@@ -2,7 +2,7 @@ TARGET = qpp # Application name
 SRC = ./src# no white spaces allowed before the comment!
 INC = ./include# no white spaces allowed before the comment!
 
-CC_STANDARD = -std=c++11 # C++ standard, we use C++98
+CC_STANDARD = -std=c++11 # C++ standard, we use C++11
 CC = g++ # C++ compiler
 WARNINGS = -Wall -Wextra # Extra warnings
 MULTIPROC = -fopenmp # Use OPENMP for multi-processing 
