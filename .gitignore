@@ -1,5 +1,3 @@
-src/*.o
-src/*~
-include/*~
+*.o
 *~
 qpp
