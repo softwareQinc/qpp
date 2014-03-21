@@ -1,0 +1,8 @@
+#!/bin/sh
+# Updates the project from eclipse workspace
+
+rm -rf ./src/*
+rm -rf ./include/*
+
+cp ~/Dropbox/programming/workspace/quantum++/src/* ./src
+cp ~/Dropbox/programming/workspace/quantum++/include/* ./include
