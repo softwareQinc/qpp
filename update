@@ -1,6 +1,7 @@
 #!/bin/sh
 # Updates the project from eclipse workspace
 
+make clean
 rm -rf ./src/*
 rm -rf ./include/*
 
