@@ -20,71 +20,17 @@ int main()
 {
 	_init(); // this will be done automatically in the framework
 
-	/*
-	 // test random matrices
-	 cmat A=cmat::Random(2,2);
-	 cmat B=cmat::Random(3,3);
-	 cmat C=cmat::Random(4,4);
-	 cmat D=cmat::Random(5,5);
-	 cmat kronMat=kron(kron(kron(A,B),C),D);
+	vector<size_t> dims={2,3,4,5,6,7}; // prod(dims) = 5040
+	vector<size_t> subsys={1,2,4};
+	size_t dim=5040;
 
-	 size_t cdims[]={2,3,4,5};
-	 std::vector<size_t> dims(cdims,cdims+sizeof(cdims)/sizeof(cdims[0]));
-
-	 size_t cperm[]={3,2,1,0}; // permutation
-	 std::vector<size_t> perm(cperm,cperm+sizeof(cperm)/sizeof(cperm[0]));
-	 cmat permutedMat=kron(kron(kron(D,C),B),A);
-
-	 disp(permutedMat);
-	 cout<<"Norm of the difference: "<<norm(permutedMat-syspermute(kronMat,dims,perm))<<endl;
-
-	 size_t cdims1[]={2,2};
-	 std::vector<size_t> dims1(cdims1,cdims1+sizeof(cdims1)/sizeof(cdims1[0]));
-
-	 size_t cperm1[]={1,0}; // permutation
-	 std::vector<size_t> perm1(cperm1,cperm1+sizeof(cperm1)/sizeof(cperm1[0]));
-
-
-	 cmat CNOT12 = gt::CNOT;
-	 // CNOT12 -> CNOT 21
-	 cmat CNOT21 = syspermute(CNOT12, dims1, perm1);
-
-	 cout<<"CNOT12:"<<endl;
-	 disp(CNOT12);
-	 cout<<endl<<"CNOT21"<<endl;
-	 disp(CNOT21);
-	 */
-	/*	cmat A0=cmat::Random(3,3);
-	 cmat A1=cmat::Random(3,3);
-	 cmat A2=cmat::Random(4,4);
-	 cmat A3=cmat::Random(5,5);
-	 cmat A4=cmat::Random(6,6);
-
-
-	 vector<cmat> vectMat;
-	 vectMat.push_back(A0);
-	 vectMat.push_back(A1);
-	 vectMat.push_back(A2);
-	 vectMat.push_back(A3);
-	 vectMat.push_back(A4);
-
-
-	 cmat kronMat=kron_list(vectMat);
-	 //disp(kronMat);
-	 cout<<endl;
-
-	 size_t csubsys[]={1,4,2,3}; // trace out A2 A3 A4
-	 size_t cdims[]={3,3,4,5,6};
-
-	 std::vector<size_t> dims(cdims,cdims+sizeof(cdims)/sizeof(cdims[0]));
-	 std::vector<size_t> subsys(csubsys,csubsys+sizeof(csubsys)/sizeof(csubsys[0]));
-
-	 cmat result = trace(A1)*trace(A2)*trace(A3)*trace(A4)*A0;
-	 cout<<norm(ptrace(kronMat, dims, subsys)-result);
-	 cout<<endl;
-	 cout<<"Size of the remaining systems:"<<result.cols()<<endl;
-	 disp(result);
-	 */
+	size_t cnt=0;
+	cmat A(dim,dim);
+	for(auto i=0;i<dim;i++)
+		for(auto j=0; j<dim; j++)
+			A(i,j)=cnt++;
+	 disp(ptrace(A, dims, subsys));
+	 cout<<endl<<norm(ptrace(A, dims, subsys))<<endl;
 
 	// do the same thing with trAB, without syspermute (i.e, traceout the last subsystems)
 	/*
@@ -106,6 +52,7 @@ int main()
 	 #endif
 	 */
 
+/*
 	stat::UniformRealDistribution a(-2, 2);
 	cout << endl << a.sample() << endl;
 
@@ -119,4 +66,5 @@ int main()
 	cout << endl;
 	int n = 41;
 	cout << "The " << n << " root of unity is: " << ct::omega(n) << endl;
+*/
 }
