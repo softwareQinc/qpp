@@ -68,7 +68,9 @@ int main(int argc, char **argv)
 	cmat c=randn(3);
 	disp(mat_pow(c,1));
 	cout<<endl<<endl;
-	disp(static_cast<cmat>(transpose(v)*v));
-	cplx vv=trace(c);
+	cmat result=transpose(v)*v;
+	cplx r=result(0);
+	disp(r);
+	//cplx vv=trace(c);
 
 }
