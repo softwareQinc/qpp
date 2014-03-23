@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 //	size_t n = atoi(argv[1]); // number of qubits
 //	size_t nout = atoi(argv[2]); // discard the first ndiscarded qubits
 
-	size_t n = 10;
+	size_t n = 10; // number of qubits
 	size_t nout = n - 2; // trace down first n-1 qubits
 
 	size_t dim = pow(2, n); // total dimension
