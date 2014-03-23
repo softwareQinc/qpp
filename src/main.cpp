@@ -66,5 +66,13 @@ int main(int argc, char **argv)
 	cout << endl;
 	disp_container(dims);
 	cout << endl;
+	cout<< "The eigenvalues of Fd(9) are: "<<endl;
+	disp(evals(gt::Fd(9)));
+	cout<<endl;
+	disp(gt::Fd(3));
+	cout<<endl<<"Precision: "<<ct::eps<<endl;
+	cout<<endl;
+	disp(ct::eps);
+	cout<<endl;
 
 }

@@ -125,11 +125,11 @@ types::cmat rand_unitary(const size_t size);
 
 // Displays a complex Eigen::Matrix (types::cmat) in friendly form
 void disp(const types::cmat &A, std::ostream& os = std::cout,
-		unsigned int precision = 4, double eps = 1e-16);
+		unsigned int precision = 4, double eps = ct::eps);
 
 // Displays a complex number in friendly form
 void disp(const types::cplx &c, std::ostream& os = std::cout,
-		unsigned int precision = 4, double eps = 1e-16);
+		unsigned int precision = 4, double eps = ct::eps);
 
 // save matrix to a binary file in double precision
 void save(const types::cmat & A, const std::string& fname);
