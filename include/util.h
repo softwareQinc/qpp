@@ -147,10 +147,10 @@ types::cmat reshape(const types::cmat& A, size_t rows, size_t cols);
 template<typename T>
 inline void disp_container(const T& x)
 {
-	std::cout<<"[ ";
-	for (typename T::const_iterator it = x.begin(); it != x.end(); it++)
+	auto it = x.begin();
+	for (; it != x.end()-1; it++)
 		std::cout << *it << " ";
-	std::cout<<"]";
+	std::cout << *(it++);
 }
 
 // used inside the #pragma omp parallel for in syspermute
