@@ -29,48 +29,34 @@ int main(int argc, char **argv)
 
 	size_t dim = pow(2, n); // total dimension
 
-	ivect dims(n);
-	for (size_t i = 0; i < n; i++)
-		dims(i)=2;
+	std::vector<size_t> dims;
+	std::vector<size_t> subsys;
 
-	ivect subsys(n);
-	for (size_t i = 0; i < nout; i++)
-		subsys(i)=i;
-
-	ivect perm(n);
-	for(size_t i = 1; i<n; i++)
-		perm(i-1)=i;
-	perm(n-1)=0;
+	for(size_t i=0; i<n; i++)
+		dims.push_back(2);
+	for(size_t i=0; i<nout; i++)
+			subsys.push_back(i);
 
 	// generate a random 2^n x 2^n matrix
 	cmat A = randn(dim);
 
-//	// take the partial trace
-//	cmat B = ptrace(A, subsys, dims);
-//
-//	cout << "Partial trace of " << nout << " out of " << n
-//			<< " qubits. Total dimension=2^" << n << "=" << dim << "." << endl;
-//	cout << endl << "Remaining matrix:"<<endl;
-//	if(B.cols()<32)
-//		disp(B);
-//	else
-//		cout<<" Size too large to be useful :)";
+	// take the partial trace
+	cmat B = ptrace(A, subsys, dims);
+	B=gt::Y;
 
-	cvect v(3);
-	v<<ct::ii,2,3;
-	disp(v);
-	cout<<endl<<endl;
-	cout<<v<<endl<<endl;
+	cout << "Partial trace of " << nout << " out of " << n
+			<< " qubits. Total dimension=2^" << n << "=" << dim << "." << endl;
+	cout << endl << "Remaining matrix:"<<endl;
+	if(B.cols()<32)
+		disp(B);
+	else
+		cout<<" Size too large to be useful :)";
 
-	ivect a(2);
-	a<<1,2;
+	cout<<endl<<"The eigenvalues of B are:"<<endl;
+	disp(evals(B));
+	cout<<endl<<"The eigenvectors of B are:"<<endl;
+	disp(evects(B));
+	cout<<endl;
 
-	cmat c=randn(3);
-	disp(mat_pow(c,1));
-	cout<<endl<<endl;
-	cmat result=transpose(v)*v;
-	cplx r=result(0);
-	disp(r);
-	//cplx vv=trace(c);
 
 }

@@ -308,7 +308,6 @@ types::cmat mat_f(const types::cmat &A, types::cplx (*f)(const types::cplx &))
 	return evects * evalsdiag * evects.inverse();
 }
 
-
 // Matrix exponential
 types::cmat mat_exp(const types::cmat &A)
 {
@@ -432,29 +431,8 @@ void disp(const types::cmat &A, std::ostream& os, unsigned int precision,
 		for (int j = 1; j < A.cols(); j++) // then the rest
 			os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
 					<< std::right << vstr[i * A.cols() + j];
-		if (i < A.rows() - 1)
-			os << std::endl;
+		os << std::endl;
 	}
-}
-
-// Displays an integer vector
-void disp(const types::ivect &v, std::ostream& os)
-{
-	for (size_t i = 0; i < v.size() - 1; i++)
-		std::cout << v(i) << " ";
-	std::cout << v(v.size() - 1);
-}
-
-// Displays a complex vector in frienly form
-void disp(const types::cvect &v, std::ostream& os, unsigned int precision,
-		double eps)
-{
-	for (size_t i = 0; i < v.size() - 1; i++)
-	{
-		disp(v(i), os, precision, eps);
-		std::cout << " ";
-	};
-	disp(v(v.size() - 1), os, precision, eps);
 }
 
 // Displays a complex number in friendly form

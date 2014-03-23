@@ -55,7 +55,7 @@ inline double norm(const types::cmat& A)
 }
 
 // eigenvalues
-inline types::cvect evals(const types::cmat &A)
+inline types::cmat evals(const types::cmat &A)
 {
 	Eigen::ComplexEigenSolver<Eigen::MatrixXcd> es(A);
 	return es.eigenvalues();
@@ -127,16 +127,9 @@ types::cmat rand_unitary(const size_t size);
 void disp(const types::cmat &A, std::ostream& os = std::cout,
 		unsigned int precision = 4, double eps = 1e-16);
 
-// Displays a complex vector in frienly form
-void disp(const types::cvect &v, std::ostream& os = std::cout,
-		unsigned int precision = 4, double eps = 1e-16);
-
 // Displays a complex number in friendly form
 void disp(const types::cplx &c, std::ostream& os = std::cout,
 		unsigned int precision = 4, double eps = 1e-16);
-
-// Displays an integer vector
-void disp(const types::ivect &v, std::ostream& os = std::cout);
 
 // save matrix to a binary file in double precision
 void save(const types::cmat & A, const std::string& fname);
