@@ -145,11 +145,12 @@ types::cmat reshape(const types::cmat& A, size_t rows, size_t cols);
 
 // Displays a standard container that supports STL iterators
 template<typename T>
-inline void print_container(const T& x)
+inline void disp_container(const T& x)
 {
+	std::cout<<"[ ";
 	for (typename T::const_iterator it = x.begin(); it != x.end(); it++)
 		std::cout << *it << " ";
-	std::cout << std::endl;
+	std::cout<<"]";
 }
 
 // used inside the #pragma omp parallel for in syspermute

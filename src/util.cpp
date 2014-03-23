@@ -358,6 +358,9 @@ types::cmat rand_unitary(const size_t size)
 	return mat_exp(static_cast<types::cmat>(ct::ii * H));
 }
 
+
+//TODO: use 1.0e+05 notation
+
 // Displays a complex Eigen::Matrix (types::cmat) in friendly form
 void disp(const types::cmat &A, std::ostream& os, unsigned int precision,
 		double eps)
@@ -431,7 +434,8 @@ void disp(const types::cmat &A, std::ostream& os, unsigned int precision,
 		for (int j = 1; j < A.cols(); j++) // then the rest
 			os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
 					<< std::right << vstr[i * A.cols() + j];
-		os << std::endl;
+		if(i<A.rows()-1)
+			os << std::endl;
 	}
 }
 

@@ -24,8 +24,8 @@ int main(int argc, char **argv)
 //	size_t n = atoi(argv[1]); // number of qubits
 //	size_t nout = atoi(argv[2]); // discard the first ndiscarded qubits
 
-	size_t n = 3;
-	size_t nout = n-1; // trace down first n-1 qubits
+	size_t n = 9;
+	size_t nout = n-2; // trace down first n-1 qubits
 
 	size_t dim = pow(2, n); // total dimension
 
@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 
 	// take the partial trace
 	cmat B = ptrace(A, subsys, dims);
-	B=gt::Y;
+
 
 	cout << "Partial trace of " << nout << " out of " << n
 			<< " qubits. Total dimension=2^" << n << "=" << dim << "." << endl;
@@ -56,7 +56,16 @@ int main(int argc, char **argv)
 	disp(evals(B));
 	cout<<endl<<"The eigenvectors of B are:"<<endl;
 	disp(evects(B));
+
 	cout<<endl;
 
+	disp(1.0+ct::ii);
+	cout<<endl;
+	disp(1.0+ct::ii);
+	cout<<endl;
+	disp_container(dims);
+	cout<<endl;
+	disp_container(dims);
+	cout<<endl;
 
 }
