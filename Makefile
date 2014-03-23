@@ -6,14 +6,14 @@ CC_STANDARD = -std=c++11 # C++ standard, we use C++11
 CC = g++ # C++ compiler
 WARNINGS = -Wall -Wextra # Extra warnings
 MULTIPROC = -fopenmp # Use OPENMP for multi-processing 
-OPTIM = -mtune=native -msse2 # use SSE2 and Native compiling
+OPTIM = -mtune=native -msse3 # use SSE2 and Native compiling
 
 EIGEN = ~/eigen_3.2.1 # Location of Eigen library, replace it with your own
 
 # Some flags, use pedantic for C++ standard compliance
 CFLAGS = -c -pedantic $(CC_STANDARD) $(WARNINGS) $(MULTIPROC) $(OPTIM)\
 	-isystem $(EIGEN) -I $(INC)
-CFLAGS_RELEASE = -O2 -DNDEBUG -DEIGEN_NO_DEBUG # Release flags
+CFLAGS_RELEASE = -O3 -DNDEBUG -DEIGEN_NO_DEBUG # Release flags
 CFLAGS_DEBUG = -DDEBUG -g3 # Debug flags
 
 # Use gomp multi-processing library

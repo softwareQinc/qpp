@@ -16,55 +16,59 @@ using namespace std;
 using namespace qpp;
 using namespace qpp::types;
 
-int main()
+int main(int argc, char **argv)
 {
 	_init(); // this will be done automatically in the framework
 
-	vector<size_t> dims={2,3,4,5,6,7}; // prod(dims) = 5040
-	vector<size_t> subsys={1,2,4};
-	size_t dim=5040;
+	// test partial trace speed
+//	size_t n = atoi(argv[1]); // number of qubits
+//	size_t nout = atoi(argv[2]); // discard the first ndiscarded qubits
 
-	size_t cnt=0;
-	cmat A(dim,dim);
-	for(auto i=0;i<dim;i++)
-		for(auto j=0; j<dim; j++)
-			A(i,j)=cnt++;
-	 disp(ptrace(A, dims, subsys));
-	 cout<<endl<<norm(ptrace(A, dims, subsys))<<endl;
+	size_t n = 3;
+	size_t nout = n-1; // trace down first n-1 qubits
 
-	// do the same thing with trAB, without syspermute (i.e, traceout the last subsystems)
-	/*
-	 size_t cdimsAB[]={6,120};
-	 cmat result = trace(A2)*trace(A3)*trace(A4)*kron(A0,A1);
-	 std::vector<size_t> dimsAB(cdimsAB,cdimsAB+sizeof(cdimsAB)/sizeof(cdimsAB[0]));
-	 cout<<norm(ptrace2(kronMat,dimsAB)-result);
-	 */
+	size_t dim = pow(2, n); // total dimension
 
-	// TODO: optimize syspermute, that's where time is spent!
-// C++11 code
-	/*
-	 #define CPP11
-	 #ifdef CPP11
-	 vector<cmat> vmat={gt::X,gt::Y,gt::Z};
-	 cmat kronvmat=kron_list(vmat);
-	 cout<<endl;
-	 disp(kronvmat);
-	 #endif
-	 */
+	ivect dims(n);
+	for (size_t i = 0; i < n; i++)
+		dims(i)=2;
 
-/*
-	stat::UniformRealDistribution a(-2, 2);
-	cout << endl << a.sample() << endl;
+	ivect subsys(n);
+	for (size_t i = 0; i < nout; i++)
+		subsys(i)=i;
 
-	stat::NormalDistribution b;
-	cout << endl << b.sample() << endl;
+	ivect perm(n);
+	for(size_t i = 1; i<n; i++)
+		perm(i-1)=i;
+	perm(n-1)=0;
 
-	cmat A = cmat::Random(2, 2);
-	cout << endl;
-	disp(A);
+	// generate a random 2^n x 2^n matrix
+	cmat A = randn(dim);
 
-	cout << endl;
-	int n = 41;
-	cout << "The " << n << " root of unity is: " << ct::omega(n) << endl;
-*/
+//	// take the partial trace
+//	cmat B = ptrace(A, subsys, dims);
+//
+//	cout << "Partial trace of " << nout << " out of " << n
+//			<< " qubits. Total dimension=2^" << n << "=" << dim << "." << endl;
+//	cout << endl << "Remaining matrix:"<<endl;
+//	if(B.cols()<32)
+//		disp(B);
+//	else
+//		cout<<" Size too large to be useful :)";
+
+	cvect v(3);
+	v<<ct::ii,2,3;
+	disp(v);
+	cout<<endl<<endl;
+	cout<<v<<endl<<endl;
+
+	ivect a(2);
+	a<<1,2;
+
+	cmat c=randn(3);
+	disp(mat_pow(c,1));
+	cout<<endl<<endl;
+	disp(static_cast<cmat>(transpose(v)*v));
+	cplx vv=trace(c);
+
 }

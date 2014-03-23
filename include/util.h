@@ -22,6 +22,52 @@
 namespace qpp
 {
 
+// Eigen function wrappers
+
+// transpose
+inline types::cmat transpose(const types::cmat& A)
+{
+	return A.transpose();
+}
+
+// conjugate
+inline types::cmat conjugate(const types::cmat& A)
+{
+	return A.conjugate();
+}
+
+// adjoint
+inline types::cmat adjoint(const types::cmat& A)
+{
+	return A.adjoint();
+}
+
+// trace
+inline types::cplx trace(const types::cmat& A)
+{
+	return A.trace();
+}
+
+// trace-norm (or Frobenius norm)
+inline double norm(const types::cmat& A)
+{
+	return A.norm();
+}
+
+// eigenvalues
+inline types::cvect evals(const types::cmat &A)
+{
+	Eigen::ComplexEigenSolver<Eigen::MatrixXcd> es(A);
+	return es.eigenvalues();
+}
+
+// eigenvectors
+inline types::cmat evects(const types::cmat &A)
+{
+	Eigen::ComplexEigenSolver<Eigen::MatrixXcd> es(A);
+	return es.eigenvectors();
+}
+
 // Kronecker product of 2 matrices
 types::cmat kron(const types::cmat &A, const types::cmat &B);
 
@@ -29,18 +75,26 @@ types::cmat kron(const types::cmat &A, const types::cmat &B);
 types::cmat kron_list(const std::vector<types::cmat> & list);
 
 // Kronecker product of a matrix with itself $n$ times
-types::cmat kron_n(const types::cmat &A, int n);
+types::cmat kron_pow(const types::cmat &A, int n);
+
+// integer index to multi-index, use C-style array for speed
+void _n2multiidx(const size_t n, const size_t numdims, const size_t *dims,
+		size_t *result);
+
+// multi index to integer index, use C-style array for speed
+size_t _multiidx2n(const size_t *midx, const size_t numdims,
+		const size_t *dims);
 
 // Partial trace over subsystem B in a D_A X D_B system
 types::cmat ptrace2(const types::cmat &AB, const std::vector<size_t> dims);
 
 // permutes the subsystems in a cmat
-types::cmat syspermute(const types::cmat &A, const std::vector<size_t> &dims,
-		const std::vector<size_t> perm);
+types::cmat syspermute(const types::cmat &A, const std::vector<size_t> perm,
+		const std::vector<size_t> &dims);
 
 // partial trace
-types::cmat ptrace(const types::cmat &A, const std::vector<size_t> &dims,
-		const std::vector<size_t> &subsys);
+types::cmat ptrace(const types::cmat &A, const std::vector<size_t> &subsys,
+		const std::vector<size_t> &dims);
 
 // TODO: expandout function
 
@@ -73,12 +127,16 @@ types::cmat rand_unitary(const size_t size);
 void disp(const types::cmat &A, std::ostream& os = std::cout,
 		unsigned int precision = 4, double eps = 1e-16);
 
-// save matrix in a text file (text format, lacks precision)
-void save_text(const types::cmat & A, const std::string& fname,
-		size_t precision = 16);
+// Displays a complex vector in frienly form
+void disp(const types::cvect &v, std::ostream& os = std::cout,
+		unsigned int precision = 4, double eps = 1e-16);
 
-// load matrix from text file
-types::cmat load_text(const std::string& fname);
+// Displays a complex number in friendly form
+void disp(const types::cplx &c, std::ostream& os = std::cout,
+		unsigned int precision = 4, double eps = 1e-16);
+
+// Displays an integer vector
+void disp(const types::ivect &v, std::ostream& os = std::cout);
 
 // save matrix to a binary file in double precision
 void save(const types::cmat & A, const std::string& fname);
@@ -101,85 +159,10 @@ inline void print_container(const T& x)
 	std::cout << std::endl;
 }
 
-// integer index to multi-index
-inline std::vector<size_t> n2multiidx(const size_t &n,
-		const std::vector<size_t> &dims)
-{
-	size_t numdims = dims.size();
-	std::vector<size_t> result(numdims, 0);
-	int _n = n;
-	size_t maxn = 1;
-	for (size_t i = 0; i < numdims; i++)
-		maxn *= dims[i];
-	if (n > maxn - 1)
-		throw std::runtime_error("Number too large, out of bounds!");
-
-	size_t tmp = 0;
-	for (size_t i = 0; i < numdims; i++)
-	{
-		tmp = _n % static_cast<int>(dims[numdims - i - 1]);
-		result[numdims - i - 1] = tmp;
-		_n = _n / static_cast<int>(dims[numdims - i - 1]);
-	}
-	return result;
-}
-
-// multi index to integer index
-inline size_t multiidx2n(const std::vector<size_t> &midx,
-		const std::vector<size_t> &dims)
-{
-	size_t numdims = dims.size();
-	std::vector<size_t> part_prod(numdims, 1); // partial products
-	size_t result = 0;
-	for (size_t i = 0; i < numdims; i++)
-		if (midx[i] >= dims[i])
-			throw std::runtime_error(
-					"Sub-index exceeds corresponding dimension!");
-
-	for (size_t j = 0; j < numdims; j++)
-		if (j == 0)
-			part_prod[numdims - 1] = 1;
-		else
-			part_prod[numdims - j - 1] = part_prod[numdims - j]
-					* dims[numdims - j];
-
-	for (size_t i = 0; i < numdims; i++)
-		result += midx[i] * part_prod[i];
-
-	return result;
-}
-
-// Eigen function wrappers
-
-// transpose
-inline types::cmat transpose(const types::cmat& A)
-{
-	return A.transpose();
-}
-
-// conjugate
-inline types::cmat conjugate(const types::cmat& A)
-{
-	return A.conjugate();
-}
-
-// adjoint
-inline types::cmat adjoint(const types::cmat& A)
-{
-	return A.adjoint();
-}
-
-// trace
-inline types::cplx trace(const types::cmat& A)
-{
-	return A.trace();
-}
-
-// trace-norm (or Frobenius norm)
-inline double norm(const types::cmat& A)
-{
-	return A.norm();
-}
+// used inside the #pragma omp parallel for in syspermute
+void _syspermute_worker(const size_t numdims, const size_t *cdims,
+		const size_t *cperm, const size_t i, const size_t j, size_t &iperm,
+		size_t &jperm, const types::cmat &A, types::cmat &result);
 
 }
 

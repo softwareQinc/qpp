@@ -44,6 +44,9 @@ typedef Eigen::RowVector3cd bra3; // 1 x 3
 typedef Eigen::RowVector4cd bra4; // 1 x 4
 typedef Eigen::RowVectorXcd bra; // dynamic-size bra
 
+typedef Eigen::VectorXcd cvect; // dynamic-size complex vector
+typedef Eigen::VectorXi ivect; // dynamic-size integer vector
+
 }
 }
 
