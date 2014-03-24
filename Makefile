@@ -16,7 +16,7 @@ CFLAGS = -c -pedantic $(CC_STANDARD) $(WARNINGS) $(MULTIPROC) $(OPTIM)\
 CFLAGS_RELEASE = -O3 -DNDEBUG -DEIGEN_NO_DEBUG # Release flags
 CFLAGS_DEBUG = -DDEBUG -g3 # Debug flags
 
-# Use gomp multi-processing library
+# Use gomp multi-processing library, a must for g++ -fopenmp flag
 LDFLAGS = -lgomp
 
 SOURCES = $(wildcard $(SRC)/*.cpp)
