@@ -11,6 +11,7 @@
 #include <stdexcept>
 
 #include "qpp.h"
+#include "internal.h"
 
 using namespace std;
 using namespace qpp;
@@ -77,7 +78,7 @@ int main()
 //	cout<<endl;
 
 	// ptranspose test
-	size_t n = 11; // number of qubits
+	size_t n = 12; // number of qubits
 	size_t dim = pow(2,n); // total dimension
 
 	cmat mat(dim,dim);
@@ -92,7 +93,7 @@ int main()
 		dm.push_back(2);
 
 	// subsystems
-	vector<size_t> sbs={0,1};
+	vector<size_t> sbs={0,2};
 
 	cout<<"Matrix: "<< endl;
 	//disp(mat);
@@ -106,4 +107,5 @@ int main()
 	cout<<"Eigenvalues of partial transpose"<<endl;
 	//disp(evals(ptranspose(mat, sbs, dm)));
 	cout<<endl<<endl;
+
 }

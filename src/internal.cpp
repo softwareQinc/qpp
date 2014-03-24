@@ -94,6 +94,7 @@ void _ptranspose_worker(const size_t numdims, const size_t numsubsys,
 		const size_t j, size_t &iperm, size_t &jperm, const types::cmat &A,
 		types::cmat &result)
 {
+
 	size_t *midxrow = new size_t[numdims];
 	size_t *midxcol = new size_t[numdims];
 
