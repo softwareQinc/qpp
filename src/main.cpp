@@ -16,7 +16,8 @@ using namespace std;
 using namespace qpp;
 using namespace qpp::types;
 
-int main(int argc, char **argv)
+//int main(int argc, char **argv)
+int main()
 {
 	_init(); // this will be done automatically in the framework
 
