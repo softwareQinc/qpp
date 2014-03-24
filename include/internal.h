@@ -8,8 +8,9 @@
 #ifndef INTERNAL_H_
 #define INTERNAL_H_
 
-// internal functions, do not modify
+#include "types.h"
 
+// internal functions, do not modify
 namespace qpp{
 
 // integer index to multi-index, use C-style array for speed
