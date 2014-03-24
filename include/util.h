@@ -96,6 +96,10 @@ types::cmat syspermute(const types::cmat &A, const std::vector<size_t> perm,
 types::cmat ptrace(const types::cmat &A, const std::vector<size_t> &subsys,
 		const std::vector<size_t> &dims);
 
+// partial transpose
+types::cmat ptranspose(const types::cmat &A, const std::vector<size_t> &subsys,
+		const std::vector<size_t> &dims);
+
 // TODO: expandout function
 
 // Matrix power A^z
@@ -158,10 +162,9 @@ void _syspermute_worker(const size_t numdims, const size_t *cdims,
 		const size_t *cperm, const size_t i, const size_t j, size_t &iperm,
 		size_t &jperm, const types::cmat &A, types::cmat &result);
 
-// partial transpose
-types::cmat ptranspose(const types::cmat &A, const std::vector<size_t> &subsys,
-		const std::vector<size_t> &dims);
-
+void _ptranspose_worker(const size_t numdims, const size_t numsubsys, const size_t *cdims,
+		const size_t *csubsys, const size_t i, const size_t j, size_t &iperm,
+		size_t &jperm, const types::cmat &A, types::cmat &result);
 }
 
 #endif /* UTIL_H_ */
