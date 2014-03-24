@@ -229,6 +229,8 @@ void _syspermute_worker(const size_t numdims, const size_t *cdims,
 types::cmat ptrace(const types::cmat &A, const std::vector<size_t> &subsys,
 		const std::vector<size_t> &dims)
 {
+	//TODO: error checks! (same as in ptranspose)
+
 	types::cmat result;
 	std::vector<size_t> permdims;
 
@@ -278,7 +280,7 @@ types::cmat ptrace(const types::cmat &A, const std::vector<size_t> &subsys,
 	return ptrace2(syspermute(A, perm, dims), sizeAB);
 }
 
-// Matrix power A^x
+// Matrix power A^z
 types::cmat mat_pow(const types::cmat &A, const types::cplx z)
 {
 	Eigen::ComplexEigenSolver<Eigen::MatrixXcd> es(A);
@@ -358,7 +360,6 @@ types::cmat rand_unitary(const size_t size)
 	return mat_exp(static_cast<types::cmat>(ct::ii * H));
 }
 
-
 //TODO: use 1.0e+05 notation
 
 // Displays a complex Eigen::Matrix (types::cmat) in friendly form
@@ -434,7 +435,7 @@ void disp(const types::cmat &A, std::ostream& os, unsigned int precision,
 		for (int j = 1; j < A.cols(); j++) // then the rest
 			os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
 					<< std::right << vstr[i * A.cols() + j];
-		if(i<A.rows()-1)
+		if (i < A.rows() - 1)
 			os << std::endl;
 	}
 }
@@ -530,4 +531,12 @@ types::cmat reshape(const types::cmat& A, size_t rows, size_t cols)
 	return realA.cast<types::cplx>() + ct::ii * imagA.cast<types::cplx>();
 }
 
+// partial transpose
+types::cmat qpp::ptranspose(const types::cmat& A,
+		const std::vector<size_t>& subsys, const std::vector<size_t>& dims)
+{
+	// error checks
 }
+
+}
+

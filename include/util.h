@@ -75,7 +75,7 @@ types::cmat kron(const types::cmat &A, const types::cmat &B);
 types::cmat kron_list(const std::vector<types::cmat> & list);
 
 // Kronecker product of a matrix with itself $n$ times
-types::cmat kron_pow(const types::cmat &A, int n);
+types::cmat kron_pow(const types::cmat &A, size_t n);
 
 // integer index to multi-index, use C-style array for speed
 void _n2multiidx(const size_t n, const size_t numdims, const size_t *dims,
@@ -157,6 +157,10 @@ inline void disp_container(const T& x)
 void _syspermute_worker(const size_t numdims, const size_t *cdims,
 		const size_t *cperm, const size_t i, const size_t j, size_t &iperm,
 		size_t &jperm, const types::cmat &A, types::cmat &result);
+
+// partial transpose
+types::cmat ptranspose(const types::cmat &A, const std::vector<size_t> &subsys,
+		const std::vector<size_t> &dims);
 
 }
 
