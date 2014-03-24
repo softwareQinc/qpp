@@ -9,6 +9,8 @@
 
 namespace qpp
 {
+namespace internal
+{
 
 // integer index to multi-index, use C-style array for speed
 void _n2multiidx(const size_t n, const size_t numdims, const size_t *dims,
@@ -113,9 +115,7 @@ void _ptranspose_worker(const size_t numdims, const size_t numsubsys,
 	delete[] midxrow;
 	delete[] midxcol;
 }
-
-
-
 }
 
+}
 

@@ -152,7 +152,7 @@ types::cmat syspermute(const types::cmat &A, const std::vector<size_t> perm,
 	for (size_t i = 0; i < dim; i++)
 #pragma omp parallel for
 		for (size_t j = 0; j < dim; j++)
-			_syspermute_worker(numdims, cdims, cperm, i, j, iperm, jperm, A,
+			internal::_syspermute_worker(numdims, cdims, cperm, i, j, iperm, jperm, A,
 					result);
 
 	delete[] cdims;
@@ -559,7 +559,7 @@ types::cmat ptranspose(const types::cmat& A, const std::vector<size_t>& subsys,
 	for (size_t i = 0; i < dim; i++)
 #pragma omp parallel for
 		for (size_t j = 0; j < dim; j++) // paralelize this code
-			_ptranspose_worker(numdims, numsubsys, cdims, csubsys, i, j, iperm,
+			internal::_ptranspose_worker(numdims, numsubsys, cdims, csubsys, i, j, iperm,
 					jperm, A, result);
 
 	delete[] cdims;
