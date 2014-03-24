@@ -200,7 +200,7 @@ types::cmat ptrace(const types::cmat &A, const std::vector<size_t> &subsys,
 
 	// check range of subsystems
 	if (std::find_if(subsyssort.begin(), subsyssort.end(),
-			[&dims](int i) -> bool
+			[&dims](size_t i) -> bool
 			{	if(i>dims.size()-1) return true;
 				else return false;}) != subsyssort.end())
 		throw std::runtime_error("ptrace: Invalid range for subsystems!");
@@ -535,7 +535,7 @@ types::cmat ptranspose(const types::cmat& A, const std::vector<size_t>& subsys,
 
 	// check range of subsystems
 	if (std::find_if(subsyssort.begin(), subsyssort.end(),
-			[&dims](int i) -> bool
+			[&dims](size_t i) -> bool
 			{	if(i>dims.size()-1) return true;
 				else return false;}) != subsyssort.end())
 		throw std::runtime_error("ptranspose: Invalid range for subsystems!");
