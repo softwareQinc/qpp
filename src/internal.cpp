@@ -91,14 +91,14 @@ void _syspermute_worker(const size_t numdims, const size_t *cdims,
 }
 
 // used inside the #pragma omp parallel for in ptranspose
-void _ptranspose_worker(const size_t* midxrow, const size_t numdims, const size_t numsubsys,
-		const size_t *cdims, const size_t *csubsys, const size_t i,
-		const size_t j, size_t &iperm, size_t &jperm, const types::cmat &A,
-		types::cmat &result)
+void _ptranspose_worker(const size_t* midxrow, const size_t numdims,
+		const size_t numsubsys, const size_t *cdims, const size_t *csubsys,
+		const size_t i, const size_t j, size_t &iperm, size_t &jperm,
+		const types::cmat &A, types::cmat &result)
 {
-	size_t *midxrowtmp =new size_t[numdims];
-	for(size_t i=0; i<numdims; i++)
-		midxrowtmp[i]=midxrow[i];
+	size_t *midxrowtmp = new size_t[numdims];
+	for (size_t i = 0; i < numdims; i++)
+		midxrowtmp[i] = midxrow[i];
 	size_t *midxcol = new size_t[numdims];
 
 	// compute the col multi-index
@@ -115,7 +115,74 @@ void _ptranspose_worker(const size_t* midxrow, const size_t numdims, const size_
 	delete[] midxcol;
 	delete[] midxrowtmp;
 }
+
+// check square matrix
+bool _check_square_mat(const types::cmat& A)
+{
+	if (A.rows() != A.cols())
+		return false;
+	return true;
+}
+
+// check that dims is a valid dimension vector
+bool _check_dims(const std::vector<size_t>& dims)
+{
+	if (std::find_if(dims.begin(), dims.end(), [&dims](int i) -> bool
+	{	if(i==0) return true;
+		else return false;}) != dims.end())
+		return false;
+	return true;
+}
+
+// check that dims match the dimension of the matrix
+bool _check_dims_match_mat(const std::vector<size_t>& dims,
+		const types::cmat& A)
+{
+	size_t proddim = 1;
+	for (size_t i : dims)
+		proddim *= i;
+	if (proddim != A.rows())
+		return false;
+	return true;
+}
+
+// check that subsys is valid with respect to dims
+bool _check_subsys(const std::vector<size_t>& subsys,
+		const std::vector<size_t>& dims)
+{
+	// sort the subsystems
+	std::vector<size_t> subsyssort = subsys;
+	std::sort(subsyssort.begin(), subsyssort.end());
+
+	// check valid number of subsystems
+	if (subsyssort.size() > dims.size())
+		return false;
+
+	// check duplicates
+	if(std::unique(subsyssort.begin(), subsyssort.end())!=subsyssort.end())
+			return false;
+
+	// check range of subsystems
+	if (std::find_if(subsyssort.begin(), subsyssort.end(),
+			[&dims](size_t i) -> bool
+			{	if(i>dims.size()-1) return true;
+				else return false;}) != subsyssort.end())
+		return false;
+
+	return true;
+}
+
+// check that the permutation is valid with respect to dims
+bool _check_perm(const std::vector<size_t>& perm,
+		const std::vector<size_t>& dims)
+{
+	std::vector<size_t> sort_perm = perm;
+	std::sort(sort_perm.begin(), sort_perm.end());
+	for (size_t i = 0; i < dims.size(); i++)
+		if (sort_perm[i] != i)
+			return false;
+	return true;
 }
 
 }
-
+}

@@ -63,22 +63,24 @@ types::cmat ptrace2(const types::cmat &A, const std::vector<size_t> dims)
 	// error checks
 
 	// check square matrix
-	size_t dim = static_cast<size_t>(A.rows());
-	if (dim != static_cast<size_t>(A.cols()))
+	if (!internal::_check_square_mat(A))
 		throw std::runtime_error("ptrace2: Matrix must be square!");
 
+	// check dims has only 2 elements
+	if (dims.size() != 2)
+		throw std::runtime_error("ptrace2: Must have only 2 dimensions!");
+
 	// check that dim is a valid dimension vector
-	if (std::find_if(dims.begin(), dims.end(), [&dims](int i) -> bool
-	{	if(i==0) return true;
-		else return false;}) != dims.end())
+	if (!internal::_check_dims(dims))
 		throw std::runtime_error("ptrace2: Invalid dimensions vector!");
 
 	// check that dims match the dimension of A
-	size_t DA = dims[0];
-	size_t DB = dims[1];
-	if (DA * DB != dim)
+	if (!internal::_check_dims_match_mat(dims, A))
 		throw std::runtime_error(
 				"ptrace2: Dimenisons vector does not match the dimension of the matrix!");
+
+	size_t DA = dims[0];
+	size_t DB = dims[1];
 
 	types::cmat result = types::cmat::Zero(DA, DA);
 
@@ -99,45 +101,27 @@ types::cmat syspermute(const types::cmat &A, const std::vector<size_t> perm,
 	// Error checks
 
 	// check square matrix
-	size_t dim = static_cast<size_t>(A.rows());
-	if (dim != static_cast<size_t>(A.cols()))
+	if (!internal::_check_square_mat(A))
 		throw std::runtime_error("syspermute: Matrix must be square!");
 
-	// check that dim is a valid dimension vector
-	if (std::find_if(dims.begin(), dims.end(), [&dims](int i) -> bool
-	{	if(i==0) return true;
-		else return false;}) != dims.end())
+	// check that dims is a valid dimension vector
+	if (!internal::_check_dims(dims))
 		throw std::runtime_error("syspermute: Invalid dimensions vector!");
 
 	// check that dims match the dimension of A
-	size_t proddim = 1;
-	for (size_t i : dims)
-		proddim *= i;
-	if (proddim != dim)
+	if (!internal::_check_dims_match_mat(dims, A))
 		throw std::runtime_error(
 				"syspermute: Dimenisons vector does not match the dimension of the matrix!");
 
 	// check that the size of the permutation is OK
-	const size_t numdims = dims.size();
-	if (numdims != perm.size())
+	if (!internal::_check_perm(perm, dims))
 		throw std::runtime_error("syspermute: Invalid permutation size!");
 
-	// check that the permutation is valid
-	std::vector<size_t> sort_perm = perm;
-	std::sort(sort_perm.begin(), sort_perm.end());
-	for (size_t i = 0; i < numdims; i++)
-	{
-		//std::cout<<sort_perm[i]<<" "<<std::endl;
-		if (sort_perm[i] != i)
-		{
-			throw std::runtime_error("syspermute: Invalid permutation!");
-		}
-	}
-
-	types::cmat result(dim, dim);
-
+	size_t dim = static_cast<size_t>(A.rows());
+	const size_t numdims = dims.size();
 	size_t *cdims = new size_t[numdims];
 	size_t *cperm = new size_t[numdims];
+	types::cmat result(dim, dim);
 
 	// copy dims in cdims and perm in cperm
 	for (size_t i = 0; i < numdims; i++)
@@ -148,7 +132,6 @@ types::cmat syspermute(const types::cmat &A, const std::vector<size_t> perm,
 
 	size_t iperm = 0;
 	size_t jperm = 0;
-
 	for (size_t i = 0; i < dim; i++)
 #pragma omp parallel for
 		for (size_t j = 0; j < dim; j++)
@@ -168,53 +151,33 @@ types::cmat ptrace(const types::cmat &A, const std::vector<size_t> &subsys,
 	// error checks
 
 	// check square matrix
-	size_t dim = static_cast<size_t>(A.rows());
-	if (dim != static_cast<size_t>(A.cols()))
+	if (!internal::_check_square_mat(A))
 		throw std::runtime_error("ptrace: Matrix must be square!");
 
-	// check that dim is a valid dimension vector
-	if (std::find_if(dims.begin(), dims.end(), [&dims](int i) -> bool
-	{	if(i==0) return true;
-		else return false;}) != dims.end())
+	// check that dims is a valid dimension vector
+	if (!internal::_check_dims(dims))
 		throw std::runtime_error("ptrace: Invalid dimensions vector!");
 
 	// check that dims match the dimension of A
-	size_t proddim = 1;
-	for (size_t i : dims)
-		proddim *= i;
-	if (proddim != dim)
+	if (!internal::_check_dims_match_mat(dims, A))
 		throw std::runtime_error(
 				"ptrace: Dimenisons vector does not match the dimension of the matrix!");
 
-	// sort the subsystems
-	std::vector<size_t> subsyssort = subsys;
-	std::sort(subsyssort.begin(), subsyssort.end());
-	// remove duplicates
-	subsyssort.erase(std::unique(subsyssort.begin(), subsyssort.end()),
-			subsyssort.end());
+	if(!internal::_check_subsys(subsys,dims))
+		throw std::runtime_error("ptrace: Invalid subsystems!");
 
-	// check valid number of subsystems
-	if (subsyssort.size() > dims.size())
-		throw std::runtime_error("ptrace: Too many subsystems!");
-
-	// check range of subsystems
-	if (std::find_if(subsyssort.begin(), subsyssort.end(),
-			[&dims](size_t i) -> bool
-			{	if(i>dims.size()-1) return true;
-				else return false;}) != subsyssort.end())
-		throw std::runtime_error("ptrace: Invalid range for subsystems!");
-
-	types::cmat result;
-	std::vector<size_t> permdims;
-
-	size_t numsubsys = subsyssort.size(); // number of subsystems we trace out
+	size_t dim = static_cast<size_t>(A.rows());
+	size_t numsubsys = subsys.size(); // number of subsystems we trace out
 	size_t numdims = dims.size(); // total number of subsystems;
 	std::vector<size_t> perm(numdims, 0); // the permutation vector
+	std::vector<size_t> permdims; // the permuted dimensions
+
+	types::cmat result;
 
 	// the total dimension of the traced-out subsystems
 	size_t dimsubsys = 1;
 	for (size_t i = 0; i < numsubsys; i++)
-		dimsubsys *= dims[subsyssort[i]];
+		dimsubsys *= dims[subsys[i]];
 
 	std::vector<size_t> sizeAB;
 	sizeAB.push_back(dim / dimsubsys);
@@ -226,8 +189,8 @@ types::cmat ptrace(const types::cmat &A, const std::vector<size_t> &subsys,
 	for (size_t i = 0; i < numdims; i++)
 	{
 		// we find that i belongs to the subsystem
-		if (std::find(subsyssort.begin(), subsyssort.end(), i)
-				!= subsyssort.end())
+		if (std::find(subsys.begin(), subsys.end(), i)
+				!= subsys.end())
 		{
 			perm[numdims - numsubsys + cnt0] = i;
 			cnt0++;
@@ -503,48 +466,29 @@ types::cmat ptranspose(const types::cmat& A, const std::vector<size_t>& subsys,
 	// error checks
 
 	// check square matrix
+		if (!internal::_check_square_mat(A))
+			throw std::runtime_error("ptranspose: Matrix must be square!");
+
+		// check that dims is a valid dimension vector
+		if (!internal::_check_dims(dims))
+			throw std::runtime_error("ptranspose: Invalid dimensions vector!");
+
+		// check that dims match the dimension of A
+		if (!internal::_check_dims_match_mat(dims, A))
+			throw std::runtime_error(
+					"ptranspose: Dimenisons vector does not match the dimension of the matrix!");
+
+		if(!internal::_check_subsys(subsys,dims))
+			throw std::runtime_error("ptranspose: Invalid subsystems!");
+
 	size_t dim = static_cast<size_t>(A.rows());
-	if (dim != static_cast<size_t>(A.cols()))
-		throw std::runtime_error("ptranspose: Matrix must be square!");
-
-	// check that dim is a valid dimension vector
-	if (std::find_if(dims.begin(), dims.end(), [&dims](int i) -> bool
-	{	if(i==0) return true;
-		else return false;}) != dims.end())
-		throw std::runtime_error("ptranspose: Invalid dimensions vector!");
-
-	// check that dims match the dimension of A
-	size_t proddim = 1;
-	for (size_t i : dims)
-		proddim *= i;
-	if (proddim != dim)
-		throw std::runtime_error(
-				"ptranspose: Dimenisons vector does not match the dimension of the matrix!");
-
-	// sort the subsystems
-	std::vector<size_t> subsyssort = subsys;
-	std::sort(subsyssort.begin(), subsyssort.end());
-	// remove duplicates
-	subsyssort.erase(std::unique(subsyssort.begin(), subsyssort.end()),
-			subsyssort.end());
-
-	// check valid number of subsystems
-	if (subsyssort.size() > dims.size())
-		throw std::runtime_error("ptranspose: Too many subsystems!");
-
-	// check range of subsystems
-	if (std::find_if(subsyssort.begin(), subsyssort.end(),
-			[&dims](size_t i) -> bool
-			{	if(i>dims.size()-1) return true;
-				else return false;}) != subsyssort.end())
-		throw std::runtime_error("ptranspose: Invalid range for subsystems!");
-
-	types::cmat result = A;
-
 	const size_t numdims = dims.size();
 	const size_t numsubsys = subsys.size();
 	size_t *cdims = new size_t[numdims];
+	size_t *midxrow = new size_t[numdims];
 	size_t *csubsys = new size_t[numsubsys];
+
+	types::cmat result = A;
 
 	// copy dims in cdims and subsys in csubsys
 	for (size_t i = 0; i < numdims; i++)
@@ -554,9 +498,6 @@ types::cmat ptranspose(const types::cmat& A, const std::vector<size_t>& subsys,
 
 	size_t iperm = 0;
 	size_t jperm = 0;
-
-	size_t *midxrow = new size_t[numdims];
-
 	for (size_t i = 0; i < dim; i++)
 	{
 		// compute the row multi-index
