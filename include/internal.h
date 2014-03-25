@@ -9,6 +9,7 @@
 #define INTERNAL_H_
 
 #include <vector>
+#include <iostream>
 #include "types.h"
 
 // internal functions, do not modify
@@ -54,6 +55,17 @@ bool _check_subsys(const std::vector<size_t> & subsys, const std::vector<size_t>
 // check that the permutation is valid with respect to dims
 bool _check_perm(const std::vector<size_t> & perm, const std::vector<size_t> & dims);
 
+// inlines
+
+// Displays a standard container that supports STL iterators
+template<typename T>
+inline void _disp_container(const T& x)
+{
+	auto it = x.begin();
+	for (; it != x.end()-1; it++)
+		std::cout << *it << " ";
+	std::cout << *(it++);
+}
 
 }
 }

@@ -17,6 +17,15 @@ using namespace std;
 using namespace qpp;
 using namespace qpp::types;
 
+
+// that's how to write a generic matrix function!
+template<typename Derived>
+ void printFirstRow(const Eigen::MatrixBase<Derived>& x)
+ {
+   cout << x.row(0);
+   cout << endl;
+ }
+
 //int main(int argc, char **argv)
 int main()
 {
@@ -81,7 +90,7 @@ int main()
 	size_t n = 3; // number of qubits
 	size_t dim = pow(2, n); // total dimension
 
-	cmat mat(dim, dim);
+	Eigen::MatrixXcd mat(dim, dim);
 	size_t cnt = 0;
 	for (size_t i = 0; i < dim; i++)
 		for (size_t j = 0; j < dim; j++)
@@ -110,6 +119,8 @@ int main()
 	cout << "Eigenvalues of partial transpose" << endl;
 	//disp(evals(ptranspose(mat, sbs, dm)));
 	cout << endl << endl;
+
+	disp(mat.diagonal().asDiagonal());
 
 
 }

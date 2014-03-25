@@ -22,7 +22,7 @@
 namespace qpp
 {
 
-// Eigen function wrappers
+// Eigen function wrappers (inlines)
 
 // transpose
 inline types::cmat transpose(const types::cmat& A)
@@ -67,6 +67,8 @@ inline types::cmat evects(const types::cmat &A)
 	Eigen::ComplexEigenSolver<Eigen::MatrixXcd> es(A);
 	return es.eigenvectors();
 }
+
+//inline types::cmat diag()
 
 // Kronecker product of 2 matrices
 types::cmat kron(const types::cmat &A, const types::cmat &B);
@@ -137,17 +139,6 @@ types::cmat load(const std::string& fname);
 // use column-major order (same as MATLAB)
 types::cmat reshape(const types::cmat& A, size_t rows, size_t cols);
 
-// inline templates
-
-// Displays a standard container that supports STL iterators
-template<typename T>
-inline void disp_container(const T& x)
-{
-	auto it = x.begin();
-	for (; it != x.end()-1; it++)
-		std::cout << *it << " ";
-	std::cout << *(it++);
-}
 
 }
 

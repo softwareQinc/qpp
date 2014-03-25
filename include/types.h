@@ -13,6 +13,8 @@
 
 // wrappers around various useful types
 
+// TODO: write everything for MatrixBase, not just complex matrices
+
 namespace qpp
 {
 
