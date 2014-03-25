@@ -91,28 +91,27 @@ void _syspermute_worker(const size_t numdims, const size_t *cdims,
 }
 
 // used inside the #pragma omp parallel for in ptranspose
-void _ptranspose_worker(const size_t numdims, const size_t numsubsys,
+void _ptranspose_worker(const size_t* midxrow, const size_t numdims, const size_t numsubsys,
 		const size_t *cdims, const size_t *csubsys, const size_t i,
 		const size_t j, size_t &iperm, size_t &jperm, const types::cmat &A,
 		types::cmat &result)
 {
-
-	size_t *midxrow = new size_t[numdims];
+	size_t *midxrowtmp =new size_t[numdims];
+	for(size_t i=0; i<numdims; i++)
+		midxrowtmp[i]=midxrow[i];
 	size_t *midxcol = new size_t[numdims];
 
-	// compute the row and col multi-indexes
-	_n2multiidx(i, numdims, cdims, midxrow);
+	// compute the col multi-indexes
 	_n2multiidx(j, numdims, cdims, midxcol);
 
 	for (size_t k = 0; k < numsubsys; k++)
-		std::swap(midxrow[csubsys[k]], midxcol[csubsys[k]]);
+		std::swap(midxrowtmp[csubsys[k]], midxcol[csubsys[k]]);
 
 	// move back to integer indexes
-	iperm = _multiidx2n(midxrow, numdims, cdims);
+	iperm = _multiidx2n(midxrowtmp, numdims, cdims);
 	jperm = _multiidx2n(midxcol, numdims, cdims);
 	result(iperm, jperm) = A(i, j);
 
-	delete[] midxrow;
 	delete[] midxcol;
 }
 }

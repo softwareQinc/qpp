@@ -152,15 +152,14 @@ types::cmat syspermute(const types::cmat &A, const std::vector<size_t> perm,
 	for (size_t i = 0; i < dim; i++)
 #pragma omp parallel for
 		for (size_t j = 0; j < dim; j++)
-			internal::_syspermute_worker(numdims, cdims, cperm, i, j, iperm, jperm, A,
-					result);
+			internal::_syspermute_worker(numdims, cdims, cperm, i, j, iperm,
+					jperm, A, result);
 
 	delete[] cdims;
 	delete[] cperm;
 
 	return result; // the permuted matrix
 }
-
 
 // partial trace
 types::cmat ptrace(const types::cmat &A, const std::vector<size_t> &subsys,
@@ -556,18 +555,23 @@ types::cmat ptranspose(const types::cmat& A, const std::vector<size_t>& subsys,
 	size_t iperm = 0;
 	size_t jperm = 0;
 
+	size_t *midxrow = new size_t[numdims];
+
 	for (size_t i = 0; i < dim; i++)
+	{
+		internal::_n2multiidx(i, numdims, cdims, midxrow);
 #pragma omp parallel for
 		for (size_t j = 0; j < dim; j++) // paralelize this code
-			internal::_ptranspose_worker(numdims, numsubsys, cdims, csubsys, i, j, iperm,
-					jperm, A, result);
+			internal::_ptranspose_worker(midxrow, numdims, numsubsys, cdims,
+					csubsys, i, j, iperm, jperm, A, result);
+	}
 
+	delete[] midxrow;
 	delete[] cdims;
 	delete[] csubsys;
 
 	return result;
 }
-
 
 }
 
