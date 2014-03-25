@@ -134,6 +134,15 @@ bool _check_dims(const std::vector<size_t>& dims)
 	return true;
 }
 
+// check that all elements in dims equal to dim
+bool _check_eq_dims(const std::vector<size_t> &dims, size_t dim)
+{
+	for (auto i : dims)
+		if (i != dim)
+			return false;
+	return true;
+}
+
 // check that dims match the dimension of the matrix
 bool _check_dims_match_mat(const std::vector<size_t>& dims,
 		const types::cmat& A)
@@ -159,8 +168,8 @@ bool _check_subsys(const std::vector<size_t>& subsys,
 		return false;
 
 	// check duplicates
-	if(std::unique(subsyssort.begin(), subsyssort.end())!=subsyssort.end())
-			return false;
+	if (std::unique(subsyssort.begin(), subsyssort.end()) != subsyssort.end())
+		return false;
 
 	// check range of subsystems
 	if (std::find_if(subsyssort.begin(), subsyssort.end(),

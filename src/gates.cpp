@@ -11,7 +11,6 @@
 #include "constants.h"
 #include "util.h"
 
-// TODO: make everything inline in header file
 
 namespace qpp
 {

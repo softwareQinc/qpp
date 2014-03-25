@@ -42,6 +42,9 @@ bool _check_square_mat(const types::cmat &A);
 // check that dims is a valid dimension vector
 bool _check_dims(const std::vector<size_t> &dims);
 
+// check that all elements in dims equal to dim
+bool _check_eq_dims(const std::vector<size_t> &dims, size_t dim);
+
 // check that dims match the dimension of the matrix
 bool _check_dims_match_mat(const std::vector<size_t> & dims, const types::cmat &A);
 

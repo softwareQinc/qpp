@@ -78,7 +78,7 @@ int main()
 //	cout<<endl;
 
 	// ptranspose test
-	size_t n = 10; // number of qubits
+	size_t n = 3; // number of qubits
 	size_t dim = pow(2, n); // total dimension
 
 	cmat mat(dim, dim);
@@ -103,12 +103,13 @@ int main()
 	cout << endl << endl;
 
 	cout << "Partial transpose" << endl;
-	//disp(ptranspose(mat, sbs, dm));
-	ptranspose(mat, perm, dm);
+	disp(ptranspose(mat, sbs, dm));
+	//ptranspose(mat, perm, dm);
 	cout << endl << endl;
 
 	cout << "Eigenvalues of partial transpose" << endl;
 	//disp(evals(ptranspose(mat, sbs, dm)));
 	cout << endl << endl;
+
 
 }
