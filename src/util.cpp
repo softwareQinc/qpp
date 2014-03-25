@@ -559,6 +559,7 @@ types::cmat ptranspose(const types::cmat& A, const std::vector<size_t>& subsys,
 
 	for (size_t i = 0; i < dim; i++)
 	{
+		// compute the row multi-index
 		internal::_n2multiidx(i, numdims, cdims, midxrow);
 #pragma omp parallel for
 		for (size_t j = 0; j < dim; j++) // paralelize this code

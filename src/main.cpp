@@ -78,34 +78,37 @@ int main()
 //	cout<<endl;
 
 	// ptranspose test
-	size_t n = 12; // number of qubits
-	size_t dim = pow(2,n); // total dimension
+	size_t n = 10; // number of qubits
+	size_t dim = pow(2, n); // total dimension
 
-	cmat mat(dim,dim);
-	size_t cnt=0;
-	for(size_t i=0;i<dim;i++)
-		for(size_t j=0;j<dim;j++)
-			mat(i,j)=cnt++;
+	cmat mat(dim, dim);
+	size_t cnt = 0;
+	for (size_t i = 0; i < dim; i++)
+		for (size_t j = 0; j < dim; j++)
+			mat(i, j) = cnt++;
 
 	// dimension vector
 	vector<size_t> dm;
-	for(size_t i=0; i<n;i++)
+	for (size_t i = 0; i < n; i++)
 		dm.push_back(2);
 
 	// subsystems
-	vector<size_t> sbs={0,2};
+	vector<size_t> sbs =
+	{ 0, 2 };
 
-	cout<<"Matrix: "<< endl;
+	vector<size_t> perm = {1,0,2,3,4,5,6,7,8,9};
+
+	cout << "Matrix: " << endl;
 	//disp(mat);
-	cout<<endl<<endl;
+	cout << endl << endl;
 
-	cout<<"Partial transpose"<< endl;
+	cout << "Partial transpose" << endl;
 	//disp(ptranspose(mat, sbs, dm));
-	ptranspose(mat, sbs, dm);
-    cout<<endl<<endl;
+	ptranspose(mat, perm, dm);
+	cout << endl << endl;
 
-	cout<<"Eigenvalues of partial transpose"<<endl;
-	disp(evals(ptranspose(mat, sbs, dm)));
-	cout<<endl<<endl;
+	cout << "Eigenvalues of partial transpose" << endl;
+	//disp(evals(ptranspose(mat, sbs, dm)));
+	cout << endl << endl;
 
 }

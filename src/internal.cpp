@@ -101,7 +101,7 @@ void _ptranspose_worker(const size_t* midxrow, const size_t numdims, const size_
 		midxrowtmp[i]=midxrow[i];
 	size_t *midxcol = new size_t[numdims];
 
-	// compute the col multi-indexes
+	// compute the col multi-index
 	_n2multiidx(j, numdims, cdims, midxcol);
 
 	for (size_t k = 0; k < numsubsys; k++)
@@ -113,6 +113,7 @@ void _ptranspose_worker(const size_t* midxrow, const size_t numdims, const size_
 	result(iperm, jperm) = A(i, j);
 
 	delete[] midxcol;
+	delete[] midxrowtmp;
 }
 }
 
