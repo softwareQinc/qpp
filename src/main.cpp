@@ -78,7 +78,7 @@ int main()
 //	cout<<endl;
 
 	// ptranspose test
-	size_t n = 12; // number of qubits
+	size_t n = 13; // number of qubits
 	size_t dim = pow(2,n); // total dimension
 
 	cmat mat(dim,dim);
