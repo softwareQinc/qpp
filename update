@@ -7,5 +7,3 @@ rm -rf ./include/*
 
 cp ~/Dropbox/programming/workspace/quantum++/src/* ./src
 cp ~/Dropbox/programming/workspace/quantum++/include/* ./include
-
-#make
