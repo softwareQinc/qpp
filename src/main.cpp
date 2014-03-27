@@ -76,6 +76,6 @@ int main()
 	cout << endl << endl;
 
 	cout << "The absolute values of the eigenvalues of u are: " << endl;
-	disp(transpose(abs(evals(u))));
+	disp(abs(transpose(evals(u))));
 	cout << endl << endl;
 }
