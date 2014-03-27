@@ -57,4 +57,7 @@ int main()
 	disp(kron(kt,bt). template cast<double>());
 	cout << endl << endl;
 
+	disp(kron(bt,kt). template cast<double>());
+	cout << endl << endl;
+
 }
