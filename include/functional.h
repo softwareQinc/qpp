@@ -40,6 +40,14 @@ Eigen::MatrixXcd funm(const Eigen::MatrixBase<Derived> &A,
 	return evects * evalsdiag * evects.inverse();
 }
 
+// Matrix absolute value, note the syntax of lambda invocation
+template<typename Derived>
+Eigen::MatrixXcd absm(const Eigen::MatrixBase<Derived> &A)
+{
+	return funm(adjoint(A) * A, [](const types::cplx & x)->types::cplx
+	{	return std::sqrt(x);});
+}
+
 // Matrix exponential
 template<typename Derived>
 Eigen::MatrixXcd expm(const Eigen::MatrixBase<Derived> &A)
@@ -68,27 +76,7 @@ Eigen::MatrixXcd cosm(const Eigen::MatrixBase<Derived> &A)
 	return funm(A, std::cos);
 }
 
-// Matrix hyperbolic sin
-template<typename Derived>
-Eigen::MatrixXcd sinhm(const Eigen::MatrixBase<Derived> &A)
-{
-	return funm(A, std::sinh);
-}
 
-// Matrix hyperbolic cos
-template<typename Derived>
-Eigen::MatrixXcd coshm(const Eigen::MatrixBase<Derived> &A)
-{
-	return funm(A, std::cosh);
-}
-
-// Matrix absolute value, note the syntax of lambda invocation
-template<typename Derived>
-Eigen::MatrixXcd absm(const Eigen::MatrixBase<Derived> &A)
-{
-	return funm(adjoint(A) * A, [](const types::cplx & x)->types::cplx
-	{	return std::sqrt(x);});
-}
 
 }
 
