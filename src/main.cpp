@@ -60,7 +60,7 @@ int main()
 	size_t dim = 8;
 	cout << "generating random unitary..." << endl;
 	cmat u = rand_unitary(dim);
-	cout << endl << "done generating random unitary";
+	cout << "done generating random unitary" << endl;
 	disp(u);
 	cout << endl;
 	double normdiff = norm((cmat) (u * adjoint(u) - cmat::Identity(dim, dim)));
