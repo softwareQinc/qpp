@@ -536,7 +536,7 @@ template<typename Derived>
 void disp(const Eigen::MatrixBase<Derived> &A, std::ostream& os = std::cout,
 		unsigned int precision = 4)
 {
-	std::cout << "typeid: " << typeid(Derived).name() << std::endl;
+	//std::cout << "typeid: " << typeid(Derived).name() << std::endl;
 	os << std::setprecision(precision) << std::fixed << A;
 }
 

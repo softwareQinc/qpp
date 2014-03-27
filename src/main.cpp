@@ -64,7 +64,7 @@ int main()
 	cout << "generating random unitary..." << endl;
 	cmat u = rand_unitary(dim);
 	cout << "done generating random unitary";
-	disp(u);
+	//disp(u);
 	cout << endl;
 	double normdiff = norm((cmat) (u * adjoint(u) - cmat::Identity(dim, dim)));
 	cout << "Norm difference: " << normdiff << endl;
