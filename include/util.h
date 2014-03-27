@@ -191,7 +191,7 @@ Derived mpower(const Eigen::MatrixBase<Derived> &A, const size_t n)
 // Computes f(A), where (*f) is the function pointer
 template<typename Derived>
 Eigen::MatrixXcd funm(const Eigen::MatrixBase<Derived> &A,
-		types::cplx (*f)(const types::cplx &))
+		types::cplx (*f)(const types::cplx))
 {
 	// check square matrix
 	if (!internal::_check_square_mat(A))
@@ -235,7 +235,7 @@ inline Eigen::MatrixXd randn(const size_t rows)
 }
 
 // Random unitary matrix
-// TODO: Use QR decomposition
+// TODO: Use QR decomposition followed by multiplication (-1 1 1 -1 ...) as in Toby's example
 inline Eigen::MatrixXcd rand_unitary(const size_t size)
 {
 	Eigen::MatrixXcd X(size, size);

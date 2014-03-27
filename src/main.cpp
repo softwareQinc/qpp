@@ -17,6 +17,9 @@ using namespace std;
 using namespace qpp;
 using namespace qpp::types;
 
+// TODO: add functions.h, or similar, for matrix functional calculus function pointers;
+// TODO: add sqrtm, absm
+
 //int main(int argc, char **argv)
 int main()
 {
@@ -78,4 +81,9 @@ int main()
 	cout << "The absolute values of the eigenvalues of u are: " << endl;
 	disp(abs(transpose(evals(u))));
 	cout << endl << endl;
+
+	imat im(2,2);
+	im<<1,2,3,4;
+	// example of functional calculus with lambda invocation
+	disp(funm(adjoint(im)*im,[](const cplx x)->cplx{return std::sqrt(x);}));
 }
