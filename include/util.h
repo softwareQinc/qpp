@@ -543,8 +543,9 @@ Derived load(const std::string& fname)
 
 // Displays an Eigen::MatrixX in friendly form
 template<typename Derived>
-void disp(const Eigen::MatrixBase<Derived> &A, std::ostream& os=std::cout,
-		unsigned int precision=4, double eps=std::numeric_limits<double>::epsilon())
+void disp(const Eigen::MatrixBase<Derived> &A, std::ostream& os = std::cout,
+		unsigned int precision = 4, double eps =
+				std::numeric_limits<double>::epsilon())
 {
 	os << std::setprecision(precision) << std::fixed << A;
 }
@@ -629,8 +630,9 @@ inline void disp(const Eigen::MatrixBase<Eigen::MatrixXcd> &A, std::ostream& os,
 }
 
 // Displays a complex number in friendly form
-inline void disp(const types::cplx c, std::ostream& os=std::cout, unsigned int precision=4,
-		double eps=std::numeric_limits<double>::epsilon())
+inline void disp(const types::cplx c, std::ostream& os = std::cout,
+		unsigned int precision = 4, double eps =
+				std::numeric_limits<double>::epsilon())
 {
 	// put the complex number inside an Eigen matrix
 	Eigen::MatrixXcd tmp(1, 1);

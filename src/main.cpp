@@ -48,4 +48,12 @@ int main()
 	disp(ptrace(a, { 0 }, { 2, 2 }));
 	cout << endl << endl;
 
+	cmat kt(3,1);
+	kt<<1,0,0;
+
+	cmat bt(1,3);
+	bt<<0,1,0;
+
+	disp((cmat)kron(kt,bt));
+
 }
