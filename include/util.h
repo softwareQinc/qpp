@@ -8,11 +8,13 @@
 #ifndef UTIL_H_
 #define	UTIL_H_
 
+#include <Eigen/QR>
 #include <stdexcept>
 #include <vector>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <cmath>
 #include "types.h"
 #include "util.h"
 #include "constants.h"
@@ -20,6 +22,12 @@
 #include "stat.h"
 
 // utility functions
+
+// TODO: expandout function
+// TODO: dyad function
+// TODO: proj (dya) function
+// TODO: ip (inner product function) function, make it general to return matrices
+// TODO: entropy functions etc
 
 namespace qpp
 {
@@ -54,6 +62,17 @@ typename Derived::Scalar trace(const Eigen::MatrixBase<Derived>& A)
 	return A.trace();
 }
 
+// absolute values component-wise, returns double
+template<typename Derived>
+Derived abs(const Eigen::MatrixBase<Derived>& A)
+{
+	Derived result = Derived::Zero(A.rows(), A.cols());
+	for (size_t i = 0; i < A.rows(); i++)
+		for (size_t j = 0; j < A.cols(); j++)
+			result(i, j) = std::abs(A(i, j));
+	return result;
+}
+
 // trace-norm (or Frobenius norm) (CHANGES return type to double)
 template<typename Derived>
 typename Eigen::MatrixXd::Scalar norm(const Eigen::MatrixBase<Derived>& A)
@@ -66,9 +85,7 @@ typename Eigen::MatrixXd::Scalar norm(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 Eigen::MatrixXcd evals(const Eigen::MatrixBase<Derived>& A)
 {
-	Eigen::ComplexEigenSolver<Eigen::MatrixXcd> es(
-			A.template cast<types::cplx>());
-	return es.eigenvalues();
+	return (A.template cast<types::cplx>()).eigenvalues();
 }
 
 // eigenvectors (CHANGES return type to complex matrix)
@@ -90,7 +107,7 @@ Derived kron(const Eigen::MatrixBase<Derived> &A,
 	int Bcols = B.cols();
 	int Brows = B.rows();
 
-	Derived result; // TODO: make this work even for fixed size inputs
+	Derived result;
 	result.resize(Arows * Brows, Acols * Bcols);
 
 	for (int i = 0; i < Arows; i++)
@@ -120,7 +137,6 @@ Derived kron_pow(const Eigen::MatrixBase<Derived> &A, size_t n)
 }
 
 // Matrix power A^z (CHANGES return type to complex matrix)
-// TODO: check square matrix
 template<typename Derived>
 Eigen::MatrixXcd mpower(const Eigen::MatrixBase<Derived> &A,
 		const types::cplx z)
@@ -219,18 +235,22 @@ inline Eigen::MatrixXd randn(const size_t rows)
 }
 
 // Random unitary matrix
+// TODO: Use QR decomposition
 inline Eigen::MatrixXcd rand_unitary(const size_t size)
 {
-	Eigen::MatrixXcd H(size, size);
+	Eigen::MatrixXcd X(size, size);
 
-	H.real() = randn(size);
-	H.imag() = randn(size);
+	X.real() = 1. / sqrt(2) * randn(size);
+	X.imag() = 1. / sqrt(2) * randn(size);
+	Eigen::HouseholderQR<Eigen::MatrixXcd> qr(X);
+
+	Eigen::MatrixXcd Q = qr.householderQ();
 
 	//= randn(size)+ct:ii*randn(size);
 
-	H = (H + adjoint(H)) / 2;
+	//H = (H + adjoint(H)) / 2;
 
-	return mat_exp(static_cast<Eigen::MatrixXcd>(ct::ii * H));
+	return Q;
 }
 
 // reshape the columns of A and returns a matrix with m rows and n columns
@@ -456,8 +476,6 @@ Derived ptranspose(const Eigen::MatrixBase<Derived>& A,
 	return result;
 }
 
-// TODO: expandout function
-
 // Random matrix with entries in Uniform[0,1]
 template<typename Derived>
 Derived rand(const size_t rows, const size_t cols)
@@ -544,15 +562,15 @@ Derived load(const std::string& fname)
 // Displays an Eigen::MatrixX in friendly form
 template<typename Derived>
 void disp(const Eigen::MatrixBase<Derived> &A, std::ostream& os = std::cout,
-		unsigned int precision = 4, double eps =
-				std::numeric_limits<double>::epsilon())
+		unsigned int precision = 4)
 {
+	std::cout << "typeid: " << typeid(Derived).name() << std::endl;
 	os << std::setprecision(precision) << std::fixed << A;
 }
 
 template<> // complex matrix specialization
 inline void disp(const Eigen::MatrixBase<Eigen::MatrixXcd> &A, std::ostream& os,
-		unsigned int precision, double eps)
+		unsigned int precision)
 
 {
 	if (A.rows() * A.cols() == 0)
@@ -561,6 +579,9 @@ inline void disp(const Eigen::MatrixBase<Eigen::MatrixXcd> &A, std::ostream& os,
 		os << std::endl;
 		return;
 	};
+
+	// everything smaller than eps is displayed as 0
+	double eps = std::numeric_limits<double>::epsilon();
 
 	std::ostringstream ostr;
 	std::vector<std::string> vstr;
@@ -631,13 +652,12 @@ inline void disp(const Eigen::MatrixBase<Eigen::MatrixXcd> &A, std::ostream& os,
 
 // Displays a complex number in friendly form
 inline void disp(const types::cplx c, std::ostream& os = std::cout,
-		unsigned int precision = 4, double eps =
-				std::numeric_limits<double>::epsilon())
+		unsigned int precision = 4)
 {
 	// put the complex number inside an Eigen matrix
 	Eigen::MatrixXcd tmp(1, 1);
 	tmp(0, 0) = c;
-	disp(tmp, os, precision, eps);
+	disp(tmp, os, precision);
 }
 
 }
