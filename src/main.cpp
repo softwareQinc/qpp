@@ -9,85 +9,26 @@
 #include <fstream>
 #include <string>
 #include <stdexcept>
+#include <cmath>
 
-#include "random.h"
-#include "util.h"
-#include "constants.h"
-#include "functional.h"
+#include "qpp.h"
 
 using namespace std;
+
 using namespace qpp;
 using namespace qpp::types;
 
 //int main(int argc, char **argv)
 int main()
 {
-//	_init(); // this will be done automatically in the framework
+	_init(); // this will be done automatically in the framework
 
-	Eigen::MatrixXd _a = Eigen::MatrixXd::Random(4, 4);
-	save(_a, "/Users/vlad/tmp/_a");
+	cmat psi(4,1);
+	psi<<0.6,0,0,0.8; // A Bell-state
+	psi = psi/norm(psi);
 
-	Eigen::MatrixXd a = load<Eigen::MatrixXd>("/Users/vlad/tmp/_a");
+	cmat rho=ptrace((cmat)(psi*adjoint(psi)),{1},{2,2});
 
-	std::vector<size_t> subsys =
-	{ 2, 2 };
-	std::vector<size_t> perm =
-	{ 1, 0 };
-
-	cout << "Error in norm difference load/save: " << norm(_a - a) << endl;
-
-	disp(ptrace2(a,
-	{ 2, 2 }));
-	cout << endl << endl;
-	disp(ptrace(a,
-	{ 0 },
-	{ 2, 2 }));
-	cout << endl << endl;
-
-	imat kt(3, 1);
-	kt << 0, 0, 1;
-
-	imat bt(1, 3);
-	bt << 0, 1, 0;
-
-	disp(kron(kt, bt).template cast<double>());
-	cout << endl << endl;
-
-	disp(kron(bt, kt));
-	cout << endl << endl;
-
-	disp(bt * kt);
-	cout << endl << endl;
-
-	size_t dim = 8;
-	cout << "generating random unitary..." << endl;
-	cmat u = rand_unitary(dim);
-	cout << "done generating random unitary" << endl;
-	disp(u);
-	cout << endl;
-	double normdiff = norm((cmat) (u * adjoint(u) - cmat::Identity(dim, dim)));
-	cout << "Norm difference: " << normdiff << endl;
-	disp(normdiff, std::cout, 18);
-	if (normdiff > std::numeric_limits<double>::epsilon())
-		cout << "YES";
-	else
-		cout << "NO";
-	cout << endl << endl;
-	cout << "The eigenvalues of u are: " << endl;
-	disp(transpose(evals(u)));
-	cout << endl << endl;
-
-	cout << "The absolute values of the eigenvalues of u are: " << endl;
-	disp(abs(transpose(evals(u))));
-	cout << endl << endl;
-
-	// matrix functional calculus
-	cmat mat(2, 2);
-	mat << 1. + ct::ii, 2, 3, 4;
-	disp(mat);
-	cout << endl << endl;
-	disp(logm(expm(mat)), std::cout);
-	cout << endl << endl;
-
+	cout<<entropyS(rho)<<endl<<endl;
 
 }
