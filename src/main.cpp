@@ -17,17 +17,6 @@ using namespace std;
 using namespace qpp;
 using namespace qpp::types;
 
-template<typename Derived>
-Derived kron_list1(const std::vector<Eigen::MatrixBase<Derived>> &list)
-{
-	Derived result = list[0];
-	std::cout << "First element in list: " << result;
-	std::cout << std::endl;
-	for (size_t i = 1; i < list.size(); i++)
-		result = kron(result, list[i]);
-	return result;
-}
-
 //int main(int argc, char **argv)
 int main()
 {
