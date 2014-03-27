@@ -55,6 +55,13 @@ Eigen::MatrixXcd expm(const Eigen::MatrixBase<Derived> &A)
 	return funm(A, std::exp);
 }
 
+// Matrix logarithm
+template<typename Derived>
+Eigen::MatrixXcd logm(const Eigen::MatrixBase<Derived> &A)
+{
+	return funm(A, std::log);
+}
+
 // Matrix square root
 template<typename Derived>
 Eigen::MatrixXcd sqrtm(const Eigen::MatrixBase<Derived> &A)
