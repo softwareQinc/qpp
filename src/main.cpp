@@ -85,6 +85,8 @@ int main()
 	// matrix functional calculus
 	cmat mat(2, 2);
 	mat << 1. + ct::ii, 2, 3, 4;
-	disp(logm(expm(mat)), std::cout, 16);
+	disp(mat);
+	cout<<endl<<endl;
+	disp(expm(logm(mat)), std::cout, 16);
 	cout << endl << endl;
 }
