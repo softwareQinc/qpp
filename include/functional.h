@@ -84,7 +84,6 @@ Eigen::MatrixXcd cosm(const Eigen::MatrixBase<Derived> &A)
 }
 
 
-
 }
 
 #endif /* FUNCTIONAL_H_ */

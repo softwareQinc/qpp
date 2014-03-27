@@ -17,9 +17,6 @@ using namespace std;
 using namespace qpp;
 using namespace qpp::types;
 
-// TODO: add functions.h, or similar, for matrix functional calculus function pointers;
-// TODO: add sqrtm, absm
-
 //int main(int argc, char **argv)
 int main()
 {
@@ -60,11 +57,11 @@ int main()
 	disp(bt * kt);
 	cout << endl << endl;
 
-	size_t dim = 10;
+	size_t dim = 8;
 	cout << "generating random unitary..." << endl;
 	cmat u = rand_unitary(dim);
-	cout << "done generating random unitary";
-	//disp(u);
+	cout << endl << "done generating random unitary";
+	disp(u);
 	cout << endl;
 	double normdiff = norm((cmat) (u * adjoint(u) - cmat::Identity(dim, dim)));
 	cout << "Norm difference: " << normdiff << endl;
@@ -86,7 +83,7 @@ int main()
 	cmat mat(2, 2);
 	mat << 1. + ct::ii, 2, 3, 4;
 	disp(mat);
-	cout<<endl<<endl;
+	cout << endl << endl;
 	disp(logm(expm(mat)), std::cout);
 	cout << endl << endl;
 }
