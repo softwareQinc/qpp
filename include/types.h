@@ -8,8 +8,8 @@
 #ifndef TYPES_H_
 #define	TYPES_H_
 
-#include <complex>
 #include <Eigen/Dense>
+#include <complex>
 
 namespace qpp
 {

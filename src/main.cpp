@@ -10,8 +10,10 @@
 #include <string>
 #include <stdexcept>
 
-#include "qpp.h"
-#include "internal.h"
+#include "random.h"
+#include "util.h"
+#include "constants.h"
+#include "functional.h"
 
 using namespace std;
 using namespace qpp;
@@ -20,7 +22,7 @@ using namespace qpp::types;
 //int main(int argc, char **argv)
 int main()
 {
-	_init(); // this will be done automatically in the framework
+//	_init(); // this will be done automatically in the framework
 
 	Eigen::MatrixXd _a = Eigen::MatrixXd::Random(4, 4);
 	save(_a, "/Users/vlad/tmp/_a");
@@ -86,4 +88,6 @@ int main()
 	cout << endl << endl;
 	disp(logm(expm(mat)), std::cout);
 	cout << endl << endl;
+
+
 }

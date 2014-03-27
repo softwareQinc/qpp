@@ -8,14 +8,12 @@
 #ifndef UTIL_H_
 #define	UTIL_H_
 
-#include <Eigen/QR>
 #include <stdexcept>
 #include <vector>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 #include "types.h"
-#include "util.h"
 #include "constants.h"
 #include "internal.h"
 #include "stat.h"
@@ -289,58 +287,9 @@ Derived mpower(const Eigen::MatrixBase<Derived> &A, const size_t n)
 	return result;
 }
 
-// Random double matrix with entries in Uniform[0,1]
-inline Eigen::MatrixXd rand(const size_t rows, const size_t cols)
-{
-	return Eigen::MatrixXd::Random(rows, cols);
-}
 
-// Random double square matrix with entries in Uniform[0,1]
-inline Eigen::MatrixXd rand(const size_t rows)
-{
-	return rand(rows, rows);
-}
 
-// Random double matrix with entries in Normal(0,1)
-inline Eigen::MatrixXd randn(const size_t rows, const size_t cols)
-{
-	stat::NormalDistribution nd; // N(0,1)
-	Eigen::MatrixXd A(rows, cols);
 
-	for (size_t i = 0; i < rows; i++)
-		for (size_t j = 0; j < cols; j++)
-			A(i, j) = nd.sample();
-	return A;
-}
-
-// Random square matrix with entries in Normal(0,1)
-inline Eigen::MatrixXd randn(const size_t rows)
-{
-	return randn(rows, rows);
-}
-
-// Random unitary matrix
-// TODO: Use QR decomposition followed by random phase perturbing
-inline Eigen::MatrixXcd rand_unitary(const size_t size)
-{
-	Eigen::MatrixXcd X(size, size);
-
-	X.real() = 1. / sqrt(2) * randn(size);
-	X.imag() = 1. / sqrt(2) * randn(size);
-	Eigen::HouseholderQR<Eigen::MatrixXcd> qr(X);
-
-	Eigen::MatrixXcd Q = qr.householderQ();
-	// phase correction so that the resultant matrix is
-	// uniformly distributed according to the Haar measure
-
-	Eigen::VectorXcd phases = (rand(size, 1)).template cast<types::cplx>();
-	for(size_t i=0; i<phases.rows(); i++)
-		phases(i)=std::exp(2*ct::pi*ct::ii*phases(i));
-
-	Q = Q * phases.asDiagonal();
-
-	return Q;
-}
 
 // reshape the columns of A and returns a matrix with m rows and n columns
 // use column-major order (same as MATLAB)

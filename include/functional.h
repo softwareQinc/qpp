@@ -8,7 +8,6 @@
 #ifndef FUNCTIONAL_H_
 #define FUNCTIONAL_H_
 
-#include <Eigen/QR>
 #include <stdexcept>
 #include <cmath>
 #include "types.h"
