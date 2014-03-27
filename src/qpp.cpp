@@ -20,9 +20,9 @@ std::mt19937 stat::_rng(_rd()); // make the mt19937 generator visible
 namespace gt
 {
 // various matrices (declared extern in "gates.h") ; make the gates visible
-types::cmat H, Id2, X, Y, Z, S, T;
-types::cmat CNOT, CP;
-types::cmat TOF(8, 8);
+Eigen::MatrixXcd H, Id2, X, Y, Z, S, T;
+Eigen::MatrixXcd CNOT, CP;
+Eigen::MatrixXcd TOF(8, 8);
 }
 
 

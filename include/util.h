@@ -233,7 +233,7 @@ inline Eigen::MatrixXcd rand_unitary(const size_t size)
 	return mat_exp(static_cast<Eigen::MatrixXcd>(ct::ii * H));
 }
 
-// reshape the columns of A and returns a cmat with m rows and n columns
+// reshape the columns of A and returns a matrix with m rows and n columns
 // use column-major order (same as MATLAB)
 template<typename Derived>
 Derived reshape(const Eigen::MatrixBase<Derived>& A, size_t rows, size_t cols)
