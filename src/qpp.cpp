@@ -6,7 +6,6 @@
  */
 
 #include <cstdlib>
-#include <ctime>
 #include "qpp.h"
 
 namespace qpp

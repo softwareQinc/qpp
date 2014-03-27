@@ -82,8 +82,8 @@ int main()
 	disp(abs(transpose(evals(u))));
 	cout << endl << endl;
 
-	imat im(2,2);
-	im<<1,2,3,4;
-	// example of functional calculus with lambda invocation
-	disp(funm(adjoint(im)*im,[](const cplx x)->cplx{return std::sqrt(x);}));
+	// matrix functional calculus
+	cmat mat(2, 2);
+	mat << 1.+ct::ii, 2, 3, 4;
+	disp(cosm(mat));
 }

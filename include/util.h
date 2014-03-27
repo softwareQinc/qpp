@@ -14,7 +14,6 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <cmath>
 #include "types.h"
 #include "util.h"
 #include "constants.h"
@@ -187,34 +186,7 @@ Derived mpower(const Eigen::MatrixBase<Derived> &A, const size_t n)
 	return result;
 }
 
-// Matrix functional calculus
-// Computes f(A), where (*f) is the function pointer
-template<typename Derived>
-Eigen::MatrixXcd funm(const Eigen::MatrixBase<Derived> &A,
-		types::cplx (*f)(const types::cplx))
-{
-	// check square matrix
-	if (!internal::_check_square_mat(A))
-		throw std::runtime_error("funm: Matrix must be square!");
 
-	Eigen::ComplexEigenSolver<Eigen::MatrixXcd> es(
-			A.template cast<types::cplx>());
-	Eigen::MatrixXcd evects = es.eigenvectors();
-	Eigen::MatrixXcd evals = es.eigenvalues();
-	for (int i = 0; i < evals.rows(); i++)
-		evals(i) = (*f)(evals(i)); // apply f(x) to each eigenvalue
-
-	Eigen::MatrixXcd evalsdiag = evals.asDiagonal();
-
-	return evects * evalsdiag * evects.inverse();
-}
-
-// Matrix exponential
-template<typename Derived>
-Eigen::MatrixXcd expm(const Eigen::MatrixBase<Derived> &A)
-{
-	return funm(A, std::exp);
-}
 
 // Random double matrix with entries in Normal(0,1)
 inline Eigen::MatrixXd randn(const size_t rows, const size_t cols)
