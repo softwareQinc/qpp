@@ -87,6 +87,6 @@ int main()
 	mat << 1. + ct::ii, 2, 3, 4;
 	disp(mat);
 	cout<<endl<<endl;
-	disp(expm(logm(mat)), std::cout, 16);
+	disp(logm(expm(mat)), std::cout, 16);
 	cout << endl << endl;
 }
