@@ -47,8 +47,8 @@ int main()
 	{	return imag(z);}) << endl << endl;
 
 
-	// Truncating the result using an MatrixXi as output
-	imat tmp = fun<cplx, int>(a, [](const cplx & z)->int
+	// Truncating the result using an MatrixXi (auto type deduction) as output
+	auto tmp = fun<cplx, int>(a, [](const cplx & z)->int
 	{	return imag(z);});
 	cout << tmp << endl << endl;
 
