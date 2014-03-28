@@ -39,6 +39,32 @@ Eigen::MatrixXcd funm(const Eigen::MatrixBase<Derived> &A,
 	return evects * evalsdiag * evects.inverse();
 }
 
+// Apply f(A) component-wise, where (*f) is the function pointer
+template<typename FunctionInputType, typename FunctionOutputType,
+		typename MatrixInputType>
+Eigen::Matrix<FunctionOutputType, Eigen::Dynamic, Eigen::Dynamic> fun(
+		const Eigen::MatrixBase<MatrixInputType> &A,
+		FunctionOutputType (*f)(const FunctionInputType &))
+// The type of A is MatrixInputType
+// The function is of the form FunctionOutputType f(const FunctionInputType &)
+// The output is an Eigen::Matrix of the type FunctionOutputType
+
+// The MatrixInputType is in general automatically deduced
+// If (*f) is not overloaded, then FunctionInputType and FuctionOutputType are also
+// automatically deduced
+
+// Somehow cannot deduce FunctionInputType and FuctionOutputType if using a lambda
+{
+	Eigen::Matrix<FunctionOutputType, Eigen::Dynamic, Eigen::Dynamic> result(
+			A.rows(), A.cols());
+
+	for (size_t i = 0; i < A.rows(); i++)
+		for (size_t j = 0; j < A.cols(); j++)
+			result(i, j) = (*f)(A(i, j));
+
+	return result;
+}
+
 // Matrix absolute value, note the syntax of lambda invocation
 template<typename Derived>
 Eigen::MatrixXcd absm(const Eigen::MatrixBase<Derived> &A)
