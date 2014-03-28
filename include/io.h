@@ -25,7 +25,7 @@ namespace qpp
 // Displays an Eigen::MatrixX in friendly form
 template<typename Derived>
 void disp(const Eigen::MatrixBase<Derived> &A, unsigned int precision = 4,
-		double chop = 1e-10, std::ostream& os = std::cout)
+		double chop = ct::chop, std::ostream& os = std::cout)
 {
 //std::cout << "typeid: " << typeid(Derived).name() << std::endl;
 	os << std::setprecision(precision) << std::fixed << A;
@@ -112,7 +112,7 @@ inline void disp(const Eigen::MatrixBase<Eigen::MatrixXcd> &A,
 
 // Displays a complex number in friendly form
 inline void disp(const types::cplx c, unsigned int precision = 4, double chop =
-		1e-10, std::ostream& os = std::cout)
+		ct::chop, std::ostream& os = std::cout)
 {
 // put the complex number inside an Eigen matrix
 	Eigen::MatrixXcd tmp(1, 1);

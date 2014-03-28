@@ -17,6 +17,9 @@ namespace qpp
 namespace ct
 {
 
+// used to set to zero everything that is smaller in absolute magnitude
+const double chop = 1e-10;
+
 const types::cplx ii(0, 1); // Imaginary i (square root of -1)
 const double pi = 3.141592653589793238462643383279502884; // pi
 const double ee = 2.718281828459045235360287471352662497; // base of natural log
