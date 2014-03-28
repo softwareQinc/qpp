@@ -50,10 +50,10 @@ Eigen::Matrix<FunctionOutputType, Eigen::Dynamic, Eigen::Dynamic> fun(
 // The output is an Eigen::Matrix of the type FunctionOutputType
 
 // The MatrixInputType is in general automatically deduced
-// If (*f) is not overloaded, then FunctionInputType and FuctionOutputType are also
+// If (*f) is not overloaded, then FunctionInputType and FunctionOutputType are also
 // automatically deduced
 
-// Somehow cannot deduce FunctionInputType and FuctionOutputType if using a lambda
+// Somehow cannot deduce FunctionInputType and FunctionOutputType if using a lambda
 {
 	Eigen::Matrix<FunctionOutputType, Eigen::Dynamic, Eigen::Dynamic> result(
 			A.rows(), A.cols());
