@@ -31,13 +31,18 @@ int main()
 	{ 1 },
 	{ 2, 2 });
 
-	cout << entropy(rho) << endl << endl;
+	cout << shannon(rho) << endl << endl;
 
 	cmat vec(4, 1);
 	vec << 0.36, 0, 0, 0.64;
 	//cout<<expm(vec)<<endl;
 
+	cout << renyi(0.99, vec) << endl << endl;
+	cout << renyi(1.01, vec) << endl << endl;
+
 	cout << renyi(1500, vec) << endl << endl;
+	cout << renyi_inf(vec) << endl << endl;
+	cout << renyi_inf(rho) << endl << endl;
 
 	cmat u = rand_unitary(2);
 	disp(u);
