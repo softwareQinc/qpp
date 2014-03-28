@@ -17,7 +17,7 @@ namespace qpp
 namespace ct
 {
 
-// used to set to zero everything that is smaller in absolute magnitude
+// used for setting to zero everything that is smaller in absolute magnitude
 const double chop = 1e-10;
 
 const types::cplx ii(0, 1); // Imaginary i (square root of -1)
