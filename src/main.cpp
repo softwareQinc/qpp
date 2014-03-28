@@ -47,8 +47,8 @@ int main()
 
 	cout << u * adjoint(u) - cmat::Identity(2, 2);
 
-	u<<ct::ee,0,0,ct::ee;
+	u << ct::ee, 0, 0, ct::ee;
 	cout << endl << endl;
 	cout << "Matrix log: " << endl;
-	cout << funm(u, std::log);
+	cout << funm(u, std::log) << endl << endl;
 }
