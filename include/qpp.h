@@ -16,6 +16,7 @@
 #include "functional.h"
 #include "random.h"
 #include "entropy.h"
+#include "io.h"
 
 //#include "internal.h" // DO NOT include this explicitly in qpp.h. These are internal functions the user should not have access to.
 
