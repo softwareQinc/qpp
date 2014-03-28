@@ -28,7 +28,7 @@ int main()
 	size_t statistics[] =
 	{ 0, 0, 0 };
 	size_t N = 100000;
-	for (int i = 0; i < N; i++)
+	for (size_t i = 0; i < N; i++)
 		statistics[d.sample()]++;
 
 	cout << (double) statistics[0] / (double) N << endl;
