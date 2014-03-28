@@ -20,7 +20,6 @@
 
 namespace qpp
 {
-//TODO: use 1.0e+05 notation
 
 // Displays an Eigen::MatrixX in friendly form
 template<typename Derived>

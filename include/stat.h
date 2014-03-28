@@ -20,35 +20,78 @@ namespace stat
 extern std::random_device _rd; // use for seeding
 extern std::mt19937 _rng; // our random number generator
 
+// light wrappers around C++11 statistical distributions
+
 class NormalDistribution
 {
-	std::normal_distribution<> d;
 public:
+	std::normal_distribution<> _d;
 	NormalDistribution(double mean = 0, double sigma = 1) :
-			d(std::normal_distribution<>(mean, sigma))
+			_d(std::normal_distribution<>(mean, sigma))
 	{
 	}
 	;
 	double sample()
 	{
-		return d(_rng);
+		return _d(_rng);
 	}
 };
 
 class UniformRealDistribution
 {
-	std::uniform_real_distribution<> d;
 public:
+	std::uniform_real_distribution<> _d;
 	UniformRealDistribution(double a = 0, double b = 1) :
-			d(std::uniform_real_distribution<>(a, b))
+			_d(std::uniform_real_distribution<>(a, b))
 	{
 	}
 	;
 	double sample()
 	{
-		return d(_rng);
+		return _d(_rng);
 	}
 };
+
+class DiscreteDistribution
+{
+public:
+	std::discrete_distribution<size_t> _d;
+	DiscreteDistribution(std::initializer_list<double> weights) :
+			_d(weights)
+	{
+	}
+	;
+	DiscreteDistribution(std::vector<double> weights) :
+			_d(weights.begin(), weights.end())
+	{
+	}
+	;
+	template<typename InputIterator>
+	DiscreteDistribution(InputIterator first, InputIterator last) :
+			_d(first, last)
+	{
+	}
+	;
+	size_t sample()
+	{
+		return _d(_rng);
+	}
+};
+
+/*
+ class DiscreteDistributionFromComplex
+ {
+ std::discrete_distribution<size_t> d;
+ public:
+ DiscreteDistribution(std::initializer_list<types::cplx> amplitudes)
+ {
+
+ };
+ size_t sample()
+ {
+ return d(_rng);
+ }
+ };*/
 
 }
 }

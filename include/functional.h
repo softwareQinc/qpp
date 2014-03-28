@@ -19,6 +19,12 @@ namespace qpp
 {
 
 // Computes f(A), where (*f) is the function pointer
+/**
+ *
+ * @param A input matrix
+ * @param f function pointer
+ * @return MatrixXcd
+ */
 template<typename Derived>
 Eigen::MatrixXcd funm(const Eigen::MatrixBase<Derived> &A,
 		types::cplx (*f)(const types::cplx &))
