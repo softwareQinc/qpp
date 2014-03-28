@@ -6,10 +6,6 @@
  */
 
 #include <iostream>
-#include <fstream>
-#include <string>
-#include <stdexcept>
-#include <cmath>
 
 #include "qpp.h"
 
@@ -21,5 +17,8 @@ using namespace qpp::types;
 //int main(int argc, char **argv)
 int main()
 {
+	cout << "Starting qpp..." << endl << endl;
 	_init(); // this will be done automatically in the framework
+
+	cout << endl << endl << "Exiting qpp..." << endl;
 }
