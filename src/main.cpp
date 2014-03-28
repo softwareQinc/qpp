@@ -33,11 +33,11 @@ int main()
 
 	cout << entropy(rho) << endl << endl;
 
-	cmat vec(6, 1);
-	vec << 0.36, 0, 0, 0.64, 0, 0;
+	cmat vec(4, 1);
+	vec << 0.36, 0, 0, 0.64;
 	//cout<<expm(vec)<<endl;
 
-	cout << entropy(vec) << endl << endl;
+	cout << renyi(1500, vec) << endl << endl;
 
 	cmat u = rand_unitary(2);
 	disp(u);
@@ -51,4 +51,5 @@ int main()
 	cout << endl << endl;
 	cout << "Matrix log: " << endl;
 	cout << funm(u, std::log) << endl << endl;
+
 }
