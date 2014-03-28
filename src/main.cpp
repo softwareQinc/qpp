@@ -6,7 +6,6 @@
  */
 
 #include <iostream>
-#include <unsupported/Eigen/MatrixFunctions>
 
 #include "qpp.h"
 
@@ -38,7 +37,6 @@ int main()
 
 	cmat a = randn(2, 2).template cast<cplx>()
 			+ ct::ii * randn(2, 2).template cast<cplx>();
-	cout<<a.sqrt()<<endl;
 
 	stat::DiscreteDistributionFromComplex dc{1.+ct::ii, ct::ii };
 	for(auto i:dc._d.probabilities())
