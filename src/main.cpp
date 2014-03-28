@@ -40,7 +40,11 @@ int main()
 			+ ct::ii * randn(2, 2).template cast<cplx>();
 	cout<<a.sqrt()<<endl;
 
-	cout<<sqrtm(a)<<endl;
+	stat::DiscreteDistributionFromComplex dc{1.+ct::ii, ct::ii };
+	for(auto i:dc._d.probabilities())
+		cout<<i<<" ";
+
+	//cout<<sqrtm(a)<<endl;
 
 	cout << endl << endl << "Exiting qpp..." << endl;
 }

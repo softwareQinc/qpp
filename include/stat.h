@@ -30,7 +30,6 @@ public:
 			_d(std::normal_distribution<>(mean, sigma))
 	{
 	}
-	;
 	double sample()
 	{
 		return _d(_rng);
@@ -45,7 +44,6 @@ public:
 			_d(std::uniform_real_distribution<>(a, b))
 	{
 	}
-	;
 	double sample()
 	{
 		return _d(_rng);
@@ -56,42 +54,55 @@ class DiscreteDistribution
 {
 public:
 	std::discrete_distribution<size_t> _d;
+
 	DiscreteDistribution(std::initializer_list<double> weights) :
 			_d(weights)
 	{
 	}
-	;
-	DiscreteDistribution(std::vector<double> weights) :
-			_d(weights.begin(), weights.end())
-	{
-	}
-	;
 	template<typename InputIterator>
 	DiscreteDistribution(InputIterator first, InputIterator last) :
 			_d(first, last)
 	{
 	}
-	;
+	DiscreteDistribution(std::vector<double> weights) :
+			_d(weights.begin(), weights.end())
+	{
+	}
 	size_t sample()
 	{
 		return _d(_rng);
 	}
 };
 
-/*
- class DiscreteDistributionFromComplex
- {
- std::discrete_distribution<size_t> d;
- public:
- DiscreteDistribution(std::initializer_list<types::cplx> amplitudes)
- {
+//TODO: complete this function
+class DiscreteDistributionFromComplex
+{
+public:
+	std::discrete_distribution<size_t> _d;
 
- };
- size_t sample()
- {
- return d(_rng);
- }
- };*/
+	DiscreteDistributionFromComplex(
+			std::initializer_list<types::cplx> amplitudes)
+	{
+		std::vector<double> weights;
+		for (auto i : amplitudes)
+			weights.push_back(std::abs(i));
+		std::discrete_distribution<size_t> tmp(weights.begin(), weights.end());
+		_d = tmp;
+	}
+	template<typename InputIterator>
+	DiscreteDistributionFromComplex(InputIterator first, InputIterator last)
+	{
+	}
+	DiscreteDistributionFromComplex(std::vector<double> weights) :
+			_d(weights.begin(), weights.end())
+	{
+	}
+
+	size_t sample()
+	{
+		return _d(_rng);
+	}
+};
 
 }
 }
