@@ -168,7 +168,7 @@ Eigen::MatrixXcd mpower(const Eigen::MatrixBase<Derived> &A,
 // Integer matrix power, preserve return type
 // Explicitly multiply the matrix with itself n times
 template<typename Derived>
-Derived mpower(const Eigen::MatrixBase<Derived> &A, const size_t n)
+Derived mpower(const Eigen::MatrixBase<Derived> &A, size_t n)
 {
 	// check square matrix
 	if (!internal::_check_square_mat(A))
@@ -224,7 +224,7 @@ Derived syspermute(const Eigen::MatrixBase<Derived> &A,
 		throw std::runtime_error("syspermute: Invalid permutation size!");
 
 	size_t dim = static_cast<size_t>(A.rows());
-	const size_t numdims = dims.size();
+	size_t numdims = dims.size();
 	size_t *cdims = new size_t[numdims];
 	size_t *cperm = new size_t[numdims];
 	Derived result(dim, dim);
@@ -375,8 +375,8 @@ Derived ptranspose(const Eigen::MatrixBase<Derived>& A,
 		throw std::runtime_error("ptranspose: Invalid subsystems!");
 
 	size_t dim = static_cast<size_t>(A.rows());
-	const size_t numdims = dims.size();
-	const size_t numsubsys = subsys.size();
+	size_t numdims = dims.size();
+	size_t numsubsys = subsys.size();
 	size_t *cdims = new size_t[numdims];
 	size_t *midxrow = new size_t[numdims];
 	size_t *csubsys = new size_t[numsubsys];

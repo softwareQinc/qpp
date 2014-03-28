@@ -20,7 +20,7 @@ namespace qpp
 
 // Shannon/von-Neumann entropy with log in given base (default = 2)
 template<typename Derived>
-double shannon(const Eigen::MatrixBase<Derived> & A, const double base = 2)
+double shannon(const Eigen::MatrixBase<Derived> & A, double base = 2)
 {
 	// vector
 	if (A.rows() == 1 || A.cols() == 1)
@@ -54,7 +54,7 @@ double shannon(const Eigen::MatrixBase<Derived> & A, const double base = 2)
 // Renyi-alpha entropy (alpha>=0) with log in given base (default = 2)
 template<typename Derived>
 double renyi(const double alpha, const Eigen::MatrixBase<Derived> & A,
-		const double base = 2)
+		double base = 2)
 {
 	if (alpha < 0)
 		throw std::runtime_error("renyi: alpha can not be negative!");
@@ -99,7 +99,7 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived> & A,
 
 // Renyi-infinity entropy (min entropy) with log in given base (default = 2)
 template<typename Derived>
-double renyi_inf(const Eigen::MatrixBase<Derived> & A, const double base = 2)
+double renyi_inf(const Eigen::MatrixBase<Derived> & A, double base = 2)
 {
 	// vector
 	if (A.rows() == 1 || A.cols() == 1)

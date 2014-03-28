@@ -82,7 +82,6 @@ Eigen::MatrixXcd cosm(const Eigen::MatrixBase<Derived> &A)
 	return funm(A, std::cos);
 }
 
-
 }
 
 #endif /* FUNCTIONAL_H_ */

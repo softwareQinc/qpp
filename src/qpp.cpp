@@ -15,15 +15,13 @@ namespace qpp
 std::random_device stat::_rd; // make the random_device generator visible
 std::mt19937 stat::_rng(_rd()); // make the mt19937 generator visible
 
-// Gate initialization
+// Various gates (declared extern in "gates.h"); make them visible
 namespace gt
 {
-// various matrices (declared extern in "gates.h") ; make the gates visible
 Eigen::MatrixXcd H, Id2, X, Y, Z, S, T;
 Eigen::MatrixXcd CNOT, CP;
 Eigen::MatrixXcd TOF(8, 8);
 }
-
 
 // initialize the library
 int _init()

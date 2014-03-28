@@ -29,7 +29,7 @@ void _disp_container(const T& x)
 }
 
 // integer index to multi-index, use C-style array for speed
-inline void _n2multiidx(const size_t n, const size_t numdims,
+inline void _n2multiidx(size_t n, size_t numdims,
 		const size_t *dims, size_t *result)
 {
 	size_t maxn = 1;
@@ -48,7 +48,7 @@ inline void _n2multiidx(const size_t n, const size_t numdims,
 }
 
 // multi index to integer index, use C-style array for speed
-inline size_t _multiidx2n(const size_t *midx, const size_t numdims,
+inline size_t _multiidx2n(const size_t *midx, size_t numdims,
 		const size_t *dims)
 {
 	for (size_t i = 0; i < numdims; i++)
@@ -152,8 +152,8 @@ inline bool _check_perm(const std::vector<size_t>& perm,
 
 // used inside the #pragma omp parallel for in syspermute
 template<typename Derived>
-inline void _syspermute_worker(const size_t numdims, const size_t *cdims,
-		const size_t *cperm, const size_t i, const size_t j, size_t &iperm,
+inline void _syspermute_worker(size_t numdims, const size_t *cdims,
+		const size_t *cperm,  size_t i,  size_t j, size_t &iperm,
 		size_t &jperm, const Eigen::MatrixBase<Derived> &A,
 		Eigen::MatrixBase<Derived> &result)
 {
@@ -190,9 +190,9 @@ inline void _syspermute_worker(const size_t numdims, const size_t *cdims,
 
 // used inside the #pragma omp parallel for in ptranspose
 template<typename Derived>
-inline void _ptranspose_worker(const size_t* midxrow, const size_t numdims,
-		const size_t numsubsys, const size_t *cdims, const size_t *csubsys,
-		const size_t i, const size_t j, size_t &iperm, size_t &jperm,
+inline void _ptranspose_worker(const size_t* midxrow, size_t numdims,
+		size_t numsubsys, const size_t *cdims, const size_t *csubsys,
+		size_t i, size_t j, size_t &iperm, size_t &jperm,
 		const Eigen::MatrixBase<Derived> &A, Eigen::MatrixBase<Derived> &result)
 {
 	size_t *midxrowtmp = new size_t[numdims];

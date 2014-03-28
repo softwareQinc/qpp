@@ -39,8 +39,8 @@ extern Eigen::MatrixXcd TOF; // Toffoli
 inline void _init_gates() // Initialize the gates
 {
 	// initialize the constants and gates
-	H = Id2 = X = Y = Z = S = T = Eigen::MatrixXcd::Zero(2,2);
-	CNOT = CP = Eigen::MatrixXcd::Zero(4,4);
+	H = Id2 = X = Y = Z = S = T = Eigen::MatrixXcd::Zero(2, 2);
+	CNOT = CP = Eigen::MatrixXcd::Zero(4, 4);
 	TOF = Eigen::MatrixXcd::Zero(8, 8);
 
 	H << 1 / sqrt(2), 1 / sqrt(2), 1 / sqrt(2), -1 / sqrt(2);
@@ -76,7 +76,7 @@ inline void _init_gates() // Initialize the gates
 // one qubit gates
 inline Eigen::MatrixXcd Rtheta(double theta)
 {
-	Eigen::MatrixXcd result(2,2);
+	Eigen::MatrixXcd result(2, 2);
 	result << 1, 0, 0, exp(ct::ii * theta);
 	return result;
 }

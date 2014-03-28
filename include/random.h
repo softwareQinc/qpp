@@ -16,19 +16,19 @@ namespace qpp
 {
 
 // Random double matrix with entries in Uniform[0,1]
-inline Eigen::MatrixXd rand(const size_t rows, const size_t cols)
+inline Eigen::MatrixXd rand(size_t rows, size_t cols)
 {
 	return Eigen::MatrixXd::Random(rows, cols);
 }
 
 // Random double square matrix with entries in Uniform[0,1]
-inline Eigen::MatrixXd rand(const size_t rows)
+inline Eigen::MatrixXd rand(size_t rows)
 {
 	return rand(rows, rows);
 }
 
 // Random double matrix with entries in Normal(0,1)
-inline Eigen::MatrixXd randn(const size_t rows, const size_t cols)
+inline Eigen::MatrixXd randn(size_t rows, size_t cols)
 {
 	stat::NormalDistribution nd; // N(0,1)
 	Eigen::MatrixXd A(rows, cols);
@@ -40,13 +40,13 @@ inline Eigen::MatrixXd randn(const size_t rows, const size_t cols)
 }
 
 // Random square matrix with entries in Normal(0,1)
-inline Eigen::MatrixXd randn(const size_t rows)
+inline Eigen::MatrixXd randn(size_t rows)
 {
 	return randn(rows, rows);
 }
 
 // Random unitary matrix
-inline Eigen::MatrixXcd rand_unitary(const size_t size)
+inline Eigen::MatrixXcd rand_unitary(size_t size)
 {
 	Eigen::MatrixXcd X(size, size);
 
