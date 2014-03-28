@@ -186,9 +186,6 @@ Derived load(const std::string& fname)
 	return A;
 }
 
-
-
-
 }
 
 #endif /* IO_H_ */

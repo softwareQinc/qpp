@@ -69,5 +69,4 @@ inline Eigen::MatrixXcd rand_unitary(size_t size)
 
 }
 
-
 #endif /* RANDOM_H_ */

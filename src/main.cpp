@@ -25,8 +25,7 @@ int main()
 	weights.push_back(2);
 	weights.push_back(3);
 	stat::DiscreteDistribution d(weights.begin(), weights.end());
-	size_t statistics[] =
-	{ 0, 0, 0 };
+	size_t statistics[] = { 0, 0, 0 };
 	size_t N = 100000;
 	for (size_t i = 0; i < N; i++)
 		statistics[d.sample()]++;
@@ -38,9 +37,10 @@ int main()
 	cmat a = randn(2, 2).template cast<cplx>()
 			+ ct::ii * randn(2, 2).template cast<cplx>();
 
-	stat::DiscreteDistributionFromComplex dc{1.+ct::ii, ct::ii };
-	for(auto i:dc._d.probabilities())
-		cout<<i<<" ";
+	cout << endl;
+	stat::DiscreteDistributionFromComplex dc { 1. + ct::ii, ct::ii };
+	for (auto i : dc._d.probabilities())
+		cout << i << " ";
 
 	//cout<<sqrtm(a)<<endl;
 
