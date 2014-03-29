@@ -145,11 +145,13 @@ inline void displn(const types::cplx c, unsigned int precision = 4,
 }
 
 // save matrix to a binary file in double precision
+// if file exists rewrites it, if not creates a new file
 template<typename Derived>
 void save(const Eigen::MatrixBase<Derived> & A, const std::string& fname)
 {
 	std::fstream fout;
-	fout.open(fname.c_str(), std::ios::out | std::ios::binary);
+	fout.open(fname.c_str(),
+			std::ios::out | std::ios::binary | std::ios::trunc);
 
 	if (fout.fail())
 	{
@@ -165,12 +167,50 @@ void save(const Eigen::MatrixBase<Derived> & A, const std::string& fname)
 	size_t cols = A.cols();
 	fout.write((char*) &rows, sizeof(rows));
 	fout.write((char*) &cols, sizeof(cols));
-//	for (size_t i = 0; i < rows; i++)
-//		for (size_t j = 0; j < cols; j++)
-//			fout.write((char*) &A(i, j), sizeof(A(i, j)));
 
-	fout.write((char*) A.data(), sizeof(typename Derived::Scalar) * rows * cols);
+	// write first the real part, then the imaginary part,
+	// in column-major order, same as MATLAB
+	// in this way, if we read a cplx matrix using doubles, we get the real part
 
+	typename Derived::Scalar * A_ptr = A.data();
+	fout.write((char*) A_ptr, sizeof(typename Derived::Scalar) * A.size());
+
+	fout.close();
+}
+
+// save matrix to a binary file in double precision
+// if file exists rewrites it, if not creates a new file
+template<>// complex specialization
+inline void save(const Eigen::MatrixBase<Eigen::MatrixXcd> & A,
+		const std::string& fname)
+{
+	std::fstream fout;
+	fout.open(fname.c_str(),
+			std::ios::out | std::ios::binary | std::ios::trunc);
+
+	if (fout.fail())
+	{
+		throw std::runtime_error(
+				"save: Error writing output file \"" + std::string(fname)
+						+ "\"!");
+	}
+// we write a header to the file
+	const char _header[] = "TYPE::Eigen::Matrix";
+	fout.write(_header, sizeof(_header));
+
+	size_t rows = A.rows();
+	size_t cols = A.cols();
+	fout.write((char*) &rows, sizeof(rows));
+	fout.write((char*) &cols, sizeof(cols));
+
+	// write first the real part, then the imaginary part,
+	// in column-major order, same as MATLAB
+	// in this way, if we read a cplx matrix using doubles, we get the real part
+
+	double * Are_ptr = static_cast<Eigen::MatrixXcd>(A).real().data();
+	double * Aim_ptr = static_cast<Eigen::MatrixXcd>(A).imag().data();
+	fout.write((char*) Are_ptr, sizeof(double) * A.size());
+	fout.write((char*) Aim_ptr, sizeof(double) * A.size());
 
 	fout.close();
 }
@@ -209,11 +249,47 @@ Derived load(const std::string& fname)
 
 	Derived A(rows, cols);
 
-//	for (size_t i = 0; i < rows; i++)
-//		for (size_t j = 0; j < cols; j++)
-//			fin.read((char*) &A(i, j), sizeof(A(i, j)));
-
 	fin.read((char*) A.data(), sizeof(typename Derived::Scalar) * rows * cols);
+
+	fin.close();
+	return A;
+}
+
+template<> // complex specialization
+inline Eigen::MatrixXcd load(const std::string& fname)
+{
+	std::fstream fin;
+	fin.open(fname.c_str(), std::ios::in | std::ios::binary);
+
+	if (fin.fail())
+	{
+		throw std::runtime_error(
+				"load: Error opening input file \"" + std::string(fname)
+						+ "\"!");
+	}
+
+	const char _header[] = "TYPE::Eigen::Matrix"; // we write the header to the file
+	char *_fheader = new char[sizeof(_header)]; // include the zero-termiation string
+
+// read the header
+	fin.read(_fheader, sizeof(_header));
+	if (strcmp(_fheader, _header))
+	{
+		delete[] _fheader;
+		throw std::runtime_error(
+				"load: Input file \"" + std::string(fname)
+						+ "\" is corrupted!");
+	}
+	delete[] _fheader;
+
+	size_t rows, cols;
+	fin.read((char*) &rows, sizeof(rows));
+	fin.read((char*) &cols, sizeof(cols));
+
+	Eigen::MatrixXcd A(rows, cols);
+
+	fin.read((char*) A.real().data(), sizeof(double) * rows * cols);
+	fin.read((char*) A.imag().data(), sizeof(double) * rows * cols);
 
 	fin.close();
 	return A;

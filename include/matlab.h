@@ -18,7 +18,6 @@
 #include "mat.h"  // path to this is defined in the Makefile
 #include "mex.h"  // path to this is defined in the Makefile
 
-// TODO: data validation
 namespace qpp
 {
 
@@ -27,12 +26,12 @@ template<typename Derived>
 Derived loadMATLAB(const std::string &mat_file, const std::string & var_name)
 {
 	throw std::runtime_error(
-			"loadMATLAB: only double and complex matrices are supported!");
+			"loadMATLAB: not implemented for this matrix type!");
 }
 
 // double specialization (Eigen::MatrixXd)
 template<>
-Eigen::MatrixXd loadMATLAB(const std::string &mat_file,
+inline Eigen::MatrixXd loadMATLAB(const std::string &mat_file,
 		const std::string & var_name)
 {
 	MATFile *pmat = matOpen(mat_file.c_str(), "r");
@@ -45,6 +44,14 @@ Eigen::MatrixXd loadMATLAB(const std::string &mat_file,
 	if (pa == NULL)
 		throw std::runtime_error(
 				"loadMATLAB: can not load the variable from MATLAB input file!");
+
+	if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
+		throw std::runtime_error(
+				"loadMATLAB: loaded variable is not 2-dimensional!");
+
+	if (!mxIsDouble(pa))
+		throw std::runtime_error(
+				"loadMATLAB: loaded variable is not in double-precision format!");
 
 	size_t rows = mxGetM(pa);
 	size_t cols = mxGetN(pa);
@@ -62,7 +69,7 @@ Eigen::MatrixXd loadMATLAB(const std::string &mat_file,
 
 // complex specialization (Eigen::MatrixXcd)
 template<>
-Eigen::MatrixXcd loadMATLAB(const std::string &mat_file,
+inline Eigen::MatrixXcd loadMATLAB(const std::string &mat_file,
 		const std::string & var_name)
 {
 	MATFile *pmat = matOpen(mat_file.c_str(), "r");
@@ -74,7 +81,15 @@ Eigen::MatrixXcd loadMATLAB(const std::string &mat_file,
 	mxArray *pa = matGetVariable(pmat, var_name.c_str());
 	if (pa == NULL)
 		throw std::runtime_error(
-				"loadMATLAB: can not load the variable from MATLAB input file!");
+				"loadMATLAB: can not load variable from MATLAB input file!");
+
+	if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
+		throw std::runtime_error(
+				"loadMATLAB: loaded variable is not 2-dimensional!");
+
+	if (!mxIsDouble(pa))
+		throw std::runtime_error(
+				"loadMATLAB: loaded variable is not in double-precision format!");
 
 	size_t rows = mxGetM(pa);
 	size_t cols = mxGetN(pa);
@@ -82,14 +97,25 @@ Eigen::MatrixXcd loadMATLAB(const std::string &mat_file,
 	Eigen::MatrixXd result_re(rows, cols);
 	Eigen::MatrixXd result_im(rows, cols);
 
-	double *pa_re, *pa_im;
-	/* Populate the real part of the created array. */
-	pa_re = (double *) mxGetPr(pa);
-	std::memcpy(result_re.data(), pa_re, sizeof(double) * mxGetNumberOfElements(pa));
+	// real part and imaginary part pointers
+	double *pa_re = nullptr, *pa_im = nullptr;
 
-	/* Populate the imaginary part of the created array. */
-	pa_im = (double *) mxGetPi(pa);
-	std::memcpy(result_im.data(), pa_im, sizeof(double) * mxGetNumberOfElements(pa));
+	// Populate the real part of the created array.
+	pa_re = (double *) mxGetPr(pa);
+	std::memcpy(result_re.data(), pa_re,
+			sizeof(double) * mxGetNumberOfElements(pa));
+
+	if (mxIsComplex(pa)) // populate the imaginary part if exists
+	{
+		pa_im = (double *) mxGetPi(pa);
+		std::memcpy(result_im.data(), pa_im,
+				sizeof(double) * mxGetNumberOfElements(pa));
+	}
+	else // set to zero the imaginary part
+	{
+		std::memset(result_im.data(), 0,
+				sizeof(double) * mxGetNumberOfElements(pa));
+	}
 
 	mxDestroyArray(pa);
 	matClose(pmat);
@@ -99,18 +125,20 @@ Eigen::MatrixXcd loadMATLAB(const std::string &mat_file,
 }
 
 // save Eigen::MatrixX to MATLAB .mat file as a double matrix
+// see MATLAB's matOpen(...) documentation
 template<typename Derived>
 void saveMATLAB(const Eigen::MatrixBase<Derived> &A,
-		const std::string & mat_file, const std::string & var_name)
+		const std::string & mat_file, const std::string & var_name,
+		const std::string & mode)
 {
 	// cast the input to a double (internal MATLAB format)
 	Eigen::MatrixXd tmp = A.template cast<double>();
 
-	MATFile *pmat = matOpen(mat_file.c_str(), "u");
+	MATFile *pmat = matOpen(mat_file.c_str(), mode.c_str());
 	if (pmat == NULL)
 	{
 		throw std::runtime_error(
-				"saveMATLAB: can not create MATLAB output file!");
+				"saveMATLAB: can not open/create MATLAB output file!");
 	}
 
 	mxArray *pa = mxCreateDoubleMatrix(tmp.rows(), tmp.cols(), mxREAL);
@@ -118,7 +146,7 @@ void saveMATLAB(const Eigen::MatrixBase<Derived> &A,
 
 	if (matPutVariable(pmat, var_name.c_str(), pa))
 		throw std::runtime_error(
-				"saveMATLAB: can not write to MATLAB output file!");
+				"saveMATLAB: can not write variable to MATLAB output file!");
 
 	mxDestroyArray(pa);
 	matClose(pmat);
@@ -127,18 +155,19 @@ void saveMATLAB(const Eigen::MatrixBase<Derived> &A,
 
 // complex specialization (Eigen::MatrixXcd)
 template<>
-void saveMATLAB(const Eigen::MatrixBase<Eigen::MatrixXcd> &A,
-		const std::string & mat_file, const std::string & var_name)
+inline void saveMATLAB(const Eigen::MatrixBase<Eigen::MatrixXcd> &A,
+		const std::string & mat_file, const std::string & var_name,
+		const std::string & mode)
 {
 	// cast the input to a double (internal MATLAB format)
 	Eigen::MatrixXd tmp_re = A.real().template cast<double>();
 	Eigen::MatrixXd tmp_im = A.imag().template cast<double>();
 
-	MATFile *pmat = matOpen(mat_file.c_str(), "u");
+	MATFile *pmat = matOpen(mat_file.c_str(), mode.c_str());
 	if (pmat == NULL)
 	{
 		throw std::runtime_error(
-				"saveMATLAB: can not create MATLAB output file!");
+				"saveMATLAB: can not open/create MATLAB output file!");
 	}
 
 	mxArray *pa = mxCreateDoubleMatrix(tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);
@@ -154,7 +183,7 @@ void saveMATLAB(const Eigen::MatrixBase<Eigen::MatrixXcd> &A,
 
 	if (matPutVariable(pmat, var_name.c_str(), pa))
 		throw std::runtime_error(
-				"saveMATLAB: can not write to MATLAB output file!");
+				"saveMATLAB: can not write variable to MATLAB output file!");
 
 	mxDestroyArray(pa);
 	matClose(pmat);
