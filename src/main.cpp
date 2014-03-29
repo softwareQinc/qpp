@@ -102,10 +102,13 @@ int main()
 	cout << fun<cplx, double>(im1, std::abs).template cast<int>();
 	cout << endl << endl;
 
-	cout << kron((im1+im1).eval(), (im1+2.*ct::ii*im1).eval());
 	cout<<endl<<endl;
-	cmat tmpres=im1+2.*ct::ii*im1;
-	displn(tmpres);
+
+	std::vector<cmat> mylist={gt::X,gt::Z};
+	displn(kron_list<cmat>({gt::X+gt::Z+sqrtm(gt::X),gt::Z+gt::Z}));
+	cout<<endl<<endl;
+	displn(kron_pow<cmat>(gt::X+gt::X,2));
+
 
 	cout << "Ending..." << endl;
 

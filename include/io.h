@@ -17,8 +17,6 @@
 #include <iomanip>
 #include "types.h"
 
-// TODO: test load/save for other types
-
 namespace qpp
 {
 
