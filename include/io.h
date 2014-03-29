@@ -165,12 +165,9 @@ void save(const Eigen::MatrixBase<Derived> & A, const std::string& fname)
 	size_t cols = A.cols();
 	fout.write((char*) &rows, sizeof(rows));
 	fout.write((char*) &cols, sizeof(cols));
-//	for (size_t i = 0; i < rows; i++)
-//		for (size_t j = 0; j < cols; j++)
-//			fout.write((char*) &A(i, j), sizeof(A(i, j)));
 
-	fout.write((char*) A.data(), sizeof(typename Derived::Scalar) * rows * cols);
-
+	fout.write((char*) static_cast<Derived>(A).data(),
+			sizeof(typename Derived::Scalar) * rows * cols);
 
 	fout.close();
 }
@@ -208,10 +205,6 @@ Derived load(const std::string& fname)
 	fin.read((char*) &cols, sizeof(cols));
 
 	Derived A(rows, cols);
-
-//	for (size_t i = 0; i < rows; i++)
-//		for (size_t j = 0; j < cols; j++)
-//			fin.read((char*) &A(i, j), sizeof(A(i, j)));
 
 	fin.read((char*) A.data(), sizeof(typename Derived::Scalar) * rows * cols);
 

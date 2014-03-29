@@ -69,7 +69,7 @@ int main()
 			<< endl;
 	displn(mtest);
 
-	//save(mtest, "/Users/vlad/tmp/qpp.out");
+	save(mtest, "/Users/vlad/tmp/qpp.out");
 
 	MTYPE mtest1 = load<MTYPE>("/Users/vlad/tmp/qpp.out");
 	cout << "My load function: " << mtest1.rows() << " x " << mtest1.cols()
