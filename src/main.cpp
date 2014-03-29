@@ -45,38 +45,46 @@ int main()
 
 #define MTYPE cmat
 
-//		MTYPE m1 = MTYPE::Random(30, 40);
-//
-//		cout << endl << endl;
-//		disp(m1);
-//		cout << endl << endl;
-//		saveMATLAB(m1, "/Users/vlad/tmp/test.mat", "m1","w");
-//
-//		// we load it back
-//		MTYPE m2 = loadMATLAB<MTYPE>("/Users/vlad/tmp/test.mat", "m1");
-//		disp(m2);
-//		cout << endl << endl;
-//
-//		// and save it again
-//		saveMATLAB(m2, "/Users/vlad/tmp/test.mat", "m2","u");
-//
-//		// now check the norm difference
-//		cout << "Norm difference ||m_1-m_2||=" << norm(m1 - m2) << endl;
-	MTYPE mtest = loadMATLAB<MTYPE>("/Users/vlad/tmp/test.mat", "mtest");
+	MTYPE m1 = MTYPE::Random(30, 40);
+
+	cout << endl << endl;
+	disp(m1);
+	cout << endl << endl;
+
+	// export to MATLAB
+	saveMATLAB(m1, "/Users/vlad/tmp/test.mat", "m1", "u");
+
+	// we load it back
+	MTYPE m2 = loadMATLAB<MTYPE>("/Users/vlad/tmp/test.mat", "m1");
+	disp(m2);
+	cout << endl << endl;
+
+	// and export to MATLAB again
+	saveMATLAB(m2, "/Users/vlad/tmp/test.mat", "m2", "u");
+
+	// now check the norm difference
+	cout << "Norm difference ||m_1-m_2||=" << norm(m1 - m2) << endl;
+
+// my load/save functions
+
+	// loading
+	MTYPE mtest = loadMATLAB<MTYPE>("/Users/vlad/tmp/test.mat", "m1");
 
 	cout << endl << endl;
 	cout << mtest.rows() << " x " << mtest.cols() << " loaded matrix: " << endl
 			<< endl;
 	displn(mtest);
 
+	// saving
 	save(mtest, "/Users/vlad/tmp/qpp.out");
 
+	// loading again
 	MTYPE mtest1 = load<MTYPE>("/Users/vlad/tmp/qpp.out");
 	cout << "My load function: " << mtest1.rows() << " x " << mtest1.cols()
 			<< " matrix:" << endl;
 	displn(mtest1);
 
-	cout<<endl<<"Norm difference: "<<norm(mtest1-mtest)<<endl;
+	cout << endl << "Norm difference: " << norm(mtest1 - m1) << endl;
 
 	cout << "Ending..." << endl;
 
