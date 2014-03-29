@@ -45,5 +45,9 @@ int main()
 
 	//cout<<sqrtm(a)<<endl;
 
+	Eigen::MatrixXd mat = Eigen::MatrixXd::Random(3,4);
+	saveMATLAB(mat,"/Users/vlad/tmp/eigenmatrix.mat","mat");
+	cout<<endl<<mat;
+
 	cout << endl << endl << "Exiting qpp..." << endl;
 }
