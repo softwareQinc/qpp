@@ -22,24 +22,26 @@ namespace qpp
 
 // define the functions here
 template<typename Derived>
-void saveMATLAB(const Eigen::MatrixBase<Derived> &A, const char* mat_file,
-		const char* var_name)
+void saveMATLAB(const Eigen::MatrixBase<Derived> &A,
+		const std::string & mat_file, const std::string & var_name)
 {
 	// cast the input to a double (internal MATLAB format)
 	Eigen::MatrixXd tmp = A.template cast<double>();
 
-	MATFile *pmat;
-	mxArray *pa;
-	pmat = matOpen(mat_file, "w");
+	MATFile *pmat = matOpen(mat_file.c_str(), "w");
 	if (pmat == NULL)
 	{
 		throw std::runtime_error(
 				"saveMATLAB: can not create MATLAB output file!");
 	}
-	pa = mxCreateDoubleMatrix(tmp.rows(), tmp.cols(), mxREAL);
-	memcpy((void*)(mxGetPr(pa)), (void*)tmp.data(), sizeof(double)*tmp.size() );
-	if(matPutVariable(pmat,var_name,pa))
-		throw std::runtime_error("saveMATLAB: can not save the variable into MATLAB file!");
+
+	mxArray *pa = mxCreateDoubleMatrix(tmp.rows(), tmp.cols(), mxREAL);
+	memcpy((void*) (mxGetPr(pa)), (void*) tmp.data(),
+			sizeof(double) * tmp.size());
+
+	if (matPutVariable(pmat, var_name.c_str(), pa))
+		throw std::runtime_error(
+				"saveMATLAB: can not write to MATLAB output file!");
 
 	matClose(pmat);
 
@@ -48,7 +50,21 @@ void saveMATLAB(const Eigen::MatrixBase<Derived> &A, const char* mat_file,
 inline void loadMATLAB(Eigen::MatrixXd &A, const std::string &mat_file,
 		const std::string & var_name)
 {
+	MATFile *pmat = matOpen(mat_file.c_str(), "r");
+	if (pmat == NULL)
+	{
+		throw std::runtime_error("loadMATLAB: can not open MATLAB input file!");
+	}
 
+	mxArray *pa = matGetVariable(pmat, var_name.c_str());
+	if (pa == NULL)
+		throw std::runtime_error(
+				"loadMATLAB: can not load the item from MATLAB input file!");
+
+	memcpy( (void*) A.data(), (void*) (mxGetPr(pa)),
+			sizeof(double) * mxGetNumberOfElements(pa));
+
+	matClose(pmat);
 }
 
 }
