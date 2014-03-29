@@ -8,13 +8,12 @@
 #include <iostream>
 
 #include "qpp.h"
+#include "matlab.h" // support for MATLAB
 
 using namespace std;
 
 using namespace qpp;
 using namespace qpp::types;
-
-// TODO: MATLAB interfacing via mat.h (using an #ifdef _HAVE_MATLAB_ and config.h)
 
 //int main(int argc, char **argv)
 int main()

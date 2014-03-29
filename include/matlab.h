@@ -8,13 +8,14 @@
 #ifndef MATLAB_H_
 #define MATLAB_H_
 
-#define HAVE_MATLAB_INSTALLED // comment if you do not have MATLAB installed
+// add the path to MATLAB/extern/include in include path
 
-#ifdef HAVE_MATLAB_INSTALLED
 #include <Eigen/Dense>
 #include <string>
-#include "mat.h"
-#include "mex.h"
+#include "mat.h"  // path defined in the Makefile
+#include "mex.h"  // path defined in the Makefile
+
+// TODO: finish matlab.h
 
 // define the functions here
 template<typename Derived>
@@ -31,7 +32,5 @@ inline void loadMATLAB(Eigen::MatrixXd &A, const std::string &mat_file,
 {
 
 }
-
-#endif /* HAVE_MATLAB_INSTALLED */
 
 #endif /* MATLAB_H_ */
