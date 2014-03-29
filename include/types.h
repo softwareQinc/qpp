@@ -24,6 +24,10 @@ typedef Eigen::MatrixXcd cmat; // dynamic-size
 // double matrix
 typedef Eigen::MatrixXd dmat; // dynamic-size
 
+// float matrix
+typedef Eigen::MatrixXf fmat; // dynamic-size
+
+
 // integer matrix
 typedef Eigen::MatrixXi imat; // dynamic-size
 
