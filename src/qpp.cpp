@@ -13,7 +13,7 @@ namespace qpp
 
 // Random number initialization
 std::random_device stat::_rd; // make the random_device generator visible
-std::mt19937 stat::_rng(_rd()); // make the mt19937 generator visible
+std::mt19937 stat::_rng(_rd()); // make the mt19937 generator visible, seed it
 
 // Various gates (declared extern in "gates.h"); make them visible
 namespace gt
