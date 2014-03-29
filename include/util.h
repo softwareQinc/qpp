@@ -64,13 +64,13 @@ typename Derived::Scalar trace(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 Derived absij(const Eigen::MatrixBase<Derived>& A)
 {
-	Derived result = Derived::Zero(A.rows(), A.cols());
-	for (size_t i = 0; i < A.rows(); i++)
-		for (size_t j = 0; j < A.cols(); j++)
-			result(i, j) = std::abs(A(i, j));
-	return result;
+//	Derived result = Derived::Zero(A.rows(), A.cols());
+//	for (size_t i = 0; i < A.rows(); i++)
+//		for (size_t j = 0; j < A.cols(); j++)
+//			result(i, j) = std::abs(A(i, j));
+//	return result;
 
-	//return (fun<typename Derived::Scalar, double>(A, std::abs)). template cast<typename Derived::Scalar>();
+	return fun<typename Derived::Scalar, double>(A, std::abs). template cast<typename Derived::Scalar>();
 
 }
 
