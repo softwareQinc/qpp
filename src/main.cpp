@@ -43,17 +43,24 @@ int main()
 	for (auto i : dc._d.probabilities())
 		cout << i << " ";
 
-	//cout<<sqrtm(a)<<endl;
+#define MTYPE cmat
 
-	Eigen::MatrixXd mat = Eigen::MatrixXd::Random(3, 4);
-	//saveMATLAB(mat, "/Users/vlad/tmp/eigenmatrix.mat", "mat");
-	cout << endl << endl << mat;
+	MTYPE m1 = MTYPE::Random(3, 4);
 
-	//Eigen::MatrixXcd mat1(3, 4);
-	cout<<endl<<endl;
-	cmat m1=loadMATLAB<cmat>("/Users/vlad/tmp/eigenmatrix.mat", "mat");
-	cout<<m1<<endl<<endl;
-	saveMATLAB(m1,"/Users/vlad/tmp/eigenmatrix.mat", "m1");
+	cout << endl << endl;
+	disp(m1);
+	cout << endl << endl;
+	saveMATLAB(m1, "/Users/vlad/tmp/eigenmatrix.mat", "m1");
 
-	cout << endl << endl << "Exiting qpp..." << endl;
+	// we load it back
+	MTYPE m2 = loadMATLAB<MTYPE>("/Users/vlad/tmp/eigenmatrix.mat", "m1");
+	disp(m2);
+	cout << endl << endl;
+
+	// and save it again
+	saveMATLAB(m2, "/Users/vlad/tmp/eigenmatrix.mat", "m2");
+
+	// now check the norm difference
+	cout << "Norm difference ||m_1-m_2||=" << norm(m1 - m2);
+
 }
