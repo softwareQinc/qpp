@@ -11,17 +11,18 @@ OPTIM = -mtune=native -msse3 # use SSE2 and Native compiling
 EIGEN = ~/eigen_3.2.1 # Location of Eigen library, replace it with your own
 
 # MATLAB
-MATLABLIBS = /Applications/MATLAB_R2013a.app/bin/maci64
-MATLABINC = /Applications/MATLAB_R2013a.app/extern/include
+MLIBS = /Applications/MATLAB_R2013a.app/bin/maci64
+MINC = /Applications/MATLAB_R2013a.app/extern/include
+MLINK = -lmx -lmat
 
 # Some flags, use pedantic for C++ standard compliance
 CFLAGS = -c -pedantic $(CC_STANDARD) $(WARNINGS) $(MULTIPROC) $(OPTIM)\
-		 -L $(MATLABLIBS) -isystem $(EIGEN) -I $(INC) -I $(MATLABINC) 
+		 -L $(MLIBS) -isystem $(EIGEN) -I $(INC) -I $(MINC) 
 CFLAGS_RELEASE = -O3 -DNDEBUG -DEIGEN_NO_DEBUG # Release flags
 CFLAGS_DEBUG = -DDEBUG -g3 # Debug flags
 
 # Use gomp multi-processing library, a must for g++ -fopenmp flag
-LDFLAGS = -lgomp -lmx -lmat 
+LDFLAGS = -lgomp $(MLINK)
 
 SOURCES = $(wildcard $(SRC)/*.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)
