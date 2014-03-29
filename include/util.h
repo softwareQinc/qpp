@@ -37,46 +37,52 @@
 namespace qpp
 {
 
-template<typename Derived> using Expression2Matrix=
+// General Eigen expression, use this for function parameters that must work
+// with expressions also
+template<typename Derived> using EigenExpression=Eigen::MatrixBase<Derived>;
+
+// every EigenExpression<Derived> can be implicitly converted
+// to TemplatedEigenMatrix<Derived>
+//
+// Use TemplatedEigenMatrix<Derived> as return for functions that take
+// EigenExpression<Derived> as inputs, so the function work with
+// Eigen expressions
+template<typename Derived> using TemplatedEigenMatrix=
 Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 
 // Eigen function wrappers (inlines)
 
 // transpose, preserve return type
 template<typename Derived>
-Expression2Matrix<Derived> transpose(
-		const Eigen::MatrixBase<Derived>& A)
+TemplatedEigenMatrix<Derived> transpose(const EigenExpression<Derived>& A)
 {
 	return A.transpose();
 }
 
 // conjugate, preserve return type
 template<typename Derived>
-Expression2Matrix<Derived> conjugate(
-		const Eigen::MatrixBase<Derived>& A)
+TemplatedEigenMatrix<Derived> conjugate(const EigenExpression<Derived>& A)
 {
 	return A.conjugate();
 }
 
 // adjoint, preserve return type
 template<typename Derived>
-Expression2Matrix<Derived> adjoint(
-		const Eigen::MatrixBase<Derived>& A)
+TemplatedEigenMatrix<Derived> adjoint(const EigenExpression<Derived>& A)
 {
 	return A.adjoint();
 }
 
 // trace, preserve return type
 template<typename Derived>
-typename Derived::Scalar trace(const Eigen::MatrixBase<Derived>& A)
+typename Derived::Scalar trace(const EigenExpression<Derived>& A)
 {
 	return A.trace();
 }
 
 // absolute values component-wise, does not change the matrix type
 template<typename Derived>
-Expression2Matrix<Derived> absij(
-		const Eigen::MatrixBase<Derived>& A)
+TemplatedEigenMatrix<Derived> absij(const EigenExpression<Derived>& A)
 {
 	return fun<typename Derived::Scalar, double>(A, std::abs).template cast<
 			typename Derived::Scalar>();
@@ -85,7 +91,7 @@ Expression2Matrix<Derived> absij(
 
 // trace-norm (or Frobenius norm) (CHANGES return type to double)
 template<typename Derived>
-typename Eigen::MatrixXd::Scalar norm(const Eigen::MatrixBase<Derived>& A)
+typename Eigen::MatrixXd::Scalar norm(const EigenExpression<Derived>& A)
 {
 	// convert matrix to complex then return its norm
 	return (A.template cast<types::cplx>()).norm();
@@ -93,14 +99,14 @@ typename Eigen::MatrixXd::Scalar norm(const Eigen::MatrixBase<Derived>& A)
 
 // eigenvalues (CHANGES return type to complex)
 template<typename Derived>
-Eigen::MatrixXcd evals(const Eigen::MatrixBase<Derived>& A)
+Eigen::MatrixXcd evals(const EigenExpression<Derived>& A)
 {
 	return (A.template cast<types::cplx>()).eigenvalues();
 }
 
 // eigenvectors (CHANGES return type to complex matrix)
 template<typename Derived>
-Eigen::MatrixXcd evects(const Eigen::MatrixBase<Derived>& A)
+Eigen::MatrixXcd evects(const EigenExpression<Derived>& A)
 {
 	Eigen::ComplexEigenSolver<Eigen::MatrixXcd> es(
 			A.template cast<types::cplx>());
@@ -109,16 +115,15 @@ Eigen::MatrixXcd evects(const Eigen::MatrixBase<Derived>& A)
 
 // Kronecker product of 2 matrices, preserve return type
 template<typename Derived>
-Expression2Matrix<Derived> kron(
-		const Eigen::MatrixBase<Derived> &A,
-		const Eigen::MatrixBase<Derived> &B)
+TemplatedEigenMatrix<Derived> kron(const EigenExpression<Derived> &A,
+		const EigenExpression<Derived> &B)
 {
 	int Acols = A.cols();
 	int Arows = A.rows();
 	int Bcols = B.cols();
 	int Brows = B.rows();
 
-	Expression2Matrix<Derived> result;
+	TemplatedEigenMatrix<Derived> result;
 	result.resize(Arows * Brows, Acols * Bcols);
 
 	for (int i = 0; i < Arows; i++)
@@ -130,19 +135,17 @@ Expression2Matrix<Derived> kron(
 // Kronecker product of a list of matrices, preserve return type
 // <Derived> is forced to be a matrix by invocation of kron inside the function
 template<typename Derived>
-Expression2Matrix<Derived> kron_list(
-		const std::vector<Derived> &list)
+TemplatedEigenMatrix<Derived> kron_list(const std::vector<Derived> &list)
 {
-	Expression2Matrix<Derived> result =
-			list[0];
+	TemplatedEigenMatrix<Derived> result = list[0];
 	for (size_t i = 1; i < list.size(); i++)
 		result = kron(result, list[i]);
 	return result;
 }
 // Kronecker product of a matrix with itself $n$ times, preserve return type
 template<typename Derived>
-Expression2Matrix<Derived> kron_pow(
-		const Expression2Matrix<Derived> &A, size_t n)
+TemplatedEigenMatrix<Derived> kron_pow(const TemplatedEigenMatrix<Derived> &A,
+		size_t n)
 {
 	std::vector<Derived> list;
 	for (size_t i = 0; i < n; i++)
@@ -152,8 +155,7 @@ Expression2Matrix<Derived> kron_pow(
 
 // Matrix power A^z (CHANGES return type to complex matrix)
 template<typename Derived>
-Eigen::MatrixXcd mpower(const Eigen::MatrixBase<Derived> &A,
-		const types::cplx z)
+Eigen::MatrixXcd mpower(const EigenExpression<Derived> &A, const types::cplx z)
 
 {
 	// check square matrix
@@ -184,15 +186,14 @@ Eigen::MatrixXcd mpower(const Eigen::MatrixBase<Derived> &A,
 // Integer matrix power, preserve return type
 // Explicitly multiply the matrix with itself n times
 template<typename Derived>
-Expression2Matrix<Derived> mpower(
-		const Eigen::MatrixBase<Derived> &A, size_t n)
+TemplatedEigenMatrix<Derived> mpower(const EigenExpression<Derived> &A,
+		size_t n)
 {
 	// check square matrix
 	if (!internal::_check_square_mat(A))
 		throw std::runtime_error("mpower: Matrix must be square!");
 
-	Expression2Matrix<Derived> result =
-			A;
+	TemplatedEigenMatrix<Derived> result = A;
 
 	if (n == 0)
 		return result.setIdentity();
@@ -207,7 +208,7 @@ Expression2Matrix<Derived> mpower(
 // use column-major order (same as MATLAB)
 template<typename Derived>
 Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic> reshape(
-		const Eigen::MatrixBase<Derived>& A, size_t rows, size_t cols)
+		const EigenExpression<Derived>& A, size_t rows, size_t cols)
 {
 	size_t rowsA = A.rows();
 	size_t colsA = A.cols();
@@ -220,9 +221,8 @@ Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic> reshape(
 
 // permutes the subsystems in a matrix
 template<typename Derived>
-Expression2Matrix<Derived> syspermute(
-		const Eigen::MatrixBase<Derived> &A, const std::vector<size_t> perm,
-		const std::vector<size_t> &dims)
+TemplatedEigenMatrix<Derived> syspermute(const EigenExpression<Derived> &A,
+		const std::vector<size_t> perm, const std::vector<size_t> &dims)
 {
 // Error checks
 
@@ -272,8 +272,8 @@ Expression2Matrix<Derived> syspermute(
 
 // Partial trace over subsystem B in a D_A x D_B system
 template<typename Derived>
-Expression2Matrix<Derived> ptrace2(
-		const Eigen::MatrixBase<Derived> &A, const std::vector<size_t> dims)
+TemplatedEigenMatrix<Derived> ptrace2(const EigenExpression<Derived> &A,
+		const std::vector<size_t> dims)
 {
 // Error checks
 // error checks
@@ -314,9 +314,8 @@ Expression2Matrix<Derived> ptrace2(
 
 // partial trace
 template<typename Derived>
-Expression2Matrix<Derived> ptrace(
-		const Eigen::MatrixBase<Derived> &A, const std::vector<size_t> &subsys,
-		const std::vector<size_t> &dims)
+TemplatedEigenMatrix<Derived> ptrace(const EigenExpression<Derived> &A,
+		const std::vector<size_t> &subsys, const std::vector<size_t> &dims)
 {
 // error checks
 
@@ -376,9 +375,8 @@ Expression2Matrix<Derived> ptrace(
 
 // partial transpose
 template<typename Derived>
-Expression2Matrix<Derived> ptranspose(
-		const Eigen::MatrixBase<Derived>& A, const std::vector<size_t>& subsys,
-		const std::vector<size_t>& dims)
+TemplatedEigenMatrix<Derived> ptranspose(const EigenExpression<Derived>& A,
+		const std::vector<size_t>& subsys, const std::vector<size_t>& dims)
 {
 // error checks
 
