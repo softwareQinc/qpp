@@ -47,7 +47,7 @@ void saveMATLAB(const Eigen::MatrixBase<Derived> &A,
 
 }
 
-inline void loadMATLAB(Eigen::MatrixXd &A, const std::string &mat_file,
+inline Eigen::MatrixXd loadMATLAB(const std::string &mat_file,
 		const std::string & var_name)
 {
 	MATFile *pmat = matOpen(mat_file.c_str(), "r");
@@ -61,10 +61,16 @@ inline void loadMATLAB(Eigen::MatrixXd &A, const std::string &mat_file,
 		throw std::runtime_error(
 				"loadMATLAB: can not load the item from MATLAB input file!");
 
-	memcpy( (void*) A.data(), (void*) (mxGetPr(pa)),
-			sizeof(double) * mxGetNumberOfElements(pa));
+	size_t rows=mxGetM(pa);
+	size_t cols=mxGetN(pa);
 
+	Eigen::MatrixXd result(rows,cols);
+
+	memcpy( (void*) result.data(), (void*) (mxGetPr(pa)),
+			sizeof(double) * mxGetNumberOfElements(pa));
 	matClose(pmat);
+
+	return result;
 }
 
 }

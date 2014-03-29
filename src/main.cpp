@@ -49,9 +49,8 @@ int main()
 	//saveMATLAB(mat, "/Users/vlad/tmp/eigenmatrix.mat", "mat");
 	cout << endl << endl << mat;
 
-	Eigen::MatrixXd mat1(3, 4);
-	loadMATLAB(mat1, "/Users/vlad/tmp/eigenmatrix.mat", "mat");
-	cout << endl << endl << mat1;
+	//Eigen::MatrixXd mat1(3, 4);
+	cout<<endl<<endl<<loadMATLAB("/Users/vlad/tmp/eigenmatrix.mat", "mat");
 
 	cout << endl << endl << "Exiting qpp..." << endl;
 }
