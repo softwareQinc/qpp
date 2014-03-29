@@ -13,8 +13,10 @@
 #include <Eigen/Dense>
 #include <string>
 #include <stdexcept>
-#include "mat.h"  // path defined in the Makefile
-#include "mex.h"  // path defined in the Makefile
+#include "types.h"
+
+#include "mat.h"  // path to this is defined in the Makefile
+#include "mex.h"  // path to this is defined in the Makefile
 
 // TODO: finish matlab.h
 namespace qpp
