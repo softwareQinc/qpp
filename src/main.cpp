@@ -61,6 +61,6 @@ int main()
 	saveMATLAB(m2, "/Users/vlad/tmp/eigenmatrix.mat", "m2");
 
 	// now check the norm difference
-	cout << "Norm difference ||m_1-m_2||=" << norm(m1 - m2);
+	cout << "Norm difference ||m_1-m_2||=" << norm(m1 - m2) << endl;
 
 }
