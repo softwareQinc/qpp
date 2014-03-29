@@ -9,10 +9,11 @@ MULTIPROC = -fopenmp # Use OPENMP for multi-processing
 OPTIM = -mtune=native -msse3 # use SSE2 and Native compiling
 
 EIGEN = ~/eigen_3.2.1 # Location of Eigen library, replace it with your own
+MATLAB =/Applications/MATLAB_R2013a.app/extern/include
 
 # Some flags, use pedantic for C++ standard compliance
 CFLAGS = -c -pedantic $(CC_STANDARD) $(WARNINGS) $(MULTIPROC) $(OPTIM)\
-	-isystem $(EIGEN) -I $(INC)
+	-isystem $(EIGEN) -I $(INC) -I $(MATLAB)
 CFLAGS_RELEASE = -O3 -DNDEBUG -DEIGEN_NO_DEBUG # Release flags
 CFLAGS_DEBUG = -DDEBUG -g3 # Debug flags
 
