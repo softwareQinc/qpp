@@ -18,6 +18,7 @@
 #include "internal.h"
 #include "stat.h"
 #include "io.h"
+#include "functional.h"
 
 // utility functions
 
@@ -28,7 +29,6 @@
 
 namespace qpp
 {
-
 
 // Eigen function wrappers (inlines)
 
@@ -60,15 +60,18 @@ typename Derived::Scalar trace(const Eigen::MatrixBase<Derived>& A)
 	return A.trace();
 }
 
-// absolute values component-wise, returns double
+// absolute values component-wise, does not change the matrix type
 template<typename Derived>
-Derived abs(const Eigen::MatrixBase<Derived>& A)
+Derived absij(const Eigen::MatrixBase<Derived>& A)
 {
 	Derived result = Derived::Zero(A.rows(), A.cols());
 	for (size_t i = 0; i < A.rows(); i++)
 		for (size_t j = 0; j < A.cols(); j++)
 			result(i, j) = std::abs(A(i, j));
 	return result;
+
+	//return (fun<typename Derived::Scalar, double>(A, std::abs)). template cast<typename Derived::Scalar>();
+
 }
 
 // trace-norm (or Frobenius norm) (CHANGES return type to double)
@@ -407,7 +410,6 @@ Derived ptranspose(const Eigen::MatrixBase<Derived>& A,
 
 	return result;
 }
-
 
 }
 

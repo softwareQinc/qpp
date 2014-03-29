@@ -86,15 +86,21 @@ int main()
 
 	cout << endl << "Norm difference: " << norm(mtest1 - m1) << endl;
 
+	cmat im1(3, 4);
+	im1 << 1, 2, 3, 4, 5, 6, 7, -8, 9, 10, 11, -12.1;
 
-	cmat im1(3,4);
-	im1<<1,2,3,4,5,6,7,8,9,10,11,12.1+ct::ii;
-
-	cout<<endl<<"Matrix: "<<endl<<endl;
-	save(im1,"/Users/vlad/tmp/qpp_imat.out");
+	cout << endl << "Matrix: " << endl << endl;
+	save(im1, "/Users/vlad/tmp/qpp_imat.out");
 	displn(load<cmat>("/Users/vlad/tmp/qpp_imat.out"));
 
 	cout << endl << "Norm difference: " << norm(mtest1 - m1) << endl;
+
+	cout << endl;
+	cout << absij(im1) << endl;
+
+	cout << endl;
+	cout << fun<cplx, double>(im1, std::abs).template cast<int>();
+	cout << endl;
 
 	cout << "Ending..." << endl;
 
