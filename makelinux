@@ -1,5 +1,0 @@
-#!/bin/sh
-# linux make (no MATLAB integration)
-
-cp Makefile.linux Makefile
-make
