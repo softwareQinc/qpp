@@ -27,7 +27,7 @@ types::ScalarEigenMatrix<Scalar> loadMATLAB(const std::string &mat_file,
 		const std::string & var_name)
 {
 	throw std::runtime_error(
-			"loadMATLAB: not implemented for this matrix type!");
+			"loadMATLAB: not implemented for this type!");
 }
 
 // double specialization
@@ -133,7 +133,7 @@ void saveMATLAB(const types::ScalarEigenMatrix<Scalar> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
-	throw std::runtime_error("saveMATLAB: not defined for this type!");
+	throw std::runtime_error("saveMATLAB: not implemented for this type!");
 }
 
 template<> // double specialization

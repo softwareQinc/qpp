@@ -25,9 +25,11 @@ template<typename MatrixType>
 void disp(const types::EigenExpression<MatrixType> &A, unsigned int precision =
 		4, double chop = ct::chop, std::ostream& os = std::cout)
 {
-	if (A.rows() * A.cols() == 0)
+	types::TemplatedEigenMatrix<MatrixType> tmp=A;
+
+	if (tmp.rows() * tmp.cols() == 0)
 	{
-		os << "Empty [" << A.rows() << " x " << A.cols() << "] matrix";
+		os << "Empty [" << tmp.rows() << " x " << tmp.cols() << "] matrix";
 		return;
 	};
 
@@ -35,16 +37,16 @@ void disp(const types::EigenExpression<MatrixType> &A, unsigned int precision =
 	std::vector<std::string> vstr;
 	std::string strtmp;
 
-	for (int i = 0; i < A.rows(); i++)
+	for (int i = 0; i < tmp.rows(); i++)
 	{
-		for (int j = 0; j < A.cols(); j++)
+		for (int j = 0; j < tmp.cols(); j++)
 		{
 			strtmp.clear(); // clear the temporary string
 			ostr.clear();
 			ostr.str(std::string()); // clear the ostringstream,
 
-			double re = static_cast<types::cplx>(A(i, j)).real();
-			double im = static_cast<types::cplx>(A(i, j)).imag();
+			double re = static_cast<types::cplx>(tmp(i, j)).real();
+			double im = static_cast<types::cplx>(tmp(i, j)).imag();
 
 			if (std::abs(re) < chop && std::abs(im) < chop)
 			{
@@ -78,23 +80,23 @@ void disp(const types::EigenExpression<MatrixType> &A, unsigned int precision =
 	}
 
 // determine the maximum lenght of the entries in each column
-	std::vector<size_t> maxlengthcols(A.cols(), 0);
+	std::vector<size_t> maxlengthcols(tmp.cols(), 0);
 
-	for (int i = 0; i < A.rows(); i++)
-		for (int j = 0; j < A.cols(); j++)
-			if (vstr[i * A.cols() + j].size() > maxlengthcols[j])
-				maxlengthcols[j] = vstr[i * A.cols() + j].size();
+	for (int i = 0; i < tmp.rows(); i++)
+		for (int j = 0; j < tmp.cols(); j++)
+			if (vstr[i * tmp.cols() + j].size() > maxlengthcols[j])
+				maxlengthcols[j] = vstr[i * tmp.cols() + j].size();
 
 // finally display it!
-	for (int i = 0; i < A.rows(); i++)
+	for (int i = 0; i < tmp.rows(); i++)
 	{
 		os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
-				<< vstr[i * A.cols()]; // display first column
-		for (int j = 1; j < A.cols(); j++) // then the rest
+				<< vstr[i * tmp.cols()]; // display first column
+		for (int j = 1; j < tmp.cols(); j++) // then the rest
 			os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
-					<< std::right << vstr[i * A.cols() + j];
+					<< std::right << vstr[i * tmp.cols() + j];
 
-		if (i < A.rows() - 1)
+		if (i < tmp.rows() - 1)
 			os << std::endl;
 	}
 }

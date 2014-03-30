@@ -38,18 +38,12 @@ int main()
 
 	cout << "Starting qpp..." << endl;
 
-	auto randu = rand_unitary(3);
-	dmat mydmat(2, 2);
-	mydmat << 1, 2, 3, 4.5;
-
-	cout << typeid(randu + adjoint(randu)).name() << endl;
-	displn(mydmat);
-	//displn(randu*adjoint(randu));
-	saveMATLAB<cplx>(randu * adjoint(randu), "/Users/vlad/tmp/test.mat",
+	auto randu = rand_unitary(10);
+	saveMATLAB<cplx>(randu, "/Users/vlad/tmp/test.mat",
 			"randu", "w");
-	auto res = loadMATLAB<double>("/Users/vlad/tmp/test.mat", "randu");
+	auto res = loadMATLAB<cplx>("/Users/vlad/tmp/test.mat", "randu");
 	cout << endl;
-	displn(res);
+	disp(adjoint(res+res)*trace(res));
 
 	cout << endl << "Exiting qpp..." << endl;
 }
