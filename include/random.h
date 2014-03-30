@@ -16,22 +16,22 @@ namespace qpp
 {
 
 // Random double matrix with entries in Uniform[0,1]
-inline Eigen::MatrixXd rand(size_t rows, size_t cols)
+inline types::dmat rand(size_t rows, size_t cols)
 {
-	return Eigen::MatrixXd::Random(rows, cols);
+	return types::dmat::Random(rows, cols);
 }
 
 // Random double square matrix with entries in Uniform[0,1]
-inline Eigen::MatrixXd rand(size_t rows)
+inline types::dmat rand(size_t rows)
 {
 	return rand(rows, rows);
 }
 
 // Random double matrix with entries in Normal(0,1)
-inline Eigen::MatrixXd randn(size_t rows, size_t cols)
+inline types::dmat randn(size_t rows, size_t cols)
 {
 	stat::NormalDistribution nd; // N(0,1)
-	Eigen::MatrixXd A(rows, cols);
+	types::dmat A(rows, cols);
 
 	for (size_t i = 0; i < rows; i++)
 		for (size_t j = 0; j < cols; j++)
@@ -39,22 +39,22 @@ inline Eigen::MatrixXd randn(size_t rows, size_t cols)
 	return A;
 }
 
-// Random square matrix with entries in Normal(0,1)
-inline Eigen::MatrixXd randn(size_t rows)
+// Random double square matrix with entries in Normal(0,1)
+inline types::dmat randn(size_t rows)
 {
 	return randn(rows, rows);
 }
 
 // Random unitary matrix
-inline Eigen::MatrixXcd rand_unitary(size_t size)
+inline types::cmat rand_unitary(size_t size)
 {
-	Eigen::MatrixXcd X(size, size);
+	types::cmat X(size, size);
 
 	X.real() = 1. / sqrt(2) * randn(size);
 	X.imag() = 1. / sqrt(2) * randn(size);
-	Eigen::HouseholderQR<Eigen::MatrixXcd> qr(X);
+	Eigen::HouseholderQR<types::cmat> qr(X);
 
-	Eigen::MatrixXcd Q = qr.householderQ();
+	types::cmat Q = qr.householderQ();
 	// phase correction so that the resultant matrix is
 	// uniformly distributed according to the Haar measure
 

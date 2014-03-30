@@ -22,16 +22,16 @@ namespace qpp
 {
 
 // load Eigen::MatrixX from MATLAB .mat file
-template<typename Derived>
-Derived loadMATLAB(const std::string &mat_file, const std::string & var_name)
+template<typename MatrixType>
+MatrixType loadMATLAB(const std::string &mat_file, const std::string & var_name)
 {
 	throw std::runtime_error(
 			"loadMATLAB: not implemented for this matrix type!");
 }
 
-// double specialization (Eigen::MatrixXd)
+// double specialization (types::dmat)
 template<>
-inline Eigen::MatrixXd loadMATLAB(const std::string &mat_file,
+inline types::dmat loadMATLAB(const std::string &mat_file,
 		const std::string & var_name)
 {
 	MATFile *pmat = matOpen(mat_file.c_str(), "r");
@@ -56,7 +56,7 @@ inline Eigen::MatrixXd loadMATLAB(const std::string &mat_file,
 	size_t rows = mxGetM(pa);
 	size_t cols = mxGetN(pa);
 
-	Eigen::MatrixXd result(rows, cols);
+	types::dmat result(rows, cols);
 
 	std::memcpy(result.data(), mxGetPr(pa),
 			sizeof(double) * mxGetNumberOfElements(pa));
@@ -67,9 +67,9 @@ inline Eigen::MatrixXd loadMATLAB(const std::string &mat_file,
 	return result;
 }
 
-// complex specialization (Eigen::MatrixXcd)
+// complex specialization (types::cmat)
 template<>
-inline Eigen::MatrixXcd loadMATLAB(const std::string &mat_file,
+inline types::cmat loadMATLAB(const std::string &mat_file,
 		const std::string & var_name)
 {
 	MATFile *pmat = matOpen(mat_file.c_str(), "r");
@@ -94,8 +94,8 @@ inline Eigen::MatrixXcd loadMATLAB(const std::string &mat_file,
 	size_t rows = mxGetM(pa);
 	size_t cols = mxGetN(pa);
 
-	Eigen::MatrixXd result_re(rows, cols);
-	Eigen::MatrixXd result_im(rows, cols);
+	types::dmat result_re(rows, cols);
+	types::dmat result_im(rows, cols);
 
 	// real part and imaginary part pointers
 	double *pa_re = nullptr, *pa_im = nullptr;
@@ -126,13 +126,13 @@ inline Eigen::MatrixXcd loadMATLAB(const std::string &mat_file,
 
 // save Eigen::MatrixX to MATLAB .mat file as a double matrix
 // see MATLAB's matOpen(...) documentation
-template<typename Derived>
-void saveMATLAB(const Eigen::MatrixBase<Derived> &A,
+template<typename MatrixType>
+void saveMATLAB(const types::EigenExpression<MatrixType> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
 	// cast the input to a double (internal MATLAB format)
-	Eigen::MatrixXd tmp = A.template cast<double>();
+	types::dmat tmp = A.template cast<double>();
 
 	MATFile *pmat = matOpen(mat_file.c_str(), mode.c_str());
 	if (pmat == NULL)
@@ -153,15 +153,15 @@ void saveMATLAB(const Eigen::MatrixBase<Derived> &A,
 
 }
 
-// complex specialization (Eigen::MatrixXcd)
+// complex specialization (types::cmat)
 template<>
-inline void saveMATLAB(const Eigen::MatrixBase<Eigen::MatrixXcd> &A,
+inline void saveMATLAB(const types::EigenExpression<types::cmat> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
 	// cast the input to a double (internal MATLAB format)
-	Eigen::MatrixXd tmp_re = A.real().template cast<double>();
-	Eigen::MatrixXd tmp_im = A.imag().template cast<double>();
+	types::dmat tmp_re = A.real().template cast<double>();
+	types::dmat tmp_im = A.imag().template cast<double>();
 
 	MATFile *pmat = matOpen(mat_file.c_str(), mode.c_str());
 	if (pmat == NULL)

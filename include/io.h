@@ -21,11 +21,11 @@ namespace qpp
 {
 
 // Displays an Eigen::MatrixX in friendly form
-template<typename Derived>
-void disp(const Eigen::MatrixBase<Derived> &A, unsigned int precision = 4,
+template<typename MatrixType>
+void disp(const types::EigenExpression<MatrixType> &A, unsigned int precision = 4,
 		double chop = ct::chop, std::ostream& os = std::cout)
 {
-//std::cout << "typeid: " << typeid(Derived).name() << std::endl;
+//std::cout << "typeid: " << typeid(MatrixType).name() << std::endl;
 	if (A.rows() * A.cols() == 0)
 	{
 		os << "Empty [" << A.rows() << " x " << A.cols() << "] matrix";
@@ -37,7 +37,7 @@ void disp(const Eigen::MatrixBase<Derived> &A, unsigned int precision = 4,
 
 // Displays an Eigen::MatrixX in friendly form
 template<>// complex matrix specialization
-inline void disp(const Eigen::MatrixBase<Eigen::MatrixXcd> &A,
+inline void disp(const types::EigenExpression<types::cmat> &A,
 		unsigned int precision, double chop, std::ostream& os)
 {
 	if (A.rows() * A.cols() == 0)
@@ -115,8 +115,8 @@ inline void disp(const Eigen::MatrixBase<Eigen::MatrixXcd> &A,
 
 // Displays an Eigen::MatrixX in friendly form
 // Adds new line after display
-template<typename Derived>
-void displn(const Eigen::MatrixBase<Derived> &A, unsigned int precision = 4,
+template<typename MatrixType>
+void displn(const types::EigenExpression<MatrixType> &A, unsigned int precision = 4,
 		double chop = ct::chop, std::ostream& os = std::cout)
 {
 	disp(A, precision, chop, os);
@@ -128,7 +128,7 @@ inline void disp(const types::cplx c, unsigned int precision = 4, double chop =
 		ct::chop, std::ostream& os = std::cout)
 {
 // put the complex number inside an Eigen matrix
-	Eigen::MatrixXcd tmp(1, 1);
+	types::cmat tmp(1, 1);
 	tmp(0, 0) = c;
 	disp(tmp, precision, chop, os);
 }
@@ -143,8 +143,8 @@ inline void displn(const types::cplx c, unsigned int precision = 4,
 }
 
 // save matrix to a binary file in double precision
-template<typename Derived>
-void save(const Eigen::MatrixBase<Derived> & A, const std::string& fname)
+template<typename MatrixType>
+void save(const types::EigenExpression<MatrixType> & A, const std::string& fname)
 {
 	std::fstream fout;
 	fout.open(fname.c_str(), std::ios::out | std::ios::binary);
@@ -164,15 +164,15 @@ void save(const Eigen::MatrixBase<Derived> & A, const std::string& fname)
 	fout.write((char*) &rows, sizeof(rows));
 	fout.write((char*) &cols, sizeof(cols));
 
-	fout.write((char*) static_cast<Derived>(A).data(),
-			sizeof(typename Derived::Scalar) * rows * cols);
+	fout.write((char*) static_cast<MatrixType>(A).data(),
+			sizeof(typename MatrixType::Scalar) * rows * cols);
 
 	fout.close();
 }
 
 // load matrix from binary file
-template<typename Derived>
-Derived load(const std::string& fname)
+template<typename MatrixType>
+MatrixType load(const std::string& fname)
 {
 	std::fstream fin;
 	fin.open(fname.c_str(), std::ios::in | std::ios::binary);
@@ -202,9 +202,10 @@ Derived load(const std::string& fname)
 	fin.read((char*) &rows, sizeof(rows));
 	fin.read((char*) &cols, sizeof(cols));
 
-	Derived A(rows, cols);
+	MatrixType A(rows, cols);
 
-	fin.read((char*) A.data(), sizeof(typename Derived::Scalar) * rows * cols);
+	fin.read((char*) A.data(),
+			sizeof(typename MatrixType::Scalar) * rows * cols);
 
 	fin.close();
 	return A;

@@ -19,8 +19,8 @@ namespace qpp
 {
 
 // Shannon/von-Neumann entropy with log in given base (default = 2)
-template<typename Derived>
-double shannon(const Eigen::MatrixBase<Derived> & A, double base = 2)
+template<typename MatrixType>
+double shannon(const types::EigenExpression<MatrixType> & A, double base = 2)
 {
 	// vector
 	if (A.rows() == 1 || A.cols() == 1)
@@ -40,7 +40,7 @@ double shannon(const Eigen::MatrixBase<Derived> & A, double base = 2)
 		throw std::runtime_error(
 				"shannon: Input must be a row/column vector or a square matrix!");
 	// get the eigenvalues
-	Eigen::MatrixXcd ev = evals(A);
+	types::cmat ev = evals(A);
 	double result = 0;
 	// take the absolut values of the entries to get rid of unwanted imaginary parts
 	for (size_t i = 0; i < ev.rows(); i++)
@@ -52,8 +52,8 @@ double shannon(const Eigen::MatrixBase<Derived> & A, double base = 2)
 }
 
 // Renyi-alpha entropy (alpha>=0) with log in given base (default = 2)
-template<typename Derived>
-double renyi(const double alpha, const Eigen::MatrixBase<Derived> & A,
+template<typename MatrixType>
+double renyi(const double alpha, const types::EigenExpression<MatrixType> & A,
 		double base = 2)
 {
 	if (alpha < 0)
@@ -87,7 +87,7 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived> & A,
 		return std::log2(A.rows()) / std::log2(base);
 
 	// get the eigenvalues
-	Eigen::MatrixXcd ev = evals(A);
+	types::cmat ev = evals(A);
 	double result = 0;
 	// take the absolut values of the entries to get rid of unwanted imaginary parts
 	for (size_t i = 0; i < ev.rows(); i++)
@@ -98,8 +98,8 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived> & A,
 }
 
 // Renyi-infinity entropy (min entropy) with log in given base (default = 2)
-template<typename Derived>
-double renyi_inf(const Eigen::MatrixBase<Derived> & A, double base = 2)
+template<typename MatrixType>
+double renyi_inf(const types::EigenExpression<MatrixType> & A, double base = 2)
 {
 	// vector
 	if (A.rows() == 1 || A.cols() == 1)
@@ -119,7 +119,7 @@ double renyi_inf(const Eigen::MatrixBase<Derived> & A, double base = 2)
 				"renyi_inf: Input must be a row/column vector or a square matrix!");
 
 	// get the eigenvalues
-	Eigen::MatrixXcd ev = evals(A);
+	types::cmat ev = evals(A);
 	double max = 0;
 	// take the absolut values of the entries to get rid of unwanted imaginary parts
 	for (size_t i = 0; i < ev.size(); i++)

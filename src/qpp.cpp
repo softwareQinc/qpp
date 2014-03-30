@@ -18,9 +18,9 @@ std::mt19937 stat::_rng(_rd()); // make the mt19937 generator visible, seed it
 // Various gates (declared extern in "gates.h"); make them visible
 namespace gt
 {
-Eigen::MatrixXcd H, Id2, X, Y, Z, S, T;
-Eigen::MatrixXcd CNOT, CP;
-Eigen::MatrixXcd TOF(8, 8);
+types::cmat H, Id2, X, Y, Z, S, T;
+types::cmat CNOT, CP;
+types::cmat TOF(8, 8);
 }
 
 // initialize the library

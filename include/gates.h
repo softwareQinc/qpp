@@ -21,27 +21,27 @@ namespace gt
 {
 
 // one qubit gates
-extern Eigen::MatrixXcd H; // Hadamard matrix
-extern Eigen::MatrixXcd Id2; // Identity matrix
-extern Eigen::MatrixXcd X; // X matrix
-extern Eigen::MatrixXcd Y; // Y matrix
-extern Eigen::MatrixXcd Z; // Z matrix
-extern Eigen::MatrixXcd S; // S gate
-extern Eigen::MatrixXcd T; // T gate
+extern types::cmat H; // Hadamard matrix
+extern types::cmat Id2; // Identity matrix
+extern types::cmat X; // X matrix
+extern types::cmat Y; // Y matrix
+extern types::cmat Z; // Z matrix
+extern types::cmat S; // S gate
+extern types::cmat T; // T gate
 
 // two qubit gates
-extern Eigen::MatrixXcd CNOT; // CNOT
-extern Eigen::MatrixXcd CP; // Controlled-Phase
+extern types::cmat CNOT; // CNOT
+extern types::cmat CP; // Controlled-Phase
 
 // three qubit gates
-extern Eigen::MatrixXcd TOF; // Toffoli
+extern types::cmat TOF; // Toffoli
 
 inline void _init_gates() // Initialize the gates
 {
 	// initialize the constants and gates
-	H = Id2 = X = Y = Z = S = T = Eigen::MatrixXcd::Zero(2, 2);
-	CNOT = CP = Eigen::MatrixXcd::Zero(4, 4);
-	TOF = Eigen::MatrixXcd::Zero(8, 8);
+	H = Id2 = X = Y = Z = S = T = types::cmat::Zero(2, 2);
+	CNOT = CP = types::cmat::Zero(4, 4);
+	TOF = types::cmat::Zero(8, 8);
 
 	H << 1 / sqrt(2), 1 / sqrt(2), 1 / sqrt(2), -1 / sqrt(2);
 	Id2 << 1, 0, 0, 1;
@@ -74,17 +74,17 @@ inline void _init_gates() // Initialize the gates
 // gates with variable dimension
 
 // one qubit gates
-inline Eigen::MatrixXcd Rtheta(double theta)
+inline types::cmat Rtheta(double theta)
 {
-	Eigen::MatrixXcd result(2, 2);
+	types::cmat result(2, 2);
 	result << 1, 0, 0, exp(ct::ii * theta);
 	return result;
 }
 
 // two qubit gates
-inline Eigen::MatrixXcd CU(const Eigen::MatrixXcd &U)
+inline types::cmat CU(const types::cmat &U)
 {
-	Eigen::MatrixXcd result = Eigen::MatrixXcd::Zero(4, 4);
+	types::cmat result = types::cmat::Zero(4, 4);
 	result(0, 0) = 1;
 	result(1, 1) = 1;
 	result.block(2, 2, 2, 2) = U;
@@ -93,38 +93,38 @@ inline Eigen::MatrixXcd CU(const Eigen::MatrixXcd &U)
 
 // one quDit gates
 
-inline Eigen::MatrixXcd Zd(size_t D)
+inline types::cmat Zd(size_t D)
 {
-	Eigen::MatrixXcd result(D, D);
-	result = Eigen::MatrixXcd::Zero(D, D);
+	types::cmat result(D, D);
+	result = types::cmat::Zero(D, D);
 	for (size_t i = 0; i < D; i++)
 		result(i, i) = pow(ct::omega(D), i);
 	return result;
 }
 
-inline Eigen::MatrixXcd Fd(size_t D)
+inline types::cmat Fd(size_t D)
 {
-	Eigen::MatrixXcd result(D, D);
-	result = Eigen::MatrixXcd::Zero(D, D);
+	types::cmat result(D, D);
+	result = types::cmat::Zero(D, D);
 	for (size_t i = 0; i < D; i++)
 		for (size_t j = 0; j < D; j++)
 			result(i, j) = 1 / sqrt(D) * pow(ct::omega(D), i * j);
 	return result;
 }
 
-inline Eigen::MatrixXcd Xd(size_t D)
+inline types::cmat Xd(size_t D)
 {
 	return Fd(D) * Zd(D) * Fd(D).inverse();
 }
 
 // two qudit gates
-inline Eigen::MatrixXcd CUd(const Eigen::MatrixXcd &U)
+inline types::cmat CUd(const types::cmat &U)
 {
 	size_t D = U.cols(); // retrieves the dimension from the size of U
-	Eigen::MatrixXcd result(D * D, D * D);
-	result = Eigen::MatrixXcd::Zero(D * D, D * D);
-	Eigen::MatrixXcd tmp(D, D);
-	tmp = Eigen::MatrixXcd::Zero(D, D); // the dyad |i><i|
+	types::cmat result(D * D, D * D);
+	result = types::cmat::Zero(D * D, D * D);
+	types::cmat tmp(D, D);
+	tmp = types::cmat::Zero(D, D); // the dyad |i><i|
 
 	for (size_t i = 0; i < D; i++)
 	{

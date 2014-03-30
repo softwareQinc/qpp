@@ -15,6 +15,8 @@
 
 // Matrix functional calculus
 
+// TODO: check that everything works for expressions
+
 namespace qpp
 {
 
@@ -23,24 +25,23 @@ namespace qpp
  *
  * @param A input matrix
  * @param f function pointer
- * @return MatrixXcd
+ * @return types::cmat
  */
-template<typename Derived>
-Eigen::MatrixXcd funm(const Eigen::MatrixBase<Derived> &A,
+template<typename MatrixType>
+types::cmat funm(const types::EigenExpression<MatrixType> &A,
 		types::cplx (*f)(const types::cplx &))
 {
 	// check square matrix
 	if (!internal::_check_square_mat(A))
 		throw std::runtime_error("funm: Matrix must be square!");
 
-	Eigen::ComplexEigenSolver<Eigen::MatrixXcd> es(
-			A.template cast<types::cplx>());
-	Eigen::MatrixXcd evects = es.eigenvectors();
-	Eigen::MatrixXcd evals = es.eigenvalues();
+	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
+	types::cmat evects = es.eigenvectors();
+	types::cmat evals = es.eigenvalues();
 	for (int i = 0; i < evals.rows(); i++)
 		evals(i) = (*f)(evals(i)); // apply f(x) to each eigenvalue
 
-	Eigen::MatrixXcd evalsdiag = evals.asDiagonal();
+	types::cmat evalsdiag = evals.asDiagonal();
 
 	return evects * evalsdiag * evects.inverse();
 }
@@ -49,7 +50,7 @@ Eigen::MatrixXcd funm(const Eigen::MatrixBase<Derived> &A,
 template<typename FunctionInputType, typename FunctionOutputType,
 		typename MatrixInputType>
 Eigen::Matrix<FunctionOutputType, Eigen::Dynamic, Eigen::Dynamic> fun(
-		const Eigen::MatrixBase<MatrixInputType> &A,
+		const types::EigenExpression<MatrixInputType> &A,
 		FunctionOutputType (*f)(const FunctionInputType &))
 // The type of A is MatrixInputType
 // The function is of the form FunctionOutputType f(const FunctionInputType &)
@@ -61,6 +62,8 @@ Eigen::Matrix<FunctionOutputType, Eigen::Dynamic, Eigen::Dynamic> fun(
 
 // Somehow cannot deduce FunctionInputType and FunctionOutputType if using a lambda
 {
+	//types::TemplatedEigenMatrix<FunctionOutputType> result(
+		//	A.rows(), A.cols());
 	Eigen::Matrix<FunctionOutputType, Eigen::Dynamic, Eigen::Dynamic> result(
 			A.rows(), A.cols());
 
@@ -72,44 +75,44 @@ Eigen::Matrix<FunctionOutputType, Eigen::Dynamic, Eigen::Dynamic> fun(
 }
 
 // Matrix absolute value, note the syntax of lambda invocation
-template<typename Derived>
-Eigen::MatrixXcd absm(const Eigen::MatrixBase<Derived> &A)
+template<typename MatrixType>
+types::cmat absm(const types::EigenExpression<MatrixType> &A)
 {
 	return funm(adjoint(A) * A, [](const types::cplx & x)->types::cplx
 	{	return std::sqrt(x);});
 }
 
 // Matrix exponential
-template<typename Derived>
-Eigen::MatrixXcd expm(const Eigen::MatrixBase<Derived> &A)
+template<typename MatrixType>
+types::cmat expm(const types::EigenExpression<MatrixType> &A)
 {
 	return funm(A, std::exp);
 }
 
 // Matrix logarithm
-template<typename Derived>
-Eigen::MatrixXcd logm(const Eigen::MatrixBase<Derived> &A)
+template<typename MatrixType>
+types::cmat logm(const types::EigenExpression<MatrixType> &A)
 {
 	return funm(A, std::log);
 }
 
 // Matrix square root
-template<typename Derived>
-Eigen::MatrixXcd sqrtm(const Eigen::MatrixBase<Derived> &A)
+template<typename MatrixType>
+types::cmat sqrtm(const types::EigenExpression<MatrixType> &A)
 {
 	return funm(A, std::sqrt);
 }
 
 // Matrix sin
-template<typename Derived>
-Eigen::MatrixXcd sinm(const Eigen::MatrixBase<Derived> &A)
+template<typename MatrixType>
+types::cmat sinm(const types::EigenExpression<MatrixType> &A)
 {
 	return funm(A, std::sin);
 }
 
 // Matrix cos
-template<typename Derived>
-Eigen::MatrixXcd cosm(const Eigen::MatrixBase<Derived> &A)
+template<typename MatrixType>
+types::cmat cosm(const types::EigenExpression<MatrixType> &A)
 {
 	return funm(A, std::cos);
 }

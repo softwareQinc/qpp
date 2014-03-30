@@ -81,7 +81,8 @@ public:
 	std::discrete_distribution<size_t> _d;
 
 	DiscreteDistributionFromComplex(
-			std::initializer_list<types::cplx> amplitudes):_d()
+			std::initializer_list<types::cplx> amplitudes) :
+			_d()
 	{
 		std::vector<double> weights;
 		for (auto i : amplitudes)
