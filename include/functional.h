@@ -121,7 +121,7 @@ types::cmat powm(const types::EigenExpression<MatrixType> &A,
 // Matrix integer power, preserve return type
 // Explicitly multiply the matrix with itself n times
 template<typename MatrixType>
-types::TemplatedEigenMatrix<MatrixType> powm_n(
+types::TemplatedEigenMatrix<MatrixType> powm_int(
 		const types::EigenExpression<MatrixType> &A, size_t n)
 {
 // check square matrix
