@@ -58,7 +58,7 @@ inline types::cmat rand_unitary(size_t size)
 	// phase correction so that the resultant matrix is
 	// uniformly distributed according to the Haar measure
 
-	Eigen::VectorXcd phases = (rand(size, 1)).template cast<types::cplx>();
+	Eigen::VectorXcd phases = (rand(size, 1)).cast<types::cplx>();
 	for(size_t i=0; i<(size_t)phases.rows(); i++)
 		phases(i)=std::exp((types::cplx)(2*ct::pi*ct::ii*phases(i)));
 
