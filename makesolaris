@@ -1,0 +1,6 @@
+#!/bin/sh
+# solaris  make (no MATLAB integration), uses GNU make
+
+cp Makefile.linux Makefile
+gmake
+cp Makefile.g++ Makefile
