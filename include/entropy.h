@@ -18,9 +18,9 @@
 namespace qpp
 {
 
-// Shannon/von-Neumann entropy with log in given base (default = 2)
+// Shannon/von-Neumann entropy
 template<typename MatrixType>
-double shannon(const types::EigenExpression<MatrixType> & A, double base = 2)
+double shannon(const types::EigenExpression<MatrixType> & A)
 {
 	// vector
 	if (A.rows() == 1 || A.cols() == 1)
@@ -31,7 +31,7 @@ double shannon(const types::EigenExpression<MatrixType> & A, double base = 2)
 			if (std::abs(A(i)) != 0)
 				result -= std::abs(A(i)) * std::log2(std::abs(A(i)));
 
-		return result / std::log2(base);
+		return result;
 	}
 
 	// matrix
@@ -48,25 +48,24 @@ double shannon(const types::EigenExpression<MatrixType> & A, double base = 2)
 			result -= std::abs((types::cplx) ev(i))
 					* std::log2(std::abs((types::cplx) ev(i)));
 
-	return result / std::log2(base);
+	return result;
 }
 
-// Renyi-alpha entropy (alpha>=0) with log in given base (default = 2)
+// Renyi-alpha entropy (alpha>=0)
 template<typename MatrixType>
-double renyi(const double alpha, const types::EigenExpression<MatrixType> & A,
-		double base = 2)
+double renyi(const double alpha, const types::EigenExpression<MatrixType> & A)
 {
 	if (alpha < 0)
 		throw std::runtime_error("renyi: alpha can not be negative!");
 
 	if (alpha == 1) // Shannon/von Neumann
-		return shannon(A, base);
+		return shannon(A);
 
 	// vector
 	if (A.rows() == 1 || A.cols() == 1)
 	{
 		if (alpha == 0)
-			return std::log2(A.size()) / std::log2(base);
+			return std::log2(A.size());
 
 		double result = 0;
 		// take the absolut values of the entries to get rid of unwanted imaginary parts
@@ -74,7 +73,7 @@ double renyi(const double alpha, const types::EigenExpression<MatrixType> & A,
 			if (std::abs((types::cplx) A(i)) != 0)
 				result += std::pow(std::abs(A(i)), alpha);
 
-		return std::log2(result) / ((1 - alpha) * std::log2(base));
+		return std::log2(result) / (1 - alpha);
 	}
 
 	// matrix
@@ -84,7 +83,7 @@ double renyi(const double alpha, const types::EigenExpression<MatrixType> & A,
 				"renyi: Input must be a row/column vector or a square matrix!");
 
 	if (alpha == 0)
-		return std::log2(A.rows()) / std::log2(base);
+		return std::log2(A.rows());
 
 	// get the eigenvalues
 	types::cmat ev = evals(A);
@@ -94,12 +93,12 @@ double renyi(const double alpha, const types::EigenExpression<MatrixType> & A,
 		if (std::abs((types::cplx) ev(i)) != 0)
 			result += std::pow(std::abs((types::cplx) ev(i)), alpha);
 
-	return std::log2(result) / ((1 - alpha) * std::log2(base));
+	return std::log2(result) / (1 - alpha);
 }
 
-// Renyi-infinity entropy (min entropy) with log in given base (default = 2)
+// Renyi-infinity entropy (min entropy)
 template<typename MatrixType>
-double renyi_inf(const types::EigenExpression<MatrixType> & A, double base = 2)
+double renyi_inf(const types::EigenExpression<MatrixType> & A)
 {
 	// vector
 	if (A.rows() == 1 || A.cols() == 1)
@@ -109,7 +108,7 @@ double renyi_inf(const types::EigenExpression<MatrixType> & A, double base = 2)
 			if (std::abs(A(i)) > max)
 				max = std::abs(A(i));
 
-		return -std::log2(max) / std::log2(base);
+		return -std::log2(max);
 	}
 
 	// matrix
@@ -126,7 +125,7 @@ double renyi_inf(const types::EigenExpression<MatrixType> & A, double base = 2)
 		if (std::abs((types::cplx) ev(i)) > max)
 			max = std::abs((types::cplx) ev(i));
 
-	return -std::log2(max) / std::log2(base);
+	return -std::log2(max);
 }
 
 }

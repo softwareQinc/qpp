@@ -139,7 +139,6 @@ types::TemplatedEigenMatrix<MatrixType> powm_int(
 	return result;
 }
 
-
 }
 
 #endif /* FUNCTIONAL_H_ */
