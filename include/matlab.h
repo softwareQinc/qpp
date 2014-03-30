@@ -22,16 +22,18 @@ namespace qpp
 {
 
 // load Eigen::MatrixX from MATLAB .mat file
-template<typename MatrixType>
-MatrixType loadMATLAB(const std::string &mat_file, const std::string & var_name)
+template<typename Scalar>
+types::ScalarEigenMatrix<Scalar> loadMATLAB(const std::string &mat_file,
+		const std::string & var_name)
 {
 	throw std::runtime_error(
 			"loadMATLAB: not implemented for this matrix type!");
 }
 
-// double specialization (types::dmat)
+// double specialization
+// if var_name is a complex matrix, only the real part is loaded
 template<>
-inline types::dmat loadMATLAB(const std::string &mat_file,
+inline types::ScalarEigenMatrix<double> loadMATLAB(const std::string &mat_file,
 		const std::string & var_name)
 {
 	MATFile *pmat = matOpen(mat_file.c_str(), "r");
@@ -42,8 +44,7 @@ inline types::dmat loadMATLAB(const std::string &mat_file,
 
 	mxArray *pa = matGetVariable(pmat, var_name.c_str());
 	if (pa == NULL)
-		throw std::runtime_error(
-				"loadMATLAB: can not load the variable "
+		throw std::runtime_error("loadMATLAB: can not load the variable "
 				"from MATLAB input file!");
 
 	if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
@@ -51,8 +52,7 @@ inline types::dmat loadMATLAB(const std::string &mat_file,
 				"loadMATLAB: loaded variable is not 2-dimensional!");
 
 	if (!mxIsDouble(pa))
-		throw std::runtime_error(
-				"loadMATLAB: loaded variable is not "
+		throw std::runtime_error("loadMATLAB: loaded variable is not "
 				"in double-precision format!");
 
 	size_t rows = mxGetM(pa);
@@ -69,10 +69,10 @@ inline types::dmat loadMATLAB(const std::string &mat_file,
 	return result;
 }
 
-// complex specialization (types::cmat)
+// complex specialization
 template<>
-inline types::cmat loadMATLAB(const std::string &mat_file,
-		const std::string & var_name)
+inline types::ScalarEigenMatrix<types::cplx> loadMATLAB(
+		const std::string &mat_file, const std::string & var_name)
 {
 	MATFile *pmat = matOpen(mat_file.c_str(), "r");
 	if (pmat == NULL)
@@ -90,8 +90,7 @@ inline types::cmat loadMATLAB(const std::string &mat_file,
 				"loadMATLAB: loaded variable is not 2-dimensional!");
 
 	if (!mxIsDouble(pa))
-		throw std::runtime_error(
-				"loadMATLAB: loaded variable is not "
+		throw std::runtime_error("loadMATLAB: loaded variable is not "
 				"in double-precision format!");
 
 	size_t rows = mxGetM(pa);
@@ -129,14 +128,19 @@ inline types::cmat loadMATLAB(const std::string &mat_file,
 
 // save Eigen::MatrixX to MATLAB .mat file as a double matrix
 // see MATLAB's matOpen(...) documentation
-template<typename MatrixType>
-void saveMATLAB(const types::EigenExpression<MatrixType> &A,
+template<typename Scalar>
+void saveMATLAB(const types::ScalarEigenMatrix<Scalar> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
-	// cast the input to a double (internal MATLAB format)
-	types::dmat tmp = A.cast<double>();
+	throw std::runtime_error("saveMATLAB: not defined for this type!");
+}
 
+template<> // double specialization
+void saveMATLAB(const types::ScalarEigenMatrix<double> &A,
+		const std::string & mat_file, const std::string & var_name,
+		const std::string & mode)
+{
 	MATFile *pmat = matOpen(mat_file.c_str(), mode.c_str());
 	if (pmat == NULL)
 	{
@@ -144,8 +148,8 @@ void saveMATLAB(const types::EigenExpression<MatrixType> &A,
 				"saveMATLAB: can not open/create MATLAB output file!");
 	}
 
-	mxArray *pa = mxCreateDoubleMatrix(tmp.rows(), tmp.cols(), mxREAL);
-	std::memcpy(mxGetPr(pa), tmp.data(), sizeof(double) * tmp.size());
+	mxArray *pa = mxCreateDoubleMatrix(A.rows(), A.cols(), mxREAL);
+	std::memcpy(mxGetPr(pa), A.data(), sizeof(double) * A.size());
 
 	if (matPutVariable(pmat, var_name.c_str(), pa))
 		throw std::runtime_error(
@@ -156,15 +160,14 @@ void saveMATLAB(const types::EigenExpression<MatrixType> &A,
 
 }
 
-// complex specialization (types::cmat)
-template<>
-inline void saveMATLAB(const types::EigenExpression<types::cmat> &A,
+template<> // complex specialization
+void saveMATLAB(const types::ScalarEigenMatrix<types::cplx> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
 	// cast the input to a double (internal MATLAB format)
-	types::dmat tmp_re = A.real().cast<double>();
-	types::dmat tmp_im = A.imag().cast<double>();
+	types::dmat tmp_re = A.real();
+	types::dmat tmp_im = A.imag();
 
 	MATFile *pmat = matOpen(mat_file.c_str(), mode.c_str());
 	if (pmat == NULL)

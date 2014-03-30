@@ -36,6 +36,7 @@ inline types::dmat randn(size_t rows, size_t cols)
 	for (size_t i = 0; i < rows; i++)
 		for (size_t j = 0; j < cols; j++)
 			A(i, j) = nd.sample();
+
 	return A;
 }
 
@@ -50,8 +51,8 @@ inline types::cmat rand_unitary(size_t size)
 {
 	types::cmat X(size, size);
 
-	X.real() = 1. / std::sqrt(2) * randn(size);
-	X.imag() = 1. / std::sqrt(2) * randn(size);
+	X.real() = 1. / std::sqrt(2.) * randn(size);
+	X.imag() = 1. / std::sqrt(2.) * randn(size);
 	Eigen::HouseholderQR<types::cmat> qr(X);
 
 	types::cmat Q = qr.householderQ();

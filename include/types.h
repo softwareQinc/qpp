@@ -33,16 +33,20 @@ typedef Eigen::MatrixXi imat; // dynamic-size
 
 // Eigen templated matrices
 
-// General Eigen expression, use this for function parameters that must work
-// with expressions also
-template<typename Derived> using EigenExpression=Eigen::MatrixBase<Derived>;
+// Use to match expressions (i.e. A+B)
+template<typename MatrixType>
+using EigenExpression=Eigen::MatrixBase<MatrixType>;
 
-// Use TemplatedEigenMatrix<Derived> as return for functions that take
-// EigenExpression<Derived> as inputs, so the function work with
-// Eigen expressions, as every EigenExpression<Derived> can be implicitly
-// converted to TemplatedEigenMatrix<Derived>
-template<typename MatrixType> using TemplatedEigenMatrix=
+// Use to match Eigen matrices regardless of scalar (i.e. cmat, dmat etc)
+// Use in general to convert from input of type EigenExpression
+template<typename MatrixType>
+using TemplatedEigenMatrix=
 Eigen::Matrix<typename MatrixType::Scalar, Eigen::Dynamic, Eigen::Dynamic>;
+
+// Use to match specific Scalar types (double/cplx etc)
+// Can not extract Scalar from an expression
+template<typename Scalar>
+using ScalarEigenMatrix=Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 
 }
 }

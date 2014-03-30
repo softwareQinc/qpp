@@ -8,7 +8,7 @@
 #include <iostream>
 
 #include "qpp.h"
-//#include "matlab.h" // support for MATLAB
+#include "matlab.h" // support for MATLAB
 
 // TODO: expandout function
 // TODO: dyad function
@@ -38,29 +38,18 @@ int main()
 
 	cout << "Starting qpp..." << endl;
 
-	auto ru = rand_unitary(3);
-	displn(ru);
+	auto randu = rand_unitary(3);
+	dmat mydmat(2, 2);
+	mydmat << 1, 2, 3, 4.5;
+
+	cout << typeid(randu + adjoint(randu)).name() << endl;
+	displn(mydmat);
+	//displn(randu*adjoint(randu));
+	saveMATLAB<cplx>(randu * adjoint(randu), "/Users/vlad/tmp/test.mat",
+			"randu", "w");
+	auto res = loadMATLAB<double>("/Users/vlad/tmp/test.mat", "randu");
 	cout << endl;
-
-	auto ruabs = ru.unaryExpr([]( std::complex<double> z)->double
-	{	return std::abs(z);});
-	cout << endl;
-	displn(ruabs.cast<cplx>());
-
-	auto ruabs1 = fun(ru, myfunc);
-	cout << endl << typeid(ruabs1).name() << endl;
-	displn(ruabs1);
-
-	cout<<endl;
-	displn(abs(ruabs));
-
-	cmat a=cmat::Random(3,3);
-	a(1,1)=1;
-	cout<<endl;
-	displn(a);
-	displn(a+a);
-
-
+	displn(res);
 
 	cout << endl << "Exiting qpp..." << endl;
 }

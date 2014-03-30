@@ -36,7 +36,7 @@ extern types::cmat CP; // Controlled-Phase
 // three qubit gates
 extern types::cmat TOF; // Toffoli
 
-inline void _init_gates() // Initialize the gates
+inline void _init_gates() // Initialize the gates, call it from qpp::_init()
 {
 	// initialize the constants and gates
 	H = Id2 = X = Y = Z = S = T = types::cmat::Zero(2, 2);
