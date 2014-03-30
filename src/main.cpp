@@ -32,7 +32,6 @@ int main()
 	cout << "Starting qpp..." << endl;
 
 	displn(rand_unitary(3));
-	cout<<norm(rand_unitary(5))<<endl;
 
 	cout << endl << "Exiting qpp..." << endl;
 }

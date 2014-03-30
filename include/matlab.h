@@ -120,8 +120,8 @@ inline types::cmat loadMATLAB(const std::string &mat_file,
 	mxDestroyArray(pa);
 	matClose(pmat);
 
-	return (result_re.template cast<types::cplx>())
-			+ ct::ii * (result_im.template cast<types::cplx>());
+	return (result_re.cast<types::cplx>())
+			+ ct::ii * (result_im.cast<types::cplx>());
 }
 
 // save Eigen::MatrixX to MATLAB .mat file as a double matrix
@@ -132,7 +132,7 @@ void saveMATLAB(const types::EigenExpression<MatrixType> &A,
 		const std::string & mode)
 {
 	// cast the input to a double (internal MATLAB format)
-	types::dmat tmp = A.template cast<double>();
+	types::dmat tmp = A.cast<double>();
 
 	MATFile *pmat = matOpen(mat_file.c_str(), mode.c_str());
 	if (pmat == NULL)
@@ -160,8 +160,8 @@ inline void saveMATLAB(const types::EigenExpression<types::cmat> &A,
 		const std::string & mode)
 {
 	// cast the input to a double (internal MATLAB format)
-	types::dmat tmp_re = A.real().template cast<double>();
-	types::dmat tmp_im = A.imag().template cast<double>();
+	types::dmat tmp_re = A.real().cast<double>();
+	types::dmat tmp_im = A.imag().cast<double>();
 
 	MATFile *pmat = matOpen(mat_file.c_str(), mode.c_str());
 	if (pmat == NULL)

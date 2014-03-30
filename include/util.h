@@ -90,7 +90,7 @@ template<typename MatrixType>
 types::TemplatedEigenMatrix<MatrixType> abs(
 		const types::EigenExpression<MatrixType>& A)
 {
-	return fun<typename MatrixType::Scalar, double>(A, std::abs).template cast<
+	return fun<typename MatrixType::Scalar, double>(A, std::abs). template cast<
 			typename MatrixType::Scalar>();
 
 }
