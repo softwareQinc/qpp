@@ -29,8 +29,5 @@ int main()
 	cout<<endl;
 	displn(mpower_n(m,2.1));
 
-
-
 	cout << endl << "Exiting qpp..." << endl;
-
 }

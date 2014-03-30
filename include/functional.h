@@ -20,33 +20,7 @@
 namespace qpp
 {
 
-// Apply f(A) component-wise, where (*f) is the function pointer
-template<typename FunctionInputType, typename FunctionOutputType,
-		typename MatrixInputType>
-Eigen::Matrix<FunctionOutputType, Eigen::Dynamic, Eigen::Dynamic> fun(
-		const types::EigenExpression<MatrixInputType> &A,
-		FunctionOutputType (*f)(const FunctionInputType &))
-// The type of A is MatrixInputType
-// The function is of the form FunctionOutputType f(const FunctionInputType &)
-// The output is an Eigen::Matrix of the type FunctionOutputType
 
-// The MatrixInputType is in general automatically deduced
-// If (*f) is not overloaded, then FunctionInputType and FunctionOutputType are also
-// automatically deduced
-
-// Somehow cannot deduce FunctionInputType and FunctionOutputType if using a lambda
-{
-	//types::TemplatedEigenMatrix<FunctionOutputType> result(
-		//	A.rows(), A.cols());
-	Eigen::Matrix<FunctionOutputType, Eigen::Dynamic, Eigen::Dynamic> result(
-			A.rows(), A.cols());
-
-	for (size_t i = 0; i < A.rows(); i++)
-		for (size_t j = 0; j < A.cols(); j++)
-			result(i, j) = (*f)(A(i, j));
-
-	return result;
-}
 
 // Computes f(A), where (*f) is the function pointer
 /**
@@ -116,6 +90,59 @@ types::cmat cosm(const types::EigenExpression<MatrixType> &A)
 {
 	return funm(A, std::cos);
 }
+
+// Matrix power A^z (CHANGES return type to complex matrix)
+template<typename MatrixType>
+types::cmat mpower(const types::EigenExpression<MatrixType> &A,
+		const types::cplx z)
+
+{
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw std::runtime_error("mpower: Matrix must be square!");
+
+	// Define A^0 = Id
+	if (real(z) == 0 && imag(z) == 0)
+	{
+		types::cmat result(A.rows(), A.rows());
+		result.setIdentity();
+		return result;
+	}
+
+	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
+	types::cmat evects = es.eigenvectors();
+	types::cmat evals = es.eigenvalues();
+	for (int i = 0; i < evals.rows(); i++)
+		evals(i) = std::pow(static_cast<types::cplx>(evals(i)),
+				static_cast<types::cplx>(z));
+
+	types::cmat evalsdiag = evals.asDiagonal();
+
+	return evects * evalsdiag * evects.inverse();
+
+}
+
+// Matrix integer power, preserve return type
+// Explicitly multiply the matrix with itself n times
+template<typename MatrixType>
+types::TemplatedEigenMatrix<MatrixType> mpower_n(
+		const types::EigenExpression<MatrixType> &A, size_t n)
+{
+// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw std::runtime_error("mpower_n: Matrix must be square!");
+
+	types::TemplatedEigenMatrix<MatrixType> result = A;
+
+	if (n == 0)
+		return result.setIdentity();
+
+	for (size_t i = 1; i < n; i++)
+		result *= A;
+
+	return result;
+}
+
 
 }
 
