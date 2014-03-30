@@ -18,6 +18,7 @@
 // TODO: Error class
 // TODO: change all for(s) to column major order
 // TODO: use .data() raw pointer instead of looping
+// TODO: use an Engine class (with static members) to get rid of qpp.cpp
 
 using namespace std;
 
