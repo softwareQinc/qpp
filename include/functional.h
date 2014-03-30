@@ -89,7 +89,7 @@ types::cmat cosm(const types::EigenExpression<MatrixType> &A)
 
 // Matrix power A^z (CHANGES return type to complex matrix)
 template<typename MatrixType>
-types::cmat mpower(const types::EigenExpression<MatrixType> &A,
+types::cmat powm(const types::EigenExpression<MatrixType> &A,
 		const types::cplx z)
 
 {
@@ -121,7 +121,7 @@ types::cmat mpower(const types::EigenExpression<MatrixType> &A,
 // Matrix integer power, preserve return type
 // Explicitly multiply the matrix with itself n times
 template<typename MatrixType>
-types::TemplatedEigenMatrix<MatrixType> mpower_n(
+types::TemplatedEigenMatrix<MatrixType> powm_n(
 		const types::EigenExpression<MatrixType> &A, size_t n)
 {
 // check square matrix
