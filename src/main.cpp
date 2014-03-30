@@ -38,12 +38,12 @@ int main()
 
 	cout << "Starting qpp..." << endl;
 
-	auto randu = rand_unitary(10);
+	auto randu = rand_unitary(100);
 	saveMATLAB<cplx>(randu, "/Users/vlad/tmp/test.mat",
 			"randu", "w");
 	auto res = loadMATLAB<cplx>("/Users/vlad/tmp/test.mat", "randu");
 	cout << endl;
-	disp(adjoint(res+res)*trace(res));
+	displn(norm(randu-res));
 
 	cout << endl << "Exiting qpp..." << endl;
 }
