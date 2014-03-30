@@ -25,21 +25,6 @@ template<typename MatrixType>
 void disp(const types::EigenExpression<MatrixType> &A, unsigned int precision =
 		4, double chop = ct::chop, std::ostream& os = std::cout)
 {
-//std::cout << "typeid: " << typeid(MatrixType).name() << std::endl;
-	if (A.rows() * A.cols() == 0)
-	{
-		os << "Empty [" << A.rows() << " x " << A.cols() << "] matrix";
-
-		return;
-	};
-	os << std::setprecision(precision) << std::fixed << A;
-}
-
-// Displays an Eigen::MatrixX in friendly form
-template<>// complex matrix specialization
-inline void disp(const types::EigenExpression<types::cmat> &A,
-		unsigned int precision, double chop, std::ostream& os)
-{
 	if (A.rows() * A.cols() == 0)
 	{
 		os << "Empty [" << A.rows() << " x " << A.cols() << "] matrix";
@@ -72,7 +57,7 @@ inline void disp(const types::EigenExpression<types::cmat> &A,
 			}
 			else if (std::abs(im) < chop)
 			{
-				ostr << std::setprecision(precision) << std::fixed << re;
+				ostr << std::setprecision(precision) << std::fixed << std::left<< re;
 				vstr.push_back(ostr.str() + " ");
 			}
 			else
@@ -108,6 +93,7 @@ inline void disp(const types::EigenExpression<types::cmat> &A,
 		for (int j = 1; j < A.cols(); j++) // then the rest
 			os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
 					<< std::right << vstr[i * A.cols() + j];
+
 		if (i < A.rows() - 1)
 			os << std::endl;
 	}

@@ -58,23 +58,12 @@ typename MatrixType::Scalar trace(const types::EigenExpression<MatrixType>& A)
 }
 
 // functor; Apply f(A) component-wise, where (*f) is the function pointer
-template<typename FunctionInputType, typename FunctionOutputType,
-		typename MatrixInputType>
-Eigen::Matrix<FunctionOutputType, Eigen::Dynamic, Eigen::Dynamic> fun(
-		const types::EigenExpression<MatrixInputType> &A,
-		FunctionOutputType (*f)(const FunctionInputType &))
-// The type of A is MatrixInputType
-// The function is of the form FunctionOutputType f(const FunctionInputType &)
-// The output is an Eigen::Matrix of the type FunctionOutputType
-
-// The MatrixInputType is in general automatically deduced
-// If (*f) is not overloaded, then FunctionInputType and FunctionOutputType
-// are also automatically deduced
-
-// Somehow cannot deduce FunctionInputType and FunctionOutputType
-// if using a Lambda
+template<typename OutputScalar, typename MatrixType>
+Eigen::Matrix<OutputScalar, Eigen::Dynamic, Eigen::Dynamic> fun(
+		const types::EigenExpression<MatrixType> &A,
+		OutputScalar (*f)(const typename MatrixType::Scalar &))
 {
-	Eigen::Matrix<FunctionOutputType, Eigen::Dynamic, Eigen::Dynamic> result(
+	Eigen::Matrix<OutputScalar, Eigen::Dynamic, Eigen::Dynamic> result(
 			A.rows(), A.cols());
 
 	for (size_t i = 0; i < A.rows(); i++)
@@ -89,7 +78,7 @@ template<typename MatrixType>
 types::TemplatedEigenMatrix<MatrixType> abs(
 		const types::EigenExpression<MatrixType>& A)
 {
-	return fun<typename MatrixType::Scalar, double>(A, std::abs).template cast<
+	return fun<double>(A, std::abs).template cast<
 			typename MatrixType::Scalar>();
 
 }

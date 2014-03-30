@@ -8,7 +8,6 @@
 #ifndef GATES_H_
 #define	GATES_H_
 
-
 #include "types.h"
 #include "constants.h"
 #include "util.h"
@@ -44,7 +43,8 @@ inline void _init_gates() // Initialize the gates
 	CNOT = CP = types::cmat::Zero(4, 4);
 	TOF = types::cmat::Zero(8, 8);
 
-	H << 1 / std::sqrt(2.), 1 / std::sqrt(2.), 1 / std::sqrt(2.), -1 / std::sqrt(2.);
+	H << 1 / std::sqrt(2.), 1 / std::sqrt(2.), 1 / std::sqrt(2.), -1
+			/ std::sqrt(2.);
 	Id2 << 1, 0, 0, 1;
 	X << 0, 1, 1, 0;
 	Z << 1, 0, 0, -1;
