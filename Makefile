@@ -14,7 +14,7 @@ EIGEN = ~/eigen_3.2.1 # Location of Eigen library, replace it with your own
 MLIBS = /Applications/MATLAB_R2013a.app/bin/maci64
 MINC = /Applications/MATLAB_R2013a.app/extern/include
 # MATLAB linker flags
-MFLAGS = #-lmx -lmat
+MFLAGS = -lmx -lmat
 
 # libgomp linker flags
 GOMPFLAGS = -lgomp

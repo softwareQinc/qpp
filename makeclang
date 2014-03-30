@@ -1,0 +1,6 @@
+#!/bin/sh
+# clang make (no openmp integration)
+
+cp Makefile.clang++ Makefile
+make
+cp Makefile.g++ Makefile
