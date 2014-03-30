@@ -44,7 +44,7 @@ types::cmat funm(const types::EigenExpression<MatrixType> &A,
 	return evects * evalsdiag * evects.inverse();
 }
 
-// Matrix absolute value, note the syntax of lambda invocation
+// Matrix absolute value, note the syntax of Lambda invocation
 template<typename MatrixType>
 types::cmat absm(const types::EigenExpression<MatrixType> &A)
 {
