@@ -131,7 +131,7 @@ inline types::cmat CUd(const types::cmat &U)
 		if (i > 0)
 			tmp(i - 1, i - 1) = 0;
 		tmp(i, i) = 1;
-		result += kron(tmp, mpower(U, i));
+		result += kron(tmp, mpower_n(U, i));
 	}
 	return result;
 }

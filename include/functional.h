@@ -20,32 +20,6 @@
 namespace qpp
 {
 
-// Computes f(A), where (*f) is the function pointer
-/**
- *
- * @param A input matrix
- * @param f function pointer
- * @return types::cmat
- */
-template<typename MatrixType>
-types::cmat funm(const types::EigenExpression<MatrixType> &A,
-		types::cplx (*f)(const types::cplx &))
-{
-	// check square matrix
-	if (!internal::_check_square_mat(A))
-		throw std::runtime_error("funm: Matrix must be square!");
-
-	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
-	types::cmat evects = es.eigenvectors();
-	types::cmat evals = es.eigenvalues();
-	for (int i = 0; i < evals.rows(); i++)
-		evals(i) = (*f)(evals(i)); // apply f(x) to each eigenvalue
-
-	types::cmat evalsdiag = evals.asDiagonal();
-
-	return evects * evalsdiag * evects.inverse();
-}
-
 // Apply f(A) component-wise, where (*f) is the function pointer
 template<typename FunctionInputType, typename FunctionOutputType,
 		typename MatrixInputType>
@@ -72,6 +46,32 @@ Eigen::Matrix<FunctionOutputType, Eigen::Dynamic, Eigen::Dynamic> fun(
 			result(i, j) = (*f)(A(i, j));
 
 	return result;
+}
+
+// Computes f(A), where (*f) is the function pointer
+/**
+ *
+ * @param A input matrix
+ * @param f function pointer
+ * @return types::cmat
+ */
+template<typename MatrixType>
+types::cmat funm(const types::EigenExpression<MatrixType> &A,
+		types::cplx (*f)(const types::cplx &))
+{
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw std::runtime_error("funm: Matrix must be square!");
+
+	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
+	types::cmat evects = es.eigenvectors();
+	types::cmat evals = es.eigenvalues();
+	for (int i = 0; i < evals.rows(); i++)
+		evals(i) = (*f)(evals(i)); // apply f(x) to each eigenvalue
+
+	types::cmat evalsdiag = evals.asDiagonal();
+
+	return evects * evalsdiag * evects.inverse();
 }
 
 // Matrix absolute value, note the syntax of lambda invocation

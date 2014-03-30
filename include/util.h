@@ -120,7 +120,8 @@ types::TemplatedEigenMatrix<MatrixType> kron(
 // Kronecker product of a list of matrices, preserve return type
 // <MatrixType> is forced to be a matrix by invocation of kron inside the function
 template<typename MatrixType>
-types::TemplatedEigenMatrix<MatrixType> kron_list(const std::vector<MatrixType> &list)
+types::TemplatedEigenMatrix<MatrixType> kron_list(
+		const std::vector<MatrixType> &list)
 {
 	types::TemplatedEigenMatrix<MatrixType> result = list[0];
 	for (size_t i = 1; i < list.size(); i++)
@@ -166,17 +167,18 @@ types::cmat mpower(const types::EigenExpression<MatrixType> &A,
 	types::cmat evalsdiag = evals.asDiagonal();
 
 	return evects * evalsdiag * evects.inverse();
+
 }
 
 // Matrix integer power, preserve return type
 // Explicitly multiply the matrix with itself n times
 template<typename MatrixType>
-types::TemplatedEigenMatrix<MatrixType> mpower(
+types::TemplatedEigenMatrix<MatrixType> mpower_n(
 		const types::EigenExpression<MatrixType> &A, size_t n)
 {
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::runtime_error("mpower: Matrix must be square!");
+		throw std::runtime_error("mpower_n: Matrix must be square!");
 
 	types::TemplatedEigenMatrix<MatrixType> result = A;
 
@@ -285,8 +287,8 @@ types::TemplatedEigenMatrix<MatrixType> ptrace2(
 	size_t DA = dims[0];
 	size_t DB = dims[1];
 
-	types::TemplatedEigenMatrix<MatrixType> result = types::TemplatedEigenMatrix<
-			MatrixType>::Zero(DA, DA);
+	types::TemplatedEigenMatrix<MatrixType> result =
+			types::TemplatedEigenMatrix<MatrixType>::Zero(DA, DA);
 
 	for (size_t i = 0; i < DA; i++)
 #pragma omp parallel for

@@ -22,6 +22,15 @@ int main()
 
 	cout << "Starting qpp..." << endl;
 
+	cmat m(2,2);
+	m<<1,2,3,4;
+
+	displn(mpower(m,ct::ii));
+	cout<<endl;
+	displn(mpower_n(m,2.1));
+
+
+
 	cout << endl << "Exiting qpp..." << endl;
 
 }
