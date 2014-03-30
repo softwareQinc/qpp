@@ -16,7 +16,8 @@
 // TODO: ip (inner product function) function, make it general to return matrices
 // TODO: check that everything works for expressions in ALL FILES!!!!
 // TODO: Error class
-// TODO: .template issues...
+// TODO: change all for(s) to column major order
+// TODO: use .data() raw pointer instead of looping
 
 using namespace std;
 
