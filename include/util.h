@@ -68,13 +68,12 @@ Eigen::Matrix<FunctionOutputType, Eigen::Dynamic, Eigen::Dynamic> fun(
 // The output is an Eigen::Matrix of the type FunctionOutputType
 
 // The MatrixInputType is in general automatically deduced
-// If (*f) is not overloaded, then FunctionInputType and FunctionOutputType are also
-// automatically deduced
+// If (*f) is not overloaded, then FunctionInputType and FunctionOutputType
+// are also automatically deduced
 
-// Somehow cannot deduce FunctionInputType and FunctionOutputType if using a lambda
+// Somehow cannot deduce FunctionInputType and FunctionOutputType
+// if using a Lambda
 {
-	//types::TemplatedEigenMatrix<FunctionOutputType> result(
-		//	A.rows(), A.cols());
 	Eigen::Matrix<FunctionOutputType, Eigen::Dynamic, Eigen::Dynamic> result(
 			A.rows(), A.cols());
 
@@ -90,7 +89,7 @@ template<typename MatrixType>
 types::TemplatedEigenMatrix<MatrixType> abs(
 		const types::EigenExpression<MatrixType>& A)
 {
-	return fun<typename MatrixType::Scalar, double>(A, std::abs). template cast<
+	return fun<typename MatrixType::Scalar, double>(A, std::abs).template cast<
 			typename MatrixType::Scalar>();
 
 }
@@ -139,7 +138,8 @@ types::TemplatedEigenMatrix<MatrixType> kron(
 }
 
 // Kronecker product of a list of matrices, preserve return type
-// <MatrixType> is forced to be a matrix by invocation of kron inside the function
+// <MatrixType> is forced to be a matrix by invocation of kron
+// inside the function
 template<typename MatrixType>
 types::TemplatedEigenMatrix<MatrixType> kron_list(
 		const std::vector<MatrixType> &list)
@@ -159,7 +159,6 @@ types::TemplatedEigenMatrix<MatrixType> kron_pow(
 		list.push_back(A.eval());
 	return kron_list(list);
 }
-
 
 // reshape the columns of A and returns a matrix with m rows and n columns
 // use column-major order (same as MATLAB)
@@ -195,7 +194,8 @@ types::TemplatedEigenMatrix<MatrixType> syspermute(
 // check that dims match the dimension of A
 	if (!internal::_check_dims_match_mat(dims, A))
 		throw std::runtime_error(
-				"syspermute: Dimenisons vector does not match the dimension of the matrix!");
+				"syspermute: Dimenisons vector does not match the dimension "
+						"of the matrix!");
 
 // check that the size of the permutation is OK
 	if (!internal::_check_perm(perm, dims))
@@ -252,7 +252,8 @@ types::TemplatedEigenMatrix<MatrixType> ptrace2(
 // check that dims match the dimension of A
 	if (!internal::_check_dims_match_mat(dims, A))
 		throw std::runtime_error(
-				"ptrace2: Dimenisons vector does not match the dimension of the matrix!");
+				"ptrace2: Dimenisons vector does not match the "
+						"dimension of the matrix!");
 
 	size_t DA = dims[0];
 	size_t DB = dims[1];
@@ -289,7 +290,8 @@ types::TemplatedEigenMatrix<MatrixType> ptrace(
 // check that dims match the dimension of A
 	if (!internal::_check_dims_match_mat(dims, A))
 		throw std::runtime_error(
-				"ptrace: Dimenisons vector does not match the dimension of the matrix!");
+				"ptrace: Dimenisons vector does not match the dimension"
+						" of the matrix!");
 
 	if (!internal::_check_subsys(subsys, dims))
 		throw std::runtime_error("ptrace: Invalid subsystems!");
@@ -351,7 +353,8 @@ types::TemplatedEigenMatrix<MatrixType> ptranspose(
 // check that dims match the dimension of A
 	if (!internal::_check_dims_match_mat(dims, A))
 		throw std::runtime_error(
-				"ptranspose: Dimenisons vector does not match the dimension of the matrix!");
+				"ptranspose: Dimenisons vector does not match the "
+						"dimension of the matrix!");
 
 	if (!internal::_check_subsys(subsys, dims))
 		throw std::runtime_error("ptranspose: Invalid subsystems!");

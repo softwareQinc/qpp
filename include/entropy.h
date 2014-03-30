@@ -26,7 +26,8 @@ double shannon(const types::EigenExpression<MatrixType> & A)
 	if (A.rows() == 1 || A.cols() == 1)
 	{
 		double result = 0;
-		// take the absolut values of the entries to get rid of unwanted imaginary parts
+		// take the absolut values of the entries
+		// to get rid of unwanted imaginary parts
 		for (size_t i = 0; i < A.size(); i++)
 			if (std::abs(A(i)) != 0)
 				result -= std::abs(A(i)) * std::log2(std::abs(A(i)));
@@ -38,11 +39,13 @@ double shannon(const types::EigenExpression<MatrixType> & A)
 	// check square matrix
 	if (!internal::_check_square_mat(A))
 		throw std::runtime_error(
-				"shannon: Input must be a row/column vector or a square matrix!");
+				"shannon: Input must be a row/column vector "
+				"or a square matrix!");
 	// get the eigenvalues
 	types::cmat ev = evals(A);
 	double result = 0;
-	// take the absolut values of the entries to get rid of unwanted imaginary parts
+	// take the absolut values of the entries
+	// to get rid of unwanted imaginary parts
 	for (size_t i = 0; i < ev.rows(); i++)
 		if (std::abs((types::cplx) ev(i)) != 0)
 			result -= std::abs((types::cplx) ev(i))
@@ -68,7 +71,8 @@ double renyi(const double alpha, const types::EigenExpression<MatrixType> & A)
 			return std::log2(A.size());
 
 		double result = 0;
-		// take the absolut values of the entries to get rid of unwanted imaginary parts
+		// take the absolut values of the entries
+		// to get rid of unwanted imaginary parts
 		for (size_t i = 0; i < A.size(); i++)
 			if (std::abs((types::cplx) A(i)) != 0)
 				result += std::pow(std::abs(A(i)), alpha);
@@ -88,7 +92,8 @@ double renyi(const double alpha, const types::EigenExpression<MatrixType> & A)
 	// get the eigenvalues
 	types::cmat ev = evals(A);
 	double result = 0;
-	// take the absolut values of the entries to get rid of unwanted imaginary parts
+	// take the absolut values of the entries
+	// to get rid of unwanted imaginary parts
 	for (size_t i = 0; i < ev.rows(); i++)
 		if (std::abs((types::cplx) ev(i)) != 0)
 			result += std::pow(std::abs((types::cplx) ev(i)), alpha);
@@ -115,12 +120,14 @@ double renyi_inf(const types::EigenExpression<MatrixType> & A)
 	// check square matrix
 	if (!internal::_check_square_mat(A))
 		throw std::runtime_error(
-				"renyi_inf: Input must be a row/column vector or a square matrix!");
+				"renyi_inf: Input must be a row/column vector "
+				"or a square matrix!");
 
 	// get the eigenvalues
 	types::cmat ev = evals(A);
 	double max = 0;
-	// take the absolut values of the entries to get rid of unwanted imaginary parts
+	// take the absolut values of the entries
+	// to get rid of unwanted imaginary parts
 	for (size_t i = 0; i < ev.size(); i++)
 		if (std::abs((types::cplx) ev(i)) > max)
 			max = std::abs((types::cplx) ev(i));

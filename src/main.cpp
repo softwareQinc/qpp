@@ -10,7 +10,6 @@
 #include "qpp.h"
 //#include "matlab.h" // support for MATLAB
 
-
 // TODO: expandout function
 // TODO: dyad function
 // TODO: proj (dya) function

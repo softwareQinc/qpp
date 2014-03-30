@@ -22,8 +22,8 @@ namespace qpp
 
 // Displays an Eigen::MatrixX in friendly form
 template<typename MatrixType>
-void disp(const types::EigenExpression<MatrixType> &A, unsigned int precision = 4,
-		double chop = ct::chop, std::ostream& os = std::cout)
+void disp(const types::EigenExpression<MatrixType> &A, unsigned int precision =
+		4, double chop = ct::chop, std::ostream& os = std::cout)
 {
 //std::cout << "typeid: " << typeid(MatrixType).name() << std::endl;
 	if (A.rows() * A.cols() == 0)
@@ -116,8 +116,9 @@ inline void disp(const types::EigenExpression<types::cmat> &A,
 // Displays an Eigen::MatrixX in friendly form
 // Adds new line after display
 template<typename MatrixType>
-void displn(const types::EigenExpression<MatrixType> &A, unsigned int precision = 4,
-		double chop = ct::chop, std::ostream& os = std::cout)
+void displn(const types::EigenExpression<MatrixType> &A,
+		unsigned int precision = 4, double chop = ct::chop, std::ostream& os =
+				std::cout)
 {
 	disp(A, precision, chop, os);
 	os << std::endl;
@@ -144,7 +145,8 @@ inline void displn(const types::cplx c, unsigned int precision = 4,
 
 // save matrix to a binary file in double precision
 template<typename MatrixType>
-void save(const types::EigenExpression<MatrixType> & A, const std::string& fname)
+void save(const types::EigenExpression<MatrixType> & A,
+		const std::string& fname)
 {
 	std::fstream fout;
 	fout.open(fname.c_str(), std::ios::out | std::ios::binary);
@@ -155,7 +157,8 @@ void save(const types::EigenExpression<MatrixType> & A, const std::string& fname
 				"save: Error writing output file \"" + std::string(fname)
 						+ "\"!");
 	}
-// we write a header to the file
+
+	// write the header to file
 	const char _header[] = "TYPE::Eigen::Matrix";
 	fout.write(_header, sizeof(_header));
 
@@ -184,10 +187,10 @@ MatrixType load(const std::string& fname)
 						+ "\"!");
 	}
 
-	const char _header[] = "TYPE::Eigen::Matrix"; // we write the header to the file
-	char *_fheader = new char[sizeof(_header)]; // include the zero-termiation string
+	const char _header[] = "TYPE::Eigen::Matrix";
+	char *_fheader = new char[sizeof(_header)];
 
-// read the header
+	// read the header from file
 	fin.read(_fheader, sizeof(_header));
 	if (strcmp(_fheader, _header))
 	{

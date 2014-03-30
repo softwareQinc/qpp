@@ -43,7 +43,8 @@ inline types::dmat loadMATLAB(const std::string &mat_file,
 	mxArray *pa = matGetVariable(pmat, var_name.c_str());
 	if (pa == NULL)
 		throw std::runtime_error(
-				"loadMATLAB: can not load the variable from MATLAB input file!");
+				"loadMATLAB: can not load the variable "
+				"from MATLAB input file!");
 
 	if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
 		throw std::runtime_error(
@@ -51,7 +52,8 @@ inline types::dmat loadMATLAB(const std::string &mat_file,
 
 	if (!mxIsDouble(pa))
 		throw std::runtime_error(
-				"loadMATLAB: loaded variable is not in double-precision format!");
+				"loadMATLAB: loaded variable is not "
+				"in double-precision format!");
 
 	size_t rows = mxGetM(pa);
 	size_t cols = mxGetN(pa);
@@ -89,7 +91,8 @@ inline types::cmat loadMATLAB(const std::string &mat_file,
 
 	if (!mxIsDouble(pa))
 		throw std::runtime_error(
-				"loadMATLAB: loaded variable is not in double-precision format!");
+				"loadMATLAB: loaded variable is not "
+				"in double-precision format!");
 
 	size_t rows = mxGetM(pa);
 	size_t cols = mxGetN(pa);
