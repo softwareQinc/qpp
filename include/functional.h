@@ -15,12 +15,10 @@
 
 // Matrix functional calculus
 
-// TODO: check that everything works for expressions
+// TODO: check that everything works for expressions in ALL FILES!!!!
 
 namespace qpp
 {
-
-
 
 // Computes f(A), where (*f) is the function pointer
 /**
