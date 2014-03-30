@@ -8,6 +8,7 @@
 #ifndef GATES_H_
 #define	GATES_H_
 
+
 #include "types.h"
 #include "constants.h"
 #include "util.h"
@@ -43,7 +44,7 @@ inline void _init_gates() // Initialize the gates
 	CNOT = CP = types::cmat::Zero(4, 4);
 	TOF = types::cmat::Zero(8, 8);
 
-	H << 1 / sqrt(2), 1 / sqrt(2), 1 / sqrt(2), -1 / sqrt(2);
+	H << 1 / std::sqrt(2.), 1 / std::sqrt(2.), 1 / std::sqrt(2.), -1 / std::sqrt(2.);
 	Id2 << 1, 0, 0, 1;
 	X << 0, 1, 1, 0;
 	Z << 1, 0, 0, -1;
@@ -108,7 +109,7 @@ inline types::cmat Fd(size_t D)
 	result = types::cmat::Zero(D, D);
 	for (size_t i = 0; i < D; i++)
 		for (size_t j = 0; j < D; j++)
-			result(i, j) = 1 / sqrt(D) * pow(ct::omega(D), i * j);
+			result(i, j) = 1 / std::sqrt(D) * pow(ct::omega(D), i * j);
 	return result;
 }
 

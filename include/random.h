@@ -50,8 +50,8 @@ inline types::cmat rand_unitary(size_t size)
 {
 	types::cmat X(size, size);
 
-	X.real() = 1. / sqrt(2) * randn(size);
-	X.imag() = 1. / sqrt(2) * randn(size);
+	X.real() = 1. / std::sqrt(2) * randn(size);
+	X.imag() = 1. / std::sqrt(2) * randn(size);
 	Eigen::HouseholderQR<types::cmat> qr(X);
 
 	types::cmat Q = qr.householderQ();

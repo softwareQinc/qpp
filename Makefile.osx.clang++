@@ -1,11 +1,12 @@
+# OS X Clang++ Makefile
 TARGET = qpp # Application name
 SRC = ./src# no white spaces allowed before the comment!
 INC = ./include# no white spaces allowed before the comment!
 
 CC_STANDARD = -std=c++11 # C++ standard, we use C++11
-CC = g++ # C++ compiler
+CC = clang++ # C++ compiler
 WARNINGS = -Wall -Wextra -Weffc++# Extra warnings
-MULTIPROC = -fopenmp # Use OPENMP for multi-processing 
+MULTIPROC = #-fopenmp # Use OPENMP for multi-processing 
 OPTIM = -mtune=native -msse3 # use SSE2 and Native compiling
 
 EIGEN = ~/eigen_3.2.1 # Location of Eigen library, replace it with your own
@@ -17,7 +18,7 @@ MINC = /Applications/MATLAB_R2013a.app/extern/include
 MFLAGS = -lmx -lmat
 
 # libgomp linker flags
-GOMPFLAGS = -lgomp
+GOMPFLAGS = #-lgomp
 
 # Compiler flags, use pedantic for C++ standard compliance
 CFLAGS = -c -pedantic $(CC_STANDARD) $(WARNINGS) $(MULTIPROC) $(OPTIM)\

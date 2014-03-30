@@ -1,0 +1,5 @@
+#!/bin/sh
+# OS X clang make (no openmp integration)
+
+cp Makefile.osx.clang++ Makefile
+make

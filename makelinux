@@ -3,4 +3,3 @@
 
 cp Makefile.linux Makefile
 make
-cp Makefile.g++ Makefile

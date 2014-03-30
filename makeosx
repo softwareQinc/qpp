@@ -1,0 +1,5 @@
+#!/bin/sh
+# OS X make
+
+cp Makefile.osx Makefile
+make

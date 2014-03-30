@@ -1,3 +1,4 @@
+# Linux makefile
 TARGET = qpp # Application name
 SRC = ./src# no white spaces allowed before the comment!
 INC = ./include# no white spaces allowed before the comment!
