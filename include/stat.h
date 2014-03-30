@@ -74,7 +74,7 @@ public:
 	}
 };
 
-//TODO: complete this function, add ctor from cmat
+//TODO: Add constructor for cmat
 class DiscreteDistributionFromComplex
 {
 public:

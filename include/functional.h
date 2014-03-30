@@ -15,8 +15,6 @@
 
 // Matrix functional calculus
 
-// TODO: check that everything works for expressions in ALL FILES!!!!
-
 namespace qpp
 {
 

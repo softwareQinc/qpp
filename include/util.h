@@ -22,12 +22,6 @@
 
 // utility functions
 
-
-// TODO: expandout function
-// TODO: dyad function
-// TODO: proj (dya) function
-// TODO: ip (inner product function) function, make it general to return matrices
-
 namespace qpp
 {
 // Eigen function wrappers (inlines)

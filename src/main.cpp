@@ -10,6 +10,14 @@
 #include "qpp.h"
 #include "matlab.h" // support for MATLAB
 
+
+// TODO: expandout function
+// TODO: dyad function
+// TODO: proj (dya) function
+// TODO: ip (inner product function) function, make it general to return matrices
+// TODO: check that everything works for expressions in ALL FILES!!!!
+
+
 using namespace std;
 
 using namespace qpp;
