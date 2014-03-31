@@ -99,6 +99,6 @@ int main()
 
 	cout<<endl;
 	displn(kron(gt::X*gt::X,gt::X+gt::X));
-
+	std::vector<cmat> gtvect={gt::X,gt::X+gt::X};
 	cout << endl << "Exiting qpp..." << endl;
 }
