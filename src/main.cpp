@@ -41,9 +41,11 @@ int main()
 	auto randu = rand_unitary(100);
 	saveMATLAB<cplx>(randu, "/Users/vlad/tmp/test.mat",
 			"randu", "w");
-	auto res = loadMATLAB<cplx>("/Users/vlad/tmp/test.mat", "randu");
+	dmat res = loadMATLAB<double>("/Users/vlad/tmp/test.mat", "randu");
 	cout << endl;
-	displn(norm(randu-res));
+	displn(norm(randu-res.template cast<cplx>()));
+	saveMATLAB<cplx>(res.template cast<cplx>(), "/Users/vlad/tmp/test.mat",
+				"randudouble", "u");
 
 	cout << endl << "Exiting qpp..." << endl;
 }
