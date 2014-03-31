@@ -15,15 +15,9 @@
 // TODO: dyad function
 // TODO: proj (dya) function
 // TODO: ip (inner product function) function, make it general to return matrices
-// TODO: check that everything works for expressions in ALL FILES!!!!
 // TODO: Error class
 // TODO: change all for(s) to column major order
 // TODO: use .data() raw pointer instead of looping
-// TODO: use a Singleton Engine class (with static members) to get rid of qpp.cpp
-// TODO: look at unaryExpr for functors!!!!
-// TODO: test that everything works with GenProducts!
-// TODO: implement selfadjoint eigensolver
-// TODO: re-write everything so it works only for matrices (not expressions)
 
 using namespace std;
 
