@@ -87,7 +87,8 @@ double norm(const types::EigenExpression<MatrixType>& A)
 template<typename MatrixType>
 types::cmat evals(const types::EigenExpression<MatrixType>& A)
 {
-	return (A.template cast<types::cplx>()).eigenvalues();
+	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
+	return es.eigenvalues();
 }
 
 // eigenvectors (CHANGES return type to complex matrix)
@@ -95,6 +96,24 @@ template<typename MatrixType>
 types::cmat evects(const types::EigenExpression<MatrixType>& A)
 {
 	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
+	return es.eigenvectors();
+}
+
+// eigenvalues of hermitian matrices (CHANGES return type to complex)
+template<typename MatrixType>
+types::cmat hevals(const MatrixType& A)
+{
+	Eigen::SelfAdjointEigenSolver<types::cmat> es(
+			A.template cast<types::cplx>());
+	return es.eigenvalues().template cast<types::cplx>();
+}
+
+// eigenvectors of hermitian matrix (CHANGES return type to complex matrix)
+template<typename MatrixType>
+types::cmat hevects(const MatrixType& A)
+{
+	Eigen::SelfAdjointEigenSolver<types::cmat> es(
+			A.template cast<types::cplx>());
 	return es.eigenvectors();
 }
 

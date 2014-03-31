@@ -73,15 +73,16 @@ int main()
 
 	// other functions
 	cout << endl;
-	cmat mat11=mat1*mat1;
+	cmat mat11 = mat1 * mat1;
 	displn(kron(mat11, mat11));
 
-	//mat11=randu;
+	mat11 = cmat::Random(3,3);
+	mat11=mat11+adjoint(mat11);
+	cmat mat2(2, 2);
+	mat2 << 1, ct::ii, -ct::ii, 1;
 	// eigenvalue test
-	cout << endl << evals(mat11)(0) << endl;
-	displn(mat11*evects(mat1*mat1).col(0)-(evals(mat11)(0))*evects(mat11).col(0));
-
-
+	cout << endl << hevals<cmat>(mat11) << endl;
+	displn(mat11*hevects(mat11).col(0)-(hevals(mat11)(0))*hevects(mat11).col(0));
 
 
 	cout << endl << "Exiting qpp..." << endl;
