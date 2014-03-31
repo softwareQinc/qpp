@@ -76,9 +76,12 @@ int main()
 	cmat mat11=mat1*mat1;
 	displn(kron(mat11, mat11));
 
+	//mat11=randu;
 	// eigenvalue test
 	cout << endl << evals(mat11)(0) << endl;
-	displn(mat11*evects(mat11).col(0)-(evals(mat11)(0))*evects(mat11).col(0));
+	displn(mat11*evects(mat1*mat1).col(0)-(evals(mat11)(0))*evects(mat11).col(0));
+
+
 
 
 	cout << endl << "Exiting qpp..." << endl;
