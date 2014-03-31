@@ -118,17 +118,17 @@ types::cmat hevects(const Expression& A)
 }
 
 // Kronecker product of 2 matrices, preserve return type
-template<typename Expression>
-types::Expression2Matrix<Expression> kron(
-		const Eigen::MatrixBase<Expression> &A,
-		const Eigen::MatrixBase<Expression> &B)
+template<typename Expression1, typename Expression2>
+types::Expression2Matrix<Expression1> kron(
+		const Eigen::MatrixBase<Expression1> &A,
+		const Eigen::MatrixBase<Expression2> &B)
 {
 	int Acols = A.cols();
 	int Arows = A.rows();
 	int Bcols = B.cols();
 	int Brows = B.rows();
 
-	types::Expression2Matrix<Expression> result;
+	types::Expression2Matrix<Expression1> result;
 	result.resize(Arows * Brows, Acols * Bcols);
 
 	for (int i = 0; i < Arows; i++)

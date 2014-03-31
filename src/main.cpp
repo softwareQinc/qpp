@@ -108,7 +108,9 @@ int main()
 
 	cout<<endl;
 	displn(kron_pow(gt::X*gt::X,2));
-	displn(kron(gt::X*gt::X,gt::X*gt::X));
+
+	cout<<endl;
+	displn(kron(gt::X*gt::X,gt::X+gt::X));
 
 	cout << endl << "Exiting qpp..." << endl;
 }
