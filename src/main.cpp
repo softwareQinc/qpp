@@ -29,11 +29,6 @@ int myfunc(const cplx &z)
 	return std::abs(z);
 }
 
-template<typename Derived>
-void printFirstRow(const Derived& x)
-{
-	cout << x.row(0) << endl;
-}
 
 //int main(int argc, char **argv)
 int main()
@@ -70,7 +65,7 @@ int main()
 	displn(fun<cmat, int>(mat1 * mat1, lambda));
 
 	cout << endl;
-	displn(fun<cmat>(mat1 * mat1, myfunc));
+	displn(fun(mat1 * mat1, myfunc));
 
 	// other functions
 	cout << endl;
@@ -88,7 +83,6 @@ int main()
 					- (hevals(mat11)(0)) * hevects(mat11).col(0));
 
 	cout << endl << mat11 << endl << endl;
-	printFirstRow(mat11);
 
 	cout << endl;
 	displn(transpose(mat11));

@@ -23,6 +23,9 @@
 
 // utility functions
 
+// use A.eval() in algorithms involving MatrixBase<Expression> so that
+// products work
+
 namespace qpp
 {
 // Eigen function wrappers (inlines)
@@ -70,7 +73,7 @@ types::ScalarEigenMatrix<OutputScalar> fun(
 
 	for (size_t i = 0; i < A.rows(); i++)
 		for (size_t j = 0; j < A.cols(); j++)
-			result(i, j) = (*f)(A(i, j));
+			result(i, j) = (*f)(A.eval()(i, j));
 
 	return result;
 }
