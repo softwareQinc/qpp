@@ -72,8 +72,8 @@ inline size_t _multiidx2n(const size_t *midx, size_t numdims,
 }
 
 // check square matrix
-template<typename MatrixType>
-bool _check_square_mat(const types::EigenExpression<MatrixType>& A)
+template<typename Expression>
+bool _check_square_mat(const Eigen::MatrixBase<Expression>& A)
 {
 	if (A.rows() != A.cols())
 		return false;
@@ -81,9 +81,9 @@ bool _check_square_mat(const types::EigenExpression<MatrixType>& A)
 }
 
 // check that dims match the dimension of the matrix
-template<typename MatrixType>
+template<typename Expression>
 bool _check_dims_match_mat(const std::vector<size_t>& dims,
-		const types::EigenExpression<MatrixType>& A)
+		const Eigen::MatrixBase<Expression>& A)
 {
 	size_t proddim = 1;
 	for (size_t i : dims)
@@ -151,11 +151,11 @@ inline bool _check_perm(const std::vector<size_t>& perm,
 }
 
 // used inside the #pragma omp parallel for in syspermute
-template<typename MatrixType>
+template<typename Expression>
 inline void _syspermute_worker(size_t numdims, const size_t *cdims,
 		const size_t *cperm,  size_t i,  size_t j, size_t &iperm,
-		size_t &jperm, const types::EigenExpression<MatrixType> &A,
-		types::EigenExpression<MatrixType> &result)
+		size_t &jperm, const Eigen::MatrixBase<Expression> &A,
+		Eigen::MatrixBase<Expression> &result)
 {
 	size_t *midxrow = new size_t[numdims];
 	size_t *midxcol = new size_t[numdims];
@@ -189,12 +189,12 @@ inline void _syspermute_worker(size_t numdims, const size_t *cdims,
 }
 
 // used inside the #pragma omp parallel for in ptranspose
-template<typename MatrixType>
+template<typename Expression>
 inline void _ptranspose_worker(const size_t* midxrow, size_t numdims,
 		size_t numsubsys, const size_t *cdims, const size_t *csubsys,
 		size_t i, size_t j, size_t &iperm, size_t &jperm,
-		const types::EigenExpression<MatrixType> &A,
-		types::EigenExpression<MatrixType> &result)
+		const Eigen::MatrixBase<Expression> &A,
+		Eigen::MatrixBase<Expression> &result)
 {
 	size_t *midxrowtmp = new size_t[numdims];
 	for (size_t i = 0; i < numdims; i++)

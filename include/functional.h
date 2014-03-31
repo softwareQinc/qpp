@@ -25,8 +25,8 @@ namespace qpp
  * @param f function pointer
  * @return types::cmat
  */
-template<typename MatrixType>
-types::cmat funm(const types::EigenExpression<MatrixType> &A,
+template<typename Expression>
+types::cmat funm(const Eigen::MatrixBase<Expression> &A,
 		types::cplx (*f)(const types::cplx &))
 {
 	// check square matrix
@@ -45,51 +45,51 @@ types::cmat funm(const types::EigenExpression<MatrixType> &A,
 }
 
 // Matrix absolute value, note the syntax of Lambda invocation
-template<typename MatrixType>
-types::cmat absm(const types::EigenExpression<MatrixType> &A)
+template<typename Expression>
+types::cmat absm(const Eigen::MatrixBase<Expression> &A)
 {
 	return funm(adjoint(A) * A, [](const types::cplx & x)->types::cplx
 	{	return std::sqrt(x);});
 }
 
 // Matrix exponential
-template<typename MatrixType>
-types::cmat expm(const types::EigenExpression<MatrixType> &A)
+template<typename Expression>
+types::cmat expm(const Eigen::MatrixBase<Expression> &A)
 {
 	return funm(A, std::exp);
 }
 
 // Matrix logarithm
-template<typename MatrixType>
-types::cmat logm(const types::EigenExpression<MatrixType> &A)
+template<typename Expression>
+types::cmat logm(const Eigen::MatrixBase<Expression> &A)
 {
 	return funm(A, std::log);
 }
 
 // Matrix square root
-template<typename MatrixType>
-types::cmat sqrtm(const types::EigenExpression<MatrixType> &A)
+template<typename Expression>
+types::cmat sqrtm(const Eigen::MatrixBase<Expression> &A)
 {
 	return funm(A, std::sqrt);
 }
 
 // Matrix sin
-template<typename MatrixType>
-types::cmat sinm(const types::EigenExpression<MatrixType> &A)
+template<typename Expression>
+types::cmat sinm(const Eigen::MatrixBase<Expression> &A)
 {
 	return funm(A, std::sin);
 }
 
 // Matrix cos
-template<typename MatrixType>
-types::cmat cosm(const types::EigenExpression<MatrixType> &A)
+template<typename Expression>
+types::cmat cosm(const Eigen::MatrixBase<Expression> &A)
 {
 	return funm(A, std::cos);
 }
 
 // Matrix power A^z (CHANGES return type to complex matrix)
-template<typename MatrixType>
-types::cmat powm(const types::EigenExpression<MatrixType> &A,
+template<typename Expression>
+types::cmat powm(const Eigen::MatrixBase<Expression> &A,
 		const types::cplx z)
 
 {
@@ -120,15 +120,15 @@ types::cmat powm(const types::EigenExpression<MatrixType> &A,
 
 // Matrix integer power, preserve return type
 // Explicitly multiply the matrix with itself n times
-template<typename MatrixType>
-types::TemplatedEigenMatrix<MatrixType> powm_int(
-		const types::EigenExpression<MatrixType> &A, size_t n)
+template<typename Expression>
+types::Expression2Matrix<Expression> powm_int(
+		const Eigen::MatrixBase<Expression> &A, size_t n)
 {
 // check square matrix
 	if (!internal::_check_square_mat(A))
 		throw std::runtime_error("mpower_n: Matrix must be square!");
 
-	types::TemplatedEigenMatrix<MatrixType> result = A;
+	types::Expression2Matrix<Expression> result = A;
 
 	if (n == 0)
 		return result.setIdentity();

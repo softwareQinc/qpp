@@ -23,6 +23,7 @@
 // TODO: look at unaryExpr for functors!!!!
 // TODO: test that everything works with GenProducts!
 // TODO: implement selfadjoint eigensolver
+// TODO: re-write everything so it works only for matrices (not expressions)
 
 using namespace std;
 
@@ -32,6 +33,12 @@ using namespace qpp::types;
 int myfunc(const cplx &z)
 {
 	return std::abs(z);
+}
+
+template<typename Derived>
+void printFirstRow(const Derived& x)
+{
+	cout << x.row(0) << endl;
 }
 
 //int main(int argc, char **argv)
@@ -74,16 +81,27 @@ int main()
 	// other functions
 	cout << endl;
 	cmat mat11 = mat1 * mat1;
-	displn(kron(mat11, mat11));
+	displn(kron((cmat) (mat1 * mat1), cmat(mat1 * mat1)));
 
-	mat11 = cmat::Random(3,3);
-	mat11=mat11+adjoint(mat11);
+	mat11 = cmat::Random(3, 3);
+	mat11 = mat11 + adjoint(mat11);
 	cmat mat2(2, 2);
 	mat2 << 1, ct::ii, -ct::ii, 1;
 	// eigenvalue test
 	cout << endl << hevals<cmat>(mat11) << endl;
-	displn(mat11*hevects(mat11).col(0)-(hevals(mat11)(0))*hevects(mat11).col(0));
+	displn(
+			mat11 * hevects(mat11).col(0)
+					- (hevals(mat11)(0)) * hevects(mat11).col(0));
 
+	cout << endl << mat11 << endl << endl;
+	printFirstRow(mat11);
+
+	cout << endl;
+	displn(transpose(mat11));
+	cout << typeid(transpose(mat11)).name() << endl<<endl;
+
+	//displn(transpose(mat11 * mat11));
+	//cout << typeid(transpose(mat11*mat11)).name() << endl;
 
 	cout << endl << "Exiting qpp..." << endl;
 }
