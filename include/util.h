@@ -133,7 +133,8 @@ types::Expression2Matrix<Expression> kron(
 
 	for (int i = 0; i < Arows; i++)
 		for (int j = 0; j < Acols; j++)
-			result.block(i * Brows, j * Bcols, Brows, Bcols) = A(i, j) * B;
+			result.block(i * Brows, j * Bcols, Brows, Bcols) = A.eval()(i, j)
+					* B.eval();
 
 	return result;
 
@@ -180,8 +181,8 @@ types::Expression2Matrix<Expression> reshape(
 // permutes the subsystems in a matrix
 template<typename Expression>
 types::Expression2Matrix<Expression> syspermute(
-		const Eigen::MatrixBase<Expression> &A,
-		const std::vector<size_t> perm, const std::vector<size_t> &dims)
+		const Eigen::MatrixBase<Expression> &A, const std::vector<size_t> perm,
+		const std::vector<size_t> &dims)
 {
 // Error checks
 
@@ -233,8 +234,7 @@ types::Expression2Matrix<Expression> syspermute(
 // Partial trace over subsystem B in a D_A x D_B system
 template<typename Expression>
 types::Expression2Matrix<Expression> ptrace2(
-		const Eigen::MatrixBase<Expression> &A,
-		const std::vector<size_t> dims)
+		const Eigen::MatrixBase<Expression> &A, const std::vector<size_t> dims)
 {
 // Error checks
 // error checks
@@ -260,8 +260,8 @@ types::Expression2Matrix<Expression> ptrace2(
 	size_t DA = dims[0];
 	size_t DB = dims[1];
 
-	types::Expression2Matrix<Expression> result =
-			types::Expression2Matrix<Expression>::Zero(DA, DA);
+	types::Expression2Matrix<Expression> result = types::Expression2Matrix<
+			Expression>::Zero(DA, DA);
 
 	for (size_t i = 0; i < DA; i++)
 #pragma omp parallel for
