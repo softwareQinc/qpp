@@ -22,6 +22,7 @@
 // TODO: use a Singleton Engine class (with static members) to get rid of qpp.cpp
 // TODO: look at unaryExpr for functors!!!!
 // TODO: test that everything works with GenProducts!
+// TODO: implement selfadjoint eigensolver
 
 using namespace std;
 
@@ -59,7 +60,7 @@ int main()
 	{	return abs(z);};
 
 	cmat mat1(3, 3);
-	mat1 << 1, -2.56, 335.2321, -4, 5.244, -6.1, 7, -8, 9. + 2.78*ct::ii;
+	mat1 << 1, -2.56, 335.2321, -4, 5.244, -6.1, 7, -8, 9. + 2.78 * ct::ii;
 
 	cout << endl;
 	displn(mat1);
@@ -72,7 +73,13 @@ int main()
 
 	// other functions
 	cout << endl;
-	displn(kron<cmat>(mat1 * mat1, mat1));
+	cmat mat11=mat1*mat1;
+	displn(kron(mat11, mat11));
+
+	// eigenvalue test
+	cout << endl << evals(mat11)(0) << endl;
+	displn(mat11*evects(mat11).col(0)-(evals(mat11)(0))*evects(mat11).col(0));
+
 
 	cout << endl << "Exiting qpp..." << endl;
 }
