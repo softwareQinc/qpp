@@ -99,7 +99,7 @@ types::cmat evects(const Eigen::MatrixBase<Expression>& A)
 	return es.eigenvectors();
 }
 
-// eigenvalues of hermitian matrices (CHANGES return type to complex)
+// eigenvalues of Hermitian matrices (CHANGES return type to complex)
 template<typename Expression>
 types::cmat hevals(const Expression& A)
 {
@@ -108,7 +108,7 @@ types::cmat hevals(const Expression& A)
 	return es.eigenvalues().template cast<types::cplx>();
 }
 
-// eigenvectors of hermitian matrix (CHANGES return type to complex matrix)
+// eigenvectors of Hermitian matrix (CHANGES return type to complex matrix)
 template<typename Expression>
 types::cmat hevects(const Expression& A)
 {
