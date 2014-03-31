@@ -22,10 +22,10 @@ namespace qpp
 
 // Displays an Eigen::MatrixX in friendly form
 template<typename MatrixType>
-void disp(const types::EigenExpression<MatrixType> &A, unsigned int precision =
-		4, double chop = ct::chop, std::ostream& os = std::cout)
+void disp(const types::EigenExpression<MatrixType> &A, double chop = ct::chop,
+		std::ostream& os = std::cout)
 {
-	types::TemplatedEigenMatrix<MatrixType> tmp=A;
+	types::TemplatedEigenMatrix<MatrixType> tmp = A;
 
 	if (tmp.rows() * tmp.cols() == 0)
 	{
@@ -34,6 +34,9 @@ void disp(const types::EigenExpression<MatrixType> &A, unsigned int precision =
 	};
 
 	std::ostringstream ostr;
+	ostr.flags(os.flags());// get the formatting flags
+	ostr.precision(os.precision()); // set precision
+
 	std::vector<std::string> vstr;
 	std::string strtmp;
 
@@ -54,24 +57,23 @@ void disp(const types::EigenExpression<MatrixType> &A, unsigned int precision =
 			}
 			else if (std::abs(re) < chop)
 			{
-				ostr << std::setprecision(precision) << std::fixed << im;
+				ostr << im;
 				vstr.push_back(ostr.str() + "i");
 			}
 			else if (std::abs(im) < chop)
 			{
-				ostr << std::setprecision(precision) << std::fixed << std::left<< re;
+				ostr  << re;
 				vstr.push_back(ostr.str() + " ");
 			}
 			else
 			{
-				ostr << std::setprecision(precision) << std::fixed << re;
+				ostr << re;
 				strtmp = ostr.str();
 
 				strtmp += (im > 0 ? " + " : " - ");
 				ostr.clear();
 				ostr.str(std::string()); // clear
-				ostr << std::setprecision(precision) << std::fixed
-						<< std::abs(im);
+				ostr << std::abs(im);
 				strtmp += ostr.str();
 				strtmp += "i";
 				vstr.push_back(strtmp);
@@ -104,30 +106,29 @@ void disp(const types::EigenExpression<MatrixType> &A, unsigned int precision =
 // Displays an Eigen::MatrixX in friendly form
 // Adds new line after display
 template<typename MatrixType>
-void displn(const types::EigenExpression<MatrixType> &A,
-		unsigned int precision = 4, double chop = ct::chop, std::ostream& os =
-				std::cout)
+void displn(const types::EigenExpression<MatrixType> &A, double chop = ct::chop,
+		std::ostream& os = std::cout)
 {
-	disp(A, precision, chop, os);
+	disp(A, chop, os);
 	os << std::endl;
 }
 
 // Displays a complex number in friendly form
-inline void disp(const types::cplx c, unsigned int precision = 4, double chop =
-		ct::chop, std::ostream& os = std::cout)
+inline void disp(const types::cplx c, double chop = ct::chop, std::ostream& os =
+		std::cout)
 {
 // put the complex number inside an Eigen matrix
 	types::cmat tmp(1, 1);
 	tmp(0, 0) = c;
-	disp(tmp, precision, chop, os);
+	disp(tmp, chop, os);
 }
 
 // Displays a complex number in friendly form
 // Adds new line after display
-inline void displn(const types::cplx c, unsigned int precision = 4,
-		double chop = ct::chop, std::ostream& os = std::cout)
+inline void displn(const types::cplx c, double chop = ct::chop,
+		std::ostream& os = std::cout)
 {
-	disp(c, precision, chop, os);
+	disp(c, chop, os);
 	os << std::endl;
 }
 

@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <cmath>
 
 #include "qpp.h"
 #include "matlab.h" // support for MATLAB
@@ -20,13 +21,14 @@
 // TODO: use .data() raw pointer instead of looping
 // TODO: use a Singleton Engine class (with static members) to get rid of qpp.cpp
 // TODO: look at unaryExpr for functors!!!!
+// TODO: test that everything works with GenProducts!
 
 using namespace std;
 
 using namespace qpp;
 using namespace qpp::types;
 
-float myfunc(const cplx &z)
+int myfunc(const cplx &z)
 {
 	return std::abs(z);
 }
@@ -36,16 +38,41 @@ int main()
 {
 	_init();
 
+	std::cout << std::fixed; // use fixed format for nice formatting
+//	std::cout << std::scientific;
+	std::cout << std::setprecision(4); // only for fixed or scientific modes
+
 	cout << "Starting qpp..." << endl;
 
-	auto randu = rand_unitary(100);
-	saveMATLAB<cplx>(randu, "/Users/vlad/tmp/test.mat",
-			"randu", "w");
-	dmat res = loadMATLAB<double>("/Users/vlad/tmp/test.mat", "randu");
+	// MATLAB interface testing
+	cmat randu = rand_unitary(3);
 	cout << endl;
-	displn(norm(randu-res.template cast<cplx>()));
-	saveMATLAB<cplx>(res.template cast<cplx>(), "/Users/vlad/tmp/test.mat",
-				"randudouble", "u");
+	displn(randu);
+
+	saveMATLAB<cplx>(randu, "/Users/vlad/tmp/test.mat", "randu", "w");
+	cmat res = loadMATLAB<cplx>("/Users/vlad/tmp/test.mat", "randu");
+	cout << endl;
+	displn(randu - res);
+
+	// functor testing
+	auto lambda = [](const cplx& z)->int
+	{	return abs(z);};
+
+	cmat mat1(3, 3);
+	mat1 << 1, -2.56, 335.2321, -4, 5.244, -6.1, 7, -8, 9. + 2.78*ct::ii;
+
+	cout << endl;
+	displn(mat1);
+
+	cout << endl;
+	displn(fun<cmat, int>(mat1 * mat1, lambda));
+
+	cout << endl;
+	displn(fun<cmat>(mat1 * mat1, myfunc));
+
+	// other functions
+	cout << endl;
+	displn(kron<cmat>(mat1 * mat1, mat1));
 
 	cout << endl << "Exiting qpp..." << endl;
 }

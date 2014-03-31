@@ -13,6 +13,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <cmath>
 #include "types.h"
 #include "constants.h"
 #include "internal.h"
@@ -58,13 +59,14 @@ typename MatrixType::Scalar trace(const types::EigenExpression<MatrixType>& A)
 }
 
 // functor; Apply f(A) component-wise, where (*f) is the function pointer
-template<typename OutputScalar, typename MatrixType>
-Eigen::Matrix<OutputScalar, Eigen::Dynamic, Eigen::Dynamic> fun(
+// returns a matrix of type OutputScalar
+template<typename MatrixType, typename OutputScalar>
+types::ScalarEigenMatrix<OutputScalar> fun(
 		const types::EigenExpression<MatrixType> &A,
 		OutputScalar (*f)(const typename MatrixType::Scalar &))
 {
-	Eigen::Matrix<OutputScalar, Eigen::Dynamic, Eigen::Dynamic> result(
-			A.rows(), A.cols());
+
+	types::ScalarEigenMatrix<OutputScalar> result(A.rows(), A.cols());
 
 	for (size_t i = 0; i < A.rows(); i++)
 		for (size_t j = 0; j < A.cols(); j++)
@@ -73,21 +75,11 @@ Eigen::Matrix<OutputScalar, Eigen::Dynamic, Eigen::Dynamic> fun(
 	return result;
 }
 
-// absolute values component-wise, does not change the matrix type
-template<typename MatrixType>
-types::TemplatedEigenMatrix<MatrixType> abs(
-		const types::EigenExpression<MatrixType>& A)
-{
-	return fun<double>(A, std::abs).template cast<
-			typename MatrixType::Scalar>();
-
-}
-
 // trace-norm (or Frobenius norm) (CHANGES return type to double)
 template<typename MatrixType>
 double norm(const types::EigenExpression<MatrixType>& A)
 {
-	// convert matrix to complex then return its norm
+// convert matrix to complex then return its norm
 	return (A.template cast<types::cplx>()).norm();
 }
 
@@ -123,7 +115,9 @@ types::TemplatedEigenMatrix<MatrixType> kron(
 	for (int i = 0; i < Arows; i++)
 		for (int j = 0; j < Acols; j++)
 			result.block(i * Brows, j * Bcols, Brows, Bcols) = A(i, j) * B;
+
 	return result;
+
 }
 
 // Kronecker product of a list of matrices, preserve return type
