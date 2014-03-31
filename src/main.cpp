@@ -100,8 +100,8 @@ int main()
 	displn(transpose(mat11));
 	cout << typeid(transpose(mat11)).name() << endl<<endl;
 
-	//displn(transpose(mat11 * mat11));
-	//cout << typeid(transpose(mat11*mat11)).name() << endl;
+	displn(transpose(mat11 * mat11));
+	cout << typeid(transpose(mat11*mat11)).name() << endl;
 
 	cout << endl << "Exiting qpp..." << endl;
 }
