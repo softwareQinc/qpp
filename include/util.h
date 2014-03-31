@@ -154,11 +154,11 @@ types::Expression2Matrix<Expression> kron_list(
 // Kronecker product of a matrix with itself $n$ times, preserve return type
 template<typename Expression>
 types::Expression2Matrix<Expression> kron_pow(
-		const types::Expression2Matrix<Expression> &A, size_t n)
+		const Eigen::MatrixBase<Expression> &A, size_t n)
 {
-	std::vector<Expression> list;
+	std::vector<typename types::Expression2Matrix<Expression>> list;
 	for (size_t i = 0; i < n; i++)
-		list.push_back(A.eval());
+		list.push_back(A);
 	return kron_list(list);
 }
 

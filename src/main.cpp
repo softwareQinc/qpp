@@ -103,5 +103,12 @@ int main()
 	displn(transpose(mat11 * mat11));
 	cout << typeid(transpose(mat11*mat11)).name() << endl;
 
+	cout<<endl;
+	displn(kron_list<cmat>({gt::X*gt::X,gt::X+gt::X}));
+
+	cout<<endl;
+	displn(kron_pow(gt::X*gt::X,2));
+	displn(kron(gt::X*gt::X,gt::X*gt::X));
+
 	cout << endl << "Exiting qpp..." << endl;
 }
