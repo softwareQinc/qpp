@@ -40,13 +40,13 @@ int main()
 
 	// TIMING
 	Timer t;  // start the timer
-	cout << "The norm of a " << N << " x " << N << " random complex matrix is: "
-			<< norm(testmat) << endl;
+	cout << "The norm of a " << N << " x " << N
+			<< " random complex matrix is: "<<endl;
+	cout << norm(testmat) << endl;
 	t.toc(); // read the time
 	cout << "It took me " << t.ticks() << " ticks (" << t.secs()
 			<< " seconds) to compute the norm." << endl;
 	// END TIMING
-
 
 	cout << endl << "Exiting qpp..." << endl;
 }
