@@ -7,7 +7,6 @@
 
 #include <iostream>
 
-
 #include "qpp.h"
 //#include "matlab.h" // support for MATLAB
 
@@ -37,26 +36,23 @@ int main()
 
 	cout << "Starting qpp..." << endl;
 
+	size_t N = 5000;
+	cmat testmat = cmat::Random(N, N);
 
-	/* TIMING */
-	Timer t; // timer starts
-	/* process starts here */
-
-	/* process ends here */
-	cout << "It took me " << t.ticks() << " ticks ("
-			<< t.secs() << " seconds)."<<endl;
-
-	cout << "It took me " << t.ticks() << " ticks ("
-				<< t.secs() << " seconds)."<<endl;
-
-	cout << "It took me " << t.ticks() << " ticks ("
-				<< t.secs() << " seconds)."<<endl;
-	t.reset();
-	cout << "It took me " << t.ticks() << " ticks ("
-				<< t.secs() << " seconds)."<<endl;
-	cout << "It took me " << t.ticks() << " ticks ("
-				<< t.secs() << " seconds)."<<endl;
-	/* END TIMING */
+	// TIMING
+	Timer t;
+	t.tic();
+	cout << "The norm of a " << N << " x " << N
+			<< " random complex matrix is: " << norm(testmat) << endl;
+	t.toc();
+	cout << "It took me " << t.ticks() << " ticks (" << t.secs()
+			<< " seconds) to compute the norm." << endl;
+	// END TIMING
+	t.reset(); // reset the clock
+	for(size_t i=0;i<10000;i++); // wait a bit
+	t.toc();
+	cout << "New timer reading immediately after reset : " << t.ticks() << " ticks (" << t.secs()
+			<< " seconds).";
 
 	cout << endl << "Exiting qpp..." << endl;
 }
