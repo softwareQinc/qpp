@@ -37,19 +37,64 @@ int main()
 
 	size_t n = 12; // 12 qubits
 	size_t N = std::pow(2, n);
-	std::cout << "n=" << n << " qubits, matrix size " << N << " x " << N << " ."
-			<< endl;
+	vector<size_t> dims; // local dimensions
+	for (size_t i = 0; i < n; i++)
+		dims.push_back(2);
+	std::cout << "n = " << n << " qubits, matrix size " << N << " x " << N
+			<< "." << endl;
 
 	// TIMING
 	Timer t, total;  // start the timer, automatic tic() in the constructor
+
+	// Matrix initialization
+	cout << "Matrix initialization timing." << endl;
 	cmat randcmat = cmat::Random(N, N);
 	t.toc(); // read the time
 	cout << "Took " << t.seconds() << " seconds." << endl;
 
+	// Matrix product
+	cout << "Matrix product timing." << endl;
 	t.tic(); // reset the chronometer
 	cmat prodmat;
-	prodmat = randcmat * randcmat;
+	prodmat = randcmat * randcmat; // need this (otherwise lazy evaluation)
 	t.toc(); // read the time
+	cout << "Took " << t.seconds() << " seconds." << endl;
+
+	// ptrace SLOW SLOW SLOW
+	cout << "ptrace timing." << endl;
+	vector<size_t> subsys_ptrace = { 0 };
+	cout << "Subsytem(s): ";
+	internal::_disp_container(subsys_ptrace);
+	std::cout << endl;
+	t.tic();
+	ptrace(randcmat, subsys_ptrace, dims);
+	t.toc();
+	cout << "Took " << t.seconds() << " seconds." << endl;
+
+	// syspermute
+	cout << "syspermute timing." << endl;
+	vector<size_t> perm; // left-shift all subsystems by 1
+	for (size_t i = 0; i < n; i++)
+		perm.push_back((i + 1) % n);
+	cout << "Subsytem(s): ";
+	internal::_disp_container(perm);
+	std::cout << endl;
+	t.tic();
+	syspermute(randcmat, perm, dims);
+	t.toc();
+	cout << "Took " << t.seconds() << " seconds." << endl;
+
+	// ptranspose
+	cout << "ptranspose timing." << endl;
+	vector<size_t> subsys_ptranspose; // partially transpose all subsystems
+	for (size_t i = 0; i < n; i++)
+		perm.push_back(i);
+	cout << "Subsytem(s): ";
+	internal::_disp_container(subsys_ptranspose);
+	std::cout << endl;
+	t.tic();
+	syspermute(randcmat, perm, dims);
+	t.toc();
 	cout << "Took " << t.seconds() << " seconds." << endl;
 
 	total.toc(); // read the total running time
