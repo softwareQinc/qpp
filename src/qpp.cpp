@@ -29,7 +29,7 @@ int _init()
 	// initialize the gates
 	gt::_init_gates();
 
-// seed the standard random number generator (needed by Eigen)
+	// seed the standard random number generator (needed by Eigen)
 	std::srand(static_cast<unsigned int>(stat::_rd()));
 
 	return 0;
