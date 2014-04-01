@@ -24,13 +24,15 @@ using namespace std;
 using namespace qpp;
 using namespace qpp::types;
 
-int myfunc(const cplx &z) {
+int myfunc(const cplx &z)
+{
     return std::abs(z);
 }
 
 //int main(int argc, char **argv)
 
-int main() {
+int main()
+{
     _init();
 
     std::cout << std::fixed; // use fixed format for nice formatting
@@ -50,7 +52,8 @@ int main() {
     //displn(randu - res);
 
     // functor testing
-    auto lambda = [](const cplx & z)->int {
+    auto lambda = [](const cplx & z)->int
+    {
         return abs(z);
     };
 
@@ -78,8 +81,8 @@ int main() {
     // eigenvalue test
     cout << endl << hevals<cmat>(mat11) << endl;
     displn(
-            mat11 * hevects(mat11).col(0)
-            - (hevals(mat11)(0)) * hevects(mat11).col(0));
+           mat11 * hevects(mat11).col(0)
+           - (hevals(mat11)(0)) * hevects(mat11).col(0));
 
     cout << endl << mat11 << endl << endl;
 
@@ -101,7 +104,7 @@ int main() {
 
     size_t N = 5000;
     cmat test = cmat::Random(N, N);
-    
+
     // measure time taken
 
     clock_t start, end;
