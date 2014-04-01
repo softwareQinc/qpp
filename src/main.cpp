@@ -113,6 +113,7 @@ int main()
 	norm(reshape(test, 1, N * N));
 
 	/* process ends here */
+
 	end = clock();
 
 	time = (double) (end - start);
