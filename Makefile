@@ -1,4 +1,3 @@
-# OS X g++ Makefile
 TARGET = qpp # Application name
 SRC = ./src# no white spaces allowed before the comment!
 INC = ./include# no white spaces allowed before the comment!
@@ -11,14 +10,10 @@ OPTIM = -mtune=native -msse3 # use SSE2 and Native compiling
 
 EIGEN = ~/eigen_3.2.1 # Location of Eigen library, replace it with your own
 
-# MATLAB libs and includes
+# MATLAB libs, includes and linker flags
 MLIBS = /Applications/MATLAB_R2013a.app/bin/maci64
 MINC = /Applications/MATLAB_R2013a.app/extern/include
-# MATLAB linker flags
 MFLAGS = -lmx -lmat
-
-# libgomp linker flags
-GOMPFLAGS = -lgomp
 
 # Compiler flags, use pedantic for C++ standard compliance
 CFLAGS = -c -pedantic $(CC_STANDARD) $(WARNINGS) $(MULTIPROC) $(OPTIM)\
@@ -26,9 +21,8 @@ CFLAGS = -c -pedantic $(CC_STANDARD) $(WARNINGS) $(MULTIPROC) $(OPTIM)\
 CFLAGS_RELEASE = -O3 -DNDEBUG -DEIGEN_NO_DEBUG # Release flags
 CFLAGS_DEBUG = -DDEBUG -g3 # Debug flags
 
-# Linker flags, use gomp multi-processing library, 
-# a must for g++ -fopenmp flag
-LDFLAGS = -L $(MLIBS) $(MFLAGS)  $(GOMPFLAGS)
+# Linker flags for MATLAB integration
+LDFLAGS = -L $(MLIBS) $(MFLAGS) 
 
 SOURCES = $(wildcard $(SRC)/*.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)

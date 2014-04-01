@@ -29,15 +29,12 @@ int main()
 {
 	_init();
 
+	// Display formatting
 	std::cout << std::fixed; // use fixed format for nice formatting
 //	std::cout << std::scientific;
 	std::cout << std::setprecision(4); // only for fixed or scientific modes
 
 	cout << "Starting qpp..." << endl;
-
-
-
-
 
 
 	/* TIMING */
