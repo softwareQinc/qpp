@@ -23,14 +23,14 @@ public:
 	{
 	}
 
-	void toc()
-	{
-		_end = std::chrono::high_resolution_clock::now();
-	}
-
 	void tic()
 	{
 		_start = _end = std::chrono::high_resolution_clock::now();
+	}
+
+	void toc()
+	{
+		_end = std::chrono::high_resolution_clock::now();
 	}
 
 	double seconds()

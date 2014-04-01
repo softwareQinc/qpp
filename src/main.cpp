@@ -37,7 +37,7 @@ int main()
 
 	// TIMING
 	Timer t, total;  // start the timer, automatic tic() in the constructor
-	size_t N = 10000;
+	size_t N = 4096; // 12 qubits
 	cmat testmat = cmat::Random(N, N);
 	t.toc();
 	cout << "It took me " << t.seconds() << " seconds to initialize a " << N
