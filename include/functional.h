@@ -15,129 +15,127 @@
 
 // Matrix functional calculus
 
-namespace qpp
-{
+namespace qpp {
 
-// Computes f(A), where (*f) is the function pointer
-/**
- *
- * @param A input matrix
- * @param f function pointer
- * @return types::cmat
- */
-template<typename Expression>
-types::cmat funm(const Eigen::MatrixBase<Expression> &A,
-		types::cplx (*f)(const types::cplx &))
-{
-	// check square matrix
-	if (!internal::_check_square_mat(A))
-		throw std::runtime_error("funm: Matrix must be square!");
+    // Computes f(A), where (*f) is the function pointer
 
-	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
-	types::cmat evects = es.eigenvectors();
-	types::cmat evals = es.eigenvalues();
-	for (int i = 0; i < evals.rows(); i++)
-		evals(i) = (*f)(evals(i)); // apply f(x) to each eigenvalue
+    /**
+     *
+     * @param A input matrix
+     * @param f function pointer
+     * @return types::cmat
+     */
+    template<typename Expression>
+    types::cmat funm(const Eigen::MatrixBase<Expression> &A,
+            types::cplx(*f)(const types::cplx &)) {
+        // check square matrix
+        if (!internal::_check_square_mat(A))
+            throw std::runtime_error("funm: Matrix must be square!");
 
-	types::cmat evalsdiag = evals.asDiagonal();
+        Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
+        types::cmat evects = es.eigenvectors();
+        types::cmat evals = es.eigenvalues();
+        for (int i = 0; i < evals.rows(); i++)
+            evals(i) = (*f)(evals(i)); // apply f(x) to each eigenvalue
 
-	return evects * evalsdiag * evects.inverse();
-}
+        types::cmat evalsdiag = evals.asDiagonal();
 
-// Matrix absolute value, note the syntax of Lambda invocation
-template<typename Expression>
-types::cmat absm(const Eigen::MatrixBase<Expression> &A)
-{
-	return funm(adjoint(A) * A, [](const types::cplx & x)->types::cplx
-	{	return std::sqrt(x);});
-}
+        return evects * evalsdiag * evects.inverse();
+    }
 
-// Matrix exponential
-template<typename Expression>
-types::cmat expm(const Eigen::MatrixBase<Expression> &A)
-{
-	return funm(A, std::exp);
-}
+    // Matrix absolute value, note the syntax of Lambda invocation
 
-// Matrix logarithm
-template<typename Expression>
-types::cmat logm(const Eigen::MatrixBase<Expression> &A)
-{
-	return funm(A, std::log);
-}
+    template<typename Expression>
+    types::cmat absm(const Eigen::MatrixBase<Expression> &A) {
+        return funm(adjoint(A) * A, [](const types::cplx & x)->types::cplx {
+            return std::sqrt(x);
+        });
+    }
 
-// Matrix square root
-template<typename Expression>
-types::cmat sqrtm(const Eigen::MatrixBase<Expression> &A)
-{
-	return funm(A, std::sqrt);
-}
+    // Matrix exponential
 
-// Matrix sin
-template<typename Expression>
-types::cmat sinm(const Eigen::MatrixBase<Expression> &A)
-{
-	return funm(A, std::sin);
-}
+    template<typename Expression>
+    types::cmat expm(const Eigen::MatrixBase<Expression> &A) {
+        return funm(A, std::exp);
+    }
 
-// Matrix cos
-template<typename Expression>
-types::cmat cosm(const Eigen::MatrixBase<Expression> &A)
-{
-	return funm(A, std::cos);
-}
+    // Matrix logarithm
 
-// Matrix power A^z (CHANGES return type to complex matrix)
-template<typename Expression>
-types::cmat powm(const Eigen::MatrixBase<Expression> &A,
-		const types::cplx z)
+    template<typename Expression>
+    types::cmat logm(const Eigen::MatrixBase<Expression> &A) {
+        return funm(A, std::log);
+    }
 
-{
-	// check square matrix
-	if (!internal::_check_square_mat(A))
-		throw std::runtime_error("mpower: Matrix must be square!");
+    // Matrix square root
 
-	// Define A^0 = Id
-	if (real(z) == 0 && imag(z) == 0)
-	{
-		types::cmat result(A.rows(), A.rows());
-		result.setIdentity();
-		return result;
-	}
+    template<typename Expression>
+    types::cmat sqrtm(const Eigen::MatrixBase<Expression> &A) {
+        return funm(A, std::sqrt);
+    }
 
-	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
-	types::cmat evects = es.eigenvectors();
-	types::cmat evals = es.eigenvalues();
-	for (int i = 0; i < evals.rows(); i++)
-		evals(i) = std::pow(static_cast<types::cplx>(evals(i)),
-				static_cast<types::cplx>(z));
+    // Matrix sin
 
-	types::cmat evalsdiag = evals.asDiagonal();
+    template<typename Expression>
+    types::cmat sinm(const Eigen::MatrixBase<Expression> &A) {
+        return funm(A, std::sin);
+    }
 
-	return evects * evalsdiag * evects.inverse();
+    // Matrix cos
 
-}
+    template<typename Expression>
+    types::cmat cosm(const Eigen::MatrixBase<Expression> &A) {
+        return funm(A, std::cos);
+    }
 
-// Matrix integer power, preserve return type
-// Explicitly multiply the matrix with itself n times
-template<typename Expression>
-types::Expression2Matrix<Expression> powm_int(
-		const Eigen::MatrixBase<Expression> &A, size_t n)
-{
-// check square matrix
-	if (!internal::_check_square_mat(A))
-		throw std::runtime_error("mpower_n: Matrix must be square!");
+    // Matrix power A^z (CHANGES return type to complex matrix)
 
-	types::Expression2Matrix<Expression> result = A;
+    template<typename Expression>
+    types::cmat powm(const Eigen::MatrixBase<Expression> &A,
+            const types::cplx z) {
+        // check square matrix
+        if (!internal::_check_square_mat(A))
+            throw std::runtime_error("mpower: Matrix must be square!");
 
-	if (n == 0)
-		return result.setIdentity();
+        // Define A^0 = Id
+        if (real(z) == 0 && imag(z) == 0) {
+            types::cmat result(A.rows(), A.rows());
+            result.setIdentity();
+            return result;
+        }
 
-	for (size_t i = 1; i < n; i++)
-		result *= A;
+        Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
+        types::cmat evects = es.eigenvectors();
+        types::cmat evals = es.eigenvalues();
+        for (int i = 0; i < evals.rows(); i++)
+            evals(i) = std::pow(static_cast<types::cplx> (evals(i)),
+                static_cast<types::cplx> (z));
 
-	return result;
-}
+        types::cmat evalsdiag = evals.asDiagonal();
+
+        return evects * evalsdiag * evects.inverse();
+
+    }
+
+    // Matrix integer power, preserve return type
+    // Explicitly multiply the matrix with itself n times
+
+    template<typename Expression>
+    types::Expression2Matrix<Expression> powm_int(
+            const Eigen::MatrixBase<Expression> &A, size_t n) {
+        // check square matrix
+        if (!internal::_check_square_mat(A))
+            throw std::runtime_error("mpower_n: Matrix must be square!");
+
+        types::Expression2Matrix<Expression> result = A;
+
+        if (n == 0)
+            return result.setIdentity();
+
+        for (size_t i = 1; i < n; i++)
+            result *= A;
+
+        return result;
+    }
 
 }
 
