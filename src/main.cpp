@@ -41,17 +41,18 @@ int main()
 
 	// TIMING
 	Timer t;  // start the timer
-	cout << "The norm of a " << N << " x " << N
-			<< " random complex matrix is: " << norm(testmat) << endl;
+	cout << "The norm of a " << N << " x " << N << " random complex matrix is: "
+			<< norm(testmat) << endl;
 	t.toc(); // read the time
 	cout << "It took me " << t.ticks() << " ticks (" << t.secs()
 			<< " seconds) to compute the norm." << endl;
 	// END TIMING
 	t.reset(); // reset the timer to current time
-	for(size_t i=0;i<10000;i++); // wait a bit
+	for (size_t i = 0; i < 10000; i++)
+		; // wait a bit
 	t.toc(); // read again
-	cout << "New timer reading immediately after reset : " << t.ticks() << " ticks (" << t.secs()
-			<< " seconds).";
+	cout << "New timer reading immediately after reset : " << t.ticks()
+			<< " ticks (" << t.secs() << " seconds).";
 
 	cout << endl << "Exiting qpp..." << endl;
 }
