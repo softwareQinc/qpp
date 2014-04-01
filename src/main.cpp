@@ -41,7 +41,6 @@ int main()
 
 	// TIMING
 	Timer t;
-	t.tic();
 	cout << "The norm of a " << N << " x " << N
 			<< " random complex matrix is: " << norm(testmat) << endl;
 	t.toc();
