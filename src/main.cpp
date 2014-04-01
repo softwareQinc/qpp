@@ -36,7 +36,7 @@ int main()
 
 	cout << "Starting qpp..." << endl;
 
-	size_t N = 5000;
+	size_t N = 7000;
 	cmat testmat = cmat::Random(N, N);
 
 	// TIMING
