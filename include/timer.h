@@ -16,33 +16,30 @@ namespace qpp
 class Timer
 {
 	clock_t _start, _end;
-	bool _toc;
 public:
 	Timer() :
-			_start(clock()), _end(_start), _toc(false)
+			_start(clock()), _end(_start)
 	{
 	}
 
 	void toc()
 	{
 		_end = clock();
-		_toc = true;
 	}
 
 	void reset()
 	{
 		_start = _end = clock();
-		_toc = false;
 	}
 
 	double ticks()
 	{
-		return _toc ? (double)(_end - _start) : -1;
+		return _end>=_start ? (double)(_end - _start) : -1;
 	}
 
 	double secs()
 	{
-		return _toc ? ticks() / CLOCKS_PER_SEC : -1;
+		return _end>=_start ? ticks() / CLOCKS_PER_SEC : -1;
 	}
 	virtual ~Timer() = default;
 };
