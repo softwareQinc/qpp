@@ -22,7 +22,8 @@ CFLAGS_RELEASE = -O3 -DNDEBUG -DEIGEN_NO_DEBUG # Release flags
 CFLAGS_DEBUG = -DDEBUG -g3 # Debug flags
 
 # Linker flags for MATLAB integration
-LDFLAGS = -L $(MLIBS) $(MFLAGS) 
+LGOMP = -lgomp
+LDFLAGS = -L $(MLIBS) $(MFLAGS) $(LGOMP) 
 
 SOURCES = $(wildcard $(SRC)/*.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)

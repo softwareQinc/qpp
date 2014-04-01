@@ -8,39 +8,37 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
-#include <ctime>
+#include <chrono>
 
 namespace qpp
 {
 
 class Timer
 {
-	clock_t _start, _end;
+protected:
+	std::chrono::high_resolution_clock::time_point _start, _end;
 public:
 	Timer() :
-			_start(clock()), _end(_start)
+			_start(std::chrono::high_resolution_clock::now()), _end(_start)
 	{
 	}
 
 	void toc()
 	{
-		_end = clock();
+		_end = std::chrono::high_resolution_clock::now();
 	}
 
-	void reset()
+	void tic()
 	{
-		_start = _end = clock();
+		_start = _end = std::chrono::high_resolution_clock::now();
 	}
 
-	double ticks()
+	double seconds()
 	{
-		return (double)(_end - _start);
+		return std::chrono::duration_cast<std::chrono::duration<double>>(
+				_end - _start).count();
 	}
 
-	double secs()
-	{
-		return ticks() / CLOCKS_PER_SEC;
-	}
 	virtual ~Timer() = default;
 };
 
