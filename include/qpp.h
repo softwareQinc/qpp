@@ -18,9 +18,10 @@
 #include "entropy.h"
 #include "io.h"
 
-// These are internal functions the user should not have access to.
+// These are internal functions the user should not have access to
 //#include "internal.h"
-// Matlab interface should not be included by default
+
+// MATLAB interface should not be included by default
 //#include "matlab.h"
 
 namespace qpp
