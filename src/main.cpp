@@ -18,6 +18,7 @@
 // TODO: Error class
 // TODO: change all for(s) to column major order
 // TODO: use .data() raw pointer instead of looping
+// TODO: write a timer class, tic/toc
 
 using namespace std;
 
