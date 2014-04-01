@@ -52,6 +52,7 @@ int main()
 	cout << "It took me " << t.ticks() << " ticks (" << t.secs()
 			<< " seconds) to compute the norm." << endl;
 
+	total.toc();
 	cout << "Total time: " << total.ticks() << " ticks (" << total.secs()
 				<< " seconds)." << endl;
 	// END TIMING
