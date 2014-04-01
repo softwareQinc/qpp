@@ -6,7 +6,7 @@
  */
 
 #include <iostream>
-#include <cmath>
+#include <ctime>
 
 #include "qpp.h"
 #include "matlab.h" // support for MATLAB
@@ -29,76 +29,94 @@ int myfunc(const cplx &z)
 	return std::abs(z);
 }
 
-
 //int main(int argc, char **argv)
 int main()
 {
 	_init();
 
-	std::cout << std::fixed; // use fixed format for nice formatting
-//	std::cout << std::scientific;
-	std::cout << std::setprecision(4); // only for fixed or scientific modes
+//	std::cout << std::fixed; // use fixed format for nice formatting
+////	std::cout << std::scientific;
+//	std::cout << std::setprecision(4); // only for fixed or scientific modes
+//
+//	cout << "Starting qpp..." << endl;
+//
+//	// MATLAB interface testing
+//	cmat randu = rand_unitary(3);
+//	cout << endl;
+//	displn(randu);
+//
+//	saveMATLAB<cplx>(randu, "/Users/vlad/tmp/test.mat", "randu", "w");
+//	cmat res = loadMATLAB<cplx>("/Users/vlad/tmp/test.mat", "randu");
+//	cout << endl;
+//	displn(randu - res);
+//
+//	// functor testing
+//	auto lambda = [](const cplx& z)->int
+//	{	return abs(z);};
+//
+//	cmat mat1(3, 3);
+//	mat1 << 1, -2.56, 335.2321, -4, 5.244, -6.1, 7, -8, 9. + 2.78 * ct::ii;
+//
+//	cout << endl;
+//	displn(mat1);
+//
+//	cout << endl;
+//	displn(fun<cmat, int>(mat1 * mat1, lambda));
+//
+//	cout << endl;
+//	displn(fun(mat1 * mat1, myfunc));
+//
+//	// other functions
+//	cout << endl;
+//	cmat mat11 = mat1 * mat1;
+//	displn(kron((cmat) (mat1 * mat1), cmat(mat1 * mat1)));
+//
+//	mat11 = cmat::Random(3, 3);
+//	mat11 = mat11 + adjoint(mat11);
+//	cmat mat2(2, 2);
+//	mat2 << 1, ct::ii, -ct::ii, 1;
+//	// eigenvalue test
+//	cout << endl << hevals<cmat>(mat11) << endl;
+//	displn(
+//			mat11 * hevects(mat11).col(0)
+//					- (hevals(mat11)(0)) * hevects(mat11).col(0));
+//
+//	cout << endl << mat11 << endl << endl;
+//
+//	cout << endl;
+//	displn(transpose(mat11));
+//	cout << typeid(transpose(mat11)).name() << endl<<endl;
+//
+//	displn(transpose(mat11 * mat11));
+//	cout << typeid(transpose(mat11*mat11)).name() << endl;
+//
+//	cout<<endl;
+//	displn(kron_list<cmat>({gt::X*gt::X,gt::X+gt::X}));
+//
+//	cout<<endl;
+//	displn(kron_pow(gt::X*gt::X,2));
+//
+//	cout<<endl;
+//	displn(kron(gt::X*gt::X,gt::X+gt::X));
 
-	cout << "Starting qpp..." << endl;
+	size_t N = 5000;
+	cmat test = cmat::Random(N, N);
 
-	// MATLAB interface testing
-	cmat randu = rand_unitary(3);
-	cout << endl;
-	displn(randu);
+	// measure time taken
 
-	saveMATLAB<cplx>(randu, "/Users/vlad/tmp/test.mat", "randu", "w");
-	cmat res = loadMATLAB<cplx>("/Users/vlad/tmp/test.mat", "randu");
-	cout << endl;
-	displn(randu - res);
+	clock_t start, end;
+	double time;
+	start = clock();
 
-	// functor testing
-	auto lambda = [](const cplx& z)->int
-	{	return abs(z);};
+	/* process starts here */
 
-	cmat mat1(3, 3);
-	mat1 << 1, -2.56, 335.2321, -4, 5.244, -6.1, 7, -8, 9. + 2.78 * ct::ii;
+	norm(reshape(test, 1, N * N));
 
-	cout << endl;
-	displn(mat1);
+	/* process ends here */
+	end = clock();
 
-	cout << endl;
-	displn(fun<cmat, int>(mat1 * mat1, lambda));
-
-	cout << endl;
-	displn(fun(mat1 * mat1, myfunc));
-
-	// other functions
-	cout << endl;
-	cmat mat11 = mat1 * mat1;
-	displn(kron((cmat) (mat1 * mat1), cmat(mat1 * mat1)));
-
-	mat11 = cmat::Random(3, 3);
-	mat11 = mat11 + adjoint(mat11);
-	cmat mat2(2, 2);
-	mat2 << 1, ct::ii, -ct::ii, 1;
-	// eigenvalue test
-	cout << endl << hevals<cmat>(mat11) << endl;
-	displn(
-			mat11 * hevects(mat11).col(0)
-					- (hevals(mat11)(0)) * hevects(mat11).col(0));
-
-	cout << endl << mat11 << endl << endl;
-
-	cout << endl;
-	displn(transpose(mat11));
-	cout << typeid(transpose(mat11)).name() << endl<<endl;
-
-	displn(transpose(mat11 * mat11));
-	cout << typeid(transpose(mat11*mat11)).name() << endl;
-
-	cout<<endl;
-	displn(kron_list<cmat>({gt::X*gt::X,gt::X+gt::X}));
-
-	cout<<endl;
-	displn(kron_pow(gt::X*gt::X,2));
-
-	cout<<endl;
-	displn(kron(gt::X*gt::X,gt::X+gt::X));
-	std::vector<cmat> gtvect={gt::X,gt::X+gt::X};
+	time = (double) (end - start);
+	cout << "It took me " << time << " clicks ("
+			<< ((float) time) / CLOCKS_PER_SEC << " seconds).";
 	cout << endl << "Exiting qpp..." << endl;
 }
