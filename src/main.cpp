@@ -36,7 +36,7 @@ int main()
 	cout << "Starting qpp..." << endl;
 
 	size_t n = 12; // 12 qubits
-	size_t N = std::pow(n, 12);
+	size_t N = std::pow(n, 2);
 	std::cout << "n=" << n << " qubits, matrix size " << N << " x " << N << " ."
 			<< endl;
 
