@@ -37,7 +37,7 @@ public:
 
 	double ticks()
 	{
-		return _toc ? _end - _start : -1;
+		return _toc ? (double)(_end - _start) : -1;
 	}
 
 	double secs()

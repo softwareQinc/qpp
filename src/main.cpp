@@ -49,7 +49,7 @@ int main()
 	// END TIMING
 	t.reset(); // reset the clock
 	for(size_t i=0;i<10000;i++); // wait a bit
-	t.toc();
+	//t.toc();
 	cout << "New timer reading immediately after reset : " << t.ticks() << " ticks (" << t.secs()
 			<< " seconds).";
 
