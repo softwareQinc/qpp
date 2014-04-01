@@ -35,23 +35,24 @@ int main()
 
 	cout << "Starting qpp..." << endl;
 
-	// TIMING
-	Timer t, total;  // start the timer, automatic tic() in the constructor
-	size_t N = 4096; // 12 qubits
-	cmat testmat = cmat::Random(N, N);
-	t.toc();
-	cout << "It took me " << t.seconds() << " seconds to initialize a " << N
-			<< " x " << N << " random complex matrix." << endl;
-	t.tic();
-
-	cmat b;
-	b = testmat * testmat;
-	t.toc(); // read the time
-	cout << "It took me " << t.seconds()
-			<< " seconds to perform matrix multiplication (including initialization)."
+	size_t n = 12; // 12 qubits
+	size_t N = std::pow(n, 12);
+	std::cout << "n=" << n << " qubits, matrix size " << N << " x " << N << " ."
 			<< endl;
 
-	total.toc();
+	// TIMING
+	Timer t, total;  // start the timer, automatic tic() in the constructor
+	cmat randcmat = cmat::Random(N, N);
+	t.toc(); // read the time
+	cout << "Took " << t.seconds() << " seconds.";
+
+	t.tic(); // reset the chronometer
+	cmat prodmat;
+	prodmat = randcmat * randcmat;
+	t.toc(); // read the time
+	cout << "Took " << t.seconds() << " seconds.";
+
+	total.toc(); // read the total running time
 	cout << "Total time: " << total.seconds() << " seconds." << endl;
 	// END TIMING
 
