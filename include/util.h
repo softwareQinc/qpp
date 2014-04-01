@@ -266,9 +266,9 @@ types::Expression2Matrix<Expression> ptrace2(
 	types::Expression2Matrix<Expression> result = types::Expression2Matrix<
 			Expression>::Zero(DA, DA);
 
-	for (size_t i = 0; i < DA; i++)
+	for (size_t j = 0; j < DA; j++) // column major order for speed
 #pragma omp parallel for
-		for (size_t j = 0; j < DA; j++)
+		for (size_t i = 0; i < DA; i++)
 		{
 			result(i, j) = trace(
 					static_cast<Expression>(A.block(i * DB, j * DB, DB, DB)));

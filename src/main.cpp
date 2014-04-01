@@ -17,6 +17,8 @@
 // TODO: Error class
 // TODO: change all for(s) to column major order
 // TODO: use .data() raw pointer instead of looping
+// TODO: optimize syspermute
+// TODO: Use Eigen::Map in syspermute
 
 using namespace std;
 
@@ -60,7 +62,7 @@ int main()
 	t.toc(); // read the time
 	cout << "Took " << t.seconds() << " seconds." << endl;
 
-	// ptrace SLOW SLOW SLOW
+	// ptrace SLOW SLOW SLOW (because of syspermute, do it without)
 	cout << endl << "ptrace timing." << endl;
 	vector<size_t> subsys_ptrace = { 0 };
 	cout << "Subsytem(s): [";
@@ -84,7 +86,7 @@ int main()
 	t.toc();
 	cout << "Took " << t.seconds() << " seconds." << endl;
 
-	// syspermute
+	// syspermute SLOW SLOW SLOW
 	cout << endl << "syspermute timing." << endl;
 	vector<size_t> perm; // left-shift all subsystems by 1
 	for (size_t i = 0; i < n; i++)
