@@ -1,3 +1,0 @@
-g++  -c -pedantic -std=c++11  -Wall -Wextra -Weffc++ -fopenmp  -mtune=native -msse3  -isystem ~/eigen_3.2.1  -I ./include -I /Applications/MATLAB_R2013a.app/extern/include  -O3 -DNDEBUG -DEIGEN_NO_DEBUG   src/main.cpp -o src/main.o
-g++  -c -pedantic -std=c++11  -Wall -Wextra -Weffc++ -fopenmp  -mtune=native -msse3  -isystem ~/eigen_3.2.1  -I ./include -I /Applications/MATLAB_R2013a.app/extern/include  -O3 -DNDEBUG -DEIGEN_NO_DEBUG   src/qpp.cpp -o src/qpp.o
-g++  -L /Applications/MATLAB_R2013a.app/bin/maci64 -lmx -lmat  -lgomp ./src/main.o ./src/qpp.o -o qpp
