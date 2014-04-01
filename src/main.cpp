@@ -35,17 +35,25 @@ int main()
 
 	cout << "Starting qpp..." << endl;
 
-	size_t N = 7000;
-	cmat testmat = cmat::Random(N, N);
 
 	// TIMING
-	Timer t;  // start the timer
+	Timer t,total;  // start the timer
+	size_t N = 10000;
+	cmat testmat = cmat::Random(N, N);
+	t.toc();
+	cout << "It took me " << t.ticks() << " ticks (" << t.secs()
+				<< " seconds) to initialize a " << N << " x " << N
+				<< " random complex matrix."<<endl;
+	t.reset();
 	cout << "The norm of a " << N << " x " << N
 			<< " random complex matrix is: "<<endl;
 	cout << norm(testmat) << endl;
 	t.toc(); // read the time
 	cout << "It took me " << t.ticks() << " ticks (" << t.secs()
 			<< " seconds) to compute the norm." << endl;
+
+	cout << "Total time: " << total.ticks() << " ticks (" << total.secs()
+				<< " seconds)." << endl;
 	// END TIMING
 
 	cout << endl << "Exiting qpp..." << endl;
