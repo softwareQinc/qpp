@@ -71,6 +71,19 @@ int main()
 	t.toc();
 	cout << "Took " << t.seconds() << " seconds." << endl;
 
+	// ptranspose
+	cout << "ptranspose timing." << endl;
+	vector<size_t> subsys_ptranspose; // partially transpose all subsystems
+	for (size_t i = 0; i < n; i++)
+		subsys_ptranspose.push_back(i);
+	cout << "Subsytem(s): ";
+	internal::_disp_container(subsys_ptranspose);
+	std::cout << endl;
+	t.tic();
+	ptranspose(randcmat, subsys_ptranspose, dims);
+	t.toc();
+	cout << "Took " << t.seconds() << " seconds." << endl;
+
 	// syspermute
 	cout << "syspermute timing." << endl;
 	vector<size_t> perm; // left-shift all subsystems by 1
@@ -84,18 +97,6 @@ int main()
 	t.toc();
 	cout << "Took " << t.seconds() << " seconds." << endl;
 
-	// ptranspose
-	cout << "ptranspose timing." << endl;
-	vector<size_t> subsys_ptranspose; // partially transpose all subsystems
-	for (size_t i = 0; i < n; i++)
-		perm.push_back(i);
-	cout << "Subsytem(s): ";
-	internal::_disp_container(subsys_ptranspose);
-	std::cout << endl;
-	t.tic();
-	syspermute(randcmat, perm, dims);
-	t.toc();
-	cout << "Took " << t.seconds() << " seconds." << endl;
 
 	total.toc(); // read the total running time
 	cout << "Total time: " << total.seconds() << " seconds." << endl;
