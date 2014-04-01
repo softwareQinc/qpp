@@ -34,12 +34,12 @@ public:
 
 	double ticks()
 	{
-		return _end>=_start ? (double)(_end - _start) : -1;
+		return (double)(_end - _start);
 	}
 
 	double secs()
 	{
-		return _end>=_start ? ticks() / CLOCKS_PER_SEC : -1;
+		return ticks() / CLOCKS_PER_SEC;
 	}
 	virtual ~Timer() = default;
 };
