@@ -23,9 +23,10 @@
 // Matlab interface should not be included by default
 //#include "matlab.h"
 
-namespace qpp {
+namespace qpp
+{
 
-    int _init(); // initialization
+int _init(); // initialization
 
 }
 

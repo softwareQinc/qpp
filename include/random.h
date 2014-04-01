@@ -12,60 +12,61 @@
 #include "stat.h"
 #include "constants.h"
 
-namespace qpp {
+namespace qpp
+{
 
-    // Random double matrix with entries in Uniform[0,1]
+// Random double matrix with entries in Uniform[0,1]
+inline types::dmat rand(size_t rows, size_t cols)
+{
+	return types::dmat::Random(rows, cols);
+}
 
-    inline types::dmat rand(size_t rows, size_t cols) {
-        return types::dmat::Random(rows, cols);
-    }
+// Random double square matrix with entries in Uniform[0,1]
+inline types::dmat rand(size_t rows)
+{
+	return rand(rows, rows);
+}
 
-    // Random double square matrix with entries in Uniform[0,1]
+// Random double matrix with entries in Normal(0,1)
+inline types::dmat randn(size_t rows, size_t cols)
+{
+	stat::NormalDistribution nd; // N(0,1)
+	types::dmat A(rows, cols);
 
-    inline types::dmat rand(size_t rows) {
-        return rand(rows, rows);
-    }
+	for (size_t i = 0; i < rows; i++)
+		for (size_t j = 0; j < cols; j++)
+			A(i, j) = nd.sample();
 
-    // Random double matrix with entries in Normal(0,1)
+	return A;
+}
 
-    inline types::dmat randn(size_t rows, size_t cols) {
-        stat::NormalDistribution nd; // N(0,1)
-        types::dmat A(rows, cols);
+// Random double square matrix with entries in Normal(0,1)
+inline types::dmat randn(size_t rows)
+{
+	return randn(rows, rows);
+}
 
-        for (size_t i = 0; i < rows; i++)
-            for (size_t j = 0; j < cols; j++)
-                A(i, j) = nd.sample();
+// Random unitary matrix
+inline types::cmat rand_unitary(size_t size)
+{
+	types::cmat X(size, size);
 
-        return A;
-    }
+	X.real() = 1. / std::sqrt(2.) * randn(size);
+	X.imag() = 1. / std::sqrt(2.) * randn(size);
+	Eigen::HouseholderQR<types::cmat> qr(X);
 
-    // Random double square matrix with entries in Normal(0,1)
+	types::cmat Q = qr.householderQ();
+	// phase correction so that the resultant matrix is
+	// uniformly distributed according to the Haar measure
 
-    inline types::dmat randn(size_t rows) {
-        return randn(rows, rows);
-    }
+	Eigen::VectorXcd phases = (rand(size, 1)).cast<types::cplx>();
+	for (size_t i = 0; i < (size_t) phases.rows(); i++)
+		phases(i) = std::exp((types::cplx) (2 * ct::pi * ct::ii * phases(i)));
 
-    // Random unitary matrix
+	Q = Q * phases.asDiagonal();
 
-    inline types::cmat rand_unitary(size_t size) {
-        types::cmat X(size, size);
-
-        X.real() = 1. / std::sqrt(2.) * randn(size);
-        X.imag() = 1. / std::sqrt(2.) * randn(size);
-        Eigen::HouseholderQR<types::cmat> qr(X);
-
-        types::cmat Q = qr.householderQ();
-        // phase correction so that the resultant matrix is
-        // uniformly distributed according to the Haar measure
-
-        Eigen::VectorXcd phases = (rand(size, 1)).cast<types::cplx>();
-        for (size_t i = 0; i < (size_t) phases.rows(); i++)
-            phases(i) = std::exp((types::cplx)(2 * ct::pi * ct::ii * phases(i)));
-
-        Q = Q * phases.asDiagonal();
-
-        return Q;
-    }
+	return Q;
+}
 
 }
 

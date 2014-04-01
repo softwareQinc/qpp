@@ -24,16 +24,15 @@ types::cmat TOF(8, 8);
 }
 
 // initialize the library
-
 int _init()
 {
-    // initialize the gates
-    gt::_init_gates();
+	// initialize the gates
+	gt::_init_gates();
 
-    // seed the standard random number generator (needed by Eigen)
-    std::srand(static_cast<unsigned int> (stat::_rd()));
+// seed the standard random number generator (needed by Eigen)
+	std::srand(static_cast<unsigned int>(stat::_rd()));
 
-    return 0;
+	return 0;
 }
 
 }
