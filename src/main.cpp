@@ -36,7 +36,7 @@ int main()
 	cout << "Starting qpp..." << endl;
 
 	size_t n = 12; // 12 qubits
-	size_t N = std::pow(n, 2);
+	size_t N = std::pow(2, n);
 	std::cout << "n=" << n << " qubits, matrix size " << N << " x " << N << " ."
 			<< endl;
 
@@ -44,13 +44,13 @@ int main()
 	Timer t, total;  // start the timer, automatic tic() in the constructor
 	cmat randcmat = cmat::Random(N, N);
 	t.toc(); // read the time
-	cout << "Took " << t.seconds() << " seconds.";
+	cout << "Took " << t.seconds() << " seconds." << endl;
 
 	t.tic(); // reset the chronometer
 	cmat prodmat;
 	prodmat = randcmat * randcmat;
 	t.toc(); // read the time
-	cout << "Took " << t.seconds() << " seconds.";
+	cout << "Took " << t.seconds() << " seconds." << endl;
 
 	total.toc(); // read the total running time
 	cout << "Total time: " << total.seconds() << " seconds." << endl;
