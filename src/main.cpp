@@ -6,7 +6,7 @@
  */
 
 #include <iostream>
-#include <ctime>
+
 
 #include "qpp.h"
 //#include "matlab.h" // support for MATLAB
@@ -39,16 +39,23 @@ int main()
 
 
 	/* TIMING */
-	clock_t start, end;
-	double time;
-	start = clock();
+	Timer t; // timer starts
 	/* process starts here */
 
 	/* process ends here */
-	end = clock();
-	time = (double) (end - start);
-	cout << "It took me " << time << " clicks ("
-			<< ((float) time) / CLOCKS_PER_SEC << " seconds).";
+	cout << "It took me " << t.ticks() << " ticks ("
+			<< t.secs() << " seconds)."<<endl;
+
+	cout << "It took me " << t.ticks() << " ticks ("
+				<< t.secs() << " seconds)."<<endl;
+
+	cout << "It took me " << t.ticks() << " ticks ("
+				<< t.secs() << " seconds)."<<endl;
+	t.reset();
+	cout << "It took me " << t.ticks() << " ticks ("
+				<< t.secs() << " seconds)."<<endl;
+	cout << "It took me " << t.ticks() << " ticks ("
+				<< t.secs() << " seconds)."<<endl;
 	/* END TIMING */
 
 	cout << endl << "Exiting qpp..." << endl;
