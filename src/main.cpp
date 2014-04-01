@@ -63,9 +63,9 @@ int main()
 	// ptrace SLOW SLOW SLOW
 	cout << endl << "ptrace timing." << endl;
 	vector<size_t> subsys_ptrace = { 0 };
-	cout << "Subsytem(s): ";
+	cout << "Subsytem(s): [";
 	internal::_disp_container(subsys_ptrace);
-	cout << endl;
+	cout<<"]"<<endl;
 	t.tic();
 	ptrace(randcmat, subsys_ptrace, dims);
 	t.toc();
@@ -76,9 +76,9 @@ int main()
 	vector<size_t> subsys_ptranspose; // partially transpose all subsystems
 	for (size_t i = 0; i < n; i++)
 		subsys_ptranspose.push_back(i);
-	cout << "Subsytem(s): ";
+	cout << "Subsytem(s): [";
 	internal::_disp_container(subsys_ptranspose);
-	cout << endl;
+	cout<<"]"<<endl;
 	t.tic();
 	ptranspose(randcmat, subsys_ptranspose, dims);
 	t.toc();
@@ -89,9 +89,9 @@ int main()
 	vector<size_t> perm; // left-shift all subsystems by 1
 	for (size_t i = 0; i < n; i++)
 		perm.push_back((i + 1) % n);
-	cout << "Subsytem(s): ";
+	cout << "Subsytem(s): [";
 	internal::_disp_container(perm);
-	cout << endl;
+	cout<<"]"<<endl;
 	t.tic();
 	syspermute(randcmat, perm, dims);
 	t.toc();
