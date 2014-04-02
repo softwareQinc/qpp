@@ -38,7 +38,7 @@ double shannon(const types::DynMat<Scalar> & A)
 	// matrix
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::runtime_error("shannon: Input must be a row/column vector "
+		throw std::logic_error("shannon: Input must be a row/column vector "
 				"or a square matrix!");
 	// get the eigenvalues
 	types::cmat ev = evals(A);
@@ -58,7 +58,7 @@ template<typename Scalar>
 double renyi(const double alpha, const types::DynMat<Scalar> & A)
 {
 	if (alpha < 0)
-		throw std::runtime_error("renyi: alpha can not be negative!");
+		throw std::logic_error("renyi: alpha can not be negative!");
 
 	if (alpha == 1) // Shannon/von Neumann
 		return shannon(A);
@@ -82,7 +82,7 @@ double renyi(const double alpha, const types::DynMat<Scalar> & A)
 	// matrix
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::runtime_error(
+		throw std::logic_error(
 				"renyi: Input must be a row/column vector or a square matrix!");
 
 	if (alpha == 0)
@@ -118,7 +118,7 @@ double renyi_inf(const types::DynMat<Scalar> & A)
 	// matrix
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::runtime_error("renyi_inf: Input must be a row/column vector "
+		throw std::logic_error("renyi_inf: Input must be a row/column vector "
 				"or a square matrix!");
 
 	// get the eigenvalues

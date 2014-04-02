@@ -36,7 +36,7 @@ inline void _n2multiidx(size_t n, size_t numdims, const size_t *dims,
 	for (size_t i = 0; i < numdims; i++)
 		maxn *= dims[i];
 	if (n > maxn - 1)
-		throw std::runtime_error(
+		throw std::logic_error(
 				"_n2multiidx: Number too large, out of bounds!");
 
 	size_t _n = n;
@@ -53,7 +53,7 @@ inline size_t _multiidx2n(const size_t *midx, size_t numdims,
 {
 	for (size_t i = 0; i < numdims; i++)
 		if (midx[i] >= dims[i])
-			throw std::runtime_error(
+			throw std::logic_error(
 					"_multiidx2n: Sub-index exceeds corresponding dimension!");
 
 	size_t *part_prod = new size_t[numdims];

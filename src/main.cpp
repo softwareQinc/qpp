@@ -21,6 +21,7 @@
 // TODO: optimize syspermute: column major ordering + ?Eigen::Map?
 // TODO: Rewrite partial trace without syspermute IMPORTANT!!!!
 // TODO: check agains zero-size matrices (i.e. non-initialized)
+// TODO: logic_error / runtime_error
 
 using namespace std;
 

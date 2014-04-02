@@ -26,7 +26,7 @@ template<typename Scalar>
 types::DynMat<Scalar> loadMATLABmatrix(const std::string &mat_file,
 		const std::string & var_name)
 {
-	throw std::runtime_error(
+	throw std::logic_error(
 			"loadMATLABmatrix: not implemented for this type!");
 }
 
@@ -135,7 +135,7 @@ void saveMATLABmatrix(const types::DynMat<Scalar> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
-	throw std::runtime_error(
+	throw std::logic_error(
 			"saveMATLABmatrix: not implemented for this type!");
 }
 
