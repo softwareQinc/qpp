@@ -26,7 +26,8 @@ template<typename Scalar>
 types::DynMat<Scalar> loadMATLABmatrix(const std::string &mat_file,
 		const std::string & var_name)
 {
-	throw std::runtime_error("loadMATLABmatrix: not implemented for this type!");
+	throw std::runtime_error(
+			"loadMATLABmatrix: not implemented for this type!");
 }
 
 // double specialization
@@ -38,7 +39,8 @@ inline types::DynMat<double> loadMATLABmatrix(const std::string &mat_file,
 	MATFile *pmat = matOpen(mat_file.c_str(), "r");
 	if (pmat == NULL)
 	{
-		throw std::runtime_error("loadMATLABmatrix: can not open MATLAB input file!");
+		throw std::runtime_error(
+				"loadMATLABmatrix: can not open MATLAB input file!");
 	}
 
 	mxArray *pa = matGetVariable(pmat, var_name.c_str());
@@ -70,13 +72,14 @@ inline types::DynMat<double> loadMATLABmatrix(const std::string &mat_file,
 
 // complex specialization
 template<>
-inline types::DynMat<types::cplx> loadMATLABmatrix(
-		const std::string &mat_file, const std::string & var_name)
+inline types::DynMat<types::cplx> loadMATLABmatrix(const std::string &mat_file,
+		const std::string & var_name)
 {
 	MATFile *pmat = matOpen(mat_file.c_str(), "r");
 	if (pmat == NULL)
 	{
-		throw std::runtime_error("loadMATLABmatrix: can not open MATLAB input file!");
+		throw std::runtime_error(
+				"loadMATLABmatrix: can not open MATLAB input file!");
 	}
 
 	mxArray *pa = matGetVariable(pmat, var_name.c_str());
@@ -132,7 +135,8 @@ void saveMATLABmatrix(const types::DynMat<Scalar> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
-	throw std::runtime_error("saveMATLABmatrix: not implemented for this type!");
+	throw std::runtime_error(
+			"saveMATLABmatrix: not implemented for this type!");
 }
 
 template<> // double specialization

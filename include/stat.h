@@ -85,15 +85,17 @@ public:
 			_d()
 	{
 		std::vector<double> weights;
-		for (auto i : amplitudes)
+		for (types::cplx i : amplitudes)
 			weights.push_back(std::abs(i));
 		std::discrete_distribution<size_t> tmp(weights.begin(), weights.end());
 		_d = tmp;
 	}
-	template<typename InputIterator>
-	DiscreteDistributionFromComplex(InputIterator first, InputIterator last)
-	{
-	}
+
+//	template<typename InputIterator>
+//	DiscreteDistributionFromComplex(InputIterator first, InputIterator last)
+//	{
+//	}
+
 	DiscreteDistributionFromComplex(std::vector<double> weights) :
 			_d(weights.begin(), weights.end())
 	{

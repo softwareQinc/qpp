@@ -56,7 +56,7 @@ int main()
 
 	// Lazy matrix product
 	cout << endl << "Lazy matrix product timing." << endl;
-	auto b=randcmat * randcmat;
+	auto b = randcmat * randcmat;
 	t.toc(); // read the time
 	cout << "Took " << t << " seconds." << endl;
 

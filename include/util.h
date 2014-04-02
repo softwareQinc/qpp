@@ -64,9 +64,9 @@ types::DynMat<OutputScalar> fun(const types::DynMat<InputScalar> &A,
 
 	types::DynMat<OutputScalar> result(A.rows(), A.cols());
 
-	for (size_t j = 0; j < A.cols(); j++)
+	for (size_t j = 0; j < static_cast<size_t>(A.cols()); j++)
 #pragma omp parallel for
-		for (size_t i = 0; i < A.rows(); i++)
+		for (size_t i = 0; i < static_cast<size_t>(A.rows()); i++)
 			result(i, j) = (*f)(A(i, j));
 
 	return result;
@@ -119,17 +119,17 @@ template<typename Scalar>
 types::DynMat<Scalar> kron(const types::DynMat<Scalar> &A,
 		const types::DynMat<Scalar> &B)
 {
-	int Acols = A.cols();
-	int Arows = A.rows();
-	int Bcols = B.cols();
-	int Brows = B.rows();
+	size_t Acols = static_cast<size_t>(A.cols());
+	size_t Arows = static_cast<size_t>(A.rows());
+	size_t Bcols = static_cast<size_t>(B.cols());
+	size_t Brows = static_cast<size_t>(B.rows());
 
 	types::DynMat<Scalar> result;
 	result.resize(Arows * Brows, Acols * Bcols);
 
-	for (int j = 0; j < Acols; j++)
+	for (size_t j = 0; j < Acols; j++)
 #pragma omp parallel for
-		for (int i = 0; i < Arows; i++)
+		for (size_t i = 0; i < Arows; i++)
 			result.block(i * Brows, j * Bcols, Brows, Bcols) = A.eval()(i, j)
 					* B.eval();
 
@@ -164,10 +164,10 @@ template<typename Scalar>
 types::DynMat<Scalar> reshape(const types::DynMat<Scalar>& A, size_t rows,
 		size_t cols)
 {
-	size_t rowsA = A.rows();
-	size_t colsA = A.cols();
+	size_t Arows = static_cast<size_t>(A.rows());
+	size_t Acols = static_cast<size_t>(A.cols());
 
-	if (rowsA * colsA != rows * cols)
+	if (Arows * Acols != rows * cols)
 		throw std::runtime_error("reshape: Dimension mismatch!");
 
 	return Eigen::Map<types::DynMat<Scalar>>(A.data(), rows, cols);

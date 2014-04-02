@@ -36,7 +36,7 @@ types::cmat funm(const types::DynMat<Scalar> &A,
 	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
 	types::cmat evects = es.eigenvectors();
 	types::cmat evals = es.eigenvalues();
-	for (int i = 0; i < evals.rows(); i++)
+	for (size_t i = 0; i < static_cast<size_t>(evals.rows()); i++)
 		evals(i) = (*f)(evals(i)); // apply f(x) to each eigenvalue
 
 	types::cmat evalsdiag = evals.asDiagonal();
@@ -89,8 +89,7 @@ types::cmat cosm(const types::DynMat<Scalar> &A)
 
 // Matrix power A^z (CHANGES return type to complex matrix)
 template<typename Scalar>
-types::cmat powm(const types::DynMat<Scalar> &A,
-		const types::cplx z)
+types::cmat powm(const types::DynMat<Scalar> &A, const types::cplx z)
 
 {
 	// check square matrix
@@ -108,7 +107,7 @@ types::cmat powm(const types::DynMat<Scalar> &A,
 	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
 	types::cmat evects = es.eigenvectors();
 	types::cmat evals = es.eigenvalues();
-	for (int i = 0; i < evals.rows(); i++)
+	for (size_t i = 0; i < static_cast<size_t>(evals.rows()); i++)
 		evals(i) = std::pow(static_cast<types::cplx>(evals(i)),
 				static_cast<types::cplx>(z));
 
@@ -121,8 +120,7 @@ types::cmat powm(const types::DynMat<Scalar> &A,
 // Matrix integer power, preserve return type
 // Explicitly multiply the matrix with itself n times
 template<typename Scalar>
-types::DynMat<Scalar> powm_int(
-		const types::DynMat<Scalar> &A, size_t n)
+types::DynMat<Scalar> powm_int(const types::DynMat<Scalar> &A, size_t n)
 {
 // check square matrix
 	if (!internal::_check_square_mat(A))

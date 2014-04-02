@@ -42,7 +42,7 @@ public:
 
 	friend std::ostream& operator<<(std::ostream &os, const Timer& rhs)
 	{
-		return os<<rhs.seconds();
+		return os << rhs.seconds();
 	}
 
 	virtual ~Timer() = default;

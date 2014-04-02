@@ -60,7 +60,7 @@ inline types::cmat rand_unitary(size_t size)
 	// uniformly distributed according to the Haar measure
 
 	Eigen::VectorXcd phases = (rand(size, 1)).cast<types::cplx>();
-	for (size_t i = 0; i < (size_t) phases.rows(); i++)
+	for (size_t i = 0; i < static_cast<size_t>(phases.rows()); i++)
 		phases(i) = std::exp((types::cplx) (2 * ct::pi * ct::ii * phases(i)));
 
 	Q = Q * phases.asDiagonal();

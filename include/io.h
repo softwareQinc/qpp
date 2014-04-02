@@ -34,15 +34,15 @@ void disp(const types::DynMat<Scalar> &A, double chop = ct::chop,
 	};
 
 	std::ostringstream ostr;
-	ostr.flags(os.flags());// get the formatting flags
+	ostr.flags(os.flags()); // get the formatting flags
 	ostr.precision(os.precision()); // set precision
 
 	std::vector<std::string> vstr;
 	std::string strtmp;
 
-	for (int i = 0; i < tmp.rows(); i++)
+	for (size_t i = 0; i < static_cast<size_t>(tmp.rows()); i++)
 	{
-		for (int j = 0; j < tmp.cols(); j++)
+		for (size_t j = 0; j < static_cast<size_t>(tmp.cols()); j++)
 		{
 			strtmp.clear(); // clear the temporary string
 			ostr.clear();
@@ -62,7 +62,7 @@ void disp(const types::DynMat<Scalar> &A, double chop = ct::chop,
 			}
 			else if (std::abs(im) < chop)
 			{
-				ostr  << re;
+				ostr << re;
 				vstr.push_back(ostr.str() + " ");
 			}
 			else
@@ -84,21 +84,21 @@ void disp(const types::DynMat<Scalar> &A, double chop = ct::chop,
 // determine the maximum lenght of the entries in each column
 	std::vector<size_t> maxlengthcols(tmp.cols(), 0);
 
-	for (int i = 0; i < tmp.rows(); i++)
-		for (int j = 0; j < tmp.cols(); j++)
+	for (size_t i = 0; i < static_cast<size_t>(tmp.rows()); i++)
+		for (size_t j = 0; j < static_cast<size_t>(tmp.cols()); j++)
 			if (vstr[i * tmp.cols() + j].size() > maxlengthcols[j])
 				maxlengthcols[j] = vstr[i * tmp.cols() + j].size();
 
 // finally display it!
-	for (int i = 0; i < tmp.rows(); i++)
+	for (size_t i = 0; i < static_cast<size_t>(tmp.rows()); i++)
 	{
 		os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
 				<< vstr[i * tmp.cols()]; // display first column
-		for (int j = 1; j < tmp.cols(); j++) // then the rest
+		for (size_t j = 1; j < static_cast<size_t>(tmp.cols()); j++) // then the rest
 			os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
 					<< std::right << vstr[i * tmp.cols() + j];
 
-		if (i < tmp.rows() - 1)
+		if (i < static_cast<size_t>(tmp.rows()) - 1)
 			os << std::endl;
 	}
 }
@@ -134,8 +134,7 @@ inline void displn(const types::cplx c, double chop = ct::chop,
 
 // save matrix to a binary file in double precision
 template<typename Scalar>
-void save(const types::DynMat<Scalar> & A,
-		const std::string& fname)
+void save(const types::DynMat<Scalar> & A, const std::string& fname)
 {
 	std::fstream fout;
 	fout.open(fname.c_str(), std::ios::out | std::ios::binary);
@@ -151,12 +150,12 @@ void save(const types::DynMat<Scalar> & A,
 	const char _header[] = "TYPE::Eigen::Matrix";
 	fout.write(_header, sizeof(_header));
 
-	size_t rows = A.rows();
-	size_t cols = A.cols();
-	fout.write((char*) &rows, sizeof(rows));
-	fout.write((char*) &cols, sizeof(cols));
+	size_t rows = static_cast<size_t>(A.rows());
+	size_t cols = static_cast<size_t>(A.cols());
+	fout.write((char *) &rows, sizeof(rows));
+	fout.write((char *) &cols, sizeof(cols));
 
-	fout.write((char*) static_cast<Scalar>(A).data(),
+	fout.write((char *) static_cast<Scalar>(A).data(),
 			sizeof(types::DynMat<Scalar>) * rows * cols);
 
 	fout.close();
@@ -191,13 +190,12 @@ types::DynMat<Scalar> load(const std::string& fname)
 	delete[] _fheader;
 
 	size_t rows, cols;
-	fin.read((char*) &rows, sizeof(rows));
-	fin.read((char*) &cols, sizeof(cols));
+	fin.read((char *) &rows, sizeof(rows));
+	fin.read((char *) &cols, sizeof(cols));
 
 	types::DynMat<Scalar> A(rows, cols);
 
-	fin.read((char*) A.data(),
-			sizeof(Scalar) * rows * cols);
+	fin.read((char *) A.data(), sizeof(Scalar) * rows * cols);
 
 	fin.close();
 	return A;

@@ -96,7 +96,7 @@ bool _check_dims_match_mat(const std::vector<size_t>& dims,
 // check that dims is a valid dimension vector
 inline bool _check_dims(const std::vector<size_t>& dims)
 {
-	if (std::find_if(dims.begin(), dims.end(), [&dims](int i) -> bool
+	if (std::find_if(dims.begin(), dims.end(), [&dims](size_t i) -> bool
 	{	if(i==0) return true;
 		else return false;}) != dims.end())
 		return false;
@@ -106,7 +106,7 @@ inline bool _check_dims(const std::vector<size_t>& dims)
 // check that all elements in dims equal to dim
 inline bool _check_eq_dims(const std::vector<size_t> &dims, size_t dim)
 {
-	for (auto i : dims)
+	for (size_t i : dims)
 		if (i != dim)
 			return false;
 	return true;
@@ -152,7 +152,7 @@ inline bool _check_perm(const std::vector<size_t>& perm,
 
 // used inside the #pragma omp parallel for in syspermute
 template<typename Scalar>
-inline void _syspermute_worker(const size_t* midxcol, size_t numdims,
+inline void _syspermute_worker(const size_t *midxcol, size_t numdims,
 		const size_t *cdims, const size_t *cperm, size_t i, size_t j,
 		size_t &iperm, size_t &jperm, const types::DynMat<Scalar> &A,
 		types::DynMat<Scalar> &result)
@@ -187,10 +187,9 @@ inline void _syspermute_worker(const size_t* midxcol, size_t numdims,
 
 // used inside the #pragma omp parallel for in ptranspose
 template<typename Scalar>
-inline void _ptranspose_worker(const size_t* midxcol, size_t numdims,
+inline void _ptranspose_worker(const size_t *midxcol, size_t numdims,
 		size_t numsubsys, const size_t *cdims, const size_t *csubsys, size_t i,
-		size_t j, size_t &iperm, size_t &jperm,
-		const types::DynMat<Scalar> &A,
+		size_t j, size_t &iperm, size_t &jperm, const types::DynMat<Scalar> &A,
 		types::DynMat<Scalar> &result)
 {
 	size_t *midxcoltmp = new size_t[numdims];

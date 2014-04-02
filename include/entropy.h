@@ -28,7 +28,7 @@ double shannon(const types::DynMat<Scalar> & A)
 		double result = 0;
 		// take the absolut values of the entries
 		// to get rid of unwanted imaginary parts
-		for (size_t i = 0; i < A.size(); i++)
+		for (size_t i = 0; i < static_cast<size_t>(A.size()); i++)
 			if (std::abs(A(i)) != 0)
 				result -= std::abs(A(i)) * std::log2(std::abs(A(i)));
 
@@ -45,7 +45,7 @@ double shannon(const types::DynMat<Scalar> & A)
 	double result = 0;
 	// take the absolut values of the entries
 	// to get rid of unwanted imaginary parts
-	for (size_t i = 0; i < ev.rows(); i++)
+	for (size_t i = 0; i < static_cast<size_t>(ev.rows()); i++)
 		if (std::abs((types::cplx) ev(i)) != 0)
 			result -= std::abs((types::cplx) ev(i))
 					* std::log2(std::abs((types::cplx) ev(i)));
@@ -72,7 +72,7 @@ double renyi(const double alpha, const types::DynMat<Scalar> & A)
 		double result = 0;
 		// take the absolut values of the entries
 		// to get rid of unwanted imaginary parts
-		for (size_t i = 0; i < A.size(); i++)
+		for (size_t i = 0; i < static_cast<size_t>(A.size()); i++)
 			if (std::abs((types::cplx) A(i)) != 0)
 				result += std::pow(std::abs(A(i)), alpha);
 
@@ -93,7 +93,7 @@ double renyi(const double alpha, const types::DynMat<Scalar> & A)
 	double result = 0;
 	// take the absolut values of the entries
 	// to get rid of unwanted imaginary parts
-	for (size_t i = 0; i < ev.rows(); i++)
+	for (size_t i = 0; i < static_cast<size_t>(ev.rows()); i++)
 		if (std::abs((types::cplx) ev(i)) != 0)
 			result += std::pow(std::abs((types::cplx) ev(i)), alpha);
 
@@ -108,7 +108,7 @@ double renyi_inf(const types::DynMat<Scalar> & A)
 	if (A.rows() == 1 || A.cols() == 1)
 	{
 		double max = 0;
-		for (size_t i = 0; i < A.size(); i++)
+		for (size_t i = 0; i < static_cast<size_t>(A.size()); i++)
 			if (std::abs(A(i)) > max)
 				max = std::abs(A(i));
 
@@ -126,7 +126,7 @@ double renyi_inf(const types::DynMat<Scalar> & A)
 	double max = 0;
 	// take the absolut values of the entries
 	// to get rid of unwanted imaginary parts
-	for (size_t i = 0; i < ev.size(); i++)
+	for (size_t i = 0; i < static_cast<size_t>(ev.size()); i++)
 		if (std::abs((types::cplx) ev(i)) > max)
 			max = std::abs((types::cplx) ev(i));
 

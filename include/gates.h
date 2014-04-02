@@ -121,7 +121,7 @@ inline types::cmat Xd(size_t D)
 // two qudit gates
 inline types::cmat CUd(const types::cmat &U)
 {
-	size_t D = U.cols(); // retrieves the dimension from the size of U
+	size_t D = static_cast<size_t>(U.cols()); // retrieves the dimension from the size of U
 	types::cmat result(D * D, D * D);
 	result = types::cmat::Zero(D * D, D * D);
 	types::cmat tmp(D, D);
