@@ -16,11 +16,12 @@
 // TODO: proj (dya) function
 // TODO: ip (inner product function) function, make it general to return matrices
 // TODO: Error class
-// TODO: change all for(s) to column major order
 // TODO: use .data() raw pointer instead of looping
 // TODO: optimize syspermute: column major ordering + ?Eigen::Map?
 // TODO: Rewrite partial trace without syspermute IMPORTANT!!!!
 // TODO: check agains zero-size matrices (i.e. non-initialized)
+// TODO: logic_error / runtime_error
+// TODO: further parallelization
 
 using namespace std;
 

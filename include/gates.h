@@ -107,8 +107,8 @@ inline types::cmat Fd(size_t D)
 {
 	types::cmat result(D, D);
 	result = types::cmat::Zero(D, D);
-	for (size_t i = 0; i < D; i++)
-		for (size_t j = 0; j < D; j++)
+	for (size_t j = 0; j < D; j++)
+		for (size_t i = 0; i < D; i++)
 			result(i, j) = 1 / std::sqrt(D) * pow(ct::omega(D), i * j);
 	return result;
 }
