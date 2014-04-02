@@ -41,8 +41,8 @@ int main()
 	// statistics tests
 	cout << endl << "Statistics tests." << endl;
 	std::vector<cplx> ampl = { 1. + ct::ii, 1. - ct::ii };
-	cmat va(1,4);
-	va << 0.1,1, 1. + ct::ii, 1. + 2. * ct::ii;
+	cmat va(1, 4);
+	va << 0.1, 1, 1. + ct::ii, 1. + 2. * ct::ii;
 	stat::DiscreteDistributionFromComplex dc(va);
 	cout << "The probabilities are: [";
 	internal::_disp_container(dc.probabilities());

@@ -26,8 +26,7 @@ template<typename Scalar>
 types::DynMat<Scalar> loadMATLABmatrix(const std::string &mat_file,
 		const std::string & var_name)
 {
-	throw std::logic_error(
-			"loadMATLABmatrix: not implemented for this type!");
+	throw std::logic_error("loadMATLABmatrix: not implemented for this type!");
 }
 
 // double specialization
@@ -135,8 +134,7 @@ void saveMATLABmatrix(const types::DynMat<Scalar> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
-	throw std::logic_error(
-			"saveMATLABmatrix: not implemented for this type!");
+	throw std::logic_error("saveMATLABmatrix: not implemented for this type!");
 }
 
 template<> // double specialization
@@ -153,7 +151,8 @@ void saveMATLABmatrix(const types::DynMat<double> &A,
 
 	mxArray *pa = mxCreateDoubleMatrix(A.rows(), A.cols(), mxREAL);
 	if (pa == NULL)
-		throw std::runtime_error("saveMATLABmatrix: mxCreateDoubleMatrix failed!");
+		throw std::runtime_error(
+				"saveMATLABmatrix: mxCreateDoubleMatrix failed!");
 
 	std::memcpy(mxGetPr(pa), A.data(), sizeof(double) * A.size());
 
@@ -184,7 +183,8 @@ void saveMATLABmatrix(const types::DynMat<types::cplx> &A,
 
 	mxArray *pa = mxCreateDoubleMatrix(tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);
 	if (pa == NULL)
-		throw std::runtime_error("saveMATLABmatrix: mxCreateDoubleMatrix failed!");
+		throw std::runtime_error(
+				"saveMATLABmatrix: mxCreateDoubleMatrix failed!");
 
 	double *pa_re, *pa_im;
 

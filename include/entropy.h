@@ -38,8 +38,9 @@ double shannon(const types::DynMat<Scalar> & A)
 	// matrix
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("shannon: Input must be a row/column vector "
-				"or a square matrix!");
+		throw std::invalid_argument(
+				"shannon: Input must be a row/column vector "
+						"or a square matrix!");
 	// get the eigenvalues
 	types::cmat ev = evals(A);
 	double result = 0;
@@ -118,8 +119,9 @@ double renyi_inf(const types::DynMat<Scalar> & A)
 	// matrix
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("renyi_inf: Input must be a row/column vector "
-				"or a square matrix!");
+		throw std::invalid_argument(
+				"renyi_inf: Input must be a row/column vector "
+						"or a square matrix!");
 
 	// get the eigenvalues
 	types::cmat ev = evals(A);
