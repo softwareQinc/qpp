@@ -20,7 +20,6 @@
 // TODO: optimize syspermute: column major ordering + ?Eigen::Map?
 // TODO: Rewrite partial trace without syspermute IMPORTANT!!!!
 // TODO: check agains zero-size matrices (i.e. non-initialized)
-// TODO: logic_error / runtime_error
 // TODO: further parallelization
 
 using namespace std;
@@ -42,8 +41,8 @@ int main()
 	// statistics tests
 	cout << endl << "Statistics tests." << endl;
 	std::vector<cplx> ampl = { 1. + ct::ii, 1. - ct::ii };
-	cmat va(1, 3);
-	va << 1, 1. + ct::ii, 1. + 2. * ct::ii;
+	cmat va(1,4);
+	va << 0.1,1, 1. + ct::ii, 1. + 2. * ct::ii;
 	stat::DiscreteDistributionFromComplex dc(va);
 	cout << "The probabilities are: [";
 	internal::_disp_container(dc.probabilities());

@@ -31,7 +31,7 @@ types::cmat funm(const types::DynMat<Scalar> &A,
 {
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::logic_error("funm: Matrix must be square!");
+		throw std::invalid_argument("funm: Matrix must be square!");
 
 	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
 	types::cmat evects = es.eigenvectors();
@@ -94,7 +94,7 @@ types::cmat powm(const types::DynMat<Scalar> &A, const types::cplx z)
 {
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::logic_error("mpower: Matrix must be square!");
+		throw std::invalid_argument("mpower: Matrix must be square!");
 
 	// Define A^0 = Id
 	if (real(z) == 0 && imag(z) == 0)
@@ -124,7 +124,7 @@ types::DynMat<Scalar> powm_int(const types::DynMat<Scalar> &A, size_t n)
 {
 // check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::logic_error("mpower_n: Matrix must be square!");
+		throw std::invalid_argument("mpower_n: Matrix must be square!");
 
 	types::DynMat<Scalar> result = A;
 

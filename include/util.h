@@ -168,7 +168,7 @@ types::DynMat<Scalar> reshape(const types::DynMat<Scalar>& A, size_t rows,
 	size_t Acols = static_cast<size_t>(A.cols());
 
 	if (Arows * Acols != rows * cols)
-		throw std::logic_error("reshape: Dimension mismatch!");
+		throw std::invalid_argument("reshape: Dimension mismatch!");
 
 	return Eigen::Map<types::DynMat<Scalar>>(A.data(), rows, cols);
 }
@@ -182,21 +182,21 @@ types::DynMat<Scalar> syspermute(const types::DynMat<Scalar> &A,
 
 // check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::logic_error("syspermute: Matrix must be square!");
+		throw std::invalid_argument("syspermute: Matrix must be square!");
 
 // check that dims is a valid dimension vector
 	if (!internal::_check_dims(dims))
-		throw std::logic_error("syspermute: Invalid dimensions vector!");
+		throw std::invalid_argument("syspermute: Invalid dimensions vector!");
 
 // check that dims match the dimension of A
 	if (!internal::_check_dims_match_mat(dims, A))
-		throw std::logic_error(
+		throw std::invalid_argument(
 				"syspermute: Dimenisons vector does not match the dimension "
 						"of the matrix!");
 
 // check that the size of the permutation is OK
 	if (!internal::_check_perm(perm, dims))
-		throw std::logic_error("syspermute: Invalid permutation size!");
+		throw std::invalid_argument("syspermute: Invalid permutation size!");
 
 	size_t dim = static_cast<size_t>(A.rows());
 	size_t numdims = dims.size();
@@ -240,19 +240,19 @@ types::DynMat<Scalar> ptrace2(const types::DynMat<Scalar> &A,
 
 // check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::logic_error("ptrace2: Matrix must be square!");
+		throw std::invalid_argument("ptrace2: Matrix must be square!");
 
 // check dims has only 2 elements
 	if (dims.size() != 2)
-		throw std::logic_error("ptrace2: Must have only 2 dimensions!");
+		throw std::invalid_argument("ptrace2: Must have only 2 subsystems!");
 
 // check that dim is a valid dimension vector
 	if (!internal::_check_dims(dims))
-		throw std::logic_error("ptrace2: Invalid dimensions vector!");
+		throw std::invalid_argument("ptrace2: Invalid dimensions vector!");
 
 // check that dims match the dimension of A
 	if (!internal::_check_dims_match_mat(dims, A))
-		throw std::logic_error(
+		throw std::invalid_argument(
 				"ptrace2: Dimenisons vector does not match the "
 						"dimension of the matrix!");
 
@@ -279,20 +279,20 @@ types::DynMat<Scalar> ptrace(const types::DynMat<Scalar> &A,
 
 // check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::logic_error("ptrace: Matrix must be square!");
+		throw std::invalid_argument("ptrace: Matrix must be square!");
 
 // check that dims is a valid dimension vector
 	if (!internal::_check_dims(dims))
-		throw std::logic_error("ptrace: Invalid dimensions vector!");
+		throw std::invalid_argument("ptrace: Invalid dimensions vector!");
 
 // check that dims match the dimension of A
 	if (!internal::_check_dims_match_mat(dims, A))
-		throw std::logic_error(
+		throw std::invalid_argument(
 				"ptrace: Dimenisons vector does not match the dimension"
 						" of the matrix!");
 
 	if (!internal::_check_subsys(subsys, dims))
-		throw std::logic_error("ptrace: Invalid subsystems!");
+		throw std::invalid_argument("ptrace: Invalid subsystems!");
 
 	size_t dim = static_cast<size_t>(A.rows());
 	size_t numsubsys = subsys.size(); // number of subsystems we trace out
@@ -341,20 +341,20 @@ types::DynMat<Scalar> ptranspose(const types::DynMat<Scalar>& A,
 
 // check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::logic_error("ptranspose: Matrix must be square!");
+		throw std::invalid_argument("ptranspose: Matrix must be square!");
 
 // check that dims is a valid dimension vector
 	if (!internal::_check_dims(dims))
-		throw std::logic_error("ptranspose: Invalid dimensions vector!");
+		throw std::invalid_argument("ptranspose: Invalid dimensions vector!");
 
 // check that dims match the dimension of A
 	if (!internal::_check_dims_match_mat(dims, A))
-		throw std::logic_error(
+		throw std::invalid_argument(
 				"ptranspose: Dimenisons vector does not match the "
 						"dimension of the matrix!");
 
 	if (!internal::_check_subsys(subsys, dims))
-		throw std::logic_error("ptranspose: Invalid subsystems!");
+		throw std::invalid_argument("ptranspose: Invalid subsystems!");
 
 	size_t dim = static_cast<size_t>(A.rows());
 	size_t numdims = dims.size();

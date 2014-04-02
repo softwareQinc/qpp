@@ -153,7 +153,7 @@ void saveMATLABmatrix(const types::DynMat<double> &A,
 
 	mxArray *pa = mxCreateDoubleMatrix(A.rows(), A.cols(), mxREAL);
 	if (pa == NULL)
-		throw std::runtime_error("saveMATLABmatrix: can not create mxArray!");
+		throw std::runtime_error("saveMATLABmatrix: mxCreateDoubleMatrix failed!");
 
 	std::memcpy(mxGetPr(pa), A.data(), sizeof(double) * A.size());
 
@@ -184,7 +184,7 @@ void saveMATLABmatrix(const types::DynMat<types::cplx> &A,
 
 	mxArray *pa = mxCreateDoubleMatrix(tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);
 	if (pa == NULL)
-		throw std::runtime_error("saveMATLABmatrix: can not create mxArray!");
+		throw std::runtime_error("saveMATLABmatrix: mxCreateDoubleMatrix failed!");
 
 	double *pa_re, *pa_im;
 

@@ -94,7 +94,6 @@ public:
 	}
 };
 
-//TODO: Add constructor for cmat
 class DiscreteDistributionFromComplex
 {
 protected:
@@ -143,11 +142,11 @@ public:
 			_d()
 	{
 		if (!internal::_check_nonzero_size(v))
-			throw std::logic_error(
+			throw std::invalid_argument(
 					"DiscreteDistributionFromComplex::DiscreteDistributionFromComplex: "
 							"zero-sized matrix!");
 		if (!internal::_check_vector(v))
-			throw std::logic_error(
+			throw std::invalid_argument(
 					"DiscreteDistributionFromComplex::DiscreteDistributionFromComplex: "
 							"input must be a row/column vector!");
 		std::vector<double> weights = cplx2double(v.data(),
