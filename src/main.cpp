@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "qpp.h"
+#include "internal.h"
 //#include "matlab.h" // support for MATLAB
 
 // TODO: expandout function
@@ -19,6 +20,7 @@
 // TODO: use .data() raw pointer instead of looping
 // TODO: optimize syspermute: column major ordering + ?Eigen::Map?
 // TODO: Rewrite partial trace without syspermute IMPORTANT!!!!
+// TODO: check agains zero-size matrices (i.e. non-initialized)
 
 using namespace std;
 
@@ -28,6 +30,7 @@ using namespace qpp::types;
 //int main(int argc, char **argv)
 int main()
 {
+	cout << "Starting qpp..." << endl;
 	_init();
 
 	// Display formatting
@@ -35,8 +38,17 @@ int main()
 //	cout << std::scientific;
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
-	cout << "Starting qpp..." << endl;
+	// statistics tests
+	cout << endl << "Statistics tests." << endl;
+	std::vector<cplx> ampl = { 1. + ct::ii, 1. - ct::ii };
+	cmat va(1, 3);
+	va << 1, 1. + ct::ii, 1. + 2. * ct::ii;
+	stat::DiscreteDistributionFromComplex dc(va);
+	cout << "The probabilities are: [";
+	internal::_disp_container(dc.probabilities());
+	cout << "]" << endl;
 
+	// other tests
 	size_t n = 12; // number of qubits
 	size_t N = std::pow(2, n);
 	vector<size_t> dims; // local dimensions

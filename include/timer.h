@@ -18,6 +18,7 @@ class Timer
 {
 protected:
 	std::chrono::high_resolution_clock::time_point _start, _end;
+
 public:
 	Timer() :
 			_start(std::chrono::high_resolution_clock::now()), _end(_start)

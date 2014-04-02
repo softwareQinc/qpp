@@ -80,6 +80,24 @@ bool _check_square_mat(const types::DynMat<Scalar>& A)
 	return true;
 }
 
+// check whether input is a vector or not
+template<typename Scalar>
+bool _check_vector(const types::DynMat<Scalar>& A)
+{
+	if (A.rows() != 1 && A.cols() != 1)
+		return false;
+	return true;
+}
+
+// check whether input is a vector or not
+template<typename Scalar>
+bool _check_nonzero_size(const types::DynMat<Scalar>& A)
+{
+	if (A.size() == 0)
+		return false;
+	return true;
+}
+
 // check that dims match the dimension of the matrix
 template<typename Scalar>
 bool _check_dims_match_mat(const std::vector<size_t>& dims,
