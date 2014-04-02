@@ -19,7 +19,6 @@
 // TODO: use .data() raw pointer instead of looping
 // TODO: optimize syspermute: column major ordering + ?Eigen::Map?
 // TODO: Rewrite partial trace without syspermute IMPORTANT!!!!
-// TODO: rewrite all functions so that they work only on matrices and not matrix expressions; user should cast them automatically
 
 using namespace std;
 
@@ -61,19 +60,19 @@ int main()
 	t.toc(); // read the time
 	cout << "Took " << t << " seconds." << endl;
 
-	// ptrace2 timing
-	cout << endl << "ptrace2 timing." << endl;
-	t.tic(); // reset the chronometer
-	// trace away half of the qubits
-	ptrace2(randcmat, { (size_t) std::sqrt(N), (size_t) std::sqrt(N) });
-	t.toc(); // read the time
-	cout << "Took " << t << " seconds." << endl;
-
 	// Matrix product
 	cout << endl << "Matrix product timing." << endl;
 	t.tic(); // reset the chronometer
 	cmat prodmat;
 	prodmat = randcmat * randcmat; // need this (otherwise lazy evaluation)
+	t.toc(); // read the time
+	cout << "Took " << t << " seconds." << endl;
+
+	// ptrace2 timing
+	cout << endl << "ptrace2 timing." << endl;
+	t.tic(); // reset the chronometer
+	// trace away half of the qubits
+	ptrace2(randcmat, { (size_t) std::sqrt(N), (size_t) std::sqrt(N) });
 	t.toc(); // read the time
 	cout << "Took " << t << " seconds." << endl;
 
