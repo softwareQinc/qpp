@@ -19,8 +19,8 @@ namespace qpp
 {
 
 // Shannon/von-Neumann entropy
-template<typename Expression>
-double shannon(const Eigen::MatrixBase<Expression> & A)
+template<typename Scalar>
+double shannon(const types::DynMat<Scalar> & A)
 {
 	// vector
 	if (A.rows() == 1 || A.cols() == 1)
@@ -54,8 +54,8 @@ double shannon(const Eigen::MatrixBase<Expression> & A)
 }
 
 // Renyi-alpha entropy (alpha>=0)
-template<typename Expression>
-double renyi(const double alpha, const Eigen::MatrixBase<Expression> & A)
+template<typename Scalar>
+double renyi(const double alpha, const types::DynMat<Scalar> & A)
 {
 	if (alpha < 0)
 		throw std::runtime_error("renyi: alpha can not be negative!");
@@ -101,8 +101,8 @@ double renyi(const double alpha, const Eigen::MatrixBase<Expression> & A)
 }
 
 // Renyi-infinity entropy (min entropy)
-template<typename Expression>
-double renyi_inf(const Eigen::MatrixBase<Expression> & A)
+template<typename Scalar>
+double renyi_inf(const types::DynMat<Scalar> & A)
 {
 	// vector
 	if (A.rows() == 1 || A.cols() == 1)

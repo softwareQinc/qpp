@@ -21,11 +21,11 @@ namespace qpp
 {
 
 // Displays an Eigen::MatrixX in friendly form
-template<typename Expression>
-void disp(const Eigen::MatrixBase<Expression> &A, double chop = ct::chop,
+template<typename Scalar>
+void disp(const types::DynMat<Scalar> &A, double chop = ct::chop,
 		std::ostream& os = std::cout)
 {
-	types::Expression2Matrix<Expression> tmp = A;
+	types::DynMat<Scalar> tmp = A;
 
 	if (tmp.rows() * tmp.cols() == 0)
 	{
@@ -105,8 +105,8 @@ void disp(const Eigen::MatrixBase<Expression> &A, double chop = ct::chop,
 
 // Displays an Eigen::MatrixX in friendly form
 // Adds new line after display
-template<typename Expression>
-void displn(const Eigen::MatrixBase<Expression> &A, double chop = ct::chop,
+template<typename Scalar>
+void displn(const types::DynMat<Scalar> &A, double chop = ct::chop,
 		std::ostream& os = std::cout)
 {
 	disp(A, chop, os);
@@ -133,8 +133,8 @@ inline void displn(const types::cplx c, double chop = ct::chop,
 }
 
 // save matrix to a binary file in double precision
-template<typename Expression>
-void save(const Eigen::MatrixBase<Expression> & A,
+template<typename Scalar>
+void save(const types::DynMat<Scalar> & A,
 		const std::string& fname)
 {
 	std::fstream fout;
@@ -156,15 +156,15 @@ void save(const Eigen::MatrixBase<Expression> & A,
 	fout.write((char*) &rows, sizeof(rows));
 	fout.write((char*) &cols, sizeof(cols));
 
-	fout.write((char*) static_cast<Expression>(A).data(),
-			sizeof(typename Expression::Scalar) * rows * cols);
+	fout.write((char*) static_cast<Scalar>(A).data(),
+			sizeof(types::DynMat<Scalar>) * rows * cols);
 
 	fout.close();
 }
 
 // load matrix from binary file
-template<typename Expression>
-Expression load(const std::string& fname)
+template<typename Scalar>
+types::DynMat<Scalar> load(const std::string& fname)
 {
 	std::fstream fin;
 	fin.open(fname.c_str(), std::ios::in | std::ios::binary);
@@ -194,10 +194,10 @@ Expression load(const std::string& fname)
 	fin.read((char*) &rows, sizeof(rows));
 	fin.read((char*) &cols, sizeof(cols));
 
-	Expression A(rows, cols);
+	types::DynMat<Scalar> A(rows, cols);
 
 	fin.read((char*) A.data(),
-			sizeof(typename Expression::Scalar) * rows * cols);
+			sizeof(Scalar) * rows * cols);
 
 	fin.close();
 	return A;

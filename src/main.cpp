@@ -17,8 +17,9 @@
 // TODO: Error class
 // TODO: change all for(s) to column major order
 // TODO: use .data() raw pointer instead of looping
-// TODO: optimize syspermute
-// TODO: Use Eigen::Map in syspermute
+// TODO: optimize syspermute: column major ordering + ?Eigen::Map?
+// TODO: Rewrite partial trace without syspermute IMPORTANT!!!!
+// TODO: rewrite all functions so that they work only on matrices and not matrix expressions; user should cast them automatically
 
 using namespace std;
 
@@ -37,13 +38,13 @@ int main()
 
 	cout << "Starting qpp..." << endl;
 
-	size_t n = 12; // 12 qubits
+	size_t n = 12; // number of qubits
 	size_t N = std::pow(2, n);
 	vector<size_t> dims; // local dimensions
 	for (size_t i = 0; i < n; i++)
 		dims.push_back(2);
-	cout <<  "n = " << n << " qubits, matrix size " << N << " x " << N
-			<< "." << endl;
+	cout << "n = " << n << " qubits, matrix size " << N << " x " << N << "."
+			<< endl;
 
 	// TIMING
 	Timer t, total;  // start the timer, automatic tic() in the constructor
@@ -52,7 +53,21 @@ int main()
 	cout << endl << "Matrix initialization timing." << endl;
 	cmat randcmat = cmat::Random(N, N);
 	t.toc(); // read the time
-	cout << "Took " << t.seconds() << " seconds." << endl;
+	cout << "Took " << t << " seconds." << endl;
+
+	// Lazy matrix product
+	cout << endl << "Lazy matrix product timing." << endl;
+	randcmat * randcmat;
+	t.toc(); // read the time
+	cout << "Took " << t << " seconds." << endl;
+
+	// ptrace2 timing
+	cout << endl << "ptrace2 timing." << endl;
+	t.tic(); // reset the chronometer
+	// trace away half of the qubits
+	ptrace2(randcmat, { (size_t) std::sqrt(N), (size_t) std::sqrt(N) });
+	t.toc(); // read the time
+	cout << "Took " << t << " seconds." << endl;
 
 	// Matrix product
 	cout << endl << "Matrix product timing." << endl;
@@ -60,18 +75,18 @@ int main()
 	cmat prodmat;
 	prodmat = randcmat * randcmat; // need this (otherwise lazy evaluation)
 	t.toc(); // read the time
-	cout << "Took " << t.seconds() << " seconds." << endl;
+	cout << "Took " << t << " seconds." << endl;
 
 	// ptrace SLOW SLOW SLOW (because of syspermute, do it without)
 	cout << endl << "ptrace timing." << endl;
-	vector<size_t> subsys_ptrace = { 0 };
+	vector<size_t> subsys_ptrace = { 0 }; // trace away the first qubit
 	cout << "Subsytem(s): [";
 	internal::_disp_container(subsys_ptrace);
-	cout<<"]"<<endl;
+	cout << "]" << endl;
 	t.tic();
 	ptrace(randcmat, subsys_ptrace, dims);
 	t.toc();
-	cout << "Took " << t.seconds() << " seconds." << endl;
+	cout << "Took " << t << " seconds." << endl;
 
 	// ptranspose
 	cout << endl << "ptranspose timing." << endl;
@@ -80,11 +95,11 @@ int main()
 		subsys_ptranspose.push_back(i);
 	cout << "Subsytem(s): [";
 	internal::_disp_container(subsys_ptranspose);
-	cout<<"]"<<endl;
+	cout << "]" << endl;
 	t.tic();
 	ptranspose(randcmat, subsys_ptranspose, dims);
 	t.toc();
-	cout << "Took " << t.seconds() << " seconds." << endl;
+	cout << "Took " << t << " seconds." << endl;
 
 	// syspermute SLOW SLOW SLOW
 	cout << endl << "syspermute timing." << endl;
@@ -93,11 +108,11 @@ int main()
 		perm.push_back((i + 1) % n);
 	cout << "Subsytem(s): [";
 	internal::_disp_container(perm);
-	cout<<"]"<<endl;
+	cout << "]" << endl;
 	t.tic();
 	syspermute(randcmat, perm, dims);
 	t.toc();
-	cout << "Took " << t.seconds() << " seconds." << endl;
+	cout << "Took " << t << " seconds." << endl;
 
 	total.toc(); // read the total running time
 	cout << endl << "Total time: " << total.seconds() << " seconds." << endl;

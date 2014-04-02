@@ -72,8 +72,8 @@ inline size_t _multiidx2n(const size_t *midx, size_t numdims,
 }
 
 // check square matrix
-template<typename Expression>
-bool _check_square_mat(const Eigen::MatrixBase<Expression>& A)
+template<typename Scalar>
+bool _check_square_mat(const types::DynMat<Scalar>& A)
 {
 	if (A.rows() != A.cols())
 		return false;
@@ -81,9 +81,9 @@ bool _check_square_mat(const Eigen::MatrixBase<Expression>& A)
 }
 
 // check that dims match the dimension of the matrix
-template<typename Expression>
+template<typename Scalar>
 bool _check_dims_match_mat(const std::vector<size_t>& dims,
-		const Eigen::MatrixBase<Expression>& A)
+		const types::DynMat<Scalar>& A)
 {
 	size_t proddim = 1;
 	for (size_t i : dims)
@@ -151,24 +151,22 @@ inline bool _check_perm(const std::vector<size_t>& perm,
 }
 
 // used inside the #pragma omp parallel for in syspermute
-template<typename Expression>
-inline void _syspermute_worker(size_t numdims, const size_t *cdims,
-		const size_t *cperm, size_t i, size_t j, size_t &iperm, size_t &jperm,
-		const Eigen::MatrixBase<Expression> &A,
-		Eigen::MatrixBase<Expression> &result)
+template<typename Scalar>
+inline void _syspermute_worker(const size_t* midxcol, size_t numdims,
+		const size_t *cdims, const size_t *cperm, size_t i, size_t j,
+		size_t &iperm, size_t &jperm, const types::DynMat<Scalar> &A,
+		types::DynMat<Scalar> &result)
 {
 	size_t *midxrow = new size_t[numdims];
-	size_t *midxcol = new size_t[numdims];
 	size_t *midxrowtmp = new size_t[numdims];
 	size_t *midxcoltmp = new size_t[numdims];
 	size_t *permdims = new size_t[numdims];
 
-	for (size_t i = 0; i < numdims; i++)
-		permdims[i] = cdims[cperm[i]]; // permuted dimensions
+	for (size_t k = 0; k < numdims; k++)
+		permdims[k] = cdims[cperm[k]]; // permuted dimensions
 
-	// compute the row and col multi-indexes
+	// compute the row multi index
 	_n2multiidx(i, numdims, cdims, midxrow);
-	_n2multiidx(j, numdims, cdims, midxcol);
 
 	for (size_t k = 0; k < numdims; k++)
 	{
@@ -182,38 +180,37 @@ inline void _syspermute_worker(size_t numdims, const size_t *cdims,
 	result(iperm, jperm) = A(i, j);
 
 	delete[] midxrow;
-	delete[] midxcol;
 	delete[] midxrowtmp;
 	delete[] midxcoltmp;
 	delete[] permdims;
 }
 
 // used inside the #pragma omp parallel for in ptranspose
-template<typename Expression>
-inline void _ptranspose_worker(const size_t* midxrow, size_t numdims,
+template<typename Scalar>
+inline void _ptranspose_worker(const size_t* midxcol, size_t numdims,
 		size_t numsubsys, const size_t *cdims, const size_t *csubsys, size_t i,
 		size_t j, size_t &iperm, size_t &jperm,
-		const Eigen::MatrixBase<Expression> &A,
-		Eigen::MatrixBase<Expression> &result)
+		const types::DynMat<Scalar> &A,
+		types::DynMat<Scalar> &result)
 {
-	size_t *midxrowtmp = new size_t[numdims];
-	for (size_t i = 0; i < numdims; i++)
-		midxrowtmp[i] = midxrow[i];
-	size_t *midxcol = new size_t[numdims];
+	size_t *midxcoltmp = new size_t[numdims];
+	for (size_t k = 0; k < numdims; k++)
+		midxcoltmp[k] = midxcol[k];
+	size_t *midxrow = new size_t[numdims];
 
-	// compute the col multi-index
-	_n2multiidx(j, numdims, cdims, midxcol);
+	// compute the row multi-index
+	_n2multiidx(i, numdims, cdims, midxrow);
 
 	for (size_t k = 0; k < numsubsys; k++)
-		std::swap(midxrowtmp[csubsys[k]], midxcol[csubsys[k]]);
+		std::swap(midxcoltmp[csubsys[k]], midxrow[csubsys[k]]);
 
 	// move back to integer indexes
-	iperm = _multiidx2n(midxrowtmp, numdims, cdims);
-	jperm = _multiidx2n(midxcol, numdims, cdims);
+	iperm = _multiidx2n(midxcoltmp, numdims, cdims);
+	jperm = _multiidx2n(midxrow, numdims, cdims);
 	result(iperm, jperm) = A(i, j);
 
-	delete[] midxcol;
-	delete[] midxrowtmp;
+	delete[] midxrow;
+	delete[] midxcoltmp;
 }
 
 }

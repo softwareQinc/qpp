@@ -32,11 +32,11 @@ typedef Eigen::MatrixXf fmat; // dynamic-size
 typedef Eigen::MatrixXi imat; // dynamic-size
 
 template<typename Expression>
-using Expression2Matrix=
+using Expression2DynMat=
 Eigen::Matrix<typename Expression::Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 
 template<typename Scalar>
-using ScalarEigenMatrix=Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
+using DynMat=Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 
 }
 }

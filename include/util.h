@@ -23,88 +23,82 @@
 
 // utility functions
 
-// use A.eval() in algorithms involving MatrixBase<Expression> so that
-// products work
-
 namespace qpp
 {
 // Eigen function wrappers (inlines)
 
 // transpose, preserve return type
-template<typename Expression>
-types::Expression2Matrix<Expression> transpose(
-		const Eigen::MatrixBase<Expression>& A)
+template<typename Scalar>
+types::DynMat<Scalar> transpose(const types::DynMat<Scalar>& A)
 {
 	return A.transpose();
 }
 
 // conjugate, preserve return type
-template<typename Expression>
-types::Expression2Matrix<Expression> conjugate(
-		const Eigen::MatrixBase<Expression>& A)
+template<typename Scalar>
+types::DynMat<Scalar> conjugate(const types::DynMat<Scalar>& A)
 {
 	return A.conjugate();
 }
 
 // adjoint, preserve return type
-template<typename Expression>
-types::Expression2Matrix<Expression> adjoint(
-		const Eigen::MatrixBase<Expression>& A)
+template<typename Scalar>
+types::DynMat<Scalar> adjoint(const types::DynMat<Scalar>& A)
 {
 	return (A).adjoint();
 }
 
 // trace, preserve return type
-template<typename Expression>
-typename Expression::Scalar trace(const Eigen::MatrixBase<Expression>& A)
+template<typename Scalar>
+Scalar trace(const types::DynMat<Scalar>& A)
 {
 	return A.trace();
 }
 
 // functor; Apply f(A) component-wise, where (*f) is the function pointer
 // returns a matrix of type OutputScalar
-template<typename Expression, typename OutputScalar>
-types::ScalarEigenMatrix<OutputScalar> fun(
-		const Eigen::MatrixBase<Expression> &A,
-		OutputScalar (*f)(const typename Expression::Scalar &))
+template<typename InputScalar, typename OutputScalar>
+types::DynMat<OutputScalar> fun(const types::DynMat<InputScalar> &A,
+		OutputScalar (*f)(const InputScalar &))
 {
 
-	types::ScalarEigenMatrix<OutputScalar> result(A.rows(), A.cols());
+	types::DynMat<OutputScalar> result(A.rows(), A.cols());
 
-	for (size_t i = 0; i < A.rows(); i++)
-		for (size_t j = 0; j < A.cols(); j++)
-			result(i, j) = (*f)(A.eval()(i, j));
+	for (size_t j = 0; j < A.cols(); j++)
+#pragma omp parallel for
+		for (size_t i = 0; i < A.rows(); i++)
+			result(i, j) = (*f)(A(i, j));
 
 	return result;
 }
 
 // trace-norm (or Frobenius norm) (CHANGES return type to double)
-template<typename Expression>
-double norm(const Eigen::MatrixBase<Expression>& A)
+template<typename Scalar>
+double norm(const types::DynMat<Scalar>& A)
 {
 // convert matrix to complex then return its norm
 	return (A.template cast<types::cplx>()).norm();
 }
 
 // eigenvalues (CHANGES return type to complex)
-template<typename Expression>
-types::cmat evals(const Eigen::MatrixBase<Expression>& A)
+template<typename Scalar>
+types::cmat evals(const types::DynMat<Scalar>& A)
 {
 	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
 	return es.eigenvalues();
 }
 
 // eigenvectors (CHANGES return type to complex matrix)
-template<typename Expression>
-types::cmat evects(const Eigen::MatrixBase<Expression>& A)
+template<typename Scalar>
+types::cmat evects(const types::DynMat<Scalar>& A)
 {
 	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
 	return es.eigenvectors();
 }
 
 // eigenvalues of Hermitian matrices (CHANGES return type to complex)
-template<typename Expression>
-types::cmat hevals(const Expression& A)
+template<typename Scalar>
+types::cmat hevals(const types::DynMat<Scalar>& A)
 {
 	Eigen::SelfAdjointEigenSolver<types::cmat> es(
 			A.template cast<types::cplx>());
@@ -112,8 +106,8 @@ types::cmat hevals(const Expression& A)
 }
 
 // eigenvectors of Hermitian matrix (CHANGES return type to complex matrix)
-template<typename Expression>
-types::cmat hevects(const Expression& A)
+template<typename Scalar>
+types::cmat hevects(const types::DynMat<Scalar>& A)
 {
 	Eigen::SelfAdjointEigenSolver<types::cmat> es(
 			A.template cast<types::cplx>());
@@ -121,21 +115,21 @@ types::cmat hevects(const Expression& A)
 }
 
 // Kronecker product of 2 matrices, preserve return type
-template<typename Expression1, typename Expression2>
-types::Expression2Matrix<Expression1> kron(
-		const Eigen::MatrixBase<Expression1> &A,
-		const Eigen::MatrixBase<Expression2> &B)
+template<typename Scalar>
+types::DynMat<Scalar> kron(const types::DynMat<Scalar> &A,
+		const types::DynMat<Scalar> &B)
 {
 	int Acols = A.cols();
 	int Arows = A.rows();
 	int Bcols = B.cols();
 	int Brows = B.rows();
 
-	types::Expression2Matrix<Expression1> result;
+	types::DynMat<Scalar> result;
 	result.resize(Arows * Brows, Acols * Bcols);
 
-	for (int i = 0; i < Arows; i++)
-		for (int j = 0; j < Acols; j++)
+	for (int j = 0; j < Acols; j++)
+#pragma omp parallel for
+		for (int i = 0; i < Arows; i++)
 			result.block(i * Brows, j * Bcols, Brows, Bcols) = A.eval()(i, j)
 					* B.eval();
 
@@ -146,21 +140,19 @@ types::Expression2Matrix<Expression1> kron(
 // Kronecker product of a list of matrices, preserve return type
 // <Expression> is forced to be a matrix by invocation of kron
 // inside the function
-template<typename Expression>
-types::Expression2Matrix<Expression> kron_list(
-		const std::vector<Expression> &list)
+template<typename Scalar>
+types::DynMat<Scalar> kron_list(const std::vector<types::DynMat<Scalar>> &list)
 {
-	types::Expression2Matrix<Expression> result = list[0];
+	types::DynMat<Scalar> result = list[0];
 	for (size_t i = 1; i < list.size(); i++)
 		result = kron(result, list[i]);
 	return result;
 }
 // Kronecker product of a matrix with itself $n$ times, preserve return type
-template<typename Expression>
-types::Expression2Matrix<Expression> kron_pow(
-		const Eigen::MatrixBase<Expression> &A, size_t n)
+template<typename Scalar>
+types::DynMat<Scalar> kron_pow(const types::DynMat<Scalar> &A, size_t n)
 {
-	std::vector<typename types::Expression2Matrix<Expression>> list;
+	std::vector<typename types::DynMat<Scalar>> list;
 	for (size_t i = 0; i < n; i++)
 		list.push_back(A);
 	return kron_list(list);
@@ -168,9 +160,9 @@ types::Expression2Matrix<Expression> kron_pow(
 
 // reshape the columns of A and returns a matrix with m rows and n columns
 // use column-major order (same as MATLAB)
-template<typename Expression>
-types::Expression2Matrix<Expression> reshape(
-		const Eigen::MatrixBase<Expression>& A, size_t rows, size_t cols)
+template<typename Scalar>
+types::DynMat<Scalar> reshape(const types::DynMat<Scalar>& A, size_t rows,
+		size_t cols)
 {
 	size_t rowsA = A.rows();
 	size_t colsA = A.cols();
@@ -178,14 +170,13 @@ types::Expression2Matrix<Expression> reshape(
 	if (rowsA * colsA != rows * cols)
 		throw std::runtime_error("reshape: Dimension mismatch!");
 
-	return Eigen::Map<Expression>(static_cast<Expression>(A).data(), rows, cols);
+	return Eigen::Map<types::DynMat<Scalar>>(A.data(), rows, cols);
 }
 
 // permutes the subsystems in a matrix
-template<typename Expression>
-types::Expression2Matrix<Expression> syspermute(
-		const Eigen::MatrixBase<Expression> &A, const std::vector<size_t> perm,
-		const std::vector<size_t> &dims)
+template<typename Scalar>
+types::DynMat<Scalar> syspermute(const types::DynMat<Scalar> &A,
+		const std::vector<size_t> perm, const std::vector<size_t> &dims)
 {
 // Error checks
 
@@ -211,7 +202,8 @@ types::Expression2Matrix<Expression> syspermute(
 	size_t numdims = dims.size();
 	size_t *cdims = new size_t[numdims];
 	size_t *cperm = new size_t[numdims];
-	Expression result(dim, dim);
+	size_t *midxcol = new size_t[numdims];
+	types::DynMat<Scalar> result(dim, dim);
 
 // copy dims in cdims and perm in cperm
 	for (size_t i = 0; i < numdims; i++)
@@ -222,25 +214,29 @@ types::Expression2Matrix<Expression> syspermute(
 
 	size_t iperm = 0;
 	size_t jperm = 0;
-	for (size_t i = 0; i < dim; i++)
+	for (size_t j = 0; j < dim; j++)
+	{
+		// compute the col multi-index
+		internal::_n2multiidx(j, numdims, cdims, midxcol);
 #pragma omp parallel for
-		for (size_t j = 0; j < dim; j++)
-			internal::_syspermute_worker(numdims, cdims, cperm, i, j, iperm,
-					jperm, A, result);
+		for (size_t i = 0; i < dim; i++)
+			internal::_syspermute_worker(midxcol, numdims, cdims, cperm, i, j,
+					iperm, jperm, A, result);
+	}
 
 	delete[] cdims;
 	delete[] cperm;
+	delete[] midxcol;
 
 	return result; // the permuted matrix
 }
 
 // Partial trace over subsystem B in a D_A x D_B system
-template<typename Expression>
-types::Expression2Matrix<Expression> ptrace2(
-		const Eigen::MatrixBase<Expression> &A, const std::vector<size_t> dims)
+template<typename Scalar>
+types::DynMat<Scalar> ptrace2(const types::DynMat<Scalar> &A,
+		const std::vector<size_t> dims)
 {
 // Error checks
-// error checks
 
 // check square matrix
 	if (!internal::_check_square_mat(A))
@@ -263,23 +259,20 @@ types::Expression2Matrix<Expression> ptrace2(
 	size_t DA = dims[0];
 	size_t DB = dims[1];
 
-	types::Expression2Matrix<Expression> result = types::Expression2Matrix<
-			Expression>::Zero(DA, DA);
+	types::DynMat<Scalar> result = types::DynMat<Scalar>::Zero(DA, DA);
 
 	for (size_t j = 0; j < DA; j++) // column major order for speed
 #pragma omp parallel for
 		for (size_t i = 0; i < DA; i++)
 		{
-			result(i, j) = trace(
-					static_cast<Expression>(A.block(i * DB, j * DB, DB, DB)));
+			result(i, j) = trace<Scalar>(A.block(i * DB, j * DB, DB, DB));
 		}
 	return result;
 }
 
 // partial trace
-template<typename Expression>
-types::Expression2Matrix<Expression> ptrace(
-		const Eigen::MatrixBase<Expression> &A,
+template<typename Scalar>
+types::DynMat<Scalar> ptrace(const types::DynMat<Scalar> &A,
 		const std::vector<size_t> &subsys, const std::vector<size_t> &dims)
 {
 // error checks
@@ -307,7 +300,7 @@ types::Expression2Matrix<Expression> ptrace(
 	std::vector<size_t> perm(numdims, 0); // the permutation vector
 	std::vector<size_t> permdims; // the permuted dimensions
 
-	types::Expression2Matrix<Expression> result;
+	types::DynMat<Scalar> result;
 
 // the total dimension of the traced-out subsystems
 	size_t dimsubsys = 1;
@@ -340,9 +333,8 @@ types::Expression2Matrix<Expression> ptrace(
 }
 
 // partial transpose
-template<typename Expression>
-types::Expression2Matrix<Expression> ptranspose(
-		const Eigen::MatrixBase<Expression>& A,
+template<typename Scalar>
+types::DynMat<Scalar> ptranspose(const types::DynMat<Scalar>& A,
 		const std::vector<size_t>& subsys, const std::vector<size_t>& dims)
 {
 // error checks
@@ -368,10 +360,10 @@ types::Expression2Matrix<Expression> ptranspose(
 	size_t numdims = dims.size();
 	size_t numsubsys = subsys.size();
 	size_t *cdims = new size_t[numdims];
-	size_t *midxrow = new size_t[numdims];
+	size_t *midxcol = new size_t[numdims];
 	size_t *csubsys = new size_t[numsubsys];
 
-	types::Expression2Matrix<Expression> result = A;
+	types::DynMat<Scalar> result = A;
 
 // copy dims in cdims and subsys in csubsys
 	for (size_t i = 0; i < numdims; i++)
@@ -381,17 +373,17 @@ types::Expression2Matrix<Expression> ptranspose(
 
 	size_t iperm = 0;
 	size_t jperm = 0;
-	for (size_t i = 0; i < dim; i++)
+	for (size_t j = 0; j < dim; j++)
 	{
-		// compute the row multi-index
-		internal::_n2multiidx(i, numdims, cdims, midxrow);
+		// compute the col multi-index
+		internal::_n2multiidx(j, numdims, cdims, midxcol);
 #pragma omp parallel for
-		for (size_t j = 0; j < dim; j++) // paralelize this code
-			internal::_ptranspose_worker(midxrow, numdims, numsubsys, cdims,
+		for (size_t i = 0; i < dim; i++)
+			internal::_ptranspose_worker(midxcol, numdims, numsubsys, cdims,
 					csubsys, i, j, iperm, jperm, A, result);
 	}
 
-	delete[] midxrow;
+	delete[] midxcol;
 	delete[] cdims;
 	delete[] csubsys;
 

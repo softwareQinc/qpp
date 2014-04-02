@@ -8,6 +8,7 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
+#include <ostream>
 #include <chrono>
 
 namespace qpp
@@ -33,10 +34,15 @@ public:
 		_end = std::chrono::high_resolution_clock::now();
 	}
 
-	double seconds()
+	double seconds() const
 	{
 		return std::chrono::duration_cast<std::chrono::duration<double>>(
 				_end - _start).count();
+	}
+
+	friend std::ostream& operator<<(std::ostream &os, const Timer& rhs)
+	{
+		return os<<rhs.seconds();
 	}
 
 	virtual ~Timer() = default;

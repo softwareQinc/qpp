@@ -23,35 +23,35 @@ namespace qpp
 
 // load Eigen::MatrixX from MATLAB .mat file
 template<typename Scalar>
-types::ScalarEigenMatrix<Scalar> loadMATLAB(const std::string &mat_file,
+types::DynMat<Scalar> loadMATLABmatrix(const std::string &mat_file,
 		const std::string & var_name)
 {
-	throw std::runtime_error("loadMATLAB: not implemented for this type!");
+	throw std::runtime_error("loadMATLABmatrix: not implemented for this type!");
 }
 
 // double specialization
 // if var_name is a complex matrix, only the real part is loaded
 template<>
-inline types::ScalarEigenMatrix<double> loadMATLAB(const std::string &mat_file,
+inline types::DynMat<double> loadMATLABmatrix(const std::string &mat_file,
 		const std::string & var_name)
 {
 	MATFile *pmat = matOpen(mat_file.c_str(), "r");
 	if (pmat == NULL)
 	{
-		throw std::runtime_error("loadMATLAB: can not open MATLAB input file!");
+		throw std::runtime_error("loadMATLABmatrix: can not open MATLAB input file!");
 	}
 
 	mxArray *pa = matGetVariable(pmat, var_name.c_str());
 	if (pa == NULL)
-		throw std::runtime_error("loadMATLAB: can not load the variable "
+		throw std::runtime_error("loadMATLABmatrix: can not load the variable "
 				"from MATLAB input file!");
 
 	if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
 		throw std::runtime_error(
-				"loadMATLAB: loaded variable is not 2-dimensional!");
+				"loadMATLABmatrix: loaded variable is not 2-dimensional!");
 
 	if (!mxIsDouble(pa))
-		throw std::runtime_error("loadMATLAB: loaded variable is not "
+		throw std::runtime_error("loadMATLABmatrix: loaded variable is not "
 				"in double-precision format!");
 
 	size_t rows = mxGetM(pa);
@@ -70,26 +70,26 @@ inline types::ScalarEigenMatrix<double> loadMATLAB(const std::string &mat_file,
 
 // complex specialization
 template<>
-inline types::ScalarEigenMatrix<types::cplx> loadMATLAB(
+inline types::DynMat<types::cplx> loadMATLABmatrix(
 		const std::string &mat_file, const std::string & var_name)
 {
 	MATFile *pmat = matOpen(mat_file.c_str(), "r");
 	if (pmat == NULL)
 	{
-		throw std::runtime_error("loadMATLAB: can not open MATLAB input file!");
+		throw std::runtime_error("loadMATLABmatrix: can not open MATLAB input file!");
 	}
 
 	mxArray *pa = matGetVariable(pmat, var_name.c_str());
 	if (pa == NULL)
 		throw std::runtime_error(
-				"loadMATLAB: can not load variable from MATLAB input file!");
+				"loadMATLABmatrix: can not load variable from MATLAB input file!");
 
 	if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
 		throw std::runtime_error(
-				"loadMATLAB: loaded variable is not 2-dimensional!");
+				"loadMATLABmatrix: loaded variable is not 2-dimensional!");
 
 	if (!mxIsDouble(pa))
-		throw std::runtime_error("loadMATLAB: loaded variable is not "
+		throw std::runtime_error("loadMATLABmatrix: loaded variable is not "
 				"in double-precision format!");
 
 	size_t rows = mxGetM(pa);
@@ -128,15 +128,15 @@ inline types::ScalarEigenMatrix<types::cplx> loadMATLAB(
 // save Eigen::MatrixX to MATLAB .mat file as a double matrix
 // see MATLAB's matOpen(...) documentation
 template<typename Scalar>
-void saveMATLAB(const types::ScalarEigenMatrix<Scalar> &A,
+void saveMATLABmatrix(const types::DynMat<Scalar> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
-	throw std::runtime_error("saveMATLAB: not implemented for this type!");
+	throw std::runtime_error("saveMATLABmatrix: not implemented for this type!");
 }
 
 template<> // double specialization
-void saveMATLAB(const types::ScalarEigenMatrix<double> &A,
+void saveMATLABmatrix(const types::DynMat<double> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
@@ -144,7 +144,7 @@ void saveMATLAB(const types::ScalarEigenMatrix<double> &A,
 	if (pmat == NULL)
 	{
 		throw std::runtime_error(
-				"saveMATLAB: can not open/create MATLAB output file!");
+				"saveMATLABmatrix: can not open/create MATLAB output file!");
 	}
 
 	mxArray *pa = mxCreateDoubleMatrix(A.rows(), A.cols(), mxREAL);
@@ -152,7 +152,7 @@ void saveMATLAB(const types::ScalarEigenMatrix<double> &A,
 
 	if (matPutVariable(pmat, var_name.c_str(), pa))
 		throw std::runtime_error(
-				"saveMATLAB: can not write variable to MATLAB output file!");
+				"saveMATLABmatrix: can not write variable to MATLAB output file!");
 
 	mxDestroyArray(pa);
 	matClose(pmat);
@@ -160,7 +160,7 @@ void saveMATLAB(const types::ScalarEigenMatrix<double> &A,
 }
 
 template<> // complex specialization
-void saveMATLAB(const types::ScalarEigenMatrix<types::cplx> &A,
+void saveMATLABmatrix(const types::DynMat<types::cplx> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
@@ -172,7 +172,7 @@ void saveMATLAB(const types::ScalarEigenMatrix<types::cplx> &A,
 	if (pmat == NULL)
 	{
 		throw std::runtime_error(
-				"saveMATLAB: can not open/create MATLAB output file!");
+				"saveMATLABmatrix: can not open/create MATLAB output file!");
 	}
 
 	mxArray *pa = mxCreateDoubleMatrix(tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);
@@ -188,7 +188,7 @@ void saveMATLAB(const types::ScalarEigenMatrix<types::cplx> &A,
 
 	if (matPutVariable(pmat, var_name.c_str(), pa))
 		throw std::runtime_error(
-				"saveMATLAB: can not write variable to MATLAB output file!");
+				"saveMATLABmatrix: can not write variable to MATLAB output file!");
 
 	mxDestroyArray(pa);
 	matClose(pmat);
