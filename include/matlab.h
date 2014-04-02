@@ -142,6 +142,10 @@ void saveMATLABmatrix(const types::DynMat<double> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("saveMATLABmatrix: Zero-sized input!");
+
 	MATFile *pmat = matOpen(mat_file.c_str(), mode.c_str());
 	if (pmat == NULL)
 	{
@@ -170,6 +174,10 @@ void saveMATLABmatrix(const types::DynMat<types::cplx> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("saveMATLABmatrix: Zero-sized input!");
+
 	// cast the input to a double (internal MATLAB format)
 	types::dmat tmp_re = A.real();
 	types::dmat tmp_im = A.imag();

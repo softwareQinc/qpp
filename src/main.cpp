@@ -19,7 +19,6 @@
 // TODO: use .data() raw pointer instead of looping
 // TODO: optimize syspermute: column major ordering + ?Eigen::Map?
 // TODO: Rewrite partial trace without syspermute IMPORTANT!!!!
-// TODO: check agains zero-size matrices (i.e. non-initialized)
 // TODO: further parallelization
 
 using namespace std;

@@ -25,12 +25,16 @@
 
 namespace qpp
 {
-// Eigen function wrappers (inlines)
+// Eigen function wrappers
 
 // transpose, preserve return type
 template<typename Scalar>
 types::DynMat<Scalar> transpose(const types::DynMat<Scalar>& A)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("transpose: Zero-sized input!");
+
 	return A.transpose();
 }
 
@@ -38,6 +42,10 @@ types::DynMat<Scalar> transpose(const types::DynMat<Scalar>& A)
 template<typename Scalar>
 types::DynMat<Scalar> conjugate(const types::DynMat<Scalar>& A)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("conjugate: Zero-sized input!");
+
 	return A.conjugate();
 }
 
@@ -45,6 +53,10 @@ types::DynMat<Scalar> conjugate(const types::DynMat<Scalar>& A)
 template<typename Scalar>
 types::DynMat<Scalar> adjoint(const types::DynMat<Scalar>& A)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("adjoint: Zero-sized input!");
+
 	return (A).adjoint();
 }
 
@@ -52,6 +64,10 @@ types::DynMat<Scalar> adjoint(const types::DynMat<Scalar>& A)
 template<typename Scalar>
 Scalar trace(const types::DynMat<Scalar>& A)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("trace: Zero-sized input!");
+
 	return A.trace();
 }
 
@@ -61,6 +77,9 @@ template<typename InputScalar, typename OutputScalar>
 types::DynMat<OutputScalar> fun(const types::DynMat<InputScalar> &A,
 		OutputScalar (*f)(const InputScalar &))
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("fun: Zero-sized input!");
 
 	types::DynMat<OutputScalar> result(A.rows(), A.cols());
 
@@ -76,7 +95,15 @@ types::DynMat<OutputScalar> fun(const types::DynMat<InputScalar> &A,
 template<typename Scalar>
 double norm(const types::DynMat<Scalar>& A)
 {
-// convert matrix to complex then return its norm
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("norm: Zero-sized input!");
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw std::invalid_argument("norm: Matrix must be square!");
+
+	// convert matrix to complex then return its norm
 	return (A.template cast<types::cplx>()).norm();
 }
 
@@ -84,6 +111,14 @@ double norm(const types::DynMat<Scalar>& A)
 template<typename Scalar>
 types::cmat evals(const types::DynMat<Scalar>& A)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("evals: Zero-sized input!");
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw std::invalid_argument("evals: Matrix must be square!");
+
 	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
 	return es.eigenvalues();
 }
@@ -92,6 +127,14 @@ types::cmat evals(const types::DynMat<Scalar>& A)
 template<typename Scalar>
 types::cmat evects(const types::DynMat<Scalar>& A)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("evects: Zero-sized input!");
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw std::invalid_argument("evects: Matrix must be square!");
+
 	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
 	return es.eigenvectors();
 }
@@ -100,6 +143,14 @@ types::cmat evects(const types::DynMat<Scalar>& A)
 template<typename Scalar>
 types::cmat hevals(const types::DynMat<Scalar>& A)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("hevals: Zero-sized input!");
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw std::invalid_argument("hevals: Matrix must be square!");
+
 	Eigen::SelfAdjointEigenSolver<types::cmat> es(
 			A.template cast<types::cplx>());
 	return es.eigenvalues().template cast<types::cplx>();
@@ -109,6 +160,14 @@ types::cmat hevals(const types::DynMat<Scalar>& A)
 template<typename Scalar>
 types::cmat hevects(const types::DynMat<Scalar>& A)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("hevects: Zero-sized input!");
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw std::invalid_argument("hevects: Matrix must be square!");
+
 	Eigen::SelfAdjointEigenSolver<types::cmat> es(
 			A.template cast<types::cplx>());
 	return es.eigenvectors();
@@ -119,6 +178,14 @@ template<typename Scalar>
 types::DynMat<Scalar> kron(const types::DynMat<Scalar> &A,
 		const types::DynMat<Scalar> &B)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("kron: Zero-sized input!");
+
+	// zero-size
+	if (!internal::_check_nonzero_size(B))
+		throw std::invalid_argument("kron: Zero-sized input!");
+
 	size_t Acols = static_cast<size_t>(A.cols());
 	size_t Arows = static_cast<size_t>(A.rows());
 	size_t Bcols = static_cast<size_t>(B.cols());
@@ -143,6 +210,10 @@ types::DynMat<Scalar> kron(const types::DynMat<Scalar> &A,
 template<typename Scalar>
 types::DynMat<Scalar> kron_list(const std::vector<types::DynMat<Scalar>> &list)
 {
+	for (auto i : list)
+		if (i.size() == 0)
+			throw std::invalid_argument("kron_list: Zero-sized input!");
+
 	types::DynMat<Scalar> result = list[0];
 	for (size_t i = 1; i < list.size(); i++)
 		result = kron(result, list[i]);
@@ -152,6 +223,10 @@ types::DynMat<Scalar> kron_list(const std::vector<types::DynMat<Scalar>> &list)
 template<typename Scalar>
 types::DynMat<Scalar> kron_pow(const types::DynMat<Scalar> &A, size_t n)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("kron_pow: Zero-sized input!");
+
 	std::vector<typename types::DynMat<Scalar>> list;
 	for (size_t i = 0; i < n; i++)
 		list.push_back(A);
@@ -167,6 +242,10 @@ types::DynMat<Scalar> reshape(const types::DynMat<Scalar>& A, size_t rows,
 	size_t Arows = static_cast<size_t>(A.rows());
 	size_t Acols = static_cast<size_t>(A.cols());
 
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("reshape: Zero-sized input!");
+
 	if (Arows * Acols != rows * cols)
 		throw std::invalid_argument("reshape: Dimension mismatch!");
 
@@ -179,6 +258,10 @@ types::DynMat<Scalar> syspermute(const types::DynMat<Scalar> &A,
 		const std::vector<size_t> perm, const std::vector<size_t> &dims)
 {
 // Error checks
+
+// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("syspermute: Zero-sized input!");
 
 // check square matrix
 	if (!internal::_check_square_mat(A))
@@ -238,6 +321,10 @@ types::DynMat<Scalar> ptrace2(const types::DynMat<Scalar> &A,
 {
 // Error checks
 
+// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("ptrace2: Zero-sized input!");
+
 // check square matrix
 	if (!internal::_check_square_mat(A))
 		throw std::invalid_argument("ptrace2: Matrix must be square!");
@@ -276,6 +363,10 @@ types::DynMat<Scalar> ptrace(const types::DynMat<Scalar> &A,
 		const std::vector<size_t> &subsys, const std::vector<size_t> &dims)
 {
 // error checks
+
+// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("ptrace: Zero-sized input!");
 
 // check square matrix
 	if (!internal::_check_square_mat(A))
@@ -338,6 +429,10 @@ types::DynMat<Scalar> ptranspose(const types::DynMat<Scalar>& A,
 		const std::vector<size_t>& subsys, const std::vector<size_t>& dims)
 {
 // error checks
+
+// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("ptranspose: Zero-sized input!");
 
 // check square matrix
 	if (!internal::_check_square_mat(A))

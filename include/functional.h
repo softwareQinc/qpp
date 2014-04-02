@@ -29,6 +29,10 @@ template<typename Scalar>
 types::cmat funm(const types::DynMat<Scalar> &A,
 		types::cplx (*f)(const types::cplx &))
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("funm: Zero-sized input!");
+
 	// check square matrix
 	if (!internal::_check_square_mat(A))
 		throw std::invalid_argument("funm: Matrix must be square!");
@@ -44,10 +48,19 @@ types::cmat funm(const types::DynMat<Scalar> &A,
 	return evects * evalsdiag * evects.inverse();
 }
 
+// TODO: check this
 // Matrix absolute value, note the syntax of Lambda invocation
 template<typename Scalar>
 types::cmat absm(const types::DynMat<Scalar> &A)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("absm: Zero-sized input!");
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw std::invalid_argument("absm: Matrix must be square!");
+
 	return funm(adjoint(A) * A, [](const types::cplx & x)->types::cplx
 	{	return std::sqrt(x);});
 }
@@ -56,6 +69,14 @@ types::cmat absm(const types::DynMat<Scalar> &A)
 template<typename Scalar>
 types::cmat expm(const types::DynMat<Scalar> &A)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("expm: Zero-sized input!");
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw std::invalid_argument("expm: Matrix must be square!");
+
 	return funm(A, std::exp);
 }
 
@@ -63,6 +84,14 @@ types::cmat expm(const types::DynMat<Scalar> &A)
 template<typename Scalar>
 types::cmat logm(const types::DynMat<Scalar> &A)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("logm: Zero-sized input!");
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw std::invalid_argument("logm: Matrix must be square!");
+
 	return funm(A, std::log);
 }
 
@@ -70,6 +99,14 @@ types::cmat logm(const types::DynMat<Scalar> &A)
 template<typename Scalar>
 types::cmat sqrtm(const types::DynMat<Scalar> &A)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("sqrtm: Zero-sized input!");
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw std::invalid_argument("sqrtm: Matrix must be square!");
+
 	return funm(A, std::sqrt);
 }
 
@@ -77,6 +114,14 @@ types::cmat sqrtm(const types::DynMat<Scalar> &A)
 template<typename Scalar>
 types::cmat sinm(const types::DynMat<Scalar> &A)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("sinm: Zero-sized input!");
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw std::invalid_argument("sinm: Matrix must be square!");
+
 	return funm(A, std::sin);
 }
 
@@ -84,6 +129,14 @@ types::cmat sinm(const types::DynMat<Scalar> &A)
 template<typename Scalar>
 types::cmat cosm(const types::DynMat<Scalar> &A)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("cosm: Zero-sized input!");
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw std::invalid_argument("cosm: Matrix must be square!");
+
 	return funm(A, std::cos);
 }
 
@@ -92,9 +145,13 @@ template<typename Scalar>
 types::cmat powm(const types::DynMat<Scalar> &A, const types::cplx z)
 
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("powm: Zero-sized input!");
+
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("mpower: Matrix must be square!");
+		throw std::invalid_argument("powm: Matrix must be square!");
 
 	// Define A^0 = Id
 	if (real(z) == 0 && imag(z) == 0)
@@ -122,9 +179,13 @@ types::cmat powm(const types::DynMat<Scalar> &A, const types::cplx z)
 template<typename Scalar>
 types::DynMat<Scalar> powm_int(const types::DynMat<Scalar> &A, size_t n)
 {
-// check square matrix
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("powm_int: Zero-sized input!");
+
+	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("mpower_n: Matrix must be square!");
+		throw std::invalid_argument("powm_int: Matrix must be square!");
 
 	types::DynMat<Scalar> result = A;
 

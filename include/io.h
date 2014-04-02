@@ -27,7 +27,7 @@ void disp(const types::DynMat<Scalar> &A, double chop = ct::chop,
 {
 	types::DynMat<Scalar> tmp = A;
 
-	if (tmp.rows() * tmp.cols() == 0)
+	if (tmp.size() == 0)
 	{
 		os << "Empty [" << tmp.rows() << " x " << tmp.cols() << "] matrix";
 		return;
@@ -136,6 +136,10 @@ inline void displn(const types::cplx c, double chop = ct::chop,
 template<typename Scalar>
 void save(const types::DynMat<Scalar> & A, const std::string& fname)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("save: Zero-sized input!");
+
 	std::fstream fout;
 	fout.open(fname.c_str(), std::ios::out | std::ios::binary);
 

@@ -8,6 +8,7 @@
 #ifndef GATES_H_
 #define	GATES_H_
 
+#include <stdexcept>
 #include "types.h"
 #include "constants.h"
 #include "util.h"
@@ -85,6 +86,8 @@ inline types::cmat Rtheta(double theta)
 // two qubit gates
 inline types::cmat CU(const types::cmat &U)
 {
+	if (U.cols() != 2 || U.rows() != 2)
+		throw std::invalid_argument("CU: input must be 2 x 2 matrix!");
 	types::cmat result = types::cmat::Zero(4, 4);
 	result(0, 0) = 1;
 	result(1, 1) = 1;
@@ -96,6 +99,8 @@ inline types::cmat CU(const types::cmat &U)
 
 inline types::cmat Zd(size_t D)
 {
+	if (D == 0)
+		throw std::invalid_argument("Zd: dimension must be greater than 0!");
 	types::cmat result(D, D);
 	result = types::cmat::Zero(D, D);
 	for (size_t i = 0; i < D; i++)
@@ -105,6 +110,8 @@ inline types::cmat Zd(size_t D)
 
 inline types::cmat Fd(size_t D)
 {
+	if (D == 0)
+		throw std::invalid_argument("Fd: dimension must be greater than 0!");
 	types::cmat result(D, D);
 	result = types::cmat::Zero(D, D);
 	for (size_t j = 0; j < D; j++)
@@ -115,12 +122,16 @@ inline types::cmat Fd(size_t D)
 
 inline types::cmat Xd(size_t D)
 {
+	if (D == 0)
+		throw std::invalid_argument("Xd: dimension must be greater than 0!");
 	return Fd(D) * Zd(D) * Fd(D).inverse();
 }
 
 // two qudit gates
 inline types::cmat CUd(const types::cmat &U)
 {
+	if (!internal::_check_square_mat(U))
+		throw std::invalid_argument("CUd: Matrix must be square!");
 	size_t D = static_cast<size_t>(U.cols()); // retrieves the dimension from the size of U
 	types::cmat result(D * D, D * D);
 	result = types::cmat::Zero(D * D, D * D);

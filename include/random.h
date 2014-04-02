@@ -18,18 +18,27 @@ namespace qpp
 // Random double matrix with entries in Uniform[0,1]
 inline types::dmat rand(size_t rows, size_t cols)
 {
+	if (rows == 0 || cols == 0)
+		throw std::invalid_argument("rand: Zero-sized input!");
+
 	return types::dmat::Random(rows, cols);
 }
 
 // Random double square matrix with entries in Uniform[0,1]
 inline types::dmat rand(size_t rows)
 {
+	if (rows == 0)
+		throw std::invalid_argument("rand: Zero-sized input!");
+
 	return rand(rows, rows);
 }
 
 // Random double matrix with entries in Normal(0,1)
 inline types::dmat randn(size_t rows, size_t cols)
 {
+	if (rows == 0 || cols == 0)
+		throw std::invalid_argument("randn: Zero-sized input!");
+
 	stat::NormalDistribution nd; // N(0,1)
 	types::dmat A(rows, cols);
 
@@ -43,12 +52,18 @@ inline types::dmat randn(size_t rows, size_t cols)
 // Random double square matrix with entries in Normal(0,1)
 inline types::dmat randn(size_t rows)
 {
+	if (rows == 0)
+		throw std::invalid_argument("randn: Zero-sized input!");
+
 	return randn(rows, rows);
 }
 
 // Random unitary matrix
 inline types::cmat rand_unitary(size_t size)
 {
+	if (size == 0)
+		throw std::invalid_argument("rand_unitary: Zero-sized input!");
+
 	types::cmat X(size, size);
 
 	X.real() = 1. / std::sqrt(2.) * randn(size);

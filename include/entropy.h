@@ -12,6 +12,7 @@
 #include <stdexcept>
 #include "types.h"
 #include "util.h"
+#include "internal.h"
 
 // entropy functions
 
@@ -22,6 +23,10 @@ namespace qpp
 template<typename Scalar>
 double shannon(const types::DynMat<Scalar> & A)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("shannon: Zero-sized input!");
+
 	// vector
 	if (A.rows() == 1 || A.cols() == 1)
 	{
@@ -64,6 +69,10 @@ double renyi(const double alpha, const types::DynMat<Scalar> & A)
 	if (alpha == 1) // Shannon/von Neumann
 		return shannon(A);
 
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("renyi: Zero-sized input!");
+
 	// vector
 	if (A.rows() == 1 || A.cols() == 1)
 	{
@@ -105,6 +114,10 @@ double renyi(const double alpha, const types::DynMat<Scalar> & A)
 template<typename Scalar>
 double renyi_inf(const types::DynMat<Scalar> & A)
 {
+	// zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw std::invalid_argument("renyi: Zero-sized input!");
+
 	// vector
 	if (A.rows() == 1 || A.cols() == 1)
 	{
