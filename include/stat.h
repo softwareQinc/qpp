@@ -79,7 +79,7 @@ public:
 	}
 
 	DiscreteDistribution(std::vector<double> weights) :
-			_d(weights.begin(), weights.end())
+			_d(std::begin(weights), std::end(weights))
 	{
 	}
 
@@ -103,7 +103,7 @@ protected:
 	std::vector<double> cplx2double(InputIterator first, InputIterator last)
 	{
 		std::vector<double> weights(last - first);
-		std::transform(first, last, weights.begin(),
+		std::transform(first, last, std::begin(weights),
 				[](const types::cplx &z)->double
 				{	return std::abs(z);});
 		return weights;
@@ -115,7 +115,8 @@ public:
 			_d()
 	{
 		std::vector<double> weights = cplx2double(first, last);
-		std::discrete_distribution<size_t> tmp(weights.begin(), weights.end());
+		std::discrete_distribution<size_t> tmp(std::begin(weights),
+				std::end(weights));
 		_d = tmp;
 	}
 
@@ -123,22 +124,24 @@ public:
 			std::initializer_list<types::cplx> amplitudes) :
 			_d()
 	{
-		std::vector<double> weights = cplx2double(amplitudes.begin(),
-				amplitudes.end());
-		std::discrete_distribution<size_t> tmp(weights.begin(), weights.end());
+		std::vector<double> weights = cplx2double(std::begin(amplitudes),
+				std::end(amplitudes));
+		std::discrete_distribution<size_t> tmp(std::begin(weights),
+				std::end(weights));
 		_d = tmp;
 	}
 
 	DiscreteDistributionFromComplex(std::vector<types::cplx> amplitudes) :
 			_d()
 	{
-		std::vector<double> weights = cplx2double(amplitudes.begin(),
-				amplitudes.end());
-		std::discrete_distribution<size_t> tmp(weights.begin(), weights.end());
+		std::vector<double> weights = cplx2double(std::begin(amplitudes),
+				std::end(amplitudes));
+		std::discrete_distribution<size_t> tmp(std::begin(weights),
+				std::end(weights));
 		_d = tmp;
 	}
 
-	DiscreteDistributionFromComplex(const types::cmat &v)  :
+	DiscreteDistributionFromComplex(const types::cmat &v) :
 			_d()
 	{
 		// check zero-size
@@ -155,7 +158,8 @@ public:
 
 		std::vector<double> weights = cplx2double(v.data(),
 				v.data() + v.size());
-		std::discrete_distribution<size_t> tmp(weights.begin(), weights.end());
+		std::discrete_distribution<size_t> tmp(std::begin(weights),
+				std::end(weights));
 		_d = tmp;
 
 	}

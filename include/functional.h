@@ -143,7 +143,6 @@ types::cmat cosm(const types::DynMat<Scalar> &A)
 template<typename Scalar>
 types::cmat powm(const types::DynMat<Scalar> &A, const types::cplx z)
 
-
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))

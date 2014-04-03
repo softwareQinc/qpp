@@ -409,7 +409,8 @@ types::DynMat<Scalar> ptrace(const types::DynMat<Scalar> &A,
 	for (size_t i = 0; i < numdims; i++)
 	{
 		// we find that i belongs to the subsystem
-		if (std::find(subsys.begin(), subsys.end(), i) != subsys.end())
+		if (std::find(std::begin(subsys), std::end(subsys), i)
+				!= std::end(subsys))
 		{
 			perm[numdims - numsubsys + cnt0] = i;
 			cnt0++;

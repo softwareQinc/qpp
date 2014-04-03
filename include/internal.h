@@ -23,8 +23,8 @@ namespace internal
 template<typename T>
 void _disp_container(const T& x)
 {
-	auto it = x.begin();
-	for (; it != x.end() - 1; it++)
+	auto it = std::begin(x);
+	for (; it != std::end(x) - 1; it++)
 		std::cout << *it << " ";
 	std::cout << *(it++);
 }
@@ -113,9 +113,9 @@ bool _check_dims_match_mat(const std::vector<size_t>& dims,
 // check that dims is a valid dimension vector
 inline bool _check_dims(const std::vector<size_t>& dims)
 {
-	if (std::find_if(dims.begin(), dims.end(), [&dims](size_t i) -> bool
+	if (std::find_if(std::begin(dims), std::end(dims), [&dims](size_t i) -> bool
 	{	if(i==0) return true;
-		else return false;}) != dims.end())
+		else return false;}) != std::end(dims))
 		return false;
 	return true;
 }
@@ -135,21 +135,22 @@ inline bool _check_subsys(const std::vector<size_t>& subsys,
 {
 	// sort the subsystems
 	std::vector<size_t> subsyssort = subsys;
-	std::sort(subsyssort.begin(), subsyssort.end());
+	std::sort(std::begin(subsyssort), std::end(subsyssort));
 
 	// check valid number of subsystems
 	if (subsyssort.size() > dims.size())
 		return false;
 
 	// check duplicates
-	if (std::unique(subsyssort.begin(), subsyssort.end()) != subsyssort.end())
+	if (std::unique(std::begin(subsyssort), std::end(subsyssort))
+			!= std::end(subsyssort))
 		return false;
 
 	// check range of subsystems
-	if (std::find_if(subsyssort.begin(), subsyssort.end(),
+	if (std::find_if(std::begin(subsyssort), std::end(subsyssort),
 			[&dims](size_t i) -> bool
 			{	if(i>dims.size()-1) return true;
-				else return false;}) != subsyssort.end())
+				else return false;}) != std::end(subsyssort))
 		return false;
 
 	return true;
@@ -160,7 +161,7 @@ inline bool _check_perm(const std::vector<size_t>& perm,
 		const std::vector<size_t>& dims)
 {
 	std::vector<size_t> sort_perm = perm;
-	std::sort(sort_perm.begin(), sort_perm.end());
+	std::sort(std::begin(sort_perm), std::end(sort_perm));
 	for (size_t i = 0; i < dims.size(); i++)
 		if (sort_perm[i] != i)
 			return false;
