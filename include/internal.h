@@ -31,7 +31,7 @@ void _disp_container(const T& x)
 
 // integer index to multi-index, use C-style array for speed
 inline void _n2multiidx(size_t n, size_t numdims, const size_t *dims,
-		size_t *result) throw (Exception)
+		size_t *result)
 {
 	size_t maxn = 1;
 	for (size_t i = 0; i < numdims; i++)
@@ -49,7 +49,7 @@ inline void _n2multiidx(size_t n, size_t numdims, const size_t *dims,
 
 // multi index to integer index, use C-style array for speed
 inline size_t _multiidx2n(const size_t *midx, size_t numdims,
-		const size_t *dims) throw (Exception)
+		const size_t *dims)
 {
 	for (size_t i = 0; i < numdims; i++)
 		if (midx[i] >= dims[i])

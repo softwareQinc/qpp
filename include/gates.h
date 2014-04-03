@@ -85,7 +85,7 @@ inline types::cmat Rtheta(double theta)
 }
 
 // two qubit gates
-inline types::cmat CU(const types::cmat &U) throw (Exception)
+inline types::cmat CU(const types::cmat &U)
 {
 	if (U.cols() != 2 || U.rows() != 2)
 		throw Exception("CU", Exception::Type::NOT_QUBIT_GATE);
@@ -98,7 +98,7 @@ inline types::cmat CU(const types::cmat &U) throw (Exception)
 
 // one quDit gates
 
-inline types::cmat Zd(size_t D) throw (Exception)
+inline types::cmat Zd(size_t D)
 {
 	if (D == 0)
 		throw Exception("Zd", Exception::Type::DIMS_HAVE_ZERO);
@@ -110,7 +110,7 @@ inline types::cmat Zd(size_t D) throw (Exception)
 	return result;
 }
 
-inline types::cmat Fd(size_t D) throw (Exception)
+inline types::cmat Fd(size_t D)
 {
 	if (D == 0)
 		throw Exception("Fd", Exception::Type::DIMS_HAVE_ZERO);
@@ -123,7 +123,7 @@ inline types::cmat Fd(size_t D) throw (Exception)
 	return result;
 }
 
-inline types::cmat Xd(size_t D) throw (Exception)
+inline types::cmat Xd(size_t D)
 {
 	if (D == 0)
 		throw Exception("Xd", Exception::Type::DIMS_HAVE_ZERO);
@@ -132,7 +132,7 @@ inline types::cmat Xd(size_t D) throw (Exception)
 }
 
 // two qudit gates
-inline types::cmat CUd(const types::cmat &U) throw (Exception)
+inline types::cmat CUd(const types::cmat &U)
 {
 	// check square matrix
 	if (!internal::_check_square_mat(U))

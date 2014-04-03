@@ -56,7 +56,7 @@ public:
 		return _msg.c_str();
 	}
 
-	virtual ~Exception()
+	virtual ~Exception() noexcept
 	{
 	}
 private:
@@ -85,7 +85,7 @@ private:
 			_msg += "Matrix has zero size!";
 			break;
 		case Type::DIMS_MISMATCH_MATRIX:
-			_msg += "Dimensions mismatch matrix!";
+			_msg += "Dimensions mismatch matrix size!";
 			break;
 		case Type::DIMS_HAVE_ZERO:
 			_msg += "Dimension(s) can not contain zero(s)!";

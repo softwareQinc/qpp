@@ -27,7 +27,7 @@ namespace qpp
  */
 template<typename Scalar>
 types::cmat funm(const types::DynMat<Scalar> &A,
-		types::cplx (*f)(const types::cplx &)) throw (Exception)
+		types::cplx (*f)(const types::cplx &))
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -51,7 +51,7 @@ types::cmat funm(const types::DynMat<Scalar> &A,
 // TODO: check this
 // Matrix absolute value, note the syntax of Lambda invocation
 template<typename Scalar>
-types::cmat absm(const types::DynMat<Scalar> &A) throw (Exception)
+types::cmat absm(const types::DynMat<Scalar> &A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -67,7 +67,7 @@ types::cmat absm(const types::DynMat<Scalar> &A) throw (Exception)
 
 // Matrix exponential
 template<typename Scalar>
-types::cmat expm(const types::DynMat<Scalar> &A) throw (Exception)
+types::cmat expm(const types::DynMat<Scalar> &A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -82,7 +82,7 @@ types::cmat expm(const types::DynMat<Scalar> &A) throw (Exception)
 
 // Matrix logarithm
 template<typename Scalar>
-types::cmat logm(const types::DynMat<Scalar> &A) throw (Exception)
+types::cmat logm(const types::DynMat<Scalar> &A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -97,7 +97,7 @@ types::cmat logm(const types::DynMat<Scalar> &A) throw (Exception)
 
 // Matrix square root
 template<typename Scalar>
-types::cmat sqrtm(const types::DynMat<Scalar> &A) throw (Exception)
+types::cmat sqrtm(const types::DynMat<Scalar> &A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -112,7 +112,7 @@ types::cmat sqrtm(const types::DynMat<Scalar> &A) throw (Exception)
 
 // Matrix sin
 template<typename Scalar>
-types::cmat sinm(const types::DynMat<Scalar> &A) throw (Exception)
+types::cmat sinm(const types::DynMat<Scalar> &A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -127,7 +127,7 @@ types::cmat sinm(const types::DynMat<Scalar> &A) throw (Exception)
 
 // Matrix cos
 template<typename Scalar>
-types::cmat cosm(const types::DynMat<Scalar> &A) throw (Exception)
+types::cmat cosm(const types::DynMat<Scalar> &A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -143,7 +143,7 @@ types::cmat cosm(const types::DynMat<Scalar> &A) throw (Exception)
 // Matrix power A^z (CHANGES return type to complex matrix)
 template<typename Scalar>
 types::cmat powm(const types::DynMat<Scalar> &A, const types::cplx z)
-		throw (Exception)
+
 
 {
 	// check zero-size
@@ -179,7 +179,7 @@ types::cmat powm(const types::DynMat<Scalar> &A, const types::cplx z)
 // Explicitly multiply the matrix with itself n times
 template<typename Scalar>
 types::DynMat<Scalar> powm_int(const types::DynMat<Scalar> &A, size_t n)
-		throw (Exception)
+
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))

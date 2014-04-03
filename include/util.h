@@ -30,7 +30,7 @@ namespace qpp
 // transpose, preserve return type
 template<typename Scalar>
 types::DynMat<Scalar> transpose(const types::DynMat<Scalar>& A)
-		throw (Exception)
+
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -42,7 +42,7 @@ types::DynMat<Scalar> transpose(const types::DynMat<Scalar>& A)
 // conjugate, preserve return type
 template<typename Scalar>
 types::DynMat<Scalar> conjugate(const types::DynMat<Scalar>& A)
-		throw (Exception)
+
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -53,7 +53,7 @@ types::DynMat<Scalar> conjugate(const types::DynMat<Scalar>& A)
 
 // adjoint, preserve return type
 template<typename Scalar>
-types::DynMat<Scalar> adjoint(const types::DynMat<Scalar>& A) throw (Exception)
+types::DynMat<Scalar> adjoint(const types::DynMat<Scalar>& A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -64,7 +64,7 @@ types::DynMat<Scalar> adjoint(const types::DynMat<Scalar>& A) throw (Exception)
 
 // trace, preserve return type
 template<typename Scalar>
-Scalar trace(const types::DynMat<Scalar>& A) throw (Exception)
+Scalar trace(const types::DynMat<Scalar>& A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -77,7 +77,7 @@ Scalar trace(const types::DynMat<Scalar>& A) throw (Exception)
 // returns a matrix of type OutputScalar
 template<typename InputScalar, typename OutputScalar>
 types::DynMat<OutputScalar> fun(const types::DynMat<InputScalar> &A,
-		OutputScalar (*f)(const InputScalar &)) throw (Exception)
+		OutputScalar (*f)(const InputScalar &))
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -95,7 +95,7 @@ types::DynMat<OutputScalar> fun(const types::DynMat<InputScalar> &A,
 
 // trace-norm (or Frobenius norm) (CHANGES return type to double)
 template<typename Scalar>
-double norm(const types::DynMat<Scalar>& A) throw (Exception)
+double norm(const types::DynMat<Scalar>& A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -111,7 +111,7 @@ double norm(const types::DynMat<Scalar>& A) throw (Exception)
 
 // eigenvalues (CHANGES return type to complex)
 template<typename Scalar>
-types::cmat evals(const types::DynMat<Scalar>& A) throw (Exception)
+types::cmat evals(const types::DynMat<Scalar>& A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -127,7 +127,7 @@ types::cmat evals(const types::DynMat<Scalar>& A) throw (Exception)
 
 // eigenvectors (CHANGES return type to complex matrix)
 template<typename Scalar>
-types::cmat evects(const types::DynMat<Scalar>& A) throw (Exception)
+types::cmat evects(const types::DynMat<Scalar>& A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -143,7 +143,7 @@ types::cmat evects(const types::DynMat<Scalar>& A) throw (Exception)
 
 // eigenvalues of Hermitian matrices (CHANGES return type to complex)
 template<typename Scalar>
-types::cmat hevals(const types::DynMat<Scalar>& A) throw (Exception)
+types::cmat hevals(const types::DynMat<Scalar>& A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -160,7 +160,7 @@ types::cmat hevals(const types::DynMat<Scalar>& A) throw (Exception)
 
 // eigenvectors of Hermitian matrix (CHANGES return type to complex matrix)
 template<typename Scalar>
-types::cmat hevects(const types::DynMat<Scalar>& A) throw (Exception)
+types::cmat hevects(const types::DynMat<Scalar>& A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -178,7 +178,7 @@ types::cmat hevects(const types::DynMat<Scalar>& A) throw (Exception)
 // Kronecker product of 2 matrices, preserve return type
 template<typename Scalar>
 types::DynMat<Scalar> kron(const types::DynMat<Scalar> &A,
-		const types::DynMat<Scalar> &B) throw (Exception)
+		const types::DynMat<Scalar> &B)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -211,7 +211,7 @@ types::DynMat<Scalar> kron(const types::DynMat<Scalar> &A,
 // inside the function
 template<typename Scalar>
 types::DynMat<Scalar> kron_list(const std::vector<types::DynMat<Scalar>> &list)
-		throw (Exception)
+
 {
 	for (auto i : list)
 		if (i.size() == 0)
@@ -225,7 +225,7 @@ types::DynMat<Scalar> kron_list(const std::vector<types::DynMat<Scalar>> &list)
 // Kronecker product of a matrix with itself $n$ times, preserve return type
 template<typename Scalar>
 types::DynMat<Scalar> kron_pow(const types::DynMat<Scalar> &A, size_t n)
-		throw (Exception)
+
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -241,7 +241,7 @@ types::DynMat<Scalar> kron_pow(const types::DynMat<Scalar> &A, size_t n)
 // use column-major order (same as MATLAB)
 template<typename Scalar>
 types::DynMat<Scalar> reshape(const types::DynMat<Scalar>& A, size_t rows,
-		size_t cols) throw (Exception)
+		size_t cols)
 {
 	size_t Arows = static_cast<size_t>(A.rows());
 	size_t Acols = static_cast<size_t>(A.cols());
@@ -260,7 +260,7 @@ types::DynMat<Scalar> reshape(const types::DynMat<Scalar>& A, size_t rows,
 template<typename Scalar>
 types::DynMat<Scalar> syspermute(const types::DynMat<Scalar> &A,
 		const std::vector<size_t> perm, const std::vector<size_t> &dims)
-				throw (Exception)
+
 {
 // Error checks
 
@@ -320,7 +320,7 @@ types::DynMat<Scalar> syspermute(const types::DynMat<Scalar> &A,
 // Partial trace over subsystem B in a D_A x D_B system
 template<typename Scalar>
 types::DynMat<Scalar> ptrace2(const types::DynMat<Scalar> &A,
-		const std::vector<size_t> dims) throw (Exception)
+		const std::vector<size_t> dims)
 {
 // Error checks
 
@@ -362,7 +362,7 @@ types::DynMat<Scalar> ptrace2(const types::DynMat<Scalar> &A,
 template<typename Scalar>
 types::DynMat<Scalar> ptrace(const types::DynMat<Scalar> &A,
 		const std::vector<size_t> &subsys, const std::vector<size_t> &dims)
-				throw (Exception)
+
 {
 // error checks
 
@@ -428,7 +428,7 @@ types::DynMat<Scalar> ptrace(const types::DynMat<Scalar> &A,
 template<typename Scalar>
 types::DynMat<Scalar> ptranspose(const types::DynMat<Scalar>& A,
 		const std::vector<size_t>& subsys, const std::vector<size_t>& dims)
-				throw (Exception)
+
 {
 // error checks
 

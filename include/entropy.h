@@ -21,7 +21,7 @@ namespace qpp
 
 // Shannon/von-Neumann entropy
 template<typename Scalar>
-double shannon(const types::DynMat<Scalar> & A) throw (Exception)
+double shannon(const types::DynMat<Scalar> & A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -62,7 +62,7 @@ double shannon(const types::DynMat<Scalar> & A) throw (Exception)
 // Renyi-alpha entropy (alpha>=0)
 template<typename Scalar>
 double renyi(const double alpha, const types::DynMat<Scalar> & A)
-		throw (Exception)
+
 {
 	if (alpha < 0)
 		throw Exception("renyi", Exception::Type::OUT_OF_RANGE);
@@ -113,7 +113,7 @@ double renyi(const double alpha, const types::DynMat<Scalar> & A)
 
 // Renyi-infinity entropy (min entropy)
 template<typename Scalar>
-double renyi_inf(const types::DynMat<Scalar> & A) throw (Exception)
+double renyi_inf(const types::DynMat<Scalar> & A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))

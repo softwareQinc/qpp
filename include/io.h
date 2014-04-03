@@ -136,7 +136,7 @@ inline void displn(const types::cplx c, double chop = ct::chop,
 // save matrix to a binary file in double precision
 template<typename Scalar>
 void save(const types::DynMat<Scalar> & A, const std::string& fname)
-		throw (Exception, std::runtime_error)
+
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -168,7 +168,7 @@ void save(const types::DynMat<Scalar> & A, const std::string& fname)
 
 // load matrix from binary file
 template<typename Scalar>
-types::DynMat<Scalar> load(const std::string& fname) throw (std::runtime_error)
+types::DynMat<Scalar> load(const std::string& fname)
 {
 	std::fstream fin;
 	fin.open(fname.c_str(), std::ios::in | std::ios::binary);

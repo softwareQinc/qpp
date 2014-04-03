@@ -17,7 +17,7 @@ namespace qpp
 {
 
 // Random double matrix with entries in Uniform[0,1]
-inline types::dmat rand(size_t rows, size_t cols) throw (Exception)
+inline types::dmat rand(size_t rows, size_t cols)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("rand", Exception::Type::MATRIX_ZERO_SIZE);
@@ -26,7 +26,7 @@ inline types::dmat rand(size_t rows, size_t cols) throw (Exception)
 }
 
 // Random double square matrix with entries in Uniform[0,1]
-inline types::dmat rand(size_t rows) throw (Exception)
+inline types::dmat rand(size_t rows)
 {
 	if (rows == 0)
 		throw Exception("rand", Exception::Type::MATRIX_ZERO_SIZE);
@@ -35,7 +35,7 @@ inline types::dmat rand(size_t rows) throw (Exception)
 }
 
 // Random double matrix with entries in Normal(0,1)
-inline types::dmat randn(size_t rows, size_t cols) throw (Exception)
+inline types::dmat randn(size_t rows, size_t cols)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("randn", Exception::Type::MATRIX_ZERO_SIZE);
@@ -51,7 +51,7 @@ inline types::dmat randn(size_t rows, size_t cols) throw (Exception)
 }
 
 // Random double square matrix with entries in Normal(0,1)
-inline types::dmat randn(size_t rows) throw (Exception)
+inline types::dmat randn(size_t rows)
 {
 	if (rows == 0)
 		throw Exception("randn", Exception::Type::MATRIX_ZERO_SIZE);
@@ -60,7 +60,7 @@ inline types::dmat randn(size_t rows) throw (Exception)
 }
 
 // Random unitary matrix
-inline types::cmat rand_unitary(size_t D) throw (Exception)
+inline types::cmat rand_unitary(size_t D)
 {
 	if (D == 0)
 		throw Exception("rand_unitary", Exception::Type::DIMS_HAVE_ZERO);

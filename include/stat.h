@@ -138,7 +138,7 @@ public:
 		_d = tmp;
 	}
 
-	DiscreteDistributionFromComplex(const types::cmat &v) throw (Exception) :
+	DiscreteDistributionFromComplex(const types::cmat &v)  :
 			_d()
 	{
 		// check zero-size

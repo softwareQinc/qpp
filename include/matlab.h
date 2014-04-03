@@ -26,7 +26,7 @@ namespace qpp
 // load Eigen::MatrixX from MATLAB .mat file
 template<typename Scalar>
 types::DynMat<Scalar> loadMATLABmatrix(const std::string &mat_file,
-		const std::string & var_name) throw (Exception)
+		const std::string & var_name)
 {
 	throw Exception("loadMATLABmatrix", Exception::Type::UNDEFINED_TYPE);
 }
@@ -35,7 +35,7 @@ types::DynMat<Scalar> loadMATLABmatrix(const std::string &mat_file,
 // if var_name is a complex matrix, only the real part is loaded
 template<>
 inline types::DynMat<double> loadMATLABmatrix(const std::string &mat_file,
-		const std::string & var_name) throw (std::runtime_error)
+		const std::string & var_name)
 {
 	MATFile *pmat = matOpen(mat_file.c_str(), "r");
 	if (pmat == NULL)
@@ -74,7 +74,7 @@ inline types::DynMat<double> loadMATLABmatrix(const std::string &mat_file,
 // complex specialization
 template<>
 inline types::DynMat<types::cplx> loadMATLABmatrix(const std::string &mat_file,
-		const std::string & var_name) throw (std::runtime_error)
+		const std::string & var_name)
 {
 	MATFile *pmat = matOpen(mat_file.c_str(), "r");
 	if (pmat == NULL)
@@ -134,7 +134,7 @@ inline types::DynMat<types::cplx> loadMATLABmatrix(const std::string &mat_file,
 template<typename Scalar>
 void saveMATLABmatrix(const types::DynMat<Scalar> &A,
 		const std::string & mat_file, const std::string & var_name,
-		const std::string & mode) throw (Exception)
+		const std::string & mode)
 {
 	throw Exception("saveMATLABmatrix", Exception::Type::UNDEFINED_TYPE);
 }
@@ -142,7 +142,7 @@ void saveMATLABmatrix(const types::DynMat<Scalar> &A,
 template<> // double specialization
 void saveMATLABmatrix(const types::DynMat<double> &A,
 		const std::string & mat_file, const std::string & var_name,
-		const std::string & mode) throw (Exception, std::runtime_error)
+		const std::string & mode)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
@@ -174,7 +174,7 @@ void saveMATLABmatrix(const types::DynMat<double> &A,
 template<> // complex specialization
 void saveMATLABmatrix(const types::DynMat<types::cplx> &A,
 		const std::string & mat_file, const std::string & var_name,
-		const std::string & mode) throw (Exception, std::runtime_error)
+		const std::string & mode)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
