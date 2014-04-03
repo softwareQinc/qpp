@@ -18,8 +18,8 @@
 // TODO: proj (dya) function
 // TODO: ip (inner product function) function, make it general to return matrices
 // TODO: use .data() raw pointer instead of looping
-// TODO: optimize syspermute: column major ordering + ?Eigen::Map?
-// TODO: Rewrite partial trace without syspermute IMPORTANT!!!!
+// TODO: optimize syspermute: ?Eigen::Map?
+// TODO: IMPORTANT Rewrite partial trace without syspermute
 // TODO: further parallelization
 
 using namespace std;
