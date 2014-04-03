@@ -48,7 +48,6 @@ types::cmat funm(const types::DynMat<Scalar> &A,
 	return evects * evalsdiag * evects.inverse();
 }
 
-// TODO: check this
 // Matrix absolute value, note the syntax of Lambda invocation
 template<typename Scalar>
 types::cmat absm(const types::DynMat<Scalar> &A)
