@@ -18,6 +18,7 @@
 #include "entropy.h"
 #include "io.h"
 #include "timer.h"
+#include "exception.h"
 
 // These are internal functions the user should not have access to
 //#include "internal.h"

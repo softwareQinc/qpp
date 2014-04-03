@@ -16,6 +16,7 @@
 #include <fstream>
 #include <iomanip>
 #include "types.h"
+#include "exception.h"
 
 namespace qpp
 {
@@ -135,10 +136,11 @@ inline void displn(const types::cplx c, double chop = ct::chop,
 // save matrix to a binary file in double precision
 template<typename Scalar>
 void save(const types::DynMat<Scalar> & A, const std::string& fname)
+		throw (Exception, std::runtime_error)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("save: Zero-sized input!");
+		throw Exception("save", Exception::Type::MATRIX_ZERO_SIZE);
 
 	std::fstream fout;
 	fout.open(fname.c_str(), std::ios::out | std::ios::binary);
@@ -159,15 +161,14 @@ void save(const types::DynMat<Scalar> & A, const std::string& fname)
 	fout.write((char *) &rows, sizeof(rows));
 	fout.write((char *) &cols, sizeof(cols));
 
-	fout.write((char *) static_cast<Scalar>(A).data(),
-			sizeof(types::DynMat<Scalar>) * rows * cols);
+	fout.write((char *) A.data(), sizeof(Scalar) * rows * cols);
 
 	fout.close();
 }
 
 // load matrix from binary file
 template<typename Scalar>
-types::DynMat<Scalar> load(const std::string& fname)
+types::DynMat<Scalar> load(const std::string& fname) throw (std::runtime_error)
 {
 	std::fstream fin;
 	fin.open(fname.c_str(), std::ios::in | std::ios::binary);

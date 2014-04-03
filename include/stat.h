@@ -11,9 +11,9 @@
 #include <random>
 #include <algorithm>
 #include <functional>
-#include <stdexcept>
 #include "types.h"
 #include "internal.h"
+#include "exception.h"
 
 // statistical distributions etc
 
@@ -138,17 +138,21 @@ public:
 		_d = tmp;
 	}
 
-	DiscreteDistributionFromComplex(const types::cmat &v) :
+	DiscreteDistributionFromComplex(const types::cmat &v) throw (Exception) :
 			_d()
 	{
+		// check zero-size
 		if (!internal::_check_nonzero_size(v))
-			throw std::invalid_argument(
-					"DiscreteDistributionFromComplex::DiscreteDistributionFromComplex: "
-							"zero-sized matrix!");
+			throw Exception(
+					"DiscreteDistributionFromComplex::DiscreteDistributionFromComplex",
+					Exception::Type::MATRIX_ZERO_SIZE);
+
+		// check vector
 		if (!internal::_check_vector(v))
-			throw std::invalid_argument(
-					"DiscreteDistributionFromComplex::DiscreteDistributionFromComplex: "
-							"input must be a row/column vector!");
+			throw Exception(
+					"DiscreteDistributionFromComplex::DiscreteDistributionFromComplex",
+					Exception::Type::MATRIX_NOT_VECTOR);
+
 		std::vector<double> weights = cplx2double(v.data(),
 				v.data() + v.size());
 		std::discrete_distribution<size_t> tmp(weights.begin(), weights.end());

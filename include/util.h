@@ -8,7 +8,6 @@
 #ifndef UTIL_H_
 #define	UTIL_H_
 
-#include <stdexcept>
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -20,6 +19,7 @@
 #include "stat.h"
 #include "io.h"
 #include "functional.h"
+#include "exception.h"
 
 // utility functions
 
@@ -30,10 +30,11 @@ namespace qpp
 // transpose, preserve return type
 template<typename Scalar>
 types::DynMat<Scalar> transpose(const types::DynMat<Scalar>& A)
+		throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("transpose: Zero-sized input!");
+		throw Exception("transpose", Exception::Type::MATRIX_ZERO_SIZE);
 
 	return A.transpose();
 }
@@ -41,32 +42,33 @@ types::DynMat<Scalar> transpose(const types::DynMat<Scalar>& A)
 // conjugate, preserve return type
 template<typename Scalar>
 types::DynMat<Scalar> conjugate(const types::DynMat<Scalar>& A)
+		throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("conjugate: Zero-sized input!");
+		throw Exception("conjugate", Exception::Type::MATRIX_ZERO_SIZE);
 
 	return A.conjugate();
 }
 
 // adjoint, preserve return type
 template<typename Scalar>
-types::DynMat<Scalar> adjoint(const types::DynMat<Scalar>& A)
+types::DynMat<Scalar> adjoint(const types::DynMat<Scalar>& A) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("adjoint: Zero-sized input!");
+		throw Exception("adjoint", Exception::Type::MATRIX_ZERO_SIZE);
 
 	return (A).adjoint();
 }
 
 // trace, preserve return type
 template<typename Scalar>
-Scalar trace(const types::DynMat<Scalar>& A)
+Scalar trace(const types::DynMat<Scalar>& A) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("trace: Zero-sized input!");
+		throw Exception("trace", Exception::Type::MATRIX_ZERO_SIZE);
 
 	return A.trace();
 }
@@ -75,11 +77,11 @@ Scalar trace(const types::DynMat<Scalar>& A)
 // returns a matrix of type OutputScalar
 template<typename InputScalar, typename OutputScalar>
 types::DynMat<OutputScalar> fun(const types::DynMat<InputScalar> &A,
-		OutputScalar (*f)(const InputScalar &))
+		OutputScalar (*f)(const InputScalar &)) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("fun: Zero-sized input!");
+		throw Exception("fun", Exception::Type::MATRIX_ZERO_SIZE);
 
 	types::DynMat<OutputScalar> result(A.rows(), A.cols());
 
@@ -93,15 +95,15 @@ types::DynMat<OutputScalar> fun(const types::DynMat<InputScalar> &A,
 
 // trace-norm (or Frobenius norm) (CHANGES return type to double)
 template<typename Scalar>
-double norm(const types::DynMat<Scalar>& A)
+double norm(const types::DynMat<Scalar>& A) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("norm: Zero-sized input!");
+		throw Exception("norm", Exception::Type::MATRIX_ZERO_SIZE);
 
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("norm: Matrix must be square!");
+		throw Exception("norm", Exception::Type::MATRIX_NOT_SQUARE);
 
 	// convert matrix to complex then return its norm
 	return (A.template cast<types::cplx>()).norm();
@@ -109,15 +111,15 @@ double norm(const types::DynMat<Scalar>& A)
 
 // eigenvalues (CHANGES return type to complex)
 template<typename Scalar>
-types::cmat evals(const types::DynMat<Scalar>& A)
+types::cmat evals(const types::DynMat<Scalar>& A) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("evals: Zero-sized input!");
+		throw Exception("evals", Exception::Type::MATRIX_ZERO_SIZE);
 
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("evals: Matrix must be square!");
+		throw Exception("evals", Exception::Type::MATRIX_NOT_SQUARE);
 
 	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
 	return es.eigenvalues();
@@ -125,15 +127,15 @@ types::cmat evals(const types::DynMat<Scalar>& A)
 
 // eigenvectors (CHANGES return type to complex matrix)
 template<typename Scalar>
-types::cmat evects(const types::DynMat<Scalar>& A)
+types::cmat evects(const types::DynMat<Scalar>& A) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("evects: Zero-sized input!");
+		throw Exception("evects", Exception::Type::MATRIX_ZERO_SIZE);
 
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("evects: Matrix must be square!");
+		throw Exception("evects", Exception::Type::MATRIX_NOT_SQUARE);
 
 	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
 	return es.eigenvectors();
@@ -141,15 +143,15 @@ types::cmat evects(const types::DynMat<Scalar>& A)
 
 // eigenvalues of Hermitian matrices (CHANGES return type to complex)
 template<typename Scalar>
-types::cmat hevals(const types::DynMat<Scalar>& A)
+types::cmat hevals(const types::DynMat<Scalar>& A) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("hevals: Zero-sized input!");
+		throw Exception("hevals", Exception::Type::MATRIX_ZERO_SIZE);
 
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("hevals: Matrix must be square!");
+		throw Exception("hevals", Exception::Type::MATRIX_NOT_SQUARE);
 
 	Eigen::SelfAdjointEigenSolver<types::cmat> es(
 			A.template cast<types::cplx>());
@@ -158,15 +160,15 @@ types::cmat hevals(const types::DynMat<Scalar>& A)
 
 // eigenvectors of Hermitian matrix (CHANGES return type to complex matrix)
 template<typename Scalar>
-types::cmat hevects(const types::DynMat<Scalar>& A)
+types::cmat hevects(const types::DynMat<Scalar>& A) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("hevects: Zero-sized input!");
+		throw Exception("hevects", Exception::Type::MATRIX_ZERO_SIZE);
 
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("hevects: Matrix must be square!");
+		throw Exception("hevects", Exception::Type::MATRIX_NOT_SQUARE);
 
 	Eigen::SelfAdjointEigenSolver<types::cmat> es(
 			A.template cast<types::cplx>());
@@ -176,15 +178,15 @@ types::cmat hevects(const types::DynMat<Scalar>& A)
 // Kronecker product of 2 matrices, preserve return type
 template<typename Scalar>
 types::DynMat<Scalar> kron(const types::DynMat<Scalar> &A,
-		const types::DynMat<Scalar> &B)
+		const types::DynMat<Scalar> &B) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("kron: Zero-sized input!");
+		throw Exception("kron", Exception::Type::MATRIX_ZERO_SIZE);
 
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(B))
-		throw std::invalid_argument("kron: Zero-sized input!");
+		throw Exception("kron", Exception::Type::MATRIX_ZERO_SIZE);
 
 	size_t Acols = static_cast<size_t>(A.cols());
 	size_t Arows = static_cast<size_t>(A.rows());
@@ -209,10 +211,11 @@ types::DynMat<Scalar> kron(const types::DynMat<Scalar> &A,
 // inside the function
 template<typename Scalar>
 types::DynMat<Scalar> kron_list(const std::vector<types::DynMat<Scalar>> &list)
+		throw (Exception)
 {
 	for (auto i : list)
 		if (i.size() == 0)
-			throw std::invalid_argument("kron_list: Zero-sized input!");
+			throw Exception("kron_list", Exception::Type::MATRIX_ZERO_SIZE);
 
 	types::DynMat<Scalar> result = list[0];
 	for (size_t i = 1; i < list.size(); i++)
@@ -222,10 +225,11 @@ types::DynMat<Scalar> kron_list(const std::vector<types::DynMat<Scalar>> &list)
 // Kronecker product of a matrix with itself $n$ times, preserve return type
 template<typename Scalar>
 types::DynMat<Scalar> kron_pow(const types::DynMat<Scalar> &A, size_t n)
+		throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("kron_pow: Zero-sized input!");
+		throw Exception("kron_pow", Exception::Type::MATRIX_ZERO_SIZE);
 
 	std::vector<typename types::DynMat<Scalar>> list;
 	for (size_t i = 0; i < n; i++)
@@ -237,17 +241,17 @@ types::DynMat<Scalar> kron_pow(const types::DynMat<Scalar> &A, size_t n)
 // use column-major order (same as MATLAB)
 template<typename Scalar>
 types::DynMat<Scalar> reshape(const types::DynMat<Scalar>& A, size_t rows,
-		size_t cols)
+		size_t cols) throw (Exception)
 {
 	size_t Arows = static_cast<size_t>(A.rows());
 	size_t Acols = static_cast<size_t>(A.cols());
 
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("reshape: Zero-sized input!");
+		throw Exception("reshape", Exception::Type::MATRIX_ZERO_SIZE);
 
 	if (Arows * Acols != rows * cols)
-		throw std::invalid_argument("reshape: Dimension mismatch!");
+		throw Exception("reshape", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 	return Eigen::Map<types::DynMat<Scalar>>(A.data(), rows, cols);
 }
@@ -256,30 +260,29 @@ types::DynMat<Scalar> reshape(const types::DynMat<Scalar>& A, size_t rows,
 template<typename Scalar>
 types::DynMat<Scalar> syspermute(const types::DynMat<Scalar> &A,
 		const std::vector<size_t> perm, const std::vector<size_t> &dims)
+				throw (Exception)
 {
 // Error checks
 
-// zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("syspermute: Zero-sized input!");
+		throw Exception("syspermute", Exception::Type::MATRIX_ZERO_SIZE);
 
-// check square matrix
+	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("syspermute: Matrix must be square!");
+		throw Exception("syspermute", Exception::Type::MATRIX_NOT_SQUARE);
 
 // check that dims is a valid dimension vector
 	if (!internal::_check_dims(dims))
-		throw std::invalid_argument("syspermute: Invalid dimensions vector!");
+		throw Exception("syspermute", Exception::Type::DIMS_HAVE_ZERO);
 
 // check that dims match the dimension of A
 	if (!internal::_check_dims_match_mat(dims, A))
-		throw std::invalid_argument(
-				"syspermute: Dimenisons vector does not match the dimension "
-						"of the matrix!");
+		throw Exception("syspermute", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 // check that the size of the permutation is OK
 	if (!internal::_check_perm(perm, dims))
-		throw std::invalid_argument("syspermute: Invalid permutation size!");
+		throw Exception("syspermute", Exception::Type::PERM_MISMATCH_DIMS);
 
 	size_t dim = static_cast<size_t>(A.rows());
 	size_t numdims = dims.size();
@@ -317,31 +320,29 @@ types::DynMat<Scalar> syspermute(const types::DynMat<Scalar> &A,
 // Partial trace over subsystem B in a D_A x D_B system
 template<typename Scalar>
 types::DynMat<Scalar> ptrace2(const types::DynMat<Scalar> &A,
-		const std::vector<size_t> dims)
+		const std::vector<size_t> dims) throw (Exception)
 {
 // Error checks
 
-// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("ptrace2: Zero-sized input!");
+		throw Exception("ptrace2", Exception::Type::MATRIX_ZERO_SIZE);
 
-// check square matrix
+	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("ptrace2: Matrix must be square!");
+		throw Exception("ptrace2", Exception::Type::MATRIX_NOT_SQUARE);
 
 // check dims has only 2 elements
 	if (dims.size() != 2)
-		throw std::invalid_argument("ptrace2: Must have only 2 subsystems!");
+		throw Exception("ptrace2", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 // check that dim is a valid dimension vector
 	if (!internal::_check_dims(dims))
-		throw std::invalid_argument("ptrace2: Invalid dimensions vector!");
+		throw Exception("ptrace2", Exception::Type::DIMS_HAVE_ZERO);
 
 // check that dims match the dimension of A
 	if (!internal::_check_dims_match_mat(dims, A))
-		throw std::invalid_argument(
-				"ptrace2: Dimenisons vector does not match the "
-						"dimension of the matrix!");
+		throw Exception("ptrace2", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 	size_t DA = dims[0];
 	size_t DB = dims[1];
@@ -361,29 +362,29 @@ types::DynMat<Scalar> ptrace2(const types::DynMat<Scalar> &A,
 template<typename Scalar>
 types::DynMat<Scalar> ptrace(const types::DynMat<Scalar> &A,
 		const std::vector<size_t> &subsys, const std::vector<size_t> &dims)
+				throw (Exception)
 {
 // error checks
 
-// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("ptrace: Zero-sized input!");
+		throw Exception("ptrace", Exception::Type::MATRIX_ZERO_SIZE);
 
-// check square matrix
+	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("ptrace: Matrix must be square!");
+		throw Exception("ptrace", Exception::Type::MATRIX_NOT_SQUARE);
 
 // check that dims is a valid dimension vector
 	if (!internal::_check_dims(dims))
-		throw std::invalid_argument("ptrace: Invalid dimensions vector!");
+		throw Exception("ptrace", Exception::Type::DIMS_HAVE_ZERO);
 
 // check that dims match the dimension of A
 	if (!internal::_check_dims_match_mat(dims, A))
-		throw std::invalid_argument(
-				"ptrace: Dimenisons vector does not match the dimension"
-						" of the matrix!");
+		throw Exception("ptrace", Exception::Type::DIMS_MISMATCH_MATRIX);
 
+// check that subsys are valid
 	if (!internal::_check_subsys(subsys, dims))
-		throw std::invalid_argument("ptrace: Invalid subsystems!");
+		throw Exception("ptrace", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
 	size_t dim = static_cast<size_t>(A.rows());
 	size_t numsubsys = subsys.size(); // number of subsystems we trace out
@@ -427,29 +428,29 @@ types::DynMat<Scalar> ptrace(const types::DynMat<Scalar> &A,
 template<typename Scalar>
 types::DynMat<Scalar> ptranspose(const types::DynMat<Scalar>& A,
 		const std::vector<size_t>& subsys, const std::vector<size_t>& dims)
+				throw (Exception)
 {
 // error checks
 
-// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("ptranspose: Zero-sized input!");
+		throw Exception("ptranspose", Exception::Type::MATRIX_ZERO_SIZE);
 
-// check square matrix
+	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("ptranspose: Matrix must be square!");
+		throw Exception("ptranspose", Exception::Type::MATRIX_NOT_SQUARE);
 
 // check that dims is a valid dimension vector
 	if (!internal::_check_dims(dims))
-		throw std::invalid_argument("ptranspose: Invalid dimensions vector!");
+		throw Exception("ptranspose", Exception::Type::DIMS_HAVE_ZERO);
 
 // check that dims match the dimension of A
 	if (!internal::_check_dims_match_mat(dims, A))
-		throw std::invalid_argument(
-				"ptranspose: Dimenisons vector does not match the "
-						"dimension of the matrix!");
+		throw Exception("ptranspose", Exception::Type::DIMS_MISMATCH_MATRIX);
 
+	// check that subsys are valid
 	if (!internal::_check_subsys(subsys, dims))
-		throw std::invalid_argument("ptranspose: Invalid subsystems!");
+		throw Exception("ptranspose", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
 	size_t dim = static_cast<size_t>(A.rows());
 	size_t numdims = dims.size();

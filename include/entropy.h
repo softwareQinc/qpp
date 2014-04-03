@@ -9,10 +9,10 @@
 #define ENTROPY_H_
 
 #include <cmath>
-#include <stdexcept>
 #include "types.h"
 #include "util.h"
 #include "internal.h"
+#include "exception.h"
 
 // entropy functions
 
@@ -21,13 +21,13 @@ namespace qpp
 
 // Shannon/von-Neumann entropy
 template<typename Scalar>
-double shannon(const types::DynMat<Scalar> & A)
+double shannon(const types::DynMat<Scalar> & A) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("shannon: Zero-sized input!");
+		throw Exception("shannon", Exception::Type::MATRIX_ZERO_SIZE);
 
-	// vector
+	// input is a vector
 	if (A.rows() == 1 || A.cols() == 1)
 	{
 		double result = 0;
@@ -40,12 +40,12 @@ double shannon(const types::DynMat<Scalar> & A)
 		return result;
 	}
 
-	// matrix
+	// input is a matrix
+
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument(
-				"shannon: Input must be a row/column vector "
-						"or a square matrix!");
+		throw Exception("shannon", Exception::Type::MATRIX_NOT_SQUARE);
+
 	// get the eigenvalues
 	types::cmat ev = evals(A);
 	double result = 0;
@@ -62,18 +62,19 @@ double shannon(const types::DynMat<Scalar> & A)
 // Renyi-alpha entropy (alpha>=0)
 template<typename Scalar>
 double renyi(const double alpha, const types::DynMat<Scalar> & A)
+		throw (Exception)
 {
 	if (alpha < 0)
-		throw std::invalid_argument("renyi: alpha can not be negative!");
+		throw Exception("renyi", Exception::Type::OUT_OF_RANGE);
 
 	if (alpha == 1) // Shannon/von Neumann
 		return shannon(A);
 
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("renyi: Zero-sized input!");
+		throw Exception("renyi", Exception::Type::MATRIX_ZERO_SIZE);
 
-	// vector
+	// input is a vector
 	if (A.rows() == 1 || A.cols() == 1)
 	{
 		if (alpha == 0)
@@ -89,11 +90,11 @@ double renyi(const double alpha, const types::DynMat<Scalar> & A)
 		return std::log2(result) / (1 - alpha);
 	}
 
-	// matrix
+	// input is a matrix
+
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument(
-				"renyi: Input must be a row/column vector or a square matrix!");
+		throw Exception("renyi", Exception::Type::MATRIX_NOT_SQUARE);
 
 	if (alpha == 0)
 		return std::log2(A.rows());
@@ -112,13 +113,13 @@ double renyi(const double alpha, const types::DynMat<Scalar> & A)
 
 // Renyi-infinity entropy (min entropy)
 template<typename Scalar>
-double renyi_inf(const types::DynMat<Scalar> & A)
+double renyi_inf(const types::DynMat<Scalar> & A) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("renyi: Zero-sized input!");
+		throw Exception("renyi_inf", Exception::Type::MATRIX_ZERO_SIZE);
 
-	// vector
+	// input is a vector
 	if (A.rows() == 1 || A.cols() == 1)
 	{
 		double max = 0;
@@ -129,12 +130,11 @@ double renyi_inf(const types::DynMat<Scalar> & A)
 		return -std::log2(max);
 	}
 
-	// matrix
+	// input is a matrix
+
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument(
-				"renyi_inf: Input must be a row/column vector "
-						"or a square matrix!");
+		throw Exception("renyi_inf", Exception::Type::MATRIX_NOT_SQUARE);
 
 	// get the eigenvalues
 	types::cmat ev = evals(A);

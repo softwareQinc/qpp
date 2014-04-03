@@ -11,6 +11,7 @@
 #include <vector>
 #include <iostream>
 #include "types.h"
+#include "exception.h"
 
 // internal functions, do not modify
 namespace qpp
@@ -30,14 +31,13 @@ void _disp_container(const T& x)
 
 // integer index to multi-index, use C-style array for speed
 inline void _n2multiidx(size_t n, size_t numdims, const size_t *dims,
-		size_t *result)
+		size_t *result) throw (Exception)
 {
 	size_t maxn = 1;
 	for (size_t i = 0; i < numdims; i++)
 		maxn *= dims[i];
 	if (n > maxn - 1)
-		throw std::invalid_argument(
-				"_n2multiidx: Number too large, out of bounds!");
+		throw Exception("_n2multiidx", Exception::Type::OUT_OF_RANGE);
 
 	size_t _n = n;
 	for (size_t i = 0; i < numdims; i++)
@@ -49,12 +49,11 @@ inline void _n2multiidx(size_t n, size_t numdims, const size_t *dims,
 
 // multi index to integer index, use C-style array for speed
 inline size_t _multiidx2n(const size_t *midx, size_t numdims,
-		const size_t *dims)
+		const size_t *dims) throw (Exception)
 {
 	for (size_t i = 0; i < numdims; i++)
 		if (midx[i] >= dims[i])
-			throw std::invalid_argument(
-					"_multiidx2n: Sub-index exceeds corresponding dimension!");
+			throw Exception("_multiidx2n", Exception::Type::OUT_OF_RANGE);
 
 	size_t *part_prod = new size_t[numdims];
 

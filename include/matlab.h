@@ -14,6 +14,8 @@
 #include <string>
 #include <stdexcept>
 #include "types.h"
+#include "internal.h"
+#include "exception.h"
 
 #include "mat.h"  // path to this is defined in the Makefile
 #include "mex.h"  // path to this is defined in the Makefile
@@ -24,16 +26,16 @@ namespace qpp
 // load Eigen::MatrixX from MATLAB .mat file
 template<typename Scalar>
 types::DynMat<Scalar> loadMATLABmatrix(const std::string &mat_file,
-		const std::string & var_name)
+		const std::string & var_name) throw (Exception)
 {
-	throw std::logic_error("loadMATLABmatrix: not implemented for this type!");
+	throw Exception("loadMATLABmatrix", Exception::Type::UNDEFINED_TYPE);
 }
 
 // double specialization
 // if var_name is a complex matrix, only the real part is loaded
 template<>
 inline types::DynMat<double> loadMATLABmatrix(const std::string &mat_file,
-		const std::string & var_name)
+		const std::string & var_name) throw (std::runtime_error)
 {
 	MATFile *pmat = matOpen(mat_file.c_str(), "r");
 	if (pmat == NULL)
@@ -72,7 +74,7 @@ inline types::DynMat<double> loadMATLABmatrix(const std::string &mat_file,
 // complex specialization
 template<>
 inline types::DynMat<types::cplx> loadMATLABmatrix(const std::string &mat_file,
-		const std::string & var_name)
+		const std::string & var_name) throw (std::runtime_error)
 {
 	MATFile *pmat = matOpen(mat_file.c_str(), "r");
 	if (pmat == NULL)
@@ -132,19 +134,19 @@ inline types::DynMat<types::cplx> loadMATLABmatrix(const std::string &mat_file,
 template<typename Scalar>
 void saveMATLABmatrix(const types::DynMat<Scalar> &A,
 		const std::string & mat_file, const std::string & var_name,
-		const std::string & mode)
+		const std::string & mode) throw (Exception)
 {
-	throw std::logic_error("saveMATLABmatrix: not implemented for this type!");
+	throw Exception("saveMATLABmatrix", Exception::Type::UNDEFINED_TYPE);
 }
 
 template<> // double specialization
 void saveMATLABmatrix(const types::DynMat<double> &A,
 		const std::string & mat_file, const std::string & var_name,
-		const std::string & mode)
+		const std::string & mode) throw (Exception, std::runtime_error)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("saveMATLABmatrix: Zero-sized input!");
+		throw Exception("saveMATLABmatrix", Exception::Type::MATRIX_ZERO_SIZE);
 
 	MATFile *pmat = matOpen(mat_file.c_str(), mode.c_str());
 	if (pmat == NULL)
@@ -172,11 +174,11 @@ void saveMATLABmatrix(const types::DynMat<double> &A,
 template<> // complex specialization
 void saveMATLABmatrix(const types::DynMat<types::cplx> &A,
 		const std::string & mat_file, const std::string & var_name,
-		const std::string & mode)
+		const std::string & mode) throw (Exception, std::runtime_error)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("saveMATLABmatrix: Zero-sized input!");
+		throw Exception("saveMATLABmatrix", Exception::Type::MATRIX_ZERO_SIZE);
 
 	// cast the input to a double (internal MATLAB format)
 	types::dmat tmp_re = A.real();

@@ -8,10 +8,10 @@
 #ifndef FUNCTIONAL_H_
 #define FUNCTIONAL_H_
 
-#include <stdexcept>
 #include <cmath>
 #include "types.h"
 #include "internal.h"
+#include "exception.h"
 
 // Matrix functional calculus
 
@@ -27,15 +27,15 @@ namespace qpp
  */
 template<typename Scalar>
 types::cmat funm(const types::DynMat<Scalar> &A,
-		types::cplx (*f)(const types::cplx &))
+		types::cplx (*f)(const types::cplx &)) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("funm: Zero-sized input!");
+		throw Exception("funm", Exception::Type::MATRIX_ZERO_SIZE);
 
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("funm: Matrix must be square!");
+		throw Exception("funm", Exception::Type::MATRIX_NOT_SQUARE);
 
 	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
 	types::cmat evects = es.eigenvectors();
@@ -51,15 +51,15 @@ types::cmat funm(const types::DynMat<Scalar> &A,
 // TODO: check this
 // Matrix absolute value, note the syntax of Lambda invocation
 template<typename Scalar>
-types::cmat absm(const types::DynMat<Scalar> &A)
+types::cmat absm(const types::DynMat<Scalar> &A) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("absm: Zero-sized input!");
+		throw Exception("absm", Exception::Type::MATRIX_ZERO_SIZE);
 
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("absm: Matrix must be square!");
+		throw Exception("absm", Exception::Type::MATRIX_NOT_SQUARE);
 
 	return funm(adjoint(A) * A, [](const types::cplx & x)->types::cplx
 	{	return std::sqrt(x);});
@@ -67,75 +67,75 @@ types::cmat absm(const types::DynMat<Scalar> &A)
 
 // Matrix exponential
 template<typename Scalar>
-types::cmat expm(const types::DynMat<Scalar> &A)
+types::cmat expm(const types::DynMat<Scalar> &A) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("expm: Zero-sized input!");
+		throw Exception("expm", Exception::Type::MATRIX_ZERO_SIZE);
 
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("expm: Matrix must be square!");
+		throw Exception("expm", Exception::Type::MATRIX_NOT_SQUARE);
 
 	return funm(A, std::exp);
 }
 
 // Matrix logarithm
 template<typename Scalar>
-types::cmat logm(const types::DynMat<Scalar> &A)
+types::cmat logm(const types::DynMat<Scalar> &A) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("logm: Zero-sized input!");
+		throw Exception("logm", Exception::Type::MATRIX_ZERO_SIZE);
 
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("logm: Matrix must be square!");
+		throw Exception("logm", Exception::Type::MATRIX_NOT_SQUARE);
 
 	return funm(A, std::log);
 }
 
 // Matrix square root
 template<typename Scalar>
-types::cmat sqrtm(const types::DynMat<Scalar> &A)
+types::cmat sqrtm(const types::DynMat<Scalar> &A) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("sqrtm: Zero-sized input!");
+		throw Exception("sqrtm", Exception::Type::MATRIX_ZERO_SIZE);
 
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("sqrtm: Matrix must be square!");
+		throw Exception("sqrtm", Exception::Type::MATRIX_NOT_SQUARE);
 
 	return funm(A, std::sqrt);
 }
 
 // Matrix sin
 template<typename Scalar>
-types::cmat sinm(const types::DynMat<Scalar> &A)
+types::cmat sinm(const types::DynMat<Scalar> &A) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("sinm: Zero-sized input!");
+		throw Exception("sinm", Exception::Type::MATRIX_ZERO_SIZE);
 
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("sinm: Matrix must be square!");
+		throw Exception("sinm", Exception::Type::MATRIX_NOT_SQUARE);
 
 	return funm(A, std::sin);
 }
 
 // Matrix cos
 template<typename Scalar>
-types::cmat cosm(const types::DynMat<Scalar> &A)
+types::cmat cosm(const types::DynMat<Scalar> &A) throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("cosm: Zero-sized input!");
+		throw Exception("cosm", Exception::Type::MATRIX_ZERO_SIZE);
 
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("cosm: Matrix must be square!");
+		throw Exception("cosm", Exception::Type::MATRIX_NOT_SQUARE);
 
 	return funm(A, std::cos);
 }
@@ -143,15 +143,16 @@ types::cmat cosm(const types::DynMat<Scalar> &A)
 // Matrix power A^z (CHANGES return type to complex matrix)
 template<typename Scalar>
 types::cmat powm(const types::DynMat<Scalar> &A, const types::cplx z)
+		throw (Exception)
 
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("powm: Zero-sized input!");
+		throw Exception("powm", Exception::Type::MATRIX_ZERO_SIZE);
 
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("powm: Matrix must be square!");
+		throw Exception("powm", Exception::Type::MATRIX_NOT_SQUARE);
 
 	// Define A^0 = Id
 	if (real(z) == 0 && imag(z) == 0)
@@ -178,14 +179,15 @@ types::cmat powm(const types::DynMat<Scalar> &A, const types::cplx z)
 // Explicitly multiply the matrix with itself n times
 template<typename Scalar>
 types::DynMat<Scalar> powm_int(const types::DynMat<Scalar> &A, size_t n)
+		throw (Exception)
 {
-	// zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw std::invalid_argument("powm_int: Zero-sized input!");
+		throw Exception("powm_int", Exception::Type::MATRIX_ZERO_SIZE);
 
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw std::invalid_argument("powm_int: Matrix must be square!");
+		throw Exception("powm_int", Exception::Type::MATRIX_NOT_SQUARE);
 
 	types::DynMat<Scalar> result = A;
 

@@ -11,11 +11,12 @@
 #include "internal.h"
 //#include "matlab.h" // support for MATLAB
 
+#include "exception.h"
+
 // TODO: expandout function
 // TODO: dyad function
 // TODO: proj (dya) function
 // TODO: ip (inner product function) function, make it general to return matrices
-// TODO: Exception class (runtime / invalid_argument)
 // TODO: use .data() raw pointer instead of looping
 // TODO: optimize syspermute: column major ordering + ?Eigen::Map?
 // TODO: Rewrite partial trace without syspermute IMPORTANT!!!!
