@@ -22,7 +22,7 @@ inline types::dmat rand(size_t rows, size_t cols)
 	if (rows == 0 || cols == 0)
 		throw Exception("rand", Exception::Type::MATRIX_ZERO_SIZE);
 
-	return types::dmat::Random(rows, cols);
+	return (types::dmat::Random(rows, cols) + types::dmat::Ones(rows, cols)) / 2;
 }
 
 // Random double square matrix with entries in Uniform[0,1]
@@ -60,10 +60,10 @@ inline types::dmat randn(size_t rows)
 }
 
 // Random unitary matrix
-inline types::cmat rand_unitary(size_t D)
+inline types::cmat randU(size_t D)
 {
 	if (D == 0)
-		throw Exception("rand_unitary", Exception::Type::DIMS_HAVE_ZERO);
+		throw Exception("randH", Exception::Type::DIMS_HAVE_ZERO);
 
 	types::cmat X(D, D);
 
@@ -82,6 +82,30 @@ inline types::cmat rand_unitary(size_t D)
 	Q = Q * phases.asDiagonal();
 
 	return Q;
+}
+
+// Random Hermitian matrix
+inline types::cmat randH(size_t D)
+{
+	if (D == 0)
+		throw Exception("randH", Exception::Type::DIMS_HAVE_ZERO);
+
+	types::cmat H = 2
+			* (rand(D).cast<types::cplx>()
+					+ ct::ii * rand(D).cast<types::cplx>())
+			- (1. + ct::ii) * types::cmat::Ones(D, D);
+
+	return H+adjoint(H);
+}
+
+// random ket
+inline types::cmat randket(size_t D)
+{
+	if (D == 0)
+		throw Exception("randket", Exception::Type::DIMS_HAVE_ZERO);
+	types::cmat kt = types::cmat::Ones(D, 1);
+	types::cmat result = randU(D) * kt;
+	return result / norm(result);
 }
 
 }

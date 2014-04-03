@@ -101,10 +101,6 @@ double norm(const types::DynMat<Scalar>& A)
 	if (!internal::_check_nonzero_size(A))
 		throw Exception("norm", Exception::Type::MATRIX_ZERO_SIZE);
 
-	// check square matrix
-	if (!internal::_check_square_mat(A))
-		throw Exception("norm", Exception::Type::MATRIX_NOT_SQUARE);
-
 	// convert matrix to complex then return its norm
 	return (A.template cast<types::cplx>()).norm();
 }
