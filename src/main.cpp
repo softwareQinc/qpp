@@ -14,7 +14,7 @@
 #include "exception.h"
 
 // TODO: expandout function
-// TODO: dyad function
+// TODO: dya/dyad function
 // TODO: proj (dya) function
 // TODO: ip (inner product function) function, make it general to return matrices
 // TODO: use .data() raw pointer instead of looping
