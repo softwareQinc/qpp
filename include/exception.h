@@ -14,8 +14,6 @@
 namespace qpp
 {
 
-//enum class Exception::Type;
-
 class Exception: public std::exception
 {
 public:
