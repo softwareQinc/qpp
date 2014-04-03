@@ -30,8 +30,8 @@ void _disp_container(const T& x)
 }
 
 // integer index to multi-index, use C-style array for speed
-inline void _n2multiidx(size_t n, size_t numdims, const size_t *dims,
-		size_t *result)
+inline void _n2multiidx(size_t n, size_t numdims, const size_t* dims,
+		size_t* result)
 {
 	size_t maxn = 1;
 	for (size_t i = 0; i < numdims; i++)
@@ -48,14 +48,14 @@ inline void _n2multiidx(size_t n, size_t numdims, const size_t *dims,
 }
 
 // multi index to integer index, use C-style array for speed
-inline size_t _multiidx2n(const size_t *midx, size_t numdims,
-		const size_t *dims)
+inline size_t _multiidx2n(const size_t* midx, size_t numdims,
+		const size_t* dims)
 {
 	for (size_t i = 0; i < numdims; i++)
 		if (midx[i] >= dims[i])
 			throw Exception("_multiidx2n", Exception::Type::OUT_OF_RANGE);
 
-	size_t *part_prod = new size_t[numdims];
+	size_t* part_prod = new size_t[numdims];
 
 	part_prod[numdims - 1] = 1;
 	for (size_t j = 1; j < numdims; j++)
@@ -170,15 +170,15 @@ inline bool _check_perm(const std::vector<size_t>& perm,
 
 // used inside the #pragma omp parallel for in syspermute
 template<typename Scalar>
-inline void _syspermute_worker(const size_t *midxcol, size_t numdims,
-		const size_t *cdims, const size_t *cperm, size_t i, size_t j,
+inline void _syspermute_worker(const size_t* midxcol, size_t numdims,
+		const size_t* cdims, const size_t* cperm, size_t i, size_t j,
 		size_t &iperm, size_t &jperm, const types::DynMat<Scalar> &A,
 		types::DynMat<Scalar> &result)
 {
-	size_t *midxrow = new size_t[numdims];
-	size_t *midxrowtmp = new size_t[numdims];
-	size_t *midxcoltmp = new size_t[numdims];
-	size_t *permdims = new size_t[numdims];
+	size_t* midxrow = new size_t[numdims];
+	size_t* midxrowtmp = new size_t[numdims];
+	size_t* midxcoltmp = new size_t[numdims];
+	size_t* permdims = new size_t[numdims];
 
 	for (size_t k = 0; k < numdims; k++)
 		permdims[k] = cdims[cperm[k]]; // permuted dimensions
@@ -205,15 +205,15 @@ inline void _syspermute_worker(const size_t *midxcol, size_t numdims,
 
 // used inside the #pragma omp parallel for in ptranspose
 template<typename Scalar>
-inline void _ptranspose_worker(const size_t *midxcol, size_t numdims,
-		size_t numsubsys, const size_t *cdims, const size_t *csubsys, size_t i,
+inline void _ptranspose_worker(const size_t* midxcol, size_t numdims,
+		size_t numsubsys, const size_t* cdims, const size_t* csubsys, size_t i,
 		size_t j, size_t &iperm, size_t &jperm, const types::DynMat<Scalar> &A,
 		types::DynMat<Scalar> &result)
 {
-	size_t *midxcoltmp = new size_t[numdims];
+	size_t* midxcoltmp = new size_t[numdims];
 	for (size_t k = 0; k < numdims; k++)
 		midxcoltmp[k] = midxcol[k];
-	size_t *midxrow = new size_t[numdims];
+	size_t* midxrow = new size_t[numdims];
 
 	// compute the row multi-index
 	_n2multiidx(i, numdims, cdims, midxrow);

@@ -158,10 +158,10 @@ void save(const types::DynMat<Scalar> & A, const std::string& fname)
 
 	size_t rows = static_cast<size_t>(A.rows());
 	size_t cols = static_cast<size_t>(A.cols());
-	fout.write((char *) &rows, sizeof(rows));
-	fout.write((char *) &cols, sizeof(cols));
+	fout.write((char*) &rows, sizeof(rows));
+	fout.write((char*) &cols, sizeof(cols));
 
-	fout.write((char *) A.data(), sizeof(Scalar) * rows * cols);
+	fout.write((char*) A.data(), sizeof(Scalar) * rows * cols);
 
 	fout.close();
 }
@@ -181,7 +181,7 @@ types::DynMat<Scalar> load(const std::string& fname)
 	}
 
 	const char _header[] = "TYPE::Eigen::Matrix";
-	char *_fheader = new char[sizeof(_header)];
+	char* _fheader = new char[sizeof(_header)];
 
 	// read the header from file
 	fin.read(_fheader, sizeof(_header));
@@ -195,12 +195,12 @@ types::DynMat<Scalar> load(const std::string& fname)
 	delete[] _fheader;
 
 	size_t rows, cols;
-	fin.read((char *) &rows, sizeof(rows));
-	fin.read((char *) &cols, sizeof(cols));
+	fin.read((char*) &rows, sizeof(rows));
+	fin.read((char*) &cols, sizeof(cols));
 
 	types::DynMat<Scalar> A(rows, cols);
 
-	fin.read((char *) A.data(), sizeof(Scalar) * rows * cols);
+	fin.read((char*) A.data(), sizeof(Scalar) * rows * cols);
 
 	fin.close();
 	return A;

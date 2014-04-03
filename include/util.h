@@ -286,9 +286,9 @@ types::DynMat<Scalar> syspermute(const types::DynMat<Scalar> &A,
 
 	size_t dim = static_cast<size_t>(A.rows());
 	size_t numdims = dims.size();
-	size_t *cdims = new size_t[numdims];
-	size_t *cperm = new size_t[numdims];
-	size_t *midxcol = new size_t[numdims];
+	size_t* cdims = new size_t[numdims];
+	size_t* cperm = new size_t[numdims];
+	size_t* midxcol = new size_t[numdims];
 	types::DynMat<Scalar> result(dim, dim);
 
 // copy dims in cdims and perm in cperm
@@ -456,9 +456,9 @@ types::DynMat<Scalar> ptranspose(const types::DynMat<Scalar>& A,
 	size_t dim = static_cast<size_t>(A.rows());
 	size_t numdims = dims.size();
 	size_t numsubsys = subsys.size();
-	size_t *cdims = new size_t[numdims];
-	size_t *midxcol = new size_t[numdims];
-	size_t *csubsys = new size_t[numsubsys];
+	size_t* cdims = new size_t[numdims];
+	size_t* midxcol = new size_t[numdims];
+	size_t* csubsys = new size_t[numsubsys];
 
 	types::DynMat<Scalar> result = A;
 
