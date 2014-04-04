@@ -43,16 +43,14 @@ int main()
 		spec += evalsH(i) * proj((cmat) (evectsH.col(i)));
 	cout << "Original matrix: " << endl;
 	displn(rH);
-	cout << endl;
-	cout << "Reconstructed from spectral decomposition: " << endl;
+	cout << endl << "Reconstructed from spectral decomposition: " << endl;
 	displn(spec);
 	cout << "Difference in norm: " << norm((cmat) (spec - rH)) << endl;
 	cmat tmp(2, 1);
 	tmp << 2, 2; // some un-normalized ket
 	cout << endl << "Projector constructed from un-normalized ket: " << endl;
 	displn(proj(tmp));
-	cout << endl;
-	cout << "Now the un-normalized corresponding dyad: " << endl;
+	cout << endl << "Now the un-normalized corresponding dyad: " << endl;
 	displn(dya(tmp));
 	cout << endl;
 
