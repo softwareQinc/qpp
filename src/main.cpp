@@ -49,6 +49,14 @@ int main()
 	cout << "Reconstructed from spectral decomposition: " << endl;
 	displn(spec);
 	cout << "Difference in norm: " << norm((cmat) (spec - rH)) << endl;
+	cmat tmp(2, 1);
+	tmp << 2, 2; // some un-normalized ket
+	cout << endl << "Projector constructed from un-normalized ket: " << endl;
+	displn(proj(tmp));
+	cout << endl;
+	cout << "Now the un-normalized corresponding dyad: " << endl;
+	displn(dya(tmp));
+	cout << endl;
 
 	// statistics tests
 	cout << endl << "Statistics tests." << endl;

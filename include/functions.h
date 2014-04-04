@@ -714,7 +714,7 @@ types::DynMat<Scalar> anticomm(const types::DynMat<Scalar> &A,
 	return A * B + B * A;
 }
 
-// projector |v><v|
+// projector onto |V><V| (normalized)
 template<typename Scalar>
 types::DynMat<Scalar> proj(const types::DynMat<Scalar>& V)
 {
@@ -726,7 +726,22 @@ types::DynMat<Scalar> proj(const types::DynMat<Scalar>& V)
 	if (!internal::_check_col_vector(V))
 		throw Exception("proj", Exception::Type::MATRIX_NOT_CVECTOR);
 
-	return V*adjoint(V);
+	return V * adjoint(V) / trace((types::cmat) (V * adjoint(V)));
+}
+
+// dyad |V><V| (not normalized)
+template<typename Scalar>
+types::DynMat<Scalar> dya(const types::DynMat<Scalar>& V)
+{
+	// check zero-size
+	if (!internal::_check_nonzero_size(V))
+		throw Exception("dya", Exception::Type::MATRIX_ZERO_SIZE);
+
+	// check column vector
+	if (!internal::_check_col_vector(V))
+		throw Exception("dya", Exception::Type::MATRIX_NOT_CVECTOR);
+
+	return V * adjoint(V);
 }
 
 }
