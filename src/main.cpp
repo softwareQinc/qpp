@@ -31,7 +31,7 @@ int main()
 
 	// output format
 	cout << std::fixed; // use fixed format for nice formatting
-	//	cout << std::scientific;
+	// cout << std::scientific;
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
 	// statistics tests

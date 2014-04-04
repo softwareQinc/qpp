@@ -281,6 +281,8 @@ types::cmat cosm(const types::DynMat<Scalar> &A)
 }
 
 // Matrix power A^z (CHANGES return type to complex matrix)
+// if z is real, explicitly cast it to types::cplx, otherwise the
+// overloaded powm(const types::DynMat&, size_t) will be called
 template<typename Scalar>
 types::cmat powm(const types::DynMat<Scalar> &A, const types::cplx z)
 
@@ -317,16 +319,16 @@ types::cmat powm(const types::DynMat<Scalar> &A, const types::cplx z)
 // Matrix integer power, preserve return type
 // Explicitly multiply the matrix with itself n times
 template<typename Scalar>
-types::DynMat<Scalar> powm_int(const types::DynMat<Scalar> &A, size_t n)
+types::DynMat<Scalar> powm(const types::DynMat<Scalar> &A, size_t n)
 
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw Exception("powm_int", Exception::Type::MATRIX_ZERO_SIZE);
+		throw Exception("powm", Exception::Type::MATRIX_ZERO_SIZE);
 
 	// check square matrix
 	if (!internal::_check_square_mat(A))
-		throw Exception("powm_int", Exception::Type::MATRIX_NOT_SQUARE);
+		throw Exception("powm", Exception::Type::MATRIX_NOT_SQUARE);
 
 	types::DynMat<Scalar> result = A;
 
@@ -395,12 +397,12 @@ types::DynMat<Scalar> kron(const types::DynMat<Scalar> &A,
 // <Expression> is forced to be a matrix by invocation of kron
 // inside the function
 template<typename Scalar>
-types::DynMat<Scalar> kron_list(const std::vector<types::DynMat<Scalar>> &list)
+types::DynMat<Scalar> kronlist(const std::vector<types::DynMat<Scalar>> &list)
 
 {
 	for (auto i : list)
 		if (i.size() == 0)
-			throw Exception("kron_list", Exception::Type::MATRIX_ZERO_SIZE);
+			throw Exception("kronlist", Exception::Type::MATRIX_ZERO_SIZE);
 
 	types::DynMat<Scalar> result = list[0];
 	for (size_t i = 1; i < list.size(); i++)
@@ -409,17 +411,17 @@ types::DynMat<Scalar> kron_list(const std::vector<types::DynMat<Scalar>> &list)
 }
 // Kronecker product of a matrix with itself $n$ times, preserve return type
 template<typename Scalar>
-types::DynMat<Scalar> kron_pow(const types::DynMat<Scalar> &A, size_t n)
+types::DynMat<Scalar> kronpow(const types::DynMat<Scalar> &A, size_t n)
 
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw Exception("kron_pow", Exception::Type::MATRIX_ZERO_SIZE);
+		throw Exception("kronpow", Exception::Type::MATRIX_ZERO_SIZE);
 
 	std::vector<typename types::DynMat<Scalar>> list;
 	for (size_t i = 0; i < n; i++)
 		list.push_back(A);
-	return kron_list(list);
+	return kronlist(list);
 }
 
 // reshape the columns of A and returns a matrix with m rows and n columns
