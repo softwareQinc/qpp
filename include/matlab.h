@@ -8,6 +8,7 @@
 #ifndef MATLAB_H_
 #define MATLAB_H_
 
+// MATLAB I/O interfacing
 // add the path to MATLAB/extern/include in include path
 
 #include <Eigen/Dense>

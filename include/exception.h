@@ -11,6 +11,8 @@
 #include <stdexcept>
 #include <string>
 
+// exception class
+
 namespace qpp
 {
 

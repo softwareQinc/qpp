@@ -12,13 +12,12 @@
 
 #include <cstdlib>
 #include "types.h"
-#include "util.h"
 #include "constants.h"
 #include "gates.h"
 #include "stat.h"
-#include "functional.h"
+#include "functions.h"
 #include "random.h"
-#include "entropy.h"
+#include "entropies.h"
 #include "io.h"
 #include "timer.h"
 #include "exception.h"

@@ -10,7 +10,7 @@
 
 #include "types.h"
 
-// Global "constants"
+// constants
 
 namespace qpp
 {

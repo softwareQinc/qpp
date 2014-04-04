@@ -1,27 +1,22 @@
-/* 
- * File:   util.h
- * Author: vlad
+/*
+ * functional.h
  *
- * Created on December 12, 2013, 10:41 PM
+ *  Created on: Mar 27, 2014
+ *      Author: vlad
  */
 
-#ifndef UTIL_H_
-#define	UTIL_H_
+#ifndef FUNCTIONAL_H_
+#define FUNCTIONAL_H_
 
 #include <vector>
-#include <iostream>
-#include <fstream>
-#include <iomanip>
 #include <cmath>
 #include "types.h"
-#include "constants.h"
 #include "internal.h"
-#include "stat.h"
-#include "io.h"
-#include "functional.h"
 #include "exception.h"
+#include "constants.h"
+#include "stat.h"
 
-// utility functions
+// Collection of quantum computing useful functions
 
 namespace qpp
 {
@@ -82,26 +77,6 @@ Scalar sum(const types::DynMat<Scalar>& A)
 		throw Exception("trace", Exception::Type::MATRIX_ZERO_SIZE);
 
 	return A.sum();
-}
-
-// functor; apply f(A) component-wise, where (*f) is the function pointer
-// returns a matrix of type OutputScalar
-template<typename InputScalar, typename OutputScalar>
-types::DynMat<OutputScalar> fun(const types::DynMat<InputScalar> &A,
-		OutputScalar (*f)(const InputScalar &))
-{
-	// check zero-size
-	if (!internal::_check_nonzero_size(A))
-		throw Exception("fun", Exception::Type::MATRIX_ZERO_SIZE);
-
-	types::DynMat<OutputScalar> result(A.rows(), A.cols());
-
-	for (size_t j = 0; j < static_cast<size_t>(A.cols()); j++)
-#pragma omp parallel for
-		for (size_t i = 0; i < static_cast<size_t>(A.rows()); i++)
-			result(i, j) = (*f)(A(i, j));
-
-	return result;
 }
 
 // trace-norm (or Frobenius norm) (CHANGES return type to double)
@@ -180,6 +155,210 @@ types::cmat hevects(const types::DynMat<Scalar>& A)
 	Eigen::SelfAdjointEigenSolver<types::cmat> es(
 			A.template cast<types::cplx>());
 	return es.eigenvectors();
+}
+
+// Matrix functional calculus
+
+// Computes f(A), where (*f) is the function pointer
+/**
+ *
+ * @param A input matrix
+ * @param f function pointer
+ * @return types::cmat
+ */
+template<typename Scalar>
+types::cmat funm(const types::DynMat<Scalar> &A,
+		types::cplx (*f)(const types::cplx &))
+{
+	// check zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw Exception("funm", Exception::Type::MATRIX_ZERO_SIZE);
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw Exception("funm", Exception::Type::MATRIX_NOT_SQUARE);
+
+	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
+	types::cmat evects = es.eigenvectors();
+	types::cmat evals = es.eigenvalues();
+	for (size_t i = 0; i < static_cast<size_t>(evals.rows()); i++)
+		evals(i) = (*f)(evals(i)); // apply f(x) to each eigenvalue
+
+	types::cmat evalsdiag = evals.asDiagonal();
+
+	return evects * evalsdiag * evects.inverse();
+}
+
+// Matrix absolute value, note the syntax of Lambda invocation
+template<typename Scalar>
+types::cmat absm(const types::DynMat<Scalar> &A)
+{
+	// check zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw Exception("absm", Exception::Type::MATRIX_ZERO_SIZE);
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw Exception("absm", Exception::Type::MATRIX_NOT_SQUARE);
+
+	return funm(adjoint(A) * A, [](const types::cplx & x)->types::cplx
+	{	return std::sqrt(x);});
+}
+
+// Matrix exponential
+template<typename Scalar>
+types::cmat expm(const types::DynMat<Scalar> &A)
+{
+	// check zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw Exception("expm", Exception::Type::MATRIX_ZERO_SIZE);
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw Exception("expm", Exception::Type::MATRIX_NOT_SQUARE);
+
+	return funm(A, std::exp);
+}
+
+// Matrix logarithm
+template<typename Scalar>
+types::cmat logm(const types::DynMat<Scalar> &A)
+{
+	// check zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw Exception("logm", Exception::Type::MATRIX_ZERO_SIZE);
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw Exception("logm", Exception::Type::MATRIX_NOT_SQUARE);
+
+	return funm(A, std::log);
+}
+
+// Matrix square root
+template<typename Scalar>
+types::cmat sqrtm(const types::DynMat<Scalar> &A)
+{
+	// check zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw Exception("sqrtm", Exception::Type::MATRIX_ZERO_SIZE);
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw Exception("sqrtm", Exception::Type::MATRIX_NOT_SQUARE);
+
+	return funm(A, std::sqrt);
+}
+
+// Matrix sin
+template<typename Scalar>
+types::cmat sinm(const types::DynMat<Scalar> &A)
+{
+	// check zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw Exception("sinm", Exception::Type::MATRIX_ZERO_SIZE);
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw Exception("sinm", Exception::Type::MATRIX_NOT_SQUARE);
+
+	return funm(A, std::sin);
+}
+
+// Matrix cos
+template<typename Scalar>
+types::cmat cosm(const types::DynMat<Scalar> &A)
+{
+	// check zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw Exception("cosm", Exception::Type::MATRIX_ZERO_SIZE);
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw Exception("cosm", Exception::Type::MATRIX_NOT_SQUARE);
+
+	return funm(A, std::cos);
+}
+
+// Matrix power A^z (CHANGES return type to complex matrix)
+template<typename Scalar>
+types::cmat powm(const types::DynMat<Scalar> &A, const types::cplx z)
+
+{
+	// check zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw Exception("powm", Exception::Type::MATRIX_ZERO_SIZE);
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw Exception("powm", Exception::Type::MATRIX_NOT_SQUARE);
+
+	// Define A^0 = Id
+	if (real(z) == 0 && imag(z) == 0)
+	{
+		types::cmat result(A.rows(), A.rows());
+		result.setIdentity();
+		return result;
+	}
+
+	Eigen::ComplexEigenSolver<types::cmat> es(A.template cast<types::cplx>());
+	types::cmat evects = es.eigenvectors();
+	types::cmat evals = es.eigenvalues();
+	for (size_t i = 0; i < static_cast<size_t>(evals.rows()); i++)
+		evals(i) = std::pow(static_cast<types::cplx>(evals(i)),
+				static_cast<types::cplx>(z));
+
+	types::cmat evalsdiag = evals.asDiagonal();
+
+	return evects * evalsdiag * evects.inverse();
+
+}
+
+// Matrix integer power, preserve return type
+// Explicitly multiply the matrix with itself n times
+template<typename Scalar>
+types::DynMat<Scalar> powm_int(const types::DynMat<Scalar> &A, size_t n)
+
+{
+	// check zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw Exception("powm_int", Exception::Type::MATRIX_ZERO_SIZE);
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw Exception("powm_int", Exception::Type::MATRIX_NOT_SQUARE);
+
+	types::DynMat<Scalar> result = A;
+
+	if (n == 0)
+		return result.setIdentity();
+
+	for (size_t i = 1; i < n; i++)
+		result *= A;
+
+	return result;
+}
+
+// other functions
+
+// functor; apply f(A) component-wise, where (*f) is the function pointer
+// returns a matrix of type OutputScalar
+template<typename InputScalar, typename OutputScalar>
+types::DynMat<OutputScalar> fun(const types::DynMat<InputScalar> &A,
+		OutputScalar (*f)(const InputScalar &))
+{
+	// check zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw Exception("fun", Exception::Type::MATRIX_ZERO_SIZE);
+
+	types::DynMat<OutputScalar> result(A.rows(), A.cols());
+
+	for (size_t j = 0; j < static_cast<size_t>(A.cols()); j++)
+#pragma omp parallel for
+		for (size_t i = 0; i < static_cast<size_t>(A.rows()); i++)
+			result(i, j) = (*f)(A(i, j));
+
+	return result;
 }
 
 // Kronecker product of 2 matrices, preserve return type
@@ -496,4 +675,4 @@ types::DynMat<Scalar> ptranspose(const types::DynMat<Scalar>& A,
 
 }
 
-#endif /* UTIL_H_ */
+#endif /* FUNCTIONAL_H_ */

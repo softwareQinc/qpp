@@ -10,11 +10,11 @@
 
 #include <cmath>
 #include "types.h"
-#include "util.h"
+#include "functions.h"
 #include "internal.h"
 #include "exception.h"
 
-// entropy functions
+// various entropies
 
 namespace qpp
 {

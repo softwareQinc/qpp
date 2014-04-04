@@ -10,9 +10,11 @@
 
 #include "types.h"
 #include "constants.h"
-#include "util.h"
+#include "functions.h"
 #include "internal.h"
 #include "exception.h"
+
+// quantum gates
 
 // Eigen predefined:
 // MatrixXcd::Identity(D, D), MatrixXcd::Zero (D,D), MatrixXcd::Random(D, D)

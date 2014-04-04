@@ -14,6 +14,7 @@
 #include "exception.h"
 
 // internal functions, do not modify
+
 namespace qpp
 {
 namespace internal
