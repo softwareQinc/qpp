@@ -5,13 +5,9 @@
  * Created on December 12, 2013, 10:38 PM
  */
 
-#include <iostream>
-
 #include "qpp.h"
-#include "internal.h"
-//#include "matlab.h" // support for MATLAB
 
-#include "exception.h"
+//#include "matlab.h" // support for MATLAB
 
 // TODO: expandout function
 // TODO: dya/dyad function
@@ -31,11 +27,7 @@ using namespace qpp::types;
 int main()
 {
 	cout << "Starting qpp..." << endl;
-	//_init();
-
-	displn(gt::X);
-	dmat m=dmat::Random(3,3);
-	displn(m);
+	_init();
 
 	/*
 	 // Display formatting
