@@ -62,7 +62,7 @@ int main()
 	stat::DiscreteDistributionFromComplex dc(va);
 	cout << "The probabilities are: [";
 	disp(dc.probabilities(), ", ");
-	cout << "]" << endl;
+	cout << "]" << endl << endl;
 
 	// other tests
 	cout << endl << "Timing tests..." << endl;
