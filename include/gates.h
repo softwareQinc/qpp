@@ -97,7 +97,6 @@ inline types::cmat CU(const types::cmat &U)
 }
 
 // one quDit gates
-
 inline types::cmat Zd(size_t D)
 {
 	if (D == 0)

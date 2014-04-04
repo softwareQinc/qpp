@@ -62,7 +62,6 @@ double shannon(const types::DynMat<Scalar> & A)
 // Renyi-alpha entropy (alpha>=0)
 template<typename Scalar>
 double renyi(const double alpha, const types::DynMat<Scalar> & A)
-
 {
 	if (alpha < 0)
 		throw Exception("renyi", Exception::Type::OUT_OF_RANGE);
