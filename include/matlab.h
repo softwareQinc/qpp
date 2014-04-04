@@ -41,21 +41,24 @@ inline types::DynMat<double> loadMATLABmatrix(const std::string &mat_file,
 	if (pmat == NULL)
 	{
 		throw std::runtime_error(
-				"loadMATLABmatrix: can not open MATLAB input file!");
+				"loadMATLABmatrix: Can not open MATLAB file " + mat_file + "!");
 	}
 
 	mxArray* pa = matGetVariable(pmat, var_name.c_str());
 	if (pa == NULL)
-		throw std::runtime_error("loadMATLABmatrix: can not load the variable "
-				"from MATLAB input file!");
+		throw std::runtime_error(
+				"loadMATLABmatrix: Can not load the variable " + var_name
+						+ " from MATLAB file " + mat_file + "!");
 
 	if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
 		throw std::runtime_error(
-				"loadMATLABmatrix: loaded variable is not 2-dimensional!");
+				"loadMATLABmatrix: Loaded variable " + var_name
+						+ " is not 2-dimensional!");
 
 	if (!mxIsDouble(pa))
-		throw std::runtime_error("loadMATLABmatrix: loaded variable is not "
-				"in double-precision format!");
+		throw std::runtime_error(
+				"loadMATLABmatrix: Loaded variable " + var_name
+						+ " is not in double-precision format!");
 
 	size_t rows = mxGetM(pa);
 	size_t cols = mxGetN(pa);
@@ -80,21 +83,24 @@ inline types::DynMat<types::cplx> loadMATLABmatrix(const std::string &mat_file,
 	if (pmat == NULL)
 	{
 		throw std::runtime_error(
-				"loadMATLABmatrix: can not open MATLAB input file!");
+				"loadMATLABmatrix: Can not open MATLAB file " + mat_file + "!");
 	}
 
 	mxArray* pa = matGetVariable(pmat, var_name.c_str());
 	if (pa == NULL)
 		throw std::runtime_error(
-				"loadMATLABmatrix: can not load variable from MATLAB input file!");
+				"loadMATLABmatrix: Can not load the variable " + var_name
+						+ " from MATLAB file " + mat_file + "!");
 
 	if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
 		throw std::runtime_error(
-				"loadMATLABmatrix: loaded variable is not 2-dimensional!");
+				"loadMATLABmatrix: Loaded variable " + var_name
+						+ " is not 2-dimensional!");
 
 	if (!mxIsDouble(pa))
-		throw std::runtime_error("loadMATLABmatrix: loaded variable is not "
-				"in double-precision format!");
+		throw std::runtime_error(
+				"loadMATLABmatrix: Loaded variable " + var_name
+						+ " is not in double-precision format!");
 
 	size_t rows = mxGetM(pa);
 	size_t cols = mxGetN(pa);
@@ -150,10 +156,9 @@ void saveMATLABmatrix(const types::DynMat<double> &A,
 
 	MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
 	if (pmat == NULL)
-	{
 		throw std::runtime_error(
-				"saveMATLABmatrix: can not open/create MATLAB output file!");
-	}
+				"saveMATLABmatrix: Can not open/create MATLAB file " + mat_file
+						+ "!");
 
 	mxArray* pa = mxCreateDoubleMatrix(A.rows(), A.cols(), mxREAL);
 	if (pa == NULL)
@@ -164,11 +169,11 @@ void saveMATLABmatrix(const types::DynMat<double> &A,
 
 	if (matPutVariable(pmat, var_name.c_str(), pa))
 		throw std::runtime_error(
-				"saveMATLABmatrix: can not write variable to MATLAB output file!");
+				"saveMATLABmatrix: Can not write the variable " + var_name
+						+ " to MATLAB file " + mat_file + "!");
 
 	mxDestroyArray(pa);
 	matClose(pmat);
-
 }
 
 template<> // complex specialization
@@ -186,10 +191,9 @@ void saveMATLABmatrix(const types::DynMat<types::cplx> &A,
 
 	MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
 	if (pmat == NULL)
-	{
 		throw std::runtime_error(
-				"saveMATLABmatrix: can not open/create MATLAB output file!");
-	}
+				"saveMATLABmatrix: Can not open/create MATLAB file " + mat_file
+						+ "!");
 
 	mxArray* pa = mxCreateDoubleMatrix(tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);
 	if (pa == NULL)
@@ -208,11 +212,11 @@ void saveMATLABmatrix(const types::DynMat<types::cplx> &A,
 
 	if (matPutVariable(pmat, var_name.c_str(), pa))
 		throw std::runtime_error(
-				"saveMATLABmatrix: can not write variable to MATLAB output file!");
+				"saveMATLABmatrix: Can not write the variable " + var_name
+						+ " to MATLAB file " + mat_file + "!");
 
 	mxDestroyArray(pa);
 	matClose(pmat);
-
 }
 
 }

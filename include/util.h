@@ -73,7 +73,18 @@ Scalar trace(const types::DynMat<Scalar>& A)
 	return A.trace();
 }
 
-// functor; Apply f(A) component-wise, where (*f) is the function pointer
+// element-wise sum, preserve return type
+template<typename Scalar>
+Scalar sum(const types::DynMat<Scalar>& A)
+{
+	// check zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw Exception("trace", Exception::Type::MATRIX_ZERO_SIZE);
+
+	return A.sum();
+}
+
+// functor; apply f(A) component-wise, where (*f) is the function pointer
 // returns a matrix of type OutputScalar
 template<typename InputScalar, typename OutputScalar>
 types::DynMat<OutputScalar> fun(const types::DynMat<InputScalar> &A,

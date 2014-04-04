@@ -31,12 +31,11 @@ using namespace qpp::types;
 int main()
 {
 	cout << "Starting qpp..." << endl;
-	_init();
+	//_init();
 
-	size_t D = 3;
-	cmat kt = randH(D);
-	displn(kt);
-	cout << endl;
+	displn(gt::X);
+	dmat m=dmat::Random(3,3);
+	displn(m);
 
 	/*
 	 // Display formatting

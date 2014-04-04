@@ -26,11 +26,9 @@ template<typename Scalar>
 void disp(const types::DynMat<Scalar> &A, double chop = ct::chop,
 		std::ostream& os = std::cout)
 {
-	types::DynMat<Scalar> tmp = A;
-
-	if (tmp.size() == 0)
+	if (A.size() == 0)
 	{
-		os << "Empty [" << tmp.rows() << " x " << tmp.cols() << "] matrix";
+		os << "Empty [" << A.rows() << " x " << A.cols() << "] matrix";
 		return;
 	};
 
@@ -39,18 +37,19 @@ void disp(const types::DynMat<Scalar> &A, double chop = ct::chop,
 	ostr.precision(os.precision()); // set precision
 
 	std::vector<std::string> vstr;
-	std::string strtmp;
+	std::string strA;
 
-	for (size_t i = 0; i < static_cast<size_t>(tmp.rows()); i++)
+	for (size_t i = 0; i < static_cast<size_t>(A.rows()); i++)
 	{
-		for (size_t j = 0; j < static_cast<size_t>(tmp.cols()); j++)
+		for (size_t j = 0; j < static_cast<size_t>(A.cols()); j++)
 		{
-			strtmp.clear(); // clear the temporary string
+			strA.clear(); // clear the temporary string
 			ostr.clear();
 			ostr.str(std::string()); // clear the ostringstream,
 
-			double re = static_cast<types::cplx>(tmp(i, j)).real();
-			double im = static_cast<types::cplx>(tmp(i, j)).imag();
+			// convert to complex
+			double re = static_cast<types::cplx>(A(i, j)).real();
+			double im = static_cast<types::cplx>(A(i, j)).imag();
 
 			if (std::abs(re) < chop && std::abs(im) < chop)
 			{
@@ -69,37 +68,37 @@ void disp(const types::DynMat<Scalar> &A, double chop = ct::chop,
 			else
 			{
 				ostr << re;
-				strtmp = ostr.str();
+				strA = ostr.str();
 
-				strtmp += (im > 0 ? " + " : " - ");
+				strA += (im > 0 ? " + " : " - ");
 				ostr.clear();
 				ostr.str(std::string()); // clear
 				ostr << std::abs(im);
-				strtmp += ostr.str();
-				strtmp += "i";
-				vstr.push_back(strtmp);
+				strA += ostr.str();
+				strA += "i";
+				vstr.push_back(strA);
 			}
 		}
 	}
 
 // determine the maximum lenght of the entries in each column
-	std::vector<size_t> maxlengthcols(tmp.cols(), 0);
+	std::vector<size_t> maxlengthcols(A.cols(), 0);
 
-	for (size_t i = 0; i < static_cast<size_t>(tmp.rows()); i++)
-		for (size_t j = 0; j < static_cast<size_t>(tmp.cols()); j++)
-			if (vstr[i * tmp.cols() + j].size() > maxlengthcols[j])
-				maxlengthcols[j] = vstr[i * tmp.cols() + j].size();
+	for (size_t i = 0; i < static_cast<size_t>(A.rows()); i++)
+		for (size_t j = 0; j < static_cast<size_t>(A.cols()); j++)
+			if (vstr[i * A.cols() + j].size() > maxlengthcols[j])
+				maxlengthcols[j] = vstr[i * A.cols() + j].size();
 
 // finally display it!
-	for (size_t i = 0; i < static_cast<size_t>(tmp.rows()); i++)
+	for (size_t i = 0; i < static_cast<size_t>(A.rows()); i++)
 	{
 		os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
-				<< vstr[i * tmp.cols()]; // display first column
-		for (size_t j = 1; j < static_cast<size_t>(tmp.cols()); j++) // then the rest
+				<< vstr[i * A.cols()]; // display first column
+		for (size_t j = 1; j < static_cast<size_t>(A.cols()); j++) // then the rest
 			os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
-					<< std::right << vstr[i * tmp.cols() + j];
+					<< std::right << vstr[i * A.cols() + j];
 
-		if (i < static_cast<size_t>(tmp.rows()) - 1)
+		if (i < static_cast<size_t>(A.rows()) - 1)
 			os << std::endl;
 	}
 }
@@ -119,9 +118,9 @@ inline void disp(const types::cplx c, double chop = ct::chop, std::ostream& os =
 		std::cout)
 {
 // put the complex number inside an Eigen matrix
-	types::cmat tmp(1, 1);
-	tmp(0, 0) = c;
-	disp(tmp, chop, os);
+	types::cmat A(1, 1);
+	A(0, 0) = c;
+	disp(A, chop, os);
 }
 
 // Displays a complex number in friendly form
