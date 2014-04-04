@@ -12,7 +12,7 @@
 // TODO: expandout function
 // TODO: dya/dyad function
 // TODO: proj (dya) function
-// TODO: ip (inner product function) function, make it general to return matrices
+// TODO: ip (inner product) function, make it general to return matrices
 // TODO: use .data() raw pointer instead of looping
 // TODO: optimize syspermute: ?Eigen::Map?
 // TODO: IMPORTANT Rewrite partial trace without syspermute
@@ -45,6 +45,7 @@ int main()
 	cout << "]" << endl;
 
 	// other tests
+	cout << endl << "Timing tests..." << endl;
 	size_t n = 12; // number of qubits
 	size_t N = std::pow(2, n);
 	vector<size_t> dims; // local dimensions
@@ -123,7 +124,7 @@ int main()
 
 	// END TIMING
 	total.toc(); // read the total running time
-	cout << endl << "Total time: " << total.seconds() << " seconds." << endl;
+	cout << endl << "Total time: " << total.seconds() << " seconds.";
 
-	cout << "Exiting qpp..." << endl;
+	cout << endl << "Exiting qpp..." << endl;
 }

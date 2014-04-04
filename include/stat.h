@@ -146,14 +146,14 @@ public:
 	{
 		// check zero-size
 		if (!internal::_check_nonzero_size(v))
-			throw Exception(
-					"DiscreteDistributionFromComplex::DiscreteDistributionFromComplex",
+			throw Exception("DiscreteDistributionFromComplex::"
+					"DiscreteDistributionFromComplex",
 					Exception::Type::MATRIX_ZERO_SIZE);
 
 		// check vector
 		if (!internal::_check_vector(v))
-			throw Exception(
-					"DiscreteDistributionFromComplex::DiscreteDistributionFromComplex",
+			throw Exception("DiscreteDistributionFromComplex::"
+					"DiscreteDistributionFromComplex",
 					Exception::Type::MATRIX_NOT_VECTOR);
 
 		std::vector<double> weights = cplx2amplitudes(v.data(),
