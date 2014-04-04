@@ -100,12 +100,12 @@ protected:
 	std::discrete_distribution<size_t> _d;
 
 	template<typename InputIterator>
-	std::vector<double> cplx2double(InputIterator first, InputIterator last)
+	std::vector<double> cplx2amplitudes(InputIterator first, InputIterator last)
 	{
 		std::vector<double> weights(last - first);
 		std::transform(first, last, std::begin(weights),
 				[](const types::cplx &z)->double
-				{	return std::abs(z);});
+				{	return std::pow(std::abs(z),2);});
 		return weights;
 	}
 
@@ -114,7 +114,7 @@ public:
 	DiscreteDistributionFromComplex(InputIterator first, InputIterator last) :
 			_d()
 	{
-		std::vector<double> weights = cplx2double(first, last);
+		std::vector<double> weights = cplx2amplitudes(first, last);
 		std::discrete_distribution<size_t> tmp(std::begin(weights),
 				std::end(weights));
 		_d = tmp;
@@ -124,7 +124,7 @@ public:
 			std::initializer_list<types::cplx> amplitudes) :
 			_d()
 	{
-		std::vector<double> weights = cplx2double(std::begin(amplitudes),
+		std::vector<double> weights = cplx2amplitudes(std::begin(amplitudes),
 				std::end(amplitudes));
 		std::discrete_distribution<size_t> tmp(std::begin(weights),
 				std::end(weights));
@@ -134,7 +134,7 @@ public:
 	DiscreteDistributionFromComplex(std::vector<types::cplx> amplitudes) :
 			_d()
 	{
-		std::vector<double> weights = cplx2double(std::begin(amplitudes),
+		std::vector<double> weights = cplx2amplitudes(std::begin(amplitudes),
 				std::end(amplitudes));
 		std::discrete_distribution<size_t> tmp(std::begin(weights),
 				std::end(weights));
@@ -156,7 +156,7 @@ public:
 					"DiscreteDistributionFromComplex::DiscreteDistributionFromComplex",
 					Exception::Type::MATRIX_NOT_VECTOR);
 
-		std::vector<double> weights = cplx2double(v.data(),
+		std::vector<double> weights = cplx2amplitudes(v.data(),
 				v.data() + v.size());
 		std::discrete_distribution<size_t> tmp(std::begin(weights),
 				std::end(weights));

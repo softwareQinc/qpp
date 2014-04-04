@@ -7,7 +7,6 @@
 
 // IMPORTANT: contains implementation/initialization of external variables
 // ALWAYS include it in main.cpp and run _init() from main.cpp
-
 #ifndef QPP_H_
 #define	QPP_H_
 

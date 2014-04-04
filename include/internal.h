@@ -19,16 +19,6 @@ namespace qpp
 namespace internal
 {
 
-// Displays a standard container that supports STL iterators
-template<typename T>
-void _disp_container(const T& x)
-{
-	auto it = std::begin(x);
-	for (; it != std::end(x) - 1; it++)
-		std::cout << *it << " ";
-	std::cout << *(it++);
-}
-
 // integer index to multi-index, use C-style array for speed
 inline void _n2multiidx(size_t n, size_t numdims, const size_t* dims,
 		size_t* result)

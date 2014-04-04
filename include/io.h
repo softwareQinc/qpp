@@ -21,6 +21,27 @@
 namespace qpp
 {
 
+// Displays a standard container that supports std::begin and std::end
+template<typename T>
+void disp(const T& x, const std::string & separator = " ", std::ostream& os =
+		std::cout)
+{
+	auto it = std::begin(x);
+	for (; it != std::end(x) - 1; it++)
+		os << *it << separator;
+	os << *(it++);
+}
+
+// Displays a standard container that supports std::begin and std::end
+// and adds a new line
+template<typename T>
+void displn(const T& x, const std::string & separator = " ", std::ostream& os =
+		std::cout)
+{
+	disp(x, separator, os);
+	os << std::endl;
+}
+
 // Displays an Eigen::MatrixX in friendly form
 template<typename Scalar>
 void disp(const types::DynMat<Scalar> &A, double chop = ct::chop,
@@ -104,7 +125,7 @@ void disp(const types::DynMat<Scalar> &A, double chop = ct::chop,
 }
 
 // Displays an Eigen::MatrixX in friendly form
-// Adds new line after display
+// and adds a new line
 template<typename Scalar>
 void displn(const types::DynMat<Scalar> &A, double chop = ct::chop,
 		std::ostream& os = std::cout)
@@ -124,7 +145,7 @@ inline void disp(const types::cplx c, double chop = ct::chop, std::ostream& os =
 }
 
 // Displays a complex number in friendly form
-// Adds new line after display
+// and adds a new line
 inline void displn(const types::cplx c, double chop = ct::chop,
 		std::ostream& os = std::cout)
 {
