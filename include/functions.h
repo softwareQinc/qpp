@@ -385,8 +385,7 @@ types::DynMat<Scalar> kron(const types::DynMat<Scalar> &A,
 	for (size_t j = 0; j < Acols; j++)
 #pragma omp parallel for
 		for (size_t i = 0; i < Arows; i++)
-			result.block(i * Brows, j * Bcols, Brows, Bcols) = A.eval()(i, j)
-					* B.eval();
+			result.block(i * Brows, j * Bcols, Brows, Bcols) = A(i, j) * B;
 
 	return result;
 
@@ -671,6 +670,46 @@ types::DynMat<Scalar> ptranspose(const types::DynMat<Scalar>& A,
 	delete[] csubsys;
 
 	return result;
+}
+
+// commutator
+template<typename Scalar>
+types::DynMat<Scalar> comm(const types::DynMat<Scalar> &A,
+		const types::DynMat<Scalar> &B)
+{
+	// check zero-size
+	if (!internal::_check_nonzero_size(A) || !internal::_check_nonzero_size(A))
+		throw Exception("comm", Exception::Type::MATRIX_ZERO_SIZE);
+
+	// check square matrices
+	if (!internal::_check_square_mat(A) || !internal::_check_square_mat(B))
+		throw Exception("comm", Exception::Type::MATRIX_NOT_SQUARE);
+
+	// check equal dimensions
+	if (A.rows() != B.rows())
+		throw Exception("comm", Exception::Type::DIMS_NOT_EQUAL);
+
+	return A * B - B * A;
+}
+
+// anti-commutator of 2 matrices
+template<typename Scalar>
+types::DynMat<Scalar> anticomm(const types::DynMat<Scalar> &A,
+		const types::DynMat<Scalar> &B)
+{
+	// check zero-size
+	if (!internal::_check_nonzero_size(A) || !internal::_check_nonzero_size(A))
+		throw Exception("anticomm", Exception::Type::MATRIX_ZERO_SIZE);
+
+	// check square matrices
+	if (!internal::_check_square_mat(A) || !internal::_check_square_mat(B))
+		throw Exception("anticomm", Exception::Type::MATRIX_NOT_SQUARE);
+
+	// check equal dimensions
+	if (A.rows() != B.rows())
+		throw Exception("anticomm", Exception::Type::DIMS_NOT_EQUAL);
+
+	return A * B + B * A;
 }
 
 }

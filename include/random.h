@@ -114,7 +114,7 @@ inline double randn(double mean = 0, double sigma = 1)
 inline types::cmat randU(size_t D)
 {
 	if (D == 0)
-		throw Exception("randH", Exception::Type::DIMS_HAVE_ZERO);
+		throw Exception("randU", Exception::Type::DIMS_HAVE_ZERO);
 
 	types::cmat X(D, D);
 
@@ -151,6 +151,7 @@ inline types::cmat randket(size_t D)
 {
 	if (D == 0)
 		throw Exception("randket", Exception::Type::DIMS_HAVE_ZERO);
+
 	types::cmat kt = types::cmat::Ones(D, 1);
 	types::cmat result = randU(D) * kt;
 	return result / norm(result);
