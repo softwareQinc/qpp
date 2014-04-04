@@ -79,6 +79,24 @@ bool _check_vector(const types::DynMat<Scalar>& A)
 	return true;
 }
 
+// check whether input is a row vector or not
+template<typename Scalar>
+bool _check_row_vector(const types::DynMat<Scalar>& A)
+{
+	if (A.rows() != 1)
+		return false;
+	return true;
+}
+
+// check whether input is a column vector or not
+template<typename Scalar>
+bool _check_col_vector(const types::DynMat<Scalar>& A)
+{
+	if (A.cols() != 1)
+		return false;
+	return true;
+}
+
 // check whether input is a vector or not
 template<typename Scalar>
 bool _check_nonzero_size(const types::DynMat<Scalar>& A)

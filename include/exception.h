@@ -22,8 +22,10 @@ public:
 	enum class Type // exception types
 	{
 		UNKNOWN_EXCEPTION = 0,
-		MATRIX_NOT_SQUARE,
+		MATRIX_NOT_CVECTOR,
+		MATRIX_NOT_RVECTOR,
 		MATRIX_NOT_VECTOR,
+		MATRIX_NOT_SQUARE,
 		MATRIX_ZERO_SIZE,
 		DIMS_MISMATCH_MATRIX,
 		DIMS_HAVE_ZERO,
@@ -78,8 +80,14 @@ private:
 		case Type::MATRIX_NOT_SQUARE:
 			_msg += "Matrix is not square!";
 			break;
+		case Type::MATRIX_NOT_CVECTOR:
+			_msg += "Matrix is not a column vector!";
+			break;
+		case Type::MATRIX_NOT_RVECTOR:
+			_msg += "Matrix is not a row vector!";
+			break;
 		case Type::MATRIX_NOT_VECTOR:
-			_msg += "Matrix is not a row/column vector!";
+			_msg += "Matrix is not a vector!";
 			break;
 		case Type::MATRIX_ZERO_SIZE:
 			_msg += "Matrix has zero size!";

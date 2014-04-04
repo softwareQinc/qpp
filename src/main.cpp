@@ -34,6 +34,22 @@ int main()
 	// cout << std::scientific;
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
+	// spectral decomposition test
+	cout << endl << "Spectral decomposition tests." << endl;
+	size_t D = 4;
+	cmat rH = randH(D);
+	cmat evalsH = hevals(rH);
+	cmat evectsH = hevects(rH);
+	cmat spec = cmat::Zero(D, D);
+	for (size_t i = 0; i < D; i++)
+		spec += evalsH(i) * proj((cmat) (evectsH.col(i)));
+	cout << "Original matrix: " << endl;
+	displn(rH);
+	cout << endl;
+	cout << "Reconstructed from spectral decomposition: " << endl;
+	displn(spec);
+	cout << "Difference in norm: " << norm((cmat) (spec - rH)) << endl;
+
 	// statistics tests
 	cout << endl << "Statistics tests." << endl;
 	std::vector<cplx> ampl = { 1. + ct::ii, 1. - ct::ii };

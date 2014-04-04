@@ -141,23 +141,23 @@ public:
 		_d = tmp;
 	}
 
-	DiscreteDistributionFromComplex(const types::cmat &v) :
+	DiscreteDistributionFromComplex(const types::cmat& V) :
 			_d()
 	{
 		// check zero-size
-		if (!internal::_check_nonzero_size(v))
+		if (!internal::_check_nonzero_size(V))
 			throw Exception("DiscreteDistributionFromComplex::"
 					"DiscreteDistributionFromComplex",
 					Exception::Type::MATRIX_ZERO_SIZE);
 
 		// check vector
-		if (!internal::_check_vector(v))
+		if (!internal::_check_vector(V))
 			throw Exception("DiscreteDistributionFromComplex::"
 					"DiscreteDistributionFromComplex",
 					Exception::Type::MATRIX_NOT_VECTOR);
 
-		std::vector<double> weights = cplx2amplitudes(v.data(),
-				v.data() + v.size());
+		std::vector<double> weights = cplx2amplitudes(V.data(),
+				V.data() + V.size());
 		std::discrete_distribution<size_t> tmp(std::begin(weights),
 				std::end(weights));
 		_d = tmp;
