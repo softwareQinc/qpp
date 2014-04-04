@@ -1,12 +1,12 @@
 /*
- * functional.h
+ * functions.h
  *
  *  Created on: Mar 27, 2014
  *      Author: vlad
  */
 
-#ifndef FUNCTIONAL_H_
-#define FUNCTIONAL_H_
+#ifndef FUNCTIONS_H_
+#define FUNCTIONS_H_
 
 #include <vector>
 #include <cmath>
@@ -714,4 +714,4 @@ types::DynMat<Scalar> anticomm(const types::DynMat<Scalar> &A,
 
 }
 
-#endif /* FUNCTIONAL_H_ */
+#endif /* FUNCTIONS_H_ */
