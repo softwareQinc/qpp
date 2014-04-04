@@ -10,8 +10,6 @@
 //#include "matlab.h" // support for MATLAB
 
 // TODO: expandout function
-// TODO: dya/dyad function
-// TODO: proj (dya) function
 // TODO: ip (inner product) function, make it general to return matrices
 // TODO: use .data() raw pointer instead of looping
 // TODO: optimize syspermute: ?Eigen::Map?
