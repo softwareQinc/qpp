@@ -139,7 +139,7 @@ inline types::cmat CUd(const types::cmat &U)
 	if (!internal::_check_square_mat(U))
 		throw Exception("", Exception::Type::MATRIX_NOT_SQUARE);
 
-	size_t D = static_cast<size_t>(U.cols()); // retrieves the dimension from the size of U
+	size_t D = static_cast<size_t>(U.cols());
 	types::cmat result(D * D, D * D);
 	result = types::cmat::Zero(D * D, D * D);
 	types::cmat tmp(D, D);
