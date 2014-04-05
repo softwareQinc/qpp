@@ -40,24 +40,24 @@ extern types::cmat CP; // Controlled-Phase
 // three qubit gates
 extern types::cmat TOF; // Toffoli
 
+// Pauli eigen-states
+extern types::cmat z0, z1, x0, x1, y0, y1;
+
 inline void _init_gates() // Initialize the gates, call it from qpp::_init()
 {
 	// initialize the constants and gates
 	H = Id2 = X = Y = Z = S = T = types::cmat::Zero(2, 2);
 	CNOT = CP = types::cmat::Zero(4, 4);
 	TOF = types::cmat::Zero(8, 8);
+	z0 = z1 = x0 = x1 = y0 = y1 = types::cmat::Zero(2, 1);
 
-	H << 1 / std::sqrt(2), 1 / std::sqrt(2), 1 / std::sqrt(2), -1
-			/ std::sqrt(2);
+	H << 1 / std::sqrt(2), 1 / std::sqrt(2), 1 / std::sqrt(2), -1 / std::sqrt(2);
 	Id2 << 1, 0, 0, 1;
 	X << 0, 1, 1, 0;
 	Z << 1, 0, 0, -1;
-	Y(0, 1) = -ct::ii;
-	Y(1, 0) = ct::ii;
-	S(0, 0) = 1;
-	S(1, 1) = ct::ii;
-	T(0, 0) = 1;
-	T(1, 1) = exp(ct::ii * ct::pi / 4.0);
+	Y << 0, -ct::ii, ct::ii, 0;
+	S << 1, 0, 0, ct::ii;
+	T << 1, 0, 0, std::exp(ct::ii * ct::pi / 4.0);
 	CNOT(0, 0) = 1;
 	CNOT(1, 1) = 1;
 	CNOT(2, 3) = 1;
@@ -74,6 +74,12 @@ inline void _init_gates() // Initialize the gates, call it from qpp::_init()
 	TOF(5, 5) = 1;
 	TOF(6, 7) = 1;
 	TOF(7, 6) = 1;
+	z0 << 1, 0;
+	z1 << 0, 1;
+	x0 << 1 / std::sqrt(2), 1 / std::sqrt(2);
+	x1 << 1 / std::sqrt(2), -1 / std::sqrt(2);
+	y0 << 1 / std::sqrt(2), ct::ii / std::sqrt(2);
+	y1 << 1 / std::sqrt(2), -ct::ii / std::sqrt(2);
 }
 
 // gates with variable dimension

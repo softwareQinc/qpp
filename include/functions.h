@@ -69,6 +69,17 @@ Scalar trace(const types::DynMat<Scalar>& A)
 	return A.trace();
 }
 
+// determinant, preserve return type
+template<typename Scalar>
+Scalar det(const types::DynMat<Scalar>& A)
+{
+	// check zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw Exception("det", Exception::Type::ZERO_SIZE);
+
+	return A.determinant();
+}
+
 // element-wise sum, preserve return type
 template<typename Scalar>
 Scalar sum(const types::DynMat<Scalar>& A)
@@ -410,8 +421,8 @@ types::DynMat<Scalar> kronlist(const std::vector<types::DynMat<Scalar>> &list)
 	if (list.size() == 0)
 		throw Exception("kronlist", Exception::Type::ZERO_SIZE);
 
-	for (auto i : list)
-		if (i.size() == 0)
+	for (auto it : list)
+		if (it.size() == 0)
 			throw Exception("kronlist", Exception::Type::ZERO_SIZE);
 
 	types::DynMat<Scalar> result = list[0];
@@ -741,7 +752,7 @@ types::DynMat<Scalar> proj(const types::DynMat<Scalar>& V)
 	if (!internal::_check_col_vector(V))
 		throw Exception("proj", Exception::Type::MATRIX_NOT_CVECTOR);
 
-	return V * adjoint(V) / trace((types::cmat) (V * adjoint(V)));
+	return V * adjoint(V) / trace((types::DynMat<Scalar>) (V * adjoint(V)));
 }
 
 // dyad |V><V| (not normalized)
@@ -831,6 +842,51 @@ types::DynMat<Scalar> expandout(const types::DynMat<Scalar>& A, size_t pos,
 	delete[] midx_row;
 	delete[] midx_col;
 
+	return result;
+}
+
+// Gram-Schmidt ortogonalization
+template<typename Scalar>
+types::DynMat<Scalar> gramschmidt(
+		const std::vector<types::DynMat<Scalar>>& vecs)
+{
+	// check empty list
+	if (vecs.size() == 0)
+		throw Exception("gramschmidt", Exception::Type::ZERO_SIZE);
+
+	for (auto it : vecs)
+		if (it.size() == 0)
+			throw Exception("gramschmidt", Exception::Type::ZERO_SIZE);
+
+	// check that is indeed a column vector
+	if (!internal::_check_col_vector(vecs[0]))
+		throw Exception("gramschmidt", Exception::Type::MATRIX_NOT_CVECTOR);
+
+	// now check that all the rest match the size of the first vector
+	for (auto it : vecs)
+		if (it.rows() != vecs[0].rows() || it.cols() != 1)
+			throw Exception("gramschmidt", Exception::Type::DIMS_NOT_EQUAL);
+
+	// start the process
+	std::vector<types::DynMat<Scalar>> outvecs;
+	outvecs.push_back(vecs[0] / norm(vecs[0]));
+	types::DynMat<Scalar> cut = types::DynMat<Scalar>::Identity(vecs[0].rows(), vecs[0].rows());
+	types::DynMat<Scalar> vi = types::DynMat<Scalar>::Zero(vecs[0].rows(), 1);
+	for (size_t i = 1; i < vecs.size(); i++)
+	{
+		cut -= proj(outvecs[i-1]);
+		vi = cut*vecs[i];
+
+		if (norm(vi) != 0) // only display the non-zero vectors
+			outvecs.push_back(vi / norm(vi));
+	}
+	types::DynMat<Scalar> result(vecs[0].rows(), outvecs.size());
+	size_t cnt = 0;
+	for (auto it : outvecs)
+	{
+		result.col(cnt) = it;
+		cnt++;
+	}
 	return result;
 }
 

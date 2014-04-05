@@ -33,6 +33,7 @@ namespace gt
 types::cmat H, Id2, X, Y, Z, S, T;
 types::cmat CNOT, CP;
 types::cmat TOF(8, 8);
+types::cmat z0, z1, x0, x1, y0, y1;
 }
 
 // make the random_device generator visible
