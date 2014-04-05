@@ -47,6 +47,15 @@ int main()
 	cout << endl << "Output (|Bell_0> state) of the circuit on |00>: " << endl;
 	displn(output);
 
+	// 3-qubit repetion code
+	cout << endl << "3-qubit repetition code: " << endl;
+	cmat rep;
+	rep = gt::CTRL(gt::X, { 0 }, { 2 }, 3) * gt::CTRL(gt::X, { 0 }, { 1 }, 3);
+	input = kronlist<cplx>( { z1, z0, z0 });
+	output = rep * input;
+	cout << "Circuit acting on |000> produces |111>. Check: " << endl;
+	displn(output);
+
 	/*
 	 // spectral decomposition test
 	 cout << endl << "Spectral decomposition tests." << endl;
