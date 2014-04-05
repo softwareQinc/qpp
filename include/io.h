@@ -23,42 +23,50 @@ namespace qpp
 
 // Displays a standard container that supports std::begin and std::end
 template<typename T>
-void disp(const T& x, const std::string & separator = " ", std::ostream& os =
-		std::cout)
+void disp(const T& x, const std::string & separator = " ",
+		const std::string& start = "[", const std::string& end = "]",
+		std::ostream& os = std::cout)
 {
+	os << start;
 	auto it = std::begin(x);
 	for (; it != std::end(x) - 1; it++)
 		os << *it << separator;
 	os << *(it++);
+	os << end;
 }
 
 // Displays a standard container that supports std::begin and std::end
 // and adds a new line
 template<typename T>
-void displn(const T& x, const std::string & separator = " ", std::ostream& os =
-		std::cout)
+void displn(const T& x, const std::string & separator = " ",
+		const std::string& start = "[", const std::string& end = "]",
+		std::ostream& os = std::cout)
 {
-	disp(x, separator, os);
+	disp(x, separator, start, end, os);
 	os << std::endl;
 }
 
 // Displays a C-style array
 template<typename T>
 void disp(const T* x, const size_t n, const std::string & separator = " ",
+		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
+	os << start;
 	for (size_t i = 0; i < n - 1; i++)
 		os << x[i] << separator;
 	os << x[n - 1];
+	os << end;
 }
 
 // Displays a C-style array
 // and adds a new line
 template<typename T>
 void displn(const T* x, const size_t n, const std::string & separator = " ",
+		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
-	disp(x, n, separator, os);
+	disp(x, n, separator, start, end, os);
 	os << std::endl;
 }
 
