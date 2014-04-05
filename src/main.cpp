@@ -57,6 +57,15 @@ int main()
 	cout << "Circuit acting on |000> produces |111>. Check: " << endl;
 	displn(output);
 
+	cout << endl << "Gram-Schmidt on a random matrix:" << endl;
+	cmat A = randn<cplx>(3, 3);
+	displn(A);
+	cmat Ags = grams(A);
+	cout << endl << "Result:" << endl;
+	displn(Ags);
+	cout << endl << "Checking for unitarity:" << endl;
+	displn((cmat) (Ags * adjoint(Ags)));
+
 	// spectral decomposition test
 	cout << endl << "Spectral decomposition tests." << endl;
 	size_t D = 4;

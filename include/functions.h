@@ -847,35 +847,35 @@ types::DynMat<Scalar> expandout(const types::DynMat<Scalar>& A, size_t pos,
 
 // Gram-Schmidt ortogonalization
 template<typename Scalar>
-types::DynMat<Scalar> gramschmidt(
-		const std::vector<types::DynMat<Scalar>>& vecs)
+types::DynMat<Scalar> grams(const std::vector<types::DynMat<Scalar>>& vecs)
 {
 	// check empty list
 	if (vecs.size() == 0)
-		throw Exception("gramschmidt", Exception::Type::ZERO_SIZE);
+		throw Exception("grams", Exception::Type::ZERO_SIZE);
 
 	for (auto it : vecs)
 		if (it.size() == 0)
-			throw Exception("gramschmidt", Exception::Type::ZERO_SIZE);
+			throw Exception("grams", Exception::Type::ZERO_SIZE);
 
 	// check that is indeed a column vector
 	if (!internal::_check_col_vector(vecs[0]))
-		throw Exception("gramschmidt", Exception::Type::MATRIX_NOT_CVECTOR);
+		throw Exception("grams", Exception::Type::MATRIX_NOT_CVECTOR);
 
 	// now check that all the rest match the size of the first vector
 	for (auto it : vecs)
 		if (it.rows() != vecs[0].rows() || it.cols() != 1)
-			throw Exception("gramschmidt", Exception::Type::DIMS_NOT_EQUAL);
+			throw Exception("grams", Exception::Type::DIMS_NOT_EQUAL);
 
 	// start the process
 	std::vector<types::DynMat<Scalar>> outvecs;
 	outvecs.push_back(vecs[0] / norm(vecs[0]));
-	types::DynMat<Scalar> cut = types::DynMat<Scalar>::Identity(vecs[0].rows(), vecs[0].rows());
+	types::DynMat<Scalar> cut = types::DynMat<Scalar>::Identity(vecs[0].rows(),
+			vecs[0].rows());
 	types::DynMat<Scalar> vi = types::DynMat<Scalar>::Zero(vecs[0].rows(), 1);
 	for (size_t i = 1; i < vecs.size(); i++)
 	{
-		cut -= proj(outvecs[i-1]);
-		vi = cut*vecs[i];
+		cut -= proj(outvecs[i - 1]);
+		vi = cut * vecs[i];
 
 		if (norm(vi) != 0) // only display the non-zero vectors
 			outvecs.push_back(vi / norm(vi));
@@ -888,6 +888,19 @@ types::DynMat<Scalar> gramschmidt(
 		cnt++;
 	}
 	return result;
+}
+
+// Gram-Schmidt ortogonalization
+template<typename Scalar>
+types::DynMat<Scalar> grams(const types::DynMat<Scalar>& A)
+{
+	// check empty list
+	if (A.size() == 0)
+		throw Exception("grams", Exception::Type::ZERO_SIZE);
+	std::vector<types::DynMat<Scalar>> input;
+	for(size_t i=0; i<A.cols();i++)
+	input.push_back(static_cast<types::DynMat<Scalar>>(A.col(i)));
+	return grams(input);
 }
 
 }
