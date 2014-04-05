@@ -8,6 +8,7 @@
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 
+#include <numeric>
 #include <vector>
 #include <cmath>
 #include "types.h"
@@ -503,7 +504,7 @@ types::DynMat<Scalar> syspermute(const types::DynMat<Scalar> &A,
 	size_t jperm = 0;
 	for (size_t j = 0; j < dim; j++)
 	{
-		// compute the col multi-index
+		// compute the column multi-index
 		internal::_n2multiidx(j, numdims, cdims, midxcol);
 #pragma omp parallel for
 		for (size_t i = 0; i < dim; i++)
@@ -673,7 +674,7 @@ types::DynMat<Scalar> ptranspose(const types::DynMat<Scalar>& A,
 	size_t jperm = 0;
 	for (size_t j = 0; j < dim; j++)
 	{
-		// compute the col multi-index
+		// compute the column multi-index
 		internal::_n2multiidx(j, numdims, cdims, midxcol);
 #pragma omp parallel for
 		for (size_t i = 0; i < dim; i++)
@@ -756,6 +757,81 @@ types::DynMat<Scalar> dya(const types::DynMat<Scalar>& V)
 		throw Exception("dya", Exception::Type::MATRIX_NOT_CVECTOR);
 
 	return V * adjoint(V);
+}
+
+// optimized, faster than kronlist(I, A, I, ...)
+template<typename Scalar>
+types::DynMat<Scalar> expandout(const types::DynMat<Scalar>& A, size_t pos,
+		const std::vector<size_t>& dims)
+{
+	// check zero-size
+	if (!internal::_check_nonzero_size(A))
+		throw Exception("expandout", Exception::Type::ZERO_SIZE);
+
+	// check that dims is a valid dimension vector
+	if (!internal::_check_dims(dims))
+		throw Exception("expandout", Exception::Type::DIMS_INVALID);
+
+	// check square matrix
+	if (!internal::_check_square_mat(A))
+		throw Exception("expandout", Exception::Type::MATRIX_NOT_SQUARE);
+
+	// check that position is valid
+	if (pos > dims.size() - 1)
+		throw Exception("expandout", Exception::Type::OUT_OF_RANGE);
+
+	// check that dims[pos] match the dimension of A
+	if (A.cols() != dims[pos])
+		throw Exception("expandout", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+	auto multiply = [](size_t x, size_t y)->size_t
+	{	return x*y;};
+
+	size_t D = std::accumulate(std::begin(dims), std::end(dims), 1, multiply);
+	types::cmat result = types::cmat::Identity(D, D);
+
+	size_t* Cdims = new size_t[dims.size()];
+	size_t* midx_row = new size_t[dims.size()];
+	size_t* midx_col = new size_t[dims.size()];
+
+	for (size_t k = 0; k < dims.size(); k++)
+	{
+		midx_row[k] = midx_col[k] = 0;
+		Cdims[k] = dims[k];
+	}
+
+	// run over the main diagonal multi-indexes
+	for (size_t i = 0; i < D; i++)
+	{
+		// get row multi_index
+		internal::_n2multiidx(i, dims.size(), Cdims, midx_row);
+		// get column multi_index (same as row)
+		internal::_n2multiidx(i, dims.size(), Cdims, midx_col);
+		// run over the gate's row multi-index
+		for (size_t a = 0; a < A.cols(); a++)
+		{
+			// construct the total row multi-index
+			midx_row[pos] = a;
+
+			// run over the gate's column multi-index
+			for (size_t b = 0; b < A.cols(); b++)
+			{
+				// construct the total column multi-index
+				midx_col[pos] = b;
+
+				// finally write the values
+				result(internal::_multiidx2n(midx_row, dims.size(), Cdims),
+						internal::_multiidx2n(midx_col, dims.size(), Cdims)) =
+						A(a, b);
+			}
+		}
+	}
+
+	delete[] Cdims;
+	delete[] midx_row;
+	delete[] midx_col;
+
+	return result;
 }
 
 }

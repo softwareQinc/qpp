@@ -92,8 +92,8 @@ inline types::cmat Rtheta(double theta)
 inline types::cmat Id(size_t D)
 {
 	if (D == 0)
-			throw Exception("Id", Exception::Type::DIMS_INVALID);
-	return types::cmat::Identity(D,D);
+		throw Exception("Id", Exception::Type::DIMS_INVALID);
+	return types::cmat::Identity(D, D);
 }
 
 inline types::cmat Zd(size_t D)
@@ -225,7 +225,7 @@ inline types::cmat CTRL(const types::cmat& A, const std::vector<size_t>& ctrl,
 	types::cmat result = types::cmat::Identity(std::pow(D, n), std::pow(D, n));
 	types::cmat Ak;
 
-	// run over the complement indices
+	// run over the complement indexes
 	for (size_t i = 0; i < std::pow(D, n - ctrlgate.size()); i++)
 	{
 		// get the complement's row multi-index
@@ -236,32 +236,35 @@ inline types::cmat CTRL(const types::cmat& A, const std::vector<size_t>& ctrl,
 			// run over the gate's row multi-index
 			for (size_t a = 0; a < static_cast<size_t>(A.cols()); a++)
 			{
-				// run over the gate's column multi-index
+				// get the row multi-index of the gate
 				internal::_n2multiidx(a, gate.size(), CdimsA, midxA_row);
-				for (size_t b = 0; b < static_cast<size_t>(A.cols()); b++) // run over col multi-index
+
+				// construct the total row multi-index
+
+				// first the ctrl part (equal for column)
+				for (size_t c = 0; c < ctrl.size(); c++)
+					midx_row[ctrl[c]] = midx_col[ctrl[c]] = k;
+
+				// then the complement part (equal for column)
+				for (size_t c = 0; c < n - ctrlgate.size(); c++)
+					midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =
+							midx_bar[c];
+
+				// then the gate part
+				for (size_t c = 0; c < gate.size(); c++)
+					midx_row[gate[c]] = midxA_row[c];
+
+				// run over the gate's column multi-index
+				for (size_t b = 0; b < static_cast<size_t>(A.cols()); b++)
 				{
 					// get the column multi-index of the gate
 					internal::_n2multiidx(b, gate.size(), CdimsA, midxA_col);
 
-					// construct the total row/col multi-index
-
-					// first the ctrl part
-					for (size_t c = 0; c < ctrl.size(); c++)
-						midx_row[ctrl[c]] = midx_col[ctrl[c]] = k;
-
-					// then the complement part
-					for (size_t c = 0; c < n - ctrlgate.size(); c++)
-						midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =
-								midx_bar[c];
-
-					// then the gate part
+					// construct the total column multi-index
 					for (size_t c = 0; c < gate.size(); c++)
-					{
-						midx_row[gate[c]] = midxA_row[c];
 						midx_col[gate[c]] = midxA_col[c];
-					}
 
-					// finally set the values
+					// finally write the values
 					result(internal::_multiidx2n(midx_row, n, Cdims),
 							internal::_multiidx2n(midx_col, n, Cdims)) = Ak(a,
 							b);
@@ -270,6 +273,7 @@ inline types::cmat CTRL(const types::cmat& A, const std::vector<size_t>& ctrl,
 
 		}
 	}
+
 	delete[] Cdims;
 	delete[] midx_row;
 	delete[] midx_col;

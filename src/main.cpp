@@ -9,7 +9,6 @@
 
 //#include "matlab.h" // support for MATLAB
 
-// TODO: expandout function
 // TODO: ip (inner product) function, make it general to return matrices
 // TODO: use .data() raw pointer instead of looping
 // TODO: optimize syspermute: ?Eigen::Map?
@@ -29,28 +28,28 @@ int main()
 	cout << "Starting qpp..." << endl;
 
 	// output format
-	cout << std::fixed; // use fixed format for nice formatting
 	// cout << std::scientific;
+	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(0); // only for fixed or scientific modes
 
-	cmat v0(2, 1), v1(2, 1);
-	v0 << 1, 0;
-	v1 << 0, 1;
+//	cmat v0(2, 1), v1(2, 1);
+//	v0 << 1, 0;
+//	v1 << 0, 1;
 //	cmat gt=CTRL(X,{0,2},{1},3);
 //	cmat input=kronlist<cplx>({v1,v1,v1	});
 //	cmat desired_output=kronlist<cplx>({v1,v0,v1});
 //	cmat output=gt*input;
-
-	displn(CTRL(CNOT, { 0 }, {1, 2}, 3));
-	cout << endl;
-	//displn(kronlist<cplx>( { Id(2), CNOT, Id(2) }));
-	//displn(CTRL(X,{0,1},{2},3));
-	//cout<<endl;
-
-	//displn(kron(CNOT,Id2));
-	//displn(syspermute(CNOT,{1,0},{2,2}));
-
 //	cout<<norm((cmat)(desired_output-output));
+
+//	displn(CTRL(CNOT, { 0 }, {1, 2}, 3));
+//	cout << endl;
+//	displn(kronlist<cplx>( { Id(2), CNOT, Id(2) }));
+//	displn(CTRL(X,{0,1},{2},3));
+//	cout<<endl;
+
+	displn(expandout(X, 2, { 2, 2, 2, 2 }));
+	cout << endl;
+	displn(kronlist<cplx>( { Id2, Id2, X, Id2 }));
 
 	/*
 	 // spectral decomposition test
