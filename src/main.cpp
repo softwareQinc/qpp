@@ -34,6 +34,7 @@ int main()
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
 	// Bell state generator
+	cout << endl << "Bell state generator: " << endl;
 	cmat circuit;
 	circuit = gt::CTRL(gt::X, { 0 }, { 1 }, 2) * expandout(gt::H, 0, { 2, 2 });
 	cmat z0(2, 1);
@@ -56,7 +57,7 @@ int main()
 	cout << "Circuit acting on |000> produces |111>. Check: " << endl;
 	displn(output);
 
-	/*
+
 	 // spectral decomposition test
 	 cout << endl << "Spectral decomposition tests." << endl;
 	 size_t D = 4;
@@ -170,7 +171,7 @@ int main()
 	 // END TIMING
 	 total.toc(); // read the total running time
 	 cout << endl << "Total time: " << total.seconds() << " seconds.";
-	 */
+
 
 	cout << endl << "Exiting qpp..." << endl;
 }
