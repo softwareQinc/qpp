@@ -47,9 +47,10 @@ int main()
 //	displn(CTRL(X,{0,1},{2},3));
 //	cout<<endl;
 
-	displn(expandout(X, 2, { 2, 2, 2, 2 }));
-	cout << endl;
-	displn(kronlist<cplx>( { Id2, Id2, X, Id2 }));
+	cmat m=rand<cplx>(3,3);
+	cmat m1=expandout(m, 1, { 2, 3, 4 });
+	cmat m2=kronlist<cplx>( { Id(2), m, Id(4)  });
+	cout<<norm((cmat)(m1-m2));
 
 	/*
 	 // spectral decomposition test
