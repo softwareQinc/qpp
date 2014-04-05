@@ -168,7 +168,6 @@ inline types::cmat CTRL(const types::cmat& A, const std::vector<size_t>& ctrl,
 	if (!internal::_check_subsys(ctrlgate, dims))
 		throw Exception("CTRL", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-	//size_t DA = A.cols(); // dimension of A
 	// check that gate list match the dimension of the matrix
 	if (A.cols() != std::pow(D, gate.size()))
 		throw Exception("CTRL", Exception::Type::DIMS_MISMATCH_MATRIX);
