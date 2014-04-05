@@ -781,7 +781,7 @@ types::DynMat<Scalar> expandout(const types::DynMat<Scalar>& A, size_t pos,
 		throw Exception("expandout", Exception::Type::OUT_OF_RANGE);
 
 	// check that dims[pos] match the dimension of A
-	if (A.cols() != dims[pos])
+	if (static_cast<size_t>(A.cols()) != dims[pos])
 		throw Exception("expandout", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 	auto multiply = [](size_t x, size_t y)->size_t
@@ -808,13 +808,13 @@ types::DynMat<Scalar> expandout(const types::DynMat<Scalar>& A, size_t pos,
 		// get column multi_index (same as row)
 		internal::_n2multiidx(i, dims.size(), Cdims, midx_col);
 		// run over the gate's row multi-index
-		for (size_t a = 0; a < A.cols(); a++)
+		for (size_t a = 0; a < static_cast<size_t>(A.cols()); a++)
 		{
 			// construct the total row multi-index
 			midx_row[pos] = a;
 
 			// run over the gate's column multi-index
-			for (size_t b = 0; b < A.cols(); b++)
+			for (size_t b = 0; b < static_cast<size_t>(A.cols()); b++)
 			{
 				// construct the total column multi-index
 				midx_col[pos] = b;
