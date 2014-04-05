@@ -148,7 +148,7 @@ public:
 		if (!internal::_check_nonzero_size(V))
 			throw Exception("DiscreteDistributionFromComplex::"
 					"DiscreteDistributionFromComplex",
-					Exception::Type::MATRIX_ZERO_SIZE);
+					Exception::Type::ZERO_SIZE);
 
 		// check vector
 		if (!internal::_check_vector(V))

@@ -38,7 +38,7 @@ inline void _n2multiidx(size_t n, size_t numdims, const size_t* dims,
 	}
 }
 
-// multi index to integer index, use C-style array for speed
+// multi-index to integer index, use C-style array for speed
 inline size_t _multiidx2n(const size_t* midx, size_t numdims,
 		const size_t* dims)
 {
@@ -97,16 +97,30 @@ bool _check_col_vector(const types::DynMat<Scalar>& A)
 	return true;
 }
 
-// check whether input is a vector or not
-template<typename Scalar>
-bool _check_nonzero_size(const types::DynMat<Scalar>& A)
+// check non-zero size of object that supports size() function
+template<typename T>
+bool _check_nonzero_size(const T& x)
 {
-	if (A.size() == 0)
+	if (x.size() == 0)
 		return false;
 	return true;
 }
 
-// check that dims match the dimension of the matrix
+// check that dims is a valid dimension vector
+inline bool _check_dims(const std::vector<size_t>& dims)
+{
+	if (dims.size() == 0)
+		return false;
+
+	if (std::find_if(std::begin(dims), std::end(dims), [&dims](size_t i) -> bool
+	{	if(i==0) return true;
+		else return false;}) != std::end(dims))
+		return false;
+	return true;
+}
+
+// check that valid dims match the dimensions
+// of valid (non-zero sized) matrix
 template<typename Scalar>
 bool _check_dims_match_mat(const std::vector<size_t>& dims,
 		const types::DynMat<Scalar>& A)
@@ -119,17 +133,7 @@ bool _check_dims_match_mat(const std::vector<size_t>& dims,
 	return true;
 }
 
-// check that dims is a valid dimension vector
-inline bool _check_dims(const std::vector<size_t>& dims)
-{
-	if (std::find_if(std::begin(dims), std::end(dims), [&dims](size_t i) -> bool
-	{	if(i==0) return true;
-		else return false;}) != std::end(dims))
-		return false;
-	return true;
-}
-
-// check that all elements in dims equal to dim
+// check that all elements in valid dims equal to dim
 inline bool _check_eq_dims(const std::vector<size_t> &dims, size_t dim)
 {
 	for (size_t i : dims)
@@ -138,17 +142,21 @@ inline bool _check_eq_dims(const std::vector<size_t> &dims, size_t dim)
 	return true;
 }
 
-// check that subsys is valid with respect to dims
+// check that subsys is valid with respect to valid dims
 inline bool _check_subsys(const std::vector<size_t>& subsys,
 		const std::vector<size_t>& dims)
 {
+	// check non-zero sized subsystems
+	if (subsys.size() == 0)
+		return false;
+
+	// check valid number of subsystems
+	if (subsys.size() > dims.size())
+		return false;
+
 	// sort the subsystems
 	std::vector<size_t> subsyssort = subsys;
 	std::sort(std::begin(subsyssort), std::end(subsyssort));
-
-	// check valid number of subsystems
-	if (subsyssort.size() > dims.size())
-		return false;
 
 	// check duplicates
 	if (std::unique(std::begin(subsyssort), std::end(subsyssort))
@@ -165,10 +173,13 @@ inline bool _check_subsys(const std::vector<size_t>& subsys,
 	return true;
 }
 
-// check that the permutation is valid with respect to dims
+// check that the permutation is valid with respect to valid dims
 inline bool _check_perm(const std::vector<size_t>& perm,
 		const std::vector<size_t>& dims)
 {
+	if (perm.size() != dims.size())
+		return false;
+
 	std::vector<size_t> sort_perm = perm;
 	std::sort(std::begin(sort_perm), std::end(sort_perm));
 	for (size_t i = 0; i < dims.size(); i++)
@@ -192,7 +203,7 @@ inline void _syspermute_worker(const size_t* midxcol, size_t numdims,
 	for (size_t k = 0; k < numdims; k++)
 		permdims[k] = cdims[cperm[k]]; // permuted dimensions
 
-	// compute the row multi index
+	// compute the row multi-index
 	_n2multiidx(i, numdims, cdims, midxrow);
 
 	for (size_t k = 0; k < numdims; k++)

@@ -31,7 +31,7 @@ template<>
 inline types::DynMat<double> rand(size_t rows, size_t cols, double a, double b)
 {
 	if (rows == 0 || cols == 0)
-		throw Exception("rand", Exception::Type::MATRIX_ZERO_SIZE);
+		throw Exception("rand", Exception::Type::ZERO_SIZE);
 
 	return (0.5 * (b - a)
 			* (types::dmat::Random(rows, cols) + types::dmat::Ones(rows, cols))
@@ -44,7 +44,7 @@ inline types::DynMat<types::cplx> rand(size_t rows, size_t cols, double a,
 		double b)
 {
 	if (rows == 0 || cols == 0)
-		throw Exception("rand", Exception::Type::MATRIX_ZERO_SIZE);
+		throw Exception("rand", Exception::Type::ZERO_SIZE);
 
 	return (0.5 * (b - a)
 			* (types::cmat::Random(rows, cols)
@@ -73,7 +73,7 @@ inline types::DynMat<double> randn(size_t rows, size_t cols, double mean,
 		double sigma)
 {
 	if (rows == 0 || cols == 0)
-		throw Exception("randn", Exception::Type::MATRIX_ZERO_SIZE);
+		throw Exception("randn", Exception::Type::ZERO_SIZE);
 
 	stat::NormalDistribution nd(mean, sigma);
 	auto lambda = [&nd](double)
@@ -90,7 +90,7 @@ inline types::DynMat<types::cplx> randn(size_t rows, size_t cols, double mean,
 		double sigma)
 {
 	if (rows == 0 || cols == 0)
-		throw Exception("randn", Exception::Type::MATRIX_ZERO_SIZE);
+		throw Exception("randn", Exception::Type::ZERO_SIZE);
 
 	stat::NormalDistribution nd(mean, sigma);
 	auto lambda = [&nd](double)
@@ -114,7 +114,7 @@ inline double randn(double mean = 0, double sigma = 1)
 inline types::cmat randU(size_t D)
 {
 	if (D == 0)
-		throw Exception("randU", Exception::Type::DIMS_HAVE_ZERO);
+		throw Exception("randU", Exception::Type::DIMS_INVALID);
 
 	types::cmat X(D, D);
 
@@ -138,7 +138,7 @@ inline types::cmat randU(size_t D)
 inline types::cmat randH(size_t D)
 {
 	if (D == 0)
-		throw Exception("randH", Exception::Type::DIMS_HAVE_ZERO);
+		throw Exception("randH", Exception::Type::DIMS_INVALID);
 
 	types::cmat H = 2 * rand<types::cplx>(D, D)
 			- (1. + ct::ii) * types::cmat::Ones(D, D);
@@ -150,7 +150,7 @@ inline types::cmat randH(size_t D)
 inline types::cmat randket(size_t D)
 {
 	if (D == 0)
-		throw Exception("randket", Exception::Type::DIMS_HAVE_ZERO);
+		throw Exception("randket", Exception::Type::DIMS_INVALID);
 
 	types::cmat kt = types::cmat::Ones(D, 1);
 	types::cmat result = randU(D) * kt;
@@ -161,7 +161,7 @@ inline types::cmat randket(size_t D)
 inline types::cmat randrho(size_t D)
 {
 	if (D == 0)
-		throw Exception("randrho", Exception::Type::DIMS_HAVE_ZERO);
+		throw Exception("randrho", Exception::Type::DIMS_INVALID);
 	types::cmat result = 10 * randH(D);
 	result = result * adjoint(result);
 	return result / trace(result);

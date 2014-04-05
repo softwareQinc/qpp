@@ -13,11 +13,12 @@
 #include "functions.h"
 #include "internal.h"
 #include "exception.h"
+#include "io.h"
 
 // quantum gates
 
-// Eigen predefined:
-// MatrixXcd::Identity(D, D), MatrixXcd::Zero (D,D), MatrixXcd::Random(D, D)
+// Eigen
+// MatrixXcd::Zero (D,D), MatrixXcd::Random(D, D)
 
 namespace qpp
 {
@@ -86,23 +87,19 @@ inline types::cmat Rtheta(double theta)
 	return result;
 }
 
-// two qubit gates
-inline types::cmat CU(const types::cmat &U)
+// one quDit gates
+
+inline types::cmat Id(size_t D)
 {
-	if (U.cols() != 2 || U.rows() != 2)
-		throw Exception("CU", Exception::Type::NOT_QUBIT_GATE);
-	types::cmat result = types::cmat::Zero(4, 4);
-	result(0, 0) = 1;
-	result(1, 1) = 1;
-	result.block(2, 2, 2, 2) = U;
-	return result;
+	if (D == 0)
+			throw Exception("Id", Exception::Type::DIMS_INVALID);
+	return types::cmat::Identity(D,D);
 }
 
-// one quDit gates
 inline types::cmat Zd(size_t D)
 {
 	if (D == 0)
-		throw Exception("Zd", Exception::Type::DIMS_HAVE_ZERO);
+		throw Exception("Zd", Exception::Type::DIMS_INVALID);
 
 	types::cmat result(D, D);
 	result = types::cmat::Zero(D, D);
@@ -114,7 +111,7 @@ inline types::cmat Zd(size_t D)
 inline types::cmat Fd(size_t D)
 {
 	if (D == 0)
-		throw Exception("Fd", Exception::Type::DIMS_HAVE_ZERO);
+		throw Exception("Fd", Exception::Type::DIMS_INVALID);
 
 	types::cmat result(D, D);
 	result = types::cmat::Zero(D, D);
@@ -124,34 +121,170 @@ inline types::cmat Fd(size_t D)
 	return result;
 }
 
-inline types::cmat Xd(size_t D)
+inline types::cmat Xd(size_t D) // X|k>=|k+1>
 {
 	if (D == 0)
-		throw Exception("Xd", Exception::Type::DIMS_HAVE_ZERO);
+		throw Exception("Xd", Exception::Type::DIMS_INVALID);
 
-	return Fd(D) * Zd(D) * Fd(D).inverse();
+	return Fd(D).inverse() * Zd(D) * Fd(D);
 }
 
-// two qudit gates
-inline types::cmat CUd(const types::cmat &U)
+// multi-quDit multi-controlled-gate
+// faster than doing sum |j><j| A^j, especially for small A and large n
+// for large A relative to D^n, use sum |j><j| A^j (CTRLsum)
+inline types::cmat CTRL(const types::cmat& A, const std::vector<size_t>& ctrl,
+		const std::vector<size_t>& gate, size_t n, size_t D = 2)
 {
+// EXCEPTION CHECKS
+	// check matrix zero size
+	if (!internal::_check_nonzero_size(A))
+		throw Exception("CTRL", Exception::Type::ZERO_SIZE);
+
 	// check square matrix
-	if (!internal::_check_square_mat(U))
-		throw Exception("", Exception::Type::MATRIX_NOT_SQUARE);
+	if (!internal::_check_square_mat(A))
+		throw Exception("CTRL", Exception::Type::MATRIX_NOT_SQUARE);
 
-	size_t D = static_cast<size_t>(U.cols());
-	types::cmat result(D * D, D * D);
-	result = types::cmat::Zero(D * D, D * D);
-	types::cmat tmp(D, D);
-	tmp = types::cmat::Zero(D, D); // the dyad |i><i|
+	// check lists zero size
+	if (ctrl.size() == 0)
+		throw Exception("CTRL", Exception::Type::ZERO_SIZE);
 
-	for (size_t i = 0; i < D; i++)
+	if (gate.size() == 0)
+		throw Exception("CTRL", Exception::Type::ZERO_SIZE);
+
+	// check out of range
+	if (n == 0)
+		throw Exception("CTRL", Exception::Type::OUT_OF_RANGE);
+
+	// check valid local dimension
+	if (D == 0)
+		throw Exception("CTRL", Exception::Type::DIMS_INVALID);
+
+	std::vector<size_t> ctrlgate = ctrl; // ctrl + gate subsystem vector
+	ctrlgate.insert(std::end(ctrlgate), std::begin(gate), std::end(gate));
+
+	std::vector<size_t> dims; // local dimensions vector
+	dims.insert(std::begin(dims), n, D);
+
+	// check that ctrl+gate subsystem is valid with respect to local dimensions
+	if (!internal::_check_subsys(ctrlgate, dims))
+		throw Exception("CTRL", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+	//size_t DA = A.cols(); // dimension of A
+	// check that gate list match the dimension of the matrix
+	if (A.cols() != std::pow(D, gate.size()))
+		throw Exception("CTRL", Exception::Type::DIMS_MISMATCH_MATRIX);
+// END EXCEPTION CHECKS
+
+	size_t* Cdims = new size_t[n];
+	size_t* midx_row = new size_t[n];
+	size_t* midx_col = new size_t[n];
+
+	size_t* CdimsA = new size_t[gate.size()];
+	size_t* midxA_row = new size_t[gate.size()];
+	size_t* midxA_col = new size_t[gate.size()];
+
+	size_t* Cdims_ctrl = new size_t[ctrl.size()];
+	size_t* midx_ctrl = new size_t[ctrl.size()];
+
+	size_t* Cdims_bar = new size_t[n - ctrlgate.size()];
+	size_t* Csubsys_bar = new size_t[n - ctrlgate.size()];
+	size_t* midx_bar = new size_t[n - ctrlgate.size()];
+
+	for (size_t k = 0, cnt = 0; k < n; k++)
 	{
-		if (i > 0)
-			tmp(i - 1, i - 1) = 0;
-		tmp(i, i) = 1;
-		result += kron(tmp, powm(U, i));
+		midx_row[k] = midx_col[k] = 0;
+		Cdims[k] = D;
+
+		// compute the complementary subsystem
+		if (std::find(std::begin(ctrlgate), std::end(ctrlgate), k)
+				== std::end(ctrlgate))
+		{
+			Csubsys_bar[cnt] = k;
+			cnt++;
+		}
 	}
+
+	for (size_t k = 0; k < gate.size(); k++)
+	{
+		midxA_row[k] = midxA_col[k] = 0;
+		CdimsA[k] = D;
+	}
+
+	for (size_t k = 0; k < ctrl.size(); k++)
+	{
+		midx_ctrl[k] = 0;
+		Cdims_ctrl[k] = D;
+	}
+
+	for (size_t k = 0; k < n - ctrlgate.size(); k++)
+	{
+		midx_bar[k] = 0;
+		Cdims_bar[k] = D;
+	}
+
+	types::cmat result = types::cmat::Identity(std::pow(D, n), std::pow(D, n));
+	types::cmat Ak;
+
+	// run over the complement indices
+	for (size_t i = 0; i < std::pow(D, n - ctrlgate.size()); i++)
+	{
+		// get the complement's row multi-index
+		internal::_n2multiidx(i, n - ctrlgate.size(), Cdims_bar, midx_bar);
+		for (size_t k = 0; k < D; k++)
+		{
+			Ak = powm(A, k); // compute A^k
+			// run over the gate's row multi-index
+			for (size_t a = 0; a < static_cast<size_t>(A.cols()); a++)
+			{
+				// run over the gate's column multi-index
+				internal::_n2multiidx(a, gate.size(), CdimsA, midxA_row);
+				for (size_t b = 0; b < static_cast<size_t>(A.cols()); b++) // run over col multi-index
+				{
+					// get the column multi-index of the gate
+					internal::_n2multiidx(b, gate.size(), CdimsA, midxA_col);
+
+					// construct the total row/col multi-index
+
+					// first the ctrl part
+					for (size_t c = 0; c < ctrl.size(); c++)
+						midx_row[ctrl[c]] = midx_col[ctrl[c]] = k;
+
+					// then the complement part
+					for (size_t c = 0; c < n - ctrlgate.size(); c++)
+						midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =
+								midx_bar[c];
+
+					// then the gate part
+					for (size_t c = 0; c < gate.size(); c++)
+					{
+						midx_row[gate[c]] = midxA_row[c];
+						midx_col[gate[c]] = midxA_col[c];
+					}
+
+					// finally set the values
+					result(internal::_multiidx2n(midx_row, n, Cdims),
+							internal::_multiidx2n(midx_col, n, Cdims)) = Ak(a,
+							b);
+				}
+			}
+
+		}
+	}
+	delete[] Cdims;
+	delete[] midx_row;
+	delete[] midx_col;
+
+	delete[] CdimsA;
+	delete[] midxA_row;
+	delete[] midxA_col;
+
+	delete[] Cdims_ctrl;
+	delete[] midx_ctrl;
+
+	delete[] Cdims_bar;
+	delete[] Csubsys_bar;
+	delete[] midx_bar;
+
 	return result;
 }
 

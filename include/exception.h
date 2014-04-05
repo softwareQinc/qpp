@@ -22,14 +22,14 @@ public:
 	enum class Type // exception types
 	{
 		UNKNOWN_EXCEPTION = 0,
+		ZERO_SIZE,
+		MATRIX_NOT_SQUARE,
 		MATRIX_NOT_CVECTOR,
 		MATRIX_NOT_RVECTOR,
 		MATRIX_NOT_VECTOR,
-		MATRIX_NOT_SQUARE,
-		MATRIX_ZERO_SIZE,
-		DIMS_MISMATCH_MATRIX,
-		DIMS_HAVE_ZERO,
+		DIMS_INVALID,
 		DIMS_NOT_EQUAL,
+		DIMS_MISMATCH_MATRIX,
 		SUBSYS_MISMATCH_DIMS,
 		PERM_MISMATCH_DIMS,
 		NOT_QUBIT_GATE,
@@ -77,6 +77,9 @@ private:
 		case Type::UNKNOWN_EXCEPTION:
 			_msg += "UNKNOWN EXCEPTION!";
 			break;
+		case Type::ZERO_SIZE:
+			_msg += "Object has zero size!";
+			break;
 		case Type::MATRIX_NOT_SQUARE:
 			_msg += "Matrix is not square!";
 			break;
@@ -89,17 +92,14 @@ private:
 		case Type::MATRIX_NOT_VECTOR:
 			_msg += "Matrix is not a vector!";
 			break;
-		case Type::MATRIX_ZERO_SIZE:
-			_msg += "Matrix has zero size!";
-			break;
-		case Type::DIMS_MISMATCH_MATRIX:
-			_msg += "Dimensions mismatch matrix size!";
-			break;
-		case Type::DIMS_HAVE_ZERO:
-			_msg += "Dimension(s) can not contain zero(s)!";
+		case Type::DIMS_INVALID:
+			_msg += "Invalid dimension(s)!";
 			break;
 		case Type::DIMS_NOT_EQUAL:
 			_msg += "Dimensions not equal!";
+			break;
+		case Type::DIMS_MISMATCH_MATRIX:
+			_msg += "Dimensions mismatch matrix size!";
 			break;
 		case Type::SUBSYS_MISMATCH_DIMS:
 			_msg += "Subsystems mismatch dimensions!";
@@ -114,7 +114,7 @@ private:
 			_msg += "Subsystems are not qubits!";
 			break;
 		case Type::OUT_OF_RANGE:
-			_msg += "Parameter(s) out of range!";
+			_msg += "Parameter out of range!";
 			break;
 		case Type::UNDEFINED_TYPE:
 			_msg += "Not defined for this type!";

@@ -25,7 +25,7 @@ double shannon(const types::DynMat<Scalar> & A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw Exception("shannon", Exception::Type::MATRIX_ZERO_SIZE);
+		throw Exception("shannon", Exception::Type::ZERO_SIZE);
 
 	// input is a vector
 	if (A.rows() == 1 || A.cols() == 1)
@@ -71,7 +71,7 @@ double renyi(const double alpha, const types::DynMat<Scalar> & A)
 
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw Exception("renyi", Exception::Type::MATRIX_ZERO_SIZE);
+		throw Exception("renyi", Exception::Type::ZERO_SIZE);
 
 	// input is a vector
 	if (A.rows() == 1 || A.cols() == 1)
@@ -116,7 +116,7 @@ double renyi_inf(const types::DynMat<Scalar> & A)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw Exception("renyi_inf", Exception::Type::MATRIX_ZERO_SIZE);
+		throw Exception("renyi_inf", Exception::Type::ZERO_SIZE);
 
 	// input is a vector
 	if (A.rows() == 1 || A.cols() == 1)

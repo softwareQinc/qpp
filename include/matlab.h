@@ -153,7 +153,7 @@ void saveMATLABmatrix(const types::DynMat<double> &A,
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw Exception("saveMATLABmatrix", Exception::Type::MATRIX_ZERO_SIZE);
+		throw Exception("saveMATLABmatrix", Exception::Type::ZERO_SIZE);
 
 	MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
 	if (pmat == NULL)
@@ -184,7 +184,7 @@ void saveMATLABmatrix(const types::DynMat<types::cplx> &A,
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw Exception("saveMATLABmatrix", Exception::Type::MATRIX_ZERO_SIZE);
+		throw Exception("saveMATLABmatrix", Exception::Type::ZERO_SIZE);
 
 	// cast the input to a double (internal MATLAB format)
 	types::dmat tmp_re = A.real();

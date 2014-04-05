@@ -42,6 +42,26 @@ void displn(const T& x, const std::string & separator = " ", std::ostream& os =
 	os << std::endl;
 }
 
+// Displays a C-style array
+template<typename T>
+void disp(const T* x, const size_t n, const std::string & separator = " ",
+		std::ostream& os = std::cout)
+{
+	for (size_t i = 0; i < n - 1; i++)
+		os << x[i] << separator;
+	os << x[n - 1];
+}
+
+// Displays a C-style array
+// and adds a new line
+template<typename T>
+void displn(const T* x, const size_t n, const std::string & separator = " ",
+		std::ostream& os = std::cout)
+{
+	disp(x, n, separator, os);
+	os << std::endl;
+}
+
 // Displays an Eigen::MatrixX in friendly form
 template<typename Scalar>
 void disp(const types::DynMat<Scalar> &A, double chop = ct::chop,
@@ -160,7 +180,7 @@ void save(const types::DynMat<Scalar> & A, const std::string& fname)
 {
 	// check zero-size
 	if (!internal::_check_nonzero_size(A))
-		throw Exception("save", Exception::Type::MATRIX_ZERO_SIZE);
+		throw Exception("save", Exception::Type::ZERO_SIZE);
 
 	std::fstream fout;
 	fout.open(fname.c_str(), std::ios::out | std::ios::binary);
