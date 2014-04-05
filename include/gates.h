@@ -13,7 +13,6 @@
 #include "functions.h"
 #include "internal.h"
 #include "exception.h"
-#include "io.h"
 
 // quantum gates
 
