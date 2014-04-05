@@ -77,7 +77,6 @@ int main()
 	displn(proj(tmp));
 	cout << endl << "Now the un-normalized corresponding dyad: " << endl;
 	displn(dya(tmp));
-	cout << endl;
 
 	// statistics tests
 	cout << endl << "Statistics tests." << endl;
@@ -87,7 +86,6 @@ int main()
 	stat::DiscreteDistributionFromComplex dc(va);
 	cout << "The probabilities are: ";
 	displn(dc.probabilities(), ", ", "{", "}");
-	cout << endl;
 
 	// other tests
 	cout << endl << "Timing tests..." << endl;
@@ -135,7 +133,7 @@ int main()
 	cout << endl << "ptrace timing." << endl;
 	vector<size_t> subsys_ptrace = { 0 }; // trace away the first qubit
 	cout << "Subsytem(s): ";
-	disp(subsys_ptrace, ", ");
+	displn(subsys_ptrace, ", ");
 	t.tic();
 	ptrace(randcmat, subsys_ptrace, dims);
 	t.toc();
@@ -147,7 +145,7 @@ int main()
 	for (size_t i = 0; i < n; i++)
 		subsys_ptranspose.push_back(i);
 	cout << "Subsytem(s): ";
-	disp(subsys_ptranspose, ", ");
+	displn(subsys_ptranspose, ", ");
 	t.tic();
 	ptranspose(randcmat, subsys_ptranspose, dims);
 	t.toc();
