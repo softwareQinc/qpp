@@ -15,11 +15,12 @@
 // TODO: IMPORTANT Rewrite partial trace without syspermute
 // TODO: further parallelization
 
+// TODO: define Bell states, X,Y,Z eigenstates etc
+
 using namespace std;
 
 using namespace qpp;
 using namespace qpp::types;
-using namespace gt;
 
 int main()
 {
@@ -30,27 +31,21 @@ int main()
 	// output format
 	// cout << std::scientific;
 	cout << std::fixed; // use fixed format for nice formatting
-	cout << std::setprecision(0); // only for fixed or scientific modes
+	cout << std::setprecision(4); // only for fixed or scientific modes
 
-//	cmat v0(2, 1), v1(2, 1);
-//	v0 << 1, 0;
-//	v1 << 0, 1;
-//	cmat gt=CTRL(X,{0,2},{1},3);
-//	cmat input=kronlist<cplx>({v1,v1,v1	});
-//	cmat desired_output=kronlist<cplx>({v1,v0,v1});
-//	cmat output=gt*input;
-//	cout<<norm((cmat)(desired_output-output));
-
-//	displn(CTRL(CNOT, { 0 }, {1, 2}, 3));
-//	cout << endl;
-//	displn(kronlist<cplx>( { Id(2), CNOT, Id(2) }));
-//	displn(CTRL(X,{0,1},{2},3));
-//	cout<<endl;
-
-	cmat m = rand<cplx>(3, 3);
-	cmat m1 = expandout(m, 1, { 2, 3, 4 });
-	cmat m2 = kronlist<cplx>( { Id(2), m, Id(4) });
-	cout << norm((cmat) (m1 - m2));
+	// Bell state generator
+	cmat circuit;
+	circuit = gt::CTRL(gt::X, { 0 }, { 1 }, 2) * expandout(gt::H, 0, { 2, 2 });
+	cmat z0(2, 1);
+	z0 << 1, 0;
+	cmat z1(2, 1);
+	z1 << 0, 1;
+	cmat input = kron(z0, z0);
+	cmat output = circuit * input;
+	cout << endl << "Circuit matrix representation: " << endl;
+	displn(circuit);
+	cout << endl << "Output (|Bell_0> state) of the circuit on |00>: " << endl;
+	displn(output);
 
 	/*
 	 // spectral decomposition test
