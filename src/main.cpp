@@ -26,31 +26,6 @@ int main()
 {
 	_init(); // ALWAYS call _init() at the beginning of main()
 
-	size_t nq = 10;
-	std::vector<cmat> in;
-	cmat A = randn<cplx>(std::pow(2, nq), std::pow(2, nq));
-	for (size_t i = 0; i < std::pow(2, nq); i++)
-		in.push_back((cmat) (A.col(i)));
-	Timer tim;
-	cout << "Timing Gram-Schmidt." << endl;
-	cmat gs = gramschmidt(in);
-	tim.toc();
-	cout << "It took " << tim << " seconds to perform the Gram-Schmidt."
-			<< endl;
-	cout << "I found " << gs.cols() << " linearly independent vectors." << endl;
-
-	cout << norm((cmat) (gs * adjoint(gs) - gt::Id(std::pow(2, nq)))) << endl;
-
-	// now generate a random unitary using QR
-	tim.tic();
-	cout << "Timing randU." << endl;
-	cmat rndu = randU(std::pow(2, nq));
-	tim.toc();
-	cout << "It took " << tim
-			<< " seconds to generate a random unitary using QR." << endl;
-	cout << norm((cmat) (rndu * adjoint(rndu) - gt::Id(std::pow(2, nq))))
-			<< endl;
-
 	cout << "Starting qpp..." << endl;
 
 	// output format
