@@ -164,7 +164,6 @@ inline types::cmat CTRL(const types::cmat& A, const std::vector<size_t>& ctrl,
 	// check lists zero size
 	if (ctrl.size() == 0)
 		throw Exception("CTRL", Exception::Type::ZERO_SIZE);
-
 	if (gate.size() == 0)
 		throw Exception("CTRL", Exception::Type::ZERO_SIZE);
 

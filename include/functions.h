@@ -757,21 +757,6 @@ types::DynMat<Scalar> proj(const types::DynMat<Scalar>& V)
 	return V * adjoint(V) / trace((types::DynMat<Scalar>) (V * adjoint(V)));
 }
 
-// dyad |V><V| (not normalized)
-template<typename Scalar>
-types::DynMat<Scalar> dya(const types::DynMat<Scalar>& V)
-{
-	// check zero-size
-	if (!internal::_check_nonzero_size(V))
-		throw Exception("dya", Exception::Type::ZERO_SIZE);
-
-	// check column vector
-	if (!internal::_check_col_vector(V))
-		throw Exception("dya", Exception::Type::MATRIX_NOT_CVECTOR);
-
-	return V * adjoint(V);
-}
-
 // optimized, faster than kronlist(I, A, I, ...)
 template<typename Scalar>
 types::DynMat<Scalar> expandout(const types::DynMat<Scalar>& A, size_t pos,
