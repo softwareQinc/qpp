@@ -885,7 +885,7 @@ types::DynMat<Scalar> grams(const types::DynMat<Scalar>& A)
 	if (A.size() == 0)
 		throw Exception("grams", Exception::Type::ZERO_SIZE);
 	std::vector<types::DynMat<Scalar>> input;
-	for(size_t i=0; i<A.cols();i++)
+	for(size_t i=0; i<static_cast<size_t>(A.cols());i++)
 	input.push_back(static_cast<types::DynMat<Scalar>>(A.col(i)));
 	return grams(input);
 }
