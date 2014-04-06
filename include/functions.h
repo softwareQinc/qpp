@@ -891,8 +891,7 @@ types::DynMat<Scalar> grams(const types::DynMat<Scalar>& A)
 }
 
 // channel specified by Kraus operators {Ks} acting on rho
-inline types::cmat channel(const types::cmat& rho,
-		const std::vector<types::cmat>& Ks)
+types::cmat channel(const types::cmat& rho, const std::vector<types::cmat>& Ks)
 {
 	if (rho.size() == 0)
 		throw Exception("channel", Exception::Type::ZERO_SIZE);

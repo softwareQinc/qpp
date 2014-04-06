@@ -35,7 +35,7 @@ types::DynMat<Scalar> loadMATLABmatrix(const std::string &mat_file,
 // double specialization
 // if var_name is a complex matrix, only the real part is loaded
 template<>
-inline types::DynMat<double> loadMATLABmatrix(const std::string &mat_file,
+types::DynMat<double> loadMATLABmatrix(const std::string &mat_file,
 		const std::string & var_name)
 {
 	MATFile* pmat = matOpen(mat_file.c_str(), "r");
@@ -77,7 +77,7 @@ inline types::DynMat<double> loadMATLABmatrix(const std::string &mat_file,
 
 // complex specialization
 template<>
-inline types::DynMat<types::cplx> loadMATLABmatrix(const std::string &mat_file,
+types::DynMat<types::cplx> loadMATLABmatrix(const std::string &mat_file,
 		const std::string & var_name)
 {
 	MATFile* pmat = matOpen(mat_file.c_str(), "r");

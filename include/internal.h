@@ -21,8 +21,7 @@ namespace internal
 {
 
 // integer index to multi-index, use C-style array for speed
-inline void _n2multiidx(size_t n, size_t numdims, const size_t* dims,
-		size_t* result)
+void _n2multiidx(size_t n, size_t numdims, const size_t* dims, size_t* result)
 {
 	size_t maxn = 1;
 	for (size_t i = 0; i < numdims; i++)
@@ -39,8 +38,7 @@ inline void _n2multiidx(size_t n, size_t numdims, const size_t* dims,
 }
 
 // multi-index to integer index, use C-style array for speed
-inline size_t _multiidx2n(const size_t* midx, size_t numdims,
-		const size_t* dims)
+size_t _multiidx2n(const size_t* midx, size_t numdims, const size_t* dims)
 {
 	for (size_t i = 0; i < numdims; i++)
 		if (midx[i] >= dims[i])
@@ -107,7 +105,7 @@ bool _check_nonzero_size(const T& x)
 }
 
 // check that dims is a valid dimension vector
-inline bool _check_dims(const std::vector<size_t>& dims)
+bool _check_dims(const std::vector<size_t>& dims)
 {
 	if (dims.size() == 0)
 		return false;
@@ -134,7 +132,7 @@ bool _check_dims_match_mat(const std::vector<size_t>& dims,
 }
 
 // check that all elements in valid dims equal to dim
-inline bool _check_eq_dims(const std::vector<size_t> &dims, size_t dim)
+bool _check_eq_dims(const std::vector<size_t> &dims, size_t dim)
 {
 	for (size_t i : dims)
 		if (i != dim)
@@ -143,7 +141,7 @@ inline bool _check_eq_dims(const std::vector<size_t> &dims, size_t dim)
 }
 
 // check that subsys is valid with respect to valid dims
-inline bool _check_subsys(const std::vector<size_t>& subsys,
+bool _check_subsys(const std::vector<size_t>& subsys,
 		const std::vector<size_t>& dims)
 {
 	// check non-zero sized subsystems
@@ -174,7 +172,7 @@ inline bool _check_subsys(const std::vector<size_t>& subsys,
 }
 
 // check that the permutation is valid with respect to valid dims
-inline bool _check_perm(const std::vector<size_t>& perm,
+bool _check_perm(const std::vector<size_t>& perm,
 		const std::vector<size_t>& dims)
 {
 	if (perm.size() != dims.size())
@@ -190,7 +188,7 @@ inline bool _check_perm(const std::vector<size_t>& perm,
 
 // used inside the #pragma omp parallel for in syspermute
 template<typename Scalar>
-inline void _syspermute_worker(const size_t* midxcol, size_t numdims,
+void _syspermute_worker(const size_t* midxcol, size_t numdims,
 		const size_t* cdims, const size_t* cperm, size_t i, size_t j,
 		size_t &iperm, size_t &jperm, const types::DynMat<Scalar> &A,
 		types::DynMat<Scalar> &result)
@@ -225,9 +223,9 @@ inline void _syspermute_worker(const size_t* midxcol, size_t numdims,
 
 // used inside the #pragma omp parallel for in ptranspose
 template<typename Scalar>
-inline void _ptranspose_worker(const size_t* midxcol, size_t numdims,
-		size_t numsubsys, const size_t* cdims, const size_t* csubsys, size_t i,
-		size_t j, size_t &iperm, size_t &jperm, const types::DynMat<Scalar> &A,
+void _ptranspose_worker(const size_t* midxcol, size_t numdims, size_t numsubsys,
+		const size_t* cdims, const size_t* csubsys, size_t i, size_t j,
+		size_t &iperm, size_t &jperm, const types::DynMat<Scalar> &A,
 		types::DynMat<Scalar> &result)
 {
 	size_t* midxcoltmp = new size_t[numdims];

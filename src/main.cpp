@@ -45,6 +45,8 @@ int main()
 	cout << endl << "[rho, rho^\\dagger]: " << endl;
 	displn(comm(rho_out, adjoint(rho_out)));
 
+	grams(rho_out);
+
 	/*
 	 _init(); // ALWAYS call _init() at the beginning of main()
 	 cout << "Starting qpp..." << endl;

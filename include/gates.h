@@ -50,7 +50,7 @@ extern types::cmat x0, x1, y0, y1, z0, z1;
 // Bell states
 extern types::cmat b00, b01, b10, b11;
 
-inline void _init_gates() // Initialize the gates, call it from qpp::_init()
+void _init_gates() // Initialize the gates, call it from qpp::_init()
 {
 	// initialize the constants and gates
 	Id2 = types::cmat::Identity(2, 2);
@@ -97,7 +97,7 @@ inline void _init_gates() // Initialize the gates, call it from qpp::_init()
 // gates with variable dimension
 
 // one qubit gates
-inline types::cmat Rtheta(double theta)
+types::cmat Rtheta(double theta)
 {
 	types::cmat result(2, 2);
 	result << 1, 0, 0, exp(ct::ii * theta);
@@ -106,14 +106,14 @@ inline types::cmat Rtheta(double theta)
 
 // one quDit gates
 
-inline types::cmat Id(size_t D)
+types::cmat Id(size_t D)
 {
 	if (D == 0)
 		throw Exception("Id", Exception::Type::DIMS_INVALID);
 	return types::cmat::Identity(D, D);
 }
 
-inline types::cmat Zd(size_t D)
+types::cmat Zd(size_t D)
 {
 	if (D == 0)
 		throw Exception("Zd", Exception::Type::DIMS_INVALID);
@@ -125,7 +125,7 @@ inline types::cmat Zd(size_t D)
 	return result;
 }
 
-inline types::cmat Fd(size_t D)
+types::cmat Fd(size_t D)
 {
 	if (D == 0)
 		throw Exception("Fd", Exception::Type::DIMS_INVALID);
@@ -138,7 +138,7 @@ inline types::cmat Fd(size_t D)
 	return result;
 }
 
-inline types::cmat Xd(size_t D) // X|k>=|k+1>
+types::cmat Xd(size_t D) // X|k>=|k+1>
 {
 	if (D == 0)
 		throw Exception("Xd", Exception::Type::DIMS_INVALID);
@@ -149,7 +149,7 @@ inline types::cmat Xd(size_t D) // X|k>=|k+1>
 // -multi-quDit multi-controlled-gate
 // -faster than doing sum |j><j| A^j, especially for small A and large n
 // for large A relative to D^n, use sum |j><j| A^j (CTRLsum)
-inline types::cmat CTRL(const types::cmat& A, const std::vector<size_t>& ctrl,
+types::cmat CTRL(const types::cmat& A, const std::vector<size_t>& ctrl,
 		const std::vector<size_t>& gate, size_t n, size_t D = 2)
 {
 // EXCEPTION CHECKS

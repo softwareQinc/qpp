@@ -20,15 +20,14 @@ namespace qpp
 
 // random matrix with entries in Uniform(a,b)
 template<typename Scalar>
-inline types::DynMat<Scalar> rand(size_t rows, size_t cols, double a = 0,
-		double b = 1)
+types::DynMat<Scalar> rand(size_t rows, size_t cols, double a = 0, double b = 1)
 {
 	throw Exception("rand", Exception::Type::UNDEFINED_TYPE);
 }
 
 // random double matrix with entries in Uniform(a,b)
 template<>
-inline types::DynMat<double> rand(size_t rows, size_t cols, double a, double b)
+types::DynMat<double> rand(size_t rows, size_t cols, double a, double b)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("rand", Exception::Type::ZERO_SIZE);
@@ -40,8 +39,7 @@ inline types::DynMat<double> rand(size_t rows, size_t cols, double a, double b)
 
 // random complex matrix with entries in Uniform(a,b)
 template<>
-inline types::DynMat<types::cplx> rand(size_t rows, size_t cols, double a,
-		double b)
+types::DynMat<types::cplx> rand(size_t rows, size_t cols, double a, double b)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("rand", Exception::Type::ZERO_SIZE);
@@ -53,7 +51,7 @@ inline types::DynMat<types::cplx> rand(size_t rows, size_t cols, double a,
 }
 
 // random number in Uniform(a, b)
-inline double rand(double a = 0, double b = 1)
+double rand(double a = 0, double b = 1)
 {
 	stat::UniformRealDistribution ud(a, b);
 	return ud.sample();
@@ -61,7 +59,7 @@ inline double rand(double a = 0, double b = 1)
 
 // random matrix with entries in Normal(mean, sigma)
 template<typename Scalar>
-inline types::DynMat<Scalar> randn(size_t rows, size_t cols, double mean = 0,
+types::DynMat<Scalar> randn(size_t rows, size_t cols, double mean = 0,
 		double sigma = 1)
 {
 	throw Exception("randn", Exception::Type::UNDEFINED_TYPE);
@@ -69,8 +67,7 @@ inline types::DynMat<Scalar> randn(size_t rows, size_t cols, double mean = 0,
 
 // random double matrix with entries in Normal(mean, sigma)
 template<>
-inline types::DynMat<double> randn(size_t rows, size_t cols, double mean,
-		double sigma)
+types::DynMat<double> randn(size_t rows, size_t cols, double mean, double sigma)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
@@ -86,7 +83,7 @@ inline types::DynMat<double> randn(size_t rows, size_t cols, double mean,
 
 // random complex matrix with entries in Normal(mean, sigma)
 template<>
-inline types::DynMat<types::cplx> randn(size_t rows, size_t cols, double mean,
+types::DynMat<types::cplx> randn(size_t rows, size_t cols, double mean,
 		double sigma)
 {
 	if (rows == 0 || cols == 0)
@@ -103,7 +100,7 @@ inline types::DynMat<types::cplx> randn(size_t rows, size_t cols, double mean,
 }
 
 // random number in Normal(mean, sigma)
-inline double randn(double mean = 0, double sigma = 1)
+double randn(double mean = 0, double sigma = 1)
 {
 	stat::NormalDistribution nd(mean, sigma);
 	return nd.sample();
@@ -111,7 +108,7 @@ inline double randn(double mean = 0, double sigma = 1)
 
 // Random unitary matrix
 //(~3 times slower than Toby Cubitt's MATLAB's, because of the QR algorithm)
-inline types::cmat randU(size_t D)
+types::cmat randU(size_t D)
 {
 	if (D == 0)
 		throw Exception("randU", Exception::Type::DIMS_INVALID);
@@ -135,7 +132,7 @@ inline types::cmat randU(size_t D)
 }
 
 // Random isometry
-inline types::cmat randV(size_t Din, size_t Dout)
+types::cmat randV(size_t Din, size_t Dout)
 {
 	if (Din == 0 || Dout == 0 || Din > Dout)
 		throw Exception("randV", Exception::Type::DIMS_INVALID);
@@ -143,7 +140,7 @@ inline types::cmat randV(size_t Din, size_t Dout)
 }
 
 // Random Kraus operators
-inline std::vector<types::cmat> randKraus(size_t n, size_t D)
+std::vector<types::cmat> randKraus(size_t n, size_t D)
 {
 	if (n == 0)
 		throw Exception("randKraus", Exception::Type::OUT_OF_RANGE);
@@ -178,7 +175,7 @@ inline std::vector<types::cmat> randKraus(size_t n, size_t D)
 }
 
 // Random Hermitian matrix
-inline types::cmat randH(size_t D)
+types::cmat randH(size_t D)
 {
 	if (D == 0)
 		throw Exception("randH", Exception::Type::DIMS_INVALID);
@@ -190,7 +187,7 @@ inline types::cmat randH(size_t D)
 }
 
 // random ket
-inline types::cmat randket(size_t D)
+types::cmat randket(size_t D)
 {
 	if (D == 0)
 		throw Exception("randket", Exception::Type::DIMS_INVALID);
@@ -201,7 +198,7 @@ inline types::cmat randket(size_t D)
 }
 
 // random density matrix
-inline types::cmat randrho(size_t D)
+types::cmat randrho(size_t D)
 {
 	if (D == 0)
 		throw Exception("randrho", Exception::Type::DIMS_INVALID);

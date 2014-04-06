@@ -26,7 +26,7 @@ const double pi = 3.141592653589793238462643383279502884; // pi
 const double ee = 2.718281828459045235360287471352662497; // base of natural log
 
 // D-th root of unity
-inline std::complex<double> omega(size_t D) // D-th root of unity
+std::complex<double> omega(size_t D) // D-th root of unity
 {
 	return exp(2.0 * pi * ii / static_cast<double>(D));
 }

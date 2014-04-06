@@ -163,7 +163,7 @@ void displn(const types::DynMat<Scalar> &A, double chop = ct::chop,
 }
 
 // Displays a complex number in friendly form
-inline void disp(const types::cplx c, double chop = ct::chop, std::ostream& os =
+void disp(const types::cplx c, double chop = ct::chop, std::ostream& os =
 		std::cout)
 {
 // put the complex number inside an Eigen matrix
@@ -174,8 +174,8 @@ inline void disp(const types::cplx c, double chop = ct::chop, std::ostream& os =
 
 // Displays a complex number in friendly form
 // and adds a new line
-inline void displn(const types::cplx c, double chop = ct::chop,
-		std::ostream& os = std::cout)
+void displn(const types::cplx c, double chop = ct::chop, std::ostream& os =
+		std::cout)
 {
 	disp(c, chop, os);
 	os << std::endl;
