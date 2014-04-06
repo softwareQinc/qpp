@@ -142,6 +142,41 @@ inline types::cmat randV(size_t Din, size_t Dout)
 	return randU(Dout).block(0, 0, Dout, Din);
 }
 
+// Random Kraus operators
+inline std::vector<types::cmat> randKraus(size_t n, size_t D)
+{
+	if (n == 0)
+		throw Exception("randKraus", Exception::Type::OUT_OF_RANGE);
+	if (D == 0)
+		throw Exception("randKraus", Exception::Type::DIMS_INVALID);
+
+	std::vector<types::cmat> result;
+	types::cmat Fk(D,D);
+	types::cmat U = randU(n * D);
+	size_t dims[2];
+	dims[0] = D;
+	dims[1] = n;
+	size_t midx_row[2] = { 0, 0 };
+	size_t midx_col[2] = { 0, 0 };
+
+	for (size_t k = 0; k < n; k++)
+	{
+		for (size_t a = 0; a < D; a++)
+			for (size_t b = 0; b < D; b++)
+			{
+				midx_row[0] = a;
+				midx_row[1] = k;
+				midx_col[0] = b;
+				midx_col[1] = 0;
+				Fk(a, b) = U(internal::_multiidx2n(midx_row, 2, dims),
+						internal::_multiidx2n(midx_col, 2, dims));
+			}
+		result.push_back(Fk);
+	}
+
+	return result;
+}
+
 // Random Hermitian matrix
 inline types::cmat randH(size_t D)
 {

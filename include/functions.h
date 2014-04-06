@@ -890,6 +890,30 @@ types::DynMat<Scalar> grams(const types::DynMat<Scalar>& A)
 	return grams(input);
 }
 
+// channel specified by Kraus operators {Ks} acting on rho
+types::cmat channel(const types::cmat& rho, const std::vector<types::cmat>& Ks)
+{
+	if (rho.size() == 0)
+		throw Exception("channel", Exception::Type::ZERO_SIZE);
+	if (!internal::_check_square_mat(rho))
+		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
+	if (Ks.size() == 0)
+		throw Exception("channel", Exception::Type::ZERO_SIZE);
+	if (!internal::_check_square_mat(Ks[0]))
+		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
+	if (Ks[0].rows() != rho.rows())
+		throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
+	for (auto it : Ks)
+		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+			throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
+
+	types::cmat result = types::cmat::Zero(rho.rows(), rho.cols());
+	for (auto it : Ks)
+		result += it * rho * adjoint(it);
+
+	return result;
+}
+
 }
 
 #endif /* FUNCTIONS_H_ */
