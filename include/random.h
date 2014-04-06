@@ -151,7 +151,7 @@ inline std::vector<types::cmat> randKraus(size_t n, size_t D)
 		throw Exception("randKraus", Exception::Type::DIMS_INVALID);
 
 	std::vector<types::cmat> result;
-	types::cmat Fk(D,D);
+	types::cmat Fk(D, D);
 	types::cmat U = randU(n * D);
 	size_t dims[2];
 	dims[0] = D;
