@@ -90,7 +90,7 @@ int main()
 	cmat rho_out = channel(rho_in, Ks); // output state
 
 	cout << "Computing its Choi matrix..." << endl;
-	cmat choimat = choi(Ks);
+	cmat choimat = kraus2choi(Ks);
 	cout << "The eigenvalues of the Choi matrix are: " << endl;
 	displn(transpose(hevals(choimat)));
 	cout << "Their sum is: " << sum(hevals(choimat)).real() << endl;

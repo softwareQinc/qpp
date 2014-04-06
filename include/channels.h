@@ -17,7 +17,7 @@
 
 namespace qpp
 {
-// channel specified by Kraus operators {Ks} acting on rho
+// the output of a channel specified by Kraus operators {Ks} acting on rho
 types::cmat channel(const types::cmat& rho, const std::vector<types::cmat>& Ks)
 {
 	if (!internal::_check_nonzero_size(rho))
@@ -42,17 +42,17 @@ types::cmat channel(const types::cmat& rho, const std::vector<types::cmat>& Ks)
 }
 
 // returns the Choi matrix of the channel specified by Kraus operators {Ks}
-types::cmat choi(const std::vector<types::cmat>& Ks)
+types::cmat kraus2choi(const std::vector<types::cmat>& Ks)
 {
 	if (!internal::_check_nonzero_size(Ks))
-		throw Exception("choi", Exception::Type::ZERO_SIZE);
+		throw Exception("kraus2choi", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_nonzero_size(Ks[0]))
-		throw Exception("choi", Exception::Type::ZERO_SIZE);
+		throw Exception("kraus2choi", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_square_mat(Ks[0]))
-		throw Exception("choi", Exception::Type::MATRIX_NOT_SQUARE);
+		throw Exception("kraus2choi", Exception::Type::MATRIX_NOT_SQUARE);
 	for (auto it : Ks)
 		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-			throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
+			throw Exception("kraus2choi", Exception::Type::DIMS_NOT_EQUAL);
 	size_t D = static_cast<size_t>(Ks[0].rows());
 
 	// construct the D x D \sum |jj> vector
