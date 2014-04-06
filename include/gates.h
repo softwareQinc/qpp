@@ -157,8 +157,6 @@ inline types::cmat Xd(size_t D) // X|k>=|k+1>
 }
 
 // -multi-quDit multi-controlled-gate
-// -faster than doing sum |j><j| A^j, especially for small A and large n
-// for large A relative to D^n, use sum |j><j| A^j (CTRLsum)
 inline types::cmat CTRL(const types::cmat& A, const std::vector<size_t>& ctrl,
 		const std::vector<size_t>& gate, size_t n, size_t D = 2)
 {
