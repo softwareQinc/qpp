@@ -17,8 +17,12 @@ namespace qpp
 namespace ct
 {
 
-// used for setting to zero everything that is smaller in absolute magnitude
+// used in disp(ln) function for setting to zero numbers for which |z|<chop
 const double chop = 1e-10;
+
+// used to decide whether a number in double precision
+// is zero or not, in if() decissions such as if(x<eps) (i.e., x is zero)
+const double eps = 1e-14;
 
 // math constants
 const std::complex<double> ii = { 0, 1 }; // Imaginary i (square root of -1)

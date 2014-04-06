@@ -21,6 +21,7 @@
 
 namespace qpp
 {
+
 namespace gt
 {
 
@@ -45,11 +46,20 @@ extern types::cmat TOF; // Toffoli
 extern types::cmat FRED; // Fredkin
 
 // Pauli eigen-states
-extern types::cmat x0, x1, y0, y1, z0, z1;
+extern types::cmat x0;
+extern types::cmat x1;
+extern types::cmat y0;
+extern types::cmat y1;
+extern types::cmat z0;
+extern types::cmat z1;
 
 // Bell states
-extern types::cmat b00, b01, b10, b11;
+extern types::cmat b00;
+extern types::cmat b01;
+extern types::cmat b10;
+extern types::cmat b11;
 
+inline
 void _init_gates() // Initialize the gates, call it from qpp::_init()
 {
 	// initialize the constants and gates
@@ -97,7 +107,7 @@ void _init_gates() // Initialize the gates, call it from qpp::_init()
 // gates with variable dimension
 
 // one qubit gates
-types::cmat Rtheta(double theta)
+inline types::cmat Rtheta(double theta)
 {
 	types::cmat result(2, 2);
 	result << 1, 0, 0, exp(ct::ii * theta);
@@ -106,14 +116,14 @@ types::cmat Rtheta(double theta)
 
 // one quDit gates
 
-types::cmat Id(size_t D)
+inline types::cmat Id(size_t D)
 {
 	if (D == 0)
 		throw Exception("Id", Exception::Type::DIMS_INVALID);
 	return types::cmat::Identity(D, D);
 }
 
-types::cmat Zd(size_t D)
+inline types::cmat Zd(size_t D)
 {
 	if (D == 0)
 		throw Exception("Zd", Exception::Type::DIMS_INVALID);
@@ -125,7 +135,7 @@ types::cmat Zd(size_t D)
 	return result;
 }
 
-types::cmat Fd(size_t D)
+inline types::cmat Fd(size_t D)
 {
 	if (D == 0)
 		throw Exception("Fd", Exception::Type::DIMS_INVALID);
@@ -138,7 +148,7 @@ types::cmat Fd(size_t D)
 	return result;
 }
 
-types::cmat Xd(size_t D) // X|k>=|k+1>
+inline types::cmat Xd(size_t D) // X|k>=|k+1>
 {
 	if (D == 0)
 		throw Exception("Xd", Exception::Type::DIMS_INVALID);
@@ -149,7 +159,7 @@ types::cmat Xd(size_t D) // X|k>=|k+1>
 // -multi-quDit multi-controlled-gate
 // -faster than doing sum |j><j| A^j, especially for small A and large n
 // for large A relative to D^n, use sum |j><j| A^j (CTRLsum)
-types::cmat CTRL(const types::cmat& A, const std::vector<size_t>& ctrl,
+inline types::cmat CTRL(const types::cmat& A, const std::vector<size_t>& ctrl,
 		const std::vector<size_t>& gate, size_t n, size_t D = 2)
 {
 // EXCEPTION CHECKS

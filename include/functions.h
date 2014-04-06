@@ -15,10 +15,8 @@
 #include "internal.h"
 #include "exception.h"
 #include "constants.h"
-#include "stat.h"
 
 // Collection of quantum computing useful functions
-
 namespace qpp
 {
 // Eigen function wrappers
@@ -313,7 +311,7 @@ types::cmat spectralpowm(const types::DynMat<Scalar> &A, const types::cplx z)
 	if (!internal::_check_square_mat(A))
 		throw Exception("spectralpowm", Exception::Type::MATRIX_NOT_SQUARE);
 
-	// Define A^0 = Id
+	// Define A^0 = Id, for z IDENTICALLY zero
 	if (real(z) == 0 && imag(z) == 0)
 	{
 		types::cmat result(A.rows(), A.rows());
@@ -466,7 +464,8 @@ types::DynMat<Scalar> reshape(const types::DynMat<Scalar>& A, size_t rows,
 	if (Arows * Acols != rows * cols)
 		throw Exception("reshape", Exception::Type::DIMS_MISMATCH_MATRIX);
 
-	return Eigen::Map<types::DynMat<Scalar>>(A.data(), rows, cols);
+	return Eigen::Map<types::DynMat<Scalar>>(const_cast<Scalar*>(A.data()),
+			rows, cols);
 }
 
 // permutes the subsystems in a matrix
@@ -837,11 +836,11 @@ template<typename Scalar>
 types::DynMat<Scalar> grams(const std::vector<types::DynMat<Scalar>>& vecs)
 {
 	// check empty list
-	if (vecs.size() == 0)
+	if (!internal::_check_nonzero_size(vecs))
 		throw Exception("grams", Exception::Type::ZERO_SIZE);
 
 	for (auto it : vecs)
-		if (it.size() == 0)
+		if (!internal::_check_nonzero_size(it))
 			throw Exception("grams", Exception::Type::ZERO_SIZE);
 
 	// check that is indeed a column vector
@@ -882,36 +881,14 @@ template<typename Scalar>
 types::DynMat<Scalar> grams(const types::DynMat<Scalar>& A)
 {
 	// check empty list
-	if (A.size() == 0)
+	if (!internal::_check_nonzero_size(A))
 		throw Exception("grams", Exception::Type::ZERO_SIZE);
 	std::vector<types::DynMat<Scalar>> input;
-	for(size_t i=0; i<static_cast<size_t>(A.cols());i++)
-	input.push_back(static_cast<types::DynMat<Scalar>>(A.col(i)));
+
+	for (size_t i = 0; i < static_cast<size_t>(A.cols()); i++)
+		input.push_back(static_cast<types::DynMat<Scalar> >(A.col(i)));
+
 	return grams(input);
-}
-
-// channel specified by Kraus operators {Ks} acting on rho
-types::cmat channel(const types::cmat& rho, const std::vector<types::cmat>& Ks)
-{
-	if (rho.size() == 0)
-		throw Exception("channel", Exception::Type::ZERO_SIZE);
-	if (!internal::_check_square_mat(rho))
-		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
-	if (Ks.size() == 0)
-		throw Exception("channel", Exception::Type::ZERO_SIZE);
-	if (!internal::_check_square_mat(Ks[0]))
-		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
-	if (Ks[0].rows() != rho.rows())
-		throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
-	for (auto it : Ks)
-		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-			throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
-
-	types::cmat result = types::cmat::Zero(rho.rows(), rho.cols());
-	for (auto it : Ks)
-		result += it * rho * adjoint(it);
-
-	return result;
 }
 
 }

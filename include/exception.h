@@ -99,7 +99,7 @@ private:
 			_msg += "Dimensions not equal!";
 			break;
 		case Type::DIMS_MISMATCH_MATRIX:
-			_msg += "Dimensions mismatch matrix size!";
+			_msg += "Dimension(s) mismatch matrix size!";
 			break;
 		case Type::SUBSYS_MISMATCH_DIMS:
 			_msg += "Subsystems mismatch dimensions!";

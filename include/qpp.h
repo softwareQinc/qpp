@@ -21,6 +21,7 @@
 #include "io.h"
 #include "timer.h"
 #include "exception.h"
+#include "channels.h"
 
 // internal.h and matlab.h should not be included by default
 

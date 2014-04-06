@@ -10,6 +10,7 @@
 
 #include <Eigen/Dense>
 #include <complex>
+#include "constants.h"
 
 namespace qpp
 {
@@ -40,6 +41,13 @@ Eigen::Matrix<typename Expression::Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 // Eigen dynamic matrix
 template<typename Scalar>
 using DynMat=Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
+
+int myfunc(int a, int b)
+{
+	//auto i=gt::X;
+
+	return a + b;
+}
 
 }
 }
