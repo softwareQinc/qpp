@@ -470,6 +470,8 @@ types::DynMat<Scalar> reshape(const types::DynMat<Scalar>& A, size_t rows,
 }
 
 // permutes the subsystems in a matrix
+// perm specifies the destination permutation,
+// i.e. the qubit perm[i] is permuted to location i, perm[i]->i
 template<typename Scalar>
 types::DynMat<Scalar> syspermute(const types::DynMat<Scalar> &A,
 		const std::vector<size_t> perm, const std::vector<size_t> &dims)
@@ -799,7 +801,7 @@ types::DynMat<Scalar> expandout(const types::DynMat<Scalar>& A, size_t pos,
 	{	return x*y;};
 
 	size_t D = std::accumulate(std::begin(dims), std::end(dims), 1, multiply);
-	types::cmat result = types::cmat::Identity(D, D);
+	types::DynMat<Scalar> result = types::DynMat<Scalar>::Identity(D, D);
 
 	size_t* Cdims = new size_t[dims.size()];
 	size_t* midx_row = new size_t[dims.size()];

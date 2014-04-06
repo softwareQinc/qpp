@@ -134,6 +134,14 @@ inline types::cmat randU(size_t D)
 	return Q;
 }
 
+// Random isometry
+inline types::cmat randV(size_t Din, size_t Dout)
+{
+	if (Din == 0 || Dout == 0 || Din > Dout)
+		throw Exception("randV", Exception::Type::DIMS_INVALID);
+	return randU(Dout).block(0, 0, Dout, Din);
+}
+
 // Random Hermitian matrix
 inline types::cmat randH(size_t D)
 {

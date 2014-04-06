@@ -30,10 +30,11 @@ namespace qpp
 // make visible the gates declared as external in gates.h
 namespace gt
 {
-types::cmat H, Id2, X, Y, Z, S, T;
-types::cmat CNOT, CP;
-types::cmat TOF(8, 8);
-types::cmat z0, z1, x0, x1, y0, y1;
+types::cmat Id2, H, X, Y, Z, S, T;
+types::cmat CNOTab, CNOTba, CZ, CS, SWAP;
+types::cmat TOF, FRED;
+types::cmat x0, x1, y0, y1, z0, z1;
+types::cmat b00, b01, b10, b11;
 }
 
 // make the random_device generator visible

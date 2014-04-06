@@ -25,8 +25,8 @@ namespace gt
 {
 
 // one qubit gates
-extern types::cmat H; // Hadamard matrix
 extern types::cmat Id2; // Identity matrix
+extern types::cmat H; // Hadamard matrix
 extern types::cmat X; // X matrix
 extern types::cmat Y; // Y matrix
 extern types::cmat Z; // Z matrix
@@ -34,52 +34,64 @@ extern types::cmat S; // S gate
 extern types::cmat T; // T gate
 
 // two qubit gates
-extern types::cmat CNOT; // CNOT
-extern types::cmat CP; // Controlled-Phase
+extern types::cmat CNOTab; // CNOT ctrl1 target2
+extern types::cmat CNOTba; // CNOT ctrl2 target1
+extern types::cmat CZ; // Controlled-Phase (Controlled-Z)
+extern types::cmat CS; // Controlled-S
+extern types::cmat SWAP; // SWAP gate
 
 // three qubit gates
 extern types::cmat TOF; // Toffoli
+extern types::cmat FRED; // Fredkin
 
 // Pauli eigen-states
-extern types::cmat z0, z1, x0, x1, y0, y1;
+extern types::cmat x0, x1, y0, y1, z0, z1;
+
+// Bell states
+extern types::cmat b00, b01, b10, b11;
 
 inline void _init_gates() // Initialize the gates, call it from qpp::_init()
 {
 	// initialize the constants and gates
-	H = Id2 = X = Y = Z = S = T = types::cmat::Zero(2, 2);
-	CNOT = CP = types::cmat::Zero(4, 4);
-	TOF = types::cmat::Zero(8, 8);
+	Id2 = types::cmat::Identity(2, 2);
+	H = X = Y = Z = S = T = types::cmat::Zero(2, 2);
+	CNOTab = CZ = CS = types::cmat::Identity(4, 4);
+	CNOTba = types::cmat::Zero(4, 4);
+	TOF = types::cmat::Identity(8, 8);
+	FRED = types::cmat::Identity(8, 8);
 	z0 = z1 = x0 = x1 = y0 = y1 = types::cmat::Zero(2, 1);
+	b00 = b01 = b10 = b11 = types::cmat::Zero(4, 1);
 
 	H << 1 / std::sqrt(2), 1 / std::sqrt(2), 1 / std::sqrt(2), -1 / std::sqrt(2);
-	Id2 << 1, 0, 0, 1;
 	X << 0, 1, 1, 0;
 	Z << 1, 0, 0, -1;
 	Y << 0, -ct::ii, ct::ii, 0;
 	S << 1, 0, 0, ct::ii;
 	T << 1, 0, 0, std::exp(ct::ii * ct::pi / 4.0);
-	CNOT(0, 0) = 1;
-	CNOT(1, 1) = 1;
-	CNOT(2, 3) = 1;
-	CNOT(3, 2) = 1;
-	CP(0, 0) = 1;
-	CP(1, 1) = 1;
-	CP(2, 2) = 1;
-	CP(3, 3) = -1;
-	TOF(0, 0) = 1;
-	TOF(1, 1) = 1;
-	TOF(2, 2) = 1;
-	TOF(3, 3) = 1;
-	TOF(4, 4) = 1;
-	TOF(5, 5) = 1;
-	TOF(6, 7) = 1;
-	TOF(7, 6) = 1;
-	z0 << 1, 0;
-	z1 << 0, 1;
+	CNOTab.block(2, 2, 2, 2) = X;
+	CNOTba(0, 0) = 1;
+	CNOTba(1, 3) = 1;
+	CNOTba(2, 2) = 1;
+	CNOTba(3, 1) = 1;
+	CZ(3, 3) = -1;
+	CS(3, 3) = ct::ii;
+	SWAP = CNOTab * CNOTba * CNOTab;
+	TOF.block(6, 6, 2, 2) = X;
+	FRED.block(4, 4, 4, 4) = SWAP;
+
 	x0 << 1 / std::sqrt(2), 1 / std::sqrt(2);
 	x1 << 1 / std::sqrt(2), -1 / std::sqrt(2);
 	y0 << 1 / std::sqrt(2), ct::ii / std::sqrt(2);
 	y1 << 1 / std::sqrt(2), -ct::ii / std::sqrt(2);
+	z0 << 1, 0;
+	z1 << 0, 1;
+
+	// Bell states, following convention from Nielsen & Chuang
+	// |ij> -> |b_{ij}> by the CNOT*(H x Id) circuit
+	b00 << 1 / std::sqrt(2), 0, 0, 1 / std::sqrt(2); // (|00>+|11>)/sqrt(2)
+	b01 << 0, 1 / std::sqrt(2), 1 / std::sqrt(2), 0; // (|01>+|10>)/sqrt(2)
+	b10 << 1 / std::sqrt(2), 0, 0, -1 / std::sqrt(2); // (|00>-|11>)/sqrt(2)
+	b11 << 0, 1 / std::sqrt(2), -1 / std::sqrt(2), 0; // (|01>-|10>)/sqrt(2)
 }
 
 // gates with variable dimension
@@ -134,8 +146,8 @@ inline types::cmat Xd(size_t D) // X|k>=|k+1>
 	return Fd(D).inverse() * Zd(D) * Fd(D);
 }
 
-// multi-quDit multi-controlled-gate
-// faster than doing sum |j><j| A^j, especially for small A and large n
+// -multi-quDit multi-controlled-gate
+// -faster than doing sum |j><j| A^j, especially for small A and large n
 // for large A relative to D^n, use sum |j><j| A^j (CTRLsum)
 inline types::cmat CTRL(const types::cmat& A, const std::vector<size_t>& ctrl,
 		const std::vector<size_t>& gate, size_t n, size_t D = 2)
@@ -245,7 +257,7 @@ inline types::cmat CTRL(const types::cmat& A, const std::vector<size_t>& ctrl,
 
 				// construct the total row multi-index
 
-				// first the ctrl part (equal for column)
+				// first the ctrl part (equal for both row and column)
 				for (size_t c = 0; c < ctrl.size(); c++)
 					midx_row[ctrl[c]] = midx_col[ctrl[c]] = k;
 
