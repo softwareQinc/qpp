@@ -23,6 +23,12 @@ typedef std::complex<double> cplx; // complex number double precision
 // complex matrix
 typedef Eigen::MatrixXcd cmat; // dynamic-size
 
+// ket
+typedef Eigen::Matrix<cplx, Eigen::Dynamic, 1> ket;
+
+// bra
+typedef Eigen::Matrix<cplx, 1, Eigen::Dynamic> bra;
+
 // double matrix
 typedef Eigen::MatrixXd dmat; // dynamic-size
 
@@ -41,13 +47,6 @@ Eigen::Matrix<typename Expression::Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 // Eigen dynamic matrix
 template<typename Scalar>
 using DynMat=Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
-
-int myfunc(int a, int b)
-{
-	//auto i=gt::X;
-
-	return a + b;
-}
 
 }
 }
