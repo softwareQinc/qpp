@@ -23,12 +23,6 @@ typedef std::complex<double> cplx; // complex number double precision
 // complex matrix
 typedef Eigen::MatrixXcd cmat; // dynamic-size
 
-// ket
-typedef Eigen::Matrix<cplx, Eigen::Dynamic, 1> ket;
-
-// bra
-typedef Eigen::Matrix<cplx, 1, Eigen::Dynamic> bra;
-
 // double matrix
 typedef Eigen::MatrixXd dmat; // dynamic-size
 

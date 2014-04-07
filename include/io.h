@@ -162,36 +162,6 @@ void displn(const types::DynMat<Scalar> &A, double chop = ct::chop,
 	os << std::endl;
 }
 
-// Displays a ket in friendly form
-void disp(const types::ket &A, double chop = ct::chop, std::ostream& os =
-		std::cout)
-{
-	disp(static_cast<types::cmat>(A), chop, os);
-}
-
-// Displays a ket in friendly form
-// and adds new line
-void displn(const types::ket &A, double chop = ct::chop, std::ostream& os =
-		std::cout)
-{
-	displn(static_cast<types::cmat>(A), chop, os);
-}
-
-// Displays a bra in friendly form
-void disp(const types::bra &A, double chop = ct::chop, std::ostream& os =
-		std::cout)
-{
-	disp(static_cast<types::cmat>(A), chop, os);
-}
-
-// Displays a bra in friendly form
-// and adds new line
-void displn(const types::bra &A, double chop = ct::chop, std::ostream& os =
-		std::cout)
-{
-	displn(static_cast<types::cmat>(A), chop, os);
-}
-
 // Displays a complex number in friendly form
 void disp(const types::cplx c, double chop = ct::chop, std::ostream& os =
 		std::cout)
