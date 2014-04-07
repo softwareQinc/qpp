@@ -67,9 +67,10 @@ types::cmat super(const std::vector<types::cmat>& Ks)
 	types::cmat EMN = types::cmat::Zero(D, D);
 
 	for (size_t m = 0; m < D; m++)
+	{
+		midx_col[0] = m;
 		for (size_t n = 0; n < D; n++)
 		{
-			midx_col[0] = m;
 			midx_col[1] = n;
 			MN(m, n) = 1;
 			// compute E(|m><n|)
@@ -77,9 +78,10 @@ types::cmat super(const std::vector<types::cmat>& Ks)
 				EMN += Ks[i] * MN * adjoint(Ks[i]);
 			MN(m, n) = 0;
 			for (size_t a = 0; a < D; a++)
+			{
+				midx_row[0] = a;
 				for (size_t b = 0; b < D; b++)
 				{
-					midx_row[0] = a;
 					midx_row[1] = b;
 					BA(b, a) = 1;
 
@@ -90,8 +92,10 @@ types::cmat super(const std::vector<types::cmat>& Ks)
 							* BA).trace();
 					BA(b, a) = 0;
 				}
+			}
 			EMN = types::cmat::Zero(D, D);
 		}
+	}
 	return result;
 }
 
@@ -144,19 +148,16 @@ std::vector<types::cmat> choi2kraus(const types::cmat& A)
 	types::cmat evec = hevects(A);
 	std::vector<types::cmat> result;
 
-	types::cmat vi = types::cmat::Zero(D * D, 1);
 	double ei = 0;
-	types::cmat Ki = types::cmat::Zero(D, D);
 
 	for (size_t i = 0; i < D * D; i++)
 	{
 		ei = eval.real()(i);
 		if (std::abs(ei) > ct::eps)
-		{
-			vi = reshape(static_cast<types::cmat>(evec.col(i)), D, D);
-			Ki = std::sqrt(ei) * vi;
-			result.push_back(Ki);
-		}
+			result.push_back(
+					std::sqrt(ei)
+							* reshape(static_cast<types::cmat>(evec.col(i)), D,
+									D));
 	}
 	return result;
 }
