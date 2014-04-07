@@ -111,7 +111,11 @@ int main()
 	cout << endl << "Their absolute values are: " << endl;
 	for (size_t i = 0; i < static_cast<size_t>(evalsupop.size()); i++)
 		cout << std::abs(evalsupop(i)) << " ";
-	cout << endl;
+	cout << endl << endl << "Diference in norm for superoperator action: ";
+	cmat rho_out2 = transpose(
+			reshape((cmat) (smat * reshape(transpose(rho_in), d * d, 1)), d,
+					d));
+	cout << norm((cmat) (rho_out - rho_out2)) << endl;
 
 	// statistics tests
 	cout << endl << "Statistics tests." << endl;
