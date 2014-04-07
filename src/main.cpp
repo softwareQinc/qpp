@@ -81,7 +81,7 @@ int main()
 
 	// channel tests
 	cout << endl << "Channel tests." << endl;
-	size_t nk = 10, d = 3; // nk Kraus on d-dimensional system
+	size_t nk = 10, d = 2; // nk Kraus on d-dimensional system
 	cout << "Generating a random channel with " << nk
 			<< " Kraus operators on a " << d << " dimensional space..." << endl;
 	std::vector<cmat> Ks = randKraus(nk, d);
@@ -90,15 +90,27 @@ int main()
 	cmat rho_out = channel(rho_in, Ks); // output state
 
 	cout << "Computing its Choi matrix..." << endl;
-	cmat choimat = kraus2choi(Ks);
+	cmat choim = choimat(Ks);
+	cout << "Choi matrix:" << endl;
+	displn(choim);
 	cout << "The eigenvalues of the Choi matrix are: " << endl;
-	displn(transpose(hevals(choimat)));
-	cout << "Their sum is: " << sum(hevals(choimat)).real() << endl;
-
-	std::vector<cmat> Kperps = choi2kraus(choimat);
+	displn(transpose(hevals(choim)));
+	cout << "Their sum is: " << sum(hevals(choim)).real() << endl;
+	std::vector<cmat> Kperps = choimat2kraus(choim);
 	cout << "The Kraus rank of the channel is: " << Kperps.size() << endl;
 	cmat rho_out1 = channel(rho_in, Kperps);
-	cout << "Difference in norm on output states: " << norm((cmat) (rho_out1 - rho_out)) << endl;
+	cout << "Difference in norm on output states: "
+			<< norm((cmat) (rho_out1 - rho_out)) << endl;
+	cout << "Superoperator matrix:" << endl;
+	cmat smat = supermat(Ks);
+	displn(smat);
+	cout << "The eigenvalues of the superoperator matrix are: " << endl;
+	cmat evalsupop = evals(smat);
+	displn(transpose(evalsupop));
+	cout << "Their absolute values are: " << endl;
+	for (size_t i = 0; i < static_cast<size_t>(evalsupop.size()); i++)
+		cout << std::abs(evalsupop(i)) << " ";
+	cout << endl;
 
 	// statistics tests
 	cout << endl << "Statistics tests." << endl;

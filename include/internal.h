@@ -21,6 +21,7 @@ namespace internal
 {
 
 // integer index to multi-index, use C-style array for speed
+// standard lexicographical order, e.g. 00, 01, 10, 11
 void _n2multiidx(size_t n, size_t numdims, const size_t* dims, size_t* result)
 {
 	size_t maxn = 1;
@@ -37,7 +38,8 @@ void _n2multiidx(size_t n, size_t numdims, const size_t* dims, size_t* result)
 	}
 }
 
-// multi-index to integer index, use C-style array for speed
+// multi-index to integer index, use C-style array for speed,
+// standard lexicographical order, e.g. 00->0, 01->1, 10->2, 11->3
 size_t _multiidx2n(const size_t* midx, size_t numdims, const size_t* dims)
 {
 	for (size_t i = 0; i < numdims; i++)
