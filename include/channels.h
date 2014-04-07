@@ -43,17 +43,17 @@ types::cmat channel(const types::cmat& rho, const std::vector<types::cmat>& Ks)
 
 // constructs the superoperator matrix in the standard operator basis |i><j|,
 // ordered in lexicographical order, e.g. |0><0|, |0><1|, |1><0|, |1><1|
-types::cmat supermat(const std::vector<types::cmat>& Ks)
+types::cmat super(const std::vector<types::cmat>& Ks)
 {
 	if (!internal::_check_nonzero_size(Ks))
-		throw Exception("supermat", Exception::Type::ZERO_SIZE);
+		throw Exception("super", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_nonzero_size(Ks[0]))
-		throw Exception("supermat", Exception::Type::ZERO_SIZE);
+		throw Exception("super", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_square_mat(Ks[0]))
-		throw Exception("supermat", Exception::Type::MATRIX_NOT_SQUARE);
+		throw Exception("super", Exception::Type::MATRIX_NOT_SQUARE);
 	for (auto it : Ks)
 		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-			throw Exception("supermat", Exception::Type::DIMS_NOT_EQUAL);
+			throw Exception("super", Exception::Type::DIMS_NOT_EQUAL);
 	size_t D = static_cast<size_t>(Ks[0].rows());
 
 	size_t midx_row[2] = { 0, 0 };
@@ -97,17 +97,19 @@ types::cmat supermat(const std::vector<types::cmat>& Ks)
 
 // returns the Choi matrix (or dynamical matrix) of the channel
 // specified by Kraus operators {Ks}
-types::cmat choimat(const std::vector<types::cmat>& Ks)
+// The superoperator L and Choi matrix C are related by
+// L_{ab,mn} = C_{ma,nb}
+types::cmat choi(const std::vector<types::cmat>& Ks)
 {
 	if (!internal::_check_nonzero_size(Ks))
-		throw Exception("choimat", Exception::Type::ZERO_SIZE);
+		throw Exception("choi", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_nonzero_size(Ks[0]))
-		throw Exception("choimat", Exception::Type::ZERO_SIZE);
+		throw Exception("choi", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_square_mat(Ks[0]))
-		throw Exception("choimat", Exception::Type::MATRIX_NOT_SQUARE);
+		throw Exception("choi", Exception::Type::MATRIX_NOT_SQUARE);
 	for (auto it : Ks)
 		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-			throw Exception("choimat", Exception::Type::DIMS_NOT_EQUAL);
+			throw Exception("choi", Exception::Type::DIMS_NOT_EQUAL);
 	size_t D = static_cast<size_t>(Ks[0].rows());
 
 	// construct the D x D \sum |jj> vector
@@ -128,15 +130,15 @@ types::cmat choimat(const std::vector<types::cmat>& Ks)
 }
 
 // extract orthogonal Kraus operators from Choi matrix
-std::vector<types::cmat> choimat2kraus(const types::cmat& A)
+std::vector<types::cmat> choi2kraus(const types::cmat& A)
 {
 	if (!internal::_check_nonzero_size(A))
-		throw Exception("choimat2kraus", Exception::Type::ZERO_SIZE);
+		throw Exception("choi2kraus", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_square_mat(A))
-		throw Exception("choimat2kraus", Exception::Type::MATRIX_NOT_SQUARE);
+		throw Exception("choi2kraus", Exception::Type::MATRIX_NOT_SQUARE);
 	size_t D = static_cast<size_t>(std::sqrt(A.rows()));
 	if (D * D != static_cast<size_t>(A.rows()))
-		throw Exception("choimat2kraus", Exception::Type::DIMS_MISMATCH_MATRIX);
+		throw Exception("choi2kraus", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 	types::cmat eval = hevals(A);
 	types::cmat evec = hevects(A);

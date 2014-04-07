@@ -90,20 +90,20 @@ int main()
 	cmat rho_out = channel(rho_in, Ks); // output state
 
 	cout << "Computing its Choi matrix..." << endl;
-	cmat choim = choimat(Ks);
+	cmat choim = choi(Ks);
 	cout << "Choi matrix:" << endl;
 	displn(choim);
 	cout << endl << "The eigenvalues of the Choi matrix are: " << endl;
 	displn(transpose(hevals(choim)));
 	cout << endl << "Their sum is: " << sum(hevals(choim)).real() << endl;
-	std::vector<cmat> Kperps = choimat2kraus(choim);
+	std::vector<cmat> Kperps = choi2kraus(choim);
 	cout << endl << "The Kraus rank of the channel is: " << Kperps.size()
 			<< endl;
 	cmat rho_out1 = channel(rho_in, Kperps);
 	cout << endl << "Difference in norm on output states: "
 			<< norm((cmat) (rho_out1 - rho_out)) << endl;
 	cout << endl << "Superoperator matrix:" << endl;
-	cmat smat = supermat(Ks);
+	cmat smat = super(Ks);
 	displn(smat);
 	cout << endl << "The eigenvalues of the superoperator matrix are: " << endl;
 	cmat evalsupop = evals(smat);
