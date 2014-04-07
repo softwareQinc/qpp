@@ -109,8 +109,8 @@ int main()
 	cmat evalsupop = evals(smat);
 	displn(transpose(evalsupop));
 	cout << endl << "Their absolute values are: " << endl;
-	for (size_t i = 0; i < static_cast<size_t>(evalsupop.size()); i++)
-		cout << std::abs(evalsupop(i)) << " ";
+	for (size_t i = 0; i < (size_t) evalsupop.size(); i++)
+		cout << std::abs((cplx) evalsupop(i)) << " ";
 	cout << endl << endl << "Diference in norm for superoperator action: ";
 	cmat rho_out2 = transpose(
 			reshape((cmat) (smat * reshape(transpose(rho_in), d * d, 1)), d,
