@@ -148,14 +148,11 @@ std::vector<types::cmat> choi2kraus(const types::cmat& A)
 	types::cmat evec = hevects(A);
 	std::vector<types::cmat> result;
 
-	double ei = 0;
-
 	for (size_t i = 0; i < D * D; i++)
 	{
-		ei = eval.real()(i);
-		if (std::abs(ei) > ct::eps)
+		if (std::abs(eval.real()(i)) > ct::eps)
 			result.push_back(
-					std::sqrt(ei)
+					std::sqrt(eval.real()(i))
 							* reshape(static_cast<types::cmat>(evec.col(i)), D,
 									D));
 	}

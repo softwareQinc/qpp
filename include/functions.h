@@ -566,9 +566,8 @@ types::DynMat<Scalar> ptrace2(const types::DynMat<Scalar> &A,
 	for (size_t j = 0; j < DA; j++) // column major order for speed
 #pragma omp parallel for
 		for (size_t i = 0; i < DA; i++)
-		{
 			result(i, j) = trace<Scalar>(A.block(i * DB, j * DB, DB, DB));
-		}
+
 	return result;
 }
 
