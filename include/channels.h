@@ -41,7 +41,8 @@ types::cmat channel(const types::cmat& rho, const std::vector<types::cmat>& Ks)
 	return result;
 }
 
-// returns the Choi matrix of the channel specified by Kraus operators {Ks}
+// returns the Choi matrix (or dynamical matrix) of the channel
+// specified by Kraus operators {Ks}
 types::cmat kraus2choi(const std::vector<types::cmat>& Ks)
 {
 	if (!internal::_check_nonzero_size(Ks))
