@@ -20,9 +20,15 @@ using namespace std;
 using namespace qpp;
 using namespace qpp::types;
 
+template<typename T>
+types::Expression2DynMat<T> test(const Eigen::MatrixBase<T>& A)
+{
+	return A;
+}
+
 int main()
 {
-	_init(); // ALWAYS call _init() at the beginning of main()
+	//_init(); // ALWAYS call _init() at the beginning of main()
 	cout << "Starting qpp..." << endl;
 
 	// output format
@@ -33,7 +39,7 @@ int main()
 	// Bell state generator
 	cout << endl << "Bell state generator: " << endl;
 	cmat circuit;
-	circuit = gt::CTRL(gt::X, { 0 }, { 1 }, 2) * expandout(gt::H, 0, { 2, 2 });
+	circuit = gt->CTRL(gt->X, { 0 }, { 1 }, 2) * expandout(gt->H, 0, { 2, 2 });
 	cmat z0(2, 1);
 	z0 << 1, 0;
 	cmat z1(2, 1);
@@ -48,7 +54,7 @@ int main()
 	// 3-qubit repetion code
 	cout << endl << "3-qubit repetition code: " << endl;
 	cmat rep;
-	rep = gt::CTRL(gt::X, { 0 }, { 2 }, 3) * gt::CTRL(gt::X, { 0 }, { 1 }, 3);
+	rep = gt->CTRL(gt->X, { 0 }, { 2 }, 3) * gt->CTRL(gt->X, { 0 }, { 1 }, 3);
 	input = kronlist<cplx>( { z1, z0, z0 });
 	output = rep * input;
 	cout << "Circuit acting on |000> produces |111>. Check: " << endl;

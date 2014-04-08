@@ -8,12 +8,12 @@
 #ifndef STAT_H_
 #define STAT_H_
 
-#include <random>
 #include <algorithm>
 #include <functional>
 #include "types.h"
 #include "internal.h"
 #include "exception.h"
+#include "randevs.h"
 
 // statistical distributions etc
 
@@ -21,9 +21,6 @@ namespace qpp
 {
 namespace stat
 {
-
-extern std::random_device _rd; // use for seeding
-extern std::mt19937 _rng; // our random number generator
 
 // light wrappers around C++11 statistical distributions
 
@@ -40,7 +37,7 @@ public:
 
 	double sample()
 	{
-		return _d(_rng);
+		return _d(RandomDevices::getInstance()->_rng);
 	}
 };
 
@@ -57,7 +54,7 @@ public:
 
 	double sample()
 	{
-		return _d(_rng);
+		return _d(RandomDevices::getInstance()->_rng);
 	}
 };
 
@@ -85,7 +82,7 @@ public:
 
 	size_t sample()
 	{
-		return _d(_rng);
+		return _d(RandomDevices::getInstance()->_rng);
 	}
 
 	std::vector<double> probabilities()
@@ -166,7 +163,7 @@ public:
 
 	size_t sample()
 	{
-		return _d(_rng);
+		return _d(RandomDevices::getInstance()->_rng);
 	}
 
 	std::vector<double> probabilities()
