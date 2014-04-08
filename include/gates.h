@@ -91,6 +91,8 @@ public:
 		return instance;
 	}
 
+	virtual ~Gates()=default;
+public:
 	// one qubit gates
 	types::cmat Id2; // Identity matrix
 	types::cmat H; // Hadamard matrix
