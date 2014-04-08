@@ -46,11 +46,6 @@ private:
 			b10(types::cmat::Zero(4, 1)), //
 			b11(types::cmat::Zero(4, 1))
 	{
-		_init_gates();
-	}
-
-	void _init_gates()
-	{
 		// initialize the constants and gates
 		H << 1 / std::sqrt(2), 1 / std::sqrt(2), 1 / std::sqrt(2), -1
 				/ std::sqrt(2);
