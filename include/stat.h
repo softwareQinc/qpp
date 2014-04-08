@@ -172,7 +172,7 @@ public:
 	}
 };
 
-}
-}
+} /* namespace stat */
+} /* namespace qpp */
 
 #endif /* STAT_H_ */

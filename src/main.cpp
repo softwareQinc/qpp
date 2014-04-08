@@ -20,7 +20,7 @@ using namespace std;
 using namespace qpp;
 using namespace qpp::types;
 
-template<typename T>
+template<typename T> // testing function for Eigen expressions
 types::Expression2DynMat<T> test(const Eigen::MatrixBase<T>& A)
 {
 	return A;

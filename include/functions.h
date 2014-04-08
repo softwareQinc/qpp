@@ -890,6 +890,6 @@ types::DynMat<Scalar> grams(const types::DynMat<Scalar>& A)
 	return grams(input);
 }
 
-}
+} /* namespace qpp */
 
 #endif /* FUNCTIONS_H_ */

@@ -207,6 +207,6 @@ types::cmat randrho(size_t D)
 	return result / trace(result);
 }
 
-}
+} /* namespace qpp */
 
 #endif /* RANDOM_H_ */

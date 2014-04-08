@@ -254,6 +254,6 @@ types::DynMat<Scalar> load(const std::string& fname)
 	return A;
 }
 
-}
+} /* namespace qpp */
 
 #endif /* IO_H_ */

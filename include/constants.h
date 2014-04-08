@@ -35,8 +35,8 @@ std::complex<double> omega(size_t D) // D-th root of unity
 	return exp(2.0 * pi * ii / static_cast<double>(D));
 }
 
-}
-}
+} /* namespace ct */
+} /* namespace qpp */
 
 #endif	/* CONSTANTS_H_ */
 

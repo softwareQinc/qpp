@@ -159,6 +159,6 @@ std::vector<types::cmat> choi2kraus(const types::cmat& A)
 	return result;
 }
 
-}
+} /* namespace qpp */
 
 #endif /* CHANNELS_H_ */

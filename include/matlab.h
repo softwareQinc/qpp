@@ -220,5 +220,5 @@ void saveMATLABmatrix(const types::DynMat<types::cplx> &A,
 	matClose(pmat);
 }
 
-}
+} /* namespace qpp */
 #endif /* MATLAB_H_ */

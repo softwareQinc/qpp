@@ -250,7 +250,7 @@ void _ptranspose_worker(const size_t* midxcol, size_t numdims, size_t numsubsys,
 	delete[] midxcoltmp;
 }
 
-}
-}
+} /* namespace internal */
+} /* namespace qpp */
 
 #endif /* INTERNAL_H_ */

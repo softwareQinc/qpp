@@ -7,9 +7,7 @@
 
 // IMPORTANT: instantiation of global singletons Gates and RandomDevices
 // Any additional singletons should be instantiated here
-
 // ALWAYS include it in main.cpp
-
 #ifndef QPP_H_
 #define	QPP_H_
 
@@ -28,12 +26,14 @@
 
 namespace qpp
 {
+
 // initialize the random devices
-RandomDevices *rd = RandomDevices::getInstance();
+RandomDevices *rdevs = RandomDevices::getInstance();
+
 // initialize the gates
-Gates *gt = Gates::getInstance();
-// seed the standard C random number generator (needed by Eigen)
-}
+const Gates *gt = Gates::getInstance();
+
+} /* namespace qpp */
 
 #endif	/* QPP_H_ */
 

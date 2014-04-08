@@ -147,5 +147,5 @@ double renyi_inf(const types::DynMat<Scalar> & A)
 	return -std::log2(max);
 }
 
-}
+} /* namespace qpp */
 #endif /* ENTROPY_H_ */

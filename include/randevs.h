@@ -13,11 +13,14 @@
 
 // Random devices singleton class
 
+namespace qpp
+{
+
 class RandomDevices // make it a singleton
 {
 private:
 	std::random_device _rd;
-	RandomDevices():
+	RandomDevices() :
 			_rd(), _rng(_rd())
 	{
 		// seed the standard C number generator, used by Eigen
@@ -32,13 +35,13 @@ public:
 	static RandomDevices* getInstance()
 	{
 		static RandomDevices instance; // Guaranteed to be destroyed.
-								// Instantiated on first use.
+		// Instantiated on first use.
 		return &instance;
 	}
 
-	virtual ~RandomDevices()=default;
+	virtual ~RandomDevices() = default;
 };
 
-
+} /* namespace qpp */
 
 #endif /* RANDEVS_H_ */

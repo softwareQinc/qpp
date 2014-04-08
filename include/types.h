@@ -42,8 +42,8 @@ Eigen::Matrix<typename Expression::Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 template<typename Scalar>
 using DynMat=Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 
-}
-}
+} /* namespace types */
+} /* namespace qpp */
 
 #endif	/* TYPES_H_ */
 

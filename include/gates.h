@@ -16,34 +16,35 @@
 
 namespace qpp
 {
+
 class Gates
 {
 private:
-	Gates():
-		Id2(types::cmat::Identity(2, 2)),
-		H(types::cmat::Zero(2, 2)),
-		X(types::cmat::Zero(2, 2)),
-		Y(types::cmat::Zero(2, 2)),
-		Z(types::cmat::Zero(2, 2)),
-		S(types::cmat::Zero(2, 2)),
-		T(types::cmat::Zero(2, 2)),
-		CNOTab(types::cmat::Identity(4, 4)),
-		CZ(types::cmat::Identity(4, 4)),
-		CS(types::cmat::Identity(4, 4)),
-		CNOTba(types::cmat::Zero(4, 4)),
-		SWAP(types::cmat::Zero(4, 4)),
-		TOF(types::cmat::Identity(8, 8)),
-		FRED(types::cmat::Identity(8, 8)),
-		x0(types::cmat::Zero(2, 1)),
-		x1(types::cmat::Zero(2, 1)),
-		y0(types::cmat::Zero(2, 1)),
-		y1(types::cmat::Zero(2, 1)),
-		z0(types::cmat::Zero(2, 1)),
-		z1(types::cmat::Zero(2, 1)),
-		b00(types::cmat::Zero(4, 1)),
-		b01(types::cmat::Zero(4, 1)),
-		b10(types::cmat::Zero(4, 1)),
-		b11(types::cmat::Zero(4, 1))
+	Gates() :
+			Id2(types::cmat::Identity(2, 2)), //
+			H(types::cmat::Zero(2, 2)), //
+			X(types::cmat::Zero(2, 2)), //
+			Y(types::cmat::Zero(2, 2)), //
+			Z(types::cmat::Zero(2, 2)), //
+			S(types::cmat::Zero(2, 2)), //
+			T(types::cmat::Zero(2, 2)), //
+			CNOTab(types::cmat::Identity(4, 4)), //
+			CZ(types::cmat::Identity(4, 4)), //
+			CS(types::cmat::Identity(4, 4)), //
+			CNOTba(types::cmat::Zero(4, 4)), //
+			SWAP(types::cmat::Zero(4, 4)), //
+			TOF(types::cmat::Identity(8, 8)), //
+			FRED(types::cmat::Identity(8, 8)), //
+			x0(types::cmat::Zero(2, 1)), //
+			x1(types::cmat::Zero(2, 1)), //
+			y0(types::cmat::Zero(2, 1)), //
+			y1(types::cmat::Zero(2, 1)), //
+			z0(types::cmat::Zero(2, 1)), //
+			z1(types::cmat::Zero(2, 1)), //
+			b00(types::cmat::Zero(4, 1)), //
+			b01(types::cmat::Zero(4, 1)), //
+			b10(types::cmat::Zero(4, 1)), //
+			b11(types::cmat::Zero(4, 1))
 	{
 		_init_gates();
 	}
@@ -87,13 +88,10 @@ public:
 	Gates(const Gates&) = delete;
 	Gates& operator=(const Gates&) = delete;
 
-	// force const pointer, do not want to be able to modify the gates
-	// from the outside... would be so nice for Eigen to support initializer
-	// lists so we can declare all gates as const static variables
-	static Gates* getInstance()
+	static const Gates* getInstance() // const singleton
 	{
 		static Gates instance; // Guaranteed to be destroyed.
-							  // Instantiated on first use.
+							   // Instantiated on first use.
 		return &instance;
 	}
 
@@ -134,7 +132,7 @@ public:
 	// gates with variable dimension
 
 	// one qubit gates
-	 types::cmat Rtheta(double theta)
+	types::cmat Rtheta(double theta) const
 	{
 		types::cmat result(2, 2);
 		result << 1, 0, 0, exp(ct::ii * theta);
@@ -143,14 +141,14 @@ public:
 
 	// one quDit gates
 
-	 types::cmat Id(size_t D)
+	types::cmat Id(size_t D) const
 	{
 		if (D == 0)
 			throw Exception("Id", Exception::Type::DIMS_INVALID);
 		return types::cmat::Identity(D, D);
 	}
 
-	 types::cmat Zd(size_t D)
+	types::cmat Zd(size_t D) const
 	{
 		if (D == 0)
 			throw Exception("Zd", Exception::Type::DIMS_INVALID);
@@ -162,7 +160,7 @@ public:
 		return result;
 	}
 
-	 types::cmat Fd(size_t D)
+	types::cmat Fd(size_t D) const
 	{
 		if (D == 0)
 			throw Exception("Fd", Exception::Type::DIMS_INVALID);
@@ -175,7 +173,7 @@ public:
 		return result;
 	}
 
-	 types::cmat Xd(size_t D) // X|k>=|k+1>
+	types::cmat Xd(size_t D) const // X|k>=|k+1>
 	{
 		if (D == 0)
 			throw Exception("Xd", Exception::Type::DIMS_INVALID);
@@ -184,9 +182,8 @@ public:
 	}
 
 	// -multi-quDit multi-controlled-gate
-	 types::cmat CTRL(const types::cmat& A,
-			const std::vector<size_t>& ctrl, const std::vector<size_t>& gate,
-			size_t n, size_t D = 2)
+	types::cmat CTRL(const types::cmat& A, const std::vector<size_t>& ctrl,
+			const std::vector<size_t>& gate, size_t n, size_t D = 2) const
 	{
 		// EXCEPTION CHECKS
 		// check matrix zero size
@@ -347,6 +344,6 @@ public:
 
 };
 
-}
+} /* namespace qpp */
 
 #endif /* GATES_H_ */
