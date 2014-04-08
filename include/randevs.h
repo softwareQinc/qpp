@@ -32,11 +32,11 @@ public:
 
 	std::mt19937 _rng;
 
-	static RandomDevices* getInstance()
+	static RandomDevices& getInstance()
 	{
 		static RandomDevices instance; // Guaranteed to be destroyed.
 		// Instantiated on first use.
-		return &instance;
+		return instance;
 	}
 
 	virtual ~RandomDevices() = default;

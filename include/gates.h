@@ -88,11 +88,11 @@ public:
 	Gates(const Gates&) = delete;
 	Gates& operator=(const Gates&) = delete;
 
-	static const Gates* getInstance() // const singleton
+	static const Gates& getInstance() // const singleton
 	{
 		static Gates instance; // Guaranteed to be destroyed.
 							   // Instantiated on first use.
-		return &instance;
+		return instance;
 	}
 
 	// one qubit gates

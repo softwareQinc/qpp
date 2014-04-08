@@ -27,11 +27,11 @@
 namespace qpp
 {
 
-// initialize the random devices
-RandomDevices *rdevs = RandomDevices::getInstance();
+// initialize the random devices singleton
+RandomDevices& rdevs = RandomDevices::getInstance();
 
-// initialize the gates
-const Gates *gt = Gates::getInstance();
+// initialize the gates singleton
+const Gates& gt = Gates::getInstance();
 
 } /* namespace qpp */
 
