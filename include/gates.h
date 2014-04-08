@@ -87,6 +87,7 @@ public:
 	{
 		static Gates instance; // Guaranteed to be destroyed.
 							   // Instantiated on first use.
+							   // Thread safe in C++11
 		return instance;
 	}
 

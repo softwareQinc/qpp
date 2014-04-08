@@ -38,7 +38,8 @@ public:
 	static RandomDevices& getInstance()
 	{
 		static RandomDevices instance; // Guaranteed to be destroyed.
-		// Instantiated on first use.
+									   // Instantiated on first use.
+									   // Thread safe in C++11
 		return instance;
 	}
 
