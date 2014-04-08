@@ -13,7 +13,7 @@
 // TODO: optimize syspermute: ?Eigen::Map?
 // TODO: IMPORTANT Rewrite partial trace without syspermute
 // TODO: further parallelization
-// TODO: move back to Eigen::MatrixBase
+// TODO: move back to Eigen::MatrixBase and test every function
 
 using namespace std;
 using namespace qpp;
@@ -36,7 +36,6 @@ int main()
 	// cout << std::scientific;
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
-
 
 	// TESTING
 	/*

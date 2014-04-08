@@ -213,8 +213,9 @@ types::cmat absm(const types::DynMat<Scalar> &A)
 	if (!internal::_check_square_mat(A))
 		throw Exception("absm", Exception::Type::MATRIX_NOT_SQUARE);
 
-	return funm(adjoint(A) * A, [](const types::cplx & x)->types::cplx
-	{	return std::sqrt(x);});
+	return funm(static_cast<types::DynMat<Scalar> >(adjoint(A) * A),
+			[](const types::cplx & x)->types::cplx
+			{	return std::sqrt(x);});
 }
 
 // Matrix exponential
