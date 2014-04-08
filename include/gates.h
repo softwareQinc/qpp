@@ -91,7 +91,7 @@ public:
 		return instance;
 	}
 
-	virtual ~Gates()=default;
+	virtual ~Gates() = default;
 public:
 	// one qubit gates
 	types::cmat Id2; // Identity matrix

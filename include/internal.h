@@ -62,37 +62,45 @@ size_t _multiidx2n(const size_t* midx, size_t numdims, const size_t* dims)
 }
 
 // check square matrix
-template<typename Scalar>
-bool _check_square_mat(const types::DynMat<Scalar>& A)
+template<typename Derived>
+bool _check_square_mat(const Eigen::MatrixBase<Derived>& A)
 {
-	if (A.rows() != A.cols())
+	const types::DynMat<typename Derived::Scalar> & rA = A;
+
+	if (rA.rows() != rA.cols())
 		return false;
 	return true;
 }
 
 // check whether input is a vector or not
-template<typename Scalar>
-bool _check_vector(const types::DynMat<Scalar>& A)
+template<typename Derived>
+bool _check_vector(const Eigen::MatrixBase<Derived>& A)
 {
-	if (A.rows() != 1 && A.cols() != 1)
+	const types::DynMat<typename Derived::Scalar> & rA = A;
+
+	if (rA.rows() != 1 && rA.cols() != 1)
 		return false;
 	return true;
 }
 
 // check whether input is a row vector or not
-template<typename Scalar>
-bool _check_row_vector(const types::DynMat<Scalar>& A)
+template<typename Derived>
+bool _check_row_vector(const Eigen::MatrixBase<Derived>& A)
 {
-	if (A.rows() != 1)
+	const types::DynMat<typename Derived::Scalar> & rA = A;
+
+	if (rA.rows() != 1)
 		return false;
 	return true;
 }
 
 // check whether input is a column vector or not
-template<typename Scalar>
-bool _check_col_vector(const types::DynMat<Scalar>& A)
+template<typename Derived>
+bool _check_col_vector(const Eigen::MatrixBase<Derived>& A)
 {
-	if (A.cols() != 1)
+	const types::DynMat<typename Derived::Scalar> & rA = A;
+
+	if (rA.cols() != 1)
 		return false;
 	return true;
 }
@@ -121,14 +129,16 @@ bool _check_dims(const std::vector<size_t>& dims)
 
 // check that valid dims match the dimensions
 // of valid (non-zero sized) matrix
-template<typename Scalar>
+template<typename Derived>
 bool _check_dims_match_mat(const std::vector<size_t>& dims,
-		const types::DynMat<Scalar>& A)
+		const Eigen::MatrixBase<Derived>& A)
 {
+	const types::DynMat<typename Derived::Scalar> & rA = A;
+
 	size_t proddim = 1;
 	for (size_t i : dims)
 		proddim *= i;
-	if (proddim != static_cast<size_t>(A.rows()))
+	if (proddim != static_cast<size_t>(rA.rows()))
 		return false;
 	return true;
 }

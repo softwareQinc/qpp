@@ -25,17 +25,17 @@ namespace qpp
 {
 
 // load Eigen::MatrixX from MATLAB .mat file
-template<typename Scalar>
-types::DynMat<Scalar> loadMATLABmatrix(const std::string &mat_file,
+template<typename Derived>
+Derived loadMATLABmatrix(const std::string &mat_file,
 		const std::string & var_name)
 {
 	throw Exception("loadMATLABmatrix", Exception::Type::UNDEFINED_TYPE);
 }
 
-// double specialization
+// MatrixXd specialization
 // if var_name is a complex matrix, only the real part is loaded
 template<>
-types::DynMat<double> loadMATLABmatrix(const std::string &mat_file,
+types::dmat loadMATLABmatrix(const std::string &mat_file,
 		const std::string & var_name)
 {
 	MATFile* pmat = matOpen(mat_file.c_str(), "r");
@@ -75,9 +75,9 @@ types::DynMat<double> loadMATLABmatrix(const std::string &mat_file,
 	return result;
 }
 
-// complex specialization
+// cmat specialization
 template<>
-types::DynMat<types::cplx> loadMATLABmatrix(const std::string &mat_file,
+types::cmat loadMATLABmatrix(const std::string &mat_file,
 		const std::string & var_name)
 {
 	MATFile* pmat = matOpen(mat_file.c_str(), "r");
@@ -138,16 +138,16 @@ types::DynMat<types::cplx> loadMATLABmatrix(const std::string &mat_file,
 
 // save Eigen::MatrixX to MATLAB .mat file as a double matrix
 // see MATLAB's matOpen(...) documentation
-template<typename Scalar>
-void saveMATLABmatrix(const types::DynMat<Scalar> &A,
+template<typename Derived>
+void saveMATLABmatrix(const Eigen::MatrixBase<Derived> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
 	throw Exception("saveMATLABmatrix", Exception::Type::UNDEFINED_TYPE);
 }
 
-template<> // double specialization
-void saveMATLABmatrix(const types::DynMat<double> &A,
+template<> // Eigen::MatrixXd specialization
+void saveMATLABmatrix(const Eigen::MatrixBase<typename types::dmat> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
@@ -177,8 +177,8 @@ void saveMATLABmatrix(const types::DynMat<double> &A,
 	matClose(pmat);
 }
 
-template<> // complex specialization
-void saveMATLABmatrix(const types::DynMat<types::cplx> &A,
+template<> // Eigen::MatrixXcd specialization
+void saveMATLABmatrix(const Eigen::MatrixBase<typename types::cmat> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {

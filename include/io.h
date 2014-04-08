@@ -23,7 +23,7 @@ namespace qpp
 
 // Displays a standard container that supports std::begin and std::end
 template<typename T>
-void disp(const T& x, const std::string & separator = " ",
+void dispSTL(const T& x, const std::string & separator = " ",
 		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
@@ -38,17 +38,17 @@ void disp(const T& x, const std::string & separator = " ",
 // Displays a standard container that supports std::begin and std::end
 // and adds a new line
 template<typename T>
-void displn(const T& x, const std::string & separator = " ",
+void displnSTL(const T& x, const std::string & separator = " ",
 		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
-	disp(x, separator, start, end, os);
+	dispcontainer(x, separator, start, end, os);
 	os << std::endl;
 }
 
-// Displays a C-style array
+// Displays a C-style fixed-size array
 template<typename T>
-void disp(const T* x, const size_t n, const std::string & separator = " ",
+void dispSTL(const T* x, const size_t n, const std::string & separator = " ",
 		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
@@ -59,25 +59,27 @@ void disp(const T* x, const size_t n, const std::string & separator = " ",
 	os << end;
 }
 
-// Displays a C-style array
+// Displays a C-style fixed-size array
 // and adds a new line
 template<typename T>
-void displn(const T* x, const size_t n, const std::string & separator = " ",
+void displnSTL(const T* x, const size_t n, const std::string & separator = " ",
 		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
-	disp(x, n, separator, start, end, os);
+	dispSTL(x, n, separator, start, end, os);
 	os << std::endl;
 }
 
 // Displays an Eigen::MatrixX in friendly form
-template<typename Scalar>
-void disp(const types::DynMat<Scalar> &A, double chop = ct::chop,
+template<typename Derived>
+void disp(const Eigen::MatrixBase<Derived>& A, double chop = ct::chop,
 		std::ostream& os = std::cout)
 {
-	if (A.size() == 0)
+	const types::DynMat<typename Derived::Scalar> & rA = A;
+
+	if (rA.size() == 0)
 	{
-		os << "Empty [" << A.rows() << " x " << A.cols() << "] matrix";
+		os << "Empty [" << rA.rows() << " x " << rA.cols() << "] matrix";
 		return;
 	};
 
@@ -88,17 +90,17 @@ void disp(const types::DynMat<Scalar> &A, double chop = ct::chop,
 	std::vector<std::string> vstr;
 	std::string strA;
 
-	for (size_t i = 0; i < static_cast<size_t>(A.rows()); i++)
+	for (size_t i = 0; i < static_cast<size_t>(rA.rows()); i++)
 	{
-		for (size_t j = 0; j < static_cast<size_t>(A.cols()); j++)
+		for (size_t j = 0; j < static_cast<size_t>(rA.cols()); j++)
 		{
 			strA.clear(); // clear the temporary string
 			ostr.clear();
 			ostr.str(std::string()); // clear the ostringstream,
 
 			// convert to complex
-			double re = static_cast<types::cplx>(A(i, j)).real();
-			double im = static_cast<types::cplx>(A(i, j)).imag();
+			double re = static_cast<types::cplx>(rA(i, j)).real();
+			double im = static_cast<types::cplx>(rA(i, j)).imag();
 
 			if (std::abs(re) < chop && std::abs(im) < chop)
 			{
@@ -131,31 +133,31 @@ void disp(const types::DynMat<Scalar> &A, double chop = ct::chop,
 	}
 
 // determine the maximum lenght of the entries in each column
-	std::vector<size_t> maxlengthcols(A.cols(), 0);
+	std::vector<size_t> maxlengthcols(rA.cols(), 0);
 
-	for (size_t i = 0; i < static_cast<size_t>(A.rows()); i++)
-		for (size_t j = 0; j < static_cast<size_t>(A.cols()); j++)
-			if (vstr[i * A.cols() + j].size() > maxlengthcols[j])
-				maxlengthcols[j] = vstr[i * A.cols() + j].size();
+	for (size_t i = 0; i < static_cast<size_t>(rA.rows()); i++)
+		for (size_t j = 0; j < static_cast<size_t>(rA.cols()); j++)
+			if (vstr[i * rA.cols() + j].size() > maxlengthcols[j])
+				maxlengthcols[j] = vstr[i * rA.cols() + j].size();
 
 // finally display it!
-	for (size_t i = 0; i < static_cast<size_t>(A.rows()); i++)
+	for (size_t i = 0; i < static_cast<size_t>(rA.rows()); i++)
 	{
 		os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
-				<< vstr[i * A.cols()]; // display first column
-		for (size_t j = 1; j < static_cast<size_t>(A.cols()); j++) // then the rest
+				<< vstr[i * rA.cols()]; // display first column
+		for (size_t j = 1; j < static_cast<size_t>(rA.cols()); j++) // then the rest
 			os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
-					<< std::right << vstr[i * A.cols() + j];
+					<< std::right << vstr[i * rA.cols() + j];
 
-		if (i < static_cast<size_t>(A.rows()) - 1)
+		if (i < static_cast<size_t>(rA.rows()) - 1)
 			os << std::endl;
 	}
 }
 
 // Displays an Eigen::MatrixX in friendly form
 // and adds a new line
-template<typename Scalar>
-void displn(const types::DynMat<Scalar> &A, double chop = ct::chop,
+template<typename Derived>
+void displn(const Eigen::MatrixBase<Derived>& A, double chop = ct::chop,
 		std::ostream& os = std::cout)
 {
 	disp(A, chop, os);
@@ -182,12 +184,14 @@ void displn(const types::cplx c, double chop = ct::chop, std::ostream& os =
 }
 
 // save matrix to a binary file in double precision
-template<typename Scalar>
-void save(const types::DynMat<Scalar> & A, const std::string& fname)
+template<typename Derived>
+void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 
 {
+	const types::DynMat<typename Derived::Scalar> & rA = A;
+
 	// check zero-size
-	if (!internal::_check_nonzero_size(A))
+	if (!internal::_check_nonzero_size(rA))
 		throw Exception("save", Exception::Type::ZERO_SIZE);
 
 	std::fstream fout;
@@ -204,19 +208,19 @@ void save(const types::DynMat<Scalar> & A, const std::string& fname)
 	const char _header[] = "TYPE::Eigen::Matrix";
 	fout.write(_header, sizeof(_header));
 
-	size_t rows = static_cast<size_t>(A.rows());
-	size_t cols = static_cast<size_t>(A.cols());
+	size_t rows = static_cast<size_t>(rA.rows());
+	size_t cols = static_cast<size_t>(rA.cols());
 	fout.write((char*) &rows, sizeof(rows));
 	fout.write((char*) &cols, sizeof(cols));
 
-	fout.write((char*) A.data(), sizeof(Scalar) * rows * cols);
+	fout.write((char*) rA.data(), sizeof(Derived::Scalar) * rows * cols);
 
 	fout.close();
 }
 
 // load matrix from binary file
-template<typename Scalar>
-types::DynMat<Scalar> load(const std::string& fname)
+template<typename Derived>
+types::DynMat<typename Derived::Scalar> load(const std::string& fname)
 {
 	std::fstream fin;
 	fin.open(fname.c_str(), std::ios::in | std::ios::binary);
@@ -246,9 +250,9 @@ types::DynMat<Scalar> load(const std::string& fname)
 	fin.read((char*) &rows, sizeof(rows));
 	fin.read((char*) &cols, sizeof(cols));
 
-	types::DynMat<Scalar> A(rows, cols);
+	types::DynMat<typename Derived::Scalar> A(rows, cols);
 
-	fin.read((char*) A.data(), sizeof(Scalar) * rows * cols);
+	fin.read((char*) A.data(), sizeof(typename Derived::Scalar) * rows * cols);
 
 	fin.close();
 	return A;

@@ -20,22 +20,24 @@ namespace qpp
 {
 
 // Shannon/von-Neumann entropy
-template<typename Scalar>
-double shannon(const types::DynMat<Scalar> & A)
+template<typename Derived>
+double shannon(const Eigen::MatrixBase<Derived>& A)
 {
+	const types::DynMat<typename Derived::Scalar> & rA = A;
+
 	// check zero-size
-	if (!internal::_check_nonzero_size(A))
+	if (!internal::_check_nonzero_size(rA))
 		throw Exception("shannon", Exception::Type::ZERO_SIZE);
 
 	// input is a vector
-	if (A.rows() == 1 || A.cols() == 1)
+	if (rA.rows() == 1 || rA.cols() == 1)
 	{
 		double result = 0;
 		// take the absolut values of the entries
 		// to get rid of unwanted imaginary parts
-		for (size_t i = 0; i < static_cast<size_t>(A.size()); i++)
-			if (std::abs(A(i)) != 0)
-				result -= std::abs(A(i)) * std::log2(std::abs(A(i)));
+		for (size_t i = 0; i < static_cast<size_t>(rA.size()); i++)
+			if (std::abs(rA(i)) != 0)
+				result -= std::abs(rA(i)) * std::log2(std::abs(rA(i)));
 
 		return result;
 	}
@@ -43,11 +45,11 @@ double shannon(const types::DynMat<Scalar> & A)
 	// input is a matrix
 
 	// check square matrix
-	if (!internal::_check_square_mat(A))
+	if (!internal::_check_square_mat(rA))
 		throw Exception("shannon", Exception::Type::MATRIX_NOT_SQUARE);
 
 	// get the eigenvalues
-	types::cmat ev = evals(A);
+	types::cmat ev = evals(rA);
 	double result = 0;
 	// take the absolut values of the entries
 	// to get rid of unwanted imaginary parts
@@ -60,31 +62,33 @@ double shannon(const types::DynMat<Scalar> & A)
 }
 
 // Renyi-alpha entropy (alpha>=0)
-template<typename Scalar>
-double renyi(const double alpha, const types::DynMat<Scalar> & A)
+template<typename Derived>
+double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 {
+	const types::DynMat<typename Derived::Scalar> & rA = A;
+
 	if (alpha < 0)
 		throw Exception("renyi", Exception::Type::OUT_OF_RANGE);
 
 	if (alpha == 1) // Shannon/von Neumann
-		return shannon(A);
+		return shannon(rA);
 
 	// check zero-size
-	if (!internal::_check_nonzero_size(A))
+	if (!internal::_check_nonzero_size(rA))
 		throw Exception("renyi", Exception::Type::ZERO_SIZE);
 
 	// input is a vector
-	if (A.rows() == 1 || A.cols() == 1)
+	if (rA.rows() == 1 || rA.cols() == 1)
 	{
 		if (alpha == 0)
-			return std::log2(A.size());
+			return std::log2(rA.size());
 
 		double result = 0;
 		// take the absolut values of the entries
 		// to get rid of unwanted imaginary parts
-		for (size_t i = 0; i < static_cast<size_t>(A.size()); i++)
-			if (std::abs((types::cplx) A(i)) != 0)
-				result += std::pow(std::abs(A(i)), alpha);
+		for (size_t i = 0; i < static_cast<size_t>(rA.size()); i++)
+			if (std::abs((types::cplx) rA(i)) != 0)
+				result += std::pow(std::abs(rA(i)), alpha);
 
 		return std::log2(result) / (1 - alpha);
 	}
@@ -92,14 +96,14 @@ double renyi(const double alpha, const types::DynMat<Scalar> & A)
 	// input is a matrix
 
 	// check square matrix
-	if (!internal::_check_square_mat(A))
+	if (!internal::_check_square_mat(rA))
 		throw Exception("renyi", Exception::Type::MATRIX_NOT_SQUARE);
 
 	if (alpha == 0)
-		return std::log2(A.rows());
+		return std::log2(rA.rows());
 
 	// get the eigenvalues
-	types::cmat ev = evals(A);
+	types::cmat ev = evals(rA);
 	double result = 0;
 	// take the absolut values of the entries
 	// to get rid of unwanted imaginary parts
@@ -111,20 +115,22 @@ double renyi(const double alpha, const types::DynMat<Scalar> & A)
 }
 
 // Renyi-infinity entropy (min entropy)
-template<typename Scalar>
-double renyi_inf(const types::DynMat<Scalar> & A)
+template<typename Derived>
+double renyi_inf(const Eigen::MatrixBase<Derived>& A)
 {
+	const types::DynMat<typename Derived::Scalar> & rA = A;
+
 	// check zero-size
-	if (!internal::_check_nonzero_size(A))
+	if (!internal::_check_nonzero_size(rA))
 		throw Exception("renyi_inf", Exception::Type::ZERO_SIZE);
 
 	// input is a vector
-	if (A.rows() == 1 || A.cols() == 1)
+	if (rA.rows() == 1 || rA.cols() == 1)
 	{
 		double max = 0;
-		for (size_t i = 0; i < static_cast<size_t>(A.size()); i++)
-			if (std::abs(A(i)) > max)
-				max = std::abs(A(i));
+		for (size_t i = 0; i < static_cast<size_t>(rA.size()); i++)
+			if (std::abs(rA(i)) > max)
+				max = std::abs(rA(i));
 
 		return -std::log2(max);
 	}
@@ -132,11 +138,11 @@ double renyi_inf(const types::DynMat<Scalar> & A)
 	// input is a matrix
 
 	// check square matrix
-	if (!internal::_check_square_mat(A))
+	if (!internal::_check_square_mat(rA))
 		throw Exception("renyi_inf", Exception::Type::MATRIX_NOT_SQUARE);
 
 	// get the eigenvalues
-	types::cmat ev = evals(A);
+	types::cmat ev = evals(rA);
 	double max = 0;
 	// take the absolut values of the entries
 	// to get rid of unwanted imaginary parts

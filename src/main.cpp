@@ -20,12 +20,26 @@ using namespace qpp;
 using namespace qpp::types;
 
 template<typename Derived> // prototype function for Eigen expressions
-types::Expression2DynMat<Derived> test(const Eigen::MatrixBase<Derived>& A)
+types::DynMat<typename Derived::Scalar> test(
+		const Eigen::MatrixBase<Derived>& A)
 {
 	// pick up the scalar type
 	cout << typeid(typename Derived::Scalar).name() << endl;
 
-	return A;
+	// create a matrix-type reference to the expression
+	const types::DynMat<typename Derived::Scalar>& rA = A;
+
+	types::DynMat<typename Derived::Scalar> copy = A; // this is a copy
+	copy(1, 1) = 10;
+	cout << copy(1, 1) << "---" << A(1, 1) << endl<<endl;
+
+	// now reference is a matrix, no longer an expression
+
+	cout << typeid(A).name() << endl;
+	cout << typeid(rA).name() << endl;
+	cout << sizeof(rA) << " " << sizeof(A) << " " << sizeof(copy) << endl;
+
+	return rA;
 }
 
 int main()
@@ -36,6 +50,17 @@ int main()
 	// cout << std::scientific;
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
+
+	Timer t;
+	cmat a(2, 2);
+	a << 1, 2, ct::ii + 4., 3. - ct::ii;
+	dmat b(2, 2);
+	b << 1, 2, 3, 4;
+	displn(a);
+	t.toc();
+	cout << t << endl;
+
+	cout << anticomm(a * a + a, a * a + a);
 
 	// TESTING
 	/*

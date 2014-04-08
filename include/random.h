@@ -19,15 +19,15 @@ namespace qpp
 {
 
 // random matrix with entries in Uniform(a,b)
-template<typename Scalar>
-types::DynMat<Scalar> rand(size_t rows, size_t cols, double a = 0, double b = 1)
+template<typename Derived>
+Derived rand(size_t rows, size_t cols, double a = 0, double b = 1)
 {
 	throw Exception("rand", Exception::Type::UNDEFINED_TYPE);
 }
 
 // random double matrix with entries in Uniform(a,b)
 template<>
-types::DynMat<double> rand(size_t rows, size_t cols, double a, double b)
+types::dmat rand(size_t rows, size_t cols, double a, double b)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("rand", Exception::Type::ZERO_SIZE);
@@ -39,15 +39,13 @@ types::DynMat<double> rand(size_t rows, size_t cols, double a, double b)
 
 // random complex matrix with entries in Uniform(a,b)
 template<>
-types::DynMat<types::cplx> rand(size_t rows, size_t cols, double a, double b)
+types::cmat rand(size_t rows, size_t cols, double a, double b)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("rand", Exception::Type::ZERO_SIZE);
 
-	return (0.5 * (b - a)
-			* (types::cmat::Random(rows, cols)
-					+ (1. + ct::ii) * types::cmat::Ones(rows, cols))
-			+ a * types::cmat::Ones(rows, cols));
+	return rand<types::dmat>(rows, cols, a, b).cast<types::cplx>()
+			+ ct::ii * rand<types::dmat>(rows, cols, a, b).cast<types::cplx>();
 }
 
 // random number in Uniform(a, b)
@@ -58,8 +56,8 @@ double rand(double a = 0, double b = 1)
 }
 
 // random matrix with entries in Normal(mean, sigma)
-template<typename Scalar>
-types::DynMat<Scalar> randn(size_t rows, size_t cols, double mean = 0,
+template<typename Derived>
+Derived randn(size_t rows, size_t cols, double mean = 0,
 		double sigma = 1)
 {
 	throw Exception("randn", Exception::Type::UNDEFINED_TYPE);
@@ -67,7 +65,7 @@ types::DynMat<Scalar> randn(size_t rows, size_t cols, double mean = 0,
 
 // random double matrix with entries in Normal(mean, sigma)
 template<>
-types::DynMat<double> randn(size_t rows, size_t cols, double mean, double sigma)
+types::dmat randn(size_t rows, size_t cols, double mean, double sigma)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
@@ -83,20 +81,16 @@ types::DynMat<double> randn(size_t rows, size_t cols, double mean, double sigma)
 
 // random complex matrix with entries in Normal(mean, sigma)
 template<>
-types::DynMat<types::cplx> randn(size_t rows, size_t cols, double mean,
+types::cmat randn(size_t rows, size_t cols, double mean,
 		double sigma)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
 
 	stat::NormalDistribution nd(mean, sigma);
-	auto lambda = [&nd](double)
-	{	return nd.sample();};
-
-	return (types::dmat::Zero(rows, cols).unaryExpr(lambda)).cast<types::cplx>()
+	return randn<types::dmat>(rows, cols, mean, sigma).cast<types::cplx>()
 			+ ct::ii
-					* (types::dmat::Zero(rows, cols).unaryExpr(lambda)).cast<
-							types::cplx>();
+					* randn<types::dmat>(rows, cols, mean, sigma).cast<types::cplx>();
 }
 
 // random number in Normal(mean, sigma)
@@ -115,14 +109,14 @@ types::cmat randU(size_t D)
 
 	types::cmat X(D, D);
 
-	X = 1 / std::sqrt(2) * randn<types::cplx>(D, D);
+	X = 1 / std::sqrt(2) * randn<types::cmat>(D, D);
 	Eigen::HouseholderQR<types::cmat> qr(X);
 
 	types::cmat Q = qr.householderQ();
 	// phase correction so that the resultant matrix is
 	// uniformly distributed according to the Haar measure
 
-	Eigen::VectorXcd phases = (rand<double>(D, 1)).cast<types::cplx>();
+	Eigen::VectorXcd phases = (rand<types::dmat>(D, 1)).cast<types::cplx>();
 	for (size_t i = 0; i < static_cast<size_t>(phases.rows()); i++)
 		phases(i) = std::exp((types::cplx) (2 * ct::pi * ct::ii * phases(i)));
 
@@ -180,7 +174,7 @@ types::cmat randH(size_t D)
 	if (D == 0)
 		throw Exception("randH", Exception::Type::DIMS_INVALID);
 
-	types::cmat H = 2 * rand<types::cplx>(D, D)
+	types::cmat H = 2 * rand<types::cmat>(D, D)
 			- (1. + ct::ii) * types::cmat::Ones(D, D);
 
 	return H + adjoint(H);
