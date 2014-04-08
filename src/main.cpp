@@ -6,7 +6,6 @@
  */
 
 #include "qpp.h"
-
 //#include "matlab.h" // support for MATLAB
 
 // TODO: ip (inner product) function, make it general to return matrices
@@ -14,27 +13,30 @@
 // TODO: optimize syspermute: ?Eigen::Map?
 // TODO: IMPORTANT Rewrite partial trace without syspermute
 // TODO: further parallelization
+// TODO: move back to Eigen::MatrixBase
 
 using namespace std;
-
 using namespace qpp;
 using namespace qpp::types;
 
-template<typename T> // testing function for Eigen expressions
-types::Expression2DynMat<T> test(const Eigen::MatrixBase<T>& A)
+template<typename Derived> // prototype function for Eigen expressions
+types::Expression2DynMat<Derived> test(const Eigen::MatrixBase<Derived>& A)
 {
+	// pick up the scalar type
+	cout << typeid(typename Derived::Scalar).name() << endl;
+
 	return A;
 }
 
 int main()
 {
-	//_init(); // ALWAYS call _init() at the beginning of main()
 	cout << "Starting qpp..." << endl;
 
 	// output format
 	// cout << std::scientific;
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
+
 
 	// TESTING
 	/*

@@ -13,8 +13,8 @@
 #include <stdexcept>
 #include <vector>
 #include <iostream>
-#include <fstream>
 #include <iomanip>
+#include <fstream>
 #include "types.h"
 #include "exception.h"
 
