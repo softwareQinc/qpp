@@ -13,7 +13,6 @@
 // TODO: optimize syspermute: ?Eigen::Map?
 // TODO: IMPORTANT Rewrite partial trace without syspermute
 // TODO: further parallelization
-// TODO: move back to Eigen::MatrixBase and test every function
 
 using namespace std;
 using namespace qpp;
