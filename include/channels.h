@@ -142,7 +142,7 @@ std::vector<types::cmat> choi2kraus(const types::cmat& A)
 		throw Exception("choi2kraus", Exception::Type::MATRIX_NOT_SQUARE);
 	size_t D = static_cast<size_t>(std::sqrt(A.rows()));
 	if (D * D != static_cast<size_t>(A.rows()))
-		throw Exception("choi2kraus", Exception::Type::DIMS_MISMATCH_MATRIX);
+		throw Exception("choi2kraus", Exception::Type::DIMS_INVALID);
 
 	types::cmat eval = hevals(A);
 	types::cmat evec = hevects(A);
