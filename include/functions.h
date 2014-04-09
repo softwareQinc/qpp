@@ -611,7 +611,7 @@ types::DynMat<typename Derived::Scalar> ptrace2(
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("ptrace2", Exception::Type::ZERO_SIZE);
 
-	// check that dim is a valid dimension vector
+	// check that dims is a valid dimension vector
 	if (!internal::_check_dims(dims))
 		throw Exception("ptrace2", Exception::Type::DIMS_INVALID);
 
@@ -944,7 +944,7 @@ types::DynMat<typename Derived::Scalar> grams(
 		if (!internal::_check_nonzero_size(it))
 			throw Exception("grams", Exception::Type::ZERO_SIZE);
 
-	// check that is indeed a column vector
+	// check that Vs[0] is indeed a column vector
 	if (!internal::_check_col_vector(Vs[0]))
 		throw Exception("grams", Exception::Type::MATRIX_NOT_CVECTOR);
 
