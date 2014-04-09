@@ -57,8 +57,7 @@ double rand(double a = 0, double b = 1)
 
 // random matrix with entries in Normal(mean, sigma)
 template<typename Derived>
-Derived randn(size_t rows, size_t cols, double mean = 0,
-		double sigma = 1)
+Derived randn(size_t rows, size_t cols, double mean = 0, double sigma = 1)
 {
 	throw Exception("randn", Exception::Type::UNDEFINED_TYPE);
 }
@@ -81,8 +80,7 @@ types::dmat randn(size_t rows, size_t cols, double mean, double sigma)
 
 // random complex matrix with entries in Normal(mean, sigma)
 template<>
-types::cmat randn(size_t rows, size_t cols, double mean,
-		double sigma)
+types::cmat randn(size_t rows, size_t cols, double mean, double sigma)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
@@ -90,7 +88,8 @@ types::cmat randn(size_t rows, size_t cols, double mean,
 	stat::NormalDistribution nd(mean, sigma);
 	return randn<types::dmat>(rows, cols, mean, sigma).cast<types::cplx>()
 			+ ct::ii
-					* randn<types::dmat>(rows, cols, mean, sigma).cast<types::cplx>();
+					* randn<types::dmat>(rows, cols, mean, sigma).cast<
+							types::cplx>();
 }
 
 // random number in Normal(mean, sigma)

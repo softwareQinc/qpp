@@ -429,13 +429,17 @@ types::DynMat<OutputScalar> fun(const Eigen::MatrixBase<Derived> &A,
 }
 
 // Kronecker product of 2 matrices, preserve return type
-template<typename Derived>
-types::DynMat<typename Derived::Scalar> kron(
-		const Eigen::MatrixBase<Derived>& A,
-		const Eigen::MatrixBase<Derived>& B)
+template<typename Derived1, typename Derived2>
+types::DynMat<typename Derived1::Scalar> kron(
+		const Eigen::MatrixBase<Derived1>& A,
+		const Eigen::MatrixBase<Derived2>& B)
 {
-	const types::DynMat<typename Derived::Scalar> & rA = A;
-	const types::DynMat<typename Derived::Scalar> & rB = B;
+	const types::DynMat<typename Derived1::Scalar> & rA = A;
+	const types::DynMat<typename Derived2::Scalar> & rB = B;
+
+	// check same scalar type
+	if (typeid(typename Derived1::Scalar) != typeid(typename Derived2::Scalar))
+		throw Exception("kron", Exception::Type::TYPE_MISMATCH);
 
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
@@ -450,7 +454,7 @@ types::DynMat<typename Derived::Scalar> kron(
 	size_t Bcols = static_cast<size_t>(rB.cols());
 	size_t Brows = static_cast<size_t>(rB.rows());
 
-	types::DynMat<typename Derived::Scalar> result;
+	types::DynMat<typename Derived1::Scalar> result;
 	result.resize(Arows * Brows, Acols * Bcols);
 
 	for (size_t j = 0; j < Acols; j++)
@@ -500,10 +504,10 @@ types::DynMat<typename Derived::Scalar> kronpow(
 	if (n == 0)
 		throw Exception("kronpow", Exception::Type::OUT_OF_RANGE);
 
-	std::vector<types::DynMat<typename Derived::Scalar>> list;
+	std::vector<types::DynMat<typename Derived::Scalar>> As;
 	for (size_t i = 0; i < n; i++)
-		list.push_back(rA);
-	return kronlist(list);
+		As.push_back(rA);
+	return kronlist(As);
 }
 
 // reshape the columns of A and returns a matrix with m rows and n columns
@@ -773,13 +777,17 @@ types::DynMat<typename Derived::Scalar> ptranspose(
 }
 
 // commutator
-template<typename Derived>
-types::DynMat<typename Derived::Scalar> comm(
-		const Eigen::MatrixBase<Derived> &A,
-		const Eigen::MatrixBase<Derived> &B)
+template<typename Derived1, typename Derived2>
+types::DynMat<typename Derived1::Scalar> comm(
+		const Eigen::MatrixBase<Derived1> &A,
+		const Eigen::MatrixBase<Derived2> &B)
 {
-	const types::DynMat<typename Derived::Scalar> & rA = A;
-	const types::DynMat<typename Derived::Scalar> & rB = B;
+	const types::DynMat<typename Derived1::Scalar> & rA = A;
+	const types::DynMat<typename Derived2::Scalar> & rB = B;
+
+	// check same scalar type
+	if (typeid(typename Derived1::Scalar) != typeid(typename Derived2::Scalar))
+		throw Exception("comm", Exception::Type::TYPE_MISMATCH);
 
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA)
@@ -798,13 +806,17 @@ types::DynMat<typename Derived::Scalar> comm(
 }
 
 // anti-commutator
-template<typename Derived>
-types::DynMat<typename Derived::Scalar> anticomm(
-		const Eigen::MatrixBase<Derived> &A,
-		const Eigen::MatrixBase<Derived> &B)
+template<typename Derived1, typename Derived2>
+types::DynMat<typename Derived1::Scalar> anticomm(
+		const Eigen::MatrixBase<Derived1> &A,
+		const Eigen::MatrixBase<Derived2> &B)
 {
-	const types::DynMat<typename Derived::Scalar>& rA = A;
-	const types::DynMat<typename Derived::Scalar>& rB = B;
+	const types::DynMat<typename Derived1::Scalar>& rA = A;
+	const types::DynMat<typename Derived2::Scalar>& rB = B;
+
+	// check same scalar type
+	if (typeid(typename Derived1::Scalar) != typeid(typename Derived2::Scalar))
+		throw Exception("kron", Exception::Type::TYPE_MISMATCH);
 
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA)

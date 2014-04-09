@@ -36,6 +36,7 @@ public:
 		NOT_QUBIT_SUBSYS,
 		OUT_OF_RANGE,
 		UNDEFINED_TYPE,
+		TYPE_MISMATCH,
 		CUSTOM_EXCEPTION
 	};
 
@@ -118,6 +119,8 @@ private:
 			break;
 		case Type::UNDEFINED_TYPE:
 			_msg += "Not defined for this type!";
+		case Type::TYPE_MISMATCH:
+			_msg += "Type mismatch!";
 			break;
 		case Type::CUSTOM_EXCEPTION:
 			return _msg += "CUSTOM EXCEPTION ";
