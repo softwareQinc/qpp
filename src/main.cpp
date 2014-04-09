@@ -8,7 +8,6 @@
 #include "qpp.h"
 //#include "matlab.h" // support for MATLAB
 
-// TODO: ip (inner product) function, make it general to return matrices
 // TODO: use .data() raw pointer instead of looping
 // TODO: optimize syspermute: ?Eigen::Map?
 // TODO: IMPORTANT Rewrite partial trace without syspermute
@@ -21,7 +20,6 @@ using namespace qpp::types;
 int main()
 {
 	cout << "Starting qpp..." << endl;
-	cout << gt.X;
 
 	// output format
 	// cout << std::scientific;
