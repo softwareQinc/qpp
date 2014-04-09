@@ -114,18 +114,18 @@ public:
 	types::cmat FRED; // Fredkin
 
 	// Pauli eigen-states
-	types::cmat x0;
-	types::cmat x1;
-	types::cmat y0;
-	types::cmat y1;
-	types::cmat z0;
-	types::cmat z1;
+	types::ket x0;
+	types::ket x1;
+	types::ket y0;
+	types::ket y1;
+	types::ket z0;
+	types::ket z1;
 
 	// Bell states
-	types::cmat b00;
-	types::cmat b01;
-	types::cmat b10;
-	types::cmat b11;
+	types::ket b00;
+	types::ket b01;
+	types::ket b10;
+	types::ket b11;
 
 	// gates with variable dimension
 
