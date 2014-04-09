@@ -180,13 +180,13 @@ types::cmat randH(size_t D)
 }
 
 // random ket
-types::cmat randket(size_t D)
+types::ket randket(size_t D)
 {
 	if (D == 0)
 		throw Exception("randket", Exception::Type::DIMS_INVALID);
 
-	types::cmat kt = types::cmat::Ones(D, 1);
-	types::cmat result = randU(D) * kt;
+	types::ket kt = types::ket::Ones(D);
+	types::ket result = randU(D) * kt;
 	return result / norm(result);
 }
 
