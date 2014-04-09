@@ -504,10 +504,10 @@ types::DynMat<typename Derived::Scalar> kronpow(
 	if (n == 0)
 		throw Exception("kronpow", Exception::Type::OUT_OF_RANGE);
 
-	std::vector<types::DynMat<typename Derived::Scalar>> As;
-	for (size_t i = 0; i < n; i++)
-		As.push_back(rA);
-	return kronlist(As);
+	types::DynMat<typename Derived::Scalar> result = rA;
+	for (size_t i = 1; i < n; i++)
+		result = kron(result, rA);
+	return result;
 }
 
 // reshape the columns of A and returns a matrix with m rows and n columns
@@ -968,9 +968,10 @@ types::DynMat<typename Derived::Scalar> grams(
 		cut -= proj(outvecs[i - 1]);
 		vi = cut * Vs[i];
 
-		if (norm(vi) != 0) // only display the non-zero vectors
+		if (abs(norm(vi)) > ct::eps) // only adds the non-zero vectors
 			outvecs.push_back(vi / norm(vi));
 	}
+
 	types::DynMat<typename Derived::Scalar> result(Vs[0].rows(),
 			outvecs.size());
 	size_t cnt = 0;

@@ -35,16 +35,16 @@ private:
 			SWAP(types::cmat::Zero(4, 4)), //
 			TOF(types::cmat::Identity(8, 8)), //
 			FRED(types::cmat::Identity(8, 8)), //
-			x0(types::cmat::Zero(2, 1)), //
-			x1(types::cmat::Zero(2, 1)), //
-			y0(types::cmat::Zero(2, 1)), //
-			y1(types::cmat::Zero(2, 1)), //
-			z0(types::cmat::Zero(2, 1)), //
-			z1(types::cmat::Zero(2, 1)), //
-			b00(types::cmat::Zero(4, 1)), //
-			b01(types::cmat::Zero(4, 1)), //
-			b10(types::cmat::Zero(4, 1)), //
-			b11(types::cmat::Zero(4, 1))
+			x0(types::ket::Zero(2)), //
+			x1(types::ket::Zero(2)), //
+			y0(types::ket::Zero(2)), //
+			y1(types::ket::Zero(2)), //
+			z0(types::ket::Zero(2)), //
+			z1(types::ket::Zero(2)), //
+			b00(types::ket::Zero(4)), //
+			b01(types::ket::Zero(4)), //
+			b10(types::ket::Zero(4)), //
+			b11(types::ket::Zero(4))
 	{
 		// initialize the constants and gates
 		H << 1 / std::sqrt(2), 1 / std::sqrt(2), 1 / std::sqrt(2), -1

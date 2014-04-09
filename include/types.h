@@ -32,6 +32,12 @@ typedef Eigen::MatrixXf fmat; // dynamic-size
 // integer matrix
 typedef Eigen::MatrixXi imat; // dynamic-size
 
+// ket
+typedef Eigen::Matrix<cplx, Eigen::Dynamic, 1> ket;
+
+// ket
+typedef Eigen::Matrix<cplx, 1, Eigen::Dynamic> bra;
+
 // Eigen dynamic matrix
 template<typename Scalar>
 using DynMat=Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
