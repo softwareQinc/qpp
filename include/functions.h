@@ -992,12 +992,13 @@ types::DynMat<typename Derived::Scalar> grams(
 
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("grams", Exception::Type::ZERO_SIZE);
+
 	std::vector<types::DynMat<typename Derived::Scalar>> input;
 
 	for (size_t i = 0; i < static_cast<size_t>(rA.cols()); i++)
 	input.push_back(static_cast<types::DynMat<typename Derived::Scalar>>(rA.col(i)));
 
-	return grams<Derived>(input);
+	return grams<types::DynMat<typename Derived::Scalar>>(input);
 }
 
 } /* namespace qpp */
