@@ -54,13 +54,14 @@ int main()
 	displn(output);
 
 	// Gram-Schmidt
-	cout << endl << "Gram-Schmidt on a random matrix:" << endl;
-	cmat A = randn<cmat>(3, 3);
+	cout << endl << "Gram-Schmidt on matrix:" << endl;
+	cmat A(3,3);
+	A<<1,1,0,0,2,0,0,0,0;
 	displn(A);
 	cmat Ags = grams(A);
 	cout << endl << "Result:" << endl;
 	displn(Ags);
-	cout << endl << "Checking for unitarity:" << endl;
+	cout << endl << "Projector is:" << endl;
 	displn(Ags * adjoint(Ags));
 
 	// spectral decomposition test
