@@ -6,6 +6,7 @@
  */
 
 #include "qpp.h"
+#include "qubit.h"
 //#include "matlab.h" // support for MATLAB
 
 // TODO: use .data() raw pointer instead of looping
@@ -26,6 +27,19 @@ int main()
 	// cout << std::scientific;
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
+
+	Qubit q;
+	// von Neumann projective measurement
+	cout<<q.measure(gt.Y, true)<<endl<<endl;
+
+	cout<<q.measure(gt.Z)<<endl;
+	cout<<q.measure(gt.Z)<<endl;
+	cout<<q.measure(gt.Z)<<endl;
+	cout<<q.measure(gt.Z)<<endl;
+	cout<<q.measure(gt.Z)<<endl;
+	cout<<q.measure(gt.Z)<<endl;
+
+	ket a(3);
 
 /*
 	// TESTING
