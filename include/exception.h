@@ -119,11 +119,12 @@ private:
 			break;
 		case Type::UNDEFINED_TYPE:
 			_msg += "Not defined for this type!";
+			break;
 		case Type::TYPE_MISMATCH:
 			_msg += "Type mismatch!";
 			break;
 		case Type::CUSTOM_EXCEPTION:
-			return _msg += "CUSTOM EXCEPTION ";
+			_msg += "CUSTOM EXCEPTION ";
 			break;
 		}
 		return _msg;
