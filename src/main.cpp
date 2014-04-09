@@ -55,8 +55,8 @@ int main()
 
 	// Gram-Schmidt
 	cout << endl << "Gram-Schmidt on matrix:" << endl;
-	cmat A(3,3);
-	A<<1,1,0,0,2,0,0,0,0;
+	cmat A(3, 3);
+	A << 1, 1, 0, 0, 2, 0, 0, 0, 0;
 	displn(A);
 	cmat Ags = grams(A);
 	cout << endl << "Result:" << endl;
