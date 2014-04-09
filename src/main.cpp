@@ -7,6 +7,8 @@
 
 #include "qpp.h"
 #include "qudit.h"
+
+#include <functional>
 //#include "matlab.h" // support for MATLAB
 
 // TODO: use .data() raw pointer instead of looping
@@ -29,7 +31,7 @@ int main()
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
 	ket zd0(3);
-	zd0<<1,0,0;
+	zd0 << 1, 0, 0;
 	Qudit q(proj(zd0));
 	cmat U = randU(3);
 
@@ -42,7 +44,7 @@ int main()
 	cout << q.measure(gt.Xd(3)) << endl;
 	cout << q.measure(gt.Xd(3)) << endl;
 	cout << q.measure(gt.Xd(3)) << endl;
-	cout << q.measure(gt.Xd(3),true) << endl;
+	cout << q.measure(gt.Xd(3), true) << endl;
 	cout << q.measure(gt.Xd(3)) << endl;
 	cout << q.measure(gt.Xd(3)) << endl;
 
