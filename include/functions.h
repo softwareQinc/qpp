@@ -463,11 +463,10 @@ types::DynMat<typename Derived::Scalar> kron(
 }
 
 // Kronecker product of a list of matrices, preserve return type
-// <Expression> is forced to be a matrix by invocation of kron
-// inside the function
+// works only for list of matrices, not list of expressions
 template<typename Derived>
 types::DynMat<typename Derived::Scalar> kronlist(
-		const std::vector<Eigen::MatrixBase<Derived> > &As)
+		const std::vector<types::DynMat<typename Derived::Scalar> > &As)
 
 {
 	if (As.size() == 0)
@@ -479,7 +478,9 @@ types::DynMat<typename Derived::Scalar> kronlist(
 
 	types::DynMat<typename Derived::Scalar> result = As[0];
 	for (size_t i = 1; i < As.size(); i++)
+	{
 		result = kron(result, As[i]);
+	}
 	return result;
 }
 
@@ -499,7 +500,7 @@ types::DynMat<typename Derived::Scalar> kronpow(
 	if (n == 0)
 		throw Exception("kronpow", Exception::Type::OUT_OF_RANGE);
 
-	std::vector<typename types::DynMat<typename Derived::Scalar>> list;
+	std::vector<types::DynMat<typename Derived::Scalar>> list;
 	for (size_t i = 0; i < n; i++)
 		list.push_back(rA);
 	return kronlist(list);
@@ -631,8 +632,7 @@ types::DynMat<typename Derived::Scalar> ptrace2(
 	for (size_t j = 0; j < DA; j++) // column major order for speed
 #pragma omp parallel for
 		for (size_t i = 0; i < DA; i++)
-			result(i, j) = trace<typename Derived::Scalar>(
-					rA.block(i * DB, j * DB, DB, DB));
+			result(i, j) = trace(rA.block(i * DB, j * DB, DB, DB));
 
 	return result;
 }
@@ -922,7 +922,7 @@ types::DynMat<typename Derived::Scalar> expandout(
 // Gram-Schmidt ortogonalization
 template<typename Derived>
 types::DynMat<typename Derived::Scalar> grams(
-		const std::vector<Eigen::MatrixBase<Derived> >& Vs)
+		const std::vector<types::DynMat<typename Derived::Scalar> >& Vs)
 {
 	// check empty list
 	if (!internal::_check_nonzero_size(Vs))
@@ -979,12 +979,12 @@ types::DynMat<typename Derived::Scalar> grams(
 
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("grams", Exception::Type::ZERO_SIZE);
-	std::vector<Eigen::MatrixBase<Derived>> input;
+	std::vector<types::DynMat<typename Derived::Scalar>> input;
 
 	for (size_t i = 0; i < static_cast<size_t>(rA.cols()); i++)
-		input.push_back(rA.col(i));
+	input.push_back(static_cast<types::DynMat<typename Derived::Scalar>>(rA.col(i)));
 
-	return grams(input);
+	return grams<Derived>(input);
 }
 
 } /* namespace qpp */

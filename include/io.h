@@ -42,7 +42,7 @@ void displnSTL(const T& x, const std::string & separator = " ",
 		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
-	dispcontainer(x, separator, start, end, os);
+	dispSTL(x, separator, start, end, os);
 	os << std::endl;
 }
 
