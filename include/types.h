@@ -10,7 +10,6 @@
 
 #include <Eigen/Dense>
 #include <complex>
-#include "constants.h"
 
 namespace qpp
 {
@@ -35,7 +34,7 @@ typedef Eigen::MatrixXi imat; // dynamic-size
 // ket
 typedef Eigen::Matrix<cplx, Eigen::Dynamic, 1> ket;
 
-// ket
+// bra
 typedef Eigen::Matrix<cplx, 1, Eigen::Dynamic> bra;
 
 // Eigen dynamic matrix

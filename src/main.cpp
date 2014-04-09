@@ -27,7 +27,7 @@ int main()
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
-
+	displn(kron(gt.X,gt.z0));
 
 /*
 	// TESTING
