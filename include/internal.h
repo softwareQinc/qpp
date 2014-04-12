@@ -231,13 +231,13 @@ void _syspermute_worker(size_t numdims, const size_t* cdims,
 template<typename Scalar>
 void _ptranspose_worker(const size_t* midxcol, size_t numdims, size_t numsubsys,
 		const size_t* cdims, const size_t* csubsys, size_t i, size_t j,
-		size_t &iperm, size_t &jperm, const types::DynMat<Scalar> &A,
-		types::DynMat<Scalar> &result)
+		size_t &iperm, size_t &jperm, const types::DynMat<Scalar>& A,
+		types::DynMat<Scalar>& result)
 {
 	size_t* midxcoltmp = new size_t[numdims];
+	size_t* midxrow = new size_t[numdims];
 	for (size_t k = 0; k < numdims; k++)
 		midxcoltmp[k] = midxcol[k];
-	size_t* midxrow = new size_t[numdims];
 
 	// compute the row multi-index
 	_n2multiidx(i, numdims, cdims, midxrow);
@@ -246,8 +246,8 @@ void _ptranspose_worker(const size_t* midxcol, size_t numdims, size_t numsubsys,
 		std::swap(midxcoltmp[csubsys[k]], midxrow[csubsys[k]]);
 
 	// move back to integer indexes
-	iperm = _multiidx2n(midxcoltmp, numdims, cdims);
-	jperm = _multiidx2n(midxrow, numdims, cdims);
+	iperm = _multiidx2n(midxrow, numdims, cdims);
+	jperm = _multiidx2n(midxcoltmp, numdims, cdims);
 	result(iperm, jperm) = A(i, j);
 
 	delete[] midxrow;

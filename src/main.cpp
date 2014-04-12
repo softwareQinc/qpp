@@ -6,10 +6,7 @@
  */
 
 #include "qpp.h"
-#include "classes/qudit.h"
-#include "internal.h"
 
-#include <functional>
 //#include "matlab.h" // support for MATLAB
 
 // TODO: use .data() raw pointer instead of looping
@@ -31,25 +28,31 @@ int main()
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
+	// TESTING
+	cout << endl << "Qudit measurements." << endl;
+	cout << "Initially in state |0><0|." << endl;
 	ket zd0(3);
 	zd0 << 1, 0, 0;
 	Qudit q(proj(zd0));
-	cmat U = randU(3);
-
-	// von Neumann projective measurement
-	cout << q.measure(gt.Zd(3), true) << endl << endl;
-
+	cout << "Measuring Z operator non-destructively. Results:" << endl;
 	cout << q.measure() << endl;
-	cout << q.measure(true) << endl;
-	cout << endl;
+	cout << q.measure() << endl;
+	cout << q.measure() << endl;
+	cout << "Measuring X operator non-destructively. Results:" << endl;
 	cout << q.measure(gt.Xd(3)) << endl;
 	cout << q.measure(gt.Xd(3)) << endl;
 	cout << q.measure(gt.Xd(3)) << endl;
+	// von Neumann projective measurement
+	cout << "Measuring X operator destructively (collapse). Results:" << endl;
 	cout << q.measure(gt.Xd(3), true) << endl;
 	cout << q.measure(gt.Xd(3)) << endl;
 	cout << q.measure(gt.Xd(3)) << endl;
-
-	// TESTING
+	cout << "Finally measureing Z operator destructively. Results:" << endl;
+	cout << q.measure(true) << endl;
+	cout << q.measure() << endl;
+	cout << q.measure() << endl;
+	cout << "Final state of qudit:" << endl;
+	displn(q.getRho());
 
 	// Bell state generator
 	cout << endl << "Bell state generator: " << endl;

@@ -153,8 +153,10 @@ void saveMATLABmatrix(const Eigen::MatrixBase<typename types::dmat> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
+	const types::dmat & rA = A;
+
 	// check zero-size
-	if (!internal::_check_nonzero_size(A))
+	if (!internal::_check_nonzero_size(rA))
 		throw Exception("saveMATLABmatrix", Exception::Type::ZERO_SIZE);
 
 	MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
@@ -163,12 +165,12 @@ void saveMATLABmatrix(const Eigen::MatrixBase<typename types::dmat> &A,
 				"saveMATLABmatrix: Can not open/create MATLAB file " + mat_file
 						+ "!");
 
-	mxArray* pa = mxCreateDoubleMatrix(A.rows(), A.cols(), mxREAL);
+	mxArray* pa = mxCreateDoubleMatrix(rA.rows(), rA.cols(), mxREAL);
 	if (pa == NULL)
 		throw std::runtime_error(
 				"saveMATLABmatrix: mxCreateDoubleMatrix failed!");
 
-	std::memcpy(mxGetPr(pa), A.data(), sizeof(double) * A.size());
+	std::memcpy(mxGetPr(pa), rA.data(), sizeof(double) * rA.size());
 
 	if (matPutVariable(pmat, var_name.c_str(), pa))
 		throw std::runtime_error(
@@ -184,13 +186,15 @@ void saveMATLABmatrix(const Eigen::MatrixBase<typename types::cmat> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
+	const types::cmat & rA = A;
+
 	// check zero-size
-	if (!internal::_check_nonzero_size(A))
+	if (!internal::_check_nonzero_size(rA))
 		throw Exception("saveMATLABmatrix", Exception::Type::ZERO_SIZE);
 
 	// cast the input to a double (internal MATLAB format)
-	types::dmat tmp_re = A.real();
-	types::dmat tmp_im = A.imag();
+	types::dmat tmp_re = rA.real();
+	types::dmat tmp_im = rA.imag();
 
 	MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
 	if (pmat == NULL)

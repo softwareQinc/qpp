@@ -20,6 +20,7 @@
 #include "types.h"
 #include "classes/exception.h"
 #include "classes/gates.h"
+#include "classes/qudit.h"
 #include "classes/randevs.h"
 #include "classes/stat.h"
 #include "classes/timer.h"

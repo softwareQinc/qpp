@@ -52,7 +52,7 @@ public:
 		size_t result = dd.sample();
 		if (destructive) // von Neumann
 			_rho = proj(evects(U).col(result)) * _rho
-					* proj(evects(U).col(result)) / std::sqrt(p[result]);
+					* proj(evects(U).col(result)) / p[result];
 
 		return result;
 	}
