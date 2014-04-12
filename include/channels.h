@@ -8,8 +8,8 @@
 #ifndef CHANNELS_H_
 #define CHANNELS_H_
 
-#include <vector>
 #include <cmath>
+#include <vector>
 #include "constants.h"
 #include "functions.h"
 #include "internal.h"
