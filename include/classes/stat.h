@@ -92,13 +92,13 @@ public:
 	}
 };
 
-class DiscreteDistributionFromComplex
+class DiscreteDistributionAbsSquare
 {
 protected:
 	std::discrete_distribution<size_t> _d;
 
 	template<typename InputIterator>
-	std::vector<double> cplx2amplitudes(InputIterator first, InputIterator last)
+	std::vector<double> cplx2weights(InputIterator first, InputIterator last)
 	{
 		std::vector<double> weights(last - first);
 		std::transform(first, last, std::begin(weights),
@@ -109,37 +109,36 @@ protected:
 
 public:
 	template<typename InputIterator>
-	DiscreteDistributionFromComplex(InputIterator first, InputIterator last) :
+	DiscreteDistributionAbsSquare(InputIterator first, InputIterator last) :
 			_d()
 	{
-		std::vector<double> weights = cplx2amplitudes(first, last);
+		std::vector<double> weights = cplx2weights(first, last);
 		std::discrete_distribution<size_t> tmp(std::begin(weights),
 				std::end(weights));
 		_d = tmp;
 	}
 
-	DiscreteDistributionFromComplex(
-			std::initializer_list<types::cplx> amplitudes) :
+	DiscreteDistributionAbsSquare(std::initializer_list<types::cplx> amplitudes) :
 			_d()
 	{
-		std::vector<double> weights = cplx2amplitudes(std::begin(amplitudes),
+		std::vector<double> weights = cplx2weights(std::begin(amplitudes),
 				std::end(amplitudes));
 		std::discrete_distribution<size_t> tmp(std::begin(weights),
 				std::end(weights));
 		_d = tmp;
 	}
 
-	DiscreteDistributionFromComplex(std::vector<types::cplx> amplitudes) :
+	DiscreteDistributionAbsSquare(std::vector<types::cplx> amplitudes) :
 			_d()
 	{
-		std::vector<double> weights = cplx2amplitudes(std::begin(amplitudes),
+		std::vector<double> weights = cplx2weights(std::begin(amplitudes),
 				std::end(amplitudes));
 		std::discrete_distribution<size_t> tmp(std::begin(weights),
 				std::end(weights));
 		_d = tmp;
 	}
 
-	DiscreteDistributionFromComplex(const types::cmat& V) :
+	DiscreteDistributionAbsSquare(const types::cmat& V) :
 			_d()
 	{
 		// check zero-size
@@ -154,7 +153,7 @@ public:
 					"DiscreteDistributionFromComplex",
 					Exception::Type::MATRIX_NOT_VECTOR);
 
-		std::vector<double> weights = cplx2amplitudes(V.data(),
+		std::vector<double> weights = cplx2weights(V.data(),
 				V.data() + V.size());
 		std::discrete_distribution<size_t> tmp(std::begin(weights),
 				std::end(weights));

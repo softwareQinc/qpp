@@ -1028,6 +1028,56 @@ types::DynMat<typename Derived::Scalar> grams(
 	return grams<types::DynMat<typename Derived::Scalar>>(input);
 }
 
+// integer index to multi-index
+// standard lexicographical order, e.g. 00, 01, 10, 11
+std::vector<size_t> n2multiidx(size_t n, const std::vector<size_t>& dims)
+{
+	if (!internal::_check_dims(dims))
+		throw Exception("n2multiidx", Exception::Type::DIMS_INVALID);
+
+	auto multiply = [](const size_t x, const size_t y)
+	{	return x*y;};
+	if (n >= std::accumulate(std::begin(dims), std::end(dims), 1U, multiply))
+		throw Exception("n2multiidx", Exception::Type::OUT_OF_RANGE);
+
+	std::vector<size_t> result(dims.size());
+	size_t _n = n;
+	for (size_t i = 0; i < dims.size(); i++)
+	{
+		result[dims.size() - i - 1] = _n
+				% static_cast<int>(dims[dims.size() - i - 1]);
+		_n = _n / static_cast<int>(dims[dims.size() - i - 1]);
+	}
+
+	return result;
+}
+
+// multi-index to integer index
+// standard lexicographical order, e.g. 00->0, 01->1, 10->2, 11->3
+size_t multiidx2n(const std::vector<size_t>& midx,
+		const std::vector<size_t>& dims)
+{
+	if (!internal::_check_dims(dims))
+		throw Exception("multiidx2n", Exception::Type::DIMS_INVALID);
+
+	for (size_t i = 0; i < dims.size(); i++)
+		if (midx[i] >= dims[i])
+			throw Exception("_multiidx2n", Exception::Type::OUT_OF_RANGE);
+
+	std::vector<size_t> part_prod(dims.size());
+
+	part_prod[dims.size() - 1] = 1;
+	for (size_t j = 1; j < dims.size(); j++)
+		part_prod[dims.size() - j - 1] = part_prod[dims.size() - j]
+				* dims[dims.size() - j];
+
+	size_t result = 0;
+	for (size_t i = 0; i < dims.size(); i++)
+		result += midx[i] * part_prod[i];
+
+	return result;
+}
+
 } /* namespace qpp */
 
 #endif /* FUNCTIONS_H_ */

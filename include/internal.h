@@ -25,12 +25,13 @@ namespace internal
 // standard lexicographical order, e.g. 00, 01, 10, 11
 void _n2multiidx(size_t n, size_t numdims, const size_t* dims, size_t* result)
 {
-	size_t maxn = 1;
-	for (size_t i = 0; i < numdims; i++)
-		maxn *= dims[i];
-	if (n > maxn - 1)
-		throw Exception("_n2multiidx", Exception::Type::OUT_OF_RANGE);
-
+// no error checks to improve speed
+	/*	size_t maxn = 1;
+	 for (size_t i = 0; i < numdims; i++)
+	 maxn *= dims[i];
+	 if (n >= maxn)
+	 throw Exception("_n2multiidx", Exception::Type::OUT_OF_RANGE);
+	 */
 	size_t _n = n;
 	for (size_t i = 0; i < numdims; i++)
 	{
@@ -43,10 +44,12 @@ void _n2multiidx(size_t n, size_t numdims, const size_t* dims, size_t* result)
 // standard lexicographical order, e.g. 00->0, 01->1, 10->2, 11->3
 size_t _multiidx2n(const size_t* midx, size_t numdims, const size_t* dims)
 {
-	for (size_t i = 0; i < numdims; i++)
-		if (midx[i] >= dims[i])
-			throw Exception("_multiidx2n", Exception::Type::OUT_OF_RANGE);
-
+// no error checks to improve speed
+	/*
+	 for (size_t i = 0; i < numdims; i++)
+	 if (midx[i] >= dims[i])
+	 throw Exception("_multiidx2n", Exception::Type::OUT_OF_RANGE);
+	 */
 	size_t* part_prod = new size_t[numdims];
 
 	part_prod[numdims - 1] = 1;
