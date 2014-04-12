@@ -24,7 +24,7 @@ namespace qpp
 
 // Displays a standard container that supports std::begin and std::end
 template<typename T>
-void dispSTL(const T& x, const std::string & separator = " ",
+void disp(const T& x, const std::string & separator = " ",
 		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
@@ -39,17 +39,17 @@ void dispSTL(const T& x, const std::string & separator = " ",
 // Displays a standard container that supports std::begin and std::end
 // and adds a new line
 template<typename T>
-void displnSTL(const T& x, const std::string & separator = " ",
+void displn(const T& x, const std::string & separator = " ",
 		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
-	dispSTL(x, separator, start, end, os);
+	disp(x, separator, start, end, os);
 	os << std::endl;
 }
 
 // Displays a C-style fixed-size array
 template<typename T>
-void dispSTL(const T* x, const size_t n, const std::string & separator = " ",
+void disp(const T* x, const size_t n, const std::string& separator = " ",
 		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
@@ -63,11 +63,11 @@ void dispSTL(const T* x, const size_t n, const std::string & separator = " ",
 // Displays a C-style fixed-size array
 // and adds a new line
 template<typename T>
-void displnSTL(const T* x, const size_t n, const std::string & separator = " ",
+void displn(const T* x, const size_t n, const std::string & separator = " ",
 		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
-	dispSTL(x, n, separator, start, end, os);
+	disp(x, n, separator, start, end, os);
 	os << std::endl;
 }
 

@@ -48,7 +48,7 @@ public:
 		for (size_t i = 0; i < _D; i++)
 			p[i] = std::abs(trace(proj(evects(U).col(i)) * _rho));
 
-		stat::DiscreteDistribution dd(p);
+		DiscreteDistribution dd(p);
 		size_t result = dd.sample();
 		if (destructive) // von Neumann
 			_rho = proj(evects(U).col(result)) * _rho

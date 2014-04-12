@@ -20,8 +20,6 @@
 
 namespace qpp
 {
-namespace stat
-{
 
 // light wrappers around C++11 statistical distributions
 
@@ -172,7 +170,6 @@ public:
 	}
 };
 
-} /* namespace stat */
 } /* namespace qpp */
 
 #endif /* STAT_H_ */

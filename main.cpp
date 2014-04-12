@@ -29,6 +29,9 @@ int main()
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
+	cplx c = qpp::rand() + ii * qpp::rand();
+	displn(c);
+
 	/*
 	 // TESTING
 	 cout << endl << "Qudit measurements." << endl;
@@ -111,7 +114,7 @@ int main()
 	 size_t nk = 10, d = 2; // nk Kraus on d-dimensional system
 	 cout << "Generating a random channel with " << nk
 	 << " Kraus operators on a " << d << " dimensional space..." << endl;
-	 std::vector<cmat> Ks = randKraus(nk, d);
+	 std::vector<cmat> Ks = randkraus(nk, d);
 
 	 cmat rho_in = randrho(d); // input state
 	 cmat rho_out = channel(rho_in, Ks); // output state

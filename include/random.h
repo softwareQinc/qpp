@@ -51,7 +51,7 @@ types::cmat rand(size_t rows, size_t cols, double a, double b)
 // random number in Uniform(a, b)
 double rand(double a = 0, double b = 1)
 {
-	stat::UniformRealDistribution ud(a, b);
+	UniformRealDistribution ud(a, b);
 	return ud.sample();
 }
 
@@ -69,7 +69,7 @@ types::dmat randn(size_t rows, size_t cols, double mean, double sigma)
 	if (rows == 0 || cols == 0)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
 
-	stat::NormalDistribution nd(mean, sigma);
+	NormalDistribution nd(mean, sigma);
 	auto lambda = [&nd](double)
 	{	return nd.sample();};
 
@@ -85,7 +85,7 @@ types::cmat randn(size_t rows, size_t cols, double mean, double sigma)
 	if (rows == 0 || cols == 0)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
 
-	stat::NormalDistribution nd(mean, sigma);
+	NormalDistribution nd(mean, sigma);
 	return randn<types::dmat>(rows, cols, mean, sigma).cast<types::cplx>()
 			+ ct::ii
 					* randn<types::dmat>(rows, cols, mean, sigma).cast<
@@ -95,7 +95,7 @@ types::cmat randn(size_t rows, size_t cols, double mean, double sigma)
 // random number in Normal(mean, sigma)
 double randn(double mean = 0, double sigma = 1)
 {
-	stat::NormalDistribution nd(mean, sigma);
+	NormalDistribution nd(mean, sigma);
 	return nd.sample();
 }
 
@@ -133,12 +133,12 @@ types::cmat randV(size_t Din, size_t Dout)
 }
 
 // Random Kraus operators
-std::vector<types::cmat> randKraus(size_t n, size_t D)
+std::vector<types::cmat> randkraus(size_t n, size_t D)
 {
 	if (n == 0)
-		throw Exception("randKraus", Exception::Type::OUT_OF_RANGE);
+		throw Exception("randkraus", Exception::Type::OUT_OF_RANGE);
 	if (D == 0)
-		throw Exception("randKraus", Exception::Type::DIMS_INVALID);
+		throw Exception("randkraus", Exception::Type::DIMS_INVALID);
 
 	std::vector<types::cmat> result;
 	types::cmat Fk(D, D);
