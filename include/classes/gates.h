@@ -8,11 +8,11 @@
 #ifndef GATES_H_
 #define GATES_H_
 
-#include "types.h"
 #include "constants.h"
 #include "functions.h"
-#include "internal.h"
 #include "exception.h"
+#include "internal.h"
+#include "types.h"
 
 namespace qpp
 {
@@ -21,44 +21,44 @@ class Gates
 {
 private:
 	Gates() :
-	Id2(types::cmat::Identity(2, 2)), //
-	H(types::cmat::Zero(2, 2)),//
-	X(types::cmat::Zero(2, 2)),//
-	Y(types::cmat::Zero(2, 2)),//
-	Z(types::cmat::Zero(2, 2)),//
-	S(types::cmat::Zero(2, 2)),//
-	T(types::cmat::Zero(2, 2)),//
-	CNOTab(types::cmat::Identity(4, 4)),//
-	CZ(types::cmat::Identity(4, 4)),//
-	CS(types::cmat::Identity(4, 4)),//
-	CNOTba(types::cmat::Zero(4, 4)),//
-	SWAP(types::cmat::Zero(4, 4)),//
-	TOF(types::cmat::Identity(8, 8)),//
-	FRED(types::cmat::Identity(8, 8)),//
-	x0(types::ket::Zero(2)),//
-	x1(types::ket::Zero(2)),//
-	y0(types::ket::Zero(2)),//
-	y1(types::ket::Zero(2)),//
-	z0(types::ket::Zero(2)),//
-	z1(types::ket::Zero(2)),//
-	px0(types::cmat::Zero(2,2)),//
-	px1(types::cmat::Zero(2,2)),//
-	py0(types::cmat::Zero(2,2)),//
-	py1(types::cmat::Zero(2,2)),//
-	pz0(types::cmat::Zero(2,2)),//
-	pz1(types::cmat::Zero(2,2)),//
-	b00(types::ket::Zero(4)),//
-	b01(types::ket::Zero(4)),//
-	b10(types::ket::Zero(4)),//
-	b11(types::ket::Zero(4)),//
-	pb00(types::cmat::Zero(4,4)),//
-	pb01(types::cmat::Zero(4,4)),//
-	pb10(types::cmat::Zero(4,4)),//
-	pb11(types::cmat::Zero(4,4))//
+			Id2(types::cmat::Identity(2, 2)), //
+			H(types::cmat::Zero(2, 2)), //
+			X(types::cmat::Zero(2, 2)), //
+			Y(types::cmat::Zero(2, 2)), //
+			Z(types::cmat::Zero(2, 2)), //
+			S(types::cmat::Zero(2, 2)), //
+			T(types::cmat::Zero(2, 2)), //
+			CNOTab(types::cmat::Identity(4, 4)), //
+			CZ(types::cmat::Identity(4, 4)), //
+			CS(types::cmat::Identity(4, 4)), //
+			CNOTba(types::cmat::Zero(4, 4)), //
+			SWAP(types::cmat::Zero(4, 4)), //
+			TOF(types::cmat::Identity(8, 8)), //
+			FRED(types::cmat::Identity(8, 8)), //
+			x0(types::ket::Zero(2)), //
+			x1(types::ket::Zero(2)), //
+			y0(types::ket::Zero(2)), //
+			y1(types::ket::Zero(2)), //
+			z0(types::ket::Zero(2)), //
+			z1(types::ket::Zero(2)), //
+			px0(types::cmat::Zero(2, 2)), //
+			px1(types::cmat::Zero(2, 2)), //
+			py0(types::cmat::Zero(2, 2)), //
+			py1(types::cmat::Zero(2, 2)), //
+			pz0(types::cmat::Zero(2, 2)), //
+			pz1(types::cmat::Zero(2, 2)), //
+			b00(types::ket::Zero(4)), //
+			b01(types::ket::Zero(4)), //
+			b10(types::ket::Zero(4)), //
+			b11(types::ket::Zero(4)), //
+			pb00(types::cmat::Zero(4, 4)), //
+			pb01(types::cmat::Zero(4, 4)), //
+			pb10(types::cmat::Zero(4, 4)), //
+			pb11(types::cmat::Zero(4, 4)) //
 	{
 		// initialize the constants and gates
 		H << 1 / std::sqrt(2), 1 / std::sqrt(2), 1 / std::sqrt(2), -1
-		/ std::sqrt(2);
+				/ std::sqrt(2);
 		X << 0, 1, 1, 0;
 		Z << 1, 0, 0, -1;
 		Y << 0, -ct::ii, ct::ii, 0;
@@ -81,12 +81,12 @@ private:
 		y1 << 1 / std::sqrt(2), -ct::ii / std::sqrt(2);
 		z0 << 1, 0;
 		z1 << 0, 1;
-		px0=x0*x0.adjoint();
-		px1=x1*x1.adjoint();
-		py0=y0*y0.adjoint();
-		py1=y1*y1.adjoint();
-		pz0=z0*z0.adjoint();
-		pz1=z1*z1.adjoint();
+		px0 = x0 * x0.adjoint();
+		px1 = x1 * x1.adjoint();
+		py0 = y0 * y0.adjoint();
+		py1 = y1 * y1.adjoint();
+		pz0 = z0 * z0.adjoint();
+		pz1 = z1 * z1.adjoint();
 
 		// Bell states, following convention from Nielsen & Chuang
 		// |ij> -> |b_{ij}> by the CNOT*(H x Id) circuit
@@ -95,10 +95,10 @@ private:
 		b10 << 1 / std::sqrt(2), 0, 0, -1 / std::sqrt(2);// (|00>-|11>)/sqrt(2)
 		b11 << 0, 1 / std::sqrt(2), -1 / std::sqrt(2), 0;// (|01>-|10>)/sqrt(2)
 
-		pb00=b00*b00.adjoint();
-		pb01=b01*b01.adjoint();
-		pb10=b10*b10.adjoint();
-		pb11=b11*b11.adjoint();
+		pb00 = b00 * b00.adjoint();
+		pb01 = b01 * b01.adjoint();
+		pb10 = b10 * b10.adjoint();
+		pb11 = b11 * b11.adjoint();
 	}
 public:
 	Gates(const Gates&) = delete;

@@ -10,13 +10,14 @@
 
 // input/output
 
+#include <fstream>
+#include <iomanip>
+#include <iostream>
 #include <stdexcept>
 #include <vector>
-#include <iostream>
-#include <iomanip>
-#include <fstream>
+
 #include "types.h"
-#include "exception.h"
+#include "classes/exception.h"
 
 namespace qpp
 {

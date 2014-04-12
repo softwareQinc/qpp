@@ -8,10 +8,11 @@
 #ifndef INTERNAL_H_
 #define INTERNAL_H_
 
-#include <vector>
 #include <iostream>
+#include <vector>
+
 #include "types.h"
-#include "exception.h"
+#include "classes/exception.h"
 
 // internal functions, do not modify
 
@@ -128,7 +129,7 @@ bool _check_dims(const std::vector<size_t>& dims)
 }
 
 // check that valid dims match the dimensions
-// of valid (non-zero sized) matrix
+// of valid (non-zero sized) quare matrix or column vector
 template<typename Derived>
 bool _check_dims_match_mat(const std::vector<size_t>& dims,
 		const Eigen::MatrixBase<Derived>& A)
@@ -200,36 +201,29 @@ bool _check_perm(const std::vector<size_t>& perm,
 
 // used inside the #pragma omp parallel for in syspermute
 template<typename Scalar>
-void _syspermute_worker(const size_t* midxcol, size_t numdims,
-		const size_t* cdims, const size_t* cperm, size_t i, size_t j,
-		size_t &iperm, size_t &jperm, const types::DynMat<Scalar> &A,
-		types::DynMat<Scalar> &result)
+void _syspermute_worker(size_t numdims, const size_t* cdims,
+		const size_t* cperm, size_t i, size_t &iperm,
+		const types::DynMat<Scalar> &V, types::DynMat<Scalar> &result)
 {
-	size_t* midxrow = new size_t[numdims];
-	size_t* midxrowtmp = new size_t[numdims];
-	size_t* midxcoltmp = new size_t[numdims];
+	size_t* midx = new size_t[numdims];
+	size_t* midxtmp = new size_t[numdims];
 	size_t* permdims = new size_t[numdims];
 
-	for (size_t k = 0; k < numdims; k++)
-		permdims[k] = cdims[cperm[k]]; // permuted dimensions
-
-	// compute the row multi-index
-	_n2multiidx(i, numdims, cdims, midxrow);
+	// compute the multi-index
+	internal::_n2multiidx(i, numdims, cdims, midx);
 
 	for (size_t k = 0; k < numdims; k++)
 	{
-		midxrowtmp[k] = midxrow[cperm[k]]; // permuted multi-indexes
-		midxcoltmp[k] = midxcol[cperm[k]]; // permuted multi-indexes
+		permdims[k] = cdims[cperm[k]]; // permuted dimensions
+		midxtmp[k] = midx[cperm[k]]; // permuted multi-indexes
 	}
 
 	// move back to integer indexes
-	iperm = _multiidx2n(midxrowtmp, numdims, permdims);
-	jperm = _multiidx2n(midxcoltmp, numdims, permdims);
-	result(iperm, jperm) = A(i, j);
+	iperm = internal::_multiidx2n(midxtmp, numdims, permdims);
+	result(iperm) = V(i);
 
-	delete[] midxrow;
-	delete[] midxrowtmp;
-	delete[] midxcoltmp;
+	delete[] midx;
+	delete[] midxtmp;
 	delete[] permdims;
 }
 

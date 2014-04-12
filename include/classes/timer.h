@@ -8,8 +8,8 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
-#include <ostream>
 #include <chrono>
+#include <ostream>
 
 namespace qpp
 {

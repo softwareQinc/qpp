@@ -10,10 +10,11 @@
 
 #include <vector>
 #include <cmath>
-#include "types.h"
-#include "internal.h"
-#include "exception.h"
 #include "constants.h"
+#include "functions.h"
+#include "internal.h"
+#include "types.h"
+#include "classes/exception.h"
 
 namespace qpp
 {

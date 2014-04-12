@@ -8,10 +8,10 @@
 #ifndef RANDOM_H_
 #define RANDOM_H_
 
-#include "types.h"
-#include "stat.h"
 #include "constants.h"
-#include "exception.h"
+#include "types.h"
+#include "classes/exception.h"
+#include "classes/stat.h"
 
 // random matrices/states
 

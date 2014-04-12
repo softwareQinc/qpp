@@ -12,11 +12,13 @@
 // add the path to MATLAB/extern/include in include path
 
 #include <Eigen/Dense>
-#include <string>
+
 #include <stdexcept>
-#include "types.h"
+#include <string>
+
 #include "internal.h"
-#include "exception.h"
+#include "types.h"
+#include "classes/exception.h"
 
 #include "mat.h"  // path to this is defined in the Makefile
 #include "mex.h"  // path to this is defined in the Makefile

@@ -11,18 +11,18 @@
 #ifndef QPP_H_
 #define	QPP_H_
 
-#include "types.h"
-#include "constants.h"
-#include "gates.h"
-#include "stat.h"
-#include "functions.h"
-#include "random.h"
-#include "entropies.h"
-#include "io.h"
-#include "timer.h"
-#include "exception.h"
 #include "channels.h"
-#include "randevs.h"
+#include "constants.h"
+#include "entropies.h"
+#include "functions.h"
+#include "io.h"
+#include "random.h"
+#include "types.h"
+#include "classes/exception.h"
+#include "classes/gates.h"
+#include "classes/randevs.h"
+#include "classes/stat.h"
+#include "classes/timer.h"
 
 namespace qpp
 {

@@ -8,13 +8,14 @@
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 
+#include <cmath>
 #include <numeric>
 #include <vector>
-#include <cmath>
-#include "types.h"
-#include "internal.h"
-#include "exception.h"
+
 #include "constants.h"
+#include "internal.h"
+#include "types.h"
+#include "classes/exception.h"
 
 // Collection of quantum computing useful functions
 namespace qpp
@@ -537,7 +538,7 @@ types::DynMat<typename Derived::Scalar> reshape(
 // i.e. the qubit perm[i] is permuted to location i, perm[i]->i
 template<typename Derived>
 types::DynMat<typename Derived::Scalar> syspermute(
-		const Eigen::MatrixBase<Derived>& A, const std::vector<size_t> perm,
+		const Eigen::MatrixBase<Derived>& A, const std::vector<size_t>& perm,
 		const std::vector<size_t> &dims)
 
 {
@@ -553,10 +554,6 @@ types::DynMat<typename Derived::Scalar> syspermute(
 	if (!internal::_check_dims(dims))
 		throw Exception("syspermute", Exception::Type::DIMS_INVALID);
 
-	// check square matrix
-	if (!internal::_check_square_mat(rA))
-		throw Exception("syspermute", Exception::Type::MATRIX_NOT_SQUARE);
-
 // check that dims match the dimension of rA
 	if (!internal::_check_dims_match_mat(dims, rA))
 		throw Exception("syspermute", Exception::Type::DIMS_MISMATCH_MATRIX);
@@ -567,41 +564,71 @@ types::DynMat<typename Derived::Scalar> syspermute(
 
 	size_t dim = static_cast<size_t>(rA.rows());
 	size_t numdims = dims.size();
-	size_t* cdims = new size_t[numdims];
-	size_t* cperm = new size_t[numdims];
-	size_t* midxcol = new size_t[numdims];
-	types::DynMat<typename Derived::Scalar> result(dim, dim);
 
-// copy dims in cdims and perm in cperm
-	for (size_t i = 0; i < numdims; i++)
-	{
-		cdims[i] = dims[i];
-		cperm[i] = perm[i];
-	}
+	types::DynMat<typename Derived::Scalar> result;
 
-	size_t iperm = 0;
-	size_t jperm = 0;
-	for (size_t j = 0; j < dim; j++)
+	// check column vector
+	if (internal::_check_col_vector(rA)) // we have a column vector
 	{
-		// compute the column multi-index
-		internal::_n2multiidx(j, numdims, cdims, midxcol);
+		size_t* cdims = new size_t[numdims];
+		size_t* cperm = new size_t[numdims];
+		size_t* midx = new size_t[numdims];
+
+		// copy dims in cdims and perm in cperm
+		for (size_t i = 0; i < numdims; i++)
+		{
+			cdims[i] = dims[i];
+			cperm[i] = perm[i];
+		}
+		result.resize(dim, 1);
+		size_t iperm = 0;
 #pragma omp parallel for
 		for (size_t i = 0; i < dim; i++)
-			internal::_syspermute_worker(midxcol, numdims, cdims, cperm, i, j,
-					iperm, jperm, rA, result);
+			internal::_syspermute_worker(numdims, cdims, cperm, i, iperm, rA,
+					result);
+		delete[] cdims;
+		delete[] cperm;
+		delete[] midx;
+		return result;
 	}
 
-	delete[] cdims;
-	delete[] cperm;
-	delete[] midxcol;
+	else if (internal::_check_square_mat(rA)) // we have a square matrix
+	{
+		size_t* cdims = new size_t[2 * numdims];
+		size_t* cperm = new size_t[2 * numdims];
+		size_t* midx = new size_t[2 * numdims];
 
-	return result; // the permuted matrix
+		// copy dims in cdims and perm in cperm
+		for (size_t i = 0; i < numdims; i++)
+		{
+			cdims[i] = cdims[i + numdims] = dims[i];
+			cperm[i] = perm[i];
+			cperm[i + numdims] = perm[i] + numdims;
+		}
+		result.resize(dim * dim, 1);
+		// map A to a column vector
+		types::DynMat<typename Derived::Scalar> vectA = Eigen::Map<
+				types::DynMat<typename Derived::Scalar>>(
+				const_cast<typename Derived::Scalar*>(rA.data()), dim * dim, 1);
+		size_t iperm = 0;
+#pragma omp parallel for
+		for (size_t i = 0; i < dim * dim; i++)
+			internal::_syspermute_worker(2 * numdims, cdims, cperm, i, iperm,
+					vectA, result);
+		delete[] cdims;
+		delete[] cperm;
+		delete[] midx;
+		return reshape(result, dim, dim);
+	}
+
+	else
+		throw Exception("syspermute", Exception::Type::DIMS_INVALID);
 }
 
 // Partial trace over subsystem B in a D_A x D_B system
 template<typename Derived>
 types::DynMat<typename Derived::Scalar> ptrace2(
-		const Eigen::MatrixBase<Derived>& A, const std::vector<size_t> dims)
+		const Eigen::MatrixBase<Derived>& A, const std::vector<size_t>& dims)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
@@ -644,8 +671,8 @@ types::DynMat<typename Derived::Scalar> ptrace2(
 // partial trace
 template<typename Derived>
 types::DynMat<typename Derived::Scalar> ptrace(
-		const Eigen::MatrixBase<Derived>& A, const std::vector<size_t> &subsys,
-		const std::vector<size_t> &dims)
+		const Eigen::MatrixBase<Derived>& A, const std::vector<size_t>& subsys,
+		const std::vector<size_t>& dims)
 
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;

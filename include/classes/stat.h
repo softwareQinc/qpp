@@ -10,10 +10,11 @@
 
 #include <algorithm>
 #include <functional>
-#include "types.h"
-#include "internal.h"
+
 #include "exception.h"
+#include "internal.h"
 #include "randevs.h"
+#include "types.h"
 
 // statistical distributions etc
 

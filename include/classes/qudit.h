@@ -8,12 +8,12 @@
 #ifndef QUDIT_H_
 #define QUDIT_H_
 
-#include "types.h"
-#include "gates.h"
-#include "internal.h"
 #include "exception.h"
 #include "functions.h"
-#include "stat.h"
+#include "gates.h"
+#include "internal.h"
+#include "types.h"
+#include "classes/stat.h"
 
 namespace qpp
 {
@@ -24,8 +24,8 @@ class Qudit
 	size_t _D;
 public:
 	// by default we have a standard qubit in state |0>
-	Qudit(const types::cmat& rho = Gates::getInstance().pz0):
-		_rho(types::cmat::Zero(2,2)),_D(2) // qubit by default
+	Qudit(const types::cmat& rho = Gates::getInstance().pz0) :
+			_rho(types::cmat::Zero(2, 2)), _D(2) // qubit by default
 	{
 		if (!internal::_check_nonzero_size(rho))
 			throw Exception("Qudit::Qudit", Exception::Type::ZERO_SIZE);

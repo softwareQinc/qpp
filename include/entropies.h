@@ -9,10 +9,11 @@
 #define ENTROPY_H_
 
 #include <cmath>
-#include "types.h"
+
 #include "functions.h"
 #include "internal.h"
-#include "exception.h"
+#include "types.h"
+#include "classes/exception.h"
 
 // various entropies
 
