@@ -29,9 +29,6 @@ int main()
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
-	cplx c = qpp::rand() + ii * qpp::rand();
-	displn(c);
-
 	/*
 	 // TESTING
 	 cout << endl << "Qudit measurements." << endl;
