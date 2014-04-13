@@ -154,7 +154,7 @@ double renyi_inf(const Eigen::MatrixBase<Derived>& A)
 	return -std::log2(max);
 }
 
-// Tsallis-alpha entropy (alpha real)
+// Tsallis-alpha entropy (alpha >=0)
 // when alpha->1 converges to Shannon with base e logarithm
 template<typename Derived>
 double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
