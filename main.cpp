@@ -30,6 +30,28 @@ int main()
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
 	// TESTING
+
+	// quantum teleportation
+	cout << endl << "Qudit teleportation." << endl;
+	ket psi = randket(2); // a random state;
+	cout << "|psi><psi|:" << endl;
+	displn(proj(psi));
+	cmat telecircuit = expandout(gt.H, { 0 }, { 2, 2, 2 })
+			* gt.CTRL(gt.X, { 0 }, { 1 }, 3);
+	ket psiin = kron(psi, gt.b00); // input state
+	ket psiout = telecircuit * psiin; // output state before measurement
+	// measure Alice's qubits, results 1 1
+	psiout = kronlist<cmat>( { proj(gt.z1), proj(gt.z1), gt.Id2 }) * psiout;
+	psiout = psiout / norm(psiout); // normalize
+	// apply correction
+	psiout = expandout(powm(gt.Z, 1) * powm(gt.X, 1), { 2 }, { 2, 2, 2 })
+			* psiout;
+	cmat rhoout = ptrace(proj(psiout), { 0, 1 }, { 2, 2, 2 });
+	cout << "Teleported state:" << endl;
+	displn(rhoout);
+	cout << "Difference in norm: " << norm(proj(psi) - rhoout) << endl;
+
+	// qudit measurements
 	cout << endl << "Qudit measurements." << endl;
 	cout << "Initially in state |0><0|." << endl;
 	ket zd0(3);
