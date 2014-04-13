@@ -31,7 +31,7 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
 		throw Exception("shannon", Exception::Type::ZERO_SIZE);
 
 	// input is a vector
-	if (rA.rows() == 1 || rA.cols() == 1)
+	if (internal::_check_vector(rA))
 	{
 		double result = 0;
 		// take the absolut values of the entries
@@ -50,7 +50,7 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
 		throw Exception("shannon", Exception::Type::MATRIX_NOT_SQUARE);
 
 	// get the eigenvalues
-	types::cmat ev = evals(rA);
+	types::cmat ev = hevals(rA);
 	double result = 0;
 	// take the absolut values of the entries
 	// to get rid of unwanted imaginary parts
@@ -79,7 +79,7 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 		throw Exception("renyi", Exception::Type::ZERO_SIZE);
 
 	// input is a vector
-	if (rA.rows() == 1 || rA.cols() == 1)
+	if (internal::_check_vector(rA))
 	{
 		if (alpha == 0)
 			return std::log2(rA.size());
@@ -104,7 +104,7 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 		return std::log2(rA.rows());
 
 	// get the eigenvalues
-	types::cmat ev = evals(rA);
+	types::cmat ev = hevals(rA);
 	double result = 0;
 	// take the absolut values of the entries
 	// to get rid of unwanted imaginary parts
@@ -126,7 +126,7 @@ double renyi_inf(const Eigen::MatrixBase<Derived>& A)
 		throw Exception("renyi_inf", Exception::Type::ZERO_SIZE);
 
 	// input is a vector
-	if (rA.rows() == 1 || rA.cols() == 1)
+	if (internal::_check_vector(rA))
 	{
 		double max = 0;
 		for (size_t i = 0; i < static_cast<size_t>(rA.size()); i++)
@@ -143,7 +143,7 @@ double renyi_inf(const Eigen::MatrixBase<Derived>& A)
 		throw Exception("renyi_inf", Exception::Type::MATRIX_NOT_SQUARE);
 
 	// get the eigenvalues
-	types::cmat ev = evals(rA);
+	types::cmat ev = hevals(rA);
 	double max = 0;
 	// take the absolut values of the entries
 	// to get rid of unwanted imaginary parts
@@ -152,6 +152,54 @@ double renyi_inf(const Eigen::MatrixBase<Derived>& A)
 			max = std::abs((types::cplx) ev(i));
 
 	return -std::log2(max);
+}
+
+// Tsallis-alpha entropy (alpha real)
+// when alpha->1 converges to Shannon with base e logarithm
+template<typename Derived>
+double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
+{
+	const types::DynMat<typename Derived::Scalar> & rA = A;
+
+	if (alpha < 0)
+		throw Exception("tsallis", Exception::Type::OUT_OF_RANGE);
+
+	if (alpha == 1) // Shannon/von Neumann with base e logarithm
+		return shannon(rA) * std::log(2);
+
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("tsallis", Exception::Type::ZERO_SIZE);
+
+	// input is a vector
+	if (internal::_check_vector(rA))
+	{
+		double result = 0;
+		// take the absolut values of the entries
+		// to get rid of unwanted imaginary parts
+		for (size_t i = 0; i < static_cast<size_t>(rA.size()); i++)
+			if (std::abs((types::cplx) rA(i)) != 0) // not identically zero
+				result += std::pow(std::abs(rA(i)), alpha);
+
+		return (result - 1) / (1 - alpha);
+	}
+
+	// input is a matrix
+
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("tsallis", Exception::Type::MATRIX_NOT_SQUARE);
+
+	// get the eigenvalues
+	types::cmat ev = hevals(rA);
+	double result = 0;
+	// take the absolut values of the entries
+	// to get rid of unwanted imaginary parts
+	for (size_t i = 0; i < static_cast<size_t>(ev.rows()); i++)
+		if (std::abs((types::cplx) ev(i)) != 0) // not identically zero
+			result += std::pow(std::abs((types::cplx) ev(i)), alpha);
+
+	return (result - 1) / (1 - alpha);
 }
 
 } /* namespace qpp */
