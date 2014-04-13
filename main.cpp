@@ -42,10 +42,10 @@ int main()
 	ket psiout = telecircuit * psiin; // output state before measurement
 	// measure Alice's qubits, measurement results are 1 0
 	psiout = kronlist<cmat>( { proj(gt.z1), proj(gt.z0), gt.Id2 }) * psiout;
-	psiout = psiout / norm(psiout); // normalize
 	// apply correction
 	psiout = expandout(powm(gt.Z, 1) * powm(gt.X, 0), { 2 }, { 2, 2, 2 })
 			* psiout;
+	psiout = psiout / norm(psiout); // normalize
 	cmat rhoout = ptrace(proj(psiout), { 0, 1 }, { 2, 2, 2 });
 	cout << endl << "Teleported state:" << endl;
 	displn(rhoout);
