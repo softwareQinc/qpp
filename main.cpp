@@ -14,6 +14,7 @@
 // TODO: IMPORTANT Rewrite partial trace without syspermute
 // TODO: further parallelization
 // TODO: testing
+// TODO: write documentation
 
 using namespace std;
 using namespace qpp;
