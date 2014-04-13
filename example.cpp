@@ -1,5 +1,5 @@
 /*
- * File:   main.cpp
+ * File:   example.cpp
  * Author: vlad
  * 
  * Created on December 12, 2013, 10:38 PM
