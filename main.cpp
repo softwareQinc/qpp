@@ -25,7 +25,7 @@ int main()
 	cout << "Starting qpp..." << endl;
 
 	// output format
-	// cout << std::scientific;
+	//cout << std::scientific;
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
