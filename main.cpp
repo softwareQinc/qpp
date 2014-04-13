@@ -45,7 +45,7 @@ int main()
 	// apply correction
 	psiout = expandout(powm(gt.Z, 1) * powm(gt.X, 0), { 2 }, { 2, 2, 2 })
 			* psiout;
-	psiout = psiout / norm(psiout); // normalize
+	// not necessary to normalize, proj() takes care of it below
 	cmat rhoout = ptrace(proj(psiout), { 0, 1 }, { 2, 2, 2 });
 	cout << endl << "Teleported state:" << endl;
 	displn(rhoout);
