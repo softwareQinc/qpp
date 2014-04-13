@@ -47,7 +47,7 @@ int main()
 	psiout = expandout(powm(gt.Z, 1) * powm(gt.X, 1), { 2 }, { 2, 2, 2 })
 			* psiout;
 	cmat rhoout = ptrace(proj(psiout), { 0, 1 }, { 2, 2, 2 });
-	cout << "Teleported state:" << endl;
+	cout << endl << "Teleported state:" << endl;
 	displn(rhoout);
 	cout << "Difference in norm: " << norm(proj(psi) - rhoout) << endl;
 
