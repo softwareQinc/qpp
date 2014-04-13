@@ -30,17 +30,6 @@ int main()
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
-	cmat rho = randrho(5);
-	cout << "Rho:" << endl;
-	displn(rho);
-	cmat eigrho = hevals(rho);
-	double alpha = 1.0;
-	cout << "Tsallis: " << tsallis(alpha, rho) << endl;
-	cout << "Tsallis: " << tsallis(alpha, eigrho) << endl;
-	cout << "Renyi: " << renyi(alpha, eigrho) << endl;
-	cout << "Shannon (ln): " << shannon(rho) * std::log(2) << endl;
-	cout << "Shannon (log2): " << shannon(rho) << endl;
-
 	/*
 	 // TESTING
 
