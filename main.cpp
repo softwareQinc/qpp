@@ -24,6 +24,10 @@ int main()
 {
 	cout << "Starting qpp..." << endl;
 
+	ket aa(8);
+	aa << 1, 2, 3, 4, 5, 6, 7, 8;
+	displn(syspermute(aa, { 0, 2, 1 }, { 2, 2, 2 }));
+
 	// output format
 	//cout << std::scientific;
 	cout << std::fixed; // use fixed format for nice formatting

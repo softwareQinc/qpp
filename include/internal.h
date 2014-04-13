@@ -132,7 +132,7 @@ bool _check_dims(const std::vector<size_t>& dims)
 }
 
 // check that valid dims match the dimensions
-// of valid (non-zero sized) quare matrix or column vector
+// of valid (non-zero sized) quare matrix
 template<typename Derived>
 bool _check_dims_match_mat(const std::vector<size_t>& dims,
 		const Eigen::MatrixBase<Derived>& A)
@@ -143,6 +143,36 @@ bool _check_dims_match_mat(const std::vector<size_t>& dims,
 	for (size_t i : dims)
 		proddim *= i;
 	if (proddim != static_cast<size_t>(rA.rows()))
+		return false;
+	return true;
+}
+
+// check that valid dims match the dimensions of valid row vector
+template<typename Derived>
+bool _check_dims_match_cvect(const std::vector<size_t>& dims,
+		const Eigen::MatrixBase<Derived>& V)
+{
+	const types::DynMat<typename Derived::Scalar> & rV = V;
+
+	size_t proddim = 1;
+	for (size_t i : dims)
+		proddim *= i;
+	if (proddim != static_cast<size_t>(rV.rows()))
+		return false;
+	return true;
+}
+
+// check that valid dims match the dimensions of valid row vector
+template<typename Derived>
+bool _check_dims_match_rvect(const std::vector<size_t>& dims,
+		const Eigen::MatrixBase<Derived>& V)
+{
+	const types::DynMat<typename Derived::Scalar> & rV = V;
+
+	size_t proddim = 1;
+	for (size_t i : dims)
+		proddim *= i;
+	if (proddim != static_cast<size_t>(rV.cols()))
 		return false;
 	return true;
 }

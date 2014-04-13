@@ -554,10 +554,6 @@ types::DynMat<typename Derived::Scalar> syspermute(
 	if (!internal::_check_dims(dims))
 		throw Exception("syspermute", Exception::Type::DIMS_INVALID);
 
-// check that dims match the dimension of rA
-	if (!internal::_check_dims_match_mat(dims, rA))
-		throw Exception("syspermute", Exception::Type::DIMS_MISMATCH_MATRIX);
-
 // check that the size of the permutation is OK
 	if (!internal::_check_perm(perm, dims))
 		throw Exception("syspermute", Exception::Type::PERM_MISMATCH_DIMS);
@@ -570,6 +566,11 @@ types::DynMat<typename Derived::Scalar> syspermute(
 	// check column vector
 	if (internal::_check_col_vector(rA)) // we have a column vector
 	{
+		// check that dims match the dimension of rA
+		if (!internal::_check_dims_match_cvect(dims, rA))
+			throw Exception("syspermute",
+					Exception::Type::DIMS_MISMATCH_CVECTOR);
+
 		size_t* cdims = new size_t[numdims];
 		size_t* cperm = new size_t[numdims];
 		size_t* midx = new size_t[numdims];
@@ -594,6 +595,11 @@ types::DynMat<typename Derived::Scalar> syspermute(
 
 	else if (internal::_check_square_mat(rA)) // we have a square matrix
 	{
+		// check that dims match the dimension of rA
+		if (!internal::_check_dims_match_mat(dims, rA))
+			throw Exception("syspermute",
+					Exception::Type::DIMS_MISMATCH_MATRIX);
+
 		size_t* cdims = new size_t[2 * numdims];
 		size_t* cperm = new size_t[2 * numdims];
 		size_t* midx = new size_t[2 * numdims];
@@ -622,7 +628,8 @@ types::DynMat<typename Derived::Scalar> syspermute(
 	}
 
 	else
-		throw Exception("syspermute", Exception::Type::DIMS_INVALID);
+		throw Exception("syspermute",
+				Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 }
 
 // Partial trace over subsystem B in a D_A x D_B system
@@ -910,7 +917,7 @@ types::DynMat<typename Derived::Scalar> expandout(
 	auto multiply = [](size_t x, size_t y)->size_t
 	{	return x*y;};
 
-	size_t D = std::accumulate(std::begin(dims), std::end(dims), 1, multiply);
+	size_t D = std::accumulate(std::begin(dims), std::end(dims), 1u, multiply);
 	types::DynMat<typename Derived::Scalar> result = types::DynMat<
 			typename Derived::Scalar>::Identity(D, D);
 
@@ -1035,9 +1042,9 @@ std::vector<size_t> n2multiidx(size_t n, const std::vector<size_t>& dims)
 	if (!internal::_check_dims(dims))
 		throw Exception("n2multiidx", Exception::Type::DIMS_INVALID);
 
-	auto multiply = [](const size_t x, const size_t y)
+	auto multiply = [](const size_t x, const size_t y)->size_t
 	{	return x*y;};
-	if (n >= std::accumulate(std::begin(dims), std::end(dims), 1U, multiply))
+	if (n >= std::accumulate(std::begin(dims), std::end(dims), 1u, multiply))
 		throw Exception("n2multiidx", Exception::Type::OUT_OF_RANGE);
 
 	std::vector<size_t> result(dims.size());
@@ -1062,7 +1069,7 @@ size_t multiidx2n(const std::vector<size_t>& midx,
 
 	for (size_t i = 0; i < dims.size(); i++)
 		if (midx[i] >= dims[i])
-			throw Exception("_multiidx2n", Exception::Type::OUT_OF_RANGE);
+			throw Exception("multiidx2n", Exception::Type::OUT_OF_RANGE);
 
 	std::vector<size_t> part_prod(dims.size());
 

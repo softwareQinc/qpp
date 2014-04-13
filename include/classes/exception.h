@@ -27,9 +27,15 @@ public:
 		MATRIX_NOT_CVECTOR,
 		MATRIX_NOT_RVECTOR,
 		MATRIX_NOT_VECTOR,
+		MATRIX_NOT_SQUARE_OR_CVECTOR,
+		MATRIX_NOT_SQUARE_OR_RVECTOR,
+		MATRIX_NOT_SQUARE_OR_VECTOR,
 		DIMS_INVALID,
 		DIMS_NOT_EQUAL,
 		DIMS_MISMATCH_MATRIX,
+		DIMS_MISMATCH_CVECTOR,
+		DIMS_MISMATCH_RVECTOR,
+		DIMS_MISMATCH_VECTOR,
 		SUBSYS_MISMATCH_DIMS,
 		PERM_MISMATCH_DIMS,
 		NOT_QUBIT_GATE,
@@ -93,6 +99,15 @@ private:
 		case Type::MATRIX_NOT_VECTOR:
 			_msg += "Matrix is not a vector!";
 			break;
+		case Type::MATRIX_NOT_SQUARE_OR_CVECTOR:
+			_msg += "Matrix is not square nor a column vector!";
+			break;
+		case Type::MATRIX_NOT_SQUARE_OR_RVECTOR:
+			_msg += "Matrix is not square nor a row vector!";
+			break;
+		case Type::MATRIX_NOT_SQUARE_OR_VECTOR:
+			_msg += "Matrix is not square nor a vector!";
+			break;
 		case Type::DIMS_INVALID:
 			_msg += "Invalid dimension(s)!";
 			break;
@@ -101,6 +116,15 @@ private:
 			break;
 		case Type::DIMS_MISMATCH_MATRIX:
 			_msg += "Dimension(s) mismatch matrix size!";
+			break;
+		case Type::DIMS_MISMATCH_CVECTOR:
+			_msg += "Dimension(s) mismatch column vector!";
+			break;
+		case Type::DIMS_MISMATCH_RVECTOR:
+			_msg += "Dimension(s) mismatch row vector!";
+			break;
+		case Type::DIMS_MISMATCH_VECTOR:
+			_msg += "Dimension(s) mismatch vector!";
 			break;
 		case Type::SUBSYS_MISMATCH_DIMS:
 			_msg += "Subsystems mismatch dimensions!";
