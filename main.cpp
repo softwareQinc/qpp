@@ -70,7 +70,7 @@ int main()
 	cout << q.measure(gt.Xd(3), true) << endl;
 	cout << q.measure(gt.Xd(3)) << endl;
 	cout << q.measure(gt.Xd(3)) << endl;
-	cout << "Finally measureing Z operator destructively. Results:" << endl;
+	cout << "Finally measuring Z operator destructively. Results:" << endl;
 	cout << q.measure(true) << endl;
 	cout << q.measure() << endl;
 	cout << q.measure() << endl;
