@@ -95,7 +95,7 @@ typename Derived::Scalar det(const Eigen::MatrixBase<Derived>& A)
 }
 
 // logarithm of the determinant, preserve return type
-// especially useful when determinant overflows
+// especially useful when determinant uderflows/overflows
 // returns -inf when |det| < smallest positive double (4.94e-324)
 template<typename Derived>
 typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A)
