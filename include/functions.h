@@ -94,6 +94,34 @@ typename Derived::Scalar det(const Eigen::MatrixBase<Derived>& A)
 	return rA.determinant();
 }
 
+// logarithm of the determinant, preserve return type
+// especially useful when determinant overflows
+// returns -inf when |det| < smallest positive double (4.94e-324)
+template<typename Derived>
+typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A)
+
+{
+	const types::DynMat<typename Derived::Scalar> & rA = A;
+
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("logdet", Exception::Type::ZERO_SIZE);
+
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("logdet", Exception::Type::MATRIX_NOT_SQUARE);
+
+	Eigen::PartialPivLU<types::DynMat<typename Derived::Scalar>> lu(rA);
+	types::DynMat<typename Derived::Scalar> U =
+			lu.matrixLU().template triangularView<Eigen::Upper>();
+	typename Derived::Scalar result = std::log(U(0, 0));
+	for (size_t i = 1; i < static_cast<size_t>(rA.rows()); i++)
+		result += std::log(U(i, i));
+
+	return result;
+
+}
+
 // element-wise sum, preserve return type
 template<typename Derived>
 typename Derived::Scalar sum(const Eigen::MatrixBase<Derived>& A)
@@ -101,7 +129,7 @@ typename Derived::Scalar sum(const Eigen::MatrixBase<Derived>& A)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("sum", Exception::Type::ZERO_SIZE);
 
@@ -114,11 +142,11 @@ double norm(const Eigen::MatrixBase<Derived>& A)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("norm", Exception::Type::ZERO_SIZE);
 
-	// convert matrix to complex then return its norm
+// convert matrix to complex then return its norm
 	return (rA.template cast<types::cplx>()).norm();
 }
 
@@ -128,11 +156,11 @@ types::cmat evals(const Eigen::MatrixBase<Derived>& A)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("evals", Exception::Type::ZERO_SIZE);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("evals", Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -146,11 +174,11 @@ types::cmat evects(const Eigen::MatrixBase<Derived>& A)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("evects", Exception::Type::ZERO_SIZE);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("evects", Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -164,11 +192,11 @@ types::cmat hevals(const Eigen::MatrixBase<Derived>& A)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("hevals", Exception::Type::ZERO_SIZE);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("hevals", Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -183,11 +211,11 @@ types::cmat hevects(const Eigen::MatrixBase<Derived>& A)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("hevects", Exception::Type::ZERO_SIZE);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("hevects", Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -212,11 +240,11 @@ types::cmat funm(const Eigen::MatrixBase<Derived> &A,
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("funm", Exception::Type::ZERO_SIZE);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("funm", Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -238,11 +266,11 @@ types::cmat sqrtm(const Eigen::MatrixBase<Derived> &A)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("sqrtm", Exception::Type::ZERO_SIZE);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("sqrtm", Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -256,11 +284,11 @@ types::cmat absm(const Eigen::MatrixBase<Derived> &A)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("absm", Exception::Type::ZERO_SIZE);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("absm", Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -274,11 +302,11 @@ types::cmat expm(const Eigen::MatrixBase<Derived> &A)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("expm", Exception::Type::ZERO_SIZE);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("expm", Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -292,11 +320,11 @@ types::cmat logm(const Eigen::MatrixBase<Derived> &A)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("logm", Exception::Type::ZERO_SIZE);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("logm", Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -310,11 +338,11 @@ types::cmat sinm(const Eigen::MatrixBase<Derived> &A)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("sinm", Exception::Type::ZERO_SIZE);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("sinm", Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -328,11 +356,11 @@ types::cmat cosm(const Eigen::MatrixBase<Derived> &A)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("cosm", Exception::Type::ZERO_SIZE);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("cosm", Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -348,15 +376,15 @@ types::cmat spectralpowm(const Eigen::MatrixBase<Derived> &A,
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("spectralpowm", Exception::Type::ZERO_SIZE);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("spectralpowm", Exception::Type::MATRIX_NOT_SQUARE);
 
-	// Define A^0 = Id, for z IDENTICALLY zero
+// Define A^0 = Id, for z IDENTICALLY zero
 	if (real(z) == 0 && imag(z) == 0)
 	{
 		types::cmat result(rA.rows(), rA.rows());
@@ -386,11 +414,11 @@ types::DynMat<typename Derived::Scalar> powm(
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("powm", Exception::Type::ZERO_SIZE);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("powm", Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -415,7 +443,7 @@ types::DynMat<OutputScalar> fun(const Eigen::MatrixBase<Derived> &A,
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("fun", Exception::Type::ZERO_SIZE);
 
@@ -438,15 +466,15 @@ types::DynMat<typename Derived1::Scalar> kron(
 	const types::DynMat<typename Derived1::Scalar> & rA = A;
 	const types::DynMat<typename Derived2::Scalar> & rB = B;
 
-	// check same scalar type
+// check same scalar type
 	if (typeid(typename Derived1::Scalar) != typeid(typename Derived2::Scalar))
 		throw Exception("kron", Exception::Type::TYPE_MISMATCH);
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("kron", Exception::Type::ZERO_SIZE);
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rB))
 		throw Exception("kron", Exception::Type::ZERO_SIZE);
 
@@ -497,11 +525,11 @@ types::DynMat<typename Derived::Scalar> kronpow(
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("kronpow", Exception::Type::ZERO_SIZE);
 
-	// check out of range
+// check out of range
 	if (n == 0)
 		throw Exception("kronpow", Exception::Type::OUT_OF_RANGE);
 
@@ -522,7 +550,7 @@ types::DynMat<typename Derived::Scalar> reshape(
 	size_t Arows = static_cast<size_t>(rA.rows());
 	size_t Acols = static_cast<size_t>(rA.cols());
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("reshape", Exception::Type::ZERO_SIZE);
 
@@ -550,7 +578,7 @@ types::DynMat<typename Derived::Scalar> syspermute(
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("syspermute", Exception::Type::ZERO_SIZE);
 
-	// check that dims is a valid dimension vector
+// check that dims is a valid dimension vector
 	if (!internal::_check_dims(dims))
 		throw Exception("syspermute", Exception::Type::DIMS_INVALID);
 
@@ -563,7 +591,7 @@ types::DynMat<typename Derived::Scalar> syspermute(
 
 	types::DynMat<typename Derived::Scalar> result;
 
-	// check column vector
+// check column vector
 	if (internal::_check_col_vector(rA)) // we have a column vector
 	{
 		// check that dims match the dimension of rA
@@ -641,23 +669,23 @@ types::DynMat<typename Derived::Scalar> ptrace2(
 
 // Error checks
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("ptrace2", Exception::Type::ZERO_SIZE);
 
-	// check that dims is a valid dimension vector
+// check that dims is a valid dimension vector
 	if (!internal::_check_dims(dims))
 		throw Exception("ptrace2", Exception::Type::DIMS_INVALID);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("ptrace2", Exception::Type::MATRIX_NOT_SQUARE);
 
-	// check dims has only 2 elements
+// check dims has only 2 elements
 	if (dims.size() != 2)
 		throw Exception("ptrace2", Exception::Type::NOT_BIPARTITE);
 
-	// check that dims match the dimension of A
+// check that dims match the dimension of A
 	if (!internal::_check_dims_match_mat(dims, rA))
 		throw Exception("ptrace2", Exception::Type::DIMS_MISMATCH_MATRIX);
 
@@ -686,15 +714,15 @@ types::DynMat<typename Derived::Scalar> ptrace(
 
 // error checks
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("ptrace", Exception::Type::ZERO_SIZE);
 
-	// check that dims is a valid dimension vector
+// check that dims is a valid dimension vector
 	if (!internal::_check_dims(dims))
 		throw Exception("ptrace", Exception::Type::DIMS_INVALID);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("ptrace", Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -756,15 +784,15 @@ types::DynMat<typename Derived::Scalar> ptranspose(
 
 // error checks
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("ptranspose", Exception::Type::ZERO_SIZE);
 
-	// check that dims is a valid dimension vector
+// check that dims is a valid dimension vector
 	if (!internal::_check_dims(dims))
 		throw Exception("ptranspose", Exception::Type::DIMS_INVALID);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("ptranspose", Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -772,7 +800,7 @@ types::DynMat<typename Derived::Scalar> ptranspose(
 	if (!internal::_check_dims_match_mat(dims, rA))
 		throw Exception("ptranspose", Exception::Type::DIMS_MISMATCH_MATRIX);
 
-	// check that subsys are valid
+// check that subsys are valid
 	if (!internal::_check_subsys(subsys, dims))
 		throw Exception("ptranspose", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
@@ -819,20 +847,20 @@ types::DynMat<typename Derived1::Scalar> comm(
 	const types::DynMat<typename Derived1::Scalar> & rA = A;
 	const types::DynMat<typename Derived2::Scalar> & rB = B;
 
-	// check same scalar type
+// check same scalar type
 	if (typeid(typename Derived1::Scalar) != typeid(typename Derived2::Scalar))
 		throw Exception("comm", Exception::Type::TYPE_MISMATCH);
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA)
 			|| !internal::_check_nonzero_size(rB))
 		throw Exception("comm", Exception::Type::ZERO_SIZE);
 
-	// check square matrices
+// check square matrices
 	if (!internal::_check_square_mat(rA) || !internal::_check_square_mat(rB))
 		throw Exception("comm", Exception::Type::MATRIX_NOT_SQUARE);
 
-	// check equal dimensions
+// check equal dimensions
 	if (rA.rows() != rB.rows())
 		throw Exception("comm", Exception::Type::DIMS_NOT_EQUAL);
 
@@ -848,20 +876,20 @@ types::DynMat<typename Derived1::Scalar> anticomm(
 	const types::DynMat<typename Derived1::Scalar>& rA = A;
 	const types::DynMat<typename Derived2::Scalar>& rB = B;
 
-	// check same scalar type
+// check same scalar type
 	if (typeid(typename Derived1::Scalar) != typeid(typename Derived2::Scalar))
 		throw Exception("kron", Exception::Type::TYPE_MISMATCH);
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA)
 			|| !internal::_check_nonzero_size(rB))
 		throw Exception("anticomm", Exception::Type::ZERO_SIZE);
 
-	// check square matrices
+// check square matrices
 	if (!internal::_check_square_mat(rA) || !internal::_check_square_mat(rB))
 		throw Exception("anticomm", Exception::Type::MATRIX_NOT_SQUARE);
 
-	// check equal dimensions
+// check equal dimensions
 	if (rA.rows() != rB.rows())
 		throw Exception("anticomm", Exception::Type::DIMS_NOT_EQUAL);
 
@@ -875,11 +903,11 @@ types::DynMat<typename Derived::Scalar> proj(
 {
 	const types::DynMat<typename Derived::Scalar> & rV = V;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rV))
 		throw Exception("proj", Exception::Type::ZERO_SIZE);
 
-	// check column vector
+// check column vector
 	if (!internal::_check_col_vector(rV))
 		throw Exception("proj", Exception::Type::MATRIX_NOT_CVECTOR);
 
@@ -894,23 +922,23 @@ types::DynMat<typename Derived::Scalar> expandout(
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("expandout", Exception::Type::ZERO_SIZE);
 
-	// check that dims is a valid dimension vector
+// check that dims is a valid dimension vector
 	if (!internal::_check_dims(dims))
 		throw Exception("expandout", Exception::Type::DIMS_INVALID);
 
-	// check square matrix
+// check square matrix
 	if (!internal::_check_square_mat(rA))
 		throw Exception("expandout", Exception::Type::MATRIX_NOT_SQUARE);
 
-	// check that position is valid
+// check that position is valid
 	if (pos > dims.size() - 1)
 		throw Exception("expandout", Exception::Type::OUT_OF_RANGE);
 
-	// check that dims[pos] match the dimension of A
+// check that dims[pos] match the dimension of A
 	if (static_cast<size_t>(rA.cols()) != dims[pos])
 		throw Exception("expandout", Exception::Type::DIMS_MISMATCH_MATRIX);
 
@@ -931,7 +959,7 @@ types::DynMat<typename Derived::Scalar> expandout(
 		Cdims[k] = dims[k];
 	}
 
-	// run over the main diagonal multi-indexes
+// run over the main diagonal multi-indexes
 	for (size_t i = 0; i < D; i++)
 	{
 		// get row multi_index
@@ -970,7 +998,7 @@ template<typename Derived>
 types::DynMat<typename Derived::Scalar> grams(
 		const std::vector<types::DynMat<typename Derived::Scalar> >& Vs)
 {
-	// check empty list
+// check empty list
 	if (!internal::_check_nonzero_size(Vs))
 		throw Exception("grams", Exception::Type::ZERO_SIZE);
 
@@ -978,16 +1006,16 @@ types::DynMat<typename Derived::Scalar> grams(
 		if (!internal::_check_nonzero_size(it))
 			throw Exception("grams", Exception::Type::ZERO_SIZE);
 
-	// check that Vs[0] is indeed a column vector
+// check that Vs[0] is indeed a column vector
 	if (!internal::_check_col_vector(Vs[0]))
 		throw Exception("grams", Exception::Type::MATRIX_NOT_CVECTOR);
 
-	// now check that all the rest match the size of the first vector
+// now check that all the rest match the size of the first vector
 	for (auto it : Vs)
 		if (it.rows() != Vs[0].rows() || it.cols() != 1)
 			throw Exception("grams", Exception::Type::DIMS_NOT_EQUAL);
 
-	// start the process
+// start the process
 	std::vector<types::DynMat<typename Derived::Scalar>> outvecs;
 	outvecs.push_back(Vs[0] / norm(Vs[0]));
 
@@ -1090,10 +1118,10 @@ types::ket mket(const std::vector<size_t>& mask)
 {
 	size_t n = mask.size();
 	size_t D = std::pow(2, n);
-	// check zero size
+// check zero size
 	if (n == 0)
 		throw Exception("mket", Exception::Type::ZERO_SIZE);
-	// check mask is a valid binary vector
+// check mask is a valid binary vector
 	for (auto it : mask)
 		if (it > 1)
 			throw Exception("mket", Exception::Type::NOT_QUBIT_SUBSYS);
@@ -1113,16 +1141,16 @@ types::ket mket(const std::vector<size_t>& mask,
 	{	return x*y;};
 	size_t D = std::accumulate(std::begin(dims), std::end(dims), 1u, multiply);
 
-	// check zero size
+// check zero size
 	if (n == 0)
 		throw Exception("mket", Exception::Type::ZERO_SIZE);
-	// check valid dims
+// check valid dims
 	if (!internal::_check_dims(dims))
 		throw Exception("mket", Exception::Type::DIMS_INVALID);
-	// check mask and dims have the same size
+// check mask and dims have the same size
 	if (mask.size() != dims.size())
 		throw Exception("mket", Exception::Type::SUBSYS_MISMATCH_DIMS);
-	// check mask is a valid vector
+// check mask is a valid vector
 	for (size_t i = 0; i < n; i++)
 		if (mask[i] >= dims[i])
 			throw Exception("mket", Exception::Type::SUBSYS_MISMATCH_DIMS);
@@ -1139,13 +1167,13 @@ types::ket mket(const std::vector<size_t>& mask, size_t d)
 	size_t n = mask.size();
 	size_t D = std::pow(d, n);
 
-	// check zero size
+// check zero size
 	if (n == 0)
 		throw Exception("mket", Exception::Type::ZERO_SIZE);
-	// check valid dims
+// check valid dims
 	if (d == 0)
 		throw Exception("mket", Exception::Type::DIMS_INVALID);
-	// check mask is a valid vector
+// check mask is a valid vector
 	for (size_t i = 0; i < n; i++)
 		if (mask[i] >= d)
 			throw Exception("mket", Exception::Type::SUBSYS_MISMATCH_DIMS);

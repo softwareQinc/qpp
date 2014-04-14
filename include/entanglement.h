@@ -160,8 +160,8 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 	if (D * D != A.rows())
 		throw Exception("gconcurrence", Exception::Type::DIMS_NOT_EQUAL);
 
-	types::cmat reducedA = ptrace2(rA * adjoint(rA), { D, D });
-	return D * std::pow(std::abs(det(reducedA)), 1. / D);
+	// we compute exp(logdet()) to avoid underflow
+	return D * std::abs(std::exp(2. / D * logdet(reshape(rA, D, D))));
 }
 
 } /* namespace qpp */
