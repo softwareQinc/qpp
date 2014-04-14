@@ -55,8 +55,8 @@ private:
 			pb01(types::cmat::Zero(4, 4)), //
 			pb10(types::cmat::Zero(4, 4)), //
 			pb11(types::cmat::Zero(4, 4)), //
-			GHZ(types::ket::Zero(8, 1)), //
-			W(types::ket::Zero(8, 1)), //
+			GHZ(types::ket::Zero(8)), //
+			W(types::ket::Zero(8)), //
 			pGHZ(types::cmat::Zero(8, 8)), //
 			pW(types::cmat::Zero(8, 8))
 	{
