@@ -100,7 +100,8 @@ double randn(double mean = 0, double sigma = 1)
 }
 
 // Random unitary matrix
-//(~3 times slower than Toby Cubitt's MATLAB's, because of the QR algorithm)
+// ~3 times slower than Toby Cubitt's MATLAB's,
+// because Eigen's QR algorithm is not parallelized
 types::cmat randU(size_t D)
 {
 	if (D == 0)
