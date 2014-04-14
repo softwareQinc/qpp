@@ -1085,6 +1085,78 @@ size_t multiidx2n(const std::vector<size_t>& midx,
 	return result;
 }
 
+// constructs a multi-qubit ket
+types::ket mket(const std::vector<size_t>& mask)
+{
+	size_t n = mask.size();
+	size_t D = std::pow(2, n);
+	// check zero size
+	if (n == 0)
+		throw Exception("mket", Exception::Type::ZERO_SIZE);
+	// check mask is a valid binary vector
+	for (auto it : mask)
+		if (it > 1)
+			throw Exception("mket", Exception::Type::NOT_QUBIT_SUBSYS);
+	std::vector<size_t> dims(n, 2);
+	types::ket result = types::ket::Zero(D);
+	size_t pos = multiidx2n(mask, dims);
+	result(pos) = 1;
+	return result;
+}
+
+// constructs a multi-qudit ket
+types::ket mket(const std::vector<size_t>& mask,
+		const std::vector<size_t>& dims)
+{
+	size_t n = mask.size();
+	auto multiply = [](size_t x, size_t y)->size_t
+	{	return x*y;};
+	size_t D = std::accumulate(std::begin(dims), std::end(dims), 1u, multiply);
+
+	// check zero size
+	if (n == 0)
+		throw Exception("mket", Exception::Type::ZERO_SIZE);
+	// check valid dims
+	if (!internal::_check_dims(dims))
+		throw Exception("mket", Exception::Type::DIMS_INVALID);
+	// check mask and dims have the same size
+	if (mask.size() != dims.size())
+		throw Exception("mket", Exception::Type::SUBSYS_MISMATCH_DIMS);
+	// check mask is a valid vector
+	for (size_t i = 0; i < n; i++)
+		if (mask[i] >= dims[i])
+			throw Exception("mket", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+	types::ket result = types::ket::Zero(D);
+	size_t pos = multiidx2n(mask, dims);
+	result(pos) = 1;
+	return result;
+}
+
+// constructs a multi-qudit ket where all subsystems have equal size d
+types::ket mket(const std::vector<size_t>& mask, size_t d)
+{
+	size_t n = mask.size();
+	size_t D = std::pow(d, n);
+
+	// check zero size
+	if (n == 0)
+		throw Exception("mket", Exception::Type::ZERO_SIZE);
+	// check valid dims
+	if (d == 0)
+		throw Exception("mket", Exception::Type::DIMS_INVALID);
+	// check mask is a valid vector
+	for (size_t i = 0; i < n; i++)
+		if (mask[i] >= d)
+			throw Exception("mket", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+	types::ket result = types::ket::Zero(D);
+	std::vector<size_t> dims(n, d);
+	size_t pos = multiidx2n(mask, dims);
+	result(pos) = 1;
+	return result;
+}
+
 } /* namespace qpp */
 
 #endif /* FUNCTIONS_H_ */

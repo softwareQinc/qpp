@@ -21,7 +21,7 @@ class Exception: public std::exception
 public:
 	enum class Type // exception types
 	{
-		UNKNOWN_EXCEPTION = 0,
+		UNKNOWN_EXCEPTION = 1,
 		ZERO_SIZE,
 		MATRIX_NOT_SQUARE,
 		MATRIX_NOT_CVECTOR,

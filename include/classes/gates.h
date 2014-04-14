@@ -54,7 +54,11 @@ private:
 			pb00(types::cmat::Zero(4, 4)), //
 			pb01(types::cmat::Zero(4, 4)), //
 			pb10(types::cmat::Zero(4, 4)), //
-			pb11(types::cmat::Zero(4, 4)) //
+			pb11(types::cmat::Zero(4, 4)), //
+			GHZ(types::ket::Zero(8, 1)), //
+			W(types::ket::Zero(8, 1)), //
+			pGHZ(types::cmat::Zero(8, 8)), //
+			pW(types::cmat::Zero(8, 8))
 	{
 		// initialize the constants and gates
 		H << 1 / std::sqrt(2), 1 / std::sqrt(2), 1 / std::sqrt(2), -1
@@ -99,6 +103,14 @@ private:
 		pb01 = b01 * b01.adjoint();
 		pb10 = b10 * b10.adjoint();
 		pb11 = b11 * b11.adjoint();
+
+		GHZ << 1, 0, 0, 0, 0, 0, 0, 1;
+		GHZ = GHZ / std::sqrt(2);
+		W << 0, 1, 1, 0, 1, 0, 0, 0;
+		W = W / std::sqrt(3);
+
+		pGHZ = GHZ * GHZ.adjoint();
+		pW = W * W.adjoint();
 	}
 public:
 	Gates(const Gates&) = delete;
@@ -162,6 +174,14 @@ public:
 	types::cmat pb10;
 	types::cmat pb11;
 
+	// W and GHZ states
+	types::ket GHZ;
+	types::ket W;
+
+	// projectors onto GHZ and W
+	types::cmat pGHZ;
+	types::cmat pW;
+
 	// gates with variable dimension
 
 	// one qubit gates
@@ -189,7 +209,7 @@ public:
 		types::cmat result(D, D);
 		result = types::cmat::Zero(D, D);
 		for (size_t i = 0; i < D; i++)
-			result(i, i) = pow(ct::omega(D), i);
+			result(i, i) = std::pow(ct::omega(D), i);
 		return result;
 	}
 
@@ -202,7 +222,7 @@ public:
 		result = types::cmat::Zero(D, D);
 		for (size_t j = 0; j < D; j++)
 			for (size_t i = 0; i < D; i++)
-				result(i, j) = 1 / std::sqrt(D) * pow(ct::omega(D), i * j);
+				result(i, j) = 1 / std::sqrt(D) * std::pow(ct::omega(D), i * j);
 		return result;
 	}
 
