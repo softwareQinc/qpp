@@ -14,6 +14,7 @@
 #include "internal.h"
 #include "types.h"
 #include "classes/exception.h"
+#include "io.h"
 
 // various entropies
 
@@ -200,6 +201,74 @@ double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
 			result += std::pow(std::abs((types::cplx) ev(i)), alpha);
 
 	return (result - 1) / (1 - alpha);
+}
+
+// mutual information between 2 subsystems
+template<typename Derived>
+double mutualinfo(const Eigen::MatrixBase<Derived>& A,
+		const std::vector<size_t>& subsys, const std::vector<size_t>& dims)
+
+{
+	const types::DynMat<typename Derived::Scalar> & rA = A;
+
+// error checks
+
+	// check that there are only 2 subsystems
+	if (subsys.size() != 2)
+		throw Exception("mutualinfo", Exception::Type::NOT_BIPARTITE);
+
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("mutualinfo", Exception::Type::ZERO_SIZE);
+
+	// check that dims is a valid dimension vector
+	if (!internal::_check_dims(dims))
+		throw Exception("mutualinfo", Exception::Type::DIMS_INVALID);
+
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("mutualinfo", Exception::Type::MATRIX_NOT_SQUARE);
+
+// check that dims match the dimension of A
+	if (!internal::_check_dims_match_mat(dims, rA))
+		throw Exception("mutualinfo", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+// check that subsys are valid
+	if (!internal::_check_subsys(subsys, dims))
+		throw Exception("mutualinfo", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+// construct the complement of subsys
+	std::vector<size_t> subsysbarA;
+	std::vector<size_t> subsysbarB;
+	std::vector<size_t> subsysbarAB;
+	for (size_t i = 0; i < dims.size(); i++)
+	{
+		if (subsys[0] != i)
+			subsysbarA.push_back(i);
+		if (subsys[1] != i)
+			subsysbarB.push_back(i);
+		if (subsys[0] != i && subsys[1] != i)
+			subsysbarAB.push_back(i);
+
+	};
+
+	types::cmat rhoA;
+	types::cmat rhoB;
+	types::cmat rhoAB;
+	if (dims.size() == 2) // bipartite state
+	{
+		rhoA = ptrace2(rA, dims);
+		rhoB = ptrace(rA, subsysbarB, dims);
+		rhoAB = rA;
+	}
+	else
+	{
+		rhoA = ptrace(rA, subsysbarA, dims);
+		rhoB = ptrace(rA, subsysbarB, dims);
+		rhoAB = ptrace(rA, subsysbarAB, dims);
+	}
+
+	return shannon(rhoA) + shannon(rhoB) - shannon(rhoAB);
 }
 
 } /* namespace qpp */

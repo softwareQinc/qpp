@@ -655,7 +655,7 @@ types::DynMat<typename Derived::Scalar> ptrace2(
 
 	// check dims has only 2 elements
 	if (dims.size() != 2)
-		throw Exception("ptrace2", Exception::Type::DIMS_MISMATCH_MATRIX);
+		throw Exception("ptrace2", Exception::Type::NOT_BIPARTITE);
 
 	// check that dims match the dimension of A
 	if (!internal::_check_dims_match_mat(dims, rA))

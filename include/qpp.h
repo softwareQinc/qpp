@@ -13,6 +13,7 @@
 
 #include "channels.h"
 #include "constants.h"
+#include "entanglement.h"
 #include "entropies.h"
 #include "functions.h"
 #include "io.h"

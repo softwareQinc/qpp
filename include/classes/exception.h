@@ -40,6 +40,7 @@ public:
 		PERM_MISMATCH_DIMS,
 		NOT_QUBIT_GATE,
 		NOT_QUBIT_SUBSYS,
+		NOT_BIPARTITE,
 		OUT_OF_RANGE,
 		UNDEFINED_TYPE,
 		TYPE_MISMATCH,
@@ -137,6 +138,9 @@ private:
 			break;
 		case Type::NOT_QUBIT_SUBSYS:
 			_msg += "Subsystems are not qubits!";
+			break;
+		case Type::NOT_BIPARTITE:
+			_msg += "Not bipartite!";
 			break;
 		case Type::OUT_OF_RANGE:
 			_msg += "Parameter out of range!";
