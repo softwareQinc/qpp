@@ -11,7 +11,6 @@
 
 // TODO: use .data() raw pointer instead of looping
 // TODO: optimize syspermute: ?Eigen::Map?
-// TODO: IMPORTANT Rewrite partial trace without syspermute
 // TODO: further parallelization
 // TODO: testing
 // TODO: write documentation
