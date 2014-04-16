@@ -188,14 +188,14 @@ bool _check_eq_dims(const std::vector<size_t> &dims, size_t dim)
 }
 
 // check that subsys is valid with respect to valid dims
-bool _check_subsys(const std::vector<size_t>& subsys,
+bool _check_subsys_match_dims(const std::vector<size_t>& subsys,
 		const std::vector<size_t>& dims)
 {
-	// check non-zero sized subsystems
-	if (subsys.size() == 0)
-		return false;
+//	// check non-zero sized subsystems
+//	if (subsys.size() == 0)
+//		return false;
 
-	// check valid number of subsystems
+// check valid number of subsystems
 	if (subsys.size() > dims.size())
 		return false;
 
@@ -219,7 +219,7 @@ bool _check_subsys(const std::vector<size_t>& subsys,
 }
 
 // check that the permutation is valid with respect to valid dims
-bool _check_perm(const std::vector<size_t>& perm,
+bool _check_perm_match_dims(const std::vector<size_t>& perm,
 		const std::vector<size_t>& dims)
 {
 	if (perm.size() != dims.size())
@@ -231,61 +231,6 @@ bool _check_perm(const std::vector<size_t>& perm,
 		if (sort_perm[i] != i)
 			return false;
 	return true;
-}
-
-// used inside the #pragma omp parallel for in syspermute
-template<typename Scalar>
-void _syspermute_worker(size_t numdims, const size_t* cdims,
-		const size_t* cperm, size_t i, size_t &iperm,
-		const types::DynMat<Scalar> &V, types::DynMat<Scalar> &result)
-{
-	size_t* midx = new size_t[numdims];
-	size_t* midxtmp = new size_t[numdims];
-	size_t* permdims = new size_t[numdims];
-
-	// compute the multi-index
-	internal::_n2multiidx(i, numdims, cdims, midx);
-
-	for (size_t k = 0; k < numdims; k++)
-	{
-		permdims[k] = cdims[cperm[k]]; // permuted dimensions
-		midxtmp[k] = midx[cperm[k]]; // permuted multi-indexes
-	}
-
-	// move back to integer indexes
-	iperm = internal::_multiidx2n(midxtmp, numdims, permdims);
-	result(iperm) = V(i);
-
-	delete[] midx;
-	delete[] midxtmp;
-	delete[] permdims;
-}
-
-// used inside the #pragma omp parallel for in ptranspose
-template<typename Scalar>
-void _ptranspose_worker(const size_t* midxcol, size_t numdims, size_t numsubsys,
-		const size_t* cdims, const size_t* csubsys, size_t i, size_t j,
-		size_t &iperm, size_t &jperm, const types::DynMat<Scalar>& A,
-		types::DynMat<Scalar>& result)
-{
-	size_t* midxcoltmp = new size_t[numdims];
-	size_t* midxrow = new size_t[numdims];
-	for (size_t k = 0; k < numdims; k++)
-		midxcoltmp[k] = midxcol[k];
-
-	// compute the row multi-index
-	_n2multiidx(i, numdims, cdims, midxrow);
-
-	for (size_t k = 0; k < numsubsys; k++)
-		std::swap(midxcoltmp[csubsys[k]], midxrow[csubsys[k]]);
-
-	// move back to integer indexes
-	iperm = _multiidx2n(midxrow, numdims, cdims);
-	jperm = _multiidx2n(midxcoltmp, numdims, cdims);
-	result(iperm, jperm) = A(i, j);
-
-	delete[] midxrow;
-	delete[] midxcoltmp;
 }
 
 } /* namespace internal */

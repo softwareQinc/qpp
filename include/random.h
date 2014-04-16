@@ -70,11 +70,9 @@ types::dmat randn(size_t rows, size_t cols, double mean, double sigma)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
 
 	NormalDistribution nd(mean, sigma);
-	auto lambda = [&nd](double)
-	{	return nd.sample();};
 
-	//types::dmat result = types::dmat::Zero(rows, cols);
-	return types::dmat::Zero(rows, cols).unaryExpr(lambda);
+	return types::dmat::Zero(rows, cols).unaryExpr([&nd](double)
+	{	return nd.sample();});
 
 }
 

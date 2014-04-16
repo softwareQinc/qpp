@@ -268,7 +268,7 @@ public:
 		dims.insert(std::begin(dims), n, D);
 
 		// check that ctrl+gate subsystem is valid with respect to local dimensions
-		if (!internal::_check_subsys(ctrlgate, dims))
+		if (!internal::_check_subsys_match_dims(ctrlgate, dims))
 			throw Exception("CTRL", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
 		// check that gate list match the dimension of the matrix

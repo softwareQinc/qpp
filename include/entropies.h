@@ -234,7 +234,7 @@ double mutualinfo(const Eigen::MatrixBase<Derived>& A,
 		throw Exception("mutualinfo", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 // check that subsys are valid
-	if (!internal::_check_subsys(subsys, dims))
+	if (!internal::_check_subsys_match_dims(subsys, dims))
 		throw Exception("mutualinfo", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
 // construct the complement of subsys
@@ -258,7 +258,7 @@ double mutualinfo(const Eigen::MatrixBase<Derived>& A,
 	if (dims.size() == 2) // bipartite state
 	{
 		rhoA = ptrace2(rA, dims);
-		rhoB = ptrace(rA, subsysbarB, dims);
+		rhoB = ptrace1(rA, dims);
 		rhoAB = rA;
 	}
 	else

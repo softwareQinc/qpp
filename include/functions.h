@@ -17,6 +17,8 @@
 #include "types.h"
 #include "classes/exception.h"
 
+#include "io.h"
+
 // Collection of quantum computing useful functions
 namespace qpp
 {
@@ -583,13 +585,39 @@ types::DynMat<typename Derived::Scalar> syspermute(
 		throw Exception("syspermute", Exception::Type::DIMS_INVALID);
 
 // check that the size of the permutation is OK
-	if (!internal::_check_perm(perm, dims))
+	if (!internal::_check_perm_match_dims(perm, dims))
 		throw Exception("syspermute", Exception::Type::PERM_MISMATCH_DIMS);
 
-	size_t dim = static_cast<size_t>(rA.rows());
+	size_t D = static_cast<size_t>(rA.rows());
 	size_t numdims = dims.size();
 
 	types::DynMat<typename Derived::Scalar> result;
+
+	auto worker = [](size_t i, size_t numdims, const size_t* cdims,
+			const size_t* cperm)
+	{
+		size_t* midx = new size_t[numdims];
+		size_t* midxtmp = new size_t[numdims];
+		size_t* permdims = new size_t[numdims];
+
+		/* compute the multi-index */
+		internal::_n2multiidx(i, numdims, cdims, midx);
+
+		for (size_t k = 0; k < numdims; k++)
+		{
+			permdims[k] = cdims[cperm[k]]; // permuted dimensions
+			midxtmp[k] = midx[cperm[k]];// permuted multi-indexes
+		}
+
+		// move back to integer indexes
+		size_t iperm = internal::_multiidx2n(midxtmp, numdims, permdims);
+
+		delete[] midx;
+		delete[] midxtmp;
+		delete[] permdims;
+
+		return iperm;
+	};
 
 // check column vector
 	if (internal::_check_col_vector(rA)) // we have a column vector
@@ -601,7 +629,6 @@ types::DynMat<typename Derived::Scalar> syspermute(
 
 		size_t* cdims = new size_t[numdims];
 		size_t* cperm = new size_t[numdims];
-		size_t* midx = new size_t[numdims];
 
 		// copy dims in cdims and perm in cperm
 		for (size_t i = 0; i < numdims; i++)
@@ -609,15 +636,15 @@ types::DynMat<typename Derived::Scalar> syspermute(
 			cdims[i] = dims[i];
 			cperm[i] = perm[i];
 		}
-		result.resize(dim, 1);
-		size_t iperm = 0;
+		result.resize(D, 1);
+
 #pragma omp parallel for
-		for (size_t i = 0; i < dim; i++)
-			internal::_syspermute_worker(numdims, cdims, cperm, i, iperm, rA,
-					result);
+		for (size_t i = 0; i < D; i++)
+			result(worker(i, numdims, cdims, cperm)) = rA(i);
+
 		delete[] cdims;
 		delete[] cperm;
-		delete[] midx;
+
 		return result;
 	}
 
@@ -630,7 +657,6 @@ types::DynMat<typename Derived::Scalar> syspermute(
 
 		size_t* cdims = new size_t[2 * numdims];
 		size_t* cperm = new size_t[2 * numdims];
-		size_t* midx = new size_t[2 * numdims];
 
 		// copy dims in cdims and perm in cperm
 		for (size_t i = 0; i < numdims; i++)
@@ -639,25 +665,76 @@ types::DynMat<typename Derived::Scalar> syspermute(
 			cperm[i] = perm[i];
 			cperm[i + numdims] = perm[i] + numdims;
 		}
-		result.resize(dim * dim, 1);
+		result.resize(D * D, 1);
 		// map A to a column vector
 		types::DynMat<typename Derived::Scalar> vectA = Eigen::Map<
 				types::DynMat<typename Derived::Scalar>>(
-				const_cast<typename Derived::Scalar*>(rA.data()), dim * dim, 1);
-		size_t iperm = 0;
+				const_cast<typename Derived::Scalar*>(rA.data()), D * D, 1);
+
 #pragma omp parallel for
-		for (size_t i = 0; i < dim * dim; i++)
-			internal::_syspermute_worker(2 * numdims, cdims, cperm, i, iperm,
-					vectA, result);
+		for (size_t i = 0; i < D * D; i++)
+			result(worker(i, 2 * numdims, cdims, cperm)) = rA(i);
+
 		delete[] cdims;
 		delete[] cperm;
-		delete[] midx;
-		return reshape(result, dim, dim);
+
+		return reshape(result, D, D);
 	}
 
 	else
 		throw Exception("syspermute",
 				Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+}
+
+// Partial trace over subsystem A in a D_A x D_B system
+template<typename Derived>
+types::DynMat<typename Derived::Scalar> ptrace1(
+		const Eigen::MatrixBase<Derived>& A, const std::vector<size_t>& dims)
+{
+	const types::DynMat<typename Derived::Scalar> & rA = A;
+
+// Error checks
+
+// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("ptrace1", Exception::Type::ZERO_SIZE);
+
+// check that dims is a valid dimension vector
+	if (!internal::_check_dims(dims))
+		throw Exception("ptrace1", Exception::Type::DIMS_INVALID);
+
+// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("ptrace1", Exception::Type::MATRIX_NOT_SQUARE);
+
+// check dims has only 2 elements
+	if (dims.size() != 2)
+		throw Exception("ptrace1", Exception::Type::NOT_BIPARTITE);
+
+// check that dims match the dimension of A
+	if (!internal::_check_dims_match_mat(dims, rA))
+		throw Exception("ptrace1", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+	size_t DA = dims[0];
+	size_t DB = dims[1];
+
+	types::DynMat<typename Derived::Scalar> result = types::DynMat<
+			typename Derived::Scalar>::Zero(DB, DB);
+
+	auto worker = [rA, DA, DB](size_t i, size_t j)
+	{
+		typename Derived::Scalar sum = 0;
+		for (size_t m = 0; m < DA; m++)
+		sum += rA(m * DB + i, m * DB + j);
+		return sum;
+	};
+
+	for (size_t j = 0; j < DB; j++) // column major order for speed
+#pragma omp parallel for
+		for (size_t i = 0; i < DB; i++)
+			result(i, j) = worker(i, j);
+
+	return result;
 }
 
 // Partial trace over subsystem B in a D_A x D_B system
@@ -730,47 +807,115 @@ types::DynMat<typename Derived::Scalar> ptrace(
 	if (!internal::_check_dims_match_mat(dims, rA))
 		throw Exception("ptrace", Exception::Type::DIMS_MISMATCH_MATRIX);
 
-// check that subsys are valid
-	if (!internal::_check_subsys(subsys, dims))
+	if (subsys.size() == dims.size())
+	{
+		types::DynMat<typename Derived::Scalar> result = types::DynMat<
+				typename Derived::Scalar>(1, 1);
+		result(0, 0) = rA.trace();
+		return result;
+	}
+	if (subsys.size() == 0)
+		return rA;
+	// check that subsys are valid
+	if (!internal::_check_subsys_match_dims(subsys, dims))
 		throw Exception("ptrace", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-	size_t dim = static_cast<size_t>(rA.rows());
-	size_t numsubsys = subsys.size(); // number of subsystems we trace out
-	size_t numdims = dims.size(); // total number of subsystems;
-	std::vector<size_t> perm(numdims, 0); // the permutation vector
-	std::vector<size_t> permdims; // the permuted dimensions
-
-	types::DynMat<typename Derived::Scalar> result;
-
-// the total dimension of the traced-out subsystems
+	size_t D = static_cast<size_t>(rA.rows());
+	size_t n = dims.size();
+	size_t nsubsys = subsys.size();
+	size_t nsubsysbar = n - nsubsys;
 	size_t dimsubsys = 1;
-	for (size_t i = 0; i < numsubsys; i++)
+	for (size_t i = 0; i < nsubsys; i++)
 		dimsubsys *= dims[subsys[i]];
+	size_t dimsubsysbar = D / dimsubsys;
 
-	std::vector<size_t> sizeAB;
-	sizeAB.push_back(dim / dimsubsys);
-	sizeAB.push_back(dimsubsys);
+	size_t* Cdims = new size_t[n];
+	size_t* Csubsys = new size_t[nsubsys];
+	size_t* Cdimssubsys = new size_t[nsubsys];
+	size_t* Csubsysbar = new size_t[nsubsysbar];
+	size_t* Cdimssubsysbar = new size_t[nsubsysbar];
 
-// construct the permutation that bring the traced-out subsystems to the end
-	size_t cnt0 = 0;
-	size_t cnt1 = 0;
-	for (size_t i = 0; i < numdims; i++)
+	for (size_t i = 0; i < n; i++)
+		Cdims[i] = dims[i];
+	for (size_t i = 0; i < nsubsys; i++)
 	{
-		// we find that i belongs to the subsystem
-		if (std::find(std::begin(subsys), std::end(subsys), i)
-				!= std::end(subsys))
+		Csubsys[i] = subsys[i];
+		Cdimssubsys[i] = dims[subsys[i]];
+	}
+	// construct the complement of subsys
+	size_t cnt = 0;
+	for (size_t i = 0; i < n; i++)
+	{
+		bool found = false;
+		for (size_t m = 0; m < nsubsys; m++)
+			if (subsys[m] == i)
+			{
+				found = true;
+				break;
+			}
+		if (!found)
 		{
-			perm[numdims - numsubsys + cnt0] = i;
-			cnt0++;
-		}
-		else
-		{
-			perm[cnt1] = i;
-			cnt1++;
+			Csubsysbar[cnt] = i;
+			Cdimssubsysbar[cnt] = dims[i];
+			cnt++;
 		}
 	}
 
-	return ptrace2(syspermute(rA, perm, dims), sizeAB);
+	types::DynMat<typename Derived::Scalar> result = types::DynMat<
+			typename Derived::Scalar>(dimsubsysbar, dimsubsysbar);
+
+	auto worker = [=](size_t i, size_t j)
+	{
+		size_t* Cmidxrow = new size_t[n];
+		size_t* Cmidxcol = new size_t[n];
+		size_t* Cmidxrowsubsysbar = new size_t[nsubsysbar];
+		size_t* Cmidxcolsubsysbar = new size_t[nsubsysbar];
+		size_t* Cmidxsubsys = new size_t[nsubsys];
+
+		/* get the row/col multi-indexes of the complement */
+		internal::_n2multiidx(i, nsubsysbar, Cdimssubsysbar, Cmidxrowsubsysbar);
+		internal::_n2multiidx(j, nsubsysbar, Cdimssubsysbar, Cmidxcolsubsysbar);
+		/* write them in the global row/col multi-indexes */
+		for(size_t k=0;k<nsubsysbar;k++)
+		{
+			Cmidxrow[Csubsysbar[k]]=Cmidxrowsubsysbar[k];
+			Cmidxcol[Csubsysbar[k]]=Cmidxcolsubsysbar[k];
+		}
+		typename Derived::Scalar sm = 0;
+		for(size_t a=0; a<dimsubsys; a++)
+		{
+			// get the multi-index over which we do the summation
+			internal::_n2multiidx(a, nsubsys, Cdimssubsys, Cmidxsubsys);
+			// write it into the global row/col multi-indexes
+			for(size_t k=0;k<nsubsys;k++)
+			Cmidxrow[Csubsys[k]]=Cmidxcol[Csubsys[k]]=Cmidxsubsys[k];
+
+			// now do the sum
+			sm+= rA(internal::_multiidx2n(Cmidxrow,n,Cdims),
+					internal::_multiidx2n(Cmidxcol,n,Cdims));
+		}
+
+		delete[] Cmidxrow;
+		delete[] Cmidxcol;
+		delete[] Cmidxrowsubsysbar;
+		delete[] Cmidxcolsubsysbar;
+		delete[] Cmidxsubsys;
+
+		return sm;
+	};
+
+	for (size_t i = 0; i < dimsubsysbar; i++)
+#pragma omp parallel for
+		for (size_t j = 0; j < dimsubsysbar; j++)
+			result(i, j) = worker(i, j);
+
+	delete[] Cdims;
+	delete[] Csubsys;
+	delete[] Cdimssubsys;
+	delete[] Csubsysbar;
+	delete[] Cdimssubsysbar;
+
+	return result;
 }
 
 // partial transpose
@@ -800,18 +945,20 @@ types::DynMat<typename Derived::Scalar> ptranspose(
 	if (!internal::_check_dims_match_mat(dims, rA))
 		throw Exception("ptranspose", Exception::Type::DIMS_MISMATCH_MATRIX);
 
+	if (subsys.size() == dims.size())
+		return rA.transpose();
+	if (subsys.size() == 0)
+		return rA;
 // check that subsys are valid
-	if (!internal::_check_subsys(subsys, dims))
+	if (!internal::_check_subsys_match_dims(subsys, dims))
 		throw Exception("ptranspose", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-	size_t dim = static_cast<size_t>(rA.rows());
+	size_t D = static_cast<size_t>(rA.rows());
 	size_t numdims = dims.size();
 	size_t numsubsys = subsys.size();
 	size_t* cdims = new size_t[numdims];
 	size_t* midxcol = new size_t[numdims];
 	size_t* csubsys = new size_t[numsubsys];
-
-	types::DynMat<typename Derived::Scalar> result = rA;
 
 // copy dims in cdims and subsys in csubsys
 	for (size_t i = 0; i < numdims; i++)
@@ -819,16 +966,36 @@ types::DynMat<typename Derived::Scalar> ptranspose(
 	for (size_t i = 0; i < numsubsys; i++)
 		csubsys[i] = subsys[i];
 
-	size_t iperm = 0;
-	size_t jperm = 0;
-	for (size_t j = 0; j < dim; j++)
+	types::DynMat<typename Derived::Scalar> result(D, D);
+
+	auto worker = [=, &result](size_t i, size_t j)
+	{
+		size_t* midxcoltmp = new size_t[numdims];
+		size_t* midxrow = new size_t[numdims];
+		for (size_t k = 0; k < numdims; k++)
+		midxcoltmp[k] = midxcol[k];
+
+		/* compute the row multi-index */
+		internal::_n2multiidx(i, numdims, cdims, midxrow);
+
+		for (size_t k = 0; k < numsubsys; k++)
+		std::swap(midxcoltmp[csubsys[k]], midxrow[csubsys[k]]);
+
+		/* writes the result */
+		result(i, j)=rA(internal::_multiidx2n(midxrow, numdims, cdims),
+				internal::_multiidx2n(midxcoltmp, numdims, cdims));
+
+		delete[] midxrow;
+		delete[] midxcoltmp;
+	};
+
+	for (size_t j = 0; j < D; j++)
 	{
 		// compute the column multi-index
 		internal::_n2multiidx(j, numdims, cdims, midxcol);
 #pragma omp parallel for
-		for (size_t i = 0; i < dim; i++)
-			internal::_ptranspose_worker(midxcol, numdims, numsubsys, cdims,
-					csubsys, i, j, iperm, jperm, rA, result);
+		for (size_t i = 0; i < D; i++)
+			worker(i, j);
 	}
 
 	delete[] midxcol;
@@ -1072,6 +1239,7 @@ std::vector<size_t> n2multiidx(size_t n, const std::vector<size_t>& dims)
 
 	auto multiply = [](const size_t x, const size_t y)->size_t
 	{	return x*y;};
+
 	if (n >= std::accumulate(std::begin(dims), std::end(dims), 1u, multiply))
 		throw Exception("n2multiidx", Exception::Type::OUT_OF_RANGE);
 
@@ -1139,6 +1307,7 @@ types::ket mket(const std::vector<size_t>& mask,
 	size_t n = mask.size();
 	auto multiply = [](size_t x, size_t y)->size_t
 	{	return x*y;};
+
 	size_t D = std::accumulate(std::begin(dims), std::end(dims), 1u, multiply);
 
 // check zero size
