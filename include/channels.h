@@ -144,15 +144,16 @@ std::vector<types::cmat> choi2kraus(const types::cmat& A)
 	if (D * D != static_cast<size_t>(A.rows()))
 		throw Exception("choi2kraus", Exception::Type::DIMS_INVALID);
 
-	types::cmat eval = hevals(A);
+	types::dmat ev = hevals(A);
 	types::cmat evec = hevects(A);
 	std::vector<types::cmat> result;
 
 	for (size_t i = 0; i < D * D; i++)
 	{
-		if (std::abs((types::cplx) eval.real()(i)) > ct::eps)
+		// take the absolute value to get rid of tiny negatives
+		if (std::abs((double) ev(i)) > ct::eps)
 			result.push_back(
-					(types::cmat) (std::sqrt((types::cplx) eval.real()(i))
+					(types::cmat) (std::sqrt((double) ev(i))
 							* reshape((types::cmat) evec.col(i), D, D)));
 	}
 	return result;

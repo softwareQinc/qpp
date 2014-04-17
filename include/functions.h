@@ -188,9 +188,9 @@ types::cmat evects(const Eigen::MatrixBase<Derived>& A)
 	return es.eigenvectors();
 }
 
-// eigenvalues of Hermitian matrices (CHANGES return type to complex)
+// eigenvalues of Hermitian matrices
 template<typename Derived>
-types::cmat hevals(const Eigen::MatrixBase<Derived>& A)
+types::dmat hevals(const Eigen::MatrixBase<Derived>& A)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
@@ -204,7 +204,7 @@ types::cmat hevals(const Eigen::MatrixBase<Derived>& A)
 
 	Eigen::SelfAdjointEigenSolver<types::cmat> es(
 			rA.template cast<types::cplx>());
-	return es.eigenvalues().template cast<types::cplx>();
+	return es.eigenvalues();
 }
 
 // eigenvectors of Hermitian matrix (CHANGES return type to complex matrix)

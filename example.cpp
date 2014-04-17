@@ -109,11 +109,11 @@ int main()
 	cout << endl << "Spectral decomposition tests." << endl;
 	size_t D = 4;
 	cmat rH = randH(D);
-	cmat evalsH = hevals(rH);
+	dmat evalsH = hevals(rH);
 	cmat evectsH = hevects(rH);
 	cmat spec = cmat::Zero(D, D);
 	for (size_t i = 0; i < D; i++)
-		spec += evalsH(i) * prj(evectsH.col(i));
+		spec += evalsH(i) * prj((cmat) evectsH.col(i));
 	cout << "Original matrix: " << endl;
 	displn(rH);
 	cout << endl << "Reconstructed from spectral decomposition: " << endl;
@@ -136,7 +136,7 @@ int main()
 	displn(choim);
 	cout << endl << "The eigenvalues of the Choi matrix are: " << endl;
 	displn(transpose(hevals(choim)));
-	cout << endl << "Their sum is: " << sum(hevals(choim)).real() << endl;
+	cout << endl << "Their sum is: " << sum(hevals(choim)) << endl;
 	std::vector<cmat> Kperps = choi2kraus(choim);
 	cout << endl << "The Kraus rank of the channel is: " << Kperps.size()
 			<< endl;
@@ -154,7 +154,7 @@ int main()
 		cout << std::abs((cplx) evalsupop(i)) << " ";
 	cout << endl << endl << "Diference in norm for superoperator action: ";
 	cmat rho_out2 = transpose(
-			reshape(smat * reshape(transpose(rho_in), d * d, 1), d, d));
+			(cmat) reshape(smat * reshape(transpose(rho_in), d * d, 1), d, d));
 	cout << norm(rho_out - rho_out2) << endl;
 
 	// statistics tests
