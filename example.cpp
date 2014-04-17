@@ -169,7 +169,7 @@ int main()
 	cout << "The probabilities are: ";
 	displn(dc.probabilities(), ", ", "{", "}");
 
-	// other tests
+	// 	// TIMING tests
 	cout << endl << "Timing tests..." << endl;
 	size_t n = 12; // number of qubits
 	size_t N = std::pow(2, n);
@@ -179,11 +179,10 @@ int main()
 	cout << "n = " << n << " qubits, matrix size " << N << " x " << N << "."
 			<< endl;
 
-	// TIMING
-	Timer t, total; // start the timer, automatic tic() in the constructor
-
 	// matrix initialization
 	cout << endl << "Matrix initialization timing." << endl;
+	// start the timer, automatic tic() in the constructor
+	Timer t, total;
 	cmat randcmat = cmat::Random(N, N);
 	t.toc(); // read the time
 	cout << "Took " << t << " seconds." << endl;
