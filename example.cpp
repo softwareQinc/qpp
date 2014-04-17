@@ -9,9 +9,6 @@
 
 //#include "matlab.h" // support for MATLAB
 
-// TODO: use .data() raw pointer instead of looping
-// TODO: optimize syspermute: ?Eigen::Map?
-// TODO: further parallelization
 // TODO: testing
 // TODO: write documentation
 
