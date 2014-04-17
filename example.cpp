@@ -31,19 +31,6 @@ int main()
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
-	// functor test
-	cout << endl << "Functor z^3 acting on:" << endl;
-	cmat a(2, 2);
-	a << 1, 2, 3, 4;
-	displn(a);
-	cout << "Result (with lambda):" << endl;
-	// functor z^3 componentwise, specify OutputScalar and Derived for lambdas
-	displn(cwise<cplx, cmat>(a, [](const cplx& z)->cplx
-	{	return z*z*z;}));
-	cout << "Result (with proper function):" << endl;
-	// automatic type deduction for proper functions
-	displn(cwise(a, &pow3));
-
 	/*
 	 // TESTING
 
@@ -112,6 +99,19 @@ int main()
 	 output = rep * input;
 	 cout << "Circuit acting on |000> produces |111>. Check: " << endl;
 	 displn(output);
+
+	 // functor test
+	 cout << endl << "Functor z^3 acting on:" << endl;
+	 cmat a(2, 2);
+	 a << 1, 2, 3, 4;
+	 displn(a);
+	 cout << "Result (with lambda):" << endl;
+	 // functor z^3 componentwise, specify OutputScalar and Derived for lambdas
+	 displn(cwise<cplx, cmat>(a, [](const cplx& z)->cplx
+	 {	return z*z*z;}));
+	 cout << "Result (with proper function):" << endl;
+	 // automatic type deduction for proper functions
+	 displn(cwise(a, &pow3));
 
 	 // Gram-Schmidt
 	 cout << endl << "Gram-Schmidt on matrix:" << endl;
@@ -184,6 +184,7 @@ int main()
 	 DiscreteDistributionAbsSquare dc(va);
 	 cout << "The probabilities are: ";
 	 displn(dc.probabilities(), ", ", "{", "}");
+
 
 	 // 	// TIMING tests
 	 cout << endl << "Timing tests..." << endl;
