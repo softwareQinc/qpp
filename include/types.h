@@ -20,22 +20,16 @@ namespace types
 // typedefs
 typedef std::complex<double> cplx; // complex number double precision
 
-// complex matrix
-typedef Eigen::MatrixXcd cmat; // dynamic-size
+// complex matrix, dynamic size
+typedef Eigen::MatrixXcd cmat;
 
-// double matrix
-typedef Eigen::MatrixXd dmat; // dynamic-size
+// double matrix, dynamic size
+typedef Eigen::MatrixXd dmat;
 
-// float matrix
-typedef Eigen::MatrixXf fmat; // dynamic-size
-
-// integer matrix
-typedef Eigen::MatrixXi imat; // dynamic-size
-
-// ket
+// ket, dynamic size
 typedef Eigen::Matrix<cplx, Eigen::Dynamic, 1> ket;
 
-// bra
+// bra, dynamic size
 typedef Eigen::Matrix<cplx, 1, Eigen::Dynamic> bra;
 
 // Eigen dynamic matrix

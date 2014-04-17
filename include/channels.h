@@ -127,9 +127,8 @@ types::cmat choi(const std::vector<types::cmat>& Ks)
 
 	types::cmat result = types::cmat::Zero(D * D, D * D);
 	for (auto it : Ks)
-		result += kron((types::cmat) (types::cmat::Identity(D, D)), it) * Omega
-				* adjoint(
-						kron((types::cmat) (types::cmat::Identity(D, D)), it));
+		result += kron(types::cmat::Identity(D, D), it) * Omega
+				* adjoint(kron(types::cmat::Identity(D, D), it));
 
 	return result;
 }
@@ -153,9 +152,7 @@ std::vector<types::cmat> choi2kraus(const types::cmat& A)
 	{
 		if (std::abs(eval.real()(i)) > ct::eps)
 			result.push_back(
-					std::sqrt(eval.real()(i))
-							* reshape(static_cast<types::cmat>(evec.col(i)), D,
-									D));
+					std::sqrt(eval.real()(i)) * reshape(evec.col(i), D, D));
 	}
 	return result;
 }
