@@ -598,12 +598,9 @@ types::DynMat<typename Derived::Scalar> syspermute(
 	{
 		// use static allocation for speed,
 		// double the size for matrices reshaped as vectors
-			size_t midx[2 * ct::maxn]
-			{};
-			size_t midxtmp[2 * ct::maxn]
-			{};
-			size_t permdims[2 * ct::maxn]
-			{};
+			size_t midx[2 * ct::maxn];
+			size_t midxtmp[2 * ct::maxn];
+			size_t permdims[2 * ct::maxn];
 
 			/* compute the multi-index */
 			internal::_n2multiidx(i, numdims, cdims, midx);
@@ -644,8 +641,8 @@ types::DynMat<typename Derived::Scalar> syspermute(
 
 	else if (internal::_check_square_mat(rA)) // we have a square matrix
 	{
-		size_t cdims[2 * ct::maxn] { };
-		size_t cperm[2 * ct::maxn] { };
+		size_t cdims[2 * ct::maxn];
+		size_t cperm[2 * ct::maxn];
 
 		// check that dims match the dimension of rA
 		if (!internal::_check_dims_match_mat(dims, rA))
