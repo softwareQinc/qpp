@@ -17,8 +17,6 @@
 #include "types.h"
 #include "classes/exception.h"
 
-#include "io.h"
-
 // Collection of quantum computing useful functions
 namespace qpp
 {

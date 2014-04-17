@@ -1,9 +1,10 @@
+# Use gmake in Solaris
 TARGET = qpp # Application name
 SRC = .# no white spaces allowed before the comment!
 INC = ./include# no white spaces allowed before the comment!
 
 CC_STANDARD = -std=c++11 # C++ standard, we use C++11
-CC = g++ # C++ compiler
+CC = /opt/csw/bin/g++ # C++ compiler
 WARNINGS = -Wall -Wextra -Weffc++ # Extra warnings
 # do not use -fopenmp for clang++, but use it for g++
 MULTIPROC = -fopenmp # Use OPENMP for multi-processing 
@@ -45,5 +46,5 @@ $(TARGET): $(OBJECTS)
 # Clean-up
 clean:
 	@echo 'Removing...'
-	@rm -fv $(SRC)/*.o 
-	@rm -fv $(TARGET)
+	@grm -fv $(SRC)/*.o 
+	@grm -fv $(TARGET)

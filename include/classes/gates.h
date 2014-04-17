@@ -19,6 +19,62 @@ namespace qpp
 
 class Gates
 {
+public:
+	// one qubit gates
+	types::cmat Id2; // Identity matrix
+	types::cmat H; // Hadamard matrix
+	types::cmat X; // X matrix
+	types::cmat Y; // Y matrix
+	types::cmat Z; // Z matrix
+	types::cmat S; // S gate
+	types::cmat T; // T gate
+
+	// two qubit gates
+	types::cmat CNOTab; // CNOT ctrl1 target2
+	types::cmat CZ; // Controlled-Phase (Controlled-Z)
+	types::cmat C_S; // Controlled-S
+	types::cmat CNOTba; // CNOT ctrl2 target1
+	types::cmat SWAP; // SWAP gate
+
+	// three qubit gates
+	types::cmat TOF; // Toffoli
+	types::cmat FRED; // Fredkin
+
+	// Pauli eigen-states
+	types::ket x0;
+	types::ket x1;
+	types::ket y0;
+	types::ket y1;
+	types::ket z0;
+	types::ket z1;
+
+	// projectors onto Pauli eigen-states
+	types::cmat px0;
+	types::cmat px1;
+	types::cmat py0;
+	types::cmat py1;
+	types::cmat pz0;
+	types::cmat pz1;
+
+	// Bell states
+	types::ket b00;
+	types::ket b01;
+	types::ket b10;
+	types::ket b11;
+
+	// projectors onto Bell states
+	types::cmat pb00;
+	types::cmat pb01;
+	types::cmat pb10;
+	types::cmat pb11;
+
+	// W and GHZ states
+	types::ket GHZ;
+	types::ket W;
+
+	// projectors onto GHZ and W
+	types::cmat pGHZ;
+	types::cmat pW;
 private:
 	Gates() :
 			Id2(types::cmat::Identity(2, 2)), //
@@ -30,9 +86,9 @@ private:
 			T(types::cmat::Zero(2, 2)), //
 			CNOTab(types::cmat::Identity(4, 4)), //
 			CZ(types::cmat::Identity(4, 4)), //
-			CS(types::cmat::Identity(4, 4)), //
+			C_S(types::cmat::Identity(4, 4)), //
 			CNOTba(types::cmat::Zero(4, 4)), //
-			SWAP(types::cmat::Zero(4, 4)), //
+			SWAP(types::cmat::Identity(4, 4)), //
 			TOF(types::cmat::Identity(8, 8)), //
 			FRED(types::cmat::Identity(8, 8)), //
 			x0(types::ket::Zero(2)), //
@@ -74,8 +130,9 @@ private:
 		CNOTba(2, 2) = 1;
 		CNOTba(3, 1) = 1;
 		CZ(3, 3) = -1;
-		CS(3, 3) = ct::ii;
-		SWAP = CNOTab * CNOTba * CNOTab;
+		C_S(3, 3) = ct::ii;
+
+		SWAP.block(1, 1, 2, 2) = X;
 		TOF.block(6, 6, 2, 2) = X;
 		FRED.block(4, 4, 4, 4) = SWAP;
 
@@ -123,65 +180,8 @@ public:
 							   // Thread safe in C++11
 		return instance;
 	}
-
 	virtual ~Gates() = default;
 public:
-	// one qubit gates
-	types::cmat Id2; // Identity matrix
-	types::cmat H; // Hadamard matrix
-	types::cmat X; // X matrix
-	types::cmat Y; // Y matrix
-	types::cmat Z; // Z matrix
-	types::cmat S; // S gate
-	types::cmat T; // T gate
-
-	// two qubit gates
-	types::cmat CNOTab; // CNOT ctrl1 target2
-	types::cmat CZ; // Controlled-Phase (Controlled-Z)
-	types::cmat CS; // Controlled-S
-	types::cmat CNOTba; // CNOT ctrl2 target1
-	types::cmat SWAP; // SWAP gate
-
-	// three qubit gates
-	types::cmat TOF; // Toffoli
-	types::cmat FRED; // Fredkin
-
-	// Pauli eigen-states
-	types::ket x0;
-	types::ket x1;
-	types::ket y0;
-	types::ket y1;
-	types::ket z0;
-	types::ket z1;
-
-	// projectors onto Pauli eigen-states
-	types::cmat px0;
-	types::cmat px1;
-	types::cmat py0;
-	types::cmat py1;
-	types::cmat pz0;
-	types::cmat pz1;
-
-	// Bell states
-	types::ket b00;
-	types::ket b01;
-	types::ket b10;
-	types::ket b11;
-
-	// projectors onto Bell states
-	types::cmat pb00;
-	types::cmat pb01;
-	types::cmat pb10;
-	types::cmat pb11;
-
-	// W and GHZ states
-	types::ket GHZ;
-	types::ket W;
-
-	// projectors onto GHZ and W
-	types::cmat pGHZ;
-	types::cmat pW;
-
 	// gates with variable dimension
 
 	// one qubit gates
