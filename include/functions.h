@@ -1040,18 +1040,17 @@ types::DynMat<typename Derived1::Scalar> anticomm(
 
 // projector onto |V><V| (normalized)
 template<typename Derived>
-types::DynMat<typename Derived::Scalar> proj(
-		const Eigen::MatrixBase<Derived>& V)
+types::DynMat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& V)
 {
 	const types::DynMat<typename Derived::Scalar> & rV = V;
 
 // check zero-size
 	if (!internal::_check_nonzero_size(rV))
-		throw Exception("proj", Exception::Type::ZERO_SIZE);
+		throw Exception("prj", Exception::Type::ZERO_SIZE);
 
 // check column vector
 	if (!internal::_check_col_vector(rV))
-		throw Exception("proj", Exception::Type::MATRIX_NOT_CVECTOR);
+		throw Exception("prj", Exception::Type::MATRIX_NOT_CVECTOR);
 
 	return rV * adjoint(rV) / trace(rV * adjoint(rV));
 }
@@ -1165,7 +1164,7 @@ types::DynMat<typename Derived::Scalar> grams(
 
 	for (size_t i = 1; i < Vs.size(); i++)
 	{
-		cut -= proj(outvecs[i - 1]);
+		cut -= prj(outvecs[i - 1]);
 		vi = cut * Vs[i];
 
 		if (abs(norm(vi)) > ct::eps) // only adds the non-zero vectors

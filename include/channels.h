@@ -150,9 +150,10 @@ std::vector<types::cmat> choi2kraus(const types::cmat& A)
 
 	for (size_t i = 0; i < D * D; i++)
 	{
-		if (std::abs(eval.real()(i)) > ct::eps)
+		if (std::abs((types::cplx) eval.real()(i)) > ct::eps)
 			result.push_back(
-					std::sqrt(eval.real()(i)) * reshape(evec.col(i), D, D));
+					(types::cmat) (std::sqrt((types::cplx) eval.real()(i))
+							* reshape((types::cmat) evec.col(i), D, D)));
 	}
 	return result;
 }

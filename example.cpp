@@ -26,35 +26,34 @@ int main()
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
-/*
 	// TESTING
 
 	// quantum teleportation
 	cout << endl << "Qudit teleportation." << endl;
 	ket psi = randket(2); // a random state;
 	cout << "|psi><psi|:" << endl;
-	displn(proj(psi));
+	displn(prj(psi));
 	cmat telecircuit = expandout(gt.H, { 0 }, { 2, 2, 2 })
 			* gt.CTRL(gt.X, { 0 }, { 1 }, 3);
 	ket psiin = kron(psi, gt.b00); // input state
 	ket psiout = telecircuit * psiin; // output state before measurement
 	// measure Alice's qubits, measurement results are 1 0
-	psiout = kronlist<cmat>( { proj(gt.z1), proj(gt.z0), gt.Id2 }) * psiout;
+	psiout = kronlist<cmat>( { prj(gt.z1), prj(gt.z0), gt.Id2 }) * psiout;
 	// apply correction
 	psiout = expandout(powm(gt.Z, 1) * powm(gt.X, 0), { 2 }, { 2, 2, 2 })
 			* psiout;
-	// not necessary to normalize, proj() takes care of it below
-	cmat rhoout = ptrace(proj(psiout), { 0, 1 }, { 2, 2, 2 });
+	// not necessary to normalize, prj() takes care of it below
+	cmat rhoout = ptrace(prj(psiout), { 0, 1 }, { 2, 2, 2 });
 	cout << endl << "Teleported state:" << endl;
 	displn(rhoout);
-	cout << "Difference in norm: " << norm(proj(psi) - rhoout) << endl;
+	cout << "Difference in norm: " << norm(prj(psi) - rhoout) << endl;
 
 	// qudit measurements
 	cout << endl << "Qudit measurements." << endl;
 	cout << "Initially in state |0><0|." << endl;
 	ket zd0(3);
 	zd0 << 1, 0, 0;
-	Qudit q(proj(zd0));
+	Qudit q(prj(zd0));
 	cout << "Measuring Z operator non-destructively. Results:" << endl;
 	cout << q.measure() << endl;
 	cout << q.measure() << endl;
@@ -114,7 +113,7 @@ int main()
 	cmat evectsH = hevects(rH);
 	cmat spec = cmat::Zero(D, D);
 	for (size_t i = 0; i < D; i++)
-		spec += evalsH(i) * proj(evectsH.col(i));
+		spec += evalsH(i) * prj(evectsH.col(i));
 	cout << "Original matrix: " << endl;
 	displn(rH);
 	cout << endl << "Reconstructed from spectral decomposition: " << endl;
@@ -252,6 +251,6 @@ int main()
 	// END TIMING
 	total.toc(); // read the total running time
 	cout << endl << "Total time: " << total.seconds() << " seconds.";
-*/
+
 	cout << endl << "Exiting qpp..." << endl;
 }

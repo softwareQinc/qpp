@@ -36,7 +36,7 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
 	{
 		double result = 0;
 		// take the absolut values of the entries
-		// to get rid of unwanted imaginary parts
+		// to get rid of zero imaginary parts
 		for (size_t i = 0; i < static_cast<size_t>(rA.size()); i++)
 			if (std::abs(rA(i)) != 0) // not identically zero
 				result -= std::abs(rA(i)) * std::log2(std::abs(rA(i)));
@@ -54,7 +54,7 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
 	types::cmat ev = hevals(rA);
 	double result = 0;
 	// take the absolut values of the entries
-	// to get rid of unwanted imaginary parts
+	// to get rid of zero imaginary parts
 	for (size_t i = 0; i < static_cast<size_t>(ev.rows()); i++)
 		if (std::abs((types::cplx) ev(i)) != 0) // not identically zero
 			result -= std::abs((types::cplx) ev(i))
@@ -87,7 +87,7 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 
 		double result = 0;
 		// take the absolut values of the entries
-		// to get rid of unwanted imaginary parts
+		// to get rid of zero imaginary parts
 		for (size_t i = 0; i < static_cast<size_t>(rA.size()); i++)
 			if (std::abs((types::cplx) rA(i)) != 0) // not identically zero
 				result += std::pow(std::abs(rA(i)), alpha);
@@ -108,7 +108,7 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 	types::cmat ev = hevals(rA);
 	double result = 0;
 	// take the absolut values of the entries
-	// to get rid of unwanted imaginary parts
+	// to get rid of zero imaginary parts
 	for (size_t i = 0; i < static_cast<size_t>(ev.rows()); i++)
 		if (std::abs((types::cplx) ev(i)) != 0) // not identically zero
 			result += std::pow(std::abs((types::cplx) ev(i)), alpha);
@@ -147,7 +147,7 @@ double renyi_inf(const Eigen::MatrixBase<Derived>& A)
 	types::cmat ev = hevals(rA);
 	double max = 0;
 	// take the absolut values of the entries
-	// to get rid of unwanted imaginary parts
+	// to get rid of zero imaginary parts
 	for (size_t i = 0; i < static_cast<size_t>(ev.size()); i++)
 		if (std::abs((types::cplx) ev(i)) > max)
 			max = std::abs((types::cplx) ev(i));
@@ -177,7 +177,7 @@ double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
 	{
 		double result = 0;
 		// take the absolut values of the entries
-		// to get rid of unwanted imaginary parts
+		// to get rid of zero imaginary parts
 		for (size_t i = 0; i < static_cast<size_t>(rA.size()); i++)
 			if (std::abs((types::cplx) rA(i)) != 0) // not identically zero
 				result += std::pow(std::abs(rA(i)), alpha);
@@ -195,7 +195,7 @@ double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
 	types::cmat ev = hevals(rA);
 	double result = 0;
 	// take the absolut values of the entries
-	// to get rid of unwanted imaginary parts
+	// to get rid of zero imaginary parts
 	for (size_t i = 0; i < static_cast<size_t>(ev.rows()); i++)
 		if (std::abs((types::cplx) ev(i)) != 0) // not identically zero
 			result += std::pow(std::abs((types::cplx) ev(i)), alpha);

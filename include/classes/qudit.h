@@ -46,13 +46,15 @@ public:
 
 		std::vector<double> p(_D);
 		for (size_t i = 0; i < _D; i++)
-			p[i] = std::abs(trace(proj(evects(U).col(i)) * _rho));
+			p[i] = std::abs(
+					(types::cplx) trace(
+							prj((types::cmat) evects(U).col(i)) * _rho));
 
 		DiscreteDistribution dd(p);
 		size_t result = dd.sample();
 		if (destructive) // von Neumann
-			_rho = proj(evects(U).col(result)) * _rho
-					* proj(evects(U).col(result)) / p[result];
+			_rho = prj((types::cmat) evects(U).col(result)) * _rho
+					* prj((types::cmat) evects(U).col(result)) / p[result];
 
 		return result;
 	}
