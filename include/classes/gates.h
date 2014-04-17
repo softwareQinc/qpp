@@ -276,20 +276,18 @@ public:
 			throw Exception("CTRL", Exception::Type::DIMS_MISMATCH_MATRIX);
 		// END EXCEPTION CHECKS
 
-		size_t* Cdims = new size_t[n];
-		size_t* midx_row = new size_t[n];
-		size_t* midx_col = new size_t[n];
+		// Use static allocation for speed!
+		size_t Cdims[ct::maxn];
+		size_t midx_row[ct::maxn];
+		size_t midx_col[ct::maxn];
 
-		size_t* CdimsA = new size_t[gate.size()];
-		size_t* midxA_row = new size_t[gate.size()];
-		size_t* midxA_col = new size_t[gate.size()];
+		size_t CdimsA[ct::maxn];
+		size_t midxA_row[ct::maxn];
+		size_t midxA_col[ct::maxn];
 
-		size_t* Cdims_ctrl = new size_t[ctrl.size()];
-		size_t* midx_ctrl = new size_t[ctrl.size()];
-
-		size_t* Cdims_bar = new size_t[n - ctrlgate.size()];
-		size_t* Csubsys_bar = new size_t[n - ctrlgate.size()];
-		size_t* midx_bar = new size_t[n - ctrlgate.size()];
+		size_t Cdims_bar[ct::maxn];
+		size_t Csubsys_bar[ct::maxn];
+		size_t midx_bar[ct::maxn];
 
 		for (size_t k = 0, cnt = 0; k < n; k++)
 		{
@@ -309,12 +307,6 @@ public:
 		{
 			midxA_row[k] = midxA_col[k] = 0;
 			CdimsA[k] = D;
-		}
-
-		for (size_t k = 0; k < ctrl.size(); k++)
-		{
-			midx_ctrl[k] = 0;
-			Cdims_ctrl[k] = D;
 		}
 
 		for (size_t k = 0; k < n - ctrlgate.size(); k++)
@@ -376,21 +368,6 @@ public:
 
 			}
 		}
-
-		delete[] Cdims;
-		delete[] midx_row;
-		delete[] midx_col;
-
-		delete[] CdimsA;
-		delete[] midxA_row;
-		delete[] midxA_col;
-
-		delete[] Cdims_ctrl;
-		delete[] midx_ctrl;
-
-		delete[] Cdims_bar;
-		delete[] Csubsys_bar;
-		delete[] midx_bar;
 
 		return result;
 	}

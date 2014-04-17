@@ -213,7 +213,7 @@ int main()
 
 	// ptrace
 	cout << endl << "ptrace timing." << endl;
-	vector<size_t> subsys_ptrace = { 0, 1, 2, 3, 4, 5 };
+	vector<size_t> subsys_ptrace = { 0 };
 	cout << "Subsytem(s): ";
 	displn(subsys_ptrace, ", ");
 	t.tic();
@@ -233,7 +233,7 @@ int main()
 	t.toc();
 	cout << "Took " << t << " seconds." << endl;
 
-	// syspermute SLOW SLOW SLOW
+	// syspermute
 	cout << endl << "syspermute timing." << endl;
 	vector<size_t> perm; // left-shift all subsystems by 1
 	for (size_t i = 0; i < n; i++)

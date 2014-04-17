@@ -51,7 +51,10 @@ size_t _multiidx2n(const size_t* midx, size_t numdims, const size_t* dims)
 	 if (midx[i] >= dims[i])
 	 throw Exception("_multiidx2n", Exception::Type::OUT_OF_RANGE);
 	 */
-	size_t* part_prod = new size_t[numdims];
+
+// Static allocation for speed!
+	// double the size for matrices reshaped as vectors
+	size_t part_prod[2 * ct::maxn];
 
 	part_prod[numdims - 1] = 1;
 	for (size_t j = 1; j < numdims; j++)
@@ -60,8 +63,6 @@ size_t _multiidx2n(const size_t* midx, size_t numdims, const size_t* dims)
 	size_t result = 0;
 	for (size_t i = 0; i < numdims; i++)
 		result += midx[i] * part_prod[i];
-
-	delete[] part_prod;
 
 	return result;
 }

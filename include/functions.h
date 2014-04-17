@@ -596,39 +596,36 @@ types::DynMat<typename Derived::Scalar> syspermute(
 	auto worker = [](size_t i, size_t numdims, const size_t* cdims,
 			const size_t* cperm)
 	{
-		size_t* midx = new size_t[numdims];
-		size_t* midxtmp = new size_t[numdims];
-		size_t* permdims = new size_t[numdims];
+		// use static allocation for speed,
+		// double the size for matrices reshaped as vectors
+			size_t midx[2 * ct::maxn]
+			{};
+			size_t midxtmp[2 * ct::maxn]
+			{};
+			size_t permdims[2 * ct::maxn]
+			{};
 
-		/* compute the multi-index */
-		internal::_n2multiidx(i, numdims, cdims, midx);
+			/* compute the multi-index */
+			internal::_n2multiidx(i, numdims, cdims, midx);
 
-		for (size_t k = 0; k < numdims; k++)
-		{
-			permdims[k] = cdims[cperm[k]]; // permuted dimensions
-			midxtmp[k] = midx[cperm[k]];// permuted multi-indexes
-		}
-
-		// move back to integer indexes
-		size_t iperm = internal::_multiidx2n(midxtmp, numdims, permdims);
-
-		delete[] midx;
-		delete[] midxtmp;
-		delete[] permdims;
-
-		return iperm;
-	};
+			for (size_t k = 0; k < numdims; k++)
+			{
+				permdims[k] = cdims[cperm[k]]; // permuted dimensions
+				midxtmp[k] = midx[cperm[k]];// permuted multi-indexes
+			}
+			return internal::_multiidx2n(midxtmp, numdims, permdims);
+		};
 
 // check column vector
 	if (internal::_check_col_vector(rA)) // we have a column vector
 	{
+		size_t cdims[ct::maxn];
+		size_t cperm[ct::maxn];
+
 		// check that dims match the dimension of rA
 		if (!internal::_check_dims_match_cvect(dims, rA))
 			throw Exception("syspermute",
 					Exception::Type::DIMS_MISMATCH_CVECTOR);
-
-		size_t* cdims = new size_t[numdims];
-		size_t* cperm = new size_t[numdims];
 
 		// copy dims in cdims and perm in cperm
 		for (size_t i = 0; i < numdims; i++)
@@ -642,26 +639,24 @@ types::DynMat<typename Derived::Scalar> syspermute(
 		for (size_t i = 0; i < D; i++)
 			result(worker(i, numdims, cdims, cperm)) = rA(i);
 
-		delete[] cdims;
-		delete[] cperm;
-
 		return result;
 	}
 
 	else if (internal::_check_square_mat(rA)) // we have a square matrix
 	{
+		size_t cdims[2 * ct::maxn] { };
+		size_t cperm[2 * ct::maxn] { };
+
 		// check that dims match the dimension of rA
 		if (!internal::_check_dims_match_mat(dims, rA))
 			throw Exception("syspermute",
 					Exception::Type::DIMS_MISMATCH_MATRIX);
 
-		size_t* cdims = new size_t[2 * numdims];
-		size_t* cperm = new size_t[2 * numdims];
-
 		// copy dims in cdims and perm in cperm
 		for (size_t i = 0; i < numdims; i++)
 		{
-			cdims[i] = cdims[i + numdims] = dims[i];
+			cdims[i] = dims[i];
+			cdims[i + numdims] = dims[i];
 			cperm[i] = perm[i];
 			cperm[i + numdims] = perm[i] + numdims;
 		}
@@ -674,9 +669,6 @@ types::DynMat<typename Derived::Scalar> syspermute(
 #pragma omp parallel for
 		for (size_t i = 0; i < D * D; i++)
 			result(worker(i, 2 * numdims, cdims, cperm)) = rA(i);
-
-		delete[] cdims;
-		delete[] cperm;
 
 		return reshape(result, D, D);
 	}
@@ -721,7 +713,7 @@ types::DynMat<typename Derived::Scalar> ptrace1(
 	types::DynMat<typename Derived::Scalar> result = types::DynMat<
 			typename Derived::Scalar>::Zero(DB, DB);
 
-	auto worker = [rA, DA, DB](size_t i, size_t j)
+	auto worker = [&](size_t i, size_t j)
 	{
 		typename Derived::Scalar sum = 0;
 		for (size_t m = 0; m < DA; m++)
@@ -829,11 +821,11 @@ types::DynMat<typename Derived::Scalar> ptrace(
 		dimsubsys *= dims[subsys[i]];
 	size_t dimsubsysbar = D / dimsubsys;
 
-	size_t* Cdims = new size_t[n];
-	size_t* Csubsys = new size_t[nsubsys];
-	size_t* Cdimssubsys = new size_t[nsubsys];
-	size_t* Csubsysbar = new size_t[nsubsysbar];
-	size_t* Cdimssubsysbar = new size_t[nsubsysbar];
+	size_t Cdims[ct::maxn];
+	size_t Csubsys[ct::maxn];
+	size_t Cdimssubsys[ct::maxn];
+	size_t Csubsysbar[ct::maxn];
+	size_t Cdimssubsysbar[ct::maxn];
 
 	for (size_t i = 0; i < n; i++)
 		Cdims[i] = dims[i];
@@ -864,56 +856,46 @@ types::DynMat<typename Derived::Scalar> ptrace(
 	types::DynMat<typename Derived::Scalar> result = types::DynMat<
 			typename Derived::Scalar>(dimsubsysbar, dimsubsysbar);
 
-	auto worker = [=](size_t i, size_t j)
+	auto worker = [&](size_t i, size_t j)
 	{
-		size_t* Cmidxrow = new size_t[n];
-		size_t* Cmidxcol = new size_t[n];
-		size_t* Cmidxrowsubsysbar = new size_t[nsubsysbar];
-		size_t* Cmidxcolsubsysbar = new size_t[nsubsysbar];
-		size_t* Cmidxsubsys = new size_t[nsubsys];
+		// use static allocation for speed!
 
-		/* get the row/col multi-indexes of the complement */
-		internal::_n2multiidx(i, nsubsysbar, Cdimssubsysbar, Cmidxrowsubsysbar);
-		internal::_n2multiidx(j, nsubsysbar, Cdimssubsysbar, Cmidxcolsubsysbar);
-		/* write them in the global row/col multi-indexes */
-		for(size_t k=0;k<nsubsysbar;k++)
-		{
-			Cmidxrow[Csubsysbar[k]]=Cmidxrowsubsysbar[k];
-			Cmidxcol[Csubsysbar[k]]=Cmidxcolsubsysbar[k];
-		}
-		typename Derived::Scalar sm = 0;
-		for(size_t a=0; a<dimsubsys; a++)
-		{
-			// get the multi-index over which we do the summation
-			internal::_n2multiidx(a, nsubsys, Cdimssubsys, Cmidxsubsys);
-			// write it into the global row/col multi-indexes
-			for(size_t k=0;k<nsubsys;k++)
-			Cmidxrow[Csubsys[k]]=Cmidxcol[Csubsys[k]]=Cmidxsubsys[k];
+			size_t Cmidxrow[ct::maxn];
+			size_t Cmidxcol[ct::maxn];
+			size_t Cmidxrowsubsysbar[ct::maxn];
+			size_t Cmidxcolsubsysbar[ct::maxn];
+			size_t Cmidxsubsys[ct::maxn];
 
-			// now do the sum
-			sm+= rA(internal::_multiidx2n(Cmidxrow,n,Cdims),
-					internal::_multiidx2n(Cmidxcol,n,Cdims));
-		}
+			/* get the row/col multi-indexes of the complement */
+			internal::_n2multiidx(i, nsubsysbar, Cdimssubsysbar, Cmidxrowsubsysbar);
+			internal::_n2multiidx(j, nsubsysbar, Cdimssubsysbar, Cmidxcolsubsysbar);
+			/* write them in the global row/col multi-indexes */
+			for(size_t k=0;k<nsubsysbar;k++)
+			{
+				Cmidxrow[Csubsysbar[k]]=Cmidxrowsubsysbar[k];
+				Cmidxcol[Csubsysbar[k]]=Cmidxcolsubsysbar[k];
+			}
+			typename Derived::Scalar sm = 0;
+			for(size_t a=0; a<dimsubsys; a++)
+			{
+				// get the multi-index over which we do the summation
+				internal::_n2multiidx(a, nsubsys, Cdimssubsys, Cmidxsubsys);
+				// write it into the global row/col multi-indexes
+				for(size_t k=0;k<nsubsys;k++)
+				Cmidxrow[Csubsys[k]]=Cmidxcol[Csubsys[k]]=Cmidxsubsys[k];
 
-		delete[] Cmidxrow;
-		delete[] Cmidxcol;
-		delete[] Cmidxrowsubsysbar;
-		delete[] Cmidxcolsubsysbar;
-		delete[] Cmidxsubsys;
+				// now do the sum
+				sm+= rA(internal::_multiidx2n(Cmidxrow,n,Cdims),
+						internal::_multiidx2n(Cmidxcol,n,Cdims));
+			}
 
-		return sm;
-	};
+			return sm;
+		};
 
 	for (size_t i = 0; i < dimsubsysbar; i++)
 #pragma omp parallel for
 		for (size_t j = 0; j < dimsubsysbar; j++)
 			result(i, j) = worker(i, j);
-
-	delete[] Cdims;
-	delete[] Csubsys;
-	delete[] Cdimssubsys;
-	delete[] Csubsysbar;
-	delete[] Cdimssubsysbar;
 
 	return result;
 }
@@ -956,9 +938,9 @@ types::DynMat<typename Derived::Scalar> ptranspose(
 	size_t D = static_cast<size_t>(rA.rows());
 	size_t numdims = dims.size();
 	size_t numsubsys = subsys.size();
-	size_t* cdims = new size_t[numdims];
-	size_t* midxcol = new size_t[numdims];
-	size_t* csubsys = new size_t[numsubsys];
+	size_t cdims[ct::maxn];
+	size_t midxcol[ct::maxn];
+	size_t csubsys[ct::maxn];
 
 // copy dims in cdims and subsys in csubsys
 	for (size_t i = 0; i < numdims; i++)
@@ -968,26 +950,26 @@ types::DynMat<typename Derived::Scalar> ptranspose(
 
 	types::DynMat<typename Derived::Scalar> result(D, D);
 
-	auto worker = [=, &result](size_t i, size_t j)
+	auto worker = [&](size_t i, size_t j)
 	{
-		size_t* midxcoltmp = new size_t[numdims];
-		size_t* midxrow = new size_t[numdims];
-		for (size_t k = 0; k < numdims; k++)
-		midxcoltmp[k] = midxcol[k];
+		// use static allocation for speed!
+			size_t midxcoltmp[ct::maxn];
+			size_t midxrow[ct::maxn];
 
-		/* compute the row multi-index */
-		internal::_n2multiidx(i, numdims, cdims, midxrow);
+			for (size_t k = 0; k < numdims; k++)
+			midxcoltmp[k] = midxcol[k];
 
-		for (size_t k = 0; k < numsubsys; k++)
-		std::swap(midxcoltmp[csubsys[k]], midxrow[csubsys[k]]);
+			/* compute the row multi-index */
+			internal::_n2multiidx(i, numdims, cdims, midxrow);
 
-		/* writes the result */
-		result(i, j)=rA(internal::_multiidx2n(midxrow, numdims, cdims),
-				internal::_multiidx2n(midxcoltmp, numdims, cdims));
+			for (size_t k = 0; k < numsubsys; k++)
+			std::swap(midxcoltmp[csubsys[k]], midxrow[csubsys[k]]);
 
-		delete[] midxrow;
-		delete[] midxcoltmp;
-	};
+			/* writes the result */
+			result(i, j)=rA(internal::_multiidx2n(midxrow, numdims, cdims),
+					internal::_multiidx2n(midxcoltmp, numdims, cdims));
+
+		};
 
 	for (size_t j = 0; j < D; j++)
 	{
@@ -997,10 +979,6 @@ types::DynMat<typename Derived::Scalar> ptranspose(
 		for (size_t i = 0; i < D; i++)
 			worker(i, j);
 	}
-
-	delete[] midxcol;
-	delete[] cdims;
-	delete[] csubsys;
 
 	return result;
 }
@@ -1116,9 +1094,9 @@ types::DynMat<typename Derived::Scalar> expandout(
 	types::DynMat<typename Derived::Scalar> result = types::DynMat<
 			typename Derived::Scalar>::Identity(D, D);
 
-	size_t* Cdims = new size_t[dims.size()];
-	size_t* midx_row = new size_t[dims.size()];
-	size_t* midx_col = new size_t[dims.size()];
+	size_t Cdims[ct::maxn];
+	size_t midx_row[ct::maxn];
+	size_t midx_col[ct::maxn];
 
 	for (size_t k = 0; k < dims.size(); k++)
 	{
@@ -1152,10 +1130,6 @@ types::DynMat<typename Derived::Scalar> expandout(
 			}
 		}
 	}
-
-	delete[] Cdims;
-	delete[] midx_row;
-	delete[] midx_col;
 
 	return result;
 }

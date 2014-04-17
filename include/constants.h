@@ -24,6 +24,9 @@ const double chop = 1e-10;
 // is zero or not; example: if(std::abs(x)<eps) then x is 0
 const double eps = 1e-12;
 
+// max number of systems, used to statically allocate arrays such as Cdims etc
+const size_t maxn = 64; // definitely cannot simulate more qubits :)
+
 // math constants
 const std::complex<double> ii = { 0, 1 }; // Imaginary i (square root of -1)
 const double pi = 3.141592653589793238462643383279502884; // pi
