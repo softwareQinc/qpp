@@ -17,6 +17,11 @@ using namespace qpp;
 using namespace qpp::types;
 using namespace qpp::ct;
 
+cplx pow3(const cplx& z)
+{
+	return std::pow(z, 3);
+}
+
 int main()
 {
 	cout << "Starting qpp..." << endl;
@@ -26,11 +31,18 @@ int main()
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
-	cmat a(2,2);
-	a<<1,2,3,4;
-
-	//functor z^3 componentwise
-	displn(cwise<cplx>(a,[](const cplx& z){return z*z*z;}));
+	// functor test
+	cout << endl << "Functor z^3 acting on:" << endl;
+	cmat a(2, 2);
+	a << 1, 2, 3, 4;
+	displn(a);
+	cout << "Result (with lambda):" << endl;
+	// functor z^3 componentwise, specify OutputScalar and Derived for lambdas
+	displn(cwise<cplx, cmat>(a, [](const cplx& z)->cplx
+	{	return z*z*z;}));
+	cout << "Result (with proper function):" << endl;
+	// automatic type deduction for proper functions
+	displn(cwise(a, &pow3));
 
 	/*
 	 // TESTING
