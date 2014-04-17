@@ -26,6 +26,12 @@ int main()
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
+	cmat a(2,2);
+	a<<1,2,3,4;
+
+	//functor z^3 componentwise
+	displn(cwise<cplx>(a,[](const cplx& z){return z*z*z;}));
+
 	/*
 	 // TESTING
 

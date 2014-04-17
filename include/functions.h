@@ -136,7 +136,7 @@ typename Derived::Scalar sum(const Eigen::MatrixBase<Derived>& A)
 	return rA.sum();
 }
 
-// trace-norm (or Frobenius norm) (CHANGES return type to double)
+// trace-norm (or Frobenius norm) (CHANGES return type to double matrix)
 template<typename Derived>
 double norm(const Eigen::MatrixBase<Derived>& A)
 {
@@ -150,7 +150,7 @@ double norm(const Eigen::MatrixBase<Derived>& A)
 	return (rA.template cast<types::cplx>()).norm();
 }
 
-// eigenvalues (CHANGES return type to complex)
+// eigenvalues (CHANGES return type to complex matrix)
 template<typename Derived>
 types::cmat evals(const Eigen::MatrixBase<Derived>& A)
 {
@@ -186,7 +186,7 @@ types::cmat evects(const Eigen::MatrixBase<Derived>& A)
 	return es.eigenvectors();
 }
 
-// eigenvalues of Hermitian matrices
+// eigenvalues of Hermitian matrices (CHANGES return type to double matrix)
 template<typename Derived>
 types::dmat hevals(const Eigen::MatrixBase<Derived>& A)
 {
@@ -274,7 +274,7 @@ types::cmat sqrtm(const Eigen::MatrixBase<Derived> &A)
 	if (!internal::_check_square_mat(rA))
 		throw Exception("sqrtm", Exception::Type::MATRIX_NOT_SQUARE);
 
-	return funm(rA, std::sqrt);
+	return funm(rA, &std::sqrt);
 }
 
 // Matrix absolute value, note the syntax of Lambda invocation
@@ -310,7 +310,7 @@ types::cmat expm(const Eigen::MatrixBase<Derived> &A)
 	if (!internal::_check_square_mat(rA))
 		throw Exception("expm", Exception::Type::MATRIX_NOT_SQUARE);
 
-	return funm(rA, std::exp);
+	return funm(rA, &std::exp);
 }
 
 // Matrix logarithm
@@ -328,7 +328,7 @@ types::cmat logm(const Eigen::MatrixBase<Derived> &A)
 	if (!internal::_check_square_mat(rA))
 		throw Exception("logm", Exception::Type::MATRIX_NOT_SQUARE);
 
-	return funm(rA, std::log);
+	return funm(rA, &std::log);
 }
 
 // Matrix sin
@@ -346,7 +346,7 @@ types::cmat sinm(const Eigen::MatrixBase<Derived> &A)
 	if (!internal::_check_square_mat(rA))
 		throw Exception("sinm", Exception::Type::MATRIX_NOT_SQUARE);
 
-	return funm(rA, std::sin);
+	return funm(rA, &std::sin);
 }
 
 // Matrix cos
@@ -364,7 +364,7 @@ types::cmat cosm(const Eigen::MatrixBase<Derived> &A)
 	if (!internal::_check_square_mat(rA))
 		throw Exception("cosm", Exception::Type::MATRIX_NOT_SQUARE);
 
-	return funm(rA, std::cos);
+	return funm(rA, &std::cos);
 }
 
 // Matrix power A^z
@@ -438,14 +438,14 @@ types::DynMat<typename Derived::Scalar> powm(
 // functor; apply f(A) component-wise, where (*f) is the function pointer
 // returns a matrix of type OutputScalar
 template<typename OutputScalar, typename Derived>
-types::DynMat<OutputScalar> fun(const Eigen::MatrixBase<Derived> &A,
+types::DynMat<OutputScalar> cwise(const Eigen::MatrixBase<Derived> &A,
 		OutputScalar (*f)(const typename Derived::Scalar &))
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
 // check zero-size
 	if (!internal::_check_nonzero_size(rA))
-		throw Exception("fun", Exception::Type::ZERO_SIZE);
+		throw Exception("cwise", Exception::Type::ZERO_SIZE);
 
 	types::DynMat<OutputScalar> result(rA.rows(), rA.cols());
 
