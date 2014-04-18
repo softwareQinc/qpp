@@ -32,7 +32,6 @@ public:
 	// two qubit gates
 	types::cmat CNOTab; // CNOT ctrl1 target2
 	types::cmat CZ; // Controlled-Phase (Controlled-Z)
-	types::cmat C_S; // Controlled-S
 	types::cmat CNOTba; // CNOT ctrl2 target1
 	types::cmat SWAP; // SWAP gate
 
@@ -86,7 +85,6 @@ private:
 			T(types::cmat::Zero(2, 2)), //
 			CNOTab(types::cmat::Identity(4, 4)), //
 			CZ(types::cmat::Identity(4, 4)), //
-			C_S(types::cmat::Identity(4, 4)), //
 			CNOTba(types::cmat::Zero(4, 4)), //
 			SWAP(types::cmat::Identity(4, 4)), //
 			TOF(types::cmat::Identity(8, 8)), //
@@ -130,7 +128,6 @@ private:
 		CNOTba(2, 2) = 1;
 		CNOTba(3, 1) = 1;
 		CZ(3, 3) = -1;
-		C_S(3, 3) = ct::ii;
 
 		SWAP.block(1, 1, 2, 2) = X;
 		TOF.block(6, 6, 2, 2) = X;
