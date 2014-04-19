@@ -41,14 +41,14 @@ types::dmat loadMATLABmatrix(const std::string &mat_file,
 		const std::string & var_name)
 {
 	MATFile* pmat = matOpen(mat_file.c_str(), "r");
-	if (pmat == NULL)
+	if (!pmat)
 	{
 		throw std::runtime_error(
 				"loadMATLABmatrix: Can not open MATLAB file " + mat_file + "!");
 	}
 
 	mxArray* pa = matGetVariable(pmat, var_name.c_str());
-	if (pa == NULL)
+	if (!pa)
 		throw std::runtime_error(
 				"loadMATLABmatrix: Can not load the variable " + var_name
 						+ " from MATLAB file " + mat_file + "!");
@@ -83,14 +83,14 @@ types::cmat loadMATLABmatrix(const std::string &mat_file,
 		const std::string & var_name)
 {
 	MATFile* pmat = matOpen(mat_file.c_str(), "r");
-	if (pmat == NULL)
+	if (!pmat)
 	{
 		throw std::runtime_error(
 				"loadMATLABmatrix: Can not open MATLAB file " + mat_file + "!");
 	}
 
 	mxArray* pa = matGetVariable(pmat, var_name.c_str());
-	if (pa == NULL)
+	if (!pa)
 		throw std::runtime_error(
 				"loadMATLABmatrix: Can not load the variable " + var_name
 						+ " from MATLAB file " + mat_file + "!");
@@ -160,13 +160,13 @@ void saveMATLABmatrix(const Eigen::MatrixBase<typename types::dmat> &A,
 		throw Exception("saveMATLABmatrix", Exception::Type::ZERO_SIZE);
 
 	MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
-	if (pmat == NULL)
+	if (!pmat)
 		throw std::runtime_error(
 				"saveMATLABmatrix: Can not open/create MATLAB file " + mat_file
 						+ "!");
 
 	mxArray* pa = mxCreateDoubleMatrix(rA.rows(), rA.cols(), mxREAL);
-	if (pa == NULL)
+	if (!pa)
 		throw std::runtime_error(
 				"saveMATLABmatrix: mxCreateDoubleMatrix failed!");
 
@@ -197,13 +197,13 @@ void saveMATLABmatrix(const Eigen::MatrixBase<typename types::cmat> &A,
 	types::dmat tmp_im = rA.imag();
 
 	MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
-	if (pmat == NULL)
+	if (!pmat)
 		throw std::runtime_error(
 				"saveMATLABmatrix: Can not open/create MATLAB file " + mat_file
 						+ "!");
 
 	mxArray* pa = mxCreateDoubleMatrix(tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);
-	if (pa == NULL)
+	if (!pa)
 		throw std::runtime_error(
 				"saveMATLABmatrix: mxCreateDoubleMatrix failed!");
 
