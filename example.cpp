@@ -40,10 +40,10 @@ int main()
 	displn(prj(psi));
 	cmat telecircuit = expandout(gt.H, { 0 }, { 2, 2, 2 })
 			* gt.CTRL(gt.X, { 0 }, { 1 }, 3);
-	ket psiin = kron(psi, gt.b00); // input state
+	ket psiin = kron(psi, st.b00); // input state
 	ket psiout = telecircuit * psiin; // output state before measurement
 	// measure Alice's qubits, measurement results are 1 0
-	psiout = kronlist<cmat>( { prj(gt.z1), prj(gt.z0), gt.Id2 }) * psiout;
+	psiout = kronlist<cmat>( { prj(st.z1), prj(st.z0), gt.Id2 }) * psiout;
 	// apply correction
 	psiout = expandout(powm(gt.Z, 1) * powm(gt.X, 0), { 2 }, { 2, 2, 2 })
 			* psiout;
@@ -83,7 +83,7 @@ int main()
 	cout << endl << "Bell state generator: " << endl;
 	cmat circuit;
 	circuit = gt.CTRL(gt.X, { 0 }, { 1 }, 2) * expandout(gt.H, 0, { 2, 2 });
-	cmat input = kron(gt.z0, gt.z0);
+	cmat input = kron(st.z0, st.z0);
 	cmat output = circuit * input;
 	cout << "Circuit matrix representation: " << endl;
 	displn(circuit);
@@ -94,7 +94,7 @@ int main()
 	cout << endl << "3-qubit repetition code: " << endl;
 	cmat rep;
 	rep = gt.CTRL(gt.X, { 0 }, { 2 }, 3) * gt.CTRL(gt.X, { 0 }, { 1 }, 3);
-	input = kronlist<cmat>( { gt.z1, gt.z0, gt.z0 });
+	input = kronlist<cmat>( { st.z1, st.z0, st.z0 });
 	output = rep * input;
 	cout << "Circuit acting on |000> produces |111>. Check: " << endl;
 	displn(output);
@@ -153,8 +153,8 @@ int main()
 	cout << "Choi matrix:" << endl;
 	displn(choim);
 	cout << endl << "The eigenvalues of the Choi matrix are: " << endl;
-	displn (transpose(hevals (choim)));cout
-	<< endl << "Their sum is: " << sum(hevals(choim)) << endl;
+	displn(transpose(hevals(choim)));
+	cout << endl << "Their sum is: " << sum(hevals(choim)) << endl;
 	std::vector<cmat> Kperps = choi2kraus(choim);
 	cout << endl << "The Kraus rank of the channel is: " << Kperps.size()
 			<< endl;

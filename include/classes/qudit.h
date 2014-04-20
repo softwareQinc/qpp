@@ -10,10 +10,11 @@
 
 #include "exception.h"
 #include "functions.h"
-#include "gates.h"
 #include "internal.h"
 #include "types.h"
+#include "classes/gates.h"
 #include "classes/stat.h"
+#include "classes/states.h"
 
 namespace qpp
 {
@@ -24,7 +25,7 @@ class Qudit
 	size_t _D;
 public:
 	// by default we have a standard qubit in state |0>
-	Qudit(const types::cmat& rho = Gates::getInstance().pz0) :
+	Qudit(const types::cmat& rho = States::getInstance().pz0) :
 			_rho(types::cmat::Zero(2, 2)), _D(2) // qubit by default
 	{
 		if (!internal::_check_nonzero_size(rho))

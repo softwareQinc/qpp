@@ -38,42 +38,6 @@ public:
 	// three qubit gates
 	types::cmat TOF; // Toffoli
 	types::cmat FRED; // Fredkin
-
-	// Pauli eigen-states
-	types::ket x0;
-	types::ket x1;
-	types::ket y0;
-	types::ket y1;
-	types::ket z0;
-	types::ket z1;
-
-	// projectors onto Pauli eigen-states
-	types::cmat px0;
-	types::cmat px1;
-	types::cmat py0;
-	types::cmat py1;
-	types::cmat pz0;
-	types::cmat pz1;
-
-	// Bell states
-	types::ket b00;
-	types::ket b01;
-	types::ket b10;
-	types::ket b11;
-
-	// projectors onto Bell states
-	types::cmat pb00;
-	types::cmat pb01;
-	types::cmat pb10;
-	types::cmat pb11;
-
-	// W and GHZ states
-	types::ket GHZ;
-	types::ket W;
-
-	// projectors onto GHZ and W
-	types::cmat pGHZ;
-	types::cmat pW;
 private:
 	Gates() :
 			Id2(types::cmat::Identity(2, 2)), //
@@ -88,31 +52,7 @@ private:
 			CNOTba(types::cmat::Zero(4, 4)), //
 			SWAP(types::cmat::Identity(4, 4)), //
 			TOF(types::cmat::Identity(8, 8)), //
-			FRED(types::cmat::Identity(8, 8)), //
-			x0(types::ket::Zero(2)), //
-			x1(types::ket::Zero(2)), //
-			y0(types::ket::Zero(2)), //
-			y1(types::ket::Zero(2)), //
-			z0(types::ket::Zero(2)), //
-			z1(types::ket::Zero(2)), //
-			px0(types::cmat::Zero(2, 2)), //
-			px1(types::cmat::Zero(2, 2)), //
-			py0(types::cmat::Zero(2, 2)), //
-			py1(types::cmat::Zero(2, 2)), //
-			pz0(types::cmat::Zero(2, 2)), //
-			pz1(types::cmat::Zero(2, 2)), //
-			b00(types::ket::Zero(4)), //
-			b01(types::ket::Zero(4)), //
-			b10(types::ket::Zero(4)), //
-			b11(types::ket::Zero(4)), //
-			pb00(types::cmat::Zero(4, 4)), //
-			pb01(types::cmat::Zero(4, 4)), //
-			pb10(types::cmat::Zero(4, 4)), //
-			pb11(types::cmat::Zero(4, 4)), //
-			GHZ(types::ket::Zero(8)), //
-			W(types::ket::Zero(8)), //
-			pGHZ(types::cmat::Zero(8, 8)), //
-			pW(types::cmat::Zero(8, 8))
+			FRED(types::cmat::Identity(8, 8)) //
 	{
 		// initialize the constants and gates
 		H << 1 / std::sqrt(2), 1 / std::sqrt(2), 1 / std::sqrt(2), -1
@@ -132,39 +72,6 @@ private:
 		SWAP.block(1, 1, 2, 2) = X;
 		TOF.block(6, 6, 2, 2) = X;
 		FRED.block(4, 4, 4, 4) = SWAP;
-
-		x0 << 1 / std::sqrt(2), 1 / std::sqrt(2);
-		x1 << 1 / std::sqrt(2), -1 / std::sqrt(2);
-		y0 << 1 / std::sqrt(2), ct::ii / std::sqrt(2);
-		y1 << 1 / std::sqrt(2), -ct::ii / std::sqrt(2);
-		z0 << 1, 0;
-		z1 << 0, 1;
-		px0 = x0 * x0.adjoint();
-		px1 = x1 * x1.adjoint();
-		py0 = y0 * y0.adjoint();
-		py1 = y1 * y1.adjoint();
-		pz0 = z0 * z0.adjoint();
-		pz1 = z1 * z1.adjoint();
-
-		// Bell states, following convention from Nielsen & Chuang
-		// |ij> -> |b_{ij}> by the CNOT*(H x Id) circuit
-		b00 << 1 / std::sqrt(2), 0, 0, 1 / std::sqrt(2);// (|00>+|11>)/sqrt(2)
-		b01 << 0, 1 / std::sqrt(2), 1 / std::sqrt(2), 0;// (|01>+|10>)/sqrt(2)
-		b10 << 1 / std::sqrt(2), 0, 0, -1 / std::sqrt(2);// (|00>-|11>)/sqrt(2)
-		b11 << 0, 1 / std::sqrt(2), -1 / std::sqrt(2), 0;// (|01>-|10>)/sqrt(2)
-
-		pb00 = b00 * b00.adjoint();
-		pb01 = b01 * b01.adjoint();
-		pb10 = b10 * b10.adjoint();
-		pb11 = b11 * b11.adjoint();
-
-		GHZ << 1, 0, 0, 0, 0, 0, 0, 1;
-		GHZ = GHZ / std::sqrt(2);
-		W << 0, 1, 1, 0, 1, 0, 0, 0;
-		W = W / std::sqrt(3);
-
-		pGHZ = GHZ * GHZ.adjoint();
-		pW = W * W.adjoint();
 	}
 public:
 	Gates(const Gates&) = delete;
@@ -233,7 +140,7 @@ public:
 
 	// -multi-quDit multi-controlled-gate
 	types::cmat CTRL(const types::cmat& A, const std::vector<size_t>& ctrl,
-			const std::vector<size_t>& gate, size_t n, size_t D = 2) const
+			const std::vector<size_t>& gate, size_t n, size_t d = 2) const
 	{
 		// EXCEPTION CHECKS
 		// check matrix zero size
@@ -255,21 +162,21 @@ public:
 			throw Exception("CTRL", Exception::Type::OUT_OF_RANGE);
 
 		// check valid local dimension
-		if (D == 0)
+		if (d == 0)
 			throw Exception("CTRL", Exception::Type::DIMS_INVALID);
 
 		std::vector<size_t> ctrlgate = ctrl; // ctrl + gate subsystem vector
 		ctrlgate.insert(std::end(ctrlgate), std::begin(gate), std::end(gate));
 
 		std::vector<size_t> dims; // local dimensions vector
-		dims.insert(std::begin(dims), n, D);
+		dims.insert(std::begin(dims), n, d);
 
 		// check that ctrl+gate subsystem is valid with respect to local dimensions
 		if (!internal::_check_subsys_match_dims(ctrlgate, dims))
 			throw Exception("CTRL", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
 		// check that gate list match the dimension of the matrix
-		if (A.cols() != std::pow(D, gate.size()))
+		if (A.cols() != std::pow(d, gate.size()))
 			throw Exception("CTRL", Exception::Type::DIMS_MISMATCH_MATRIX);
 		// END EXCEPTION CHECKS
 
@@ -286,74 +193,75 @@ public:
 		size_t Csubsys_bar[ct::maxn];
 		size_t midx_bar[ct::maxn];
 
+		size_t ngate = gate.size();
+		size_t nctrl = ctrl.size();
+		size_t nsubsys_bar = n - ctrlgate.size();
+		size_t D = std::pow(d, n);
+		size_t DA = static_cast<size_t>(A.cols());
+		size_t Dsubsys_bar = std::pow(d, nsubsys_bar);
+
 		for (size_t k = 0, cnt = 0; k < n; k++)
 		{
 			midx_row[k] = midx_col[k] = 0;
-			Cdims[k] = D;
+			Cdims[k] = d;
 
-			// compute the complementary subsystem
+			// compute the complementary subsystem of ctrlgate w.r.t. dims
 			if (std::find(std::begin(ctrlgate), std::end(ctrlgate), k)
 					== std::end(ctrlgate))
 			{
 				Csubsys_bar[cnt] = k;
+				Cdims_bar[cnt] = d;
+				midx_bar[cnt] = 0;
 				cnt++;
 			}
 		}
 
-		for (size_t k = 0; k < gate.size(); k++)
+		for (size_t k = 0; k < ngate; k++)
 		{
 			midxA_row[k] = midxA_col[k] = 0;
-			CdimsA[k] = D;
+			CdimsA[k] = d;
 		}
 
-		for (size_t k = 0; k < n - ctrlgate.size(); k++)
-		{
-			midx_bar[k] = 0;
-			Cdims_bar[k] = D;
-		}
-
-		types::cmat result = types::cmat::Identity(std::pow(D, n),
-				std::pow(D, n));
+		types::cmat result = types::cmat::Identity(D, D);
 		types::cmat Ak;
 
 		// run over the complement indexes
-		for (size_t i = 0; i < std::pow(D, n - ctrlgate.size()); i++)
+		for (size_t i = 0; i < Dsubsys_bar; i++)
 		{
 			// get the complement's row multi-index
-			internal::_n2multiidx(i, n - ctrlgate.size(), Cdims_bar, midx_bar);
-			for (size_t k = 0; k < D; k++)
+			internal::_n2multiidx(i, nsubsys_bar, Cdims_bar, midx_bar);
+			for (size_t k = 0; k < d; k++)
 			{
 				Ak = powm(A, k); // compute A^k
 				// run over the gate's row multi-index
-				for (size_t a = 0; a < static_cast<size_t>(A.cols()); a++)
+				for (size_t a = 0; a < DA; a++)
 				{
 					// get the row multi-index of the gate
-					internal::_n2multiidx(a, gate.size(), CdimsA, midxA_row);
+					internal::_n2multiidx(a, ngate, CdimsA, midxA_row);
 
 					// construct the total row multi-index
 
 					// first the ctrl part (equal for both row and column)
-					for (size_t c = 0; c < ctrl.size(); c++)
+					for (size_t c = 0; c < nctrl; c++)
 						midx_row[ctrl[c]] = midx_col[ctrl[c]] = k;
 
 					// then the complement part (equal for column)
-					for (size_t c = 0; c < n - ctrlgate.size(); c++)
+					for (size_t c = 0; c < nsubsys_bar; c++)
 						midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =
 								midx_bar[c];
 
 					// then the gate part
-					for (size_t c = 0; c < gate.size(); c++)
+					for (size_t c = 0; c < ngate; c++)
 						midx_row[gate[c]] = midxA_row[c];
 
 					// run over the gate's column multi-index
-					for (size_t b = 0; b < static_cast<size_t>(A.cols()); b++)
+					for (size_t b = 0; b < DA; b++)
 					{
 						// get the column multi-index of the gate
-						internal::_n2multiidx(b, gate.size(), CdimsA,
-								midxA_col);
+						internal::_n2multiidx(b, ngate, CdimsA, midxA_col);
 
 						// construct the total column multi-index
-						for (size_t c = 0; c < gate.size(); c++)
+						for (size_t c = 0; c < ngate; c++)
 							midx_col[gate[c]] = midxA_col[c];
 
 						// finally write the values
@@ -370,6 +278,7 @@ public:
 	}
 
 };
+/* class Gates */
 
 } /* namespace qpp */
 

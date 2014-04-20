@@ -24,6 +24,7 @@
 #include "classes/qudit.h"
 #include "classes/randevs.h"
 #include "classes/stat.h"
+#include "classes/states.h"
 #include "classes/timer.h"
 
 namespace qpp
@@ -34,6 +35,9 @@ RandomDevices& rdevs = RandomDevices::getInstance();
 
 // initialize the gates singleton
 const Gates& gt = Gates::getInstance();
+
+// initialize the states singleton
+const States& st = States::getInstance();
 
 } /* namespace qpp */
 

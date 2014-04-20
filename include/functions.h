@@ -1322,6 +1322,146 @@ types::ket mket(const std::vector<size_t>& mask, size_t d)
 	return result;
 }
 
+/*
+ template<typename Derived>
+ types::DynMat<typename Derived::Scalar> apply(
+ const Eigen::MatrixBase<Derived>& rho,
+ const Eigen::MatrixBase<Derived>& A, const std::vector<size_t>& gate,
+ const std::vector<size_t>& dims)
+ {
+ // EXCEPTION CHECKS
+ // check matrix zero size
+ if (!internal::_check_nonzero_size(A))
+ throw Exception("apply", Exception::Type::ZERO_SIZE);
+
+ if (!internal::_check_nonzero_size(rho))
+ throw Exception("apply", Exception::Type::ZERO_SIZE);
+
+ // check square matrix
+ if (!internal::_check_square_mat(A))
+ throw Exception("apply", Exception::Type::MATRIX_NOT_SQUARE);
+
+ if (!internal::_check_square_mat(rho))
+ throw Exception("apply", Exception::Type::MATRIX_NOT_SQUARE);
+
+ // check that dims is a valid dimension vector
+ if (!internal::_check_dims(dims))
+ throw Exception("apply", Exception::Type::DIMS_INVALID);
+
+ // check that dims match matrix rho
+ if (!internal::_check_dims_match_mat(dims, rho))
+ throw Exception("apply", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+ // check gate subsys is valid w.r.t. dims
+ if (!internal::_check_subsys_match_dims(gate, dims))
+ throw Exception("apply", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+ // check gate match matrix A
+ size_t dimgate = 1;
+ for (size_t i = 0; i < gate.size(); i++)
+ dimgate *= dims[gate[i]];
+ if (A.cols() != dimgate)
+ throw Exception("apply", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+ // Use static allocation for speed!
+ size_t Cdims[ct::maxn];
+ size_t midx_row[ct::maxn];
+ size_t midx_col[ct::maxn];
+
+ size_t CdimsA[ct::maxn];
+ size_t midxA_row[ct::maxn];
+ size_t midxA_col[ct::maxn];
+
+ size_t CdimsA_bar[ct::maxn];
+ size_t CsubsysA_bar[ct::maxn];
+ size_t midxA_bar_row[ct::maxn];
+ size_t midxA_bar_col[ct::maxn];
+
+ size_t D = 1;
+ size_t DA_bar = 1;
+ for (size_t k = 0, cnt = 0; k < dims.size(); k++)
+ {
+ midx_row[k] = midx_col[k] = 0;
+ Cdims[k] = dims[k];
+ D *= dims[k];
+
+ // compute the complementary subsystem of gate w.r.t. dims
+ if (std::find(std::begin(gate), std::end(gate), k) == std::end(gate))
+ {
+ CsubsysA_bar[cnt] = k;
+ CdimsA_bar[cnt] = dims[k];
+ midxA_bar_row[k] = midxA_bar_col[k] = 0;
+ DA_bar *= dims[k];
+ cnt++;
+ }
+ }
+
+ size_t DA = 1;
+ for (size_t k = 0; k < gate.size(); k++)
+ {
+ midxA_row[k] = midxA_col[k] = 0;
+ CdimsA[k] = dims[gate[k]];
+ DA *= dims[gate[k]];
+ }
+
+ types::DynMat<typename Derived::Scalar> result = types::DynMat<
+ typename Derived::Scalar>::Identity(D, D);
+
+ // run over the complement row multi-index
+ for (size_t i = 0; i < DA_bar; i++)
+ {
+ // get the complement's row multi-index
+ internal::_n2multiidx(i, DA_bar, CdimsA_bar, midxA_bar_row);
+ // run over the complement col multi-index
+ for (size_t j = 0; j < DA_bar; i++)
+ {
+ // get the complement's col multi-index
+ internal::_n2multiidx(i, DA_bar, CdimsA_bar, midxA_bar_col);
+
+ // run over the gate's row multi-index
+ for (size_t a = 0; a < DA; a++)
+ {
+ // get the row multi-index of the gate
+ internal::_n2multiidx(a, gate.size(), CdimsA, midxA_row);
+
+ // construct the total row multi-index
+
+ // first the ctrl part (equal for both row and column)
+ for (size_t c = 0; c < ctrl.size(); c++)
+ midx_row[ctrl[c]] = midx_col[ctrl[c]] = k;
+
+ // then the complement part (equal for column)
+ for (size_t c = 0; c < n - ctrlgate.size(); c++)
+ midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =
+ midx_bar[c];
+
+ // then the gate part
+ for (size_t c = 0; c < gate.size(); c++)
+ midx_row[gate[c]] = midxA_row[c];
+
+ // run over the gate's column multi-index
+ for (size_t b = 0; b < static_cast<size_t>(A.cols()); b++)
+ {
+ // get the column multi-index of the gate
+ internal::_n2multiidx(b, gate.size(), CdimsA, midxA_col);
+
+ // construct the total column multi-index
+ for (size_t c = 0; c < gate.size(); c++)
+ midx_col[gate[c]] = midxA_col[c];
+
+ // finally write the values
+ result(internal::_multiidx2n(midx_row, n, Cdims),
+ internal::_multiidx2n(midx_col, n, Cdims)) = Ak(a,
+ b);
+ }
+ }
+ }
+
+ }
+
+ return result;
+ }*/
+
 } /* namespace qpp */
 
 #endif /* FUNCTIONS_H_ */
