@@ -398,7 +398,7 @@ types::DynMat<typename Derived1::Scalar> gate(
 				size_t result_row_idx = internal::_multiidx2n(midx_row, n,
 						Cdims);
 
-				// compute the coefficient
+				// compute the coefficient	TODO: parallelize
 				typename Derived1::Scalar coeff = 0;
 				for (size_t c = 0; c < DA; c++)
 				{
@@ -457,7 +457,7 @@ types::DynMat<typename Derived1::Scalar> gate(
 				// run over the col index
 				for (size_t j = 0; j < D; j++)
 				{
-					// compute the coefficient
+					// compute the coefficient	TODO: parallelize
 					typename Derived1::Scalar coeff = 0;
 					for (size_t c = 0; c < DA; c++)
 					{
