@@ -18,26 +18,35 @@
 
 namespace qpp
 {
-// the output of a channel specified by Kraus operators {Ks} acting on rho
-types::cmat channel(const types::cmat& rho, const std::vector<types::cmat>& Ks)
+// applies channel specified by Kraus operators {Ks}
+// to density matrix rho
+template<typename Derived>
+types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
+		const std::vector<types::cmat>& Ks)
 {
-	if (!internal::_check_nonzero_size(rho))
+	// check cplx scalar type
+	if (typeid(typename Derived::Scalar) != typeid(types::cplx))
+		throw Exception("channel", Exception::Type::TYPE_MISMATCH);
+
+	const types::cmat & rrho = rho;
+
+	if (!internal::_check_nonzero_size(rrho))
 		throw Exception("channel", Exception::Type::ZERO_SIZE);
-	if (!internal::_check_square_mat(rho))
+	if (!internal::_check_square_mat(rrho))
 		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
 	if (!internal::_check_nonzero_size(Ks))
 		throw Exception("channel", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_square_mat(Ks[0]))
 		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
-	if (Ks[0].rows() != rho.rows())
+	if (Ks[0].rows() != rrho.rows())
 		throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
 	for (auto it : Ks)
 		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
 			throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
 
-	types::cmat result = types::cmat::Zero(rho.rows(), rho.cols());
+	types::cmat result = types::cmat::Zero(rrho.rows(), rrho.cols());
 	for (auto it : Ks)
-		result += it * rho * adjoint(it);
+		result += it * rrho * adjoint(it);
 
 	return result;
 }
@@ -133,7 +142,7 @@ types::cmat choi(const std::vector<types::cmat>& Ks)
 	return result;
 }
 
-// extract orthogonal Kraus operators from Choi matrix
+// extracts orthogonal Kraus operators from Choi matrix
 std::vector<types::cmat> choi2kraus(const types::cmat& A)
 {
 	if (!internal::_check_nonzero_size(A))
@@ -155,6 +164,205 @@ std::vector<types::cmat> choi2kraus(const types::cmat& A)
 			result.push_back(
 					(types::cmat) (std::sqrt((double) ev(i))
 							* reshape((types::cmat) evec.col(i), D, D)));
+	}
+	return result;
+}
+
+// applies channel specifed by Kraus operators {Ks}
+// to part of density matrix specified by subsys
+template<typename Derived>
+types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
+		const std::vector<types::cmat>& Ks, const std::vector<size_t>& subsys,
+		const std::vector<size_t>& dims)
+{
+	// EXCEPTION CHECKS
+	// check same scalar type
+	if (typeid(typename Derived::Scalar) != typeid(types::cplx))
+		throw Exception("channel", Exception::Type::TYPE_MISMATCH);
+
+	const types::cmat & rrho = rho;
+
+	// check zero sizes
+	if (!internal::_check_nonzero_size(rrho))
+		throw Exception("channel", Exception::Type::ZERO_SIZE);
+
+	// check square matrix for the rho
+	if (!internal::_check_square_mat(rrho))
+		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
+
+	// check that dims is a valid dimension vector
+	if (!internal::_check_dims(dims))
+		throw Exception("channel", Exception::Type::DIMS_INVALID);
+
+	// check that dims match rho matrix
+	if (!internal::_check_dims_match_mat(dims, rrho))
+		throw Exception("channel", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+	// check subsys is valid w.r.t. dims
+	if (!internal::_check_subsys_match_dims(subsys, dims))
+		throw Exception("channel", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+	// check the Kraus operators
+	if (!internal::_check_nonzero_size(Ks))
+		throw Exception("channel", Exception::Type::ZERO_SIZE);
+	if (!internal::_check_square_mat(Ks[0]))
+		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
+	for (auto it : Ks)
+		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+			throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
+
+	// Use static allocation for speed!
+	size_t Cdims[ct::maxn];
+	size_t midx_row[ct::maxn];
+	size_t midx_col[ct::maxn];
+	size_t midx_rho_row[ct::maxn];
+	size_t midx_rho_col[ct::maxn];
+
+	size_t CdimsA[ct::maxn];
+	size_t CsubsysA[ct::maxn];
+	size_t midxA_row[ct::maxn];
+	size_t midxA_col[ct::maxn];
+	size_t midxA_rho_row[ct::maxn];
+	size_t midxA_rho_col[ct::maxn];
+
+	size_t CdimsA_bar[ct::maxn];
+	size_t CsubsysA_bar[ct::maxn];
+	size_t midxA_bar_row[ct::maxn];
+	size_t midxA_bar_col[ct::maxn];
+
+	size_t n = dims.size();
+	size_t nA = subsys.size();
+	size_t nA_bar = n - nA;
+
+	size_t D = 1;
+	size_t DA_bar = 1;
+
+	for (size_t k = 0, cnt = 0; k < n; k++)
+	{
+		midx_row[k] = midx_col[k] = midx_rho_row[k] = midx_rho_col[k] = 0;
+		Cdims[k] = dims[k];
+		D *= dims[k];
+
+		// compute the complementary subsystem of subsys w.r.t. dims
+		if (std::find(std::begin(subsys), std::end(subsys), k)
+				== std::end(subsys))
+		{
+			CsubsysA_bar[cnt] = k;
+			CdimsA_bar[cnt] = dims[k];
+			midxA_bar_row[cnt] = midxA_bar_col[cnt] = 0;
+			DA_bar *= dims[k];
+			cnt++;
+		}
+	}
+
+	size_t DA = 1;
+	for (size_t k = 0; k < nA; k++)
+	{
+		midxA_row[k] = midxA_col[k] = midxA_rho_row[k] = midxA_rho_col[k] = 0;
+		CdimsA[k] = dims[subsys[k]];
+		CsubsysA[k] = subsys[k];
+		DA *= dims[subsys[k]];
+	}
+
+	// check that dimension of Kraus matches the dimension of the subsys
+	if (static_cast<size_t>(Ks[0].rows()) != DA)
+		throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
+
+	// get the superoperator matrix of the channel
+	types::cmat sop = super(Ks);
+
+	types::cmat result(D, D);
+
+	// run over the subsys's row multi-index
+	for (size_t c = 0; c < DA; c++)
+	{
+		// get the subsys' row multi-index
+		internal::_n2multiidx(c, nA, CdimsA, midxA_row);
+		// compute the subsys' row part of total multi-index
+		for (size_t k = 0; k < nA; k++)
+			midx_row[CsubsysA[k]] = midxA_row[k];
+
+		// run over the complement's row multi-index
+		for (size_t i = 0; i < DA_bar; i++)
+		{
+			// get the complement's row multi-index
+			internal::_n2multiidx(i, nA_bar, CdimsA_bar, midxA_bar_row);
+			// compute the complement's row part of total multi-index
+			for (size_t k = 0; k < nA_bar; k++)
+				midx_row[CsubsysA_bar[k]] = midxA_bar_row[k];
+
+			// run over the subsys's col multi-index
+			for (size_t d = 0; d < DA; d++)
+			{
+				// get the subsys' col multi-index
+				internal::_n2multiidx(d, nA, CdimsA, midxA_col);
+				// compute the subsys' col part of total multi-index
+				for (size_t k = 0; k < nA; k++)
+					midx_col[CsubsysA[k]] = midxA_col[k];
+				// run over the complement's col multi-index
+
+				for (size_t j = 0; j < DA_bar; j++)
+				{
+					// get the complement's col multi-index
+					internal::_n2multiidx(j, nA_bar, CdimsA_bar, midxA_bar_col);
+					// compute the complement's col part of total multi-index
+					for (size_t k = 0; k < nA_bar; k++)
+						midx_col[CsubsysA_bar[k]] = midxA_bar_col[k];
+
+					// now compute the coefficient
+					types::cplx coeff = 0;
+					for (size_t a = 0; a < DA; a++)
+					{
+						// get the subsys part of row multi-index for rho
+						internal::_n2multiidx(a, nA, CdimsA, midxA_rho_row);
+						for (size_t b = 0; b < DA; b++)
+						{
+							// get the subsys part of col multi-index for rho
+							internal::_n2multiidx(b, nA, CdimsA, midxA_rho_col);
+
+							// get the total row/col multi-index for rho
+							for (size_t k = 0; k < nA; k++)
+							{
+								midx_rho_row[CsubsysA[k]] = midxA_rho_row[k];
+								midx_rho_col[CsubsysA[k]] = midxA_rho_col[k];
+							}
+							for (size_t k = 0; k < nA_bar; k++)
+							{
+								midx_rho_row[CsubsysA_bar[k]] =
+										midxA_bar_row[k];
+								midx_rho_col[CsubsysA_bar[k]] =
+										midxA_bar_col[k];
+							}
+
+							size_t midx_sop_col[2];
+							size_t midx_sop_row[2];
+							size_t sop_dims[2];
+							sop_dims[0] = sop_dims[1] = DA;
+							midx_sop_row[0] = c;
+							midx_sop_row[1] = d;
+							midx_sop_col[0] = a;
+							midx_sop_col[1] = b;
+
+							coeff += sop(
+									internal::_multiidx2n(midx_sop_row, 2,
+											sop_dims),
+									internal::_multiidx2n(midx_sop_col, 2,
+											sop_dims))
+									* rrho(
+											internal::_multiidx2n(midx_rho_row,
+													n, Cdims),
+											internal::_multiidx2n(midx_rho_col,
+													n, Cdims));
+
+						}
+					}
+
+					result(internal::_multiidx2n(midx_row, n, Cdims),
+							internal::_multiidx2n(midx_col, n, Cdims)) = coeff;
+
+				}
+			}
+		}
 	}
 	return result;
 }

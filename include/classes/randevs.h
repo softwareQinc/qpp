@@ -21,6 +21,9 @@ namespace qpp
 
 class RandomDevices // make it a singleton
 {
+public:
+	std::random_device _rd;
+	std::mt19937 _rng;
 private:
 	RandomDevices() :
 			_rd(), _rng(_rd())
@@ -31,9 +34,6 @@ private:
 public:
 	RandomDevices(const RandomDevices&) = delete;
 	RandomDevices& operator=(const RandomDevices&) = delete;
-
-	std::random_device _rd;
-	std::mt19937 _rng;
 
 	static RandomDevices& getInstance()
 	{

@@ -140,7 +140,7 @@ public:
 
 	// -multi-quDit multi-controlled-gate
 	types::cmat CTRL(const types::cmat& A, const std::vector<size_t>& ctrl,
-			const std::vector<size_t>& gate, size_t n, size_t d = 2) const
+			const std::vector<size_t>& subsys, size_t n, size_t d = 2) const
 	{
 		// EXCEPTION CHECKS
 		// check matrix zero size
@@ -154,7 +154,7 @@ public:
 		// check lists zero size
 		if (ctrl.size() == 0)
 			throw Exception("CTRL", Exception::Type::ZERO_SIZE);
-		if (gate.size() == 0)
+		if (subsys.size() == 0)
 			throw Exception("CTRL", Exception::Type::ZERO_SIZE);
 
 		// check out of range
@@ -166,17 +166,18 @@ public:
 			throw Exception("CTRL", Exception::Type::DIMS_INVALID);
 
 		std::vector<size_t> ctrlgate = ctrl; // ctrl + gate subsystem vector
-		ctrlgate.insert(std::end(ctrlgate), std::begin(gate), std::end(gate));
+		ctrlgate.insert(std::end(ctrlgate), std::begin(subsys),
+				std::end(subsys));
 
 		std::vector<size_t> dims; // local dimensions vector
 		dims.insert(std::begin(dims), n, d);
 
-		// check that ctrl+gate subsystem is valid with respect to local dimensions
+		// check that ctrl + gate subsystem is valid with respect to local dimensions
 		if (!internal::_check_subsys_match_dims(ctrlgate, dims))
 			throw Exception("CTRL", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-		// check that gate list match the dimension of the matrix
-		if (A.cols() != std::pow(d, gate.size()))
+		// check that subsys list match the dimension of the matrix
+		if (A.cols() != std::pow(d, subsys.size()))
 			throw Exception("CTRL", Exception::Type::DIMS_MISMATCH_MATRIX);
 		// END EXCEPTION CHECKS
 
@@ -193,7 +194,7 @@ public:
 		size_t Csubsys_bar[ct::maxn];
 		size_t midx_bar[ct::maxn];
 
-		size_t ngate = gate.size();
+		size_t ngate = subsys.size();
 		size_t nctrl = ctrl.size();
 		size_t nsubsys_bar = n - ctrlgate.size();
 		size_t D = std::pow(d, n);
@@ -233,10 +234,10 @@ public:
 			for (size_t k = 0; k < d; k++)
 			{
 				Ak = powm(A, k); // compute A^k
-				// run over the gate's row multi-index
+				// run over the subsys's row multi-index
 				for (size_t a = 0; a < DA; a++)
 				{
-					// get the gate's row multi-index
+					// get the subsys's row multi-index
 					internal::_n2multiidx(a, ngate, CdimsA, midxA_row);
 
 					// construct the result's row multi-index
@@ -250,19 +251,19 @@ public:
 						midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =
 								midx_bar[c];
 
-					// then the gate part
+					// then the subsys part
 					for (size_t c = 0; c < ngate; c++)
-						midx_row[gate[c]] = midxA_row[c];
+						midx_row[subsys[c]] = midxA_row[c];
 
-					// run over the gate's column multi-index
+					// run over the subsys's column multi-index
 					for (size_t b = 0; b < DA; b++)
 					{
-						// get the gate's column multi-index
+						// get the subsys's column multi-index
 						internal::_n2multiidx(b, ngate, CdimsA, midxA_col);
 
 						// construct the result's column multi-index
 						for (size_t c = 0; c < ngate; c++)
-							midx_col[gate[c]] = midxA_col[c];
+							midx_col[subsys[c]] = midxA_col[c];
 
 						// finally write the values
 						result(internal::_multiidx2n(midx_row, n, Cdims),
@@ -278,6 +279,210 @@ public:
 
 };
 /* class Gates */
+
+// applies gate A to part of state vector
+// or density matrix specified by subsys
+template<typename Derived1, typename Derived2>
+types::DynMat<typename Derived1::Scalar> gate(
+		const Eigen::MatrixBase<Derived2>& state,
+		const Eigen::MatrixBase<Derived1>& A, const std::vector<size_t>& subsys,
+		const std::vector<size_t>& dims)
+{
+	const types::DynMat<typename Derived1::Scalar> & rA = A;
+	const types::DynMat<typename Derived2::Scalar> & rstate = state;
+
+	// EXCEPTION CHECKS
+	// check same scalar type
+	if (typeid(typename Derived1::Scalar) != typeid(typename Derived2::Scalar))
+		throw Exception("gate", Exception::Type::TYPE_MISMATCH);
+
+	// check zero sizes
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("gate", Exception::Type::ZERO_SIZE);
+
+	// check zero sizes
+	if (!internal::_check_nonzero_size(rstate))
+		throw Exception("gate", Exception::Type::ZERO_SIZE);
+
+	// check square matrix for the subsys
+	if (!internal::_check_square_mat(rA))
+		throw Exception("gate", Exception::Type::MATRIX_NOT_SQUARE);
+
+	// check that dims is a valid dimension vector
+	if (!internal::_check_dims(dims))
+		throw Exception("gate", Exception::Type::DIMS_INVALID);
+
+	// check subsys is valid w.r.t. dims
+	if (!internal::_check_subsys_match_dims(subsys, dims))
+		throw Exception("gate", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+	// Use static allocation for speed!
+	size_t Cdims[ct::maxn];
+	size_t midx_row[ct::maxn];
+	size_t midx_rho_row[ct::maxn];
+
+	size_t CdimsA[ct::maxn];
+	size_t CsubsysA[ct::maxn];
+	size_t midxA_row[ct::maxn];
+	size_t midxA_rho_row[ct::maxn];
+
+	size_t CdimsA_bar[ct::maxn];
+	size_t CsubsysA_bar[ct::maxn];
+	size_t midxA_bar_row[ct::maxn];
+
+	size_t n = dims.size();
+	size_t nA = subsys.size();
+	size_t nA_bar = n - nA;
+
+	size_t D = 1;
+	size_t DA_bar = 1;
+
+	for (size_t k = 0, cnt = 0; k < n; k++)
+	{
+		midx_row[k] = midx_rho_row[k] = 0;
+		Cdims[k] = dims[k];
+		D *= dims[k];
+
+		// compute the complement of subsys w.r.t. dims
+		if (std::find(std::begin(subsys), std::end(subsys), k)
+				== std::end(subsys))
+		{
+			CsubsysA_bar[cnt] = k;
+			CdimsA_bar[cnt] = dims[k];
+			midxA_bar_row[cnt] = 0;
+			DA_bar *= dims[k];
+			cnt++;
+		}
+	}
+
+	size_t DA = 1;
+	for (size_t k = 0; k < nA; k++)
+	{
+		midxA_row[k] = midxA_rho_row[k] = 0;
+		CdimsA[k] = dims[subsys[k]];
+		CsubsysA[k] = subsys[k];
+		DA *= dims[subsys[k]];
+	}
+
+	if (internal::_check_col_vector(rstate)) // we have a ket
+	{
+		// check that dims match state vector
+		if (!internal::_check_dims_match_cvect(dims, rstate))
+			throw Exception("gate", Exception::Type::DIMS_MISMATCH_CVECTOR);
+
+		// check that state vector matches the dimensions of the subsys
+		if (static_cast<size_t>(rA.cols()) != DA)
+			throw Exception("gate", Exception::Type::DIMS_MISMATCH_CVECTOR);
+
+		types::DynMat<typename Derived1::Scalar> result(D, 1);
+
+		// run over the subsys's row multi-index
+		for (size_t a = 0; a < DA; a++)
+		{
+			// get the subsys's row multi-index
+			internal::_n2multiidx(a, nA, CdimsA, midxA_row);
+			// compute subsys part of the result's row multi-index
+			for (size_t k = 0; k < nA; k++)
+				midx_row[CsubsysA[k]] = midxA_row[k];
+			// run over the complement's row multi-index
+			for (size_t i = 0; i < DA_bar; i++)
+			{
+				// get the complement's row multi-index
+				internal::_n2multiidx(i, nA_bar, CdimsA_bar, midxA_bar_row);
+				// now compute the complement part of the result's row multi-index
+				// and the complement part of the state's total row multi-index
+				for (size_t k = 0; k < nA_bar; k++)
+					midx_row[CsubsysA_bar[k]] = midx_rho_row[CsubsysA_bar[k]] =
+							midxA_bar_row[k];
+				// compute the results's row index
+				size_t result_row_idx = internal::_multiidx2n(midx_row, n,
+						Cdims);
+
+				// compute the coefficient
+				typename Derived1::Scalar coeff = 0;
+				for (size_t c = 0; c < DA; c++)
+				{
+					// compute the subsys part state's row multi-index
+					internal::_n2multiidx(c, nA, CdimsA, midxA_rho_row);
+					// now we have the total state's row multi-index
+					for (size_t k = 0; k < nA; k++)
+						midx_rho_row[CsubsysA[k]] = midxA_rho_row[k];
+
+					coeff += rA(a, c)
+							* rstate(
+									internal::_multiidx2n(midx_rho_row, n,
+											Cdims));
+				}
+				// write down the result
+				result(result_row_idx) = coeff;
+			}
+		}
+		return result;
+	}
+	else if (internal::_check_square_mat(rstate)) // we have a matrix
+	{
+
+		// check that dims match state matrix
+		if (!internal::_check_dims_match_mat(dims, rstate))
+			throw Exception("gate", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+		// check that state matrix matches the dimensions of the subsys
+		if (static_cast<size_t>(rA.cols()) != DA)
+			throw Exception("gate", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+		types::DynMat<typename Derived1::Scalar> result(D, D);
+
+		// run over the subsys's row multi-index
+		for (size_t a = 0; a < DA; a++)
+		{
+			// get the subsys's row multi-index
+			internal::_n2multiidx(a, nA, CdimsA, midxA_row);
+			// compute subsys part of the result's row multi-index
+			for (size_t k = 0; k < nA; k++)
+				midx_row[CsubsysA[k]] = midxA_row[k];
+			// run over the complement's row multi-index
+			for (size_t i = 0; i < DA_bar; i++)
+			{
+				// get the complement's row multi-index
+				internal::_n2multiidx(i, nA_bar, CdimsA_bar, midxA_bar_row);
+				// now compute the complement part of the result's row multi-index
+				// and the complement part of the state's total row multi-index
+				for (size_t k = 0; k < nA_bar; k++)
+					midx_row[CsubsysA_bar[k]] = midx_rho_row[CsubsysA_bar[k]] =
+							midxA_bar_row[k];
+				// compute the results's row index
+				size_t result_row_idx = internal::_multiidx2n(midx_row, n,
+						Cdims);
+
+				// run over the col index
+				for (size_t j = 0; j < D; j++)
+				{
+					// compute the coefficient
+					typename Derived1::Scalar coeff = 0;
+					for (size_t c = 0; c < DA; c++)
+					{
+						// compute the subsys part state's row multi-index
+						internal::_n2multiidx(c, nA, CdimsA, midxA_rho_row);
+						// now we have the total state's row multi-index
+						for (size_t k = 0; k < nA; k++)
+							midx_rho_row[CsubsysA[k]] = midxA_rho_row[k];
+
+						coeff += rA(a, c)
+								* rstate(
+										internal::_multiidx2n(midx_rho_row, n,
+												Cdims), j);
+
+					}
+					// write down the result
+					result(result_row_idx, j) = coeff;
+				}
+			}
+		}
+		return result;
+	}
+	else
+		throw Exception("gate", Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+}
 
 } /* namespace qpp */
 
