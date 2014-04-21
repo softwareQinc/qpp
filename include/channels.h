@@ -299,8 +299,8 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 				// compute the subsys' col part of total multi-index
 				for (size_t k = 0; k < nA; k++)
 					midx_col[CsubsysA[k]] = midxA_col[k];
-				// run over the complement's col multi-index
 
+				// run over the complement's col multi-index
 				for (size_t j = 0; j < DA_bar; j++)
 				{
 					// get the complement's col multi-index
