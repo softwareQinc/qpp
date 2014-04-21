@@ -122,14 +122,14 @@ public:
 	static const States& getInstance() // const singleton
 	{
 		static States instance; // Guaranteed to be destroyed.
-							   // Instantiated on first use.
-							   // Thread safe in C++11
+								// Instantiated on first use.
+								// Thread safe in C++11
 		return instance;
 	}
 	virtual ~States() = default;
-}; /* class States */
+};
+/* class States */
 
 } /* namespace qpp */
-
 
 #endif /* STATES_H_ */

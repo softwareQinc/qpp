@@ -236,10 +236,10 @@ public:
 				// run over the gate's row multi-index
 				for (size_t a = 0; a < DA; a++)
 				{
-					// get the row multi-index of the gate
+					// get the gate's row multi-index
 					internal::_n2multiidx(a, ngate, CdimsA, midxA_row);
 
-					// construct the total row multi-index
+					// construct the result's row multi-index
 
 					// first the ctrl part (equal for both row and column)
 					for (size_t c = 0; c < nctrl; c++)
@@ -257,10 +257,10 @@ public:
 					// run over the gate's column multi-index
 					for (size_t b = 0; b < DA; b++)
 					{
-						// get the column multi-index of the gate
+						// get the gate's column multi-index
 						internal::_n2multiidx(b, ngate, CdimsA, midxA_col);
 
-						// construct the total column multi-index
+						// construct the result's column multi-index
 						for (size_t c = 0; c < ngate; c++)
 							midx_col[gate[c]] = midxA_col[c];
 
@@ -273,7 +273,6 @@ public:
 
 			}
 		}
-
 		return result;
 	}
 

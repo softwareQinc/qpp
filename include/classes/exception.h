@@ -92,22 +92,22 @@ private:
 			_msg += "Matrix is not square!";
 			break;
 		case Type::MATRIX_NOT_CVECTOR:
-			_msg += "Matrix is not a column vector!";
+			_msg += "Matrix is not column vector!";
 			break;
 		case Type::MATRIX_NOT_RVECTOR:
-			_msg += "Matrix is not a row vector!";
+			_msg += "Matrix is not row vector!";
 			break;
 		case Type::MATRIX_NOT_VECTOR:
-			_msg += "Matrix is not a vector!";
+			_msg += "Matrix is not vector!";
 			break;
 		case Type::MATRIX_NOT_SQUARE_OR_CVECTOR:
-			_msg += "Matrix is not square nor a column vector!";
+			_msg += "Matrix is not square nor column vector!";
 			break;
 		case Type::MATRIX_NOT_SQUARE_OR_RVECTOR:
-			_msg += "Matrix is not square nor a row vector!";
+			_msg += "Matrix is not square nor row vector!";
 			break;
 		case Type::MATRIX_NOT_SQUARE_OR_VECTOR:
-			_msg += "Matrix is not square nor a vector!";
+			_msg += "Matrix is not square nor vector!";
 			break;
 		case Type::DIMS_INVALID:
 			_msg += "Invalid dimension(s)!";
@@ -134,7 +134,7 @@ private:
 			_msg += "Permutation mismatch dimensions!";
 			break;
 		case Type::NOT_QUBIT_GATE:
-			_msg += "Matrix is not a qubit gate!";
+			_msg += "Matrix is not qubit gate!";
 			break;
 		case Type::NOT_QUBIT_SUBSYS:
 			_msg += "Subsystems are not qubits!";
