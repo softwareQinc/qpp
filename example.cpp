@@ -32,8 +32,6 @@ int main()
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
-	displn(channel(prj(mket( { 1, 1 })), { gt.CNOTba }, { 1, 0 }, { 2, 2 }));
-	cout << endl;
 	/*
 	 // TESTING
 
