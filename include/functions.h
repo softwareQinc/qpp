@@ -1192,7 +1192,8 @@ types::DynMat<typename Derived::Scalar> grams(
 	std::vector<types::DynMat<typename Derived::Scalar>> input;
 
 	for (size_t i = 0; i < static_cast<size_t>(rA.cols()); i++)
-	input.push_back(static_cast<types::DynMat<typename Derived::Scalar>>(rA.col(i)));
+		input.push_back(
+				static_cast<types::DynMat<typename Derived::Scalar> >(rA.col(i)));
 
 	return grams<types::DynMat<typename Derived::Scalar>>(input);
 }
