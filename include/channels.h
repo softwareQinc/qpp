@@ -273,95 +273,75 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 
 	types::cmat result(D, D);
 
-	// run over the subsys's row multi-index
-	for (size_t c = 0; c < DA; c++)
+	// run over rows
+	for (size_t i = 0; i < D; i++)
 	{
+		// get the result's row multi-index
+		internal::_n2multiidx(i, n, Cdims, midx_row);
+		// get the subsys' complement row multi-index
+		for (size_t k = 0; k < nA_bar; k++)
+			midxA_bar_row[k] = midx_row[CsubsysA_bar[k]];
 		// get the subsys' row multi-index
-		internal::_n2multiidx(c, nA, CdimsA, midxA_row);
-		// compute the subsys' row part of total multi-index
 		for (size_t k = 0; k < nA; k++)
-			midx_row[CsubsysA[k]] = midxA_row[k];
+			midxA_row[k] = midx_row[CsubsysA[k]];
 
-		// run over the complement's row multi-index
-		for (size_t i = 0; i < DA_bar; i++)
+		// run over cols
+		for (size_t j = 0; j < D; j++)
 		{
-			// get the complement's row multi-index
-			internal::_n2multiidx(i, nA_bar, CdimsA_bar, midxA_bar_row);
-			// compute the complement's row part of total multi-index
+			// get the result's col multi-index
+			internal::_n2multiidx(j, n, Cdims, midx_col);
+			// get the subsys' complement col multi-index
 			for (size_t k = 0; k < nA_bar; k++)
-				midx_row[CsubsysA_bar[k]] = midxA_bar_row[k];
+				midxA_bar_col[k] = midx_col[CsubsysA_bar[k]];
+			// get the subsys' col multi-index
+			for (size_t k = 0; k < nA; k++)
+				midxA_col[k] = midx_col[CsubsysA[k]];
 
-			// run over the subsys's col multi-index
-			for (size_t d = 0; d < DA; d++)
+			// now compute the coefficient
+			types::cplx coeff = 0;
+			for (size_t a = 0; a < DA; a++)
 			{
-				// get the subsys' col multi-index
-				internal::_n2multiidx(d, nA, CdimsA, midxA_col);
-				// compute the subsys' col part of total multi-index
-				for (size_t k = 0; k < nA; k++)
-					midx_col[CsubsysA[k]] = midxA_col[k];
-
-				// run over the complement's col multi-index
-				for (size_t j = 0; j < DA_bar; j++)
+				// get the subsys part of row multi-index for rho
+				internal::_n2multiidx(a, nA, CdimsA, midxA_rho_row);
+				for (size_t b = 0; b < DA; b++)
 				{
-					// get the complement's col multi-index
-					internal::_n2multiidx(j, nA_bar, CdimsA_bar, midxA_bar_col);
-					// compute the complement's col part of total multi-index
-					for (size_t k = 0; k < nA_bar; k++)
-						midx_col[CsubsysA_bar[k]] = midxA_bar_col[k];
+					// get the subsys part of col multi-index for rho
+					internal::_n2multiidx(b, nA, CdimsA, midxA_rho_col);
 
-					// now compute the coefficient
-					types::cplx coeff = 0;
-					for (size_t a = 0; a < DA; a++)
+					// get the total row/col multi-index for rho
+					for (size_t k = 0; k < nA; k++)
 					{
-						// get the subsys part of row multi-index for rho
-						internal::_n2multiidx(a, nA, CdimsA, midxA_rho_row);
-						for (size_t b = 0; b < DA; b++)
-						{
-							// get the subsys part of col multi-index for rho
-							internal::_n2multiidx(b, nA, CdimsA, midxA_rho_col);
-
-							// get the total row/col multi-index for rho
-							for (size_t k = 0; k < nA; k++)
-							{
-								midx_rho_row[CsubsysA[k]] = midxA_rho_row[k];
-								midx_rho_col[CsubsysA[k]] = midxA_rho_col[k];
-							}
-							for (size_t k = 0; k < nA_bar; k++)
-							{
-								midx_rho_row[CsubsysA_bar[k]] =
-										midxA_bar_row[k];
-								midx_rho_col[CsubsysA_bar[k]] =
-										midxA_bar_col[k];
-							}
-
-							size_t midx_sop_col[2];
-							size_t midx_sop_row[2];
-							size_t sop_dims[2];
-							sop_dims[0] = sop_dims[1] = DA;
-							midx_sop_row[0] = c;
-							midx_sop_row[1] = d;
-							midx_sop_col[0] = a;
-							midx_sop_col[1] = b;
-
-							coeff += sop(
-									internal::_multiidx2n(midx_sop_row, 2,
-											sop_dims),
-									internal::_multiidx2n(midx_sop_col, 2,
-											sop_dims))
-									* rrho(
-											internal::_multiidx2n(midx_rho_row,
-													n, Cdims),
-											internal::_multiidx2n(midx_rho_col,
-													n, Cdims));
-
-						}
+						midx_rho_row[CsubsysA[k]] = midxA_rho_row[k];
+						midx_rho_col[CsubsysA[k]] = midxA_rho_col[k];
+					}
+					for (size_t k = 0; k < nA_bar; k++)
+					{
+						midx_rho_row[CsubsysA_bar[k]] = midxA_bar_row[k];
+						midx_rho_col[CsubsysA_bar[k]] = midxA_bar_col[k];
 					}
 
-					result(internal::_multiidx2n(midx_row, n, Cdims),
-							internal::_multiidx2n(midx_col, n, Cdims)) = coeff;
+					size_t midx_sop_col[2]; // index the superop using 2 indices
+					size_t midx_sop_row[2];
+					size_t sop_dims[2];
+					sop_dims[0] = sop_dims[1] = DA;
+					midx_sop_row[0] = internal::_multiidx2n(midxA_row, nA,
+							CdimsA);
+					midx_sop_row[1] = internal::_multiidx2n(midxA_col, nA,
+							CdimsA);
+					midx_sop_col[0] = a;
+					midx_sop_col[1] = b;
 
+					coeff += sop(
+							internal::_multiidx2n(midx_sop_row, 2, sop_dims),
+							internal::_multiidx2n(midx_sop_col, 2, sop_dims))
+							* rrho(
+									internal::_multiidx2n(midx_rho_row, n,
+											Cdims),
+									internal::_multiidx2n(midx_rho_col, n,
+											Cdims));
 				}
 			}
+			result(i, j) = coeff;
 		}
 	}
 	return result;

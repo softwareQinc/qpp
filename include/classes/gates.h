@@ -284,12 +284,12 @@ public:
 // or density matrix specified by subsys
 template<typename Derived1, typename Derived2>
 types::DynMat<typename Derived1::Scalar> gate(
-		const Eigen::MatrixBase<Derived2>& state,
-		const Eigen::MatrixBase<Derived1>& A, const std::vector<size_t>& subsys,
+		const Eigen::MatrixBase<Derived1>& state,
+		const Eigen::MatrixBase<Derived2>& A, const std::vector<size_t>& subsys,
 		const std::vector<size_t>& dims)
 {
-	const types::DynMat<typename Derived1::Scalar> & rA = A;
-	const types::DynMat<typename Derived2::Scalar> & rstate = state;
+	const types::DynMat<typename Derived1::Scalar> & rstate = state;
+	const types::DynMat<typename Derived2::Scalar> & rA = A;
 
 	// EXCEPTION CHECKS
 	// check same scalar type
@@ -384,6 +384,7 @@ types::DynMat<typename Derived1::Scalar> gate(
 			// compute subsys part of the result's row multi-index
 			for (size_t k = 0; k < nA; k++)
 				midx_row[CsubsysA[k]] = midxA_row[k];
+
 			// run over the complement's row multi-index
 			for (size_t i = 0; i < DA_bar; i++)
 			{
@@ -440,6 +441,7 @@ types::DynMat<typename Derived1::Scalar> gate(
 			// compute subsys part of the result's row multi-index
 			for (size_t k = 0; k < nA; k++)
 				midx_row[CsubsysA[k]] = midxA_row[k];
+
 			// run over the complement's row multi-index
 			for (size_t i = 0; i < DA_bar; i++)
 			{

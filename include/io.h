@@ -164,7 +164,7 @@ void displn(const Eigen::MatrixBase<Derived>& A, double chop = ct::chop,
 	os << std::endl;
 }
 
-// Displays a complex number in friendly form
+// Displays a number (implicit conversion to cplx) in friendly form
 void disp(const types::cplx c, double chop = ct::chop, std::ostream& os =
 		std::cout)
 {
@@ -174,7 +174,7 @@ void disp(const types::cplx c, double chop = ct::chop, std::ostream& os =
 	disp(A, chop, os);
 }
 
-// Displays a complex number in friendly form
+// Displays a number (implicit conversion to cplx) in friendly form
 // and adds a new line
 void displn(const types::cplx c, double chop = ct::chop, std::ostream& os =
 		std::cout)
