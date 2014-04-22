@@ -32,11 +32,11 @@ int main()
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
-//	displn(channel(st.px0,{st.pz0, st.pz1},{0},{2}));
-	displn(gate(st.z0, gt.X, { 0 }, { 2 }));
-
 	/*
 	 // TESTING
+
+	 //	displn(channel(st.px0,{st.pz0, st.pz1},{0},{2}));
+	 //	displn(gate(st.z0, gt.X, { 0 }, { 2 }));
 
 	 // quantum teleportation
 	 cout << endl << "Qudit teleportation." << endl;
