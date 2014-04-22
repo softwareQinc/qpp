@@ -309,7 +309,7 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 					for (size_t k = 0; k < nA_bar; k++)
 						midx_col[CsubsysA_bar[k]] = midxA_bar_col[k];
 
-					// now compute the coefficient	TODO: parallelize
+					// now compute the coefficient
 					types::cplx coeff = 0;
 					for (size_t a = 0; a < DA; a++)
 					{
