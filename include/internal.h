@@ -219,18 +219,18 @@ bool _check_subsys_match_dims(const std::vector<size_t>& subsys,
 	return true;
 }
 
-// check that the permutation is valid with respect to valid dims
-bool _check_perm_match_dims(const std::vector<size_t>& perm,
-		const std::vector<size_t>& dims)
+// check valid permutation
+bool _check_perm(const std::vector<size_t>& perm)
 {
-	if (perm.size() != dims.size())
+	if (perm.size() == 0)
 		return false;
 
 	std::vector<size_t> sort_perm = perm;
 	std::sort(std::begin(sort_perm), std::end(sort_perm));
-	for (size_t i = 0; i < dims.size(); i++)
+	for (size_t i = 0; i < perm.size(); i++)
 		if (sort_perm[i] != i)
 			return false;
+
 	return true;
 }
 

@@ -66,6 +66,20 @@ types::DynMat<typename Derived::Scalar> adjoint(
 	return rA.adjoint();
 }
 
+// inverse, preserve return type
+template<typename Derived>
+types::DynMat<typename Derived::Scalar> inverse(
+		const Eigen::MatrixBase<Derived>& A)
+{
+	const types::DynMat<typename Derived::Scalar> & rA = A;
+
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("inverse", Exception::Type::ZERO_SIZE);
+
+	return rA.inverse();
+}
+
 // trace, preserve return type
 template<typename Derived>
 typename Derived::Scalar trace(const Eigen::MatrixBase<Derived>& A)
@@ -573,17 +587,21 @@ types::DynMat<typename Derived::Scalar> syspermute(
 
 // Error checks
 
-// check zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("syspermute", Exception::Type::ZERO_SIZE);
 
-// check that dims is a valid dimension vector
+	// check that dims is a valid dimension vector
 	if (!internal::_check_dims(dims))
 		throw Exception("syspermute", Exception::Type::DIMS_INVALID);
 
-// check that the size of the permutation is OK
-	if (!internal::_check_perm_match_dims(perm, dims))
-		throw Exception("syspermute", Exception::Type::PERM_MISMATCH_DIMS);
+	// check that we have a valid permutation
+	if (!internal::_check_perm(perm))
+		throw Exception("syspermute", Exception::Type::PERM_INVALID);
+
+	// check permutation size
+	if (perm.size() != dims.size())
+		throw Exception("syspermute", Exception::Type::PERM_INVALID);
 
 	size_t D = static_cast<size_t>(rA.rows());
 	size_t numdims = dims.size();
@@ -1319,6 +1337,39 @@ types::ket mket(const std::vector<size_t>& mask, size_t d)
 	std::vector<size_t> dims(n, d);
 	size_t pos = multiidx2n(mask, dims);
 	result(pos) = 1;
+	return result;
+}
+
+// inverse permutation
+std::vector<size_t> invperm(const std::vector<size_t>& perm)
+{
+	if (!internal::_check_perm(perm))
+		throw Exception("invperm", Exception::Type::PERM_INVALID);
+
+	// construct the inverse
+	std::vector<size_t> result(perm.size());
+	for (size_t i = 0; i < perm.size(); i++)
+		result[perm[i]] = i;
+
+	return result;
+}
+
+// compose permutations, perm(sigma)
+std::vector<size_t> compperm(const std::vector<size_t>& perm,
+		const std::vector<size_t>& sigma)
+{
+	if (!internal::_check_perm(perm))
+		throw Exception("compperm", Exception::Type::PERM_INVALID);
+	if (!internal::_check_perm(sigma))
+		throw Exception("compperm", Exception::Type::PERM_INVALID);
+	if (perm.size() != sigma.size())
+		throw Exception("compperm", Exception::Type::PERM_INVALID);
+
+	// construct the composition perm(sigma)
+	std::vector<size_t> result(perm.size());
+	for (size_t i = 0; i < perm.size(); i++)
+		result[i] = perm[sigma[i]];
+
 	return result;
 }
 

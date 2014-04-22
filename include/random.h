@@ -25,7 +25,7 @@ Derived rand(size_t rows, size_t cols, double a = 0, double b = 1)
 	throw Exception("rand", Exception::Type::UNDEFINED_TYPE);
 }
 
-// random double matrix with entries in Uniform(a,b)
+// random double matrix with entries in Uniform[a,b)
 template<>
 types::dmat rand(size_t rows, size_t cols, double a, double b)
 {
@@ -37,7 +37,7 @@ types::dmat rand(size_t rows, size_t cols, double a, double b)
 			+ a * types::dmat::Ones(rows, cols));
 }
 
-// random complex matrix with entries in Uniform(a,b)
+// random complex matrix with entries in Uniform[a,b)
 template<>
 types::cmat rand(size_t rows, size_t cols, double a, double b)
 {
@@ -48,11 +48,19 @@ types::cmat rand(size_t rows, size_t cols, double a, double b)
 			+ ct::ii * rand<types::dmat>(rows, cols, a, b).cast<types::cplx>();
 }
 
-// random number in Uniform(a, b)
+// random number in Uniform[a, b)
 double rand(double a = 0, double b = 1)
 {
 	UniformRealDistribution ud(a, b);
 	return ud.sample();
+}
+
+// random integer uniformly distributed in [a,b)
+int randint(int a, int b)
+{
+	UniformRealDistribution ud(a, b);
+
+	return static_cast<int>(std::floor(ud.sample()));
 }
 
 // random matrix with entries in Normal(mean, sigma)
@@ -197,6 +205,22 @@ types::cmat randrho(size_t D)
 	types::cmat result = 10 * randH(D);
 	result = result * adjoint(result);
 	return result / trace(result);
+}
+
+// random permutation (using Knuth shuffles method)
+std::vector<size_t> randperm(size_t n)
+{
+	if (n == 0)
+		throw Exception("randperm", Exception::Type::PERM_INVALID);
+
+	std::vector<size_t> result(n);
+	for (size_t i = 0; i < n; i++)
+		result[i] = i;
+	// now do the swap
+	for (size_t i = 0; i < n; i++)
+		std::swap(result[i], result[randint(i, n)]);
+
+	return result;
 }
 
 } /* namespace qpp */

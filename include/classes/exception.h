@@ -37,7 +37,7 @@ public:
 		DIMS_MISMATCH_RVECTOR,
 		DIMS_MISMATCH_VECTOR,
 		SUBSYS_MISMATCH_DIMS,
-		PERM_MISMATCH_DIMS,
+		PERM_INVALID,
 		NOT_QUBIT_GATE,
 		NOT_QUBIT_SUBSYS,
 		NOT_BIPARTITE,
@@ -130,8 +130,8 @@ private:
 		case Type::SUBSYS_MISMATCH_DIMS:
 			_msg += "Subsystems mismatch dimensions!";
 			break;
-		case Type::PERM_MISMATCH_DIMS:
-			_msg += "Permutation mismatch dimensions!";
+		case Type::PERM_INVALID:
+			_msg += "Invalid permutation!";
 			break;
 		case Type::NOT_QUBIT_GATE:
 			_msg += "Matrix is not qubit gate!";
