@@ -39,7 +39,7 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 	if (!internal::_check_square_mat(Ks[0]))
 		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
 	if (Ks[0].rows() != rrho.rows())
-		throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
+		throw Exception("channel", Exception::Type::DIMS_MISMATCH_MATRIX);
 	for (auto it : Ks)
 		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
 			throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
@@ -225,7 +225,6 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 	size_t midxA_rho_row[ct::maxn];
 	size_t midxA_rho_col[ct::maxn];
 
-	size_t CdimsA_bar[ct::maxn];
 	size_t CsubsysA_bar[ct::maxn];
 	size_t midxA_bar_row[ct::maxn];
 	size_t midxA_bar_col[ct::maxn];
@@ -248,7 +247,6 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 				== std::end(subsys))
 		{
 			CsubsysA_bar[cnt] = k;
-			CdimsA_bar[cnt] = dims[k];
 			midxA_bar_row[cnt] = midxA_bar_col[cnt] = 0;
 			DA_bar *= dims[k];
 			cnt++;
@@ -266,7 +264,7 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 
 	// check that dimension of Kraus matches the dimension of the subsys
 	if (static_cast<size_t>(Ks[0].rows()) != DA)
-		throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
+		throw Exception("channel", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 	// get the superoperator matrix of the channel
 	types::cmat sop = super(Ks);
