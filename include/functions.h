@@ -511,8 +511,7 @@ types::DynMat<typename Derived1::Scalar> kron(
 
 // Kronecker product of a list of matrices, preserve return type
 template<typename Derived>
-types::DynMat<typename Derived::Scalar> kronlist(
-		const std::vector<types::DynMat<typename Derived::Scalar> > &As)
+types::DynMat<typename Derived::Scalar> kronlist(const std::vector<Derived> &As)
 
 {
 	if (As.size() == 0)
@@ -528,6 +527,15 @@ types::DynMat<typename Derived::Scalar> kronlist(
 		result = kron(result, As[i]);
 	}
 	return result;
+}
+
+// Kronecker product of a list of matrices, preserve return type
+// deduce the template parameters from initializer_list
+template<typename Derived>
+types::DynMat<typename Derived::Scalar> kronlist(
+		const std::initializer_list<Derived> &As)
+{
+	return kronlist(std::vector<Derived>(As));
 }
 
 // Kronecker product of a matrix with itself $n$ times, preserve return type

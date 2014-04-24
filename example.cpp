@@ -32,7 +32,6 @@ int main()
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
-	/*
 	 // TESTING
 
 	 // testing channel and gate
@@ -287,15 +286,15 @@ int main()
 	 cout << "Took " << t << " seconds." << endl;
 
 	 // matrix product
-	 cout << endl << "Matrix product timing." << endl;
-	 t.tic(); // reset the chronometer
-	 cmat prodmat = randcmat * randcmat; // explicit cmat now
-	 t.toc(); // read the time
-	 cout << "Took " << t << " seconds." << endl;
+//	 cout << endl << "Matrix product timing." << endl;
+//	 t.tic(); // reset the chronometer
+//	 cmat prodmat = randcmat * randcmat; // explicit cmat now
+//	 t.toc(); // read the time
+//	 cout << "Took " << t << " seconds." << endl;
 
-	 // END TIMING
-	 total.toc(); // read the total running time
-	 cout << endl << "Total time: " << total.seconds() << " seconds.";
-	 */
+	// END TIMING
+	total.toc(); // read the total running time
+	cout << endl << "Total time: " << total.seconds() << " seconds.";
+
 	cout << endl << "Exiting qpp..." << endl;
 }
