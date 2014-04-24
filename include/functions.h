@@ -1361,8 +1361,7 @@ types::DynMat<typename Derived1::Scalar> gate(
 
 // Gram-Schmidt ortogonalization
 template<typename Derived>
-types::DynMat<typename Derived::Scalar> grams(
-		const std::vector<types::DynMat<typename Derived::Scalar> >& Vs)
+types::DynMat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
 {
 // check empty list
 	if (!internal::_check_nonzero_size(Vs))
@@ -1409,6 +1408,15 @@ types::DynMat<typename Derived::Scalar> grams(
 		cnt++;
 	}
 	return result;
+}
+
+// Gram-Schmidt ortogonalization
+// deduce the template parameters from initializer_list
+template<typename Derived>
+types::DynMat<typename Derived::Scalar> grams(
+		const std::initializer_list<Derived>& Vs)
+{
+	return grams(std::vector<Derived>(Vs));
 }
 
 // Gram-Schmidt ortogonalization
