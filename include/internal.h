@@ -237,7 +237,7 @@ bool _check_perm(const std::vector<size_t>& perm)
 // Kronecker product of 2 matrices, preserve return type
 // internal function for the variadic template function wrapper kron()
 template<typename Derived1, typename Derived2>
-types::DynMat<typename Derived1::Scalar> _kron(
+types::DynMat<typename Derived1::Scalar> _kron2(
 		const Eigen::MatrixBase<Derived1>& A,
 		const Eigen::MatrixBase<Derived2>& B)
 {

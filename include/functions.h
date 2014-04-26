@@ -481,7 +481,7 @@ types::DynMat<typename T::Scalar> kron(const T& head)
 template<typename T, typename ... Args>
 types::DynMat<typename T::Scalar> kron(const T& head, const Args&... tail)
 {
-	return internal::_kron(head, kron(tail...));
+	return internal::_kron2(head, kron(tail...));
 }
 
 // Kronecker product of a list (std::vector) of matrices, preserve return type
