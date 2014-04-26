@@ -29,9 +29,9 @@ void disp(const T& x, const std::string & separator, const std::string& start =
 {
 	os << start;
 	auto it = std::begin(x);
-	for (; it != std::end(x) - 1; it++)
+	for (; it != std::end(x) - 1; ++it)
 		os << *it << separator;
-	os << *(it++);
+	os << *it;
 	os << end;
 }
 
