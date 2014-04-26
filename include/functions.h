@@ -1053,7 +1053,7 @@ types::DynMat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& V)
 	return rV * adjoint(rV) / trace(rV * adjoint(rV));
 }
 
-// optimized, faster than kronlist(I, A, I, ...)
+// optimized, faster than kron(As...)
 template<typename Derived>
 types::DynMat<typename Derived::Scalar> expandout(
 		const Eigen::MatrixBase<Derived>& A, size_t pos,
