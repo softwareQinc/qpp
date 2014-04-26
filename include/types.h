@@ -17,20 +17,20 @@ namespace qpp
 
 namespace types
 {
-// typedefs
-typedef std::complex<double> cplx; // complex number double precision
+// type aliases
+using cplx=std::complex<double>; // complex number double precision
 
 // complex matrix, dynamic size
-typedef Eigen::MatrixXcd cmat;
+using cmat=Eigen::MatrixXcd;
 
 // double matrix, dynamic size
-typedef Eigen::MatrixXd dmat;
+using dmat=Eigen::MatrixXd;
 
 // ket, dynamic size
-typedef Eigen::Matrix<cplx, Eigen::Dynamic, 1> ket;
+using ket=Eigen::Matrix<cplx, Eigen::Dynamic, 1>;
 
 // bra, dynamic size
-typedef Eigen::Matrix<cplx, 1, Eigen::Dynamic> bra;
+using bra=Eigen::Matrix<cplx, 1, Eigen::Dynamic>;
 
 // Eigen dynamic matrix
 template<typename Scalar>
