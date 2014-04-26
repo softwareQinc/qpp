@@ -234,6 +234,45 @@ bool _check_perm(const std::vector<size_t>& perm)
 	return true;
 }
 
+// Kronecker product of 2 matrices, preserve return type
+// internal function for the variadic template function wrapper kron()
+template<typename Derived1, typename Derived2>
+types::DynMat<typename Derived1::Scalar> _kron(
+		const Eigen::MatrixBase<Derived1>& A,
+		const Eigen::MatrixBase<Derived2>& B)
+{
+	const types::DynMat<typename Derived1::Scalar> & rA = A;
+	const types::DynMat<typename Derived2::Scalar> & rB = B;
+
+// check same scalar type
+	if (typeid(typename Derived1::Scalar) != typeid(typename Derived2::Scalar))
+		throw Exception("kron", Exception::Type::TYPE_MISMATCH);
+
+// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("kron", Exception::Type::ZERO_SIZE);
+
+// check zero-size
+	if (!internal::_check_nonzero_size(rB))
+		throw Exception("kron", Exception::Type::ZERO_SIZE);
+
+	size_t Acols = static_cast<size_t>(rA.cols());
+	size_t Arows = static_cast<size_t>(rA.rows());
+	size_t Bcols = static_cast<size_t>(rB.cols());
+	size_t Brows = static_cast<size_t>(rB.rows());
+
+	types::DynMat<typename Derived1::Scalar> result;
+	result.resize(Arows * Brows, Acols * Bcols);
+
+	for (size_t j = 0; j < Acols; j++)
+#pragma omp parallel for
+		for (size_t i = 0; i < Arows; i++)
+			result.block(i * Brows, j * Bcols, Brows, Bcols) = rA(i, j) * rB;
+
+	return result;
+
+}
+
 } /* namespace internal */
 } /* namespace qpp */
 

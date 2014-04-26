@@ -293,10 +293,10 @@ int main()
 	 t.toc(); // read the time
 	 cout << "Took " << t << " seconds." << endl;
 
-	// END TIMING
-	total.toc(); // read the total running time
-	cout << endl << "Total time: " << total.seconds() << " seconds.";
-*/
+	 // END TIMING
+	 total.toc(); // read the total running time
+	 cout << endl << "Total time: " << total.seconds() << " seconds.";
+	 */
 
 	cout << endl << "Exiting qpp..." << endl;
 }

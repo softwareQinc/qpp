@@ -471,55 +471,30 @@ types::DynMat<OutputScalar> cwise(const Eigen::MatrixBase<Derived> &A,
 	return result;
 }
 
-// Kronecker product of 2 matrices, preserve return type
-template<typename Derived1, typename Derived2>
-types::DynMat<typename Derived1::Scalar> kron(
-		const Eigen::MatrixBase<Derived1>& A,
-		const Eigen::MatrixBase<Derived2>& B)
+// Kronecker product of multiple matrices, preserve return type
+// variadic template
+template<typename T>
+types::DynMat<typename T::Scalar> kron(const T& head)
 {
-	const types::DynMat<typename Derived1::Scalar> & rA = A;
-	const types::DynMat<typename Derived2::Scalar> & rB = B;
-
-// check same scalar type
-	if (typeid(typename Derived1::Scalar) != typeid(typename Derived2::Scalar))
-		throw Exception("kron", Exception::Type::TYPE_MISMATCH);
-
-// check zero-size
-	if (!internal::_check_nonzero_size(rA))
-		throw Exception("kron", Exception::Type::ZERO_SIZE);
-
-// check zero-size
-	if (!internal::_check_nonzero_size(rB))
-		throw Exception("kron", Exception::Type::ZERO_SIZE);
-
-	size_t Acols = static_cast<size_t>(rA.cols());
-	size_t Arows = static_cast<size_t>(rA.rows());
-	size_t Bcols = static_cast<size_t>(rB.cols());
-	size_t Brows = static_cast<size_t>(rB.rows());
-
-	types::DynMat<typename Derived1::Scalar> result;
-	result.resize(Arows * Brows, Acols * Bcols);
-
-	for (size_t j = 0; j < Acols; j++)
-#pragma omp parallel for
-		for (size_t i = 0; i < Arows; i++)
-			result.block(i * Brows, j * Bcols, Brows, Bcols) = rA(i, j) * rB;
-
-	return result;
-
+	return head;
+}
+template<typename T, typename ... Args>
+types::DynMat<typename T::Scalar> kron(const T& head, const Args&... tail)
+{
+	return internal::_kron(head, kron(tail...));
 }
 
-// Kronecker product of a list of matrices, preserve return type
+// Kronecker product of a list (std::vector) of matrices, preserve return type
 template<typename Derived>
-types::DynMat<typename Derived::Scalar> kronlist(const std::vector<Derived> &As)
+types::DynMat<typename Derived::Scalar> kron(const std::vector<Derived> &As)
 
 {
 	if (As.size() == 0)
-		throw Exception("kronlist", Exception::Type::ZERO_SIZE);
+		throw Exception("kron", Exception::Type::ZERO_SIZE);
 
 	for (auto it : As)
 		if (it.size() == 0)
-			throw Exception("kronlist", Exception::Type::ZERO_SIZE);
+			throw Exception("kron", Exception::Type::ZERO_SIZE);
 
 	types::DynMat<typename Derived::Scalar> result = As[0];
 	for (size_t i = 1; i < As.size(); i++)
@@ -532,10 +507,10 @@ types::DynMat<typename Derived::Scalar> kronlist(const std::vector<Derived> &As)
 // Kronecker product of a list of matrices, preserve return type
 // deduce the template parameters from initializer_list
 template<typename Derived>
-types::DynMat<typename Derived::Scalar> kronlist(
+types::DynMat<typename Derived::Scalar> kron(
 		const std::initializer_list<Derived> &As)
 {
-	return kronlist(std::vector<Derived>(As));
+	return kron(std::vector<Derived>(As));
 }
 
 // Kronecker product of a matrix with itself $n$ times, preserve return type

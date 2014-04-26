@@ -18,7 +18,8 @@ namespace qpp
 namespace types
 {
 // type aliases
-using cplx=std::complex<double>; // complex number double precision
+using cplx=std::complex<double>;
+// complex number double precision
 
 // complex matrix, dynamic size
 using cmat=Eigen::MatrixXcd;
