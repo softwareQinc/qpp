@@ -8,6 +8,7 @@
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 
+#include <algorithm>
 #include <cmath>
 #include <numeric>
 #include <vector>

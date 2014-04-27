@@ -8,6 +8,8 @@
 #ifndef GATES_H_
 #define GATES_H_
 
+#include <algorithm>
+
 #include "constants.h"
 #include "functions.h"
 #include "exception.h"

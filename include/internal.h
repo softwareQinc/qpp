@@ -8,6 +8,7 @@
 #ifndef INTERNAL_H_
 #define INTERNAL_H_
 
+#include <algorithm>
 #include <iostream>
 #include <utility>
 #include <vector>
