@@ -1037,6 +1037,7 @@ types::DynMat<typename Derived1::Scalar> anticomm(
 }
 
 // projector onto |V><V| (normalized)
+// returns the matrix Zero if |V> has norm zero
 template<typename Derived>
 types::DynMat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& V)
 {
@@ -1050,7 +1051,13 @@ types::DynMat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& V)
 	if (!internal::_check_col_vector(rV))
 		throw Exception("prj", Exception::Type::MATRIX_NOT_CVECTOR);
 
-	return rV * adjoint(rV) / trace(rV * adjoint(rV));
+	double normV = norm(rV);
+	if (normV > ct::eps)
+		return rV * adjoint(rV) / (normV * normV);
+	else
+		return types::DynMat<typename Derived::Scalar>::Zero(rV.rows(),
+				rV.rows());
+
 }
 
 // optimized, faster than kron(As...)
@@ -1338,7 +1345,7 @@ types::DynMat<typename Derived1::Scalar> gate(
 template<typename Derived>
 types::DynMat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
 {
-// check empty list
+	// check empty list
 	if (!internal::_check_nonzero_size(Vs))
 		throw Exception("grams", Exception::Type::ZERO_SIZE);
 
@@ -1346,18 +1353,14 @@ types::DynMat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
 		if (!internal::_check_nonzero_size(it))
 			throw Exception("grams", Exception::Type::ZERO_SIZE);
 
-// check that Vs[0] is a column vector
+	// check that Vs[0] is a column vector
 	if (!internal::_check_col_vector(Vs[0]))
 		throw Exception("grams", Exception::Type::MATRIX_NOT_CVECTOR);
 
-// now check that all the rest match the size of the first vector
+	// now check that all the rest match the size of the first vector
 	for (auto it : Vs)
 		if (it.rows() != Vs[0].rows() || it.cols() != 1)
 			throw Exception("grams", Exception::Type::DIMS_NOT_EQUAL);
-
-// start the process
-	std::vector<types::DynMat<typename Derived::Scalar>> outvecs;
-	outvecs.push_back(Vs[0] / norm(Vs[0]));
 
 	types::DynMat<typename Derived::Scalar> cut = types::DynMat<
 			typename Derived::Scalar>::Identity(Vs[0].rows(), Vs[0].rows());
@@ -1365,24 +1368,40 @@ types::DynMat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
 	types::DynMat<typename Derived::Scalar> vi = types::DynMat<
 			typename Derived::Scalar>::Zero(Vs[0].rows(), 1);
 
-	for (size_t i = 1; i < Vs.size(); i++)
+	std::vector<types::DynMat<typename Derived::Scalar>> outvecs;
+	// find the first non-zero vector in the list
+	size_t pos = 0;
+	for (pos = 0; pos < Vs.size(); pos++)
 	{
-		cut -= prj(outvecs[i - 1]);
-		vi = cut * Vs[i];
+		if (norm(Vs[pos]) > ct::eps) // add it as the first element
+		{
+			outvecs.push_back(Vs[pos]);
+			break;
+		}
+	}
 
-		if (abs(norm(vi)) > ct::eps) // only adds the non-zero vectors
-			outvecs.push_back(vi / norm(vi));
+	// start the process
+	for (size_t i = pos + 1; i < Vs.size(); i++)
+	{
+		cut -= prj(outvecs[i - 1 - pos]);
+		vi = cut * Vs[i];
+		outvecs.push_back(vi);
 	}
 
 	types::DynMat<typename Derived::Scalar> result(Vs[0].rows(),
 			outvecs.size());
+
 	size_t cnt = 0;
 	for (auto it : outvecs)
 	{
-		result.col(cnt) = it;
-		cnt++;
+		double normV = norm(it);
+		if (normV > ct::eps) // we add only the non-zero vectors
+		{
+			result.col(cnt) = it / normV;
+			cnt++;
+		}
 	}
-	return result;
+	return result.block(0, 0, Vs[0].rows(), cnt);
 }
 
 // Gram-Schmidt ortogonalization
