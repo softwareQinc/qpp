@@ -32,7 +32,6 @@ int main()
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
-	/*
 	 // TESTING
 
 	 // testing channel and gate
@@ -296,7 +295,6 @@ int main()
 	 // END TIMING
 	 total.toc(); // read the total running time
 	 cout << endl << "Total time: " << total.seconds() << " seconds.";
-	 */
 
 	cout << endl << "Exiting qpp..." << endl;
 }
