@@ -55,7 +55,7 @@ double rand(double a = 0, double b = 1)
 	return ud.sample();
 }
 
-// random integer uniformly distributed in [a,b)
+// random long long integer uniformly distributed in [a,b)
 long long randint(long long a, long long b)
 {
 	UniformRealDistribution ud(a, b);
