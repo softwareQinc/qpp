@@ -56,11 +56,11 @@ double rand(double a = 0, double b = 1)
 }
 
 // random integer uniformly distributed in [a,b)
-int randint(int a, int b)
+long long randint(long long a, long long b)
 {
 	UniformRealDistribution ud(a, b);
 
-	return static_cast<int>(std::floor(ud.sample()));
+	return static_cast<long long>(std::floor(ud.sample()));
 }
 
 // random matrix with entries in Normal(mean, sigma)
