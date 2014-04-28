@@ -6,7 +6,6 @@
  */
 
 #include "qpp.h"
-
 //#include "matlab.h" // support for MATLAB
 
 // TODO: testing
