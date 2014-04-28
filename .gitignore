@@ -2,5 +2,5 @@
 *~
 *.swp
 qpp
-update
+update*
 benchmark*
