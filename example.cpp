@@ -6,7 +6,7 @@
  */
 
 #include "qpp.h"
-#include "matlab.h" // support for MATLAB
+//#include "matlab.h" // support for MATLAB
 
 // TODO: testing
 // TODO: write documentation
