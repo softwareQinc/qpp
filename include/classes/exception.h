@@ -48,7 +48,7 @@ public:
 		// the number of rows of Eigen::Matrix (assumed to be square)
 		DIMS_MISMATCH_MATRIX,
 		// product of dimenison's std::vector<size_t> not equal to
-		// the number of cols of Eigen::Matrix (assumed to be column vector)
+		// the number of rows of Eigen::Matrix (assumed to be column vector)
 		DIMS_MISMATCH_CVECTOR,
 		// product of dimenison's std::vector<size_t> not equal to
 		// the number of cols of Eigen::Matrix (assumed to be row vector)
