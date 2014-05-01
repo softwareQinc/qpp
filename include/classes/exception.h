@@ -21,59 +21,59 @@ class Exception: public std::exception
 public:
 	enum class Type // exception types
 	{
-		// unknown exception
 		UNKNOWN_EXCEPTION = 1,
+		// unknown exception
+		ZERO_SIZE,
 		// zero sized object, e.g. non-initialized Eigen::Matrix
 		// or std::vector with no elements
-		ZERO_SIZE,
-		// Eigen::Matrix is not square
 		MATRIX_NOT_SQUARE,
-		// Eigen::Matrix is not a column vector
+		// Eigen::Matrix is not square
 		MATRIX_NOT_CVECTOR,
-		// Eigen::Matrix is not a row vector
+		// Eigen::Matrix is not a column vector
 		MATRIX_NOT_RVECTOR,
-		// Eigen::Matrix is not a row/column vector
+		// Eigen::Matrix is not a row vector
 		MATRIX_NOT_VECTOR,
-		// Eigen::Matrix is not square nor a column vector
+		// Eigen::Matrix is not a row/column vector
 		MATRIX_NOT_SQUARE_OR_CVECTOR,
-		// Eigen::Matrix is not square nor a row vector
+		// Eigen::Matrix is not square nor a column vector
 		MATRIX_NOT_SQUARE_OR_RVECTOR,
-		// Eigen::Matrix is not square nor a row/column vector
+		// Eigen::Matrix is not square nor a row vector
 		MATRIX_NOT_SQUARE_OR_VECTOR,
-		// std::vector<size_t> of dimensions has zero size or contains zeros
+		// Eigen::Matrix is not square nor a row/column vector
 		DIMS_INVALID,
-		// std::vector<size_t> of dimensions contains un-equal elements
+		// std::vector<size_t> of dimensions has zero size or contains zeros
 		DIMS_NOT_EQUAL,
-		// product of dimenison's std::vector<size_t> not equal to
-		// the number of rows of Eigen::Matrix (assumed to be square)
+		// std::vector<size_t> of dimensions contains un-equal elements
 		DIMS_MISMATCH_MATRIX,
 		// product of dimenison's std::vector<size_t> not equal to
-		// the number of rows of Eigen::Matrix (assumed to be column vector)
+		// the number of rows of Eigen::Matrix (assumed to be square)
 		DIMS_MISMATCH_CVECTOR,
 		// product of dimenison's std::vector<size_t> not equal to
-		// the number of cols of Eigen::Matrix (assumed to be row vector)
+		// the number of cols of Eigen::Matrix (assumed to be column vector)
 		DIMS_MISMATCH_RVECTOR,
 		// product of dimenison's std::vector<size_t> not equal to
-		// the size of Eigen::Matrix (assumed to be row/column vector)
+		// the number of cols of Eigen::Matrix (assumed to be row vector)
 		DIMS_MISMATCH_VECTOR,
+		// product of dimenison's std::vector<size_t> not equal to
+		// the size of Eigen::Matrix (assumed to be row/column vector)
+		SUBSYS_MISMATCH_DIMS,
 		// std::vector<size_t> subsystem vector has duplicatates, or
 		// has entries that are larger than the size of std::vector<size_t>
 		// of dimensions
-		SUBSYS_MISMATCH_DIMS,
-		// invalid std::vector<size_t> permutation
 		PERM_INVALID,
-		// Eigen::Matrix is not 2 x 2
+		// invalid std::vector<size_t> permutation
 		NOT_QUBIT_GATE,
-		// not 2-dimensional subsystems
+		// Eigen::Matrix is not 2 x 2
 		NOT_QUBIT_SUBSYS,
-		// std::vector<size_t> of dimensions has size different from 2
+		// not 2-dimensional subsystems
 		NOT_BIPARTITE,
-		// parameter out of range
+		// std::vector<size_t> of dimensions has size different from 2
 		OUT_OF_RANGE,
-		// template function not defined for this type
+		// parameter out of range
 		UNDEFINED_TYPE,
-		// custom exception, user must provide a custom message
+		// template function not defined for this type
 		CUSTOM_EXCEPTION
+		// custom exception, user must provide a custom message
 	};
 
 	Exception(const std::string & where, const Type& type) :
