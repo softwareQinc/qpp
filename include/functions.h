@@ -988,9 +988,7 @@ types::DynMat<typename Derived1::Scalar> comm(
 	const types::DynMat<typename Derived1::Scalar> & rA = A;
 	const types::DynMat<typename Derived2::Scalar> & rB = B;
 
-// check same scalar type
-	if (typeid(typename Derived1::Scalar) != typeid(typename Derived2::Scalar))
-		throw Exception("comm", Exception::Type::TYPE_MISMATCH);
+// EXCEPTION CHECKS
 
 // check zero-size
 	if (!internal::_check_nonzero_size(rA)
@@ -1017,9 +1015,7 @@ types::DynMat<typename Derived1::Scalar> anticomm(
 	const types::DynMat<typename Derived1::Scalar>& rA = A;
 	const types::DynMat<typename Derived2::Scalar>& rB = B;
 
-// check same scalar type
-	if (typeid(typename Derived1::Scalar) != typeid(typename Derived2::Scalar))
-		throw Exception("kron", Exception::Type::TYPE_MISMATCH);
+// EXCEPTION CHECKS
 
 // check zero-size
 	if (!internal::_check_nonzero_size(rA)
@@ -1148,9 +1144,6 @@ types::DynMat<typename Derived1::Scalar> gate(
 	const types::DynMat<typename Derived2::Scalar> & rA = A;
 
 	// EXCEPTION CHECKS
-	// check same scalar type
-	if (typeid(typename Derived1::Scalar) != typeid(typename Derived2::Scalar))
-		throw Exception("gate", Exception::Type::TYPE_MISMATCH);
 
 	// check zero sizes
 	if (!internal::_check_nonzero_size(rA))

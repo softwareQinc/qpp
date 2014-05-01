@@ -245,15 +245,13 @@ types::DynMat<typename Derived1::Scalar> _kron2(
 	const types::DynMat<typename Derived1::Scalar> & rA = A;
 	const types::DynMat<typename Derived2::Scalar> & rB = B;
 
-// check same scalar type
-	if (typeid(typename Derived1::Scalar) != typeid(typename Derived2::Scalar))
-		throw Exception("kron", Exception::Type::TYPE_MISMATCH);
+	// EXCEPTION CHECKS
 
-// check zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("kron", Exception::Type::ZERO_SIZE);
 
-// check zero-size
+	// check zero-size
 	if (!internal::_check_nonzero_size(rB))
 		throw Exception("kron", Exception::Type::ZERO_SIZE);
 

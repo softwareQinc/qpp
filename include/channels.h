@@ -20,43 +20,11 @@
 
 namespace qpp
 {
-// applies channel specified by Kraus operators {Ks}
-// to density matrix rho
-template<typename Derived>
-types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
-		const std::vector<types::cmat>& Ks)
-{
-	// check cplx scalar type
-	if (typeid(typename Derived::Scalar) != typeid(types::cplx))
-		throw Exception("channel", Exception::Type::TYPE_MISMATCH);
-
-	const types::cmat & rrho = rho;
-
-	if (!internal::_check_nonzero_size(rrho))
-		throw Exception("channel", Exception::Type::ZERO_SIZE);
-	if (!internal::_check_square_mat(rrho))
-		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
-	if (!internal::_check_nonzero_size(Ks))
-		throw Exception("channel", Exception::Type::ZERO_SIZE);
-	if (!internal::_check_square_mat(Ks[0]))
-		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
-	if (Ks[0].rows() != rrho.rows())
-		throw Exception("channel", Exception::Type::DIMS_MISMATCH_MATRIX);
-	for (auto it : Ks)
-		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-			throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
-
-	types::cmat result = types::cmat::Zero(rrho.rows(), rrho.cols());
-	for (auto it : Ks)
-		result += it * rrho * adjoint(it);
-
-	return result;
-}
-
 // constructs the superoperator matrix in the standard operator basis |i><j|,
 // ordered in lexicographical order, e.g. |0><0|, |0><1|, |1><0|, |1><1|
 types::cmat super(const std::vector<types::cmat>& Ks)
 {
+	// EXCEPTION CHECKS
 	if (!internal::_check_nonzero_size(Ks))
 		throw Exception("super", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_nonzero_size(Ks[0]))
@@ -117,6 +85,7 @@ types::cmat super(const std::vector<types::cmat>& Ks)
 // L_{ab,mn} = C_{ma,nb}
 types::cmat choi(const std::vector<types::cmat>& Ks)
 {
+	// EXCEPTION CHECKS
 	if (!internal::_check_nonzero_size(Ks))
 		throw Exception("choi", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_nonzero_size(Ks[0]))
@@ -147,6 +116,7 @@ types::cmat choi(const std::vector<types::cmat>& Ks)
 // extracts orthogonal Kraus operators from Choi matrix
 std::vector<types::cmat> choi2kraus(const types::cmat& A)
 {
+	// EXCEPTION CHECKS
 	if (!internal::_check_nonzero_size(A))
 		throw Exception("choi2kraus", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_square_mat(A))
@@ -170,6 +140,36 @@ std::vector<types::cmat> choi2kraus(const types::cmat& A)
 	return result;
 }
 
+// applies channel specified by Kraus operators {Ks}
+// to density matrix rho
+template<typename Derived>
+types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
+		const std::vector<types::cmat>& Ks)
+{
+	const types::cmat & rrho = rho;
+
+	// EXCEPTION CHECKS
+	if (!internal::_check_nonzero_size(rrho))
+		throw Exception("channel", Exception::Type::ZERO_SIZE);
+	if (!internal::_check_square_mat(rrho))
+		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
+	if (!internal::_check_nonzero_size(Ks))
+		throw Exception("channel", Exception::Type::ZERO_SIZE);
+	if (!internal::_check_square_mat(Ks[0]))
+		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
+	if (Ks[0].rows() != rrho.rows())
+		throw Exception("channel", Exception::Type::DIMS_MISMATCH_MATRIX);
+	for (auto it : Ks)
+		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+			throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
+
+	types::cmat result = types::cmat::Zero(rrho.rows(), rrho.cols());
+	for (auto it : Ks)
+		result += it * rrho * adjoint(it);
+
+	return result;
+}
+
 // applies channel specifed by Kraus operators {Ks}
 // to part of density matrix specified by subsys
 template<typename Derived>
@@ -177,13 +177,9 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 		const std::vector<types::cmat>& Ks, const std::vector<size_t>& subsys,
 		const std::vector<size_t>& dims)
 {
-	// EXCEPTION CHECKS
-	// check same scalar type
-	if (typeid(typename Derived::Scalar) != typeid(types::cplx))
-		throw Exception("channel", Exception::Type::TYPE_MISMATCH);
-
 	const types::cmat & rrho = rho;
 
+	// EXCEPTION CHECKS
 	// check zero sizes
 	if (!internal::_check_nonzero_size(rrho))
 		throw Exception("channel", Exception::Type::ZERO_SIZE);

@@ -11,7 +11,7 @@
 #include <stdexcept>
 #include <string>
 
-// exception class
+// exception class, function parameter checking
 
 namespace qpp
 {
@@ -21,29 +21,58 @@ class Exception: public std::exception
 public:
 	enum class Type // exception types
 	{
+		// unknown exception
 		UNKNOWN_EXCEPTION = 1,
+		// zero sized object, e.g. non-initialized Eigen::Matrix
+		// or std::vector with no elements
 		ZERO_SIZE,
+		// Eigen::Matrix is not square
 		MATRIX_NOT_SQUARE,
+		// Eigen::Matrix is not a column vector
 		MATRIX_NOT_CVECTOR,
+		// Eigen::Matrix is not a row vector
 		MATRIX_NOT_RVECTOR,
+		// Eigen::Matrix is not a row/column vector
 		MATRIX_NOT_VECTOR,
+		// Eigen::Matrix is not square nor a column vector
 		MATRIX_NOT_SQUARE_OR_CVECTOR,
+		// Eigen::Matrix is not square nor a row vector
 		MATRIX_NOT_SQUARE_OR_RVECTOR,
+		// Eigen::Matrix is not square nor a row/column vector
 		MATRIX_NOT_SQUARE_OR_VECTOR,
+		// std::vector<size_t> of dimensions has zero size or contains zeros
 		DIMS_INVALID,
+		// std::vector<size_t> of dimensions contains un-equal elements
 		DIMS_NOT_EQUAL,
+		// product of dimenison's std::vector<size_t> not equal to
+		// the number of rows of Eigen::Matrix (assumed to be square)
 		DIMS_MISMATCH_MATRIX,
+		// product of dimenison's std::vector<size_t> not equal to
+		// the number of cols of Eigen::Matrix (assumed to be column vector)
 		DIMS_MISMATCH_CVECTOR,
+		// product of dimenison's std::vector<size_t> not equal to
+		// the number of cols of Eigen::Matrix (assumed to be row vector)
 		DIMS_MISMATCH_RVECTOR,
+		// product of dimenison's std::vector<size_t> not equal to
+		// the size of Eigen::Matrix (assumed to be row/column vector)
 		DIMS_MISMATCH_VECTOR,
+		// std::vector<size_t> subsystem vector has duplicatates, or
+		// has entries that are larger than the size of std::vector<size_t>
+		// of dimensions
 		SUBSYS_MISMATCH_DIMS,
+		// invalid std::vector<size_t> permutation
 		PERM_INVALID,
+		// Eigen::Matrix is not 2 x 2
 		NOT_QUBIT_GATE,
+		// not 2-dimensional subsystems
 		NOT_QUBIT_SUBSYS,
+		// std::vector<size_t> of dimensions has size different from 2
 		NOT_BIPARTITE,
+		// parameter out of range
 		OUT_OF_RANGE,
+		// template function not defined for this type
 		UNDEFINED_TYPE,
-		TYPE_MISMATCH,
+		// custom exception, user must provide a custom message
 		CUSTOM_EXCEPTION
 	};
 
@@ -74,6 +103,7 @@ private:
 	Type _type;
 	std::string _custom;
 
+	// construct exception messages
 	std::string _construct_exception_msg()
 	{
 		_msg += "IN ";
@@ -147,9 +177,6 @@ private:
 			break;
 		case Type::UNDEFINED_TYPE:
 			_msg += "Not defined for this type!";
-			break;
-		case Type::TYPE_MISMATCH:
-			_msg += "Type mismatch!";
 			break;
 		case Type::CUSTOM_EXCEPTION:
 			_msg += "CUSTOM EXCEPTION ";
