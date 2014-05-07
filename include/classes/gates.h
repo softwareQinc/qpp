@@ -91,10 +91,17 @@ public:
 	// gates with variable dimension
 
 	// one qubit gates
-	types::cmat Rtheta(double theta) const
+
+	// Rotation of theta about n (a unit vector {nx, ny, nz})
+	types::cmat Rn(double theta, std::vector<double> n) const
 	{
+		if (n.size() != 3) // not a 3-D vector
+			throw Exception("Rn", "n is not a 3-D vector");
+
 		types::cmat result(2, 2);
-		result << 1, 0, 0, exp(ct::ii * theta);
+		result = std::cos(theta / 2) * Id2
+				- ct::ii * std::sin(theta / 2)
+						* (n[0] * X + n[1] * Y + n[2] * Z);
 		return result;
 	}
 
