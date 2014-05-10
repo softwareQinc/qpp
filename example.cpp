@@ -34,8 +34,8 @@ int main()
 
 	// TESTING
 
-	// testing channel and gate
-	cout << endl << "Testing channel(...) and gate(...)." << endl;
+	// testing channel and Gates::apply
+	cout << endl << "Testing channel(...) and Gates::apply(...)." << endl;
 	cmat rho = randrho(16);
 	cmat K = kron(gt.Id2, gt.X, gt.Y, gt.Z);
 	vector<size_t> p = randperm(4); // permutation
@@ -49,15 +49,15 @@ int main()
 			1, 2, 3 }, { 2, 2, 2, 2 }), invp, { 2, 2, 2, 2 });
 	cout << norm(r1 - r2) << endl << endl;
 
-	r1 = gate(rho, K, p, { 2, 2, 2, 2 });
+	r1 = gt.apply(rho, K, p, { 2, 2, 2, 2 });
 	r2 = syspermute(
-			gate(syspermute(rho, p, { 2, 2, 2, 2 }), K, { 0, 1, 2, 3 }, { 2, 2,
-					2, 2 }), invp, { 2, 2, 2, 2 });
+			gt.apply(syspermute(rho, p, { 2, 2, 2, 2 }), K, { 0, 1, 2, 3 }, { 2,
+					2, 2, 2 }), invp, { 2, 2, 2, 2 });
 	cout << norm(r1 - r2) << endl << endl;
 
 	displn(channel(prj(mket( { 0, 1 })), { gt.CNOTab }, { 1, 0 }, { 2, 2 }));
 	cout << endl;
-	displn(gate(mket( { 0, 0 }), gt.CNOTab, { 0, 1 }, { 2, 2 }));
+	displn(gt.apply(mket( { 0, 0 }), gt.CNOTab, { 0, 1 }, { 2, 2 }));
 
 	// quantum teleportation
 	cout << endl << "Qudit teleportation." << endl;

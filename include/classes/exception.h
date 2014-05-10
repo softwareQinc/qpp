@@ -73,7 +73,7 @@ public:
 		UNDEFINED_TYPE,
 		// template function not defined for this type
 		CUSTOM_EXCEPTION
-		// custom exception, user must provide a custom message
+	// custom exception, user must provide a custom message
 	};
 
 	Exception(const std::string & where, const Type& type) :
