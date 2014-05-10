@@ -96,7 +96,7 @@ public:
 	types::cmat Rn(double theta, std::vector<double> n) const
 	{
 		if (n.size() != 3) // not a 3-D vector
-			throw Exception("Gates::Rn", "n is not a 3-D vector");
+			throw Exception("Gates::Rn", "n is not a 3-D vector!");
 
 		types::cmat result(2, 2);
 		result = std::cos(theta / 2) * Id2

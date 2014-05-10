@@ -186,7 +186,7 @@ types::cmat randH(size_t D)
 	return H + adjoint(H);
 }
 
-// random ket
+// random ket of dimension D
 types::ket randket(size_t D)
 {
 	if (D == 0)
