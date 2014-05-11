@@ -9,6 +9,7 @@
 #define GATES_H_
 
 #include <algorithm>
+#include <type_traits>
 
 #include "constants.h"
 #include "functions.h"
@@ -107,13 +108,6 @@ public:
 
 	// one quDit gates
 
-	types::cmat Id(size_t D) const
-	{
-		if (D == 0)
-			throw Exception("Gates::Id", Exception::Type::DIMS_INVALID);
-		return types::cmat::Identity(D, D);
-	}
-
 	types::cmat Zd(size_t D) const
 	{
 		if (D == 0)
@@ -147,6 +141,14 @@ public:
 		return Fd(D).inverse() * Zd(D) * Fd(D);
 	}
 
+	template<typename Derived = Eigen::MatrixXcd>
+	Derived Id(size_t D) const
+	{
+		if (D == 0)
+			throw Exception("Gates::Id", Exception::Type::DIMS_INVALID);
+		return Derived::Identity(D, D);
+	}
+
 	// applies gate A to part of state vector
 	// or density matrix specified by subsys
 	template<typename Derived1, typename Derived2>
@@ -160,6 +162,10 @@ public:
 		const types::DynMat<typename Derived2::Scalar> & rA = A;
 
 		// EXCEPTION CHECKS
+
+		// check types
+		if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
+			throw Exception("Gates::apply", Exception::Type::TYPE_MISMATCH);
 
 		// check zero sizes
 		if (!internal::_check_nonzero_size(rA))

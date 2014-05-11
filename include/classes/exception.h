@@ -70,6 +70,8 @@ public:
 		// std::vector<size_t> of dimensions has size different from 2
 		OUT_OF_RANGE,
 		// parameter out of range
+		TYPE_MISMATCH,
+		// types do not match (i.e. Matrix<double> vs Matrix<cplx>)
 		UNDEFINED_TYPE,
 		// template function not defined for this type
 		CUSTOM_EXCEPTION
@@ -174,6 +176,9 @@ private:
 			break;
 		case Type::OUT_OF_RANGE:
 			_msg += "Parameter out of range!";
+			break;
+		case Type::TYPE_MISMATCH:
+			_msg += "Type mismatch!";
 			break;
 		case Type::UNDEFINED_TYPE:
 			_msg += "Not defined for this type!";

@@ -11,6 +11,7 @@
 #include "constants.h"
 #include "types.h"
 #include "classes/exception.h"
+#include "classes/randevs.h"
 #include "classes/stat.h"
 
 // random matrices/states
@@ -207,18 +208,19 @@ types::cmat randrho(size_t D)
 	return result / trace(result);
 }
 
-// random permutation (using Knuth shuffles method)
+// random permutation (using Knuth shuffle method)
 std::vector<size_t> randperm(size_t n)
 {
 	if (n == 0)
 		throw Exception("randperm", Exception::Type::PERM_INVALID);
 
 	std::vector<size_t> result(n);
-	for (size_t i = 0; i < n; i++)
-		result[i] = i;
-	// now do the swap
-	for (size_t i = 0; i < n; i++)
-		std::swap(result[i], result[randint(i, n)]);
+
+	// fill in increasing order
+	std::iota(std::begin(result), std::end(result), 0);
+	// shuffle
+	std::shuffle(std::begin(result), std::end(result),
+			RandomDevices::getInstance()._rng);
 
 	return result;
 }

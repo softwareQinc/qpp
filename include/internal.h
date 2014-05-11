@@ -10,11 +10,14 @@
 
 #include <algorithm>
 #include <iostream>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
 #include "types.h"
 #include "classes/exception.h"
+
+#include "io.h"
 
 // internal functions, do not modify
 
@@ -28,12 +31,6 @@ namespace internal
 void _n2multiidx(size_t n, size_t numdims, const size_t* dims, size_t* result)
 {
 // no error checks to improve speed
-	/*	size_t maxn = 1;
-	 for (size_t i = 0; i < numdims; i++)
-	 maxn *= dims[i];
-	 if (n >= maxn)
-	 throw Exception("_n2multiidx", Exception::Type::OUT_OF_RANGE);
-	 */
 	size_t _n = n;
 	for (size_t i = 0; i < numdims; i++)
 	{
@@ -47,11 +44,6 @@ void _n2multiidx(size_t n, size_t numdims, const size_t* dims, size_t* result)
 size_t _multiidx2n(const size_t* midx, size_t numdims, const size_t* dims)
 {
 // no error checks to improve speed
-	/*
-	 for (size_t i = 0; i < numdims; i++)
-	 if (midx[i] >= dims[i])
-	 throw Exception("_multiidx2n", Exception::Type::OUT_OF_RANGE);
-	 */
 
 // Static allocation for speed!
 	// double the size for matrices reshaped as vectors
@@ -226,13 +218,14 @@ bool _check_perm(const std::vector<size_t>& perm)
 	if (perm.size() == 0)
 		return false;
 
-	std::vector<size_t> sort_perm = perm;
-	std::sort(std::begin(sort_perm), std::end(sort_perm));
-	for (size_t i = 0; i < perm.size(); i++)
-		if (sort_perm[i] != i)
-			return false;
+	std::vector<size_t> ordered(perm.size());
+	std::iota(std::begin(ordered), std::end(ordered), 0);
 
-	return true;
+	if (std::is_permutation(std::begin(ordered), std::end(ordered),
+			std::begin(perm)))
+		return true;
+	else
+		return false;
 }
 
 // Kronecker product of 2 matrices, preserve return type
@@ -246,6 +239,10 @@ types::DynMat<typename Derived1::Scalar> _kron2(
 	const types::DynMat<typename Derived2::Scalar> & rB = B;
 
 	// EXCEPTION CHECKS
+
+	// check types
+	if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
+		throw Exception("kron", Exception::Type::TYPE_MISMATCH);
 
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA))

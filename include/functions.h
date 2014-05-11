@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <cmath>
 #include <numeric>
+#include <type_traits>
 #include <vector>
 
 #include "constants.h"
@@ -990,6 +991,10 @@ types::DynMat<typename Derived1::Scalar> comm(
 
 // EXCEPTION CHECKS
 
+	// check types
+	if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
+		throw Exception("comm", Exception::Type::TYPE_MISMATCH);
+
 // check zero-size
 	if (!internal::_check_nonzero_size(rA)
 			|| !internal::_check_nonzero_size(rB))
@@ -1016,6 +1021,10 @@ types::DynMat<typename Derived1::Scalar> anticomm(
 	const types::DynMat<typename Derived2::Scalar>& rB = B;
 
 // EXCEPTION CHECKS
+
+	// check types
+	if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
+		throw Exception("anticomm", Exception::Type::TYPE_MISMATCH);
 
 // check zero-size
 	if (!internal::_check_nonzero_size(rA)

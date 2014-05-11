@@ -191,7 +191,7 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
 	// check zero-size
-	if (!internal::_check_nonzero_size(rA))
+	if (rA.size() == 0)
 		throw Exception("save", Exception::Type::ZERO_SIZE);
 
 	std::fstream fout;
