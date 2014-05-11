@@ -30,13 +30,13 @@
 namespace qpp
 {
 
-// initialize the random devices singleton
+// initialize the random devices -- Singleton
 RandomDevices& rdevs = RandomDevices::getInstance();
 
-// initialize the gates singleton
+// initialize the gates -- Singleton
 const Gates& gt = Gates::getInstance();
 
-// initialize the states singleton
+// initialize the states -- Singleton
 const States& st = States::getInstance();
 
 } /* namespace qpp */
