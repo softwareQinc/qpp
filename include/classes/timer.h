@@ -17,22 +17,22 @@ namespace qpp
 class Timer
 {
 protected:
-	std::chrono::high_resolution_clock::time_point _start, _end;
+	std::chrono::steady_clock::time_point _start, _end;
 
 public:
 	Timer() :
-			_start(std::chrono::high_resolution_clock::now()), _end(_start)
+			_start(std::chrono::steady_clock::now()), _end(_start)
 	{
 	}
 
 	void tic()
 	{
-		_start = _end = std::chrono::high_resolution_clock::now();
+		_start = _end = std::chrono::steady_clock::now();
 	}
 
 	void toc()
 	{
-		_end = std::chrono::high_resolution_clock::now();
+		_end = std::chrono::steady_clock::now();
 	}
 
 	double seconds() const
