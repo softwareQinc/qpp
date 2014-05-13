@@ -18,9 +18,8 @@ CFLAGS = -c -pedantic $(CC_STANDARD) $(WARNINGS) $(MULTIPROC) $(OPTIM)\
 CFLAGS_RELEASE = -O3 -DNDEBUG -DEIGEN_NO_DEBUG # Release flags
 CFLAGS_DEBUG = -DDEBUG -g3 # Debug flags
 
-# do not use -lgomp for clang++, but use it for g++
-LGOMP = -lgomp
-LDFLAGS = $(LGOMP) 
+# Linker flags
+LDFLAGS = $(MULTIPROC) 
 
 SOURCES = $(wildcard $(SRC)/*.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)

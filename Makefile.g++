@@ -22,10 +22,8 @@ CFLAGS = -c -pedantic $(CC_STANDARD) $(WARNINGS) $(MULTIPROC) $(OPTIM)\
 CFLAGS_RELEASE = -O3 -DNDEBUG -DEIGEN_NO_DEBUG # Release flags
 CFLAGS_DEBUG = -DDEBUG -g3 # Debug flags
 
-# Linker flags for MATLAB integration
-# do not use -lgomp for clang++, but use it for g++
-LGOMP = -lgomp
-LDFLAGS = $(LGOMP) -L $(MLIBS) $(MFLAGS) 
+# Linker flags
+LDFLAGS = $(MULTIPROC) -L $(MLIBS) $(MFLAGS) 
 
 SOURCES = $(wildcard $(SRC)/*.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)
