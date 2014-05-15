@@ -12,7 +12,7 @@
 // TODO: testing
 // TODO: write documentation
 // TODO: more robust exception parameter checking
-// TODO: partial trace and other functions for pure states
+// TODO: partial trace and other functions (channels etc)
 
 using namespace std;
 
