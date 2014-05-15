@@ -103,7 +103,7 @@ types::cmat choi(const std::vector<types::cmat>& Ks)
 	for (size_t a = 0; a < D; a++)
 		MES(a * D + a) = 1;
 
-	types::cmat Omega = MES * adjoint(MES);
+	types::cmat Omega = static_cast<types::cmat>(MES * adjoint(MES));
 
 	types::cmat result = types::cmat::Zero(D * D, D * D);
 	for (auto it : Ks)

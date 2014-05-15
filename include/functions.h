@@ -1287,7 +1287,7 @@ size_t multiidx2n(const std::vector<size_t>& midx,
 types::ket mket(const std::vector<size_t>& mask)
 {
 	size_t n = mask.size();
-	size_t D = std::pow(2, n);
+	size_t D = static_cast<size_t>(std::pow(2, n));
 // check zero size
 	if (n == 0)
 		throw Exception("mket", Exception::Type::ZERO_SIZE);
@@ -1336,7 +1336,7 @@ types::ket mket(const std::vector<size_t>& mask,
 types::ket mket(const std::vector<size_t>& mask, size_t d)
 {
 	size_t n = mask.size();
-	size_t D = std::pow(d, n);
+	size_t D = static_cast<size_t>(std::pow(d, n));
 
 // check zero size
 	if (n == 0)

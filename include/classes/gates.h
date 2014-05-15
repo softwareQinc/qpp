@@ -138,7 +138,7 @@ public:
 		if (D == 0)
 			throw Exception("Gates::Xd", Exception::Type::DIMS_INVALID);
 
-		return Fd(D).inverse() * Zd(D) * Fd(D);
+		return static_cast<types::cmat>(Fd(D).inverse() * Zd(D) * Fd(D));
 	}
 
 	template<typename Derived = Eigen::MatrixXcd>

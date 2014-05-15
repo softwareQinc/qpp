@@ -59,7 +59,7 @@ double rand(double a = 0, double b = 1)
 // random long long integer uniformly distributed in [a,b)
 long long randint(long long a, long long b)
 {
-	UniformRealDistribution ud(a, b);
+	UniformRealDistribution ud(static_cast<double>(a), static_cast<double>(b));
 
 	return static_cast<long long>(std::floor(ud.sample()));
 }
@@ -194,7 +194,7 @@ types::ket randket(size_t D)
 		throw Exception("randket", Exception::Type::DIMS_INVALID);
 
 	types::ket kt = types::ket::Ones(D);
-	types::ket result = randU(D) * kt;
+	types::ket result = static_cast<types::ket>(randU(D) * kt);
 	return result / norm(result);
 }
 
