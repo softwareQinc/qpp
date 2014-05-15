@@ -10,9 +10,11 @@
 
 // input/output
 
+#include <algorithm>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <iterator>
 #include <stdexcept>
 #include <vector>
 
@@ -22,21 +24,36 @@
 namespace qpp
 {
 
-// Displays a standard container that supports std::begin and std::end
+// Displays a standard container that supports std::begin, std::end
+// and forward iterating
 template<typename T>
 void disp(const T& x, const std::string & separator, const std::string& start =
 		"[", const std::string& end = "]", std::ostream& os = std::cout)
 {
 	os << start;
+
 	auto it = std::begin(x);
-	for (; it != std::end(x) - 1; ++it)
-		os << *it << separator;
-	os << *it;
+	auto it_end = std::end(x);
+
+	if (it != it_end)
+	{
+		// the iterator just before the end, need this for containers
+		// that do not have backwards iterators
+		decltype(it_end) it_before_end = it;
+		while (it_before_end = it, ++it != it_end)
+			;
+
+		it = std::begin(x);
+		for (; it != it_before_end; ++it)
+			os << *it << separator;
+		os << *it;
+	}
+
 	os << end;
 }
 
-// Displays a standard container that supports std::begin and std::end
-// and adds a new line
+// Displays a standard container that supports std::begin, std::end
+// and forward iterating, and adds a new line
 template<typename T>
 void displn(const T& x, const std::string & separator,
 		const std::string& start = "[", const std::string& end = "]",
@@ -46,20 +63,23 @@ void displn(const T& x, const std::string & separator,
 	os << std::endl;
 }
 
-// Displays a C-style fixed-size array
+// Displays a C-style dynamically-allocated array
 template<typename T>
 void disp(const T* x, const size_t n, const std::string& separator,
 		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
 	os << start;
+
 	for (size_t i = 0; i < n - 1; i++)
 		os << x[i] << separator;
-	os << x[n - 1];
+	if (n > 0)
+		os << x[n - 1];
+
 	os << end;
 }
 
-// Displays a C-style fixed-size array
+// Displays a C-style dynamically-allocated array
 // and adds a new line
 template<typename T>
 void displn(const T* x, const size_t n, const std::string & separator,
