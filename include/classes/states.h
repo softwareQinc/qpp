@@ -18,6 +18,22 @@ namespace qpp
 
 class States
 {
+private:
+	~States()
+	{
+	}
+	;
+public:
+	States(const States&) = delete;
+	States& operator=(const States&) = delete;
+
+	static const States& getInstance() // const singleton
+	{
+		static States instance; // Guaranteed to be destroyed.
+								// Instantiated on first use.
+								// Thread safe in C++11
+		return instance;
+	}
 public:
 	// Pauli eigen-states
 	types::ket x0;
@@ -115,18 +131,6 @@ private:
 		pGHZ = GHZ * GHZ.adjoint();
 		pW = W * W.adjoint();
 	}
-public:
-	States(const States&) = delete;
-	States& operator=(const States&) = delete;
-
-	static const States& getInstance() // const singleton
-	{
-		static States instance; // Guaranteed to be destroyed.
-								// Instantiated on first use.
-								// Thread safe in C++11
-		return instance;
-	}
-	virtual ~States() = default;
 };
 /* class States */
 

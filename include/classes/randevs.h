@@ -21,16 +21,11 @@ namespace qpp
 
 class RandomDevices // make it a singleton
 {
-public:
-	std::random_device _rd;
-	std::mt19937 _rng;
 private:
-	RandomDevices() :
-			_rd(), _rng(_rd())
+	~RandomDevices()
 	{
-		// seed the standard C number generator, used by Eigen
-		std::srand(_rd());
 	}
+	;
 public:
 	RandomDevices(const RandomDevices&) = delete;
 	RandomDevices& operator=(const RandomDevices&) = delete;
@@ -42,8 +37,16 @@ public:
 									   // Thread safe in C++11
 		return instance;
 	}
-
-	virtual ~RandomDevices() = default;
+public:
+	std::random_device _rd;
+	std::mt19937 _rng;
+private:
+	RandomDevices() :
+			_rd(), _rng(_rd())
+	{
+		// seed the standard C number generator, used by Eigen
+		std::srand(_rd());
+	}
 };
 
 } /* namespace qpp */

@@ -22,6 +22,22 @@ namespace qpp
 
 class Gates
 {
+private:
+	~Gates()
+	{
+	}
+	;
+public:
+	Gates(const Gates&) = delete;
+	Gates& operator=(const Gates&) = delete;
+
+	static const Gates& getInstance() // const singleton
+	{
+		static Gates instance; // Guaranteed to be destroyed.
+							   // Instantiated on first use.
+							   // Thread safe in C++11
+		return instance;
+	}
 public:
 	// one qubit gates
 	types::cmat Id2; // Identity matrix
@@ -76,18 +92,6 @@ private:
 		TOF.block(6, 6, 2, 2) = X;
 		FRED.block(4, 4, 4, 4) = SWAP;
 	}
-public:
-	Gates(const Gates&) = delete;
-	Gates& operator=(const Gates&) = delete;
-
-	static const Gates& getInstance() // const singleton
-	{
-		static Gates instance; // Guaranteed to be destroyed.
-							   // Instantiated on first use.
-							   // Thread safe in C++11
-		return instance;
-	}
-	virtual ~Gates() = default;
 public:
 	// gates with variable dimension
 
