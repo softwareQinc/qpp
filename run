@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export DYLD_LIBRARY_PATH="/Applications/MATLAB_R2013a.app/bin/maci64"
+
+./qpp
