@@ -11,24 +11,13 @@
 namespace qpp
 {
 
-class States
+class States: public Singleton<const States> // const Singleton
 {
-private:
+	friend class Singleton<const States> ;
 	~States()
 	{
 	}
 	;
-public:
-	States(const States&) = delete;
-	States& operator=(const States&) = delete;
-
-	static const States& getInstance() // const singleton
-	{
-		static States instance; // Guaranteed to be destroyed.
-								// Instantiated on first use.
-								// Thread safe in C++11
-		return instance;
-	}
 public:
 	// Pauli eigen-states
 	types::ket x0;

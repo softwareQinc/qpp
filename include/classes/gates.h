@@ -11,24 +11,13 @@
 namespace qpp
 {
 
-class Gates
+class Gates: public Singleton<const Gates> // const Singleton
 {
-private:
+	friend class Singleton<const Gates> ;
 	~Gates()
 	{
 	}
 	;
-public:
-	Gates(const Gates&) = delete;
-	Gates& operator=(const Gates&) = delete;
-
-	static const Gates& getInstance() // const singleton
-	{
-		static Gates instance; // Guaranteed to be destroyed.
-							   // Instantiated on first use.
-							   // Thread safe in C++11
-		return instance;
-	}
 public:
 	// one qubit gates
 	types::cmat Id2; // Identity matrix

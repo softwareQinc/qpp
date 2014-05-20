@@ -39,6 +39,7 @@
 #include "constants.h"
 #include "types.h"
 #include "classes/exception.h"
+#include "classes/singleton.h"
 #include "internal.h"
 #include "functions.h"
 #include "classes/states.h"

@@ -16,24 +16,14 @@
 namespace qpp
 {
 
-class RandomDevices // make it a singleton
+// Singleton, cannot be const
+class RandomDevices: public Singleton<RandomDevices>
 {
-private:
+	friend class Singleton<RandomDevices> ;
 	~RandomDevices()
 	{
 	}
 	;
-public:
-	RandomDevices(const RandomDevices&) = delete;
-	RandomDevices& operator=(const RandomDevices&) = delete;
-
-	static RandomDevices& getInstance()
-	{
-		static RandomDevices instance; // Guaranteed to be destroyed.
-									   // Instantiated on first use.
-									   // Thread safe in C++11
-		return instance;
-	}
 public:
 	std::random_device _rd;
 	std::mt19937 _rng;
