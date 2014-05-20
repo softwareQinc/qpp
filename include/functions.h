@@ -8,17 +8,6 @@
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <type_traits>
-#include <vector>
-
-#include "constants.h"
-#include "internal.h"
-#include "types.h"
-#include "classes/exception.h"
-
 // Collection of quantum computing useful functions
 namespace qpp
 {

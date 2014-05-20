@@ -10,17 +10,6 @@
 
 // input/output
 
-#include <algorithm>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <iterator>
-#include <stdexcept>
-#include <vector>
-
-#include "types.h"
-#include "classes/exception.h"
-
 namespace qpp
 {
 

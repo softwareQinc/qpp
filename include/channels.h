@@ -8,16 +8,6 @@
 #ifndef CHANNELS_H_
 #define CHANNELS_H_
 
-#include <algorithm>
-#include <cmath>
-#include <vector>
-
-#include "constants.h"
-#include "functions.h"
-#include "internal.h"
-#include "types.h"
-#include "classes/exception.h"
-
 namespace qpp
 {
 // constructs the superoperator matrix in the standard operator basis |i><j|,

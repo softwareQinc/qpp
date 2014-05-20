@@ -8,9 +8,6 @@
 #ifndef RANDEVS_H_
 #define RANDEVS_H_
 
-#include <cstdlib>
-#include <random>
-
 // Random devices singleton class
 // public members:
 // std::random_device _rd

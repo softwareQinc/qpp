@@ -8,11 +8,6 @@
 #ifndef STATES_H_
 #define STATES_H_
 
-#include <cmath>
-
-#include "constants.h"
-#include "types.h"
-
 namespace qpp
 {
 

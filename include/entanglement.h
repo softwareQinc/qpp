@@ -8,13 +8,6 @@
 #ifndef ENTANGLEMENT_H_
 #define ENTANGLEMENT_H_
 
-#include <Eigen/SVD>
-
-#include "entropies.h"
-#include "functions.h"
-#include "internal.h"
-#include "types.h"
-
 // entanglement
 
 namespace qpp

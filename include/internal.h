@@ -8,17 +8,6 @@
 #ifndef INTERNAL_H_
 #define INTERNAL_H_
 
-#include <algorithm>
-#include <iostream>
-#include <type_traits>
-#include <utility>
-#include <vector>
-
-#include "types.h"
-#include "classes/exception.h"
-
-#include "io.h"
-
 // internal functions, do not modify
 
 namespace qpp

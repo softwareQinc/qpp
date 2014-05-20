@@ -8,15 +8,6 @@
 #ifndef GATES_H_
 #define GATES_H_
 
-#include <algorithm>
-#include <type_traits>
-
-#include "constants.h"
-#include "functions.h"
-#include "exception.h"
-#include "internal.h"
-#include "types.h"
-
 namespace qpp
 {
 

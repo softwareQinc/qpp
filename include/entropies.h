@@ -8,14 +8,6 @@
 #ifndef ENTROPY_H_
 #define ENTROPY_H_
 
-#include <cmath>
-
-#include "functions.h"
-#include "internal.h"
-#include "types.h"
-#include "classes/exception.h"
-#include "io.h"
-
 // various entropies, assume as input either
 // a normalized hermitian matrix or a probability vector
 

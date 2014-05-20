@@ -8,8 +8,6 @@
 #ifndef CONSTANTS_H_
 #define	CONSTANTS_H_
 
-#include <complex>
-
 // constants
 
 namespace qpp

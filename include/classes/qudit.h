@@ -8,14 +8,6 @@
 #ifndef QUDIT_H_
 #define QUDIT_H_
 
-#include "exception.h"
-#include "functions.h"
-#include "internal.h"
-#include "types.h"
-#include "classes/gates.h"
-#include "classes/stat.h"
-#include "classes/states.h"
-
 namespace qpp
 {
 

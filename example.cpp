@@ -13,6 +13,7 @@
 // TODO: write documentation
 // TODO: more robust exception parameter checking
 // TODO: partial trace and other functions (channels etc)
+// TODO: change loops to column major order
 
 using namespace std;
 

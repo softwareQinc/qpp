@@ -8,12 +8,6 @@
 #ifndef RANDOM_H_
 #define RANDOM_H_
 
-#include "constants.h"
-#include "types.h"
-#include "classes/exception.h"
-#include "classes/randevs.h"
-#include "classes/stat.h"
-
 // random matrices/states
 
 namespace qpp

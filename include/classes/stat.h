@@ -8,14 +8,6 @@
 #ifndef STAT_H_
 #define STAT_H_
 
-#include <algorithm>
-#include <functional>
-
-#include "exception.h"
-#include "internal.h"
-#include "randevs.h"
-#include "types.h"
-
 // statistical distributions etc
 
 namespace qpp

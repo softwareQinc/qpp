@@ -11,15 +11,6 @@
 // MATLAB I/O interfacing
 // add the path to MATLAB/extern/include in include path
 
-#include <Eigen/Dense>
-
-#include <stdexcept>
-#include <string>
-
-#include "internal.h"
-#include "types.h"
-#include "classes/exception.h"
-
 #include "mat.h"  // path to this is defined in the Makefile
 #include "mex.h"  // path to this is defined in the Makefile
 
