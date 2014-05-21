@@ -29,7 +29,7 @@ types::cmat schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
 	if (!internal::_check_col_vector(rA))
 		throw Exception("schmidtcoeff", Exception::Type::MATRIX_NOT_CVECTOR);
 	// check matching dimensions
-	if (dims[0] * dims[1] != rA.rows())
+	if (!internal::_check_dims_match_mat(dims, A))
 		throw Exception("schmidtcoeff", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 	Eigen::JacobiSVD<types::DynMat<typename Derived::Scalar>> svd(
@@ -53,7 +53,7 @@ types::cmat schmidtU(const Eigen::MatrixBase<Derived>& A,
 	if (!internal::_check_col_vector(rA))
 		throw Exception("schmidtU", Exception::Type::MATRIX_NOT_CVECTOR);
 	// check matching dimensions
-	if (dims[0] * dims[1] != rA.rows())
+	if (!internal::_check_dims_match_mat(dims, A))
 		throw Exception("schmidtU", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 	Eigen::JacobiSVD<types::DynMat<typename Derived::Scalar>> svd(
@@ -78,7 +78,7 @@ types::cmat schmidtV(const Eigen::MatrixBase<Derived>& A,
 	if (!internal::_check_col_vector(rA))
 		throw Exception("schmidtV", Exception::Type::MATRIX_NOT_CVECTOR);
 	// check matching dimensions
-	if (dims[0] * dims[1] != rA.rows())
+	if (!internal::_check_dims_match_mat(dims, A))
 		throw Exception("schmidtV", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 	Eigen::JacobiSVD<types::DynMat<typename Derived::Scalar>> svd(
@@ -105,7 +105,7 @@ types::cmat schmidtprob(const Eigen::MatrixBase<Derived>& A,
 	if (!internal::_check_col_vector(rA))
 		throw Exception("schmidtprob", Exception::Type::MATRIX_NOT_CVECTOR);
 	// check matching dimensions
-	if (dims[0] * dims[1] != rA.rows())
+	if (!internal::_check_dims_match_mat(dims, A))
 		throw Exception("schmidtprob", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 	Eigen::JacobiSVD<types::DynMat<typename Derived::Scalar>> svd(
@@ -131,7 +131,7 @@ double entanglement(const Eigen::MatrixBase<Derived>& A,
 	if (!internal::_check_col_vector(rA))
 		throw Exception("entanglement", Exception::Type::MATRIX_NOT_CVECTOR);
 	// check matching dimensions
-	if (dims[0] * dims[1] != rA.rows())
+	if (!internal::_check_dims_match_mat(dims, A))
 		throw Exception("entanglement", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 	return shannon(schmidtprob(rA, dims));
@@ -150,7 +150,7 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 		throw Exception("gconcurrence", Exception::Type::MATRIX_NOT_CVECTOR);
 
 	size_t D = static_cast<size_t>(std::sqrt(A.rows()));
-	if (D * D != A.rows())
+	if (D * D != static_cast<size_t>(A.rows()))
 		throw Exception("gconcurrence", Exception::Type::DIMS_NOT_EQUAL);
 
 	// we compute exp(logdet()) to avoid underflow
