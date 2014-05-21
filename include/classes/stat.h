@@ -76,7 +76,7 @@ public:
 		return _d(RandomDevices::getInstance()._rng);
 	}
 
-	std::vector<double> probabilities()
+	std::vector<double> probabilities() const
 	{
 		return _d.probabilities();
 	}
@@ -88,7 +88,8 @@ protected:
 	std::discrete_distribution<size_t> _d;
 
 	template<typename InputIterator>
-	std::vector<double> cplx2weights(InputIterator first, InputIterator last)
+	std::vector<double> cplx2weights(InputIterator first,
+			InputIterator last) const
 	{
 		std::vector<double> weights(last - first);
 		std::transform(first, last, std::begin(weights),
@@ -156,7 +157,7 @@ public:
 		return _d(RandomDevices::getInstance()._rng);
 	}
 
-	std::vector<double> probabilities()
+	std::vector<double> probabilities() const
 	{
 		return _d.probabilities();
 	}
