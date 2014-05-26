@@ -13,11 +13,12 @@
 #define	QPP_H_
 
 #include <algorithm>
-#include <cmath>
 #include <chrono>
+#include <cmath>
 #include <complex>
 #include <cstddef>
 #include <cstdlib>
+#include <cstring>
 #include <fstream>
 #include <functional>
 #include <iomanip>
