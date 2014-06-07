@@ -16,8 +16,7 @@
 namespace qpp
 {
 
-// Singleton, cannot be const
-class RandomDevices: public Singleton<const RandomDevices>
+class RandomDevices: public Singleton<const RandomDevices> // const Singleton
 {
 	friend class Singleton<const RandomDevices> ;
 	~RandomDevices()
