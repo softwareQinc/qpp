@@ -60,7 +60,7 @@ namespace qpp
 {
 
 // initialize the random devices -- Singleton
-RandomDevices& rdevs = RandomDevices::getInstance();
+const RandomDevices& rdevs = RandomDevices::getInstance();
 
 // initialize the gates -- Singleton
 const Gates& gt = Gates::getInstance();

@@ -17,18 +17,18 @@ namespace qpp
 {
 
 // Singleton, cannot be const
-class RandomDevices: public Singleton<RandomDevices>
+class RandomDevices: public Singleton<const RandomDevices>
 {
-	friend class Singleton<RandomDevices> ;
+	friend class Singleton<const RandomDevices> ;
 	~RandomDevices()
 	{
 	}
 	;
 public:
 	std::random_device _rd;
-	std::mt19937 _rng;
+	mutable std::mt19937 _rng;
 private:
-	RandomDevices() :
+	RandomDevices():
 			_rd(), _rng(_rd())
 	{
 		// seed the standard C number generator, used by Eigen
