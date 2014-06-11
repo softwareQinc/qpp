@@ -42,10 +42,10 @@ int main()
 	 cout << endl << "Testing channel(...) and Gates::apply(...)." << endl;
 	 cmat rho = randrho(16);
 	 cmat K = kron(gt.Id2, gt.X, gt.Y, gt.Z);
-	 vector<size_t> p = randperm(4); // permutation
+	 vector<std::size_t> p = randperm(4); // permutation
 	 cout << "Permutation: ";
 	 displn(p, ", ");
-	 vector<size_t> invp = invperm(p); // inverse permutation
+	 vector<std::size_t> invp = invperm(p); // inverse permutation
 	 cout << "Inverse permutation: ";
 	 displn(invp, ", ");
 	 cmat r1 = channel(rho, { K }, p, { 2, 2, 2, 2 });
@@ -155,12 +155,12 @@ int main()
 
 	 // spectral decomposition test
 	 cout << endl << "Spectral decomposition tests." << endl;
-	 size_t D = 4;
+	 std::size_t D = 4;
 	 cmat rH = randH(D);
 	 dmat evalsH = hevals(rH);
 	 cmat evectsH = hevects(rH);
 	 cmat spec = cmat::Zero(D, D);
-	 for (size_t i = 0; i < D; i++)
+	 for (std::size_t i = 0; i < D; i++)
 	 spec += evalsH(i) * prj((cmat) evectsH.col(i));
 	 cout << "Original matrix: " << endl;
 	 displn(rH);
@@ -170,7 +170,7 @@ int main()
 
 	 // channel tests
 	 cout << endl << "Channel tests." << endl;
-	 size_t nk = 10, d = 2; // nk Kraus on d-dimensional system
+	 std::size_t nk = 10, d = 2; // nk Kraus on d-dimensional system
 	 cout << "Generating a random channel with " << nk
 	 << " Kraus operators on a " << d << " dimensional space..." << endl;
 	 std::vector<cmat> Ks = randkraus(nk, d);
@@ -198,7 +198,7 @@ int main()
 	 cmat evalsupop = evals(smat);
 	 displn(transpose(evalsupop));
 	 cout << endl << "Their absolute values are: " << endl;
-	 for (size_t i = 0; i < (size_t) evalsupop.size(); i++)
+	 for (std::size_t i = 0; i < (std::size_t) evalsupop.size(); i++)
 	 cout << std::abs((cplx) evalsupop(i)) << " ";
 	 cout << endl << endl << "Diference in norm for superoperator action: ";
 	 cmat rho_out2 = transpose(
@@ -216,9 +216,9 @@ int main()
 
 	 // 	// TIMING tests
 	 cout << endl << "Timing tests..." << endl;
-	 size_t n = 12; // number of qubits
-	 size_t N = std::pow(2, n);
-	 vector<size_t> dims(n, 2); // local dimensions
+	 std::size_t n = 12; // number of qubits
+	 std::size_t N = std::pow(2, n);
+	 vector<std::size_t> dims(n, 2); // local dimensions
 	 cout << "n = " << n << " qubits, matrix size " << N << " x " << N << "."
 	 << endl;
 
@@ -241,7 +241,7 @@ int main()
 	 cout << endl << "ptrace1 timing." << endl;
 	 t.tic(); // reset the chronometer
 	 // trace away half of the qubits
-	 ptrace1(randcmat, { (size_t) std::sqrt(N), (size_t) std::sqrt(N) });
+	 ptrace1(randcmat, { (std::size_t) std::sqrt(N), (std::size_t) std::sqrt(N) });
 	 t.toc(); // read the time
 	 cout << "Took " << t << " seconds." << endl;
 
@@ -249,13 +249,13 @@ int main()
 	 cout << endl << "ptrace2 timing." << endl;
 	 t.tic(); // reset the chronometer
 	 // trace away half of the qubits
-	 ptrace2(randcmat, { (size_t) std::sqrt(N), (size_t) std::sqrt(N) });
+	 ptrace2(randcmat, { (std::size_t) std::sqrt(N), (std::size_t) std::sqrt(N) });
 	 t.toc(); // read the time
 	 cout << "Took " << t << " seconds." << endl;
 
 	 // ptrace
 	 cout << endl << "ptrace timing." << endl;
-	 vector<size_t> subsys_ptrace = { 0 };
+	 vector<std::size_t> subsys_ptrace = { 0 };
 	 cout << "Subsytem(s): ";
 	 displn(subsys_ptrace, ", ");
 	 t.tic();
@@ -265,8 +265,8 @@ int main()
 
 	 // ptranspose
 	 cout << endl << "ptranspose timing." << endl;
-	 vector<size_t> subsys_ptranspose; // partially transpose n-1 subsystems
-	 for (size_t i = 0; i < n - 1; i++)
+	 vector<std::size_t> subsys_ptranspose; // partially transpose n-1 subsystems
+	 for (std::size_t i = 0; i < n - 1; i++)
 	 subsys_ptranspose.push_back(i);
 	 cout << "Subsytem(s): ";
 	 displn(subsys_ptranspose, ", ");
@@ -277,8 +277,8 @@ int main()
 
 	 // syspermute
 	 cout << endl << "syspermute timing." << endl;
-	 vector<size_t> perm; // left-shift all subsystems by 1
-	 for (size_t i = 0; i < n; i++)
+	 vector<std::size_t> perm; // left-shift all subsystems by 1
+	 for (std::size_t i = 0; i < n; i++)
 	 perm.push_back((i + 1) % n);
 	 cout << "Subsytem(s): ";
 	 displn(perm, ", ");

@@ -92,32 +92,32 @@ public:
 
 	// one quDit gates
 
-	types::cmat Zd(size_t D) const
+	types::cmat Zd(std::size_t D) const
 	{
 		if (D == 0)
 			throw Exception("Gates::Zd", Exception::Type::DIMS_INVALID);
 
 		types::cmat result(D, D);
 		result = types::cmat::Zero(D, D);
-		for (size_t i = 0; i < D; i++)
+		for (std::size_t i = 0; i < D; i++)
 			result(i, i) = std::pow(ct::omega(D), i);
 		return result;
 	}
 
-	types::cmat Fd(size_t D) const
+	types::cmat Fd(std::size_t D) const
 	{
 		if (D == 0)
 			throw Exception("Gates::Fd", Exception::Type::DIMS_INVALID);
 
 		types::cmat result(D, D);
 		result = types::cmat::Zero(D, D);
-		for (size_t j = 0; j < D; j++)
-			for (size_t i = 0; i < D; i++)
+		for (std::size_t j = 0; j < D; j++)
+			for (std::size_t i = 0; i < D; i++)
 				result(i, j) = 1 / std::sqrt(D) * std::pow(ct::omega(D), i * j);
 		return result;
 	}
 
-	types::cmat Xd(size_t D) const // X|k>=|k+1>
+	types::cmat Xd(std::size_t D) const // X|k>=|k+1>
 	{
 		if (D == 0)
 			throw Exception("Gates::Xd", Exception::Type::DIMS_INVALID);
@@ -126,7 +126,7 @@ public:
 	}
 
 	template<typename Derived = Eigen::MatrixXcd>
-	Derived Id(size_t D) const
+	Derived Id(std::size_t D) const
 	{
 		if (D == 0)
 			throw Exception("Gates::Id", Exception::Type::DIMS_INVALID);
@@ -139,8 +139,8 @@ public:
 	types::DynMat<typename Derived1::Scalar> apply(
 			const Eigen::MatrixBase<Derived1>& state,
 			const Eigen::MatrixBase<Derived2>& A,
-			const std::vector<size_t>& subsys,
-			const std::vector<size_t>& dims) const
+			const std::vector<std::size_t>& subsys,
+			const std::vector<std::size_t>& dims) const
 	{
 		const types::DynMat<typename Derived1::Scalar> & rstate = state;
 		const types::DynMat<typename Derived2::Scalar> & rA = A;
@@ -173,27 +173,27 @@ public:
 					Exception::Type::SUBSYS_MISMATCH_DIMS);
 
 		// Use static allocation for speed!
-		size_t Cdims[ct::maxn];
-		size_t midx_row[ct::maxn];
-		size_t midx_rho_row[ct::maxn];
+		std::size_t Cdims[ct::maxn];
+		std::size_t midx_row[ct::maxn];
+		std::size_t midx_rho_row[ct::maxn];
 
-		size_t CdimsA[ct::maxn];
-		size_t CsubsysA[ct::maxn];
-		size_t midxA_row[ct::maxn];
-		size_t midxA_rho_row[ct::maxn];
+		std::size_t CdimsA[ct::maxn];
+		std::size_t CsubsysA[ct::maxn];
+		std::size_t midxA_row[ct::maxn];
+		std::size_t midxA_rho_row[ct::maxn];
 
-		size_t CdimsA_bar[ct::maxn];
-		size_t CsubsysA_bar[ct::maxn];
-		size_t midxA_bar_row[ct::maxn];
+		std::size_t CdimsA_bar[ct::maxn];
+		std::size_t CsubsysA_bar[ct::maxn];
+		std::size_t midxA_bar_row[ct::maxn];
 
-		size_t n = dims.size();
-		size_t nA = subsys.size();
-		size_t nA_bar = n - nA;
+		std::size_t n = dims.size();
+		std::size_t nA = subsys.size();
+		std::size_t nA_bar = n - nA;
 
-		size_t D = 1;
-		size_t DA_bar = 1;
+		std::size_t D = 1;
+		std::size_t DA_bar = 1;
 
-		for (size_t k = 0, cnt = 0; k < n; k++)
+		for (std::size_t k = 0, cnt = 0; k < n; k++)
 		{
 			midx_row[k] = midx_rho_row[k] = 0;
 			Cdims[k] = dims[k];
@@ -211,8 +211,8 @@ public:
 			}
 		}
 
-		size_t DA = 1;
-		for (size_t k = 0; k < nA; k++)
+		std::size_t DA = 1;
+		for (std::size_t k = 0; k < nA; k++)
 		{
 			midxA_row[k] = midxA_rho_row[k] = 0;
 			CdimsA[k] = dims[subsys[k]];
@@ -228,23 +228,23 @@ public:
 						Exception::Type::DIMS_MISMATCH_CVECTOR);
 
 			// check that state vector matches the dimensions of the subsys
-			if (static_cast<size_t>(rA.cols()) != DA)
+			if (static_cast<std::size_t>(rA.cols()) != DA)
 				throw Exception("Gates::apply",
 						Exception::Type::DIMS_MISMATCH_CVECTOR);
 
 			types::DynMat<typename Derived1::Scalar> result(D, 1);
 
 			// run over the subsys's row multi-index
-			for (size_t a = 0; a < DA; a++)
+			for (std::size_t a = 0; a < DA; a++)
 			{
 				// get the subsys's row multi-index
 				internal::_n2multiidx(a, nA, CdimsA, midxA_row);
 				// compute subsys part of the result's row multi-index
-				for (size_t k = 0; k < nA; k++)
+				for (std::size_t k = 0; k < nA; k++)
 					midx_row[CsubsysA[k]] = midxA_row[k];
 
 				// run over the complement's row multi-index
-				for (size_t i = 0; i < DA_bar; i++)
+				for (std::size_t i = 0; i < DA_bar; i++)
 				{
 					// get the complement's row multi-index
 					internal::_n2multiidx(i, nA_bar, CdimsA_bar, midxA_bar_row);
@@ -252,22 +252,22 @@ public:
 					// result's row multi-index
 					// and the complement part
 					// of the state's total row multi-index
-					for (size_t k = 0; k < nA_bar; k++)
+					for (std::size_t k = 0; k < nA_bar; k++)
 						midx_row[CsubsysA_bar[k]] =
 								midx_rho_row[CsubsysA_bar[k]] =
 										midxA_bar_row[k];
 					// compute the results's row index
-					size_t result_row_idx = internal::_multiidx2n(midx_row, n,
+					std::size_t result_row_idx = internal::_multiidx2n(midx_row, n,
 							Cdims);
 
 					// compute the coefficient
 					typename Derived1::Scalar coeff = 0;
-					for (size_t c = 0; c < DA; c++)
+					for (std::size_t c = 0; c < DA; c++)
 					{
 						// compute the subsys part state's row multi-index
 						internal::_n2multiidx(c, nA, CdimsA, midxA_rho_row);
 						// now we have the total state's row multi-index
-						for (size_t k = 0; k < nA; k++)
+						for (std::size_t k = 0; k < nA; k++)
 							midx_rho_row[CsubsysA[k]] = midxA_rho_row[k];
 
 						coeff += rA(a, c)
@@ -290,23 +290,23 @@ public:
 						Exception::Type::DIMS_MISMATCH_MATRIX);
 
 			// check that state matrix matches the dimensions of the subsys
-			if (static_cast<size_t>(rA.cols()) != DA)
+			if (static_cast<std::size_t>(rA.cols()) != DA)
 				throw Exception("Gates::apply",
 						Exception::Type::DIMS_MISMATCH_MATRIX);
 
 			types::DynMat<typename Derived1::Scalar> result(D, D);
 
 			// run over the subsys's row multi-index
-			for (size_t a = 0; a < DA; a++)
+			for (std::size_t a = 0; a < DA; a++)
 			{
 				// get the subsys's row multi-index
 				internal::_n2multiidx(a, nA, CdimsA, midxA_row);
 				// compute subsys part of the result's row multi-index
-				for (size_t k = 0; k < nA; k++)
+				for (std::size_t k = 0; k < nA; k++)
 					midx_row[CsubsysA[k]] = midxA_row[k];
 
 				// run over the complement's row multi-index
-				for (size_t i = 0; i < DA_bar; i++)
+				for (std::size_t i = 0; i < DA_bar; i++)
 				{
 					// get the complement's row multi-index
 					internal::_n2multiidx(i, nA_bar, CdimsA_bar, midxA_bar_row);
@@ -314,25 +314,25 @@ public:
 					// of the result's row multi-index
 					// and the complement part of the
 					// state's total row multi-index
-					for (size_t k = 0; k < nA_bar; k++)
+					for (std::size_t k = 0; k < nA_bar; k++)
 						midx_row[CsubsysA_bar[k]] =
 								midx_rho_row[CsubsysA_bar[k]] =
 										midxA_bar_row[k];
 					// compute the results's row index
-					size_t result_row_idx = internal::_multiidx2n(midx_row, n,
+					std::size_t result_row_idx = internal::_multiidx2n(midx_row, n,
 							Cdims);
 
 					// run over the col index
-					for (size_t j = 0; j < D; j++)
+					for (std::size_t j = 0; j < D; j++)
 					{
 						// compute the coefficient
 						typename Derived1::Scalar coeff = 0;
-						for (size_t c = 0; c < DA; c++)
+						for (std::size_t c = 0; c < DA; c++)
 						{
 							// compute the subsys part state's row multi-index
 							internal::_n2multiidx(c, nA, CdimsA, midxA_rho_row);
 							// now we have the total state's row multi-index
-							for (size_t k = 0; k < nA; k++)
+							for (std::size_t k = 0; k < nA; k++)
 								midx_rho_row[CsubsysA[k]] = midxA_rho_row[k];
 
 							coeff += rA(a, c)
@@ -357,8 +357,8 @@ public:
 	template<typename Derived>
 	types::DynMat<typename Derived::Scalar> CTRL(
 			const Eigen::MatrixBase<Derived>& A,
-			const std::vector<size_t>& ctrl, const std::vector<size_t>& subsys,
-			size_t n, size_t d = 2) const
+			const std::vector<std::size_t>& ctrl, const std::vector<std::size_t>& subsys,
+			std::size_t n, std::size_t d = 2) const
 	{
 		const types::DynMat<typename Derived::Scalar> & rA = A;
 
@@ -385,11 +385,11 @@ public:
 		if (d == 0)
 			throw Exception("Gates::CTRL", Exception::Type::DIMS_INVALID);
 
-		std::vector<size_t> ctrlgate = ctrl; // ctrl + gate subsystem vector
+		std::vector<std::size_t> ctrlgate = ctrl; // ctrl + gate subsystem vector
 		ctrlgate.insert(std::end(ctrlgate), std::begin(subsys),
 				std::end(subsys));
 
-		std::vector<size_t> dims; // local dimensions vector
+		std::vector<std::size_t> dims; // local dimensions vector
 		dims.insert(std::begin(dims), n, d);
 
 		// check that ctrl + gate subsystem is valid
@@ -405,26 +405,26 @@ public:
 		// END EXCEPTION CHECKS
 
 		// Use static allocation for speed!
-		size_t Cdims[ct::maxn];
-		size_t midx_row[ct::maxn];
-		size_t midx_col[ct::maxn];
+		std::size_t Cdims[ct::maxn];
+		std::size_t midx_row[ct::maxn];
+		std::size_t midx_col[ct::maxn];
 
-		size_t CdimsA[ct::maxn];
-		size_t midxA_row[ct::maxn];
-		size_t midxA_col[ct::maxn];
+		std::size_t CdimsA[ct::maxn];
+		std::size_t midxA_row[ct::maxn];
+		std::size_t midxA_col[ct::maxn];
 
-		size_t Cdims_bar[ct::maxn];
-		size_t Csubsys_bar[ct::maxn];
-		size_t midx_bar[ct::maxn];
+		std::size_t Cdims_bar[ct::maxn];
+		std::size_t Csubsys_bar[ct::maxn];
+		std::size_t midx_bar[ct::maxn];
 
-		size_t ngate = subsys.size();
-		size_t nctrl = ctrl.size();
-		size_t nsubsys_bar = n - ctrlgate.size();
-		size_t D = std::pow(d, n);
-		size_t DA = static_cast<size_t>(rA.cols());
-		size_t Dsubsys_bar = std::pow(d, nsubsys_bar);
+		std::size_t ngate = subsys.size();
+		std::size_t nctrl = ctrl.size();
+		std::size_t nsubsys_bar = n - ctrlgate.size();
+		std::size_t D = std::pow(d, n);
+		std::size_t DA = static_cast<std::size_t>(rA.cols());
+		std::size_t Dsubsys_bar = std::pow(d, nsubsys_bar);
 
-		for (size_t k = 0, cnt = 0; k < n; k++)
+		for (std::size_t k = 0, cnt = 0; k < n; k++)
 		{
 			midx_row[k] = midx_col[k] = 0;
 			Cdims[k] = d;
@@ -440,7 +440,7 @@ public:
 			}
 		}
 
-		for (size_t k = 0; k < ngate; k++)
+		for (std::size_t k = 0; k < ngate; k++)
 		{
 			midxA_row[k] = midxA_col[k] = 0;
 			CdimsA[k] = d;
@@ -451,15 +451,15 @@ public:
 		types::DynMat<typename Derived::Scalar> Ak;
 
 		// run over the complement indexes
-		for (size_t i = 0; i < Dsubsys_bar; i++)
+		for (std::size_t i = 0; i < Dsubsys_bar; i++)
 		{
 			// get the complement's row multi-index
 			internal::_n2multiidx(i, nsubsys_bar, Cdims_bar, midx_bar);
-			for (size_t k = 0; k < d; k++)
+			for (std::size_t k = 0; k < d; k++)
 			{
 				Ak = powm(rA, k); // compute rA^k
 				// run over the subsys's row multi-index
-				for (size_t a = 0; a < DA; a++)
+				for (std::size_t a = 0; a < DA; a++)
 				{
 					// get the subsys's row multi-index
 					internal::_n2multiidx(a, ngate, CdimsA, midxA_row);
@@ -467,26 +467,26 @@ public:
 					// construct the result's row multi-index
 
 					// first the ctrl part (equal for both row and column)
-					for (size_t c = 0; c < nctrl; c++)
+					for (std::size_t c = 0; c < nctrl; c++)
 						midx_row[ctrl[c]] = midx_col[ctrl[c]] = k;
 
 					// then the complement part (equal for column)
-					for (size_t c = 0; c < nsubsys_bar; c++)
+					for (std::size_t c = 0; c < nsubsys_bar; c++)
 						midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =
 								midx_bar[c];
 
 					// then the subsys part
-					for (size_t c = 0; c < ngate; c++)
+					for (std::size_t c = 0; c < ngate; c++)
 						midx_row[subsys[c]] = midxA_row[c];
 
 					// run over the subsys's column multi-index
-					for (size_t b = 0; b < DA; b++)
+					for (std::size_t b = 0; b < DA; b++)
 					{
 						// get the subsys's column multi-index
 						internal::_n2multiidx(b, ngate, CdimsA, midxA_col);
 
 						// construct the result's column multi-index
-						for (size_t c = 0; c < ngate; c++)
+						for (std::size_t c = 0; c < ngate; c++)
 							midx_col[subsys[c]] = midxA_col[c];
 
 						// finally write the values

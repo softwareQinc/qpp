@@ -54,13 +54,13 @@ void displn(const T& x, const std::string & separator,
 
 // Displays a C-style dynamically-allocated array
 template<typename T>
-void disp(const T* x, const size_t n, const std::string& separator,
+void disp(const T* x, const std::size_t n, const std::string& separator,
 		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
 	os << start;
 
-	for (size_t i = 0; i < n - 1; i++)
+	for (std::size_t i = 0; i < n - 1; i++)
 		os << x[i] << separator;
 	if (n > 0)
 		os << x[n - 1];
@@ -71,7 +71,7 @@ void disp(const T* x, const size_t n, const std::string& separator,
 // Displays a C-style dynamically-allocated array
 // and adds a new line
 template<typename T>
-void displn(const T* x, const size_t n, const std::string & separator,
+void displn(const T* x, const std::size_t n, const std::string & separator,
 		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
@@ -99,9 +99,9 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = ct::chop,
 	std::vector<std::string> vstr;
 	std::string strA;
 
-	for (size_t i = 0; i < static_cast<size_t>(rA.rows()); i++)
+	for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
 	{
-		for (size_t j = 0; j < static_cast<size_t>(rA.cols()); j++)
+		for (std::size_t j = 0; j < static_cast<std::size_t>(rA.cols()); j++)
 		{
 			strA.clear(); // clear the temporary string
 			ostr.clear();
@@ -142,23 +142,23 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = ct::chop,
 	}
 
 // determine the maximum lenght of the entries in each column
-	std::vector<size_t> maxlengthcols(rA.cols(), 0);
+	std::vector<std::size_t> maxlengthcols(rA.cols(), 0);
 
-	for (size_t i = 0; i < static_cast<size_t>(rA.rows()); i++)
-		for (size_t j = 0; j < static_cast<size_t>(rA.cols()); j++)
+	for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
+		for (std::size_t j = 0; j < static_cast<std::size_t>(rA.cols()); j++)
 			if (vstr[i * rA.cols() + j].size() > maxlengthcols[j])
 				maxlengthcols[j] = vstr[i * rA.cols() + j].size();
 
 // finally display it!
-	for (size_t i = 0; i < static_cast<size_t>(rA.rows()); i++)
+	for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
 	{
 		os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
 				<< vstr[i * rA.cols()]; // display first column
-		for (size_t j = 1; j < static_cast<size_t>(rA.cols()); j++) // then the rest
+		for (std::size_t j = 1; j < static_cast<std::size_t>(rA.cols()); j++) // then the rest
 			os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
 					<< std::right << vstr[i * rA.cols() + j];
 
-		if (i < static_cast<size_t>(rA.rows()) - 1)
+		if (i < static_cast<std::size_t>(rA.rows()) - 1)
 			os << std::endl;
 	}
 }
@@ -217,8 +217,8 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 	const char _header[] = "TYPE::Eigen::Matrix";
 	fout.write(_header, sizeof(_header));
 
-	size_t rows = static_cast<size_t>(rA.rows());
-	size_t cols = static_cast<size_t>(rA.cols());
+	std::size_t rows = static_cast<std::size_t>(rA.rows());
+	std::size_t cols = static_cast<std::size_t>(rA.cols());
 	fout.write((char*) &rows, sizeof(rows));
 	fout.write((char*) &cols, sizeof(cols));
 
@@ -255,7 +255,7 @@ types::DynMat<typename Derived::Scalar> load(const std::string& fname)
 	}
 	delete[] _fheader;
 
-	size_t rows, cols;
+	std::size_t rows, cols;
 	fin.read((char*) &rows, sizeof(rows));
 	fin.read((char*) &cols, sizeof(cols));
 

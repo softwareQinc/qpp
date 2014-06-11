@@ -54,8 +54,8 @@ types::dmat loadMATLABmatrix(const std::string &mat_file,
 				"loadMATLABmatrix: Loaded variable " + var_name
 						+ " is not in double-precision format!");
 
-	size_t rows = mxGetM(pa);
-	size_t cols = mxGetN(pa);
+	std::size_t rows = mxGetM(pa);
+	std::size_t cols = mxGetN(pa);
 
 	types::dmat result(rows, cols);
 
@@ -96,8 +96,8 @@ types::cmat loadMATLABmatrix(const std::string &mat_file,
 				"loadMATLABmatrix: Loaded variable " + var_name
 						+ " is not in double-precision format!");
 
-	size_t rows = mxGetM(pa);
-	size_t cols = mxGetN(pa);
+	std::size_t rows = mxGetM(pa);
+	std::size_t cols = mxGetN(pa);
 
 	types::dmat result_re(rows, cols);
 	types::dmat result_im(rows, cols);

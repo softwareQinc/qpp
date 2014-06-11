@@ -52,7 +52,7 @@ public:
 class DiscreteDistribution
 {
 protected:
-	std::discrete_distribution<size_t> _d;
+	std::discrete_distribution<std::size_t> _d;
 
 public:
 	template<typename InputIterator>
@@ -71,7 +71,7 @@ public:
 	{
 	}
 
-	size_t sample()
+	std::size_t sample()
 	{
 		return _d(RandomDevices::getInstance()._rng);
 	}
@@ -85,7 +85,7 @@ public:
 class DiscreteDistributionAbsSquare
 {
 protected:
-	std::discrete_distribution<size_t> _d;
+	std::discrete_distribution<std::size_t> _d;
 
 	template<typename InputIterator>
 	std::vector<double> cplx2weights(InputIterator first,
@@ -104,7 +104,7 @@ public:
 			_d()
 	{
 		std::vector<double> weights = cplx2weights(first, last);
-		std::discrete_distribution<size_t> tmp(std::begin(weights),
+		std::discrete_distribution<std::size_t> tmp(std::begin(weights),
 				std::end(weights));
 		_d = tmp;
 	}
@@ -114,7 +114,7 @@ public:
 	{
 		std::vector<double> weights = cplx2weights(std::begin(amplitudes),
 				std::end(amplitudes));
-		std::discrete_distribution<size_t> tmp(std::begin(weights),
+		std::discrete_distribution<std::size_t> tmp(std::begin(weights),
 				std::end(weights));
 		_d = tmp;
 	}
@@ -124,7 +124,7 @@ public:
 	{
 		std::vector<double> weights = cplx2weights(std::begin(amplitudes),
 				std::end(amplitudes));
-		std::discrete_distribution<size_t> tmp(std::begin(weights),
+		std::discrete_distribution<std::size_t> tmp(std::begin(weights),
 				std::end(weights));
 		_d = tmp;
 	}
@@ -146,13 +146,13 @@ public:
 
 		std::vector<double> weights = cplx2weights(V.data(),
 				V.data() + V.size());
-		std::discrete_distribution<size_t> tmp(std::begin(weights),
+		std::discrete_distribution<std::size_t> tmp(std::begin(weights),
 				std::end(weights));
 		_d = tmp;
 
 	}
 
-	size_t sample()
+	std::size_t sample()
 	{
 		return _d(RandomDevices::getInstance()._rng);
 	}

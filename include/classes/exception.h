@@ -38,33 +38,33 @@ public:
 		MATRIX_NOT_SQUARE_OR_VECTOR,
 		// Eigen::Matrix is not square nor a row/column vector
 		DIMS_INVALID,
-		// std::vector<size_t> of dimensions has zero size or contains zeros
+		// std::vector<std::size_t> of dimensions has zero size or contains zeros
 		DIMS_NOT_EQUAL,
-		// std::vector<size_t> of dimensions contains un-equal elements
+		// std::vector<std::size_t> of dimensions contains un-equal elements
 		DIMS_MISMATCH_MATRIX,
-		// product of dimenison's std::vector<size_t> not equal to
+		// product of dimenison's std::vector<std::size_t> not equal to
 		// the number of rows of Eigen::Matrix (assumed to be square)
 		DIMS_MISMATCH_CVECTOR,
-		// product of dimenison's std::vector<size_t> not equal to
+		// product of dimenison's std::vector<std::size_t> not equal to
 		// the number of cols of Eigen::Matrix (assumed to be column vector)
 		DIMS_MISMATCH_RVECTOR,
-		// product of dimenison's std::vector<size_t> not equal to
+		// product of dimenison's std::vector<std::size_t> not equal to
 		// the number of cols of Eigen::Matrix (assumed to be row vector)
 		DIMS_MISMATCH_VECTOR,
-		// product of dimenison's std::vector<size_t> not equal to
+		// product of dimenison's std::vector<std::size_t> not equal to
 		// the size of Eigen::Matrix (assumed to be row/column vector)
 		SUBSYS_MISMATCH_DIMS,
-		// std::vector<size_t> subsystem vector has duplicatates, or
-		// has entries that are larger than the size of std::vector<size_t>
+		// std::vector<std::size_t> subsystem vector has duplicatates, or
+		// has entries that are larger than the size of std::vector<std::size_t>
 		// of dimensions
 		PERM_INVALID,
-		// invalid std::vector<size_t> permutation
+		// invalid std::vector<std::size_t> permutation
 		NOT_QUBIT_GATE,
 		// Eigen::Matrix is not 2 x 2
 		NOT_QUBIT_SUBSYS,
 		// not 2-dimensional subsystems
 		NOT_BIPARTITE,
-		// std::vector<size_t> of dimensions has size different from 2
+		// std::vector<std::size_t> of dimensions has size different from 2
 		OUT_OF_RANGE,
 		// parameter out of range
 		TYPE_MISMATCH,

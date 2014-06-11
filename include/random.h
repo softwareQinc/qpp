@@ -15,14 +15,14 @@ namespace qpp
 
 // random matrix with entries in Uniform(a,b)
 template<typename Derived>
-Derived rand(size_t rows, size_t cols, double a = 0, double b = 1)
+Derived rand(std::size_t rows, std::size_t cols, double a = 0, double b = 1)
 {
 	throw Exception("rand", Exception::Type::UNDEFINED_TYPE);
 }
 
 // random double matrix with entries in Uniform[a,b)
 template<>
-types::dmat rand(size_t rows, size_t cols, double a, double b)
+types::dmat rand(std::size_t rows, std::size_t cols, double a, double b)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("rand", Exception::Type::ZERO_SIZE);
@@ -34,7 +34,7 @@ types::dmat rand(size_t rows, size_t cols, double a, double b)
 
 // random complex matrix with entries in Uniform[a,b)
 template<>
-types::cmat rand(size_t rows, size_t cols, double a, double b)
+types::cmat rand(std::size_t rows, std::size_t cols, double a, double b)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("rand", Exception::Type::ZERO_SIZE);
@@ -60,14 +60,14 @@ long long randint(long long a, long long b)
 
 // random matrix with entries in Normal(mean, sigma)
 template<typename Derived>
-Derived randn(size_t rows, size_t cols, double mean = 0, double sigma = 1)
+Derived randn(std::size_t rows, std::size_t cols, double mean = 0, double sigma = 1)
 {
 	throw Exception("randn", Exception::Type::UNDEFINED_TYPE);
 }
 
 // random double matrix with entries in Normal(mean, sigma)
 template<>
-types::dmat randn(size_t rows, size_t cols, double mean, double sigma)
+types::dmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
@@ -81,7 +81,7 @@ types::dmat randn(size_t rows, size_t cols, double mean, double sigma)
 
 // random complex matrix with entries in Normal(mean, sigma)
 template<>
-types::cmat randn(size_t rows, size_t cols, double mean, double sigma)
+types::cmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
@@ -103,7 +103,7 @@ double randn(double mean = 0, double sigma = 1)
 // Random unitary matrix
 // ~3 times slower than Toby Cubitt's MATLAB's,
 // because Eigen's QR algorithm is not parallelized
-types::cmat randU(size_t D)
+types::cmat randU(std::size_t D)
 {
 	if (D == 0)
 		throw Exception("randU", Exception::Type::DIMS_INVALID);
@@ -118,7 +118,7 @@ types::cmat randU(size_t D)
 	// uniformly distributed according to the Haar measure
 
 	Eigen::VectorXcd phases = (rand<types::dmat>(D, 1)).cast<types::cplx>();
-	for (size_t i = 0; i < static_cast<size_t>(phases.rows()); i++)
+	for (std::size_t i = 0; i < static_cast<std::size_t>(phases.rows()); i++)
 		phases(i) = std::exp((types::cplx) (2 * ct::pi * ct::ii * phases(i)));
 
 	Q = Q * phases.asDiagonal();
@@ -127,7 +127,7 @@ types::cmat randU(size_t D)
 }
 
 // Random isometry
-types::cmat randV(size_t Din, size_t Dout)
+types::cmat randV(std::size_t Din, std::size_t Dout)
 {
 	if (Din == 0 || Dout == 0 || Din > Dout)
 		throw Exception("randV", Exception::Type::DIMS_INVALID);
@@ -135,7 +135,7 @@ types::cmat randV(size_t Din, size_t Dout)
 }
 
 // Random Kraus operators
-std::vector<types::cmat> randkraus(size_t n, size_t D)
+std::vector<types::cmat> randkraus(std::size_t n, std::size_t D)
 {
 	if (n == 0)
 		throw Exception("randkraus", Exception::Type::OUT_OF_RANGE);
@@ -145,16 +145,16 @@ std::vector<types::cmat> randkraus(size_t n, size_t D)
 	std::vector<types::cmat> result;
 	types::cmat Fk(D, D);
 	types::cmat U = randU(n * D);
-	size_t dims[2];
+	std::size_t dims[2];
 	dims[0] = D;
 	dims[1] = n;
-	size_t midx_row[2] = { 0, 0 };
-	size_t midx_col[2] = { 0, 0 };
+	std::size_t midx_row[2] = { 0, 0 };
+	std::size_t midx_col[2] = { 0, 0 };
 
-	for (size_t k = 0; k < n; k++)
+	for (std::size_t k = 0; k < n; k++)
 	{
-		for (size_t a = 0; a < D; a++)
-			for (size_t b = 0; b < D; b++)
+		for (std::size_t a = 0; a < D; a++)
+			for (std::size_t b = 0; b < D; b++)
 			{
 				midx_row[0] = a;
 				midx_row[1] = k;
@@ -170,7 +170,7 @@ std::vector<types::cmat> randkraus(size_t n, size_t D)
 }
 
 // Random Hermitian matrix
-types::cmat randH(size_t D)
+types::cmat randH(std::size_t D)
 {
 	if (D == 0)
 		throw Exception("randH", Exception::Type::DIMS_INVALID);
@@ -182,7 +182,7 @@ types::cmat randH(size_t D)
 }
 
 // random ket of dimension D
-types::ket randket(size_t D)
+types::ket randket(std::size_t D)
 {
 	if (D == 0)
 		throw Exception("randket", Exception::Type::DIMS_INVALID);
@@ -193,7 +193,7 @@ types::ket randket(size_t D)
 }
 
 // random density matrix
-types::cmat randrho(size_t D)
+types::cmat randrho(std::size_t D)
 {
 	if (D == 0)
 		throw Exception("randrho", Exception::Type::DIMS_INVALID);
@@ -203,12 +203,12 @@ types::cmat randrho(size_t D)
 }
 
 // random permutation (using Knuth shuffle method)
-std::vector<size_t> randperm(size_t n)
+std::vector<std::size_t> randperm(std::size_t n)
 {
 	if (n == 0)
 		throw Exception("randperm", Exception::Type::PERM_INVALID);
 
-	std::vector<size_t> result(n);
+	std::vector<std::size_t> result(n);
 
 	// fill in increasing order
 	std::iota(std::begin(result), std::end(result), 0);

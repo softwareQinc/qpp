@@ -29,7 +29,7 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
 	{
 		double result = 0;
 		// take the absolut value to get rid of tiny negatives
-		for (size_t i = 0; i < static_cast<size_t>(rA.size()); i++)
+		for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); i++)
 			if (std::abs(rA(i)) != 0) // not identically zero
 				result -= std::abs(rA(i)) * std::log2(std::abs(rA(i)));
 
@@ -46,7 +46,7 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
 	types::dmat ev = hevals(rA);
 	double result = 0;
 	// take the absolut value to get rid of tiny negatives
-	for (size_t i = 0; i < static_cast<size_t>(ev.rows()); i++)
+	for (std::size_t i = 0; i < static_cast<std::size_t>(ev.rows()); i++)
 		if (std::abs((types::cplx) ev(i)) != 0) // not identically zero
 			result -= std::abs((types::cplx) ev(i))
 					* std::log2(std::abs((types::cplx) ev(i)));
@@ -78,7 +78,7 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 
 		double result = 0;
 		// take the absolut value to get rid of tiny negatives
-		for (size_t i = 0; i < static_cast<size_t>(rA.size()); i++)
+		for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); i++)
 			if (std::abs((types::cplx) rA(i)) != 0) // not identically zero
 				result += std::pow(std::abs(rA(i)), alpha);
 
@@ -98,7 +98,7 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 	types::dmat ev = hevals(rA);
 	double result = 0;
 	// take the absolut value to get rid of tiny negatives
-	for (size_t i = 0; i < static_cast<size_t>(ev.rows()); i++)
+	for (std::size_t i = 0; i < static_cast<std::size_t>(ev.rows()); i++)
 		if (std::abs((types::cplx) ev(i)) != 0) // not identically zero
 			result += std::pow(std::abs((types::cplx) ev(i)), alpha);
 
@@ -119,7 +119,7 @@ double renyi_inf(const Eigen::MatrixBase<Derived>& A)
 	if (internal::_check_vector(rA))
 	{
 		double max = 0;
-		for (size_t i = 0; i < static_cast<size_t>(rA.size()); i++)
+		for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); i++)
 			if (std::abs(rA(i)) > max)
 				max = std::abs(rA(i));
 
@@ -136,7 +136,7 @@ double renyi_inf(const Eigen::MatrixBase<Derived>& A)
 	types::dmat ev = hevals(rA);
 	double max = 0;
 	// take the absolut value to get rid of tiny negatives
-	for (size_t i = 0; i < static_cast<size_t>(ev.size()); i++)
+	for (std::size_t i = 0; i < static_cast<std::size_t>(ev.size()); i++)
 		if (std::abs((types::cplx) ev(i)) > max)
 			max = std::abs((types::cplx) ev(i));
 
@@ -165,7 +165,7 @@ double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
 	{
 		double result = 0;
 		// take the absolut value to get rid of tiny negatives
-		for (size_t i = 0; i < static_cast<size_t>(rA.size()); i++)
+		for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); i++)
 			if (std::abs((types::cplx) rA(i)) != 0) // not identically zero
 				result += std::pow(std::abs(rA(i)), alpha);
 
@@ -183,7 +183,7 @@ double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
 	double result = 0;
 	// take the absolut values of the entries
 	//of tiny negativesginary parts
-	for (size_t i = 0; i < static_cast<size_t>(ev.rows()); i++)
+	for (std::size_t i = 0; i < static_cast<std::size_t>(ev.rows()); i++)
 		if (std::abs((types::cplx) ev(i)) != 0) // not identically zero
 			result += std::pow(std::abs((types::cplx) ev(i)), alpha);
 
@@ -193,7 +193,7 @@ double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
 // quantum mutual information between 2 subsystems
 template<typename Derived>
 double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
-		const std::vector<size_t>& subsys, const std::vector<size_t>& dims)
+		const std::vector<std::size_t>& subsys, const std::vector<std::size_t>& dims)
 
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
@@ -225,10 +225,10 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 		throw Exception("mutualinfo", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
 // construct the complement of subsys
-	std::vector<size_t> subsysbarA;
-	std::vector<size_t> subsysbarB;
-	std::vector<size_t> subsysbarAB;
-	for (size_t i = 0; i < dims.size(); i++)
+	std::vector<std::size_t> subsysbarA;
+	std::vector<std::size_t> subsysbarB;
+	std::vector<std::size_t> subsysbarAB;
+	for (std::size_t i = 0; i < dims.size(); i++)
 	{
 		if (subsys[0] != i)
 			subsysbarA.push_back(i);

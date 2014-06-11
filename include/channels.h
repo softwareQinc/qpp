@@ -24,11 +24,11 @@ types::cmat super(const std::vector<types::cmat>& Ks)
 	for (auto it : Ks)
 		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
 			throw Exception("super", Exception::Type::DIMS_NOT_EQUAL);
-	size_t D = static_cast<size_t>(Ks[0].rows());
+	std::size_t D = static_cast<std::size_t>(Ks[0].rows());
 
-	size_t midx_row[2] = { 0, 0 };
-	size_t midx_col[2] = { 0, 0 };
-	size_t dims[2];
+	std::size_t midx_row[2] = { 0, 0 };
+	std::size_t midx_col[2] = { 0, 0 };
+	std::size_t dims[2];
 	dims[0] = dims[1] = D;
 
 	types::cmat result(D * D, D * D);
@@ -36,21 +36,21 @@ types::cmat super(const std::vector<types::cmat>& Ks)
 	types::cmat BA = types::cmat::Zero(D, D);
 	types::cmat EMN = types::cmat::Zero(D, D);
 
-	for (size_t m = 0; m < D; m++)
+	for (std::size_t m = 0; m < D; m++)
 	{
 		midx_col[0] = m;
-		for (size_t n = 0; n < D; n++)
+		for (std::size_t n = 0; n < D; n++)
 		{
 			midx_col[1] = n;
 			MN(m, n) = 1;
 			// compute E(|m><n|)
-			for (size_t i = 0; i < Ks.size(); i++)
+			for (std::size_t i = 0; i < Ks.size(); i++)
 				EMN += Ks[i] * MN * adjoint(Ks[i]);
 			MN(m, n) = 0;
-			for (size_t a = 0; a < D; a++)
+			for (std::size_t a = 0; a < D; a++)
 			{
 				midx_row[0] = a;
-				for (size_t b = 0; b < D; b++)
+				for (std::size_t b = 0; b < D; b++)
 				{
 					midx_row[1] = b;
 					BA(b, a) = 1;
@@ -85,12 +85,12 @@ types::cmat choi(const std::vector<types::cmat>& Ks)
 	for (auto it : Ks)
 		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
 			throw Exception("choi", Exception::Type::DIMS_NOT_EQUAL);
-	size_t D = static_cast<size_t>(Ks[0].rows());
+	std::size_t D = static_cast<std::size_t>(Ks[0].rows());
 
 	// construct the D x D \sum |jj> vector
 	// (un-normalized maximally entangled state)
 	types::cmat MES = types::cmat::Zero(D * D, 1);
-	for (size_t a = 0; a < D; a++)
+	for (std::size_t a = 0; a < D; a++)
 		MES(a * D + a) = 1;
 
 	types::cmat Omega = static_cast<types::cmat>(MES * adjoint(MES));
@@ -111,15 +111,15 @@ std::vector<types::cmat> choi2kraus(const types::cmat& A)
 		throw Exception("choi2kraus", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_square_mat(A))
 		throw Exception("choi2kraus", Exception::Type::MATRIX_NOT_SQUARE);
-	size_t D = static_cast<size_t>(std::sqrt(A.rows()));
-	if (D * D != static_cast<size_t>(A.rows()))
+	std::size_t D = static_cast<std::size_t>(std::sqrt(A.rows()));
+	if (D * D != static_cast<std::size_t>(A.rows()))
 		throw Exception("choi2kraus", Exception::Type::DIMS_INVALID);
 
 	types::dmat ev = hevals(A);
 	types::cmat evec = hevects(A);
 	std::vector<types::cmat> result;
 
-	for (size_t i = 0; i < D * D; i++)
+	for (std::size_t i = 0; i < D * D; i++)
 	{
 		// take the absolute value to get rid of tiny negatives
 		if (std::abs((double) ev(i)) > ct::eps)
@@ -164,8 +164,8 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 // to part of density matrix specified by subsys
 template<typename Derived>
 types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
-		const std::vector<types::cmat>& Ks, const std::vector<size_t>& subsys,
-		const std::vector<size_t>& dims)
+		const std::vector<types::cmat>& Ks, const std::vector<std::size_t>& subsys,
+		const std::vector<std::size_t>& dims)
 {
 	const types::cmat & rrho = rho;
 
@@ -200,31 +200,31 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 			throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
 
 	// Use static allocation for speed!
-	size_t Cdims[ct::maxn];
-	size_t midx_row[ct::maxn];
-	size_t midx_col[ct::maxn];
-	size_t midx_rho_row[ct::maxn];
-	size_t midx_rho_col[ct::maxn];
+	std::size_t Cdims[ct::maxn];
+	std::size_t midx_row[ct::maxn];
+	std::size_t midx_col[ct::maxn];
+	std::size_t midx_rho_row[ct::maxn];
+	std::size_t midx_rho_col[ct::maxn];
 
-	size_t CdimsA[ct::maxn];
-	size_t CsubsysA[ct::maxn];
-	size_t midxA_row[ct::maxn];
-	size_t midxA_col[ct::maxn];
-	size_t midxA_rho_row[ct::maxn];
-	size_t midxA_rho_col[ct::maxn];
+	std::size_t CdimsA[ct::maxn];
+	std::size_t CsubsysA[ct::maxn];
+	std::size_t midxA_row[ct::maxn];
+	std::size_t midxA_col[ct::maxn];
+	std::size_t midxA_rho_row[ct::maxn];
+	std::size_t midxA_rho_col[ct::maxn];
 
-	size_t CsubsysA_bar[ct::maxn];
-	size_t midxA_bar_row[ct::maxn];
-	size_t midxA_bar_col[ct::maxn];
+	std::size_t CsubsysA_bar[ct::maxn];
+	std::size_t midxA_bar_row[ct::maxn];
+	std::size_t midxA_bar_col[ct::maxn];
 
-	size_t n = dims.size();
-	size_t nA = subsys.size();
-	size_t nA_bar = n - nA;
+	std::size_t n = dims.size();
+	std::size_t nA = subsys.size();
+	std::size_t nA_bar = n - nA;
 
-	size_t D = 1;
-	size_t DA_bar = 1;
+	std::size_t D = 1;
+	std::size_t DA_bar = 1;
 
-	for (size_t k = 0, cnt = 0; k < n; k++)
+	for (std::size_t k = 0, cnt = 0; k < n; k++)
 	{
 		midx_row[k] = midx_col[k] = midx_rho_row[k] = midx_rho_col[k] = 0;
 		Cdims[k] = dims[k];
@@ -241,8 +241,8 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 		}
 	}
 
-	size_t DA = 1;
-	for (size_t k = 0; k < nA; k++)
+	std::size_t DA = 1;
+	for (std::size_t k = 0; k < nA; k++)
 	{
 		midxA_row[k] = midxA_col[k] = midxA_rho_row[k] = midxA_rho_col[k] = 0;
 		CdimsA[k] = dims[subsys[k]];
@@ -251,7 +251,7 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 	}
 
 	// check that dimension of Kraus matches the dimension of the subsys
-	if (static_cast<size_t>(Ks[0].rows()) != DA)
+	if (static_cast<std::size_t>(Ks[0].rows()) != DA)
 		throw Exception("channel", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 	// get the superoperator matrix of the channel
@@ -260,55 +260,55 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 	types::cmat result(D, D);
 
 	// run over rows
-	for (size_t i = 0; i < D; i++)
+	for (std::size_t i = 0; i < D; i++)
 	{
 		// get the result's row multi-index
 		internal::_n2multiidx(i, n, Cdims, midx_row);
 		// get the subsys' complement row multi-index
-		for (size_t k = 0; k < nA_bar; k++)
+		for (std::size_t k = 0; k < nA_bar; k++)
 			midxA_bar_row[k] = midx_row[CsubsysA_bar[k]];
 		// get the subsys' row multi-index
-		for (size_t k = 0; k < nA; k++)
+		for (std::size_t k = 0; k < nA; k++)
 			midxA_row[k] = midx_row[CsubsysA[k]];
 
 		// run over cols
-		for (size_t j = 0; j < D; j++)
+		for (std::size_t j = 0; j < D; j++)
 		{
 			// get the result's col multi-index
 			internal::_n2multiidx(j, n, Cdims, midx_col);
 			// get the subsys' complement col multi-index
-			for (size_t k = 0; k < nA_bar; k++)
+			for (std::size_t k = 0; k < nA_bar; k++)
 				midxA_bar_col[k] = midx_col[CsubsysA_bar[k]];
 			// get the subsys' col multi-index
-			for (size_t k = 0; k < nA; k++)
+			for (std::size_t k = 0; k < nA; k++)
 				midxA_col[k] = midx_col[CsubsysA[k]];
 
 			// now compute the coefficient
 			types::cplx coeff = 0;
-			for (size_t a = 0; a < DA; a++)
+			for (std::size_t a = 0; a < DA; a++)
 			{
 				// get the subsys part of row multi-index for rho
 				internal::_n2multiidx(a, nA, CdimsA, midxA_rho_row);
-				for (size_t b = 0; b < DA; b++)
+				for (std::size_t b = 0; b < DA; b++)
 				{
 					// get the subsys part of col multi-index for rho
 					internal::_n2multiidx(b, nA, CdimsA, midxA_rho_col);
 
 					// get the total row/col multi-index for rho
-					for (size_t k = 0; k < nA; k++)
+					for (std::size_t k = 0; k < nA; k++)
 					{
 						midx_rho_row[CsubsysA[k]] = midxA_rho_row[k];
 						midx_rho_col[CsubsysA[k]] = midxA_rho_col[k];
 					}
-					for (size_t k = 0; k < nA_bar; k++)
+					for (std::size_t k = 0; k < nA_bar; k++)
 					{
 						midx_rho_row[CsubsysA_bar[k]] = midxA_bar_row[k];
 						midx_rho_col[CsubsysA_bar[k]] = midxA_bar_col[k];
 					}
 
-					size_t midx_sop_col[2]; // index the superop using 2 indices
-					size_t midx_sop_row[2];
-					size_t sop_dims[2];
+					std::size_t midx_sop_col[2]; // index the superop using 2 indices
+					std::size_t midx_sop_row[2];
+					std::size_t sop_dims[2];
 					sop_dims[0] = sop_dims[1] = DA;
 					midx_sop_row[0] = internal::_multiidx2n(midxA_row, nA,
 							CdimsA);

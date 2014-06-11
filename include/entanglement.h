@@ -16,7 +16,7 @@ namespace qpp
 // schmidt coefficients
 template<typename Derived>
 types::cmat schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
-		const std::vector<size_t>& dims)
+		const std::vector<std::size_t>& dims)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 	// check zero-size
@@ -40,7 +40,7 @@ types::cmat schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
 // schmidt U (basis on Alice's side, i.e. U|j> = |\bar j> (schmidt vector))
 template<typename Derived>
 types::cmat schmidtU(const Eigen::MatrixBase<Derived>& A,
-		const std::vector<size_t>& dims)
+		const std::vector<std::size_t>& dims)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 	// check zero-size
@@ -65,7 +65,7 @@ types::cmat schmidtU(const Eigen::MatrixBase<Derived>& A,
 // schmidt V (basis on Bob's side, i.e. V|j> = |\bar j> (schmidt vector))
 template<typename Derived>
 types::cmat schmidtV(const Eigen::MatrixBase<Derived>& A,
-		const std::vector<size_t>& dims)
+		const std::vector<std::size_t>& dims)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 	// check zero-size
@@ -92,7 +92,7 @@ types::cmat schmidtV(const Eigen::MatrixBase<Derived>& A,
 // schmidt probabilities (sum up to one)
 template<typename Derived>
 types::cmat schmidtprob(const Eigen::MatrixBase<Derived>& A,
-		const std::vector<size_t>& dims)
+		const std::vector<std::size_t>& dims)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 	// check zero-size
@@ -118,7 +118,7 @@ types::cmat schmidtprob(const Eigen::MatrixBase<Derived>& A,
 
 template<typename Derived>
 double entanglement(const Eigen::MatrixBase<Derived>& A,
-		const std::vector<size_t>& dims)
+		const std::vector<std::size_t>& dims)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 	// check zero-size
@@ -149,8 +149,8 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 	if (!internal::_check_col_vector(rA))
 		throw Exception("gconcurrence", Exception::Type::MATRIX_NOT_CVECTOR);
 
-	size_t D = static_cast<size_t>(std::sqrt(A.rows()));
-	if (D * D != static_cast<size_t>(A.rows()))
+	std::size_t D = static_cast<std::size_t>(std::sqrt(A.rows()));
+	if (D * D != static_cast<std::size_t>(A.rows()))
 		throw Exception("gconcurrence", Exception::Type::DIMS_NOT_EQUAL);
 
 	// we compute exp(logdet()) to avoid underflow

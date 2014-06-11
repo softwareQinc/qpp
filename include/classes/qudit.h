@@ -14,7 +14,7 @@ namespace qpp
 class Qudit
 {
 	types::cmat _rho;
-	size_t _D;
+	std::size_t _D;
 public:
 	// by default we have a standard qubit in state |0>
 	Qudit(const types::cmat& rho = States::getInstance().pz0) :
@@ -29,22 +29,22 @@ public:
 		_rho = rho;
 	}
 
-	size_t measure(const types::cmat& U, bool destructive = false)
+	std::size_t measure(const types::cmat& U, bool destructive = false)
 	{
 		if (!internal::_check_square_mat(U))
 			throw Exception("Qudit::measure",
 					Exception::Type::MATRIX_NOT_SQUARE);
-		if (static_cast<size_t>(U.rows()) != _D)
+		if (static_cast<std::size_t>(U.rows()) != _D)
 			throw Exception("Qudit::measure", Exception::Type::DIMS_INVALID);
 
 		std::vector<double> p(_D);
-		for (size_t i = 0; i < _D; i++)
+		for (std::size_t i = 0; i < _D; i++)
 			p[i] = std::abs(
 					(types::cplx) trace(
 							prj((types::cmat) evects(U).col(i)) * _rho));
 
 		DiscreteDistribution dd(p);
-		size_t result = dd.sample();
+		std::size_t result = dd.sample();
 		if (destructive) // von Neumann
 			_rho = prj((types::cmat) evects(U).col(result)) * _rho
 					* prj((types::cmat) evects(U).col(result)) / p[result];
@@ -53,7 +53,7 @@ public:
 	}
 
 	// measure in the standard basis {|j>}_{j=0}^{_D-1}
-	size_t measure(bool destructive = false)
+	std::size_t measure(bool destructive = false)
 	{
 		return measure(types::cmat::Identity(_D, _D), destructive);
 	}
@@ -62,7 +62,7 @@ public:
 	{
 		return _rho;
 	}
-	size_t getD() const
+	std::size_t getD() const
 	{
 		return _D;
 	}
