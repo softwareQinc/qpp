@@ -94,9 +94,6 @@ public:
 		return _msg.c_str();
 	}
 
-	virtual ~Exception() noexcept
-	{
-	}
 private:
 	std::string _where, _msg;
 	Type _type;

@@ -66,8 +66,6 @@ public:
 	{
 		return _D;
 	}
-
-	virtual ~Qudit() = default;
 };
 
 } /* namespace qpp */

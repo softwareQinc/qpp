@@ -42,8 +42,6 @@ public:
 	{
 		return os << rhs.seconds();
 	}
-
-	virtual ~Timer() = default;
 };
 
 } /* namespace qpp */
