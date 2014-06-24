@@ -24,7 +24,7 @@ void _n2multiidx(std::size_t n, std::size_t numdims, const std::size_t* dims, st
 	for (std::size_t i = 0; i < numdims; i++)
 	{
 		result[numdims - i - 1] = _n % static_cast<int>(dims[numdims - i - 1]);
-		_n = _n / static_cast<int>(dims[numdims - i - 1]);
+		_n /= _n / static_cast<int>(dims[numdims - i - 1]);
 	}
 }
 
