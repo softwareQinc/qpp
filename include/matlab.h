@@ -11,6 +11,9 @@
 // MATLAB I/O interfacing
 // add the path to MATLAB/extern/include in include path
 
+#include <cstddef>
+#include <cstring>
+
 #include "mat.h"  // path to this is defined in the Makefile
 #include "mex.h"  // path to this is defined in the Makefile
 
