@@ -1031,7 +1031,7 @@ types::DynMat<typename Derived1::Scalar> anticomm(
 	return rA * rB + rB * rA;
 }
 
-// projector onto |V><V| (normalized)
+// (normalized) projector onto |V>
 // returns the matrix Zero if |V> has norm zero
 template<typename Derived>
 types::DynMat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& V)
