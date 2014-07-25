@@ -19,7 +19,6 @@ namespace qpp
 class RandomDevices: public Singleton<const RandomDevices> // const Singleton
 {
 	friend class Singleton<const RandomDevices> ;
-	~RandomDevices() = default;
 public:
 	std::random_device _rd;
 	mutable std::mt19937 _rng;

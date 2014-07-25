@@ -28,7 +28,7 @@ public:
 
 	double sample()
 	{
-		return _d(RandomDevices::getInstance()._rng);
+		return _d(RandomDevices::get_instance()._rng);
 	}
 };
 
@@ -45,7 +45,7 @@ public:
 
 	double sample()
 	{
-		return _d(RandomDevices::getInstance()._rng);
+		return _d(RandomDevices::get_instance()._rng);
 	}
 };
 
@@ -73,7 +73,7 @@ public:
 
 	std::size_t sample()
 	{
-		return _d(RandomDevices::getInstance()._rng);
+		return _d(RandomDevices::get_instance()._rng);
 	}
 
 	std::vector<double> probabilities() const
@@ -154,7 +154,7 @@ public:
 
 	std::size_t sample()
 	{
-		return _d(RandomDevices::getInstance()._rng);
+		return _d(RandomDevices::get_instance()._rng);
 	}
 
 	std::vector<double> probabilities() const

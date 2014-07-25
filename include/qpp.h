@@ -59,13 +59,13 @@ namespace qpp
 {
 
 // initialize the random devices -- Singleton
-const RandomDevices& rdevs = RandomDevices::getInstance();
+const RandomDevices& rdevs = RandomDevices::get_instance();
 
 // initialize the gates -- Singleton
-const Gates& gt = Gates::getInstance();
+const Gates& gt = Gates::get_instance();
 
 // initialize the states -- Singleton
-const States& st = States::getInstance();
+const States& st = States::get_instance();
 
 } /* namespace qpp */
 

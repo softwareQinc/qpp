@@ -17,7 +17,7 @@ class Qudit
 	std::size_t _D;
 public:
 	// by default we have a standard qubit in state |0>
-	Qudit(const types::cmat& rho = States::getInstance().pz0) :
+	Qudit(const types::cmat& rho = States::get_instance().pz0) :
 			_rho(types::cmat::Zero(2, 2)), _D(2) // qubit by default
 	{
 		if (!internal::_check_nonzero_size(rho))

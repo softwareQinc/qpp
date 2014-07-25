@@ -215,7 +215,7 @@ std::vector<std::size_t> randperm(std::size_t n)
 	std::iota(std::begin(result), std::end(result), 0);
 	// shuffle
 	std::shuffle(std::begin(result), std::end(result),
-			RandomDevices::getInstance()._rng);
+			RandomDevices::get_instance()._rng);
 
 	return result;
 }
