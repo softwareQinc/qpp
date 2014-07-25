@@ -13,7 +13,7 @@ namespace qpp
 
 // Singleton policy class, use as
 //
-// class Foo: public Singleton</*const*/ Foo>
+// class Foo: public Singleton</*const*/ Foo> // use const for const reference
 // {
 //	   friend class Singleton<Foo>;
 //     Foo(/* parameters */){/* implement ctor here */}
@@ -25,7 +25,8 @@ namespace qpp
 //
 // Foo& single_Foo = Foo::get_instance();
 //
-// do not use pointers as you cannot delete them
+// can use pointers to the instance,
+// but of course you cannot delete them
 //
 // Foo* psingle_Foo = & Foo::get_instance();
 // delete psingle_Foo; // this doesn't compile, cannot delete
