@@ -40,13 +40,12 @@ protected:
 	Singleton(const Singleton&) = delete;
 	Singleton& operator=(const Singleton&) = delete;
 public:
-	template<typename ... Args> // parameters forwarded to derived constructor
-	static T& get_instance(Args ... args)
+	static T& get_instance()
 	{
 		// Guaranteed to be destroyed.
 		// Instantiated on first use.
 		// Thread safe in C++11
-		static T instance { std::forward<Args>(args)... };
+		static T instance;
 		return instance;
 	}
 };
