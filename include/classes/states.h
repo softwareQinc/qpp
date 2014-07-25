@@ -14,10 +14,6 @@ namespace qpp
 class States: public Singleton<const States> // const Singleton
 {
 	friend class Singleton<const States> ;
-	~States()
-	{
-	}
-	;
 public:
 	// Pauli eigen-states
 	types::ket x0;

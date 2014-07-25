@@ -164,7 +164,8 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 // to part of density matrix specified by subsys
 template<typename Derived>
 types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
-		const std::vector<types::cmat>& Ks, const std::vector<std::size_t>& subsys,
+		const std::vector<types::cmat>& Ks,
+		const std::vector<std::size_t>& subsys,
 		const std::vector<std::size_t>& dims)
 {
 	const types::cmat & rrho = rho;

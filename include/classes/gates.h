@@ -14,10 +14,6 @@ namespace qpp
 class Gates: public Singleton<const Gates> // const Singleton
 {
 	friend class Singleton<const Gates> ;
-	~Gates()
-	{
-	}
-	;
 public:
 	// one qubit gates
 	types::cmat Id2; // Identity matrix
@@ -257,8 +253,8 @@ public:
 								midx_rho_row[CsubsysA_bar[k]] =
 										midxA_bar_row[k];
 					// compute the results's row index
-					std::size_t result_row_idx = internal::_multiidx2n(midx_row, n,
-							Cdims);
+					std::size_t result_row_idx = internal::_multiidx2n(midx_row,
+							n, Cdims);
 
 					// compute the coefficient
 					typename Derived1::Scalar coeff = 0;
@@ -319,8 +315,8 @@ public:
 								midx_rho_row[CsubsysA_bar[k]] =
 										midxA_bar_row[k];
 					// compute the results's row index
-					std::size_t result_row_idx = internal::_multiidx2n(midx_row, n,
-							Cdims);
+					std::size_t result_row_idx = internal::_multiidx2n(midx_row,
+							n, Cdims);
 
 					// run over the col index
 					for (std::size_t j = 0; j < D; j++)
@@ -357,8 +353,9 @@ public:
 	template<typename Derived>
 	types::DynMat<typename Derived::Scalar> CTRL(
 			const Eigen::MatrixBase<Derived>& A,
-			const std::vector<std::size_t>& ctrl, const std::vector<std::size_t>& subsys,
-			std::size_t n, std::size_t d = 2) const
+			const std::vector<std::size_t>& ctrl,
+			const std::vector<std::size_t>& subsys, std::size_t n,
+			std::size_t d = 2) const
 	{
 		const types::DynMat<typename Derived::Scalar> & rA = A;
 

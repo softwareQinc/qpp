@@ -553,7 +553,8 @@ types::DynMat<typename Derived::Scalar> reshape(
 // i.e. the qubit perm[i] is permuted to location i, perm[i]->i
 template<typename Derived>
 types::DynMat<typename Derived::Scalar> syspermute(
-		const Eigen::MatrixBase<Derived>& A, const std::vector<std::size_t>& perm,
+		const Eigen::MatrixBase<Derived>& A,
+		const std::vector<std::size_t>& perm,
 		const std::vector<std::size_t> &dims)
 
 {
@@ -582,25 +583,26 @@ types::DynMat<typename Derived::Scalar> syspermute(
 
 	types::DynMat<typename Derived::Scalar> result;
 
-	auto worker = [](std::size_t i, std::size_t numdims, const std::size_t* cdims,
-			const std::size_t* cperm)
-	{
-		// use static allocation for speed,
-		// double the size for matrices reshaped as vectors
-			std::size_t midx[2 * ct::maxn];
-			std::size_t midxtmp[2 * ct::maxn];
-			std::size_t permdims[2 * ct::maxn];
-
-			/* compute the multi-index */
-			internal::_n2multiidx(i, numdims, cdims, midx);
-
-			for (std::size_t k = 0; k < numdims; k++)
+	auto worker =
+			[](std::size_t i, std::size_t numdims, const std::size_t* cdims,
+					const std::size_t* cperm)
 			{
-				permdims[k] = cdims[cperm[k]]; // permuted dimensions
-				midxtmp[k] = midx[cperm[k]];// permuted multi-indexes
-			}
-			return internal::_multiidx2n(midxtmp, numdims, permdims);
-		};
+				// use static allocation for speed,
+				// double the size for matrices reshaped as vectors
+				std::size_t midx[2 * ct::maxn];
+				std::size_t midxtmp[2 * ct::maxn];
+				std::size_t permdims[2 * ct::maxn];
+
+				/* compute the multi-index */
+				internal::_n2multiidx(i, numdims, cdims, midx);
+
+				for (std::size_t k = 0; k < numdims; k++)
+				{
+					permdims[k] = cdims[cperm[k]]; // permuted dimensions
+					midxtmp[k] = midx[cperm[k]];// permuted multi-indexes
+				}
+				return internal::_multiidx2n(midxtmp, numdims, permdims);
+			};
 
 // check column vector
 	if (internal::_check_col_vector(rA)) // we have a column vector
@@ -667,7 +669,8 @@ types::DynMat<typename Derived::Scalar> syspermute(
 // Partial trace over subsystem A in a D_A x D_B system
 template<typename Derived>
 types::DynMat<typename Derived::Scalar> ptrace1(
-		const Eigen::MatrixBase<Derived>& A, const std::vector<std::size_t>& dims)
+		const Eigen::MatrixBase<Derived>& A,
+		const std::vector<std::size_t>& dims)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
@@ -718,7 +721,8 @@ types::DynMat<typename Derived::Scalar> ptrace1(
 // Partial trace over subsystem B in a D_A x D_B system
 template<typename Derived>
 types::DynMat<typename Derived::Scalar> ptrace2(
-		const Eigen::MatrixBase<Derived>& A, const std::vector<std::size_t>& dims)
+		const Eigen::MatrixBase<Derived>& A,
+		const std::vector<std::size_t>& dims)
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;
 
@@ -761,7 +765,8 @@ types::DynMat<typename Derived::Scalar> ptrace2(
 // partial trace
 template<typename Derived>
 types::DynMat<typename Derived::Scalar> ptrace(
-		const Eigen::MatrixBase<Derived>& A, const std::vector<std::size_t>& subsys,
+		const Eigen::MatrixBase<Derived>& A,
+		const std::vector<std::size_t>& subsys,
 		const std::vector<std::size_t>& dims)
 
 {
@@ -889,7 +894,8 @@ types::DynMat<typename Derived::Scalar> ptrace(
 // partial transpose
 template<typename Derived>
 types::DynMat<typename Derived::Scalar> ptranspose(
-		const Eigen::MatrixBase<Derived>& A, const std::vector<std::size_t>& subsys,
+		const Eigen::MatrixBase<Derived>& A,
+		const std::vector<std::size_t>& subsys,
 		const std::vector<std::size_t>& dims)
 
 {
@@ -1086,7 +1092,8 @@ types::DynMat<typename Derived::Scalar> expandout(
 	auto multiply = [](std::size_t x, std::size_t y)->std::size_t
 	{	return x*y;};
 
-	std::size_t D = std::accumulate(std::begin(dims), std::end(dims), 1u, multiply);
+	std::size_t D = std::accumulate(std::begin(dims), std::end(dims), 1u,
+			multiply);
 	types::DynMat<typename Derived::Scalar> result = types::DynMat<
 			typename Derived::Scalar>::Identity(D, D);
 
@@ -1114,7 +1121,8 @@ types::DynMat<typename Derived::Scalar> expandout(
 			midx_row[pos] = a;
 
 			// run over the gate's column multi-index
-			for (std::size_t b = 0; b < static_cast<std::size_t>(rA.cols()); b++)
+			for (std::size_t b = 0; b < static_cast<std::size_t>(rA.cols());
+					b++)
 			{
 				// construct the total column multi-index
 				midx_col[pos] = b;
@@ -1223,7 +1231,8 @@ types::DynMat<typename Derived::Scalar> grams(
 
 // integer index to multi-index
 // standard lexicographical order, e.g. 00, 01, 10, 11
-std::vector<std::size_t> n2multiidx(std::size_t n, const std::vector<std::size_t>& dims)
+std::vector<std::size_t> n2multiidx(std::size_t n,
+		const std::vector<std::size_t>& dims)
 {
 	if (!internal::_check_dims(dims))
 		throw Exception("n2multiidx", Exception::Type::DIMS_INVALID);
@@ -1299,7 +1308,8 @@ types::ket mket(const std::vector<std::size_t>& mask,
 	auto multiply = [](std::size_t x, std::size_t y)->std::size_t
 	{	return x*y;};
 
-	std::size_t D = std::accumulate(std::begin(dims), std::end(dims), 1u, multiply);
+	std::size_t D = std::accumulate(std::begin(dims), std::end(dims), 1u,
+			multiply);
 
 // check zero size
 	if (n == 0)

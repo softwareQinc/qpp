@@ -19,15 +19,12 @@ namespace qpp
 class RandomDevices: public Singleton<const RandomDevices> // const Singleton
 {
 	friend class Singleton<const RandomDevices> ;
-	~RandomDevices()
-	{
-	}
-	;
+	~RandomDevices() = default;
 public:
 	std::random_device _rd;
 	mutable std::mt19937 _rng;
 private:
-	RandomDevices():
+	RandomDevices() :
 			_rd(), _rng(_rd())
 	{
 		// seed the standard C number generator, used by Eigen

@@ -17,7 +17,8 @@ namespace internal
 
 // integer index to multi-index, use C-style array for speed
 // standard lexicographical order, e.g. 00, 01, 10, 11
-void _n2multiidx(std::size_t n, std::size_t numdims, const std::size_t* dims, std::size_t* result)
+void _n2multiidx(std::size_t n, std::size_t numdims, const std::size_t* dims,
+		std::size_t* result)
 {
 // no error checks to improve speed
 	std::size_t _n = n;
@@ -30,7 +31,8 @@ void _n2multiidx(std::size_t n, std::size_t numdims, const std::size_t* dims, st
 
 // multi-index to integer index, use C-style array for speed,
 // standard lexicographical order, e.g. 00->0, 01->1, 10->2, 11->3
-std::size_t _multiidx2n(const std::size_t* midx, std::size_t numdims, const std::size_t* dims)
+std::size_t _multiidx2n(const std::size_t* midx, std::size_t numdims,
+		const std::size_t* dims)
 {
 // no error checks to improve speed
 
@@ -108,9 +110,10 @@ bool _check_dims(const std::vector<std::size_t>& dims)
 	if (dims.size() == 0)
 		return false;
 
-	if (std::find_if(std::begin(dims), std::end(dims), [&dims](std::size_t i) -> bool
-	{	if(i==0) return true;
-		else return false;}) != std::end(dims))
+	if (std::find_if(std::begin(dims), std::end(dims),
+			[&dims](std::size_t i) -> bool
+			{	if(i==0) return true;
+				else return false;}) != std::end(dims))
 		return false;
 	return true;
 }

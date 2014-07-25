@@ -39,8 +39,9 @@ types::cmat rand(std::size_t rows, std::size_t cols, double a, double b)
 	if (rows == 0 || cols == 0)
 		throw Exception("rand", Exception::Type::ZERO_SIZE);
 
-	return rand<types::dmat>(rows, cols, a, b).cast<types::cplx>()
-			+ ct::ii * rand<types::dmat>(rows, cols, a, b).cast<types::cplx>();
+	return rand < types::dmat
+			> (rows, cols, a, b).cast<types::cplx>() + ct::ii * rand
+			< types::dmat > (rows, cols, a, b).cast<types::cplx>();
 }
 
 // random number in Uniform[a, b)
@@ -60,7 +61,8 @@ long long randint(long long a, long long b)
 
 // random matrix with entries in Normal(mean, sigma)
 template<typename Derived>
-Derived randn(std::size_t rows, std::size_t cols, double mean = 0, double sigma = 1)
+Derived randn(std::size_t rows, std::size_t cols, double mean = 0,
+		double sigma = 1)
 {
 	throw Exception("randn", Exception::Type::UNDEFINED_TYPE);
 }
@@ -87,10 +89,9 @@ types::cmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
 
 	NormalDistribution nd(mean, sigma);
-	return randn<types::dmat>(rows, cols, mean, sigma).cast<types::cplx>()
-			+ ct::ii
-					* randn<types::dmat>(rows, cols, mean, sigma).cast<
-							types::cplx>();
+	return randn < types::dmat
+			> (rows, cols, mean, sigma).cast<types::cplx>() + ct::ii * randn
+			< types::dmat > (rows, cols, mean, sigma).cast<types::cplx>();
 }
 
 // random number in Normal(mean, sigma)

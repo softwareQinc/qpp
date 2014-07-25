@@ -193,7 +193,8 @@ double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
 // quantum mutual information between 2 subsystems
 template<typename Derived>
 double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
-		const std::vector<std::size_t>& subsys, const std::vector<std::size_t>& dims)
+		const std::vector<std::size_t>& subsys,
+		const std::vector<std::size_t>& dims)
 
 {
 	const types::DynMat<typename Derived::Scalar> & rA = A;

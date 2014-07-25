@@ -142,7 +142,7 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = ct::chop,
 	}
 
 // determine the maximum lenght of the entries in each column
-	std::vector<std::size_t> maxlengthcols(rA.cols(), 0);
+	std::vector < std::size_t > maxlengthcols(rA.cols(), 0);
 
 	for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
 		for (std::size_t j = 0; j < static_cast<std::size_t>(rA.cols()); j++)

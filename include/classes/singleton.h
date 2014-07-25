@@ -15,10 +15,8 @@ template<typename T> // Singleton policy class
 class Singleton
 {
 protected:
-	Singleton()
-	{
-	}
-	;
+	Singleton() = default;
+	~Singleton() = default;
 	Singleton(const Singleton&) = delete;
 	Singleton& operator=(const Singleton&) = delete;
 public:
