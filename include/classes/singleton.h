@@ -11,25 +11,7 @@
 namespace qpp
 {
 
-// Singleton policy class, use as
-//
-// class Foo: public Singleton</*const*/ Foo> // use const for const reference
-// {
-//	   friend class Singleton<Foo>;
-//     Foo(/* parameters */){/* implement ctor here */}
-// public:
-//     // public members here
-// };
-//
-// then get the instance as
-//
-// Foo& single_Foo = Foo::get_instance();
-//
-// can use pointers to the instance,
-// but of course you cannot delete them
-//
-// Foo* psingle_Foo = & Foo::get_instance();
-// delete psingle_Foo; // this doesn't compile, cannot delete
+// Singleton policy class
 
 template<typename T>
 class Singleton
