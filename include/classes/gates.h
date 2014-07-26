@@ -11,7 +11,7 @@
 namespace qpp
 {
 
-MAKE_CONST_SINGLETON_CLASS (Gates) // const Singleton
+CLASS_CONST_SINGLETON(Gates) // const Singleton
 public:
 	// one qubit gates
 	types::cmat Id2; // Identity matrix

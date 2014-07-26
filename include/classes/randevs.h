@@ -16,7 +16,7 @@
 namespace qpp
 {
 
-MAKE_CONST_SINGLETON_CLASS(RandomDevices) // const Singleton
+CLASS_CONST_SINGLETON(RandomDevices) // const Singleton
 public:
 	std::random_device _rd;
 	mutable std::mt19937 _rng;

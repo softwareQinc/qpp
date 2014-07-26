@@ -11,7 +11,7 @@
 namespace qpp
 {
 
-MAKE_CONST_SINGLETON_CLASS(States) // const Singleton
+CLASS_CONST_SINGLETON(States) // const Singleton
 public:
 	// Pauli eigen-states
 	types::ket x0;

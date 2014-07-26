@@ -35,12 +35,12 @@ public:
 // macros for defining Singletons, just implement
 // private ctors and dtors in defined classes
 
-#define MAKE_SINGLETON_CLASS(Foo)\
+#define CLASS_SINGLETON(Foo)\
 class Foo: public Singleton<Foo>\
 {\
     friend class Singleton<Foo>;
 
-#define MAKE_CONST_SINGLETON_CLASS(Foo)\
+#define CLASS_CONST_SINGLETON(Foo)\
 class Foo: public Singleton<const Foo>\
 {\
     friend class Singleton<const Foo>;
