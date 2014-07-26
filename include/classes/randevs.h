@@ -16,9 +16,7 @@
 namespace qpp
 {
 
-class RandomDevices: public Singleton<const RandomDevices> // const Singleton
-{
-	friend class Singleton<const RandomDevices> ;
+MAKE_CONST_SINGLETON_CLASS(RandomDevices) // const Singleton
 public:
 	std::random_device _rd;
 	mutable std::mt19937 _rng;
@@ -30,6 +28,7 @@ private:
 		std::srand(_rd());
 	}
 };
+/* class RandomDevices */
 
 } /* namespace qpp */
 

@@ -11,9 +11,8 @@
 namespace qpp
 {
 
-class Gates: public Singleton<const Gates> // const Singleton
-{
-	friend class Singleton<const Gates> ;
+MAKE_CONST_SINGLETON_CLASS (Gates)
+// const Singleton
 public:
 	// one qubit gates
 	types::cmat Id2; // Identity matrix
@@ -35,23 +34,23 @@ public:
 	types::cmat FRED; // Fredkin
 private:
 	Gates() :
-			Id2(types::cmat::Identity(2, 2)), //
-			H(types::cmat::Zero(2, 2)), //
-			X(types::cmat::Zero(2, 2)), //
-			Y(types::cmat::Zero(2, 2)), //
-			Z(types::cmat::Zero(2, 2)), //
-			S(types::cmat::Zero(2, 2)), //
-			T(types::cmat::Zero(2, 2)), //
-			CNOTab(types::cmat::Identity(4, 4)), //
-			CZ(types::cmat::Identity(4, 4)), //
-			CNOTba(types::cmat::Zero(4, 4)), //
-			SWAP(types::cmat::Identity(4, 4)), //
-			TOF(types::cmat::Identity(8, 8)), //
-			FRED(types::cmat::Identity(8, 8)) //
+	Id2(types::cmat::Identity(2, 2)), //
+	H(types::cmat::Zero(2, 2)),//
+	X(types::cmat::Zero(2, 2)),//
+	Y(types::cmat::Zero(2, 2)),//
+	Z(types::cmat::Zero(2, 2)),//
+	S(types::cmat::Zero(2, 2)),//
+	T(types::cmat::Zero(2, 2)),//
+	CNOTab(types::cmat::Identity(4, 4)),//
+	CZ(types::cmat::Identity(4, 4)),//
+	CNOTba(types::cmat::Zero(4, 4)),//
+	SWAP(types::cmat::Identity(4, 4)),//
+	TOF(types::cmat::Identity(8, 8)),//
+	FRED(types::cmat::Identity(8, 8))//
 	{
 		// initialize the constants and gates
 		H << 1 / std::sqrt(2), 1 / std::sqrt(2), 1 / std::sqrt(2), -1
-				/ std::sqrt(2);
+		/ std::sqrt(2);
 		X << 0, 1, 1, 0;
 		Z << 1, 0, 0, -1;
 		Y << 0, -ct::ii, ct::ii, 0;

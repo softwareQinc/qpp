@@ -18,7 +18,7 @@ class Singleton
 {
 protected:
 	Singleton() = default;
-	~Singleton() = default;
+	virtual ~Singleton() = default;
 	Singleton(const Singleton&) = delete;
 	Singleton& operator=(const Singleton&) = delete;
 public:
@@ -31,6 +31,19 @@ public:
 		return instance;
 	}
 };
+
+// macros for defining Singletons, just implement
+// private ctors and dtors in defined classes
+
+#define MAKE_SINGLETON_CLASS(Foo)\
+class Foo: public Singleton<Foo>\
+{\
+    friend class Singleton<Foo>;
+
+#define MAKE_CONST_SINGLETON_CLASS(Foo)\
+class Foo: public Singleton<const Foo>\
+{\
+    friend class Singleton<const Foo>;
 
 } /* namespace qpp */
 
