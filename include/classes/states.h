@@ -80,8 +80,8 @@ private:
 		// initialize
 		x0 << 1 / std::sqrt(2), 1 / std::sqrt(2);
 		x1 << 1 / std::sqrt(2), -1 / std::sqrt(2);
-		y0 << 1 / std::sqrt(2), ct::ii / std::sqrt(2);
-		y1 << 1 / std::sqrt(2), -ct::ii / std::sqrt(2);
+		y0 << 1 / std::sqrt(2), 1_i / std::sqrt(2);
+		y1 << 1 / std::sqrt(2), -1_i / std::sqrt(2);
 		z0 << 1, 0;
 		z1 << 0, 1;
 		px0 = x0 * x0.adjoint();

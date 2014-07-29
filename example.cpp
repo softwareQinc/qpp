@@ -207,9 +207,9 @@ int main()
 
 	 // statistics tests
 	 cout << endl << "Statistics tests." << endl;
-	 std::vector<cplx> ampl = { 1. + ii, 1. - ii };
+	 std::vector<cplx> ampl = { 1. + 1_i, 1. - 1_i };
 	 cmat va(1, 4);
-	 va << 0.1, 1, 1. + ii, 1. + 2. * ii;
+	 va << 0.1, 1, 1. + 1_i, 1. + 2_i;
 	 DiscreteDistributionAbsSquare dc(va);
 	 cout << "The probabilities are: ";
 	 displn(dc.probabilities(), ", ", "{", "}");

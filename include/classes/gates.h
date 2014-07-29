@@ -54,9 +54,9 @@ private:
 				/ std::sqrt(2);
 		X << 0, 1, 1, 0;
 		Z << 1, 0, 0, -1;
-		Y << 0, -ct::ii, ct::ii, 0;
-		S << 1, 0, 0, ct::ii;
-		T << 1, 0, 0, std::exp(ct::ii * ct::pi / 4.0);
+		Y << 0, -1_i, 1_i, 0;
+		S << 1, 0, 0, 1_i;
+		T << 1, 0, 0, std::exp(1_i * ct::pi / 4.0);
 		CNOTab.block(2, 2, 2, 2) = X;
 		CNOTba(0, 0) = 1;
 		CNOTba(1, 3) = 1;
@@ -81,8 +81,7 @@ public:
 
 		types::cmat result(2, 2);
 		result = std::cos(theta / 2) * Id2
-				- ct::ii * std::sin(theta / 2)
-						* (n[0] * X + n[1] * Y + n[2] * Z);
+				- 1_i * std::sin(theta / 2) * (n[0] * X + n[1] * Y + n[2] * Z);
 		return result;
 	}
 

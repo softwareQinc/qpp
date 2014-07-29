@@ -120,6 +120,7 @@ typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A)
 	types::DynMat<typename Derived::Scalar> U =
 			lu.matrixLU().template triangularView<Eigen::Upper>();
 	typename Derived::Scalar result = std::log(U(0, 0));
+
 	for (std::size_t i = 1; i < static_cast<std::size_t>(rA.rows()); i++)
 		result += std::log(U(i, i));
 

@@ -12,6 +12,19 @@
 
 namespace qpp
 {
+// user defined literal for complex imaginary i (square root of -1)
+constexpr std::complex<double> operator""_i(unsigned long long int x)
+{
+	return
+	{	0., static_cast<double>(x)};
+}
+
+constexpr std::complex<double> operator""_i(long double x)
+{
+	return
+	{	0., static_cast<double>(x)};
+}
+
 namespace ct
 {
 
@@ -26,14 +39,14 @@ const double eps = 1e-12;
 const std::size_t maxn = 64; // definitely cannot simulate more qubits :)
 
 // math constants
-const std::complex<double> ii = { 0, 1 }; // Imaginary i (square root of -1)
+//const std::complex<double> ii = { 0, 1 }; // Imaginary i (square root of -1)
 const double pi = 3.141592653589793238462643383279502884; // pi
 const double ee = 2.718281828459045235360287471352662497; // base of natural log
 
 // D-th root of unity
 std::complex<double> omega(std::size_t D) // D-th root of unity
 {
-	return exp(2.0 * pi * ii / static_cast<double>(D));
+	return exp(2.0 * pi * 1_i / static_cast<double>(D));
 }
 
 } /* namespace ct */

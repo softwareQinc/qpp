@@ -40,8 +40,8 @@ types::cmat rand(std::size_t rows, std::size_t cols, double a, double b)
 		throw Exception("rand", Exception::Type::ZERO_SIZE);
 
 	return rand < types::dmat
-			> (rows, cols, a, b).cast<types::cplx>() + ct::ii * rand
-			< types::dmat > (rows, cols, a, b).cast<types::cplx>();
+			> (rows, cols, a, b).cast<types::cplx>() + 1_i * rand < types::dmat
+			> (rows, cols, a, b).cast<types::cplx>();
 }
 
 // random number in Uniform[a, b)
@@ -90,7 +90,7 @@ types::cmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 
 	NormalDistribution nd(mean, sigma);
 	return randn < types::dmat
-			> (rows, cols, mean, sigma).cast<types::cplx>() + ct::ii * randn
+			> (rows, cols, mean, sigma).cast<types::cplx>() + 1_i * randn
 			< types::dmat > (rows, cols, mean, sigma).cast<types::cplx>();
 }
 
@@ -120,7 +120,7 @@ types::cmat randU(std::size_t D)
 
 	Eigen::VectorXcd phases = (rand<types::dmat>(D, 1)).cast<types::cplx>();
 	for (std::size_t i = 0; i < static_cast<std::size_t>(phases.rows()); i++)
-		phases(i) = std::exp((types::cplx) (2 * ct::pi * ct::ii * phases(i)));
+		phases(i) = std::exp((types::cplx) (2 * ct::pi * 1_i * phases(i)));
 
 	Q = Q * phases.asDiagonal();
 
@@ -177,7 +177,7 @@ types::cmat randH(std::size_t D)
 		throw Exception("randH", Exception::Type::DIMS_INVALID);
 
 	types::cmat H = 2 * rand<types::cmat>(D, D)
-			- (1. + ct::ii) * types::cmat::Ones(D, D);
+			- (1. + 1_i) * types::cmat::Ones(D, D);
 
 	return H + adjoint(H);
 }

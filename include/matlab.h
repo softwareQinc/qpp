@@ -126,7 +126,7 @@ types::cmat loadMATLABmatrix(const std::string &mat_file,
 	matClose(pmat);
 
 	return (result_re.cast<types::cplx>())
-			+ ct::ii * (result_im.cast<types::cplx>());
+			+ 1_i * (result_im.cast<types::cplx>());
 }
 
 // save Eigen::MatrixX to MATLAB .mat file as a double matrix
