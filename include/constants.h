@@ -13,13 +13,13 @@
 namespace qpp
 {
 // user defined literal for complex imaginary i (square root of -1)
-constexpr std::complex<double> operator""_i(unsigned long long int x)
+constexpr std::complex<double> operator "" _i(unsigned long long int x)
 {
 	return
 	{	0., static_cast<double>(x)};
 }
 
-constexpr std::complex<double> operator""_i(long double x)
+constexpr std::complex<double> operator "" _i(long double x)
 {
 	return
 	{	0., static_cast<double>(x)};
