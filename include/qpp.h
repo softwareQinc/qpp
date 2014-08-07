@@ -18,6 +18,7 @@
 #include <complex>
 #include <cstdlib>
 #include <cstring>
+#include <exception>
 #include <fstream>
 #include <functional>
 #include <iomanip>
@@ -26,7 +27,6 @@
 #include <numeric>
 #include <ostream>
 #include <random>
-#include <stdexcept>
 #include <string>
 #include <type_traits>
 #include <utility>
