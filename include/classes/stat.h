@@ -49,6 +49,23 @@ public:
 	}
 };
 
+class UniformIntDistribution
+{
+protected:
+	std::uniform_int_distribution<> _d;
+
+public:
+	UniformIntDistribution(int a = 0, int b = 1) :
+			_d(std::uniform_int_distribution<>(a, b))
+	{
+	}
+
+	int sample()
+	{
+		return _d(RandomDevices::get_instance()._rng);
+	}
+};
+
 class DiscreteDistribution
 {
 protected:
