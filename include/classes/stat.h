@@ -101,7 +101,7 @@ protected:
 public:
 	template<typename InputIterator>
 	DiscreteDistributionAbsSquare(InputIterator first, InputIterator last) :
-			_d()
+			_d { }
 	{
 		std::vector<double> weights = cplx2weights(first, last);
 		std::discrete_distribution<std::size_t> tmp(std::begin(weights),
@@ -110,7 +110,7 @@ public:
 	}
 
 	DiscreteDistributionAbsSquare(std::initializer_list<types::cplx> amplitudes) :
-			_d()
+			_d { }
 	{
 		std::vector<double> weights = cplx2weights(std::begin(amplitudes),
 				std::end(amplitudes));
@@ -120,7 +120,7 @@ public:
 	}
 
 	DiscreteDistributionAbsSquare(std::vector<types::cplx> amplitudes) :
-			_d()
+			_d { }
 	{
 		std::vector<double> weights = cplx2weights(std::begin(amplitudes),
 				std::end(amplitudes));
@@ -129,23 +129,25 @@ public:
 		_d = tmp;
 	}
 
-	DiscreteDistributionAbsSquare(const types::cmat& V) :
-			_d()
+	template<typename Derived>
+	DiscreteDistributionAbsSquare(const Eigen::MatrixBase<Derived> &V) :
+			_d { }
 	{
+		const types::DynMat<typename Derived::Scalar> & rV = V;
 		// check zero-size
-		if (!internal::_check_nonzero_size(V))
-			throw Exception("DiscreteDistributionFromComplex::"
-					"DiscreteDistributionFromComplex",
+		if (!internal::_check_nonzero_size(rV))
+			throw Exception("DiscreteDistributionAbsSquare::"
+					"DiscreteDistributionAbsSquare",
 					Exception::Type::ZERO_SIZE);
 
 		// check vector
-		if (!internal::_check_vector(V))
-			throw Exception("DiscreteDistributionFromComplex::"
-					"DiscreteDistributionFromComplex",
+		if (!internal::_check_vector(rV))
+			throw Exception("DiscreteDistributionAbsSquare::"
+					"DiscreteDistributionAbsSquare",
 					Exception::Type::MATRIX_NOT_VECTOR);
 
-		std::vector<double> weights = cplx2weights(V.data(),
-				V.data() + V.size());
+		std::vector<double> weights = cplx2weights(rV.data(),
+				rV.data() + rV.size());
 		std::discrete_distribution<std::size_t> tmp(std::begin(weights),
 				std::end(weights));
 		_d = tmp;
