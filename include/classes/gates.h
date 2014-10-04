@@ -128,6 +128,18 @@ public:
 		return Derived::Identity(D, D);
 	}
 
+	// applies controlled-gate A to part of state vector
+	// or density matrix specified by subsys
+	template<typename Derived1, typename Derived2>
+	types::DynMat<typename Derived1::Scalar> applyCTRL(
+			const Eigen::MatrixBase<Derived1>& state,
+			const Eigen::MatrixBase<Derived2>& A,
+			const std::vector<std::size_t>& ctrl,
+			const std::vector<std::size_t>& subsys, std::size_t n,
+			std::size_t d = 2) const
+	{
+	}
+
 	// applies gate A to part of state vector
 	// or density matrix specified by subsys
 	template<typename Derived1, typename Derived2>

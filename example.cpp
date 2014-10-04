@@ -14,6 +14,8 @@
 // TODO: write documentation
 // TODO: more robust exception parameter checking
 // TODO: change loops to column major order, better OpenMP implementation
+// TODO: Gates::applyCTRL without need for fully specifying CTRL matrix,
+		 // should be faster than apply(...CTRL...)
 
 using namespace std;
 

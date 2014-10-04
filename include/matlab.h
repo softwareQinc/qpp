@@ -140,7 +140,7 @@ void saveMATLABmatrix(const Eigen::MatrixBase<Derived> &A,
 }
 
 template<> // Eigen::MatrixXd specialization
-void saveMATLABmatrix(const Eigen::MatrixBase<typename types::dmat> &A,
+void saveMATLABmatrix(const Eigen::MatrixBase<types::dmat> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
