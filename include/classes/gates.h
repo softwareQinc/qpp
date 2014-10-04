@@ -360,7 +360,7 @@ public:
 					Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 	}
 
-	// -multi-quDit multi-controlled-gate
+	// returns a multi-quDit multi-controlled-gate in matrix form
 	template<typename Derived>
 	types::DynMat<typename Derived::Scalar> CTRL(
 			const Eigen::MatrixBase<Derived>& A,
