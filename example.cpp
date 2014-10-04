@@ -16,6 +16,7 @@
 // TODO: change loops to column major order, better OpenMP implementation
 // TODO: Gates::applyCTRL without need for fully specifying CTRL matrix,
 		 // should be faster than apply(...CTRL...)
+// TODO: parallelize everything!
 
 using namespace std;
 
