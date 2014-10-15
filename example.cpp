@@ -6,7 +6,6 @@
  */
 
 #include "qpp.h"
-#include <set>
 
 //#include "matlab.h" // support for MATLAB
 
