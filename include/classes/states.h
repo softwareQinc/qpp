@@ -16,66 +16,42 @@ class States: public Singleton<const States> // const Singleton
 	friend class Singleton<const States> ;
 public:
 	// Pauli eigen-states
-	types::ket x0;
-	types::ket x1;
-	types::ket y0;
-	types::ket y1;
-	types::ket z0;
-	types::ket z1;
+	types::ket x0 { types::ket::Zero(2) };
+	types::ket x1 { types::ket::Zero(2) };
+	types::ket y0 { types::ket::Zero(2) };
+	types::ket y1 { types::ket::Zero(2) };
+	types::ket z0 { types::ket::Zero(2) };
+	types::ket z1 { types::ket::Zero(2) };
 
 	// projectors onto Pauli eigen-states
-	types::cmat px0;
-	types::cmat px1;
-	types::cmat py0;
-	types::cmat py1;
-	types::cmat pz0;
-	types::cmat pz1;
+	types::cmat px0 { types::cmat::Zero(2, 2) };
+	types::cmat px1 { types::cmat::Zero(2, 2) };
+	types::cmat py0 { types::cmat::Zero(2, 2) };
+	types::cmat py1 { types::cmat::Zero(2, 2) };
+	types::cmat pz0 { types::cmat::Zero(2, 2) };
+	types::cmat pz1 { types::cmat::Zero(2, 2) };
 
 	// Bell states
-	types::ket b00;
-	types::ket b01;
-	types::ket b10;
-	types::ket b11;
+	types::ket b00 { types::ket::Zero(4) };
+	types::ket b01 { types::ket::Zero(4) };
+	types::ket b10 { types::ket::Zero(4) };
+	types::ket b11 { types::ket::Zero(4) };
 
 	// projectors onto Bell states
-	types::cmat pb00;
-	types::cmat pb01;
-	types::cmat pb10;
-	types::cmat pb11;
+	types::cmat pb00 { types::ket::Zero(4, 4) };
+	types::cmat pb01 { types::ket::Zero(4, 4) };
+	types::cmat pb10 { types::ket::Zero(4, 4) };
+	types::cmat pb11 { types::ket::Zero(4, 4) };
 
 	// W and GHZ states
-	types::ket GHZ;
-	types::ket W;
+	types::ket GHZ { types::ket::Zero(8) };
+	types::ket W { types::ket::Zero(8) };
 
 	// projectors onto GHZ and W
-	types::cmat pGHZ;
-	types::cmat pW;
+	types::cmat pGHZ { types::ket::Zero(8, 8) };
+	types::cmat pW { types::ket::Zero(8, 8) };
 private:
-	States() :
-			x0(types::ket::Zero(2)), //
-			x1(types::ket::Zero(2)), //
-			y0(types::ket::Zero(2)), //
-			y1(types::ket::Zero(2)), //
-			z0(types::ket::Zero(2)), //
-			z1(types::ket::Zero(2)), //
-			px0(types::cmat::Zero(2, 2)), //
-			px1(types::cmat::Zero(2, 2)), //
-			py0(types::cmat::Zero(2, 2)), //
-			py1(types::cmat::Zero(2, 2)), //
-			pz0(types::cmat::Zero(2, 2)), //
-			pz1(types::cmat::Zero(2, 2)), //
-			b00(types::ket::Zero(4)), //
-			b01(types::ket::Zero(4)), //
-			b10(types::ket::Zero(4)), //
-			b11(types::ket::Zero(4)), //
-			pb00(types::cmat::Zero(4, 4)), //
-			pb01(types::cmat::Zero(4, 4)), //
-			pb10(types::cmat::Zero(4, 4)), //
-			pb11(types::cmat::Zero(4, 4)), //
-			GHZ(types::ket::Zero(8)), //
-			W(types::ket::Zero(8)), //
-			pGHZ(types::cmat::Zero(8, 8)), //
-			pW(types::cmat::Zero(8, 8))
+	States()
 	{
 		// initialize
 		x0 << 1 / std::sqrt(2), 1 / std::sqrt(2);

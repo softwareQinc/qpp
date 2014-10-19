@@ -27,6 +27,7 @@
 #include <numeric>
 #include <ostream>
 #include <random>
+#include <stdexcept>
 #include <string>
 #include <type_traits>
 #include <utility>

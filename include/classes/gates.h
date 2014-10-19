@@ -16,38 +16,25 @@ class Gates: public Singleton<const Gates> // const Singleton
 	friend class Singleton<const Gates> ;
 public:
 	// one qubit gates
-	types::cmat Id2; // Identity matrix
-	types::cmat H; // Hadamard matrix
-	types::cmat X; // X matrix
-	types::cmat Y; // Y matrix
-	types::cmat Z; // Z matrix
-	types::cmat S; // S gate
-	types::cmat T; // T gate
+	types::cmat Id2 { types::cmat::Identity(2, 2) }; // Identity matrix
+	types::cmat H { types::cmat::Zero(2, 2) }; // Hadamard matrix
+	types::cmat X { types::cmat::Zero(2, 2) }; // X matrix
+	types::cmat Y { types::cmat::Zero(2, 2) }; // Y matrix
+	types::cmat Z { types::cmat::Zero(2, 2) }; // Z matrix
+	types::cmat S { types::cmat::Zero(2, 2) }; // S gate
+	types::cmat T { types::cmat::Zero(2, 2) }; // T gate
 
 	// two qubit gates
-	types::cmat CNOTab; // CNOT ctrl1 target2
-	types::cmat CZ; // Controlled-Phase (Controlled-Z)
-	types::cmat CNOTba; // CNOT ctrl2 target1
-	types::cmat SWAP; // SWAP gate
+	types::cmat CNOTab { types::cmat::Identity(4, 4) }; // CNOT ctrl1 target2
+	types::cmat CZ { types::cmat::Identity(4, 4) }; // Controlled-Phase (Controlled-Z)
+	types::cmat CNOTba { types::cmat::Zero(4, 4) }; // CNOT ctrl2 target1
+	types::cmat SWAP { types::cmat::Identity(4, 4) }; // SWAP gate
 
 	// three qubit gates
-	types::cmat TOF; // Toffoli
-	types::cmat FRED; // Fredkin
+	types::cmat TOF { types::cmat::Identity(8, 8) }; // Toffoli
+	types::cmat FRED { types::cmat::Identity(8, 8) }; // Fredkin
 private:
-	Gates() :
-			Id2(types::cmat::Identity(2, 2)), //
-			H(types::cmat::Zero(2, 2)), //
-			X(types::cmat::Zero(2, 2)), //
-			Y(types::cmat::Zero(2, 2)), //
-			Z(types::cmat::Zero(2, 2)), //
-			S(types::cmat::Zero(2, 2)), //
-			T(types::cmat::Zero(2, 2)), //
-			CNOTab(types::cmat::Identity(4, 4)), //
-			CZ(types::cmat::Identity(4, 4)), //
-			CNOTba(types::cmat::Zero(4, 4)), //
-			SWAP(types::cmat::Identity(4, 4)), //
-			TOF(types::cmat::Identity(8, 8)), //
-			FRED(types::cmat::Identity(8, 8)) //
+	Gates()
 	{
 		// initialize the constants and gates
 		H << 1 / std::sqrt(2), 1 / std::sqrt(2), 1 / std::sqrt(2), -1
