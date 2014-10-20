@@ -38,18 +38,18 @@ public:
 	types::ket b11 { types::ket::Zero(4) };
 
 	// projectors onto Bell states
-	types::cmat pb00 { types::ket::Zero(4, 4) };
-	types::cmat pb01 { types::ket::Zero(4, 4) };
-	types::cmat pb10 { types::ket::Zero(4, 4) };
-	types::cmat pb11 { types::ket::Zero(4, 4) };
+	types::cmat pb00 { types::cmat::Zero(4, 4) };
+	types::cmat pb01 { types::cmat::Zero(4, 4) };
+	types::cmat pb10 { types::cmat::Zero(4, 4) };
+	types::cmat pb11 { types::cmat::Zero(4, 4) };
 
 	// W and GHZ states
 	types::ket GHZ { types::ket::Zero(8) };
 	types::ket W { types::ket::Zero(8) };
 
 	// projectors onto GHZ and W
-	types::cmat pGHZ { types::ket::Zero(8, 8) };
-	types::cmat pW { types::ket::Zero(8, 8) };
+	types::cmat pGHZ { types::cmat::Zero(8, 8) };
+	types::cmat pW { types::cmat::Zero(8, 8) };
 private:
 	States()
 	{
