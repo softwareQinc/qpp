@@ -54,10 +54,10 @@ private:
 	States()
 	{
 		// initialize
-		x0 << 1 / std::sqrt(2), 1 / std::sqrt(2);
-		x1 << 1 / std::sqrt(2), -1 / std::sqrt(2);
-		y0 << 1 / std::sqrt(2), 1_i / std::sqrt(2);
-		y1 << 1 / std::sqrt(2), -1_i / std::sqrt(2);
+		x0 << 1 / std::sqrt(2.), 1 / std::sqrt(2.);
+		x1 << 1 / std::sqrt(2.), -1 / std::sqrt(2.);
+		y0 << 1 / std::sqrt(2.), 1_i / std::sqrt(2.);
+		y1 << 1 / std::sqrt(2.), -1_i / std::sqrt(2.);
 		z0 << 1, 0;
 		z1 << 0, 1;
 		px0 = x0 * x0.adjoint();
@@ -69,10 +69,10 @@ private:
 
 		// Bell states, following convention from Nielsen & Chuang
 		// |ij> -> |b_{ij}> by the CNOT*(H x Id) circuit
-		b00 << 1 / std::sqrt(2), 0, 0, 1 / std::sqrt(2);// (|00>+|11>)/sqrt(2)
-		b01 << 0, 1 / std::sqrt(2), 1 / std::sqrt(2), 0;// (|01>+|10>)/sqrt(2)
-		b10 << 1 / std::sqrt(2), 0, 0, -1 / std::sqrt(2);// (|00>-|11>)/sqrt(2)
-		b11 << 0, 1 / std::sqrt(2), -1 / std::sqrt(2), 0;// (|01>-|10>)/sqrt(2)
+		b00 << 1 / std::sqrt(2.), 0, 0, 1 / std::sqrt(2.);// (|00>+|11>)/sqrt(2)
+		b01 << 0, 1 / std::sqrt(2.), 1 / std::sqrt(2.), 0;// (|01>+|10>)/sqrt(2)
+		b10 << 1 / std::sqrt(2.), 0, 0, -1 / std::sqrt(2.);// (|00>-|11>)/sqrt(2)
+		b11 << 0, 1 / std::sqrt(2.), -1 / std::sqrt(2.), 0;// (|01>-|10>)/sqrt(2)
 
 		pb00 = b00 * b00.adjoint();
 		pb01 = b01 * b01.adjoint();
@@ -80,9 +80,9 @@ private:
 		pb11 = b11 * b11.adjoint();
 
 		GHZ << 1, 0, 0, 0, 0, 0, 0, 1;
-		GHZ = GHZ / std::sqrt(2);
+		GHZ = GHZ / std::sqrt(2.);
 		W << 0, 1, 1, 0, 1, 0, 0, 0;
-		W = W / std::sqrt(3);
+		W = W / std::sqrt(3.);
 
 		pGHZ = GHZ * GHZ.adjoint();
 		pW = W * W.adjoint();

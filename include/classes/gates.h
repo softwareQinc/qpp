@@ -37,8 +37,8 @@ private:
 	Gates()
 	{
 		// initialize the constants and gates
-		H << 1 / std::sqrt(2), 1 / std::sqrt(2), 1 / std::sqrt(2), -1
-				/ std::sqrt(2);
+		H << 1 / std::sqrt(2.), 1 / std::sqrt(2.), 1 / std::sqrt(2.), -1
+				/ std::sqrt(2.);
 		X << 0, 1, 1, 0;
 		Z << 1, 0, 0, -1;
 		Y << 0, -1_i, 1_i, 0;
@@ -95,7 +95,7 @@ public:
 		result = types::cmat::Zero(D, D);
 		for (std::size_t j = 0; j < D; j++)
 			for (std::size_t i = 0; i < D; i++)
-				result(i, j) = 1 / std::sqrt(D) * std::pow(ct::omega(D), i * j);
+				result(i, j) = 1 / std::sqrt((double)D) * std::pow(ct::omega(D), i * j);
 		return result;
 	}
 

@@ -16,6 +16,7 @@
 // TODO: Gates::applyCTRL without need for fully specifying CTRL matrix,
 // should be faster than apply(...CTRL...)
 // TODO: parallelize everything!
+// TODO: replace std::sqrt(2) with std::sqrt(2.), for portability
 
 using namespace std;
 

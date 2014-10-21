@@ -111,7 +111,7 @@ types::cmat randU(std::size_t D)
 
 	types::cmat X(D, D);
 
-	X = 1 / std::sqrt(2) * randn<types::cmat>(D, D);
+	X = 1 / std::sqrt(2.) * randn<types::cmat>(D, D);
 	Eigen::HouseholderQR<types::cmat> qr(X);
 
 	types::cmat Q = qr.householderQ();

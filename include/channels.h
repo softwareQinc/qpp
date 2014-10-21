@@ -111,7 +111,7 @@ std::vector<types::cmat> choi2kraus(const types::cmat& A)
 		throw Exception("choi2kraus", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_square_mat(A))
 		throw Exception("choi2kraus", Exception::Type::MATRIX_NOT_SQUARE);
-	std::size_t D = static_cast<std::size_t>(std::sqrt(A.rows()));
+	std::size_t D = static_cast<std::size_t>(std::sqrt((double)A.rows()));
 	if (D * D != static_cast<std::size_t>(A.rows()))
 		throw Exception("choi2kraus", Exception::Type::DIMS_INVALID);
 
