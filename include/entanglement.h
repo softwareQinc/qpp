@@ -149,7 +149,7 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 	if (!internal::_check_col_vector(rA))
 		throw Exception("gconcurrence", Exception::Type::MATRIX_NOT_CVECTOR);
 
-	std::size_t D = static_cast<std::size_t>((double)std::sqrt(A.rows()));
+	std::size_t D = static_cast<std::size_t>(std::sqrt((double)A.rows()));
 	if (D * D != static_cast<std::size_t>(A.rows()))
 		throw Exception("gconcurrence", Exception::Type::DIMS_NOT_EQUAL);
 
