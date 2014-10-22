@@ -74,7 +74,7 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 	if (internal::_check_vector(rA))
 	{
 		if (alpha == 0)
-			return std::log2(rA.size());
+			return std::log2((double)rA.size());
 
 		double result = 0;
 		// take the absolut value to get rid of tiny negatives
@@ -92,7 +92,7 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 		throw Exception("renyi", Exception::Type::MATRIX_NOT_SQUARE);
 
 	if (alpha == 0)
-		return std::log2(rA.rows());
+		return std::log2((double)rA.rows());
 
 	// get the eigenvalues
 	types::dmat ev = hevals(rA);
@@ -154,7 +154,7 @@ double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
 		throw Exception("tsallis", Exception::Type::OUT_OF_RANGE);
 
 	if (alpha == 1) // Shannon/von Neumann with base e logarithm
-		return shannon(rA) * std::log(2);
+		return shannon(rA) * std::log(2.);
 
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
