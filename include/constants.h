@@ -32,7 +32,7 @@ namespace ct
 constexpr double chop = 1e-10;
 
 // used to decide whether a number or expression in double precision
-// is zero or not; example: if(std::abs(x)<eps) then x is 0
+// is zero or not; example: if(std::abs(x) < eps) then x is considered to be 0
 constexpr double eps = 1e-12;
 
 // max number of systems, used to statically allocate arrays such as Cdims etc
