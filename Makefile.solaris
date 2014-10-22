@@ -1,4 +1,4 @@
-# Solaris support, use gmake to build
+# Solaris support, use gmake when building
 TARGET = qpp # Application name
 SRC = .# no white spaces allowed before the comment!
 INC = ./include# no white spaces allowed before the comment!
