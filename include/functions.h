@@ -1798,7 +1798,7 @@ types::ket mket(const std::vector<std::size_t>& mask,
  * @brief Multi-partite qudit ket (same dimensions overload)
  *
  * Constructs the multi-partite qudit ket \f$|\mathrm{mask}\rangle\f$
- * in a multi-partite system, all subsystem having equal dimension @a d\n
+ * in a multi-partite system, all subsystem having equal dimension @a d \n
  * @a mask is a std::vector of non-negative integers, and
  * each element in @a mask has to be strictly smaller than @a d
  */
