@@ -12,6 +12,11 @@ namespace qpp
 {
 // constructs the superoperator matrix in the standard operator basis |i><j|,
 // ordered in lexicographical order, e.g. |0><0|, |0><1|, |1><0|, |1><1|
+/**
+ *
+ * @param Ks
+ * @return
+ */
 types::cmat super(const std::vector<types::cmat>& Ks)
 {
 	// EXCEPTION CHECKS

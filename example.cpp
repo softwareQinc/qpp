@@ -10,7 +10,7 @@
 //#include "matlab.h" // support for MATLAB
 
 // TODO: testing
-// TODO: write documentation
+// TODO: write documentation (IN PROGRESS)
 // TODO: more robust exception parameter checking
 // TODO: change loops to column major order, better OpenMP implementation
 // TODO: Gates::applyCTRL without need for fully specifying CTRL matrix,
@@ -31,13 +31,11 @@ cplx pow3(const cplx& z)
 int main()
 {
 	cout << "Starting qpp..." << endl;
-
 	// output format
 	//cout << std::scientific;
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
-//	/*
 	// TESTING
 	// testing channel and Gates::apply
 	cout << endl << "Testing channel(...) and Gates::apply(...)." << endl;

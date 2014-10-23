@@ -13,23 +13,38 @@ namespace qpp
 
 namespace types
 {
-// type aliases
-using cplx=std::complex<double>;
-// complex number double precision
 
-// complex matrix, dynamic size
+/**
+ * @brief Complex number in double precision
+ */
+using cplx=std::complex<double>;
+
+/**
+ * @brief Complex (double precision) dynamic Eigen matrix
+ */
 using cmat=Eigen::MatrixXcd;
 
-// double matrix, dynamic size
+/**
+ * @brief Real (double precision) dynamic Eigen matrix
+ */
 using dmat=Eigen::MatrixXd;
 
-// ket, dynamic size
+/**
+ * @brief Complex (double precision) dynamic Eigen column matrix
+ */
 using ket=Eigen::Matrix<cplx, Eigen::Dynamic, 1>;
 
-// bra, dynamic size
+/**
+ * @brief Complex (double precision) dynamic Eigen row matrix
+ */
 using bra=Eigen::Matrix<cplx, 1, Eigen::Dynamic>;
 
-// Eigen dynamic matrix
+/**
+ * @brief Dynamic Eigen matrix over the field specified by @a Scalar
+ *
+ * Example:
+ * @code auto mat = DynMat<float>(2,3); // type of mat is Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> @endcode
+ */
 template<typename Scalar>
 using DynMat=Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 

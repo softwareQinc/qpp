@@ -262,11 +262,12 @@ types::DynMat<typename Derived1::Scalar> _kron2(
 }
 
 // may be useful, extracts variadic template argument pack into a std::vector
-template<typename T>
+template<typename T> // ends the recursion
 void variadic_vector_emplace(std::vector<T>&)
 {
 }
 
+// may be useful, extracts variadic template argument pack into a std::vector
 template<typename T, typename First, typename ... Args>
 void variadic_vector_emplace(std::vector<T>& v, First&& first, Args&&... args)
 {

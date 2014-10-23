@@ -16,18 +16,18 @@
 namespace qpp
 {
 
-class RandomDevices: public Singleton<const RandomDevices> // const Singleton
+class RandomDevices: public Singleton<RandomDevices> // Singleton
 {
-	friend class Singleton<const RandomDevices> ;
+	friend class Singleton<RandomDevices> ;
+	std::random_device _rd; // used to seed std::mt19937 _rng
 public:
-	std::random_device _rd;
-	mutable std::mt19937 _rng;
+	std::mt19937 _rng; // Mersenne twister random number generator engine
 private:
 	RandomDevices() :
 			_rd(), _rng(_rd())
 	{
-		// seed the standard C number generator, used by Eigen
-		std::srand(_rd());
+		// seeds the standard C number generator, used by Eigen
+		std::srand(_rng());
 	}
 };
 /* class RandomDevices */

@@ -557,8 +557,9 @@ types::cmat cosm(const Eigen::MatrixBase<Derived> &A)
 /**
  * @brief Matrix power
  *
- * By convention \f$A^0 = I\f$\n
- * Uses the spectral decomposition of @a A to compute the matrix power
+ * Uses the spectral decomposition of @a A to compute the matrix power\n
+ * By convention \f$A^0 = I\f$
+ *
  */
 /**
  *
@@ -604,8 +605,8 @@ types::cmat spectralpowm(const Eigen::MatrixBase<Derived> &A,
 /**
  * @brief Matrix power
  *
- * By convention \f$A^0 = I\f$\n
- * Explicitly multiplies the matrix @a A with itself @a n times
+ * Explicitly multiplies the matrix @a A with itself @a n times\n
+ * By convention \f$A^0 = I\f$
  */
 /**
  *
@@ -681,7 +682,7 @@ types::DynMat<OutputScalar> cwise(const Eigen::MatrixBase<Derived> &A,
  * @brief Kronecker product (variadic overload)
  *
  * Used to stop the recursion for the variadic template version of
- * @a qpp::kron(...)
+ * @a qpp::kron()
  */
 /**
  *
