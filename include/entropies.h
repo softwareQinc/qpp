@@ -9,12 +9,20 @@
 #define ENTROPY_H_
 
 // various entropies, assume as input either
-// a normalized hermitian matrix or a probability vector
+// a normalized Hermitian matrix or a probability vector
 
 namespace qpp
 {
 
-// Shannon/von-Neumann entropy
+/**
+ * \brief Shannon/von-Neumann entropy of the
+ * probability distribution/density matrix \a A
+ *
+ * \param A Eigen expression, representing a probability distribution
+ * (dynamic column vector) or a density matrix
+ * (dynamic matrix over the complex field)
+ * \return Shannon/von-Neumann entropy, with the logarithm in base 2
+ */
 template<typename Derived>
 double shannon(const Eigen::MatrixBase<Derived>& A)
 {
@@ -54,7 +62,17 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
 	return result;
 }
 
-// Renyi-alpha entropy (alpha>=0)
+/**
+ * \brief Renyi-\f$\alpha\f$ entropy of the
+ * probability distribution/density matrix \a A
+ *
+ * \note \f$ \alpha\geq 0\f$
+ *
+ * \param A Eigen expression, representing a probability distribution
+ * (dynamic column vector) or a density matrix
+ * (dynamic matrix over the complex field)
+ * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
+ */
 template<typename Derived>
 double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 {
@@ -105,7 +123,15 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 	return std::log2(result) / (1 - alpha);
 }
 
-// Renyi-infinity entropy (min entropy)
+/**
+ * \brief Renyi-\f$\infty\f$ entropy (min entropy) of the
+ * probability distribution/density matrix \a A
+ *
+ * \param A Eigen expression, representing a probability distribution
+ * (dynamic column vector) or a density matrix
+ * (dynamic matrix over the complex field)
+ * \return Renyi-\f$\infty\f$ entropy, with the logarithm in base 2
+ */
 template<typename Derived>
 double renyi_inf(const Eigen::MatrixBase<Derived>& A)
 {
@@ -143,8 +169,19 @@ double renyi_inf(const Eigen::MatrixBase<Derived>& A)
 	return -std::log2(max);
 }
 
-// Tsallis-alpha entropy (alpha >=0)
-// when alpha->1 converges to Shannon/von Neumann with base e logarithm
+/**
+ * \brief Tsallis-\f$\alpha\f$ entropy of the
+ * probability distribution/density matrix \a A
+ *
+ * \note \f$ \alpha\geq 0\f$
+ * When \f$ \alpha\to 1\f$ the Tsallis entropy converges to the
+ * Shannon/von-Neumann entropy, with the logarithm in base \f$ e \f$
+ *
+ * \param A Eigen expression, representing a probability distribution
+ * (dynamic column vector) or a density matrix
+ * (dynamic matrix over the complex field)
+ * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
+ */
 template<typename Derived>
 double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
 {
@@ -190,7 +227,15 @@ double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
 	return (result - 1) / (1 - alpha);
 }
 
-// quantum mutual information between 2 subsystems
+/**
+ * \brief Quantum mutual information between 2 subsystems of a composite system
+ *
+ * \param A Eigen expression
+ * \param subsys Subsystems' indexes
+ * \param dims Subsystems' dimensions
+ * \return Mutual information between the 2 subsystems
+ */
+// Make it more general!
 template<typename Derived>
 double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 		const std::vector<std::size_t>& subsys,
