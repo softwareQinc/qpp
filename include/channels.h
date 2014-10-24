@@ -10,12 +10,19 @@
 
 namespace qpp
 {
-// constructs the superoperator matrix in the standard operator basis |i><j|,
-// ordered in lexicographical order, e.g. |0><0|, |0><1|, |1><0|, |1><1|
+
 /**
+ * \brief Superoperator matrix representation
  *
- * @param Ks
- * @return
+ * Constructs the superoperator matrix of the channel specified by the set of
+ * Kraus operators \a Ks in the standard operator basis
+ * \f$\{|i\rangle\langle j|\}\f$ ordered in lexicographical order, i.e.
+ * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
+ *
+ * \param Ks std::vector of Eigen expressions representing the set of
+ * Kraus operators
+ * \return Superoperator matrix representation,
+ * as a dynamic matrix over the complex field
  */
 types::cmat super(const std::vector<types::cmat>& Ks)
 {
@@ -74,10 +81,22 @@ types::cmat super(const std::vector<types::cmat>& Ks)
 	return result;
 }
 
-// returns the Choi matrix (or dynamical matrix) of the channel
-// specified by Kraus operators {Ks}
-// The superoperator L and Choi matrix C are related by
-// L_{ab,mn} = C_{ma,nb}
+/**
+ * \brief Choi matrix representation
+ *
+ * Constructs the Choi matrix of the channel specified by the set of Kraus
+ * operators \a Ks in the standard operator basis \f$\{|i\rangle\langle j|\}\f$
+ * ordered in lexicographical order, i.e.
+ * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
+ *
+ * Note: the superoperator matrix \f$S\f$ and the Choi matrix \f$ C\f$
+ * are related by \f$ S_{ab,mn} = C_{ma,nb}\f$
+ *
+ * \param Ks std::vector of Eigen expressions representing the set of
+ * Kraus operators
+ * \return Choi matrix representation,
+ * as a dynamic matrix over the complex field
+ */
 types::cmat choi(const std::vector<types::cmat>& Ks)
 {
 	// EXCEPTION CHECKS
@@ -108,7 +127,19 @@ types::cmat choi(const std::vector<types::cmat>& Ks)
 	return result;
 }
 
-// extracts orthogonal Kraus operators from Choi matrix
+/**
+ * \brief Extracts orthogonal Kraus operators from Choi matrix
+ *
+ * Extracts a set of orthogonal (under Hilbert-Schmidt operator norm) Kraus
+ * operators from the Choi representation \a A of the channel
+ *
+ * Note: The Kraus operators satisfy \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$
+ * for all \f$i\neq j\f$
+ *
+ * \param A Choi matrix
+ * \return std::vector of dynamic matrices over the complex field
+ * representing the set of Kraus operators
+ */
 std::vector<types::cmat> choi2kraus(const types::cmat& A)
 {
 	// EXCEPTION CHECKS
@@ -135,8 +166,15 @@ std::vector<types::cmat> choi2kraus(const types::cmat& A)
 	return result;
 }
 
-// applies channel specified by Kraus operators {Ks}
-// to density matrix rho
+/**
+ * \brief Applies the channel specified by the set of Kraus operators \a Ks
+ * to the density matrix \a rho
+ *
+ * \param rho Eigen expression
+ * \param Ks std::vector of Eigen expressions representing the set of
+ * Kraus operators
+ * \return Output density matrix, as a dynamic matrix over the complex field
+ */
 template<typename Derived>
 types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 		const std::vector<types::cmat>& Ks)
@@ -165,8 +203,17 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 	return result;
 }
 
-// applies channel specifed by Kraus operators {Ks}
-// to part of density matrix specified by subsys
+/**
+ * \brief Applies the channel specified by the set of Kraus operators \a Ks to
+ * the part of the density matrix \a rho specified by \a subsys
+ *
+ * \param rho Eigen expression
+ * \param Ks std::vector of Eigen expressions representing the set of
+ * Kraus operators
+ * \param subsys Subsystems' indexes
+ * \param dims Dimensions of the multi-partite system
+ * \return Output density matrix, as a dynamic matrix over the complex field
+ */
 template<typename Derived>
 types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 		const std::vector<types::cmat>& Ks,

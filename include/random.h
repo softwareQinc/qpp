@@ -13,7 +13,7 @@
 namespace qpp
 {
 
-// random matrix with entries in Uniform(a,b)
+// random matrix with entries in Uniform[a,b)
 template<typename Derived>
 Derived rand(std::size_t rows, std::size_t cols, double a = 0, double b = 1)
 {
@@ -182,7 +182,7 @@ types::cmat randH(std::size_t D)
 	return H + adjoint(H);
 }
 
-// random ket of dimension D
+// random ket of dimension D why randU() ? and not N(0,1)?
 types::ket randket(std::size_t D)
 {
 	if (D == 0)

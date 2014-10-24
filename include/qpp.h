@@ -5,9 +5,9 @@
  * Created on December 12, 2013, 10:42 PM
  */
 
-// IMPORTANT: instantiation of global singletons Gates and RandomDevices
+// IMPORTANT: instantiation of global singletons RandomDevices, Gates and States
 // Any additional singletons should be instantiated here
-// Includes all necessary headers
+// Includes all necessary headers (except "matlab.h")
 // ALWAYS include it in main.cpp
 #ifndef QPP_H_
 #define	QPP_H_
@@ -60,23 +60,23 @@ namespace qpp
 {
 
 /**
- * @brief qpp::RandomDevices Singleton
+ * \brief qpp::RandomDevices Singleton
  *
- * Initializes the random devices, see the class @a qpp::RandomDevices
+ * Initializes the random devices, see the class \a qpp::RandomDevices
  */
 RandomDevices& rdevs = RandomDevices::get_instance();
 
 /**
- * @brief qpp::Gates const Singleton
+ * \brief qpp::Gates const Singleton
  *
- * Initializes the gates, see the class @a qpp::Gates
+ * Initializes the gates, see the class \a qpp::Gates
  */
 const Gates& gt = Gates::get_instance();
 
 /**
- * @brief qpp::States const Singleton
+ * \brief qpp::States const Singleton
  *
- * Initializes the states, see the class @a qpp::States
+ * Initializes the states, see the class \a qpp::States
  */const States& st = States::get_instance();
 
 } /* namespace qpp */

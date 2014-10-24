@@ -9,6 +9,9 @@
 #define INTERNAL_H_
 
 // internal functions, do not modify
+/**
+ * \namespace qpp::internal Internal functions, do not modify or use directly
+ */
 
 namespace qpp
 {
