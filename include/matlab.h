@@ -172,14 +172,12 @@ void saveMATLABmatrix(const Eigen::MatrixBase<Derived> &A,
  * \brief Saves an Eigen dynamic matrix to a MATLAB .mat file,
  * specialization for double matrices (\a qpp::dmat)
  *
- * \note If \a var_name is a complex matrix, only the real part is loaded
- *
  * \param A Eigen expression over the complex field
  * \param mat_file MATALB .mat file
  * \param var_name Variable name in the .mat file representing
  * the matrix to be saved
- * \param mode The saving mode (append, overwrite etc.),
- * see MATLAB's matOpen(...) documentation for details
+ * \param mode Saving mode (append, overwrite etc.),
+ * see MATLAB's \a matOpen() documentation for details
  */
 template<> // Eigen::MatrixXd specialization
 void saveMATLABmatrix(const Eigen::MatrixBase<dmat> &A,
@@ -222,7 +220,7 @@ void saveMATLABmatrix(const Eigen::MatrixBase<dmat> &A,
  * \param mat_file MATALB .mat file
  * \param var_name Variable name in the .mat file representing
  * the matrix to be saved
- * \param mode The saving mode (append, overwrite etc.),
+ * \param mode Saving mode (append, overwrite etc.),
  * see MATLAB's \a matOpen() documentation for details
  */
 template<> // Eigen::MatrixXcd specialization
