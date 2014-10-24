@@ -44,7 +44,7 @@ constexpr double chop = 1e-10;
  * \brief Used to decide whether a number or expression in double precision
  * is zero or not
  *
- * Example: \code if(std::abs(x) < qpp::ct::eps) // x is zero \endcode
+ * Example: \code if(std::abs(x) < qpp::eps) // x is zero \endcode
  */
 constexpr double eps = 1e-12;
 

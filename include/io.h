@@ -13,8 +13,18 @@
 namespace qpp
 {
 
-// Displays a standard container that supports std::begin, std::end
-// and forward iterating
+/**
+ * \brief Displays a standard container that supports std::begin, std::end
+ * and forward iteration. Does not add a newline.
+ *
+ * \see \a qpp::displn()
+ *
+ * \param x Container
+ * \param separator Separator
+ * \param start Left marking
+ * \param end Right marking
+ * \param os Output stream
+ */
 template<typename T>
 void disp(const T& x, const std::string & separator, const std::string& start =
 		"[", const std::string& end = "]", std::ostream& os = std::cout)
@@ -41,8 +51,18 @@ void disp(const T& x, const std::string & separator, const std::string& start =
 	os << end;
 }
 
-// Displays a standard container that supports std::begin, std::end
-// and forward iterating, and adds a new line
+/**
+ * \brief Displays a standard container that supports std::begin, std::end
+ * and forward iteration. Adds a newline.
+ *
+ * \see \a qpp::disp()
+ *
+ * \param x Container
+ * \param separator Separator
+ * \param start Left marking
+ * \param end Right marking
+ * \param os Output stream
+ */
 template<typename T>
 void displn(const T& x, const std::string & separator,
 		const std::string& start = "[", const std::string& end = "]",
@@ -52,7 +72,18 @@ void displn(const T& x, const std::string & separator,
 	os << std::endl;
 }
 
-// Displays a C-style dynamically-allocated array
+/**
+ * \brief Displays a C-style array. Does not add a newline.
+ *
+ * \see \a qpp::displn()
+ *
+ * \param x Pointer to the first element
+ * \param n Number of elements to be displayed
+ * \param separator Separator
+ * \param start Left marking
+ * \param end Right marking
+ * \param os Output stream
+ */
 template<typename T>
 void disp(const T* x, const std::size_t n, const std::string& separator,
 		const std::string& start = "[", const std::string& end = "]",
@@ -68,8 +99,18 @@ void disp(const T* x, const std::size_t n, const std::string& separator,
 	os << end;
 }
 
-// Displays a C-style dynamically-allocated array
-// and adds a new line
+/**
+ * \brief Displays a C-style array. Adds a newline.
+ *
+ * \see \a qpp::disp()
+ *
+ * \param x Pointer to the first element
+ * \param n Number of elements to be displayed
+ * \param separator Separator
+ * \param start Left marking
+ * \param end Right marking
+ * \param os Output stream
+ */
 template<typename T>
 void displn(const T* x, const std::size_t n, const std::string & separator,
 		const std::string& start = "[", const std::string& end = "]",
@@ -79,9 +120,19 @@ void displn(const T* x, const std::size_t n, const std::string & separator,
 	os << std::endl;
 }
 
-// Displays an Eigen::MatrixX in friendly form
+/**
+ * \brief Displays an Eigen expression in matrix friendly form. Does not add a
+ * new line.
+ *
+ * \see \a qpp::displn()
+ *
+ * @param A Eigen expression
+ * @param chop Set to zero the elements smaller in absolute value
+ * than \a chop
+ * @param os Output stream
+ */
 template<typename Derived>
-void disp(const Eigen::MatrixBase<Derived>& A, double chop = chop,
+void disp(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
 		std::ostream& os = std::cout)
 {
 	const DynMat<typename Derived::Scalar> & rA = A;
@@ -92,12 +143,12 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = chop,
 		return;
 	};
 
-	std::ostringstream ostr;
+	std::ostringstream ostr{};
 	ostr.flags(os.flags()); // get the formatting flags
 	ostr.precision(os.precision()); // set precision
 
-	std::vector<std::string> vstr;
-	std::string strA;
+	std::vector<std::string> vstr{};
+	std::string strA{};
 
 	for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
 	{
@@ -105,7 +156,7 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = chop,
 		{
 			strA.clear(); // clear the temporary string
 			ostr.clear();
-			ostr.str(std::string()); // clear the ostringstream,
+			ostr.str(std::string{}); // clear the ostringstream
 
 			// convert to complex
 			double re = static_cast<cplx>(rA(i, j)).real();
@@ -113,7 +164,10 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = chop,
 
 			if (std::abs(re) < chop && std::abs(im) < chop)
 			{
-				vstr.push_back("0 ");
+				ostr << "0 "; // otherwise segfault on destruction
+							  // if using only vstr.push_back("0 ");
+							  // bug in libmx
+				vstr.push_back(ostr.str());
 			}
 			else if (std::abs(re) < chop)
 			{
@@ -141,7 +195,7 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = chop,
 		}
 	}
 
-// determine the maximum lenght of the entries in each column
+	// determine the maximum lenght of the entries in each column
 	std::vector < std::size_t > maxlengthcols(rA.cols(), 0);
 
 	for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
@@ -149,12 +203,13 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = chop,
 			if (vstr[i * rA.cols() + j].size() > maxlengthcols[j])
 				maxlengthcols[j] = vstr[i * rA.cols() + j].size();
 
-// finally display it!
+	// finally display it!
 	for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
 	{
 		os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
 				<< vstr[i * rA.cols()]; // display first column
-		for (std::size_t j = 1; j < static_cast<std::size_t>(rA.cols()); j++) // then the rest
+		// then the rest
+		for (std::size_t j = 1; j < static_cast<std::size_t>(rA.cols()); j++)
 			os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
 					<< std::right << vstr[i * rA.cols() + j];
 
@@ -163,36 +218,72 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = chop,
 	}
 }
 
-// Displays an Eigen::MatrixX in friendly form
-// and adds a new line
+/**
+ * \brief Displays an Eigen expression in matrix friendly form. Adds a newline.
+ *
+ * \see \a qpp::disp()
+ *
+ * @param A Eigen expression
+ * @param chop Set to zero the elements smaller in absolute value
+ * than \a chop
+ * @param os Output stream
+ */
 template<typename Derived>
-void displn(const Eigen::MatrixBase<Derived>& A, double chop = chop,
+void displn(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
 		std::ostream& os = std::cout)
 {
 	disp(A, chop, os);
 	os << std::endl;
 }
 
-// Displays a number (implicit conversion to cplx) in friendly form
-void disp(const cplx c, double chop = chop, std::ostream& os =
+/**
+ * \brief Displays a number (implicitly converted to std::complex<double>)
+ * in friendly form. Does not add a new line.
+ *
+ * \see \a qpp::displn()
+ *
+ * @param z Real/complex number
+ * @param chop Set to zero the elements smaller in absolute value
+ * than \a chop
+ * @param os Output stream
+ */
+void disp(const cplx z, double chop = qpp::chop, std::ostream& os =
 		std::cout)
 {
 // put the complex number inside an Eigen matrix
 	cmat A(1, 1);
-	A(0, 0) = c;
+	A(0, 0) = z;
 	disp(A, chop, os);
 }
 
-// Displays a number (implicit conversion to cplx) in friendly form
-// and adds a new line
-void displn(const cplx c, double chop = chop, std::ostream& os =
+
+/**
+ * \brief Displays a number (implicitly converted to std::complex<double>)
+ * in friendly form. Adds a new line.
+ *
+ * \see \a qpp::disp()
+ *
+ * @param z Real/complex number
+ * @param chop Set to zero the elements smaller in absolute value
+ * than \a chop
+ * @param os Output stream
+ */
+void displn(const cplx z, double chop = qpp::chop, std::ostream& os =
 		std::cout)
 {
-	disp(c, chop, os);
+	disp(z, chop, os);
 	os << std::endl;
 }
 
-// save matrix to a binary file in double precision
+/**
+ * \brief Saves Eigen expression to a binary file (internal format) in double
+ * precission
+ *
+ * \see qpp::saveMATLABmatrix()
+ *
+ * @param A Eigen expression
+ * @param fname Output file name
+ */
 template<typename Derived>
 void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 
@@ -227,7 +318,25 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 	fout.close();
 }
 
-// load matrix from binary file
+/**
+ * \brief Loads Eigen matrix from a binary file (internal format) in double
+ * precission
+ *
+ * The template parameter cannot be automatically deduced and
+ * must be explicitly provided, depending on the scalar field of the matrix
+ * that is being loaded.
+ *
+ * Example:
+ * \code
+ * // loads a previously saved Eigen dynamic complex matrix from "input.bin"
+ * auto mat = load<cmat>("input.bin");
+ * \endcode
+ *
+ * \see qpp::loadMATLABmatrix()
+ *
+ * @param A Eigen expression
+ * @param fname Output file name
+ */
 template<typename Derived>
 DynMat<typename Derived::Scalar> load(const std::string& fname)
 {

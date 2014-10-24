@@ -66,9 +66,7 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
 
 /**
  * \brief Renyi-\f$\alpha\f$ entropy of the
- * probability distribution/density matrix \a A
- *
- * \note \f$ \alpha\geq 0\f$
+ * probability distribution/density matrix \a A, for \f$ \alpha\geq 0\f$
  *
  * \param alpha Non-negative real number
  * \param A Eigen expression, representing a probability distribution
@@ -175,9 +173,8 @@ double renyi_inf(const Eigen::MatrixBase<Derived>& A)
 
 /**
  * \brief Tsallis-\f$\alpha\f$ entropy of the
- * probability distribution/density matrix \a A
+ * probability distribution/density matrix \a A, for \f$ \alpha\geq 0\f$\n
  *
- * \note \f$ \alpha\geq 0\f$\n
  * When \f$ \alpha\to 1\f$ the Tsallis entropy converges to the
  * Shannon/von-Neumann entropy, with the logarithm in base \f$ e \f$
  *

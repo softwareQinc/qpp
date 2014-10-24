@@ -120,7 +120,7 @@ cmat schmidtV(const Eigen::MatrixBase<Derived>& A,
 /**
  * \brief Schmidt probabilities of the bi-partite pure state \a A
  *
- * \note Defined as the squares of the Schmidt coefficients\n
+ * Defined as the squares of the Schmidt coefficients\n
  * The sum of the Schmidt probabilities equals 1
  * \see \a qpp::schmidtcoeff()
  *
@@ -158,7 +158,7 @@ cmat schmidtprob(const Eigen::MatrixBase<Derived>& A,
 /**
  * \brief Entanglement of the bi-partite pure state \a A
  *
- * \note Defined as the von-Neumann entropy of the reduced density matrix
+ * Defined as the von-Neumann entropy of the reduced density matrix
  * of one of the subsystems
  * \see qpp::shannon()
  *
@@ -190,7 +190,7 @@ double entanglement(const Eigen::MatrixBase<Derived>& A,
 /**
  * \brief G-concurrence of the bi-partite pure state \a A
  *
- * \note Uses \a qpp::logdet() to avoid overflows
+ * Uses \a qpp::logdet() to avoid overflows
  * \see qpp::logdet()
  *
  * \param A Eigen expression
