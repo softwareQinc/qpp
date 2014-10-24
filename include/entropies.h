@@ -8,6 +8,8 @@
 #ifndef ENTROPY_H_
 #define ENTROPY_H_
 
+#include "io.h"
+
 // various entropies, assume as input either
 // a normalized Hermitian matrix or a probability vector
 
@@ -93,7 +95,7 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 	if (internal::_check_vector(rA))
 	{
 		if (alpha == 0)
-			return std::log2((double)rA.size());
+			return std::log2((double) rA.size());
 
 		double result = 0;
 		// take the absolut value to get rid of tiny negatives
@@ -111,7 +113,7 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 		throw Exception("renyi", Exception::Type::MATRIX_NOT_SQUARE);
 
 	if (alpha == 0)
-		return std::log2((double)rA.rows());
+		return std::log2((double) rA.rows());
 
 	// get the eigenvalues
 	dmat ev = hevals(rA);
@@ -234,24 +236,22 @@ double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
  * \brief Quantum mutual information between 2 subsystems of a composite system
  *
  * \param A Eigen expression
- * \param subsys Subsystems' indexes
+ * \param subsysA Indexes of the first subsystem
+ * \param subsysB Indexes of the second subsystem
  * \param dims Subsystems' dimensions
  * \return Mutual information between the 2 subsystems
  */
 // Make it more general!
 template<typename Derived>
 double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
-		const std::vector<std::size_t>& subsys,
+		const std::vector<std::size_t>& subsysA,
+		const std::vector<std::size_t>& subsysB,
 		const std::vector<std::size_t>& dims)
 
 {
 	const DynMat<typename Derived::Scalar> & rA = A;
 
 // error checks
-
-	// check that there are only 2 subsystems
-	if (subsys.size() != 2)
-		throw Exception("mutualinfo", Exception::Type::NOT_BIPARTITE);
 
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
@@ -265,44 +265,52 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 	if (!internal::_check_square_mat(rA))
 		throw Exception("mutualinfo", Exception::Type::MATRIX_NOT_SQUARE);
 
-// check that dims match the dimension of A
+	// check that dims match the dimension of A
 	if (!internal::_check_dims_match_mat(dims, rA))
 		throw Exception("mutualinfo", Exception::Type::DIMS_MISMATCH_MATRIX);
 
-// check that subsys are valid
-	if (!internal::_check_subsys_match_dims(subsys, dims))
+	// check that subsys are valid
+	if (!internal::_check_subsys_match_dims(subsysA, dims) ||\
+				!internal::_check_subsys_match_dims(subsysB, dims))
 		throw Exception("mutualinfo", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-// construct the complement of subsys
-	std::vector<std::size_t> subsysbarA;
-	std::vector<std::size_t> subsysbarB;
-	std::vector<std::size_t> subsysbarAB;
-	for (std::size_t i = 0; i < dims.size(); i++)
-	{
-		if (subsys[0] != i)
-			subsysbarA.push_back(i);
-		if (subsys[1] != i)
-			subsysbarB.push_back(i);
-		if (subsys[0] != i && subsys[1] != i)
-			subsysbarAB.push_back(i);
 
-	};
+	// The full system indexes {0,1,...,n-1}
+	std::vector<std::size_t> full_system(dims.size());
+	std::iota(std::begin(full_system), std::end(full_system),0);
 
-	cmat rhoA;
-	cmat rhoB;
-	cmat rhoAB;
-	if (dims.size() == 2) // bi-partite state
-	{
-		rhoA = ptrace2(rA, dims);
-		rhoB = ptrace1(rA, dims);
-		rhoAB = rA;
-	}
-	else
-	{
-		rhoA = ptrace(rA, subsysbarA, dims);
-		rhoB = ptrace(rA, subsysbarB, dims);
-		rhoAB = ptrace(rA, subsysbarAB, dims);
-	}
+	// Sorted input subsystems
+	std::vector<std::size_t> subsysAsorted{subsysA};
+	std::vector<std::size_t> subsysBsorted{subsysB};
+
+	// sort the input subsystems (as needed by std::set_difference)
+	std::sort(std::begin(subsysAsorted), std::end(subsysAsorted));
+	std::sort(std::begin(subsysBsorted), std::end(subsysBsorted));
+
+	// construct the complement of subsys
+	std::vector<std::size_t> subsysAbar;
+	std::vector<std::size_t> subsysBbar;
+	std::vector<std::size_t> subsysABbar;
+	std::vector<std::size_t> subsysAB;
+
+	std::set_difference(std::begin(full_system), std::end(full_system),\
+		 		std::begin(subsysAsorted), std::end(subsysAsorted),\
+		 		std::back_inserter(subsysAbar));
+	std::set_difference(std::begin(full_system), std::end(full_system),\
+		 		std::begin(subsysBsorted), std::end(subsysBsorted),\
+		 		std::back_inserter(subsysBbar));
+	std::set_union(std::begin(subsysAsorted), std::end(subsysAsorted),\
+			  std::begin(subsysBsorted), std::end(subsysBsorted), \
+			  std::back_inserter(subsysAB));
+	std::sort(std::begin(subsysAB), std::end(subsysAB));
+
+	std::set_difference(std::begin(full_system), std::end(full_system),\
+			 		std::begin(subsysAB), std::end(subsysAB),\
+			 		std::back_inserter(subsysABbar));
+
+	cmat rhoA = ptrace(rA, subsysAbar, dims);
+	cmat rhoB = ptrace(rA, subsysBbar, dims);
+	cmat rhoAB = ptrace(rA, subsysABbar, dims);
 
 	return shannon(rhoA) + shannon(rhoB) - shannon(rhoAB);
 }

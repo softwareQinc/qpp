@@ -28,11 +28,13 @@ cplx pow3(const cplx& z) // a test function
 int main()
 {
 	cout << "Starting qpp..." << endl;
+
 	// output format
 	//cout << std::scientific;
 	cout << std::fixed; // use fixed format for nice formatting
 	cout << std::setprecision(4); // only for fixed or scientific modes
 
+/*
 	// TESTING
 	// testing channel and Gates::apply
 	cout << endl << "Testing channel(...) and Gates::apply(...)." << endl;
