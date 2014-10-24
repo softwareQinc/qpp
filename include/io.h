@@ -166,7 +166,7 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
 			{
 				ostr << "0 "; // otherwise segfault on destruction
 							  // if using only vstr.push_back("0 ");
-							  // bug in libmx
+							  // bug in MATLAB's libmx
 				vstr.push_back(ostr.str());
 			}
 			else if (std::abs(re) < chop)
