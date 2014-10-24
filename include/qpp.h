@@ -27,7 +27,7 @@
 using namespace std;
 using namespace qpp;
 
-cplx pow3(const cplx& z)
+cplx pow3(const cplx& z) // a test function
 {
 	return std::pow(z, 3);
 }
