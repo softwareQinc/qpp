@@ -20,8 +20,6 @@
 using namespace std;
 
 using namespace qpp;
-using namespace qpp::types;
-using namespace qpp::ct;
 
 cplx pow3(const cplx& z)
 {

@@ -81,10 +81,10 @@ void displn(const T* x, const std::size_t n, const std::string & separator,
 
 // Displays an Eigen::MatrixX in friendly form
 template<typename Derived>
-void disp(const Eigen::MatrixBase<Derived>& A, double chop = ct::chop,
+void disp(const Eigen::MatrixBase<Derived>& A, double chop = chop,
 		std::ostream& os = std::cout)
 {
-	const types::DynMat<typename Derived::Scalar> & rA = A;
+	const DynMat<typename Derived::Scalar> & rA = A;
 
 	if (rA.size() == 0)
 	{
@@ -108,8 +108,8 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = ct::chop,
 			ostr.str(std::string()); // clear the ostringstream,
 
 			// convert to complex
-			double re = static_cast<types::cplx>(rA(i, j)).real();
-			double im = static_cast<types::cplx>(rA(i, j)).imag();
+			double re = static_cast<cplx>(rA(i, j)).real();
+			double im = static_cast<cplx>(rA(i, j)).imag();
 
 			if (std::abs(re) < chop && std::abs(im) < chop)
 			{
@@ -166,7 +166,7 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = ct::chop,
 // Displays an Eigen::MatrixX in friendly form
 // and adds a new line
 template<typename Derived>
-void displn(const Eigen::MatrixBase<Derived>& A, double chop = ct::chop,
+void displn(const Eigen::MatrixBase<Derived>& A, double chop = chop,
 		std::ostream& os = std::cout)
 {
 	disp(A, chop, os);
@@ -174,18 +174,18 @@ void displn(const Eigen::MatrixBase<Derived>& A, double chop = ct::chop,
 }
 
 // Displays a number (implicit conversion to cplx) in friendly form
-void disp(const types::cplx c, double chop = ct::chop, std::ostream& os =
+void disp(const cplx c, double chop = chop, std::ostream& os =
 		std::cout)
 {
 // put the complex number inside an Eigen matrix
-	types::cmat A(1, 1);
+	cmat A(1, 1);
 	A(0, 0) = c;
 	disp(A, chop, os);
 }
 
 // Displays a number (implicit conversion to cplx) in friendly form
 // and adds a new line
-void displn(const types::cplx c, double chop = ct::chop, std::ostream& os =
+void displn(const cplx c, double chop = chop, std::ostream& os =
 		std::cout)
 {
 	disp(c, chop, os);
@@ -197,7 +197,7 @@ template<typename Derived>
 void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 
 {
-	const types::DynMat<typename Derived::Scalar> & rA = A;
+	const DynMat<typename Derived::Scalar> & rA = A;
 
 	// check zero-size
 	if (rA.size() == 0)
@@ -229,7 +229,7 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 
 // load matrix from binary file
 template<typename Derived>
-types::DynMat<typename Derived::Scalar> load(const std::string& fname)
+DynMat<typename Derived::Scalar> load(const std::string& fname)
 {
 	std::fstream fin;
 	fin.open(fname.c_str(), std::ios::in | std::ios::binary);
@@ -259,7 +259,7 @@ types::DynMat<typename Derived::Scalar> load(const std::string& fname)
 	fin.read((char*) &rows, sizeof(rows));
 	fin.read((char*) &cols, sizeof(cols));
 
-	types::DynMat<typename Derived::Scalar> A(rows, cols);
+	DynMat<typename Derived::Scalar> A(rows, cols);
 
 	fin.read((char*) A.data(), sizeof(typename Derived::Scalar) * rows * cols);
 

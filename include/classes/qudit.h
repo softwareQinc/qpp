@@ -13,12 +13,12 @@ namespace qpp
 
 class Qudit
 {
-	types::cmat _rho;
+	cmat _rho;
 	std::size_t _D;
 public:
 	// by default we have a standard qubit in state |0>
-	Qudit(const types::cmat& rho = States::get_instance().pz0) :
-			_rho(types::cmat::Zero(2, 2)), _D(2) // qubit by default
+	Qudit(const cmat& rho = States::get_instance().pz0) :
+			_rho(cmat::Zero(2, 2)), _D(2) // qubit by default
 	{
 		if (!internal::_check_nonzero_size(rho))
 			throw Exception("Qudit::Qudit", Exception::Type::ZERO_SIZE);
@@ -29,7 +29,7 @@ public:
 		_rho = rho;
 	}
 
-	std::size_t measure(const types::cmat& U, bool destructive = false)
+	std::size_t measure(const cmat& U, bool destructive = false)
 	{
 		if (!internal::_check_square_mat(U))
 			throw Exception("Qudit::measure",
@@ -40,14 +40,14 @@ public:
 		std::vector<double> p(_D);
 		for (std::size_t i = 0; i < _D; i++)
 			p[i] = std::abs(
-					(types::cplx) trace(
-							prj((types::cmat) evects(U).col(i)) * _rho));
+					(cplx) trace(
+							prj((cmat) evects(U).col(i)) * _rho));
 
 		DiscreteDistribution dd(p);
 		std::size_t result = dd.sample();
 		if (destructive) // von Neumann
-			_rho = prj((types::cmat) evects(U).col(result)) * _rho
-					* prj((types::cmat) evects(U).col(result)) / p[result];
+			_rho = prj((cmat) evects(U).col(result)) * _rho
+					* prj((cmat) evects(U).col(result)) / p[result];
 
 		return result;
 	}
@@ -55,10 +55,10 @@ public:
 	// measure in the standard basis {|j>}_{j=0}^{_D-1}
 	std::size_t measure(bool destructive = false)
 	{
-		return measure(types::cmat::Identity(_D, _D), destructive);
+		return measure(cmat::Identity(_D, _D), destructive);
 	}
 
-	types::cmat getRho() const
+	cmat getRho() const
 	{
 		return _rho;
 	}

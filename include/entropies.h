@@ -18,7 +18,7 @@ namespace qpp
 template<typename Derived>
 double shannon(const Eigen::MatrixBase<Derived>& A)
 {
-	const types::DynMat<typename Derived::Scalar> & rA = A;
+	const DynMat<typename Derived::Scalar> & rA = A;
 
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
@@ -43,13 +43,13 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
 		throw Exception("shannon", Exception::Type::MATRIX_NOT_SQUARE);
 
 	// get the eigenvalues
-	types::dmat ev = hevals(rA);
+	dmat ev = hevals(rA);
 	double result = 0;
 	// take the absolut value to get rid of tiny negatives
 	for (std::size_t i = 0; i < static_cast<std::size_t>(ev.rows()); i++)
-		if (std::abs((types::cplx) ev(i)) != 0) // not identically zero
-			result -= std::abs((types::cplx) ev(i))
-					* std::log2(std::abs((types::cplx) ev(i)));
+		if (std::abs((cplx) ev(i)) != 0) // not identically zero
+			result -= std::abs((cplx) ev(i))
+					* std::log2(std::abs((cplx) ev(i)));
 
 	return result;
 }
@@ -58,7 +58,7 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 {
-	const types::DynMat<typename Derived::Scalar> & rA = A;
+	const DynMat<typename Derived::Scalar> & rA = A;
 
 	if (alpha < 0)
 		throw Exception("renyi", Exception::Type::OUT_OF_RANGE);
@@ -79,7 +79,7 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 		double result = 0;
 		// take the absolut value to get rid of tiny negatives
 		for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); i++)
-			if (std::abs((types::cplx) rA(i)) != 0) // not identically zero
+			if (std::abs((cplx) rA(i)) != 0) // not identically zero
 				result += std::pow(std::abs(rA(i)), alpha);
 
 		return std::log2(result) / (1 - alpha);
@@ -95,12 +95,12 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 		return std::log2((double)rA.rows());
 
 	// get the eigenvalues
-	types::dmat ev = hevals(rA);
+	dmat ev = hevals(rA);
 	double result = 0;
 	// take the absolut value to get rid of tiny negatives
 	for (std::size_t i = 0; i < static_cast<std::size_t>(ev.rows()); i++)
-		if (std::abs((types::cplx) ev(i)) != 0) // not identically zero
-			result += std::pow(std::abs((types::cplx) ev(i)), alpha);
+		if (std::abs((cplx) ev(i)) != 0) // not identically zero
+			result += std::pow(std::abs((cplx) ev(i)), alpha);
 
 	return std::log2(result) / (1 - alpha);
 }
@@ -109,7 +109,7 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 double renyi_inf(const Eigen::MatrixBase<Derived>& A)
 {
-	const types::DynMat<typename Derived::Scalar> & rA = A;
+	const DynMat<typename Derived::Scalar> & rA = A;
 
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
@@ -133,12 +133,12 @@ double renyi_inf(const Eigen::MatrixBase<Derived>& A)
 		throw Exception("renyi_inf", Exception::Type::MATRIX_NOT_SQUARE);
 
 	// get the eigenvalues
-	types::dmat ev = hevals(rA);
+	dmat ev = hevals(rA);
 	double max = 0;
 	// take the absolut value to get rid of tiny negatives
 	for (std::size_t i = 0; i < static_cast<std::size_t>(ev.size()); i++)
-		if (std::abs((types::cplx) ev(i)) > max)
-			max = std::abs((types::cplx) ev(i));
+		if (std::abs((cplx) ev(i)) > max)
+			max = std::abs((cplx) ev(i));
 
 	return -std::log2(max);
 }
@@ -148,7 +148,7 @@ double renyi_inf(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
 {
-	const types::DynMat<typename Derived::Scalar> & rA = A;
+	const DynMat<typename Derived::Scalar> & rA = A;
 
 	if (alpha < 0)
 		throw Exception("tsallis", Exception::Type::OUT_OF_RANGE);
@@ -166,7 +166,7 @@ double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
 		double result = 0;
 		// take the absolut value to get rid of tiny negatives
 		for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); i++)
-			if (std::abs((types::cplx) rA(i)) != 0) // not identically zero
+			if (std::abs((cplx) rA(i)) != 0) // not identically zero
 				result += std::pow(std::abs(rA(i)), alpha);
 
 		return (result - 1) / (1 - alpha);
@@ -179,13 +179,13 @@ double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
 		throw Exception("tsallis", Exception::Type::MATRIX_NOT_SQUARE);
 
 	// get the eigenvalues
-	types::dmat ev = hevals(rA);
+	dmat ev = hevals(rA);
 	double result = 0;
 	// take the absolut values of the entries
 	//of tiny negativesginary parts
 	for (std::size_t i = 0; i < static_cast<std::size_t>(ev.rows()); i++)
-		if (std::abs((types::cplx) ev(i)) != 0) // not identically zero
-			result += std::pow(std::abs((types::cplx) ev(i)), alpha);
+		if (std::abs((cplx) ev(i)) != 0) // not identically zero
+			result += std::pow(std::abs((cplx) ev(i)), alpha);
 
 	return (result - 1) / (1 - alpha);
 }
@@ -197,7 +197,7 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 		const std::vector<std::size_t>& dims)
 
 {
-	const types::DynMat<typename Derived::Scalar> & rA = A;
+	const DynMat<typename Derived::Scalar> & rA = A;
 
 // error checks
 
@@ -240,9 +240,9 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 
 	};
 
-	types::cmat rhoA;
-	types::cmat rhoB;
-	types::cmat rhoAB;
+	cmat rhoA;
+	cmat rhoB;
+	cmat rhoAB;
 	if (dims.size() == 2) // bipartite state
 	{
 		rhoA = ptrace2(rA, dims);

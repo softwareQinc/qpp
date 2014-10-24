@@ -24,7 +24,7 @@ namespace qpp
  * \return Superoperator matrix representation,
  * as a dynamic matrix over the complex field
  */
-types::cmat super(const std::vector<types::cmat>& Ks)
+cmat super(const std::vector<cmat>& Ks)
 {
 	// EXCEPTION CHECKS
 	if (!internal::_check_nonzero_size(Ks))
@@ -43,10 +43,10 @@ types::cmat super(const std::vector<types::cmat>& Ks)
 	std::size_t dims[2];
 	dims[0] = dims[1] = D;
 
-	types::cmat result(D * D, D * D);
-	types::cmat MN = types::cmat::Zero(D, D);
-	types::cmat BA = types::cmat::Zero(D, D);
-	types::cmat EMN = types::cmat::Zero(D, D);
+	cmat result(D * D, D * D);
+	cmat MN = cmat::Zero(D, D);
+	cmat BA = cmat::Zero(D, D);
+	cmat EMN = cmat::Zero(D, D);
 
 	for (std::size_t m = 0; m < D; m++)
 	{
@@ -75,7 +75,7 @@ types::cmat super(const std::vector<types::cmat>& Ks)
 					BA(b, a) = 0;
 				}
 			}
-			EMN = types::cmat::Zero(D, D);
+			EMN = cmat::Zero(D, D);
 		}
 	}
 	return result;
@@ -97,7 +97,7 @@ types::cmat super(const std::vector<types::cmat>& Ks)
  * \return Choi matrix representation,
  * as a dynamic matrix over the complex field
  */
-types::cmat choi(const std::vector<types::cmat>& Ks)
+cmat choi(const std::vector<cmat>& Ks)
 {
 	// EXCEPTION CHECKS
 	if (!internal::_check_nonzero_size(Ks))
@@ -113,16 +113,16 @@ types::cmat choi(const std::vector<types::cmat>& Ks)
 
 	// construct the D x D \sum |jj> vector
 	// (un-normalized maximally entangled state)
-	types::cmat MES = types::cmat::Zero(D * D, 1);
+	cmat MES = cmat::Zero(D * D, 1);
 	for (std::size_t a = 0; a < D; a++)
 		MES(a * D + a) = 1;
 
-	types::cmat Omega = static_cast<types::cmat>(MES * adjoint(MES));
+	cmat Omega = static_cast<cmat>(MES * adjoint(MES));
 
-	types::cmat result = types::cmat::Zero(D * D, D * D);
+	cmat result = cmat::Zero(D * D, D * D);
 	for (auto it : Ks)
-		result += kron(types::cmat::Identity(D, D), it) * Omega
-				* adjoint(kron(types::cmat::Identity(D, D), it));
+		result += kron(cmat::Identity(D, D), it) * Omega
+				* adjoint(kron(cmat::Identity(D, D), it));
 
 	return result;
 }
@@ -140,7 +140,7 @@ types::cmat choi(const std::vector<types::cmat>& Ks)
  * \return std::vector of dynamic matrices over the complex field
  * representing the set of Kraus operators
  */
-std::vector<types::cmat> choi2kraus(const types::cmat& A)
+std::vector<cmat> choi2kraus(const cmat& A)
 {
 	// EXCEPTION CHECKS
 	if (!internal::_check_nonzero_size(A))
@@ -151,17 +151,17 @@ std::vector<types::cmat> choi2kraus(const types::cmat& A)
 	if (D * D != static_cast<std::size_t>(A.rows()))
 		throw Exception("choi2kraus", Exception::Type::DIMS_INVALID);
 
-	types::dmat ev = hevals(A);
-	types::cmat evec = hevects(A);
-	std::vector<types::cmat> result;
+	dmat ev = hevals(A);
+	cmat evec = hevects(A);
+	std::vector<cmat> result;
 
 	for (std::size_t i = 0; i < D * D; i++)
 	{
 		// take the absolute value to get rid of tiny negatives
-		if (std::abs((double) ev(i)) > ct::eps)
+		if (std::abs((double) ev(i)) > eps)
 			result.push_back(
-					(types::cmat) (std::sqrt((double) ev(i))
-							* reshape((types::cmat) evec.col(i), D, D)));
+					(cmat) (std::sqrt((double) ev(i))
+							* reshape((cmat) evec.col(i), D, D)));
 	}
 	return result;
 }
@@ -176,10 +176,10 @@ std::vector<types::cmat> choi2kraus(const types::cmat& A)
  * \return Output density matrix, as a dynamic matrix over the complex field
  */
 template<typename Derived>
-types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
-		const std::vector<types::cmat>& Ks)
+cmat channel(const Eigen::MatrixBase<Derived>& rho,
+		const std::vector<cmat>& Ks)
 {
-	const types::cmat & rrho = rho;
+	const cmat & rrho = rho;
 
 	// EXCEPTION CHECKS
 	if (!internal::_check_nonzero_size(rrho))
@@ -196,7 +196,7 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
 			throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
 
-	types::cmat result = types::cmat::Zero(rrho.rows(), rrho.cols());
+	cmat result = cmat::Zero(rrho.rows(), rrho.cols());
 	for (auto it : Ks)
 		result += it * rrho * adjoint(it);
 
@@ -215,12 +215,12 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
  * \return Output density matrix, as a dynamic matrix over the complex field
  */
 template<typename Derived>
-types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
-		const std::vector<types::cmat>& Ks,
+cmat channel(const Eigen::MatrixBase<Derived>& rho,
+		const std::vector<cmat>& Ks,
 		const std::vector<std::size_t>& subsys,
 		const std::vector<std::size_t>& dims)
 {
-	const types::cmat & rrho = rho;
+	const cmat & rrho = rho;
 
 	// EXCEPTION CHECKS
 	// check zero sizes
@@ -253,22 +253,22 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 			throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
 
 	// Use static allocation for speed!
-	std::size_t Cdims[ct::maxn];
-	std::size_t midx_row[ct::maxn];
-	std::size_t midx_col[ct::maxn];
-	std::size_t midx_rho_row[ct::maxn];
-	std::size_t midx_rho_col[ct::maxn];
+	std::size_t Cdims[maxn];
+	std::size_t midx_row[maxn];
+	std::size_t midx_col[maxn];
+	std::size_t midx_rho_row[maxn];
+	std::size_t midx_rho_col[maxn];
 
-	std::size_t CdimsA[ct::maxn];
-	std::size_t CsubsysA[ct::maxn];
-	std::size_t midxA_row[ct::maxn];
-	std::size_t midxA_col[ct::maxn];
-	std::size_t midxA_rho_row[ct::maxn];
-	std::size_t midxA_rho_col[ct::maxn];
+	std::size_t CdimsA[maxn];
+	std::size_t CsubsysA[maxn];
+	std::size_t midxA_row[maxn];
+	std::size_t midxA_col[maxn];
+	std::size_t midxA_rho_row[maxn];
+	std::size_t midxA_rho_col[maxn];
 
-	std::size_t CsubsysA_bar[ct::maxn];
-	std::size_t midxA_bar_row[ct::maxn];
-	std::size_t midxA_bar_col[ct::maxn];
+	std::size_t CsubsysA_bar[maxn];
+	std::size_t midxA_bar_row[maxn];
+	std::size_t midxA_bar_col[maxn];
 
 	std::size_t n = dims.size();
 	std::size_t nA = subsys.size();
@@ -308,9 +308,9 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 		throw Exception("channel", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 	// get the superoperator matrix of the channel
-	types::cmat sop = super(Ks);
+	cmat sop = super(Ks);
 
-	types::cmat result(D, D);
+	cmat result(D, D);
 
 	// run over rows
 	for (std::size_t i = 0; i < D; i++)
@@ -337,7 +337,7 @@ types::cmat channel(const Eigen::MatrixBase<Derived>& rho,
 				midxA_col[k] = midx_col[CsubsysA[k]];
 
 			// now compute the coefficient
-			types::cplx coeff = 0;
+			cplx coeff = 0;
 			for (std::size_t a = 0; a < DA; a++)
 			{
 				// get the subsys part of row multi-index for rho

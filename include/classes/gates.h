@@ -16,23 +16,23 @@ class Gates: public Singleton<const Gates> // const Singleton
 	friend class Singleton<const Gates> ;
 public:
 	// one qubit gates
-	types::cmat Id2 { types::cmat::Identity(2, 2) }; // Identity matrix
-	types::cmat H { types::cmat::Zero(2, 2) }; // Hadamard matrix
-	types::cmat X { types::cmat::Zero(2, 2) }; // X matrix
-	types::cmat Y { types::cmat::Zero(2, 2) }; // Y matrix
-	types::cmat Z { types::cmat::Zero(2, 2) }; // Z matrix
-	types::cmat S { types::cmat::Zero(2, 2) }; // S gate
-	types::cmat T { types::cmat::Zero(2, 2) }; // T gate
+	cmat Id2 { cmat::Identity(2, 2) }; // Identity matrix
+	cmat H { cmat::Zero(2, 2) }; // Hadamard matrix
+	cmat X { cmat::Zero(2, 2) }; // X matrix
+	cmat Y { cmat::Zero(2, 2) }; // Y matrix
+	cmat Z { cmat::Zero(2, 2) }; // Z matrix
+	cmat S { cmat::Zero(2, 2) }; // S gate
+	cmat T { cmat::Zero(2, 2) }; // T gate
 
 	// two qubit gates
-	types::cmat CNOTab { types::cmat::Identity(4, 4) }; // CNOT ctrl1 target2
-	types::cmat CZ { types::cmat::Identity(4, 4) }; // Controlled-Phase (Controlled-Z)
-	types::cmat CNOTba { types::cmat::Zero(4, 4) }; // CNOT ctrl2 target1
-	types::cmat SWAP { types::cmat::Identity(4, 4) }; // SWAP gate
+	cmat CNOTab { cmat::Identity(4, 4) }; // CNOT ctrl1 target2
+	cmat CZ { cmat::Identity(4, 4) }; // Controlled-Phase (Controlled-Z)
+	cmat CNOTba { cmat::Zero(4, 4) }; // CNOT ctrl2 target1
+	cmat SWAP { cmat::Identity(4, 4) }; // SWAP gate
 
 	// three qubit gates
-	types::cmat TOF { types::cmat::Identity(8, 8) }; // Toffoli
-	types::cmat FRED { types::cmat::Identity(8, 8) }; // Fredkin
+	cmat TOF { cmat::Identity(8, 8) }; // Toffoli
+	cmat FRED { cmat::Identity(8, 8) }; // Fredkin
 private:
 	Gates()
 	{
@@ -43,7 +43,7 @@ private:
 		Z << 1, 0, 0, -1;
 		Y << 0, -1_i, 1_i, 0;
 		S << 1, 0, 0, 1_i;
-		T << 1, 0, 0, std::exp(1_i * ct::pi / 4.0);
+		T << 1, 0, 0, std::exp(1_i * pi / 4.0);
 		CNOTab.block(2, 2, 2, 2) = X;
 		CNOTba(0, 0) = 1;
 		CNOTba(1, 3) = 1;
@@ -61,12 +61,12 @@ public:
 	// one qubit gates
 
 	// Rotation of theta about n (a unit vector {nx, ny, nz})
-	types::cmat Rn(double theta, std::vector<double> n) const
+	cmat Rn(double theta, std::vector<double> n) const
 	{
 		if (n.size() != 3) // not a 3-D vector
 			throw Exception("Gates::Rn", "n is not a 3-D vector!");
 
-		types::cmat result(2, 2);
+		cmat result(2, 2);
 		result = std::cos(theta / 2) * Id2
 				- 1_i * std::sin(theta / 2) * (n[0] * X + n[1] * Y + n[2] * Z);
 		return result;
@@ -74,37 +74,37 @@ public:
 
 	// one quDit gates
 
-	types::cmat Zd(std::size_t D) const
+	cmat Zd(std::size_t D) const
 	{
 		if (D == 0)
 			throw Exception("Gates::Zd", Exception::Type::DIMS_INVALID);
 
-		types::cmat result(D, D);
-		result = types::cmat::Zero(D, D);
+		cmat result(D, D);
+		result = cmat::Zero(D, D);
 		for (std::size_t i = 0; i < D; i++)
-			result(i, i) = std::pow(ct::omega(D), i);
+			result(i, i) = std::pow(omega(D), i);
 		return result;
 	}
 
-	types::cmat Fd(std::size_t D) const
+	cmat Fd(std::size_t D) const
 	{
 		if (D == 0)
 			throw Exception("Gates::Fd", Exception::Type::DIMS_INVALID);
 
-		types::cmat result(D, D);
-		result = types::cmat::Zero(D, D);
+		cmat result(D, D);
+		result = cmat::Zero(D, D);
 		for (std::size_t j = 0; j < D; j++)
 			for (std::size_t i = 0; i < D; i++)
-				result(i, j) = 1 / std::sqrt((double)D) * std::pow(ct::omega(D), i * j);
+				result(i, j) = 1 / std::sqrt((double)D) * std::pow(omega(D), i * j);
 		return result;
 	}
 
-	types::cmat Xd(std::size_t D) const // X|k>=|k+1>
+	cmat Xd(std::size_t D) const // X|k>=|k+1>
 	{
 		if (D == 0)
 			throw Exception("Gates::Xd", Exception::Type::DIMS_INVALID);
 
-		return static_cast<types::cmat>(Fd(D).inverse() * Zd(D) * Fd(D));
+		return static_cast<cmat>(Fd(D).inverse() * Zd(D) * Fd(D));
 	}
 
 	template<typename Derived = Eigen::MatrixXcd>
@@ -118,7 +118,7 @@ public:
 	// applies controlled-gate A to part of state vector
 	// or density matrix specified by subsys
 	template<typename Derived1, typename Derived2>
-	types::DynMat<typename Derived1::Scalar> applyCTRL(
+	DynMat<typename Derived1::Scalar> applyCTRL(
 			const Eigen::MatrixBase<Derived1>& state,
 			const Eigen::MatrixBase<Derived2>& A,
 			const std::vector<std::size_t>& ctrl,
@@ -130,14 +130,14 @@ public:
 	// applies gate A to part of state vector
 	// or density matrix specified by subsys
 	template<typename Derived1, typename Derived2>
-	types::DynMat<typename Derived1::Scalar> apply(
+	DynMat<typename Derived1::Scalar> apply(
 			const Eigen::MatrixBase<Derived1>& state,
 			const Eigen::MatrixBase<Derived2>& A,
 			const std::vector<std::size_t>& subsys,
 			const std::vector<std::size_t>& dims) const
 	{
-		const types::DynMat<typename Derived1::Scalar> & rstate = state;
-		const types::DynMat<typename Derived2::Scalar> & rA = A;
+		const DynMat<typename Derived1::Scalar> & rstate = state;
+		const DynMat<typename Derived2::Scalar> & rA = A;
 
 		// EXCEPTION CHECKS
 
@@ -167,18 +167,18 @@ public:
 					Exception::Type::SUBSYS_MISMATCH_DIMS);
 
 		// Use static allocation for speed!
-		std::size_t Cdims[ct::maxn];
-		std::size_t midx_row[ct::maxn];
-		std::size_t midx_rho_row[ct::maxn];
+		std::size_t Cdims[maxn];
+		std::size_t midx_row[maxn];
+		std::size_t midx_rho_row[maxn];
 
-		std::size_t CdimsA[ct::maxn];
-		std::size_t CsubsysA[ct::maxn];
-		std::size_t midxA_row[ct::maxn];
-		std::size_t midxA_rho_row[ct::maxn];
+		std::size_t CdimsA[maxn];
+		std::size_t CsubsysA[maxn];
+		std::size_t midxA_row[maxn];
+		std::size_t midxA_rho_row[maxn];
 
-		std::size_t CdimsA_bar[ct::maxn];
-		std::size_t CsubsysA_bar[ct::maxn];
-		std::size_t midxA_bar_row[ct::maxn];
+		std::size_t CdimsA_bar[maxn];
+		std::size_t CsubsysA_bar[maxn];
+		std::size_t midxA_bar_row[maxn];
 
 		std::size_t n = dims.size();
 		std::size_t nA = subsys.size();
@@ -226,7 +226,7 @@ public:
 				throw Exception("Gates::apply",
 						Exception::Type::DIMS_MISMATCH_CVECTOR);
 
-			types::DynMat<typename Derived1::Scalar> result(D, 1);
+			DynMat<typename Derived1::Scalar> result(D, 1);
 
 			// run over the subsys's row multi-index
 			for (std::size_t a = 0; a < DA; a++)
@@ -288,7 +288,7 @@ public:
 				throw Exception("Gates::apply",
 						Exception::Type::DIMS_MISMATCH_MATRIX);
 
-			types::DynMat<typename Derived1::Scalar> result(D, D);
+			DynMat<typename Derived1::Scalar> result(D, D);
 
 			// run over the subsys's row multi-index
 			for (std::size_t a = 0; a < DA; a++)
@@ -349,13 +349,13 @@ public:
 
 	// returns a multi-quDit multi-controlled-gate in matrix form
 	template<typename Derived>
-	types::DynMat<typename Derived::Scalar> CTRL(
+	DynMat<typename Derived::Scalar> CTRL(
 			const Eigen::MatrixBase<Derived>& A,
 			const std::vector<std::size_t>& ctrl,
 			const std::vector<std::size_t>& subsys, std::size_t n,
 			std::size_t d = 2) const
 	{
-		const types::DynMat<typename Derived::Scalar> & rA = A;
+		const DynMat<typename Derived::Scalar> & rA = A;
 
 		// EXCEPTION CHECKS
 		// check matrix zero size
@@ -380,7 +380,7 @@ public:
 		if (d == 0)
 			throw Exception("Gates::CTRL", Exception::Type::DIMS_INVALID);
 
-		std::vector<std::size_t> ctrlgate = ctrl; // ctrl + gate subsystem vector
+		std::vector<std::size_t> ctrlgate = ctrl;// ctrl + gate subsystem vector
 		ctrlgate.insert(std::end(ctrlgate), std::begin(subsys),
 				std::end(subsys));
 
@@ -400,17 +400,17 @@ public:
 		// END EXCEPTION CHECKS
 
 		// Use static allocation for speed!
-		std::size_t Cdims[ct::maxn];
-		std::size_t midx_row[ct::maxn];
-		std::size_t midx_col[ct::maxn];
+		std::size_t Cdims[maxn];
+		std::size_t midx_row[maxn];
+		std::size_t midx_col[maxn];
 
-		std::size_t CdimsA[ct::maxn];
-		std::size_t midxA_row[ct::maxn];
-		std::size_t midxA_col[ct::maxn];
+		std::size_t CdimsA[maxn];
+		std::size_t midxA_row[maxn];
+		std::size_t midxA_col[maxn];
 
-		std::size_t Cdims_bar[ct::maxn];
-		std::size_t Csubsys_bar[ct::maxn];
-		std::size_t midx_bar[ct::maxn];
+		std::size_t Cdims_bar[maxn];
+		std::size_t Csubsys_bar[maxn];
+		std::size_t midx_bar[maxn];
 
 		std::size_t ngate = subsys.size();
 		std::size_t nctrl = ctrl.size();
@@ -441,9 +441,9 @@ public:
 			CdimsA[k] = d;
 		}
 
-		types::DynMat<typename Derived::Scalar> result = types::DynMat<
+		DynMat<typename Derived::Scalar> result = DynMat<
 				typename Derived::Scalar>::Identity(D, D);
-		types::DynMat<typename Derived::Scalar> Ak;
+		DynMat<typename Derived::Scalar> Ak;
 
 		// run over the complement indexes
 		for (std::size_t i = 0; i < Dsubsys_bar; i++)

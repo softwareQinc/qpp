@@ -110,7 +110,7 @@ protected:
 	{
 		std::vector<double> weights(last - first);
 		std::transform(first, last, std::begin(weights),
-				[](const types::cplx &z)->double
+				[](const cplx &z)->double
 				{	return std::pow(std::abs(z),2);});
 		return weights;
 	}
@@ -126,7 +126,7 @@ public:
 		_d = tmp;
 	}
 
-	DiscreteDistributionAbsSquare(std::initializer_list<types::cplx> amplitudes) :
+	DiscreteDistributionAbsSquare(std::initializer_list<cplx> amplitudes) :
 			_d { }
 	{
 		std::vector<double> weights = cplx2weights(std::begin(amplitudes),
@@ -136,7 +136,7 @@ public:
 		_d = tmp;
 	}
 
-	DiscreteDistributionAbsSquare(std::vector<types::cplx> amplitudes) :
+	DiscreteDistributionAbsSquare(std::vector<cplx> amplitudes) :
 			_d { }
 	{
 		std::vector<double> weights = cplx2weights(std::begin(amplitudes),
@@ -150,7 +150,7 @@ public:
 	DiscreteDistributionAbsSquare(const Eigen::MatrixBase<Derived> &V) :
 			_d { }
 	{
-		const types::DynMat<typename Derived::Scalar> & rV = V;
+		const DynMat<typename Derived::Scalar> & rV = V;
 		// check zero-size
 		if (!internal::_check_nonzero_size(rV))
 			throw Exception("DiscreteDistributionAbsSquare::"

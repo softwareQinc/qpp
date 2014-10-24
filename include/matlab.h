@@ -28,7 +28,7 @@ Derived loadMATLABmatrix(const std::string &mat_file,
 // MatrixXd specialization
 // if var_name is a complex matrix, only the real part is loaded
 template<>
-types::dmat loadMATLABmatrix(const std::string &mat_file,
+dmat loadMATLABmatrix(const std::string &mat_file,
 		const std::string & var_name)
 {
 	MATFile* pmat = matOpen(mat_file.c_str(), "r");
@@ -57,7 +57,7 @@ types::dmat loadMATLABmatrix(const std::string &mat_file,
 	std::size_t rows = mxGetM(pa);
 	std::size_t cols = mxGetN(pa);
 
-	types::dmat result(rows, cols);
+	dmat result(rows, cols);
 
 	std::memcpy(result.data(), mxGetPr(pa),
 			sizeof(double) * mxGetNumberOfElements(pa));
@@ -70,7 +70,7 @@ types::dmat loadMATLABmatrix(const std::string &mat_file,
 
 // cmat specialization
 template<>
-types::cmat loadMATLABmatrix(const std::string &mat_file,
+cmat loadMATLABmatrix(const std::string &mat_file,
 		const std::string & var_name)
 {
 	MATFile* pmat = matOpen(mat_file.c_str(), "r");
@@ -99,8 +99,8 @@ types::cmat loadMATLABmatrix(const std::string &mat_file,
 	std::size_t rows = mxGetM(pa);
 	std::size_t cols = mxGetN(pa);
 
-	types::dmat result_re(rows, cols);
-	types::dmat result_im(rows, cols);
+	dmat result_re(rows, cols);
+	dmat result_im(rows, cols);
 
 	// real part and imaginary part pointers
 	double* pa_re = nullptr, *pa_im = nullptr;
@@ -125,8 +125,8 @@ types::cmat loadMATLABmatrix(const std::string &mat_file,
 	mxDestroyArray(pa);
 	matClose(pmat);
 
-	return (result_re.cast<types::cplx>())
-			+ 1_i * (result_im.cast<types::cplx>());
+	return (result_re.cast<cplx>())
+			+ 1_i * (result_im.cast<cplx>());
 }
 
 // save Eigen::MatrixX to MATLAB .mat file as a double matrix
@@ -140,11 +140,11 @@ void saveMATLABmatrix(const Eigen::MatrixBase<Derived> &A,
 }
 
 template<> // Eigen::MatrixXd specialization
-void saveMATLABmatrix(const Eigen::MatrixBase<types::dmat> &A,
+void saveMATLABmatrix(const Eigen::MatrixBase<dmat> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
-	const types::dmat & rA = A;
+	const dmat & rA = A;
 
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
@@ -173,19 +173,19 @@ void saveMATLABmatrix(const Eigen::MatrixBase<types::dmat> &A,
 }
 
 template<> // Eigen::MatrixXcd specialization
-void saveMATLABmatrix(const Eigen::MatrixBase<typename types::cmat> &A,
+void saveMATLABmatrix(const Eigen::MatrixBase<typename cmat> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
-	const types::cmat & rA = A;
+	const cmat & rA = A;
 
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("saveMATLABmatrix", Exception::Type::ZERO_SIZE);
 
 	// cast the input to a double (internal MATLAB format)
-	types::dmat tmp_re = rA.real();
-	types::dmat tmp_im = rA.imag();
+	dmat tmp_re = rA.real();
+	dmat tmp_im = rA.imag();
 
 	MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
 	if (!pmat)

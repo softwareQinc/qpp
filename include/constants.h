@@ -34,9 +34,6 @@ constexpr std::complex<double> operator "" _i(long double x)
 	{	0., static_cast<double>(x)};
 }
 
-namespace ct
-{
-
 /**
  * \brief  Used in \a qpp::disp() and \a qpp::displn() for setting to zero
  * numbers that have their absolute value smaller than \a qpp::ct::chop
@@ -78,7 +75,6 @@ std::complex<double> omega(std::size_t D)
 	return exp(2.0 * pi * 1_i / static_cast<double>(D));
 }
 
-} /* namespace ct */
 } /* namespace qpp */
 
 #endif	/* CONSTANTS_H_ */

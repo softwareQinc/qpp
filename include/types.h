@@ -11,9 +11,6 @@
 namespace qpp
 {
 
-namespace types
-{
-
 /**
  * \brief Complex number in double precision
  */
@@ -48,7 +45,6 @@ using bra=Eigen::Matrix<cplx, 1, Eigen::Dynamic>;
 template<typename Scalar>
 using DynMat=Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 
-} /* namespace types */
 } /* namespace qpp */
 
 #endif	/* TYPES_H_ */
