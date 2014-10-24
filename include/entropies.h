@@ -243,7 +243,7 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 	cmat rhoA;
 	cmat rhoB;
 	cmat rhoAB;
-	if (dims.size() == 2) // bipartite state
+	if (dims.size() == 2) // bi-partite state
 	{
 		rhoA = ptrace2(rA, dims);
 		rhoB = ptrace1(rA, dims);

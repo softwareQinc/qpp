@@ -13,7 +13,17 @@
 namespace qpp
 {
 
-// schmidt coefficients
+/**
+ * \brief Schmidt coefficients of the bi-partite pure state \a A
+ *
+ * \note The sum of the squares of the Schmidt coefficients equals 1
+ * \see \a qpp::schmidtprob()
+ *
+ * \param A Eigen expression
+ * \param dims Subsystems' dimensions
+ * \return Schmidt coefficients of \a A, as a dynamic matrix
+ * over the complex field, with the Schmidt coefficients on the diagonal
+ */
 template<typename Derived>
 cmat schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
 		const std::vector<std::size_t>& dims)
@@ -22,7 +32,7 @@ cmat schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("schmidtcoeff", Exception::Type::ZERO_SIZE);
-	// check bipartite
+	// check bi-partite
 	if (dims.size() != 2)
 		throw Exception("schmidtcoeff", Exception::Type::NOT_BIPARTITE);
 	// check column vector
@@ -37,7 +47,16 @@ cmat schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
 	return svd.singularValues().template cast<cplx>();
 }
 
-// schmidt U (basis on Alice's side, i.e. U|j> = |\bar j> (schmidt vector))
+/**
+ * \brief Schmidt basis on Alice's side
+ *
+ * \param A Eigen expression
+ * \param dims Subsystems' dimensions
+ * \return Unitary matrix \f$ U \f$ representing the Schmidt basis
+ * on Alice's side, as a dynamic matrix over the complex field,
+ * acting on the computational basis as \f$ U|j\rangle = |\bar j\rangle\f$
+ * (Schmidt vector)
+ */
 template<typename Derived>
 cmat schmidtU(const Eigen::MatrixBase<Derived>& A,
 		const std::vector<std::size_t>& dims)
@@ -46,7 +65,7 @@ cmat schmidtU(const Eigen::MatrixBase<Derived>& A,
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("schmidtU", Exception::Type::ZERO_SIZE);
-	// check bipartite
+	// check bi-partite
 	if (dims.size() != 2)
 		throw Exception("schmidtU", Exception::Type::NOT_BIPARTITE);
 	// check column vector
@@ -62,7 +81,16 @@ cmat schmidtU(const Eigen::MatrixBase<Derived>& A,
 	return svd.matrixU();
 }
 
-// schmidt V (basis on Bob's side, i.e. V|j> = |\bar j> (schmidt vector))
+/**
+ * \brief Schmidt basis on Bob's side
+ *
+ * \param A Eigen expression
+ * \param dims Subsystems' dimensions
+ * \return Unitary matrix \f$ V \f$ representing the Schmidt basis
+ * on Bob's side, as a dynamic matrix over the complex field,
+ * acting on the computational basis as \f$ V|j\rangle = |\bar j\rangle\f$
+ * (Schmidt vector)
+ */
 template<typename Derived>
 cmat schmidtV(const Eigen::MatrixBase<Derived>& A,
 		const std::vector<std::size_t>& dims)
@@ -71,7 +99,7 @@ cmat schmidtV(const Eigen::MatrixBase<Derived>& A,
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("schmidtV", Exception::Type::ZERO_SIZE);
-	// check bipartite
+	// check bi-partite
 	if (dims.size() != 2)
 		throw Exception("schmidtV", Exception::Type::NOT_BIPARTITE);
 	// check column vector
@@ -89,7 +117,18 @@ cmat schmidtV(const Eigen::MatrixBase<Derived>& A,
 	return adjoint(transpose(svd.matrixV()));
 }
 
-// schmidt probabilities (sum up to one)
+/**
+ * \brief Schmidt probabilities of the bi-partite pure state \a A
+ *
+ * \note Defined as the squares of the Schmidt coefficients\n
+ * The sum of the Schmidt probabilities equals 1
+ * \see \a qpp::schmidtcoeff()
+ *
+ * \param A Eigen expression
+ * \param dims Subsystems' dimensions
+ * \return Schmidt probabilites of \a A, as a dynamic matrix
+ * over the complex field, with the Schmidt probabilities on the diagonal
+ */
 template<typename Derived>
 cmat schmidtprob(const Eigen::MatrixBase<Derived>& A,
 		const std::vector<std::size_t>& dims)
@@ -98,7 +137,7 @@ cmat schmidtprob(const Eigen::MatrixBase<Derived>& A,
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("schmidtprob", Exception::Type::ZERO_SIZE);
-	// check bipartite
+	// check bi-partite
 	if (dims.size() != 2)
 		throw Exception("schmidtprob", Exception::Type::NOT_BIPARTITE);
 	// check column vector
@@ -116,6 +155,17 @@ cmat schmidtprob(const Eigen::MatrixBase<Derived>& A,
 					cplx>()).asDiagonal()), 2).diagonal();
 }
 
+/**
+ * \brief Entanglement of the bi-partite pure state \a A
+ *
+ * \note Defined as the von-Neumann entropy of the reduced density matrix
+ * of one of the subsystems
+ * \see qpp::shannon()
+ *
+ * \param A Eigen expression
+ * \param dims Subsystems' dimensions
+ * \return Entanglement, with the logarithm in base 2
+ */
 template<typename Derived>
 double entanglement(const Eigen::MatrixBase<Derived>& A,
 		const std::vector<std::size_t>& dims)
@@ -124,7 +174,7 @@ double entanglement(const Eigen::MatrixBase<Derived>& A,
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("entanglement", Exception::Type::ZERO_SIZE);
-	// check bipartite
+	// check bi-partite
 	if (dims.size() != 2)
 		throw Exception("entanglement", Exception::Type::NOT_BIPARTITE);
 	// check column vector
@@ -137,6 +187,16 @@ double entanglement(const Eigen::MatrixBase<Derived>& A,
 	return shannon(schmidtprob(rA, dims));
 }
 
+/**
+ * \brief G-concurrence of the bi-partite pure state \a A
+ *
+ * \note Uses \a qpp::logdet() to avoid overflows
+ * \see qpp::logdet()
+ *
+ * \param A Eigen expression
+ * \param dims Subsystems' dimensions
+ * \return G-concurrence
+ */
 template<typename Derived> // the G-concurrence
 double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 {

@@ -174,7 +174,7 @@ private:
 			_msg += "Subsystems are not qubits!";
 			break;
 		case Type::NOT_BIPARTITE:
-			_msg += "Not bipartite!";
+			_msg += "Not bi-partite!";
 			break;
 		case Type::OUT_OF_RANGE:
 			_msg += "Parameter out of range!";

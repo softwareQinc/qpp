@@ -212,7 +212,7 @@ double norm(const Eigen::MatrixBase<Derived>& A)
  *
  * \param A Eigen expression
  * \return Eigenvalues of \a A, as a diagonal dynamic matrix
- * over the complex field, with eigenvalues on the diagonal
+ * over the complex field, with the eigenvalues on the diagonal
  */
 template<typename Derived>
 cmat evals(const Eigen::MatrixBase<Derived>& A)
