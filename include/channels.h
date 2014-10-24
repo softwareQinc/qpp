@@ -89,7 +89,7 @@ cmat super(const std::vector<cmat>& Ks)
  * ordered in lexicographical order, i.e.
  * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
  *
- * Note: the superoperator matrix \f$S\f$ and the Choi matrix \f$ C\f$
+ * \note the superoperator matrix \f$S\f$ and the Choi matrix \f$ C\f$
  * are related by \f$ S_{ab,mn} = C_{ma,nb}\f$
  *
  * \param Ks std::vector of Eigen expressions representing the set of
@@ -133,7 +133,7 @@ cmat choi(const std::vector<cmat>& Ks)
  * Extracts a set of orthogonal (under Hilbert-Schmidt operator norm) Kraus
  * operators from the Choi representation \a A of the channel
  *
- * Note: The Kraus operators satisfy \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$
+ * \note The Kraus operators satisfy \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$
  * for all \f$i\neq j\f$
  *
  * \param A Choi matrix

@@ -19,60 +19,68 @@ public:
 	enum class Type // exception types
 	{
 		UNKNOWN_EXCEPTION = 1,
-		// unknown exception
+				/*!< Unknown exception */
 		ZERO_SIZE,
-		// zero sized object, e.g. non-initialized Eigen::Matrix
-		// or std::vector with no elements
+				/*!< Zero sized object, e.g. empty Eigen::Matrix
+		 	 	 * or std::vector with no elements */
 		MATRIX_NOT_SQUARE,
-		// Eigen::Matrix is not square
+				/*!< Eigen::Matrix is not square */
 		MATRIX_NOT_CVECTOR,
-		// Eigen::Matrix is not a column vector
+				/*!< Eigen::Matrix is not a column vector */
 		MATRIX_NOT_RVECTOR,
-		// Eigen::Matrix is not a row vector
+				/*!< Eigen::Matrix is not a row vector */
 		MATRIX_NOT_VECTOR,
-		// Eigen::Matrix is not a row/column vector
+				/*!< Eigen::Matrix is not a row/column vector */
 		MATRIX_NOT_SQUARE_OR_CVECTOR,
-		// Eigen::Matrix is not square nor a column vector
+				/*!< Eigen::Matrix is not square nor a column vector */
 		MATRIX_NOT_SQUARE_OR_RVECTOR,
-		// Eigen::Matrix is not square nor a row vector
+				/*!< Eigen::Matrix is not square nor a row vector */
 		MATRIX_NOT_SQUARE_OR_VECTOR,
-		// Eigen::Matrix is not square nor a row/column vector
+				/*!< Eigen::Matrix is not square nor a row/column vector */
 		DIMS_INVALID,
-		// std::vector<std::size_t> of dimensions has zero size or contains zeros
+				/*!< std::vector<std::size_t> representing the dimensions
+				 * has zero size or contains zeros */
 		DIMS_NOT_EQUAL,
-		// std::vector<std::size_t> of dimensions contains un-equal elements
+				/*!< std::vector<std::size_t> representing the dimensions
+				 * contains non-equal elements */
 		DIMS_MISMATCH_MATRIX,
-		// product of dimenison's std::vector<std::size_t> not equal to
-		// the number of rows of Eigen::Matrix (assumed to be square)
+				/*!< Product of the dimenisons' std::vector<std::size_t>
+				 * is not equal to the number of rows of Eigen::Matrix
+				 * (assumed to be square) */
 		DIMS_MISMATCH_CVECTOR,
-		// product of dimenison's std::vector<std::size_t> not equal to
-		// the number of cols of Eigen::Matrix (assumed to be column vector)
+				/*!< Product of the dimenisons' std::vector<std::size_t>
+				 * is not equal to the number of cols of Eigen::Matrix
+				 * (assumed to be a column vector) */
 		DIMS_MISMATCH_RVECTOR,
-		// product of dimenison's std::vector<std::size_t> not equal to
-		// the number of cols of Eigen::Matrix (assumed to be row vector)
+				/*!< Product of the dimenisons' std::vector<std::size_t>
+				 * is not equal to the number of cols of Eigen::Matrix
+				 * (assumed to be a row vector) */
 		DIMS_MISMATCH_VECTOR,
-		// product of dimenison's std::vector<std::size_t> not equal to
-		// the size of Eigen::Matrix (assumed to be row/column vector)
+				/*!< Product of the dimenisons' std::vector<std::size_t>
+				 * is not equal to the number of cols of Eigen::Matrix
+				 * (assumed to be a row/column vector) */
 		SUBSYS_MISMATCH_DIMS,
-		// std::vector<std::size_t> subsystem vector has duplicatates, or
-		// has entries that are larger than the size of std::vector<std::size_t>
-		// of dimensions
+				/*!< std::vector<std::size_t> representing the subsystems'
+				 * labels has duplicatates, or has entries that are larger than
+				 * the size of the std::vector<std::size_t> representing the
+				 * dimensions */
 		PERM_INVALID,
-		// invalid std::vector<std::size_t> permutation
+				/*!< Invalid std::vector<std::size_t> permutation */
 		NOT_QUBIT_GATE,
-		// Eigen::Matrix is not 2 x 2
+				/*!<  Eigen::Matrix is not 2 x 2 */
 		NOT_QUBIT_SUBSYS,
-		// not 2-dimensional subsystems
+				/*!< Subsystems are not 2-dimensional */
 		NOT_BIPARTITE,
-		// std::vector<std::size_t> of dimensions has size different from 2
+				/*!< std::vector<std::size_t> representing the dimensions
+				 * has size different from 2 */
 		OUT_OF_RANGE,
-		// parameter out of range
+				/*!< Parameter out of range */
 		TYPE_MISMATCH,
-		// types do not match (i.e. Matrix<double> vs Matrix<cplx>)
+				/*!< Types do not match (i.e. Matrix<double> vs Matrix<cplx>) */
 		UNDEFINED_TYPE,
-		// template function not defined for this type
+				/*!< Templated function not defined for this type */
 		CUSTOM_EXCEPTION
-	// custom exception, user must provide a custom message
+				/*!< Custom exception, user must provide a custom message */
 	};
 
 	Exception(const std::string & where, const Type& type) :

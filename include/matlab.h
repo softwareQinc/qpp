@@ -9,7 +9,7 @@
 #define MATLAB_H_
 
 // MATLAB I/O interfacing
-// add the path to MATLAB/extern/include in include path
+// add the path to $MATLAB_INSTALLATION_FOLDER/extern/include in include path
 
 #include "mat.h"  // path to this is defined in the Makefile
 #include "mex.h"  // path to this is defined in the Makefile
@@ -173,7 +173,7 @@ void saveMATLABmatrix(const Eigen::MatrixBase<dmat> &A,
 }
 
 template<> // Eigen::MatrixXcd specialization
-void saveMATLABmatrix(const Eigen::MatrixBase<typename cmat> &A,
+void saveMATLABmatrix(const Eigen::MatrixBase<cmat> &A,
 		const std::string & mat_file, const std::string & var_name,
 		const std::string & mode)
 {
