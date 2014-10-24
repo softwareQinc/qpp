@@ -68,6 +68,7 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
  *
  * \note \f$ \alpha\geq 0\f$
  *
+ * \param alpha Non-negative real number
  * \param A Eigen expression, representing a probability distribution
  * (dynamic column vector) or a density matrix
  * (dynamic matrix over the complex field)
@@ -130,7 +131,8 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
  * \param A Eigen expression, representing a probability distribution
  * (dynamic column vector) or a density matrix
  * (dynamic matrix over the complex field)
- * \return Renyi-\f$\infty\f$ entropy, with the logarithm in base 2
+ * \return Renyi-\f$\infty\f$ entropy (min entropy),
+ * with the logarithm in base 2
  */
 template<typename Derived>
 double renyi_inf(const Eigen::MatrixBase<Derived>& A)
@@ -173,10 +175,11 @@ double renyi_inf(const Eigen::MatrixBase<Derived>& A)
  * \brief Tsallis-\f$\alpha\f$ entropy of the
  * probability distribution/density matrix \a A
  *
- * \note \f$ \alpha\geq 0\f$
+ * \note \f$ \alpha\geq 0\f$\n
  * When \f$ \alpha\to 1\f$ the Tsallis entropy converges to the
  * Shannon/von-Neumann entropy, with the logarithm in base \f$ e \f$
  *
+ * \param alpha Non-negative real number
  * \param A Eigen expression, representing a probability distribution
  * (dynamic column vector) or a density matrix
  * (dynamic matrix over the complex field)
