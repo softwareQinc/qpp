@@ -1,0 +1,12 @@
+<map id="qpp::channel" name="qpp::channel">
+<area shape="rect" id="node2" href="$namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31" title="qpp::internal::_check\l_nonzero_size" alt="" coords="569,163,704,205"/>
+<area shape="rect" id="node3" href="$namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276" title="qpp::internal::_check\l_square_mat" alt="" coords="375,46,510,87"/>
+<area shape="rect" id="node4" href="$namespaceqpp_1_1internal.html#a8b3940aa8b60b8eeb411db0f3802503b" title="qpp::internal::_check_dims" alt="" coords="148,64,316,91"/>
+<area shape="rect" id="node5" href="$namespaceqpp_1_1internal.html#a54738d7b62e4c9a0489bf56f45096894" title="qpp::internal::_check\l_dims_match_mat" alt="" coords="165,115,299,157"/>
+<area shape="rect" id="node6" href="$namespaceqpp_1_1internal.html#aed2221e974a69e3f1c39006bcdf50738" title="qpp::internal::_check\l_subsys_match_dims" alt="" coords="159,181,305,222"/>
+<area shape="rect" id="node7" href="$namespaceqpp.html#a54d1de5e72943a61c35ab634690a841b" title="Superoperator matrix representation. " alt="" coords="191,247,273,273"/>
+<area shape="rect" id="node9" href="$namespaceqpp_1_1internal.html#a7ab3b0b016ffd0eb793ea6281bed9fc0" title="qpp::internal::_multiidx2n" alt="" coords="364,297,521,324"/>
+<area shape="rect" id="node11" href="$namespaceqpp_1_1internal.html#ad6e3c598a9985bac31f86dc916151b80" title="qpp::internal::_n2multiidx" alt="" coords="153,348,311,375"/>
+<area shape="rect" id="node8" href="$namespaceqpp.html#ac541afad6657467d9bd83c69345880a2" title="Adjoint. " alt="" coords="399,196,487,223"/>
+<area shape="rect" id="node10" href="$namespaceqpp.html#a1e1daff5450728504da1fdfedf8d8b54" title="Trace. " alt="" coords="403,247,482,273"/>
+</map>

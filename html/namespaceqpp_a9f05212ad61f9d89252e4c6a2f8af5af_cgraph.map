@@ -1,0 +1,12 @@
+<map id="qpp::syspermute" name="qpp::syspermute">
+<area shape="rect" id="node2" href="$namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31" title="qpp::internal::_check\l_nonzero_size" alt="" coords="390,248,525,289"/>
+<area shape="rect" id="node3" href="$namespaceqpp_1_1internal.html#aa98f4d9f314627f2481f2dd338e10aab" title="qpp::internal::_check_dims" alt="" coords="172,47,340,74"/>
+<area shape="rect" id="node4" href="$namespaceqpp_1_1internal.html#ac5d7cbd63bbd8e3db1bb27d1e059c4bb" title="qpp::internal::_check_perm" alt="" coords="171,98,341,125"/>
+<area shape="rect" id="node5" href="$namespaceqpp_1_1internal.html#a5182108d9cb72a83cc0a9aa4323c2d8b" title="qpp::internal::_n2multiidx" alt="" coords="177,149,335,175"/>
+<area shape="rect" id="node6" href="$namespaceqpp_1_1internal.html#a551a8384063aa3cdbcc03b6db51f8522" title="qpp::internal::_multiidx2n" alt="" coords="177,199,335,226"/>
+<area shape="rect" id="node7" href="$namespaceqpp_1_1internal.html#add886736621946a87cbc404ad955a605" title="qpp::internal::_check\l_col_vector" alt="" coords="189,251,323,292"/>
+<area shape="rect" id="node8" href="$namespaceqpp_1_1internal.html#aaf71329d6a5e1a31233c3d318f0c4d6e" title="qpp::internal::_check\l_dims_match_cvect" alt="" coords="189,316,323,357"/>
+<area shape="rect" id="node9" href="$namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276" title="qpp::internal::_check\l_square_mat" alt="" coords="189,381,323,423"/>
+<area shape="rect" id="node10" href="$namespaceqpp_1_1internal.html#ab8d8262d50cc57fe0d1b5f880de5f690" title="qpp::internal::_check\l_dims_match_mat" alt="" coords="189,447,323,488"/>
+<area shape="rect" id="node11" href="$namespaceqpp.html#ac8895b7146454fe39eb6fec999b2fc19" title="qpp::reshape" alt="" coords="207,513,305,539"/>
+</map>

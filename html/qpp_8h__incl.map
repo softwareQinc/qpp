@@ -1,0 +1,19 @@
+<map id="include/qpp.h" name="include/qpp.h">
+<area shape="rect" id="node23" href="$constants_8h.html" title="constants.h" alt="" coords="1903,80,1989,107"/>
+<area shape="rect" id="node24" href="$types_8h.html" title="types.h" alt="" coords="2014,80,2078,107"/>
+<area shape="rect" id="node25" href="$exception_8h.html" title="classes/exception.h" alt="" coords="2103,80,2237,107"/>
+<area shape="rect" id="node26" href="$singleton_8h.html" title="classes/singleton.h" alt="" coords="2261,80,2391,107"/>
+<area shape="rect" id="node27" href="$states_8h.html" title="classes/states.h" alt="" coords="2415,80,2530,107"/>
+<area shape="rect" id="node28" href="$randevs_8h.html" title="classes/randevs.h" alt="" coords="2555,80,2681,107"/>
+<area shape="rect" id="node29" href="$internal_8h.html" title="internal.h" alt="" coords="2705,80,2776,107"/>
+<area shape="rect" id="node30" href="$functions_8h.html" title="functions.h" alt="" coords="2800,80,2881,107"/>
+<area shape="rect" id="node31" href="$gates_8h.html" title="classes/gates.h" alt="" coords="2906,80,3018,107"/>
+<area shape="rect" id="node32" href="$stat_8h.html" title="classes/stat.h" alt="" coords="3042,80,3143,107"/>
+<area shape="rect" id="node33" href="$entropies_8h.html" title="entropies.h" alt="" coords="3167,80,3250,107"/>
+<area shape="rect" id="node34" href="$entanglement_8h.html" title="entanglement.h" alt="" coords="3274,80,3381,107"/>
+<area shape="rect" id="node35" href="$channels_8h.html" title="channels.h" alt="" coords="3405,80,3487,107"/>
+<area shape="rect" id="node36" href="$io_8h.html" title="io.h" alt="" coords="3512,80,3553,107"/>
+<area shape="rect" id="node37" href="$random_8h.html" title="random.h" alt="" coords="3578,80,3653,107"/>
+<area shape="rect" id="node38" href="$qudit_8h.html" title="classes/qudit.h" alt="" coords="3677,80,3783,107"/>
+<area shape="rect" id="node39" href="$timer_8h.html" title="classes/timer.h" alt="" coords="3808,80,3913,107"/>
+</map>
