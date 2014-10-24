@@ -18,7 +18,6 @@
 // TODO: parallelize everything!
 
 using namespace std;
-
 using namespace qpp;
 
 cplx pow3(const cplx& z)
