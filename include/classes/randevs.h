@@ -15,10 +15,9 @@
 
 namespace qpp
 {
-
-class RandomDevices: public Singleton<RandomDevices> // Singleton
+class RandomDevices: public internal::Singleton<RandomDevices> // Singleton
 {
-	friend class Singleton<RandomDevices> ;
+	friend class internal::Singleton<RandomDevices> ;
 	std::random_device _rd; // used to seed std::mt19937 _rng
 public:
 	std::mt19937 _rng; // Mersenne twister random number generator engine

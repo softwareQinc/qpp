@@ -331,10 +331,13 @@ ket randket(std::size_t D)
 {
 	if (D == 0)
 		throw Exception("randket", Exception::Type::DIMS_INVALID);
-
+/* slow
 	ket kt = ket::Ones(D);
 	ket result = static_cast<ket>(randU(D) * kt);
-	return result / norm(result);
+	return result;
+*/
+	ket kt = static_cast<ket>(randn<cmat>(D,1));
+	return kt / norm(kt);
 }
 
 /**

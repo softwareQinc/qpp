@@ -11,9 +11,9 @@
 namespace qpp
 {
 
-class Gates: public Singleton<const Gates> // const Singleton
+class Gates: public internal::Singleton<const Gates> // const Singleton
 {
-	friend class Singleton<const Gates> ;
+	friend class internal::Singleton<const Gates> ;
 public:
 	// one qubit gates
 	cmat Id2 { cmat::Identity(2, 2) }; // Identity matrix

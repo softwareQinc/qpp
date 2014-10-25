@@ -12,83 +12,107 @@
 
 namespace qpp
 {
-
+/**
+ * \brief Generates custom exceptions
+ *
+ * Customize this class if more exceptions are needed
+ */
 class Exception: public std::exception
 {
 public:
+	/**
+	 * \brief Exception types, add more exceptions here if needed
+	 *
+	 * \see qpp:Exception::_construct_exception_msg()
+	 */
 	enum class Type // exception types
 	{
-		UNKNOWN_EXCEPTION = 1,
+		UNKNOWN_EXCEPTION = 1,       //!< UNKNOWN_EXCEPTION
 		/*!< Unknown exception */
-		ZERO_SIZE,
+		ZERO_SIZE,                   //!< ZERO_SIZE
 		/*!< Zero sized object, e.g. empty Eigen::Matrix
 		 * or std::vector with no elements */
-		MATRIX_NOT_SQUARE,
+		MATRIX_NOT_SQUARE,           //!< MATRIX_NOT_SQUARE
 		/*!< Eigen::Matrix is not square */
-		MATRIX_NOT_CVECTOR,
+		MATRIX_NOT_CVECTOR,          //!< MATRIX_NOT_CVECTOR
 		/*!< Eigen::Matrix is not a column vector */
-		MATRIX_NOT_RVECTOR,
+		MATRIX_NOT_RVECTOR,          //!< MATRIX_NOT_RVECTOR
 		/*!< Eigen::Matrix is not a row vector */
-		MATRIX_NOT_VECTOR,
+		MATRIX_NOT_VECTOR,           //!< MATRIX_NOT_VECTOR
 		/*!< Eigen::Matrix is not a row/column vector */
-		MATRIX_NOT_SQUARE_OR_CVECTOR,
+		MATRIX_NOT_SQUARE_OR_CVECTOR,//!< MATRIX_NOT_SQUARE_OR_CVECTOR
 		/*!< Eigen::Matrix is not square nor a column vector */
-		MATRIX_NOT_SQUARE_OR_RVECTOR,
+		MATRIX_NOT_SQUARE_OR_RVECTOR,//!< MATRIX_NOT_SQUARE_OR_RVECTOR
 		/*!< Eigen::Matrix is not square nor a row vector */
-		MATRIX_NOT_SQUARE_OR_VECTOR,
+		MATRIX_NOT_SQUARE_OR_VECTOR, //!< MATRIX_NOT_SQUARE_OR_VECTOR
 		/*!< Eigen::Matrix is not square nor a row/column vector */
-		DIMS_INVALID,
+		DIMS_INVALID,                //!< DIMS_INVALID
 		/*!< std::vector<std::size_t> representing the dimensions
 		 * has zero size or contains zeros */
-		DIMS_NOT_EQUAL,
+		DIMS_NOT_EQUAL,              //!< DIMS_NOT_EQUAL
 		/*!< std::vector<std::size_t> representing the dimensions
 		 * contains non-equal elements */
-		DIMS_MISMATCH_MATRIX,
+		DIMS_MISMATCH_MATRIX,        //!< DIMS_MISMATCH_MATRIX
 		/*!< Product of the dimenisons' std::vector<std::size_t>
 		 * is not equal to the number of rows of Eigen::Matrix
 		 * (assumed to be square) */
-		DIMS_MISMATCH_CVECTOR,
+		DIMS_MISMATCH_CVECTOR,       //!< DIMS_MISMATCH_CVECTOR
 		/*!< Product of the dimenisons' std::vector<std::size_t>
 		 * is not equal to the number of cols of Eigen::Matrix
 		 * (assumed to be a column vector) */
-		DIMS_MISMATCH_RVECTOR,
+		DIMS_MISMATCH_RVECTOR,       //!< DIMS_MISMATCH_RVECTOR
 		/*!< Product of the dimenisons' std::vector<std::size_t>
 		 * is not equal to the number of cols of Eigen::Matrix
 		 * (assumed to be a row vector) */
-		DIMS_MISMATCH_VECTOR,
+		DIMS_MISMATCH_VECTOR,        //!< DIMS_MISMATCH_VECTOR
 		/*!< Product of the dimenisons' std::vector<std::size_t>
 		 * is not equal to the number of cols of Eigen::Matrix
 		 * (assumed to be a row/column vector) */
-		SUBSYS_MISMATCH_DIMS,
+		SUBSYS_MISMATCH_DIMS,        //!< SUBSYS_MISMATCH_DIMS
 		/*!< std::vector<std::size_t> representing the subsystems'
 		 * labels has duplicatates, or has entries that are larger than
 		 * the size of the std::vector<std::size_t> representing the
 		 * dimensions */
-		PERM_INVALID,
+		PERM_INVALID,                //!< PERM_INVALID
 		/*!< Invalid std::vector<std::size_t> permutation */
-		NOT_QUBIT_GATE,
+		NOT_QUBIT_GATE,              //!< NOT_QUBIT_GATE
 		/*!<  Eigen::Matrix is not 2 x 2 */
-		NOT_QUBIT_SUBSYS,
+		NOT_QUBIT_SUBSYS,            //!< NOT_QUBIT_SUBSYS
 		/*!< Subsystems are not 2-dimensional */
-		NOT_BIPARTITE,
+		NOT_BIPARTITE,               //!< NOT_BIPARTITE
 		/*!< std::vector<std::size_t> representing the dimensions
 		 * has size different from 2 */
-		OUT_OF_RANGE,
+		OUT_OF_RANGE,                //!< OUT_OF_RANGE
 		/*!< Parameter out of range */
-		TYPE_MISMATCH,
+		TYPE_MISMATCH,               //!< TYPE_MISMATCH
 		/*!< Types do not match (i.e. Matrix<double> vs Matrix<cplx>) */
-		UNDEFINED_TYPE,
+		UNDEFINED_TYPE,              //!< UNDEFINED_TYPE
 		/*!< Templated function not defined for this type */
-		CUSTOM_EXCEPTION
+		CUSTOM_EXCEPTION             //!< CUSTOM_EXCEPTION
 	/*!< Custom exception, user must provide a custom message */
 	};
 
+	/**
+	 * \brief Constructs an exception
+	 *
+	 * @param where Text representing where the exception occured
+	 * @param type Exception's type, see the strong enumeration
+	 * \a qpp::Exception::TYPE
+	 */
 	Exception(const std::string & where, const Type& type) :
 			_where(where), _msg(), _type(type), _custom()
 	{
 		_construct_exception_msg();
 	}
 
+	/**
+	 * \brief Constructs an exception
+	 *
+	 * \overload
+	 *
+	 * @param where Text representing where the exception occured
+	 * @param custom Exception's description
+	 */
 	Exception(const std::string & where, const std::string & custom) :
 			_where(where), _msg(), _type(Type::CUSTOM_EXCEPTION), _custom(
 					custom)
@@ -96,7 +120,11 @@ public:
 		_construct_exception_msg();
 		_msg += custom; // add the custom message at the end
 	}
-
+	/**
+	 * \brief Overrides std::exception::what()
+	 *
+	 * @return Exception's description
+	 */
 	virtual const char* what() const noexcept override
 	{
 		return _msg.c_str();
@@ -107,7 +135,13 @@ private:
 	Type _type;
 	std::string _custom;
 
-	// construct exception messages
+	/**
+	 * \brief Constructs the exception's description from its type
+	 *
+	 * Must modify the code of this function if more exceptions are added
+	 *
+	 * @return Exception's description
+	 */
 	std::string _construct_exception_msg()
 	{
 		_msg += "IN ";

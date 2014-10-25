@@ -10,7 +10,8 @@
 
 namespace qpp
 {
-
+namespace internal
+{
 // macros for defining Singletons, just implement
 // private ctors and dtors in defined classes
 
@@ -48,6 +49,7 @@ public:
 	}
 };
 
+} /* namespace internal */
 } /* namespace qpp */
 
 #endif /* SINGLETON_H_ */
