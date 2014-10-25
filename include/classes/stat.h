@@ -58,8 +58,8 @@ protected:
 	std::uniform_int_distribution<T> _d;
 
 public:
-	UniformIntegerDistribution(T a = std::numeric_limits<T>::min(),\
-			T b = std::numeric_limits<T>::max()) :
+	UniformIntegerDistribution(T a = std::numeric_limits<T>::min(), T b =
+			std::numeric_limits<T>::max()) :
 			_d(std::uniform_int_distribution<T>(a, b))
 	{
 	}

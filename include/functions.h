@@ -206,8 +206,7 @@ double norm(const Eigen::MatrixBase<Derived>& A)
  * \brief Eigenvalues
  *
  * \param A Eigen expression
- * \return Eigenvalues of \a A, as a diagonal dynamic matrix
- * over the complex field, with the eigenvalues on the diagonal
+ * \return Eigenvalues of \a A, as a diagonal complex matrix
  */
 template<typename Derived>
 cmat evals(const Eigen::MatrixBase<Derived>& A)
@@ -230,8 +229,7 @@ cmat evals(const Eigen::MatrixBase<Derived>& A)
  * \brief Eigenvectors
  *
  * \param A Eigen expression
- * \return Eigenvectors of \a A, as columns
- * of a dynamic matrix over the complex field
+ * \return Eigenvectors of \a A, as columns of a complex matrix
  */
 template<typename Derived>
 cmat evects(const Eigen::MatrixBase<Derived>& A)
@@ -254,8 +252,7 @@ cmat evects(const Eigen::MatrixBase<Derived>& A)
  * \brief Hermitian eigenvalues
  *
  * \param A Eigen expression
- * \return Eigenvalues of Hermitian \a A, as a diagonal dynamic matrix
- * over the real field, with eigenvalues on the diagonal
+ * \return Eigenvalues of Hermitian \a A, as a diagonal real matrix
  */
 template<typename Derived>
 dmat hevals(const Eigen::MatrixBase<Derived>& A)
@@ -278,8 +275,7 @@ dmat hevals(const Eigen::MatrixBase<Derived>& A)
  * \brief Hermitian eigenvectors
  *
  * \param A Eigen expression
- * \return Eigenvectors of Hermitian \a A, as columns
- * of a dynamic matrix over the complex field
+ * \return Eigenvectors of Hermitian \a A, as columns of a complex matrix
  */
 template<typename Derived>
 cmat hevects(const Eigen::MatrixBase<Derived>& A)
@@ -304,7 +300,7 @@ cmat hevects(const Eigen::MatrixBase<Derived>& A)
  *
  * \param A Eigen expression
  * \param f Pointer-to-function from complex to complex
- * \return \a f(A), as a dynamic matrix over the complex field
+ * \return \a \f$f(A)\f$
  */
 template<typename Derived>
 cmat funm(const Eigen::MatrixBase<Derived> &A, cplx (*f)(const cplx &))
@@ -334,8 +330,7 @@ cmat funm(const Eigen::MatrixBase<Derived> &A, cplx (*f)(const cplx &))
  * \brief Matrix square root
  *
  * \param A Eigen expression
- * \return Matrix square root of \a A, as a dynamic matrix
- * over the complex field
+ * \return Matrix square root of \a A
  */
 template<typename Derived>
 cmat sqrtm(const Eigen::MatrixBase<Derived> &A)
@@ -357,8 +352,7 @@ cmat sqrtm(const Eigen::MatrixBase<Derived> &A)
  * \brief Matrix absolut value
  *
  * \param A Eigen expression
- * \return Matrix absolut value of \a A, as a dynamic matrix
- * over the complex field
+ * \return Matrix absolut value of \a A
  */
 template<typename Derived>
 cmat absm(const Eigen::MatrixBase<Derived> &A)
@@ -380,8 +374,7 @@ cmat absm(const Eigen::MatrixBase<Derived> &A)
  * \brief Matrix exponential
  *
  * \param A Eigen expression
- * \return Matrix exponential of \a A, as a dynamic matrix
- * over the complex field
+ * \return Matrix exponential of \a A
  */
 template<typename Derived>
 cmat expm(const Eigen::MatrixBase<Derived> &A)
@@ -403,7 +396,7 @@ cmat expm(const Eigen::MatrixBase<Derived> &A)
  * \brief Matrix logarithm
  *
  * \param A Eigen expression
- * \return Matrix logarithm of \a A, as a dynamic matrix over the complex field
+ * \return Matrix logarithm of \a A
  */
 template<typename Derived>
 cmat logm(const Eigen::MatrixBase<Derived> &A)
@@ -425,7 +418,7 @@ cmat logm(const Eigen::MatrixBase<Derived> &A)
  * \brief Matrix sin
  *
  * \param A Eigen expression
- * \return Matrix sine of \a A, as a dynamic matrix over the complex field
+ * \return Matrix sine of \a A
  */
 template<typename Derived>
 cmat sinm(const Eigen::MatrixBase<Derived> &A)
@@ -447,7 +440,7 @@ cmat sinm(const Eigen::MatrixBase<Derived> &A)
  * \brief Matrix cos
  *
  * \param A Eigen expression
- * \return Matrix cosine of \a A, as a dynamic matrix over the complex field
+ * \return Matrix cosine of \a A
  */
 template<typename Derived>
 cmat cosm(const Eigen::MatrixBase<Derived> &A)
@@ -473,7 +466,7 @@ cmat cosm(const Eigen::MatrixBase<Derived> &A)
  *
  * \param A Eigen expression
  * \param z Complex number
- * \return Matrix power \f$A^z\f$, as a dynamic matrix over the complex field
+ * \return Matrix power \f$A^z\f$
  */
 template<typename Derived>
 cmat spectralpowm(const Eigen::MatrixBase<Derived> &A, const cplx z)
@@ -1561,8 +1554,7 @@ std::size_t multiidx2n(const std::vector<std::size_t>& midx,
  * where \a mask is a std::vector of 0's and 1's
  *
  * \param mask std::vector of 0's and 1's
- * \return Multi-partite qubit state vector, as a dynamic column vector
- * over the complex field
+ * \return Multi-partite qubit state vector, as a complex dynamic column vector
  */
 ket mket(const std::vector<std::size_t>& mask)
 {
@@ -1592,8 +1584,7 @@ ket mket(const std::vector<std::size_t>& mask)
  *
  * \param mask std::vector of non-negative integers
  * \param dims Dimensions of the multi-partite system
- * \return Multi-partite qudit state vector, as a dynamic column vector
- * over the complex field
+ * \return Multi-partite qudit state vector, as a complex dynamic column vector
  */
 ket mket(const std::vector<std::size_t>& mask,
 		const std::vector<std::size_t>& dims)
@@ -1635,8 +1626,7 @@ ket mket(const std::vector<std::size_t>& mask,
  *
  * \param mask std::vector of non-negative integers
  * \param d Subsystems' dimension
- * \return Multi-partite qudit state vector, as a dynamic column vector
- * over the complex field
+ * \return Multi-partite qudit state vector, as a complex dynamic column vector
  */
 ket mket(const std::vector<std::size_t>& mask, std::size_t d)
 {

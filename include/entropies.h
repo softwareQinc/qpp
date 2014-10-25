@@ -21,8 +21,7 @@ namespace qpp
  * probability distribution/density matrix \a A
  *
  * \param A Eigen expression, representing a probability distribution
- * (dynamic column vector) or a density matrix
- * (dynamic matrix over the complex field)
+ * (real dynamic column vector) or a density matrix (complex dynamic matrix)
  * \return Shannon/von-Neumann entropy, with the logarithm in base 2
  */
 template<typename Derived>
@@ -70,8 +69,7 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
  *
  * \param alpha Non-negative real number
  * \param A Eigen expression, representing a probability distribution
- * (dynamic column vector) or a density matrix
- * (dynamic matrix over the complex field)
+ * (real dynamic column vector) or a density matrix (complex dynamic matrix)
  * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
  */
 template<typename Derived>
@@ -129,8 +127,7 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
  * probability distribution/density matrix \a A
  *
  * \param A Eigen expression, representing a probability distribution
- * (dynamic column vector) or a density matrix
- * (dynamic matrix over the complex field)
+ * (real dynamic column vector) or a density matrix (complex dynamic matrix)
  * \return Renyi-\f$\infty\f$ entropy (min entropy),
  * with the logarithm in base 2
  */
@@ -180,8 +177,7 @@ double renyi_inf(const Eigen::MatrixBase<Derived>& A)
  *
  * \param alpha Non-negative real number
  * \param A Eigen expression, representing a probability distribution
- * (dynamic column vector) or a density matrix
- * (dynamic matrix over the complex field)
+ * (real dynamic column vector) or a density matrix (complex dynamic matrix)
  * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
  */
 template<typename Derived>
@@ -267,18 +263,17 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 		throw Exception("mutualinfo", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 	// check that subsys are valid
-	if (!internal::_check_subsys_match_dims(subsysA, dims) ||\
-				!internal::_check_subsys_match_dims(subsysB, dims))
+	if (!internal::_check_subsys_match_dims(subsysA, dims)
+			|| !internal::_check_subsys_match_dims(subsysB, dims))
 		throw Exception("mutualinfo", Exception::Type::SUBSYS_MISMATCH_DIMS);
-
 
 	// The full system indexes {0,1,...,n-1}
 	std::vector<std::size_t> full_system(dims.size());
-	std::iota(std::begin(full_system), std::end(full_system),0);
+	std::iota(std::begin(full_system), std::end(full_system), 0);
 
 	// Sorted input subsystems
-	std::vector<std::size_t> subsysAsorted{subsysA};
-	std::vector<std::size_t> subsysBsorted{subsysB};
+	std::vector<std::size_t> subsysAsorted { subsysA };
+	std::vector<std::size_t> subsysBsorted { subsysB };
 
 	// sort the input subsystems (as needed by std::set_difference)
 	std::sort(std::begin(subsysAsorted), std::end(subsysAsorted));
@@ -290,20 +285,20 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 	std::vector<std::size_t> subsysABbar;
 	std::vector<std::size_t> subsysAB;
 
-	std::set_difference(std::begin(full_system), std::end(full_system),\
-		 		std::begin(subsysAsorted), std::end(subsysAsorted),\
-		 		std::back_inserter(subsysAbar));
-	std::set_difference(std::begin(full_system), std::end(full_system),\
-		 		std::begin(subsysBsorted), std::end(subsysBsorted),\
-		 		std::back_inserter(subsysBbar));
-	std::set_union(std::begin(subsysAsorted), std::end(subsysAsorted),\
-			  std::begin(subsysBsorted), std::end(subsysBsorted), \
-			  std::back_inserter(subsysAB));
+	std::set_difference(std::begin(full_system), std::end(full_system),
+			std::begin(subsysAsorted), std::end(subsysAsorted),
+			std::back_inserter(subsysAbar));
+	std::set_difference(std::begin(full_system), std::end(full_system),
+			std::begin(subsysBsorted), std::end(subsysBsorted),
+			std::back_inserter(subsysBbar));
+	std::set_union(std::begin(subsysAsorted), std::end(subsysAsorted),
+			std::begin(subsysBsorted), std::end(subsysBsorted),
+			std::back_inserter(subsysAB));
 	std::sort(std::begin(subsysAB), std::end(subsysAB));
 
-	std::set_difference(std::begin(full_system), std::end(full_system),\
-			 		std::begin(subsysAB), std::end(subsysAB),\
-			 		std::back_inserter(subsysABbar));
+	std::set_difference(std::begin(full_system), std::end(full_system),
+			std::begin(subsysAB), std::end(subsysAB),
+			std::back_inserter(subsysABbar));
 
 	cmat rhoA = ptrace(rA, subsysAbar, dims);
 	cmat rhoB = ptrace(rA, subsysBbar, dims);

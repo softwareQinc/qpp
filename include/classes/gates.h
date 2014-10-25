@@ -95,7 +95,8 @@ public:
 		result = cmat::Zero(D, D);
 		for (std::size_t j = 0; j < D; j++)
 			for (std::size_t i = 0; i < D; i++)
-				result(i, j) = 1 / std::sqrt((double)D) * std::pow(omega(D), i * j);
+				result(i, j) = 1 / std::sqrt((double) D)
+						* std::pow(omega(D), i * j);
 		return result;
 	}
 
@@ -349,8 +350,7 @@ public:
 
 	// returns a multi-quDit multi-controlled-gate in matrix form
 	template<typename Derived>
-	DynMat<typename Derived::Scalar> CTRL(
-			const Eigen::MatrixBase<Derived>& A,
+	DynMat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived>& A,
 			const std::vector<std::size_t>& ctrl,
 			const std::vector<std::size_t>& subsys, std::size_t n,
 			std::size_t d = 2) const

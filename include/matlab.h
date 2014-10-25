@@ -54,8 +54,7 @@ Derived loadMATLABmatrix(const std::string &mat_file,
  * \return Eigen double dynamic matrix (\a qpp::dmat)
  */
 template<>
-dmat loadMATLABmatrix(const std::string &mat_file,
-		const std::string & var_name)
+dmat loadMATLABmatrix(const std::string &mat_file, const std::string & var_name)
 {
 	MATFile* pmat = matOpen(mat_file.c_str(), "r");
 	if (!pmat)
@@ -114,8 +113,7 @@ dmat loadMATLABmatrix(const std::string &mat_file,
  * \return Eigen complex dynamic matrix (\a qpp::cmat)
  */
 template<>
-cmat loadMATLABmatrix(const std::string &mat_file,
-		const std::string & var_name)
+cmat loadMATLABmatrix(const std::string &mat_file, const std::string & var_name)
 {
 	MATFile* pmat = matOpen(mat_file.c_str(), "r");
 	if (!pmat)
@@ -169,8 +167,7 @@ cmat loadMATLABmatrix(const std::string &mat_file,
 	mxDestroyArray(pa);
 	matClose(pmat);
 
-	return (result_re.cast<cplx>())
-			+ 1_i * (result_im.cast<cplx>());
+	return (result_re.cast<cplx>()) + 1_i * (result_im.cast<cplx>());
 }
 
 /**

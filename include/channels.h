@@ -19,10 +19,8 @@ namespace qpp
  * \f$\{|i\rangle\langle j|\}\f$ ordered in lexicographical order, i.e.
  * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
  *
- * \param Ks std::vector of Eigen expressions representing the set of
- * Kraus operators
- * \return Superoperator matrix representation,
- * as a dynamic matrix over the complex field
+ * \param Ks Set of Kraus operators
+ * \return Superoperator matrix representation
  */
 cmat super(const std::vector<cmat>& Ks)
 {
@@ -92,10 +90,8 @@ cmat super(const std::vector<cmat>& Ks)
  * \note The superoperator matrix \f$S\f$ and the Choi matrix \f$ C\f$
  * are related by \f$ S_{ab,mn} = C_{ma,nb}\f$
  *
- * \param Ks std::vector of Eigen expressions representing the set of
- * Kraus operators
- * \return Choi matrix representation,
- * as a dynamic matrix over the complex field
+ * \param Ks Set of Kraus operators
+ * \return Choi matrix representation
  */
 cmat choi(const std::vector<cmat>& Ks)
 {
@@ -137,8 +133,7 @@ cmat choi(const std::vector<cmat>& Ks)
  * for all \f$i\neq j\f$
  *
  * \param A Choi matrix
- * \return std::vector of dynamic matrices over the complex field
- * representing the set of Kraus operators
+ * \return Set of Kraus operators
  */
 std::vector<cmat> choi2kraus(const cmat& A)
 {
@@ -147,7 +142,7 @@ std::vector<cmat> choi2kraus(const cmat& A)
 		throw Exception("choi2kraus", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_square_mat(A))
 		throw Exception("choi2kraus", Exception::Type::MATRIX_NOT_SQUARE);
-	std::size_t D = static_cast<std::size_t>(std::sqrt((double)A.rows()));
+	std::size_t D = static_cast<std::size_t>(std::sqrt((double) A.rows()));
 	if (D * D != static_cast<std::size_t>(A.rows()))
 		throw Exception("choi2kraus", Exception::Type::DIMS_INVALID);
 
@@ -171,13 +166,11 @@ std::vector<cmat> choi2kraus(const cmat& A)
  * to the density matrix \a rho
  *
  * \param rho Eigen expression
- * \param Ks std::vector of Eigen expressions representing the set of
- * Kraus operators
- * \return Output density matrix, as a dynamic matrix over the complex field
+ * \param Ks Set of Kraus operators
+ * \return Output density matrix after the action of the channel
  */
 template<typename Derived>
-cmat channel(const Eigen::MatrixBase<Derived>& rho,
-		const std::vector<cmat>& Ks)
+cmat channel(const Eigen::MatrixBase<Derived>& rho, const std::vector<cmat>& Ks)
 {
 	const cmat & rrho = rho;
 
@@ -208,15 +201,13 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
  * the part of the density matrix \a rho specified by \a subsys
  *
  * \param rho Eigen expression
- * \param Ks std::vector of Eigen expressions representing the set of
- * Kraus operators
+ * \param Ks Set of Kraus operators
  * \param subsys Subsystems' indexes
  * \param dims Dimensions of the multi-partite system
- * \return Output density matrix, as a dynamic matrix over the complex field
+ * \return Output density matrix after the action of the channel
  */
 template<typename Derived>
-cmat channel(const Eigen::MatrixBase<Derived>& rho,
-		const std::vector<cmat>& Ks,
+cmat channel(const Eigen::MatrixBase<Derived>& rho, const std::vector<cmat>& Ks,
 		const std::vector<std::size_t>& subsys,
 		const std::vector<std::size_t>& dims)
 {

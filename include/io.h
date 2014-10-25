@@ -143,12 +143,12 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
 		return;
 	};
 
-	std::ostringstream ostr{};
+	std::ostringstream ostr { };
 	ostr.flags(os.flags()); // get the formatting flags
 	ostr.precision(os.precision()); // set precision
 
-	std::vector<std::string> vstr{};
-	std::string strA{};
+	std::vector<std::string> vstr { };
+	std::string strA { };
 
 	for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
 	{
@@ -156,7 +156,7 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
 		{
 			strA.clear(); // clear the temporary string
 			ostr.clear();
-			ostr.str(std::string{}); // clear the ostringstream
+			ostr.str(std::string { }); // clear the ostringstream
 
 			// convert to complex
 			double re = static_cast<cplx>(rA(i, j)).real();
@@ -247,15 +247,13 @@ void displn(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
  * than \a chop
  * \param os Output stream
  */
-void disp(const cplx z, double chop = qpp::chop, std::ostream& os =
-		std::cout)
+void disp(const cplx z, double chop = qpp::chop, std::ostream& os = std::cout)
 {
 // put the complex number inside an Eigen matrix
 	cmat A(1, 1);
 	A(0, 0) = z;
 	disp(A, chop, os);
 }
-
 
 /**
  * \brief Displays a number (implicitly converted to std::complex<double>)
@@ -268,8 +266,7 @@ void disp(const cplx z, double chop = qpp::chop, std::ostream& os =
  * than \a chop
  * \param os Output stream
  */
-void displn(const cplx z, double chop = qpp::chop, std::ostream& os =
-		std::cout)
+void displn(const cplx z, double chop = qpp::chop, std::ostream& os = std::cout)
 {
 	disp(z, chop, os);
 	os << std::endl;

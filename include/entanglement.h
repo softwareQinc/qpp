@@ -21,8 +21,8 @@ namespace qpp
  *
  * \param A Eigen expression
  * \param dims Subsystems' dimensions
- * \return Schmidt coefficients of \a A, as a dynamic matrix
- * over the complex field, with the Schmidt coefficients on the diagonal
+ * \return Schmidt coefficients of \a A, as a complex dynamic matrix,
+ *  with the Schmidt coefficients on the diagonal
  */
 template<typename Derived>
 cmat schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
@@ -53,8 +53,8 @@ cmat schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
  * \param A Eigen expression
  * \param dims Subsystems' dimensions
  * \return Unitary matrix \f$ U \f$ representing the Schmidt basis
- * on Alice's side, as a dynamic matrix over the complex field,
- * acting on the computational basis as \f$ U|j\rangle = |\bar j\rangle\f$
+ * on Alice's side, as a complex dynamic matrix, acting on
+ * the computational basis as \f$ U|j\rangle = |\bar j\rangle\f$
  * (Schmidt vector)
  */
 template<typename Derived>
@@ -87,8 +87,8 @@ cmat schmidtU(const Eigen::MatrixBase<Derived>& A,
  * \param A Eigen expression
  * \param dims Subsystems' dimensions
  * \return Unitary matrix \f$ V \f$ representing the Schmidt basis
- * on Bob's side, as a dynamic matrix over the complex field,
- * acting on the computational basis as \f$ V|j\rangle = |\bar j\rangle\f$
+ * on Bob's side, as a complex dynamic matrix, acting on
+ * the computational basis as \f$ V|j\rangle = |\bar j\rangle\f$
  * (Schmidt vector)
  */
 template<typename Derived>
@@ -126,8 +126,8 @@ cmat schmidtV(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param dims Subsystems' dimensions
- * \return Schmidt probabilites of \a A, as a dynamic matrix
- * over the complex field, with the Schmidt probabilities on the diagonal
+ * \return Schmidt probabilites of \a A, as a complex dynamic matrix,
+ * with the Schmidt probabilities on the diagonal
  */
 template<typename Derived>
 cmat schmidtprob(const Eigen::MatrixBase<Derived>& A,
@@ -151,8 +151,8 @@ cmat schmidtprob(const Eigen::MatrixBase<Derived>& A,
 			transpose(reshape(rA, dims[1], dims[0])));
 
 	return powm(
-			static_cast<cmat>((svd.singularValues().template cast<
-					cplx>()).asDiagonal()), 2).diagonal();
+			static_cast<cmat>((svd.singularValues().template cast<cplx>()).asDiagonal()),
+			2).diagonal();
 }
 
 /**
@@ -209,7 +209,7 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 	if (!internal::_check_col_vector(rA))
 		throw Exception("gconcurrence", Exception::Type::MATRIX_NOT_CVECTOR);
 
-	std::size_t D = static_cast<std::size_t>(std::sqrt((double)A.rows()));
+	std::size_t D = static_cast<std::size_t>(std::sqrt((double) A.rows()));
 	if (D * D != static_cast<std::size_t>(A.rows()))
 		throw Exception("gconcurrence", Exception::Type::DIMS_NOT_EQUAL);
 

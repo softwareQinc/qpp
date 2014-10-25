@@ -39,9 +39,7 @@ public:
 
 		std::vector<double> p(_D);
 		for (std::size_t i = 0; i < _D; i++)
-			p[i] = std::abs(
-					(cplx) trace(
-							prj((cmat) evects(U).col(i)) * _rho));
+			p[i] = std::abs((cplx) trace(prj((cmat) evects(U).col(i)) * _rho));
 
 		DiscreteDistribution<> dd(p);
 		std::size_t result = dd.sample();

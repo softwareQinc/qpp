@@ -9,15 +9,14 @@
 // Any additional singletons should be instantiated here
 // Includes all necessary headers (except "matlab.h")
 // ALWAYS include it in main.cpp
-
 /**
  * \mainpage quantum++ - A C++11 quantum computing library
  * \version 0.1
  * \author Vlad Gheorghiu, vgheorgh@gmail.com
- * \date 24 October 2014
+ * \date \f$\mathrm{\today}\f$
  *
  * This is the main page of the documentation. More coming soon.
- */     
+ */
 
 #ifndef QPP_H_
 #define	QPP_H_
