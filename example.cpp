@@ -20,6 +20,7 @@
 // template-ize them (IN PROGRESS)
 
 using namespace std;
+
 using namespace qpp;
 
 cplx pow3(const cplx& z) // a test function
