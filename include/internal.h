@@ -10,10 +10,9 @@
 
 // internal functions, do not modify
 /**
- * \namespace qpp::internal Internal functions,
- * do not modify or use them directly
+ * \namespace qpp::internal Internal implementation details,
+ * do not modify/use the functions/classes unless you know what you are doing
  */
-
 namespace qpp
 {
 namespace internal

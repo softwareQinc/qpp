@@ -10,23 +10,9 @@
 
 namespace qpp
 {
-namespace internal
+namespace internal // internal class, do not modify
 {
-// macros for defining Singletons, just implement
-// private ctors and dtors in defined classes
-
-#define CLASS_SINGLETON(Foo)\
-class Foo: public Singleton<Foo>\
-{\
-    friend class Singleton<Foo>;
-
-#define CLASS_CONST_SINGLETON(Foo)\
-class Foo: public Singleton<const Foo>\
-{\
-    friend class Singleton<const Foo>;
-
 // Singleton policy class
-
 template<typename T>
 class Singleton
 {
