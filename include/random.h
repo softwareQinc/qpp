@@ -14,7 +14,7 @@ namespace qpp
 {
 
 /**
- * \brief Generates a random dynamic matrix with entries uniformly
+ * \brief Generates a random matrix with entries uniformly
  * distributed in the interval [a, b)
  *
  * If complex, then both real and imaginary parts are uniformly distributed
@@ -31,7 +31,7 @@ Derived rand(std::size_t rows, std::size_t cols, double a = 0, double b = 1)
 }
 
 /**
- * \brief Generates a random dynamic matrix with entries uniformly
+ * \brief Generates a random matrix with entries uniformly
  * distributed in the interval [a, b),
  * specialization for double matrices (\a qpp::dmat)
  *
@@ -61,7 +61,7 @@ dmat rand(std::size_t rows, std::size_t cols, double a, double b)
 }
 
 /**
- * \brief Generates a random dynamic matrix with entries (both real and
+ * \brief Generates a random matrix with entries (both real and
  * imaginary) uniformly distributed in the interval [a, b),
  * specialization for complex matrices (\a qpp::cmat)
  *
@@ -78,7 +78,7 @@ dmat rand(std::size_t rows, std::size_t cols, double a, double b)
  * \param cols Number of columns of the random generated matrix
  * \param a Beginning of the interval, belongs to it
  * \param b End of the interval, does not belong to it
- * \return Random double complex matrix (\a qpp::cmat)
+ * \return Random complex dynamic matrix (\a qpp::cmat)
  */
 template<>
 cmat rand(std::size_t rows, std::size_t cols, double a, double b)
@@ -121,7 +121,7 @@ int randint(int a = std::numeric_limits<int>::min(), int b =
 }
 
 /**
- * \brief Generates a random dynamic matrix with entries normally
+ * \brief Generates a random matrix with entries normally
  * distributed in N(mean, sigma)
  *
  * If complex, then both real and imaginary parts are normally distributed
@@ -139,7 +139,7 @@ Derived randn(std::size_t rows, std::size_t cols, double mean = 0,
 }
 
 /**
- * \brief Generates a random dynamic matrix with entries normally
+ * \brief Generates a random matrix with entries normally
  * distributed in N(mean, sigma),
  * specialization for double matrices (\a qpp::dmat)
  *
@@ -172,7 +172,7 @@ dmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 }
 
 /**
- * \brief Generates a random dynamic matrix with entries (both real and
+ * \brief Generates a random matrix with entries (both real and
  * imaginary) normally distributed in N(mean, sigma),
  * specialization for complex matrices (\a qpp::cmat)
  *
@@ -216,7 +216,7 @@ double randn(double mean = 0, double sigma = 1)
 }
 
 /**
- * \brief Generates a random unitary dynamic matrix
+ * \brief Generates a random unitary matrix
  *
  * \param D Dimension of the Hilbert space
  * \return Random unitary dynamic matrix
@@ -247,7 +247,7 @@ cmat randU(std::size_t D)
 }
 
 /**
- * \brief Generates a random isometry dynamic matrix
+ * \brief Generates a random isometry matrix
  *
  * \param Din Size of the input Hilbert space
  * \param Dout Size of the output Hilbert space
@@ -260,7 +260,16 @@ cmat randV(std::size_t Din, std::size_t Dout)
 	return randU(Dout).block(0, 0, Dout, Din);
 }
 
-// Random Kraus operators
+/**
+ * \brief Generates a set of random Kraus operators
+ *
+ * \note The set of Kraus operators satisfy the closure condition
+ * \f$ \sum_i K_i^\dagger K_i = I\f$
+ *
+ * \param n Number of Kraus operators
+ * \param D Dimension of the Hilbert space
+ * \return Set of \a n Kraus operators satisfying the closure condition
+ */
 std::vector<cmat> randkraus(std::size_t n, std::size_t D)
 {
 	if (n == 0)
@@ -295,7 +304,12 @@ std::vector<cmat> randkraus(std::size_t n, std::size_t D)
 	return result;
 }
 
-// Random Hermitian matrix
+/**
+ * \brief Generates a random Hermitian matrix
+ *
+ * \param D Dimension of the Hilbert space
+ * \return Random Hermitian dynamic matrix
+ */
 cmat randH(std::size_t D)
 {
 	if (D == 0)
@@ -306,7 +320,12 @@ cmat randH(std::size_t D)
 	return H + adjoint(H);
 }
 
-// random ket of dimension D why randU() ? and not N(0,1)?
+/**
+ * \brief Generates a random normalized ket (pure state vector)
+ *
+ * \param D Dimension of the Hilbert space
+ * \return Random normalized ket dynamic column-matrix
+ */
 ket randket(std::size_t D)
 {
 	if (D == 0)
@@ -317,8 +336,12 @@ ket randket(std::size_t D)
 	return result / norm(result);
 }
 
-// random density matrix
-cmat randrho(std::size_t D)
+/**
+ * \brief Generates a random density matrix
+ *
+ * \param D Dimension of the Hilbert space
+ * \return Random density matrix, as a complex dynamic matrix
+ */cmat randrho(std::size_t D)
 {
 	if (D == 0)
 		throw Exception("randrho", Exception::Type::DIMS_INVALID);
@@ -327,7 +350,16 @@ cmat randrho(std::size_t D)
 	return result / trace(result);
 }
 
-// random permutation (using Knuth shuffle method)
+/**
+ * \brief Generates a random uniformly distributed permutation
+ *
+ * Uses Knuth's shuffle method (as implemented by std::shuffle),
+ * so that all permutations are equally probable
+ *
+ * \param n Size of the permutation
+ * \return Random permutation of size \a n
+ */
+ // random permutation (using Knuth shuffle method)
 std::vector<std::size_t> randperm(std::size_t n)
 {
 	if (n == 0)
