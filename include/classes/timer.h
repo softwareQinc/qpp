@@ -10,6 +10,7 @@
 
 namespace qpp
 {
+
 /**
  * \brief Measures time
  *
@@ -75,7 +76,7 @@ public:
 	{
 		return os << rhs.seconds();
 	}
-};
+}; /* class Timer */
 
 } /* namespace qpp */
 

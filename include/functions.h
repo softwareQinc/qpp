@@ -11,8 +11,8 @@
 // Collection of quantum computing useful functions
 namespace qpp
 {
-// Eigen function wrappers
 
+// Eigen function wrappers
 /**
  * \brief Transpose
  *

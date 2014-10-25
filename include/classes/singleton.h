@@ -12,6 +12,7 @@ namespace qpp
 {
 namespace internal // internal class, do not modify
 {
+
 // Singleton policy class
 template<typename T>
 class Singleton
@@ -33,7 +34,7 @@ public:
 		static T instance;
 		return instance;
 	}
-};
+}; /* class Singleton */
 
 } /* namespace internal */
 } /* namespace qpp */

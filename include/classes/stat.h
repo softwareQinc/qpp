@@ -8,8 +8,6 @@
 #ifndef STAT_H_
 #define STAT_H_
 
-// statistical distributions etc
-
 namespace qpp
 {
 

@@ -8,13 +8,9 @@
 #ifndef RANDEVS_H_
 #define RANDEVS_H_
 
-// Random devices singleton class
-// public members:
-// std::random_device _rd
-// std::mt19937 _rng
-
 namespace qpp
 {
+
 class RandomDevices: public internal::Singleton<RandomDevices> // Singleton
 {
 	friend class internal::Singleton<RandomDevices> ;
@@ -28,8 +24,7 @@ private:
 		// seeds the standard C number generator, used by Eigen
 		std::srand(_rng());
 	}
-};
-/* class RandomDevices */
+}; /* class RandomDevices */
 
 } /* namespace qpp */
 

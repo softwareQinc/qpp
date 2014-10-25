@@ -8,12 +8,11 @@
 #ifndef EXCEPTION_H_
 #define EXCEPTION_H_
 
-// exception class, function parameter checking
-
 namespace qpp
 {
+
 /**
- * \brief Generates custom exceptions
+ * \brief Generates custom exceptions, used when validating function parameters
  *
  * Customize this class if more exceptions are needed
  */
@@ -225,7 +224,7 @@ private:
 		}
 		return _msg;
 	}
-};
+}; /* class Exception */
 
 } /* namespace qpp */
 

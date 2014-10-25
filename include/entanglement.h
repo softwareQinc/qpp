@@ -218,4 +218,5 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 }
 
 } /* namespace qpp */
+
 #endif /* ENTANGLEMENT_H_ */

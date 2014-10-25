@@ -308,4 +308,5 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 }
 
 } /* namespace qpp */
+
 #endif /* ENTROPY_H_ */

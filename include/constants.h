@@ -12,6 +12,7 @@
 
 namespace qpp
 {
+
 /**
  * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (integer overload)
  *

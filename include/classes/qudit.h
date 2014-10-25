@@ -64,7 +64,7 @@ public:
 	{
 		return _D;
 	}
-};
+}; /* class Qudit */
 
 } /* namespace qpp */
 
