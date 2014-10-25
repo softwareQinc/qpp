@@ -14,11 +14,11 @@ namespace qpp
 {
 
 /**
- * \brief Generates an Eigen random dynamic matrix with entries uniformly
- * distributed in the interval [a,b)
+ * \brief Generates a random dynamic matrix with entries uniformly
+ * distributed in the interval [a, b)
  *
  * If complex, then both real and imaginary parts are uniformly distributed
- * in [a,b)
+ * in [a, b)
  *
  * This is the generic version that always throws
  * \a qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
@@ -31,8 +31,8 @@ Derived rand(std::size_t rows, std::size_t cols, double a = 0, double b = 1)
 }
 
 /**
- * \brief Generates an Eigen random dynamic matrix with entries uniformly
- * distributed in the interval [a,b),
+ * \brief Generates a random dynamic matrix with entries uniformly
+ * distributed in the interval [a, b),
  * specialization for double matrices (\a qpp::dmat)
  *
  * The template parameter cannot be automatically deduced and
@@ -40,15 +40,15 @@ Derived rand(std::size_t rows, std::size_t cols, double a = 0, double b = 1)
  *
  * Example:
  * \code
- * // generates a 3 x 3 Eigen random dynamic double matrix, with entries uniformly distributed in [-1,1)
+ * // generates a 3 x 3 random dynamic double matrix, with entries uniformly distributed in [-1,1)
  * auto mat = rand<dmat>(3, 3, -1, 1);
  * \endcode
  *
  * \param rows Number of rows of the random generated matrix
  * \param cols Number of columns of the random generated matrix
- * \param a
- * \param b
- * \return Eigen random double dynamic matrix (\a qpp::dmat)
+ * \param a Beginning of the interval, belongs to it
+ * \param b End of the interval, does not belong to it
+ * \return Random double dynamic matrix (\a qpp::dmat)
  */
 template<>
 dmat rand(std::size_t rows, std::size_t cols, double a, double b)
@@ -61,8 +61,8 @@ dmat rand(std::size_t rows, std::size_t cols, double a, double b)
 }
 
 /**
- * \brief Generates an Eigen random dynamic matrix with entries uniformly
- * distributed in the interval [a,b),
+ * \brief Generates a random dynamic matrix with entries (both real and
+ * imaginary) uniformly distributed in the interval [a, b),
  * specialization for complex matrices (\a qpp::cmat)
  *
  * The template parameter cannot be automatically deduced and
@@ -70,18 +70,15 @@ dmat rand(std::size_t rows, std::size_t cols, double a, double b)
  *
  * Example:
  * \code
- * // generates a 3 x 3 Eigen random dynamic complex matrix, with entries (both real and imaginary) uniformly distributed in [-1,1)
+ * // generates a 3 x 3 random dynamic complex matrix, with entries (both real and imaginary) uniformly distributed in [-1,1)
  * auto mat = rand<cmat>(3, 3, -1, 1);
  * \endcode
  *
- * Both the real part and imaginary part of the entries of the resulting random
- * matrix are uniformly distributed in the interval [a,b).
- *
  * \param rows Number of rows of the random generated matrix
  * \param cols Number of columns of the random generated matrix
- * \param a
- * \param b
- * \return Eigen random double dynamic matrix (\a qpp::dmat)
+ * \param a Beginning of the interval, belongs to it
+ * \param b End of the interval, does not belong to it
+ * \return Random double complex matrix (\a qpp::cmat)
  */
 template<>
 cmat rand(std::size_t rows, std::size_t cols, double a, double b)
@@ -95,11 +92,11 @@ cmat rand(std::size_t rows, std::size_t cols, double a, double b)
 
 /**
  * \brief Generates a random real number (double) uniformly distributed in
- * the interval [a,b)
- * \param a
- * \param b
+ * the interval [a, b)
+ * \param a Beginning of the interval, belongs to it
+ * \param b End of the interval, does not belong to it
  * \return Random real number (double) uniformly distributed in
- * the interval [a,b)
+ * the interval [a, b)
  */
 double rand(double a = 0, double b = 1)
 {
@@ -109,11 +106,11 @@ double rand(double a = 0, double b = 1)
 
 /**
  * \brief Generates a random integer (int) uniformly distributed in
- * the interval [a,b]
- * \param a
- * \param b
+ * the interval [a, b]
+ * \param a Beginning of the interval, belongs to it
+ * \param b End of the interval, does not belong to it
  * \return Random integer (int) uniformly distributed in
- * the interval [a,b]
+ * the interval [a, b]
  */
 int randint(int a = std::numeric_limits<int>::min(), int b =
 		std::numeric_limits<int>::max())
@@ -123,8 +120,17 @@ int randint(int a = std::numeric_limits<int>::min(), int b =
 	return ud.sample();
 }
 
-// random matrix with entries in Normal(mean, sigma)
-
+/**
+ * \brief Generates a random dynamic matrix with entries normally
+ * distributed in N(mean, sigma)
+ *
+ * If complex, then both real and imaginary parts are normally distributed
+ * in N(mean, sigma)
+ *
+ * This is the generic version that always throws
+ * \a qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
+ * \a qpp::dmat and \a qpp::cmat
+ */
 template<typename Derived>
 Derived randn(std::size_t rows, std::size_t cols, double mean = 0,
 		double sigma = 1)
@@ -132,7 +138,26 @@ Derived randn(std::size_t rows, std::size_t cols, double mean = 0,
 	throw Exception("randn", Exception::Type::UNDEFINED_TYPE);
 }
 
-// random double matrix with entries in Normal(mean, sigma)
+/**
+ * \brief Generates a random dynamic matrix with entries normally
+ * distributed in N(mean, sigma),
+ * specialization for double matrices (\a qpp::dmat)
+ *
+ * The template parameter cannot be automatically deduced and
+ * must be explicitly provided
+ *
+ * Example:
+ * \code
+ * // generates a 3 x 3 random dynamic double matrix, with entries normally distributed in N(0,2)
+ * auto mat = randn<dmat>(3, 3, 0, 2);
+ * \endcode
+ *
+ * \param rows Number of rows of the random generated matrix
+ * \param cols Number of columns of the random generated matrix
+ * \param mean Mean
+ * \param sigma Standard deviation
+ * \return Random double dynamic matrix (\a qpp::dmat)
+ */
 template<>
 dmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 {
@@ -146,7 +171,26 @@ dmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 
 }
 
-// random complex matrix with entries in Normal(mean, sigma)
+/**
+ * \brief Generates a random dynamic matrix with entries (both real and
+ * imaginary) normally distributed in N(mean, sigma),
+ * specialization for complex matrices (\a qpp::cmat)
+ *
+ * The template parameter cannot be automatically deduced and
+ * must be explicitly provided
+ *
+ * Example:
+ * \code
+ * // generates a 3 x 3 random dynamic complex matrix, with entries (both real and imaginary) normally distributed in N(0,2)
+ * auto mat = randn<cmat>(3, 3, 0, 2);
+ * \endcode
+ *
+ * \param rows Number of rows of the random generated matrix
+ * \param cols Number of columns of the random generated matrix
+ * \param mean Mean
+ * \param sigma Standard deviation
+ * \return Random complex dynamic matrix (\a qpp::cmat)
+ */
 template<>
 cmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 {
@@ -158,17 +202,28 @@ cmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 			< dmat > (rows, cols, mean, sigma).cast<cplx>();
 }
 
-// random number in Normal(mean, sigma)
+/**
+ * \brief Generates a random real number (double) normally distributed in
+ * N(mean, sigma)
+ * \param mean Mean
+ * \param sigma Standard deviation
+ * \return Random real number (double) normally distributed in N(mean, sigma)
+ */
 double randn(double mean = 0, double sigma = 1)
 {
 	NormalDistribution<> nd(mean, sigma);
 	return nd.sample();
 }
 
-// Random unitary matrix
-// ~3 times slower than Toby Cubitt's MATLAB's,
-// because Eigen's QR algorithm is not parallelized
+/**
+ * \brief Generates a random unitary dynamic matrix
+ *
+ * \param D Dimension of the Hilbert space
+ * \return Random unitary dynamic matrix
+ */
 cmat randU(std::size_t D)
+// ~3 times slower than Toby Cubitt's MATLAB corresponding routine,
+// because 's QR algorithm is not parallelized
 {
 	if (D == 0)
 		throw Exception("randU", Exception::Type::DIMS_INVALID);
@@ -191,7 +246,13 @@ cmat randU(std::size_t D)
 	return Q;
 }
 
-// Random isometry
+/**
+ * \brief Generates a random isometry dynamic matrix
+ *
+ * \param Din Size of the input Hilbert space
+ * \param Dout Size of the output Hilbert space
+ * \return Random isometry dynamic matrix
+ */
 cmat randV(std::size_t Din, std::size_t Dout)
 {
 	if (Din == 0 || Dout == 0 || Din > Dout)
