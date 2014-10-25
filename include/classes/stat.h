@@ -51,7 +51,7 @@ public:
 	}
 };
 
-template<typename T = std::size_t>
+template<typename T = int>
 class UniformIntegerDistribution
 {
 protected:

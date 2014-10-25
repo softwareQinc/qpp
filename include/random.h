@@ -56,8 +56,7 @@ dmat rand(std::size_t rows, std::size_t cols, double a, double b)
 	if (rows == 0 || cols == 0)
 		throw Exception("rand", Exception::Type::ZERO_SIZE);
 
-	return (0.5 * (b - a)
-			* (dmat::Random(rows, cols) + dmat::Ones(rows, cols))
+	return (0.5 * (b - a) * (dmat::Random(rows, cols) + dmat::Ones(rows, cols))
 			+ a * dmat::Ones(rows, cols));
 }
 
@@ -69,7 +68,7 @@ dmat rand(std::size_t rows, std::size_t cols, double a, double b)
  * The template parameter cannot be automatically deduced and
  * must be explicitly provided
  *
-* Example:
+ * Example:
  * \code
  * // generates a 3 x 3 Eigen random dynamic complex matrix, with entries (both real and imaginary) uniformly distributed in [-1,1)
  * auto mat = rand<cmat>(3, 3, -1, 1);
@@ -90,17 +89,16 @@ cmat rand(std::size_t rows, std::size_t cols, double a, double b)
 	if (rows == 0 || cols == 0)
 		throw Exception("rand", Exception::Type::ZERO_SIZE);
 
-	return rand < dmat
-			> (rows, cols, a, b).cast<cplx>() + 1_i * rand < dmat
+	return rand < dmat > (rows, cols, a, b).cast<cplx>() + 1_i * rand < dmat
 			> (rows, cols, a, b).cast<cplx>();
 }
 
 /**
- * \brief Generates a random double uniformly distributed in
+ * \brief Generates a random real number (double) uniformly distributed in
  * the interval [a,b)
  * \param a
  * \param b
- * \return Random real number uniformly distributed in
+ * \return Random real number (double) uniformly distributed in
  * the interval [a,b)
  */
 double rand(double a = 0, double b = 1)
@@ -110,22 +108,23 @@ double rand(double a = 0, double b = 1)
 }
 
 /**
- * \brief Generates a random long long integer uniformly distributed in
+ * \brief Generates a random integer (int) uniformly distributed in
  * the interval [a,b]
  * \param a
  * \param b
- * \return Random long long integer uniformly distributed in
+ * \return Random integer (int) uniformly distributed in
  * the interval [a,b]
  */
-long long int randint(long long a = std::numeric_limits<long long int>::min(),\
-		long long b = std::numeric_limits<long long int>::max())
+int randint(int a = std::numeric_limits<int>::min(), int b =
+		std::numeric_limits<int>::max())
 {
-	UniformIntegerDistribution<long long int> ud(a, b);
+	UniformIntegerDistribution<int> ud(a, b);
 
 	return ud.sample();
 }
 
 // random matrix with entries in Normal(mean, sigma)
+
 template<typename Derived>
 Derived randn(std::size_t rows, std::size_t cols, double mean = 0,
 		double sigma = 1)
@@ -155,8 +154,7 @@ cmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
 
 	NormalDistribution<> nd(mean, sigma);
-	return randn < dmat
-			> (rows, cols, mean, sigma).cast<cplx>() + 1_i * randn
+	return randn < dmat > (rows, cols, mean, sigma).cast<cplx>() + 1_i * randn
 			< dmat > (rows, cols, mean, sigma).cast<cplx>();
 }
 
@@ -242,8 +240,7 @@ cmat randH(std::size_t D)
 	if (D == 0)
 		throw Exception("randH", Exception::Type::DIMS_INVALID);
 
-	cmat H = 2 * rand<cmat>(D, D)
-			- (1. + 1_i) * cmat::Ones(D, D);
+	cmat H = 2 * rand<cmat>(D, D) - (1. + 1_i) * cmat::Ones(D, D);
 
 	return H + adjoint(H);
 }
