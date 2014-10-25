@@ -41,7 +41,7 @@ Derived loadMATLABmatrix(const std::string &mat_file,
  * \param var_name Variable name in the .mat file representing
  * the matrix to be loaded
  *
- * @return Eigen double dynamic matrix (\a qpp::dmat)
+ * \return Eigen double dynamic matrix (\a qpp::dmat)
  */
 template<>
 dmat loadMATLABmatrix(const std::string &mat_file,

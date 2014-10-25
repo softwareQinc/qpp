@@ -126,10 +126,10 @@ void displn(const T* x, const std::size_t n, const std::string & separator,
  *
  * \see \a qpp::displn()
  *
- * @param A Eigen expression
- * @param chop Set to zero the elements smaller in absolute value
+ * \param A Eigen expression
+ * \param chop Set to zero the elements smaller in absolute value
  * than \a chop
- * @param os Output stream
+ * \param os Output stream
  */
 template<typename Derived>
 void disp(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
@@ -223,10 +223,10 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
  *
  * \see \a qpp::disp()
  *
- * @param A Eigen expression
- * @param chop Set to zero the elements smaller in absolute value
+ * \param A Eigen expression
+ * \param chop Set to zero the elements smaller in absolute value
  * than \a chop
- * @param os Output stream
+ * \param os Output stream
  */
 template<typename Derived>
 void displn(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
@@ -242,10 +242,10 @@ void displn(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
  *
  * \see \a qpp::displn()
  *
- * @param z Real/complex number
- * @param chop Set to zero the elements smaller in absolute value
+ * \param z Real/complex number
+ * \param chop Set to zero the elements smaller in absolute value
  * than \a chop
- * @param os Output stream
+ * \param os Output stream
  */
 void disp(const cplx z, double chop = qpp::chop, std::ostream& os =
 		std::cout)
@@ -263,10 +263,10 @@ void disp(const cplx z, double chop = qpp::chop, std::ostream& os =
  *
  * \see \a qpp::disp()
  *
- * @param z Real/complex number
- * @param chop Set to zero the elements smaller in absolute value
+ * \param z Real/complex number
+ * \param chop Set to zero the elements smaller in absolute value
  * than \a chop
- * @param os Output stream
+ * \param os Output stream
  */
 void displn(const cplx z, double chop = qpp::chop, std::ostream& os =
 		std::cout)
@@ -281,8 +281,8 @@ void displn(const cplx z, double chop = qpp::chop, std::ostream& os =
  *
  * \see qpp::saveMATLABmatrix()
  *
- * @param A Eigen expression
- * @param fname Output file name
+ * \param A Eigen expression
+ * \param fname Output file name
  */
 template<typename Derived>
 void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
@@ -334,8 +334,8 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
  *
  * \see qpp::loadMATLABmatrix()
  *
- * @param A Eigen expression
- * @param fname Output file name
+ * \param A Eigen expression
+ * \param fname Output file name
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> load(const std::string& fname)
