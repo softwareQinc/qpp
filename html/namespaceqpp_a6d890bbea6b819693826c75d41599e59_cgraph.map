@@ -1,7 +1,0 @@
-<map id="qpp::expandout" name="qpp::expandout">
-<area shape="rect" id="node2" href="$namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31" title="qpp::internal::_check\l_nonzero_size" alt="" coords="182,5,317,46"/>
-<area shape="rect" id="node3" href="$namespaceqpp_1_1internal.html#aa98f4d9f314627f2481f2dd338e10aab" title="qpp::internal::_check_dims" alt="" coords="165,71,333,97"/>
-<area shape="rect" id="node4" href="$namespaceqpp_1_1internal.html#a0d79aa74c2696acef7b90c83233d8859" title="qpp::internal::_check\l_square_mat" alt="" coords="182,122,317,163"/>
-<area shape="rect" id="node5" href="$namespaceqpp_1_1internal.html#a5182108d9cb72a83cc0a9aa4323c2d8b" title="qpp::internal::_n2multiidx" alt="" coords="171,188,328,215"/>
-<area shape="rect" id="node6" href="$namespaceqpp_1_1internal.html#a551a8384063aa3cdbcc03b6db51f8522" title="qpp::internal::_multiidx2n" alt="" coords="171,239,328,265"/>
-</map>

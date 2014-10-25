@@ -1,8 +1,0 @@
-<map id="qpp::grams" name="qpp::grams">
-<area shape="rect" id="node2" href="$namespaceqpp.html#a860709765d14fc0b0d5c5d73b4da7e34" title="Gram&#45;Schmidt orthogonalization (std::vector overload) " alt="" coords="140,147,227,174"/>
-<area shape="rect" id="node3" href="$namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31" title="qpp::internal::_check\l_nonzero_size" alt="" coords="571,140,705,181"/>
-<area shape="rect" id="node4" href="$namespaceqpp_1_1internal.html#add886736621946a87cbc404ad955a605" title="qpp::internal::_check\l_col_vector" alt="" coords="388,5,523,47"/>
-<area shape="rect" id="node5" href="$namespaceqpp.html#af2e4740854c958579228593dd639aa6c" title="Trace norm. " alt="" coords="416,173,495,199"/>
-<area shape="rect" id="node6" href="$namespaceqpp.html#af82cb710d2e54ddf09b32a91c62ab8e8" title="Projector. " alt="" coords="275,122,340,149"/>
-<area shape="rect" id="node7" href="$namespaceqpp.html#ada39f63fe67c9f5e48e952cd70abb9c7" title="Adjoint. " alt="" coords="411,122,499,149"/>
-</map>

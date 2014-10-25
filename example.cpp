@@ -9,13 +9,15 @@
 
 //#include "matlab.h" // support for MATLAB
 
-// TODO: testing
+// TODO: testing (IN PROGRESS)
 // TODO: write documentation (IN PROGRESS)
 // TODO: more robust exception parameter checking
 // TODO: change loops to column major order, better OpenMP implementation
 // TODO: Gates::applyCTRL without need for fully specifying CTRL matrix,
 // should be faster than apply(...CTRL...)
-// TODO: parallelize everything!
+// TODO: parallelize everything! (IMPORTANT)
+// TODO: simplify statistics distribution wrappers, use std::enable_if and
+// template-ize them (IN PROGRESS)
 
 using namespace std;
 using namespace qpp;
@@ -208,7 +210,7 @@ int main()
 	 std::vector<cplx> ampl = { 1. + 1_i, 1. - 1_i };
 	 cmat va(1, 4);
 	 va << 0.1, 1, 1. + 1_i, 1. + 2_i;
-	 DiscreteDistributionAbsSquare dc(va);
+	 DiscreteDistributionAbsSquare<> dc(va);
 	 cout << "The probabilities are: ";
 	 displn(dc.probabilities(), ", ", "{", "}");
 

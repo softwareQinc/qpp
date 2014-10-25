@@ -1,6 +1,0 @@
-<map id="qpp::ptrace2" name="qpp::ptrace2">
-<area shape="rect" id="node2" href="$namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31" title="qpp::internal::_check\l_nonzero_size" alt="" coords="163,5,298,46"/>
-<area shape="rect" id="node3" href="$namespaceqpp_1_1internal.html#aa98f4d9f314627f2481f2dd338e10aab" title="qpp::internal::_check_dims" alt="" coords="147,71,315,97"/>
-<area shape="rect" id="node4" href="$namespaceqpp_1_1internal.html#a0d79aa74c2696acef7b90c83233d8859" title="qpp::internal::_check\l_square_mat" alt="" coords="163,122,298,163"/>
-<area shape="rect" id="node5" href="$namespaceqpp_1_1internal.html#a533a76bfd5ec7f76cf9ceb6d947d49c8" title="qpp::internal::_check\l_dims_match_mat" alt="" coords="163,187,298,229"/>
-</map>

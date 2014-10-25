@@ -1,9 +1,0 @@
-<map id="include/random.h" name="include/random.h">
-<area shape="rect" id="node2" href="$constants_8h.html" title="constants.h" alt="" coords="5,81,95,109"/>
-<area shape="rect" id="node4" href="$types_8h.html" title="types.h" alt="" coords="325,309,389,337"/>
-<area shape="rect" id="node6" href="$exception_8h.html" title="classes/exception.h" alt="" coords="852,309,990,337"/>
-<area shape="rect" id="node9" href="$randevs_8h.html" title="classes/randevs.h" alt="" coords="191,157,319,185"/>
-<area shape="rect" id="node12" href="$stat_8h.html" title="classes/stat.h" alt="" coords="576,81,678,109"/>
-<area shape="rect" id="node15" href="$internal_8h.html" title="internal.h" alt="" coords="589,157,666,185"/>
-<area shape="rect" id="node20" href="$io_8h.html" title="io.h" alt="" coords="677,233,719,261"/>
-</map>

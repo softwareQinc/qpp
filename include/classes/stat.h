@@ -15,61 +15,66 @@ namespace qpp
 
 // light wrappers around C++11 statistical distributions
 
+template<typename T = double>
 class NormalDistribution
 {
 protected:
-	std::normal_distribution<> _d;
+	std::normal_distribution<T> _d;
 
 public:
-	NormalDistribution(double mean = 0, double sigma = 1) :
-			_d(std::normal_distribution<>(mean, sigma))
+	NormalDistribution(T mean = 0, T sigma = 1) :
+			_d(std::normal_distribution<T>(mean, sigma))
 	{
 	}
 
-	double sample()
+	T sample()
 	{
 		return _d(RandomDevices::get_instance()._rng);
 	}
 };
 
+template<typename T = double>
 class UniformRealDistribution
 {
 protected:
-	std::uniform_real_distribution<> _d;
+	std::uniform_real_distribution<T> _d;
 
 public:
-	UniformRealDistribution(double a = 0, double b = 1) :
-			_d(std::uniform_real_distribution<>(a, b))
+	UniformRealDistribution(T a = 0, T b = 1) :
+			_d(std::uniform_real_distribution<T>(a, b))
 	{
 	}
 
-	double sample()
+	T sample()
 	{
 		return _d(RandomDevices::get_instance()._rng);
 	}
 };
 
-class UniformIntDistribution
+template<typename T = std::size_t>
+class UniformIntegerDistribution
 {
 protected:
-	std::uniform_int_distribution<> _d;
+	std::uniform_int_distribution<T> _d;
 
 public:
-	UniformIntDistribution(int a = 0, int b = 1) :
-			_d(std::uniform_int_distribution<>(a, b))
+	UniformIntegerDistribution(T a = std::numeric_limits<T>::min(),\
+			T b = std::numeric_limits<T>::max()) :
+			_d(std::uniform_int_distribution<T>(a, b))
 	{
 	}
 
-	int sample()
+	T sample()
 	{
 		return _d(RandomDevices::get_instance()._rng);
 	}
 };
 
+template<typename T = std::size_t>
 class DiscreteDistribution
 {
 protected:
-	std::discrete_distribution<std::size_t> _d;
+	std::discrete_distribution<T> _d;
 
 public:
 	template<typename InputIterator>
@@ -88,7 +93,7 @@ public:
 	{
 	}
 
-	std::size_t sample()
+	T sample()
 	{
 		return _d(RandomDevices::get_instance()._rng);
 	}
@@ -99,10 +104,11 @@ public:
 	}
 };
 
+template<typename T = std::size_t>
 class DiscreteDistributionAbsSquare
 {
 protected:
-	std::discrete_distribution<std::size_t> _d;
+	std::discrete_distribution<T> _d;
 
 	template<typename InputIterator>
 	std::vector<double> cplx2weights(InputIterator first,
@@ -121,7 +127,7 @@ public:
 			_d { }
 	{
 		std::vector<double> weights = cplx2weights(first, last);
-		std::discrete_distribution<std::size_t> tmp(std::begin(weights),
+		std::discrete_distribution<T> tmp(std::begin(weights),
 				std::end(weights));
 		_d = tmp;
 	}
@@ -131,7 +137,7 @@ public:
 	{
 		std::vector<double> weights = cplx2weights(std::begin(amplitudes),
 				std::end(amplitudes));
-		std::discrete_distribution<std::size_t> tmp(std::begin(weights),
+		std::discrete_distribution<T> tmp(std::begin(weights),
 				std::end(weights));
 		_d = tmp;
 	}
@@ -141,7 +147,7 @@ public:
 	{
 		std::vector<double> weights = cplx2weights(std::begin(amplitudes),
 				std::end(amplitudes));
-		std::discrete_distribution<std::size_t> tmp(std::begin(weights),
+		std::discrete_distribution<T> tmp(std::begin(weights),
 				std::end(weights));
 		_d = tmp;
 	}
@@ -165,13 +171,13 @@ public:
 
 		std::vector<double> weights = cplx2weights(rV.data(),
 				rV.data() + rV.size());
-		std::discrete_distribution<std::size_t> tmp(std::begin(weights),
+		std::discrete_distribution<T> tmp(std::begin(weights),
 				std::end(weights));
 		_d = tmp;
 
 	}
 
-	std::size_t sample()
+	T sample()
 	{
 		return _d(RandomDevices::get_instance()._rng);
 	}

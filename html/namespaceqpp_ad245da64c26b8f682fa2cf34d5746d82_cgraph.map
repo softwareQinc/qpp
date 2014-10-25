@@ -1,8 +1,0 @@
-<map id="qpp::grams" name="qpp::grams">
-<area shape="rect" id="node2" href="$namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31" title="qpp::internal::_check\l_nonzero_size" alt="" coords="454,146,589,187"/>
-<area shape="rect" id="node3" href="$namespaceqpp_1_1internal.html#add886736621946a87cbc404ad955a605" title="qpp::internal::_check\l_col_vector" alt="" coords="270,37,405,78"/>
-<area shape="rect" id="node4" href="$namespaceqpp.html#af2e4740854c958579228593dd639aa6c" title="qpp::norm" alt="" coords="142,204,221,231"/>
-<area shape="rect" id="node5" href="$namespaceqpp.html#af82cb710d2e54ddf09b32a91c62ab8e8" title="qpp::prj" alt="" coords="149,103,214,129"/>
-<area shape="rect" id="node6" href="$namespaceqpp.html#ada39f63fe67c9f5e48e952cd70abb9c7" title="qpp::adjoint" alt="" coords="293,204,381,231"/>
-<area shape="rect" id="node7" href="$namespaceqpp.html#a1e1daff5450728504da1fdfedf8d8b54" title="qpp::trace" alt="" coords="298,103,377,129"/>
-</map>

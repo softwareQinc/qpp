@@ -43,7 +43,7 @@ public:
 					(cplx) trace(
 							prj((cmat) evects(U).col(i)) * _rho));
 
-		DiscreteDistribution dd(p);
+		DiscreteDistribution<> dd(p);
 		std::size_t result = dd.sample();
 		if (destructive) // von Neumann
 			_rho = prj((cmat) evects(U).col(result)) * _rho

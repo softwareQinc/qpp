@@ -13,14 +13,43 @@
 namespace qpp
 {
 
-// random matrix with entries in Uniform[a,b)
+/**
+ * \brief Generates an Eigen random dynamic matrix with entries uniformly
+ * distributed in the interval [a,b)
+ *
+ * If complex, then both real and imaginary parts are uniformly distributed
+ * in [a,b)
+ *
+ * This is the generic version that always throws
+ * \a qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
+ * \a qpp::dmat and \a qpp::cmat
+ */
 template<typename Derived>
 Derived rand(std::size_t rows, std::size_t cols, double a = 0, double b = 1)
 {
 	throw Exception("rand", Exception::Type::UNDEFINED_TYPE);
 }
 
-// random double matrix with entries in Uniform[a,b)
+/**
+ * \brief Generates an Eigen random dynamic matrix with entries uniformly
+ * distributed in the interval [a,b),
+ * specialization for double matrices (\a qpp::dmat)
+ *
+ * The template parameter cannot be automatically deduced and
+ * must be explicitly provided
+ *
+ * Example:
+ * \code
+ * // generates a 3 x 3 Eigen random dynamic double matrix, with entries uniformly distributed in [-1,1)
+ * auto mat = rand<dmat>(3, 3, -1, 1);
+ * \endcode
+ *
+ * \param rows Number of rows of the random generated matrix
+ * \param cols Number of columns of the random generated matrix
+ * \param a
+ * \param b
+ * \return Eigen random double dynamic matrix (\a qpp::dmat)
+ */
 template<>
 dmat rand(std::size_t rows, std::size_t cols, double a, double b)
 {
@@ -32,7 +61,29 @@ dmat rand(std::size_t rows, std::size_t cols, double a, double b)
 			+ a * dmat::Ones(rows, cols));
 }
 
-// random complex matrix with entries in Uniform[a,b)
+/**
+ * \brief Generates an Eigen random dynamic matrix with entries uniformly
+ * distributed in the interval [a,b),
+ * specialization for complex matrices (\a qpp::cmat)
+ *
+ * The template parameter cannot be automatically deduced and
+ * must be explicitly provided
+ *
+* Example:
+ * \code
+ * // generates a 3 x 3 Eigen random dynamic complex matrix, with entries (both real and imaginary) uniformly distributed in [-1,1)
+ * auto mat = rand<cmat>(3, 3, -1, 1);
+ * \endcode
+ *
+ * Both the real part and imaginary part of the entries of the resulting random
+ * matrix are uniformly distributed in the interval [a,b).
+ *
+ * \param rows Number of rows of the random generated matrix
+ * \param cols Number of columns of the random generated matrix
+ * \param a
+ * \param b
+ * \return Eigen random double dynamic matrix (\a qpp::dmat)
+ */
 template<>
 cmat rand(std::size_t rows, std::size_t cols, double a, double b)
 {
@@ -44,19 +95,34 @@ cmat rand(std::size_t rows, std::size_t cols, double a, double b)
 			> (rows, cols, a, b).cast<cplx>();
 }
 
-// random number in Uniform[a, b)
+/**
+ * \brief Generates a random double uniformly distributed in
+ * the interval [a,b)
+ * \param a
+ * \param b
+ * \return Random real number uniformly distributed in
+ * the interval [a,b)
+ */
 double rand(double a = 0, double b = 1)
 {
-	UniformRealDistribution ud(a, b);
+	UniformRealDistribution<> ud(a, b);
 	return ud.sample();
 }
 
-// random long long integer uniformly distributed in [a,b)
-long long randint(long long a, long long b)
+/**
+ * \brief Generates a random long long integer uniformly distributed in
+ * the interval [a,b]
+ * \param a
+ * \param b
+ * \return Random long long integer uniformly distributed in
+ * the interval [a,b]
+ */
+long long int randint(long long a = std::numeric_limits<long long int>::min(),\
+		long long b = std::numeric_limits<long long int>::max())
 {
-	UniformRealDistribution ud(static_cast<double>(a), static_cast<double>(b));
+	UniformIntegerDistribution<long long int> ud(a, b);
 
-	return static_cast<long long>(std::floor(ud.sample()));
+	return ud.sample();
 }
 
 // random matrix with entries in Normal(mean, sigma)
@@ -74,7 +140,7 @@ dmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 	if (rows == 0 || cols == 0)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
 
-	NormalDistribution nd(mean, sigma);
+	NormalDistribution<> nd(mean, sigma);
 
 	return dmat::Zero(rows, cols).unaryExpr([&nd](double)
 	{	return nd.sample();});
@@ -88,7 +154,7 @@ cmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 	if (rows == 0 || cols == 0)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
 
-	NormalDistribution nd(mean, sigma);
+	NormalDistribution<> nd(mean, sigma);
 	return randn < dmat
 			> (rows, cols, mean, sigma).cast<cplx>() + 1_i * randn
 			< dmat > (rows, cols, mean, sigma).cast<cplx>();
@@ -97,7 +163,7 @@ cmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 // random number in Normal(mean, sigma)
 double randn(double mean = 0, double sigma = 1)
 {
-	NormalDistribution nd(mean, sigma);
+	NormalDistribution<> nd(mean, sigma);
 	return nd.sample();
 }
 

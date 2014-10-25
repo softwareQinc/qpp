@@ -35,6 +35,16 @@ Derived loadMATLABmatrix(const std::string &mat_file,
  * \brief Loads an Eigen dynamic matrix from a MATLAB .mat file,
  * specialization for double matrices (\a qpp::dmat)
  *
+ * The template parameter cannot be automatically deduced and
+ * must be explicitly provided
+ *
+ * Example:
+ * \code
+ * // loads a previously saved Eigen dynamic double matrix from the
+ * MATLAB file "input.mat"
+ * auto mat = loadMATLABmatrix<dmat>("input.mat");
+ * \endcode
+ *
  * \note If \a var_name is a complex matrix, only the real part is loaded
  *
  * \param mat_file MATALB .mat file
@@ -87,6 +97,16 @@ dmat loadMATLABmatrix(const std::string &mat_file,
 /**
  * \brief Loads an Eigen dynamic matrix from a MATLAB .mat file,
  * specialization for complex matrices (\a qpp::cmat)
+ *
+ * The template parameter cannot be automatically deduced and
+ * must be explicitly provided
+ *
+ * Example:
+ * \code
+ * // loads a previously saved Eigen dynamic complex matrix from the
+ * MATLAB file "input.mat"
+ * auto mat = loadMATLABmatrix<cmat>("input.mat");
+ * \endcode
  *
  * \param mat_file MATALB .mat file
  * \param var_name Variable name in the .mat file representing
