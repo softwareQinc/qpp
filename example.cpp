@@ -214,10 +214,10 @@ int main()
 			std::end(weights));
 
 	cout << "The probabilities are: ";
-	auto probs = dc.probabilities();
+	std::vector<double> probs = dc.probabilities();
 	displn(probs, ", ", "{", "}");
 	cout << "Their sum is: "
-			<< std::accumulate(std::begin(probs), std::end(probs), 0) << endl;
+			<< std::accumulate(std::begin(probs), std::end(probs), 0.) << endl;
 
 	// 	// TIMING tests
 	cout << endl << "Timing tests..." << endl;
