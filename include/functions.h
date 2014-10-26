@@ -164,7 +164,7 @@ typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A)
 }
 
 /**
- * \brief Element-wise sum of Eigen expression
+ * \brief Element-wise sum of \a A
  *
  * \param A Eigen expression
  * \return Element-wise sum of \a A, as a scalar over the same scalar field
@@ -180,6 +180,25 @@ typename Derived::Scalar sum(const Eigen::MatrixBase<Derived>& A)
 		throw Exception("sum", Exception::Type::ZERO_SIZE);
 
 	return rA.sum();
+}
+
+/**
+ * \brief Element-wise product of \a A
+ *
+ * \param A Eigen expression
+ * \return Element-wise product of \a A, as a scalar over the same scalar field
+ */
+template<typename Derived>
+typename Derived::Scalar prod(const Eigen::MatrixBase<Derived>& A)
+
+{
+	const DynMat<typename Derived::Scalar> & rA = A;
+
+// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("sum", Exception::Type::ZERO_SIZE);
+
+	return rA.prod();
 }
 
 /**
