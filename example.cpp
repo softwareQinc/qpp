@@ -164,7 +164,7 @@ int main()
 	cmat evectsH = hevects(rH);
 	cmat spec = cmat::Zero(D, D);
 	for (std::size_t i = 0; i < D; i++)
-		spec += evalsH(i) * prj((cmat) evectsH.col(i));
+		spec += evalsH(i) * prj(evectsH.col(i));
 	std::cout << "Original matrix: " << std::endl;
 	displn(rH);
 	std::cout << std::endl << "Reconstructed from spectral decomposition: "
@@ -211,7 +211,7 @@ int main()
 	std::cout << std::endl << std::endl
 			<< "Diference in norm for superoperator action: ";
 	cmat rho_out2 = transpose(
-			(cmat) reshape(smat * reshape(transpose(rho_in), d * d, 1), d, d));
+			reshape(smat * reshape(transpose(rho_in), d * d, 1), d, d));
 	std::cout << norm(rho_out - rho_out2) << std::endl;
 
 	// statistics tests
