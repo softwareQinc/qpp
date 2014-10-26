@@ -17,7 +17,8 @@ namespace qpp
  * \brief Transpose
  *
  * \param A Eigen expression
- * \return Transpose of \a A, as a dynamic matrix over the same scalar field
+ * \return Transpose of \a A, as a dynamic matrix
+ * over the same scalar field as \a A
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> transpose(const Eigen::MatrixBase<Derived>& A)
@@ -37,7 +38,7 @@ DynMat<typename Derived::Scalar> transpose(const Eigen::MatrixBase<Derived>& A)
  *
  * \param A Eigen expression
  * \return Complex conjugate of \a A, as a dynamic matrix
- * over the same scalar field
+ * over the same scalar field as \a A
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> conjugate(const Eigen::MatrixBase<Derived>& A)
@@ -57,7 +58,7 @@ DynMat<typename Derived::Scalar> conjugate(const Eigen::MatrixBase<Derived>& A)
  *
  * \param A Eigen expression
  * \return Adjoint (Hermitian conjugate) of \a A, as a dynamic matrix
- * over the same scalar field
+ * over the same scalar field as \a A
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> adjoint(const Eigen::MatrixBase<Derived>& A)
@@ -75,7 +76,8 @@ DynMat<typename Derived::Scalar> adjoint(const Eigen::MatrixBase<Derived>& A)
  * \brief Inverse
  *
  * \param A Eigen expression
- * \return Inverse of \a A, as a dynamic matrix over the same scalar field
+ * \return Inverse of \a A, as a dynamic matrix
+ * over the same scalar field as \a A
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> inverse(const Eigen::MatrixBase<Derived>& A)
@@ -93,7 +95,7 @@ DynMat<typename Derived::Scalar> inverse(const Eigen::MatrixBase<Derived>& A)
  * \brief Trace
  *
  * \param A Eigen expression
- * \return Trace of \a A, as a scalar over the same scalar field
+ * \return Trace of \a A, as a scalar in the same scalar field as \a A
  */
 template<typename Derived>
 typename Derived::Scalar trace(const Eigen::MatrixBase<Derived>& A)
@@ -112,7 +114,7 @@ typename Derived::Scalar trace(const Eigen::MatrixBase<Derived>& A)
  * \brief Determinant
  *
  * \param A Eigen expression
- * \return Determinant of \a A, as a scalar over the same scalar field\n
+ * \return Determinant of \a A, as a scalar in the same scalar field as \a A\n
  * Returns \f$\pm \infty\f$ when the determinant overflows/underflows
  */
 template<typename Derived>
@@ -135,7 +137,7 @@ typename Derived::Scalar det(const Eigen::MatrixBase<Derived>& A)
  *
  * \param A Eigen expression
  * \return Logarithm of the determinant of \a A, as a scalar
- * over the same scalar field
+ * in the same scalar field as \a A
  */
 template<typename Derived>
 typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A)
@@ -167,7 +169,8 @@ typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A)
  * \brief Element-wise sum of \a A
  *
  * \param A Eigen expression
- * \return Element-wise sum of \a A, as a scalar over the same scalar field
+ * \return Element-wise sum of \a A, as a scalar
+ * in the same scalar field as \a A
  */
 template<typename Derived>
 typename Derived::Scalar sum(const Eigen::MatrixBase<Derived>& A)
@@ -186,7 +189,8 @@ typename Derived::Scalar sum(const Eigen::MatrixBase<Derived>& A)
  * \brief Element-wise product of \a A
  *
  * \param A Eigen expression
- * \return Element-wise product of \a A, as a scalar over the same scalar field
+ * \return Element-wise product of \a A, as a scalar
+ * in the same scalar field as \a A
  */
 template<typename Derived>
 typename Derived::Scalar prod(const Eigen::MatrixBase<Derived>& A)
@@ -528,7 +532,7 @@ cmat spectralpowm(const Eigen::MatrixBase<Derived> &A, const cplx z)
  * \param A Eigen expression
  * \param n Non-negative integer
  * \return Matrix power \f$A^n\f$, as a dynamic matrix
- * over the same scalar field
+ * over the same scalar field as \a A
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived> &A,
@@ -609,7 +613,8 @@ DynMat<typename T::Scalar> kron(const T& head)
  * \param head Eigen expression
  * \param tail Variadic Eigen expression (zero or more parameters)
  * \return Kronecker product of all input parameters,
- * evaluated from left to right, as a dynamic matrix over the same scalar field
+ * evaluated from left to right, as a dynamic matrix
+ * over the same scalar field as its arguments
  */
 template<typename T, typename ... Args>
 DynMat<typename T::Scalar> kron(const T& head, const Args&... tail)
@@ -622,7 +627,8 @@ DynMat<typename T::Scalar> kron(const T& head, const Args&... tail)
  *
  * \param As std::vector of Eigen expressions
  * \return Kronecker product of all elements in \a As,
- * evaluated from left to right, as a dynamic matrix over the same scalar field
+ * evaluated from left to right, as a dynamic matrix
+ * over the same scalar field as its arguments
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> kron(const std::vector<Derived> &As)
@@ -651,7 +657,8 @@ DynMat<typename Derived::Scalar> kron(const std::vector<Derived> &As)
  * \param As std::initializer_list of Eigen expressions,
  * such as \a {A1, A2, ... ,Ak}
  * \return Kronecker product of all elements in \a As,
- * evaluated from left to right, as a dynamic matrix over the same scalar field
+ * evaluated from left to right, as a dynamic matrix
+ * over the same scalar field as its arguments
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> kron(const std::initializer_list<Derived> &As)
@@ -665,7 +672,7 @@ DynMat<typename Derived::Scalar> kron(const std::initializer_list<Derived> &As)
  * \param A Eigen expression
  * \param n Non-negative integer
  * \return Kronecker product of \a A with itself \a n times \f$A^{\otimes n}\f$,
- * as a dynamic matrix over the same scalar field
+ * as a dynamic matrix over the same scalar field as \a A
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> kronpow(const Eigen::MatrixBase<Derived>& A,
@@ -697,7 +704,7 @@ DynMat<typename Derived::Scalar> kronpow(const Eigen::MatrixBase<Derived>& A,
  * \param rows Number of rows of the reshaped matrix
  * \param cols Number of columns of the reshaped matrix
  * \return Reshaped matrix with \a rows rows and \a cols columns,
- * as a dynamic matrix over the same scalar field
+ * as a dynamic matrix over the same scalar field as \a A
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived>& A,
@@ -728,7 +735,8 @@ DynMat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived>& A,
  * \param A Eigen expression
  * \param perm Permutation
  * \param dims Subsystems' dimensions
- * \return Permuted system, as a dynamic matrix over the same scalar field
+ * \return Permuted system, as a dynamic matrix
+ * over the same scalar field as \a A
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> syspermute(const Eigen::MatrixBase<Derived>& A,
@@ -855,7 +863,7 @@ DynMat<typename Derived::Scalar> syspermute(const Eigen::MatrixBase<Derived>& A,
  * (must be a std::vector with 2 elements)
  * \return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$
  * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
- * over the same scalar field
+ * over the same scalar field as \a A
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
@@ -915,7 +923,7 @@ DynMat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
  * (must be a std::vector with 2 elements)
  * \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$
  * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
- * over the same scalar field
+ * over the same scalar field as \a A
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
@@ -969,7 +977,8 @@ DynMat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
  * \param subsys Subsystem indexes
  * \param dims Dimensions of the multi-partite system
  * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a subsys
- * in a multi-partite system, as a dynamic matrix over the same scalar field
+ * in a multi-partite system, as a dynamic matrix
+ * over the same scalar field as \a A
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
@@ -1109,7 +1118,7 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
  * \param dims Dimensions of the multi-partite system
  * \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$
  * over the subsytems \a subsys in a multi-partite system, as a dynamic matrix
- * over the same scalar field
+ * over the same scalar field as \a A
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> ptranspose(const Eigen::MatrixBase<Derived>& A,
@@ -1202,7 +1211,7 @@ DynMat<typename Derived::Scalar> ptranspose(const Eigen::MatrixBase<Derived>& A,
  * \param A Eigen expression
  * \param B Eigen expression
  * \return Commutator \f$AB -BA\f$, as a dynamic matrix
- * over the same scalar field
+ * over the same scalar field as \a A
  */
 template<typename Derived1, typename Derived2>
 DynMat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1> &A,
@@ -1242,7 +1251,7 @@ DynMat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1> &A,
  * \param A Eigen expression
  * \param B Eigen expression
  * \return Anti-commutator \f$AB +BA\f$, as a dynamic matrix
- * over the same scalar field
+ * over the same scalar field as \a A
  */
 template<typename Derived1, typename Derived2>
 DynMat<typename Derived1::Scalar> anticomm(const Eigen::MatrixBase<Derived1> &A,
@@ -1281,7 +1290,7 @@ DynMat<typename Derived1::Scalar> anticomm(const Eigen::MatrixBase<Derived1> &A,
  * \param V Eigen expression
  * \return Projector onto the state vector \a V, or the matrix \a Zero
  * if \a V has norm zero (i.e. smaller than \a qpp::eps),
- * as a dynamic matrix over the same scalar field
+ * as a dynamic matrix over the same scalar field as \a A
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& V)
@@ -1315,7 +1324,8 @@ DynMat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& V)
  * \param dims Dimensions of the multi-partite system
  * \return Tensor product
  * \f$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
- * with \a A on position \a pos, as a dynamic matrix over the same scalar field
+ * with \a A on position \a pos, as a dynamic matrix
+ * over the same scalar field as \a A
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> expandout(const Eigen::MatrixBase<Derived>& A,
@@ -1397,7 +1407,7 @@ DynMat<typename Derived::Scalar> expandout(const Eigen::MatrixBase<Derived>& A,
  *
  * \param Vs std::vector of Eigen expressions as column vectors
  * \return Gram-Schmidt vectors of \a Vs as columns of a dynamic matrix
- * over the same scalar field
+ * over the same scalar field as its arguments
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
@@ -1467,7 +1477,7 @@ DynMat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
  *
  * \param Vs std::initializer_list of Eigen expressions as column vectors
  * \return Gram-Schmidt vectors of \a Vs as columns of a dynamic matrix
- * over the same scalar field
+ * over the same scalar field as its arguments
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> grams(const std::initializer_list<Derived>& Vs)
@@ -1480,7 +1490,7 @@ DynMat<typename Derived::Scalar> grams(const std::initializer_list<Derived>& Vs)
  *
  * \param A Eigen expression, the input vectors are the columns of \a A
  * \return Gram-Schmidt vectors of the columns of \a A,
- * as columns of a dynamic matrix over the same scalar field
+ * as columns of a dynamic matrix over the same scalar field as \a A
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A)
@@ -1762,7 +1772,7 @@ std::vector<double> amplitudes(const Eigen::MatrixBase<Derived>& V)
  * @param first Iterator to the first element of the range
  * @param last  Iterator to the last element of the range
  * \return Element-wise sum of the range,
- * as a scalar over the same scalar field
+ * as a scalar in the same scalar field as the range
  */
 template<typename InputIterator>
 auto sum(InputIterator first,
@@ -1778,7 +1788,7 @@ auto sum(InputIterator first,
  * @param first Iterator to the first element of the range
  * @param last  Iterator to the last element of the range
  * \return Element-wise product of the range,
- * as a scalar over the same scalar field
+ * as a scalar in the same scalar field as the range
  */
 template<typename InputIterator>
 auto prod(InputIterator first,
