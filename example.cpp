@@ -217,7 +217,6 @@ int main()
 	std::vector<double> probs = dc.probabilities();
 	displn(probs, ", ", "{", "}");
 	cout << "Their sum is: " << sum(probs) << endl;
-	cout << "Their product is: " << prod(probs) << endl;
 
 	// 	// TIMING tests
 	cout << endl << "Timing tests..." << endl;
