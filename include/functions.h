@@ -1760,7 +1760,7 @@ std::vector<double> amplitudes(const Eigen::MatrixBase<Derived>& V)
  * \brief Element-wise sum of a range
  *
  * @param first Iterator to the first element of the range
- * @param last  Iterator to the last element of the rangeer
+ * @param last  Iterator to the last element of the range
  * \return Element-wise sum of the range,
  * as a scalar over the same scalar field
  */
@@ -1776,7 +1776,7 @@ auto sum(InputIterator first,
  * \brief Element-wise product of a range
  *
  * @param first Iterator to the first element of the range
- * @param last  Iterator to the last element of the rangeer
+ * @param last  Iterator to the last element of the range
  * \return Element-wise product of the range,
  * as a scalar over the same scalar field
  */
