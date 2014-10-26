@@ -17,7 +17,6 @@
 // should be faster than apply(...CTRL...)
 // TODO: parallelize everything! (IMPORTANT)
 
-using namespace std;
 using namespace qpp;
 
 cplx pow3(const cplx& z) // a test function
@@ -27,44 +26,45 @@ cplx pow3(const cplx& z) // a test function
 
 int main()
 {
-	cout << "Starting qpp..." << endl;
+	std::cout << "Starting qpp..." << std::endl;
 
 	// output format
-	//cout << std::scientific;
-	cout << std::fixed; // use fixed format for nice formatting
-	cout << std::setprecision(4); // only for fixed or scientific modes
+	//std::cout << std::scientific;
+	std::cout << std::fixed; // use fixed format for nice formatting
+	std::cout << std::setprecision(4); // only for fixed or scientific modes
 
 //	/*
 	// TESTING
 	// testing channel and Gates::apply
-	cout << endl << "Testing channel(...) and Gates::apply(...)." << endl;
+	std::cout << std::endl << "Testing channel(...) and Gates::apply(...)."
+			<< std::endl;
 	cmat rho = randrho(16);
 	cmat K = kron(gt.Id2, gt.X, gt.Y, gt.Z);
-	vector<std::size_t> p = randperm(4); // permutation
-	cout << "Permutation: ";
+	std::vector<std::size_t> p = randperm(4); // permutation
+	std::cout << "Permutation: ";
 	displn(p, ", ");
-	vector<std::size_t> invp = invperm(p); // inverse permutation
-	cout << "Inverse permutation: ";
+	std::vector<std::size_t> invp = invperm(p); // inverse permutation
+	std::cout << "Inverse permutation: ";
 	displn(invp, ", ");
 	cmat r1 = channel(rho, { K }, p, { 2, 2, 2, 2 });
 	cmat r2 = syspermute(channel(syspermute(rho, p, { 2, 2, 2, 2 }), { K }, { 0,
 			1, 2, 3 }, { 2, 2, 2, 2 }), invp, { 2, 2, 2, 2 });
-	cout << norm(r1 - r2) << endl << endl;
+	std::cout << norm(r1 - r2) << std::endl << std::endl;
 
 	r1 = gt.apply(rho, K, p, { 2, 2, 2, 2 });
 	r2 = syspermute(
 			gt.apply(syspermute(rho, p, { 2, 2, 2, 2 }), K, { 0, 1, 2, 3 }, { 2,
 					2, 2, 2 }), invp, { 2, 2, 2, 2 });
-	cout << norm(r1 - r2) << endl << endl;
+	std::cout << norm(r1 - r2) << std::endl << std::endl;
 
 	displn(channel(prj(mket( { 0, 1 })), { gt.CNOTab }, { 1, 0 }, { 2, 2 }));
-	cout << endl;
+	std::cout << std::endl;
 	displn(gt.apply(mket( { 0, 0 }), gt.CNOTab, { 0, 1 }, { 2, 2 }));
 
 	// quantum teleportation
-	cout << endl << "Qudit teleportation." << endl;
+	std::cout << std::endl << "Qudit teleportation." << std::endl;
 	ket psi = randket(2); // a random state;
-	cout << "|psi><psi|:" << endl;
+	std::cout << "|psi><psi|:" << std::endl;
 	displn(prj(psi));
 	cmat telecircuit = expandout(gt.H, { 0 }, { 2, 2, 2 })
 			* gt.CTRL(gt.X, { 0 }, { 1 }, 3);
@@ -77,82 +77,87 @@ int main()
 			* psiout;
 	// not necessary to normalize, prj() takes care of it below
 	cmat rhoout = ptrace(prj(psiout), { 0, 1 }, { 2, 2, 2 });
-	cout << endl << "Teleported state:" << endl;
+	std::cout << std::endl << "Teleported state:" << std::endl;
 	displn(rhoout);
-	cout << "Difference in norm: " << norm(prj(psi) - rhoout) << endl;
+	std::cout << "Difference in norm: " << norm(prj(psi) - rhoout) << std::endl;
 
 	// qudit measurements
-	cout << endl << "Qudit measurements." << endl;
-	cout << "Initially in state |0><0|." << endl;
+	std::cout << std::endl << "Qudit measurements." << std::endl;
+	std::cout << "Initially in state |0><0|." << std::endl;
 	ket zd0(3);
 	zd0 << 1, 0, 0;
 	Qudit q(prj(zd0));
-	cout << "Measuring Z operator non-destructively. Results:" << endl;
-	cout << q.measure() << endl;
-	cout << q.measure() << endl;
-	cout << q.measure() << endl;
-	cout << "Measuring X operator non-destructively. Results:" << endl;
-	cout << q.measure(gt.Xd(3)) << endl;
-	cout << q.measure(gt.Xd(3)) << endl;
-	cout << q.measure(gt.Xd(3)) << endl;
+	std::cout << "Measuring Z operator non-destructively. Results:"
+			<< std::endl;
+	std::cout << q.measure() << std::endl;
+	std::cout << q.measure() << std::endl;
+	std::cout << q.measure() << std::endl;
+	std::cout << "Measuring X operator non-destructively. Results:"
+			<< std::endl;
+	std::cout << q.measure(gt.Xd(3)) << std::endl;
+	std::cout << q.measure(gt.Xd(3)) << std::endl;
+	std::cout << q.measure(gt.Xd(3)) << std::endl;
 	// von Neumann projective measurement
-	cout << "Measuring X operator destructively (collapse). Results:" << endl;
-	cout << q.measure(gt.Xd(3), true) << endl;
-	cout << q.measure(gt.Xd(3)) << endl;
-	cout << q.measure(gt.Xd(3)) << endl;
-	cout << "Finally measuring Z operator destructively. Results:" << endl;
-	cout << q.measure(true) << endl;
-	cout << q.measure() << endl;
-	cout << q.measure() << endl;
-	cout << "Final state of qudit:" << endl;
+	std::cout << "Measuring X operator destructively (collapse). Results:"
+			<< std::endl;
+	std::cout << q.measure(gt.Xd(3), true) << std::endl;
+	std::cout << q.measure(gt.Xd(3)) << std::endl;
+	std::cout << q.measure(gt.Xd(3)) << std::endl;
+	std::cout << "Finally measuring Z operator destructively. Results:"
+			<< std::endl;
+	std::cout << q.measure(true) << std::endl;
+	std::cout << q.measure() << std::endl;
+	std::cout << q.measure() << std::endl;
+	std::cout << "Final state of qudit:" << std::endl;
 	displn(q.getRho());
 
 	// Bell state generator
-	cout << endl << "Bell state generator: " << endl;
+	std::cout << std::endl << "Bell state generator: " << std::endl;
 	cmat circuit;
 	circuit = gt.CTRL(gt.X, { 0 }, { 1 }, 2) * expandout(gt.H, 0, { 2, 2 });
 	cmat input = kron(st.z0, st.z0);
 	cmat output = circuit * input;
-	cout << "Circuit matrix representation: " << endl;
+	std::cout << "Circuit matrix representation: " << std::endl;
 	displn(circuit);
-	cout << endl << "Output (|Bell_0> state) of the circuit on |00>: " << endl;
+	std::cout << std::endl << "Output (|Bell_0> state) of the circuit on |00>: "
+			<< std::endl;
 	displn(output);
 
 	// 3-qubit repetion code
-	cout << endl << "3-qubit repetition code: " << endl;
+	std::cout << std::endl << "3-qubit repetition code: " << std::endl;
 	cmat rep;
 	rep = gt.CTRL(gt.X, { 0 }, { 2 }, 3) * gt.CTRL(gt.X, { 0 }, { 1 }, 3);
 	input = kron(st.z1, st.z0, st.z0);
 	output = rep * input;
-	cout << "Circuit acting on |000> produces |111>. Check: " << endl;
+	std::cout << "Circuit acting on |000> produces |111>. Check: " << std::endl;
 	displn(output);
 
 	// functor test
-	cout << endl << "Functor z^3 acting on:" << endl;
+	std::cout << std::endl << "Functor z^3 acting on:" << std::endl;
 	cmat a(2, 2);
 	a << 1, 2, 3, 4;
 	displn(a);
-	cout << "Result (with lambda):" << endl;
+	std::cout << "Result (with lambda):" << std::endl;
 	// functor z^3 componentwise, specify OutputScalar and Derived for lambdas
 	displn(cwise<cplx, cmat>(a, [](const cplx& z)->cplx
 	{	return z*z*z;}));
-	cout << "Result (with proper function):" << endl;
+	std::cout << "Result (with proper function):" << std::endl;
 	// automatic type deduction for proper functions
 	displn(cwise(a, &pow3));
 
 	// Gram-Schmidt
-	cout << endl << "Gram-Schmidt on matrix:" << endl;
+	std::cout << std::endl << "Gram-Schmidt on matrix:" << std::endl;
 	cmat A(3, 3);
 	A << 1, 1, 0, 0, 2, 0, 0, 0, 0;
 	displn(A);
 	cmat Ags = grams(A);
-	cout << endl << "Result:" << endl;
+	std::cout << std::endl << "Result:" << std::endl;
 	displn(Ags);
-	cout << endl << "Projector is:" << endl;
+	std::cout << std::endl << "Projector is:" << std::endl;
 	displn(Ags * adjoint(Ags));
 
 	// spectral decomposition test
-	cout << endl << "Spectral decomposition tests." << endl;
+	std::cout << std::endl << "Spectral decomposition tests." << std::endl;
 	std::size_t D = 4;
 	cmat rH = randH(D);
 	dmat evalsH = hevals(rH);
@@ -160,51 +165,57 @@ int main()
 	cmat spec = cmat::Zero(D, D);
 	for (std::size_t i = 0; i < D; i++)
 		spec += evalsH(i) * prj((cmat) evectsH.col(i));
-	cout << "Original matrix: " << endl;
+	std::cout << "Original matrix: " << std::endl;
 	displn(rH);
-	cout << endl << "Reconstructed from spectral decomposition: " << endl;
+	std::cout << std::endl << "Reconstructed from spectral decomposition: "
+			<< std::endl;
 	displn(spec);
-	cout << "Difference in norm: " << norm(spec - rH) << endl;
+	std::cout << "Difference in norm: " << norm(spec - rH) << std::endl;
 
 	// channel tests
-	cout << endl << "Channel tests." << endl;
+	std::cout << std::endl << "Channel tests." << std::endl;
 	std::size_t nk = 10, d = 2; // nk Kraus on d-dimensional system
-	cout << "Generating a random channel with " << nk
-			<< " Kraus operators on a " << d << " dimensional space..." << endl;
+	std::cout << "Generating a random channel with " << nk
+			<< " Kraus operators on a " << d << " dimensional space..."
+			<< std::endl;
 	std::vector<cmat> Ks = randkraus(nk, d);
 
 	cmat rho_in = randrho(d); // input state
 	cmat rho_out = channel(rho_in, Ks); // output state
 
-	cout << "Computing its Choi matrix..." << endl;
+	std::cout << "Computing its Choi matrix..." << std::endl;
 	cmat choim = choi(Ks);
-	cout << "Choi matrix:" << endl;
+	std::cout << "Choi matrix:" << std::endl;
 	displn(choim);
-	cout << endl << "The eigenvalues of the Choi matrix are: " << endl;
+	std::cout << std::endl << "The eigenvalues of the Choi matrix are: "
+			<< std::endl;
 	displn(transpose(hevals(choim)));
-	cout << endl << "Their sum is: " << sum(hevals(choim)) << endl;
+	std::cout << std::endl << "Their sum is: " << sum(hevals(choim))
+			<< std::endl;
 	std::vector<cmat> Kperps = choi2kraus(choim);
-	cout << endl << "The Kraus rank of the channel is: " << Kperps.size()
-			<< endl;
+	std::cout << std::endl << "The Kraus rank of the channel is: "
+			<< Kperps.size() << std::endl;
 	cmat rho_out1 = channel(rho_in, Kperps);
-	cout << endl << "Difference in norm on output states: "
-			<< norm(rho_out1 - rho_out) << endl;
-	cout << endl << "Superoperator matrix:" << endl;
+	std::cout << std::endl << "Difference in norm on output states: "
+			<< norm(rho_out1 - rho_out) << std::endl;
+	std::cout << std::endl << "Superoperator matrix:" << std::endl;
 	cmat smat = super(Ks);
 	displn(smat);
-	cout << endl << "The eigenvalues of the superoperator matrix are: " << endl;
+	std::cout << std::endl
+			<< "The eigenvalues of the superoperator matrix are: " << std::endl;
 	cmat evalsupop = evals(smat);
 	displn(transpose(evalsupop));
-	cout << endl << "Their absolute values are: " << endl;
+	std::cout << std::endl << "Their absolute values are: " << std::endl;
 	for (std::size_t i = 0; i < (std::size_t) evalsupop.size(); i++)
-		cout << std::abs((cplx) evalsupop(i)) << " ";
-	cout << endl << endl << "Diference in norm for superoperator action: ";
+		std::cout << std::abs((cplx) evalsupop(i)) << " ";
+	std::cout << std::endl << std::endl
+			<< "Diference in norm for superoperator action: ";
 	cmat rho_out2 = transpose(
 			(cmat) reshape(smat * reshape(transpose(rho_in), d * d, 1), d, d));
-	cout << norm(rho_out - rho_out2) << endl;
+	std::cout << norm(rho_out - rho_out2) << std::endl;
 
 	// statistics tests
-	cout << endl << "Statistics tests." << endl;
+	std::cout << std::endl << "Statistics tests." << std::endl;
 	std::vector<cplx> ampl = { 1. + 1_i, 1. - 1_i };
 	ket va(4);
 	va << 0.1, 1, 1. + 1_i, 1. + 2_i;
@@ -212,97 +223,98 @@ int main()
 	std::discrete_distribution<std::size_t> dc(std::begin(weights),
 			std::end(weights));
 
-	cout << "The probabilities are: ";
+	std::cout << "The probabilities are: ";
 	std::vector<double> probs = dc.probabilities();
 	displn(probs, ", ", "{", "}");
-	cout << "Their sum is: " << sum(std::begin(probs), std::end(probs)) << endl;
+	std::cout << "Their sum is: " << sum(std::begin(probs), std::end(probs))
+			<< std::endl;
 
 	// 	// TIMING tests
-	cout << endl << "Timing tests..." << endl;
+	std::cout << std::endl << "Timing tests..." << std::endl;
 	std::size_t n = 12; // number of qubits
 	std::size_t N = std::pow(2, n);
-	vector<std::size_t> dims(n, 2); // local dimensions
-	cout << "n = " << n << " qubits, matrix size " << N << " x " << N << "."
-			<< endl;
+	std::vector<std::size_t> dims(n, 2); // local dimensions
+	std::cout << "n = " << n << " qubits, matrix size " << N << " x " << N
+			<< "." << std::endl;
 
 	// matrix initialization
-	cout << endl << "Matrix initialization timing." << endl;
+	std::cout << std::endl << "Matrix initialization timing." << std::endl;
 	// start the timer, automatic tic() in the constructor
 	Timer t, total;
 	cmat randcmat = cmat::Random(N, N);
 	t.toc(); // read the time
-	cout << "Took " << t << " seconds." << endl;
+	std::cout << "Took " << t << " seconds." << std::endl;
 
 	// lazy matrix product
-	cout << endl << "Lazy matrix product timing." << endl;
+	std::cout << std::endl << "Lazy matrix product timing." << std::endl;
 	t.tic();
 	auto lazyprod = randcmat * randcmat; // lazyprod has type GenMatProduct
 	t.toc(); // read the time
-	cout << "Took " << t << " seconds." << endl;
+	std::cout << "Took " << t << " seconds." << std::endl;
 
 	// ptrace1 timing
-	cout << endl << "ptrace1 timing." << endl;
+	std::cout << std::endl << "ptrace1 timing." << std::endl;
 	t.tic(); // reset the chronometer
 	// trace away half of the qubits
 	ptrace1(randcmat,
 			{ (std::size_t) std::sqrt(N), (std::size_t) std::sqrt(N) });
 	t.toc(); // read the time
-	cout << "Took " << t << " seconds." << endl;
+	std::cout << "Took " << t << " seconds." << std::endl;
 
 	// ptrace2 timing
-	cout << endl << "ptrace2 timing." << endl;
+	std::cout << std::endl << "ptrace2 timing." << std::endl;
 	t.tic(); // reset the chronometer
 	// trace away half of the qubits
 	ptrace2(randcmat,
 			{ (std::size_t) std::sqrt(N), (std::size_t) std::sqrt(N) });
 	t.toc(); // read the time
-	cout << "Took " << t << " seconds." << endl;
+	std::cout << "Took " << t << " seconds." << std::endl;
 
 	// ptrace
-	cout << endl << "ptrace timing." << endl;
-	vector<std::size_t> subsys_ptrace = { 0 };
-	cout << "Subsytem(s): ";
+	std::cout << std::endl << "ptrace timing." << std::endl;
+	std::vector<std::size_t> subsys_ptrace = { 0 };
+	std::cout << "Subsytem(s): ";
 	displn(subsys_ptrace, ", ");
 	t.tic();
 	ptrace(randcmat, subsys_ptrace, dims);
 	t.toc();
-	cout << "Took " << t << " seconds." << endl;
+	std::cout << "Took " << t << " seconds." << std::endl;
 
 	// ptranspose
-	cout << endl << "ptranspose timing." << endl;
-	vector<std::size_t> subsys_ptranspose; // partially transpose n-1 subsystems
+	std::cout << std::endl << "ptranspose timing." << std::endl;
+	std::vector<std::size_t> subsys_ptranspose; // partially transpose n-1 subsystems
 	for (std::size_t i = 0; i < n - 1; i++)
 		subsys_ptranspose.push_back(i);
-	cout << "Subsytem(s): ";
+	std::cout << "Subsytem(s): ";
 	displn(subsys_ptranspose, ", ");
 	t.tic();
 	ptranspose(randcmat, subsys_ptranspose, dims);
 	t.toc();
-	cout << "Took " << t << " seconds." << endl;
+	std::cout << "Took " << t << " seconds." << std::endl;
 
 	// syspermute
-	cout << endl << "syspermute timing." << endl;
-	vector<std::size_t> perm; // left-shift all subsystems by 1
+	std::cout << std::endl << "syspermute timing." << std::endl;
+	std::vector<std::size_t> perm; // left-shift all subsystems by 1
 	for (std::size_t i = 0; i < n; i++)
 		perm.push_back((i + 1) % n);
-	cout << "Subsytem(s): ";
+	std::cout << "Subsytem(s): ";
 	displn(perm, ", ");
 	t.tic();
 	syspermute(randcmat, perm, dims);
 	t.toc();
-	cout << "Took " << t << " seconds." << endl;
+	std::cout << "Took " << t << " seconds." << std::endl;
 
 	//	 // matrix product
-	//	 cout << endl << "Matrix product timing." << endl;
+	//	 std::cout << std::endl << "Matrix product timing." << std::endl;
 	//	 t.tic(); // reset the chronometer
 	//	 cmat prodmat = randcmat * randcmat; // explicit cmat now
 	//	 t.toc(); // read the time
-	//	 cout << "Took " << t << " seconds." << endl;
+	//	 std::cout << "Took " << t << " seconds." << std::endl;
 
 	// END TIMING
 	total.toc(); // read the total running time
-	cout << endl << "Total time: " << total.seconds() << " seconds.";
+	std::cout << std::endl << "Total time: " << total.seconds() << " seconds.";
 	//	 */
 
-	cout << endl << "Exiting qpp..." << endl;
+	std::cout << std::endl << "Exiting qpp..." << std::endl;
 }
