@@ -11,32 +11,38 @@
 namespace qpp
 {
 
+/**
+ * \class qpp::Gates
+ * \brief Singleton class that implements most commonly used gates
+ */
 class Gates: public internal::Singleton<const Gates> // const Singleton
 {
-	friend class internal::Singleton<const Gates> ;
+	friend class internal::Singleton<const Gates>;
 public:
-	// one qubit gates
-	cmat Id2 { cmat::Identity(2, 2) }; // Identity matrix
-	cmat H { cmat::Zero(2, 2) }; // Hadamard matrix
-	cmat X { cmat::Zero(2, 2) }; // X matrix
-	cmat Y { cmat::Zero(2, 2) }; // Y matrix
-	cmat Z { cmat::Zero(2, 2) }; // Z matrix
-	cmat S { cmat::Zero(2, 2) }; // S gate
-	cmat T { cmat::Zero(2, 2) }; // T gate
+	// One qubit gates
+	cmat Id2 { cmat::Identity(2, 2) }; ///< Identity gate
+	cmat H { cmat::Zero(2, 2) }; ///< Hadamard gate
+	cmat X { cmat::Zero(2, 2) }; ///< Pauli Sigma-X gate
+	cmat Y { cmat::Zero(2, 2) }; ///< Pauli Sigma-Y gate
+	cmat Z { cmat::Zero(2, 2) }; ///< Pauli Sigma-Z gate
+	cmat S { cmat::Zero(2, 2) }; ///< S gate
+	cmat T { cmat::Zero(2, 2) }; ///< T gate
 
 	// two qubit gates
-	cmat CNOTab { cmat::Identity(4, 4) }; // CNOT ctrl1 target2
-	cmat CZ { cmat::Identity(4, 4) }; // Controlled-Phase (Controlled-Z)
-	cmat CNOTba { cmat::Zero(4, 4) }; // CNOT ctrl2 target1
-	cmat SWAP { cmat::Identity(4, 4) }; // SWAP gate
+	cmat CNOTab { cmat::Identity(4, 4) }; ///< Controlled-NOT control target gate
+	cmat CZ { cmat::Identity(4, 4) }; ///< Controlled-Phase gate
+	cmat CNOTba { cmat::Zero(4, 4) }; ///< Controlled-NOT target control gate
+	cmat SWAP { cmat::Identity(4, 4) }; ///< SWAP gate
 
 	// three qubit gates
-	cmat TOF { cmat::Identity(8, 8) }; // Toffoli
-	cmat FRED { cmat::Identity(8, 8) }; // Fredkin
+	cmat TOF { cmat::Identity(8, 8) }; ///< Toffoli gate
+	cmat FRED { cmat::Identity(8, 8) }; ///< Fredkin gate
 private:
+	/**
+	 * \brief Initializes the gates
+	 */
 	Gates()
 	{
-		// initialize the constants and gates
 		H << 1 / std::sqrt(2.), 1 / std::sqrt(2.), 1 / std::sqrt(2.), -1
 				/ std::sqrt(2.);
 		X << 0, 1, 1, 0;
@@ -56,11 +62,17 @@ private:
 		FRED.block(4, 4, 4, 4) = SWAP;
 	}
 public:
-	// gates with variable dimension
+	// variable gates
 
 	// one qubit gates
 
-	// Rotation of theta about n (a unit vector {nx, ny, nz})
+	/**
+	 * \brief Rotation of \a theta about the 3-dimensional real unit vector \a n
+	 *
+	 * @param theta Rotation angle
+	 * @param n 3-dimensional real unit vector
+	 * @return Rotation gate
+	 */
 	cmat Rn(double theta, std::vector<double> n) const
 	{
 		if (n.size() != 3) // not a 3-D vector
@@ -74,6 +86,14 @@ public:
 
 	// one quDit gates
 
+	/**
+	 * \brief Generalized Z gate for qudits
+	 *
+	 * \note Defined as \f$ Z = \sum_j \exp(2\pi i j/D) |j\rangle\langle j| \f$
+	 *
+	 * @param D Dimension of the Hilbert space
+	 * @return Generalized Z gate for qudits
+	 */
 	cmat Zd(std::size_t D) const
 	{
 		if (D == 0)
@@ -86,6 +106,14 @@ public:
 		return result;
 	}
 
+	/**
+	 * \brief Fourier transform gate for qudits
+	 *
+	 * \note Defined as \f$ F = \sum_{jk} \exp(2\pi i jk/D) |j\rangle\langle k| \f$
+	 *
+	 * @param D Dimension of the Hilbert space
+	 * @return Fourier transform gate for qudits
+	 */
 	cmat Fd(std::size_t D) const
 	{
 		if (D == 0)
@@ -100,7 +128,15 @@ public:
 		return result;
 	}
 
-	cmat Xd(std::size_t D) const // X|k>=|k+1>
+	/**
+	 * \brief Generalized X gate for qudits
+	 *
+	 * \note Defined as \f$ X = \sum_j |j\oplus 1\rangle\langle j| \f$
+	 *
+	 * @param D Dimension of the Hilbert space
+	 * @return Generalized X gate for qudits
+	 */
+	cmat Xd(std::size_t D) const
 	{
 		if (D == 0)
 			throw Exception("Gates::Xd", Exception::Type::DIMS_INVALID);
@@ -108,6 +144,15 @@ public:
 		return static_cast<cmat>(Fd(D).inverse() * Zd(D) * Fd(D));
 	}
 
+	/**
+	 * \brief Identity gate
+	 *
+	 * \note Can change the return type from complex matrix (default)
+	 * by explicitly specifying the template parameter
+	 *
+	 * @param D Dimension of the Hilbert space
+	 * @return Identity gate
+	 */
 	template<typename Derived = Eigen::MatrixXcd>
 	Derived Id(std::size_t D) const
 	{
@@ -116,8 +161,21 @@ public:
 		return Derived::Identity(D, D);
 	}
 
-	// applies controlled-gate A to part of state vector
-	// or density matrix specified by subsys
+	/**
+	 * \brief Applies the controlled-gate \a A to the part \a subsys
+	 * of a multipartite state vector or density matrix
+	 *
+	 * \note The dimension of the gate \a A must match
+	 * the dimension of \a subsys
+	 *
+	 * @param state Eigen expression
+	 * @param A Eigen expression
+	 * @param ctrl Control subsystem indexes
+	 * @param subsys Subsystem indexes where the gate \a A is applied
+	 * @param n Total number of subsystes
+	 * @param d Local dimensions of all local Hilbert spaces (must all be equal)
+	 * @return CTRL-A gate applied to the part \a subsys of \a state
+	 */
 	template<typename Derived1, typename Derived2>
 	DynMat<typename Derived1::Scalar> applyCTRL(
 			const Eigen::MatrixBase<Derived1>& state,
@@ -128,8 +186,19 @@ public:
 	{
 	}
 
-	// applies gate A to part of state vector
-	// or density matrix specified by subsys
+	/**
+	 * \brief Applies the gate \a A to the part \a subsys
+	 * of a multipartite state vector or density matrix
+	 *
+	 * \note The dimension of the gate \a A must match
+	 * the dimension of \a subsys
+	 *
+	 * @param state Eigen expression
+	 * @param A Eigen expression
+	 * @param subsys Subsystem indexes where the gate \a A is applied
+	 * @param dims Local dimensions of all local Hilbert spaces (can be different)
+	 * @return Gate \a A applied to the part \a subsys of \a state
+	 */
 	template<typename Derived1, typename Derived2>
 	DynMat<typename Derived1::Scalar> apply(
 			const Eigen::MatrixBase<Derived1>& state,
@@ -349,6 +418,20 @@ public:
 	}
 
 	// returns a multi-quDit multi-controlled-gate in matrix form
+	/**
+	 * \brief Generates the multipartite multiple-controlled-\a A gate in matrix form
+	 *
+	 * \note The dimension of the gate \a A must match
+	 * the dimension of \a subsys
+	 *
+	 * @param A Eigen expression
+	 * @param ctrl Control subsystem indexes
+	 * @param subsys Subsystem indexes where the gate \a A is applied
+	 * @param n Total number of subsystes
+	 * @param d Local dimensions of all local Hilbert spaces (must all be equal)
+	 * @return CTRL-A gate, as a matrix over the same scalar field as \a A
+	 */
+
 	template<typename Derived>
 	DynMat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived>& A,
 			const std::vector<std::size_t>& ctrl,
@@ -496,7 +579,8 @@ public:
 		return result;
 	}
 
-}; /* class Gates */
+};
+/* class Gates */
 
 } /* namespace qpp */
 

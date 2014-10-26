@@ -12,6 +12,7 @@ namespace qpp
 {
 
 /**
+ * \class qpp::Exception
  * \brief Generates custom exceptions, used when validating function parameters
  *
  * Customize this class if more exceptions are needed

@@ -13,18 +13,35 @@ namespace qpp
 
 // light wrappers around C++11 statistical distributions
 
+/**
+ * \class qpp::NormalDistribution
+ * \brief Template light wrapper around std::normal_distribution<>, generates
+ * normally-distributed random numbers.
+ *
+ * \note Can change the scalar type from double (default) by
+ * explicitly specifying the template parameter
+ */
 template<typename T = double>
 class NormalDistribution
 {
 protected:
-	std::normal_distribution<T> _d;
+	std::normal_distribution<T> _d; ///< Wrapper around this
 
 public:
+	/**
+	 * \brief Constructs an instance with mean \a mean and standard deviation \a sigma
+	 * @param mean Mean
+	 * @param sigma Standard deviation
+	 */
 	NormalDistribution(T mean = 0, T sigma = 1) :
 			_d(std::normal_distribution<T>(mean, sigma))
 	{
 	}
 
+	/**
+	 * \brief Samples from the distribution
+	 * @return Random number normally distributed in N(\a mean, \a sigma)
+	 */
 	T sample()
 	{
 		return _d(RandomDevices::get_instance()._rng);

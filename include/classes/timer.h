@@ -12,6 +12,7 @@ namespace qpp
 {
 
 /**
+ * \class qpp::Timer
  * \brief Measures time
  *
  * Uses a std::chrono::steady_clock.
@@ -24,7 +25,7 @@ protected:
 
 public:
 	/**
-	 * \brief Constructs the instance with the current time
+	 * \brief Constructs an instance with the current time
 	 * as the starting point
 	 */
 	Timer() :

@@ -948,7 +948,7 @@ DynMat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
  *  over a list of subsystems
  *
  * \param A Eigen expression
- * \param subsys Subsystems' indexes
+ * \param subsys Subsystem indexes
  * \param dims Dimensions of the multi-partite system
  * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a subsys
  * in a multi-partite system, as a dynamic matrix over the same scalar field
@@ -1087,7 +1087,7 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
  *  over a list of subsystems
  *
  * \param A Eigen expression
- * \param subsys Subsystems' indexes
+ * \param subsys Subsystem indexes
  * \param dims Dimensions of the multi-partite system
  * \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$
  * over the subsytems \a subsys in a multi-partite system, as a dynamic matrix

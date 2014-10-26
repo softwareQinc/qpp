@@ -10,47 +10,54 @@
 
 namespace qpp
 {
+/**
+ * \class qpp::States
+ * \brief Singleton class that implements most commonly used states
+ */
 
 class States: public internal::Singleton<const States> // const Singleton
 {
 	friend class internal::Singleton<const States> ;
 public:
 	// Pauli eigen-states
-	ket x0 { ket::Zero(2) };
-	ket x1 { ket::Zero(2) };
-	ket y0 { ket::Zero(2) };
-	ket y1 { ket::Zero(2) };
-	ket z0 { ket::Zero(2) };
-	ket z1 { ket::Zero(2) };
+	ket x0 { ket::Zero(2) }; ///< Pauli Sigma-X 0-eigenstate |+>
+	ket x1 { ket::Zero(2) }; ///< Pauli Sigma-X 1-eigenstate |->
+	ket y0 { ket::Zero(2) }; ///< Pauli Sigma-Y 0-eigenstate
+	ket y1 { ket::Zero(2) }; ///< Pauli Sigma-Y 1-eigenstate
+	ket z0 { ket::Zero(2) }; ///< Pauli Sigma-Z 0-eigenstate |0>
+	ket z1 { ket::Zero(2) }; ///< Pauli Sigma-Z 1-eigenstate |1>
 
 	// projectors onto Pauli eigen-states
-	cmat px0 { cmat::Zero(2, 2) };
-	cmat px1 { cmat::Zero(2, 2) };
-	cmat py0 { cmat::Zero(2, 2) };
-	cmat py1 { cmat::Zero(2, 2) };
-	cmat pz0 { cmat::Zero(2, 2) };
-	cmat pz1 { cmat::Zero(2, 2) };
+	cmat px0 { cmat::Zero(2, 2) }; ///< Projector onto the Pauli Sigma-X 0-eigenstate |+><+|
+	cmat px1 { cmat::Zero(2, 2) }; ///< Projector onto the Pauli Sigma-X 1-eigenstate |-><-|
+	cmat py0 { cmat::Zero(2, 2) }; ///< Projector onto the Pauli Sigma-Y 0-eigenstate
+	cmat py1 { cmat::Zero(2, 2) }; ///< Projector onto the Pauli Sigma-Y 1-eigenstate
+	cmat pz0 { cmat::Zero(2, 2) }; ///< Projector onto the Pauli Sigma-Z 0-eigenstate |0><0|
+	cmat pz1 { cmat::Zero(2, 2) }; ///< Projector onto the Pauli Sigma-Z 1-eigenstate |1><1|
 
 	// Bell states
-	ket b00 { ket::Zero(4) };
-	ket b01 { ket::Zero(4) };
-	ket b10 { ket::Zero(4) };
-	ket b11 { ket::Zero(4) };
+	ket b00 { ket::Zero(4) }; ///< Bell-00 state (following the convention in Nielsen and Chuang)
+	ket b01 { ket::Zero(4) }; ///< Bell-01 state (following the convention in Nielsen and Chuang)
+	ket b10 { ket::Zero(4) }; ///< Bell-10 state (following the convention in Nielsen and Chuang)
+	ket b11 { ket::Zero(4) }; ///< Bell-11 state (following the convention in Nielsen and Chuang)
 
 	// projectors onto Bell states
-	cmat pb00 { cmat::Zero(4, 4) };
-	cmat pb01 { cmat::Zero(4, 4) };
-	cmat pb10 { cmat::Zero(4, 4) };
-	cmat pb11 { cmat::Zero(4, 4) };
+	cmat pb00 { cmat::Zero(4, 4) }; ///< Projector onto the Bell-00 state
+	cmat pb01 { cmat::Zero(4, 4) }; ///< Projector onto the Bell-01 state
+	cmat pb10 { cmat::Zero(4, 4) }; ///< Projector onto the Bell-10 state
+	cmat pb11 { cmat::Zero(4, 4) }; ///< Projector onto the Bell-11 state
 
 	// W and GHZ states
-	ket GHZ { ket::Zero(8) };
-	ket W { ket::Zero(8) };
+	ket GHZ { ket::Zero(8) }; ///< GHZ state
+	ket W { ket::Zero(8) }; ///< W state
 
 	// projectors onto GHZ and W
-	cmat pGHZ { cmat::Zero(8, 8) };
-	cmat pW { cmat::Zero(8, 8) };
+	cmat pGHZ { cmat::Zero(8, 8) }; ///< Projector onto the GHZ state
+	cmat pW { cmat::Zero(8, 8) }; ///< Projector onto the W state
 private:
+	/**
+	 * Initialize the states
+	 */
 	States()
 	{
 		// initialize
