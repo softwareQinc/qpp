@@ -167,8 +167,7 @@ typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A)
  * \brief Element-wise sum
  *
  * \param A Eigen expression
- * \return Element-wise sum of \a A, as a dynamic matrix
- * over the same scalar field
+ * \return Element-wise sum of \a A, as a scalar over the same scalar field
  */
 template<typename Derived>
 typename Derived::Scalar sum(const Eigen::MatrixBase<Derived>& A)
@@ -1694,6 +1693,48 @@ std::vector<std::size_t> compperm(const std::vector<std::size_t>& perm,
 		result[i] = perm[sigma[i]];
 
 	return result;
+}
+
+/**
+ * \brief Computes the absolut values squared of a range of complex numbers
+
+ * @param first Iterator to the first element of the range
+ * @param last  Iterator to the last element of the range
+ * @return Real vector consisting of the range's absolut values squared
+ */
+template<typename InputIterator>
+std::vector<double> amplitudes(InputIterator first, InputIterator last)
+{
+	std::vector<double> weights(last - first);
+	std::transform(first, last, std::begin(weights), [](const cplx &z)->double
+	{	return std::pow(std::abs(z),2);});
+	return weights;
+}
+
+/**
+ * \brief Computes the absolut values squared of a column vector
+
+ * @param V Eigen expression
+ * @return Real vector consisting of the absolut values squared
+ */
+template<typename Derived>
+std::vector<double> amplitudes(const Eigen::MatrixBase<Derived>& V)
+{
+	const DynMat<typename Derived::Scalar> & rV = V;
+
+	// check zero-size
+	if (!internal::_check_nonzero_size(rV))
+		throw Exception("amplitudes", Exception::Type::ZERO_SIZE);
+
+	// check column vector
+	if (!internal::_check_col_vector(rV))
+		throw Exception("amplitudes", Exception::Type::MATRIX_NOT_CVECTOR);
+
+	std::vector<double> weights(rV.size());
+	std::transform(rV.data(), rV.data() + rV.size(), std::begin(weights),
+			[](const cplx &z)->double
+			{	return std::pow(std::abs(z), 2);});
+	return weights;
 }
 
 } /* namespace qpp */

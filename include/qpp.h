@@ -57,7 +57,6 @@
 #include "internal.h"
 #include "functions.h"
 #include "classes/gates.h"
-#include "classes/stat.h"
 #include "entropies.h"
 #include "entanglement.h"
 

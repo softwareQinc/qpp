@@ -41,8 +41,9 @@ public:
 		for (std::size_t i = 0; i < _D; i++)
 			p[i] = std::abs((cplx) trace(prj((cmat) evects(U).col(i)) * _rho));
 
-		DiscreteDistribution<> dd(p);
-		std::size_t result = dd.sample();
+		std::discrete_distribution<std::size_t> dd{std::begin(p), std::end(p)};
+		std::size_t result = dd(RandomDevices::get_instance()._rng);
+
 		if (destructive) // von Neumann
 			_rho = prj((cmat) evects(U).col(result)) * _rho
 					* prj((cmat) evects(U).col(result)) / p[result];

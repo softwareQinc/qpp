@@ -100,8 +100,8 @@ cmat rand(std::size_t rows, std::size_t cols, double a, double b)
  */
 double rand(double a = 0, double b = 1)
 {
-	UniformRealDistribution<> ud(a, b);
-	return ud.sample();
+	std::uniform_real_distribution<> ud(a,b);
+	return ud(RandomDevices::get_instance()._rng);
 }
 
 /**
@@ -115,9 +115,8 @@ double rand(double a = 0, double b = 1)
 int randint(int a = std::numeric_limits<int>::min(), int b =
 		std::numeric_limits<int>::max())
 {
-	UniformIntegerDistribution<int> ud(a, b);
-
-	return ud.sample();
+	std::uniform_int_distribution<int> ud(a, b);
+	return ud(RandomDevices::get_instance()._rng);
 }
 
 /**
@@ -164,10 +163,10 @@ dmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 	if (rows == 0 || cols == 0)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
 
-	NormalDistribution<> nd(mean, sigma);
+	std::normal_distribution<> nd(mean, sigma);
 
 	return dmat::Zero(rows, cols).unaryExpr([&nd](double)
-	{	return nd.sample();});
+	{	return nd(RandomDevices::get_instance()._rng);});
 
 }
 
@@ -197,7 +196,6 @@ cmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 	if (rows == 0 || cols == 0)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
 
-	NormalDistribution<> nd(mean, sigma);
 	return randn < dmat > (rows, cols, mean, sigma).cast<cplx>() + 1_i * randn
 			< dmat > (rows, cols, mean, sigma).cast<cplx>();
 }
@@ -212,8 +210,8 @@ cmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
  */
 double randn(double mean = 0, double sigma = 1)
 {
-	NormalDistribution<> nd(mean, sigma);
-	return nd.sample();
+	std::normal_distribution<> nd(mean, sigma);
+	return nd(RandomDevices::get_instance()._rng);
 }
 
 /**

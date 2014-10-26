@@ -16,8 +16,7 @@
 // TODO: Gates::applyCTRL without need for fully specifying CTRL matrix,
 // should be faster than apply(...CTRL...)
 // TODO: parallelize everything! (IMPORTANT)
-// TODO: simplify statistics distribution wrappers, use std::enable_if and
-// template-ize them (IN PROGRESS)
+// TODO: sum and prod functions for vectors
 
 using namespace std;
 using namespace qpp;
@@ -208,11 +207,17 @@ int main()
 	// statistics tests
 	cout << endl << "Statistics tests." << endl;
 	std::vector<cplx> ampl = { 1. + 1_i, 1. - 1_i };
-	cmat va(1, 4);
+	ket va(4);
 	va << 0.1, 1, 1. + 1_i, 1. + 2_i;
-	DiscreteDistributionAbsSquare<> dc(va);
+	std::vector<double> weights = amplitudes(va);
+	std::discrete_distribution<std::size_t> dc(std::begin(weights),
+			std::end(weights));
+
 	cout << "The probabilities are: ";
-	displn(dc.probabilities(), ", ", "{", "}");
+	auto probs = dc.probabilities();
+	displn(probs, ", ", "{", "}");
+	cout << "Their sum is: "
+			<< std::accumulate(std::begin(probs), std::end(probs), 0) << endl;
 
 	// 	// TIMING tests
 	cout << endl << "Timing tests..." << endl;
