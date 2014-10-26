@@ -209,14 +209,14 @@ int main()
 	std::vector<cplx> ampl = { 1. + 1_i, 1. - 1_i };
 	ket va(4);
 	va << 0.1, 1, 1. + 1_i, 1. + 2_i;
-	std::vector<double> weights = amplitudes(va);
+	std::vector<double> weights = amplitudes(std::begin(ampl), std::end(ampl));
 	std::discrete_distribution<std::size_t> dc(std::begin(weights),
 			std::end(weights));
 
 	cout << "The probabilities are: ";
 	std::vector<double> probs = dc.probabilities();
 	displn(probs, ", ", "{", "}");
-	cout << "Their sum is: " << sum(probs) << endl;
+	cout << "Their sum is: " << sum(std::begin(probs), std::end(probs)) << endl;
 
 	// 	// TIMING tests
 	cout << endl << "Timing tests..." << endl;

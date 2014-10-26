@@ -1738,32 +1738,37 @@ std::vector<double> amplitudes(const Eigen::MatrixBase<Derived>& V)
 }
 
 /**
- * \brief Element-wise sum of standard container
- * that supports std::begin, std::end and forward iteration
+ * \brief Element-wise sum of a range
  *
- * \param x Container
- * \return Element-wise sum of \a x, as a scalar over the same scalar field
+ * @param first Iterator to the first element of the range
+ * @param last  Iterator to the last element of the rangeer
+ * \return Element-wise sum of the range,
+ * as a scalar over the same scalar field
  */
-template<typename T>
-auto sum(const T& x)->typename T::value_type
+template<typename InputIterator>
+auto sum(InputIterator first,
+		InputIterator last)->typename InputIterator::value_type
 {
-	return std::accumulate(std::begin(x), std::end(x),
-			static_cast<typename T::value_type>(0));
+	return std::accumulate(first, last,
+			static_cast<typename InputIterator::value_type>(0));
 }
 
 /**
- * \brief Element-wise product of standard container
- * that supports std::begin, std::end and forward iteration
+ * \brief Element-wise product of a range
  *
- * \param x Container
- * \return Element-wise product of \a x, as a scalar over the same scalar field
+ * @param first Iterator to the first element of the range
+ * @param last  Iterator to the last element of the rangeer
+ * \return Element-wise product of the range,
+ * as a scalar over the same scalar field
  */
-template<typename T>
-auto prod(const T& x)->typename T::value_type
+template<typename InputIterator>
+auto prod(InputIterator first,
+		InputIterator last)->typename InputIterator::value_type
 {
-	return std::accumulate(std::begin(x), std::end(x),
-			static_cast<typename T::value_type>(1),
-			[](const typename T::value_type& x, const typename T::value_type& y)
+	return std::accumulate(first, last,
+			static_cast<typename InputIterator::value_type>(1),
+			[](const typename InputIterator::value_type& x,
+					const typename InputIterator::value_type& y)
 			{
 				return x* y;
 			});
