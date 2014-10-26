@@ -93,7 +93,7 @@ DynMat<typename Derived::Scalar> inverse(const Eigen::MatrixBase<Derived>& A)
  * \brief Trace
  *
  * \param A Eigen expression
- * \return Trace of \a A, as a dynamic matrix over the same scalar field
+ * \return Trace of \a A, as a scalar over the same scalar field
  */
 template<typename Derived>
 typename Derived::Scalar trace(const Eigen::MatrixBase<Derived>& A)
@@ -112,7 +112,7 @@ typename Derived::Scalar trace(const Eigen::MatrixBase<Derived>& A)
  * \brief Determinant
  *
  * \param A Eigen expression
- * \return Determinant of \a A, as a dynamic matrix over the same scalar field\n
+ * \return Determinant of \a A, as a scalar over the same scalar field\n
  * Returns \f$\pm \infty\f$ when the determinant overflows/underflows
  */
 template<typename Derived>
@@ -134,7 +134,7 @@ typename Derived::Scalar det(const Eigen::MatrixBase<Derived>& A)
  * Especially useful when the determinant overflows/underflows\n
  *
  * \param A Eigen expression
- * \return Logarithm of the determinant of \a A, as a dynamic matrix
+ * \return Logarithm of the determinant of \a A, as a scalar
  * over the same scalar field
  */
 template<typename Derived>
