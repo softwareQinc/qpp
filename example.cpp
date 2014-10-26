@@ -216,8 +216,8 @@ int main()
 	cout << "The probabilities are: ";
 	std::vector<double> probs = dc.probabilities();
 	displn(probs, ", ", "{", "}");
-	cout << "Their sum is: "
-			<< std::accumulate(std::begin(probs), std::end(probs), 0.) << endl;
+	cout << "Their sum is: " << sum(probs) << endl;
+	cout << "Their product is: " << prod(probs) << endl;
 
 	// 	// TIMING tests
 	cout << endl << "Timing tests..." << endl;

@@ -164,7 +164,7 @@ typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A)
 }
 
 /**
- * \brief Element-wise sum
+ * \brief Element-wise sum of Eigen expression
  *
  * \param A Eigen expression
  * \return Element-wise sum of \a A, as a scalar over the same scalar field
@@ -1735,6 +1735,36 @@ std::vector<double> amplitudes(const Eigen::MatrixBase<Derived>& V)
 			[](const cplx &z)->double
 			{	return std::pow(std::abs(z), 2);});
 	return weights;
+}
+
+/**
+ * \brief Element-wise sum of standard container
+ *
+ * \param x Container that supports std::begin and std::end
+ * \return Element-wise sum of \a x, as a scalar over the same scalar field
+ */
+template<typename T>
+auto sum(const T& x)->typename T::value_type
+{
+	return std::accumulate(std::begin(x), std::end(x),
+			static_cast<typename T::value_type>(0));
+}
+
+/**
+ * \brief Element-wise product of standard container
+ *
+ * \param x Container that supports std::begin and std::end
+ * \return Element-wise product of \a x, as a scalar over the same scalar field
+ */
+template<typename T>
+auto prod(const T& x)->typename T::value_type
+{
+	return std::accumulate(std::begin(x), std::end(x),
+			static_cast<typename T::value_type>(1),
+			[](const typename T::value_type& x, const typename T::value_type& y)
+			{
+				return x* y;
+			});
 }
 
 } /* namespace qpp */
