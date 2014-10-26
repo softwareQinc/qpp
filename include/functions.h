@@ -1739,8 +1739,9 @@ std::vector<double> amplitudes(const Eigen::MatrixBase<Derived>& V)
 
 /**
  * \brief Element-wise sum of standard container
+ * that supports std::begin, std::end and forward iteration
  *
- * \param x Container that supports std::begin and std::end
+ * \param x Container
  * \return Element-wise sum of \a x, as a scalar over the same scalar field
  */
 template<typename T>
@@ -1752,8 +1753,9 @@ auto sum(const T& x)->typename T::value_type
 
 /**
  * \brief Element-wise product of standard container
+ * that supports std::begin, std::end and forward iteration
  *
- * \param x Container that supports std::begin and std::end
+ * \param x Container
  * \return Element-wise product of \a x, as a scalar over the same scalar field
  */
 template<typename T>
