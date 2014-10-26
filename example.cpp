@@ -16,7 +16,6 @@
 // TODO: Gates::applyCTRL without need for fully specifying CTRL matrix,
 // should be faster than apply(...CTRL...)
 // TODO: parallelize everything! (IMPORTANT)
-// TODO: sum and prod functions for vectors
 
 using namespace std;
 using namespace qpp;
