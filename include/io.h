@@ -274,7 +274,7 @@ void displn(const cplx z, double chop = qpp::chop, std::ostream& os = std::cout)
 
 /**
  * \brief Saves Eigen expression to a binary file (internal format) in double
- * precission
+ * precision
  *
  * \see qpp::saveMATLABmatrix()
  *
@@ -317,7 +317,7 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 
 /**
  * \brief Loads Eigen matrix from a binary file (internal format) in double
- * precission
+ * precision
  *
  * The template parameter cannot be automatically deduced and
  * must be explicitly provided, depending on the scalar field of the matrix
