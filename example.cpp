@@ -51,15 +51,15 @@ int main()
 			1, 2, 3 }, { 2, 2, 2, 2 }), invp, { 2, 2, 2, 2 });
 	std::cout << norm(r1 - r2) << std::endl << std::endl;
 
-	r1 = gt.apply(rho, K, p, { 2, 2, 2, 2 });
+	r1 = apply(rho, K, p, { 2, 2, 2, 2 });
 	r2 = syspermute(
-			gt.apply(syspermute(rho, p, { 2, 2, 2, 2 }), K, { 0, 1, 2, 3 }, { 2,
+			apply(syspermute(rho, p, { 2, 2, 2, 2 }), K, { 0, 1, 2, 3 }, { 2,
 					2, 2, 2 }), invp, { 2, 2, 2, 2 });
 	std::cout << norm(r1 - r2) << std::endl << std::endl;
 
 	displn(channel(prj(mket( { 0, 1 })), { gt.CNOTab }, { 1, 0 }, { 2, 2 }));
 	std::cout << std::endl;
-	displn(gt.apply(mket( { 0, 0 }), gt.CNOTab, { 0, 1 }, { 2, 2 }));
+	displn(apply(mket( { 0, 0 }), gt.CNOTab, { 0, 1 }, { 2, 2 }));
 
 	// quantum teleportation
 	std::cout << std::endl << "Qudit teleportation." << std::endl;

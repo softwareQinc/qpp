@@ -60,7 +60,7 @@
 #include "entropies.h"
 #include "entanglement.h"
 
-#include "channels.h"
+#include "operations.h"
 #include "io.h"
 #include "random.h"
 #include "classes/qudit.h"
