@@ -143,11 +143,11 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
 		return;
 	};
 
-	std::ostringstream ostr { };
+	std::ostringstream ostr;
 	ostr.flags(os.flags()); // get the formatting flags
 	ostr.precision(os.precision()); // set precision
 
-	std::vector<std::string> vstr { };
+	std::vector<std::string> vstr;
 	std::string strA { };
 
 	for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
