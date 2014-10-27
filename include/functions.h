@@ -582,8 +582,8 @@ DynMat<OutputScalar> cwise(const Eigen::MatrixBase<Derived> &A,
 
 	DynMat<OutputScalar> result(rA.rows(), rA.cols());
 
+#pragma omp parallel for collapse(2)
 	for (std::size_t j = 0; j < static_cast<std::size_t>(rA.cols()); j++)
-#pragma omp parallel for
 		for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
 			result(i, j) = (*f)(rA(i, j));
 

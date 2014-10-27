@@ -680,8 +680,8 @@ DynMat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 		return sum;
 	};
 
+#pragma omp parallel for collapse(2)
 	for (std::size_t j = 0; j < DB; j++) // column major order for speed
-#pragma omp parallel for
 		for (std::size_t i = 0; i < DB; i++)
 			result(i, j) = worker(i, j);
 
@@ -732,8 +732,8 @@ DynMat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 	DynMat<typename Derived::Scalar> result =
 			DynMat<typename Derived::Scalar>::Zero(DA, DA);
 
+#pragma omp parallel for collapse(2)
 	for (std::size_t j = 0; j < DA; j++) // column major order for speed
-#pragma omp parallel for
 		for (std::size_t i = 0; i < DA; i++)
 			result(i, j) = trace(rA.block(i * DB, j * DB, DB, DB));
 
@@ -872,8 +872,8 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 			return sm;
 		};
 
+#pragma omp parallel for collapse(2)
 	for (std::size_t i = 0; i < dimsubsysbar; i++)
-#pragma omp parallel for
 		for (std::size_t j = 0; j < dimsubsysbar; j++)
 			result(i, j) = worker(i, j);
 
@@ -961,7 +961,7 @@ DynMat<typename Derived::Scalar> ptranspose(const Eigen::MatrixBase<Derived>& A,
 			result(i, j)=rA(internal::_multiidx2n(midxrow, numdims, cdims),
 					internal::_multiidx2n(midxcoltmp, numdims, cdims));
 
-		};
+	};
 
 	for (std::size_t j = 0; j < D; j++)
 	{

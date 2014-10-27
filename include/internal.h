@@ -254,8 +254,8 @@ DynMat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
 	DynMat<typename Derived1::Scalar> result;
 	result.resize(Arows * Brows, Acols * Bcols);
 
+#pragma omp parallel for collapse(2)
 	for (std::size_t j = 0; j < Acols; j++)
-#pragma omp parallel for
 		for (std::size_t i = 0; i < Arows; i++)
 			result.block(i * Brows, j * Bcols, Brows, Bcols) = rA(i, j) * rB;
 
