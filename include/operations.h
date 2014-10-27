@@ -625,6 +625,481 @@ std::vector<cmat> choi2kraus(const cmat& A)
 	return result;
 }
 
+/**
+ * \brief Partial trace
+ *
+ *  Partial trace of density matrix
+ *  over the first subsystem in a bi-partite system
+ *
+ * \param A Eigen expression
+ * \param dims Dimensions of bi-partite system
+ * (must be a std::vector with 2 elements)
+ * \return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$
+ * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
+ * over the same scalar field as \a A
+ */
+template<typename Derived>
+DynMat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
+		const std::vector<std::size_t>& dims)
+{
+	const DynMat<typename Derived::Scalar> & rA = A;
+
+// Error checks
+
+// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("ptrace1", Exception::Type::ZERO_SIZE);
+
+// check that dims is a valid dimension vector
+	if (!internal::_check_dims(dims))
+		throw Exception("ptrace1", Exception::Type::DIMS_INVALID);
+
+// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("ptrace1", Exception::Type::MATRIX_NOT_SQUARE);
+
+// check dims has only 2 elements
+	if (dims.size() != 2)
+		throw Exception("ptrace1", Exception::Type::NOT_BIPARTITE);
+
+// check that dims match the dimension of A
+	if (!internal::_check_dims_match_mat(dims, rA))
+		throw Exception("ptrace1", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+	std::size_t DA = dims[0];
+	std::size_t DB = dims[1];
+
+	DynMat<typename Derived::Scalar> result =
+			DynMat<typename Derived::Scalar>::Zero(DB, DB);
+
+	auto worker = [&](std::size_t i, std::size_t j)
+	{
+		typename Derived::Scalar sum = 0;
+		for (std::size_t m = 0; m < DA; m++)
+		sum += rA(m * DB + i, m * DB + j);
+		return sum;
+	};
+
+	for (std::size_t j = 0; j < DB; j++) // column major order for speed
+#pragma omp parallel for
+		for (std::size_t i = 0; i < DB; i++)
+			result(i, j) = worker(i, j);
+
+	return result;
+}
+
+/**
+ * \brief Partial trace
+ *
+ * \param A Eigen expression
+ * \param dims Dimensions of bi-partite system
+ * (must be a std::vector with 2 elements)
+ * \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$
+ * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
+ * over the same scalar field as \a A
+ */
+template<typename Derived>
+DynMat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
+		const std::vector<std::size_t>& dims)
+{
+	const DynMat<typename Derived::Scalar> & rA = A;
+
+// Error checks
+
+// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("ptrace2", Exception::Type::ZERO_SIZE);
+
+// check that dims is a valid dimension vector
+	if (!internal::_check_dims(dims))
+		throw Exception("ptrace2", Exception::Type::DIMS_INVALID);
+
+// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("ptrace2", Exception::Type::MATRIX_NOT_SQUARE);
+
+// check dims has only 2 elements
+	if (dims.size() != 2)
+		throw Exception("ptrace2", Exception::Type::NOT_BIPARTITE);
+
+// check that dims match the dimension of A
+	if (!internal::_check_dims_match_mat(dims, rA))
+		throw Exception("ptrace2", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+	std::size_t DA = dims[0];
+	std::size_t DB = dims[1];
+
+	DynMat<typename Derived::Scalar> result =
+			DynMat<typename Derived::Scalar>::Zero(DA, DA);
+
+	for (std::size_t j = 0; j < DA; j++) // column major order for speed
+#pragma omp parallel for
+		for (std::size_t i = 0; i < DA; i++)
+			result(i, j) = trace(rA.block(i * DB, j * DB, DB, DB));
+
+	return result;
+}
+
+/**
+ * \brief Partial trace
+ *
+ *  Partial trace of the multi-partite density matrix
+ *  over a list of subsystems
+ *
+ * \param A Eigen expression
+ * \param subsys Subsystem indexes
+ * \param dims Dimensions of the multi-partite system
+ * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a subsys
+ * in a multi-partite system, as a dynamic matrix
+ * over the same scalar field as \a A
+ */
+template<typename Derived>
+DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
+		const std::vector<std::size_t>& subsys,
+		const std::vector<std::size_t>& dims)
+
+{
+	const DynMat<typename Derived::Scalar> & rA = A;
+
+// error checks
+
+// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("ptrace", Exception::Type::ZERO_SIZE);
+
+// check that dims is a valid dimension vector
+	if (!internal::_check_dims(dims))
+		throw Exception("ptrace", Exception::Type::DIMS_INVALID);
+
+// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("ptrace", Exception::Type::MATRIX_NOT_SQUARE);
+
+// check that dims match the dimension of A
+	if (!internal::_check_dims_match_mat(dims, rA))
+		throw Exception("ptrace", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+	if (subsys.size() == dims.size())
+	{
+		DynMat<typename Derived::Scalar> result = DynMat<
+				typename Derived::Scalar>(1, 1);
+		result(0, 0) = rA.trace();
+		return result;
+	}
+	if (subsys.size() == 0)
+		return rA;
+	// check that subsys are valid
+	if (!internal::_check_subsys_match_dims(subsys, dims))
+		throw Exception("ptrace", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+	std::size_t D = static_cast<std::size_t>(rA.rows());
+	std::size_t n = dims.size();
+	std::size_t nsubsys = subsys.size();
+	std::size_t nsubsysbar = n - nsubsys;
+	std::size_t dimsubsys = 1;
+	for (std::size_t i = 0; i < nsubsys; i++)
+		dimsubsys *= dims[subsys[i]];
+	std::size_t dimsubsysbar = D / dimsubsys;
+
+	std::size_t Cdims[maxn];
+	std::size_t Csubsys[maxn];
+	std::size_t Cdimssubsys[maxn];
+	std::size_t Csubsysbar[maxn];
+	std::size_t Cdimssubsysbar[maxn];
+
+	for (std::size_t i = 0; i < n; i++)
+		Cdims[i] = dims[i];
+	for (std::size_t i = 0; i < nsubsys; i++)
+	{
+		Csubsys[i] = subsys[i];
+		Cdimssubsys[i] = dims[subsys[i]];
+	}
+	// construct the complement of subsys
+	std::size_t cnt = 0;
+	for (std::size_t i = 0; i < n; i++)
+	{
+		bool found = false;
+		for (std::size_t m = 0; m < nsubsys; m++)
+			if (subsys[m] == i)
+			{
+				found = true;
+				break;
+			}
+		if (!found)
+		{
+			Csubsysbar[cnt] = i;
+			Cdimssubsysbar[cnt] = dims[i];
+			cnt++;
+		}
+	}
+
+	DynMat<typename Derived::Scalar> result = DynMat<typename Derived::Scalar>(
+			dimsubsysbar, dimsubsysbar);
+
+	auto worker = [&](std::size_t i, std::size_t j)
+	{
+		// use static allocation for speed!
+
+			std::size_t Cmidxrow[maxn];
+			std::size_t Cmidxcol[maxn];
+			std::size_t Cmidxrowsubsysbar[maxn];
+			std::size_t Cmidxcolsubsysbar[maxn];
+			std::size_t Cmidxsubsys[maxn];
+
+			/* get the row/col multi-indexes of the complement */
+			internal::_n2multiidx(i, nsubsysbar, Cdimssubsysbar, Cmidxrowsubsysbar);
+			internal::_n2multiidx(j, nsubsysbar, Cdimssubsysbar, Cmidxcolsubsysbar);
+			/* write them in the global row/col multi-indexes */
+			for(std::size_t k=0;k<nsubsysbar;k++)
+			{
+				Cmidxrow[Csubsysbar[k]]=Cmidxrowsubsysbar[k];
+				Cmidxcol[Csubsysbar[k]]=Cmidxcolsubsysbar[k];
+			}
+			typename Derived::Scalar sm = 0;
+			for(std::size_t a=0; a<dimsubsys; a++)
+			{
+				// get the multi-index over which we do the summation
+				internal::_n2multiidx(a, nsubsys, Cdimssubsys, Cmidxsubsys);
+				// write it into the global row/col multi-indexes
+				for(std::size_t k=0;k<nsubsys;k++)
+				Cmidxrow[Csubsys[k]]=Cmidxcol[Csubsys[k]]=Cmidxsubsys[k];
+
+				// now do the sum
+				sm+= rA(internal::_multiidx2n(Cmidxrow,n,Cdims),
+						internal::_multiidx2n(Cmidxcol,n,Cdims));
+			}
+
+			return sm;
+		};
+
+	for (std::size_t i = 0; i < dimsubsysbar; i++)
+#pragma omp parallel for
+		for (std::size_t j = 0; j < dimsubsysbar; j++)
+			result(i, j) = worker(i, j);
+
+	return result;
+}
+
+/**
+ * \brief Partial transpose
+ *
+ *  Partial transpose of the multi-partite density matrix
+ *  over a list of subsystems
+ *
+ * \param A Eigen expression
+ * \param subsys Subsystem indexes
+ * \param dims Dimensions of the multi-partite system
+ * \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$
+ * over the subsytems \a subsys in a multi-partite system, as a dynamic matrix
+ * over the same scalar field as \a A
+ */
+template<typename Derived>
+DynMat<typename Derived::Scalar> ptranspose(const Eigen::MatrixBase<Derived>& A,
+		const std::vector<std::size_t>& subsys,
+		const std::vector<std::size_t>& dims)
+
+{
+	const DynMat<typename Derived::Scalar> & rA = A;
+
+// error checks
+
+// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("ptranspose", Exception::Type::ZERO_SIZE);
+
+// check that dims is a valid dimension vector
+	if (!internal::_check_dims(dims))
+		throw Exception("ptranspose", Exception::Type::DIMS_INVALID);
+
+// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("ptranspose", Exception::Type::MATRIX_NOT_SQUARE);
+
+// check that dims match the dimension of A
+	if (!internal::_check_dims_match_mat(dims, rA))
+		throw Exception("ptranspose", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+	if (subsys.size() == dims.size())
+		return rA.transpose();
+	if (subsys.size() == 0)
+		return rA;
+// check that subsys are valid
+	if (!internal::_check_subsys_match_dims(subsys, dims))
+		throw Exception("ptranspose", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+	std::size_t D = static_cast<std::size_t>(rA.rows());
+	std::size_t numdims = dims.size();
+	std::size_t numsubsys = subsys.size();
+	std::size_t cdims[maxn];
+	std::size_t midxcol[maxn];
+	std::size_t csubsys[maxn];
+
+// copy dims in cdims and subsys in csubsys
+	for (std::size_t i = 0; i < numdims; i++)
+		cdims[i] = dims[i];
+	for (std::size_t i = 0; i < numsubsys; i++)
+		csubsys[i] = subsys[i];
+
+	DynMat<typename Derived::Scalar> result(D, D);
+
+	auto worker = [&](std::size_t i, std::size_t j)
+	{
+		// use static allocation for speed!
+			std::size_t midxcoltmp[maxn];
+			std::size_t midxrow[maxn];
+
+			for (std::size_t k = 0; k < numdims; k++)
+			midxcoltmp[k] = midxcol[k];
+
+			/* compute the row multi-index */
+			internal::_n2multiidx(i, numdims, cdims, midxrow);
+
+			for (std::size_t k = 0; k < numsubsys; k++)
+			std::swap(midxcoltmp[csubsys[k]], midxrow[csubsys[k]]);
+
+			/* writes the result */
+			result(i, j)=rA(internal::_multiidx2n(midxrow, numdims, cdims),
+					internal::_multiidx2n(midxcoltmp, numdims, cdims));
+
+		};
+
+	for (std::size_t j = 0; j < D; j++)
+	{
+		// compute the column multi-index
+		internal::_n2multiidx(j, numdims, cdims, midxcol);
+#pragma omp parallel for
+		for (std::size_t i = 0; i < D; i++)
+			worker(i, j);
+	}
+
+	return result;
+}
+/**
+ * \brief System permutation
+ *
+ * Permutes the subsystems in a state vector or density matrix\n
+ * The qubit \a perm[\a i] is permuted to the location \a i
+ *
+ * \param A Eigen expression
+ * \param perm Permutation
+ * \param dims Subsystems' dimensions
+ * \return Permuted system, as a dynamic matrix
+ * over the same scalar field as \a A
+ */
+template<typename Derived>
+DynMat<typename Derived::Scalar> syspermute(const Eigen::MatrixBase<Derived>& A,
+		const std::vector<std::size_t>& perm,
+		const std::vector<std::size_t>& dims)
+
+{
+	const DynMat<typename Derived::Scalar> & rA = A;
+
+// Error checks
+
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("syspermute", Exception::Type::ZERO_SIZE);
+
+	// check that dims is a valid dimension vector
+	if (!internal::_check_dims(dims))
+		throw Exception("syspermute", Exception::Type::DIMS_INVALID);
+
+	// check that we have a valid permutation
+	if (!internal::_check_perm(perm))
+		throw Exception("syspermute", Exception::Type::PERM_INVALID);
+
+	// check permutation size
+	if (perm.size() != dims.size())
+		throw Exception("syspermute", Exception::Type::PERM_INVALID);
+
+	std::size_t D = static_cast<std::size_t>(rA.rows());
+	std::size_t numdims = dims.size();
+
+	DynMat<typename Derived::Scalar> result;
+
+	auto worker =
+			[](std::size_t i, std::size_t numdims, const std::size_t* cdims,
+					const std::size_t* cperm)
+			{
+				// use static allocation for speed,
+				// double the size for matrices reshaped as vectors
+				std::size_t midx[2 * maxn];
+				std::size_t midxtmp[2 * maxn];
+				std::size_t permdims[2 * maxn];
+
+				/* compute the multi-index */
+				internal::_n2multiidx(i, numdims, cdims, midx);
+
+				for (std::size_t k = 0; k < numdims; k++)
+				{
+					permdims[k] = cdims[cperm[k]]; // permuted dimensions
+					midxtmp[k] = midx[cperm[k]];// permuted multi-indexes
+				}
+				return internal::_multiidx2n(midxtmp, numdims, permdims);
+			};
+
+// check column vector
+	if (internal::_check_col_vector(rA)) // we have a column vector
+	{
+		std::size_t cdims[maxn];
+		std::size_t cperm[maxn];
+
+		// check that dims match the dimension of rA
+		if (!internal::_check_dims_match_cvect(dims, rA))
+			throw Exception("syspermute",
+					Exception::Type::DIMS_MISMATCH_CVECTOR);
+
+		// copy dims in cdims and perm in cperm
+		for (std::size_t i = 0; i < numdims; i++)
+		{
+			cdims[i] = dims[i];
+			cperm[i] = perm[i];
+		}
+		result.resize(D, 1);
+
+#pragma omp parallel for
+		for (std::size_t i = 0; i < D; i++)
+			result(worker(i, numdims, cdims, cperm)) = rA(i);
+
+		return result;
+	}
+
+	else if (internal::_check_square_mat(rA)) // we have a square matrix
+	{
+		std::size_t cdims[2 * maxn];
+		std::size_t cperm[2 * maxn];
+
+		// check that dims match the dimension of rA
+		if (!internal::_check_dims_match_mat(dims, rA))
+			throw Exception("syspermute",
+					Exception::Type::DIMS_MISMATCH_MATRIX);
+
+		// copy dims in cdims and perm in cperm
+		for (std::size_t i = 0; i < numdims; i++)
+		{
+			cdims[i] = dims[i];
+			cdims[i + numdims] = dims[i];
+			cperm[i] = perm[i];
+			cperm[i + numdims] = perm[i] + numdims;
+		}
+		result.resize(D * D, 1);
+		// map A to a column vector
+		DynMat<typename Derived::Scalar> vectA = Eigen::Map<
+				DynMat<typename Derived::Scalar>>(
+				const_cast<typename Derived::Scalar*>(rA.data()), D * D, 1);
+
+#pragma omp parallel for
+		for (std::size_t i = 0; i < D * D; i++)
+			result(worker(i, 2 * numdims, cdims, cperm)) = rA(i);
+
+		return reshape(result, D, D);
+	}
+
+	else
+		throw Exception("syspermute",
+				Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+}
+
 } /* namespace qpp */
 
 #endif /* OPERATIONS_H_ */
