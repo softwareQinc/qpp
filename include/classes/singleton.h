@@ -51,7 +51,7 @@ class Singleton
 {
 protected:
 	Singleton() = default;
-	virtual ~Singleton(){};
+	virtual ~Singleton(){}; // = default yields "looser throw specifer g++4.7"
 	Singleton(const Singleton&) = delete;
 	Singleton& operator=(const Singleton&) = delete;
 public:
