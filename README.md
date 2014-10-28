@@ -1,4 +1,4 @@
-qpp
+quantum++
 ===
 
 This is a header-only (template-based) C++11 quantum computing library, and it is work in progress.
