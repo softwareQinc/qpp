@@ -51,7 +51,11 @@ class Singleton
 {
 protected:
 	Singleton() = default;
-	virtual ~Singleton(){}; // = default yields "looser throw specifer g++4.7"
+	virtual ~Singleton()
+	{
+	}
+	// = default yields "looser throw specifer g++4.7"
+	//see http://stackoverflow.com/questions/11497252/default-destructor-nothrow
 	Singleton(const Singleton&) = delete;
 	Singleton& operator=(const Singleton&) = delete;
 public:
@@ -63,7 +67,8 @@ public:
 		static T instance;
 		return instance;
 	}
-}; /* class Singleton */
+};
+/* class Singleton */
 
 } /* namespace internal */
 } /* namespace qpp */
