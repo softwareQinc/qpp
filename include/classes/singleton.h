@@ -51,7 +51,7 @@ class Singleton
 {
 protected:
 	Singleton() = default;
-	virtual ~Singleton() = default;
+	virtual ~Singleton(){};
 	Singleton(const Singleton&) = delete;
 	Singleton& operator=(const Singleton&) = delete;
 public:
