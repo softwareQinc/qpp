@@ -292,7 +292,7 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 		throw Exception("save", Exception::Type::ZERO_SIZE);
 
 	std::fstream fout;
-	fout.open(fname.c_str(), std::ios::out | std::ios::binary);
+	fout.open(fname, std::ios::out | std::ios::binary);
 
 	if (fout.fail())
 	{
@@ -338,7 +338,7 @@ template<typename Derived>
 DynMat<typename Derived::Scalar> load(const std::string& fname)
 {
 	std::fstream fin;
-	fin.open(fname.c_str(), std::ios::in | std::ios::binary);
+	fin.open(fname, std::ios::in | std::ios::binary);
 
 	if (fin.fail())
 	{
