@@ -56,7 +56,7 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 
 	// check that gate matches the dimensions of the subsys
 	if (static_cast<std::size_t>(rA.rows()) != std::pow(d, subsys.size()))
-		throw Exception("apply", Exception::Type::DIMS_MISMATCH_MATRIX);
+		throw Exception("applyCTRL", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 	// check out of range
 	if (n == 0)
@@ -85,12 +85,6 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 	std::vector<cmat> Gi; // construct the table of A^i
 	for (std::size_t i = 0; i < d; i++)
 		Gi.push_back(powm(rA, i));
-
-	for (auto&& elem : Gi)
-	{
-		displn(elem);
-		std::cout << std::endl;
-	}
 
 	if (internal::_check_col_vector(rstate)) // we have a ket
 	{
@@ -332,6 +326,7 @@ DynMat<typename Derived1::Scalar> apply(
 	else
 		throw Exception("apply", Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 }
+
 
 /**
  * \brief Superoperator matrix representation
