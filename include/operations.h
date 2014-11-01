@@ -22,7 +22,7 @@ namespace qpp
  * @param A Eigen expression
  * @param ctrl Control subsystem indexes
  * @param subsys Subsystem indexes where the gate \a A is applied
- * @param n Total number of subsystes
+ * @param n Total number of subsystems
  * @param d Local dimensions of all local Hilbert spaces (must all be equal)
  * @return CTRL-A gate applied to the part \a subsys of \a state
  */
@@ -34,6 +34,84 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 		const std::vector<std::size_t>& subsys, std::size_t n,
 		std::size_t d = 2)
 {
+	const DynMat<typename Derived1::Scalar> & rstate = state;
+	const DynMat<typename Derived2::Scalar> & rA = A;
+
+	// EXCEPTION CHECKS
+	// check types
+	if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
+		throw Exception("applyCTRL", Exception::Type::TYPE_MISMATCH);
+
+	// check zero sizes
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("applyCTRL", Exception::Type::ZERO_SIZE);
+
+	// check zero sizes
+	if (!internal::_check_nonzero_size(rstate))
+		throw Exception("applyCTRL", Exception::Type::ZERO_SIZE);
+
+	// check square matrix for the gate
+	if (!internal::_check_square_mat(rA))
+		throw Exception("applyCTRL", Exception::Type::MATRIX_NOT_SQUARE);
+
+	// check that gate matches the dimensions of the subsys
+	if (static_cast<std::size_t>(rA.rows()) != std::pow(d, subsys.size()))
+		throw Exception("apply", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+	// check out of range
+	if (n == 0)
+		throw Exception("applyCTRL", Exception::Type::OUT_OF_RANGE);
+
+	// check that dimension is valid
+	if (d == 0)
+		throw Exception("applyCTRL", Exception::Type::DIMS_INVALID);
+
+	std::vector<std::size_t> dims(n, d); // local dimensions vector
+
+	// check subsys is valid w.r.t. dims
+	if (!internal::_check_subsys_match_dims(subsys, dims))
+		throw Exception("applyCTRL", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+	std::vector<std::size_t> ctrlgate = ctrl; // ctrl + gate subsystem vector
+	ctrlgate.insert(std::end(ctrlgate), std::begin(subsys), std::end(subsys));
+
+	// check that ctrl + gate subsystem is valid
+	// with respect to local dimensions
+	if (!internal::_check_subsys_match_dims(ctrlgate, dims))
+		throw Exception("applyCTRL", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+	// END EXCEPTION CHECKS
+
+	std::vector<cmat> Gi; // construct the table of A^i
+	for (std::size_t i = 0; i < d; i++)
+		Gi.push_back(powm(rA, i));
+
+	for (auto&& elem : Gi)
+	{
+		displn(elem);
+		std::cout << std::endl;
+	}
+
+	if (internal::_check_col_vector(rstate)) // we have a ket
+	{
+		// check that dims match state vector
+		if (!internal::_check_dims_match_cvect(dims, rstate))
+			throw Exception("applyCTRL",
+					Exception::Type::DIMS_MISMATCH_CVECTOR);
+
+	}
+	else if (internal::_check_square_mat(rstate)) // we have a matrix
+	{
+		// check that dims match state matrix
+		if (!internal::_check_dims_match_mat(dims, rstate))
+			throw Exception("applyCTRL", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+	}
+	else
+		throw Exception("applyCTRL",
+				Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+
+	return cmat::Zero(2, 2);
 }
 
 /**
@@ -73,7 +151,7 @@ DynMat<typename Derived1::Scalar> apply(
 	if (!internal::_check_nonzero_size(rstate))
 		throw Exception("apply", Exception::Type::ZERO_SIZE);
 
-	// check square matrix for the subsys
+	// check square matrix for the gate
 	if (!internal::_check_square_mat(rA))
 		throw Exception("apply", Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -133,14 +211,14 @@ DynMat<typename Derived1::Scalar> apply(
 		DA *= dims[subsys[k]];
 	}
 
+	// check that gate mathches the dimensions of the subsys
+	if (static_cast<std::size_t>(rA.rows()) != DA)
+		throw Exception("apply", Exception::Type::DIMS_MISMATCH_MATRIX);
+
 	if (internal::_check_col_vector(rstate)) // we have a ket
 	{
 		// check that dims match state vector
 		if (!internal::_check_dims_match_cvect(dims, rstate))
-			throw Exception("apply", Exception::Type::DIMS_MISMATCH_CVECTOR);
-
-		// check that state vector matches the dimensions of the subsys
-		if (static_cast<std::size_t>(rA.cols()) != DA)
 			throw Exception("apply", Exception::Type::DIMS_MISMATCH_CVECTOR);
 
 		DynMat<typename Derived1::Scalar> result(D, 1);
@@ -196,10 +274,6 @@ DynMat<typename Derived1::Scalar> apply(
 
 		// check that dims match state matrix
 		if (!internal::_check_dims_match_mat(dims, rstate))
-			throw Exception("apply", Exception::Type::DIMS_MISMATCH_MATRIX);
-
-		// check that state matrix matches the dimensions of the subsys
-		if (static_cast<std::size_t>(rA.cols()) != DA)
 			throw Exception("apply", Exception::Type::DIMS_MISMATCH_MATRIX);
 
 		DynMat<typename Derived1::Scalar> result(D, D);
@@ -961,7 +1035,7 @@ DynMat<typename Derived::Scalar> ptranspose(const Eigen::MatrixBase<Derived>& A,
 			result(i, j)=rA(internal::_multiidx2n(midxrow, numdims, cdims),
 					internal::_multiidx2n(midxcoltmp, numdims, cdims));
 
-	};
+		};
 
 	for (std::size_t j = 0; j < D; j++)
 	{

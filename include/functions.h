@@ -1171,8 +1171,8 @@ ket mket(const std::vector<std::size_t>& mask,
 /**
  * \brief Multi-partite qudit ket (same dimensions overload)
  *
- * Constructs the multi-partite qudit ket \f$|\mathrm{mask}\rangle\f$
- * in a multi-partite system, all subsystem having equal dimension \a d \n
+ * Constructs the multi-partite qudit ket \f$|\mathrm{mask}\rangle\f$,
+ * all subsystem having equal dimension \a d \n
  * \a mask is a std::vector of non-negative integers, and
  * each element in \a mask has to be strictly smaller than \a d
  *
@@ -1200,6 +1200,116 @@ ket mket(const std::vector<std::size_t>& mask, std::size_t d)
 	std::vector<std::size_t> dims(n, d);
 	std::size_t pos = multiidx2n(mask, dims);
 	result(pos) = 1;
+	return result;
+}
+
+/**
+ * \brief Projector onto multi-partite qubit ket
+ *
+ * Constructs the projector onto the multi-partite qubit ket
+ * \f$|\mathrm{mask}\rangle\f$,
+ * where \a mask is a std::vector of 0's and 1's
+ *
+ * \param mask std::vector of 0's and 1's
+ * \return Projector onto multi-partite qubit state vector,
+ * as a complex dynamic matrix
+ */
+cmat mprj(const std::vector<std::size_t>& mask)
+{
+	std::size_t n = mask.size();
+	std::size_t D = static_cast<std::size_t>(std::pow(2, n));
+// check zero size
+	if (n == 0)
+		throw Exception("mprj", Exception::Type::ZERO_SIZE);
+// check mask is a valid binary vector
+	for (auto it : mask)
+		if (it > 1)
+			throw Exception("mprj", Exception::Type::NOT_QUBIT_SUBSYS);
+	std::vector<std::size_t> dims(n, 2);
+	cmat result = cmat::Zero(D, D);
+	std::size_t pos = multiidx2n(mask, dims);
+	result(pos, pos) = 1;
+	return result;
+}
+
+/**
+ * \brief Projector onto multi-partite qudit ket (different dimensions overload)
+ *
+ * Constructs the projector onto the multi-partite qudit ket
+ * \f$|\mathrm{mask}\rangle\f$,
+ * where \a mask is a std::vector of non-negative integers\n
+ * Each element in \a mask has to be smaller than the corresponding element
+ * in \a dims
+ *
+ * \param mask std::vector of non-negative integers
+ * \param dims Dimensions of the multi-partite system
+ * \return Projector onto multi-partite qudit state vector,
+ * as a complex dynamic matrix
+ */
+cmat mprj(const std::vector<std::size_t>& mask,
+		const std::vector<std::size_t>& dims)
+{
+	std::size_t n = mask.size();
+	auto multiply = [](std::size_t x, std::size_t y)->std::size_t
+	{	return x*y;};
+
+	std::size_t D = std::accumulate(std::begin(dims), std::end(dims), 1u,
+			multiply);
+
+// check zero size
+	if (n == 0)
+		throw Exception("mprj", Exception::Type::ZERO_SIZE);
+// check valid dims
+	if (!internal::_check_dims(dims))
+		throw Exception("mprj", Exception::Type::DIMS_INVALID);
+// check mask and dims have the same size
+	if (mask.size() != dims.size())
+		throw Exception("mprj", Exception::Type::SUBSYS_MISMATCH_DIMS);
+// check mask is a valid vector
+	for (std::size_t i = 0; i < n; i++)
+		if (mask[i] >= dims[i])
+			throw Exception("mprj", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+	cmat result = cmat::Zero(D, D);
+	std::size_t pos = multiidx2n(mask, dims);
+	result(pos, pos) = 1;
+	return result;
+}
+
+/**
+ * \brief Projector onto multi-partite qudit ket (same dimensions overload)
+ *
+ * Constructs the projector onto the multi-partite qudit ket
+ * \f$|\mathrm{mask}\rangle\f$,
+ * all subsystem having equal dimension \a d \n
+ * \a mask is a std::vector of non-negative integers, and
+ * each element in \a mask has to be strictly smaller than \a d
+ *
+ * \param mask std::vector of non-negative integers
+ * \param d Subsystems' dimension
+ * \return Projector onto multi-partite qudit state vector,
+ * as a complex dynamic matrix
+ */
+cmat mprj(const std::vector<std::size_t>& mask, std::size_t d)
+{
+	std::size_t n = mask.size();
+	std::size_t D = static_cast<std::size_t>(std::pow(d, n));
+
+// check zero size
+	if (n == 0)
+		throw Exception("mprj", Exception::Type::ZERO_SIZE);
+// check valid dims
+	if (d == 0)
+		throw Exception("mprj", Exception::Type::DIMS_INVALID);
+// check mask is a valid vector
+	for (std::size_t i = 0; i < n; i++)
+		if (mask[i] >= d)
+			throw Exception("mprj", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+	cmat result = cmat::Zero(D, D);
+	std::vector<std::size_t> dims(n, d);
+	std::size_t pos = multiidx2n(mask, dims);
+	result(pos, pos) = 1;
 	return result;
 }
 

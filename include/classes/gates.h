@@ -211,8 +211,7 @@ public:
 		ctrlgate.insert(std::end(ctrlgate), std::begin(subsys),
 				std::end(subsys));
 
-		std::vector<std::size_t> dims; // local dimensions vector
-		dims.insert(std::begin(dims), n, d);
+		std::vector<std::size_t> dims(n,d); // local dimensions vector
 
 		// check that ctrl + gate subsystem is valid
 		// with respect to local dimensions
