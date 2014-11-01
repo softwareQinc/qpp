@@ -82,9 +82,9 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 
 	// END EXCEPTION CHECKS
 
-	std::vector<cmat> Gi; // construct the table of A^i
+	std::vector<cmat> Ai; // construct the table of A^i
 	for (std::size_t i = 0; i < d; i++)
-		Gi.push_back(powm(rA, i));
+		Ai.push_back(powm(rA, i));
 
 	if (internal::_check_col_vector(rstate)) // we have a ket
 	{

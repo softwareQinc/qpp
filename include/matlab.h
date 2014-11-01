@@ -11,8 +11,8 @@
 // MATLAB I/O interfacing
 // add the path to $MATLAB_INSTALLATION_FOLDER/extern/include in include path
 
-#include "mat.h"  // path to this is defined in the Makefile
-#include "mex.h"  // path to this is defined in the Makefile
+#include "mat.h"  // path to this file is defined in the Makefile
+#include "mex.h"  // path to this file is defined in the Makefile
 
 namespace qpp
 {
