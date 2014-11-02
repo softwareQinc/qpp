@@ -363,11 +363,11 @@ DynMat<typename Derived1::Scalar> apply(
 
 	// check out of range
 	if (n == 0)
-		throw Exception("applyCTRL", Exception::Type::OUT_OF_RANGE);
+		throw Exception("apply", Exception::Type::OUT_OF_RANGE);
 
 	// check that dimension is valid
 	if (d == 0)
-		throw Exception("applyCTRL", Exception::Type::DIMS_INVALID);
+		throw Exception("apply", Exception::Type::DIMS_INVALID);
 
 	std::vector<std::size_t> dims(n, d); // local dimensions vector
 
