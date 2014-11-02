@@ -12,7 +12,7 @@ namespace qpp
 {
 /**
  * \class qpp::States
- * \brief Singleton class that implements most commonly used states
+ * \brief const Singleton class that implements most commonly used states
  */
 
 class States: public internal::Singleton<const States> // const Singleton

@@ -25,13 +25,6 @@ cplx pow3(const cplx& z) // a test function
 
 int main()
 {
-	std::cout << "Starting qpp..." << std::endl;
-
-	// output format
-	//std::cout << std::scientific;
-	std::cout << std::fixed; // use fixed format for nice formatting
-	std::cout << std::setprecision(4); // only for fixed or scientific modes
-
 	displn((cmat)evals(gt.X).asDiagonal());
 
 // testing applyCTRL
@@ -198,7 +191,7 @@ int main()
 
 	// channel tests
 	std::cout << std::endl << "Channel tests." << std::endl;
-	std::size_t nk = 5, d = 12; // nk Kraus on d-dimensional system
+	std::size_t nk = 5, d = 3; // nk Kraus on d-dimensional system
 	std::cout << "Generating a random channel with " << nk
 			<< " Kraus operators on a " << d << " dimensional space..."
 			<< std::endl;
@@ -352,6 +345,4 @@ int main()
 	total.toc(); // read the total running time
 	std::cout << std::endl << "Total time: " << total.seconds() << " seconds.";
 	//	 */
-
-	std::cout << std::endl << "Exiting qpp..." << std::endl;
 }

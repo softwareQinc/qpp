@@ -13,7 +13,7 @@ namespace qpp
 
 /**
  * \class qpp::Gates
- * \brief Singleton class that implements most commonly used gates
+ * \brief const Singleton class that implements most commonly used gates
  */
 class Gates: public internal::Singleton<const Gates> // const Singleton
 {
@@ -322,8 +322,7 @@ public:
 		return result;
 	}
 
-};
-/* class Gates */
+}; /* class Gates */
 
 } /* namespace qpp */
 

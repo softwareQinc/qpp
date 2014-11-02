@@ -56,6 +56,7 @@
 #include "classes/states.h"
 #include "classes/randevs.h"
 #include "internal.h"
+#include "classes/init.h"
 #include "functions.h"
 #include "classes/gates.h"
 #include "entropies.h"
@@ -90,7 +91,16 @@ const Gates& gt = Gates::get_instance();
  * \brief qpp::States const Singleton
  *
  * Initializes the states, see the class \a qpp::States
- */const States& st = States::get_instance();
+ */
+const States& st = States::get_instance();
+
+/**
+ * \brief qpp::Init const Singleton
+ *
+ * Additional initializations/cleanups
+ */
+const Init& init = Init::get_instance();
+
 
 } /* namespace qpp */
 
