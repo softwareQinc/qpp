@@ -12,7 +12,7 @@
 // TODO: testing (IN PROGRESS)
 // TODO: parallelize everything (Gates::CTRL etc) - IMPORTANT! (IN PROGRESS)
 // TODO: change loops to column major order (IN PROGRESS)
-// TODO: inline small functions
+// TODO: inline small functions (IN PROGRESS)
 
 // TODO: write introductory page (documentation)
 // TODO: more robust exception parameter checking
