@@ -20,7 +20,7 @@ namespace internal
 
 // integer index to multi-index, use C-style array for speed
 // standard lexicographical order, e.g. 00, 01, 10, 11
-void _n2multiidx(std::size_t n, std::size_t numdims, const std::size_t* dims,
+inline void _n2multiidx(std::size_t n, std::size_t numdims, const std::size_t* dims,
 		std::size_t* result)
 {
 // no error checks to improve speed
@@ -34,7 +34,7 @@ void _n2multiidx(std::size_t n, std::size_t numdims, const std::size_t* dims,
 
 // multi-index to integer index, use C-style array for speed,
 // standard lexicographical order, e.g. 00->0, 01->1, 10->2, 11->3
-std::size_t _multiidx2n(const std::size_t* midx, std::size_t numdims,
+inline std::size_t _multiidx2n(const std::size_t* midx, std::size_t numdims,
 		const std::size_t* dims)
 {
 // no error checks to improve speed
