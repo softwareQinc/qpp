@@ -10,7 +10,7 @@
 //#include "matlab.h" // support for MATLAB
 
 // TODO: testing (IN PROGRESS)
-// TODO: parallelize everything - IMPORTANT! (IN PROGRESS)
+// TODO: parallelize everything (Gates::CTRL etc) - IMPORTANT! (IN PROGRESS)
 
 // TODO: write introductory page (documentation)
 // TODO: more robust exception parameter checking

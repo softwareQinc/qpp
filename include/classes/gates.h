@@ -121,6 +121,7 @@ public:
 
 		cmat result(D, D);
 		result = cmat::Zero(D, D);
+#pragma omp parallel for collapse(2)
 		for (std::size_t j = 0; j < D; j++)
 			for (std::size_t i = 0; i < D; i++)
 				result(i, j) = 1 / std::sqrt((double) D)
@@ -160,8 +161,6 @@ public:
 			throw Exception("Gates::Id", Exception::Type::DIMS_INVALID);
 		return Derived::Identity(D, D);
 	}
-
-
 
 	/**
 	 * \brief Generates the multipartite multiple-controlled-\a A gate in matrix form
