@@ -67,6 +67,8 @@
 #include "classes/qudit.h"
 #include "classes/timer.h"
 
+#include "obsolete.h"
+
 namespace qpp
 {
 
