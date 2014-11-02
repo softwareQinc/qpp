@@ -34,6 +34,28 @@ int main()
 	std::cout << std::fixed; // use fixed format for nice formatting
 	std::cout << std::setprecision(4); // only for fixed or scientific modes
 
+
+// testing applyCTRL
+	size_t d = 3;
+	size_t n = 3;
+	std::vector<std::size_t> ctrl = { 0 };
+	std::vector<std::size_t> subsys = { 2 };
+	ket psi = mket( { 1, 0, 1 }, d);
+	cmat rho = mprj( { 1, 0, 3 }, d);
+	cmat gate = gt.Xd(3);
+
+	displn(psi);
+	std::cout << std::endl;
+	auto result_ket = applyCTRL(psi, gate, ctrl, subsys, n, d);
+	displn(result_ket);
+	std::cout << std::endl;
+
+	std::cout << std::endl;
+	auto result_rho = applyCTRL(rho, gate, ctrl, subsys, n, d);
+	displn(result_rho);
+	std::cout << std::endl << "Norm difference: ";
+	displn(norm(result_rho - result_ket * adjoint(result_ket)));
+
 	/*
 	 // TESTING
 	 // testing channel and apply

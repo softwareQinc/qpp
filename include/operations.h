@@ -74,6 +74,7 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 
 	std::vector<std::size_t> ctrlgate = ctrl; // ctrl + gate subsystem vector
 	ctrlgate.insert(std::end(ctrlgate), std::begin(subsys), std::end(subsys));
+	std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
 	// check that ctrl + gate subsystem is valid
 	// with respect to local dimensions
@@ -82,10 +83,170 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 
 	// END EXCEPTION CHECKS
 
-	std::vector<cmat> Ai; // construct the table of A^i
+	// construct the table of A^i and (A^dagger)^i
+	std::vector<DynMat<typename Derived1::Scalar>> Ai;
+	std::vector<DynMat<typename Derived1::Scalar>> Aidagger;
 	for (std::size_t i = 0; i < d; i++)
+	{
 		Ai.push_back(powm(rA, i));
+		Aidagger.push_back(powm(adjoint(rA), i));
+	}
 
+	std::size_t D = static_cast<std::size_t>(std::pow(d, n));
+	std::size_t DA = rA.rows();
+	std::size_t DCTRLAbar = static_cast<std::size_t>(std::pow(d,
+			n - ctrlgate.size()));
+
+	std::size_t Cdims[maxn]; // local dimensions
+	std::size_t CdimsA[maxn]; // local dimensions
+	std::size_t CdimsCTRLAbar[maxn]; // local dimensions
+
+	std::vector<std::size_t> ctrlgatebar(n - ctrlgate.size()); // rest
+	std::vector<std::size_t> allsubsys(n);
+	std::iota(std::begin(allsubsys), std::end(allsubsys), 0);
+	std::set_difference(std::begin(allsubsys), std::end(allsubsys),
+			std::begin(ctrlgate), std::end(ctrlgate), std::begin(ctrlgatebar));
+
+	for (std::size_t k = 0; k < n; k++)
+		Cdims[k] = d;
+	for (std::size_t k = 0; k < subsys.size(); k++)
+		CdimsA[k] = d;
+	for (std::size_t k = 0; k < n - ctrlgate.size(); k++)
+		CdimsCTRLAbar[k] = d;
+
+	//std::clog << D << " " << DA << " " << DCTRL << " " << DCTRLA << " "
+	//	<< DCTRLAbar << std::endl;
+
+	// worker, computes the coefficient and the index for the ket case
+	// used in #pragma omp parallel for collapse
+	auto coeff_idx_ket = [&](std::size_t _i, std::size_t _m, std::size_t _r)
+	-> std::pair<typename Derived1::Scalar, std::size_t>
+	{
+		std::size_t idx = 0;
+		typename Derived1::Scalar coeff = 0;
+
+		std::size_t Cmidx[maxn]; // the total multi-index
+			std::size_t CmidxA[maxn];// the gate multi-index
+			std::size_t CmidxCTRLAbar[maxn];// the rest multi-index
+
+			// compute the index
+
+			// set the CTRL part
+			for(std::size_t k = 0; k < ctrl.size(); k++)
+			{
+				Cmidx[ctrl[k]] = _i;
+			}
+
+			// set the rest
+			internal::_n2multiidx(_r, n - ctrlgate.size(),
+					CdimsCTRLAbar, CmidxCTRLAbar);
+			for(std::size_t k = 0; k < n - ctrlgate.size(); k++)
+			{
+				Cmidx[ctrlgatebar[k]] = CmidxCTRLAbar[k];
+			}
+
+			// set the A part
+			internal::_n2multiidx(_m, subsys.size(), CdimsA, CmidxA);
+			for(std::size_t k = 0; k < subsys.size(); k++)
+			{
+				Cmidx[subsys[k]] = CmidxA[k];
+			}
+
+			idx = internal::_multiidx2n(Cmidx, n, Cdims); // we got the index
+
+			// compute the coefficient
+			for(std::size_t _n = 0; _n < DA; _n++)
+			{
+				internal::_n2multiidx(_n, subsys.size(), CdimsA, CmidxA);
+				for(std::size_t k = 0; k < subsys.size(); k++)
+				{
+					Cmidx[subsys[k]] = CmidxA[k];
+				}
+				coeff += Ai[_i](_m,_n) *
+				rstate(internal::_multiidx2n(Cmidx, n, Cdims));
+			}
+
+			return std::make_pair(coeff, idx);
+		};
+
+	// worker, computes the coefficient and the index
+	// for the density matrix case
+	// used in #pragma omp parallel for collapse
+	auto coeff_idx_rho = [&](std::size_t _i1, std::size_t _m1,
+			std::size_t _r1, std::size_t _i2, std::size_t _m2,
+			std::size_t _r2 )
+	-> std::tuple<typename Derived1::Scalar, std::size_t, std::size_t>
+	{
+		std::size_t idxrow = 0;
+		std::size_t idxcol = 0;
+		typename Derived1::Scalar coeff = 0;
+
+		std::size_t Cmidxrow[maxn]; // the total row multi-index
+			std::size_t Cmidxcol[maxn];// the total col multi-index
+			std::size_t CmidxArow[maxn];// the gate row multi-index
+			std::size_t CmidxAcol[maxn];// the gate col multi-index
+			std::size_t CmidxCTRLAbarrow[maxn];// the rest row multi-index
+			std::size_t CmidxCTRLAbarcol[maxn];// the rest col multi-index
+
+			// compute the ket/bra indexes
+
+			// set the CTRL part
+			for(std::size_t k = 0; k < ctrl.size(); k++)
+			{
+				Cmidxrow[ctrl[k]] = _i1;
+				Cmidxcol[ctrl[k]] = _i2;
+			}
+
+			// set the rest
+			internal::_n2multiidx(_r1, n - ctrlgate.size(),
+					CdimsCTRLAbar, CmidxCTRLAbarrow);
+			internal::_n2multiidx(_r2, n - ctrlgate.size(),
+					CdimsCTRLAbar, CmidxCTRLAbarcol);
+			for(std::size_t k = 0; k < n - ctrlgate.size(); k++)
+			{
+				Cmidxrow[ctrlgatebar[k]] = CmidxCTRLAbarrow[k];
+				Cmidxcol[ctrlgatebar[k]] = CmidxCTRLAbarcol[k];
+			}
+
+			// set the A part
+			internal::_n2multiidx(_m1, subsys.size(), CdimsA, CmidxArow);
+			internal::_n2multiidx(_m2, subsys.size(), CdimsA, CmidxAcol);
+			for(std::size_t k = 0; k < subsys.size(); k++)
+			{
+				Cmidxrow[subsys[k]] = CmidxArow[k];
+				Cmidxcol[subsys[k]] = CmidxAcol[k];
+			}
+
+			// we got the ket/bra indexes
+			idxrow = internal::_multiidx2n(Cmidxrow, n, Cdims);
+			idxcol = internal::_multiidx2n(Cmidxcol, n, Cdims);
+
+			// compute the coefficient
+			for(std::size_t _n1 = 0; _n1 < DA; _n1++)
+			{
+				internal::_n2multiidx(_n1, subsys.size(), CdimsA, CmidxArow);
+				for(std::size_t k = 0; k < subsys.size(); k++)
+				{
+					Cmidxrow[subsys[k]] = CmidxArow[k];
+				}
+				for(std::size_t _n2 = 0; _n2 < DA; _n2++)
+				{
+					internal::_n2multiidx(_n2, subsys.size(), CdimsA, CmidxAcol);
+					for(std::size_t k = 0; k < subsys.size(); k++)
+					{
+						Cmidxcol[subsys[k]] = CmidxAcol[k];
+					}
+					coeff += Ai[_i1](_m1,_n1)*
+					rstate(internal::_multiidx2n(Cmidxrow, n, Cdims),
+							internal::_multiidx2n(Cmidxcol, n, Cdims))*
+					Aidagger[_i2](_n2,_m2);
+				}
+			}
+
+			return std::make_tuple(coeff, idxrow, idxcol);
+		};
+
+	//************ ket ************//
 	if (internal::_check_col_vector(rstate)) // we have a ket
 	{
 		// check that dims match state vector
@@ -93,19 +254,51 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 			throw Exception("applyCTRL",
 					Exception::Type::DIMS_MISMATCH_CVECTOR);
 
+		DynMat<typename Derived1::Scalar> result = DynMat<
+				typename Derived1::Scalar>::Zero(D, 1);
+
+#pragma omp parallel for collapse(3)
+		for (std::size_t i = 0; i < d; i++)
+			for (std::size_t m = 0; m < DA; m++)
+				for (std::size_t r = 0; r < DCTRLAbar; r++)
+					result(coeff_idx_ket(i, m, r).second) = coeff_idx_ket(i, m,
+							r).first;
+
+		return result;
 	}
+
+	//************ density matrix ************//
 	else if (internal::_check_square_mat(rstate)) // we have a matrix
 	{
 		// check that dims match state matrix
 		if (!internal::_check_dims_match_mat(dims, rstate))
 			throw Exception("applyCTRL", Exception::Type::DIMS_MISMATCH_MATRIX);
 
+		DynMat<typename Derived1::Scalar> result = DynMat<
+				typename Derived1::Scalar>::Zero(D, D);
+
+#pragma omp parallel for collapse(6)
+		for (std::size_t i1 = 0; i1 < d; i1++)
+			for (std::size_t m1 = 0; m1 < DA; m1++)
+				for (std::size_t r1 = 0; r1 < DCTRLAbar; r1++)
+					for (std::size_t i2 = 0; i2 < d; i2++)
+						for (std::size_t m2 = 0; m2 < DA; m2++)
+							for (std::size_t r2 = 0; r2 < DCTRLAbar; r2++)
+							{
+								auto coeff_idxes = coeff_idx_rho(i1, m1, r1, i2,
+										m2, r2);
+								result(std::get<1>(coeff_idxes),
+										std::get<2>(coeff_idxes)) = std::get<0>(
+										coeff_idxes);
+							}
+		return result;
 	}
+
+	//************ Exception: not ket nor density matrix ************//
 	else
 		throw Exception("applyCTRL",
 				Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 
-	return cmat::Zero(2, 2);
 }
 
 /**
@@ -327,7 +520,6 @@ DynMat<typename Derived1::Scalar> apply(
 		throw Exception("apply", Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 }
 
-
 /**
  * \brief Superoperator matrix representation
  *
@@ -348,7 +540,7 @@ cmat super(const std::vector<cmat>& Ks)
 		throw Exception("super", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_square_mat(Ks[0]))
 		throw Exception("super", Exception::Type::MATRIX_NOT_SQUARE);
-	for (auto it : Ks)
+	for (auto&& it : Ks)
 		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
 			throw Exception("super", Exception::Type::DIMS_NOT_EQUAL);
 	std::size_t D = static_cast<std::size_t>(Ks[0].rows());
@@ -420,12 +612,12 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho, const std::vector<cmat>& Ks)
 		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
 	if (Ks[0].rows() != rrho.rows())
 		throw Exception("channel", Exception::Type::DIMS_MISMATCH_MATRIX);
-	for (auto it : Ks)
+	for (auto&& it : Ks)
 		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
 			throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
 
 	cmat result = cmat::Zero(rrho.rows(), rrho.cols());
-	for (auto it : Ks)
+	for (auto&& it : Ks)
 		result += it * rrho * adjoint(it);
 
 	return result;
@@ -474,7 +666,7 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho, const std::vector<cmat>& Ks,
 		throw Exception("channel", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_square_mat(Ks[0]))
 		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
-	for (auto it : Ks)
+	for (auto&& it : Ks)
 		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
 			throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
 
@@ -635,7 +827,7 @@ cmat choi(const std::vector<cmat>& Ks)
 		throw Exception("choi", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_square_mat(Ks[0]))
 		throw Exception("choi", Exception::Type::MATRIX_NOT_SQUARE);
-	for (auto it : Ks)
+	for (auto&& it : Ks)
 		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
 			throw Exception("choi", Exception::Type::DIMS_NOT_EQUAL);
 	std::size_t D = static_cast<std::size_t>(Ks[0].rows());
@@ -649,7 +841,7 @@ cmat choi(const std::vector<cmat>& Ks)
 	cmat Omega = static_cast<cmat>(MES * adjoint(MES));
 
 	cmat result = cmat::Zero(D * D, D * D);
-	for (auto it : Ks)
+	for (auto&& it : Ks)
 		result += kron(cmat::Identity(D, D), it) * Omega
 				* adjoint(kron(cmat::Identity(D, D), it));
 

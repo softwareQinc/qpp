@@ -637,7 +637,7 @@ DynMat<typename Derived::Scalar> kron(const std::vector<Derived> &As)
 	if (As.size() == 0)
 		throw Exception("kron", Exception::Type::ZERO_SIZE);
 
-	for (auto it : As)
+	for (auto&& it : As)
 		if (it.size() == 0)
 			throw Exception("kron", Exception::Type::ZERO_SIZE);
 
@@ -940,7 +940,7 @@ DynMat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
 	if (!internal::_check_nonzero_size(Vs))
 		throw Exception("grams", Exception::Type::ZERO_SIZE);
 
-	for (auto it : Vs)
+	for (auto&& it : Vs)
 		if (!internal::_check_nonzero_size(it))
 			throw Exception("grams", Exception::Type::ZERO_SIZE);
 
@@ -949,7 +949,7 @@ DynMat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
 		throw Exception("grams", Exception::Type::MATRIX_NOT_CVECTOR);
 
 	// now check that all the rest match the size of the first vector
-	for (auto it : Vs)
+	for (auto&& it : Vs)
 		if (it.rows() != Vs[0].rows() || it.cols() != 1)
 			throw Exception("grams", Exception::Type::DIMS_NOT_EQUAL);
 
@@ -983,7 +983,7 @@ DynMat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
 	DynMat<typename Derived::Scalar> result(Vs[0].rows(), outvecs.size());
 
 	std::size_t cnt = 0;
-	for (auto it : outvecs)
+	for (auto&& it : outvecs)
 	{
 		double normV = norm(it);
 		if (normV > eps) // we add only the non-zero vectors
@@ -1116,7 +1116,7 @@ ket mket(const std::vector<std::size_t>& mask)
 	if (n == 0)
 		throw Exception("mket", Exception::Type::ZERO_SIZE);
 // check mask is a valid binary vector
-	for (auto it : mask)
+	for (auto&& it : mask)
 		if (it > 1)
 			throw Exception("mket", Exception::Type::NOT_QUBIT_SUBSYS);
 	std::vector<std::size_t> dims(n, 2);
@@ -1222,7 +1222,7 @@ cmat mprj(const std::vector<std::size_t>& mask)
 	if (n == 0)
 		throw Exception("mprj", Exception::Type::ZERO_SIZE);
 // check mask is a valid binary vector
-	for (auto it : mask)
+	for (auto&& it : mask)
 		if (it > 1)
 			throw Exception("mprj", Exception::Type::NOT_QUBIT_SUBSYS);
 	std::vector<std::size_t> dims(n, 2);
