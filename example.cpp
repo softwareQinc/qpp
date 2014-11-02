@@ -10,12 +10,11 @@
 //#include "matlab.h" // support for MATLAB
 
 // TODO: testing (IN PROGRESS)
+// TODO: parallelize everything - IMPORTANT! (IN PROGRESS)
 
 // TODO: write introductory page (documentation)
 // TODO: more robust exception parameter checking
 // TODO: change loops to column major order
-
-// TODO: parallelize everything! (IMPORTANT)
 
 using namespace qpp;
 
