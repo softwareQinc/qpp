@@ -560,7 +560,7 @@ cmat super(const std::vector<cmat>& Ks)
 					{
 						// compute result(ab,mn)=<a|E(|m><n)|b>
 						B(b) = 1;
-						result(a * D + b, m * D + n) = A * EMN * B;
+						result(a * D + b, m * D + n) = (A * EMN * B)(0);
 						B(b) = 0;
 					}
 					A(a) = 0;
