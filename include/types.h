@@ -14,27 +14,27 @@ namespace qpp
 /**
  * \brief Complex number in double precision
  */
-using cplx=std::complex<double>;
+using cplx = std::complex<double>;
 
 /**
  * \brief Complex (double precision) dynamic Eigen matrix
  */
-using cmat=Eigen::MatrixXcd;
+using cmat = Eigen::MatrixXcd;
 
 /**
  * \brief Real (double precision) dynamic Eigen matrix
  */
-using dmat=Eigen::MatrixXd;
+using dmat = Eigen::MatrixXd;
 
 /**
  * \brief Complex (double precision) dynamic Eigen column matrix
  */
-using ket=Eigen::Matrix<cplx, Eigen::Dynamic, 1>;
+using ket = Eigen::Matrix<cplx, Eigen::Dynamic, 1>;
 
 /**
  * \brief Complex (double precision) dynamic Eigen row matrix
  */
-using bra=Eigen::Matrix<cplx, 1, Eigen::Dynamic>;
+using bra = Eigen::Matrix<cplx, 1, Eigen::Dynamic>;
 
 /**
  * \brief Dynamic Eigen matrix over the field specified by \a Scalar
@@ -43,7 +43,7 @@ using bra=Eigen::Matrix<cplx, 1, Eigen::Dynamic>;
  * \code auto mat = DynMat<float>(2,3); // type of mat is Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> \endcode
  */
 template<typename Scalar>
-using DynMat=Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
+using DynMat = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 
 } /* namespace qpp */
 
