@@ -198,7 +198,7 @@ int main()
 
 	// channel tests
 	std::cout << std::endl << "Channel tests." << std::endl;
-	std::size_t nk = 10, d = 2; // nk Kraus on d-dimensional system
+	std::size_t nk = 5, d = 12; // nk Kraus on d-dimensional system
 	std::cout << "Generating a random channel with " << nk
 			<< " Kraus operators on a " << d << " dimensional space..."
 			<< std::endl;
@@ -226,14 +226,16 @@ int main()
 
 	Timer tmp;
 
-	cmat smat1 = obsolete::super(Ks);
+	cmat smat1 = super(Ks);
 	tmp.toc();
 	std::clog << tmp << std::endl;
 
 	tmp.tic();
-	cmat smat = super(Ks);
+	cmat smat = obsolete::super(Ks);
 	tmp.toc();
 	std::clog << tmp << std::endl;
+
+	std::clog << norm(smat - smat1) << std::endl;
 
 	displn(smat);
 	std::cout << std::endl

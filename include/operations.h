@@ -534,46 +534,39 @@ cmat super(const std::vector<cmat>& Ks)
 			throw Exception("super", Exception::Type::DIMS_NOT_EQUAL);
 	std::size_t D = static_cast<std::size_t>(Ks[0].rows());
 
-	std::size_t midx_row[2] = { 0, 0 };
-	std::size_t midx_col[2] = { 0, 0 };
-	std::size_t dims[2];
-	dims[0] = dims[1] = D;
-
 	cmat result(D * D, D * D);
 	cmat MN = cmat::Zero(D, D);
-	cmat BA = cmat::Zero(D, D);
+	bra A = bra::Zero(D);
+	ket B = ket::Zero(D);
 	cmat EMN = cmat::Zero(D, D);
 
+#pragma omp parallel for collapse(2)
 	for (std::size_t m = 0; m < D; m++)
 	{
-		midx_col[0] = m;
 		for (std::size_t n = 0; n < D; n++)
 		{
-			midx_col[1] = n;
-			MN(m, n) = 1;
-			// compute E(|m><n|)
-
-			for (std::size_t i = 0; i < Ks.size(); i++)
-				EMN += Ks[i] * MN * adjoint(Ks[i]);
-
-			MN(m, n) = 0;
-			for (std::size_t a = 0; a < D; a++)
+#pragma omp critical
 			{
-				midx_row[0] = a;
-				for (std::size_t b = 0; b < D; b++)
+				// compute E(|m><n|)
+				MN(m, n) = 1;
+				for (std::size_t i = 0; i < Ks.size(); i++)
+					EMN += Ks[i] * MN * adjoint(Ks[i]);
+				MN(m, n) = 0;
+
+				for (std::size_t a = 0; a < D; a++)
 				{
-					midx_row[1] = b;
-					BA(b, a) = 1;
-
-					// compute result(ab,mn)=<a|E(|m><n)|b>
-
-					result(internal::_multiidx2n(midx_row, 2, dims),
-							internal::_multiidx2n(midx_col, 2, dims)) = (EMN
-							* BA).trace();
-					BA(b, a) = 0;
+					A(a) = 1;
+					for (std::size_t b = 0; b < D; b++)
+					{
+						// compute result(ab,mn)=<a|E(|m><n)|b>
+						B(b) = 1;
+						result(a * D + b, m * D + n) = A * EMN * B;
+						B(b) = 0;
+					}
+					A(a) = 0;
 				}
+				EMN = cmat::Zero(D, D);
 			}
-			EMN = cmat::Zero(D, D);
 		}
 	}
 	return result;
@@ -595,7 +588,7 @@ cmat super(const std::vector<cmat>& Ks)
  */
 cmat choi(const std::vector<cmat>& Ks)
 {
-	// EXCEPTION CHECKS
+// EXCEPTION CHECKS
 	if (!internal::_check_nonzero_size(Ks))
 		throw Exception("choi", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_nonzero_size(Ks[0]))
@@ -607,8 +600,8 @@ cmat choi(const std::vector<cmat>& Ks)
 			throw Exception("choi", Exception::Type::DIMS_NOT_EQUAL);
 	std::size_t D = static_cast<std::size_t>(Ks[0].rows());
 
-	// construct the D x D \sum |jj> vector
-	// (un-normalized maximally entangled state)
+// construct the D x D \sum |jj> vector
+// (un-normalized maximally entangled state)
 	cmat MES = cmat::Zero(D * D, 1);
 	for (std::size_t a = 0; a < D; a++)
 		MES(a * D + a) = 1;
@@ -644,7 +637,7 @@ cmat choi(const std::vector<cmat>& Ks)
  */
 std::vector<cmat> choi2kraus(const cmat& A)
 {
-	// EXCEPTION CHECKS
+// EXCEPTION CHECKS
 	if (!internal::_check_nonzero_size(A))
 		throw Exception("choi2kraus", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_square_mat(A))
@@ -831,7 +824,7 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 	}
 	if (subsys.size() == 0)
 		return rA;
-	// check that subsys are valid
+// check that subsys are valid
 	if (!internal::_check_subsys_match_dims(subsys, dims))
 		throw Exception("ptrace", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
@@ -857,7 +850,7 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 		Csubsys[i] = subsys[i];
 		Cdimssubsys[i] = dims[subsys[i]];
 	}
-	// construct the complement of subsys
+// construct the complement of subsys
 	std::size_t cnt = 0;
 	for (std::size_t i = 0; i < n; i++)
 	{
@@ -1039,19 +1032,19 @@ DynMat<typename Derived::Scalar> syspermute(const Eigen::MatrixBase<Derived>& A,
 
 // Error checks
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("syspermute", Exception::Type::ZERO_SIZE);
 
-	// check that dims is a valid dimension vector
+// check that dims is a valid dimension vector
 	if (!internal::_check_dims(dims))
 		throw Exception("syspermute", Exception::Type::DIMS_INVALID);
 
-	// check that we have a valid permutation
+// check that we have a valid permutation
 	if (!internal::_check_perm(perm))
 		throw Exception("syspermute", Exception::Type::PERM_INVALID);
 
-	// check permutation size
+// check permutation size
 	if (perm.size() != dims.size())
 		throw Exception("syspermute", Exception::Type::PERM_INVALID);
 
