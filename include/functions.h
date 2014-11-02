@@ -1361,9 +1361,9 @@ std::vector<std::size_t> compperm(const std::vector<std::size_t>& perm,
 /**
  * \brief Computes the absolut values squared of a range of complex numbers
 
- * @param first Iterator to the first element of the range
- * @param last  Iterator to the last element of the range
- * @return Real vector consisting of the range's absolut values squared
+ * \param first Iterator to the first element of the range
+ * \param last  Iterator to the last element of the range
+ * \return Real vector consisting of the range's absolut values squared
  */
 template<typename InputIterator>
 std::vector<double> amplitudes(InputIterator first, InputIterator last)
@@ -1377,8 +1377,8 @@ std::vector<double> amplitudes(InputIterator first, InputIterator last)
 /**
  * \brief Computes the absolut values squared of a column vector
 
- * @param V Eigen expression
- * @return Real vector consisting of the absolut values squared
+ * \param V Eigen expression
+ * \return Real vector consisting of the absolut values squared
  */
 template<typename Derived>
 std::vector<double> amplitudes(const Eigen::MatrixBase<Derived>& V)
@@ -1403,8 +1403,8 @@ std::vector<double> amplitudes(const Eigen::MatrixBase<Derived>& V)
 /**
  * \brief Element-wise sum of a range
  *
- * @param first Iterator to the first element of the range
- * @param last  Iterator to the last element of the range
+ * \param first Iterator to the first element of the range
+ * \param last  Iterator to the last element of the range
  * \return Element-wise sum of the range,
  * as a scalar in the same scalar field as the range
  */
@@ -1419,8 +1419,8 @@ auto sum(InputIterator first,
 /**
  * \brief Element-wise product of a range
  *
- * @param first Iterator to the first element of the range
- * @param last  Iterator to the last element of the range
+ * \param first Iterator to the first element of the range
+ * \param last  Iterator to the last element of the range
  * \return Element-wise product of the range,
  * as a scalar in the same scalar field as the range
  */

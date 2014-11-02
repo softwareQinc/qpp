@@ -18,13 +18,13 @@ namespace qpp
  * \note The dimension of the gate \a A must match
  * the dimension of \a subsys
  *
- * @param state Eigen expression
- * @param A Eigen expression
- * @param ctrl Control subsystem indexes
- * @param subsys Subsystem indexes where the gate \a A is applied
- * @param n Total number of subsystems
- * @param d Local dimensions of all local Hilbert spaces (must all be equal)
- * @return CTRL-A gate applied to the part \a subsys of \a state
+ * \param state Eigen expression
+ * \param A Eigen expression
+ * \param ctrl Control subsystem indexes
+ * \param subsys Subsystem indexes where the gate \a A is applied
+ * \param n Total number of subsystems
+ * \param d Local dimensions of all local Hilbert spaces (must all be equal)
+ * \return CTRL-A gate applied to the part \a subsys of \a state
  */
 template<typename Derived1, typename Derived2>
 DynMat<typename Derived1::Scalar> applyCTRL(
@@ -83,6 +83,8 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 
 	// END EXCEPTION CHECKS
 
+	std::size_t ctrlsize = ctrl.size();
+
 	// construct the table of A^i and (A^dagger)^i
 	std::vector<DynMat<typename Derived1::Scalar>> Ai;
 	std::vector<DynMat<typename Derived1::Scalar>> Aidagger;
@@ -113,9 +115,6 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 		CdimsA[k] = d;
 	for (std::size_t k = 0; k < n - ctrlgate.size(); k++)
 		CdimsCTRLAbar[k] = d;
-
-	//std::clog << D << " " << DA << " " << DCTRL << " " << DCTRLA << " "
-	//	<< DCTRLAbar << std::endl;
 
 	// worker, computes the coefficient and the index for the ket case
 	// used in #pragma omp parallel for collapse
@@ -257,12 +256,20 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 		DynMat<typename Derived1::Scalar> result = DynMat<
 				typename Derived1::Scalar>::Zero(D, 1);
 
-#pragma omp parallel for collapse(3)
-		for (std::size_t i = 0; i < d; i++)
-			for (std::size_t m = 0; m < DA; m++)
-				for (std::size_t r = 0; r < DCTRLAbar; r++)
-					result(coeff_idx_ket(i, m, r).second) = coeff_idx_ket(i, m,
+#pragma omp parallel for collapse(2)
+		for (std::size_t m = 0; m < DA; m++)
+			for (std::size_t r = 0; r < DCTRLAbar; r++)
+				if (ctrlsize == 0) // no control
+				{
+					result(coeff_idx_ket(1, m, r).second) = coeff_idx_ket(1, m,
 							r).first;
+				}
+				else
+					for (std::size_t i = 0; i < d; i++)
+					{
+						result(coeff_idx_ket(i, m, r).second) = coeff_idx_ket(i,
+								m, r).first;
+					}
 
 		return result;
 	}
@@ -277,20 +284,32 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 		DynMat<typename Derived1::Scalar> result = DynMat<
 				typename Derived1::Scalar>::Zero(D, D);
 
-#pragma omp parallel for collapse(6)
-		for (std::size_t i1 = 0; i1 < d; i1++)
-			for (std::size_t m1 = 0; m1 < DA; m1++)
-				for (std::size_t r1 = 0; r1 < DCTRLAbar; r1++)
-					for (std::size_t i2 = 0; i2 < d; i2++)
-						for (std::size_t m2 = 0; m2 < DA; m2++)
-							for (std::size_t r2 = 0; r2 < DCTRLAbar; r2++)
-							{
-								auto coeff_idxes = coeff_idx_rho(i1, m1, r1, i2,
-										m2, r2);
-								result(std::get<1>(coeff_idxes),
-										std::get<2>(coeff_idxes)) = std::get<0>(
-										coeff_idxes);
-							}
+#pragma omp parallel for collapse(4)
+		for (std::size_t m1 = 0; m1 < DA; m1++)
+			for (std::size_t r1 = 0; r1 < DCTRLAbar; r1++)
+				for (std::size_t m2 = 0; m2 < DA; m2++)
+					for (std::size_t r2 = 0; r2 < DCTRLAbar; r2++)
+						if (ctrlsize == 0) // no control
+						{
+							auto coeff_idxes = coeff_idx_rho(1, m1, r1, 1, m2,
+									r2);
+							result(std::get<1>(coeff_idxes),
+									std::get<2>(coeff_idxes)) = std::get<0>(
+									coeff_idxes);
+						}
+						else
+						{
+							for (std::size_t i1 = 0; i1 < d; i1++)
+								for (std::size_t i2 = 0; i2 < d; i2++)
+
+								{
+									auto coeff_idxes = coeff_idx_rho(i1, m1, r1,
+											i2, m2, r2);
+									result(std::get<1>(coeff_idxes),
+											std::get<2>(coeff_idxes)) =
+											std::get<0>(coeff_idxes);
+								}
+						}
 		return result;
 	}
 
@@ -298,7 +317,6 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 	else
 		throw Exception("applyCTRL",
 				Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
-
 }
 
 /**
@@ -308,11 +326,94 @@ DynMat<typename Derived1::Scalar> applyCTRL(
  * \note The dimension of the gate \a A must match
  * the dimension of \a subsys
  *
- * @param state Eigen expression
- * @param A Eigen expression
- * @param subsys Subsystem indexes where the gate \a A is applied
- * @param dims Local dimensions of all local Hilbert spaces (can be different)
- * @return Gate \a A applied to the part \a subsys of \a state
+ * \param state Eigen expression
+ * \param A Eigen expression
+ * \param subsys Subsystem indexes where the gate \a A is applied
+ * \param n Total number of subsystems
+ * \param d Local dimensions of all local Hilbert spaces (must all be equal)
+ * \return Gate \a A applied to the part \a subsys of \a state
+ */
+template<typename Derived1, typename Derived2>
+DynMat<typename Derived1::Scalar> apply(
+		const Eigen::MatrixBase<Derived1>& state,
+		const Eigen::MatrixBase<Derived2>& A,
+		const std::vector<std::size_t>& subsys, std::size_t n,
+		std::size_t d = 2)
+{
+	const DynMat<typename Derived1::Scalar> & rstate = state;
+	const DynMat<typename Derived2::Scalar> & rA = A;
+
+	// EXCEPTION CHECKS
+
+	// check types
+	if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
+		throw Exception("apply", Exception::Type::TYPE_MISMATCH);
+
+	// check zero sizes
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("apply", Exception::Type::ZERO_SIZE);
+
+	// check zero sizes
+	if (!internal::_check_nonzero_size(rstate))
+		throw Exception("apply", Exception::Type::ZERO_SIZE);
+
+	// check square matrix for the gate
+	if (!internal::_check_square_mat(rA))
+		throw Exception("apply", Exception::Type::MATRIX_NOT_SQUARE);
+
+	// check out of range
+	if (n == 0)
+		throw Exception("applyCTRL", Exception::Type::OUT_OF_RANGE);
+
+	// check that dimension is valid
+	if (d == 0)
+		throw Exception("applyCTRL", Exception::Type::DIMS_INVALID);
+
+	std::vector<std::size_t> dims(n, d); // local dimensions vector
+
+	// check subsys is valid w.r.t. dims
+	if (!internal::_check_subsys_match_dims(subsys, dims))
+		throw Exception("apply", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+	// check that gate matches the dimensions of the subsys
+	if (static_cast<std::size_t>(rA.rows()) != std::pow(d, subsys.size()))
+		throw Exception("apply", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+	if (internal::_check_col_vector(rstate)) // we have a ket
+	{
+		// check that dims match state vector
+		if (!internal::_check_dims_match_cvect(dims, rstate))
+			throw Exception("apply", Exception::Type::DIMS_MISMATCH_CVECTOR);
+
+		return applyCTRL(rstate, rA, { }, subsys, n, d);
+	}
+	else if (internal::_check_square_mat(rstate)) // we have a matrix
+	{
+
+		// check that dims match state matrix
+		if (!internal::_check_dims_match_mat(dims, rstate))
+			throw Exception("apply", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+		return applyCTRL(rstate, rA, { }, subsys, n, d);;
+	}
+	else
+		throw Exception("apply", Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+}
+
+namespace obsolete
+{
+/**
+ * \brief Applies the gate \a A to the part \a subsys
+ * of a multipartite state vector or density matrix
+ *
+ * \note The dimension of the gate \a A must match
+ * the dimension of \a subsys
+ *
+ * \param state Eigen expression
+ * \param A Eigen expression
+ * \param subsys Subsystem indexes where the gate \a A is applied
+ * \param dims Local dimensions of all local Hilbert spaces (can be different)
+ * \return Gate \a A applied to the part \a subsys of \a state
  */
 template<typename Derived1, typename Derived2>
 DynMat<typename Derived1::Scalar> apply(
@@ -519,6 +620,7 @@ DynMat<typename Derived1::Scalar> apply(
 	else
 		throw Exception("apply", Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 }
+} // namespace old
 
 /**
  * \brief Superoperator matrix representation

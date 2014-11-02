@@ -56,7 +56,7 @@ public:
 	/**
 	 * \brief Time passed in seconds
 	 *
-	 * @return Number of seconds that passed between the instantiation/reset
+	 * \return Number of seconds that passed between the instantiation/reset
 	 * and invocation of qpp::Timer::toc()
 	 */
 	double seconds() const
@@ -68,9 +68,9 @@ public:
 	/**
 	 * \brief Overload for std::ostream operators
 	 *
-	 * @param os Output stream
-	 * @param rhs Timer instance
-	 * @return Writes to the output stream the number of seconds that passed
+	 * \param os Output stream
+	 * \param rhs Timer instance
+	 * \return Writes to the output stream the number of seconds that passed
 	 * between the instantiation/reset and invocation of qpp::Timer::toc().
 	 */
 	friend std::ostream& operator<<(std::ostream &os, const Timer& rhs)

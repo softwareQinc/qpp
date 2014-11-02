@@ -69,9 +69,9 @@ public:
 	/**
 	 * \brief Rotation of \a theta about the 3-dimensional real unit vector \a n
 	 *
-	 * @param theta Rotation angle
-	 * @param n 3-dimensional real unit vector
-	 * @return Rotation gate
+	 * \param theta Rotation angle
+	 * \param n 3-dimensional real unit vector
+	 * \return Rotation gate
 	 */
 	cmat Rn(double theta, std::vector<double> n) const
 	{
@@ -91,8 +91,8 @@ public:
 	 *
 	 * \note Defined as \f$ Z = \sum_j \exp(2\pi i j/D) |j\rangle\langle j| \f$
 	 *
-	 * @param D Dimension of the Hilbert space
-	 * @return Generalized Z gate for qudits
+	 * \param D Dimension of the Hilbert space
+	 * \return Generalized Z gate for qudits
 	 */
 	cmat Zd(std::size_t D) const
 	{
@@ -111,8 +111,8 @@ public:
 	 *
 	 * \note Defined as \f$ F = \sum_{jk} \exp(2\pi i jk/D) |j\rangle\langle k| \f$
 	 *
-	 * @param D Dimension of the Hilbert space
-	 * @return Fourier transform gate for qudits
+	 * \param D Dimension of the Hilbert space
+	 * \return Fourier transform gate for qudits
 	 */
 	cmat Fd(std::size_t D) const
 	{
@@ -133,8 +133,8 @@ public:
 	 *
 	 * \note Defined as \f$ X = \sum_j |j\oplus 1\rangle\langle j| \f$
 	 *
-	 * @param D Dimension of the Hilbert space
-	 * @return Generalized X gate for qudits
+	 * \param D Dimension of the Hilbert space
+	 * \return Generalized X gate for qudits
 	 */
 	cmat Xd(std::size_t D) const
 	{
@@ -150,8 +150,8 @@ public:
 	 * \note Can change the return type from complex matrix (default)
 	 * by explicitly specifying the template parameter
 	 *
-	 * @param D Dimension of the Hilbert space
-	 * @return Identity gate
+	 * \param D Dimension of the Hilbert space
+	 * \return Identity gate
 	 */
 	template<typename Derived = Eigen::MatrixXcd>
 	Derived Id(std::size_t D) const
@@ -169,12 +169,12 @@ public:
 	 * \note The dimension of the gate \a A must match
 	 * the dimension of \a subsys
 	 *
-	 * @param A Eigen expression
-	 * @param ctrl Control subsystem indexes
-	 * @param subsys Subsystem indexes where the gate \a A is applied
-	 * @param n Total number of subsystes
-	 * @param d Local dimensions of all local Hilbert spaces (must all be equal)
-	 * @return CTRL-A gate, as a matrix over the same scalar field as \a A
+	 * \param A Eigen expression
+	 * \param ctrl Control subsystem indexes
+	 * \param subsys Subsystem indexes where the gate \a A is applied
+	 * \param n Total number of subsystes
+	 * \param d Local dimensions of all local Hilbert spaces (must all be equal)
+	 * \return CTRL-A gate, as a matrix over the same scalar field as \a A
 	 */
 	template<typename Derived>
 	DynMat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived>& A,

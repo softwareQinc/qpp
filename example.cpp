@@ -10,7 +10,6 @@
 //#include "matlab.h" // support for MATLAB
 
 // TODO: testing (IN PROGRESS)
-// TODO: applyCTRL (IN PROGRESS)
 
 // TODO: write introductory page (documentation)
 // TODO: more robust exception parameter checking
@@ -36,12 +35,13 @@ int main()
 
 
 // testing applyCTRL
+
 	size_t d = 3;
 	size_t n = 3;
-	std::vector<std::size_t> ctrl = { 0 };
+	std::vector<std::size_t> ctrl = { };
 	std::vector<std::size_t> subsys = { 2 };
 	ket psi = mket( { 1, 0, 1 }, d);
-	cmat rho = mprj( { 1, 0, 3 }, d);
+	cmat rho = mprj( { 1, 0,  1 }, d);
 	cmat gate = gt.Xd(3);
 
 	displn(psi);
