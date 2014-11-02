@@ -32,6 +32,8 @@ int main()
 	std::cout << std::fixed; // use fixed format for nice formatting
 	std::cout << std::setprecision(4); // only for fixed or scientific modes
 
+	displn((cmat)evals(gt.X).asDiagonal());
+
 // testing applyCTRL
 	/*
 	 size_t d = 3;
@@ -221,7 +223,18 @@ int main()
 	std::cout << std::endl << "Difference in norm on output states: "
 			<< norm(rho_out1 - rho_out) << std::endl;
 	std::cout << std::endl << "Superoperator matrix:" << std::endl;
+
+	Timer tmp;
+
+	cmat smat1 = obsolete::super(Ks);
+	tmp.toc();
+	std::clog << tmp << std::endl;
+
+	tmp.tic();
 	cmat smat = super(Ks);
+	tmp.toc();
+	std::clog << tmp << std::endl;
+
 	displn(smat);
 	std::cout << std::endl
 			<< "The eigenvalues of the superoperator matrix are: " << std::endl;

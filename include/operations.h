@@ -401,74 +401,6 @@ DynMat<typename Derived1::Scalar> apply(
 }
 
 /**
- * \brief Superoperator matrix representation
- *
- * Constructs the superoperator matrix of the channel specified by the set of
- * Kraus operators \a Ks in the standard operator basis
- * \f$\{|i\rangle\langle j|\}\f$ ordered in lexicographical order, i.e.
- * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
- *
- * \param Ks Set of Kraus operators
- * \return Superoperator matrix representation
- */
-cmat super(const std::vector<cmat>& Ks)
-{
-	// EXCEPTION CHECKS
-	if (!internal::_check_nonzero_size(Ks))
-		throw Exception("super", Exception::Type::ZERO_SIZE);
-	if (!internal::_check_nonzero_size(Ks[0]))
-		throw Exception("super", Exception::Type::ZERO_SIZE);
-	if (!internal::_check_square_mat(Ks[0]))
-		throw Exception("super", Exception::Type::MATRIX_NOT_SQUARE);
-	for (auto&& it : Ks)
-		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-			throw Exception("super", Exception::Type::DIMS_NOT_EQUAL);
-	std::size_t D = static_cast<std::size_t>(Ks[0].rows());
-
-	std::size_t midx_row[2] = { 0, 0 };
-	std::size_t midx_col[2] = { 0, 0 };
-	std::size_t dims[2];
-	dims[0] = dims[1] = D;
-
-	cmat result(D * D, D * D);
-	cmat MN = cmat::Zero(D, D);
-	cmat BA = cmat::Zero(D, D);
-	cmat EMN = cmat::Zero(D, D);
-
-	for (std::size_t m = 0; m < D; m++)
-	{
-		midx_col[0] = m;
-		for (std::size_t n = 0; n < D; n++)
-		{
-			midx_col[1] = n;
-			MN(m, n) = 1;
-			// compute E(|m><n|)
-			for (std::size_t i = 0; i < Ks.size(); i++)
-				EMN += Ks[i] * MN * adjoint(Ks[i]);
-			MN(m, n) = 0;
-			for (std::size_t a = 0; a < D; a++)
-			{
-				midx_row[0] = a;
-				for (std::size_t b = 0; b < D; b++)
-				{
-					midx_row[1] = b;
-					BA(b, a) = 1;
-
-					// compute result(ab,mn)=<a|E(|m><n)|b>
-
-					result(internal::_multiidx2n(midx_row, 2, dims),
-							internal::_multiidx2n(midx_col, 2, dims)) = (EMN
-							* BA).trace();
-					BA(b, a) = 0;
-				}
-			}
-			EMN = cmat::Zero(D, D);
-		}
-	}
-	return result;
-}
-
-/**
  * \brief Applies the channel specified by the set of Kraus operators \a Ks
  * to the density matrix \a rho
  *
@@ -572,6 +504,76 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho, const std::vector<cmat>& Ks,
 #pragma omp critical
 		{
 			result += apply(rrho, Ks[i], subsys, n, d);
+		}
+	}
+	return result;
+}
+
+/**
+ * \brief Superoperator matrix representation
+ *
+ * Constructs the superoperator matrix of the channel specified by the set of
+ * Kraus operators \a Ks in the standard operator basis
+ * \f$\{|i\rangle\langle j|\}\f$ ordered in lexicographical order, i.e.
+ * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
+ *
+ * \param Ks Set of Kraus operators
+ * \return Superoperator matrix representation
+ */
+cmat super(const std::vector<cmat>& Ks)
+{
+	// EXCEPTION CHECKS
+	if (!internal::_check_nonzero_size(Ks))
+		throw Exception("super", Exception::Type::ZERO_SIZE);
+	if (!internal::_check_nonzero_size(Ks[0]))
+		throw Exception("super", Exception::Type::ZERO_SIZE);
+	if (!internal::_check_square_mat(Ks[0]))
+		throw Exception("super", Exception::Type::MATRIX_NOT_SQUARE);
+	for (auto&& it : Ks)
+		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+			throw Exception("super", Exception::Type::DIMS_NOT_EQUAL);
+	std::size_t D = static_cast<std::size_t>(Ks[0].rows());
+
+	std::size_t midx_row[2] = { 0, 0 };
+	std::size_t midx_col[2] = { 0, 0 };
+	std::size_t dims[2];
+	dims[0] = dims[1] = D;
+
+	cmat result(D * D, D * D);
+	cmat MN = cmat::Zero(D, D);
+	cmat BA = cmat::Zero(D, D);
+	cmat EMN = cmat::Zero(D, D);
+
+	for (std::size_t m = 0; m < D; m++)
+	{
+		midx_col[0] = m;
+		for (std::size_t n = 0; n < D; n++)
+		{
+			midx_col[1] = n;
+			MN(m, n) = 1;
+			// compute E(|m><n|)
+
+			for (std::size_t i = 0; i < Ks.size(); i++)
+				EMN += Ks[i] * MN * adjoint(Ks[i]);
+
+			MN(m, n) = 0;
+			for (std::size_t a = 0; a < D; a++)
+			{
+				midx_row[0] = a;
+				for (std::size_t b = 0; b < D; b++)
+				{
+					midx_row[1] = b;
+					BA(b, a) = 1;
+
+					// compute result(ab,mn)=<a|E(|m><n)|b>
+
+					result(internal::_multiidx2n(midx_row, 2, dims),
+							internal::_multiidx2n(midx_col, 2, dims)) = (EMN
+							* BA).trace();
+					BA(b, a) = 0;
+				}
+			}
+			EMN = cmat::Zero(D, D);
 		}
 	}
 	return result;

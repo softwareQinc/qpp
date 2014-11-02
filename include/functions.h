@@ -228,7 +228,7 @@ double norm(const Eigen::MatrixBase<Derived>& A)
  * \brief Eigenvalues
  *
  * \param A Eigen expression
- * \return Eigenvalues of \a A, as a diagonal complex matrix
+ * \return Eigenvalues of \a A, as a complex dynamic column vector
  */
 template<typename Derived>
 cmat evals(const Eigen::MatrixBase<Derived>& A)
@@ -274,7 +274,7 @@ cmat evects(const Eigen::MatrixBase<Derived>& A)
  * \brief Hermitian eigenvalues
  *
  * \param A Eigen expression
- * \return Eigenvalues of Hermitian \a A, as a diagonal real matrix
+ * \return Eigenvalues of Hermitian \a A, as a real dynamic column vector
  */
 template<typename Derived>
 dmat hevals(const Eigen::MatrixBase<Derived>& A)
