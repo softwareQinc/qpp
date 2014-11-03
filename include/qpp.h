@@ -27,6 +27,7 @@
 #include <complex>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 #include <exception>
 #include <fstream>
 #include <functional>

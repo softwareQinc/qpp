@@ -26,7 +26,10 @@ public:
 	Init()
 	{
 		// On entry message
-		std::cout << "Starting qpp..." << std::endl;
+		std::cout << ">>> " << "Starting quantum++..." << std::endl;
+		auto current_date = std::chrono::system_clock::to_time_t(
+				std::chrono::system_clock::now());
+		std::cout << ">>> " << std::ctime(&current_date) << std::endl;
 
 		// set default output format and precision
 		std::cout << std::fixed; // use fixed format for nice formatting
@@ -39,7 +42,11 @@ private:
 	~Init()
 	{
 		// On exit message
-		std::cout << std::endl << "Exiting qpp..." << std::endl;
+		std::cout << std::endl << ">>> " << "Exiting quantum++..." << std::endl;
+
+		auto current_date = std::chrono::system_clock::to_time_t(
+				std::chrono::system_clock::now());
+		std::cout << ">>> " << std::ctime(&current_date) << std::endl;
 	}
 };
 /* class Init */
