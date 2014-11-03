@@ -50,7 +50,7 @@
 #include <Eigen/Dense>
 #include <Eigen/SVD>
 
-// do not change the order of these!
+// do not change the order in this group, inter-dependencies
 #include "constants.h"
 #include "types.h"
 #include "classes/exception.h"
@@ -64,11 +64,13 @@
 #include "entropies.h"
 #include "entanglement.h"
 
+// the ones below can be in any order, no inter-dependencies
 #include "operations.h"
 #include "io.h"
 #include "random.h"
 #include "classes/timer.h"
 
+// experimental/testing
 #include "experimental/test.h"
 #include "experimental/classes/qudit.h"
 
