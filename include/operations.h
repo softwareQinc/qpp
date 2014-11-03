@@ -981,7 +981,7 @@ DynMat<typename Derived::Scalar> ptranspose(const Eigen::MatrixBase<Derived>& A,
 
 	DynMat<typename Derived::Scalar> result(D, D);
 
-	auto worker = [&](std::size_t i, std::size_t j)
+	auto worker = [=, &midxcol](std::size_t i)
 	{
 		// use static allocation for speed!
 			std::size_t midxcoltmp[maxn];
@@ -997,7 +997,7 @@ DynMat<typename Derived::Scalar> ptranspose(const Eigen::MatrixBase<Derived>& A,
 			std::swap(midxcoltmp[csubsys[k]], midxrow[csubsys[k]]);
 
 			/* writes the result */
-			result(i, j)=rA(internal::_multiidx2n(midxrow, numdims, cdims),
+			return rA(internal::_multiidx2n(midxrow, numdims, cdims),
 					internal::_multiidx2n(midxcoltmp, numdims, cdims));
 
 		};
@@ -1008,7 +1008,7 @@ DynMat<typename Derived::Scalar> ptranspose(const Eigen::MatrixBase<Derived>& A,
 		internal::_n2multiidx(j, numdims, cdims, midxcol);
 #pragma omp parallel for
 		for (std::size_t i = 0; i < D; i++)
-			worker(i, j);
+			result(i, j) = worker(i);
 	}
 
 	return result;
