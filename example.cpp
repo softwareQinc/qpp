@@ -27,7 +27,7 @@ cplx pow3(const cplx& z) // a test function
 int main()
 {
 	std::discrete_distribution<std::size_t> dd{0.1,0.9};
-	std::cout << dd(rdevs._rng); // sample
+	std::cout << dd(rdevs._rng) << std::endl; // sample
 
 //	/*
 	// TESTING
