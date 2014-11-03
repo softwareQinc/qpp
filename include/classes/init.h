@@ -27,6 +27,8 @@ public:
 	{
 		// On entry message
 		std::cout << ">>> " << "Starting quantum++..." << std::endl;
+
+		// Gets and displays current time
 		auto current_date = std::chrono::system_clock::to_time_t(
 				std::chrono::system_clock::now());
 		std::cout << ">>> " << std::ctime(&current_date) << std::endl;
@@ -44,6 +46,7 @@ private:
 		// On exit message
 		std::cout << std::endl << ">>> " << "Exiting quantum++..." << std::endl;
 
+		// Gets and displays current time
 		auto current_date = std::chrono::system_clock::to_time_t(
 				std::chrono::system_clock::now());
 		std::cout << ">>> " << std::ctime(&current_date) << std::endl;
