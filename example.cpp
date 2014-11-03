@@ -17,6 +17,8 @@
 // TODO: write introductory page (documentation)
 // TODO: more robust exception parameter checking
 
+// TODO: lambda capture by value when possible
+
 using namespace qpp;
 
 cplx pow3(const cplx& z) // a test function
