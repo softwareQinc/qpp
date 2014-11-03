@@ -114,7 +114,7 @@ bool _check_dims(const std::vector<std::size_t>& dims)
 		return false;
 
 	if (std::find_if(std::begin(dims), std::end(dims),
-			[&dims](std::size_t i) -> bool
+			[dims](std::size_t i) -> bool
 			{	if(i==0) return true;
 				else return false;}) != std::end(dims))
 		return false;
@@ -199,7 +199,7 @@ bool _check_subsys_match_dims(const std::vector<std::size_t>& subsys,
 
 	// check range of subsystems
 	if (std::find_if(std::begin(subsyssort), std::end(subsyssort),
-			[&dims](std::size_t i) -> bool
+			[dims](std::size_t i) -> bool
 			{	if(i>dims.size()-1) return true;
 				else return false;}) != std::end(subsyssort))
 		return false;

@@ -117,7 +117,7 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 
 	// worker, computes the coefficient and the index for the ket case
 	// used in #pragma omp parallel for collapse
-	auto coeff_idx_ket = [&](std::size_t _i, std::size_t _m, std::size_t _r)
+	auto coeff_idx_ket = [=](std::size_t _i, std::size_t _m, std::size_t _r)
 	-> std::pair<typename Derived1::Scalar, std::size_t>
 	{
 		std::size_t idx = 0;
@@ -170,7 +170,7 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 	// worker, computes the coefficient and the index
 	// for the density matrix case
 	// used in #pragma omp parallel for collapse
-	auto coeff_idx_rho = [&](std::size_t _i1, std::size_t _m1,
+	auto coeff_idx_rho = [=](std::size_t _i1, std::size_t _m1,
 			std::size_t _r1, std::size_t _i2, std::size_t _m2,
 			std::size_t _r2 )
 	-> std::tuple<typename Derived1::Scalar, std::size_t, std::size_t>
@@ -252,7 +252,7 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 			throw Exception("applyCTRL",
 					Exception::Type::DIMS_MISMATCH_CVECTOR);
 
-		if(d == 1)
+		if (d == 1)
 			return rstate;
 
 		DynMat<typename Derived1::Scalar> result = rstate;
@@ -282,7 +282,7 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 		if (!internal::_check_dims_match_mat(dims, rstate))
 			throw Exception("applyCTRL", Exception::Type::DIMS_MISMATCH_MATRIX);
 
-		if(d == 1)
+		if (d == 1)
 			return rstate;
 
 		DynMat<typename Derived1::Scalar> result = rstate;
@@ -711,7 +711,7 @@ DynMat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 	DynMat<typename Derived::Scalar> result =
 			DynMat<typename Derived::Scalar>::Zero(DB, DB);
 
-	auto worker = [&](std::size_t i, std::size_t j)
+	auto worker = [=](std::size_t i, std::size_t j)
 	{
 		typename Derived::Scalar sum = 0;
 		for (std::size_t m = 0; m < DA; m++)
@@ -875,7 +875,7 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 	DynMat<typename Derived::Scalar> result = DynMat<typename Derived::Scalar>(
 			dimsubsysbar, dimsubsysbar);
 
-	auto worker = [&](std::size_t i, std::size_t j)
+	auto worker = [=](std::size_t i, std::size_t j)
 	{
 		// use static allocation for speed!
 
@@ -981,7 +981,7 @@ DynMat<typename Derived::Scalar> ptranspose(const Eigen::MatrixBase<Derived>& A,
 
 	DynMat<typename Derived::Scalar> result(D, D);
 
-	auto worker = [&](std::size_t i, std::size_t j)
+	auto worker = [=,&result](std::size_t i, std::size_t j)
 	{
 		// use static allocation for speed!
 			std::size_t midxcoltmp[maxn];
