@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?>
+<cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+	<storageModule moduleId="org.eclipse.cdt.core.settings">
+		<cconfiguration
+			id="cdt.managedbuild.config.gnu.macosx.exe.debug.1139516571">
+			<storageModule
+				buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider"
+				id="cdt.managedbuild.config.gnu.macosx.exe.debug.1139516571"
+				moduleId="org.eclipse.cdt.core.settings" name="Debug">
+				<externalSettings />
+				<extensions>
+					<extension id="org.eclipse.cdt.core.MachO64" point="org.eclipse.cdt.core.BinaryParser" />
+					<extension id="org.eclipse.cdt.core.GCCErrorParser"
+						point="org.eclipse.cdt.core.ErrorParser" />
+					<extension id="org.eclipse.cdt.core.GASErrorParser"
+						point="org.eclipse.cdt.core.ErrorParser" />
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser"
+						point="org.eclipse.cdt.core.ErrorParser" />
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser" />
+					<extension id="org.eclipse.cdt.core.GLDErrorParser"
+						point="org.eclipse.cdt.core.ErrorParser" />
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="${ProjName}"
+					buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe"
+					buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug"
+					cleanCommand="rm -rf" description=""
+					id="cdt.managedbuild.config.gnu.macosx.exe.debug.1139516571" name="Debug"
+					parent="cdt.managedbuild.config.gnu.macosx.exe.debug">
+					<folderInfo
+						id="cdt.managedbuild.config.gnu.macosx.exe.debug.1139516571."
+						name="/" resourcePath="">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.macosx.base.2142765843"
+							name="MacOSX GCC" superClass="cdt.managedbuild.toolchain.gnu.macosx.base"
+							targetTool="cdt.managedbuild.tool.gnu.cpp.linker;cdt.managedbuild.tool.gnu.archiver;cdt.managedbuild.tool.macosx.c.linker.macosx.base"
+							unusedChildren="cdt.managedbuild.tool.macosx.cpp.linker.macosx.base">
+							<targetPlatform archList="all"
+								binaryParser="org.eclipse.cdt.core.MachO64"
+								id="cdt.managedbuild.target.gnu.platform.macosx.base.1397931521"
+								name="Debug Platform" osList="macosx"
+								superClass="cdt.managedbuild.target.gnu.platform.macosx.base" />
+							<builder buildPath="${workspace_loc:/quantum++}/Debug"
+								id="cdt.managedbuild.target.gnu.builder.macosx.base.181990920"
+								keepEnvironmentInBuildfile="false" name="Gnu Make Builder"
+								superClass="cdt.managedbuild.target.gnu.builder.macosx.base">
+								<outputEntries>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath"
+										name="Debug" />
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath"
+										name="Release" />
+								</outputEntries>
+							</builder>
+							<tool command="/opt/local/bin/g++"
+								id="cdt.managedbuild.tool.macosx.c.linker.macosx.base.1720767085"
+								name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.base" />
+							<tool command="/opt/local/bin/g++"
+								commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
+								id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug.1008819958"
+								name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug">
+								<option id="macosx.cpp.link.option.libs.1839174114" name="Libraries (-l)"
+									superClass="macosx.cpp.link.option.libs" valueType="libs" />
+								<option id="macosx.cpp.link.option.paths.901718971" name="Library search path (-L)"
+									superClass="macosx.cpp.link.option.paths" valueType="libPaths" />
+								<option id="macosx.cpp.link.option.flags.75174222" name="Linker flags"
+									superClass="macosx.cpp.link.option.flags" value="" valueType="string" />
+								<inputType
+									id="cdt.managedbuild.tool.macosx.cpp.linker.input.1864142547"
+									superClass="cdt.managedbuild.tool.macosx.cpp.linker.input">
+									<additionalInput kind="additionalinputdependency"
+										paths="$(USER_OBJS)" />
+									<additionalInput kind="additionalinput" paths="$(LIBS)" />
+								</inputType>
+							</tool>
+							<tool command="as"
+								commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
+								id="cdt.managedbuild.tool.gnu.assembler.macosx.base.1175392545"
+								name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.macosx.base">
+								<option id="gnu.both.asm.option.include.paths.1206760078"
+									name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths"
+									valueType="includePath">
+									<listOptionValue builtIn="false"
+										value="/Users/vlad/Dropbox/programming/workspace/quantum++/include" />
+									<listOptionValue builtIn="false"
+										value="/Applications/MATLAB_R2014b.app/extern/include/" />
+									<listOptionValue builtIn="false"
+										value="/Users/vlad/eigen_3.2.2" />
+								</option>
+								<inputType
+									id="cdt.managedbuild.tool.gnu.assembler.input.1854077222"
+									superClass="cdt.managedbuild.tool.gnu.assembler.input" />
+							</tool>
+							<tool command="/opt/local/bin/g++"
+								id="cdt.managedbuild.tool.gnu.archiver.macosx.base.1036506695"
+								name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.macosx.base" />
+							<tool command="/opt/local/bin/g++"
+								commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
+								id="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.base.1185303380"
+								name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.base">
+								<option id="gnu.cpp.compiler.option.include.paths.835122406"
+									name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths"
+									valueType="includePath">
+									<listOptionValue builtIn="false"
+										value="/Users/vlad/Dropbox/programming/workspace/quantum++/include" />
+									<listOptionValue builtIn="false"
+										value="/Applications/MATLAB_R2014b.app/extern/include/" />
+									<listOptionValue builtIn="false"
+										value="/Users/vlad/eigen_3.2.2" />
+								</option>
+								<option id="gnu.cpp.compiler.option.optimization.level.1834639034"
+									name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level"
+									value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated" />
+								<option id="gnu.cpp.compiler.option.debugging.level.1563900288"
+									name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level"
+									value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated" />
+								<option id="gnu.cpp.compiler.option.other.other.774344210"
+									name="Other flags" superClass="gnu.cpp.compiler.option.other.other"
+									value="-c -isystem /Users/vlad/eigen_3.2.2 -fmessage-length=0 -std=c++11 -fopenmp -fno-weak"
+									valueType="string" />
+								<option id="gnu.cpp.compiler.option.warnings.pedantic.212788920"
+									name="Pedantic (-pedantic)" superClass="gnu.cpp.compiler.option.warnings.pedantic"
+									value="true" valueType="boolean" />
+								<option id="gnu.cpp.compiler.option.warnings.extrawarn.578892192"
+									name="Extra warnings (-Wextra)" superClass="gnu.cpp.compiler.option.warnings.extrawarn"
+									value="true" valueType="boolean" />
+								<option
+									id="gnu.cpp.compiler.option.warnings.wconversion.2145507329"
+									name="Implicit conversion warnings (-Wconversion)" superClass="gnu.cpp.compiler.option.warnings.wconversion"
+									value="true" valueType="boolean" />
+								<option id="gnu.cpp.compiler.option.dialect.std.2000007340"
+									name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std"
+									value="gnu.cpp.compiler.dialect.default" valueType="enumerated" />
+								<option id="gnu.cpp.compiler.option.debugging.other.907303342"
+									name="Other debugging flags" superClass="gnu.cpp.compiler.option.debugging.other"
+									value="-DDEBUG" valueType="string" />
+								<inputType
+									id="cdt.managedbuild.tool.gnu.cpp.compiler.input.449175627"
+									superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input" />
+							</tool>
+							<tool
+								id="cdt.managedbuild.tool.gnu.c.compiler.macosx.base.129764110"
+								name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.macosx.base">
+								<option defaultValue="gnu.c.optimization.level.none"
+									id="gnu.c.compiler.option.optimization.level.785585632" name="Optimization Level"
+									superClass="gnu.c.compiler.option.optimization.level"
+									valueType="enumerated" />
+								<option id="gnu.c.compiler.option.debugging.level.1379820518"
+									name="Debug Level" superClass="gnu.c.compiler.option.debugging.level"
+									value="gnu.c.debugging.level.max" valueType="enumerated" />
+								<option id="gnu.c.compiler.option.include.paths.1419200918"
+									name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths"
+									valueType="includePath">
+									<listOptionValue builtIn="false"
+										value="/Users/vlad/Dropbox/programming/workspace/quantum++/include" />
+									<listOptionValue builtIn="false"
+										value="/Applications/MATLAB_R2014b.app/extern/include/" />
+									<listOptionValue builtIn="false"
+										value="/Users/vlad/eigen_3.2.2" />
+								</option>
+								<option id="gnu.c.compiler.option.warnings.pedantic.1751262450"
+									name="Pedantic (-pedantic)" superClass="gnu.c.compiler.option.warnings.pedantic"
+									value="false" valueType="boolean" />
+								<option id="gnu.c.compiler.option.dialect.std.477600647"
+									name="Language standard" superClass="gnu.c.compiler.option.dialect.std"
+									value="gnu.c.compiler.dialect.default" valueType="enumerated" />
+								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.61127346"
+									superClass="cdt.managedbuild.tool.gnu.c.compiler.input" />
+							</tool>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry excluding="experimental|src" flags="VALUE_WORKSPACE_PATH|RESOLVED"
+							kind="sourcePath" name="" />
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings" />
+		</cconfiguration>
+		<cconfiguration
+			id="cdt.managedbuild.config.macosx.exe.release.1386273201">
+			<storageModule
+				buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider"
+				id="cdt.managedbuild.config.macosx.exe.release.1386273201" moduleId="org.eclipse.cdt.core.settings"
+				name="Release">
+				<externalSettings />
+				<extensions>
+					<extension id="org.eclipse.cdt.core.MachO64" point="org.eclipse.cdt.core.BinaryParser" />
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser"
+						point="org.eclipse.cdt.core.ErrorParser" />
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser" />
+					<extension id="org.eclipse.cdt.core.GCCErrorParser"
+						point="org.eclipse.cdt.core.ErrorParser" />
+					<extension id="org.eclipse.cdt.core.GASErrorParser"
+						point="org.eclipse.cdt.core.ErrorParser" />
+					<extension id="org.eclipse.cdt.core.GLDErrorParser"
+						point="org.eclipse.cdt.core.ErrorParser" />
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="${ProjName}"
+					buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe"
+					buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release"
+					cleanCommand="rm -rf" description=""
+					id="cdt.managedbuild.config.macosx.exe.release.1386273201" name="Release"
+					parent="cdt.managedbuild.config.macosx.exe.release">
+					<folderInfo
+						id="cdt.managedbuild.config.macosx.exe.release.1386273201." name="/"
+						resourcePath="">
+						<toolChain
+							id="cdt.managedbuild.toolchain.gnu.macosx.exe.release.454970842"
+							name="MacOSX GCC" superClass="cdt.managedbuild.toolchain.gnu.macosx.exe.release">
+							<targetPlatform
+								id="cdt.managedbuild.target.gnu.platform.macosx.exe.release.1505550100"
+								name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.macosx.exe.release" />
+							<builder buildPath="${workspace_loc:/quantum++}/Release"
+								id="cdt.managedbuild.target.gnu.builder.macosx.exe.release.2089140439"
+								keepEnvironmentInBuildfile="false" managedBuildOn="true"
+								name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.macosx.exe.release" />
+							<tool command="/opt/local/bin/g++"
+								id="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.release.543067146"
+								name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.release" />
+							<tool command="/opt/local/bin/g++"
+								commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
+								id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.release.1979232091"
+								name="MacOS X C++ Linker"
+								superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.release">
+								<option id="macosx.cpp.link.option.libs.75167630" name="Libraries (-l)"
+									superClass="macosx.cpp.link.option.libs" valueType="libs">
+									<listOptionValue builtIn="false" value="gomp" />
+									<listOptionValue builtIn="false" value="mx" />
+									<listOptionValue builtIn="false" value="mat" />
+								</option>
+								<option id="macosx.cpp.link.option.paths.364252824" name="Library search path (-L)"
+									superClass="macosx.cpp.link.option.paths" valueType="libPaths">
+									<listOptionValue builtIn="false"
+										value="/Applications/MATLAB_R2014b.app/bin/maci64/" />
+								</option>
+								<option id="macosx.cpp.link.option.shared.217884721"
+									name="Shared (-dynamiclib)" superClass="macosx.cpp.link.option.shared"
+									value="false" valueType="boolean" />
+								<option id="macosx.cpp.link.option.flags.655945061" name="Linker flags"
+									superClass="macosx.cpp.link.option.flags" value="" valueType="string" />
+								<inputType
+									id="cdt.managedbuild.tool.macosx.cpp.linker.input.941788141"
+									superClass="cdt.managedbuild.tool.macosx.cpp.linker.input">
+									<additionalInput kind="additionalinputdependency"
+										paths="$(USER_OBJS)" />
+									<additionalInput kind="additionalinput" paths="$(LIBS)" />
+								</inputType>
+							</tool>
+							<tool
+								id="cdt.managedbuild.tool.gnu.assembler.macosx.exe.release.1542830078"
+								name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.macosx.exe.release">
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.662946934"
+									superClass="cdt.managedbuild.tool.gnu.assembler.input" />
+							</tool>
+							<tool command="/opt/local/bin/g++"
+								id="cdt.managedbuild.tool.gnu.archiver.macosx.base.606234714"
+								name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.macosx.base" />
+							<tool command="/opt/local/bin/g++"
+								id="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release.179805992"
+								name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release">
+								<option
+									id="gnu.cpp.compiler.macosx.exe.release.option.optimization.level.81554702"
+									name="Optimization Level"
+									superClass="gnu.cpp.compiler.macosx.exe.release.option.optimization.level"
+									value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated" />
+								<option
+									id="gnu.cpp.compiler.macosx.exe.release.option.debugging.level.397558029"
+									name="Debug Level"
+									superClass="gnu.cpp.compiler.macosx.exe.release.option.debugging.level"
+									value="gnu.cpp.compiler.debugging.level.none" valueType="enumerated" />
+								<option id="gnu.cpp.compiler.option.include.paths.1492717970"
+									name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths"
+									valueType="includePath">
+									<listOptionValue builtIn="false"
+										value="/Users/vlad/Dropbox/programming/workspace/quantum++/include" />
+									<listOptionValue builtIn="false"
+										value="/Users/vlad/eigen_3.2.2" />
+									<listOptionValue builtIn="false"
+										value="/Applications/MATLAB_R2014b.app/extern/include/" />
+								</option>
+								<option id="gnu.cpp.compiler.option.other.other.1884923359"
+									name="Other flags" superClass="gnu.cpp.compiler.option.other.other"
+									value="-c -isystem /Users/vlad/eigen_3.2.2 -fmessage-length=0 -std=c++11 -fopenmp "
+									valueType="string" />
+								<option id="gnu.cpp.compiler.option.warnings.pedantic.897501124"
+									name="Pedantic (-pedantic)" superClass="gnu.cpp.compiler.option.warnings.pedantic"
+									value="false" valueType="boolean" />
+								<option id="gnu.cpp.compiler.option.warnings.extrawarn.2027952640"
+									name="Extra warnings (-Wextra)" superClass="gnu.cpp.compiler.option.warnings.extrawarn"
+									value="false" valueType="boolean" />
+								<option id="gnu.cpp.compiler.option.dialect.std.1999943399"
+									name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std"
+									value="gnu.cpp.compiler.dialect.default" valueType="enumerated" />
+								<option
+									id="gnu.cpp.compiler.option.warnings.wconversion.1423513269"
+									name="Implicit conversion warnings (-Wconversion)" superClass="gnu.cpp.compiler.option.warnings.wconversion"
+									value="false" valueType="boolean" />
+								<option id="gnu.cpp.compiler.option.optimization.flags.652614099"
+									name="Other optimization flags" superClass="gnu.cpp.compiler.option.optimization.flags"
+									value="" valueType="string" />
+								<option id="gnu.cpp.compiler.option.debugging.other.973944928"
+									name="Other debugging flags" superClass="gnu.cpp.compiler.option.debugging.other"
+									value="-DNDEBUG -DEIGEN_NO_DEBUG" valueType="string" />
+								<inputType
+									id="cdt.managedbuild.tool.gnu.cpp.compiler.input.139894970"
+									superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input" />
+							</tool>
+							<tool
+								id="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.release.1873990719"
+								name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.release">
+								<option defaultValue="gnu.c.optimization.level.most"
+									id="gnu.c.compiler.macosx.exe.release.option.optimization.level.958866102"
+									name="Optimization Level"
+									superClass="gnu.c.compiler.macosx.exe.release.option.optimization.level"
+									valueType="enumerated" />
+								<option
+									id="gnu.c.compiler.macosx.exe.release.option.debugging.level.512848886"
+									name="Debug Level" superClass="gnu.c.compiler.macosx.exe.release.option.debugging.level"
+									value="gnu.c.debugging.level.none" valueType="enumerated" />
+								<option id="gnu.c.compiler.option.warnings.pedantic.1772261548"
+									name="Pedantic (-pedantic)" superClass="gnu.c.compiler.option.warnings.pedantic"
+									value="false" valueType="boolean" />
+								<option id="gnu.c.compiler.option.dialect.std.190810193"
+									name="Language standard" superClass="gnu.c.compiler.option.dialect.std"
+									value="gnu.c.compiler.dialect.default" valueType="enumerated" />
+								<inputType
+									id="cdt.managedbuild.tool.gnu.c.compiler.input.1057789241"
+									superClass="cdt.managedbuild.tool.gnu.c.compiler.input" />
+							</tool>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry excluding="experimental|src" flags="VALUE_WORKSPACE_PATH|RESOLVED"
+							kind="sourcePath" name="" />
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings" />
+		</cconfiguration>
+	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="quantum++.cdt.managedbuild.target.macosx.exe.596779051"
+			name="Executable" projectType="cdt.managedbuild.target.macosx.exe" />
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders" />
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/quantum++" />
+		</configuration>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/quantum++" />
+		</configuration>
+	</storageModule>
+	<storageModule
+		moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings">
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets" />
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true"
+			selectedProfileId="" />
+		<scannerConfigBuildInfo
+			instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1139516571;cdt.managedbuild.config.gnu.macosx.exe.debug.1139516571.;cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.1669101948;cdt.managedbuild.tool.gnu.c.compiler.input.2054818055">
+			<autodiscovery enabled="true" problemReportingEnabled="true"
+				selectedProfileId="" />
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo
+			instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1139516571;cdt.managedbuild.config.gnu.macosx.exe.debug.1139516571.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1272177430;cdt.managedbuild.tool.gnu.cpp.compiler.input.1165200972">
+			<autodiscovery enabled="true" problemReportingEnabled="true"
+				selectedProfileId="" />
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo
+			instanceId="cdt.managedbuild.config.macosx.exe.release.1386273201;cdt.managedbuild.config.macosx.exe.release.1386273201.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release.179805992;cdt.managedbuild.tool.gnu.cpp.compiler.input.139894970">
+			<autodiscovery enabled="true" problemReportingEnabled="true"
+				selectedProfileId="" />
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo
+			instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1139516571;cdt.managedbuild.config.gnu.macosx.exe.debug.1139516571.;cdt.managedbuild.tool.gnu.c.compiler.macosx.base.129764110;cdt.managedbuild.tool.gnu.c.compiler.input.61127346">
+			<autodiscovery enabled="true" problemReportingEnabled="true"
+				selectedProfileId="" />
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo
+			instanceId="cdt.managedbuild.config.macosx.exe.release.1386273201;cdt.managedbuild.config.macosx.exe.release.1386273201.;cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.release.1873990719;cdt.managedbuild.tool.gnu.c.compiler.input.1057789241">
+			<autodiscovery enabled="true" problemReportingEnabled="true"
+				selectedProfileId="" />
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo
+			instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1139516571;cdt.managedbuild.config.gnu.macosx.exe.debug.1139516571.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.base.1185303380;cdt.managedbuild.tool.gnu.cpp.compiler.input.449175627">
+			<autodiscovery enabled="true" problemReportingEnabled="true"
+				selectedProfileId="" />
+		</scannerConfigBuildInfo>
+	</storageModule>
+</cproject>
