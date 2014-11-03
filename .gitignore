@@ -1,0 +1,7 @@
+*.o
+*~
+*.swp
+qpp
+update*
+benchmark*
+temp.cxx
