@@ -48,9 +48,10 @@ public:
 	 *
 	 * Set the current time as the ending point
 	 */
-	void toc()
+	const Timer& toc()
 	{
 		_end = std::chrono::steady_clock::now();
+		return *this;
 	}
 
 	/**

@@ -26,37 +26,37 @@ cplx pow3(const cplx& z) // a test function
 
 int main()
 {
-	displn((cmat)evals(gt.X).asDiagonal());
+	std::vector<int> v { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-// testing applyCTRL
-	/*
-	 size_t d = 3;
-	 size_t n = 3;
-	 std::vector<std::size_t> ctrl = { };
-	 std::vector<std::size_t> subsys = { 2 };
-	 ket psi = mket( { 1, 0, 1 }, d);
-	 cmat rho = mprj( { 1, 0,  1 }, d);
-	 cmat gate = gt.Xd(3);
-
-	 displn(psi);
-	 std::cout << std::endl;
-	 auto result_ket = applyCTRL(psi, gate, ctrl, subsys, n, d);
-	 displn(result_ket);
-	 std::cout << std::endl;
-
-	 std::cout << std::endl;
-	 auto result_rho = applyCTRL(rho, gate, ctrl, subsys, n, d);
-	 displn(result_rho);
-	 std::cout << std::endl << "Norm difference: ";
-	 displn(norm(result_rho - result_ket * adjoint(result_ket)));
-	 */
+	displn(v.begin(), v.begin() + 3, ", ");
+	displn(v, ", ");
 
 //	/*
 	// TESTING
+
+	// testing applyCTRL
+	size_t d = 3;
+	size_t n = 3;
+	std::vector<std::size_t> ctrl = { };
+	std::vector<std::size_t> subsys = { 2 };
+	ket psi = mket( { 1, 0, 1 }, d);
+	cmat rho = mprj( { 1, 0, 1 }, d);
+	cmat gate = gt.Xd(3);
+	displn(psi);
+	std::cout << std::endl;
+	auto result_ket = applyCTRL(psi, gate, ctrl, subsys, n, d);
+	displn(result_ket);
+	std::cout << std::endl;
+	std::cout << std::endl;
+	auto result_rho = applyCTRL(rho, gate, ctrl, subsys, n, d);
+	displn(result_rho);
+	std::cout << std::endl << "Norm difference: ";
+	displn(norm(result_rho - result_ket * adjoint(result_ket)));
+
 	// testing channel and apply
 	std::cout << std::endl << "Testing channel(...) and apply(...)."
 			<< std::endl;
-	cmat rho = randrho(16);
+	rho = randrho(16);
 	cmat K = kron(gt.Id2, gt.X, gt.Y, gt.Z);
 	std::vector<std::size_t> p = randperm(4); // permutation
 	std::cout << "Permutation: ";
@@ -81,7 +81,7 @@ int main()
 
 	// quantum teleportation
 	std::cout << std::endl << "Qudit teleportation." << std::endl;
-	ket psi = randket(2); // a random state;
+	psi = randket(2); // a random state;
 	std::cout << "|psi><psi|:" << std::endl;
 	displn(prj(psi));
 	cmat telecircuit = expandout(gt.H, { 0 }, { 2, 2, 2 })
@@ -192,7 +192,8 @@ int main()
 
 	// channel tests
 	std::cout << std::endl << "Channel tests." << std::endl;
-	std::size_t nk = 5, d = 3; // nk Kraus on d-dimensional system
+	std::size_t nk = 5;
+	d = 3; // nk Kraus on d-dimensional system
 	std::cout << "Generating a random channel with " << nk
 			<< " Kraus operators on a " << d << " dimensional space..."
 			<< std::endl;
@@ -262,7 +263,7 @@ int main()
 
 	// 	// TIMING tests
 	std::cout << std::endl << "Timing tests..." << std::endl;
-	std::size_t n = 12; // number of qubits
+	n = 12; // number of qubits
 	std::size_t N = std::pow(2, n);
 	std::vector<std::size_t> dims(n, 2); // local dimensions
 	std::cout << "n = " << n << " qubits, matrix size " << N << " x " << N

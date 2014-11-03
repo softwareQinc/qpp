@@ -181,7 +181,7 @@ public:
 			const std::vector<std::size_t>& subsys, std::size_t n,
 			std::size_t d = 2) const
 	{
-		const DynMat<typename Derived::Scalar> & rA = A;
+		const DynMat<typename Derived::Scalar>& rA = A;
 
 		// EXCEPTION CHECKS
 		// check matrix zero size

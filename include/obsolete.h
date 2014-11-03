@@ -483,6 +483,31 @@ cmat super(const std::vector<cmat>& Ks)
 	return result;
 }
 
+/**
+ * \brief Generates the multipartite multiple-controlled-\a A gate in matrix form
+ *
+ * \note The dimension of the gate \a A must match
+ * the dimension of \a subsys
+ *
+ * \param A Eigen expression
+ * \param ctrl Control subsystem indexes
+ * \param subsys Subsystem indexes where the gate \a A is applied
+ * \param n Total number of subsystes
+ * \param d Local dimensions of all local Hilbert spaces (must all be equal)
+ * \return CTRL-A gate, as a matrix over the same scalar field as \a A
+ */
+template<typename Derived>
+DynMat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived>& A,
+		const std::vector<std::size_t>& ctrl,
+		const std::vector<std::size_t>& subsys, std::size_t n,
+		std::size_t d = 2)
+{
+	DynMat<typename Derived::Scalar> result =
+			DynMat<typename Derived::Scalar>::Identity(std::pow(d,n),
+					std::pow(d, n));
+	return result;
+}
+
 } /* namespace obsolete */
 } /* namespace qpp */
 

@@ -214,13 +214,14 @@ typename Derived::Scalar prod(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 double norm(const Eigen::MatrixBase<Derived>& A)
 {
-	const DynMat<typename Derived::Scalar> & rA = A;
+	const DynMat<typename Derived::Scalar>& rA = A;
 
 // check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("norm", Exception::Type::ZERO_SIZE);
 
 // convert matrix to complex then return its norm
+
 	return (rA.template cast<cplx>()).norm();
 }
 

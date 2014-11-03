@@ -14,6 +14,66 @@ namespace qpp
 {
 
 /**
+ * \brief Displays a range. Does not add a newline.
+ *
+ * \see \a qpp::displn()
+ *
+ * \param first Iterator to the first element of the range
+ * \param last  Iterator to the last element of the range
+ * \param separator Separator
+ * \param start Left marking
+ * \param end Right marking
+ * \param os Output stream
+ */
+template<typename InputIterator>
+void disp(const InputIterator& first, const InputIterator& last,
+		const std::string & separator, const std::string& start = "[",
+		const std::string& end = "]", std::ostream& os = std::cout)
+{
+	os << start;
+
+	auto it = first;
+	auto it_end = last;
+
+	if (it != it_end)
+	{
+		// the iterator just before the end, need this for containers
+		// that do not have backwards iterators
+		decltype(it_end) it_before_end = it;
+		while (it_before_end = it, ++it != it_end)
+			;
+
+		it = first;
+		for (; it != it_before_end; ++it)
+			os << *it << separator;
+		os << *it;
+	}
+
+	os << end;
+}
+
+/**
+ * \brief Displays a range. Does not add a newline.
+ *
+ * \see \a qpp::displn()
+ *
+ * \param first Iterator to the first element of the range
+ * \param last  Iterator to the last element of the range
+ * \param separator Separator
+ * \param start Left marking
+ * \param end Right marking
+ * \param os Output stream
+ */
+template<typename InputIterator>
+void displn(const InputIterator& first, const InputIterator& last,
+		const std::string & separator, const std::string& start = "[",
+		const std::string& end = "]", std::ostream& os = std::cout)
+{
+	disp(first, last, separator, start, end, os);
+	os << std::endl;
+}
+
+/**
  * \brief Displays a standard container that supports std::begin, std::end
  * and forward iteration. Does not add a newline.
  *
@@ -29,26 +89,7 @@ template<typename T>
 void disp(const T& x, const std::string & separator, const std::string& start =
 		"[", const std::string& end = "]", std::ostream& os = std::cout)
 {
-	os << start;
-
-	auto it = std::begin(x);
-	auto it_end = std::end(x);
-
-	if (it != it_end)
-	{
-		// the iterator just before the end, need this for containers
-		// that do not have backwards iterators
-		decltype(it_end) it_before_end = it;
-		while (it_before_end = it, ++it != it_end)
-			;
-
-		it = std::begin(x);
-		for (; it != it_before_end; ++it)
-			os << *it << separator;
-		os << *it;
-	}
-
-	os << end;
+	disp(std::begin(x), std::end(x), separator, start, end, os);
 }
 
 /**

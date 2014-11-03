@@ -94,7 +94,6 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 		Aidagger.push_back(powm(adjoint(rA), i));
 	}
 
-	std::size_t D = static_cast<std::size_t>(std::pow(d, n));
 	std::size_t DA = rA.rows();
 	std::size_t DCTRLAbar = static_cast<std::size_t>(std::pow(d,
 			n - ctrlgate.size()));
@@ -253,8 +252,10 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 			throw Exception("applyCTRL",
 					Exception::Type::DIMS_MISMATCH_CVECTOR);
 
-		DynMat<typename Derived1::Scalar> result = DynMat<
-				typename Derived1::Scalar>::Zero(D, 1);
+		if(d == 1)
+			return rstate;
+
+		DynMat<typename Derived1::Scalar> result = rstate;
 
 #pragma omp parallel for collapse(2)
 		for (std::size_t m = 0; m < DA; m++)
@@ -281,8 +282,10 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 		if (!internal::_check_dims_match_mat(dims, rstate))
 			throw Exception("applyCTRL", Exception::Type::DIMS_MISMATCH_MATRIX);
 
-		DynMat<typename Derived1::Scalar> result = DynMat<
-				typename Derived1::Scalar>::Zero(D, D);
+		if(d == 1)
+			return rstate;
+
+		DynMat<typename Derived1::Scalar> result = rstate;
 
 #pragma omp parallel for collapse(4)
 		for (std::size_t m1 = 0; m1 < DA; m1++)
@@ -471,11 +474,11 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho, const std::vector<cmat>& Ks,
 
 	// check out of range
 	if (n == 0)
-		throw Exception("applyCTRL", Exception::Type::OUT_OF_RANGE);
+		throw Exception("channel", Exception::Type::OUT_OF_RANGE);
 
 	// check that dimension is valid
 	if (d == 0)
-		throw Exception("applyCTRL", Exception::Type::DIMS_INVALID);
+		throw Exception("channel", Exception::Type::DIMS_INVALID);
 
 	std::vector<std::size_t> dims(n, d); // local dimensions vector
 
