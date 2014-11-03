@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   example.cpp
  * Author: vlad
  *
