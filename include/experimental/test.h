@@ -487,7 +487,8 @@ cmat super(const std::vector<cmat>& Ks)
 }
 
 /**
- * \brief Generates the multipartite multiple-controlled-\a A gate in matrix form
+ * \brief Generates the multipartite multiple-controlled-\a A gate
+ * in matrix form
  *
  * \note The dimension of the gate \a A must match
  * the dimension of \a subsys
@@ -499,7 +500,8 @@ cmat super(const std::vector<cmat>& Ks)
  * \param d Local dimensions of all local Hilbert spaces (must all be equal)
  * \return CTRL-A gate, as a matrix over the same scalar field as \a A
  */
-template<typename Derived> // Parallel version, seems slower than the serial
+// Parallel version, seems slower than the sequential qpp::Gates::CTRL
+template<typename Derived>
 DynMat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived>& A,
 		const std::vector<std::size_t>& ctrl,
 		const std::vector<std::size_t>& subsys, std::size_t n,

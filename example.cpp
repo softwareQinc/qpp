@@ -79,14 +79,14 @@ int main()
 	psi = randket(2); // a random state;
 	std::cout << "|psi><psi|:" << std::endl;
 	displn(prj(psi));
-	cmat telecircuit = expandout(gt.H, { 0 }, { 2, 2, 2 })
-			* gt.CTRL(gt.X, { 0 }, { 1 }, 3);
+	cmat telecircuit = gt.expandout(gt.H, { 0 }, { 2, 2, 2 }) * gt.CTRL(gt.X, {
+			0 }, { 1 }, 3);
 	ket psiin = kron(psi, st.b00); // input state
 	ket psiout = telecircuit * psiin; // output state before measurement
 	// measure Alice's qubits, measurement results are 1 0
 	psiout = kron(prj(st.z1), prj(st.z0), gt.Id2) * psiout;
 	// apply correction
-	psiout = expandout(powm(gt.Z, 1) * powm(gt.X, 0), { 2 }, { 2, 2, 2 })
+	psiout = gt.expandout(powm(gt.Z, 1) * powm(gt.X, 0), { 2 }, { 2, 2, 2 })
 			* psiout;
 	// not necessary to normalize, prj() takes care of it below
 	cmat rhoout = ptrace(prj(psiout), { 0, 1 }, { 2, 2, 2 });
@@ -127,7 +127,7 @@ int main()
 	// Bell state generator
 	std::cout << std::endl << "Bell state generator: " << std::endl;
 	cmat circuit;
-	circuit = gt.CTRL(gt.X, { 0 }, { 1 }, 2) * expandout(gt.H, 0, { 2, 2 });
+	circuit = gt.CTRL(gt.X, { 0 }, { 1 }, 2) * gt.expandout(gt.H, 0, { 2, 2 });
 	cmat input = kron(st.z0, st.z0);
 	cmat output = circuit * input;
 	std::cout << "Circuit matrix representation: " << std::endl;
