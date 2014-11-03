@@ -8,7 +8,7 @@
 #ifndef INCLUDE_FUNCTIONS_H_
 #define INCLUDE_FUNCTIONS_H_
 
-// Collection of quantum computing useful functions
+// Collection of generic quantum computing functions
 namespace qpp
 {
 
