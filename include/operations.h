@@ -981,7 +981,7 @@ DynMat<typename Derived::Scalar> ptranspose(const Eigen::MatrixBase<Derived>& A,
 
 	DynMat<typename Derived::Scalar> result(D, D);
 
-	auto worker = [=,&result](std::size_t i, std::size_t j)
+	auto worker = [&](std::size_t i, std::size_t j)
 	{
 		// use static allocation for speed!
 			std::size_t midxcoltmp[maxn];
