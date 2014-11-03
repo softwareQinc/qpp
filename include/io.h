@@ -185,8 +185,7 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
 	};
 
 	std::ostringstream ostr;
-	ostr.flags(os.flags()); // get the formatting flags
-	ostr.precision(os.precision()); // set precision
+	ostr.copyfmt(os); // copy os' state
 
 	std::vector<std::string> vstr;
 	std::string strA { };
