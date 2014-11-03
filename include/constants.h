@@ -52,7 +52,7 @@ constexpr double eps = 1e-12;
 /**
  * \brief Maximum number of qubits
  *
- * Used internally to statically allocate arrays (for speed reasons)
+ * Used internally to allocate arrays on the stack (for speed reasons)
  */
 constexpr std::size_t maxn = 64; // definitely cannot simulate more qubits :)
 
