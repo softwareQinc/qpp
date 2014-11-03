@@ -5,8 +5,8 @@
  *      Author: vlad
  */
 
-#ifndef FUNCTIONS_H_
-#define FUNCTIONS_H_
+#ifndef INCLUDE_FUNCTIONS_H_
+#define INCLUDE_FUNCTIONS_H_
 
 // Collection of quantum computing useful functions
 namespace qpp
@@ -24,13 +24,13 @@ template<typename Derived>
 DynMat<typename Derived::Scalar> transpose(const Eigen::MatrixBase<Derived> &A)
 
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("transpose", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("transpose", Exception::Type::ZERO_SIZE);
 
-    return rA.transpose();
+	return rA.transpose();
 }
 
 /**
@@ -44,13 +44,13 @@ template<typename Derived>
 DynMat<typename Derived::Scalar> conjugate(const Eigen::MatrixBase<Derived> &A)
 
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("conjugate", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("conjugate", Exception::Type::ZERO_SIZE);
 
-    return rA.conjugate();
+	return rA.conjugate();
 }
 
 /**
@@ -63,13 +63,13 @@ DynMat<typename Derived::Scalar> conjugate(const Eigen::MatrixBase<Derived> &A)
 template<typename Derived>
 DynMat<typename Derived::Scalar> adjoint(const Eigen::MatrixBase<Derived> &A)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("adjoint", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("adjoint", Exception::Type::ZERO_SIZE);
 
-    return rA.adjoint();
+	return rA.adjoint();
 }
 
 /**
@@ -82,13 +82,13 @@ DynMat<typename Derived::Scalar> adjoint(const Eigen::MatrixBase<Derived> &A)
 template<typename Derived>
 DynMat<typename Derived::Scalar> inverse(const Eigen::MatrixBase<Derived> &A)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("inverse", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("inverse", Exception::Type::ZERO_SIZE);
 
-    return rA.inverse();
+	return rA.inverse();
 }
 
 /**
@@ -101,13 +101,13 @@ template<typename Derived>
 typename Derived::Scalar trace(const Eigen::MatrixBase<Derived> &A)
 
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("trace", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("trace", Exception::Type::ZERO_SIZE);
 
-    return rA.trace();
+	return rA.trace();
 }
 
 /**
@@ -121,13 +121,13 @@ template<typename Derived>
 typename Derived::Scalar det(const Eigen::MatrixBase<Derived> &A)
 
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("det", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("det", Exception::Type::ZERO_SIZE);
 
-    return rA.determinant();
+	return rA.determinant();
 }
 
 /**
@@ -143,25 +143,25 @@ template<typename Derived>
 typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived> &A)
 
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("logdet", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("logdet", Exception::Type::ZERO_SIZE);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("logdet", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("logdet", Exception::Type::MATRIX_NOT_SQUARE);
 
-    Eigen::PartialPivLU<DynMat<typename Derived::Scalar>> lu(rA);
-    DynMat<typename Derived::Scalar> U = lu.matrixLU().template triangularView <
-                                         Eigen::Upper > ();
-    typename Derived::Scalar result = std::log(U(0, 0));
+	Eigen::PartialPivLU<DynMat<typename Derived::Scalar>> lu(rA);
+	DynMat<typename Derived::Scalar> U = lu.matrixLU().template triangularView<
+			Eigen::Upper>();
+	typename Derived::Scalar result = std::log(U(0, 0));
 
-    for (std::size_t i = 1; i < static_cast<std::size_t>(rA.rows()); i++)
-        result += std::log(U(i, i));
+	for (std::size_t i = 1; i < static_cast<std::size_t>(rA.rows()); i++)
+		result += std::log(U(i, i));
 
-    return result;
+	return result;
 
 }
 
@@ -176,13 +176,13 @@ template<typename Derived>
 typename Derived::Scalar sum(const Eigen::MatrixBase<Derived> &A)
 
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("sum", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("sum", Exception::Type::ZERO_SIZE);
 
-    return rA.sum();
+	return rA.sum();
 }
 
 /**
@@ -196,13 +196,13 @@ template<typename Derived>
 typename Derived::Scalar prod(const Eigen::MatrixBase<Derived> &A)
 
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("sum", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("sum", Exception::Type::ZERO_SIZE);
 
-    return rA.prod();
+	return rA.prod();
 }
 
 /**
@@ -214,15 +214,15 @@ typename Derived::Scalar prod(const Eigen::MatrixBase<Derived> &A)
 template<typename Derived>
 double norm(const Eigen::MatrixBase<Derived> &A)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("norm", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("norm", Exception::Type::ZERO_SIZE);
 
-    // convert matrix to complex then return its norm
+	// convert matrix to complex then return its norm
 
-    return (rA.template cast<cplx>()).norm();
+	return (rA.template cast<cplx>()).norm();
 }
 
 /**
@@ -234,18 +234,18 @@ double norm(const Eigen::MatrixBase<Derived> &A)
 template<typename Derived>
 DynColVect<cplx> evals(const Eigen::MatrixBase<Derived> &A)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("evals", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("evals", Exception::Type::ZERO_SIZE);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("evals", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("evals", Exception::Type::MATRIX_NOT_SQUARE);
 
-    Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
-    return es.eigenvalues();
+	Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
+	return es.eigenvalues();
 }
 
 /**
@@ -257,18 +257,18 @@ DynColVect<cplx> evals(const Eigen::MatrixBase<Derived> &A)
 template<typename Derived>
 cmat evects(const Eigen::MatrixBase<Derived> &A)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("evects", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("evects", Exception::Type::ZERO_SIZE);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("evects", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("evects", Exception::Type::MATRIX_NOT_SQUARE);
 
-    Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
-    return es.eigenvectors();
+	Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
+	return es.eigenvectors();
 }
 
 /**
@@ -280,18 +280,18 @@ cmat evects(const Eigen::MatrixBase<Derived> &A)
 template<typename Derived>
 DynColVect<double> hevals(const Eigen::MatrixBase<Derived> &A)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("hevals", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("hevals", Exception::Type::ZERO_SIZE);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("hevals", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("hevals", Exception::Type::MATRIX_NOT_SQUARE);
 
-    Eigen::SelfAdjointEigenSolver<cmat> es(rA.template cast<cplx>());
-    return es.eigenvalues();
+	Eigen::SelfAdjointEigenSolver<cmat> es(rA.template cast<cplx>());
+	return es.eigenvalues();
 }
 
 /**
@@ -303,18 +303,18 @@ DynColVect<double> hevals(const Eigen::MatrixBase<Derived> &A)
 template<typename Derived>
 cmat hevects(const Eigen::MatrixBase<Derived> &A)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("hevects", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("hevects", Exception::Type::ZERO_SIZE);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("hevects", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("hevects", Exception::Type::MATRIX_NOT_SQUARE);
 
-    Eigen::SelfAdjointEigenSolver<cmat> es(rA.template cast<cplx>());
-    return es.eigenvectors();
+	Eigen::SelfAdjointEigenSolver<cmat> es(rA.template cast<cplx>());
+	return es.eigenvectors();
 }
 
 // Matrix functional calculus
@@ -328,25 +328,25 @@ cmat hevects(const Eigen::MatrixBase<Derived> &A)
 template<typename Derived>
 cmat funm(const Eigen::MatrixBase<Derived> &A, cplx (*f)(const cplx &))
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("funm", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("funm", Exception::Type::ZERO_SIZE);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("funm", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("funm", Exception::Type::MATRIX_NOT_SQUARE);
 
-    Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
-    cmat evects = es.eigenvectors();
-    cmat evals = es.eigenvalues();
-    for (std::size_t i = 0; i < static_cast<std::size_t>(evals.rows()); i++)
-        evals(i) = (*f)(evals(i)); // apply f(x) to each eigenvalue
+	Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
+	cmat evects = es.eigenvectors();
+	cmat evals = es.eigenvalues();
+	for (std::size_t i = 0; i < static_cast<std::size_t>(evals.rows()); i++)
+		evals(i) = (*f)(evals(i)); // apply f(x) to each eigenvalue
 
-    cmat evalsdiag = evals.asDiagonal();
+	cmat evalsdiag = evals.asDiagonal();
 
-    return evects * evalsdiag * evects.inverse();
+	return evects * evalsdiag * evects.inverse();
 }
 
 /**
@@ -358,17 +358,17 @@ cmat funm(const Eigen::MatrixBase<Derived> &A, cplx (*f)(const cplx &))
 template<typename Derived>
 cmat sqrtm(const Eigen::MatrixBase<Derived> &A)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("sqrtm", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("sqrtm", Exception::Type::ZERO_SIZE);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("sqrtm", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("sqrtm", Exception::Type::MATRIX_NOT_SQUARE);
 
-    return funm(rA, &std::sqrt);
+	return funm(rA, &std::sqrt);
 }
 
 /**
@@ -380,17 +380,17 @@ cmat sqrtm(const Eigen::MatrixBase<Derived> &A)
 template<typename Derived>
 cmat absm(const Eigen::MatrixBase<Derived> &A)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("absm", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("absm", Exception::Type::ZERO_SIZE);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("absm", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("absm", Exception::Type::MATRIX_NOT_SQUARE);
 
-    return sqrtm(adjoint(rA) * rA);
+	return sqrtm(adjoint(rA) * rA);
 }
 
 /**
@@ -402,17 +402,17 @@ cmat absm(const Eigen::MatrixBase<Derived> &A)
 template<typename Derived>
 cmat expm(const Eigen::MatrixBase<Derived> &A)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("expm", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("expm", Exception::Type::ZERO_SIZE);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("expm", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("expm", Exception::Type::MATRIX_NOT_SQUARE);
 
-    return funm(rA, &std::exp);
+	return funm(rA, &std::exp);
 }
 
 /**
@@ -424,17 +424,17 @@ cmat expm(const Eigen::MatrixBase<Derived> &A)
 template<typename Derived>
 cmat logm(const Eigen::MatrixBase<Derived> &A)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("logm", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("logm", Exception::Type::ZERO_SIZE);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("logm", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("logm", Exception::Type::MATRIX_NOT_SQUARE);
 
-    return funm(rA, &std::log);
+	return funm(rA, &std::log);
 }
 
 /**
@@ -446,17 +446,17 @@ cmat logm(const Eigen::MatrixBase<Derived> &A)
 template<typename Derived>
 cmat sinm(const Eigen::MatrixBase<Derived> &A)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("sinm", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("sinm", Exception::Type::ZERO_SIZE);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("sinm", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("sinm", Exception::Type::MATRIX_NOT_SQUARE);
 
-    return funm(rA, &std::sin);
+	return funm(rA, &std::sin);
 }
 
 /**
@@ -468,17 +468,17 @@ cmat sinm(const Eigen::MatrixBase<Derived> &A)
 template<typename Derived>
 cmat cosm(const Eigen::MatrixBase<Derived> &A)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("cosm", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("cosm", Exception::Type::ZERO_SIZE);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("cosm", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("cosm", Exception::Type::MATRIX_NOT_SQUARE);
 
-    return funm(rA, &std::cos);
+	return funm(rA, &std::cos);
 }
 
 /**
@@ -495,32 +495,32 @@ template<typename Derived>
 cmat spectralpowm(const Eigen::MatrixBase<Derived> &A, const cplx z)
 
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("spectralpowm", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("spectralpowm", Exception::Type::ZERO_SIZE);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("spectralpowm", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("spectralpowm", Exception::Type::MATRIX_NOT_SQUARE);
 
-    // Define A^0 = Id, for z IDENTICALLY zero
-    if (real(z) == 0 && imag(z) == 0)
-    {
-        cmat result(rA.rows(), rA.rows());
-        return result.setIdentity();;
-    }
+	// Define A^0 = Id, for z IDENTICALLY zero
+	if (real(z) == 0 && imag(z) == 0)
+	{
+		cmat result(rA.rows(), rA.rows());
+		return result.setIdentity();;
+	}
 
-    Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
-    cmat evects = es.eigenvectors();
-    cmat evals = es.eigenvalues();
-    for (std::size_t i = 0; i < static_cast<std::size_t>(evals.rows()); i++)
-        evals(i) = std::pow(static_cast<cplx>(evals(i)), static_cast<cplx>(z));
+	Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
+	cmat evects = es.eigenvectors();
+	cmat evals = es.eigenvalues();
+	for (std::size_t i = 0; i < static_cast<std::size_t>(evals.rows()); i++)
+		evals(i) = std::pow(static_cast<cplx>(evals(i)), static_cast<cplx>(z));
 
-    cmat evalsdiag = evals.asDiagonal();
+	cmat evalsdiag = evals.asDiagonal();
 
-    return evects * evalsdiag * evects.inverse();
+	return evects * evalsdiag * evects.inverse();
 
 }
 
@@ -537,28 +537,28 @@ cmat spectralpowm(const Eigen::MatrixBase<Derived> &A, const cplx z)
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived> &A,
-                                      std::size_t n)
+		std::size_t n)
 
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("powm", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("powm", Exception::Type::ZERO_SIZE);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("powm", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("powm", Exception::Type::MATRIX_NOT_SQUARE);
 
-    DynMat<typename Derived::Scalar> result = rA;
+	DynMat<typename Derived::Scalar> result = rA;
 
-    if (n == 0)
-        return result.setIdentity();
+	if (n == 0)
+		return result.setIdentity();
 
-    for (std::size_t i = 1; i < n; i++)
-        result *= rA;
+	for (std::size_t i = 1; i < n; i++)
+		result *= rA;
 
-    return result;
+	return result;
 }
 
 // other functions
@@ -573,22 +573,22 @@ DynMat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived> &A,
  */
 template<typename OutputScalar, typename Derived>
 DynMat<OutputScalar> cwise(const Eigen::MatrixBase<Derived> &A,
-                           OutputScalar (*f)(const typename Derived::Scalar &))
+		OutputScalar (*f)(const typename Derived::Scalar &))
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("cwise", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("cwise", Exception::Type::ZERO_SIZE);
 
-    DynMat<OutputScalar> result(rA.rows(), rA.cols());
+	DynMat<OutputScalar> result(rA.rows(), rA.cols());
 
-    #pragma omp parallel for collapse(2)
-    for (std::size_t j = 0; j < static_cast<std::size_t>(rA.cols()); j++)
-        for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
-            result(i, j) = (*f)(rA(i, j));
+#pragma omp parallel for collapse(2)
+	for (std::size_t j = 0; j < static_cast<std::size_t>(rA.cols()); j++)
+		for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
+			result(i, j) = (*f)(rA(i, j));
 
-    return result;
+	return result;
 }
 
 // Kronecker product of multiple matrices, preserve return type
@@ -605,7 +605,7 @@ DynMat<OutputScalar> cwise(const Eigen::MatrixBase<Derived> &A,
 template<typename T>
 DynMat<typename T::Scalar> kron(const T &head)
 {
-    return head;
+	return head;
 }
 
 /**
@@ -620,7 +620,7 @@ DynMat<typename T::Scalar> kron(const T &head)
 template<typename T, typename ... Args>
 DynMat<typename T::Scalar> kron(const T &head, const Args &... tail)
 {
-    return internal::_kron2(head, kron(tail...));
+	return internal::_kron2(head, kron(tail...));
 }
 
 /**
@@ -635,19 +635,19 @@ template<typename Derived>
 DynMat<typename Derived::Scalar> kron(const std::vector<Derived> &As)
 
 {
-    if (As.size() == 0)
-        throw Exception("kron", Exception::Type::ZERO_SIZE);
+	if (As.size() == 0)
+		throw Exception("kron", Exception::Type::ZERO_SIZE);
 
-    for (auto && it : As)
-        if (it.size() == 0)
-            throw Exception("kron", Exception::Type::ZERO_SIZE);
+	for (auto && it : As)
+		if (it.size() == 0)
+			throw Exception("kron", Exception::Type::ZERO_SIZE);
 
-    DynMat<typename Derived::Scalar> result = As[0];
-    for (std::size_t i = 1; i < As.size(); i++)
-    {
-        result = kron(result, As[i]);
-    }
-    return result;
+	DynMat<typename Derived::Scalar> result = As[0];
+	for (std::size_t i = 1; i < As.size(); i++)
+	{
+		result = kron(result, As[i]);
+	}
+	return result;
 }
 
 // Kronecker product of a list of matrices, preserve return type
@@ -664,7 +664,7 @@ DynMat<typename Derived::Scalar> kron(const std::vector<Derived> &As)
 template<typename Derived>
 DynMat<typename Derived::Scalar> kron(const std::initializer_list<Derived> &As)
 {
-    return kron(std::vector<Derived>(As));
+	return kron(std::vector<Derived>(As));
 }
 
 /**
@@ -677,23 +677,23 @@ DynMat<typename Derived::Scalar> kron(const std::initializer_list<Derived> &As)
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> kronpow(const Eigen::MatrixBase<Derived> &A,
-        std::size_t n)
+		std::size_t n)
 
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("kronpow", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("kronpow", Exception::Type::ZERO_SIZE);
 
-    // check out of range
-    if (n == 0)
-        throw Exception("kronpow", Exception::Type::OUT_OF_RANGE);
+	// check out of range
+	if (n == 0)
+		throw Exception("kronpow", Exception::Type::OUT_OF_RANGE);
 
-    DynMat<typename Derived::Scalar> result = rA;
-    for (std::size_t i = 1; i < n; i++)
-        result = kron(result, rA);
-    return result;
+	DynMat<typename Derived::Scalar> result = rA;
+	for (std::size_t i = 1; i < n; i++)
+		result = kron(result, rA);
+	return result;
 }
 
 /**
@@ -709,22 +709,22 @@ DynMat<typename Derived::Scalar> kronpow(const Eigen::MatrixBase<Derived> &A,
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived> &A,
-        std::size_t rows, std::size_t cols)
+		std::size_t rows, std::size_t cols)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    std::size_t Arows = static_cast<std::size_t>(rA.rows());
-    std::size_t Acols = static_cast<std::size_t>(rA.cols());
+	std::size_t Arows = static_cast<std::size_t>(rA.rows());
+	std::size_t Acols = static_cast<std::size_t>(rA.cols());
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("reshape", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("reshape", Exception::Type::ZERO_SIZE);
 
-    if (Arows * Acols != rows * cols)
-        throw Exception("reshape", Exception::Type::DIMS_MISMATCH_MATRIX);
+	if (Arows * Acols != rows * cols)
+		throw Exception("reshape", Exception::Type::DIMS_MISMATCH_MATRIX);
 
-    return Eigen::Map<DynMat<typename Derived::Scalar>>(
-               const_cast<typename Derived::Scalar *>(rA.data()), rows, cols);
+	return Eigen::Map<DynMat<typename Derived::Scalar>>(
+			const_cast<typename Derived::Scalar *>(rA.data()), rows, cols);
 }
 
 /**
@@ -740,31 +740,31 @@ DynMat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived> &A,
  */
 template<typename Derived1, typename Derived2>
 DynMat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1> &A,
-                                       const Eigen::MatrixBase<Derived2> &B)
+		const Eigen::MatrixBase<Derived2> &B)
 {
-    const DynMat<typename Derived1::Scalar> &rA = A;
-    const DynMat<typename Derived2::Scalar> &rB = B;
+	const DynMat<typename Derived1::Scalar> &rA = A;
+	const DynMat<typename Derived2::Scalar> &rB = B;
 
-    // EXCEPTION CHECKS
+	// EXCEPTION CHECKS
 
-    // check types
-    if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
-        throw Exception("comm", Exception::Type::TYPE_MISMATCH);
+	// check types
+	if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
+		throw Exception("comm", Exception::Type::TYPE_MISMATCH);
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA)
-            || !internal::_check_nonzero_size(rB))
-        throw Exception("comm", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA)
+			|| !internal::_check_nonzero_size(rB))
+		throw Exception("comm", Exception::Type::ZERO_SIZE);
 
-    // check square matrices
-    if (!internal::_check_square_mat(rA) || !internal::_check_square_mat(rB))
-        throw Exception("comm", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrices
+	if (!internal::_check_square_mat(rA) || !internal::_check_square_mat(rB))
+		throw Exception("comm", Exception::Type::MATRIX_NOT_SQUARE);
 
-    // check equal dimensions
-    if (rA.rows() != rB.rows())
-        throw Exception("comm", Exception::Type::DIMS_NOT_EQUAL);
+	// check equal dimensions
+	if (rA.rows() != rB.rows())
+		throw Exception("comm", Exception::Type::DIMS_NOT_EQUAL);
 
-    return rA * rB - rB * rA;
+	return rA * rB - rB * rA;
 }
 
 /**
@@ -780,31 +780,31 @@ DynMat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1> &A,
  */
 template<typename Derived1, typename Derived2>
 DynMat<typename Derived1::Scalar> anticomm(const Eigen::MatrixBase<Derived1> &A,
-        const Eigen::MatrixBase<Derived2> &B)
+		const Eigen::MatrixBase<Derived2> &B)
 {
-    const DynMat<typename Derived1::Scalar> &rA = A;
-    const DynMat<typename Derived2::Scalar> &rB = B;
+	const DynMat<typename Derived1::Scalar> &rA = A;
+	const DynMat<typename Derived2::Scalar> &rB = B;
 
-    // EXCEPTION CHECKS
+	// EXCEPTION CHECKS
 
-    // check types
-    if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
-        throw Exception("anticomm", Exception::Type::TYPE_MISMATCH);
+	// check types
+	if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
+		throw Exception("anticomm", Exception::Type::TYPE_MISMATCH);
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA)
-            || !internal::_check_nonzero_size(rB))
-        throw Exception("anticomm", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA)
+			|| !internal::_check_nonzero_size(rB))
+		throw Exception("anticomm", Exception::Type::ZERO_SIZE);
 
-    // check square matrices
-    if (!internal::_check_square_mat(rA) || !internal::_check_square_mat(rB))
-        throw Exception("anticomm", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrices
+	if (!internal::_check_square_mat(rA) || !internal::_check_square_mat(rB))
+		throw Exception("anticomm", Exception::Type::MATRIX_NOT_SQUARE);
 
-    // check equal dimensions
-    if (rA.rows() != rB.rows())
-        throw Exception("anticomm", Exception::Type::DIMS_NOT_EQUAL);
+	// check equal dimensions
+	if (rA.rows() != rB.rows())
+		throw Exception("anticomm", Exception::Type::DIMS_NOT_EQUAL);
 
-    return rA * rB + rB * rA;
+	return rA * rB + rB * rA;
 }
 
 /**
@@ -820,21 +820,21 @@ DynMat<typename Derived1::Scalar> anticomm(const Eigen::MatrixBase<Derived1> &A,
 template<typename Derived>
 DynMat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived> &V)
 {
-    const DynMat<typename Derived::Scalar> &rV = V;
+	const DynMat<typename Derived::Scalar> &rV = V;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rV))
-        throw Exception("prj", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rV))
+		throw Exception("prj", Exception::Type::ZERO_SIZE);
 
-    // check column vector
-    if (!internal::_check_col_vector(rV))
-        throw Exception("prj", Exception::Type::MATRIX_NOT_CVECTOR);
+	// check column vector
+	if (!internal::_check_col_vector(rV))
+		throw Exception("prj", Exception::Type::MATRIX_NOT_CVECTOR);
 
-    double normV = norm(rV);
-    if (normV > eps)
-        return rV * adjoint(rV) / (normV * normV);
-    else
-        return DynMat<typename Derived::Scalar>::Zero(rV.rows(), rV.rows());
+	double normV = norm(rV);
+	if (normV > eps)
+		return rV * adjoint(rV) / (normV * normV);
+	else
+		return DynMat<typename Derived::Scalar>::Zero(rV.rows(), rV.rows());
 
 }
 
@@ -854,77 +854,77 @@ DynMat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived> &V)
  */
 template<typename Derived>
 DynMat<typename Derived::Scalar> expandout(const Eigen::MatrixBase<Derived> &A,
-        std::size_t pos, const std::vector<std::size_t> &dims)
+		std::size_t pos, const std::vector<std::size_t> &dims)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("expandout", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("expandout", Exception::Type::ZERO_SIZE);
 
-    // check that dims is a valid dimension vector
-    if (!internal::_check_dims(dims))
-        throw Exception("expandout", Exception::Type::DIMS_INVALID);
+	// check that dims is a valid dimension vector
+	if (!internal::_check_dims(dims))
+		throw Exception("expandout", Exception::Type::DIMS_INVALID);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("expandout", Exception::Type::MATRIX_NOT_SQUARE);
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("expandout", Exception::Type::MATRIX_NOT_SQUARE);
 
-    // check that position is valid
-    if (pos > dims.size() - 1)
-        throw Exception("expandout", Exception::Type::OUT_OF_RANGE);
+	// check that position is valid
+	if (pos > dims.size() - 1)
+		throw Exception("expandout", Exception::Type::OUT_OF_RANGE);
 
-    // check that dims[pos] match the dimension of A
-    if (static_cast<std::size_t>(rA.cols()) != dims[pos])
-        throw Exception("expandout", Exception::Type::DIMS_MISMATCH_MATRIX);
+	// check that dims[pos] match the dimension of A
+	if (static_cast<std::size_t>(rA.cols()) != dims[pos])
+		throw Exception("expandout", Exception::Type::DIMS_MISMATCH_MATRIX);
 
-    auto multiply = [](std::size_t x, std::size_t y)->std::size_t
-    {   return x * y;};
+	auto multiply = [](std::size_t x, std::size_t y)->std::size_t
+	{	return x * y;};
 
-    std::size_t D = std::accumulate(std::begin(dims), std::end(dims), 1u,
-                                    multiply);
-    DynMat<typename Derived::Scalar> result =
-        DynMat<typename Derived::Scalar>::Identity(D, D);
+	std::size_t D = std::accumulate(std::begin(dims), std::end(dims), 1u,
+			multiply);
+	DynMat<typename Derived::Scalar> result =
+			DynMat<typename Derived::Scalar>::Identity(D, D);
 
-    std::size_t Cdims[maxn];
-    std::size_t midx_row[maxn];
-    std::size_t midx_col[maxn];
+	std::size_t Cdims[maxn];
+	std::size_t midx_row[maxn];
+	std::size_t midx_col[maxn];
 
-    for (std::size_t k = 0; k < dims.size(); k++)
-    {
-        midx_row[k] = midx_col[k] = 0;
-        Cdims[k] = dims[k];
-    }
+	for (std::size_t k = 0; k < dims.size(); k++)
+	{
+		midx_row[k] = midx_col[k] = 0;
+		Cdims[k] = dims[k];
+	}
 
-    // run over the main diagonal multi-indexes
-    for (std::size_t i = 0; i < D; i++)
-    {
-        // get row multi_index
-        internal::_n2multiidx(i, dims.size(), Cdims, midx_row);
-        // get column multi_index (same as row)
-        internal::_n2multiidx(i, dims.size(), Cdims, midx_col);
-        // run over the gate's row multi-index
-        for (std::size_t a = 0; a < static_cast<std::size_t>(rA.cols()); a++)
-        {
-            // construct the total row multi-index
-            midx_row[pos] = a;
+	// run over the main diagonal multi-indexes
+	for (std::size_t i = 0; i < D; i++)
+	{
+		// get row multi_index
+		internal::_n2multiidx(i, dims.size(), Cdims, midx_row);
+		// get column multi_index (same as row)
+		internal::_n2multiidx(i, dims.size(), Cdims, midx_col);
+		// run over the gate's row multi-index
+		for (std::size_t a = 0; a < static_cast<std::size_t>(rA.cols()); a++)
+		{
+			// construct the total row multi-index
+			midx_row[pos] = a;
 
-            // run over the gate's column multi-index
-            for (std::size_t b = 0; b < static_cast<std::size_t>(rA.cols());
-                    b++)
-            {
-                // construct the total column multi-index
-                midx_col[pos] = b;
+			// run over the gate's column multi-index
+			for (std::size_t b = 0; b < static_cast<std::size_t>(rA.cols());
+					b++)
+			{
+				// construct the total column multi-index
+				midx_col[pos] = b;
 
-                // finally write the values
-                result(internal::_multiidx2n(midx_row, dims.size(), Cdims),
-                       internal::_multiidx2n(midx_col, dims.size(), Cdims)) =
-                           rA(a, b);
-            }
-        }
-    }
+				// finally write the values
+				result(internal::_multiidx2n(midx_row, dims.size(), Cdims),
+						internal::_multiidx2n(midx_col, dims.size(), Cdims)) =
+						rA(a, b);
+			}
+		}
+	}
 
-    return result;
+	return result;
 }
 
 /**
@@ -937,63 +937,63 @@ DynMat<typename Derived::Scalar> expandout(const Eigen::MatrixBase<Derived> &A,
 template<typename Derived>
 DynMat<typename Derived::Scalar> grams(const std::vector<Derived> &Vs)
 {
-    // check empty list
-    if (!internal::_check_nonzero_size(Vs))
-        throw Exception("grams", Exception::Type::ZERO_SIZE);
+	// check empty list
+	if (!internal::_check_nonzero_size(Vs))
+		throw Exception("grams", Exception::Type::ZERO_SIZE);
 
-    for (auto && it : Vs)
-        if (!internal::_check_nonzero_size(it))
-            throw Exception("grams", Exception::Type::ZERO_SIZE);
+	for (auto && it : Vs)
+		if (!internal::_check_nonzero_size(it))
+			throw Exception("grams", Exception::Type::ZERO_SIZE);
 
-    // check that Vs[0] is a column vector
-    if (!internal::_check_col_vector(Vs[0]))
-        throw Exception("grams", Exception::Type::MATRIX_NOT_CVECTOR);
+	// check that Vs[0] is a column vector
+	if (!internal::_check_col_vector(Vs[0]))
+		throw Exception("grams", Exception::Type::MATRIX_NOT_CVECTOR);
 
-    // now check that all the rest match the size of the first vector
-    for (auto && it : Vs)
-        if (it.rows() != Vs[0].rows() || it.cols() != 1)
-            throw Exception("grams", Exception::Type::DIMS_NOT_EQUAL);
+	// now check that all the rest match the size of the first vector
+	for (auto && it : Vs)
+		if (it.rows() != Vs[0].rows() || it.cols() != 1)
+			throw Exception("grams", Exception::Type::DIMS_NOT_EQUAL);
 
-    DynMat<typename Derived::Scalar> cut =
-        DynMat<typename Derived::Scalar>::Identity(Vs[0].rows(),
-                Vs[0].rows());
+	DynMat<typename Derived::Scalar> cut =
+			DynMat<typename Derived::Scalar>::Identity(Vs[0].rows(),
+					Vs[0].rows());
 
-    DynMat<typename Derived::Scalar> vi =
-        DynMat<typename Derived::Scalar>::Zero(Vs[0].rows(), 1);
+	DynMat<typename Derived::Scalar> vi =
+			DynMat<typename Derived::Scalar>::Zero(Vs[0].rows(), 1);
 
-    std::vector<DynMat<typename Derived::Scalar>> outvecs;
-    // find the first non-zero vector in the list
-    std::size_t pos = 0;
-    for (pos = 0; pos < Vs.size(); pos++)
-    {
-        if (norm(Vs[pos]) > eps) // add it as the first element
-        {
-            outvecs.push_back(Vs[pos]);
-            break;
-        }
-    }
+	std::vector<DynMat<typename Derived::Scalar>> outvecs;
+	// find the first non-zero vector in the list
+	std::size_t pos = 0;
+	for (pos = 0; pos < Vs.size(); pos++)
+	{
+		if (norm(Vs[pos]) > eps) // add it as the first element
+		{
+			outvecs.push_back(Vs[pos]);
+			break;
+		}
+	}
 
-    // start the process
-    for (std::size_t i = pos + 1; i < Vs.size(); i++)
-    {
-        cut -= prj(outvecs[i - 1 - pos]);
-        vi = cut * Vs[i];
-        outvecs.push_back(vi);
-    }
+	// start the process
+	for (std::size_t i = pos + 1; i < Vs.size(); i++)
+	{
+		cut -= prj(outvecs[i - 1 - pos]);
+		vi = cut * Vs[i];
+		outvecs.push_back(vi);
+	}
 
-    DynMat<typename Derived::Scalar> result(Vs[0].rows(), outvecs.size());
+	DynMat<typename Derived::Scalar> result(Vs[0].rows(), outvecs.size());
 
-    std::size_t cnt = 0;
-    for (auto && it : outvecs)
-    {
-        double normV = norm(it);
-        if (normV > eps) // we add only the non-zero vectors
-        {
-            result.col(cnt) = it / normV;
-            cnt++;
-        }
-    }
-    return result.block(0, 0, Vs[0].rows(), cnt);
+	std::size_t cnt = 0;
+	for (auto && it : outvecs)
+	{
+		double normV = norm(it);
+		if (normV > eps) // we add only the non-zero vectors
+		{
+			result.col(cnt) = it / normV;
+			cnt++;
+		}
+	}
+	return result.block(0, 0, Vs[0].rows(), cnt);
 }
 
 // deduce the template parameters from initializer_list
@@ -1007,7 +1007,7 @@ DynMat<typename Derived::Scalar> grams(const std::vector<Derived> &Vs)
 template<typename Derived>
 DynMat<typename Derived::Scalar> grams(const std::initializer_list<Derived> &Vs)
 {
-    return grams(std::vector<Derived>(Vs));
+	return grams(std::vector<Derived>(Vs));
 }
 
 /**
@@ -1020,18 +1020,18 @@ DynMat<typename Derived::Scalar> grams(const std::initializer_list<Derived> &Vs)
 template<typename Derived>
 DynMat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived> &A)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+	const DynMat<typename Derived::Scalar> &rA = A;
 
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("grams", Exception::Type::ZERO_SIZE);
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("grams", Exception::Type::ZERO_SIZE);
 
-    std::vector<DynMat<typename Derived::Scalar>> input;
+	std::vector<DynMat<typename Derived::Scalar>> input;
 
-    for (std::size_t i = 0; i < static_cast<std::size_t>(rA.cols()); i++)
-        input.push_back(
-            static_cast<DynMat<typename Derived::Scalar> >(rA.col(i)));
+	for (std::size_t i = 0; i < static_cast<std::size_t>(rA.cols()); i++)
+		input.push_back(
+				static_cast<DynMat<typename Derived::Scalar> >(rA.col(i)));
 
-    return grams<DynMat<typename Derived::Scalar>>(input);
+	return grams<DynMat<typename Derived::Scalar>>(input);
 }
 
 /**
@@ -1044,27 +1044,27 @@ DynMat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived> &A)
  * \return Multi-index of the same size as \a dims
  */
 std::vector<std::size_t> n2multiidx(std::size_t n,
-                                    const std::vector<std::size_t> &dims)
+		const std::vector<std::size_t> &dims)
 {
-    if (!internal::_check_dims(dims))
-        throw Exception("n2multiidx", Exception::Type::DIMS_INVALID);
+	if (!internal::_check_dims(dims))
+		throw Exception("n2multiidx", Exception::Type::DIMS_INVALID);
 
-    auto multiply = [](const std::size_t x, const std::size_t y)->std::size_t
-    {   return x * y;};
+	auto multiply = [](const std::size_t x, const std::size_t y)->std::size_t
+	{	return x * y;};
 
-    if (n >= std::accumulate(std::begin(dims), std::end(dims), 1u, multiply))
-        throw Exception("n2multiidx", Exception::Type::OUT_OF_RANGE);
+	if (n >= std::accumulate(std::begin(dims), std::end(dims), 1u, multiply))
+		throw Exception("n2multiidx", Exception::Type::OUT_OF_RANGE);
 
-    std::vector<std::size_t> result(dims.size());
-    std::size_t _n = n;
-    for (std::size_t i = 0; i < dims.size(); i++)
-    {
-        result[dims.size() - i - 1] = _n
-                                      % static_cast<int>(dims[dims.size() - i - 1]);
-        _n = _n / static_cast<int>(dims[dims.size() - i - 1]);
-    }
+	std::vector<std::size_t> result(dims.size());
+	std::size_t _n = n;
+	for (std::size_t i = 0; i < dims.size(); i++)
+	{
+		result[dims.size() - i - 1] = _n
+				% static_cast<int>(dims[dims.size() - i - 1]);
+		_n = _n / static_cast<int>(dims[dims.size() - i - 1]);
+	}
 
-    return result;
+	return result;
 }
 
 /**
@@ -1077,27 +1077,27 @@ std::vector<std::size_t> n2multiidx(std::size_t n,
  * \return Non-negative integer index
  */
 std::size_t multiidx2n(const std::vector<std::size_t> &midx,
-                       const std::vector<std::size_t> &dims)
+		const std::vector<std::size_t> &dims)
 {
-    if (!internal::_check_dims(dims))
-        throw Exception("multiidx2n", Exception::Type::DIMS_INVALID);
+	if (!internal::_check_dims(dims))
+		throw Exception("multiidx2n", Exception::Type::DIMS_INVALID);
 
-    for (std::size_t i = 0; i < dims.size(); i++)
-        if (midx[i] >= dims[i])
-            throw Exception("multiidx2n", Exception::Type::OUT_OF_RANGE);
+	for (std::size_t i = 0; i < dims.size(); i++)
+		if (midx[i] >= dims[i])
+			throw Exception("multiidx2n", Exception::Type::OUT_OF_RANGE);
 
-    std::vector<std::size_t> part_prod(dims.size());
+	std::vector<std::size_t> part_prod(dims.size());
 
-    part_prod[dims.size() - 1] = 1;
-    for (std::size_t j = 1; j < dims.size(); j++)
-        part_prod[dims.size() - j - 1] = part_prod[dims.size() - j]
-                                         * dims[dims.size() - j];
+	part_prod[dims.size() - 1] = 1;
+	for (std::size_t j = 1; j < dims.size(); j++)
+		part_prod[dims.size() - j - 1] = part_prod[dims.size() - j]
+				* dims[dims.size() - j];
 
-    std::size_t result = 0;
-    for (std::size_t i = 0; i < dims.size(); i++)
-        result += midx[i] * part_prod[i];
+	std::size_t result = 0;
+	for (std::size_t i = 0; i < dims.size(); i++)
+		result += midx[i] * part_prod[i];
 
-    return result;
+	return result;
 }
 
 /**
@@ -1111,20 +1111,20 @@ std::size_t multiidx2n(const std::vector<std::size_t> &midx,
  */
 ket mket(const std::vector<std::size_t> &mask)
 {
-    std::size_t n = mask.size();
-    std::size_t D = static_cast<std::size_t>(std::pow(2, n));
-    // check zero size
-    if (n == 0)
-        throw Exception("mket", Exception::Type::ZERO_SIZE);
-    // check mask is a valid binary vector
-    for (auto && it : mask)
-        if (it > 1)
-            throw Exception("mket", Exception::Type::NOT_QUBIT_SUBSYS);
-    std::vector<std::size_t> dims(n, 2);
-    ket result = ket::Zero(D);
-    std::size_t pos = multiidx2n(mask, dims);
-    result(pos) = 1;
-    return result;
+	std::size_t n = mask.size();
+	std::size_t D = static_cast<std::size_t>(std::pow(2, n));
+	// check zero size
+	if (n == 0)
+		throw Exception("mket", Exception::Type::ZERO_SIZE);
+	// check mask is a valid binary vector
+	for (auto && it : mask)
+		if (it > 1)
+			throw Exception("mket", Exception::Type::NOT_QUBIT_SUBSYS);
+	std::vector<std::size_t> dims(n, 2);
+	ket result = ket::Zero(D);
+	std::size_t pos = multiidx2n(mask, dims);
+	result(pos) = 1;
+	return result;
 }
 
 /**
@@ -1140,33 +1140,33 @@ ket mket(const std::vector<std::size_t> &mask)
  * \return Multi-partite qudit state vector, as a complex dynamic column vector
  */
 ket mket(const std::vector<std::size_t> &mask,
-         const std::vector<std::size_t> &dims)
+		const std::vector<std::size_t> &dims)
 {
-    std::size_t n = mask.size();
-    auto multiply = [](std::size_t x, std::size_t y)->std::size_t
-    {   return x * y;};
+	std::size_t n = mask.size();
+	auto multiply = [](std::size_t x, std::size_t y)->std::size_t
+	{	return x * y;};
 
-    std::size_t D = std::accumulate(std::begin(dims), std::end(dims), 1u,
-                                    multiply);
+	std::size_t D = std::accumulate(std::begin(dims), std::end(dims), 1u,
+			multiply);
 
-    // check zero size
-    if (n == 0)
-        throw Exception("mket", Exception::Type::ZERO_SIZE);
-    // check valid dims
-    if (!internal::_check_dims(dims))
-        throw Exception("mket", Exception::Type::DIMS_INVALID);
-    // check mask and dims have the same size
-    if (mask.size() != dims.size())
-        throw Exception("mket", Exception::Type::SUBSYS_MISMATCH_DIMS);
-    // check mask is a valid vector
-    for (std::size_t i = 0; i < n; i++)
-        if (mask[i] >= dims[i])
-            throw Exception("mket", Exception::Type::SUBSYS_MISMATCH_DIMS);
+	// check zero size
+	if (n == 0)
+		throw Exception("mket", Exception::Type::ZERO_SIZE);
+	// check valid dims
+	if (!internal::_check_dims(dims))
+		throw Exception("mket", Exception::Type::DIMS_INVALID);
+	// check mask and dims have the same size
+	if (mask.size() != dims.size())
+		throw Exception("mket", Exception::Type::SUBSYS_MISMATCH_DIMS);
+	// check mask is a valid vector
+	for (std::size_t i = 0; i < n; i++)
+		if (mask[i] >= dims[i])
+			throw Exception("mket", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-    ket result = ket::Zero(D);
-    std::size_t pos = multiidx2n(mask, dims);
-    result(pos) = 1;
-    return result;
+	ket result = ket::Zero(D);
+	std::size_t pos = multiidx2n(mask, dims);
+	result(pos) = 1;
+	return result;
 }
 
 /**
@@ -1183,25 +1183,25 @@ ket mket(const std::vector<std::size_t> &mask,
  */
 ket mket(const std::vector<std::size_t> &mask, std::size_t d)
 {
-    std::size_t n = mask.size();
-    std::size_t D = static_cast<std::size_t>(std::pow(d, n));
+	std::size_t n = mask.size();
+	std::size_t D = static_cast<std::size_t>(std::pow(d, n));
 
-    // check zero size
-    if (n == 0)
-        throw Exception("mket", Exception::Type::ZERO_SIZE);
-    // check valid dims
-    if (d == 0)
-        throw Exception("mket", Exception::Type::DIMS_INVALID);
-    // check mask is a valid vector
-    for (std::size_t i = 0; i < n; i++)
-        if (mask[i] >= d)
-            throw Exception("mket", Exception::Type::SUBSYS_MISMATCH_DIMS);
+	// check zero size
+	if (n == 0)
+		throw Exception("mket", Exception::Type::ZERO_SIZE);
+	// check valid dims
+	if (d == 0)
+		throw Exception("mket", Exception::Type::DIMS_INVALID);
+	// check mask is a valid vector
+	for (std::size_t i = 0; i < n; i++)
+		if (mask[i] >= d)
+			throw Exception("mket", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-    ket result = ket::Zero(D);
-    std::vector<std::size_t> dims(n, d);
-    std::size_t pos = multiidx2n(mask, dims);
-    result(pos) = 1;
-    return result;
+	ket result = ket::Zero(D);
+	std::vector<std::size_t> dims(n, d);
+	std::size_t pos = multiidx2n(mask, dims);
+	result(pos) = 1;
+	return result;
 }
 
 /**
@@ -1217,20 +1217,20 @@ ket mket(const std::vector<std::size_t> &mask, std::size_t d)
  */
 cmat mprj(const std::vector<std::size_t> &mask)
 {
-    std::size_t n = mask.size();
-    std::size_t D = static_cast<std::size_t>(std::pow(2, n));
-    // check zero size
-    if (n == 0)
-        throw Exception("mprj", Exception::Type::ZERO_SIZE);
-    // check mask is a valid binary vector
-    for (auto && it : mask)
-        if (it > 1)
-            throw Exception("mprj", Exception::Type::NOT_QUBIT_SUBSYS);
-    std::vector<std::size_t> dims(n, 2);
-    cmat result = cmat::Zero(D, D);
-    std::size_t pos = multiidx2n(mask, dims);
-    result(pos, pos) = 1;
-    return result;
+	std::size_t n = mask.size();
+	std::size_t D = static_cast<std::size_t>(std::pow(2, n));
+	// check zero size
+	if (n == 0)
+		throw Exception("mprj", Exception::Type::ZERO_SIZE);
+	// check mask is a valid binary vector
+	for (auto && it : mask)
+		if (it > 1)
+			throw Exception("mprj", Exception::Type::NOT_QUBIT_SUBSYS);
+	std::vector<std::size_t> dims(n, 2);
+	cmat result = cmat::Zero(D, D);
+	std::size_t pos = multiidx2n(mask, dims);
+	result(pos, pos) = 1;
+	return result;
 }
 
 /**
@@ -1248,33 +1248,33 @@ cmat mprj(const std::vector<std::size_t> &mask)
  * as a complex dynamic matrix
  */
 cmat mprj(const std::vector<std::size_t> &mask,
-          const std::vector<std::size_t> &dims)
+		const std::vector<std::size_t> &dims)
 {
-    std::size_t n = mask.size();
-    auto multiply = [](std::size_t x, std::size_t y)->std::size_t
-    {   return x * y;};
+	std::size_t n = mask.size();
+	auto multiply = [](std::size_t x, std::size_t y)->std::size_t
+	{	return x * y;};
 
-    std::size_t D = std::accumulate(std::begin(dims), std::end(dims), 1u,
-                                    multiply);
+	std::size_t D = std::accumulate(std::begin(dims), std::end(dims), 1u,
+			multiply);
 
-    // check zero size
-    if (n == 0)
-        throw Exception("mprj", Exception::Type::ZERO_SIZE);
-    // check valid dims
-    if (!internal::_check_dims(dims))
-        throw Exception("mprj", Exception::Type::DIMS_INVALID);
-    // check mask and dims have the same size
-    if (mask.size() != dims.size())
-        throw Exception("mprj", Exception::Type::SUBSYS_MISMATCH_DIMS);
-    // check mask is a valid vector
-    for (std::size_t i = 0; i < n; i++)
-        if (mask[i] >= dims[i])
-            throw Exception("mprj", Exception::Type::SUBSYS_MISMATCH_DIMS);
+	// check zero size
+	if (n == 0)
+		throw Exception("mprj", Exception::Type::ZERO_SIZE);
+	// check valid dims
+	if (!internal::_check_dims(dims))
+		throw Exception("mprj", Exception::Type::DIMS_INVALID);
+	// check mask and dims have the same size
+	if (mask.size() != dims.size())
+		throw Exception("mprj", Exception::Type::SUBSYS_MISMATCH_DIMS);
+	// check mask is a valid vector
+	for (std::size_t i = 0; i < n; i++)
+		if (mask[i] >= dims[i])
+			throw Exception("mprj", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-    cmat result = cmat::Zero(D, D);
-    std::size_t pos = multiidx2n(mask, dims);
-    result(pos, pos) = 1;
-    return result;
+	cmat result = cmat::Zero(D, D);
+	std::size_t pos = multiidx2n(mask, dims);
+	result(pos, pos) = 1;
+	return result;
 }
 
 /**
@@ -1293,25 +1293,25 @@ cmat mprj(const std::vector<std::size_t> &mask,
  */
 cmat mprj(const std::vector<std::size_t> &mask, std::size_t d)
 {
-    std::size_t n = mask.size();
-    std::size_t D = static_cast<std::size_t>(std::pow(d, n));
+	std::size_t n = mask.size();
+	std::size_t D = static_cast<std::size_t>(std::pow(d, n));
 
-    // check zero size
-    if (n == 0)
-        throw Exception("mprj", Exception::Type::ZERO_SIZE);
-    // check valid dims
-    if (d == 0)
-        throw Exception("mprj", Exception::Type::DIMS_INVALID);
-    // check mask is a valid vector
-    for (std::size_t i = 0; i < n; i++)
-        if (mask[i] >= d)
-            throw Exception("mprj", Exception::Type::SUBSYS_MISMATCH_DIMS);
+	// check zero size
+	if (n == 0)
+		throw Exception("mprj", Exception::Type::ZERO_SIZE);
+	// check valid dims
+	if (d == 0)
+		throw Exception("mprj", Exception::Type::DIMS_INVALID);
+	// check mask is a valid vector
+	for (std::size_t i = 0; i < n; i++)
+		if (mask[i] >= d)
+			throw Exception("mprj", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-    cmat result = cmat::Zero(D, D);
-    std::vector<std::size_t> dims(n, d);
-    std::size_t pos = multiidx2n(mask, dims);
-    result(pos, pos) = 1;
-    return result;
+	cmat result = cmat::Zero(D, D);
+	std::vector<std::size_t> dims(n, d);
+	std::size_t pos = multiidx2n(mask, dims);
+	result(pos, pos) = 1;
+	return result;
 }
 
 /**
@@ -1322,15 +1322,15 @@ cmat mprj(const std::vector<std::size_t> &mask, std::size_t d)
  */
 std::vector<std::size_t> invperm(const std::vector<std::size_t> &perm)
 {
-    if (!internal::_check_perm(perm))
-        throw Exception("invperm", Exception::Type::PERM_INVALID);
+	if (!internal::_check_perm(perm))
+		throw Exception("invperm", Exception::Type::PERM_INVALID);
 
-    // construct the inverse
-    std::vector<std::size_t> result(perm.size());
-    for (std::size_t i = 0; i < perm.size(); i++)
-        result[perm[i]] = i;
+	// construct the inverse
+	std::vector<std::size_t> result(perm.size());
+	for (std::size_t i = 0; i < perm.size(); i++)
+		result[perm[i]] = i;
 
-    return result;
+	return result;
 }
 
 /**
@@ -1342,21 +1342,21 @@ std::vector<std::size_t> invperm(const std::vector<std::size_t> &perm)
  *  = perm(sigma)
  */
 std::vector<std::size_t> compperm(const std::vector<std::size_t> &perm,
-                                  const std::vector<std::size_t> &sigma)
+		const std::vector<std::size_t> &sigma)
 {
-    if (!internal::_check_perm(perm))
-        throw Exception("compperm", Exception::Type::PERM_INVALID);
-    if (!internal::_check_perm(sigma))
-        throw Exception("compperm", Exception::Type::PERM_INVALID);
-    if (perm.size() != sigma.size())
-        throw Exception("compperm", Exception::Type::PERM_INVALID);
+	if (!internal::_check_perm(perm))
+		throw Exception("compperm", Exception::Type::PERM_INVALID);
+	if (!internal::_check_perm(sigma))
+		throw Exception("compperm", Exception::Type::PERM_INVALID);
+	if (perm.size() != sigma.size())
+		throw Exception("compperm", Exception::Type::PERM_INVALID);
 
-    // construct the composition perm(sigma)
-    std::vector<std::size_t> result(perm.size());
-    for (std::size_t i = 0; i < perm.size(); i++)
-        result[i] = perm[sigma[i]];
+	// construct the composition perm(sigma)
+	std::vector<std::size_t> result(perm.size());
+	for (std::size_t i = 0; i < perm.size(); i++)
+		result[i] = perm[sigma[i]];
 
-    return result;
+	return result;
 }
 
 /**
@@ -1369,10 +1369,10 @@ std::vector<std::size_t> compperm(const std::vector<std::size_t> &perm,
 template<typename InputIterator>
 std::vector<double> amplitudes(InputIterator first, InputIterator last)
 {
-    std::vector<double> weights(last - first);
-    std::transform(first, last, std::begin(weights), [](const cplx & z)->double
-    {   return std::pow(std::abs(z), 2);});
-    return weights;
+	std::vector<double> weights(last - first);
+	std::transform(first, last, std::begin(weights), [](const cplx & z)->double
+	{	return std::pow(std::abs(z), 2);});
+	return weights;
 }
 
 /**
@@ -1384,21 +1384,21 @@ std::vector<double> amplitudes(InputIterator first, InputIterator last)
 template<typename Derived>
 std::vector<double> amplitudes(const Eigen::MatrixBase<Derived> &V)
 {
-    const DynMat<typename Derived::Scalar> &rV = V;
+	const DynMat<typename Derived::Scalar> &rV = V;
 
-    // check zero-size
-    if (!internal::_check_nonzero_size(rV))
-        throw Exception("amplitudes", Exception::Type::ZERO_SIZE);
+	// check zero-size
+	if (!internal::_check_nonzero_size(rV))
+		throw Exception("amplitudes", Exception::Type::ZERO_SIZE);
 
-    // check column vector
-    if (!internal::_check_col_vector(rV))
-        throw Exception("amplitudes", Exception::Type::MATRIX_NOT_CVECTOR);
+	// check column vector
+	if (!internal::_check_col_vector(rV))
+		throw Exception("amplitudes", Exception::Type::MATRIX_NOT_CVECTOR);
 
-    std::vector<double> weights(rV.size());
-    std::transform(rV.data(), rV.data() + rV.size(), std::begin(weights),
-                   [](const cplx & z)->double
-    {   return std::pow(std::abs(z), 2);});
-    return weights;
+	std::vector<double> weights(rV.size());
+	std::transform(rV.data(), rV.data() + rV.size(), std::begin(weights),
+			[](const cplx & z)->double
+			{	return std::pow(std::abs(z), 2);});
+	return weights;
 }
 
 /**
@@ -1411,10 +1411,10 @@ std::vector<double> amplitudes(const Eigen::MatrixBase<Derived> &V)
  */
 template<typename InputIterator>
 auto sum(InputIterator first,
-         InputIterator last)->typename InputIterator::value_type
+		InputIterator last)->typename InputIterator::value_type
 {
-    return std::accumulate(first, last,
-    static_cast<typename InputIterator::value_type>(0));
+	return std::accumulate(first, last,
+			static_cast<typename InputIterator::value_type>(0));
 }
 
 /**
@@ -1427,17 +1427,17 @@ auto sum(InputIterator first,
  */
 template<typename InputIterator>
 auto prod(InputIterator first,
-          InputIterator last)->typename InputIterator::value_type
+		InputIterator last)->typename InputIterator::value_type
 {
-    return std::accumulate(first, last,
-    static_cast<typename InputIterator::value_type>(1),
-    [](const typename InputIterator::value_type & x,
-    const typename InputIterator::value_type & y)
-    {
-        return x * y;
-    });
+	return std::accumulate(first, last,
+			static_cast<typename InputIterator::value_type>(1),
+			[](const typename InputIterator::value_type & x,
+					const typename InputIterator::value_type & y)
+			{
+				return x * y;
+			});
 }
 
 } /* namespace qpp */
 
-#endif /* FUNCTIONS_H_ */
+#endif /* INCLUDE_FUNCTIONS_H_ */

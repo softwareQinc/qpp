@@ -1,18 +1,21 @@
 /*
- * obsolete.h
+ * test.h
  *
- *  Created on: Nov 1, 2014
+ *  Created on: Nov 3, 2014
  *      Author: vlad
  */
 
-#ifndef OBSOLETE_H_
-#define OBSOLETE_H_
+#ifndef INCLUDE_EXPERIMENTAL_TEST_H_
+#define INCLUDE_EXPERIMENTAL_TEST_H_
 
-// contains obsolete functions, DO NOT USE THEM!
-// eventually will be removed
+// testing functions, do not use/modify
+/**
+ * \namespace qpp::experimental Experimental/test functions,
+ * do not use/modify these functions/classes
+ */
 namespace qpp
 {
-namespace obsolete
+namespace experimental
 {
 
 /**
@@ -496,20 +499,246 @@ cmat super(const std::vector<cmat>& Ks)
  * \param d Local dimensions of all local Hilbert spaces (must all be equal)
  * \return CTRL-A gate, as a matrix over the same scalar field as \a A
  */
-template<typename Derived>
+template<typename Derived> // Parallel version, seems slower than the serial
 DynMat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived>& A,
 		const std::vector<std::size_t>& ctrl,
 		const std::vector<std::size_t>& subsys, std::size_t n,
 		std::size_t d = 2)
 {
+	const DynMat<typename Derived::Scalar>& rA = A;
+
+	// EXCEPTION CHECKS
+	// check matrix zero size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("Gates::CTRL", Exception::Type::ZERO_SIZE);
+
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("Gates::CTRL", Exception::Type::MATRIX_NOT_SQUARE);
+
+	// check lists zero size
+	if (subsys.size() == 0)
+		throw Exception("Gates::CTRL", Exception::Type::ZERO_SIZE);
+
+	// check out of range
+	if (n == 0)
+		throw Exception("Gates::CTRL", Exception::Type::OUT_OF_RANGE);
+
+	// check valid local dimension
+	if (d == 0)
+		throw Exception("Gates::CTRL", Exception::Type::DIMS_INVALID);
+
+	std::vector<std::size_t> ctrlgate = ctrl;	// ctrl + gate subsystem vector
+	ctrlgate.insert(std::end(ctrlgate), std::begin(subsys), std::end(subsys));
+	std::sort(std::begin(ctrlgate), std::end(ctrlgate));
+
+	std::vector<std::size_t> dims(n, d); // local dimensions vector
+
+	// check that ctrl + gate subsystem is valid
+	// with respect to local dimensions
+	if (!internal::_check_subsys_match_dims(ctrlgate, dims))
+		throw Exception("Gates::CTRL", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+	// check that subsys list match the dimension of the matrix
+	if (rA.cols() != std::pow(d, subsys.size()))
+		throw Exception("Gates::CTRL", Exception::Type::DIMS_MISMATCH_MATRIX);
+	// END EXCEPTION CHECKS
+
+	if (d == 1)
+		return rA;
+
+	std::size_t ctrlsize = ctrl.size();
+
+	// construct the table of A^i
+	std::vector<DynMat<typename Derived::Scalar>> Ai;
+	std::vector<DynMat<typename Derived::Scalar>> Aidagger;
+	for (std::size_t i = 0; i < d; i++)
+	{
+		Ai.push_back(powm(rA, i));
+	}
+
+	std::size_t D = std::pow(d, n);
+	std::size_t DA = rA.rows();
+	std::size_t DCTRLAbar = static_cast<std::size_t>(std::pow(d,
+			n - ctrlgate.size()));
+
+	std::size_t Cdims[maxn]; // local dimensions
+	std::size_t CdimsA[maxn]; // local dimensions
+	std::size_t CdimsCTRLAbar[maxn]; // local dimensions
+
+	std::vector<std::size_t> ctrlgatebar(n - ctrlgate.size()); // rest
+	std::vector<std::size_t> allsubsys(n);
+	std::iota(std::begin(allsubsys), std::end(allsubsys), 0);
+	std::set_difference(std::begin(allsubsys), std::end(allsubsys),
+			std::begin(ctrlgate), std::end(ctrlgate), std::begin(ctrlgatebar));
+
+	for (std::size_t k = 0; k < n; k++)
+		Cdims[k] = d;
+	for (std::size_t k = 0; k < subsys.size(); k++)
+		CdimsA[k] = d;
+	for (std::size_t k = 0; k < n - ctrlgate.size(); k++)
+		CdimsCTRLAbar[k] = d;
+
+	auto coeff =
+			[ = ](std::size_t _i, std::size_t _m, std::size_t _n, std::size_t _r)
+			-> std::pair<std::size_t, std::size_t>
+			{
+				std::size_t idxrow = 0;
+				std::size_t idxcol = 0;
+				std::size_t Cmidxrow[maxn]; // the total row multi-index
+				std::size_t Cmidxcol[maxn];// the total col multi-index
+				std::size_t CmidxArow[maxn];// the gate part row multi-index
+				std::size_t CmidxAcol[maxn];// the gate part col multi-index
+				std::size_t CmidxCTRLAbar[maxn];// the rest multi-index
+
+				// compute the index
+
+				// set the CTRL part
+				for (std::size_t k = 0; k < ctrl.size(); k++)
+				{
+					Cmidxrow[ctrl[k]] = Cmidxcol[ctrl[k]] = _i;
+				}
+
+				// set the rest
+				internal::_n2multiidx(_r, n - ctrlgate.size(),
+						CdimsCTRLAbar, CmidxCTRLAbar);
+				for (std::size_t k = 0; k < n - ctrlgate.size(); k++)
+				{
+					Cmidxrow[ctrlgatebar[k]] = Cmidxcol[ctrlgatebar[k]] = CmidxCTRLAbar[k];
+				}
+
+				// set the A part
+				internal::_n2multiidx(_m, subsys.size(), CdimsA, CmidxArow);
+				internal::_n2multiidx(_n, subsys.size(), CdimsA, CmidxAcol);
+				for (std::size_t k = 0; k < subsys.size(); k++)
+				{
+					Cmidxrow[subsys[k]] = CmidxArow[k];
+					Cmidxcol[subsys[k]] = CmidxAcol[k];
+				}
+
+				// we now got the total row/col indexes
+				idxrow = internal::_multiidx2n(Cmidxrow, n, Cdims);
+				idxcol = internal::_multiidx2n(Cmidxcol, n, Cdims);
+
+				return std::make_pair(idxrow, idxcol);
+			};
+
 	DynMat<typename Derived::Scalar> result =
-			DynMat<typename Derived::Scalar>::Identity(std::pow(d,n),
-					std::pow(d, n));
+			DynMat<typename Derived::Scalar>::Identity(D, D);
+
+#pragma omp parallel for collapse(4)
+	for (std::size_t m = 0; m < DA; m++)
+		for (std::size_t n = 0; n < DA; n++)
+			for (std::size_t r = 0; r < DCTRLAbar; r++)
+				for (std::size_t i = 0; i < d; i++)
+					if (ctrlsize == 0) // no control
+					{
+						result(coeff(i, m, n, r).first,
+								coeff(i, m, n, r).second) = Ai[1](m, n);
+					}
+					else
+					{
+						result(coeff(i, m, n, r).first,
+								coeff(i, m, n, r).second) = Ai[i](m, n);
+					}
+
 	return result;
 }
 
-} /* namespace obsolete */
+/**
+ * \brief Choi matrix representation
+ *
+ * Constructs the Choi matrix of the channel specified by the set of Kraus
+ * operators \a Ks in the standard operator basis \f$\{|i\rangle\langle j|\}\f$
+ * ordered in lexicographical order, i.e.
+ * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
+ *
+ * \note The superoperator matrix \f$S\f$ and the Choi matrix \f$ C\f$
+ * are related by \f$ S_{ab,mn} = C_{ma,nb}\f$
+ *
+ * \param Ks Set of Kraus operators
+ * \return Choi matrix representation
+ */
+cmat choi(const std::vector<cmat> &Ks)
+{
+	// EXCEPTION CHECKS
+	if (!internal::_check_nonzero_size(Ks))
+		throw Exception("choi", Exception::Type::ZERO_SIZE);
+	if (!internal::_check_nonzero_size(Ks[0]))
+		throw Exception("choi", Exception::Type::ZERO_SIZE);
+	if (!internal::_check_square_mat(Ks[0]))
+		throw Exception("choi", Exception::Type::MATRIX_NOT_SQUARE);
+	for (auto && it : Ks)
+		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+			throw Exception("choi", Exception::Type::DIMS_NOT_EQUAL);
+	std::size_t D = static_cast<std::size_t>(Ks[0].rows());
+
+	// construct the D x D \sum |jj> vector
+	// (un-normalized maximally entangled state)
+	cmat MES = cmat::Zero(D * D, 1);
+	for (std::size_t a = 0; a < D; a++)
+		MES(a * D + a) = 1;
+
+	cmat Omega = static_cast<cmat>(MES * adjoint(MES));
+
+	cmat result = cmat::Zero(D * D, D * D);
+
+	for (std::size_t i = 0; i < Ks.size(); i++)
+	{
+		result += kron(cmat::Identity(D, D), Ks[i]) * Omega
+				* adjoint(kron(cmat::Identity(D, D), Ks[i]));
+	}
+
+	return result;
+}
+
+/**
+ * \brief Generates a set of random Kraus operators
+ *
+ * \note The set of Kraus operators satisfy the closure condition
+ * \f$ \sum_i K_i^\dagger K_i = I\f$
+ *
+ * \param n Number of Kraus operators
+ * \param D Dimension of the Hilbert space
+ * \return Set of \a n Kraus operators satisfying the closure condition
+ */
+std::vector<cmat> randkraus(std::size_t n, std::size_t D)
+{
+	if (n == 0)
+		throw Exception("randkraus", Exception::Type::OUT_OF_RANGE);
+	if (D == 0)
+		throw Exception("randkraus", Exception::Type::DIMS_INVALID);
+
+	std::vector<cmat> result;
+	cmat Fk(D, D);
+	cmat U = randU(n * D);
+	std::size_t dims[2];
+	dims[0] = D;
+	dims[1] = n;
+	std::size_t midx_row[2] = { 0, 0 };
+	std::size_t midx_col[2] = { 0, 0 };
+
+	for (std::size_t k = 0; k < n; k++)
+	{
+		midx_row[1] = k;
+		for (std::size_t a = 0; a < D; a++)
+		{
+			midx_row[0] = a;
+			for (std::size_t b = 0; b < D; b++)
+			{
+				midx_col[0] = b;
+				Fk(a, b) = U(internal::_multiidx2n(midx_row, 2, dims),
+						internal::_multiidx2n(midx_col, 2, dims));
+			}
+		}
+		result.push_back(Fk);
+	}
+
+	return result;
+}
+
+
+} /* namespace experimental */
 } /* namespace qpp */
 
-#endif /* OBSOLETE_H_ */
-
+#endif /* INCLUDE_EXPERIMENTAL_TEST_H_ */

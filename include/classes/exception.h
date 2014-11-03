@@ -5,8 +5,8 @@
  *      Author: vlad
  */
 
-#ifndef EXCEPTION_H_
-#define EXCEPTION_H_
+#ifndef INCLUDE_CLASSES_EXCEPTION_H_
+#define INCLUDE_CLASSES_EXCEPTION_H_
 
 namespace qpp
 {
@@ -40,9 +40,9 @@ public:
 		/*!< Eigen::Matrix is not a row vector */
 		MATRIX_NOT_VECTOR,           //!< MATRIX_NOT_VECTOR
 		/*!< Eigen::Matrix is not a row/column vector */
-		MATRIX_NOT_SQUARE_OR_CVECTOR,//!< MATRIX_NOT_SQUARE_OR_CVECTOR
+		MATRIX_NOT_SQUARE_OR_CVECTOR,          //!< MATRIX_NOT_SQUARE_OR_CVECTOR
 		/*!< Eigen::Matrix is not square nor a column vector */
-		MATRIX_NOT_SQUARE_OR_RVECTOR,//!< MATRIX_NOT_SQUARE_OR_RVECTOR
+		MATRIX_NOT_SQUARE_OR_RVECTOR,          //!< MATRIX_NOT_SQUARE_OR_RVECTOR
 		/*!< Eigen::Matrix is not square nor a row vector */
 		MATRIX_NOT_SQUARE_OR_VECTOR, //!< MATRIX_NOT_SQUARE_OR_VECTOR
 		/*!< Eigen::Matrix is not square nor a row/column vector */
@@ -225,8 +225,9 @@ private:
 		}
 		return _msg;
 	}
-}; /* class Exception */
+};
+/* class Exception */
 
 } /* namespace qpp */
 
-#endif /* EXCEPTION_H_ */
+#endif /* INCLUDE_CLASSES_EXCEPTION_H_ */

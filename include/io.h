@@ -5,8 +5,8 @@
  *      Author: vlad
  */
 
-#ifndef IO_H_
-#define IO_H_
+#ifndef INCLUDE_IO_H_
+#define INCLUDE_IO_H_
 
 // input/output
 
@@ -416,4 +416,4 @@ DynMat<typename Derived::Scalar> load(const std::string& fname)
 
 } /* namespace qpp */
 
-#endif /* IO_H_ */
+#endif /* INCLUDE_IO_H_ */

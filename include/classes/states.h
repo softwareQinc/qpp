@@ -5,8 +5,8 @@
  *      Author: vlad
  */
 
-#ifndef STATES_H_
-#define STATES_H_
+#ifndef INCLUDE_CLASSES_STATES_H_
+#define INCLUDE_CLASSES_STATES_H_
 
 namespace qpp
 {
@@ -17,7 +17,7 @@ namespace qpp
 
 class States: public internal::Singleton<const States> // const Singleton
 {
-	friend class internal::Singleton<const States> ;
+	friend class internal::Singleton<const States>;
 public:
 	// Pauli eigen-states
 	ket x0 { ket::Zero(2) }; ///< Pauli Sigma-X 0-eigenstate |+>
@@ -94,8 +94,9 @@ private:
 		pGHZ = GHZ * GHZ.adjoint();
 		pW = W * W.adjoint();
 	}
-}; /* class States */
+};
+/* class States */
 
 } /* namespace qpp */
 
-#endif /* STATES_H_ */
+#endif /* INCLUDE_CLASSES_STATES_H_ */

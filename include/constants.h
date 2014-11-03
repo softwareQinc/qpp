@@ -5,8 +5,8 @@
  * Created on December 12, 2013, 10:41 PM
  */
 
-#ifndef CONSTANTS_H_
-#define	CONSTANTS_H_
+#ifndef INCLUDE_CONSTANTS_H_
+#define	INCLUDE_CONSTANTS_H_
 
 // constants
 
@@ -78,5 +78,5 @@ std::complex<double> omega(std::size_t D)
 
 } /* namespace qpp */
 
-#endif	/* CONSTANTS_H_ */
+#endif	/* INCLUDE_CONSTANTS_H_ */
 

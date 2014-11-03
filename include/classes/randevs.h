@@ -5,8 +5,8 @@
  *      Author: vlad
  */
 
-#ifndef RANDEVS_H_
-#define RANDEVS_H_
+#ifndef INCLUDE_CLASSES_RANDEVS_H_
+#define INCLUDE_CLASSES_RANDEVS_H_
 
 namespace qpp
 {
@@ -22,7 +22,7 @@ namespace qpp
  */
 class RandomDevices: public internal::Singleton<RandomDevices> // Singleton
 {
-	friend class internal::Singleton<RandomDevices> ;
+	friend class internal::Singleton<RandomDevices>;
 	std::random_device _rd; ///< used to seed std::mt19937 _rng
 public:
 	std::mt19937 _rng; ///< Mersenne twister random number generator engine
@@ -35,8 +35,9 @@ private:
 	{
 		std::srand(_rng());
 	}
-}; /* class RandomDevices */
+};
+/* class RandomDevices */
 
 } /* namespace qpp */
 
-#endif /* RANDEVS_H_ */
+#endif /* INCLUDE_CLASSES_RANDEVS_H_ */

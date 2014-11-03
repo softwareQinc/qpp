@@ -5,8 +5,8 @@
  *      Author: vlad
  */
 
-#ifndef MATLAB_H_
-#define MATLAB_H_
+#ifndef INCLUDE_MATLAB_MATLAB_H_
+#define INCLUDE_MATLAB_MATLAB_H_
 
 // MATLAB I/O interfacing
 // add the path to $MATLAB_INSTALLATION_FOLDER/extern/include in include path
@@ -286,4 +286,4 @@ void saveMATLABmatrix(const Eigen::MatrixBase<cmat> &A,
 }
 
 } /* namespace qpp */
-#endif /* MATLAB_H_ */
+#endif /* INCLUDE_MATLAB_MATLAB_H_ */

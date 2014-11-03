@@ -5,8 +5,8 @@
  *      Author: vlad
  */
 
-#ifndef ENTROPY_H_
-#define ENTROPY_H_
+#ifndef INCLUDE_ENTROPY_H_
+#define INCLUDE_ENTROPY_H_
 
 // various entropies, assume as input either
 // a normalized Hermitian matrix or a probability vector
@@ -307,4 +307,4 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 
 } /* namespace qpp */
 
-#endif /* ENTROPY_H_ */
+#endif /* INCLUDE_ENTROPY_H_ */

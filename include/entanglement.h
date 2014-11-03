@@ -5,8 +5,8 @@
  *      Author: vlad
  */
 
-#ifndef ENTANGLEMENT_H_
-#define ENTANGLEMENT_H_
+#ifndef INCLUDE_ENTANGLEMENT_H_
+#define INCLUDE_ENTANGLEMENT_H_
 
 // entanglement
 
@@ -219,4 +219,4 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 
 } /* namespace qpp */
 
-#endif /* ENTANGLEMENT_H_ */
+#endif /* INCLUDE_ENTANGLEMENT_H_ */

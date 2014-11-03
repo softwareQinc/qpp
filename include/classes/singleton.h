@@ -5,8 +5,8 @@
  *      Author: vlad
  */
 
-#ifndef SINGLETON_H_
-#define SINGLETON_H_
+#ifndef INCLUDE_CLASSES_SINGLETON_H_
+#define INCLUDE_CLASSES_SINGLETON_H_
 
 namespace qpp
 {
@@ -73,4 +73,4 @@ public:
 } /* namespace internal */
 } /* namespace qpp */
 
-#endif /* SINGLETON_H_ */
+#endif /* INCLUDE_CLASSES_SINGLETON_H_ */

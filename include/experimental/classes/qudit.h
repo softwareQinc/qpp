@@ -1,14 +1,16 @@
 /*
  * qudit.h
  *
- *  Created on: Apr 9, 2014
+ *  Created on: Nov 3, 2014
  *      Author: vlad
  */
 
-#ifndef QUDIT_H_
-#define QUDIT_H_
+#ifndef INCLUDE_EXPERIMENTAL_CLASSES_QUDIT_H_
+#define INCLUDE_EXPERIMENTAL_CLASSES_QUDIT_H_
 
 namespace qpp
+{
+namespace experimental
 {
 
 class Qudit
@@ -41,7 +43,7 @@ public:
 		for (std::size_t i = 0; i < _D; i++)
 			p[i] = std::abs((cplx) trace(prj((cmat) evects(U).col(i)) * _rho));
 
-		std::discrete_distribution<std::size_t> dd{std::begin(p), std::end(p)};
+		std::discrete_distribution<std::size_t> dd { std::begin(p), std::end(p) };
 		std::size_t result = dd(RandomDevices::get_instance()._rng);
 
 		if (destructive) // von Neumann
@@ -65,8 +67,10 @@ public:
 	{
 		return _D;
 	}
-}; /* class Qudit */
+};
+/* class Qudit */
 
 } /* namespace qpp */
+} /* namespace experimental */
 
-#endif /* QUDIT_H_ */
+#endif /* INCLUDE_EXPERIMENTAL_CLASSES_QUDIT_H_ */

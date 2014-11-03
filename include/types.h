@@ -5,8 +5,8 @@
  * Created on December 12, 2013, 10:41 PM
  */
 
-#ifndef TYPES_H_
-#define	TYPES_H_
+#ifndef INCLUDE_TYPES_H_
+#define	INCLUDE_TYPES_H_
 
 namespace qpp
 {
@@ -46,24 +46,28 @@ using DynRowVect = Eigen::Matrix<Scalar, 1, Eigen::Dynamic>;
 /**
  * \brief Complex (double precision) dynamic Eigen column vector
  */
-using ket = DynColVect<cplx>; // Eigen::VectorXcd
+using ket = DynColVect<cplx>;
+// Eigen::VectorXcd
 
 /**
  * \brief Complex (double precision) dynamic Eigen row vector
  */
-using bra = DynRowVect<cplx>; // Eigen::RowVectorXcd
+using bra = DynRowVect<cplx>;
+// Eigen::RowVectorXcd
 
 /**
  * \brief Complex (double precision) dynamic Eigen matrix
  */
-using cmat = DynMat<cplx>; // Eigen::MatrixXcd;
+using cmat = DynMat<cplx>;
+// Eigen::MatrixXcd;
 
 /**
  * \brief Real (double precision) dynamic Eigen matrix
  */
-using dmat = DynMat<double>; // Eigen::MatrixXd
+using dmat = DynMat<double>;
+// Eigen::MatrixXd
 
 } /* namespace qpp */
 
-#endif	/* TYPES_H_ */
+#endif	/* INCLUDE_TYPES_H_ */
 

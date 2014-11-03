@@ -5,7 +5,8 @@
  * Created on December 12, 2013, 10:42 PM
  */
 
-// IMPORTANT: instantiation of global singletons RandomDevices, Gates and States
+// IMPORTANT: instantiation of global singletons
+// RandomDevices, Gates, States and Init
 // Any additional singletons should be instantiated here
 // Includes all necessary headers (except "matlab.h")
 // ALWAYS include it in main.cpp
@@ -18,8 +19,8 @@
  * This is the main page of the documentation. More coming soon.
  */
 
-#ifndef QPP_H_
-#define	QPP_H_
+#ifndef INCLUDE_QPP_H_
+#define	INCLUDE_QPP_H_
 
 #include <algorithm>
 #include <chrono>
@@ -56,7 +57,7 @@
 #include "classes/singleton.h"
 #include "classes/states.h"
 #include "classes/randevs.h"
-#include "internal.h"
+#include "internal/functions.h"
 #include "classes/init.h"
 #include "functions.h"
 #include "classes/gates.h"
@@ -66,10 +67,10 @@
 #include "operations.h"
 #include "io.h"
 #include "random.h"
-#include "classes/qudit.h"
 #include "classes/timer.h"
 
-#include "obsolete.h"
+#include "experimental/test.h"
+#include "experimental/classes/qudit.h"
 
 namespace qpp
 {
@@ -102,8 +103,7 @@ const States& st = States::get_instance();
  */
 const Init& init = Init::get_instance();
 
-
 } /* namespace qpp */
 
-#endif	/* QPP_H_ */
+#endif	/* INCLUDE_QPP_H_ */
 

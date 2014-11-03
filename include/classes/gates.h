@@ -5,8 +5,8 @@
  *      Author: vlad
  */
 
-#ifndef GATES_H_
-#define GATES_H_
+#ifndef INCLUDE_CLASSES_GATES_H_
+#define INCLUDE_CLASSES_GATES_H_
 
 namespace qpp
 {
@@ -210,7 +210,7 @@ public:
 		ctrlgate.insert(std::end(ctrlgate), std::begin(subsys),
 				std::end(subsys));
 
-		std::vector<std::size_t> dims(n,d); // local dimensions vector
+		std::vector<std::size_t> dims(n, d); // local dimensions vector
 
 		// check that ctrl + gate subsystem is valid
 		// with respect to local dimensions
@@ -321,8 +321,9 @@ public:
 		return result;
 	}
 
-}; /* class Gates */
+};
+/* class Gates */
 
 } /* namespace qpp */
 
-#endif /* GATES_H_ */
+#endif /* INCLUDE_CLASSES_GATES_H_ */

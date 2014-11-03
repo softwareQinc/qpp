@@ -5,8 +5,8 @@
  *      Author: vlad
  */
 
-#ifndef RANDOM_H_
-#define RANDOM_H_
+#ifndef INCLUDE_RANDOM_H_
+#define INCLUDE_RANDOM_H_
 
 // random matrices/states
 
@@ -100,7 +100,7 @@ cmat rand(std::size_t rows, std::size_t cols, double a, double b)
  */
 double rand(double a = 0, double b = 1)
 {
-	std::uniform_real_distribution<> ud(a,b);
+	std::uniform_real_distribution<> ud(a, b);
 	return ud(RandomDevices::get_instance()._rng);
 }
 
@@ -276,29 +276,18 @@ std::vector<cmat> randkraus(std::size_t n, std::size_t D)
 	if (D == 0)
 		throw Exception("randkraus", Exception::Type::DIMS_INVALID);
 
-	std::vector<cmat> result;
+	std::vector<cmat> result(n);
+	for (std::size_t i = 0; i < n; i++)
+		result[i] = cmat::Zero(D, D);
+
 	cmat Fk(D, D);
 	cmat U = randU(n * D);
-	std::size_t dims[2];
-	dims[0] = D;
-	dims[1] = n;
-	std::size_t midx_row[2] = { 0, 0 };
-	std::size_t midx_col[2] = { 0, 0 };
 
+#pragma omp parallel for collapse(3)
 	for (std::size_t k = 0; k < n; k++)
-	{
 		for (std::size_t a = 0; a < D; a++)
 			for (std::size_t b = 0; b < D; b++)
-			{
-				midx_row[0] = a;
-				midx_row[1] = k;
-				midx_col[0] = b;
-				midx_col[1] = 0;
-				Fk(a, b) = U(internal::_multiidx2n(midx_row, 2, dims),
-						internal::_multiidx2n(midx_col, 2, dims));
-			}
-		result.push_back(Fk);
-	}
+				result[k](a, b) = U(a * n + k, b * n);
 
 	return result;
 }
@@ -329,12 +318,12 @@ ket randket(std::size_t D)
 {
 	if (D == 0)
 		throw Exception("randket", Exception::Type::DIMS_INVALID);
-/* slow
-	ket kt = ket::Ones(D);
-	ket result = static_cast<ket>(randU(D) * kt);
-	return result;
-*/
-	ket kt = static_cast<ket>(randn<cmat>(D,1));
+	/* slow
+	 ket kt = ket::Ones(D);
+	 ket result = static_cast<ket>(randU(D) * kt);
+	 return result;
+	 */
+	ket kt = static_cast<ket>(randn<cmat>(D, 1));
 	return kt / norm(kt);
 }
 
@@ -369,9 +358,9 @@ std::vector<std::size_t> randperm(std::size_t n)
 
 	std::vector<std::size_t> result(n);
 
-	// fill in increasing order
+// fill in increasing order
 	std::iota(std::begin(result), std::end(result), 0);
-	// shuffle
+// shuffle
 	std::shuffle(std::begin(result), std::end(result),
 			RandomDevices::get_instance()._rng);
 
@@ -380,4 +369,4 @@ std::vector<std::size_t> randperm(std::size_t n)
 
 } /* namespace qpp */
 
-#endif /* RANDOM_H_ */
+#endif /* INCLUDE_RANDOM_H_ */

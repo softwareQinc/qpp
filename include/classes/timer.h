@@ -5,8 +5,8 @@
  *      Author: vlad
  */
 
-#ifndef TIMER_H_
-#define TIMER_H_
+#ifndef INCLUDE_CLASSES_TIMER_H_
+#define INCLUDE_CLASSES_TIMER_H_
 
 namespace qpp
 {
@@ -47,6 +47,8 @@ public:
 	 * \brief Stops the chronometer
 	 *
 	 * Set the current time as the ending point
+	 *
+	 * \return Current instance
 	 */
 	const Timer& toc()
 	{
@@ -78,8 +80,9 @@ public:
 	{
 		return os << rhs.seconds();
 	}
-}; /* class Timer */
+};
+/* class Timer */
 
 } /* namespace qpp */
 
-#endif /* TIMER_H_ */
+#endif /* INCLUDE_CLASSES_TIMER_H_ */

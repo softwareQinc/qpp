@@ -1,17 +1,17 @@
 /*
- * internal.h
+ * functions.h
  *
  *  Created on: Mar 24, 2014
  *      Author: vlad
  */
 
-#ifndef INTERNAL_H_
-#define INTERNAL_H_
+#ifndef INCLUDE_INTERNAL_FUNCTIONS_H_
+#define INCLUDE_INTERNAL_FUNCTIONS_H_
 
-// internal functions, do not modify
+// internal functions, do not use/modify
 /**
  * \namespace qpp::internal Internal implementation details,
- * do not modify/use the functions/classes unless you know what you are doing
+ * do not use/modify these functions/classes
  */
 namespace qpp
 {
@@ -20,8 +20,8 @@ namespace internal
 
 // integer index to multi-index, use C-style array for speed
 // standard lexicographical order, e.g. 00, 01, 10, 11
-inline void _n2multiidx(std::size_t n, std::size_t numdims, const std::size_t* dims,
-		std::size_t* result)
+inline void _n2multiidx(std::size_t n, std::size_t numdims,
+		const std::size_t* dims, std::size_t* result)
 {
 // no error checks to improve speed
 	std::size_t _n = n;
@@ -280,4 +280,4 @@ void variadic_vector_emplace(std::vector<T>& v, First&& first, Args&&... args)
 } /* namespace internal */
 } /* namespace qpp */
 
-#endif /* INTERNAL_H_ */
+#endif /* INCLUDE_INTERNAL_FUNCTIONS_H_ */

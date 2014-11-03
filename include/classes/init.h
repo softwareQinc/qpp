@@ -5,8 +5,8 @@
  *      Author: vlad
  */
 
-#ifndef INIT_H_
-#define INIT_H_
+#ifndef INCLUDE_CLASSES_INIT_H_
+#define INCLUDE_CLASSES_INIT_H_
 
 namespace qpp
 {
@@ -25,16 +25,17 @@ public:
 	 */
 	Init()
 	{
-		// On entry message
+		// on entry message
 		std::cout << ">>> " << "Starting quantum++..." << std::endl;
 
-		// Gets and displays current system time
-		auto current_date = std::chrono::system_clock::to_time_t(
-				std::chrono::system_clock::now());
+		// gets and displays current system time
+		time_t current_date;
+		time(&current_date);
 		std::cout << ">>> " << std::ctime(&current_date);
 
 		// set default output format and precision
 		std::cout << std::fixed; // use fixed format for nice formatting
+		// std::cout << std::scientific;
 		std::cout << std::setprecision(4); // only for fixed or scientific modes
 	}
 private:
@@ -43,12 +44,12 @@ private:
 	 */
 	~Init()
 	{
-		// On exit message
+		// on exit message
 		std::cout << std::endl << ">>> " << "Exiting quantum++..." << std::endl;
 
-		// Gets and displays current system time
-		auto current_date = std::chrono::system_clock::to_time_t(
-				std::chrono::system_clock::now());
+		// gets and displays current system time
+		time_t current_date;
+		time(&current_date);
 		std::cout << ">>> " << std::ctime(&current_date);
 	}
 };
@@ -56,4 +57,4 @@ private:
 
 } /* namespace qpp */
 
-#endif /* INIT_H_ */
+#endif /* INCLUDE_CLASSES_INIT_H_ */
