@@ -53,9 +53,9 @@ void disp(const InputIterator& first, const InputIterator& last,
 }
 
 /**
- * \brief Displays a range. Does not add a newline.
+ * \brief Displays a range. Adds a newline.
  *
- * \see \a qpp::displn()
+ * \see \a qpp::disp()
  *
  * \param first Iterator to the first element of the range
  * \param last  Iterator to the last element of the range

@@ -31,7 +31,7 @@ public:
 		// Gets and displays current system time
 		auto current_date = std::chrono::system_clock::to_time_t(
 				std::chrono::system_clock::now());
-		std::cout << ">>> " << std::ctime(&current_date) << std::endl;
+		std::cout << ">>> " << std::ctime(&current_date);
 
 		// set default output format and precision
 		std::cout << std::fixed; // use fixed format for nice formatting
@@ -49,7 +49,7 @@ private:
 		// Gets and displays current system time
 		auto current_date = std::chrono::system_clock::to_time_t(
 				std::chrono::system_clock::now());
-		std::cout << ">>> " << std::ctime(&current_date) << std::endl;
+		std::cout << ">>> " << std::ctime(&current_date);
 	}
 };
 /* class Init */
