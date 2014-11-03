@@ -8,8 +8,6 @@
 #ifndef ENTROPY_H_
 #define ENTROPY_H_
 
-#include "io.h"
-
 // various entropies, assume as input either
 // a normalized Hermitian matrix or a probability vector
 

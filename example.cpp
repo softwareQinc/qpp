@@ -174,7 +174,7 @@ int main()
 	 std::cout << std::endl << "Spectral decomposition tests." << std::endl;
 	 std::size_t D = 4;
 	 cmat rH = randH(D);
-	 dmat evalsH = hevals(rH);
+	 DynColVect<double> evalsH = hevals(rH);
 	 cmat evectsH = hevects(rH);
 	 cmat spec = cmat::Zero(D, D);
 	 for (std::size_t i = 0; i < D; i++)

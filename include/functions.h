@@ -232,7 +232,7 @@ double norm(const Eigen::MatrixBase<Derived>& A)
  * \return Eigenvalues of \a A, as a complex dynamic column vector
  */
 template<typename Derived>
-cmat evals(const Eigen::MatrixBase<Derived>& A)
+DynColVect<cplx> evals(const Eigen::MatrixBase<Derived>& A)
 {
 	const DynMat<typename Derived::Scalar> & rA = A;
 
@@ -278,7 +278,7 @@ cmat evects(const Eigen::MatrixBase<Derived>& A)
  * \return Eigenvalues of Hermitian \a A, as a real dynamic column vector
  */
 template<typename Derived>
-dmat hevals(const Eigen::MatrixBase<Derived>& A)
+DynColVect<double> hevals(const Eigen::MatrixBase<Derived>& A)
 {
 	const DynMat<typename Derived::Scalar> & rA = A;
 
