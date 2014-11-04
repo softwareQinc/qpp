@@ -13,8 +13,8 @@ And finally, the simulator should be user-friendly, easy to use for anyone with 
 
 ## Compiling/linking instructions for a simple example using g++
 
-- Example file: `example.cpp` (current folder)
-- Output binary: `qpp` (current folder)
+- Example file: `example.cpp` (current folder, from where g++ is run)
+- Output binary: `qpp` (current folder, from where g++ is run)
 
 ### Configuration:
 
