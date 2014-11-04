@@ -11,7 +11,7 @@ And finally, the simulator should be user-friendly, easy to use for anyone with 
 
 ---
 
-##Compiling instructions
+## Compiling instructions (with g++)
 
 ### Library/header files location:
 
@@ -25,15 +25,15 @@ MATLAB compiler shared library files: /Applications/MATLAB_R2014b.app/bin/maci64
 
 g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -O3 -DNDEBUG -DEIGEN_NO_DEBUG -isystem $HOME/eigen_3.2.2 -I$HOME/qpp/include -I/Applications/MATLAB_R2014b.app/extern/include -L/Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
 
-== Release mode (without MATLAB support): ==
+### Release mode (without MATLAB support): 
 
 g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -O3 -DNDEBUG -DEIGEN_NO_DEBUG -isystem $HOME/eigen_3.2.2 -I$HOME/qpp/include example.cpp -o qpp
 
 
-== Debug mode (with MATLAB support): ==
+### Debug mode (with MATLAB support): 
 
 g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include -I /Applications/MATLAB_R2014b.app/extern/include -L /Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
 
-== Debug mode (without MATLAB support): ==
+### Debug mode (without MATLAB support): 
 
 g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include example.cpp -o qpp
