@@ -15,7 +15,7 @@ And finally, the simulator should be user-friendly, easy to use for anyone with 
 
 ### Library/header files location:
 
-- Eigen3 library located in $HOME/eigen_3.2.2
+- Eigen3 library located in `$HOME/eigen_3.2.2`
 - Quantum++ library located in $HOME/qpp
 - MATLAB compiler include header files: /Applications/MATLAB_R2014b.app/extern/include 
 - MATLAB compiler shared library files: /Applications/MATLAB_R2014b.app/bin/maci64
