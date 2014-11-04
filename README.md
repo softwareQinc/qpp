@@ -1,7 +1,7 @@
 Quantum++
 ===
 
-This is a header-only (template-based) C++11 quantum computing library, based on Eigen3 linear algebra library http://eigen.tuxfamily.org/, and it is still work in progress. 
+This is a header-only (template-based) C++11 quantum computing library, based on Eigen3 linear algebra library http://eigen.tuxfamily.org/, and it is still work in progress. Copyright (c) 2013 - 2014 Vlad Gheorghiu (vgheorgh@gmail.com)
 
 If anyone else is interesting in contributing please let me known at vgheorgh@gmail.com. There is still work left to be done, and I can provide you with more details about what I have in mind. To contribute, you need to have a decent knowledge of C++ (preferably C++11), including templates and STL, a basic knowledge of quantum computing and linear algebra, and some working experience with Eigen3.
 
