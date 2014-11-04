@@ -11,14 +11,14 @@ And finally, the simulator should be user-friendly, easy to use for anyone with 
 
 ---
 
-## Compiling instructions (with g++)
+## Compiling/linking instructions of `example.cpp` (with g++), produces the executable `qpp`
 
 ### Library/header files location:
 
 - Eigen3 library located in `$HOME/eigen_3.2.2`
-- Quantum++ library located in $HOME/qpp
-- MATLAB compiler include header files: /Applications/MATLAB_R2014b.app/extern/include 
-- MATLAB compiler shared library files: /Applications/MATLAB_R2014b.app/bin/maci64
+- Quantum++ library located in `$HOME/qpp`
+- MATLAB compiler include header files: `/Applications/MATLAB_R2014b.app/extern/include`
+- MATLAB compiler shared library files: `/Applications/MATLAB_R2014b.app/bin/maci64`
 
 
 ### Release mode (with MATLAB support): 
