@@ -23,23 +23,21 @@ And finally, the simulator should be user-friendly, easy to use for anyone with 
 - MATLAB compiler include header files: `/Applications/MATLAB_R2014b.app/extern/include`
 - MATLAB compiler shared library files: `/Applications/MATLAB_R2014b.app/bin/maci64`
 
-### Release mode (with MATLAB support): 
-
-	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -O3 -DNDEBUG -DEIGEN_NO_DEBUG -isystem $HOME/eigen_3.2.2 -I$HOME/qpp/include -I/Applications/MATLAB_R2014b.app/extern/include -L/Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
-
 ### Release mode (without MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -O3 -DNDEBUG -DEIGEN_NO_DEBUG -isystem $HOME/eigen_3.2.2 -I$HOME/qpp/include example.cpp -o qpp
-
-
-### Debug mode (with MATLAB support): 
-
-	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include -I /Applications/MATLAB_R2014b.app/extern/include -L /Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
 
 ### Debug mode (without MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include example.cpp -o qpp
 
+### Release mode (with MATLAB support): 
+
+	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -O3 -DNDEBUG -DEIGEN_NO_DEBUG -isystem $HOME/eigen_3.2.2 -I$HOME/qpp/include -I/Applications/MATLAB_R2014b.app/extern/include -L/Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
+
+### Debug mode (with MATLAB support): 
+
+	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include -I /Applications/MATLAB_R2014b.app/extern/include -L /Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
 
 The current version of the repository has a set of Makefiles available under the folder `Makefile.examples`. To build the executable, just replace the Makefile from the root folder with the appropriate Makefile from `Makefile.examples`, then type `make` (release mode) or `make debug` (debug mode) to produce the executable `qpp`. 
 
