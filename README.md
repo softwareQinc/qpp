@@ -39,6 +39,6 @@ And finally, the simulator should be user-friendly, easy to use for anyone with 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include example.cpp -o qpp
 
 
-Current repository has a set of Makefiles available under `Makefile.examples`. To build the executable, just replace the Makefile from the root folder with the appropriate Makefile from `Makefile.examples`, then type `make` (release mode) or `make debug` (debug mode) to produce the executable `qpp`. 
+The current version of the repository has a set of Makefiles available under the folder **Makefile.examples**. To build the executable, just replace the Makefile from the root folder with the appropriate Makefile from `Makefile.examples`, then type `make` (release mode) or `make debug` (debug mode) to produce the executable `qpp`. 
 
 PS: these Makefiles are provided for convenience, the final version of the library will consist only of header files, and therefore it is the user's responsability to create an appropriate Makefile that suits her/his needs. 
