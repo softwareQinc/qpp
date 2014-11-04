@@ -1,13 +1,26 @@
 Quantum++
 ===
 
-This is a header-only (template-based) C++11 quantum computing library, and it is work in progress.
+This is a header-only (template-based) C++11 quantum computing library, based on Eigen3 linear algebra library http://eigen.tuxfamily.org/, and it is still work in progress. 
 
-If anyone else is interesting in contributing please let me known at vgheorgh@gmail.com. There is still a lot of work left to be done, and I can provide you with more details about what I have in mind. If you are interested in contributing, you need to have a decent knowledge of C++ (preferably C++11), including templates and STL, a basic knowledge of quantum computing and linear algebra, and some experience with Eigen linear algebra library http://eigen.tuxfamily.org/ (although this is not mandatory, but highly desirable).
+If anyone else is interesting in contributing please let me known at vgheorgh@gmail.com. There is still work left to be done, and I can provide you with more details about what I have in mind. To contribute, you need to have a decent knowledge of C++ (preferably C++11), including templates and STL, a basic knowledge of quantum computing and linear algebra, and some working experience with Eigen3.
 
-The ultimate goal of this project is to have a universal quantum simulator, applicable to a vast majority of problems in quantum information/computation, and nevertheless to be as fast as possible. Right now the parallelization is done using OpenMP, but probably one can create a new branch using GPU-type multi-processing like CUDA, although this may require a significant amount of code re-writing.
+The ultimate goal of this project is to build a universal quantum simulator, applicable to a vast majority of problems in quantum information/computation. The simulator should be fast but nevertheless user-friendly for anyone with a basic knowledge of C/C++. 
 
-And finally, the simulator should be user-friendly, easy to use for anyone with a basic knowledge of C/C++. My intention is to have it publicly available, so do not expect to make money out of it :)
+---
+
+Quantum++ is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Quantum++ is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 ---
 
