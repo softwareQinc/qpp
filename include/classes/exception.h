@@ -60,6 +60,9 @@ public:
 		/*!< Eigen::Matrix is not square nor a row vector */
 		MATRIX_NOT_SQUARE_OR_VECTOR, //!< MATRIX_NOT_SQUARE_OR_VECTOR
 		/*!< Eigen::Matrix is not square nor a row/column vector */
+		MATRIX_MISMATCH_SUBSYS,        //!< SUBSYS_MISMATCH_MATRIX
+		/*! Matrix size mismatch subsystems' size (e.g. in
+		 * apply(), or channel() */
 		DIMS_INVALID,                //!< DIMS_INVALID
 		/*!< std::vector<std::size_t> representing the dimensions
 		 * has zero size or contains zeros */
@@ -191,6 +194,9 @@ private:
 		case Type::MATRIX_NOT_SQUARE_OR_VECTOR:
 			_msg += "Matrix is not square nor vector!";
 			break;
+		case Type::MATRIX_MISMATCH_SUBSYS:
+			_msg += "Matrix mismatch subsystems!";
+			break;
 		case Type::DIMS_INVALID:
 			_msg += "Invalid dimension(s)!";
 			break;
@@ -211,7 +217,6 @@ private:
 			break;
 		case Type::SUBSYS_MISMATCH_DIMS:
 			_msg += "Subsystems mismatch dimensions!";
-			break;
 		case Type::PERM_INVALID:
 			_msg += "Invalid permutation!";
 			break;

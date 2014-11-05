@@ -70,7 +70,7 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 
 	// check that gate matches the dimensions of the subsys
 	if (static_cast<std::size_t>(rA.rows()) != std::pow(d, subsys.size()))
-		throw Exception("applyCTRL", Exception::Type::DIMS_MISMATCH_MATRIX);
+		throw Exception("applyCTRL", Exception::Type::MATRIX_MISMATCH_SUBSYS);
 
 	// check out of range
 	if (n == 0)
@@ -395,7 +395,7 @@ DynMat<typename Derived1::Scalar> apply(
 
 	// check that gate matches the dimensions of the subsys
 	if (static_cast<std::size_t>(rA.rows()) != std::pow(d, subsys.size()))
-		throw Exception("apply", Exception::Type::DIMS_MISMATCH_MATRIX);
+		throw Exception("apply", Exception::Type::MATRIX_MISMATCH_SUBSYS);
 
 	if (internal::_check_col_vector(rstate)) // we have a ket
 	{
@@ -510,6 +510,8 @@ cmat channel(const Eigen::MatrixBase<Derived> &rho, const std::vector<cmat> &Ks,
 		throw Exception("channel", Exception::Type::ZERO_SIZE);
 	if (!internal::_check_square_mat(Ks[0]))
 		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
+	if (Ks[0].rows() != std::pow(d, subsys.size()))
+			throw Exception("channel", Exception::Type::MATRIX_MISMATCH_SUBSYS);
 	for (auto && it : Ks)
 		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
 			throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);

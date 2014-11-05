@@ -35,18 +35,31 @@ namespace qpp
  */
 template<typename Derived>
 std::pair<std::vector<double>, std::vector<cmat>> measure(
-		const Eigen::MatrixBase<Derived>& A, std::vector<cmat> Ks)
+		const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)
 {
 	const DynMat<typename Derived::Scalar> &rA = A;
 
+	// EXCEPTION CHECKS
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("measure", Exception::Type::ZERO_SIZE);
 
+	// check the Kraus operators
+	if (!internal::_check_nonzero_size(Ks))
+		throw Exception("measure", Exception::Type::ZERO_SIZE);
+	if (!internal::_check_square_mat(Ks[0]))
+		throw Exception("measure", Exception::Type::MATRIX_NOT_SQUARE);
+	if (Ks[0].rows() != rA.rows())
+		throw Exception("measure", Exception::Type::DIMS_MISMATCH_MATRIX);
+	for (auto && it : Ks)
+		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+			throw Exception("measure", Exception::Type::DIMS_NOT_EQUAL);
+	// END EXCEPTION CHECKS
+
 	// probabilities
 	std::vector<double> prob(rA.size());
 	// resulting states
-	std::vector<DynMat<typename Derived::Scalar>> rhos(rA.size());
+	std::vector<cmat> rhos(rA.size());
 
 	if (internal::_check_square_mat(rA)) // square matrix
 	{
@@ -76,14 +89,24 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 {
 	const DynMat<typename Derived::Scalar> &rA = A;
 
+	// EXCEPTION CHECKS
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("measure", Exception::Type::ZERO_SIZE);
 
+	// check the gate U
+	if (!internal::_check_nonzero_size(U))
+		throw Exception("measure", Exception::Type::ZERO_SIZE);
+	if (!internal::_check_square_mat(U))
+		throw Exception("measure", Exception::Type::MATRIX_NOT_SQUARE);
+	if (U.rows() != rA.rows())
+		throw Exception("measure", Exception::Type::DIMS_MISMATCH_MATRIX);
+	// END EXCEPTION CHECKS
+
 	// probabilities
 	std::vector<double> prob(rA.size());
 	// resulting states
-	std::vector<DynMat<typename Derived::Scalar>> rhos(rA.size());
+	std::vector<cmat> rhos(rA.size());
 
 	if (internal::_check_square_mat(rA)) // square matrix
 	{
