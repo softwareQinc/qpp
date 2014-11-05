@@ -27,11 +27,12 @@ namespace qpp
 {
 
 /**
- * \brief
+ * \brief Measures the state \a A using the set of Kraus operators \a Ks
  *
- * \param A
- * \param Ks
- * \return
+ * \param A Eigen expression
+ * \param Ks Set of Kraus operators
+ * \return \return Pair of vector of probabilities and vector of
+ * resulting normalized states
  */
 template<typename Derived>
 std::pair<std::vector<double>, std::vector<cmat>> measure(
@@ -57,31 +58,48 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 	// END EXCEPTION CHECKS
 
 	// probabilities
-	std::vector<double> prob(rA.size());
+	std::vector<double> prob(Ks.size());
 	// resulting states
-	std::vector<cmat> rhos(rA.size());
+	std::vector<cmat> outstates;
 
 	if (internal::_check_square_mat(rA)) // square matrix
 	{
-
+		for (std::size_t i = 0; i < Ks.size(); i++)
+		{
+			cmat tmp;
+			tmp = Ks[i] * rA * adjoint(Ks[i]); // un-normalized
+			prob[i] = std::abs(trace(tmp)); // probability
+			if (prob[i] > eps)
+				outstates.push_back(tmp / prob[i]); // normalized
+		}
 	}
 	else if (internal::_check_col_vector(rA)) // column vector
 	{
-
+		for (std::size_t i = 0; i < Ks.size(); i++)
+		{
+			cmat tmp;
+			tmp = Ks[i] * rA; // un-normalized
+			// probability
+			prob[i] = std::abs((adjoint(tmp) * tmp).value());
+			if (prob[i] > eps)
+				outstates.push_back(tmp / std::sqrt(prob[i])); // normalized
+		}
 	}
 	else
 		throw Exception("measure",
 				Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 
-	//return rA;
+	return std::make_pair(prob, outstates);
 }
 
 /**
- * \brief
+ * \brief Measures the state \a A in the basis specified by the unitary
+ * matrix \a U
  *
- * \param A
- * \param U
- * \return
+ * \param A Eigen expression
+ * \param U Unitary matrix representing the measurement basis
+ * \return Pair of vector of probabilities and vector of
+ * resulting normalized states
  */
 template<typename Derived>
 std::pair<std::vector<double>, std::vector<cmat>> measure(
@@ -104,23 +122,39 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 	// END EXCEPTION CHECKS
 
 	// probabilities
-	std::vector<double> prob(rA.size());
+	std::vector<double> prob(U.rows());
 	// resulting states
-	std::vector<cmat> rhos(rA.size());
+	std::vector<cmat> outstates;
 
 	if (internal::_check_square_mat(rA)) // square matrix
 	{
-
+		for (std::size_t i = 0; i < static_cast<std::size_t>(U.rows()); i++)
+		{
+			cmat tmp;
+			// un-normalized
+			tmp = evects(U).col(i) * rA * adjoint((ket) evects(U).col(i));
+			prob[i] = std::abs(trace(tmp)); // probability
+			if (prob[i] > eps)
+				outstates.push_back(tmp / prob[i]); // normalized
+		}
 	}
 	else if (internal::_check_col_vector(rA)) // column vector
 	{
-
+		for (std::size_t i = 0; i < static_cast<std::size_t>(U.rows()); i++)
+		{
+			cmat tmp;
+			tmp = prj((ket) evects(U).col(i)) * rA;
+			// probability
+			prob[i] = std::abs((adjoint(tmp) * tmp).value());
+			if (prob[i] > eps)
+				outstates.push_back(tmp / std::sqrt(prob[i])); // normalized
+		}
 	}
 	else
 		throw Exception("measure",
 				Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 
-	//return rA;
+	return std::make_pair(prob, outstates);
 }
 
 }

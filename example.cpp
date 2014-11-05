@@ -41,6 +41,12 @@ cplx pow3(const cplx& z) // a test function
 
 int main()
 {
+	std::vector<cmat> Ks = {st.pz0,st.pz1};
+	auto res = measure(st.z0, Ks);
+	displn(res.first, ", ") << std::endl;
+	auto outstates = res.second;
+	for (auto&& elem : outstates)
+		displn(elem);
 
 	/*   comment this line with // to uncomment the whole example
 	 // TESTING
