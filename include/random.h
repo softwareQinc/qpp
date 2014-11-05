@@ -279,29 +279,29 @@ cmat randV(std::size_t Din, std::size_t Dout)
  * \note The set of Kraus operators satisfy the closure condition
  * \f$ \sum_i K_i^\dagger K_i = I\f$
  *
- * \param n Number of Kraus operators
+ * \param N Number of Kraus operators
  * \param D Dimension of the Hilbert space
- * \return Set of \a n Kraus operators satisfying the closure condition
+ * \return Set of \a N Kraus operators satisfying the closure condition
  */
-std::vector<cmat> randkraus(std::size_t n, std::size_t D)
+std::vector<cmat> randkraus(std::size_t N, std::size_t D)
 {
-	if (n == 0)
+	if (N == 0)
 		throw Exception("randkraus", Exception::Type::OUT_OF_RANGE);
 	if (D == 0)
 		throw Exception("randkraus", Exception::Type::DIMS_INVALID);
 
-	std::vector<cmat> result(n);
-	for (std::size_t i = 0; i < n; i++)
+	std::vector<cmat> result(N);
+	for (std::size_t i = 0; i < N; i++)
 		result[i] = cmat::Zero(D, D);
 
 	cmat Fk(D, D);
-	cmat U = randU(n * D);
+	cmat U = randU(N * D);
 
 #pragma omp parallel for collapse(3)
-	for (std::size_t k = 0; k < n; k++)
+	for (std::size_t k = 0; k < N; k++)
 		for (std::size_t a = 0; a < D; a++)
 			for (std::size_t b = 0; b < D; b++)
-				result[k](a, b) = U(a * n + k, b * n);
+				result[k](a, b) = U(a * N + k, b * N);
 
 	return result;
 }

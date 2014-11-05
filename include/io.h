@@ -104,8 +104,9 @@ std::ostream& displn(const InputIterator& first, const InputIterator& last,
  * \return Output stream
  */
 template<typename T>
-std::ostream& disp(const T& x, const std::string & separator, const std::string& start =
-		"[", const std::string& end = "]", std::ostream& os = std::cout)
+std::ostream& disp(const T& x, const std::string & separator,
+		const std::string& start = "[", const std::string& end = "]",
+		std::ostream& os = std::cout)
 {
 	disp(std::begin(x), std::end(x), separator, start, end, os);
 	return os;
@@ -148,9 +149,9 @@ std::ostream& displn(const T& x, const std::string & separator,
  * \return Output stream
  */
 template<typename T>
-std::ostream& disp(const T* x, const std::size_t n, const std::string& separator,
-		const std::string& start = "[", const std::string& end = "]",
-		std::ostream& os = std::cout)
+std::ostream& disp(const T* x, const std::size_t n,
+		const std::string& separator, const std::string& start = "[",
+		const std::string& end = "]", std::ostream& os = std::cout)
 {
 	os << start;
 
@@ -177,9 +178,9 @@ std::ostream& disp(const T* x, const std::size_t n, const std::string& separator
  * \return Output stream
  */
 template<typename T>
-std::ostream& displn(const T* x, const std::size_t n, const std::string & separator,
-		const std::string& start = "[", const std::string& end = "]",
-		std::ostream& os = std::cout)
+std::ostream& displn(const T* x, const std::size_t n,
+		const std::string & separator, const std::string& start = "[",
+		const std::string& end = "]", std::ostream& os = std::cout)
 {
 	disp(x, n, separator, start, end, os);
 	os << std::endl;
@@ -297,8 +298,8 @@ std::ostream& disp(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
  * \return Output stream
  */
 template<typename Derived>
-std::ostream& displn(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
-		std::ostream& os = std::cout)
+std::ostream& displn(const Eigen::MatrixBase<Derived>& A, double chop =
+		qpp::chop, std::ostream& os = std::cout)
 {
 	disp(A, chop, os);
 	os << std::endl;
@@ -317,7 +318,8 @@ std::ostream& displn(const Eigen::MatrixBase<Derived>& A, double chop = qpp::cho
  * \param os Output stream
  * \return Output stream
  */
-std::ostream& disp(const cplx z, double chop = qpp::chop, std::ostream& os = std::cout)
+std::ostream& disp(const cplx z, double chop = qpp::chop, std::ostream& os =
+		std::cout)
 {
 // put the complex number inside an Eigen matrix
 	cmat A(1, 1);
@@ -338,7 +340,8 @@ std::ostream& disp(const cplx z, double chop = qpp::chop, std::ostream& os = std
  * \param os Output stream
  * \return Output stream
  */
-std::ostream& displn(const cplx z, double chop = qpp::chop, std::ostream& os = std::cout)
+std::ostream& displn(const cplx z, double chop = qpp::chop, std::ostream& os =
+		std::cout)
 {
 	disp(z, chop, os);
 	os << std::endl;

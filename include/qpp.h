@@ -27,8 +27,8 @@
 /**
  * \mainpage quantum++ - A C++11 quantum computing library
  * \version 0.1
- * \author Vlad Gheorghiu, vgheorgh@gmail.com
- * \date \f$\mathrm{\today}\f$
+ * \author Vlad Gheorghiu (vgheorgh@gmail.com)
+ * \copyright (c) 2013 - 2014 Vlad Gheorghiu (vgheorgh@gmail.com)
  *
  * This is the main page of the documentation. More coming soon.
  */

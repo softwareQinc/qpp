@@ -41,6 +41,23 @@ cplx pow3(const cplx& z) // a test function
 
 int main()
 {
+	auto D = 4, N = 6;
+	cmat rho = randrho(D);
+	auto Ks = randkraus(N, D);
+	auto r1 = channel(rho, Ks);
+	auto probstates = measure(rho, Ks);
+	cmat r2 = cmat::Zero(D, D);
+	for (auto i = 0; i < N; i++)
+		r2 += probstates.first[i] * probstates.second[i];
+	displn(r1) << std::endl;
+	displn(r2) << std::endl;
+	std::cout << "Difference in norm: " << norm(r1 - r2) << std::endl;
+
+	auto res = measure(st.z1, gt.Id2);
+	displn(res.first, ", ") << std::endl;
+	auto outstates = res.second;
+	for (auto&& elem : outstates)
+		displn(elem) << std::endl;
 
 	/*   comment this line with // to uncomment the whole example
 	 // TESTING

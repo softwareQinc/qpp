@@ -511,7 +511,7 @@ cmat channel(const Eigen::MatrixBase<Derived> &rho, const std::vector<cmat> &Ks,
 	if (!internal::_check_square_mat(Ks[0]))
 		throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
 	if (Ks[0].rows() != std::pow(d, subsys.size()))
-			throw Exception("channel", Exception::Type::MATRIX_MISMATCH_SUBSYS);
+		throw Exception("channel", Exception::Type::MATRIX_MISMATCH_SUBSYS);
 	for (auto && it : Ks)
 		if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
 			throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);

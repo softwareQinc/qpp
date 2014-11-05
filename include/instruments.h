@@ -31,8 +31,8 @@ namespace qpp
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
- * \return \return Pair of vector of probabilities and vector of
- * resulting normalized states
+ * \return Pair of vector of probabilities and vector of
+ * post-measurement normalized states
  */
 template<typename Derived>
 std::pair<std::vector<double>, std::vector<cmat>> measure(
@@ -61,11 +61,12 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 	std::vector<double> prob(Ks.size());
 	// resulting states
 	std::vector<cmat> outstates(Ks.size());
-	for (std::size_t i = 0; i < static_cast<std::size_t>(Ks.size()); i++)
-		outstates[i] = cmat::Zero(rA.rows(), rA.rows());
 
 	if (internal::_check_square_mat(rA)) // square matrix
 	{
+		for (std::size_t i = 0; i < static_cast<std::size_t>(Ks.size()); i++)
+			outstates[i] = cmat::Zero(rA.rows(), rA.rows());
+
 		for (std::size_t i = 0; i < Ks.size(); i++)
 		{
 			cmat tmp;
@@ -77,6 +78,9 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 	}
 	else if (internal::_check_col_vector(rA)) // column vector
 	{
+		for (std::size_t i = 0; i < static_cast<std::size_t>(Ks.size()); i++)
+			outstates[i] = cmat::Zero(rA.rows(), 1);
+
 		for (std::size_t i = 0; i < Ks.size(); i++)
 		{
 			cmat tmp;
@@ -92,6 +96,7 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 				Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 
 	return std::make_pair(prob, outstates);
+
 }
 
 // std::initializer_list overload, avoids ambiguity for 2-element lists, see
@@ -102,8 +107,8 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
- * \return \return Pair of vector of probabilities and vector of
- * resulting normalized states
+ * \return Pair of vector of probabilities and vector of
+ * post-measurement normalized states
  */
 template<typename Derived>
 std::pair<std::vector<double>, std::vector<cmat>> measure(
@@ -123,7 +128,7 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
  * \param A Eigen expression
  * \param U Unitary matrix representing the measurement basis
  * \return Pair of vector of probabilities and vector of
- * resulting normalized states
+ * post-measurement normalized states
  */
 template<typename Derived>
 std::pair<std::vector<double>, std::vector<cmat>> measure(
@@ -149,11 +154,12 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 	std::vector<double> prob(U.rows());
 	// resulting states
 	std::vector<cmat> outstates(U.rows());
-	for (std::size_t i = 0; i < static_cast<std::size_t>(U.rows()); i++)
-		outstates[i] = cmat::Zero(rA.rows(), rA.rows());
 
 	if (internal::_check_square_mat(rA)) // square matrix
 	{
+		for (std::size_t i = 0; i < static_cast<std::size_t>(U.rows()); i++)
+			outstates[i] = cmat::Zero(rA.rows(), rA.rows());
+
 		for (std::size_t i = 0; i < static_cast<std::size_t>(U.rows()); i++)
 		{
 			cmat tmp;
@@ -166,6 +172,9 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 	}
 	else if (internal::_check_col_vector(rA)) // column vector
 	{
+		for (std::size_t i = 0; i < static_cast<std::size_t>(U.rows()); i++)
+			outstates[i] = cmat::Zero(rA.rows(), 1);
+
 		for (std::size_t i = 0; i < static_cast<std::size_t>(U.rows()); i++)
 		{
 			cmat tmp;
