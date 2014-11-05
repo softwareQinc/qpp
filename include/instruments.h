@@ -60,7 +60,9 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 	// probabilities
 	std::vector<double> prob(Ks.size());
 	// resulting states
-	std::vector<cmat> outstates;
+	std::vector<cmat> outstates(Ks.size());
+	for (std::size_t i = 0; i < static_cast<std::size_t>(Ks.size()); i++)
+		outstates[i] = cmat::Zero(rA.rows(), rA.rows());
 
 	if (internal::_check_square_mat(rA)) // square matrix
 	{
@@ -70,7 +72,7 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 			tmp = Ks[i] * rA * adjoint(Ks[i]); // un-normalized
 			prob[i] = std::abs(trace(tmp)); // probability
 			if (prob[i] > eps)
-				outstates.push_back(tmp / prob[i]); // normalized
+				outstates[i] = tmp / prob[i]; // normalized
 		}
 	}
 	else if (internal::_check_col_vector(rA)) // column vector
@@ -82,7 +84,7 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 			// probability
 			prob[i] = std::abs((adjoint(tmp) * tmp).value());
 			if (prob[i] > eps)
-				outstates.push_back(tmp / std::sqrt(prob[i])); // normalized
+				outstates[i] = tmp / std::sqrt(prob[i]); // normalized
 		}
 	}
 	else
@@ -93,8 +95,9 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 }
 
 /**
- * \brief Measures the state \a A in the basis specified by the unitary
- * matrix \a U. The basis vectors are the columns of \a U.
+ * \brief Measures the state \a A in the orthonormal basis
+ * specified by the unitary matrix \a U.
+ * The normalized basis vectors are the columns of \a U.
  *
  * \note
  *
@@ -126,7 +129,9 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 	// probabilities
 	std::vector<double> prob(U.rows());
 	// resulting states
-	std::vector<cmat> outstates;
+	std::vector<cmat> outstates(U.rows());
+	for (std::size_t i = 0; i < static_cast<std::size_t>(U.rows()); i++)
+		outstates[i] = cmat::Zero(rA.rows(), rA.rows());
 
 	if (internal::_check_square_mat(rA)) // square matrix
 	{
@@ -137,7 +142,7 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 			tmp = evects(U).col(i) * rA * adjoint((ket) evects(U).col(i));
 			prob[i] = std::abs(trace(tmp)); // probability
 			if (prob[i] > eps)
-				outstates.push_back(tmp / prob[i]); // normalized
+				outstates[i] = tmp / prob[i]; // normalized
 		}
 	}
 	else if (internal::_check_col_vector(rA)) // column vector
@@ -149,7 +154,7 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 			// probability
 			prob[i] = std::abs((adjoint(tmp) * tmp).value());
 			if (prob[i] > eps)
-				outstates.push_back(tmp / std::sqrt(prob[i])); // normalized
+				outstates[i] = tmp / std::sqrt(prob[i]); // normalized
 		}
 	}
 	else

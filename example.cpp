@@ -43,7 +43,7 @@ int main()
 {
 	 // measuring
 	 std::vector<cmat> Ks = { st.pz0, st.pz1 };
-	 auto res = measure(st.y1, Ks);
+	 auto res = measure(st.x1, Ks);
 	 displn(res.first, ", ") << std::endl;
 	 auto outstates = res.second;
 	 for (auto&& elem : outstates)
