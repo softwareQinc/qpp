@@ -137,7 +137,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
 
 	if (alpha == infty) // H min
 	{
-		return svals(rA)[0];
+		return -std::log2(svals(rA)[0]);
 	}
 
 	// get the singular values

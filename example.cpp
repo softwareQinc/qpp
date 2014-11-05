@@ -131,10 +131,8 @@ int main()
 				<< std::endl;
 		std::cout << ">> Schmidt coefficients of psi: " << std::endl;
 		displn(schmidtcoeff(psi, { 2, 2 }));
+		std::cout << ">> Schmidt probabilities of psi: " << std::endl;
+		displn(schmidtprob(psi, { 2, 2 }));
 	}
-
-	cmat rho = randrho(5);
-	std::cout << renyi(rho, infty) << " " << experimental::renyi_inf(rho);
-
 	// */
 }

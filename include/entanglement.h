@@ -35,11 +35,10 @@ namespace qpp
  *
  * \param A Eigen expression
  * \param dims Subsystems' dimensions
- * \return Schmidt coefficients of \a A, as a complex dynamic matrix,
- *  with the Schmidt coefficients on the diagonal
+ * \return Schmidt coefficients of \a A, as a complex dynamic column vector
  */
 template<typename Derived>
-cmat schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
+DynColVect<cplx> schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
 		const std::vector<std::size_t>& dims)
 {
 	const DynMat<typename Derived::Scalar> & rA = A;
@@ -140,11 +139,10 @@ cmat schmidtV(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param dims Subsystems' dimensions
- * \return Schmidt probabilites of \a A, as a complex dynamic matrix,
- * with the Schmidt probabilities on the diagonal
+ * \return Schmidt probabilites of \a A, as a real dynamic column vector
  */
 template<typename Derived>
-cmat schmidtprob(const Eigen::MatrixBase<Derived>& A,
+DynColVect<double> schmidtprob(const Eigen::MatrixBase<Derived>& A,
 		const std::vector<std::size_t>& dims)
 {
 	const DynMat<typename Derived::Scalar> & rA = A;
@@ -164,9 +162,7 @@ cmat schmidtprob(const Eigen::MatrixBase<Derived>& A,
 	Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(
 			transpose(reshape(rA, dims[1], dims[0])));
 
-	return powm(
-			static_cast<cmat>((svd.singularValues().template cast<cplx>()).asDiagonal()),
-			2).diagonal();
+	return powm((dmat)svd.singularValues().asDiagonal(), 2).diagonal();
 }
 
 /**
@@ -185,16 +181,16 @@ double entanglement(const Eigen::MatrixBase<Derived>& A,
 		const std::vector<std::size_t>& dims)
 {
 	const DynMat<typename Derived::Scalar> & rA = A;
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("entanglement", Exception::Type::ZERO_SIZE);
-	// check bi-partite
+// check bi-partite
 	if (dims.size() != 2)
 		throw Exception("entanglement", Exception::Type::NOT_BIPARTITE);
-	// check column vector
+// check column vector
 	if (!internal::_check_col_vector(rA))
 		throw Exception("entanglement", Exception::Type::MATRIX_NOT_CVECTOR);
-	// check matching dimensions
+// check matching dimensions
 	if (!internal::_check_dims_match_mat(dims, rA))
 		throw Exception("entanglement", Exception::Type::DIMS_MISMATCH_MATRIX);
 
@@ -217,19 +213,19 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 {
 	const DynMat<typename Derived::Scalar> & rA = A;
 
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("gconcurrence", Exception::Type::ZERO_SIZE);
-	// check column vector
+// check column vector
 	if (!internal::_check_col_vector(rA))
 		throw Exception("gconcurrence", Exception::Type::MATRIX_NOT_CVECTOR);
 
-	// check equal local dimensions
+// check equal local dimensions
 	std::size_t D = static_cast<std::size_t>(std::sqrt((double) rA.rows()));
 	if (D * D != static_cast<std::size_t>(rA.rows()))
 		throw Exception("gconcurrence", Exception::Type::DIMS_NOT_EQUAL);
 
-	// we compute exp(logdet()) to avoid underflow
+// we compute exp(logdet()) to avoid underflow
 	return D * std::abs(std::exp(2. / D * logdet(reshape(rA, D, D))));
 }
 
@@ -245,20 +241,20 @@ double negativity(const Eigen::MatrixBase<Derived>& A,
 		const std::vector<std::size_t>& dims)
 {
 	const DynMat<typename Derived::Scalar> & rA = A;
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("negativity", Exception::Type::ZERO_SIZE);
-	// check bi-partite
+// check bi-partite
 	if (dims.size() != 2)
 		throw Exception("negativity", Exception::Type::NOT_BIPARTITE);
-	// check square matrix vector
+// check square matrix vector
 	if (!internal::_check_square_mat(rA))
 		throw Exception("negativity", Exception::Type::MATRIX_NOT_SQUARE);
-	// check matching dimensions
+// check matching dimensions
 	if (!internal::_check_dims_match_mat(dims, rA))
 		throw Exception("negativity", Exception::Type::DIMS_MISMATCH_MATRIX);
 
-	return (normLp(ptranspose(rA, { 0 }, dims), 1) - 1.) / 2.;
+	return (schatten(ptranspose(rA, { 0 }, dims), 1) - 1.) / 2.;
 }
 
 /**
@@ -273,16 +269,16 @@ double lognegativity(const Eigen::MatrixBase<Derived>& A,
 		const std::vector<std::size_t>& dims)
 {
 	const DynMat<typename Derived::Scalar> & rA = A;
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("lognegativity", Exception::Type::ZERO_SIZE);
-	// check bi-partite
+// check bi-partite
 	if (dims.size() != 2)
 		throw Exception("lognegativity", Exception::Type::NOT_BIPARTITE);
-	// check square matrix vector
+// check square matrix vector
 	if (!internal::_check_square_mat(rA))
 		throw Exception("lognegativity", Exception::Type::MATRIX_NOT_SQUARE);
-	// check matching dimensions
+// check matching dimensions
 	if (!internal::_check_dims_match_mat(dims, rA))
 		throw Exception("lognegativity", Exception::Type::DIMS_MISMATCH_MATRIX);
 
@@ -299,13 +295,13 @@ template<typename Derived>
 double concurrence(const Eigen::MatrixBase<Derived>& A)
 {
 	const DynMat<typename Derived::Scalar> & rA = A;
-	// check zero-size
+// check zero-size
 	if (!internal::_check_nonzero_size(rA))
 		throw Exception("concurrence", Exception::Type::ZERO_SIZE);
-	// check square matrix vector
+// check square matrix vector
 	if (!internal::_check_square_mat(rA))
 		throw Exception("concurrence", Exception::Type::MATRIX_NOT_SQUARE);
-	// check that the state is a 2-qubit state
+// check that the state is a 2-qubit state
 	if (rA.rows() != 4)
 		throw Exception("concurrence", Exception::Type::NOT_QUBIT_SUBSYS);
 

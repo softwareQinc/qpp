@@ -608,9 +608,9 @@ double schatten(const Eigen::MatrixBase<Derived> &A, std::size_t p)
 
 	// check zero-size
 	if (!internal::_check_nonzero_size(rA))
-		throw Exception("normLp", Exception::Type::ZERO_SIZE);
+		throw Exception("schatten", Exception::Type::ZERO_SIZE);
 	if (p < 1)
-		throw Exception("normLp", Exception::Type::OUT_OF_RANGE);
+		throw Exception("schatten", Exception::Type::OUT_OF_RANGE);
 
 	if(p==infty) // infinity norm (largest singular value)
 	{
