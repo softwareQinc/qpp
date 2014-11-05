@@ -95,6 +95,23 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 }
 
 /**
+ * \brief Measures the state \a A using the set of Kraus operators \a Ks
+ * (std::initializer_list overload)
+ *
+ * \param A Eigen expression
+ * \param Ks Set of Kraus operators
+ * \return \return Pair of vector of probabilities and vector of
+ * resulting normalized states
+ */
+template<typename Derived>
+std::pair<std::vector<double>, std::vector<cmat>> measure(
+		const Eigen::MatrixBase<Derived>& A,
+		const std::initializer_list<cmat>& Ks)
+{
+	return measure(A, std::vector<cmat>(Ks));
+}
+
+/**
  * \brief Measures the state \a A in the orthonormal basis
  * specified by the unitary matrix \a U.
  * The normalized basis vectors are the columns of \a U.

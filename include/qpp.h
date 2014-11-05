@@ -46,6 +46,7 @@
 #include <exception>
 #include <fstream>
 #include <functional>
+#include <initializer_list>
 #include <iomanip>
 #include <iostream>
 #include <iterator>
