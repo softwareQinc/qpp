@@ -1,7 +1,7 @@
 Quantum++
 ===
 
-Quantum++ is a template-based header-only C++11 quantum computing library, using Eigen3 linear algebra library http://eigen.tuxfamily.org/. Copyright (c) 2013 - 2014 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
+Quantum++ is a template-based header-only C++11 quantum computing library, developed using Eigen3 linear algebra library http://eigen.tuxfamily.org/. Copyright (c) 2013 - 2014 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
 
 If anyone else is interesting in contributing please let me known. There is still work left to be done, and I can provide you with more details about what I have in mind. To contribute, you need to have a decent knowledge of C++ (preferably C++11), including templates and STL, a basic knowledge of quantum computing and linear algebra, and some working experience with Eigen3.
 
