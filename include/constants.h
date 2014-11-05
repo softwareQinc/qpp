@@ -80,6 +80,11 @@ constexpr double pi = 3.141592653589793238462643383279502884;
 constexpr double ee = 2.718281828459045235360287471352662497;
 
 /**
+* \brief Used to denote infinity
+*/
+constexpr std::size_t infty = -1;
+
+/**
  * \brief D-th root of unity
  *
  * \param D Non-negative integer

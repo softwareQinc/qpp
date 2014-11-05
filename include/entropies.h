@@ -79,13 +79,14 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
  * \brief Renyi-\f$\alpha\f$ entropy of the
  * probability distribution/density matrix \a A, for \f$ \alpha\geq 0\f$
  *
- * \param alpha Non-negative real number
  * \param A Eigen expression, representing a probability distribution
  * (real dynamic column vector) or a density matrix (complex dynamic matrix)
+ * \param alpha Non-negative real number,
+ * use \a qpp::infty for \f$\alpha = \infty\f$
  * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
  */
 template<typename Derived>
-double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
+double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
 {
 	const DynMat<typename Derived::Scalar> & rA = A;
 
@@ -102,8 +103,19 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 	// input is a vector
 	if (internal::_check_vector(rA))
 	{
-		if (alpha == 0)
-			return std::log2((double) rA.size());
+		if (alpha == 0) // H max
+			return std::log2((double) rA.rows());
+
+		if (alpha == infty) // H min
+		{
+			double max = 0;
+			for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size());
+					i++)
+				if (std::abs(rA(i)) > max)
+					max = std::abs(rA(i));
+
+			return -std::log2(max);
+		}
 
 		double result = 0;
 		// take the absolut value to get rid of tiny negatives
@@ -120,64 +132,22 @@ double renyi(const double alpha, const Eigen::MatrixBase<Derived>& A)
 	if (!internal::_check_square_mat(rA))
 		throw Exception("renyi", Exception::Type::MATRIX_NOT_SQUARE);
 
-	if (alpha == 0)
-		return std::log2((double) rA.rows());
+	if (alpha == 0) // H max
+		return -std::log2((double) rA.rows());
 
-	// get the eigenvalues
-	dmat ev = hevals(rA);
-	double result = 0;
-	// take the absolut value to get rid of tiny negatives
-	for (std::size_t i = 0; i < static_cast<std::size_t>(ev.rows()); i++)
-		if (std::abs((cplx) ev(i)) != 0) // not identically zero
-			result += std::pow(std::abs((cplx) ev(i)), alpha);
-
-	return std::log2(result) / (1 - alpha);
-}
-
-/**
- * \brief Renyi-\f$\infty\f$ entropy (min entropy) of the
- * probability distribution/density matrix \a A
- *
- * \param A Eigen expression, representing a probability distribution
- * (real dynamic column vector) or a density matrix (complex dynamic matrix)
- * \return Renyi-\f$\infty\f$ entropy (min entropy),
- * with the logarithm in base 2
- */
-template<typename Derived>
-double renyi_inf(const Eigen::MatrixBase<Derived>& A)
-{
-	const DynMat<typename Derived::Scalar> & rA = A;
-
-	// check zero-size
-	if (!internal::_check_nonzero_size(rA))
-		throw Exception("renyi_inf", Exception::Type::ZERO_SIZE);
-
-	// input is a vector
-	if (internal::_check_vector(rA))
+	if (alpha == infty) // H min
 	{
-		double max = 0;
-		for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); i++)
-			if (std::abs(rA(i)) > max)
-				max = std::abs(rA(i));
-
-		return -std::log2(max);
+		return svals(rA)[0];
 	}
 
-	// input is a matrix
+	// get the singular values
+	dmat sv = svals(rA);
+	double result = 0;
+	for (std::size_t i = 0; i < static_cast<std::size_t>(sv.rows()); i++)
+		if (sv(i) != 0) // not identically zero
+			result += std::pow((double)sv(i), alpha);
 
-	// check square matrix
-	if (!internal::_check_square_mat(rA))
-		throw Exception("renyi_inf", Exception::Type::MATRIX_NOT_SQUARE);
-
-	// get the eigenvalues
-	dmat ev = hevals(rA);
-	double max = 0;
-	// take the absolut value to get rid of tiny negatives
-	for (std::size_t i = 0; i < static_cast<std::size_t>(ev.size()); i++)
-		if (std::abs((cplx) ev(i)) > max)
-			max = std::abs((cplx) ev(i));
-
-	return -std::log2(max);
+	return std::log2(result) / (1 - alpha);
 }
 
 /**
@@ -187,13 +157,14 @@ double renyi_inf(const Eigen::MatrixBase<Derived>& A)
  * When \f$ \alpha\to 1\f$ the Tsallis entropy converges to the
  * Shannon/von-Neumann entropy, with the logarithm in base \f$ e \f$
  *
- * \param alpha Non-negative real number
  * \param A Eigen expression, representing a probability distribution
  * (real dynamic column vector) or a density matrix (complex dynamic matrix)
+ * \param alpha Non-negative real number
+ *
  * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
  */
 template<typename Derived>
-double tsallis(const double alpha, const Eigen::MatrixBase<Derived>& A)
+double tsallis(const Eigen::MatrixBase<Derived>& A, double alpha)
 {
 	const DynMat<typename Derived::Scalar> & rA = A;
 

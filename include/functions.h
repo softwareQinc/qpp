@@ -220,18 +220,12 @@ typename Derived::Scalar prod(const Eigen::MatrixBase<Derived> &A)
 }
 
 /**
- * \brief Schatten-p norm
- *
- * \Note The \a p value is a template parameter.
- * Use \a p = Eigen::Infinity to obtain the infinity norm.
+ * \brief Frobenius norm
  *
  * \param A Eigen expression
- * \return Schatten-p norm of \a A, as a real number
- *
- * Example:
- * \code double norm_one = norm<1>(A); // computes the Schatten norm 1 of A \endcode
+ * \return Frobenius norm of \a A, as a real number
  */
-template< int p, typename Derived>
+template<typename Derived>
 double norm(const Eigen::MatrixBase<Derived> &A)
 {
 	const DynMat<typename Derived::Scalar> &rA = A;
@@ -241,7 +235,7 @@ double norm(const Eigen::MatrixBase<Derived> &A)
 		throw Exception("norm", Exception::Type::ZERO_SIZE);
 
 	// convert matrix to complex then return its norm
-	return (rA.template cast<cplx>()).template lpNorm<p>();
+	return (rA.template cast<cplx>()).norm();
 }
 
 /**
@@ -334,6 +328,26 @@ cmat hevects(const Eigen::MatrixBase<Derived> &A)
 
 	Eigen::SelfAdjointEigenSolver<cmat> es(rA.template cast<cplx>());
 	return es.eigenvectors();
+}
+
+/**
+ * \brief Singular values
+ *
+ * \param A Eigen expression
+ * \return Singular values of \a A, as a real dynamic column vector
+ */
+template<typename Derived>
+DynColVect<double> svals(const Eigen::MatrixBase<Derived> &A)
+{
+	const DynMat<typename Derived::Scalar> &rA = A;
+
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("svals", Exception::Type::ZERO_SIZE);
+
+	Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(rA);
+
+	return svd.singularValues();
 }
 
 // Matrix functional calculus
@@ -578,6 +592,33 @@ DynMat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived> &A,
 		result *= rA;
 
 	return result;
+}
+
+/**
+ * \brief Schatten norm
+ *
+ * \param A Eigen expression
+ * \param p Integer, greater or equal to 1
+ * \return Schatten-\a p norm of \a A, as a real number
+ */
+template<typename Derived>
+double schatten(const Eigen::MatrixBase<Derived> &A, std::size_t p)
+{
+	const DynMat<typename Derived::Scalar> &rA = A;
+
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("normLp", Exception::Type::ZERO_SIZE);
+	if (p < 1)
+		throw Exception("normLp", Exception::Type::OUT_OF_RANGE);
+
+	if(p==infty) // infinity norm (largest singular value)
+	{
+		return svals(rA)[0];
+	}
+
+	// convert matrix to complex then return its Schatten-p norm
+	return std::pow(trace(powm(absm(rA),p)).real(),1./(double)p);
 }
 
 // other functions
@@ -849,7 +890,7 @@ DynMat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived> &V)
 	if (!internal::_check_col_vector(rV))
 		throw Exception("prj", Exception::Type::MATRIX_NOT_CVECTOR);
 
-	double normV = norm<2>(rV);
+	double normV = norm(rV);
 	if (normV > eps)
 		return rV * adjoint(rV) / (normV * normV);
 	else

@@ -67,7 +67,7 @@ int main()
 		cmat rho_B = ptrace1(prj(output_aAB), { D * D, D });
 		std::cout << ">> Bob's density operator: " << std::endl;
 		displn(rho_B);
-		std::cout << ">> Norm difference: " << norm<2>(rho_B - prj(psi_a))
+		std::cout << ">> Norm difference: " << norm(rho_B - prj(psi_a))
 				<< std::endl; // verification
 	}
 
@@ -132,6 +132,9 @@ int main()
 		std::cout << ">> Schmidt coefficients of psi: " << std::endl;
 		displn(schmidtcoeff(psi, { 2, 2 }));
 	}
+
+	cmat rho = randrho(5);
+	std::cout << renyi(rho, infty) << " " << experimental::renyi_inf(rho);
 
 	// */
 }

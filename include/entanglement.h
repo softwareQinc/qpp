@@ -66,10 +66,10 @@ cmat schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param dims Subsystems' dimensions
- * \return Unitary matrix \f$ U \f$ representing the Schmidt basis
- * on Alice's side, as a complex dynamic matrix, acting on
- * the computational basis as \f$ U|j\rangle = |\bar j\rangle\f$
- * (Schmidt vector)
+ * \return Unitary matrix \f$ U \f$ whose columns represent
+ * the Schmidt basis vectors on Alice's side. Acts on the computational basis
+ * as \f$ U|j\rangle = |\bar j\rangle\f$, where \f$|\bar j\rangle\f$ denotes
+ * the Schmidt vector.
  */
 template<typename Derived>
 cmat schmidtU(const Eigen::MatrixBase<Derived>& A,
@@ -100,10 +100,10 @@ cmat schmidtU(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param dims Subsystems' dimensions
- * \return Unitary matrix \f$ V \f$ representing the Schmidt basis
- * on Bob's side, as a complex dynamic matrix, acting on
- * the computational basis as \f$ V|j\rangle = |\bar j\rangle\f$
- * (Schmidt vector)
+ * \return Unitary matrix \f$ V \f$ whose columns represent
+ * the Schmidt basis vectors on Bob's side. Acts on the computational basis
+ * as \f$ V|j\rangle = |\bar j\rangle\f$, where \f$|\bar j\rangle\f$ denotes
+ * the Schmidt vector.
  */
 template<typename Derived>
 cmat schmidtV(const Eigen::MatrixBase<Derived>& A,
@@ -258,7 +258,7 @@ double negativity(const Eigen::MatrixBase<Derived>& A,
 	if (!internal::_check_dims_match_mat(dims, rA))
 		throw Exception("negativity", Exception::Type::DIMS_MISMATCH_MATRIX);
 
-	return (norm<1>(ptranspose(rA, { 0 }, dims)) - 1) / 2.;
+	return (normLp(ptranspose(rA, { 0 }, dims), 1) - 1.) / 2.;
 }
 
 /**

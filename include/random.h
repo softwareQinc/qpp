@@ -338,7 +338,7 @@ ket randket(std::size_t D)
 	 return result;
 	 */
 	ket kt = static_cast<ket>(randn<cmat>(D, 1));
-	return kt / norm<2>(kt);
+	return kt / norm(kt);
 }
 
 /**

@@ -753,6 +753,52 @@ std::vector<cmat> randkraus(std::size_t n, std::size_t D)
 	return result;
 }
 
+/**
+ * \brief Renyi-\f$\infty\f$ entropy (min entropy) of the
+ * probability distribution/density matrix \a A
+ *
+ * \param A Eigen expression, representing a probability distribution
+ * (real dynamic column vector) or a density matrix (complex dynamic matrix)
+ * \return Renyi-\f$\infty\f$ entropy (min entropy),
+ * with the logarithm in base 2
+ */
+template<typename Derived>
+double renyi_inf(const Eigen::MatrixBase<Derived>& A)
+{
+	const DynMat<typename Derived::Scalar> & rA = A;
+
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("renyi_inf", Exception::Type::ZERO_SIZE);
+
+	// input is a vector
+	if (internal::_check_vector(rA))
+	{
+		double max = 0;
+		for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); i++)
+			if (std::abs(rA(i)) > max)
+				max = std::abs(rA(i));
+
+		return -std::log2(max);
+	}
+
+	// input is a matrix
+
+	// check square matrix
+	if (!internal::_check_square_mat(rA))
+		throw Exception("renyi_inf", Exception::Type::MATRIX_NOT_SQUARE);
+
+	// get the eigenvalues
+	dmat ev = hevals(rA);
+	double max = 0;
+	// take the absolut value to get rid of tiny negatives
+	for (std::size_t i = 0; i < static_cast<std::size_t>(ev.size()); i++)
+		if (std::abs((cplx) ev(i)) > max)
+			max = std::abs((cplx) ev(i));
+
+	return -std::log2(max);
+}
+
 } /* namespace experimental */
 } /* namespace qpp */
 
