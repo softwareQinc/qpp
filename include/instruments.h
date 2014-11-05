@@ -26,6 +26,81 @@
 namespace qpp
 {
 
-} /* namespace qpp */
+/**
+ * \brief
+ *
+ * \param A
+ * \param Ks
+ * \return
+ */
+template<typename Derived>
+std::pair<std::vector<double>, std::vector<cmat>> measure(
+		const Eigen::MatrixBase<Derived>& A, std::vector<cmat> Ks)
+{
+	const DynMat<typename Derived::Scalar> &rA = A;
+
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("measure", Exception::Type::ZERO_SIZE);
+
+	// probabilities
+	std::vector<double> prob(rA.size());
+	// resulting states
+	std::vector<DynMat<typename Derived::Scalar>> rhos(rA.size());
+
+	if (internal::_check_square_mat(rA)) // square matrix
+	{
+
+	}
+	else if (internal::_check_col_vector(rA)) // column vector
+	{
+
+	}
+	else
+		throw Exception("measure",
+				Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+
+	//return rA;
+}
+
+/**
+ * \brief
+ *
+ * \param A
+ * \param U
+ * \return
+ */
+template<typename Derived>
+std::pair<std::vector<double>, std::vector<cmat>> measure(
+		const Eigen::MatrixBase<Derived>& A, const cmat& U)
+{
+	const DynMat<typename Derived::Scalar> &rA = A;
+
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("measure", Exception::Type::ZERO_SIZE);
+
+	// probabilities
+	std::vector<double> prob(rA.size());
+	// resulting states
+	std::vector<DynMat<typename Derived::Scalar>> rhos(rA.size());
+
+	if (internal::_check_square_mat(rA)) // square matrix
+	{
+
+	}
+	else if (internal::_check_col_vector(rA)) // column vector
+	{
+
+	}
+	else
+		throw Exception("measure",
+				Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+
+	//return rA;
+}
+
+}
+/* namespace qpp */
 
 #endif /* INCLUDE_INSTRUMENTS_H_ */

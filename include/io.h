@@ -38,6 +38,7 @@ namespace qpp
  * \param start Left marking
  * \param end Right marking
  * \param os Output stream
+ * \return Output stream
  */
 template<typename InputIterator>
 void disp(const InputIterator& first, const InputIterator& last,
@@ -77,14 +78,16 @@ void disp(const InputIterator& first, const InputIterator& last,
  * \param start Left marking
  * \param end Right marking
  * \param os Output stream
+ * \return Output stream
  */
 template<typename InputIterator>
-void displn(const InputIterator& first, const InputIterator& last,
+std::ostream& displn(const InputIterator& first, const InputIterator& last,
 		const std::string & separator, const std::string& start = "[",
 		const std::string& end = "]", std::ostream& os = std::cout)
 {
 	disp(first, last, separator, start, end, os);
 	os << std::endl;
+	return os;
 }
 
 /**
@@ -98,12 +101,14 @@ void displn(const InputIterator& first, const InputIterator& last,
  * \param start Left marking
  * \param end Right marking
  * \param os Output stream
+ * \return Output stream
  */
 template<typename T>
-void disp(const T& x, const std::string & separator, const std::string& start =
+std::ostream& disp(const T& x, const std::string & separator, const std::string& start =
 		"[", const std::string& end = "]", std::ostream& os = std::cout)
 {
 	disp(std::begin(x), std::end(x), separator, start, end, os);
+	return os;
 }
 
 /**
@@ -117,14 +122,16 @@ void disp(const T& x, const std::string & separator, const std::string& start =
  * \param start Left marking
  * \param end Right marking
  * \param os Output stream
+ * \return Output stream
  */
 template<typename T>
-void displn(const T& x, const std::string & separator,
+std::ostream& displn(const T& x, const std::string & separator,
 		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
 	disp(x, separator, start, end, os);
 	os << std::endl;
+	return os;
 }
 
 /**
@@ -138,9 +145,10 @@ void displn(const T& x, const std::string & separator,
  * \param start Left marking
  * \param end Right marking
  * \param os Output stream
+ * \return Output stream
  */
 template<typename T>
-void disp(const T* x, const std::size_t n, const std::string& separator,
+std::ostream& disp(const T* x, const std::size_t n, const std::string& separator,
 		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
@@ -152,6 +160,7 @@ void disp(const T* x, const std::size_t n, const std::string& separator,
 		os << x[n - 1];
 
 	os << end;
+	return os;
 }
 
 /**
@@ -165,14 +174,16 @@ void disp(const T* x, const std::size_t n, const std::string& separator,
  * \param start Left marking
  * \param end Right marking
  * \param os Output stream
+ * \return Output stream
  */
 template<typename T>
-void displn(const T* x, const std::size_t n, const std::string & separator,
+std::ostream& displn(const T* x, const std::size_t n, const std::string & separator,
 		const std::string& start = "[", const std::string& end = "]",
 		std::ostream& os = std::cout)
 {
 	disp(x, n, separator, start, end, os);
 	os << std::endl;
+	return os;
 }
 
 /**
@@ -185,9 +196,10 @@ void displn(const T* x, const std::size_t n, const std::string & separator,
  * \param chop Set to zero the elements smaller in absolute value
  * than \a chop
  * \param os Output stream
+ * \return Output stream
  */
 template<typename Derived>
-void disp(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
+std::ostream& disp(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
 		std::ostream& os = std::cout)
 {
 	const DynMat<typename Derived::Scalar> & rA = A;
@@ -195,7 +207,7 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
 	if (rA.size() == 0)
 	{
 		os << "Empty [" << rA.rows() << " x " << rA.cols() << "] matrix";
-		return;
+		return os;
 	};
 
 	std::ostringstream ostr;
@@ -270,6 +282,7 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
 		if (i < static_cast<std::size_t>(rA.rows()) - 1)
 			os << std::endl;
 	}
+	return os;
 }
 
 /**
@@ -281,13 +294,15 @@ void disp(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
  * \param chop Set to zero the elements smaller in absolute value
  * than \a chop
  * \param os Output stream
+ * \return Output stream
  */
 template<typename Derived>
-void displn(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
+std::ostream& displn(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
 		std::ostream& os = std::cout)
 {
 	disp(A, chop, os);
 	os << std::endl;
+	return os;
 }
 
 /**
@@ -300,13 +315,15 @@ void displn(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
  * \param chop Set to zero the elements smaller in absolute value
  * than \a chop
  * \param os Output stream
+ * \return Output stream
  */
-void disp(const cplx z, double chop = qpp::chop, std::ostream& os = std::cout)
+std::ostream& disp(const cplx z, double chop = qpp::chop, std::ostream& os = std::cout)
 {
 // put the complex number inside an Eigen matrix
 	cmat A(1, 1);
 	A(0, 0) = z;
 	disp(A, chop, os);
+	return os;
 }
 
 /**
@@ -319,11 +336,13 @@ void disp(const cplx z, double chop = qpp::chop, std::ostream& os = std::cout)
  * \param chop Set to zero the elements smaller in absolute value
  * than \a chop
  * \param os Output stream
+ * \return Output stream
  */
-void displn(const cplx z, double chop = qpp::chop, std::ostream& os = std::cout)
+std::ostream& displn(const cplx z, double chop = qpp::chop, std::ostream& os = std::cout)
 {
 	disp(z, chop, os);
 	os << std::endl;
+	return os;
 }
 
 /**
