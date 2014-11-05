@@ -94,7 +94,9 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 
 /**
  * \brief Measures the state \a A in the basis specified by the unitary
- * matrix \a U
+ * matrix \a U. The basis vectors are the columns of \a U.
+ *
+ * \note
  *
  * \param A Eigen expression
  * \param U Unitary matrix representing the measurement basis
