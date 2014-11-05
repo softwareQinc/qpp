@@ -80,8 +80,8 @@
 #include "entanglement.h"
 
 // the ones below can be in any order, no inter-dependencies
-#include "instruments.h"
 #include "io.h"
+#include "instruments.h"
 #include "operations.h"
 #include "random.h"
 #include "classes/timer.h"

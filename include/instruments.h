@@ -64,9 +64,6 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 
 	if (internal::_check_square_mat(rA)) // square matrix
 	{
-		for (std::size_t i = 0; i < static_cast<std::size_t>(Ks.size()); i++)
-			outstates[i] = cmat::Zero(rA.rows(), rA.rows());
-
 		for (std::size_t i = 0; i < Ks.size(); i++)
 		{
 			cmat tmp;
@@ -78,12 +75,10 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 	}
 	else if (internal::_check_col_vector(rA)) // column vector
 	{
-		for (std::size_t i = 0; i < static_cast<std::size_t>(Ks.size()); i++)
-			outstates[i] = cmat::Zero(rA.rows(), 1);
-
 		for (std::size_t i = 0; i < Ks.size(); i++)
 		{
-			cmat tmp;
+			outstates[i] = ket::Zero(rA.rows());
+			ket tmp;
 			tmp = Ks[i] * rA; // un-normalized
 			// probability
 			prob[i] = std::abs((adjoint(tmp) * tmp).value());
@@ -120,17 +115,16 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 
 /**
  * \brief Measures the state \a A in the orthonormal basis
- * specified by the unitary matrix \a U.
- * The normalized basis vectors are the columns of \a U.
+ * specified by the eigenvectors of \a M.
  *
  * \param A Eigen expression
- * \param U Unitary matrix representing the measurement basis
+ * \param M Normal matrix whose eigenvectors define the measurement basis
  * \return Pair of vector of probabilities and vector of
  * post-measurement normalized states
  */
 template<typename Derived>
 std::pair<std::vector<double>, std::vector<cmat>> measure(
-		const Eigen::MatrixBase<Derived>& A, const cmat& U)
+		const Eigen::MatrixBase<Derived>& A, const cmat& M)
 {
 	const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -140,29 +134,28 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 		throw Exception("measure", Exception::Type::ZERO_SIZE);
 
 	// check the gate U
-	if (!internal::_check_nonzero_size(U))
+	if (!internal::_check_nonzero_size(M))
 		throw Exception("measure", Exception::Type::ZERO_SIZE);
-	if (!internal::_check_square_mat(U))
+	if (!internal::_check_square_mat(M))
 		throw Exception("measure", Exception::Type::MATRIX_NOT_SQUARE);
-	if (U.rows() != rA.rows())
+	if (M.rows() != rA.rows())
 		throw Exception("measure", Exception::Type::DIMS_MISMATCH_MATRIX);
 	// END EXCEPTION CHECKS
 
 	// probabilities
-	std::vector<double> prob(U.rows());
+	std::vector<double> prob(M.rows());
 	// resulting states
-	std::vector<cmat> outstates(U.rows());
+	std::vector<cmat> outstates(M.rows());
 
 	if (internal::_check_square_mat(rA)) // square matrix
 	{
-		for (std::size_t i = 0; i < static_cast<std::size_t>(U.rows()); i++)
-			outstates[i] = cmat::Zero(rA.rows(), rA.rows());
-
-		for (std::size_t i = 0; i < static_cast<std::size_t>(U.rows()); i++)
+		for (std::size_t i = 0; i < static_cast<std::size_t>(M.rows()); i++)
 		{
+			outstates[i] = cmat::Zero(rA.rows(), rA.rows());
 			cmat tmp;
 			// un-normalized
-			tmp = evects(U).col(i) * rA * adjoint((ket) evects(U).col(i));
+			tmp = prj((ket) evects(M).col(i)) * rA
+					* prj((ket) evects(M).col(i));
 			prob[i] = std::abs(trace(tmp)); // probability
 			if (prob[i] > eps)
 				outstates[i] = tmp / prob[i]; // normalized
@@ -170,13 +163,11 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 	}
 	else if (internal::_check_col_vector(rA)) // column vector
 	{
-		for (std::size_t i = 0; i < static_cast<std::size_t>(U.rows()); i++)
-			outstates[i] = cmat::Zero(rA.rows(), 1);
-
-		for (std::size_t i = 0; i < static_cast<std::size_t>(U.rows()); i++)
+		for (std::size_t i = 0; i < static_cast<std::size_t>(M.rows()); i++)
 		{
-			cmat tmp;
-			tmp = prj((ket) evects(U).col(i)) * rA;
+			outstates[i] = ket::Zero(rA.rows());
+			ket tmp;
+			tmp = prj((ket) evects(M).col(i)) * rA;
 			// probability
 			prob[i] = std::abs((adjoint(tmp) * tmp).value());
 			if (prob[i] > eps)
