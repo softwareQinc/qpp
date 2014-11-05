@@ -42,9 +42,6 @@ cplx pow3(const cplx& z) // a test function
 int main()
 {
 
-	cmat rho(16,16);
-	channel(rho, {gt.X, gt.Z},{2},4);
-
 	/*   comment this line with // to uncomment the whole example
 	 // TESTING
 

@@ -217,6 +217,7 @@ private:
 			break;
 		case Type::SUBSYS_MISMATCH_DIMS:
 			_msg += "Subsystems mismatch dimensions!";
+			break;
 		case Type::PERM_INVALID:
 			_msg += "Invalid permutation!";
 			break;
