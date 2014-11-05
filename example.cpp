@@ -73,7 +73,7 @@ int main()
 
 	// Qudit Dense Coding
 	{
-		std::size_t D = 4; // size of the system
+		std::size_t D = 3; // size of the system
 		std::cout << std::endl << "**** Qudit Dense Coding , D = " << D
 				<< " ****" << std::endl;
 		ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
