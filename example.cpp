@@ -84,8 +84,8 @@ int main()
 				gt.CTRL(gt.Xd(D), { 0 }, { 1 }, 2, D)
 						* kron(gt.Fd(D), gt.Id(D)));
 		// equal probabilities of choosing a message
-		std::uniform_int_distribution<std::size_t> udd(0, D * D - 1);
-		std::size_t m_A = udd(rdevs._rng); // sample, obtain the message index
+		std::uniform_int_distribution<std::size_t> uid(0, D * D - 1);
+		std::size_t m_A = uid(rdevs._rng); // sample, obtain the message index
 		auto midx = n2multiidx(m_A, { D, D });
 		std::cout << "** Alice sent: ";
 		displn(midx, " ");
