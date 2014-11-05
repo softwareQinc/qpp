@@ -76,13 +76,14 @@
 #include "classes/init.h"
 #include "functions.h"
 #include "classes/gates.h"
+#include "operations.h"
 #include "entropies.h"
+#include "io.h"
 #include "entanglement.h"
 
 // the ones below can be in any order, no inter-dependencies
 #include "io.h"
 #include "instruments.h"
-#include "operations.h"
 #include "random.h"
 #include "classes/timer.h"
 

@@ -220,12 +220,18 @@ typename Derived::Scalar prod(const Eigen::MatrixBase<Derived> &A)
 }
 
 /**
- * \brief Trace norm
+ * \brief Schatten-p norm
+ *
+ * \Note The \a p value is a template parameter.
+ * Use \a p = Eigen::Infinity to obtain the infinity norm.
  *
  * \param A Eigen expression
- * \return Trace norm (Frobenius norm) of \a A, as a real number
+ * \return Schatten-p norm of \a A, as a real number
+ *
+ * Example:
+ * \code double norm_one = norm<1>(A); // computes the Schatten norm 1 of A \endcode
  */
-template<typename Derived>
+template< int p, typename Derived>
 double norm(const Eigen::MatrixBase<Derived> &A)
 {
 	const DynMat<typename Derived::Scalar> &rA = A;
@@ -235,8 +241,7 @@ double norm(const Eigen::MatrixBase<Derived> &A)
 		throw Exception("norm", Exception::Type::ZERO_SIZE);
 
 	// convert matrix to complex then return its norm
-
-	return (rA.template cast<cplx>()).norm();
+	return (rA.template cast<cplx>()).template lpNorm<p>();
 }
 
 /**
@@ -844,7 +849,7 @@ DynMat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived> &V)
 	if (!internal::_check_col_vector(rV))
 		throw Exception("prj", Exception::Type::MATRIX_NOT_CVECTOR);
 
-	double normV = norm(rV);
+	double normV = norm<2>(rV);
 	if (normV > eps)
 		return rV * adjoint(rV) / (normV * normV);
 	else

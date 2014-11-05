@@ -27,7 +27,7 @@ using namespace qpp;
 
 int main()
 {
-//	/*   comment this line with "//" to uncomment the whole example
+	//	/*   comment this line with "//" to uncomment the whole example
 
 	// Qudit Teleportation
 	{
@@ -42,7 +42,7 @@ int main()
 				gt.CTRL(gt.Xd(D), { 0 }, { 1 }, 2, D)
 						* kron(gt.Fd(D), gt.Id(D)));
 		ket psi_a = randket(D); // random state as input on a
-		std::cout << "** Initial state:" << std::endl;
+		std::cout << ">> Initial state:" << std::endl;
 		displn(psi_a);
 		ket input_aAB = kron(psi_a, mes_AB); // joint input state aAB
 		// output before measurement
@@ -51,11 +51,11 @@ int main()
 				gt.Id(D * D)); // measure on aA
 		std::discrete_distribution<std::size_t> dd(measured_aA.first.begin(),
 				measured_aA.first.end());
-		std::cout << "** Measurement probabilities: ";
+		std::cout << ">> Measurement probabilities: ";
 		displn(measured_aA.first, ", ");
 		std::size_t m = dd(rdevs._rng); // sample
 		auto midx = n2multiidx(m, { D, D });
-		std::cout << "** Measurement result: ";
+		std::cout << ">> Measurement result: ";
 		displn(midx, " ");
 		// conditional result on B before correction
 		ket output_m_aAB = apply(output_aAB, prj(mket(midx, { D, D })),
@@ -65,9 +65,9 @@ int main()
 				// apply correction on B
 		output_aAB = apply(output_m_aAB, correction_B, { 2 }, 3, D);
 		cmat rho_B = ptrace1(prj(output_aAB), { D * D, D });
-		std::cout << "** Bob's density operator: " << std::endl;
+		std::cout << ">> Bob's density operator: " << std::endl;
 		displn(rho_B);
-		std::cout << "** Norm difference: " << norm(rho_B - prj(psi_a))
+		std::cout << ">> Norm difference: " << norm<2>(rho_B - prj(psi_a))
 				<< std::endl; // verification
 	}
 
@@ -87,7 +87,7 @@ int main()
 		std::uniform_int_distribution<std::size_t> uid(0, D * D - 1);
 		std::size_t m_A = uid(rdevs._rng); // sample, obtain the message index
 		auto midx = n2multiidx(m_A, { D, D });
-		std::cout << "** Alice sent: ";
+		std::cout << ">> Alice sent: ";
 		displn(midx, " ");
 		// Alice's operation
 		cmat U_A = powm(gt.Zd(D), midx[0]) * powm(adjoint(gt.Xd(D)), midx[1]);
@@ -96,14 +96,41 @@ int main()
 		// Bob measures the joint system in the qudit Bell basis
 		psi_AB = apply(psi_AB, Bell_AB, { 0, 1 }, 2, D);
 		auto measured = measure(psi_AB, gt.Id(D * D));
-		std::cout << "** Bob measurement probabilities: ";
+		std::cout << ">> Bob measurement probabilities: ";
 		displn(measured.first, ", ");
 		// Bob samples according to the measurement probabilities
 		std::discrete_distribution<std::size_t> dd(measured.first.begin(),
 				measured.first.end());
 		std::size_t m_B = dd(rdevs._rng);
-		std::cout << "** Bob received: ";
-		displn(n2multiidx(m_B, { D, D }), " ") << std::endl;
+		std::cout << ">> Bob received: ";
+		displn(n2multiidx(m_B, { D, D }), " ");
+	}
+
+	// Entanglement
+	{
+		std::cout << std::endl << "**** Entanglement ****" << std::endl;
+
+		cmat rho = 0.2 * st.pb00 + 0.8 * st.pb11;
+		std::cout << ">> rho: " << std::endl;
+		displn(rho);
+		std::cout << ">> Concurrence of rho: " << concurrence(rho) << std::endl;
+		std::cout << ">> Negativity of rho: " << negativity(rho, { 2, 2 })
+				<< std::endl;
+		std::cout << ">> Logarithimc negativity of rho: "
+				<< lognegativity(rho, { 2, 2 }) << std::endl;
+		ket psi = 0.6 * mket( { 0, 0 }) + 0.8 * mket( { 1, 1 });
+		// apply some local random unitaries
+		psi = kron(randU(2), randU(2)) * psi;
+		std::cout << ">> psi: " << std::endl;
+		displn(psi);
+		std::cout << ">> Entanglement of psi: " << entanglement(psi, { 2, 2 })
+				<< std::endl;
+		std::cout << ">> Concurrence of psi: " << concurrence(prj(psi))
+				<< std::endl;
+		std::cout << ">> G-Concurrence of psi: " << gconcurrence(psi)
+				<< std::endl;
+		std::cout << ">> Schmidt coefficients of psi: " << std::endl;
+		displn(schmidtcoeff(psi, { 2, 2 }));
 	}
 
 	// */
