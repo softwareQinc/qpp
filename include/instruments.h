@@ -94,6 +94,8 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
 	return std::make_pair(prob, outstates);
 }
 
+// std::initializer_list overload, avoids ambiguity for 2-element lists, see
+// http://stackoverflow.com/questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
  * \brief Measures the state \a A using the set of Kraus operators \a Ks
  * (std::initializer_list overload)
