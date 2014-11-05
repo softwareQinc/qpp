@@ -123,8 +123,6 @@ std::pair<std::vector<double>, std::vector<cmat>> measure(
  * specified by the unitary matrix \a U.
  * The normalized basis vectors are the columns of \a U.
  *
- * \note
- *
  * \param A Eigen expression
  * \param U Unitary matrix representing the measurement basis
  * \return Pair of vector of probabilities and vector of
