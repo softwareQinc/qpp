@@ -27,8 +27,6 @@ using namespace qpp;
 
 int main()
 {
-	//	/*   comment this line with "//" to uncomment the whole example
-
 	// Qudit Teleportation
 	{
 		std::size_t D = 3; // size of the system
@@ -109,7 +107,6 @@ int main()
 	// Grover's search algorithm, we time it
 	{
 		Timer t; // set a timer
-
 		std::size_t n = 6; // number of qubits
 		std::cout << std::endl << "**** Grover on n = " << n << " qubits ****"
 				<< std::endl;
@@ -157,7 +154,6 @@ int main()
 	// Entanglement
 	{
 		std::cout << std::endl << "**** Entanglement ****" << std::endl;
-
 		cmat rho = 0.2 * st.pb00 + 0.8 * st.pb11;
 		std::cout << ">> rho: " << std::endl;
 		displn(rho);
@@ -189,7 +185,7 @@ int main()
 		displn(V);
 		std::cout << ">> State psi in the Schmidt basis: " << std::endl;
 		displn(adjoint(kron(U, V)) * psi);
-
+		// reconstructed state
 		ket psi_from_schmidt = schmidtcoeff(psi, { 2, 2 })(0)
 				* kron(U.col(0), V.col(0))
 				+ schmidtcoeff(psi, { 2, 2 })(1) * kron(U.col(1), V.col(1));
@@ -200,6 +196,4 @@ int main()
 		std::cout << ">> Norm difference: " << norm(psi - psi_from_schmidt)
 				<< std::endl;
 	}
-
-	// */
 }
