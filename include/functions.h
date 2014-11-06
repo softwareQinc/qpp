@@ -1327,7 +1327,7 @@ std::vector<std::size_t> compperm(const std::vector<std::size_t> &perm,
  * \return Real vector consisting of the range's absolut values squared
  */
 template<typename InputIterator>
-std::vector<double> ampl(InputIterator first, InputIterator last)
+std::vector<double> abssq(InputIterator first, InputIterator last)
 {
 	std::vector<double> weights(last - first);
 	std::transform(first, last, std::begin(weights), [](const cplx & z)->double
@@ -1342,17 +1342,17 @@ std::vector<double> ampl(InputIterator first, InputIterator last)
  * \return Real vector consisting of the absolut values squared
  */
 template<typename Derived>
-std::vector<double> ampl(const Eigen::MatrixBase<Derived> &V)
+std::vector<double> abssq(const Eigen::MatrixBase<Derived> &V)
 {
 	const DynMat<typename Derived::Scalar> &rV = V;
 
 	// check zero-size
 	if (!internal::_check_nonzero_size(rV))
-		throw Exception("ampl", Exception::Type::ZERO_SIZE);
+		throw Exception("abssq", Exception::Type::ZERO_SIZE);
 
 	// check column vector
 	if (!internal::_check_col_vector(rV))
-		throw Exception("ampl", Exception::Type::MATRIX_NOT_CVECTOR);
+		throw Exception("abssq", Exception::Type::MATRIX_NOT_CVECTOR);
 
 	std::vector<double> weights(rV.size());
 	std::transform(rV.data(), rV.data() + rV.size(), std::begin(weights),
