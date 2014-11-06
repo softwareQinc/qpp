@@ -105,11 +105,11 @@ public:
 		/*!< Types do not match (i.e. Matrix<double> vs Matrix<cplx>) */
 		UNDEFINED_TYPE,              //!< UNDEFINED_TYPE
 		/*!< Templated function not defined for this type */
-		NO_CODEWORD,				//! < NO_CODEWORD
+		NO_CODEWORD,				 //!< NO_CODEWORD
 		/*!< Codeword does not exist, thrown when calling
 		 * \a qpp::Codes::codeword() with invalid \a i */
 		CUSTOM_EXCEPTION             //!< CUSTOM_EXCEPTION
-	/*!< Custom exception, user must provide a custom message */
+		/*!< Custom exception, user must provide a custom message */
 	};
 
 	/**

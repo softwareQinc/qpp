@@ -57,8 +57,8 @@ namespace internal // internal class, do not modify
  *
  * \endcode
  *
- * \see Code of \a qpp::Gates, \a qpp::RandomDevices, \a qpp::States or
- * \a qpp.h for real world examples of usage.
+ * \see Code of \a qpp::Codes, \a qpp::Gates, \a qpp::RandomDevices,
+ * \a qpp::States or \a qpp.h for real world examples of usage.
  */
 template<typename T>
 class Singleton
