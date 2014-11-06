@@ -52,6 +52,12 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include -I /Applications/MATLAB_R2014b.app/extern/include -L /Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
 
+Note: if you want to run the program on OS X with MATLAB support, make sure that the environment variable `DYLD_LIBRARY_PATH` is set to point to the MATLAB compiler library location, see the `run_OSX_MATLAB` script. Example of how to run:
+	
+	export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"; ./qpp
+
+Otherwise, you will get a runtime error like `dyld: Library not loaded: @rpath/libmat.dylib`
+
 The current version of the repository has a set of Makefiles available under the folder `Makefile.examples`. To build the executable, just replace the Makefile from the root folder with the appropriate Makefile from `Makefile.examples`, then type `make` (release mode) or `make debug` (debug mode) to produce the executable `qpp`. 
 
 PS: these Makefiles are provided for convenience, the final version of the library will consist only of header files, and therefore it is the user's responsability to create an appropriate Makefile that suits her/his needs. 
