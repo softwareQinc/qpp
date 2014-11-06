@@ -1117,33 +1117,6 @@ std::size_t multiidx2n(const std::vector<std::size_t> &midx,
 }
 
 /**
- * \brief Multi-partite qubit ket
- *
- * Constructs the multi-partite qubit ket \f$|\mathrm{mask}\rangle\f$,
- * where \a mask is a std::vector of 0's and 1's
- *
- * \param mask std::vector of 0's and 1's
- * \return Multi-partite qubit state vector, as a complex dynamic column vector
- */
-ket mket(const std::vector<std::size_t> &mask)
-{
-	std::size_t n = mask.size();
-	std::size_t D = static_cast<std::size_t>(std::pow(2, n));
-	// check zero size
-	if (n == 0)
-		throw Exception("mket", Exception::Type::ZERO_SIZE);
-	// check mask is a valid binary vector
-	for (auto && it : mask)
-		if (it > 1)
-			throw Exception("mket", Exception::Type::NOT_QUBIT_SUBSYS);
-	std::vector<std::size_t> dims(n, 2);
-	ket result = ket::Zero(D);
-	std::size_t pos = multiidx2n(mask, dims);
-	result(pos) = 1;
-	return result;
-}
-
-/**
  * \brief Multi-partite qudit ket (different dimensions overload)
  *
  * Constructs the multi-partite qudit ket \f$|\mathrm{mask}\rangle\f$,
@@ -1197,7 +1170,7 @@ ket mket(const std::vector<std::size_t> &mask,
  * \param d Subsystems' dimension
  * \return Multi-partite qudit state vector, as a complex dynamic column vector
  */
-ket mket(const std::vector<std::size_t> &mask, std::size_t d)
+ket mket(const std::vector<std::size_t> &mask, std::size_t d = 2)
 {
 	std::size_t n = mask.size();
 	std::size_t D = static_cast<std::size_t>(std::pow(d, n));
@@ -1217,35 +1190,6 @@ ket mket(const std::vector<std::size_t> &mask, std::size_t d)
 	std::vector<std::size_t> dims(n, d);
 	std::size_t pos = multiidx2n(mask, dims);
 	result(pos) = 1;
-	return result;
-}
-
-/**
- * \brief Projector onto multi-partite qubit ket
- *
- * Constructs the projector onto the multi-partite qubit ket
- * \f$|\mathrm{mask}\rangle\f$,
- * where \a mask is a std::vector of 0's and 1's
- *
- * \param mask std::vector of 0's and 1's
- * \return Projector onto multi-partite qubit state vector,
- * as a complex dynamic matrix
- */
-cmat mprj(const std::vector<std::size_t> &mask)
-{
-	std::size_t n = mask.size();
-	std::size_t D = static_cast<std::size_t>(std::pow(2, n));
-	// check zero size
-	if (n == 0)
-		throw Exception("mprj", Exception::Type::ZERO_SIZE);
-	// check mask is a valid binary vector
-	for (auto && it : mask)
-		if (it > 1)
-			throw Exception("mprj", Exception::Type::NOT_QUBIT_SUBSYS);
-	std::vector<std::size_t> dims(n, 2);
-	cmat result = cmat::Zero(D, D);
-	std::size_t pos = multiidx2n(mask, dims);
-	result(pos, pos) = 1;
 	return result;
 }
 
@@ -1307,7 +1251,7 @@ cmat mprj(const std::vector<std::size_t> &mask,
  * \return Projector onto multi-partite qudit state vector,
  * as a complex dynamic matrix
  */
-cmat mprj(const std::vector<std::size_t> &mask, std::size_t d)
+cmat mprj(const std::vector<std::size_t> &mask, std::size_t d = 2)
 {
 	std::size_t n = mask.size();
 	std::size_t D = static_cast<std::size_t>(std::pow(d, n));

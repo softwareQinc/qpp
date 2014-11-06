@@ -34,7 +34,7 @@ int main()
 				<< " ****" << std::endl;
 		ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
 		for (std::size_t i = 0; i < D; i++)
-			mes_AB += mket( { i, i }, { D, D });
+			mes_AB += mket( { i, i }, D);
 		mes_AB /= std::sqrt((double) D);
 		cmat Bell_aA = adjoint( // circuit that measures in the qudit Bell basis
 				gt.CTRL(gt.Xd(D), { 0 }, { 1 }, 2, D)
@@ -56,8 +56,8 @@ int main()
 		std::cout << ">> Measurement result: ";
 		displn(midx, " ");
 		// conditional result on B before correction
-		ket output_m_aAB = apply(output_aAB, prj(mket(midx, { D, D })),
-				{ 0, 1 }, 3, D) / std::sqrt(measured_aA.first[m]);
+		ket output_m_aAB = apply(output_aAB, prj(mket(midx, D)), { 0, 1 }, 3, D)
+				/ std::sqrt(measured_aA.first[m]);
 		cmat correction_B = powm(gt.Zd(D), midx[0])
 				* powm(adjoint(gt.Xd(D)), midx[1]); // correction operator
 				// apply correction on B
@@ -76,7 +76,7 @@ int main()
 				<< " ****" << std::endl;
 		ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
 		for (std::size_t i = 0; i < D; i++)
-			mes_AB += mket( { i, i }, { D, D });
+			mes_AB += mket( { i, i }, D);
 		mes_AB /= std::sqrt((double) D);
 		cmat Bell_AB = adjoint( // circuit that measures in the qudit Bell basis
 				gt.CTRL(gt.Xd(D), { 0 }, { 1 }, 2, D)
