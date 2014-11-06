@@ -52,7 +52,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include -I /Applications/MATLAB_R2014b.app/extern/include -L /Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
 
-Note: if you want to run the program on OS X with MATLAB support, make sure that the environment variable `DYLD_LIBRARY_PATH` is set to point to the MATLAB compiler library location, see the `run_OSX_MATLAB` script. Example of how to run:
+Note: if you want to run the program on OS X with MATLAB support, make sure that the environment variable `DYLD_LIBRARY_PATH` is set to point to the MATLAB compiler library location, see the `run_OSX_MATLAB` script. Example of run command:
 	
 	export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"; ./qpp
 
