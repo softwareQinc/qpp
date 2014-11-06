@@ -68,6 +68,7 @@
 #include "classes/init.h"
 #include "functions.h"
 #include "classes/gates.h"
+#include "classes/codes.h"
 #include "operations.h"
 #include "entropies.h"
 #include "io.h"
@@ -87,11 +88,18 @@ namespace qpp
 {
 
 /**
- * \brief qpp::RandomDevices Singleton
+ * \brief qpp::Init const Singleton
  *
- * Initializes the random devices, see the class \a qpp::RandomDevices
+ * Additional initializations/cleanups
  */
-RandomDevices& rdevs = RandomDevices::get_instance();
+const Init& init = Init::get_instance();
+
+/**
+ * \brief qpp::Codes const Singleton
+ *
+ * Initializes the codes, see the class \a qpp::Codes
+ */
+const Codes& codes = Codes::get_instance();
 
 /**
  * \brief qpp::Gates const Singleton
@@ -108,11 +116,12 @@ const Gates& gt = Gates::get_instance();
 const States& st = States::get_instance();
 
 /**
- * \brief qpp::Init const Singleton
+ * \brief qpp::RandomDevices Singleton
  *
- * Additional initializations/cleanups
+ * Initializes the random devices, see the class \a qpp::RandomDevices
  */
-const Init& init = Init::get_instance();
+RandomDevices& rdevs = RandomDevices::get_instance();
+
 
 } /* namespace qpp */
 

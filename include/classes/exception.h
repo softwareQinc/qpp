@@ -105,6 +105,9 @@ public:
 		/*!< Types do not match (i.e. Matrix<double> vs Matrix<cplx>) */
 		UNDEFINED_TYPE,              //!< UNDEFINED_TYPE
 		/*!< Templated function not defined for this type */
+		NO_CODEWORD,				//! < NO_CODEWORD
+		/*!< Codeword does not exist, thrown when calling
+		 * \a qpp::Codes::codeword() with invalid \a i */
 		CUSTOM_EXCEPTION             //!< CUSTOM_EXCEPTION
 	/*!< Custom exception, user must provide a custom message */
 	};
@@ -114,7 +117,7 @@ public:
 	 *
 	 * \param where Text representing where the exception occured
 	 * \param type Exception's type, see the strong enumeration
-	 * \a qpp::Exception::TYPE
+	 * qpp::Exception::Type
 	 */
 	Exception(const std::string & where, const Type& type) :
 			_where(where), _msg(), _type(type), _custom()
@@ -238,6 +241,9 @@ private:
 			break;
 		case Type::UNDEFINED_TYPE:
 			_msg += "Not defined for this type!";
+			break;
+		case Type::NO_CODEWORD:
+			_msg += "Codeword does not exist!";
 			break;
 		case Type::CUSTOM_EXCEPTION:
 			_msg += "CUSTOM EXCEPTION ";

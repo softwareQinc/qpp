@@ -196,4 +196,28 @@ int main()
 		std::cout << ">> Norm difference: " << norm(psi - psi_from_schmidt)
 				<< std::endl;
 	}
+
+	// Quantum error correcting codes
+	{
+		std::cout << std::endl << "**** Quantum error correcting codes ****"
+				<< std::endl;
+		ket a0 = codes.codeword(Codes::Type::FIVE_QUBIT, 0);
+		ket a1 = codes.codeword(Codes::Type::FIVE_QUBIT, 1);
+		ket b0 = codes.codeword(Codes::Type::SEVEN_QUBIT_STEANE, 0);
+		ket b1 = codes.codeword(Codes::Type::SEVEN_QUBIT_STEANE, 1);
+		ket c0 = codes.codeword(Codes::Type::NINE_QUBIT_SHOR, 0);
+		ket c1 = codes.codeword(Codes::Type::NINE_QUBIT_SHOR, 1);
+		std::cout << ">> Five qubit [[5,1,3]] code. ";
+		std::cout << "Checking codeword orthogonality." << std::endl;
+		std::cout << ">> <0L | 1L> = ";
+		displn(adjoint(a0) * a1);
+		std::cout << ">> Seven qubit [[7,1,3]] Steane code. ";
+		std::cout << "Checking codeword orthogonality." << std::endl;
+		std::cout << ">> <0L | 1L> = ";
+		displn(adjoint(b0) * b1);
+		std::cout << ">> Nine qubit [[9,1,3]] code. ";
+		std::cout << "Checking codeword orthogonality." << std::endl;
+		std::cout << ">> <0L | 1L> = ";
+		displn(adjoint(c0) * c1);
+	}
 }
