@@ -107,7 +107,7 @@ int main()
 	// Grover's search algorithm, we time it
 	{
 		Timer t; // set a timer
-		std::size_t n = 6; // number of qubits
+		std::size_t n = 4; // number of qubits
 		std::cout << std::endl << "**** Grover on n = " << n << " qubits ****"
 				<< std::endl;
 		std::vector<std::size_t> dims(n, 2); // local dimensions
