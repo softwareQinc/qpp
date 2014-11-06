@@ -118,7 +118,7 @@ int main()
 				<< std::endl;
 		std::cout << ">> Logarithimc negativity of rho: "
 				<< lognegativity(rho, { 2, 2 }) << std::endl;
-		ket psi = 0.6 * mket( { 0, 0 }) + 0.8 * mket( { 1, 1 });
+		ket psi = 0.8 * mket( { 0, 0 }) + 0.6 * mket( { 1, 1 });
 		// apply some local random unitaries
 		psi = kron(randU(2), randU(2)) * psi;
 		std::cout << ">> psi: " << std::endl;
@@ -133,6 +133,14 @@ int main()
 		displn(schmidtcoeff(psi, { 2, 2 }));
 		std::cout << ">> Schmidt probabilities of psi: " << std::endl;
 		displn(schmidtprob(psi, { 2, 2 }));
+		cmat U = schmidtU(psi, { 2, 2 });
+		cmat V = schmidtV(psi, { 2, 2 });
+		std::cout << ">> Schmidt vectors on Alice's side: " << std::endl;
+		displn(U);
+		std::cout << ">> Schmidt vectors on Bob's side: " << std::endl;
+		displn(V);
+		std::cout << ">> State psi in Schmidt basis: " << std::endl;
+		displn(adjoint(kron(U, V)) * psi);
 	}
 	// */
 }

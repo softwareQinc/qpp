@@ -350,6 +350,51 @@ DynColVect<double> svals(const Eigen::MatrixBase<Derived> &A)
 	return svd.singularValues();
 }
 
+/**
+ * \brief Left singular vectors
+ *
+ * \param A Eigen expression
+ * \return Complex dynamic matrix, whose columns are the left singular
+ * vectors of \a A
+ */
+template<typename Derived>
+cmat svdU(const Eigen::MatrixBase<Derived> &A)
+{
+	const DynMat<typename Derived::Scalar> &rA = A;
+
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("svdU", Exception::Type::ZERO_SIZE);
+
+	Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(rA,
+			Eigen::DecompositionOptions::ComputeFullU);
+
+	return svd.matrixU();
+}
+
+/**
+ * \brief Right singular vectors
+ *
+ * \param A Eigen expression
+ * \return Complex dynamic matrix, whose columns are the right singular
+ * vectors of \a A
+ */
+
+template<typename Derived>
+cmat svdV(const Eigen::MatrixBase<Derived> &A)
+{
+	const DynMat<typename Derived::Scalar> &rA = A;
+
+	// check zero-size
+	if (!internal::_check_nonzero_size(rA))
+		throw Exception("svdV", Exception::Type::ZERO_SIZE);
+
+	Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(rA,
+			Eigen::DecompositionOptions::ComputeFullV);
+
+	return svd.matrixV();
+}
+
 // Matrix functional calculus
 /**
  * \brief Functional calculus f(A)
@@ -612,13 +657,13 @@ double schatten(const Eigen::MatrixBase<Derived> &A, std::size_t p)
 	if (p < 1)
 		throw Exception("schatten", Exception::Type::OUT_OF_RANGE);
 
-	if(p==infty) // infinity norm (largest singular value)
+	if (p == infty) // infinity norm (largest singular value)
 	{
 		return svals(rA)[0];
 	}
 
 	// convert matrix to complex then return its Schatten-p norm
-	return std::pow(trace(powm(absm(rA),p)).real(),1./(double)p);
+	return std::pow(trace(powm(absm(rA), p)).real(), 1. / (double) p);
 }
 
 // other functions

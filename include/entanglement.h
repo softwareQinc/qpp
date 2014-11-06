@@ -88,10 +88,7 @@ cmat schmidtU(const Eigen::MatrixBase<Derived>& A,
 	if (!internal::_check_dims_match_mat(dims, rA))
 		throw Exception("schmidtU", Exception::Type::DIMS_MISMATCH_MATRIX);
 
-	Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(
-			transpose(reshape(rA, dims[1], dims[0])),
-			Eigen::DecompositionOptions::ComputeFullU);
-	return svd.matrixU();
+	return svdU(transpose(reshape(rA, dims[1], dims[0])));
 }
 
 /**
@@ -122,12 +119,9 @@ cmat schmidtV(const Eigen::MatrixBase<Derived>& A,
 	if (!internal::_check_dims_match_mat(dims, rA))
 		throw Exception("schmidtV", Exception::Type::DIMS_MISMATCH_MATRIX);
 
-	Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(
-			transpose(reshape(rA, dims[1], dims[0])),
-			Eigen::DecompositionOptions::ComputeFullV);
 	// by default returns V^*, we need V, i.e. the complex conjugate,
 	// i.e. adjoint(transpose(V))
-	return adjoint(transpose(svd.matrixV()));
+	return svdV(transpose(reshape(conjugate(rA), dims[1], dims[0])));
 }
 
 /**
@@ -162,7 +156,7 @@ DynColVect<double> schmidtprob(const Eigen::MatrixBase<Derived>& A,
 	Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(
 			transpose(reshape(rA, dims[1], dims[0])));
 
-	return powm((dmat)svd.singularValues().asDiagonal(), 2).diagonal();
+	return powm((dmat) svd.singularValues().asDiagonal(), 2).diagonal();
 }
 
 /**
