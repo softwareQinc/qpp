@@ -106,8 +106,10 @@ int main()
 		displn(n2multiidx(m_B, { D, D }), " ");
 	}
 
-	// Grover's search algorithm
+	// Grover's search algorithm, we time it
 	{
+		Timer t; // set a timer
+
 		std::size_t n = 6; // number of qubits
 		std::cout << std::endl << "**** Grover on n = " << n << " qubits ****"
 				<< std::endl;
@@ -146,6 +148,10 @@ int main()
 			std::cout << ">> Not there yet... we obtained: ";
 		std::cout << result << " -> ";
 		displn(n2multiidx(result, dims), " ");
+		// stop the timer and display it
+		std::cout << ">> It took " << t.toc()
+				<< " seconds to simulate Grover on " << n << " qubits."
+				<< std::endl;
 	}
 
 	// Entanglement
