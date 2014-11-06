@@ -139,8 +139,18 @@ int main()
 		displn(U);
 		std::cout << ">> Schmidt vectors on Bob's side: " << std::endl;
 		displn(V);
-		std::cout << ">> State psi in Schmidt basis: " << std::endl;
+		std::cout << ">> State psi in the Schmidt basis: " << std::endl;
 		displn(adjoint(kron(U, V)) * psi);
+
+		ket psi_from_schmidt = schmidtcoeff(psi, { 2, 2 })(0)
+				* kron(U.col(0), V.col(0))
+				+ schmidtcoeff(psi, { 2, 2 })(1) * kron(U.col(1), V.col(1));
+		std::cout
+				<< ">> State psi reconstructed from the Schmidt decomposition: "
+				<< std::endl;
+		displn(psi_from_schmidt);
+		std::cout << ">> Norm difference: " << norm(psi - psi_from_schmidt)
+				<< std::endl;
 	}
 	// */
 }

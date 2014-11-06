@@ -66,9 +66,7 @@ DynColVect<cplx> schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
  * \param A Eigen expression
  * \param dims Subsystems' dimensions
  * \return Unitary matrix \f$ U \f$ whose columns represent
- * the Schmidt basis vectors on Alice's side. Acts on the computational basis
- * as \f$ U|j\rangle = |\bar j\rangle\f$, where \f$|\bar j\rangle\f$ denotes
- * the Schmidt vector.
+ * the Schmidt basis vectors on Alice's side.
  */
 template<typename Derived>
 cmat schmidtU(const Eigen::MatrixBase<Derived>& A,
@@ -97,9 +95,7 @@ cmat schmidtU(const Eigen::MatrixBase<Derived>& A,
  * \param A Eigen expression
  * \param dims Subsystems' dimensions
  * \return Unitary matrix \f$ V \f$ whose columns represent
- * the Schmidt basis vectors on Bob's side. Acts on the computational basis
- * as \f$ V|j\rangle = |\bar j\rangle\f$, where \f$|\bar j\rangle\f$ denotes
- * the Schmidt vector.
+ * the Schmidt basis vectors on Bob's side.
  */
 template<typename Derived>
 cmat schmidtV(const Eigen::MatrixBase<Derived>& A,
