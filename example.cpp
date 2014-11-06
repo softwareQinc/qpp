@@ -106,6 +106,48 @@ int main()
 		displn(n2multiidx(m_B, { D, D }), " ");
 	}
 
+	// Grover's search algorithm
+	{
+		std::size_t n = 6; // number of qubits
+		std::cout << std::endl << "**** Grover on n = " << n << " qubits ****"
+				<< std::endl;
+		std::vector<std::size_t> dims(n, 2); // local dimensions
+		std::size_t N = std::pow(2, n); // number of elements in the database
+		std::cout << ">> Database size: " << N << std::endl;
+		// mark an element randomly
+		std::uniform_int_distribution<std::size_t> uid(0, N - 1);
+		std::size_t marked = uid(rdevs._rng);
+		std::cout << ">> Marked state: " << marked << " -> ";
+		displn(n2multiidx(marked, dims), " ");
+		ket psi = mket(n2multiidx(0, dims)); // computational |0>^\otimes n
+		psi = (kronpow(gt.H, n) * psi).eval(); // apply H^\otimes n, no aliasing
+		cmat G = 2 * prj(psi) - gt.Id(N); // Diffusion operator
+		// number of queries
+		std::size_t nqueries = std::ceil(pi * std::sqrt(N) / 4.);
+		std::cout << ">> We run " << nqueries << " queries" << std::endl;
+		for (std::size_t i = 0; i < nqueries; i++)
+		{
+			psi(marked) = -psi(marked); // apply the oracle first, no aliasing
+			psi = (G * psi).eval(); // no aliasing
+		}
+		// we now measure the state in the computational basis
+		auto measured = measure(psi, gt.Id(N));
+		std::cout << ">> Probability of the marked state: "
+				<< measured.first[marked] << std::endl;
+		std::cout << ">> Probability of all results: ";
+		displn(measured.first, ", ");
+		std::cout << ">> Let's sample..." << std::endl;
+		std::discrete_distribution<std::size_t> dd(measured.first.begin(),
+				measured.first.end());
+		std::size_t result = dd(rdevs._rng);
+		if (result == marked)
+			std::cout << ">> Hooray, we obtained the correct result: ";
+		else
+			std::cout << ">> Not there yet... we obtained: ";
+		std::cout << result << " -> ";
+		displn(n2multiidx(result, dims), " ");
+	}
+
 	// Entanglement
 	{
 		std::cout << std::endl << "**** Entanglement ****" << std::endl;
@@ -152,5 +194,6 @@ int main()
 		std::cout << ">> Norm difference: " << norm(psi - psi_from_schmidt)
 				<< std::endl;
 	}
+
 	// */
 }
