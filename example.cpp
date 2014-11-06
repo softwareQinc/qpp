@@ -127,7 +127,7 @@ int main()
 		for (std::size_t i = 0; i < nqueries; i++)
 		{
 			psi(marked) = -psi(marked); // apply the oracle first, no aliasing
-			psi = (G * psi).eval(); // no aliasing
+			psi = (G * psi).eval(); // then the diffusion operator, no aliasing
 		}
 		// we now measure the state in the computational basis
 		auto measured = measure(psi, gt.Id(N));
