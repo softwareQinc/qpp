@@ -215,7 +215,7 @@ int main()
 		std::cout << "Checking codeword orthogonality." << std::endl;
 		std::cout << ">> <0L | 1L> = ";
 		displn(adjoint(b0) * b1);
-		std::cout << ">> Nine qubit [[9,1,3]] code. ";
+		std::cout << ">> Nine qubit [[9,1,3]] Shor code. ";
 		std::cout << "Checking codeword orthogonality." << std::endl;
 		std::cout << ">> <0L | 1L> = ";
 		displn(adjoint(c0) * c1);
