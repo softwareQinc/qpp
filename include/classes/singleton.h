@@ -33,10 +33,10 @@ namespace internal // internal class, do not modify
  * \brief Singleton policy class, used internally to implement
  * the singleton pattern via CRTP (Curiously recurring template pattern)
  *
- * To implement a singleton, derive your class from \a qpp::internal::Singleton,
- * make \a qpp::internal::Singleton a friend of your class, then declare
+ * To implement a singleton, derive your class from qpp::internal::Singleton,
+ * make qpp::internal::Singleton a friend of your class, then declare
  * the constructor of your class as private. To get an instance, use the static
- * member function \a qpp::internal::Singleton::get_instance(), which returns a
+ * member function qpp::internal::Singleton::get_instance(), which returns a
  * reference to your newly created singleton (thread-safe in C++11).
  *
  * Example:
@@ -57,8 +57,8 @@ namespace internal // internal class, do not modify
  *
  * \endcode
  *
- * \see Code of \a qpp::Codes, \a qpp::Gates, \a qpp::RandomDevices,
- * \a qpp::States or \a qpp.h for real world examples of usage.
+ * \see Code of qpp::Codes, qpp::Gates, qpp::RandomDevices,
+ * qpp::States or qpp.h for real world examples of usage.
  */
 template<typename T>
 class Singleton

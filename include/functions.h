@@ -702,7 +702,7 @@ DynMat<OutputScalar> cwise(const Eigen::MatrixBase<Derived> &A,
  * \brief Kronecker product (variadic overload)
  *
  * Used to stop the recursion for the variadic template version of
- * \a qpp::kron()
+ * qpp::kron()
  *
  * \param head Eigen expression
  * \return Its argument \a head
@@ -919,7 +919,7 @@ DynMat<typename Derived1::Scalar> anticomm(const Eigen::MatrixBase<Derived1> &A,
  *
  * \param V Eigen expression
  * \return Projector onto the state vector \a V, or the matrix \a Zero
- * if \a V has norm zero (i.e. smaller than \a qpp::eps),
+ * if \a V has norm zero (i.e. smaller than qpp::eps),
  * as a dynamic matrix over the same scalar field as \a A
  */
 template<typename Derived>

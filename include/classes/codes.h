@@ -35,7 +35,7 @@ public:
 	/**
 	 * \brief Code types, add more codes here if needed
 	 *
-	 * \see \a qpp::Codes::codeword()
+	 * \see qpp::Codes::codeword()
 	 */
 	enum class Type // exception types
 	{
@@ -52,7 +52,7 @@ public:
 	/**
 	 * \brief Returns the codeword of the specified code
 	 *
-	 * \param type Code type, defined in the enum \a qpp::Codes::Types
+	 * \param type Code type, defined in the enum qpp::Codes::Types
 	 * \param i Codeword index
 	 * \return \a i-th codeword  of the code \a type
 	 */

@@ -27,20 +27,19 @@
 namespace qpp
 {
 
-
 /**
  * \brief Eigen expression or complex number ostream manipulator.
  *
  * \param A Eigen expression
  * \param chop Set to zero the elements smaller in absolute value
  * than \a chop
- * \return qpp::internal::IOManip
+ * \return Instance of qpp::internal::IOManipEigen
  */
 template<typename Derived>
-IOManip<char, std::vector<char>::iterator> disp(
-		const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop)
+IOManipEigen disp(const Eigen::MatrixBase<Derived>& A, double chop =
+		qpp::chop)
 {
-	return IOManip<char, std::vector<char>::iterator>(A, chop);
+	return IOManipEigen(A, chop);
 }
 
 /**
@@ -51,53 +50,51 @@ IOManip<char, std::vector<char>::iterator> disp(
  * \param separator Separator
  * \param start Left marking
  * \param end Right marking
- * \return qpp::internal::IOManip
+ * \return Instance of qpp::internal::IOManipRange
  */
 template<typename InputIterator>
-IOManip<char, InputIterator> disp(const InputIterator& first,
+IOManipRange<InputIterator> disp(const InputIterator& first,
 		const InputIterator& last, const std::string & separator,
 		const std::string& start = "[", const std::string& end = "]")
 {
-	return IOManip<char, InputIterator>(first, last, separator, start, end);
+	return IOManipRange<InputIterator>(first, last, separator, start, end);
 }
 
 /**
  * \brief Standard container ostream manipulator. The container must support
- * std::begin, std::end and forward iteration.
+ * std::begin(), std::end() and forward iteration.
  *
  * \param x Container
  * \param separator Separator
  * \param start Left marking
  * \param end Right marking
- * \return qpp::internal::IOManip
+ * \return Instance of qpp::internal::IOManipRange
  */
-template<typename T>
-IOManip<char, typename T::const_iterator> disp(const T& x,
+template<typename Container>
+IOManipRange<typename Container::const_iterator> disp(const Container& c,
 		const std::string & separator, const std::string& start = "[",
 		const std::string& end = "]")
 {
-	return IOManip<char, typename T::const_iterator>(x.begin(), x.end(),
+	return IOManipRange<typename Container::const_iterator>(c.cbegin(), c.cend(),
 			separator, start, end);
 }
 
 /**
- * \brief C-style string ostream manipulator
- *
- * \see \a qpp::displn()
+ * \brief C-style pointer ostream manipulator
  *
  * \param x Pointer to the first element
  * \param n Number of elements to be displayed
  * \param separator Separator
  * \param start Left marking
  * \param end Right marking
- * \return qpp::internal::IOManip
+ * \return Instance of qpp::internal::IOManipPointer
  */
-template<typename T>
-IOManip<T, std::vector<char>::iterator> disp(const T* p, std::size_t n,
+template<typename PointerType>
+IOManipPointer<PointerType> disp(const PointerType* p, std::size_t n,
 		const std::string & separator, const std::string& start = "[",
 		const std::string& end = "]")
 {
-	return IOManip<T, std::vector<char>::iterator>(p, n, separator, start, end);
+	return IOManipPointer<PointerType>(p, n, separator, start, end);
 }
 
 /**

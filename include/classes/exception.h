@@ -107,7 +107,7 @@ public:
 		/*!< Templated function not defined for this type */
 		NO_CODEWORD,				 //!< NO_CODEWORD
 		/*!< Codeword does not exist, thrown when calling
-		 * \a qpp::Codes::codeword() with invalid \a i */
+		 * qpp::Codes::codeword() with invalid \a i */
 		CUSTOM_EXCEPTION             //!< CUSTOM_EXCEPTION
 		/*!< Custom exception, user must provide a custom message */
 	};

@@ -50,8 +50,8 @@ constexpr std::complex<double> operator "" _i(long double x)
 }
 
 /**
- * \brief  Used in \a qpp::disp() and \a qpp::displn() for setting to zero
- * numbers that have their absolute value smaller than \a qpp::ct::chop
+ * \brief  Used in qpp::disp() and qpp::displn() for setting to zero
+ * numbers that have their absolute value smaller than qpp::ct::chop
  */
 constexpr double chop = 1e-10;
 

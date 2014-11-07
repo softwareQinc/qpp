@@ -802,7 +802,7 @@ double renyi_inf(const Eigen::MatrixBase<Derived>& A)
 /**
  * \brief Displays a range. Does not add a newline.
  *
- * \see \a qpp::displn()
+ * \see qpp::displn()
  *
  * \param first Iterator to the first element of the range
  * \param last  Iterator to the last element of the range
@@ -842,7 +842,7 @@ void disp(const InputIterator& first, const InputIterator& last,
 /**
  * \brief Displays a range. Adds a newline.
  *
- * \see \a qpp::disp()
+ * \see qpp::disp()
  *
  * \param first Iterator to the first element of the range
  * \param last  Iterator to the last element of the range
@@ -866,7 +866,7 @@ std::ostream& displn(const InputIterator& first, const InputIterator& last,
  * \brief Displays a standard container that supports std::begin, std::end
  * and forward iteration. Does not add a newline.
  *
- * \see \a qpp::displn()
+ * \see qpp::displn()
  *
  * \param x Container
  * \param separator Separator
@@ -888,7 +888,7 @@ std::ostream& disp(const T& x, const std::string & separator,
  * \brief Displays a standard container that supports std::begin, std::end
  * and forward iteration. Adds a newline.
  *
- * \see \a qpp::disp()
+ * \see qpp::disp()
  *
  * \param x Container
  * \param separator Separator
@@ -910,7 +910,7 @@ std::ostream& displn(const T& x, const std::string & separator,
 /**
  * \brief Displays a C-style array. Does not add a newline.
  *
- * \see \a qpp::displn()
+ * \see qpp::displn()
  *
  * \param x Pointer to the first element
  * \param n Number of elements to be displayed
@@ -939,7 +939,7 @@ std::ostream& disp(const T* x, const std::size_t n,
 /**
  * \brief Displays a C-style array. Adds a newline.
  *
- * \see \a qpp::disp()
+ * \see qpp::disp()
  *
  * \param x Pointer to the first element
  * \param n Number of elements to be displayed
@@ -963,7 +963,7 @@ std::ostream& displn(const T* x, const std::size_t n,
  * \brief Displays an Eigen expression in matrix friendly form. Does not add a
  * new line.
  *
- * \see \a qpp::displn()
+ * \see qpp::displn()
  *
  * \param A Eigen expression
  * \param chop Set to zero the elements smaller in absolute value
@@ -1061,7 +1061,7 @@ std::ostream& disp(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
 /**
  * \brief Displays an Eigen expression in matrix friendly form. Adds a newline.
  *
- * \see \a qpp::disp()
+ * \see qpp::disp()
  *
  * \param A Eigen expression
  * \param chop Set to zero the elements smaller in absolute value
@@ -1082,7 +1082,7 @@ std::ostream& displn(const Eigen::MatrixBase<Derived>& A, double chop =
  * \brief Displays a number (implicitly converted to std::complex<double>)
  * in friendly form. Does not add a new line.
  *
- * \see \a qpp::displn()
+ * \see qpp::displn()
  *
  * \param z Real/complex number
  * \param chop Set to zero the elements smaller in absolute value
@@ -1104,7 +1104,7 @@ std::ostream& disp(const cplx z, double chop = qpp::chop, std::ostream& os =
  * \brief Displays a number (implicitly converted to std::complex<double>)
  * in friendly form. Adds a new line.
  *
- * \see \a qpp::disp()
+ * \see qpp::disp()
  *
  * \param z Real/complex number
  * \param chop Set to zero the elements smaller in absolute value

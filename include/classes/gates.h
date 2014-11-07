@@ -340,7 +340,7 @@ public:
 	 * \brief Expands out
 	 *
 	 *  Expands out \a A as a matrix in a multi-partite system\n
-	 *  Faster than using \a qpp::kron(I, I, ..., I, A, I, ..., I)
+	 *  Faster than using qpp::kron(I, I, ..., I, A, I, ..., I)
 	 *
 	 * \param A Eigen expression
 	 * \param pos Position

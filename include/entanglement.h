@@ -31,7 +31,7 @@ namespace qpp
  * \brief Schmidt coefficients of the bi-partite pure state \a A
  *
  * \note The sum of the squares of the Schmidt coefficients equals 1
- * \see \a qpp::schmidtprob()
+ * \see qpp::schmidtprob()
  *
  * \param A Eigen expression
  * \param dims Subsystems' dimensions
@@ -125,7 +125,7 @@ cmat schmidtV(const Eigen::MatrixBase<Derived>& A,
  *
  * Defined as the squares of the Schmidt coefficients\n
  * The sum of the Schmidt probabilities equals 1
- * \see \a qpp::schmidtcoeff()
+ * \see qpp::schmidtcoeff()
  *
  * \param A Eigen expression
  * \param dims Subsystems' dimensions
@@ -192,7 +192,7 @@ double entanglement(const Eigen::MatrixBase<Derived>& A,
  *
  * \note Both local dimensions must be equal
  *
- * Uses \a qpp::logdet() to avoid overflows
+ * Uses qpp::logdet() to avoid overflows
  * \see qpp::logdet()
  *
  * \param A Eigen expression

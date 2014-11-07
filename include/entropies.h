@@ -82,7 +82,7 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
  * \param A Eigen expression, representing a probability distribution
  * (real dynamic column vector) or a density matrix (complex dynamic matrix)
  * \param alpha Non-negative real number,
- * use \a qpp::infty for \f$\alpha = \infty\f$
+ * use qpp::infty for \f$\alpha = \infty\f$
  * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
  */
 template<typename Derived>
