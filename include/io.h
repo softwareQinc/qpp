@@ -27,116 +27,61 @@
 namespace qpp
 {
 
+
 /**
- * \brief Displays a range. Does not add a newline.
+ * \brief Eigen expression or complex number ostream manipulator.
  *
- * \see \a qpp::displn()
+ * \param A Eigen expression
+ * \param chop Set to zero the elements smaller in absolute value
+ * than \a chop
+ * \return qpp::internal::IOManip
+ */
+template<typename Derived>
+IOManip<char, std::vector<char>::iterator> disp(
+		const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop)
+{
+	return IOManip<char, std::vector<char>::iterator>(A, chop);
+}
+
+/**
+ * \brief Range ostream manipulator
  *
  * \param first Iterator to the first element of the range
  * \param last  Iterator to the last element of the range
  * \param separator Separator
  * \param start Left marking
  * \param end Right marking
- * \param os Output stream
- * \return Output stream
+ * \return qpp::internal::IOManip
  */
 template<typename InputIterator>
-void disp(const InputIterator& first, const InputIterator& last,
-		const std::string & separator, const std::string& start = "[",
-		const std::string& end = "]", std::ostream& os = std::cout)
+IOManip<char, InputIterator> disp(const InputIterator& first,
+		const InputIterator& last, const std::string & separator,
+		const std::string& start = "[", const std::string& end = "]")
 {
-	os << start;
-
-	auto it = first;
-	auto it_end = last;
-
-	if (it != it_end)
-	{
-		// the iterator just before the end, need this for containers
-		// that do not have backwards iterators
-		decltype(it_end) it_before_end = it;
-		while (it_before_end = it, ++it != it_end)
-			;
-
-		it = first;
-		for (; it != it_before_end; ++it)
-			os << *it << separator;
-		os << *it;
-	}
-
-	os << end;
+	return IOManip<char, InputIterator>(first, last, separator, start, end);
 }
 
 /**
- * \brief Displays a range. Adds a newline.
- *
- * \see \a qpp::disp()
- *
- * \param first Iterator to the first element of the range
- * \param last  Iterator to the last element of the range
- * \param separator Separator
- * \param start Left marking
- * \param end Right marking
- * \param os Output stream
- * \return Output stream
- */
-template<typename InputIterator>
-std::ostream& displn(const InputIterator& first, const InputIterator& last,
-		const std::string & separator, const std::string& start = "[",
-		const std::string& end = "]", std::ostream& os = std::cout)
-{
-	disp(first, last, separator, start, end, os);
-	os << std::endl;
-	return os;
-}
-
-/**
- * \brief Displays a standard container that supports std::begin, std::end
- * and forward iteration. Does not add a newline.
- *
- * \see \a qpp::displn()
+ * \brief Standard container ostream manipulator. The container must support
+ * std::begin, std::end and forward iteration.
  *
  * \param x Container
  * \param separator Separator
  * \param start Left marking
  * \param end Right marking
- * \param os Output stream
- * \return Output stream
+ * \return qpp::internal::IOManip
  */
 template<typename T>
-std::ostream& disp(const T& x, const std::string & separator,
-		const std::string& start = "[", const std::string& end = "]",
-		std::ostream& os = std::cout)
+IOManip<char, typename T::const_iterator> disp(const T& x,
+		const std::string & separator, const std::string& start = "[",
+		const std::string& end = "]")
 {
-	disp(std::begin(x), std::end(x), separator, start, end, os);
-	return os;
+	return IOManip<char, typename T::const_iterator>(x.begin(), x.end(),
+			separator, start, end);
 }
 
 /**
- * \brief Displays a standard container that supports std::begin, std::end
- * and forward iteration. Adds a newline.
- *
- * \see \a qpp::disp()
- *
- * \param x Container
- * \param separator Separator
- * \param start Left marking
- * \param end Right marking
- * \param os Output stream
- * \return Output stream
- */
-template<typename T>
-std::ostream& displn(const T& x, const std::string & separator,
-		const std::string& start = "[", const std::string& end = "]",
-		std::ostream& os = std::cout)
-{
-	disp(x, separator, start, end, os);
-	os << std::endl;
-	return os;
-}
-
-/**
- * \brief Displays a C-style array. Does not add a newline.
+ * \brief C-style string ostream manipulator
  *
  * \see \a qpp::displn()
  *
@@ -145,207 +90,14 @@ std::ostream& displn(const T& x, const std::string & separator,
  * \param separator Separator
  * \param start Left marking
  * \param end Right marking
- * \param os Output stream
- * \return Output stream
+ * \return qpp::internal::IOManip
  */
 template<typename T>
-std::ostream& disp(const T* x, const std::size_t n,
-		const std::string& separator, const std::string& start = "[",
-		const std::string& end = "]", std::ostream& os = std::cout)
-{
-	os << start;
-
-	for (std::size_t i = 0; i < n - 1; i++)
-		os << x[i] << separator;
-	if (n > 0)
-		os << x[n - 1];
-
-	os << end;
-	return os;
-}
-
-/**
- * \brief Displays a C-style array. Adds a newline.
- *
- * \see \a qpp::disp()
- *
- * \param x Pointer to the first element
- * \param n Number of elements to be displayed
- * \param separator Separator
- * \param start Left marking
- * \param end Right marking
- * \param os Output stream
- * \return Output stream
- */
-template<typename T>
-std::ostream& displn(const T* x, const std::size_t n,
+IOManip<T, std::vector<char>::iterator> disp(const T* p, std::size_t n,
 		const std::string & separator, const std::string& start = "[",
-		const std::string& end = "]", std::ostream& os = std::cout)
+		const std::string& end = "]")
 {
-	disp(x, n, separator, start, end, os);
-	os << std::endl;
-	return os;
-}
-
-/**
- * \brief Displays an Eigen expression in matrix friendly form. Does not add a
- * new line.
- *
- * \see \a qpp::displn()
- *
- * \param A Eigen expression
- * \param chop Set to zero the elements smaller in absolute value
- * than \a chop
- * \param os Output stream
- * \return Output stream
- */
-template<typename Derived>
-std::ostream& disp(const Eigen::MatrixBase<Derived>& A, double chop = qpp::chop,
-		std::ostream& os = std::cout)
-{
-	const DynMat<typename Derived::Scalar> & rA = A;
-
-	if (rA.size() == 0)
-	{
-		os << "Empty [" << rA.rows() << " x " << rA.cols() << "] matrix";
-		return os;
-	};
-
-	std::ostringstream ostr;
-	ostr.copyfmt(os); // copy os' state
-
-	std::vector<std::string> vstr;
-	std::string strA { };
-
-	for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
-	{
-		for (std::size_t j = 0; j < static_cast<std::size_t>(rA.cols()); j++)
-		{
-			strA.clear(); // clear the temporary string
-			ostr.clear();
-			ostr.str(std::string { }); // clear the ostringstream
-
-			// convert to complex
-			double re = static_cast<cplx>(rA(i, j)).real();
-			double im = static_cast<cplx>(rA(i, j)).imag();
-
-			if (std::abs(re) < chop && std::abs(im) < chop)
-			{
-				ostr << "0 "; // otherwise segfault on destruction
-							  // if using only vstr.push_back("0 ");
-							  // bug in MATLAB's libmx
-				vstr.push_back(ostr.str());
-			}
-			else if (std::abs(re) < chop)
-			{
-				ostr << im;
-				vstr.push_back(ostr.str() + "i");
-			}
-			else if (std::abs(im) < chop)
-			{
-				ostr << re;
-				vstr.push_back(ostr.str() + " ");
-			}
-			else
-			{
-				ostr << re;
-				strA = ostr.str();
-
-				strA += (im > 0 ? " + " : " - ");
-				ostr.clear();
-				ostr.str(std::string()); // clear
-				ostr << std::abs(im);
-				strA += ostr.str();
-				strA += "i";
-				vstr.push_back(strA);
-			}
-		}
-	}
-
-	// determine the maximum lenght of the entries in each column
-	std::vector < std::size_t > maxlengthcols(rA.cols(), 0);
-
-	for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
-		for (std::size_t j = 0; j < static_cast<std::size_t>(rA.cols()); j++)
-			if (vstr[i * rA.cols() + j].size() > maxlengthcols[j])
-				maxlengthcols[j] = vstr[i * rA.cols() + j].size();
-
-	// finally display it!
-	for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
-	{
-		os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
-				<< vstr[i * rA.cols()]; // display first column
-		// then the rest
-		for (std::size_t j = 1; j < static_cast<std::size_t>(rA.cols()); j++)
-			os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
-					<< std::right << vstr[i * rA.cols() + j];
-
-		if (i < static_cast<std::size_t>(rA.rows()) - 1)
-			os << std::endl;
-	}
-	return os;
-}
-
-/**
- * \brief Displays an Eigen expression in matrix friendly form. Adds a newline.
- *
- * \see \a qpp::disp()
- *
- * \param A Eigen expression
- * \param chop Set to zero the elements smaller in absolute value
- * than \a chop
- * \param os Output stream
- * \return Output stream
- */
-template<typename Derived>
-std::ostream& displn(const Eigen::MatrixBase<Derived>& A, double chop =
-		qpp::chop, std::ostream& os = std::cout)
-{
-	disp(A, chop, os);
-	os << std::endl;
-	return os;
-}
-
-/**
- * \brief Displays a number (implicitly converted to std::complex<double>)
- * in friendly form. Does not add a new line.
- *
- * \see \a qpp::displn()
- *
- * \param z Real/complex number
- * \param chop Set to zero the elements smaller in absolute value
- * than \a chop
- * \param os Output stream
- * \return Output stream
- */
-std::ostream& disp(const cplx z, double chop = qpp::chop, std::ostream& os =
-		std::cout)
-{
-// put the complex number inside an Eigen matrix
-	cmat A(1, 1);
-	A(0, 0) = z;
-	disp(A, chop, os);
-	return os;
-}
-
-/**
- * \brief Displays a number (implicitly converted to std::complex<double>)
- * in friendly form. Adds a new line.
- *
- * \see \a qpp::disp()
- *
- * \param z Real/complex number
- * \param chop Set to zero the elements smaller in absolute value
- * than \a chop
- * \param os Output stream
- * \return Output stream
- */
-std::ostream& displn(const cplx z, double chop = qpp::chop, std::ostream& os =
-		std::cout)
-{
-	disp(z, chop, os);
-	os << std::endl;
-	return os;
+	return IOManip<T, std::vector<char>::iterator>(p, n, separator, start, end);
 }
 
 /**

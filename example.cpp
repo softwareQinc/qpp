@@ -41,7 +41,7 @@ int main()
 						* kron(gt.Fd(D), gt.Id(D)));
 		ket psi_a = randket(D); // random state as input on a
 		std::cout << ">> Initial state:" << std::endl;
-		displn(psi_a);
+		std::cout << disp(psi_a) << std::endl;
 		ket input_aAB = kron(psi_a, mes_AB); // joint input state aAB
 		// output before measurement
 		ket output_aAB = apply(input_aAB, Bell_aA, { 0, 1 }, 3, D);
@@ -50,11 +50,11 @@ int main()
 		std::discrete_distribution<std::size_t> dd(measured_aA.first.begin(),
 				measured_aA.first.end());
 		std::cout << ">> Measurement probabilities: ";
-		displn(measured_aA.first, ", ");
+		std::cout << disp(measured_aA.first, ", ") << std::endl;
 		std::size_t m = dd(rdevs._rng); // sample
 		auto midx = n2multiidx(m, { D, D });
 		std::cout << ">> Measurement result: ";
-		displn(midx, " ");
+		std::cout << disp(midx, " ") << std::endl;
 		// conditional result on B before correction
 		ket output_m_aAB = apply(output_aAB, prj(mket(midx, D)), { 0, 1 }, 3, D)
 				/ std::sqrt(measured_aA.first[m]);
@@ -64,7 +64,7 @@ int main()
 		output_aAB = apply(output_m_aAB, correction_B, { 2 }, 3, D);
 		cmat rho_B = ptrace1(prj(output_aAB), { D * D, D });
 		std::cout << ">> Bob's density operator: " << std::endl;
-		displn(rho_B);
+		std::cout << disp(rho_B) << std::endl;
 		std::cout << ">> Norm difference: " << norm(rho_B - prj(psi_a))
 				<< std::endl; // verification
 	}
@@ -86,7 +86,7 @@ int main()
 		std::size_t m_A = uid(rdevs._rng); // sample, obtain the message index
 		auto midx = n2multiidx(m_A, { D, D });
 		std::cout << ">> Alice sent: ";
-		displn(midx, " ");
+		std::cout << disp(midx, " ") << std::endl;
 		// Alice's operation
 		cmat U_A = powm(gt.Zd(D), midx[0]) * powm(adjoint(gt.Xd(D)), midx[1]);
 		// Alice encodes the message
@@ -95,13 +95,13 @@ int main()
 		psi_AB = apply(psi_AB, Bell_AB, { 0, 1 }, 2, D);
 		auto measured = measure(psi_AB, gt.Id(D * D));
 		std::cout << ">> Bob measurement probabilities: ";
-		displn(measured.first, ", ");
+		std::cout << disp(measured.first, ", ") << std::endl;
 		// Bob samples according to the measurement probabilities
 		std::discrete_distribution<std::size_t> dd(measured.first.begin(),
 				measured.first.end());
 		std::size_t m_B = dd(rdevs._rng);
 		std::cout << ">> Bob received: ";
-		displn(n2multiidx(m_B, { D, D }), " ");
+		std::cout << disp(n2multiidx(m_B, { D, D }), " ") << std::endl;
 	}
 
 	// Grover's search algorithm, we time it
@@ -117,7 +117,7 @@ int main()
 		std::uniform_int_distribution<std::size_t> uid(0, N - 1);
 		std::size_t marked = uid(rdevs._rng);
 		std::cout << ">> Marked state: " << marked << " -> ";
-		displn(n2multiidx(marked, dims), " ");
+		std::cout << disp(n2multiidx(marked, dims), " ") << std::endl;
 		ket psi = mket(n2multiidx(0, dims)); // computational |0>^\otimes n
 		psi = (kronpow(gt.H, n) * psi).eval(); // apply H^\otimes n, no aliasing
 		cmat G = 2 * prj(psi) - gt.Id(N); // Diffusion operator
@@ -134,7 +134,7 @@ int main()
 		std::cout << ">> Probability of the marked state: "
 				<< measured.first[marked] << std::endl;
 		std::cout << ">> Probability of all results: ";
-		displn(measured.first, ", ");
+		std::cout << disp(measured.first, ", ") << std::endl;
 		std::cout << ">> Let's sample..." << std::endl;
 		std::discrete_distribution<std::size_t> dd(measured.first.begin(),
 				measured.first.end());
@@ -144,7 +144,7 @@ int main()
 		else
 			std::cout << ">> Not there yet... we obtained: ";
 		std::cout << result << " -> ";
-		displn(n2multiidx(result, dims), " ");
+		std::cout << disp(n2multiidx(result, dims), " ") << std::endl;
 		// stop the timer and display it
 		std::cout << ">> It took " << t.toc()
 				<< " seconds to simulate Grover on " << n << " qubits."
@@ -156,7 +156,7 @@ int main()
 		std::cout << std::endl << "**** Entanglement ****" << std::endl;
 		cmat rho = 0.2 * st.pb00 + 0.8 * st.pb11;
 		std::cout << ">> rho: " << std::endl;
-		displn(rho);
+		std::cout << disp(rho) << std::endl;
 		std::cout << ">> Concurrence of rho: " << concurrence(rho) << std::endl;
 		std::cout << ">> Negativity of rho: " << negativity(rho, { 2, 2 })
 				<< std::endl;
@@ -166,7 +166,7 @@ int main()
 		// apply some local random unitaries
 		psi = kron(randU(2), randU(2)) * psi;
 		std::cout << ">> psi: " << std::endl;
-		displn(psi);
+		std::cout << disp(psi) << std::endl;
 		std::cout << ">> Entanglement of psi: " << entanglement(psi, { 2, 2 })
 				<< std::endl;
 		std::cout << ">> Concurrence of psi: " << concurrence(prj(psi))
@@ -174,17 +174,17 @@ int main()
 		std::cout << ">> G-Concurrence of psi: " << gconcurrence(psi)
 				<< std::endl;
 		std::cout << ">> Schmidt coefficients of psi: " << std::endl;
-		displn(schmidtcoeff(psi, { 2, 2 }));
+		std::cout << disp(schmidtcoeff(psi, { 2, 2 })) << std::endl;
 		std::cout << ">> Schmidt probabilities of psi: " << std::endl;
-		displn(schmidtprob(psi, { 2, 2 }));
+		std::cout << disp(schmidtprob(psi, { 2, 2 })) << std::endl;
 		cmat U = schmidtU(psi, { 2, 2 });
 		cmat V = schmidtV(psi, { 2, 2 });
 		std::cout << ">> Schmidt vectors on Alice's side: " << std::endl;
-		displn(U);
+		std::cout << disp(U) << std::endl;
 		std::cout << ">> Schmidt vectors on Bob's side: " << std::endl;
-		displn(V);
+		std::cout << disp(V) << std::endl;
 		std::cout << ">> State psi in the Schmidt basis: " << std::endl;
-		displn(adjoint(kron(U, V)) * psi);
+		std::cout << disp(adjoint(kron(U, V)) * psi) << std::endl;
 		// reconstructed state
 		ket psi_from_schmidt = schmidtcoeff(psi, { 2, 2 })(0)
 				* kron(U.col(0), V.col(0))
@@ -192,7 +192,7 @@ int main()
 		std::cout
 				<< ">> State psi reconstructed from the Schmidt decomposition: "
 				<< std::endl;
-		displn(psi_from_schmidt);
+		std::cout << disp(psi_from_schmidt) << std::endl;
 		std::cout << ">> Norm difference: " << norm(psi - psi_from_schmidt)
 				<< std::endl;
 	}
@@ -210,14 +210,14 @@ int main()
 		std::cout << ">> Five qubit [[5, 1, 3]] code. ";
 		std::cout << "Checking codeword orthogonality." << std::endl;
 		std::cout << ">> <0L | 1L> = ";
-		displn(adjoint(a0) * a1);
+		std::cout << disp(adjoint(a0) * a1) << std::endl;
 		std::cout << ">> Seven qubit [[7, 1, 3]] Steane code. ";
 		std::cout << "Checking codeword orthogonality." << std::endl;
 		std::cout << ">> <0L | 1L> = ";
-		displn(adjoint(b0) * b1);
+		std::cout << disp(adjoint(b0) * b1) << std::endl;
 		std::cout << ">> Nine qubit [[9, 1, 3]] Shor code. ";
 		std::cout << "Checking codeword orthogonality." << std::endl;
 		std::cout << ">> <0L | 1L> = ";
-		displn(adjoint(c0) * c1);
+		std::cout << disp(adjoint(c0) * c1) << std::endl;
 	}
 }

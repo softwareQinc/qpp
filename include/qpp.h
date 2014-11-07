@@ -71,6 +71,7 @@
 #include "classes/codes.h"
 #include "operations.h"
 #include "entropies.h"
+#include "internal/classes/iomanip.h"
 #include "io.h"
 #include "entanglement.h"
 

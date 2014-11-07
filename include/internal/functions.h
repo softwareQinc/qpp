@@ -53,7 +53,7 @@ inline std::size_t _multiidx2n(const std::size_t* midx, std::size_t numdims,
 {
 // no error checks to improve speed
 
-// Static allocation for speed!
+	// Static allocation for speed!
 	// double the size for matrices reshaped as vectors
 	std::size_t part_prod[2 * maxn];
 
@@ -65,7 +65,7 @@ inline std::size_t _multiidx2n(const std::size_t* midx, std::size_t numdims,
 	for (std::size_t i = 0; i < numdims; i++)
 		result += midx[i] * part_prod[i];
 
-	return result;
+	return 0;
 }
 
 // check square matrix
