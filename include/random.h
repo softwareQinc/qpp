@@ -65,7 +65,7 @@ Derived rand(std::size_t rows, std::size_t cols, double a = 0, double b = 1)
  * \return Random real matrix
  */
 template<>
-dmat rand(std::size_t rows, std::size_t cols, double a, double b)
+inline dmat rand(std::size_t rows, std::size_t cols, double a, double b)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("rand", Exception::Type::ZERO_SIZE);
@@ -95,7 +95,7 @@ dmat rand(std::size_t rows, std::size_t cols, double a, double b)
  * \return Random complex matrix
  */
 template<>
-cmat rand(std::size_t rows, std::size_t cols, double a, double b)
+inline cmat rand(std::size_t rows, std::size_t cols, double a, double b)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("rand", Exception::Type::ZERO_SIZE);
@@ -172,7 +172,7 @@ Derived randn(std::size_t rows, std::size_t cols, double mean = 0,
  * \return Random real matrix
  */
 template<>
-dmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
+inline dmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
@@ -205,7 +205,7 @@ dmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
  * \return Random complex matrix
  */
 template<>
-cmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
+inline cmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 {
 	if (rows == 0 || cols == 0)
 		throw Exception("randn", Exception::Type::ZERO_SIZE);
