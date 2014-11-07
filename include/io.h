@@ -28,7 +28,7 @@ namespace qpp
 {
 
 /**
- * \brief Eigen expression or complex number ostream manipulator.
+ * \brief Eigen expression ostream manipulator.
  *
  * \param A Eigen expression
  * \param chop Set to zero the elements smaller in absolute value
@@ -40,6 +40,21 @@ internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A, double chop =
 		qpp::chop)
 {
 	return internal::IOManipEigen(A, chop);
+}
+
+/**
+ * \brief Complex number ostream manipulator.
+ *
+ * \param z Complex number (or any other type implicitly cast-able
+ * to std::complex<double>)
+ * \param chop Set to zero the elements smaller in absolute value
+ * than \a chop
+ * \return Instance of qpp::internal::internal::IOManipEigen
+ */
+internal::IOManipEigen disp(cplx z, double chop =
+		qpp::chop)
+{
+	return internal::IOManipEigen(z, chop);
 }
 
 /**
