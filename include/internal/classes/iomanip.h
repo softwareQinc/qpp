@@ -10,6 +10,8 @@
 
 namespace qpp
 {
+namespace internal
+{
 
 template<typename InputIterator>
 class IOManipRange
@@ -202,6 +204,8 @@ public:
 	}
 }; /* class IOManipEigen */
 
+
+} /* namespace internal */
 } /* namespace qpp */
 
 #endif /* INCLUDE_INTERNAL_CLASSES_IOMANIP_H_ */
