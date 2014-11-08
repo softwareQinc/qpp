@@ -65,7 +65,7 @@ inline std::size_t _multiidx2n(const std::size_t* midx, std::size_t numdims,
 	for (std::size_t i = 0; i < numdims; i++)
 		result += midx[i] * part_prod[i];
 
-	return 0;
+	return result;
 }
 
 // check square matrix
