@@ -2,4 +2,5 @@
 *~
 *.swp
 qpp
-update*
+.idea
+build
