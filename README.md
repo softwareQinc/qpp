@@ -77,8 +77,8 @@ The current version of the repository has a `CMakeLists.txt` configuration file 
     cmake -DWITH_MATLAB=ON ..
     make
 
-The above commands create the relase mode executable `qpp`, with MATLAB support, inside the directory `./build`. 
-To build a different configuration, e.g. debug configuration without MATLAB support, 
+The above commands create the relase-mode executable `qpp`, with MATLAB support, inside the directory `./build`. 
+To build a different configuration, e.g. debug-mode without MATLAB support (default), 
 type from inside the `./build` directory
 
     rm -rf *
@@ -89,7 +89,8 @@ The above commands create the debug mode executable `qpp`, without MATLAB suppor
 inside the directory `./build`.
 
 To change the location of `Eigen3` library or the location of MATLAB installation, 
-edit the `CMakeLists.txt` file. Do not forget to remove everything from the `./build` directory before a fresh build
+edit the `CMakeLists.txt` file. 
+Do not forget to remove everything from the `./build` directory before a fresh build!
 
 
 PS: For convenience, the current version of the repository has also a set of Makefiles available 
