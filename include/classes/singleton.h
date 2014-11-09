@@ -24,67 +24,71 @@
 
 namespace qpp
 {
-namespace internal // internal class, do not modify
-{
+    namespace internal // internal class, do not modify
+    {
 
 // Singleton policy class
 /**
- * \class qpp::internal::Singleton
- * \brief Singleton policy class, used internally to implement
- * the singleton pattern via CRTP (Curiously recurring template pattern)
- *
- * To implement a singleton, derive your class from qpp::internal::Singleton,
- * make qpp::internal::Singleton a friend of your class, then declare
- * the constructor of your class as private. To get an instance, use the static
- * member function qpp::internal::Singleton::get_instance(), which returns a
- * reference to your newly created singleton (thread-safe in C++11).
- *
- * Example:
- * \code
- * class MySingleton: public qpp::internal::Singleton<MySingleton>
- * {
- * 	   friend class qpp::internal::Singleton<MySingleton>;
- * public:
- *     // Declare all public members here
- * private:
- *     MySingleton()
- *     {
- *         // Implement the constructor here
- *     }
- * };
- *
- * MySingleton& mySingleton = MySingleton::get_instance(); // Get an instance
- *
- * \endcode
- *
- * \see Code of qpp::Codes, qpp::Gates, qpp::RandomDevices,
- * qpp::States or qpp.h for real world examples of usage.
- */
-template<typename T>
-class Singleton
-{
-protected:
-	Singleton() = default;
-	virtual ~Singleton()
-	{
-	}
-	// = default yields "looser throw specifer in g++ <= 4.7"
-	//see http://stackoverflow.com/questions/11497252/default-destructor-nothrow
-	Singleton(const Singleton&) = delete;
-	Singleton& operator=(const Singleton&) = delete;
-public:
-	static T& get_instance()
-	{
-		// Guaranteed to be destroyed.
-		// Instantiated on first use.
-		// Thread safe in C++11
-		static T instance;
-		return instance;
-	}
-};
+* \class qpp::internal::Singleton
+* \brief Singleton policy class, used internally to implement
+* the singleton pattern via CRTP (Curiously recurring template pattern)
+*
+* To implement a singleton, derive your class from qpp::internal::Singleton,
+* make qpp::internal::Singleton a friend of your class, then declare
+* the constructor of your class as private. To get an instance, use the static
+* member function qpp::internal::Singleton::get_instance(), which returns a
+* reference to your newly created singleton (thread-safe in C++11).
+*
+* Example:
+* \code
+* class MySingleton: public qpp::internal::Singleton<MySingleton>
+* {
+* 	   friend class qpp::internal::Singleton<MySingleton>;
+* public:
+*     // Declare all public members here
+* private:
+*     MySingleton()
+*     {
+*         // Implement the constructor here
+*     }
+* };
+*
+* MySingleton& mySingleton = MySingleton::get_instance(); // Get an instance
+*
+* \endcode
+*
+* \see Code of qpp::Codes, qpp::Gates, qpp::RandomDevices,
+* qpp::States or qpp.h for real world examples of usage.
+*/
+        template<typename T>
+        class Singleton
+        {
+        protected:
+            Singleton() = default;
+
+            virtual ~Singleton()
+            {
+            }
+
+            // = default yields "looser throw specifer in g++ <= 4.7"
+            //see http://stackoverflow.com/questions/11497252/default-destructor-nothrow
+            Singleton(const Singleton &) = delete;
+
+            Singleton &operator=(const Singleton &) = delete;
+
+        public:
+            static T &get_instance()
+            {
+                // Guaranteed to be destroyed.
+                // Instantiated on first use.
+                // Thread safe in C++11
+                static T instance;
+                return instance;
+            }
+        };
 /* class Singleton */
 
-} /* namespace internal */
+    } /* namespace internal */
 } /* namespace qpp */
 
 #endif /* INCLUDE_CLASSES_SINGLETON_H_ */
