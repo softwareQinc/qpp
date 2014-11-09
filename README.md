@@ -69,11 +69,11 @@ Example of run command:
 Otherwise, you will get a runtime error like `dyld: Library not loaded: @rpath/libmat.dylib`
 
 The current version of the repository has a `CMakeLists.txt` configuration file for building using `cmake`
- (`cmake` has to be installed). To build the project using `cmake`, I recommend an out-of-source build, 
+ (`cmake` needs to be installed). To build the project using `cmake`, I recommend an out-of-source build, 
  i.e., from the root of the project, type
 
-    mkdir build
-    cd build
+    mkdir ./build
+    cd ./build
     cmake ..
     make
 
