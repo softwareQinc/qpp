@@ -2,4 +2,4 @@
 
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"
 
-./qpp
+./build/qpp
