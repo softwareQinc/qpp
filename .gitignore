@@ -4,3 +4,6 @@
 qpp
 .idea
 build
+latex
+documentation.Doxyfile
+mainpage.dox
