@@ -1,0 +1,44 @@
+\form#0:$ Z = \sum_j \exp(2\pi i j/D) |j\rangle\langle j| $
+\form#1:$ F = \sum_{jk} \exp(2\pi i jk/D) |j\rangle\langle k| $
+\form#2:$ X = \sum_j |j\oplus 1\rangle\langle j| $
+\form#3:$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I$
+\form#4:$i=\sqrt{-1}$
+\form#5:$ \pi $
+\form#6:$e$
+\form#7:$\exp(2\pi i/D)$
+\form#8:$ U $
+\form#9:$ V $
+\form#10:$\alpha$
+\form#11:$ \alpha\geq 0$
+\form#12:$\alpha = \infty$
+\form#13:$ \alpha\to 1$
+\form#14:$ e $
+\form#15:$\{|i\rangle\langle j|\}$
+\form#16:$|0\rangle\langle 0|$
+\form#17:$|0\rangle\langle 1|$
+\form#18:$S$
+\form#19:$ C$
+\form#20:$ S_{ab,mn} = C_{ma,nb}$
+\form#21:$ \sum_i K_i^\dagger K_i = I$
+\form#22:$\infty$
+\form#23:$\pm \infty$
+\form#24:$f(A)$
+\form#25:$A^0 = I$
+\form#26:$A^z$
+\form#27:$A^n$
+\form#28:$A^{\otimes n}$
+\form#29:$ [A,B] = AB - BA $
+\form#30:$AB -BA$
+\form#31:$ \{A,B\} = AB + BA $
+\form#32:$AB +BA$
+\form#33:$|\mathrm{mask}\rangle$
+\form#34:$\circ$
+\form#35:$Tr(K_i^\dagger K_j)=\delta_{ij}$
+\form#36:$i\neq j$
+\form#37:$Tr_{A}(\cdot)$
+\form#38:$A$
+\form#39:$A\otimes B$
+\form#40:$Tr_{B}(\cdot)$
+\form#41:$B$
+\form#42:$Tr_{subsys}(\cdot)$
+\form#43:$(\cdot)^{T_{subsys}}$

@@ -1,0 +1,23 @@
+<map id="include/qpp.h" name="include/qpp.h">
+<area shape="rect" id="node29" href="$constants_8h.html" title="constants.h" alt="" coords="2428,87,2515,114"/>
+<area shape="rect" id="node30" href="$types_8h.html" title="types.h" alt="" coords="2539,87,2603,114"/>
+<area shape="rect" id="node31" href="$exception_8h.html" title="classes/exception.h" alt="" coords="2628,87,2763,114"/>
+<area shape="rect" id="node32" href="$singleton_8h.html" title="classes/singleton.h" alt="" coords="2787,87,2916,114"/>
+<area shape="rect" id="node33" href="$states_8h.html" title="classes/states.h" alt="" coords="2941,87,3055,114"/>
+<area shape="rect" id="node34" href="$randevs_8h.html" title="classes/randevs.h" alt="" coords="3080,87,3207,114"/>
+<area shape="rect" id="node35" href="$internal_2functions_8h.html" title="internal/functions.h" alt="" coords="3231,87,3355,114"/>
+<area shape="rect" id="node36" href="$init_8h.html" title="classes/init.h" alt="" coords="3379,87,3473,114"/>
+<area shape="rect" id="node37" href="$functions_8h.html" title="functions.h" alt="" coords="3497,87,3579,114"/>
+<area shape="rect" id="node38" href="$gates_8h.html" title="classes/gates.h" alt="" coords="3603,87,3715,114"/>
+<area shape="rect" id="node39" href="$codes_8h.html" title="classes/codes.h" alt="" coords="3739,87,3854,114"/>
+<area shape="rect" id="node40" href="$operations_8h.html" title="operations.h" alt="" coords="3878,87,3969,114"/>
+<area shape="rect" id="node41" href="$entropies_8h.html" title="entropies.h" alt="" coords="3993,87,4075,114"/>
+<area shape="rect" id="node42" href="$iomanip_8h.html" title="internal/classes/iomanip.h" alt="" coords="4100,87,4267,114"/>
+<area shape="rect" id="node43" href="$io_8h.html" title="io.h" alt="" coords="4291,87,4332,114"/>
+<area shape="rect" id="node44" href="$entanglement_8h.html" title="entanglement.h" alt="" coords="4357,87,4463,114"/>
+<area shape="rect" id="node45" href="$instruments_8h.html" title="instruments.h" alt="" coords="4488,87,4583,114"/>
+<area shape="rect" id="node46" href="$random_8h.html" title="random.h" alt="" coords="4607,87,4682,114"/>
+<area shape="rect" id="node47" href="$timer_8h.html" title="classes/timer.h" alt="" coords="4707,87,4812,114"/>
+<area shape="rect" id="node48" href="$test_8h.html" title="experimental/test.h" alt="" coords="4836,87,4963,114"/>
+<area shape="rect" id="node49" href="$qudit_8h.html" title="experimental/classes\l/qudit.h" alt="" coords="4987,80,5129,121"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="qpp::schatten" name="qpp::schatten">
+<area shape="rect" id="node2" href="$namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31" title="qpp::internal::_check\l_nonzero_size" alt="" coords="687,213,821,254"/>
+<area shape="rect" id="node3" href="$namespaceqpp.html#a51e1199f56fdc39622a17c949d6ede5a" title="Singular values. " alt="" coords="420,43,503,69"/>
+<area shape="rect" id="node4" href="$namespaceqpp.html#a1e1daff5450728504da1fdfedf8d8b54" title="Trace. " alt="" coords="155,93,233,120"/>
+<area shape="rect" id="node5" href="$namespaceqpp.html#a3b4fd08d05e83656e8ce3153fe5a6f0b" title="Matrix power. " alt="" coords="551,499,638,525"/>
+<area shape="rect" id="node7" href="$namespaceqpp.html#a3a4cb16d97f9cc763bd133b64f2b6f6d" title="Matrix absolut value. " alt="" coords="152,195,236,221"/>
+<area shape="rect" id="node6" href="$namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276" title="qpp::internal::_check\l_square_mat" alt="" coords="687,466,821,507"/>
+<area shape="rect" id="node8" href="$namespaceqpp.html#a83e2b23bc11e3cb8dd6909969af7377c" title="Matrix square root. " alt="" coords="287,296,369,323"/>
+<area shape="rect" id="node12" href="$namespaceqpp.html#ac541afad6657467d9bd83c69345880a2" title="Adjoint. " alt="" coords="284,195,372,221"/>
+<area shape="rect" id="node9" href="$namespaceqpp.html#a659b50e01fa0b26089d3944c2c56601a" title="Functional calculus f(A) " alt="" coords="422,347,501,373"/>
+<area shape="rect" id="node10" href="$namespaceqpp.html#acc9597bacc39c501eb8e2e5e8530fcd8" title="Eigenvectors. " alt="" coords="551,397,639,424"/>
+<area shape="rect" id="node11" href="$namespaceqpp.html#a927d85e57656ffb19ddb149985fa52df" title="Eigenvalues. " alt="" coords="553,347,636,373"/>
+</map>

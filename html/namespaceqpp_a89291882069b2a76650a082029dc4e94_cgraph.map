@@ -1,0 +1,7 @@
+<map id="qpp::ptrace1" name="qpp::ptrace1">
+<area shape="rect" id="node2" href="$namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31" title="qpp::internal::_check\l_nonzero_size" alt="" coords="363,96,497,137"/>
+<area shape="rect" id="node3" href="$namespaceqpp_1_1internal.html#a8b3940aa8b60b8eeb411db0f3802503b" title="qpp::internal::_check_dims" alt="" coords="147,37,315,63"/>
+<area shape="rect" id="node4" href="$namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276" title="qpp::internal::_check\l_square_mat" alt="" coords="163,88,298,129"/>
+<area shape="rect" id="node5" href="$namespaceqpp_1_1internal.html#a54738d7b62e4c9a0489bf56f45096894" title="qpp::internal::_check\l_dims_match_mat" alt="" coords="163,153,298,195"/>
+<area shape="rect" id="node6" href="$namespaceqpp.html#a48a92e8a327ff86f87c6236965103797" title="Element&#45;wise sum of A. " alt="" coords="193,219,268,246"/>
+</map>

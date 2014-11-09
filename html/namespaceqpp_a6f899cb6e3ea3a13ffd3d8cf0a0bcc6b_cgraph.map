@@ -1,0 +1,8 @@
+<map id="qpp::concurrence" name="qpp::concurrence">
+<area shape="rect" id="node2" href="$namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31" title="qpp::internal::_check\l_nonzero_size" alt="" coords="409,152,544,193"/>
+<area shape="rect" id="node3" href="$namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276" title="qpp::internal::_check\l_square_mat" alt="" coords="409,9,544,50"/>
+<area shape="rect" id="node4" href="$classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802" title="qpp::internal::Singleton\l\&lt; const Gates \&gt;::get_instance" alt="" coords="171,93,361,134"/>
+<area shape="rect" id="node5" href="$namespaceqpp.html#a927d85e57656ffb19ddb149985fa52df" title="Eigenvalues. " alt="" coords="225,42,307,68"/>
+<area shape="rect" id="node6" href="$namespaceqpp.html#a3b2bafdce8302c9ac34ab328ec84a3f7" title="Kronecker product (variadic overload) " alt="" coords="229,210,303,236"/>
+<area shape="rect" id="node7" href="$namespaceqpp.html#acbf2df9d3f5c18623eab26ab84ea7418" title="Complex conjugate. " alt="" coords="213,159,319,186"/>
+</map>

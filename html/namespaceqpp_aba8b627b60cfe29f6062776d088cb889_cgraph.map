@@ -1,0 +1,21 @@
+<map id="qpp::lognegativity" name="qpp::lognegativity">
+<area shape="rect" id="node2" href="$namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31" title="qpp::internal::_check\l_nonzero_size" alt="" coords="1107,593,1241,634"/>
+<area shape="rect" id="node3" href="$namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276" title="qpp::internal::_check\l_square_mat" alt="" coords="1107,187,1241,229"/>
+<area shape="rect" id="node4" href="$namespaceqpp_1_1internal.html#a54738d7b62e4c9a0489bf56f45096894" title="qpp::internal::_check\l_dims_match_mat" alt="" coords="506,363,641,405"/>
+<area shape="rect" id="node5" href="$namespaceqpp.html#ae5ecdcfef5ce5a89efbebf0f4354be36" title="Negativity of the bi&#45;partite mixed state A. " alt="" coords="173,404,277,431"/>
+<area shape="rect" id="node6" href="$namespaceqpp.html#a8251985eb390022a0116f6572a82ea58" title="Schatten norm. " alt="" coords="334,651,433,677"/>
+<area shape="rect" id="node16" href="$namespaceqpp.html#a0893a2a4dcfd11696a0e675da03f8f61" title="Partial transpose. " alt="" coords="325,236,441,263"/>
+<area shape="rect" id="node7" href="$namespaceqpp.html#a51e1199f56fdc39622a17c949d6ede5a" title="Singular values. " alt="" coords="837,701,920,728"/>
+<area shape="rect" id="node8" href="$namespaceqpp.html#a1e1daff5450728504da1fdfedf8d8b54" title="Trace. " alt="" coords="707,752,785,779"/>
+<area shape="rect" id="node9" href="$namespaceqpp.html#a3b4fd08d05e83656e8ce3153fe5a6f0b" title="Matrix power. " alt="" coords="971,245,1058,272"/>
+<area shape="rect" id="node10" href="$namespaceqpp.html#a3a4cb16d97f9cc763bd133b64f2b6f6d" title="Matrix absolut value. " alt="" coords="531,600,615,627"/>
+<area shape="rect" id="node11" href="$namespaceqpp.html#a83e2b23bc11e3cb8dd6909969af7377c" title="Matrix square root. " alt="" coords="705,423,787,449"/>
+<area shape="rect" id="node15" href="$namespaceqpp.html#ac541afad6657467d9bd83c69345880a2" title="Adjoint. " alt="" coords="835,600,923,627"/>
+<area shape="rect" id="node12" href="$namespaceqpp.html#a659b50e01fa0b26089d3944c2c56601a" title="Functional calculus f(A) " alt="" coords="839,397,918,424"/>
+<area shape="rect" id="node13" href="$namespaceqpp.html#acc9597bacc39c501eb8e2e5e8530fcd8" title="Eigenvectors. " alt="" coords="971,397,1059,424"/>
+<area shape="rect" id="node14" href="$namespaceqpp.html#a927d85e57656ffb19ddb149985fa52df" title="Eigenvalues. " alt="" coords="973,347,1056,373"/>
+<area shape="rect" id="node17" href="$namespaceqpp_1_1internal.html#a8b3940aa8b60b8eeb411db0f3802503b" title="qpp::internal::_check_dims" alt="" coords="489,261,657,288"/>
+<area shape="rect" id="node18" href="$namespaceqpp_1_1internal.html#aed2221e974a69e3f1c39006bcdf50738" title="qpp::internal::_check\l_subsys_match_dims" alt="" coords="500,94,647,135"/>
+<area shape="rect" id="node19" href="$namespaceqpp_1_1internal.html#ad6e3c598a9985bac31f86dc916151b80" title="qpp::internal::_n2multiidx" alt="" coords="495,160,652,187"/>
+<area shape="rect" id="node20" href="$namespaceqpp_1_1internal.html#a7ab3b0b016ffd0eb793ea6281bed9fc0" title="qpp::internal::_multiidx2n" alt="" coords="495,211,652,237"/>
+</map>
