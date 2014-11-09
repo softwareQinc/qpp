@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 2.8.4)
-project(qppclinon)
+cmake_minimum_required(VERSION 2.6.0)
+project(qpp)
 
 set(CMAKE_CXX_COMPILER "g++") # modify as needed
 
@@ -23,4 +23,4 @@ endif(${WITH_MATLAB})
 set(SOURCE_FILES
     example.cpp)
 
-add_executable(qppclinon ${SOURCE_FILES})
+add_executable(qpp ${SOURCE_FILES})
