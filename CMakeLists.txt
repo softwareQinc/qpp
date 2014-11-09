@@ -17,7 +17,7 @@ include_directories(SYSTEM ${EIGEN})
 option(WITH_MATLAB "MATLAB integration" OFF)
 if(${WITH_MATLAB})
     include_directories("/Applications/MATLAB_R2014b.app/extern/include") # modify as needed
-    set (CMAKE_EXE_LINKER_FLAGS " -lmx -lmat -L/Applications/MATLAB_R2014b.app/bin/maci64")
+    set (CMAKE_EXE_LINKER_FLAGS " -lmx -lmat -L/Applications/MATLAB_R2014b.app/bin/maci64") # modify as needed
 endif(${WITH_MATLAB})
 
 set(SOURCE_FILES
