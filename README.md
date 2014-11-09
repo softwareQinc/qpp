@@ -1,11 +1,19 @@
 Quantum++
 ===
 
-Quantum++ is a template-based header-only C++11 quantum computing library, developed using Eigen3 linear algebra library http://eigen.tuxfamily.org/. Copyright (c) 2013 - 2014 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
+Quantum++ is a template-based header-only C++11 quantum computing library, 
+developed using Eigen3 linear algebra library http://eigen.tuxfamily.org/. 
+Copyright (c) 2013 - 2014 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
 
-If anyone else is interesting in contributing please let me known. There is still work left to be done, and I can provide you with more details about what I have in mind. To contribute, you need to have a decent knowledge of C++ (preferably C++11), including templates and STL, a basic knowledge of quantum computing and linear algebra, and some working experience with Eigen3.
+If anyone else is interesting in contributing please let me known. 
+There is still work left to be done, and I can provide you with more details about what I have in mind. 
+To contribute, you need to have a decent knowledge of C++ (preferably C++11), 
+including templates and STL, a basic knowledge of quantum computing and linear algebra, 
+and some working experience with Eigen3.
 
-The ultimate goal of this project is to build a universal quantum simulator, applicable to a vast majority of problems in quantum information/computation. The simulator should be fast but nevertheless user-friendly for anyone with a basic knowledge of C/C++. 
+The ultimate goal of this project is to build a universal quantum simulator, 
+applicable to a vast majority of problems in quantum information/computation. 
+The simulator should be fast but nevertheless user-friendly for anyone with a basic knowledge of C/C++. 
 
 ---
 
@@ -52,12 +60,41 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include -I /Applications/MATLAB_R2014b.app/extern/include -L /Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
 
-Note: if you want to run the program on OS X with MATLAB support, make sure that the environment variable `DYLD_LIBRARY_PATH` is set to point to the MATLAB compiler library location, see the `run_OSX_MATLAB` script. Example of run command:
+Note: if you want to run the program on OS X with MATLAB support, make sure that the environment variable 
+`DYLD_LIBRARY_PATH` is set to point to the MATLAB compiler library location, see the `run_OSX_MATLAB` script. 
+Example of run command:
 	
 	export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"; ./qpp
 
 Otherwise, you will get a runtime error like `dyld: Library not loaded: @rpath/libmat.dylib`
 
-The current version of the repository has a set of Makefiles available under the folder `Makefile.examples`. To build the executable, just replace the Makefile from the root folder with the appropriate Makefile from `Makefile.examples`, then type `make` (release mode) or `make debug` (debug mode) to produce the executable `qpp`. 
+The current version of the repository has a `CMakeLists.txt` configuration file for building using `cmake`
+ (`cmake` has to be installed). To build the project using `cmake`, I recommend an out-of-source build, 
+ i.e., from the root of the project, type
 
-PS: these Makefiles are provided for convenience, the final version of the library will consist only of header files, and therefore it is the user's responsability to create an appropriate Makefile that suits her/his needs. 
+    mkdir build
+    cd build
+    cmake -DWITH_MATLAB=ON ..
+    make
+
+The above commands create the relase mode executable `qpp`, with MATLAB support, inside the directory `./build`. 
+To build a different configuration, e.g. debug configuration without MATLAB support, 
+type from inside the `./build` directory
+
+    rm -rf *
+    cmake -DCMAKE_BUILD_TYPE=Debug
+    make
+
+The above commands create the debug mode executable `qpp`, without MATLAB support (default), 
+inside the directory `./build`.
+
+To change the location of `Eigen3` library or the location of MATLAB installation, 
+edit the `CMakeLists.txt` file. Do not forget to remove everything from the `./build` directory before a fresh build
+
+
+PS: For convenience, the current version of the repository has also a set of Makefiles available 
+under the folder`./Makefile.examples`. To build the executable, copy into the root of the project 
+an appropriate Makefile from `./Makefile.examples`, and name it `Makefile` , 
+then type `make` (release mode) or `make debug` (debug mode) to produce the executable `qpp`.
+These Makefiles are provided for convenience, the final version of the library will consist only of header files, 
+and therefore it is the user's responsability to create an appropriate Makefile that suits her/his needs.
