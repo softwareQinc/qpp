@@ -77,7 +77,8 @@ The current version of the repository has a `CMakeLists.txt` configuration file 
     cmake -DWITH_MATLAB=ON ..
     make
 
-The above commands create the relase-mode executable `qpp`, with MATLAB support, inside the directory `./build`. 
+The above commands create the relase-mode (default) executable `qpp`, 
+with MATLAB support, inside the directory `./build`. 
 To build a different configuration, e.g. debug-mode without MATLAB support (default), 
 type from inside the `./build` directory
 
