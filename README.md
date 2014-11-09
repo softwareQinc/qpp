@@ -74,20 +74,17 @@ The current version of the repository has a `CMakeLists.txt` configuration file 
 
     mkdir build
     cd build
-    cmake -DWITH_MATLAB=ON ..
+    cmake ..
     make
 
 The above commands create the relase-mode (default) executable `qpp`, 
-with MATLAB support, inside the directory `./build`. 
-To build a different configuration, e.g. debug-mode without MATLAB support (default), 
+without MATLAB support (default), inside the directory `./build`. 
+To build a different configuration, e.g. debug-mode with MATLAB support, 
 type from inside the `./build` directory
 
     rm -rf *
-    cmake -DCMAKE_BUILD_TYPE=Debug
+    cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB=ON
     make
-
-The above commands create the debug mode executable `qpp`, without MATLAB support (default), 
-inside the directory `./build`.
 
 To change the location of `Eigen3` library or the location of MATLAB installation, 
 edit the `CMakeLists.txt` file. 
