@@ -70,7 +70,7 @@ Otherwise, you will get a runtime error like `dyld: Library not loaded: @rpath/l
 
 The current version of the repository has a `CMakeLists.txt` configuration file for building using `cmake`
  (`cmake` needs to be installed). To build the project using `cmake`, I recommend an out-of-source build, 
- i.e., from the root of the project, type
+ i.e., from the root of the project (where `./include` is located), type
 
     mkdir ./build
     cd ./build
@@ -91,9 +91,12 @@ edit the `CMakeLists.txt` file.
 Do not forget to remove everything from the `./build` directory before a fresh build!
 
 
-PS: For convenience, the current version of the repository has also a set of Makefiles available 
+For convenience, the current version of the repository has also a set of Makefiles available 
 under the folder`./Makefile.examples`. To build the executable, copy into the root of the project 
 an appropriate Makefile from `./Makefile.examples`, and name it `Makefile` , 
 then type `make` (release mode) or `make debug` (debug mode) to produce the executable `qpp`.
-These Makefiles are provided for convenience, the final version of the library will consist only of header files, 
-and therefore it is the user's responsability to create an appropriate Makefile that suits her/his needs.
+
+
+`Makefiles.examples` and `CMakeLists.txt` are provided for convenience.
+The final version of the library will consist only of header files, 
+and it is the user's responsability to create an appropriate Makefile system that suits her/his needs.
