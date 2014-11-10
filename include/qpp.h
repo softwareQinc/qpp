@@ -72,7 +72,6 @@
 #include "operations.h"
 #include "entropies.h"
 #include "internal/classes/iomanip.h"
-#include "io.h"
 #include "entanglement.h"
 
 // the ones below can be in any order, no inter-dependencies
