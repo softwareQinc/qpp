@@ -361,23 +361,23 @@ namespace qpp
 
             // check zero-size
             if (!internal::_check_nonzero_size(rA))
-                throw Exception("expandout", Exception::Type::ZERO_SIZE);
+                throw Exception("Gates::expandout", Exception::Type::ZERO_SIZE);
 
             // check that dims is a valid dimension vector
             if (!internal::_check_dims(dims))
-                throw Exception("expandout", Exception::Type::DIMS_INVALID);
+                throw Exception("Gates::expandout", Exception::Type::DIMS_INVALID);
 
             // check square matrix
             if (!internal::_check_square_mat(rA))
-                throw Exception("expandout", Exception::Type::MATRIX_NOT_SQUARE);
+                throw Exception("Gates::expandout", Exception::Type::MATRIX_NOT_SQUARE);
 
             // check that position is valid
             if (pos > dims.size() - 1)
-                throw Exception("expandout", Exception::Type::OUT_OF_RANGE);
+                throw Exception("Gates::expandout", Exception::Type::OUT_OF_RANGE);
 
             // check that dims[pos] match the dimension of A
             if (static_cast<std::size_t>(rA.cols()) != dims[pos])
-                throw Exception("expandout", Exception::Type::DIMS_MISMATCH_MATRIX);
+                throw Exception("Gates::expandout", Exception::Type::DIMS_MISMATCH_MATRIX);
 
             auto multiply = [](std::size_t x, std::size_t y) -> std::size_t
             {

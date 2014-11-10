@@ -75,9 +75,10 @@
 #include "entanglement.h"
 
 // the ones below can be in any order, no inter-dependencies
-#include "io.h"
+#include "input_output.h"
 #include "instruments.h"
 #include "random.h"
+#include "number_theory.h"
 #include "classes/timer.h"
 
 // experimental/testing

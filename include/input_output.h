@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_IO_H_
-#define INCLUDE_IO_H_
+#ifndef INCLUDE_INPUT_OUTPUT_H_
+#define INCLUDE_INPUT_OUTPUT_H_
 
 // input/output
 
@@ -216,4 +216,4 @@ namespace qpp
 
 } /* namespace qpp */
 
-#endif /* INCLUDE_IO_H_ */
+#endif /* INCLUDE_INPUT_OUTPUT_H_ */
