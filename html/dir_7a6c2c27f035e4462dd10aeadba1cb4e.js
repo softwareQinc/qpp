@@ -12,7 +12,7 @@ var dir_7a6c2c27f035e4462dd10aeadba1cb4e =
     [ "init.h", "init_8h.html", [
       [ "Init", "classqpp_1_1_init.html", "classqpp_1_1_init" ]
     ] ],
-    [ "randevs.h", "randevs_8h.html", [
+    [ "random_devices.h", "random__devices_8h.html", [
       [ "RandomDevices", "classqpp_1_1_random_devices.html", "classqpp_1_1_random_devices" ]
     ] ],
     [ "singleton.h", "singleton_8h.html", [
