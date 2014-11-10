@@ -99,4 +99,4 @@ then type `make` (for release version) or `make debug` (for debug version) to pr
 
 `Makefiles.examples` and `CMakeLists.txt` are provided for convenience.
 The final version of the library will consist only of header files, 
-and it is the user's responsability to create an appropriate Makefile system that suits her/his needs.
+and it is the user's responsability to create an appropriate build system that suits her/his needs.
