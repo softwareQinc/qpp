@@ -1062,16 +1062,10 @@ namespace qpp
         if (n >= std::accumulate(std::begin(dims), std::end(dims), 1u, multiply))
             throw Exception("n2multiidx", Exception::Type::OUT_OF_RANGE);
 
-        std::vector<std::size_t> result(dims.size());
-        std::size_t _n = n;
-        for (std::size_t i = 0; i < dims.size(); ++i)
-        {
-            result[dims.size() - i - 1] = _n
-                    % static_cast<int>(dims[dims.size() - i - 1]);
-            _n = _n / static_cast<int>(dims[dims.size() - i - 1]);
-        }
 
-        return result;
+        std::size_t result[2 * maxn];  // double the size for matrices reshaped as vectors
+        internal::_n2multiidx(n, dims.size(), dims.data(), result);
+        return std::vector<std::size_t>(result, result + dims.size());
     }
 
 /**
@@ -1093,18 +1087,7 @@ namespace qpp
             if (midx[i] >= dims[i])
                 throw Exception("multiidx2n", Exception::Type::OUT_OF_RANGE);
 
-        std::vector<std::size_t> part_prod(dims.size());
-
-        part_prod[dims.size() - 1] = 1;
-        for (std::size_t i = 1; i < dims.size(); ++i)
-            part_prod[dims.size() - i - 1] = part_prod[dims.size() - i]
-                    * dims[dims.size() - i];
-
-        std::size_t result = 0;
-        for (std::size_t i = 0; i < dims.size(); ++i)
-            result += midx[i] * part_prod[i];
-
-        return result;
+        return internal::_multiidx2n(midx.data(), dims.size(), dims.data());
     }
 
 /**

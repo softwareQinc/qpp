@@ -38,11 +38,10 @@ namespace qpp
                 const std::size_t *dims, std::size_t *result)
         {
 // no error checks to improve speed
-            std::size_t _n = n;
             for (std::size_t i = 0; i < numdims; ++i)
             {
-                result[numdims - i - 1] = _n % static_cast<int>(dims[numdims - i - 1]);
-                _n /= static_cast<int>(dims[numdims - i - 1]);
+                result[numdims - i - 1] = n % static_cast<int>(dims[numdims - i - 1]);
+                n /= static_cast<int>(dims[numdims - i - 1]);
             }
         }
 
@@ -57,15 +56,15 @@ namespace qpp
             // double the size for matrices reshaped as vectors
             std::size_t part_prod[2 * maxn];
 
+            std::size_t result = 0;
             part_prod[numdims - 1] = 1;
             for (std::size_t i = 1; i < numdims; ++i)
+            {
                 part_prod[numdims - i - 1] = part_prod[numdims - i] * dims[numdims - i];
+                result += midx[numdims - i - 1] * part_prod[numdims - i - 1];
+            }
 
-            std::size_t result = 0;
-            for (std::size_t i = 0; i < numdims; ++i)
-                result += midx[i] * part_prod[i];
-
-            return result;
+            return result + midx[numdims - 1];
         }
 
 // check square matrix
