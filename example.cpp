@@ -45,11 +45,11 @@ int main()
         ket output_aAB = apply(input_aAB, Bell_aA, {0, 1}, 3, D);
         auto measured_aA = measure(ptrace2(prj(output_aAB), {D * D, D}), gt.Id(D * D)); // measure on aA
         std::discrete_distribution<std::size_t> dd(measured_aA.first.begin(), measured_aA.first.end());
-        std::cout << ">> Measurement probabilities: ";
+        std::cout << ">> Alice's measurement probabilities: ";
         std::cout << disp(measured_aA.first, ", ") << std::endl;
         std::size_t m = dd(rdevs._rng); // sample
         auto midx = n2multiidx(m, {D, D});
-        std::cout << ">> Measurement result: ";
+        std::cout << ">> Alice's measurement result: ";
         std::cout << disp(midx, " ") << std::endl;
         // conditional result on B before correction
         ket output_m_aAB = apply(output_aAB, prj(mket(midx, D)), {0, 1}, 3, D) / std::sqrt(measured_aA.first[m]);
@@ -85,7 +85,7 @@ int main()
         // Bob measures the joint system in the qudit Bell basis
         psi_AB = apply(psi_AB, Bell_AB, {0, 1}, 2, D);
         auto measured = measure(psi_AB, gt.Id(D * D));
-        std::cout << ">> Bob measurement probabilities: ";
+        std::cout << ">> Bob's measurement probabilities: ";
         std::cout << disp(measured.first, ", ") << std::endl;
         // Bob samples according to the measurement probabilities
         std::discrete_distribution<std::size_t> dd(measured.first.begin(), measured.first.end());
