@@ -54,7 +54,7 @@ namespace qpp
                     throw Exception("Qudit::measure", Exception::Type::DIMS_INVALID);
 
                 std::vector<double> p(_D);
-                for (std::size_t i = 0; i < _D; i++)
+                for (std::size_t i = 0; i < _D; ++i)
                     p[i] = std::abs((cplx) trace(prj((cmat) evects(U).col(i)) * _rho));
 
                 std::discrete_distribution<std::size_t> dd{std::begin(p), std::end(p)};
