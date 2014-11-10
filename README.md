@@ -80,8 +80,9 @@ The current version of the repository has a `CMakeLists.txt` configuration file 
 The above commands create the relase version (default) executable `qpp`, 
 without MATLAB support (default), inside the directory `./build`. 
 To build a different configuration, e.g. debug version with MATLAB support, 
-type from inside the `./build` directory
+type from the root of the project
 
+    cd ./build
     rm -rf *
     cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB=ON
     make
