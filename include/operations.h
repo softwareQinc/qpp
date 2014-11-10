@@ -924,8 +924,8 @@ namespace qpp
         };
 
 #pragma omp parallel for collapse(2)
-        for (std::size_t i = 0; i < dimsubsysbar; i++)
-            for (std::size_t j = 0; j < dimsubsysbar; j++)
+        for (std::size_t j = 0; j < dimsubsysbar; j++)
+            for (std::size_t i = 0; i < dimsubsysbar; i++)
                 result(i, j) = worker(i, j);
 
         return result;

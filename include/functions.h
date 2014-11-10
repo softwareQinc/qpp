@@ -1096,9 +1096,9 @@ namespace qpp
         std::vector<std::size_t> part_prod(dims.size());
 
         part_prod[dims.size() - 1] = 1;
-        for (std::size_t j = 1; j < dims.size(); j++)
-            part_prod[dims.size() - j - 1] = part_prod[dims.size() - j]
-                    * dims[dims.size() - j];
+        for (std::size_t i = 1; i < dims.size(); i++)
+            part_prod[dims.size() - i - 1] = part_prod[dims.size() - i]
+                    * dims[dims.size() - i];
 
         std::size_t result = 0;
         for (std::size_t i = 0; i < dims.size(); i++)

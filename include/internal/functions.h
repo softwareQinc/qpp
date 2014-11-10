@@ -58,8 +58,8 @@ namespace qpp
             std::size_t part_prod[2 * maxn];
 
             part_prod[numdims - 1] = 1;
-            for (std::size_t j = 1; j < numdims; j++)
-                part_prod[numdims - j - 1] = part_prod[numdims - j] * dims[numdims - j];
+            for (std::size_t i = 1; i < numdims; i++)
+                part_prod[numdims - i - 1] = part_prod[numdims - i] * dims[numdims - i];
 
             std::size_t result = 0;
             for (std::size_t i = 0; i < numdims; i++)
