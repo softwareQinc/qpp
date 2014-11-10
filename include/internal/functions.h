@@ -70,7 +70,7 @@ namespace qpp
 
 // check square matrix
         template<typename Derived>
-        bool _check_square_mat(const Eigen::MatrixBase <Derived> &A)
+        bool _check_square_mat(const Eigen::MatrixBase<Derived> &A)
         {
             const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -81,7 +81,7 @@ namespace qpp
 
 // check whether input is a vector or not
         template<typename Derived>
-        bool _check_vector(const Eigen::MatrixBase <Derived> &A)
+        bool _check_vector(const Eigen::MatrixBase<Derived> &A)
         {
             const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -92,7 +92,7 @@ namespace qpp
 
 // check whether input is a row vector or not
         template<typename Derived>
-        bool _check_row_vector(const Eigen::MatrixBase <Derived> &A)
+        bool _check_row_vector(const Eigen::MatrixBase<Derived> &A)
         {
             const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -103,7 +103,7 @@ namespace qpp
 
 // check whether input is a column vector or not
         template<typename Derived>
-        bool _check_col_vector(const Eigen::MatrixBase <Derived> &A)
+        bool _check_col_vector(const Eigen::MatrixBase<Derived> &A)
         {
             const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -122,7 +122,7 @@ namespace qpp
         }
 
 // check that dims is a valid dimension vector
-        bool _check_dims(const std::vector <std::size_t> &dims)
+        bool _check_dims(const std::vector<std::size_t> &dims)
         {
             if (dims.size() == 0)
                 return false;
@@ -140,8 +140,8 @@ namespace qpp
 // check that valid dims match the dimensions
 // of valid (non-zero sized) quare matrix
         template<typename Derived>
-        bool _check_dims_match_mat(const std::vector <std::size_t> &dims,
-                const Eigen::MatrixBase <Derived> &A)
+        bool _check_dims_match_mat(const std::vector<std::size_t> &dims,
+                const Eigen::MatrixBase<Derived> &A)
         {
             const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -155,8 +155,8 @@ namespace qpp
 
 // check that valid dims match the dimensions of valid row vector
         template<typename Derived>
-        bool _check_dims_match_cvect(const std::vector <std::size_t> &dims,
-                const Eigen::MatrixBase <Derived> &V)
+        bool _check_dims_match_cvect(const std::vector<std::size_t> &dims,
+                const Eigen::MatrixBase<Derived> &V)
         {
             const DynMat<typename Derived::Scalar> &rV = V;
 
@@ -170,8 +170,8 @@ namespace qpp
 
 // check that valid dims match the dimensions of valid row vector
         template<typename Derived>
-        bool _check_dims_match_rvect(const std::vector <std::size_t> &dims,
-                const Eigen::MatrixBase <Derived> &V)
+        bool _check_dims_match_rvect(const std::vector<std::size_t> &dims,
+                const Eigen::MatrixBase<Derived> &V)
         {
             const DynMat<typename Derived::Scalar> &rV = V;
 
@@ -184,7 +184,7 @@ namespace qpp
         }
 
 // check that all elements in valid dims equal to dim
-        bool _check_eq_dims(const std::vector <std::size_t> &dims, std::size_t dim)
+        bool _check_eq_dims(const std::vector<std::size_t> &dims, std::size_t dim)
         {
             for (std::size_t i : dims)
                 if (i != dim)
@@ -193,8 +193,8 @@ namespace qpp
         }
 
 // check that subsys is valid with respect to valid dims
-        bool _check_subsys_match_dims(const std::vector <std::size_t> &subsys,
-                const std::vector <std::size_t> &dims)
+        bool _check_subsys_match_dims(const std::vector<std::size_t> &subsys,
+                const std::vector<std::size_t> &dims)
         {
 //	// check non-zero sized subsystems
 //	if (subsys.size() == 0)
@@ -205,7 +205,7 @@ namespace qpp
                 return false;
 
             // sort the subsystems
-            std::vector <std::size_t> subsyssort = subsys;
+            std::vector<std::size_t> subsyssort = subsys;
             std::sort(std::begin(subsyssort), std::end(subsyssort));
 
             // check duplicates
@@ -226,12 +226,12 @@ namespace qpp
         }
 
 // check valid permutation
-        bool _check_perm(const std::vector <std::size_t> &perm)
+        bool _check_perm(const std::vector<std::size_t> &perm)
         {
             if (perm.size() == 0)
                 return false;
 
-            std::vector <std::size_t> ordered(perm.size());
+            std::vector<std::size_t> ordered(perm.size());
             std::iota(std::begin(ordered), std::end(ordered), 0);
 
             if (std::is_permutation(std::begin(ordered), std::end(ordered),
@@ -244,8 +244,8 @@ namespace qpp
 // Kronecker product of 2 matrices, preserve return type
 // internal function for the variadic template function wrapper kron()
         template<typename Derived1, typename Derived2>
-        DynMat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase <Derived1> &A,
-                const Eigen::MatrixBase <Derived2> &B)
+        DynMat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1> &A,
+                const Eigen::MatrixBase<Derived2> &B)
         {
             const DynMat<typename Derived1::Scalar> &rA = A;
             const DynMat<typename Derived2::Scalar> &rB = B;
@@ -284,13 +284,13 @@ namespace qpp
 // may be useful, extracts variadic template argument pack into a std::vector
         template<typename T>
         // ends the recursion
-        void variadic_vector_emplace(std::vector <T> &)
+        void variadic_vector_emplace(std::vector<T> &)
         {
         }
 
 // may be useful, extracts variadic template argument pack into a std::vector
         template<typename T, typename First, typename ... Args>
-        void variadic_vector_emplace(std::vector <T> &v, First &&first, Args &&... args)
+        void variadic_vector_emplace(std::vector<T> &v, First &&first, Args &&... args)
         {
             v.emplace_back(std::forward<First>(first));
             variadic_vector_emplace(v, std::forward<Args>(args)...);

@@ -38,8 +38,8 @@ namespace qpp
 * \return Schmidt coefficients of \a A, as a complex dynamic column vector
 */
     template<typename Derived>
-    DynColVect <cplx> schmidtcoeff(const Eigen::MatrixBase <Derived> &A,
-            const std::vector <std::size_t> &dims)
+    DynColVect<cplx> schmidtcoeff(const Eigen::MatrixBase<Derived> &A,
+            const std::vector<std::size_t> &dims)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
         // check zero-size
@@ -55,7 +55,7 @@ namespace qpp
         if (!internal::_check_dims_match_mat(dims, rA))
             throw Exception("schmidtcoeff", Exception::Type::DIMS_MISMATCH_MATRIX);
 
-        Eigen::JacobiSVD <DynMat<typename Derived::Scalar>> svd(
+        Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(
                 transpose(reshape(rA, dims[1], dims[0])));
         return svd.singularValues().template cast<cplx>();
     }
@@ -69,8 +69,8 @@ namespace qpp
 * the Schmidt basis vectors on Alice's side.
 */
     template<typename Derived>
-    cmat schmidtU(const Eigen::MatrixBase <Derived> &A,
-            const std::vector <std::size_t> &dims)
+    cmat schmidtU(const Eigen::MatrixBase<Derived> &A,
+            const std::vector<std::size_t> &dims)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
         // check zero-size
@@ -98,8 +98,8 @@ namespace qpp
 * the Schmidt basis vectors on Bob's side.
 */
     template<typename Derived>
-    cmat schmidtV(const Eigen::MatrixBase <Derived> &A,
-            const std::vector <std::size_t> &dims)
+    cmat schmidtV(const Eigen::MatrixBase<Derived> &A,
+            const std::vector<std::size_t> &dims)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
         // check zero-size
@@ -132,8 +132,8 @@ namespace qpp
 * \return Schmidt probabilites of \a A, as a real dynamic column vector
 */
     template<typename Derived>
-    DynColVect<double> schmidtprob(const Eigen::MatrixBase <Derived> &A,
-            const std::vector <std::size_t> &dims)
+    DynColVect<double> schmidtprob(const Eigen::MatrixBase<Derived> &A,
+            const std::vector<std::size_t> &dims)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
         // check zero-size
@@ -149,7 +149,7 @@ namespace qpp
         if (!internal::_check_dims_match_mat(dims, rA))
             throw Exception("schmidtprob", Exception::Type::DIMS_MISMATCH_MATRIX);
 
-        Eigen::JacobiSVD <DynMat<typename Derived::Scalar>> svd(
+        Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(
                 transpose(reshape(rA, dims[1], dims[0])));
 
         return powm((dmat) svd.singularValues().asDiagonal(), 2).diagonal();
@@ -167,8 +167,8 @@ namespace qpp
 * \return Entanglement, with the logarithm in base 2
 */
     template<typename Derived>
-    double entanglement(const Eigen::MatrixBase <Derived> &A,
-            const std::vector <std::size_t> &dims)
+    double entanglement(const Eigen::MatrixBase<Derived> &A,
+            const std::vector<std::size_t> &dims)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 // check zero-size
@@ -200,7 +200,7 @@ namespace qpp
 */
     template<typename Derived>
     // the G-concurrence
-    double gconcurrence(const Eigen::MatrixBase <Derived> &A)
+    double gconcurrence(const Eigen::MatrixBase<Derived> &A)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -228,8 +228,8 @@ namespace qpp
 * \return Negativity
 */
     template<typename Derived>
-    double negativity(const Eigen::MatrixBase <Derived> &A,
-            const std::vector <std::size_t> &dims)
+    double negativity(const Eigen::MatrixBase<Derived> &A,
+            const std::vector<std::size_t> &dims)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 // check zero-size
@@ -256,8 +256,8 @@ namespace qpp
 * \return Logarithmic negativity, with the logarithm in base 2
 */
     template<typename Derived>
-    double lognegativity(const Eigen::MatrixBase <Derived> &A,
-            const std::vector <std::size_t> &dims)
+    double lognegativity(const Eigen::MatrixBase<Derived> &A,
+            const std::vector<std::size_t> &dims)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 // check zero-size
@@ -283,7 +283,7 @@ namespace qpp
 * \return Wootters concurrence
 */
     template<typename Derived>
-    double concurrence(const Eigen::MatrixBase <Derived> &A)
+    double concurrence(const Eigen::MatrixBase<Derived> &A)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 // check zero-size

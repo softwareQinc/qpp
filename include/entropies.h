@@ -37,7 +37,7 @@ namespace qpp
 * \return Shannon/von-Neumann entropy, with the logarithm in base 2
 */
     template<typename Derived>
-    double shannon(const Eigen::MatrixBase <Derived> &A)
+    double shannon(const Eigen::MatrixBase<Derived> &A)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -86,7 +86,7 @@ namespace qpp
 * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
 */
     template<typename Derived>
-    double renyi(const Eigen::MatrixBase <Derived> &A, double alpha)
+    double renyi(const Eigen::MatrixBase<Derived> &A, double alpha)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -164,7 +164,7 @@ namespace qpp
 * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
 */
     template<typename Derived>
-    double tsallis(const Eigen::MatrixBase <Derived> &A, double alpha)
+    double tsallis(const Eigen::MatrixBase<Derived> &A, double alpha)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -219,10 +219,10 @@ namespace qpp
 */
 // Make it more general!
     template<typename Derived>
-    double qmutualinfo(const Eigen::MatrixBase <Derived> &A,
-            const std::vector <std::size_t> &subsysA,
-            const std::vector <std::size_t> &subsysB,
-            const std::vector <std::size_t> &dims)
+    double qmutualinfo(const Eigen::MatrixBase<Derived> &A,
+            const std::vector<std::size_t> &subsysA,
+            const std::vector<std::size_t> &subsysB,
+            const std::vector<std::size_t> &dims)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -250,22 +250,22 @@ namespace qpp
             throw Exception("mutualinfo", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
         // The full system indexes {0,1,...,n-1}
-        std::vector <std::size_t> full_system(dims.size());
+        std::vector<std::size_t> full_system(dims.size());
         std::iota(std::begin(full_system), std::end(full_system), 0);
 
         // Sorted input subsystems
-        std::vector <std::size_t> subsysAsorted{subsysA};
-        std::vector <std::size_t> subsysBsorted{subsysB};
+        std::vector<std::size_t> subsysAsorted{subsysA};
+        std::vector<std::size_t> subsysBsorted{subsysB};
 
         // sort the input subsystems (as needed by std::set_difference)
         std::sort(std::begin(subsysAsorted), std::end(subsysAsorted));
         std::sort(std::begin(subsysBsorted), std::end(subsysBsorted));
 
         // construct the complement of subsys
-        std::vector <std::size_t> subsysAbar;
-        std::vector <std::size_t> subsysBbar;
-        std::vector <std::size_t> subsysABbar;
-        std::vector <std::size_t> subsysAB;
+        std::vector<std::size_t> subsysAbar;
+        std::vector<std::size_t> subsysBbar;
+        std::vector<std::size_t> subsysABbar;
+        std::vector<std::size_t> subsysAB;
 
         std::set_difference(std::begin(full_system), std::end(full_system),
                 std::begin(subsysAsorted), std::end(subsysAsorted),

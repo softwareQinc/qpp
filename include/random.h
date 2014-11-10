@@ -246,7 +246,7 @@ namespace qpp
         cmat X(D, D);
 
         X = 1 / std::sqrt(2.) * randn < cmat > (D, D);
-        Eigen::HouseholderQR <cmat> qr(X);
+        Eigen::HouseholderQR<cmat> qr(X);
 
         cmat Q = qr.householderQ();
         // phase correction so that the resultant matrix is
@@ -254,7 +254,7 @@ namespace qpp
 
         Eigen::VectorXcd phases = (rand < dmat > (D, 1)).cast<cplx>();
         for (std::size_t i = 0; i < static_cast<std::size_t>(phases.rows()); i++)
-            phases(i) = std::exp((cplx)(2 * pi * 1_i * phases(i)));
+            phases(i) = std::exp((cplx) (2 * pi * 1_i * phases(i)));
 
         Q = Q * phases.asDiagonal();
 
@@ -285,14 +285,14 @@ namespace qpp
 * \param D Dimension of the Hilbert space
 * \return Set of \a N Kraus operators satisfying the closure condition
 */
-    std::vector <cmat> randkraus(std::size_t N, std::size_t D)
+    std::vector<cmat> randkraus(std::size_t N, std::size_t D)
     {
         if (N == 0)
             throw Exception("randkraus", Exception::Type::OUT_OF_RANGE);
         if (D == 0)
             throw Exception("randkraus", Exception::Type::DIMS_INVALID);
 
-        std::vector <cmat> result(N);
+        std::vector<cmat> result(N);
         for (std::size_t i = 0; i < N; i++)
             result[i] = cmat::Zero(D, D);
 
@@ -367,12 +367,12 @@ namespace qpp
 * \return Random permutation of size \a n
 */
 // random permutation (using Knuth shuffle method)
-    std::vector <std::size_t> randperm(std::size_t n)
+    std::vector<std::size_t> randperm(std::size_t n)
     {
         if (n == 0)
             throw Exception("randperm", Exception::Type::PERM_INVALID);
 
-        std::vector <std::size_t> result(n);
+        std::vector<std::size_t> result(n);
 
 // fill in increasing order
         std::iota(std::begin(result), std::end(result), 0);

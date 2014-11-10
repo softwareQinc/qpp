@@ -148,7 +148,7 @@ namespace qpp
                 std::ostringstream ostr;
                 ostr.copyfmt(os); // copy os' state
 
-                std::vector <std::string> vstr;
+                std::vector<std::string> vstr;
                 std::string strA{};
 
                 for (std::size_t i = 0; i < static_cast<std::size_t>(rhs._A.rows());
@@ -199,7 +199,7 @@ namespace qpp
                 }
 
                 // determine the maximum lenght of the entries in each column
-                std::vector <std::size_t> maxlengthcols(rhs._A.cols(), 0);
+                std::vector<std::size_t> maxlengthcols(rhs._A.cols(), 0);
 
                 for (std::size_t i = 0; i < static_cast<std::size_t>(rhs._A.rows());
                      i++)

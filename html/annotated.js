@@ -1,4 +1,4 @@
 var annotated =
-[
-    [ "qpp", "namespaceqpp.html", "namespaceqpp" ]
-];
+    [
+        ["qpp", "namespaceqpp.html", "namespaceqpp"]
+    ];

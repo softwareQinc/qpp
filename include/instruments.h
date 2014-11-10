@@ -35,8 +35,8 @@ namespace qpp
 * post-measurement normalized states
 */
     template<typename Derived>
-    std::pair <std::vector<double>, std::vector<cmat>> measure(
-            const Eigen::MatrixBase <Derived> &A, const std::vector <cmat> &Ks)
+    std::pair<std::vector<double>, std::vector<cmat>> measure(
+            const Eigen::MatrixBase<Derived> &A, const std::vector<cmat> &Ks)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -60,7 +60,7 @@ namespace qpp
         // probabilities
         std::vector<double> prob(Ks.size());
         // resulting states
-        std::vector <cmat> outstates(Ks.size());
+        std::vector<cmat> outstates(Ks.size());
 
         if (internal::_check_square_mat(rA)) // square matrix
         {
@@ -106,9 +106,9 @@ namespace qpp
 * post-measurement normalized states
 */
     template<typename Derived>
-    std::pair <std::vector<double>, std::vector<cmat>> measure(
-            const Eigen::MatrixBase <Derived> &A,
-            const std::initializer_list <cmat> &Ks)
+    std::pair<std::vector<double>, std::vector<cmat>> measure(
+            const Eigen::MatrixBase<Derived> &A,
+            const std::initializer_list<cmat> &Ks)
     {
         return measure(A, std::vector<cmat>(Ks));
     }
@@ -123,8 +123,8 @@ namespace qpp
 * post-measurement normalized states
 */
     template<typename Derived>
-    std::pair <std::vector<double>, std::vector<cmat>> measure(
-            const Eigen::MatrixBase <Derived> &A, const cmat &M)
+    std::pair<std::vector<double>, std::vector<cmat>> measure(
+            const Eigen::MatrixBase<Derived> &A, const cmat &M)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -145,7 +145,7 @@ namespace qpp
         // probabilities
         std::vector<double> prob(M.rows());
         // resulting states
-        std::vector <cmat> outstates(M.rows());
+        std::vector<cmat> outstates(M.rows());
 
         if (internal::_check_square_mat(rA)) // square matrix
         {

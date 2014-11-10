@@ -57,7 +57,7 @@ namespace qpp
                 for (std::size_t i = 0; i < _D; i++)
                     p[i] = std::abs((cplx) trace(prj((cmat) evects(U).col(i)) * _rho));
 
-                std::discrete_distribution <std::size_t> dd{std::begin(p), std::end(p)};
+                std::discrete_distribution<std::size_t> dd{std::begin(p), std::end(p)};
                 std::size_t result = dd(RandomDevices::get_instance()._rng);
 
                 if (destructive) // von Neumann

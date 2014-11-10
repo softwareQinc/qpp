@@ -193,9 +193,9 @@ namespace qpp
         * \return CTRL-A gate, as a matrix over the same scalar field as \a A
         */
         template<typename Derived>
-        DynMat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase <Derived> &A,
-                const std::vector <std::size_t> &ctrl,
-                const std::vector <std::size_t> &subsys, std::size_t n,
+        DynMat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived> &A,
+                const std::vector<std::size_t> &ctrl,
+                const std::vector<std::size_t> &subsys, std::size_t n,
                 std::size_t d = 2) const
         {
             const DynMat<typename Derived::Scalar> &rA = A;
@@ -223,11 +223,11 @@ namespace qpp
             if (d == 0)
                 throw Exception("Gates::CTRL", Exception::Type::DIMS_INVALID);
 
-            std::vector <std::size_t> ctrlgate = ctrl;// ctrl + gate subsystem vector
+            std::vector<std::size_t> ctrlgate = ctrl;// ctrl + gate subsystem vector
             ctrlgate.insert(std::end(ctrlgate), std::begin(subsys),
                     std::end(subsys));
 
-            std::vector <std::size_t> dims(n, d); // local dimensions vector
+            std::vector<std::size_t> dims(n, d); // local dimensions vector
 
             // check that ctrl + gate subsystem is valid
             // with respect to local dimensions
@@ -354,8 +354,8 @@ namespace qpp
         */
         template<typename Derived>
         DynMat<typename Derived::Scalar> expandout(
-                const Eigen::MatrixBase <Derived> &A, std::size_t pos,
-                const std::vector <std::size_t> &dims) const
+                const Eigen::MatrixBase<Derived> &A, std::size_t pos,
+                const std::vector<std::size_t> &dims) const
         {
             const DynMat<typename Derived::Scalar> &rA = A;
 

@@ -42,10 +42,10 @@ namespace qpp
 */
     template<typename Derived1, typename Derived2>
     DynMat<typename Derived1::Scalar> applyCTRL(
-            const Eigen::MatrixBase <Derived1> &state,
-            const Eigen::MatrixBase <Derived2> &A,
-            const std::vector <std::size_t> &ctrl,
-            const std::vector <std::size_t> &subsys, std::size_t n,
+            const Eigen::MatrixBase<Derived1> &state,
+            const Eigen::MatrixBase<Derived2> &A,
+            const std::vector<std::size_t> &ctrl,
+            const std::vector<std::size_t> &subsys, std::size_t n,
             std::size_t d = 2)
     {
         const DynMat<typename Derived1::Scalar> &rstate = state;
@@ -80,13 +80,13 @@ namespace qpp
         if (d == 0)
             throw Exception("applyCTRL", Exception::Type::DIMS_INVALID);
 
-        std::vector <std::size_t> dims(n, d); // local dimensions vector
+        std::vector<std::size_t> dims(n, d); // local dimensions vector
 
         // check subsys is valid w.r.t. dims
         if (!internal::_check_subsys_match_dims(subsys, dims))
             throw Exception("applyCTRL", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-        std::vector <std::size_t> ctrlgate = ctrl; // ctrl + gate subsystem vector
+        std::vector<std::size_t> ctrlgate = ctrl; // ctrl + gate subsystem vector
         ctrlgate.insert(std::end(ctrlgate), std::begin(subsys), std::end(subsys));
         std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
@@ -98,8 +98,8 @@ namespace qpp
         // END EXCEPTION CHECKS
 
         // construct the table of A^i and (A^dagger)^i
-        std::vector <DynMat<typename Derived1::Scalar>> Ai;
-        std::vector <DynMat<typename Derived1::Scalar>> Aidagger;
+        std::vector<DynMat<typename Derived1::Scalar>> Ai;
+        std::vector<DynMat<typename Derived1::Scalar>> Aidagger;
         for (std::size_t i = 0; i < d; i++)
         {
             Ai.push_back(powm(rA, i));
@@ -116,8 +116,8 @@ namespace qpp
         std::size_t CdimsA[maxn]; // local dimensions
         std::size_t CdimsCTRLAbar[maxn]; // local dimensions
 
-        std::vector <std::size_t> ctrlgatebar(n - ctrlgate.size()); // rest
-        std::vector <std::size_t> allsubsys(n);
+        std::vector<std::size_t> ctrlgatebar(n - ctrlgate.size()); // rest
+        std::vector<std::size_t> allsubsys(n);
         std::iota(std::begin(allsubsys), std::end(allsubsys), 0);
         std::set_difference(std::begin(allsubsys), std::end(allsubsys),
                 std::begin(ctrlgate), std::end(ctrlgate), std::begin(ctrlgatebar));
@@ -352,9 +352,9 @@ namespace qpp
 */
     template<typename Derived1, typename Derived2>
     DynMat<typename Derived1::Scalar> apply(
-            const Eigen::MatrixBase <Derived1> &state,
-            const Eigen::MatrixBase <Derived2> &A,
-            const std::vector <std::size_t> &subsys, std::size_t n,
+            const Eigen::MatrixBase<Derived1> &state,
+            const Eigen::MatrixBase<Derived2> &A,
+            const std::vector<std::size_t> &subsys, std::size_t n,
             std::size_t d = 2)
     {
         const DynMat<typename Derived1::Scalar> &rstate = state;
@@ -386,7 +386,7 @@ namespace qpp
         if (d == 0)
             throw Exception("apply", Exception::Type::DIMS_INVALID);
 
-        std::vector <std::size_t> dims(n, d); // local dimensions vector
+        std::vector<std::size_t> dims(n, d); // local dimensions vector
 
         // check subsys is valid w.r.t. dims
         if (!internal::_check_subsys_match_dims(subsys, dims))
@@ -426,7 +426,7 @@ namespace qpp
 * \return Output density matrix after the action of the channel
 */
     template<typename Derived>
-    cmat channel(const Eigen::MatrixBase <Derived> &rho, const std::vector <cmat> &Ks)
+    cmat channel(const Eigen::MatrixBase<Derived> &rho, const std::vector<cmat> &Ks)
     {
         const cmat &rrho = rho;
 
@@ -471,8 +471,8 @@ namespace qpp
 * \return Output density matrix after the action of the channel
 */
     template<typename Derived>
-    cmat channel(const Eigen::MatrixBase <Derived> &rho, const std::vector <cmat> &Ks,
-            const std::vector <std::size_t> &subsys, std::size_t n,
+    cmat channel(const Eigen::MatrixBase<Derived> &rho, const std::vector<cmat> &Ks,
+            const std::vector<std::size_t> &subsys, std::size_t n,
             std::size_t d = 2)
     {
         const cmat &rrho = rho;
@@ -494,7 +494,7 @@ namespace qpp
         if (d == 0)
             throw Exception("channel", Exception::Type::DIMS_INVALID);
 
-        std::vector <std::size_t> dims(n, d); // local dimensions vector
+        std::vector<std::size_t> dims(n, d); // local dimensions vector
 
         // check that dims match rho matrix
         if (!internal::_check_dims_match_mat(dims, rrho))
@@ -535,7 +535,7 @@ namespace qpp
 * \param Ks Set of Kraus operators
 * \return Superoperator matrix representation
 */
-    cmat super(const std::vector <cmat> &Ks)
+    cmat super(const std::vector<cmat> &Ks)
     {
         // EXCEPTION CHECKS
         if (!internal::_check_nonzero_size(Ks))
@@ -602,7 +602,7 @@ namespace qpp
 * \param Ks Set of Kraus operators
 * \return Choi matrix representation
 */
-    cmat choi(const std::vector <cmat> &Ks)
+    cmat choi(const std::vector<cmat> &Ks)
     {
         // EXCEPTION CHECKS
         if (!internal::_check_nonzero_size(Ks))
@@ -651,7 +651,7 @@ namespace qpp
 * \param A Choi matrix
 * \return Set of Kraus operators
 */
-    std::vector <cmat> choi2kraus(const cmat &A)
+    std::vector<cmat> choi2kraus(const cmat &A)
     {
         // EXCEPTION CHECKS
         if (!internal::_check_nonzero_size(A))
@@ -664,7 +664,7 @@ namespace qpp
 
         dmat ev = hevals(A);
         cmat evec = hevects(A);
-        std::vector <cmat> result;
+        std::vector<cmat> result;
 
         for (std::size_t i = 0; i < D * D; i++)
         {
@@ -691,8 +691,8 @@ namespace qpp
 * over the same scalar field as \a A
 */
     template<typename Derived>
-    DynMat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase <Derived> &A,
-            const std::vector <std::size_t> &dims)
+    DynMat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived> &A,
+            const std::vector<std::size_t> &dims)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -751,8 +751,8 @@ namespace qpp
 * over the same scalar field as \a A
 */
     template<typename Derived>
-    DynMat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase <Derived> &A,
-            const std::vector <std::size_t> &dims)
+    DynMat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived> &A,
+            const std::vector<std::size_t> &dims)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -806,9 +806,9 @@ namespace qpp
 * over the same scalar field as \a A
 */
     template<typename Derived>
-    DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase <Derived> &A,
-            const std::vector <std::size_t> &subsys,
-            const std::vector <std::size_t> &dims)
+    DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived> &A,
+            const std::vector<std::size_t> &subsys,
+            const std::vector<std::size_t> &dims)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -945,9 +945,9 @@ namespace qpp
 * over the same scalar field as \a A
 */
     template<typename Derived>
-    DynMat<typename Derived::Scalar> ptranspose(const Eigen::MatrixBase <Derived> &A,
-            const std::vector <std::size_t> &subsys,
-            const std::vector <std::size_t> &dims)
+    DynMat<typename Derived::Scalar> ptranspose(const Eigen::MatrixBase<Derived> &A,
+            const std::vector<std::size_t> &subsys,
+            const std::vector<std::size_t> &dims)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -1038,9 +1038,9 @@ namespace qpp
 * over the same scalar field as \a A
 */
     template<typename Derived>
-    DynMat<typename Derived::Scalar> syspermute(const Eigen::MatrixBase <Derived> &A,
-            const std::vector <std::size_t> &perm,
-            const std::vector <std::size_t> &dims)
+    DynMat<typename Derived::Scalar> syspermute(const Eigen::MatrixBase<Derived> &A,
+            const std::vector<std::size_t> &perm,
+            const std::vector<std::size_t> &dims)
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 

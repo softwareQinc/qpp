@@ -47,10 +47,10 @@ namespace qpp
 */
         template<typename Derived1, typename Derived2>
         DynMat<typename Derived1::Scalar> apply(
-                const Eigen::MatrixBase <Derived1> &state,
-                const Eigen::MatrixBase <Derived2> &A,
-                const std::vector <std::size_t> &subsys,
-                const std::vector <std::size_t> &dims)
+                const Eigen::MatrixBase<Derived1> &state,
+                const Eigen::MatrixBase<Derived2> &A,
+                const std::vector<std::size_t> &subsys,
+                const std::vector<std::size_t> &dims)
         {
             const DynMat<typename Derived1::Scalar> &rstate = state;
             const DynMat<typename Derived2::Scalar> &rA = A;
@@ -262,9 +262,9 @@ namespace qpp
 * \return Output density matrix after the action of the channel
 */
         template<typename Derived>
-        cmat channel(const Eigen::MatrixBase <Derived> &rho, const std::vector <cmat> &Ks,
-                const std::vector <std::size_t> &subsys,
-                const std::vector <std::size_t> &dims)
+        cmat channel(const Eigen::MatrixBase<Derived> &rho, const std::vector<cmat> &Ks,
+                const std::vector<std::size_t> &subsys,
+                const std::vector<std::size_t> &dims)
         {
             const cmat &rrho = rho;
 
@@ -443,7 +443,7 @@ namespace qpp
 * \param Ks Set of Kraus operators
 * \return Superoperator matrix representation
 */
-        cmat super(const std::vector <cmat> &Ks)
+        cmat super(const std::vector<cmat> &Ks)
         {
             // EXCEPTION CHECKS
             if (!internal::_check_nonzero_size(Ks))
@@ -516,9 +516,9 @@ namespace qpp
 */
 // Parallel version, seems slower than the sequential qpp::Gates::CTRL
         template<typename Derived>
-        DynMat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase <Derived> &A,
-                const std::vector <std::size_t> &ctrl,
-                const std::vector <std::size_t> &subsys, std::size_t n,
+        DynMat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived> &A,
+                const std::vector<std::size_t> &ctrl,
+                const std::vector<std::size_t> &subsys, std::size_t n,
                 std::size_t d = 2)
         {
             const DynMat<typename Derived::Scalar> &rA = A;
@@ -544,11 +544,11 @@ namespace qpp
             if (d == 0)
                 throw Exception("Gates::CTRL", Exception::Type::DIMS_INVALID);
 
-            std::vector <std::size_t> ctrlgate = ctrl;    // ctrl + gate subsystem vector
+            std::vector<std::size_t> ctrlgate = ctrl;    // ctrl + gate subsystem vector
             ctrlgate.insert(std::end(ctrlgate), std::begin(subsys), std::end(subsys));
             std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
-            std::vector <std::size_t> dims(n, d); // local dimensions vector
+            std::vector<std::size_t> dims(n, d); // local dimensions vector
 
             // check that ctrl + gate subsystem is valid
             // with respect to local dimensions
@@ -566,8 +566,8 @@ namespace qpp
             std::size_t ctrlsize = ctrl.size();
 
             // construct the table of A^i
-            std::vector <DynMat<typename Derived::Scalar>> Ai;
-            std::vector <DynMat<typename Derived::Scalar>> Aidagger;
+            std::vector<DynMat<typename Derived::Scalar>> Ai;
+            std::vector<DynMat<typename Derived::Scalar>> Aidagger;
             for (std::size_t i = 0; i < d; i++)
             {
                 Ai.push_back(powm(rA, i));
@@ -582,8 +582,8 @@ namespace qpp
             std::size_t CdimsA[maxn]; // local dimensions
             std::size_t CdimsCTRLAbar[maxn]; // local dimensions
 
-            std::vector <std::size_t> ctrlgatebar(n - ctrlgate.size()); // rest
-            std::vector <std::size_t> allsubsys(n);
+            std::vector<std::size_t> ctrlgatebar(n - ctrlgate.size()); // rest
+            std::vector<std::size_t> allsubsys(n);
             std::iota(std::begin(allsubsys), std::end(allsubsys), 0);
             std::set_difference(std::begin(allsubsys), std::end(allsubsys),
                     std::begin(ctrlgate), std::end(ctrlgate), std::begin(ctrlgatebar));
@@ -597,7 +597,7 @@ namespace qpp
 
             auto coeff =
                     [=](std::size_t _i, std::size_t _m, std::size_t _n, std::size_t _r)
-                            -> std::pair <std::size_t, std::size_t>
+                            -> std::pair<std::size_t, std::size_t>
                     {
                         std::size_t idxrow = 0;
                         std::size_t idxcol = 0;
@@ -675,7 +675,7 @@ namespace qpp
 * \param Ks Set of Kraus operators
 * \return Choi matrix representation
 */
-        cmat choi(const std::vector <cmat> &Ks)
+        cmat choi(const std::vector<cmat> &Ks)
         {
             // EXCEPTION CHECKS
             if (!internal::_check_nonzero_size(Ks))
@@ -718,14 +718,14 @@ namespace qpp
 * \param D Dimension of the Hilbert space
 * \return Set of \a n Kraus operators satisfying the closure condition
 */
-        std::vector <cmat> randkraus(std::size_t n, std::size_t D)
+        std::vector<cmat> randkraus(std::size_t n, std::size_t D)
         {
             if (n == 0)
                 throw Exception("randkraus", Exception::Type::OUT_OF_RANGE);
             if (D == 0)
                 throw Exception("randkraus", Exception::Type::DIMS_INVALID);
 
-            std::vector <cmat> result;
+            std::vector<cmat> result;
             cmat Fk(D, D);
             cmat U = randU(n * D);
             std::size_t dims[2];
@@ -763,7 +763,7 @@ namespace qpp
 * with the logarithm in base 2
 */
         template<typename Derived>
-        double renyi_inf(const Eigen::MatrixBase <Derived> &A)
+        double renyi_inf(const Eigen::MatrixBase<Derived> &A)
         {
             const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -971,7 +971,7 @@ namespace qpp
 * \return Output stream
 */
         template<typename Derived>
-        std::ostream &disp(const Eigen::MatrixBase <Derived> &A, double chop = qpp::chop,
+        std::ostream &disp(const Eigen::MatrixBase<Derived> &A, double chop = qpp::chop,
                 std::ostream &os = std::cout)
         {
             const DynMat<typename Derived::Scalar> &rA = A;
@@ -985,7 +985,7 @@ namespace qpp
             std::ostringstream ostr;
             ostr.copyfmt(os); // copy os' state
 
-            std::vector <std::string> vstr;
+            std::vector<std::string> vstr;
             std::string strA{};
 
             for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
@@ -1034,7 +1034,7 @@ namespace qpp
             }
 
             // determine the maximum lenght of the entries in each column
-            std::vector <std::size_t> maxlengthcols(rA.cols(), 0);
+            std::vector<std::size_t> maxlengthcols(rA.cols(), 0);
 
             for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
                 for (std::size_t j = 0; j < static_cast<std::size_t>(rA.cols()); j++)
@@ -1069,7 +1069,7 @@ namespace qpp
 * \return Output stream
 */
         template<typename Derived>
-        std::ostream &displn(const Eigen::MatrixBase <Derived> &A, double chop =
+        std::ostream &displn(const Eigen::MatrixBase<Derived> &A, double chop =
         qpp::chop, std::ostream &os = std::cout)
         {
             disp(A, chop, os);
