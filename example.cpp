@@ -195,7 +195,4 @@ int main()
         std::cout << ">> <0L | 1L> = ";
         std::cout << disp(adjoint(c0) * c1) << std::endl;
     }
-
-    std::cout << std::setprecision(100) << contfrac2x({0,0,0}) << std::setprecision(4) << std::endl;
-    std::cout << disp(x2contfrac(4.00, 100),", ") << std::endl;
 }
