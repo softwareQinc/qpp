@@ -480,6 +480,18 @@ Container::const_iterator &gt;&#160;</td><td class="memTemplItemRight" valign="b
 <tr class="memitem:ac3095e8de98c536e5e620b6a0582e1b5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ac3095e8de98c536e5e620b6a0582e1b5">contfrac2x</a> (const std::vector&lt; double &gt; &amp;cf)</td></tr>
 <tr class="memdesc:ac3095e8de98c536e5e620b6a0582e1b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Real representation of a simple continued fraction.  <a href="#ac3095e8de98c536e5e620b6a0582e1b5">More...</a><br /></td></tr>
 <tr class="separator:ac3095e8de98c536e5e620b6a0582e1b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae245a12a1f7c9ab36da26498b2c4da96"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ae245a12a1f7c9ab36da26498b2c4da96">gcd</a> (std::size_t m, std::size_t n)</td></tr>
+<tr class="memdesc:ae245a12a1f7c9ab36da26498b2c4da96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greatest common divisor of two non-negative integers.  <a href="#ae245a12a1f7c9ab36da26498b2c4da96">More...</a><br /></td></tr>
+<tr class="separator:ae245a12a1f7c9ab36da26498b2c4da96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6b06a1ed3f09f5296470d4c180d9edc"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ac6b06a1ed3f09f5296470d4c180d9edc">gcd</a> (const std::vector&lt; std::size_t &gt; &amp;ns)</td></tr>
+<tr class="memdesc:ac6b06a1ed3f09f5296470d4c180d9edc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greatest common divisor of a list of non-negative integers.  <a href="#ac6b06a1ed3f09f5296470d4c180d9edc">More...</a><br /></td></tr>
+<tr class="separator:ac6b06a1ed3f09f5296470d4c180d9edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37ded4330bac75ed34190b1c40d53381"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a37ded4330bac75ed34190b1c40d53381">lcm</a> (std::size_t m, std::size_t n)</td></tr>
+<tr class="memdesc:a37ded4330bac75ed34190b1c40d53381"><td class="mdescLeft">&#160;</td><td class="mdescRight">Least common multiple of two positive integers.  <a href="#a37ded4330bac75ed34190b1c40d53381">More...</a><br /></td></tr>
+<tr class="separator:a37ded4330bac75ed34190b1c40d53381"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cd094d5bde1344756f98167abb079f5"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a0cd094d5bde1344756f98167abb079f5">lcm</a> (const std::vector&lt; std::size_t &gt; &amp;ns)</td></tr>
+<tr class="memdesc:a0cd094d5bde1344756f98167abb079f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Least common multiple of a list of positive integers.  <a href="#a0cd094d5bde1344756f98167abb079f5">More...</a><br /></td></tr>
+<tr class="separator:a0cd094d5bde1344756f98167abb079f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17f354526dfc4be8f37ff04b2372f596"><td class="memTemplParams" colspan="2">template&lt;typename Derived1 , typename Derived2 &gt; </td></tr>
 <tr class="memitem:a17f354526dfc4be8f37ff04b2372f596"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat</a>&lt; typename Derived1::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a17f354526dfc4be8f37ff04b2372f596">applyCTRL</a> (const Eigen::MatrixBase&lt; Derived1 &gt; &amp;state, const Eigen::MatrixBase&lt; Derived2 &gt; &amp;A, const std::vector&lt; std::size_t &gt; &amp;ctrl, const std::vector&lt; std::size_t &gt; &amp;subsys, std::size_t n, std::size_t d=2)</td></tr>
 <tr class="memdesc:a17f354526dfc4be8f37ff04b2372f596"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the controlled-gate <em>A</em> to the part <em>subsys</em> of a multipartite state vector or density matrix.  <a href="#a17f354526dfc4be8f37ff04b2372f596">More...</a><br /></td></tr>
@@ -2059,6 +2071,76 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="ae245a12a1f7c9ab36da26498b2c4da96"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t qpp::gcd </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Greatest common divisor of two non-negative integers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">m</td><td>Non-negative integer </td></tr>
+    <tr><td class="paramname">n</td><td>Non-negative integer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Greatest common divisor of <em>m</em> and <em>n</em> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ac6b06a1ed3f09f5296470d4c180d9edc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t qpp::gcd </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::size_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>ns</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Greatest common divisor of a list of non-negative integers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ns</td><td>List of non-negative integers </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Greatest common divisor of all numbers in <em>ns</em> </dd></dl>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespaceqpp_ac6b06a1ed3f09f5296470d4c180d9edc_cgraph.png" border="0" usemap="#namespaceqpp_ac6b06a1ed3f09f5296470d4c180d9edc_cgraph" alt=""/></div>
+<map name="namespaceqpp_ac6b06a1ed3f09f5296470d4c180d9edc_cgraph" id="namespaceqpp_ac6b06a1ed3f09f5296470d4c180d9edc_cgraph">
+<area shape="rect" id="node2" href="namespaceqpp.html#ae245a12a1f7c9ab36da26498b2c4da96" title="Greatest common divisor of two non&#45;negative integers. " alt="" coords="124,5,195,32"/></map>
+</div>
+</p>
+
+</div>
+</div>
 <a class="anchor" id="a100bf63d3dabba74e049aff37ea7e383"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2536,6 +2618,85 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="namespaceqpp_ac695bd8e27cfe03265b550f62c394adb_cgraph.png" border="0" usemap="#namespaceqpp_ac695bd8e27cfe03265b550f62c394adb_cgraph" alt=""/></div>
 <map name="namespaceqpp_ac695bd8e27cfe03265b550f62c394adb_cgraph" id="namespaceqpp_ac695bd8e27cfe03265b550f62c394adb_cgraph">
 <area shape="rect" id="node2" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31" title="qpp::internal::_check\l_nonzero_size" alt="" coords="153,5,288,47"/><area shape="rect" id="node3" href="namespaceqpp.html#a3b2bafdce8302c9ac34ab328ec84a3f7" title="Kronecker product (variadic overload) " alt="" coords="183,71,258,98"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a37ded4330bac75ed34190b1c40d53381"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t qpp::lcm </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Least common multiple of two positive integers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">m</td><td>Positive integer </td></tr>
+    <tr><td class="paramname">n</td><td>Positive integer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Least common multiple of <em>m</em> and <em>n</em> </dd></dl>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespaceqpp_a37ded4330bac75ed34190b1c40d53381_cgraph.png" border="0" usemap="#namespaceqpp_a37ded4330bac75ed34190b1c40d53381_cgraph" alt=""/></div>
+<map name="namespaceqpp_a37ded4330bac75ed34190b1c40d53381_cgraph" id="namespaceqpp_a37ded4330bac75ed34190b1c40d53381_cgraph">
+<area shape="rect" id="node2" href="namespaceqpp.html#ae245a12a1f7c9ab36da26498b2c4da96" title="Greatest common divisor of two non&#45;negative integers. " alt="" coords="123,5,193,32"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a0cd094d5bde1344756f98167abb079f5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t qpp::lcm </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::size_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>ns</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Least common multiple of a list of positive integers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ns</td><td>List of positive integers </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Least common multiple of all numbers in <em>ns</em> </dd></dl>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespaceqpp_a0cd094d5bde1344756f98167abb079f5_cgraph.png" border="0" usemap="#namespaceqpp_a0cd094d5bde1344756f98167abb079f5_cgraph" alt=""/></div>
+<map name="namespaceqpp_a0cd094d5bde1344756f98167abb079f5_cgraph" id="namespaceqpp_a0cd094d5bde1344756f98167abb079f5_cgraph">
+<area shape="rect" id="node2" href="namespaceqpp.html#a78595ec429a5df51dbe682cdb9711d9c" title="Element&#45;wise product of A. " alt="" coords="123,13,199,39"/><area shape="rect" id="node4" href="namespaceqpp.html#ae245a12a1f7c9ab36da26498b2c4da96" title="Greatest common divisor of two non&#45;negative integers. " alt="" coords="125,63,196,90"/><area shape="rect" id="node3" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31" title="qpp::internal::_check\l_nonzero_size" alt="" coords="247,5,381,47"/></map>
 </div>
 </p>
 
@@ -5885,7 +6046,7 @@ Here is the call graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Mon Nov 10 2014 16:17:46 for quantum++ by
+    <li class="footer">Generated on Mon Nov 10 2014 17:20:40 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
