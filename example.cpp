@@ -220,5 +220,4 @@ int main()
         std::cout << ">> <0L | 1L> = ";
         std::cout << disp(adjoint(c0) * c1) << std::endl;
     }
-
 }
