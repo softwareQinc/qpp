@@ -30,25 +30,21 @@ int main()
     // Qudit Teleportation
     {
         std::size_t D = 3; // size of the system
-        std::cout << std::endl << "**** Qudit Teleportation, D = " << D
-                << " ****" << std::endl;
+        std::cout << std::endl << "**** Qudit Teleportation, D = " << D << " ****" << std::endl;
         ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
         for (std::size_t i = 0; i < D; i++)
             mes_AB += mket({i, i}, D);
         mes_AB /= std::sqrt((double) D);
-        cmat Bell_aA = adjoint( // circuit that measures in the qudit Bell basis
-                gt.CTRL(gt.Xd(D), {0}, {1}, 2, D)
-                        * kron(gt.Fd(D), gt.Id(D)));
+        // circuit that measures in the qudit Bell basis
+        cmat Bell_aA = adjoint(gt.CTRL(gt.Xd(D), {0}, {1}, 2, D) * kron(gt.Fd(D), gt.Id(D)));
         ket psi_a = randket(D); // random state as input on a
         std::cout << ">> Initial state:" << std::endl;
         std::cout << disp(psi_a) << std::endl;
         ket input_aAB = kron(psi_a, mes_AB); // joint input state aAB
         // output before measurement
         ket output_aAB = apply(input_aAB, Bell_aA, {0, 1}, 3, D);
-        auto measured_aA = measure(ptrace2(prj(output_aAB), {D * D, D}),
-                gt.Id(D * D)); // measure on aA
-        std::discrete_distribution<std::size_t> dd(measured_aA.first.begin(),
-                measured_aA.first.end());
+        auto measured_aA = measure(ptrace2(prj(output_aAB), {D * D, D}), gt.Id(D * D)); // measure on aA
+        std::discrete_distribution<std::size_t> dd(measured_aA.first.begin(), measured_aA.first.end());
         std::cout << ">> Measurement probabilities: ";
         std::cout << disp(measured_aA.first, ", ") << std::endl;
         std::size_t m = dd(rdevs._rng); // sample
@@ -56,31 +52,26 @@ int main()
         std::cout << ">> Measurement result: ";
         std::cout << disp(midx, " ") << std::endl;
         // conditional result on B before correction
-        ket output_m_aAB = apply(output_aAB, prj(mket(midx, D)), {0, 1}, 3, D)
-                / std::sqrt(measured_aA.first[m]);
-        cmat correction_B = powm(gt.Zd(D), midx[0])
-                * powm(adjoint(gt.Xd(D)), midx[1]); // correction operator
+        ket output_m_aAB = apply(output_aAB, prj(mket(midx, D)), {0, 1}, 3, D) / std::sqrt(measured_aA.first[m]);
+        cmat correction_B = powm(gt.Zd(D), midx[0]) * powm(adjoint(gt.Xd(D)), midx[1]); // correction operator
         // apply correction on B
         output_aAB = apply(output_m_aAB, correction_B, {2}, 3, D);
         cmat rho_B = ptrace1(prj(output_aAB), {D * D, D});
         std::cout << ">> Bob's density operator: " << std::endl;
         std::cout << disp(rho_B) << std::endl;
-        std::cout << ">> Norm difference: " << norm(rho_B - prj(psi_a))
-                << std::endl; // verification
+        std::cout << ">> Norm difference: " << norm(rho_B - prj(psi_a)) << std::endl; // verification
     }
 
     // Qudit Dense Coding
     {
         std::size_t D = 3; // size of the system
-        std::cout << std::endl << "**** Qudit Dense Coding, D = " << D
-                << " ****" << std::endl;
+        std::cout << std::endl << "**** Qudit Dense Coding, D = " << D << " ****" << std::endl;
         ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
         for (std::size_t i = 0; i < D; i++)
             mes_AB += mket({i, i}, D);
         mes_AB /= std::sqrt((double) D);
-        cmat Bell_AB = adjoint( // circuit that measures in the qudit Bell basis
-                gt.CTRL(gt.Xd(D), {0}, {1}, 2, D)
-                        * kron(gt.Fd(D), gt.Id(D)));
+        // circuit that measures in the qudit Bell basis
+        cmat Bell_AB = adjoint(gt.CTRL(gt.Xd(D), {0}, {1}, 2, D) * kron(gt.Fd(D), gt.Id(D)));
         // equal probabilities of choosing a message
         std::uniform_int_distribution<std::size_t> uid(0, D * D - 1);
         std::size_t m_A = uid(rdevs._rng); // sample, obtain the message index
@@ -97,8 +88,7 @@ int main()
         std::cout << ">> Bob measurement probabilities: ";
         std::cout << disp(measured.first, ", ") << std::endl;
         // Bob samples according to the measurement probabilities
-        std::discrete_distribution<std::size_t> dd(measured.first.begin(),
-                measured.first.end());
+        std::discrete_distribution<std::size_t> dd(measured.first.begin(), measured.first.end());
         std::size_t m_B = dd(rdevs._rng);
         std::cout << ">> Bob received: ";
         std::cout << disp(n2multiidx(m_B, {D, D}), " ") << std::endl;
@@ -108,8 +98,7 @@ int main()
     {
         Timer t; // set a timer
         std::size_t n = 4; // number of qubits
-        std::cout << std::endl << "**** Grover on n = " << n << " qubits ****"
-                << std::endl;
+        std::cout << std::endl << "**** Grover on n = " << n << " qubits ****" << std::endl;
         std::vector<std::size_t> dims(n, 2); // local dimensions
         std::size_t N = std::pow(2, n); // number of elements in the database
         std::cout << ">> Database size: " << N << std::endl;
@@ -131,13 +120,11 @@ int main()
         }
         // we now measure the state in the computational basis
         auto measured = measure(psi, gt.Id(N));
-        std::cout << ">> Probability of the marked state: "
-                << measured.first[marked] << std::endl;
+        std::cout << ">> Probability of the marked state: " << measured.first[marked] << std::endl;
         std::cout << ">> Probability of all results: ";
         std::cout << disp(measured.first, ", ") << std::endl;
         std::cout << ">> Let's sample..." << std::endl;
-        std::discrete_distribution<std::size_t> dd(measured.first.begin(),
-                measured.first.end());
+        std::discrete_distribution<std::size_t> dd(measured.first.begin(), measured.first.end());
         std::size_t result = dd(rdevs._rng);
         if (result == marked)
             std::cout << ">> Hooray, we obtained the correct result: ";
@@ -146,9 +133,7 @@ int main()
         std::cout << result << " -> ";
         std::cout << disp(n2multiidx(result, dims), " ") << std::endl;
         // stop the timer and display it
-        std::cout << ">> It took " << t.toc()
-                << " seconds to simulate Grover on " << n << " qubits."
-                << std::endl;
+        std::cout << ">> It took " << t.toc() << " seconds to simulate Grover on " << n << " qubits." << std::endl;
     }
 
     // Entanglement
@@ -158,21 +143,16 @@ int main()
         std::cout << ">> rho: " << std::endl;
         std::cout << disp(rho) << std::endl;
         std::cout << ">> Concurrence of rho: " << concurrence(rho) << std::endl;
-        std::cout << ">> Negativity of rho: " << negativity(rho, {2, 2})
-                << std::endl;
-        std::cout << ">> Logarithimc negativity of rho: "
-                << lognegativity(rho, {2, 2}) << std::endl;
+        std::cout << ">> Negativity of rho: " << negativity(rho, {2, 2}) << std::endl;
+        std::cout << ">> Logarithimc negativity of rho: " << lognegativity(rho, {2, 2}) << std::endl;
         ket psi = 0.8 * mket({0, 0}) + 0.6 * mket({1, 1});
         // apply some local random unitaries
         psi = kron(randU(2), randU(2)) * psi;
         std::cout << ">> psi: " << std::endl;
         std::cout << disp(psi) << std::endl;
-        std::cout << ">> Entanglement of psi: " << entanglement(psi, {2, 2})
-                << std::endl;
-        std::cout << ">> Concurrence of psi: " << concurrence(prj(psi))
-                << std::endl;
-        std::cout << ">> G-Concurrence of psi: " << gconcurrence(psi)
-                << std::endl;
+        std::cout << ">> Entanglement of psi: " << entanglement(psi, {2, 2}) << std::endl;
+        std::cout << ">> Concurrence of psi: " << concurrence(prj(psi)) << std::endl;
+        std::cout << ">> G-Concurrence of psi: " << gconcurrence(psi) << std::endl;
         std::cout << ">> Schmidt coefficients of psi: " << std::endl;
         std::cout << disp(schmidtcoeff(psi, {2, 2})) << std::endl;
         std::cout << ">> Schmidt probabilities of psi: " << std::endl;
@@ -186,21 +166,16 @@ int main()
         std::cout << ">> State psi in the Schmidt basis: " << std::endl;
         std::cout << disp(adjoint(kron(U, V)) * psi) << std::endl;
         // reconstructed state
-        ket psi_from_schmidt = schmidtcoeff(psi, {2, 2})(0)
-                * kron(U.col(0), V.col(0))
-                + schmidtcoeff(psi, {2, 2})(1) * kron(U.col(1), V.col(1));
-        std::cout
-                << ">> State psi reconstructed from the Schmidt decomposition: "
-                << std::endl;
+        ket psi_from_schmidt = schmidtcoeff(psi, {2, 2})(0) * kron(U.col(0), V.col(0)) +
+                schmidtcoeff(psi, {2, 2})(1) * kron(U.col(1), V.col(1));
+        std::cout << ">> State psi reconstructed from the Schmidt decomposition: " << std::endl;
         std::cout << disp(psi_from_schmidt) << std::endl;
-        std::cout << ">> Norm difference: " << norm(psi - psi_from_schmidt)
-                << std::endl;
+        std::cout << ">> Norm difference: " << norm(psi - psi_from_schmidt) << std::endl;
     }
 
     // Quantum error correcting codes
     {
-        std::cout << std::endl << "**** Quantum error correcting codes ****"
-                << std::endl;
+        std::cout << std::endl << "**** Quantum error correcting codes ****" << std::endl;
         ket a0 = codes.codeword(Codes::Type::FIVE_QUBIT, 0);
         ket a1 = codes.codeword(Codes::Type::FIVE_QUBIT, 1);
         ket b0 = codes.codeword(Codes::Type::SEVEN_QUBIT_STEANE, 0);
