@@ -178,7 +178,7 @@ namespace qpp
         if (ns.size() == 0)
             throw Exception("lcm", Exception::Type::ZERO_SIZE);
 
-        if(ns.size() == 1) // convention: lcm({n}) = n
+        if (ns.size() == 1) // convention: lcm({n}) = n
             return ns[0];
 
         auto multiply = [](std::size_t x, std::size_t y) -> std::size_t
@@ -191,6 +191,7 @@ namespace qpp
 
         return prod / gcd(ns);
     }
+
 } /* namespace qpp */
 
 #endif /* INCLUDE_NUMBER_THEORY_H_ */
