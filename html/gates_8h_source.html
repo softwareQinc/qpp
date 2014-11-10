@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> result(D, D);</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            result = cmat::Zero(D, D);</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; D; i++)</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; D; ++i)</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                result(i, i) = std::pow(<a class="code" href="namespaceqpp.html#a66175b7225b388d8851c04171fc7a141">omega</a>(D), i);</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div>
@@ -178,8 +178,8 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> result(D, D);</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            result = cmat::Zero(D, D);</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="preprocessor">#pragma omp parallel for collapse(2)</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            <span class="keywordflow">for</span> (std::size_t j = 0; j &lt; D; j++)</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; D; i++)</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            <span class="keywordflow">for</span> (std::size_t j = 0; j &lt; D; ++j)</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; D; ++i)</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                    result(i, j) = 1 / std::sqrt((<span class="keywordtype">double</span>) D)</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                            * std::pow(<a class="code" href="namespaceqpp.html#a66175b7225b388d8851c04171fc7a141">omega</a>(D), i * j);</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;            <span class="keywordflow">return</span> result;</div>
@@ -270,7 +270,7 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            std::size_t DA = <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(rA.cols());</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            std::size_t Dsubsys_bar = std::pow(d, nsubsys_bar);</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            <span class="keywordflow">for</span> (std::size_t k = 0, cnt = 0; k &lt; n; k++)</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            <span class="keywordflow">for</span> (std::size_t k = 0, cnt = 0; k &lt; n; ++k)</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            {</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                midx_row[k] = midx_col[k] = 0;</div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                Cdims[k] = d;</div>
@@ -286,7 +286,7 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                }</div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;            }</div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;            <span class="keywordflow">for</span> (std::size_t k = 0; k &lt; ngate; k++)</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;            <span class="keywordflow">for</span> (std::size_t k = 0; k &lt; ngate; ++k)</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;            {</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                midxA_row[k] = midxA_col[k] = 0;</div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;                CdimsA[k] = d;</div>
@@ -297,15 +297,15 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;            <a class="code" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat&lt;typename Derived::Scalar&gt;</a> Ak;</div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;            <span class="comment">// run over the complement indexes</span></div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;            <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; Dsubsys_bar; i++)</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;            <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; Dsubsys_bar; ++i)</div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            {</div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;                <span class="comment">// get the complement&#39;s row multi-index</span></div>
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;                <a class="code" href="namespaceqpp_1_1internal.html#ad6e3c598a9985bac31f86dc916151b80">internal::_n2multiidx</a>(i, nsubsys_bar, Cdims_bar, midx_bar);</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;                <span class="keywordflow">for</span> (std::size_t k = 0; k &lt; d; k++)</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;                <span class="keywordflow">for</span> (std::size_t k = 0; k &lt; d; ++k)</div>
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;                {</div>
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;                    Ak = <a class="code" href="namespaceqpp.html#a3b4fd08d05e83656e8ce3153fe5a6f0b">powm</a>(rA, k); <span class="comment">// compute rA^k</span></div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;                    <span class="comment">// run over the subsys&#39;s row multi-index</span></div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                    <span class="keywordflow">for</span> (std::size_t a = 0; a &lt; DA; a++)</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                    <span class="keywordflow">for</span> (std::size_t a = 0; a &lt; DA; ++a)</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                    {</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;                        <span class="comment">// get the subsys&#39;s row multi-index</span></div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                        <a class="code" href="namespaceqpp_1_1internal.html#ad6e3c598a9985bac31f86dc916151b80">internal::_n2multiidx</a>(a, ngate, CdimsA, midxA_row);</div>
@@ -313,26 +313,26 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                        <span class="comment">// construct the result&#39;s row multi-index</span></div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;                        <span class="comment">// first the ctrl part (equal for both row and column)</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                        <span class="keywordflow">for</span> (std::size_t c = 0; c &lt; nctrl; c++)</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                        <span class="keywordflow">for</span> (std::size_t c = 0; c &lt; nctrl; ++c)</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;                            midx_row[ctrl[c]] = midx_col[ctrl[c]] = k;</div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                        <span class="comment">// then the complement part (equal for column)</span></div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                        <span class="keywordflow">for</span> (std::size_t c = 0; c &lt; nsubsys_bar; c++)</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                        <span class="keywordflow">for</span> (std::size_t c = 0; c &lt; nsubsys_bar; ++c)</div>
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                            midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =</div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                                    midx_bar[c];</div>
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                        <span class="comment">// then the subsys part</span></div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                        <span class="keywordflow">for</span> (std::size_t c = 0; c &lt; ngate; c++)</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                        <span class="keywordflow">for</span> (std::size_t c = 0; c &lt; ngate; ++c)</div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                            midx_row[subsys[c]] = midxA_row[c];</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                        <span class="comment">// run over the subsys&#39;s column multi-index</span></div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                        <span class="keywordflow">for</span> (std::size_t b = 0; b &lt; DA; b++)</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                        <span class="keywordflow">for</span> (std::size_t b = 0; b &lt; DA; ++b)</div>
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                        {</div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                            <span class="comment">// get the subsys&#39;s column multi-index</span></div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;                            <a class="code" href="namespaceqpp_1_1internal.html#ad6e3c598a9985bac31f86dc916151b80">internal::_n2multiidx</a>(b, ngate, CdimsA, midxA_col);</div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;</div>
 <div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                            <span class="comment">// construct the result&#39;s column multi-index</span></div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                            <span class="keywordflow">for</span> (std::size_t c = 0; c &lt; ngate; c++)</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                            <span class="keywordflow">for</span> (std::size_t c = 0; c &lt; ngate; ++c)</div>
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;                                midx_col[subsys[c]] = midxA_col[c];</div>
 <div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;</div>
 <div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;                            <span class="comment">// finally write the values</span></div>
@@ -388,14 +388,14 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;            std::size_t midx_row[<a class="code" href="namespaceqpp.html#a9cb5b9cd86de8efebf531f22f673489a">maxn</a>];</div>
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;            std::size_t midx_col[<a class="code" href="namespaceqpp.html#a9cb5b9cd86de8efebf531f22f673489a">maxn</a>];</div>
 <div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;            <span class="keywordflow">for</span> (std::size_t k = 0; k &lt; dims.size(); k++)</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;            <span class="keywordflow">for</span> (std::size_t k = 0; k &lt; dims.size(); ++k)</div>
 <div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;            {</div>
 <div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;                midx_row[k] = midx_col[k] = 0;</div>
 <div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;                Cdims[k] = dims[k];</div>
 <div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;            }</div>
 <div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;</div>
 <div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;            <span class="comment">// run over the main diagonal multi-indexes</span></div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;            <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; D; i++)</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;            <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; D; ++i)</div>
 <div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;            {</div>
 <div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;                <span class="comment">// get row multi_index</span></div>
 <div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;                <a class="code" href="namespaceqpp_1_1internal.html#ad6e3c598a9985bac31f86dc916151b80">internal::_n2multiidx</a>(i, dims.size(), Cdims, midx_row);</div>
@@ -403,14 +403,14 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;                <a class="code" href="namespaceqpp_1_1internal.html#ad6e3c598a9985bac31f86dc916151b80">internal::_n2multiidx</a>(i, dims.size(), Cdims, midx_col);</div>
 <div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;                <span class="comment">// run over the gate&#39;s row multi-index</span></div>
 <div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;                <span class="keywordflow">for</span> (std::size_t a = 0; a &lt; static_cast&lt;std::size_t&gt;(rA.cols());</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;                     a++)</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;                     ++a)</div>
 <div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;                {</div>
 <div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;                    <span class="comment">// construct the total row multi-index</span></div>
 <div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;                    midx_row[pos] = a;</div>
 <div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;</div>
 <div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;                    <span class="comment">// run over the gate&#39;s column multi-index</span></div>
 <div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;                    <span class="keywordflow">for</span> (std::size_t b = 0; b &lt; static_cast&lt;std::size_t&gt;(rA.cols());</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;                         b++)</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;                         ++b)</div>
 <div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;                    {</div>
 <div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;                        <span class="comment">// construct the total column multi-index</span></div>
 <div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;                        midx_col[pos] = b;</div>
@@ -438,11 +438,11 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="ttc" id="classqpp_1_1internal_1_1_singleton_html"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html">qpp::internal::Singleton</a></div><div class="ttdoc">Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...</div><div class="ttdef"><b>Definition:</b> singleton.h:64</div></div>
 <div class="ttc" id="classqpp_1_1_gates_html"><div class="ttname"><a href="classqpp_1_1_gates.html">qpp::Gates</a></div><div class="ttdoc">const Singleton class that implements most commonly used gates </div><div class="ttdef"><b>Definition:</b> gates.h:32</div></div>
 <div class="ttc" id="classqpp_1_1_gates_html_a32b58bf718bc4681a3b3aab410ab3980"><div class="ttname"><a href="classqpp_1_1_gates.html#a32b58bf718bc4681a3b3aab410ab3980">qpp::Gates::Fd</a></div><div class="ttdeci">cmat Fd(std::size_t D) const </div><div class="ttdoc">Fourier transform gate for qudits. </div><div class="ttdef"><b>Definition:</b> gates.h:133</div></div>
-<div class="ttc" id="namespaceqpp_1_1internal_html_ace7cfa182baf987f8a3374bd700b4276"><div class="ttname"><a href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">qpp::internal::_check_square_mat</a></div><div class="ttdeci">bool _check_square_mat(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> functions.h:73</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_ace7cfa182baf987f8a3374bd700b4276"><div class="ttname"><a href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">qpp::internal::_check_square_mat</a></div><div class="ttdeci">bool _check_square_mat(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> functions.h:72</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">qpp::Exception::Type::DIMS_INVALID</a></div><div class="ttdoc">DIMS_INVALID. </div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">qpp::Exception::Type::ZERO_SIZE</a></div><div class="ttdoc">ZERO_SIZE. </div></div>
 <div class="ttc" id="classqpp_1_1_gates_html_a486d615d3d9a81dcca9aff7c05998d8f"><div class="ttname"><a href="classqpp_1_1_gates.html#a486d615d3d9a81dcca9aff7c05998d8f">qpp::Gates::Rn</a></div><div class="ttdeci">cmat Rn(double theta, std::vector&lt; double &gt; n) const </div><div class="ttdoc">Rotation of theta about the 3-dimensional real unit vector n. </div><div class="ttdef"><b>Definition:</b> gates.h:92</div></div>
-<div class="ttc" id="namespaceqpp_1_1internal_html_a8b3940aa8b60b8eeb411db0f3802503b"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a8b3940aa8b60b8eeb411db0f3802503b">qpp::internal::_check_dims</a></div><div class="ttdeci">bool _check_dims(const std::vector&lt; std::size_t &gt; &amp;dims)</div><div class="ttdef"><b>Definition:</b> functions.h:125</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a8b3940aa8b60b8eeb411db0f3802503b"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a8b3940aa8b60b8eeb411db0f3802503b">qpp::internal::_check_dims</a></div><div class="ttdeci">bool _check_dims(const std::vector&lt; std::size_t &gt; &amp;dims)</div><div class="ttdef"><b>Definition:</b> functions.h:124</div></div>
 <div class="ttc" id="classqpp_1_1_gates_html_a372134e5d9f2f23373ec9431be1cde15"><div class="ttname"><a href="classqpp_1_1_gates.html#a372134e5d9f2f23373ec9431be1cde15">qpp::Gates::S</a></div><div class="ttdeci">cmat S</div><div class="ttdoc">S gate. </div><div class="ttdef"><b>Definition:</b> gates.h:43</div></div>
 <div class="ttc" id="classqpp_1_1_gates_html_ac24f89316c231a8831ee57d87d380e7e"><div class="ttname"><a href="classqpp_1_1_gates.html#ac24f89316c231a8831ee57d87d380e7e">qpp::Gates::T</a></div><div class="ttdeci">cmat T</div><div class="ttdoc">T gate. </div><div class="ttdef"><b>Definition:</b> gates.h:44</div></div>
 <div class="ttc" id="classqpp_1_1_gates_html_a4c4ff34a747969a686a121cba16ece2d"><div class="ttname"><a href="classqpp_1_1_gates.html#a4c4ff34a747969a686a121cba16ece2d">qpp::Gates::FRED</a></div><div class="ttdeci">cmat FRED</div><div class="ttdoc">Fredkin gate. </div><div class="ttdef"><b>Definition:</b> gates.h:54</div></div>
@@ -454,12 +454,12 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="ttc" id="classqpp_1_1_gates_html_a57f1e0fc4e5cd8ea34ffec0a5aae969c"><div class="ttname"><a href="classqpp_1_1_gates.html#a57f1e0fc4e5cd8ea34ffec0a5aae969c">qpp::Gates::X</a></div><div class="ttdeci">cmat X</div><div class="ttdoc">Pauli Sigma-X gate. </div><div class="ttdef"><b>Definition:</b> gates.h:40</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html"><div class="ttname"><a href="classqpp_1_1_exception.html">qpp::Exception</a></div><div class="ttdoc">Generates custom exceptions, used when validating function parameters. </div><div class="ttdef"><b>Definition:</b> exception.h:34</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">qpp::Exception::Type::OUT_OF_RANGE</a></div><div class="ttdoc">OUT_OF_RANGE. </div></div>
-<div class="ttc" id="namespaceqpp_1_1internal_html_a7ab3b0b016ffd0eb793ea6281bed9fc0"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a7ab3b0b016ffd0eb793ea6281bed9fc0">qpp::internal::_multiidx2n</a></div><div class="ttdeci">std::size_t _multiidx2n(const std::size_t *midx, std::size_t numdims, const std::size_t *dims)</div><div class="ttdef"><b>Definition:</b> functions.h:51</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a7ab3b0b016ffd0eb793ea6281bed9fc0"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a7ab3b0b016ffd0eb793ea6281bed9fc0">qpp::internal::_multiidx2n</a></div><div class="ttdeci">std::size_t _multiidx2n(const std::size_t *midx, std::size_t numdims, const std::size_t *dims)</div><div class="ttdef"><b>Definition:</b> functions.h:50</div></div>
 <div class="ttc" id="namespaceqpp_html_a66175b7225b388d8851c04171fc7a141"><div class="ttname"><a href="namespaceqpp.html#a66175b7225b388d8851c04171fc7a141">qpp::omega</a></div><div class="ttdeci">std::complex&lt; double &gt; omega(std::size_t D)</div><div class="ttdoc">D-th root of unity. </div><div class="ttdef"><b>Definition:</b> constants.h:99</div></div>
-<div class="ttc" id="namespaceqpp_1_1internal_html_aed2221e974a69e3f1c39006bcdf50738"><div class="ttname"><a href="namespaceqpp_1_1internal.html#aed2221e974a69e3f1c39006bcdf50738">qpp::internal::_check_subsys_match_dims</a></div><div class="ttdeci">bool _check_subsys_match_dims(const std::vector&lt; std::size_t &gt; &amp;subsys, const std::vector&lt; std::size_t &gt; &amp;dims)</div><div class="ttdef"><b>Definition:</b> functions.h:196</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_aed2221e974a69e3f1c39006bcdf50738"><div class="ttname"><a href="namespaceqpp_1_1internal.html#aed2221e974a69e3f1c39006bcdf50738">qpp::internal::_check_subsys_match_dims</a></div><div class="ttdeci">bool _check_subsys_match_dims(const std::vector&lt; std::size_t &gt; &amp;subsys, const std::vector&lt; std::size_t &gt; &amp;dims)</div><div class="ttdef"><b>Definition:</b> functions.h:195</div></div>
 <div class="ttc" id="namespaceqpp_html_a73c04db6f636b236d64fddb069bef492"><div class="ttname"><a href="namespaceqpp.html#a73c04db6f636b236d64fddb069bef492">qpp::pi</a></div><div class="ttdeci">constexpr double pi</div><div class="ttdoc"> </div><div class="ttdef"><b>Definition:</b> constants.h:82</div></div>
 <div class="ttc" id="namespaceqpp_html_a39fdcbcd3a12dd426ceab6d4aec4a281"><div class="ttname"><a href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">qpp::DynMat</a></div><div class="ttdeci">Eigen::Matrix&lt; Scalar, Eigen::Dynamic, Eigen::Dynamic &gt; DynMat</div><div class="ttdoc">Dynamic Eigen matrix over the field specified by Scalar. </div><div class="ttdef"><b>Definition:</b> types.h:40</div></div>
-<div class="ttc" id="namespaceqpp_1_1internal_html_a62ab44d343a116c122e488bc3ac46a31"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">qpp::internal::_check_nonzero_size</a></div><div class="ttdeci">bool _check_nonzero_size(const T &amp;x)</div><div class="ttdef"><b>Definition:</b> functions.h:117</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a62ab44d343a116c122e488bc3ac46a31"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">qpp::internal::_check_nonzero_size</a></div><div class="ttdeci">bool _check_nonzero_size(const T &amp;x)</div><div class="ttdef"><b>Definition:</b> functions.h:116</div></div>
 <div class="ttc" id="classqpp_1_1_gates_html_abeb66223219626504ab3e2152fbd25ae"><div class="ttname"><a href="classqpp_1_1_gates.html#abeb66223219626504ab3e2152fbd25ae">qpp::Gates::Xd</a></div><div class="ttdeci">cmat Xd(std::size_t D) const </div><div class="ttdoc">Generalized X gate for qudits. </div><div class="ttdef"><b>Definition:</b> gates.h:156</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_ad6e3c598a9985bac31f86dc916151b80"><div class="ttname"><a href="namespaceqpp_1_1internal.html#ad6e3c598a9985bac31f86dc916151b80">qpp::internal::_n2multiidx</a></div><div class="ttdeci">void _n2multiidx(std::size_t n, std::size_t numdims, const std::size_t *dims, std::size_t *result)</div><div class="ttdef"><b>Definition:</b> functions.h:37</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2">qpp::Exception::Type::SUBSYS_MISMATCH_DIMS</a></div><div class="ttdoc">SUBSYS_MISMATCH_DIMS. </div></div>
@@ -480,7 +480,7 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_7a6c2c27f035e4462dd10aeadba1cb4e.html">classes</a></li><li class="navelem"><a class="el" href="gates_8h.html">gates.h</a></li>
-    <li class="footer">Generated on Mon Nov 10 2014 00:37:04 for quantum++ by
+    <li class="footer">Generated on Mon Nov 10 2014 15:11:28 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

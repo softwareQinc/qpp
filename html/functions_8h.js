@@ -8,6 +8,8 @@ var functions_8h =
     [ "comm", "functions_8h.html#a9e549f73a22004d7868a2392fcddae5f", null ],
     [ "compperm", "functions_8h.html#ac0ff84d3dba1a25530b8118e1feb39d2", null ],
     [ "conjugate", "functions_8h.html#acbf2df9d3f5c18623eab26ab84ea7418", null ],
+    [ "contfrac2x", "functions_8h.html#a117454e14ef9b63f568bfc28d712eb07", null ],
+    [ "contfrac2x", "functions_8h.html#ac3095e8de98c536e5e620b6a0582e1b5", null ],
     [ "cosm", "functions_8h.html#a369c7a2f9f27121178519ddba186fbcd", null ],
     [ "cwise", "functions_8h.html#af68a93794f1719077733b79cc9f2f1df", null ],
     [ "det", "functions_8h.html#a4f6e426d47b5bf66afc0f7cc0321e0eb", null ],
@@ -51,5 +53,6 @@ var functions_8h =
     [ "svdU", "functions_8h.html#a33c070beade098fa8f26440791cc8840", null ],
     [ "svdV", "functions_8h.html#a285eda1b8ec8614398dd731e5e3a89ed", null ],
     [ "trace", "functions_8h.html#a1e1daff5450728504da1fdfedf8d8b54", null ],
-    [ "transpose", "functions_8h.html#a7b652e3ea4b9748204359a69588a8c91", null ]
+    [ "transpose", "functions_8h.html#a7b652e3ea4b9748204359a69588a8c91", null ],
+    [ "x2contfrac", "functions_8h.html#a7a833b3c059da10f018372fd34fc5108", null ]
 ];

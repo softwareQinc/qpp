@@ -191,7 +191,7 @@ $(document).ready(function(){initNavTree('random_8h_source.html','');});
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <span class="comment">// uniformly distributed according to the Haar measure</span></div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        Eigen::VectorXcd phases = (rand &lt; dmat &gt; (D, 1)).cast&lt;<a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt;();</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;(phases.rows()); i++)</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;(phases.rows()); ++i)</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            phases(i) = std::exp((<a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>) (2 * <a class="code" href="namespaceqpp.html#a73c04db6f636b236d64fddb069bef492">pi</a> * 1_i * phases(i)));</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        Q = Q * phases.asDiagonal();</div>
@@ -214,16 +214,16 @@ $(document).ready(function(){initNavTree('random_8h_source.html','');});
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;randkraus&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        std::vector&lt;cmat&gt; result(N);</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; N; i++)</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; N; ++i)</div>
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;            result[i] = cmat::Zero(D, D);</div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;</div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> Fk(D, D);</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> U = <a class="code" href="namespaceqpp.html#a5c63023791941918aad0894de4ba1eb7">randU</a>(N * D);</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="preprocessor">#pragma omp parallel for collapse(3)</span></div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <span class="keywordflow">for</span> (std::size_t k = 0; k &lt; N; k++)</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            <span class="keywordflow">for</span> (std::size_t a = 0; a &lt; D; a++)</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;                <span class="keywordflow">for</span> (std::size_t b = 0; b &lt; D; b++)</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <span class="keywordflow">for</span> (std::size_t k = 0; k &lt; N; ++k)</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            <span class="keywordflow">for</span> (std::size_t a = 0; a &lt; D; ++a)</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;                <span class="keywordflow">for</span> (std::size_t b = 0; b &lt; D; ++b)</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;                    result[k](a, b) = U(a * N + k, b * N);</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        <span class="keywordflow">return</span> result;</div>
@@ -311,7 +311,7 @@ $(document).ready(function(){initNavTree('random_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="random_8h.html">random.h</a></li>
-    <li class="footer">Generated on Mon Nov 10 2014 00:37:05 for quantum++ by
+    <li class="footer">Generated on Mon Nov 10 2014 15:11:28 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
