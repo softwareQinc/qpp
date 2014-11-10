@@ -167,7 +167,7 @@ namespace qpp
                 Eigen::Upper>();
         typename Derived::Scalar result = std::log(U(0, 0));
 
-        for (std::size_t i = 1; i < static_cast<std::size_t>(rA.rows()); i++)
+        for (std::size_t i = 1; i < static_cast<std::size_t>(rA.rows()); ++i)
             result += std::log(U(i, i));
 
         return result;
@@ -412,7 +412,7 @@ namespace qpp
         Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
         cmat evects = es.eigenvectors();
         cmat evals = es.eigenvalues();
-        for (std::size_t i = 0; i < static_cast<std::size_t>(evals.rows()); i++)
+        for (std::size_t i = 0; i < static_cast<std::size_t>(evals.rows()); ++i)
             evals(i) = (*f)(evals(i)); // apply f(x) to each eigenvalue
 
         cmat evalsdiag = evals.asDiagonal();
@@ -585,7 +585,7 @@ namespace qpp
         Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
         cmat evects = es.eigenvectors();
         cmat evals = es.eigenvalues();
-        for (std::size_t i = 0; i < static_cast<std::size_t>(evals.rows()); i++)
+        for (std::size_t i = 0; i < static_cast<std::size_t>(evals.rows()); ++i)
             evals(i) = std::pow(static_cast<cplx>(evals(i)), static_cast<cplx>(z));
 
         cmat evalsdiag = evals.asDiagonal();
@@ -624,7 +624,7 @@ namespace qpp
         if (n == 0)
             return result.setIdentity();
 
-        for (std::size_t i = 1; i < n; i++)
+        for (std::size_t i = 1; i < n; ++i)
             result *= rA;
 
         return result;
@@ -680,8 +680,8 @@ namespace qpp
         DynMat<OutputScalar> result(rA.rows(), rA.cols());
 
 #pragma omp parallel for collapse(2)
-        for (std::size_t j = 0; j < static_cast<std::size_t>(rA.cols()); j++)
-            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
+        for (std::size_t j = 0; j < static_cast<std::size_t>(rA.cols()); ++j)
+            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); ++i)
                 result(i, j) = (*f)(rA(i, j));
 
         return result;
@@ -738,7 +738,7 @@ namespace qpp
                 throw Exception("kron", Exception::Type::ZERO_SIZE);
 
         DynMat<typename Derived::Scalar> result = As[0];
-        for (std::size_t i = 1; i < As.size(); i++)
+        for (std::size_t i = 1; i < As.size(); ++i)
         {
             result = kron(result, As[i]);
         }
@@ -785,7 +785,7 @@ namespace qpp
             throw Exception("kronpow", Exception::Type::OUT_OF_RANGE);
 
         DynMat<typename Derived::Scalar> result = rA;
-        for (std::size_t i = 1; i < n; i++)
+        for (std::size_t i = 1; i < n; ++i)
             result = kron(result, rA);
         return result;
     }
@@ -969,7 +969,7 @@ namespace qpp
         std::vector<DynMat<typename Derived::Scalar>> outvecs;
         // find the first non-zero vector in the list
         std::size_t pos = 0;
-        for (pos = 0; pos < Vs.size(); pos++)
+        for (pos = 0; pos < Vs.size(); ++pos)
         {
             if (norm(Vs[pos]) > eps) // add it as the first element
             {
@@ -979,7 +979,7 @@ namespace qpp
         }
 
         // start the process
-        for (std::size_t i = pos + 1; i < Vs.size(); i++)
+        for (std::size_t i = pos + 1; i < Vs.size(); ++i)
         {
             cut -= prj(outvecs[i - 1 - pos]);
             vi = cut * Vs[i];
@@ -1032,7 +1032,7 @@ namespace qpp
 
         std::vector<DynMat<typename Derived::Scalar>> input;
 
-        for (std::size_t i = 0; i < static_cast<std::size_t>(rA.cols()); i++)
+        for (std::size_t i = 0; i < static_cast<std::size_t>(rA.cols()); ++i)
             input.push_back(
                     static_cast<DynMat<typename Derived::Scalar> >(rA.col(i)));
 
@@ -1064,7 +1064,7 @@ namespace qpp
 
         std::vector<std::size_t> result(dims.size());
         std::size_t _n = n;
-        for (std::size_t i = 0; i < dims.size(); i++)
+        for (std::size_t i = 0; i < dims.size(); ++i)
         {
             result[dims.size() - i - 1] = _n
                     % static_cast<int>(dims[dims.size() - i - 1]);
@@ -1089,19 +1089,19 @@ namespace qpp
         if (!internal::_check_dims(dims))
             throw Exception("multiidx2n", Exception::Type::DIMS_INVALID);
 
-        for (std::size_t i = 0; i < dims.size(); i++)
+        for (std::size_t i = 0; i < dims.size(); ++i)
             if (midx[i] >= dims[i])
                 throw Exception("multiidx2n", Exception::Type::OUT_OF_RANGE);
 
         std::vector<std::size_t> part_prod(dims.size());
 
         part_prod[dims.size() - 1] = 1;
-        for (std::size_t i = 1; i < dims.size(); i++)
+        for (std::size_t i = 1; i < dims.size(); ++i)
             part_prod[dims.size() - i - 1] = part_prod[dims.size() - i]
                     * dims[dims.size() - i];
 
         std::size_t result = 0;
-        for (std::size_t i = 0; i < dims.size(); i++)
+        for (std::size_t i = 0; i < dims.size(); ++i)
             result += midx[i] * part_prod[i];
 
         return result;
@@ -1141,7 +1141,7 @@ namespace qpp
         if (mask.size() != dims.size())
             throw Exception("mket", Exception::Type::SUBSYS_MISMATCH_DIMS);
         // check mask is a valid vector
-        for (std::size_t i = 0; i < n; i++)
+        for (std::size_t i = 0; i < n; ++i)
             if (mask[i] >= dims[i])
                 throw Exception("mket", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
@@ -1175,7 +1175,7 @@ namespace qpp
         if (d == 0)
             throw Exception("mket", Exception::Type::DIMS_INVALID);
         // check mask is a valid vector
-        for (std::size_t i = 0; i < n; i++)
+        for (std::size_t i = 0; i < n; ++i)
             if (mask[i] >= d)
                 throw Exception("mket", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
@@ -1222,7 +1222,7 @@ namespace qpp
         if (mask.size() != dims.size())
             throw Exception("mprj", Exception::Type::SUBSYS_MISMATCH_DIMS);
         // check mask is a valid vector
-        for (std::size_t i = 0; i < n; i++)
+        for (std::size_t i = 0; i < n; ++i)
             if (mask[i] >= dims[i])
                 throw Exception("mprj", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
@@ -1258,7 +1258,7 @@ namespace qpp
         if (d == 0)
             throw Exception("mprj", Exception::Type::DIMS_INVALID);
         // check mask is a valid vector
-        for (std::size_t i = 0; i < n; i++)
+        for (std::size_t i = 0; i < n; ++i)
             if (mask[i] >= d)
                 throw Exception("mprj", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
@@ -1282,7 +1282,7 @@ namespace qpp
 
         // construct the inverse
         std::vector<std::size_t> result(perm.size());
-        for (std::size_t i = 0; i < perm.size(); i++)
+        for (std::size_t i = 0; i < perm.size(); ++i)
             result[perm[i]] = i;
 
         return result;
@@ -1308,7 +1308,7 @@ namespace qpp
 
         // construct the composition perm(sigma)
         std::vector<std::size_t> result(perm.size());
-        for (std::size_t i = 0; i < perm.size(); i++)
+        for (std::size_t i = 0; i < perm.size(); ++i)
             result[i] = perm[sigma[i]];
 
         return result;

@@ -102,7 +102,7 @@ namespace qpp
             std::size_t D = 1;
             std::size_t DA_bar = 1;
 
-            for (std::size_t k = 0, cnt = 0; k < n; k++)
+            for (std::size_t k = 0, cnt = 0; k < n; ++k)
             {
                 midx_row[k] = midx_rho_row[k] = 0;
                 Cdims[k] = dims[k];
@@ -121,7 +121,7 @@ namespace qpp
             }
 
             std::size_t DA = 1;
-            for (std::size_t k = 0; k < nA; k++)
+            for (std::size_t k = 0; k < nA; ++k)
             {
                 midxA_row[k] = midxA_rho_row[k] = 0;
                 CdimsA[k] = dims[subsys[k]];
@@ -142,16 +142,16 @@ namespace qpp
                 DynMat<typename Derived1::Scalar> result(D, 1);
 
                 // run over the subsys's row multi-index
-                for (std::size_t a = 0; a < DA; a++)
+                for (std::size_t a = 0; a < DA; ++a)
                 {
                     // get the subsys's row multi-index
                     internal::_n2multiidx(a, nA, CdimsA, midxA_row);
                     // compute subsys part of the result's row multi-index
-                    for (std::size_t k = 0; k < nA; k++)
+                    for (std::size_t k = 0; k < nA; ++k)
                         midx_row[CsubsysA[k]] = midxA_row[k];
 
                     // run over the complement's row multi-index
-                    for (std::size_t i = 0; i < DA_bar; i++)
+                    for (std::size_t i = 0; i < DA_bar; ++i)
                     {
                         // get the complement's row multi-index
                         internal::_n2multiidx(i, nA_bar, CdimsA_bar, midxA_bar_row);
@@ -159,7 +159,7 @@ namespace qpp
                         // result's row multi-index
                         // and the complement part
                         // of the state's total row multi-index
-                        for (std::size_t k = 0; k < nA_bar; k++)
+                        for (std::size_t k = 0; k < nA_bar; ++k)
                             midx_row[CsubsysA_bar[k]] = midx_rho_row[CsubsysA_bar[k]] =
                                     midxA_bar_row[k];
                         // compute the results's row index
@@ -168,12 +168,12 @@ namespace qpp
 
                         // compute the coefficient
                         typename Derived1::Scalar coeff = 0;
-                        for (std::size_t c = 0; c < DA; c++)
+                        for (std::size_t c = 0; c < DA; ++c)
                         {
                             // compute the subsys part state's row multi-index
                             internal::_n2multiidx(c, nA, CdimsA, midxA_rho_row);
                             // now we have the total state's row multi-index
-                            for (std::size_t k = 0; k < nA; k++)
+                            for (std::size_t k = 0; k < nA; ++k)
                                 midx_rho_row[CsubsysA[k]] = midxA_rho_row[k];
 
                             coeff += rA(a, c)
@@ -197,16 +197,16 @@ namespace qpp
                 DynMat<typename Derived1::Scalar> result(D, D);
 
                 // run over the subsys's row multi-index
-                for (std::size_t a = 0; a < DA; a++)
+                for (std::size_t a = 0; a < DA; ++a)
                 {
                     // get the subsys's row multi-index
                     internal::_n2multiidx(a, nA, CdimsA, midxA_row);
                     // compute subsys part of the result's row multi-index
-                    for (std::size_t k = 0; k < nA; k++)
+                    for (std::size_t k = 0; k < nA; ++k)
                         midx_row[CsubsysA[k]] = midxA_row[k];
 
                     // run over the complement's row multi-index
-                    for (std::size_t i = 0; i < DA_bar; i++)
+                    for (std::size_t i = 0; i < DA_bar; ++i)
                     {
                         // get the complement's row multi-index
                         internal::_n2multiidx(i, nA_bar, CdimsA_bar, midxA_bar_row);
@@ -214,7 +214,7 @@ namespace qpp
                         // of the result's row multi-index
                         // and the complement part of the
                         // state's total row multi-index
-                        for (std::size_t k = 0; k < nA_bar; k++)
+                        for (std::size_t k = 0; k < nA_bar; ++k)
                             midx_row[CsubsysA_bar[k]] = midx_rho_row[CsubsysA_bar[k]] =
                                     midxA_bar_row[k];
                         // compute the results's row index
@@ -222,16 +222,16 @@ namespace qpp
                                 Cdims);
 
                         // run over the col index
-                        for (std::size_t j = 0; j < D; j++)
+                        for (std::size_t j = 0; j < D; ++j)
                         {
                             // compute the coefficient
                             typename Derived1::Scalar coeff = 0;
-                            for (std::size_t c = 0; c < DA; c++)
+                            for (std::size_t c = 0; c < DA; ++c)
                             {
                                 // compute the subsys part state's row multi-index
                                 internal::_n2multiidx(c, nA, CdimsA, midxA_rho_row);
                                 // now we have the total state's row multi-index
-                                for (std::size_t k = 0; k < nA; k++)
+                                for (std::size_t k = 0; k < nA; ++k)
                                     midx_rho_row[CsubsysA[k]] = midxA_rho_row[k];
 
                                 coeff += rA(a, c)
@@ -323,7 +323,7 @@ namespace qpp
             std::size_t D = 1;
             std::size_t DA_bar = 1;
 
-            for (std::size_t k = 0, cnt = 0; k < n; k++)
+            for (std::size_t k = 0, cnt = 0; k < n; ++k)
             {
                 midx_row[k] = midx_col[k] = midx_rho_row[k] = midx_rho_col[k] = 0;
                 Cdims[k] = dims[k];
@@ -341,7 +341,7 @@ namespace qpp
             }
 
             std::size_t DA = 1;
-            for (std::size_t k = 0; k < nA; k++)
+            for (std::size_t k = 0; k < nA; ++k)
             {
                 midxA_row[k] = midxA_col[k] = midxA_rho_row[k] = midxA_rho_col[k] = 0;
                 CdimsA[k] = dims[subsys[k]];
@@ -359,47 +359,47 @@ namespace qpp
             cmat result(D, D);
 
             // run over rows
-            for (std::size_t i = 0; i < D; i++)
+            for (std::size_t i = 0; i < D; ++i)
             {
                 // get the result's row multi-index
                 internal::_n2multiidx(i, n, Cdims, midx_row);
                 // get the subsys' complement row multi-index
-                for (std::size_t k = 0; k < nA_bar; k++)
+                for (std::size_t k = 0; k < nA_bar; ++k)
                     midxA_bar_row[k] = midx_row[CsubsysA_bar[k]];
                 // get the subsys' row multi-index
-                for (std::size_t k = 0; k < nA; k++)
+                for (std::size_t k = 0; k < nA; ++k)
                     midxA_row[k] = midx_row[CsubsysA[k]];
 
                 // run over cols
-                for (std::size_t j = 0; j < D; j++)
+                for (std::size_t j = 0; j < D; ++j)
                 {
                     // get the result's col multi-index
                     internal::_n2multiidx(j, n, Cdims, midx_col);
                     // get the subsys' complement col multi-index
-                    for (std::size_t k = 0; k < nA_bar; k++)
+                    for (std::size_t k = 0; k < nA_bar; ++k)
                         midxA_bar_col[k] = midx_col[CsubsysA_bar[k]];
                     // get the subsys' col multi-index
-                    for (std::size_t k = 0; k < nA; k++)
+                    for (std::size_t k = 0; k < nA; ++k)
                         midxA_col[k] = midx_col[CsubsysA[k]];
 
                     // now compute the coefficient
                     cplx coeff = 0;
-                    for (std::size_t a = 0; a < DA; a++)
+                    for (std::size_t a = 0; a < DA; ++a)
                     {
                         // get the subsys part of row multi-index for rho
                         internal::_n2multiidx(a, nA, CdimsA, midxA_rho_row);
-                        for (std::size_t b = 0; b < DA; b++)
+                        for (std::size_t b = 0; b < DA; ++b)
                         {
                             // get the subsys part of col multi-index for rho
                             internal::_n2multiidx(b, nA, CdimsA, midxA_rho_col);
 
                             // get the total row/col multi-index for rho
-                            for (std::size_t k = 0; k < nA; k++)
+                            for (std::size_t k = 0; k < nA; ++k)
                             {
                                 midx_rho_row[CsubsysA[k]] = midxA_rho_row[k];
                                 midx_rho_col[CsubsysA[k]] = midxA_rho_col[k];
                             }
-                            for (std::size_t k = 0; k < nA_bar; k++)
+                            for (std::size_t k = 0; k < nA_bar; ++k)
                             {
                                 midx_rho_row[CsubsysA_bar[k]] = midxA_bar_row[k];
                                 midx_rho_col[CsubsysA_bar[k]] = midxA_bar_col[k];
@@ -467,21 +467,21 @@ namespace qpp
             cmat BA = cmat::Zero(D, D);
             cmat EMN = cmat::Zero(D, D);
 
-            for (std::size_t m = 0; m < D; m++)
+            for (std::size_t m = 0; m < D; ++m)
             {
                 midx_col[0] = m;
-                for (std::size_t n = 0; n < D; n++)
+                for (std::size_t n = 0; n < D; ++n)
                 {
                     midx_col[1] = n;
                     MN(m, n) = 1;
                     // compute E(|m><n|)
-                    for (std::size_t i = 0; i < Ks.size(); i++)
+                    for (std::size_t i = 0; i < Ks.size(); ++i)
                         EMN += Ks[i] * MN * adjoint(Ks[i]);
                     MN(m, n) = 0;
-                    for (std::size_t a = 0; a < D; a++)
+                    for (std::size_t a = 0; a < D; ++a)
                     {
                         midx_row[0] = a;
-                        for (std::size_t b = 0; b < D; b++)
+                        for (std::size_t b = 0; b < D; ++b)
                         {
                             midx_row[1] = b;
                             BA(b, a) = 1;
@@ -568,7 +568,7 @@ namespace qpp
             // construct the table of A^i
             std::vector<DynMat<typename Derived::Scalar>> Ai;
             std::vector<DynMat<typename Derived::Scalar>> Aidagger;
-            for (std::size_t i = 0; i < d; i++)
+            for (std::size_t i = 0; i < d; ++i)
             {
                 Ai.push_back(powm(rA, i));
             }
@@ -588,11 +588,11 @@ namespace qpp
             std::set_difference(std::begin(allsubsys), std::end(allsubsys),
                     std::begin(ctrlgate), std::end(ctrlgate), std::begin(ctrlgatebar));
 
-            for (std::size_t k = 0; k < n; k++)
+            for (std::size_t k = 0; k < n; ++k)
                 Cdims[k] = d;
-            for (std::size_t k = 0; k < subsys.size(); k++)
+            for (std::size_t k = 0; k < subsys.size(); ++k)
                 CdimsA[k] = d;
-            for (std::size_t k = 0; k < n - ctrlgate.size(); k++)
+            for (std::size_t k = 0; k < n - ctrlgate.size(); ++k)
                 CdimsCTRLAbar[k] = d;
 
             auto coeff =
@@ -610,7 +610,7 @@ namespace qpp
                         // compute the index
 
                         // set the CTRL part
-                        for (std::size_t k = 0; k < ctrl.size(); k++)
+                        for (std::size_t k = 0; k < ctrl.size(); ++k)
                         {
                             Cmidxrow[ctrl[k]] = Cmidxcol[ctrl[k]] = _i;
                         }
@@ -618,7 +618,7 @@ namespace qpp
                         // set the rest
                         internal::_n2multiidx(_r, n - ctrlgate.size(),
                                 CdimsCTRLAbar, CmidxCTRLAbar);
-                        for (std::size_t k = 0; k < n - ctrlgate.size(); k++)
+                        for (std::size_t k = 0; k < n - ctrlgate.size(); ++k)
                         {
                             Cmidxrow[ctrlgatebar[k]] = Cmidxcol[ctrlgatebar[k]] = CmidxCTRLAbar[k];
                         }
@@ -626,7 +626,7 @@ namespace qpp
                         // set the A part
                         internal::_n2multiidx(_m, subsys.size(), CdimsA, CmidxArow);
                         internal::_n2multiidx(_n, subsys.size(), CdimsA, CmidxAcol);
-                        for (std::size_t k = 0; k < subsys.size(); k++)
+                        for (std::size_t k = 0; k < subsys.size(); ++k)
                         {
                             Cmidxrow[subsys[k]] = CmidxArow[k];
                             Cmidxcol[subsys[k]] = CmidxAcol[k];
@@ -643,10 +643,10 @@ namespace qpp
                     DynMat<typename Derived::Scalar>::Identity(D, D);
 
 #pragma omp parallel for collapse(4)
-            for (std::size_t m = 0; m < DA; m++)
-                for (std::size_t n = 0; n < DA; n++)
-                    for (std::size_t r = 0; r < DCTRLAbar; r++)
-                        for (std::size_t i = 0; i < d; i++)
+            for (std::size_t m = 0; m < DA; ++m)
+                for (std::size_t n = 0; n < DA; ++n)
+                    for (std::size_t r = 0; r < DCTRLAbar; ++r)
+                        for (std::size_t i = 0; i < d; ++i)
                             if (ctrlsize == 0) // no control
                             {
                                 result(coeff(i, m, n, r).first,
@@ -692,14 +692,14 @@ namespace qpp
             // construct the D x D \sum |jj> vector
             // (un-normalized maximally entangled state)
             cmat MES = cmat::Zero(D * D, 1);
-            for (std::size_t a = 0; a < D; a++)
+            for (std::size_t a = 0; a < D; ++a)
                 MES(a * D + a) = 1;
 
             cmat Omega = static_cast<cmat>(MES * adjoint(MES));
 
             cmat result = cmat::Zero(D * D, D * D);
 
-            for (std::size_t i = 0; i < Ks.size(); i++)
+            for (std::size_t i = 0; i < Ks.size(); ++i)
             {
                 result += kron(cmat::Identity(D, D), Ks[i]) * Omega
                         * adjoint(kron(cmat::Identity(D, D), Ks[i]));
@@ -734,13 +734,13 @@ namespace qpp
             std::size_t midx_row[2] = {0, 0};
             std::size_t midx_col[2] = {0, 0};
 
-            for (std::size_t k = 0; k < n; k++)
+            for (std::size_t k = 0; k < n; ++k)
             {
                 midx_row[1] = k;
-                for (std::size_t a = 0; a < D; a++)
+                for (std::size_t a = 0; a < D; ++a)
                 {
                     midx_row[0] = a;
-                    for (std::size_t b = 0; b < D; b++)
+                    for (std::size_t b = 0; b < D; ++b)
                     {
                         midx_col[0] = b;
                         Fk(a, b) = U(internal::_multiidx2n(midx_row, 2, dims),
@@ -775,7 +775,7 @@ namespace qpp
             if (internal::_check_vector(rA))
             {
                 double max = 0;
-                for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); i++)
+                for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); ++i)
                     if (std::abs(rA(i)) > max)
                         max = std::abs(rA(i));
 
@@ -792,7 +792,7 @@ namespace qpp
             dmat ev = hevals(rA);
             double max = 0;
             // take the absolut value to get rid of tiny negatives
-            for (std::size_t i = 0; i < static_cast<std::size_t>(ev.size()); i++)
+            for (std::size_t i = 0; i < static_cast<std::size_t>(ev.size()); ++i)
                 if (std::abs((cplx) ev(i)) > max)
                     max = std::abs((cplx) ev(i));
 
@@ -926,7 +926,7 @@ namespace qpp
         {
             os << start;
 
-            for (std::size_t i = 0; i < n - 1; i++)
+            for (std::size_t i = 0; i < n - 1; ++i)
                 os << x[i] << separator;
             if (n > 0)
                 os << x[n - 1];
@@ -988,9 +988,9 @@ namespace qpp
             std::vector<std::string> vstr;
             std::string strA{};
 
-            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
+            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); ++i)
             {
-                for (std::size_t j = 0; j < static_cast<std::size_t>(rA.cols()); j++)
+                for (std::size_t j = 0; j < static_cast<std::size_t>(rA.cols()); ++j)
                 {
                     strA.clear(); // clear the temporary string
                     ostr.clear();
@@ -1036,18 +1036,18 @@ namespace qpp
             // determine the maximum lenght of the entries in each column
             std::vector<std::size_t> maxlengthcols(rA.cols(), 0);
 
-            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
-                for (std::size_t j = 0; j < static_cast<std::size_t>(rA.cols()); j++)
+            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); ++i)
+                for (std::size_t j = 0; j < static_cast<std::size_t>(rA.cols()); ++j)
                     if (vstr[i * rA.cols() + j].size() > maxlengthcols[j])
                         maxlengthcols[j] = vstr[i * rA.cols() + j].size();
 
             // finally display it!
-            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); i++)
+            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); ++i)
             {
                 os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
                         << vstr[i * rA.cols()]; // display first column
                 // then the rest
-                for (std::size_t j = 1; j < static_cast<std::size_t>(rA.cols()); j++)
+                for (std::size_t j = 1; j < static_cast<std::size_t>(rA.cols()); ++j)
                     os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
                             << std::right << vstr[i * rA.cols() + j];
 

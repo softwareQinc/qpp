@@ -117,7 +117,7 @@ namespace qpp
 
             cmat result(D, D);
             result = cmat::Zero(D, D);
-            for (std::size_t i = 0; i < D; i++)
+            for (std::size_t i = 0; i < D; ++i)
                 result(i, i) = std::pow(omega(D), i);
             return result;
         }
@@ -138,8 +138,8 @@ namespace qpp
             cmat result(D, D);
             result = cmat::Zero(D, D);
 #pragma omp parallel for collapse(2)
-            for (std::size_t j = 0; j < D; j++)
-                for (std::size_t i = 0; i < D; i++)
+            for (std::size_t j = 0; j < D; ++j)
+                for (std::size_t i = 0; i < D; ++i)
                     result(i, j) = 1 / std::sqrt((double) D)
                             * std::pow(omega(D), i * j);
             return result;
@@ -261,7 +261,7 @@ namespace qpp
             std::size_t DA = static_cast<std::size_t>(rA.cols());
             std::size_t Dsubsys_bar = std::pow(d, nsubsys_bar);
 
-            for (std::size_t k = 0, cnt = 0; k < n; k++)
+            for (std::size_t k = 0, cnt = 0; k < n; ++k)
             {
                 midx_row[k] = midx_col[k] = 0;
                 Cdims[k] = d;
@@ -277,7 +277,7 @@ namespace qpp
                 }
             }
 
-            for (std::size_t k = 0; k < ngate; k++)
+            for (std::size_t k = 0; k < ngate; ++k)
             {
                 midxA_row[k] = midxA_col[k] = 0;
                 CdimsA[k] = d;
@@ -288,15 +288,15 @@ namespace qpp
             DynMat<typename Derived::Scalar> Ak;
 
             // run over the complement indexes
-            for (std::size_t i = 0; i < Dsubsys_bar; i++)
+            for (std::size_t i = 0; i < Dsubsys_bar; ++i)
             {
                 // get the complement's row multi-index
                 internal::_n2multiidx(i, nsubsys_bar, Cdims_bar, midx_bar);
-                for (std::size_t k = 0; k < d; k++)
+                for (std::size_t k = 0; k < d; ++k)
                 {
                     Ak = powm(rA, k); // compute rA^k
                     // run over the subsys's row multi-index
-                    for (std::size_t a = 0; a < DA; a++)
+                    for (std::size_t a = 0; a < DA; ++a)
                     {
                         // get the subsys's row multi-index
                         internal::_n2multiidx(a, ngate, CdimsA, midxA_row);
@@ -304,26 +304,26 @@ namespace qpp
                         // construct the result's row multi-index
 
                         // first the ctrl part (equal for both row and column)
-                        for (std::size_t c = 0; c < nctrl; c++)
+                        for (std::size_t c = 0; c < nctrl; ++c)
                             midx_row[ctrl[c]] = midx_col[ctrl[c]] = k;
 
                         // then the complement part (equal for column)
-                        for (std::size_t c = 0; c < nsubsys_bar; c++)
+                        for (std::size_t c = 0; c < nsubsys_bar; ++c)
                             midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =
                                     midx_bar[c];
 
                         // then the subsys part
-                        for (std::size_t c = 0; c < ngate; c++)
+                        for (std::size_t c = 0; c < ngate; ++c)
                             midx_row[subsys[c]] = midxA_row[c];
 
                         // run over the subsys's column multi-index
-                        for (std::size_t b = 0; b < DA; b++)
+                        for (std::size_t b = 0; b < DA; ++b)
                         {
                             // get the subsys's column multi-index
                             internal::_n2multiidx(b, ngate, CdimsA, midxA_col);
 
                             // construct the result's column multi-index
-                            for (std::size_t c = 0; c < ngate; c++)
+                            for (std::size_t c = 0; c < ngate; ++c)
                                 midx_col[subsys[c]] = midxA_col[c];
 
                             // finally write the values
@@ -393,14 +393,14 @@ namespace qpp
             std::size_t midx_row[maxn];
             std::size_t midx_col[maxn];
 
-            for (std::size_t k = 0; k < dims.size(); k++)
+            for (std::size_t k = 0; k < dims.size(); ++k)
             {
                 midx_row[k] = midx_col[k] = 0;
                 Cdims[k] = dims[k];
             }
 
             // run over the main diagonal multi-indexes
-            for (std::size_t i = 0; i < D; i++)
+            for (std::size_t i = 0; i < D; ++i)
             {
                 // get row multi_index
                 internal::_n2multiidx(i, dims.size(), Cdims, midx_row);
@@ -408,14 +408,14 @@ namespace qpp
                 internal::_n2multiidx(i, dims.size(), Cdims, midx_col);
                 // run over the gate's row multi-index
                 for (std::size_t a = 0; a < static_cast<std::size_t>(rA.cols());
-                     a++)
+                     ++a)
                 {
                     // construct the total row multi-index
                     midx_row[pos] = a;
 
                     // run over the gate's column multi-index
                     for (std::size_t b = 0; b < static_cast<std::size_t>(rA.cols());
-                         b++)
+                         ++b)
                     {
                         // construct the total column multi-index
                         midx_col[pos] = b;

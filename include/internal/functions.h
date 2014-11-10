@@ -39,7 +39,7 @@ namespace qpp
         {
 // no error checks to improve speed
             std::size_t _n = n;
-            for (std::size_t i = 0; i < numdims; i++)
+            for (std::size_t i = 0; i < numdims; ++i)
             {
                 result[numdims - i - 1] = _n % static_cast<int>(dims[numdims - i - 1]);
                 _n /= static_cast<int>(dims[numdims - i - 1]);
@@ -58,11 +58,11 @@ namespace qpp
             std::size_t part_prod[2 * maxn];
 
             part_prod[numdims - 1] = 1;
-            for (std::size_t i = 1; i < numdims; i++)
+            for (std::size_t i = 1; i < numdims; ++i)
                 part_prod[numdims - i - 1] = part_prod[numdims - i] * dims[numdims - i];
 
             std::size_t result = 0;
-            for (std::size_t i = 0; i < numdims; i++)
+            for (std::size_t i = 0; i < numdims; ++i)
                 result += midx[i] * part_prod[i];
 
             return result;
@@ -273,8 +273,8 @@ namespace qpp
             result.resize(Arows * Brows, Acols * Bcols);
 
 #pragma omp parallel for collapse(2)
-            for (std::size_t j = 0; j < Acols; j++)
-                for (std::size_t i = 0; i < Arows; i++)
+            for (std::size_t j = 0; j < Acols; ++j)
+                for (std::size_t i = 0; i < Arows; ++i)
                     result.block(i * Brows, j * Bcols, Brows, Bcols) = rA(i, j) * rB;
 
             return result;

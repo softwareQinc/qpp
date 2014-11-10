@@ -64,7 +64,7 @@ namespace qpp
 
         if (internal::_check_square_mat(rA)) // square matrix
         {
-            for (std::size_t i = 0; i < Ks.size(); i++)
+            for (std::size_t i = 0; i < Ks.size(); ++i)
             {
                 cmat tmp;
                 tmp = Ks[i] * rA * adjoint(Ks[i]); // un-normalized
@@ -75,7 +75,7 @@ namespace qpp
         }
         else if (internal::_check_col_vector(rA)) // column vector
         {
-            for (std::size_t i = 0; i < Ks.size(); i++)
+            for (std::size_t i = 0; i < Ks.size(); ++i)
             {
                 outstates[i] = ket::Zero(rA.rows());
                 ket tmp;
@@ -149,7 +149,7 @@ namespace qpp
 
         if (internal::_check_square_mat(rA)) // square matrix
         {
-            for (std::size_t i = 0; i < static_cast<std::size_t>(M.rows()); i++)
+            for (std::size_t i = 0; i < static_cast<std::size_t>(M.rows()); ++i)
             {
                 outstates[i] = cmat::Zero(rA.rows(), rA.rows());
                 cmat tmp;
@@ -163,7 +163,7 @@ namespace qpp
         }
         else if (internal::_check_col_vector(rA)) // column vector
         {
-            for (std::size_t i = 0; i < static_cast<std::size_t>(M.rows()); i++)
+            for (std::size_t i = 0; i < static_cast<std::size_t>(M.rows()); ++i)
             {
                 outstates[i] = ket::Zero(rA.rows());
                 ket tmp;

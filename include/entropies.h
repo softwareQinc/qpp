@@ -50,7 +50,7 @@ namespace qpp
         {
             double result = 0;
             // take the absolut value to get rid of tiny negatives
-            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); i++)
+            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); ++i)
                 if (std::abs(rA(i)) != 0) // not identically zero
                     result -= std::abs(rA(i)) * std::log2(std::abs(rA(i)));
 
@@ -67,7 +67,7 @@ namespace qpp
         dmat ev = hevals(rA);
         double result = 0;
         // take the absolut value to get rid of tiny negatives
-        for (std::size_t i = 0; i < static_cast<std::size_t>(ev.rows()); i++)
+        for (std::size_t i = 0; i < static_cast<std::size_t>(ev.rows()); ++i)
             if (std::abs((cplx) ev(i)) != 0) // not identically zero
                 result -= std::abs((cplx) ev(i))
                         * std::log2(std::abs((cplx) ev(i)));
@@ -110,7 +110,7 @@ namespace qpp
             {
                 double max = 0;
                 for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size());
-                     i++)
+                     ++i)
                     if (std::abs(rA(i)) > max)
                         max = std::abs(rA(i));
 
@@ -119,7 +119,7 @@ namespace qpp
 
             double result = 0;
             // take the absolut value to get rid of tiny negatives
-            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); i++)
+            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); ++i)
                 if (std::abs((cplx) rA(i)) != 0) // not identically zero
                     result += std::pow(std::abs(rA(i)), alpha);
 
@@ -143,7 +143,7 @@ namespace qpp
         // get the singular values
         dmat sv = svals(rA);
         double result = 0;
-        for (std::size_t i = 0; i < static_cast<std::size_t>(sv.rows()); i++)
+        for (std::size_t i = 0; i < static_cast<std::size_t>(sv.rows()); ++i)
             if (sv(i) != 0) // not identically zero
                 result += std::pow((double) sv(i), alpha);
 
@@ -183,7 +183,7 @@ namespace qpp
         {
             double result = 0;
             // take the absolut value to get rid of tiny negatives
-            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); i++)
+            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); ++i)
                 if (std::abs((cplx) rA(i)) != 0) // not identically zero
                     result += std::pow(std::abs(rA(i)), alpha);
 
@@ -201,7 +201,7 @@ namespace qpp
         double result = 0;
         // take the absolut values of the entries
         //of tiny negativesginary parts
-        for (std::size_t i = 0; i < static_cast<std::size_t>(ev.rows()); i++)
+        for (std::size_t i = 0; i < static_cast<std::size_t>(ev.rows()); ++i)
             if (std::abs((cplx) ev(i)) != 0) // not identically zero
                 result += std::pow(std::abs((cplx) ev(i)), alpha);
 

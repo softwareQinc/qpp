@@ -253,7 +253,7 @@ namespace qpp
         // uniformly distributed according to the Haar measure
 
         Eigen::VectorXcd phases = (rand < dmat > (D, 1)).cast<cplx>();
-        for (std::size_t i = 0; i < static_cast<std::size_t>(phases.rows()); i++)
+        for (std::size_t i = 0; i < static_cast<std::size_t>(phases.rows()); ++i)
             phases(i) = std::exp((cplx) (2 * pi * 1_i * phases(i)));
 
         Q = Q * phases.asDiagonal();
@@ -293,16 +293,16 @@ namespace qpp
             throw Exception("randkraus", Exception::Type::DIMS_INVALID);
 
         std::vector<cmat> result(N);
-        for (std::size_t i = 0; i < N; i++)
+        for (std::size_t i = 0; i < N; ++i)
             result[i] = cmat::Zero(D, D);
 
         cmat Fk(D, D);
         cmat U = randU(N * D);
 
 #pragma omp parallel for collapse(3)
-        for (std::size_t k = 0; k < N; k++)
-            for (std::size_t a = 0; a < D; a++)
-                for (std::size_t b = 0; b < D; b++)
+        for (std::size_t k = 0; k < N; ++k)
+            for (std::size_t a = 0; a < D; ++a)
+                for (std::size_t b = 0; b < D; ++b)
                     result[k](a, b) = U(a * N + k, b * N);
 
         return result;

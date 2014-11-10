@@ -100,7 +100,7 @@ namespace qpp
         // construct the table of A^i and (A^dagger)^i
         std::vector<DynMat<typename Derived1::Scalar>> Ai;
         std::vector<DynMat<typename Derived1::Scalar>> Aidagger;
-        for (std::size_t i = 0; i < d; i++)
+        for (std::size_t i = 0; i < d; ++i)
         {
             Ai.push_back(powm(rA, i));
             Aidagger.push_back(powm(adjoint(rA), i));
@@ -122,11 +122,11 @@ namespace qpp
         std::set_difference(std::begin(allsubsys), std::end(allsubsys),
                 std::begin(ctrlgate), std::end(ctrlgate), std::begin(ctrlgatebar));
 
-        for (std::size_t k = 0; k < n; k++)
+        for (std::size_t k = 0; k < n; ++k)
             Cdims[k] = d;
-        for (std::size_t k = 0; k < subsys.size(); k++)
+        for (std::size_t k = 0; k < subsys.size(); ++k)
             CdimsA[k] = d;
-        for (std::size_t k = 0; k < n - ctrlgate.size(); k++)
+        for (std::size_t k = 0; k < n - ctrlgate.size(); ++k)
             CdimsCTRLAbar[k] = d;
 
         // worker, computes the coefficient and the index for the ket case
@@ -144,7 +144,7 @@ namespace qpp
             // compute the index
 
             // set the CTRL part
-            for (std::size_t k = 0; k < ctrl.size(); k++)
+            for (std::size_t k = 0; k < ctrl.size(); ++k)
             {
                 Cmidx[ctrl[k]] = _i;
             }
@@ -152,14 +152,14 @@ namespace qpp
             // set the rest
             internal::_n2multiidx(_r, n - ctrlgate.size(),
                     CdimsCTRLAbar, CmidxCTRLAbar);
-            for (std::size_t k = 0; k < n - ctrlgate.size(); k++)
+            for (std::size_t k = 0; k < n - ctrlgate.size(); ++k)
             {
                 Cmidx[ctrlgatebar[k]] = CmidxCTRLAbar[k];
             }
 
             // set the A part
             internal::_n2multiidx(_m, subsys.size(), CdimsA, CmidxA);
-            for (std::size_t k = 0; k < subsys.size(); k++)
+            for (std::size_t k = 0; k < subsys.size(); ++k)
             {
                 Cmidx[subsys[k]] = CmidxA[k];
             }
@@ -168,10 +168,10 @@ namespace qpp
             idx = internal::_multiidx2n(Cmidx, n, Cdims);
 
             // compute the coefficient
-            for (std::size_t _n = 0; _n < DA; _n++)
+            for (std::size_t _n = 0; _n < DA; ++_n)
             {
                 internal::_n2multiidx(_n, subsys.size(), CdimsA, CmidxA);
-                for (std::size_t k = 0; k < subsys.size(); k++)
+                for (std::size_t k = 0; k < subsys.size(); ++k)
                 {
                     Cmidx[subsys[k]] = CmidxA[k];
                 }
@@ -204,7 +204,7 @@ namespace qpp
             // compute the ket/bra indexes
 
             // set the CTRL part
-            for (std::size_t k = 0; k < ctrl.size(); k++)
+            for (std::size_t k = 0; k < ctrl.size(); ++k)
             {
                 Cmidxrow[ctrl[k]] = _i1;
                 Cmidxcol[ctrl[k]] = _i2;
@@ -215,7 +215,7 @@ namespace qpp
                     CdimsCTRLAbar, CmidxCTRLAbarrow);
             internal::_n2multiidx(_r2, n - ctrlgate.size(),
                     CdimsCTRLAbar, CmidxCTRLAbarcol);
-            for (std::size_t k = 0; k < n - ctrlgate.size(); k++)
+            for (std::size_t k = 0; k < n - ctrlgate.size(); ++k)
             {
                 Cmidxrow[ctrlgatebar[k]] = CmidxCTRLAbarrow[k];
                 Cmidxcol[ctrlgatebar[k]] = CmidxCTRLAbarcol[k];
@@ -224,7 +224,7 @@ namespace qpp
             // set the A part
             internal::_n2multiidx(_m1, subsys.size(), CdimsA, CmidxArow);
             internal::_n2multiidx(_m2, subsys.size(), CdimsA, CmidxAcol);
-            for (std::size_t k = 0; k < subsys.size(); k++)
+            for (std::size_t k = 0; k < subsys.size(); ++k)
             {
                 Cmidxrow[subsys[k]] = CmidxArow[k];
                 Cmidxcol[subsys[k]] = CmidxAcol[k];
@@ -235,17 +235,17 @@ namespace qpp
             idxcol = internal::_multiidx2n(Cmidxcol, n, Cdims);
 
             // compute the coefficient
-            for (std::size_t _n1 = 0; _n1 < DA; _n1++)
+            for (std::size_t _n1 = 0; _n1 < DA; ++_n1)
             {
                 internal::_n2multiidx(_n1, subsys.size(), CdimsA, CmidxArow);
-                for (std::size_t k = 0; k < subsys.size(); k++)
+                for (std::size_t k = 0; k < subsys.size(); ++k)
                 {
                     Cmidxrow[subsys[k]] = CmidxArow[k];
                 }
-                for (std::size_t _n2 = 0; _n2 < DA; _n2++)
+                for (std::size_t _n2 = 0; _n2 < DA; ++_n2)
                 {
                     internal::_n2multiidx(_n2, subsys.size(), CdimsA, CmidxAcol);
-                    for (std::size_t k = 0; k < subsys.size(); k++)
+                    for (std::size_t k = 0; k < subsys.size(); ++k)
                     {
                         Cmidxcol[subsys[k]] = CmidxAcol[k];
                     }
@@ -273,15 +273,15 @@ namespace qpp
             DynMat<typename Derived1::Scalar> result = rstate;
 
 #pragma omp parallel for collapse(2)
-            for (std::size_t m = 0; m < DA; m++)
-                for (std::size_t r = 0; r < DCTRLAbar; r++)
+            for (std::size_t m = 0; m < DA; ++m)
+                for (std::size_t r = 0; r < DCTRLAbar; ++r)
                     if (ctrlsize == 0) // no control
                     {
                         result(coeff_idx_ket(1, m, r).second) = coeff_idx_ket(1, m,
                                 r).first;
                     }
                     else
-                        for (std::size_t i = 0; i < d; i++)
+                        for (std::size_t i = 0; i < d; ++i)
                         {
                             result(coeff_idx_ket(i, m, r).second) = coeff_idx_ket(i,
                                     m, r).first;
@@ -303,10 +303,10 @@ namespace qpp
             DynMat<typename Derived1::Scalar> result = rstate;
 
 #pragma omp parallel for collapse(4)
-            for (std::size_t m1 = 0; m1 < DA; m1++)
-                for (std::size_t r1 = 0; r1 < DCTRLAbar; r1++)
-                    for (std::size_t m2 = 0; m2 < DA; m2++)
-                        for (std::size_t r2 = 0; r2 < DCTRLAbar; r2++)
+            for (std::size_t m1 = 0; m1 < DA; ++m1)
+                for (std::size_t r1 = 0; r1 < DCTRLAbar; ++r1)
+                    for (std::size_t m2 = 0; m2 < DA; ++m2)
+                        for (std::size_t r2 = 0; r2 < DCTRLAbar; ++r2)
                             if (ctrlsize == 0) // no control
                             {
                                 auto coeff_idxes = coeff_idx_rho(1, m1, r1, 1, m2,
@@ -317,8 +317,8 @@ namespace qpp
                             }
                             else
                             {
-                                for (std::size_t i1 = 0; i1 < d; i1++)
-                                    for (std::size_t i2 = 0; i2 < d; i2++)
+                                for (std::size_t i1 = 0; i1 < d; ++i1)
+                                    for (std::size_t i2 = 0; i2 < d; ++i2)
                                     {
                                         auto coeff_idxes = coeff_idx_rho(i1, m1, r1,
                                                 i2, m2, r2);
@@ -448,7 +448,7 @@ namespace qpp
         cmat result = cmat::Zero(rrho.rows(), rrho.cols());
 
 #pragma omp parallel for
-        for (std::size_t i = 0; i < Ks.size(); i++)
+        for (std::size_t i = 0; i < Ks.size(); ++i)
         {
 #pragma omp critical
             {
@@ -517,7 +517,7 @@ namespace qpp
 
         cmat result = cmat::Zero(std::pow(d, n), std::pow(d, n));
 
-        for (size_t i = 0; i < Ks.size(); i++)
+        for (std::size_t i = 0; i < Ks.size(); ++i)
         {
             result += apply(rrho, Ks[i], subsys, n, d);
         }
@@ -556,22 +556,22 @@ namespace qpp
         cmat EMN = cmat::Zero(D, D);
 
 #pragma omp parallel for collapse(2)
-        for (std::size_t m = 0; m < D; m++)
+        for (std::size_t m = 0; m < D; ++m)
         {
-            for (std::size_t n = 0; n < D; n++)
+            for (std::size_t n = 0; n < D; ++n)
             {
 #pragma omp critical
                 {
                     // compute E(|m><n|)
                     MN(m, n) = 1;
-                    for (std::size_t i = 0; i < Ks.size(); i++)
+                    for (std::size_t i = 0; i < Ks.size(); ++i)
                         EMN += Ks[i] * MN * adjoint(Ks[i]);
                     MN(m, n) = 0;
 
-                    for (std::size_t a = 0; a < D; a++)
+                    for (std::size_t a = 0; a < D; ++a)
                     {
                         A(a) = 1;
-                        for (std::size_t b = 0; b < D; b++)
+                        for (std::size_t b = 0; b < D; ++b)
                         {
                             // compute result(ab,mn)=<a|E(|m><n)|b>
                             B(b) = 1;
@@ -619,7 +619,7 @@ namespace qpp
         // construct the D x D \sum |jj> vector
         // (un-normalized maximally entangled state)
         cmat MES = cmat::Zero(D * D, 1);
-        for (std::size_t a = 0; a < D; a++)
+        for (std::size_t a = 0; a < D; ++a)
             MES(a * D + a) = 1;
 
         cmat Omega = static_cast<cmat>(MES * adjoint(MES));
@@ -627,7 +627,7 @@ namespace qpp
         cmat result = cmat::Zero(D * D, D * D);
 
 #pragma omp parallel for
-        for (std::size_t i = 0; i < Ks.size(); i++)
+        for (std::size_t i = 0; i < Ks.size(); ++i)
         {
 #pragma omp critical
             {
@@ -666,7 +666,7 @@ namespace qpp
         cmat evec = hevects(A);
         std::vector<cmat> result;
 
-        for (std::size_t i = 0; i < D * D; i++)
+        for (std::size_t i = 0; i < D * D; ++i)
         {
             // take the absolute value to get rid of tiny negatives
             if (std::abs((double) ev(i)) > eps)
@@ -727,14 +727,14 @@ namespace qpp
         auto worker = [=](std::size_t i, std::size_t j)
         {
             typename Derived::Scalar sum = 0;
-            for (std::size_t m = 0; m < DA; m++)
+            for (std::size_t m = 0; m < DA; ++m)
                 sum += rA(m * DB + i, m * DB + j);
             return sum;
         };
 
 #pragma omp parallel for collapse(2)
-        for (std::size_t j = 0; j < DB; j++) // column major order for speed
-            for (std::size_t i = 0; i < DB; i++)
+        for (std::size_t j = 0; j < DB; ++j) // column major order for speed
+            for (std::size_t i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
 
         return result;
@@ -785,8 +785,8 @@ namespace qpp
                 DynMat<typename Derived::Scalar>::Zero(DA, DA);
 
 #pragma omp parallel for collapse(2)
-        for (std::size_t j = 0; j < DA; j++) // column major order for speed
-            for (std::size_t i = 0; i < DA; i++)
+        for (std::size_t j = 0; j < DA; ++j) // column major order for speed
+            for (std::size_t i = 0; i < DA; ++i)
                 result(i, j) = trace(rA.block(i * DB, j * DB, DB, DB));
 
         return result;
@@ -848,7 +848,7 @@ namespace qpp
         std::size_t nsubsys = subsys.size();
         std::size_t nsubsysbar = n - nsubsys;
         std::size_t dimsubsys = 1;
-        for (std::size_t i = 0; i < nsubsys; i++)
+        for (std::size_t i = 0; i < nsubsys; ++i)
             dimsubsys *= dims[subsys[i]];
         std::size_t dimsubsysbar = D / dimsubsys;
 
@@ -858,19 +858,19 @@ namespace qpp
         std::size_t Csubsysbar[maxn];
         std::size_t Cdimssubsysbar[maxn];
 
-        for (std::size_t i = 0; i < n; i++)
+        for (std::size_t i = 0; i < n; ++i)
             Cdims[i] = dims[i];
-        for (std::size_t i = 0; i < nsubsys; i++)
+        for (std::size_t i = 0; i < nsubsys; ++i)
         {
             Csubsys[i] = subsys[i];
             Cdimssubsys[i] = dims[subsys[i]];
         }
         // construct the complement of subsys
         std::size_t cnt = 0;
-        for (std::size_t i = 0; i < n; i++)
+        for (std::size_t i = 0; i < n; ++i)
         {
             bool found = false;
-            for (std::size_t m = 0; m < nsubsys; m++)
+            for (std::size_t m = 0; m < nsubsys; ++m)
                 if (subsys[m] == i)
                 {
                     found = true;
@@ -901,18 +901,18 @@ namespace qpp
             internal::_n2multiidx(i, nsubsysbar, Cdimssubsysbar, Cmidxrowsubsysbar);
             internal::_n2multiidx(j, nsubsysbar, Cdimssubsysbar, Cmidxcolsubsysbar);
             /* write them in the global row/col multi-indexes */
-            for (std::size_t k = 0; k < nsubsysbar; k++)
+            for (std::size_t k = 0; k < nsubsysbar; ++k)
             {
                 Cmidxrow[Csubsysbar[k]] = Cmidxrowsubsysbar[k];
                 Cmidxcol[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
             }
             typename Derived::Scalar sm = 0;
-            for (std::size_t a = 0; a < dimsubsys; a++)
+            for (std::size_t a = 0; a < dimsubsys; ++a)
             {
                 // get the multi-index over which we do the summation
                 internal::_n2multiidx(a, nsubsys, Cdimssubsys, Cmidxsubsys);
                 // write it into the global row/col multi-indexes
-                for (std::size_t k = 0; k < nsubsys; k++)
+                for (std::size_t k = 0; k < nsubsys; ++k)
                     Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]] = Cmidxsubsys[k];
 
                 // now do the sum
@@ -924,8 +924,8 @@ namespace qpp
         };
 
 #pragma omp parallel for collapse(2)
-        for (std::size_t j = 0; j < dimsubsysbar; j++)
-            for (std::size_t i = 0; i < dimsubsysbar; i++)
+        for (std::size_t j = 0; j < dimsubsysbar; ++j)
+            for (std::size_t i = 0; i < dimsubsysbar; ++i)
                 result(i, j) = worker(i, j);
 
         return result;
@@ -985,9 +985,9 @@ namespace qpp
         std::size_t csubsys[maxn];
 
         // copy dims in cdims and subsys in csubsys
-        for (std::size_t i = 0; i < numdims; i++)
+        for (std::size_t i = 0; i < numdims; ++i)
             cdims[i] = dims[i];
-        for (std::size_t i = 0; i < numsubsys; i++)
+        for (std::size_t i = 0; i < numsubsys; ++i)
             csubsys[i] = subsys[i];
 
         DynMat<typename Derived::Scalar> result(D, D);
@@ -998,13 +998,13 @@ namespace qpp
             std::size_t midxcoltmp[maxn];
             std::size_t midxrow[maxn];
 
-            for (std::size_t k = 0; k < numdims; k++)
+            for (std::size_t k = 0; k < numdims; ++k)
                 midxcoltmp[k] = midxcol[k];
 
             /* compute the row multi-index */
             internal::_n2multiidx(i, numdims, cdims, midxrow);
 
-            for (std::size_t k = 0; k < numsubsys; k++)
+            for (std::size_t k = 0; k < numsubsys; ++k)
                 std::swap(midxcoltmp[csubsys[k]], midxrow[csubsys[k]]);
 
             /* writes the result */
@@ -1013,12 +1013,12 @@ namespace qpp
 
         };
 
-        for (std::size_t j = 0; j < D; j++)
+        for (std::size_t j = 0; j < D; ++j)
         {
             // compute the column multi-index
             internal::_n2multiidx(j, numdims, cdims, midxcol);
 #pragma omp parallel for
-            for (std::size_t i = 0; i < D; i++)
+            for (std::size_t i = 0; i < D; ++i)
                 result(i, j) = worker(i);
         }
 
@@ -1080,7 +1080,7 @@ namespace qpp
                     /* compute the multi-index */
                     internal::_n2multiidx(i, numdims, cdims, midx);
 
-                    for (std::size_t k = 0; k < numdims; k++)
+                    for (std::size_t k = 0; k < numdims; ++k)
                     {
                         permdims[k] = cdims[cperm[k]]; // permuted dimensions
                         midxtmp[k] = midx[cperm[k]];// permuted multi-indexes
@@ -1100,7 +1100,7 @@ namespace qpp
                         Exception::Type::DIMS_MISMATCH_CVECTOR);
 
             // copy dims in cdims and perm in cperm
-            for (std::size_t i = 0; i < numdims; i++)
+            for (std::size_t i = 0; i < numdims; ++i)
             {
                 cdims[i] = dims[i];
                 cperm[i] = perm[i];
@@ -1108,7 +1108,7 @@ namespace qpp
             result.resize(D, 1);
 
 #pragma omp parallel for
-            for (std::size_t i = 0; i < D; i++)
+            for (std::size_t i = 0; i < D; ++i)
                 result(worker(i, numdims, cdims, cperm)) = rA(i);
 
             return result;
@@ -1125,7 +1125,7 @@ namespace qpp
                         Exception::Type::DIMS_MISMATCH_MATRIX);
 
             // copy dims in cdims and perm in cperm
-            for (std::size_t i = 0; i < numdims; i++)
+            for (std::size_t i = 0; i < numdims; ++i)
             {
                 cdims[i] = dims[i];
                 cdims[i + numdims] = dims[i];
@@ -1139,7 +1139,7 @@ namespace qpp
                     const_cast<typename Derived::Scalar *>(rA.data()), D * D, 1);
 
 #pragma omp parallel for
-            for (std::size_t i = 0; i < D * D; i++)
+            for (std::size_t i = 0; i < D * D; ++i)
                 result(worker(i, 2 * numdims, cdims, cperm)) = rA(i);
 
             return reshape(result, D, D);
