@@ -42,14 +42,11 @@ namespace qpp
 
         std::vector<double> result;
 
-        double r = x;
-        double a = std::floor(r);
         for (std::size_t i = 0; i < n; ++i)
         {
-            result.push_back(a);
-            r = 1. / (r - a);
-            a = std::floor(r);
-            if (!std::isfinite(r) || r > cut)
+            result.push_back(std::floor(x));
+            x = 1. / (x - std::floor(x));
+            if (!std::isfinite(x) || x > cut)
                 return result;
         }
         return result;
