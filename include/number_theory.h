@@ -109,6 +109,88 @@ namespace qpp
         return cf[0] + tmp;
     }
 
+/**
+* \brief Greatest common divisor of two non-negative integers
+*
+* \param m Non-negative integer
+* \param n Non-negative integer
+* \return Greatest common divisor of \a m and \a n
+*/
+    std::size_t gcd(std::size_t m, std::size_t n)
+    {
+        if (m == 0 || n == 0)
+            return (std::max(m, n));
+
+        std::size_t result = 1;
+        while (n)
+        {
+            result = n;
+            n = m % result;
+            m = result;
+        }
+
+        return result;
+    }
+
+/**
+* \brief Greatest common divisor of a list of non-negative integers
+*
+* \param ns List of non-negative integers
+* \return Greatest common divisor of all numbers in \a ns
+*/
+    std::size_t gcd(const std::vector<std::size_t> &ns)
+    {
+        if (ns.size() == 0)
+            throw Exception("gcd", Exception::Type::ZERO_SIZE);
+
+        std::size_t result = ns[0]; // convention: gcd({n}) = n
+        for (std::size_t i = 1; i < ns.size(); ++i)
+        {
+            result = gcd(result, ns[i]);
+        }
+
+        return result;
+    }
+
+/**
+* \brief Least common multiple of two positive integers
+*
+* \param m Positive integer
+* \param n Positive integer
+* \return Least common multiple of \a m and \a n
+*/
+    std::size_t lcm(std::size_t m, std::size_t n)
+    {
+        if (m == 0 || n == 0)
+            throw Exception("lcm", Exception::Type::OUT_OF_RANGE);
+
+        return m * n / gcd(m, n);
+    }
+
+/**
+* \brief Least common multiple of a list of positive integers
+*
+* \param ns List of positive integers
+* \return Least common multiple of all numbers in \a ns
+*/
+    std::size_t lcm(const std::vector<std::size_t> &ns)
+    {
+        if (ns.size() == 0)
+            throw Exception("lcm", Exception::Type::ZERO_SIZE);
+
+        if(ns.size() == 1) // convention: lcm({n}) = n
+            return ns[0];
+
+        auto multiply = [](std::size_t x, std::size_t y) -> std::size_t
+        {
+            return x * y;
+        };
+
+        std::size_t prod = std::accumulate(std::begin(ns), std::end(ns), 1u,
+                multiply);
+
+        return prod / gcd(ns);
+    }
 } /* namespace qpp */
 
 #endif /* INCLUDE_NUMBER_THEORY_H_ */
