@@ -23,6 +23,7 @@
 #define INCLUDE_FUNCTIONS_H_
 
 // Collection of generic quantum computing functions
+
 namespace qpp
 {
 

@@ -61,27 +61,31 @@
 #include "constants.h"
 #include "types.h"
 #include "classes/exception.h"
+#include "internal/classes/iomanip.h"
+#include "input_output.h"
+
+// do not change the order in this group, inter-dependencies
 #include "classes/singleton.h"
+#include "classes/init.h"
+#include "internal/functions.h"
+#include "functions.h"
+#include "classes/codes.h"
+#include "classes/gates.h"
 #include "classes/states.h"
 #include "classes/random_devices.h"
-#include "internal/functions.h"
-#include "classes/init.h"
-#include "functions.h"
-#include "classes/gates.h"
-#include "classes/codes.h"
+
+// do not change the order in this group, inter-dependencies
 #include "operations.h"
 #include "entropies.h"
-#include "internal/classes/iomanip.h"
 #include "entanglement.h"
 
 // the ones below can be in any order, no inter-dependencies
-#include "input_output.h"
-#include "instruments.h"
-#include "random.h"
-#include "number_theory.h"
 #include "classes/timer.h"
+#include "instruments.h"
+#include "number_theory.h"
+#include "random.h"
 
-// experimental/testing
+// experimental/testing, do not use them in production version
 #include "experimental/test.h"
 #include "experimental/classes/qudit.h"
 
