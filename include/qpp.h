@@ -63,7 +63,7 @@
 #include "classes/exception.h"
 #include "classes/singleton.h"
 #include "classes/states.h"
-#include "classes/randevs.h"
+#include "classes/random_devices.h"
 #include "internal/functions.h"
 #include "classes/init.h"
 #include "functions.h"

@@ -200,7 +200,7 @@ namespace qpp
                     "load: Input file \"" + std::string(fname)
                             + "\" is corrupted!");
         }
-        delete[] _fheader;
+         delete[] _fheader;
 
         std::size_t rows, cols;
         fin.read((char *) &rows, sizeof(rows));
