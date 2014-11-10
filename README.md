@@ -44,19 +44,19 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 - MATLAB compiler include header files: `/Applications/MATLAB_R2014b.app/extern/include`
 - MATLAB compiler shared library files: `/Applications/MATLAB_R2014b.app/bin/maci64`
 
-### Release mode (without MATLAB support): 
+### Release version (without MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -O3 -DNDEBUG -DEIGEN_NO_DEBUG -isystem $HOME/eigen_3.2.2 -I$HOME/qpp/include example.cpp -o qpp
 
-### Debug mode (without MATLAB support): 
+### Debug version (without MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include example.cpp -o qpp
 
-### Release mode (with MATLAB support): 
+### Release version (with MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -O3 -DNDEBUG -DEIGEN_NO_DEBUG -isystem $HOME/eigen_3.2.2 -I$HOME/qpp/include -I/Applications/MATLAB_R2014b.app/extern/include -L/Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
 
-### Debug mode (with MATLAB support): 
+### Debug version (with MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include -I /Applications/MATLAB_R2014b.app/extern/include -L /Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
 
@@ -77,9 +77,9 @@ The current version of the repository has a `CMakeLists.txt` configuration file 
     cmake ..
     make
 
-The above commands create the relase-mode (default) executable `qpp`, 
+The above commands create the relase version (default) executable `qpp`, 
 without MATLAB support (default), inside the directory `./build`. 
-To build a different configuration, e.g. debug-mode with MATLAB support, 
+To build a different configuration, e.g. debug version with MATLAB support, 
 type from inside the `./build` directory
 
     rm -rf *
@@ -93,8 +93,8 @@ Do not forget to remove everything from the `./build` directory before a fresh b
 
 For convenience, the current version of the repository has also a set of Makefiles available 
 under the folder`./Makefile.examples`. To build the executable, copy into the root of the project 
-an appropriate Makefile from `./Makefile.examples`, and name it `Makefile` , 
-then type `make` (release mode) or `make debug` (debug mode) to produce the executable `qpp`.
+an appropriate Makefile from `./Makefile.examples`, name it `Makefile`, 
+then type `make` (for release version) or `make debug` (for debug version) to produce the executable `qpp`.
 
 
 `Makefiles.examples` and `CMakeLists.txt` are provided for convenience.
