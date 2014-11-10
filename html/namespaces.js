@@ -1,4 +1,4 @@
 var namespaces =
-    [
-        ["qpp", "namespaceqpp.html", "namespaceqpp"]
-    ];
+[
+    [ "qpp", "namespaceqpp.html", "namespaceqpp" ]
+];
