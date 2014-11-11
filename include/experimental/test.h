@@ -986,7 +986,7 @@ namespace qpp
             ostr.copyfmt(os); // copy os' state
 
             std::vector<std::string> vstr;
-            std::string strA{};
+            std::string strA;
 
             for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); ++i)
             {

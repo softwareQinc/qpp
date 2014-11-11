@@ -195,4 +195,47 @@ int main()
         std::cout << ">> |<0L|1L>| = ";
         std::cout << disp(adjoint(c0) * c1) << std::endl;
     }
+
+    // Timing tests
+    {
+        std::cout << std::endl << "**** Timing tests ****" << std::endl;
+
+        std::size_t n = 12; // number of qubits
+        std::size_t N = std::pow(2, n);
+        std::vector<std::size_t> dims(n, 2); // local dimensions
+        std::cout << ">> n = " << n << " qubits, matrix size " << N << " x " << N
+                << "." << std::endl;
+        cmat randcmat = cmat::Random(N, N);
+
+        // ptrace
+        std::cout << std::endl << "**** qpp::ptrace() timing ****" << std::endl;
+        std::vector<std::size_t> subsys_ptrace = {0};
+        std::cout << ">> Subsytem(s): ";
+        std::cout << disp(subsys_ptrace, ", ") << std::endl;
+        Timer t;
+        ptrace(randcmat, subsys_ptrace, dims);
+        std::cout << ">> Took " << t.toc() << " seconds." << std::endl;
+
+        // ptranspose
+        std::cout << std::endl << "**** qpp::ptranspose() timing ****" << std::endl;
+        std::vector<std::size_t> subsys_ptranspose; // partially transpose n-1 subsystems
+        for (std::size_t i = 0; i < n - 1; i++)
+            subsys_ptranspose.push_back(i);
+        std::cout << ">> Subsytem(s): ";
+        std::cout << disp(subsys_ptranspose, ", ") << std::endl;
+        t.tic();
+        ptranspose(randcmat, subsys_ptranspose, dims);
+        std::cout << ">> Took " << t.toc() << " seconds." << std::endl;
+
+        // syspermute
+        std::cout << std::endl << "**** qpp::syspermute() timing ****" << std::endl;
+        std::vector<std::size_t> perm; // left-shift all subsystems by 1
+        for (std::size_t i = 0; i < n; i++)
+            perm.push_back((i + 1) % n);
+        std::cout << ">> Subsytem(s): ";
+        std::cout << disp(perm, ", ") << std::endl;
+        t.tic();
+        syspermute(randcmat, perm, dims);
+        std::cout << ">> Took " << t.toc() << " seconds." << std::endl;
+    }
 }

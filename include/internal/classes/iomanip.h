@@ -32,8 +32,8 @@ namespace qpp
         template<typename InputIterator>
         class IOManipRange
         {
-            InputIterator _first{}, _last{};
-            std::string _separator{}, _start{}, _end{};
+            InputIterator _first, _last;
+            std::string _separator, _start, _end;
         public:
             explicit IOManipRange(InputIterator first, InputIterator last,
                     const std::string &separator, const std::string &start = "[",
@@ -77,9 +77,9 @@ namespace qpp
         template<typename PointerType>
         class IOManipPointer
         {
-            const PointerType *_p{};
-            std::size_t _n{};
-            std::string _separator{}, _start{}, _end{};
+            const PointerType *_p;
+            std::size_t _n;
+            std::string _separator, _start, _end;
         public:
             explicit IOManipPointer(const PointerType *p, const std::size_t n,
                     const std::string &separator, const std::string &start = "[",
@@ -123,8 +123,8 @@ namespace qpp
 
         class IOManipEigen
         {
-            cmat _A{};
-            double _chop{};
+            cmat _A;
+            double _chop;
         public:
             // Eigen matrices
             template<typename Derived>
@@ -136,10 +136,9 @@ namespace qpp
 
             // Complex numbers
             explicit IOManipEigen(const cplx z, double chop = qpp::chop) :
-                    _chop(chop)
+                    _A(cmat::Zero(1,1)), _chop(chop)
             {
                 // put the complex number inside an Eigen matrix
-                _A.resize(1, 1);
                 _A(0, 0) = z;
             }
 
@@ -158,7 +157,7 @@ namespace qpp
                 ostr.copyfmt(os); // copy os' state
 
                 std::vector<std::string> vstr;
-                std::string strA{};
+                std::string strA;
 
                 for (std::size_t i = 0; i < static_cast<std::size_t>(rhs._A.rows());
                      ++i)
