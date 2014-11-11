@@ -130,7 +130,7 @@ namespace qpp
 
         // check zero-size
         if (rA.size() == 0)
-            throw Exception("save", Exception::Type::ZERO_SIZE);
+            throw Exception("qpp::save()", Exception::Type::ZERO_SIZE);
 
         std::fstream fout;
         fout.open(fname, std::ios::out | std::ios::binary);
@@ -138,7 +138,7 @@ namespace qpp
         if (fout.fail())
         {
             throw std::runtime_error(
-                    "save: Error writing output file \"" + std::string(fname)
+                    "qpp::save(): Error writing output file \"" + std::string(fname)
                             + "\"!");
         }
 
@@ -184,7 +184,7 @@ namespace qpp
         if (fin.fail())
         {
             throw std::runtime_error(
-                    "load: Error opening input file \"" + std::string(fname)
+                    "qpp::load(): Error opening input file \"" + std::string(fname)
                             + "\"!");
         }
 
@@ -197,7 +197,7 @@ namespace qpp
         {
             delete[] _fheader;
             throw std::runtime_error(
-                    "load: Input file \"" + std::string(fname)
+                    "qpp::load(): Input file \"" + std::string(fname)
                             + "\" is corrupted!");
         }
         delete[] _fheader;

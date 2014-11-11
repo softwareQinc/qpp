@@ -59,27 +59,27 @@ namespace qpp
 
             // check types
             if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
-                throw Exception("apply", Exception::Type::TYPE_MISMATCH);
+                throw Exception("qpp::experimental::apply()", Exception::Type::TYPE_MISMATCH);
 
             // check zero sizes
             if (!internal::_check_nonzero_size(rA))
-                throw Exception("apply", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::apply()", Exception::Type::ZERO_SIZE);
 
             // check zero sizes
             if (!internal::_check_nonzero_size(rstate))
-                throw Exception("apply", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::apply()", Exception::Type::ZERO_SIZE);
 
             // check square matrix for the gate
             if (!internal::_check_square_mat(rA))
-                throw Exception("apply", Exception::Type::MATRIX_NOT_SQUARE);
+                throw Exception("qpp::experimental::apply()", Exception::Type::MATRIX_NOT_SQUARE);
 
             // check that dims is a valid dimension vector
             if (!internal::_check_dims(dims))
-                throw Exception("apply", Exception::Type::DIMS_INVALID);
+                throw Exception("qpp::experimental::apply()", Exception::Type::DIMS_INVALID);
 
             // check subsys is valid w.r.t. dims
             if (!internal::_check_subsys_match_dims(subsys, dims))
-                throw Exception("apply", Exception::Type::SUBSYS_MISMATCH_DIMS);
+                throw Exception("qpp::experimental::apply()", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
             // Use static allocation for speed!
             std::size_t Cdims[maxn];
@@ -131,13 +131,13 @@ namespace qpp
 
             // check that gate mathches the dimensions of the subsys
             if (static_cast<std::size_t>(rA.rows()) != DA)
-                throw Exception("apply", Exception::Type::DIMS_MISMATCH_MATRIX);
+                throw Exception("qpp::experimental::apply()", Exception::Type::DIMS_MISMATCH_MATRIX);
 
             if (internal::_check_col_vector(rstate)) // we have a ket
             {
                 // check that dims match state vector
                 if (!internal::_check_dims_match_cvect(dims, rstate))
-                    throw Exception("apply", Exception::Type::DIMS_MISMATCH_CVECTOR);
+                    throw Exception("qpp::experimental::apply()", Exception::Type::DIMS_MISMATCH_CVECTOR);
 
                 DynMat<typename Derived1::Scalar> result(D, 1);
 
@@ -192,7 +192,7 @@ namespace qpp
 
                 // check that dims match state matrix
                 if (!internal::_check_dims_match_mat(dims, rstate))
-                    throw Exception("apply", Exception::Type::DIMS_MISMATCH_MATRIX);
+                    throw Exception("qpp::experimental::apply()", Exception::Type::DIMS_MISMATCH_MATRIX);
 
                 DynMat<typename Derived1::Scalar> result(D, D);
 
@@ -248,7 +248,7 @@ namespace qpp
                 return result;
             }
             else
-                throw Exception("apply", Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+                throw Exception("qpp::experimental::apply()", Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
         }
 
 /**
@@ -271,32 +271,32 @@ namespace qpp
             // EXCEPTION CHECKS
             // check zero sizes
             if (!internal::_check_nonzero_size(rrho))
-                throw Exception("channel", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::channel()", Exception::Type::ZERO_SIZE);
 
             // check square matrix for the rho
             if (!internal::_check_square_mat(rrho))
-                throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
+                throw Exception("qpp::experimental::channel()", Exception::Type::MATRIX_NOT_SQUARE);
 
             // check that dims is a valid dimension vector
             if (!internal::_check_dims(dims))
-                throw Exception("channel", Exception::Type::DIMS_INVALID);
+                throw Exception("qpp::experimental::channel()", Exception::Type::DIMS_INVALID);
 
             // check that dims match rho matrix
             if (!internal::_check_dims_match_mat(dims, rrho))
-                throw Exception("channel", Exception::Type::DIMS_MISMATCH_MATRIX);
+                throw Exception("qpp::experimental::channel()", Exception::Type::DIMS_MISMATCH_MATRIX);
 
             // check subsys is valid w.r.t. dims
             if (!internal::_check_subsys_match_dims(subsys, dims))
-                throw Exception("channel", Exception::Type::SUBSYS_MISMATCH_DIMS);
+                throw Exception("qpp::experimental::channel()", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
             // check the Kraus operators
             if (!internal::_check_nonzero_size(Ks))
-                throw Exception("channel", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::channel()", Exception::Type::ZERO_SIZE);
             if (!internal::_check_square_mat(Ks[0]))
-                throw Exception("channel", Exception::Type::MATRIX_NOT_SQUARE);
+                throw Exception("qpp::experimental::channel()", Exception::Type::MATRIX_NOT_SQUARE);
             for (auto &&it : Ks)
                 if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-                    throw Exception("channel", Exception::Type::DIMS_NOT_EQUAL);
+                    throw Exception("qpp::experimental::channel()", Exception::Type::DIMS_NOT_EQUAL);
 
             // Use static allocation for speed!
             std::size_t Cdims[maxn];
@@ -351,7 +351,7 @@ namespace qpp
 
             // check that dimension of Kraus matches the dimension of the subsys
             if (static_cast<std::size_t>(Ks[0].rows()) != DA)
-                throw Exception("channel", Exception::Type::DIMS_MISMATCH_MATRIX);
+                throw Exception("qpp::experimental::channel()", Exception::Type::DIMS_MISMATCH_MATRIX);
 
             // get the superoperator matrix of the channel
             cmat sop = super(Ks);
@@ -447,14 +447,14 @@ namespace qpp
         {
             // EXCEPTION CHECKS
             if (!internal::_check_nonzero_size(Ks))
-                throw Exception("super", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::super()", Exception::Type::ZERO_SIZE);
             if (!internal::_check_nonzero_size(Ks[0]))
-                throw Exception("super", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::super()", Exception::Type::ZERO_SIZE);
             if (!internal::_check_square_mat(Ks[0]))
-                throw Exception("super", Exception::Type::MATRIX_NOT_SQUARE);
+                throw Exception("qpp::experimental::super()", Exception::Type::MATRIX_NOT_SQUARE);
             for (auto &&it : Ks)
                 if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-                    throw Exception("super", Exception::Type::DIMS_NOT_EQUAL);
+                    throw Exception("qpp::experimental::super()", Exception::Type::DIMS_NOT_EQUAL);
             std::size_t D = static_cast<std::size_t>(Ks[0].rows());
 
             std::size_t midx_row[2] = {0, 0};
@@ -526,23 +526,23 @@ namespace qpp
             // EXCEPTION CHECKS
             // check matrix zero size
             if (!internal::_check_nonzero_size(rA))
-                throw Exception("Gates::CTRL", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::CTRL()", Exception::Type::ZERO_SIZE);
 
             // check square matrix
             if (!internal::_check_square_mat(rA))
-                throw Exception("Gates::CTRL", Exception::Type::MATRIX_NOT_SQUARE);
+                throw Exception("qpp::experimental::CTRL()", Exception::Type::MATRIX_NOT_SQUARE);
 
             // check lists zero size
             if (subsys.size() == 0)
-                throw Exception("Gates::CTRL", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::CTRL()", Exception::Type::ZERO_SIZE);
 
             // check out of range
             if (n == 0)
-                throw Exception("Gates::CTRL", Exception::Type::OUT_OF_RANGE);
+                throw Exception("qpp::experimental::CTRL()", Exception::Type::OUT_OF_RANGE);
 
             // check valid local dimension
             if (d == 0)
-                throw Exception("Gates::CTRL", Exception::Type::DIMS_INVALID);
+                throw Exception("qpp::experimental::CTRL()", Exception::Type::DIMS_INVALID);
 
             std::vector<std::size_t> ctrlgate = ctrl;    // ctrl + gate subsystem vector
             ctrlgate.insert(std::end(ctrlgate), std::begin(subsys), std::end(subsys));
@@ -553,11 +553,11 @@ namespace qpp
             // check that ctrl + gate subsystem is valid
             // with respect to local dimensions
             if (!internal::_check_subsys_match_dims(ctrlgate, dims))
-                throw Exception("Gates::CTRL", Exception::Type::SUBSYS_MISMATCH_DIMS);
+                throw Exception("qpp::experimental::CTRL()", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
             // check that subsys list match the dimension of the matrix
             if (rA.cols() != std::pow(d, subsys.size()))
-                throw Exception("Gates::CTRL", Exception::Type::DIMS_MISMATCH_MATRIX);
+                throw Exception("qpp::experimental::CTRL()", Exception::Type::DIMS_MISMATCH_MATRIX);
             // END EXCEPTION CHECKS
 
             if (d == 1)
@@ -679,14 +679,14 @@ namespace qpp
         {
             // EXCEPTION CHECKS
             if (!internal::_check_nonzero_size(Ks))
-                throw Exception("choi", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::choi()", Exception::Type::ZERO_SIZE);
             if (!internal::_check_nonzero_size(Ks[0]))
-                throw Exception("choi", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::choi()", Exception::Type::ZERO_SIZE);
             if (!internal::_check_square_mat(Ks[0]))
-                throw Exception("choi", Exception::Type::MATRIX_NOT_SQUARE);
+                throw Exception("qpp::experimental::choi()", Exception::Type::MATRIX_NOT_SQUARE);
             for (auto &&it : Ks)
                 if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-                    throw Exception("choi", Exception::Type::DIMS_NOT_EQUAL);
+                    throw Exception("qpp::experimental::choi()", Exception::Type::DIMS_NOT_EQUAL);
             std::size_t D = static_cast<std::size_t>(Ks[0].rows());
 
             // construct the D x D \sum |jj> vector
@@ -721,9 +721,9 @@ namespace qpp
         std::vector<cmat> randkraus(std::size_t n, std::size_t D)
         {
             if (n == 0)
-                throw Exception("randkraus", Exception::Type::OUT_OF_RANGE);
+                throw Exception("qpp::experimental::randkraus()", Exception::Type::OUT_OF_RANGE);
             if (D == 0)
-                throw Exception("randkraus", Exception::Type::DIMS_INVALID);
+                throw Exception("qpp::experimental::randkraus()", Exception::Type::DIMS_INVALID);
 
             std::vector<cmat> result;
             cmat Fk(D, D);
@@ -769,7 +769,7 @@ namespace qpp
 
             // check zero-size
             if (!internal::_check_nonzero_size(rA))
-                throw Exception("renyi_inf", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::renyi_inf()", Exception::Type::ZERO_SIZE);
 
             // input is a vector
             if (internal::_check_vector(rA))
@@ -786,7 +786,7 @@ namespace qpp
 
             // check square matrix
             if (!internal::_check_square_mat(rA))
-                throw Exception("renyi_inf", Exception::Type::MATRIX_NOT_SQUARE);
+                throw Exception("qpp::experimental::renyi_inf()", Exception::Type::MATRIX_NOT_SQUARE);
 
             // get the eigenvalues
             dmat ev = hevals(rA);

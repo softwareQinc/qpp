@@ -38,7 +38,7 @@ namespace qpp
     std::vector<int> x2contfrac(double x, std::size_t n, std::size_t cut = 1e5)
     {
         if (n == 0)
-            throw Exception("x2contfrac", Exception::Type::OUT_OF_RANGE);
+            throw Exception("qpp::x2contfrac()", Exception::Type::OUT_OF_RANGE);
 
         std::vector<int> result;
 
@@ -63,10 +63,10 @@ namespace qpp
     double contfrac2x(const std::vector<int> &cf, std::size_t n)
     {
         if (cf.size() == 0)
-            throw Exception("contfrac2x", Exception::Type::ZERO_SIZE);
+            throw Exception("qpp::contfrac2x()", Exception::Type::ZERO_SIZE);
 
         if (n == 0)
-            throw Exception("contfrac2x", Exception::Type::OUT_OF_RANGE);
+            throw Exception("qpp::contfrac2x()", Exception::Type::OUT_OF_RANGE);
 
         if (n > cf.size())
             n = cf.size();
@@ -92,7 +92,7 @@ namespace qpp
     double contfrac2x(const std::vector<int> &cf)
     {
         if (cf.size() == 0)
-            throw Exception("contfrac2x", Exception::Type::ZERO_SIZE);
+            throw Exception("qpp::contfrac2x()", Exception::Type::ZERO_SIZE);
 
         if (cf.size() == 1) // degenerate case, integer
             return cf[0];
@@ -138,7 +138,7 @@ namespace qpp
     std::size_t gcd(const std::vector<std::size_t> &ns)
     {
         if (ns.size() == 0)
-            throw Exception("gcd", Exception::Type::ZERO_SIZE);
+            throw Exception("qpp::gcd()", Exception::Type::ZERO_SIZE);
 
         std::size_t result = ns[0]; // convention: gcd({n}) = n
         for (std::size_t i = 1; i < ns.size(); ++i)
@@ -159,7 +159,7 @@ namespace qpp
     std::size_t lcm(std::size_t m, std::size_t n)
     {
         if (m == 0 || n == 0)
-            throw Exception("lcm", Exception::Type::OUT_OF_RANGE);
+            throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
 
         return m * n / gcd(m, n);
     }
@@ -173,10 +173,13 @@ namespace qpp
     std::size_t lcm(const std::vector<std::size_t> &ns)
     {
         if (ns.size() == 0)
-            throw Exception("lcm", Exception::Type::ZERO_SIZE);
+            throw Exception("qpp::lcm()", Exception::Type::ZERO_SIZE);
 
         if (ns.size() == 1) // convention: lcm({n}) = n
             return ns[0];
+
+        if(std::find(std::begin(ns), std::end(ns), 0)!=std::end(ns))
+            throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
 
         auto multiply = [](std::size_t x, std::size_t y) -> std::size_t
         {
@@ -188,6 +191,52 @@ namespace qpp
 
         return prod / gcd(ns);
     }
+
+/**
+* \brief Inverse permutation
+*
+* \param perm Permutation
+* \return Inverse of the permutation \a perm
+*/
+    std::vector<std::size_t> invperm(const std::vector<std::size_t> &perm)
+    {
+        if (!internal::_check_perm(perm))
+            throw Exception("qpp::invperm()", Exception::Type::PERM_INVALID);
+
+        // construct the inverse
+        std::vector<std::size_t> result(perm.size());
+        for (std::size_t i = 0; i < perm.size(); ++i)
+            result[perm[i]] = i;
+
+        return result;
+    }
+
+/**
+* \brief Compose permutations
+*
+* \param perm Permutation
+* \param sigma Permutation
+* \return Composition of the permutations \a perm \f$\circ\f$ \a sigma
+*  = perm(sigma)
+*/
+    std::vector<std::size_t> compperm(const std::vector<std::size_t> &perm,
+            const std::vector<std::size_t> &sigma)
+    {
+        if (!internal::_check_perm(perm))
+            throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
+        if (!internal::_check_perm(sigma))
+            throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
+        if (perm.size() != sigma.size())
+            throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
+
+        // construct the composition perm(sigma)
+        std::vector<std::size_t> result(perm.size());
+        for (std::size_t i = 0; i < perm.size(); ++i)
+            result[i] = perm[sigma[i]];
+
+        return result;
+    }
+
 
 } /* namespace qpp */
 

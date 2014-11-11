@@ -37,9 +37,9 @@ namespace qpp
                     _rho(cmat::Zero(2, 2)), _D(2) // qubit by default
             {
                 if (!internal::_check_nonzero_size(rho))
-                    throw Exception("Qudit::Qudit", Exception::Type::ZERO_SIZE);
+                    throw Exception("qpp::experimental::Qudit::Qudit()", Exception::Type::ZERO_SIZE);
                 if (!internal::_check_square_mat(rho))
-                    throw Exception("Qudit::Qudit", Exception::Type::MATRIX_NOT_SQUARE);
+                    throw Exception("qpp::experimental::Qudit::Qudit()", Exception::Type::MATRIX_NOT_SQUARE);
                 _D = rho.rows();
 
                 _rho = rho;
@@ -48,10 +48,10 @@ namespace qpp
             std::size_t measure(const cmat &U, bool destructive = false)
             {
                 if (!internal::_check_square_mat(U))
-                    throw Exception("Qudit::measure",
+                    throw Exception("qpp::experimental::Qudit::measure()",
                             Exception::Type::MATRIX_NOT_SQUARE);
                 if (static_cast<std::size_t>(U.rows()) != _D)
-                    throw Exception("Qudit::measure", Exception::Type::DIMS_INVALID);
+                    throw Exception("qpp::experimental::Qudit::measure()", Exception::Type::DIMS_INVALID);
 
                 std::vector<double> p(_D);
                 for (std::size_t i = 0; i < _D; ++i)

@@ -42,7 +42,7 @@ namespace qpp
     Derived loadMATLABmatrix(const std::string &mat_file,
             const std::string &var_name)
     {
-        throw Exception("loadMATLABmatrix", Exception::Type::UNDEFINED_TYPE);
+        throw Exception("qpp::loadMATLABmatrix()", Exception::Type::UNDEFINED_TYPE);
     }
 
 /**
@@ -74,23 +74,23 @@ namespace qpp
         if (!pmat)
         {
             throw std::runtime_error(
-                    "loadMATLABmatrix: Can not open MATLAB file " + mat_file + "!");
+                    "qpp::loadMATLABmatrix(): Can not open MATLAB file " + mat_file + "!");
         }
 
         mxArray *pa = matGetVariable(pmat, var_name.c_str());
         if (!pa)
             throw std::runtime_error(
-                    "loadMATLABmatrix: Can not load the variable " + var_name
+                    "qpp::loadMATLABmatrix(): Can not load the variable " + var_name
                             + " from MATLAB file " + mat_file + "!");
 
         if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
             throw std::runtime_error(
-                    "loadMATLABmatrix: Loaded variable " + var_name
+                    "qpp::loadMATLABmatrix(): Loaded variable " + var_name
                             + " is not 2-dimensional!");
 
         if (!mxIsDouble(pa))
             throw std::runtime_error(
-                    "loadMATLABmatrix: Loaded variable " + var_name
+                    "qpp::loadMATLABmatrix(): Loaded variable " + var_name
                             + " is not in double-precision format!");
 
         std::size_t rows = mxGetM(pa);
@@ -133,23 +133,23 @@ namespace qpp
         if (!pmat)
         {
             throw std::runtime_error(
-                    "loadMATLABmatrix: Can not open MATLAB file " + mat_file + "!");
+                    "qpp::loadMATLABmatrix(): Can not open MATLAB file " + mat_file + "!");
         }
 
         mxArray *pa = matGetVariable(pmat, var_name.c_str());
         if (!pa)
             throw std::runtime_error(
-                    "loadMATLABmatrix: Can not load the variable " + var_name
+                    "qpp::loadMATLABmatrix(): Can not load the variable " + var_name
                             + " from MATLAB file " + mat_file + "!");
 
         if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
             throw std::runtime_error(
-                    "loadMATLABmatrix: Loaded variable " + var_name
+                    "qpp::loadMATLABmatrix(): Loaded variable " + var_name
                             + " is not 2-dimensional!");
 
         if (!mxIsDouble(pa))
             throw std::runtime_error(
-                    "loadMATLABmatrix: Loaded variable " + var_name
+                    "qpp::loadMATLABmatrix(): Loaded variable " + var_name
                             + " is not in double-precision format!");
 
         std::size_t rows = mxGetM(pa);
@@ -196,7 +196,7 @@ namespace qpp
             const std::string &mat_file, const std::string &var_name,
             const std::string &mode)
     {
-        throw Exception("saveMATLABmatrix", Exception::Type::UNDEFINED_TYPE);
+        throw Exception("qpp::saveMATLABmatrix()", Exception::Type::UNDEFINED_TYPE);
     }
 
 /**
@@ -220,24 +220,24 @@ namespace qpp
 
         // check zero-size
         if (!internal::_check_nonzero_size(rA))
-            throw Exception("saveMATLABmatrix", Exception::Type::ZERO_SIZE);
+            throw Exception("qpp::saveMATLABmatrix()", Exception::Type::ZERO_SIZE);
 
         MATFile *pmat = matOpen(mat_file.c_str(), mode.c_str());
         if (!pmat)
             throw std::runtime_error(
-                    "saveMATLABmatrix: Can not open/create MATLAB file " + mat_file
+                    "qpp::saveMATLABmatrix(): Can not open/create MATLAB file " + mat_file
                             + "!");
 
         mxArray *pa = mxCreateDoubleMatrix(rA.rows(), rA.cols(), mxREAL);
         if (!pa)
             throw std::runtime_error(
-                    "saveMATLABmatrix: mxCreateDoubleMatrix failed!");
+                    "qpp::saveMATLABmatrix(): mxCreateDoubleMatrix failed!");
 
         std::memcpy(mxGetPr(pa), rA.data(), sizeof(double) * rA.size());
 
         if (matPutVariable(pmat, var_name.c_str(), pa))
             throw std::runtime_error(
-                    "saveMATLABmatrix: Can not write the variable " + var_name
+                    "qpp::saveMATLABmatrix(): Can not write the variable " + var_name
                             + " to MATLAB file " + mat_file + "!");
 
         mxDestroyArray(pa);
@@ -265,7 +265,7 @@ namespace qpp
 
         // check zero-size
         if (!internal::_check_nonzero_size(rA))
-            throw Exception("saveMATLABmatrix", Exception::Type::ZERO_SIZE);
+            throw Exception("qpp::saveMATLABmatrix()", Exception::Type::ZERO_SIZE);
 
         // cast the input to a double (internal MATLAB format)
         dmat tmp_re = rA.real();
@@ -274,13 +274,13 @@ namespace qpp
         MATFile *pmat = matOpen(mat_file.c_str(), mode.c_str());
         if (!pmat)
             throw std::runtime_error(
-                    "saveMATLABmatrix: Can not open/create MATLAB file " + mat_file
+                    "qpp::saveMATLABmatrix(): Can not open/create MATLAB file " + mat_file
                             + "!");
 
         mxArray *pa = mxCreateDoubleMatrix(tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);
         if (!pa)
             throw std::runtime_error(
-                    "saveMATLABmatrix: mxCreateDoubleMatrix failed!");
+                    "qpp::saveMATLABmatrix(): mxCreateDoubleMatrix failed!");
 
         double *pa_re, *pa_im;
 
@@ -294,7 +294,7 @@ namespace qpp
 
         if (matPutVariable(pmat, var_name.c_str(), pa))
             throw std::runtime_error(
-                    "saveMATLABmatrix: Can not write the variable " + var_name
+                    "qpp::saveMATLABmatrix(): Can not write the variable " + var_name
                             + " to MATLAB file " + mat_file + "!");
 
         mxDestroyArray(pa);

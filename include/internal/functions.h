@@ -253,15 +253,15 @@ namespace qpp
 
             // check types
             if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
-                throw Exception("kron", Exception::Type::TYPE_MISMATCH);
+                throw Exception("qpp::kron()", Exception::Type::TYPE_MISMATCH);
 
             // check zero-size
             if (!internal::_check_nonzero_size(rA))
-                throw Exception("kron", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
 
             // check zero-size
             if (!internal::_check_nonzero_size(rB))
-                throw Exception("kron", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
 
             std::size_t Acols = static_cast<std::size_t>(rA.cols());
             std::size_t Arows = static_cast<std::size_t>(rA.rows());

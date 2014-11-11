@@ -80,7 +80,7 @@ namespace qpp
                                     - mket({0, 1, 1, 1, 0}) - mket({1, 0, 0, 1, 1}) - mket({0, 1, 0, 0, 0}) + mket({1, 1, 0, 1, 0})) / 4.;
                             break;
                         default:
-                            throw Exception("codes", Exception::Type::NO_CODEWORD);
+                            throw Exception("qpp::Codes::codeword()", Exception::Type::NO_CODEWORD);
                     }
                     break;
                 case Type::SEVEN_QUBIT_STEANE: // [[7,1,3]] Steane code according to Nielsen and Chuang)
@@ -96,7 +96,7 @@ namespace qpp
                                     + mket({1, 1, 1, 0, 0, 0, 0}) + mket({0, 1, 0, 0, 1, 0, 1}) + mket({1, 0, 0, 0, 0, 1, 1}) + mket({0, 0, 1, 0, 1, 1, 0})) / std::sqrt(8.);
                             break;
                         default:
-                            throw Exception("codes", Exception::Type::NO_CODEWORD);
+                            throw Exception("qpp::Codes::codeword()", Exception::Type::NO_CODEWORD);
                     }
                     break;
                 case Type::NINE_QUBIT_SHOR: // [[9,1,3]] Shor code
@@ -112,7 +112,7 @@ namespace qpp
                             result = kron(shorb, kron(shorb, shorb)) / std::sqrt(8.);
                             break;
                         default:
-                            throw Exception("codes", Exception::Type::NO_CODEWORD);
+                            throw Exception("qpp::Codes::codeword()", Exception::Type::NO_CODEWORD);
                     }
             }
             return result;

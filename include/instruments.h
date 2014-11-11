@@ -43,18 +43,18 @@ namespace qpp
         // EXCEPTION CHECKS
         // check zero-size
         if (!internal::_check_nonzero_size(rA))
-            throw Exception("measure", Exception::Type::ZERO_SIZE);
+            throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
         // check the Kraus operators
         if (!internal::_check_nonzero_size(Ks))
-            throw Exception("measure", Exception::Type::ZERO_SIZE);
+            throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
         if (!internal::_check_square_mat(Ks[0]))
-            throw Exception("measure", Exception::Type::MATRIX_NOT_SQUARE);
+            throw Exception("qpp::measure()", Exception::Type::MATRIX_NOT_SQUARE);
         if (Ks[0].rows() != rA.rows())
-            throw Exception("measure", Exception::Type::DIMS_MISMATCH_MATRIX);
+            throw Exception("qpp::measure()", Exception::Type::DIMS_MISMATCH_MATRIX);
         for (auto &&it : Ks)
             if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-                throw Exception("measure", Exception::Type::DIMS_NOT_EQUAL);
+                throw Exception("qpp::measure()", Exception::Type::DIMS_NOT_EQUAL);
         // END EXCEPTION CHECKS
 
         // probabilities
@@ -87,7 +87,7 @@ namespace qpp
             }
         }
         else
-            throw Exception("measure",
+            throw Exception("qpp::measure()",
                     Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 
         return std::make_pair(prob, outstates);
@@ -131,15 +131,15 @@ namespace qpp
         // EXCEPTION CHECKS
         // check zero-size
         if (!internal::_check_nonzero_size(rA))
-            throw Exception("measure", Exception::Type::ZERO_SIZE);
+            throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
         // check the gate U
         if (!internal::_check_nonzero_size(M))
-            throw Exception("measure", Exception::Type::ZERO_SIZE);
+            throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
         if (!internal::_check_square_mat(M))
-            throw Exception("measure", Exception::Type::MATRIX_NOT_SQUARE);
+            throw Exception("qpp::measure()", Exception::Type::MATRIX_NOT_SQUARE);
         if (M.rows() != rA.rows())
-            throw Exception("measure", Exception::Type::DIMS_MISMATCH_MATRIX);
+            throw Exception("qpp::measure()", Exception::Type::DIMS_MISMATCH_MATRIX);
         // END EXCEPTION CHECKS
 
         // probabilities
@@ -175,7 +175,7 @@ namespace qpp
             }
         }
         else
-            throw Exception("measure",
+            throw Exception("qpp::measure()",
                     Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 
         return std::make_pair(prob, outstates);

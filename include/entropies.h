@@ -43,7 +43,7 @@ namespace qpp
 
         // check zero-size
         if (!internal::_check_nonzero_size(rA))
-            throw Exception("shannon", Exception::Type::ZERO_SIZE);
+            throw Exception("qpp::shannon()", Exception::Type::ZERO_SIZE);
 
         // input is a vector
         if (internal::_check_vector(rA))
@@ -61,7 +61,7 @@ namespace qpp
 
         // check square matrix
         if (!internal::_check_square_mat(rA))
-            throw Exception("shannon", Exception::Type::MATRIX_NOT_SQUARE);
+            throw Exception("qpp::shannon()", Exception::Type::MATRIX_NOT_SQUARE);
 
         // get the eigenvalues
         dmat ev = hevals(rA);
@@ -91,14 +91,14 @@ namespace qpp
         const DynMat<typename Derived::Scalar> &rA = A;
 
         if (alpha < 0)
-            throw Exception("renyi", Exception::Type::OUT_OF_RANGE);
+            throw Exception("qpp::renyi()", Exception::Type::OUT_OF_RANGE);
 
         if (alpha == 1) // Shannon/von Neumann
             return shannon(rA);
 
         // check zero-size
         if (!internal::_check_nonzero_size(rA))
-            throw Exception("renyi", Exception::Type::ZERO_SIZE);
+            throw Exception("qpp::renyi()", Exception::Type::ZERO_SIZE);
 
         // input is a vector
         if (internal::_check_vector(rA))
@@ -130,7 +130,7 @@ namespace qpp
 
         // check square matrix
         if (!internal::_check_square_mat(rA))
-            throw Exception("renyi", Exception::Type::MATRIX_NOT_SQUARE);
+            throw Exception("qpp::renyi()", Exception::Type::MATRIX_NOT_SQUARE);
 
         if (alpha == 0) // H max
             return -std::log2((double) rA.rows());
@@ -169,14 +169,14 @@ namespace qpp
         const DynMat<typename Derived::Scalar> &rA = A;
 
         if (alpha < 0)
-            throw Exception("tsallis", Exception::Type::OUT_OF_RANGE);
+            throw Exception("qpp::tsallis()", Exception::Type::OUT_OF_RANGE);
 
         if (alpha == 1) // Shannon/von Neumann with base e logarithm
             return shannon(rA) * std::log(2.);
 
         // check zero-size
         if (!internal::_check_nonzero_size(rA))
-            throw Exception("tsallis", Exception::Type::ZERO_SIZE);
+            throw Exception("qpp::tsallis()", Exception::Type::ZERO_SIZE);
 
         // input is a vector
         if (internal::_check_vector(rA))
@@ -194,7 +194,7 @@ namespace qpp
 
         // check square matrix
         if (!internal::_check_square_mat(rA))
-            throw Exception("tsallis", Exception::Type::MATRIX_NOT_SQUARE);
+            throw Exception("qpp::tsallis()", Exception::Type::MATRIX_NOT_SQUARE);
 
         // get the eigenvalues
         dmat ev = hevals(rA);
@@ -230,24 +230,24 @@ namespace qpp
 
         // check zero-size
         if (!internal::_check_nonzero_size(rA))
-            throw Exception("mutualinfo", Exception::Type::ZERO_SIZE);
+            throw Exception("qpp::mutualinfo()", Exception::Type::ZERO_SIZE);
 
         // check that dims is a valid dimension vector
         if (!internal::_check_dims(dims))
-            throw Exception("mutualinfo", Exception::Type::DIMS_INVALID);
+            throw Exception("qpp::mutualinfo()", Exception::Type::DIMS_INVALID);
 
         // check square matrix
         if (!internal::_check_square_mat(rA))
-            throw Exception("mutualinfo", Exception::Type::MATRIX_NOT_SQUARE);
+            throw Exception("qpp::mutualinfo()", Exception::Type::MATRIX_NOT_SQUARE);
 
         // check that dims match the dimension of A
         if (!internal::_check_dims_match_mat(dims, rA))
-            throw Exception("mutualinfo", Exception::Type::DIMS_MISMATCH_MATRIX);
+            throw Exception("qpp::mutualinfo()", Exception::Type::DIMS_MISMATCH_MATRIX);
 
         // check that subsys are valid
         if (!internal::_check_subsys_match_dims(subsysA, dims)
                 || !internal::_check_subsys_match_dims(subsysB, dims))
-            throw Exception("mutualinfo", Exception::Type::SUBSYS_MISMATCH_DIMS);
+            throw Exception("qpp::mutualinfo()", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
         // The full system indexes {0,1,...,n-1}
         std::vector<std::size_t> full_system(dims.size());
