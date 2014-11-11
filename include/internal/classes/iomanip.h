@@ -93,14 +93,8 @@ namespace qpp
             }
 
             // to silence -Weffc++ warnings
-            IOManipPointer(const IOManipPointer &)
-            {
-            }
-
-            IOManipPointer &operator=(const IOManipPointer &)
-            {
-                return *this;
-            }
+            IOManipPointer(const IOManipPointer &) = default;
+            IOManipPointer &operator=(const IOManipPointer &) = default;
 
             template<typename charT, typename traits>
             friend std::basic_ostream<charT, traits> &
