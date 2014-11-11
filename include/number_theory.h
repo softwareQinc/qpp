@@ -35,12 +35,12 @@ namespace qpp
 * \return Integer vector containing the simple continued fraction expansion of \a x.
 * If there are \a m less than \a n terms in the expansion, a shorter vector with \a m components is returned.
 */
-    std::vector<std::size_t> x2contfrac(double x, std::size_t n, std::size_t cut = 1e5)
+    std::vector<int> x2contfrac(double x, std::size_t n, std::size_t cut = 1e5)
     {
         if (n == 0)
             throw Exception("x2contfrac", Exception::Type::OUT_OF_RANGE);
 
-        std::vector<std::size_t> result;
+        std::vector<int> result;
 
         for (std::size_t i = 0; i < n; ++i)
         {
@@ -60,7 +60,7 @@ namespace qpp
 * then all terms in \a cf are considered.
 * \return Real representation of the simple continued fraction
 */
-    double contfrac2x(const std::vector<std::size_t> &cf, std::size_t n)
+    double contfrac2x(const std::vector<int> &cf, std::size_t n)
     {
         if (cf.size() == 0)
             throw Exception("contfrac2x", Exception::Type::ZERO_SIZE);
@@ -89,7 +89,7 @@ namespace qpp
 * \param cf Integer vector containing the simple continued fraction expansion
 * \return Real representation of the simple continued fraction
 */
-    double contfrac2x(const std::vector<std::size_t> &cf)
+    double contfrac2x(const std::vector<int> &cf)
     {
         if (cf.size() == 0)
             throw Exception("contfrac2x", Exception::Type::ZERO_SIZE);
