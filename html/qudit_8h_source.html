@@ -124,7 +124,7 @@ $(document).ready(function(){initNavTree('qudit_8h_source.html','');});
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                    <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;Qudit::measure&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                std::vector&lt;double&gt; p(<a class="code" href="classqpp_1_1experimental_1_1_qudit.html#aca830d0896616e3e9309b1aafa26eb41">_D</a>);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; <a class="code" href="classqpp_1_1experimental_1_1_qudit.html#aca830d0896616e3e9309b1aafa26eb41">_D</a>; i++)</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; <a class="code" href="classqpp_1_1experimental_1_1_qudit.html#aca830d0896616e3e9309b1aafa26eb41">_D</a>; ++i)</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                    p[i] = std::abs((<a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>) <a class="code" href="namespaceqpp.html#a1e1daff5450728504da1fdfedf8d8b54">trace</a>(<a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>((<a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a>) <a class="code" href="namespaceqpp.html#acc9597bacc39c501eb8e2e5e8530fcd8">evects</a>(U).col(i)) * <a class="code" href="classqpp_1_1experimental_1_1_qudit.html#a3b3c287aedaa372d775aec879414b61c">_rho</a>));</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                std::discrete_distribution&lt;std::size_t&gt; dd{std::begin(p), std::end(p)};</div>
@@ -185,7 +185,7 @@ $(document).ready(function(){initNavTree('qudit_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_8966848d4591654ab1db845bb311f08b.html">experimental</a></li><li class="navelem"><a class="el" href="dir_c64f631d9584386ee71fb5da7f7b1b01.html">classes</a></li><li class="navelem"><a class="el" href="qudit_8h.html">qudit.h</a></li>
-    <li class="footer">Generated on Mon Nov 10 2014 17:20:16 for quantum++ by
+    <li class="footer">Generated on Mon Nov 10 2014 21:35:32 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
