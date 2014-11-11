@@ -152,7 +152,7 @@ namespace qpp
         Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(
                 transpose(reshape(rA, dims[1], dims[0])));
 
-        return powm((dmat) svd.singularValues().asDiagonal(), 2).diagonal();
+        return powm(static_cast<dmat>(svd.singularValues().asDiagonal()), 2).diagonal();
     }
 
 /**
