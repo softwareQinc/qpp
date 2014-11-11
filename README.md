@@ -60,13 +60,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include -I /Applications/MATLAB_R2014b.app/extern/include -L /Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
 
-Note: if you want to run the program on OS X with MATLAB support, make sure that the environment variable 
-`DYLD_LIBRARY_PATH` is set to point to the MATLAB compiler library location, see the `run_OSX_MATLAB` script. 
-Example of run command from inside the directory where the executable `qpp` is located:
-	
-	export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"; ./qpp
-
-Otherwise, you will get a runtime error like `dyld: Library not loaded: @rpath/libmat.dylib`
+### Building using CMake 
 
 The current version of the repository has a `CMakeLists.txt` configuration file for building using `cmake`
  (`cmake` needs to be installed). To build the project using `cmake`, I recommend an out-of-source build, 
@@ -98,6 +92,7 @@ To change the location of `Eigen3` library or the location of MATLAB installatio
 edit the `CMakeLists.txt` file. See also `CMakeLists.txt` for additional options.
 Do not forget to remove everything from the `./build` directory before a fresh build!
 
+### Building using make
 
 For convenience, the current version of the repository has also a set of Makefiles available 
 under the folder`./Makefile.examples`. To build the executable this way (without using `cmake`), 
@@ -105,6 +100,15 @@ copy into the root of the project
 an appropriate Makefile from `./Makefile.examples`, name it `Makefile`, 
 then type `make` (for release version) or `make debug` (for debug version) to produce the executable `qpp`.
 
+### Additional remarks
+
+If you want to run the program on OS X with MATLAB support, make sure that the environment variable 
+`DYLD_LIBRARY_PATH` is set to point to the MATLAB compiler library location, see the `run_OSX_MATLAB` script. 
+Example of run command from inside the directory where the executable `qpp` is located:
+	
+	export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"; ./qpp
+
+Otherwise, you will get a runtime error like `dyld: Library not loaded: @rpath/libmat.dylib`
 
 `Makefiles.examples` and `CMakeLists.txt` are provided for convenience.
 The final version of the library will consist only of header files, 
