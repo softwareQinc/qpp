@@ -25,15 +25,15 @@
 namespace qpp
 {
 
-/**
-* \class qpp::RandomDevices
-* \brief Singeleton class that manages the source of randomness in the library
-*
-* It consists of a wrapper around an std::mt19937 Mersenne twister
-* random number generator engine and an std::random_device engine. The latter
-* is used to seed the Mersenne twister. The class also seeds the standard
-* std::srand C number generator, as it is used by Eigen.
-*/
+    /**
+    * \class qpp::RandomDevices
+    * \brief Singeleton class that manages the source of randomness in the library
+    *
+    * It consists of a wrapper around an std::mt19937 Mersenne twister
+    * random number generator engine and an std::random_device engine. The latter
+    * is used to seed the Mersenne twister. The class also seeds the standard
+    * std::srand C number generator, as it is used by Eigen.
+    */
     class RandomDevices : public internal::Singleton<RandomDevices> // Singleton
     {
         friend class internal::Singleton<RandomDevices>;

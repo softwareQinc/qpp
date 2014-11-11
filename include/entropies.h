@@ -28,14 +28,14 @@
 namespace qpp
 {
 
-/**
-* \brief Shannon/von-Neumann entropy of the
-* probability distribution/density matrix \a A
-*
-* \param A Eigen expression, representing a probability distribution
-* (real dynamic column vector) or a density matrix (complex dynamic matrix)
-* \return Shannon/von-Neumann entropy, with the logarithm in base 2
-*/
+    /**
+    * \brief Shannon/von-Neumann entropy of the
+    * probability distribution/density matrix \a A
+    *
+    * \param A Eigen expression, representing a probability distribution
+    * (real dynamic column vector) or a density matrix (complex dynamic matrix)
+    * \return Shannon/von-Neumann entropy, with the logarithm in base 2
+    */
     template<typename Derived>
     double shannon(const Eigen::MatrixBase<Derived> &A)
     {
@@ -75,16 +75,16 @@ namespace qpp
         return result;
     }
 
-/**
-* \brief Renyi-\f$\alpha\f$ entropy of the
-* probability distribution/density matrix \a A, for \f$ \alpha\geq 0\f$
-*
-* \param A Eigen expression, representing a probability distribution
-* (real dynamic column vector) or a density matrix (complex dynamic matrix)
-* \param alpha Non-negative real number,
-* use qpp::infty for \f$\alpha = \infty\f$
-* \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
-*/
+    /**
+    * \brief Renyi-\f$\alpha\f$ entropy of the
+    * probability distribution/density matrix \a A, for \f$ \alpha\geq 0\f$
+    *
+    * \param A Eigen expression, representing a probability distribution
+    * (real dynamic column vector) or a density matrix (complex dynamic matrix)
+    * \param alpha Non-negative real number,
+    * use qpp::infty for \f$\alpha = \infty\f$
+    * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
+    */
     template<typename Derived>
     double renyi(const Eigen::MatrixBase<Derived> &A, double alpha)
     {
@@ -150,19 +150,19 @@ namespace qpp
         return std::log2(result) / (1 - alpha);
     }
 
-/**
-* \brief Tsallis-\f$\alpha\f$ entropy of the
-* probability distribution/density matrix \a A, for \f$ \alpha\geq 0\f$\n
-*
-* When \f$ \alpha\to 1\f$ the Tsallis entropy converges to the
-* Shannon/von-Neumann entropy, with the logarithm in base \f$ e \f$
-*
-* \param A Eigen expression, representing a probability distribution
-* (real dynamic column vector) or a density matrix (complex dynamic matrix)
-* \param alpha Non-negative real number
-*
-* \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
-*/
+    /**
+    * \brief Tsallis-\f$\alpha\f$ entropy of the
+    * probability distribution/density matrix \a A, for \f$ \alpha\geq 0\f$\n
+    *
+    * When \f$ \alpha\to 1\f$ the Tsallis entropy converges to the
+    * Shannon/von-Neumann entropy, with the logarithm in base \f$ e \f$
+    *
+    * \param A Eigen expression, representing a probability distribution
+    * (real dynamic column vector) or a density matrix (complex dynamic matrix)
+    * \param alpha Non-negative real number
+    *
+    * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
+    */
     template<typename Derived>
     double tsallis(const Eigen::MatrixBase<Derived> &A, double alpha)
     {
@@ -208,16 +208,15 @@ namespace qpp
         return (result - 1) / (1 - alpha);
     }
 
-/**
-* \brief Quantum mutual information between 2 subsystems of a composite system
-*
-* \param A Eigen expression
-* \param subsysA Indexes of the first subsystem
-* \param subsysB Indexes of the second subsystem
-* \param dims Subsystems' dimensions
-* \return Mutual information between the 2 subsystems
-*/
-// Make it more general!
+    /**
+    * \brief Quantum mutual information between 2 subsystems of a composite system
+    *
+    * \param A Eigen expression
+    * \param subsysA Indexes of the first subsystem
+    * \param subsysB Indexes of the second subsystem
+    * \param dims Subsystems' dimensions
+    * \return Mutual information between the 2 subsystems
+    */
     template<typename Derived>
     double qmutualinfo(const Eigen::MatrixBase<Derived> &A,
             const std::vector<std::size_t> &subsysA,
@@ -226,7 +225,7 @@ namespace qpp
     {
         const DynMat<typename Derived::Scalar> &rA = A;
 
-// error checks
+        // error checks
 
         // check zero-size
         if (!internal::_check_nonzero_size(rA))

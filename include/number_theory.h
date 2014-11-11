@@ -26,15 +26,15 @@
 
 namespace qpp
 {
-/**
-* \brief Simple continued fraction expansion
-*
-* \param x Real number
-* \param n Number of terms in the expansion
-* \param cut Stop the expansion when the next term is greater than \a cut
-* \return Integer vector containing the simple continued fraction expansion of \a x.
-* If there are \a m less than \a n terms in the expansion, a shorter vector with \a m components is returned.
-*/
+    /**
+    * \brief Simple continued fraction expansion
+    *
+    * \param x Real number
+    * \param n Number of terms in the expansion
+    * \param cut Stop the expansion when the next term is greater than \a cut
+    * \return Integer vector containing the simple continued fraction expansion of \a x.
+    * If there are \a m less than \a n terms in the expansion, a shorter vector with \a m components is returned.
+    */
     std::vector<int> x2contfrac(double x, std::size_t n, std::size_t cut = 1e5)
     {
         if (n == 0)
@@ -52,14 +52,14 @@ namespace qpp
         return result;
     }
 
-/**
-* \brief Real representation of a simple continued fraction
-*
-* \param cf Integer vector containing the simple continued fraction expansion
-* \param n Number of terms considered in the continued fraction expansion. If \a n is greater than the size of \a cf,
-* then all terms in \a cf are considered.
-* \return Real representation of the simple continued fraction
-*/
+    /**
+    * \brief Real representation of a simple continued fraction
+    *
+    * \param cf Integer vector containing the simple continued fraction expansion
+    * \param n Number of terms considered in the continued fraction expansion. If \a n is greater than the size of \a cf,
+    * then all terms in \a cf are considered.
+    * \return Real representation of the simple continued fraction
+    */
     double contfrac2x(const std::vector<int> &cf, std::size_t n)
     {
         if (cf.size() == 0)
@@ -83,12 +83,12 @@ namespace qpp
         return cf[0] + tmp;
     }
 
-/**
-* \brief Real representation of a simple continued fraction
-*
-* \param cf Integer vector containing the simple continued fraction expansion
-* \return Real representation of the simple continued fraction
-*/
+    /**
+    * \brief Real representation of a simple continued fraction
+    *
+    * \param cf Integer vector containing the simple continued fraction expansion
+    * \return Real representation of the simple continued fraction
+    */
     double contfrac2x(const std::vector<int> &cf)
     {
         if (cf.size() == 0)
@@ -106,13 +106,13 @@ namespace qpp
         return cf[0] + tmp;
     }
 
-/**
-* \brief Greatest common divisor of two non-negative integers
-*
-* \param m Non-negative integer
-* \param n Non-negative integer
-* \return Greatest common divisor of \a m and \a n
-*/
+    /**
+    * \brief Greatest common divisor of two non-negative integers
+    *
+    * \param m Non-negative integer
+    * \param n Non-negative integer
+    * \return Greatest common divisor of \a m and \a n
+    */
     std::size_t gcd(std::size_t m, std::size_t n)
     {
         if (m == 0 || n == 0)
@@ -129,12 +129,12 @@ namespace qpp
         return result;
     }
 
-/**
-* \brief Greatest common divisor of a list of non-negative integers
-*
-* \param ns List of non-negative integers
-* \return Greatest common divisor of all numbers in \a ns
-*/
+    /**
+    * \brief Greatest common divisor of a list of non-negative integers
+    *
+    * \param ns List of non-negative integers
+    * \return Greatest common divisor of all numbers in \a ns
+    */
     std::size_t gcd(const std::vector<std::size_t> &ns)
     {
         if (ns.size() == 0)
@@ -149,13 +149,13 @@ namespace qpp
         return result;
     }
 
-/**
-* \brief Least common multiple of two positive integers
-*
-* \param m Positive integer
-* \param n Positive integer
-* \return Least common multiple of \a m and \a n
-*/
+    /**
+    * \brief Least common multiple of two positive integers
+    *
+    * \param m Positive integer
+    * \param n Positive integer
+    * \return Least common multiple of \a m and \a n
+    */
     std::size_t lcm(std::size_t m, std::size_t n)
     {
         if (m == 0 || n == 0)
@@ -164,12 +164,12 @@ namespace qpp
         return m * n / gcd(m, n);
     }
 
-/**
-* \brief Least common multiple of a list of positive integers
-*
-* \param ns List of positive integers
-* \return Least common multiple of all numbers in \a ns
-*/
+    /**
+    * \brief Least common multiple of a list of positive integers
+    *
+    * \param ns List of positive integers
+    * \return Least common multiple of all numbers in \a ns
+    */
     std::size_t lcm(const std::vector<std::size_t> &ns)
     {
         if (ns.size() == 0)
@@ -192,12 +192,12 @@ namespace qpp
         return prod / gcd(ns);
     }
 
-/**
-* \brief Inverse permutation
-*
-* \param perm Permutation
-* \return Inverse of the permutation \a perm
-*/
+    /**
+    * \brief Inverse permutation
+    *
+    * \param perm Permutation
+    * \return Inverse of the permutation \a perm
+    */
     std::vector<std::size_t> invperm(const std::vector<std::size_t> &perm)
     {
         if (!internal::_check_perm(perm))
@@ -211,14 +211,14 @@ namespace qpp
         return result;
     }
 
-/**
-* \brief Compose permutations
-*
-* \param perm Permutation
-* \param sigma Permutation
-* \return Composition of the permutations \a perm \f$\circ\f$ \a sigma
-*  = perm(sigma)
-*/
+    /**
+    * \brief Compose permutations
+    *
+    * \param perm Permutation
+    * \param sigma Permutation
+    * \return Composition of the permutations \a perm \f$\circ\f$ \a sigma
+    *  = perm(sigma)
+    */
     std::vector<std::size_t> compperm(const std::vector<std::size_t> &perm,
             const std::vector<std::size_t> &sigma)
     {

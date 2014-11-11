@@ -32,12 +32,12 @@ namespace qpp
     namespace internal
     {
 
-// integer index to multi-index, use C-style array for speed
-// standard lexicographical order, e.g. 00, 01, 10, 11
+        // integer index to multi-index, use C-style array for speed
+        // standard lexicographical order, e.g. 00, 01, 10, 11
         inline void _n2multiidx(std::size_t n, std::size_t numdims,
                 const std::size_t *dims, std::size_t *result)
         {
-// no error checks to improve speed
+            // no error checks to improve speed
             for (std::size_t i = 0; i < numdims; ++i)
             {
                 result[numdims - i - 1] = n % static_cast<int>(dims[numdims - i - 1]);
@@ -45,12 +45,12 @@ namespace qpp
             }
         }
 
-// multi-index to integer index, use C-style array for speed,
-// standard lexicographical order, e.g. 00->0, 01->1, 10->2, 11->3
+        // multi-index to integer index, use C-style array for speed,
+        // standard lexicographical order, e.g. 00->0, 01->1, 10->2, 11->3
         inline std::size_t _multiidx2n(const std::size_t *midx, std::size_t numdims,
                 const std::size_t *dims)
         {
-// no error checks to improve speed
+            // no error checks to improve speed
 
             // Static allocation for speed!
             // double the size for matrices reshaped as vectors
@@ -67,7 +67,7 @@ namespace qpp
             return result + midx[numdims - 1];
         }
 
-// check square matrix
+        // check square matrix
         template<typename Derived>
         bool _check_square_mat(const Eigen::MatrixBase<Derived> &A)
         {
@@ -78,7 +78,7 @@ namespace qpp
             return true;
         }
 
-// check whether input is a vector or not
+        // check whether input is a vector or not
         template<typename Derived>
         bool _check_vector(const Eigen::MatrixBase<Derived> &A)
         {
@@ -89,7 +89,7 @@ namespace qpp
             return true;
         }
 
-// check whether input is a row vector or not
+        // check whether input is a row vector or not
         template<typename Derived>
         bool _check_row_vector(const Eigen::MatrixBase<Derived> &A)
         {
@@ -100,7 +100,7 @@ namespace qpp
             return true;
         }
 
-// check whether input is a column vector or not
+        // check whether input is a column vector or not
         template<typename Derived>
         bool _check_col_vector(const Eigen::MatrixBase<Derived> &A)
         {
@@ -111,7 +111,7 @@ namespace qpp
             return true;
         }
 
-// check non-zero size of object that supports size() function
+        // check non-zero size of object that supports size() function
         template<typename T>
         bool _check_nonzero_size(const T &x)
         {
@@ -120,7 +120,7 @@ namespace qpp
             return true;
         }
 
-// check that dims is a valid dimension vector
+        // check that dims is a valid dimension vector
         bool _check_dims(const std::vector<std::size_t> &dims)
         {
             if (dims.size() == 0)
@@ -136,8 +136,8 @@ namespace qpp
             return true;
         }
 
-// check that valid dims match the dimensions
-// of valid (non-zero sized) quare matrix
+        // check that valid dims match the dimensions
+        // of valid (non-zero sized) quare matrix
         template<typename Derived>
         bool _check_dims_match_mat(const std::vector<std::size_t> &dims,
                 const Eigen::MatrixBase<Derived> &A)
@@ -152,7 +152,7 @@ namespace qpp
             return true;
         }
 
-// check that valid dims match the dimensions of valid row vector
+        // check that valid dims match the dimensions of valid row vector
         template<typename Derived>
         bool _check_dims_match_cvect(const std::vector<std::size_t> &dims,
                 const Eigen::MatrixBase<Derived> &V)
@@ -167,7 +167,7 @@ namespace qpp
             return true;
         }
 
-// check that valid dims match the dimensions of valid row vector
+        // check that valid dims match the dimensions of valid row vector
         template<typename Derived>
         bool _check_dims_match_rvect(const std::vector<std::size_t> &dims,
                 const Eigen::MatrixBase<Derived> &V)
@@ -182,7 +182,7 @@ namespace qpp
             return true;
         }
 
-// check that all elements in valid dims equal to dim
+        // check that all elements in valid dims equal to dim
         bool _check_eq_dims(const std::vector<std::size_t> &dims, std::size_t dim)
         {
             for (std::size_t i : dims)
@@ -191,15 +191,15 @@ namespace qpp
             return true;
         }
 
-// check that subsys is valid with respect to valid dims
+        // check that subsys is valid with respect to valid dims
         bool _check_subsys_match_dims(const std::vector<std::size_t> &subsys,
                 const std::vector<std::size_t> &dims)
         {
-//	// check non-zero sized subsystems
-//	if (subsys.size() == 0)
-//		return false;
+            //	// check non-zero sized subsystems
+            //	if (subsys.size() == 0)
+            //		return false;
 
-// check valid number of subsystems
+            // check valid number of subsystems
             if (subsys.size() > dims.size())
                 return false;
 
@@ -224,7 +224,7 @@ namespace qpp
             return true;
         }
 
-// check valid permutation
+        // check valid permutation
         bool _check_perm(const std::vector<std::size_t> &perm)
         {
             if (perm.size() == 0)
@@ -240,8 +240,8 @@ namespace qpp
                 return false;
         }
 
-// Kronecker product of 2 matrices, preserve return type
-// internal function for the variadic template function wrapper kron()
+        // Kronecker product of 2 matrices, preserve return type
+        // internal function for the variadic template function wrapper kron()
         template<typename Derived1, typename Derived2>
         DynMat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1> &A,
                 const Eigen::MatrixBase<Derived2> &B)
@@ -280,14 +280,14 @@ namespace qpp
 
         }
 
-// may be useful, extracts variadic template argument pack into a std::vector
+        // may be useful, extracts variadic template argument pack into a std::vector
         template<typename T>
         // ends the recursion
         void variadic_vector_emplace(std::vector<T> &)
         {
         }
 
-// may be useful, extracts variadic template argument pack into a std::vector
+        // may be useful, extracts variadic template argument pack into a std::vector
         template<typename T, typename First, typename ... Args>
         void variadic_vector_emplace(std::vector<T> &v, First &&first, Args &&... args)
         {

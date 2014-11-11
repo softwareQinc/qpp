@@ -27,14 +27,14 @@
 namespace qpp
 {
 
-/**
-* \brief Eigen expression ostream manipulator.
-*
-* \param A Eigen expression
-* \param chop Set to zero the elements smaller in absolute value
-* than \a chop
-* \return Instance of qpp::internal::internal::IOManipEigen
-*/
+    /**
+    * \brief Eigen expression ostream manipulator.
+    *
+    * \param A Eigen expression
+    * \param chop Set to zero the elements smaller in absolute value
+    * than \a chop
+    * \return Instance of qpp::internal::internal::IOManipEigen
+    */
     template<typename Derived>
     internal::IOManipEigen disp(const Eigen::MatrixBase<Derived> &A, double chop =
     qpp::chop)
@@ -42,31 +42,31 @@ namespace qpp
         return internal::IOManipEigen(A, chop);
     }
 
-/**
-* \brief Complex number ostream manipulator.
-*
-* \param z Complex number (or any other type implicitly cast-able
-* to std::complex<double>)
-* \param chop Set to zero the elements smaller in absolute value
-* than \a chop
-* \return Instance of qpp::internal::internal::IOManipEigen
-*/
+    /**
+    * \brief Complex number ostream manipulator.
+    *
+    * \param z Complex number (or any other type implicitly cast-able
+    * to std::complex<double>)
+    * \param chop Set to zero the elements smaller in absolute value
+    * than \a chop
+    * \return Instance of qpp::internal::internal::IOManipEigen
+    */
     internal::IOManipEigen disp(cplx z, double chop =
     qpp::chop)
     {
         return internal::IOManipEigen(z, chop);
     }
 
-/**
-* \brief Range ostream manipulator
-*
-* \param first Iterator to the first element of the range
-* \param last  Iterator to the last element of the range
-* \param separator Separator
-* \param start Left marking
-* \param end Right marking
-* \return Instance of qpp::internal::internal::IOManipRange
-*/
+    /**
+    * \brief Range ostream manipulator
+    *
+    * \param first Iterator to the first element of the range
+    * \param last  Iterator to the last element of the range
+    * \param separator Separator
+    * \param start Left marking
+    * \param end Right marking
+    * \return Instance of qpp::internal::internal::IOManipRange
+    */
     template<typename InputIterator>
     internal::IOManipRange<InputIterator> disp(const InputIterator &first,
             const InputIterator &last, const std::string &separator,
@@ -76,16 +76,16 @@ namespace qpp
         >(first, last, separator, start, end);
     }
 
-/**
-* \brief Standard container ostream manipulator. The container must support
-* std::begin(), std::end() and forward iteration.
-*
-* \param x Container
-* \param separator Separator
-* \param start Left marking
-* \param end Right marking
-* \return Instance of qpp::internal::internal::IOManipRange
-*/
+    /**
+    * \brief Standard container ostream manipulator. The container must support
+    * std::begin(), std::end() and forward iteration.
+    *
+    * \param x Container
+    * \param separator Separator
+    * \param start Left marking
+    * \param end Right marking
+    * \return Instance of qpp::internal::internal::IOManipRange
+    */
     template<typename Container>
     internal::IOManipRange<typename Container::const_iterator> disp(
             const Container &c, const std::string &separator,
@@ -95,16 +95,16 @@ namespace qpp
                 c.cbegin(), c.cend(), separator, start, end);
     }
 
-/**
-* \brief C-style pointer ostream manipulator
-*
-* \param x Pointer to the first element
-* \param n Number of elements to be displayed
-* \param separator Separator
-* \param start Left marking
-* \param end Right marking
-* \return Instance of qpp::internal::internal::IOManipPointer
-*/
+    /**
+    * \brief C-style pointer ostream manipulator
+    *
+    * \param x Pointer to the first element
+    * \param n Number of elements to be displayed
+    * \param separator Separator
+    * \param start Left marking
+    * \param end Right marking
+    * \return Instance of qpp::internal::internal::IOManipPointer
+    */
     template<typename PointerType>
     internal::IOManipPointer<PointerType> disp(const PointerType *p, std::size_t n,
             const std::string &separator, const std::string &start = "[",
@@ -114,15 +114,15 @@ namespace qpp
         >(p, n, separator, start, end);
     }
 
-/**
-* \brief Saves Eigen expression to a binary file (internal format) in double
-* precision
-*
-* \see qpp::saveMATLABmatrix()
-*
-* \param A Eigen expression
-* \param fname Output file name
-*/
+    /**
+    * \brief Saves Eigen expression to a binary file (internal format) in double
+    * precision
+    *
+    * \see qpp::saveMATLABmatrix()
+    *
+    * \param A Eigen expression
+    * \param fname Output file name
+    */
     template<typename Derived>
     void save(const Eigen::MatrixBase<Derived> &A, const std::string &fname)
     {
@@ -156,25 +156,25 @@ namespace qpp
         fout.close();
     }
 
-/**
-* \brief Loads Eigen matrix from a binary file (internal format) in double
-* precision
-*
-* The template parameter cannot be automatically deduced and
-* must be explicitly provided, depending on the scalar field of the matrix
-* that is being loaded.
-*
-* Example:
-* \code
-* // loads a previously saved Eigen dynamic complex matrix from "input.bin"
-* auto mat = load<cmat>("input.bin");
-* \endcode
-*
-* \see qpp::loadMATLABmatrix()
-*
-* \param A Eigen expression
-* \param fname Output file name
-*/
+    /**
+    * \brief Loads Eigen matrix from a binary file (internal format) in double
+    * precision
+    *
+    * The template parameter cannot be automatically deduced and
+    * must be explicitly provided, depending on the scalar field of the matrix
+    * that is being loaded.
+    *
+    * Example:
+    * \code
+    * // loads a previously saved Eigen dynamic complex matrix from "input.bin"
+    * auto mat = load<cmat>("input.bin");
+    * \endcode
+    *
+    * \see qpp::loadMATLABmatrix()
+    *
+    * \param A Eigen expression
+    * \param fname Output file name
+    */
     template<typename Derived>
     DynMat<typename Derived::Scalar> load(const std::string &fname)
     {

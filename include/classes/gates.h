@@ -25,10 +25,10 @@
 namespace qpp
 {
 
-/**
-* \class qpp::Gates
-* \brief const Singleton class that implements most commonly used gates
-*/
+    /**
+    * \class qpp::Gates
+    * \brief const Singleton class that implements most commonly used gates
+    */
     class Gates : public internal::Singleton<const Gates> // const Singleton
     {
         friend class internal::Singleton<const Gates>;
@@ -226,6 +226,7 @@ namespace qpp
             std::vector<std::size_t> ctrlgate = ctrl;// ctrl + gate subsystem vector
             ctrlgate.insert(std::end(ctrlgate), std::begin(subsys),
                     std::end(subsys));
+            std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
             std::vector<std::size_t> dims(n, d); // local dimensions vector
 
@@ -261,20 +262,22 @@ namespace qpp
             std::size_t DA = static_cast<std::size_t>(rA.cols());
             std::size_t Dsubsys_bar = std::pow(d, nsubsys_bar);
 
-            for (std::size_t k = 0, cnt = 0; k < n; ++k)
+            // compute the complementary subsystem of ctrlgate w.r.t. dims
+            std::vector<std::size_t> allsubsys(n); // all subsystems
+            std::iota(std::begin(allsubsys), std::end(allsubsys), 0);
+            std::set_difference(std::begin(allsubsys), std::end(allsubsys),
+                    std::begin(ctrlgate), std::end(ctrlgate), std::begin(Csubsys_bar));
+
+            for (std::size_t k = 0; k < n; ++k)
             {
                 midx_row[k] = midx_col[k] = 0;
                 Cdims[k] = d;
+            }
 
-                // compute the complementary subsystem of ctrlgate w.r.t. dims
-                if (std::find(std::begin(ctrlgate), std::end(ctrlgate), k)
-                        == std::end(ctrlgate))
-                {
-                    Csubsys_bar[cnt] = k;
-                    Cdims_bar[cnt] = d;
-                    midx_bar[cnt] = 0;
-                    cnt++;
-                }
+            for(std::size_t k = 0; k < nsubsys_bar; ++k)
+            {
+                Cdims_bar[k] = d;
+                midx_bar[k] = 0;
             }
 
             for (std::size_t k = 0; k < ngate; ++k)

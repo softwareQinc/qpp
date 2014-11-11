@@ -92,39 +92,39 @@
 namespace qpp
 {
 
-/**
-* \brief qpp::Init const Singleton
-*
-* Additional initializations/cleanups
-*/
+    /**
+    * \brief qpp::Init const Singleton
+    *
+    * Additional initializations/cleanups
+    */
     const Init &init = Init::get_instance();
 
-/**
-* \brief qpp::Codes const Singleton
-*
-* Initializes the codes, see the class \a qpp::Codes
-*/
+    /**
+    * \brief qpp::Codes const Singleton
+    *
+    * Initializes the codes, see the class \a qpp::Codes
+    */
     const Codes &codes = Codes::get_instance();
 
-/**
-* \brief qpp::Gates const Singleton
-*
-* Initializes the gates, see the class \a qpp::Gates
-*/
+    /**
+    * \brief qpp::Gates const Singleton
+    *
+    * Initializes the gates, see the class \a qpp::Gates
+    */
     const Gates &gt = Gates::get_instance();
 
-/**
-* \brief qpp::States const Singleton
-*
-* Initializes the states, see the class \a qpp::States
-*/
+    /**
+    * \brief qpp::States const Singleton
+    *
+    * Initializes the states, see the class \a qpp::States
+    */
     const States &st = States::get_instance();
 
-/**
-* \brief qpp::RandomDevices Singleton
-*
-* Initializes the random devices, see the class \a qpp::RandomDevices
-*/
+    /**
+    * \brief qpp::RandomDevices Singleton
+    *
+    * Initializes the random devices, see the class \a qpp::RandomDevices
+    */
     RandomDevices &rdevs = RandomDevices::get_instance();
 
 

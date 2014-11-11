@@ -24,11 +24,11 @@
 
 namespace qpp
 {
-/**
-* \class qpp::States
-* \brief const Singleton class that implements most commonly used states
-*/
 
+    /**
+    * \class qpp::States
+    * \brief const Singleton class that implements most commonly used states
+    */
     class States : public internal::Singleton<const States> // const Singleton
     {
         friend class internal::Singleton<const States>;

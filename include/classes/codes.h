@@ -24,10 +24,11 @@
 
 namespace qpp
 {
-/**
-* \class qpp::Codes
-* \brief const Singleton class that defines quantum error correcting codes
-*/
+
+    /**
+    * \class qpp::Codes
+    * \brief const Singleton class that defines quantum error correcting codes
+    */
     class Codes : public internal::Singleton<const Codes> // const Singleton
     {
         friend class internal::Singleton<const Codes>;

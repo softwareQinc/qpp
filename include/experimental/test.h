@@ -32,19 +32,19 @@ namespace qpp
     namespace experimental
     {
 
-/**
-* \brief Applies the gate \a A to the part \a subsys
-* of a multipartite state vector or density matrix
-*
-* \note The dimension of the gate \a A must match
-* the dimension of \a subsys
-*
-* \param state Eigen expression
-* \param A Eigen expression
-* \param subsys Subsystem indexes where the gate \a A is applied
-* \param dims Local dimensions of all local Hilbert spaces (can be different)
-* \return Gate \a A applied to the part \a subsys of \a state
-*/
+        /**
+        * \brief Applies the gate \a A to the part \a subsys
+        * of a multipartite state vector or density matrix
+        *
+        * \note The dimension of the gate \a A must match
+        * the dimension of \a subsys
+        *
+        * \param state Eigen expression
+        * \param A Eigen expression
+        * \param subsys Subsystem indexes where the gate \a A is applied
+        * \param dims Local dimensions of all local Hilbert spaces (can be different)
+        * \return Gate \a A applied to the part \a subsys of \a state
+        */
         template<typename Derived1, typename Derived2>
         DynMat<typename Derived1::Scalar> apply(
                 const Eigen::MatrixBase<Derived1> &state,
@@ -251,16 +251,16 @@ namespace qpp
                 throw Exception("qpp::experimental::apply()", Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
         }
 
-/**
-* \brief Applies the channel specified by the set of Kraus operators \a Ks to
-* the part of the density matrix \a rho specified by \a subsys
-*
-* \param rho Eigen expression
-* \param Ks Set of Kraus operators
-* \param subsys Subsystems' indexes
-* \param dims Local dimensions of all local Hilbert spaces (can be different)
-* \return Output density matrix after the action of the channel
-*/
+        /**
+        * \brief Applies the channel specified by the set of Kraus operators \a Ks to
+        * the part of the density matrix \a rho specified by \a subsys
+        *
+        * \param rho Eigen expression
+        * \param Ks Set of Kraus operators
+        * \param subsys Subsystems' indexes
+        * \param dims Local dimensions of all local Hilbert spaces (can be different)
+        * \return Output density matrix after the action of the channel
+        */
         template<typename Derived>
         cmat channel(const Eigen::MatrixBase<Derived> &rho, const std::vector<cmat> &Ks,
                 const std::vector<std::size_t> &subsys,
@@ -432,17 +432,17 @@ namespace qpp
             return result;
         }
 
-/**
-* \brief Superoperator matrix representation
-*
-* Constructs the superoperator matrix of the channel specified by the set of
-* Kraus operators \a Ks in the standard operator basis
-* \f$\{|i\rangle\langle j|\}\f$ ordered in lexicographical order, i.e.
-* \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
-*
-* \param Ks Set of Kraus operators
-* \return Superoperator matrix representation
-*/
+        /**
+        * \brief Superoperator matrix representation
+        *
+        * Constructs the superoperator matrix of the channel specified by the set of
+        * Kraus operators \a Ks in the standard operator basis
+        * \f$\{|i\rangle\langle j|\}\f$ ordered in lexicographical order, i.e.
+        * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
+        *
+        * \param Ks Set of Kraus operators
+        * \return Superoperator matrix representation
+        */
         cmat super(const std::vector<cmat> &Ks)
         {
             // EXCEPTION CHECKS
@@ -500,21 +500,21 @@ namespace qpp
             return result;
         }
 
-/**
-* \brief Generates the multipartite multiple-controlled-\a A gate
-* in matrix form
-*
-* \note The dimension of the gate \a A must match
-* the dimension of \a subsys
-*
-* \param A Eigen expression
-* \param ctrl Control subsystem indexes
-* \param subsys Subsystem indexes where the gate \a A is applied
-* \param n Total number of subsystes
-* \param d Local dimensions of all local Hilbert spaces (must all be equal)
-* \return CTRL-A gate, as a matrix over the same scalar field as \a A
-*/
-// Parallel version, seems slower than the sequential qpp::Gates::CTRL
+        /**
+        * \brief Generates the multipartite multiple-controlled-\a A gate
+        * in matrix form
+        *
+        * \note The dimension of the gate \a A must match
+        * the dimension of \a subsys
+        *
+        * \param A Eigen expression
+        * \param ctrl Control subsystem indexes
+        * \param subsys Subsystem indexes where the gate \a A is applied
+        * \param n Total number of subsystes
+        * \param d Local dimensions of all local Hilbert spaces (must all be equal)
+        * \return CTRL-A gate, as a matrix over the same scalar field as \a A
+        */
+        // Parallel version, seems slower than the sequential qpp::Gates::CTRL
         template<typename Derived>
         DynMat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived> &A,
                 const std::vector<std::size_t> &ctrl,
@@ -661,20 +661,20 @@ namespace qpp
             return result;
         }
 
-/**
-* \brief Choi matrix representation
-*
-* Constructs the Choi matrix of the channel specified by the set of Kraus
-* operators \a Ks in the standard operator basis \f$\{|i\rangle\langle j|\}\f$
-* ordered in lexicographical order, i.e.
-* \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
-*
-* \note The superoperator matrix \f$S\f$ and the Choi matrix \f$ C\f$
-* are related by \f$ S_{ab,mn} = C_{ma,nb}\f$
-*
-* \param Ks Set of Kraus operators
-* \return Choi matrix representation
-*/
+        /**
+        * \brief Choi matrix representation
+        *
+        * Constructs the Choi matrix of the channel specified by the set of Kraus
+        * operators \a Ks in the standard operator basis \f$\{|i\rangle\langle j|\}\f$
+        * ordered in lexicographical order, i.e.
+        * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
+        *
+        * \note The superoperator matrix \f$S\f$ and the Choi matrix \f$ C\f$
+        * are related by \f$ S_{ab,mn} = C_{ma,nb}\f$
+        *
+        * \param Ks Set of Kraus operators
+        * \return Choi matrix representation
+        */
         cmat choi(const std::vector<cmat> &Ks)
         {
             // EXCEPTION CHECKS
@@ -708,16 +708,16 @@ namespace qpp
             return result;
         }
 
-/**
-* \brief Generates a set of random Kraus operators
-*
-* \note The set of Kraus operators satisfy the closure condition
-* \f$ \sum_i K_i^\dagger K_i = I\f$
-*
-* \param n Number of Kraus operators
-* \param D Dimension of the Hilbert space
-* \return Set of \a n Kraus operators satisfying the closure condition
-*/
+        /**
+        * \brief Generates a set of random Kraus operators
+        *
+        * \note The set of Kraus operators satisfy the closure condition
+        * \f$ \sum_i K_i^\dagger K_i = I\f$
+        *
+        * \param n Number of Kraus operators
+        * \param D Dimension of the Hilbert space
+        * \return Set of \a n Kraus operators satisfying the closure condition
+        */
         std::vector<cmat> randkraus(std::size_t n, std::size_t D)
         {
             if (n == 0)
@@ -753,15 +753,15 @@ namespace qpp
             return result;
         }
 
-/**
-* \brief Renyi-\f$\infty\f$ entropy (min entropy) of the
-* probability distribution/density matrix \a A
-*
-* \param A Eigen expression, representing a probability distribution
-* (real dynamic column vector) or a density matrix (complex dynamic matrix)
-* \return Renyi-\f$\infty\f$ entropy (min entropy),
-* with the logarithm in base 2
-*/
+        /**
+        * \brief Renyi-\f$\infty\f$ entropy (min entropy) of the
+        * probability distribution/density matrix \a A
+        *
+        * \param A Eigen expression, representing a probability distribution
+        * (real dynamic column vector) or a density matrix (complex dynamic matrix)
+        * \return Renyi-\f$\infty\f$ entropy (min entropy),
+        * with the logarithm in base 2
+        */
         template<typename Derived>
         double renyi_inf(const Eigen::MatrixBase<Derived> &A)
         {
@@ -799,19 +799,19 @@ namespace qpp
             return -std::log2(max);
         }
 
-/**
-* \brief Displays a range. Does not add a newline.
-*
-* \see qpp::displn()
-*
-* \param first Iterator to the first element of the range
-* \param last  Iterator to the last element of the range
-* \param separator Separator
-* \param start Left marking
-* \param end Right marking
-* \param os Output stream
-* \return Output stream
-*/
+        /**
+        * \brief Displays a range. Does not add a newline.
+        *
+        * \see qpp::displn()
+        *
+        * \param first Iterator to the first element of the range
+        * \param last  Iterator to the last element of the range
+        * \param separator Separator
+        * \param start Left marking
+        * \param end Right marking
+        * \param os Output stream
+        * \return Output stream
+        */
         template<typename InputIterator>
         void disp(const InputIterator &first, const InputIterator &last,
                 const std::string &separator, const std::string &start = "[",
@@ -838,19 +838,19 @@ namespace qpp
             os << end;
         }
 
-/**
-* \brief Displays a range. Adds a newline.
-*
-* \see qpp::disp()
-*
-* \param first Iterator to the first element of the range
-* \param last  Iterator to the last element of the range
-* \param separator Separator
-* \param start Left marking
-* \param end Right marking
-* \param os Output stream
-* \return Output stream
-*/
+        /**
+        * \brief Displays a range. Adds a newline.
+        *
+        * \see qpp::disp()
+        *
+        * \param first Iterator to the first element of the range
+        * \param last  Iterator to the last element of the range
+        * \param separator Separator
+        * \param start Left marking
+        * \param end Right marking
+        * \param os Output stream
+        * \return Output stream
+        */
         template<typename InputIterator>
         std::ostream &displn(const InputIterator &first, const InputIterator &last,
                 const std::string &separator, const std::string &start = "[",
@@ -861,19 +861,19 @@ namespace qpp
             return os;
         }
 
-/**
-* \brief Displays a standard container that supports std::begin, std::end
-* and forward iteration. Does not add a newline.
-*
-* \see qpp::displn()
-*
-* \param x Container
-* \param separator Separator
-* \param start Left marking
-* \param end Right marking
-* \param os Output stream
-* \return Output stream
-*/
+        /**
+        * \brief Displays a standard container that supports std::begin, std::end
+        * and forward iteration. Does not add a newline.
+        *
+        * \see qpp::displn()
+        *
+        * \param x Container
+        * \param separator Separator
+        * \param start Left marking
+        * \param end Right marking
+        * \param os Output stream
+        * \return Output stream
+        */
         template<typename T>
         std::ostream &disp(const T &x, const std::string &separator,
                 const std::string &start = "[", const std::string &end = "]",
@@ -883,19 +883,19 @@ namespace qpp
             return os;
         }
 
-/**
-* \brief Displays a standard container that supports std::begin, std::end
-* and forward iteration. Adds a newline.
-*
-* \see qpp::disp()
-*
-* \param x Container
-* \param separator Separator
-* \param start Left marking
-* \param end Right marking
-* \param os Output stream
-* \return Output stream
-*/
+        /**
+        * \brief Displays a standard container that supports std::begin, std::end
+        * and forward iteration. Adds a newline.
+        *
+        * \see qpp::disp()
+        *
+        * \param x Container
+        * \param separator Separator
+        * \param start Left marking
+        * \param end Right marking
+        * \param os Output stream
+        * \return Output stream
+        */
         template<typename T>
         std::ostream &displn(const T &x, const std::string &separator,
                 const std::string &start = "[", const std::string &end = "]",
@@ -906,19 +906,19 @@ namespace qpp
             return os;
         }
 
-/**
-* \brief Displays a C-style array. Does not add a newline.
-*
-* \see qpp::displn()
-*
-* \param x Pointer to the first element
-* \param n Number of elements to be displayed
-* \param separator Separator
-* \param start Left marking
-* \param end Right marking
-* \param os Output stream
-* \return Output stream
-*/
+        /**
+        * \brief Displays a C-style array. Does not add a newline.
+        *
+        * \see qpp::displn()
+        *
+        * \param x Pointer to the first element
+        * \param n Number of elements to be displayed
+        * \param separator Separator
+        * \param start Left marking
+        * \param end Right marking
+        * \param os Output stream
+        * \return Output stream
+        */
         template<typename T>
         std::ostream &disp(const T *x, const std::size_t n,
                 const std::string &separator, const std::string &start = "[",
@@ -935,19 +935,19 @@ namespace qpp
             return os;
         }
 
-/**
-* \brief Displays a C-style array. Adds a newline.
-*
-* \see qpp::disp()
-*
-* \param x Pointer to the first element
-* \param n Number of elements to be displayed
-* \param separator Separator
-* \param start Left marking
-* \param end Right marking
-* \param os Output stream
-* \return Output stream
-*/
+        /**
+        * \brief Displays a C-style array. Adds a newline.
+        *
+        * \see qpp::disp()
+        *
+        * \param x Pointer to the first element
+        * \param n Number of elements to be displayed
+        * \param separator Separator
+        * \param start Left marking
+        * \param end Right marking
+        * \param os Output stream
+        * \return Output stream
+        */
         template<typename T>
         std::ostream &displn(const T *x, const std::size_t n,
                 const std::string &separator, const std::string &start = "[",
@@ -958,18 +958,18 @@ namespace qpp
             return os;
         }
 
-/**
-* \brief Displays an Eigen expression in matrix friendly form. Does not add a
-* new line.
-*
-* \see qpp::displn()
-*
-* \param A Eigen expression
-* \param chop Set to zero the elements smaller in absolute value
-* than \a chop
-* \param os Output stream
-* \return Output stream
-*/
+        /**
+        * \brief Displays an Eigen expression in matrix friendly form. Does not add a
+        * new line.
+        *
+        * \see qpp::displn()
+        *
+        * \param A Eigen expression
+        * \param chop Set to zero the elements smaller in absolute value
+        * than \a chop
+        * \param os Output stream
+        * \return Output stream
+        */
         template<typename Derived>
         std::ostream &disp(const Eigen::MatrixBase<Derived> &A, double chop = qpp::chop,
                 std::ostream &os = std::cout)
@@ -1057,17 +1057,17 @@ namespace qpp
             return os;
         }
 
-/**
-* \brief Displays an Eigen expression in matrix friendly form. Adds a newline.
-*
-* \see qpp::disp()
-*
-* \param A Eigen expression
-* \param chop Set to zero the elements smaller in absolute value
-* than \a chop
-* \param os Output stream
-* \return Output stream
-*/
+        /**
+        * \brief Displays an Eigen expression in matrix friendly form. Adds a newline.
+        *
+        * \see qpp::disp()
+        *
+        * \param A Eigen expression
+        * \param chop Set to zero the elements smaller in absolute value
+        * than \a chop
+        * \param os Output stream
+        * \return Output stream
+        */
         template<typename Derived>
         std::ostream &displn(const Eigen::MatrixBase<Derived> &A, double chop =
         qpp::chop, std::ostream &os = std::cout)
@@ -1077,18 +1077,18 @@ namespace qpp
             return os;
         }
 
-/**
-* \brief Displays a number (implicitly converted to std::complex<double>)
-* in friendly form. Does not add a new line.
-*
-* \see qpp::displn()
-*
-* \param z Real/complex number
-* \param chop Set to zero the elements smaller in absolute value
-* than \a chop
-* \param os Output stream
-* \return Output stream
-*/
+        /**
+        * \brief Displays a number (implicitly converted to std::complex<double>)
+        * in friendly form. Does not add a new line.
+        *
+        * \see qpp::displn()
+        *
+        * \param z Real/complex number
+        * \param chop Set to zero the elements smaller in absolute value
+        * than \a chop
+        * \param os Output stream
+        * \return Output stream
+        */
         std::ostream &disp(const cplx z, double chop = qpp::chop, std::ostream &os =
         std::cout)
         {
@@ -1099,18 +1099,18 @@ namespace qpp
             return os;
         }
 
-/**
-* \brief Displays a number (implicitly converted to std::complex<double>)
-* in friendly form. Adds a new line.
-*
-* \see qpp::disp()
-*
-* \param z Real/complex number
-* \param chop Set to zero the elements smaller in absolute value
-* than \a chop
-* \param os Output stream
-* \return Output stream
-*/
+        /**
+        * \brief Displays a number (implicitly converted to std::complex<double>)
+        * in friendly form. Adds a new line.
+        *
+        * \see qpp::disp()
+        *
+        * \param z Real/complex number
+        * \param chop Set to zero the elements smaller in absolute value
+        * than \a chop
+        * \param os Output stream
+        * \return Output stream
+        */
         std::ostream &displn(const cplx z, double chop = qpp::chop, std::ostream &os =
         std::cout)
         {

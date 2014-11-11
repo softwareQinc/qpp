@@ -25,13 +25,13 @@
 namespace qpp
 {
 
-/**
-* \class qpp::Timer
-* \brief Measures time
-*
-* Uses a std::chrono::steady_clock.
-* It is not affected by wall clock changes during runtime.
-*/
+    /**
+    * \class qpp::Timer
+    * \brief Measures time
+    *
+    * Uses a std::chrono::steady_clock.
+    * It is not affected by wall clock changes during runtime.
+    */
     class Timer
     {
     protected:

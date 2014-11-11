@@ -26,14 +26,14 @@
 namespace qpp
 {
 
-/**
-* \brief Measures the state \a A using the set of Kraus operators \a Ks
-*
-* \param A Eigen expression
-* \param Ks Set of Kraus operators
-* \return Pair of vector of probabilities and vector of
-* post-measurement normalized states
-*/
+    /**
+    * \brief Measures the state \a A using the set of Kraus operators \a Ks
+    *
+    * \param A Eigen expression
+    * \param Ks Set of Kraus operators
+    * \return Pair of vector of probabilities and vector of
+    * post-measurement normalized states
+    */
     template<typename Derived>
     std::pair<std::vector<double>, std::vector<cmat>> measure(
             const Eigen::MatrixBase<Derived> &A, const std::vector<cmat> &Ks)
@@ -94,17 +94,17 @@ namespace qpp
 
     }
 
-// std::initializer_list overload, avoids ambiguity for 2-element lists, see
-// http://stackoverflow.com/questions/26750039/ambiguity-when-using-initializer-list-as-parameter
-/**
-* \brief Measures the state \a A using the set of Kraus operators \a Ks
-* (std::initializer_list overload)
-*
-* \param A Eigen expression
-* \param Ks Set of Kraus operators
-* \return Pair of vector of probabilities and vector of
-* post-measurement normalized states
-*/
+    // std::initializer_list overload, avoids ambiguity for 2-element lists, see
+    // http://stackoverflow.com/questions/26750039/ambiguity-when-using-initializer-list-as-parameter
+    /**
+    * \brief Measures the state \a A using the set of Kraus operators \a Ks
+    * (std::initializer_list overload)
+    *
+    * \param A Eigen expression
+    * \param Ks Set of Kraus operators
+    * \return Pair of vector of probabilities and vector of
+    * post-measurement normalized states
+    */
     template<typename Derived>
     std::pair<std::vector<double>, std::vector<cmat>> measure(
             const Eigen::MatrixBase<Derived> &A,
@@ -113,15 +113,15 @@ namespace qpp
         return measure(A, std::vector<cmat>(Ks));
     }
 
-/**
-* \brief Measures the state \a A in the orthonormal basis
-* specified by the eigenvectors of \a M.
-*
-* \param A Eigen expression
-* \param M Normal matrix whose eigenvectors define the measurement basis
-* \return Pair of vector of probabilities and vector of
-* post-measurement normalized states
-*/
+    /**
+    * \brief Measures the state \a A in the orthonormal basis
+    * specified by the eigenvectors of \a M.
+    *
+    * \param A Eigen expression
+    * \param M Normal matrix whose eigenvectors define the measurement basis
+    * \return Pair of vector of probabilities and vector of
+    * post-measurement normalized states
+    */
     template<typename Derived>
     std::pair<std::vector<double>, std::vector<cmat>> measure(
             const Eigen::MatrixBase<Derived> &A, const cmat &M)

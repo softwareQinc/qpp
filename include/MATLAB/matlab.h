@@ -31,13 +31,13 @@
 namespace qpp
 {
 
-/**
-* \brief Loads an Eigen dynamic matrix from a MATLAB .mat file, generic version
-*
-* This is the generic version that always throws
-* \a qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
-* \a qpp::dmat and \a qpp::cmat (the only matrix types that can be loaded)
-*/
+    /**
+    * \brief Loads an Eigen dynamic matrix from a MATLAB .mat file, generic version
+    *
+    * This is the generic version that always throws
+    * \a qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
+    * \a qpp::dmat and \a qpp::cmat (the only matrix types that can be loaded)
+    */
     template<typename Derived>
     Derived loadMATLABmatrix(const std::string &mat_file,
             const std::string &var_name)
@@ -45,28 +45,28 @@ namespace qpp
         throw Exception("qpp::loadMATLABmatrix()", Exception::Type::UNDEFINED_TYPE);
     }
 
-/**
-* \brief Loads an Eigen dynamic matrix from a MATLAB .mat file,
-* specialization for double matrices (\a qpp::dmat)
-*
-* The template parameter cannot be automatically deduced and
-* must be explicitly provided
-*
-* Example:
-* \code
-* // loads a previously saved Eigen dynamic double matrix from the
-* MATLAB file "input.mat"
-* auto mat = loadMATLABmatrix<dmat>("input.mat");
-* \endcode
-*
-* \note If \a var_name is a complex matrix, only the real part is loaded
-*
-* \param mat_file MATALB .mat file
-* \param var_name Variable name in the .mat file representing
-* the matrix to be loaded
-*
-* \return Eigen double dynamic matrix (\a qpp::dmat)
-*/
+    /**
+    * \brief Loads an Eigen dynamic matrix from a MATLAB .mat file,
+    * specialization for double matrices (\a qpp::dmat)
+    *
+    * The template parameter cannot be automatically deduced and
+    * must be explicitly provided
+    *
+    * Example:
+    * \code
+    * // loads a previously saved Eigen dynamic double matrix from the
+    * MATLAB file "input.mat"
+    * auto mat = loadMATLABmatrix<dmat>("input.mat");
+    * \endcode
+    *
+    * \note If \a var_name is a complex matrix, only the real part is loaded
+    *
+    * \param mat_file MATALB .mat file
+    * \param var_name Variable name in the .mat file representing
+    * the matrix to be loaded
+    *
+    * \return Eigen double dynamic matrix (\a qpp::dmat)
+    */
     template<>
     inline dmat loadMATLABmatrix(const std::string &mat_file, const std::string &var_name)
     {
@@ -107,25 +107,25 @@ namespace qpp
         return result;
     }
 
-/**
-* \brief Loads an Eigen dynamic matrix from a MATLAB .mat file,
-* specialization for complex matrices (\a qpp::cmat)
-*
-* The template parameter cannot be automatically deduced and
-* must be explicitly provided
-*
-* Example:
-* \code
-* // loads a previously saved Eigen dynamic complex matrix from the
-* MATLAB file "input.mat"
-* auto mat = loadMATLABmatrix<cmat>("input.mat");
-* \endcode
-*
-* \param mat_file MATALB .mat file
-* \param var_name Variable name in the .mat file representing
-* the matrix to be loaded
-* \return Eigen complex dynamic matrix (\a qpp::cmat)
-*/
+    /**
+    * \brief Loads an Eigen dynamic matrix from a MATLAB .mat file,
+    * specialization for complex matrices (\a qpp::cmat)
+    *
+    * The template parameter cannot be automatically deduced and
+    * must be explicitly provided
+    *
+    * Example:
+    * \code
+    * // loads a previously saved Eigen dynamic complex matrix from the
+    * MATLAB file "input.mat"
+    * auto mat = loadMATLABmatrix<cmat>("input.mat");
+    * \endcode
+    *
+    * \param mat_file MATALB .mat file
+    * \param var_name Variable name in the .mat file representing
+    * the matrix to be loaded
+    * \return Eigen complex dynamic matrix (\a qpp::cmat)
+    */
     template<>
     inline cmat loadMATLABmatrix(const std::string &mat_file, const std::string &var_name)
     {
@@ -184,13 +184,13 @@ namespace qpp
         return (result_re.cast<cplx>()) + 1_i * (result_im.cast<cplx>());
     }
 
-/**
-* \brief Saves an Eigen dynamic matrix to a MATLAB .mat file, generic version
-*
-* This is the generic version that always throws
-* \a qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
-* \a qpp::dmat and \a qpp::cmat (the only matrix types that can be saved)
-*/
+    /**
+    * \brief Saves an Eigen dynamic matrix to a MATLAB .mat file, generic version
+    *
+    * This is the generic version that always throws
+    * \a qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
+    * \a qpp::dmat and \a qpp::cmat (the only matrix types that can be saved)
+    */
     template<typename Derived>
     void saveMATLABmatrix(const Eigen::MatrixBase <Derived> &A,
             const std::string &mat_file, const std::string &var_name,
@@ -199,17 +199,17 @@ namespace qpp
         throw Exception("qpp::saveMATLABmatrix()", Exception::Type::UNDEFINED_TYPE);
     }
 
-/**
-* \brief Saves an Eigen dynamic matrix to a MATLAB .mat file,
-* specialization for double matrices (\a qpp::dmat)
-*
-* \param A Eigen expression over the complex field
-* \param mat_file MATALB .mat file
-* \param var_name Variable name in the .mat file representing
-* the matrix to be saved
-* \param mode Saving mode (append, overwrite etc.),
-* see MATLAB's \a matOpen() documentation for details
-*/
+    /**
+    * \brief Saves an Eigen dynamic matrix to a MATLAB .mat file,
+    * specialization for double matrices (\a qpp::dmat)
+    *
+    * \param A Eigen expression over the complex field
+    * \param mat_file MATALB .mat file
+    * \param var_name Variable name in the .mat file representing
+    * the matrix to be saved
+    * \param mode Saving mode (append, overwrite etc.),
+    * see MATLAB's \a matOpen() documentation for details
+    */
     template<>
     // Eigen::MatrixXd specialization
     inline void saveMATLABmatrix(const Eigen::MatrixBase <dmat> &A,
@@ -244,17 +244,17 @@ namespace qpp
         matClose(pmat);
     }
 
-/**
-* \brief Saves an Eigen dynamic matrix to a MATLAB .mat file,
-* specialization for complex matrices (\a qpp::cmat)
-*
-* \param A Eigen expression over the complex field
-* \param mat_file MATALB .mat file
-* \param var_name Variable name in the .mat file representing
-* the matrix to be saved
-* \param mode Saving mode (append, overwrite etc.),
-* see MATLAB's \a matOpen() documentation for details
-*/
+    /**
+    * \brief Saves an Eigen dynamic matrix to a MATLAB .mat file,
+    * specialization for complex matrices (\a qpp::cmat)
+    *
+    * \param A Eigen expression over the complex field
+    * \param mat_file MATALB .mat file
+    * \param var_name Variable name in the .mat file representing
+    * the matrix to be saved
+    * \param mode Saving mode (append, overwrite etc.),
+    * see MATLAB's \a matOpen() documentation for details
+    */
     template<>
     // Eigen::MatrixXcd specialization
     inline void saveMATLABmatrix(const Eigen::MatrixBase <cmat> &A,

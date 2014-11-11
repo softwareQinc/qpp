@@ -25,21 +25,21 @@
 namespace qpp
 {
 
-/**
-* \brief Applies the controlled-gate \a A to the part \a subsys
-* of a multipartite state vector or density matrix
-*
-* \note The dimension of the gate \a A must match
-* the dimension of \a subsys
-*
-* \param state Eigen expression
-* \param A Eigen expression
-* \param ctrl Control subsystem indexes
-* \param subsys Subsystem indexes where the gate \a A is applied
-* \param n Total number of subsystems
-* \param d Local dimensions of all local Hilbert spaces (must all be equal)
-* \return CTRL-A gate applied to the part \a subsys of \a state
-*/
+    /**
+    * \brief Applies the controlled-gate \a A to the part \a subsys
+    * of a multipartite state vector or density matrix
+    *
+    * \note The dimension of the gate \a A must match
+    * the dimension of \a subsys
+    *
+    * \param state Eigen expression
+    * \param A Eigen expression
+    * \param ctrl Control subsystem indexes
+    * \param subsys Subsystem indexes where the gate \a A is applied
+    * \param n Total number of subsystems
+    * \param d Local dimensions of all local Hilbert spaces (must all be equal)
+    * \return CTRL-A gate applied to the part \a subsys of \a state
+    */
     template<typename Derived1, typename Derived2>
     DynMat<typename Derived1::Scalar> applyCTRL(
             const Eigen::MatrixBase<Derived1> &state,
@@ -117,8 +117,9 @@ namespace qpp
         std::size_t CdimsCTRLAbar[maxn]; // local dimensions
 
         std::vector<std::size_t> ctrlgatebar(n - ctrlgate.size()); // rest
-        std::vector<std::size_t> allsubsys(n);
+        std::vector<std::size_t> allsubsys(n); // all subsystems
         std::iota(std::begin(allsubsys), std::end(allsubsys), 0);
+        // compute the complementary subsystem of ctrlgate w.r.t. dims
         std::set_difference(std::begin(allsubsys), std::end(allsubsys),
                 std::begin(ctrlgate), std::end(ctrlgate), std::begin(ctrlgatebar));
 
@@ -336,20 +337,20 @@ namespace qpp
                     Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
     }
 
-/**
-* \brief Applies the gate \a A to the part \a subsys
-* of a multipartite state vector or density matrix
-*
-* \note The dimension of the gate \a A must match
-* the dimension of \a subsys
-*
-* \param state Eigen expression
-* \param A Eigen expression
-* \param subsys Subsystem indexes where the gate \a A is applied
-* \param n Total number of subsystems
-* \param d Local dimensions of all local Hilbert spaces (must all be equal)
-* \return Gate \a A applied to the part \a subsys of \a state
-*/
+    /**
+    * \brief Applies the gate \a A to the part \a subsys
+    * of a multipartite state vector or density matrix
+    *
+    * \note The dimension of the gate \a A must match
+    * the dimension of \a subsys
+    *
+    * \param state Eigen expression
+    * \param A Eigen expression
+    * \param subsys Subsystem indexes where the gate \a A is applied
+    * \param n Total number of subsystems
+    * \param d Local dimensions of all local Hilbert spaces (must all be equal)
+    * \return Gate \a A applied to the part \a subsys of \a state
+    */
     template<typename Derived1, typename Derived2>
     DynMat<typename Derived1::Scalar> apply(
             const Eigen::MatrixBase<Derived1> &state,
@@ -417,14 +418,14 @@ namespace qpp
             throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
     }
 
-/**
-* \brief Applies the channel specified by the set of Kraus operators \a Ks
-* to the density matrix \a rho
-*
-* \param rho Eigen expression
-* \param Ks Set of Kraus operators
-* \return Output density matrix after the action of the channel
-*/
+    /**
+    * \brief Applies the channel specified by the set of Kraus operators \a Ks
+    * to the density matrix \a rho
+    *
+    * \param rho Eigen expression
+    * \param Ks Set of Kraus operators
+    * \return Output density matrix after the action of the channel
+    */
     template<typename Derived>
     cmat channel(const Eigen::MatrixBase<Derived> &rho, const std::vector<cmat> &Ks)
     {
@@ -459,17 +460,17 @@ namespace qpp
         return result;
     }
 
-/**
-* \brief Applies the channel specified by the set of Kraus operators \a Ks to
-* the part of the density matrix \a rho specified by \a subsys
-*
-* \param rho Eigen expression
-* \param Ks Set of Kraus operators
-* \param subsys Subsystems' indexes
-* \param n Total number of subsystems
-* \param d Local dimensions of all local Hilbert spaces (must all be equal)
-* \return Output density matrix after the action of the channel
-*/
+    /**
+    * \brief Applies the channel specified by the set of Kraus operators \a Ks to
+    * the part of the density matrix \a rho specified by \a subsys
+    *
+    * \param rho Eigen expression
+    * \param Ks Set of Kraus operators
+    * \param subsys Subsystems' indexes
+    * \param n Total number of subsystems
+    * \param d Local dimensions of all local Hilbert spaces (must all be equal)
+    * \return Output density matrix after the action of the channel
+    */
     template<typename Derived>
     cmat channel(const Eigen::MatrixBase<Derived> &rho, const std::vector<cmat> &Ks,
             const std::vector<std::size_t> &subsys, std::size_t n,
@@ -524,17 +525,17 @@ namespace qpp
         return result;
     }
 
-/**
-* \brief Superoperator matrix representation
-*
-* Constructs the superoperator matrix of the channel specified by the set of
-* Kraus operators \a Ks in the standard operator basis
-* \f$\{|i\rangle\langle j|\}\f$ ordered in lexicographical order, i.e.
-* \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
-*
-* \param Ks Set of Kraus operators
-* \return Superoperator matrix representation
-*/
+    /**
+    * \brief Superoperator matrix representation
+    *
+    * Constructs the superoperator matrix of the channel specified by the set of
+    * Kraus operators \a Ks in the standard operator basis
+    * \f$\{|i\rangle\langle j|\}\f$ ordered in lexicographical order, i.e.
+    * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
+    *
+    * \param Ks Set of Kraus operators
+    * \return Superoperator matrix representation
+    */
     cmat super(const std::vector<cmat> &Ks)
     {
         // EXCEPTION CHECKS
@@ -588,20 +589,20 @@ namespace qpp
         return result;
     }
 
-/**
-* \brief Choi matrix representation
-*
-* Constructs the Choi matrix of the channel specified by the set of Kraus
-* operators \a Ks in the standard operator basis \f$\{|i\rangle\langle j|\}\f$
-* ordered in lexicographical order, i.e.
-* \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
-*
-* \note The superoperator matrix \f$S\f$ and the Choi matrix \f$ C\f$
-* are related by \f$ S_{ab,mn} = C_{ma,nb}\f$
-*
-* \param Ks Set of Kraus operators
-* \return Choi matrix representation
-*/
+    /**
+    * \brief Choi matrix representation
+    *
+    * Constructs the Choi matrix of the channel specified by the set of Kraus
+    * operators \a Ks in the standard operator basis \f$\{|i\rangle\langle j|\}\f$
+    * ordered in lexicographical order, i.e.
+    * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
+    *
+    * \note The superoperator matrix \f$S\f$ and the Choi matrix \f$ C\f$
+    * are related by \f$ S_{ab,mn} = C_{ma,nb}\f$
+    *
+    * \param Ks Set of Kraus operators
+    * \return Choi matrix representation
+    */
     cmat choi(const std::vector<cmat> &Ks)
     {
         // EXCEPTION CHECKS
@@ -639,18 +640,18 @@ namespace qpp
         return result;
     }
 
-/**
-* \brief Extracts orthogonal Kraus operators from Choi matrix
-*
-* Extracts a set of orthogonal (under Hilbert-Schmidt operator norm) Kraus
-* operators from the Choi representation \a A of the channel
-*
-* \note The Kraus operators satisfy \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$
-* for all \f$i\neq j\f$
-*
-* \param A Choi matrix
-* \return Set of Kraus operators
-*/
+    /**
+    * \brief Extracts orthogonal Kraus operators from Choi matrix
+    *
+    * Extracts a set of orthogonal (under Hilbert-Schmidt operator norm) Kraus
+    * operators from the Choi representation \a A of the channel
+    *
+    * \note The Kraus operators satisfy \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$
+    * for all \f$i\neq j\f$
+    *
+    * \param A Choi matrix
+    * \return Set of Kraus operators
+    */
     std::vector<cmat> choi2kraus(const cmat &A)
     {
         // EXCEPTION CHECKS
@@ -677,19 +678,19 @@ namespace qpp
         return result;
     }
 
-/**
-* \brief Partial trace
-*
-*  Partial trace of density matrix
-*  over the first subsystem in a bi-partite system
-*
-* \param A Eigen expression
-* \param dims Dimensions of bi-partite system
-* (must be a std::vector with 2 elements)
-* \return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$
-* in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
-* over the same scalar field as \a A
-*/
+    /**
+    * \brief Partial trace
+    *
+    *  Partial trace of density matrix
+    *  over the first subsystem in a bi-partite system
+    *
+    * \param A Eigen expression
+    * \param dims Dimensions of bi-partite system
+    * (must be a std::vector with 2 elements)
+    * \return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$
+    * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
+    * over the same scalar field as \a A
+    */
     template<typename Derived>
     DynMat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived> &A,
             const std::vector<std::size_t> &dims)
@@ -740,16 +741,16 @@ namespace qpp
         return result;
     }
 
-/**
-* \brief Partial trace
-*
-* \param A Eigen expression
-* \param dims Dimensions of bi-partite system
-* (must be a std::vector with 2 elements)
-* \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$
-* in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
-* over the same scalar field as \a A
-*/
+    /**
+    * \brief Partial trace
+    *
+    * \param A Eigen expression
+    * \param dims Dimensions of bi-partite system
+    * (must be a std::vector with 2 elements)
+    * \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$
+    * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
+    * over the same scalar field as \a A
+    */
     template<typename Derived>
     DynMat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived> &A,
             const std::vector<std::size_t> &dims)
@@ -792,19 +793,19 @@ namespace qpp
         return result;
     }
 
-/**
-* \brief Partial trace
-*
-*  Partial trace of the multi-partite density matrix
-*  over a list of subsystems
-*
-* \param A Eigen expression
-* \param subsys Subsystem indexes
-* \param dims Dimensions of the multi-partite system
-* \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a subsys
-* in a multi-partite system, as a dynamic matrix
-* over the same scalar field as \a A
-*/
+    /**
+    * \brief Partial trace
+    *
+    *  Partial trace of the multi-partite density matrix
+    *  over a list of subsystems
+    *
+    * \param A Eigen expression
+    * \param subsys Subsystem indexes
+    * \param dims Dimensions of the multi-partite system
+    * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a subsys
+    * in a multi-partite system, as a dynamic matrix
+    * over the same scalar field as \a A
+    */
     template<typename Derived>
     DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived> &A,
             const std::vector<std::size_t> &subsys,
@@ -931,19 +932,19 @@ namespace qpp
         return result;
     }
 
-/**
-* \brief Partial transpose
-*
-*  Partial transpose of the multi-partite density matrix
-*  over a list of subsystems
-*
-* \param A Eigen expression
-* \param subsys Subsystem indexes
-* \param dims Dimensions of the multi-partite system
-* \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$
-* over the subsytems \a subsys in a multi-partite system, as a dynamic matrix
-* over the same scalar field as \a A
-*/
+    /**
+    * \brief Partial transpose
+    *
+    *  Partial transpose of the multi-partite density matrix
+    *  over a list of subsystems
+    *
+    * \param A Eigen expression
+    * \param subsys Subsystem indexes
+    * \param dims Dimensions of the multi-partite system
+    * \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$
+    * over the subsytems \a subsys in a multi-partite system, as a dynamic matrix
+    * over the same scalar field as \a A
+    */
     template<typename Derived>
     DynMat<typename Derived::Scalar> ptranspose(const Eigen::MatrixBase<Derived> &A,
             const std::vector<std::size_t> &subsys,
@@ -1025,18 +1026,18 @@ namespace qpp
         return result;
     }
 
-/**
-* \brief System permutation
-*
-* Permutes the subsystems in a state vector or density matrix\n
-* The qubit \a perm[\a i] is permuted to the location \a i
-*
-* \param A Eigen expression
-* \param perm Permutation
-* \param dims Subsystems' dimensions
-* \return Permuted system, as a dynamic matrix
-* over the same scalar field as \a A
-*/
+    /**
+    * \brief System permutation
+    *
+    * Permutes the subsystems in a state vector or density matrix\n
+    * The qubit \a perm[\a i] is permuted to the location \a i
+    *
+    * \param A Eigen expression
+    * \param perm Permutation
+    * \param dims Subsystems' dimensions
+    * \return Permuted system, as a dynamic matrix
+    * over the same scalar field as \a A
+    */
     template<typename Derived>
     DynMat<typename Derived::Scalar> syspermute(const Eigen::MatrixBase<Derived> &A,
             const std::vector<std::size_t> &perm,
