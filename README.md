@@ -37,26 +37,26 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 - Example file: `example.cpp` (current folder, from where `g++` is run)
 - Output binary: `qpp` (current folder, from where `g++` is run)
 
-### Configuration:
+#### Configuration:
 
 - Eigen3 library located in `$HOME/eigen_3.2.2`
 - Quantum++ library located in `$HOME/qpp`
 - MATLAB compiler include header files: `/Applications/MATLAB_R2014b.app/extern/include`
 - MATLAB compiler shared library files: `/Applications/MATLAB_R2014b.app/bin/maci64`
 
-### Release version (without MATLAB support): 
+#### Release version (without MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -O3 -DNDEBUG -DEIGEN_NO_DEBUG -isystem $HOME/eigen_3.2.2 -I$HOME/qpp/include example.cpp -o qpp
 
-### Debug version (without MATLAB support): 
+#### Debug version (without MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include example.cpp -o qpp
 
-### Release version (with MATLAB support): 
+#### Release version (with MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -O3 -DNDEBUG -DEIGEN_NO_DEBUG -isystem $HOME/eigen_3.2.2 -I$HOME/qpp/include -I/Applications/MATLAB_R2014b.app/extern/include -L/Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
 
-### Debug version (with MATLAB support): 
+#### Debug version (with MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include -I /Applications/MATLAB_R2014b.app/extern/include -L /Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
 
