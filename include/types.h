@@ -22,8 +22,7 @@
 #ifndef INCLUDE_TYPES_H_
 #define INCLUDE_TYPES_H_
 
-namespace qpp
-{
+namespace qpp {
 
 /**
 * \brief Complex number in double precision
@@ -60,26 +59,22 @@ namespace qpp
 /**
 * \brief Complex (double precision) dynamic Eigen column vector
 */
-    using ket = DynColVect<cplx>;
-// Eigen::VectorXcd
+    using ket = DynColVect<cplx>; // Eigen::VectorXcd
 
 /**
 * \brief Complex (double precision) dynamic Eigen row vector
 */
-    using bra = DynRowVect<cplx>;
-// Eigen::RowVectorXcd
+    using bra = DynRowVect<cplx>; // Eigen::RowVectorXcd
 
 /**
 * \brief Complex (double precision) dynamic Eigen matrix
 */
-    using cmat = DynMat<cplx>;
-// Eigen::MatrixXcd;
+    using cmat = DynMat<cplx>; // Eigen::MatrixXcd;
 
 /**
 * \brief Real (double precision) dynamic Eigen matrix
 */
-    using dmat = DynMat<double>;
-// Eigen::MatrixXd
+    using dmat = DynMat<double>; // Eigen::MatrixXd
 
 } /* namespace qpp */
 
