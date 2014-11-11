@@ -319,15 +319,15 @@ $(document).ready(function(){initNavTree('internal_2functions_8h_source.html',''
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            <span class="comment">// check types</span></div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            <span class="keywordflow">if</span> (!std::is_same&lt;typename Derived1::Scalar, typename Derived2::Scalar&gt;::value)</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;kron&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca2f93918ef99e03b7b8e7230b2a28fb52">Exception::Type::TYPE_MISMATCH</a>);</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::kron()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca2f93918ef99e03b7b8e7230b2a28fb52">Exception::Type::TYPE_MISMATCH</a>);</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            <span class="comment">// check zero-size</span></div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(rA))</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;kron&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::kron()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            <span class="comment">// check zero-size</span></div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(rB))</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;kron&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::kron()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            std::size_t Acols = <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(rA.cols());</div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;            std::size_t Arows = <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(rA.rows());</div>
@@ -392,7 +392,7 @@ $(document).ready(function(){initNavTree('internal_2functions_8h_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_963e57a8294c229b5ff887c0b5b78922.html">internal</a></li><li class="navelem"><a class="el" href="internal_2functions_8h.html">functions.h</a></li>
-    <li class="footer">Generated on Mon Nov 10 2014 21:35:32 for quantum++ by
+    <li class="footer">Generated on Tue Nov 11 2014 07:51:59 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
