@@ -32,7 +32,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 ---
 
-## Compiling/linking instructions for a simple example using g++
+## Building instructions for g++
 
 - Example file: `example.cpp` (current folder, from where `g++` is run)
 - Output binary: `qpp` (current folder, from where `g++` is run)
