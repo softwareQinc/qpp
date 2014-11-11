@@ -75,7 +75,7 @@ namespace qpp
             return cf[0];
 
         double tmp = 1. / cf[n - 1];
-        for (int i = n - 2; i > 0; --i)
+        for (std::size_t i = n - 2; i != 0; --i)
         {
             tmp = 1. / (tmp + cf[i]);
         }
@@ -98,7 +98,7 @@ namespace qpp
             return cf[0];
 
         double tmp = 1. / cf[cf.size() - 1];
-        for (int i = cf.size() - 2; i > 0; --i)
+        for (std::size_t i = cf.size() - 2; i != 0; --i)
         {
             tmp = 1. / (tmp + cf[i]);
         }
