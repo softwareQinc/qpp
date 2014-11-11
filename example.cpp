@@ -166,8 +166,8 @@ int main()
         std::cout << ">> State psi in the Schmidt basis: " << std::endl;
         std::cout << disp(adjoint(kron(U, V)) * psi) << std::endl;
         // reconstructed state
-        ket psi_from_schmidt = schmidtcoeff(psi, {2, 2})(0) * kron(U.col(0), V.col(0)) +
-                schmidtcoeff(psi, {2, 2})(1) * kron(U.col(1), V.col(1));
+        ket psi_from_schmidt = schmidtcoeff(psi, {2, 2})(0) * kron(U.col(0), V.col(0))
+                + schmidtcoeff(psi, {2, 2})(1) * kron(U.col(1), V.col(1));
         std::cout << ">> State psi reconstructed from the Schmidt decomposition: " << std::endl;
         std::cout << disp(psi_from_schmidt) << std::endl;
         std::cout << ">> Norm difference: " << norm(psi - psi_from_schmidt) << std::endl;
@@ -203,8 +203,7 @@ int main()
         std::size_t n = 12; // number of qubits
         std::size_t N = std::pow(2, n);
         std::vector<std::size_t> dims(n, 2); // local dimensions
-        std::cout << ">> n = " << n << " qubits, matrix size " << N << " x " << N
-                << "." << std::endl;
+        std::cout << ">> n = " << n << " qubits, matrix size " << N << " x " << N << "." << std::endl;
         cmat randcmat = cmat::Random(N, N);
 
         // ptrace
