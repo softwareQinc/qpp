@@ -100,7 +100,8 @@ Do not forget to remove everything from the `./build` directory before a fresh b
 
 
 For convenience, the current version of the repository has also a set of Makefiles available 
-under the folder`./Makefile.examples`. To build the executable, copy into the root of the project 
+under the folder`./Makefile.examples`. To build the executable this way (without using `cmake`), 
+copy into the root of the project 
 an appropriate Makefile from `./Makefile.examples`, name it `Makefile`, 
 then type `make` (for release version) or `make debug` (for debug version) to produce the executable `qpp`.
 
