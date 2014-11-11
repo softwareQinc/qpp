@@ -77,7 +77,7 @@ The current version of the repository has a `CMakeLists.txt` configuration file 
     cmake ..
     make
 
-The above commands create the relase version (default) executable `qpp`, 
+The above commands build the relase version (default) executable `qpp`, 
 without MATLAB support (default), inside the directory `./build`. 
 To build a different configuration, e.g. debug version with MATLAB support, 
 type from the root of the project
@@ -86,9 +86,16 @@ type from the root of the project
     rm -rf *
     cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB=ON
     make
+    
+Or, to disable OpenMP support (enabled by default), type
+   
+    cd ./build
+    rm -rf *
+    cmake -DWITH_OPENMP=OFF
+    make
 
 To change the location of `Eigen3` library or the location of MATLAB installation, 
-edit the `CMakeLists.txt` file. 
+edit the `CMakeLists.txt` file. See also `CMakeLists.txt` for additional options.
 Do not forget to remove everything from the `./build` directory before a fresh build!
 
 
