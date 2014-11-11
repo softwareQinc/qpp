@@ -22,7 +22,8 @@
 #ifndef INCLUDE_TYPES_H_
 #define INCLUDE_TYPES_H_
 
-namespace qpp {
+namespace qpp
+{
 
 /**
 * \brief Complex number in double precision
