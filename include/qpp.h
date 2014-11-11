@@ -26,7 +26,7 @@
 // ALWAYS include it in main.cpp
 
 #ifndef INCLUDE_QPP_H_
-#define    INCLUDE_QPP_H_
+#define INCLUDE_QPP_H_
 
 #include <algorithm>
 #include <chrono>

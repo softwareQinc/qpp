@@ -20,7 +20,7 @@
  */
 
 #ifndef INCLUDE_CONSTANTS_H_
-#define    INCLUDE_CONSTANTS_H_
+#define INCLUDE_CONSTANTS_H_
 
 // constants
 
