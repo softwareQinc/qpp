@@ -178,7 +178,7 @@ namespace qpp
         if (ns.size() == 1) // convention: lcm({n}) = n
             return ns[0];
 
-        if(std::find(std::begin(ns), std::end(ns), 0)!=std::end(ns))
+        if (std::find(std::begin(ns), std::end(ns), 0) != std::end(ns))
             throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
 
         auto multiply = [](std::size_t x, std::size_t y) -> std::size_t

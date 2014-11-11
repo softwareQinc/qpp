@@ -274,7 +274,7 @@ namespace qpp
                 Cdims[k] = d;
             }
 
-            for(std::size_t k = 0; k < nsubsys_bar; ++k)
+            for (std::size_t k = 0; k < nsubsys_bar; ++k)
             {
                 Cdims_bar[k] = d;
                 midx_bar[k] = 0;

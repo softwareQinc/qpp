@@ -94,6 +94,7 @@ namespace qpp
 
             // to silence -Weffc++ warnings
             IOManipPointer(const IOManipPointer &) = default;
+
             IOManipPointer &operator=(const IOManipPointer &) = default;
 
             template<typename charT, typename traits>
@@ -130,7 +131,7 @@ namespace qpp
 
             // Complex numbers
             explicit IOManipEigen(const cplx z, double chop = qpp::chop) :
-                    _A(cmat::Zero(1,1)), _chop(chop)
+                    _A(cmat::Zero(1, 1)), _chop(chop)
             {
                 // put the complex number inside an Eigen matrix
                 _A(0, 0) = z;
