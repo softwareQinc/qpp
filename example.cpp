@@ -235,6 +235,6 @@ int main()
         std::cout << disp(perm, ", ") << std::endl;
         t.tic();
         syspermute(randcmat, perm, dims);
-        std::cout << ">> It took " << t.toc() << " seconds. " << std::endl;
+        std::cout << ">> It took " << t.toc() << " seconds." << std::endl;
     }
 }
