@@ -802,7 +802,7 @@ namespace qpp
         /**
         * \brief Displays a range. Does not add a newline.
         *
-        * \see qpp::displn()
+        * \see qpp::experimental::displn()
         *
         * \param first Iterator to the first element of the range
         * \param last  Iterator to the last element of the range
@@ -841,7 +841,7 @@ namespace qpp
         /**
         * \brief Displays a range. Adds a newline.
         *
-        * \see qpp::disp()
+        * \see qpp::experimental::disp()
         *
         * \param first Iterator to the first element of the range
         * \param last  Iterator to the last element of the range
@@ -865,7 +865,7 @@ namespace qpp
         * \brief Displays a standard container that supports std::begin, std::end
         * and forward iteration. Does not add a newline.
         *
-        * \see qpp::displn()
+        * \see qpp::experimental::displn()
         *
         * \param x Container
         * \param separator Separator
@@ -887,7 +887,7 @@ namespace qpp
         * \brief Displays a standard container that supports std::begin, std::end
         * and forward iteration. Adds a newline.
         *
-        * \see qpp::disp()
+        * \see qpp::experimental::disp()
         *
         * \param x Container
         * \param separator Separator
@@ -909,7 +909,7 @@ namespace qpp
         /**
         * \brief Displays a C-style array. Does not add a newline.
         *
-        * \see qpp::displn()
+        * \see qpp::experimental::displn()
         *
         * \param x Pointer to the first element
         * \param n Number of elements to be displayed
@@ -938,7 +938,7 @@ namespace qpp
         /**
         * \brief Displays a C-style array. Adds a newline.
         *
-        * \see qpp::disp()
+        * \see qpp::experimental::disp()
         *
         * \param x Pointer to the first element
         * \param n Number of elements to be displayed
@@ -962,7 +962,7 @@ namespace qpp
         * \brief Displays an Eigen expression in matrix friendly form. Does not add a
         * new line.
         *
-        * \see qpp::displn()
+        * \see qpp::experimental::displn()
         *
         * \param A Eigen expression
         * \param chop Set to zero the elements smaller in absolute value
@@ -1060,7 +1060,7 @@ namespace qpp
         /**
         * \brief Displays an Eigen expression in matrix friendly form. Adds a newline.
         *
-        * \see qpp::disp()
+        * \see qpp::experimental::disp()
         *
         * \param A Eigen expression
         * \param chop Set to zero the elements smaller in absolute value
@@ -1069,8 +1069,8 @@ namespace qpp
         * \return Output stream
         */
         template<typename Derived>
-        std::ostream &displn(const Eigen::MatrixBase<Derived> &A, double chop =
-        qpp::chop, std::ostream &os = std::cout)
+        std::ostream &displn(const Eigen::MatrixBase<Derived> &A, double chop = qpp::chop,
+                std::ostream &os = std::cout)
         {
             disp(A, chop, os);
             os << std::endl;
@@ -1081,7 +1081,7 @@ namespace qpp
         * \brief Displays a number (implicitly converted to std::complex<double>)
         * in friendly form. Does not add a new line.
         *
-        * \see qpp::displn()
+        * \see qpp::experimental::displn()
         *
         * \param z Real/complex number
         * \param chop Set to zero the elements smaller in absolute value
@@ -1089,8 +1089,7 @@ namespace qpp
         * \param os Output stream
         * \return Output stream
         */
-        std::ostream &disp(const cplx z, double chop = qpp::chop, std::ostream &os =
-        std::cout)
+        std::ostream &disp(const cplx z, double chop = qpp::chop, std::ostream &os = std::cout)
         {
             // put the complex number inside an Eigen matrix
             cmat A(1, 1);
@@ -1103,7 +1102,7 @@ namespace qpp
         * \brief Displays a number (implicitly converted to std::complex<double>)
         * in friendly form. Adds a new line.
         *
-        * \see qpp::disp()
+        * \see qpp::experimental::disp()
         *
         * \param z Real/complex number
         * \param chop Set to zero the elements smaller in absolute value
@@ -1111,8 +1110,7 @@ namespace qpp
         * \param os Output stream
         * \return Output stream
         */
-        std::ostream &displn(const cplx z, double chop = qpp::chop, std::ostream &os =
-        std::cout)
+        std::ostream &displn(const cplx z, double chop = qpp::chop, std::ostream &os = std::cout)
         {
             disp(z, chop, os);
             os << std::endl;
@@ -1148,37 +1146,37 @@ namespace qpp
             // EXCEPTION CHECKS
             // check types
             if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
-                throw Exception("qpp::applyCTRL()", Exception::Type::TYPE_MISMATCH);
+                throw Exception("qpp::experimental::applyCTRL()", Exception::Type::TYPE_MISMATCH);
 
             // check zero sizes
             if (!internal::_check_nonzero_size(rA))
-                throw Exception("qpp::applyCTRL()", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::applyCTRL()", Exception::Type::ZERO_SIZE);
 
             // check zero sizes
             if (!internal::_check_nonzero_size(rstate))
-                throw Exception("qpp::applyCTRL()", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::applyCTRL()", Exception::Type::ZERO_SIZE);
 
             // check square matrix for the gate
             if (!internal::_check_square_mat(rA))
-                throw Exception("qpp::applyCTRL()", Exception::Type::MATRIX_NOT_SQUARE);
+                throw Exception("qpp::experimental::applyCTRL()", Exception::Type::MATRIX_NOT_SQUARE);
 
             // check that all control subsystems have the same dimension
             std::size_t d = ctrl.size() > 0 ? ctrl[0] : 1;
             for (std::size_t i = 1; i < ctrl.size(); ++i)
                 if (ctrl[i] != d)
-                    throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_NOT_EQUAL);
+                    throw Exception("qpp::experimental::applyCTRL()", Exception::Type::DIMS_NOT_EQUAL);
 
             // check that gate matches the dimensions of the subsys
             if (!internal::_check_dims_match_mat(subsys, rA))
-                throw Exception("qpp::applyCTRL()", Exception::Type::MATRIX_MISMATCH_SUBSYS);
+                throw Exception("qpp::experimental::applyCTRL()", Exception::Type::MATRIX_MISMATCH_SUBSYS);
 
             // check that dimension is valid
             if (!internal::_check_dims(dims))
-                throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_INVALID);
+                throw Exception("qpp::experimental::applyCTRL()", Exception::Type::DIMS_INVALID);
 
             // check subsys is valid w.r.t. dims
             if (!internal::_check_subsys_match_dims(subsys, dims))
-                throw Exception("qpp::applyCTRL()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+                throw Exception("qpp::experimental::applyCTRL()", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
             std::vector<std::size_t> ctrlgate = ctrl; // ctrl + gate subsystem vector
             ctrlgate.insert(std::end(ctrlgate), std::begin(subsys), std::end(subsys));
@@ -1187,7 +1185,7 @@ namespace qpp
             // check that ctrl + gate subsystem is valid
             // with respect to local dimensions
             if (!internal::_check_subsys_match_dims(ctrlgate, dims))
-                throw Exception("qpp::applyCTRL()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+                throw Exception("qpp::experimental::applyCTRL()", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
             // END EXCEPTION CHECKS
 
@@ -1362,7 +1360,7 @@ namespace qpp
             {
                 // check that dims match state vector
                 if (!internal::_check_dims_match_cvect(dims, rstate))
-                    throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_MISMATCH_CVECTOR);
+                    throw Exception("qpp::experimental::applyCTRL()", Exception::Type::DIMS_MISMATCH_CVECTOR);
 
                 if (D == 1)
                     return rstate;
@@ -1391,7 +1389,7 @@ namespace qpp
             {
                 // check that dims match state matrix
                 if (!internal::_check_dims_match_mat(dims, rstate))
-                    throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_MISMATCH_MATRIX);
+                    throw Exception("qpp::experimental::applyCTRL()", Exception::Type::DIMS_MISMATCH_MATRIX);
 
                 if (D == 1)
                     return rstate;
@@ -1428,7 +1426,7 @@ namespace qpp
 
                 //************ Exception: not ket nor density matrix ************//
             else
-                throw Exception("qpp::applyCTRL()",
+                throw Exception("qpp::experimental::applyCTRL()",
                         Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
         }
 
@@ -1459,37 +1457,37 @@ namespace qpp
 
             // check types
             if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
-                throw Exception("qpp::apply()", Exception::Type::TYPE_MISMATCH);
+                throw Exception("qpp::experimental::apply()", Exception::Type::TYPE_MISMATCH);
 
             // check zero sizes
             if (!internal::_check_nonzero_size(rA))
-                throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::apply()", Exception::Type::ZERO_SIZE);
 
             // check zero sizes
             if (!internal::_check_nonzero_size(rstate))
-                throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::apply()", Exception::Type::ZERO_SIZE);
 
             // check square matrix for the gate
             if (!internal::_check_square_mat(rA))
-                throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE);
+                throw Exception("qpp::experimental::apply()", Exception::Type::MATRIX_NOT_SQUARE);
 
             // check that dimension is valid
             if (!internal::_check_dims(dims))
-                throw Exception("qpp::apply()", Exception::Type::DIMS_INVALID);
+                throw Exception("qpp::experimental::apply()", Exception::Type::DIMS_INVALID);
 
             // check subsys is valid w.r.t. dims
             if (!internal::_check_subsys_match_dims(subsys, dims))
-                throw Exception("qpp::apply()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+                throw Exception("qpp::experimental::apply()", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
             // check that gate matches the dimensions of the subsys
             if (!internal::_check_dims_match_mat(subsys, rA))
-                throw Exception("qpp::apply()", Exception::Type::MATRIX_MISMATCH_SUBSYS);
+                throw Exception("qpp::experimental::apply()", Exception::Type::MATRIX_MISMATCH_SUBSYS);
 
             if (internal::_check_col_vector(rstate)) // we have a ket
             {
                 // check that dims match state vector
                 if (!internal::_check_dims_match_cvect(dims, rstate))
-                    throw Exception("qpp::apply()", Exception::Type::DIMS_MISMATCH_CVECTOR);
+                    throw Exception("qpp::experimental::apply()", Exception::Type::DIMS_MISMATCH_CVECTOR);
 
                 return applyCTRL(rstate, rA, {}, subsys, dims);
             }
@@ -1498,12 +1496,12 @@ namespace qpp
 
                 // check that dims match state matrix
                 if (!internal::_check_dims_match_mat(dims, rstate))
-                    throw Exception("qpp::apply()", Exception::Type::DIMS_MISMATCH_MATRIX);
+                    throw Exception("qpp::experimental::apply()", Exception::Type::DIMS_MISMATCH_MATRIX);
 
                 return applyCTRL(rstate, rA, {}, subsys, dims);;
             }
             else
-                throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+                throw Exception("qpp::experimental::apply()", Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
         }
 
         /**
@@ -1525,34 +1523,34 @@ namespace qpp
             // EXCEPTION CHECKS
             // check zero sizes
             if (!internal::_check_nonzero_size(rrho))
-                throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental:channel()", Exception::Type::ZERO_SIZE);
 
             // check square matrix for the rho
             if (!internal::_check_square_mat(rrho))
-                throw Exception("qpp::channel()", Exception::Type::MATRIX_NOT_SQUARE);
+                throw Exception("qpp::experimental:channel()", Exception::Type::MATRIX_NOT_SQUARE);
 
             // check that dimension is valid
             if (!internal::_check_dims(dims))
-                throw Exception("qpp::channel()", Exception::Type::DIMS_INVALID);
+                throw Exception("qpp::experimental:channel()", Exception::Type::DIMS_INVALID);
 
             // check that dims match rho matrix
             if (!internal::_check_dims_match_mat(dims, rrho))
-                throw Exception("qpp::channel()", Exception::Type::DIMS_MISMATCH_MATRIX);
+                throw Exception("qpp::experimental:channel()", Exception::Type::DIMS_MISMATCH_MATRIX);
 
             // check subsys is valid w.r.t. dims
             if (!internal::_check_subsys_match_dims(subsys, dims))
-                throw Exception("qpp::channel()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+                throw Exception("qpp::experimental:channel()", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
             // check the Kraus operators
             if (!internal::_check_nonzero_size(Ks))
-                throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental:channel()", Exception::Type::ZERO_SIZE);
             if (!internal::_check_square_mat(Ks[0]))
-                throw Exception("qpp::channel()", Exception::Type::MATRIX_NOT_SQUARE);
+                throw Exception("qpp::experimental:channel()", Exception::Type::MATRIX_NOT_SQUARE);
             if (!internal::_check_dims_match_mat(subsys, Ks[0]))
-                throw Exception("qpp::channel()", Exception::Type::MATRIX_MISMATCH_SUBSYS);
+                throw Exception("qpp::experimental:channel()", Exception::Type::MATRIX_MISMATCH_SUBSYS);
             for (auto &&it : Ks)
                 if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-                    throw Exception("qpp::channel()", Exception::Type::DIMS_NOT_EQUAL);
+                    throw Exception("qpp::experimental:channel()", Exception::Type::DIMS_NOT_EQUAL);
 
             cmat result = cmat::Zero(rrho.rows(), rrho.rows());
 
