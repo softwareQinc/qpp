@@ -28,10 +28,10 @@ using namespace qpp;
 int main()
 {
 
-    // Qudit Teleportation
+    // Qudit teleportation
     {
         std::size_t D = 3; // size of the system
-        std::cout << std::endl << "**** Qudit Teleportation, D = " << D << " ****" << std::endl;
+        std::cout << std::endl << "**** Qudit teleportation, D = " << D << " ****" << std::endl;
         ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
         for (std::size_t i = 0; i < D; i++)
             mes_AB += mket({i, i}, D);
@@ -62,10 +62,10 @@ int main()
         std::cout << ">> Norm difference: " << norm(rho_B - prj(psi_a)) << std::endl; // verification
     }
 
-    // Qudit Dense Coding
+    // Qudit dense coding
     {
         std::size_t D = 3; // size of the system
-        std::cout << std::endl << "**** Qudit Dense Coding, D = " << D << " ****" << std::endl;
+        std::cout << std::endl << "**** Qudit dense coding, D = " << D << " ****" << std::endl;
         ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
         for (std::size_t i = 0; i < D; i++)
             mes_AB += mket({i, i}, D);

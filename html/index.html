@@ -76,10 +76,10 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="line"><span class="keywordtype">int</span> main()</div>
 <div class="line">{</div>
 <div class="line"></div>
-<div class="line">    <span class="comment">// Qudit Teleportation</span></div>
+<div class="line">    <span class="comment">// Qudit teleportation</span></div>
 <div class="line">    {</div>
 <div class="line">        std::size_t D = 3; <span class="comment">// size of the system</span></div>
-<div class="line">        std::cout &lt;&lt; std::endl &lt;&lt; <span class="stringliteral">&quot;**** Qudit Teleportation, D = &quot;</span> &lt;&lt; D &lt;&lt; <span class="stringliteral">&quot; ****&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">        std::cout &lt;&lt; std::endl &lt;&lt; <span class="stringliteral">&quot;**** Qudit teleportation, D = &quot;</span> &lt;&lt; D &lt;&lt; <span class="stringliteral">&quot; ****&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">        <a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a> mes_AB = ket::Zero(D * D); <span class="comment">// maximally entangled state resource</span></div>
 <div class="line">        <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; D; i++)</div>
 <div class="line">            mes_AB += <a class="code" href="namespaceqpp.html#a94ade48c09bb33df893d7ff62a098374">mket</a>({i, i}, D);</div>
@@ -110,10 +110,10 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Norm difference: &quot;</span> &lt;&lt; <a class="code" href="namespaceqpp.html#af2e4740854c958579228593dd639aa6c">norm</a>(rho_B - <a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>(psi_a)) &lt;&lt; std::endl; <span class="comment">// verification</span></div>
 <div class="line">    }</div>
 <div class="line"></div>
-<div class="line">    <span class="comment">// Qudit Dense Coding</span></div>
+<div class="line">    <span class="comment">// Qudit dense coding</span></div>
 <div class="line">    {</div>
 <div class="line">        std::size_t D = 3; <span class="comment">// size of the system</span></div>
-<div class="line">        std::cout &lt;&lt; std::endl &lt;&lt; <span class="stringliteral">&quot;**** Qudit Dense Coding, D = &quot;</span> &lt;&lt; D &lt;&lt; <span class="stringliteral">&quot; ****&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">        std::cout &lt;&lt; std::endl &lt;&lt; <span class="stringliteral">&quot;**** Qudit dense coding, D = &quot;</span> &lt;&lt; D &lt;&lt; <span class="stringliteral">&quot; ****&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">        <a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a> mes_AB = ket::Zero(D * D); <span class="comment">// maximally entangled state resource</span></div>
 <div class="line">        <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; D; i++)</div>
 <div class="line">            mes_AB += <a class="code" href="namespaceqpp.html#a94ade48c09bb33df893d7ff62a098374">mket</a>({i, i}, D);</div>
@@ -289,7 +289,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 12 2014 18:28:22 for quantum++ by
+    <li class="footer">Generated on Wed Nov 12 2014 18:47:05 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
