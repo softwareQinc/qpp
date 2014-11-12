@@ -237,7 +237,6 @@ namespace qpp
         return result;
     }
 
-
 } /* namespace qpp */
 
 #endif /* INCLUDE_NUMBER_THEORY_H_ */

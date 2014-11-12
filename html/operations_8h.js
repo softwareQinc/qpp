@@ -1,8 +1,11 @@
 var operations_8h =
 [
+    [ "apply", "operations_8h.html#a15f5f4c236713542560dfeb8237c76f7", null ],
     [ "apply", "operations_8h.html#a02a237b102353f57c7243356a82cba36", null ],
+    [ "applyCTRL", "operations_8h.html#a1d88751cff72495fccdcfa77b74d1729", null ],
     [ "applyCTRL", "operations_8h.html#a1dcea8c285d9dd3fdedf166266a782ab", null ],
     [ "channel", "operations_8h.html#af6d3ed33a419331f7e9721b5fa602e2c", null ],
+    [ "channel", "operations_8h.html#a8420993c681e0dc2e9ed41bddf109dcd", null ],
     [ "channel", "operations_8h.html#a4aa64db27df5e0156a53227f0bd932df", null ],
     [ "choi", "operations_8h.html#ac8f061a25c22b9d79d2536dc4ea738c9", null ],
     [ "choi2kraus", "operations_8h.html#ac08330f1578fa6b6e382a80132dffb46", null ],

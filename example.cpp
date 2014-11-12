@@ -213,7 +213,7 @@ int main()
         std::cout << disp(subsys_ptrace, ", ") << std::endl;
         Timer t;
         ptrace(randcmat, subsys_ptrace, dims);
-        std::cout << ">> Took " << t.toc() << " seconds." << std::endl;
+        std::cout << ">> It took " << t.toc() << " seconds." << std::endl;
 
         // ptranspose
         std::cout << std::endl << "**** qpp::ptranspose() timing ****" << std::endl;
@@ -224,7 +224,7 @@ int main()
         std::cout << disp(subsys_ptranspose, ", ") << std::endl;
         t.tic();
         ptranspose(randcmat, subsys_ptranspose, dims);
-        std::cout << ">> Took " << t.toc() << " seconds." << std::endl;
+        std::cout << ">> It took " << t.toc() << " seconds." << std::endl;
 
         // syspermute
         std::cout << std::endl << "**** qpp::syspermute() timing ****" << std::endl;
@@ -235,6 +235,6 @@ int main()
         std::cout << disp(perm, ", ") << std::endl;
         t.tic();
         syspermute(randcmat, perm, dims);
-        std::cout << ">> Took " << t.toc() << " seconds." << std::endl;
+        std::cout << ">> It took " << t.toc() << " seconds." << std::endl;
     }
 }
