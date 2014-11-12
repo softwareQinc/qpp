@@ -1163,7 +1163,7 @@ namespace qpp
                 throw Exception("qpp::applyCTRL()", Exception::Type::MATRIX_NOT_SQUARE);
 
             // check that all control subsystems have the same dimension
-            std::size_t d = ctrl[0];
+            std::size_t d = ctrl.size() > 0 ? ctrl[0] : 1;
             for (std::size_t i = 1; i < ctrl.size(); ++i)
                 if (ctrl[i] != d)
                     throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_NOT_EQUAL);
@@ -1194,6 +1194,13 @@ namespace qpp
 
 
             // END EXCEPTION CHECKS
+
+            auto multiply = [](const std::size_t x, const std::size_t y) -> std::size_t
+            {
+                return x * y;
+            };
+
+            std::size_t D = rstate.rows(); // total dimension
 
             // construct the table of A^i and (A^dagger)^i
             std::vector<DynMat<typename Derived1::Scalar>> Ai;
@@ -1365,7 +1372,7 @@ namespace qpp
                 if (!internal::_check_dims_match_cvect(dims, rstate))
                     throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_MISMATCH_CVECTOR);
 
-                if (d == 1)
+                if (D == 1)
                     return rstate;
 
                 DynMat<typename Derived1::Scalar> result = rstate;
@@ -1394,7 +1401,7 @@ namespace qpp
                 if (!internal::_check_dims_match_mat(dims, rstate))
                     throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_MISMATCH_MATRIX);
 
-                if (d == 1)
+                if (D == 1)
                     return rstate;
 
                 DynMat<typename Derived1::Scalar> result = rstate;
