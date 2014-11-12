@@ -1195,11 +1195,6 @@ namespace qpp
 
             // END EXCEPTION CHECKS
 
-            auto multiply = [](const std::size_t x, const std::size_t y) -> std::size_t
-            {
-                return x * y;
-            };
-
             std::size_t D = rstate.rows(); // total dimension
 
             // construct the table of A^i and (A^dagger)^i
