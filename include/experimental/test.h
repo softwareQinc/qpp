@@ -1166,10 +1166,6 @@ namespace qpp
                 if (ctrl[i] != d)
                     throw Exception("qpp::experimental::applyCTRL()", Exception::Type::DIMS_NOT_EQUAL);
 
-            // check that gate matches the dimensions of the subsys
-            if (!internal::_check_dims_match_mat(subsys, rA))
-                throw Exception("qpp::experimental::applyCTRL()", Exception::Type::MATRIX_MISMATCH_SUBSYS);
-
             // check that dimension is valid
             if (!internal::_check_dims(dims))
                 throw Exception("qpp::experimental::applyCTRL()", Exception::Type::DIMS_INVALID);
@@ -1177,6 +1173,13 @@ namespace qpp
             // check subsys is valid w.r.t. dims
             if (!internal::_check_subsys_match_dims(subsys, dims))
                 throw Exception("qpp::experimental::applyCTRL()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+            // check that gate matches the dimensions of the subsys
+            std::vector<std::size_t> subsys_dims(subsys.size());
+            for (std::size_t i = 0; i < subsys.size(); ++i)
+                subsys_dims[i] = dims[subsys[i]];
+            if (!internal::_check_dims_match_mat(subsys_dims, rA))
+                throw Exception("qpp::experimental::applyCTRL()", Exception::Type::MATRIX_MISMATCH_SUBSYS);
 
             std::vector<std::size_t> ctrlgate = ctrl; // ctrl + gate subsystem vector
             ctrlgate.insert(std::end(ctrlgate), std::begin(subsys), std::end(subsys));
@@ -1480,7 +1483,10 @@ namespace qpp
                 throw Exception("qpp::experimental::apply()", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
             // check that gate matches the dimensions of the subsys
-            if (!internal::_check_dims_match_mat(subsys, rA))
+            std::vector<std::size_t> subsys_dims(subsys.size());
+            for (std::size_t i = 0; i < subsys.size(); ++i)
+                subsys_dims[i] = dims[subsys[i]];
+            if (!internal::_check_dims_match_mat(subsys_dims, rA))
                 throw Exception("qpp::experimental::apply()", Exception::Type::MATRIX_MISMATCH_SUBSYS);
 
             if (internal::_check_col_vector(rstate)) // we have a ket
@@ -1541,12 +1547,16 @@ namespace qpp
             if (!internal::_check_subsys_match_dims(subsys, dims))
                 throw Exception("qpp::experimental::channel()", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
+            std::vector<std::size_t> subsys_dims(subsys.size());
+            for (std::size_t i = 0; i < subsys.size(); ++i)
+                subsys_dims[i] = dims[subsys[i]];
+
             // check the Kraus operators
             if (!internal::_check_nonzero_size(Ks))
                 throw Exception("qpp::experimental::channel()", Exception::Type::ZERO_SIZE);
             if (!internal::_check_square_mat(Ks[0]))
                 throw Exception("qpp::experimental::channel()", Exception::Type::MATRIX_NOT_SQUARE);
-            if (!internal::_check_dims_match_mat(subsys, Ks[0]))
+            if (!internal::_check_dims_match_mat(subsys_dims, Ks[0]))
                 throw Exception("qpp::experimental::channel()", Exception::Type::MATRIX_MISMATCH_SUBSYS);
             for (auto &&it : Ks)
                 if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
