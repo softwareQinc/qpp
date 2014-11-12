@@ -59,7 +59,8 @@ int main()
         cmat rho_B = correction_B * output_m_B * adjoint(correction_B);
         std::cout << ">> Bob's final state (after correction): " << std::endl;
         std::cout << disp(rho_B) << std::endl;
-        std::cout << ">> Norm difference: " << norm(rho_B - prj(psi_a)) << std::endl; // verification
+        // verification
+        std::cout << ">> Norm difference: " << norm(rho_B - prj(psi_a)) << std::endl;
     }
 
     // Qudit dense coding
@@ -168,6 +169,7 @@ int main()
                 + schmidtcoeff(psi, {2, 2})(1) * kron(U.col(1), V.col(1));
         std::cout << ">> State psi reconstructed from the Schmidt decomposition: " << std::endl;
         std::cout << disp(psi_from_schmidt) << std::endl;
+        // verification
         std::cout << ">> Norm difference: " << norm(psi - psi_from_schmidt) << std::endl;
     }
 

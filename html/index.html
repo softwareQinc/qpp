@@ -107,7 +107,8 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="line">        <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> rho_B = correction_B * output_m_B * <a class="code" href="namespaceqpp.html#ac541afad6657467d9bd83c69345880a2">adjoint</a>(correction_B);</div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Bob&#39;s final state (after correction): &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">        std::cout &lt;&lt; <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(rho_B) &lt;&lt; std::endl;</div>
-<div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Norm difference: &quot;</span> &lt;&lt; <a class="code" href="namespaceqpp.html#af2e4740854c958579228593dd639aa6c">norm</a>(rho_B - <a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>(psi_a)) &lt;&lt; std::endl; <span class="comment">// verification</span></div>
+<div class="line">        <span class="comment">// verification</span></div>
+<div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Norm difference: &quot;</span> &lt;&lt; <a class="code" href="namespaceqpp.html#af2e4740854c958579228593dd639aa6c">norm</a>(rho_B - <a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>(psi_a)) &lt;&lt; std::endl;</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// Qudit dense coding</span></div>
@@ -216,6 +217,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="line">                + <a class="code" href="namespaceqpp.html#a810c85eb9d8b64d7b42655713d7c16f3">schmidtcoeff</a>(psi, {2, 2})(1) * <a class="code" href="namespaceqpp.html#a3b2bafdce8302c9ac34ab328ec84a3f7">kron</a>(U.col(1), V.col(1));</div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; State psi reconstructed from the Schmidt decomposition: &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">        std::cout &lt;&lt; <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(psi_from_schmidt) &lt;&lt; std::endl;</div>
+<div class="line">        <span class="comment">// verification</span></div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Norm difference: &quot;</span> &lt;&lt; <a class="code" href="namespaceqpp.html#af2e4740854c958579228593dd639aa6c">norm</a>(psi - psi_from_schmidt) &lt;&lt; std::endl;</div>
 <div class="line">    }</div>
 <div class="line"></div>
@@ -289,7 +291,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 12 2014 18:47:05 for quantum++ by
+    <li class="footer">Generated on Wed Nov 12 2014 18:50:27 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
