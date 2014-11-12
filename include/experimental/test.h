@@ -1195,7 +1195,7 @@ namespace qpp
             // construct the table of A^i and (A^dagger)^i
             std::vector<DynMat<typename Derived1::Scalar>> Ai;
             std::vector<DynMat<typename Derived1::Scalar>> Aidagger;
-            for (std::size_t i = 0; i < d; ++i)
+            for (std::size_t i = 0; i < std::max(d, (std::size_t) 2); ++i)
             {
                 Ai.push_back(powm(rA, i));
                 Aidagger.push_back(powm(adjoint(rA), i));
@@ -1207,8 +1207,7 @@ namespace qpp
             std::size_t ctrlsize = ctrl.size();
 
             std::size_t DA = rA.rows();
-            std::size_t DCTRLAbar = static_cast<std::size_t>(std::pow(d,
-                    n - ctrlgate.size()));
+            std::size_t DCTRLAbar = static_cast<std::size_t>(D / (DA * std::pow(d, ctrl.size())));
 
             std::size_t Cdims[maxn]; // local dimensions
             std::size_t CdimsA[maxn]; // local dimensions

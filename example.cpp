@@ -27,7 +27,6 @@ using namespace qpp;
 
 int main()
 {
-    /*
     // Qudit Teleportation
     {
         std::size_t D = 3; // size of the system
@@ -237,17 +236,5 @@ int main()
         t.tic();
         syspermute(randcmat, perm, dims);
         std::cout << ">> Took " << t.toc() << " seconds." << std::endl;
-    } */
-
-    cmat gate = randn<cmat>(6, 6);
-    ket psi = mket({1, 2},
-    {
-        2, 3
-    });
-    std::cout << disp(psi) << std::endl;
-
-    ket res1 = gate * psi;
-    ket res2 = experimental::apply(psi, gate, {0, 1}, {2, 3});
-
-    std::cout << norm(res2 - res1) << std::endl;
+    }
 }
