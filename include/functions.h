@@ -126,8 +126,8 @@ namespace qpp
     * \brief Determinant
     *
     * \param A Eigen expression
-    * \return Determinant of \a A, as a scalar in the same scalar field as \a A\n
-    * Returns \f$\pm \infty\f$ when the determinant overflows/underflows
+    * \return Determinant of \a A, as a scalar in the same scalar field as \a A.
+    * Returns \f$\pm \infty\f$ when the determinant overflows/underflows.
     */
     template<typename Derived>
     typename Derived::Scalar det(const Eigen::MatrixBase<Derived> &A)
