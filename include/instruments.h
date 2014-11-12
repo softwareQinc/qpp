@@ -26,7 +26,6 @@
 namespace qpp
 {
 // partial measurements
-
     /**
     * \brief  Measures the part \a subsys of the multi-partite state vector or density matrix \a A
     * using the set of Kraus operators \a Ks
