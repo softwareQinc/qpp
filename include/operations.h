@@ -27,7 +27,7 @@ namespace qpp
 
     /**
     * \brief Applies the controlled-gate \a A to the part \a subsys
-    * of a multipartite state vector or density matrix
+    * of a multi-partite state vector or density matrix
     *
     * \note The dimension of the gate \a A must match
     * the dimension of \a subsys
@@ -288,9 +288,8 @@ namespace qpp
 
             return result;
         }
-
             //************ density matrix ************//
-        else if (internal::_check_square_mat(rstate)) // we have a matrix
+        else if (internal::_check_square_mat(rstate)) // we have a density matrix
         {
             // check that dims match state matrix
             if (!internal::_check_dims_match_mat(dims, rstate))
@@ -337,7 +336,7 @@ namespace qpp
 
     /**
     * \brief Applies the gate \a A to the part \a subsys
-    * of a multipartite state vector or density matrix
+    * of a multi-partite state vector or density matrix
     *
     * \note The dimension of the gate \a A must match
     * the dimension of \a subsys
@@ -402,7 +401,7 @@ namespace qpp
 
             return applyCTRL(rstate, rA, {}, subsys, d);
         }
-        else if (internal::_check_square_mat(rstate)) // we have a matrix
+        else if (internal::_check_square_mat(rstate)) // we have a density matrix
         {
 
             // check that dims match state matrix
@@ -680,7 +679,7 @@ namespace qpp
     *  over the first subsystem in a bi-partite system
     *
     * \param A Eigen expression
-    * \param dims Dimensions of bi-partite system
+    * \param dims Dimensions of the bi-partite system
     * (must be a std::vector with 2 elements)
     * \return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$
     * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
@@ -740,7 +739,7 @@ namespace qpp
     * \brief Partial trace
     *
     * \param A Eigen expression
-    * \param dims Dimensions of bi-partite system
+    * \param dims Dimensions of the bi-partite system
     * (must be a std::vector with 2 elements)
     * \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$
     * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
@@ -1029,7 +1028,7 @@ namespace qpp
     *
     * \param A Eigen expression
     * \param perm Permutation
-    * \param dims Subsystems' dimensions
+    * \param dims Dimensions of the multi-partite system
     * \return Permuted system, as a dynamic matrix
     * over the same scalar field as \a A
     */
@@ -1109,7 +1108,6 @@ namespace qpp
 
             return result;
         }
-
         else if (internal::_check_square_mat(rA)) // we have a square matrix
         {
             std::size_t cdims[2 * maxn];

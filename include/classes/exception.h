@@ -60,9 +60,9 @@ namespace qpp
             /*!< Eigen::Matrix is not square nor a row vector */
                     MATRIX_NOT_SQUARE_OR_VECTOR, //!< MATRIX_NOT_SQUARE_OR_VECTOR
             /*!< Eigen::Matrix is not square nor a row/column vector */
-                    MATRIX_MISMATCH_SUBSYS,        //!< SUBSYS_MISMATCH_MATRIX
+                    MATRIX_MISMATCH_SUBSYS,        //!< MATRIX_MISMATCH_SUBSYS
             /*! Matrix size mismatch subsystems' size (e.g. in
-             * apply(), or channel() */
+             * qpp::apply(), or qpp::channel() */
                     DIMS_INVALID,                //!< DIMS_INVALID
             /*!< std::vector<std::size_t> representing the dimensions
              * has zero size or contains zeros */

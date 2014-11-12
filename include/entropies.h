@@ -214,7 +214,7 @@ namespace qpp
     * \param A Eigen expression
     * \param subsysA Indexes of the first subsystem
     * \param subsysB Indexes of the second subsystem
-    * \param dims Subsystems' dimensions
+    * \param dims Dimensions of the multi-partite system
     * \return Mutual information between the 2 subsystems
     */
     template<typename Derived>

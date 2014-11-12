@@ -34,7 +34,7 @@ namespace qpp
     * \see qpp::schmidtprob()
     *
     * \param A Eigen expression
-    * \param dims Subsystems' dimensions
+    * \param dims Dimensions of the bi-partite system
     * \return Schmidt coefficients of \a A, as a complex dynamic column vector
     */
     template<typename Derived>
@@ -64,7 +64,7 @@ namespace qpp
     * \brief Schmidt basis on Alice's side
     *
     * \param A Eigen expression
-    * \param dims Subsystems' dimensions
+    * \param dims Dimensions of the bi-partite system
     * \return Unitary matrix \f$ U \f$ whose columns represent
     * the Schmidt basis vectors on Alice's side.
     */
@@ -93,7 +93,7 @@ namespace qpp
     * \brief Schmidt basis on Bob's side
     *
     * \param A Eigen expression
-    * \param dims Subsystems' dimensions
+    * \param dims Dimensions of the bi-partite system
     * \return Unitary matrix \f$ V \f$ whose columns represent
     * the Schmidt basis vectors on Bob's side.
     */
@@ -128,7 +128,7 @@ namespace qpp
     * \see qpp::schmidtcoeff()
     *
     * \param A Eigen expression
-    * \param dims Subsystems' dimensions
+    * \param dims Dimensions of the bi-partite system
     * \return Schmidt probabilites of \a A, as a real dynamic column vector
     */
     template<typename Derived>
@@ -163,7 +163,7 @@ namespace qpp
     * \see qpp::shannon()
     *
     * \param A Eigen expression
-    * \param dims Subsystems' dimensions
+    * \param dims Dimensions of the bi-partite system
     * \return Entanglement, with the logarithm in base 2
     */
     template<typename Derived>
@@ -224,7 +224,7 @@ namespace qpp
     * \brief Negativity of the bi-partite mixed state \a A
     *
     * \param A Eigen expression
-    * \param dims Subsystems' dimensions
+    * \param dims Dimensions of the bi-partite system
     * \return Negativity
     */
     template<typename Derived>
@@ -252,7 +252,7 @@ namespace qpp
     * \brief Logarithmic negativity of the bi-partite mixed state \a A
     *
     * \param A Eigen expression
-    * \param dims Subsystems' dimensions
+    * \param dims Dimensions of the bi-partite system
     * \return Logarithmic negativity, with the logarithm in base 2
     */
     template<typename Derived>

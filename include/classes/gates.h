@@ -179,7 +179,7 @@ namespace qpp
         }
 
         /**
-        * \brief Generates the multipartite multiple-controlled-\a A gate
+        * \brief Generates the multi-partite multiple-controlled-\a A gate
         * in matrix form
         *
         * \note The dimension of the gate \a A must match

@@ -34,7 +34,7 @@ namespace qpp
 
         /**
         * \brief Applies the gate \a A to the part \a subsys
-        * of a multipartite state vector or density matrix
+        * of a multi-partite state vector or density matrix
         *
         * \note The dimension of the gate \a A must match
         * the dimension of \a subsys
@@ -187,7 +187,7 @@ namespace qpp
                 }
                 return result;
             }
-            else if (internal::_check_square_mat(rstate)) // we have a matrix
+            else if (internal::_check_square_mat(rstate)) // we have a density matrix
             {
 
                 // check that dims match state matrix
@@ -501,7 +501,7 @@ namespace qpp
         }
 
         /**
-        * \brief Generates the multipartite multiple-controlled-\a A gate
+        * \brief Generates the multi-partite multiple-controlled-\a A gate
         * in matrix form
         *
         * \note The dimension of the gate \a A must match
@@ -1092,7 +1092,7 @@ namespace qpp
         std::ostream &disp(const cplx z, double chop = qpp::chop, std::ostream &os =
         std::cout)
         {
-// put the complex number inside an Eigen matrix
+            // put the complex number inside an Eigen matrix
             cmat A(1, 1);
             A(0, 0) = z;
             disp(A, chop, os);
@@ -1118,6 +1118,321 @@ namespace qpp
             os << std::endl;
             return os;
         }
+
+        /**
+        * \brief Applies the controlled-gate \a A to the part \a subsys
+        * of a multi-partite state vector or density matrix
+        *
+        * \note The dimension of the gate \a A must match
+        * the dimension of \a subsys.
+        * Also, all control subsystems in \a ctrl must have the same dimension.
+        *
+        * \param state Eigen expression
+        * \param A Eigen expression
+        * \param ctrl Control subsystem indexes
+        * \param subsys Subsystem indexes where the gate \a A is applied
+        * \param dims Dimensions of the multi-partite system
+        * \return CTRL-A gate applied to the part \a subsys of \a state
+        */
+        template<typename Derived1, typename Derived2>
+        DynMat<typename Derived1::Scalar> applyCTRL(
+                const Eigen::MatrixBase<Derived1> &state,
+                const Eigen::MatrixBase<Derived2> &A,
+                const std::vector<std::size_t> &ctrl,
+                const std::vector<std::size_t> &subsys,
+                const std::vector<std::size_t> &dims)
+        {
+            const DynMat<typename Derived1::Scalar> &rstate = state;
+            const DynMat<typename Derived2::Scalar> &rA = A;
+
+            // EXCEPTION CHECKS
+            // check types
+            if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
+                throw Exception("qpp::applyCTRL()", Exception::Type::TYPE_MISMATCH);
+
+            // check zero sizes
+            if (!internal::_check_nonzero_size(rA))
+                throw Exception("qpp::applyCTRL()", Exception::Type::ZERO_SIZE);
+
+            // check zero sizes
+            if (!internal::_check_nonzero_size(rstate))
+                throw Exception("qpp::applyCTRL()", Exception::Type::ZERO_SIZE);
+
+            // check square matrix for the gate
+            if (!internal::_check_square_mat(rA))
+                throw Exception("qpp::applyCTRL()", Exception::Type::MATRIX_NOT_SQUARE);
+
+            // check that all control subsystems have the same dimension
+            std::size_t d = ctrl[0];
+            for (std::size_t i = 1; i < ctrl.size(); ++i)
+                if (ctrl[i] != d)
+                    throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_NOT_EQUAL);
+
+            // check that gate matches the dimensions of the subsys
+            if (!internal::_check_dims_match_mat(subsys, rA))
+                throw Exception("qpp::applyCTRL()", Exception::Type::MATRIX_MISMATCH_SUBSYS);
+
+            // check that dimension is valid
+            if (!internal::_check_dims(dims))
+                throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_INVALID);
+
+            // find the total number of systems
+            std::size_t n = dims.size();
+
+            // check subsys is valid w.r.t. dims
+            if (!internal::_check_subsys_match_dims(subsys, dims))
+                throw Exception("qpp::applyCTRL()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+            std::vector<std::size_t> ctrlgate = ctrl; // ctrl + gate subsystem vector
+            ctrlgate.insert(std::end(ctrlgate), std::begin(subsys), std::end(subsys));
+            std::sort(std::begin(ctrlgate), std::end(ctrlgate));
+
+            // check that ctrl + gate subsystem is valid
+            // with respect to local dimensions
+            if (!internal::_check_subsys_match_dims(ctrlgate, dims))
+                throw Exception("qpp::applyCTRL()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+
+            // END EXCEPTION CHECKS
+
+            // construct the table of A^i and (A^dagger)^i
+            std::vector<DynMat<typename Derived1::Scalar>> Ai;
+            std::vector<DynMat<typename Derived1::Scalar>> Aidagger;
+            for (std::size_t i = 0; i < d; ++i)
+            {
+                Ai.push_back(powm(rA, i));
+                Aidagger.push_back(powm(adjoint(rA), i));
+            }
+
+            std::size_t ctrlsize = ctrl.size();
+
+            std::size_t DA = rA.rows();
+            std::size_t DCTRLAbar = static_cast<std::size_t>(std::pow(d,
+                    n - ctrlgate.size()));
+
+            std::size_t Cdims[maxn]; // local dimensions
+            std::size_t CdimsA[maxn]; // local dimensions
+            std::size_t CdimsCTRLAbar[maxn]; // local dimensions
+
+            std::vector<std::size_t> ctrlgatebar(n - ctrlgate.size()); // rest
+            std::vector<std::size_t> allsubsys(n); // all subsystems
+            std::iota(std::begin(allsubsys), std::end(allsubsys), 0);
+            // compute the complementary subsystem of ctrlgate w.r.t. dims
+            std::set_difference(std::begin(allsubsys), std::end(allsubsys),
+                    std::begin(ctrlgate), std::end(ctrlgate), std::begin(ctrlgatebar));
+
+            for (std::size_t k = 0; k < n; ++k)
+                Cdims[k] = dims[k];
+            for (std::size_t k = 0; k < subsys.size(); ++k)
+                CdimsA[k] = dims[subsys[k]];
+            for (std::size_t k = 0; k < n - ctrlgate.size(); ++k)
+                CdimsCTRLAbar[k] = dims[ctrlgatebar[k]];
+
+            // worker, computes the coefficient and the index for the ket case
+            // used in #pragma omp parallel for collapse
+            auto coeff_idx_ket = [=](std::size_t _i, std::size_t _m, std::size_t _r)
+                    -> std::pair<typename Derived1::Scalar, std::size_t>
+            {
+                std::size_t idx = 0;
+                typename Derived1::Scalar coeff = 0;
+
+                std::size_t Cmidx[maxn]; // the total multi-index
+                std::size_t CmidxA[maxn];// the gate part multi-index
+                std::size_t CmidxCTRLAbar[maxn];// the rest multi-index
+
+                // compute the index
+
+                // set the CTRL part
+                for (std::size_t k = 0; k < ctrl.size(); ++k)
+                {
+                    Cmidx[ctrl[k]] = _i;
+                }
+
+                // set the rest
+                internal::_n2multiidx(_r, n - ctrlgate.size(),
+                        CdimsCTRLAbar, CmidxCTRLAbar);
+                for (std::size_t k = 0; k < n - ctrlgate.size(); ++k)
+                {
+                    Cmidx[ctrlgatebar[k]] = CmidxCTRLAbar[k];
+                }
+
+                // set the A part
+                internal::_n2multiidx(_m, subsys.size(), CdimsA, CmidxA);
+                for (std::size_t k = 0; k < subsys.size(); ++k)
+                {
+                    Cmidx[subsys[k]] = CmidxA[k];
+                }
+
+                // we now got the total index
+                idx = internal::_multiidx2n(Cmidx, n, Cdims);
+
+                // compute the coefficient
+                for (std::size_t _n = 0; _n < DA; ++_n)
+                {
+                    internal::_n2multiidx(_n, subsys.size(), CdimsA, CmidxA);
+                    for (std::size_t k = 0; k < subsys.size(); ++k)
+                    {
+                        Cmidx[subsys[k]] = CmidxA[k];
+                    }
+                    coeff += Ai[_i](_m, _n) *
+                            rstate(internal::_multiidx2n(Cmidx, n, Cdims));
+                }
+
+                return std::make_pair(coeff, idx);
+            };
+
+            // worker, computes the coefficient and the index
+            // for the density matrix case
+            // used in #pragma omp parallel for collapse
+            auto coeff_idx_rho = [=](std::size_t _i1, std::size_t _m1,
+                    std::size_t _r1, std::size_t _i2, std::size_t _m2,
+                    std::size_t _r2)
+                    -> std::tuple<typename Derived1::Scalar, std::size_t, std::size_t>
+            {
+                std::size_t idxrow = 0;
+                std::size_t idxcol = 0;
+                typename Derived1::Scalar coeff = 0;
+
+                std::size_t Cmidxrow[maxn]; // the total row multi-index
+                std::size_t Cmidxcol[maxn];// the total col multi-index
+                std::size_t CmidxArow[maxn];// the gate part row multi-index
+                std::size_t CmidxAcol[maxn];// the gate part col multi-index
+                std::size_t CmidxCTRLAbarrow[maxn];// the rest row multi-index
+                std::size_t CmidxCTRLAbarcol[maxn];// the rest col multi-index
+
+                // compute the ket/bra indexes
+
+                // set the CTRL part
+                for (std::size_t k = 0; k < ctrl.size(); ++k)
+                {
+                    Cmidxrow[ctrl[k]] = _i1;
+                    Cmidxcol[ctrl[k]] = _i2;
+                }
+
+                // set the rest
+                internal::_n2multiidx(_r1, n - ctrlgate.size(),
+                        CdimsCTRLAbar, CmidxCTRLAbarrow);
+                internal::_n2multiidx(_r2, n - ctrlgate.size(),
+                        CdimsCTRLAbar, CmidxCTRLAbarcol);
+                for (std::size_t k = 0; k < n - ctrlgate.size(); ++k)
+                {
+                    Cmidxrow[ctrlgatebar[k]] = CmidxCTRLAbarrow[k];
+                    Cmidxcol[ctrlgatebar[k]] = CmidxCTRLAbarcol[k];
+                }
+
+                // set the A part
+                internal::_n2multiidx(_m1, subsys.size(), CdimsA, CmidxArow);
+                internal::_n2multiidx(_m2, subsys.size(), CdimsA, CmidxAcol);
+                for (std::size_t k = 0; k < subsys.size(); ++k)
+                {
+                    Cmidxrow[subsys[k]] = CmidxArow[k];
+                    Cmidxcol[subsys[k]] = CmidxAcol[k];
+                }
+
+                // we now got the total row/col indexes
+                idxrow = internal::_multiidx2n(Cmidxrow, n, Cdims);
+                idxcol = internal::_multiidx2n(Cmidxcol, n, Cdims);
+
+                // compute the coefficient
+                for (std::size_t _n1 = 0; _n1 < DA; ++_n1)
+                {
+                    internal::_n2multiidx(_n1, subsys.size(), CdimsA, CmidxArow);
+                    for (std::size_t k = 0; k < subsys.size(); ++k)
+                    {
+                        Cmidxrow[subsys[k]] = CmidxArow[k];
+                    }
+                    for (std::size_t _n2 = 0; _n2 < DA; ++_n2)
+                    {
+                        internal::_n2multiidx(_n2, subsys.size(), CdimsA, CmidxAcol);
+                        for (std::size_t k = 0; k < subsys.size(); ++k)
+                        {
+                            Cmidxcol[subsys[k]] = CmidxAcol[k];
+                        }
+                        coeff += Ai[_i1](_m1, _n1) *
+                                rstate(internal::_multiidx2n(Cmidxrow, n, Cdims),
+                                        internal::_multiidx2n(Cmidxcol, n, Cdims)) *
+                                Aidagger[_i2](_n2, _m2);
+                    }
+                }
+
+                return std::make_tuple(coeff, idxrow, idxcol);
+            };
+
+            //************ ket ************//
+            if (internal::_check_col_vector(rstate)) // we have a ket
+            {
+                // check that dims match state vector
+                if (!internal::_check_dims_match_cvect(dims, rstate))
+                    throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_MISMATCH_CVECTOR);
+
+                if (d == 1)
+                    return rstate;
+
+                DynMat<typename Derived1::Scalar> result = rstate;
+
+#pragma omp parallel for collapse(2)
+                for (std::size_t m = 0; m < DA; ++m)
+                    for (std::size_t r = 0; r < DCTRLAbar; ++r)
+                        if (ctrlsize == 0) // no control
+                        {
+                            result(coeff_idx_ket(1, m, r).second) = coeff_idx_ket(1, m,
+                                    r).first;
+                        }
+                        else
+                            for (std::size_t i = 0; i < d; ++i)
+                            {
+                                result(coeff_idx_ket(i, m, r).second) = coeff_idx_ket(i,
+                                        m, r).first;
+                            }
+
+                return result;
+            }
+                //************ density matrix ************//
+            else if (internal::_check_square_mat(rstate)) // we have a density matrix
+            {
+                // check that dims match state matrix
+                if (!internal::_check_dims_match_mat(dims, rstate))
+                    throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+                if (d == 1)
+                    return rstate;
+
+                DynMat<typename Derived1::Scalar> result = rstate;
+
+#pragma omp parallel for collapse(4)
+                for (std::size_t m1 = 0; m1 < DA; ++m1)
+                    for (std::size_t r1 = 0; r1 < DCTRLAbar; ++r1)
+                        for (std::size_t m2 = 0; m2 < DA; ++m2)
+                            for (std::size_t r2 = 0; r2 < DCTRLAbar; ++r2)
+                                if (ctrlsize == 0) // no control
+                                {
+                                    auto coeff_idxes = coeff_idx_rho(1, m1, r1, 1, m2,
+                                            r2);
+                                    result(std::get<1>(coeff_idxes),
+                                            std::get<2>(coeff_idxes)) = std::get<0>(
+                                            coeff_idxes);
+                                }
+                                else
+                                {
+                                    for (std::size_t i1 = 0; i1 < d; ++i1)
+                                        for (std::size_t i2 = 0; i2 < d; ++i2)
+                                        {
+                                            auto coeff_idxes = coeff_idx_rho(i1, m1, r1,
+                                                    i2, m2, r2);
+                                            result(std::get<1>(coeff_idxes),
+                                                    std::get<2>(coeff_idxes)) =
+                                                    std::get<0>(coeff_idxes);
+                                        }
+                                }
+                return result;
+            }
+
+                //************ Exception: not ket nor density matrix ************//
+            else
+                throw Exception("qpp::applyCTRL()",
+                        Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+        }
+
 
     } /* namespace experimental */
 } /* namespace qpp */
