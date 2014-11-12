@@ -90,7 +90,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="line">        std::cout &lt;&lt; <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(psi_a) &lt;&lt; std::endl;</div>
 <div class="line">        <a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a> input_aAB = <a class="code" href="namespaceqpp.html#a3b2bafdce8302c9ac34ab328ec84a3f7">kron</a>(psi_a, mes_AB); <span class="comment">// joint input state aAB</span></div>
 <div class="line">        <span class="comment">// output before measurement</span></div>
-<div class="line">        <a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a> output_aAB = <a class="code" href="namespaceqpp.html#ae8b303f3e5093c116f4b2a0e3d44bc88">apply</a>(input_aAB, Bell_aA, {0, 1}, 3, D);</div>
+<div class="line">        <a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a> output_aAB = <a class="code" href="namespaceqpp.html#a02a237b102353f57c7243356a82cba36">apply</a>(input_aAB, Bell_aA, {0, 1}, 3, D);</div>
 <div class="line">        <span class="keyword">auto</span> measured_aA = <a class="code" href="namespaceqpp.html#a27f5cf97f5ee0fbdeae163c0f77e28d6">measure</a>(<a class="code" href="namespaceqpp.html#ae846df6b2525ef728947e00c2074e8b6">ptrace2</a>(<a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>(output_aAB), {D * D, D}), <a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#a4c356975433e4929f12314a8b01d32a0">Id</a>(D * D)); <span class="comment">// measure on aA</span></div>
 <div class="line">        std::discrete_distribution&lt;std::size_t&gt; dd(measured_aA.first.begin(), measured_aA.first.end());</div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Alice&#39;s measurement probabilities: &quot;</span>;</div>
@@ -100,10 +100,10 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Alice&#39;s measurement result: &quot;</span>;</div>
 <div class="line">        std::cout &lt;&lt; <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(midx, <span class="stringliteral">&quot; &quot;</span>) &lt;&lt; std::endl;</div>
 <div class="line">        <span class="comment">// conditional result on B before correction</span></div>
-<div class="line">        <a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a> output_m_aAB = <a class="code" href="namespaceqpp.html#ae8b303f3e5093c116f4b2a0e3d44bc88">apply</a>(output_aAB, <a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>(<a class="code" href="namespaceqpp.html#a94ade48c09bb33df893d7ff62a098374">mket</a>(midx, D)), {0, 1}, 3, D) / std::sqrt(measured_aA.first[m]);</div>
+<div class="line">        <a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a> output_m_aAB = <a class="code" href="namespaceqpp.html#a02a237b102353f57c7243356a82cba36">apply</a>(output_aAB, <a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>(<a class="code" href="namespaceqpp.html#a94ade48c09bb33df893d7ff62a098374">mket</a>(midx, D)), {0, 1}, 3, D) / std::sqrt(measured_aA.first[m]);</div>
 <div class="line">        <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> correction_B = <a class="code" href="namespaceqpp.html#a3b4fd08d05e83656e8ce3153fe5a6f0b">powm</a>(<a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#ab00d8b91ac401243ae34dffac1358696">Zd</a>(D), midx[0]) * <a class="code" href="namespaceqpp.html#a3b4fd08d05e83656e8ce3153fe5a6f0b">powm</a>(<a class="code" href="namespaceqpp.html#ac541afad6657467d9bd83c69345880a2">adjoint</a>(<a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#abeb66223219626504ab3e2152fbd25ae">Xd</a>(D)), midx[1]); <span class="comment">// correction operator</span></div>
 <div class="line">        <span class="comment">// apply correction on B</span></div>
-<div class="line">        output_aAB = <a class="code" href="namespaceqpp.html#ae8b303f3e5093c116f4b2a0e3d44bc88">apply</a>(output_m_aAB, correction_B, {2}, 3, D);</div>
+<div class="line">        output_aAB = <a class="code" href="namespaceqpp.html#a02a237b102353f57c7243356a82cba36">apply</a>(output_m_aAB, correction_B, {2}, 3, D);</div>
 <div class="line">        <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> rho_B = <a class="code" href="namespaceqpp.html#a89291882069b2a76650a082029dc4e94">ptrace1</a>(<a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>(output_aAB), {D * D, D});</div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Bob&#39;s density operator: &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">        std::cout &lt;&lt; <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(rho_B) &lt;&lt; std::endl;</div>
@@ -129,9 +129,9 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="line">        <span class="comment">// Alice&#39;s operation</span></div>
 <div class="line">        <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> U_A = <a class="code" href="namespaceqpp.html#a3b4fd08d05e83656e8ce3153fe5a6f0b">powm</a>(<a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#ab00d8b91ac401243ae34dffac1358696">Zd</a>(D), midx[0]) * <a class="code" href="namespaceqpp.html#a3b4fd08d05e83656e8ce3153fe5a6f0b">powm</a>(<a class="code" href="namespaceqpp.html#ac541afad6657467d9bd83c69345880a2">adjoint</a>(<a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#abeb66223219626504ab3e2152fbd25ae">Xd</a>(D)), midx[1]);</div>
 <div class="line">        <span class="comment">// Alice encodes the message</span></div>
-<div class="line">        <a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a> psi_AB = <a class="code" href="namespaceqpp.html#ae8b303f3e5093c116f4b2a0e3d44bc88">apply</a>(mes_AB, U_A, {0}, 2, D);</div>
+<div class="line">        <a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a> psi_AB = <a class="code" href="namespaceqpp.html#a02a237b102353f57c7243356a82cba36">apply</a>(mes_AB, U_A, {0}, 2, D);</div>
 <div class="line">        <span class="comment">// Bob measures the joint system in the qudit Bell basis</span></div>
-<div class="line">        psi_AB = <a class="code" href="namespaceqpp.html#ae8b303f3e5093c116f4b2a0e3d44bc88">apply</a>(psi_AB, Bell_AB, {0, 1}, 2, D);</div>
+<div class="line">        psi_AB = <a class="code" href="namespaceqpp.html#a02a237b102353f57c7243356a82cba36">apply</a>(psi_AB, Bell_AB, {0, 1}, 2, D);</div>
 <div class="line">        <span class="keyword">auto</span> measured = <a class="code" href="namespaceqpp.html#a27f5cf97f5ee0fbdeae163c0f77e28d6">measure</a>(psi_AB, <a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#a4c356975433e4929f12314a8b01d32a0">Id</a>(D * D));</div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Bob&#39;s measurement probabilities: &quot;</span>;</div>
 <div class="line">        std::cout &lt;&lt; <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(measured.first, <span class="stringliteral">&quot;, &quot;</span>) &lt;&lt; std::endl;</div>
@@ -249,7 +249,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Nov 11 2014 07:52:00 for quantum++ by
+    <li class="footer">Generated on Tue Nov 11 2014 19:11:37 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
