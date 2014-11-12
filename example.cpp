@@ -42,7 +42,7 @@ int main()
         std::cout << disp(psi_a) << std::endl;
         ket input_aAB = kron(psi_a, mes_AB); // joint input state aAB
         // output before measurement
-        ket output_aAB = apply(input_aAB, Bell_aA, {0, 1}, 3, D);
+        ket output_aAB = apply(input_aAB, Bell_aA, {0, 1}, D);
         auto measured_aA = measure(ptrace2(prj(output_aAB), {D * D, D}), gt.Id(D * D)); // measure on aA
         std::discrete_distribution<std::size_t> dd(measured_aA.first.begin(), measured_aA.first.end());
         std::cout << ">> Alice's measurement probabilities: ";
@@ -52,10 +52,10 @@ int main()
         std::cout << ">> Alice's measurement result: ";
         std::cout << disp(midx, " ") << std::endl;
         // conditional result on B before correction
-        ket output_m_aAB = apply(output_aAB, prj(mket(midx, D)), {0, 1}, 3, D) / std::sqrt(measured_aA.first[m]);
+        ket output_m_aAB = apply(output_aAB, prj(mket(midx, D)), {0, 1}, D) / std::sqrt(measured_aA.first[m]);
         cmat correction_B = powm(gt.Zd(D), midx[0]) * powm(adjoint(gt.Xd(D)), midx[1]); // correction operator
         // apply correction on B
-        output_aAB = apply(output_m_aAB, correction_B, {2}, 3, D);
+        output_aAB = apply(output_m_aAB, correction_B, {2}, D);
         cmat rho_B = ptrace1(prj(output_aAB), {D * D, D});
         std::cout << ">> Bob's density operator: " << std::endl;
         std::cout << disp(rho_B) << std::endl;
@@ -81,9 +81,9 @@ int main()
         // Alice's operation
         cmat U_A = powm(gt.Zd(D), midx[0]) * powm(adjoint(gt.Xd(D)), midx[1]);
         // Alice encodes the message
-        ket psi_AB = apply(mes_AB, U_A, {0}, 2, D);
+        ket psi_AB = apply(mes_AB, U_A, {0}, D);
         // Bob measures the joint system in the qudit Bell basis
-        psi_AB = apply(psi_AB, Bell_AB, {0, 1}, 2, D);
+        psi_AB = apply(psi_AB, Bell_AB, {0, 1}, D);
         auto measured = measure(psi_AB, gt.Id(D * D));
         std::cout << ">> Bob's measurement probabilities: ";
         std::cout << disp(measured.first, ", ") << std::endl;

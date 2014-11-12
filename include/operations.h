@@ -36,7 +36,6 @@ namespace qpp
     * \param A Eigen expression
     * \param ctrl Control subsystem indexes
     * \param subsys Subsystem indexes where the gate \a A is applied
-    * \param n Total number of subsystems
     * \param d Local dimensions of all local Hilbert spaces (must all be equal)
     * \return CTRL-A gate applied to the part \a subsys of \a state
     */
@@ -45,7 +44,7 @@ namespace qpp
             const Eigen::MatrixBase<Derived1> &state,
             const Eigen::MatrixBase<Derived2> &A,
             const std::vector<std::size_t> &ctrl,
-            const std::vector<std::size_t> &subsys, std::size_t n,
+            const std::vector<std::size_t> &subsys,
             std::size_t d = 2)
     {
         const DynMat<typename Derived1::Scalar> &rstate = state;
@@ -72,13 +71,13 @@ namespace qpp
         if (static_cast<std::size_t>(rA.rows()) != std::pow(d, subsys.size()))
             throw Exception("qpp::applyCTRL()", Exception::Type::MATRIX_MISMATCH_SUBSYS);
 
-        // check out of range
-        if (n == 0)
-            throw Exception("qpp::applyCTRL()", Exception::Type::OUT_OF_RANGE);
-
         // check that dimension is valid
         if (d == 0)
             throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_INVALID);
+
+        // find the number of systems
+        double nd = std::log2(rstate.rows()) / std::log2(d);
+        std::size_t n = static_cast<std::size_t>(nd);
 
         std::vector<std::size_t> dims(n, d); // local dimensions vector
 
@@ -265,8 +264,7 @@ namespace qpp
         {
             // check that dims match state vector
             if (!internal::_check_dims_match_cvect(dims, rstate))
-                throw Exception("qpp::applyCTRL()",
-                        Exception::Type::DIMS_MISMATCH_CVECTOR);
+                throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_MISMATCH_CVECTOR);
 
             if (d == 1)
                 return rstate;
@@ -347,7 +345,6 @@ namespace qpp
     * \param state Eigen expression
     * \param A Eigen expression
     * \param subsys Subsystem indexes where the gate \a A is applied
-    * \param n Total number of subsystems
     * \param d Local dimensions of all local Hilbert spaces (must all be equal)
     * \return Gate \a A applied to the part \a subsys of \a state
     */
@@ -355,7 +352,7 @@ namespace qpp
     DynMat<typename Derived1::Scalar> apply(
             const Eigen::MatrixBase<Derived1> &state,
             const Eigen::MatrixBase<Derived2> &A,
-            const std::vector<std::size_t> &subsys, std::size_t n,
+            const std::vector<std::size_t> &subsys,
             std::size_t d = 2)
     {
         const DynMat<typename Derived1::Scalar> &rstate = state;
@@ -379,13 +376,13 @@ namespace qpp
         if (!internal::_check_square_mat(rA))
             throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE);
 
-        // check out of range
-        if (n == 0)
-            throw Exception("qpp::apply()", Exception::Type::OUT_OF_RANGE);
-
         // check that dimension is valid
         if (d == 0)
             throw Exception("qpp::apply()", Exception::Type::DIMS_INVALID);
+
+        // find the number of systems
+        double nd = std::log2(rstate.rows()) / std::log2(d);
+        std::size_t n = static_cast<std::size_t>(nd);
 
         std::vector<std::size_t> dims(n, d); // local dimensions vector
 
@@ -403,7 +400,7 @@ namespace qpp
             if (!internal::_check_dims_match_cvect(dims, rstate))
                 throw Exception("qpp::apply()", Exception::Type::DIMS_MISMATCH_CVECTOR);
 
-            return applyCTRL(rstate, rA, {}, subsys, n, d);
+            return applyCTRL(rstate, rA, {}, subsys, d);
         }
         else if (internal::_check_square_mat(rstate)) // we have a matrix
         {
@@ -412,7 +409,7 @@ namespace qpp
             if (!internal::_check_dims_match_mat(dims, rstate))
                 throw Exception("qpp::apply()", Exception::Type::DIMS_MISMATCH_MATRIX);
 
-            return applyCTRL(rstate, rA, {}, subsys, n, d);;
+            return applyCTRL(rstate, rA, {}, subsys, d);;
         }
         else
             throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
@@ -467,14 +464,12 @@ namespace qpp
     * \param rho Eigen expression
     * \param Ks Set of Kraus operators
     * \param subsys Subsystems' indexes
-    * \param n Total number of subsystems
     * \param d Local dimensions of all local Hilbert spaces (must all be equal)
     * \return Output density matrix after the action of the channel
     */
     template<typename Derived>
     cmat channel(const Eigen::MatrixBase<Derived> &rho, const std::vector<cmat> &Ks,
-            const std::vector<std::size_t> &subsys, std::size_t n,
-            std::size_t d = 2)
+            const std::vector<std::size_t> &subsys, std::size_t d = 2)
     {
         const cmat &rrho = rho;
 
@@ -487,13 +482,13 @@ namespace qpp
         if (!internal::_check_square_mat(rrho))
             throw Exception("qpp::channel()", Exception::Type::MATRIX_NOT_SQUARE);
 
-        // check out of range
-        if (n == 0)
-            throw Exception("qpp::channel()", Exception::Type::OUT_OF_RANGE);
-
         // check that dimension is valid
         if (d == 0)
             throw Exception("qpp::channel()", Exception::Type::DIMS_INVALID);
+
+        // find the number of systems
+        double nd = std::log2(rrho.rows()) / std::log2(d);
+        std::size_t n = static_cast<std::size_t>(nd);
 
         std::vector<std::size_t> dims(n, d); // local dimensions vector
 
@@ -520,7 +515,7 @@ namespace qpp
 
         for (std::size_t i = 0; i < Ks.size(); ++i)
         {
-            result += apply(rrho, Ks[i], subsys, n, d);
+            result += apply(rrho, Ks[i], subsys, d);
         }
         return result;
     }
