@@ -350,7 +350,7 @@ namespace qpp
     * \param A Eigen expression
     * \param ctrl Control subsystem indexes
     * \param subsys Subsystem indexes where the gate \a A is applied
-    * \param d Local dimensions of all local Hilbert spaces (must all be equal)
+    * \param d Subsystem dimensions
     * \return CTRL-A gate applied to the part \a subsys of \a state
     */
     template<typename Derived1, typename Derived2>
@@ -461,7 +461,7 @@ namespace qpp
     * \param state Eigen expression
     * \param A Eigen expression
     * \param subsys Subsystem indexes where the gate \a A is applied
-    * \param d Local dimensions of all local Hilbert spaces (must all be equal)
+    * \param d Subsystem dimensions
     * \return Gate \a A applied to the part \a subsys of \a state
     */
     template<typename Derived1, typename Derived2>
@@ -594,7 +594,7 @@ namespace qpp
     * \param rho Eigen expression
     * \param Ks Set of Kraus operators
     * \param subsys Subsystems' indexes where the Kraus operators \a Ks are applied
-    * \param d Local dimensions of all local Hilbert spaces (must all be equal)
+    * \param d Subsystem dimensions
     * \return Output density matrix after the action of the channel
     */
     template<typename Derived>
@@ -1117,8 +1117,8 @@ namespace qpp
     /**
     * \brief System permutation
     *
-    * Permutes the subsystems in a state vector or density matrix\n
-    * The qubit \a perm[\a i] is permuted to the location \a i
+    * Permutes the subsystems in a state vector or density matrix.
+    * The qubit \a perm[\a i] is permuted to the location \a i.
     *
     * \param A Eigen expression
     * \param perm Permutation

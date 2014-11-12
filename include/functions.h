@@ -144,7 +144,7 @@ namespace qpp
     /**
     * \brief Logarithm of the determinant
     *
-    * Especially useful when the determinant overflows/underflows\n
+    * Useful when the determinant overflows/underflows
     *
     * \param A Eigen expression
     * \return Logarithm of the determinant of \a A, as a scalar
@@ -556,8 +556,8 @@ namespace qpp
     /**
     * \brief Matrix power
     *
-    * Uses the spectral decomposition of \a A to compute the matrix power\n
-    * By convention \f$A^0 = I\f$
+    * Uses the spectral decomposition of \a A to compute the matrix power.
+    * By convention \f$A^0 = I\f$.
     *
     * \param A Eigen expression
     * \param z Complex number
@@ -598,8 +598,8 @@ namespace qpp
     /**
     * \brief Matrix power
     *
-    * Explicitly multiplies the matrix \a A with itself \a n times\n
-    * By convention \f$A^0 = I\f$
+    * Explicitly multiplies the matrix \a A with itself \a n times.
+    * By convention \f$A^0 = I\f$.
     *
     * \param A Eigen expression
     * \param n Non-negative integer
@@ -691,7 +691,7 @@ namespace qpp
     // Kronecker product of multiple matrices, preserve return type
     // variadic template
     /**
-    * \brief Kronecker product (variadic overload)
+    * \brief Kronecker product
     *
     * Used to stop the recursion for the variadic template version of
     * qpp::kron()
@@ -706,7 +706,7 @@ namespace qpp
     }
 
     /**
-    * \brief Kronecker product (variadic overload)
+    * \brief Kronecker product
     *
     * \param head Eigen expression
     * \param tail Variadic Eigen expression (zero or more parameters)
@@ -721,7 +721,7 @@ namespace qpp
     }
 
     /**
-    * \brief Kronecker product (std::vector overload)
+    * \brief Kronecker product
     *
     * \param As std::vector of Eigen expressions
     * \return Kronecker product of all elements in \a As,
@@ -749,7 +749,7 @@ namespace qpp
     // Kronecker product of a list of matrices, preserve return type
     // deduce the template parameters from initializer_list
     /**
-    * \brief Kronecker product (std::initializer_list overload)
+    * \brief Kronecker product
     *
     * \param As std::initializer_list of Eigen expressions,
     * such as \a {A1, A2, ... ,Ak}
@@ -825,8 +825,8 @@ namespace qpp
     /**
     * \brief Commutator
     *
-    *  Commutator \f$ [A,B] = AB - BA \f$\n
-    *  Both \a A and \a B must be Eigen expressions over the same scalar field
+    *  Commutator \f$ [A,B] = AB - BA \f$.
+    *  Both \a A and \a B must be Eigen expressions over the same scalar field.
     *
     * \param A Eigen expression
     * \param B Eigen expression
@@ -865,8 +865,8 @@ namespace qpp
     /**
     * \brief Anti-commutator
     *
-    *  Anti-commutator \f$ \{A,B\} = AB + BA \f$\n
-    *  Both \a A and \a B must be Eigen expressions over the same scalar field
+    *  Anti-commutator \f$ \{A,B\} = AB + BA \f$.
+    *  Both \a A and \a B must be Eigen expressions over the same scalar field.
     *
     * \param A Eigen expression
     * \param B Eigen expression
@@ -934,7 +934,7 @@ namespace qpp
     }
 
     /**
-    * \brief Gram-Schmidt orthogonalization (std::vector overload)
+    * \brief Gram-Schmidt orthogonalization
     *
     * \param Vs std::vector of Eigen expressions as column vectors
     * \return Gram-Schmidt vectors of \a Vs as columns of a dynamic matrix
@@ -1004,7 +1004,7 @@ namespace qpp
 
     // deduce the template parameters from initializer_list
     /**
-    * \brief Gram-Schmidt orthogonalization (std::initializer_list overload)
+    * \brief Gram-Schmidt orthogonalization
     *
     * \param Vs std::initializer_list of Eigen expressions as column vectors
     * \return Gram-Schmidt vectors of \a Vs as columns of a dynamic matrix
@@ -1017,7 +1017,7 @@ namespace qpp
     }
 
     /**
-    * \brief Gram-Schmidt orthogonalization (Eigen expression (matrix) overload)
+    * \brief Gram-Schmidt orthogonalization
     *
     * \param A Eigen expression, the input vectors are the columns of \a A
     * \return Gram-Schmidt vectors of the columns of \a A,
@@ -1092,12 +1092,12 @@ namespace qpp
     }
 
     /**
-    * \brief Multi-partite qudit ket (different dimensions overload)
+    * \brief Multi-partite qudit ket
     *
     * Constructs the multi-partite qudit ket \f$|\mathrm{mask}\rangle\f$,
-    * where \a mask is a std::vector of non-negative integers\n
+    * where \a mask is a std::vector of non-negative integers.
     * Each element in \a mask has to be smaller than the corresponding element
-    * in \a dims
+    * in \a dims.
     *
     * \param mask std::vector of non-negative integers
     * \param dims Dimensions of the multi-partite system
@@ -1136,15 +1136,15 @@ namespace qpp
     }
 
     /**
-    * \brief Multi-partite qudit ket (same dimensions overload)
+    * \brief Multi-partite qudit ket
     *
     * Constructs the multi-partite qudit ket \f$|\mathrm{mask}\rangle\f$,
-    * all subsystem having equal dimension \a d \n
+    * all subsystem having equal dimension \a d.
     * \a mask is a std::vector of non-negative integers, and
-    * each element in \a mask has to be strictly smaller than \a d
+    * each element in \a mask has to be strictly smaller than \a d.
     *
     * \param mask std::vector of non-negative integers
-    * \param d Subsystems' dimension
+    * \param d Subsystem dimensions
     * \return Multi-partite qudit state vector, as a complex dynamic column vector
     */
     ket mket(const std::vector<std::size_t> &mask, std::size_t d = 2)
@@ -1171,13 +1171,13 @@ namespace qpp
     }
 
     /**
-    * \brief Projector onto multi-partite qudit ket (different dimensions overload)
+    * \brief Projector onto multi-partite qudit ket
     *
     * Constructs the projector onto the multi-partite qudit ket
     * \f$|\mathrm{mask}\rangle\f$,
-    * where \a mask is a std::vector of non-negative integers\n
+    * where \a mask is a std::vector of non-negative integers.
     * Each element in \a mask has to be smaller than the corresponding element
-    * in \a dims
+    * in \a dims.
     *
     * \param mask std::vector of non-negative integers
     * \param dims Dimensions of the multi-partite system
@@ -1217,16 +1217,16 @@ namespace qpp
     }
 
     /**
-    * \brief Projector onto multi-partite qudit ket (same dimensions overload)
+    * \brief Projector onto multi-partite qudit ket
     *
     * Constructs the projector onto the multi-partite qudit ket
     * \f$|\mathrm{mask}\rangle\f$,
-    * all subsystem having equal dimension \a d \n
+    * all subsystem having equal dimension \a d.
     * \a mask is a std::vector of non-negative integers, and
-    * each element in \a mask has to be strictly smaller than \a d
+    * each element in \a mask has to be strictly smaller than \a d.
     *
     * \param mask std::vector of non-negative integers
-    * \param d Subsystems' dimension
+    * \param d Subsystem dimensions
     * \return Projector onto multi-partite qudit state vector,
     * as a complex dynamic matrix
     */

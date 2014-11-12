@@ -158,77 +158,77 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="comment">// std::initializer_list overload, avoids ambiguity for 2-element lists, see</span></div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="comment">// http://stackoverflow.com/questions/26750039/ambiguity-when-using-initializer-list-as-parameter</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a06e3ae31fe7cd58136a4072dcfc389e9">  109</a></span>&#160;    std::pair&lt;std::vector&lt;double&gt;, std::vector&lt;cmat&gt;&gt; <a class="code" href="namespaceqpp.html#a27f5cf97f5ee0fbdeae163c0f77e28d6">measure</a>(</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt; &amp;A,</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keyword">const</span> std::initializer_list&lt;cmat&gt; &amp;Ks)</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    {</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a27f5cf97f5ee0fbdeae163c0f77e28d6">measure</a>(A, std::vector&lt;cmat&gt;(Ks));</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    }</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a6bb62ddad1b66794b3cfd74d80f8aaf9">  126</a></span>&#160;    std::pair&lt;std::vector&lt;double&gt;, std::vector&lt;cmat&gt;&gt; <a class="code" href="namespaceqpp.html#a27f5cf97f5ee0fbdeae163c0f77e28d6">measure</a>(</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt; &amp;A, <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &amp;M)</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    {</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat&lt;typename Derived::Scalar&gt;</a> &amp;rA = A;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <span class="comment">// EXCEPTION CHECKS</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <span class="comment">// check zero-size</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(rA))</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::measure()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <span class="comment">// check the gate U</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(M))</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::measure()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">internal::_check_square_mat</a>(M))</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::measure()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cacb2cab32e9061c686a6664d06c8bac94">Exception::Type::MATRIX_NOT_SQUARE</a>);</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <span class="keywordflow">if</span> (M.rows() != rA.rows())</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::measure()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d">Exception::Type::DIMS_MISMATCH_MATRIX</a>);</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="comment">// END EXCEPTION CHECKS</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <span class="comment">// probabilities</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        std::vector&lt;double&gt; prob(M.rows());</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="comment">// resulting states</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        std::vector&lt;cmat&gt; outstates(M.rows());</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">internal::_check_square_mat</a>(rA)) <span class="comment">// square matrix</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        {</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;(M.rows()); ++i)</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            {</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                outstates[i] = cmat::Zero(rA.rows(), rA.rows());</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> tmp;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                <span class="comment">// un-normalized</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                tmp = <a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>((<a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a>) <a class="code" href="namespaceqpp.html#acc9597bacc39c501eb8e2e5e8530fcd8">evects</a>(M).col(i)) * rA</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                        * <a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>((<a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a>) <a class="code" href="namespaceqpp.html#acc9597bacc39c501eb8e2e5e8530fcd8">evects</a>(M).col(i));</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                prob[i] = std::abs(<a class="code" href="namespaceqpp.html#a1e1daff5450728504da1fdfedf8d8b54">trace</a>(tmp)); <span class="comment">// probability</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                <span class="keywordflow">if</span> (prob[i] &gt; <a class="code" href="namespaceqpp.html#a9a99ccccd473a9006dfaadb5761ac4f6">eps</a>)</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                    outstates[i] = tmp / prob[i]; <span class="comment">// normalized</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            }</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        }</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="namespaceqpp_1_1internal.html#add886736621946a87cbc404ad955a605">internal::_check_col_vector</a>(rA)) <span class="comment">// column vector</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        {</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;(M.rows()); ++i)</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            {</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                outstates[i] = ket::Zero(rA.rows());</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                <a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a> tmp;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                tmp = <a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>((<a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a>) <a class="code" href="namespaceqpp.html#acc9597bacc39c501eb8e2e5e8530fcd8">evects</a>(M).col(i)) * rA;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                <span class="comment">// probability</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                prob[i] = std::abs((<a class="code" href="namespaceqpp.html#ac541afad6657467d9bd83c69345880a2">adjoint</a>(tmp) * tmp).value());</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                <span class="keywordflow">if</span> (prob[i] &gt; <a class="code" href="namespaceqpp.html#a9a99ccccd473a9006dfaadb5761ac4f6">eps</a>)</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                    outstates[i] = tmp / std::sqrt(prob[i]); <span class="comment">// normalized</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            }</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        }</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::measure()&quot;</span>,</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                    <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7caf6ba7b51754d252579c9daa43dbbfd68">Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR</a>);</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        <span class="keywordflow">return</span> std::make_pair(prob, outstates);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    }</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;}</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment">/* namespace qpp */</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INCLUDE_INSTRUMENTS_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a06e3ae31fe7cd58136a4072dcfc389e9">  108</a></span>&#160;    std::pair&lt;std::vector&lt;double&gt;, std::vector&lt;cmat&gt;&gt; <a class="code" href="namespaceqpp.html#a27f5cf97f5ee0fbdeae163c0f77e28d6">measure</a>(</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt; &amp;A,</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keyword">const</span> std::initializer_list&lt;cmat&gt; &amp;Ks)</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    {</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a27f5cf97f5ee0fbdeae163c0f77e28d6">measure</a>(A, std::vector&lt;cmat&gt;(Ks));</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    }</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a6bb62ddad1b66794b3cfd74d80f8aaf9">  125</a></span>&#160;    std::pair&lt;std::vector&lt;double&gt;, std::vector&lt;cmat&gt;&gt; <a class="code" href="namespaceqpp.html#a27f5cf97f5ee0fbdeae163c0f77e28d6">measure</a>(</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt; &amp;A, <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &amp;M)</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    {</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat&lt;typename Derived::Scalar&gt;</a> &amp;rA = A;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        <span class="comment">// EXCEPTION CHECKS</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <span class="comment">// check zero-size</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(rA))</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::measure()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        <span class="comment">// check the gate U</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(M))</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::measure()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">internal::_check_square_mat</a>(M))</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::measure()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cacb2cab32e9061c686a6664d06c8bac94">Exception::Type::MATRIX_NOT_SQUARE</a>);</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <span class="keywordflow">if</span> (M.rows() != rA.rows())</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::measure()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d">Exception::Type::DIMS_MISMATCH_MATRIX</a>);</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <span class="comment">// END EXCEPTION CHECKS</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        <span class="comment">// probabilities</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        std::vector&lt;double&gt; prob(M.rows());</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <span class="comment">// resulting states</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        std::vector&lt;cmat&gt; outstates(M.rows());</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">internal::_check_square_mat</a>(rA)) <span class="comment">// square matrix</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        {</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;(M.rows()); ++i)</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            {</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                outstates[i] = cmat::Zero(rA.rows(), rA.rows());</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> tmp;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                <span class="comment">// un-normalized</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                tmp = <a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>((<a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a>) <a class="code" href="namespaceqpp.html#acc9597bacc39c501eb8e2e5e8530fcd8">evects</a>(M).col(i)) * rA</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                        * <a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>((<a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a>) <a class="code" href="namespaceqpp.html#acc9597bacc39c501eb8e2e5e8530fcd8">evects</a>(M).col(i));</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                prob[i] = std::abs(<a class="code" href="namespaceqpp.html#a1e1daff5450728504da1fdfedf8d8b54">trace</a>(tmp)); <span class="comment">// probability</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                <span class="keywordflow">if</span> (prob[i] &gt; <a class="code" href="namespaceqpp.html#a9a99ccccd473a9006dfaadb5761ac4f6">eps</a>)</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                    outstates[i] = tmp / prob[i]; <span class="comment">// normalized</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            }</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        }</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="namespaceqpp_1_1internal.html#add886736621946a87cbc404ad955a605">internal::_check_col_vector</a>(rA)) <span class="comment">// column vector</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        {</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;(M.rows()); ++i)</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            {</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                outstates[i] = ket::Zero(rA.rows());</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                <a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a> tmp;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                tmp = <a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>((<a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a>) <a class="code" href="namespaceqpp.html#acc9597bacc39c501eb8e2e5e8530fcd8">evects</a>(M).col(i)) * rA;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                <span class="comment">// probability</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                prob[i] = std::abs((<a class="code" href="namespaceqpp.html#ac541afad6657467d9bd83c69345880a2">adjoint</a>(tmp) * tmp).value());</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                <span class="keywordflow">if</span> (prob[i] &gt; <a class="code" href="namespaceqpp.html#a9a99ccccd473a9006dfaadb5761ac4f6">eps</a>)</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                    outstates[i] = tmp / std::sqrt(prob[i]); <span class="comment">// normalized</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            }</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        }</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::measure()&quot;</span>,</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                    <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7caf6ba7b51754d252579c9daa43dbbfd68">Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR</a>);</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        <span class="keywordflow">return</span> std::make_pair(prob, outstates);</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    }</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;}</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INCLUDE_INSTRUMENTS_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="namespaceqpp_html_a27f5cf97f5ee0fbdeae163c0f77e28d6"><div class="ttname"><a href="namespaceqpp.html#a27f5cf97f5ee0fbdeae163c0f77e28d6">qpp::measure</a></div><div class="ttdeci">std::pair&lt; std::vector&lt; double &gt;, std::vector&lt; cmat &gt; &gt; measure(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; cmat &gt; &amp;Ks)</div><div class="ttdoc">Measures the state A using the set of Kraus operators Ks. </div><div class="ttdef"><b>Definition:</b> instruments.h:38</div></div>
 <div class="ttc" id="namespaceqpp_html_a9a99ccccd473a9006dfaadb5761ac4f6"><div class="ttname"><a href="namespaceqpp.html#a9a99ccccd473a9006dfaadb5761ac4f6">qpp::eps</a></div><div class="ttdeci">constexpr double eps</div><div class="ttdoc">Used to decide whether a number or expression in double precision is zero or not. ...</div><div class="ttdef"><b>Definition:</b> constants.h:70</div></div>
 <div class="ttc" id="namespaceqpp_html_add021f91288df8af3125cf4b2c8806e6"><div class="ttname"><a href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">qpp::ket</a></div><div class="ttdeci">DynColVect&lt; cplx &gt; ket</div><div class="ttdoc">Complex (double precision) dynamic Eigen column vector. </div><div class="ttdef"><b>Definition:</b> types.h:63</div></div>
@@ -253,7 +253,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="instruments_8h.html">instruments.h</a></li>
-    <li class="footer">Generated on Tue Nov 11 2014 23:31:07 for quantum++ by
+    <li class="footer">Generated on Tue Nov 11 2014 23:57:17 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

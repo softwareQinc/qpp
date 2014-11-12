@@ -189,7 +189,7 @@ namespace qpp
         * \param ctrl Control subsystem indexes
         * \param subsys Subsystem indexes where the gate \a A is applied
         * \param n Total number of subsystes
-        * \param d Local dimensions of all local Hilbert spaces (must all be equal)
+        * \param d Subsystem dimensions
         * \return CTRL-A gate, as a matrix over the same scalar field as \a A
         */
         template<typename Derived>
@@ -345,8 +345,8 @@ namespace qpp
         /**
         * \brief Expands out
         *
-        *  Expands out \a A as a matrix in a multi-partite system\n
-        *  Faster than using qpp::kron(I, I, ..., I, A, I, ..., I)
+        *  Expands out \a A as a matrix in a multi-partite system.
+        *  Faster than using qpp::kron(I, I, ..., I, A, I, ..., I).
         *
         * \param A Eigen expression
         * \param pos Position

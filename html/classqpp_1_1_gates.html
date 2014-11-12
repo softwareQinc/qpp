@@ -281,7 +281,7 @@ template&lt;typename Derived &gt; </div>
     <tr><td class="paramname">ctrl</td><td>Control subsystem indexes </td></tr>
     <tr><td class="paramname">subsys</td><td>Subsystem indexes where the gate <em>A</em> is applied </td></tr>
     <tr><td class="paramname">n</td><td>Total number of subsystes </td></tr>
-    <tr><td class="paramname">d</td><td>Local dimensions of all local Hilbert spaces (must all be equal) </td></tr>
+    <tr><td class="paramname">d</td><td>Subsystem dimensions </td></tr>
   </table>
   </dd>
 </dl>
@@ -330,8 +330,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Expands out. </p>
-<p>Expands out <em>A</em> as a matrix in a multi-partite system<br />
- Faster than using <a class="el" href="namespaceqpp.html#a3b2bafdce8302c9ac34ab328ec84a3f7" title="Kronecker product (variadic overload) ">qpp::kron</a>(I, I, ..., I, A, I, ..., I)</p>
+<p>Expands out <em>A</em> as a matrix in a multi-partite system. Faster than using <a class="el" href="namespaceqpp.html#a3b2bafdce8302c9ac34ab328ec84a3f7" title="Kronecker product. ">qpp::kron</a>(I, I, ..., I, A, I, ..., I).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -739,7 +738,7 @@ template&lt;typename Derived  = Eigen::MatrixXcd&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_gates.html">Gates</a></li>
-    <li class="footer">Generated on Tue Nov 11 2014 23:31:08 for quantum++ by
+    <li class="footer">Generated on Tue Nov 11 2014 23:57:18 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -123,8 +123,8 @@ namespace qpp
     /**
     * \brief Schmidt probabilities of the bi-partite pure state \a A
     *
-    * Defined as the squares of the Schmidt coefficients\n
-    * The sum of the Schmidt probabilities equals 1
+    * Defined as the squares of the Schmidt coefficients.
+    * The sum of the Schmidt probabilities equals 1.
     * \see qpp::schmidtcoeff()
     *
     * \param A Eigen expression

@@ -98,7 +98,6 @@ namespace qpp
     // http://stackoverflow.com/questions/26750039/ambiguity-when-using-initializer-list-as-parameter
     /**
     * \brief Measures the state \a A using the set of Kraus operators \a Ks
-    * (std::initializer_list overload)
     *
     * \param A Eigen expression
     * \param Ks Set of Kraus operators

@@ -152,7 +152,7 @@ namespace qpp
 
     /**
     * \brief Tsallis-\f$\alpha\f$ entropy of the
-    * probability distribution/density matrix \a A, for \f$ \alpha\geq 0\f$\n
+    * probability distribution/density matrix \a A, for \f$ \alpha\geq 0\f$
     *
     * When \f$ \alpha\to 1\f$ the Tsallis entropy converges to the
     * Shannon/von-Neumann entropy, with the logarithm in base \f$ e \f$
