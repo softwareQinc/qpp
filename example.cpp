@@ -44,7 +44,7 @@ int main()
         ket input_aAB = kron(psi_a, mes_AB); // joint input state aAB
         // output before measurement
         ket output_aAB = apply(input_aAB, Bell_aA, {0, 1}, D);
-        auto measured_aA = measure(output_aAB, gt.Id(D * D), {0, 1}, {D, D, D}); // measure on aA
+        auto measured_aA = measure(output_aAB, gt.Id(D * D), {0, 1}, D); // measure on aA
         std::size_t m = std::get<0>(measured_aA); // measurement result
         auto midx = n2multiidx(m, {D, D});
         std::cout << ">> Alice's measurement result: ";
