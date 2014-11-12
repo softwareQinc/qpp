@@ -481,7 +481,7 @@ namespace qpp
         std::size_t n = static_cast<std::size_t>(std::log2(rstate.rows()) / std::log2(d));
         std::vector<std::size_t> dims(n, d); // local dimensions vector
 
-        return applyCTRL(rstate, rA, {}, subsys, dims);;
+        return apply(rstate, rA, subsys, dims);
     }
 
     /**

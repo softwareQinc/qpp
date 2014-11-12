@@ -496,7 +496,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;        std::size_t n = <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(std::log2(rstate.rows()) / std::log2(d));</div>
 <div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;        std::vector&lt;std::size_t&gt; dims(n, d); <span class="comment">// local dimensions vector</span></div>
 <div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;</div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a1d88751cff72495fccdcfa77b74d1729">applyCTRL</a>(rstate, rA, {}, subsys, dims);;</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a15f5f4c236713542560dfeb8237c76f7">apply</a>(rstate, rA, subsys, dims);</div>
 <div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;    }</div>
 <div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;</div>
 <div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
@@ -1185,7 +1185,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="operations_8h.html">operations.h</a></li>
-    <li class="footer">Generated on Tue Nov 11 2014 22:41:31 for quantum++ by
+    <li class="footer">Generated on Tue Nov 11 2014 22:51:43 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
