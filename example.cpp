@@ -55,8 +55,9 @@ int main()
         cmat output_m_B = std::get<2>(measured_aA)[m];
         cmat correction_B = powm(gt.Zd(D), midx[0]) * powm(adjoint(gt.Xd(D)), midx[1]); // correction operator
         // apply correction on B
+        std::cout << ">> Bob must apply the correction operator Z^" << midx[0] << " X^" << D - midx[1] << std::endl;
         cmat rho_B = correction_B * output_m_B * adjoint(correction_B);
-        std::cout << ">> Bob's state: " << std::endl;
+        std::cout << ">> Bob's final state (after correction): " << std::endl;
         std::cout << disp(rho_B) << std::endl;
         std::cout << ">> Norm difference: " << norm(rho_B - prj(psi_a)) << std::endl; // verification
     }
@@ -75,7 +76,7 @@ int main()
         std::uniform_int_distribution<std::size_t> uid(0, D * D - 1);
         std::size_t m_A = uid(rdevs._rng); // sample, obtain the message index
         auto midx = n2multiidx(m_A, {D, D});
-        std::cout << ">> Alice sent: ";
+        std::cout << ">> Alice sent: " << m_A << " -> ";
         std::cout << disp(midx, " ") << std::endl;
         // Alice's operation
         cmat U_A = powm(gt.Zd(D), midx[0]) * powm(adjoint(gt.Xd(D)), midx[1]);

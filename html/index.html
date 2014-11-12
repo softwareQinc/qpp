@@ -103,8 +103,9 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="line">        <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> output_m_B = std::get&lt;2&gt;(measured_aA)[m];</div>
 <div class="line">        <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> correction_B = <a class="code" href="namespaceqpp.html#a3b4fd08d05e83656e8ce3153fe5a6f0b">powm</a>(<a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#ab00d8b91ac401243ae34dffac1358696">Zd</a>(D), midx[0]) * <a class="code" href="namespaceqpp.html#a3b4fd08d05e83656e8ce3153fe5a6f0b">powm</a>(<a class="code" href="namespaceqpp.html#ac541afad6657467d9bd83c69345880a2">adjoint</a>(<a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#abeb66223219626504ab3e2152fbd25ae">Xd</a>(D)), midx[1]); <span class="comment">// correction operator</span></div>
 <div class="line">        <span class="comment">// apply correction on B</span></div>
+<div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Bob must apply the correction operator Z^&quot;</span> &lt;&lt; midx[0] &lt;&lt; <span class="stringliteral">&quot; X^&quot;</span> &lt;&lt; D - midx[1] &lt;&lt; std::endl;</div>
 <div class="line">        <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> rho_B = correction_B * output_m_B * <a class="code" href="namespaceqpp.html#ac541afad6657467d9bd83c69345880a2">adjoint</a>(correction_B);</div>
-<div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Bob&#39;s state: &quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Bob&#39;s final state (after correction): &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">        std::cout &lt;&lt; <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(rho_B) &lt;&lt; std::endl;</div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Norm difference: &quot;</span> &lt;&lt; <a class="code" href="namespaceqpp.html#af2e4740854c958579228593dd639aa6c">norm</a>(rho_B - <a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>(psi_a)) &lt;&lt; std::endl; <span class="comment">// verification</span></div>
 <div class="line">    }</div>
@@ -123,7 +124,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="line">        std::uniform_int_distribution&lt;std::size_t&gt; uid(0, D * D - 1);</div>
 <div class="line">        std::size_t m_A = uid(<a class="code" href="namespaceqpp.html#ae470c1750d1cc895763d1902f3a6882d">rdevs</a>.<a class="code" href="classqpp_1_1_random_devices.html#a52ccfd3ac258f76480f1451e9972f15c">_rng</a>); <span class="comment">// sample, obtain the message index</span></div>
 <div class="line">        <span class="keyword">auto</span> midx = <a class="code" href="namespaceqpp.html#afbe051c49a6c9c5a1cbb6401f95143a8">n2multiidx</a>(m_A, {D, D});</div>
-<div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Alice sent: &quot;</span>;</div>
+<div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Alice sent: &quot;</span> &lt;&lt; m_A &lt;&lt; <span class="stringliteral">&quot; -&gt; &quot;</span>;</div>
 <div class="line">        std::cout &lt;&lt; <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(midx, <span class="stringliteral">&quot; &quot;</span>) &lt;&lt; std::endl;</div>
 <div class="line">        <span class="comment">// Alice&#39;s operation</span></div>
 <div class="line">        <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> U_A = <a class="code" href="namespaceqpp.html#a3b4fd08d05e83656e8ce3153fe5a6f0b">powm</a>(<a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#ab00d8b91ac401243ae34dffac1358696">Zd</a>(D), midx[0]) * <a class="code" href="namespaceqpp.html#a3b4fd08d05e83656e8ce3153fe5a6f0b">powm</a>(<a class="code" href="namespaceqpp.html#ac541afad6657467d9bd83c69345880a2">adjoint</a>(<a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#abeb66223219626504ab3e2152fbd25ae">Xd</a>(D)), midx[1]);</div>
@@ -288,7 +289,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 12 2014 18:15:49 for quantum++ by
+    <li class="footer">Generated on Wed Nov 12 2014 18:28:22 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
