@@ -22,10 +22,9 @@
 #ifndef INCLUDE_EXPERIMENTAL_TEST_H_
 #define INCLUDE_EXPERIMENTAL_TEST_H_
 
-// testing functions, do not use/modify
 /**
-* \namespace qpp::experimental Experimental/test functions,
-* do not use/modify these functions/classes
+* \namespace qpp::experimental Experimental/test functions/classes,
+* do not use or modify these functions/classes
 */
 namespace qpp
 {
