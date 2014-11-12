@@ -1523,34 +1523,34 @@ namespace qpp
             // EXCEPTION CHECKS
             // check zero sizes
             if (!internal::_check_nonzero_size(rrho))
-                throw Exception("qpp::experimental:channel()", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::channel()", Exception::Type::ZERO_SIZE);
 
             // check square matrix for the rho
             if (!internal::_check_square_mat(rrho))
-                throw Exception("qpp::experimental:channel()", Exception::Type::MATRIX_NOT_SQUARE);
+                throw Exception("qpp::experimental::channel()", Exception::Type::MATRIX_NOT_SQUARE);
 
             // check that dimension is valid
             if (!internal::_check_dims(dims))
-                throw Exception("qpp::experimental:channel()", Exception::Type::DIMS_INVALID);
+                throw Exception("qpp::experimental::channel()", Exception::Type::DIMS_INVALID);
 
             // check that dims match rho matrix
             if (!internal::_check_dims_match_mat(dims, rrho))
-                throw Exception("qpp::experimental:channel()", Exception::Type::DIMS_MISMATCH_MATRIX);
+                throw Exception("qpp::experimental::channel()", Exception::Type::DIMS_MISMATCH_MATRIX);
 
             // check subsys is valid w.r.t. dims
             if (!internal::_check_subsys_match_dims(subsys, dims))
-                throw Exception("qpp::experimental:channel()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+                throw Exception("qpp::experimental::channel()", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
             // check the Kraus operators
             if (!internal::_check_nonzero_size(Ks))
-                throw Exception("qpp::experimental:channel()", Exception::Type::ZERO_SIZE);
+                throw Exception("qpp::experimental::channel()", Exception::Type::ZERO_SIZE);
             if (!internal::_check_square_mat(Ks[0]))
-                throw Exception("qpp::experimental:channel()", Exception::Type::MATRIX_NOT_SQUARE);
+                throw Exception("qpp::experimental::channel()", Exception::Type::MATRIX_NOT_SQUARE);
             if (!internal::_check_dims_match_mat(subsys, Ks[0]))
-                throw Exception("qpp::experimental:channel()", Exception::Type::MATRIX_MISMATCH_SUBSYS);
+                throw Exception("qpp::experimental::channel()", Exception::Type::MATRIX_MISMATCH_SUBSYS);
             for (auto &&it : Ks)
                 if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-                    throw Exception("qpp::experimental:channel()", Exception::Type::DIMS_NOT_EQUAL);
+                    throw Exception("qpp::experimental::channel()", Exception::Type::DIMS_NOT_EQUAL);
 
             cmat result = cmat::Zero(rrho.rows(), rrho.rows());
 
