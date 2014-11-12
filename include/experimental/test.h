@@ -46,7 +46,7 @@ namespace qpp
         * \return Gate \a A applied to the part \a subsys of \a state
         */
         template<typename Derived1, typename Derived2>
-        DynMat<typename Derived1::Scalar> apply(
+        DynMat<typename Derived1::Scalar> apply_old(
                 const Eigen::MatrixBase<Derived1> &state,
                 const Eigen::MatrixBase<Derived2> &A,
                 const std::vector<std::size_t> &subsys,
@@ -262,7 +262,7 @@ namespace qpp
         * \return Output density matrix after the action of the channel
         */
         template<typename Derived>
-        cmat channel(const Eigen::MatrixBase<Derived> &rho, const std::vector<cmat> &Ks,
+        cmat channel_old(const Eigen::MatrixBase<Derived> &rho, const std::vector<cmat> &Ks,
                 const std::vector<std::size_t> &subsys,
                 const std::vector<std::size_t> &dims)
         {
@@ -1176,9 +1176,6 @@ namespace qpp
             if (!internal::_check_dims(dims))
                 throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_INVALID);
 
-            // find the total number of systems
-            std::size_t n = dims.size();
-
             // check subsys is valid w.r.t. dims
             if (!internal::_check_subsys_match_dims(subsys, dims))
                 throw Exception("qpp::applyCTRL()", Exception::Type::SUBSYS_MISMATCH_DIMS);
@@ -1192,10 +1189,7 @@ namespace qpp
             if (!internal::_check_subsys_match_dims(ctrlgate, dims))
                 throw Exception("qpp::applyCTRL()", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-
             // END EXCEPTION CHECKS
-
-            std::size_t D = rstate.rows(); // total dimension
 
             // construct the table of A^i and (A^dagger)^i
             std::vector<DynMat<typename Derived1::Scalar>> Ai;
@@ -1205,6 +1199,9 @@ namespace qpp
                 Ai.push_back(powm(rA, i));
                 Aidagger.push_back(powm(adjoint(rA), i));
             }
+
+            std::size_t D = rstate.rows(); // total dimension
+            std::size_t n = dims.size();   // total number of subsystems
 
             std::size_t ctrlsize = ctrl.size();
 
@@ -1435,6 +1432,136 @@ namespace qpp
                         Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
         }
 
+        /**
+        * \brief Applies the gate \a A to the part \a subsys
+        * of a multi-partite state vector or density matrix
+        *
+        * \note The dimension of the gate \a A must match
+        * the dimension of \a subsys
+        *
+        * \param state Eigen expression
+        * \param A Eigen expression
+        * \param subsys Subsystem indexes where the gate \a A is applied
+        * \param dims Dimensions of the multi-partite system
+        * \return Gate \a A applied to the part \a subsys of \a state
+        */
+        template<typename Derived1, typename Derived2>
+        DynMat<typename Derived1::Scalar> apply(
+                const Eigen::MatrixBase<Derived1> &state,
+                const Eigen::MatrixBase<Derived2> &A,
+                const std::vector<std::size_t> &subsys,
+                const std::vector<std::size_t> &dims)
+        {
+            const DynMat<typename Derived1::Scalar> &rstate = state;
+            const DynMat<typename Derived2::Scalar> &rA = A;
+
+            // EXCEPTION CHECKS
+
+            // check types
+            if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
+                throw Exception("qpp::apply()", Exception::Type::TYPE_MISMATCH);
+
+            // check zero sizes
+            if (!internal::_check_nonzero_size(rA))
+                throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
+
+            // check zero sizes
+            if (!internal::_check_nonzero_size(rstate))
+                throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
+
+            // check square matrix for the gate
+            if (!internal::_check_square_mat(rA))
+                throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE);
+
+            // check that dimension is valid
+            if (!internal::_check_dims(dims))
+                throw Exception("qpp::apply()", Exception::Type::DIMS_INVALID);
+
+            // check subsys is valid w.r.t. dims
+            if (!internal::_check_subsys_match_dims(subsys, dims))
+                throw Exception("qpp::apply()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+            // check that gate matches the dimensions of the subsys
+            if (!internal::_check_dims_match_mat(subsys, rA))
+                throw Exception("qpp::apply()", Exception::Type::MATRIX_MISMATCH_SUBSYS);
+
+            if (internal::_check_col_vector(rstate)) // we have a ket
+            {
+                // check that dims match state vector
+                if (!internal::_check_dims_match_cvect(dims, rstate))
+                    throw Exception("qpp::apply()", Exception::Type::DIMS_MISMATCH_CVECTOR);
+
+                return applyCTRL(rstate, rA, {}, subsys, dims);
+            }
+            else if (internal::_check_square_mat(rstate)) // we have a density matrix
+            {
+
+                // check that dims match state matrix
+                if (!internal::_check_dims_match_mat(dims, rstate))
+                    throw Exception("qpp::apply()", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+                return applyCTRL(rstate, rA, {}, subsys, dims);;
+            }
+            else
+                throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+        }
+
+        /**
+        * \brief Applies the channel specified by the set of Kraus operators \a Ks to
+        * the part of the density matrix \a rho specified by \a subsys
+        *
+        * \param rho Eigen expression
+        * \param Ks Set of Kraus operators
+        * \param subsys Subsystems' indexes where the Kraus operators \a Ks are applied
+        * \param dims Dimensions of the multi-partite system
+        * \return Output density matrix after the action of the channel
+        */
+        template<typename Derived>
+        cmat channel(const Eigen::MatrixBase<Derived> &rho, const std::vector<cmat> &Ks,
+                const std::vector<std::size_t> &subsys, const std::vector<std::size_t> &dims)
+        {
+            const cmat &rrho = rho;
+
+            // EXCEPTION CHECKS
+            // check zero sizes
+            if (!internal::_check_nonzero_size(rrho))
+                throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
+
+            // check square matrix for the rho
+            if (!internal::_check_square_mat(rrho))
+                throw Exception("qpp::channel()", Exception::Type::MATRIX_NOT_SQUARE);
+
+            // check that dimension is valid
+            if (!internal::_check_dims(dims))
+                throw Exception("qpp::channel()", Exception::Type::DIMS_INVALID);
+
+            // check that dims match rho matrix
+            if (!internal::_check_dims_match_mat(dims, rrho))
+                throw Exception("qpp::channel()", Exception::Type::DIMS_MISMATCH_MATRIX);
+
+            // check subsys is valid w.r.t. dims
+            if (!internal::_check_subsys_match_dims(subsys, dims))
+                throw Exception("qpp::channel()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+            // check the Kraus operators
+            if (!internal::_check_nonzero_size(Ks))
+                throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
+            if (!internal::_check_square_mat(Ks[0]))
+                throw Exception("qpp::channel()", Exception::Type::MATRIX_NOT_SQUARE);
+            if (!internal::_check_dims_match_mat(subsys, Ks[0]))
+                throw Exception("qpp::channel()", Exception::Type::MATRIX_MISMATCH_SUBSYS);
+            for (auto &&it : Ks)
+                if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+                    throw Exception("qpp::channel()", Exception::Type::DIMS_NOT_EQUAL);
+
+            cmat result = cmat::Zero(rrho.rows(), rrho.rows());
+
+            for (std::size_t i = 0; i < Ks.size(); ++i)
+            {
+                result += apply(rrho, Ks[i], subsys, dims);
+            }
+            return result;
+        }
 
     } /* namespace experimental */
 } /* namespace qpp */

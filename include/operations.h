@@ -462,7 +462,7 @@ namespace qpp
     *
     * \param rho Eigen expression
     * \param Ks Set of Kraus operators
-    * \param subsys Subsystems' indexes
+    * \param subsys Subsystems' indexes where the Kraus operators \a Ks are applied
     * \param d Local dimensions of all local Hilbert spaces (must all be equal)
     * \return Output density matrix after the action of the channel
     */
