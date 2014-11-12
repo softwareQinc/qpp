@@ -50,8 +50,8 @@ namespace qpp
         {
             std::srand(_rng());
         }
-    };
-/* class RandomDevices */
+    }; /* class RandomDevices */
+
 
 } /* namespace qpp */
 

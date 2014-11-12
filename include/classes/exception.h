@@ -252,8 +252,8 @@ namespace qpp
             }
             return _msg;
         }
-    };
-/* class Exception */
+    }; /* class Exception */
+
 
 } /* namespace qpp */
 

@@ -70,9 +70,7 @@ namespace qpp
                 os << rhs._end;
                 return os;
             }
-        };
-
-        /* class IOManipRange */
+        }; // class IOManipRange
 
         template<typename PointerType>
         class IOManipPointer
@@ -111,10 +109,7 @@ namespace qpp
                 os << rhs._end;
                 return os;
             }
-
-        };
-
-        /* class IOManipPointer */
+        }; // class IOManipPointer
 
         class IOManipEigen
         {
@@ -228,8 +223,7 @@ namespace qpp
                 }
                 return os;
             }
-        }; /* class IOManipEigen */
-
+        }; // class IOManipEigen
 
     } /* namespace internal */
 } /* namespace qpp */

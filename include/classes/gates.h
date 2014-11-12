@@ -435,8 +435,7 @@ namespace qpp
             return result;
         }
 
-    };
-/* class Gates */
+    }; /* class Gates */
 
 } /* namespace qpp */
 

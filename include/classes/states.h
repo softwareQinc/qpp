@@ -109,8 +109,7 @@ namespace qpp
             pGHZ = GHZ * GHZ.adjoint();
             pW = W * W.adjoint();
         }
-    };
-/* class States */
+    }; /* class States */
 
 } /* namespace qpp */
 

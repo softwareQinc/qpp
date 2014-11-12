@@ -84,8 +84,7 @@ namespace qpp
                 static T instance;
                 return instance;
             }
-        };
-/* class Singleton */
+        }; /* class Singleton */
 
     } /* namespace internal */
 } /* namespace qpp */

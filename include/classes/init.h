@@ -68,8 +68,7 @@ namespace qpp
             time(&current_date);
             std::cout << ">>> " << std::ctime(&current_date);
         }
-    };
-/* class Init */
+    }; /* class Init */
 
 } /* namespace qpp */
 

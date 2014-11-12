@@ -150,40 +150,35 @@ $(document).ready(function(){initNavTree('qpp_8h_source.html','');});
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="entanglement_8h.html">entanglement.h</a>&quot;</span></div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">// the ones below can be in any order, no inter-dependencies</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="timer_8h.html">classes/timer.h</a>&quot;</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="instruments_8h.html">instruments.h</a>&quot;</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="number__theory_8h.html">number_theory.h</a>&quot;</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="random_8h.html">random.h</a>&quot;</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="random_8h.html">random.h</a>&quot;</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="timer_8h.html">classes/timer.h</a>&quot;</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="instruments_8h.html">instruments.h</a>&quot;</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="number__theory_8h.html">number_theory.h</a>&quot;</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">// experimental/testing, do not use them in production version</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="test_8h.html">experimental/test.h</a>&quot;</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="qudit_8h.html">experimental/classes/qudit.h</a>&quot;</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keyword">namespace </span>qpp</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;{</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="namespaceqpp.html#aca4969dadb784a76f5182b791fb54198">  100</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classqpp_1_1_init.html">Init</a> &amp;<a class="code" href="namespaceqpp.html#aca4969dadb784a76f5182b791fb54198">init</a> = <a class="code" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">Init::get_instance</a>();</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a3af5132edaed29c8d8233d1bb6ffa47a">  107</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classqpp_1_1_codes.html">Codes</a> &amp;<a class="code" href="namespaceqpp.html#a3af5132edaed29c8d8233d1bb6ffa47a">codes</a> = <a class="code" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">Codes::get_instance</a>();</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno"><a class="line" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">  114</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classqpp_1_1_gates.html">Gates</a> &amp;<a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a> = <a class="code" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">Gates::get_instance</a>();</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a8cf42bdf7cdbcc98543c7bf6ef36671d">  121</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classqpp_1_1_states.html">States</a> &amp;<a class="code" href="namespaceqpp.html#a8cf42bdf7cdbcc98543c7bf6ef36671d">st</a> = <a class="code" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">States::get_instance</a>();</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
-<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ae470c1750d1cc895763d1902f3a6882d">  128</a></span>&#160;    <a class="code" href="classqpp_1_1_random_devices.html">RandomDevices</a> &amp;<a class="code" href="namespaceqpp.html#ae470c1750d1cc895763d1902f3a6882d">rdevs</a> = <a class="code" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">RandomDevices::get_instance</a>();</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keyword">namespace </span>qpp</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;{</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="namespaceqpp.html#aca4969dadb784a76f5182b791fb54198">   96</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classqpp_1_1_init.html">Init</a> &amp;<a class="code" href="namespaceqpp.html#aca4969dadb784a76f5182b791fb54198">init</a> = <a class="code" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">Init::get_instance</a>();</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a3af5132edaed29c8d8233d1bb6ffa47a">  103</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classqpp_1_1_codes.html">Codes</a> &amp;<a class="code" href="namespaceqpp.html#a3af5132edaed29c8d8233d1bb6ffa47a">codes</a> = <a class="code" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">Codes::get_instance</a>();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">  110</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classqpp_1_1_gates.html">Gates</a> &amp;<a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a> = <a class="code" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">Gates::get_instance</a>();</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a8cf42bdf7cdbcc98543c7bf6ef36671d">  117</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classqpp_1_1_states.html">States</a> &amp;<a class="code" href="namespaceqpp.html#a8cf42bdf7cdbcc98543c7bf6ef36671d">st</a> = <a class="code" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">States::get_instance</a>();</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ae470c1750d1cc895763d1902f3a6882d">  124</a></span>&#160;    <a class="code" href="classqpp_1_1_random_devices.html">RandomDevices</a> &amp;<a class="code" href="namespaceqpp.html#ae470c1750d1cc895763d1902f3a6882d">rdevs</a> = <a class="code" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">RandomDevices::get_instance</a>();</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">/* INCLUDE_QPP_H_ */</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">/* INCLUDE_QPP_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
-<div class="ttc" id="namespaceqpp_html_a3af5132edaed29c8d8233d1bb6ffa47a"><div class="ttname"><a href="namespaceqpp.html#a3af5132edaed29c8d8233d1bb6ffa47a">qpp::codes</a></div><div class="ttdeci">const Codes &amp; codes</div><div class="ttdoc">qpp::Codes const Singleton </div><div class="ttdef"><b>Definition:</b> qpp.h:107</div></div>
+<div class="ttc" id="namespaceqpp_html_a3af5132edaed29c8d8233d1bb6ffa47a"><div class="ttname"><a href="namespaceqpp.html#a3af5132edaed29c8d8233d1bb6ffa47a">qpp::codes</a></div><div class="ttdeci">const Codes &amp; codes</div><div class="ttdoc">qpp::Codes const Singleton </div><div class="ttdef"><b>Definition:</b> qpp.h:103</div></div>
 <div class="ttc" id="singleton_8h_html"><div class="ttname"><a href="singleton_8h.html">singleton.h</a></div></div>
 <div class="ttc" id="types_8h_html"><div class="ttname"><a href="types_8h.html">types.h</a></div></div>
 <div class="ttc" id="init_8h_html"><div class="ttname"><a href="init_8h.html">init.h</a></div></div>
 <div class="ttc" id="entanglement_8h_html"><div class="ttname"><a href="entanglement_8h.html">entanglement.h</a></div></div>
 <div class="ttc" id="constants_8h_html"><div class="ttname"><a href="constants_8h.html">constants.h</a></div></div>
-<div class="ttc" id="test_8h_html"><div class="ttname"><a href="test_8h.html">test.h</a></div></div>
 <div class="ttc" id="classqpp_1_1_gates_html"><div class="ttname"><a href="classqpp_1_1_gates.html">qpp::Gates</a></div><div class="ttdoc">const Singleton class that implements most commonly used gates </div><div class="ttdef"><b>Definition:</b> gates.h:32</div></div>
 <div class="ttc" id="classqpp_1_1_init_html"><div class="ttname"><a href="classqpp_1_1_init.html">qpp::Init</a></div><div class="ttdoc">const Singleton class that performs additional initializations/cleanups </div><div class="ttdef"><b>Definition:</b> init.h:33</div></div>
 <div class="ttc" id="operations_8h_html"><div class="ttname"><a href="operations_8h.html">operations.h</a></div></div>
@@ -199,24 +194,23 @@ $(document).ready(function(){initNavTree('qpp_8h_source.html','');});
 <div class="ttc" id="input__output_8h_html"><div class="ttname"><a href="input__output_8h.html">input_output.h</a></div></div>
 <div class="ttc" id="classqpp_1_1internal_1_1_singleton_html_a65f1068804fafa264c2a6adabbe35802"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">qpp::internal::Singleton&lt; const Init &gt;::get_instance</a></div><div class="ttdeci">static const Init &amp; get_instance()</div><div class="ttdef"><b>Definition:</b> singleton.h:79</div></div>
 <div class="ttc" id="entropies_8h_html"><div class="ttname"><a href="entropies_8h.html">entropies.h</a></div></div>
-<div class="ttc" id="namespaceqpp_html_aca4969dadb784a76f5182b791fb54198"><div class="ttname"><a href="namespaceqpp.html#aca4969dadb784a76f5182b791fb54198">qpp::init</a></div><div class="ttdeci">const Init &amp; init</div><div class="ttdoc">qpp::Init const Singleton </div><div class="ttdef"><b>Definition:</b> qpp.h:100</div></div>
-<div class="ttc" id="namespaceqpp_html_abde5be3693c953f79e9c8e262447c8d4"><div class="ttname"><a href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">qpp::gt</a></div><div class="ttdeci">const Gates &amp; gt</div><div class="ttdoc">qpp::Gates const Singleton </div><div class="ttdef"><b>Definition:</b> qpp.h:114</div></div>
-<div class="ttc" id="qudit_8h_html"><div class="ttname"><a href="qudit_8h.html">qudit.h</a></div></div>
+<div class="ttc" id="namespaceqpp_html_aca4969dadb784a76f5182b791fb54198"><div class="ttname"><a href="namespaceqpp.html#aca4969dadb784a76f5182b791fb54198">qpp::init</a></div><div class="ttdeci">const Init &amp; init</div><div class="ttdoc">qpp::Init const Singleton </div><div class="ttdef"><b>Definition:</b> qpp.h:96</div></div>
+<div class="ttc" id="namespaceqpp_html_abde5be3693c953f79e9c8e262447c8d4"><div class="ttname"><a href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">qpp::gt</a></div><div class="ttdeci">const Gates &amp; gt</div><div class="ttdoc">qpp::Gates const Singleton </div><div class="ttdef"><b>Definition:</b> qpp.h:110</div></div>
 <div class="ttc" id="internal_2functions_8h_html"><div class="ttname"><a href="internal_2functions_8h.html">functions.h</a></div></div>
 <div class="ttc" id="functions_8h_html"><div class="ttname"><a href="functions_8h.html">functions.h</a></div></div>
 <div class="ttc" id="random__devices_8h_html"><div class="ttname"><a href="random__devices_8h.html">random_devices.h</a></div></div>
-<div class="ttc" id="namespaceqpp_html_ae470c1750d1cc895763d1902f3a6882d"><div class="ttname"><a href="namespaceqpp.html#ae470c1750d1cc895763d1902f3a6882d">qpp::rdevs</a></div><div class="ttdeci">RandomDevices &amp; rdevs</div><div class="ttdoc">qpp::RandomDevices Singleton </div><div class="ttdef"><b>Definition:</b> qpp.h:128</div></div>
+<div class="ttc" id="namespaceqpp_html_ae470c1750d1cc895763d1902f3a6882d"><div class="ttname"><a href="namespaceqpp.html#ae470c1750d1cc895763d1902f3a6882d">qpp::rdevs</a></div><div class="ttdeci">RandomDevices &amp; rdevs</div><div class="ttdoc">qpp::RandomDevices Singleton </div><div class="ttdef"><b>Definition:</b> qpp.h:124</div></div>
 <div class="ttc" id="codes_8h_html"><div class="ttname"><a href="codes_8h.html">codes.h</a></div></div>
 <div class="ttc" id="random_8h_html"><div class="ttname"><a href="random_8h.html">random.h</a></div></div>
 <div class="ttc" id="gates_8h_html"><div class="ttname"><a href="gates_8h.html">gates.h</a></div></div>
-<div class="ttc" id="namespaceqpp_html_a8cf42bdf7cdbcc98543c7bf6ef36671d"><div class="ttname"><a href="namespaceqpp.html#a8cf42bdf7cdbcc98543c7bf6ef36671d">qpp::st</a></div><div class="ttdeci">const States &amp; st</div><div class="ttdoc">qpp::States const Singleton </div><div class="ttdef"><b>Definition:</b> qpp.h:121</div></div>
+<div class="ttc" id="namespaceqpp_html_a8cf42bdf7cdbcc98543c7bf6ef36671d"><div class="ttname"><a href="namespaceqpp.html#a8cf42bdf7cdbcc98543c7bf6ef36671d">qpp::st</a></div><div class="ttdeci">const States &amp; st</div><div class="ttdoc">qpp::States const Singleton </div><div class="ttdef"><b>Definition:</b> qpp.h:117</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="qpp_8h.html">qpp.h</a></li>
-    <li class="footer">Generated on Tue Nov 11 2014 22:51:43 for quantum++ by
+    <li class="footer">Generated on Tue Nov 11 2014 23:22:45 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

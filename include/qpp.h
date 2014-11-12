@@ -80,14 +80,10 @@
 #include "entanglement.h"
 
 // the ones below can be in any order, no inter-dependencies
+#include "random.h"
 #include "classes/timer.h"
 #include "instruments.h"
 #include "number_theory.h"
-#include "random.h"
-
-// experimental/testing, do not use them in production version
-#include "experimental/test.h"
-#include "experimental/classes/qudit.h"
 
 namespace qpp
 {

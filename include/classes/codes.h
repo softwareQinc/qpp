@@ -118,8 +118,7 @@ namespace qpp
             }
             return result;
         }
-    };
-/* class Codes */
+    }; /* class Codes */
 
 }
 

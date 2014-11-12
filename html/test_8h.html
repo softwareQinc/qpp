@@ -65,20 +65,12 @@ $(document).ready(function(){initNavTree('test_8h.html','');});
 <div id="doc-content">
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
 <div class="title">test.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><div class="dynheader">
-This graph shows which files directly or indirectly include this file:</div>
-<div class="dyncontent">
-<div class="center"><img src="test_8h__dep__incl.png" border="0" usemap="#include_2experimental_2test_8hdep" alt=""/></div>
-<map name="include_2experimental_2test_8hdep" id="include_2experimental_2test_8hdep">
-<area shape="rect" id="node2" href="qpp_8h.html" title="include/qpp.h" alt="" coords="24,95,121,121"/></map>
-</div>
-</div>
+
 <p><a href="test_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -87,84 +79,6 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceqpp"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html">qpp</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ad1b6850b5b814c9e3b722b84617d5804"><td class="memTemplParams" colspan="2">template&lt;typename Derived1 , typename Derived2 &gt; </td></tr>
-<tr class="memitem:ad1b6850b5b814c9e3b722b84617d5804"><td class="memTemplItemLeft" align="right" valign="top">DynMat&lt; typename Derived1::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#ad1b6850b5b814c9e3b722b84617d5804">qpp::experimental::apply_old</a> (const Eigen::MatrixBase&lt; Derived1 &gt; &amp;state, const Eigen::MatrixBase&lt; Derived2 &gt; &amp;A, const std::vector&lt; std::size_t &gt; &amp;subsys, const std::vector&lt; std::size_t &gt; &amp;dims)</td></tr>
-<tr class="memdesc:ad1b6850b5b814c9e3b722b84617d5804"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the gate <em>A</em> to the part <em>subsys</em> of a multi-partite state vector or density matrix.  <a href="#ad1b6850b5b814c9e3b722b84617d5804">More...</a><br /></td></tr>
-<tr class="separator:ad1b6850b5b814c9e3b722b84617d5804"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abab2429e5df789694fdd090b13125a9c"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:abab2429e5df789694fdd090b13125a9c"><td class="memTemplItemLeft" align="right" valign="top">cmat&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#abab2429e5df789694fdd090b13125a9c">qpp::experimental::channel_old</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;rho, const std::vector&lt; cmat &gt; &amp;Ks, const std::vector&lt; std::size_t &gt; &amp;subsys, const std::vector&lt; std::size_t &gt; &amp;dims)</td></tr>
-<tr class="memdesc:abab2429e5df789694fdd090b13125a9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the channel specified by the set of Kraus operators <em>Ks</em> to the part of the density matrix <em>rho</em> specified by <em>subsys</em>.  <a href="#abab2429e5df789694fdd090b13125a9c">More...</a><br /></td></tr>
-<tr class="separator:abab2429e5df789694fdd090b13125a9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab06b2f2928810b01de7fdfcad6b429b6"><td class="memItemLeft" align="right" valign="top">cmat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#ab06b2f2928810b01de7fdfcad6b429b6">qpp::experimental::super</a> (const std::vector&lt; cmat &gt; &amp;Ks)</td></tr>
-<tr class="memdesc:ab06b2f2928810b01de7fdfcad6b429b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Superoperator matrix representation.  <a href="#ab06b2f2928810b01de7fdfcad6b429b6">More...</a><br /></td></tr>
-<tr class="separator:ab06b2f2928810b01de7fdfcad6b429b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3be0ef6405d1dc66c6b72c52e030f059"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:a3be0ef6405d1dc66c6b72c52e030f059"><td class="memTemplItemLeft" align="right" valign="top">DynMat&lt; typename Derived::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#a3be0ef6405d1dc66c6b72c52e030f059">qpp::experimental::CTRL</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; std::size_t &gt; &amp;ctrl, const std::vector&lt; std::size_t &gt; &amp;subsys, std::size_t n, std::size_t d=2)</td></tr>
-<tr class="memdesc:a3be0ef6405d1dc66c6b72c52e030f059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates the multi-partite multiple-controlled-<em>A</em> gate in matrix form.  <a href="#a3be0ef6405d1dc66c6b72c52e030f059">More...</a><br /></td></tr>
-<tr class="separator:a3be0ef6405d1dc66c6b72c52e030f059"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac28bf764b5aa2b3c198f2779b697a5d3"><td class="memItemLeft" align="right" valign="top">cmat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#ac28bf764b5aa2b3c198f2779b697a5d3">qpp::experimental::choi</a> (const std::vector&lt; cmat &gt; &amp;Ks)</td></tr>
-<tr class="memdesc:ac28bf764b5aa2b3c198f2779b697a5d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Choi matrix representation.  <a href="#ac28bf764b5aa2b3c198f2779b697a5d3">More...</a><br /></td></tr>
-<tr class="separator:ac28bf764b5aa2b3c198f2779b697a5d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c44818e0eb668e8ae0b164ea5692724"><td class="memItemLeft" align="right" valign="top">std::vector&lt; cmat &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#a0c44818e0eb668e8ae0b164ea5692724">qpp::experimental::randkraus</a> (std::size_t n, std::size_t D)</td></tr>
-<tr class="memdesc:a0c44818e0eb668e8ae0b164ea5692724"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a set of random Kraus operators.  <a href="#a0c44818e0eb668e8ae0b164ea5692724">More...</a><br /></td></tr>
-<tr class="separator:a0c44818e0eb668e8ae0b164ea5692724"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dae5c154f30ec6a542190f828766ab3"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:a1dae5c154f30ec6a542190f828766ab3"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#a1dae5c154f30ec6a542190f828766ab3">qpp::experimental::renyi_inf</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</td></tr>
-<tr class="memdesc:a1dae5c154f30ec6a542190f828766ab3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renyi- <img class="formulaInl" alt="$\infty$" src="form_22.png"/> entropy (min entropy) of the probability distribution/density matrix <em>A</em>.  <a href="#a1dae5c154f30ec6a542190f828766ab3">More...</a><br /></td></tr>
-<tr class="separator:a1dae5c154f30ec6a542190f828766ab3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b98c393616eb3e69f0cddd9cbda88da"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator &gt; </td></tr>
-<tr class="memitem:a0b98c393616eb3e69f0cddd9cbda88da"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#a0b98c393616eb3e69f0cddd9cbda88da">qpp::experimental::disp</a> (const InputIterator &amp;first, const InputIterator &amp;last, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;, std::ostream &amp;os=std::cout)</td></tr>
-<tr class="memdesc:a0b98c393616eb3e69f0cddd9cbda88da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays a range. Does not add a newline.  <a href="#a0b98c393616eb3e69f0cddd9cbda88da">More...</a><br /></td></tr>
-<tr class="separator:a0b98c393616eb3e69f0cddd9cbda88da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4fec399593b70b3d54f213500807569"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator &gt; </td></tr>
-<tr class="memitem:af4fec399593b70b3d54f213500807569"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#af4fec399593b70b3d54f213500807569">qpp::experimental::displn</a> (const InputIterator &amp;first, const InputIterator &amp;last, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;, std::ostream &amp;os=std::cout)</td></tr>
-<tr class="memdesc:af4fec399593b70b3d54f213500807569"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays a range. Adds a newline.  <a href="#af4fec399593b70b3d54f213500807569">More...</a><br /></td></tr>
-<tr class="separator:af4fec399593b70b3d54f213500807569"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada983dfc96bc8a2998d9242eec7874df"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ada983dfc96bc8a2998d9242eec7874df"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#ada983dfc96bc8a2998d9242eec7874df">qpp::experimental::disp</a> (const T &amp;x, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;, std::ostream &amp;os=std::cout)</td></tr>
-<tr class="memdesc:ada983dfc96bc8a2998d9242eec7874df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays a standard container that supports std::begin, std::end and forward iteration. Does not add a newline.  <a href="#ada983dfc96bc8a2998d9242eec7874df">More...</a><br /></td></tr>
-<tr class="separator:ada983dfc96bc8a2998d9242eec7874df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a101d31ffc525c288a4d110484a4fa7c4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a101d31ffc525c288a4d110484a4fa7c4"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#a101d31ffc525c288a4d110484a4fa7c4">qpp::experimental::displn</a> (const T &amp;x, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;, std::ostream &amp;os=std::cout)</td></tr>
-<tr class="memdesc:a101d31ffc525c288a4d110484a4fa7c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays a standard container that supports std::begin, std::end and forward iteration. Adds a newline.  <a href="#a101d31ffc525c288a4d110484a4fa7c4">More...</a><br /></td></tr>
-<tr class="separator:a101d31ffc525c288a4d110484a4fa7c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4202a1b7bd0ee74918876b1555635c13"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a4202a1b7bd0ee74918876b1555635c13"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#a4202a1b7bd0ee74918876b1555635c13">qpp::experimental::disp</a> (const T *x, const std::size_t n, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;, std::ostream &amp;os=std::cout)</td></tr>
-<tr class="memdesc:a4202a1b7bd0ee74918876b1555635c13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays a C-style array. Does not add a newline.  <a href="#a4202a1b7bd0ee74918876b1555635c13">More...</a><br /></td></tr>
-<tr class="separator:a4202a1b7bd0ee74918876b1555635c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e9fe6980bec3a3ff1c42bf888b47a38"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a3e9fe6980bec3a3ff1c42bf888b47a38"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#a3e9fe6980bec3a3ff1c42bf888b47a38">qpp::experimental::displn</a> (const T *x, const std::size_t n, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;, std::ostream &amp;os=std::cout)</td></tr>
-<tr class="memdesc:a3e9fe6980bec3a3ff1c42bf888b47a38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays a C-style array. Adds a newline.  <a href="#a3e9fe6980bec3a3ff1c42bf888b47a38">More...</a><br /></td></tr>
-<tr class="separator:a3e9fe6980bec3a3ff1c42bf888b47a38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e7b2ccc485d5ba1a38964c421352bdb"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:a6e7b2ccc485d5ba1a38964c421352bdb"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#a6e7b2ccc485d5ba1a38964c421352bdb">qpp::experimental::disp</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, double chop=<a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>, std::ostream &amp;os=std::cout)</td></tr>
-<tr class="memdesc:a6e7b2ccc485d5ba1a38964c421352bdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays an Eigen expression in matrix friendly form. Does not add a new line.  <a href="#a6e7b2ccc485d5ba1a38964c421352bdb">More...</a><br /></td></tr>
-<tr class="separator:a6e7b2ccc485d5ba1a38964c421352bdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad071f0916cf5598a3e9b5c8e16bc4e52"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:ad071f0916cf5598a3e9b5c8e16bc4e52"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#ad071f0916cf5598a3e9b5c8e16bc4e52">qpp::experimental::displn</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, double chop=<a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>, std::ostream &amp;os=std::cout)</td></tr>
-<tr class="memdesc:ad071f0916cf5598a3e9b5c8e16bc4e52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays an Eigen expression in matrix friendly form. Adds a newline.  <a href="#ad071f0916cf5598a3e9b5c8e16bc4e52">More...</a><br /></td></tr>
-<tr class="separator:ad071f0916cf5598a3e9b5c8e16bc4e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d35f4c93e44df202e2ff14200d03e63"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#a1d35f4c93e44df202e2ff14200d03e63">qpp::experimental::disp</a> (const cplx z, double chop=<a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>, std::ostream &amp;os=std::cout)</td></tr>
-<tr class="memdesc:a1d35f4c93e44df202e2ff14200d03e63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays a number (implicitly converted to std::complex&lt;double&gt;) in friendly form. Does not add a new line.  <a href="#a1d35f4c93e44df202e2ff14200d03e63">More...</a><br /></td></tr>
-<tr class="separator:a1d35f4c93e44df202e2ff14200d03e63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05d8f60e7036b60b0c21ad5d1e5d89d2"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#a05d8f60e7036b60b0c21ad5d1e5d89d2">qpp::experimental::displn</a> (const cplx z, double chop=<a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>, std::ostream &amp;os=std::cout)</td></tr>
-<tr class="memdesc:a05d8f60e7036b60b0c21ad5d1e5d89d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays a number (implicitly converted to std::complex&lt;double&gt;) in friendly form. Adds a new line.  <a href="#a05d8f60e7036b60b0c21ad5d1e5d89d2">More...</a><br /></td></tr>
-<tr class="separator:a05d8f60e7036b60b0c21ad5d1e5d89d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27106796e1771a3bad2893c565829b81"><td class="memTemplParams" colspan="2">template&lt;typename Derived1 , typename Derived2 &gt; </td></tr>
-<tr class="memitem:a27106796e1771a3bad2893c565829b81"><td class="memTemplItemLeft" align="right" valign="top">DynMat&lt; typename Derived1::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#a27106796e1771a3bad2893c565829b81">qpp::experimental::applyCTRL</a> (const Eigen::MatrixBase&lt; Derived1 &gt; &amp;state, const Eigen::MatrixBase&lt; Derived2 &gt; &amp;A, const std::vector&lt; std::size_t &gt; &amp;ctrl, const std::vector&lt; std::size_t &gt; &amp;subsys, const std::vector&lt; std::size_t &gt; &amp;dims)</td></tr>
-<tr class="memdesc:a27106796e1771a3bad2893c565829b81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the controlled-gate <em>A</em> to the part <em>subsys</em> of a multi-partite state vector or density matrix.  <a href="#a27106796e1771a3bad2893c565829b81">More...</a><br /></td></tr>
-<tr class="separator:a27106796e1771a3bad2893c565829b81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a193c1629485264c0a2dea51970dcfb93"><td class="memTemplParams" colspan="2">template&lt;typename Derived1 , typename Derived2 &gt; </td></tr>
-<tr class="memitem:a193c1629485264c0a2dea51970dcfb93"><td class="memTemplItemLeft" align="right" valign="top">DynMat&lt; typename Derived1::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#a193c1629485264c0a2dea51970dcfb93">qpp::experimental::apply</a> (const Eigen::MatrixBase&lt; Derived1 &gt; &amp;state, const Eigen::MatrixBase&lt; Derived2 &gt; &amp;A, const std::vector&lt; std::size_t &gt; &amp;subsys, const std::vector&lt; std::size_t &gt; &amp;dims)</td></tr>
-<tr class="memdesc:a193c1629485264c0a2dea51970dcfb93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the gate <em>A</em> to the part <em>subsys</em> of a multi-partite state vector or density matrix.  <a href="#a193c1629485264c0a2dea51970dcfb93">More...</a><br /></td></tr>
-<tr class="separator:a193c1629485264c0a2dea51970dcfb93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1bdf9f42303a50ea55d69d8d5387b53"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:ad1bdf9f42303a50ea55d69d8d5387b53"><td class="memTemplItemLeft" align="right" valign="top">cmat&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#ad1bdf9f42303a50ea55d69d8d5387b53">qpp::experimental::channel</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;rho, const std::vector&lt; cmat &gt; &amp;Ks, const std::vector&lt; std::size_t &gt; &amp;subsys, const std::vector&lt; std::size_t &gt; &amp;dims)</td></tr>
-<tr class="memdesc:ad1bdf9f42303a50ea55d69d8d5387b53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the channel specified by the set of Kraus operators <em>Ks</em> to the part of the density matrix <em>rho</em> specified by <em>subsys</em>.  <a href="#ad1bdf9f42303a50ea55d69d8d5387b53">More...</a><br /></td></tr>
-<tr class="separator:ad1bdf9f42303a50ea55d69d8d5387b53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -172,7 +86,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_8966848d4591654ab1db845bb311f08b.html">experimental</a></li><li class="navelem"><a class="el" href="test_8h.html">test.h</a></li>
-    <li class="footer">Generated on Tue Nov 11 2014 22:51:44 for quantum++ by
+    <li class="footer">Generated on Tue Nov 11 2014 23:22:45 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

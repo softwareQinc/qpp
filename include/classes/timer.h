@@ -94,8 +94,7 @@ namespace qpp
         {
             return os << rhs.seconds();
         }
-    };
-/* class Timer */
+    }; /* class Timer */
 
 } /* namespace qpp */
 
