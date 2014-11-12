@@ -26,7 +26,7 @@ namespace qpp
 {
     /**
     * \brief Applies the controlled-gate \a A to the part \a subsys
-    * of a multi-partite state vector or density matrix
+    * of the multi-partite state vector or density matrix \a state
     *
     * \note The dimension of the gate \a A must match
     * the dimension of \a subsys.
@@ -341,7 +341,7 @@ namespace qpp
 
     /**
     * \brief Applies the controlled-gate \a A to the part \a subsys
-    * of a multi-partite state vector or density matrix
+    * of the multi-partite state vector or density matrix \a state
     *
     * \note The dimension of the gate \a A must match
     * the dimension of \a subsys
@@ -376,7 +376,7 @@ namespace qpp
 
     /**
     * \brief Applies the gate \a A to the part \a subsys
-    * of a multi-partite state vector or density matrix
+    * of the multi-partite state vector or density matrix \a state
     *
     * \note The dimension of the gate \a A must match
     * the dimension of \a subsys
@@ -453,7 +453,7 @@ namespace qpp
 
     /**
     * \brief Applies the gate \a A to the part \a subsys
-    * of a multi-partite state vector or density matrix
+    * of the multi-partite state vector or density matrix \a state
     *
     * \note The dimension of the gate \a A must match
     * the dimension of \a subsys
@@ -528,11 +528,11 @@ namespace qpp
 
     /**
     * \brief Applies the channel specified by the set of Kraus operators \a Ks to
-    * the part of the density matrix \a rho specified by \a subsys
+    * the part \a subsys of the multi-partite density matrix \a rho
     *
     * \param rho Eigen expression
     * \param Ks Set of Kraus operators
-    * \param subsys Subsystems' indexes where the Kraus operators \a Ks are applied
+    * \param subsys Subsystem indexes where the Kraus operators \a Ks are applied
     * \param dims Dimensions of the multi-partite system
     * \return Output density matrix after the action of the channel
     */
@@ -589,11 +589,11 @@ namespace qpp
 
     /**
     * \brief Applies the channel specified by the set of Kraus operators \a Ks to
-    * the part of the density matrix \a rho specified by \a subsys
+    * the part \a subsys of the multi-partite density matrix \a rho
     *
     * \param rho Eigen expression
     * \param Ks Set of Kraus operators
-    * \param subsys Subsystems' indexes where the Kraus operators \a Ks are applied
+    * \param subsys Subsystem indexes where the Kraus operators \a Ks are applied
     * \param d Subsystem dimensions
     * \return Output density matrix after the action of the channel
     */
