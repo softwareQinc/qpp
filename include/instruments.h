@@ -103,10 +103,8 @@ namespace qpp
             for (std::size_t i = 0; i < static_cast<std::size_t>(Ks.size()); ++i)
             {
                 outstates[i] = cmat::Zero(Drest, Drest);
-
                 cmat tmp = apply(rA, Ks[i], subsys, dims);
                 tmp = ptrace(tmp, subsys, dims);
-
                 prob[i] = std::abs(trace(tmp)); // probability
                 if (prob[i] > eps)
                     outstates[i] = tmp / prob[i]; // normalized output state corresponding to measurement result i
@@ -117,10 +115,8 @@ namespace qpp
             for (std::size_t i = 0; i < static_cast<std::size_t>(Ks.size()); ++i)
             {
                 outstates[i] = cmat::Zero(Drest, Drest);
-
                 cmat tmp = apply(rA, Ks[i], subsys, dims);
                 prob[i] = std::pow(norm(tmp), 2);
-
                 if (prob[i] > eps)
                     outstates[i] = ptrace(prj(tmp), subsys, dims);
             }
@@ -361,8 +357,8 @@ namespace qpp
         {
             for (std::size_t i = 0; i < Ks.size(); ++i)
             {
-                cmat tmp;
-                tmp = Ks[i] * rA * adjoint(Ks[i]); // un-normalized
+                outstates[i] = cmat::Zero(rA.rows(), rA.rows());
+                cmat tmp = Ks[i] * rA * adjoint(Ks[i]); // un-normalized;
                 prob[i] = std::abs(trace(tmp)); // probability
                 if (prob[i] > eps)
                     outstates[i] = tmp / prob[i]; // normalized
@@ -373,8 +369,7 @@ namespace qpp
             for (std::size_t i = 0; i < Ks.size(); ++i)
             {
                 outstates[i] = ket::Zero(rA.rows());
-                ket tmp;
-                tmp = Ks[i] * rA; // un-normalized
+                ket tmp = Ks[i] * rA; // un-normalized;
                 // probability
                 prob[i] = std::abs((adjoint(tmp) * tmp).value());
                 if (prob[i] > eps)
