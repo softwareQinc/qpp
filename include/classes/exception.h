@@ -61,7 +61,7 @@ namespace qpp
                     MATRIX_NOT_SQUARE_OR_VECTOR, //!< MATRIX_NOT_SQUARE_OR_VECTOR
             /*!< Eigen::Matrix is not square nor a row/column vector */
                     MATRIX_MISMATCH_SUBSYS,        //!< MATRIX_MISMATCH_SUBSYS
-            /*! Matrix size mismatch subsystems' size (e.g. in
+            /*! Matrix size mismatch subsystem sizes (e.g. in
              * qpp::apply(), or qpp::channel() */
                     DIMS_INVALID,                //!< DIMS_INVALID
             /*!< std::vector<std::size_t> representing the dimensions
@@ -86,12 +86,10 @@ namespace qpp
              * is not equal to the number of cols of Eigen::Matrix
              * (assumed to be a row/column vector) */
                     SUBSYS_MISMATCH_DIMS,        //!< SUBSYS_MISMATCH_DIMS
-            /*!< std::vector<std::size_t> representing the subsystems'
+            /*!< std::vector<std::size_t> representing the subsystem
              * labels has duplicatates, or has entries that are larger than
              * the size of the std::vector<std::size_t> representing the
              * dimensions */
-                    PERM_INVALID,                //!< PERM_INVALID
-            /*!< Invalid std::vector<std::size_t> permutation */
                     NOT_QUBIT_GATE,              //!< NOT_QUBIT_GATE
             /*!<  Eigen::Matrix is not 2 x 2 */
                     NOT_QUBIT_SUBSYS,            //!< NOT_QUBIT_SUBSYS
@@ -99,15 +97,17 @@ namespace qpp
                     NOT_BIPARTITE,               //!< NOT_BIPARTITE
             /*!< std::vector<std::size_t> representing the dimensions
              * has size different from 2 */
+                    NO_CODEWORD,                 //!< NO_CODEWORD
+            /*!< Codeword does not exist, thrown when calling
+             * qpp::Codes::codeword() with invalid \a i */
+                    PERM_INVALID,                //!< PERM_INVALID
+            /*!< Invalid std::vector<std::size_t> permutation */
                     OUT_OF_RANGE,                //!< OUT_OF_RANGE
             /*!< Parameter out of range */
                     TYPE_MISMATCH,               //!< TYPE_MISMATCH
             /*!< Types do not match (i.e. Matrix<double> vs Matrix<cplx>) */
                     UNDEFINED_TYPE,              //!< UNDEFINED_TYPE
             /*!< Templated function not defined for this type */
-                    NO_CODEWORD,                 //!< NO_CODEWORD
-            /*!< Codeword does not exist, thrown when calling
-             * qpp::Codes::codeword() with invalid \a i */
                     CUSTOM_EXCEPTION             //!< CUSTOM_EXCEPTION
             /*!< Custom exception, user must provide a custom message */
         };
@@ -222,9 +222,6 @@ namespace qpp
                 case Type::SUBSYS_MISMATCH_DIMS:
                     _msg += "Subsystems mismatch dimensions!";
                     break;
-                case Type::PERM_INVALID:
-                    _msg += "Invalid permutation!";
-                    break;
                 case Type::NOT_QUBIT_GATE:
                     _msg += "Matrix is not qubit gate!";
                     break;
@@ -234,6 +231,12 @@ namespace qpp
                 case Type::NOT_BIPARTITE:
                     _msg += "Not bi-partite!";
                     break;
+                case Type::NO_CODEWORD:
+                    _msg += "Codeword does not exist!";
+                    break;
+                case Type::PERM_INVALID:
+                    _msg += "Invalid permutation!";
+                    break;
                 case Type::OUT_OF_RANGE:
                     _msg += "Parameter out of range!";
                     break;
@@ -242,9 +245,6 @@ namespace qpp
                     break;
                 case Type::UNDEFINED_TYPE:
                     _msg += "Not defined for this type!";
-                    break;
-                case Type::NO_CODEWORD:
-                    _msg += "Codeword does not exist!";
                     break;
                 case Type::CUSTOM_EXCEPTION:
                     _msg += "CUSTOM EXCEPTION ";

@@ -91,7 +91,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="line">        <a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a> input_aAB = <a class="code" href="namespaceqpp.html#a3b2bafdce8302c9ac34ab328ec84a3f7">kron</a>(psi_a, mes_AB); <span class="comment">// joint input state aAB</span></div>
 <div class="line">        <span class="comment">// output before measurement</span></div>
 <div class="line">        <a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a> output_aAB = <a class="code" href="namespaceqpp.html#a15f5f4c236713542560dfeb8237c76f7">apply</a>(input_aAB, Bell_aA, {0, 1}, D);</div>
-<div class="line">        <span class="keyword">auto</span> measured_aA = <a class="code" href="namespaceqpp.html#a27f5cf97f5ee0fbdeae163c0f77e28d6">measure</a>(<a class="code" href="namespaceqpp.html#ae846df6b2525ef728947e00c2074e8b6">ptrace2</a>(<a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>(output_aAB), {D * D, D}), <a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#a4c356975433e4929f12314a8b01d32a0">Id</a>(D * D)); <span class="comment">// measure on aA</span></div>
+<div class="line">        <span class="keyword">auto</span> measured_aA = <a class="code" href="namespaceqpp.html#aa67d479bd53ef2dafb20db8a2207665c">measure</a>(<a class="code" href="namespaceqpp.html#ae846df6b2525ef728947e00c2074e8b6">ptrace2</a>(<a class="code" href="namespaceqpp.html#a4324f5182395adab0e36eede35e4fe6b">prj</a>(output_aAB), {D * D, D}), <a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#a4c356975433e4929f12314a8b01d32a0">Id</a>(D * D)); <span class="comment">// measure on aA</span></div>
 <div class="line">        std::discrete_distribution&lt;std::size_t&gt; dd(measured_aA.first.begin(), measured_aA.first.end());</div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Alice&#39;s measurement probabilities: &quot;</span>;</div>
 <div class="line">        std::cout &lt;&lt; <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(measured_aA.first, <span class="stringliteral">&quot;, &quot;</span>) &lt;&lt; std::endl;</div>
@@ -132,7 +132,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="line">        <a class="code" href="namespaceqpp.html#add021f91288df8af3125cf4b2c8806e6">ket</a> psi_AB = <a class="code" href="namespaceqpp.html#a15f5f4c236713542560dfeb8237c76f7">apply</a>(mes_AB, U_A, {0}, D);</div>
 <div class="line">        <span class="comment">// Bob measures the joint system in the qudit Bell basis</span></div>
 <div class="line">        psi_AB = <a class="code" href="namespaceqpp.html#a15f5f4c236713542560dfeb8237c76f7">apply</a>(psi_AB, Bell_AB, {0, 1}, D);</div>
-<div class="line">        <span class="keyword">auto</span> measured = <a class="code" href="namespaceqpp.html#a27f5cf97f5ee0fbdeae163c0f77e28d6">measure</a>(psi_AB, <a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#a4c356975433e4929f12314a8b01d32a0">Id</a>(D * D));</div>
+<div class="line">        <span class="keyword">auto</span> measured = <a class="code" href="namespaceqpp.html#aa67d479bd53ef2dafb20db8a2207665c">measure</a>(psi_AB, <a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#a4c356975433e4929f12314a8b01d32a0">Id</a>(D * D));</div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Bob&#39;s measurement probabilities: &quot;</span>;</div>
 <div class="line">        std::cout &lt;&lt; <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(measured.first, <span class="stringliteral">&quot;, &quot;</span>) &lt;&lt; std::endl;</div>
 <div class="line">        <span class="comment">// Bob samples according to the measurement probabilities</span></div>
@@ -167,7 +167,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="line">            psi = (G * psi).eval(); <span class="comment">// then the diffusion operator, no aliasing</span></div>
 <div class="line">        }</div>
 <div class="line">        <span class="comment">// we now measure the state in the computational basis</span></div>
-<div class="line">        <span class="keyword">auto</span> measured = <a class="code" href="namespaceqpp.html#a27f5cf97f5ee0fbdeae163c0f77e28d6">measure</a>(psi, <a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#a4c356975433e4929f12314a8b01d32a0">Id</a>(N));</div>
+<div class="line">        <span class="keyword">auto</span> measured = <a class="code" href="namespaceqpp.html#aa67d479bd53ef2dafb20db8a2207665c">measure</a>(psi, <a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#a4c356975433e4929f12314a8b01d32a0">Id</a>(N));</div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Probability of the marked state: &quot;</span> &lt;&lt; measured.first[marked] &lt;&lt; std::endl;</div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt; Probability of all results: &quot;</span>;</div>
 <div class="line">        std::cout &lt;&lt; <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(measured.first, <span class="stringliteral">&quot;, &quot;</span>) &lt;&lt; std::endl;</div>
@@ -291,7 +291,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 12 2014 00:19:58 for quantum++ by
+    <li class="footer">Generated on Wed Nov 12 2014 17:58:07 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

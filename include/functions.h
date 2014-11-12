@@ -1336,6 +1336,45 @@ namespace qpp
                 });
     }
 
+    /**
+    * \brief Finds the pure state representation of a matrix proportional to a projector onto a pure state
+    *
+    * \note No purity check is done, the input state \a A must have rank one,
+    * otherwise the function returs the first non-zero eigenvector of \a A
+    *
+    * \param A Eigen expression, assumed to be proportional to a projector onto a pure state, i.e. \a A is assumed
+    * to have rank one
+    * \return The unique non-zero eigenvector of \a A, as a dynamic column vector over the same scalar field as \a A
+    */
+    template<typename Derived>
+    DynColVect<typename Derived::Scalar> rho2pure(const Eigen::MatrixBase<Derived> &A)
+    {
+        const DynMat<typename Derived::Scalar> &rA = A;
+
+        // EXCEPTION CHECKS
+        // check zero-size
+        if (!internal::_check_nonzero_size(rA))
+            throw Exception("qpp::rho2pure()", Exception::Type::ZERO_SIZE);
+        // check square matrix
+        if (!internal::_check_square_mat(rA))
+            throw Exception("qpp::rho2pure()", Exception::Type::MATRIX_NOT_SQUARE);
+        // END EXPCEPTION CHECKS
+
+        DynColVect<double> tmp_evals = hevals(rA);
+        cmat tmp_evects = hevects(rA);
+        DynColVect<typename Derived::Scalar> result = DynColVect<typename Derived::Scalar>::Zero(rA.rows());
+        // find the non-zero eigenvector (there is only one, assuming the state is pure)
+        for (std::size_t k = 0; k < static_cast<std::size_t>(rA.rows()); ++k)
+        {
+            if (std::abs(tmp_evals(k)) > eps)
+            {
+                result = tmp_evects.col(k);
+                break;
+            }
+        }
+        return result;
+    }
+
 } /* namespace qpp */
 
 #endif /* INCLUDE_FUNCTIONS_H_ */

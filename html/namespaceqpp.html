@@ -394,6 +394,11 @@ Functions</h2></td></tr>
 <tr class="memitem:ab7f10cf7a2845946fedfac88e6a9081f"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ab7f10cf7a2845946fedfac88e6a9081f">prod</a> (InputIterator first, InputIterator last) -&gt; typename InputIterator::value_type</td></tr>
 <tr class="memdesc:ab7f10cf7a2845946fedfac88e6a9081f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Element-wise product of a range.  <a href="#ab7f10cf7a2845946fedfac88e6a9081f">More...</a><br /></td></tr>
 <tr class="separator:ab7f10cf7a2845946fedfac88e6a9081f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fae2e6e9a554f4f553524033258021c"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a9fae2e6e9a554f4f553524033258021c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a23060a9e83c7da740a4459153dbd2c41">DynColVect</a>&lt; typename <br class="typebreak" />
+Derived::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a9fae2e6e9a554f4f553524033258021c">rho2pure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</td></tr>
+<tr class="memdesc:a9fae2e6e9a554f4f553524033258021c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the pure state representation of a matrix proportional to a projector onto a pure state.  <a href="#a9fae2e6e9a554f4f553524033258021c">More...</a><br /></td></tr>
+<tr class="separator:a9fae2e6e9a554f4f553524033258021c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f1805e175751ef749374e3c8499f15d"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a4f1805e175751ef749374e3c8499f15d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html">internal::IOManipEigen</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, double <a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>=<a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>)</td></tr>
 <tr class="memdesc:a4f1805e175751ef749374e3c8499f15d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eigen expression ostream manipulator.  <a href="#a4f1805e175751ef749374e3c8499f15d">More...</a><br /></td></tr>
@@ -425,21 +430,60 @@ Container::const_iterator &gt;&#160;</td><td class="memTemplItemRight" valign="b
 <tr class="memitem:a217e8ae6b09ac3cc89415d4b6204fda6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat</a>&lt; typename Derived::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a217e8ae6b09ac3cc89415d4b6204fda6">load</a> (const std::string &amp;fname)</td></tr>
 <tr class="memdesc:a217e8ae6b09ac3cc89415d4b6204fda6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads Eigen matrix from a binary file (internal format) in double precision.  <a href="#a217e8ae6b09ac3cc89415d4b6204fda6">More...</a><br /></td></tr>
 <tr class="separator:a217e8ae6b09ac3cc89415d4b6204fda6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27f5cf97f5ee0fbdeae163c0f77e28d6"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:a27f5cf97f5ee0fbdeae163c0f77e28d6"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; std::vector&lt; double &gt;<br class="typebreak" />
-, std::vector&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a27f5cf97f5ee0fbdeae163c0f77e28d6">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &amp;Ks)</td></tr>
-<tr class="memdesc:a27f5cf97f5ee0fbdeae163c0f77e28d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the state <em>A</em> using the set of Kraus operators <em>Ks</em>.  <a href="#a27f5cf97f5ee0fbdeae163c0f77e28d6">More...</a><br /></td></tr>
-<tr class="separator:a27f5cf97f5ee0fbdeae163c0f77e28d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06e3ae31fe7cd58136a4072dcfc389e9"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:a06e3ae31fe7cd58136a4072dcfc389e9"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; std::vector&lt; double &gt;<br class="typebreak" />
-, std::vector&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a06e3ae31fe7cd58136a4072dcfc389e9">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::initializer_list&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &amp;Ks)</td></tr>
-<tr class="memdesc:a06e3ae31fe7cd58136a4072dcfc389e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the state <em>A</em> using the set of Kraus operators <em>Ks</em>.  <a href="#a06e3ae31fe7cd58136a4072dcfc389e9">More...</a><br /></td></tr>
-<tr class="separator:a06e3ae31fe7cd58136a4072dcfc389e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bb62ddad1b66794b3cfd74d80f8aaf9"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:a6bb62ddad1b66794b3cfd74d80f8aaf9"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; std::vector&lt; double &gt;<br class="typebreak" />
-, std::vector&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a6bb62ddad1b66794b3cfd74d80f8aaf9">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &amp;M)</td></tr>
-<tr class="memdesc:a6bb62ddad1b66794b3cfd74d80f8aaf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the state <em>A</em> in the orthonormal basis specified by the eigenvectors of <em>M</em>.  <a href="#a6bb62ddad1b66794b3cfd74d80f8aaf9">More...</a><br /></td></tr>
-<tr class="separator:a6bb62ddad1b66794b3cfd74d80f8aaf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa67d479bd53ef2dafb20db8a2207665c"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:aa67d479bd53ef2dafb20db8a2207665c"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; std::size_t, <br class="typebreak" />
+std::vector&lt; double &gt;<br class="typebreak" />
+, std::vector&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aa67d479bd53ef2dafb20db8a2207665c">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &amp;Ks, const std::vector&lt; std::size_t &gt; &amp;subsys, const std::vector&lt; std::size_t &gt; &amp;dims)</td></tr>
+<tr class="memdesc:aa67d479bd53ef2dafb20db8a2207665c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the part <em>subsys</em> of the multi-partite state vector or density matrix <em>A</em> using the set of Kraus operators <em>Ks</em>.  <a href="#aa67d479bd53ef2dafb20db8a2207665c">More...</a><br /></td></tr>
+<tr class="separator:aa67d479bd53ef2dafb20db8a2207665c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e88cbdbcfb198818f5e49dd7c2904a3"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a3e88cbdbcfb198818f5e49dd7c2904a3"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; std::size_t, <br class="typebreak" />
+std::vector&lt; double &gt;<br class="typebreak" />
+, std::vector&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a3e88cbdbcfb198818f5e49dd7c2904a3">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::initializer_list&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &amp;Ks, const std::vector&lt; std::size_t &gt; &amp;subsys, const std::vector&lt; std::size_t &gt; &amp;dims)</td></tr>
+<tr class="memdesc:a3e88cbdbcfb198818f5e49dd7c2904a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the part <em>subsys</em> of the multi-partite state vector or density matrix <em>A</em> using the set of Kraus operators <em>Ks</em>.  <a href="#a3e88cbdbcfb198818f5e49dd7c2904a3">More...</a><br /></td></tr>
+<tr class="separator:a3e88cbdbcfb198818f5e49dd7c2904a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9722c7db968d9d2d73360afe8f4f7cd3"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a9722c7db968d9d2d73360afe8f4f7cd3"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; std::size_t, <br class="typebreak" />
+std::vector&lt; double &gt;<br class="typebreak" />
+, std::vector&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a9722c7db968d9d2d73360afe8f4f7cd3">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &amp;Ks, const std::vector&lt; std::size_t &gt; &amp;subsys, const std::size_t d=2)</td></tr>
+<tr class="memdesc:a9722c7db968d9d2d73360afe8f4f7cd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the part <em>subsys</em> of the multi-partite state vector or density matrix <em>A</em> using the set of Kraus operators <em>Ks</em>.  <a href="#a9722c7db968d9d2d73360afe8f4f7cd3">More...</a><br /></td></tr>
+<tr class="separator:a9722c7db968d9d2d73360afe8f4f7cd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad14e7a9cbe0187ad6577b32a71ed9ce2"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:ad14e7a9cbe0187ad6577b32a71ed9ce2"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; std::size_t, <br class="typebreak" />
+std::vector&lt; double &gt;<br class="typebreak" />
+, std::vector&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ad14e7a9cbe0187ad6577b32a71ed9ce2">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::initializer_list&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &amp;Ks, const std::vector&lt; std::size_t &gt; &amp;subsys, const std::size_t d=2)</td></tr>
+<tr class="memdesc:ad14e7a9cbe0187ad6577b32a71ed9ce2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the part <em>subsys</em> of the multi-partite state vector or density matrix <em>A</em> using the set of Kraus operators <em>Ks</em>.  <a href="#ad14e7a9cbe0187ad6577b32a71ed9ce2">More...</a><br /></td></tr>
+<tr class="separator:ad14e7a9cbe0187ad6577b32a71ed9ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5c133827c40b6e615d616442d744cb1"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:ab5c133827c40b6e615d616442d744cb1"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; std::size_t, <br class="typebreak" />
+std::vector&lt; double &gt;<br class="typebreak" />
+, std::vector&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ab5c133827c40b6e615d616442d744cb1">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &amp;U, const std::vector&lt; std::size_t &gt; &amp;subsys, const std::vector&lt; std::size_t &gt; &amp;dims)</td></tr>
+<tr class="memdesc:ab5c133827c40b6e615d616442d744cb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the part <em>subsys</em> of the multi-partite state <em>A</em> in the orthonormal basis specified by the unitary matrix <em>U</em>.  <a href="#ab5c133827c40b6e615d616442d744cb1">More...</a><br /></td></tr>
+<tr class="separator:ab5c133827c40b6e615d616442d744cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17b170e9f3a5f8822e5ff27f0023cd1e"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a17b170e9f3a5f8822e5ff27f0023cd1e"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; std::size_t, <br class="typebreak" />
+std::vector&lt; double &gt;<br class="typebreak" />
+, std::vector&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a17b170e9f3a5f8822e5ff27f0023cd1e">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &amp;U, const std::vector&lt; std::size_t &gt; &amp;subsys, const std::size_t d=2)</td></tr>
+<tr class="memdesc:a17b170e9f3a5f8822e5ff27f0023cd1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the part <em>subsys</em> of the multi-partite state <em>A</em> in the orthonormal basis specified by the unitary matrix <em>U</em>.  <a href="#a17b170e9f3a5f8822e5ff27f0023cd1e">More...</a><br /></td></tr>
+<tr class="separator:a17b170e9f3a5f8822e5ff27f0023cd1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ab9e727227257620aab37cf6e7edabd"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a9ab9e727227257620aab37cf6e7edabd"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; std::size_t, <br class="typebreak" />
+std::vector&lt; double &gt;<br class="typebreak" />
+, std::vector&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a9ab9e727227257620aab37cf6e7edabd">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &amp;Ks)</td></tr>
+<tr class="memdesc:a9ab9e727227257620aab37cf6e7edabd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the state <em>A</em> using the set of Kraus operators <em>Ks</em>.  <a href="#a9ab9e727227257620aab37cf6e7edabd">More...</a><br /></td></tr>
+<tr class="separator:a9ab9e727227257620aab37cf6e7edabd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cb5b9f74f7d1103c6536307dc7e9e60"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a7cb5b9f74f7d1103c6536307dc7e9e60"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; std::size_t, <br class="typebreak" />
+std::vector&lt; double &gt;<br class="typebreak" />
+, std::vector&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a7cb5b9f74f7d1103c6536307dc7e9e60">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::initializer_list&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &amp;Ks)</td></tr>
+<tr class="memdesc:a7cb5b9f74f7d1103c6536307dc7e9e60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the state <em>A</em> using the set of Kraus operators <em>Ks</em>.  <a href="#a7cb5b9f74f7d1103c6536307dc7e9e60">More...</a><br /></td></tr>
+<tr class="separator:a7cb5b9f74f7d1103c6536307dc7e9e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcf17a94b675f00820fdbc633727c7c0"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:abcf17a94b675f00820fdbc633727c7c0"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; std::size_t, <br class="typebreak" />
+std::vector&lt; double &gt;<br class="typebreak" />
+, std::vector&lt; <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#abcf17a94b675f00820fdbc633727c7c0">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const <a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> &amp;U)</td></tr>
+<tr class="memdesc:abcf17a94b675f00820fdbc633727c7c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the state <em>A</em> in the orthonormal basis specified by the unitary matrix <em>U</em>.  <a href="#abcf17a94b675f00820fdbc633727c7c0">More...</a><br /></td></tr>
+<tr class="separator:abcf17a94b675f00820fdbc633727c7c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84a0f3023e1895d22de4e5f3e727e1dd"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a84a0f3023e1895d22de4e5f3e727e1dd"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a84a0f3023e1895d22de4e5f3e727e1dd">loadMATLABmatrix</a> (const std::string &amp;mat_file, const std::string &amp;var_name)</td></tr>
 <tr class="memdesc:a84a0f3023e1895d22de4e5f3e727e1dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads an Eigen dynamic matrix from a MATLAB .mat file, generic version.  <a href="#a84a0f3023e1895d22de4e5f3e727e1dd">More...</a><br /></td></tr>
@@ -2778,14 +2822,332 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a27f5cf97f5ee0fbdeae163c0f77e28d6"></a>
+<a class="anchor" id="aa67d479bd53ef2dafb20db8a2207665c"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Derived &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt;std::vector&lt;double&gt;, std::vector&lt;<a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a>&gt; &gt; qpp::measure </td>
+          <td class="memname">std::tuple&lt;std::size_t, std::vector&lt;double&gt;, std::vector&lt;<a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a>&gt; &gt; qpp::measure </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; cmat &gt; &amp;&#160;</td>
+          <td class="paramname"><em>Ks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::size_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>subsys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::size_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dims</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Measures the part <em>subsys</em> of the multi-partite state vector or density matrix <em>A</em> using the set of Kraus operators <em>Ks</em>. </p>
+<dl class="section note"><dt>Note</dt><dd>The dimension of all <em>Ks</em> must match the dimension of <em>subsys</em>.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
+    <tr><td class="paramname">Ks</td><td>Set of Kraus operators </td></tr>
+    <tr><td class="paramname">subsys</td><td>Subsystem indexes that are measured </td></tr>
+    <tr><td class="paramname">dims</td><td>Dimensions of the multi-partite system </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of the result of the measurement, the vector of outcome probabilities and the vector of post-measurement normalized states </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a3e88cbdbcfb198818f5e49dd7c2904a3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::tuple&lt;std::size_t, std::vector&lt;double&gt;, std::vector&lt;<a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a>&gt; &gt; qpp::measure </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::initializer_list&lt; cmat &gt; &amp;&#160;</td>
+          <td class="paramname"><em>Ks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::size_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>subsys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::size_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dims</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Measures the part <em>subsys</em> of the multi-partite state vector or density matrix <em>A</em> using the set of Kraus operators <em>Ks</em>. </p>
+<dl class="section note"><dt>Note</dt><dd>The dimension of all <em>Ks</em> must match the dimension of <em>subsys</em>.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
+    <tr><td class="paramname">subsys</td><td>Subsystem indexes that are measured </td></tr>
+    <tr><td class="paramname">dims</td><td>Dimensions of the multi-partite system </td></tr>
+    <tr><td class="paramname">Ks</td><td>Set of Kraus operators </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of the result of the measurement, the vector of outcome probabilities and the vector of post-measurement normalized states </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a9722c7db968d9d2d73360afe8f4f7cd3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::tuple&lt;std::size_t, std::vector&lt;double&gt;, std::vector&lt;<a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a>&gt; &gt; qpp::measure </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; cmat &gt; &amp;&#160;</td>
+          <td class="paramname"><em>Ks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::size_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>subsys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>d</em> = <code>2</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Measures the part <em>subsys</em> of the multi-partite state vector or density matrix <em>A</em> using the set of Kraus operators <em>Ks</em>. </p>
+<dl class="section note"><dt>Note</dt><dd>The dimension of all <em>Ks</em> must match the dimension of <em>subsys</em>.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
+    <tr><td class="paramname">subsys</td><td>Subsystem indexes that are measured </td></tr>
+    <tr><td class="paramname">d</td><td>Subsystem dimensions </td></tr>
+    <tr><td class="paramname">Ks</td><td>Set of Kraus operators </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of the result of the measurement, the vector of outcome probabilities and the vector of post-measurement normalized states </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ad14e7a9cbe0187ad6577b32a71ed9ce2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::tuple&lt;std::size_t, std::vector&lt;double&gt;, std::vector&lt;<a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a>&gt; &gt; qpp::measure </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::initializer_list&lt; cmat &gt; &amp;&#160;</td>
+          <td class="paramname"><em>Ks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::size_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>subsys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>d</em> = <code>2</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Measures the part <em>subsys</em> of the multi-partite state vector or density matrix <em>A</em> using the set of Kraus operators <em>Ks</em>. </p>
+<dl class="section note"><dt>Note</dt><dd>The dimension of all <em>Ks</em> must match the dimension of <em>subsys</em>.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
+    <tr><td class="paramname">subsys</td><td>Subsystem indexes that are measured </td></tr>
+    <tr><td class="paramname">d</td><td>Subsystem dimensions </td></tr>
+    <tr><td class="paramname">Ks</td><td>Set of Kraus operators </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of the result of the measurement, the vector of outcome probabilities and the vector of post-measurement normalized states </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab5c133827c40b6e615d616442d744cb1"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::tuple&lt;std::size_t, std::vector&lt;double&gt;, std::vector&lt;<a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a>&gt; &gt; qpp::measure </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const cmat &amp;&#160;</td>
+          <td class="paramname"><em>U</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::size_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>subsys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::size_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dims</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Measures the part <em>subsys</em> of the multi-partite state <em>A</em> in the orthonormal basis specified by the unitary matrix <em>U</em>. </p>
+<dl class="section note"><dt>Note</dt><dd>The dimension of <em>U</em> must match the dimension of <em>subsys</em>.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
+    <tr><td class="paramname">subsys</td><td>Subsystem indexes that are measured </td></tr>
+    <tr><td class="paramname">dims</td><td>Dimensions of the multi-partite system </td></tr>
+    <tr><td class="paramname">U</td><td>Unitary matrix whose columns represent the measurement basis vectors </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of the result of the measurement, the vector of outcome probabilities and the vector of post-measurement normalized states </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a17b170e9f3a5f8822e5ff27f0023cd1e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::tuple&lt;std::size_t, std::vector&lt;double&gt;, std::vector&lt;<a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a>&gt; &gt; qpp::measure </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const cmat &amp;&#160;</td>
+          <td class="paramname"><em>U</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::size_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>subsys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>d</em> = <code>2</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Measures the part <em>subsys</em> of the multi-partite state <em>A</em> in the orthonormal basis specified by the unitary matrix <em>U</em>. </p>
+<dl class="section note"><dt>Note</dt><dd>The dimension of <em>U</em> must match the dimension of <em>subsys</em>.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
+    <tr><td class="paramname">subsys</td><td>Subsystem indexes that are measured </td></tr>
+    <tr><td class="paramname">d</td><td>Subsystem dimensions </td></tr>
+    <tr><td class="paramname">U</td><td>Unitary matrix whose columns represent the measurement basis vectors </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of the result of the measurement, the vector of outcome probabilities and the vector of post-measurement normalized states </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a9ab9e727227257620aab37cf6e7edabd"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::tuple&lt;std::size_t, std::vector&lt;double&gt;, std::vector&lt;<a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a>&gt; &gt; qpp::measure </td>
           <td>(</td>
           <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
           <td class="paramname"><em>A</em>, </td>
@@ -2812,18 +3174,18 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Pair of vector of probabilities and vector of post-measurement normalized states </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of the result of the measurement, the vector of outcome probabilities and the vector of post-measurement normalized states </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a06e3ae31fe7cd58136a4072dcfc389e9"></a>
+<a class="anchor" id="a7cb5b9f74f7d1103c6536307dc7e9e60"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Derived &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt;std::vector&lt;double&gt;, std::vector&lt;<a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a>&gt; &gt; qpp::measure </td>
+          <td class="memname">std::tuple&lt;std::size_t, std::vector&lt;double&gt;, std::vector&lt;<a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a>&gt; &gt; qpp::measure </td>
           <td>(</td>
           <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
           <td class="paramname"><em>A</em>, </td>
@@ -2850,18 +3212,18 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Pair of vector of probabilities and vector of post-measurement normalized states </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of the result of the measurement, the vector of outcome probabilities and the vector of post-measurement normalized states </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a6bb62ddad1b66794b3cfd74d80f8aaf9"></a>
+<a class="anchor" id="abcf17a94b675f00820fdbc633727c7c0"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Derived &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt;std::vector&lt;double&gt;, std::vector&lt;<a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a>&gt; &gt; qpp::measure </td>
+          <td class="memname">std::tuple&lt;std::size_t, std::vector&lt;double&gt;, std::vector&lt;<a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a>&gt; &gt; qpp::measure </td>
           <td>(</td>
           <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
           <td class="paramname"><em>A</em>, </td>
@@ -2870,7 +3232,7 @@ template&lt;typename Derived &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const cmat &amp;&#160;</td>
-          <td class="paramname"><em>M</em>&#160;</td>
+          <td class="paramname"><em>U</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2880,15 +3242,15 @@ template&lt;typename Derived &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Measures the state <em>A</em> in the orthonormal basis specified by the eigenvectors of <em>M</em>. </p>
+<p>Measures the state <em>A</em> in the orthonormal basis specified by the unitary matrix <em>U</em>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
-    <tr><td class="paramname">M</td><td>Normal matrix whose eigenvectors define the measurement basis </td></tr>
+    <tr><td class="paramname">U</td><td>Unitary matrix whose columns represent the measurement basis vectors </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Pair of vector of probabilities and vector of post-measurement normalized states </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of the result of the measurement, the vector of outcome probabilities and the vector of post-measurement normalized states </dd></dl>
 
 </div>
 </div>
@@ -4327,6 +4689,34 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="a9fae2e6e9a554f4f553524033258021c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceqpp.html#a23060a9e83c7da740a4459153dbd2c41">DynColVect</a>&lt;typename Derived::Scalar&gt; qpp::rho2pure </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
+          <td class="paramname"><em>A</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Finds the pure state representation of a matrix proportional to a projector onto a pure state. </p>
+<dl class="section note"><dt>Note</dt><dd>No purity check is done, the input state <em>A</em> must have rank one, otherwise the function returs the first non-zero eigenvector of <em>A</em> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>Eigen expression, assumed to be proportional to a projector onto a pure state, i.e. <em>A</em> is assumed to have rank one </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The unique non-zero eigenvector of <em>A</em>, as a dynamic column vector over the same scalar field as <em>A</em> </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a238cf516513837235fbc7d7d283f7b78"></a>
 <div class="memitem">
 <div class="memproto">
@@ -5362,7 +5752,7 @@ template&lt;typename Derived &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Wed Nov 12 2014 00:19:58 for quantum++ by
+    <li class="footer">Generated on Wed Nov 12 2014 17:58:05 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

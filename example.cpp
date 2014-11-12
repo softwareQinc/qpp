@@ -27,6 +27,7 @@ using namespace qpp;
 
 int main()
 {
+
     // Qudit Teleportation
     {
         std::size_t D = 3; // size of the system
@@ -43,21 +44,19 @@ int main()
         ket input_aAB = kron(psi_a, mes_AB); // joint input state aAB
         // output before measurement
         ket output_aAB = apply(input_aAB, Bell_aA, {0, 1}, D);
-        auto measured_aA = measure(ptrace2(prj(output_aAB), {D * D, D}), gt.Id(D * D)); // measure on aA
-        std::discrete_distribution<std::size_t> dd(measured_aA.first.begin(), measured_aA.first.end());
-        std::cout << ">> Alice's measurement probabilities: ";
-        std::cout << disp(measured_aA.first, ", ") << std::endl;
-        std::size_t m = dd(rdevs._rng); // sample
+        auto measured_aA = measure(output_aAB, gt.Id(D * D), {0, 1}, {D, D, D}); // measure on aA
+        std::size_t m = std::get<0>(measured_aA); // measurement result
         auto midx = n2multiidx(m, {D, D});
         std::cout << ">> Alice's measurement result: ";
-        std::cout << disp(midx, " ") << std::endl;
+        std::cout << m << " -> " << disp(midx, " ") << std::endl;
+        std::cout << ">> Alice's measurement probabilities: ";
+        std::cout << disp(std::get<1>(measured_aA), ", ") << std::endl;
         // conditional result on B before correction
-        ket output_m_aAB = apply(output_aAB, prj(mket(midx, D)), {0, 1}, D) / std::sqrt(measured_aA.first[m]);
+        cmat output_m_B = std::get<2>(measured_aA)[m];
         cmat correction_B = powm(gt.Zd(D), midx[0]) * powm(adjoint(gt.Xd(D)), midx[1]); // correction operator
         // apply correction on B
-        output_aAB = apply(output_m_aAB, correction_B, {2}, D);
-        cmat rho_B = ptrace1(prj(output_aAB), {D * D, D});
-        std::cout << ">> Bob's density operator: " << std::endl;
+        cmat rho_B = correction_B * output_m_B * adjoint(correction_B);
+        std::cout << ">> Bob's state: " << std::endl;
         std::cout << disp(rho_B) << std::endl;
         std::cout << ">> Norm difference: " << norm(rho_B - prj(psi_a)) << std::endl; // verification
     }
@@ -86,12 +85,11 @@ int main()
         psi_AB = apply(psi_AB, Bell_AB, {0, 1}, D);
         auto measured = measure(psi_AB, gt.Id(D * D));
         std::cout << ">> Bob's measurement probabilities: ";
-        std::cout << disp(measured.first, ", ") << std::endl;
+        std::cout << disp(std::get<1>(measured), ", ") << std::endl;
         // Bob samples according to the measurement probabilities
-        std::discrete_distribution<std::size_t> dd(measured.first.begin(), measured.first.end());
-        std::size_t m_B = dd(rdevs._rng);
+        std::size_t m_B = std::get<0>(measured);
         std::cout << ">> Bob received: ";
-        std::cout << disp(n2multiidx(m_B, {D, D}), " ") << std::endl;
+        std::cout << m_B << " -> " << disp(n2multiidx(m_B, {D, D}), " ") << std::endl;
     }
 
     // Grover's search algorithm, we time it
@@ -120,12 +118,11 @@ int main()
         }
         // we now measure the state in the computational basis
         auto measured = measure(psi, gt.Id(N));
-        std::cout << ">> Probability of the marked state: " << measured.first[marked] << std::endl;
+        std::cout << ">> Probability of the marked state: " << std::get<1>(measured)[marked] << std::endl;
         std::cout << ">> Probability of all results: ";
-        std::cout << disp(measured.first, ", ") << std::endl;
+        std::cout << disp(std::get<1>(measured), ", ") << std::endl;
         std::cout << ">> Let's sample..." << std::endl;
-        std::discrete_distribution<std::size_t> dd(measured.first.begin(), measured.first.end());
-        std::size_t result = dd(rdevs._rng);
+        std::size_t result = std::get<0>(measured);
         if (result == marked)
             std::cout << ">> Hooray, we obtained the correct result: ";
         else

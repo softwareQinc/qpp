@@ -39,6 +39,7 @@ var functions_8h =
     [ "prod", "functions_8h.html#a78595ec429a5df51dbe682cdb9711d9c", null ],
     [ "prod", "functions_8h.html#ab7f10cf7a2845946fedfac88e6a9081f", null ],
     [ "reshape", "functions_8h.html#a1f5c91b44c2437627777140980cac940", null ],
+    [ "rho2pure", "functions_8h.html#a9fae2e6e9a554f4f553524033258021c", null ],
     [ "schatten", "functions_8h.html#a8251985eb390022a0116f6572a82ea58", null ],
     [ "sinm", "functions_8h.html#a78be6e812878479d6acbd25cf5ae387c", null ],
     [ "spectralpowm", "functions_8h.html#a62d7f0db6a049f254c2a7a77af8eb29e", null ],
