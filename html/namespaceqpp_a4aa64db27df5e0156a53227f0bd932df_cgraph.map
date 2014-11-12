@@ -1,0 +1,6 @@
+<map id="qpp::channel" name="qpp::channel">
+<area shape="rect" id="node2" href="$namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31" title="qpp::internal::_check\l_nonzero_size" alt="" coords="473,21,608,62"/>
+<area shape="rect" id="node3" href="$namespaceqpp.html#af6d3ed33a419331f7e9721b5fa602e2c" title="Applies the channel specified by the set of Kraus operators Ks to the density matrix rho..." alt="" coords="148,60,243,87"/>
+<area shape="rect" id="node4" href="$namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276" title="qpp::internal::_check\l_square_mat" alt="" coords="291,79,425,121"/>
+<area shape="rect" id="node5" href="$namespaceqpp.html#ac541afad6657467d9bd83c69345880a2" title="Adjoint. " alt="" coords="314,145,402,172"/>
+</map>
