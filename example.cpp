@@ -357,7 +357,8 @@ auto TIMING = []
     std::cout << ">> It took " << t.toc() << " seconds." << std::endl;
 
     // qpp::ptranspose()
-    std::cout << std::endl << "**** qpp::ptranspose() timing ****" << std::endl;
+    std::cout << std::endl << "**** qpp::ptranspose() timing ****"
+            << std::endl;
     // partially transpose n-1 subsystems
     std::vector<std::size_t> subsys_ptranspose;
     for (std::size_t i = 0; i < n - 1; ++i)
@@ -369,7 +370,8 @@ auto TIMING = []
     std::cout << ">> It took " << t.toc() << " seconds." << std::endl;
 
     // qpp::syspermute()
-    std::cout << std::endl << "**** qpp::syspermute() timing ****" << std::endl;
+    std::cout << std::endl << "**** qpp::syspermute() timing ****"
+            << std::endl;
     std::vector<std::size_t> perm; // left-shift all subsystems by 1
     for (std::size_t i = 0; i < n; ++i)
         perm.push_back((i + 1) % n);
