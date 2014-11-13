@@ -33,7 +33,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 ---
 ## Building instructions
 
-#### Configuration:
+### Configuration:
 
 - Eigen3 library located in `$HOME/eigen_3.2.2`
 - Quantum++ library located in `$HOME/qpp`
