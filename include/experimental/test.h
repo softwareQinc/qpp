@@ -28,10 +28,10 @@
 */
 namespace qpp
 {
-    namespace experimental
-    {
+namespace experimental
+{
 
-    } /* namespace experimental */
+} /* namespace experimental */
 } /* namespace qpp */
 
 #endif /* INCLUDE_EXPERIMENTAL_TEST_H_ */

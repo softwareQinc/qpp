@@ -25,100 +25,128 @@
 namespace qpp
 {
 
+/**
+* \class qpp::Codes
+* \brief const Singleton class that defines quantum error correcting codes
+*/
+class Codes : public internal::Singleton<const Codes> // const Singleton
+{
+    friend class internal::Singleton<const Codes>;
+
+public:
     /**
-    * \class qpp::Codes
-    * \brief const Singleton class that defines quantum error correcting codes
+    * \brief Code types, add more codes here if needed
+    *
+    * \see qpp::Codes::codeword()
     */
-    class Codes : public internal::Singleton<const Codes> // const Singleton
+    enum class Type // exception types
     {
-        friend class internal::Singleton<const Codes>;
+        FIVE_QUBIT = 1,     //!< [[5,1,3]] qubit code
+        SEVEN_QUBIT_STEANE, //!< [[7,1,3]] Steane qubit code
+        NINE_QUBIT_SHOR     //!< [[9,1,3]] Shor qubit code
+    };
+private:
+    /**
+    * \brief Default constructor
+    */
+    Codes() = default;
+public:
+    /**
+    * \brief Returns the codeword of the specified code
+    *
+    * \param type Code type, defined in the enum qpp::Codes::Types
+    * \param i Codeword index
+    * \return \a i-th codeword  of the code \a type
+    */
+    ket codeword(Type type, std::size_t i) const
+    {
+        ket result;
+        switch (type)
+        {
+            // [[5,1,3]] Five qubit code according to Nielsen and Chuang)
+            case Type::FIVE_QUBIT:
+                switch (i)
+                {
+                    case 0:
+                        result = (mket({0, 0, 0, 0, 0}) + mket({1, 0, 0, 1, 0})
+                                + mket({0, 1, 0, 0, 1}) + mket({1, 0, 1, 0, 0})
+                                + mket({0, 1, 0, 1, 0}) - mket({1, 1, 0, 1, 1})
+                                - mket({0, 0, 1, 1, 0}) - mket({1, 1, 0, 0, 0})
+                                - mket({1, 1, 1, 0, 1}) - mket({0, 0, 0, 1, 1})
+                                - mket({1, 1, 1, 1, 0}) - mket({0, 1, 1, 1, 1})
+                                - mket({1, 0, 0, 0, 1}) - mket({0, 1, 1, 0, 0})
+                                - mket({1, 0, 1, 1, 1}) + mket({0, 0, 1, 0, 1}))
+                                / 4.;
+                        break;
+                    case 1:
+                        result = (mket({1, 1, 1, 1, 1}) + mket({0, 1, 1, 0, 1})
+                                + mket({1, 0, 1, 1, 0}) + mket({0, 1, 0, 1, 1})
+                                + mket({1, 0, 1, 0, 1}) - mket({0, 0, 1, 0, 0})
+                                - mket({1, 1, 0, 0, 1}) - mket({0, 0, 1, 1, 1})
+                                - mket({0, 0, 0, 1, 0}) - mket({1, 1, 1, 0, 0})
+                                - mket({0, 0, 0, 0, 1}) - mket({1, 0, 0, 0, 0})
+                                - mket({0, 1, 1, 1, 0}) - mket({1, 0, 0, 1, 1})
+                                - mket({0, 1, 0, 0, 0}) + mket({1, 1, 0, 1, 0}))
+                                / 4.;
+                        break;
+                    default:
+                        throw Exception("qpp::Codes::codeword()",
+                                Exception::Type::NO_CODEWORD);
+                }
+                break;
+                // [[7,1,3]] Steane code according to Nielsen and Chuang)
+            case Type::SEVEN_QUBIT_STEANE:
+                switch (i)
+                {
+                    case 0:
+                        result = (mket({0, 0, 0, 0, 0, 0, 0})
+                                + mket({1, 0, 1, 0, 1, 0, 1})
+                                + mket({0, 1, 1, 0, 0, 1, 1})
+                                + mket({1, 1, 0, 0, 1, 1, 0})
+                                + mket({0, 0, 0, 1, 1, 1, 1})
+                                + mket({1, 0, 1, 1, 0, 1, 0})
+                                + mket({0, 1, 1, 1, 1, 0, 0})
+                                + mket({1, 1, 0, 1, 0, 0, 1})) / std::sqrt(8.);
 
-    public:
-        /**
-        * \brief Code types, add more codes here if needed
-        *
-        * \see qpp::Codes::codeword()
-        */
-        enum class Type // exception types
-        {
-            FIVE_QUBIT = 1,    //!< [[5,1,3]] qubit code
-            SEVEN_QUBIT_STEANE, //!< [[7,1,3]] Steane qubit code
-            NINE_QUBIT_SHOR //!< [[9,1,3]] Shor qubit code
-        };
-    private:
-        /**
-        * \brief Default constructor
-        */
-        Codes()
-        {
-        };
-    public:
-        /**
-        * \brief Returns the codeword of the specified code
-        *
-        * \param type Code type, defined in the enum qpp::Codes::Types
-        * \param i Codeword index
-        * \return \a i-th codeword  of the code \a type
-        */
-        ket codeword(Type type, std::size_t i) const
-        {
-            ket result;
-            switch (type)
-            {
-                case Type::FIVE_QUBIT:  // [[5,1,3]] Five qubit code according to Nielsen and Chuang)
-                    switch (i)
-                    {
-                        case 0:
-                            result = (mket({0, 0, 0, 0, 0}) + mket({1, 0, 0, 1, 0}) + mket({0, 1, 0, 0, 1}) + mket({1, 0, 1, 0, 0})
-                                    + mket({0, 1, 0, 1, 0}) - mket({1, 1, 0, 1, 1}) - mket({0, 0, 1, 1, 0}) - mket({1, 1, 0, 0, 0})
-                                    - mket({1, 1, 1, 0, 1}) - mket({0, 0, 0, 1, 1}) - mket({1, 1, 1, 1, 0}) - mket({0, 1, 1, 1, 1})
-                                    - mket({1, 0, 0, 0, 1}) - mket({0, 1, 1, 0, 0}) - mket({1, 0, 1, 1, 1}) + mket({0, 0, 1, 0, 1})) / 4.;
-                            break;
-                        case 1:
-                            result = (mket({1, 1, 1, 1, 1}) + mket({0, 1, 1, 0, 1}) + mket({1, 0, 1, 1, 0}) + mket({0, 1, 0, 1, 1})
-                                    + mket({1, 0, 1, 0, 1}) - mket({0, 0, 1, 0, 0}) - mket({1, 1, 0, 0, 1}) - mket({0, 0, 1, 1, 1})
-                                    - mket({0, 0, 0, 1, 0}) - mket({1, 1, 1, 0, 0}) - mket({0, 0, 0, 0, 1}) - mket({1, 0, 0, 0, 0})
-                                    - mket({0, 1, 1, 1, 0}) - mket({1, 0, 0, 1, 1}) - mket({0, 1, 0, 0, 0}) + mket({1, 1, 0, 1, 0})) / 4.;
-                            break;
-                        default:
-                            throw Exception("qpp::Codes::codeword()", Exception::Type::NO_CODEWORD);
-                    }
-                    break;
-                case Type::SEVEN_QUBIT_STEANE: // [[7,1,3]] Steane code according to Nielsen and Chuang)
-                    switch (i)
-                    {
-                        case 0:
-                            result = (mket({0, 0, 0, 0, 0, 0, 0}) + mket({1, 0, 1, 0, 1, 0, 1}) + mket({0, 1, 1, 0, 0, 1, 1}) + mket({1, 1, 0, 0, 1, 1, 0})
-                                    + mket({0, 0, 0, 1, 1, 1, 1}) + mket({1, 0, 1, 1, 0, 1, 0}) + mket({0, 1, 1, 1, 1, 0, 0}) + mket({1, 1, 0, 1, 0, 0, 1})) / std::sqrt(8.);
-
-                            break;
-                        case 1:
-                            result = (mket({1, 1, 1, 1, 1, 1, 1}) + mket({0, 1, 0, 1, 0, 1, 0}) + mket({1, 0, 0, 1, 1, 0, 0}) + mket({0, 0, 1, 1, 0, 0, 1})
-                                    + mket({1, 1, 1, 0, 0, 0, 0}) + mket({0, 1, 0, 0, 1, 0, 1}) + mket({1, 0, 0, 0, 0, 1, 1}) + mket({0, 0, 1, 0, 1, 1, 0})) / std::sqrt(8.);
-                            break;
-                        default:
-                            throw Exception("qpp::Codes::codeword()", Exception::Type::NO_CODEWORD);
-                    }
-                    break;
-                case Type::NINE_QUBIT_SHOR: // [[9,1,3]] Shor code
-                    ket shora, shorb;
-                    shora = mket({0, 0, 0}) + mket({1, 1, 1,});
-                    shorb = mket({0, 0, 0}) - mket({1, 1, 1,});
-                    switch (i)
-                    {
-                        case 0:
-                            result = kron(shora, kron(shora, shora)) / std::sqrt(8.);
-                            break;
-                        case 1:
-                            result = kron(shorb, kron(shorb, shorb)) / std::sqrt(8.);
-                            break;
-                        default:
-                            throw Exception("qpp::Codes::codeword()", Exception::Type::NO_CODEWORD);
-                    }
-            }
-            return result;
+                        break;
+                    case 1:
+                        result = (mket({1, 1, 1, 1, 1, 1, 1})
+                                + mket({0, 1, 0, 1, 0, 1, 0})
+                                + mket({1, 0, 0, 1, 1, 0, 0})
+                                + mket({0, 0, 1, 1, 0, 0, 1})
+                                + mket({1, 1, 1, 0, 0, 0, 0})
+                                + mket({0, 1, 0, 0, 1, 0, 1})
+                                + mket({1, 0, 0, 0, 0, 1, 1})
+                                + mket({0, 0, 1, 0, 1, 1, 0})) / std::sqrt(8.);
+                        break;
+                    default:
+                        throw Exception("qpp::Codes::codeword()",
+                                Exception::Type::NO_CODEWORD);
+                }
+                break;
+                // [[9,1,3]] Shor code
+            case Type::NINE_QUBIT_SHOR:
+                ket shora, shorb;
+                shora = mket({0, 0, 0}) + mket({1, 1, 1,});
+                shorb = mket({0, 0, 0}) - mket({1, 1, 1,});
+                switch (i)
+                {
+                    case 0:
+                        result = kron(shora, kron(shora, shora))
+                                / std::sqrt(8.);
+                        break;
+                    case 1:
+                        result = kron(shorb, kron(shorb, shorb))
+                                / std::sqrt(8.);
+                        break;
+                    default:
+                        throw Exception("qpp::Codes::codeword()",
+                                Exception::Type::NO_CODEWORD);
+                }
         }
-    }; /* class Codes */
+        return result;
+    }
+}; /* class Codes */
 
 }
 
