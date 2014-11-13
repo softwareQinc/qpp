@@ -40,6 +40,8 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 - MATLAB compiler include header files: `/Applications/MATLAB_R2014b.app/extern/include`
 - MATLAB compiler shared library files: `/Applications/MATLAB_R2014b.app/bin/maci64`
 
+---
+
 ### Building instructions for g++
 
 - Example file: `example.cpp` (current folder, from where `g++` is run)
