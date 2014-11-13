@@ -31,11 +31,7 @@ You should have received a copy of the GNU General Public License
 along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 ---
-
-## Building instructions for g++
-
-- Example file: `example.cpp` (current folder, from where `g++` is run)
-- Output binary: `qpp` (current folder, from where `g++` is run)
+## Building instructions
 
 #### Configuration:
 
@@ -43,6 +39,11 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 - Quantum++ library located in `$HOME/qpp`
 - MATLAB compiler include header files: `/Applications/MATLAB_R2014b.app/extern/include`
 - MATLAB compiler shared library files: `/Applications/MATLAB_R2014b.app/bin/maci64`
+
+### Building instructions for g++
+
+- Example file: `example.cpp` (current folder, from where `g++` is run)
+- Output binary: `qpp` (current folder, from where `g++` is run)
 
 #### Release version (without MATLAB support): 
 
@@ -59,6 +60,8 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 #### Debug version (with MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include -I /Applications/MATLAB_R2014b.app/extern/include -L /Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
+
+---
 
 ### Building using CMake 
 
@@ -92,6 +95,8 @@ To change the location of `Eigen3` library or the location of MATLAB installatio
 edit the `CMakeLists.txt` file. See also `CMakeLists.txt` for additional options.
 Do not forget to remove everything from the `./build` directory before a fresh build!
 
+---
+
 ### Building using make
 
 For convenience, the current version of the repository has also a set of Makefiles available 
@@ -99,6 +104,8 @@ under the folder`./Makefile.examples`. To build the executable this way (without
 copy into the root of the project 
 an appropriate Makefile from `./Makefile.examples`, name it `Makefile`, 
 then type `make` (for release version) or `make debug` (for debug version) to produce the executable `qpp`.
+
+---
 
 ### Additional remarks
 
