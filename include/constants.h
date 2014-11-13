@@ -74,7 +74,7 @@ constexpr double eps = 1e-12;
 *
 * Used internally to allocate arrays on the stack (for speed reasons)
 */
-constexpr std::size_t maxn = 64; // definitely cannot simulate more qubits :)
+constexpr std::size_t maxn = 64; // maximum number of qudits a state may have
 
 /**
 * \brief \f$ \pi \f$

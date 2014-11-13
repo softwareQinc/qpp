@@ -252,7 +252,8 @@ DynMat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1> &A,
     // EXCEPTION CHECKS
 
     // check types
-    if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
+    if (!std::is_same<typename Derived1::Scalar,
+            typename Derived2::Scalar>::value)
         throw Exception("qpp::kron()", Exception::Type::TYPE_MISMATCH);
 
     // check zero-size

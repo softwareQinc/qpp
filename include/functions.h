@@ -161,11 +161,12 @@ typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived> &A)
 
     // check square matrix
     if (!internal::_check_square_mat(rA))
-        throw Exception("qpp::logdet()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::logdet()",
+                Exception::Type::MATRIX_NOT_SQUARE);
 
     Eigen::PartialPivLU<DynMat<typename Derived::Scalar>> lu(rA);
-    DynMat<typename Derived::Scalar> U = lu.matrixLU().template triangularView<
-            Eigen::Upper>();
+    DynMat<typename Derived::Scalar> U =
+            lu.matrixLU().template triangularView<Eigen::Upper>();
     typename Derived::Scalar result = std::log(U(0, 0));
 
     for (std::size_t i = 1; i < static_cast<std::size_t>(rA.rows()); ++i)
@@ -318,7 +319,8 @@ cmat hevects(const Eigen::MatrixBase<Derived> &A)
 
     // check square matrix
     if (!internal::_check_square_mat(rA))
-        throw Exception("qpp::hevects()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::hevects()",
+                Exception::Type::MATRIX_NOT_SQUARE);
 
     Eigen::SelfAdjointEigenSolver<cmat> es(rA.template cast<cplx>());
     return es.eigenvectors();
@@ -574,7 +576,8 @@ cmat spectralpowm(const Eigen::MatrixBase<Derived> &A, const cplx z)
 
     // check square matrix
     if (!internal::_check_square_mat(rA))
-        throw Exception("qpp::spectralpowm()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::spectralpowm()",
+                Exception::Type::MATRIX_NOT_SQUARE);
 
     // Define A^0 = Id, for z IDENTICALLY zero
     if (real(z) == 0 && imag(z) == 0)
@@ -816,7 +819,8 @@ DynMat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived> &A,
         throw Exception("qpp::reshape()", Exception::Type::ZERO_SIZE);
 
     if (Arows * Acols != rows * cols)
-        throw Exception("qpp::reshape()", Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw Exception("qpp::reshape()",
+                Exception::Type::DIMS_MISMATCH_MATRIX);
 
     return Eigen::Map<DynMat<typename Derived::Scalar>>(
             const_cast<typename Derived::Scalar *>(rA.data()), rows, cols);
@@ -843,7 +847,8 @@ DynMat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1> &A,
     // EXCEPTION CHECKS
 
     // check types
-    if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
+    if (!std::is_same<typename Derived1::Scalar,
+            typename Derived2::Scalar>::value)
         throw Exception("qpp::comm()", Exception::Type::TYPE_MISMATCH);
 
     // check zero-size
@@ -883,7 +888,8 @@ DynMat<typename Derived1::Scalar> anticomm(const Eigen::MatrixBase<Derived1> &A,
     // EXCEPTION CHECKS
 
     // check types
-    if (!std::is_same<typename Derived1::Scalar, typename Derived2::Scalar>::value)
+    if (!std::is_same<typename Derived1::Scalar,
+            typename Derived2::Scalar>::value)
         throw Exception("qpp::anticomm()", Exception::Type::TYPE_MISMATCH);
 
     // check zero-size
@@ -893,7 +899,8 @@ DynMat<typename Derived1::Scalar> anticomm(const Eigen::MatrixBase<Derived1> &A,
 
     // check square matrices
     if (!internal::_check_square_mat(rA) || !internal::_check_square_mat(rB))
-        throw Exception("qpp::anticomm()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::anticomm()",
+                Exception::Type::MATRIX_NOT_SQUARE);
 
     // check equal dimensions
     if (rA.rows() != rB.rows())
@@ -1063,8 +1070,8 @@ std::vector<std::size_t> n2multiidx(std::size_t n,
     if (n >= std::accumulate(std::begin(dims), std::end(dims), 1u, multiply))
         throw Exception("qpp::n2multiidx()", Exception::Type::OUT_OF_RANGE);
 
-
-    std::size_t result[2 * maxn];  // double the size for matrices reshaped as vectors
+    // double the size for matrices reshaped as vectors
+    std::size_t result[2 * maxn];
     internal::_n2multiidx(n, dims.size(), dims.data(), result);
     return std::vector<std::size_t>(result, result + dims.size());
 }
@@ -1127,7 +1134,8 @@ ket mket(const std::vector<std::size_t> &mask,
     // check mask is a valid vector
     for (std::size_t i = 0; i < n; ++i)
         if (mask[i] >= dims[i])
-            throw Exception("qpp::mket()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+            throw Exception("qpp::mket()",
+                    Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     ket result = ket::Zero(D);
     std::size_t pos = multiidx2n(mask, dims);
@@ -1161,7 +1169,8 @@ ket mket(const std::vector<std::size_t> &mask, std::size_t d = 2)
     // check mask is a valid vector
     for (std::size_t i = 0; i < n; ++i)
         if (mask[i] >= d)
-            throw Exception("qpp::mket()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+            throw Exception("qpp::mket()",
+                    Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     ket result = ket::Zero(D);
     std::vector<std::size_t> dims(n, d);
@@ -1208,7 +1217,8 @@ cmat mprj(const std::vector<std::size_t> &mask,
     // check mask is a valid vector
     for (std::size_t i = 0; i < n; ++i)
         if (mask[i] >= dims[i])
-            throw Exception("qpp::mprj()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+            throw Exception("qpp::mprj()",
+                    Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     cmat result = cmat::Zero(D, D);
     std::size_t pos = multiidx2n(mask, dims);
@@ -1244,7 +1254,8 @@ cmat mprj(const std::vector<std::size_t> &mask, std::size_t d = 2)
     // check mask is a valid vector
     for (std::size_t i = 0; i < n; ++i)
         if (mask[i] >= d)
-            throw Exception("qpp::mprj()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+            throw Exception("qpp::mprj()",
+                    Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     cmat result = cmat::Zero(D, D);
     std::vector<std::size_t> dims(n, d);
@@ -1264,10 +1275,11 @@ template<typename InputIterator>
 std::vector<double> abssq(InputIterator first, InputIterator last)
 {
     std::vector<double> weights(last - first);
-    std::transform(first, last, std::begin(weights), [](const cplx &z) -> double
-    {
-        return std::pow(std::abs(z), 2);
-    });
+    std::transform(first, last, std::begin(weights),
+            [](const cplx &z) -> double
+            {
+                return std::pow(std::abs(z), 2);
+            });
     return weights;
 }
 
@@ -1337,17 +1349,20 @@ auto prod(InputIterator first,
 }
 
 /**
-* \brief Finds the pure state representation of a matrix proportional to a projector onto a pure state
+* \brief Finds the pure state representation of a matrix
+* proportional to a projector onto a pure state
 *
 * \note No purity check is done, the input state \a A must have rank one,
 * otherwise the function returs the first non-zero eigenvector of \a A
 *
-* \param A Eigen expression, assumed to be proportional to a projector onto a pure state, i.e. \a A is assumed
-* to have rank one
-* \return The unique non-zero eigenvector of \a A, as a dynamic column vector over the same scalar field as \a A
+* \param A Eigen expression, assumed to be proportional
+* to a projector onto a pure state, i.e. \a A is assumed to have rank one
+* \return The unique non-zero eigenvector of \a A,
+* as a dynamic column vector over the same scalar field as \a A
 */
 template<typename Derived>
-DynColVect<typename Derived::Scalar> rho2pure(const Eigen::MatrixBase<Derived> &A)
+DynColVect<typename Derived::Scalar> rho2pure(
+        const Eigen::MatrixBase<Derived> &A)
 {
     const DynMat<typename Derived::Scalar> &rA = A;
 
@@ -1362,8 +1377,10 @@ DynColVect<typename Derived::Scalar> rho2pure(const Eigen::MatrixBase<Derived> &
 
     DynColVect<double> tmp_evals = hevals(rA);
     cmat tmp_evects = hevects(rA);
-    DynColVect<typename Derived::Scalar> result = DynColVect<typename Derived::Scalar>::Zero(rA.rows());
-    // find the non-zero eigenvector (there is only one, assuming the state is pure)
+    DynColVect<typename Derived::Scalar> result =
+            DynColVect<typename Derived::Scalar>::Zero(rA.rows());
+    // find the non-zero eigenvector
+    // there is only one, assuming the state is pure
     for (std::size_t k = 0; k < static_cast<std::size_t>(rA.rows()); ++k)
     {
         if (std::abs(tmp_evals(k)) > eps)

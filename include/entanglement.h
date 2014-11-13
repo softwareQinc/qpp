@@ -50,10 +50,12 @@ DynColVect<cplx> schmidtcoeff(const Eigen::MatrixBase<Derived> &A,
         throw Exception("qpp::schmidtcoeff()", Exception::Type::NOT_BIPARTITE);
     // check column vector
     if (!internal::_check_col_vector(rA))
-        throw Exception("qpp::schmidtcoeff()", Exception::Type::MATRIX_NOT_CVECTOR);
+        throw Exception("qpp::schmidtcoeff()",
+                Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
     if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::schmidtcoeff()", Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw Exception("qpp::schmidtcoeff()",
+                Exception::Type::DIMS_MISMATCH_MATRIX);
 
     Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(
             transpose(reshape(rA, dims[1], dims[0])));
@@ -84,7 +86,8 @@ cmat schmidtU(const Eigen::MatrixBase<Derived> &A,
         throw Exception("qpp::schmidtU()", Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
     if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::schmidtU()", Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw Exception("qpp::schmidtU()",
+                Exception::Type::DIMS_MISMATCH_MATRIX);
 
     return svdU(transpose(reshape(rA, dims[1], dims[0])));
 }
@@ -113,7 +116,8 @@ cmat schmidtV(const Eigen::MatrixBase<Derived> &A,
         throw Exception("qpp::schmidtV()", Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
     if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::schmidtV()", Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw Exception("qpp::schmidtV()",
+                Exception::Type::DIMS_MISMATCH_MATRIX);
 
     // by default returns V^*, we need V, i.e. the complex conjugate,
     // i.e. adjoint(transpose(V))
@@ -144,15 +148,18 @@ DynColVect<double> schmidtprob(const Eigen::MatrixBase<Derived> &A,
         throw Exception("qpp::schmidtprob()", Exception::Type::NOT_BIPARTITE);
     // check column vector
     if (!internal::_check_col_vector(rA))
-        throw Exception("qpp::schmidtprob()", Exception::Type::MATRIX_NOT_CVECTOR);
+        throw Exception("qpp::schmidtprob()",
+                Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
     if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::schmidtprob()", Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw Exception("qpp::schmidtprob()",
+                Exception::Type::DIMS_MISMATCH_MATRIX);
 
     Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(
             transpose(reshape(rA, dims[1], dims[0])));
 
-    return powm(static_cast<dmat>(svd.singularValues().asDiagonal()), 2).diagonal();
+    return powm(static_cast<dmat>(svd.singularValues().asDiagonal()), 2)
+            .diagonal();
 }
 
 /**
@@ -179,10 +186,12 @@ double entanglement(const Eigen::MatrixBase<Derived> &A,
         throw Exception("qpp::entanglement()", Exception::Type::NOT_BIPARTITE);
     // check column vector
     if (!internal::_check_col_vector(rA))
-        throw Exception("qpp::entanglement()", Exception::Type::MATRIX_NOT_CVECTOR);
+        throw Exception("qpp::entanglement()",
+                Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
     if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::entanglement()", Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw Exception("qpp::entanglement()",
+                Exception::Type::DIMS_MISMATCH_MATRIX);
 
     return shannon(schmidtprob(rA, dims));
 }
@@ -209,12 +218,14 @@ double gconcurrence(const Eigen::MatrixBase<Derived> &A)
         throw Exception("qpp::gconcurrence()", Exception::Type::ZERO_SIZE);
     // check column vector
     if (!internal::_check_col_vector(rA))
-        throw Exception("qpp::gconcurrence()", Exception::Type::MATRIX_NOT_CVECTOR);
+        throw Exception("qpp::gconcurrence()",
+                Exception::Type::MATRIX_NOT_CVECTOR);
 
     // check equal local dimensions
     std::size_t D = static_cast<std::size_t>(std::sqrt((double) rA.rows()));
     if (D * D != static_cast<std::size_t>(rA.rows()))
-        throw Exception("qpp::gconcurrence()", Exception::Type::DIMS_NOT_EQUAL);
+        throw Exception("qpp::gconcurrence()",
+                Exception::Type::DIMS_NOT_EQUAL);
 
     // we compute exp(logdet()) to avoid underflow
     return D * std::abs(std::exp(2. / D * logdet(reshape(rA, D, D))));
@@ -240,10 +251,12 @@ double negativity(const Eigen::MatrixBase<Derived> &A,
         throw Exception("qpp::negativity()", Exception::Type::NOT_BIPARTITE);
     // check square matrix vector
     if (!internal::_check_square_mat(rA))
-        throw Exception("qpp::negativity()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::negativity()",
+                Exception::Type::MATRIX_NOT_SQUARE);
     // check matching dimensions
     if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::negativity()", Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw Exception("qpp::negativity()",
+                Exception::Type::DIMS_MISMATCH_MATRIX);
 
     return (schatten(ptranspose(rA, {0}, dims), 1) - 1.) / 2.;
 }
@@ -268,10 +281,12 @@ double lognegativity(const Eigen::MatrixBase<Derived> &A,
         throw Exception("qpp::lognegativity()", Exception::Type::NOT_BIPARTITE);
     // check square matrix vector
     if (!internal::_check_square_mat(rA))
-        throw Exception("qpp::lognegativity()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::lognegativity()",
+                Exception::Type::MATRIX_NOT_SQUARE);
     // check matching dimensions
     if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::lognegativity()", Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw Exception("qpp::lognegativity()",
+                Exception::Type::DIMS_MISMATCH_MATRIX);
 
     return std::log2(2 * negativity(rA, dims) + 1);
 }
@@ -291,10 +306,12 @@ double concurrence(const Eigen::MatrixBase<Derived> &A)
         throw Exception("qpp::concurrence()", Exception::Type::ZERO_SIZE);
     // check square matrix vector
     if (!internal::_check_square_mat(rA))
-        throw Exception("qpp::concurrence()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::concurrence()",
+                Exception::Type::MATRIX_NOT_SQUARE);
     // check that the state is a 2-qubit state
     if (rA.rows() != 4)
-        throw Exception("qpp::concurrence()", Exception::Type::NOT_QUBIT_SUBSYS);
+        throw Exception("qpp::concurrence()",
+                Exception::Type::NOT_QUBIT_SUBSYS);
 
     cmat sigmaY = Gates::get_instance().Y;
     DynColVect<double> lambdas =

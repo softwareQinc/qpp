@@ -237,16 +237,19 @@ double qmutualinfo(const Eigen::MatrixBase<Derived> &A,
 
     // check square matrix
     if (!internal::_check_square_mat(rA))
-        throw Exception("qpp::mutualinfo()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::mutualinfo()",
+                Exception::Type::MATRIX_NOT_SQUARE);
 
     // check that dims match the dimension of A
     if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::mutualinfo()", Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw Exception("qpp::mutualinfo()",
+                Exception::Type::DIMS_MISMATCH_MATRIX);
 
     // check that subsys are valid
     if (!internal::_check_subsys_match_dims(subsysA, dims)
             || !internal::_check_subsys_match_dims(subsysB, dims))
-        throw Exception("qpp::mutualinfo()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+        throw Exception("qpp::mutualinfo()",
+                Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     // The full system indexes {0,1,...,n-1}
     std::vector<std::size_t> full_system(dims.size());

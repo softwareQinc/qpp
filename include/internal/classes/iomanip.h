@@ -22,7 +22,8 @@
 #ifndef INCLUDE_INTERNAL_CLASSES_IOMANIP_H_
 #define INCLUDE_INTERNAL_CLASSES_IOMANIP_H_
 
-// ostream manipulators for nice formatting of Eigen matrices and STL/C-style containers/vectors
+// ostream manipulators for nice formatting of
+// Eigen matrices and STL/C-style containers/vectors
 
 namespace qpp
 {

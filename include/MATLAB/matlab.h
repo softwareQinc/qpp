@@ -68,20 +68,22 @@ Derived loadMATLABmatrix(const std::string &mat_file,
 * \return Eigen double dynamic matrix (\a qpp::dmat)
 */
 template<>
-inline dmat loadMATLABmatrix(const std::string &mat_file, const std::string &var_name)
+inline dmat loadMATLABmatrix(const std::string &mat_file,
+        const std::string &var_name)
 {
     MATFile *pmat = matOpen(mat_file.c_str(), "r");
     if (!pmat)
     {
         throw std::runtime_error(
-                "qpp::loadMATLABmatrix(): Can not open MATLAB file " + mat_file + "!");
+                "qpp::loadMATLABmatrix(): Can not open MATLAB file "
+                        + mat_file + "!");
     }
 
     mxArray *pa = matGetVariable(pmat, var_name.c_str());
     if (!pa)
         throw std::runtime_error(
-                "qpp::loadMATLABmatrix(): Can not load the variable " + var_name
-                        + " from MATLAB file " + mat_file + "!");
+                "qpp::loadMATLABmatrix(): Can not load the variable "
+                        + var_name + " from MATLAB file " + mat_file + "!");
 
     if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
         throw std::runtime_error(
@@ -127,20 +129,22 @@ inline dmat loadMATLABmatrix(const std::string &mat_file, const std::string &var
 * \return Eigen complex dynamic matrix (\a qpp::cmat)
 */
 template<>
-inline cmat loadMATLABmatrix(const std::string &mat_file, const std::string &var_name)
+inline cmat loadMATLABmatrix(const std::string &mat_file,
+        const std::string &var_name)
 {
     MATFile *pmat = matOpen(mat_file.c_str(), "r");
     if (!pmat)
     {
         throw std::runtime_error(
-                "qpp::loadMATLABmatrix(): Can not open MATLAB file " + mat_file + "!");
+                "qpp::loadMATLABmatrix(): Can not open MATLAB file "
+                        + mat_file + "!");
     }
 
     mxArray *pa = matGetVariable(pmat, var_name.c_str());
     if (!pa)
         throw std::runtime_error(
-                "qpp::loadMATLABmatrix(): Can not load the variable " + var_name
-                        + " from MATLAB file " + mat_file + "!");
+                "qpp::loadMATLABmatrix(): Can not load the variable "
+                        + var_name + " from MATLAB file " + mat_file + "!");
 
     if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
         throw std::runtime_error(
@@ -225,8 +229,8 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <dmat> &A,
     MATFile *pmat = matOpen(mat_file.c_str(), mode.c_str());
     if (!pmat)
         throw std::runtime_error(
-                "qpp::saveMATLABmatrix(): Can not open/create MATLAB file " + mat_file
-                        + "!");
+                "qpp::saveMATLABmatrix(): Can not open/create MATLAB file "
+                        + mat_file + "!");
 
     mxArray *pa = mxCreateDoubleMatrix(rA.rows(), rA.cols(), mxREAL);
     if (!pa)
@@ -237,8 +241,8 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <dmat> &A,
 
     if (matPutVariable(pmat, var_name.c_str(), pa))
         throw std::runtime_error(
-                "qpp::saveMATLABmatrix(): Can not write the variable " + var_name
-                        + " to MATLAB file " + mat_file + "!");
+                "qpp::saveMATLABmatrix(): Can not write the variable "
+                        + var_name + " to MATLAB file " + mat_file + "!");
 
     mxDestroyArray(pa);
     matClose(pmat);
@@ -274,8 +278,8 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <cmat> &A,
     MATFile *pmat = matOpen(mat_file.c_str(), mode.c_str());
     if (!pmat)
         throw std::runtime_error(
-                "qpp::saveMATLABmatrix(): Can not open/create MATLAB file " + mat_file
-                        + "!");
+                "qpp::saveMATLABmatrix(): Can not open/create MATLAB file "
+                        + mat_file + "!");
 
     mxArray *pa = mxCreateDoubleMatrix(tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);
     if (!pa)
@@ -294,8 +298,8 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <cmat> &A,
 
     if (matPutVariable(pmat, var_name.c_str(), pa))
         throw std::runtime_error(
-                "qpp::saveMATLABmatrix(): Can not write the variable " + var_name
-                        + " to MATLAB file " + mat_file + "!");
+                "qpp::saveMATLABmatrix(): Can not write the variable "
+                        + var_name + " to MATLAB file " + mat_file + "!");
 
     mxDestroyArray(pa);
     matClose(pmat);
