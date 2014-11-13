@@ -115,7 +115,6 @@ then type `make` (for release version) or `make debug` (for debug version) to pr
 Example of run command from inside the directory where the executable `qpp` is located:
 	
 	    export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"; ./qpp
-
 Otherwise, you will get a runtime error like `dyld: Library not loaded: @rpath/libmat.dylib`
 
 - `Makefiles.examples` and `CMakeLists.txt` are provided for convenience.
