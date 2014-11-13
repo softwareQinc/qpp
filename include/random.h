@@ -175,7 +175,8 @@ Derived randn(std::size_t rows, std::size_t cols, double mean = 0,
 * \return Random real matrix
 */
 template<>
-inline dmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
+inline dmat randn(std::size_t rows, std::size_t cols,
+        double mean, double sigma)
 {
     if (rows == 0 || cols == 0)
         throw Exception("qpp::randn()", Exception::Type::ZERO_SIZE);
@@ -211,7 +212,8 @@ inline dmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 * \return Random complex matrix
 */
 template<>
-inline cmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
+inline cmat randn(std::size_t rows, std::size_t cols,
+        double mean, double sigma)
 {
     if (rows == 0 || cols == 0)
         throw Exception("qpp::randn()", Exception::Type::ZERO_SIZE);

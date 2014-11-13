@@ -879,7 +879,8 @@ DynMat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1> &A,
 * over the same scalar field as \a A
 */
 template<typename Derived1, typename Derived2>
-DynMat<typename Derived1::Scalar> anticomm(const Eigen::MatrixBase<Derived1> &A,
+DynMat<typename Derived1::Scalar> anticomm(
+        const Eigen::MatrixBase<Derived1> &A,
         const Eigen::MatrixBase<Derived2> &B)
 {
     const DynMat<typename Derived1::Scalar> &rA = A;
@@ -1018,7 +1019,8 @@ DynMat<typename Derived::Scalar> grams(const std::vector<Derived> &Vs)
 * over the same scalar field as its arguments
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> grams(const std::initializer_list<Derived> &Vs)
+DynMat<typename Derived::Scalar> grams(
+        const std::initializer_list<Derived> &Vs)
 {
     return grams(std::vector<Derived>(Vs));
 }
@@ -1093,7 +1095,8 @@ std::size_t multiidx2n(const std::vector<std::size_t> &midx,
 
     for (std::size_t i = 0; i < dims.size(); ++i)
         if (midx[i] >= dims[i])
-            throw Exception("qpp::multiidx2n()", Exception::Type::OUT_OF_RANGE);
+            throw Exception("qpp::multiidx2n()",
+                    Exception::Type::OUT_OF_RANGE);
 
     return internal::_multiidx2n(midx.data(), dims.size(), dims.data());
 }

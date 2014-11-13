@@ -98,7 +98,8 @@ public:
 
     template<typename charT, typename traits>
     friend std::basic_ostream<charT, traits> &
-    operator<<(std::basic_ostream<charT, traits> &os, const IOManipPointer &rhs)
+    operator<<(std::basic_ostream<charT, traits> &os,
+            const IOManipPointer &rhs)
     {
         os << rhs._start;
 
@@ -153,8 +154,8 @@ public:
         for (std::size_t i = 0; i < static_cast<std::size_t>(rhs._A.rows());
              ++i)
         {
-            for (std::size_t j = 0; j < static_cast<std::size_t>(rhs._A.cols());
-                 ++j)
+            for (std::size_t j = 0;
+                 j < static_cast<std::size_t>(rhs._A.cols()); ++j)
             {
                 strA.clear(); // clear the temporary string
                 ostr.clear();
@@ -202,8 +203,8 @@ public:
 
         for (std::size_t i = 0; i < static_cast<std::size_t>(rhs._A.rows());
              ++i)
-            for (std::size_t j = 0; j < static_cast<std::size_t>(rhs._A.cols());
-                 ++j)
+            for (std::size_t j = 0;
+                 j < static_cast<std::size_t>(rhs._A.cols()); ++j)
                 if (vstr[i * rhs._A.cols() + j].size() > maxlengthcols[j])
                     maxlengthcols[j] = vstr[i * rhs._A.cols() + j].size();
 
@@ -214,8 +215,8 @@ public:
             os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
                     << vstr[i * rhs._A.cols()]; // display first column
             // then the rest
-            for (std::size_t j = 1; j < static_cast<std::size_t>(rhs._A.cols());
-                 ++j)
+            for (std::size_t j = 1;
+                 j < static_cast<std::size_t>(rhs._A.cols()); ++j)
                 os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
                         << std::right << vstr[i * rhs._A.cols() + j];
 

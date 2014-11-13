@@ -60,7 +60,8 @@ inline std::size_t _multiidx2n(const std::size_t *midx, std::size_t numdims,
     part_prod[numdims - 1] = 1;
     for (std::size_t i = 1; i < numdims; ++i)
     {
-        part_prod[numdims - i - 1] = part_prod[numdims - i] * dims[numdims - i];
+        part_prod[numdims - i - 1] =
+                part_prod[numdims - i] * dims[numdims - i];
         result += midx[numdims - i - 1] * part_prod[numdims - i - 1];
     }
 

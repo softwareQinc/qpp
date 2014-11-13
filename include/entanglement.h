@@ -83,7 +83,8 @@ cmat schmidtU(const Eigen::MatrixBase<Derived> &A,
         throw Exception("qpp::schmidtU()", Exception::Type::NOT_BIPARTITE);
     // check column vector
     if (!internal::_check_col_vector(rA))
-        throw Exception("qpp::schmidtU()", Exception::Type::MATRIX_NOT_CVECTOR);
+        throw Exception("qpp::schmidtU()",
+                Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
     if (!internal::_check_dims_match_mat(dims, rA))
         throw Exception("qpp::schmidtU()",
@@ -113,7 +114,8 @@ cmat schmidtV(const Eigen::MatrixBase<Derived> &A,
         throw Exception("qpp::schmidtV()", Exception::Type::NOT_BIPARTITE);
     // check column vector
     if (!internal::_check_col_vector(rA))
-        throw Exception("qpp::schmidtV()", Exception::Type::MATRIX_NOT_CVECTOR);
+        throw Exception("qpp::schmidtV()",
+                Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
     if (!internal::_check_dims_match_mat(dims, rA))
         throw Exception("qpp::schmidtV()",
@@ -278,7 +280,8 @@ double lognegativity(const Eigen::MatrixBase<Derived> &A,
         throw Exception("qpp::lognegativity()", Exception::Type::ZERO_SIZE);
     // check bi-partite
     if (dims.size() != 2)
-        throw Exception("qpp::lognegativity()", Exception::Type::NOT_BIPARTITE);
+        throw Exception("qpp::lognegativity()",
+                Exception::Type::NOT_BIPARTITE);
     // check square matrix vector
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::lognegativity()",

@@ -42,7 +42,8 @@ template<typename Derived>
 Derived loadMATLABmatrix(const std::string &mat_file,
         const std::string &var_name)
 {
-    throw Exception("qpp::loadMATLABmatrix()", Exception::Type::UNDEFINED_TYPE);
+    throw Exception("qpp::loadMATLABmatrix()",
+            Exception::Type::UNDEFINED_TYPE);
 }
 
 /**
@@ -200,7 +201,8 @@ void saveMATLABmatrix(const Eigen::MatrixBase <Derived> &A,
         const std::string &mat_file, const std::string &var_name,
         const std::string &mode)
 {
-    throw Exception("qpp::saveMATLABmatrix()", Exception::Type::UNDEFINED_TYPE);
+    throw Exception("qpp::saveMATLABmatrix()",
+            Exception::Type::UNDEFINED_TYPE);
 }
 
 /**
@@ -281,7 +283,8 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <cmat> &A,
                 "qpp::saveMATLABmatrix(): Can not open/create MATLAB file "
                         + mat_file + "!");
 
-    mxArray *pa = mxCreateDoubleMatrix(tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);
+    mxArray *pa = mxCreateDoubleMatrix(
+            tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);
     if (!pa)
         throw std::runtime_error(
                 "qpp::saveMATLABmatrix(): mxCreateDoubleMatrix failed!");

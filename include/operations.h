@@ -66,7 +66,8 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 
     // check square matrix for the gate
     if (!internal::_check_square_mat(rA))
-        throw Exception("qpp::applyCTRL()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::applyCTRL()",
+                Exception::Type::MATRIX_NOT_SQUARE);
 
     // check that all control subsystems have the same dimension
     std::size_t d = ctrl.size() > 0 ? ctrl[0] : 1;
@@ -320,18 +321,19 @@ DynMat<typename Derived1::Scalar> applyCTRL(
                     for (std::size_t r2 = 0; r2 < DCTRLAbar; ++r2)
                         if (ctrlsize == 0) // no control
                         {
-                            auto coeff_idxes = coeff_idx_rho(1, m1, r1, 1, m2,
-                                    r2);
+                            auto coeff_idxes = coeff_idx_rho(1, m1, r1,
+                                    1, m2, r2);
                             result(std::get<1>(coeff_idxes),
-                                    std::get<2>(coeff_idxes)) = std::get<0>(
-                                    coeff_idxes);
+                                    std::get<2>(coeff_idxes)) =
+                                    std::get<0>(coeff_idxes);
                         }
                         else
                         {
                             for (std::size_t i1 = 0; i1 < d; ++i1)
                                 for (std::size_t i2 = 0; i2 < d; ++i2)
                                 {
-                                    auto coeff_idxes = coeff_idx_rho(i1, m1, r1,
+                                    auto coeff_idxes = coeff_idx_rho(
+                                            i1, m1, r1,
                                             i2, m2, r2);
                                     result(std::get<1>(coeff_idxes),
                                             std::get<2>(coeff_idxes)) =
@@ -508,7 +510,8 @@ DynMat<typename Derived1::Scalar> apply(
 * \return Output density matrix after the action of the channel
 */
 template<typename Derived>
-cmat channel(const Eigen::MatrixBase<Derived> &rho, const std::vector<cmat> &Ks)
+cmat channel(const Eigen::MatrixBase<Derived> &rho,
+        const std::vector<cmat> &Ks)
 {
     const cmat &rrho = rho;
 
@@ -602,9 +605,8 @@ cmat channel(const Eigen::MatrixBase<Derived> &rho,
     cmat result = cmat::Zero(rrho.rows(), rrho.rows());
 
     for (std::size_t i = 0; i < Ks.size(); ++i)
-    {
         result += apply(rrho, Ks[i], subsys, dims);
-    }
+
     return result;
 }
 
@@ -944,7 +946,8 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived> &A,
 
     // check that dims match the dimension of A
     if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::ptrace()", Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw Exception("qpp::ptrace()",
+                Exception::Type::DIMS_MISMATCH_MATRIX);
 
     if (subsys.size() == dims.size())
     {
@@ -957,7 +960,8 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived> &A,
         return rA;
     // check that subsys are valid
     if (!internal::_check_subsys_match_dims(subsys, dims))
-        throw Exception("qpp::ptrace()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+        throw Exception("qpp::ptrace()",
+                Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     std::size_t D = static_cast<std::size_t>(rA.rows());
     std::size_t n = dims.size();
@@ -1000,8 +1004,8 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived> &A,
         }
     }
 
-    DynMat<typename Derived::Scalar> result = DynMat<typename Derived::Scalar>(
-            dimsubsysbar, dimsubsysbar);
+    DynMat<typename Derived::Scalar> result =
+            DynMat<typename Derived::Scalar>(dimsubsysbar, dimsubsysbar);
 
     auto worker = [=](std::size_t i, std::size_t j)
     {
@@ -1014,8 +1018,10 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived> &A,
         std::size_t Cmidxsubsys[maxn];
 
         /* get the row/col multi-indexes of the complement */
-        internal::_n2multiidx(i, nsubsysbar, Cdimssubsysbar, Cmidxrowsubsysbar);
-        internal::_n2multiidx(j, nsubsysbar, Cdimssubsysbar, Cmidxcolsubsysbar);
+        internal::_n2multiidx(i, nsubsysbar,
+                Cdimssubsysbar, Cmidxrowsubsysbar);
+        internal::_n2multiidx(j, nsubsysbar,
+                Cdimssubsysbar, Cmidxcolsubsysbar);
         /* write them in the global row/col multi-indexes */
         for (std::size_t k = 0; k < nsubsysbar; ++k)
         {
@@ -1061,7 +1067,8 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived> &A,
 * over the same scalar field as \a A
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> ptranspose(const Eigen::MatrixBase<Derived> &A,
+DynMat<typename Derived::Scalar> ptranspose(
+        const Eigen::MatrixBase<Derived> &A,
         const std::vector<std::size_t> &subsys,
         const std::vector<std::size_t> &dims)
 {
@@ -1157,7 +1164,8 @@ DynMat<typename Derived::Scalar> ptranspose(const Eigen::MatrixBase<Derived> &A,
 * over the same scalar field as \a A
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> syspermute(const Eigen::MatrixBase<Derived> &A,
+DynMat<typename Derived::Scalar> syspermute(
+        const Eigen::MatrixBase<Derived> &A,
         const std::vector<std::size_t> &perm,
         const std::vector<std::size_t> &dims)
 {

@@ -35,12 +35,12 @@ class States : public internal::Singleton<const States> // const Singleton
 
 public:
     // Pauli eigen-states
-    ket x0{ket::Zero(2)};   ///< Pauli Sigma-X 0-eigenstate |+>
-    ket x1{ket::Zero(2)};   ///< Pauli Sigma-X 1-eigenstate |->
-    ket y0{ket::Zero(2)};   ///< Pauli Sigma-Y 0-eigenstate
-    ket y1{ket::Zero(2)};   ///< Pauli Sigma-Y 1-eigenstate
-    ket z0{ket::Zero(2)};   ///< Pauli Sigma-Z 0-eigenstate |0>
-    ket z1{ket::Zero(2)};   ///< Pauli Sigma-Z 1-eigenstate |1>
+    ket x0{ket::Zero(2)};           ///< Pauli Sigma-X 0-eigenstate |+>
+    ket x1{ket::Zero(2)};           ///< Pauli Sigma-X 1-eigenstate |->
+    ket y0{ket::Zero(2)};           ///< Pauli Sigma-Y 0-eigenstate |y+>
+    ket y1{ket::Zero(2)};           ///< Pauli Sigma-Y 1-eigenstate |y->
+    ket z0{ket::Zero(2)};           ///< Pauli Sigma-Z 0-eigenstate |0>
+    ket z1{ket::Zero(2)};           ///< Pauli Sigma-Z 1-eigenstate |1>
 
     // projectors onto Pauli eigen-states
     cmat px0{cmat::Zero(2, 2)};
@@ -48,9 +48,9 @@ public:
     cmat px1{cmat::Zero(2, 2)};
     ///< Projector onto the Pauli Sigma-X 1-eigenstate |-><-|
     cmat py0{cmat::Zero(2, 2)};
-    ///< Projector onto the Pauli Sigma-Y 0-eigenstate
+    ///< Projector onto the Pauli Sigma-Y 0-eigenstate |y+><y+|
     cmat py1{cmat::Zero(2, 2)};
-    ///< Projector onto the Pauli Sigma-Y 1-eigenstate
+    ///< Projector onto the Pauli Sigma-Y 1-eigenstate |y-><y-|
     cmat pz0{cmat::Zero(2, 2)};
     ///< Projector onto the Pauli Sigma-Z 0-eigenstate |0><0|
     cmat pz1{cmat::Zero(2, 2)};

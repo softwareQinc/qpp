@@ -228,7 +228,8 @@ public:
             throw Exception("qpp::Gates::CTRL()",
                     Exception::Type::DIMS_INVALID);
 
-        std::vector<std::size_t> ctrlgate = ctrl;// ctrl + gate subsystem vector
+        // ctrl + gate subsystem vector
+        std::vector<std::size_t> ctrlgate = ctrl;
         ctrlgate.insert(std::end(ctrlgate), std::begin(subsys),
                 std::end(subsys));
         std::sort(std::begin(ctrlgate), std::end(ctrlgate));
@@ -428,8 +429,8 @@ public:
                 midx_row[pos] = a;
 
                 // run over the gate's column multi-index
-                for (std::size_t b = 0; b < static_cast<std::size_t>(rA.cols());
-                     ++b)
+                for (std::size_t b = 0;
+                     b < static_cast<std::size_t>(rA.cols()); ++b)
                 {
                     // construct the total column multi-index
                     midx_col[pos] = b;

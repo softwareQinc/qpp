@@ -40,10 +40,10 @@ class RandomDevices : public internal::Singleton<RandomDevices> // Singleton
 
     std::random_device _rd; ///< used to seed std::mt19937 _rng
 public:
-    std::mt19937 _rng;      ///< Mersenne twister random number generator engine
+    std::mt19937 _rng;      ///< Mersenne twister random number generator
 private:
     /**
-    * \brief Initializes and seeds the random number generators.
+    * \brief Initializes and seeds the random number generators
     */
     RandomDevices() :
             _rd(), _rng(_rd())
