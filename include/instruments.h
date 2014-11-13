@@ -100,7 +100,7 @@ namespace qpp
 
         if (internal::_check_square_mat(rA)) // square matrix
         {
-            for (std::size_t i = 0; i < static_cast<std::size_t>(Ks.size()); ++i)
+            for (std::size_t i = 0; i < Ks.size(); ++i)
             {
                 outstates[i] = cmat::Zero(Dbar, Dbar);
                 cmat tmp = apply(rA, Ks[i], subsys, dims);
@@ -112,7 +112,7 @@ namespace qpp
         }
         else if (internal::_check_col_vector(rA)) // column vector
         {
-            for (std::size_t i = 0; i < static_cast<std::size_t>(Ks.size()); ++i)
+            for (std::size_t i = 0; i < Ks.size(); ++i)
             {
                 outstates[i] = cmat::Zero(Dbar, Dbar);
                 cmat tmp = apply(rA, Ks[i], subsys, dims);

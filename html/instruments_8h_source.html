@@ -136,7 +136,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;it: subsys_dims)</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            Dsubsys *= it;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        std::size_t Drest = D / Dsubsys;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        std::size_t Dbar = D / Dsubsys;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="comment">// check the Kraus operators</span></div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(Ks))</div>
@@ -157,9 +157,9 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">internal::_check_square_mat</a>(rA)) <span class="comment">// square matrix</span></div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        {</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;(Ks.size()); ++i)</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; Ks.size(); ++i)</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            {</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                outstates[i] = cmat::Zero(Drest, Drest);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                outstates[i] = cmat::Zero(Dbar, Dbar);</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> tmp = <a class="code" href="namespaceqpp.html#a15f5f4c236713542560dfeb8237c76f7">apply</a>(rA, Ks[i], subsys, dims);</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                tmp = <a class="code" href="namespaceqpp.html#a5fef47d40c93533b586f9b90a97c3621">ptrace</a>(tmp, subsys, dims);</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                prob[i] = std::abs(<a class="code" href="namespaceqpp.html#a1e1daff5450728504da1fdfedf8d8b54">trace</a>(tmp)); <span class="comment">// probability</span></div>
@@ -169,9 +169,9 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        }</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="namespaceqpp_1_1internal.html#add886736621946a87cbc404ad955a605">internal::_check_col_vector</a>(rA)) <span class="comment">// column vector</span></div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        {</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;(Ks.size()); ++i)</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; Ks.size(); ++i)</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            {</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                outstates[i] = cmat::Zero(Drest, Drest);</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                outstates[i] = cmat::Zero(Dbar, Dbar);</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> tmp = <a class="code" href="namespaceqpp.html#a15f5f4c236713542560dfeb8237c76f7">apply</a>(rA, Ks[i], subsys, dims);</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                prob[i] = std::pow(<a class="code" href="namespaceqpp.html#af2e4740854c958579228593dd639aa6c">norm</a>(tmp), 2);</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                <span class="keywordflow">if</span> (prob[i] &gt; <a class="code" href="namespaceqpp.html#a9a99ccccd473a9006dfaadb5761ac4f6">eps</a>)</div>
@@ -443,7 +443,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="instruments_8h.html">instruments.h</a></li>
-    <li class="footer">Generated on Wed Nov 12 2014 18:50:26 for quantum++ by
+    <li class="footer">Generated on Wed Nov 12 2014 23:08:59 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
