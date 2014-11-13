@@ -33,14 +33,13 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 ---
 ## Building instructions
 
-### Configuration:
+-- Configuration:
 
 - Eigen3 library located in `$HOME/eigen_3.2.2`
 - Quantum++ library located in `$HOME/qpp`
 - MATLAB compiler include header files: `/Applications/MATLAB_R2014b.app/extern/include`
 - MATLAB compiler shared library files: `/Applications/MATLAB_R2014b.app/bin/maci64`
 
----
 
 ### Building instructions for g++
 
