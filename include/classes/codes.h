@@ -50,6 +50,7 @@ private:
     * \brief Default constructor
     */
     Codes() = default;
+
 public:
     /**
     * \brief Returns the codeword of the specified code
