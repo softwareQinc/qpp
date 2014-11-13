@@ -27,7 +27,8 @@ namespace qpp
 {
 // partial measurements
 /**
-* \brief  Measures the part \a subsys of the multi-partite state vector or density matrix \a A
+* \brief  Measures the part \a subsys of
+* the multi-partite state vector or density matrix \a A
 * using the set of Kraus operators \a Ks
 *
 * \note The dimension of all \a Ks must match the dimension of \a subsys.
@@ -36,7 +37,8 @@ namespace qpp
 * \param Ks Set of Kraus operators
 * \param subsys Subsystem indexes that are measured
 * \param dims Dimensions of the multi-partite system
-* \return Tuple consisiting of the result of the measurement, the vector of outcome probabilities
+* \return Tuple consisiting of the result of the measurement,
+* the vector of outcome probabilities
 * and the vector of post-measurement normalized states
 */
 template<typename Derived>
@@ -61,11 +63,13 @@ measure(
 
     // check that dims match rho matrix
     if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::measure()", Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw Exception("qpp::measure()",
+                Exception::Type::DIMS_MISMATCH_MATRIX);
 
     // check subsys is valid w.r.t. dims
     if (!internal::_check_subsys_match_dims(subsys, dims))
-        throw Exception("qpp::measure()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+        throw Exception("qpp::measure()",
+                Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     std::vector<std::size_t> subsys_dims(subsys.size());
     for (std::size_t i = 0; i < subsys.size(); ++i)
@@ -83,14 +87,18 @@ measure(
 
     // check the Kraus operators
     if (!internal::_check_nonzero_size(Ks))
-        throw Exception("qpp::destructive_measure()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::destructive_measure()",
+                Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(Ks[0]))
-        throw Exception("qpp::destructive_measure()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::destructive_measure()",
+                Exception::Type::MATRIX_NOT_SQUARE);
     if (Dsubsys != static_cast<std::size_t>(Ks[0].rows()))
-        throw Exception("qpp::destructive_measure()", Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw Exception("qpp::destructive_measure()",
+                Exception::Type::DIMS_MISMATCH_MATRIX);
     for (auto &&it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-            throw Exception("qpp::destructive_measure()", Exception::Type::DIMS_NOT_EQUAL);
+            throw Exception("qpp::destructive_measure()",
+                    Exception::Type::DIMS_NOT_EQUAL);
     // END EXCEPTION CHECKS
 
     // probabilities
@@ -107,7 +115,9 @@ measure(
             tmp = ptrace(tmp, subsys, dims);
             prob[i] = std::abs(trace(tmp)); // probability
             if (prob[i] > eps)
-                outstates[i] = tmp / prob[i]; // normalized output state corresponding to measurement result i
+                // normalized output state
+                // corresponding to measurement result i
+                outstates[i] = tmp / prob[i];
         }
     }
     else if (internal::_check_col_vector(rA)) // column vector
@@ -126,16 +136,19 @@ measure(
                 Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 
     // sample from the probability distribution
-    std::discrete_distribution<std::size_t> dd(std::begin(prob), std::end(prob));
+    std::discrete_distribution<std::size_t> dd(std::begin(prob),
+            std::end(prob));
     std::size_t result = dd(RandomDevices::get_instance()._rng);
 
     return std::make_tuple(result, prob, outstates);
 }
 
 // std::initializer_list overload, avoids ambiguity for 2-element lists, see
-// http://stackoverflow.com/questions/26750039/ambiguity-when-using-initializer-list-as-parameter
+// http://stackoverflow.com
+// /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
-* \brief  Measures the part \a subsys of the multi-partite state vector or density matrix \a A
+* \brief  Measures the part \a subsys of
+* the multi-partite state vector or density matrix \a A
 * using the set of Kraus operators \a Ks
 *
 * \note The dimension of all \a Ks must match the dimension of \a subsys.
@@ -144,7 +157,8 @@ measure(
 * \param subsys Subsystem indexes that are measured
 * \param dims Dimensions of the multi-partite system
 * \param Ks Set of Kraus operators
-* \return Tuple consisiting of the result of the measurement, the vector of outcome probabilities
+* \return Tuple consisiting of the result of the measurement,
+* the vector of outcome probabilities
 * and the vector of post-measurement normalized states
 */
 template<typename Derived>
@@ -160,7 +174,8 @@ measure(
 
 
 /**
-* \brief  Measures the part \a subsys of the multi-partite state vector or density matrix \a A
+* \brief  Measures the part \a subsys of
+* the multi-partite state vector or density matrix \a A
 * using the set of Kraus operators \a Ks
 *
 * \note The dimension of all \a Ks must match the dimension of \a subsys.
@@ -169,7 +184,8 @@ measure(
 * \param subsys Subsystem indexes that are measured
 * \param d Subsystem dimensions
 * \param Ks Set of Kraus operators
-* \return Tuple consisiting of the result of the measurement, the vector of outcome probabilities
+* \return Tuple consisiting of the result of the measurement,
+* the vector of outcome probabilities
 * and the vector of post-measurement normalized states
 */
 template<typename Derived>
@@ -186,16 +202,19 @@ measure(
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
-    std::size_t n = static_cast<std::size_t>(std::log2(rA.rows()) / std::log2(d));
+    std::size_t n =
+            static_cast<std::size_t>(std::log2(rA.rows()) / std::log2(d));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
     return measure(rA, Ks, subsys, dims);
 }
 
 // std::initializer_list overload, avoids ambiguity for 2-element lists, see
-// http://stackoverflow.com/questions/26750039/ambiguity-when-using-initializer-list-as-parameter
+// http://stackoverflow.com
+// /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
-* \brief  Measures the part \a subsys of the multi-partite state vector or density matrix \a A
+* \brief  Measures the part \a subsys of
+* the multi-partite state vector or density matrix \a A
 * using the set of Kraus operators \a Ks
 *
 * \note The dimension of all \a Ks must match the dimension of \a subsys.
@@ -204,7 +223,8 @@ measure(
 * \param subsys Subsystem indexes that are measured
 * \param d Subsystem dimensions
 * \param Ks Set of Kraus operators
-* \return Tuple consisiting of the result of the measurement, the vector of outcome probabilities
+* \return Tuple consisiting of the result of the measurement,
+* the vector of outcome probabilities
 * and the vector of post-measurement normalized states
 */
 template<typename Derived>
@@ -219,7 +239,8 @@ measure(
 }
 
 /**
-* \brief Measures the part \a subsys of the multi-partite state \a A in the orthonormal basis
+* \brief Measures the part \a subsys of
+* the multi-partite state \a A in the orthonormal basis
 * specified by the unitary matrix \a U
 *
 * \note The dimension of \a U must match the dimension of \a subsys.
@@ -228,7 +249,8 @@ measure(
 * \param subsys Subsystem indexes that are measured
 * \param dims Dimensions of the multi-partite system
 * \param U Unitary matrix whose columns represent the measurement basis vectors
-* \return Tuple consisiting of the result of the measurement, the vector of outcome probabilities
+* \return Tuple consisiting of the result of the measurement,
+* the vector of outcome probabilities
 * and the vector of post-measurement normalized states
 */
 template<typename Derived>
@@ -253,11 +275,13 @@ measure(
 
     // check that dims match rho matrix
     if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::measure()", Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw Exception("qpp::measure()",
+                Exception::Type::DIMS_MISMATCH_MATRIX);
 
     // check subsys is valid w.r.t. dims
     if (!internal::_check_subsys_match_dims(subsys, dims))
-        throw Exception("qpp::measure()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+        throw Exception("qpp::measure()",
+                Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     std::vector<std::size_t> subsys_dims(subsys.size());
     for (std::size_t i = 0; i < subsys.size(); ++i)
@@ -273,7 +297,8 @@ measure(
     if (!internal::_check_square_mat(U))
         throw Exception("qpp::measure()", Exception::Type::MATRIX_NOT_SQUARE);
     if (Dsubsys != static_cast<std::size_t>(U.rows()))
-        throw Exception("qpp::measure()", Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw Exception("qpp::measure()",
+                Exception::Type::DIMS_MISMATCH_MATRIX);
     // END EXCEPTION CHECKS
 
     std::vector<cmat> Ks(U.rows());
@@ -284,7 +309,8 @@ measure(
 }
 
 /**
-* \brief Measures the part \a subsys of the multi-partite state \a A in the orthonormal basis
+* \brief Measures the part \a subsys of
+* the multi-partite state \a A in the orthonormal basis
 * specified by the unitary matrix \a U
 *
 * \note The dimension of \a U must match the dimension of \a subsys.
@@ -293,7 +319,8 @@ measure(
 * \param subsys Subsystem indexes that are measured
 * \param d Subsystem dimensions
 * \param U Unitary matrix whose columns represent the measurement basis vectors
-* \return Tuple consisiting of the result of the measurement, the vector of outcome probabilities
+* \return Tuple consisiting of the result of the measurement,
+* the vector of outcome probabilities
 * and the vector of post-measurement normalized states
 */
 template<typename Derived>
@@ -310,7 +337,8 @@ measure(
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
-    std::size_t n = static_cast<std::size_t>(std::log2(rA.rows()) / std::log2(d));
+    std::size_t n =
+            static_cast<std::size_t>(std::log2(rA.rows()) / std::log2(d));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
     return measure(rA, U, subsys, dims);
@@ -322,7 +350,8 @@ measure(
 *
 * \param A Eigen expression
 * \param Ks Set of Kraus operators
-* \return Tuple consisiting of the result of the measurement, the vector of outcome probabilities
+* \return Tuple consisiting of the result of the measurement,
+* the vector of outcome probabilities
 * and the vector of post-measurement normalized states
 */
 template<typename Derived>
@@ -342,7 +371,8 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
     if (!internal::_check_square_mat(Ks[0]))
         throw Exception("qpp::measure()", Exception::Type::MATRIX_NOT_SQUARE);
     if (Ks[0].rows() != rA.rows())
-        throw Exception("qpp::measure()", Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw Exception("qpp::measure()",
+                Exception::Type::DIMS_MISMATCH_MATRIX);
     for (auto &&it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
             throw Exception("qpp::measure()", Exception::Type::DIMS_NOT_EQUAL);
@@ -381,20 +411,23 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
                 Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 
     // sample from the probability distribution
-    std::discrete_distribution<std::size_t> dd(std::begin(prob), std::end(prob));
+    std::discrete_distribution<std::size_t> dd(std::begin(prob),
+            std::end(prob));
     std::size_t result = dd(RandomDevices::get_instance()._rng);
 
     return std::make_tuple(result, prob, outstates);
 }
 
 // std::initializer_list overload, avoids ambiguity for 2-element lists, see
-// http://stackoverflow.com/questions/26750039/ambiguity-when-using-initializer-list-as-parameter
+// http://stackoverflow.com
+// /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
 * \brief Measures the state \a A using the set of Kraus operators \a Ks
 *
 * \param A Eigen expression
 * \param Ks Set of Kraus operators
-* \return Tuple consisiting of the result of the measurement, the vector of outcome probabilities
+* \return Tuple consisiting of the result of the measurement,
+* the vector of outcome probabilities
 * and the vector of post-measurement normalized states
 */
 template<typename Derived>
@@ -406,11 +439,13 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
 }
 
 /**
-* \brief Measures the state \a A in the orthonormal basis specified by the unitary matrix \a U
+* \brief Measures the state \a A in the orthonormal basis
+* specified by the unitary matrix \a U
 *
 * \param A Eigen expression
 * \param U Unitary matrix whose columns represent the measurement basis vectors
-* \return Tuple consisiting of the result of the measurement, the vector of outcome probabilities
+* \return Tuple consisiting of the result of the measurement,
+* the vector of outcome probabilities
 * and the vector of post-measurement normalized states
 */
 template<typename Derived>
@@ -430,7 +465,8 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
     if (!internal::_check_square_mat(U))
         throw Exception("qpp::measure()", Exception::Type::MATRIX_NOT_SQUARE);
     if (U.rows() != rA.rows())
-        throw Exception("qpp::measure()", Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw Exception("qpp::measure()",
+                Exception::Type::DIMS_MISMATCH_MATRIX);
     // END EXCEPTION CHECKS
 
     std::vector<cmat> Ks(U.rows());

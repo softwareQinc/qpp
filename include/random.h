@@ -54,7 +54,8 @@ Derived rand(std::size_t rows, std::size_t cols, double a = 0, double b = 1)
 *
 * Example:
 * \code
-* // generates a 3 x 3 random Eigen::MatrixXd, with entries uniformly distributed in [-1,1)
+* // generates a 3 x 3 random Eigen::MatrixXd,
+* // with entries uniformly distributed in [-1,1)
 * auto mat = rand<dmat>(3, 3, -1, 1);
 * \endcode
 *
@@ -84,7 +85,8 @@ inline dmat rand(std::size_t rows, std::size_t cols, double a, double b)
 *
 * Example:
 * \code
-* // generates a 3 x 3 random Eigen::MatrixXcd, with entries (both real and imaginary) uniformly distributed in [-1,1)
+* // generates a 3 x 3 random Eigen::MatrixXcd,
+* // with entries (both real and imaginary) uniformly distributed in [-1,1)
 * auto mat = rand<cmat>(3, 3, -1, 1);
 * \endcode
 *
@@ -161,7 +163,8 @@ Derived randn(std::size_t rows, std::size_t cols, double mean = 0,
 *
 * Example:
 * \code
-* // generates a 3 x 3 random Eigen::MatrixXd, with entries normally distributed in N(0,2)
+* // generates a 3 x 3 random Eigen::MatrixXd,
+* // with entries normally distributed in N(0,2)
 * auto mat = randn<dmat>(3, 3, 0, 2);
 * \endcode
 *
@@ -196,7 +199,8 @@ inline dmat randn(std::size_t rows, std::size_t cols, double mean, double sigma)
 *
 * Example:
 * \code
-* // generates a 3 x 3 random Eigen::MatrixXcd, with entries (both real and imaginary) normally distributed in N(0,2)
+* // generates a 3 x 3 random Eigen::MatrixXcd,
+* // with entries (both real and imaginary) normally distributed in N(0,2)
 * auto mat = randn<cmat>(3, 3, 0, 2);
 * \endcode
 *

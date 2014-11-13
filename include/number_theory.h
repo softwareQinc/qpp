@@ -32,8 +32,9 @@ namespace qpp
 * \param x Real number
 * \param n Number of terms in the expansion
 * \param cut Stop the expansion when the next term is greater than \a cut
-* \return Integer vector containing the simple continued fraction expansion of \a x.
-* If there are \a m less than \a n terms in the expansion, a shorter vector with \a m components is returned.
+* \return Integer vector containing the simple continued fraction expansion
+* of \a x. If there are \a m less than \a n terms in the expansion,
+* a shorter vector with \a m components is returned.
 */
 std::vector<int> x2contfrac(double x, std::size_t n, std::size_t cut = 1e5)
 {
@@ -56,8 +57,9 @@ std::vector<int> x2contfrac(double x, std::size_t n, std::size_t cut = 1e5)
 * \brief Real representation of a simple continued fraction
 *
 * \param cf Integer vector containing the simple continued fraction expansion
-* \param n Number of terms considered in the continued fraction expansion. If \a n is greater than the size of \a cf,
-* then all terms in \a cf are considered.
+* \param n Number of terms considered in the continued fraction expansion.
+* If \a n is greater than the size of \a cf,then all terms in \a cf
+* are considered.
 * \return Real representation of the simple continued fraction
 */
 double contfrac2x(const std::vector<int> &cf, std::size_t n)
@@ -186,8 +188,8 @@ std::size_t lcm(const std::vector<std::size_t> &ns)
         return x * y;
     };
 
-    std::size_t prod = std::accumulate(std::begin(ns), std::end(ns), 1u,
-            multiply);
+    std::size_t prod = std::accumulate(std::begin(ns), std::end(ns),
+            1u, multiply);
 
     return prod / gcd(ns);
 }
