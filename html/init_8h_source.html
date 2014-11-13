@@ -95,39 +95,39 @@ $(document).ready(function(){initNavTree('init_8h_source.html','');});
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span>qpp</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html">   33</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classqpp_1_1_init.html">Init</a> : <span class="keyword">public</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;const Init&gt; <span class="comment">// const Singleton</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    {</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html#ac8d1cd0592921282440f9287abf4f22c">   35</a></span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;const <a class="code" href="classqpp_1_1_init.html">Init</a>&gt;;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="classqpp_1_1_init.html">Init</a> : <span class="keyword">public</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;const Init&gt; <span class="comment">// const Singleton</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html#ac8d1cd0592921282440f9287abf4f22c">   35</a></span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;const <a class="code" href="classqpp_1_1_init.html">Init</a>&gt;;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html#a5650a0e31393cf13755262328f2122e9">   41</a></span>&#160;        <a class="code" href="classqpp_1_1_init.html#a5650a0e31393cf13755262328f2122e9">Init</a>()</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <span class="comment">// on entry message</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; &quot;</span> &lt;&lt; <span class="stringliteral">&quot;Starting quantum++...&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html#a5650a0e31393cf13755262328f2122e9">   41</a></span>&#160;    <a class="code" href="classqpp_1_1_init.html#a5650a0e31393cf13755262328f2122e9">Init</a>()</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="comment">// on entry message</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; Starting Quantum++...&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="comment">// gets and displays current system time</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            time_t current_date;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            time(&amp;current_date);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; &quot;</span> &lt;&lt; std::ctime(&amp;current_date);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="comment">// gets and displays current system time</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        time_t current_date;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        time(&amp;current_date);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; &quot;</span> &lt;&lt; std::ctime(&amp;current_date) &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="comment">// set default output format and precision</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            std::cout &lt;&lt; std::fixed; <span class="comment">// use fixed format for nice formatting</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="comment">// std::cout &lt;&lt; std::scientific;</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            std::cout &lt;&lt; std::setprecision(4); <span class="comment">// only for fixed or scientific modes</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="comment">// set default output format and precision</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        std::cout &lt;&lt; std::fixed; <span class="comment">// use fixed format for nice formatting</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="comment">// std::cout &lt;&lt; std::scientific;</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        std::cout &lt;&lt; std::setprecision(4); <span class="comment">// only for fixed/scientific modes</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html#af6c4566d220d568199e1ca9d954cb8da">   61</a></span>&#160;        <a class="code" href="classqpp_1_1_init.html#af6c4566d220d568199e1ca9d954cb8da">~Init</a>()</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="comment">// on exit message</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            std::cout &lt;&lt; std::endl &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; &quot;</span> &lt;&lt; <span class="stringliteral">&quot;Exiting quantum++...&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html#af6c4566d220d568199e1ca9d954cb8da">   61</a></span>&#160;    <a class="code" href="classqpp_1_1_init.html#af6c4566d220d568199e1ca9d954cb8da">~Init</a>()</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="comment">// on exit message</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; Exiting Quantum++...&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="comment">// gets and displays current system time</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            time_t current_date;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            time(&amp;current_date);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; &quot;</span> &lt;&lt; std::ctime(&amp;current_date);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }; <span class="comment">/* class Init */</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="comment">// gets and displays current system time</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        time_t current_date;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        time(&amp;current_date);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; &quot;</span> &lt;&lt; std::ctime(&amp;current_date);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}; <span class="comment">/* class Init */</span></div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
@@ -142,7 +142,7 @@ $(document).ready(function(){initNavTree('init_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_7a6c2c27f035e4462dd10aeadba1cb4e.html">classes</a></li><li class="navelem"><a class="el" href="init_8h.html">init.h</a></li>
-    <li class="footer">Generated on Wed Nov 12 2014 23:08:59 for quantum++ by
+    <li class="footer">Generated on Thu Nov 13 2014 15:52:50 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

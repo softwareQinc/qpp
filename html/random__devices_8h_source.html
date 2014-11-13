@@ -95,26 +95,26 @@ $(document).ready(function(){initNavTree('random__devices_8h_source.html','');})
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span>qpp</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classqpp_1_1_random_devices.html">   37</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classqpp_1_1_random_devices.html">RandomDevices</a> : <span class="keyword">public</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;RandomDevices&gt; <span class="comment">// Singleton</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    {</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classqpp_1_1_random_devices.html#ac542b78a6c61e337cc6e6f9e514feb75">   39</a></span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;<a class="code" href="classqpp_1_1_random_devices.html">RandomDevices</a>&gt;;</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classqpp_1_1_random_devices.html">   37</a></span>&#160;<span class="keyword">class </span><a class="code" href="classqpp_1_1_random_devices.html">RandomDevices</a> : <span class="keyword">public</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;RandomDevices&gt; <span class="comment">// Singleton</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classqpp_1_1_random_devices.html#ac542b78a6c61e337cc6e6f9e514feb75">   39</a></span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;<a class="code" href="classqpp_1_1_random_devices.html">RandomDevices</a>&gt;;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classqpp_1_1_random_devices.html#aff84714f2a748afacce235e37e373192">   41</a></span>&#160;        std::random_device <a class="code" href="classqpp_1_1_random_devices.html#aff84714f2a748afacce235e37e373192">_rd</a>; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classqpp_1_1_random_devices.html#a52ccfd3ac258f76480f1451e9972f15c">   43</a></span>&#160;        std::mt19937 <a class="code" href="classqpp_1_1_random_devices.html#a52ccfd3ac258f76480f1451e9972f15c">_rng</a>; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classqpp_1_1_random_devices.html#a96f9df3a55d6b0eaf54d4182138868c7">   48</a></span>&#160;        <a class="code" href="classqpp_1_1_random_devices.html#a96f9df3a55d6b0eaf54d4182138868c7">RandomDevices</a>() :</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <a class="code" href="classqpp_1_1_random_devices.html#aff84714f2a748afacce235e37e373192">_rd</a>(), <a class="code" href="classqpp_1_1_random_devices.html#a52ccfd3ac258f76480f1451e9972f15c">_rng</a>(<a class="code" href="classqpp_1_1_random_devices.html#aff84714f2a748afacce235e37e373192">_rd</a>())</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            std::srand(<a class="code" href="classqpp_1_1_random_devices.html#a52ccfd3ac258f76480f1451e9972f15c">_rng</a>());</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }; <span class="comment">/* class RandomDevices */</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classqpp_1_1_random_devices.html#aff84714f2a748afacce235e37e373192">   41</a></span>&#160;    std::random_device <a class="code" href="classqpp_1_1_random_devices.html#aff84714f2a748afacce235e37e373192">_rd</a>; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classqpp_1_1_random_devices.html#a52ccfd3ac258f76480f1451e9972f15c">   43</a></span>&#160;    std::mt19937 <a class="code" href="classqpp_1_1_random_devices.html#a52ccfd3ac258f76480f1451e9972f15c">_rng</a>;      </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classqpp_1_1_random_devices.html#a96f9df3a55d6b0eaf54d4182138868c7">   48</a></span>&#160;    <a class="code" href="classqpp_1_1_random_devices.html#a96f9df3a55d6b0eaf54d4182138868c7">RandomDevices</a>() :</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <a class="code" href="classqpp_1_1_random_devices.html#aff84714f2a748afacce235e37e373192">_rd</a>(), <a class="code" href="classqpp_1_1_random_devices.html#a52ccfd3ac258f76480f1451e9972f15c">_rng</a>(<a class="code" href="classqpp_1_1_random_devices.html#aff84714f2a748afacce235e37e373192">_rd</a>())</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        std::srand(<a class="code" href="classqpp_1_1_random_devices.html#a52ccfd3ac258f76480f1451e9972f15c">_rng</a>());</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    }</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}; <span class="comment">/* class RandomDevices */</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INCLUDE_CLASSES_RANDOM_DEVICES_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="classqpp_1_1_random_devices_html_a52ccfd3ac258f76480f1451e9972f15c"><div class="ttname"><a href="classqpp_1_1_random_devices.html#a52ccfd3ac258f76480f1451e9972f15c">qpp::RandomDevices::_rng</a></div><div class="ttdeci">std::mt19937 _rng</div><div class="ttdoc">Mersenne twister random number generator engine. </div><div class="ttdef"><b>Definition:</b> random_devices.h:43</div></div>
+<div class="ttc" id="classqpp_1_1_random_devices_html_a52ccfd3ac258f76480f1451e9972f15c"><div class="ttname"><a href="classqpp_1_1_random_devices.html#a52ccfd3ac258f76480f1451e9972f15c">qpp::RandomDevices::_rng</a></div><div class="ttdeci">std::mt19937 _rng</div><div class="ttdoc">Mersenne twister random number generator. </div><div class="ttdef"><b>Definition:</b> random_devices.h:43</div></div>
 <div class="ttc" id="classqpp_1_1internal_1_1_singleton_html"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html">qpp::internal::Singleton</a></div><div class="ttdoc">Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...</div><div class="ttdef"><b>Definition:</b> singleton.h:63</div></div>
 <div class="ttc" id="classqpp_1_1_random_devices_html_a96f9df3a55d6b0eaf54d4182138868c7"><div class="ttname"><a href="classqpp_1_1_random_devices.html#a96f9df3a55d6b0eaf54d4182138868c7">qpp::RandomDevices::RandomDevices</a></div><div class="ttdeci">RandomDevices()</div><div class="ttdoc">Initializes and seeds the random number generators. </div><div class="ttdef"><b>Definition:</b> random_devices.h:48</div></div>
 <div class="ttc" id="classqpp_1_1_random_devices_html"><div class="ttname"><a href="classqpp_1_1_random_devices.html">qpp::RandomDevices</a></div><div class="ttdoc">Singeleton class that manages the source of randomness in the library. </div><div class="ttdef"><b>Definition:</b> random_devices.h:37</div></div>
@@ -125,7 +125,7 @@ $(document).ready(function(){initNavTree('random__devices_8h_source.html','');})
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_7a6c2c27f035e4462dd10aeadba1cb4e.html">classes</a></li><li class="navelem"><a class="el" href="random__devices_8h.html">random_devices.h</a></li>
-    <li class="footer">Generated on Wed Nov 12 2014 23:08:59 for quantum++ by
+    <li class="footer">Generated on Thu Nov 13 2014 15:52:50 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

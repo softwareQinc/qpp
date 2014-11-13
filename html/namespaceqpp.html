@@ -753,7 +753,8 @@ template&lt;typename Scalar &gt; </div>
 </div><div class="memdoc">
 
 <p>Dynamic Eigen column vector over the field specified by <em>Scalar</em>. </p>
-<p>Example: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> colvect = DynColVect&lt;float&gt;(2); <span class="comment">// type of colvect is Eigen::Matrix&lt;float, Eigen::Dynamic, 1&gt; </span></div>
+<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// type of colvect is Eigen::Matrix&lt;float, Eigen::Dynamic, 1&gt;</span></div>
+<div class="line"><span class="keyword">auto</span> colvect = DynColVect&lt;float&gt;(2);</div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -770,7 +771,8 @@ template&lt;typename Scalar &gt; </div>
 </div><div class="memdoc">
 
 <p>Dynamic Eigen matrix over the field specified by <em>Scalar</em>. </p>
-<p>Example: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> mat = DynMat&lt;float&gt;(2,3); <span class="comment">// type of mat is Eigen::Matrix&lt;float, Eigen::Dynamic, Eigen::Dynamic&gt; </span></div>
+<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// type of mat is Eigen::Matrix&lt;float, Eigen::Dynamic, Eigen::Dynamic&gt;</span></div>
+<div class="line"><span class="keyword">auto</span> mat = DynMat&lt;float&gt;(2,3);</div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -787,7 +789,8 @@ template&lt;typename Scalar &gt; </div>
 </div><div class="memdoc">
 
 <p>Dynamic Eigen row vector over the field specified by <em>Scalar</em>. </p>
-<p>Example: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> rowvect = DynRowVect&lt;float&gt;(3); <span class="comment">// type of rowvect is Eigen::Matrix&lt;float, 1, Eigen::Dynamic&gt; </span></div>
+<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// type of rowvect is Eigen::Matrix&lt;float, 1, Eigen::Dynamic&gt;</span></div>
+<div class="line"><span class="keyword">auto</span> rowvect = DynRowVect&lt;float&gt;(3);</div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -1543,7 +1546,7 @@ template&lt;typename Derived &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cf</td><td>Integer vector containing the simple continued fraction expansion </td></tr>
-    <tr><td class="paramname">n</td><td>Number of terms considered in the continued fraction expansion. If <em>n</em> is greater than the size of <em>cf</em>, then all terms in <em>cf</em> are considered. </td></tr>
+    <tr><td class="paramname">n</td><td>Number of terms considered in the continued fraction expansion. If <em>n</em> is greater than the size of <em>cf</em>,then all terms in <em>cf</em> are considered. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2624,7 +2627,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Loads an Eigen dynamic matrix from a MATLAB .mat file, generic version. </p>
-<p>This is the generic version that always throws <em><a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530" title="UNDEFINED_TYPE. ">qpp::Exception::Type::UNDEFINED_TYPE</a></em>. It is specialized only for <em><a class="el" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a></em> and <em><a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a></em> (the only matrix types that can be loaded) </p>
+<p>This is the generic version that always throws <em><a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530">qpp::Exception::Type::UNDEFINED_TYPE</a></em>. It is specialized only for <em><a class="el" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a></em> and <em><a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a></em> (the only matrix types that can be loaded) </p>
 
 </div>
 </div>
@@ -3720,7 +3723,7 @@ template&lt;typename InputIterator &gt; </div>
           <td></td>
           <td>)</td>
           <td></td><td> -&gt; typename InputIterator::value_type
-    </td>
+</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3998,7 +4001,7 @@ template&lt;typename Derived &gt; </div>
 
 <p>Generates a random matrix with entries uniformly distributed in the interval [a, b) </p>
 <p>If complex, then both real and imaginary parts are uniformly distributed in [a, b)</p>
-<p>This is the generic version that always throws <em><a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530" title="UNDEFINED_TYPE. ">qpp::Exception::Type::UNDEFINED_TYPE</a></em>. It is specialized only for <em><a class="el" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a></em> and <em><a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a></em> </p>
+<p>This is the generic version that always throws <em><a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530">qpp::Exception::Type::UNDEFINED_TYPE</a></em>. It is specialized only for <em><a class="el" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a></em> and <em><a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a></em> </p>
 
 </div>
 </div>
@@ -4050,7 +4053,8 @@ template&lt;&gt; </div>
 
 <p>Generates a random real matrix with entries uniformly distributed in the interval [a, b), specialization for double matrices (<em><a class="el" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a></em>) </p>
 <p>The template parameter cannot be automatically deduced and must be explicitly provided</p>
-<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// generates a 3 x 3 random Eigen::MatrixXd, with entries uniformly distributed in [-1,1)</span></div>
+<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// generates a 3 x 3 random Eigen::MatrixXd,</span></div>
+<div class="line"><span class="comment">// with entries uniformly distributed in [-1,1)</span></div>
 <div class="line"><span class="keyword">auto</span> mat = rand&lt;dmat&gt;(3, 3, -1, 1);</div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -4113,7 +4117,8 @@ template&lt;&gt; </div>
 
 <p>Generates a random complex matrix with entries (both real and imaginary) uniformly distributed in the interval [a, b), specialization for complex matrices (<em><a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a></em>) </p>
 <p>The template parameter cannot be automatically deduced and must be explicitly provided</p>
-<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// generates a 3 x 3 random Eigen::MatrixXcd, with entries (both real and imaginary) uniformly distributed in [-1,1)</span></div>
+<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// generates a 3 x 3 random Eigen::MatrixXcd,</span></div>
+<div class="line"><span class="comment">// with entries (both real and imaginary) uniformly distributed in [-1,1)</span></div>
 <div class="line"><span class="keyword">auto</span> mat = rand&lt;cmat&gt;(3, 3, -1, 1);</div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -4327,7 +4332,7 @@ template&lt;typename Derived &gt; </div>
 
 <p>Generates a random matrix with entries normally distributed in N(mean, sigma) </p>
 <p>If complex, then both real and imaginary parts are normally distributed in N(mean, sigma)</p>
-<p>This is the generic version that always throws <em><a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530" title="UNDEFINED_TYPE. ">qpp::Exception::Type::UNDEFINED_TYPE</a></em>. It is specialized only for <em><a class="el" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a></em> and <em><a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a></em> </p>
+<p>This is the generic version that always throws <em><a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530">qpp::Exception::Type::UNDEFINED_TYPE</a></em>. It is specialized only for <em><a class="el" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a></em> and <em><a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a></em> </p>
 
 </div>
 </div>
@@ -4379,7 +4384,8 @@ template&lt;&gt; </div>
 
 <p>Generates a random real matrix with entries normally distributed in N(mean, sigma), specialization for double matrices (<em><a class="el" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a></em>) </p>
 <p>The template parameter cannot be automatically deduced and must be explicitly provided</p>
-<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// generates a 3 x 3 random Eigen::MatrixXd, with entries normally distributed in N(0,2)</span></div>
+<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// generates a 3 x 3 random Eigen::MatrixXd,</span></div>
+<div class="line"><span class="comment">// with entries normally distributed in N(0,2)</span></div>
 <div class="line"><span class="keyword">auto</span> mat = randn&lt;dmat&gt;(3, 3, 0, 2);</div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -4442,7 +4448,8 @@ template&lt;&gt; </div>
 
 <p>Generates a random complex matrix with entries (both real and imaginary) normally distributed in N(mean, sigma), specialization for complex matrices (<em><a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a></em>) </p>
 <p>The template parameter cannot be automatically deduced and must be explicitly provided</p>
-<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// generates a 3 x 3 random Eigen::MatrixXcd, with entries (both real and imaginary) normally distributed in N(0,2)</span></div>
+<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// generates a 3 x 3 random Eigen::MatrixXcd,</span></div>
+<div class="line"><span class="comment">// with entries (both real and imaginary) normally distributed in N(0,2)</span></div>
 <div class="line"><span class="keyword">auto</span> mat = randn&lt;cmat&gt;(3, 3, 0, 2);</div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -4794,7 +4801,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Saves an Eigen dynamic matrix to a MATLAB .mat file, generic version. </p>
-<p>This is the generic version that always throws <em><a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530" title="UNDEFINED_TYPE. ">qpp::Exception::Type::UNDEFINED_TYPE</a></em>. It is specialized only for <em><a class="el" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a></em> and <em><a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a></em> (the only matrix types that can be saved) </p>
+<p>This is the generic version that always throws <em><a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530">qpp::Exception::Type::UNDEFINED_TYPE</a></em>. It is specialized only for <em><a class="el" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a></em> and <em><a class="el" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a></em> (the only matrix types that can be saved) </p>
 
 </div>
 </div>
@@ -5278,7 +5285,7 @@ template&lt;typename InputIterator &gt; </div>
           <td></td>
           <td>)</td>
           <td></td><td> -&gt; typename InputIterator::value_type
-    </td>
+</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -5752,7 +5759,7 @@ template&lt;typename Derived &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Wed Nov 12 2014 23:09:00 for quantum++ by
+    <li class="footer">Generated on Thu Nov 13 2014 15:52:53 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
