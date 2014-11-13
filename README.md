@@ -33,13 +33,14 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 ### Configuration:
 
+- Compiler: `g++` (`clang++` does not yet support OpenMP)
 - Eigen3 library located in `$HOME/eigen_3.2.2`
 - Quantum++ library located in `$HOME/qpp`
 - MATLAB compiler include header files: `/Applications/MATLAB_R2014b.app/extern/include`
 - MATLAB compiler shared library files: `/Applications/MATLAB_R2014b.app/bin/maci64`
 
 ===
-### Building instructions for g++
+### Building instructions for `g++`
 
 - Example file: `example.cpp` (current folder, from where `g++` is run)
 - Output binary: `qpp` (current folder, from where `g++` is run)
@@ -61,7 +62,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include -I /Applications/MATLAB_R2014b.app/extern/include -L /Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
 
 ===
-### Building using CMake 
+### Building using `cmake`
 
 The current version of the repository has a `CMakeLists.txt` configuration file for building using `cmake`
  (`cmake` needs to be installed). To build the project using `cmake`, I recommend an out-of-source build, 
@@ -94,7 +95,7 @@ edit the `CMakeLists.txt` file. See also `CMakeLists.txt` for additional options
 Do not forget to remove everything from the `./build` directory before a fresh build!
 
 ===
-### Building using make
+### Building using `make`
 
 For convenience, the current version of the repository has also a set of Makefiles available 
 under the folder`./Makefile.examples`. To build the executable this way (without using `cmake`), 
@@ -105,7 +106,7 @@ then type `make` (for release version) or `make debug` (for debug version) to pr
 ===
 ### Additional remarks
 
-If you want to run the program on OS X with MATLAB support, make sure that the environment variable 
+- If you want to run the program on OS X with MATLAB support, make sure that the environment variable 
 `DYLD_LIBRARY_PATH` is set to point to the MATLAB compiler library location, see the `run_OSX_MATLAB` script. 
 Example of run command from inside the directory where the executable `qpp` is located:
 	
@@ -113,6 +114,8 @@ Example of run command from inside the directory where the executable `qpp` is l
 
 Otherwise, you will get a runtime error like `dyld: Library not loaded: @rpath/libmat.dylib`
 
-`Makefiles.examples` and `CMakeLists.txt` are provided for convenience.
+- If your compiler does not support OpenMP, disable it in your build, as the linker may not find `gomp` library.
+
+- `Makefiles.examples` and `CMakeLists.txt` are provided for convenience.
 The final version of the library will consist only of header files, 
 and it is the user's responsability to create an appropriate build system.
