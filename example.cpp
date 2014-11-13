@@ -29,7 +29,7 @@ int main() {
     // Measurements
     {
         std::cout << std::endl << "**** Measurements ****" << std::endl;
-        cmat state = st.b00;
+        ket state = st.b00;
         std::vector<std::size_t> subsys = {0};
         std::size_t result;
         std::vector<double> probs;
