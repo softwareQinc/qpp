@@ -80,10 +80,10 @@ auto MEASUREMENTS = []
     // do not influence the complementary subsystems
 
     cmat rho_bar = ptrace(rho, subsys);
-    cmat rho_out_bar = cmat::Zero(4,4);
+    cmat rho_out_bar = cmat::Zero(4, 4);
 
     // compute the resulting mixed state after the measurement
-    for(std::size_t i = 0; i < probs.size(); ++i)
+    for (std::size_t i = 0; i < probs.size(); ++i)
         rho_out_bar += probs[i] * states[i];
 
     // verification
@@ -106,7 +106,7 @@ auto TELEPORTATION = []
     cmat Bell_aA = adjoint(gt.CTRL(gt.Xd(D), {0}, {1}, 2, D)
             * kron(gt.Fd(D), gt.Id(D)));
 
-     ket psi_a = randket(D); // random state as input on a
+    ket psi_a = randket(D); // random state as input on a
     std::cout << ">> Initial state:" << std::endl;
     std::cout << disp(psi_a) << std::endl;
 
@@ -156,7 +156,7 @@ auto DENSE_CODING = []
     cmat Bell_AB = adjoint(gt.CTRL(gt.Xd(D), {0}, {1}, 2, D)
             * kron(gt.Fd(D), gt.Id(D)));
 
-     // equal probabilities of choosing a message
+    // equal probabilities of choosing a message
     std::uniform_int_distribution<std::size_t> uid(0, D * D - 1);
     std::size_t m_A = uid(rdevs._rng); // sample, obtain the message index
 
@@ -210,7 +210,7 @@ auto GROVER = []
     cmat G = 2 * prj(psi) - gt.Id(N); // Diffusion operator
 
     // number of queries
-    std::size_t nqueries = std::ceil(pi * std::sqrt((double)N) / 4.);
+    std::size_t nqueries = std::ceil(pi * std::sqrt((double) N) / 4.);
     std::cout << ">> We run " << nqueries << " queries" << std::endl;
     for (std::size_t i = 0; i < nqueries; ++i)
     {
