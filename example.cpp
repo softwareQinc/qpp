@@ -253,6 +253,4 @@ int main() {
         syspermute(randcmat, perm, dims);
         std::cout << ">> It took " << t.toc() << " seconds." << std::endl;
     }
-
-
 }
