@@ -102,14 +102,14 @@ private:
         // Bell states, following convention from Nielsen & Chuang
         // |ij> -> |b_{ij}> by the CNOT*(H x Id) circuit
 
-        // (|00> + |11>) / sqrt(2)
         b00 << 1 / std::sqrt(2.), 0, 0, 1 / std::sqrt(2.);
-        // (|01> + |10>) / sqrt(2)
+        // (|00> + |11>) / sqrt(2)
         b01 << 0, 1 / std::sqrt(2.), 1 / std::sqrt(2.), 0;
-        // (|00> - |11>) / sqrt(2)
+        // (|01> + |10>) / sqrt(2)
         b10 << 1 / std::sqrt(2.), 0, 0, -1 / std::sqrt(2.);
-        // (|01> - |10>) / sqrt(2)
+        // (|00> - |11>) / sqrt(2)
         b11 << 0, 1 / std::sqrt(2.), -1 / std::sqrt(2.), 0;
+        // (|01> - |10>) / sqrt(2)
 
         pb00 = b00 * b00.adjoint();
         pb01 = b01 * b01.adjoint();
