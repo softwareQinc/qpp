@@ -15,7 +15,6 @@ applicable to a vast majority of problems in quantum information/computation.
 The simulator should be fast but nevertheless user-friendly for anyone with a basic knowledge of C/C++. 
 
 ---
-
 Quantum++ is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -30,7 +29,6 @@ You should have received a copy of the GNU General Public License
 along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 ---
-
 ## Building instructions
 
 ### Configuration:
@@ -41,7 +39,6 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 - MATLAB compiler shared library files: `/Applications/MATLAB_R2014b.app/bin/maci64`
 
 ===
-
 ### Building instructions for g++
 
 - Example file: `example.cpp` (current folder, from where `g++` is run)
@@ -64,7 +61,6 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include -I /Applications/MATLAB_R2014b.app/extern/include -L /Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
 
 ===
-
 ### Building using CMake 
 
 The current version of the repository has a `CMakeLists.txt` configuration file for building using `cmake`
@@ -98,7 +94,6 @@ edit the `CMakeLists.txt` file. See also `CMakeLists.txt` for additional options
 Do not forget to remove everything from the `./build` directory before a fresh build!
 
 ===
-
 ### Building using make
 
 For convenience, the current version of the repository has also a set of Makefiles available 
@@ -108,7 +103,6 @@ an appropriate Makefile from `./Makefile.examples`, name it `Makefile`,
 then type `make` (for release version) or `make debug` (for debug version) to produce the executable `qpp`.
 
 ===
-
 ### Additional remarks
 
 If you want to run the program on OS X with MATLAB support, make sure that the environment variable 
