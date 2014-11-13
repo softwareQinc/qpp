@@ -1,4 +1,5 @@
 Quantum++
+
 ---
 
 Quantum++ is a template-based header-only C++11 quantum computing library, 
