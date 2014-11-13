@@ -79,7 +79,7 @@ namespace qpp
         for (auto &&it: subsys_dims)
             Dsubsys *= it;
 
-        std::size_t Drest = D / Dsubsys;
+        std::size_t Dbar = D / Dsubsys;
 
         // check the Kraus operators
         if (!internal::_check_nonzero_size(Ks))
@@ -102,7 +102,7 @@ namespace qpp
         {
             for (std::size_t i = 0; i < static_cast<std::size_t>(Ks.size()); ++i)
             {
-                outstates[i] = cmat::Zero(Drest, Drest);
+                outstates[i] = cmat::Zero(Dbar, Dbar);
                 cmat tmp = apply(rA, Ks[i], subsys, dims);
                 tmp = ptrace(tmp, subsys, dims);
                 prob[i] = std::abs(trace(tmp)); // probability
@@ -114,7 +114,7 @@ namespace qpp
         {
             for (std::size_t i = 0; i < static_cast<std::size_t>(Ks.size()); ++i)
             {
-                outstates[i] = cmat::Zero(Drest, Drest);
+                outstates[i] = cmat::Zero(Dbar, Dbar);
                 cmat tmp = apply(rA, Ks[i], subsys, dims);
                 prob[i] = std::pow(norm(tmp), 2);
                 if (prob[i] > eps)
