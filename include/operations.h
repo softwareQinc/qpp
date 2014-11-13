@@ -789,7 +789,7 @@ std::vector<cmat> choi2kraus(const cmat &A)
         // take the absolute value to get rid of tiny negatives
         if (std::abs((double) ev(i)) > eps)
             result.push_back(
-                    static_cast<cmat>(std::sqrt((double) ev(i))
+                    static_cast<cmat>(std::sqrt(ev(i))
                             * reshape(static_cast<cmat>(evec.col(i)), D, D)));
     }
 
@@ -1059,6 +1059,37 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived> &A,
 }
 
 /**
+* \brief Partial trace
+*
+*  Partial trace of the multi-partite density matrix
+*  over a list of subsystems
+*
+* \param A Eigen expression
+* \param subsys Subsystem indexes
+* \param d Subsystem dimensions
+* \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a subsys
+* in a multi-partite system, as a dynamic matrix
+* over the same scalar field as \a A
+*/
+template<typename Derived>
+DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived> &A,
+        const std::vector<std::size_t> &subsys,
+        std::size_t d = 2)
+{
+    const DynMat<typename Derived::Scalar> &rA = A;
+
+    // check zero size
+    if (!internal::_check_nonzero_size(rA))
+        throw Exception("qpp::ptrace()", Exception::Type::ZERO_SIZE);
+
+    std::size_t n =
+            static_cast<std::size_t>(std::log2(rA.rows()) / std::log2(d));
+    std::vector<std::size_t> dims(n, d); // local dimensions vector
+
+    return ptrace(rA, subsys, dims);
+}
+
+/**
 * \brief Partial transpose
 *
 *  Partial transpose of the multi-partite density matrix
@@ -1156,6 +1187,38 @@ DynMat<typename Derived::Scalar> ptranspose(
     }
 
     return result;
+}
+
+/**
+* \brief Partial transpose
+*
+*  Partial transpose of the multi-partite density matrix
+*  over a list of subsystems
+*
+* \param A Eigen expression
+* \param subsys Subsystem indexes
+* \param d Subsystem dimensions
+* \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$
+* over the subsytems \a subsys in a multi-partite system, as a dynamic matrix
+* over the same scalar field as \a A
+*/
+template<typename Derived>
+DynMat<typename Derived::Scalar> ptranspose(
+        const Eigen::MatrixBase<Derived> &A,
+        const std::vector<std::size_t> &subsys,
+        std::size_t d = 2)
+{
+    const DynMat<typename Derived::Scalar> &rA = A;
+
+    // check zero size
+    if (!internal::_check_nonzero_size(rA))
+        throw Exception("qpp::ptranspose()", Exception::Type::ZERO_SIZE);
+
+    std::size_t n =
+            static_cast<std::size_t>(std::log2(rA.rows()) / std::log2(d));
+    std::vector<std::size_t> dims(n, d); // local dimensions vector
+
+    return ptranspose(rA, subsys, dims);
 }
 
 /**
@@ -1282,6 +1345,37 @@ DynMat<typename Derived::Scalar> syspermute(
     else
         throw Exception("qpp::syspermute()",
                 Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+}
+
+/**
+* \brief System permutation
+*
+* Permutes the subsystems in a state vector or density matrix.
+* The qubit \a perm[\a i] is permuted to the location \a i.
+*
+* \param A Eigen expression
+* \param perm Permutation
+* \param d Subsystem dimensions
+* \return Permuted system, as a dynamic matrix
+* over the same scalar field as \a A
+*/
+template<typename Derived>
+DynMat<typename Derived::Scalar> syspermute(
+        const Eigen::MatrixBase<Derived> &A,
+        const std::vector<std::size_t> &perm,
+        std::size_t d = 2)
+{
+    const DynMat<typename Derived::Scalar> &rA = A;
+
+    // check zero size
+    if (!internal::_check_nonzero_size(rA))
+        throw Exception("qpp::syspermute()", Exception::Type::ZERO_SIZE);
+
+    std::size_t n =
+            static_cast<std::size_t>(std::log2(rA.rows()) / std::log2(d));
+    std::vector<std::size_t> dims(n, d); // local dimensions vector
+
+    return syspermute(rA, perm, dims);
 }
 
 } /* namespace qpp */

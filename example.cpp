@@ -32,7 +32,7 @@ auto MEASUREMENTS = []
 {
     std::cout << "**** Measurements ****" << std::endl;
 
-    ket state = st.b00;
+    ket psi = st.b00;
     std::vector<std::size_t> subsys = {0};
     std::size_t result;
     std::vector<double> probs;
@@ -40,10 +40,10 @@ auto MEASUREMENTS = []
 
     // measures the first subsystem of the Bell state (|00> + |11>)/sqrt(2)
     // in the X basis
-    std::tie(result, probs, states) = measure(state, gt.H, {0});
+    std::tie(result, probs, states) = measure(psi, gt.H, {0});
     std::cout << ">> Measuring part " << disp(subsys, " ")
             << " of the state: " << std::endl;
-    std::cout << disp(state) << std::endl;
+    std::cout << disp(psi) << std::endl;
     std::cout << ">> Measurement result: " << result << std::endl;
     std::cout << ">> Probabilities: " << disp(probs, ", ") << std::endl;
     std::cout << ">> Resulting normalized post-measurement states: "
@@ -51,6 +51,44 @@ auto MEASUREMENTS = []
 
     for (auto &&it: states)
         std::cout << disp(it) << std::endl << std::endl;
+
+    // measure 2 subsystems out of a 4-qubit random density matrix
+    cmat rho = randrho(16);
+    subsys = {1, 2};
+    cmat U = randU(4); // random basis on 2 qubits
+
+    std::cout << ">> Measuring qubits " << disp(subsys, " ")
+            << " of a 4-qubit random state in the random basis:" << std::endl;
+    std::cout << disp(U) << std::endl;
+
+    std::tie(result, probs, states) = measure(rho, U, {1, 2});
+    std::cout << ">> Measurement result: " << result << std::endl;
+    std::cout << ">> Probabilities: " << disp(probs, ", ") << std::endl;
+    std::cout << ">> Sum of the probabilities: "
+            << sum(probs.begin(), probs.end()) << std::endl;
+    std::cout << ">> Resulting normalized post-measurement states: "
+            << std::endl;
+
+    for (auto &&it: states)
+        std::cout << disp(it) << std::endl << std::endl;
+
+    // Check now how the state after the measurement "looks"
+    // on the left over subsystems {0, 3}
+
+    // It should be the same as the partial trace over {1,2 }
+    // of the initial state (before the measurement), as local CPTP maps
+    // do not influence the complementary subsystems
+
+    cmat rho_bar = ptrace(rho, subsys);
+    cmat rho_out_bar = cmat::Zero(4,4);
+
+    // compute the resulting mixed state after the measurement
+    for(std::size_t i = 0; i < probs.size(); ++i)
+        rho_out_bar += probs[i] * states[i];
+
+    // verification
+    std::cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar)
+            << std::endl << std::endl;
 };
 
 // Qudit teleportation
@@ -60,7 +98,7 @@ auto TELEPORTATION = []
     std::cout << "**** Qudit teleportation, D = " << D << " ****" << std::endl;
 
     ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
-    for (std::size_t i = 0; i < D; i++)
+    for (std::size_t i = 0; i < D; ++i)
         mes_AB += mket({i, i}, D);
     mes_AB /= std::sqrt((double) D);
 
@@ -110,7 +148,7 @@ auto DENSE_CODING = []
     std::cout << "**** Qudit dense coding, D = " << D << " ****" << std::endl;
 
     ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
-    for (std::size_t i = 0; i < D; i++)
+    for (std::size_t i = 0; i < D; ++i)
         mes_AB += mket({i, i}, D);
     mes_AB /= std::sqrt((double) D);
 
@@ -171,9 +209,10 @@ auto GROVER = []
 
     cmat G = 2 * prj(psi) - gt.Id(N); // Diffusion operator
 
-    std::size_t nqueries = std::ceil(pi * std::sqrt(N) / 4.); // no. queries
+    // number of queries
+    std::size_t nqueries = std::ceil(pi * std::sqrt((double)N) / 4.);
     std::cout << ">> We run " << nqueries << " queries" << std::endl;
-    for (std::size_t i = 0; i < nqueries; i++)
+    for (std::size_t i = 0; i < nqueries; ++i)
     {
         psi(marked) = -psi(marked); // apply the oracle first, no aliasing
         psi = (G * psi).eval(); // then the diffusion operator, no aliasing
@@ -304,7 +343,6 @@ auto TIMING = []
 
     std::size_t n = 12; // number of qubits
     std::size_t N = std::pow(2, n);
-    std::vector<std::size_t> dims(n, 2); // local dimensions
     std::cout << ">> n = " << n << " qubits, matrix size "
             << N << " x " << N << "." << std::endl;
     cmat randcmat = cmat::Random(N, N);
@@ -315,30 +353,30 @@ auto TIMING = []
     std::cout << ">> Subsytem(s): ";
     std::cout << disp(subsys_ptrace, ", ") << std::endl;
     Timer t;
-    ptrace(randcmat, subsys_ptrace, dims);
+    ptrace(randcmat, subsys_ptrace);
     std::cout << ">> It took " << t.toc() << " seconds." << std::endl;
 
     // qpp::ptranspose()
     std::cout << std::endl << "**** qpp::ptranspose() timing ****" << std::endl;
     // partially transpose n-1 subsystems
     std::vector<std::size_t> subsys_ptranspose;
-    for (std::size_t i = 0; i < n - 1; i++)
+    for (std::size_t i = 0; i < n - 1; ++i)
         subsys_ptranspose.push_back(i);
     std::cout << ">> Subsytem(s): ";
     std::cout << disp(subsys_ptranspose, ", ") << std::endl;
     t.tic();
-    ptranspose(randcmat, subsys_ptranspose, dims);
+    ptranspose(randcmat, subsys_ptranspose);
     std::cout << ">> It took " << t.toc() << " seconds." << std::endl;
 
     // qpp::syspermute()
     std::cout << std::endl << "**** qpp::syspermute() timing ****" << std::endl;
     std::vector<std::size_t> perm; // left-shift all subsystems by 1
-    for (std::size_t i = 0; i < n; i++)
+    for (std::size_t i = 0; i < n; ++i)
         perm.push_back((i + 1) % n);
     std::cout << ">> Subsytem(s): ";
     std::cout << disp(perm, ", ") << std::endl;
     t.tic();
-    syspermute(randcmat, perm, dims);
+    syspermute(randcmat, perm);
     std::cout << ">> It took " << t.toc() << " seconds."
             << std::endl << std::endl;
 };
