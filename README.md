@@ -30,16 +30,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
----
+===
 ## Building instructions
 
--- Configuration:
+### Configuration:
 
 - Eigen3 library located in `$HOME/eigen_3.2.2`
 - Quantum++ library located in `$HOME/qpp`
 - MATLAB compiler include header files: `/Applications/MATLAB_R2014b.app/extern/include`
 - MATLAB compiler shared library files: `/Applications/MATLAB_R2014b.app/bin/maci64`
 
+===
 
 ### Building instructions for g++
 
@@ -62,7 +63,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp -mtune=native -msse3 -g3 -DDEBUG -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include -I /Applications/MATLAB_R2014b.app/extern/include -L /Applications/MATLAB_R2014b.app/bin/maci64 -lmx -lmat example.cpp -o qpp
 
----
+===
 
 ### Building using CMake 
 
@@ -96,7 +97,7 @@ To change the location of `Eigen3` library or the location of MATLAB installatio
 edit the `CMakeLists.txt` file. See also `CMakeLists.txt` for additional options.
 Do not forget to remove everything from the `./build` directory before a fresh build!
 
----
+===
 
 ### Building using make
 
@@ -106,7 +107,7 @@ copy into the root of the project
 an appropriate Makefile from `./Makefile.examples`, name it `Makefile`, 
 then type `make` (for release version) or `make debug` (for debug version) to produce the executable `qpp`.
 
----
+===
 
 ### Additional remarks
 
