@@ -105,8 +105,11 @@ then type `make` (for release version) or `make debug` (for debug version) to pr
 
 ===
 ### Additional remarks
+
 - The C++ compiler must be C++11 compliant.
+
 - If your compiler does not support OpenMP (as it is the case e.g with `clang++`), disable it in your build, as the linker may not find `gomp` library.
+
 - If you want to run the program on OS X with MATLAB support, make sure that the environment variable 
 `DYLD_LIBRARY_PATH` is set to point to the MATLAB compiler library location, see the `run_OSX_MATLAB` script. 
 Example of run command from inside the directory where the executable `qpp` is located:
@@ -114,6 +117,7 @@ Example of run command from inside the directory where the executable `qpp` is l
 	    export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"; ./qpp
 
 Otherwise, you will get a runtime error like `dyld: Library not loaded: @rpath/libmat.dylib`
+
 - `Makefiles.examples` and `CMakeLists.txt` are provided for convenience.
 The final version of the library will consist only of header files, 
 and it is the user's responsability to create an appropriate build system.
