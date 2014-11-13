@@ -253,6 +253,7 @@ DynColVect<cplx> evals(const Eigen::MatrixBase<Derived> &A)
         throw Exception("qpp::evals()", Exception::Type::MATRIX_NOT_SQUARE);
 
     Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
+
     return es.eigenvalues();
 }
 
@@ -276,6 +277,7 @@ cmat evects(const Eigen::MatrixBase<Derived> &A)
         throw Exception("qpp::evects()", Exception::Type::MATRIX_NOT_SQUARE);
 
     Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
+
     return es.eigenvectors();
 }
 
@@ -299,6 +301,7 @@ DynColVect<double> hevals(const Eigen::MatrixBase<Derived> &A)
         throw Exception("qpp::hevals()", Exception::Type::MATRIX_NOT_SQUARE);
 
     Eigen::SelfAdjointEigenSolver<cmat> es(rA.template cast<cplx>());
+
     return es.eigenvalues();
 }
 
@@ -323,6 +326,7 @@ cmat hevects(const Eigen::MatrixBase<Derived> &A)
                 Exception::Type::MATRIX_NOT_SQUARE);
 
     Eigen::SelfAdjointEigenSolver<cmat> es(rA.template cast<cplx>());
+
     return es.eigenvectors();
 }
 
@@ -581,10 +585,7 @@ cmat spectralpowm(const Eigen::MatrixBase<Derived> &A, const cplx z)
 
     // Define A^0 = Id, for z IDENTICALLY zero
     if (real(z) == 0 && imag(z) == 0)
-    {
-        cmat result(rA.rows(), rA.rows());
-        return result.setIdentity();;
-    }
+        return cmat::Identity(rA.rows(), rA.rows());
 
     Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
     cmat evects = es.eigenvectors();
@@ -626,7 +627,8 @@ DynMat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived> &A,
     DynMat<typename Derived::Scalar> result = rA;
 
     if (n == 0)
-        return result.setIdentity();
+        return DynMat<typename Derived::Scalar>::Identity(
+                rA.rows(), rA.rows());
 
     for (std::size_t i = 1; i < n; ++i)
         result *= rA;
@@ -653,9 +655,7 @@ double schatten(const Eigen::MatrixBase<Derived> &A, std::size_t p)
         throw Exception("qpp::schatten()", Exception::Type::OUT_OF_RANGE);
 
     if (p == infty) // infinity norm (largest singular value)
-    {
         return svals(rA)[0];
-    }
 
     // convert matrix to complex then return its Schatten-p norm
     return std::pow(trace(powm(absm(rA), p)).real(), 1. / (double) p);
@@ -746,6 +746,7 @@ DynMat<typename Derived::Scalar> kron(const std::vector<Derived> &As)
     {
         result = kron(result, As[i]);
     }
+
     return result;
 }
 
@@ -791,6 +792,7 @@ DynMat<typename Derived::Scalar> kronpow(const Eigen::MatrixBase<Derived> &A,
     DynMat<typename Derived::Scalar> result = rA;
     for (std::size_t i = 1; i < n; ++i)
         result = kron(result, rA);
+
     return result;
 }
 
@@ -1007,6 +1009,7 @@ DynMat<typename Derived::Scalar> grams(const std::vector<Derived> &Vs)
             cnt++;
         }
     }
+
     return result.block(0, 0, Vs[0].rows(), cnt);
 }
 
@@ -1075,6 +1078,7 @@ std::vector<std::size_t> n2multiidx(std::size_t n,
     // double the size for matrices reshaped as vectors
     std::size_t result[2 * maxn];
     internal::_n2multiidx(n, dims.size(), dims.data(), result);
+
     return std::vector<std::size_t>(result, result + dims.size());
 }
 
@@ -1143,6 +1147,7 @@ ket mket(const std::vector<std::size_t> &mask,
     ket result = ket::Zero(D);
     std::size_t pos = multiidx2n(mask, dims);
     result(pos) = 1;
+
     return result;
 }
 
@@ -1179,6 +1184,7 @@ ket mket(const std::vector<std::size_t> &mask, std::size_t d = 2)
     std::vector<std::size_t> dims(n, d);
     std::size_t pos = multiidx2n(mask, dims);
     result(pos) = 1;
+
     return result;
 }
 
@@ -1226,6 +1232,7 @@ cmat mprj(const std::vector<std::size_t> &mask,
     cmat result = cmat::Zero(D, D);
     std::size_t pos = multiidx2n(mask, dims);
     result(pos, pos) = 1;
+
     return result;
 }
 
@@ -1264,6 +1271,7 @@ cmat mprj(const std::vector<std::size_t> &mask, std::size_t d = 2)
     std::vector<std::size_t> dims(n, d);
     std::size_t pos = multiidx2n(mask, dims);
     result(pos, pos) = 1;
+
     return result;
 }
 
@@ -1283,6 +1291,7 @@ std::vector<double> abssq(InputIterator first, InputIterator last)
             {
                 return std::pow(std::abs(z), 2);
             });
+
     return weights;
 }
 
@@ -1311,6 +1320,7 @@ std::vector<double> abssq(const Eigen::MatrixBase<Derived> &V)
             {
                 return std::pow(std::abs(z), 2);
             });
+
     return weights;
 }
 
@@ -1392,6 +1402,7 @@ DynColVect<typename Derived::Scalar> rho2pure(
             break;
         }
     }
+
     return result;
 }
 

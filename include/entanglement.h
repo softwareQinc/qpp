@@ -59,6 +59,7 @@ DynColVect<cplx> schmidtcoeff(const Eigen::MatrixBase<Derived> &A,
 
     Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(
             transpose(reshape(rA, dims[1], dims[0])));
+
     return svd.singularValues().template cast<cplx>();
 }
 

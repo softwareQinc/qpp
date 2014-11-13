@@ -211,6 +211,7 @@ DynMat<typename Derived::Scalar> load(const std::string &fname)
             sizeof(typename Derived::Scalar) * rows * cols);
 
     fin.close();
+
     return A;
 }
 

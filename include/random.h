@@ -71,8 +71,8 @@ inline dmat rand(std::size_t rows, std::size_t cols, double a, double b)
     if (rows == 0 || cols == 0)
         throw Exception("qpp::rand()", Exception::Type::ZERO_SIZE);
 
-    return (0.5 * (b - a) * (dmat::Random(rows, cols) + dmat::Ones(rows, cols))
-            + a * dmat::Ones(rows, cols));
+    return (0.5 * (b - a) * dmat::Random(rows, cols) +
+            0.5 * (b + a) * dmat::Ones(rows, cols));
 }
 
 /**
@@ -102,8 +102,8 @@ inline cmat rand(std::size_t rows, std::size_t cols, double a, double b)
     if (rows == 0 || cols == 0)
         throw Exception("qpp::rand()", Exception::Type::ZERO_SIZE);
 
-    return rand<dmat>(rows, cols, a, b).cast<cplx>() + 1_i * rand<dmat
-    >(rows, cols, a, b).cast<cplx>();
+    return rand<dmat>(rows, cols, a, b).cast<cplx>() +
+            1_i * rand<dmat>(rows, cols, a, b).cast<cplx>();
 }
 
 /**
@@ -117,6 +117,7 @@ inline cmat rand(std::size_t rows, std::size_t cols, double a, double b)
 double rand(double a = 0, double b = 1)
 {
     std::uniform_real_distribution<> ud(a, b);
+
     return ud(RandomDevices::get_instance()._rng);
 }
 
@@ -132,6 +133,7 @@ int randint(int a = std::numeric_limits<int>::min(), int b =
 std::numeric_limits<int>::max())
 {
     std::uniform_int_distribution<int> ud(a, b);
+
     return ud(RandomDevices::get_instance()._rng);
 }
 
@@ -183,10 +185,11 @@ inline dmat randn(std::size_t rows, std::size_t cols,
 
     std::normal_distribution<> nd(mean, sigma);
 
-    return dmat::Zero(rows, cols).unaryExpr([&nd](double)
-    {
-        return nd(RandomDevices::get_instance()._rng);
-    });
+    return dmat::Zero(rows, cols).unaryExpr(
+            [&nd](double)
+            {
+                return nd(RandomDevices::get_instance()._rng);
+            });
 
 }
 
@@ -218,8 +221,8 @@ inline cmat randn(std::size_t rows, std::size_t cols,
     if (rows == 0 || cols == 0)
         throw Exception("qpp::randn()", Exception::Type::ZERO_SIZE);
 
-    return randn<dmat>(rows, cols, mean, sigma).cast<cplx>() + 1_i * randn
-            <dmat>(rows, cols, mean, sigma).cast<cplx>();
+    return randn<dmat>(rows, cols, mean, sigma).cast<cplx>() +
+            1_i * randn<dmat>(rows, cols, mean, sigma).cast<cplx>();
 }
 
 /**
@@ -233,6 +236,7 @@ inline cmat randn(std::size_t rows, std::size_t cols,
 double randn(double mean = 0, double sigma = 1)
 {
     std::normal_distribution<> nd(mean, sigma);
+
     return nd(RandomDevices::get_instance()._rng);
 }
 
@@ -278,6 +282,7 @@ cmat randV(std::size_t Din, std::size_t Dout)
 {
     if (Din == 0 || Dout == 0 || Din > Dout)
         throw Exception("qpp::randV()", Exception::Type::DIMS_INVALID);
+
     return randU(Dout).block(0, 0, Dout, Din);
 }
 
@@ -340,12 +345,16 @@ ket randket(std::size_t D)
 {
     if (D == 0)
         throw Exception("qpp::randket()", Exception::Type::DIMS_INVALID);
+
     /* slow
      ket kt = ket::Ones(D);
      ket result = static_cast<ket>(randU(D) * kt);
+
      return result;
      */
+
     ket kt = static_cast<ket>(randn < cmat > (D, 1));
+
     return kt / norm(kt);
 }
 
@@ -359,8 +368,10 @@ cmat randrho(std::size_t D)
 {
     if (D == 0)
         throw Exception("qpp::randrho()", Exception::Type::DIMS_INVALID);
+
     cmat result = 10 * randH(D);
     result = result * adjoint(result);
+
     return result / trace(result);
 }
 

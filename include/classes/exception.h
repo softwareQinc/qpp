@@ -250,6 +250,7 @@ private:
                 _msg += "CUSTOM EXCEPTION ";
                 break;
         }
+
         return _msg;
     }
 }; /* class Exception */

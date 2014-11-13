@@ -69,6 +69,7 @@ public:
             os << *it;
         }
         os << rhs._end;
+
         return os;
     }
 }; // class IOManipRange
@@ -109,6 +110,7 @@ public:
             os << rhs._p[rhs._n - 1];
 
         os << rhs._end;
+
         return os;
     }
 }; // class IOManipPointer
@@ -140,8 +142,9 @@ public:
     {
         if (rhs._A.size() == 0)
         {
-            os << "Empty [" << rhs._A.rows() << " x " << rhs._A.cols()
-                    << "] matrix";
+            os << "Empty [" << rhs._A.rows() << " x "
+                    << rhs._A.cols() << "] matrix";
+
             return os;
         };
 
@@ -223,6 +226,7 @@ public:
             if (i < static_cast<std::size_t>(rhs._A.rows()) - 1)
                 os << std::endl;
         }
+
         return os;
     }
 }; // class IOManipEigen

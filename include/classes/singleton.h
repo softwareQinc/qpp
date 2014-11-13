@@ -83,6 +83,7 @@ public:
         // Instantiated on first use.
         // Thread safe in C++11
         static T instance;
+
         return instance;
     }
 }; /* class Singleton */

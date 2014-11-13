@@ -145,6 +145,7 @@ public:
                                 Exception::Type::NO_CODEWORD);
                 }
         }
+
         return result;
     }
 }; /* class Codes */

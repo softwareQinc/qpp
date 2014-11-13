@@ -90,7 +90,9 @@ public:
     * \return Writes to the output stream the number of seconds that passed
     * between the instantiation/reset and invocation of qpp::Timer::toc().
     */
-    friend std::ostream &operator<<(std::ostream &os, const Timer &rhs)
+    template<typename charT, typename traits>
+    friend std::basic_ostream<charT, traits> &
+    operator<<(std::basic_ostream<charT, traits> &os, const Timer &rhs)
     {
         return os << rhs.seconds();
     }

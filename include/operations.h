@@ -340,6 +340,7 @@ DynMat<typename Derived1::Scalar> applyCTRL(
                                             std::get<0>(coeff_idxes);
                                 }
                         }
+
         return result;
     }
 
@@ -700,6 +701,7 @@ cmat super(const std::vector<cmat> &Ks)
             }
         }
     }
+
     return result;
 }
 
@@ -790,6 +792,7 @@ std::vector<cmat> choi2kraus(const cmat &A)
                     static_cast<cmat>(std::sqrt((double) ev(i))
                             * reshape(static_cast<cmat>(evec.col(i)), D, D)));
     }
+
     return result;
 }
 
@@ -846,6 +849,7 @@ DynMat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived> &A,
         typename Derived::Scalar sum = 0;
         for (std::size_t m = 0; m < DA; ++m)
             sum += rA(m * DB + i, m * DB + j);
+
         return sum;
     };
 
@@ -954,6 +958,7 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived> &A,
         DynMat<typename Derived::Scalar> result = DynMat<
                 typename Derived::Scalar>(1, 1);
         result(0, 0) = rA.trace();
+
         return result;
     }
     if (subsys.size() == 0)
@@ -1096,8 +1101,10 @@ DynMat<typename Derived::Scalar> ptranspose(
 
     if (subsys.size() == dims.size())
         return rA.transpose();
+
     if (subsys.size() == 0)
         return rA;
+
     // check that subsys are valid
     if (!internal::_check_subsys_match_dims(subsys, dims))
         throw Exception("qpp::ptranspose()",
@@ -1212,6 +1219,7 @@ DynMat<typename Derived::Scalar> syspermute(
                     permdims[k] = cdims[cperm[k]]; // permuted dimensions
                     midxtmp[k] = midx[cperm[k]];// permuted multi-indexes
                 }
+
                 return internal::_multiidx2n(midxtmp, numdims, permdims);
             };
 

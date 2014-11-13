@@ -97,6 +97,7 @@ public:
         cmat result(2, 2);
         result = std::cos(theta / 2) * Id2
                 - 1_i * std::sin(theta / 2) * (n[0] * X + n[1] * Y + n[2] * Z);
+
         return result;
     }
 
@@ -119,6 +120,7 @@ public:
         result = cmat::Zero(D, D);
         for (std::size_t i = 0; i < D; ++i)
             result(i, i) = std::pow(omega(D), i);
+
         return result;
     }
 
@@ -143,6 +145,7 @@ public:
             for (std::size_t i = 0; i < D; ++i)
                 result(i, j) = 1 / std::sqrt((double) D)
                         * std::pow(omega(D), i * j);
+
         return result;
     }
 
@@ -176,6 +179,7 @@ public:
     {
         if (D == 0)
             throw Exception("qpp::Gates::Id()", Exception::Type::DIMS_INVALID);
+
         return Derived::Identity(D, D);
     }
 
@@ -345,6 +349,7 @@ public:
 
             }
         }
+
         return result;
     }
 

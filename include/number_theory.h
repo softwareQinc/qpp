@@ -50,6 +50,7 @@ std::vector<int> x2contfrac(double x, std::size_t n, std::size_t cut = 1e5)
         if (!std::isfinite(x) || x > cut)
             return result;
     }
+
     return result;
 }
 

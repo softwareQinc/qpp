@@ -76,6 +76,7 @@ bool _check_square_mat(const Eigen::MatrixBase<Derived> &A)
 
     if (rA.rows() != rA.cols())
         return false;
+
     return true;
 }
 
@@ -87,6 +88,7 @@ bool _check_vector(const Eigen::MatrixBase<Derived> &A)
 
     if (rA.rows() != 1 && rA.cols() != 1)
         return false;
+
     return true;
 }
 
@@ -98,6 +100,7 @@ bool _check_row_vector(const Eigen::MatrixBase<Derived> &A)
 
     if (rA.rows() != 1)
         return false;
+
     return true;
 }
 
@@ -109,6 +112,7 @@ bool _check_col_vector(const Eigen::MatrixBase<Derived> &A)
 
     if (rA.cols() != 1)
         return false;
+
     return true;
 }
 
@@ -118,6 +122,7 @@ bool _check_nonzero_size(const T &x)
 {
     if (x.size() == 0)
         return false;
+
     return true;
 }
 
@@ -134,6 +139,7 @@ bool _check_dims(const std::vector<std::size_t> &dims)
                 else return false;
             }) != std::end(dims))
         return false;
+
     return true;
 }
 
@@ -150,6 +156,7 @@ bool _check_dims_match_mat(const std::vector<std::size_t> &dims,
         proddim *= i;
     if (proddim != static_cast<std::size_t>(rA.rows()))
         return false;
+
     return true;
 }
 
@@ -165,6 +172,7 @@ bool _check_dims_match_cvect(const std::vector<std::size_t> &dims,
         proddim *= i;
     if (proddim != static_cast<std::size_t>(rV.rows()))
         return false;
+
     return true;
 }
 
@@ -180,6 +188,7 @@ bool _check_dims_match_rvect(const std::vector<std::size_t> &dims,
         proddim *= i;
     if (proddim != static_cast<std::size_t>(rV.cols()))
         return false;
+
     return true;
 }
 
@@ -189,6 +198,7 @@ bool _check_eq_dims(const std::vector<std::size_t> &dims, std::size_t dim)
     for (std::size_t i : dims)
         if (i != dim)
             return false;
+
     return true;
 }
 
