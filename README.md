@@ -1,5 +1,4 @@
 # Quantum++
----
 
 Quantum++ is a template-based header-only C++11 quantum computing library, 
 developed using Eigen3 linear algebra library http://eigen.tuxfamily.org/. 
