@@ -110,7 +110,7 @@ then type `make` (for release version) or `make debug` (for debug version) to pr
 `DYLD_LIBRARY_PATH` is set to point to the MATLAB compiler library location, see the `run_OSX_MATLAB` script. 
 Example of run command from inside the directory where the executable `qpp` is located:
 	
-	export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"; ./qpp
+	    export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"; ./qpp
 
 Otherwise, you will get a runtime error like `dyld: Library not loaded: @rpath/libmat.dylib`
 
