@@ -25,13 +25,30 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
+    // Measurements
+    {
+        std::cout << std::endl << "**** Measurements ****" << std::endl;
+        cmat state = st.b00;
+        std::vector<std::size_t> subsys = {0};
+        std::size_t result;
+        std::vector<double> probs;
+        std::vector<cmat> states;
+        // measures the first subsystem of the Bell state (|00> + |11>)/sqrt(2) in the X basis
+        std::tie(result, probs, states) = measure(state, gt.H, {0});
+        std::cout << ">> Measuring part " << disp(subsys, " ") << " of the state: " << std::endl;
+        std::cout << disp(state) << std::endl;
+        std::cout << ">> Measurement result: " << result << std::endl;
+        std::cout << ">> Probabilities: " << disp(probs, ", ") << std::endl;
+        std::cout << ">> Resulting normalized post-measurement states: " << std::endl;
+        for (auto &&it: states)
+            std::cout << disp(it) << std::endl << std::endl;
+    }
 
     // Qudit teleportation
     {
         std::size_t D = 3; // size of the system
-        std::cout << std::endl << "**** Qudit teleportation, D = " << D << " ****" << std::endl;
+        std::cout << "**** Qudit teleportation, D = " << D << " ****" << std::endl;
         ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
         for (std::size_t i = 0; i < D; i++)
             mes_AB += mket({i, i}, D);
@@ -113,8 +130,7 @@ int main()
         // number of queries
         std::size_t nqueries = std::ceil(pi * std::sqrt(N) / 4.);
         std::cout << ">> We run " << nqueries << " queries" << std::endl;
-        for (std::size_t i = 0; i < nqueries; i++)
-        {
+        for (std::size_t i = 0; i < nqueries; i++) {
             psi(marked) = -psi(marked); // apply the oracle first, no aliasing
             psi = (G * psi).eval(); // then the diffusion operator, no aliasing
         }
@@ -237,4 +253,6 @@ int main()
         syspermute(randcmat, perm, dims);
         std::cout << ">> It took " << t.toc() << " seconds." << std::endl;
     }
+
+
 }
