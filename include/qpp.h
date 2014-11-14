@@ -123,7 +123,6 @@ const States &st = States::get_instance();
 */
 RandomDevices &rdevs = RandomDevices::get_instance();
 
-
 } /* namespace qpp */
 
 #endif	/* INCLUDE_QPP_H_ */
