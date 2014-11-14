@@ -88,7 +88,7 @@ auto MEASUREMENTS = []
 
     // verification
     std::cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar)
-            << std::endl << std::endl;
+            << std::endl;
 
     // random Kraus
     std::cout << ">> Random channel on part of the state " << std::endl;
@@ -348,7 +348,7 @@ auto CHANNEL = []
     std::size_t nk = 5;
     std::size_t D = 3; // nk Kraus on d-dimensional system
     std::cout << ">> Generating a random channel with " << nk
-            << " Kraus operators on a " << D << " dimensional space..."
+            << " Kraus operators on a " << D << " dimensional space"
             << std::endl;
     std::vector<cmat> Ks = randkraus(nk, D);
 
@@ -358,7 +358,7 @@ auto CHANNEL = []
     std::cout << ">> Computing its Choi matrix..." << std::endl;
     cmat choim = choi(Ks);
     std::cout << ">> Choi matrix:" << std::endl << disp(choim) << std::endl;
-    std::cout << std::endl << ">> The eigenvalues of the Choi matrix are: "
+    std::cout << ">> The eigenvalues of the Choi matrix are: "
             << std::endl << disp(transpose(hevals(choim))) << std::endl;
     std::cout << ">> Their sum is: " << sum(hevals(choim))
             << std::endl;
@@ -371,8 +371,7 @@ auto CHANNEL = []
     std::cout << ">> Superoperator matrix:" << std::endl;
     cmat smat = super(Ks);
     std::cout << disp(smat) << std::endl;
-    std::cout << std::endl
-            << ">> The eigenvalues of the superoperator matrix are: "
+    std::cout << ">> The eigenvalues of the superoperator matrix are: "
             << std::endl;
     cmat evalsupop = evals(smat);
     std::cout << disp(transpose(evalsupop)) << std::endl;
@@ -383,7 +382,7 @@ auto CHANNEL = []
             << ">> Diference in norm for superoperator action: ";
     cmat rho_out2 = transpose(
             reshape(smat * reshape(transpose(rho_in), D * D, 1), D, D));
-    std::cout << norm(rho_out - rho_out2) << std::endl;
+    std::cout << norm(rho_out - rho_out2) << std::endl << std::endl;
 };
 
 // Timing tests
@@ -394,21 +393,21 @@ auto TIMING = []
     std::size_t n = 12; // number of qubits
     std::size_t N = std::pow(2, n);
     std::cout << ">> n = " << n << " qubits, matrix size "
-            << N << " x " << N << "." << std::endl;
+            << N << " x " << N << "." << std::endl << std::endl;
     cmat randcmat = cmat::Random(N, N);
 
     // qpp::ptrace()
-    std::cout << std::endl << "**** qpp::ptrace() timing ****" << std::endl;
+    std::cout << "**** qpp::ptrace() timing ****" << std::endl;
     std::vector<std::size_t> subsys_ptrace = {0};
     std::cout << ">> Subsytem(s): ";
     std::cout << disp(subsys_ptrace, ", ") << std::endl;
     Timer t;
     ptrace(randcmat, subsys_ptrace);
-    std::cout << ">> It took " << t.toc() << " seconds." << std::endl;
+    std::cout << ">> It took " << t.toc() << " seconds."
+            << std::endl << std::endl;
 
     // qpp::ptranspose()
-    std::cout << std::endl << "**** qpp::ptranspose() timing ****"
-            << std::endl;
+    std::cout << "**** qpp::ptranspose() timing ****" << std::endl;
     // partially transpose n-1 subsystems
     std::vector<std::size_t> subsys_ptranspose;
     for (std::size_t i = 0; i < n - 1; ++i)
@@ -417,11 +416,11 @@ auto TIMING = []
     std::cout << disp(subsys_ptranspose, ", ") << std::endl;
     t.tic();
     ptranspose(randcmat, subsys_ptranspose);
-    std::cout << ">> It took " << t.toc() << " seconds." << std::endl;
+    std::cout << ">> It took " << t.toc() << " seconds."
+            << std::endl << std::endl;
 
     // qpp::syspermute()
-    std::cout << std::endl << "**** qpp::syspermute() timing ****"
-            << std::endl;
+    std::cout << "**** qpp::syspermute() timing ****" << std::endl;
     std::vector<std::size_t> perm; // left-shift all subsystems by 1
     for (std::size_t i = 0; i < n; ++i)
         perm.push_back((i + 1) % n);
