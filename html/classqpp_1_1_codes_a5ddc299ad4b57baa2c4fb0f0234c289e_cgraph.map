@@ -1,7 +1,0 @@
-<map id="qpp::Codes::codeword" name="qpp::Codes::codeword">
-<area shape="rect" id="node2" href="$namespaceqpp.html#a94ade48c09bb33df893d7ff62a098374" title="Multi&#45;partite qudit ket (different dimensions overload) " alt="" coords="204,31,281,57"/>
-<area shape="rect" id="node6" href="$namespaceqpp.html#a3b2bafdce8302c9ac34ab328ec84a3f7" title="Kronecker product (variadic overload) " alt="" coords="205,81,280,108"/>
-<area shape="rect" id="node3" href="$namespaceqpp_1_1internal.html#a8b3940aa8b60b8eeb411db0f3802503b" title="qpp::internal::_check_dims" alt="" coords="483,5,651,32"/>
-<area shape="rect" id="node4" href="$namespaceqpp.html#a19badf6efe78383485b2ba28e4136bb7" title="Multi&#45;index to non&#45;negative integer index. " alt="" coords="329,56,435,83"/>
-<area shape="rect" id="node5" href="$namespaceqpp_1_1internal.html#a7ab3b0b016ffd0eb793ea6281bed9fc0" title="qpp::internal::_multiidx2n" alt="" coords="488,56,645,83"/>
-</map>

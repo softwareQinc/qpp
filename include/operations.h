@@ -1144,15 +1144,15 @@ DynMat<typename Derived::Scalar> ptranspose(
     std::size_t D = static_cast<std::size_t>(rA.rows());
     std::size_t numdims = dims.size();
     std::size_t numsubsys = subsys.size();
-    std::size_t cdims[maxn];
+    std::size_t Cdims[maxn];
     std::size_t midxcol[maxn];
-    std::size_t csubsys[maxn];
+    std::size_t Csubsys[maxn];
 
-    // copy dims in cdims and subsys in csubsys
+    // copy dims in Cdims and subsys in Csubsys
     for (std::size_t i = 0; i < numdims; ++i)
-        cdims[i] = dims[i];
+        Cdims[i] = dims[i];
     for (std::size_t i = 0; i < numsubsys; ++i)
-        csubsys[i] = subsys[i];
+        Csubsys[i] = subsys[i];
 
     DynMat<typename Derived::Scalar> result(D, D);
 
@@ -1166,21 +1166,21 @@ DynMat<typename Derived::Scalar> ptranspose(
             midxcoltmp[k] = midxcol[k];
 
         /* compute the row multi-index */
-        internal::_n2multiidx(i, numdims, cdims, midxrow);
+        internal::_n2multiidx(i, numdims, Cdims, midxrow);
 
         for (std::size_t k = 0; k < numsubsys; ++k)
-            std::swap(midxcoltmp[csubsys[k]], midxrow[csubsys[k]]);
+            std::swap(midxcoltmp[Csubsys[k]], midxrow[Csubsys[k]]);
 
         /* writes the result */
-        return rA(internal::_multiidx2n(midxrow, numdims, cdims),
-                internal::_multiidx2n(midxcoltmp, numdims, cdims));
+        return rA(internal::_multiidx2n(midxrow, numdims, Cdims),
+                internal::_multiidx2n(midxcoltmp, numdims, Cdims));
 
     };
 
     for (std::size_t j = 0; j < D; ++j)
     {
         // compute the column multi-index
-        internal::_n2multiidx(j, numdims, cdims, midxcol);
+        internal::_n2multiidx(j, numdims, Cdims, midxcol);
 #pragma omp parallel for
         for (std::size_t i = 0; i < D; ++i)
             result(i, j) = worker(i);
@@ -1265,8 +1265,8 @@ DynMat<typename Derived::Scalar> syspermute(
     DynMat<typename Derived::Scalar> result;
 
     auto worker =
-            [](std::size_t i, std::size_t numdims, const std::size_t *cdims,
-                    const std::size_t *cperm)
+            [](std::size_t i, std::size_t numdims, const std::size_t *Cdims,
+                    const std::size_t *Cperm)
             {
                 // use static allocation for speed,
                 // double the size for matrices reshaped as vectors
@@ -1275,12 +1275,12 @@ DynMat<typename Derived::Scalar> syspermute(
                 std::size_t permdims[2 * maxn];
 
                 /* compute the multi-index */
-                internal::_n2multiidx(i, numdims, cdims, midx);
+                internal::_n2multiidx(i, numdims, Cdims, midx);
 
                 for (std::size_t k = 0; k < numdims; ++k)
                 {
-                    permdims[k] = cdims[cperm[k]]; // permuted dimensions
-                    midxtmp[k] = midx[cperm[k]];// permuted multi-indexes
+                    permdims[k] = Cdims[Cperm[k]]; // permuted dimensions
+                    midxtmp[k] = midx[Cperm[k]];// permuted multi-indexes
                 }
 
                 return internal::_multiidx2n(midxtmp, numdims, permdims);
@@ -1289,45 +1289,45 @@ DynMat<typename Derived::Scalar> syspermute(
     // check column vector
     if (internal::_check_col_vector(rA)) // we have a column vector
     {
-        std::size_t cdims[maxn];
-        std::size_t cperm[maxn];
+        std::size_t Cdims[maxn];
+        std::size_t Cperm[maxn];
 
         // check that dims match the dimension of rA
         if (!internal::_check_dims_match_cvect(dims, rA))
             throw Exception("qpp::syspermute()",
                     Exception::Type::DIMS_MISMATCH_CVECTOR);
 
-        // copy dims in cdims and perm in cperm
+        // copy dims in Cdims and perm in Cperm
         for (std::size_t i = 0; i < numdims; ++i)
         {
-            cdims[i] = dims[i];
-            cperm[i] = perm[i];
+            Cdims[i] = dims[i];
+            Cperm[i] = perm[i];
         }
         result.resize(D, 1);
 
 #pragma omp parallel for
         for (std::size_t i = 0; i < D; ++i)
-            result(worker(i, numdims, cdims, cperm)) = rA(i);
+            result(worker(i, numdims, Cdims, Cperm)) = rA(i);
 
         return result;
     }
     else if (internal::_check_square_mat(rA)) // we have a square matrix
     {
-        std::size_t cdims[2 * maxn];
-        std::size_t cperm[2 * maxn];
+        std::size_t Cdims[2 * maxn];
+        std::size_t Cperm[2 * maxn];
 
         // check that dims match the dimension of rA
         if (!internal::_check_dims_match_mat(dims, rA))
             throw Exception("qpp::syspermute()",
                     Exception::Type::DIMS_MISMATCH_MATRIX);
 
-        // copy dims in cdims and perm in cperm
+        // copy dims in Cdims and perm in Cperm
         for (std::size_t i = 0; i < numdims; ++i)
         {
-            cdims[i] = dims[i];
-            cdims[i + numdims] = dims[i];
-            cperm[i] = perm[i];
-            cperm[i + numdims] = perm[i] + numdims;
+            Cdims[i] = dims[i];
+            Cdims[i + numdims] = dims[i];
+            Cperm[i] = perm[i];
+            Cperm[i + numdims] = perm[i] + numdims;
         }
         result.resize(D * D, 1);
         // map A to a column vector
@@ -1337,7 +1337,7 @@ DynMat<typename Derived::Scalar> syspermute(
 
 #pragma omp parallel for
         for (std::size_t i = 0; i < D * D; ++i)
-            result(worker(i, 2 * numdims, cdims, cperm)) = rA(i);
+            result(worker(i, 2 * numdims, Cdims, Cperm)) = rA(i);
 
         return reshape(result, D, D);
     }

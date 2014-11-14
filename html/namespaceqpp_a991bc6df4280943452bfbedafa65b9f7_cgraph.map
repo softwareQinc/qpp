@@ -1,8 +1,0 @@
-<map id="qpp::renyi" name="qpp::renyi">
-<area shape="rect" id="node2" href="$namespaceqpp.html#a3642532b9a23be1c7f7cafa4629e6d5d" title="Shannon/von&#45;Neumann entropy of the probability distribution/density matrix A. " alt="" coords="131,131,232,158"/>
-<area shape="rect" id="node3" href="$namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31" title="qpp::internal::_check\l_nonzero_size" alt="" coords="463,214,597,256"/>
-<area shape="rect" id="node4" href="$namespaceqpp_1_1internal.html#ad27f82cc41710292417948f5f4b91999" title="qpp::internal::_check\l_vector" alt="" coords="280,29,415,70"/>
-<area shape="rect" id="node5" href="$namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276" title="qpp::internal::_check\l_square_mat" alt="" coords="463,88,597,129"/>
-<area shape="rect" id="node7" href="$namespaceqpp.html#a51e1199f56fdc39622a17c949d6ede5a" title="Singular values. " alt="" coords="140,298,223,324"/>
-<area shape="rect" id="node6" href="$namespaceqpp.html#a96eb6e12c5bc0c544663f6705bc1c950" title="Hermitian eigenvalues. " alt="" coords="303,146,392,172"/>
-</map>
