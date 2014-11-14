@@ -27,7 +27,6 @@ using namespace qpp;
 
 // We define each example as an independent lambda function
 
-// Measurements
 auto MEASUREMENTS = []
 {
     std::cout << "**** Measurements ****" << std::endl;
@@ -100,7 +99,6 @@ auto MEASUREMENTS = []
             << std::endl << std::endl;
 };
 
-// Qudit teleportation
 auto TELEPORTATION = []
 {
     std::size_t D = 3; // size of the system
@@ -150,7 +148,6 @@ auto TELEPORTATION = []
             << std::endl << std::endl;
 };
 
-// Qudit dense coding
 auto DENSE_CODING = []
 {
     std::size_t D = 3; // size of the system
@@ -191,7 +188,6 @@ auto DENSE_CODING = []
             << std::endl << std::endl;
 };
 
-// Grover's search algorithm, we time it
 auto GROVER = []
 {
     Timer t; // set a timer
@@ -246,7 +242,6 @@ auto GROVER = []
             << n << " qubits." << std::endl << std::endl;
 };
 
-// Entanglement
 auto ENTANGLEMENT = []
 {
     std::cout << "**** Entanglement ****" << std::endl;
@@ -312,7 +307,6 @@ auto ENTANGLEMENT = []
             << std::endl << std::endl;
 };
 
-// Quantum error correcting codes
 auto QECC = []
 {
     std::cout << "**** Quantum error correcting codes ****" << std::endl;
@@ -344,8 +338,8 @@ auto QECC = []
 
 auto CHANNEL = []
 {
-    // channel tests
     std::cout << "**** Channel tests ****" << std::endl;
+
     std::size_t nk = 5;
     std::size_t D = 3; // nk Kraus on d-dimensional system
     std::cout << ">> Generating a random channel with " << nk
@@ -404,6 +398,7 @@ cplx pow3(const cplx& z) // test function used by qpp::cwise() in FUNCTOR()
 auto FUNCTOR = []
 {
     std::cout << "**** Functor ****" << std::endl;
+
     // functor test
     std::cout << ">> Functor z^3 acting component-wise on:" << std::endl;
     cmat A(2, 2);
@@ -425,6 +420,7 @@ auto FUNCTOR = []
 auto GRAMSCHMIDT = []
 {
     std::cout << "**** Gram-Schmidt ****" << std::endl;
+
     cmat A(3, 3);
     A << 1, 1, 0, 0, 2, 0, 0, 0, 0;
     std::cout << ">> Input matrix:" << std::endl << disp(A) << std::endl;
@@ -459,7 +455,21 @@ auto SPECTRAL = []
             << std::endl << std::endl;
 };
 
-// Timing tests
+auto RANDOM = []
+{
+    std::cout << "**** Randomness ****" << std::endl;
+
+    std::cout << ">> Generating a random ket on D=5" << std::endl;
+    ket rket = randket(5);
+    std::cout << disp(rket) << std::endl;
+
+    std::vector<double> probs = abssq(rket);
+    std::cout << "Probabilities: " << disp(probs, ", ") << std::endl;
+
+    std::cout << "Sum of the probabilities: ";
+    std::cout << sum(probs.begin(), probs.end()) << std::endl << std::endl;
+};
+
 auto TIMING = []
 {
     std::cout << "**** Timing tests ****" << std::endl;
@@ -506,25 +516,19 @@ auto TIMING = []
             << std::endl << std::endl;
 };
 
-
 int main()
 {
     // Examples
-//    MEASUREMENTS();
-//    TELEPORTATION();
-//    DENSE_CODING();
-//    GROVER();
-//    ENTANGLEMENT();
-//    QECC();
-//    CHANNEL();
-//    FUNCTOR();
-//    GRAMSCHMIDT();
-//    SPECTRAL();
-//    TIMING();
-
-    ket rket = randket(5);
-    std::cout << disp(rket) << std::endl;
-    std::vector<double> probs = abssq(rket);
-    std::cout << disp(probs,", ") << std::endl;
-    std::cout << sum(probs.begin(), probs.end()) << std::endl;
+    MEASUREMENTS();
+    TELEPORTATION();
+    DENSE_CODING();
+    GROVER();
+    ENTANGLEMENT();
+    QECC();
+    CHANNEL();
+    FUNCTOR();
+    GRAMSCHMIDT();
+    SPECTRAL();
+    RANDOM();
+    TIMING();
 }
