@@ -109,7 +109,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
         if (alpha == infty) // H min
         {
             double max = 0;
-            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size());
+            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows());
                  ++i)
                 if (std::abs(rA(i)) > max)
                     max = std::abs(rA(i));

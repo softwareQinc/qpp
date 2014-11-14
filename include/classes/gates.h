@@ -162,7 +162,7 @@ public:
         if (D == 0)
             throw Exception("qpp::Gates::Xd()", Exception::Type::DIMS_INVALID);
 
-        return static_cast<cmat>(Fd(D).inverse() * Zd(D) * Fd(D));
+        return Fd(D).inverse() * Zd(D) * Fd(D);
     }
 
     /**

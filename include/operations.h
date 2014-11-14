@@ -739,7 +739,7 @@ cmat choi(const std::vector<cmat>& Ks)
     for (std::size_t a = 0; a < D; ++a)
         MES(a * D + a) = 1;
 
-    cmat Omega = static_cast<cmat>(MES * adjoint(MES));
+    cmat Omega = MES * adjoint(MES);
 
     cmat result = cmat::Zero(D * D, D * D);
 

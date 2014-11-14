@@ -1166,7 +1166,7 @@ ket mket(const std::vector<std::size_t>& mask,
 ket mket(const std::vector<std::size_t>& mask, std::size_t d = 2)
 {
     std::size_t n = mask.size();
-    std::size_t D = static_cast<std::size_t>(std::pow(d, n));
+    std::size_t D = std::pow(d, n);
 
     // check zero size
     if (n == 0)
@@ -1253,7 +1253,7 @@ cmat mprj(const std::vector<std::size_t>& mask,
 cmat mprj(const std::vector<std::size_t>& mask, std::size_t d = 2)
 {
     std::size_t n = mask.size();
-    std::size_t D = static_cast<std::size_t>(std::pow(d, n));
+    std::size_t D = std::pow(d, n);
 
     // check zero size
     if (n == 0)
