@@ -435,7 +435,7 @@ auto TIMING = []
 
 int main()
 {
-    // Examples
+    // Examples, update from eclipse
     MEASUREMENTS();
     TELEPORTATION();
     DENSE_CODING();
