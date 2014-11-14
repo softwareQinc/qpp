@@ -4,6 +4,6 @@
 qpp
 .idea
 build
-doc/documentation.Doxyfile
-doc/latex
-doc/mainpage.dox
+documentation.Doxyfile
+latex
+mainpage.dox
