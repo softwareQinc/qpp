@@ -95,6 +95,7 @@ auto MEASUREMENTS = []
     rho_bar = ptrace(rho, {1, 3});
     rho_out_bar = ptrace(channel(rho, randkraus(3, 4), {1, 3}), {1, 3});
 
+    // verification
     std::cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar)
             << std::endl << std::endl;
 };
@@ -358,31 +359,104 @@ auto CHANNEL = []
     std::cout << ">> Computing its Choi matrix..." << std::endl;
     cmat choim = choi(Ks);
     std::cout << ">> Choi matrix:" << std::endl << disp(choim) << std::endl;
+
     std::cout << ">> The eigenvalues of the Choi matrix are: "
             << std::endl << disp(transpose(hevals(choim))) << std::endl;
+
     std::cout << ">> Their sum is: " << sum(hevals(choim))
             << std::endl;
+
     std::vector<cmat> Kperps = choi2kraus(choim);
     std::cout << ">> The Kraus rank of the channel is: "
             << Kperps.size() << std::endl;
+
     cmat rho_out1 = channel(rho_in, Kperps);
-    std::cout << ">> Difference in norm on output states: "
+    // verification
+    std::cout << ">> Norm difference on output states: "
             << norm(rho_out1 - rho_out) << std::endl;
+
     std::cout << ">> Superoperator matrix:" << std::endl;
     cmat smat = super(Ks);
     std::cout << disp(smat) << std::endl;
+
     std::cout << ">> The eigenvalues of the superoperator matrix are: "
             << std::endl;
     cmat evalsupop = evals(smat);
     std::cout << disp(transpose(evalsupop)) << std::endl;
+
     std::cout << ">> Their absolute values are: " << std::endl;
     for (std::size_t i = 0; i < (std::size_t) evalsupop.size(); i++)
         std::cout << std::abs(evalsupop(i)) << " ";
+
+    // verification
     std::cout << std::endl
             << ">> Diference in norm for superoperator action: ";
     cmat rho_out2 = transpose(
             reshape(smat * reshape(transpose(rho_in), D * D, 1), D, D));
     std::cout << norm(rho_out - rho_out2) << std::endl << std::endl;
+};
+
+cplx pow3(const cplx& z) // test function used by qpp::cwise() in FUNCTOR()
+{
+    return std::pow(z, 3);
+}
+
+auto FUNCTOR = []
+{
+    std::cout << "**** Functor ****" << std::endl;
+    // functor test
+    std::cout << ">> Functor z^3 acting component-wise on:" << std::endl;
+    cmat A(2, 2);
+    A << 1, 2, 3, 4;
+    std::cout << disp(A) << std::endl;
+
+    std::cout << ">> Result (with lambda):" << std::endl;
+    // functor z^3 componentwise, specify OutputScalar and Derived for lambdas
+    std::cout << disp(cwise<cplx, cmat>(A, [](const cplx& z) -> cplx
+    {
+        return z * z * z;
+    })) << std::endl;
+
+    std::cout << ">> Result (with proper function):" << std::endl;
+    // automatic type deduction for proper functions
+    std::cout << disp(cwise(A, &pow3)) << std::endl << std::endl;
+};
+
+auto GRAMSCHMIDT = []
+{
+    std::cout << "**** Gram-Schmidt ****" << std::endl;
+    cmat A(3, 3);
+    A << 1, 1, 0, 0, 2, 0, 0, 0, 0;
+    std::cout << ">> Input matrix:" << std::endl << disp(A) << std::endl;
+
+    cmat Ags = grams(A);
+    std::cout << ">> Result:" << std::endl << disp(Ags) << std::endl;
+
+    std::cout << ">> Projector onto G.S. vectors:" << std::endl;
+    std::cout << disp(Ags * adjoint(Ags)) << std::endl << std::endl;
+};
+
+auto SPECTRAL = []
+{
+    std::cout << "**** Spectral decomposition tests ****" << std::endl;
+    std::size_t D = 4;
+    cmat rH = randH(D);
+    std::cout << ">> Original matrix: " << std::endl << disp(rH) << std::endl;
+
+    // spectral decomposition here
+    DynColVect<double> evalsH = hevals(rH);
+    cmat evectsH = hevects(rH);
+    cmat spec = cmat::Zero(D, D);
+    // reconstruct the matrix
+    for (std::size_t i = 0; i < D; i++)
+        spec += evalsH(i) * prj(evectsH.col(i));
+
+    std::cout << ">> Reconstructed from spectral decomposition: " << std::endl;
+    std::cout << disp(spec) << std::endl;
+
+    // verification
+    std::cout << ">> Norm difference: " << norm(spec - rH)
+            << std::endl << std::endl;
 };
 
 // Timing tests
@@ -443,5 +517,8 @@ int main()
     ENTANGLEMENT();
     QECC();
     CHANNEL();
+    FUNCTOR();
+    GRAMSCHMIDT();
+    SPECTRAL();
     TIMING();
 }
