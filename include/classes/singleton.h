@@ -63,7 +63,9 @@ template<typename T>
 class Singleton
 {
 protected:
-    Singleton() = default;
+    Singleton()
+    {
+    }
 
     virtual ~Singleton()
     {

@@ -49,7 +49,9 @@ private:
     /**
     * \brief Default constructor
     */
-    Codes() = default;
+    Codes()
+    {
+    }
 
 public:
     /**

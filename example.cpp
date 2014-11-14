@@ -89,6 +89,14 @@ auto MEASUREMENTS = []
     // verification
     std::cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar)
             << std::endl << std::endl;
+
+    // random Kraus
+    std::cout << ">> Random channel on part of the state " << std::endl;
+    rho_bar = ptrace(rho, {1, 3});
+    rho_out_bar = ptrace(channel(rho, randkraus(3, 4), {1, 3}), {1, 3});
+
+    std::cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar)
+            << std::endl << std::endl;
 };
 
 // Qudit teleportation
@@ -383,7 +391,7 @@ auto TIMING = []
 int main()
 {
     // Examples
-    MEASUREMENTS();
+//    MEASUREMENTS();
     TELEPORTATION();
     DENSE_CODING();
     GROVER();
