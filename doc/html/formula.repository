@@ -13,32 +13,31 @@
 \form#12:$\alpha = \infty$
 \form#13:$ \alpha\to 1$
 \form#14:$ e $
-\form#15:$\{|i\rangle\langle j|\}$
-\form#16:$|0\rangle\langle 0|$
-\form#17:$|0\rangle\langle 1|$
-\form#18:$S$
-\form#19:$ C$
-\form#20:$ S_{ab,mn} = C_{ma,nb}$
-\form#21:$ \sum_i K_i^\dagger K_i = I$
-\form#22:$\infty$
-\form#23:$\pm \infty$
-\form#24:$f(A)$
-\form#25:$A^0 = I$
-\form#26:$A^z$
-\form#27:$A^n$
-\form#28:$A^{\otimes n}$
-\form#29:$ [A,B] = AB - BA $
-\form#30:$AB -BA$
-\form#31:$ \{A,B\} = AB + BA $
-\form#32:$AB +BA$
-\form#33:$|\mathrm{mask}\rangle$
-\form#34:$\circ$
-\form#35:$Tr(K_i^\dagger K_j)=\delta_{ij}$
-\form#36:$i\neq j$
-\form#37:$Tr_{A}(\cdot)$
-\form#38:$A$
-\form#39:$A\otimes B$
-\form#40:$Tr_{B}(\cdot)$
-\form#41:$B$
-\form#42:$Tr_{subsys}(\cdot)$
-\form#43:$(\cdot)^{T_{subsys}}$
+\form#15:$\pm \infty$
+\form#16:$f(A)$
+\form#17:$A^0 = I$
+\form#18:$A^z$
+\form#19:$A^n$
+\form#20:$A^{\otimes n}$
+\form#21:$ [A,B] = AB - BA $
+\form#22:$AB -BA$
+\form#23:$ \{A,B\} = AB + BA $
+\form#24:$AB +BA$
+\form#25:$|\mathrm{mask}\rangle$
+\form#26:$\circ$
+\form#27:$\{|i\rangle\langle j|\}$
+\form#28:$|0\rangle\langle 0|$
+\form#29:$|0\rangle\langle 1|$
+\form#30:$S$
+\form#31:$ C$
+\form#32:$ S_{ab,mn} = C_{ma,nb}$
+\form#33:$Tr(K_i^\dagger K_j)=\delta_{ij}$
+\form#34:$i\neq j$
+\form#35:$Tr_{A}(\cdot)$
+\form#36:$A$
+\form#37:$A\otimes B$
+\form#38:$Tr_{B}(\cdot)$
+\form#39:$B$
+\form#40:$Tr_{subsys}(\cdot)$
+\form#41:$(\cdot)^{T_{subsys}}$
+\form#42:$ \sum_i K_i^\dagger K_i = I$
