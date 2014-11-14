@@ -510,15 +510,21 @@ auto TIMING = []
 int main()
 {
     // Examples
-    MEASUREMENTS();
-    TELEPORTATION();
-    DENSE_CODING();
-    GROVER();
-    ENTANGLEMENT();
-    QECC();
-    CHANNEL();
-    FUNCTOR();
-    GRAMSCHMIDT();
-    SPECTRAL();
-    TIMING();
+//    MEASUREMENTS();
+//    TELEPORTATION();
+//    DENSE_CODING();
+//    GROVER();
+//    ENTANGLEMENT();
+//    QECC();
+//    CHANNEL();
+//    FUNCTOR();
+//    GRAMSCHMIDT();
+//    SPECTRAL();
+//    TIMING();
+
+    ket rket = randket(5);
+    std::cout << disp(rket) << std::endl;
+    std::vector<double> probs = abssq(rket);
+    std::cout << disp(probs,", ") << std::endl;
+    std::cout << sum(probs.begin(), probs.end()) << std::endl;
 }
