@@ -459,7 +459,7 @@ auto RANDOM = []
 {
     std::cout << "**** Randomness ****" << std::endl;
 
-    std::cout << ">> Generating a random ket on D=5" << std::endl;
+    std::cout << ">> Generating a random ket on D = 5" << std::endl;
     ket rket = randket(5);
     std::cout << disp(rket) << std::endl;
 
