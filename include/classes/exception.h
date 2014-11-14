@@ -119,7 +119,7 @@ public:
     * \param type Exception's type, see the strong enumeration
     * qpp::Exception::Type
     */
-    Exception(const std::string &where, const Type &type) :
+    Exception(const std::string& where, const Type& type) :
             _where(where), _msg(), _type(type), _custom()
     {
         _construct_exception_msg();
@@ -133,7 +133,7 @@ public:
     * \param where Text representing where the exception occured
     * \param custom Exception's description
     */
-    Exception(const std::string &where, const std::string &custom) :
+    Exception(const std::string& where, const std::string& custom) :
             _where(where), _msg(), _type(Type::CUSTOM_EXCEPTION), _custom(
             custom)
     {
@@ -146,7 +146,7 @@ public:
     *
     * \return Exception's description
     */
-    virtual const char *what() const noexcept override
+    virtual const char* what() const noexcept override
     {
         return _msg.c_str();
     }

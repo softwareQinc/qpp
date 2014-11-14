@@ -64,7 +64,7 @@ public:
     *
     * \return Current instance
     */
-    const Timer &toc()
+    const Timer& toc()
     {
         _end = std::chrono::steady_clock::now();
         return *this;
@@ -91,8 +91,8 @@ public:
     * between the instantiation/reset and invocation of qpp::Timer::toc().
     */
     template<typename charT, typename traits>
-    friend std::basic_ostream<charT, traits> &
-    operator<<(std::basic_ostream<charT, traits> &os, const Timer &rhs)
+    friend std::basic_ostream<charT, traits>&
+    operator<<(std::basic_ostream<charT, traits>& os, const Timer& rhs)
     {
         return os << rhs.seconds();
     }

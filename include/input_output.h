@@ -36,7 +36,7 @@ namespace qpp
 * \return Instance of qpp::internal::internal::IOManipEigen
 */
 template<typename Derived>
-internal::IOManipEigen disp(const Eigen::MatrixBase<Derived> &A,
+internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
         double chop = qpp::chop)
 {
     return internal::IOManipEigen(A, chop);
@@ -68,9 +68,9 @@ internal::IOManipEigen disp(cplx z,
 * \return Instance of qpp::internal::internal::IOManipRange
 */
 template<typename InputIterator>
-internal::IOManipRange<InputIterator> disp(const InputIterator &first,
-        const InputIterator &last, const std::string &separator,
-        const std::string &start = "[", const std::string &end = "]")
+internal::IOManipRange<InputIterator> disp(const InputIterator& first,
+        const InputIterator& last, const std::string& separator,
+        const std::string& start = "[", const std::string& end = "]")
 {
     return internal::IOManipRange<InputIterator
     >(first, last, separator, start, end);
@@ -88,8 +88,8 @@ internal::IOManipRange<InputIterator> disp(const InputIterator &first,
 */
 template<typename Container>
 internal::IOManipRange<typename Container::const_iterator> disp(
-        const Container &c, const std::string &separator,
-        const std::string &start = "[", const std::string &end = "]")
+        const Container& c, const std::string& separator,
+        const std::string& start = "[", const std::string& end = "]")
 {
     return internal::IOManipRange<typename Container::const_iterator>(
             c.cbegin(), c.cend(), separator, start, end);
@@ -106,9 +106,9 @@ internal::IOManipRange<typename Container::const_iterator> disp(
 * \return Instance of qpp::internal::internal::IOManipPointer
 */
 template<typename PointerType>
-internal::IOManipPointer<PointerType> disp(const PointerType *p, std::size_t n,
-        const std::string &separator, const std::string &start = "[",
-        const std::string &end = "]")
+internal::IOManipPointer<PointerType> disp(const PointerType* p, std::size_t n,
+        const std::string& separator, const std::string& start = "[",
+        const std::string& end = "]")
 {
     return internal::IOManipPointer<PointerType>(p, n, separator, start, end);
 }
@@ -123,9 +123,9 @@ internal::IOManipPointer<PointerType> disp(const PointerType *p, std::size_t n,
 * \param fname Output file name
 */
 template<typename Derived>
-void save(const Eigen::MatrixBase<Derived> &A, const std::string &fname)
+void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+    const DynMat<typename Derived::Scalar>& rA = A;
 
     // check zero-size
     if (rA.size() == 0)
@@ -147,10 +147,10 @@ void save(const Eigen::MatrixBase<Derived> &A, const std::string &fname)
 
     std::size_t rows = static_cast<std::size_t>(rA.rows());
     std::size_t cols = static_cast<std::size_t>(rA.cols());
-    fout.write((char *) &rows, sizeof(rows));
-    fout.write((char *) &cols, sizeof(cols));
+    fout.write((char*) &rows, sizeof(rows));
+    fout.write((char*) &cols, sizeof(cols));
 
-    fout.write((char *) rA.data(), sizeof(Derived::Scalar) * rows * cols);
+    fout.write((char*) rA.data(), sizeof(Derived::Scalar) * rows * cols);
 
     fout.close();
 }
@@ -175,7 +175,7 @@ void save(const Eigen::MatrixBase<Derived> &A, const std::string &fname)
 * \param fname Output file name
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> load(const std::string &fname)
+DynMat<typename Derived::Scalar> load(const std::string& fname)
 {
     std::fstream fin;
     fin.open(fname, std::ios::in | std::ios::binary);
@@ -188,7 +188,7 @@ DynMat<typename Derived::Scalar> load(const std::string &fname)
     }
 
     const char _header[] = "TYPE::Eigen::Matrix";
-    char *_fheader = new char[sizeof(_header)];
+    char* _fheader = new char[sizeof(_header)];
 
     // read the header from file
     fin.read(_fheader, sizeof(_header));
@@ -202,12 +202,12 @@ DynMat<typename Derived::Scalar> load(const std::string &fname)
     delete[] _fheader;
 
     std::size_t rows, cols;
-    fin.read((char *) &rows, sizeof(rows));
-    fin.read((char *) &cols, sizeof(cols));
+    fin.read((char*) &rows, sizeof(rows));
+    fin.read((char*) &cols, sizeof(cols));
 
     DynMat<typename Derived::Scalar> A(rows, cols);
 
-    fin.read((char *) A.data(),
+    fin.read((char*) A.data(),
             sizeof(typename Derived::Scalar) * rows * cols);
 
     fin.close();

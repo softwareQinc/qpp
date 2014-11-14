@@ -198,13 +198,13 @@ public:
     * \return CTRL-A gate, as a matrix over the same scalar field as \a A
     */
     template<typename Derived>
-    DynMat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived> &A,
-            const std::vector<std::size_t> &ctrl,
-            const std::vector<std::size_t> &subsys,
+    DynMat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived>& A,
+            const std::vector<std::size_t>& ctrl,
+            const std::vector<std::size_t>& subsys,
             std::size_t n,
             std::size_t d = 2) const
     {
-        const DynMat<typename Derived::Scalar> &rA = A;
+        const DynMat<typename Derived::Scalar>& rA = A;
 
         // EXCEPTION CHECKS
         // check matrix zero size
@@ -369,10 +369,10 @@ public:
     */
     template<typename Derived>
     DynMat<typename Derived::Scalar> expandout(
-            const Eigen::MatrixBase<Derived> &A, std::size_t pos,
-            const std::vector<std::size_t> &dims) const
+            const Eigen::MatrixBase<Derived>& A, std::size_t pos,
+            const std::vector<std::size_t>& dims) const
     {
-        const DynMat<typename Derived::Scalar> &rA = A;
+        const DynMat<typename Derived::Scalar>& rA = A;
 
         // check zero-size
         if (!internal::_check_nonzero_size(rA))

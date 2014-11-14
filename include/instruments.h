@@ -44,12 +44,12 @@ namespace qpp
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
 measure(
-        const Eigen::MatrixBase<Derived> &A,
-        const std::vector<cmat> &Ks,
-        const std::vector<std::size_t> &subsys,
-        const std::vector<std::size_t> &dims)
+        const Eigen::MatrixBase<Derived>& A,
+        const std::vector<cmat>& Ks,
+        const std::vector<std::size_t>& subsys,
+        const std::vector<std::size_t>& dims)
 {
-    const cmat &rA = A;
+    const cmat& rA = A;
 
     // EXCEPTION CHECKS
 
@@ -76,11 +76,11 @@ measure(
         subsys_dims[i] = dims[subsys[i]];
 
     std::size_t D = 1;
-    for (auto &&it: dims)
+    for (auto&& it: dims)
         D *= it;
 
     std::size_t Dsubsys = 1;
-    for (auto &&it: subsys_dims)
+    for (auto&& it: subsys_dims)
         Dsubsys *= it;
 
     std::size_t Dbar = D / Dsubsys;
@@ -95,7 +95,7 @@ measure(
     if (Dsubsys != static_cast<std::size_t>(Ks[0].rows()))
         throw Exception("qpp::destructive_measure()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
-    for (auto &&it : Ks)
+    for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
             throw Exception("qpp::destructive_measure()",
                     Exception::Type::DIMS_NOT_EQUAL);
@@ -164,10 +164,10 @@ measure(
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
 measure(
-        const Eigen::MatrixBase<Derived> &A,
-        const std::initializer_list<cmat> &Ks,
-        const std::vector<std::size_t> &subsys,
-        const std::vector<std::size_t> &dims)
+        const Eigen::MatrixBase<Derived>& A,
+        const std::initializer_list<cmat>& Ks,
+        const std::vector<std::size_t>& subsys,
+        const std::vector<std::size_t>& dims)
 {
     return measure(A, std::vector<cmat>(Ks), subsys, dims);
 }
@@ -191,12 +191,12 @@ measure(
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
 measure(
-        const Eigen::MatrixBase<Derived> &A,
-        const std::vector<cmat> &Ks,
-        const std::vector<std::size_t> &subsys,
+        const Eigen::MatrixBase<Derived>& A,
+        const std::vector<cmat>& Ks,
+        const std::vector<std::size_t>& subsys,
         const std::size_t d = 2)
 {
-    const cmat &rA = A;
+    const cmat& rA = A;
 
     // check zero size
     if (!internal::_check_nonzero_size(rA))
@@ -230,9 +230,9 @@ measure(
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
 measure(
-        const Eigen::MatrixBase<Derived> &A,
-        const std::initializer_list<cmat> &Ks,
-        const std::vector<std::size_t> &subsys,
+        const Eigen::MatrixBase<Derived>& A,
+        const std::initializer_list<cmat>& Ks,
+        const std::vector<std::size_t>& subsys,
         const std::size_t d = 2)
 {
     return measure(A, std::vector<cmat>(Ks), subsys, d);
@@ -256,12 +256,12 @@ measure(
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
 measure(
-        const Eigen::MatrixBase<Derived> &A,
-        const cmat &U,
-        const std::vector<std::size_t> &subsys,
-        const std::vector<std::size_t> &dims)
+        const Eigen::MatrixBase<Derived>& A,
+        const cmat& U,
+        const std::vector<std::size_t>& subsys,
+        const std::vector<std::size_t>& dims)
 {
-    const cmat &rA = A;
+    const cmat& rA = A;
 
     // EXCEPTION CHECKS
 
@@ -288,7 +288,7 @@ measure(
         subsys_dims[i] = dims[subsys[i]];
 
     std::size_t Dsubsys = 1;
-    for (auto &&it: subsys_dims)
+    for (auto&& it: subsys_dims)
         Dsubsys *= it;
 
     // check the unitary basis matrix U
@@ -326,12 +326,12 @@ measure(
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
 measure(
-        const Eigen::MatrixBase<Derived> &A,
-        const cmat &U,
-        const std::vector<std::size_t> &subsys,
+        const Eigen::MatrixBase<Derived>& A,
+        const cmat& U,
+        const std::vector<std::size_t>& subsys,
         const std::size_t d = 2)
 {
-    const cmat &rA = A;
+    const cmat& rA = A;
 
     // check zero size
     if (!internal::_check_nonzero_size(rA))
@@ -356,9 +356,9 @@ measure(
 */
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
-        const Eigen::MatrixBase<Derived> &A, const std::vector<cmat> &Ks)
+        const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+    const DynMat<typename Derived::Scalar>& rA = A;
 
     // EXCEPTION CHECKS
     // check zero-size
@@ -373,7 +373,7 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
     if (Ks[0].rows() != rA.rows())
         throw Exception("qpp::measure()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
-    for (auto &&it : Ks)
+    for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
             throw Exception("qpp::measure()", Exception::Type::DIMS_NOT_EQUAL);
     // END EXCEPTION CHECKS
@@ -432,8 +432,8 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
 */
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
-        const Eigen::MatrixBase<Derived> &A,
-        const std::initializer_list<cmat> &Ks)
+        const Eigen::MatrixBase<Derived>& A,
+        const std::initializer_list<cmat>& Ks)
 {
     return measure(A, std::vector<cmat>(Ks));
 }
@@ -450,9 +450,9 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
 */
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
-        const Eigen::MatrixBase<Derived> &A, const cmat &U)
+        const Eigen::MatrixBase<Derived>& A, const cmat& U)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+    const DynMat<typename Derived::Scalar>& rA = A;
 
     // EXCEPTION CHECKS
     // check zero-size

@@ -93,35 +93,35 @@ namespace qpp
 *
 * Additional initializations/cleanups
 */
-const Init &init = Init::get_instance();
+const Init& init = Init::get_instance();
 
 /**
 * \brief qpp::Codes const Singleton
 *
 * Initializes the codes, see the class \a qpp::Codes
 */
-const Codes &codes = Codes::get_instance();
+const Codes& codes = Codes::get_instance();
 
 /**
 * \brief qpp::Gates const Singleton
 *
 * Initializes the gates, see the class \a qpp::Gates
 */
-const Gates &gt = Gates::get_instance();
+const Gates& gt = Gates::get_instance();
 
 /**
 * \brief qpp::States const Singleton
 *
 * Initializes the states, see the class \a qpp::States
 */
-const States &st = States::get_instance();
+const States& st = States::get_instance();
 
 /**
 * \brief qpp::RandomDevices Singleton
 *
 * Initializes the random devices, see the class \a qpp::RandomDevices
 */
-RandomDevices &rdevs = RandomDevices::get_instance();
+RandomDevices& rdevs = RandomDevices::get_instance();
 
 } /* namespace qpp */
 

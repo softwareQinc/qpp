@@ -39,8 +39,8 @@ namespace qpp
 * \a qpp::dmat and \a qpp::cmat (the only matrix types that can be loaded)
 */
 template<typename Derived>
-Derived loadMATLABmatrix(const std::string &mat_file,
-        const std::string &var_name)
+Derived loadMATLABmatrix(const std::string& mat_file,
+        const std::string& var_name)
 {
     throw Exception("qpp::loadMATLABmatrix()",
             Exception::Type::UNDEFINED_TYPE);
@@ -69,10 +69,10 @@ Derived loadMATLABmatrix(const std::string &mat_file,
 * \return Eigen double dynamic matrix (\a qpp::dmat)
 */
 template<>
-inline dmat loadMATLABmatrix(const std::string &mat_file,
-        const std::string &var_name)
+inline dmat loadMATLABmatrix(const std::string& mat_file,
+        const std::string& var_name)
 {
-    MATFile *pmat = matOpen(mat_file.c_str(), "r");
+    MATFile* pmat = matOpen(mat_file.c_str(), "r");
     if (!pmat)
     {
         throw std::runtime_error(
@@ -80,7 +80,7 @@ inline dmat loadMATLABmatrix(const std::string &mat_file,
                         + mat_file + "!");
     }
 
-    mxArray *pa = matGetVariable(pmat, var_name.c_str());
+    mxArray* pa = matGetVariable(pmat, var_name.c_str());
     if (!pa)
         throw std::runtime_error(
                 "qpp::loadMATLABmatrix(): Can not load the variable "
@@ -130,10 +130,10 @@ inline dmat loadMATLABmatrix(const std::string &mat_file,
 * \return Eigen complex dynamic matrix (\a qpp::cmat)
 */
 template<>
-inline cmat loadMATLABmatrix(const std::string &mat_file,
-        const std::string &var_name)
+inline cmat loadMATLABmatrix(const std::string& mat_file,
+        const std::string& var_name)
 {
-    MATFile *pmat = matOpen(mat_file.c_str(), "r");
+    MATFile* pmat = matOpen(mat_file.c_str(), "r");
     if (!pmat)
     {
         throw std::runtime_error(
@@ -141,7 +141,7 @@ inline cmat loadMATLABmatrix(const std::string &mat_file,
                         + mat_file + "!");
     }
 
-    mxArray *pa = matGetVariable(pmat, var_name.c_str());
+    mxArray* pa = matGetVariable(pmat, var_name.c_str());
     if (!pa)
         throw std::runtime_error(
                 "qpp::loadMATLABmatrix(): Can not load the variable "
@@ -164,16 +164,16 @@ inline cmat loadMATLABmatrix(const std::string &mat_file,
     dmat result_im(rows, cols);
 
     // real part and imaginary part pointers
-    double *pa_re = nullptr, *pa_im = nullptr;
+    double* pa_re = nullptr, * pa_im = nullptr;
 
     // Populate the real part of the created array.
-    pa_re = (double *) mxGetPr(pa);
+    pa_re = (double*) mxGetPr(pa);
     std::memcpy(result_re.data(), pa_re,
             sizeof(double) * mxGetNumberOfElements(pa));
 
     if (mxIsComplex(pa)) // populate the imaginary part if exists
     {
-        pa_im = (double *) mxGetPi(pa);
+        pa_im = (double*) mxGetPi(pa);
         std::memcpy(result_im.data(), pa_im,
                 sizeof(double) * mxGetNumberOfElements(pa));
     }
@@ -197,9 +197,9 @@ inline cmat loadMATLABmatrix(const std::string &mat_file,
 * \a qpp::dmat and \a qpp::cmat (the only matrix types that can be saved)
 */
 template<typename Derived>
-void saveMATLABmatrix(const Eigen::MatrixBase <Derived> &A,
-        const std::string &mat_file, const std::string &var_name,
-        const std::string &mode)
+void saveMATLABmatrix(const Eigen::MatrixBase <Derived>& A,
+        const std::string& mat_file, const std::string& var_name,
+        const std::string& mode)
 {
     throw Exception("qpp::saveMATLABmatrix()",
             Exception::Type::UNDEFINED_TYPE);
@@ -218,23 +218,23 @@ void saveMATLABmatrix(const Eigen::MatrixBase <Derived> &A,
 */
 template<>
 // Eigen::MatrixXd specialization
-inline void saveMATLABmatrix(const Eigen::MatrixBase <dmat> &A,
-        const std::string &mat_file, const std::string &var_name,
-        const std::string &mode)
+inline void saveMATLABmatrix(const Eigen::MatrixBase <dmat>& A,
+        const std::string& mat_file, const std::string& var_name,
+        const std::string& mode)
 {
-    const dmat &rA = A;
+    const dmat& rA = A;
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::saveMATLABmatrix()", Exception::Type::ZERO_SIZE);
 
-    MATFile *pmat = matOpen(mat_file.c_str(), mode.c_str());
+    MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
     if (!pmat)
         throw std::runtime_error(
                 "qpp::saveMATLABmatrix(): Can not open/create MATLAB file "
                         + mat_file + "!");
 
-    mxArray *pa = mxCreateDoubleMatrix(rA.rows(), rA.cols(), mxREAL);
+    mxArray* pa = mxCreateDoubleMatrix(rA.rows(), rA.cols(), mxREAL);
     if (!pa)
         throw std::runtime_error(
                 "qpp::saveMATLABmatrix(): mxCreateDoubleMatrix failed!");
@@ -263,11 +263,11 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <dmat> &A,
 */
 template<>
 // Eigen::MatrixXcd specialization
-inline void saveMATLABmatrix(const Eigen::MatrixBase <cmat> &A,
-        const std::string &mat_file, const std::string &var_name,
-        const std::string &mode)
+inline void saveMATLABmatrix(const Eigen::MatrixBase <cmat>& A,
+        const std::string& mat_file, const std::string& var_name,
+        const std::string& mode)
 {
-    const cmat &rA = A;
+    const cmat& rA = A;
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
@@ -277,26 +277,26 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <cmat> &A,
     dmat tmp_re = rA.real();
     dmat tmp_im = rA.imag();
 
-    MATFile *pmat = matOpen(mat_file.c_str(), mode.c_str());
+    MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
     if (!pmat)
         throw std::runtime_error(
                 "qpp::saveMATLABmatrix(): Can not open/create MATLAB file "
                         + mat_file + "!");
 
-    mxArray *pa = mxCreateDoubleMatrix(
+    mxArray* pa = mxCreateDoubleMatrix(
             tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);
     if (!pa)
         throw std::runtime_error(
                 "qpp::saveMATLABmatrix(): mxCreateDoubleMatrix failed!");
 
-    double *pa_re, *pa_im;
+    double* pa_re, * pa_im;
 
     /* Populate the real part of the created array. */
-    pa_re = (double *) mxGetPr(pa);
+    pa_re = (double*) mxGetPr(pa);
     std::memcpy(pa_re, tmp_re.data(), sizeof(double) * tmp_re.size());
 
     /* Populate the imaginary part of the created array. */
-    pa_im = (double *) mxGetPi(pa);
+    pa_im = (double*) mxGetPi(pa);
     std::memcpy(pa_im, tmp_im.data(), sizeof(double) * tmp_im.size());
 
     if (matPutVariable(pmat, var_name.c_str(), pa))

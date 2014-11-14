@@ -49,7 +49,7 @@ auto MEASUREMENTS = []
     std::cout << ">> Resulting normalized post-measurement states: "
             << std::endl;
 
-    for (auto &&it: states)
+    for (auto&& it: states)
         std::cout << disp(it) << std::endl << std::endl;
 
     // measure 2 subsystems out of a 4-qubit random density matrix
@@ -69,7 +69,7 @@ auto MEASUREMENTS = []
     std::cout << ">> Resulting normalized post-measurement states: "
             << std::endl;
 
-    for (auto &&it: states)
+    for (auto&& it: states)
         std::cout << disp(it) << std::endl << std::endl;
 
     // check now how the state after the measurement "looks"
