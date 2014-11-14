@@ -341,6 +341,51 @@ auto QECC = []
     std::cout << disp(adjoint(c0) * c1) << std::endl << std::endl;
 };
 
+auto CHANNEL = []
+{
+    // channel tests
+    std::cout << "**** Channel tests ****" << std::endl;
+    std::size_t nk = 5;
+    std::size_t D = 3; // nk Kraus on d-dimensional system
+    std::cout << ">> Generating a random channel with " << nk
+            << " Kraus operators on a " << D << " dimensional space..."
+            << std::endl;
+    std::vector<cmat> Ks = randkraus(nk, D);
+
+    cmat rho_in = randrho(D); // random input state
+    cmat rho_out = channel(rho_in, Ks); // output state
+
+    std::cout << ">> Computing its Choi matrix..." << std::endl;
+    cmat choim = choi(Ks);
+    std::cout << ">> Choi matrix:" << std::endl << disp(choim) << std::endl;
+    std::cout << std::endl << ">> The eigenvalues of the Choi matrix are: "
+            << std::endl << disp(transpose(hevals(choim))) << std::endl;
+    std::cout << ">> Their sum is: " << sum(hevals(choim))
+            << std::endl;
+    std::vector<cmat> Kperps = choi2kraus(choim);
+    std::cout << ">> The Kraus rank of the channel is: "
+            << Kperps.size() << std::endl;
+    cmat rho_out1 = channel(rho_in, Kperps);
+    std::cout << ">> Difference in norm on output states: "
+            << norm(rho_out1 - rho_out) << std::endl;
+    std::cout << ">> Superoperator matrix:" << std::endl;
+    cmat smat = super(Ks);
+    std::cout << disp(smat) << std::endl;
+    std::cout << std::endl
+            << ">> The eigenvalues of the superoperator matrix are: "
+            << std::endl;
+    cmat evalsupop = evals(smat);
+    std::cout << disp(transpose(evalsupop)) << std::endl;
+    std::cout << ">> Their absolute values are: " << std::endl;
+    for (std::size_t i = 0; i < (std::size_t) evalsupop.size(); i++)
+        std::cout << std::abs(evalsupop(i)) << " ";
+    std::cout << std::endl
+            << ">> Diference in norm for superoperator action: ";
+    cmat rho_out2 = transpose(
+            reshape(smat * reshape(transpose(rho_in), D * D, 1), D, D));
+    std::cout << norm(rho_out - rho_out2) << std::endl;
+};
+
 // Timing tests
 auto TIMING = []
 {
@@ -388,6 +433,7 @@ auto TIMING = []
             << std::endl << std::endl;
 };
 
+
 int main()
 {
     // Examples
@@ -397,5 +443,6 @@ int main()
     GROVER();
     ENTANGLEMENT();
     QECC();
+    CHANNEL();
     TIMING();
 }

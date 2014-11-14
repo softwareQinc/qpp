@@ -789,8 +789,7 @@ std::vector<cmat> choi2kraus(const cmat& A)
         // take the absolute value to get rid of tiny negatives
         if (std::abs((double) ev(i)) > eps)
             result.push_back(
-                    static_cast<cmat>(std::sqrt(ev(i))
-                            * reshape(static_cast<cmat>(evec.col(i)), D, D)));
+                    std::sqrt(ev(i)) * reshape(evec.col(i), D, D));
     }
 
     return result;
