@@ -165,7 +165,7 @@ auto DENSE_CODING = []
             * kron(gt.Fd(D), gt.Id(D)));
 
     // equal probabilities of choosing a message
-    std::size_t m_A = static_cast<std::size_t>(randint(0, D * D - 1));
+    std::size_t m_A = randint(0, D * D - 1);
     auto midx = n2multiidx(m_A, {D, D});
     std::cout << ">> Alice sent: " << m_A << " -> ";
     std::cout << disp(midx, " ") << std::endl;
@@ -203,7 +203,7 @@ auto GROVER = []
     std::cout << ">> Database size: " << N << std::endl;
 
     // mark an element randomly
-    std::size_t marked = static_cast<std::size_t>(randint(0, N - 1));
+    std::size_t marked = randint(0, N - 1);
     std::cout << ">> Marked state: " << marked << " -> ";
     std::cout << disp(n2multiidx(marked, dims), " ") << std::endl;
 
@@ -215,9 +215,7 @@ auto GROVER = []
     cmat G = 2 * prj(psi) - gt.Id(N); // Diffusion operator
 
     // number of queries
-    std::size_t nqueries =
-            static_cast<std::size_t>(
-                    std::ceil(pi * std::sqrt((double) N) / 4.));
+    std::size_t nqueries = std::ceil(pi * std::sqrt((double) N) / 4.);
     std::cout << ">> We run " << nqueries << " queries" << std::endl;
     for (std::size_t i = 0; i < nqueries; ++i)
     {
