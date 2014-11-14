@@ -101,47 +101,49 @@ $(document).ready(function(){initNavTree('singleton_8h_source.html','');});
 <div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_singleton.html">   63</a></span>&#160;<span class="keyword">class </span><a class="code" href="classqpp_1_1internal_1_1_singleton.html">Singleton</a></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;{</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="classqpp_1_1internal_1_1_singleton.html#a3e231fc9521d40bf01b74a4ba1ae4e62">Singleton</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_singleton.html#aba717b4ca79fc5f0cfe9b0cd340ef100">   68</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html#aba717b4ca79fc5f0cfe9b0cd340ef100">~Singleton</a>()</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    }</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">// = default yields &quot;looser throw specifer in g++ &lt;= 4.7&quot;</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// see http://stackoverflow.com</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// /questions/11497252/default-destructor-nothrow</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="classqpp_1_1internal_1_1_singleton.html#a3e231fc9521d40bf01b74a4ba1ae4e62">Singleton</a>(<span class="keyword">const</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html">Singleton</a> &amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="classqpp_1_1internal_1_1_singleton.html">Singleton</a> &amp;<a class="code" href="classqpp_1_1internal_1_1_singleton.html#ac9f8d235a7b7e9fc5732e0d049442fa5">operator=</a>(<span class="keyword">const</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html">Singleton</a> &amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_singleton.html#ad8d6232fc4a5705c04d27045d2c2c09d">   66</a></span>&#160;    <a class="code" href="classqpp_1_1internal_1_1_singleton.html#ad8d6232fc4a5705c04d27045d2c2c09d">Singleton</a>()</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_singleton.html#aba717b4ca79fc5f0cfe9b0cd340ef100">   70</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html#aba717b4ca79fc5f0cfe9b0cd340ef100">~Singleton</a>()</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// = default yields &quot;looser throw specifer in g++ &lt;= 4.7&quot;</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">// see http://stackoverflow.com</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">// /questions/11497252/default-destructor-nothrow</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="classqpp_1_1internal_1_1_singleton.html#ad8d6232fc4a5705c04d27045d2c2c09d">Singleton</a>(<span class="keyword">const</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html">Singleton</a>&amp;) = <span class="keyword">delete</span>;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">   80</a></span>&#160;    <span class="keyword">static</span> T &amp;<a class="code" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">get_instance</a>()</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="comment">// Guaranteed to be destroyed.</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="comment">// Instantiated on first use.</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="comment">// Thread safe in C++11</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keyword">static</span> T instance;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordflow">return</span> instance;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}; <span class="comment">/* class Singleton */</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;} <span class="comment">/* namespace internal */</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INCLUDE_CLASSES_SINGLETON_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <a class="code" href="classqpp_1_1internal_1_1_singleton.html">Singleton</a>&amp; <a class="code" href="classqpp_1_1internal_1_1_singleton.html#ac9f8d235a7b7e9fc5732e0d049442fa5">operator=</a>(<span class="keyword">const</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html">Singleton</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">   82</a></span>&#160;    <span class="keyword">static</span> T&amp; <a class="code" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">get_instance</a>()</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="comment">// Guaranteed to be destroyed.</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="comment">// Instantiated on first use.</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="comment">// Thread safe in C++11</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keyword">static</span> T instance;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">return</span> instance;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}; <span class="comment">/* class Singleton */</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;} <span class="comment">/* namespace internal */</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INCLUDE_CLASSES_SINGLETON_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="classqpp_1_1internal_1_1_singleton_html"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html">qpp::internal::Singleton</a></div><div class="ttdoc">Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...</div><div class="ttdef"><b>Definition:</b> singleton.h:63</div></div>
 <div class="ttc" id="classqpp_1_1internal_1_1_singleton_html_ac9f8d235a7b7e9fc5732e0d049442fa5"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html#ac9f8d235a7b7e9fc5732e0d049442fa5">qpp::internal::Singleton::operator=</a></div><div class="ttdeci">Singleton &amp; operator=(const Singleton &amp;)=delete</div></div>
-<div class="ttc" id="classqpp_1_1internal_1_1_singleton_html_a3e231fc9521d40bf01b74a4ba1ae4e62"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html#a3e231fc9521d40bf01b74a4ba1ae4e62">qpp::internal::Singleton::Singleton</a></div><div class="ttdeci">Singleton()=default</div></div>
-<div class="ttc" id="classqpp_1_1internal_1_1_singleton_html_a65f1068804fafa264c2a6adabbe35802"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">qpp::internal::Singleton::get_instance</a></div><div class="ttdeci">static T &amp; get_instance()</div><div class="ttdef"><b>Definition:</b> singleton.h:80</div></div>
-<div class="ttc" id="classqpp_1_1internal_1_1_singleton_html_aba717b4ca79fc5f0cfe9b0cd340ef100"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html#aba717b4ca79fc5f0cfe9b0cd340ef100">qpp::internal::Singleton::~Singleton</a></div><div class="ttdeci">virtual ~Singleton()</div><div class="ttdef"><b>Definition:</b> singleton.h:68</div></div>
+<div class="ttc" id="classqpp_1_1internal_1_1_singleton_html_ad8d6232fc4a5705c04d27045d2c2c09d"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html#ad8d6232fc4a5705c04d27045d2c2c09d">qpp::internal::Singleton::Singleton</a></div><div class="ttdeci">Singleton()</div><div class="ttdef"><b>Definition:</b> singleton.h:66</div></div>
+<div class="ttc" id="classqpp_1_1internal_1_1_singleton_html_a65f1068804fafa264c2a6adabbe35802"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">qpp::internal::Singleton::get_instance</a></div><div class="ttdeci">static T &amp; get_instance()</div><div class="ttdef"><b>Definition:</b> singleton.h:82</div></div>
+<div class="ttc" id="classqpp_1_1internal_1_1_singleton_html_aba717b4ca79fc5f0cfe9b0cd340ef100"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html#aba717b4ca79fc5f0cfe9b0cd340ef100">qpp::internal::Singleton::~Singleton</a></div><div class="ttdeci">virtual ~Singleton()</div><div class="ttdef"><b>Definition:</b> singleton.h:70</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_7a6c2c27f035e4462dd10aeadba1cb4e.html">classes</a></li><li class="navelem"><a class="el" href="singleton_8h.html">singleton.h</a></li>
-    <li class="footer">Generated on Thu Nov 13 2014 22:06:02 for quantum++ by
+    <li class="footer">Generated on Fri Nov 14 2014 07:58:05 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

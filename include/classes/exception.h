@@ -61,8 +61,8 @@ public:
                 MATRIX_NOT_SQUARE_OR_VECTOR,
         /*!< Eigen::Matrix is not square nor a row/column vector */
                 MATRIX_MISMATCH_SUBSYS,
-        /*! Matrix size mismatch subsystem sizes (e.g. in
-         * qpp::apply(), or qpp::channel() */
+        /*!< Matrix size mismatch subsystem sizes (e.g. in
+         * qpp::apply(), or qpp::channel()) */
                 DIMS_INVALID,
         /*!< std::vector<std::size_t> representing the dimensions
          * has zero size or contains zeros */
@@ -70,20 +70,20 @@ public:
         /*!< std::vector<std::size_t> representing the dimensions
          * contains non-equal elements */
                 DIMS_MISMATCH_MATRIX,
-        /*!< Product of the dimenisons' std::vector<std::size_t>
+        /*!< Product of the dimensions of std::vector<std::size_t>
          * is not equal to the number of rows of Eigen::Matrix
          * (assumed to be square) */
                 DIMS_MISMATCH_CVECTOR,
-        /*!< Product of the dimenisons' std::vector<std::size_t>
-         * is not equal to the number of cols of Eigen::Matrix
+        /*!< Product of the dimensions of std::vector<std::size_t>
+         * is not equal to the number of columns of Eigen::Matrix
          * (assumed to be a column vector) */
                 DIMS_MISMATCH_RVECTOR,
-        /*!< Product of the dimenisons' std::vector<std::size_t>
-         * is not equal to the number of cols of Eigen::Matrix
+        /*!< Product of the dimensions of std::vector<std::size_t>
+         * is not equal to the number of columns of Eigen::Matrix
          * (assumed to be a row vector) */
                 DIMS_MISMATCH_VECTOR,
-        /*!< Product of the dimenisons' std::vector<std::size_t>
-         * is not equal to the number of cols of Eigen::Matrix
+        /*!< Product of the dimensions of std::vector<std::size_t>
+         * is not equal to the number of columns of Eigen::Matrix
          * (assumed to be a row/column vector) */
                 SUBSYS_MISMATCH_DIMS,
         /*!< std::vector<std::size_t> representing the subsystem

@@ -206,13 +206,13 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    }</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l00201"></a><span class="lineno"><a class="line" href="classqpp_1_1_gates.html#a043d023d0d19f5a12b4d63fc36ba32c2">  201</a></span>&#160;    <a class="code" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat&lt;typename Derived::Scalar&gt;</a> <a class="code" href="classqpp_1_1_gates.html#a043d023d0d19f5a12b4d63fc36ba32c2">CTRL</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt; &amp;A,</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <span class="keyword">const</span> std::vector&lt;std::size_t&gt; &amp;ctrl,</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            <span class="keyword">const</span> std::vector&lt;std::size_t&gt; &amp;subsys,</div>
+<div class="line"><a name="l00201"></a><span class="lineno"><a class="line" href="classqpp_1_1_gates.html#a043d023d0d19f5a12b4d63fc36ba32c2">  201</a></span>&#160;    <a class="code" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat&lt;typename Derived::Scalar&gt;</a> <a class="code" href="classqpp_1_1_gates.html#a043d023d0d19f5a12b4d63fc36ba32c2">CTRL</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <span class="keyword">const</span> std::vector&lt;std::size_t&gt;&amp; ctrl,</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            <span class="keyword">const</span> std::vector&lt;std::size_t&gt;&amp; subsys,</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;            std::size_t n,</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            std::size_t d = 2)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat&lt;typename Derived::Scalar&gt;</a> &amp;rA = A;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        <span class="comment">// check matrix zero size</span></div>
@@ -363,10 +363,10 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;</div>
 <div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l00371"></a><span class="lineno"><a class="line" href="classqpp_1_1_gates.html#aec25e71f2664d3eb4048f9690a4a7d9b">  371</a></span>&#160;    <a class="code" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat&lt;typename Derived::Scalar&gt;</a> <a class="code" href="classqpp_1_1_gates.html#aec25e71f2664d3eb4048f9690a4a7d9b">expandout</a>(</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;            <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt; &amp;A, std::size_t pos,</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;            <span class="keyword">const</span> std::vector&lt;std::size_t&gt; &amp;dims)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;            <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A, std::size_t pos,</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;            <span class="keyword">const</span> std::vector&lt;std::size_t&gt;&amp; dims)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat&lt;typename Derived::Scalar&gt;</a> &amp;rA = A;</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;</div>
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        <span class="comment">// check zero-size</span></div>
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(rA))</div>
@@ -498,7 +498,7 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_7a6c2c27f035e4462dd10aeadba1cb4e.html">classes</a></li><li class="navelem"><a class="el" href="gates_8h.html">gates.h</a></li>
-    <li class="footer">Generated on Thu Nov 13 2014 22:06:02 for quantum++ by
+    <li class="footer">Generated on Fri Nov 14 2014 07:58:05 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
