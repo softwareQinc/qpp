@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('input__output_8h_source.html','');});
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">   39</a></span>&#160;<a class="code" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html">internal::IOManipEigen</a> <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt; &amp;A,</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">   39</a></span>&#160;<a class="code" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html">internal::IOManipEigen</a> <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a> = <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>)</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html">internal::IOManipEigen</a>(A, <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>);</div>
@@ -111,9 +111,9 @@ $(document).ready(function(){initNavTree('input__output_8h_source.html','');});
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> InputIterator&gt;</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a60298648d39542ac44effa9fe73d41c9">   71</a></span>&#160;<a class="code" href="classqpp_1_1internal_1_1_i_o_manip_range.html">internal::IOManipRange&lt;InputIterator&gt;</a> <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(<span class="keyword">const</span> InputIterator &amp;first,</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keyword">const</span> InputIterator &amp;last, <span class="keyword">const</span> std::string &amp;separator,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keyword">const</span> std::string &amp;start = <span class="stringliteral">&quot;[&quot;</span>, <span class="keyword">const</span> std::string &amp;end = <span class="stringliteral">&quot;]&quot;</span>)</div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a60298648d39542ac44effa9fe73d41c9">   71</a></span>&#160;<a class="code" href="classqpp_1_1internal_1_1_i_o_manip_range.html">internal::IOManipRange&lt;InputIterator&gt;</a> <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(<span class="keyword">const</span> InputIterator&amp; first,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keyword">const</span> InputIterator&amp; last, <span class="keyword">const</span> std::string&amp; separator,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keyword">const</span> std::string&amp; start = <span class="stringliteral">&quot;[&quot;</span>, <span class="keyword">const</span> std::string&amp; end = <span class="stringliteral">&quot;]&quot;</span>)</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;{</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_range.html">internal::IOManipRange</a>&lt;InputIterator</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    &gt;(first, last, separator, start, end);</div>
@@ -121,25 +121,25 @@ $(document).ready(function(){initNavTree('input__output_8h_source.html','');});
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container&gt;</div>
 <div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="namespaceqpp.html#afc2ad6985e72b70282708a637cf42e7b">   90</a></span>&#160;<a class="code" href="classqpp_1_1internal_1_1_i_o_manip_range.html">internal::IOManipRange&lt;typename Container::const_iterator&gt;</a> <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keyword">const</span> Container &amp;c, <span class="keyword">const</span> std::string &amp;separator,</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keyword">const</span> std::string &amp;start = <span class="stringliteral">&quot;[&quot;</span>, <span class="keyword">const</span> std::string &amp;end = <span class="stringliteral">&quot;]&quot;</span>)</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keyword">const</span> Container&amp; c, <span class="keyword">const</span> std::string&amp; separator,</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keyword">const</span> std::string&amp; start = <span class="stringliteral">&quot;[&quot;</span>, <span class="keyword">const</span> std::string&amp; end = <span class="stringliteral">&quot;]&quot;</span>)</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;{</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_range.html">internal::IOManipRange&lt;typename Container::const_iterator&gt;</a>(</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            c.cbegin(), c.cend(), separator, start, end);</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Po<span class="keywordtype">int</span>erType&gt;</div>
-<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="namespaceqpp.html#af6e8f13a0bb318a28e1066a8fe5b3ce0">  109</a></span>&#160;<a class="code" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html">internal::IOManipPointer&lt;PointerType&gt;</a> <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(<span class="keyword">const</span> PointerType *p, std::size_t n,</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keyword">const</span> std::string &amp;separator, <span class="keyword">const</span> std::string &amp;start = <span class="stringliteral">&quot;[&quot;</span>,</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keyword">const</span> std::string &amp;end = <span class="stringliteral">&quot;]&quot;</span>)</div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="namespaceqpp.html#af6e8f13a0bb318a28e1066a8fe5b3ce0">  109</a></span>&#160;<a class="code" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html">internal::IOManipPointer&lt;PointerType&gt;</a> <a class="code" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a>(<span class="keyword">const</span> PointerType* p, std::size_t n,</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keyword">const</span> std::string&amp; separator, <span class="keyword">const</span> std::string&amp; start = <span class="stringliteral">&quot;[&quot;</span>,</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keyword">const</span> std::string&amp; end = <span class="stringliteral">&quot;]&quot;</span>)</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;{</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html">internal::IOManipPointer&lt;PointerType&gt;</a>(p, n, separator, start, end);</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;}</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a238cf516513837235fbc7d7d283f7b78">  126</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespaceqpp.html#a238cf516513837235fbc7d7d283f7b78">save</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt; &amp;A, <span class="keyword">const</span> std::string &amp;fname)</div>
+<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a238cf516513837235fbc7d7d283f7b78">  126</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespaceqpp.html#a238cf516513837235fbc7d7d283f7b78">save</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A, <span class="keyword">const</span> std::string&amp; fname)</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;{</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat&lt;typename Derived::Scalar&gt;</a> &amp;rA = A;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="comment">// check zero-size</span></div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keywordflow">if</span> (rA.size() == 0)</div>
@@ -161,16 +161,16 @@ $(document).ready(function(){initNavTree('input__output_8h_source.html','');});
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    std::size_t rows = <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(rA.rows());</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    std::size_t cols = <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(rA.cols());</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    fout.write((<span class="keywordtype">char</span> *) &amp;rows, <span class="keyword">sizeof</span>(rows));</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    fout.write((<span class="keywordtype">char</span> *) &amp;cols, <span class="keyword">sizeof</span>(cols));</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    fout.write((<span class="keywordtype">char</span>*) &amp;rows, <span class="keyword">sizeof</span>(rows));</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    fout.write((<span class="keywordtype">char</span>*) &amp;cols, <span class="keyword">sizeof</span>(cols));</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    fout.write((<span class="keywordtype">char</span> *) rA.data(), <span class="keyword">sizeof</span>(Derived::Scalar) * rows * cols);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    fout.write((<span class="keywordtype">char</span>*) rA.data(), <span class="keyword">sizeof</span>(Derived::Scalar) * rows * cols);</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    fout.close();</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;}</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l00178"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a217e8ae6b09ac3cc89415d4b6204fda6">  178</a></span>&#160;<a class="code" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat&lt;typename Derived::Scalar&gt;</a> <a class="code" href="namespaceqpp.html#a217e8ae6b09ac3cc89415d4b6204fda6">load</a>(<span class="keyword">const</span> std::string &amp;fname)</div>
+<div class="line"><a name="l00178"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a217e8ae6b09ac3cc89415d4b6204fda6">  178</a></span>&#160;<a class="code" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat&lt;typename Derived::Scalar&gt;</a> <a class="code" href="namespaceqpp.html#a217e8ae6b09ac3cc89415d4b6204fda6">load</a>(<span class="keyword">const</span> std::string&amp; fname)</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;{</div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    std::fstream fin;</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    fin.open(fname, std::ios::in | std::ios::binary);</div>
@@ -183,7 +183,7 @@ $(document).ready(function(){initNavTree('input__output_8h_source.html','');});
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    }</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> _header[] = <span class="stringliteral">&quot;TYPE::Eigen::Matrix&quot;</span>;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keywordtype">char</span> *_fheader = <span class="keyword">new</span> <span class="keywordtype">char</span>[<span class="keyword">sizeof</span>(_header)];</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keywordtype">char</span>* _fheader = <span class="keyword">new</span> <span class="keywordtype">char</span>[<span class="keyword">sizeof</span>(_header)];</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="comment">// read the header from file</span></div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    fin.read(_fheader, <span class="keyword">sizeof</span>(_header));</div>
@@ -197,12 +197,12 @@ $(document).ready(function(){initNavTree('input__output_8h_source.html','');});
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keyword">delete</span>[] _fheader;</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    std::size_t rows, cols;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    fin.read((<span class="keywordtype">char</span> *) &amp;rows, <span class="keyword">sizeof</span>(rows));</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    fin.read((<span class="keywordtype">char</span> *) &amp;cols, <span class="keyword">sizeof</span>(cols));</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    fin.read((<span class="keywordtype">char</span>*) &amp;rows, <span class="keyword">sizeof</span>(rows));</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    fin.read((<span class="keywordtype">char</span>*) &amp;cols, <span class="keyword">sizeof</span>(cols));</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <a class="code" href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">DynMat&lt;typename Derived::Scalar&gt;</a> A(rows, cols);</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    fin.read((<span class="keywordtype">char</span> *) A.data(),</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    fin.read((<span class="keywordtype">char</span>*) A.data(),</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            <span class="keyword">sizeof</span>(<span class="keyword">typename</span> Derived::Scalar) * rows * cols);</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    fin.close();</div>
@@ -230,7 +230,7 @@ $(document).ready(function(){initNavTree('input__output_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="input__output_8h.html">input_output.h</a></li>
-    <li class="footer">Generated on Thu Nov 13 2014 22:06:02 for quantum++ by
+    <li class="footer">Generated on Fri Nov 14 2014 08:10:59 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

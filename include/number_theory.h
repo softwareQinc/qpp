@@ -63,7 +63,7 @@ std::vector<int> x2contfrac(double x, std::size_t n, std::size_t cut = 1e5)
 * are considered.
 * \return Real representation of the simple continued fraction
 */
-double contfrac2x(const std::vector<int> &cf, std::size_t n)
+double contfrac2x(const std::vector<int>& cf, std::size_t n)
 {
     if (cf.size() == 0)
         throw Exception("qpp::contfrac2x()", Exception::Type::ZERO_SIZE);
@@ -92,7 +92,7 @@ double contfrac2x(const std::vector<int> &cf, std::size_t n)
 * \param cf Integer vector containing the simple continued fraction expansion
 * \return Real representation of the simple continued fraction
 */
-double contfrac2x(const std::vector<int> &cf)
+double contfrac2x(const std::vector<int>& cf)
 {
     if (cf.size() == 0)
         throw Exception("qpp::contfrac2x()", Exception::Type::ZERO_SIZE);
@@ -138,7 +138,7 @@ std::size_t gcd(std::size_t m, std::size_t n)
 * \param ns List of non-negative integers
 * \return Greatest common divisor of all numbers in \a ns
 */
-std::size_t gcd(const std::vector<std::size_t> &ns)
+std::size_t gcd(const std::vector<std::size_t>& ns)
 {
     if (ns.size() == 0)
         throw Exception("qpp::gcd()", Exception::Type::ZERO_SIZE);
@@ -173,7 +173,7 @@ std::size_t lcm(std::size_t m, std::size_t n)
 * \param ns List of positive integers
 * \return Least common multiple of all numbers in \a ns
 */
-std::size_t lcm(const std::vector<std::size_t> &ns)
+std::size_t lcm(const std::vector<std::size_t>& ns)
 {
     if (ns.size() == 0)
         throw Exception("qpp::lcm()", Exception::Type::ZERO_SIZE);
@@ -201,7 +201,7 @@ std::size_t lcm(const std::vector<std::size_t> &ns)
 * \param perm Permutation
 * \return Inverse of the permutation \a perm
 */
-std::vector<std::size_t> invperm(const std::vector<std::size_t> &perm)
+std::vector<std::size_t> invperm(const std::vector<std::size_t>& perm)
 {
     if (!internal::_check_perm(perm))
         throw Exception("qpp::invperm()", Exception::Type::PERM_INVALID);
@@ -222,8 +222,8 @@ std::vector<std::size_t> invperm(const std::vector<std::size_t> &perm)
 * \return Composition of the permutations \a perm \f$\circ\f$ \a sigma
 *  = perm(sigma)
 */
-std::vector<std::size_t> compperm(const std::vector<std::size_t> &perm,
-        const std::vector<std::size_t> &sigma)
+std::vector<std::size_t> compperm(const std::vector<std::size_t>& perm,
+        const std::vector<std::size_t>& sigma)
 {
     if (!internal::_check_perm(perm))
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);

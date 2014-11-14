@@ -45,7 +45,7 @@ public:
         /*!< Unknown exception */
                 ZERO_SIZE,
         /*!< Zero sized object, e.g. empty Eigen::Matrix
-        * or std::vector with no elements */
+         * or std::vector with no elements */
                 MATRIX_NOT_SQUARE,
         /*!< Eigen::Matrix is not square */
                 MATRIX_NOT_CVECTOR,
@@ -61,8 +61,8 @@ public:
                 MATRIX_NOT_SQUARE_OR_VECTOR,
         /*!< Eigen::Matrix is not square nor a row/column vector */
                 MATRIX_MISMATCH_SUBSYS,
-        /*! Matrix size mismatch subsystem sizes (e.g. in
-         * qpp::apply(), or qpp::channel() */
+        /*!< Matrix size mismatch subsystem sizes (e.g. in
+         * qpp::apply(), or qpp::channel()) */
                 DIMS_INVALID,
         /*!< std::vector<std::size_t> representing the dimensions
          * has zero size or contains zeros */
@@ -70,20 +70,20 @@ public:
         /*!< std::vector<std::size_t> representing the dimensions
          * contains non-equal elements */
                 DIMS_MISMATCH_MATRIX,
-        /*!< Product of the dimenisons' std::vector<std::size_t>
+        /*!< Product of the dimensions of std::vector<std::size_t>
          * is not equal to the number of rows of Eigen::Matrix
          * (assumed to be square) */
                 DIMS_MISMATCH_CVECTOR,
-        /*!< Product of the dimenisons' std::vector<std::size_t>
-         * is not equal to the number of cols of Eigen::Matrix
+        /*!< Product of the dimensions of std::vector<std::size_t>
+         * is not equal to the number of columns of Eigen::Matrix
          * (assumed to be a column vector) */
                 DIMS_MISMATCH_RVECTOR,
-        /*!< Product of the dimenisons' std::vector<std::size_t>
-         * is not equal to the number of cols of Eigen::Matrix
+        /*!< Product of the dimensions of std::vector<std::size_t>
+         * is not equal to the number of columns of Eigen::Matrix
          * (assumed to be a row vector) */
                 DIMS_MISMATCH_VECTOR,
-        /*!< Product of the dimenisons' std::vector<std::size_t>
-         * is not equal to the number of cols of Eigen::Matrix
+        /*!< Product of the dimensions of std::vector<std::size_t>
+         * is not equal to the number of columns of Eigen::Matrix
          * (assumed to be a row/column vector) */
                 SUBSYS_MISMATCH_DIMS,
         /*!< std::vector<std::size_t> representing the subsystem
@@ -119,7 +119,7 @@ public:
     * \param type Exception's type, see the strong enumeration
     * qpp::Exception::Type
     */
-    Exception(const std::string &where, const Type &type) :
+    Exception(const std::string& where, const Type& type) :
             _where(where), _msg(), _type(type), _custom()
     {
         _construct_exception_msg();
@@ -133,7 +133,7 @@ public:
     * \param where Text representing where the exception occured
     * \param custom Exception's description
     */
-    Exception(const std::string &where, const std::string &custom) :
+    Exception(const std::string& where, const std::string& custom) :
             _where(where), _msg(), _type(Type::CUSTOM_EXCEPTION), _custom(
             custom)
     {
@@ -146,7 +146,7 @@ public:
     *
     * \return Exception's description
     */
-    virtual const char *what() const noexcept override
+    virtual const char* what() const noexcept override
     {
         return _msg.c_str();
     }

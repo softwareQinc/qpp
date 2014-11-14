@@ -63,7 +63,9 @@ template<typename T>
 class Singleton
 {
 protected:
-    Singleton() = default;
+    Singleton()
+    {
+    }
 
     virtual ~Singleton()
     {
@@ -72,12 +74,12 @@ protected:
     // = default yields "looser throw specifer in g++ <= 4.7"
     // see http://stackoverflow.com
     // /questions/11497252/default-destructor-nothrow
-    Singleton(const Singleton &) = delete;
+    Singleton(const Singleton&) = delete;
 
-    Singleton &operator=(const Singleton &) = delete;
+    Singleton& operator=(const Singleton&) = delete;
 
 public:
-    static T &get_instance()
+    static T& get_instance()
     {
         // Guaranteed to be destroyed.
         // Instantiated on first use.

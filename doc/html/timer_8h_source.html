@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('timer_8h_source.html','');});
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <a class="code" href="classqpp_1_1_timer.html#a63f565f4d3000f83acb5208ab6b123da">_start</a> = <a class="code" href="classqpp_1_1_timer.html#a9a7916516dfc50e4eb8c4e45a9ef9358">_end</a> = std::chrono::steady_clock::now();</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    }</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#ae85c057c8fdc095b0a06feefe0691a1a">   67</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classqpp_1_1_timer.html">Timer</a> &amp;<a class="code" href="classqpp_1_1_timer.html#ae85c057c8fdc095b0a06feefe0691a1a">toc</a>()</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#ae85c057c8fdc095b0a06feefe0691a1a">   67</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classqpp_1_1_timer.html">Timer</a>&amp; <a class="code" href="classqpp_1_1_timer.html#ae85c057c8fdc095b0a06feefe0691a1a">toc</a>()</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    {</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <a class="code" href="classqpp_1_1_timer.html#a9a7916516dfc50e4eb8c4e45a9ef9358">_end</a> = std::chrono::steady_clock::now();</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
@@ -124,8 +124,8 @@ $(document).ready(function(){initNavTree('timer_8h_source.html','');});
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    }</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> <span class="keywordtype">char</span>T, <span class="keyword">typename</span> traits&gt;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keyword">friend</span> std::basic_ostream&lt;charT, traits&gt; &amp;</div>
-<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#ab9d2ca93425b03884be70e2938019391">   95</a></span>&#160;    operator&lt;&lt;(std::basic_ostream&lt;charT, traits&gt; &amp;os, <span class="keyword">const</span> <a class="code" href="classqpp_1_1_timer.html">Timer</a> &amp;rhs)</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keyword">friend</span> std::basic_ostream&lt;charT, traits&gt;&amp;</div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#ab9d2ca93425b03884be70e2938019391">   95</a></span>&#160;    operator&lt;&lt;(std::basic_ostream&lt;charT, traits&gt;&amp; os, <span class="keyword">const</span> <a class="code" href="classqpp_1_1_timer.html">Timer</a>&amp; rhs)</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    {</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">return</span> os &lt;&lt; rhs.<a class="code" href="classqpp_1_1_timer.html#aaaa3d575c39a0cc38bf2291e723a1cea">seconds</a>();</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    }</div>
@@ -147,7 +147,7 @@ $(document).ready(function(){initNavTree('timer_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_7a6c2c27f035e4462dd10aeadba1cb4e.html">classes</a></li><li class="navelem"><a class="el" href="timer_8h.html">timer.h</a></li>
-    <li class="footer">Generated on Thu Nov 13 2014 22:06:02 for quantum++ by
+    <li class="footer">Generated on Fri Nov 14 2014 08:10:59 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

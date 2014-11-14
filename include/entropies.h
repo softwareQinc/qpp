@@ -37,9 +37,9 @@ namespace qpp
 * \return Shannon/von-Neumann entropy, with the logarithm in base 2
 */
 template<typename Derived>
-double shannon(const Eigen::MatrixBase<Derived> &A)
+double shannon(const Eigen::MatrixBase<Derived>& A)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+    const DynMat<typename Derived::Scalar>& rA = A;
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
@@ -86,9 +86,9 @@ double shannon(const Eigen::MatrixBase<Derived> &A)
 * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
 */
 template<typename Derived>
-double renyi(const Eigen::MatrixBase<Derived> &A, double alpha)
+double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+    const DynMat<typename Derived::Scalar>& rA = A;
 
     if (alpha < 0)
         throw Exception("qpp::renyi()", Exception::Type::OUT_OF_RANGE);
@@ -109,7 +109,7 @@ double renyi(const Eigen::MatrixBase<Derived> &A, double alpha)
         if (alpha == infty) // H min
         {
             double max = 0;
-            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size());
+            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows());
                  ++i)
                 if (std::abs(rA(i)) > max)
                     max = std::abs(rA(i));
@@ -162,9 +162,9 @@ double renyi(const Eigen::MatrixBase<Derived> &A, double alpha)
 * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
 */
 template<typename Derived>
-double tsallis(const Eigen::MatrixBase<Derived> &A, double alpha)
+double tsallis(const Eigen::MatrixBase<Derived>& A, double alpha)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+    const DynMat<typename Derived::Scalar>& rA = A;
 
     if (alpha < 0)
         throw Exception("qpp::tsallis()", Exception::Type::OUT_OF_RANGE);
@@ -216,12 +216,12 @@ double tsallis(const Eigen::MatrixBase<Derived> &A, double alpha)
 * \return Mutual information between the 2 subsystems
 */
 template<typename Derived>
-double qmutualinfo(const Eigen::MatrixBase<Derived> &A,
-        const std::vector<std::size_t> &subsysA,
-        const std::vector<std::size_t> &subsysB,
-        const std::vector<std::size_t> &dims)
+double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
+        const std::vector<std::size_t>& subsysA,
+        const std::vector<std::size_t>& subsysB,
+        const std::vector<std::size_t>& dims)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+    const DynMat<typename Derived::Scalar>& rA = A;
 
     // error checks
 

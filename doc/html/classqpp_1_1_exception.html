@@ -219,24 +219,25 @@ Private Attributes</h2></td></tr>
 <p>Eigen::Matrix is not square nor a row/column vector </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a91985c96dc408d3538b8f88cf1eaae7cae5cf555f5690014691094e79b5c737f2"></a>MATRIX_MISMATCH_SUBSYS&#160;</td><td class="fielddoc">
+<p>Matrix size mismatch subsystem sizes (e.g. in <a class="el" href="namespaceqpp.html#a15f5f4c236713542560dfeb8237c76f7" title="Applies the gate A to the part subsys of the multi-partite state vector or density matrix state...">qpp::apply()</a>, or <a class="el" href="namespaceqpp.html#af6d3ed33a419331f7e9721b5fa602e2c" title="Applies the channel specified by the set of Kraus operators Ks to the density matrix rho...">qpp::channel()</a>) </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092"></a>DIMS_INVALID&#160;</td><td class="fielddoc">
-<p>Matrix size mismatch subsystem sizes (e.g. in <a class="el" href="namespaceqpp.html#a15f5f4c236713542560dfeb8237c76f7" title="Applies the gate A to the part subsys of the multi-partite state vector or density matrix state...">qpp::apply()</a>, or <a class="el" href="namespaceqpp.html#af6d3ed33a419331f7e9721b5fa602e2c" title="Applies the channel specified by the set of Kraus operators Ks to the density matrix rho...">qpp::channel()</a> std::vector&lt;std::size_t&gt; representing the dimensions has zero size or contains zeros </p>
+<p>std::vector&lt;std::size_t&gt; representing the dimensions has zero size or contains zeros </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a91985c96dc408d3538b8f88cf1eaae7caae0e67b77fc0b11803a4f7a791ecd5b7"></a>DIMS_NOT_EQUAL&#160;</td><td class="fielddoc">
 <p>std::vector&lt;std::size_t&gt; representing the dimensions contains non-equal elements </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d"></a>DIMS_MISMATCH_MATRIX&#160;</td><td class="fielddoc">
-<p>Product of the dimenisons' std::vector&lt;std::size_t&gt; is not equal to the number of rows of Eigen::Matrix (assumed to be square) </p>
+<p>Product of the dimensions of std::vector&lt;std::size_t&gt; is not equal to the number of rows of Eigen::Matrix (assumed to be square) </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a91985c96dc408d3538b8f88cf1eaae7ca8e50b38bf4bfc1c10f6d65283db18c47"></a>DIMS_MISMATCH_CVECTOR&#160;</td><td class="fielddoc">
-<p>Product of the dimenisons' std::vector&lt;std::size_t&gt; is not equal to the number of cols of Eigen::Matrix (assumed to be a column vector) </p>
+<p>Product of the dimensions of std::vector&lt;std::size_t&gt; is not equal to the number of columns of Eigen::Matrix (assumed to be a column vector) </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a91985c96dc408d3538b8f88cf1eaae7caf54a8e84ee2e9ae39bff4b35089c4834"></a>DIMS_MISMATCH_RVECTOR&#160;</td><td class="fielddoc">
-<p>Product of the dimenisons' std::vector&lt;std::size_t&gt; is not equal to the number of cols of Eigen::Matrix (assumed to be a row vector) </p>
+<p>Product of the dimensions of std::vector&lt;std::size_t&gt; is not equal to the number of columns of Eigen::Matrix (assumed to be a row vector) </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a91985c96dc408d3538b8f88cf1eaae7ca2cf73571fdadd35684639ef9e411895e"></a>DIMS_MISMATCH_VECTOR&#160;</td><td class="fielddoc">
-<p>Product of the dimenisons' std::vector&lt;std::size_t&gt; is not equal to the number of cols of Eigen::Matrix (assumed to be a row/column vector) </p>
+<p>Product of the dimensions of std::vector&lt;std::size_t&gt; is not equal to the number of columns of Eigen::Matrix (assumed to be a row/column vector) </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2"></a>SUBSYS_MISMATCH_DIMS&#160;</td><td class="fielddoc">
 <p>std::vector&lt;std::size_t&gt; representing the subsystem labels has duplicatates, or has entries that are larger than the size of the std::vector&lt;std::size_t&gt; representing the dimensions </p>
@@ -504,7 +505,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_exception.html">Exception</a></li>
-    <li class="footer">Generated on Thu Nov 13 2014 22:06:03 for quantum++ by
+    <li class="footer">Generated on Fri Nov 14 2014 08:11:00 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

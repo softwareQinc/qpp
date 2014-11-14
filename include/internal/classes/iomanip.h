@@ -37,8 +37,8 @@ class IOManipRange
     std::string _separator, _start, _end;
 public:
     explicit IOManipRange(InputIterator first, InputIterator last,
-            const std::string &separator, const std::string &start = "[",
-            const std::string &end = "]") :
+            const std::string& separator, const std::string& start = "[",
+            const std::string& end = "]") :
             _first(first),
             _last(last),
             _separator(separator),
@@ -48,8 +48,8 @@ public:
     }
 
     template<typename charT, typename traits>
-    friend std::basic_ostream<charT, traits> &
-    operator<<(std::basic_ostream<charT, traits> &os, const IOManipRange &rhs)
+    friend std::basic_ostream<charT, traits>&
+    operator<<(std::basic_ostream<charT, traits>& os, const IOManipRange& rhs)
     {
         os << rhs._start;
 
@@ -77,13 +77,13 @@ public:
 template<typename PointerType>
 class IOManipPointer
 {
-    const PointerType *_p;
+    const PointerType* _p;
     std::size_t _n;
     std::string _separator, _start, _end;
 public:
-    explicit IOManipPointer(const PointerType *p, const std::size_t n,
-            const std::string &separator, const std::string &start = "[",
-            const std::string &end = "]") :
+    explicit IOManipPointer(const PointerType* p, const std::size_t n,
+            const std::string& separator, const std::string& start = "[",
+            const std::string& end = "]") :
             _p(p),
             _n(n),
             _separator(separator),
@@ -93,14 +93,14 @@ public:
     }
 
     // to silence -Weffc++ warnings
-    IOManipPointer(const IOManipPointer &) = default;
+    IOManipPointer(const IOManipPointer&) = default;
 
-    IOManipPointer &operator=(const IOManipPointer &) = default;
+    IOManipPointer& operator=(const IOManipPointer&) = default;
 
     template<typename charT, typename traits>
-    friend std::basic_ostream<charT, traits> &
-    operator<<(std::basic_ostream<charT, traits> &os,
-            const IOManipPointer &rhs)
+    friend std::basic_ostream<charT, traits>&
+    operator<<(std::basic_ostream<charT, traits>& os,
+            const IOManipPointer& rhs)
     {
         os << rhs._start;
 
@@ -122,7 +122,7 @@ class IOManipEigen
 public:
     // Eigen matrices
     template<typename Derived>
-    explicit IOManipEigen(const Eigen::MatrixBase<Derived> &A, double chop =
+    explicit IOManipEigen(const Eigen::MatrixBase<Derived>& A, double chop =
     qpp::chop) :
             _A(A.template cast<cplx>()), _chop(chop)
     {
@@ -137,8 +137,8 @@ public:
     }
 
     template<typename charT, typename traits>
-    friend std::basic_ostream<charT, traits> &
-    operator<<(std::basic_ostream<charT, traits> &os, const IOManipEigen &rhs)
+    friend std::basic_ostream<charT, traits>&
+    operator<<(std::basic_ostream<charT, traits>& os, const IOManipEigen& rhs)
     {
         if (rhs._A.size() == 0)
         {

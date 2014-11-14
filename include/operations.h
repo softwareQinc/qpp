@@ -41,14 +41,14 @@ namespace qpp
 */
 template<typename Derived1, typename Derived2>
 DynMat<typename Derived1::Scalar> applyCTRL(
-        const Eigen::MatrixBase<Derived1> &state,
-        const Eigen::MatrixBase<Derived2> &A,
-        const std::vector<std::size_t> &ctrl,
-        const std::vector<std::size_t> &subsys,
-        const std::vector<std::size_t> &dims)
+        const Eigen::MatrixBase<Derived1>& state,
+        const Eigen::MatrixBase<Derived2>& A,
+        const std::vector<std::size_t>& ctrl,
+        const std::vector<std::size_t>& subsys,
+        const std::vector<std::size_t>& dims)
 {
-    const DynMat<typename Derived1::Scalar> &rstate = state;
-    const DynMat<typename Derived2::Scalar> &rA = A;
+    const DynMat<typename Derived1::Scalar>& rstate = state;
+    const DynMat<typename Derived2::Scalar>& rA = A;
 
     // EXCEPTION CHECKS
     // check types
@@ -366,14 +366,14 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 */
 template<typename Derived1, typename Derived2>
 DynMat<typename Derived1::Scalar> applyCTRL(
-        const Eigen::MatrixBase<Derived1> &state,
-        const Eigen::MatrixBase<Derived2> &A,
-        const std::vector<std::size_t> &ctrl,
-        const std::vector<std::size_t> &subsys,
+        const Eigen::MatrixBase<Derived1>& state,
+        const Eigen::MatrixBase<Derived2>& A,
+        const std::vector<std::size_t>& ctrl,
+        const std::vector<std::size_t>& subsys,
         std::size_t d = 2)
 {
-    const DynMat<typename Derived1::Scalar> &rstate = state;
-    const DynMat<typename Derived1::Scalar> &rA = A;
+    const DynMat<typename Derived1::Scalar>& rstate = state;
+    const DynMat<typename Derived1::Scalar>& rA = A;
 
     // check zero size
     if (!internal::_check_nonzero_size(rstate))
@@ -401,13 +401,13 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 */
 template<typename Derived1, typename Derived2>
 DynMat<typename Derived1::Scalar> apply(
-        const Eigen::MatrixBase<Derived1> &state,
-        const Eigen::MatrixBase<Derived2> &A,
-        const std::vector<std::size_t> &subsys,
-        const std::vector<std::size_t> &dims)
+        const Eigen::MatrixBase<Derived1>& state,
+        const Eigen::MatrixBase<Derived2>& A,
+        const std::vector<std::size_t>& subsys,
+        const std::vector<std::size_t>& dims)
 {
-    const DynMat<typename Derived1::Scalar> &rstate = state;
-    const DynMat<typename Derived2::Scalar> &rA = A;
+    const DynMat<typename Derived1::Scalar>& rstate = state;
+    const DynMat<typename Derived2::Scalar>& rA = A;
 
     // EXCEPTION CHECKS
 
@@ -483,13 +483,13 @@ DynMat<typename Derived1::Scalar> apply(
 */
 template<typename Derived1, typename Derived2>
 DynMat<typename Derived1::Scalar> apply(
-        const Eigen::MatrixBase<Derived1> &state,
-        const Eigen::MatrixBase<Derived2> &A,
-        const std::vector<std::size_t> &subsys,
+        const Eigen::MatrixBase<Derived1>& state,
+        const Eigen::MatrixBase<Derived2>& A,
+        const std::vector<std::size_t>& subsys,
         std::size_t d = 2)
 {
-    const DynMat<typename Derived1::Scalar> &rstate = state;
-    const DynMat<typename Derived1::Scalar> &rA = A;
+    const DynMat<typename Derived1::Scalar>& rstate = state;
+    const DynMat<typename Derived1::Scalar>& rA = A;
 
     // check zero size
     if (!internal::_check_nonzero_size(rstate))
@@ -511,10 +511,10 @@ DynMat<typename Derived1::Scalar> apply(
 * \return Output density matrix after the action of the channel
 */
 template<typename Derived>
-cmat channel(const Eigen::MatrixBase<Derived> &rho,
-        const std::vector<cmat> &Ks)
+cmat channel(const Eigen::MatrixBase<Derived>& rho,
+        const std::vector<cmat>& Ks)
 {
-    const cmat &rrho = rho;
+    const cmat& rrho = rho;
 
     // EXCEPTION CHECKS
     if (!internal::_check_nonzero_size(rrho))
@@ -528,7 +528,7 @@ cmat channel(const Eigen::MatrixBase<Derived> &rho,
     if (Ks[0].rows() != rrho.rows())
         throw Exception("qpp::channel()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
-    for (auto &&it : Ks)
+    for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
             throw Exception("qpp::channel()", Exception::Type::DIMS_NOT_EQUAL);
 
@@ -557,12 +557,12 @@ cmat channel(const Eigen::MatrixBase<Derived> &rho,
 * \return Output density matrix after the action of the channel
 */
 template<typename Derived>
-cmat channel(const Eigen::MatrixBase<Derived> &rho,
-        const std::vector<cmat> &Ks,
-        const std::vector<std::size_t> &subsys,
-        const std::vector<std::size_t> &dims)
+cmat channel(const Eigen::MatrixBase<Derived>& rho,
+        const std::vector<cmat>& Ks,
+        const std::vector<std::size_t>& subsys,
+        const std::vector<std::size_t>& dims)
 {
-    const cmat &rrho = rho;
+    const cmat& rrho = rho;
 
     // EXCEPTION CHECKS
     // check zero sizes
@@ -599,7 +599,7 @@ cmat channel(const Eigen::MatrixBase<Derived> &rho,
     if (!internal::_check_dims_match_mat(subsys_dims, Ks[0]))
         throw Exception("qpp::channel()",
                 Exception::Type::MATRIX_MISMATCH_SUBSYS);
-    for (auto &&it : Ks)
+    for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
             throw Exception("qpp::channel()", Exception::Type::DIMS_NOT_EQUAL);
 
@@ -622,12 +622,12 @@ cmat channel(const Eigen::MatrixBase<Derived> &rho,
 * \return Output density matrix after the action of the channel
 */
 template<typename Derived>
-cmat channel(const Eigen::MatrixBase<Derived> &rho,
-        const std::vector<cmat> &Ks,
-        const std::vector<std::size_t> &subsys,
+cmat channel(const Eigen::MatrixBase<Derived>& rho,
+        const std::vector<cmat>& Ks,
+        const std::vector<std::size_t>& subsys,
         std::size_t d = 2)
 {
-    const cmat &rrho = rho;
+    const cmat& rrho = rho;
 
     // check zero sizes
     if (!internal::_check_nonzero_size(rrho))
@@ -651,7 +651,7 @@ cmat channel(const Eigen::MatrixBase<Derived> &rho,
 * \param Ks Set of Kraus operators
 * \return Superoperator matrix representation
 */
-cmat super(const std::vector<cmat> &Ks)
+cmat super(const std::vector<cmat>& Ks)
 {
     // EXCEPTION CHECKS
     if (!internal::_check_nonzero_size(Ks))
@@ -660,7 +660,7 @@ cmat super(const std::vector<cmat> &Ks)
         throw Exception("qpp::super()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(Ks[0]))
         throw Exception("qpp::super()", Exception::Type::MATRIX_NOT_SQUARE);
-    for (auto &&it : Ks)
+    for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
             throw Exception("qpp::super()", Exception::Type::DIMS_NOT_EQUAL);
     std::size_t D = static_cast<std::size_t>(Ks[0].rows());
@@ -719,7 +719,7 @@ cmat super(const std::vector<cmat> &Ks)
 * \param Ks Set of Kraus operators
 * \return Choi matrix representation
 */
-cmat choi(const std::vector<cmat> &Ks)
+cmat choi(const std::vector<cmat>& Ks)
 {
     // EXCEPTION CHECKS
     if (!internal::_check_nonzero_size(Ks))
@@ -728,7 +728,7 @@ cmat choi(const std::vector<cmat> &Ks)
         throw Exception("qpp::choi()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(Ks[0]))
         throw Exception("qpp::choi()", Exception::Type::MATRIX_NOT_SQUARE);
-    for (auto &&it : Ks)
+    for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
             throw Exception("qpp::choi()", Exception::Type::DIMS_NOT_EQUAL);
     std::size_t D = static_cast<std::size_t>(Ks[0].rows());
@@ -739,7 +739,7 @@ cmat choi(const std::vector<cmat> &Ks)
     for (std::size_t a = 0; a < D; ++a)
         MES(a * D + a) = 1;
 
-    cmat Omega = static_cast<cmat>(MES * adjoint(MES));
+    cmat Omega = MES * adjoint(MES);
 
     cmat result = cmat::Zero(D * D, D * D);
 
@@ -768,7 +768,7 @@ cmat choi(const std::vector<cmat> &Ks)
 * \param A Choi matrix
 * \return Set of Kraus operators
 */
-std::vector<cmat> choi2kraus(const cmat &A)
+std::vector<cmat> choi2kraus(const cmat& A)
 {
     // EXCEPTION CHECKS
     if (!internal::_check_nonzero_size(A))
@@ -789,8 +789,7 @@ std::vector<cmat> choi2kraus(const cmat &A)
         // take the absolute value to get rid of tiny negatives
         if (std::abs((double) ev(i)) > eps)
             result.push_back(
-                    static_cast<cmat>(std::sqrt(ev(i))
-                            * reshape(static_cast<cmat>(evec.col(i)), D, D)));
+                    std::sqrt(ev(i)) * reshape(evec.col(i), D, D));
     }
 
     return result;
@@ -810,10 +809,10 @@ std::vector<cmat> choi2kraus(const cmat &A)
 * over the same scalar field as \a A
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived> &A,
-        const std::vector<std::size_t> &dims)
+DynMat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
+        const std::vector<std::size_t>& dims)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+    const DynMat<typename Derived::Scalar>& rA = A;
 
     // Error checks
 
@@ -872,10 +871,10 @@ DynMat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived> &A,
 * over the same scalar field as \a A
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived> &A,
-        const std::vector<std::size_t> &dims)
+DynMat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
+        const std::vector<std::size_t>& dims)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+    const DynMat<typename Derived::Scalar>& rA = A;
 
     // Error checks
 
@@ -928,11 +927,11 @@ DynMat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived> &A,
 * over the same scalar field as \a A
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived> &A,
-        const std::vector<std::size_t> &subsys,
-        const std::vector<std::size_t> &dims)
+DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
+        const std::vector<std::size_t>& subsys,
+        const std::vector<std::size_t>& dims)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+    const DynMat<typename Derived::Scalar>& rA = A;
 
     // error checks
 
@@ -1072,11 +1071,11 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived> &A,
 * over the same scalar field as \a A
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived> &A,
-        const std::vector<std::size_t> &subsys,
+DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
+        const std::vector<std::size_t>& subsys,
         std::size_t d = 2)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+    const DynMat<typename Derived::Scalar>& rA = A;
 
     // check zero size
     if (!internal::_check_nonzero_size(rA))
@@ -1104,11 +1103,11 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived> &A,
 */
 template<typename Derived>
 DynMat<typename Derived::Scalar> ptranspose(
-        const Eigen::MatrixBase<Derived> &A,
-        const std::vector<std::size_t> &subsys,
-        const std::vector<std::size_t> &dims)
+        const Eigen::MatrixBase<Derived>& A,
+        const std::vector<std::size_t>& subsys,
+        const std::vector<std::size_t>& dims)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+    const DynMat<typename Derived::Scalar>& rA = A;
 
     // error checks
 
@@ -1204,11 +1203,11 @@ DynMat<typename Derived::Scalar> ptranspose(
 */
 template<typename Derived>
 DynMat<typename Derived::Scalar> ptranspose(
-        const Eigen::MatrixBase<Derived> &A,
-        const std::vector<std::size_t> &subsys,
+        const Eigen::MatrixBase<Derived>& A,
+        const std::vector<std::size_t>& subsys,
         std::size_t d = 2)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+    const DynMat<typename Derived::Scalar>& rA = A;
 
     // check zero size
     if (!internal::_check_nonzero_size(rA))
@@ -1235,11 +1234,11 @@ DynMat<typename Derived::Scalar> ptranspose(
 */
 template<typename Derived>
 DynMat<typename Derived::Scalar> syspermute(
-        const Eigen::MatrixBase<Derived> &A,
-        const std::vector<std::size_t> &perm,
-        const std::vector<std::size_t> &dims)
+        const Eigen::MatrixBase<Derived>& A,
+        const std::vector<std::size_t>& perm,
+        const std::vector<std::size_t>& dims)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+    const DynMat<typename Derived::Scalar>& rA = A;
 
     // Error checks
 
@@ -1265,8 +1264,8 @@ DynMat<typename Derived::Scalar> syspermute(
     DynMat<typename Derived::Scalar> result;
 
     auto worker =
-            [](std::size_t i, std::size_t numdims, const std::size_t *Cdims,
-                    const std::size_t *Cperm)
+            [](std::size_t i, std::size_t numdims, const std::size_t* Cdims,
+                    const std::size_t* Cperm)
             {
                 // use static allocation for speed,
                 // double the size for matrices reshaped as vectors
@@ -1333,7 +1332,7 @@ DynMat<typename Derived::Scalar> syspermute(
         // map A to a column vector
         DynMat<typename Derived::Scalar> vectA = Eigen::Map<
                 DynMat<typename Derived::Scalar>>(
-                const_cast<typename Derived::Scalar *>(rA.data()), D * D, 1);
+                const_cast<typename Derived::Scalar*>(rA.data()), D * D, 1);
 
 #pragma omp parallel for
         for (std::size_t i = 0; i < D * D; ++i)
@@ -1361,11 +1360,11 @@ DynMat<typename Derived::Scalar> syspermute(
 */
 template<typename Derived>
 DynMat<typename Derived::Scalar> syspermute(
-        const Eigen::MatrixBase<Derived> &A,
-        const std::vector<std::size_t> &perm,
+        const Eigen::MatrixBase<Derived>& A,
+        const std::vector<std::size_t>& perm,
         std::size_t d = 2)
 {
-    const DynMat<typename Derived::Scalar> &rA = A;
+    const DynMat<typename Derived::Scalar>& rA = A;
 
     // check zero size
     if (!internal::_check_nonzero_size(rA))
