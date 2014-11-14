@@ -125,7 +125,7 @@ double rand(double a = 0, double b = 1)
 * \brief Generates a random integer (int) uniformly distributed in
 * the interval [a, b]
 * \param a Beginning of the interval, belongs to it
-* \param b End of the interval, does not belong to it
+* \param b End of the interval, belongs to it
 * \return Random integer (int) uniformly distributed in
 * the interval [a, b]
 */

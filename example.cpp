@@ -72,10 +72,10 @@ auto MEASUREMENTS = []
     for (auto &&it: states)
         std::cout << disp(it) << std::endl << std::endl;
 
-    // Check now how the state after the measurement "looks"
+    // check now how the state after the measurement "looks"
     // on the left over subsystems {0, 3}
 
-    // It should be the same as the partial trace over {1,2 }
+    // it should be the same as the partial trace over {1, 2}
     // of the initial state (before the measurement), as local CPTP maps
     // do not influence the complementary subsystems
 
@@ -157,9 +157,7 @@ auto DENSE_CODING = []
             * kron(gt.Fd(D), gt.Id(D)));
 
     // equal probabilities of choosing a message
-    std::uniform_int_distribution<std::size_t> uid(0, D * D - 1);
-    std::size_t m_A = uid(rdevs._rng); // sample, obtain the message index
-
+    std::size_t m_A = randint(0, D * D - 1);
     auto midx = n2multiidx(m_A, {D, D});
     std::cout << ">> Alice sent: " << m_A << " -> ";
     std::cout << disp(midx, " ") << std::endl;
@@ -197,8 +195,7 @@ auto GROVER = []
     std::cout << ">> Database size: " << N << std::endl;
 
     // mark an element randomly
-    std::uniform_int_distribution<std::size_t> uid(0, N - 1);
-    std::size_t marked = uid(rdevs._rng);
+    std::size_t marked = randint(0, N - 1);
     std::cout << ">> Marked state: " << marked << " -> ";
     std::cout << disp(n2multiidx(marked, dims), " ") << std::endl;
 
@@ -385,7 +382,7 @@ auto TIMING = []
 
 int main()
 {
-    // Decide which examples to run
+    // Examples
     MEASUREMENTS();
     TELEPORTATION();
     DENSE_CODING();
