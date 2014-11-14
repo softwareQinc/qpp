@@ -215,7 +215,9 @@ auto GROVER = []
     cmat G = 2 * prj(psi) - gt.Id(N); // Diffusion operator
 
     // number of queries
-    std::size_t nqueries = std::ceil(pi * std::sqrt((double) N) / 4.);
+    std::size_t nqueries =
+            static_cast<std::size_t>(
+                    std::ceil(pi * std::sqrt((double) N) / 4.));
     std::cout << ">> We run " << nqueries << " queries" << std::endl;
     for (std::size_t i = 0; i < nqueries; ++i)
     {
