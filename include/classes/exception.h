@@ -45,7 +45,7 @@ public:
         /*!< Unknown exception */
                 ZERO_SIZE,
         /*!< Zero sized object, e.g. empty Eigen::Matrix
-        * or std::vector with no elements */
+         * or std::vector with no elements */
                 MATRIX_NOT_SQUARE,
         /*!< Eigen::Matrix is not square */
                 MATRIX_NOT_CVECTOR,
