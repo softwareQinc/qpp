@@ -391,7 +391,7 @@ auto TIMING = []
 int main()
 {
     // Examples
-//    MEASUREMENTS();
+    MEASUREMENTS();
     TELEPORTATION();
     DENSE_CODING();
     GROVER();
