@@ -50,7 +50,7 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
     {
         double result = 0;
         // take the absolut value to get rid of tiny negatives
-        for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); ++i)
+        for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); ++i)
             if (std::abs(rA(i)) != 0) // not identically zero
                 result -= std::abs(rA(i)) * std::log2(std::abs(rA(i)));
 
@@ -119,7 +119,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
 
         double result = 0;
         // take the absolut value to get rid of tiny negatives
-        for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); ++i)
+        for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); ++i)
             if (std::abs((cplx) rA(i)) != 0) // not identically zero
                 result += std::pow(std::abs(rA(i)), alpha);
 
@@ -181,7 +181,7 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double alpha)
     {
         double result = 0;
         // take the absolut value to get rid of tiny negatives
-        for (std::size_t i = 0; i < static_cast<std::size_t>(rA.size()); ++i)
+        for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); ++i)
             if (std::abs((cplx) rA(i)) != 0) // not identically zero
                 result += std::pow(std::abs(rA(i)), alpha);
 

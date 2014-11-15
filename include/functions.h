@@ -738,7 +738,7 @@ DynMat<typename Derived::Scalar> kron(const std::vector<Derived>& As)
         throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
 
     for (auto&& it : As)
-        if (it.size() == 0)
+        if (!internal::_check_nonzero_size(it))
             throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
 
     DynMat<typename Derived::Scalar> result = As[0];
@@ -1314,8 +1314,8 @@ std::vector<double> abssq(const Eigen::MatrixBase<Derived>& V)
     if (!internal::_check_col_vector(rV))
         throw Exception("qpp::abssq()", Exception::Type::MATRIX_NOT_CVECTOR);
 
-    std::vector<double> weights(rV.size());
-    std::transform(rV.data(), rV.data() + rV.size(), std::begin(weights),
+    std::vector<double> weights(rV.rows());
+    std::transform(rV.data(), rV.data() + rV.rows(), std::begin(weights),
             [](const cplx& z) -> double
             {
                 return std::pow(std::abs(z), 2);

@@ -19,10 +19,11 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// TODO: use .rows() instead of .cols() whenever possible
 // TODO: check for roundoff errors when using double->std::size_t conversions
 // TODO: check the entropy functions, use svals instead of hevals
-// TODO: use .rows() instead of .cols() whenever possible
 // TODO: smarter qpp::kronpow() and qpp::powm() as compared with brute force
+// TODO: if possible, use std::enable_if for static dispatch
 
 #include "qpp.h"
 
@@ -535,5 +536,8 @@ int main()
     GRAMSCHMIDT();
     SPECTRAL();
     RANDOM();
-    TIMING();
+    // TIMING();
+
+    cmat a(0,2);
+    std::cout << disp(a) << std::endl;
 }
