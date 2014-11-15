@@ -542,6 +542,23 @@ auto TIMING = []
             << std::endl << std::endl;
 };
 
+std::size_t expo(std::size_t a, std::size_t n)
+{
+    std::size_t result = 1;
+
+    while (n)
+    {
+        if (n % 2 == 1)
+        {
+            result *= a;
+        }
+        n /= 2;
+        a *= a;
+    }
+
+    return result;
+}
+
 int main()
 {
     // Examples

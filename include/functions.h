@@ -615,24 +615,30 @@ template<typename Derived>
 DynMat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived>& A,
         std::size_t n)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    DynMat<typename Derived::Scalar> cA = A;
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if (!internal::_check_nonzero_size(cA))
         throw Exception("qpp::powm()", Exception::Type::ZERO_SIZE);
 
     // check square matrix
-    if (!internal::_check_square_mat(rA))
+    if (!internal::_check_square_mat(cA))
         throw Exception("qpp::powm()", Exception::Type::MATRIX_NOT_SQUARE);
 
-    DynMat<typename Derived::Scalar> result = rA;
+    DynMat<typename Derived::Scalar> result =
+            DynMat<typename Derived::Scalar>::Identity(
+                    cA.rows(), cA.rows());
 
-    if (n == 0)
-        return DynMat<typename Derived::Scalar>::Identity(
-                rA.rows(), rA.rows());
-
-    for (std::size_t i = 1; i < n; ++i)
-        result *= rA;
+    // fast matrix power
+    while (n)
+    {
+        if (n % 2 == 1)
+        {
+            result = (result * cA).eval();
+        }
+        n /= 2;
+        cA = (cA * cA).eval();
+    }
 
     return result;
 }

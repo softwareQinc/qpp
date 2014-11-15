@@ -35,8 +35,8 @@ namespace qpp
 * in [a, b)
 *
 * This is the generic version that always throws
-* \a qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
-* \a qpp::dmat and \a qpp::cmat
+* qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
+* qpp::dmat and qpp::cmat
 */
 template<typename Derived>
 Derived rand(std::size_t rows, std::size_t cols, double a = 0, double b = 1)
@@ -47,7 +47,7 @@ Derived rand(std::size_t rows, std::size_t cols, double a = 0, double b = 1)
 /**
 * \brief Generates a random real matrix with entries uniformly
 * distributed in the interval [a, b),
-* specialization for double matrices (\a qpp::dmat)
+* specialization for double matrices (qpp::dmat)
 *
 * The template parameter cannot be automatically deduced and
 * must be explicitly provided
@@ -78,7 +78,7 @@ inline dmat rand(std::size_t rows, std::size_t cols, double a, double b)
 /**
 * \brief Generates a random complex matrix with entries (both real and
 * imaginary) uniformly distributed in the interval [a, b),
-* specialization for complex matrices (\a qpp::cmat)
+* specialization for complex matrices (qpp::cmat)
 *
 * The template parameter cannot be automatically deduced and
 * must be explicitly provided
@@ -145,8 +145,8 @@ std::size_t randidx(std::size_t a = std::numeric_limits<std::size_t>::min(),
 * in N(mean, sigma)
 *
 * This is the generic version that always throws
-* \a qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
-* \a qpp::dmat and \a qpp::cmat
+* qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
+* qpp::dmat and qpp::cmat
 */
 template<typename Derived>
 Derived randn(std::size_t rows, std::size_t cols, double mean = 0,
@@ -158,7 +158,7 @@ Derived randn(std::size_t rows, std::size_t cols, double mean = 0,
 /**
 * \brief Generates a random real matrix with entries normally
 * distributed in N(mean, sigma),
-* specialization for double matrices (\a qpp::dmat)
+* specialization for double matrices (qpp::dmat)
 *
 * The template parameter cannot be automatically deduced and
 * must be explicitly provided
@@ -196,7 +196,7 @@ inline dmat randn(std::size_t rows, std::size_t cols,
 /**
 * \brief Generates a random complex matrix with entries (both real and
 * imaginary) normally distributed in N(mean, sigma),
-* specialization for complex matrices (\a qpp::cmat)
+* specialization for complex matrices (qpp::cmat)
 *
 * The template parameter cannot be automatically deduced and
 * must be explicitly provided
