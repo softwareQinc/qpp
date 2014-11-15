@@ -536,8 +536,5 @@ int main()
     GRAMSCHMIDT();
     SPECTRAL();
     RANDOM();
-    // TIMING();
-
-    cmat a(0,2);
-    std::cout << disp(a) << std::endl;
+    TIMING();
 }
