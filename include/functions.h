@@ -591,7 +591,7 @@ cmat spectralpowm(const Eigen::MatrixBase<Derived>& A, const cplx z)
     cmat evects = es.eigenvectors();
     cmat evals = es.eigenvalues();
     for (std::size_t i = 0; i < static_cast<std::size_t>(evals.rows()); ++i)
-        evals(i) = std::pow(static_cast<cplx>(evals(i)), static_cast<cplx>(z));
+        evals(i) = std::pow(evals(i), z);
 
     cmat evalsdiag = evals.asDiagonal();
 
@@ -657,8 +657,7 @@ double schatten(const Eigen::MatrixBase<Derived>& A, std::size_t p)
     if (p == infty) // infinity norm (largest singular value)
         return svals(rA)[0];
 
-    // convert matrix to complex then return its Schatten-p norm
-    return std::pow(trace(powm(absm(rA), p)).real(), 1. / (double) p);
+    return std::pow(trace(powm(absm(rA), p)).real(), 1. / p);
 }
 
 // other functions
@@ -738,7 +737,7 @@ DynMat<typename Derived::Scalar> kron(const std::vector<Derived>& As)
         throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
 
     for (auto&& it : As)
-        if (it.size() == 0)
+        if (!internal::_check_nonzero_size(it))
             throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
 
     DynMat<typename Derived::Scalar> result = As[0];
@@ -1046,8 +1045,7 @@ DynMat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A)
     std::vector<DynMat<typename Derived::Scalar>> input;
 
     for (std::size_t i = 0; i < static_cast<std::size_t>(rA.cols()); ++i)
-        input.push_back(
-                static_cast<DynMat<typename Derived::Scalar>>(rA.col(i)));
+        input.push_back(rA.col(i));
 
     return grams<DynMat<typename Derived::Scalar>>(input);
 }
@@ -1166,7 +1164,7 @@ ket mket(const std::vector<std::size_t>& mask,
 ket mket(const std::vector<std::size_t>& mask, std::size_t d = 2)
 {
     std::size_t n = mask.size();
-    std::size_t D = std::pow(d, n);
+    std::size_t D = static_cast<std::size_t>(std::llround(std::pow(d, n)));
 
     // check zero size
     if (n == 0)
@@ -1253,7 +1251,7 @@ cmat mprj(const std::vector<std::size_t>& mask,
 cmat mprj(const std::vector<std::size_t>& mask, std::size_t d = 2)
 {
     std::size_t n = mask.size();
-    std::size_t D = std::pow(d, n);
+    std::size_t D = static_cast<std::size_t>(std::llround(std::pow(d, n)));
 
     // check zero size
     if (n == 0)
@@ -1314,8 +1312,8 @@ std::vector<double> abssq(const Eigen::MatrixBase<Derived>& V)
     if (!internal::_check_col_vector(rV))
         throw Exception("qpp::abssq()", Exception::Type::MATRIX_NOT_CVECTOR);
 
-    std::vector<double> weights(rV.size());
-    std::transform(rV.data(), rV.data() + rV.size(), std::begin(weights),
+    std::vector<double> weights(rV.rows());
+    std::transform(rV.data(), rV.data() + rV.rows(), std::begin(weights),
             [](const cplx& z) -> double
             {
                 return std::pow(std::abs(z), 2);
@@ -1388,7 +1386,7 @@ DynColVect<typename Derived::Scalar> rho2pure(
         throw Exception("qpp::rho2pure()", Exception::Type::MATRIX_NOT_SQUARE);
     // END EXPCEPTION CHECKS
 
-    DynColVect<double> tmp_evals = hevals(rA);
+    DynColVect<double> tmp_evals = svals(rA);
     cmat tmp_evects = hevects(rA);
     DynColVect<typename Derived::Scalar> result =
             DynColVect<typename Derived::Scalar>::Zero(rA.rows());
@@ -1396,7 +1394,7 @@ DynColVect<typename Derived::Scalar> rho2pure(
     // there is only one, assuming the state is pure
     for (std::size_t k = 0; k < static_cast<std::size_t>(rA.rows()); ++k)
     {
-        if (std::abs(tmp_evals(k)) > eps)
+        if (tmp_evals(k) > eps)
         {
             result = tmp_evects.col(k);
             break;

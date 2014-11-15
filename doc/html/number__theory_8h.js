@@ -8,5 +8,5 @@ var number__theory_8h =
     [ "invperm", "number__theory_8h.html#a6a2093db36b11503a66f77301fbbedb5", null ],
     [ "lcm", "number__theory_8h.html#a37ded4330bac75ed34190b1c40d53381", null ],
     [ "lcm", "number__theory_8h.html#a0cd094d5bde1344756f98167abb079f5", null ],
-    [ "x2contfrac", "number__theory_8h.html#a569c5700863d7054bea8e36f26d9930b", null ]
+    [ "x2contfrac", "number__theory_8h.html#a881227fd0155dce19f39ffeaec02b98f", null ]
 ];

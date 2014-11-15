@@ -40,8 +40,8 @@ inline void _n2multiidx(std::size_t n, std::size_t numdims,
     // no error checks to improve speed
     for (std::size_t i = 0; i < numdims; ++i)
     {
-        result[numdims - i - 1] = n % static_cast<int>(dims[numdims - i - 1]);
-        n /= static_cast<int>(dims[numdims - i - 1]);
+        result[numdims - i - 1] = n % (dims[numdims - i - 1]);
+        n /= (dims[numdims - i - 1]);
     }
 }
 
@@ -160,7 +160,7 @@ bool _check_dims_match_mat(const std::vector<std::size_t>& dims,
     return true;
 }
 
-// check that valid dims match the dimensions of valid row vector
+// check that valid dims match the dimensions of valid column vector
 template<typename Derived>
 bool _check_dims_match_cvect(const std::vector<std::size_t>& dims,
         const Eigen::MatrixBase<Derived>& V)

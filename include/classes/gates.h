@@ -143,7 +143,7 @@ public:
 #pragma omp parallel for collapse(2)
         for (std::size_t j = 0; j < D; ++j)
             for (std::size_t i = 0; i < D; ++i)
-                result(i, j) = 1 / std::sqrt((double) D)
+                result(i, j) = 1 / std::sqrt(static_cast<double>(D))
                         * std::pow(omega(D), i * j);
 
         return result;
@@ -247,7 +247,7 @@ public:
                     Exception::Type::SUBSYS_MISMATCH_DIMS);
 
         // check that subsys list match the dimension of the matrix
-        if (rA.cols() != std::pow(d, subsys.size()))
+        if (rA.rows() != std::llround(std::pow(d, subsys.size())))
             throw Exception("qpp::Gates::CTRL()",
                     Exception::Type::DIMS_MISMATCH_MATRIX);
         // END EXCEPTION CHECKS
@@ -268,9 +268,10 @@ public:
         std::size_t ngate = subsys.size();
         std::size_t nctrl = ctrl.size();
         std::size_t nsubsys_bar = n - ctrlgate.size();
-        std::size_t D = std::pow(d, n);
-        std::size_t DA = static_cast<std::size_t>(rA.cols());
-        std::size_t Dsubsys_bar = std::pow(d, nsubsys_bar);
+        std::size_t D = static_cast<std::size_t>(std::llround(std::pow(d, n)));
+        std::size_t DA = static_cast<std::size_t>(rA.rows());
+        std::size_t Dsubsys_bar = static_cast<std::size_t>(
+                std::llround(std::pow(d, nsubsys_bar)));
 
         // compute the complementary subsystem of ctrlgate w.r.t. dims
         std::vector<std::size_t> allsubsys(n); // all subsystems
@@ -395,7 +396,7 @@ public:
                     Exception::Type::OUT_OF_RANGE);
 
         // check that dims[pos] match the dimension of A
-        if (static_cast<std::size_t>(rA.cols()) != dims[pos])
+        if (static_cast<std::size_t>(rA.rows()) != dims[pos])
             throw Exception("qpp::Gates::expandout()",
                     Exception::Type::DIMS_MISMATCH_MATRIX);
 
@@ -427,7 +428,7 @@ public:
             // get column multi_index (same as row)
             internal::_n2multiidx(i, dims.size(), Cdims, midx_col);
             // run over the gate's row multi-index
-            for (std::size_t a = 0; a < static_cast<std::size_t>(rA.cols());
+            for (std::size_t a = 0; a < static_cast<std::size_t>(rA.rows());
                  ++a)
             {
                 // construct the total row multi-index

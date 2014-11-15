@@ -108,7 +108,7 @@ DynMat<typename Derived1::Scalar> applyCTRL(
     // construct the table of A^i and (A^dagger)^i
     std::vector<DynMat<typename Derived1::Scalar>> Ai;
     std::vector<DynMat<typename Derived1::Scalar>> Aidagger;
-    for (std::size_t i = 0; i < std::max(d, (std::size_t) 2); ++i)
+    for (std::size_t i = 0; i < std::max(d, static_cast<std::size_t>(2)); ++i)
     {
         Ai.push_back(powm(rA, i));
         Aidagger.push_back(powm(adjoint(rA), i));
@@ -121,7 +121,8 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 
     std::size_t DA = rA.rows();
     std::size_t DCTRLAbar =
-            static_cast<std::size_t>(D / (DA * std::pow(d, ctrl.size())));
+            static_cast<std::size_t>(std::llround(
+                    D / (DA * std::pow(d, ctrl.size()))));
 
     std::size_t Cdims[maxn]; // local dimensions
     std::size_t CdimsA[maxn]; // local dimensions
@@ -380,7 +381,8 @@ DynMat<typename Derived1::Scalar> applyCTRL(
         throw Exception("qpp::applyCTRL()", Exception::Type::ZERO_SIZE);
 
     std::size_t n =
-            static_cast<std::size_t>(std::log2(rstate.rows()) / std::log2(d));
+            static_cast<std::size_t>(std::llround(std::log2(rstate.rows()) /
+                    std::log2(d)));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
     return applyCTRL(rstate, rA, ctrl, subsys, dims);
@@ -496,7 +498,8 @@ DynMat<typename Derived1::Scalar> apply(
         throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
 
     std::size_t n =
-            static_cast<std::size_t>(std::log2(rstate.rows()) / std::log2(d));
+            static_cast<std::size_t>(std::llround(std::log2(rstate.rows()) /
+                    std::log2(d)));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
     return apply(rstate, rA, subsys, dims);
@@ -521,7 +524,7 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
         throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(rrho))
         throw Exception("qpp::channel()", Exception::Type::MATRIX_NOT_SQUARE);
-    if (!internal::_check_nonzero_size(Ks))
+    if (Ks.size() == 0)
         throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(Ks[0]))
         throw Exception("qpp::channel()", Exception::Type::MATRIX_NOT_SQUARE);
@@ -532,7 +535,7 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
             throw Exception("qpp::channel()", Exception::Type::DIMS_NOT_EQUAL);
 
-    cmat result = cmat::Zero(rrho.rows(), rrho.cols());
+    cmat result = cmat::Zero(rrho.rows(), rrho.rows());
 
 #pragma omp parallel for
     for (std::size_t i = 0; i < Ks.size(); ++i)
@@ -592,7 +595,7 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
         subsys_dims[i] = dims[subsys[i]];
 
     // check the Kraus operators
-    if (!internal::_check_nonzero_size(Ks))
+    if (Ks.size() == 0)
         throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(Ks[0]))
         throw Exception("qpp::channel()", Exception::Type::MATRIX_NOT_SQUARE);
@@ -634,7 +637,8 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
         throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
 
     std::size_t n =
-            static_cast<std::size_t>(std::log2(rrho.rows()) / std::log2(d));
+            static_cast<std::size_t>(std::llround(std::log2(rrho.rows()) /
+                    std::log2(d)));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
     return channel(rrho, Ks, subsys, dims);
@@ -654,7 +658,7 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
 cmat super(const std::vector<cmat>& Ks)
 {
     // EXCEPTION CHECKS
-    if (!internal::_check_nonzero_size(Ks))
+    if (Ks.size() == 0)
         throw Exception("qpp::super()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_nonzero_size(Ks[0]))
         throw Exception("qpp::super()", Exception::Type::ZERO_SIZE);
@@ -722,7 +726,7 @@ cmat super(const std::vector<cmat>& Ks)
 cmat choi(const std::vector<cmat>& Ks)
 {
     // EXCEPTION CHECKS
-    if (!internal::_check_nonzero_size(Ks))
+    if (Ks.size() == 0)
         throw Exception("qpp::choi()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_nonzero_size(Ks[0]))
         throw Exception("qpp::choi()", Exception::Type::ZERO_SIZE);
@@ -776,18 +780,18 @@ std::vector<cmat> choi2kraus(const cmat& A)
     if (!internal::_check_square_mat(A))
         throw Exception("qpp::choi2kraus()",
                 Exception::Type::MATRIX_NOT_SQUARE);
-    std::size_t D = static_cast<std::size_t>(std::sqrt((double) A.rows()));
+    std::size_t D = static_cast<std::size_t>(std::llround(
+            std::sqrt(static_cast<double>(A.rows()))));
     if (D * D != static_cast<std::size_t>(A.rows()))
         throw Exception("qpp::choi2kraus()", Exception::Type::DIMS_INVALID);
 
-    dmat ev = hevals(A);
+    dmat ev = svals(A);
     cmat evec = hevects(A);
     std::vector<cmat> result;
 
     for (std::size_t i = 0; i < D * D; ++i)
     {
-        // take the absolute value to get rid of tiny negatives
-        if (std::abs((double) ev(i)) > eps)
+        if (ev(i) > eps)
             result.push_back(
                     std::sqrt(ev(i)) * reshape(evec.col(i), D, D));
     }
@@ -1082,7 +1086,8 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::ptrace()", Exception::Type::ZERO_SIZE);
 
     std::size_t n =
-            static_cast<std::size_t>(std::log2(rA.rows()) / std::log2(d));
+            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
+                    std::log2(d)));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
     return ptrace(rA, subsys, dims);
@@ -1214,7 +1219,8 @@ DynMat<typename Derived::Scalar> ptranspose(
         throw Exception("qpp::ptranspose()", Exception::Type::ZERO_SIZE);
 
     std::size_t n =
-            static_cast<std::size_t>(std::log2(rA.rows()) / std::log2(d));
+            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
+                    std::log2(d)));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
     return ptranspose(rA, subsys, dims);
@@ -1371,7 +1377,8 @@ DynMat<typename Derived::Scalar> syspermute(
         throw Exception("qpp::syspermute()", Exception::Type::ZERO_SIZE);
 
     std::size_t n =
-            static_cast<std::size_t>(std::log2(rA.rows()) / std::log2(d));
+            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
+                    std::log2(d)));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
     return syspermute(rA, perm, dims);

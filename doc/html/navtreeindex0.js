@@ -173,10 +173,11 @@ var NAVTREEINDEX0 =
 "entanglement_8h.html#ae5ecdcfef5ce5a89efbebf0f4354be36":[3,0,0,5,4],
 "entanglement_8h_source.html":[3,0,0,5],
 "entropies_8h.html":[3,0,0,6],
-"entropies_8h.html#a3642532b9a23be1c7f7cafa4629e6d5d":[3,0,0,6,2],
-"entropies_8h.html#a4980e688af46b3b1a96c2f12c9849cd0":[3,0,0,6,3],
+"entropies_8h.html#a3642532b9a23be1c7f7cafa4629e6d5d":[3,0,0,6,3],
+"entropies_8h.html#a4980e688af46b3b1a96c2f12c9849cd0":[3,0,0,6,4],
+"entropies_8h.html#a757eca5bb6ba3f3614598a9acae2cf56":[3,0,0,6,1],
 "entropies_8h.html#a80473c412499e9a120c4597a34add129":[3,0,0,6,0],
-"entropies_8h.html#a991bc6df4280943452bfbedafa65b9f7":[3,0,0,6,1],
+"entropies_8h.html#a991bc6df4280943452bfbedafa65b9f7":[3,0,0,6,2],
 "entropies_8h_source.html":[3,0,0,6],
 "exception_8h.html":[3,0,0,0,1],
 "exception_8h_source.html":[3,0,0,0,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "init_8h.html":[3,0,0,0,3],
 "init_8h_source.html":[3,0,0,0,3],
 "input__output_8h.html":[3,0,0,8],
-"input__output_8h.html#a217e8ae6b09ac3cc89415d4b6204fda6":[3,0,0,8,5],
-"input__output_8h.html#a238cf516513837235fbc7d7d283f7b78":[3,0,0,8,6]
+"input__output_8h.html#a217e8ae6b09ac3cc89415d4b6204fda6":[3,0,0,8,5]
 };

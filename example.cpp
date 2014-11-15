@@ -27,7 +27,6 @@ using namespace qpp;
 
 // We define each example as an independent lambda function
 
-// Measurements
 auto MEASUREMENTS = []
 {
     std::cout << "**** Measurements ****" << std::endl;
@@ -100,7 +99,6 @@ auto MEASUREMENTS = []
             << std::endl << std::endl;
 };
 
-// Qudit teleportation
 auto TELEPORTATION = []
 {
     std::size_t D = 3; // size of the system
@@ -150,7 +148,6 @@ auto TELEPORTATION = []
             << std::endl << std::endl;
 };
 
-// Qudit dense coding
 auto DENSE_CODING = []
 {
     std::size_t D = 3; // size of the system
@@ -166,7 +163,7 @@ auto DENSE_CODING = []
             * kron(gt.Fd(D), gt.Id(D)));
 
     // equal probabilities of choosing a message
-    std::size_t m_A = randint(0, D * D - 1);
+    std::size_t m_A = randidx(0, D * D - 1);
     auto midx = n2multiidx(m_A, {D, D});
     std::cout << ">> Alice sent: " << m_A << " -> ";
     std::cout << disp(midx, " ") << std::endl;
@@ -191,7 +188,6 @@ auto DENSE_CODING = []
             << std::endl << std::endl;
 };
 
-// Grover's search algorithm, we time it
 auto GROVER = []
 {
     Timer t; // set a timer
@@ -200,11 +196,12 @@ auto GROVER = []
     std::cout << "**** Grover on n = " << n << " qubits ****" << std::endl;
 
     std::vector<std::size_t> dims(n, 2); // local dimensions
-    std::size_t N = std::pow(2, n); // number of elements in the database
+    // number of elements in the database
+    std::size_t N = std::round(std::pow(2, n));
     std::cout << ">> Database size: " << N << std::endl;
 
     // mark an element randomly
-    std::size_t marked = randint(0, N - 1);
+    std::size_t marked = randidx(0, N - 1);
     std::cout << ">> Marked state: " << marked << " -> ";
     std::cout << disp(n2multiidx(marked, dims), " ") << std::endl;
 
@@ -246,7 +243,6 @@ auto GROVER = []
             << n << " qubits." << std::endl << std::endl;
 };
 
-// Entanglement
 auto ENTANGLEMENT = []
 {
     std::cout << "**** Entanglement ****" << std::endl;
@@ -312,7 +308,6 @@ auto ENTANGLEMENT = []
             << std::endl << std::endl;
 };
 
-// Quantum error correcting codes
 auto QECC = []
 {
     std::cout << "**** Quantum error correcting codes ****" << std::endl;
@@ -344,8 +339,8 @@ auto QECC = []
 
 auto CHANNEL = []
 {
-    // channel tests
     std::cout << "**** Channel tests ****" << std::endl;
+
     std::size_t nk = 5;
     std::size_t D = 3; // nk Kraus on d-dimensional system
     std::cout << ">> Generating a random channel with " << nk
@@ -385,7 +380,7 @@ auto CHANNEL = []
     std::cout << disp(transpose(evalsupop)) << std::endl;
 
     std::cout << ">> Their absolute values are: " << std::endl;
-    for (std::size_t i = 0; i < (std::size_t) evalsupop.size(); i++)
+    for (std::size_t i = 0; i < (std::size_t) evalsupop.size(); ++i)
         std::cout << std::abs(evalsupop(i)) << " ";
 
     // verification
@@ -404,6 +399,7 @@ cplx pow3(const cplx& z) // test function used by qpp::cwise() in FUNCTOR()
 auto FUNCTOR = []
 {
     std::cout << "**** Functor ****" << std::endl;
+
     // functor test
     std::cout << ">> Functor z^3 acting component-wise on:" << std::endl;
     cmat A(2, 2);
@@ -425,6 +421,7 @@ auto FUNCTOR = []
 auto GRAMSCHMIDT = []
 {
     std::cout << "**** Gram-Schmidt ****" << std::endl;
+
     cmat A(3, 3);
     A << 1, 1, 0, 0, 2, 0, 0, 0, 0;
     std::cout << ">> Input matrix:" << std::endl << disp(A) << std::endl;
@@ -448,7 +445,7 @@ auto SPECTRAL = []
     cmat evectsH = hevects(rH);
     cmat spec = cmat::Zero(D, D);
     // reconstruct the matrix
-    for (std::size_t i = 0; i < D; i++)
+    for (std::size_t i = 0; i < D; ++i)
         spec += evalsH(i) * prj(evectsH.col(i));
 
     std::cout << ">> Reconstructed from spectral decomposition: " << std::endl;
@@ -459,13 +456,52 @@ auto SPECTRAL = []
             << std::endl << std::endl;
 };
 
-// Timing tests
+auto RANDOM = []
+{
+    std::cout << "**** Randomness ****" << std::endl;
+
+    std::cout << ">> Generating a random ket on D = 5" << std::endl;
+    ket rket = randket(5);
+    std::cout << disp(rket) << std::endl;
+
+    std::vector<double> probs = abssq(rket);
+    std::cout << "Probabilities: " << disp(probs, ", ") << std::endl;
+
+    std::cout << "Sum of the probabilities: ";
+    std::cout << sum(probs.begin(), probs.end()) << std::endl << std::endl;
+};
+
+auto ENTROPIES = []
+{
+    std::cout << "*** Entropies ****" << std::endl;
+
+    cmat rho = st.pb00;
+    cmat rhoA = ptrace(rho, {1});
+    std::cout << ">> State: " << std::endl << disp(rho) << std::endl;
+    std::cout << ">> Partial trace over B: " << std::endl
+            << disp(rhoA) << std::endl;
+    std::cout << ">> Shannon entropy: " << shannon(rhoA) << std::endl;
+    std::cout << ">> Renyi-0 (Hmax) entropy :" << renyi(rhoA, 0) << std::endl;
+    std::cout << ">> Renyi-1 entropy: " << renyi(rhoA, 1) << std::endl;
+    std::cout << ">> Renyi-2 entropy: " << renyi(rhoA, 2) << std::endl;
+    std::cout << ">> Renyi-inf (Hmin) entropy :"
+            << renyi(rhoA, infty) << std::endl;
+    std::cout << ">> Tsallis-1 entropy: " << tsallis(rhoA, 1) << std::endl;
+    std::cout << ">> Tsallis-2 entropy: " << tsallis(rhoA, 2) << std::endl;
+    std::cout << ">> Quantum mutual information between A and B: "
+            << qmutualinfo(rho, {0}, {1}) << std::endl;
+    std::cout << ">> Quantum mutual information between A and A: "
+            << qmutualinfo(rho, {0}, {0}) << std::endl;
+    std::cout << ">> Quantum mutual information between B and B: "
+            << qmutualinfo(rho, {1}, {1}) << std::endl << std::endl;
+};
+
 auto TIMING = []
 {
     std::cout << "**** Timing tests ****" << std::endl;
 
     std::size_t n = 12; // number of qubits
-    std::size_t N = std::pow(2, n);
+    std::size_t N = std::round(std::pow(2, n));
     std::cout << ">> n = " << n << " qubits, matrix size "
             << N << " x " << N << "." << std::endl << std::endl;
     cmat randcmat = cmat::Random(N, N);
@@ -506,7 +542,6 @@ auto TIMING = []
             << std::endl << std::endl;
 };
 
-
 int main()
 {
     // Examples
@@ -520,5 +555,7 @@ int main()
     FUNCTOR();
     GRAMSCHMIDT();
     SPECTRAL();
+    RANDOM();
+    ENTROPIES();
     TIMING();
 }

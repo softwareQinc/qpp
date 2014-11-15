@@ -19,6 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <internal/functions.h>
+
 #ifndef INCLUDE_INTERNAL_CLASSES_IOMANIP_H_
 #define INCLUDE_INTERNAL_CLASSES_IOMANIP_H_
 
@@ -140,7 +142,7 @@ public:
     friend std::basic_ostream<charT, traits>&
     operator<<(std::basic_ostream<charT, traits>& os, const IOManipEigen& rhs)
     {
-        if (rhs._A.size() == 0)
+        if (!internal::_check_nonzero_size(rhs._A))
         {
             os << "Empty [" << rhs._A.rows() << " x "
                     << rhs._A.cols() << "] matrix";

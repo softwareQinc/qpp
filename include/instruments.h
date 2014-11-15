@@ -86,18 +86,18 @@ measure(
     std::size_t Dbar = D / Dsubsys;
 
     // check the Kraus operators
-    if (!internal::_check_nonzero_size(Ks))
-        throw Exception("qpp::destructive_measure()",
+    if (Ks.size() == 0)
+        throw Exception("qpp::measure()",
                 Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(Ks[0]))
-        throw Exception("qpp::destructive_measure()",
+        throw Exception("qpp::measure()",
                 Exception::Type::MATRIX_NOT_SQUARE);
     if (Dsubsys != static_cast<std::size_t>(Ks[0].rows()))
-        throw Exception("qpp::destructive_measure()",
+        throw Exception("qpp::measure()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
     for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-            throw Exception("qpp::destructive_measure()",
+            throw Exception("qpp::measure()",
                     Exception::Type::DIMS_NOT_EQUAL);
     // END EXCEPTION CHECKS
 
@@ -203,7 +203,8 @@ measure(
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
     std::size_t n =
-            static_cast<std::size_t>(std::log2(rA.rows()) / std::log2(d));
+            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
+                    std::log2(d)));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
     return measure(rA, Ks, subsys, dims);
@@ -338,7 +339,8 @@ measure(
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
     std::size_t n =
-            static_cast<std::size_t>(std::log2(rA.rows()) / std::log2(d));
+            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
+                    std::log2(d)));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
     return measure(rA, U, subsys, dims);
@@ -366,7 +368,7 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
     // check the Kraus operators
-    if (!internal::_check_nonzero_size(Ks))
+    if (Ks.size() == 0)
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(Ks[0]))
         throw Exception("qpp::measure()", Exception::Type::MATRIX_NOT_SQUARE);

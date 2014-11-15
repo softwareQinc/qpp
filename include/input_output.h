@@ -19,6 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <internal/functions.h>
+
 #ifndef INCLUDE_INPUT_OUTPUT_H_
 #define INCLUDE_INPUT_OUTPUT_H_
 
@@ -128,7 +130,7 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
     const DynMat<typename Derived::Scalar>& rA = A;
 
     // check zero-size
-    if (rA.size() == 0)
+    if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::save()", Exception::Type::ZERO_SIZE);
 
     std::fstream fout;
