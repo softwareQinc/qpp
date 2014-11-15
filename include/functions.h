@@ -331,10 +331,11 @@ cmat hevects(const Eigen::MatrixBase<Derived>& A)
 }
 
 /**
-* \brief Singular values
+* \brief Singular values, in decreasing order
 *
 * \param A Eigen expression
-* \return Singular values of \a A, as a real dynamic column vector
+* \return Singular values of \a A, in decreasing order,
+* as a real dynamic column vector
 */
 template<typename Derived>
 DynColVect<double> svals(const Eigen::MatrixBase<Derived>& A)
@@ -1386,7 +1387,7 @@ DynColVect<typename Derived::Scalar> rho2pure(
         throw Exception("qpp::rho2pure()", Exception::Type::MATRIX_NOT_SQUARE);
     // END EXPCEPTION CHECKS
 
-    DynColVect<double> tmp_svals = svals(rA);
+    DynColVect<double> tmp_evals = hevals(rA);
     cmat tmp_evects = hevects(rA);
     DynColVect<typename Derived::Scalar> result =
             DynColVect<typename Derived::Scalar>::Zero(rA.rows());
@@ -1394,7 +1395,7 @@ DynColVect<typename Derived::Scalar> rho2pure(
     // there is only one, assuming the state is pure
     for (std::size_t k = 0; k < static_cast<std::size_t>(rA.rows()); ++k)
     {
-        if (tmp_svals(k) > eps)
+        if (std::abs(tmp_evals(k)) > eps)
         {
             result = tmp_evects.col(k);
             break;
