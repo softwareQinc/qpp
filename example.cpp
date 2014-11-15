@@ -19,6 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// TODO: check for roundoff errors when using double->std::size_t conversions
+
 #include "qpp.h"
 
 // #include "MATLAB/matlab.h" // support for MATLAB
