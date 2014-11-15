@@ -23,6 +23,7 @@
 // TODO: check the entropy functions, use svals instead of hevals
 // TODO: smarter qpp::kronpow() and qpp::powm() as compared with brute force
 // TODO: if possible, use std::enable_if for static dispatch
+// TODO: overload all subsys functions with std::size_t d = 2 option
 
 #include "qpp.h"
 
