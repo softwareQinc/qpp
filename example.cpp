@@ -385,7 +385,7 @@ auto CHANNEL = []
 
     // verification
     std::cout << std::endl
-            << ">> Diference in norm for superoperator action: ";
+            << ">> Norm difference for superoperator action: ";
     cmat rho_out2 = transpose(
             reshape(smat * reshape(transpose(rho_in), D * D, 1), D, D));
     std::cout << norm(rho_out - rho_out2) << std::endl << std::endl;
@@ -545,17 +545,21 @@ auto TIMING = []
 int main()
 {
     // Examples
-    MEASUREMENTS();
-    TELEPORTATION();
-    DENSE_CODING();
-    GROVER();
-    ENTANGLEMENT();
-    QECC();
-    CHANNEL();
-    FUNCTOR();
-    GRAMSCHMIDT();
-    SPECTRAL();
-    RANDOM();
-    ENTROPIES();
-    TIMING();
+//    MEASUREMENTS();
+//    TELEPORTATION();
+//    DENSE_CODING();
+//    GROVER();
+//    ENTANGLEMENT();
+//    QECC();
+//    CHANNEL();
+//    FUNCTOR();
+//    GRAMSCHMIDT();
+//    SPECTRAL();
+//    RANDOM();
+//    ENTROPIES();
+//    TIMING();
+
+    ket psi = randket(3);
+    ket psi_prime = rho2pure(prj(psi));
+    std::cout << norm(psi-psi_prime) << std::endl;
 }

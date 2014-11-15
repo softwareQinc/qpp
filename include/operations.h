@@ -785,15 +785,15 @@ std::vector<cmat> choi2kraus(const cmat& A)
     if (D * D != static_cast<std::size_t>(A.rows()))
         throw Exception("qpp::choi2kraus()", Exception::Type::DIMS_INVALID);
 
-    dmat ev = svals(A);
+    dmat ev = hevals(A);
     cmat evec = hevects(A);
     std::vector<cmat> result;
 
     for (std::size_t i = 0; i < D * D; ++i)
     {
-        if (ev(i) > eps)
+        if (std::abs(ev(i)) > eps)
             result.push_back(
-                    std::sqrt(ev(i)) * reshape(evec.col(i), D, D));
+                    std::sqrt(std::abs(ev(i))) * reshape(evec.col(i), D, D));
     }
 
     return result;

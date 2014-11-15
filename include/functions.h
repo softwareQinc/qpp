@@ -1386,7 +1386,7 @@ DynColVect<typename Derived::Scalar> rho2pure(
         throw Exception("qpp::rho2pure()", Exception::Type::MATRIX_NOT_SQUARE);
     // END EXPCEPTION CHECKS
 
-    DynColVect<double> tmp_evals = svals(rA);
+    DynColVect<double> tmp_svals = svals(rA);
     cmat tmp_evects = hevects(rA);
     DynColVect<typename Derived::Scalar> result =
             DynColVect<typename Derived::Scalar>::Zero(rA.rows());
@@ -1394,7 +1394,7 @@ DynColVect<typename Derived::Scalar> rho2pure(
     // there is only one, assuming the state is pure
     for (std::size_t k = 0; k < static_cast<std::size_t>(rA.rows()); ++k)
     {
-        if (tmp_evals(k) > eps)
+        if (tmp_svals(k) > eps)
         {
             result = tmp_evects.col(k);
             break;
