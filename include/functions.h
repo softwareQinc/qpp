@@ -597,7 +597,6 @@ cmat spectralpowm(const Eigen::MatrixBase<Derived>& A, const cplx z)
     cmat evalsdiag = evals.asDiagonal();
 
     return evects * evalsdiag * evects.inverse();
-
 }
 
 /**
