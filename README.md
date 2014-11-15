@@ -38,8 +38,10 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 - Compiler: `g++` >= 4.7 (for C++11 support)
 - Eigen3 library located in `$HOME/eigen_3.2.2`
 - Quantum++ library located in `$HOME/qpp`
-- MATLAB compiler include header files: `/Applications/MATLAB_R2014b.app/extern/include`
-- MATLAB compiler shared library files: `/Applications/MATLAB_R2014b.app/bin/maci64`
+- MATLAB compiler include header files:
+`/Applications/MATLAB_R2014b.app/extern/include`
+- MATLAB compiler shared library files:
+`/Applications/MATLAB_R2014b.app/bin/maci64`
 
 ===
 ### Building instructions for `g++`
@@ -141,11 +143,13 @@ the executable `qpp` is located:
 	
 	    export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:\
         "/Applications/MATLAB_R2014b.app/bin/maci64" ; ./qpp
-Otherwise, you will get a runtime error like `dyld: Library not loaded: @rpath/libmat.dylib`
+Otherwise, you will get a runtime error like 
+`dyld: Library not loaded: @rpath/libmat.dylib`
 
 - If you build a debug version with `g++` under OS X and use `gdb` to step 
 inside template functions you may want to add `-fno-weak` compiler flag. See 
-http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks
+http://stackoverflow.com
+/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks
 for more details about this problem.
 
 - `Makefiles.examples` and `CMakeLists.txt` are provided for convenience.
