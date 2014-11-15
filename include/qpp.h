@@ -98,28 +98,28 @@ const Init& init = Init::get_instance();
 /**
 * \brief qpp::Codes const Singleton
 *
-* Initializes the codes, see the class \a qpp::Codes
+* Initializes the codes, see the class qpp::Codes
 */
 const Codes& codes = Codes::get_instance();
 
 /**
 * \brief qpp::Gates const Singleton
 *
-* Initializes the gates, see the class \a qpp::Gates
+* Initializes the gates, see the class qpp::Gates
 */
 const Gates& gt = Gates::get_instance();
 
 /**
 * \brief qpp::States const Singleton
 *
-* Initializes the states, see the class \a qpp::States
+* Initializes the states, see the class qpp::States
 */
 const States& st = States::get_instance();
 
 /**
 * \brief qpp::RandomDevices Singleton
 *
-* Initializes the random devices, see the class \a qpp::RandomDevices
+* Initializes the random devices, see the class qpp::RandomDevices
 */
 RandomDevices& rdevs = RandomDevices::get_instance();
 
