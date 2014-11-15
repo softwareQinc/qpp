@@ -524,7 +524,7 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
         throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(rrho))
         throw Exception("qpp::channel()", Exception::Type::MATRIX_NOT_SQUARE);
-    if (!internal::_check_nonzero_size(Ks))
+    if (Ks.size() == 0)
         throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(Ks[0]))
         throw Exception("qpp::channel()", Exception::Type::MATRIX_NOT_SQUARE);
@@ -535,7 +535,7 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
             throw Exception("qpp::channel()", Exception::Type::DIMS_NOT_EQUAL);
 
-    cmat result = cmat::Zero(rrho.rows(), rrho.cols());
+    cmat result = cmat::Zero(rrho.rows(), rrho.rows());
 
 #pragma omp parallel for
     for (std::size_t i = 0; i < Ks.size(); ++i)
@@ -595,7 +595,7 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
         subsys_dims[i] = dims[subsys[i]];
 
     // check the Kraus operators
-    if (!internal::_check_nonzero_size(Ks))
+    if (Ks.size() == 0)
         throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(Ks[0]))
         throw Exception("qpp::channel()", Exception::Type::MATRIX_NOT_SQUARE);
@@ -658,7 +658,7 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
 cmat super(const std::vector<cmat>& Ks)
 {
     // EXCEPTION CHECKS
-    if (!internal::_check_nonzero_size(Ks))
+    if (Ks.size() == 0)
         throw Exception("qpp::super()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_nonzero_size(Ks[0]))
         throw Exception("qpp::super()", Exception::Type::ZERO_SIZE);
@@ -726,7 +726,7 @@ cmat super(const std::vector<cmat>& Ks)
 cmat choi(const std::vector<cmat>& Ks)
 {
     // EXCEPTION CHECKS
-    if (!internal::_check_nonzero_size(Ks))
+    if (Ks.size() == 0)
         throw Exception("qpp::choi()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_nonzero_size(Ks[0]))
         throw Exception("qpp::choi()", Exception::Type::ZERO_SIZE);

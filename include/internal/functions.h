@@ -160,7 +160,7 @@ bool _check_dims_match_mat(const std::vector<std::size_t>& dims,
     return true;
 }
 
-// check that valid dims match the dimensions of valid row vector
+// check that valid dims match the dimensions of valid column vector
 template<typename Derived>
 bool _check_dims_match_cvect(const std::vector<std::size_t>& dims,
         const Eigen::MatrixBase<Derived>& V)
