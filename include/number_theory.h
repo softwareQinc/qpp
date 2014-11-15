@@ -45,8 +45,8 @@ std::vector<int> x2contfrac(double x, std::size_t n, std::size_t cut = 1e5)
 
     for (std::size_t i = 0; i < n; ++i)
     {
-        result.push_back(std::floor(x));
-        x = 1. / (x - std::floor(x));
+        result.push_back(std::lround(std::floor(x)));
+        x = 1 / (x - std::floor(x));
         if (!std::isfinite(x) || x > cut)
             return result;
     }

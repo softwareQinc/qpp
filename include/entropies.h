@@ -143,7 +143,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
     double result = 0;
     for (std::size_t i = 0; i < static_cast<std::size_t>(sv.rows()); ++i)
         if (sv(i) != 0) // not identically zero
-            result += std::pow((double) sv(i), alpha);
+            result += std::pow(sv(i), alpha);
 
     return std::log2(result) / (1 - alpha);
 }

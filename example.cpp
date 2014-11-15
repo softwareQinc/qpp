@@ -20,6 +20,8 @@
  */
 
 // TODO: check for roundoff errors when using double->std::size_t conversions
+// TODO: check the entropy functions, use svlas instead of hevals
+// TODO: use .rows() instead of .cols() whenever possible
 
 #include "qpp.h"
 
