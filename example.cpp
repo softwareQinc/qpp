@@ -384,7 +384,7 @@ auto CHANNEL = []
     std::cout << disp(transpose(evalsupop)) << std::endl;
 
     std::cout << ">> Their absolute values are: " << std::endl;
-    for (std::size_t i = 0; i < (std::size_t) evalsupop.size(); i++)
+    for (std::size_t i = 0; i < (std::size_t) evalsupop.size(); ++i)
         std::cout << std::abs(evalsupop(i)) << " ";
 
     // verification
@@ -449,7 +449,7 @@ auto SPECTRAL = []
     cmat evectsH = hevects(rH);
     cmat spec = cmat::Zero(D, D);
     // reconstruct the matrix
-    for (std::size_t i = 0; i < D; i++)
+    for (std::size_t i = 0; i < D; ++i)
         spec += evalsH(i) * prj(evectsH.col(i));
 
     std::cout << ">> Reconstructed from spectral decomposition: " << std::endl;
