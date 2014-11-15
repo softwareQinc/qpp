@@ -49,7 +49,6 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
     if (internal::_check_vector(rA))
     {
         double result = 0;
-        // take the absolut value to get rid of tiny negatives
         for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); ++i)
             if (std::abs(rA(i)) != 0) // not identically zero
                 result -= std::abs(rA(i)) * std::log2(std::abs(rA(i)));
@@ -63,14 +62,11 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::shannon()", Exception::Type::MATRIX_NOT_SQUARE);
 
-    // get the eigenvalues
-    dmat ev = hevals(rA);
+    dmat ev = svals(rA); // get the singular values
     double result = 0;
-    // take the absolut value to get rid of tiny negatives
     for (std::size_t i = 0; i < static_cast<std::size_t>(ev.rows()); ++i)
-        if (std::abs((cplx) ev(i)) != 0) // not identically zero
-            result -= std::abs((cplx) ev(i))
-                    * std::log2(std::abs((cplx) ev(i)));
+        if (ev(i) != 0) // not identically zero
+            result -= ev(i) * std::log2(ev(i));
 
     return result;
 }
@@ -104,7 +100,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
     if (internal::_check_vector(rA))
     {
         if (alpha == 0) // H max
-            return std::log2((double) rA.rows());
+            return std::log2(static_cast<double>( rA.rows()));
 
         if (alpha == infty) // H min
         {
@@ -118,9 +114,8 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
         }
 
         double result = 0;
-        // take the absolut value to get rid of tiny negatives
         for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); ++i)
-            if (std::abs((cplx) rA(i)) != 0) // not identically zero
+            if (std::abs(rA(i)) != 0) // not identically zero
                 result += std::pow(std::abs(rA(i)), alpha);
 
         return std::log2(result) / (1 - alpha);
@@ -133,13 +128,12 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
         throw Exception("qpp::renyi()", Exception::Type::MATRIX_NOT_SQUARE);
 
     if (alpha == 0) // H max
-        return -std::log2((double) rA.rows());
+        return std::log2(static_cast<double>( rA.rows()));
 
     if (alpha == infty) // H min
         return -std::log2(svals(rA)[0]);
 
-    // get the singular values
-    dmat sv = svals(rA);
+    dmat sv = svals(rA); // get the singular values
     double result = 0;
     for (std::size_t i = 0; i < static_cast<std::size_t>(sv.rows()); ++i)
         if (sv(i) != 0) // not identically zero
@@ -180,9 +174,8 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double alpha)
     if (internal::_check_vector(rA))
     {
         double result = 0;
-        // take the absolut value to get rid of tiny negatives
         for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); ++i)
-            if (std::abs((cplx) rA(i)) != 0) // not identically zero
+            if (std::abs(rA(i)) != 0) // not identically zero
                 result += std::pow(std::abs(rA(i)), alpha);
 
         return (result - 1) / (1 - alpha);
@@ -194,14 +187,11 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double alpha)
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::tsallis()", Exception::Type::MATRIX_NOT_SQUARE);
 
-    // get the eigenvalues
-    dmat ev = hevals(rA);
+    dmat ev = svals(rA); // get the singular values
     double result = 0;
-    // take the absolut values of the entries
-    //of tiny negativesginary parts
     for (std::size_t i = 0; i < static_cast<std::size_t>(ev.rows()); ++i)
-        if (std::abs((cplx) ev(i)) != 0) // not identically zero
-            result += std::pow(std::abs((cplx) ev(i)), alpha);
+        if (ev(i) != 0) // not identically zero
+            result += std::pow(ev(i), alpha);
 
     return (result - 1) / (1 - alpha);
 }
@@ -287,6 +277,37 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
     cmat rhoAB = ptrace(rA, subsysABbar, dims);
 
     return shannon(rhoA) + shannon(rhoB) - shannon(rhoAB);
+}
+
+/**
+* \brief Quantum mutual information between 2 subsystems of a composite system
+*
+* \param A Eigen expression
+* \param subsysA Indexes of the first subsystem
+* \param subsysB Indexes of the second subsystem
+* \param d Subsystem dimensions
+* \return Mutual information between the 2 subsystems
+*/
+template<typename Derived>
+double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
+        const std::vector<std::size_t>& subsysA,
+        const std::vector<std::size_t>& subsysB,
+        std::size_t d = 2)
+{
+    const DynMat<typename Derived::Scalar>& rA = A;
+
+    // error checks
+
+    // check zero-size
+    if (!internal::_check_nonzero_size(rA))
+        throw Exception("qpp::mutualinfo()", Exception::Type::ZERO_SIZE);
+
+    std::size_t n =
+            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
+                    std::log2(d)));
+    std::vector<std::size_t> dims(n, d); // local dimensions vector
+
+    return qmutualinfo(rA, subsysA, subsysB, dims);
 }
 
 } /* namespace qpp */

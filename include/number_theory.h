@@ -36,16 +36,17 @@ namespace qpp
 * of \a x. If there are \a m less than \a n terms in the expansion,
 * a shorter vector with \a m components is returned.
 */
-std::vector<int> x2contfrac(double x, std::size_t n, std::size_t cut = 1e5)
+std::vector<long long int> x2contfrac(double x, std::size_t n,
+        std::size_t cut = 1e5)
 {
     if (n == 0)
         throw Exception("qpp::x2contfrac()", Exception::Type::OUT_OF_RANGE);
 
-    std::vector<int> result;
+    std::vector<long long int> result;
 
     for (std::size_t i = 0; i < n; ++i)
     {
-        result.push_back(std::lround(std::floor(x)));
+        result.push_back(std::llround(std::floor(x)));
         x = 1 / (x - std::floor(x));
         if (!std::isfinite(x) || x > cut)
             return result;

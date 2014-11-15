@@ -226,7 +226,7 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 
     // check equal local dimensions
     std::size_t D = static_cast<std::size_t>(std::llround(
-            std::sqrt((double) rA.rows())));
+            std::sqrt(static_cast<double>(rA.rows()))));
     if (D * D != static_cast<std::size_t>(rA.rows()))
         throw Exception("qpp::gconcurrence()",
                 Exception::Type::DIMS_NOT_EQUAL);

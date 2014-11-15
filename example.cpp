@@ -19,13 +19,6 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// TODO: check for roundoff errors when using double->std::size_t conversions
-// TODO: check the entropy functions, use svals instead of hevals
-// TODO: smarter qpp::kronpow() and qpp::powm() as compared with brute force
-// TODO: if possible, use std::enable_if for static dispatch
-// TODO: overload all subsys functions with std::size_t d = 2 option
-// TODO: use cbegin/cend whenever possible
-
 #include "qpp.h"
 
 // #include "MATLAB/matlab.h" // support for MATLAB
@@ -170,7 +163,7 @@ auto DENSE_CODING = []
             * kron(gt.Fd(D), gt.Id(D)));
 
     // equal probabilities of choosing a message
-    std::size_t m_A = randint(0, D * D - 1);
+    std::size_t m_A = randidx(0, D * D - 1);
     auto midx = n2multiidx(m_A, {D, D});
     std::cout << ">> Alice sent: " << m_A << " -> ";
     std::cout << disp(midx, " ") << std::endl;
@@ -203,11 +196,12 @@ auto GROVER = []
     std::cout << "**** Grover on n = " << n << " qubits ****" << std::endl;
 
     std::vector<std::size_t> dims(n, 2); // local dimensions
-    std::size_t N = std::pow(2, n); // number of elements in the database
+    // number of elements in the database
+    std::size_t N = std::round(std::pow(2, n));
     std::cout << ">> Database size: " << N << std::endl;
 
     // mark an element randomly
-    std::size_t marked = randint(0, N - 1);
+    std::size_t marked = randidx(0, N - 1);
     std::cout << ">> Marked state: " << marked << " -> ";
     std::cout << disp(n2multiidx(marked, dims), " ") << std::endl;
 
@@ -477,12 +471,37 @@ auto RANDOM = []
     std::cout << sum(probs.begin(), probs.end()) << std::endl << std::endl;
 };
 
+auto ENTROPIES = []
+{
+    std::cout << "*** Entropies ****" << std::endl;
+
+    cmat rho = st.pb00;
+    cmat rhoA = ptrace(rho, {1});
+    std::cout << ">> State: " << std::endl << disp(rho) << std::endl;
+    std::cout << ">> Partial trace over B: " << std::endl
+            << disp(rhoA) << std::endl;
+    std::cout << ">> Shannon entropy: " << shannon(rhoA) << std::endl;
+    std::cout << ">> Renyi-0 (Hmax) entropy :" << renyi(rhoA, 0) << std::endl;
+    std::cout << ">> Renyi-1 entropy: " << renyi(rhoA, 1) << std::endl;
+    std::cout << ">> Renyi-2 entropy: " << renyi(rhoA, 2) << std::endl;
+    std::cout << ">> Renyi-inf (Hmin) entropy :"
+            << renyi(rhoA, infty) << std::endl;
+    std::cout << ">> Tsallis-1 entropy: " << tsallis(rhoA, 1) << std::endl;
+    std::cout << ">> Tsallis-2 entropy: " << tsallis(rhoA, 2) << std::endl;
+    std::cout << ">> Quantum mutual information between A and B: "
+            << qmutualinfo(rho, {0}, {1}) << std::endl;
+    std::cout << ">> Quantum mutual information between A and A: "
+            << qmutualinfo(rho, {0}, {0}) << std::endl;
+    std::cout << ">> Quantum mutual information between B and B: "
+            << qmutualinfo(rho, {1}, {1}) << std::endl << std::endl;
+};
+
 auto TIMING = []
 {
     std::cout << "**** Timing tests ****" << std::endl;
 
     std::size_t n = 12; // number of qubits
-    std::size_t N = std::pow(2, n);
+    std::size_t N = std::round(std::pow(2, n));
     std::cout << ">> n = " << n << " qubits, matrix size "
             << N << " x " << N << "." << std::endl << std::endl;
     cmat randcmat = cmat::Random(N, N);
@@ -537,5 +556,6 @@ int main()
     GRAMSCHMIDT();
     SPECTRAL();
     RANDOM();
+    ENTROPIES();
     TIMING();
 }

@@ -108,7 +108,7 @@ DynMat<typename Derived1::Scalar> applyCTRL(
     // construct the table of A^i and (A^dagger)^i
     std::vector<DynMat<typename Derived1::Scalar>> Ai;
     std::vector<DynMat<typename Derived1::Scalar>> Aidagger;
-    for (std::size_t i = 0; i < std::max(d, (std::size_t) 2); ++i)
+    for (std::size_t i = 0; i < std::max(d, static_cast<std::size_t>(2)); ++i)
     {
         Ai.push_back(powm(rA, i));
         Aidagger.push_back(powm(adjoint(rA), i));
@@ -781,18 +781,17 @@ std::vector<cmat> choi2kraus(const cmat& A)
         throw Exception("qpp::choi2kraus()",
                 Exception::Type::MATRIX_NOT_SQUARE);
     std::size_t D = static_cast<std::size_t>(std::llround(
-            std::sqrt((double) A.rows())));
+            std::sqrt(static_cast<double>(A.rows()))));
     if (D * D != static_cast<std::size_t>(A.rows()))
         throw Exception("qpp::choi2kraus()", Exception::Type::DIMS_INVALID);
 
-    dmat ev = hevals(A);
+    dmat ev = svals(A);
     cmat evec = hevects(A);
     std::vector<cmat> result;
 
     for (std::size_t i = 0; i < D * D; ++i)
     {
-        // take the absolute value to get rid of tiny negatives
-        if (std::abs((double) ev(i)) > eps)
+        if (ev(i) > eps)
             result.push_back(
                     std::sqrt(ev(i)) * reshape(evec.col(i), D, D));
     }

@@ -122,19 +122,19 @@ double rand(double a = 0, double b = 1)
 }
 
 /**
-* \brief Generates a random integer (int) uniformly distributed in
+* \brief Generates a random index (std::size_t) uniformly distributed in
 * the interval [a, b]
 * \param a Beginning of the interval, belongs to it
 * \param b End of the interval, belongs to it
-* \return Random integer (int) uniformly distributed in
+* \return Random index (std::size_t) uniformly distributed in
 * the interval [a, b]
 */
-int randint(int a = std::numeric_limits<int>::min(), int b =
-std::numeric_limits<int>::max())
+std::size_t randidx(std::size_t a = std::numeric_limits<std::size_t>::min(),
+        std::size_t b = std::numeric_limits<std::size_t>::max())
 {
-    std::uniform_int_distribution<int> ud(a, b);
+    std::uniform_int_distribution<std::size_t> uid(a, b);
 
-    return ud(RandomDevices::get_instance()._rng);
+    return uid(RandomDevices::get_instance()._rng);
 }
 
 /**
@@ -264,7 +264,7 @@ cmat randU(std::size_t D)
 
     Eigen::VectorXcd phases = (rand < dmat > (D, 1)).cast<cplx>();
     for (std::size_t i = 0; i < static_cast<std::size_t>(phases.rows()); ++i)
-        phases(i) = std::exp((cplx) (2 * pi * 1_i * phases(i)));
+        phases(i) = std::exp(2 * pi * 1_i * phases(i));
 
     Q = Q * phases.asDiagonal();
 
@@ -353,7 +353,7 @@ ket randket(std::size_t D)
      return result;
      */
 
-    ket kt = static_cast<ket>(randn < cmat > (D, 1));
+    ket kt = randn < cmat > (D, 1);
 
     return kt / norm(kt);
 }
