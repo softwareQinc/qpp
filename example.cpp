@@ -385,7 +385,7 @@ auto CHANNEL = []
 
     // verification
     std::cout << std::endl
-            << ">> Diference in norm for superoperator action: ";
+            << ">> Norm difference for superoperator action: ";
     cmat rho_out2 = transpose(
             reshape(smat * reshape(transpose(rho_in), D * D, 1), D, D));
     std::cout << norm(rho_out - rho_out2) << std::endl << std::endl;
