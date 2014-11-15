@@ -545,17 +545,21 @@ auto TIMING = []
 int main()
 {
     // Examples
-    MEASUREMENTS();
-    TELEPORTATION();
-    DENSE_CODING();
-    GROVER();
-    ENTANGLEMENT();
-    QECC();
-    CHANNEL();
-    FUNCTOR();
-    GRAMSCHMIDT();
-    SPECTRAL();
-    RANDOM();
-    ENTROPIES();
-    TIMING();
+//    MEASUREMENTS();
+//    TELEPORTATION();
+//    DENSE_CODING();
+//    GROVER();
+//    ENTANGLEMENT();
+//    QECC();
+//    CHANNEL();
+//    FUNCTOR();
+//    GRAMSCHMIDT();
+//    SPECTRAL();
+//    RANDOM();
+//    ENTROPIES();
+//    TIMING();
+
+    ket psi = randket(3);
+    ket psi_prime = rho2pure(prj(psi));
+    std::cout << norm(psi-psi_prime) << std::endl;
 }
