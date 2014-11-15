@@ -112,7 +112,7 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    {</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordtype">double</span> result = 0;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="comment">// take the absolut value to get rid of tiny negatives</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;(rA.size()); ++i)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;(rA.rows()); ++i)</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordflow">if</span> (std::abs(rA(i)) != 0) <span class="comment">// not identically zero</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                result -= std::abs(rA(i)) * std::log2(std::abs(rA(i)));</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
@@ -171,7 +171,7 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keywordtype">double</span> result = 0;</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="comment">// take the absolut value to get rid of tiny negatives</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;(rA.size()); ++i)</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;(rA.rows()); ++i)</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            <span class="keywordflow">if</span> (std::abs((<a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>) rA(i)) != 0) <span class="comment">// not identically zero</span></div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                result += std::pow(std::abs(rA(i)), alpha);</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
@@ -195,7 +195,7 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keywordtype">double</span> result = 0;</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;(sv.rows()); ++i)</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <span class="keywordflow">if</span> (sv(i) != 0) <span class="comment">// not identically zero</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            result += std::pow((<span class="keywordtype">double</span>) sv(i), alpha);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            result += std::pow(sv(i), alpha);</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keywordflow">return</span> std::log2(result) / (1 - alpha);</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;}</div>
@@ -220,7 +220,7 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    {</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        <span class="keywordtype">double</span> result = 0;</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        <span class="comment">// take the absolut value to get rid of tiny negatives</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;(rA.size()); ++i)</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;(rA.rows()); ++i)</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            <span class="keywordflow">if</span> (std::abs((<a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>) rA(i)) != 0) <span class="comment">// not identically zero</span></div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                result += std::pow(std::abs(rA(i)), alpha);</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
@@ -343,7 +343,7 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_html_a39fdcbcd3a12dd426ceab6d4aec4a281"><div class="ttname"><a href="namespaceqpp.html#a39fdcbcd3a12dd426ceab6d4aec4a281">qpp::DynMat</a></div><div class="ttdeci">Eigen::Matrix&lt; Scalar, Eigen::Dynamic, Eigen::Dynamic &gt; DynMat</div><div class="ttdoc">Dynamic Eigen matrix over the field specified by Scalar. </div><div class="ttdef"><b>Definition:</b> types.h:43</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a62ab44d343a116c122e488bc3ac46a31"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">qpp::internal::_check_nonzero_size</a></div><div class="ttdeci">bool _check_nonzero_size(const T &amp;x)</div><div class="ttdef"><b>Definition:</b> functions.h:121</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2">qpp::Exception::Type::SUBSYS_MISMATCH_DIMS</a></div></div>
-<div class="ttc" id="namespaceqpp_html_a5fef47d40c93533b586f9b90a97c3621"><div class="ttname"><a href="namespaceqpp.html#a5fef47d40c93533b586f9b90a97c3621">qpp::ptrace</a></div><div class="ttdeci">DynMat&lt; typename Derived::Scalar &gt; ptrace(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; std::size_t &gt; &amp;subsys, const std::vector&lt; std::size_t &gt; &amp;dims)</div><div class="ttdoc">Partial trace. </div><div class="ttdef"><b>Definition:</b> operations.h:930</div></div>
+<div class="ttc" id="namespaceqpp_html_a5fef47d40c93533b586f9b90a97c3621"><div class="ttname"><a href="namespaceqpp.html#a5fef47d40c93533b586f9b90a97c3621">qpp::ptrace</a></div><div class="ttdeci">DynMat&lt; typename Derived::Scalar &gt; ptrace(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; std::size_t &gt; &amp;subsys, const std::vector&lt; std::size_t &gt; &amp;dims)</div><div class="ttdoc">Partial trace. </div><div class="ttdef"><b>Definition:</b> operations.h:935</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d">qpp::Exception::Type::DIMS_MISMATCH_MATRIX</a></div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7cacb2cab32e9061c686a6664d06c8bac94"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cacb2cab32e9061c686a6664d06c8bac94">qpp::Exception::Type::MATRIX_NOT_SQUARE</a></div></div>
 <div class="ttc" id="namespaceqpp_html_a80473c412499e9a120c4597a34add129"><div class="ttname"><a href="namespaceqpp.html#a80473c412499e9a120c4597a34add129">qpp::qmutualinfo</a></div><div class="ttdeci">double qmutualinfo(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; std::size_t &gt; &amp;subsysA, const std::vector&lt; std::size_t &gt; &amp;subsysB, const std::vector&lt; std::size_t &gt; &amp;dims)</div><div class="ttdoc">Quantum mutual information between 2 subsystems of a composite system. </div><div class="ttdef"><b>Definition:</b> entropies.h:219</div></div>
@@ -353,7 +353,7 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="entropies_8h.html">entropies.h</a></li>
-    <li class="footer">Generated on Fri Nov 14 2014 14:55:18 for quantum++ by
+    <li class="footer">Generated on Fri Nov 14 2014 23:38:04 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -255,7 +255,7 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                    <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2">Exception::Type::SUBSYS_MISMATCH_DIMS</a>);</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="comment">// check that subsys list match the dimension of the matrix</span></div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="keywordflow">if</span> (rA.cols() != std::pow(d, subsys.size()))</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="keywordflow">if</span> (rA.rows() != std::llround(std::pow(d, subsys.size())))</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::Gates::CTRL()&quot;</span>,</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                    <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d">Exception::Type::DIMS_MISMATCH_MATRIX</a>);</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <span class="comment">// END EXCEPTION CHECKS</span></div>
@@ -276,9 +276,9 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        std::size_t ngate = subsys.size();</div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        std::size_t nctrl = ctrl.size();</div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        std::size_t nsubsys_bar = n - ctrlgate.size();</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        std::size_t D = std::pow(d, n);</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        std::size_t DA = <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(rA.cols());</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        std::size_t Dsubsys_bar = std::pow(d, nsubsys_bar);</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        std::size_t D = std::llround(std::pow(d, n));</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        std::size_t DA = <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(rA.rows());</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        std::size_t Dsubsys_bar = std::llround(std::pow(d, nsubsys_bar));</div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        <span class="comment">// compute the complementary subsystem of ctrlgate w.r.t. dims</span></div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        std::vector&lt;std::size_t&gt; allsubsys(n); <span class="comment">// all subsystems</span></div>
@@ -389,7 +389,7 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;                    <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
 <div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;</div>
 <div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        <span class="comment">// check that dims[pos] match the dimension of A</span></div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        <span class="keywordflow">if</span> (static_cast&lt;std::size_t&gt;(rA.cols()) != dims[pos])</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        <span class="keywordflow">if</span> (static_cast&lt;std::size_t&gt;(rA.rows()) != dims[pos])</div>
 <div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::Gates::expandout()&quot;</span>,</div>
 <div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;                    <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d">Exception::Type::DIMS_MISMATCH_MATRIX</a>);</div>
 <div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;</div>
@@ -421,7 +421,7 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;            <span class="comment">// get column multi_index (same as row)</span></div>
 <div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;            <a class="code" href="namespaceqpp_1_1internal.html#ad6e3c598a9985bac31f86dc916151b80">internal::_n2multiidx</a>(i, dims.size(), Cdims, midx_col);</div>
 <div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;            <span class="comment">// run over the gate&#39;s row multi-index</span></div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;            <span class="keywordflow">for</span> (std::size_t a = 0; a &lt; static_cast&lt;std::size_t&gt;(rA.cols());</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;            <span class="keywordflow">for</span> (std::size_t a = 0; a &lt; static_cast&lt;std::size_t&gt;(rA.rows());</div>
 <div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;                 ++a)</div>
 <div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;            {</div>
 <div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;                <span class="comment">// construct the total row multi-index</span></div>
@@ -498,7 +498,7 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_7a6c2c27f035e4462dd10aeadba1cb4e.html">classes</a></li><li class="navelem"><a class="el" href="gates_8h.html">gates.h</a></li>
-    <li class="footer">Generated on Fri Nov 14 2014 14:55:18 for quantum++ by
+    <li class="footer">Generated on Fri Nov 14 2014 23:38:04 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
