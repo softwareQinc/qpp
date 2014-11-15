@@ -121,7 +121,8 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 
     std::size_t DA = rA.rows();
     std::size_t DCTRLAbar =
-            static_cast<std::size_t>(D / (DA * std::pow(d, ctrl.size())));
+            static_cast<std::size_t>(std::llround(
+                    D / (DA * std::pow(d, ctrl.size()))));
 
     std::size_t Cdims[maxn]; // local dimensions
     std::size_t CdimsA[maxn]; // local dimensions
@@ -380,7 +381,7 @@ DynMat<typename Derived1::Scalar> applyCTRL(
         throw Exception("qpp::applyCTRL()", Exception::Type::ZERO_SIZE);
 
     std::size_t n =
-            static_cast<std::size_t>(std::round(std::log2(rstate.rows()) /
+            static_cast<std::size_t>(std::llround(std::log2(rstate.rows()) /
                     std::log2(d)));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
@@ -497,7 +498,7 @@ DynMat<typename Derived1::Scalar> apply(
         throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
 
     std::size_t n =
-            static_cast<std::size_t>(std::round(std::log2(rstate.rows()) /
+            static_cast<std::size_t>(std::llround(std::log2(rstate.rows()) /
                     std::log2(d)));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
@@ -636,7 +637,7 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
         throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
 
     std::size_t n =
-            static_cast<std::size_t>(std::round(std::log2(rrho.rows()) /
+            static_cast<std::size_t>(std::llround(std::log2(rrho.rows()) /
                     std::log2(d)));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
@@ -779,7 +780,7 @@ std::vector<cmat> choi2kraus(const cmat& A)
     if (!internal::_check_square_mat(A))
         throw Exception("qpp::choi2kraus()",
                 Exception::Type::MATRIX_NOT_SQUARE);
-    std::size_t D = static_cast<std::size_t>(std::round(
+    std::size_t D = static_cast<std::size_t>(std::llround(
             std::sqrt((double) A.rows())));
     if (D * D != static_cast<std::size_t>(A.rows()))
         throw Exception("qpp::choi2kraus()", Exception::Type::DIMS_INVALID);
@@ -1086,7 +1087,7 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::ptrace()", Exception::Type::ZERO_SIZE);
 
     std::size_t n =
-            static_cast<std::size_t>(std::round(std::log2(rA.rows()) /
+            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
                     std::log2(d)));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
@@ -1219,7 +1220,7 @@ DynMat<typename Derived::Scalar> ptranspose(
         throw Exception("qpp::ptranspose()", Exception::Type::ZERO_SIZE);
 
     std::size_t n =
-            static_cast<std::size_t>(std::round(std::log2(rA.rows()) /
+            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
                     std::log2(d)));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
@@ -1377,7 +1378,7 @@ DynMat<typename Derived::Scalar> syspermute(
         throw Exception("qpp::syspermute()", Exception::Type::ZERO_SIZE);
 
     std::size_t n =
-            static_cast<std::size_t>(std::round(std::log2(rA.rows()) /
+            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
                     std::log2(d)));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 

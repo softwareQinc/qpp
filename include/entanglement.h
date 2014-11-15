@@ -225,7 +225,7 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
                 Exception::Type::MATRIX_NOT_CVECTOR);
 
     // check equal local dimensions
-    std::size_t D = static_cast<std::size_t>(std::round(
+    std::size_t D = static_cast<std::size_t>(std::llround(
             std::sqrt((double) rA.rows())));
     if (D * D != static_cast<std::size_t>(rA.rows()))
         throw Exception("qpp::gconcurrence()",

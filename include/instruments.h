@@ -203,7 +203,7 @@ measure(
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
     std::size_t n =
-            static_cast<std::size_t>(std::round(std::log2(rA.rows()) /
+            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
                     std::log2(d)));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
@@ -339,7 +339,7 @@ measure(
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
     std::size_t n =
-            static_cast<std::size_t>(std::round(std::log2(rA.rows()) /
+            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
                     std::log2(d)));
     std::vector<std::size_t> dims(n, d); // local dimensions vector
 
