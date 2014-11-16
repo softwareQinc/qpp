@@ -46,8 +46,8 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 ===
 ### Building instructions for `g++`
 
-- Example file: `example.cpp` (current folder, from where `g++` is run)
-- Output executable: `qpp` (current folder, from where `g++` is run)
+- Example file: `example.cpp` (current directory, from where `g++` is run)
+- Output executable: `qpp` (current directory, from where `g++` is run)
 
 #### Release version (without MATLAB support): 
 
@@ -120,7 +120,7 @@ of MATLAB installation, edit the `CMakeLists.txt` file. See also `CMakeLists
 ### Building using `make`
 
 For convenience, the current version of the repository has also a set 
-of Makefiles available under the folder`./Makefile.examples`. To build the 
+of Makefiles available under the directory`./Makefile.examples`. To build the 
 executable this way (without using `cmake`), copy into the root of the project 
 an appropriate Makefile from `./Makefile.examples`, name it `Makefile`, 
 then type `make` (for release version) or `make debug` (for debug version) 
@@ -142,10 +142,10 @@ Otherwise, you will get a runtime error like
 `dyld: Library not loaded: @rpath/libmat.dylib`.
 
     * I recommend running via a script, as otherwise setting the 
-    `DYLD_LIBRARY_PATH` globably may interfere with Macports `cmake` installation
-    (in case you use `cmake` from `macports`). If you use a script, then the 
-    environment variable is local to the script and does not interfere 
-    with the rest of the system.
+    `DYLD_LIBRARY_PATH` globally may interfere with Macports' `cmake` 
+    installation (in case you use `cmake` from `macports`). If you use a 
+    script, then the environment variable is local to the script and does not
+    interfere with the rest of the system.
 
     * Example of running script, run from inside the directory where 
     the executable `qpp` is located:
