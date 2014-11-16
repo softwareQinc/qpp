@@ -255,7 +255,6 @@ private:
     }
 }; /* class Exception */
 
-
 } /* namespace qpp */
 
 #endif /* INCLUDE_CLASSES_EXCEPTION_H_ */
