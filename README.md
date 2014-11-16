@@ -138,13 +138,20 @@ as otherwise the linker may not find the `gomp` library.
 - If you run the program on OS X with MATLAB support, make sure that 
 the environment variable `DYLD_LIBRARY_PATH` is set to point to the MATLAB 
 compiler library location, see the `run_OSX_MATLAB` script. 
-Example of run command from inside the directory where 
+Example of running script, run from inside the directory where 
 the executable `qpp` is located:
-	
-	    export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:\
-        "/Applications/MATLAB_R2014b.app/bin/maci64" ; ./qpp
+	    
+	    #!/bin/sh # Run Quantum++ under OS X with MATLAB support
+	    
+	    export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"
+	    ./qpp
 Otherwise, you will get a runtime error like 
 `dyld: Library not loaded: @rpath/libmat.dylib`
+PS: I recommend running via a script, as otherwise setting the 
+`DYLD_LIBRARY_PATH` globably may interfere with Macports `cmake` installation
+(in case you use `cmake` from `macports`). If you use a script, then the 
+environment variable is local to the script and does not interfere 
+with the rest of the system.
 
 - If you build a debug version with `g++` under OS X and use `gdb` to step 
 inside template functions you may want to add `-fno-weak` compiler flag. See 
