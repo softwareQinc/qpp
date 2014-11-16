@@ -539,13 +539,13 @@ void GRAPHSTATES()
     std::cout << disp(G0) << std::endl << std::endl;
     std::cout << disp(G1) << std::endl;
     // verification
-    std::cout << ">> Norm difference:" << norm(G0 - G1) << std::endl;
+    std::cout << ">> Norm difference: " << norm(G0 - G1) << std::endl;
 
     // check the corresponding density matrices
     std::cout << ">> Resulting density matrices:" << std::endl;
     std::cout << disp(rhoG0) << std::endl << std::endl;
     std::cout << disp(rhoG1) << std::endl;
-    std::cout << ">> Norm difference:" << norm(rhoG0 - rhoG1) << std::endl;
+    std::cout << ">> Norm difference: " << norm(rhoG0 - rhoG1) << std::endl;
 
     // check the X-Z rule
     // applying X to a vertex is equivalent to applying Z to its neighbors
