@@ -71,7 +71,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
          -I/Applications/MATLAB_R2014b.app/extern/include \
          -L/Applications/MATLAB_R2014b.app/bin/maci64 \
          -lmx -lmat example.cpp -o qpp
-
+ 
 #### Debug version (with MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
