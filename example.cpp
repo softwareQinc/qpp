@@ -483,10 +483,10 @@ void ENTROPIES()
     std::cout << ">> Partial trace over B: " << std::endl
             << disp(rhoA) << std::endl;
     std::cout << ">> Shannon entropy: " << shannon(rhoA) << std::endl;
-    std::cout << ">> Renyi-0 (Hmax) entropy :" << renyi(rhoA, 0) << std::endl;
+    std::cout << ">> Renyi-0 (Hmax) entropy: " << renyi(rhoA, 0) << std::endl;
     std::cout << ">> Renyi-1 entropy: " << renyi(rhoA, 1) << std::endl;
     std::cout << ">> Renyi-2 entropy: " << renyi(rhoA, 2) << std::endl;
-    std::cout << ">> Renyi-inf (Hmin) entropy :"
+    std::cout << ">> Renyi-inf (Hmin) entropy: "
             << renyi(rhoA, infty) << std::endl;
     std::cout << ">> Tsallis-1 entropy: " << tsallis(rhoA, 1) << std::endl;
     std::cout << ">> Tsallis-2 entropy: " << tsallis(rhoA, 2) << std::endl;
@@ -535,14 +535,14 @@ void GRAPHSTATES()
         }
     // end construction
 
-    std::cout << ">> Resulting graph states:" << std::endl;
+    std::cout << ">> Resulting graph states: " << std::endl;
     std::cout << disp(G0) << std::endl << std::endl;
     std::cout << disp(G1) << std::endl;
     // verification
     std::cout << ">> Norm difference: " << norm(G0 - G1) << std::endl;
 
     // check the corresponding density matrices
-    std::cout << ">> Resulting density matrices:" << std::endl;
+    std::cout << ">> Resulting density matrices: " << std::endl;
     std::cout << disp(rhoG0) << std::endl << std::endl;
     std::cout << disp(rhoG1) << std::endl;
     std::cout << ">> Norm difference: " << norm(rhoG0 - rhoG1) << std::endl;
