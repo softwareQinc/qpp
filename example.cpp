@@ -19,15 +19,17 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// TODO: extensive testing
+
 #include "qpp.h"
 
 // #include "MATLAB/matlab.h" // support for MATLAB
 
 using namespace qpp;
 
-// We define each example as an independent lambda function
+// We define each example as an independent function
 
-auto MEASUREMENTS = []
+void MEASUREMENTS()
 {
     std::cout << "**** Measurements ****" << std::endl;
 
@@ -97,9 +99,9 @@ auto MEASUREMENTS = []
     // verification
     std::cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar)
             << std::endl << std::endl;
-};
+}
 
-auto TELEPORTATION = []
+void TELEPORTATION()
 {
     std::size_t D = 3; // size of the system
     std::cout << "**** Qudit teleportation, D = " << D << " ****" << std::endl;
@@ -146,9 +148,9 @@ auto TELEPORTATION = []
     // verification
     std::cout << ">> Norm difference: " << norm(rho_B - prj(psi_a))
             << std::endl << std::endl;
-};
+}
 
-auto DENSE_CODING = []
+void DENSE_CODING()
 {
     std::size_t D = 3; // size of the system
     std::cout << "**** Qudit dense coding, D = " << D << " ****" << std::endl;
@@ -186,9 +188,9 @@ auto DENSE_CODING = []
     std::cout << ">> Bob received: ";
     std::cout << m_B << " -> " << disp(n2multiidx(m_B, {D, D}), " ")
             << std::endl << std::endl;
-};
+}
 
-auto GROVER = []
+void GROVER()
 {
     Timer t; // set a timer
 
@@ -241,9 +243,9 @@ auto GROVER = []
     // stop the timer and display it
     std::cout << ">> It took " << t.toc() << " seconds to simulate Grover on "
             << n << " qubits." << std::endl << std::endl;
-};
+}
 
-auto ENTANGLEMENT = []
+void ENTANGLEMENT()
 {
     std::cout << "**** Entanglement ****" << std::endl;
 
@@ -306,9 +308,9 @@ auto ENTANGLEMENT = []
     // verification
     std::cout << ">> Norm difference: " << norm(psi - psi_from_schmidt)
             << std::endl << std::endl;
-};
+}
 
-auto QECC = []
+void QECC()
 {
     std::cout << "**** Quantum error correcting codes ****" << std::endl;
 
@@ -335,9 +337,9 @@ auto QECC = []
     std::cout << "Checking codeword orthogonality." << std::endl;
     std::cout << ">> |<0L|1L>| = ";
     std::cout << disp(adjoint(c0) * c1) << std::endl << std::endl;
-};
+}
 
-auto CHANNEL = []
+void CHANNEL()
 {
     std::cout << "**** Channel tests ****" << std::endl;
 
@@ -389,14 +391,14 @@ auto CHANNEL = []
     cmat rho_out2 = transpose(
             reshape(smat * reshape(transpose(rho_in), D * D, 1), D, D));
     std::cout << norm(rho_out - rho_out2) << std::endl << std::endl;
-};
+}
 
 cplx pow3(const cplx& z) // test function used by qpp::cwise() in FUNCTOR()
 {
     return std::pow(z, 3);
 }
 
-auto FUNCTOR = []
+void FUNCTOR()
 {
     std::cout << "**** Functor ****" << std::endl;
 
@@ -416,9 +418,9 @@ auto FUNCTOR = []
     std::cout << ">> Result (with proper function):" << std::endl;
     // automatic type deduction for proper functions
     std::cout << disp(cwise(A, &pow3)) << std::endl << std::endl;
-};
+}
 
-auto GRAMSCHMIDT = []
+void GRAMSCHMIDT()
 {
     std::cout << "**** Gram-Schmidt ****" << std::endl;
 
@@ -431,9 +433,9 @@ auto GRAMSCHMIDT = []
 
     std::cout << ">> Projector onto G.S. vectors:" << std::endl;
     std::cout << disp(Ags * adjoint(Ags)) << std::endl << std::endl;
-};
+}
 
-auto SPECTRAL = []
+void SPECTRAL()
 {
     std::cout << "**** Spectral decomposition tests ****" << std::endl;
     std::size_t D = 4;
@@ -454,9 +456,9 @@ auto SPECTRAL = []
     // verification
     std::cout << ">> Norm difference: " << norm(spec - rH)
             << std::endl << std::endl;
-};
+}
 
-auto RANDOM = []
+void RANDOM()
 {
     std::cout << "**** Randomness ****" << std::endl;
 
@@ -469,9 +471,9 @@ auto RANDOM = []
 
     std::cout << "Sum of the probabilities: ";
     std::cout << sum(probs.begin(), probs.end()) << std::endl << std::endl;
-};
+}
 
-auto ENTROPIES = []
+void ENTROPIES()
 {
     std::cout << "*** Entropies ****" << std::endl;
 
@@ -494,9 +496,74 @@ auto ENTROPIES = []
             << qmutualinfo(rho, {0}, {0}) << std::endl;
     std::cout << ">> Quantum mutual information between B and B: "
             << qmutualinfo(rho, {1}, {1}) << std::endl << std::endl;
-};
+}
 
-auto TIMING = []
+void GRAPHSTATES()
+{
+    std::cout << "**** Graph states ****" << std::endl;
+
+    // adjacency matrix, triangle graph (LU equivalent to a GHZ state)
+    std::size_t Gamma[3][3] = {{0, 1, 1}, {1, 0, 1}, {1, 1, 0}};
+
+    // start with 2 states in |000>
+    ket G0 = mket({0, 0, 0});
+    ket G1 = mket({0, 0, 0});
+
+    // and their density matrices
+    cmat rhoG0 = prj(G0);
+    cmat rhoG1 = prj(G1);
+
+    // then construct the graph state via 2 methods:
+    // qpp::apply() and qpp::applyCTRL()
+    // result should be the same, we check later
+    cmat H3 = kronpow(gt.H, 3); // all |+>
+    G0 = (H3 * G0).eval();
+    G1 = G0;
+    rhoG0 = (H3 * rhoG0 * adjoint(H3)).eval();
+    rhoG1 = rhoG0;
+    // apply pairwise Control-Phases
+    for (std::size_t i = 0; i < 3; ++i)
+        for (std::size_t j = i + 1; j < 3; ++j)
+        {
+            if (Gamma[i][j])
+            {
+                G0 = apply(G0, gt.CZ, {i, j});
+                G1 = applyCTRL(G1, gt.Z, {i}, {j});
+                rhoG0 = apply(rhoG0, gt.CZ, {i, j});
+                rhoG1 = applyCTRL(rhoG1, gt.Z, {i}, {j});
+            }
+        }
+    // end construction
+
+    std::cout << ">> Resulting graph states:" << std::endl;
+    std::cout << disp(G0) << std::endl << std::endl;
+    std::cout << disp(G1) << std::endl;
+    // verification
+    std::cout << ">> Norm difference:" << norm(G0 - G1) << std::endl;
+
+    // check the corresponding density matrices
+    std::cout << ">> Resulting density matrices:" << std::endl;
+    std::cout << disp(rhoG0) << std::endl << std::endl;
+    std::cout << disp(rhoG1) << std::endl;
+    std::cout << ">> Norm difference:" << norm(rhoG0 - rhoG1) << std::endl;
+
+    // check the X-Z rule
+    // applying X to a vertex is equivalent to applying Z to its neighbors
+    ket G0X0 = apply(G0, gt.X, {0});
+    cmat rhoG0X0 = apply(rhoG0, gt.X, {0});
+    ket G0Z1Z2 = apply(G0, kron(gt.Z, gt.Z), {1, 2});
+    cmat rhoG0Z1Z2 = apply(rhoG0, kron(gt.Z, gt.Z), {1, 2});
+
+    // verification
+    std::cout << ">> Checking the X-Z rule" << std::endl;
+    std::cout << ">> X-Z rule. Norm difference for kets: ";
+    std::cout << norm(G0X0 - G0Z1Z2) << std::endl;
+    std::cout << ">> X-Z rule. Norm difference for the corresponding "
+            "density matrices: ";
+    std::cout << norm(rhoG0X0 - rhoG0Z1Z2) << std::endl << std::endl;
+}
+
+void TIMING()
 {
     std::cout << "**** Timing tests ****" << std::endl;
 
@@ -540,7 +607,7 @@ auto TIMING = []
     syspermute(randcmat, perm);
     std::cout << ">> It took " << t.toc() << " seconds."
             << std::endl << std::endl;
-};
+}
 
 int main()
 {
@@ -557,5 +624,6 @@ int main()
     SPECTRAL();
     RANDOM();
     ENTROPIES();
+    GRAPHSTATES();
     TIMING();
 }

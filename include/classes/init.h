@@ -61,7 +61,7 @@ private:
     ~Init()
     {
         // on exit message
-        std::cout << ">>> Exiting Quantum++..." << std::endl;
+        std::cout << std::endl << ">>> Exiting Quantum++..." << std::endl;
 
         // gets and displays current system time
         time_t current_date;

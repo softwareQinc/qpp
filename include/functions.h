@@ -629,13 +629,10 @@ DynMat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived>& A,
                     cA.rows(), cA.rows());
 
     // fast matrix power
-    while (n)
+    for (; n > 0; n /= 2)
     {
-        if (n % 2 == 1)
-        {
+        if (n % 2)
             result = (result * cA).eval();
-        }
-        n /= 2;
         cA = (cA * cA).eval();
     }
 

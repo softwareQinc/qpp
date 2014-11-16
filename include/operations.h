@@ -70,9 +70,9 @@ DynMat<typename Derived1::Scalar> applyCTRL(
                 Exception::Type::MATRIX_NOT_SQUARE);
 
     // check that all control subsystems have the same dimension
-    std::size_t d = ctrl.size() > 0 ? ctrl[0] : 1;
+    std::size_t d = ctrl.size() > 0 ? dims[ctrl[0]] : 1;
     for (std::size_t i = 1; i < ctrl.size(); ++i)
-        if (ctrl[i] != d)
+        if (dims[ctrl[i]] != d)
             throw Exception("qpp::applyCTRL()",
                     Exception::Type::DIMS_NOT_EQUAL);
 
@@ -116,13 +116,8 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 
     std::size_t D = rstate.rows(); // total dimension
     std::size_t n = dims.size();   // total number of subsystems
-
-    std::size_t ctrlsize = ctrl.size();
-
-    std::size_t DA = rA.rows();
-    std::size_t DCTRLAbar =
-            static_cast<std::size_t>(std::llround(
-                    D / (DA * std::pow(d, ctrl.size()))));
+    std::size_t ctrlsize = ctrl.size(); // dimension of ctrl subsystem
+    std::size_t DA = rA.rows(); // dimension of gate subsystem
 
     std::size_t Cdims[maxn]; // local dimensions
     std::size_t CdimsA[maxn]; // local dimensions
@@ -135,12 +130,17 @@ DynMat<typename Derived1::Scalar> applyCTRL(
     std::set_difference(std::begin(allsubsys), std::end(allsubsys),
             std::begin(ctrlgate), std::end(ctrlgate), std::begin(ctrlgatebar));
 
+    std::size_t DCTRLAbar = 1; // dimension of the rest
+    for (std::size_t i = 0; i < ctrlgatebar.size(); ++i)
+        DCTRLAbar *= dims[ctrlgatebar[i]];
+
     for (std::size_t k = 0; k < n; ++k)
         Cdims[k] = dims[k];
     for (std::size_t k = 0; k < subsys.size(); ++k)
         CdimsA[k] = dims[subsys[k]];
-    for (std::size_t k = 0; k < n - ctrlgate.size(); ++k)
+    for (std::size_t k = 0; k < ctrlgatebar.size(); ++k)
         CdimsCTRLAbar[k] = dims[ctrlgatebar[k]];
+
 
     // worker, computes the coefficient and the index for the ket case
     // used in #pragma omp parallel for collapse
@@ -279,7 +279,6 @@ DynMat<typename Derived1::Scalar> applyCTRL(
         if (!internal::_check_dims_match_cvect(dims, rstate))
             throw Exception("qpp::applyCTRL()",
                     Exception::Type::DIMS_MISMATCH_CVECTOR);
-
         if (D == 1)
             return rstate;
 
@@ -288,6 +287,7 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 #pragma omp parallel for collapse(2)
         for (std::size_t m = 0; m < DA; ++m)
             for (std::size_t r = 0; r < DCTRLAbar; ++r)
+            {
                 if (ctrlsize == 0) // no control
                 {
                     result(coeff_idx_ket(1, m, r).second) =
@@ -299,6 +299,7 @@ DynMat<typename Derived1::Scalar> applyCTRL(
                         result(coeff_idx_ket(i, m, r).second) =
                                 coeff_idx_ket(i, m, r).first;
                     }
+            }
 
         return result;
     }
@@ -463,7 +464,7 @@ DynMat<typename Derived1::Scalar> apply(
             throw Exception("qpp::apply()",
                     Exception::Type::DIMS_MISMATCH_MATRIX);
 
-        return applyCTRL(rstate, rA, {}, subsys, dims);;
+        return applyCTRL(rstate, rA, {}, subsys, dims);
     }
     else
         throw Exception("qpp::apply()",
