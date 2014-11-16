@@ -101,14 +101,14 @@ type from the root of the project
 
     cd ./build
     rm -rf *
-    cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB=ON
+    cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB=ON ..
     make
     
 Or, to disable OpenMP support (enabled by default), type
    
     cd ./build
     rm -rf *
-    cmake -DWITH_OPENMP=OFF
+    cmake -DWITH_OPENMP=OFF ..
     make
 
 To change the location of `Eigen3` library or the location 
