@@ -152,7 +152,8 @@ the executable `qpp` is located:
 	    
 	    #!/bin/sh # Run Quantum++ under OS X with MATLAB support
 	    
-	    export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"
+	    export DYLD_LIBRARY_PATH=\
+        $DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"
 	    ./qpp
 
 
