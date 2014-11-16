@@ -393,7 +393,8 @@ void CHANNEL()
     std::cout << norm(rho_out - rho_out2) << std::endl << std::endl;
 }
 
-cplx pow3(const cplx& z) // test function used by qpp::cwise() in FUNCTOR()
+// test function used by qpp::cwise() in FUNCTOR()
+cplx pow3(const cplx& z)
 {
     return std::pow(z, 3);
 }
