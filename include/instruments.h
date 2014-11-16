@@ -477,7 +477,7 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
 
     return measure(rA, Ks);
 }
-}
-/* namespace qpp */
+
+} /* namespace qpp */
 
 #endif /* INCLUDE_INSTRUMENTS_H_ */

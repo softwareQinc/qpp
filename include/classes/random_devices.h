@@ -52,7 +52,6 @@ private:
     }
 }; /* class RandomDevices */
 
-
 } /* namespace qpp */
 
 #endif /* INCLUDE_CLASSES_RANDOM_DEVICES_H_ */

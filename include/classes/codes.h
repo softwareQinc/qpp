@@ -152,6 +152,6 @@ public:
     }
 }; /* class Codes */
 
-}
+} /* namespace qpp */
 
 #endif /* INCLUDE_CLASSES_CODES_H_ */
