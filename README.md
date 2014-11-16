@@ -150,10 +150,10 @@ Otherwise, you will get a runtime error like
     * Example of running script, run from inside the directory where 
     the executable `qpp` is located:
 	    
-	    #!/bin/sh # Run Quantum++ under OS X with MATLAB support
-	    
-	    export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"
-	    ./qpp
+            #!/bin/sh # Run Quantum++ under OS X with MATLAB support
+            
+            export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"
+            ./qpp
 
 - If you build a debug version with `g++` under OS X and use `gdb` to step 
 inside template functions you may want to add `-fno-weak` compiler flag. See 
