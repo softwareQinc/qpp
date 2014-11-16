@@ -387,7 +387,7 @@ void CHANNEL()
 
     // verification
     std::cout << std::endl
-            << ">> Norm difference for superoperator action: ";
+            << ">> Norm difference for the superoperator action: ";
     cmat rho_out2 = transpose(
             reshape(smat * reshape(transpose(rho_in), D * D, 1), D, D));
     std::cout << norm(rho_out - rho_out2) << std::endl << std::endl;
@@ -556,7 +556,7 @@ void GRAPHSTATES()
 
     // verification
     std::cout << ">> Checking the X-Z rule" << std::endl;
-    std::cout << ">> X-Z rule. Norm difference for kets: ";
+    std::cout << ">> X-Z rule. Norm difference for the kets: ";
     std::cout << norm(G0X0 - G0Z1Z2) << std::endl;
     std::cout << ">> X-Z rule. Norm difference for the corresponding "
             "density matrices: ";
