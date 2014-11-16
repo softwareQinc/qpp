@@ -47,7 +47,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 ### Building instructions for `g++`
 
 - Example file: `example.cpp` (current folder, from where `g++` is run)
-- Output binary: `qpp` (current folder, from where `g++` is run)
+- Output executable: `qpp` (current folder, from where `g++` is run)
 
 #### Release version (without MATLAB support): 
 
