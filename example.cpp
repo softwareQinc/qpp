@@ -177,8 +177,9 @@ void DENSE_CODING()
     ket psi_AB = apply(mes_AB, U_A, {0}, D);
 
     // Bob measures the joint system in the qudit Bell basis
-    // use swap to avoid temporaries
-    // until Eigen supports move semantics
+    // use swap to avoid temporaries until Eigen supports move semantics,
+    // although the compiler should use copy elision and
+    // remove the temporary even without using the swap trick
     psi_AB.swap(apply(psi_AB, Bell_AB, {0, 1}, D));
 
     auto measured = measure(psi_AB, gt.Id(D * D));
@@ -531,7 +532,9 @@ void GRAPHSTATES()
             if (Gamma[i][j])
             {
                 // use swap to avoid temporaries
-                // until Eigen supports move semantics
+                // until Eigen supports move semantics,
+                // although the compiler should use copy elision and
+                // remove the temporary even without using the swap trick
                 G0.swap(apply(G0, gt.CZ, {i, j}));
                 G1.swap(applyCTRL(G1, gt.Z, {i}, {j}));
                 rhoG0.swap(apply(rhoG0, gt.CZ, {i, j}));
