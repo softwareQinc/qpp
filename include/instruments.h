@@ -37,9 +37,9 @@ namespace qpp
 * \param Ks Set of Kraus operators
 * \param subsys Subsystem indexes that are measured
 * \param dims Dimensions of the multi-partite system
-* \return Tuple consisiting of the result of the measurement,
-* the vector of outcome probabilities
-* and the vector of post-measurement normalized states
+* \return Tuple consisiting of 1. Result of the measurement, 2.
+* Vector of outcome probabilities and 3. Vector of post-measurement
+* normalized states
 */
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
@@ -157,9 +157,9 @@ measure(
 * \param subsys Subsystem indexes that are measured
 * \param dims Dimensions of the multi-partite system
 * \param Ks Set of Kraus operators
-* \return Tuple consisiting of the result of the measurement,
-* the vector of outcome probabilities
-* and the vector of post-measurement normalized states
+* \return Tuple consisiting of 1. Result of the measurement,
+* 2. Vector of outcome probabilities and 3. Vector of post-measurement
+* normalized states
 */
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
@@ -184,9 +184,9 @@ measure(
 * \param subsys Subsystem indexes that are measured
 * \param d Subsystem dimensions
 * \param Ks Set of Kraus operators
-* \return Tuple consisiting of the result of the measurement,
-* the vector of outcome probabilities
-* and the vector of post-measurement normalized states
+* \return Tuple consisiting of 1. Result of the measurement,
+* 2. Vector of outcome probabilities and 3. Vector of post-measurement
+* normalized states
 */
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
@@ -224,9 +224,9 @@ measure(
 * \param subsys Subsystem indexes that are measured
 * \param d Subsystem dimensions
 * \param Ks Set of Kraus operators
-* \return Tuple consisiting of the result of the measurement,
-* the vector of outcome probabilities
-* and the vector of post-measurement normalized states
+* \return Tuple consisiting of 1. Result of the measurement,
+* 2. Vector of outcome probabilities and 3. Vector of post-measurement
+* normalized states
 */
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
@@ -250,9 +250,9 @@ measure(
 * \param subsys Subsystem indexes that are measured
 * \param dims Dimensions of the multi-partite system
 * \param U Unitary matrix whose columns represent the measurement basis vectors
-* \return Tuple consisiting of the result of the measurement,
-* the vector of outcome probabilities
-* and the vector of post-measurement normalized states
+* \return Tuple consisiting of 1. Result of the measurement,
+* 2. Vector of outcome probabilities and 3. Vector of post-measurement
+* normalized states
 */
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
@@ -320,9 +320,9 @@ measure(
 * \param subsys Subsystem indexes that are measured
 * \param d Subsystem dimensions
 * \param U Unitary matrix whose columns represent the measurement basis vectors
-* \return Tuple consisiting of the result of the measurement,
-* the vector of outcome probabilities
-* and the vector of post-measurement normalized states
+* \return Tuple consisiting of 1. Result of the measurement,
+* 2. Vector of outcome probabilities and 3. Vector of post-measurement
+* normalized states
 */
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
@@ -352,9 +352,9 @@ measure(
 *
 * \param A Eigen expression
 * \param Ks Set of Kraus operators
-* \return Tuple consisiting of the result of the measurement,
-* the vector of outcome probabilities
-* and the vector of post-measurement normalized states
+* \return Tuple consisiting of 1. Result of the measurement,
+* 2. Vector of outcome probabilities and 3. Vector of post-measurement
+* normalized states
 */
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
@@ -428,9 +428,9 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
 *
 * \param A Eigen expression
 * \param Ks Set of Kraus operators
-* \return Tuple consisiting of the result of the measurement,
-* the vector of outcome probabilities
-* and the vector of post-measurement normalized states
+* \return Tuple consisiting of 1. Result of the measurement,
+* 2. Vector of outcome probabilities and 3. Vector of post-measurement
+* normalized states
 */
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
@@ -446,9 +446,9 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
 *
 * \param A Eigen expression
 * \param U Unitary matrix whose columns represent the measurement basis vectors
-* \return Tuple consisiting of the result of the measurement,
-* the vector of outcome probabilities
-* and the vector of post-measurement normalized states
+* \return Tuple consisiting of 1. Result of the measurement,
+* 2. Vector of outcome probabilities and 3. Vector of post-measurement
+* normalized states
 */
 template<typename Derived>
 std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(

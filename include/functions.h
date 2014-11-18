@@ -234,6 +234,31 @@ double norm(const Eigen::MatrixBase<Derived>& A)
 }
 
 /**
+* \brief Eigenvalues and eigenvectors
+*
+* \param A Eigen expression
+* \return Pair of:  1. Eigenvalues of \a A, as a complex dynamic column vector,
+* and 2. Eigenvectors of \a A, as columns of a complex matrix
+*/
+template<typename Derived>
+std::pair<DynColVect<cplx>, cmat> eig(const Eigen::MatrixBase<Derived>& A)
+{
+    const DynMat<typename Derived::Scalar>& rA = A;
+
+    // check zero-size
+    if (!internal::_check_nonzero_size(rA))
+        throw Exception("qpp::eig()", Exception::Type::ZERO_SIZE);
+
+    // check square matrix
+    if (!internal::_check_square_mat(rA))
+        throw Exception("qpp::eig()", Exception::Type::MATRIX_NOT_SQUARE);
+
+    Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
+
+    return std::make_pair(es.eigenvalues(), es.eigenvectors());
+}
+
+/**
 * \brief Eigenvalues
 *
 * \param A Eigen expression
@@ -252,9 +277,7 @@ DynColVect<cplx> evals(const Eigen::MatrixBase<Derived>& A)
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::evals()", Exception::Type::MATRIX_NOT_SQUARE);
 
-    Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
-
-    return es.eigenvalues();
+    return eig(rA).first;
 }
 
 /**
@@ -278,7 +301,32 @@ cmat evects(const Eigen::MatrixBase<Derived>& A)
 
     Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
 
-    return es.eigenvectors();
+    return eig(rA).second;
+}
+
+/**
+* \brief Eigenvalues and eigenvectors of Hermitian expression
+*
+* \param A Eigen expression
+* \return Pair of:  1. Eigenvalues of \a A, as a real dynamic column vector,
+* and 2. Eigenvectors of \a A, as columns of a complex matrix
+*/
+template<typename Derived>
+std::pair<DynColVect<double>, cmat> heig(const Eigen::MatrixBase<Derived>& A)
+{
+    const DynMat<typename Derived::Scalar>& rA = A;
+
+    // check zero-size
+    if (!internal::_check_nonzero_size(rA))
+        throw Exception("qpp::heig()", Exception::Type::ZERO_SIZE);
+
+    // check square matrix
+    if (!internal::_check_square_mat(rA))
+        throw Exception("qpp::heig()", Exception::Type::MATRIX_NOT_SQUARE);
+
+    Eigen::SelfAdjointEigenSolver<cmat> es(rA.template cast<cplx>());
+
+    return std::make_pair(es.eigenvalues(), es.eigenvectors());
 }
 
 /**
@@ -300,9 +348,7 @@ DynColVect<double> hevals(const Eigen::MatrixBase<Derived>& A)
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::hevals()", Exception::Type::MATRIX_NOT_SQUARE);
 
-    Eigen::SelfAdjointEigenSolver<cmat> es(rA.template cast<cplx>());
-
-    return es.eigenvalues();
+    return heig(rA).first;
 }
 
 /**
@@ -325,16 +371,42 @@ cmat hevects(const Eigen::MatrixBase<Derived>& A)
         throw Exception("qpp::hevects()",
                 Exception::Type::MATRIX_NOT_SQUARE);
 
-    Eigen::SelfAdjointEigenSolver<cmat> es(rA.template cast<cplx>());
-
-    return es.eigenvectors();
+    return heig(rA).second;
 }
 
 /**
-* \brief Singular values, in decreasing order
+* \brief Singular values and left/right singular vectors
 *
 * \param A Eigen expression
-* \return Singular values of \a A, in decreasing order,
+* \return Tuple of: 1. Left sigular vectors of \a A, as a complex dynamic matrix
+* whose columns are the left singular vectors of \a A, 2. Singular values of \a
+* A, ordered in decreasing order, as a real dynamic column vector,
+* and 3. Right singular vectors of \a A,
+* as a complex dynamic matrix whose columns are the right singular vectors of
+* \a A
+*/
+template<typename Derived>
+std::tuple<cmat, DynMat<double>, cmat>
+svd(const Eigen::MatrixBase<Derived>& A)
+{
+    const DynMat<typename Derived::Scalar>& rA = A;
+
+    // check zero-size
+    if (!internal::_check_nonzero_size(rA))
+        throw Exception("qpp::svd()", Exception::Type::ZERO_SIZE);
+
+    Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> sv(rA,
+            Eigen::DecompositionOptions::ComputeFullU |
+                    Eigen::DecompositionOptions::ComputeFullV);
+
+    return std::make_tuple(sv.matrixU(), sv.singularValues(),sv.matrixV());
+}
+
+/**
+* \brief Singular values
+*
+* \param A Eigen expression
+* \return Singular values of \a A, ordered in decreasing order,
 * as a real dynamic column vector
 */
 template<typename Derived>
@@ -346,9 +418,9 @@ DynColVect<double> svals(const Eigen::MatrixBase<Derived>& A)
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::svals()", Exception::Type::ZERO_SIZE);
 
-    Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(rA);
+    Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> sv(rA);
 
-    return svd.singularValues();
+    return sv.singularValues();
 }
 
 /**
@@ -367,10 +439,10 @@ cmat svdU(const Eigen::MatrixBase<Derived>& A)
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::svdU()", Exception::Type::ZERO_SIZE);
 
-    Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(rA,
+    Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> sv(rA,
             Eigen::DecompositionOptions::ComputeFullU);
 
-    return svd.matrixU();
+    return sv.matrixU();
 }
 
 /**
@@ -389,10 +461,10 @@ cmat svdV(const Eigen::MatrixBase<Derived>& A)
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::svdV()", Exception::Type::ZERO_SIZE);
 
-    Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(rA,
+    Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> sv(rA,
             Eigen::DecompositionOptions::ComputeFullV);
 
-    return svd.matrixV();
+    return sv.matrixV();
 }
 
 // Matrix functional calculus
