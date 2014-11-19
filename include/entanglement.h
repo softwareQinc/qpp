@@ -57,10 +57,8 @@ DynColVect<cplx> schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::schmidtcoeff()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
 
-    Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(
-            transpose(reshape(rA, dims[1], dims[0])));
-
-    return svd.singularValues().template cast<cplx>();
+    return svals(transpose(reshape(rA, dims[1], dims[0]))).template
+            cast<cplx>();
 }
 
 /**
@@ -72,7 +70,7 @@ DynColVect<cplx> schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
 * the Schmidt basis vectors on Alice's side.
 */
 template<typename Derived>
-cmat schmidtU(const Eigen::MatrixBase<Derived>& A,
+cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
         const std::vector<std::size_t>& dims)
 {
     const DynMat<typename Derived::Scalar>& rA = A;
@@ -103,7 +101,7 @@ cmat schmidtU(const Eigen::MatrixBase<Derived>& A,
 * the Schmidt basis vectors on Bob's side.
 */
 template<typename Derived>
-cmat schmidtV(const Eigen::MatrixBase<Derived>& A,
+cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
         const std::vector<std::size_t>& dims)
 {
     const DynMat<typename Derived::Scalar>& rA = A;
@@ -158,10 +156,10 @@ DynColVect<double> schmidtprob(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::schmidtprob()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
 
-    Eigen::JacobiSVD<DynMat<typename Derived::Scalar>> svd(
-            transpose(reshape(rA, dims[1], dims[0])));
-
-    return powm(static_cast<dmat>(svd.singularValues().asDiagonal()), 2)
+    return powm(static_cast<dmat>(
+            svals(
+                    transpose(reshape(rA, dims[1], dims[0]))
+            ).asDiagonal()), 2)
             .diagonal();
 }
 

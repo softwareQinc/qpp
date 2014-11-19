@@ -288,22 +288,22 @@ void ENTANGLEMENT()
     std::cout << ">> Schmidt probabilities of psi: " << std::endl;
     std::cout << disp(schmidtprob(psi, {2, 2})) << std::endl;
 
-    cmat U = schmidtU(psi, {2, 2});
-    cmat V = schmidtV(psi, {2, 2});
+    cmat UA = schmidtA(psi, {2, 2});
+    cmat UB = schmidtB(psi, {2, 2});
 
     std::cout << ">> Schmidt vectors on Alice's side: " << std::endl;
-    std::cout << disp(U) << std::endl;
+    std::cout << disp(UA) << std::endl;
 
     std::cout << ">> Schmidt vectors on Bob's side: " << std::endl;
-    std::cout << disp(V) << std::endl;
+    std::cout << disp(UB) << std::endl;
 
     std::cout << ">> State psi in the Schmidt basis: " << std::endl;
-    std::cout << disp(adjoint(kron(U, V)) * psi) << std::endl;
+    std::cout << disp(adjoint(kron(UA, UB)) * psi) << std::endl;
 
     // reconstructed state
     ket psi_from_schmidt =
-            schmidtcoeff(psi, {2, 2})(0) * kron(U.col(0), V.col(0))
-                    + schmidtcoeff(psi, {2, 2})(1) * kron(U.col(1), V.col(1));
+            schmidtcoeff(psi, {2, 2})(0) * kron(UA.col(0), UB.col(0))
+                    + schmidtcoeff(psi, {2, 2})(1) * kron(UA.col(1), UB.col(1));
     std::cout << ">> State psi reconstructed from the Schmidt decomposition: "
             << std::endl;
     std::cout << disp(psi_from_schmidt) << std::endl;

@@ -234,11 +234,11 @@ double norm(const Eigen::MatrixBase<Derived>& A)
 }
 
 /**
-* \brief Eigenvalues and eigenvectors
+* \brief Full eigen decomposition
 *
 * \param A Eigen expression
 * \return Pair of:  1. Eigenvalues of \a A, as a complex dynamic column vector,
-* and 2. Eigenvectors of \a A, as columns of a complex matrix
+* and 2. Eigenvectors of \a A, as columns of a complex dynamic matrix
 */
 template<typename Derived>
 std::pair<DynColVect<cplx>, cmat> eig(const Eigen::MatrixBase<Derived>& A)
@@ -284,7 +284,7 @@ DynColVect<cplx> evals(const Eigen::MatrixBase<Derived>& A)
 * \brief Eigenvectors
 *
 * \param A Eigen expression
-* \return Eigenvectors of \a A, as columns of a complex matrix
+* \return Eigenvectors of \a A, as columns of a complex dynamic matrix
 */
 template<typename Derived>
 cmat evects(const Eigen::MatrixBase<Derived>& A)
@@ -305,11 +305,11 @@ cmat evects(const Eigen::MatrixBase<Derived>& A)
 }
 
 /**
-* \brief Eigenvalues and eigenvectors of Hermitian expression
+* \brief Full eigen decomposition of Hermitian expression
 *
 * \param A Eigen expression
 * \return Pair of:  1. Eigenvalues of \a A, as a real dynamic column vector,
-* and 2. Eigenvectors of \a A, as columns of a complex matrix
+* and 2. Eigenvectors of \a A, as columns of a complex dynamic matrix
 */
 template<typename Derived>
 std::pair<DynColVect<double>, cmat> heig(const Eigen::MatrixBase<Derived>& A)
@@ -375,15 +375,13 @@ cmat hevects(const Eigen::MatrixBase<Derived>& A)
 }
 
 /**
-* \brief Singular values and left/right singular vectors
+* \brief Full singular value decomposition
 *
 * \param A Eigen expression
-* \return Tuple of: 1. Left sigular vectors of \a A, as a complex dynamic matrix
-* whose columns are the left singular vectors of \a A, 2. Singular values of \a
-* A, ordered in decreasing order, as a real dynamic column vector,
-* and 3. Right singular vectors of \a A,
-* as a complex dynamic matrix whose columns are the right singular vectors of
-* \a A
+* \return Tuple of: 1. Left sigular vectors of \a A, as columns of a complex
+* dynamic matrix, 2. Singular values of \a A, ordered in decreasing order,
+* as a real dynamic column vector, and 3. Right singular vectors of \a A,
+* as columns of a complex dynamic matrix
 */
 template<typename Derived>
 std::tuple<cmat, DynMat<double>, cmat>
@@ -399,7 +397,7 @@ svd(const Eigen::MatrixBase<Derived>& A)
             Eigen::DecompositionOptions::ComputeFullU |
                     Eigen::DecompositionOptions::ComputeFullV);
 
-    return std::make_tuple(sv.matrixU(), sv.singularValues(),sv.matrixV());
+    return std::make_tuple(sv.matrixU(), sv.singularValues(), sv.matrixV());
 }
 
 /**
