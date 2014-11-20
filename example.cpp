@@ -20,6 +20,7 @@
  */
 
 // TODO: extensive testing
+// TODO: brief file documentation
 
 #include "qpp.h"
 
