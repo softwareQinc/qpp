@@ -35,7 +35,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 ### Configuration:
 
-- Compiler: `g++` >= 4.7 (for C++11 support)
+- Compiler: `g++` >= 4.8 (for good C++11 support)
 - Eigen3 library located in `$HOME/eigen_3.2.2`
 - Quantum++ library located in `$HOME/qpp`
 - MATLAB compiler include header files:
