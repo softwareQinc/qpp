@@ -39,7 +39,7 @@ namespace qpp
 * qpp::dmat and qpp::cmat
 */
 template<typename Derived>
-Derived rand(std::size_t rows, std::size_t cols, double a = 0, double b = 1)
+Derived rand(idx rows, idx cols, double a = 0, double b = 1)
 {
     throw Exception("qpp::rand()", Exception::Type::UNDEFINED_TYPE);
 }
@@ -66,7 +66,7 @@ Derived rand(std::size_t rows, std::size_t cols, double a = 0, double b = 1)
 * \return Random real matrix
 */
 template<>
-inline dmat rand(std::size_t rows, std::size_t cols, double a, double b)
+inline dmat rand(idx rows, idx cols, double a, double b)
 {
     if (rows == 0 || cols == 0)
         throw Exception("qpp::rand()", Exception::Type::ZERO_SIZE);
@@ -97,7 +97,7 @@ inline dmat rand(std::size_t rows, std::size_t cols, double a, double b)
 * \return Random complex matrix
 */
 template<>
-inline cmat rand(std::size_t rows, std::size_t cols, double a, double b)
+inline cmat rand(idx rows, idx cols, double a, double b)
 {
     if (rows == 0 || cols == 0)
         throw Exception("qpp::rand()", Exception::Type::ZERO_SIZE);
@@ -122,17 +122,17 @@ double rand(double a = 0, double b = 1)
 }
 
 /**
-* \brief Generates a random index (std::size_t) uniformly distributed in
+* \brief Generates a random index (idx) uniformly distributed in
 * the interval [a, b]
 * \param a Beginning of the interval, belongs to it
 * \param b End of the interval, belongs to it
-* \return Random index (std::size_t) uniformly distributed in
+* \return Random index (idx) uniformly distributed in
 * the interval [a, b]
 */
-std::size_t randidx(std::size_t a = std::numeric_limits<std::size_t>::min(),
-        std::size_t b = std::numeric_limits<std::size_t>::max())
+idx randidx(idx a = std::numeric_limits<idx>::min(),
+        idx b = std::numeric_limits<idx>::max())
 {
-    std::uniform_int_distribution<std::size_t> uid(a, b);
+    std::uniform_int_distribution<idx> uid(a, b);
 
     return uid(RandomDevices::get_instance()._rng);
 }
@@ -149,7 +149,7 @@ std::size_t randidx(std::size_t a = std::numeric_limits<std::size_t>::min(),
 * qpp::dmat and qpp::cmat
 */
 template<typename Derived>
-Derived randn(std::size_t rows, std::size_t cols, double mean = 0,
+Derived randn(idx rows, idx cols, double mean = 0,
         double sigma = 1)
 {
     throw Exception("qpp::randn()", Exception::Type::UNDEFINED_TYPE);
@@ -177,7 +177,7 @@ Derived randn(std::size_t rows, std::size_t cols, double mean = 0,
 * \return Random real matrix
 */
 template<>
-inline dmat randn(std::size_t rows, std::size_t cols,
+inline dmat randn(idx rows, idx cols,
         double mean, double sigma)
 {
     if (rows == 0 || cols == 0)
@@ -215,7 +215,7 @@ inline dmat randn(std::size_t rows, std::size_t cols,
 * \return Random complex matrix
 */
 template<>
-inline cmat randn(std::size_t rows, std::size_t cols,
+inline cmat randn(idx rows, idx cols,
         double mean, double sigma)
 {
     if (rows == 0 || cols == 0)
@@ -246,7 +246,7 @@ double randn(double mean = 0, double sigma = 1)
 * \param D Dimension of the Hilbert space
 * \return Random unitary
 */
-cmat randU(std::size_t D)
+cmat randU(idx D)
 // ~3 times slower than Toby Cubitt's MATLAB corresponding routine,
 // because 's QR algorithm is not parallelized
 {
@@ -263,7 +263,7 @@ cmat randU(std::size_t D)
     // uniformly distributed according to the Haar measure
 
     Eigen::VectorXcd phases = (rand < dmat > (D, 1)).cast<cplx>();
-    for (std::size_t i = 0; i < static_cast<std::size_t>(phases.rows()); ++i)
+    for (idx i = 0; i < static_cast<idx>(phases.rows()); ++i)
         phases(i) = std::exp(2 * pi * 1_i * phases(i));
 
     Q = Q * phases.asDiagonal();
@@ -278,7 +278,7 @@ cmat randU(std::size_t D)
 * \param Dout Size of the output Hilbert space
 * \return Random isometry matrix
 */
-cmat randV(std::size_t Din, std::size_t Dout)
+cmat randV(idx Din, idx Dout)
 {
     if (Din == 0 || Dout == 0 || Din > Dout)
         throw Exception("qpp::randV()", Exception::Type::DIMS_INVALID);
@@ -296,7 +296,7 @@ cmat randV(std::size_t Din, std::size_t Dout)
 * \param D Dimension of the Hilbert space
 * \return Set of \a N Kraus operators satisfying the closure condition
 */
-std::vector<cmat> randkraus(std::size_t N, std::size_t D)
+std::vector<cmat> randkraus(idx N, idx D)
 {
     if (N == 0)
         throw Exception("qpp::randkraus()", Exception::Type::OUT_OF_RANGE);
@@ -304,16 +304,16 @@ std::vector<cmat> randkraus(std::size_t N, std::size_t D)
         throw Exception("qpp::randkraus()", Exception::Type::DIMS_INVALID);
 
     std::vector<cmat> result(N);
-    for (std::size_t i = 0; i < N; ++i)
+    for (idx i = 0; i < N; ++i)
         result[i] = cmat::Zero(D, D);
 
     cmat Fk(D, D);
     cmat U = randU(N * D);
 
 #pragma omp parallel for collapse(3)
-    for (std::size_t k = 0; k < N; ++k)
-        for (std::size_t a = 0; a < D; ++a)
-            for (std::size_t b = 0; b < D; ++b)
+    for (idx k = 0; k < N; ++k)
+        for (idx a = 0; a < D; ++a)
+            for (idx b = 0; b < D; ++b)
                 result[k](a, b) = U(a * N + k, b * N);
 
     return result;
@@ -325,7 +325,7 @@ std::vector<cmat> randkraus(std::size_t N, std::size_t D)
 * \param D Dimension of the Hilbert space
 * \return Random Hermitian matrix
 */
-cmat randH(std::size_t D)
+cmat randH(idx D)
 {
     if (D == 0)
         throw Exception("qpp::randH()", Exception::Type::DIMS_INVALID);
@@ -341,7 +341,7 @@ cmat randH(std::size_t D)
 * \param D Dimension of the Hilbert space
 * \return Random normalized ket
 */
-ket randket(std::size_t D)
+ket randket(idx D)
 {
     if (D == 0)
         throw Exception("qpp::randket()", Exception::Type::DIMS_INVALID);
@@ -364,7 +364,7 @@ ket randket(std::size_t D)
 * \param D Dimension of the Hilbert space
 * \return Random density matrix
 */
-cmat randrho(std::size_t D)
+cmat randrho(idx D)
 {
     if (D == 0)
         throw Exception("qpp::randrho()", Exception::Type::DIMS_INVALID);
@@ -384,12 +384,12 @@ cmat randrho(std::size_t D)
 * \param n Size of the permutation
 * \return Random permutation of size \a n
 */
-std::vector<std::size_t> randperm(std::size_t n)
+std::vector<idx> randperm(idx n)
 {
     if (n == 0)
         throw Exception("qpp::randperm()", Exception::Type::PERM_INVALID);
 
-    std::vector<std::size_t> result(n);
+    std::vector<idx> result(n);
 
     // fill in increasing order
     std::iota(std::begin(result), std::end(result), 0);

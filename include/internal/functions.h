@@ -72,7 +72,7 @@ inline std::size_t _multiidx2n(const std::size_t* midx, std::size_t numdims,
 template<typename Derived>
 bool _check_square_mat(const Eigen::MatrixBase<Derived>& A)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     if (rA.rows() != rA.cols())
         return false;
@@ -84,7 +84,7 @@ bool _check_square_mat(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 bool _check_vector(const Eigen::MatrixBase<Derived>& A)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     if (rA.rows() != 1 && rA.cols() != 1)
         return false;
@@ -96,7 +96,7 @@ bool _check_vector(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 bool _check_row_vector(const Eigen::MatrixBase<Derived>& A)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     if (rA.rows() != 1)
         return false;
@@ -108,7 +108,7 @@ bool _check_row_vector(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 bool _check_col_vector(const Eigen::MatrixBase<Derived>& A)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     if (rA.cols() != 1)
         return false;
@@ -149,7 +149,7 @@ template<typename Derived>
 bool _check_dims_match_mat(const std::vector<std::size_t>& dims,
         const Eigen::MatrixBase<Derived>& A)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     std::size_t proddim = 1;
     for (std::size_t i : dims)
@@ -165,7 +165,7 @@ template<typename Derived>
 bool _check_dims_match_cvect(const std::vector<std::size_t>& dims,
         const Eigen::MatrixBase<Derived>& V)
 {
-    const DynMat<typename Derived::Scalar>& rV = V;
+    const dyn_mat<typename Derived::Scalar>& rV = V;
 
     std::size_t proddim = 1;
     for (std::size_t i : dims)
@@ -181,7 +181,7 @@ template<typename Derived>
 bool _check_dims_match_rvect(const std::vector<std::size_t>& dims,
         const Eigen::MatrixBase<Derived>& V)
 {
-    const DynMat<typename Derived::Scalar>& rV = V;
+    const dyn_mat<typename Derived::Scalar>& rV = V;
 
     std::size_t proddim = 1;
     for (std::size_t i : dims)
@@ -254,11 +254,11 @@ bool _check_perm(const std::vector<std::size_t>& perm)
 // Kronecker product of 2 matrices, preserve return type
 // internal function for the variadic template function wrapper kron()
 template<typename Derived1, typename Derived2>
-DynMat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
+dyn_mat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
         const Eigen::MatrixBase<Derived2>& B)
 {
-    const DynMat<typename Derived1::Scalar>& rA = A;
-    const DynMat<typename Derived2::Scalar>& rB = B;
+    const dyn_mat<typename Derived1::Scalar>& rA = A;
+    const dyn_mat<typename Derived2::Scalar>& rB = B;
 
     // EXCEPTION CHECKS
 
@@ -280,7 +280,7 @@ DynMat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
     std::size_t Bcols = static_cast<std::size_t>(rB.cols());
     std::size_t Brows = static_cast<std::size_t>(rB.rows());
 
-    DynMat<typename Derived1::Scalar> result;
+    dyn_mat<typename Derived1::Scalar> result;
     result.resize(Arows * Brows, Acols * Bcols);
 
 #pragma omp parallel for collapse(2)

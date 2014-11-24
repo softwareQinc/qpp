@@ -36,15 +36,15 @@ namespace qpp
 * of \a x. If there are \a m less than \a n terms in the expansion,
 * a shorter vector with \a m components is returned.
 */
-std::vector<long long int> x2contfrac(double x, std::size_t n,
-        std::size_t cut = 1e5)
+std::vector<long long int> x2contfrac(double x, idx n,
+        idx cut = 1e5)
 {
     if (n == 0)
         throw Exception("qpp::x2contfrac()", Exception::Type::OUT_OF_RANGE);
 
     std::vector<long long int> result;
 
-    for (std::size_t i = 0; i < n; ++i)
+    for (idx i = 0; i < n; ++i)
     {
         result.push_back(std::llround(std::floor(x)));
         x = 1 / (x - std::floor(x));
@@ -64,7 +64,7 @@ std::vector<long long int> x2contfrac(double x, std::size_t n,
 * are considered.
 * \return Real representation of the simple continued fraction
 */
-double contfrac2x(const std::vector<int>& cf, std::size_t n)
+double contfrac2x(const std::vector<int>& cf, idx n)
 {
     if (cf.size() == 0)
         throw Exception("qpp::contfrac2x()", Exception::Type::ZERO_SIZE);
@@ -79,7 +79,7 @@ double contfrac2x(const std::vector<int>& cf, std::size_t n)
         return cf[0];
 
     double tmp = 1. / cf[n - 1];
-    for (std::size_t i = n - 2; i != 0; --i)
+    for (idx i = n - 2; i != 0; --i)
     {
         tmp = 1. / (tmp + cf[i]);
     }
@@ -102,7 +102,7 @@ double contfrac2x(const std::vector<int>& cf)
         return cf[0];
 
     double tmp = 1. / cf[cf.size() - 1];
-    for (std::size_t i = cf.size() - 2; i != 0; --i)
+    for (idx i = cf.size() - 2; i != 0; --i)
     {
         tmp = 1. / (tmp + cf[i]);
     }
@@ -117,12 +117,12 @@ double contfrac2x(const std::vector<int>& cf)
 * \param n Non-negative integer
 * \return Greatest common divisor of \a m and \a n
 */
-std::size_t gcd(std::size_t m, std::size_t n)
+idx gcd(idx m, idx n)
 {
     if (m == 0 || n == 0)
         return (std::max(m, n));
 
-    std::size_t result = 1;
+    idx result = 1;
     while (n)
     {
         result = n;
@@ -139,13 +139,13 @@ std::size_t gcd(std::size_t m, std::size_t n)
 * \param ns List of non-negative integers
 * \return Greatest common divisor of all numbers in \a ns
 */
-std::size_t gcd(const std::vector<std::size_t>& ns)
+idx gcd(const std::vector<idx>& ns)
 {
     if (ns.size() == 0)
         throw Exception("qpp::gcd()", Exception::Type::ZERO_SIZE);
 
-    std::size_t result = ns[0]; // convention: gcd({n}) = n
-    for (std::size_t i = 1; i < ns.size(); ++i)
+    idx result = ns[0]; // convention: gcd({n}) = n
+    for (idx i = 1; i < ns.size(); ++i)
     {
         result = gcd(result, ns[i]);
     }
@@ -160,7 +160,7 @@ std::size_t gcd(const std::vector<std::size_t>& ns)
 * \param n Positive integer
 * \return Least common multiple of \a m and \a n
 */
-std::size_t lcm(std::size_t m, std::size_t n)
+idx lcm(idx m, idx n)
 {
     if (m == 0 || n == 0)
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
@@ -174,7 +174,7 @@ std::size_t lcm(std::size_t m, std::size_t n)
 * \param ns List of positive integers
 * \return Least common multiple of all numbers in \a ns
 */
-std::size_t lcm(const std::vector<std::size_t>& ns)
+idx lcm(const std::vector<idx>& ns)
 {
     if (ns.size() == 0)
         throw Exception("qpp::lcm()", Exception::Type::ZERO_SIZE);
@@ -185,12 +185,12 @@ std::size_t lcm(const std::vector<std::size_t>& ns)
     if (std::find(std::begin(ns), std::end(ns), 0) != std::end(ns))
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
 
-    auto multiply = [](std::size_t x, std::size_t y) -> std::size_t
+    auto multiply = [](idx x, idx y) -> idx
     {
         return x * y;
     };
 
-    std::size_t prod = std::accumulate(std::begin(ns), std::end(ns),
+    idx prod = std::accumulate(std::begin(ns), std::end(ns),
             1u, multiply);
 
     return prod / gcd(ns);
@@ -202,14 +202,14 @@ std::size_t lcm(const std::vector<std::size_t>& ns)
 * \param perm Permutation
 * \return Inverse of the permutation \a perm
 */
-std::vector<std::size_t> invperm(const std::vector<std::size_t>& perm)
+std::vector<idx> invperm(const std::vector<idx>& perm)
 {
     if (!internal::_check_perm(perm))
         throw Exception("qpp::invperm()", Exception::Type::PERM_INVALID);
 
     // construct the inverse
-    std::vector<std::size_t> result(perm.size());
-    for (std::size_t i = 0; i < perm.size(); ++i)
+    std::vector<idx> result(perm.size());
+    for (idx i = 0; i < perm.size(); ++i)
         result[perm[i]] = i;
 
     return result;
@@ -223,8 +223,8 @@ std::vector<std::size_t> invperm(const std::vector<std::size_t>& perm)
 * \return Composition of the permutations \a perm \f$\circ\f$ \a sigma
 *  = perm(sigma)
 */
-std::vector<std::size_t> compperm(const std::vector<std::size_t>& perm,
-        const std::vector<std::size_t>& sigma)
+std::vector<idx> compperm(const std::vector<idx>& perm,
+        const std::vector<idx>& sigma)
 {
     if (!internal::_check_perm(perm))
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
@@ -234,8 +234,8 @@ std::vector<std::size_t> compperm(const std::vector<std::size_t>& perm,
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
 
     // construct the composition perm(sigma)
-    std::vector<std::size_t> result(perm.size());
-    for (std::size_t i = 0; i < perm.size(); ++i)
+    std::vector<idx> result(perm.size());
+    for (idx i = 0; i < perm.size(); ++i)
         result[i] = perm[sigma[i]];
 
     return result;

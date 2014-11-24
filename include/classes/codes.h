@@ -61,7 +61,7 @@ public:
     * \param i Codeword index
     * \return \a i-th codeword  of the code \a type
     */
-    ket codeword(Type type, std::size_t i) const
+    ket codeword(Type type, idx i) const
     {
         ket result;
         switch (type)

@@ -111,14 +111,14 @@ public:
     * \param D Dimension of the Hilbert space
     * \return Generalized Z gate for qudits
     */
-    cmat Zd(std::size_t D) const
+    cmat Zd(idx D) const
     {
         if (D == 0)
             throw Exception("qpp::Gates::Zd()", Exception::Type::DIMS_INVALID);
 
         cmat result(D, D);
         result = cmat::Zero(D, D);
-        for (std::size_t i = 0; i < D; ++i)
+        for (idx i = 0; i < D; ++i)
             result(i, i) = std::pow(omega(D), i);
 
         return result;
@@ -133,7 +133,7 @@ public:
     * \param D Dimension of the Hilbert space
     * \return Fourier transform gate for qudits
     */
-    cmat Fd(std::size_t D) const
+    cmat Fd(idx D) const
     {
         if (D == 0)
             throw Exception("qpp::Gates::Fd()", Exception::Type::DIMS_INVALID);
@@ -141,8 +141,8 @@ public:
         cmat result(D, D);
         result = cmat::Zero(D, D);
 #pragma omp parallel for collapse(2)
-        for (std::size_t j = 0; j < D; ++j)
-            for (std::size_t i = 0; i < D; ++i)
+        for (idx j = 0; j < D; ++j)
+            for (idx i = 0; i < D; ++i)
                 result(i, j) = 1 / std::sqrt(static_cast<double>(D))
                         * std::pow(omega(D), i * j);
 
@@ -157,7 +157,7 @@ public:
     * \param D Dimension of the Hilbert space
     * \return Generalized X gate for qudits
     */
-    cmat Xd(std::size_t D) const
+    cmat Xd(idx D) const
     {
         if (D == 0)
             throw Exception("qpp::Gates::Xd()", Exception::Type::DIMS_INVALID);
@@ -175,7 +175,7 @@ public:
     * \return Identity gate
     */
     template<typename Derived = Eigen::MatrixXcd>
-    Derived Id(std::size_t D) const
+    Derived Id(idx D) const
     {
         if (D == 0)
             throw Exception("qpp::Gates::Id()", Exception::Type::DIMS_INVALID);
@@ -198,13 +198,13 @@ public:
     * \return CTRL-A gate, as a matrix over the same scalar field as \a A
     */
     template<typename Derived>
-    DynMat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived>& A,
-            const std::vector<std::size_t>& ctrl,
-            const std::vector<std::size_t>& subsys,
-            std::size_t n,
-            std::size_t d = 2) const
+    dyn_mat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived>& A,
+            const std::vector<idx>& ctrl,
+            const std::vector<idx>& subsys,
+            idx n,
+            idx d = 2) const
     {
-        const DynMat<typename Derived::Scalar>& rA = A;
+        const dyn_mat<typename Derived::Scalar>& rA = A;
 
         // EXCEPTION CHECKS
         // check matrix zero size
@@ -233,12 +233,12 @@ public:
                     Exception::Type::DIMS_INVALID);
 
         // ctrl + gate subsystem vector
-        std::vector<std::size_t> ctrlgate = ctrl;
+        std::vector<idx> ctrlgate = ctrl;
         ctrlgate.insert(std::end(ctrlgate), std::begin(subsys),
                 std::end(subsys));
         std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
-        std::vector<std::size_t> dims(n, d); // local dimensions vector
+        std::vector<idx> dims(n, d); // local dimensions vector
 
         // check that ctrl + gate subsystem is valid
         // with respect to local dimensions
@@ -253,65 +253,65 @@ public:
         // END EXCEPTION CHECKS
 
         // Use static allocation for speed!
-        std::size_t Cdims[maxn];
-        std::size_t midx_row[maxn];
-        std::size_t midx_col[maxn];
+        idx Cdims[maxn];
+        idx midx_row[maxn];
+        idx midx_col[maxn];
 
-        std::size_t CdimsA[maxn];
-        std::size_t midxA_row[maxn];
-        std::size_t midxA_col[maxn];
+        idx CdimsA[maxn];
+        idx midxA_row[maxn];
+        idx midxA_col[maxn];
 
-        std::size_t Cdims_bar[maxn];
-        std::size_t Csubsys_bar[maxn];
-        std::size_t midx_bar[maxn];
+        idx Cdims_bar[maxn];
+        idx Csubsys_bar[maxn];
+        idx midx_bar[maxn];
 
-        std::size_t ngate = subsys.size();
-        std::size_t nctrl = ctrl.size();
-        std::size_t nsubsys_bar = n - ctrlgate.size();
-        std::size_t D = static_cast<std::size_t>(std::llround(std::pow(d, n)));
-        std::size_t DA = static_cast<std::size_t>(rA.rows());
-        std::size_t Dsubsys_bar = static_cast<std::size_t>(
+        idx ngate = subsys.size();
+        idx nctrl = ctrl.size();
+        idx nsubsys_bar = n - ctrlgate.size();
+        idx D = static_cast<idx>(std::llround(std::pow(d, n)));
+        idx DA = static_cast<idx>(rA.rows());
+        idx Dsubsys_bar = static_cast<idx>(
                 std::llround(std::pow(d, nsubsys_bar)));
 
         // compute the complementary subsystem of ctrlgate w.r.t. dims
-        std::vector<std::size_t> allsubsys(n); // all subsystems
+        std::vector<idx> allsubsys(n); // all subsystems
         std::iota(std::begin(allsubsys), std::end(allsubsys), 0);
         std::set_difference(std::begin(allsubsys), std::end(allsubsys),
                 std::begin(ctrlgate), std::end(ctrlgate),
                 std::begin(Csubsys_bar));
 
-        for (std::size_t k = 0; k < n; ++k)
+        for (idx k = 0; k < n; ++k)
         {
             midx_row[k] = midx_col[k] = 0;
             Cdims[k] = d;
         }
 
-        for (std::size_t k = 0; k < nsubsys_bar; ++k)
+        for (idx k = 0; k < nsubsys_bar; ++k)
         {
             Cdims_bar[k] = d;
             midx_bar[k] = 0;
         }
 
-        for (std::size_t k = 0; k < ngate; ++k)
+        for (idx k = 0; k < ngate; ++k)
         {
             midxA_row[k] = midxA_col[k] = 0;
             CdimsA[k] = d;
         }
 
-        DynMat<typename Derived::Scalar> result = DynMat<
+        dyn_mat<typename Derived::Scalar> result = dyn_mat<
                 typename Derived::Scalar>::Identity(D, D);
-        DynMat<typename Derived::Scalar> Ak;
+        dyn_mat<typename Derived::Scalar> Ak;
 
         // run over the complement indexes
-        for (std::size_t i = 0; i < Dsubsys_bar; ++i)
+        for (idx i = 0; i < Dsubsys_bar; ++i)
         {
             // get the complement's row multi-index
             internal::_n2multiidx(i, nsubsys_bar, Cdims_bar, midx_bar);
-            for (std::size_t k = 0; k < d; ++k)
+            for (idx k = 0; k < d; ++k)
             {
                 Ak = powm(rA, k); // compute rA^k
                 // run over the subsys's row multi-index
-                for (std::size_t a = 0; a < DA; ++a)
+                for (idx a = 0; a < DA; ++a)
                 {
                     // get the subsys's row multi-index
                     internal::_n2multiidx(a, ngate, CdimsA, midxA_row);
@@ -319,26 +319,26 @@ public:
                     // construct the result's row multi-index
 
                     // first the ctrl part (equal for both row and column)
-                    for (std::size_t c = 0; c < nctrl; ++c)
+                    for (idx c = 0; c < nctrl; ++c)
                         midx_row[ctrl[c]] = midx_col[ctrl[c]] = k;
 
                     // then the complement part (equal for column)
-                    for (std::size_t c = 0; c < nsubsys_bar; ++c)
+                    for (idx c = 0; c < nsubsys_bar; ++c)
                         midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =
                                 midx_bar[c];
 
                     // then the subsys part
-                    for (std::size_t c = 0; c < ngate; ++c)
+                    for (idx c = 0; c < ngate; ++c)
                         midx_row[subsys[c]] = midxA_row[c];
 
                     // run over the subsys's column multi-index
-                    for (std::size_t b = 0; b < DA; ++b)
+                    for (idx b = 0; b < DA; ++b)
                     {
                         // get the subsys's column multi-index
                         internal::_n2multiidx(b, ngate, CdimsA, midxA_col);
 
                         // construct the result's column multi-index
-                        for (std::size_t c = 0; c < ngate; ++c)
+                        for (idx c = 0; c < ngate; ++c)
                             midx_col[subsys[c]] = midxA_col[c];
 
                         // finally write the values
@@ -369,11 +369,11 @@ public:
     * over the same scalar field as \a A
     */
     template<typename Derived>
-    DynMat<typename Derived::Scalar> expandout(
-            const Eigen::MatrixBase<Derived>& A, std::size_t pos,
-            const std::vector<std::size_t>& dims) const
+    dyn_mat<typename Derived::Scalar> expandout(
+            const Eigen::MatrixBase<Derived>& A, idx pos,
+            const std::vector<idx>& dims) const
     {
-        const DynMat<typename Derived::Scalar>& rA = A;
+        const dyn_mat<typename Derived::Scalar>& rA = A;
 
         // check zero-size
         if (!internal::_check_nonzero_size(rA))
@@ -396,47 +396,47 @@ public:
                     Exception::Type::OUT_OF_RANGE);
 
         // check that dims[pos] match the dimension of A
-        if (static_cast<std::size_t>(rA.rows()) != dims[pos])
+        if (static_cast<idx>(rA.rows()) != dims[pos])
             throw Exception("qpp::Gates::expandout()",
                     Exception::Type::DIMS_MISMATCH_MATRIX);
 
-        auto multiply = [](std::size_t x, std::size_t y) -> std::size_t
+        auto multiply = [](idx x, idx y) -> idx
         {
             return x * y;
         };
 
-        std::size_t D = std::accumulate(std::begin(dims), std::end(dims),
+        idx D = std::accumulate(std::begin(dims), std::end(dims),
                 1u, multiply);
-        DynMat<typename Derived::Scalar> result = DynMat<
+        dyn_mat<typename Derived::Scalar> result = dyn_mat<
                 typename Derived::Scalar>::Identity(D, D);
 
-        std::size_t Cdims[maxn];
-        std::size_t midx_row[maxn];
-        std::size_t midx_col[maxn];
+        idx Cdims[maxn];
+        idx midx_row[maxn];
+        idx midx_col[maxn];
 
-        for (std::size_t k = 0; k < dims.size(); ++k)
+        for (idx k = 0; k < dims.size(); ++k)
         {
             midx_row[k] = midx_col[k] = 0;
             Cdims[k] = dims[k];
         }
 
         // run over the main diagonal multi-indexes
-        for (std::size_t i = 0; i < D; ++i)
+        for (idx i = 0; i < D; ++i)
         {
             // get row multi_index
             internal::_n2multiidx(i, dims.size(), Cdims, midx_row);
             // get column multi_index (same as row)
             internal::_n2multiidx(i, dims.size(), Cdims, midx_col);
             // run over the gate's row multi-index
-            for (std::size_t a = 0; a < static_cast<std::size_t>(rA.rows());
+            for (idx a = 0; a < static_cast<idx>(rA.rows());
                  ++a)
             {
                 // construct the total row multi-index
                 midx_row[pos] = a;
 
                 // run over the gate's column multi-index
-                for (std::size_t b = 0;
-                     b < static_cast<std::size_t>(rA.cols()); ++b)
+                for (idx b = 0;
+                     b < static_cast<idx>(rA.cols()); ++b)
                 {
                     // construct the total column multi-index
                     midx_col[pos] = b;

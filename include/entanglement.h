@@ -38,10 +38,10 @@ namespace qpp
 * \return Schmidt coefficients of \a A, as a complex dynamic column vector
 */
 template<typename Derived>
-DynColVect<cplx> schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& dims)
+dyn_col_vect<cplx> schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
+        const std::vector<idx>& dims)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::schmidtcoeff()", Exception::Type::ZERO_SIZE);
@@ -71,9 +71,9 @@ DynColVect<cplx> schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& dims)
+        const std::vector<idx>& dims)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::schmidtU()", Exception::Type::ZERO_SIZE);
@@ -102,9 +102,9 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& dims)
+        const std::vector<idx>& dims)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::schmidtV()", Exception::Type::ZERO_SIZE);
@@ -137,10 +137,10 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
 * \return Schmidt probabilites of \a A, as a real dynamic column vector
 */
 template<typename Derived>
-DynColVect<double> schmidtprob(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& dims)
+dyn_col_vect<double> schmidtprob(const Eigen::MatrixBase<Derived>& A,
+        const std::vector<idx>& dims)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::schmidtprob()", Exception::Type::ZERO_SIZE);
@@ -176,9 +176,9 @@ DynColVect<double> schmidtprob(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 double entanglement(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& dims)
+        const std::vector<idx>& dims)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::entanglement()", Exception::Type::ZERO_SIZE);
@@ -212,7 +212,7 @@ template<typename Derived>
 // the G-concurrence
 double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
@@ -223,9 +223,9 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
                 Exception::Type::MATRIX_NOT_CVECTOR);
 
     // check equal local dimensions
-    std::size_t D = static_cast<std::size_t>(std::llround(
+    idx D = static_cast<idx>(std::llround(
             std::sqrt(static_cast<double>(rA.rows()))));
-    if (D * D != static_cast<std::size_t>(rA.rows()))
+    if (D * D != static_cast<idx>(rA.rows()))
         throw Exception("qpp::gconcurrence()",
                 Exception::Type::DIMS_NOT_EQUAL);
 
@@ -242,9 +242,9 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 */
 template<typename Derived>
 double negativity(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& dims)
+        const std::vector<idx>& dims)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::negativity()", Exception::Type::ZERO_SIZE);
@@ -272,9 +272,9 @@ double negativity(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 double lognegativity(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& dims)
+        const std::vector<idx>& dims)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::lognegativity()", Exception::Type::ZERO_SIZE);
@@ -303,7 +303,7 @@ double lognegativity(const Eigen::MatrixBase<Derived>& A,
 template<typename Derived>
 double concurrence(const Eigen::MatrixBase<Derived>& A)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::concurrence()", Exception::Type::ZERO_SIZE);
@@ -317,7 +317,7 @@ double concurrence(const Eigen::MatrixBase<Derived>& A)
                 Exception::Type::NOT_QUBIT_SUBSYS);
 
     cmat sigmaY = Gates::get_instance().Y;
-    DynColVect<double> lambdas =
+    dyn_col_vect<double> lambdas =
             evals(
                     rA * kron(sigmaY, sigmaY) * conjugate(rA)
                             * kron(sigmaY, sigmaY)).real();

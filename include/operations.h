@@ -40,15 +40,15 @@ namespace qpp
 * \return CTRL-A gate applied to the part \a subsys of \a state
 */
 template<typename Derived1, typename Derived2>
-DynMat<typename Derived1::Scalar> applyCTRL(
+dyn_mat<typename Derived1::Scalar> applyCTRL(
         const Eigen::MatrixBase<Derived1>& state,
         const Eigen::MatrixBase<Derived2>& A,
-        const std::vector<std::size_t>& ctrl,
-        const std::vector<std::size_t>& subsys,
-        const std::vector<std::size_t>& dims)
+        const std::vector<idx>& ctrl,
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
 {
-    const DynMat<typename Derived1::Scalar>& rstate = state;
-    const DynMat<typename Derived2::Scalar>& rA = A;
+    const dyn_mat<typename Derived1::Scalar>& rstate = state;
+    const dyn_mat<typename Derived2::Scalar>& rA = A;
 
     // EXCEPTION CHECKS
     // check types
@@ -70,8 +70,8 @@ DynMat<typename Derived1::Scalar> applyCTRL(
                 Exception::Type::MATRIX_NOT_SQUARE);
 
     // check that all control subsystems have the same dimension
-    std::size_t d = ctrl.size() > 0 ? dims[ctrl[0]] : 1;
-    for (std::size_t i = 1; i < ctrl.size(); ++i)
+    idx d = ctrl.size() > 0 ? dims[ctrl[0]] : 1;
+    for (idx i = 1; i < ctrl.size(); ++i)
         if (dims[ctrl[i]] != d)
             throw Exception("qpp::applyCTRL()",
                     Exception::Type::DIMS_NOT_EQUAL);
@@ -86,14 +86,14 @@ DynMat<typename Derived1::Scalar> applyCTRL(
                 Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     // check that gate matches the dimensions of the subsys
-    std::vector<std::size_t> subsys_dims(subsys.size());
-    for (std::size_t i = 0; i < subsys.size(); ++i)
+    std::vector<idx> subsys_dims(subsys.size());
+    for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
     if (!internal::_check_dims_match_mat(subsys_dims, rA))
         throw Exception("qpp::applyCTRL()",
                 Exception::Type::MATRIX_MISMATCH_SUBSYS);
 
-    std::vector<std::size_t> ctrlgate = ctrl; // ctrl + gate subsystem vector
+    std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
     ctrlgate.insert(std::end(ctrlgate), std::begin(subsys), std::end(subsys));
     std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
@@ -106,58 +106,58 @@ DynMat<typename Derived1::Scalar> applyCTRL(
     // END EXCEPTION CHECKS
 
     // construct the table of A^i and (A^dagger)^i
-    std::vector<DynMat<typename Derived1::Scalar>> Ai;
-    std::vector<DynMat<typename Derived1::Scalar>> Aidagger;
-    for (std::size_t i = 0; i < std::max(d, static_cast<std::size_t>(2)); ++i)
+    std::vector<dyn_mat<typename Derived1::Scalar>> Ai;
+    std::vector<dyn_mat<typename Derived1::Scalar>> Aidagger;
+    for (idx i = 0; i < std::max(d, static_cast<idx>(2)); ++i)
     {
         Ai.push_back(powm(rA, i));
         Aidagger.push_back(powm(adjoint(rA), i));
     }
 
-    std::size_t D = rstate.rows(); // total dimension
-    std::size_t n = dims.size();   // total number of subsystems
-    std::size_t ctrlsize = ctrl.size(); // dimension of ctrl subsystem
-    std::size_t DA = rA.rows(); // dimension of gate subsystem
+    idx D = rstate.rows(); // total dimension
+    idx n = dims.size();   // total number of subsystems
+    idx ctrlsize = ctrl.size(); // dimension of ctrl subsystem
+    idx DA = rA.rows(); // dimension of gate subsystem
 
-    std::size_t Cdims[maxn]; // local dimensions
-    std::size_t CdimsA[maxn]; // local dimensions
-    std::size_t CdimsCTRLAbar[maxn]; // local dimensions
+    idx Cdims[maxn]; // local dimensions
+    idx CdimsA[maxn]; // local dimensions
+    idx CdimsCTRLAbar[maxn]; // local dimensions
 
-    std::vector<std::size_t> ctrlgatebar(n - ctrlgate.size()); // rest
-    std::vector<std::size_t> allsubsys(n); // all subsystems
+    std::vector<idx> ctrlgatebar(n - ctrlgate.size()); // rest
+    std::vector<idx> allsubsys(n); // all subsystems
     std::iota(std::begin(allsubsys), std::end(allsubsys), 0);
     // compute the complementary subsystem of ctrlgate w.r.t. dims
     std::set_difference(std::begin(allsubsys), std::end(allsubsys),
             std::begin(ctrlgate), std::end(ctrlgate), std::begin(ctrlgatebar));
 
-    std::size_t DCTRLAbar = 1; // dimension of the rest
-    for (std::size_t i = 0; i < ctrlgatebar.size(); ++i)
+    idx DCTRLAbar = 1; // dimension of the rest
+    for (idx i = 0; i < ctrlgatebar.size(); ++i)
         DCTRLAbar *= dims[ctrlgatebar[i]];
 
-    for (std::size_t k = 0; k < n; ++k)
+    for (idx k = 0; k < n; ++k)
         Cdims[k] = dims[k];
-    for (std::size_t k = 0; k < subsys.size(); ++k)
+    for (idx k = 0; k < subsys.size(); ++k)
         CdimsA[k] = dims[subsys[k]];
-    for (std::size_t k = 0; k < ctrlgatebar.size(); ++k)
+    for (idx k = 0; k < ctrlgatebar.size(); ++k)
         CdimsCTRLAbar[k] = dims[ctrlgatebar[k]];
 
 
     // worker, computes the coefficient and the index for the ket case
     // used in #pragma omp parallel for collapse
-    auto coeff_idx_ket = [=](std::size_t _i, std::size_t _m, std::size_t _r)
-            -> std::pair<typename Derived1::Scalar, std::size_t>
+    auto coeff_idx_ket = [=](idx _i, idx _m, idx _r)
+            -> std::pair<typename Derived1::Scalar, idx>
     {
-        std::size_t idx = 0;
+        idx indx = 0;
         typename Derived1::Scalar coeff = 0;
 
-        std::size_t Cmidx[maxn]; // the total multi-index
-        std::size_t CmidxA[maxn];// the gate part multi-index
-        std::size_t CmidxCTRLAbar[maxn];// the rest multi-index
+        idx Cmidx[maxn]; // the total multi-index
+        idx CmidxA[maxn];// the gate part multi-index
+        idx CmidxCTRLAbar[maxn];// the rest multi-index
 
         // compute the index
 
         // set the CTRL part
-        for (std::size_t k = 0; k < ctrl.size(); ++k)
+        for (idx k = 0; k < ctrl.size(); ++k)
         {
             Cmidx[ctrl[k]] = _i;
         }
@@ -165,26 +165,26 @@ DynMat<typename Derived1::Scalar> applyCTRL(
         // set the rest
         internal::_n2multiidx(_r, n - ctrlgate.size(),
                 CdimsCTRLAbar, CmidxCTRLAbar);
-        for (std::size_t k = 0; k < n - ctrlgate.size(); ++k)
+        for (idx k = 0; k < n - ctrlgate.size(); ++k)
         {
             Cmidx[ctrlgatebar[k]] = CmidxCTRLAbar[k];
         }
 
         // set the A part
         internal::_n2multiidx(_m, subsys.size(), CdimsA, CmidxA);
-        for (std::size_t k = 0; k < subsys.size(); ++k)
+        for (idx k = 0; k < subsys.size(); ++k)
         {
             Cmidx[subsys[k]] = CmidxA[k];
         }
 
         // we now got the total index
-        idx = internal::_multiidx2n(Cmidx, n, Cdims);
+        indx = internal::_multiidx2n(Cmidx, n, Cdims);
 
         // compute the coefficient
-        for (std::size_t _n = 0; _n < DA; ++_n)
+        for (idx _n = 0; _n < DA; ++_n)
         {
             internal::_n2multiidx(_n, subsys.size(), CdimsA, CmidxA);
-            for (std::size_t k = 0; k < subsys.size(); ++k)
+            for (idx k = 0; k < subsys.size(); ++k)
             {
                 Cmidx[subsys[k]] = CmidxA[k];
             }
@@ -192,32 +192,32 @@ DynMat<typename Derived1::Scalar> applyCTRL(
                     rstate(internal::_multiidx2n(Cmidx, n, Cdims));
         }
 
-        return std::make_pair(coeff, idx);
+        return std::make_pair(coeff, indx);
     };
 
     // worker, computes the coefficient and the index
     // for the density matrix case
     // used in #pragma omp parallel for collapse
-    auto coeff_idx_rho = [=](std::size_t _i1, std::size_t _m1,
-            std::size_t _r1, std::size_t _i2, std::size_t _m2,
-            std::size_t _r2)
-            -> std::tuple<typename Derived1::Scalar, std::size_t, std::size_t>
+    auto coeff_idx_rho = [=](idx _i1, idx _m1,
+            idx _r1, idx _i2, idx _m2,
+            idx _r2)
+            -> std::tuple<typename Derived1::Scalar, idx, idx>
     {
-        std::size_t idxrow = 0;
-        std::size_t idxcol = 0;
+        idx idxrow = 0;
+        idx idxcol = 0;
         typename Derived1::Scalar coeff = 0;
 
-        std::size_t Cmidxrow[maxn]; // the total row multi-index
-        std::size_t Cmidxcol[maxn];// the total col multi-index
-        std::size_t CmidxArow[maxn];// the gate part row multi-index
-        std::size_t CmidxAcol[maxn];// the gate part col multi-index
-        std::size_t CmidxCTRLAbarrow[maxn];// the rest row multi-index
-        std::size_t CmidxCTRLAbarcol[maxn];// the rest col multi-index
+        idx Cmidxrow[maxn]; // the total row multi-index
+        idx Cmidxcol[maxn];// the total col multi-index
+        idx CmidxArow[maxn];// the gate part row multi-index
+        idx CmidxAcol[maxn];// the gate part col multi-index
+        idx CmidxCTRLAbarrow[maxn];// the rest row multi-index
+        idx CmidxCTRLAbarcol[maxn];// the rest col multi-index
 
         // compute the ket/bra indexes
 
         // set the CTRL part
-        for (std::size_t k = 0; k < ctrl.size(); ++k)
+        for (idx k = 0; k < ctrl.size(); ++k)
         {
             Cmidxrow[ctrl[k]] = _i1;
             Cmidxcol[ctrl[k]] = _i2;
@@ -228,7 +228,7 @@ DynMat<typename Derived1::Scalar> applyCTRL(
                 CdimsCTRLAbar, CmidxCTRLAbarrow);
         internal::_n2multiidx(_r2, n - ctrlgate.size(),
                 CdimsCTRLAbar, CmidxCTRLAbarcol);
-        for (std::size_t k = 0; k < n - ctrlgate.size(); ++k)
+        for (idx k = 0; k < n - ctrlgate.size(); ++k)
         {
             Cmidxrow[ctrlgatebar[k]] = CmidxCTRLAbarrow[k];
             Cmidxcol[ctrlgatebar[k]] = CmidxCTRLAbarcol[k];
@@ -237,7 +237,7 @@ DynMat<typename Derived1::Scalar> applyCTRL(
         // set the A part
         internal::_n2multiidx(_m1, subsys.size(), CdimsA, CmidxArow);
         internal::_n2multiidx(_m2, subsys.size(), CdimsA, CmidxAcol);
-        for (std::size_t k = 0; k < subsys.size(); ++k)
+        for (idx k = 0; k < subsys.size(); ++k)
         {
             Cmidxrow[subsys[k]] = CmidxArow[k];
             Cmidxcol[subsys[k]] = CmidxAcol[k];
@@ -248,17 +248,17 @@ DynMat<typename Derived1::Scalar> applyCTRL(
         idxcol = internal::_multiidx2n(Cmidxcol, n, Cdims);
 
         // compute the coefficient
-        for (std::size_t _n1 = 0; _n1 < DA; ++_n1)
+        for (idx _n1 = 0; _n1 < DA; ++_n1)
         {
             internal::_n2multiidx(_n1, subsys.size(), CdimsA, CmidxArow);
-            for (std::size_t k = 0; k < subsys.size(); ++k)
+            for (idx k = 0; k < subsys.size(); ++k)
             {
                 Cmidxrow[subsys[k]] = CmidxArow[k];
             }
-            for (std::size_t _n2 = 0; _n2 < DA; ++_n2)
+            for (idx _n2 = 0; _n2 < DA; ++_n2)
             {
                 internal::_n2multiidx(_n2, subsys.size(), CdimsA, CmidxAcol);
-                for (std::size_t k = 0; k < subsys.size(); ++k)
+                for (idx k = 0; k < subsys.size(); ++k)
                 {
                     Cmidxcol[subsys[k]] = CmidxAcol[k];
                 }
@@ -282,11 +282,11 @@ DynMat<typename Derived1::Scalar> applyCTRL(
         if (D == 1)
             return rstate;
 
-        DynMat<typename Derived1::Scalar> result = rstate;
+        dyn_mat<typename Derived1::Scalar> result = rstate;
 
 #pragma omp parallel for collapse(2)
-        for (std::size_t m = 0; m < DA; ++m)
-            for (std::size_t r = 0; r < DCTRLAbar; ++r)
+        for (idx m = 0; m < DA; ++m)
+            for (idx r = 0; r < DCTRLAbar; ++r)
             {
                 if (ctrlsize == 0) // no control
                 {
@@ -294,7 +294,7 @@ DynMat<typename Derived1::Scalar> applyCTRL(
                             coeff_idx_ket(1, m, r).first;
                 }
                 else
-                    for (std::size_t i = 0; i < d; ++i)
+                    for (idx i = 0; i < d; ++i)
                     {
                         result(coeff_idx_ket(i, m, r).second) =
                                 coeff_idx_ket(i, m, r).first;
@@ -314,13 +314,13 @@ DynMat<typename Derived1::Scalar> applyCTRL(
         if (D == 1)
             return rstate;
 
-        DynMat<typename Derived1::Scalar> result = rstate;
+        dyn_mat<typename Derived1::Scalar> result = rstate;
 
 #pragma omp parallel for collapse(4)
-        for (std::size_t m1 = 0; m1 < DA; ++m1)
-            for (std::size_t r1 = 0; r1 < DCTRLAbar; ++r1)
-                for (std::size_t m2 = 0; m2 < DA; ++m2)
-                    for (std::size_t r2 = 0; r2 < DCTRLAbar; ++r2)
+        for (idx m1 = 0; m1 < DA; ++m1)
+            for (idx r1 = 0; r1 < DCTRLAbar; ++r1)
+                for (idx m2 = 0; m2 < DA; ++m2)
+                    for (idx r2 = 0; r2 < DCTRLAbar; ++r2)
                         if (ctrlsize == 0) // no control
                         {
                             auto coeff_idxes = coeff_idx_rho(1, m1, r1,
@@ -331,8 +331,8 @@ DynMat<typename Derived1::Scalar> applyCTRL(
                         }
                         else
                         {
-                            for (std::size_t i1 = 0; i1 < d; ++i1)
-                                for (std::size_t i2 = 0; i2 < d; ++i2)
+                            for (idx i1 = 0; i1 < d; ++i1)
+                                for (idx i2 = 0; i2 < d; ++i2)
                                 {
                                     auto coeff_idxes = coeff_idx_rho(
                                             i1, m1, r1,
@@ -367,24 +367,24 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 * \return CTRL-A gate applied to the part \a subsys of \a state
 */
 template<typename Derived1, typename Derived2>
-DynMat<typename Derived1::Scalar> applyCTRL(
+dyn_mat<typename Derived1::Scalar> applyCTRL(
         const Eigen::MatrixBase<Derived1>& state,
         const Eigen::MatrixBase<Derived2>& A,
-        const std::vector<std::size_t>& ctrl,
-        const std::vector<std::size_t>& subsys,
-        std::size_t d = 2)
+        const std::vector<idx>& ctrl,
+        const std::vector<idx>& subsys,
+        idx d = 2)
 {
-    const DynMat<typename Derived1::Scalar>& rstate = state;
-    const DynMat<typename Derived1::Scalar>& rA = A;
+    const dyn_mat<typename Derived1::Scalar>& rstate = state;
+    const dyn_mat<typename Derived1::Scalar>& rA = A;
 
     // check zero size
     if (!internal::_check_nonzero_size(rstate))
         throw Exception("qpp::applyCTRL()", Exception::Type::ZERO_SIZE);
 
-    std::size_t n =
-            static_cast<std::size_t>(std::llround(std::log2(rstate.rows()) /
+    idx n =
+            static_cast<idx>(std::llround(std::log2(rstate.rows()) /
                     std::log2(d)));
-    std::vector<std::size_t> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return applyCTRL(rstate, rA, ctrl, subsys, dims);
 }
@@ -403,14 +403,14 @@ DynMat<typename Derived1::Scalar> applyCTRL(
 * \return Gate \a A applied to the part \a subsys of \a state
 */
 template<typename Derived1, typename Derived2>
-DynMat<typename Derived1::Scalar> apply(
+dyn_mat<typename Derived1::Scalar> apply(
         const Eigen::MatrixBase<Derived1>& state,
         const Eigen::MatrixBase<Derived2>& A,
-        const std::vector<std::size_t>& subsys,
-        const std::vector<std::size_t>& dims)
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
 {
-    const DynMat<typename Derived1::Scalar>& rstate = state;
-    const DynMat<typename Derived2::Scalar>& rA = A;
+    const dyn_mat<typename Derived1::Scalar>& rstate = state;
+    const dyn_mat<typename Derived2::Scalar>& rA = A;
 
     // EXCEPTION CHECKS
 
@@ -440,8 +440,8 @@ DynMat<typename Derived1::Scalar> apply(
         throw Exception("qpp::apply()", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     // check that gate matches the dimensions of the subsys
-    std::vector<std::size_t> subsys_dims(subsys.size());
-    for (std::size_t i = 0; i < subsys.size(); ++i)
+    std::vector<idx> subsys_dims(subsys.size());
+    for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
     if (!internal::_check_dims_match_mat(subsys_dims, rA))
         throw Exception("qpp::apply()",
@@ -485,23 +485,23 @@ DynMat<typename Derived1::Scalar> apply(
 * \return Gate \a A applied to the part \a subsys of \a state
 */
 template<typename Derived1, typename Derived2>
-DynMat<typename Derived1::Scalar> apply(
+dyn_mat<typename Derived1::Scalar> apply(
         const Eigen::MatrixBase<Derived1>& state,
         const Eigen::MatrixBase<Derived2>& A,
-        const std::vector<std::size_t>& subsys,
-        std::size_t d = 2)
+        const std::vector<idx>& subsys,
+        idx d = 2)
 {
-    const DynMat<typename Derived1::Scalar>& rstate = state;
-    const DynMat<typename Derived1::Scalar>& rA = A;
+    const dyn_mat<typename Derived1::Scalar>& rstate = state;
+    const dyn_mat<typename Derived1::Scalar>& rA = A;
 
     // check zero size
     if (!internal::_check_nonzero_size(rstate))
         throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
 
-    std::size_t n =
-            static_cast<std::size_t>(std::llround(std::log2(rstate.rows()) /
+    idx n =
+            static_cast<idx>(std::llround(std::log2(rstate.rows()) /
                     std::log2(d)));
-    std::vector<std::size_t> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return apply(rstate, rA, subsys, dims);
 }
@@ -539,7 +539,7 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
     cmat result = cmat::Zero(rrho.rows(), rrho.rows());
 
 #pragma omp parallel for
-    for (std::size_t i = 0; i < Ks.size(); ++i)
+    for (idx i = 0; i < Ks.size(); ++i)
     {
 #pragma omp critical
         {
@@ -563,8 +563,8 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
 template<typename Derived>
 cmat channel(const Eigen::MatrixBase<Derived>& rho,
         const std::vector<cmat>& Ks,
-        const std::vector<std::size_t>& subsys,
-        const std::vector<std::size_t>& dims)
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
 {
     const cmat& rrho = rho;
 
@@ -591,8 +591,8 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
         throw Exception("qpp::channel()",
                 Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-    std::vector<std::size_t> subsys_dims(subsys.size());
-    for (std::size_t i = 0; i < subsys.size(); ++i)
+    std::vector<idx> subsys_dims(subsys.size());
+    for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
 
     // check the Kraus operators
@@ -609,7 +609,7 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
 
     cmat result = cmat::Zero(rrho.rows(), rrho.rows());
 
-    for (std::size_t i = 0; i < Ks.size(); ++i)
+    for (idx i = 0; i < Ks.size(); ++i)
         result += apply(rrho, Ks[i], subsys, dims);
 
     return result;
@@ -628,8 +628,8 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
 template<typename Derived>
 cmat channel(const Eigen::MatrixBase<Derived>& rho,
         const std::vector<cmat>& Ks,
-        const std::vector<std::size_t>& subsys,
-        std::size_t d = 2)
+        const std::vector<idx>& subsys,
+        idx d = 2)
 {
     const cmat& rrho = rho;
 
@@ -637,10 +637,10 @@ cmat channel(const Eigen::MatrixBase<Derived>& rho,
     if (!internal::_check_nonzero_size(rrho))
         throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
 
-    std::size_t n =
-            static_cast<std::size_t>(std::llround(std::log2(rrho.rows()) /
+    idx n =
+            static_cast<idx>(std::llround(std::log2(rrho.rows()) /
                     std::log2(d)));
-    std::vector<std::size_t> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return channel(rrho, Ks, subsys, dims);
 }
@@ -668,7 +668,7 @@ cmat super(const std::vector<cmat>& Ks)
     for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
             throw Exception("qpp::super()", Exception::Type::DIMS_NOT_EQUAL);
-    std::size_t D = static_cast<std::size_t>(Ks[0].rows());
+    idx D = static_cast<idx>(Ks[0].rows());
 
     cmat result(D * D, D * D);
     cmat MN = cmat::Zero(D, D);
@@ -677,22 +677,22 @@ cmat super(const std::vector<cmat>& Ks)
     cmat EMN = cmat::Zero(D, D);
 
 #pragma omp parallel for collapse(2)
-    for (std::size_t m = 0; m < D; ++m)
+    for (idx m = 0; m < D; ++m)
     {
-        for (std::size_t n = 0; n < D; ++n)
+        for (idx n = 0; n < D; ++n)
         {
 #pragma omp critical
             {
                 // compute E(|m><n|)
                 MN(m, n) = 1;
-                for (std::size_t i = 0; i < Ks.size(); ++i)
+                for (idx i = 0; i < Ks.size(); ++i)
                     EMN += Ks[i] * MN * adjoint(Ks[i]);
                 MN(m, n) = 0;
 
-                for (std::size_t a = 0; a < D; ++a)
+                for (idx a = 0; a < D; ++a)
                 {
                     A(a) = 1;
-                    for (std::size_t b = 0; b < D; ++b)
+                    for (idx b = 0; b < D; ++b)
                     {
                         // compute result(ab,mn)=<a|E(|m><n)|b>
                         B(b) = 1;
@@ -736,12 +736,12 @@ cmat choi(const std::vector<cmat>& Ks)
     for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
             throw Exception("qpp::choi()", Exception::Type::DIMS_NOT_EQUAL);
-    std::size_t D = static_cast<std::size_t>(Ks[0].rows());
+    idx D = static_cast<idx>(Ks[0].rows());
 
     // construct the D x D \sum |jj> vector
     // (un-normalized maximally entangled state)
     cmat MES = cmat::Zero(D * D, 1);
-    for (std::size_t a = 0; a < D; ++a)
+    for (idx a = 0; a < D; ++a)
         MES(a * D + a) = 1;
 
     cmat Omega = MES * adjoint(MES);
@@ -749,7 +749,7 @@ cmat choi(const std::vector<cmat>& Ks)
     cmat result = cmat::Zero(D * D, D * D);
 
 #pragma omp parallel for
-    for (std::size_t i = 0; i < Ks.size(); ++i)
+    for (idx i = 0; i < Ks.size(); ++i)
     {
 #pragma omp critical
         {
@@ -781,16 +781,16 @@ std::vector<cmat> choi2kraus(const cmat& A)
     if (!internal::_check_square_mat(A))
         throw Exception("qpp::choi2kraus()",
                 Exception::Type::MATRIX_NOT_SQUARE);
-    std::size_t D = static_cast<std::size_t>(std::llround(
+    idx D = static_cast<idx>(std::llround(
             std::sqrt(static_cast<double>(A.rows()))));
-    if (D * D != static_cast<std::size_t>(A.rows()))
+    if (D * D != static_cast<idx>(A.rows()))
         throw Exception("qpp::choi2kraus()", Exception::Type::DIMS_INVALID);
 
     dmat ev = hevals(A);
     cmat evec = hevects(A);
     std::vector<cmat> result;
 
-    for (std::size_t i = 0; i < D * D; ++i)
+    for (idx i = 0; i < D * D; ++i)
     {
         if (std::abs(ev(i)) > eps)
             result.push_back(
@@ -814,10 +814,10 @@ std::vector<cmat> choi2kraus(const cmat& A)
 * over the same scalar field as \a A
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& dims)
+dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
+        const std::vector<idx>& dims)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // Error checks
 
@@ -842,24 +842,24 @@ DynMat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::ptrace1()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
 
-    std::size_t DA = dims[0];
-    std::size_t DB = dims[1];
+    idx DA = dims[0];
+    idx DB = dims[1];
 
-    DynMat<typename Derived::Scalar> result =
-            DynMat<typename Derived::Scalar>::Zero(DB, DB);
+    dyn_mat<typename Derived::Scalar> result =
+            dyn_mat<typename Derived::Scalar>::Zero(DB, DB);
 
-    auto worker = [=](std::size_t i, std::size_t j)
+    auto worker = [=](idx i, idx j)
     {
         typename Derived::Scalar sum = 0;
-        for (std::size_t m = 0; m < DA; ++m)
+        for (idx m = 0; m < DA; ++m)
             sum += rA(m * DB + i, m * DB + j);
 
         return sum;
     };
 
 #pragma omp parallel for collapse(2)
-    for (std::size_t j = 0; j < DB; ++j) // column major order for speed
-        for (std::size_t i = 0; i < DB; ++i)
+    for (idx j = 0; j < DB; ++j) // column major order for speed
+        for (idx i = 0; i < DB; ++i)
             result(i, j) = worker(i, j);
 
     return result;
@@ -876,10 +876,10 @@ DynMat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 * over the same scalar field as \a A
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& dims)
+dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
+        const std::vector<idx>& dims)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // Error checks
 
@@ -904,15 +904,15 @@ DynMat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::ptrace2()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
 
-    std::size_t DA = dims[0];
-    std::size_t DB = dims[1];
+    idx DA = dims[0];
+    idx DB = dims[1];
 
-    DynMat<typename Derived::Scalar> result =
-            DynMat<typename Derived::Scalar>::Zero(DA, DA);
+    dyn_mat<typename Derived::Scalar> result =
+            dyn_mat<typename Derived::Scalar>::Zero(DA, DA);
 
 #pragma omp parallel for collapse(2)
-    for (std::size_t j = 0; j < DA; ++j) // column major order for speed
-        for (std::size_t i = 0; i < DA; ++i)
+    for (idx j = 0; j < DA; ++j) // column major order for speed
+        for (idx i = 0; i < DA; ++i)
             result(i, j) = trace(rA.block(i * DB, j * DB, DB, DB));
 
     return result;
@@ -932,11 +932,11 @@ DynMat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 * over the same scalar field as \a A
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& subsys,
-        const std::vector<std::size_t>& dims)
+dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // error checks
 
@@ -959,7 +959,7 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 
     if (subsys.size() == dims.size())
     {
-        DynMat<typename Derived::Scalar> result = DynMat<
+        dyn_mat<typename Derived::Scalar> result = dyn_mat<
                 typename Derived::Scalar>(1, 1);
         result(0, 0) = rA.trace();
 
@@ -972,34 +972,34 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::ptrace()",
                 Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-    std::size_t D = static_cast<std::size_t>(rA.rows());
-    std::size_t n = dims.size();
-    std::size_t nsubsys = subsys.size();
-    std::size_t nsubsysbar = n - nsubsys;
-    std::size_t dimsubsys = 1;
-    for (std::size_t i = 0; i < nsubsys; ++i)
+    idx D = static_cast<idx>(rA.rows());
+    idx n = dims.size();
+    idx nsubsys = subsys.size();
+    idx nsubsysbar = n - nsubsys;
+    idx dimsubsys = 1;
+    for (idx i = 0; i < nsubsys; ++i)
         dimsubsys *= dims[subsys[i]];
-    std::size_t dimsubsysbar = D / dimsubsys;
+    idx dimsubsysbar = D / dimsubsys;
 
-    std::size_t Cdims[maxn];
-    std::size_t Csubsys[maxn];
-    std::size_t Cdimssubsys[maxn];
-    std::size_t Csubsysbar[maxn];
-    std::size_t Cdimssubsysbar[maxn];
+    idx Cdims[maxn];
+    idx Csubsys[maxn];
+    idx Cdimssubsys[maxn];
+    idx Csubsysbar[maxn];
+    idx Cdimssubsysbar[maxn];
 
-    for (std::size_t i = 0; i < n; ++i)
+    for (idx i = 0; i < n; ++i)
         Cdims[i] = dims[i];
-    for (std::size_t i = 0; i < nsubsys; ++i)
+    for (idx i = 0; i < nsubsys; ++i)
     {
         Csubsys[i] = subsys[i];
         Cdimssubsys[i] = dims[subsys[i]];
     }
     // construct the complement of subsys
-    std::size_t cnt = 0;
-    for (std::size_t i = 0; i < n; ++i)
+    idx cnt = 0;
+    for (idx i = 0; i < n; ++i)
     {
         bool found = false;
-        for (std::size_t m = 0; m < nsubsys; ++m)
+        for (idx m = 0; m < nsubsys; ++m)
             if (subsys[m] == i)
             {
                 found = true;
@@ -1013,18 +1013,18 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         }
     }
 
-    DynMat<typename Derived::Scalar> result =
-            DynMat<typename Derived::Scalar>(dimsubsysbar, dimsubsysbar);
+    dyn_mat<typename Derived::Scalar> result =
+            dyn_mat<typename Derived::Scalar>(dimsubsysbar, dimsubsysbar);
 
-    auto worker = [=](std::size_t i, std::size_t j)
+    auto worker = [=](idx i, idx j)
     {
         // use static allocation for speed!
 
-        std::size_t Cmidxrow[maxn];
-        std::size_t Cmidxcol[maxn];
-        std::size_t Cmidxrowsubsysbar[maxn];
-        std::size_t Cmidxcolsubsysbar[maxn];
-        std::size_t Cmidxsubsys[maxn];
+        idx Cmidxrow[maxn];
+        idx Cmidxcol[maxn];
+        idx Cmidxrowsubsysbar[maxn];
+        idx Cmidxcolsubsysbar[maxn];
+        idx Cmidxsubsys[maxn];
 
         /* get the row/col multi-indexes of the complement */
         internal::_n2multiidx(i, nsubsysbar,
@@ -1032,18 +1032,18 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         internal::_n2multiidx(j, nsubsysbar,
                 Cdimssubsysbar, Cmidxcolsubsysbar);
         /* write them in the global row/col multi-indexes */
-        for (std::size_t k = 0; k < nsubsysbar; ++k)
+        for (idx k = 0; k < nsubsysbar; ++k)
         {
             Cmidxrow[Csubsysbar[k]] = Cmidxrowsubsysbar[k];
             Cmidxcol[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
         }
         typename Derived::Scalar sm = 0;
-        for (std::size_t a = 0; a < dimsubsys; ++a)
+        for (idx a = 0; a < dimsubsys; ++a)
         {
             // get the multi-index over which we do the summation
             internal::_n2multiidx(a, nsubsys, Cdimssubsys, Cmidxsubsys);
             // write it into the global row/col multi-indexes
-            for (std::size_t k = 0; k < nsubsys; ++k)
+            for (idx k = 0; k < nsubsys; ++k)
                 Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]] = Cmidxsubsys[k];
 
             // now do the sum
@@ -1055,8 +1055,8 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     };
 
 #pragma omp parallel for collapse(2)
-    for (std::size_t j = 0; j < dimsubsysbar; ++j)
-        for (std::size_t i = 0; i < dimsubsysbar; ++i)
+    for (idx j = 0; j < dimsubsysbar; ++j)
+        for (idx i = 0; i < dimsubsysbar; ++i)
             result(i, j) = worker(i, j);
 
     return result;
@@ -1076,20 +1076,20 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 * over the same scalar field as \a A
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& subsys,
-        std::size_t d = 2)
+dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
+        const std::vector<idx>& subsys,
+        idx d = 2)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // check zero size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::ptrace()", Exception::Type::ZERO_SIZE);
 
-    std::size_t n =
-            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
+    idx n =
+            static_cast<idx>(std::llround(std::log2(rA.rows()) /
                     std::log2(d)));
-    std::vector<std::size_t> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return ptrace(rA, subsys, dims);
 }
@@ -1108,12 +1108,12 @@ DynMat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 * over the same scalar field as \a A
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> ptranspose(
+dyn_mat<typename Derived::Scalar> ptranspose(
         const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& subsys,
-        const std::vector<std::size_t>& dims)
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // error checks
 
@@ -1146,34 +1146,34 @@ DynMat<typename Derived::Scalar> ptranspose(
         throw Exception("qpp::ptranspose()",
                 Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-    std::size_t D = static_cast<std::size_t>(rA.rows());
-    std::size_t numdims = dims.size();
-    std::size_t numsubsys = subsys.size();
-    std::size_t Cdims[maxn];
-    std::size_t midxcol[maxn];
-    std::size_t Csubsys[maxn];
+    idx D = static_cast<idx>(rA.rows());
+    idx numdims = dims.size();
+    idx numsubsys = subsys.size();
+    idx Cdims[maxn];
+    idx midxcol[maxn];
+    idx Csubsys[maxn];
 
     // copy dims in Cdims and subsys in Csubsys
-    for (std::size_t i = 0; i < numdims; ++i)
+    for (idx i = 0; i < numdims; ++i)
         Cdims[i] = dims[i];
-    for (std::size_t i = 0; i < numsubsys; ++i)
+    for (idx i = 0; i < numsubsys; ++i)
         Csubsys[i] = subsys[i];
 
-    DynMat<typename Derived::Scalar> result(D, D);
+    dyn_mat<typename Derived::Scalar> result(D, D);
 
-    auto worker = [=, &midxcol](std::size_t i)
+    auto worker = [=, &midxcol](idx i)
     {
         // use static allocation for speed!
-        std::size_t midxcoltmp[maxn];
-        std::size_t midxrow[maxn];
+        idx midxcoltmp[maxn];
+        idx midxrow[maxn];
 
-        for (std::size_t k = 0; k < numdims; ++k)
+        for (idx k = 0; k < numdims; ++k)
             midxcoltmp[k] = midxcol[k];
 
         /* compute the row multi-index */
         internal::_n2multiidx(i, numdims, Cdims, midxrow);
 
-        for (std::size_t k = 0; k < numsubsys; ++k)
+        for (idx k = 0; k < numsubsys; ++k)
             std::swap(midxcoltmp[Csubsys[k]], midxrow[Csubsys[k]]);
 
         /* writes the result */
@@ -1182,12 +1182,12 @@ DynMat<typename Derived::Scalar> ptranspose(
 
     };
 
-    for (std::size_t j = 0; j < D; ++j)
+    for (idx j = 0; j < D; ++j)
     {
         // compute the column multi-index
         internal::_n2multiidx(j, numdims, Cdims, midxcol);
 #pragma omp parallel for
-        for (std::size_t i = 0; i < D; ++i)
+        for (idx i = 0; i < D; ++i)
             result(i, j) = worker(i);
     }
 
@@ -1208,21 +1208,21 @@ DynMat<typename Derived::Scalar> ptranspose(
 * over the same scalar field as \a A
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> ptranspose(
+dyn_mat<typename Derived::Scalar> ptranspose(
         const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& subsys,
-        std::size_t d = 2)
+        const std::vector<idx>& subsys,
+        idx d = 2)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // check zero size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::ptranspose()", Exception::Type::ZERO_SIZE);
 
-    std::size_t n =
-            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
+    idx n =
+            static_cast<idx>(std::llround(std::log2(rA.rows()) /
                     std::log2(d)));
-    std::vector<std::size_t> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return ptranspose(rA, subsys, dims);
 }
@@ -1240,12 +1240,12 @@ DynMat<typename Derived::Scalar> ptranspose(
 * over the same scalar field as \a A
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> syspermute(
+dyn_mat<typename Derived::Scalar> syspermute(
         const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& perm,
-        const std::vector<std::size_t>& dims)
+        const std::vector<idx>& perm,
+        const std::vector<idx>& dims)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // Error checks
 
@@ -1265,25 +1265,25 @@ DynMat<typename Derived::Scalar> syspermute(
     if (perm.size() != dims.size())
         throw Exception("qpp::syspermute()", Exception::Type::PERM_INVALID);
 
-    std::size_t D = static_cast<std::size_t>(rA.rows());
-    std::size_t numdims = dims.size();
+    idx D = static_cast<idx>(rA.rows());
+    idx numdims = dims.size();
 
-    DynMat<typename Derived::Scalar> result;
+    dyn_mat<typename Derived::Scalar> result;
 
     auto worker =
-            [](std::size_t i, std::size_t numdims, const std::size_t* Cdims,
-                    const std::size_t* Cperm)
+            [](idx i, idx numdims, const idx* Cdims,
+                    const idx* Cperm)
             {
                 // use static allocation for speed,
                 // double the size for matrices reshaped as vectors
-                std::size_t midx[2 * maxn];
-                std::size_t midxtmp[2 * maxn];
-                std::size_t permdims[2 * maxn];
+                idx midx[2 * maxn];
+                idx midxtmp[2 * maxn];
+                idx permdims[2 * maxn];
 
                 /* compute the multi-index */
                 internal::_n2multiidx(i, numdims, Cdims, midx);
 
-                for (std::size_t k = 0; k < numdims; ++k)
+                for (idx k = 0; k < numdims; ++k)
                 {
                     permdims[k] = Cdims[Cperm[k]]; // permuted dimensions
                     midxtmp[k] = midx[Cperm[k]];// permuted multi-indexes
@@ -1295,8 +1295,8 @@ DynMat<typename Derived::Scalar> syspermute(
     // check column vector
     if (internal::_check_col_vector(rA)) // we have a column vector
     {
-        std::size_t Cdims[maxn];
-        std::size_t Cperm[maxn];
+        idx Cdims[maxn];
+        idx Cperm[maxn];
 
         // check that dims match the dimension of rA
         if (!internal::_check_dims_match_cvect(dims, rA))
@@ -1304,7 +1304,7 @@ DynMat<typename Derived::Scalar> syspermute(
                     Exception::Type::DIMS_MISMATCH_CVECTOR);
 
         // copy dims in Cdims and perm in Cperm
-        for (std::size_t i = 0; i < numdims; ++i)
+        for (idx i = 0; i < numdims; ++i)
         {
             Cdims[i] = dims[i];
             Cperm[i] = perm[i];
@@ -1312,15 +1312,15 @@ DynMat<typename Derived::Scalar> syspermute(
         result.resize(D, 1);
 
 #pragma omp parallel for
-        for (std::size_t i = 0; i < D; ++i)
+        for (idx i = 0; i < D; ++i)
             result(worker(i, numdims, Cdims, Cperm)) = rA(i);
 
         return result;
     }
     else if (internal::_check_square_mat(rA)) // we have a square matrix
     {
-        std::size_t Cdims[2 * maxn];
-        std::size_t Cperm[2 * maxn];
+        idx Cdims[2 * maxn];
+        idx Cperm[2 * maxn];
 
         // check that dims match the dimension of rA
         if (!internal::_check_dims_match_mat(dims, rA))
@@ -1328,7 +1328,7 @@ DynMat<typename Derived::Scalar> syspermute(
                     Exception::Type::DIMS_MISMATCH_MATRIX);
 
         // copy dims in Cdims and perm in Cperm
-        for (std::size_t i = 0; i < numdims; ++i)
+        for (idx i = 0; i < numdims; ++i)
         {
             Cdims[i] = dims[i];
             Cdims[i + numdims] = dims[i];
@@ -1337,12 +1337,12 @@ DynMat<typename Derived::Scalar> syspermute(
         }
         result.resize(D * D, 1);
         // map A to a column vector
-        DynMat<typename Derived::Scalar> vectA = Eigen::Map<
-                DynMat<typename Derived::Scalar>>(
+        dyn_mat<typename Derived::Scalar> vectA = Eigen::Map<
+                dyn_mat<typename Derived::Scalar>>(
                 const_cast<typename Derived::Scalar*>(rA.data()), D * D, 1);
 
 #pragma omp parallel for
-        for (std::size_t i = 0; i < D * D; ++i)
+        for (idx i = 0; i < D * D; ++i)
             result(worker(i, 2 * numdims, Cdims, Cperm)) = rA(i);
 
         return reshape(result, D, D);
@@ -1366,21 +1366,21 @@ DynMat<typename Derived::Scalar> syspermute(
 * over the same scalar field as \a A
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> syspermute(
+dyn_mat<typename Derived::Scalar> syspermute(
         const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& perm,
-        std::size_t d = 2)
+        const std::vector<idx>& perm,
+        idx d = 2)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // check zero size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::syspermute()", Exception::Type::ZERO_SIZE);
 
-    std::size_t n =
-            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
+    idx n =
+            static_cast<idx>(std::llround(std::log2(rA.rows()) /
                     std::log2(d)));
-    std::vector<std::size_t> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return syspermute(rA, perm, dims);
 }

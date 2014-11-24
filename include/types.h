@@ -36,11 +36,11 @@ using cplx = std::complex<double>;
 * Example:
 * \code
 * // type of mat is Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>
-* auto mat = DynMat<float>(2,3);
+* auto mat = dyn_mat<float>(2,3);
 * \endcode
 */
 template<typename Scalar> // Eigen::MatrixX<type> (where type = Scalar)
-using DynMat = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
+using dyn_mat = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 
 /**
 * \brief Dynamic Eigen column vector over the field specified by \a Scalar
@@ -48,11 +48,11 @@ using DynMat = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 * Example:
 * \code
 * // type of colvect is Eigen::Matrix<float, Eigen::Dynamic, 1>
-* auto colvect = DynColVect<float>(2);
+* auto colvect = dyn_col_vect<float>(2);
 * \endcode
 */
 template<typename Scalar> // Eigen::VectorX<type> (where type = Scalar)
-using DynColVect = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
+using dyn_col_vect = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 
 /**
 * \brief Dynamic Eigen row vector over the field specified by \a Scalar
@@ -60,31 +60,36 @@ using DynColVect = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 * Example:
 * \code
 * // type of rowvect is Eigen::Matrix<float, 1, Eigen::Dynamic>
-* auto rowvect = DynRowVect<float>(3);
+* auto rowvect = dyn_row_vect<float>(3);
 * \endcode
 */
 template<typename Scalar> // Eigen::RowVectorX<type> (where type = Scalar)
-using DynRowVect = Eigen::Matrix<Scalar, 1, Eigen::Dynamic>;
+using dyn_row_vect = Eigen::Matrix<Scalar, 1, Eigen::Dynamic>;
 
 /**
 * \brief Complex (double precision) dynamic Eigen column vector
 */
-using ket = DynColVect<cplx>; // Eigen::VectorXcd
+using ket = dyn_col_vect<cplx>; // Eigen::VectorXcd
 
 /**
 * \brief Complex (double precision) dynamic Eigen row vector
 */
-using bra = DynRowVect<cplx>; // Eigen::RowVectorXcd
+using bra = dyn_row_vect<cplx>; // Eigen::RowVectorXcd
 
 /**
 * \brief Complex (double precision) dynamic Eigen matrix
 */
-using cmat = DynMat<cplx>; // Eigen::MatrixXcd;
+using cmat = dyn_mat<cplx>; // Eigen::MatrixXcd;
 
 /**
 * \brief Real (double precision) dynamic Eigen matrix
 */
-using dmat = DynMat<double>; // Eigen::MatrixXd
+using dmat = dyn_mat<double>; // Eigen::MatrixXd
+
+/**
+* \brief Non-negative integer index
+*/
+using idx = std::size_t;
 
 } /* namespace qpp */
 

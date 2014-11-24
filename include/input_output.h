@@ -108,7 +108,7 @@ internal::IOManipRange<typename Container::const_iterator> disp(
 * \return Instance of qpp::internal::internal::IOManipPointer
 */
 template<typename PointerType>
-internal::IOManipPointer<PointerType> disp(const PointerType* p, std::size_t n,
+internal::IOManipPointer<PointerType> disp(const PointerType* p, idx n,
         const std::string& separator, const std::string& start = "[",
         const std::string& end = "]")
 {
@@ -127,7 +127,7 @@ internal::IOManipPointer<PointerType> disp(const PointerType* p, std::size_t n,
 template<typename Derived>
 void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
@@ -147,8 +147,8 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
     const char _header[] = "TYPE::Eigen::Matrix";
     fout.write(_header, sizeof(_header));
 
-    std::size_t rows = static_cast<std::size_t>(rA.rows());
-    std::size_t cols = static_cast<std::size_t>(rA.cols());
+    idx rows = static_cast<idx>(rA.rows());
+    idx cols = static_cast<idx>(rA.cols());
     fout.write((char*) &rows, sizeof(rows));
     fout.write((char*) &cols, sizeof(cols));
 
@@ -177,7 +177,7 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 * \param fname Output file name
 */
 template<typename Derived>
-DynMat<typename Derived::Scalar> load(const std::string& fname)
+dyn_mat<typename Derived::Scalar> load(const std::string& fname)
 {
     std::fstream fin;
     fin.open(fname, std::ios::in | std::ios::binary);
@@ -203,11 +203,11 @@ DynMat<typename Derived::Scalar> load(const std::string& fname)
     }
     delete[] _fheader;
 
-    std::size_t rows, cols;
+    idx rows, cols;
     fin.read((char*) &rows, sizeof(rows));
     fin.read((char*) &cols, sizeof(cols));
 
-    DynMat<typename Derived::Scalar> A(rows, cols);
+    dyn_mat<typename Derived::Scalar> A(rows, cols);
 
     fin.read((char*) A.data(),
             sizeof(typename Derived::Scalar) * rows * cols);

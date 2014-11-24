@@ -64,44 +64,44 @@ public:
         /*!< Matrix size mismatch subsystem sizes (e.g. in
          * qpp::apply(), or qpp::channel()) */
                 DIMS_INVALID,
-        /*!< std::vector<std::size_t> representing the dimensions
+        /*!< std::vector<idx> representing the dimensions
          * has zero size or contains zeros */
                 DIMS_NOT_EQUAL,
-        /*!< std::vector<std::size_t> representing the dimensions
+        /*!< std::vector<idx> representing the dimensions
          * contains non-equal elements */
                 DIMS_MISMATCH_MATRIX,
-        /*!< Product of the dimensions of std::vector<std::size_t>
+        /*!< Product of the dimensions of std::vector<idx>
          * is not equal to the number of rows of Eigen::Matrix
          * (assumed to be square) */
                 DIMS_MISMATCH_CVECTOR,
-        /*!< Product of the dimensions of std::vector<std::size_t>
+        /*!< Product of the dimensions of std::vector<idx>
          * is not equal to the number of columns of Eigen::Matrix
          * (assumed to be a column vector) */
                 DIMS_MISMATCH_RVECTOR,
-        /*!< Product of the dimensions of std::vector<std::size_t>
+        /*!< Product of the dimensions of std::vector<idx>
          * is not equal to the number of columns of Eigen::Matrix
          * (assumed to be a row vector) */
                 DIMS_MISMATCH_VECTOR,
-        /*!< Product of the dimensions of std::vector<std::size_t>
+        /*!< Product of the dimensions of std::vector<idx>
          * is not equal to the number of columns of Eigen::Matrix
          * (assumed to be a row/column vector) */
                 SUBSYS_MISMATCH_DIMS,
-        /*!< std::vector<std::size_t> representing the subsystem
+        /*!< std::vector<idx> representing the subsystem
          * labels has duplicatates, or has entries that are larger than
-         * the size of the std::vector<std::size_t> representing the
+         * the size of the std::vector<idx> representing the
          * dimensions */
                 NOT_QUBIT_GATE,
         /*!<  Eigen::Matrix is not 2 x 2 */
                 NOT_QUBIT_SUBSYS,
         /*!< Subsystems are not 2-dimensional */
                 NOT_BIPARTITE,
-        /*!< std::vector<std::size_t> representing the dimensions
+        /*!< std::vector<idx> representing the dimensions
          * has size different from 2 */
                 NO_CODEWORD,
         /*!< Codeword does not exist, thrown when calling
          * qpp::Codes::codeword() with invalid \a i */
                 PERM_INVALID,
-        /*!< Invalid std::vector<std::size_t> permutation */
+        /*!< Invalid std::vector<idx> permutation */
                 OUT_OF_RANGE,
         /*!< Parameter out of range */
                 TYPE_MISMATCH,

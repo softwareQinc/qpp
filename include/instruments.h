@@ -42,12 +42,12 @@ namespace qpp
 * normalized states
 */
 template<typename Derived>
-std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(
         const Eigen::MatrixBase<Derived>& A,
         const std::vector<cmat>& Ks,
-        const std::vector<std::size_t>& subsys,
-        const std::vector<std::size_t>& dims)
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
 {
     const cmat& rA = A;
 
@@ -71,19 +71,19 @@ measure(
         throw Exception("qpp::measure()",
                 Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-    std::vector<std::size_t> subsys_dims(subsys.size());
-    for (std::size_t i = 0; i < subsys.size(); ++i)
+    std::vector<idx> subsys_dims(subsys.size());
+    for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
 
-    std::size_t D = 1;
+    idx D = 1;
     for (auto&& it: dims)
         D *= it;
 
-    std::size_t Dsubsys = 1;
+    idx Dsubsys = 1;
     for (auto&& it: subsys_dims)
         Dsubsys *= it;
 
-    std::size_t Dbar = D / Dsubsys;
+    idx Dbar = D / Dsubsys;
 
     // check the Kraus operators
     if (Ks.size() == 0)
@@ -92,7 +92,7 @@ measure(
     if (!internal::_check_square_mat(Ks[0]))
         throw Exception("qpp::measure()",
                 Exception::Type::MATRIX_NOT_SQUARE);
-    if (Dsubsys != static_cast<std::size_t>(Ks[0].rows()))
+    if (Dsubsys != static_cast<idx>(Ks[0].rows()))
         throw Exception("qpp::measure()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
     for (auto&& it : Ks)
@@ -108,7 +108,7 @@ measure(
 
     if (internal::_check_square_mat(rA)) // square matrix
     {
-        for (std::size_t i = 0; i < Ks.size(); ++i)
+        for (idx i = 0; i < Ks.size(); ++i)
         {
             outstates[i] = cmat::Zero(Dbar, Dbar);
             cmat tmp = apply(rA, Ks[i], subsys, dims);
@@ -122,7 +122,7 @@ measure(
     }
     else if (internal::_check_col_vector(rA)) // column vector
     {
-        for (std::size_t i = 0; i < Ks.size(); ++i)
+        for (idx i = 0; i < Ks.size(); ++i)
         {
             outstates[i] = cmat::Zero(Dbar, Dbar);
             cmat tmp = apply(rA, Ks[i], subsys, dims);
@@ -136,9 +136,9 @@ measure(
                 Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 
     // sample from the probability distribution
-    std::discrete_distribution<std::size_t> dd(std::begin(prob),
+    std::discrete_distribution<idx> dd(std::begin(prob),
             std::end(prob));
-    std::size_t result = dd(RandomDevices::get_instance()._rng);
+    idx result = dd(RandomDevices::get_instance()._rng);
 
     return std::make_tuple(result, prob, outstates);
 }
@@ -162,12 +162,12 @@ measure(
 * normalized states
 */
 template<typename Derived>
-std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(
         const Eigen::MatrixBase<Derived>& A,
         const std::initializer_list<cmat>& Ks,
-        const std::vector<std::size_t>& subsys,
-        const std::vector<std::size_t>& dims)
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
 {
     return measure(A, std::vector<cmat>(Ks), subsys, dims);
 }
@@ -189,12 +189,12 @@ measure(
 * normalized states
 */
 template<typename Derived>
-std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(
         const Eigen::MatrixBase<Derived>& A,
         const std::vector<cmat>& Ks,
-        const std::vector<std::size_t>& subsys,
-        const std::size_t d = 2)
+        const std::vector<idx>& subsys,
+        const idx d = 2)
 {
     const cmat& rA = A;
 
@@ -202,10 +202,10 @@ measure(
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
-    std::size_t n =
-            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
+    idx n =
+            static_cast<idx>(std::llround(std::log2(rA.rows()) /
                     std::log2(d)));
-    std::vector<std::size_t> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return measure(rA, Ks, subsys, dims);
 }
@@ -229,12 +229,12 @@ measure(
 * normalized states
 */
 template<typename Derived>
-std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(
         const Eigen::MatrixBase<Derived>& A,
         const std::initializer_list<cmat>& Ks,
-        const std::vector<std::size_t>& subsys,
-        const std::size_t d = 2)
+        const std::vector<idx>& subsys,
+        const idx d = 2)
 {
     return measure(A, std::vector<cmat>(Ks), subsys, d);
 }
@@ -255,12 +255,12 @@ measure(
 * normalized states
 */
 template<typename Derived>
-std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(
         const Eigen::MatrixBase<Derived>& A,
         const cmat& U,
-        const std::vector<std::size_t>& subsys,
-        const std::vector<std::size_t>& dims)
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
 {
     const cmat& rA = A;
 
@@ -284,11 +284,11 @@ measure(
         throw Exception("qpp::measure()",
                 Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-    std::vector<std::size_t> subsys_dims(subsys.size());
-    for (std::size_t i = 0; i < subsys.size(); ++i)
+    std::vector<idx> subsys_dims(subsys.size());
+    for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
 
-    std::size_t Dsubsys = 1;
+    idx Dsubsys = 1;
     for (auto&& it: subsys_dims)
         Dsubsys *= it;
 
@@ -297,13 +297,13 @@ measure(
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(U))
         throw Exception("qpp::measure()", Exception::Type::MATRIX_NOT_SQUARE);
-    if (Dsubsys != static_cast<std::size_t>(U.rows()))
+    if (Dsubsys != static_cast<idx>(U.rows()))
         throw Exception("qpp::measure()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
     // END EXCEPTION CHECKS
 
     std::vector<cmat> Ks(U.rows());
-    for (std::size_t i = 0; i < static_cast<std::size_t>(U.rows()); i++)
+    for (idx i = 0; i < static_cast<idx>(U.rows()); i++)
         Ks[i] = U.col(i) * adjoint(U.col(i));
 
     return measure(rA, Ks, subsys, dims);
@@ -325,12 +325,12 @@ measure(
 * normalized states
 */
 template<typename Derived>
-std::tuple<std::size_t, std::vector<double>, std::vector<cmat>>
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(
         const Eigen::MatrixBase<Derived>& A,
         const cmat& U,
-        const std::vector<std::size_t>& subsys,
-        const std::size_t d = 2)
+        const std::vector<idx>& subsys,
+        const idx d = 2)
 {
     const cmat& rA = A;
 
@@ -338,10 +338,10 @@ measure(
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
-    std::size_t n =
-            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
+    idx n =
+            static_cast<idx>(std::llround(std::log2(rA.rows()) /
                     std::log2(d)));
-    std::vector<std::size_t> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return measure(rA, U, subsys, dims);
 }
@@ -357,10 +357,10 @@ measure(
 * normalized states
 */
 template<typename Derived>
-std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
+std::tuple<idx, std::vector<double>, std::vector<cmat>> measure(
         const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // EXCEPTION CHECKS
     // check zero-size
@@ -387,7 +387,7 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
 
     if (internal::_check_square_mat(rA)) // square matrix
     {
-        for (std::size_t i = 0; i < Ks.size(); ++i)
+        for (idx i = 0; i < Ks.size(); ++i)
         {
             outstates[i] = cmat::Zero(rA.rows(), rA.rows());
             cmat tmp = Ks[i] * rA * adjoint(Ks[i]); // un-normalized;
@@ -398,7 +398,7 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
     }
     else if (internal::_check_col_vector(rA)) // column vector
     {
-        for (std::size_t i = 0; i < Ks.size(); ++i)
+        for (idx i = 0; i < Ks.size(); ++i)
         {
             outstates[i] = ket::Zero(rA.rows());
             ket tmp = Ks[i] * rA; // un-normalized;
@@ -413,9 +413,9 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
                 Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 
     // sample from the probability distribution
-    std::discrete_distribution<std::size_t> dd(std::begin(prob),
+    std::discrete_distribution<idx> dd(std::begin(prob),
             std::end(prob));
-    std::size_t result = dd(RandomDevices::get_instance()._rng);
+    idx result = dd(RandomDevices::get_instance()._rng);
 
     return std::make_tuple(result, prob, outstates);
 }
@@ -433,7 +433,7 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
 * normalized states
 */
 template<typename Derived>
-std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
+std::tuple<idx, std::vector<double>, std::vector<cmat>> measure(
         const Eigen::MatrixBase<Derived>& A,
         const std::initializer_list<cmat>& Ks)
 {
@@ -451,10 +451,10 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
 * normalized states
 */
 template<typename Derived>
-std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
+std::tuple<idx, std::vector<double>, std::vector<cmat>> measure(
         const Eigen::MatrixBase<Derived>& A, const cmat& U)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // EXCEPTION CHECKS
     // check zero-size
@@ -472,7 +472,7 @@ std::tuple<std::size_t, std::vector<double>, std::vector<cmat>> measure(
     // END EXCEPTION CHECKS
 
     std::vector<cmat> Ks(U.rows());
-    for (std::size_t i = 0; i < static_cast<std::size_t>(U.rows()); i++)
+    for (idx i = 0; i < static_cast<idx>(U.rows()); i++)
         Ks[i] = U.col(i) * adjoint(U.col(i));
 
     return measure(rA, Ks);

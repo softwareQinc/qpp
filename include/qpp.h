@@ -58,8 +58,8 @@
 #include <Eigen/SVD>
 
 // do not change the order in this group, inter-dependencies
-#include "constants.h"
 #include "types.h"
+#include "constants.h"
 #include "classes/exception.h"
 #include "internal/classes/iomanip.h"
 #include "input_output.h"

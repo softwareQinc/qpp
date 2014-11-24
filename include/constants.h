@@ -74,7 +74,7 @@ constexpr double eps = 1e-12;
 *
 * Used internally to allocate arrays on the stack (for speed reasons)
 */
-constexpr std::size_t maxn = 64; // maximum number of qudits a state may have
+constexpr idx maxn = 64; // maximum number of qudits a state may have
 
 /**
 * \brief \f$ \pi \f$
@@ -88,7 +88,7 @@ constexpr double ee = 2.718281828459045235360287471352662497;
 /**
 * \brief Used to denote infinity
 */
-constexpr std::size_t infty = -1;
+constexpr idx infty = -1;
 
 /**
 * \brief D-th root of unity
@@ -96,7 +96,7 @@ constexpr std::size_t infty = -1;
 * \param D Non-negative integer
 * \return D-th root of unity \f$\exp(2\pi i/D)\f$
 */
-std::complex<double> omega(std::size_t D)
+std::complex<double> omega(idx D)
 {
     return exp(2.0 * pi * 1_i / static_cast<double>(D));
 }

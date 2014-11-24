@@ -39,7 +39,7 @@ namespace qpp
 template<typename Derived>
 double shannon(const Eigen::MatrixBase<Derived>& A)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
@@ -49,7 +49,7 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
     if (internal::_check_vector(rA))
     {
         double result = 0;
-        for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); ++i)
+        for (idx i = 0; i < static_cast<idx>(rA.rows()); ++i)
             if (std::abs(rA(i)) != 0) // not identically zero
                 result -= std::abs(rA(i)) * std::log2(std::abs(rA(i)));
 
@@ -64,7 +64,7 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
 
     dmat ev = svals(rA); // get the singular values
     double result = 0;
-    for (std::size_t i = 0; i < static_cast<std::size_t>(ev.rows()); ++i)
+    for (idx i = 0; i < static_cast<idx>(ev.rows()); ++i)
         if (ev(i) != 0) // not identically zero
             result -= ev(i) * std::log2(ev(i));
 
@@ -84,7 +84,7 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     if (alpha < 0)
         throw Exception("qpp::renyi()", Exception::Type::OUT_OF_RANGE);
@@ -105,7 +105,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
         if (alpha == infty) // H min
         {
             double max = 0;
-            for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows());
+            for (idx i = 0; i < static_cast<idx>(rA.rows());
                  ++i)
                 if (std::abs(rA(i)) > max)
                     max = std::abs(rA(i));
@@ -114,7 +114,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
         }
 
         double result = 0;
-        for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); ++i)
+        for (idx i = 0; i < static_cast<idx>(rA.rows()); ++i)
             if (std::abs(rA(i)) != 0) // not identically zero
                 result += std::pow(std::abs(rA(i)), alpha);
 
@@ -135,7 +135,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
 
     dmat sv = svals(rA); // get the singular values
     double result = 0;
-    for (std::size_t i = 0; i < static_cast<std::size_t>(sv.rows()); ++i)
+    for (idx i = 0; i < static_cast<idx>(sv.rows()); ++i)
         if (sv(i) != 0) // not identically zero
             result += std::pow(sv(i), alpha);
 
@@ -158,7 +158,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
 template<typename Derived>
 double tsallis(const Eigen::MatrixBase<Derived>& A, double alpha)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     if (alpha < 0)
         throw Exception("qpp::tsallis()", Exception::Type::OUT_OF_RANGE);
@@ -174,7 +174,7 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double alpha)
     if (internal::_check_vector(rA))
     {
         double result = 0;
-        for (std::size_t i = 0; i < static_cast<std::size_t>(rA.rows()); ++i)
+        for (idx i = 0; i < static_cast<idx>(rA.rows()); ++i)
             if (std::abs(rA(i)) != 0) // not identically zero
                 result += std::pow(std::abs(rA(i)), alpha);
 
@@ -189,7 +189,7 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double alpha)
 
     dmat ev = svals(rA); // get the singular values
     double result = 0;
-    for (std::size_t i = 0; i < static_cast<std::size_t>(ev.rows()); ++i)
+    for (idx i = 0; i < static_cast<idx>(ev.rows()); ++i)
         if (ev(i) != 0) // not identically zero
             result += std::pow(ev(i), alpha);
 
@@ -207,11 +207,11 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double alpha)
 */
 template<typename Derived>
 double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& subsysA,
-        const std::vector<std::size_t>& subsysB,
-        const std::vector<std::size_t>& dims)
+        const std::vector<idx>& subsysA,
+        const std::vector<idx>& subsysB,
+        const std::vector<idx>& dims)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // error checks
 
@@ -240,22 +240,22 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
                 Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     // The full system indexes {0,1,...,n-1}
-    std::vector<std::size_t> full_system(dims.size());
+    std::vector<idx> full_system(dims.size());
     std::iota(std::begin(full_system), std::end(full_system), 0);
 
     // Sorted input subsystems
-    std::vector<std::size_t> subsysAsorted{subsysA};
-    std::vector<std::size_t> subsysBsorted{subsysB};
+    std::vector<idx> subsysAsorted{subsysA};
+    std::vector<idx> subsysBsorted{subsysB};
 
     // sort the input subsystems (as needed by std::set_difference)
     std::sort(std::begin(subsysAsorted), std::end(subsysAsorted));
     std::sort(std::begin(subsysBsorted), std::end(subsysBsorted));
 
     // construct the complement of subsys
-    std::vector<std::size_t> subsysAbar;
-    std::vector<std::size_t> subsysBbar;
-    std::vector<std::size_t> subsysABbar;
-    std::vector<std::size_t> subsysAB;
+    std::vector<idx> subsysAbar;
+    std::vector<idx> subsysBbar;
+    std::vector<idx> subsysABbar;
+    std::vector<idx> subsysAB;
 
     std::set_difference(std::begin(full_system), std::end(full_system),
             std::begin(subsysAsorted), std::end(subsysAsorted),
@@ -290,11 +290,11 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<std::size_t>& subsysA,
-        const std::vector<std::size_t>& subsysB,
-        std::size_t d = 2)
+        const std::vector<idx>& subsysA,
+        const std::vector<idx>& subsysB,
+        idx d = 2)
 {
-    const DynMat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // error checks
 
@@ -302,10 +302,10 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::mutualinfo()", Exception::Type::ZERO_SIZE);
 
-    std::size_t n =
-            static_cast<std::size_t>(std::llround(std::log2(rA.rows()) /
+    idx n =
+            static_cast<idx>(std::llround(std::log2(rA.rows()) /
                     std::log2(d)));
-    std::vector<std::size_t> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return qmutualinfo(rA, subsysA, subsysB, dims);
 }

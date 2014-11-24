@@ -28,51 +28,53 @@
 
 using namespace qpp;
 
-// We define each example as an independent function
+using std::cout;
+using std::endl;
 
+// We define each example as an independent function
 void MEASUREMENTS()
 {
-    std::cout << "**** Measurements ****" << std::endl;
+    cout << "**** Measurements ****" << endl;
 
     ket psi = st.b00;
-    std::vector<std::size_t> subsys = {0};
-    std::size_t result;
+    std::vector<idx> subsys = {0};
+    idx result;
     std::vector<double> probs;
     std::vector<cmat> states;
 
     // measures the first subsystem of the Bell state (|00> + |11>)/sqrt(2)
     // in the X basis
     std::tie(result, probs, states) = measure(psi, gt.H, {0});
-    std::cout << ">> Measuring part " << disp(subsys, " ")
-            << " of the state: " << std::endl;
-    std::cout << disp(psi) << std::endl;
-    std::cout << ">> Measurement result: " << result << std::endl;
-    std::cout << ">> Probabilities: " << disp(probs, ", ") << std::endl;
-    std::cout << ">> Resulting normalized post-measurement states: "
-            << std::endl;
+    cout << ">> Measuring part " << disp(subsys, " ")
+            << " of the state: " << endl;
+    cout << disp(psi) << endl;
+    cout << ">> Measurement result: " << result << endl;
+    cout << ">> Probabilities: " << disp(probs, ", ") << endl;
+    cout << ">> Resulting normalized post-measurement states: "
+            << endl;
 
     for (auto&& it: states)
-        std::cout << disp(it) << std::endl << std::endl;
+        cout << disp(it) << endl << endl;
 
     // measure 2 subsystems out of a 4-qubit random density matrix
     cmat rho = randrho(16);
     subsys = {1, 2};
     cmat U = randU(4); // random basis on 2 qubits
 
-    std::cout << ">> Measuring qubits " << disp(subsys, " ")
-            << " of a 4-qubit random state in the random basis:" << std::endl;
-    std::cout << disp(U) << std::endl;
+    cout << ">> Measuring qubits " << disp(subsys, " ")
+            << " of a 4-qubit random state in the random basis:" << endl;
+    cout << disp(U) << endl;
 
     std::tie(result, probs, states) = measure(rho, U, {1, 2});
-    std::cout << ">> Measurement result: " << result << std::endl;
-    std::cout << ">> Probabilities: " << disp(probs, ", ") << std::endl;
-    std::cout << ">> Sum of the probabilities: "
-            << sum(probs.begin(), probs.end()) << std::endl;
-    std::cout << ">> Resulting normalized post-measurement states: "
-            << std::endl;
+    cout << ">> Measurement result: " << result << endl;
+    cout << ">> Probabilities: " << disp(probs, ", ") << endl;
+    cout << ">> Sum of the probabilities: "
+            << sum(probs.begin(), probs.end()) << endl;
+    cout << ">> Resulting normalized post-measurement states: "
+            << endl;
 
     for (auto&& it: states)
-        std::cout << disp(it) << std::endl << std::endl;
+        cout << disp(it) << endl << endl;
 
     // check now how the state after the measurement "looks"
     // on the left over subsystems {0, 3}
@@ -85,30 +87,30 @@ void MEASUREMENTS()
     cmat rho_out_bar = cmat::Zero(4, 4);
 
     // compute the resulting mixed state after the measurement
-    for (std::size_t i = 0; i < probs.size(); ++i)
+    for (idx i = 0; i < probs.size(); ++i)
         rho_out_bar += probs[i] * states[i];
 
     // verification
-    std::cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar)
-            << std::endl;
+    cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar)
+            << endl;
 
     // random Kraus
-    std::cout << ">> Random channel on part of the state " << std::endl;
+    cout << ">> Random channel on part of the state " << endl;
     rho_bar = ptrace(rho, {1, 3});
     rho_out_bar = ptrace(channel(rho, randkraus(3, 4), {1, 3}), {1, 3});
 
     // verification
-    std::cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar)
-            << std::endl << std::endl;
+    cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar)
+            << endl << endl;
 }
 
 void TELEPORTATION()
 {
-    std::size_t D = 3; // size of the system
-    std::cout << "**** Qudit teleportation, D = " << D << " ****" << std::endl;
+    idx D = 3; // size of the system
+    cout << "**** Qudit teleportation, D = " << D << " ****" << endl;
 
     ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
-    for (std::size_t i = 0; i < D; ++i)
+    for (idx i = 0; i < D; ++i)
         mes_AB += mket({i, i}, D);
     mes_AB /= std::sqrt((double) D);
 
@@ -117,8 +119,8 @@ void TELEPORTATION()
             * kron(gt.Fd(D), gt.Id(D)));
 
     ket psi_a = randket(D); // random state as input on a
-    std::cout << ">> Initial state:" << std::endl;
-    std::cout << disp(psi_a) << std::endl;
+    cout << ">> Initial state:" << endl;
+    cout << disp(psi_a) << endl;
 
     ket input_aAB = kron(psi_a, mes_AB); // joint input state aAB
     // output before measurement
@@ -126,38 +128,38 @@ void TELEPORTATION()
 
     // measure on aA
     auto measured_aA = measure(output_aAB, gt.Id(D * D), {0, 1}, D);
-    std::size_t m = std::get<0>(measured_aA); // measurement result
+    idx m = std::get<0>(measured_aA); // measurement result
 
     auto midx = n2multiidx(m, {D, D});
-    std::cout << ">> Alice's measurement result: ";
-    std::cout << m << " -> " << disp(midx, " ") << std::endl;
-    std::cout << ">> Alice's measurement probabilities: ";
-    std::cout << disp(std::get<1>(measured_aA), ", ") << std::endl;
+    cout << ">> Alice's measurement result: ";
+    cout << m << " -> " << disp(midx, " ") << endl;
+    cout << ">> Alice's measurement probabilities: ";
+    cout << disp(std::get<1>(measured_aA), ", ") << endl;
 
     // conditional result on B before correction
     cmat output_m_B = std::get<2>(measured_aA)[m];
     cmat correction_B = powm(gt.Zd(D), midx[0]) *
             powm(adjoint(gt.Xd(D)), midx[1]); // correction operator
     // apply correction on B
-    std::cout << ">> Bob must apply the correction operator Z^" << midx[0]
-            << " X^" << D - midx[1] << std::endl;
+    cout << ">> Bob must apply the correction operator Z^" << midx[0]
+            << " X^" << D - midx[1] << endl;
     cmat rho_B = correction_B * output_m_B * adjoint(correction_B);
 
-    std::cout << ">> Bob's final state (after correction): " << std::endl;
-    std::cout << disp(rho_B) << std::endl;
+    cout << ">> Bob's final state (after correction): " << endl;
+    cout << disp(rho_B) << endl;
 
     // verification
-    std::cout << ">> Norm difference: " << norm(rho_B - prj(psi_a))
-            << std::endl << std::endl;
+    cout << ">> Norm difference: " << norm(rho_B - prj(psi_a))
+            << endl << endl;
 }
 
 void DENSE_CODING()
 {
-    std::size_t D = 3; // size of the system
-    std::cout << "**** Qudit dense coding, D = " << D << " ****" << std::endl;
+    idx D = 3; // size of the system
+    cout << "**** Qudit dense coding, D = " << D << " ****" << endl;
 
     ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
-    for (std::size_t i = 0; i < D; ++i)
+    for (idx i = 0; i < D; ++i)
         mes_AB += mket({i, i}, D);
     mes_AB /= std::sqrt((double) D);
 
@@ -166,10 +168,10 @@ void DENSE_CODING()
             * kron(gt.Fd(D), gt.Id(D)));
 
     // equal probabilities of choosing a message
-    std::size_t m_A = randidx(0, D * D - 1);
+    idx m_A = randidx(0, D * D - 1);
     auto midx = n2multiidx(m_A, {D, D});
-    std::cout << ">> Alice sent: " << m_A << " -> ";
-    std::cout << disp(midx, " ") << std::endl;
+    cout << ">> Alice sent: " << m_A << " -> ";
+    cout << disp(midx, " ") << endl;
 
     // Alice's operation
     cmat U_A = powm(gt.Zd(D), midx[0]) * powm(adjoint(gt.Xd(D)), midx[1]);
@@ -184,32 +186,32 @@ void DENSE_CODING()
     psi_AB.swap(apply(psi_AB, Bell_AB, {0, 1}, D));
 
     auto measured = measure(psi_AB, gt.Id(D * D));
-    std::cout << ">> Bob's measurement probabilities: ";
-    std::cout << disp(std::get<1>(measured), ", ") << std::endl;
+    cout << ">> Bob's measurement probabilities: ";
+    cout << disp(std::get<1>(measured), ", ") << endl;
 
     // Bob samples according to the measurement probabilities
-    std::size_t m_B = std::get<0>(measured);
-    std::cout << ">> Bob received: ";
-    std::cout << m_B << " -> " << disp(n2multiidx(m_B, {D, D}), " ")
-            << std::endl << std::endl;
+    idx m_B = std::get<0>(measured);
+    cout << ">> Bob received: ";
+    cout << m_B << " -> " << disp(n2multiidx(m_B, {D, D}), " ")
+            << endl << endl;
 }
 
 void GROVER()
 {
     Timer t; // set a timer
 
-    std::size_t n = 4; // number of qubits
-    std::cout << "**** Grover on n = " << n << " qubits ****" << std::endl;
+    idx n = 4; // number of qubits
+    cout << "**** Grover on n = " << n << " qubits ****" << endl;
 
-    std::vector<std::size_t> dims(n, 2); // local dimensions
+    std::vector<idx> dims(n, 2); // local dimensions
     // number of elements in the database
-    std::size_t N = std::round(std::pow(2, n));
-    std::cout << ">> Database size: " << N << std::endl;
+    idx N = std::round(std::pow(2, n));
+    cout << ">> Database size: " << N << endl;
 
     // mark an element randomly
-    std::size_t marked = randidx(0, N - 1);
-    std::cout << ">> Marked state: " << marked << " -> ";
-    std::cout << disp(n2multiidx(marked, dims), " ") << std::endl;
+    idx marked = randidx(0, N - 1);
+    cout << ">> Marked state: " << marked << " -> ";
+    cout << disp(n2multiidx(marked, dims), " ") << endl;
 
     ket psi = mket(n2multiidx(0, dims)); // computational |0>^\otimes n
 
@@ -219,9 +221,9 @@ void GROVER()
     cmat G = 2 * prj(psi) - gt.Id(N); // Diffusion operator
 
     // number of queries
-    std::size_t nqueries = std::ceil(pi * std::sqrt((double) N) / 4.);
-    std::cout << ">> We run " << nqueries << " queries" << std::endl;
-    for (std::size_t i = 0; i < nqueries; ++i)
+    idx nqueries = std::ceil(pi * std::sqrt((double) N) / 4.);
+    cout << ">> We run " << nqueries << " queries" << endl;
+    for (idx i = 0; i < nqueries; ++i)
     {
         psi(marked) = -psi(marked); // apply the oracle first, no aliasing
         psi = (G * psi).eval(); // then the diffusion operator, no aliasing
@@ -229,94 +231,94 @@ void GROVER()
 
     // we now measure the state in the computational basis
     auto measured = measure(psi, gt.Id(N));
-    std::cout << ">> Probability of the marked state: "
-            << std::get<1>(measured)[marked] << std::endl;
-    std::cout << ">> Probability of all results: ";
-    std::cout << disp(std::get<1>(measured), ", ") << std::endl;
+    cout << ">> Probability of the marked state: "
+            << std::get<1>(measured)[marked] << endl;
+    cout << ">> Probability of all results: ";
+    cout << disp(std::get<1>(measured), ", ") << endl;
 
     // sample
-    std::cout << ">> Let's sample..." << std::endl;
-    std::size_t result = std::get<0>(measured);
+    cout << ">> Let's sample..." << endl;
+    idx result = std::get<0>(measured);
     if (result == marked)
-        std::cout << ">> Hooray, we obtained the correct result: ";
+        cout << ">> Hooray, we obtained the correct result: ";
     else
-        std::cout << ">> Not there yet... we obtained: ";
-    std::cout << result << " -> ";
-    std::cout << disp(n2multiidx(result, dims), " ") << std::endl;
+        cout << ">> Not there yet... we obtained: ";
+    cout << result << " -> ";
+    cout << disp(n2multiidx(result, dims), " ") << endl;
 
     // stop the timer and display it
-    std::cout << ">> It took " << t.toc() << " seconds to simulate Grover on "
-            << n << " qubits." << std::endl << std::endl;
+    cout << ">> It took " << t.toc() << " seconds to simulate Grover on "
+            << n << " qubits." << endl << endl;
 }
 
 void ENTANGLEMENT()
 {
-    std::cout << "**** Entanglement ****" << std::endl;
+    cout << "**** Entanglement ****" << endl;
 
     cmat rho = 0.2 * st.pb00 + 0.8 * st.pb11;
-    std::cout << ">> rho: " << std::endl;
-    std::cout << disp(rho) << std::endl;
+    cout << ">> rho: " << endl;
+    cout << disp(rho) << endl;
 
-    std::cout << ">> Concurrence of rho: "
-            << concurrence(rho) << std::endl;
+    cout << ">> Concurrence of rho: "
+            << concurrence(rho) << endl;
 
-    std::cout << ">> Negativity of rho: "
-            << negativity(rho, {2, 2}) << std::endl;
+    cout << ">> Negativity of rho: "
+            << negativity(rho, {2, 2}) << endl;
 
-    std::cout << ">> Logarithimc negativity of rho: "
-            << lognegativity(rho, {2, 2}) << std::endl;
+    cout << ">> Logarithimc negativity of rho: "
+            << lognegativity(rho, {2, 2}) << endl;
 
     ket psi = 0.8 * mket({0, 0}) + 0.6 * mket({1, 1});
 
     // apply some local random unitaries
     psi = kron(randU(2), randU(2)) * psi;
 
-    std::cout << ">> psi: " << std::endl;
-    std::cout << disp(psi) << std::endl;
+    cout << ">> psi: " << endl;
+    cout << disp(psi) << endl;
 
-    std::cout << ">> Entanglement of psi: "
-            << entanglement(psi, {2, 2}) << std::endl;
+    cout << ">> Entanglement of psi: "
+            << entanglement(psi, {2, 2}) << endl;
 
-    std::cout << ">> Concurrence of psi: "
-            << concurrence(prj(psi)) << std::endl;
+    cout << ">> Concurrence of psi: "
+            << concurrence(prj(psi)) << endl;
 
-    std::cout << ">> G-Concurrence of psi: "
-            << gconcurrence(psi) << std::endl;
+    cout << ">> G-Concurrence of psi: "
+            << gconcurrence(psi) << endl;
 
-    std::cout << ">> Schmidt coefficients of psi: " << std::endl;
-    std::cout << disp(schmidtcoeff(psi, {2, 2})) << std::endl;
+    cout << ">> Schmidt coefficients of psi: " << endl;
+    cout << disp(schmidtcoeff(psi, {2, 2})) << endl;
 
-    std::cout << ">> Schmidt probabilities of psi: " << std::endl;
-    std::cout << disp(schmidtprob(psi, {2, 2})) << std::endl;
+    cout << ">> Schmidt probabilities of psi: " << endl;
+    cout << disp(schmidtprob(psi, {2, 2})) << endl;
 
     cmat UA = schmidtA(psi, {2, 2});
     cmat UB = schmidtB(psi, {2, 2});
 
-    std::cout << ">> Schmidt vectors on Alice's side: " << std::endl;
-    std::cout << disp(UA) << std::endl;
+    cout << ">> Schmidt vectors on Alice's side: " << endl;
+    cout << disp(UA) << endl;
 
-    std::cout << ">> Schmidt vectors on Bob's side: " << std::endl;
-    std::cout << disp(UB) << std::endl;
+    cout << ">> Schmidt vectors on Bob's side: " << endl;
+    cout << disp(UB) << endl;
 
-    std::cout << ">> State psi in the Schmidt basis: " << std::endl;
-    std::cout << disp(adjoint(kron(UA, UB)) * psi) << std::endl;
+    cout << ">> State psi in the Schmidt basis: " << endl;
+    cout << disp(adjoint(kron(UA, UB)) * psi) << endl;
 
     // reconstructed state
     ket psi_from_schmidt =
             schmidtcoeff(psi, {2, 2})(0) * kron(UA.col(0), UB.col(0))
                     + schmidtcoeff(psi, {2, 2})(1) * kron(UA.col(1), UB.col(1));
-    std::cout << ">> State psi reconstructed from the Schmidt decomposition: "
-            << std::endl;
-    std::cout << disp(psi_from_schmidt) << std::endl;
+    cout << ">> State psi reconstructed from the Schmidt decomposition: "
+            << endl;
+    cout << disp(psi_from_schmidt) << endl;
 
     // verification
-    std::cout << ">> Norm difference: " << norm(psi - psi_from_schmidt)
-            << std::endl << std::endl;
+    cout << ">> Norm difference: " << norm(psi - psi_from_schmidt)
+            << endl << endl;
 }
 
 void QECC()
 {
-    std::cout << "**** Quantum error correcting codes ****" << std::endl;
+    cout << "**** Quantum error correcting codes ****" << endl;
 
     ket a0 = codes.codeword(Codes::Type::FIVE_QUBIT, 0);
     ket a1 = codes.codeword(Codes::Type::FIVE_QUBIT, 1);
@@ -327,74 +329,74 @@ void QECC()
     ket c0 = codes.codeword(Codes::Type::NINE_QUBIT_SHOR, 0);
     ket c1 = codes.codeword(Codes::Type::NINE_QUBIT_SHOR, 1);
 
-    std::cout << ">> [[5, 1, 3]] Five qubit code. ";
-    std::cout << "Checking codeword orthogonality." << std::endl;
-    std::cout << ">> |<0L|1L>| = ";
-    std::cout << disp(adjoint(a0) * a1) << std::endl;
+    cout << ">> [[5, 1, 3]] Five qubit code. ";
+    cout << "Checking codeword orthogonality." << endl;
+    cout << ">> |<0L|1L>| = ";
+    cout << disp(adjoint(a0) * a1) << endl;
 
-    std::cout << ">> [[7, 1, 3]] Seven qubit Steane code. ";
-    std::cout << "Checking codeword orthogonality." << std::endl;
-    std::cout << ">> |<0L|1L>| = ";
-    std::cout << disp(adjoint(b0) * b1) << std::endl;
+    cout << ">> [[7, 1, 3]] Seven qubit Steane code. ";
+    cout << "Checking codeword orthogonality." << endl;
+    cout << ">> |<0L|1L>| = ";
+    cout << disp(adjoint(b0) * b1) << endl;
 
-    std::cout << ">> [[9, 1, 3]] Nine qubit Shor code. ";
-    std::cout << "Checking codeword orthogonality." << std::endl;
-    std::cout << ">> |<0L|1L>| = ";
-    std::cout << disp(adjoint(c0) * c1) << std::endl << std::endl;
+    cout << ">> [[9, 1, 3]] Nine qubit Shor code. ";
+    cout << "Checking codeword orthogonality." << endl;
+    cout << ">> |<0L|1L>| = ";
+    cout << disp(adjoint(c0) * c1) << endl << endl;
 }
 
 void CHANNEL()
 {
-    std::cout << "**** Channel tests ****" << std::endl;
+    cout << "**** Channel tests ****" << endl;
 
-    std::size_t nk = 5;
-    std::size_t D = 3; // nk Kraus on d-dimensional system
-    std::cout << ">> Generating a random channel with " << nk
+    idx nk = 5;
+    idx D = 3; // nk Kraus on d-dimensional system
+    cout << ">> Generating a random channel with " << nk
             << " Kraus operators on a " << D << " dimensional space"
-            << std::endl;
+            << endl;
     std::vector<cmat> Ks = randkraus(nk, D);
 
     cmat rho_in = randrho(D); // random input state
     cmat rho_out = channel(rho_in, Ks); // output state
 
-    std::cout << ">> Computing its Choi matrix..." << std::endl;
+    cout << ">> Computing its Choi matrix..." << endl;
     cmat choim = choi(Ks);
-    std::cout << ">> Choi matrix:" << std::endl << disp(choim) << std::endl;
+    cout << ">> Choi matrix:" << endl << disp(choim) << endl;
 
-    std::cout << ">> The eigenvalues of the Choi matrix are: "
-            << std::endl << disp(transpose(hevals(choim))) << std::endl;
+    cout << ">> The eigenvalues of the Choi matrix are: "
+            << endl << disp(transpose(hevals(choim))) << endl;
 
-    std::cout << ">> Their sum is: " << sum(hevals(choim))
-            << std::endl;
+    cout << ">> Their sum is: " << sum(hevals(choim))
+            << endl;
 
     std::vector<cmat> Kperps = choi2kraus(choim);
-    std::cout << ">> The Kraus rank of the channel is: "
-            << Kperps.size() << std::endl;
+    cout << ">> The Kraus rank of the channel is: "
+            << Kperps.size() << endl;
 
     cmat rho_out1 = channel(rho_in, Kperps);
     // verification
-    std::cout << ">> Norm difference on output states: "
-            << norm(rho_out1 - rho_out) << std::endl;
+    cout << ">> Norm difference on output states: "
+            << norm(rho_out1 - rho_out) << endl;
 
-    std::cout << ">> Superoperator matrix:" << std::endl;
+    cout << ">> Superoperator matrix:" << endl;
     cmat smat = super(Ks);
-    std::cout << disp(smat) << std::endl;
+    cout << disp(smat) << endl;
 
-    std::cout << ">> The eigenvalues of the superoperator matrix are: "
-            << std::endl;
+    cout << ">> The eigenvalues of the superoperator matrix are: "
+            << endl;
     cmat evalsupop = evals(smat);
-    std::cout << disp(transpose(evalsupop)) << std::endl;
+    cout << disp(transpose(evalsupop)) << endl;
 
-    std::cout << ">> Their absolute values are: " << std::endl;
-    for (std::size_t i = 0; i < (std::size_t) evalsupop.size(); ++i)
-        std::cout << std::abs(evalsupop(i)) << " ";
+    cout << ">> Their absolute values are: " << endl;
+    for (idx i = 0; i < (idx) evalsupop.size(); ++i)
+        cout << std::abs(evalsupop(i)) << " ";
 
     // verification
-    std::cout << std::endl
+    cout << endl
             << ">> Norm difference for the superoperator action: ";
     cmat rho_out2 = transpose(
             reshape(smat * reshape(transpose(rho_in), D * D, 1), D, D));
-    std::cout << norm(rho_out - rho_out2) << std::endl << std::endl;
+    cout << norm(rho_out - rho_out2) << endl << endl;
 }
 
 // test function used by qpp::cwise() in FUNCTOR()
@@ -405,110 +407,110 @@ cplx pow3(const cplx& z)
 
 void FUNCTOR()
 {
-    std::cout << "**** Functor ****" << std::endl;
+    cout << "**** Functor ****" << endl;
 
     // functor test
-    std::cout << ">> Functor z^3 acting component-wise on:" << std::endl;
+    cout << ">> Functor z^3 acting component-wise on:" << endl;
     cmat A(2, 2);
     A << 1, 2, 3, 4;
-    std::cout << disp(A) << std::endl;
+    cout << disp(A) << endl;
 
-    std::cout << ">> Result (with lambda):" << std::endl;
+    cout << ">> Result (with lambda):" << endl;
     // functor z^3 componentwise, specify OutputScalar and Derived for lambdas
-    std::cout << disp(cwise<cplx, cmat>(A, [](const cplx& z) -> cplx
+    cout << disp(cwise<cplx, cmat>(A, [](const cplx& z) -> cplx
     {
         return z * z * z;
-    })) << std::endl;
+    })) << endl;
 
-    std::cout << ">> Result (with proper function):" << std::endl;
+    cout << ">> Result (with proper function):" << endl;
     // automatic type deduction for proper functions
-    std::cout << disp(cwise(A, &pow3)) << std::endl << std::endl;
+    cout << disp(cwise(A, &pow3)) << endl << endl;
 }
 
 void GRAMSCHMIDT()
 {
-    std::cout << "**** Gram-Schmidt ****" << std::endl;
+    cout << "**** Gram-Schmidt ****" << endl;
 
     cmat A(3, 3);
     A << 1, 1, 0, 0, 2, 0, 0, 0, 0;
-    std::cout << ">> Input matrix:" << std::endl << disp(A) << std::endl;
+    cout << ">> Input matrix:" << endl << disp(A) << endl;
 
     cmat Ags = grams(A);
-    std::cout << ">> Result:" << std::endl << disp(Ags) << std::endl;
+    cout << ">> Result:" << endl << disp(Ags) << endl;
 
-    std::cout << ">> Projector onto G.S. vectors:" << std::endl;
-    std::cout << disp(Ags * adjoint(Ags)) << std::endl << std::endl;
+    cout << ">> Projector onto G.S. vectors:" << endl;
+    cout << disp(Ags * adjoint(Ags)) << endl << endl;
 }
 
 void SPECTRAL()
 {
-    std::cout << "**** Spectral decomposition tests ****" << std::endl;
-    std::size_t D = 4;
+    cout << "**** Spectral decomposition tests ****" << endl;
+    idx D = 4;
     cmat rH = randH(D);
-    std::cout << ">> Original matrix: " << std::endl << disp(rH) << std::endl;
+    cout << ">> Original matrix: " << endl << disp(rH) << endl;
 
     // spectral decomposition here
-    DynColVect<double> evalsH = hevals(rH);
+    dyn_col_vect<double> evalsH = hevals(rH);
     cmat evectsH = hevects(rH);
     cmat spec = cmat::Zero(D, D);
     // reconstruct the matrix
-    for (std::size_t i = 0; i < D; ++i)
+    for (idx i = 0; i < D; ++i)
         spec += evalsH(i) * prj(evectsH.col(i));
 
-    std::cout << ">> Reconstructed from spectral decomposition: " << std::endl;
-    std::cout << disp(spec) << std::endl;
+    cout << ">> Reconstructed from spectral decomposition: " << endl;
+    cout << disp(spec) << endl;
 
     // verification
-    std::cout << ">> Norm difference: " << norm(spec - rH)
-            << std::endl << std::endl;
+    cout << ">> Norm difference: " << norm(spec - rH)
+            << endl << endl;
 }
 
 void RANDOM()
 {
-    std::cout << "**** Randomness ****" << std::endl;
+    cout << "**** Randomness ****" << endl;
 
-    std::cout << ">> Generating a random ket on D = 5" << std::endl;
+    cout << ">> Generating a random ket on D = 5" << endl;
     ket rket = randket(5);
-    std::cout << disp(rket) << std::endl;
+    cout << disp(rket) << endl;
 
     std::vector<double> probs = abssq(rket);
-    std::cout << "Probabilities: " << disp(probs, ", ") << std::endl;
+    cout << "Probabilities: " << disp(probs, ", ") << endl;
 
-    std::cout << "Sum of the probabilities: ";
-    std::cout << sum(probs.begin(), probs.end()) << std::endl << std::endl;
+    cout << "Sum of the probabilities: ";
+    cout << sum(probs.begin(), probs.end()) << endl << endl;
 }
 
 void ENTROPIES()
 {
-    std::cout << "*** Entropies ****" << std::endl;
+    cout << "*** Entropies ****" << endl;
 
     cmat rho = st.pb00;
     cmat rhoA = ptrace(rho, {1});
-    std::cout << ">> State: " << std::endl << disp(rho) << std::endl;
-    std::cout << ">> Partial trace over B: " << std::endl
-            << disp(rhoA) << std::endl;
-    std::cout << ">> Shannon entropy: " << shannon(rhoA) << std::endl;
-    std::cout << ">> Renyi-0 (Hmax) entropy: " << renyi(rhoA, 0) << std::endl;
-    std::cout << ">> Renyi-1 entropy: " << renyi(rhoA, 1) << std::endl;
-    std::cout << ">> Renyi-2 entropy: " << renyi(rhoA, 2) << std::endl;
-    std::cout << ">> Renyi-inf (Hmin) entropy: "
-            << renyi(rhoA, infty) << std::endl;
-    std::cout << ">> Tsallis-1 entropy: " << tsallis(rhoA, 1) << std::endl;
-    std::cout << ">> Tsallis-2 entropy: " << tsallis(rhoA, 2) << std::endl;
-    std::cout << ">> Quantum mutual information between A and B: "
-            << qmutualinfo(rho, {0}, {1}) << std::endl;
-    std::cout << ">> Quantum mutual information between A and A: "
-            << qmutualinfo(rho, {0}, {0}) << std::endl;
-    std::cout << ">> Quantum mutual information between B and B: "
-            << qmutualinfo(rho, {1}, {1}) << std::endl << std::endl;
+    cout << ">> State: " << endl << disp(rho) << endl;
+    cout << ">> Partial trace over B: " << endl
+            << disp(rhoA) << endl;
+    cout << ">> Shannon entropy: " << shannon(rhoA) << endl;
+    cout << ">> Renyi-0 (Hmax) entropy: " << renyi(rhoA, 0) << endl;
+    cout << ">> Renyi-1 entropy: " << renyi(rhoA, 1) << endl;
+    cout << ">> Renyi-2 entropy: " << renyi(rhoA, 2) << endl;
+    cout << ">> Renyi-inf (Hmin) entropy: "
+            << renyi(rhoA, infty) << endl;
+    cout << ">> Tsallis-1 entropy: " << tsallis(rhoA, 1) << endl;
+    cout << ">> Tsallis-2 entropy: " << tsallis(rhoA, 2) << endl;
+    cout << ">> Quantum mutual information between A and B: "
+            << qmutualinfo(rho, {0}, {1}) << endl;
+    cout << ">> Quantum mutual information between A and A: "
+            << qmutualinfo(rho, {0}, {0}) << endl;
+    cout << ">> Quantum mutual information between B and B: "
+            << qmutualinfo(rho, {1}, {1}) << endl << endl;
 }
 
 void GRAPHSTATES()
 {
-    std::cout << "**** Graph states ****" << std::endl;
+    cout << "**** Graph states ****" << endl;
 
     // adjacency matrix, triangle graph (LU equivalent to a GHZ state)
-    std::size_t Gamma[3][3] = {{0, 1, 1}, {1, 0, 1}, {1, 1, 0}};
+    idx Gamma[3][3] = {{0, 1, 1}, {1, 0, 1}, {1, 1, 0}};
 
     // start with 2 states in |000>
     ket G0 = mket({0, 0, 0});
@@ -527,8 +529,8 @@ void GRAPHSTATES()
     rhoG0 = (H3 * rhoG0 * adjoint(H3)).eval();
     rhoG1 = rhoG0;
     // apply pairwise Control-Phases
-    for (std::size_t i = 0; i < 3; ++i)
-        for (std::size_t j = i + 1; j < 3; ++j)
+    for (idx i = 0; i < 3; ++i)
+        for (idx j = i + 1; j < 3; ++j)
         {
             if (Gamma[i][j])
             {
@@ -544,17 +546,17 @@ void GRAPHSTATES()
         }
     // end construction
 
-    std::cout << ">> Resulting graph states: " << std::endl;
-    std::cout << disp(G0) << std::endl << std::endl;
-    std::cout << disp(G1) << std::endl;
+    cout << ">> Resulting graph states: " << endl;
+    cout << disp(G0) << endl << endl;
+    cout << disp(G1) << endl;
     // verification
-    std::cout << ">> Norm difference: " << norm(G0 - G1) << std::endl;
+    cout << ">> Norm difference: " << norm(G0 - G1) << endl;
 
     // check the corresponding density matrices
-    std::cout << ">> Resulting density matrices: " << std::endl;
-    std::cout << disp(rhoG0) << std::endl << std::endl;
-    std::cout << disp(rhoG1) << std::endl;
-    std::cout << ">> Norm difference: " << norm(rhoG0 - rhoG1) << std::endl;
+    cout << ">> Resulting density matrices: " << endl;
+    cout << disp(rhoG0) << endl << endl;
+    cout << disp(rhoG1) << endl;
+    cout << ">> Norm difference: " << norm(rhoG0 - rhoG1) << endl;
 
     // check the X-Z rule
     // applying X to a vertex is equivalent to applying Z to its neighbors
@@ -564,58 +566,58 @@ void GRAPHSTATES()
     cmat rhoG0Z1Z2 = apply(rhoG0, kron(gt.Z, gt.Z), {1, 2});
 
     // verification
-    std::cout << ">> Checking the X-Z rule" << std::endl;
-    std::cout << ">> X-Z rule. Norm difference for the kets: ";
-    std::cout << norm(G0X0 - G0Z1Z2) << std::endl;
-    std::cout << ">> X-Z rule. Norm difference for the corresponding "
+    cout << ">> Checking the X-Z rule" << endl;
+    cout << ">> X-Z rule. Norm difference for the kets: ";
+    cout << norm(G0X0 - G0Z1Z2) << endl;
+    cout << ">> X-Z rule. Norm difference for the corresponding "
             "density matrices: ";
-    std::cout << norm(rhoG0X0 - rhoG0Z1Z2) << std::endl << std::endl;
+    cout << norm(rhoG0X0 - rhoG0Z1Z2) << endl << endl;
 }
 
 void TIMING()
 {
-    std::cout << "**** Timing tests ****" << std::endl;
+    cout << "**** Timing tests ****" << endl;
 
-    std::size_t n = 12; // number of qubits
-    std::size_t N = std::round(std::pow(2, n));
-    std::cout << ">> n = " << n << " qubits, matrix size "
-            << N << " x " << N << "." << std::endl << std::endl;
+    idx n = 12; // number of qubits
+    idx N = std::round(std::pow(2, n));
+    cout << ">> n = " << n << " qubits, matrix size "
+            << N << " x " << N << "." << endl << endl;
     cmat randcmat = cmat::Random(N, N);
 
     // qpp::ptrace()
-    std::cout << "**** qpp::ptrace() timing ****" << std::endl;
-    std::vector<std::size_t> subsys_ptrace = {0};
-    std::cout << ">> Subsytem(s): ";
-    std::cout << disp(subsys_ptrace, ", ") << std::endl;
+    cout << "**** qpp::ptrace() timing ****" << endl;
+    std::vector<idx> subsys_ptrace = {0};
+    cout << ">> Subsytem(s): ";
+    cout << disp(subsys_ptrace, ", ") << endl;
     Timer t;
     ptrace(randcmat, subsys_ptrace);
-    std::cout << ">> It took " << t.toc() << " seconds."
-            << std::endl << std::endl;
+    cout << ">> It took " << t.toc() << " seconds."
+            << endl << endl;
 
     // qpp::ptranspose()
-    std::cout << "**** qpp::ptranspose() timing ****" << std::endl;
+    cout << "**** qpp::ptranspose() timing ****" << endl;
     // partially transpose n-1 subsystems
-    std::vector<std::size_t> subsys_ptranspose;
-    for (std::size_t i = 0; i < n - 1; ++i)
+    std::vector<idx> subsys_ptranspose;
+    for (idx i = 0; i < n - 1; ++i)
         subsys_ptranspose.push_back(i);
-    std::cout << ">> Subsytem(s): ";
-    std::cout << disp(subsys_ptranspose, ", ") << std::endl;
+    cout << ">> Subsytem(s): ";
+    cout << disp(subsys_ptranspose, ", ") << endl;
     t.tic();
     ptranspose(randcmat, subsys_ptranspose);
-    std::cout << ">> It took " << t.toc() << " seconds."
-            << std::endl << std::endl;
+    cout << ">> It took " << t.toc() << " seconds."
+            << endl << endl;
 
     // qpp::syspermute()
-    std::cout << "**** qpp::syspermute() timing ****" << std::endl;
-    std::vector<std::size_t> perm; // left-shift all subsystems by 1
-    for (std::size_t i = 0; i < n; ++i)
+    cout << "**** qpp::syspermute() timing ****" << endl;
+    std::vector<idx> perm; // left-shift all subsystems by 1
+    for (idx i = 0; i < n; ++i)
         perm.push_back((i + 1) % n);
-    std::cout << ">> Subsytem(s): ";
-    std::cout << disp(perm, ", ") << std::endl;
+    cout << ">> Subsytem(s): ";
+    cout << disp(perm, ", ") << endl;
     t.tic();
     syspermute(randcmat, perm);
-    std::cout << ">> It took " << t.toc() << " seconds."
-            << std::endl << std::endl;
+    cout << ">> It took " << t.toc() << " seconds."
+            << endl << endl;
 }
 
 int main()
