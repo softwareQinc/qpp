@@ -198,9 +198,9 @@ public:
     * \return CTRL-A gate, as a matrix over the same scalar field as \a A
     */
     template<typename Derived>
-    dyn_mat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived>& A,
-            const std::vector<idx>& ctrl,
-            const std::vector<idx>& subsys,
+    dyn_mat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase <Derived>& A,
+            const std::vector <idx>& ctrl,
+            const std::vector <idx>& subsys,
             idx n,
             idx d = 2) const
     {
@@ -233,12 +233,12 @@ public:
                     Exception::Type::DIMS_INVALID);
 
         // ctrl + gate subsystem vector
-        std::vector<idx> ctrlgate = ctrl;
+        std::vector <idx> ctrlgate = ctrl;
         ctrlgate.insert(std::end(ctrlgate), std::begin(subsys),
                 std::end(subsys));
         std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
-        std::vector<idx> dims(n, d); // local dimensions vector
+        std::vector <idx> dims(n, d); // local dimensions vector
 
         // check that ctrl + gate subsystem is valid
         // with respect to local dimensions
@@ -274,7 +274,7 @@ public:
                 std::llround(std::pow(d, nsubsys_bar)));
 
         // compute the complementary subsystem of ctrlgate w.r.t. dims
-        std::vector<idx> allsubsys(n); // all subsystems
+        std::vector <idx> allsubsys(n); // all subsystems
         std::iota(std::begin(allsubsys), std::end(allsubsys), 0);
         std::set_difference(std::begin(allsubsys), std::end(allsubsys),
                 std::begin(ctrlgate), std::end(ctrlgate),
@@ -370,8 +370,8 @@ public:
     */
     template<typename Derived>
     dyn_mat<typename Derived::Scalar> expandout(
-            const Eigen::MatrixBase<Derived>& A, idx pos,
-            const std::vector<idx>& dims) const
+            const Eigen::MatrixBase <Derived>& A, idx pos,
+            const std::vector <idx>& dims) const
     {
         const dyn_mat<typename Derived::Scalar>& rA = A;
 

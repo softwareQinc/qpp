@@ -100,14 +100,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a4980e688af46b3b1a96c2f12c9849cd0"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a4980e688af46b3b1a96c2f12c9849cd0">qpp::tsallis</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, double alpha)</td></tr>
 <tr class="memdesc:a4980e688af46b3b1a96c2f12c9849cd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tsallis- <img class="formulaInl" alt="$\alpha$" src="form_10.png"/> entropy of the probability distribution/density matrix <em>A</em>, for <img class="formulaInl" alt="$ \alpha\geq 0$" src="form_11.png"/>.  <a href="#a4980e688af46b3b1a96c2f12c9849cd0">More...</a><br /></td></tr>
 <tr class="separator:a4980e688af46b3b1a96c2f12c9849cd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80473c412499e9a120c4597a34add129"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:a80473c412499e9a120c4597a34add129"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a80473c412499e9a120c4597a34add129">qpp::qmutualinfo</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; std::size_t &gt; &amp;subsysA, const std::vector&lt; std::size_t &gt; &amp;subsysB, const std::vector&lt; std::size_t &gt; &amp;dims)</td></tr>
-<tr class="memdesc:a80473c412499e9a120c4597a34add129"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantum mutual information between 2 subsystems of a composite system.  <a href="#a80473c412499e9a120c4597a34add129">More...</a><br /></td></tr>
-<tr class="separator:a80473c412499e9a120c4597a34add129"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a757eca5bb6ba3f3614598a9acae2cf56"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:a757eca5bb6ba3f3614598a9acae2cf56"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a757eca5bb6ba3f3614598a9acae2cf56">qpp::qmutualinfo</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; std::size_t &gt; &amp;subsysA, const std::vector&lt; std::size_t &gt; &amp;subsysB, std::size_t d=2)</td></tr>
-<tr class="memdesc:a757eca5bb6ba3f3614598a9acae2cf56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantum mutual information between 2 subsystems of a composite system.  <a href="#a757eca5bb6ba3f3614598a9acae2cf56">More...</a><br /></td></tr>
-<tr class="separator:a757eca5bb6ba3f3614598a9acae2cf56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a336521e1a561be170d44dd5a1bc81c1d"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a336521e1a561be170d44dd5a1bc81c1d"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a336521e1a561be170d44dd5a1bc81c1d">qpp::qmutualinfo</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;subsysA, const std::vector&lt; idx &gt; &amp;subsysB, const std::vector&lt; idx &gt; &amp;dims)</td></tr>
+<tr class="memdesc:a336521e1a561be170d44dd5a1bc81c1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantum mutual information between 2 subsystems of a composite system.  <a href="#a336521e1a561be170d44dd5a1bc81c1d">More...</a><br /></td></tr>
+<tr class="separator:a336521e1a561be170d44dd5a1bc81c1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dfb291551237e2a5b45e335141e759a"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a1dfb291551237e2a5b45e335141e759a"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a1dfb291551237e2a5b45e335141e759a">qpp::qmutualinfo</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;subsysA, const std::vector&lt; idx &gt; &amp;subsysB, idx d=2)</td></tr>
+<tr class="memdesc:a1dfb291551237e2a5b45e335141e759a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantum mutual information between 2 subsystems of a composite system.  <a href="#a1dfb291551237e2a5b45e335141e759a">More...</a><br /></td></tr>
+<tr class="separator:a1dfb291551237e2a5b45e335141e759a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -115,7 +115,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="entropies_8h.html">entropies.h</a></li>
-    <li class="footer">Generated on Wed Nov 19 2014 10:15:14 for quantum++ by
+    <li class="footer">Generated on Wed Nov 26 2014 16:12:17 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

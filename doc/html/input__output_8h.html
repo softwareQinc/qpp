@@ -107,19 +107,19 @@ Functions</h2></td></tr>
 Container::const_iterator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#afc2ad6985e72b70282708a637cf42e7b">qpp::disp</a> (const Container &amp;c, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;)</td></tr>
 <tr class="memdesc:afc2ad6985e72b70282708a637cf42e7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard container ostream manipulator. The container must support std::begin(), std::end() and forward iteration.  <a href="#afc2ad6985e72b70282708a637cf42e7b">More...</a><br /></td></tr>
 <tr class="separator:afc2ad6985e72b70282708a637cf42e7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6e8f13a0bb318a28e1066a8fe5b3ce0"><td class="memTemplParams" colspan="2">template&lt;typename PointerType &gt; </td></tr>
-<tr class="memitem:af6e8f13a0bb318a28e1066a8fe5b3ce0"><td class="memTemplItemLeft" align="right" valign="top">internal::IOManipPointer<br class="typebreak" />
-&lt; PointerType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#af6e8f13a0bb318a28e1066a8fe5b3ce0">qpp::disp</a> (const PointerType *p, std::size_t n, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;)</td></tr>
-<tr class="memdesc:af6e8f13a0bb318a28e1066a8fe5b3ce0"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-style pointer ostream manipulator.  <a href="#af6e8f13a0bb318a28e1066a8fe5b3ce0">More...</a><br /></td></tr>
-<tr class="separator:af6e8f13a0bb318a28e1066a8fe5b3ce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0d94fac0c249e0c34ed5ff9e9b6a4be"><td class="memTemplParams" colspan="2">template&lt;typename PointerType &gt; </td></tr>
+<tr class="memitem:aa0d94fac0c249e0c34ed5ff9e9b6a4be"><td class="memTemplItemLeft" align="right" valign="top">internal::IOManipPointer<br class="typebreak" />
+&lt; PointerType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aa0d94fac0c249e0c34ed5ff9e9b6a4be">qpp::disp</a> (const PointerType *p, idx n, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;)</td></tr>
+<tr class="memdesc:aa0d94fac0c249e0c34ed5ff9e9b6a4be"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-style pointer ostream manipulator.  <a href="#aa0d94fac0c249e0c34ed5ff9e9b6a4be">More...</a><br /></td></tr>
+<tr class="separator:aa0d94fac0c249e0c34ed5ff9e9b6a4be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a238cf516513837235fbc7d7d283f7b78"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a238cf516513837235fbc7d7d283f7b78"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a238cf516513837235fbc7d7d283f7b78">qpp::save</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::string &amp;fname)</td></tr>
 <tr class="memdesc:a238cf516513837235fbc7d7d283f7b78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves Eigen expression to a binary file (internal format) in double precision.  <a href="#a238cf516513837235fbc7d7d283f7b78">More...</a><br /></td></tr>
 <tr class="separator:a238cf516513837235fbc7d7d283f7b78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a217e8ae6b09ac3cc89415d4b6204fda6"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:a217e8ae6b09ac3cc89415d4b6204fda6"><td class="memTemplItemLeft" align="right" valign="top">DynMat&lt; typename Derived::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a217e8ae6b09ac3cc89415d4b6204fda6">qpp::load</a> (const std::string &amp;fname)</td></tr>
-<tr class="memdesc:a217e8ae6b09ac3cc89415d4b6204fda6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads Eigen matrix from a binary file (internal format) in double precision.  <a href="#a217e8ae6b09ac3cc89415d4b6204fda6">More...</a><br /></td></tr>
-<tr class="separator:a217e8ae6b09ac3cc89415d4b6204fda6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea6b39f40a9c9a188a5e0dd244b4bf08"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:aea6b39f40a9c9a188a5e0dd244b4bf08"><td class="memTemplItemLeft" align="right" valign="top">dyn_mat&lt; typename Derived::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aea6b39f40a9c9a188a5e0dd244b4bf08">qpp::load</a> (const std::string &amp;fname)</td></tr>
+<tr class="memdesc:aea6b39f40a9c9a188a5e0dd244b4bf08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads Eigen matrix from a binary file (internal format) in double precision.  <a href="#aea6b39f40a9c9a188a5e0dd244b4bf08">More...</a><br /></td></tr>
+<tr class="separator:aea6b39f40a9c9a188a5e0dd244b4bf08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -127,7 +127,7 @@ Container::const_iterator &gt;&#160;</td><td class="memTemplItemRight" valign="b
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="input__output_8h.html">input_output.h</a></li>
-    <li class="footer">Generated on Wed Nov 19 2014 10:15:14 for quantum++ by
+    <li class="footer">Generated on Wed Nov 26 2014 16:12:17 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

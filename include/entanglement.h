@@ -38,8 +38,8 @@ namespace qpp
 * \return Schmidt coefficients of \a A, as a complex dynamic column vector
 */
 template<typename Derived>
-dyn_col_vect<cplx> schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<idx>& dims)
+dyn_col_vect <cplx> schmidtcoeff(const Eigen::MatrixBase <Derived>& A,
+        const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -70,8 +70,8 @@ dyn_col_vect<cplx> schmidtcoeff(const Eigen::MatrixBase<Derived>& A,
 * the Schmidt basis vectors on Alice's side.
 */
 template<typename Derived>
-cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<idx>& dims)
+cmat schmidtA(const Eigen::MatrixBase <Derived>& A,
+        const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -101,8 +101,8 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
 * the Schmidt basis vectors on Bob's side.
 */
 template<typename Derived>
-cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<idx>& dims)
+cmat schmidtB(const Eigen::MatrixBase <Derived>& A,
+        const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -137,8 +137,8 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
 * \return Schmidt probabilites of \a A, as a real dynamic column vector
 */
 template<typename Derived>
-dyn_col_vect<double> schmidtprob(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<idx>& dims)
+dyn_col_vect<double> schmidtprob(const Eigen::MatrixBase <Derived>& A,
+        const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -175,8 +175,8 @@ dyn_col_vect<double> schmidtprob(const Eigen::MatrixBase<Derived>& A,
 * \return Entanglement, with the logarithm in base 2
 */
 template<typename Derived>
-double entanglement(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<idx>& dims)
+double entanglement(const Eigen::MatrixBase <Derived>& A,
+        const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -210,7 +210,7 @@ double entanglement(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 // the G-concurrence
-double gconcurrence(const Eigen::MatrixBase<Derived>& A)
+double gconcurrence(const Eigen::MatrixBase <Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -241,8 +241,8 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 * \return Negativity
 */
 template<typename Derived>
-double negativity(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<idx>& dims)
+double negativity(const Eigen::MatrixBase <Derived>& A,
+        const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -271,8 +271,8 @@ double negativity(const Eigen::MatrixBase<Derived>& A,
 * \return Logarithmic negativity, with the logarithm in base 2
 */
 template<typename Derived>
-double lognegativity(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<idx>& dims)
+double lognegativity(const Eigen::MatrixBase <Derived>& A,
+        const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -301,7 +301,7 @@ double lognegativity(const Eigen::MatrixBase<Derived>& A,
 * \return Wootters concurrence
 */
 template<typename Derived>
-double concurrence(const Eigen::MatrixBase<Derived>& A)
+double concurrence(const Eigen::MatrixBase <Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size

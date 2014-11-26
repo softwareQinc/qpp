@@ -12,7 +12,7 @@ var internal_2functions_8h =
     [ "_check_square_mat", "internal_2functions_8h.html#ace7cfa182baf987f8a3374bd700b4276", null ],
     [ "_check_subsys_match_dims", "internal_2functions_8h.html#aed2221e974a69e3f1c39006bcdf50738", null ],
     [ "_check_vector", "internal_2functions_8h.html#ad27f82cc41710292417948f5f4b91999", null ],
-    [ "_kron2", "internal_2functions_8h.html#acc7ac24af699fa7185410195c7a8bb9c", null ],
+    [ "_kron2", "internal_2functions_8h.html#ab192c1e640124a4a578bf43ef97afd47", null ],
     [ "_multiidx2n", "internal_2functions_8h.html#a7ab3b0b016ffd0eb793ea6281bed9fc0", null ],
     [ "_n2multiidx", "internal_2functions_8h.html#ad6e3c598a9985bac31f86dc916151b80", null ],
     [ "variadic_vector_emplace", "internal_2functions_8h.html#a5f99527a1f1e06fd6d62e094cd2e97f0", null ],

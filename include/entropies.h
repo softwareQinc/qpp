@@ -37,7 +37,7 @@ namespace qpp
 * \return Shannon/von-Neumann entropy, with the logarithm in base 2
 */
 template<typename Derived>
-double shannon(const Eigen::MatrixBase<Derived>& A)
+double shannon(const Eigen::MatrixBase <Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -82,7 +82,7 @@ double shannon(const Eigen::MatrixBase<Derived>& A)
 * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
 */
 template<typename Derived>
-double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
+double renyi(const Eigen::MatrixBase <Derived>& A, double alpha)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -156,7 +156,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
 * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
 */
 template<typename Derived>
-double tsallis(const Eigen::MatrixBase<Derived>& A, double alpha)
+double tsallis(const Eigen::MatrixBase <Derived>& A, double alpha)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -206,10 +206,10 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double alpha)
 * \return Mutual information between the 2 subsystems
 */
 template<typename Derived>
-double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<idx>& subsysA,
-        const std::vector<idx>& subsysB,
-        const std::vector<idx>& dims)
+double qmutualinfo(const Eigen::MatrixBase <Derived>& A,
+        const std::vector <idx>& subsysA,
+        const std::vector <idx>& subsysB,
+        const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -240,22 +240,22 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
                 Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     // The full system indexes {0,1,...,n-1}
-    std::vector<idx> full_system(dims.size());
+    std::vector <idx> full_system(dims.size());
     std::iota(std::begin(full_system), std::end(full_system), 0);
 
     // Sorted input subsystems
-    std::vector<idx> subsysAsorted{subsysA};
-    std::vector<idx> subsysBsorted{subsysB};
+    std::vector <idx> subsysAsorted{subsysA};
+    std::vector <idx> subsysBsorted{subsysB};
 
     // sort the input subsystems (as needed by std::set_difference)
     std::sort(std::begin(subsysAsorted), std::end(subsysAsorted));
     std::sort(std::begin(subsysBsorted), std::end(subsysBsorted));
 
     // construct the complement of subsys
-    std::vector<idx> subsysAbar;
-    std::vector<idx> subsysBbar;
-    std::vector<idx> subsysABbar;
-    std::vector<idx> subsysAB;
+    std::vector <idx> subsysAbar;
+    std::vector <idx> subsysBbar;
+    std::vector <idx> subsysABbar;
+    std::vector <idx> subsysAB;
 
     std::set_difference(std::begin(full_system), std::end(full_system),
             std::begin(subsysAsorted), std::end(subsysAsorted),
@@ -289,9 +289,9 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 * \return Mutual information between the 2 subsystems
 */
 template<typename Derived>
-double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<idx>& subsysA,
-        const std::vector<idx>& subsysB,
+double qmutualinfo(const Eigen::MatrixBase <Derived>& A,
+        const std::vector <idx>& subsysA,
+        const std::vector <idx>& subsysB,
         idx d = 2)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
@@ -305,7 +305,7 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
                     std::log2(d)));
-    std::vector<idx> dims(n, d); // local dimensions vector
+    std::vector <idx> dims(n, d); // local dimensions vector
 
     return qmutualinfo(rA, subsysA, subsysB, dims);
 }

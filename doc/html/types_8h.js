@@ -1,11 +1,12 @@
 var types_8h =
 [
-    [ "bra", "types_8h.html#ad31e93771501f862f00d548105e153b2", null ],
-    [ "cmat", "types_8h.html#a8b7b2a88cebcdddfde04c087eecf1328", null ],
+    [ "bra", "types_8h.html#a09daae8cfa0b7c350f6705f09ddbfb09", null ],
+    [ "cmat", "types_8h.html#a49c56d608ca03d6258e540404e0ab187", null ],
     [ "cplx", "types_8h.html#aad7ccc50a6b139279d7b56d07112b183", null ],
-    [ "dmat", "types_8h.html#a31d63fc80c90b84ab9ab7062f2d82d86", null ],
-    [ "DynColVect", "types_8h.html#a23060a9e83c7da740a4459153dbd2c41", null ],
-    [ "DynMat", "types_8h.html#a39fdcbcd3a12dd426ceab6d4aec4a281", null ],
-    [ "DynRowVect", "types_8h.html#a7fc6fdb793d3e2fcc393ac909ecb421d", null ],
-    [ "ket", "types_8h.html#add021f91288df8af3125cf4b2c8806e6", null ]
+    [ "dmat", "types_8h.html#a1aa9659792d095652ae72e522a3a2954", null ],
+    [ "dyn_col_vect", "types_8h.html#a07c62992d1a236f062887990eea26b15", null ],
+    [ "dyn_mat", "types_8h.html#ac39e7c2b66f0209911cc3afc06223648", null ],
+    [ "dyn_row_vect", "types_8h.html#ad94b7f2170b530b81ea9e1d167938589", null ],
+    [ "idx", "types_8h.html#a1f5f7137e8551cf82db04d3b81cdd706", null ],
+    [ "ket", "types_8h.html#a8945ec38f98d7df111998312fd4b3e5e", null ]
 ];

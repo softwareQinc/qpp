@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="namespaceqpp.html#aa2030161b0158746beaac80612a3464e">   72</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86">dmat</a> <a class="code" href="namespaceqpp.html#a84a0f3023e1895d22de4e5f3e727e1dd">loadMATLABmatrix</a>(<span class="keyword">const</span> std::string&amp; mat_file,</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="namespaceqpp.html#aa2030161b0158746beaac80612a3464e">   72</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a1aa9659792d095652ae72e522a3a2954">dmat</a> <a class="code" href="namespaceqpp.html#a84a0f3023e1895d22de4e5f3e727e1dd">loadMATLABmatrix</a>(<span class="keyword">const</span> std::string&amp; mat_file,</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keyword">const</span> std::string&amp; var_name)</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;{</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    MATFile* pmat = matOpen(mat_file.c_str(), <span class="stringliteral">&quot;r&quot;</span>);</div>
@@ -140,7 +140,7 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    std::size_t rows = mxGetM(pa);</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    std::size_t cols = mxGetN(pa);</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <a class="code" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86">dmat</a> result(rows, cols);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <a class="code" href="namespaceqpp.html#a1aa9659792d095652ae72e522a3a2954">dmat</a> result(rows, cols);</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    std::memcpy(result.data(), mxGetPr(pa),</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keyword">sizeof</span>(double) * mxGetNumberOfElements(pa));</div>
@@ -152,7 +152,7 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;}</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a26858bfbbec50369d19270c7bf329afa">  133</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a> <a class="code" href="namespaceqpp.html#a84a0f3023e1895d22de4e5f3e727e1dd">loadMATLABmatrix</a>(<span class="keyword">const</span> std::string&amp; mat_file,</div>
+<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a26858bfbbec50369d19270c7bf329afa">  133</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a49c56d608ca03d6258e540404e0ab187">cmat</a> <a class="code" href="namespaceqpp.html#a84a0f3023e1895d22de4e5f3e727e1dd">loadMATLABmatrix</a>(<span class="keyword">const</span> std::string&amp; mat_file,</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        <span class="keyword">const</span> std::string&amp; var_name)</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;{</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    MATFile* pmat = matOpen(mat_file.c_str(), <span class="stringliteral">&quot;r&quot;</span>);</div>
@@ -182,8 +182,8 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    std::size_t rows = mxGetM(pa);</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    std::size_t cols = mxGetN(pa);</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <a class="code" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86">dmat</a> result_re(rows, cols);</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <a class="code" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86">dmat</a> result_im(rows, cols);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <a class="code" href="namespaceqpp.html#a1aa9659792d095652ae72e522a3a2954">dmat</a> result_re(rows, cols);</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <a class="code" href="namespaceqpp.html#a1aa9659792d095652ae72e522a3a2954">dmat</a> result_im(rows, cols);</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="comment">// real part and imaginary part pointers</span></div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordtype">double</span>* pa_re = <span class="keyword">nullptr</span>, * pa_im = <span class="keyword">nullptr</span>;</div>
@@ -226,7 +226,7 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        <span class="keyword">const</span> std::string&amp; mat_file, <span class="keyword">const</span> std::string&amp; var_name,</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <span class="keyword">const</span> std::string&amp; mode)</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;{</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86">dmat</a>&amp; rA = A;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a1aa9659792d095652ae72e522a3a2954">dmat</a>&amp; rA = A;</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="comment">// check zero-size</span></div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(rA))</div>
@@ -260,15 +260,15 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="keyword">const</span> std::string&amp; mat_file, <span class="keyword">const</span> std::string&amp; var_name,</div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        <span class="keyword">const</span> std::string&amp; mode)</div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;{</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">cmat</a>&amp; rA = A;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a49c56d608ca03d6258e540404e0ab187">cmat</a>&amp; rA = A;</div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="comment">// check zero-size</span></div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(rA))</div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::saveMATLABmatrix()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    <span class="comment">// cast the input to a double (internal MATLAB format)</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <a class="code" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86">dmat</a> tmp_re = rA.real();</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <a class="code" href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86">dmat</a> tmp_im = rA.imag();</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <a class="code" href="namespaceqpp.html#a1aa9659792d095652ae72e522a3a2954">dmat</a> tmp_re = rA.real();</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <a class="code" href="namespaceqpp.html#a1aa9659792d095652ae72e522a3a2954">dmat</a> tmp_im = rA.imag();</div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="keywordflow">if</span> (!pmat)</div>
@@ -303,12 +303,12 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INCLUDE_MATLAB_MATLAB_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="namespaceqpp_html_a1aa9659792d095652ae72e522a3a2954"><div class="ttname"><a href="namespaceqpp.html#a1aa9659792d095652ae72e522a3a2954">qpp::dmat</a></div><div class="ttdeci">dyn_mat&lt; double &gt; dmat</div><div class="ttdoc">Real (double precision) dynamic Eigen matrix. </div><div class="ttdef"><b>Definition:</b> types.h:87</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">qpp::Exception::Type::ZERO_SIZE</a></div></div>
-<div class="ttc" id="namespaceqpp_html_a31d63fc80c90b84ab9ab7062f2d82d86"><div class="ttname"><a href="namespaceqpp.html#a31d63fc80c90b84ab9ab7062f2d82d86">qpp::dmat</a></div><div class="ttdeci">DynMat&lt; double &gt; dmat</div><div class="ttdoc">Real (double precision) dynamic Eigen matrix. </div><div class="ttdef"><b>Definition:</b> types.h:87</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530">qpp::Exception::Type::UNDEFINED_TYPE</a></div></div>
-<div class="ttc" id="namespaceqpp_html_a8b7b2a88cebcdddfde04c087eecf1328"><div class="ttname"><a href="namespaceqpp.html#a8b7b2a88cebcdddfde04c087eecf1328">qpp::cmat</a></div><div class="ttdeci">DynMat&lt; cplx &gt; cmat</div><div class="ttdoc">Complex (double precision) dynamic Eigen matrix. </div><div class="ttdef"><b>Definition:</b> types.h:82</div></div>
 <div class="ttc" id="namespaceqpp_html_aad7ccc50a6b139279d7b56d07112b183"><div class="ttname"><a href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">qpp::cplx</a></div><div class="ttdeci">std::complex&lt; double &gt; cplx</div><div class="ttdoc">Complex number in double precision. </div><div class="ttdef"><b>Definition:</b> types.h:31</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html"><div class="ttname"><a href="classqpp_1_1_exception.html">qpp::Exception</a></div><div class="ttdoc">Generates custom exceptions, used when validating function parameters. </div><div class="ttdef"><b>Definition:</b> exception.h:34</div></div>
+<div class="ttc" id="namespaceqpp_html_a49c56d608ca03d6258e540404e0ab187"><div class="ttname"><a href="namespaceqpp.html#a49c56d608ca03d6258e540404e0ab187">qpp::cmat</a></div><div class="ttdeci">dyn_mat&lt; cplx &gt; cmat</div><div class="ttdoc">Complex (double precision) dynamic Eigen matrix. </div><div class="ttdef"><b>Definition:</b> types.h:82</div></div>
 <div class="ttc" id="namespaceqpp_html_a84a0f3023e1895d22de4e5f3e727e1dd"><div class="ttname"><a href="namespaceqpp.html#a84a0f3023e1895d22de4e5f3e727e1dd">qpp::loadMATLABmatrix</a></div><div class="ttdeci">Derived loadMATLABmatrix(const std::string &amp;mat_file, const std::string &amp;var_name)</div><div class="ttdoc">Loads an Eigen dynamic matrix from a MATLAB .mat file, generic version. </div><div class="ttdef"><b>Definition:</b> matlab.h:42</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a62ab44d343a116c122e488bc3ac46a31"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">qpp::internal::_check_nonzero_size</a></div><div class="ttdeci">bool _check_nonzero_size(const T &amp;x)</div><div class="ttdef"><b>Definition:</b> functions.h:121</div></div>
 <div class="ttc" id="namespaceqpp_html_a38d10a1f7c02f69d876a28133893d082"><div class="ttname"><a href="namespaceqpp.html#a38d10a1f7c02f69d876a28133893d082">qpp::saveMATLABmatrix</a></div><div class="ttdeci">void saveMATLABmatrix(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::string &amp;mat_file, const std::string &amp;var_name, const std::string &amp;mode)</div><div class="ttdoc">Saves an Eigen dynamic matrix to a MATLAB .mat file, generic version. </div><div class="ttdef"><b>Definition:</b> matlab.h:200</div></div>
@@ -318,7 +318,7 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f0c44e4d9b9e12784d8dda0520b1b069.html">MATLAB</a></li><li class="navelem"><a class="el" href="matlab_8h.html">matlab.h</a></li>
-    <li class="footer">Generated on Wed Nov 19 2014 10:15:14 for quantum++ by
+    <li class="footer">Generated on Wed Nov 26 2014 16:12:17 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
