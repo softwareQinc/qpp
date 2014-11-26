@@ -32,7 +32,7 @@ namespace qpp
 *
 * Example: \code auto z = 4_i; // type of z is std::complex<double> \endcode
 */
-constexpr std::complex<double> operator
+constexpr cplx operator
 ""
 
 _i(unsigned long long int x)
@@ -46,7 +46,7 @@ _i(unsigned long long int x)
 *
 * Example: \code auto z = 4.5_i; // type of z is std::complex<double> \endcode
 */
-constexpr std::complex<double> operator
+constexpr cplx operator
 ""
 
 _i(long double x)
@@ -56,8 +56,8 @@ _i(long double x)
 }
 
 /**
-* \brief  Used in qpp::disp() and qpp::displn() for setting to zero
-* numbers that have their absolute value smaller than qpp::ct::chop
+* \brief  Used in qpp::disp() for setting to zero  numbers
+* that have their absolute value smaller than qpp::chop
 */
 constexpr double chop = 1e-10;
 
@@ -96,7 +96,7 @@ constexpr idx infty = -1;
 * \param D Non-negative integer
 * \return D-th root of unity \f$\exp(2\pi i/D)\f$
 */
-std::complex<double> omega(idx D)
+cplx omega(idx D)
 {
     return exp(2.0 * pi * 1_i / static_cast<double>(D));
 }
