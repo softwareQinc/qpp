@@ -206,13 +206,13 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    }</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l00201"></a><span class="lineno"><a class="line" href="classqpp_1_1_gates.html#ae75fe932917ec2d75d2110cbe76876a2">  201</a></span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> <a class="code" href="classqpp_1_1_gates.html#ae75fe932917ec2d75d2110cbe76876a2">CTRL</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; ctrl,</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsys,</div>
+<div class="line"><a name="l00201"></a><span class="lineno"><a class="line" href="classqpp_1_1_gates.html#ae75fe932917ec2d75d2110cbe76876a2">  201</a></span>&#160;    <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a> <a class="code" href="classqpp_1_1_gates.html#ae75fe932917ec2d75d2110cbe76876a2">CTRL</a>(<span class="keyword">const</span> Eigen::MatrixBase &lt;Derived&gt;&amp; A,</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; ctrl,</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; subsys,</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;            <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n,</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        <span class="comment">// check matrix zero size</span></div>
@@ -241,12 +241,12 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;                    <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        <span class="comment">// ctrl + gate subsystem vector</span></div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        std::vector&lt;idx&gt; ctrlgate = ctrl;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        std::vector &lt;idx&gt; ctrlgate = ctrl;</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        ctrlgate.insert(std::end(ctrlgate), std::begin(subsys),</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;                std::end(subsys));</div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        std::sort(std::begin(ctrlgate), std::end(ctrlgate));</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        std::vector&lt;idx&gt; dims(n, d); <span class="comment">// local dimensions vector</span></div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        std::vector &lt;idx&gt; dims(n, d); <span class="comment">// local dimensions vector</span></div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        <span class="comment">// check that ctrl + gate subsystem is valid</span></div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <span class="comment">// with respect to local dimensions</span></div>
@@ -282,7 +282,7 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                std::llround(std::pow(d, nsubsys_bar)));</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        <span class="comment">// compute the complementary subsystem of ctrlgate w.r.t. dims</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        std::vector&lt;idx&gt; allsubsys(n); <span class="comment">// all subsystems</span></div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        std::vector &lt;idx&gt; allsubsys(n); <span class="comment">// all subsystems</span></div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        std::iota(std::begin(allsubsys), std::end(allsubsys), 0);</div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        std::set_difference(std::begin(allsubsys), std::end(allsubsys),</div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                std::begin(ctrlgate), std::end(ctrlgate),</div>
@@ -306,9 +306,9 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;            CdimsA[k] = d;</div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        }</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> result = <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt;</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a> result = <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat</a>&lt;</div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                <span class="keyword">typename</span> Derived::Scalar&gt;::Identity(D, D);</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> Ak;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a> Ak;</div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        <span class="comment">// run over the complement indexes</span></div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; Dsubsys_bar; ++i)</div>
@@ -363,11 +363,11 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    }</div>
 <div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;</div>
 <div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l00372"></a><span class="lineno"><a class="line" href="classqpp_1_1_gates.html#a34f16eb2518f7406a1836c9361c231da">  372</a></span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> <a class="code" href="classqpp_1_1_gates.html#a34f16eb2518f7406a1836c9361c231da">expandout</a>(</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;            <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> pos,</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;            <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00372"></a><span class="lineno"><a class="line" href="classqpp_1_1_gates.html#a34f16eb2518f7406a1836c9361c231da">  372</a></span>&#160;    <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a> <a class="code" href="classqpp_1_1_gates.html#a34f16eb2518f7406a1836c9361c231da">expandout</a>(</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;            <span class="keyword">const</span> Eigen::MatrixBase &lt;Derived&gt;&amp; A, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> pos,</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;            <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; dims)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;</div>
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        <span class="comment">// check zero-size</span></div>
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(rA))</div>
@@ -401,7 +401,7 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;</div>
 <div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = std::accumulate(std::begin(dims), std::end(dims),</div>
 <div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;                1u, multiply);</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> result = <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt;</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a> result = <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat</a>&lt;</div>
 <div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;                <span class="keyword">typename</span> Derived::Scalar&gt;::Identity(D, D);</div>
 <div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;</div>
 <div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Cdims[<a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
@@ -455,10 +455,10 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="ttc" id="classqpp_1_1_gates_html_a0ac46268b5d595e237b410db88f171be"><div class="ttname"><a href="classqpp_1_1_gates.html#a0ac46268b5d595e237b410db88f171be">qpp::Gates::SWAP</a></div><div class="ttdeci">cmat SWAP</div><div class="ttdoc">SWAP gate. </div><div class="ttdef"><b>Definition:</b> gates.h:50</div></div>
 <div class="ttc" id="namespaceqpp_html_aea80be6c57ee43e43aa9629942cd3608"><div class="ttname"><a href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">qpp::maxn</a></div><div class="ttdeci">constexpr idx maxn</div><div class="ttdoc">Maximum number of qubits. </div><div class="ttdef"><b>Definition:</b> constants.h:77</div></div>
 <div class="ttc" id="namespaceqpp_html_a621afdaae12a94a5e10a874fc2073dc0"><div class="ttname"><a href="namespaceqpp.html#a621afdaae12a94a5e10a874fc2073dc0">qpp::omega</a></div><div class="ttdeci">cplx omega(idx D)</div><div class="ttdoc">D-th root of unity. </div><div class="ttdef"><b>Definition:</b> constants.h:99</div></div>
-<div class="ttc" id="namespaceqpp_html_ac39e7c2b66f0209911cc3afc06223648"><div class="ttname"><a href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">qpp::dyn_mat</a></div><div class="ttdeci">Eigen::Matrix&lt; Scalar, Eigen::Dynamic, Eigen::Dynamic &gt; dyn_mat</div><div class="ttdoc">Dynamic Eigen matrix over the field specified by Scalar. </div><div class="ttdef"><b>Definition:</b> types.h:43</div></div>
 <div class="ttc" id="classqpp_1_1_gates_html_a41c298ccd28fd2e40f915237f5d68bf9"><div class="ttname"><a href="classqpp_1_1_gates.html#a41c298ccd28fd2e40f915237f5d68bf9">qpp::Gates::Zd</a></div><div class="ttdeci">cmat Zd(idx D) const </div><div class="ttdoc">Generalized Z gate for qudits. </div><div class="ttdef"><b>Definition:</b> gates.h:114</div></div>
 <div class="ttc" id="classqpp_1_1internal_1_1_singleton_html"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html">qpp::internal::Singleton</a></div><div class="ttdoc">Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...</div><div class="ttdef"><b>Definition:</b> singleton.h:63</div></div>
 <div class="ttc" id="classqpp_1_1_gates_html"><div class="ttname"><a href="classqpp_1_1_gates.html">qpp::Gates</a></div><div class="ttdoc">const Singleton class that implements most commonly used gates </div><div class="ttdef"><b>Definition:</b> gates.h:32</div></div>
+<div class="ttc" id="namespaceqpp_html_a6da17ff338dfcc20d4d6b0476643f6a6"><div class="ttname"><a href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">qpp::dyn_mat</a></div><div class="ttdeci">Eigen::Matrix&lt; Scalar, Eigen::Dynamic, Eigen::Dynamic &gt; dyn_mat</div><div class="ttdoc">Dynamic Eigen matrix over the field specified by Scalar. </div><div class="ttdef"><b>Definition:</b> types.h:43</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_ace7cfa182baf987f8a3374bd700b4276"><div class="ttname"><a href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">qpp::internal::_check_square_mat</a></div><div class="ttdeci">bool _check_square_mat(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> functions.h:73</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">qpp::Exception::Type::DIMS_INVALID</a></div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">qpp::Exception::Type::ZERO_SIZE</a></div></div>
@@ -500,7 +500,7 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_7a6c2c27f035e4462dd10aeadba1cb4e.html">classes</a></li><li class="navelem"><a class="el" href="gates_8h.html">gates.h</a></li>
-    <li class="footer">Generated on Wed Nov 26 2014 16:12:17 for quantum++ by
+    <li class="footer">Generated on Wed Nov 26 2014 21:34:27 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
