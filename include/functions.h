@@ -209,7 +209,7 @@ typename Derived::Scalar prod(const Eigen::MatrixBase <Derived>& A)
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
-        throw Exception("qpp::sum()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::prod()", Exception::Type::ZERO_SIZE);
 
     return rA.prod();
 }
