@@ -50,8 +50,7 @@ void MEASUREMENTS()
     cout << disp(psi) << endl;
     cout << ">> Measurement result: " << result << endl;
     cout << ">> Probabilities: " << disp(probs, ", ") << endl;
-    cout << ">> Resulting normalized post-measurement states: "
-            << endl;
+    cout << ">> Resulting normalized post-measurement states: " << endl;
 
     for (auto&& it: states)
         cout << disp(it) << endl << endl;
@@ -70,8 +69,7 @@ void MEASUREMENTS()
     cout << ">> Probabilities: " << disp(probs, ", ") << endl;
     cout << ">> Sum of the probabilities: "
             << sum(probs.begin(), probs.end()) << endl;
-    cout << ">> Resulting normalized post-measurement states: "
-            << endl;
+    cout << ">> Resulting normalized post-measurement states: " << endl;
 
     for (auto&& it: states)
         cout << disp(it) << endl << endl;
@@ -91,8 +89,7 @@ void MEASUREMENTS()
         rho_out_bar += probs[i] * states[i];
 
     // verification
-    cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar)
-            << endl;
+    cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar) << endl;
 
     // random Kraus
     cout << ">> Random channel on part of the state " << endl;
@@ -149,8 +146,7 @@ void TELEPORTATION()
     cout << disp(rho_B) << endl;
 
     // verification
-    cout << ">> Norm difference: " << norm(rho_B - prj(psi_a))
-            << endl << endl;
+    cout << ">> Norm difference: " << norm(rho_B - prj(psi_a)) << endl << endl;
 }
 
 void DENSE_CODING()
@@ -259,11 +255,9 @@ void ENTANGLEMENT()
     cout << ">> rho: " << endl;
     cout << disp(rho) << endl;
 
-    cout << ">> Concurrence of rho: "
-            << concurrence(rho) << endl;
+    cout << ">> Concurrence of rho: " << concurrence(rho) << endl;
 
-    cout << ">> Negativity of rho: "
-            << negativity(rho, {2, 2}) << endl;
+    cout << ">> Negativity of rho: " << negativity(rho, {2, 2}) << endl;
 
     cout << ">> Logarithimc negativity of rho: "
             << lognegativity(rho, {2, 2}) << endl;
@@ -276,14 +270,11 @@ void ENTANGLEMENT()
     cout << ">> psi: " << endl;
     cout << disp(psi) << endl;
 
-    cout << ">> Entanglement of psi: "
-            << entanglement(psi, {2, 2}) << endl;
+    cout << ">> Entanglement of psi: " << entanglement(psi, {2, 2}) << endl;
 
-    cout << ">> Concurrence of psi: "
-            << concurrence(prj(psi)) << endl;
+    cout << ">> Concurrence of psi: " << concurrence(prj(psi)) << endl;
 
-    cout << ">> G-Concurrence of psi: "
-            << gconcurrence(psi) << endl;
+    cout << ">> G-Concurrence of psi: " << gconcurrence(psi) << endl;
 
     cout << ">> Schmidt coefficients of psi: " << endl;
     cout << disp(schmidtcoeff(psi, {2, 2})) << endl;
@@ -352,8 +343,7 @@ void CHANNEL()
     idx nk = 5;
     idx D = 3; // nk Kraus on d-dimensional system
     cout << ">> Generating a random channel with " << nk
-            << " Kraus operators on a " << D << " dimensional space"
-            << endl;
+            << " Kraus operators on a " << D << " dimensional space" << endl;
     std::vector<cmat> Ks = randkraus(nk, D);
 
     cmat rho_in = randrho(D); // random input state
@@ -366,12 +356,10 @@ void CHANNEL()
     cout << ">> The eigenvalues of the Choi matrix are: "
             << endl << disp(transpose(hevals(choim))) << endl;
 
-    cout << ">> Their sum is: " << sum(hevals(choim))
-            << endl;
+    cout << ">> Their sum is: " << sum(hevals(choim)) << endl;
 
     std::vector<cmat> Kperps = choi2kraus(choim);
-    cout << ">> The Kraus rank of the channel is: "
-            << Kperps.size() << endl;
+    cout << ">> The Kraus rank of the channel is: " << Kperps.size() << endl;
 
     cmat rho_out1 = channel(rho_in, Kperps);
     // verification
@@ -382,8 +370,7 @@ void CHANNEL()
     cmat smat = super(Ks);
     cout << disp(smat) << endl;
 
-    cout << ">> The eigenvalues of the superoperator matrix are: "
-            << endl;
+    cout << ">> The eigenvalues of the superoperator matrix are: " << endl;
     cmat evalsupop = evals(smat);
     cout << disp(transpose(evalsupop)) << endl;
 
@@ -392,8 +379,7 @@ void CHANNEL()
         cout << std::abs(evalsupop(i)) << " ";
 
     // verification
-    cout << endl
-            << ">> Norm difference for the superoperator action: ";
+    cout << endl << ">> Norm difference for the superoperator action: ";
     cmat rho_out2 = transpose(
             reshape(smat * reshape(transpose(rho_in), D * D, 1), D, D));
     cout << norm(rho_out - rho_out2) << endl << endl;
@@ -461,8 +447,7 @@ void SPECTRAL()
     cout << disp(spec) << endl;
 
     // verification
-    cout << ">> Norm difference: " << norm(spec - rH)
-            << endl << endl;
+    cout << ">> Norm difference: " << norm(spec - rH) << endl << endl;
 }
 
 void RANDOM()
@@ -487,14 +472,12 @@ void ENTROPIES()
     cmat rho = st.pb00;
     cmat rhoA = ptrace(rho, {1});
     cout << ">> State: " << endl << disp(rho) << endl;
-    cout << ">> Partial trace over B: " << endl
-            << disp(rhoA) << endl;
+    cout << ">> Partial trace over B: " << endl << disp(rhoA) << endl;
     cout << ">> Shannon entropy: " << shannon(rhoA) << endl;
     cout << ">> Renyi-0 (Hmax) entropy: " << renyi(rhoA, 0) << endl;
     cout << ">> Renyi-1 entropy: " << renyi(rhoA, 1) << endl;
     cout << ">> Renyi-2 entropy: " << renyi(rhoA, 2) << endl;
-    cout << ">> Renyi-inf (Hmin) entropy: "
-            << renyi(rhoA, infty) << endl;
+    cout << ">> Renyi-inf (Hmin) entropy: " << renyi(rhoA, infty) << endl;
     cout << ">> Tsallis-1 entropy: " << tsallis(rhoA, 1) << endl;
     cout << ">> Tsallis-2 entropy: " << tsallis(rhoA, 2) << endl;
     cout << ">> Quantum mutual information between A and B: "
@@ -580,8 +563,8 @@ void TIMING()
 
     idx n = 12; // number of qubits
     idx N = std::round(std::pow(2, n));
-    cout << ">> n = " << n << " qubits, matrix size "
-            << N << " x " << N << "." << endl << endl;
+    cout << ">> n = " << n << " qubits, matrix size " << N << " x " << N
+            << "." << endl << endl;
     cmat randcmat = cmat::Random(N, N);
 
     // qpp::ptrace()
@@ -591,8 +574,7 @@ void TIMING()
     cout << disp(subsys_ptrace, ", ") << endl;
     Timer t;
     ptrace(randcmat, subsys_ptrace);
-    cout << ">> It took " << t.toc() << " seconds."
-            << endl << endl;
+    cout << ">> It took " << t.toc() << " seconds." << endl << endl;
 
     // qpp::ptranspose()
     cout << "**** qpp::ptranspose() timing ****" << endl;
@@ -604,8 +586,7 @@ void TIMING()
     cout << disp(subsys_ptranspose, ", ") << endl;
     t.tic();
     ptranspose(randcmat, subsys_ptranspose);
-    cout << ">> It took " << t.toc() << " seconds."
-            << endl << endl;
+    cout << ">> It took " << t.toc() << " seconds." << endl << endl;
 
     // qpp::syspermute()
     cout << "**** qpp::syspermute() timing ****" << endl;
@@ -616,8 +597,7 @@ void TIMING()
     cout << disp(perm, ", ") << endl;
     t.tic();
     syspermute(randcmat, perm);
-    cout << ">> It took " << t.toc() << " seconds."
-            << endl << endl;
+    cout << ">> It took " << t.toc() << " seconds." << endl << endl;
 }
 
 int main()
