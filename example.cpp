@@ -24,7 +24,7 @@
 
 #include <qpp.h>
 
-// #include "MATLAB/matlab.h" // support for MATLAB
+// #include <MATLAB/matlab.h> // support for MATLAB
 
 using namespace qpp;
 
