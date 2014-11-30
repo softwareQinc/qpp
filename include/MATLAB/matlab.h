@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_MATLAB_MATLAB_H_
-#define INCLUDE_MATLAB_MATLAB_H_
+#ifndef MATLAB_MATLAB_H_
+#define MATLAB_MATLAB_H_
 
 // MATLAB I/O interfacing
 // add the path to $MATLAB_INSTALLATION_FOLDER/extern/include in include path
@@ -96,8 +96,8 @@ inline dmat loadMATLABmatrix(const std::string& mat_file,
                 "qpp::loadMATLABmatrix(): Loaded variable " + var_name
                         + " is not in double-precision format!");
 
-    std::size_t rows = mxGetM(pa);
-    std::size_t cols = mxGetN(pa);
+    idx rows = mxGetM(pa);
+    idx cols = mxGetN(pa);
 
     dmat result(rows, cols);
 
@@ -157,8 +157,8 @@ inline cmat loadMATLABmatrix(const std::string& mat_file,
                 "qpp::loadMATLABmatrix(): Loaded variable " + var_name
                         + " is not in double-precision format!");
 
-    std::size_t rows = mxGetM(pa);
-    std::size_t cols = mxGetN(pa);
+    idx rows = mxGetM(pa);
+    idx cols = mxGetN(pa);
 
     dmat result_re(rows, cols);
     dmat result_im(rows, cols);
@@ -309,4 +309,4 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <cmat>& A,
 }
 
 } /* namespace qpp */
-#endif /* INCLUDE_MATLAB_MATLAB_H_ */
+#endif /* MATLAB_MATLAB_H_ */

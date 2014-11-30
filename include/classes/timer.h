@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CLASSES_TIMER_H_
-#define INCLUDE_CLASSES_TIMER_H_
+#ifndef CLASSES_TIMER_H_
+#define CLASSES_TIMER_H_
 
 namespace qpp
 {
@@ -100,4 +100,4 @@ public:
 
 } /* namespace qpp */
 
-#endif /* INCLUDE_CLASSES_TIMER_H_ */
+#endif /* CLASSES_TIMER_H_ */

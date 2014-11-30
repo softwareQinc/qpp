@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_RANDOM_H_
-#define INCLUDE_RANDOM_H_
+#ifndef RANDOM_H_
+#define RANDOM_H_
 
 // random matrices/states
 
@@ -402,4 +402,4 @@ std::vector <idx> randperm(idx n)
 
 } /* namespace qpp */
 
-#endif /* INCLUDE_RANDOM_H_ */
+#endif /* RANDOM_H_ */

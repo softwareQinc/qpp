@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_ENTANGLEMENT_H_
-#define INCLUDE_ENTANGLEMENT_H_
+#ifndef ENTANGLEMENT_H_
+#define ENTANGLEMENT_H_
 
 // entanglement
 
@@ -340,4 +340,4 @@ double concurrence(const Eigen::MatrixBase <Derived>& A)
 
 } /* namespace qpp */
 
-#endif /* INCLUDE_ENTANGLEMENT_H_ */
+#endif /* ENTANGLEMENT_H_ */

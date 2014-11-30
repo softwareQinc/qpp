@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_TYPES_H_
-#define INCLUDE_TYPES_H_
+#ifndef TYPES_H_
+#define TYPES_H_
 
 namespace qpp
 {
@@ -93,5 +93,5 @@ using idx = std::size_t;
 
 } /* namespace qpp */
 
-#endif	/* INCLUDE_TYPES_H_ */
+#endif	/* TYPES_H_ */
 

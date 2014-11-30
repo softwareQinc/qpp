@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CLASSES_GATES_H_
-#define INCLUDE_CLASSES_GATES_H_
+#ifndef CLASSES_GATES_H_
+#define CLASSES_GATES_H_
 
 namespace qpp
 {
@@ -455,4 +455,4 @@ public:
 
 } /* namespace qpp */
 
-#endif /* INCLUDE_CLASSES_GATES_H_ */
+#endif /* CLASSES_GATES_H_ */

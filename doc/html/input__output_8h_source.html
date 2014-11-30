@@ -91,8 +91,8 @@ $(document).ready(function(){initNavTree('input__output_8h_source.html','');});
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="internal_2functions_8h.html">internal/functions.h</a>&gt;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#ifndef INCLUDE_INPUT_OUTPUT_H_</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#define INCLUDE_INPUT_OUTPUT_H_</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#ifndef INPUT_OUTPUT_H_</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#define INPUT_OUTPUT_H_</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// input/output</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
@@ -214,7 +214,7 @@ $(document).ready(function(){initNavTree('input__output_8h_source.html','');});
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;</div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INCLUDE_INPUT_OUTPUT_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INPUT_OUTPUT_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="namespaceqpp_html_a3a6d2c509bdcf240869e1bebb3be4e94"><div class="ttname"><a href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a></div><div class="ttdeci">constexpr double chop</div><div class="ttdoc">Used in qpp::disp() for setting to zero numbers that have their absolute value smaller than qpp::chop...</div><div class="ttdef"><b>Definition:</b> constants.h:62</div></div>
 <div class="ttc" id="classqpp_1_1internal_1_1_i_o_manip_range_html"><div class="ttname"><a href="classqpp_1_1internal_1_1_i_o_manip_range.html">qpp::internal::IOManipRange</a></div><div class="ttdef"><b>Definition:</b> iomanip.h:36</div></div>
 <div class="ttc" id="namespaceqpp_html_a6da17ff338dfcc20d4d6b0476643f6a6"><div class="ttname"><a href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">qpp::dyn_mat</a></div><div class="ttdeci">Eigen::Matrix&lt; Scalar, Eigen::Dynamic, Eigen::Dynamic &gt; dyn_mat</div><div class="ttdoc">Dynamic Eigen matrix over the field specified by Scalar. </div><div class="ttdef"><b>Definition:</b> types.h:43</div></div>
@@ -225,7 +225,7 @@ $(document).ready(function(){initNavTree('input__output_8h_source.html','');});
 <div class="ttc" id="internal_2functions_8h_html"><div class="ttname"><a href="internal_2functions_8h.html">functions.h</a></div></div>
 <div class="ttc" id="classqpp_1_1internal_1_1_i_o_manip_pointer_html"><div class="ttname"><a href="classqpp_1_1internal_1_1_i_o_manip_pointer.html">qpp::internal::IOManipPointer</a></div><div class="ttdef"><b>Definition:</b> iomanip.h:80</div></div>
 <div class="ttc" id="namespaceqpp_html_aea6b39f40a9c9a188a5e0dd244b4bf08"><div class="ttname"><a href="namespaceqpp.html#aea6b39f40a9c9a188a5e0dd244b4bf08">qpp::load</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; load(const std::string &amp;fname)</div><div class="ttdoc">Loads Eigen matrix from a binary file (internal format) in double precision. </div><div class="ttdef"><b>Definition:</b> input_output.h:180</div></div>
-<div class="ttc" id="namespaceqpp_1_1internal_html_a62ab44d343a116c122e488bc3ac46a31"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">qpp::internal::_check_nonzero_size</a></div><div class="ttdeci">bool _check_nonzero_size(const T &amp;x)</div><div class="ttdef"><b>Definition:</b> functions.h:121</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a62ab44d343a116c122e488bc3ac46a31"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">qpp::internal::_check_nonzero_size</a></div><div class="ttdeci">bool _check_nonzero_size(const T &amp;x)</div><div class="ttdef"><b>Definition:</b> functions.h:119</div></div>
 <div class="ttc" id="namespaceqpp_html_a238cf516513837235fbc7d7d283f7b78"><div class="ttname"><a href="namespaceqpp.html#a238cf516513837235fbc7d7d283f7b78">qpp::save</a></div><div class="ttdeci">void save(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::string &amp;fname)</div><div class="ttdoc">Saves Eigen expression to a binary file (internal format) in double precision. </div><div class="ttdef"><b>Definition:</b> input_output.h:128</div></div>
 <div class="ttc" id="namespaceqpp_html_a1f5f7137e8551cf82db04d3b81cdd706"><div class="ttname"><a href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">qpp::idx</a></div><div class="ttdeci">std::size_t idx</div><div class="ttdoc">Non-negative integer index. </div><div class="ttdef"><b>Definition:</b> types.h:92</div></div>
 <div class="ttc" id="namespaceqpp_html_a4f1805e175751ef749374e3c8499f15d"><div class="ttname"><a href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">qpp::disp</a></div><div class="ttdeci">internal::IOManipEigen disp(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, double chop=qpp::chop)</div><div class="ttdoc">Eigen expression ostream manipulator. </div><div class="ttdef"><b>Definition:</b> input_output.h:41</div></div>
@@ -235,7 +235,7 @@ $(document).ready(function(){initNavTree('input__output_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="input__output_8h.html">input_output.h</a></li>
-    <li class="footer">Generated on Sun Nov 30 2014 15:06:40 for quantum++ by
+    <li class="footer">Generated on Sun Nov 30 2014 15:28:55 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

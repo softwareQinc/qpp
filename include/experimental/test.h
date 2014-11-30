@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_EXPERIMENTAL_TEST_H_
-#define INCLUDE_EXPERIMENTAL_TEST_H_
+#ifndef EXPERIMENTAL_TEST_H_
+#define EXPERIMENTAL_TEST_H_
 
 /**
 * \namespace qpp::experimental Experimental/test functions/classes,
@@ -34,4 +34,4 @@ namespace experimental
 } /* namespace experimental */
 } /* namespace qpp */
 
-#endif /* INCLUDE_EXPERIMENTAL_TEST_H_ */
+#endif /* EXPERIMENTAL_TEST_H_ */

@@ -21,8 +21,8 @@
 
 #include <internal/functions.h>
 
-#ifndef INCLUDE_INPUT_OUTPUT_H_
-#define INCLUDE_INPUT_OUTPUT_H_
+#ifndef INPUT_OUTPUT_H_
+#define INPUT_OUTPUT_H_
 
 // input/output
 
@@ -219,4 +219,4 @@ dyn_mat<typename Derived::Scalar> load(const std::string& fname)
 
 } /* namespace qpp */
 
-#endif /* INCLUDE_INPUT_OUTPUT_H_ */
+#endif /* INPUT_OUTPUT_H_ */

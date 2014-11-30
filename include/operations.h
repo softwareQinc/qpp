@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_OPERATIONS_H_
-#define INCLUDE_OPERATIONS_H_
+#ifndef OPERATIONS_H_
+#define OPERATIONS_H_
 
 namespace qpp
 {
@@ -1386,4 +1386,4 @@ dyn_mat<typename Derived::Scalar> syspermute(
 
 } /* namespace qpp */
 
-#endif /* INCLUDE_OPERATIONS_H_ */
+#endif /* OPERATIONS_H_ */

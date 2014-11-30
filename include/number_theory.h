@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_NUMBER_THEORY_H_
-#define INCLUDE_NUMBER_THEORY_H_
+#ifndef NUMBER_THEORY_H_
+#define NUMBER_THEORY_H_
 
 // number theory functions
 
@@ -243,4 +243,4 @@ std::vector <idx> compperm(const std::vector <idx>& perm,
 
 } /* namespace qpp */
 
-#endif /* INCLUDE_NUMBER_THEORY_H_ */
+#endif /* NUMBER_THEORY_H_ */

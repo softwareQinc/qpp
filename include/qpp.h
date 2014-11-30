@@ -25,8 +25,8 @@
 // Includes all necessary headers (except "matlab.h")
 // ALWAYS include it in main.cpp
 
-#ifndef INCLUDE_QPP_H_
-#define INCLUDE_QPP_H_
+#ifndef QPP_H_
+#define QPP_H_
 
 #include <algorithm>
 #include <chrono>
@@ -125,5 +125,5 @@ RandomDevices& rdevs = RandomDevices::get_instance();
 
 } /* namespace qpp */
 
-#endif	/* INCLUDE_QPP_H_ */
+#endif	/* QPP_H_ */
 

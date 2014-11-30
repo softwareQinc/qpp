@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_INSTRUMENTS_H_
-#define INCLUDE_INSTRUMENTS_H_
+#ifndef INSTRUMENTS_H_
+#define INSTRUMENTS_H_
 
 // measurements
 namespace qpp
@@ -480,4 +480,4 @@ std::tuple <idx, std::vector<double>, std::vector<cmat>> measure(
 
 } /* namespace qpp */
 
-#endif /* INCLUDE_INSTRUMENTS_H_ */
+#endif /* INSTRUMENTS_H_ */

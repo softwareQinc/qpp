@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CLASSES_INIT_H_
-#define INCLUDE_CLASSES_INIT_H_
+#ifndef CLASSES_INIT_H_
+#define CLASSES_INIT_H_
 
 namespace qpp
 {
@@ -72,4 +72,4 @@ private:
 
 } /* namespace qpp */
 
-#endif /* INCLUDE_CLASSES_INIT_H_ */
+#endif /* CLASSES_INIT_H_ */

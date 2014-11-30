@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CONSTANTS_H_
-#define INCLUDE_CONSTANTS_H_
+#ifndef CONSTANTS_H_
+#define CONSTANTS_H_
 
 // constants
 
@@ -103,5 +103,5 @@ cplx omega(idx D)
 
 } /* namespace qpp */
 
-#endif	/* INCLUDE_CONSTANTS_H_ */
+#endif	/* CONSTANTS_H_ */
 

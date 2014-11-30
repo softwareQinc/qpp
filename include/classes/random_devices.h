@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CLASSES_RANDOM_DEVICES_H_
-#define INCLUDE_CLASSES_RANDOM_DEVICES_H_
+#ifndef CLASSES_RANDOM_DEVICES_H_
+#define CLASSES_RANDOM_DEVICES_H_
 
 namespace qpp
 {
@@ -54,4 +54,4 @@ private:
 
 } /* namespace qpp */
 
-#endif /* INCLUDE_CLASSES_RANDOM_DEVICES_H_ */
+#endif /* CLASSES_RANDOM_DEVICES_H_ */

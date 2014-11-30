@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_FUNCTIONS_H_
-#define INCLUDE_FUNCTIONS_H_
+#ifndef FUNCTIONS_H_
+#define FUNCTIONS_H_
 
 // Collection of generic quantum computing functions
 
@@ -1483,4 +1483,4 @@ dyn_col_vect<typename Derived::Scalar> rho2pure(
 
 } /* namespace qpp */
 
-#endif /* INCLUDE_FUNCTIONS_H_ */
+#endif /* FUNCTIONS_H_ */

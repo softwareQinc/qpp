@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CLASSES_SINGLETON_H_
-#define INCLUDE_CLASSES_SINGLETON_H_
+#ifndef INTERNAL_CLASSES_SINGLETON_H_
+#define INTERNAL_CLASSES_SINGLETON_H_
 
 namespace qpp
 {
@@ -93,4 +93,4 @@ public:
 } /* namespace internal */
 } /* namespace qpp */
 
-#endif /* INCLUDE_CLASSES_SINGLETON_H_ */
+#endif /* INTERNAL_CLASSES_SINGLETON_H_ */

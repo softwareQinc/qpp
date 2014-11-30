@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_INTERNAL_FUNCTIONS_H_
-#define INCLUDE_INTERNAL_FUNCTIONS_H_
+#ifndef INTERNAL_FUNCTIONS_H_
+#define INTERNAL_FUNCTIONS_H_
 
 // internal functions, do not use/modify
 /**
@@ -34,11 +34,10 @@ namespace internal
 
 // integer index to multi-index, use C-style array for speed
 // standard lexicographical order, e.g. 00, 01, 10, 11
-inline void _n2multiidx(std::size_t n, std::size_t numdims,
-        const std::size_t* dims, std::size_t* result)
+inline void _n2multiidx(idx n, idx numdims, const idx* dims, idx* result)
 {
     // no error checks to improve speed
-    for (std::size_t i = 0; i < numdims; ++i)
+    for (idx i = 0; i < numdims; ++i)
     {
         result[numdims - i - 1] = n % (dims[numdims - i - 1]);
         n /= (dims[numdims - i - 1]);
@@ -47,18 +46,17 @@ inline void _n2multiidx(std::size_t n, std::size_t numdims,
 
 // multi-index to integer index, use C-style array for speed,
 // standard lexicographical order, e.g. 00->0, 01->1, 10->2, 11->3
-inline std::size_t _multiidx2n(const std::size_t* midx, std::size_t numdims,
-        const std::size_t* dims)
+inline idx _multiidx2n(const idx* midx, idx numdims, const idx* dims)
 {
     // no error checks to improve speed
 
     // Static allocation for speed!
     // double the size for matrices reshaped as vectors
-    std::size_t part_prod[2 * maxn];
+    idx part_prod[2 * maxn];
 
-    std::size_t result = 0;
+    idx result = 0;
     part_prod[numdims - 1] = 1;
-    for (std::size_t i = 1; i < numdims; ++i)
+    for (idx i = 1; i < numdims; ++i)
     {
         part_prod[numdims - i - 1] =
                 part_prod[numdims - i] * dims[numdims - i];
@@ -127,13 +125,13 @@ bool _check_nonzero_size(const T& x)
 }
 
 // check that dims is a valid dimension vector
-bool _check_dims(const std::vector <std::size_t>& dims)
+bool _check_dims(const std::vector <idx>& dims)
 {
     if (dims.size() == 0)
         return false;
 
     if (std::find_if(std::begin(dims), std::end(dims),
-            [dims](std::size_t i) -> bool
+            [dims](idx i) -> bool
             {
                 if (i == 0) return true;
                 else return false;
@@ -146,15 +144,15 @@ bool _check_dims(const std::vector <std::size_t>& dims)
 // check that valid dims match the dimensions
 // of valid (non-zero sized) quare matrix
 template<typename Derived>
-bool _check_dims_match_mat(const std::vector <std::size_t>& dims,
+bool _check_dims_match_mat(const std::vector <idx>& dims,
         const Eigen::MatrixBase <Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
-    std::size_t proddim = 1;
-    for (std::size_t i : dims)
+    idx proddim = 1;
+    for (idx i : dims)
         proddim *= i;
-    if (proddim != static_cast<std::size_t>(rA.rows()))
+    if (proddim != static_cast<idx>(rA.rows()))
         return false;
 
     return true;
@@ -162,15 +160,15 @@ bool _check_dims_match_mat(const std::vector <std::size_t>& dims,
 
 // check that valid dims match the dimensions of valid column vector
 template<typename Derived>
-bool _check_dims_match_cvect(const std::vector <std::size_t>& dims,
+bool _check_dims_match_cvect(const std::vector <idx>& dims,
         const Eigen::MatrixBase <Derived>& V)
 {
     const dyn_mat<typename Derived::Scalar>& rV = V;
 
-    std::size_t proddim = 1;
-    for (std::size_t i : dims)
+    idx proddim = 1;
+    for (idx i : dims)
         proddim *= i;
-    if (proddim != static_cast<std::size_t>(rV.rows()))
+    if (proddim != static_cast<idx>(rV.rows()))
         return false;
 
     return true;
@@ -178,24 +176,24 @@ bool _check_dims_match_cvect(const std::vector <std::size_t>& dims,
 
 // check that valid dims match the dimensions of valid row vector
 template<typename Derived>
-bool _check_dims_match_rvect(const std::vector <std::size_t>& dims,
+bool _check_dims_match_rvect(const std::vector <idx>& dims,
         const Eigen::MatrixBase <Derived>& V)
 {
     const dyn_mat<typename Derived::Scalar>& rV = V;
 
-    std::size_t proddim = 1;
-    for (std::size_t i : dims)
+    idx proddim = 1;
+    for (idx i : dims)
         proddim *= i;
-    if (proddim != static_cast<std::size_t>(rV.cols()))
+    if (proddim != static_cast<idx>(rV.cols()))
         return false;
 
     return true;
 }
 
 // check that all elements in valid dims equal to dim
-bool _check_eq_dims(const std::vector <std::size_t>& dims, std::size_t dim)
+bool _check_eq_dims(const std::vector <idx>& dims, idx dim)
 {
-    for (std::size_t i : dims)
+    for (idx i : dims)
         if (i != dim)
             return false;
 
@@ -203,8 +201,8 @@ bool _check_eq_dims(const std::vector <std::size_t>& dims, std::size_t dim)
 }
 
 // check that subsys is valid with respect to valid dims
-bool _check_subsys_match_dims(const std::vector <std::size_t>& subsys,
-        const std::vector <std::size_t>& dims)
+bool _check_subsys_match_dims(const std::vector <idx>& subsys,
+        const std::vector <idx>& dims)
 {
     //	// check non-zero sized subsystems
     //	if (subsys.size() == 0)
@@ -215,7 +213,7 @@ bool _check_subsys_match_dims(const std::vector <std::size_t>& subsys,
         return false;
 
     // sort the subsystems
-    std::vector <std::size_t> subsyssort = subsys;
+    std::vector <idx> subsyssort = subsys;
     std::sort(std::begin(subsyssort), std::end(subsyssort));
 
     // check duplicates
@@ -225,7 +223,7 @@ bool _check_subsys_match_dims(const std::vector <std::size_t>& subsys,
 
     // check range of subsystems
     if (std::find_if(std::begin(subsyssort), std::end(subsyssort),
-            [dims](std::size_t i) -> bool
+            [dims](idx i) -> bool
             {
                 if (i > dims.size() - 1) return true;
                 else return false;
@@ -236,12 +234,12 @@ bool _check_subsys_match_dims(const std::vector <std::size_t>& subsys,
 }
 
 // check valid permutation
-bool _check_perm(const std::vector <std::size_t>& perm)
+bool _check_perm(const std::vector <idx>& perm)
 {
     if (perm.size() == 0)
         return false;
 
-    std::vector <std::size_t> ordered(perm.size());
+    std::vector <idx> ordered(perm.size());
     std::iota(std::begin(ordered), std::end(ordered), 0);
 
     if (std::is_permutation(std::begin(ordered), std::end(ordered),
@@ -275,17 +273,17 @@ dyn_mat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase <Derived1>& A,
     if (!internal::_check_nonzero_size(rB))
         throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
 
-    std::size_t Acols = static_cast<std::size_t>(rA.cols());
-    std::size_t Arows = static_cast<std::size_t>(rA.rows());
-    std::size_t Bcols = static_cast<std::size_t>(rB.cols());
-    std::size_t Brows = static_cast<std::size_t>(rB.rows());
+    idx Acols = static_cast<idx>(rA.cols());
+    idx Arows = static_cast<idx>(rA.rows());
+    idx Bcols = static_cast<idx>(rB.cols());
+    idx Brows = static_cast<idx>(rB.rows());
 
     dyn_mat<typename Derived1::Scalar> result;
     result.resize(Arows * Brows, Acols * Bcols);
 
 #pragma omp parallel for collapse(2)
-    for (std::size_t j = 0; j < Acols; ++j)
-        for (std::size_t i = 0; i < Arows; ++i)
+    for (idx j = 0; j < Acols; ++j)
+        for (idx i = 0; i < Arows; ++i)
             result.block(i * Brows, j * Bcols, Brows, Bcols) = rA(i, j) * rB;
 
     return result;
@@ -310,4 +308,4 @@ void variadic_vector_emplace(std::vector <T>& v, First&& first, Args&& ... args)
 } /* namespace internal */
 } /* namespace qpp */
 
-#endif /* INCLUDE_INTERNAL_FUNCTIONS_H_ */
+#endif /* INTERNAL_FUNCTIONS_H_ */
