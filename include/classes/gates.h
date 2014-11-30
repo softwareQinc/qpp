@@ -201,8 +201,7 @@ public:
     dyn_mat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase <Derived>& A,
             const std::vector <idx>& ctrl,
             const std::vector <idx>& subsys,
-            idx n,
-            idx d = 2) const
+            idx n, idx d = 2) const
     {
         const dyn_mat<typename Derived::Scalar>& rA = A;
 
