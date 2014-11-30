@@ -22,7 +22,7 @@
 // TODO: extensive testing
 // TODO: brief file documentation
 
-#include "qpp.h"
+#include <qpp.h>
 
 // #include "MATLAB/matlab.h" // support for MATLAB
 
