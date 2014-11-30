@@ -52,21 +52,21 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 #### Release version (without MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
-         -mtune=native -msse3 -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
+         -mtune=native -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
          -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include \
          example.cpp -o qpp
 
 #### Debug version (without MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
-         -mtune=native -msse3 -g3 -DDEBUG \
+         -mtune=native -g3 -DDEBUG \
          -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include \
           example.cpp -o qpp
 
 #### Release version (with MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
-         -mtune=native -msse3 -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
+         -mtune=native -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
          -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include \
          -I/Applications/MATLAB_R2014b.app/extern/include \
          -L/Applications/MATLAB_R2014b.app/bin/maci64 \
@@ -75,7 +75,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 #### Debug version (with MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
-         -mtune=native -msse3 -g3 -DDEBUG \
+         -mtune=native -g3 -DDEBUG \
          -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include \
          -I /Applications/MATLAB_R2014b.app/extern/include \
          -L /Applications/MATLAB_R2014b.app/bin/maci64 \
