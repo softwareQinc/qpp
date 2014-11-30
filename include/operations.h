@@ -199,8 +199,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     // for the density matrix case
     // used in #pragma omp parallel for collapse
     auto coeff_idx_rho = [=](idx _i1, idx _m1,
-            idx _r1, idx _i2, idx _m2,
-            idx _r2)
+            idx _r1, idx _i2, idx _m2, idx _r2)
             -> std::tuple<typename Derived1::Scalar, idx, idx>
     {
         idx idxrow = 0;
