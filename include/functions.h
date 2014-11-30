@@ -36,7 +36,8 @@ namespace qpp
 * over the same scalar field as \a A
 */
 template<typename Derived>
-dyn_mat<typename Derived::Scalar> transpose(const Eigen::MatrixBase <Derived>& A)
+dyn_mat<typename Derived::Scalar> transpose(
+        const Eigen::MatrixBase <Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -55,7 +56,8 @@ dyn_mat<typename Derived::Scalar> transpose(const Eigen::MatrixBase <Derived>& A
 * over the same scalar field as \a A
 */
 template<typename Derived>
-dyn_mat<typename Derived::Scalar> conjugate(const Eigen::MatrixBase <Derived>& A)
+dyn_mat<typename Derived::Scalar> conjugate(
+        const Eigen::MatrixBase <Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -312,7 +314,8 @@ cmat evects(const Eigen::MatrixBase <Derived>& A)
 * and 2. Eigenvectors of \a A, as columns of a complex dynamic matrix
 */
 template<typename Derived>
-std::pair <dyn_col_vect<double>, cmat> heig(const Eigen::MatrixBase <Derived>& A)
+std::pair <dyn_col_vect<double>, cmat> heig(
+        const Eigen::MatrixBase <Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -834,7 +837,8 @@ dyn_mat<typename Derived::Scalar> kron(const std::vector <Derived>& As)
 * over the same scalar field as its arguments
 */
 template<typename Derived>
-dyn_mat<typename Derived::Scalar> kron(const std::initializer_list <Derived>& As)
+dyn_mat<typename Derived::Scalar> kron(
+        const std::initializer_list <Derived>& As)
 {
     return kron(std::vector<Derived>(As));
 }
