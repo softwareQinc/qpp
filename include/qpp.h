@@ -65,7 +65,7 @@
 #include "input_output.h"
 
 // do not change the order in this group, inter-dependencies
-#include "classes/singleton.h"
+#include "internal/classes/singleton.h"
 #include "classes/init.h"
 #include "internal/functions.h"
 #include "functions.h"

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.7"/>
-<title>quantum++: include/internal/functions.h Source File</title>
+<title>quantum++: internal/functions.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('internal_2functions_8h_source.html',''
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// standard lexicographical order, e.g. 00, 01, 10, 11</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#ad6e3c598a9985bac31f86dc916151b80">   37</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="namespaceqpp_1_1internal.html#ad6e3c598a9985bac31f86dc916151b80">_n2multiidx</a>(std::size_t n, std::size_t numdims,</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">const</span> std::size_t* dims, std::size_t* result)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a2d40b2372b7537b8a5b9e0a92d729769">   39</a></span>&#160;{</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="comment">// no error checks to improve speed</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; numdims; ++i)</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    {</div>
@@ -122,7 +122,7 @@ $(document).ready(function(){initNavTree('internal_2functions_8h_source.html',''
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">// double the size for matrices reshaped as vectors</span></div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    std::size_t part_prod[2 * <a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    std::size_t result = 0;</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ad430508f45480e4d7a8ac83ae7d00aae">   59</a></span>&#160;    std::size_t result = 0;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    part_prod[numdims - 1] = 1;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">for</span> (std::size_t i = 1; i &lt; numdims; ++i)</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    {</div>
@@ -142,7 +142,7 @@ $(document).ready(function(){initNavTree('internal_2functions_8h_source.html',''
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">if</span> (rA.rows() != rA.cols())</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="namespaceqpp.html#aba2b3538ec37539e56f77addfb9ea1dd">   79</a></span>&#160;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
@@ -161,7 +161,7 @@ $(document).ready(function(){initNavTree('internal_2functions_8h_source.html',''
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">// check whether input is a row vector or not</span></div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#ab2181932161b010bf7e7ede26f83d050">   97</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespaceqpp_1_1internal.html#ab2181932161b010bf7e7ede26f83d050">_check_row_vector</a>(<span class="keyword">const</span> Eigen::MatrixBase &lt;Derived&gt;&amp; A)</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;{</div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a5db8a845e5766ebb3f4eea5177c810de">   98</a></span>&#160;{</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordflow">if</span> (rA.rows() != 1)</div>
@@ -179,7 +179,7 @@ $(document).ready(function(){initNavTree('internal_2functions_8h_source.html',''
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordflow">if</span> (rA.cols() != 1)</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a1e1daff5450728504da1fdfedf8d8b54">  116</a></span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;}</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">// check non-zero size of object that supports size() function</span></div>
@@ -198,7 +198,7 @@ $(document).ready(function(){initNavTree('internal_2functions_8h_source.html',''
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordflow">if</span> (dims.size() == 0)</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordflow">if</span> (std::find_if(std::begin(dims), std::end(dims),</div>
+<div class="line"><a name="l00135"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a4f6e426d47b5bf66afc0f7cc0321e0eb">  135</a></span>&#160;    <span class="keywordflow">if</span> (std::find_if(std::begin(dims), std::end(dims),</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            [dims](std::size_t i) -&gt; <span class="keywordtype">bool</span></div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            {</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                <span class="keywordflow">if</span> (i == 0) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
@@ -219,7 +219,7 @@ $(document).ready(function(){initNavTree('internal_2functions_8h_source.html',''
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    std::size_t proddim = 1;</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordflow">for</span> (std::size_t i : dims)</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        proddim *= i;</div>
+<div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a95a129545b05e69dd7f4c60b009ca183">  156</a></span>&#160;        proddim *= i;</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keywordflow">if</span> (proddim != static_cast&lt;std::size_t&gt;(rA.rows()))</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
@@ -252,7 +252,7 @@ $(document).ready(function(){initNavTree('internal_2functions_8h_source.html',''
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    std::size_t proddim = 1;</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordflow">for</span> (std::size_t i : dims)</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        proddim *= i;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="keywordflow">if</span> (proddim != static_cast&lt;std::size_t&gt;(rV.cols()))</div>
+<div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a48a92e8a327ff86f87c6236965103797">  189</a></span>&#160;    <span class="keywordflow">if</span> (proddim != static_cast&lt;std::size_t&gt;(rV.cols()))</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
@@ -271,7 +271,7 @@ $(document).ready(function(){initNavTree('internal_2functions_8h_source.html',''
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment">// check that subsys is valid with respect to valid dims</span></div>
 <div class="line"><a name="l00206"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#aed2221e974a69e3f1c39006bcdf50738">  206</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespaceqpp_1_1internal.html#aed2221e974a69e3f1c39006bcdf50738">_check_subsys_match_dims</a>(<span class="keyword">const</span> std::vector &lt;std::size_t&gt;&amp; subsys,</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="keyword">const</span> std::vector &lt;std::size_t&gt;&amp; dims)</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;{</div>
+<div class="line"><a name="l00208"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a78595ec429a5df51dbe682cdb9711d9c">  208</a></span>&#160;{</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="comment">//  // check non-zero sized subsystems</span></div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <span class="comment">//  if (subsys.size() == 0)</span></div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="comment">//      return false;</span></div>
@@ -289,7 +289,7 @@ $(document).ready(function(){initNavTree('internal_2functions_8h_source.html',''
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            != std::end(subsyssort))</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="comment">// check range of subsystems</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno"><a class="line" href="namespaceqpp.html#af2e4740854c958579228593dd639aa6c">  226</a></span>&#160;    <span class="comment">// check range of subsystems</span></div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keywordflow">if</span> (std::find_if(std::begin(subsyssort), std::end(subsyssort),</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            [dims](std::size_t i) -&gt; <span class="keywordtype">bool</span></div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            {</div>
@@ -309,7 +309,7 @@ $(document).ready(function(){initNavTree('internal_2functions_8h_source.html',''
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;</div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    std::vector &lt;std::size_t&gt; ordered(perm.size());</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    std::iota(std::begin(ordered), std::end(ordered), 0);</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;</div>
+<div class="line"><a name="l00246"></a><span class="lineno"><a class="line" href="namespaceqpp.html#afa6eb666202bc76f713c4deadf8624a6">  246</a></span>&#160;</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <span class="keywordflow">if</span> (std::is_permutation(std::begin(ordered), std::end(ordered),</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            std::begin(perm)))</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
@@ -333,7 +333,7 @@ $(document).ready(function(){initNavTree('internal_2functions_8h_source.html',''
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;            <span class="keyword">typename</span> Derived2::Scalar&gt;::value)</div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::kron()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca2f93918ef99e03b7b8e7230b2a28fb52">Exception::Type::TYPE_MISMATCH</a>);</div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="comment">// check zero-size</span></div>
+<div class="line"><a name="l00270"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a2f9801291f336021f67fd1a022664c24">  270</a></span>&#160;    <span class="comment">// check zero-size</span></div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(rA))</div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::kron()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;</div>
@@ -355,7 +355,7 @@ $(document).ready(function(){initNavTree('internal_2functions_8h_source.html',''
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;            result.block(i * Brows, j * Bcols, Brows, Bcols) = rA(i, j) * rB;</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;</div>
+<div class="line"><a name="l00292"></a><span class="lineno"><a class="line" href="namespaceqpp.html#acc9597bacc39c501eb8e2e5e8530fcd8">  292</a></span>&#160;</div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;}</div>
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">// may be useful, extracts variadic template argument pack into a std::vector</span></div>
@@ -403,8 +403,8 @@ $(document).ready(function(){initNavTree('internal_2functions_8h_source.html',''
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_963e57a8294c229b5ff887c0b5b78922.html">internal</a></li><li class="navelem"><a class="el" href="internal_2functions_8h.html">functions.h</a></li>
-    <li class="footer">Generated on Sun Nov 30 2014 14:50:57 for quantum++ by
+    <li class="navelem"><a class="el" href="dir_7374381ecdb819c64ee9b6ea2bd3370d.html">internal</a></li><li class="navelem"><a class="el" href="internal_2functions_8h.html">functions.h</a></li>
+    <li class="footer">Generated on Sun Nov 30 2014 15:06:40 for quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

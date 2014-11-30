@@ -1,5 +1,5 @@
-<map id="include/internal/functions.h" name="include/internal/functions.h">
-<area shape="rect" id="node2" href="$input__output_8h.html" title="include/input_output.h" alt="" coords="5,87,148,114"/>
-<area shape="rect" id="node3" href="$qpp_8h.html" title="include/qpp.h" alt="" coords="137,169,235,196"/>
-<area shape="rect" id="node4" href="$iomanip_8h.html" title="include/internal/classes\l/iomanip.h" alt="" coords="224,80,375,121"/>
+<map id="internal/functions.h" name="internal/functions.h">
+<area shape="rect" id="node2" href="$input__output_8h.html" title="input_output.h" alt="" coords="5,80,107,107"/>
+<area shape="rect" id="node3" href="$qpp_8h.html" title="qpp.h" alt="" coords="117,155,171,181"/>
+<area shape="rect" id="node4" href="$iomanip_8h.html" title="internal/classes/iomanip.h" alt="" coords="182,80,349,107"/>
 </map>

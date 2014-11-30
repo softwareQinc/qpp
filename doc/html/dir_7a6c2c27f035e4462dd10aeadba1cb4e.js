@@ -15,9 +15,6 @@ var dir_7a6c2c27f035e4462dd10aeadba1cb4e =
     [ "random_devices.h", "random__devices_8h.html", [
       [ "RandomDevices", "classqpp_1_1_random_devices.html", "classqpp_1_1_random_devices" ]
     ] ],
-    [ "singleton.h", "singleton_8h.html", [
-      [ "Singleton", "classqpp_1_1internal_1_1_singleton.html", "classqpp_1_1internal_1_1_singleton" ]
-    ] ],
     [ "states.h", "states_8h.html", [
       [ "States", "classqpp_1_1_states.html", "classqpp_1_1_states" ]
     ] ],
