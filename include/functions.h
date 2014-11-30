@@ -1408,8 +1408,7 @@ std::vector<double> abssq(const Eigen::MatrixBase <Derived>& V)
 * as a scalar in the same scalar field as the range
 */
 template<typename InputIterator>
-auto sum(InputIterator first,
-        InputIterator last) -> typename InputIterator::value_type
+typename InputIterator::value_type sum(InputIterator first, InputIterator last)
 {
     return std::accumulate(first, last,
             static_cast<typename InputIterator::value_type>(0));
@@ -1424,8 +1423,8 @@ auto sum(InputIterator first,
 * as a scalar in the same scalar field as the range
 */
 template<typename InputIterator>
-auto prod(InputIterator first,
-        InputIterator last) -> typename InputIterator::value_type
+typename InputIterator::value_type prod(InputIterator first,
+        InputIterator last)
 {
     return std::accumulate(first, last,
             static_cast<typename InputIterator::value_type>(1),
