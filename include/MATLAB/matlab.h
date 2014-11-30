@@ -167,13 +167,13 @@ inline cmat loadMATLABmatrix(const std::string& mat_file,
     double* pa_re = nullptr, * pa_im = nullptr;
 
     // Populate the real part of the created array.
-    pa_re = (double*) mxGetPr(pa);
+    pa_re = static_cast<double*>(mxGetPr(pa));
     std::memcpy(result_re.data(), pa_re,
             sizeof(double) * mxGetNumberOfElements(pa));
 
     if (mxIsComplex(pa)) // populate the imaginary part if exists
     {
-        pa_im = (double*) mxGetPi(pa);
+        pa_im = static_cast<double*>(mxGetPi(pa));
         std::memcpy(result_im.data(), pa_im,
                 sizeof(double) * mxGetNumberOfElements(pa));
     }
@@ -292,11 +292,11 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <cmat>& A,
     double* pa_re, * pa_im;
 
     /* Populate the real part of the created array. */
-    pa_re = (double*) mxGetPr(pa);
+    pa_re = static_cast<double*>(mxGetPr(pa));
     std::memcpy(pa_re, tmp_re.data(), sizeof(double) * tmp_re.size());
 
     /* Populate the imaginary part of the created array. */
-    pa_im = (double*) mxGetPi(pa);
+    pa_im = static_cast<double*>(mxGetPi(pa));
     std::memcpy(pa_im, tmp_im.data(), sizeof(double) * tmp_im.size());
 
     if (matPutVariable(pmat, var_name.c_str(), pa))
