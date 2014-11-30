@@ -3,7 +3,7 @@ project(qpp)
 
 # modify as needed
 set(CMAKE_CXX_COMPILER "g++")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pedantic -Wall -Wextra -Weffc++ -mtune=native ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pedantic -Wall -Wextra -Weffc++")
 set(EIGEN "$ENV{HOME}/eigen_3.2.2")
 
 option(WITH_OPENMP "OpenMP support" ON)
