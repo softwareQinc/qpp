@@ -113,10 +113,12 @@ Or, to disable OpenMP support (enabled by default), type
     cmake -DWITH_OPENMP=OFF ..
     make
 
-To change the location of `Eigen3` library or the location 
-of MATLAB installation, edit the `CMakeLists.txt` file. See also `CMakeLists
-.txt` for additional options. Do not forget to remove everything from the `
-./build` directory before a fresh build!
+To change the name of the example file, the location of `Eigen3` 
+library or the location of MATLAB installation, 
+edit the `CMakeLists.txt` file. See also `CMakeLists.txt` 
+for additional options. 
+Do not forget to remove everything from the `./build` directory 
+before a fresh build!
 
 ===
 ### Additional remarks
