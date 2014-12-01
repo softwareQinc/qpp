@@ -46,8 +46,9 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 ===
 ### Building instructions for `g++`
 
-- Example file: `examples/example.cpp`
-- Output executable: `examples/example`
+- Example file: `$HOME/qpp/examples/example.cpp`
+- Output executable: `$HOME/qpp/examples/example`
+- Must run the commands below from inside the directory `$HOME/qpp/examples` 
 
 #### Release version (without MATLAB support): 
 
