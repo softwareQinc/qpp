@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 2.8.0)
 project(qpp)
 
 # modify as needed
+set(SOURCE_FILES
+    examples/full.cpp)
+
+# modify as needed
 set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pedantic -Wall -Wextra -Weffc++")
 set(EIGEN "$ENV{HOME}/eigen_3.2.2")
@@ -33,9 +37,6 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DEIGEN_NO
 
 include_directories(include)
 include_directories(SYSTEM ${EIGEN})
-
-set(SOURCE_FILES
-    examples/full.cpp)
 
 if( NOT CMAKE_BUILD_TYPE )
   set( CMAKE_BUILD_TYPE Release CACHE STRING
