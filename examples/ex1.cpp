@@ -1,3 +1,5 @@
+// source: ./examples/ex1.cpp
+
 #include <qpp.h>
 
 int main() 

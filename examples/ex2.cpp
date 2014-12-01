@@ -1,3 +1,5 @@
+// source: ./examples/ex2.cpp
+
 #include <qpp.h>
 using namespace qpp;
 
