@@ -96,7 +96,7 @@ example using `cmake`, I recommend an out-of-source build,
     make
 
 The above commands build the relase version (default) executable `qpp`, 
-from the source file `examples/example.cpp`,
+from the source file `./examples/example.cpp`,
 without MATLAB support (default), inside the directory `./build`. 
 To build a different configuration, e.g. debug version with MATLAB support, 
 type from the root of the project
