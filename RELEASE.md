@@ -11,4 +11,4 @@ page https://github.com/vsoftco/qpp
 is provided in the file `doc/refman.pdf`, 
 and the corresponding `html` reference in the file `doc/html/index.html`
 
-- A documented example is provided in the file `example.cpp`
+- A set of documented examples are provided in the directory `./examples/`
