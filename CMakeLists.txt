@@ -3,7 +3,7 @@ project(qpp)
 
 # modify as needed
 set(SOURCE_FILES
-    examples/full.cpp)
+    examples/example.cpp)
 
 # modify as needed
 set(CMAKE_CXX_COMPILER "g++")
