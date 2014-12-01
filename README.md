@@ -46,22 +46,22 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 ===
 ### Building instructions for `g++`
 
-- Example file: `example.cpp` (current directory, from where `g++` is run)
-- Output executable: `qpp` (current directory, from where `g++` is run)
+- Example file: `examples/example.cpp`
+- Output executable: `examples/example`
 
 #### Release version (without MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
          -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
          -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include \
-         example.cpp -o qpp
+         example.cpp -o example
 
 #### Debug version (without MATLAB support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
          -g3 -DDEBUG \
          -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include \
-          example.cpp -o qpp
+          example.cpp -o example
 
 #### Release version (with MATLAB support): 
 
@@ -70,7 +70,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
          -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include \
          -I/Applications/MATLAB_R2014b.app/extern/include \
          -L/Applications/MATLAB_R2014b.app/bin/maci64 \
-         -lmx -lmat example.cpp -o qpp
+         -lmx -lmat example.cpp -o example
 
 #### Debug version (with MATLAB support): 
 
@@ -79,14 +79,14 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
          -isystem $HOME/eigen_3.2.2 -I $HOME/qpp/include \
          -I /Applications/MATLAB_R2014b.app/extern/include \
          -L /Applications/MATLAB_R2014b.app/bin/maci64 \
-         -lmx -lmat example.cpp -o qpp
+         -lmx -lmat example.cpp -o example
 
 ===
 ### Building using `cmake`
 
 The current version of the repository has a `CMakeLists.txt` configuration file 
-for building using `cmake` (`cmake` needs to be installed). To build the 
-project using `cmake`, I recommend an out-of-source build, 
+for building examples using `cmake` (`cmake` needs to be installed). To build an 
+example using `cmake`, I recommend an out-of-source build, 
  i.e., from the root of the project (where `./include` is located), type
 
     mkdir ./build
@@ -95,6 +95,7 @@ project using `cmake`, I recommend an out-of-source build,
     make
 
 The above commands build the relase version (default) executable `qpp`, 
+from the source file `examples/example.cpp`,
 without MATLAB support (default), inside the directory `./build`. 
 To build a different configuration, e.g. debug version with MATLAB support, 
 type from the root of the project
@@ -115,16 +116,6 @@ To change the location of `Eigen3` library or the location
 of MATLAB installation, edit the `CMakeLists.txt` file. See also `CMakeLists
 .txt` for additional options. Do not forget to remove everything from the `
 ./build` directory before a fresh build!
-
-===
-### Building using `make`
-
-For convenience, the current version of the repository has also a set 
-of Makefiles available under the directory`./Makefile.examples`. To build the 
-executable this way (without using `cmake`), copy into the root of the project 
-an appropriate Makefile from `./Makefile.examples`, name it `Makefile`, 
-then type `make` (for release version) or `make debug` (for debug version) 
-to produce the executable `qpp`.
 
 ===
 ### Additional remarks
@@ -159,8 +150,4 @@ Otherwise, you will get a runtime error like
 inside template functions you may want to add `-fno-weak` compiler flag. See 
 <http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks>
 for more details about this problem.
-
-- `Makefiles.examples` and `CMakeLists.txt` are provided for convenience.
-The final version of the library will consist only of header files, 
-and it is the user's responsability to create an appropriate build system.
 
