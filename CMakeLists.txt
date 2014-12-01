@@ -35,7 +35,7 @@ include_directories(include)
 include_directories(SYSTEM ${EIGEN})
 
 set(SOURCE_FILES
-    example.cpp)
+    examples/full.cpp)
 
 if( NOT CMAKE_BUILD_TYPE )
   set( CMAKE_BUILD_TYPE Release CACHE STRING
