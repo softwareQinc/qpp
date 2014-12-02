@@ -19,8 +19,6 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// TODO: extensive testing
-
 #include <qpp.h>
 
 // #include <MATLAB/matlab.h> // support for MATLAB
