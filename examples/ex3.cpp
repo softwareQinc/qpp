@@ -3,7 +3,6 @@
 #include <qpp.h>
 using namespace qpp;
 
-
 int main()
 {
     ket psi = mket({0, 0});
