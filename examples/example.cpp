@@ -91,7 +91,7 @@ void MEASUREMENTS()
     // random Kraus
     cout << ">> Random channel on part of the state " << endl;
     rho_bar = ptrace(rho, {1, 3});
-    rho_out_bar = ptrace(channel(rho, randkraus(3, 4), {1, 3}), {1, 3});
+    rho_out_bar = ptrace(apply(rho, randkraus(3, 4), {1, 3}), {1, 3});
 
     // verification
     cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar)
@@ -344,7 +344,7 @@ void CHANNEL()
     std::vector<cmat> Ks = randkraus(nk, D);
 
     cmat rho_in = randrho(D); // random input state
-    cmat rho_out = channel(rho_in, Ks); // output state
+    cmat rho_out = apply(rho_in, Ks); // output state
 
     cout << ">> Computing its Choi matrix..." << endl;
     cmat choim = choi(Ks);
@@ -358,7 +358,7 @@ void CHANNEL()
     std::vector<cmat> Kperps = choi2kraus(choim);
     cout << ">> The Kraus rank of the channel is: " << Kperps.size() << endl;
 
-    cmat rho_out1 = channel(rho_in, Kperps);
+    cmat rho_out1 = apply(rho_in, Kperps);
     // verification
     cout << ">> Norm difference on output states: "
             << norm(rho_out1 - rho_out) << endl;

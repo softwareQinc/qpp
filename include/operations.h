@@ -521,26 +521,26 @@ dyn_mat<typename Derived1::Scalar> apply(
 * \return Output density matrix after the action of the channel
 */
 template<typename Derived>
-cmat channel(const Eigen::MatrixBase <Derived>& rho,
+cmat apply(const Eigen::MatrixBase <Derived>& rho,
         const std::vector <cmat>& Ks)
 {
     const cmat& rrho = rho;
 
     // EXCEPTION CHECKS
     if (!internal::_check_nonzero_size(rrho))
-        throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(rrho))
-        throw Exception("qpp::channel()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE);
     if (Ks.size() == 0)
-        throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(Ks[0]))
-        throw Exception("qpp::channel()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE);
     if (Ks[0].rows() != rrho.rows())
-        throw Exception("qpp::channel()",
+        throw Exception("qpp::apply()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
     for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-            throw Exception("qpp::channel()", Exception::Type::DIMS_NOT_EQUAL);
+            throw Exception("qpp::apply()", Exception::Type::DIMS_NOT_EQUAL);
 
     cmat result = cmat::Zero(rrho.rows(), rrho.rows());
 
@@ -567,7 +567,7 @@ cmat channel(const Eigen::MatrixBase <Derived>& rho,
 * \return Output density matrix after the action of the channel
 */
 template<typename Derived>
-cmat channel(const Eigen::MatrixBase <Derived>& rho,
+cmat apply(const Eigen::MatrixBase <Derived>& rho,
         const std::vector <cmat>& Ks,
         const std::vector <idx>& subsys,
         const std::vector <idx>& dims)
@@ -577,24 +577,24 @@ cmat channel(const Eigen::MatrixBase <Derived>& rho,
     // EXCEPTION CHECKS
     // check zero sizes
     if (!internal::_check_nonzero_size(rrho))
-        throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
 
     // check square matrix for the rho
     if (!internal::_check_square_mat(rrho))
-        throw Exception("qpp::channel()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE);
 
     // check that dimension is valid
     if (!internal::_check_dims(dims))
-        throw Exception("qpp::channel()", Exception::Type::DIMS_INVALID);
+        throw Exception("qpp::apply()", Exception::Type::DIMS_INVALID);
 
     // check that dims match rho matrix
     if (!internal::_check_dims_match_mat(dims, rrho))
-        throw Exception("qpp::channel()",
+        throw Exception("qpp::apply()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
 
     // check subsys is valid w.r.t. dims
     if (!internal::_check_subsys_match_dims(subsys, dims))
-        throw Exception("qpp::channel()",
+        throw Exception("qpp::apply()",
                 Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     std::vector <idx> subsys_dims(subsys.size());
@@ -603,15 +603,15 @@ cmat channel(const Eigen::MatrixBase <Derived>& rho,
 
     // check the Kraus operators
     if (Ks.size() == 0)
-        throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(Ks[0]))
-        throw Exception("qpp::channel()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE);
     if (!internal::_check_dims_match_mat(subsys_dims, Ks[0]))
-        throw Exception("qpp::channel()",
+        throw Exception("qpp::apply()",
                 Exception::Type::MATRIX_MISMATCH_SUBSYS);
     for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-            throw Exception("qpp::channel()", Exception::Type::DIMS_NOT_EQUAL);
+            throw Exception("qpp::apply()", Exception::Type::DIMS_NOT_EQUAL);
 
     cmat result = cmat::Zero(rrho.rows(), rrho.rows());
 
@@ -632,7 +632,7 @@ cmat channel(const Eigen::MatrixBase <Derived>& rho,
 * \return Output density matrix after the action of the channel
 */
 template<typename Derived>
-cmat channel(const Eigen::MatrixBase <Derived>& rho,
+cmat apply(const Eigen::MatrixBase <Derived>& rho,
         const std::vector <cmat>& Ks,
         const std::vector <idx>& subsys,
         idx d = 2)
@@ -641,14 +641,14 @@ cmat channel(const Eigen::MatrixBase <Derived>& rho,
 
     // check zero sizes
     if (!internal::_check_nonzero_size(rrho))
-        throw Exception("qpp::channel()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
 
     idx n =
             static_cast<idx>(std::llround(std::log2(rrho.rows()) /
                     std::log2(d)));
     std::vector <idx> dims(n, d); // local dimensions vector
 
-    return channel(rrho, Ks, subsys, dims);
+    return apply(rrho, Ks, subsys, dims);
 }
 
 /**

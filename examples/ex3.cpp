@@ -1,5 +1,4 @@
 // source: ./examples/ex3.cpp
-
 #include <qpp.h>
 using namespace qpp;
 
