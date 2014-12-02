@@ -44,7 +44,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 `/Applications/MATLAB_R2014b.app/bin/maci64`
 
 
-### Building instructions for `g++` without a build system
+### Building instructions without a build system
 
 - Example file: `$HOME/qpp/examples/example.cpp`
 - Output executable: `$HOME/qpp/examples/example`
