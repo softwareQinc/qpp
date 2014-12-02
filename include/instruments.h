@@ -133,7 +133,7 @@ measure(
         for (idx i = 0; i < Ks.size(); ++i)
         {
             outstates[i] = cmat::Zero(Dbar, Dbar);
-            cmat tmp = apply(rA, Ks[i], subsys, dims);
+            ket tmp = apply(rA, Ks[i], subsys, dims);
             prob[i] = std::pow(norm(tmp), 2);
             if (prob[i] > eps)
                 outstates[i] = ptrace(prj(tmp), subsys, dims);
