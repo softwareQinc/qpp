@@ -19,6 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file number_theory.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef NUMBER_THEORY_H_
 #define NUMBER_THEORY_H_
 

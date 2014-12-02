@@ -19,6 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file entropies.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef ENTROPY_H_
 #define ENTROPY_H_
 

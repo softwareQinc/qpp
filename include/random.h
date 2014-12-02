@@ -19,6 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file random.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef RANDOM_H_
 #define RANDOM_H_
 

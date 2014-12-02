@@ -19,6 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file constants.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef CONSTANTS_H_
 #define CONSTANTS_H_
 

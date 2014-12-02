@@ -19,16 +19,25 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file internal/functions.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef INTERNAL_FUNCTIONS_H_
 #define INTERNAL_FUNCTIONS_H_
 
-// internal functions, do not use/modify
-/**
-* \namespace qpp::internal Internal implementation details,
-* do not use/modify these functions/classes
-*/
 namespace qpp
 {
+/**
+* \namespace qpp::internal
+* \brief Internal implementation details, do not use/modify these
+* functions/classes
+*
+* Additional details here
+*/
 namespace internal
 {
 

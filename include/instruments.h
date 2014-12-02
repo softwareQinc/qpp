@@ -19,6 +19,14 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file instruments.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
+
 #ifndef INSTRUMENTS_H_
 #define INSTRUMENTS_H_
 

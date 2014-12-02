@@ -19,6 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file classes/exception.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef CLASSES_EXCEPTION_H_
 #define CLASSES_EXCEPTION_H_
 

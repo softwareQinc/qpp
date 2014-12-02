@@ -19,6 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file entanglement.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef ENTANGLEMENT_H_
 #define ENTANGLEMENT_H_
 

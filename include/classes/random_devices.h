@@ -19,6 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file classes/random_devices.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef CLASSES_RANDOM_DEVICES_H_
 #define CLASSES_RANDOM_DEVICES_H_
 

@@ -19,6 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file classes/gates.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef CLASSES_GATES_H_
 #define CLASSES_GATES_H_
 

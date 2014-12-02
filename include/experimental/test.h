@@ -19,15 +19,25 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file experimental/test.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef EXPERIMENTAL_TEST_H_
 #define EXPERIMENTAL_TEST_H_
 
-/**
-* \namespace qpp::experimental Experimental/test functions/classes,
-* do not use or modify these functions/classes
-*/
 namespace qpp
 {
+/**
+* \namespace qpp::experimental
+* \brief Experimental/test functions/classes,
+* do not use or modify these functions/classes
+*
+* Additional details here
+*/
 namespace experimental
 {
 

@@ -19,6 +19,14 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file internal/classes/singleton.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
+
 #ifndef INTERNAL_CLASSES_SINGLETON_H_
 #define INTERNAL_CLASSES_SINGLETON_H_
 

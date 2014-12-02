@@ -19,6 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file classes/init.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef CLASSES_INIT_H_
 #define CLASSES_INIT_H_
 

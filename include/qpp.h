@@ -25,6 +25,13 @@
 // Includes all necessary headers (except "matlab.h")
 // ALWAYS include it in main.cpp
 
+/**
+* \file qpp.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef QPP_H_
 #define QPP_H_
 
@@ -85,6 +92,13 @@
 #include "instruments.h"
 #include "number_theory.h"
 
+
+/**
+* \namespace qpp
+* \brief Quantum++'s main namespace
+*
+* Additional details here
+*/
 namespace qpp
 {
 

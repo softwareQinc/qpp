@@ -19,6 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file classes/states.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef CLASSES_STATES_H_
 #define CLASSES_STATES_H_
 

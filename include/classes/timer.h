@@ -19,6 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file classes/timer.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef CLASSES_TIMER_H_
 #define CLASSES_TIMER_H_
 

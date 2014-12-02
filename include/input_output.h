@@ -19,6 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file input_output.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #include <internal/functions.h>
 
 #ifndef INPUT_OUTPUT_H_

@@ -19,6 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file operations.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef OPERATIONS_H_
 #define OPERATIONS_H_
 

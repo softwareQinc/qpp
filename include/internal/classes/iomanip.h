@@ -19,6 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file internal/classes/iomanip.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #include <internal/functions.h>
 
 #ifndef INTERNAL_CLASSES_IOMANIP_H_

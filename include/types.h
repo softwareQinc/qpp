@@ -19,6 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file types.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef TYPES_H_
 #define TYPES_H_
 
