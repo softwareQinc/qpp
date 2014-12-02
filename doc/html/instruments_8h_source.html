@@ -181,7 +181,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; Ks.size(); ++i)</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        {</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            outstates[i] = cmat::Zero(Dbar, Dbar);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            <a class="code" href="namespaceqpp.html#a49c56d608ca03d6258e540404e0ab187">cmat</a> tmp = <a class="code" href="namespaceqpp.html#a6cc60c95fa5b4158e153269699d245bc">apply</a>(rA, Ks[i], subsys, dims);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            <a class="code" href="namespaceqpp.html#a8945ec38f98d7df111998312fd4b3e5e">ket</a> tmp = <a class="code" href="namespaceqpp.html#a6cc60c95fa5b4158e153269699d245bc">apply</a>(rA, Ks[i], subsys, dims);</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            prob[i] = std::pow(<a class="code" href="namespaceqpp.html#af2e4740854c958579228593dd639aa6c">norm</a>(tmp), 2);</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            <span class="keywordflow">if</span> (prob[i] &gt; <a class="code" href="namespaceqpp.html#a9a99ccccd473a9006dfaadb5761ac4f6">eps</a>)</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                outstates[i] = <a class="code" href="namespaceqpp.html#a1300526d686af7fec966d8760087a168">ptrace</a>(<a class="code" href="namespaceqpp.html#aba404255d64874760673090457055373">prj</a>(tmp), subsys, dims);</div>
@@ -467,7 +467,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="instruments_8h.html">instruments.h</a></li>
-    <li class="footer">Generated on Tue Dec 2 2014 15:50:46 for Quantum++ by
+    <li class="footer">Generated on Tue Dec 2 2014 17:20:18 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
