@@ -121,7 +121,7 @@ Do not forget to remove everything from the `./build` directory
 before a fresh build!
 
 
-## Additional remarks
+### Additional remarks
 
 - The C++ compiler must be C++11 compliant.
 
