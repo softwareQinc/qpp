@@ -43,7 +43,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 - MATLAB compiler shared library files:
 `/Applications/MATLAB_R2014b.app/bin/maci64`
 
-===
+
 ### Building instructions for `g++`
 
 - Example file: `$HOME/qpp/examples/example.cpp`
@@ -82,7 +82,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
          -L /Applications/MATLAB_R2014b.app/bin/maci64 \
          -lmx -lmat example.cpp -o example
 
-===
+
 ### Building using `cmake`
 
 The current version of the repository has a `CMakeLists.txt` configuration file 
@@ -120,7 +120,7 @@ for additional options.
 Do not forget to remove everything from the `./build` directory 
 before a fresh build!
 
-===
+
 ### Additional remarks
 
 - The C++ compiler must be C++11 compliant.
