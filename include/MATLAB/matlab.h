@@ -19,6 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+* \file MATLAB/matlab.h
+* \brief A documented file
+*
+* Additional details here
+*/
+
 #ifndef MATLAB_MATLAB_H_
 #define MATLAB_MATLAB_H_
 

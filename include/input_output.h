@@ -26,8 +26,6 @@
 * Additional details here
 */
 
-#include <internal/functions.h>
-
 #ifndef INPUT_OUTPUT_H_
 #define INPUT_OUTPUT_H_
 

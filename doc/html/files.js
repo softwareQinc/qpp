@@ -7,7 +7,7 @@ var files =
     [ "constants.h", "constants_8h.html", "constants_8h" ],
     [ "entanglement.h", "entanglement_8h.html", "entanglement_8h" ],
     [ "entropies.h", "entropies_8h.html", "entropies_8h" ],
-    [ "functions.h", "functions_8h.html", null ],
+    [ "functions.h", "functions_8h.html", "functions_8h" ],
     [ "input_output.h", "input__output_8h.html", "input__output_8h" ],
     [ "instruments.h", "instruments_8h.html", "instruments_8h" ],
     [ "number_theory.h", "number__theory_8h.html", "number__theory_8h" ],

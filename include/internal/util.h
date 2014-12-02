@@ -20,14 +20,14 @@
  */
 
 /**
-* \file internal/functions.h
+* \file internal/util.h
 * \brief A documented file
 *
 * Additional details here
 */
 
-#ifndef INTERNAL_FUNCTIONS_H_
-#define INTERNAL_FUNCTIONS_H_
+#ifndef INTERNAL_UTIL_H_
+#define INTERNAL_UTIL_H_
 
 namespace qpp
 {
@@ -317,4 +317,4 @@ void variadic_vector_emplace(std::vector <T>& v, First&& first, Args&& ... args)
 } /* namespace internal */
 } /* namespace qpp */
 
-#endif /* INTERNAL_FUNCTIONS_H_ */
+#endif /* INTERNAL_UTIL_H_ */

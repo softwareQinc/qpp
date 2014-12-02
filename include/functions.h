@@ -26,7 +26,6 @@
 * Additional details here
 */
 
-
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 

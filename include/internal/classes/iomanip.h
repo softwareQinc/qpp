@@ -26,8 +26,6 @@
 * Additional details here
 */
 
-#include <internal/functions.h>
-
 #ifndef INTERNAL_CLASSES_IOMANIP_H_
 #define INTERNAL_CLASSES_IOMANIP_H_
 
