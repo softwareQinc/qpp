@@ -1,7 +1,7 @@
 var NAVTREE =
 [
   [ "quantum++", "index.html", [
-    [ "Quantum++ - A C++11 quantum computing library", "index.html", null ],
+    [ "Quantum++", "md___users_vlad__dropbox_programming_cpp_qpp_clion__r_e_a_d_m_e.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -33,7 +33,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"input__output_8h.html"
+"input__output_8h.html#a238cf516513837235fbc7d7d283f7b78"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

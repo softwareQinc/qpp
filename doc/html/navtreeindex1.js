@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"input__output_8h.html":[3,0,8],
 "input__output_8h.html#a238cf516513837235fbc7d7d283f7b78":[3,0,8,6],
 "input__output_8h.html#a4f1805e175751ef749374e3c8499f15d":[3,0,8,0],
 "input__output_8h.html#a60298648d39542ac44effa9fe73d41c9":[3,0,8,2],
@@ -30,6 +29,7 @@ var NAVTREEINDEX1 =
 "matlab_8h.html#a84a0f3023e1895d22de4e5f3e727e1dd":[3,0,3,0,0],
 "matlab_8h.html#aa2030161b0158746beaac80612a3464e":[3,0,3,0,1],
 "matlab_8h_source.html":[3,0,3,0],
+"md___users_vlad__dropbox_programming_cpp_qpp_clion__r_e_a_d_m_e.html":[0],
 "namespacemembers.html":[1,1,0],
 "namespacemembers_func.html":[1,1,1],
 "namespacemembers_type.html":[1,1,3],
