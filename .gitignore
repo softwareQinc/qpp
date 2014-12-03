@@ -1,10 +1,9 @@
-*.o
-*~
-*.swp
-qpp
 .idea/
 build/
-documentation.Doxyfile
-latex/
 html/
+latex/
 quick/
+
+*.swp
+
+documentation.Doxyfile
