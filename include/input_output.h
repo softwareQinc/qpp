@@ -155,7 +155,8 @@ void save(const Eigen::MatrixBase <Derived>& A, const std::string& fname)
     fout.write((char*) &rows, sizeof(rows));
     fout.write((char*) &cols, sizeof(cols));
 
-    fout.write((char*) rA.data(), sizeof(Derived::Scalar) * rows * cols);
+    fout.write((char*) rA.data(),
+            sizeof(typename Derived::Scalar) * rows * cols);
 
     fout.close();
 }
