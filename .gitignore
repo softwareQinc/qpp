@@ -2,10 +2,9 @@
 *~
 *.swp
 qpp
-/.idea
-/build
-/mainpage.dox
-/documentation.Doxyfile
-/latex
-/html
-/quick
+.idea/
+build/
+documentation.Doxyfile
+latex/
+html/
+quick/
