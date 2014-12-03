@@ -101,7 +101,7 @@ constexpr idx infty = -1;
 * \param D Non-negative integer
 * \return D-th root of unity \f$\exp(2\pi i/D)\f$
 */
-cplx omega(idx D)
+inline cplx omega(idx D)
 {
     return exp(2.0 * pi * 1_i / static_cast<double>(D));
 }
