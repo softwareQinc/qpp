@@ -34,7 +34,7 @@ int main()
     std::cout << "After partially tracing down the second subsystem:\n";
     std::cout << disp(rhoA) << std::endl;
 
-    // compute the vonNeumann entropy
+    // compute the von-Neumann entropy
     double ent = entropy(rhoA);
     std::cout << "Entropy: " << ent << std::endl;
 }
