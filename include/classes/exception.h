@@ -21,9 +21,7 @@
 
 /**
 * \file classes/exception.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Exceptions
 */
 
 #ifndef CLASSES_EXCEPTION_H_

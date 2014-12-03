@@ -21,9 +21,7 @@
 
 /**
 * \file input_output.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Input/output functions
 */
 
 #ifndef INPUT_OUTPUT_H_

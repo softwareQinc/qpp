@@ -21,9 +21,7 @@
 
 /**
 * \file classes/random_devices.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Random devices
 */
 
 #ifndef CLASSES_RANDOM_DEVICES_H_

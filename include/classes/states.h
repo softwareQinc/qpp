@@ -21,9 +21,7 @@
 
 /**
 * \file classes/states.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Quantum states
 */
 
 #ifndef CLASSES_STATES_H_

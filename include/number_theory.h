@@ -21,9 +21,7 @@
 
 /**
 * \file number_theory.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Number theory functions
 */
 
 #ifndef NUMBER_THEORY_H_

@@ -21,9 +21,7 @@
 
 /**
 * \file internal/util.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Internal utility functions
 */
 
 #ifndef INTERNAL_UTIL_H_
@@ -35,8 +33,6 @@ namespace qpp
 * \namespace qpp::internal
 * \brief Internal implementation details, do not use/modify these
 * functions/classes
-*
-* Additional details here
 */
 namespace internal
 {

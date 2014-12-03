@@ -21,9 +21,7 @@
 
 /**
 * \file internal/classes/singleton.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Singleton via CRTP
 */
 
 

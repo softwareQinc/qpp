@@ -21,9 +21,7 @@
 
 /**
 * \file instruments.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Measurement functions
 */
 
 

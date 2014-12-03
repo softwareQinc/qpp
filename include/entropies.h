@@ -21,9 +21,7 @@
 
 /**
 * \file entropies.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Entropy functions
 */
 
 #ifndef ENTROPY_H_

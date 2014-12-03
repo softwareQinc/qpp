@@ -21,9 +21,7 @@
 
 /**
 * \file operations.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Quantum operation functions
 */
 
 #ifndef OPERATIONS_H_

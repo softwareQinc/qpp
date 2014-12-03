@@ -21,9 +21,7 @@
 
 /**
 * \file classes/timer.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Timing
 */
 
 #ifndef CLASSES_TIMER_H_

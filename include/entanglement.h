@@ -21,9 +21,7 @@
 
 /**
 * \file entanglement.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Entanglement functions
 */
 
 #ifndef ENTANGLEMENT_H_

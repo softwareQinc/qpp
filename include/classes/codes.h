@@ -21,9 +21,7 @@
 
 /**
 * \file classes/codes.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Quantum error correcting codes
 */
 
 #ifndef CLASSES_CODES_H_

@@ -21,9 +21,7 @@
 
 /**
 * \file classes/gates.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Quantum gates
 */
 
 #ifndef CLASSES_GATES_H_

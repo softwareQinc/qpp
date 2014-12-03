@@ -21,9 +21,7 @@
 
 /**
 * \file internal/classes/iomanip.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Input/output manipulators
 */
 
 #ifndef INTERNAL_CLASSES_IOMANIP_H_

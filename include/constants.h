@@ -21,9 +21,7 @@
 
 /**
 * \file constants.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Constants
 */
 
 #ifndef CONSTANTS_H_

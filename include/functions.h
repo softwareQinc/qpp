@@ -21,9 +21,7 @@
 
 /**
 * \file functions.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Generic quantum computing functions
 */
 
 #ifndef FUNCTIONS_H_

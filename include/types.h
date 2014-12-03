@@ -21,9 +21,7 @@
 
 /**
 * \file types.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Type aliases
 */
 
 #ifndef TYPES_H_

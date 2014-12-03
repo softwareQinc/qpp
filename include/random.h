@@ -21,9 +21,7 @@
 
 /**
 * \file random.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Randomness-related functions
 */
 
 #ifndef RANDOM_H_

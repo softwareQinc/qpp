@@ -27,9 +27,7 @@
 
 /**
 * \file qpp.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Quantum++'s main header file, includes all other necessary headers
 */
 
 #ifndef QPP_H_
@@ -96,8 +94,6 @@
 /**
 * \namespace qpp
 * \brief Quantum++'s main namespace
-*
-* Additional details here
 */
 namespace qpp
 {

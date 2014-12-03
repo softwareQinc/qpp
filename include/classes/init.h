@@ -21,9 +21,7 @@
 
 /**
 * \file classes/init.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Initialization
 */
 
 #ifndef CLASSES_INIT_H_

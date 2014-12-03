@@ -21,9 +21,7 @@
 
 /**
 * \file experimental/test.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Experimental/test functions/classes
 */
 
 #ifndef EXPERIMENTAL_TEST_H_
@@ -33,10 +31,7 @@ namespace qpp
 {
 /**
 * \namespace qpp::experimental
-* \brief Experimental/test functions/classes,
-* do not use or modify these functions/classes
-*
-* Additional details here
+* \brief Experimental/test functions/classes, do not use or modify
 */
 namespace experimental
 {
