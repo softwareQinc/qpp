@@ -1,4 +1,5 @@
-// source: ./examples/ex1.cpp
+// Minimal example
+// Source: ./examples/ex1.cpp
 #include <qpp.h>
 
 int main()
