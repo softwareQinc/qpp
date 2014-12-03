@@ -21,9 +21,7 @@
 
 /**
 * \file MATLAB/matlab.h
-* \brief A documented file
-*
-* Additional details here
+* \brief Input/output interfacing with MATLAB
 */
 
 #ifndef MATLAB_MATLAB_H_

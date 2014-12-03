@@ -21,7 +21,7 @@
 
 /**
 * \file internal/classes/singleton.h
-* \brief Singleton via CRTP
+* \brief Singleton pattern via CRTP
 */
 
 
