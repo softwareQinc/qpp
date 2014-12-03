@@ -22,7 +22,7 @@ int main()
     U = randU(2);
     std::cout << "Generating a random one-qubit gate U:\n";
     std::cout << disp(U) << std::endl;
-    
+
     result = applyCTRL(psi, U, {0}, {1});
     std::cout << "The result of applying the Controlled-U gate on |10> is:\n";
     std::cout << disp(result) << std::endl;

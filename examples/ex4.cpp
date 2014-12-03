@@ -1,4 +1,4 @@
-// Quantum operations 
+// Quantum operations
 // Source: ./examples/ex4.cpp
 #include <qpp.h>
 using namespace qpp;

@@ -31,8 +31,7 @@ namespace qpp
 {
 /**
 * \namespace qpp::internal
-* \brief Internal implementation details, do not use/modify these
-* functions/classes
+* \brief Internal utility functions, do not use/modify
 */
 namespace internal
 {
