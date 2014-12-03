@@ -470,7 +470,7 @@ void ENTROPIES()
     cmat rhoA = ptrace(rho, {1});
     cout << ">> State: " << endl << disp(rho) << endl;
     cout << ">> Partial trace over B: " << endl << disp(rhoA) << endl;
-    cout << ">> Shannon entropy: " << shannon(rhoA) << endl;
+    cout << ">> vonNeumann entropy: " << entropy(rhoA) << endl;
     cout << ">> Renyi-0 (Hmax) entropy: " << renyi(rhoA, 0) << endl;
     cout << ">> Renyi-1 entropy: " << renyi(rhoA, 1) << endl;
     cout << ">> Renyi-2 entropy: " << renyi(rhoA, 2) << endl;

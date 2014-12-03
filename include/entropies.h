@@ -42,13 +42,13 @@ namespace qpp
 * \return Shannon/von-Neumann entropy, with the logarithm in base 2
 */
 template<typename Derived>
-double shannon(const Eigen::MatrixBase <Derived>& A)
+double entropy(const Eigen::MatrixBase <Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
-        throw Exception("qpp::shannon()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::entropy()", Exception::Type::ZERO_SIZE);
 
     // input is a vector
     if (internal::_check_vector(rA))
@@ -65,7 +65,7 @@ double shannon(const Eigen::MatrixBase <Derived>& A)
 
     // check square matrix
     if (!internal::_check_square_mat(rA))
-        throw Exception("qpp::shannon()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::entropy()", Exception::Type::MATRIX_NOT_SQUARE);
 
     dmat ev = svals(rA); // get the singular values
     double result = 0;
@@ -95,7 +95,7 @@ double renyi(const Eigen::MatrixBase <Derived>& A, double alpha)
         throw Exception("qpp::renyi()", Exception::Type::OUT_OF_RANGE);
 
     if (alpha == 1) // Shannon/von Neumann
-        return shannon(rA);
+        return entropy(rA);
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
@@ -169,7 +169,7 @@ double tsallis(const Eigen::MatrixBase <Derived>& A, double alpha)
         throw Exception("qpp::tsallis()", Exception::Type::OUT_OF_RANGE);
 
     if (alpha == 1) // Shannon/von Neumann with base e logarithm
-        return shannon(rA) * std::log(2.);
+        return entropy(rA) * std::log(2.);
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
@@ -281,7 +281,7 @@ double qmutualinfo(const Eigen::MatrixBase <Derived>& A,
     cmat rhoB = ptrace(rA, subsysBbar, dims);
     cmat rhoAB = ptrace(rA, subsysABbar, dims);
 
-    return shannon(rhoA) + shannon(rhoB) - shannon(rhoAB);
+    return entropy(rhoA) + entropy(rhoB) - entropy(rhoAB);
 }
 
 /**

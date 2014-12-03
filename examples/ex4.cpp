@@ -33,4 +33,8 @@ int main()
     cmat rhoA = ptrace(rhoOut, {1});
     std::cout << "After partially tracing down the second subsystem:\n";
     std::cout << disp(rhoA) << std::endl;
+
+    // compute the vonNeumann entropy
+    double ent = entropy(rhoA);
+    std::cout << "Entropy: " << ent << std::endl;
 }

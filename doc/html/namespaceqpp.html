@@ -86,7 +86,7 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespaceqpp_1_1experimental"><td class="mdescLeft">&#160;</td><td class="mdescRight">Experimental/test functions/classes, do not use or modify. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceqpp_1_1internal"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html">internal</a></td></tr>
-<tr class="memdesc:namespaceqpp_1_1internal"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal implementation details, do not use/modify these functions/classes. <br /></td></tr>
+<tr class="memdesc:namespaceqpp_1_1internal"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal utility functions, do not use/modify. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -193,10 +193,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a6f899cb6e3ea3a13ffd3d8cf0a0bcc6b"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a6f899cb6e3ea3a13ffd3d8cf0a0bcc6b">concurrence</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</td></tr>
 <tr class="memdesc:a6f899cb6e3ea3a13ffd3d8cf0a0bcc6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wootters concurrence of the bi-partite qubit mixed state <em>A</em>.  <a href="#a6f899cb6e3ea3a13ffd3d8cf0a0bcc6b">More...</a><br /></td></tr>
 <tr class="separator:a6f899cb6e3ea3a13ffd3d8cf0a0bcc6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3642532b9a23be1c7f7cafa4629e6d5d"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:a3642532b9a23be1c7f7cafa4629e6d5d"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a3642532b9a23be1c7f7cafa4629e6d5d">shannon</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</td></tr>
-<tr class="memdesc:a3642532b9a23be1c7f7cafa4629e6d5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shannon/von-Neumann entropy of the probability distribution/density matrix <em>A</em>.  <a href="#a3642532b9a23be1c7f7cafa4629e6d5d">More...</a><br /></td></tr>
-<tr class="separator:a3642532b9a23be1c7f7cafa4629e6d5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a922127fa0dd6659113c8277de8731c41"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a922127fa0dd6659113c8277de8731c41"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a922127fa0dd6659113c8277de8731c41">entropy</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</td></tr>
+<tr class="memdesc:a922127fa0dd6659113c8277de8731c41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shannon/von-Neumann entropy of the probability distribution/density matrix <em>A</em>.  <a href="#a922127fa0dd6659113c8277de8731c41">More...</a><br /></td></tr>
+<tr class="separator:a922127fa0dd6659113c8277de8731c41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a991bc6df4280943452bfbedafa65b9f7"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a991bc6df4280943452bfbedafa65b9f7"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a991bc6df4280943452bfbedafa65b9f7">renyi</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, double alpha)</td></tr>
 <tr class="memdesc:a991bc6df4280943452bfbedafa65b9f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renyi- <img class="formulaInl" alt="$\alpha$" src="form_10.png"/> entropy of the probability distribution/density matrix <em>A</em>, for <img class="formulaInl" alt="$ \alpha\geq 0$" src="form_11.png"/>.  <a href="#a991bc6df4280943452bfbedafa65b9f7">More...</a><br /></td></tr>
@@ -2022,7 +2022,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Entanglement of the bi-partite pure state <em>A</em>. </p>
-<p>Defined as the von-Neumann entropy of the reduced density matrix of one of the subsystems </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a3642532b9a23be1c7f7cafa4629e6d5d" title="Shannon/von-Neumann entropy of the probability distribution/density matrix A. ">qpp::shannon()</a></dd></dl>
+<p>Defined as the von-Neumann entropy of the reduced density matrix of one of the subsystems </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a922127fa0dd6659113c8277de8731c41" title="Shannon/von-Neumann entropy of the probability distribution/density matrix A. ">qpp::entropy()</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -2031,6 +2031,33 @@ template&lt;typename Derived &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Entanglement, with the logarithm in base 2 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a922127fa0dd6659113c8277de8731c41"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double qpp::entropy </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
+          <td class="paramname"><em>A</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Shannon/von-Neumann entropy of the probability distribution/density matrix <em>A</em>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>Eigen expression, representing a probability distribution (real dynamic column vector) or a density matrix (complex dynamic matrix) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Shannon/von-Neumann entropy, with the logarithm in base 2 </dd></dl>
 
 </div>
 </div>
@@ -5398,33 +5425,6 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a3642532b9a23be1c7f7cafa4629e6d5d"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Derived &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">double qpp::shannon </td>
-          <td>(</td>
-          <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
-          <td class="paramname"><em>A</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Shannon/von-Neumann entropy of the probability distribution/density matrix <em>A</em>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">A</td><td>Eigen expression, representing a probability distribution (real dynamic column vector) or a density matrix (complex dynamic matrix) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Shannon/von-Neumann entropy, with the logarithm in base 2 </dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="a78be6e812878479d6acbd25cf5ae387c"></a>
 <div class="memitem">
 <div class="memproto">
@@ -6113,7 +6113,7 @@ template&lt;typename Derived &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Wed Dec 3 2014 00:15:36 for Quantum++ by
+    <li class="footer">Generated on Wed Dec 3 2014 17:47:02 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

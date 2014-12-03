@@ -173,7 +173,7 @@ dyn_col_vect<double> schmidtprob(const Eigen::MatrixBase <Derived>& A,
 *
 * Defined as the von-Neumann entropy of the reduced density matrix
 * of one of the subsystems
-* \see qpp::shannon()
+* \see qpp::entropy()
 *
 * \param A Eigen expression
 * \param dims Dimensions of the bi-partite system
@@ -199,7 +199,7 @@ double entanglement(const Eigen::MatrixBase <Derived>& A,
         throw Exception("qpp::entanglement()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
 
-    return shannon(schmidtprob(rA, dims));
+    return entropy(schmidtprob(rA, dims));
 }
 
 /**
