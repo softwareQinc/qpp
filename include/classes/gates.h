@@ -49,7 +49,7 @@ public:
     cmat T{cmat::Zero(2, 2)};           ///< T gate
 
     // two qubit gates
-    cmat CNOTab{cmat::Identity(4, 4)};  ///< Controlled-NOT control target gate
+    cmat CNOT{cmat::Identity(4, 4)};  ///< Controlled-NOT control target gate
     cmat CZ{cmat::Identity(4, 4)};      ///< Controlled-Phase gate
     cmat CNOTba{cmat::Zero(4, 4)};      ///< Controlled-NOT target control gate
     cmat SWAP{cmat::Identity(4, 4)};    ///< SWAP gate
@@ -70,7 +70,7 @@ private:
         Y << 0, -1_i, 1_i, 0;
         S << 1, 0, 0, 1_i;
         T << 1, 0, 0, std::exp(1_i * pi / 4.0);
-        CNOTab.block(2, 2, 2, 2) = X;
+        CNOT.block(2, 2, 2, 2) = X;
         CNOTba(0, 0) = 1;
         CNOTba(1, 3) = 1;
         CNOTba(2, 2) = 1;

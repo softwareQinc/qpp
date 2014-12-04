@@ -9,7 +9,7 @@ var classqpp_1_1_gates =
     [ "Xd", "classqpp_1_1_gates.html#aba257d3b2b6fd2e5abe1de147f26673a", null ],
     [ "Zd", "classqpp_1_1_gates.html#a41c298ccd28fd2e40f915237f5d68bf9", null ],
     [ "internal::Singleton< const Gates >", "classqpp_1_1_gates.html#aa1f4f01674cf15c93baf192cbaccd6de", null ],
-    [ "CNOTab", "classqpp_1_1_gates.html#ac23234412f4aa1068d774a6dcd9a34ec", null ],
+    [ "CNOT", "classqpp_1_1_gates.html#aa6ae25043f3a93030ff6aeadf997b98b", null ],
     [ "CNOTba", "classqpp_1_1_gates.html#a40a1062ffe2db2a59095be0c8236e761", null ],
     [ "CZ", "classqpp_1_1_gates.html#a4b721a4f790bb53616168a6c95ab6fd7", null ],
     [ "FRED", "classqpp_1_1_gates.html#a4c4ff34a747969a686a121cba16ece2d", null ],

@@ -173,10 +173,8 @@ void DENSE_CODING()
     ket psi_AB = apply(mes_AB, U_A, {0}, D);
 
     // Bob measures the joint system in the qudit Bell basis
-    // use swap to avoid temporaries until Eigen supports move semantics,
-    // although the compiler should use copy elision and
-    // remove the temporary even without using the swap trick
-    psi_AB.swap(apply(psi_AB, Bell_AB, {0, 1}, D));
+    // copy elision via return value optimization (RVO)
+    psi_AB = apply(psi_AB, Bell_AB, {0, 1}, D);
 
     auto measured = measure(psi_AB, gt.Id(D * D));
     cout << ">> Bob's measurement probabilities: ";
@@ -514,14 +512,11 @@ void GRAPHSTATES()
         {
             if (Gamma[i][j])
             {
-                // use swap to avoid temporaries
-                // until Eigen supports move semantics,
-                // although the compiler should use copy elision and
-                // remove the temporary even without using the swap trick
-                G0.swap(apply(G0, gt.CZ, {i, j}));
-                G1.swap(applyCTRL(G1, gt.Z, {i}, {j}));
-                rhoG0.swap(apply(rhoG0, gt.CZ, {i, j}));
-                rhoG1.swap(applyCTRL(rhoG1, gt.Z, {i}, {j}));
+                // copy elision via RVO
+                G0=apply(G0, gt.CZ, {i, j});
+                G1=applyCTRL(G1, gt.Z, {i}, {j});
+                rhoG0=apply(rhoG0, gt.CZ, {i, j});
+                rhoG1=applyCTRL(rhoG1, gt.Z, {i}, {j});
             }
         }
     // end construction

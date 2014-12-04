@@ -6,7 +6,7 @@ using namespace qpp;
 int main()
 {
     ket psi = mket({0, 0});
-    cmat U = gt.CNOTab * kron(gt.H, gt.Id2);
+    cmat U = gt.CNOT * kron(gt.H, gt.Id2);
     ket result = U * psi; // we have the Bell state (|00>+|11>)/sqrt(2)
 
     std::cout << "We just produced the Bell state:\n";

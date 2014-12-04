@@ -13,10 +13,10 @@ int main()
     std::cout << disp(result) << std::endl;
 
     psi = mket({1, 0}); // |10> state
-    U = gt.CNOTab; // Controlled-NOT
+    U = gt.CNOT; // Controlled-NOT
     result = U * psi;
 
-    std::cout << "The result of applying the gate CNOTab on |10> is:\n";
+    std::cout << "The result of applying the gate CNOT on |10> is:\n";
     std::cout << disp(result) << std::endl;
 
     U = randU(2);
