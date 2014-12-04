@@ -2,8 +2,9 @@
 
 Bugs may still be lingering around and I welcome any comments or bug reports.
 
-- For building instructions and additional information see the file `./README.md` or
-the main repository page at https://github.com/vsoftco/qpp
+- For building instructions and additional information 
+see the file `./README.md` or the main repository page 
+at https://github.com/vsoftco/qpp
 
 - A quick starting guide is provided in the file `./doc/quick.pdf` 
 
