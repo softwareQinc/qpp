@@ -20,7 +20,8 @@
  */
 
 // IMPORTANT: instantiation of global singletons
-// RandomDevices, Gates, States and Init
+// Init, Codes, Gates, States and RandomDevices
+//
 // Any additional singletons should be instantiated here
 // Includes all necessary headers (except "matlab.h")
 // ALWAYS include it in main.cpp
