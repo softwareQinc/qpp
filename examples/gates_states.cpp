@@ -1,5 +1,5 @@
 // Gates and states
-// Source: ./examples/ex2.cpp
+// Source: ./examples/gates_states.cpp
 #include <qpp.h>
 using namespace qpp;
 

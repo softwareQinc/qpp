@@ -1,0 +1,11 @@
+>>> Starting Quantum++...
+>>> Thu Dec  4 15:37:49 2014
+
+Permuting subsystems according to [1, 2, 3, 4, 5, 6, 7, 8, 0]
+It took 0.00008600 seconds to permute the subsytems.
+Inverse permutation: [8, 0, 1, 2, 3, 4, 5, 6, 7]
+It took 0.00009400 seconds to un-permute the subsystems.
+Norm difference: 0.00000000
+
+>>> Exiting Quantum++...
+>>> Thu Dec  4 15:37:49 2014

@@ -1,5 +1,5 @@
 // Quantum operations
-// Source: ./examples/ex4.cpp
+// Source: ./examples/quantum_operations.cpp
 #include <qpp.h>
 using namespace qpp;
 

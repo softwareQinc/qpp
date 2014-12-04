@@ -1,5 +1,5 @@
 // Measurements
-// Source: ./examples/ex3.cpp
+// Source: ./examples/measurements.cpp
 #include <qpp.h>
 using namespace qpp;
 

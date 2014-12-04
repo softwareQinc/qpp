@@ -1,5 +1,5 @@
 // Input/output
-// Source: ./examples/ex5.cpp
+// Source: ./examples/input_output.cpp
 #include <qpp.h>
 #include <MATLAB/matlab.h>
 using namespace qpp;
@@ -14,7 +14,7 @@ int main()
     std::cout << "Norm difference load/save: ";
     std::cout << norm(loaded_rho - rho) << std::endl;
 
-    // Interfacing with MATLAB
+    // interfacing with MATLAB
     saveMATLABmatrix(rho, "rho.mat", "rho", "w");
     loaded_rho = loadMATLABmatrix<cmat>("rho.mat", "rho");
     // display the difference in norm, should be 0

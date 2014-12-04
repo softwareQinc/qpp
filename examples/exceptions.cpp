@@ -1,5 +1,5 @@
 // Exceptions
-// Source: ./examples/ex6.cpp
+// Source: ./examples/exceptions.cpp
 #include <qpp.h>
 using namespace qpp;
 
