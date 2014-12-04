@@ -222,26 +222,26 @@ double qmutualinfo(const Eigen::MatrixBase <Derived>& A,
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
-        throw Exception("qpp::mutualinfo()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::qmutualinfo()", Exception::Type::ZERO_SIZE);
 
     // check that dims is a valid dimension vector
     if (!internal::_check_dims(dims))
-        throw Exception("qpp::mutualinfo()", Exception::Type::DIMS_INVALID);
+        throw Exception("qpp::qmutualinfo()", Exception::Type::DIMS_INVALID);
 
     // check square matrix
     if (!internal::_check_square_mat(rA))
-        throw Exception("qpp::mutualinfo()",
+        throw Exception("qpp::qmutualinfo()",
                 Exception::Type::MATRIX_NOT_SQUARE);
 
     // check that dims match the dimension of A
     if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::mutualinfo()",
+        throw Exception("qpp::qmutualinfo()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
 
     // check that subsys are valid
     if (!internal::_check_subsys_match_dims(subsysA, dims)
             || !internal::_check_subsys_match_dims(subsysB, dims))
-        throw Exception("qpp::mutualinfo()",
+        throw Exception("qpp::qmutualinfo()",
                 Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     // The full system indexes {0,1,...,n-1}
@@ -305,7 +305,7 @@ double qmutualinfo(const Eigen::MatrixBase <Derived>& A,
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
-        throw Exception("qpp::mutualinfo()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::qmutualinfo()", Exception::Type::ZERO_SIZE);
 
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
