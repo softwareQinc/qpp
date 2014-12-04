@@ -1,7 +1,0 @@
->>> Starting Quantum++...
->>> Thu Dec  4 15:37:49 2014
-
-Hello Quantum++!
-
->>> Exiting Quantum++...
->>> Thu Dec  4 15:37:49 2014
