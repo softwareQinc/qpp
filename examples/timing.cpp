@@ -11,7 +11,7 @@ int main()
     ket c0 = codes.codeword(Codes::Type::NINE_QUBIT_SHOR, 0);
 
     Timer t; // declare and start a timer
-    std::vector<idx> perm {1, 2, 3, 4, 5, 6, 7, 8, 0}; // declare a permutation
+    std::vector<idx> perm = randperm(9); // declare a random permutation
     ket c0perm = syspermute(c0, perm); // permute the system
     t.toc(); // stops the timer
     std::cout << "Permuting subsystems according to " << disp(perm, ", ");
