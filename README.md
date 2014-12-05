@@ -11,7 +11,7 @@ For additional [Eigen 3](http://eigen.tuxfamily.org) documentation see
 
 Copyright (c) 2013 - 2014 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
 
-If you are interesting in contributing please let me know. 
+If you are interesting in contributing, please let me know. 
 There is still work left to be done, and I can provide you with more details 
 about what I have in mind. To contribute, you need to have a decent knowledge 
 of C++ (preferably C++11), including templates and the standard library, 
@@ -92,10 +92,10 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 ### Building using `cmake`
 
-The current version of the repository has a `CMakeLists.txt` configuration file 
-for building examples using `cmake` (`cmake` needs to be installed). To build an 
-example using `cmake`, I recommend an out-of-source build, 
- i.e., from the root of the project (where `./include` is located), type
+The current version of the repository has a `CMakeLists.txt` configuration file
+for building examples using `cmake` (`cmake` needs to be installed). 
+To build an example using `cmake`, I recommend an out-of-source build, i.e., 
+from the root of the project (where `./include` is located), type
 
     mkdir ./build
     cd ./build
