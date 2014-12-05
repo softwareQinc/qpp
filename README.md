@@ -1,8 +1,11 @@
 # Quantum++ 
 
-Quantum++ is a template-based header-only C++11 quantum computing library, 
-developed using [Eigen 3](http://eigen.tuxfamily.org) linear algebra library, 
-and if available, the [OpenMP](http://openmp.org/) multi-processing library. 
+Quantum++ is a C++11 general purpose quantum computing library, composed 
+solely of header files. It uses the [Eigen 3](http://eigen.tuxfamily.org) 
+linear algebra library and, if available, the [OpenMP](http://openmp.org/) 
+multi-processing library. For additional Eigen 3 documentation see 
+<http://eigen.tuxfamily.org/dox/>. For a simple Eigen 3 quick ASCII reference 
+see <http://eigen.tuxfamily.org/dox/AsciiQuickReference.txt.>
 Copyright (c) 2013 - 2014 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
 
 If you are interesting in contributing please let me know. 
