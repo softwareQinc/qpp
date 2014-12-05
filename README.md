@@ -1,15 +1,15 @@
 # Quantum++ 
 
 Quantum++ is a template-based header-only C++11 quantum computing library, 
-developed using Eigen~3 linear algebra library <http://eigen.tuxfamily.org>.
+developed using Eigen 3 linear algebra library <http://eigen.tuxfamily.org>.
 Copyright (c) 2013 - 2014 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
 
-If anyone else is interesting in contributing please let me known. 
+If you are interesting in contributing please let me know. 
 There is still work left to be done, and I can provide you with more details 
 about what I have in mind. To contribute, you need to have a decent knowledge 
 of C++ (preferably C++11), including templates and STL, 
 a basic knowledge of quantum computing and linear algebra, 
-and some working experience with Eigen~3.
+and some working experience with Eigen 3.
 
 The ultimate goal of this project is to build a universal quantum simulator, 
 applicable to a vast majority of problems in quantum information/computation.
@@ -36,7 +36,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 ### Configuration:
 
 - Compiler: `g++` >= 4.8 (for good C++11 support)
-- Eigen~3 library located in `$HOME/eigen`
+- Eigen 3 library located in `$HOME/eigen`
 - Quantum++ library located in `$HOME/qpp`
 - MATLAB compiler include header files:
 `/Applications/MATLAB_R2014b.app/extern/include`
@@ -113,7 +113,7 @@ Or, to disable OpenMP support (enabled by default), type
     cmake -DWITH_OPENMP=OFF ..
     make
 
-To change the name of the example file, the location of `Eigen~3` 
+To change the name of the example file, the location of the Eigen 3
 library or the location of MATLAB installation, 
 edit the `CMakeLists.txt` file. See also `CMakeLists.txt` 
 for additional options. 
