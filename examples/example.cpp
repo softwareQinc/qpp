@@ -174,7 +174,7 @@ void DENSE_CODING()
 
     // Bob measures the joint system in the qudit Bell basis
     // copy elision via return value optimization (RVO)
-    psi_AB = apply(psi_AB, Bell_AB, {0, 1}, D);
+    psi_AB.swap(apply(psi_AB, Bell_AB, {0, 1}, D));
 
     auto measured = measure(psi_AB, gt.Id(D * D));
     cout << ">> Bob's measurement probabilities: ";
