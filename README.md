@@ -1,8 +1,9 @@
 # Quantum++ 
 
 Quantum++ is a template-based header-only C++11 quantum computing library, 
-developed using [Eigen 3](http://eigen.tuxfamily.org) linear algebra library.
-Copyright (c) 2013 - 2014 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
+developed using [Eigen 3](http://eigen.tuxfamily.org) linear algebra library. 
+If available, Quantum++ uses the [OpenMP](http://openmp.org/) multi-processing
+library. Copyright (c) 2013 - 2014 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
 
 If you are interesting in contributing please let me know. 
 There is still work left to be done, and I can provide you with more details 
