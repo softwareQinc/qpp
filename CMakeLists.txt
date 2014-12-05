@@ -8,7 +8,7 @@ set(SOURCE_FILES
 # modify as needed
 set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pedantic -Wall -Wextra -Weffc++")
-set(EIGEN "$ENV{HOME}/eigen_3.2.2")
+set(EIGEN "$ENV{HOME}/eigen")
 
 option(WITH_OPENMP "OpenMP support" ON)
 if(${WITH_OPENMP})

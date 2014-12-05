@@ -173,8 +173,7 @@ void DENSE_CODING()
     ket psi_AB = apply(mes_AB, U_A, {0}, D);
 
     // Bob measures the joint system in the qudit Bell basis
-    // copy elision via return value optimization (RVO)
-    psi_AB.swap(apply(psi_AB, Bell_AB, {0, 1}, D));
+    psi_AB = apply(psi_AB, Bell_AB, {0, 1}, D);
 
     auto measured = measure(psi_AB, gt.Id(D * D));
     cout << ">> Bob's measurement probabilities: ";
@@ -512,7 +511,6 @@ void GRAPHSTATES()
         {
             if (Gamma[i][j])
             {
-                // copy elision via RVO
                 G0=apply(G0, gt.CZ, {i, j});
                 G1=applyCTRL(G1, gt.Z, {i}, {j});
                 rhoG0=apply(rhoG0, gt.CZ, {i, j});
