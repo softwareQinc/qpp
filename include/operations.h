@@ -27,6 +27,11 @@
 #ifndef OPERATIONS_H_
 #define OPERATIONS_H_
 
+// disable g++ bogus warning unused-but-set in lambda functions
+#if (__GNUC__)
+    #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+#endif
+
 namespace qpp
 {
 /**
