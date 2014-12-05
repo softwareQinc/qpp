@@ -113,7 +113,7 @@ type from the root of the project
     cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB=ON ..
     make
     
-Or, to disable OpenMP support (enabled by default), type
+Or, to disable [OpenMP](http://openmp.org/) support (enabled by default), type
    
     cd ./build
     rm -rf *
@@ -132,9 +132,9 @@ before a fresh build!
 
 - The C++ compiler must be C++11 compliant.
 
-- If your compiler does not support OpenMP 
-(as it is the case e.g with `clang++`), disable OpenMP it in your build, 
-as otherwise the linker may not find the `gomp` library.
+- If your compiler does not support [OpenMP](http://openmp.org/) 
+(as it is the case e.g with `clang++`), disable [OpenMP](http://openmp.org/)
+in your build, as otherwise the linker may not find the `gomp` library.
 
 - If you run the program on OS X with MATLAB support, make sure that 
 the environment variable `DYLD_LIBRARY_PATH` is set to point to the MATLAB 
