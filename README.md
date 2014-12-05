@@ -7,9 +7,9 @@ Copyright (c) 2013 - 2014 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
 If you are interesting in contributing please let me know. 
 There is still work left to be done, and I can provide you with more details 
 about what I have in mind. To contribute, you need to have a decent knowledge 
-of C++ (preferably C++11), including templates and STL, 
+of C++ (preferably C++11), including templates and the standard library, 
 a basic knowledge of quantum computing and linear algebra, 
-and some working experience with Eigen 3.
+and some working experience with [Eigen 3](http://eigen.tuxfamily.org).
 
 The ultimate goal of this project is to build a universal quantum simulator, 
 applicable to a vast majority of problems in quantum information/computation.
@@ -36,7 +36,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 ### Configuration:
 
 - Compiler: `g++` >= 4.8 (for good C++11 support)
-- Eigen 3 library located in `$HOME/eigen`
+- [Eigen 3](http://eigen.tuxfamily.org) library located in `$HOME/eigen`
 - Quantum++ library located in `$HOME/qpp`
 - MATLAB compiler include header files:
 `/Applications/MATLAB_R2014b.app/extern/include`
