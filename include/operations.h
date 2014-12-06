@@ -29,7 +29,7 @@
 
 // silence g++ bogus warning -Wunused-but-set-variable in lambda functions
 #if (__GNUC__)
-    #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 #endif
 
 namespace qpp
@@ -1279,28 +1279,6 @@ dyn_mat<typename Derived::Scalar> syspermute(
 
     dyn_mat<typename Derived::Scalar> result;
 
-    auto worker =
-            [](idx i, idx numdims, const idx* Cdims,
-                    const idx* Cperm)
-            {
-                // use static allocation for speed,
-                // double the size for matrices reshaped as vectors
-                idx midx[2 * maxn];
-                idx midxtmp[2 * maxn];
-                idx permdims[2 * maxn];
-
-                /* compute the multi-index */
-                internal::_n2multiidx(i, numdims, Cdims, midx);
-
-                for (idx k = 0; k < numdims; ++k)
-                {
-                    permdims[k] = Cdims[Cperm[k]]; // permuted dimensions
-                    midxtmp[k] = midx[Cperm[k]];// permuted multi-indexes
-                }
-
-                return internal::_multiidx2n(midxtmp, numdims, permdims);
-            };
-
     // check column vector
     if (internal::_check_col_vector(rA)) // we have a column vector
     {
@@ -1320,9 +1298,29 @@ dyn_mat<typename Derived::Scalar> syspermute(
         }
         result.resize(D, 1);
 
+        auto worker = [&Cdims, &Cperm, numdims](idx i)
+        {
+            // use static allocation for speed,
+            // double the size for matrices reshaped as vectors
+            idx midx[maxn];
+            idx midxtmp[maxn];
+            idx permdims[maxn];
+
+            /* compute the multi-index */
+            internal::_n2multiidx(i, numdims, Cdims, midx);
+
+            for (idx k = 0; k < numdims; ++k)
+            {
+                permdims[k] = Cdims[Cperm[k]]; // permuted dimensions
+                midxtmp[k] = midx[Cperm[k]];// permuted multi-indexes
+            }
+
+            return internal::_multiidx2n(midxtmp, numdims, permdims);
+        };
+
 #pragma omp parallel for
         for (idx i = 0; i < D; ++i)
-            result(worker(i, numdims, Cdims, Cperm)) = rA(i);
+            result(worker(i)) = rA(i);
 
         return result;
     }
@@ -1347,12 +1345,32 @@ dyn_mat<typename Derived::Scalar> syspermute(
         result.resize(D * D, 1);
         // map A to a column vector
         dyn_mat<typename Derived::Scalar> vectA = Eigen::Map<
-                dyn_mat<typename Derived::Scalar>>(
+                dyn_mat<typename Derived::Scalar >>(
                 const_cast<typename Derived::Scalar*>(rA.data()), D * D, 1);
+
+        auto worker = [&Cdims, &Cperm, numdims](idx i)
+        {
+            // use static allocation for speed,
+            // double the size for matrices reshaped as vectors
+            idx midx[2 * maxn];
+            idx midxtmp[2 * maxn];
+            idx permdims[2 * maxn];
+
+            /* compute the multi-index */
+            internal::_n2multiidx(i, 2 * numdims, Cdims, midx);
+
+            for (idx k = 0; k < 2 * numdims; ++k)
+            {
+                permdims[k] = Cdims[Cperm[k]]; // permuted dimensions
+                midxtmp[k] = midx[Cperm[k]];// permuted multi-indexes
+            }
+
+            return internal::_multiidx2n(midxtmp, 2 * numdims, permdims);
+        };
 
 #pragma omp parallel for
         for (idx i = 0; i < D * D; ++i)
-            result(worker(i, 2 * numdims, Cdims, Cperm)) = rA(i);
+            result(worker(i)) = rA(i);
 
         return reshape(result, D, D);
     }
