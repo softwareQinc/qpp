@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// silence g++ bogus warning -Wunused-but-set-variable in lambda functions</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#if (__GNUC__)</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">    #pragma GCC diagnostic ignored &quot;-Wunused-but-set-variable&quot;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wunused-but-set-variable&quot;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span>qpp</div>
@@ -1138,112 +1138,130 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01279"></a><span class="lineno"> 1279</span>&#160;</div>
 <div class="line"><a name="l01280"></a><span class="lineno"> 1280</span>&#160;    <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a> result;</div>
 <div class="line"><a name="l01281"></a><span class="lineno"> 1281</span>&#160;</div>
-<div class="line"><a name="l01282"></a><span class="lineno"> 1282</span>&#160;    <span class="keyword">auto</span> worker =</div>
-<div class="line"><a name="l01283"></a><span class="lineno"> 1283</span>&#160;            [](<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> numdims, <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>* Cdims,</div>
-<div class="line"><a name="l01284"></a><span class="lineno"> 1284</span>&#160;                    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>* Cperm)</div>
-<div class="line"><a name="l01285"></a><span class="lineno"> 1285</span>&#160;            {</div>
-<div class="line"><a name="l01286"></a><span class="lineno"> 1286</span>&#160;                <span class="comment">// use static allocation for speed,</span></div>
-<div class="line"><a name="l01287"></a><span class="lineno"> 1287</span>&#160;                <span class="comment">// double the size for matrices reshaped as vectors</span></div>
-<div class="line"><a name="l01288"></a><span class="lineno"> 1288</span>&#160;                <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> midx[2 * <a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
-<div class="line"><a name="l01289"></a><span class="lineno"> 1289</span>&#160;                <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> midxtmp[2 * <a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
-<div class="line"><a name="l01290"></a><span class="lineno"> 1290</span>&#160;                <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> permdims[2 * <a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
-<div class="line"><a name="l01291"></a><span class="lineno"> 1291</span>&#160;</div>
-<div class="line"><a name="l01292"></a><span class="lineno"> 1292</span>&#160;                <span class="comment">/* compute the multi-index */</span></div>
-<div class="line"><a name="l01293"></a><span class="lineno"> 1293</span>&#160;                <a class="code" href="namespaceqpp_1_1internal.html#a3e4b3da5275b8fd5c1dafb0281eb6505">internal::_n2multiidx</a>(i, numdims, Cdims, midx);</div>
-<div class="line"><a name="l01294"></a><span class="lineno"> 1294</span>&#160;</div>
-<div class="line"><a name="l01295"></a><span class="lineno"> 1295</span>&#160;                <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> k = 0; k &lt; numdims; ++k)</div>
-<div class="line"><a name="l01296"></a><span class="lineno"> 1296</span>&#160;                {</div>
-<div class="line"><a name="l01297"></a><span class="lineno"> 1297</span>&#160;                    permdims[k] = Cdims[Cperm[k]]; <span class="comment">// permuted dimensions</span></div>
-<div class="line"><a name="l01298"></a><span class="lineno"> 1298</span>&#160;                    midxtmp[k] = midx[Cperm[k]];<span class="comment">// permuted multi-indexes</span></div>
-<div class="line"><a name="l01299"></a><span class="lineno"> 1299</span>&#160;                }</div>
+<div class="line"><a name="l01282"></a><span class="lineno"> 1282</span>&#160;    <span class="comment">// check column vector</span></div>
+<div class="line"><a name="l01283"></a><span class="lineno"> 1283</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespaceqpp_1_1internal.html#add886736621946a87cbc404ad955a605">internal::_check_col_vector</a>(rA)) <span class="comment">// we have a column vector</span></div>
+<div class="line"><a name="l01284"></a><span class="lineno"> 1284</span>&#160;    {</div>
+<div class="line"><a name="l01285"></a><span class="lineno"> 1285</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Cdims[<a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
+<div class="line"><a name="l01286"></a><span class="lineno"> 1286</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Cperm[<a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
+<div class="line"><a name="l01287"></a><span class="lineno"> 1287</span>&#160;</div>
+<div class="line"><a name="l01288"></a><span class="lineno"> 1288</span>&#160;        <span class="comment">// check that dims match the dimension of rA</span></div>
+<div class="line"><a name="l01289"></a><span class="lineno"> 1289</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#ac65903c07823d69fb7a75e2b215ed0a7">internal::_check_dims_match_cvect</a>(dims, rA))</div>
+<div class="line"><a name="l01290"></a><span class="lineno"> 1290</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::syspermute()&quot;</span>,</div>
+<div class="line"><a name="l01291"></a><span class="lineno"> 1291</span>&#160;                    <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca8e50b38bf4bfc1c10f6d65283db18c47">Exception::Type::DIMS_MISMATCH_CVECTOR</a>);</div>
+<div class="line"><a name="l01292"></a><span class="lineno"> 1292</span>&#160;</div>
+<div class="line"><a name="l01293"></a><span class="lineno"> 1293</span>&#160;        <span class="comment">// copy dims in Cdims and perm in Cperm</span></div>
+<div class="line"><a name="l01294"></a><span class="lineno"> 1294</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; numdims; ++i)</div>
+<div class="line"><a name="l01295"></a><span class="lineno"> 1295</span>&#160;        {</div>
+<div class="line"><a name="l01296"></a><span class="lineno"> 1296</span>&#160;            Cdims[i] = dims[i];</div>
+<div class="line"><a name="l01297"></a><span class="lineno"> 1297</span>&#160;            Cperm[i] = perm[i];</div>
+<div class="line"><a name="l01298"></a><span class="lineno"> 1298</span>&#160;        }</div>
+<div class="line"><a name="l01299"></a><span class="lineno"> 1299</span>&#160;        result.resize(D, 1);</div>
 <div class="line"><a name="l01300"></a><span class="lineno"> 1300</span>&#160;</div>
-<div class="line"><a name="l01301"></a><span class="lineno"> 1301</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespaceqpp_1_1internal.html#ac25d035c37ff112e1192e213444f4fc2">internal::_multiidx2n</a>(midxtmp, numdims, permdims);</div>
-<div class="line"><a name="l01302"></a><span class="lineno"> 1302</span>&#160;            };</div>
-<div class="line"><a name="l01303"></a><span class="lineno"> 1303</span>&#160;</div>
-<div class="line"><a name="l01304"></a><span class="lineno"> 1304</span>&#160;    <span class="comment">// check column vector</span></div>
-<div class="line"><a name="l01305"></a><span class="lineno"> 1305</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespaceqpp_1_1internal.html#add886736621946a87cbc404ad955a605">internal::_check_col_vector</a>(rA)) <span class="comment">// we have a column vector</span></div>
-<div class="line"><a name="l01306"></a><span class="lineno"> 1306</span>&#160;    {</div>
-<div class="line"><a name="l01307"></a><span class="lineno"> 1307</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Cdims[<a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
-<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Cperm[<a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
-<div class="line"><a name="l01309"></a><span class="lineno"> 1309</span>&#160;</div>
-<div class="line"><a name="l01310"></a><span class="lineno"> 1310</span>&#160;        <span class="comment">// check that dims match the dimension of rA</span></div>
-<div class="line"><a name="l01311"></a><span class="lineno"> 1311</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#ac65903c07823d69fb7a75e2b215ed0a7">internal::_check_dims_match_cvect</a>(dims, rA))</div>
-<div class="line"><a name="l01312"></a><span class="lineno"> 1312</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::syspermute()&quot;</span>,</div>
-<div class="line"><a name="l01313"></a><span class="lineno"> 1313</span>&#160;                    <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca8e50b38bf4bfc1c10f6d65283db18c47">Exception::Type::DIMS_MISMATCH_CVECTOR</a>);</div>
-<div class="line"><a name="l01314"></a><span class="lineno"> 1314</span>&#160;</div>
-<div class="line"><a name="l01315"></a><span class="lineno"> 1315</span>&#160;        <span class="comment">// copy dims in Cdims and perm in Cperm</span></div>
-<div class="line"><a name="l01316"></a><span class="lineno"> 1316</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; numdims; ++i)</div>
-<div class="line"><a name="l01317"></a><span class="lineno"> 1317</span>&#160;        {</div>
-<div class="line"><a name="l01318"></a><span class="lineno"> 1318</span>&#160;            Cdims[i] = dims[i];</div>
-<div class="line"><a name="l01319"></a><span class="lineno"> 1319</span>&#160;            Cperm[i] = perm[i];</div>
-<div class="line"><a name="l01320"></a><span class="lineno"> 1320</span>&#160;        }</div>
-<div class="line"><a name="l01321"></a><span class="lineno"> 1321</span>&#160;        result.resize(D, 1);</div>
-<div class="line"><a name="l01322"></a><span class="lineno"> 1322</span>&#160;</div>
-<div class="line"><a name="l01323"></a><span class="lineno"> 1323</span>&#160;<span class="preprocessor">#pragma omp parallel for</span></div>
-<div class="line"><a name="l01324"></a><span class="lineno"> 1324</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; D; ++i)</div>
-<div class="line"><a name="l01325"></a><span class="lineno"> 1325</span>&#160;            result(worker(i, numdims, Cdims, Cperm)) = rA(i);</div>
-<div class="line"><a name="l01326"></a><span class="lineno"> 1326</span>&#160;</div>
-<div class="line"><a name="l01327"></a><span class="lineno"> 1327</span>&#160;        <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l01328"></a><span class="lineno"> 1328</span>&#160;    }</div>
-<div class="line"><a name="l01329"></a><span class="lineno"> 1329</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">internal::_check_square_mat</a>(rA)) <span class="comment">// we have a square matrix</span></div>
-<div class="line"><a name="l01330"></a><span class="lineno"> 1330</span>&#160;    {</div>
-<div class="line"><a name="l01331"></a><span class="lineno"> 1331</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Cdims[2 * <a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
-<div class="line"><a name="l01332"></a><span class="lineno"> 1332</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Cperm[2 * <a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
-<div class="line"><a name="l01333"></a><span class="lineno"> 1333</span>&#160;</div>
-<div class="line"><a name="l01334"></a><span class="lineno"> 1334</span>&#160;        <span class="comment">// check that dims match the dimension of rA</span></div>
-<div class="line"><a name="l01335"></a><span class="lineno"> 1335</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a91aa370280d653933744a64a55cd0ff3">internal::_check_dims_match_mat</a>(dims, rA))</div>
-<div class="line"><a name="l01336"></a><span class="lineno"> 1336</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::syspermute()&quot;</span>,</div>
-<div class="line"><a name="l01337"></a><span class="lineno"> 1337</span>&#160;                    <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d">Exception::Type::DIMS_MISMATCH_MATRIX</a>);</div>
-<div class="line"><a name="l01338"></a><span class="lineno"> 1338</span>&#160;</div>
-<div class="line"><a name="l01339"></a><span class="lineno"> 1339</span>&#160;        <span class="comment">// copy dims in Cdims and perm in Cperm</span></div>
-<div class="line"><a name="l01340"></a><span class="lineno"> 1340</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; numdims; ++i)</div>
-<div class="line"><a name="l01341"></a><span class="lineno"> 1341</span>&#160;        {</div>
-<div class="line"><a name="l01342"></a><span class="lineno"> 1342</span>&#160;            Cdims[i] = dims[i];</div>
-<div class="line"><a name="l01343"></a><span class="lineno"> 1343</span>&#160;            Cdims[i + numdims] = dims[i];</div>
-<div class="line"><a name="l01344"></a><span class="lineno"> 1344</span>&#160;            Cperm[i] = perm[i];</div>
-<div class="line"><a name="l01345"></a><span class="lineno"> 1345</span>&#160;            Cperm[i + numdims] = perm[i] + numdims;</div>
-<div class="line"><a name="l01346"></a><span class="lineno"> 1346</span>&#160;        }</div>
-<div class="line"><a name="l01347"></a><span class="lineno"> 1347</span>&#160;        result.resize(D * D, 1);</div>
-<div class="line"><a name="l01348"></a><span class="lineno"> 1348</span>&#160;        <span class="comment">// map A to a column vector</span></div>
-<div class="line"><a name="l01349"></a><span class="lineno"> 1349</span>&#160;        <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a> vectA = Eigen::Map&lt;</div>
-<div class="line"><a name="l01350"></a><span class="lineno"> 1350</span>&#160;                <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a>&gt;(</div>
-<div class="line"><a name="l01351"></a><span class="lineno"> 1351</span>&#160;                <span class="keyword">const_cast&lt;</span>typename Derived::Scalar*<span class="keyword">&gt;</span>(rA.data()), D * D, 1);</div>
-<div class="line"><a name="l01352"></a><span class="lineno"> 1352</span>&#160;</div>
-<div class="line"><a name="l01353"></a><span class="lineno"> 1353</span>&#160;<span class="preprocessor">#pragma omp parallel for</span></div>
-<div class="line"><a name="l01354"></a><span class="lineno"> 1354</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; D * D; ++i)</div>
-<div class="line"><a name="l01355"></a><span class="lineno"> 1355</span>&#160;            result(worker(i, 2 * numdims, Cdims, Cperm)) = rA(i);</div>
-<div class="line"><a name="l01356"></a><span class="lineno"> 1356</span>&#160;</div>
-<div class="line"><a name="l01357"></a><span class="lineno"> 1357</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#afa33bacb26cad466156dc3f8f3980da7">reshape</a>(result, D, D);</div>
-<div class="line"><a name="l01358"></a><span class="lineno"> 1358</span>&#160;    }</div>
-<div class="line"><a name="l01359"></a><span class="lineno"> 1359</span>&#160;</div>
-<div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::syspermute()&quot;</span>,</div>
-<div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160;                <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7caf6ba7b51754d252579c9daa43dbbfd68">Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR</a>);</div>
-<div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160;}</div>
-<div class="line"><a name="l01364"></a><span class="lineno"> 1364</span>&#160;</div>
-<div class="line"><a name="l01377"></a><span class="lineno"> 1377</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l01378"></a><span class="lineno"><a class="line" href="namespaceqpp.html#af9de352ae53eb3ad8141721b487869b0"> 1378</a></span>&#160;<a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a> <a class="code" href="namespaceqpp.html#a4cf8dec8978b57214c806094f69e05ca">syspermute</a>(</div>
-<div class="line"><a name="l01379"></a><span class="lineno"> 1379</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase &lt;Derived&gt;&amp; A,</div>
-<div class="line"><a name="l01380"></a><span class="lineno"> 1380</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; perm,</div>
-<div class="line"><a name="l01381"></a><span class="lineno"> 1381</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
-<div class="line"><a name="l01382"></a><span class="lineno"> 1382</span>&#160;{</div>
-<div class="line"><a name="l01383"></a><span class="lineno"> 1383</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
-<div class="line"><a name="l01384"></a><span class="lineno"> 1384</span>&#160;</div>
-<div class="line"><a name="l01385"></a><span class="lineno"> 1385</span>&#160;    <span class="comment">// check zero size</span></div>
-<div class="line"><a name="l01386"></a><span class="lineno"> 1386</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(rA))</div>
-<div class="line"><a name="l01387"></a><span class="lineno"> 1387</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::syspermute()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
-<div class="line"><a name="l01388"></a><span class="lineno"> 1388</span>&#160;</div>
-<div class="line"><a name="l01389"></a><span class="lineno"> 1389</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n =</div>
-<div class="line"><a name="l01390"></a><span class="lineno"> 1390</span>&#160;            <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(rA.rows()) /</div>
-<div class="line"><a name="l01391"></a><span class="lineno"> 1391</span>&#160;                    std::log2(d)));</div>
-<div class="line"><a name="l01392"></a><span class="lineno"> 1392</span>&#160;    std::vector &lt;idx&gt; dims(n, d); <span class="comment">// local dimensions vector</span></div>
-<div class="line"><a name="l01393"></a><span class="lineno"> 1393</span>&#160;</div>
-<div class="line"><a name="l01394"></a><span class="lineno"> 1394</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a4cf8dec8978b57214c806094f69e05ca">syspermute</a>(rA, perm, dims);</div>
-<div class="line"><a name="l01395"></a><span class="lineno"> 1395</span>&#160;}</div>
-<div class="line"><a name="l01396"></a><span class="lineno"> 1396</span>&#160;</div>
-<div class="line"><a name="l01397"></a><span class="lineno"> 1397</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
-<div class="line"><a name="l01398"></a><span class="lineno"> 1398</span>&#160;</div>
-<div class="line"><a name="l01399"></a><span class="lineno"> 1399</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* OPERATIONS_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l01301"></a><span class="lineno"> 1301</span>&#160;        <span class="keyword">auto</span> worker = [&amp;Cdims, &amp;Cperm, numdims](<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i)</div>
+<div class="line"><a name="l01302"></a><span class="lineno"> 1302</span>&#160;        {</div>
+<div class="line"><a name="l01303"></a><span class="lineno"> 1303</span>&#160;            <span class="comment">// use static allocation for speed,</span></div>
+<div class="line"><a name="l01304"></a><span class="lineno"> 1304</span>&#160;            <span class="comment">// double the size for matrices reshaped as vectors</span></div>
+<div class="line"><a name="l01305"></a><span class="lineno"> 1305</span>&#160;            <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> midx[<a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
+<div class="line"><a name="l01306"></a><span class="lineno"> 1306</span>&#160;            <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> midxtmp[<a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
+<div class="line"><a name="l01307"></a><span class="lineno"> 1307</span>&#160;            <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> permdims[<a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
+<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;</div>
+<div class="line"><a name="l01309"></a><span class="lineno"> 1309</span>&#160;            <span class="comment">/* compute the multi-index */</span></div>
+<div class="line"><a name="l01310"></a><span class="lineno"> 1310</span>&#160;            <a class="code" href="namespaceqpp_1_1internal.html#a3e4b3da5275b8fd5c1dafb0281eb6505">internal::_n2multiidx</a>(i, numdims, Cdims, midx);</div>
+<div class="line"><a name="l01311"></a><span class="lineno"> 1311</span>&#160;</div>
+<div class="line"><a name="l01312"></a><span class="lineno"> 1312</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> k = 0; k &lt; numdims; ++k)</div>
+<div class="line"><a name="l01313"></a><span class="lineno"> 1313</span>&#160;            {</div>
+<div class="line"><a name="l01314"></a><span class="lineno"> 1314</span>&#160;                permdims[k] = Cdims[Cperm[k]]; <span class="comment">// permuted dimensions</span></div>
+<div class="line"><a name="l01315"></a><span class="lineno"> 1315</span>&#160;                midxtmp[k] = midx[Cperm[k]];<span class="comment">// permuted multi-indexes</span></div>
+<div class="line"><a name="l01316"></a><span class="lineno"> 1316</span>&#160;            }</div>
+<div class="line"><a name="l01317"></a><span class="lineno"> 1317</span>&#160;</div>
+<div class="line"><a name="l01318"></a><span class="lineno"> 1318</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespaceqpp_1_1internal.html#ac25d035c37ff112e1192e213444f4fc2">internal::_multiidx2n</a>(midxtmp, numdims, permdims);</div>
+<div class="line"><a name="l01319"></a><span class="lineno"> 1319</span>&#160;        };</div>
+<div class="line"><a name="l01320"></a><span class="lineno"> 1320</span>&#160;</div>
+<div class="line"><a name="l01321"></a><span class="lineno"> 1321</span>&#160;<span class="preprocessor">#pragma omp parallel for</span></div>
+<div class="line"><a name="l01322"></a><span class="lineno"> 1322</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; D; ++i)</div>
+<div class="line"><a name="l01323"></a><span class="lineno"> 1323</span>&#160;            result(worker(i)) = rA(i);</div>
+<div class="line"><a name="l01324"></a><span class="lineno"> 1324</span>&#160;</div>
+<div class="line"><a name="l01325"></a><span class="lineno"> 1325</span>&#160;        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l01326"></a><span class="lineno"> 1326</span>&#160;    }</div>
+<div class="line"><a name="l01327"></a><span class="lineno"> 1327</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">internal::_check_square_mat</a>(rA)) <span class="comment">// we have a square matrix</span></div>
+<div class="line"><a name="l01328"></a><span class="lineno"> 1328</span>&#160;    {</div>
+<div class="line"><a name="l01329"></a><span class="lineno"> 1329</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Cdims[2 * <a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
+<div class="line"><a name="l01330"></a><span class="lineno"> 1330</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Cperm[2 * <a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
+<div class="line"><a name="l01331"></a><span class="lineno"> 1331</span>&#160;</div>
+<div class="line"><a name="l01332"></a><span class="lineno"> 1332</span>&#160;        <span class="comment">// check that dims match the dimension of rA</span></div>
+<div class="line"><a name="l01333"></a><span class="lineno"> 1333</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a91aa370280d653933744a64a55cd0ff3">internal::_check_dims_match_mat</a>(dims, rA))</div>
+<div class="line"><a name="l01334"></a><span class="lineno"> 1334</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::syspermute()&quot;</span>,</div>
+<div class="line"><a name="l01335"></a><span class="lineno"> 1335</span>&#160;                    <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d">Exception::Type::DIMS_MISMATCH_MATRIX</a>);</div>
+<div class="line"><a name="l01336"></a><span class="lineno"> 1336</span>&#160;</div>
+<div class="line"><a name="l01337"></a><span class="lineno"> 1337</span>&#160;        <span class="comment">// copy dims in Cdims and perm in Cperm</span></div>
+<div class="line"><a name="l01338"></a><span class="lineno"> 1338</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; numdims; ++i)</div>
+<div class="line"><a name="l01339"></a><span class="lineno"> 1339</span>&#160;        {</div>
+<div class="line"><a name="l01340"></a><span class="lineno"> 1340</span>&#160;            Cdims[i] = dims[i];</div>
+<div class="line"><a name="l01341"></a><span class="lineno"> 1341</span>&#160;            Cdims[i + numdims] = dims[i];</div>
+<div class="line"><a name="l01342"></a><span class="lineno"> 1342</span>&#160;            Cperm[i] = perm[i];</div>
+<div class="line"><a name="l01343"></a><span class="lineno"> 1343</span>&#160;            Cperm[i + numdims] = perm[i] + numdims;</div>
+<div class="line"><a name="l01344"></a><span class="lineno"> 1344</span>&#160;        }</div>
+<div class="line"><a name="l01345"></a><span class="lineno"> 1345</span>&#160;        result.resize(D * D, 1);</div>
+<div class="line"><a name="l01346"></a><span class="lineno"> 1346</span>&#160;        <span class="comment">// map A to a column vector</span></div>
+<div class="line"><a name="l01347"></a><span class="lineno"> 1347</span>&#160;        <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a> vectA = Eigen::Map&lt;</div>
+<div class="line"><a name="l01348"></a><span class="lineno"> 1348</span>&#160;                <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar &gt;</a>&gt;(</div>
+<div class="line"><a name="l01349"></a><span class="lineno"> 1349</span>&#160;                <span class="keyword">const_cast&lt;</span>typename Derived::Scalar*<span class="keyword">&gt;</span>(rA.data()), D * D, 1);</div>
+<div class="line"><a name="l01350"></a><span class="lineno"> 1350</span>&#160;</div>
+<div class="line"><a name="l01351"></a><span class="lineno"> 1351</span>&#160;        <span class="keyword">auto</span> worker = [&amp;Cdims, &amp;Cperm, numdims](<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i)</div>
+<div class="line"><a name="l01352"></a><span class="lineno"> 1352</span>&#160;        {</div>
+<div class="line"><a name="l01353"></a><span class="lineno"> 1353</span>&#160;            <span class="comment">// use static allocation for speed,</span></div>
+<div class="line"><a name="l01354"></a><span class="lineno"> 1354</span>&#160;            <span class="comment">// double the size for matrices reshaped as vectors</span></div>
+<div class="line"><a name="l01355"></a><span class="lineno"> 1355</span>&#160;            <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> midx[2 * <a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
+<div class="line"><a name="l01356"></a><span class="lineno"> 1356</span>&#160;            <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> midxtmp[2 * <a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
+<div class="line"><a name="l01357"></a><span class="lineno"> 1357</span>&#160;            <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> permdims[2 * <a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
+<div class="line"><a name="l01358"></a><span class="lineno"> 1358</span>&#160;</div>
+<div class="line"><a name="l01359"></a><span class="lineno"> 1359</span>&#160;            <span class="comment">/* compute the multi-index */</span></div>
+<div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;            <a class="code" href="namespaceqpp_1_1internal.html#a3e4b3da5275b8fd5c1dafb0281eb6505">internal::_n2multiidx</a>(i, 2 * numdims, Cdims, midx);</div>
+<div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160;</div>
+<div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> k = 0; k &lt; 2 * numdims; ++k)</div>
+<div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160;            {</div>
+<div class="line"><a name="l01364"></a><span class="lineno"> 1364</span>&#160;                permdims[k] = Cdims[Cperm[k]]; <span class="comment">// permuted dimensions</span></div>
+<div class="line"><a name="l01365"></a><span class="lineno"> 1365</span>&#160;                midxtmp[k] = midx[Cperm[k]];<span class="comment">// permuted multi-indexes</span></div>
+<div class="line"><a name="l01366"></a><span class="lineno"> 1366</span>&#160;            }</div>
+<div class="line"><a name="l01367"></a><span class="lineno"> 1367</span>&#160;</div>
+<div class="line"><a name="l01368"></a><span class="lineno"> 1368</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespaceqpp_1_1internal.html#ac25d035c37ff112e1192e213444f4fc2">internal::_multiidx2n</a>(midxtmp, 2 * numdims, permdims);</div>
+<div class="line"><a name="l01369"></a><span class="lineno"> 1369</span>&#160;        };</div>
+<div class="line"><a name="l01370"></a><span class="lineno"> 1370</span>&#160;</div>
+<div class="line"><a name="l01371"></a><span class="lineno"> 1371</span>&#160;<span class="preprocessor">#pragma omp parallel for</span></div>
+<div class="line"><a name="l01372"></a><span class="lineno"> 1372</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; D * D; ++i)</div>
+<div class="line"><a name="l01373"></a><span class="lineno"> 1373</span>&#160;            result(worker(i)) = rA(i);</div>
+<div class="line"><a name="l01374"></a><span class="lineno"> 1374</span>&#160;</div>
+<div class="line"><a name="l01375"></a><span class="lineno"> 1375</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#afa33bacb26cad466156dc3f8f3980da7">reshape</a>(result, D, D);</div>
+<div class="line"><a name="l01376"></a><span class="lineno"> 1376</span>&#160;    }</div>
+<div class="line"><a name="l01377"></a><span class="lineno"> 1377</span>&#160;</div>
+<div class="line"><a name="l01378"></a><span class="lineno"> 1378</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l01379"></a><span class="lineno"> 1379</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::syspermute()&quot;</span>,</div>
+<div class="line"><a name="l01380"></a><span class="lineno"> 1380</span>&#160;                <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7caf6ba7b51754d252579c9daa43dbbfd68">Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR</a>);</div>
+<div class="line"><a name="l01381"></a><span class="lineno"> 1381</span>&#160;}</div>
+<div class="line"><a name="l01382"></a><span class="lineno"> 1382</span>&#160;</div>
+<div class="line"><a name="l01395"></a><span class="lineno"> 1395</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
+<div class="line"><a name="l01396"></a><span class="lineno"><a class="line" href="namespaceqpp.html#af9de352ae53eb3ad8141721b487869b0"> 1396</a></span>&#160;<a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a> <a class="code" href="namespaceqpp.html#a4cf8dec8978b57214c806094f69e05ca">syspermute</a>(</div>
+<div class="line"><a name="l01397"></a><span class="lineno"> 1397</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase &lt;Derived&gt;&amp; A,</div>
+<div class="line"><a name="l01398"></a><span class="lineno"> 1398</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; perm,</div>
+<div class="line"><a name="l01399"></a><span class="lineno"> 1399</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
+<div class="line"><a name="l01400"></a><span class="lineno"> 1400</span>&#160;{</div>
+<div class="line"><a name="l01401"></a><span class="lineno"> 1401</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
+<div class="line"><a name="l01402"></a><span class="lineno"> 1402</span>&#160;</div>
+<div class="line"><a name="l01403"></a><span class="lineno"> 1403</span>&#160;    <span class="comment">// check zero size</span></div>
+<div class="line"><a name="l01404"></a><span class="lineno"> 1404</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(rA))</div>
+<div class="line"><a name="l01405"></a><span class="lineno"> 1405</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::syspermute()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
+<div class="line"><a name="l01406"></a><span class="lineno"> 1406</span>&#160;</div>
+<div class="line"><a name="l01407"></a><span class="lineno"> 1407</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n =</div>
+<div class="line"><a name="l01408"></a><span class="lineno"> 1408</span>&#160;            <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(rA.rows()) /</div>
+<div class="line"><a name="l01409"></a><span class="lineno"> 1409</span>&#160;                    std::log2(d)));</div>
+<div class="line"><a name="l01410"></a><span class="lineno"> 1410</span>&#160;    std::vector &lt;idx&gt; dims(n, d); <span class="comment">// local dimensions vector</span></div>
+<div class="line"><a name="l01411"></a><span class="lineno"> 1411</span>&#160;</div>
+<div class="line"><a name="l01412"></a><span class="lineno"> 1412</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a4cf8dec8978b57214c806094f69e05ca">syspermute</a>(rA, perm, dims);</div>
+<div class="line"><a name="l01413"></a><span class="lineno"> 1413</span>&#160;}</div>
+<div class="line"><a name="l01414"></a><span class="lineno"> 1414</span>&#160;</div>
+<div class="line"><a name="l01415"></a><span class="lineno"> 1415</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l01416"></a><span class="lineno"> 1416</span>&#160;</div>
+<div class="line"><a name="l01417"></a><span class="lineno"> 1417</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* OPERATIONS_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a3e4b3da5275b8fd5c1dafb0281eb6505"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a3e4b3da5275b8fd5c1dafb0281eb6505">qpp::internal::_n2multiidx</a></div><div class="ttdeci">void _n2multiidx(idx n, idx numdims, const idx *dims, idx *result)</div><div class="ttdef"><b>Definition:</b> util.h:47</div></div>
 <div class="ttc" id="namespaceqpp_html_aea80be6c57ee43e43aa9629942cd3608"><div class="ttname"><a href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">qpp::maxn</a></div><div class="ttdeci">constexpr idx maxn</div><div class="ttdoc">Maximum number of qubits. </div><div class="ttdef"><b>Definition:</b> constants.h:82</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca8e50b38bf4bfc1c10f6d65283db18c47"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca8e50b38bf4bfc1c10f6d65283db18c47">qpp::Exception::Type::DIMS_MISMATCH_CVECTOR</a></div></div>
@@ -1299,7 +1317,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="operations_8h.html">operations.h</a></li>
-    <li class="footer">Generated on Thu Dec 4 2014 22:29:47 for Quantum++ by
+    <li class="footer">Generated on Fri Dec 5 2014 22:23:07 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
