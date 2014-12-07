@@ -42,7 +42,7 @@ public:
     /**
     * \brief Exception types, add more exceptions here if needed
     *
-    * \see qpp:Exception::_construct_exception_msg()
+    * \see qpp::Exception::_construct_exception_msg()
     */
     enum class Type // exception types
     {
@@ -163,6 +163,8 @@ private:
 
     /**
     * \brief Constructs the exception's description from its type
+    * 
+    * \see qpp::Exception::Type
     *
     * Must modify the code of this function if more exceptions are added
     */
