@@ -165,10 +165,8 @@ private:
     * \brief Constructs the exception's description from its type
     *
     * Must modify the code of this function if more exceptions are added
-    *
-    * \return Exception's description
     */
-    std::string _construct_exception_msg()
+    void _construct_exception_msg()
     {
         _msg += "IN ";
         _msg += _where;
@@ -255,8 +253,6 @@ private:
                 _msg += "CUSTOM EXCEPTION ";
                 break;
         }
-
-        return _msg;
     }
 }; /* class Exception */
 
