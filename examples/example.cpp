@@ -551,7 +551,7 @@ void TIMING()
 {
     cout << "**** Timing tests ****" << endl;
 
-    idx n = 12; // number of qubits
+    idx n = 10; // number of qubits
     idx N = std::round(std::pow(2, n));
     cout << ">> n = " << n << " qubits, matrix size " << N << " x " << N
             << "." << endl << endl;
