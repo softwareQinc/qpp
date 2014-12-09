@@ -163,7 +163,7 @@ private:
 
     /**
     * \brief Constructs the exception's description from its type
-    * 
+    *
     * \see qpp::Exception::Type
     *
     * Must modify the code of this function if more exceptions are added

@@ -34,12 +34,10 @@ namespace qpp
 {
 
 /**
-* \brief Shannon/von-Neumann entropy of the
-* probability distribution/density matrix \a A
+* \brief von-Neumann entropy of the density matrix \a A
 *
-* \param A Eigen expression, representing a probability distribution
-* (real dynamic column vector) or a density matrix (complex dynamic matrix)
-* \return Shannon/von-Neumann entropy, with the logarithm in base 2
+* \param A Eigen expression
+* \return von-Neumann entropy, with the logarithm in base 2
 */
 template<typename Derived>
 double entropy(const Eigen::MatrixBase <Derived>& A)
@@ -49,19 +47,6 @@ double entropy(const Eigen::MatrixBase <Derived>& A)
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::entropy()", Exception::Type::ZERO_SIZE);
-
-    // input is a vector
-    if (internal::_check_vector(rA))
-    {
-        double result = 0;
-        for (idx i = 0; i < static_cast<idx>(rA.rows()); ++i)
-            if (std::abs(rA(i)) != 0) // not identically zero
-                result -= std::abs(rA(i)) * std::log2(std::abs(rA(i)));
-
-        return result;
-    }
-
-    // input is a matrix
 
     // check square matrix
     if (!internal::_check_square_mat(rA))
@@ -77,11 +62,33 @@ double entropy(const Eigen::MatrixBase <Derived>& A)
 }
 
 /**
-* \brief Renyi-\f$\alpha\f$ entropy of the
-* probability distribution/density matrix \a A, for \f$ \alpha\geq 0\f$
+* \brief Shannon entropy of the probability distribution \a prob
 *
-* \param A Eigen expression, representing a probability distribution
-* (real dynamic column vector) or a density matrix (complex dynamic matrix)
+* \param prob Real probability vector
+* \return Shannon entropy, with the logarithm in base 2
+*/
+double entropy(const std::vector<double>& prob)
+{
+    // check zero-size
+    if (!internal::_check_nonzero_size(prob))
+        throw Exception("qpp::entropy()", Exception::Type::ZERO_SIZE);
+
+    double result = 0;
+    for (idx i = 0; i < prob.size(); ++i)
+        if (std::abs(prob[i]) != 0) // not identically zero
+            result -= std::abs(prob[i]) * std::log2(std::abs(prob[i]));
+
+    return result;
+}
+
+/**
+* \brief Renyi-\f$\alpha\f$ entropy of the density matrix \a A,
+* for \f$\alpha\geq 0\f$
+*
+*\note When \f$ \alpha\to 1\f$ the Renyi entropy converges to the
+* von-Neumann entropy, with the logarithm in base 2
+*
+* \param A Eigen expression
 * \param alpha Non-negative real number,
 * use qpp::infty for \f$\alpha = \infty\f$
 * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
@@ -91,49 +98,22 @@ double renyi(const Eigen::MatrixBase <Derived>& A, double alpha)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
-    if (alpha < 0)
-        throw Exception("qpp::renyi()", Exception::Type::OUT_OF_RANGE);
-
-    if (alpha == 1) // Shannon/von Neumann
-        return entropy(rA);
-
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::renyi()", Exception::Type::ZERO_SIZE);
-
-    // input is a vector
-    if (internal::_check_vector(rA))
-    {
-        if (alpha == 0) // H max
-            return std::log2(static_cast<double>( rA.rows()));
-
-        if (alpha == infty) // H min
-        {
-            double max = 0;
-            for (idx i = 0; i < static_cast<idx>(rA.rows());
-                 ++i)
-                if (std::abs(rA(i)) > max)
-                    max = std::abs(rA(i));
-
-            return -std::log2(max);
-        }
-
-        double result = 0;
-        for (idx i = 0; i < static_cast<idx>(rA.rows()); ++i)
-            if (std::abs(rA(i)) != 0) // not identically zero
-                result += std::pow(std::abs(rA(i)), alpha);
-
-        return std::log2(result) / (1 - alpha);
-    }
-
-    // input is a matrix
 
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::renyi()", Exception::Type::MATRIX_NOT_SQUARE);
 
+    if (alpha < 0)
+        throw Exception("qpp::renyi()", Exception::Type::OUT_OF_RANGE);
+
     if (alpha == 0) // H max
         return std::log2(static_cast<double>( rA.rows()));
+
+    if (alpha == 1) // Shannon/von-Neumann
+        return entropy(rA);
 
     if (alpha == infty) // H min
         return -std::log2(svals(rA)[0]);
@@ -148,57 +128,120 @@ double renyi(const Eigen::MatrixBase <Derived>& A, double alpha)
 }
 
 /**
-* \brief Tsallis-\f$\alpha\f$ entropy of the
-* probability distribution/density matrix \a A, for \f$ \alpha\geq 0\f$
+* \brief Renyi-\f$\alpha\f$ entropy of the probability distribution \a prob,
+* for \f$\alpha\geq 0\f$
 *
-* When \f$ \alpha\to 1\f$ the Tsallis entropy converges to the
-* Shannon/von-Neumann entropy, with the logarithm in base \f$ e \f$
+*\note When \f$ \alpha\to 1\f$ the Renyi entropy converges to the
+* Shannon entropy, with the logarithm in base 2
 *
-* \param A Eigen expression, representing a probability distribution
-* (real dynamic column vector) or a density matrix (complex dynamic matrix)
-* \param alpha Non-negative real number
-*
+* \param prob Real probability vector
+* \param alpha Non-negative real number,
+* use qpp::infty for \f$\alpha = \infty\f$
 * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
 */
-template<typename Derived>
-double tsallis(const Eigen::MatrixBase <Derived>& A, double alpha)
+double renyi(const std::vector<double>& prob, double alpha)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    // check zero-size
+    if (!internal::_check_nonzero_size(prob))
+        throw Exception("qpp::renyi()", Exception::Type::ZERO_SIZE);
 
     if (alpha < 0)
-        throw Exception("qpp::tsallis()", Exception::Type::OUT_OF_RANGE);
+        throw Exception("qpp::renyi()", Exception::Type::OUT_OF_RANGE);
 
-    if (alpha == 1) // Shannon/von Neumann with base e logarithm
-        return entropy(rA) * std::log(2.);
+    if (alpha == 0) // H max
+        return std::log2(static_cast<double>( prob.size()));
+
+    if (alpha == 1) // Shannon/von-Neumann
+        return entropy(prob);
+
+    if (alpha == infty) // H min
+    {
+        double max = 0;
+        for (idx i = 0; i < prob.size(); ++i)
+            if (std::abs(prob[i]) > max)
+                max = std::abs(prob[i]);
+
+        return -std::log2(max);
+    }
+
+    double result = 0;
+    for (idx i = 0; i < prob.size(); ++i)
+        if (std::abs(prob[i]) != 0) // not identically zero
+            result += std::pow(std::abs(prob[i]), alpha);
+
+    return std::log2(result) / (1 - alpha);
+}
+
+/**
+* \brief Tsallis-\f$q\f$ entropy of the density matrix \a A,
+* for \f$q\geq 0\f$
+*
+* \note When \f$ q\to 1\f$ the Tsallis entropy converges to the
+* von-Neumann entropy, with the logarithm in base \f$ e \f$
+*
+* \param A Eigen expression
+* \param q Non-negative real number
+*
+* \return Tsallis-\f$q\f$ entropy
+*/
+template<typename Derived>
+double tsallis(const Eigen::MatrixBase <Derived>& A, double q)
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::tsallis()", Exception::Type::ZERO_SIZE);
 
-    // input is a vector
-    if (internal::_check_vector(rA))
-    {
-        double result = 0;
-        for (idx i = 0; i < static_cast<idx>(rA.rows()); ++i)
-            if (std::abs(rA(i)) != 0) // not identically zero
-                result += std::pow(std::abs(rA(i)), alpha);
-
-        return (result - 1) / (1 - alpha);
-    }
-
-    // input is a matrix
-
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::tsallis()", Exception::Type::MATRIX_NOT_SQUARE);
+
+    if (q < 0)
+        throw Exception("qpp::tsallis()", Exception::Type::OUT_OF_RANGE);
+
+    if (q == 1) // Shannon/von-Neumann with base e logarithm
+        return entropy(rA) * std::log(2.);
 
     dmat ev = svals(rA); // get the singular values
     double result = 0;
     for (idx i = 0; i < static_cast<idx>(ev.rows()); ++i)
         if (ev(i) != 0) // not identically zero
-            result += std::pow(ev(i), alpha);
+            result += std::pow(ev(i), q);
 
-    return (result - 1) / (1 - alpha);
+    return (result - 1) / (1 - q);
+}
+
+/**
+* \brief Tsallis-\f$q\f$ entropy of the probability distribution \a prob,
+* for \f$q\geq 0\f$
+*
+* \note When \f$ q\to 1\f$ the Tsallis entropy converges to the
+* Shannon entropy, with the logarithm in base \f$ e \f$
+*
+* \param prob Real probability vector
+* \param q Non-negative real number
+*
+* \return Tsallis-\f$q\f$ entropy
+*/
+double tsallis(const std::vector<double>& prob, double q)
+{
+    // check zero-size
+    if (!internal::_check_nonzero_size(prob))
+        throw Exception("qpp::tsallis()", Exception::Type::ZERO_SIZE);
+
+    if (q < 0)
+        throw Exception("qpp::tsallis()", Exception::Type::OUT_OF_RANGE);
+
+    if (q == 1) // Shannon/von-Neumann with base e logarithm
+        return entropy(prob) * std::log(2.);
+
+    double result = 0;
+    for (idx i = 0; i < prob.size(); ++i)
+        if (std::abs(prob[i]) != 0) // not identically zero
+            result += std::pow(std::abs(prob[i]), q);
+
+    return (result - 1) / (1 - q);
 }
 
 /**

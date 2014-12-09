@@ -274,7 +274,7 @@ void ENTANGLEMENT()
     cout << disp(schmidtcoeff(psi, {2, 2})) << endl;
 
     cout << ">> Schmidt probabilities of psi: " << endl;
-    cout << disp(schmidtprob(psi, {2, 2})) << endl;
+    cout << disp(schmidtprob(psi, {2, 2}), ", ") << endl;
 
     cmat UA = schmidtA(psi, {2, 2});
     cmat UB = schmidtB(psi, {2, 2});

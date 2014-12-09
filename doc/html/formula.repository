@@ -41,3 +41,7 @@
 \form#40:$Tr_{subsys}(\cdot)$
 \form#41:$(\cdot)^{T_{subsys}}$
 \form#42:$ \sum_i K_i^\dagger K_i = I$
+\form#43:$\alpha\geq 0$
+\form#44:$q$
+\form#45:$q\geq 0$
+\form#46:$ q\to 1$

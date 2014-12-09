@@ -29,6 +29,9 @@
 
 // entanglement
 
+#include <types.h>
+#include <vector>
+
 namespace qpp
 {
 
@@ -40,11 +43,11 @@ namespace qpp
 *
 * \param A Eigen expression
 * \param dims Dimensions of the bi-partite system
-* \return Schmidt coefficients of \a A, as a complex dynamic column vector
+* \return Schmidt coefficients of \a A, as a real dynamic column vector
 */
 template<typename Derived>
-dyn_col_vect <cplx> schmidtcoeff(const Eigen::MatrixBase <Derived>& A,
-        const std::vector <idx>& dims)
+dyn_col_vect<double> schmidtcoeff(const Eigen::MatrixBase <Derived>& A,
+        const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -62,8 +65,7 @@ dyn_col_vect <cplx> schmidtcoeff(const Eigen::MatrixBase <Derived>& A,
         throw Exception("qpp::schmidtcoeff()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
 
-    return svals(transpose(reshape(rA, dims[1], dims[0]))).template
-            cast<cplx>();
+    return svals(transpose(reshape(rA, dims[1], dims[0])));
 }
 
 /**
@@ -76,7 +78,7 @@ dyn_col_vect <cplx> schmidtcoeff(const Eigen::MatrixBase <Derived>& A,
 */
 template<typename Derived>
 cmat schmidtA(const Eigen::MatrixBase <Derived>& A,
-        const std::vector <idx>& dims)
+        const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -107,7 +109,7 @@ cmat schmidtA(const Eigen::MatrixBase <Derived>& A,
 */
 template<typename Derived>
 cmat schmidtB(const Eigen::MatrixBase <Derived>& A,
-        const std::vector <idx>& dims)
+        const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -139,11 +141,11 @@ cmat schmidtB(const Eigen::MatrixBase <Derived>& A,
 *
 * \param A Eigen expression
 * \param dims Dimensions of the bi-partite system
-* \return Schmidt probabilites of \a A, as a real dynamic column vector
+* \return Real vector consisting of the Schmidt probabilites of \a A
 */
 template<typename Derived>
-dyn_col_vect<double> schmidtprob(const Eigen::MatrixBase <Derived>& A,
-        const std::vector <idx>& dims)
+std::vector<double> schmidtprob(const Eigen::MatrixBase <Derived>& A,
+        const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -161,11 +163,12 @@ dyn_col_vect<double> schmidtprob(const Eigen::MatrixBase <Derived>& A,
         throw Exception("qpp::schmidtprob()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
 
-    return powm(static_cast<dmat>(
-            svals(
-                    transpose(reshape(rA, dims[1], dims[0]))
-            ).asDiagonal()), 2)
-            .diagonal();
+    std::vector<double> result;
+    dyn_col_vect<double> scf = schmidtcoeff(rA, dims);
+    for (std::size_t i = 0; i < static_cast<std::size_t>(scf.rows()); ++i)
+        result.push_back(std::pow(scf(i), 2));
+
+    return result;
 }
 
 /**
@@ -181,7 +184,7 @@ dyn_col_vect<double> schmidtprob(const Eigen::MatrixBase <Derived>& A,
 */
 template<typename Derived>
 double entanglement(const Eigen::MatrixBase <Derived>& A,
-        const std::vector <idx>& dims)
+        const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -247,7 +250,7 @@ double gconcurrence(const Eigen::MatrixBase <Derived>& A)
 */
 template<typename Derived>
 double negativity(const Eigen::MatrixBase <Derived>& A,
-        const std::vector <idx>& dims)
+        const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -277,7 +280,7 @@ double negativity(const Eigen::MatrixBase <Derived>& A,
 */
 template<typename Derived>
 double lognegativity(const Eigen::MatrixBase <Derived>& A,
-        const std::vector <idx>& dims)
+        const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
