@@ -693,7 +693,7 @@ Variables</h2></td></tr>
 <tr class="memdesc:a9a99ccccd473a9006dfaadb5761ac4f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to decide whether a number or expression in double precision is zero or not.  <a href="#a9a99ccccd473a9006dfaadb5761ac4f6">More...</a><br /></td></tr>
 <tr class="separator:a9a99ccccd473a9006dfaadb5761ac4f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea80be6c57ee43e43aa9629942cd3608"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a> = 64</td></tr>
-<tr class="memdesc:aea80be6c57ee43e43aa9629942cd3608"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of qubits.  <a href="#aea80be6c57ee43e43aa9629942cd3608">More...</a><br /></td></tr>
+<tr class="memdesc:aea80be6c57ee43e43aa9629942cd3608"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of allowed qu(d)its (subsystems)  <a href="#aea80be6c57ee43e43aa9629942cd3608">More...</a><br /></td></tr>
 <tr class="separator:aea80be6c57ee43e43aa9629942cd3608"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73c04db6f636b236d64fddb069bef492"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a73c04db6f636b236d64fddb069bef492">pi</a> = 3.141592653589793238462643383279502884</td></tr>
 <tr class="memdesc:a73c04db6f636b236d64fddb069bef492"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img class="formulaInl" alt="$ \pi $" src="form_5.png"/>  <a href="#a73c04db6f636b236d64fddb069bef492">More...</a><br /></td></tr>
@@ -701,9 +701,9 @@ Variables</h2></td></tr>
 <tr class="memitem:aca5c7e10fa94db0755cb937250144630"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aca5c7e10fa94db0755cb937250144630">ee</a> = 2.718281828459045235360287471352662497</td></tr>
 <tr class="memdesc:aca5c7e10fa94db0755cb937250144630"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base of natural logarithm, <img class="formulaInl" alt="$e$" src="form_6.png"/>.  <a href="#aca5c7e10fa94db0755cb937250144630">More...</a><br /></td></tr>
 <tr class="separator:aca5c7e10fa94db0755cb937250144630"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9564335398ee760b070d91a855c9f08"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ad9564335398ee760b070d91a855c9f08">infty</a> = -1</td></tr>
-<tr class="memdesc:ad9564335398ee760b070d91a855c9f08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to denote infinity.  <a href="#ad9564335398ee760b070d91a855c9f08">More...</a><br /></td></tr>
-<tr class="separator:ad9564335398ee760b070d91a855c9f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecd9c0f42f21f1d3b29868b6a8cac4c7"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aecd9c0f42f21f1d3b29868b6a8cac4c7">infty</a> = std::numeric_limits&lt;double&gt;::infinity()</td></tr>
+<tr class="memdesc:aecd9c0f42f21f1d3b29868b6a8cac4c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to denote infinity in double precision.  <a href="#aecd9c0f42f21f1d3b29868b6a8cac4c7">More...</a><br /></td></tr>
+<tr class="separator:aecd9c0f42f21f1d3b29868b6a8cac4c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca4969dadb784a76f5182b791fb54198"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classqpp_1_1_init.html">Init</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aca4969dadb784a76f5182b791fb54198">init</a> = <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">Init::get_instance</a>()</td></tr>
 <tr class="memdesc:aca4969dadb784a76f5182b791fb54198"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classqpp_1_1_init.html" title="const Singleton class that performs additional initializations/cleanups ">qpp::Init</a> const Singleton  <a href="#aca4969dadb784a76f5182b791fb54198">More...</a><br /></td></tr>
 <tr class="separator:aca4969dadb784a76f5182b791fb54198"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4951,7 +4951,7 @@ template&lt;typename Derived &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression, representing a probability distribution (real dynamic column vector) or a density matrix (complex dynamic matrix) </td></tr>
-    <tr><td class="paramname">alpha</td><td>Non-negative real number, use <a class="el" href="namespaceqpp.html#ad9564335398ee760b070d91a855c9f08" title="Used to denote infinity. ">qpp::infty</a> for <img class="formulaInl" alt="$\alpha = \infty$" src="form_12.png"/> </td></tr>
+    <tr><td class="paramname">alpha</td><td>Non-negative real number, use <a class="el" href="namespaceqpp.html#aecd9c0f42f21f1d3b29868b6a8cac4c7" title="Used to denote infinity in double precision. ">qpp::infty</a> for <img class="formulaInl" alt="$\alpha = \infty$" src="form_12.png"/> </td></tr>
   </table>
   </dd>
 </dl>
@@ -6019,17 +6019,17 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="ad9564335398ee760b070d91a855c9f08"></a>
+<a class="anchor" id="aecd9c0f42f21f1d3b29868b6a8cac4c7"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::infty = -1</td>
+          <td class="memname">constexpr double qpp::infty = std::numeric_limits&lt;double&gt;::infinity()</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Used to denote infinity. </p>
+<p>Used to denote infinity in double precision. </p>
 
 </div>
 </div>
@@ -6058,7 +6058,7 @@ template&lt;typename Derived &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Maximum number of qubits. </p>
+<p>Maximum number of allowed qu(d)its (subsystems) </p>
 <p>Used internally to allocate arrays on the stack (for speed reasons) </p>
 
 </div>
@@ -6113,7 +6113,7 @@ template&lt;typename Derived &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Tue Dec 9 2014 11:02:57 for Quantum++ by
+    <li class="footer">Generated on Tue Dec 9 2014 14:33:48 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

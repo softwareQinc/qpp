@@ -75,7 +75,7 @@ constexpr double chop = 1e-10;
 constexpr double eps = 1e-12;
 
 /**
-* \brief Maximum number of qubits
+* \brief Maximum number of allowed qu(d)its (subsystems)
 *
 * Used internally to allocate arrays on the stack (for speed reasons)
 */
@@ -91,9 +91,9 @@ constexpr double pi = 3.141592653589793238462643383279502884;
 constexpr double ee = 2.718281828459045235360287471352662497;
 
 /**
-* \brief Used to denote infinity
+* \brief Used to denote infinity in double precision
 */
-constexpr idx infty = -1;
+constexpr double infty = std::numeric_limits<double>::infinity();
 
 /**
 * \brief D-th root of unity
