@@ -107,6 +107,10 @@ public:
          * qpp::Codes::codeword() with invalid \a i */
                 PERM_INVALID,
         /*!< Invalid std::vector<idx> permutation */
+                PERM_MISMATCH_DIMS,
+        /*!< Size of the std::vector<idx> representing the permutation
+         * is different from the size of the std::vector<idx> representing the
+         * dimensions */
                 OUT_OF_RANGE,
         /*!< Parameter out of range */
                 TYPE_MISMATCH,
@@ -241,6 +245,9 @@ private:
                 break;
             case Type::PERM_INVALID:
                 _msg += "Invalid permutation!";
+                break;
+            case Type::PERM_MISMATCH_DIMS:
+                _msg += "Permutation mismatch dimensions!";
                 break;
             case Type::OUT_OF_RANGE:
                 _msg += "Parameter out of range!";

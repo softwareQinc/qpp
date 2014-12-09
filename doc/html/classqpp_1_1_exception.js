@@ -23,6 +23,7 @@ var classqpp_1_1_exception =
       [ "NOT_BIPARTITE", "classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca93a1b69163069e595edb06c2af7183dd", null ],
       [ "NO_CODEWORD", "classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca765d62c3ecb450227a1985539db58050", null ],
       [ "PERM_INVALID", "classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca97c98bf66b3a4ad201dceb1f5ef5417f", null ],
+      [ "PERM_MISMATCH_DIMS", "classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6f5a157d66050b57e1fdf39e78ca5680", null ],
       [ "OUT_OF_RANGE", "classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad", null ],
       [ "TYPE_MISMATCH", "classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca2f93918ef99e03b7b8e7230b2a28fb52", null ],
       [ "UNDEFINED_TYPE", "classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530", null ],

@@ -511,10 +511,10 @@ void GRAPHSTATES()
         {
             if (Gamma[i][j])
             {
-                G0=apply(G0, gt.CZ, {i, j});
-                G1=applyCTRL(G1, gt.Z, {i}, {j});
-                rhoG0=apply(rhoG0, gt.CZ, {i, j});
-                rhoG1=applyCTRL(rhoG1, gt.Z, {i}, {j});
+                G0 = apply(G0, gt.CZ, {i, j});
+                G1 = applyCTRL(G1, gt.Z, {i}, {j});
+                rhoG0 = apply(rhoG0, gt.CZ, {i, j});
+                rhoG1 = applyCTRL(rhoG1, gt.Z, {i}, {j});
             }
         }
     // end construction

@@ -28,6 +28,8 @@
 #define OPERATIONS_H_
 
 // silence g++ bogus warning -Wunused-but-set-variable in lambda functions
+#include <classes/exception.h>
+
 #if (__GNUC__)
 #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 #endif
@@ -1270,9 +1272,10 @@ dyn_mat<typename Derived::Scalar> syspermute(
     if (!internal::_check_perm(perm))
         throw Exception("qpp::syspermute()", Exception::Type::PERM_INVALID);
 
-    // check permutation size
+    // check that permutation match dimensions
     if (perm.size() != dims.size())
-        throw Exception("qpp::syspermute()", Exception::Type::PERM_INVALID);
+        throw Exception("qpp::syspermute()",
+                Exception::Type::PERM_MISMATCH_DIMS);
 
     idx D = static_cast<idx>(rA.rows());
     idx numdims = dims.size();

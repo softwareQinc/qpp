@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordflow">if</span> (alpha == 0) <span class="comment">// H max</span></div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">return</span> std::log2(static_cast&lt;double&gt;( rA.rows()));</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordflow">if</span> (alpha == 1) <span class="comment">// Shannon/von Neumann</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordflow">if</span> (alpha == 1) <span class="comment">// Shannon/von-Neumann</span></div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a922127fa0dd6659113c8277de8731c41">entropy</a>(rA);</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keywordflow">if</span> (alpha == <a class="code" href="namespaceqpp.html#aecd9c0f42f21f1d3b29868b6a8cac4c7">infty</a>) <span class="comment">// H min</span></div>
@@ -181,13 +181,13 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordflow">if</span> (alpha == 0) <span class="comment">// H max</span></div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="keywordflow">return</span> std::log2(static_cast&lt;double&gt;( prob.size()));</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordflow">if</span> (alpha == 1) <span class="comment">// Shannon/von Neumann</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordflow">if</span> (alpha == 1) <span class="comment">// Shannon/von-Neumann</span></div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a922127fa0dd6659113c8277de8731c41">entropy</a>(prob);</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keywordflow">if</span> (alpha == <a class="code" href="namespaceqpp.html#aecd9c0f42f21f1d3b29868b6a8cac4c7">infty</a>) <span class="comment">// H min</span></div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    {</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordtype">double</span> max = 0;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; prob.size();++i)</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; prob.size(); ++i)</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            <span class="keywordflow">if</span> (std::abs(prob[i]) &gt; max)</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                max = std::abs(prob[i]);</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
@@ -218,7 +218,7 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keywordflow">if</span> (q &lt; 0)</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::tsallis()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keywordflow">if</span> (q == 1) <span class="comment">// Shannon/von Neumann with base e logarithm</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keywordflow">if</span> (q == 1) <span class="comment">// Shannon/von-Neumann with base e logarithm</span></div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a922127fa0dd6659113c8277de8731c41">entropy</a>(rA) * std::log(2.);</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <a class="code" href="namespaceqpp.html#a1aa9659792d095652ae72e522a3a2954">dmat</a> ev = <a class="code" href="namespaceqpp.html#abe012650e8ff95fc346dd75cdbb3625a">svals</a>(rA); <span class="comment">// get the singular values</span></div>
@@ -239,7 +239,7 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="keywordflow">if</span> (q &lt; 0)</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::tsallis()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keywordflow">if</span> (q == 1) <span class="comment">// Shannon/von Neumann with base e logarithm</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keywordflow">if</span> (q == 1) <span class="comment">// Shannon/von-Neumann with base e logarithm</span></div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a922127fa0dd6659113c8277de8731c41">entropy</a>(prob) * std::log(2.);</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keywordtype">double</span> result = 0;</div>
@@ -363,7 +363,7 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="ttc" id="classqpp_1_1_exception_html"><div class="ttname"><a href="classqpp_1_1_exception.html">qpp::Exception</a></div><div class="ttdoc">Generates custom exceptions, used when validating function parameters. </div><div class="ttdef"><b>Definition:</b> exception.h:39</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">qpp::Exception::Type::OUT_OF_RANGE</a></div></div>
 <div class="ttc" id="namespaceqpp_html_a991bc6df4280943452bfbedafa65b9f7"><div class="ttname"><a href="namespaceqpp.html#a991bc6df4280943452bfbedafa65b9f7">qpp::renyi</a></div><div class="ttdeci">double renyi(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, double alpha)</div><div class="ttdoc">Renyi-  entropy of the density matrix A, for . </div><div class="ttdef"><b>Definition:</b> entropies.h:97</div></div>
-<div class="ttc" id="namespaceqpp_html_a1300526d686af7fec966d8760087a168"><div class="ttname"><a href="namespaceqpp.html#a1300526d686af7fec966d8760087a168">qpp::ptrace</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; ptrace(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Partial trace. </div><div class="ttdef"><b>Definition:</b> operations.h:944</div></div>
+<div class="ttc" id="namespaceqpp_html_a1300526d686af7fec966d8760087a168"><div class="ttname"><a href="namespaceqpp.html#a1300526d686af7fec966d8760087a168">qpp::ptrace</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; ptrace(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Partial trace. </div><div class="ttdef"><b>Definition:</b> operations.h:946</div></div>
 <div class="ttc" id="namespaceqpp_html_aecd9c0f42f21f1d3b29868b6a8cac4c7"><div class="ttname"><a href="namespaceqpp.html#aecd9c0f42f21f1d3b29868b6a8cac4c7">qpp::infty</a></div><div class="ttdeci">constexpr double infty</div><div class="ttdoc">Used to denote infinity in double precision. </div><div class="ttdef"><b>Definition:</b> constants.h:96</div></div>
 <div class="ttc" id="namespaceqpp_html_a49c56d608ca03d6258e540404e0ab187"><div class="ttname"><a href="namespaceqpp.html#a49c56d608ca03d6258e540404e0ab187">qpp::cmat</a></div><div class="ttdeci">dyn_mat&lt; cplx &gt; cmat</div><div class="ttdoc">Complex (double precision) dynamic Eigen matrix. </div><div class="ttdef"><b>Definition:</b> types.h:87</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a62ab44d343a116c122e488bc3ac46a31"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">qpp::internal::_check_nonzero_size</a></div><div class="ttdeci">bool _check_nonzero_size(const T &amp;x)</div><div class="ttdef"><b>Definition:</b> util.h:129</div></div>
@@ -378,7 +378,7 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="entropies_8h.html">entropies.h</a></li>
-    <li class="footer">Generated on Tue Dec 9 2014 17:06:26 for Quantum++ by
+    <li class="footer">Generated on Tue Dec 9 2014 18:12:06 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
