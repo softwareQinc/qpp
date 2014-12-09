@@ -66,8 +66,8 @@ public:
                 MATRIX_NOT_SQUARE_OR_VECTOR,
         /*!< Eigen::Matrix is not square nor a row/column vector */
                 MATRIX_MISMATCH_SUBSYS,
-        /*!< Matrix size mismatch subsystem sizes (e.g. in
-         * qpp::apply(), or qpp::channel()) */
+        /*!< Matrix size mismatch subsystem sizes
+         * (e.g. in qpp::apply()) */
                 DIMS_INVALID,
         /*!< std::vector<idx> representing the dimensions
          * has zero size or contains zeros */
