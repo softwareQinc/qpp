@@ -40,7 +40,7 @@ class Exception : public std::exception
 {
 public:
     /**
-    * \brief Exception types, add more exceptions here if needed
+    * \brief Exception types, add more here if needed
     *
     * \see qpp::Exception::_construct_exception_msg()
     */
@@ -50,7 +50,7 @@ public:
         /*!< Unknown exception */
                 ZERO_SIZE,
         /*!< Zero sized object, e.g. empty Eigen::Matrix
-         * or std::vector with no elements */
+         * or std::vector<> with no elements */
                 MATRIX_NOT_SQUARE,
         /*!< Eigen::Matrix is not square */
                 MATRIX_NOT_CVECTOR,
@@ -66,57 +66,51 @@ public:
                 MATRIX_NOT_SQUARE_OR_VECTOR,
         /*!< Eigen::Matrix is not square nor a row/column vector */
                 MATRIX_MISMATCH_SUBSYS,
-        /*!< Matrix size mismatch subsystem sizes
-         * (e.g. in qpp::apply()) */
+        /*!< Matrix size mismatch subsystem sizes (e.g. in qpp::apply()) */
                 DIMS_INVALID,
-        /*!< std::vector<idx> representing the dimensions
-         * has zero size or contains zeros */
+        /*!< std::vector<idx> of dimensions has zero size or contains zeros */
                 DIMS_NOT_EQUAL,
-        /*!< std::vector<idx> representing the dimensions
-         * contains non-equal elements */
+        /*!< Local/global dimensions are not equal */
                 DIMS_MISMATCH_MATRIX,
-        /*!< Product of the dimensions of std::vector<idx>
+        /*!< Product of the elements of std::vector<idx> of dimensions
          * is not equal to the number of rows of Eigen::Matrix
-         * (assumed to be square) */
+         * (assumed to be a square matrix) */
                 DIMS_MISMATCH_CVECTOR,
-        /*!< Product of the dimensions of std::vector<idx>
-         * is not equal to the number of columns of Eigen::Matrix
+        /*!< Product of the elements of std::vector<idx> of dimensions
+         * is not equal to the number of elements of Eigen::Matrix
          * (assumed to be a column vector) */
                 DIMS_MISMATCH_RVECTOR,
-        /*!< Product of the dimensions of std::vector<idx>
-         * is not equal to the number of columns of Eigen::Matrix
+        /*!< Product of the elements of std::vector<idx> of dimensions
+         * is not equal to the number of elements of Eigen::Matrix
          * (assumed to be a row vector) */
                 DIMS_MISMATCH_VECTOR,
-        /*!< Product of the dimensions of std::vector<idx>
-         * is not equal to the number of columns of Eigen::Matrix
+        /*!< Product of the elements of std::vector<idx> of dimensions
+         * is not equal to the number of elements of Eigen::Matrix
          * (assumed to be a row/column vector) */
                 SUBSYS_MISMATCH_DIMS,
-        /*!< std::vector<idx> representing the subsystem
-         * labels has duplicatates, or has entries that are larger than
-         * the size of the std::vector<idx> representing the
-         * dimensions */
+        /*!< std::vector<idx> of subsystem labels has duplicates,
+         * or has entries that are larger than the size of
+         * the std::vector<idx> of dimensions */
+                PERM_INVALID,
+        /*!< std::vector<idx> does note represent a valid permutation */
+                PERM_MISMATCH_DIMS,
+        /*!< Size of the std::vector<idx> representing the permutation
+         * is different from the size of the std::vector<idx> of dimensions */
                 NOT_QUBIT_GATE,
         /*!<  Eigen::Matrix is not 2 x 2 */
                 NOT_QUBIT_SUBSYS,
         /*!< Subsystems are not 2-dimensional */
                 NOT_BIPARTITE,
-        /*!< std::vector<idx> representing the dimensions
-         * has size different from 2 */
+        /*!< std::vector<idx> of dimensions has size different from 2 */
                 NO_CODEWORD,
         /*!< Codeword does not exist, thrown when calling
-         * qpp::Codes::codeword() with invalid \a i */
-                PERM_INVALID,
-        /*!< Invalid std::vector<idx> permutation */
-                PERM_MISMATCH_DIMS,
-        /*!< Size of the std::vector<idx> representing the permutation
-         * is different from the size of the std::vector<idx> representing the
-         * dimensions */
+         * qpp::Codes::codeword() with invalid index \a i */
                 OUT_OF_RANGE,
         /*!< Parameter out of range */
                 TYPE_MISMATCH,
-        /*!< Types do not match (i.e. Matrix<double> vs Matrix<cplx>) */
+        /*!< Scalar types do not match */
                 UNDEFINED_TYPE,
-        /*!< Templated function not defined for this type */
+        /*!< Templated specialization not defined for this type */
                 CUSTOM_EXCEPTION
         /*!< Custom exception, user must provide a custom message */
     };
@@ -231,6 +225,12 @@ private:
             case Type::SUBSYS_MISMATCH_DIMS:
                 _msg += "Subsystems mismatch dimensions!";
                 break;
+            case Type::PERM_INVALID:
+                _msg += "Invalid permutation!";
+                break;
+            case Type::PERM_MISMATCH_DIMS:
+                _msg += "Permutation mismatch dimensions!";
+                break;
             case Type::NOT_QUBIT_GATE:
                 _msg += "Matrix is not qubit gate!";
                 break;
@@ -242,12 +242,6 @@ private:
                 break;
             case Type::NO_CODEWORD:
                 _msg += "Codeword does not exist!";
-                break;
-            case Type::PERM_INVALID:
-                _msg += "Invalid permutation!";
-                break;
-            case Type::PERM_MISMATCH_DIMS:
-                _msg += "Permutation mismatch dimensions!";
                 break;
             case Type::OUT_OF_RANGE:
                 _msg += "Parameter out of range!";

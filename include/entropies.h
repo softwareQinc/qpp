@@ -30,6 +30,8 @@
 // various entropies, assume as input either
 // a normalized Hermitian matrix or a probability vector
 
+#include <classes/exception.h>
+
 namespace qpp
 {
 
