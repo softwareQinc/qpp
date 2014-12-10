@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a643a3f3073b38757ad670ad3d0c64850">   46</a></span>&#160;<a class="code" href="namespaceqpp.html#a83c66503d7c177ceb0423e286ee1a318">dyn_col_vect&lt;double&gt;</a> <a class="code" href="namespaceqpp.html#a643a3f3073b38757ad670ad3d0c64850">schmidtcoeffs</a>(<span class="keyword">const</span> Eigen::MatrixBase &lt;Derived&gt;&amp; A,</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="comment">// check zero-size</span></div>
@@ -123,7 +123,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a27d0cd12502123ea1fe7c48d1043439a">   77</a></span>&#160;<a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a27d0cd12502123ea1fe7c48d1043439a">schmidtA</a>(<span class="keyword">const</span> Eigen::MatrixBase &lt;Derived&gt;&amp; A,</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="comment">// check zero-size</span></div>
@@ -146,7 +146,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a9843ae59cf424139b3537d21fbfd5860">  108</a></span>&#160;<a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a9843ae59cf424139b3537d21fbfd5860">schmidtB</a>(<span class="keyword">const</span> Eigen::MatrixBase &lt;Derived&gt;&amp; A,</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;{</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="comment">// check zero-size</span></div>
@@ -171,7 +171,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l00144"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a61ff269f163f35f9e929ca800fe8b32f">  144</a></span>&#160;std::vector&lt;double&gt; <a class="code" href="namespaceqpp.html#a61ff269f163f35f9e929ca800fe8b32f">schmidtprobs</a>(<span class="keyword">const</span> Eigen::MatrixBase &lt;Derived&gt;&amp; A,</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;{</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="comment">// check zero-size</span></div>
@@ -199,7 +199,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l00183"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a9fe919380a14cf18d8c845ee2e3a8f31">  183</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a9fe919380a14cf18d8c845ee2e3a8f31">entanglement</a>(<span class="keyword">const</span> Eigen::MatrixBase &lt;Derived&gt;&amp; A,</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;{</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="comment">// check zero-size</span></div>
@@ -247,7 +247,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l00249"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a7e79a2383dc47a848ea3e88337070e62">  249</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a7e79a2383dc47a848ea3e88337070e62">negativity</a>(<span class="keyword">const</span> Eigen::MatrixBase &lt;Derived&gt;&amp; A,</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;{</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="comment">// check zero-size</span></div>
@@ -270,7 +270,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l00279"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a825e4812d1b111b04bc3744e4abc1246">  279</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a825e4812d1b111b04bc3744e4abc1246">lognegativity</a>(<span class="keyword">const</span> Eigen::MatrixBase &lt;Derived&gt;&amp; A,</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;{</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="comment">// check zero-size</span></div>
@@ -351,7 +351,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_html_a9294ebd345fe1c99731bf2b776e610d7"><div class="ttname"><a href="namespaceqpp.html#a9294ebd345fe1c99731bf2b776e610d7">qpp::kron</a></div><div class="ttdeci">dyn_mat&lt; typename T::Scalar &gt; kron(const T &amp;head)</div><div class="ttdoc">Kronecker product. </div><div class="ttdef"><b>Definition:</b> functions.h:786</div></div>
 <div class="ttc" id="classqpp_1_1internal_1_1_singleton_html_a65f1068804fafa264c2a6adabbe35802"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">qpp::internal::Singleton&lt; const Gates &gt;::get_instance</a></div><div class="ttdeci">static const Gates &amp; get_instance()</div><div class="ttdef"><b>Definition:</b> singleton.h:87</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca59630fb402a9b9e7e84059a8c9442f2d"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca59630fb402a9b9e7e84059a8c9442f2d">qpp::Exception::Type::MATRIX_NOT_CVECTOR</a></div></div>
-<div class="ttc" id="namespaceqpp_html_a922127fa0dd6659113c8277de8731c41"><div class="ttname"><a href="namespaceqpp.html#a922127fa0dd6659113c8277de8731c41">qpp::entropy</a></div><div class="ttdeci">double entropy(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">von-Neumann entropy of the density matrix A </div><div class="ttdef"><b>Definition:</b> entropies.h:45</div></div>
+<div class="ttc" id="namespaceqpp_html_a922127fa0dd6659113c8277de8731c41"><div class="ttname"><a href="namespaceqpp.html#a922127fa0dd6659113c8277de8731c41">qpp::entropy</a></div><div class="ttdeci">double entropy(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">von-Neumann entropy of the density matrix A </div><div class="ttdef"><b>Definition:</b> entropies.h:43</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html"><div class="ttname"><a href="classqpp_1_1_exception.html">qpp::Exception</a></div><div class="ttdoc">Generates custom exceptions, used when validating function parameters. </div><div class="ttdef"><b>Definition:</b> exception.h:39</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca93a1b69163069e595edb06c2af7183dd"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca93a1b69163069e595edb06c2af7183dd">qpp::Exception::Type::NOT_BIPARTITE</a></div></div>
 <div class="ttc" id="namespaceqpp_html_a2d40b2372b7537b8a5b9e0a92d729769"><div class="ttname"><a href="namespaceqpp.html#a2d40b2372b7537b8a5b9e0a92d729769">qpp::transpose</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; transpose(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Transpose. </div><div class="ttdef"><b>Definition:</b> functions.h:44</div></div>
@@ -378,7 +378,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="entanglement_8h.html">entanglement.h</a></li>
-    <li class="footer">Generated on Wed Dec 10 2014 03:12:23 for Quantum++ by
+    <li class="footer">Generated on Wed Dec 10 2014 03:23:53 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

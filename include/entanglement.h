@@ -44,7 +44,7 @@ namespace qpp
 */
 template<typename Derived>
 dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase <Derived>& A,
-        const std::vector<idx>& dims)
+        const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -75,7 +75,7 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase <Derived>& A,
 */
 template<typename Derived>
 cmat schmidtA(const Eigen::MatrixBase <Derived>& A,
-        const std::vector<idx>& dims)
+        const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -106,7 +106,7 @@ cmat schmidtA(const Eigen::MatrixBase <Derived>& A,
 */
 template<typename Derived>
 cmat schmidtB(const Eigen::MatrixBase <Derived>& A,
-        const std::vector<idx>& dims)
+        const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -142,7 +142,7 @@ cmat schmidtB(const Eigen::MatrixBase <Derived>& A,
 */
 template<typename Derived>
 std::vector<double> schmidtprobs(const Eigen::MatrixBase <Derived>& A,
-        const std::vector<idx>& dims)
+        const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -181,7 +181,7 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase <Derived>& A,
 */
 template<typename Derived>
 double entanglement(const Eigen::MatrixBase <Derived>& A,
-        const std::vector<idx>& dims)
+        const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -247,7 +247,7 @@ double gconcurrence(const Eigen::MatrixBase <Derived>& A)
 */
 template<typename Derived>
 double negativity(const Eigen::MatrixBase <Derived>& A,
-        const std::vector<idx>& dims)
+        const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -277,7 +277,7 @@ double negativity(const Eigen::MatrixBase <Derived>& A,
 */
 template<typename Derived>
 double lognegativity(const Eigen::MatrixBase <Derived>& A,
-        const std::vector<idx>& dims)
+        const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
