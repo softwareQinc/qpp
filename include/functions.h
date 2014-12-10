@@ -1360,7 +1360,7 @@ cmat mprj(const std::vector <idx>& mask, idx d = 2)
 
 * \param first Iterator to the first element of the range
 * \param last  Iterator to the last element of the range
-* \return Real vector consisting of the range's absolut values squared
+* \return Real vector consisting of the range absolut values squared
 */
 template<typename InputIterator>
 std::vector<double> abssq(InputIterator first, InputIterator last)

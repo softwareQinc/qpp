@@ -311,18 +311,18 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        <span class="comment">// run over the complement indexes</span></div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; Dsubsys_bar; ++i)</div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        {</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;            <span class="comment">// get the complement&#39;s row multi-index</span></div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;            <span class="comment">// get the complement row multi-index</span></div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;            <a class="code" href="namespaceqpp_1_1internal.html#a3e4b3da5275b8fd5c1dafb0281eb6505">internal::_n2multiidx</a>(i, nsubsys_bar, Cdims_bar, midx_bar);</div>
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> k = 0; k &lt; d; ++k)</div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;            {</div>
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                Ak = <a class="code" href="namespaceqpp.html#adc34b7cd0bcbdddf99c4835489c47b5d">powm</a>(rA, k); <span class="comment">// compute rA^k</span></div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                <span class="comment">// run over the subsys&#39;s row multi-index</span></div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                <span class="comment">// run over the subsys row multi-index</span></div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> a = 0; a &lt; DA; ++a)</div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                {</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                    <span class="comment">// get the subsys&#39;s row multi-index</span></div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                    <span class="comment">// get the subsys row multi-index</span></div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                    <a class="code" href="namespaceqpp_1_1internal.html#a3e4b3da5275b8fd5c1dafb0281eb6505">internal::_n2multiidx</a>(a, ngate, CdimsA, midxA_row);</div>
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                    <span class="comment">// construct the result&#39;s row multi-index</span></div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                    <span class="comment">// construct the result row multi-index</span></div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;</div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;                    <span class="comment">// first the ctrl part (equal for both row and column)</span></div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;                    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> c = 0; c &lt; nctrl; ++c)</div>
@@ -337,13 +337,13 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> c = 0; c &lt; ngate; ++c)</div>
 <div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;                        midx_row[subsys[c]] = midxA_row[c];</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;                    <span class="comment">// run over the subsys&#39;s column multi-index</span></div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;                    <span class="comment">// run over the subsys column multi-index</span></div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;                    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> b = 0; b &lt; DA; ++b)</div>
 <div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;                    {</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;                        <span class="comment">// get the subsys&#39;s column multi-index</span></div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;                        <span class="comment">// get the subsys column multi-index</span></div>
 <div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;                        <a class="code" href="namespaceqpp_1_1internal.html#a3e4b3da5275b8fd5c1dafb0281eb6505">internal::_n2multiidx</a>(b, ngate, CdimsA, midxA_col);</div>
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;                        <span class="comment">// construct the result&#39;s column multi-index</span></div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;                        <span class="comment">// construct the result column multi-index</span></div>
 <div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;                        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> c = 0; c &lt; ngate; ++c)</div>
 <div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                            midx_col[subsys[c]] = midxA_col[c];</div>
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;</div>
@@ -419,14 +419,14 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;            <a class="code" href="namespaceqpp_1_1internal.html#a3e4b3da5275b8fd5c1dafb0281eb6505">internal::_n2multiidx</a>(i, dims.size(), Cdims, midx_row);</div>
 <div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;            <span class="comment">// get column multi_index (same as row)</span></div>
 <div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;            <a class="code" href="namespaceqpp_1_1internal.html#a3e4b3da5275b8fd5c1dafb0281eb6505">internal::_n2multiidx</a>(i, dims.size(), Cdims, midx_col);</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;            <span class="comment">// run over the gate&#39;s row multi-index</span></div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;            <span class="comment">// run over the gate row multi-index</span></div>
 <div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> a = 0; a &lt; static_cast&lt;idx&gt;(rA.rows());</div>
 <div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;                 ++a)</div>
 <div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;            {</div>
 <div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;                <span class="comment">// construct the total row multi-index</span></div>
 <div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;                midx_row[pos] = a;</div>
 <div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;                <span class="comment">// run over the gate&#39;s column multi-index</span></div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;                <span class="comment">// run over the gate column multi-index</span></div>
 <div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;                <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> b = 0;</div>
 <div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;                     b &lt; static_cast&lt;idx&gt;(rA.cols()); ++b)</div>
 <div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;                {</div>
@@ -498,7 +498,7 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b02e4219757ae4e3a0f1714873865bbf.html">classes</a></li><li class="navelem"><a class="el" href="gates_8h.html">gates.h</a></li>
-    <li class="footer">Generated on Wed Dec 10 2014 03:23:53 for Quantum++ by
+    <li class="footer">Generated on Wed Dec 10 2014 11:11:37 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

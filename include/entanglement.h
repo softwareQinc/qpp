@@ -66,12 +66,12 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase <Derived>& A,
 }
 
 /**
-* \brief Schmidt basis on Alice's side
+* \brief Schmidt basis on Alice side
 *
 * \param A Eigen expression
 * \param dims Dimensions of the bi-partite system
 * \return Unitary matrix \f$ U \f$ whose columns represent
-* the Schmidt basis vectors on Alice's side.
+* the Schmidt basis vectors on Alice side.
 */
 template<typename Derived>
 cmat schmidtA(const Eigen::MatrixBase <Derived>& A,
@@ -97,12 +97,12 @@ cmat schmidtA(const Eigen::MatrixBase <Derived>& A,
 }
 
 /**
-* \brief Schmidt basis on Bob's side
+* \brief Schmidt basis on Bob side
 *
 * \param A Eigen expression
 * \param dims Dimensions of the bi-partite system
 * \return Unitary matrix \f$ V \f$ whose columns represent
-* the Schmidt basis vectors on Bob's side.
+* the Schmidt basis vectors on Bob side.
 */
 template<typename Derived>
 cmat schmidtB(const Eigen::MatrixBase <Derived>& A,

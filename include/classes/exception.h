@@ -119,7 +119,7 @@ public:
     * \brief Constructs an exception
     *
     * \param where Text representing where the exception occured
-    * \param type Exception's type, see the strong enumeration
+    * \param type Exception type, see the strong enumeration
     * qpp::Exception::Type
     */
     Exception(const std::string& where, const Type& type) :
@@ -134,7 +134,7 @@ public:
     * \overload
     *
     * \param where Text representing where the exception occured
-    * \param custom Exception's description
+    * \param custom Exception description
     */
     Exception(const std::string& where, const std::string& custom) :
             _where(where), _msg(), _type(Type::CUSTOM_EXCEPTION), _custom(
@@ -147,7 +147,7 @@ public:
     /**
     * \brief Overrides std::exception::what()
     *
-    * \return Exception's description
+    * \return Exception description
     */
     virtual const char* what() const noexcept override
     {
@@ -160,7 +160,7 @@ private:
     std::string _custom;
 
     /**
-    * \brief Constructs the exception's description from its type
+    * \brief Constructs the exception description from its type
     *
     * \see qpp::Exception::Type
     *

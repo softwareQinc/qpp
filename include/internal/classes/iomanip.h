@@ -177,7 +177,7 @@ public:
                 {
                     ostr << "0 "; // otherwise segfault on destruction
                     // if using only vstr.push_back("0 ");
-                    // bug in MATLAB's libmx
+                    // bug in MATLAB libmx
                     vstr.push_back(ostr.str());
                 }
                 else if (std::abs(re) < rhs._chop)

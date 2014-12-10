@@ -219,7 +219,7 @@ void saveMATLABmatrix(const Eigen::MatrixBase <Derived>& A,
 * \param var_name Variable name in the .mat file representing
 * the matrix to be saved
 * \param mode Saving mode (append, overwrite etc.),
-* see MATLAB's \a matOpen() documentation for details
+* see MATLAB \a matOpen() documentation for details
 */
 template<>
 // Eigen::MatrixXd specialization
@@ -264,7 +264,7 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <dmat>& A,
 * \param var_name Variable name in the .mat file representing
 * the matrix to be saved
 * \param mode Saving mode (append, overwrite etc.),
-* see MATLAB's \a matOpen() documentation for details
+* see MATLAB \a matOpen() documentation for details
 */
 template<>
 // Eigen::MatrixXcd specialization

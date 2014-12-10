@@ -307,18 +307,18 @@ public:
         // run over the complement indexes
         for (idx i = 0; i < Dsubsys_bar; ++i)
         {
-            // get the complement's row multi-index
+            // get the complement row multi-index
             internal::_n2multiidx(i, nsubsys_bar, Cdims_bar, midx_bar);
             for (idx k = 0; k < d; ++k)
             {
                 Ak = powm(rA, k); // compute rA^k
-                // run over the subsys's row multi-index
+                // run over the subsys row multi-index
                 for (idx a = 0; a < DA; ++a)
                 {
-                    // get the subsys's row multi-index
+                    // get the subsys row multi-index
                     internal::_n2multiidx(a, ngate, CdimsA, midxA_row);
 
-                    // construct the result's row multi-index
+                    // construct the result row multi-index
 
                     // first the ctrl part (equal for both row and column)
                     for (idx c = 0; c < nctrl; ++c)
@@ -333,13 +333,13 @@ public:
                     for (idx c = 0; c < ngate; ++c)
                         midx_row[subsys[c]] = midxA_row[c];
 
-                    // run over the subsys's column multi-index
+                    // run over the subsys column multi-index
                     for (idx b = 0; b < DA; ++b)
                     {
-                        // get the subsys's column multi-index
+                        // get the subsys column multi-index
                         internal::_n2multiidx(b, ngate, CdimsA, midxA_col);
 
-                        // construct the result's column multi-index
+                        // construct the result column multi-index
                         for (idx c = 0; c < ngate; ++c)
                             midx_col[subsys[c]] = midxA_col[c];
 
@@ -429,14 +429,14 @@ public:
             internal::_n2multiidx(i, dims.size(), Cdims, midx_row);
             // get column multi_index (same as row)
             internal::_n2multiidx(i, dims.size(), Cdims, midx_col);
-            // run over the gate's row multi-index
+            // run over the gate row multi-index
             for (idx a = 0; a < static_cast<idx>(rA.rows());
                  ++a)
             {
                 // construct the total row multi-index
                 midx_row[pos] = a;
 
-                // run over the gate's column multi-index
+                // run over the gate column multi-index
                 for (idx b = 0;
                      b < static_cast<idx>(rA.cols()); ++b)
                 {

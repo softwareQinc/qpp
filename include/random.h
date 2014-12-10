@@ -253,7 +253,7 @@ double randn(double mean = 0, double sigma = 1)
 */
 cmat randU(idx D)
 // ~3 times slower than Toby Cubitt's MATLAB corresponding routine,
-// because 's QR algorithm is not parallelized
+// because Eigen 3 QR algorithm is not parallelized
 {
     if (D == 0)
         throw Exception("qpp::randU()", Exception::Type::DIMS_INVALID);
@@ -383,7 +383,7 @@ cmat randrho(idx D)
 /**
 * \brief Generates a random uniformly distributed permutation
 *
-* Uses Knuth's shuffle method (as implemented by std::shuffle),
+* Uses Knuth shuffle method (as implemented by std::shuffle),
 * so that all permutations are equally probable
 *
 * \param n Size of the permutation
