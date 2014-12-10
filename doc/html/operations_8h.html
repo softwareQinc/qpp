@@ -126,15 +126,21 @@ Derived1::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a
 <tr class="memitem:a30b822c022591a8b840f3588de33eaf2"><td class="memTemplItemLeft" align="right" valign="top">cmat&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a30b822c022591a8b840f3588de33eaf2">qpp::apply</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;rho, const std::vector&lt; cmat &gt; &amp;Ks, const std::vector&lt; idx &gt; &amp;subsys, idx d=2)</td></tr>
 <tr class="memdesc:a30b822c022591a8b840f3588de33eaf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the channel specified by the set of Kraus operators <em>Ks</em> to the part <em>subsys</em> of the multi-partite density matrix <em>rho</em>.  <a href="#a30b822c022591a8b840f3588de33eaf2">More...</a><br /></td></tr>
 <tr class="separator:a30b822c022591a8b840f3588de33eaf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54d1de5e72943a61c35ab634690a841b"><td class="memItemLeft" align="right" valign="top">cmat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a54d1de5e72943a61c35ab634690a841b">qpp::super</a> (const std::vector&lt; cmat &gt; &amp;Ks)</td></tr>
-<tr class="memdesc:a54d1de5e72943a61c35ab634690a841b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Superoperator matrix representation.  <a href="#a54d1de5e72943a61c35ab634690a841b">More...</a><br /></td></tr>
-<tr class="separator:a54d1de5e72943a61c35ab634690a841b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8f061a25c22b9d79d2536dc4ea738c9"><td class="memItemLeft" align="right" valign="top">cmat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ac8f061a25c22b9d79d2536dc4ea738c9">qpp::choi</a> (const std::vector&lt; cmat &gt; &amp;Ks)</td></tr>
-<tr class="memdesc:ac8f061a25c22b9d79d2536dc4ea738c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Choi matrix representation.  <a href="#ac8f061a25c22b9d79d2536dc4ea738c9">More...</a><br /></td></tr>
-<tr class="separator:ac8f061a25c22b9d79d2536dc4ea738c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a474d2e8fdbac3fb577c835e5416fecaa"><td class="memItemLeft" align="right" valign="top">cmat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a474d2e8fdbac3fb577c835e5416fecaa">qpp::kraus2super</a> (const std::vector&lt; cmat &gt; &amp;Ks)</td></tr>
+<tr class="memdesc:a474d2e8fdbac3fb577c835e5416fecaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Superoperator matrix.  <a href="#a474d2e8fdbac3fb577c835e5416fecaa">More...</a><br /></td></tr>
+<tr class="separator:a474d2e8fdbac3fb577c835e5416fecaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f23aa8ee0eb007532b29ada39091d4f"><td class="memItemLeft" align="right" valign="top">cmat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a9f23aa8ee0eb007532b29ada39091d4f">qpp::kraus2choi</a> (const std::vector&lt; cmat &gt; &amp;Ks)</td></tr>
+<tr class="memdesc:a9f23aa8ee0eb007532b29ada39091d4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Choi matrix.  <a href="#a9f23aa8ee0eb007532b29ada39091d4f">More...</a><br /></td></tr>
+<tr class="separator:a9f23aa8ee0eb007532b29ada39091d4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac08330f1578fa6b6e382a80132dffb46"><td class="memItemLeft" align="right" valign="top">std::vector&lt; cmat &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ac08330f1578fa6b6e382a80132dffb46">qpp::choi2kraus</a> (const cmat &amp;A)</td></tr>
-<tr class="memdesc:ac08330f1578fa6b6e382a80132dffb46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracts orthogonal Kraus operators from Choi matrix.  <a href="#ac08330f1578fa6b6e382a80132dffb46">More...</a><br /></td></tr>
+<tr class="memdesc:ac08330f1578fa6b6e382a80132dffb46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Orthogonal Kraus operators from Choi matrix.  <a href="#ac08330f1578fa6b6e382a80132dffb46">More...</a><br /></td></tr>
 <tr class="separator:ac08330f1578fa6b6e382a80132dffb46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b5fb595977b62ea764f9362828678f2"><td class="memItemLeft" align="right" valign="top">cmat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a8b5fb595977b62ea764f9362828678f2">qpp::choi2super</a> (const cmat &amp;A)</td></tr>
+<tr class="memdesc:a8b5fb595977b62ea764f9362828678f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts Choi matrix to superoperator matrix.  <a href="#a8b5fb595977b62ea764f9362828678f2">More...</a><br /></td></tr>
+<tr class="separator:a8b5fb595977b62ea764f9362828678f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2b8ee9e2f9b51a281f7c42f61571c9a"><td class="memItemLeft" align="right" valign="top">cmat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ad2b8ee9e2f9b51a281f7c42f61571c9a">qpp::super2choi</a> (const cmat &amp;A)</td></tr>
+<tr class="memdesc:ad2b8ee9e2f9b51a281f7c42f61571c9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts superoperator matrix to Choi matrix.  <a href="#ad2b8ee9e2f9b51a281f7c42f61571c9a">More...</a><br /></td></tr>
+<tr class="separator:ad2b8ee9e2f9b51a281f7c42f61571c9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e1f6add4257e7a92af4378a848110b7"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a3e1f6add4257e7a92af4378a848110b7"><td class="memTemplItemLeft" align="right" valign="top">dyn_mat&lt; typename Derived::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a3e1f6add4257e7a92af4378a848110b7">qpp::ptrace1</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;dims)</td></tr>
 <tr class="memdesc:a3e1f6add4257e7a92af4378a848110b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Partial trace.  <a href="#a3e1f6add4257e7a92af4378a848110b7">More...</a><br /></td></tr>
@@ -161,11 +167,11 @@ Derived1::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a
 <tr class="separator:aaa62e91772d192f1a7981f651ff9072c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cf8dec8978b57214c806094f69e05ca"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a4cf8dec8978b57214c806094f69e05ca"><td class="memTemplItemLeft" align="right" valign="top">dyn_mat&lt; typename Derived::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a4cf8dec8978b57214c806094f69e05ca">qpp::syspermute</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;perm, const std::vector&lt; idx &gt; &amp;dims)</td></tr>
-<tr class="memdesc:a4cf8dec8978b57214c806094f69e05ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">System permutation.  <a href="#a4cf8dec8978b57214c806094f69e05ca">More...</a><br /></td></tr>
+<tr class="memdesc:a4cf8dec8978b57214c806094f69e05ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subsystem permutation.  <a href="#a4cf8dec8978b57214c806094f69e05ca">More...</a><br /></td></tr>
 <tr class="separator:a4cf8dec8978b57214c806094f69e05ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9de352ae53eb3ad8141721b487869b0"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:af9de352ae53eb3ad8141721b487869b0"><td class="memTemplItemLeft" align="right" valign="top">dyn_mat&lt; typename Derived::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#af9de352ae53eb3ad8141721b487869b0">qpp::syspermute</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;perm, idx d=2)</td></tr>
-<tr class="memdesc:af9de352ae53eb3ad8141721b487869b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">System permutation.  <a href="#af9de352ae53eb3ad8141721b487869b0">More...</a><br /></td></tr>
+<tr class="memdesc:af9de352ae53eb3ad8141721b487869b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subsystem permutation.  <a href="#af9de352ae53eb3ad8141721b487869b0">More...</a><br /></td></tr>
 <tr class="separator:af9de352ae53eb3ad8141721b487869b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -176,7 +182,7 @@ Derived1::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="operations_8h.html">operations.h</a></li>
-    <li class="footer">Generated on Tue Dec 9 2014 22:39:52 for Quantum++ by
+    <li class="footer">Generated on Wed Dec 10 2014 01:11:52 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

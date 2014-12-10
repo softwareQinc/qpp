@@ -344,7 +344,7 @@ void CHANNEL()
     cmat rho_out = apply(rho_in, Ks); // output state
 
     cout << ">> Computing its Choi matrix..." << endl;
-    cmat choim = choi(Ks);
+    cmat choim = kraus2choi(Ks);
     cout << ">> Choi matrix:" << endl << disp(choim) << endl;
 
     cout << ">> The eigenvalues of the Choi matrix are: "
@@ -361,7 +361,7 @@ void CHANNEL()
             << norm(rho_out1 - rho_out) << endl;
 
     cout << ">> Superoperator matrix:" << endl;
-    cmat smat = super(Ks);
+    cmat smat = kraus2super(Ks);
     cout << disp(smat) << endl;
 
     cout << ">> The eigenvalues of the superoperator matrix are: " << endl;

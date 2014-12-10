@@ -657,7 +657,7 @@ cmat apply(const Eigen::MatrixBase <Derived>& rho,
 }
 
 /**
-* \brief Superoperator matrix representation
+* \brief Superoperator matrix
 *
 * Constructs the superoperator matrix of the channel specified by the set of
 * Kraus operators \a Ks in the standard operator basis
@@ -665,20 +665,20 @@ cmat apply(const Eigen::MatrixBase <Derived>& rho,
 * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
 *
 * \param Ks Set of Kraus operators
-* \return Superoperator matrix representation
+* \return Superoperator matrix
 */
-cmat super(const std::vector <cmat>& Ks)
+cmat kraus2super(const std::vector <cmat>& Ks)
 {
     // EXCEPTION CHECKS
     if (Ks.size() == 0)
-        throw Exception("qpp::super()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::kraus2super()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_nonzero_size(Ks[0]))
-        throw Exception("qpp::super()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::kraus2super()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(Ks[0]))
-        throw Exception("qpp::super()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::kraus2super()", Exception::Type::MATRIX_NOT_SQUARE);
     for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-            throw Exception("qpp::super()", Exception::Type::DIMS_NOT_EQUAL);
+            throw Exception("qpp::kraus2super()", Exception::Type::DIMS_NOT_EQUAL);
     idx D = static_cast<idx>(Ks[0].rows());
 
     cmat result(D * D, D * D);
@@ -722,7 +722,7 @@ cmat super(const std::vector <cmat>& Ks)
 }
 
 /**
-* \brief Choi matrix representation
+* \brief Choi matrix
 *
 * Constructs the Choi matrix of the channel specified by the set of Kraus
 * operators \a Ks in the standard operator basis \f$\{|i\rangle\langle j|\}\f$
@@ -733,20 +733,20 @@ cmat super(const std::vector <cmat>& Ks)
 * are related by \f$ S_{ab,mn} = C_{ma,nb}\f$
 *
 * \param Ks Set of Kraus operators
-* \return Choi matrix representation
+* \return Choi matrix
 */
-cmat choi(const std::vector <cmat>& Ks)
+cmat kraus2choi(const std::vector <cmat>& Ks)
 {
     // EXCEPTION CHECKS
     if (Ks.size() == 0)
-        throw Exception("qpp::choi()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::kraus2choi()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_nonzero_size(Ks[0]))
-        throw Exception("qpp::choi()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::kraus2choi()", Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(Ks[0]))
-        throw Exception("qpp::choi()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw Exception("qpp::kraus2choi()", Exception::Type::MATRIX_NOT_SQUARE);
     for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-            throw Exception("qpp::choi()", Exception::Type::DIMS_NOT_EQUAL);
+            throw Exception("qpp::kraus2choi()", Exception::Type::DIMS_NOT_EQUAL);
     idx D = static_cast<idx>(Ks[0].rows());
 
     // construct the D x D \sum |jj> vector
@@ -773,16 +773,16 @@ cmat choi(const std::vector <cmat>& Ks)
 }
 
 /**
-* \brief Extracts orthogonal Kraus operators from Choi matrix
+* \brief Orthogonal Kraus operators from Choi matrix
 *
 * Extracts a set of orthogonal (under Hilbert-Schmidt operator norm) Kraus
-* operators from the Choi representation \a A of the channel
+* operators from the Choi matrix \a A
 *
 * \note The Kraus operators satisfy \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$
 * for all \f$i\neq j\f$
 *
 * \param A Choi matrix
-* \return Set of Kraus operators
+* \return Set of orthogonal Kraus operators
 */
 std::vector <cmat> choi2kraus(const cmat& A)
 {
@@ -807,6 +807,68 @@ std::vector <cmat> choi2kraus(const cmat& A)
             result.push_back(
                     std::sqrt(std::abs(ev(i))) * reshape(evec.col(i), D, D));
     }
+
+    return result;
+}
+
+/**
+* \brief Converts Choi matrix to superoperator matrix
+*
+* \param A Choi matrix
+* \return Superoperator matrix
+*/
+cmat choi2super(const cmat& A)
+{
+    // EXCEPTION CHECKS
+    if (!internal::_check_nonzero_size(A))
+        throw Exception("qpp::choi2super()", Exception::Type::ZERO_SIZE);
+    if (!internal::_check_square_mat(A))
+        throw Exception("qpp::choi2super()",
+                Exception::Type::MATRIX_NOT_SQUARE);
+    idx D = static_cast<idx>(std::llround(
+            std::sqrt(static_cast<double>(A.rows()))));
+    if (D * D != static_cast<idx>(A.rows()))
+        throw Exception("qpp::choi2super()", Exception::Type::DIMS_INVALID);
+
+    cmat result = cmat::Zero(D*D, D*D);
+
+#pragma omp parallel for collapse(4)
+    for(std::size_t a = 0; a < D; ++a)
+        for(std::size_t b = 0; b < D; ++b)
+            for(std::size_t m = 0; m < D; ++m)
+                for(std::size_t n = 0; n < D; ++n)
+                    result(a*D+b, m*D+n) = A(m*D+a, n*D+b);
+
+    return result;
+}
+
+/**
+* \brief Converts superoperator matrix to Choi matrix
+*
+* \param A Superoperator matrix
+* \return Choi matrix
+*/
+cmat super2choi(const cmat& A)
+{
+    // EXCEPTION CHECKS
+    if (!internal::_check_nonzero_size(A))
+        throw Exception("qpp::super2choi()", Exception::Type::ZERO_SIZE);
+    if (!internal::_check_square_mat(A))
+        throw Exception("qpp::super2choi()",
+                Exception::Type::MATRIX_NOT_SQUARE);
+    idx D = static_cast<idx>(std::llround(
+            std::sqrt(static_cast<double>(A.rows()))));
+    if (D * D != static_cast<idx>(A.rows()))
+        throw Exception("qpp::super2choi()", Exception::Type::DIMS_INVALID);
+
+    cmat result = cmat::Zero(D*D, D*D);
+
+#pragma omp parallel for collapse(4)
+    for(std::size_t a = 0; a < D; ++a)
+        for(std::size_t b = 0; b < D; ++b)
+            for(std::size_t m = 0; m < D; ++m)
+                for(std::size_t n = 0; n < D; ++n)
+                    result(m*D+a, n*D+b) = A(a*D+b, m*D+n);
 
     return result;
 }
@@ -1239,7 +1301,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 }
 
 /**
-* \brief System permutation
+* \brief Subsystem permutation
 *
 * Permutes the subsystems in a state vector or density matrix.
 * The qubit \a perm[\a i] is permuted to the location \a i.
@@ -1384,7 +1446,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
 }
 
 /**
-* \brief System permutation
+* \brief Subsystem permutation
 *
 * Permutes the subsystems in a state vector or density matrix.
 * The qubit \a perm[\a i] is permuted to the location \a i.
