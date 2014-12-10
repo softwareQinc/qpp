@@ -271,10 +271,10 @@ void ENTANGLEMENT()
     cout << ">> G-Concurrence of psi: " << gconcurrence(psi) << endl;
 
     cout << ">> Schmidt coefficients of psi: " << endl;
-    cout << disp(schmidtcoeff(psi, {2, 2})) << endl;
+    cout << disp(schmidtcoeffs(psi, {2, 2})) << endl;
 
     cout << ">> Schmidt probabilities of psi: " << endl;
-    cout << disp(schmidtprob(psi, {2, 2}), ", ") << endl;
+    cout << disp(schmidtprobs(psi, {2, 2}), ", ") << endl;
 
     cmat UA = schmidtA(psi, {2, 2});
     cmat UB = schmidtB(psi, {2, 2});
@@ -290,8 +290,8 @@ void ENTANGLEMENT()
 
     // reconstructed state
     ket psi_from_schmidt =
-            schmidtcoeff(psi, {2, 2})(0) * kron(UA.col(0), UB.col(0))
-                    + schmidtcoeff(psi, {2, 2})(1) * kron(UA.col(1), UB.col(1));
+            schmidtcoeffs(psi, {2, 2})(0) * kron(UA.col(0), UB.col(0))
+                    + schmidtcoeffs(psi, {2, 2})(1) * kron(UA.col(1), UB.col(1));
     cout << ">> State psi reconstructed from the Schmidt decomposition: "
             << endl;
     cout << disp(psi_from_schmidt) << endl;
@@ -467,7 +467,7 @@ void ENTROPIES()
     cmat rhoA = ptrace(rho, {1});
     cout << ">> State: " << endl << disp(rho) << endl;
     cout << ">> Partial trace over B: " << endl << disp(rhoA) << endl;
-    cout << ">> vonNeumann entropy: " << entropy(rhoA) << endl;
+    cout << ">> von-Neumann entropy: " << entropy(rhoA) << endl;
     cout << ">> Renyi-0 (Hmax) entropy: " << renyi(rhoA, 0) << endl;
     cout << ">> Renyi-1 entropy: " << renyi(rhoA, 1) << endl;
     cout << ">> Renyi-2 entropy: " << renyi(rhoA, 2) << endl;

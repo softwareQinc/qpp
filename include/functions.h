@@ -392,7 +392,7 @@ cmat hevects(const Eigen::MatrixBase <Derived>& A)
 * as columns of a complex dynamic matrix
 */
 template<typename Derived>
-std::tuple <cmat, dyn_mat<double>, cmat>
+std::tuple <cmat, dyn_col_vect<double>, cmat>
 svd(const Eigen::MatrixBase <Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;

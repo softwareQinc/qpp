@@ -341,8 +341,8 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;}</div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;</div>
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;std::tuple &lt;cmat, dyn_mat&lt;double&gt;, <a class="code" href="namespaceqpp.html#a49c56d608ca03d6258e540404e0ab187">cmat</a>&gt;</div>
-<div class="line"><a name="l00396"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a422257e75b6de2f5d3c0d58da6489570">  396</a></span>&#160;<a class="code" href="namespaceqpp.html#a422257e75b6de2f5d3c0d58da6489570">svd</a>(<span class="keyword">const</span> Eigen::MatrixBase &lt;Derived&gt;&amp; A)</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;std::tuple &lt;cmat, dyn_col_vect&lt;double&gt;, <a class="code" href="namespaceqpp.html#a49c56d608ca03d6258e540404e0ab187">cmat</a>&gt;</div>
+<div class="line"><a name="l00396"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a01fbc71879953afc92d8828aa6b99627">  396</a></span>&#160;<a class="code" href="namespaceqpp.html#a01fbc71879953afc92d8828aa6b99627">svd</a>(<span class="keyword">const</span> Eigen::MatrixBase &lt;Derived&gt;&amp; A)</div>
 <div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;{</div>
 <div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a6da17ff338dfcc20d4d6b0476643f6a6">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;</div>
@@ -1186,8 +1186,8 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7cacb2cab32e9061c686a6664d06c8bac94"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cacb2cab32e9061c686a6664d06c8bac94">qpp::Exception::Type::MATRIX_NOT_SQUARE</a></div></div>
 <div class="ttc" id="namespaceqpp_html_a48a92e8a327ff86f87c6236965103797"><div class="ttname"><a href="namespaceqpp.html#a48a92e8a327ff86f87c6236965103797">qpp::sum</a></div><div class="ttdeci">Derived::Scalar sum(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Element-wise sum of A. </div><div class="ttdef"><b>Definition:</b> functions.h:194</div></div>
 <div class="ttc" id="namespaceqpp_html_afa33bacb26cad466156dc3f8f3980da7"><div class="ttname"><a href="namespaceqpp.html#afa33bacb26cad466156dc3f8f3980da7">qpp::reshape</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; reshape(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, idx rows, idx cols)</div><div class="ttdoc">Reshape. </div><div class="ttdef"><b>Definition:</b> functions.h:892</div></div>
-<div class="ttc" id="namespaceqpp_html_a422257e75b6de2f5d3c0d58da6489570"><div class="ttname"><a href="namespaceqpp.html#a422257e75b6de2f5d3c0d58da6489570">qpp::svd</a></div><div class="ttdeci">std::tuple&lt; cmat, dyn_mat&lt; double &gt;, cmat &gt; svd(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Full singular value decomposition. </div><div class="ttdef"><b>Definition:</b> functions.h:396</div></div>
 <div class="ttc" id="namespaceqpp_html_a8945ec38f98d7df111998312fd4b3e5e"><div class="ttname"><a href="namespaceqpp.html#a8945ec38f98d7df111998312fd4b3e5e">qpp::ket</a></div><div class="ttdeci">dyn_col_vect&lt; cplx &gt; ket</div><div class="ttdoc">Complex (double precision) dynamic Eigen column vector. </div><div class="ttdef"><b>Definition:</b> types.h:77</div></div>
+<div class="ttc" id="namespaceqpp_html_a01fbc71879953afc92d8828aa6b99627"><div class="ttname"><a href="namespaceqpp.html#a01fbc71879953afc92d8828aa6b99627">qpp::svd</a></div><div class="ttdeci">std::tuple&lt; cmat, dyn_col_vect&lt; double &gt;, cmat &gt; svd(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Full singular value decomposition. </div><div class="ttdef"><b>Definition:</b> functions.h:396</div></div>
 <div class="ttc" id="namespaceqpp_html_ac38ccf0665bd72f6d350c13c6d926b15"><div class="ttname"><a href="namespaceqpp.html#ac38ccf0665bd72f6d350c13c6d926b15">qpp::grams</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; grams(const std::vector&lt; Derived &gt; &amp;Vs)</div><div class="ttdoc">Gram-Schmidt orthogonalization. </div><div class="ttdef"><b>Definition:</b> functions.h:1035</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -1195,7 +1195,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="functions_8h.html">functions.h</a></li>
-    <li class="footer">Generated on Tue Dec 9 2014 19:17:51 for Quantum++ by
+    <li class="footer">Generated on Tue Dec 9 2014 21:04:14 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

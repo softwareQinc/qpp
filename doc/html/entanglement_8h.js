@@ -7,6 +7,6 @@ var entanglement_8h =
     [ "negativity", "entanglement_8h.html#a7e79a2383dc47a848ea3e88337070e62", null ],
     [ "schmidtA", "entanglement_8h.html#a27d0cd12502123ea1fe7c48d1043439a", null ],
     [ "schmidtB", "entanglement_8h.html#a9843ae59cf424139b3537d21fbfd5860", null ],
-    [ "schmidtcoeff", "entanglement_8h.html#aaea5ceee67384a42a426fba2a65719dd", null ],
-    [ "schmidtprob", "entanglement_8h.html#a422f7bad61df4d232750ef14a9e27d9d", null ]
+    [ "schmidtcoeffs", "entanglement_8h.html#a643a3f3073b38757ad670ad3d0c64850", null ],
+    [ "schmidtprobs", "entanglement_8h.html#a61ff269f163f35f9e929ca800fe8b32f", null ]
 ];

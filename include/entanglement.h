@@ -39,30 +39,30 @@ namespace qpp
 * \brief Schmidt coefficients of the bi-partite pure state \a A
 *
 * \note The sum of the squares of the Schmidt coefficients equals 1
-* \see qpp::schmidtprob()
+* \see qpp::schmidtprobs()
 *
 * \param A Eigen expression
 * \param dims Dimensions of the bi-partite system
 * \return Schmidt coefficients of \a A, as a real dynamic column vector
 */
 template<typename Derived>
-dyn_col_vect<double> schmidtcoeff(const Eigen::MatrixBase <Derived>& A,
+dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase <Derived>& A,
         const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
-        throw Exception("qpp::schmidtcoeff()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::schmidtcoeffs()", Exception::Type::ZERO_SIZE);
     // check bi-partite
     if (dims.size() != 2)
-        throw Exception("qpp::schmidtcoeff()", Exception::Type::NOT_BIPARTITE);
+        throw Exception("qpp::schmidtcoeffs()", Exception::Type::NOT_BIPARTITE);
     // check column vector
     if (!internal::_check_col_vector(rA))
-        throw Exception("qpp::schmidtcoeff()",
+        throw Exception("qpp::schmidtcoeffs()",
                 Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
     if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::schmidtcoeff()",
+        throw Exception("qpp::schmidtcoeffs()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
 
     return svals(transpose(reshape(rA, dims[1], dims[0])));
@@ -137,34 +137,34 @@ cmat schmidtB(const Eigen::MatrixBase <Derived>& A,
 *
 * Defined as the squares of the Schmidt coefficients.
 * The sum of the Schmidt probabilities equals 1.
-* \see qpp::schmidtcoeff()
+* \see qpp::schmidtcoeffs()
 *
 * \param A Eigen expression
 * \param dims Dimensions of the bi-partite system
 * \return Real vector consisting of the Schmidt probabilites of \a A
 */
 template<typename Derived>
-std::vector<double> schmidtprob(const Eigen::MatrixBase <Derived>& A,
+std::vector<double> schmidtprobs(const Eigen::MatrixBase <Derived>& A,
         const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
-        throw Exception("qpp::schmidtprob()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::schmidtprobs()", Exception::Type::ZERO_SIZE);
     // check bi-partite
     if (dims.size() != 2)
-        throw Exception("qpp::schmidtprob()", Exception::Type::NOT_BIPARTITE);
+        throw Exception("qpp::schmidtprobs()", Exception::Type::NOT_BIPARTITE);
     // check column vector
     if (!internal::_check_col_vector(rA))
-        throw Exception("qpp::schmidtprob()",
+        throw Exception("qpp::schmidtprobs()",
                 Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
     if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::schmidtprob()",
+        throw Exception("qpp::schmidtprobs()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
 
     std::vector<double> result;
-    dyn_col_vect<double> scf = schmidtcoeff(rA, dims);
+    dyn_col_vect<double> scf = schmidtcoeffs(rA, dims);
     for (std::size_t i = 0; i < static_cast<std::size_t>(scf.rows()); ++i)
         result.push_back(std::pow(scf(i), 2));
 
@@ -202,7 +202,7 @@ double entanglement(const Eigen::MatrixBase <Derived>& A,
         throw Exception("qpp::entanglement()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
 
-    return entropy(schmidtprob(rA, dims));
+    return entropy(schmidtprobs(rA, dims));
 }
 
 /**
