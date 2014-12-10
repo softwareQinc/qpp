@@ -19,10 +19,10 @@ int main()
     std::cout << disp(Ks[0]) << "\n    and \n" << disp(Ks[1]) << std::endl;
 
     std::cout << "Superoperator matrix of the channel:\n";
-    std::cout << disp(super(Ks)) << std::endl;
+    std::cout << disp(kraus2super(Ks)) << std::endl;
 
     std::cout << "Choi matrix of the channel:\n";
-    std::cout << disp(choi(Ks)) << std::endl;
+    std::cout << disp(kraus2choi(Ks)) << std::endl;
 
     // apply the channel onto the first subsystem
     cmat rhoOut = apply(rho, Ks, {0});
