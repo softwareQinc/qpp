@@ -137,4 +137,3 @@ RandomDevices& rdevs = RandomDevices::get_instance();
 } /* namespace qpp */
 
 #endif	/* QPP_H_ */
-

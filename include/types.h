@@ -99,4 +99,3 @@ using dyn_row_vect = Eigen::Matrix <Scalar, 1, Eigen::Dynamic>;
 } /* namespace qpp */
 
 #endif	/* TYPES_H_ */
-
