@@ -120,7 +120,8 @@ Or, to disable [OpenMP](http://openmp.org/) support (enabled by default), type
     cmake -DWITH_OPENMP=OFF ..
     make
 
-To change the name of the example file, the location of the Eigen 3
+To change the name of the example file, the location of the
+[Eigen 3](http://eigen.tuxfamily.org)
 library or the location of MATLAB installation, 
 edit the `CMakeLists.txt` file. See also `CMakeLists.txt` 
 for additional options. 
