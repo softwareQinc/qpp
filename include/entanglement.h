@@ -29,9 +29,6 @@
 
 // entanglement
 
-#include <types.h>
-#include <vector>
-
 namespace qpp
 {
 

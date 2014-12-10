@@ -24,7 +24,6 @@
 * \brief Measurement functions
 */
 
-
 #ifndef INSTRUMENTS_H_
 #define INSTRUMENTS_H_
 

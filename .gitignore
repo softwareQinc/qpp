@@ -1,8 +1,7 @@
 .idea/
-build/
-/html
-latex/
-quick/
+/build/
+/doc/latex/
+/quick/
 
 *.swp
 

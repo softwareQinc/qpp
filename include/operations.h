@@ -28,8 +28,6 @@
 #define OPERATIONS_H_
 
 // silence g++ bogus warning -Wunused-but-set-variable in lambda functions
-#include <classes/exception.h>
-
 #if (__GNUC__)
 #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 #endif

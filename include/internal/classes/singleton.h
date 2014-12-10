@@ -24,7 +24,6 @@
 * \brief Singleton pattern via CRTP
 */
 
-
 #ifndef INTERNAL_CLASSES_SINGLETON_H_
 #define INTERNAL_CLASSES_SINGLETON_H_
 
