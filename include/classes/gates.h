@@ -121,8 +121,7 @@ public:
         if (D == 0)
             throw Exception("qpp::Gates::Zd()", Exception::Type::DIMS_INVALID);
 
-        cmat result(D, D);
-        result = cmat::Zero(D, D);
+        cmat result = cmat::Zero(D, D);
         for (idx i = 0; i < D; ++i)
             result(i, i) = std::pow(omega(D), i);
 
@@ -144,7 +143,6 @@ public:
             throw Exception("qpp::Gates::Fd()", Exception::Type::DIMS_INVALID);
 
         cmat result(D, D);
-        result = cmat::Zero(D, D);
 #pragma omp parallel for collapse(2)
         for (idx j = 0; j < D; ++j)
             for (idx i = 0; i < D; ++i)

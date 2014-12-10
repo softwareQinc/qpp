@@ -770,14 +770,14 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;    <span class="keywordflow">if</span> (D * D != static_cast&lt;idx&gt;(A.rows()))</div>
 <div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::choi2super()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;</div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> result = cmat::Zero(D*D, D*D);</div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> result(D * D, D * D);</div>
 <div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;</div>
 <div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;<span class="preprocessor">#pragma omp parallel for collapse(4)</span></div>
-<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;    <span class="keywordflow">for</span>(std::size_t a = 0; a &lt; D; ++a)</div>
-<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;        <span class="keywordflow">for</span>(std::size_t b = 0; b &lt; D; ++b)</div>
-<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;            <span class="keywordflow">for</span>(std::size_t m = 0; m &lt; D; ++m)</div>
-<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;                <span class="keywordflow">for</span>(std::size_t n = 0; n &lt; D; ++n)</div>
-<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;                    result(a*D+b, m*D+n) = A(m*D+a, n*D+b);</div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;    <span class="keywordflow">for</span> (std::size_t a = 0; a &lt; D; ++a)</div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;        <span class="keywordflow">for</span> (std::size_t b = 0; b &lt; D; ++b)</div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;            <span class="keywordflow">for</span> (std::size_t m = 0; m &lt; D; ++m)</div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;                <span class="keywordflow">for</span> (std::size_t n = 0; n &lt; D; ++n)</div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;                    result(a * D + b, m * D + n) = A(m * D + a, n * D + b);</div>
 <div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;</div>
 <div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;    <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;}</div>
@@ -795,14 +795,14 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;    <span class="keywordflow">if</span> (D * D != static_cast&lt;idx&gt;(A.rows()))</div>
 <div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::super2choi()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;</div>
-<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;    <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> result = cmat::Zero(D*D, D*D);</div>
+<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;    <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> result(D * D, D * D);</div>
 <div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;</div>
 <div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;<span class="preprocessor">#pragma omp parallel for collapse(4)</span></div>
-<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;    <span class="keywordflow">for</span>(std::size_t a = 0; a &lt; D; ++a)</div>
-<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;        <span class="keywordflow">for</span>(std::size_t b = 0; b &lt; D; ++b)</div>
-<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;            <span class="keywordflow">for</span>(std::size_t m = 0; m &lt; D; ++m)</div>
-<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;                <span class="keywordflow">for</span>(std::size_t n = 0; n &lt; D; ++n)</div>
-<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;                    result(m*D+a, n*D+b) = A(a*D+b, m*D+n);</div>
+<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;    <span class="keywordflow">for</span> (std::size_t a = 0; a &lt; D; ++a)</div>
+<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;        <span class="keywordflow">for</span> (std::size_t b = 0; b &lt; D; ++b)</div>
+<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;            <span class="keywordflow">for</span> (std::size_t m = 0; m &lt; D; ++m)</div>
+<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;                <span class="keywordflow">for</span> (std::size_t n = 0; n &lt; D; ++n)</div>
+<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;                    result(m * D + a, n * D + b) = A(a * D + b, m * D + n);</div>
 <div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;</div>
 <div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;    <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;}</div>
@@ -1374,7 +1374,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="operations_8h.html">operations.h</a></li>
-    <li class="footer">Generated on Wed Dec 10 2014 01:32:39 for Quantum++ by
+    <li class="footer">Generated on Wed Dec 10 2014 02:14:47 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

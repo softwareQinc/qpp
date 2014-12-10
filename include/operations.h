@@ -830,14 +830,14 @@ cmat choi2super(const cmat& A)
     if (D * D != static_cast<idx>(A.rows()))
         throw Exception("qpp::choi2super()", Exception::Type::DIMS_INVALID);
 
-    cmat result = cmat::Zero(D*D, D*D);
+    cmat result(D * D, D * D);
 
 #pragma omp parallel for collapse(4)
-    for(std::size_t a = 0; a < D; ++a)
-        for(std::size_t b = 0; b < D; ++b)
-            for(std::size_t m = 0; m < D; ++m)
-                for(std::size_t n = 0; n < D; ++n)
-                    result(a*D+b, m*D+n) = A(m*D+a, n*D+b);
+    for (std::size_t a = 0; a < D; ++a)
+        for (std::size_t b = 0; b < D; ++b)
+            for (std::size_t m = 0; m < D; ++m)
+                for (std::size_t n = 0; n < D; ++n)
+                    result(a * D + b, m * D + n) = A(m * D + a, n * D + b);
 
     return result;
 }
@@ -861,14 +861,14 @@ cmat super2choi(const cmat& A)
     if (D * D != static_cast<idx>(A.rows()))
         throw Exception("qpp::super2choi()", Exception::Type::DIMS_INVALID);
 
-    cmat result = cmat::Zero(D*D, D*D);
+    cmat result(D * D, D * D);
 
 #pragma omp parallel for collapse(4)
-    for(std::size_t a = 0; a < D; ++a)
-        for(std::size_t b = 0; b < D; ++b)
-            for(std::size_t m = 0; m < D; ++m)
-                for(std::size_t n = 0; n < D; ++n)
-                    result(m*D+a, n*D+b) = A(a*D+b, m*D+n);
+    for (std::size_t a = 0; a < D; ++a)
+        for (std::size_t b = 0; b < D; ++b)
+            for (std::size_t m = 0; m < D; ++m)
+                for (std::size_t n = 0; n < D; ++n)
+                    result(m * D + a, n * D + b) = A(a * D + b, m * D + n);
 
     return result;
 }
