@@ -1,6 +1,3 @@
-### Warning: development branch, v0.1.1, use it at your own risk! 
-### Switch to the master branch for the stable v0.1 version.
-
 # Quantum++ 
 
 Quantum++ is a C++11 general purpose quantum computing library, composed 
