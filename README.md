@@ -1,6 +1,3 @@
-### Development version, use it at your own risk!
-### Switch to the master branch for the stable version v0.1.
-
 # Quantum++
 
 Quantum++ is a C++11 general purpose quantum computing library, composed 
@@ -45,7 +42,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 ### Configuration:
 
-- Compiler: `g++` >= 4.8 (for good C++11 support)
+- Compiler: [g++](https://gcc.gnu.org/) >= 4.8 (for good C++11 support)
 - [Eigen 3](http://eigen.tuxfamily.org) library located in `$HOME/eigen`
 - Quantum++ library located in `$HOME/qpp`
 - MATLAB compiler include header files:
@@ -137,7 +134,7 @@ before a fresh build!
 - The C++ compiler must be C++11 compliant.
 
 - If your compiler does not support [OpenMP](http://openmp.org/) 
-(as it is the case e.g with `clang++`), disable [OpenMP](http://openmp.org/)
+(as it is the case e.g with [clang++](http://clang.llvm.org/)), disable [OpenMP](http://openmp.org/)
 in your build, as otherwise the linker may not find the `gomp` library.
 
 - If you run the program on OS X with MATLAB support, make sure that 
@@ -160,7 +157,7 @@ Otherwise, you will get a runtime error like
             export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"
             ./qpp
 
-- If you build a debug version with `g++` under OS X and use `gdb` to step 
+- If you build a debug version with [g++](https://gcc.gnu.org/) under OS X and use `gdb` to step 
 inside template functions you may want to add `-fno-weak` compiler flag. See 
 <http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks>
 for more details about this problem.
