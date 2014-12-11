@@ -33,6 +33,7 @@ namespace qpp
 {
 /**
 * \brief Simple continued fraction expansion
+* \see qpp::contfrac2x()
 *
 * \param x Real number
 * \param n Number of terms in the expansion
@@ -62,6 +63,7 @@ std::vector<long long int> x2contfrac(double x, idx n,
 
 /**
 * \brief Real representation of a simple continued fraction
+* \see qpp::x2contfrac()
 *
 * \param cf Integer vector containing the simple continued fraction expansion
 * \param n Number of terms considered in the continued fraction expansion.
@@ -94,6 +96,7 @@ double contfrac2x(const std::vector<int>& cf, idx n)
 
 /**
 * \brief Real representation of a simple continued fraction
+* \see qpp::x2contfrac()
 *
 * \param cf Integer vector containing the simple continued fraction expansion
 * \return Real representation of the simple continued fraction
@@ -117,6 +120,7 @@ double contfrac2x(const std::vector<int>& cf)
 
 /**
 * \brief Greatest common divisor of two non-negative integers
+* \see qpp::lcm()
 *
 * \param m Non-negative integer
 * \param n Non-negative integer
@@ -140,6 +144,7 @@ idx gcd(idx m, idx n)
 
 /**
 * \brief Greatest common divisor of a list of non-negative integers
+* \see qpp::lcm()
 *
 * \param ns List of non-negative integers
 * \return Greatest common divisor of all numbers in \a ns
@@ -160,6 +165,7 @@ idx gcd(const std::vector <idx>& ns)
 
 /**
 * \brief Least common multiple of two positive integers
+* \see qpp::gcd()
 *
 * \param m Positive integer
 * \param n Positive integer
@@ -175,6 +181,7 @@ idx lcm(idx m, idx n)
 
 /**
 * \brief Least common multiple of a list of positive integers
+* \see qpp::gcd()
 *
 * \param ns List of positive integers
 * \return Least common multiple of all numbers in \a ns

@@ -1134,6 +1134,7 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase <Derived>& A)
 
 /**
 * \brief Non-negative integer index to multi-index
+* \see qpp::multiidx2n()
 *
 * Uses standard lexicographical order, i.e. 00...0, 00...1 etc.
 *
@@ -1164,6 +1165,7 @@ std::vector <idx> n2multiidx(idx n,
 
 /**
 * \brief Multi-index to non-negative integer index
+* \see qpp::n2multiidx()
 *
 * Uses standard lexicographical order, i.e. 00...0, 00...1 etc.
 *

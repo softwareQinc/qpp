@@ -121,8 +121,7 @@ internal::IOManipPointer <PointerType> disp(const PointerType* p, idx n,
 /**
 * \brief Saves Eigen expression to a binary file (internal format) in double
 * precision
-*
-* \see qpp::saveMATLABmatrix()
+* \see qpp::load()
 *
 * \param A Eigen expression
 * \param fname Output file name
@@ -164,6 +163,7 @@ void save(const Eigen::MatrixBase <Derived>& A, const std::string& fname)
 /**
 * \brief Loads Eigen matrix from a binary file (internal format) in double
 * precision
+* \see qpp::save()
 *
 * The template parameter cannot be automatically deduced and
 * must be explicitly provided, depending on the scalar field of the matrix
@@ -174,8 +174,6 @@ void save(const Eigen::MatrixBase <Derived>& A, const std::string& fname)
 * // loads a previously saved Eigen dynamic complex matrix from "input.bin"
 * auto mat = load<cmat>("input.bin");
 * \endcode
-*
-* \see qpp::loadMATLABmatrix()
 *
 * \param A Eigen expression
 * \param fname Output file name
