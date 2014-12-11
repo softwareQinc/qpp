@@ -102,7 +102,7 @@ namespace qpp
 /**
 * \brief qpp::Init const Singleton
 *
-* Additional initializations/cleanups
+* Additional initializations/cleanups, see the class qpp::Init
 */
 const Init& init = Init::get_instance();
 
