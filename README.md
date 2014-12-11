@@ -151,11 +151,12 @@ Otherwise, you will get a runtime error like
 `dyld: Library not loaded: @rpath/libmat.dylib`.
 
     * I recommend running via a script, as otherwise setting the 
-    `DYLD_LIBRARY_PATH` globally may interfere with Macports' 
-    [cmake](http://www.cmake.org/) installation (in case you use 
-    [cmake](http://www.cmake.org/) from [macports](https://www.macports.org/)). 
-    If you use a script, then the environment variable is local to the script 
-    and does not interfere with the rest of the system.
+    `DYLD_LIBRARY_PATH` globally may interfere with 
+    [macports](https://www.macports.org/)' [cmake](http://www.cmake.org/) 
+    installation (in case you use [cmake](http://www.cmake.org/) from 
+    [macports](https://www.macports.org/)). If you use a script, 
+    then the environment variable is local to the script and 
+    does not interfere with the rest of the system.
 
     * Example of running script, run from inside the directory where 
     the executable `qpp` is located:
