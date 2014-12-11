@@ -146,7 +146,7 @@ disable [OpenMP](http://openmp.org/) in your build,
 as otherwise the linker may not find the 
 [gomp](https://gcc.gnu.org/projects/gomp/) library.
 
-- If you run the program on OS X with 
+- If you run the program on [OS X](http://www.apple.com/osx) with 
 [MATLAB](http://www.mathworks.com/products/matlab/) support, make sure that 
 the environment variable `DYLD_LIBRARY_PATH` is set to point to the 
 [MATLAB](http://www.mathworks.com/products/matlab/) 
@@ -170,8 +170,9 @@ Otherwise, you will get a runtime error like
             export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"
             ./qpp
 
-- If you build a debug version with [g++](https://gcc.gnu.org/) under OS X and 
-use [gdb](http://www.gnu.org/software/gdb/) to step inside template functions 
+- If you build a debug version with [g++](https://gcc.gnu.org/) under 
+[OS X](http://www.apple.com/osx) X and use 
+[gdb](http://www.gnu.org/software/gdb/) to step inside template functions 
 you may want to add `-fno-weak` compiler flag. See 
 <http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks>
 for more details about this problem.
