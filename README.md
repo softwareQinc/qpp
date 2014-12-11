@@ -1,4 +1,4 @@
-### Development version, use it at your own risk.
+### Development version, use it at your own risk!
 ### Switch to the master branch for the stable version v0.1.
 
 # Quantum++
