@@ -59,24 +59,21 @@ shared library files:
 - Output executable: `$HOME/qpp/examples/example`
 - Must run the commands below from inside the directory `$HOME/qpp/examples` 
 
-#### Release version
- (without [MATLAB](http://www.mathworks.com/products/matlab/) support): 
+#### Release version (without [MATLAB](http://www.mathworks.com/products/matlab/) support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
          -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
          -isystem $HOME/eigen -I $HOME/qpp/include \
          example.cpp -o example
 
-#### Debug version
- (without [MATLAB](http://www.mathworks.com/products/matlab/) support): 
+#### Debug version (without [MATLAB](http://www.mathworks.com/products/matlab/) support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
          -g3 -DDEBUG \
          -isystem $HOME/eigen -I $HOME/qpp/include \
           example.cpp -o example
 
-#### Release version
- (with [MATLAB](http://www.mathworks.com/products/matlab/) support): 
+#### Release version (with [MATLAB](http://www.mathworks.com/products/matlab/) support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
          -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
@@ -85,8 +82,7 @@ shared library files:
          -L/Applications/MATLAB_R2014b.app/bin/maci64 \
          -lmx -lmat example.cpp -o example
 
-#### Debug version
- (with [MATLAB](http://www.mathworks.com/products/matlab/) support):  
+#### Debug version (with [MATLAB](http://www.mathworks.com/products/matlab/) support):  
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
          -g3 -DDEBUG \
@@ -113,7 +109,8 @@ The above commands build the relase version (default) executable `qpp`,
 from the source file `./examples/example.cpp`,
 without [MATLAB](http://www.mathworks.com/products/matlab/) support (default), 
 inside the directory `./build`. To build a different configuration, 
-e.g. debug version with MATLAB support, type from the root of the project
+e.g. debug version with [MATLAB](http://www.mathworks.com/products/matlab/) 
+support, type from the root of the project
 
     cd ./build
     rm -rf *
