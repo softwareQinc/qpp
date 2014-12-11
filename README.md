@@ -42,7 +42,8 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 ### Configuration:
 
-- Compiler: [g++](https://gcc.gnu.org/) >= 4.8 (for good C++11 support)
+- Compiler: [g++](https://gcc.gnu.org/) version 4.8 or later 
+(for good C++11 support)
 - [Eigen 3](http://eigen.tuxfamily.org) library located in `$HOME/eigen`
 - Quantum++ library located in `$HOME/qpp`
 - [MATLAB](http://www.mathworks.com/products/matlab/) compiler 
