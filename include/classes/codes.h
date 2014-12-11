@@ -41,7 +41,6 @@ class Codes : public internal::Singleton<const Codes> // const Singleton
 public:
     /**
     * \brief Code types, add more codes here if needed
-    *
     * \see qpp::Codes::codeword()
     */
     enum class Type // exception types
@@ -60,9 +59,10 @@ private:
 
 public:
     /**
-    * \brief Returns the codeword of the specified code
+    * \brief Returns the codeword of the specified code type
+    * \see qpp::Codes::Type
     *
-    * \param type Code type, defined in the enum qpp::Codes::Types
+    * \param type Code type
     * \param i Codeword index
     * \return \a i-th codeword  of the code \a type
     */

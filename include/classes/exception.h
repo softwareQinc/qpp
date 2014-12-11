@@ -41,7 +41,6 @@ class Exception : public std::exception
 public:
     /**
     * \brief Exception types, add more here if needed
-    *
     * \see qpp::Exception::_construct_exception_msg()
     */
     enum class Type // exception types
@@ -119,8 +118,7 @@ public:
     * \brief Constructs an exception
     *
     * \param where Text representing where the exception occured
-    * \param type Exception type, see the strong enumeration
-    * qpp::Exception::Type
+    * \param type Exception type, defined in qpp::Exception::Type
     */
     Exception(const std::string& where, const Type& type) :
             _where(where), _msg(), _type(type), _custom()
@@ -161,7 +159,6 @@ private:
 
     /**
     * \brief Constructs the exception description from its type
-    *
     * \see qpp::Exception::Type
     *
     * Must modify the code of this function if more exceptions are added

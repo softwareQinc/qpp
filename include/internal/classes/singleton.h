@@ -61,7 +61,7 @@ namespace internal // internal class, do not modify
 *
 * \endcode
 *
-* \see Code of qpp::Codes, qpp::Gates, qpp::RandomDevices,
+* \see Code of qpp::Codes, qpp::Gates, qpp::Init, qpp::RandomDevices,
 * qpp::States or qpp.h for real world examples of usage.
 */
 template<typename T>

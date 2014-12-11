@@ -38,6 +38,7 @@ namespace qpp
 
 /**
 * \brief Loads an Eigen dynamic matrix from a MATLAB .mat file, generic version
+* \see qpp::saveMATLABmatrix()
 *
 * This is the generic version that always throws
 * qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
@@ -54,6 +55,7 @@ Derived loadMATLABmatrix(const std::string& mat_file,
 /**
 * \brief Loads an Eigen dynamic matrix from a MATLAB .mat file,
 * specialization for double matrices (qpp::dmat)
+* \see qpp::saveMATLABmatrix()
 *
 * The template parameter cannot be automatically deduced and
 * must be explicitly provided
@@ -118,6 +120,7 @@ inline dmat loadMATLABmatrix(const std::string& mat_file,
 /**
 * \brief Loads an Eigen dynamic matrix from a MATLAB .mat file,
 * specialization for complex matrices (qpp::cmat)
+* \see qpp::saveMATLABmatrix()
 *
 * The template parameter cannot be automatically deduced and
 * must be explicitly provided
@@ -196,6 +199,7 @@ inline cmat loadMATLABmatrix(const std::string& mat_file,
 
 /**
 * \brief Saves an Eigen dynamic matrix to a MATLAB .mat file, generic version
+* \see qpp::loadMATLABmatrix()
 *
 * This is the generic version that always throws
 * qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
@@ -213,6 +217,7 @@ void saveMATLABmatrix(const Eigen::MatrixBase <Derived>& A,
 /**
 * \brief Saves an Eigen dynamic matrix to a MATLAB .mat file,
 * specialization for double matrices (qpp::dmat)
+* \see qpp::loadMATLABmatrix()
 *
 * \param A Eigen expression over the complex field
 * \param mat_file MATALB .mat file
@@ -258,6 +263,7 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <dmat>& A,
 /**
 * \brief Saves an Eigen dynamic matrix to a MATLAB .mat file,
 * specialization for complex matrices (qpp::cmat)
+* \see qpp::loadMATLABmatrix()
 *
 * \param A Eigen expression over the complex field
 * \param mat_file MATALB .mat file

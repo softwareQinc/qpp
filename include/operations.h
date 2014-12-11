@@ -721,6 +721,7 @@ cmat kraus2super(const std::vector <cmat>& Ks)
 
 /**
 * \brief Choi matrix
+* \see qpp::choi2kraus()
 *
 * Constructs the Choi matrix of the channel specified by the set of Kraus
 * operators \a Ks in the standard operator basis \f$\{|i\rangle\langle j|\}\f$
@@ -772,6 +773,7 @@ cmat kraus2choi(const std::vector <cmat>& Ks)
 
 /**
 * \brief Orthogonal Kraus operators from Choi matrix
+* \see qpp::kraus2choi()
 *
 * Extracts a set of orthogonal (under Hilbert-Schmidt operator norm) Kraus
 * operators from the Choi matrix \a A
@@ -811,6 +813,7 @@ std::vector <cmat> choi2kraus(const cmat& A)
 
 /**
 * \brief Converts Choi matrix to superoperator matrix
+* \see qpp::super2choi()
 *
 * \param A Choi matrix
 * \return Superoperator matrix
@@ -842,6 +845,7 @@ cmat choi2super(const cmat& A)
 
 /**
 * \brief Converts superoperator matrix to Choi matrix
+* \see qpp::choi2super()
 *
 * \param A Superoperator matrix
 * \return Choi matrix
