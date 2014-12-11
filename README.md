@@ -1,6 +1,3 @@
-### Development version, use it at your own risk!
-### Switch to the master branch for the stable version v0.1.
-
 # Quantum++
 
 Quantum++ is a C++11 general purpose quantum computing library, composed 
@@ -171,7 +168,7 @@ Otherwise, you will get a runtime error like
             ./qpp
 
 - If you build a debug version with [g++](https://gcc.gnu.org/) under 
-[OS X](http://www.apple.com/osx) X and use 
+[OS X](http://www.apple.com/osx) and use 
 [gdb](http://www.gnu.org/software/gdb/) to step inside template functions 
 you may want to add `-fno-weak` compiler flag. See 
 <http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks>
