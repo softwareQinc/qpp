@@ -190,14 +190,14 @@ $(document).ready(function(){initNavTree('random_8h_source.html','');});
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> X(D, D);</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    X = 1 / std::sqrt(2.) * randn &lt; cmat &gt; (D, D);</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    X = 1 / std::sqrt(2.) * randn &lt;cmat&gt; (D, D);</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    Eigen::HouseholderQR &lt;cmat&gt; qr(X);</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> Q = qr.householderQ();</div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <span class="comment">// phase correction so that the resultant matrix is</span></div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="comment">// uniformly distributed according to the Haar measure</span></div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    Eigen::VectorXcd phases = (rand &lt; dmat &gt; (D, 1)).cast&lt;<a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt;();</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    Eigen::VectorXcd phases = (rand &lt;dmat&gt; (D, 1)).cast&lt;<a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt;();</div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(phases.rows()); ++i)</div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        phases(i) = std::exp(2 * <a class="code" href="namespaceqpp.html#a73c04db6f636b236d64fddb069bef492">pi</a> * 1_i * phases(i));</div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;</div>
@@ -242,7 +242,7 @@ $(document).ready(function(){initNavTree('random_8h_source.html','');});
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <span class="keywordflow">if</span> (D == 0)</div>
 <div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::randH()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> H = 2 * rand &lt; cmat &gt; (D, D) - (1. + 1_i) * cmat::Ones(D, D);</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> H = 2 * rand &lt;cmat&gt; (D, D) - (1. + 1_i) * cmat::Ones(D, D);</div>
 <div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;</div>
 <div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    <span class="keywordflow">return</span> H + <a class="code" href="namespaceqpp.html#aba2b3538ec37539e56f77addfb9ea1dd">adjoint</a>(H);</div>
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;}</div>
@@ -259,7 +259,7 @@ $(document).ready(function(){initNavTree('random_8h_source.html','');});
 <div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="comment">     return result;</span></div>
 <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="comment">     */</span></div>
 <div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> kt = randn &lt; cmat &gt; (D, 1);</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> kt = randn &lt;cmat&gt; (D, 1);</div>
 <div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;</div>
 <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    <span class="keywordflow">return</span> kt / <a class="code" href="namespaceqpp.html#af2e4740854c958579228593dd639aa6c">norm</a>(kt);</div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;}</div>
@@ -326,7 +326,7 @@ $(document).ready(function(){initNavTree('random_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="random_8h.html">random.h</a></li>
-    <li class="footer">Generated on Thu Dec 11 2014 11:01:28 for Quantum++ by
+    <li class="footer">Generated on Thu Dec 11 2014 11:29:42 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
