@@ -242,6 +242,7 @@ double norm(const Eigen::MatrixBase <Derived>& A)
 
 /**
 * \brief Full eigen decomposition
+* \see qpp::heig()
 *
 * \param A Eigen expression
 * \return Pair of:  1. Eigenvalues of \a A, as a complex dynamic column vector,
@@ -267,6 +268,7 @@ std::pair <dyn_col_vect<cplx>, cmat> eig(const Eigen::MatrixBase <Derived>& A)
 
 /**
 * \brief Eigenvalues
+* \see qpp::hevals()
 *
 * \param A Eigen expression
 * \return Eigenvalues of \a A, as a complex dynamic column vector
@@ -289,6 +291,7 @@ dyn_col_vect <cplx> evals(const Eigen::MatrixBase <Derived>& A)
 
 /**
 * \brief Eigenvectors
+* \see qpp::hevects()
 *
 * \param A Eigen expression
 * \return Eigenvectors of \a A, as columns of a complex dynamic matrix
@@ -313,6 +316,7 @@ cmat evects(const Eigen::MatrixBase <Derived>& A)
 
 /**
 * \brief Full eigen decomposition of Hermitian expression
+* \see qpp::eig()
 *
 * \param A Eigen expression
 * \return Pair of:  1. Eigenvalues of \a A, as a real dynamic column vector,
@@ -339,6 +343,7 @@ std::pair <dyn_col_vect<double>, cmat> heig(
 
 /**
 * \brief Hermitian eigenvalues
+* \see qpp::evals()
 *
 * \param A Eigen expression
 * \return Eigenvalues of Hermitian \a A, as a real dynamic column vector
@@ -361,6 +366,7 @@ dyn_col_vect<double> hevals(const Eigen::MatrixBase <Derived>& A)
 
 /**
 * \brief Hermitian eigenvectors
+* \see qpp::evects()
 *
 * \param A Eigen expression
 * \return Eigenvectors of Hermitian \a A, as columns of a complex matrix
@@ -640,6 +646,7 @@ cmat cosm(const Eigen::MatrixBase <Derived>& A)
 
 /**
 * \brief Matrix power
+* \see qpp::powm()
 *
 * Uses the spectral decomposition of \a A to compute the matrix power.
 * By convention \f$A^0 = I\f$.
@@ -679,6 +686,7 @@ cmat spectralpowm(const Eigen::MatrixBase <Derived>& A, const cplx z)
 
 /**
 * \brief Matrix power
+* \see qpp::spectralpowm()
 *
 * Explicitly multiplies the matrix \a A with itself \a n times.
 * By convention \f$A^0 = I\f$.
@@ -775,6 +783,7 @@ dyn_mat <OutputScalar> cwise(const Eigen::MatrixBase <Derived>& A,
 // variadic template
 /**
 * \brief Kronecker product
+* \see qpp::kronpow()
 *
 * Used to stop the recursion for the variadic template version of
 * qpp::kron()
@@ -790,6 +799,7 @@ dyn_mat<typename T::Scalar> kron(const T& head)
 
 /**
 * \brief Kronecker product
+* \see qpp::kronpow()
 *
 * \param head Eigen expression
 * \param tail Variadic Eigen expression (zero or more parameters)
@@ -805,6 +815,7 @@ dyn_mat<typename T::Scalar> kron(const T& head, const Args& ... tail)
 
 /**
 * \brief Kronecker product
+* \see qpp::kronpow()
 *
 * \param As std::vector of Eigen expressions
 * \return Kronecker product of all elements in \a As,
@@ -834,6 +845,7 @@ dyn_mat<typename Derived::Scalar> kron(const std::vector <Derived>& As)
 // deduce the template parameters from initializer_list
 /**
 * \brief Kronecker product
+* \see qpp::kronpow()
 *
 * \param As std::initializer_list of Eigen expressions,
 * such as \a {A1, A2, ... ,Ak}
@@ -850,6 +862,7 @@ dyn_mat<typename Derived::Scalar> kron(
 
 /**
 * \brief Kronecker power
+* \see qpp::kron()
 *
 * \param A Eigen expression
 * \param n Non-negative integer
@@ -911,6 +924,7 @@ dyn_mat<typename Derived::Scalar> reshape(const Eigen::MatrixBase <Derived>& A,
 
 /**
 * \brief Commutator
+* \see qpp::anticomm()
 *
 *  Commutator \f$ [A,B] = AB - BA \f$.
 *  Both \a A and \a B must be Eigen expressions over the same scalar field.
@@ -952,6 +966,7 @@ dyn_mat<typename Derived1::Scalar> comm(const Eigen::MatrixBase <Derived1>& A,
 
 /**
 * \brief Anti-commutator
+* \see qpp::comm()
 *
 *  Anti-commutator \f$ \{A,B\} = AB + BA \f$.
 *  Both \a A and \a B must be Eigen expressions over the same scalar field.

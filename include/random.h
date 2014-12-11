@@ -260,14 +260,14 @@ cmat randU(idx D)
 
     cmat X(D, D);
 
-    X = 1 / std::sqrt(2.) * randn < cmat > (D, D);
+    X = 1 / std::sqrt(2.) * randn <cmat> (D, D);
     Eigen::HouseholderQR <cmat> qr(X);
 
     cmat Q = qr.householderQ();
     // phase correction so that the resultant matrix is
     // uniformly distributed according to the Haar measure
 
-    Eigen::VectorXcd phases = (rand < dmat > (D, 1)).cast<cplx>();
+    Eigen::VectorXcd phases = (rand <dmat> (D, 1)).cast<cplx>();
     for (idx i = 0; i < static_cast<idx>(phases.rows()); ++i)
         phases(i) = std::exp(2 * pi * 1_i * phases(i));
 
@@ -335,7 +335,7 @@ cmat randH(idx D)
     if (D == 0)
         throw Exception("qpp::randH()", Exception::Type::DIMS_INVALID);
 
-    cmat H = 2 * rand < cmat > (D, D) - (1. + 1_i) * cmat::Ones(D, D);
+    cmat H = 2 * rand <cmat> (D, D) - (1. + 1_i) * cmat::Ones(D, D);
 
     return H + adjoint(H);
 }
@@ -358,7 +358,7 @@ ket randket(idx D)
      return result;
      */
 
-    ket kt = randn < cmat > (D, 1);
+    ket kt = randn <cmat> (D, 1);
 
     return kt / norm(kt);
 }

@@ -37,6 +37,7 @@ namespace qpp
 /**
 * \brief Applies the controlled-gate \a A to the part \a subsys
 * of the multi-partite state vector or density matrix \a state
+* \see qpp::Gates::CTRL()
 *
 * \note The dimension of the gate \a A must match
 * the dimension of \a subsys.
@@ -364,6 +365,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 /**
 * \brief Applies the controlled-gate \a A to the part \a subsys
 * of the multi-partite state vector or density matrix \a state
+* \see qpp::Gates::CTRL()
 *
 * \note The dimension of the gate \a A must match
 * the dimension of \a subsys
@@ -877,6 +879,7 @@ cmat super2choi(const cmat& A)
 
 /**
 * \brief Partial trace
+* \see qpp::ptrace2()
 *
 *  Partial trace of density matrix
 *  over the first subsystem in a bi-partite system
@@ -942,6 +945,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase <Derived>& A,
 
 /**
 * \brief Partial trace
+* \see qpp::ptrace1()
 *
 * \param A Eigen expression
 * \param dims Dimensions of the bi-partite system
@@ -995,6 +999,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase <Derived>& A,
 
 /**
 * \brief Partial trace
+* \see qpp::ptrace1(), qpp::ptrace2()
 *
 *  Partial trace of the multi-partite density matrix
 *  over a list of subsystems
@@ -1139,6 +1144,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase <Derived>& A,
 
 /**
 * \brief Partial trace
+* \see qpp::ptrace1(), qpp::ptrace2()
 *
 *  Partial trace of the multi-partite density matrix
 *  over a list of subsystems

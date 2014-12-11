@@ -189,6 +189,7 @@ public:
     /**
     * \brief Generates the multi-partite multiple-controlled-\a A gate
     * in matrix form
+    * \see qpp::applyCTRL()
     *
     * \note The dimension of the gate \a A must match
     * the dimension of \a subsys
@@ -358,6 +359,7 @@ public:
 
     /**
     * \brief Expands out
+    * \see qpp::kron()
     *
     *  Expands out \a A as a matrix in a multi-partite system.
     *  Faster than using qpp::kron(I, I, ..., I, A, I, ..., I).
