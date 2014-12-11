@@ -168,7 +168,7 @@ Otherwise, you will get a runtime error like
             export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"
             ./qpp
 
-- If you build a debug version with https://gcc.gnu.org/ under OS X and 
+- If you build a debug version with [g++](https://gcc.gnu.org/) under OS X and 
 use [gdb](http://www.gnu.org/software/gdb/) to step inside template functions 
 you may want to add `-fno-weak` compiler flag. See 
 <http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks>
