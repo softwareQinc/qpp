@@ -9,39 +9,38 @@
 \form#8:$ U $
 \form#9:$ V $
 \form#10:$\alpha$
-\form#11:$ \alpha\geq 0$
-\form#12:$\alpha = \infty$
-\form#13:$ \alpha\to 1$
-\form#14:$ e $
-\form#15:$\pm \infty$
-\form#16:$f(A)$
-\form#17:$A^0 = I$
-\form#18:$A^z$
-\form#19:$A^n$
-\form#20:$A^{\otimes n}$
-\form#21:$ [A,B] = AB - BA $
-\form#22:$AB -BA$
-\form#23:$ \{A,B\} = AB + BA $
-\form#24:$AB +BA$
-\form#25:$|\mathrm{mask}\rangle$
-\form#26:$\circ$
-\form#27:$\{|i\rangle\langle j|\}$
-\form#28:$|0\rangle\langle 0|$
-\form#29:$|0\rangle\langle 1|$
-\form#30:$S$
-\form#31:$ C$
-\form#32:$ S_{ab,mn} = C_{ma,nb}$
-\form#33:$Tr(K_i^\dagger K_j)=\delta_{ij}$
-\form#34:$i\neq j$
-\form#35:$Tr_{A}(\cdot)$
-\form#36:$A$
-\form#37:$A\otimes B$
-\form#38:$Tr_{B}(\cdot)$
-\form#39:$B$
-\form#40:$Tr_{subsys}(\cdot)$
-\form#41:$(\cdot)^{T_{subsys}}$
-\form#42:$ \sum_i K_i^\dagger K_i = I$
-\form#43:$\alpha\geq 0$
-\form#44:$q$
-\form#45:$q\geq 0$
-\form#46:$ q\to 1$
+\form#11:$\alpha\geq 0$
+\form#12:$ \alpha\to 1$
+\form#13:$\alpha = \infty$
+\form#14:$q$
+\form#15:$q\geq 0$
+\form#16:$ q\to 1$
+\form#17:$ e $
+\form#18:$\pm \infty$
+\form#19:$f(A)$
+\form#20:$A^0 = I$
+\form#21:$A^z$
+\form#22:$A^n$
+\form#23:$A^{\otimes n}$
+\form#24:$ [A,B] = AB - BA $
+\form#25:$AB -BA$
+\form#26:$ \{A,B\} = AB + BA $
+\form#27:$AB +BA$
+\form#28:$|\mathrm{mask}\rangle$
+\form#29:$\circ$
+\form#30:$\{|i\rangle\langle j|\}$
+\form#31:$|0\rangle\langle 0|$
+\form#32:$|0\rangle\langle 1|$
+\form#33:$S$
+\form#34:$ C$
+\form#35:$ S_{ab,mn} = C_{ma,nb}$
+\form#36:$Tr(K_i^\dagger K_j)=\delta_{ij}$
+\form#37:$i\neq j$
+\form#38:$Tr_{A}(\cdot)$
+\form#39:$A$
+\form#40:$A\otimes B$
+\form#41:$Tr_{B}(\cdot)$
+\form#42:$B$
+\form#43:$Tr_{subsys}(\cdot)$
+\form#44:$(\cdot)^{T_{subsys}}$
+\form#45:$ \sum_i K_i^\dagger K_i = I$
