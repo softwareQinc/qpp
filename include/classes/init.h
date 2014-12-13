@@ -69,8 +69,8 @@ private:
         std::cout << std::endl << ">>> Exiting Quantum++..." << std::endl;
 
         // gets and displays current system time
-        time_t current_date;
-        time(&current_date);
+        std::time_t current_date;
+        std::time(&current_date);
         std::cout << ">>> " << std::ctime(&current_date);
     }
 }; /* class Init */
