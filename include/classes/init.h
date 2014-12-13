@@ -49,8 +49,8 @@ public:
         std::cout << ">>> Starting Quantum++..." << std::endl;
 
         // gets and displays current system time
-        time_t current_date;
-        time(&current_date);
+        std::time_t current_date;
+        std::time(&current_date);
         std::cout << ">>> " << std::ctime(&current_date) << std::endl;
 
         // set default output format and precision
