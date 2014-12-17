@@ -836,10 +836,10 @@ cmat choi2super(const cmat& A)
     cmat result(D * D, D * D);
 
 #pragma omp parallel for collapse(4)
-    for (std::size_t a = 0; a < D; ++a)
-        for (std::size_t b = 0; b < D; ++b)
-            for (std::size_t m = 0; m < D; ++m)
-                for (std::size_t n = 0; n < D; ++n)
+    for (idx a = 0; a < D; ++a)
+        for (idx b = 0; b < D; ++b)
+            for (idx m = 0; m < D; ++m)
+                for (idx n = 0; n < D; ++n)
                     result(a * D + b, m * D + n) = A(m * D + a, n * D + b);
 
     return result;
@@ -868,10 +868,10 @@ cmat super2choi(const cmat& A)
     cmat result(D * D, D * D);
 
 #pragma omp parallel for collapse(4)
-    for (std::size_t a = 0; a < D; ++a)
-        for (std::size_t b = 0; b < D; ++b)
-            for (std::size_t m = 0; m < D; ++m)
-                for (std::size_t n = 0; n < D; ++n)
+    for (idx a = 0; a < D; ++a)
+        for (idx b = 0; b < D; ++b)
+            for (idx m = 0; m < D; ++m)
+                for (idx n = 0; n < D; ++n)
                     result(m * D + a, n * D + b) = A(a * D + b, m * D + n);
 
     return result;

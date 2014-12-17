@@ -162,7 +162,7 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase <Derived>& A,
 
     std::vector<double> result;
     dyn_col_vect<double> scf = schmidtcoeffs(rA, dims);
-    for (std::size_t i = 0; i < static_cast<std::size_t>(scf.rows()); ++i)
+    for (idx i = 0; i < static_cast<idx>(scf.rows()); ++i)
         result.push_back(std::pow(scf(i), 2));
 
     return result;
