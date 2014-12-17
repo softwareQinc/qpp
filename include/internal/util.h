@@ -300,6 +300,46 @@ dyn_mat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase <Derived1>& A,
 
 }
 
+// Direct sum of 2 matrices, preserve return type
+// internal function for the variadic template function wrapper dirsum()
+template<typename Derived1, typename Derived2>
+dyn_mat<typename Derived1::Scalar> _dirsum2(
+        const Eigen::MatrixBase <Derived1>& A,
+        const Eigen::MatrixBase <Derived2>& B)
+{
+    const dyn_mat<typename Derived1::Scalar>& rA = A;
+    const dyn_mat<typename Derived2::Scalar>& rB = B;
+
+    // EXCEPTION CHECKS
+
+    // check types
+    if (!std::is_same<typename Derived1::Scalar,
+            typename Derived2::Scalar>::value)
+        throw Exception("qpp::dirsum()", Exception::Type::TYPE_MISMATCH);
+
+    // check zero-size
+    if (!internal::_check_nonzero_size(rA))
+        throw Exception("qpp::dirsum()", Exception::Type::ZERO_SIZE);
+
+    // check zero-size
+    if (!internal::_check_nonzero_size(rB))
+        throw Exception("qpp::dirsum()", Exception::Type::ZERO_SIZE);
+
+    idx Acols = static_cast<idx>(rA.cols());
+    idx Arows = static_cast<idx>(rA.rows());
+    idx Bcols = static_cast<idx>(rB.cols());
+    idx Brows = static_cast<idx>(rB.rows());
+
+    dyn_mat<typename Derived1::Scalar> result =
+            dyn_mat<typename Derived1::Scalar>::Zero(Arows + Brows, Acols + Bcols);
+
+    result.block(0, 0, Arows, Acols) = rA;
+    result.block(Arows, Acols, Brows, Bcols) = rB;
+
+    return result;
+
+}
+
 // may be useful, extracts variadic template argument pack into a std::vector
 template<typename T>
 // ends the recursion

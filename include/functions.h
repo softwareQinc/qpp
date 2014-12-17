@@ -890,6 +890,117 @@ dyn_mat<typename Derived::Scalar> kronpow(const Eigen::MatrixBase <Derived>& A,
     return result;
 }
 
+// Direct sum of multiple matrices, preserve return type
+// variadic template
+/**
+* \brief Direct sum
+* \see qpp::dirsumpow()
+*
+* Used to stop the recursion for the variadic template version of
+* qpp::dirsum()
+*
+* \param head Eigen expression
+* \return Its argument \a head
+*/
+template<typename T>
+dyn_mat<typename T::Scalar> dirsum(const T& head)
+{
+    return head;
+}
+
+/**
+* \brief Direct sum
+* \see qpp::dirsumpow()
+*
+* \param head Eigen expression
+* \param tail Variadic Eigen expression (zero or more parameters)
+* \return Direct sum of all input parameters,
+* evaluated from left to right, as a dynamic matrix
+* over the same scalar field as its arguments
+*/
+template<typename T, typename ... Args>
+dyn_mat<typename T::Scalar> dirsum(const T& head, const Args& ... tail)
+{
+    return internal::_dirsum2(head, dirsum(tail...));
+}
+
+/**
+* \brief Direct sum
+* \see qpp::dirsumpow()
+*
+* \param As std::vector of Eigen expressions
+* \return Direct sum of all elements in \a As,
+* evaluated from left to right, as a dynamic matrix
+* over the same scalar field as its arguments
+*/
+template<typename Derived>
+dyn_mat<typename Derived::Scalar> dirsum(const std::vector <Derived>& As)
+{
+    if (As.size() == 0)
+        throw Exception("qpp::dirsum()", Exception::Type::ZERO_SIZE);
+
+    for (auto&& it : As)
+        if (!internal::_check_nonzero_size(it))
+            throw Exception("qpp::dirsum()", Exception::Type::ZERO_SIZE);
+
+    dyn_mat<typename Derived::Scalar> result = As[0];
+    for (idx i = 1; i < As.size(); ++i)
+    {
+        result = dirsum(result, As[i]);
+    }
+
+    return result;
+}
+
+// Direct sum of a list of matrices, preserve return type
+// deduce the template parameters from initializer_list
+/**
+* \brief Direct sum
+* \see qpp::dirsumpow()
+*
+* \param As std::initializer_list of Eigen expressions,
+* such as \a {A1, A2, ... ,Ak}
+* \return Direct sum of all elements in \a As,
+* evaluated from left to right, as a dynamic matrix
+* over the same scalar field as its arguments
+*/
+template<typename Derived>
+dyn_mat<typename Derived::Scalar> dirsum(
+        const std::initializer_list <Derived>& As)
+{
+    return dirsum(std::vector<Derived>(As));
+}
+
+/**
+* \brief Direct sum power
+* \see qpp::dirsum()
+*
+* \param A Eigen expression
+* \param n Non-negative integer
+* \return Direct sum of \a A with itself \a n times \f$A^{\oplus n}\f$,
+* as a dynamic matrix over the same scalar field as \a A
+*/
+template<typename Derived>
+dyn_mat<typename Derived::Scalar> dirsumpow(
+        const Eigen::MatrixBase <Derived>& A, idx n)
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A;
+
+    // check zero-size
+    if (!internal::_check_nonzero_size(rA))
+        throw Exception("qpp::dirsumpow()", Exception::Type::ZERO_SIZE);
+
+    // check out of range
+    if (n == 0)
+        throw Exception("qpp::dirsumpow()", Exception::Type::OUT_OF_RANGE);
+
+    dyn_mat<typename Derived::Scalar> result = rA;
+    for (idx i = 1; i < n; ++i)
+        result = dirsum(result, rA);
+
+    return result;
+}
+
 /**
 * \brief Reshape
 *

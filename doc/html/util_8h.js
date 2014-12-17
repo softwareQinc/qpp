@@ -12,6 +12,7 @@ var util_8h =
     [ "_check_square_mat", "util_8h.html#ace7cfa182baf987f8a3374bd700b4276", null ],
     [ "_check_subsys_match_dims", "util_8h.html#a40b09454ce4959a4fd231e67518d6abe", null ],
     [ "_check_vector", "util_8h.html#ad27f82cc41710292417948f5f4b91999", null ],
+    [ "_dirsum2", "util_8h.html#a164486ba597d10ddf2f1f573366d7e7c", null ],
     [ "_kron2", "util_8h.html#ab192c1e640124a4a578bf43ef97afd47", null ],
     [ "_multiidx2n", "util_8h.html#ac25d035c37ff112e1192e213444f4fc2", null ],
     [ "_n2multiidx", "util_8h.html#a3e4b3da5275b8fd5c1dafb0281eb6505", null ],
