@@ -191,7 +191,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    std::vector&lt;double&gt; result;</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <a class="code" href="namespaceqpp.html#a83c66503d7c177ceb0423e286ee1a318">dyn_col_vect&lt;double&gt;</a> scf = <a class="code" href="namespaceqpp.html#a643a3f3073b38757ad670ad3d0c64850">schmidtcoeffs</a>(rA, dims);</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; static_cast&lt;std::size_t&gt;(scf.rows()); ++i)</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(scf.rows()); ++i)</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        result.push_back(std::pow(scf(i), 2));</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keywordflow">return</span> result;</div>
@@ -378,7 +378,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="entanglement_8h.html">entanglement.h</a></li>
-    <li class="footer">Generated on Mon Dec 15 2014 13:03:20 for Quantum++ by
+    <li class="footer">Generated on Wed Dec 17 2014 03:30:39 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
