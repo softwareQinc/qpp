@@ -85,7 +85,7 @@ internal::IOManipRange <InputIterator> disp(const InputIterator& first,
 * \brief Standard container ostream manipulator. The container must support
 * std::begin(), std::end() and forward iteration.
 *
-* \param x Container
+* \param c Container
 * \param separator Separator
 * \param start Left marking
 * \param end Right marking
@@ -103,7 +103,7 @@ internal::IOManipRange<typename Container::const_iterator> disp(
 /**
 * \brief C-style pointer ostream manipulator
 *
-* \param x Pointer to the first element
+* \param p Pointer to the first element
 * \param n Number of elements to be displayed
 * \param separator Separator
 * \param start Left marking
