@@ -149,7 +149,7 @@ idx gcd(idx m, idx n)
 * \param ns List of non-negative integers
 * \return Greatest common divisor of all numbers in \a ns
 */
-idx gcd(const std::vector <idx>& ns)
+idx gcd(const std::vector<idx>& ns)
 {
     if (ns.size() == 0)
         throw Exception("qpp::gcd()", Exception::Type::ZERO_SIZE);
@@ -186,7 +186,7 @@ idx lcm(idx m, idx n)
 * \param ns List of positive integers
 * \return Least common multiple of all numbers in \a ns
 */
-idx lcm(const std::vector <idx>& ns)
+idx lcm(const std::vector<idx>& ns)
 {
     if (ns.size() == 0)
         throw Exception("qpp::lcm()", Exception::Type::ZERO_SIZE);
@@ -214,13 +214,13 @@ idx lcm(const std::vector <idx>& ns)
 * \param perm Permutation
 * \return Inverse of the permutation \a perm
 */
-std::vector <idx> invperm(const std::vector <idx>& perm)
+std::vector<idx> invperm(const std::vector<idx>& perm)
 {
     if (!internal::_check_perm(perm))
         throw Exception("qpp::invperm()", Exception::Type::PERM_INVALID);
 
     // construct the inverse
-    std::vector <idx> result(perm.size());
+    std::vector<idx> result(perm.size());
     for (idx i = 0; i < perm.size(); ++i)
         result[perm[i]] = i;
 
@@ -235,8 +235,8 @@ std::vector <idx> invperm(const std::vector <idx>& perm)
 * \return Composition of the permutations \a perm \f$\circ\f$ \a sigma
 *  = perm(sigma)
 */
-std::vector <idx> compperm(const std::vector <idx>& perm,
-        const std::vector <idx>& sigma)
+std::vector<idx> compperm(const std::vector<idx>& perm,
+        const std::vector<idx>& sigma)
 {
     if (!internal::_check_perm(perm))
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
@@ -246,7 +246,7 @@ std::vector <idx> compperm(const std::vector <idx>& perm,
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
 
     // construct the composition perm(sigma)
-    std::vector <idx> result(perm.size());
+    std::vector<idx> result(perm.size());
     for (idx i = 0; i < perm.size(); ++i)
         result[i] = perm[sigma[i]];
 

@@ -41,7 +41,7 @@ namespace qpp
 * \return Instance of qpp::internal::internal::IOManipEigen
 */
 template<typename Derived>
-internal::IOManipEigen disp(const Eigen::MatrixBase <Derived>& A,
+internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
         double chop = qpp::chop)
 {
     return internal::IOManipEigen(A, chop);
@@ -73,7 +73,7 @@ internal::IOManipEigen disp(cplx z,
 * \return Instance of qpp::internal::internal::IOManipRange
 */
 template<typename InputIterator>
-internal::IOManipRange <InputIterator> disp(const InputIterator& first,
+internal::IOManipRange<InputIterator> disp(const InputIterator& first,
         const InputIterator& last, const std::string& separator,
         const std::string& start = "[", const std::string& end = "]")
 {
@@ -111,7 +111,7 @@ internal::IOManipRange<typename Container::const_iterator> disp(
 * \return Instance of qpp::internal::internal::IOManipPointer
 */
 template<typename PointerType>
-internal::IOManipPointer <PointerType> disp(const PointerType* p, idx n,
+internal::IOManipPointer<PointerType> disp(const PointerType* p, idx n,
         const std::string& separator, const std::string& start = "[",
         const std::string& end = "]")
 {
@@ -127,7 +127,7 @@ internal::IOManipPointer <PointerType> disp(const PointerType* p, idx n,
 * \param fname Output file name
 */
 template<typename Derived>
-void save(const Eigen::MatrixBase <Derived>& A, const std::string& fname)
+void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 

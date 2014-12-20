@@ -119,8 +119,8 @@ $(document).ready(function(){initNavTree('iomanip_8h_source.html','');});
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> <span class="keywordtype">char</span>T, <span class="keyword">typename</span> traits&gt;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">friend</span> std::basic_ostream &lt;charT, traits&gt;&amp;</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_i_o_manip_range.html#a00e97b80f44120d3f676cdd3eadfafdb">   57</a></span>&#160;    operator&lt;&lt;(std::basic_ostream &lt;charT, traits&gt;&amp; os, <span class="keyword">const</span> <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_range.html">IOManipRange</a>&amp; rhs)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">friend</span> std::basic_ostream&lt;charT, traits&gt;&amp;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_i_o_manip_range.html#a00e97b80f44120d3f676cdd3eadfafdb">   57</a></span>&#160;    operator&lt;&lt;(std::basic_ostream&lt;charT, traits&gt;&amp; os, <span class="keyword">const</span> <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_range.html">IOManipRange</a>&amp; rhs)</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    {</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        os &lt;&lt; rhs.<a class="code" href="classqpp_1_1internal_1_1_i_o_manip_range.html#a2d6162990560e503a0fac096838be4c4">_start</a>;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
@@ -169,8 +169,8 @@ $(document).ready(function(){initNavTree('iomanip_8h_source.html','');});
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html">IOManipPointer</a>&amp; <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html#aaebd54e51b45ec5ba2849e6c5c33640d">operator=</a>(<span class="keyword">const</span> <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html">IOManipPointer</a>&amp;) = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> <span class="keywordtype">char</span>T, <span class="keyword">typename</span> traits&gt;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keyword">friend</span> std::basic_ostream &lt;charT, traits&gt;&amp;</div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html#a5837d0b55adf96406b870b44985d778a">  107</a></span>&#160;    operator&lt;&lt;(std::basic_ostream &lt;charT, traits&gt;&amp; os,</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keyword">friend</span> std::basic_ostream&lt;charT, traits&gt;&amp;</div>
+<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html#a5837d0b55adf96406b870b44985d778a">  107</a></span>&#160;    operator&lt;&lt;(std::basic_ostream&lt;charT, traits&gt;&amp; os,</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keyword">const</span> <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html">IOManipPointer</a>&amp; rhs)</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    {</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        os &lt;&lt; rhs.<a class="code" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html#a994c9abbae7ac25b9fcadd4661a2ef5a">_start</a>;</div>
@@ -193,7 +193,7 @@ $(document).ready(function(){initNavTree('iomanip_8h_source.html','');});
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="comment">// Eigen matrices</span></div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#aa4e5ec41f773261047e2ddf27663a597">  130</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#aa4e5ec41f773261047e2ddf27663a597">IOManipEigen</a>(<span class="keyword">const</span> Eigen::MatrixBase &lt;Derived&gt;&amp; A, <span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a> =</div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#aa4e5ec41f773261047e2ddf27663a597">  130</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#aa4e5ec41f773261047e2ddf27663a597">IOManipEigen</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A, <span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a> =</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>) :</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#ae3632b9603001e9aee9d145dec2c9aba">_A</a>(A.template cast&lt;<a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt;()), <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#a6bc6814959c36d5bd02e1d330b44b242">_chop</a>(<a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>)</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    {</div>
@@ -208,8 +208,8 @@ $(document).ready(function(){initNavTree('iomanip_8h_source.html','');});
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    }</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> <span class="keywordtype">char</span>T, <span class="keyword">typename</span> traits&gt;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keyword">friend</span> std::basic_ostream &lt;charT, traits&gt;&amp;</div>
-<div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#ab7e5d2ce44feafba8da47d50cb799ae6">  146</a></span>&#160;    operator&lt;&lt;(std::basic_ostream &lt;charT, traits&gt;&amp; os, <span class="keyword">const</span> <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html">IOManipEigen</a>&amp; rhs)</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keyword">friend</span> std::basic_ostream&lt;charT, traits&gt;&amp;</div>
+<div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#ab7e5d2ce44feafba8da47d50cb799ae6">  146</a></span>&#160;    operator&lt;&lt;(std::basic_ostream&lt;charT, traits&gt;&amp; os, <span class="keyword">const</span> <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html">IOManipEigen</a>&amp; rhs)</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    {</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(rhs._A))</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        {</div>
@@ -222,7 +222,7 @@ $(document).ready(function(){initNavTree('iomanip_8h_source.html','');});
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        std::ostringstream ostr;</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        ostr.copyfmt(os); <span class="comment">// copy os&#39; state</span></div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        std::vector &lt;std::string&gt; vstr;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        std::vector&lt;std::string&gt; vstr;</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        std::string strA;</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(rhs._A.rows());</div>
@@ -273,7 +273,7 @@ $(document).ready(function(){initNavTree('iomanip_8h_source.html','');});
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        }</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="comment">// determine the maximum lenght of the entries in each column</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        std::vector &lt;idx&gt; maxlengthcols(rhs._A.cols(), 0);</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        std::vector&lt;idx&gt; maxlengthcols(rhs._A.cols(), 0);</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(rhs._A.rows());</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;             ++i)</div>
@@ -337,7 +337,7 @@ $(document).ready(function(){initNavTree('iomanip_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7374381ecdb819c64ee9b6ea2bd3370d.html">internal</a></li><li class="navelem"><a class="el" href="dir_0287916e3084ede6e6e90e400eca2f39.html">classes</a></li><li class="navelem"><a class="el" href="iomanip_8h.html">iomanip.h</a></li>
-    <li class="footer">Generated on Wed Dec 17 2014 14:51:41 for Quantum++ by
+    <li class="footer">Generated on Sat Dec 20 2014 14:01:39 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

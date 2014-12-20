@@ -96,8 +96,8 @@ public:
     * between the instantiation/reset and invocation of qpp::Timer::toc().
     */
     template<typename charT, typename traits>
-    friend std::basic_ostream <charT, traits>&
-    operator<<(std::basic_ostream <charT, traits>& os, const Timer& rhs)
+    friend std::basic_ostream<charT, traits>&
+    operator<<(std::basic_ostream<charT, traits>& os, const Timer& rhs)
     {
         return os << rhs.seconds();
     }

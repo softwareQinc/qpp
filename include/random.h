@@ -137,7 +137,7 @@ double rand(double a = 0, double b = 1)
 idx randidx(idx a = std::numeric_limits<idx>::min(),
         idx b = std::numeric_limits<idx>::max())
 {
-    std::uniform_int_distribution <idx> uid(a, b);
+    std::uniform_int_distribution<idx> uid(a, b);
 
     return uid(RandomDevices::get_instance()._rng);
 }
@@ -260,14 +260,14 @@ cmat randU(idx D)
 
     cmat X(D, D);
 
-    X = 1 / std::sqrt(2.) * randn <cmat> (D, D);
-    Eigen::HouseholderQR <cmat> qr(X);
+    X = 1 / std::sqrt(2.) * randn < cmat > (D, D);
+    Eigen::HouseholderQR<cmat> qr(X);
 
     cmat Q = qr.householderQ();
     // phase correction so that the resultant matrix is
     // uniformly distributed according to the Haar measure
 
-    Eigen::VectorXcd phases = (rand <dmat> (D, 1)).cast<cplx>();
+    Eigen::VectorXcd phases = (rand < dmat > (D, 1)).cast<cplx>();
     for (idx i = 0; i < static_cast<idx>(phases.rows()); ++i)
         phases(i) = std::exp(2 * pi * 1_i * phases(i));
 
@@ -301,14 +301,14 @@ cmat randV(idx Din, idx Dout)
 * \param D Dimension of the Hilbert space
 * \return Set of \a N Kraus operators satisfying the closure condition
 */
-std::vector <cmat> randkraus(idx N, idx D)
+std::vector<cmat> randkraus(idx N, idx D)
 {
     if (N == 0)
         throw Exception("qpp::randkraus()", Exception::Type::OUT_OF_RANGE);
     if (D == 0)
         throw Exception("qpp::randkraus()", Exception::Type::DIMS_INVALID);
 
-    std::vector <cmat> result(N);
+    std::vector<cmat> result(N);
     for (idx i = 0; i < N; ++i)
         result[i] = cmat::Zero(D, D);
 
@@ -335,7 +335,7 @@ cmat randH(idx D)
     if (D == 0)
         throw Exception("qpp::randH()", Exception::Type::DIMS_INVALID);
 
-    cmat H = 2 * rand <cmat> (D, D) - (1. + 1_i) * cmat::Ones(D, D);
+    cmat H = 2 * rand < cmat > (D, D) - (1. + 1_i) * cmat::Ones(D, D);
 
     return H + adjoint(H);
 }
@@ -358,7 +358,7 @@ ket randket(idx D)
      return result;
      */
 
-    ket kt = randn <cmat> (D, 1);
+    ket kt = randn < cmat > (D, 1);
 
     return kt / norm(kt);
 }
@@ -389,12 +389,12 @@ cmat randrho(idx D)
 * \param n Size of the permutation
 * \return Random permutation of size \a n
 */
-std::vector <idx> randperm(idx n)
+std::vector<idx> randperm(idx n)
 {
     if (n == 0)
         throw Exception("qpp::randperm()", Exception::Type::PERM_INVALID);
 
-    std::vector <idx> result(n);
+    std::vector<idx> result(n);
 
     // fill in increasing order
     std::iota(std::begin(result), std::end(result), 0);

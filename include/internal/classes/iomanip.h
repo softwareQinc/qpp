@@ -53,8 +53,8 @@ public:
     }
 
     template<typename charT, typename traits>
-    friend std::basic_ostream <charT, traits>&
-    operator<<(std::basic_ostream <charT, traits>& os, const IOManipRange& rhs)
+    friend std::basic_ostream<charT, traits>&
+    operator<<(std::basic_ostream<charT, traits>& os, const IOManipRange& rhs)
     {
         os << rhs._start;
 
@@ -103,8 +103,8 @@ public:
     IOManipPointer& operator=(const IOManipPointer&) = default;
 
     template<typename charT, typename traits>
-    friend std::basic_ostream <charT, traits>&
-    operator<<(std::basic_ostream <charT, traits>& os,
+    friend std::basic_ostream<charT, traits>&
+    operator<<(std::basic_ostream<charT, traits>& os,
             const IOManipPointer& rhs)
     {
         os << rhs._start;
@@ -127,7 +127,7 @@ class IOManipEigen
 public:
     // Eigen matrices
     template<typename Derived>
-    explicit IOManipEigen(const Eigen::MatrixBase <Derived>& A, double chop =
+    explicit IOManipEigen(const Eigen::MatrixBase<Derived>& A, double chop =
     qpp::chop) :
             _A(A.template cast<cplx>()), _chop(chop)
     {
@@ -142,8 +142,8 @@ public:
     }
 
     template<typename charT, typename traits>
-    friend std::basic_ostream <charT, traits>&
-    operator<<(std::basic_ostream <charT, traits>& os, const IOManipEigen& rhs)
+    friend std::basic_ostream<charT, traits>&
+    operator<<(std::basic_ostream<charT, traits>& os, const IOManipEigen& rhs)
     {
         if (!internal::_check_nonzero_size(rhs._A))
         {
@@ -156,7 +156,7 @@ public:
         std::ostringstream ostr;
         ostr.copyfmt(os); // copy os' state
 
-        std::vector <std::string> vstr;
+        std::vector<std::string> vstr;
         std::string strA;
 
         for (idx i = 0; i < static_cast<idx>(rhs._A.rows());
@@ -207,7 +207,7 @@ public:
         }
 
         // determine the maximum lenght of the entries in each column
-        std::vector <idx> maxlengthcols(rhs._A.cols(), 0);
+        std::vector<idx> maxlengthcols(rhs._A.cols(), 0);
 
         for (idx i = 0; i < static_cast<idx>(rhs._A.rows());
              ++i)

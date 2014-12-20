@@ -52,11 +52,11 @@ namespace qpp
 */
 template<typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> applyCTRL(
-        const Eigen::MatrixBase <Derived1>& state,
-        const Eigen::MatrixBase <Derived2>& A,
-        const std::vector <idx>& ctrl,
-        const std::vector <idx>& subsys,
-        const std::vector <idx>& dims)
+        const Eigen::MatrixBase<Derived1>& state,
+        const Eigen::MatrixBase<Derived2>& A,
+        const std::vector<idx>& ctrl,
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived1::Scalar>& rstate = state;
     const dyn_mat<typename Derived2::Scalar>& rA = A;
@@ -97,14 +97,14 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
                 Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     // check that gate matches the dimensions of the subsys
-    std::vector <idx> subsys_dims(subsys.size());
+    std::vector<idx> subsys_dims(subsys.size());
     for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
     if (!internal::_check_dims_match_mat(subsys_dims, rA))
         throw Exception("qpp::applyCTRL()",
                 Exception::Type::MATRIX_MISMATCH_SUBSYS);
 
-    std::vector <idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
+    std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
     ctrlgate.insert(std::end(ctrlgate), std::begin(subsys), std::end(subsys));
     std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
@@ -117,8 +117,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     // END EXCEPTION CHECKS
 
     // construct the table of A^i and (A^dagger)^i
-    std::vector <dyn_mat<typename Derived1::Scalar>> Ai;
-    std::vector <dyn_mat<typename Derived1::Scalar>> Aidagger;
+    std::vector<dyn_mat<typename Derived1::Scalar>> Ai;
+    std::vector<dyn_mat<typename Derived1::Scalar>> Aidagger;
     for (idx i = 0; i < std::max(d, static_cast<idx>(2)); ++i)
     {
         Ai.push_back(powm(rA, i));
@@ -134,8 +134,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     idx CdimsA[maxn]; // local dimensions
     idx CdimsCTRLAbar[maxn]; // local dimensions
 
-    std::vector <idx> ctrlgatebar(n - ctrlgate.size()); // rest
-    std::vector <idx> allsubsys(n); // all subsystems
+    std::vector<idx> ctrlgatebar(n - ctrlgate.size()); // rest
+    std::vector<idx> allsubsys(n); // all subsystems
     std::iota(std::begin(allsubsys), std::end(allsubsys), 0);
     // compute the complementary subsystem of ctrlgate w.r.t. dims
     std::set_difference(std::begin(allsubsys), std::end(allsubsys),
@@ -379,10 +379,10 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 */
 template<typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> applyCTRL(
-        const Eigen::MatrixBase <Derived1>& state,
-        const Eigen::MatrixBase <Derived2>& A,
-        const std::vector <idx>& ctrl,
-        const std::vector <idx>& subsys,
+        const Eigen::MatrixBase<Derived1>& state,
+        const Eigen::MatrixBase<Derived2>& A,
+        const std::vector<idx>& ctrl,
+        const std::vector<idx>& subsys,
         idx d = 2)
 {
     const dyn_mat<typename Derived1::Scalar>& rstate = state;
@@ -395,7 +395,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     idx n =
             static_cast<idx>(std::llround(std::log2(rstate.rows()) /
                     std::log2(d)));
-    std::vector <idx> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return applyCTRL(rstate, rA, ctrl, subsys, dims);
 }
@@ -415,10 +415,10 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 */
 template<typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> apply(
-        const Eigen::MatrixBase <Derived1>& state,
-        const Eigen::MatrixBase <Derived2>& A,
-        const std::vector <idx>& subsys,
-        const std::vector <idx>& dims)
+        const Eigen::MatrixBase<Derived1>& state,
+        const Eigen::MatrixBase<Derived2>& A,
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived1::Scalar>& rstate = state;
     const dyn_mat<typename Derived2::Scalar>& rA = A;
@@ -451,7 +451,7 @@ dyn_mat<typename Derived1::Scalar> apply(
         throw Exception("qpp::apply()", Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     // check that gate matches the dimensions of the subsys
-    std::vector <idx> subsys_dims(subsys.size());
+    std::vector<idx> subsys_dims(subsys.size());
     for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
     if (!internal::_check_dims_match_mat(subsys_dims, rA))
@@ -497,9 +497,9 @@ dyn_mat<typename Derived1::Scalar> apply(
 */
 template<typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> apply(
-        const Eigen::MatrixBase <Derived1>& state,
-        const Eigen::MatrixBase <Derived2>& A,
-        const std::vector <idx>& subsys,
+        const Eigen::MatrixBase<Derived1>& state,
+        const Eigen::MatrixBase<Derived2>& A,
+        const std::vector<idx>& subsys,
         idx d = 2)
 {
     const dyn_mat<typename Derived1::Scalar>& rstate = state;
@@ -512,7 +512,7 @@ dyn_mat<typename Derived1::Scalar> apply(
     idx n =
             static_cast<idx>(std::llround(std::log2(rstate.rows()) /
                     std::log2(d)));
-    std::vector <idx> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return apply(rstate, rA, subsys, dims);
 }
@@ -526,8 +526,8 @@ dyn_mat<typename Derived1::Scalar> apply(
 * \return Output density matrix after the action of the channel
 */
 template<typename Derived>
-cmat apply(const Eigen::MatrixBase <Derived>& rho,
-        const std::vector <cmat>& Ks)
+cmat apply(const Eigen::MatrixBase<Derived>& rho,
+        const std::vector<cmat>& Ks)
 {
     const cmat& rrho = rho;
 
@@ -572,10 +572,10 @@ cmat apply(const Eigen::MatrixBase <Derived>& rho,
 * \return Output density matrix after the action of the channel
 */
 template<typename Derived>
-cmat apply(const Eigen::MatrixBase <Derived>& rho,
-        const std::vector <cmat>& Ks,
-        const std::vector <idx>& subsys,
-        const std::vector <idx>& dims)
+cmat apply(const Eigen::MatrixBase<Derived>& rho,
+        const std::vector<cmat>& Ks,
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
 {
     const cmat& rrho = rho;
 
@@ -602,7 +602,7 @@ cmat apply(const Eigen::MatrixBase <Derived>& rho,
         throw Exception("qpp::apply()",
                 Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-    std::vector <idx> subsys_dims(subsys.size());
+    std::vector<idx> subsys_dims(subsys.size());
     for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
 
@@ -637,9 +637,9 @@ cmat apply(const Eigen::MatrixBase <Derived>& rho,
 * \return Output density matrix after the action of the channel
 */
 template<typename Derived>
-cmat apply(const Eigen::MatrixBase <Derived>& rho,
-        const std::vector <cmat>& Ks,
-        const std::vector <idx>& subsys,
+cmat apply(const Eigen::MatrixBase<Derived>& rho,
+        const std::vector<cmat>& Ks,
+        const std::vector<idx>& subsys,
         idx d = 2)
 {
     const cmat& rrho = rho;
@@ -651,7 +651,7 @@ cmat apply(const Eigen::MatrixBase <Derived>& rho,
     idx n =
             static_cast<idx>(std::llround(std::log2(rrho.rows()) /
                     std::log2(d)));
-    std::vector <idx> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return apply(rrho, Ks, subsys, dims);
 }
@@ -667,7 +667,7 @@ cmat apply(const Eigen::MatrixBase <Derived>& rho,
 * \param Ks Set of Kraus operators
 * \return Superoperator matrix
 */
-cmat kraus2super(const std::vector <cmat>& Ks)
+cmat kraus2super(const std::vector<cmat>& Ks)
 {
     // EXCEPTION CHECKS
     if (Ks.size() == 0)
@@ -736,7 +736,7 @@ cmat kraus2super(const std::vector <cmat>& Ks)
 * \param Ks Set of Kraus operators
 * \return Choi matrix
 */
-cmat kraus2choi(const std::vector <cmat>& Ks)
+cmat kraus2choi(const std::vector<cmat>& Ks)
 {
     // EXCEPTION CHECKS
     if (Ks.size() == 0)
@@ -786,7 +786,7 @@ cmat kraus2choi(const std::vector <cmat>& Ks)
 * \param A Choi matrix
 * \return Set of orthogonal Kraus operators
 */
-std::vector <cmat> choi2kraus(const cmat& A)
+std::vector<cmat> choi2kraus(const cmat& A)
 {
     // EXCEPTION CHECKS
     if (!internal::_check_nonzero_size(A))
@@ -801,7 +801,7 @@ std::vector <cmat> choi2kraus(const cmat& A)
 
     dmat ev = hevals(A);
     cmat evec = hevects(A);
-    std::vector <cmat> result;
+    std::vector<cmat> result;
 
     for (idx i = 0; i < D * D; ++i)
     {
@@ -892,8 +892,8 @@ cmat super2choi(const cmat& A)
 * over the same scalar field as \a A
 */
 template<typename Derived>
-dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase <Derived>& A,
-        const std::vector <idx>& dims)
+dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
+        const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -955,8 +955,8 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase <Derived>& A,
 * over the same scalar field as \a A
 */
 template<typename Derived>
-dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase <Derived>& A,
-        const std::vector <idx>& dims)
+dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
+        const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -1012,9 +1012,9 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase <Derived>& A,
 * over the same scalar field as \a A
 */
 template<typename Derived>
-dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase <Derived>& A,
-        const std::vector <idx>& subsys,
-        const std::vector <idx>& dims)
+dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -1157,8 +1157,8 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase <Derived>& A,
 * over the same scalar field as \a A
 */
 template<typename Derived>
-dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase <Derived>& A,
-        const std::vector <idx>& subsys,
+dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
+        const std::vector<idx>& subsys,
         idx d = 2)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
@@ -1170,7 +1170,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase <Derived>& A,
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
                     std::log2(d)));
-    std::vector <idx> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return ptrace(rA, subsys, dims);
 }
@@ -1190,9 +1190,9 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase <Derived>& A,
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> ptranspose(
-        const Eigen::MatrixBase <Derived>& A,
-        const std::vector <idx>& subsys,
-        const std::vector <idx>& dims)
+        const Eigen::MatrixBase<Derived>& A,
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -1290,8 +1290,8 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> ptranspose(
-        const Eigen::MatrixBase <Derived>& A,
-        const std::vector <idx>& subsys,
+        const Eigen::MatrixBase<Derived>& A,
+        const std::vector<idx>& subsys,
         idx d = 2)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
@@ -1303,7 +1303,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
                     std::log2(d)));
-    std::vector <idx> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return ptranspose(rA, subsys, dims);
 }
@@ -1322,9 +1322,9 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> syspermute(
-        const Eigen::MatrixBase <Derived>& A,
-        const std::vector <idx>& perm,
-        const std::vector <idx>& dims)
+        const Eigen::MatrixBase<Derived>& A,
+        const std::vector<idx>& perm,
+        const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -1467,8 +1467,8 @@ dyn_mat<typename Derived::Scalar> syspermute(
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> syspermute(
-        const Eigen::MatrixBase <Derived>& A,
-        const std::vector <idx>& perm,
+        const Eigen::MatrixBase<Derived>& A,
+        const std::vector<idx>& perm,
         idx d = 2)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
@@ -1480,7 +1480,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
                     std::log2(d)));
-    std::vector <idx> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return syspermute(rA, perm, dims);
 }
