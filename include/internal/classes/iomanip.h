@@ -57,20 +57,12 @@ public:
     operator<<(std::basic_ostream<charT, traits>& os, const IOManipRange& rhs)
     {
         os << rhs._start;
-
-        auto it = rhs._first;
-        auto it_end = rhs._last;
-
-        if (it != it_end)
+        bool first = true;
+        for (auto it = rhs._first; it != rhs._last; ++it)
         {
-            // the iterator just before the end, need this for containers
-            // that do not have backwards iterators
-            decltype(it_end) it_before_end = it;
-            while (it_before_end = it, ++it != it_end);
-
-            it = rhs._first;
-            for (; it != it_before_end; ++it)
-                os << *it << rhs._separator;
+            if (!first)
+                os << rhs._separator;
+            first = false;
             os << *it;
         }
         os << rhs._end;
