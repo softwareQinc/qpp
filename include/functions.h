@@ -225,7 +225,7 @@ typename Derived::Scalar prod(const Eigen::MatrixBase<Derived>& A)
 * \brief Frobenius norm
 *
 * \param A Eigen expression
-* \return Frobenius norm of \a A, as a real number
+* \return Frobenius norm of \a A
 */
 template<typename Derived>
 double norm(const Eigen::MatrixBase<Derived>& A)
@@ -726,14 +726,15 @@ dyn_mat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Schatten norm
+* \brief Schatten matrix norm
 *
 * \param A Eigen expression
-* \param p Integer, greater or equal to 1
-* \return Schatten-\a p norm of \a A, as a real number
+* \param p Real number, greater or equal to 1,
+* use qpp::infty for \f$p = \infty\f$
+* \return Schatten-\a p matrix norm of \a A
 */
 template<typename Derived>
-double schatten(const Eigen::MatrixBase<Derived>& A, idx p)
+double schatten(const Eigen::MatrixBase<Derived>& A, double p)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -744,7 +745,7 @@ double schatten(const Eigen::MatrixBase<Derived>& A, idx p)
         throw Exception("qpp::schatten()", Exception::Type::OUT_OF_RANGE);
 
     if (p == infty) // infinity norm (largest singular value)
-        return svals(rA)[0];
+        return svals(rA)(0);
 
     return std::pow(trace(powm(absm(rA), p)).real(), 1. / p);
 }
