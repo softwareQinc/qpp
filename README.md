@@ -1,8 +1,5 @@
 # Quantum++
 
-### Development version, use it at your own risk!
-### For the latest stable version, switch to the master branch.
-
 Quantum++ is a C++11 general purpose quantum computing library, composed 
 solely of template header files. It uses the 
 [Eigen 3](http://eigen.tuxfamily.org) linear algebra library and, 
