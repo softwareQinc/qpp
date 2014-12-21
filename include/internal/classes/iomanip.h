@@ -57,6 +57,7 @@ public:
     operator<<(std::basic_ostream<charT, traits>& os, const IOManipRange& rhs)
     {
         os << rhs._start;
+
         bool first = true;
         for (auto it = rhs._first; it != rhs._last; ++it)
         {
