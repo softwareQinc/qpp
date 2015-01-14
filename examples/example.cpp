@@ -365,7 +365,7 @@ void CHANNEL()
     cout << disp(smat) << endl;
 
     cout << ">> The eigenvalues of the superoperator matrix are: " << endl;
-    cmat evalsupop = evals(smat);
+    dyn_col_vect<cplx> evalsupop = evals(smat);
     cout << disp(transpose(evalsupop)) << endl;
 
     cout << ">> Their absolute values are: " << endl;
