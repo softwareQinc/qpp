@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"functions_rela.html":[2,3,5],
 "functions_vars.html":[2,3,2],
 "gates_8h.html":[3,0,0,2],
 "gates_8h_source.html":[3,0,0,2],
