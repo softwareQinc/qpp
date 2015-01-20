@@ -62,7 +62,7 @@ Derived loadMATLABmatrix(const std::string& mat_file,
 *
 * Example:
 * \code
-* // loads a previously saved Eigen dynamic double matrix 
+* // loads a previously saved Eigen dynamic double matrix
 * // from the MATLAB file "input.mat"
 * auto mat = loadMATLABmatrix<dmat>("input.mat");
 * \endcode
@@ -127,7 +127,7 @@ inline dmat loadMATLABmatrix(const std::string& mat_file,
 *
 * Example:
 * \code
-* // loads a previously saved Eigen dynamic complex matrix 
+* // loads a previously saved Eigen dynamic complex matrix
 * // from the MATLAB file "input.mat"
 * auto mat = loadMATLABmatrix<cmat>("input.mat");
 * \endcode
