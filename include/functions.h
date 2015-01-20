@@ -1549,10 +1549,13 @@ std::vector<double> abssq(const Eigen::MatrixBase<Derived>& V)
 * as a scalar in the same scalar field as the range
 */
 template<typename InputIterator>
-typename InputIterator::value_type sum(InputIterator first, InputIterator last)
+typename std::iterator_traits<InputIterator>::value_type
+sum(InputIterator first, InputIterator last)
 {
     return std::accumulate(first, last,
-            static_cast<typename InputIterator::value_type>(0));
+            static_cast<
+                    typename std::iterator_traits<InputIterator>::value_type>
+            (0));
 }
 
 /**
@@ -1564,13 +1567,17 @@ typename InputIterator::value_type sum(InputIterator first, InputIterator last)
 * as a scalar in the same scalar field as the range
 */
 template<typename InputIterator>
-typename InputIterator::value_type prod(InputIterator first,
-        InputIterator last)
+typename std::iterator_traits<InputIterator>::value_type
+prod(InputIterator first, InputIterator last)
 {
     return std::accumulate(first, last,
-            static_cast<typename InputIterator::value_type>(1),
-            [](const typename InputIterator::value_type& x,
-                    const typename InputIterator::value_type& y)
+            static_cast<
+                    typename std::iterator_traits<InputIterator>::value_type>
+            (1),
+            [](const typename
+            std::iterator_traits<InputIterator>::value_type& x,
+                    const typename
+                    std::iterator_traits<InputIterator>::value_type& y)
             {
                 return x * y;
             });
