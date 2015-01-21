@@ -12,7 +12,7 @@ For additional [Eigen 3](http://eigen.tuxfamily.org) documentation see
 [Eigen 3](http://eigen.tuxfamily.org) quick ASCII reference see
 <http://eigen.tuxfamily.org/dox/AsciiQuickReference.txt>.
 
-Copyright (c) 2013 - 2014 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
+Copyright (c) 2013 - 2015 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
 
 If you are interesting in contributing, please let me know. 
 There is still work left to be done, and I can provide you with more details 
