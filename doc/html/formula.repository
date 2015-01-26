@@ -46,3 +46,5 @@
 \form#45:$(\cdot)^{T_{subsys}}$
 \form#46:$ \sum_i K_i^\dagger K_i = I$
 \form#47:$p = \infty$
+\form#48:$\mathcal(O)(\sqrt(n))$
+\form#49:$\mathcal{O}(\sqrt{n})$

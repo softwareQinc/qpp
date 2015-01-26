@@ -42,13 +42,13 @@ namespace qpp
 * of \a x. If there are \a m less than \a n terms in the expansion,
 * a shorter vector with \a m components is returned.
 */
-std::vector<long long int> x2contfrac(double x, idx n,
+std::vector<int> x2contfrac(double x, idx n,
         idx cut = 1e5)
 {
     if (n == 0)
         throw Exception("qpp::x2contfrac()", Exception::Type::OUT_OF_RANGE);
 
-    std::vector<long long int> result;
+    std::vector<int> result;
 
     for (idx i = 0; i < n; ++i)
     {
@@ -126,12 +126,12 @@ double contfrac2x(const std::vector<int>& cf)
 * \param n Non-negative integer
 * \return Greatest common divisor of \a m and \a n
 */
-idx gcd(idx m, idx n)
+unsigned long long int gcd(unsigned long long int m, unsigned long long int n)
 {
     if (m == 0 || n == 0)
         return (std::max(m, n));
 
-    idx result = 1;
+    unsigned long long int result = 1;
     while (n)
     {
         result = n;
@@ -149,12 +149,12 @@ idx gcd(idx m, idx n)
 * \param ns List of non-negative integers
 * \return Greatest common divisor of all numbers in \a ns
 */
-idx gcd(const std::vector<idx>& ns)
+unsigned long long int gcd(const std::vector<unsigned long long int>& ns)
 {
     if (ns.size() == 0)
         throw Exception("qpp::gcd()", Exception::Type::ZERO_SIZE);
 
-    idx result = ns[0]; // convention: gcd({n}) = n
+    unsigned long long int result = ns[0]; // convention: gcd({n}) = n
     for (idx i = 1; i < ns.size(); ++i)
     {
         result = gcd(result, ns[i]);
@@ -171,7 +171,7 @@ idx gcd(const std::vector<idx>& ns)
 * \param n Positive integer
 * \return Least common multiple of \a m and \a n
 */
-idx lcm(idx m, idx n)
+unsigned long long int lcm(unsigned long long int m, unsigned long long int n)
 {
     if (m == 0 || n == 0)
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
@@ -186,7 +186,7 @@ idx lcm(idx m, idx n)
 * \param ns List of positive integers
 * \return Least common multiple of all numbers in \a ns
 */
-idx lcm(const std::vector<idx>& ns)
+unsigned long long int lcm(const std::vector<unsigned long long int>& ns)
 {
     if (ns.size() == 0)
         throw Exception("qpp::lcm()", Exception::Type::ZERO_SIZE);
@@ -197,13 +197,14 @@ idx lcm(const std::vector<idx>& ns)
     if (std::find(std::begin(ns), std::end(ns), 0) != std::end(ns))
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
 
-    auto multiply = [](idx x, idx y) -> idx
+    auto multiply = [](unsigned long long int x, unsigned long long int y)
+            -> unsigned long long int
     {
         return x * y;
     };
 
-    idx prod = std::accumulate(std::begin(ns), std::end(ns),
-            1u, multiply);
+    unsigned long long int prod = std::accumulate(std::begin(ns), std::end(ns),
+            1ULL, multiply);
 
     return prod / gcd(ns);
 }
@@ -251,6 +252,67 @@ std::vector<idx> compperm(const std::vector<idx>& perm,
         result[i] = perm[sigma[i]];
 
     return result;
+}
+
+//TODO: isprime
+
+
+/**
+* \brief Prime factor decomposition
+*
+* \note Runs in \f$\mathcal{O}(\sqrt{n})\f$ time complexity
+*
+* \param n Integer strictly greater than 1
+* \return Integer vector containing the factors
+*/
+std::vector<unsigned long long int> factors(unsigned long long int n)
+{
+    if (n == 0 || n == 1)
+        throw Exception("qpp::factors()", Exception::Type::OUT_OF_RANGE);
+
+    std::vector<unsigned long long int> result;
+    unsigned long long int d = 2;
+
+    while (n > 1)
+    {
+        while (n % d == 0)
+        {
+            result.push_back(d);
+            n /= d;
+        }
+        ++d;
+        if (d * d > n) // changes the running time from O(n) to O(sqrt(n))
+        {
+            if (n > 1)
+            {
+                result.push_back(n);
+            }
+            break;
+        }
+    }
+
+    return result;
+}
+
+/**
+* \brief Primality test
+*
+* \note Runs in \f$\mathcal{O}(\sqrt{n})\f$ time complexity
+*
+* \param n Integer strictly greater than 1
+* \return True if the number is prime, false otherwise
+*/
+bool isprime(unsigned long long int n)
+{
+    if (n == 0 or n == 1)
+        throw Exception("qpp::isprime()", Exception::Type::OUT_OF_RANGE);
+
+    std::vector<unsigned long long int> facts = factors(n);
+
+    if (facts.size() == 1)
+        return true;
+
+    return false;
 }
 
 } /* namespace qpp */
