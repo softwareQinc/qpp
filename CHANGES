@@ -1,2 +1,8 @@
-Version 0.1
+Version 0.1 - 21 December 2014
     - First stable version, public release
+
+Version 0.2 - 26 January 2015
+    - Minor fixes
+    - Added prime-number related functions in number_theory.h:
+            qpp::factors() - prime factors of positive integer
+            qpp::isprime() - primality test
