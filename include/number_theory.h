@@ -254,9 +254,6 @@ std::vector<idx> compperm(const std::vector<idx>& perm,
     return result;
 }
 
-//TODO: isprime
-
-
 /**
 * \brief Prime factor decomposition
 *
