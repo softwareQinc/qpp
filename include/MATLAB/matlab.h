@@ -1,7 +1,7 @@
 /*
  * Quantum++
  *
- * Copyright (c) 2013 - 2014 Vlad Gheorghiu (vgheorgh@gmail.com)
+ * Copyright (c) 2013 - 2015 Vlad Gheorghiu (vgheorgh@gmail.com)
  *
  * This file is part of Quantum++.
  *
@@ -62,8 +62,8 @@ Derived loadMATLABmatrix(const std::string& mat_file,
 *
 * Example:
 * \code
-* // loads a previously saved Eigen dynamic double matrix from the
-* MATLAB file "input.mat"
+* // loads a previously saved Eigen dynamic double matrix
+* // from the MATLAB file "input.mat"
 * auto mat = loadMATLABmatrix<dmat>("input.mat");
 * \endcode
 *
@@ -127,8 +127,8 @@ inline dmat loadMATLABmatrix(const std::string& mat_file,
 *
 * Example:
 * \code
-* // loads a previously saved Eigen dynamic complex matrix from the
-* MATLAB file "input.mat"
+* // loads a previously saved Eigen dynamic complex matrix
+* // from the MATLAB file "input.mat"
 * auto mat = loadMATLABmatrix<cmat>("input.mat");
 * \endcode
 *

@@ -1,7 +1,7 @@
 /*
  * Quantum++
  *
- * Copyright (c) 2013 - 2014 Vlad Gheorghiu (vgheorgh@gmail.com)
+ * Copyright (c) 2013 - 2015 Vlad Gheorghiu (vgheorgh@gmail.com)
  *
  * This file is part of Quantum++.
  *
@@ -365,7 +365,7 @@ void CHANNEL()
     cout << disp(smat) << endl;
 
     cout << ">> The eigenvalues of the superoperator matrix are: " << endl;
-    cmat evalsupop = evals(smat);
+    dyn_col_vect<cplx> evalsupop = evals(smat);
     cout << disp(transpose(evalsupop)) << endl;
 
     cout << ">> Their absolute values are: " << endl;

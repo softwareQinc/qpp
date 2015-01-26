@@ -1,4 +1,4 @@
-### First public release of Quantum++
+### Quantum++ v0.2
 
 Bugs may still be lingering around and I welcome any comments or bug reports.
 

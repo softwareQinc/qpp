@@ -1,7 +1,7 @@
 /*
  * Quantum++
  *
- * Copyright (c) 2013 - 2014 Vlad Gheorghiu (vgheorgh@gmail.com)
+ * Copyright (c) 2013 - 2015 Vlad Gheorghiu (vgheorgh@gmail.com)
  *
  * This file is part of Quantum++.
  *
@@ -36,7 +36,7 @@ namespace qpp
 *
 * Consists of a wrapper around an std::mt19937 Mersenne twister
 * random number generator engine and an std::random_device engine. The latter
-* is used to seed the Mersenne twister. This class also seeds the standard 
+* is used to seed the Mersenne twister. This class also seeds the standard
 * C number generator, as it is used by Eigen.
 */
 class RandomDevices : public internal::Singleton<RandomDevices> // Singleton
