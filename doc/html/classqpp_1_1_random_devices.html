@@ -71,8 +71,6 @@ $(document).ready(function(){initNavTree('classqpp_1_1_random_devices.html','');
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classqpp_1_1_random_devices-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -105,18 +103,6 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a52ccfd3ac258f76480f1451e9972f15c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mersenne twister random number generator.  <a href="#a52ccfd3ac258f76480f1451e9972f15c">More...</a><br /></td></tr>
 <tr class="separator:a52ccfd3ac258f76480f1451e9972f15c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a96f9df3a55d6b0eaf54d4182138868c7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_random_devices.html#a96f9df3a55d6b0eaf54d4182138868c7">RandomDevices</a> ()</td></tr>
-<tr class="memdesc:a96f9df3a55d6b0eaf54d4182138868c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes and seeds the random number generators.  <a href="#a96f9df3a55d6b0eaf54d4182138868c7">More...</a><br /></td></tr>
-<tr class="separator:a96f9df3a55d6b0eaf54d4182138868c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:aff84714f2a748afacce235e37e373192"><td class="memItemLeft" align="right" valign="top">std::random_device&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_random_devices.html#aff84714f2a748afacce235e37e373192">_rd</a></td></tr>
-<tr class="memdesc:aff84714f2a748afacce235e37e373192"><td class="mdescLeft">&#160;</td><td class="mdescRight">used to seed std::mt19937 _rng  <a href="#aff84714f2a748afacce235e37e373192">More...</a><br /></td></tr>
-<tr class="separator:aff84714f2a748afacce235e37e373192"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
 <tr class="memitem:ac542b78a6c61e337cc6e6f9e514feb75"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_random_devices.html#ac542b78a6c61e337cc6e6f9e514feb75">internal::Singleton&lt; RandomDevices &gt;</a></td></tr>
@@ -140,33 +126,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Singeleton class that manages the source of randomness in the library. </p>
 <p>Consists of a wrapper around an std::mt19937 Mersenne twister random number generator engine and an std::random_device engine. The latter is used to seed the Mersenne twister. This class also seeds the standard C number generator, as it is used by Eigen. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a96f9df3a55d6b0eaf54d4182138868c7"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">qpp::RandomDevices::RandomDevices </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Initializes and seeds the random number generators. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Friends And Related Function Documentation</h2>
+</div><h2 class="groupheader">Friends And Related Function Documentation</h2>
 <a class="anchor" id="ac542b78a6c61e337cc6e6f9e514feb75"></a>
 <div class="memitem">
 <div class="memproto">
@@ -188,28 +148,6 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="aff84714f2a748afacce235e37e373192"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::random_device qpp::RandomDevices::_rd</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>used to seed std::mt19937 _rng </p>
-
-</div>
-</div>
 <a class="anchor" id="a52ccfd3ac258f76480f1451e9972f15c"></a>
 <div class="memitem">
 <div class="memproto">
@@ -233,7 +171,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_random_devices.html">RandomDevices</a></li>
-    <li class="footer">Generated on Mon Jan 26 2015 18:08:06 for Quantum++ by
+    <li class="footer">Generated on Wed Jan 28 2015 11:04:59 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

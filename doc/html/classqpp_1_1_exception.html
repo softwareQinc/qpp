@@ -72,8 +72,6 @@ $(document).ready(function(){initNavTree('classqpp_1_1_exception.html','');});
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classqpp_1_1_exception-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">qpp::Exception Class Reference</div>  </div>
@@ -96,7 +94,7 @@ Collaboration diagram for qpp::Exception:</div>
 <div class="dyncontent">
 <div class="center"><img src="classqpp_1_1_exception__coll__graph.png" border="0" usemap="#qpp_1_1_exception_coll__map" alt="Collaboration graph"/></div>
 <map name="qpp_1_1_exception_coll__map" id="qpp_1_1_exception_coll__map">
-<area shape="rect" id="node2" title="STL class. " alt="" coords="5,96,109,123"/><area shape="rect" id="node3" title="STL class. " alt="" coords="133,96,213,123"/><area shape="rect" id="node4" title="STL class. " alt="" coords="110,5,237,47"/></map>
+<area shape="rect" id="node2" title="STL class. " alt="" coords="9,5,113,32"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
@@ -151,23 +149,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a59e464cb761133e41eb3cdb4a77ac55b"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_exception.html#a59e464cb761133e41eb3cdb4a77ac55b">what</a> () const noexceptoverride</td></tr>
 <tr class="memdesc:a59e464cb761133e41eb3cdb4a77ac55b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overrides std::exception::what()  <a href="#a59e464cb761133e41eb3cdb4a77ac55b">More...</a><br /></td></tr>
 <tr class="separator:a59e464cb761133e41eb3cdb4a77ac55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:af93e5b4b45b5d9e19cea929ce08a8e34"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_exception.html#af93e5b4b45b5d9e19cea929ce08a8e34">_construct_exception_msg</a> ()</td></tr>
-<tr class="memdesc:af93e5b4b45b5d9e19cea929ce08a8e34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the exception description from its type.  <a href="#af93e5b4b45b5d9e19cea929ce08a8e34">More...</a><br /></td></tr>
-<tr class="separator:af93e5b4b45b5d9e19cea929ce08a8e34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:af3709e1bb0b6ac684e18bf332fcab90e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_exception.html#af3709e1bb0b6ac684e18bf332fcab90e">_where</a></td></tr>
-<tr class="separator:af3709e1bb0b6ac684e18bf332fcab90e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78c2cb9721e9fcd729f49134ea29ebdd"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_exception.html#a78c2cb9721e9fcd729f49134ea29ebdd">_msg</a></td></tr>
-<tr class="separator:a78c2cb9721e9fcd729f49134ea29ebdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ab4219dbe5da043d51a49be62e10573"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7c">Type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_exception.html#a7ab4219dbe5da043d51a49be62e10573">_type</a></td></tr>
-<tr class="separator:a7ab4219dbe5da043d51a49be62e10573"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae97ce74ba0750c77428a4f79431062d4"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_exception.html#ae97ce74ba0750c77428a4f79431062d4">_custom</a></td></tr>
-<tr class="separator:ae97ce74ba0750c77428a4f79431062d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Generates custom exceptions, used when validating function parameters. </p>
@@ -192,7 +173,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p><a class="el" href="classqpp_1_1_exception.html" title="Generates custom exceptions, used when validating function parameters. ">Exception</a> types, add more here if needed. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classqpp_1_1_exception.html#af93e5b4b45b5d9e19cea929ce08a8e34" title="Constructs the exception description from its type. ">qpp::Exception::_construct_exception_msg()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>qpp::Exception::_construct_exception_msg() </dd></dl>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a91985c96dc408d3538b8f88cf1eaae7ca0b2b5755a40c29d02f7167bc5f01e20d"></a>UNKNOWN_EXCEPTION&#160;</td><td class="fielddoc">
 <p>Unknown exception </p>
@@ -368,33 +349,6 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="af93e5b4b45b5d9e19cea929ce08a8e34"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void qpp::Exception::_construct_exception_msg </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Constructs the exception description from its type. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7c" title="Exception types, add more here if needed. ">qpp::Exception::Type</a></dd></dl>
-<p>Must modify the code of this function if more exceptions are added </p>
-
-</div>
-</div>
 <a class="anchor" id="a59e464cb761133e41eb3cdb4a77ac55b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -421,87 +375,6 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="ae97ce74ba0750c77428a4f79431062d4"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string qpp::Exception::_custom</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a78c2cb9721e9fcd729f49134ea29ebdd"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string qpp::Exception::_msg</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a7ab4219dbe5da043d51a49be62e10573"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7c">Type</a> qpp::Exception::_type</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="af3709e1bb0b6ac684e18bf332fcab90e"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string qpp::Exception::_where</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>classes/<a class="el" href="exception_8h_source.html">exception.h</a></li>
 </ul>
@@ -511,7 +384,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_exception.html">Exception</a></li>
-    <li class="footer">Generated on Mon Jan 26 2015 18:08:06 for Quantum++ by
+    <li class="footer">Generated on Wed Jan 28 2015 11:04:59 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
