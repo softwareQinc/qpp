@@ -735,9 +735,9 @@ Variables</h2></td></tr>
 <tr class="memitem:a8cf42bdf7cdbcc98543c7bf6ef36671d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classqpp_1_1_states.html">States</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a8cf42bdf7cdbcc98543c7bf6ef36671d">st</a> = <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">States::get_instance</a>()</td></tr>
 <tr class="memdesc:a8cf42bdf7cdbcc98543c7bf6ef36671d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classqpp_1_1_states.html" title="const Singleton class that implements most commonly used states ">qpp::States</a> const Singleton  <a href="#a8cf42bdf7cdbcc98543c7bf6ef36671d">More...</a><br /></td></tr>
 <tr class="separator:a8cf42bdf7cdbcc98543c7bf6ef36671d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae470c1750d1cc895763d1902f3a6882d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_random_devices.html">RandomDevices</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ae470c1750d1cc895763d1902f3a6882d">rdevs</a> = <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">RandomDevices::get_instance</a>()</td></tr>
-<tr class="memdesc:ae470c1750d1cc895763d1902f3a6882d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classqpp_1_1_random_devices.html" title="Singeleton class that manages the source of randomness in the library. ">qpp::RandomDevices</a> Singleton  <a href="#ae470c1750d1cc895763d1902f3a6882d">More...</a><br /></td></tr>
-<tr class="separator:ae470c1750d1cc895763d1902f3a6882d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f0dceb1b16f7bed83f18ecff66a3b34"><td class="memItemLeft" align="right" valign="top">thread_local <a class="el" href="classqpp_1_1_random_devices.html">RandomDevices</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a5f0dceb1b16f7bed83f18ecff66a3b34">rdevs</a> = <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">RandomDevices::get_instance</a>()</td></tr>
+<tr class="memdesc:a5f0dceb1b16f7bed83f18ecff66a3b34"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classqpp_1_1_random_devices.html" title="Singeleton class that manages the source of randomness in the library. ">qpp::RandomDevices</a> Singleton  <a href="#a5f0dceb1b16f7bed83f18ecff66a3b34">More...</a><br /></td></tr>
+<tr class="separator:a5f0dceb1b16f7bed83f18ecff66a3b34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Quantum++ main namespace. </p>
@@ -6501,18 +6501,19 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="ae470c1750d1cc895763d1902f3a6882d"></a>
+<a class="anchor" id="a5f0dceb1b16f7bed83f18ecff66a3b34"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classqpp_1_1_random_devices.html">RandomDevices</a>&amp; qpp::rdevs = <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">RandomDevices::get_instance</a>()</td>
+          <td class="memname">thread_local <a class="el" href="classqpp_1_1_random_devices.html">RandomDevices</a>&amp; qpp::rdevs = <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">RandomDevices::get_instance</a>()</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p><a class="el" href="classqpp_1_1_random_devices.html" title="Singeleton class that manages the source of randomness in the library. ">qpp::RandomDevices</a> Singleton </p>
-<p>Initializes the random devices, see the class <a class="el" href="classqpp_1_1_random_devices.html" title="Singeleton class that manages the source of randomness in the library. ">qpp::RandomDevices</a> </p>
+<p>Initializes the random devices, see the class <a class="el" href="classqpp_1_1_random_devices.html" title="Singeleton class that manages the source of randomness in the library. ">qpp::RandomDevices</a></p>
+<dl class="section note"><dt>Note</dt><dd>Has thread storage duration, due to mutability of its members std::mt19937 and std::random_device </dd></dl>
 
 </div>
 </div>
@@ -6537,7 +6538,7 @@ template&lt;typename Derived &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Wed Jan 28 2015 11:04:59 for Quantum++ by
+    <li class="footer">Generated on Sun Feb 15 2015 19:57:09 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
