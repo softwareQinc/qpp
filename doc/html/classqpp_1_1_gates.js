@@ -1,6 +1,5 @@
 var classqpp_1_1_gates =
 [
-    [ "Gates", "classqpp_1_1_gates.html#af8d87a811249d288454f5b30017eccea", null ],
     [ "CTRL", "classqpp_1_1_gates.html#ae75fe932917ec2d75d2110cbe76876a2", null ],
     [ "expandout", "classqpp_1_1_gates.html#a34f16eb2518f7406a1836c9361c231da", null ],
     [ "Fd", "classqpp_1_1_gates.html#a0cb90c08dd6eb0e9c19333b00478dc54", null ],
