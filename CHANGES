@@ -7,5 +7,5 @@ Version 0.2 - 26 January 2015
             qpp::factors() - prime factors of positive integer
             qpp::isprime() - primality test
 
-Development version 0.2.1 
-	- qpp::internal::Singleton<T>::get_thread_local_instance()
+Version 0.3 - 15 February 2015
+	- Added qpp::internal::Singleton<T>::get_thread_local_instance()
