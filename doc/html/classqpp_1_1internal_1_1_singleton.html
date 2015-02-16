@@ -106,7 +106,7 @@ Protected Member Functions</h2></td></tr>
 class qpp::internal::Singleton&lt; T &gt;</h3>
 
 <p><a class="el" href="classqpp_1_1internal_1_1_singleton.html" title="Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...">Singleton</a> policy class, used internally to implement the singleton pattern via CRTP (Curiously recurring template pattern) </p>
-<p>To implement a singleton, derive your class from <a class="el" href="classqpp_1_1internal_1_1_singleton.html" title="Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...">qpp::internal::Singleton</a>, make <a class="el" href="classqpp_1_1internal_1_1_singleton.html" title="Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...">qpp::internal::Singleton</a> a friend of your class, then declare the constructor of your class as private. To get an instance, use the static member function <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">qpp::internal::Singleton::get_instance()</a>, which returns a reference to your newly created singleton (thread-safe in C++11).</p>
+<p>To implement a singleton, derive your class from <a class="el" href="classqpp_1_1internal_1_1_singleton.html" title="Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...">qpp::internal::Singleton</a>, make <a class="el" href="classqpp_1_1internal_1_1_singleton.html" title="Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...">qpp::internal::Singleton</a> a friend of your class, then declare the constructor of your class as private. To get an instance, use the static member function <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">qpp::internal::Singleton::get_instance()</a> (<a class="el" href="classqpp_1_1internal_1_1_singleton.html#ac5ea06e8442773de6e64859c81650e3f">qpp::internal::Singleton::get_thread_local_instance()</a>), which returns a reference (thread_local reference) to your newly created singleton (thread-safe in C++11).</p>
 <p>Example: </p><div class="fragment"><div class="line"><span class="keyword">class </span>MySingleton: <span class="keyword">public</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html">qpp::internal::Singleton</a>&lt;MySingleton&gt;</div>
 <div class="line">{</div>
 <div class="line">       <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classqpp_1_1internal_1_1_singleton.html">qpp::internal::Singleton</a>&lt;MySingleton&gt;;</div>
@@ -286,7 +286,7 @@ template&lt;typename T&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="namespaceqpp_1_1internal.html">internal</a></li><li class="navelem"><a class="el" href="classqpp_1_1internal_1_1_singleton.html">Singleton</a></li>
-    <li class="footer">Generated on Sun Feb 15 2015 20:27:08 for Quantum++ by
+    <li class="footer">Generated on Sun Feb 15 2015 20:48:24 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
