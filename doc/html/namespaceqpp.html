@@ -735,7 +735,7 @@ Variables</h2></td></tr>
 <tr class="memitem:a8cf42bdf7cdbcc98543c7bf6ef36671d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classqpp_1_1_states.html">States</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a8cf42bdf7cdbcc98543c7bf6ef36671d">st</a> = <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">States::get_instance</a>()</td></tr>
 <tr class="memdesc:a8cf42bdf7cdbcc98543c7bf6ef36671d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classqpp_1_1_states.html" title="const Singleton class that implements most commonly used states ">qpp::States</a> const Singleton  <a href="#a8cf42bdf7cdbcc98543c7bf6ef36671d">More...</a><br /></td></tr>
 <tr class="separator:a8cf42bdf7cdbcc98543c7bf6ef36671d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f0dceb1b16f7bed83f18ecff66a3b34"><td class="memItemLeft" align="right" valign="top">thread_local <a class="el" href="classqpp_1_1_random_devices.html">RandomDevices</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a5f0dceb1b16f7bed83f18ecff66a3b34">rdevs</a> = <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">RandomDevices::get_instance</a>()</td></tr>
+<tr class="memitem:a5f0dceb1b16f7bed83f18ecff66a3b34"><td class="memItemLeft" align="right" valign="top">thread_local <a class="el" href="classqpp_1_1_random_devices.html">RandomDevices</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a5f0dceb1b16f7bed83f18ecff66a3b34">rdevs</a> = <a class="el" href="classqpp_1_1internal_1_1_singleton.html#ac5ea06e8442773de6e64859c81650e3f">RandomDevices::get_thread_local_instance</a>()</td></tr>
 <tr class="memdesc:a5f0dceb1b16f7bed83f18ecff66a3b34"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classqpp_1_1_random_devices.html" title="Singeleton class that manages the source of randomness in the library. ">qpp::RandomDevices</a> Singleton  <a href="#a5f0dceb1b16f7bed83f18ecff66a3b34">More...</a><br /></td></tr>
 <tr class="separator:a5f0dceb1b16f7bed83f18ecff66a3b34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -6506,14 +6506,14 @@ template&lt;typename Derived &gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">thread_local <a class="el" href="classqpp_1_1_random_devices.html">RandomDevices</a>&amp; qpp::rdevs = <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">RandomDevices::get_instance</a>()</td>
+          <td class="memname">thread_local <a class="el" href="classqpp_1_1_random_devices.html">RandomDevices</a>&amp; qpp::rdevs = <a class="el" href="classqpp_1_1internal_1_1_singleton.html#ac5ea06e8442773de6e64859c81650e3f">RandomDevices::get_thread_local_instance</a>()</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p><a class="el" href="classqpp_1_1_random_devices.html" title="Singeleton class that manages the source of randomness in the library. ">qpp::RandomDevices</a> Singleton </p>
 <p>Initializes the random devices, see the class <a class="el" href="classqpp_1_1_random_devices.html" title="Singeleton class that manages the source of randomness in the library. ">qpp::RandomDevices</a></p>
-<dl class="section note"><dt>Note</dt><dd>Has thread storage duration, due to mutability of its members std::mt19937 and std::random_device </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Has thread storage duration, due to mutability of its public member std::mt19937 </dd></dl>
 
 </div>
 </div>
@@ -6538,7 +6538,7 @@ template&lt;typename Derived &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Sun Feb 15 2015 19:57:09 for Quantum++ by
+    <li class="footer">Generated on Sun Feb 15 2015 20:27:08 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

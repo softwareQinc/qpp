@@ -123,7 +123,7 @@ double rand(double a = 0, double b = 1)
 {
     std::uniform_real_distribution<> ud(a, b);
 
-    return ud(RandomDevices::get_instance()._rng);
+    return ud(RandomDevices::get_thread_local_instance()._rng);
 }
 
 /**
@@ -139,7 +139,7 @@ idx randidx(idx a = std::numeric_limits<idx>::min(),
 {
     std::uniform_int_distribution<idx> uid(a, b);
 
-    return uid(RandomDevices::get_instance()._rng);
+    return uid(RandomDevices::get_thread_local_instance()._rng);
 }
 
 /**
@@ -193,7 +193,7 @@ inline dmat randn(idx rows, idx cols,
     return dmat::Zero(rows, cols).unaryExpr(
             [&nd](double)
             {
-                return nd(RandomDevices::get_instance()._rng);
+                return nd(RandomDevices::get_thread_local_instance()._rng);
             });
 
 }
@@ -242,7 +242,7 @@ double randn(double mean = 0, double sigma = 1)
 {
     std::normal_distribution<> nd(mean, sigma);
 
-    return nd(RandomDevices::get_instance()._rng);
+    return nd(RandomDevices::get_thread_local_instance()._rng);
 }
 
 /**
@@ -400,7 +400,7 @@ std::vector<idx> randperm(idx n)
     std::iota(std::begin(result), std::end(result), 0);
     // shuffle
     std::shuffle(std::begin(result), std::end(result),
-            RandomDevices::get_instance()._rng);
+            RandomDevices::get_thread_local_instance()._rng);
 
     return result;
 }

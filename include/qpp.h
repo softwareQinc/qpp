@@ -132,10 +132,10 @@ const States& st = States::get_instance();
 *
 * Initializes the random devices, see the class qpp::RandomDevices
 *
-* \note Has thread storage duration, due to mutability of its members 
-* std::mt19937 and std::random_device
+* \note Has thread storage duration, due to mutability of its public member
+* std::mt19937
 */
-thread_local RandomDevices& rdevs = RandomDevices::get_instance();
+thread_local RandomDevices& rdevs = RandomDevices::get_thread_local_instance();
 
 } /* namespace qpp */
 
