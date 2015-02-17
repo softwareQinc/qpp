@@ -23,6 +23,6 @@ int main()
     std::cout << std::endl << "Probabilities: ";
     std::cout << disp(std::get<1>(m), ", ") << std::endl;
     std::cout << "Resulting states: " << std::endl;
-    for (auto && elem : std::get<2>(m))
-        std::cout << disp(elem) << std::endl << std::endl;
+    for (auto&& it : std::get<2>(m))
+        std::cout << disp(it) << std::endl << std::endl;
 }
