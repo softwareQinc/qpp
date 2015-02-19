@@ -52,7 +52,7 @@ var functions_8h =
     [ "spectralpowm", "functions_8h.html#a62d7f0db6a049f254c2a7a77af8eb29e", null ],
     [ "sqrtm", "functions_8h.html#a83e2b23bc11e3cb8dd6909969af7377c", null ],
     [ "sum", "functions_8h.html#a48a92e8a327ff86f87c6236965103797", null ],
-    [ "sum", "functions_8h.html#a71fdacbcc8284b5088c582310f9962f1", null ],
+    [ "sum", "functions_8h.html#a47cb01e93f61124c4ecba74ddcc9a3bd", null ],
     [ "svals", "functions_8h.html#abe012650e8ff95fc346dd75cdbb3625a", null ],
     [ "svd", "functions_8h.html#a01fbc71879953afc92d8828aa6b99627", null ],
     [ "svdU", "functions_8h.html#a33c070beade098fa8f26440791cc8840", null ],

@@ -231,7 +231,7 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff">dmat</a>&amp; rA = A;</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="comment">// check zero-size</span></div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(rA))</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">internal::_check_nonzero_size</a>(rA))</div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::saveMATLABmatrix()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());</div>
@@ -265,7 +265,7 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; rA = A;</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="comment">// check zero-size</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">internal::_check_nonzero_size</a>(rA))</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">internal::_check_nonzero_size</a>(rA))</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::saveMATLABmatrix()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="comment">// cast the input to a double (internal MATLAB format)</span></div>
@@ -311,9 +311,9 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530">qpp::Exception::Type::UNDEFINED_TYPE</a></div></div>
 <div class="ttc" id="namespaceqpp_html_aad7ccc50a6b139279d7b56d07112b183"><div class="ttname"><a href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">qpp::cplx</a></div><div class="ttdeci">std::complex&lt; double &gt; cplx</div><div class="ttdoc">Complex number in double precision. </div><div class="ttdef"><b>Definition:</b> types.h:41</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html"><div class="ttname"><a href="classqpp_1_1_exception.html">qpp::Exception</a></div><div class="ttdoc">Generates custom exceptions, used when validating function parameters. </div><div class="ttdef"><b>Definition:</b> exception.h:39</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a06ca054b0436fb4b9b445574dec47f82"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">qpp::internal::_check_nonzero_size</a></div><div class="ttdeci">bool _check_nonzero_size(const T &amp;x) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:131</div></div>
 <div class="ttc" id="namespaceqpp_html_a84a0f3023e1895d22de4e5f3e727e1dd"><div class="ttname"><a href="namespaceqpp.html#a84a0f3023e1895d22de4e5f3e727e1dd">qpp::loadMATLABmatrix</a></div><div class="ttdeci">Derived loadMATLABmatrix(const std::string &amp;mat_file, const std::string &amp;var_name)</div><div class="ttdoc">Loads an Eigen dynamic matrix from a MATLAB .mat file, generic version. </div><div class="ttdef"><b>Definition:</b> matlab.h:48</div></div>
 <div class="ttc" id="namespaceqpp_html_ab0de67006716bdc8fae52c6a49259276"><div class="ttname"><a href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">qpp::cmat</a></div><div class="ttdeci">Eigen::MatrixXcd cmat</div><div class="ttdoc">Complex (double precision) dynamic Eigen matrix. </div><div class="ttdef"><b>Definition:</b> types.h:56</div></div>
-<div class="ttc" id="namespaceqpp_1_1internal_html_a62ab44d343a116c122e488bc3ac46a31"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a62ab44d343a116c122e488bc3ac46a31">qpp::internal::_check_nonzero_size</a></div><div class="ttdeci">bool _check_nonzero_size(const T &amp;x)</div><div class="ttdef"><b>Definition:</b> util.h:129</div></div>
 <div class="ttc" id="namespaceqpp_html_a38d10a1f7c02f69d876a28133893d082"><div class="ttname"><a href="namespaceqpp.html#a38d10a1f7c02f69d876a28133893d082">qpp::saveMATLABmatrix</a></div><div class="ttdeci">void saveMATLABmatrix(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::string &amp;mat_file, const std::string &amp;var_name, const std::string &amp;mode)</div><div class="ttdoc">Saves an Eigen dynamic matrix to a MATLAB .mat file, generic version. </div><div class="ttdef"><b>Definition:</b> matlab.h:209</div></div>
 <div class="ttc" id="namespaceqpp_html_a1f5f7137e8551cf82db04d3b81cdd706"><div class="ttname"><a href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">qpp::idx</a></div><div class="ttdeci">std::size_t idx</div><div class="ttdoc">Non-negative integer index. </div><div class="ttdef"><b>Definition:</b> types.h:36</div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -322,7 +322,7 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_26e95c14e39a3b2aa874b4ad85a981a5.html">MATLAB</a></li><li class="navelem"><a class="el" href="matlab_8h.html">matlab.h</a></li>
-    <li class="footer">Generated on Sun Feb 15 2015 21:34:15 for Quantum++ by
+    <li class="footer">Generated on Wed Feb 18 2015 20:27:34 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

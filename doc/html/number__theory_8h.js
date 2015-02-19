@@ -4,7 +4,7 @@ var number__theory_8h =
     [ "contfrac2x", "number__theory_8h.html#a392505168b9760af20ed641d86fe3a7d", null ],
     [ "contfrac2x", "number__theory_8h.html#a155296775ac0c0cd0cfe52c2ade8f14c", null ],
     [ "factors", "number__theory_8h.html#a215c720d5f42667fb6113fe77b56873d", null ],
-    [ "gcd", "number__theory_8h.html#a6d775eb89c0bd90605168089805d2e71", null ],
+    [ "gcd", "number__theory_8h.html#a3af1bee2cdcb69d2f10020eee6fef002", null ],
     [ "gcd", "number__theory_8h.html#ae8f774cd0c5fe0232f427188ee8e98bc", null ],
     [ "invperm", "number__theory_8h.html#a396e880587519c2861caf0bcdfb219a0", null ],
     [ "isprime", "number__theory_8h.html#a2853f3470078b224952bca34d0bc1b18", null ],

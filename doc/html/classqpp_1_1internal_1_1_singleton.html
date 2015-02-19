@@ -85,17 +85,17 @@ $(document).ready(function(){initNavTree('classqpp_1_1internal_1_1_singleton.htm
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a65f1068804fafa264c2a6adabbe35802"><td class="memItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">get_instance</a> ()</td></tr>
-<tr class="separator:a65f1068804fafa264c2a6adabbe35802"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5ea06e8442773de6e64859c81650e3f"><td class="memItemLeft" align="right" valign="top">static thread_local T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_singleton.html#ac5ea06e8442773de6e64859c81650e3f">get_thread_local_instance</a> ()</td></tr>
-<tr class="separator:ac5ea06e8442773de6e64859c81650e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c06f662f70991aa6f84bacf71efc069"><td class="memItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">get_instance</a> () noexcept(std::is_nothrow_constructible&lt; T &gt;::value)</td></tr>
+<tr class="separator:a4c06f662f70991aa6f84bacf71efc069"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf4b1c567e5b672354c026c7ae02ae16"><td class="memItemLeft" align="right" valign="top">static thread_local T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_singleton.html#aaf4b1c567e5b672354c026c7ae02ae16">get_thread_local_instance</a> () noexcept(std::is_nothrow_constructible&lt; T &gt;::value)</td></tr>
+<tr class="separator:aaf4b1c567e5b672354c026c7ae02ae16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:ad8d6232fc4a5705c04d27045d2c2c09d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_singleton.html#ad8d6232fc4a5705c04d27045d2c2c09d">Singleton</a> ()</td></tr>
-<tr class="separator:ad8d6232fc4a5705c04d27045d2c2c09d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba717b4ca79fc5f0cfe9b0cd340ef100"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_singleton.html#aba717b4ca79fc5f0cfe9b0cd340ef100">~Singleton</a> ()</td></tr>
-<tr class="separator:aba717b4ca79fc5f0cfe9b0cd340ef100"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18117a60454bc17415345055ecef4763"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_singleton.html#a18117a60454bc17415345055ecef4763">Singleton</a> () noexcept</td></tr>
+<tr class="separator:a18117a60454bc17415345055ecef4763"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc9c0ac8c95bb8825c1681ed81cd19c6"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_singleton.html#abc9c0ac8c95bb8825c1681ed81cd19c6">~Singleton</a> () noexcept(std::is_nothrow_destructible&lt; T &gt;::value)</td></tr>
+<tr class="separator:abc9c0ac8c95bb8825c1681ed81cd19c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f5902847d8719a540387dab15409693"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_singleton.html#a9f5902847d8719a540387dab15409693">Singleton</a> (const <a class="el" href="classqpp_1_1internal_1_1_singleton.html">Singleton</a> &amp;)=delete</td></tr>
 <tr class="separator:a9f5902847d8719a540387dab15409693"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9f8d235a7b7e9fc5732e0d049442fa5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1internal_1_1_singleton.html">Singleton</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_singleton.html#ac9f8d235a7b7e9fc5732e0d049442fa5">operator=</a> (const <a class="el" href="classqpp_1_1internal_1_1_singleton.html">Singleton</a> &amp;)=delete</td></tr>
@@ -106,7 +106,7 @@ Protected Member Functions</h2></td></tr>
 class qpp::internal::Singleton&lt; T &gt;</h3>
 
 <p><a class="el" href="classqpp_1_1internal_1_1_singleton.html" title="Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...">Singleton</a> policy class, used internally to implement the singleton pattern via CRTP (Curiously recurring template pattern) </p>
-<p>To implement a singleton, derive your class from <a class="el" href="classqpp_1_1internal_1_1_singleton.html" title="Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...">qpp::internal::Singleton</a>, make <a class="el" href="classqpp_1_1internal_1_1_singleton.html" title="Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...">qpp::internal::Singleton</a> a friend of your class, then declare the constructor of your class as private. To get an instance, use the static member function <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a65f1068804fafa264c2a6adabbe35802">qpp::internal::Singleton::get_instance()</a> (<a class="el" href="classqpp_1_1internal_1_1_singleton.html#ac5ea06e8442773de6e64859c81650e3f">qpp::internal::Singleton::get_thread_local_instance()</a>), which returns a reference (thread_local reference) to your newly created singleton (thread-safe in C++11).</p>
+<p>To implement a singleton, derive your class from <a class="el" href="classqpp_1_1internal_1_1_singleton.html" title="Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...">qpp::internal::Singleton</a>, make <a class="el" href="classqpp_1_1internal_1_1_singleton.html" title="Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...">qpp::internal::Singleton</a> a friend of your class, then declare the constructor of your class as private. To get an instance, use the static member function <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">qpp::internal::Singleton::get_instance()</a> (<a class="el" href="classqpp_1_1internal_1_1_singleton.html#aaf4b1c567e5b672354c026c7ae02ae16">qpp::internal::Singleton::get_thread_local_instance()</a>), which returns a reference (thread_local reference) to your newly created singleton (thread-safe in C++11).</p>
 <p>Example: </p><div class="fragment"><div class="line"><span class="keyword">class </span>MySingleton: <span class="keyword">public</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html">qpp::internal::Singleton</a>&lt;MySingleton&gt;</div>
 <div class="line">{</div>
 <div class="line">       <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classqpp_1_1internal_1_1_singleton.html">qpp::internal::Singleton</a>&lt;MySingleton&gt;;</div>
@@ -124,7 +124,7 @@ class qpp::internal::Singleton&lt; T &gt;</h3>
 <div class="line"><span class="comment">// Get a thread_local instance</span></div>
 </div><!-- fragment --><dl class="section see"><dt>See also</dt><dd>Code of <a class="el" href="classqpp_1_1_codes.html" title="const Singleton class that defines quantum error correcting codes ">qpp::Codes</a>, <a class="el" href="classqpp_1_1_gates.html" title="const Singleton class that implements most commonly used gates ">qpp::Gates</a>, <a class="el" href="classqpp_1_1_init.html" title="const Singleton class that performs additional initializations/cleanups ">qpp::Init</a>, <a class="el" href="classqpp_1_1_random_devices.html" title="Singeleton class that manages the source of randomness in the library. ">qpp::RandomDevices</a>, <a class="el" href="classqpp_1_1_states.html" title="const Singleton class that implements most commonly used states ">qpp::States</a> or <a class="el" href="qpp_8h.html" title="Quantum++ main header file, includes all other necessary headers. ">qpp.h</a> for real world examples of usage. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ad8d6232fc4a5705c04d27045d2c2c09d"></a>
+<a class="anchor" id="a18117a60454bc17415345055ecef4763"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -142,14 +142,14 @@ template&lt;typename T&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="aba717b4ca79fc5f0cfe9b0cd340ef100"></a>
+<a class="anchor" id="abc9c0ac8c95bb8825c1681ed81cd19c6"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -167,7 +167,7 @@ template&lt;typename T&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -201,7 +201,7 @@ template&lt;typename T&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a65f1068804fafa264c2a6adabbe35802"></a>
+<a class="anchor" id="a4c06f662f70991aa6f84bacf71efc069"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -219,14 +219,14 @@ template&lt;typename T&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="ac5ea06e8442773de6e64859c81650e3f"></a>
+<a class="anchor" id="aaf4b1c567e5b672354c026c7ae02ae16"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -244,7 +244,7 @@ template&lt;typename T&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -286,7 +286,7 @@ template&lt;typename T&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="namespaceqpp_1_1internal.html">internal</a></li><li class="navelem"><a class="el" href="classqpp_1_1internal_1_1_singleton.html">Singleton</a></li>
-    <li class="footer">Generated on Sun Feb 15 2015 21:34:15 for Quantum++ by
+    <li class="footer">Generated on Wed Feb 18 2015 20:27:35 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
