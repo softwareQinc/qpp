@@ -76,7 +76,7 @@ protected:
     {
     }
 
-    virtual ~Singleton() noexcept(std::is_nothrow_destructible<T>::value)
+    virtual ~Singleton()
     {
     }
 
