@@ -8,7 +8,7 @@ Version 0.2 - 26 January 2015
             qpp::isprime() - primality test
 
 Version 0.3 - 15 February 2015
-	- Added qpp::internal::Singleton<T>::get_thread_local_instance()
+    - Added qpp::internal::Singleton<T>::get_thread_local_instance()
 
 Version 0.3.1 - development
     - Added noexcept specification where suitable
