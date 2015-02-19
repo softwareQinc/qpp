@@ -44,7 +44,7 @@ var functions_8h =
     [ "powm", "functions_8h.html#adc34b7cd0bcbdddf99c4835489c47b5d", null ],
     [ "prj", "functions_8h.html#aba404255d64874760673090457055373", null ],
     [ "prod", "functions_8h.html#a78595ec429a5df51dbe682cdb9711d9c", null ],
-    [ "prod", "functions_8h.html#a7f4d7011145e0589b6ba5767dcf90885", null ],
+    [ "prod", "functions_8h.html#ab690714bfccdafaae2ddfe5c9b12b948", null ],
     [ "reshape", "functions_8h.html#afa33bacb26cad466156dc3f8f3980da7", null ],
     [ "rho2pure", "functions_8h.html#ad3b0046735db751418aea0b81d0cb048", null ],
     [ "schatten", "functions_8h.html#a1865cddc66aa88d853512abd39e584e1", null ],

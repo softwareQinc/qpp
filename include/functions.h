@@ -1555,10 +1555,11 @@ sum(InputIterator first, InputIterator last) noexcept
 */
 template<typename InputIterator>
 typename std::iterator_traits<InputIterator>::value_type
-prod(InputIterator first, InputIterator last)
+prod(InputIterator first, InputIterator last) noexcept
 {
     using value_type =
     typename std::iterator_traits<InputIterator>::value_type;
+    
     return std::accumulate(first, last, static_cast<value_type>(1),
             std::multiplies<value_type>());
 }

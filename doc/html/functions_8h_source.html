@@ -1133,50 +1133,51 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01547"></a><span class="lineno"> 1547</span>&#160;</div>
 <div class="line"><a name="l01556"></a><span class="lineno"> 1556</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> InputIterator&gt;</div>
 <div class="line"><a name="l01557"></a><span class="lineno"> 1557</span>&#160;<span class="keyword">typename</span> std::iterator_traits&lt;InputIterator&gt;::value_type</div>
-<div class="line"><a name="l01558"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a7f4d7011145e0589b6ba5767dcf90885"> 1558</a></span>&#160;<a class="code" href="namespaceqpp.html#a78595ec429a5df51dbe682cdb9711d9c">prod</a>(InputIterator first, InputIterator last)</div>
+<div class="line"><a name="l01558"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ab690714bfccdafaae2ddfe5c9b12b948"> 1558</a></span>&#160;<a class="code" href="namespaceqpp.html#a78595ec429a5df51dbe682cdb9711d9c">prod</a>(InputIterator first, InputIterator last) noexcept</div>
 <div class="line"><a name="l01559"></a><span class="lineno"> 1559</span>&#160;{</div>
 <div class="line"><a name="l01560"></a><span class="lineno"> 1560</span>&#160;    <span class="keyword">using</span> value_type =</div>
 <div class="line"><a name="l01561"></a><span class="lineno"> 1561</span>&#160;    <span class="keyword">typename</span> std::iterator_traits&lt;InputIterator&gt;::value_type;</div>
-<div class="line"><a name="l01562"></a><span class="lineno"> 1562</span>&#160;    <span class="keywordflow">return</span> std::accumulate(first, last, static_cast&lt;value_type&gt;(1),</div>
-<div class="line"><a name="l01563"></a><span class="lineno"> 1563</span>&#160;            std::multiplies&lt;value_type&gt;());</div>
-<div class="line"><a name="l01564"></a><span class="lineno"> 1564</span>&#160;}</div>
-<div class="line"><a name="l01565"></a><span class="lineno"> 1565</span>&#160;</div>
-<div class="line"><a name="l01578"></a><span class="lineno"> 1578</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l01579"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ad3b0046735db751418aea0b81d0cb048"> 1579</a></span>&#160;<a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;typename Derived::Scalar&gt;</a> <a class="code" href="namespaceqpp.html#ad3b0046735db751418aea0b81d0cb048">rho2pure</a>(</div>
-<div class="line"><a name="l01580"></a><span class="lineno"> 1580</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A)</div>
-<div class="line"><a name="l01581"></a><span class="lineno"> 1581</span>&#160;{</div>
-<div class="line"><a name="l01582"></a><span class="lineno"> 1582</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
-<div class="line"><a name="l01583"></a><span class="lineno"> 1583</span>&#160;</div>
-<div class="line"><a name="l01584"></a><span class="lineno"> 1584</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
-<div class="line"><a name="l01585"></a><span class="lineno"> 1585</span>&#160;    <span class="comment">// check zero-size</span></div>
-<div class="line"><a name="l01586"></a><span class="lineno"> 1586</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">internal::_check_nonzero_size</a>(rA))</div>
-<div class="line"><a name="l01587"></a><span class="lineno"> 1587</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::rho2pure()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
-<div class="line"><a name="l01588"></a><span class="lineno"> 1588</span>&#160;    <span class="comment">// check square matrix</span></div>
-<div class="line"><a name="l01589"></a><span class="lineno"> 1589</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a1aedb97a120b9f06b27ec59a42587d77">internal::_check_square_mat</a>(rA))</div>
-<div class="line"><a name="l01590"></a><span class="lineno"> 1590</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::rho2pure()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cacb2cab32e9061c686a6664d06c8bac94">Exception::Type::MATRIX_NOT_SQUARE</a>);</div>
-<div class="line"><a name="l01591"></a><span class="lineno"> 1591</span>&#160;    <span class="comment">// END EXPCEPTION CHECKS</span></div>
-<div class="line"><a name="l01592"></a><span class="lineno"> 1592</span>&#160;</div>
-<div class="line"><a name="l01593"></a><span class="lineno"> 1593</span>&#160;    <a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;double&gt;</a> tmp_evals = <a class="code" href="namespaceqpp.html#a322665174fcacffbdf82dd04139d667e">hevals</a>(rA);</div>
-<div class="line"><a name="l01594"></a><span class="lineno"> 1594</span>&#160;    <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> tmp_evects = <a class="code" href="namespaceqpp.html#abeadaf6395c78a52339bec119c4a331b">hevects</a>(rA);</div>
-<div class="line"><a name="l01595"></a><span class="lineno"> 1595</span>&#160;    <a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;typename Derived::Scalar&gt;</a> result =</div>
-<div class="line"><a name="l01596"></a><span class="lineno"> 1596</span>&#160;            <a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;typename Derived::Scalar&gt;::Zero</a>(rA.rows());</div>
-<div class="line"><a name="l01597"></a><span class="lineno"> 1597</span>&#160;    <span class="comment">// find the non-zero eigenvector</span></div>
-<div class="line"><a name="l01598"></a><span class="lineno"> 1598</span>&#160;    <span class="comment">// there is only one, assuming the state is pure</span></div>
-<div class="line"><a name="l01599"></a><span class="lineno"> 1599</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> k = 0; k &lt; static_cast&lt;idx&gt;(rA.rows()); ++k)</div>
-<div class="line"><a name="l01600"></a><span class="lineno"> 1600</span>&#160;    {</div>
-<div class="line"><a name="l01601"></a><span class="lineno"> 1601</span>&#160;        <span class="keywordflow">if</span> (std::abs(tmp_evals(k)) &gt; <a class="code" href="namespaceqpp.html#a9a99ccccd473a9006dfaadb5761ac4f6">eps</a>)</div>
-<div class="line"><a name="l01602"></a><span class="lineno"> 1602</span>&#160;        {</div>
-<div class="line"><a name="l01603"></a><span class="lineno"> 1603</span>&#160;            result = tmp_evects.col(k);</div>
-<div class="line"><a name="l01604"></a><span class="lineno"> 1604</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l01605"></a><span class="lineno"> 1605</span>&#160;        }</div>
-<div class="line"><a name="l01606"></a><span class="lineno"> 1606</span>&#160;    }</div>
-<div class="line"><a name="l01607"></a><span class="lineno"> 1607</span>&#160;</div>
-<div class="line"><a name="l01608"></a><span class="lineno"> 1608</span>&#160;    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l01609"></a><span class="lineno"> 1609</span>&#160;}</div>
-<div class="line"><a name="l01610"></a><span class="lineno"> 1610</span>&#160;</div>
-<div class="line"><a name="l01611"></a><span class="lineno"> 1611</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
-<div class="line"><a name="l01612"></a><span class="lineno"> 1612</span>&#160;</div>
-<div class="line"><a name="l01613"></a><span class="lineno"> 1613</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* FUNCTIONS_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l01562"></a><span class="lineno"> 1562</span>&#160;    </div>
+<div class="line"><a name="l01563"></a><span class="lineno"> 1563</span>&#160;    <span class="keywordflow">return</span> std::accumulate(first, last, static_cast&lt;value_type&gt;(1),</div>
+<div class="line"><a name="l01564"></a><span class="lineno"> 1564</span>&#160;            std::multiplies&lt;value_type&gt;());</div>
+<div class="line"><a name="l01565"></a><span class="lineno"> 1565</span>&#160;}</div>
+<div class="line"><a name="l01566"></a><span class="lineno"> 1566</span>&#160;</div>
+<div class="line"><a name="l01579"></a><span class="lineno"> 1579</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
+<div class="line"><a name="l01580"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ad3b0046735db751418aea0b81d0cb048"> 1580</a></span>&#160;<a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;typename Derived::Scalar&gt;</a> <a class="code" href="namespaceqpp.html#ad3b0046735db751418aea0b81d0cb048">rho2pure</a>(</div>
+<div class="line"><a name="l01581"></a><span class="lineno"> 1581</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A)</div>
+<div class="line"><a name="l01582"></a><span class="lineno"> 1582</span>&#160;{</div>
+<div class="line"><a name="l01583"></a><span class="lineno"> 1583</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
+<div class="line"><a name="l01584"></a><span class="lineno"> 1584</span>&#160;</div>
+<div class="line"><a name="l01585"></a><span class="lineno"> 1585</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
+<div class="line"><a name="l01586"></a><span class="lineno"> 1586</span>&#160;    <span class="comment">// check zero-size</span></div>
+<div class="line"><a name="l01587"></a><span class="lineno"> 1587</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">internal::_check_nonzero_size</a>(rA))</div>
+<div class="line"><a name="l01588"></a><span class="lineno"> 1588</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::rho2pure()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
+<div class="line"><a name="l01589"></a><span class="lineno"> 1589</span>&#160;    <span class="comment">// check square matrix</span></div>
+<div class="line"><a name="l01590"></a><span class="lineno"> 1590</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a1aedb97a120b9f06b27ec59a42587d77">internal::_check_square_mat</a>(rA))</div>
+<div class="line"><a name="l01591"></a><span class="lineno"> 1591</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::rho2pure()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cacb2cab32e9061c686a6664d06c8bac94">Exception::Type::MATRIX_NOT_SQUARE</a>);</div>
+<div class="line"><a name="l01592"></a><span class="lineno"> 1592</span>&#160;    <span class="comment">// END EXPCEPTION CHECKS</span></div>
+<div class="line"><a name="l01593"></a><span class="lineno"> 1593</span>&#160;</div>
+<div class="line"><a name="l01594"></a><span class="lineno"> 1594</span>&#160;    <a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;double&gt;</a> tmp_evals = <a class="code" href="namespaceqpp.html#a322665174fcacffbdf82dd04139d667e">hevals</a>(rA);</div>
+<div class="line"><a name="l01595"></a><span class="lineno"> 1595</span>&#160;    <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> tmp_evects = <a class="code" href="namespaceqpp.html#abeadaf6395c78a52339bec119c4a331b">hevects</a>(rA);</div>
+<div class="line"><a name="l01596"></a><span class="lineno"> 1596</span>&#160;    <a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;typename Derived::Scalar&gt;</a> result =</div>
+<div class="line"><a name="l01597"></a><span class="lineno"> 1597</span>&#160;            <a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;typename Derived::Scalar&gt;::Zero</a>(rA.rows());</div>
+<div class="line"><a name="l01598"></a><span class="lineno"> 1598</span>&#160;    <span class="comment">// find the non-zero eigenvector</span></div>
+<div class="line"><a name="l01599"></a><span class="lineno"> 1599</span>&#160;    <span class="comment">// there is only one, assuming the state is pure</span></div>
+<div class="line"><a name="l01600"></a><span class="lineno"> 1600</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> k = 0; k &lt; static_cast&lt;idx&gt;(rA.rows()); ++k)</div>
+<div class="line"><a name="l01601"></a><span class="lineno"> 1601</span>&#160;    {</div>
+<div class="line"><a name="l01602"></a><span class="lineno"> 1602</span>&#160;        <span class="keywordflow">if</span> (std::abs(tmp_evals(k)) &gt; <a class="code" href="namespaceqpp.html#a9a99ccccd473a9006dfaadb5761ac4f6">eps</a>)</div>
+<div class="line"><a name="l01603"></a><span class="lineno"> 1603</span>&#160;        {</div>
+<div class="line"><a name="l01604"></a><span class="lineno"> 1604</span>&#160;            result = tmp_evects.col(k);</div>
+<div class="line"><a name="l01605"></a><span class="lineno"> 1605</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l01606"></a><span class="lineno"> 1606</span>&#160;        }</div>
+<div class="line"><a name="l01607"></a><span class="lineno"> 1607</span>&#160;    }</div>
+<div class="line"><a name="l01608"></a><span class="lineno"> 1608</span>&#160;</div>
+<div class="line"><a name="l01609"></a><span class="lineno"> 1609</span>&#160;    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l01610"></a><span class="lineno"> 1610</span>&#160;}</div>
+<div class="line"><a name="l01611"></a><span class="lineno"> 1611</span>&#160;</div>
+<div class="line"><a name="l01612"></a><span class="lineno"> 1612</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l01613"></a><span class="lineno"> 1613</span>&#160;</div>
+<div class="line"><a name="l01614"></a><span class="lineno"> 1614</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* FUNCTIONS_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="namespaceqpp_html_acbb48ecd842d8f6a3938e3e5b9a36506"><div class="ttname"><a href="namespaceqpp.html#acbb48ecd842d8f6a3938e3e5b9a36506">qpp::heig</a></div><div class="ttdeci">std::pair&lt; dyn_col_vect&lt; double &gt;, cmat &gt; heig(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Full eigen decomposition of Hermitian expression. </div><div class="ttdef"><b>Definition:</b> functions.h:326</div></div>
 <div class="ttc" id="namespaceqpp_html_a95a129545b05e69dd7f4c60b009ca183"><div class="ttname"><a href="namespaceqpp.html#a95a129545b05e69dd7f4c60b009ca183">qpp::logdet</a></div><div class="ttdeci">Derived::Scalar logdet(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Logarithm of the determinant. </div><div class="ttdef"><b>Definition:</b> functions.h:161</div></div>
 <div class="ttc" id="namespaceqpp_html_aea80be6c57ee43e43aa9629942cd3608"><div class="ttname"><a href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">qpp::maxn</a></div><div class="ttdeci">constexpr idx maxn</div><div class="ttdoc">Maximum number of allowed qu(d)its (subsystems) </div><div class="ttdef"><b>Definition:</b> constants.h:84</div></div>
@@ -1200,7 +1201,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">qpp::Exception::Type::ZERO_SIZE</a></div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a9f0b546cba6a722b4ceb8601d510b5cb"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a9f0b546cba6a722b4ceb8601d510b5cb">qpp::internal::_check_col_vector</a></div><div class="ttdeci">bool _check_col_vector(const Eigen::MatrixBase&lt; Derived &gt; &amp;A) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:119</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7caae0e67b77fc0b11803a4f7a791ecd5b7"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7caae0e67b77fc0b11803a4f7a791ecd5b7">qpp::Exception::Type::DIMS_NOT_EQUAL</a></div></div>
-<div class="ttc" id="namespaceqpp_html_ad3b0046735db751418aea0b81d0cb048"><div class="ttname"><a href="namespaceqpp.html#ad3b0046735db751418aea0b81d0cb048">qpp::rho2pure</a></div><div class="ttdeci">dyn_col_vect&lt; typename Derived::Scalar &gt; rho2pure(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Finds the pure state representation of a matrix proportional to a projector onto a pure state...</div><div class="ttdef"><b>Definition:</b> functions.h:1579</div></div>
+<div class="ttc" id="namespaceqpp_html_ad3b0046735db751418aea0b81d0cb048"><div class="ttname"><a href="namespaceqpp.html#ad3b0046735db751418aea0b81d0cb048">qpp::rho2pure</a></div><div class="ttdeci">dyn_col_vect&lt; typename Derived::Scalar &gt; rho2pure(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Finds the pure state representation of a matrix proportional to a projector onto a pure state...</div><div class="ttdef"><b>Definition:</b> functions.h:1580</div></div>
 <div class="ttc" id="namespaceqpp_html_ac0cea183ce30cc864b16a8583af6b2a6"><div class="ttname"><a href="namespaceqpp.html#ac0cea183ce30cc864b16a8583af6b2a6">qpp::dirsumpow</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; dirsumpow(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, idx n)</div><div class="ttdoc">Direct sum power. </div><div class="ttdef"><b>Definition:</b> functions.h:994</div></div>
 <div class="ttc" id="namespaceqpp_html_acc9597bacc39c501eb8e2e5e8530fcd8"><div class="ttname"><a href="namespaceqpp.html#acc9597bacc39c501eb8e2e5e8530fcd8">qpp::evects</a></div><div class="ttdeci">cmat evects(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Eigenvectors. </div><div class="ttdef"><b>Definition:</b> functions.h:300</div></div>
 <div class="ttc" id="namespaceqpp_html_a659b50e01fa0b26089d3944c2c56601a"><div class="ttname"><a href="namespaceqpp.html#a659b50e01fa0b26089d3944c2c56601a">qpp::funm</a></div><div class="ttdeci">cmat funm(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, cplx(*f)(const cplx &amp;))</div><div class="ttdoc">Functional calculus f(A) </div><div class="ttdef"><b>Definition:</b> functions.h:492</div></div>
@@ -1257,7 +1258,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="functions_8h.html">functions.h</a></li>
-    <li class="footer">Generated on Wed Feb 18 2015 21:14:44 for Quantum++ by
+    <li class="footer">Generated on Wed Feb 18 2015 21:21:16 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
