@@ -127,6 +127,7 @@ double contfrac2x(const std::vector<int>& cf)
 * \return Greatest common divisor of \a m and \a n
 */
 unsigned long long int gcd(unsigned long long int m, unsigned long long int n)
+noexcept
 {
     if (m == 0 || n == 0)
         return (std::max(m, n));
@@ -197,14 +198,9 @@ unsigned long long int lcm(const std::vector<unsigned long long int>& ns)
     if (std::find(std::begin(ns), std::end(ns), 0) != std::end(ns))
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
 
-    auto multiply = [](unsigned long long int x, unsigned long long int y)
-            -> unsigned long long int
-    {
-        return x * y;
-    };
-
     unsigned long long int prod = std::accumulate(std::begin(ns), std::end(ns),
-            1ULL, multiply);
+            static_cast<unsigned long long int>(1),
+            std::multiplies<unsigned long long int>());
 
     return prod / gcd(ns);
 }

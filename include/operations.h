@@ -155,7 +155,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
     // worker, computes the coefficient and the index for the ket case
     // used in #pragma omp parallel for collapse
-    auto coeff_idx_ket = [=](idx _i, idx _m, idx _r)
+    auto coeff_idx_ket = [=](idx _i, idx _m, idx _r) noexcept
             -> std::pair<typename Derived1::Scalar, idx>
     {
         idx indx = 0;
@@ -210,7 +210,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     // for the density matrix case
     // used in #pragma omp parallel for collapse
     auto coeff_idx_rho = [=](idx _i1, idx _m1,
-            idx _r1, idx _i2, idx _m2, idx _r2)
+            idx _r1, idx _i2, idx _m2, idx _r2) noexcept
             -> std::tuple<typename Derived1::Scalar, idx, idx>
     {
         idx idxrow = 0;
@@ -926,7 +926,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
     dyn_mat<typename Derived::Scalar> result =
             dyn_mat<typename Derived::Scalar>::Zero(DB, DB);
 
-    auto worker = [=](idx i, idx j)
+    auto worker = [=](idx i, idx j) noexcept
     {
         typename Derived::Scalar sum = 0;
         for (idx m = 0; m < DA; ++m)
@@ -1096,7 +1096,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     dyn_mat<typename Derived::Scalar> result =
             dyn_mat<typename Derived::Scalar>(dimsubsysbar, dimsubsysbar);
 
-    auto worker = [=](idx i, idx j)
+    auto worker = [=](idx i, idx j) noexcept
     {
         // use static allocation for speed!
 
@@ -1242,7 +1242,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 
     dyn_mat<typename Derived::Scalar> result(D, D);
 
-    auto worker = [=, &midxcol](idx i)
+    auto worker = [=, &midxcol](idx i) noexcept
     {
         // use static allocation for speed!
         idx midxcoltmp[maxn];
@@ -1371,7 +1371,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
         }
         result.resize(D, 1);
 
-        auto worker = [&Cdims, &Cperm, numdims](idx i)
+        auto worker = [&Cdims, &Cperm, numdims](idx i) noexcept
         {
             // use static allocation for speed,
             // double the size for matrices reshaped as vectors
@@ -1421,7 +1421,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
                 dyn_mat<typename Derived::Scalar >>(
                 const_cast<typename Derived::Scalar*>(rA.data()), D * D, 1);
 
-        auto worker = [&Cdims, &Cperm, numdims](idx i)
+        auto worker = [&Cdims, &Cperm, numdims](idx i) noexcept
         {
             // use static allocation for speed,
             // double the size for matrices reshaped as vectors

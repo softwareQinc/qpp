@@ -61,7 +61,7 @@ private:
     /**
     * \brief Initializes the gates
     */
-    Gates()
+    Gates() noexcept
     {
         H << 1 / std::sqrt(2.), 1 / std::sqrt(2.), 1 / std::sqrt(2.), -1
                 / std::sqrt(2.);
@@ -404,13 +404,8 @@ public:
             throw Exception("qpp::Gates::expandout()",
                     Exception::Type::DIMS_MISMATCH_MATRIX);
 
-        auto multiply = [](idx x, idx y) -> idx
-        {
-            return x * y;
-        };
-
         idx D = std::accumulate(std::begin(dims), std::end(dims),
-                1u, multiply);
+                static_cast<idx>(1), std::multiplies<idx>());
         dyn_mat<typename Derived::Scalar> result = dyn_mat<
                 typename Derived::Scalar>::Identity(D, D);
 

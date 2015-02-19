@@ -56,8 +56,7 @@ internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
 * than \a chop
 * \return Instance of qpp::internal::internal::IOManipEigen
 */
-internal::IOManipEigen disp(cplx z,
-        double chop = qpp::chop)
+internal::IOManipEigen disp(cplx z, double chop = qpp::chop) noexcept
 {
     return internal::IOManipEigen(z, chop);
 }
@@ -75,7 +74,7 @@ internal::IOManipEigen disp(cplx z,
 template<typename InputIterator>
 internal::IOManipRange<InputIterator> disp(const InputIterator& first,
         const InputIterator& last, const std::string& separator,
-        const std::string& start = "[", const std::string& end = "]")
+        const std::string& start = "[", const std::string& end = "]") noexcept
 {
     return internal::IOManipRange<InputIterator
     >(first, last, separator, start, end);
@@ -83,7 +82,7 @@ internal::IOManipRange<InputIterator> disp(const InputIterator& first,
 
 /**
 * \brief Standard container ostream manipulator. The container must support
-* std::begin(), std::end() and forward iteration.
+* std::cbegin(), std::cend() and forward iteration.
 *
 * \param c Container
 * \param separator Separator
@@ -94,7 +93,7 @@ internal::IOManipRange<InputIterator> disp(const InputIterator& first,
 template<typename Container>
 internal::IOManipRange<typename Container::const_iterator> disp(
         const Container& c, const std::string& separator,
-        const std::string& start = "[", const std::string& end = "]")
+        const std::string& start = "[", const std::string& end = "]") noexcept
 {
     return internal::IOManipRange<typename Container::const_iterator>(
             c.cbegin(), c.cend(), separator, start, end);
@@ -113,7 +112,7 @@ internal::IOManipRange<typename Container::const_iterator> disp(
 template<typename PointerType>
 internal::IOManipPointer<PointerType> disp(const PointerType* p, idx n,
         const std::string& separator, const std::string& start = "[",
-        const std::string& end = "]")
+        const std::string& end = "]") noexcept
 {
     return internal::IOManipPointer<PointerType>(p, n, separator, start, end);
 }

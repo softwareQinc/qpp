@@ -88,7 +88,7 @@ private:
     /**
     * Initialize the states
     */
-    States()
+    States() noexcept
     {
         // initialize
         x0 << 1 / std::sqrt(2.), 1 / std::sqrt(2.);

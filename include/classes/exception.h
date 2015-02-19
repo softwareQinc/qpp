@@ -120,8 +120,8 @@ public:
     * \param where Text representing where the exception occured
     * \param type Exception type, defined in qpp::Exception::Type
     */
-    Exception(const std::string& where, const Type& type) :
-            _where(where), _msg(), _type(type), _custom()
+    Exception(const std::string& where, const Type& type) noexcept :
+            _where{where}, _msg{}, _type{type}, _custom{}
     {
         _construct_exception_msg();
     }
@@ -134,9 +134,9 @@ public:
     * \param where Text representing where the exception occured
     * \param custom Exception description
     */
-    Exception(const std::string& where, const std::string& custom) :
-            _where(where), _msg(), _type(Type::CUSTOM_EXCEPTION), _custom(
-            custom)
+    Exception(const std::string& where, const std::string& custom) noexcept :
+            _where{where}, _msg{}, _type{Type::CUSTOM_EXCEPTION},
+            _custom{custom}
     {
         _construct_exception_msg();
         _msg += custom; // add the custom message at the end
@@ -163,7 +163,7 @@ private:
     *
     * Must modify the code of this function if more exceptions are added
     */
-    void _construct_exception_msg()
+    void _construct_exception_msg() noexcept
     {
         _msg += "IN ";
         _msg += _where;

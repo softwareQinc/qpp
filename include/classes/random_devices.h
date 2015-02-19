@@ -51,7 +51,7 @@ private:
     * \brief Initializes and seeds the random number generators
     */
     RandomDevices() :
-            _rd(), _rng(_rd())
+            _rd{}, _rng{_rd()}
     {
         std::srand(_rng());
     }

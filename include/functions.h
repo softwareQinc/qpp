@@ -1276,18 +1276,13 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A)
 * \param dims Dimensions of the multi-partite system
 * \return Multi-index of the same size as \a dims
 */
-std::vector<idx> n2multiidx(idx n,
-        const std::vector<idx>& dims)
+std::vector<idx> n2multiidx(idx n, const std::vector<idx>& dims)
 {
     if (!internal::_check_dims(dims))
         throw Exception("qpp::n2multiidx()", Exception::Type::DIMS_INVALID);
 
-    auto multiply = [](const idx x, const idx y) -> idx
-    {
-        return x * y;
-    };
-
-    if (n >= std::accumulate(std::begin(dims), std::end(dims), 1u, multiply))
+    if (n >= std::accumulate(std::begin(dims), std::end(dims),
+            static_cast<idx>(1), std::multiplies<idx>()))
         throw Exception("qpp::n2multiidx()", Exception::Type::OUT_OF_RANGE);
 
     // double the size for matrices reshaped as vectors
@@ -1337,13 +1332,9 @@ ket mket(const std::vector<idx>& mask,
         const std::vector<idx>& dims)
 {
     idx n = mask.size();
-    auto multiply = [](idx x, idx y) -> idx
-    {
-        return x * y;
-    };
 
-    idx D = std::accumulate(std::begin(dims), std::end(dims), 1u,
-            multiply);
+    idx D = std::accumulate(std::begin(dims), std::end(dims),
+            static_cast<idx>(1), std::multiplies<idx>());
 
     // check zero size
     if (n == 0)
@@ -1422,13 +1413,9 @@ cmat mprj(const std::vector<idx>& mask,
         const std::vector<idx>& dims)
 {
     idx n = mask.size();
-    auto multiply = [](idx x, idx y) -> idx
-    {
-        return x * y;
-    };
 
-    idx D = std::accumulate(std::begin(dims), std::end(dims), 1u,
-            multiply);
+    idx D = std::accumulate(std::begin(dims), std::end(dims),
+            static_cast<idx>(1), std::multiplies<idx>());
 
     // check zero size
     if (n == 0)
@@ -1501,7 +1488,7 @@ cmat mprj(const std::vector<idx>& mask, idx d = 2)
 template<typename InputIterator>
 std::vector<double> abssq(InputIterator first, InputIterator last)
 {
-    std::vector<double> weights(last - first);
+    std::vector<double> weights(std::distance(first, last));
     std::transform(first, last, std::begin(weights),
             [](const cplx& z) -> double
             {
@@ -1550,12 +1537,12 @@ std::vector<double> abssq(const Eigen::MatrixBase<Derived>& V)
 */
 template<typename InputIterator>
 typename std::iterator_traits<InputIterator>::value_type
-sum(InputIterator first, InputIterator last)
+sum(InputIterator first, InputIterator last) noexcept
 {
-    return std::accumulate(first, last,
-            static_cast<
-                    typename std::iterator_traits<InputIterator>::value_type>
-            (0));
+    using value_type =
+    typename std::iterator_traits<InputIterator>::value_type;
+
+    return std::accumulate(first, last, static_cast<value_type>(0));
 }
 
 /**
@@ -1570,17 +1557,10 @@ template<typename InputIterator>
 typename std::iterator_traits<InputIterator>::value_type
 prod(InputIterator first, InputIterator last)
 {
-    return std::accumulate(first, last,
-            static_cast<
-                    typename std::iterator_traits<InputIterator>::value_type>
-            (1),
-            [](const typename
-            std::iterator_traits<InputIterator>::value_type& x,
-                    const typename
-                    std::iterator_traits<InputIterator>::value_type& y)
-            {
-                return x * y;
-            });
+    using value_type =
+    typename std::iterator_traits<InputIterator>::value_type;
+    return std::accumulate(first, last, static_cast<value_type>(1),
+            std::multiplies<value_type>());
 }
 
 /**
@@ -1588,7 +1568,7 @@ prod(InputIterator first, InputIterator last)
 * proportional to a projector onto a pure state
 *
 * \note No purity check is done, the input state \a A must have rank one,
-* otherwise the function returs the first non-zero eigenvector of \a A
+* otherwise the function returns the first non-zero eigenvector of \a A
 *
 * \param A Eigen expression, assumed to be proportional
 * to a projector onto a pure state, i.e. \a A is assumed to have rank one
