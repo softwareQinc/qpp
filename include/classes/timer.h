@@ -48,7 +48,7 @@ public:
     * as the starting point
     */
     Timer() noexcept :
-            _start(std::chrono::steady_clock::now()), _end(_start)
+            _start{std::chrono::steady_clock::now()}, _end{_start}
     {
     }
 
