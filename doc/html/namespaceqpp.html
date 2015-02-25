@@ -1028,7 +1028,7 @@ template&lt;typename Derived1 , typename Derived2 &gt; </div>
 
 <p>Anti-commutator. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#aa4c1b998a518e655645a0285f90550e3" title="Commutator. ">qpp::comm()</a></dd></dl>
-<p>Anti-commutator <img class="formulaInl" alt="$ \{A,B\} = AB + BA $" src="form_27.png"/>. Both <em>A</em> and <em>B</em> must be Eigen expressions over the same scalar field.</p>
+<p>Anti-commutator <img class="formulaInl" alt="$ \{A,B\} = AB + BA $" src="form_28.png"/>. Both <em>A</em> and <em>B</em> must be Eigen expressions over the same scalar field.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -1036,7 +1036,7 @@ template&lt;typename Derived1 , typename Derived2 &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Anti-commutator <img class="formulaInl" alt="$AB +BA$" src="form_28.png"/>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Anti-commutator <img class="formulaInl" alt="$AB +BA$" src="form_29.png"/>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -1427,7 +1427,7 @@ template&lt;typename Derived1 , typename Derived2 &gt; </div>
 <p>Orthogonal Kraus operators from Choi matrix. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a9f23aa8ee0eb007532b29ada39091d4f" title="Choi matrix. ">qpp::kraus2choi()</a></dd></dl>
 <p>Extracts a set of orthogonal (under Hilbert-Schmidt operator norm) Kraus operators from the Choi matrix <em>A</em> </p>
-<dl class="section note"><dt>Note</dt><dd>The Kraus operators satisfy <img class="formulaInl" alt="$Tr(K_i^\dagger K_j)=\delta_{ij}$" src="form_37.png"/> for all <img class="formulaInl" alt="$i\neq j$" src="form_38.png"/></dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The Kraus operators satisfy <img class="formulaInl" alt="$Tr(K_i^\dagger K_j)=\delta_{ij}$" src="form_39.png"/> for all <img class="formulaInl" alt="$i\neq j$" src="form_40.png"/></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Choi matrix </td></tr>
@@ -1492,7 +1492,7 @@ template&lt;typename Derived1 , typename Derived2 &gt; </div>
 
 <p>Commutator. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#af2f54909fe5801ad4bc179be28ad7a41" title="Anti-commutator. ">qpp::anticomm()</a></dd></dl>
-<p>Commutator <img class="formulaInl" alt="$ [A,B] = AB - BA $" src="form_25.png"/>. Both <em>A</em> and <em>B</em> must be Eigen expressions over the same scalar field.</p>
+<p>Commutator <img class="formulaInl" alt="$ [A,B] = AB - BA $" src="form_26.png"/>. Both <em>A</em> and <em>B</em> must be Eigen expressions over the same scalar field.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -1500,7 +1500,7 @@ template&lt;typename Derived1 , typename Derived2 &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Commutator <img class="formulaInl" alt="$AB -BA$" src="form_26.png"/>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Commutator <img class="formulaInl" alt="$AB -BA$" src="form_27.png"/>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -1536,7 +1536,7 @@ template&lt;typename Derived1 , typename Derived2 &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Composition of the permutations <em>perm</em> <img class="formulaInl" alt="$\circ$" src="form_30.png"/> <em>sigma</em> = perm(sigma) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Composition of the permutations <em>perm</em> <img class="formulaInl" alt="$\circ$" src="form_31.png"/> <em>sigma</em> = perm(sigma) </dd></dl>
 
 </div>
 </div>
@@ -1908,7 +1908,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Direct sum of <em>A</em> with itself <em>n</em> times <img class="formulaInl" alt="$A^{\oplus n}$" src="form_24.png"/>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Direct sum of <em>A</em> with itself <em>n</em> times <img class="formulaInl" alt="$A^{\oplus n}$" src="form_25.png"/>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -2405,7 +2405,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Prime factor decomposition. </p>
-<dl class="section note"><dt>Note</dt><dd>Runs in <img class="formulaInl" alt="$\mathcal{O}(\sqrt{n})$" src="form_49.png"/> time complexity</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Runs in <img class="formulaInl" alt="$\mathcal{O}(\sqrt{n})$" src="form_32.png"/> time complexity</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td>Integer strictly greater than 1 </td></tr>
@@ -2786,7 +2786,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Primality test. </p>
-<dl class="section note"><dt>Note</dt><dd>Runs in <img class="formulaInl" alt="$\mathcal{O}(\sqrt{n})$" src="form_49.png"/> time complexity</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Runs in <img class="formulaInl" alt="$\mathcal{O}(\sqrt{n})$" src="form_32.png"/> time complexity</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td>Integer strictly greater than 1 </td></tr>
@@ -2813,8 +2813,8 @@ template&lt;typename Derived &gt; </div>
 
 <p>Choi matrix. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ac08330f1578fa6b6e382a80132dffb46" title="Orthogonal Kraus operators from Choi matrix. ">qpp::choi2kraus()</a></dd></dl>
-<p>Constructs the Choi matrix of the channel specified by the set of Kraus operators <em>Ks</em> in the standard operator basis <img class="formulaInl" alt="$\{|i\rangle\langle j|\}$" src="form_31.png"/> ordered in lexicographical order, i.e. <img class="formulaInl" alt="$|0\rangle\langle 0|$" src="form_32.png"/>, <img class="formulaInl" alt="$|0\rangle\langle 1|$" src="form_33.png"/> etc.</p>
-<dl class="section note"><dt>Note</dt><dd>The superoperator matrix <img class="formulaInl" alt="$S$" src="form_34.png"/> and the Choi matrix <img class="formulaInl" alt="$ C$" src="form_35.png"/> are related by <img class="formulaInl" alt="$ S_{ab,mn} = C_{ma,nb}$" src="form_36.png"/></dd></dl>
+<p>Constructs the Choi matrix of the channel specified by the set of Kraus operators <em>Ks</em> in the standard operator basis <img class="formulaInl" alt="$\{|i\rangle\langle j|\}$" src="form_33.png"/> ordered in lexicographical order, i.e. <img class="formulaInl" alt="$|0\rangle\langle 0|$" src="form_34.png"/>, <img class="formulaInl" alt="$|0\rangle\langle 1|$" src="form_35.png"/> etc.</p>
+<dl class="section note"><dt>Note</dt><dd>The superoperator matrix <img class="formulaInl" alt="$S$" src="form_36.png"/> and the Choi matrix <img class="formulaInl" alt="$ C$" src="form_37.png"/> are related by <img class="formulaInl" alt="$ S_{ab,mn} = C_{ma,nb}$" src="form_38.png"/></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">Ks</td><td>Set of Kraus operators </td></tr>
@@ -2840,7 +2840,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Superoperator matrix. </p>
-<p>Constructs the superoperator matrix of the channel specified by the set of Kraus operators <em>Ks</em> in the standard operator basis <img class="formulaInl" alt="$\{|i\rangle\langle j|\}$" src="form_31.png"/> ordered in lexicographical order, i.e. <img class="formulaInl" alt="$|0\rangle\langle 0|$" src="form_32.png"/>, <img class="formulaInl" alt="$|0\rangle\langle 1|$" src="form_33.png"/> etc.</p>
+<p>Constructs the superoperator matrix of the channel specified by the set of Kraus operators <em>Ks</em> in the standard operator basis <img class="formulaInl" alt="$\{|i\rangle\langle j|\}$" src="form_33.png"/> ordered in lexicographical order, i.e. <img class="formulaInl" alt="$|0\rangle\langle 0|$" src="form_34.png"/>, <img class="formulaInl" alt="$|0\rangle\langle 1|$" src="form_35.png"/> etc.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">Ks</td><td>Set of Kraus operators </td></tr>
@@ -3010,7 +3010,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Kronecker product of <em>A</em> with itself <em>n</em> times <img class="formulaInl" alt="$A^{\otimes n}$" src="form_23.png"/>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Kronecker product of <em>A</em> with itself <em>n</em> times <img class="formulaInl" alt="$A^{\otimes n}$" src="form_24.png"/>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -3385,7 +3385,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of 1. Result of the measurement, 2. Vector of outcome probabilities and 3. Vector of post-measurement normalized states </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisting of 1. Result of the measurement, 2. Vector of outcome probabilities and 3. Vector of post-measurement normalized states </dd></dl>
 
 </div>
 </div>
@@ -3438,7 +3438,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of 1. Result of the measurement,<ol type="1">
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisting of 1. Result of the measurement,<ol type="1">
 <li>Vector of outcome probabilities and 3. Vector of post-measurement normalized states </li>
 </ol>
 </dd></dl>
@@ -3494,7 +3494,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of 1. Result of the measurement,<ol type="1">
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisting of 1. Result of the measurement,<ol type="1">
 <li>Vector of outcome probabilities and 3. Vector of post-measurement normalized states </li>
 </ol>
 </dd></dl>
@@ -3550,7 +3550,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of 1. Result of the measurement,<ol type="1">
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisting of 1. Result of the measurement,<ol type="1">
 <li>Vector of outcome probabilities and 3. Vector of post-measurement normalized states </li>
 </ol>
 </dd></dl>
@@ -3606,7 +3606,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of 1. Result of the measurement,<ol type="1">
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisting of 1. Result of the measurement,<ol type="1">
 <li>Vector of outcome probabilities and 3. Vector of post-measurement normalized states </li>
 </ol>
 </dd></dl>
@@ -3662,7 +3662,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of 1. Result of the measurement,<ol type="1">
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisting of 1. Result of the measurement,<ol type="1">
 <li>Vector of outcome probabilities and 3. Vector of post-measurement normalized states </li>
 </ol>
 </dd></dl>
@@ -3703,7 +3703,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of 1. Result of the measurement,<ol type="1">
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisting of 1. Result of the measurement,<ol type="1">
 <li>Vector of outcome probabilities and 3. Vector of post-measurement normalized states </li>
 </ol>
 </dd></dl>
@@ -3744,7 +3744,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of 1. Result of the measurement,<ol type="1">
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisting of 1. Result of the measurement,<ol type="1">
 <li>Vector of outcome probabilities and 3. Vector of post-measurement normalized states </li>
 </ol>
 </dd></dl>
@@ -3785,7 +3785,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Tuple consisiting of 1. Result of the measurement,<ol type="1">
+<dl class="section return"><dt>Returns</dt><dd>Tuple consisting of 1. Result of the measurement,<ol type="1">
 <li>Vector of outcome probabilities and 3. Vector of post-measurement normalized states </li>
 </ol>
 </dd></dl>
@@ -3817,7 +3817,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Multi-partite qudit ket. </p>
-<p>Constructs the multi-partite qudit ket <img class="formulaInl" alt="$|\mathrm{mask}\rangle$" src="form_29.png"/>, where <em>mask</em> is a std::vector of non-negative integers. Each element in <em>mask</em> has to be smaller than the corresponding element in <em>dims</em>.</p>
+<p>Constructs the multi-partite qudit ket <img class="formulaInl" alt="$|\mathrm{mask}\rangle$" src="form_30.png"/>, where <em>mask</em> is a std::vector of non-negative integers. Each element in <em>mask</em> has to be smaller than the corresponding element in <em>dims</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mask</td><td>std::vector of non-negative integers </td></tr>
@@ -3854,7 +3854,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Multi-partite qudit ket. </p>
-<p>Constructs the multi-partite qudit ket <img class="formulaInl" alt="$|\mathrm{mask}\rangle$" src="form_29.png"/>, all subsystem having equal dimension <em>d</em>. <em>mask</em> is a std::vector of non-negative integers, and each element in <em>mask</em> has to be strictly smaller than <em>d</em>.</p>
+<p>Constructs the multi-partite qudit ket <img class="formulaInl" alt="$|\mathrm{mask}\rangle$" src="form_30.png"/>, all subsystem having equal dimension <em>d</em>. <em>mask</em> is a std::vector of non-negative integers, and each element in <em>mask</em> has to be strictly smaller than <em>d</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mask</td><td>std::vector of non-negative integers </td></tr>
@@ -3891,7 +3891,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Projector onto multi-partite qudit ket. </p>
-<p>Constructs the projector onto the multi-partite qudit ket <img class="formulaInl" alt="$|\mathrm{mask}\rangle$" src="form_29.png"/>, where <em>mask</em> is a std::vector of non-negative integers. Each element in <em>mask</em> has to be smaller than the corresponding element in <em>dims</em>.</p>
+<p>Constructs the projector onto the multi-partite qudit ket <img class="formulaInl" alt="$|\mathrm{mask}\rangle$" src="form_30.png"/>, where <em>mask</em> is a std::vector of non-negative integers. Each element in <em>mask</em> has to be smaller than the corresponding element in <em>dims</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mask</td><td>std::vector of non-negative integers </td></tr>
@@ -3928,7 +3928,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Projector onto multi-partite qudit ket. </p>
-<p>Constructs the projector onto the multi-partite qudit ket <img class="formulaInl" alt="$|\mathrm{mask}\rangle$" src="form_29.png"/>, all subsystem having equal dimension <em>d</em>. <em>mask</em> is a std::vector of non-negative integers, and each element in <em>mask</em> has to be strictly smaller than <em>d</em>.</p>
+<p>Constructs the projector onto the multi-partite qudit ket <img class="formulaInl" alt="$|\mathrm{mask}\rangle$" src="form_30.png"/>, all subsystem having equal dimension <em>d</em>. <em>mask</em> is a std::vector of non-negative integers, and each element in <em>mask</em> has to be strictly smaller than <em>d</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mask</td><td>std::vector of non-negative integers </td></tr>
@@ -4352,7 +4352,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Partial trace <img class="formulaInl" alt="$Tr_{subsys}(\cdot)$" src="form_44.png"/> over the subsytems <em>subsys</em> in a multi-partite system, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Partial trace <img class="formulaInl" alt="$Tr_{subsys}(\cdot)$" src="form_46.png"/> over the subsytems <em>subsys</em> in a multi-partite system, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -4399,7 +4399,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Partial trace <img class="formulaInl" alt="$Tr_{subsys}(\cdot)$" src="form_44.png"/> over the subsytems <em>subsys</em> in a multi-partite system, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Partial trace <img class="formulaInl" alt="$Tr_{subsys}(\cdot)$" src="form_46.png"/> over the subsytems <em>subsys</em> in a multi-partite system, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -4439,7 +4439,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Partial trace <img class="formulaInl" alt="$Tr_{A}(\cdot)$" src="form_39.png"/> over the first subsytem <img class="formulaInl" alt="$A$" src="form_40.png"/> in a bi-partite system <img class="formulaInl" alt="$A\otimes B$" src="form_41.png"/>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Partial trace <img class="formulaInl" alt="$Tr_{A}(\cdot)$" src="form_41.png"/> over the first subsytem <img class="formulaInl" alt="$A$" src="form_42.png"/> in a bi-partite system <img class="formulaInl" alt="$A\otimes B$" src="form_43.png"/>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -4478,7 +4478,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Partial trace <img class="formulaInl" alt="$Tr_{B}(\cdot)$" src="form_42.png"/> over the second subsytem <img class="formulaInl" alt="$B$" src="form_43.png"/> in a bi-partite system <img class="formulaInl" alt="$A\otimes B$" src="form_41.png"/>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Partial trace <img class="formulaInl" alt="$Tr_{B}(\cdot)$" src="form_44.png"/> over the second subsytem <img class="formulaInl" alt="$B$" src="form_45.png"/> in a bi-partite system <img class="formulaInl" alt="$A\otimes B$" src="form_43.png"/>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -4524,7 +4524,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Partial transpose <img class="formulaInl" alt="$(\cdot)^{T_{subsys}}$" src="form_45.png"/> over the subsytems <em>subsys</em> in a multi-partite system, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Partial transpose <img class="formulaInl" alt="$(\cdot)^{T_{subsys}}$" src="form_47.png"/> over the subsytems <em>subsys</em> in a multi-partite system, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -4570,7 +4570,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Partial transpose <img class="formulaInl" alt="$(\cdot)^{T_{subsys}}$" src="form_45.png"/> over the subsytems <em>subsys</em> in a multi-partite system, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Partial transpose <img class="formulaInl" alt="$(\cdot)^{T_{subsys}}$" src="form_47.png"/> over the subsytems <em>subsys</em> in a multi-partite system, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -4997,7 +4997,7 @@ template&lt;&gt; </div>
 </div><div class="memdoc">
 
 <p>Generates a set of random Kraus operators. </p>
-<dl class="section note"><dt>Note</dt><dd>The set of Kraus operators satisfy the closure condition <img class="formulaInl" alt="$ \sum_i K_i^\dagger K_i = I$" src="form_46.png"/></dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The set of Kraus operators satisfy the closure condition <img class="formulaInl" alt="$ \sum_i K_i^\dagger K_i = I$" src="form_48.png"/></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">N</td><td>Number of Kraus operators </td></tr>
@@ -5711,7 +5711,7 @@ template&lt;typename Derived &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
-    <tr><td class="paramname">p</td><td>Real number, greater or equal to 1, use <a class="el" href="namespaceqpp.html#aecd9c0f42f21f1d3b29868b6a8cac4c7" title="Used to denote infinity in double precision. ">qpp::infty</a> for <img class="formulaInl" alt="$p = \infty$" src="form_47.png"/> </td></tr>
+    <tr><td class="paramname">p</td><td>Real number, greater or equal to 1, use <a class="el" href="namespaceqpp.html#aecd9c0f42f21f1d3b29868b6a8cac4c7" title="Used to denote infinity in double precision. ">qpp::infty</a> for <img class="formulaInl" alt="$p = \infty$" src="form_23.png"/> </td></tr>
   </table>
   </dd>
 </dl>
@@ -6585,7 +6585,7 @@ template&lt;typename Derived &gt; </div>
 
 <p><a class="el" href="classqpp_1_1_random_devices.html" title="Singeleton class that manages the source of randomness in the library. ">qpp::RandomDevices</a> Singleton </p>
 <p>Initializes the random devices, see the class <a class="el" href="classqpp_1_1_random_devices.html" title="Singeleton class that manages the source of randomness in the library. ">qpp::RandomDevices</a></p>
-<dl class="section note"><dt>Note</dt><dd>Has thread storage duration, due to mutability of its public member std::mt19937 </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Has thread storage duration, due to mutability of its public member std::mt19937 and possible data races </dd></dl>
 
 </div>
 </div>
@@ -6610,7 +6610,7 @@ template&lt;typename Derived &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Wed Feb 18 2015 21:21:16 for Quantum++ by
+    <li class="footer">Generated on Wed Feb 25 2015 16:33:15 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
