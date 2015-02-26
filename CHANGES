@@ -12,5 +12,5 @@ Version 0.3 - 15 February 2015
 
 Version 0.3.1 - development
     - Added noexcept specification where suitable
-    - Added new functions in functions.h 
+    - Added new functions in functions.h: 
             qpp::complement() - computes the complement of a subsystem vector
