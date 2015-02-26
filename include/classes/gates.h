@@ -197,7 +197,7 @@ public:
     * \param A Eigen expression
     * \param ctrl Control subsystem indexes
     * \param subsys Subsystem indexes where the gate \a A is applied
-    * \param n Total number of subsystes
+    * \param n Total number of subsystems
     * \param d Subsystem dimensions
     * \return CTRL-A gate, as a matrix over the same scalar field as \a A
     */
@@ -277,10 +277,8 @@ public:
                 std::llround(std::pow(d, nsubsys_bar)));
 
         // compute the complementary subsystem of ctrlgate w.r.t. dims
-        std::vector<idx> allsubsys(n); // all subsystems
-        std::iota(std::begin(allsubsys), std::end(allsubsys), 0);
-        std::set_difference(std::begin(allsubsys), std::end(allsubsys),
-                std::begin(ctrlgate), std::end(ctrlgate),
+        std::vector<idx> subsys_bar = complement(ctrlgate, n);
+        std::copy(std::begin(subsys_bar), std::end(subsys_bar),
                 std::begin(Csubsys_bar));
 
         for (idx k = 0; k < n; ++k)

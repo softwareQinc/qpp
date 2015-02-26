@@ -1559,7 +1559,7 @@ prod(InputIterator first, InputIterator last) noexcept
 {
     using value_type =
     typename std::iterator_traits<InputIterator>::value_type;
-    
+
     return std::accumulate(first, last, static_cast<value_type>(1),
             std::multiplies<value_type>());
 }
@@ -1607,6 +1607,32 @@ dyn_col_vect<typename Derived::Scalar> rho2pure(
     }
 
     return result;
+}
+
+/**
+* \brief Constructs the complement of a subsystem vector
+*
+* \param subsys Subsystem vector
+* \param N Total number of systems
+* \return The complement of \a subsys with respect to the set
+* \f$\{0, 1, \ldots, N - 1\}\f$
+*/
+template<typename T>
+std::vector<T> complement(std::vector<T> subsys, idx N)
+{
+    if (N < subsys.size())
+        throw Exception("qpp::complement()", Exception::Type::OUT_OF_RANGE);
+
+    std::vector<T> all(N);
+    std::vector<T> subsys_bar(N - subsys.size());
+
+    std::iota(std::begin(all), std::end(all), 0);
+    std::sort(std::begin(subsys), std::end(subsys));
+    std::set_difference(std::begin(all), std::end(all),
+            std::begin(subsys), std::end(subsys),
+            std::begin(subsys_bar));
+
+    return subsys_bar;
 }
 
 } /* namespace qpp */

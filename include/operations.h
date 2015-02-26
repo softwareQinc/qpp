@@ -134,12 +134,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     idx CdimsA[maxn]; // local dimensions
     idx CdimsCTRLAbar[maxn]; // local dimensions
 
-    std::vector<idx> ctrlgatebar(n - ctrlgate.size()); // rest
-    std::vector<idx> allsubsys(n); // all subsystems
-    std::iota(std::begin(allsubsys), std::end(allsubsys), 0);
     // compute the complementary subsystem of ctrlgate w.r.t. dims
-    std::set_difference(std::begin(allsubsys), std::end(allsubsys),
-            std::begin(ctrlgate), std::end(ctrlgate), std::begin(ctrlgatebar));
+    std::vector<idx> ctrlgatebar = complement(ctrlgate, n);
 
     idx DCTRLAbar = 1; // dimension of the rest
     for (idx i = 0; i < ctrlgatebar.size(); ++i)
@@ -1067,30 +1063,22 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     idx Csubsysbar[maxn];
     idx Cdimssubsysbar[maxn];
 
+    std::vector<idx> subsys_bar = complement(subsys, n);
+    std::copy(std::begin(subsys_bar), std::end(subsys_bar),
+            std::begin(Csubsysbar));
+
     for (idx i = 0; i < n; ++i)
+    {
         Cdims[i] = dims[i];
+    }
     for (idx i = 0; i < nsubsys; ++i)
     {
         Csubsys[i] = subsys[i];
         Cdimssubsys[i] = dims[subsys[i]];
     }
-    // construct the complement of subsys
-    idx cnt = 0;
-    for (idx i = 0; i < n; ++i)
+    for (idx i = 0; i < nsubsysbar; ++i)
     {
-        bool found = false;
-        for (idx m = 0; m < nsubsys; ++m)
-            if (subsys[m] == i)
-            {
-                found = true;
-                break;
-            }
-        if (!found)
-        {
-            Csubsysbar[cnt] = i;
-            Cdimssubsysbar[cnt] = dims[i];
-            cnt++;
-        }
+        Cdimssubsysbar[i] = dims[subsys_bar[i]];
     }
 
     dyn_mat<typename Derived::Scalar> result =

@@ -47,3 +47,5 @@
 \form#46:$Tr_{subsys}(\cdot)$
 \form#47:$(\cdot)^{T_{subsys}}$
 \form#48:$ \sum_i K_i^\dagger K_i = I$
+\form#49:${0, 1, \ldots, N - 1}$
+\form#50:$\{0, 1, \ldots, N - 1\}$
