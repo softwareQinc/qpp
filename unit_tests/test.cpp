@@ -1,7 +1,7 @@
 #include <qpp.h>
 #include <gtest/gtest.h>
 
-using namespace qpp
+using namespace qpp;
 
 int main(int argc, char** argv)
 {
