@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 2.8.0)
-project(qpp)
+project(testing)
 
 # modify as needed
 set(SOURCE_FILES
-    test.cpp)
+    testing.cpp)
 
 # modify as needed
 set(CMAKE_CXX_COMPILER "g++")
@@ -46,4 +46,4 @@ if( NOT CMAKE_BUILD_TYPE )
        FORCE )
 endif()
 
-add_executable(qpp ${SOURCE_FILES})
+add_executable(testing ${SOURCE_FILES})
