@@ -1187,7 +1187,6 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             // compute the column multi-indexes of the complement
             internal::_n2multiidx(j, nsubsysbar,
                     Cdimssubsysbar, Cmidxcolsubsysbar);
-
 #pragma omp parallel for
             for (idx i = 0; i < dimsubsysbar; ++i)
             {
