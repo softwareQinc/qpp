@@ -140,6 +140,3 @@ thread_local RandomDevices& rdevs = RandomDevices::get_thread_local_instance();
 } /* namespace qpp */
 
 #endif	/* QPP_H_ */
-
-// TODO: implement ket-versions of
-// qpp::ptrace1, qpp::ptrace2, qpp::ptrace and qpp::ptranspose

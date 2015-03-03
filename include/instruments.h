@@ -133,7 +133,7 @@ measure(
             ket tmp = apply(rA, Ks[i], subsys, dims);
             prob[i] = std::pow(norm(tmp), 2);
             if (prob[i] > eps)
-                outstates[i] = ptrace(prj(tmp), subsys, dims);
+                outstates[i] = ptrace(tmp, subsys, dims);
         }
     }
     else
@@ -246,8 +246,8 @@ measure(
 
 /**
 * \brief Measures the part \a subsys of
-* the multi-partite state \a A in the orthonormal basis
-* specified by the unitary matrix \a U
+* the multi-partite state vector or density matrix \a A
+* in the orthonormal basis specified by the unitary matrix \a U
 *
 * \note The dimension of \a U must match the dimension of \a subsys.
 *
@@ -316,8 +316,8 @@ measure(
 
 /**
 * \brief Measures the part \a subsys of
-* the multi-partite state \a A in the orthonormal basis
-* specified by the unitary matrix \a U
+* the multi-partite state vector or density matrix \a A\ in the orthonormal
+* basis specified by the unitary matrix \a U
 *
 * \note The dimension of \a U must match the dimension of \a subsys.
 *
