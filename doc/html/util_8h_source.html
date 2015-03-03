@@ -323,7 +323,7 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    result.resize(Arows * Brows, Acols * Bcols);</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="preprocessor">#pragma omp parallel for collapse(2)</span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; Acols; ++j)</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; Acols; ++j) <span class="comment">// column major order for speed</span></div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; Arows; ++i)</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            result.block(i * Brows, j * Bcols, Brows, Bcols) = rA(i, j) * rB;</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
@@ -418,7 +418,7 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7374381ecdb819c64ee9b6ea2bd3370d.html">internal</a></li><li class="navelem"><a class="el" href="util_8h.html">util.h</a></li>
-    <li class="footer">Generated on Thu Feb 26 2015 13:32:55 for Quantum++ by
+    <li class="footer">Generated on Tue Mar 3 2015 15:45:56 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

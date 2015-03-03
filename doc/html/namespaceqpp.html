@@ -502,11 +502,11 @@ Functions</h2></td></tr>
 <tr class="separator:abc7ea167685a1a9ea7874c76814486e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e5a7bc98f622b96d6b518d65a857ebb"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a5e5a7bc98f622b96d6b518d65a857ebb"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>, std::vector&lt; double &gt;, std::vector&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a5e5a7bc98f622b96d6b518d65a857ebb">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;subsys, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;dims)</td></tr>
-<tr class="memdesc:a5e5a7bc98f622b96d6b518d65a857ebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the part <em>subsys</em> of the multi-partite state <em>A</em> in the orthonormal basis specified by the unitary matrix <em>U</em>.  <a href="#a5e5a7bc98f622b96d6b518d65a857ebb">More...</a><br /></td></tr>
+<tr class="memdesc:a5e5a7bc98f622b96d6b518d65a857ebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the part <em>subsys</em> of the multi-partite state vector or density matrix <em>A</em> in the orthonormal basis specified by the unitary matrix <em>U</em>.  <a href="#a5e5a7bc98f622b96d6b518d65a857ebb">More...</a><br /></td></tr>
 <tr class="separator:a5e5a7bc98f622b96d6b518d65a857ebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55f5fa1adb6fe17cdfbe1b06ba265f62"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a55f5fa1adb6fe17cdfbe1b06ba265f62"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>, std::vector&lt; double &gt;, std::vector&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a55f5fa1adb6fe17cdfbe1b06ba265f62">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;subsys, const <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d=2)</td></tr>
-<tr class="memdesc:a55f5fa1adb6fe17cdfbe1b06ba265f62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the part <em>subsys</em> of the multi-partite state <em>A</em> in the orthonormal basis specified by the unitary matrix <em>U</em>.  <a href="#a55f5fa1adb6fe17cdfbe1b06ba265f62">More...</a><br /></td></tr>
+<tr class="memdesc:a55f5fa1adb6fe17cdfbe1b06ba265f62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the part <em>subsys</em> of the multi-partite state vector or density matrix <em>A\</em> in the orthonormal basis specified by the unitary matrix <em>U</em>.  <a href="#a55f5fa1adb6fe17cdfbe1b06ba265f62">More...</a><br /></td></tr>
 <tr class="separator:a55f5fa1adb6fe17cdfbe1b06ba265f62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65da96cadec88fbbb3cc70b0a82fa90c"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a65da96cadec88fbbb3cc70b0a82fa90c"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>, std::vector&lt; double &gt;, std::vector&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a65da96cadec88fbbb3cc70b0a82fa90c">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &amp;Ks)</td></tr>
@@ -3637,7 +3637,7 @@ template&lt;typename Derived &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Measures the part <em>subsys</em> of the multi-partite state <em>A</em> in the orthonormal basis specified by the unitary matrix <em>U</em>. </p>
+<p>Measures the part <em>subsys</em> of the multi-partite state vector or density matrix <em>A</em> in the orthonormal basis specified by the unitary matrix <em>U</em>. </p>
 <dl class="section note"><dt>Note</dt><dd>The dimension of <em>U</em> must match the dimension of <em>subsys</em>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -3693,7 +3693,7 @@ template&lt;typename Derived &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Measures the part <em>subsys</em> of the multi-partite state <em>A</em> in the orthonormal basis specified by the unitary matrix <em>U</em>. </p>
+<p>Measures the part <em>subsys</em> of the multi-partite state vector or density matrix <em>A\</em> in the orthonormal basis specified by the unitary matrix <em>U</em>. </p>
 <dl class="section note"><dt>Note</dt><dd>The dimension of <em>U</em> must match the dimension of <em>subsys</em>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -4385,7 +4385,7 @@ template&lt;typename Derived &gt; </div>
 
 <p>Partial trace. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a3e1f6add4257e7a92af4378a848110b7" title="Partial trace. ">qpp::ptrace1()</a>, <a class="el" href="namespaceqpp.html#a9c0652daea1cfc2385239956ca80b356" title="Partial trace. ">qpp::ptrace2()</a></dd></dl>
-<p>Partial trace of the multi-partite density matrix over a list of subsystems</p>
+<p>Partial trace of the multi-partite state vector or density matrix over a list of subsystems</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -4432,7 +4432,7 @@ template&lt;typename Derived &gt; </div>
 
 <p>Partial trace. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a3e1f6add4257e7a92af4378a848110b7" title="Partial trace. ">qpp::ptrace1()</a>, <a class="el" href="namespaceqpp.html#a9c0652daea1cfc2385239956ca80b356" title="Partial trace. ">qpp::ptrace2()</a></dd></dl>
-<p>Partial trace of the multi-partite density matrix over a list of subsystems</p>
+<p>Partial trace of the multi-partite state vector or density matrix over a list of subsystems</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -4473,7 +4473,7 @@ template&lt;typename Derived &gt; </div>
 
 <p>Partial trace. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a9c0652daea1cfc2385239956ca80b356" title="Partial trace. ">qpp::ptrace2()</a></dd></dl>
-<p>Partial trace of density matrix over the first subsystem in a bi-partite system</p>
+<p>Partial trace over the first subsystem of bi-partite state vector or density matrix</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -4513,6 +4513,7 @@ template&lt;typename Derived &gt; </div>
 
 <p>Partial trace. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a3e1f6add4257e7a92af4378a848110b7" title="Partial trace. ">qpp::ptrace1()</a></dd></dl>
+<p>Partial trace over the second subsystem of bi-partite state vector or density matrix</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -4557,7 +4558,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Partial transpose. </p>
-<p>Partial transpose of the multi-partite density matrix over a list of subsystems</p>
+<p>Partial transpose of the multi-partite state vector or density matrix over a list of subsystems</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -4603,7 +4604,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Partial transpose. </p>
-<p>Partial transpose of the multi-partite density matrix over a list of subsystems</p>
+<p>Partial transpose of the multi-partite state vector or density matrix over a list of subsystems</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -6250,7 +6251,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Subsystem permutation. </p>
-<p>Permutes the subsystems in a state vector or density matrix. The qubit <em>perm</em>[<em>i</em>] is permuted to the location <em>i</em>.</p>
+<p>Permutes the subsystems of a state vector or density matrix. The qubit <em>perm</em>[<em>i</em>] is permuted to the location <em>i</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -6296,7 +6297,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Subsystem permutation. </p>
-<p>Permutes the subsystems in a state vector or density matrix. The qubit <em>perm</em>[<em>i</em>] is permuted to the location <em>i</em>.</p>
+<p>Permutes the subsystems of a state vector or density matrix. The qubit <em>perm</em>[<em>i</em>] is permuted to the location <em>i</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -6652,7 +6653,7 @@ template&lt;typename Derived &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Thu Feb 26 2015 13:32:55 for Quantum++ by
+    <li class="footer">Generated on Tue Mar 3 2015 15:45:56 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

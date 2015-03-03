@@ -180,7 +180,7 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> result(D, D);</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="preprocessor">#pragma omp parallel for collapse(2)</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; D; ++j)</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; D; ++j) <span class="comment">// column major order for speed</span></div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; D; ++i)</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                result(i, j) = 1 / std::sqrt(static_cast&lt;double&gt;(D))</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                        * std::pow(<a class="code" href="namespaceqpp.html#a621afdaae12a94a5e10a874fc2073dc0">omega</a>(D), i * j);</div>
@@ -456,7 +456,7 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">qpp::Exception::Type::ZERO_SIZE</a></div></div>
 <div class="ttc" id="classqpp_1_1_gates_html_a486d615d3d9a81dcca9aff7c05998d8f"><div class="ttname"><a href="classqpp_1_1_gates.html#a486d615d3d9a81dcca9aff7c05998d8f">qpp::Gates::Rn</a></div><div class="ttdeci">cmat Rn(double theta, std::vector&lt; double &gt; n) const </div><div class="ttdoc">Rotation of theta about the 3-dimensional real unit vector n. </div><div class="ttdef"><b>Definition:</b> gates.h:97</div></div>
 <div class="ttc" id="classqpp_1_1_gates_html_a372134e5d9f2f23373ec9431be1cde15"><div class="ttname"><a href="classqpp_1_1_gates.html#a372134e5d9f2f23373ec9431be1cde15">qpp::Gates::S</a></div><div class="ttdeci">cmat S</div><div class="ttdoc">S gate. </div><div class="ttdef"><b>Definition:</b> gates.h:48</div></div>
-<div class="ttc" id="namespaceqpp_html_a87ad5b3e58dedde05467ac1961e44892"><div class="ttname"><a href="namespaceqpp.html#a87ad5b3e58dedde05467ac1961e44892">qpp::complement</a></div><div class="ttdeci">std::vector&lt; T &gt; complement(std::vector&lt; T &gt; subsys, idx N)</div><div class="ttdoc">Constructs the complement of a subsystem vector. </div><div class="ttdef"><b>Definition:</b> functions.h:1621</div></div>
+<div class="ttc" id="namespaceqpp_html_a87ad5b3e58dedde05467ac1961e44892"><div class="ttname"><a href="namespaceqpp.html#a87ad5b3e58dedde05467ac1961e44892">qpp::complement</a></div><div class="ttdeci">std::vector&lt; T &gt; complement(std::vector&lt; T &gt; subsys, idx N)</div><div class="ttdoc">Constructs the complement of a subsystem vector. </div><div class="ttdef"><b>Definition:</b> functions.h:1622</div></div>
 <div class="ttc" id="classqpp_1_1_gates_html_ac24f89316c231a8831ee57d87d380e7e"><div class="ttname"><a href="classqpp_1_1_gates.html#ac24f89316c231a8831ee57d87d380e7e">qpp::Gates::T</a></div><div class="ttdeci">cmat T</div><div class="ttdoc">T gate. </div><div class="ttdef"><b>Definition:</b> gates.h:49</div></div>
 <div class="ttc" id="classqpp_1_1_gates_html_a4c4ff34a747969a686a121cba16ece2d"><div class="ttname"><a href="classqpp_1_1_gates.html#a4c4ff34a747969a686a121cba16ece2d">qpp::Gates::FRED</a></div><div class="ttdeci">cmat FRED</div><div class="ttdoc">Fredkin gate. </div><div class="ttdef"><b>Definition:</b> gates.h:59</div></div>
 <div class="ttc" id="classqpp_1_1_gates_html_a40a1062ffe2db2a59095be0c8236e761"><div class="ttname"><a href="classqpp_1_1_gates.html#a40a1062ffe2db2a59095be0c8236e761">qpp::Gates::CNOTba</a></div><div class="ttdeci">cmat CNOTba</div><div class="ttdoc">Controlled-NOT target control gate. </div><div class="ttdef"><b>Definition:</b> gates.h:54</div></div>
@@ -493,7 +493,7 @@ $(document).ready(function(){initNavTree('gates_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b02e4219757ae4e3a0f1714873865bbf.html">classes</a></li><li class="navelem"><a class="el" href="gates_8h.html">gates.h</a></li>
-    <li class="footer">Generated on Thu Feb 26 2015 13:32:55 for Quantum++ by
+    <li class="footer">Generated on Tue Mar 3 2015 15:45:56 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
