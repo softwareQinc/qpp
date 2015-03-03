@@ -1105,6 +1105,8 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     idx Csubsysbar[maxn];
     idx Cdimssubsysbar[maxn];
 
+    idx Cmidxcolsubsysbar[maxn];
+
     std::vector<idx> subsys_bar = complement(subsys, n);
     std::copy(std::begin(subsys_bar), std::end(subsys_bar),
             std::begin(Csubsysbar));
@@ -1143,21 +1145,18 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         if (subsys.size() == 0)
             return rA * adjoint(rA);
 
-        auto worker = [=](idx i, idx j) noexcept
+        auto worker = [=, &Cmidxcolsubsysbar](idx i) noexcept
         {
             // use static allocation for speed!
 
             idx Cmidxrow[maxn];
             idx Cmidxcol[maxn];
             idx Cmidxrowsubsysbar[maxn];
-            idx Cmidxcolsubsysbar[maxn];
             idx Cmidxsubsys[maxn];
 
-            /* get the row/col multi-indexes of the complement */
+            /* get the row multi-indexes of the complement */
             internal::_n2multiidx(i, nsubsysbar,
                     Cdimssubsysbar, Cmidxrowsubsysbar);
-            internal::_n2multiidx(j, nsubsysbar,
-                    Cdimssubsysbar, Cmidxcolsubsysbar);
             /* write them in the global row/col multi-indexes */
             for (idx k = 0; k < nsubsysbar; ++k)
             {
@@ -1183,10 +1182,18 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             return sm;
         };
 
-#pragma omp parallel for collapse(2)
         for (idx j = 0; j < dimsubsysbar; ++j) // column major order for speed
+        {
+            // compute the column multi-indexes of the complement
+            internal::_n2multiidx(j, nsubsysbar,
+                    Cdimssubsysbar, Cmidxcolsubsysbar);
+
+#pragma omp parallel for
             for (idx i = 0; i < dimsubsysbar; ++i)
-                result(i, j) = worker(i, j);
+            {
+                result(i, j) = worker(i);
+            }
+        }
 
         return result;
     }
@@ -1207,21 +1214,18 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         if (subsys.size() == 0)
             return rA;
 
-        auto worker = [=](idx i, idx j) noexcept
+        auto worker = [=, &Cmidxcolsubsysbar](idx i) noexcept
         {
             // use static allocation for speed!
 
             idx Cmidxrow[maxn];
             idx Cmidxcol[maxn];
             idx Cmidxrowsubsysbar[maxn];
-            idx Cmidxcolsubsysbar[maxn];
             idx Cmidxsubsys[maxn];
 
             /* get the row/col multi-indexes of the complement */
             internal::_n2multiidx(i, nsubsysbar,
                     Cdimssubsysbar, Cmidxrowsubsysbar);
-            internal::_n2multiidx(j, nsubsysbar,
-                    Cdimssubsysbar, Cmidxcolsubsysbar);
             /* write them in the global row/col multi-indexes */
             for (idx k = 0; k < nsubsysbar; ++k)
             {
@@ -1246,10 +1250,17 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             return sm;
         };
 
-#pragma omp parallel for collapse(2)
         for (idx j = 0; j < dimsubsysbar; ++j) // column major order for speed
+        {
+            // compute the column multi-indexes of the complement
+            internal::_n2multiidx(j, nsubsysbar,
+                    Cdimssubsysbar, Cmidxcolsubsysbar);
+#pragma omp parallel for
             for (idx i = 0; i < dimsubsysbar; ++i)
-                result(i, j) = worker(i, j);
+            {
+                result(i, j) = worker(i);
+            }
+        }
 
         return result;
     }
@@ -1332,7 +1343,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
     idx numdims = dims.size();
     idx numsubsys = subsys.size();
     idx Cdims[maxn];
-    idx midxcol[maxn];
+    idx Cmidxcol[maxn];
     idx Csubsys[maxn];
 
     // copy dims in Cdims and subsys in Csubsys
@@ -1357,14 +1368,14 @@ dyn_mat<typename Derived::Scalar> ptranspose(
         if (subsys.size() == 0)
             return rA * adjoint(rA);
 
-        auto worker = [=, &midxcol](idx i) noexcept
+        auto worker = [=, &Cmidxcol](idx i) noexcept
         {
             // use static allocation for speed!
             idx midxcoltmp[maxn];
             idx midxrow[maxn];
 
             for (idx k = 0; k < numdims; ++k)
-                midxcoltmp[k] = midxcol[k];
+                midxcoltmp[k] = Cmidxcol[k];
 
             /* compute the row multi-index */
             internal::_n2multiidx(i, numdims, Cdims, midxrow);
@@ -1381,7 +1392,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
         for (idx j = 0; j < D; ++j)
         {
             // compute the column multi-index
-            internal::_n2multiidx(j, numdims, Cdims, midxcol);
+            internal::_n2multiidx(j, numdims, Cdims, Cmidxcol);
 #pragma omp parallel for
             for (idx i = 0; i < D; ++i)
                 result(i, j) = worker(i);
@@ -1403,14 +1414,14 @@ dyn_mat<typename Derived::Scalar> ptranspose(
         if (subsys.size() == 0)
             return rA;
 
-        auto worker = [=, &midxcol](idx i) noexcept
+        auto worker = [=, &Cmidxcol](idx i) noexcept
         {
             // use static allocation for speed!
             idx midxcoltmp[maxn];
             idx midxrow[maxn];
 
             for (idx k = 0; k < numdims; ++k)
-                midxcoltmp[k] = midxcol[k];
+                midxcoltmp[k] = Cmidxcol[k];
 
             /* compute the row multi-index */
             internal::_n2multiidx(i, numdims, Cdims, midxrow);
@@ -1426,7 +1437,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
         for (idx j = 0; j < D; ++j)
         {
             // compute the column multi-index
-            internal::_n2multiidx(j, numdims, Cdims, midxcol);
+            internal::_n2multiidx(j, numdims, Cdims, Cmidxcol);
 #pragma omp parallel for
             for (idx i = 0; i < D; ++i)
                 result(i, j) = worker(i);

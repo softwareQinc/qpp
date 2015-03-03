@@ -177,7 +177,6 @@ measure(
     return measure(A, std::vector<cmat>(Ks), subsys, dims);
 }
 
-
 /**
 * \brief  Measures the part \a subsys of
 * the multi-partite state vector or density matrix \a A
