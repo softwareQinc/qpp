@@ -1431,7 +1431,7 @@ template&lt;typename Derived1 , typename Derived2 &gt; </div>
 <p>Orthogonal Kraus operators from Choi matrix. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a9f23aa8ee0eb007532b29ada39091d4f" title="Choi matrix. ">qpp::kraus2choi()</a></dd></dl>
 <p>Extracts a set of orthogonal (under Hilbert-Schmidt operator norm) Kraus operators from the Choi matrix <em>A</em> </p>
-<dl class="section note"><dt>Note</dt><dd>The Kraus operators satisfy <img class="formulaInl" alt="$Tr(K_i^\dagger K_j)=\delta_{ij}$" src="form_39.png"/> for all <img class="formulaInl" alt="$i\neq j$" src="form_40.png"/></dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The Kraus operators satisfy <img class="formulaInl" alt="$Tr(K_i^\dagger K_j)=\delta_{ij}$" src="form_40.png"/> for all <img class="formulaInl" alt="$i\neq j$" src="form_41.png"/></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Choi matrix </td></tr>
@@ -1542,7 +1542,7 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The complement of <em>subsys</em> with respect to the set <img class="formulaInl" alt="$\{0, 1, \ldots, N - 1\}$" src="form_50.png"/> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The complement of <em>subsys</em> with respect to the set <img class="formulaInl" alt="$\{0, 1, \ldots, N - 1\}$" src="form_31.png"/> </dd></dl>
 
 </div>
 </div>
@@ -1578,7 +1578,7 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Composition of the permutations <em>perm</em> <img class="formulaInl" alt="$\circ$" src="form_31.png"/> <em>sigma</em> = perm(sigma) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Composition of the permutations <em>perm</em> <img class="formulaInl" alt="$\circ$" src="form_32.png"/> <em>sigma</em> = perm(sigma) </dd></dl>
 
 </div>
 </div>
@@ -2447,7 +2447,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Prime factor decomposition. </p>
-<dl class="section note"><dt>Note</dt><dd>Runs in <img class="formulaInl" alt="$\mathcal{O}(\sqrt{n})$" src="form_32.png"/> time complexity</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Runs in <img class="formulaInl" alt="$\mathcal{O}(\sqrt{n})$" src="form_33.png"/> time complexity</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td>Integer strictly greater than 1 </td></tr>
@@ -2828,7 +2828,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Primality test. </p>
-<dl class="section note"><dt>Note</dt><dd>Runs in <img class="formulaInl" alt="$\mathcal{O}(\sqrt{n})$" src="form_32.png"/> time complexity</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Runs in <img class="formulaInl" alt="$\mathcal{O}(\sqrt{n})$" src="form_33.png"/> time complexity</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td>Integer strictly greater than 1 </td></tr>
@@ -2855,8 +2855,8 @@ template&lt;typename Derived &gt; </div>
 
 <p>Choi matrix. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ac08330f1578fa6b6e382a80132dffb46" title="Orthogonal Kraus operators from Choi matrix. ">qpp::choi2kraus()</a></dd></dl>
-<p>Constructs the Choi matrix of the channel specified by the set of Kraus operators <em>Ks</em> in the standard operator basis <img class="formulaInl" alt="$\{|i\rangle\langle j|\}$" src="form_33.png"/> ordered in lexicographical order, i.e. <img class="formulaInl" alt="$|0\rangle\langle 0|$" src="form_34.png"/>, <img class="formulaInl" alt="$|0\rangle\langle 1|$" src="form_35.png"/> etc.</p>
-<dl class="section note"><dt>Note</dt><dd>The superoperator matrix <img class="formulaInl" alt="$S$" src="form_36.png"/> and the Choi matrix <img class="formulaInl" alt="$ C$" src="form_37.png"/> are related by <img class="formulaInl" alt="$ S_{ab,mn} = C_{ma,nb}$" src="form_38.png"/></dd></dl>
+<p>Constructs the Choi matrix of the channel specified by the set of Kraus operators <em>Ks</em> in the standard operator basis <img class="formulaInl" alt="$\{|i\rangle\langle j|\}$" src="form_34.png"/> ordered in lexicographical order, i.e. <img class="formulaInl" alt="$|0\rangle\langle 0|$" src="form_35.png"/>, <img class="formulaInl" alt="$|0\rangle\langle 1|$" src="form_36.png"/> etc.</p>
+<dl class="section note"><dt>Note</dt><dd>The superoperator matrix <img class="formulaInl" alt="$S$" src="form_37.png"/> and the Choi matrix <img class="formulaInl" alt="$ C$" src="form_38.png"/> are related by <img class="formulaInl" alt="$ S_{ab,mn} = C_{ma,nb}$" src="form_39.png"/></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">Ks</td><td>Set of Kraus operators </td></tr>
@@ -2882,7 +2882,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Superoperator matrix. </p>
-<p>Constructs the superoperator matrix of the channel specified by the set of Kraus operators <em>Ks</em> in the standard operator basis <img class="formulaInl" alt="$\{|i\rangle\langle j|\}$" src="form_33.png"/> ordered in lexicographical order, i.e. <img class="formulaInl" alt="$|0\rangle\langle 0|$" src="form_34.png"/>, <img class="formulaInl" alt="$|0\rangle\langle 1|$" src="form_35.png"/> etc.</p>
+<p>Constructs the superoperator matrix of the channel specified by the set of Kraus operators <em>Ks</em> in the standard operator basis <img class="formulaInl" alt="$\{|i\rangle\langle j|\}$" src="form_34.png"/> ordered in lexicographical order, i.e. <img class="formulaInl" alt="$|0\rangle\langle 0|$" src="form_35.png"/>, <img class="formulaInl" alt="$|0\rangle\langle 1|$" src="form_36.png"/> etc.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">Ks</td><td>Set of Kraus operators </td></tr>
@@ -4394,7 +4394,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Partial trace <img class="formulaInl" alt="$Tr_{subsys}(\cdot)$" src="form_46.png"/> over the subsytems <em>subsys</em> in a multi-partite system, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Partial trace <img class="formulaInl" alt="$Tr_{subsys}(\cdot)$" src="form_47.png"/> over the subsytems <em>subsys</em> in a multi-partite system, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -4441,7 +4441,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Partial trace <img class="formulaInl" alt="$Tr_{subsys}(\cdot)$" src="form_46.png"/> over the subsytems <em>subsys</em> in a multi-partite system, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Partial trace <img class="formulaInl" alt="$Tr_{subsys}(\cdot)$" src="form_47.png"/> over the subsytems <em>subsys</em> in a multi-partite system, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -4481,7 +4481,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Partial trace <img class="formulaInl" alt="$Tr_{A}(\cdot)$" src="form_41.png"/> over the first subsytem <img class="formulaInl" alt="$A$" src="form_42.png"/> in a bi-partite system <img class="formulaInl" alt="$A\otimes B$" src="form_43.png"/>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Partial trace <img class="formulaInl" alt="$Tr_{A}(\cdot)$" src="form_42.png"/> over the first subsytem <img class="formulaInl" alt="$A$" src="form_43.png"/> in a bi-partite system <img class="formulaInl" alt="$A\otimes B$" src="form_44.png"/>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -4521,7 +4521,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Partial trace <img class="formulaInl" alt="$Tr_{B}(\cdot)$" src="form_44.png"/> over the second subsytem <img class="formulaInl" alt="$B$" src="form_45.png"/> in a bi-partite system <img class="formulaInl" alt="$A\otimes B$" src="form_43.png"/>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Partial trace <img class="formulaInl" alt="$Tr_{B}(\cdot)$" src="form_45.png"/> over the second subsytem <img class="formulaInl" alt="$B$" src="form_46.png"/> in a bi-partite system <img class="formulaInl" alt="$A\otimes B$" src="form_44.png"/>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -4567,7 +4567,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Partial transpose <img class="formulaInl" alt="$(\cdot)^{T_{subsys}}$" src="form_47.png"/> over the subsytems <em>subsys</em> in a multi-partite system, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Partial transpose <img class="formulaInl" alt="$(\cdot)^{T_{subsys}}$" src="form_48.png"/> over the subsytems <em>subsys</em> in a multi-partite system, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -4613,7 +4613,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Partial transpose <img class="formulaInl" alt="$(\cdot)^{T_{subsys}}$" src="form_47.png"/> over the subsytems <em>subsys</em> in a multi-partite system, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Partial transpose <img class="formulaInl" alt="$(\cdot)^{T_{subsys}}$" src="form_48.png"/> over the subsytems <em>subsys</em> in a multi-partite system, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -5040,7 +5040,7 @@ template&lt;&gt; </div>
 </div><div class="memdoc">
 
 <p>Generates a set of random Kraus operators. </p>
-<dl class="section note"><dt>Note</dt><dd>The set of Kraus operators satisfy the closure condition <img class="formulaInl" alt="$ \sum_i K_i^\dagger K_i = I$" src="form_48.png"/></dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The set of Kraus operators satisfy the closure condition <img class="formulaInl" alt="$ \sum_i K_i^\dagger K_i = I$" src="form_49.png"/></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">N</td><td>Number of Kraus operators </td></tr>
@@ -6653,7 +6653,7 @@ template&lt;typename Derived &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Tue Mar 3 2015 17:33:08 for Quantum++ by
+    <li class="footer">Generated on Tue Mar 3 2015 19:39:24 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

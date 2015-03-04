@@ -1,6 +1,0 @@
-digraph "experimental" {
-  compound=true
-  node [ fontsize="10", fontname="Helvetica"];
-  edge [ labelfontsize="10", labelfontname="Helvetica"];
-  dir_8c0381a6091af7a47ae909a45b674508 [shape=box, label="experimental", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_8c0381a6091af7a47ae909a45b674508.html"];
-}
