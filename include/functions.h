@@ -1518,14 +1518,7 @@ std::vector<double> abssq(const Eigen::MatrixBase<Derived>& V)
     if (!internal::_check_col_vector(rV))
         throw Exception("qpp::abssq()", Exception::Type::MATRIX_NOT_CVECTOR);
 
-    std::vector<double> weights(rV.rows());
-    std::transform(rV.data(), rV.data() + rV.rows(), std::begin(weights),
-            [](const cplx& z) -> double
-            {
-                return std::pow(std::abs(z), 2);
-            });
-
-    return weights;
+    return abssq(rV.data(), rV.data() + rV.rows());
 }
 
 /**
