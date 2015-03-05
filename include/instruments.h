@@ -111,6 +111,7 @@ measure(
     // resulting states
     std::vector<cmat> outstates(Ks.size());
 
+    //************ density matrix ************//
     if (internal::_check_square_mat(rA)) // square matrix
     {
         for (idx i = 0; i < Ks.size(); ++i)
@@ -125,6 +126,7 @@ measure(
                 outstates[i] = tmp / prob[i];
         }
     }
+        //************ ket ************//
     else if (internal::_check_col_vector(rA)) // column vector
     {
         for (idx i = 0; i < Ks.size(); ++i)
@@ -162,8 +164,8 @@ measure(
 * \param subsys Subsystem indexes that are measured
 * \param dims Dimensions of the multi-partite system
 * \param Ks Set of Kraus operators
-* \return Tuple consisting of 1. Result of the measurement,
-* 2. Vector of outcome probabilities and 3. Vector of post-measurement
+* \return Tuple consisting of 1. Result of the measurement, 2.
+* Vector of outcome probabilities and 3. Vector of post-measurement
 * normalized states
 */
 template<typename Derived>
@@ -188,8 +190,8 @@ measure(
 * \param subsys Subsystem indexes that are measured
 * \param d Subsystem dimensions
 * \param Ks Set of Kraus operators
-* \return Tuple consisting of 1. Result of the measurement,
-* 2. Vector of outcome probabilities and 3. Vector of post-measurement
+* \return Tuple consisting of 1. Result of the measurement, 2.
+* Vector of outcome probabilities and 3. Vector of post-measurement
 * normalized states
 */
 template<typename Derived>
@@ -228,8 +230,8 @@ measure(
 * \param subsys Subsystem indexes that are measured
 * \param d Subsystem dimensions
 * \param Ks Set of Kraus operators
-* \return Tuple consisting of 1. Result of the measurement,
-* 2. Vector of outcome probabilities and 3. Vector of post-measurement
+* \return Tuple consisting of 1. Result of the measurement, 2.
+* Vector of outcome probabilities and 3. Vector of post-measurement
 * normalized states
 */
 template<typename Derived>
@@ -254,8 +256,8 @@ measure(
 * \param subsys Subsystem indexes that are measured
 * \param dims Dimensions of the multi-partite system
 * \param U Unitary matrix whose columns represent the measurement basis vectors
-* \return Tuple consisting of 1. Result of the measurement,
-* 2. Vector of outcome probabilities and 3. Vector of post-measurement
+* \return Tuple consisting of 1. Result of the measurement, 2.
+* Vector of outcome probabilities and 3. Vector of post-measurement
 * normalized states
 */
 template<typename Derived>
@@ -324,8 +326,8 @@ measure(
 * \param subsys Subsystem indexes that are measured
 * \param d Subsystem dimensions
 * \param U Unitary matrix whose columns represent the measurement basis vectors
-* \return Tuple consisting of 1. Result of the measurement,
-* 2. Vector of outcome probabilities and 3. Vector of post-measurement
+* \return Tuple consisting of 1. Result of the measurement, 2.
+* Vector of outcome probabilities and 3. Vector of post-measurement
 * normalized states
 */
 template<typename Derived>
@@ -356,8 +358,8 @@ measure(
 *
 * \param A Eigen expression
 * \param Ks Set of Kraus operators
-* \return Tuple consisting of 1. Result of the measurement,
-* 2. Vector of outcome probabilities and 3. Vector of post-measurement
+* \return Tuple consisting of 1. Result of the measurement, 2.
+* Vector of outcome probabilities and 3. Vector of post-measurement
 * normalized states
 */
 template<typename Derived>
@@ -389,6 +391,7 @@ std::tuple<idx, std::vector<double>, std::vector<cmat>> measure(
     // resulting states
     std::vector<cmat> outstates(Ks.size());
 
+    //************ density matrix ************//
     if (internal::_check_square_mat(rA)) // square matrix
     {
         for (idx i = 0; i < Ks.size(); ++i)
@@ -400,6 +403,7 @@ std::tuple<idx, std::vector<double>, std::vector<cmat>> measure(
                 outstates[i] = tmp / prob[i]; // normalized
         }
     }
+        //************ ket ************//
     else if (internal::_check_col_vector(rA)) // column vector
     {
         for (idx i = 0; i < Ks.size(); ++i)
@@ -432,8 +436,8 @@ std::tuple<idx, std::vector<double>, std::vector<cmat>> measure(
 *
 * \param A Eigen expression
 * \param Ks Set of Kraus operators
-* \return Tuple consisting of 1. Result of the measurement,
-* 2. Vector of outcome probabilities and 3. Vector of post-measurement
+* \return Tuple consisting of 1. Result of the measurement, 2.
+* Vector of outcome probabilities and 3. Vector of post-measurement
 * normalized states
 */
 template<typename Derived>
@@ -450,8 +454,8 @@ std::tuple<idx, std::vector<double>, std::vector<cmat>> measure(
 *
 * \param A Eigen expression
 * \param U Unitary matrix whose columns represent the measurement basis vectors
-* \return Tuple consisting of 1. Result of the measurement,
-* 2. Vector of outcome probabilities and 3. Vector of post-measurement
+* \return Tuple consisting of 1. Result of the measurement, 2.
+* Vector of outcome probabilities and 3. Vector of post-measurement
 * normalized states
 */
 template<typename Derived>
@@ -485,3 +489,5 @@ std::tuple<idx, std::vector<double>, std::vector<cmat>> measure(
 } /* namespace qpp */
 
 #endif /* INSTRUMENTS_H_ */
+
+// TODO: optimize qpp::measure() and qpp::apply()
