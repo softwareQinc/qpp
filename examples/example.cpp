@@ -593,7 +593,7 @@ void TIMING()
 int main()
 {
     // Examples
-/*    MEASUREMENTS();
+    MEASUREMENTS();
     TELEPORTATION();
     DENSE_CODING();
     GROVER();
@@ -606,21 +606,5 @@ int main()
     RANDOM();
     ENTROPIES();
     GRAPHSTATES();
-    TIMING();*/
-
-    idx N{24};
-    std::vector<idx> dims(N, 2); // N qubits
-    idx D = prod(dims.begin(), dims.end());
-    idx Nsubsys = std::distance(dims.begin(), dims.end())/2;
-    idx Dsubsys = prod(dims.begin(), dims.begin() + Nsubsys);
-    ket psi = randket(D);
-    std::cout << N << " " << D << " " << Nsubsys << " " << Dsubsys << std::endl;
-
-    cmat U = gt.Id(2); // measure Nsubsys
-    Timer t;
-    //auto res = measure(psi, U, {0});
-    auto res = apply(psi,gt.CNOT,{12, 16});
-    std::cout << t.toc() << std::endl;
-    std::cout << res.cols() << " x " << res.rows() << std::endl;
-    std::cout << norm(res) << std::endl;
+    TIMING();
 }
