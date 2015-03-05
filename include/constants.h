@@ -29,8 +29,6 @@
 
 // constants
 
-#include <classes/exception.h>
-
 namespace qpp
 {
 
