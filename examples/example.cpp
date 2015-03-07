@@ -23,6 +23,8 @@
 
 // #include <MATLAB/matlab.h> // support for MATLAB
 
+#include <experimental/test.h> // support for testing features
+
 using namespace qpp;
 
 using std::cout;
@@ -94,8 +96,37 @@ void MEASUREMENTS()
     rho_out_bar = ptrace(apply(rho, randkraus(3, 4), {1, 3}), {1, 3});
 
     // verification
-    cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar)
-            << endl << endl;
+    cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar) << endl;
+
+    cout << ">> Sequential measurements on the state/density matrix:" << endl;
+    psi = ket::Zero(4);
+    psi << 0, 0.8 ,0.6, 0; // 0.8 |01> + 0.6 |10>
+    rho = psi * adjoint(psi);
+    cout << disp(psi) << std::endl;
+
+    std::vector<idx> subsys_ket{1};
+    std::vector<idx> subsys_rho{0};
+
+    auto meas_ket = experimental::measure_seq(psi, subsys_ket);
+    auto meas_rho = experimental::measure_seq(rho, subsys_rho);
+
+    // ket
+    std::cout << ">> Ket, measuring subsystem(s) ";
+    std::cout << disp(subsys_ket," ") << std::endl;
+    std::cout << ">> Outcome(s): " << disp(std::get<0>(meas_ket)," ") <<
+            std::endl;
+    std::cout << ">> Probability:  " << std::get<1>(meas_ket) << std::endl;
+    std::cout << ">> Resulting state:  " << std::endl;
+    std::cout << disp(std::get<2>(meas_ket)) << std::endl << std::endl;
+
+    // density matrix
+    std::cout << ">> Density matrix, measuring subsystem(s) ";
+    std::cout << disp(subsys_rho," ") << std::endl;
+    std::cout << ">> Outcome(s): " << disp(std::get<0>(meas_rho)," ") <<
+            std::endl;
+    std::cout << ">> Probability:  " << std::get<1>(meas_rho) << std::endl;
+    std::cout << ">> Resulting state:  " << std::endl;
+    std::cout << disp(std::get<2>(meas_rho)) << std::endl;
 }
 
 void TELEPORTATION()
@@ -594,17 +625,17 @@ int main()
 {
     // Examples
     MEASUREMENTS();
-    TELEPORTATION();
-    DENSE_CODING();
-    GROVER();
-    ENTANGLEMENT();
-    QECC();
-    CHANNEL();
-    FUNCTOR();
-    GRAMSCHMIDT();
-    SPECTRAL();
-    RANDOM();
-    ENTROPIES();
-    GRAPHSTATES();
-    TIMING();
+//    TELEPORTATION();
+//    DENSE_CODING();
+//    GROVER();
+//    ENTANGLEMENT();
+//    QECC();
+//    CHANNEL();
+//    FUNCTOR();
+//    GRAMSCHMIDT();
+//    SPECTRAL();
+//    RANDOM();
+//    ENTROPIES();
+//    GRAPHSTATES();
+//    TIMING();
 }

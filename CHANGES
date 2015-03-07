@@ -12,8 +12,10 @@ Version 0.3 - 15 February 2015
 
 Version 0.3.1 - development
     - Added noexcept specification where suitable
-    - Added new functions in functions.h: 
-            qpp::complement() - computes the complement of a subsystem vector
     - Added overloads of qpp::ptrace1(), qpp::ptrace2(), qpp::ptrace() and
       qpp::ptranspose() that allow a pure state input, as it was the case
       before with qpp::syspermute().
+    - Added new function in functions.h:
+            qpp::complement() - computes the complement of a subsystem vector
+    - Added new function in experimental/test.h:
+            qpp::experimental::measure_seq() - measures subsystems sequentially
