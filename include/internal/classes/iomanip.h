@@ -43,7 +43,7 @@ class IOManipRange
 public:
     explicit IOManipRange(InputIterator first, InputIterator last,
             const std::string& separator, const std::string& start = "[",
-            const std::string& end = "]") noexcept :
+            const std::string& end = "]") :
             _first{first},
             _last{last},
             _separator{separator},
@@ -81,7 +81,7 @@ class IOManipPointer
 public:
     explicit IOManipPointer(const PointerType* p, const idx n,
             const std::string& separator, const std::string& start = "[",
-            const std::string& end = "]") noexcept :
+            const std::string& end = "]") :
             _p{p},
             _n{n},
             _separator{separator},
@@ -127,7 +127,7 @@ public:
     }
 
     // Complex numbers
-    explicit IOManipEigen(const cplx z, double chop = qpp::chop) noexcept :
+    explicit IOManipEigen(const cplx z, double chop = qpp::chop) :
             _A{cmat::Zero(1, 1)}, _chop{chop}
     {
         // put the complex number inside an Eigen matrix

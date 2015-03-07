@@ -61,7 +61,7 @@ private:
     /**
     * \brief Initializes the gates
     */
-    Gates() noexcept
+    Gates()
     {
         H << 1 / std::sqrt(2.), 1 / std::sqrt(2.), 1 / std::sqrt(2.), -1
                 / std::sqrt(2.);

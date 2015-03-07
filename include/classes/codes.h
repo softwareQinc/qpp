@@ -53,7 +53,7 @@ private:
     /**
     * \brief Default constructor
     */
-    Codes() noexcept
+    Codes()
     {
     }
 

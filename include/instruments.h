@@ -80,14 +80,8 @@ measure(
     for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
 
-    idx D = 1;
-    for (auto&& it: dims)
-        D *= it;
-
-    idx Dsubsys = 1;
-    for (auto&& it: subsys_dims)
-        Dsubsys *= it;
-
+    idx D = prod(dims.begin(), dims.end());
+    idx Dsubsys = prod(subsys_dims.begin(), subsys_dims.end());
     idx Dbar = D / Dsubsys;
 
     // check the Kraus operators
@@ -121,9 +115,11 @@ measure(
             tmp = ptrace(tmp, subsys, dims);
             prob[i] = std::abs(trace(tmp)); // probability
             if (prob[i] > eps)
+            {
                 // normalized output state
                 // corresponding to measurement result i
                 outstates[i] = tmp / prob[i];
+            }
         }
     }
         //************ ket ************//
@@ -135,7 +131,12 @@ measure(
             ket tmp = apply(rA, Ks[i], subsys, dims);
             prob[i] = std::pow(norm(tmp), 2);
             if (prob[i] > eps)
+            {
+                // normalized output state
+                // corresponding to measurement result i
+                tmp /= std::sqrt(prob[i]);
                 outstates[i] = ptrace(tmp, subsys, dims);
+            }
         }
     }
     else
@@ -294,9 +295,7 @@ measure(
     for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
 
-    idx Dsubsys = 1;
-    for (auto&& it: subsys_dims)
-        Dsubsys *= it;
+    idx Dsubsys = prod(subsys_dims.begin(), subsys_dims.end());
 
     // check the unitary basis matrix U
     if (!internal::_check_nonzero_size(U))
@@ -411,7 +410,7 @@ std::tuple<idx, std::vector<double>, std::vector<cmat>> measure(
             outstates[i] = ket::Zero(rA.rows());
             ket tmp = Ks[i] * rA; // un-normalized;
             // probability
-            prob[i] = std::abs((adjoint(tmp) * tmp).value());
+            prob[i] = std::pow(norm(tmp), 2);
             if (prob[i] > eps)
                 outstates[i] = tmp / std::sqrt(prob[i]); // normalized
         }
@@ -489,5 +488,3 @@ std::tuple<idx, std::vector<double>, std::vector<cmat>> measure(
 } /* namespace qpp */
 
 #endif /* INSTRUMENTS_H_ */
-
-// TODO: optimize qpp::measure() and qpp::apply()

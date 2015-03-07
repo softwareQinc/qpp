@@ -127,8 +127,10 @@ double contfrac2x(const std::vector<int>& cf)
 * \return Greatest common divisor of \a m and \a n
 */
 unsigned long long int gcd(unsigned long long int m, unsigned long long int n)
-noexcept
 {
+    if (m == 0 && n == 0)
+        throw Exception("qpp::gcd()", Exception::Type::OUT_OF_RANGE);
+
     if (m == 0 || n == 0)
         return (std::max(m, n));
 

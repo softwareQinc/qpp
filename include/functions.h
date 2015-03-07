@@ -1531,7 +1531,7 @@ std::vector<double> abssq(const Eigen::MatrixBase<Derived>& V)
 */
 template<typename InputIterator>
 typename std::iterator_traits<InputIterator>::value_type
-sum(InputIterator first, InputIterator last) noexcept
+sum(InputIterator first, InputIterator last)
 {
     using value_type =
     typename std::iterator_traits<InputIterator>::value_type;
@@ -1549,7 +1549,7 @@ sum(InputIterator first, InputIterator last) noexcept
 */
 template<typename InputIterator>
 typename std::iterator_traits<InputIterator>::value_type
-prod(InputIterator first, InputIterator last) noexcept
+prod(InputIterator first, InputIterator last)
 {
     using value_type =
     typename std::iterator_traits<InputIterator>::value_type;

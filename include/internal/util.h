@@ -80,7 +80,7 @@ noexcept
 
 // check square matrix
 template<typename Derived>
-bool _check_square_mat(const Eigen::MatrixBase<Derived>& A) noexcept
+bool _check_square_mat(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -89,7 +89,7 @@ bool _check_square_mat(const Eigen::MatrixBase<Derived>& A) noexcept
 
 // check whether input is a vector or not
 template<typename Derived>
-bool _check_vector(const Eigen::MatrixBase<Derived>& A) noexcept
+bool _check_vector(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -98,7 +98,7 @@ bool _check_vector(const Eigen::MatrixBase<Derived>& A) noexcept
 
 // check whether input is a row vector or not
 template<typename Derived>
-bool _check_row_vector(const Eigen::MatrixBase<Derived>& A) noexcept
+bool _check_row_vector(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -107,7 +107,7 @@ bool _check_row_vector(const Eigen::MatrixBase<Derived>& A) noexcept
 
 // check whether input is a column vector or not
 template<typename Derived>
-bool _check_col_vector(const Eigen::MatrixBase<Derived>& A) noexcept
+bool _check_col_vector(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -122,7 +122,7 @@ bool _check_nonzero_size(const T& x) noexcept
 }
 
 // check that dims is a valid dimension vector
-bool _check_dims(const std::vector<idx>& dims) noexcept
+bool _check_dims(const std::vector<idx>& dims)
 {
     if (dims.size() == 0)
         return false;
@@ -139,7 +139,7 @@ bool _check_dims(const std::vector<idx>& dims) noexcept
 // of valid (non-zero sized) quare matrix
 template<typename Derived>
 bool _check_dims_match_mat(const std::vector<idx>& dims,
-        const Eigen::MatrixBase<Derived>& A) noexcept
+        const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -152,7 +152,7 @@ bool _check_dims_match_mat(const std::vector<idx>& dims,
 // check that valid dims match the dimensions of valid column vector
 template<typename Derived>
 bool _check_dims_match_cvect(const std::vector<idx>& dims,
-        const Eigen::MatrixBase<Derived>& V) noexcept
+        const Eigen::MatrixBase<Derived>& V)
 {
     const dyn_mat<typename Derived::Scalar>& rV = V;
 
@@ -165,7 +165,7 @@ bool _check_dims_match_cvect(const std::vector<idx>& dims,
 // check that valid dims match the dimensions of valid row vector
 template<typename Derived>
 bool _check_dims_match_rvect(const std::vector<idx>& dims,
-        const Eigen::MatrixBase<Derived>& V) noexcept
+        const Eigen::MatrixBase<Derived>& V)
 {
     const dyn_mat<typename Derived::Scalar>& rV = V;
 
@@ -187,7 +187,7 @@ bool _check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept
 
 // check that subsys is valid with respect to valid dims
 bool _check_subsys_match_dims(const std::vector<idx>& subsys,
-        const std::vector<idx>& dims) noexcept
+        const std::vector<idx>& dims)
 {
     //	// check non-zero sized subsystems
     //	if (subsys.size() == 0)
@@ -215,7 +215,7 @@ bool _check_subsys_match_dims(const std::vector<idx>& subsys,
 }
 
 // check valid permutation
-bool _check_perm(const std::vector<idx>& perm) noexcept
+bool _check_perm(const std::vector<idx>& perm)
 {
     if (perm.size() == 0)
         return false;

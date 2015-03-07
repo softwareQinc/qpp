@@ -14,6 +14,6 @@ Version 0.3.1 - development
     - Added noexcept specification where suitable
     - Added new functions in functions.h: 
             qpp::complement() - computes the complement of a subsystem vector
-    - all overloads of qpp::ptrace1(), qpp::ptrace2(), qpp::ptrace() and
-      qpp::ptranspose() now allow a pure state input, similarly to 
-      qpp::syspermute(). 
+    - Added overloads of qpp::ptrace1(), qpp::ptrace2(), qpp::ptrace() and
+      qpp::ptranspose() that allow a pure state input, as it was the case
+      before with qpp::syspermute().
