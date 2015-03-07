@@ -20,7 +20,7 @@ endif(${WITH_OPENMP})
 option(WITH_MATLAB "MATLAB integration" OFF)
 if(${WITH_MATLAB})
     include_directories("/Applications/MATLAB_R2014b.app/extern/include")
-    set (CMAKE_EXE_LINKER_FLAGS " -lmx -lmat -L/Applications/MATLAB_R2014b.app/bin/maci64")
+    set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lmx -lmat -L/Applications/MATLAB_R2014b.app/bin/maci64")
 endif(${WITH_MATLAB})
 
 # use the "no-weak" debugging flag only when debugging under OS X,
