@@ -99,13 +99,12 @@ void MEASUREMENTS()
     cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar) << endl;
 
     cout << ">> Sequential measurements on the state/density matrix:" << endl;
-    psi = ket::Zero(4);
-    psi << 0, 0.8 ,0.6, 0; // 0.8 |01> + 0.6 |10>
+    psi = 0.8 * mket({0, 1}) + 0.6 * mket({1, 0});
     rho = psi * adjoint(psi);
     cout << disp(psi) << std::endl;
 
-    std::vector<idx> subsys_ket{1};
-    std::vector<idx> subsys_rho{0};
+    std::vector<idx> subsys_ket{0};
+    std::vector<idx> subsys_rho{1};
 
     auto meas_ket = experimental::measure_seq(psi, subsys_ket);
     auto meas_rho = experimental::measure_seq(rho, subsys_rho);

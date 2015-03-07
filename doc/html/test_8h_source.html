@@ -107,12 +107,12 @@ $(document).ready(function(){initNavTree('test_8h_source.html','');});
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        std::vector&lt;idx&gt; subsys,</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        std::vector&lt;idx&gt; dims)</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; rA = A;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> cA = A;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="comment">// check zero-size</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">internal::_check_nonzero_size</a>(rA))</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">internal::_check_nonzero_size</a>(cA))</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::measure_seq()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="comment">// check that dimension is valid</span></div>
@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('test_8h_source.html','');});
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::measure_seq()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="comment">// check that dims match rho matrix</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a91aa370280d653933744a64a55cd0ff3">internal::_check_dims_match_mat</a>(dims, rA))</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a91aa370280d653933744a64a55cd0ff3">internal::_check_dims_match_mat</a>(dims, cA))</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::measure_seq()&quot;</span>,</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d">Exception::Type::DIMS_MISMATCH_MATRIX</a>);</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
@@ -133,21 +133,21 @@ $(document).ready(function(){initNavTree('test_8h_source.html','');});
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    std::vector&lt;idx&gt; result;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">double</span> prob = 1;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> outstate = rA;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="comment">// sort subsys in decreasing order</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    std::sort(std::begin(subsys), std::end(subsys), std::greater&lt;idx&gt;());</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">// sort subsys in decreasing order,</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="comment">// the order of measurements does not matter</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    std::sort(std::begin(subsys), std::end(subsys), std::greater&lt;idx&gt;{});</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="comment">//************ density matrix or column vector ************//</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">internal::_check_square_mat</a>(rA) || <a class="code" href="namespaceqpp_1_1internal.html#add886736621946a87cbc404ad955a605">internal::_check_col_vector</a>(rA))</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">internal::_check_square_mat</a>(cA) || <a class="code" href="namespaceqpp_1_1internal.html#add886736621946a87cbc404ad955a605">internal::_check_col_vector</a>(cA))</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    {</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keywordflow">while</span> (subsys.size() &gt; 0)</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keyword">auto</span> tmp = <a class="code" href="namespaceqpp.html#a65da96cadec88fbbb3cc70b0a82fa90c">measure</a>(outstate, <a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#a401d12cb3fedafac911ae343d6f37da0">Id</a>(dims.at(subsys.at(0))),</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keyword">auto</span> tmp = <a class="code" href="namespaceqpp.html#a65da96cadec88fbbb3cc70b0a82fa90c">measure</a>(cA, <a class="code" href="namespaceqpp.html#abde5be3693c953f79e9c8e262447c8d4">gt</a>.<a class="code" href="classqpp_1_1_gates.html#a401d12cb3fedafac911ae343d6f37da0">Id</a>(dims.at(subsys.at(0))),</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                    {subsys.at(0)}, dims);</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            result.push_back(std::get&lt;0&gt;(tmp));</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            prob *= std::get&lt;1&gt;(tmp).at(std::get&lt;0&gt;(tmp));</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            outstate = std::get&lt;2&gt;(tmp).at(std::get&lt;0&gt;(tmp));</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            cA = std::get&lt;2&gt;(tmp).at(std::get&lt;0&gt;(tmp));</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="comment">// remove the subsystem</span></div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            dims.erase(std::next(dims.begin(), subsys.at(0)));</div>
@@ -158,7 +158,7 @@ $(document).ready(function(){initNavTree('test_8h_source.html','');});
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::measure_seq()&quot;</span>,</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7caf6ba7b51754d252579c9daa43dbbfd68">Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR</a>);</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordflow">return</span> std::make_tuple(result, prob, outstate);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordflow">return</span> std::make_tuple(result, prob, cA);</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;}</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment">// sequential partial measurements</span></div>
@@ -188,6 +188,7 @@ $(document).ready(function(){initNavTree('test_8h_source.html','');});
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* EXPERIMENTAL_TEST_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a40b09454ce4959a4fd231e67518d6abe"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a40b09454ce4959a4fd231e67518d6abe">qpp::internal::_check_subsys_match_dims</a></div><div class="ttdeci">bool _check_subsys_match_dims(const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdef"><b>Definition:</b> util.h:189</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a91aa370280d653933744a64a55cd0ff3"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a91aa370280d653933744a64a55cd0ff3">qpp::internal::_check_dims_match_mat</a></div><div class="ttdeci">bool _check_dims_match_mat(const std::vector&lt; idx &gt; &amp;dims, const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:141</div></div>
+<div class="ttc" id="namespaceqpp_html_ac39e7c2b66f0209911cc3afc06223648"><div class="ttname"><a href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">qpp::dyn_mat</a></div><div class="ttdeci">Eigen::Matrix&lt; Scalar, Eigen::Dynamic, Eigen::Dynamic &gt; dyn_mat</div><div class="ttdoc">Dynamic Eigen matrix over the field specified by Scalar. </div><div class="ttdef"><b>Definition:</b> types.h:73</div></div>
 <div class="ttc" id="namespaceqpp_html"><div class="ttname"><a href="namespaceqpp.html">qpp</a></div><div class="ttdoc">Quantum++ main namespace. </div><div class="ttdef"><b>Definition:</b> codes.h:30</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_ace7cfa182baf987f8a3374bd700b4276"><div class="ttname"><a href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">qpp::internal::_check_square_mat</a></div><div class="ttdeci">bool _check_square_mat(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:83</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">qpp::Exception::Type::DIMS_INVALID</a></div></div>
@@ -211,7 +212,7 @@ $(document).ready(function(){initNavTree('test_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_8c0381a6091af7a47ae909a45b674508.html">experimental</a></li><li class="navelem"><a class="el" href="test_8h.html">test.h</a></li>
-    <li class="footer">Generated on Sat Mar 7 2015 15:19:19 for Quantum++ by
+    <li class="footer">Generated on Sat Mar 7 2015 15:46:17 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

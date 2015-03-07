@@ -56,12 +56,12 @@ measure_seq(
         std::vector<idx> subsys,
         std::vector<idx> dims)
 {
-    const cmat& rA = A;
+    dyn_mat<typename Derived::Scalar> cA = A;
 
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if (!internal::_check_nonzero_size(cA))
         throw Exception("qpp::measure_seq()", Exception::Type::ZERO_SIZE);
 
     // check that dimension is valid
@@ -69,7 +69,7 @@ measure_seq(
         throw Exception("qpp::measure_seq()", Exception::Type::DIMS_INVALID);
 
     // check that dims match rho matrix
-    if (!internal::_check_dims_match_mat(dims, rA))
+    if (!internal::_check_dims_match_mat(dims, cA))
         throw Exception("qpp::measure_seq()",
                 Exception::Type::DIMS_MISMATCH_MATRIX);
 
@@ -82,21 +82,21 @@ measure_seq(
 
     std::vector<idx> result;
     double prob = 1;
-    cmat outstate = rA;
 
-    // sort subsys in decreasing order
-    std::sort(std::begin(subsys), std::end(subsys), std::greater<idx>());
+    // sort subsys in decreasing order,
+    // the order of measurements does not matter
+    std::sort(std::begin(subsys), std::end(subsys), std::greater<idx>{});
 
     //************ density matrix or column vector ************//
-    if (internal::_check_square_mat(rA) || internal::_check_col_vector(rA))
+    if (internal::_check_square_mat(cA) || internal::_check_col_vector(cA))
     {
         while (subsys.size() > 0)
         {
-            auto tmp = measure(outstate, gt.Id(dims.at(subsys.at(0))),
+            auto tmp = measure(cA, gt.Id(dims.at(subsys.at(0))),
                     {subsys.at(0)}, dims);
             result.push_back(std::get<0>(tmp));
             prob *= std::get<1>(tmp).at(std::get<0>(tmp));
-            outstate = std::get<2>(tmp).at(std::get<0>(tmp));
+            cA = std::get<2>(tmp).at(std::get<0>(tmp));
 
             // remove the subsystem
             dims.erase(std::next(dims.begin(), subsys.at(0)));
@@ -107,7 +107,7 @@ measure_seq(
         throw Exception("qpp::measure_seq()",
                 Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 
-    return std::make_tuple(result, prob, outstate);
+    return std::make_tuple(result, prob, cA);
 }
 
 // sequential partial measurements
