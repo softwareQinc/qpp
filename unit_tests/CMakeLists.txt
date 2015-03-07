@@ -38,7 +38,7 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DEIGEN_NO
 
 include_directories(../include)
 include_directories(SYSTEM ${EIGEN} ${GMOCK})
-set (CMAKE_EXE_LINKER_FLAGS " -lgmock -L/Users/vlad/gmock-1.7.0/build/ ")
+set (CMAKE_EXE_LINKER_FLAGS " -lgmock -L$ENV{HOME}/gmock-1.7.0/build/ ")
 
 if( NOT CMAKE_BUILD_TYPE )
   set( CMAKE_BUILD_TYPE Release CACHE STRING
