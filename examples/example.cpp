@@ -625,17 +625,17 @@ int main()
 {
     // Examples
     MEASUREMENTS();
-//    TELEPORTATION();
-//    DENSE_CODING();
-//    GROVER();
-//    ENTANGLEMENT();
-//    QECC();
-//    CHANNEL();
-//    FUNCTOR();
-//    GRAMSCHMIDT();
-//    SPECTRAL();
-//    RANDOM();
-//    ENTROPIES();
-//    GRAPHSTATES();
-//    TIMING();
+    TELEPORTATION();
+    DENSE_CODING();
+    GROVER();
+    ENTANGLEMENT();
+    QECC();
+    CHANNEL();
+    FUNCTOR();
+    GRAMSCHMIDT();
+    SPECTRAL();
+    RANDOM();
+    ENTROPIES();
+    GRAPHSTATES();
+    TIMING();
 }
