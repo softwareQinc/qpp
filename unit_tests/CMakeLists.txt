@@ -10,7 +10,6 @@ set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pedantic -Wall -Wextra -Weffc++")
 set(EIGEN "$ENV{HOME}/eigen")
 set(GMOCK "$ENV{HOME}/gmock-1.7.0")
-set (CMAKE_EXE_LINKER_FLAGS " -lgmock -L${GMOCK}/build/ ")
 
 option(WITH_OPENMP "OpenMP support" ON)
 if(${WITH_OPENMP})
@@ -22,7 +21,7 @@ endif(${WITH_OPENMP})
 option(WITH_MATLAB "MATLAB integration" OFF)
 if(${WITH_MATLAB})
     include_directories("/Applications/MATLAB_R2014b.app/extern/include")
-    set (CMAKE_EXE_LINKER_FLAGS " -lmx -lmat -L/Applications/MATLAB_R2014b.app/bin/maci64")
+    set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lmx -lmat -L/Applications/MATLAB_R2014b.app/bin/maci64")
 endif(${WITH_MATLAB})
 
 # use the "no-weak" debugging flag only when debugging under OS X,
@@ -39,6 +38,7 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DEIGEN_NO
 
 include_directories(../include)
 include_directories(SYSTEM ${EIGEN} "${GMOCK}/gtest/include")
+set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L${GMOCK}/build/ ")
 
 if( NOT CMAKE_BUILD_TYPE )
   set( CMAKE_BUILD_TYPE Release CACHE STRING
@@ -47,3 +47,4 @@ if( NOT CMAKE_BUILD_TYPE )
 endif()
 
 add_executable(testing ${SOURCE_FILES})
+target_link_libraries(testing gmock pthread) # make sure -lgmock and -lpthread are added at the end of the compiling command
