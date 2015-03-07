@@ -29,7 +29,7 @@ var classqpp_1_1_exception =
       [ "UNDEFINED_TYPE", "classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530", null ],
       [ "CUSTOM_EXCEPTION", "classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cae0cff7ecbef91c65bce0458b4aaa3d85", null ]
     ] ],
-    [ "Exception", "classqpp_1_1_exception.html#ae3f2ed2bfd66fccec14c6bd9c06ed3b5", null ],
-    [ "Exception", "classqpp_1_1_exception.html#a315b773a7cdf87ce7298a247643fd6b8", null ],
+    [ "Exception", "classqpp_1_1_exception.html#af31368e08ce7c7161ddaf65b3f27d5b2", null ],
+    [ "Exception", "classqpp_1_1_exception.html#af0e2b4649f0288edaf9436fcaac88755", null ],
     [ "what", "classqpp_1_1_exception.html#a59e464cb761133e41eb3cdb4a77ac55b", null ]
 ];
