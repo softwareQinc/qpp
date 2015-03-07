@@ -212,10 +212,6 @@ measure(
         throw Exception("qpp::measure()",
                 Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-    // we have a full measurement
-//    if (subsys.size() == dims.size())
-//        return measure(rA, Ks);
-
     std::vector<idx> subsys_dims(subsys.size());
     for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
