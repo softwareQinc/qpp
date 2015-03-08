@@ -28,3 +28,5 @@ Version 0.4 - 8 March 2015
     - Removed support for the C-style random number engine, as it is not thread
         safe. Hence, Eigen::Matrix::Random() should not be used, use instead
         qpp::rand() functions.
+
+Version 0.4.1 - development
