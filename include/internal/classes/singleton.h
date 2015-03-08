@@ -74,7 +74,7 @@ class Singleton
 protected:
     Singleton() noexcept = default;
 
-    ~Singleton() = default;
+    virtual ~Singleton() = default;
 
     Singleton(const Singleton&) = delete;
 
