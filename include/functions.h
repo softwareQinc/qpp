@@ -1148,7 +1148,7 @@ dyn_mat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& V)
         throw Exception("qpp::prj()", Exception::Type::ZERO_SIZE);
 
     // check column vector
-    if (!internal::_check_col_vector(rV))
+    if (!internal::_check_cvector(rV))
         throw Exception("qpp::prj()", Exception::Type::MATRIX_NOT_CVECTOR);
 
     double normV = norm(rV);
@@ -1178,7 +1178,7 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
             throw Exception("qpp::grams()", Exception::Type::ZERO_SIZE);
 
     // check that Vs[0] is a column vector
-    if (!internal::_check_col_vector(Vs[0]))
+    if (!internal::_check_cvector(Vs[0]))
         throw Exception("qpp::grams()", Exception::Type::MATRIX_NOT_CVECTOR);
 
     // now check that all the rest match the size of the first vector
@@ -1480,7 +1480,7 @@ cmat mprj(const std::vector<idx>& mask, idx d = 2)
 }
 
 /**
-* \brief Computes the absolut values squared of a range of complex numbers
+* \brief Computes the absolute values squared of a range of complex numbers
 
 * \param first Iterator to the first element of the range
 * \param last  Iterator to the last element of the range
@@ -1491,16 +1491,16 @@ std::vector<double> abssq(InputIterator first, InputIterator last)
 {
     std::vector<double> weights(std::distance(first, last));
     std::transform(first, last, std::begin(weights),
-            [](const cplx& z) -> double
+            [](cplx z) -> double
             {
-                return std::pow(std::abs(z), 2);
+                return std::norm(z);
             });
 
     return weights;
 }
 
 /**
-* \brief Computes the absolut values squared of a column vector
+* \brief Computes the absolute values squared of a column vector
 
 * \param V Eigen expression
 * \return Real vector consisting of the absolut values squared
@@ -1515,14 +1515,14 @@ std::vector<double> abssq(const Eigen::MatrixBase<Derived>& V)
         throw Exception("qpp::abssq()", Exception::Type::ZERO_SIZE);
 
     // check column vector
-    if (!internal::_check_col_vector(rV))
+    if (!internal::_check_cvector(rV))
         throw Exception("qpp::abssq()", Exception::Type::MATRIX_NOT_CVECTOR);
 
     return abssq(rV.data(), rV.data() + rV.rows());
 }
 
 /**
-* \brief Element-wise sum of a range
+* \brief Element-wise sum of an STL-like range
 *
 * \param first Iterator to the first element of the range
 * \param last  Iterator to the last element of the range
@@ -1540,7 +1540,24 @@ sum(InputIterator first, InputIterator last)
 }
 
 /**
-* \brief Element-wise product of a range
+* \brief Element-wise sum of the elements of an STL-like container
+*
+* \param c STL-like container
+* \return Element-wise sum of the elements of the container,
+* as a scalar in the same scalar field as the container
+*/
+template<typename Container>
+typename Container::value_type
+sum(const Container& c)
+{
+    using value_type = typename Container::value_type;
+
+    return std::accumulate(std::begin(c), std::end(c),
+            static_cast<value_type>(0));
+}
+
+/**
+* \brief Element-wise product of an STL-like range
 *
 * \param first Iterator to the first element of the range
 * \param last  Iterator to the last element of the range
@@ -1556,6 +1573,24 @@ prod(InputIterator first, InputIterator last)
 
     return std::accumulate(first, last, static_cast<value_type>(1),
             std::multiplies<value_type>());
+}
+
+
+/**
+* \brief Element-wise product of the elements of an STL-like container
+*
+* \param c STL-like container
+* \return Element-wise product of the elements of the container,
+* as a scalar in the same scalar field as the container
+*/
+template<typename Container>
+typename Container::value_type
+prod(const Container& c)
+{
+    using value_type = typename Container::value_type;
+
+    return std::accumulate(std::begin(c), std::end(c),
+            static_cast<value_type>(1), std::multiplies<value_type>());
 }
 
 /**

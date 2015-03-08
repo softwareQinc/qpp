@@ -4,18 +4,27 @@ Version 0.1 - 21 December 2014
 Version 0.2 - 26 January 2015
     - Minor fixes
     - Added prime-number related functions in number_theory.h:
-            qpp::factors() - prime factors of positive integer
-            qpp::isprime() - primality test
+        qpp::factors() - prime factors of positive integer
+        qpp::isprime() - primality test
 
 Version 0.3 - 15 February 2015
     - Added qpp::internal::Singleton<T>::get_thread_local_instance()
 
 Version 0.3.1 - development
     - Added noexcept specification where suitable
+    - Added the following exception types to the qpp::Exception::Type strong
+        enum: NOT_QUBIT_MATRIX (replaces previous NOT_QUBIT_GATE),
+        NOT_QUBIT_CVECTOR, NOT_QUBIT_RVECTOR and NOT_QUBIT_VECTOR
     - Added overloads of qpp::ptrace1(), qpp::ptrace2(), qpp::ptrace() and
-      qpp::ptranspose() that allow a pure state input, as it was the case
-      before with qpp::syspermute().
+        qpp::ptranspose() that allow a pure state input, as it was the case
+        before with qpp::syspermute().
+    - Added overloads of qpp::prod() and qpp::sum() for STL-like containers
     - Added new function in functions.h:
-            qpp::complement() - computes the complement of a subsystem vector
+        qpp::complement() - computes the complement of a subsystem vector
     - Added new function in experimental/test.h:
-            qpp::experimental::measure_seq() - measures subsystems sequentially
+        qpp::experimental::measure_seq() - measures subsystems sequentially
+        qpp::experimental::rho2bloch() - qubit density matrix to Bloch vector
+        qpp::experimental::rho2bloch - Bloch vector to qubit density matrix
+    - Removed support for the C-style random number engine, as it is not thread
+        safe. Hence, Eigen::Matrix::Random() should not be used, use instead
+        qpp::rand() functions.

@@ -94,10 +94,11 @@ public:
     * \param n 3-dimensional real unit vector
     * \return Rotation gate
     */
-    cmat Rn(double theta, std::vector<double> n) const
+    cmat Rn(double theta, const std::vector<double>& n) const
     {
-        if (n.size() != 3) // not a 3-D vector
-            throw Exception("qpp::Gates::Rn()", "n is not a 3-D vector!");
+        // check 3-dimensional vector
+        if (n.size() != 3)
+            throw Exception("qpp::Gates::Rn()", "n is not a 3-dimensional vector!");
 
         cmat result(2, 2);
         result = std::cos(theta / 2) * Id2

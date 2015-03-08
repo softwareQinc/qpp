@@ -127,7 +127,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Singeleton class that manages the source of randomness in the library. </p>
-<p>Consists of a wrapper around an std::mt19937 Mersenne twister random number generator engine and an std::random_device engine. The latter is used to seed the Mersenne twister. This class also seeds the standard C number generator, as it is used by Eigen. </p>
+<p>Consists of a wrapper around an std::mt19937 Mersenne twister random number generator engine and an std::random_device engine. The latter is used to seed the Mersenne twister.</p>
+<dl class="section warning"><dt>Warning</dt><dd>This class DOES NOT seed the standard C number generator used by Eigen::Matrix::Random(), since it is not thread safe. Do not use Eigen::Matrix::Random() or functions that depend on the C style random number engine, but use <a class="el" href="namespaceqpp.html#a98a75700e99974758b39948e65536407" title="Generates a random real number uniformly distributed in the interval [a, b) ">qpp::rand()</a> instead! </dd></dl>
 </div><h2 class="groupheader">Friends And Related Function Documentation</h2>
 <a class="anchor" id="ac542b78a6c61e337cc6e6f9e514feb75"></a>
 <div class="memitem">
@@ -173,7 +174,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_random_devices.html">RandomDevices</a></li>
-    <li class="footer">Generated on Sat Mar 7 2015 15:46:18 for Quantum++ by
+    <li class="footer">Generated on Sat Mar 7 2015 22:55:35 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

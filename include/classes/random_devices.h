@@ -36,8 +36,12 @@ namespace qpp
 *
 * Consists of a wrapper around an std::mt19937 Mersenne twister
 * random number generator engine and an std::random_device engine. The latter
-* is used to seed the Mersenne twister. This class also seeds the standard
-* C number generator, as it is used by Eigen.
+* is used to seed the Mersenne twister.
+*
+* \warning This class DOES NOT seed the standard C number generator used by
+* Eigen::Matrix::Random(), since it is not thread safe. Do not use
+* Eigen::Matrix::Random() or functions that depend on the C style random
+* number engine, but use qpp::rand() instead!
 */
 class RandomDevices : public internal::Singleton<RandomDevices> // Singleton
 {
@@ -50,10 +54,8 @@ private:
     /**
     * \brief Initializes and seeds the random number generators
     */
-    RandomDevices() :
-            _rd{}, _rng{_rd()}
+    RandomDevices() : _rd{}, _rng{_rd()}
     {
-        std::srand(_rng());
     }
 }; /* class RandomDevices */
 

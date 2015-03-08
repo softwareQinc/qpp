@@ -279,7 +279,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     };
 
     //************ ket ************//
-    if (internal::_check_col_vector(rstate)) // we have a ket
+    if (internal::_check_cvector(rstate)) // we have a ket
     {
         // check that dims match state vector
         if (!internal::_check_dims_match_cvect(dims, rstate))
@@ -454,7 +454,7 @@ dyn_mat<typename Derived1::Scalar> apply(
                 Exception::Type::MATRIX_MISMATCH_SUBSYS);
 
     //************ ket ************//
-    if (internal::_check_col_vector(rstate)) // we have a ket
+    if (internal::_check_cvector(rstate)) // we have a ket
     {
         // check that dims match state vector
         if (!internal::_check_dims_match_cvect(dims, rstate))
@@ -916,7 +916,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
             dyn_mat<typename Derived::Scalar>::Zero(DB, DB);
 
     //************ ket ************//
-    if (internal::_check_col_vector(rA)) // we have a ket
+    if (internal::_check_cvector(rA)) // we have a ket
     {
         // check that dims match the dimension of A
         if (!internal::_check_dims_match_cvect(dims, rA))
@@ -1010,7 +1010,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
             dyn_mat<typename Derived::Scalar>::Zero(DA, DA);
 
     //************ ket ************//
-    if (internal::_check_col_vector(rA)) // we have a ket
+    if (internal::_check_cvector(rA)) // we have a ket
     {
         // check that dims match the dimension of A
         if (!internal::_check_dims_match_cvect(dims, rA))
@@ -1129,7 +1129,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             dyn_mat<typename Derived::Scalar>(dimsubsysbar, dimsubsysbar);
 
     //************ ket ************//
-    if (internal::_check_col_vector(rA)) // we have a ket
+    if (internal::_check_cvector(rA)) // we have a ket
     {
         // check that dims match the dimension of A
         if (!internal::_check_dims_match_cvect(dims, rA))
@@ -1354,7 +1354,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
     dyn_mat<typename Derived::Scalar> result(D, D);
 
     //************ ket ************//
-    if (internal::_check_col_vector(rA)) // we have a ket
+    if (internal::_check_cvector(rA)) // we have a ket
     {
         // check that dims match the dimension of A
         if (!internal::_check_dims_match_cvect(dims, rA))
@@ -1528,7 +1528,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
     dyn_mat<typename Derived::Scalar> result;
 
     //************ ket ************//
-    if (internal::_check_col_vector(rA)) // we have a column vector
+    if (internal::_check_cvector(rA)) // we have a column vector
     {
         idx Cdims[maxn];
         idx Cperm[maxn];

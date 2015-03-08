@@ -123,15 +123,19 @@ Public Types</h2></td></tr>
 &#160;&#160;<a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2">Type::SUBSYS_MISMATCH_DIMS</a>, 
 <a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca97c98bf66b3a4ad201dceb1f5ef5417f">Type::PERM_INVALID</a>, 
 <a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6f5a157d66050b57e1fdf39e78ca5680">Type::PERM_MISMATCH_DIMS</a>, 
-<a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca59cd9d366a63cb07bc3fa90ef8760dda">Type::NOT_QUBIT_GATE</a>, 
+<a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cac1925a2bcbd4d90fb390389214bdc0a3">Type::NOT_QUBIT_MATRIX</a>, 
 <br />
-&#160;&#160;<a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca51e12e991aab139c75ad2b329af05b14">Type::NOT_QUBIT_SUBSYS</a>, 
-<a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca93a1b69163069e595edb06c2af7183dd">Type::NOT_BIPARTITE</a>, 
+&#160;&#160;<a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cae4f75323cc566d705c4a4b024a877752">Type::NOT_QUBIT_CVECTOR</a>, 
+<a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cac719df7c7b74ca351cd46961319b779f">Type::NOT_QUBIT_RVECTOR</a>, 
+<a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cab6243b2d62522da950d9d287ed650b34">Type::NOT_QUBIT_VECTOR</a>, 
+<a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca51e12e991aab139c75ad2b329af05b14">Type::NOT_QUBIT_SUBSYS</a>, 
+<br />
+&#160;&#160;<a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca93a1b69163069e595edb06c2af7183dd">Type::NOT_BIPARTITE</a>, 
 <a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca765d62c3ecb450227a1985539db58050">Type::NO_CODEWORD</a>, 
 <a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Type::OUT_OF_RANGE</a>, 
+<a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca2f93918ef99e03b7b8e7230b2a28fb52">Type::TYPE_MISMATCH</a>, 
 <br />
-&#160;&#160;<a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca2f93918ef99e03b7b8e7230b2a28fb52">Type::TYPE_MISMATCH</a>, 
-<a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530">Type::UNDEFINED_TYPE</a>, 
+&#160;&#160;<a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530">Type::UNDEFINED_TYPE</a>, 
 <a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cae0cff7ecbef91c65bce0458b4aaa3d85">Type::CUSTOM_EXCEPTION</a>
 <br />
  }</td></tr>
@@ -232,8 +236,17 @@ Public Member Functions</h2></td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a91985c96dc408d3538b8f88cf1eaae7ca6f5a157d66050b57e1fdf39e78ca5680"></a>PERM_MISMATCH_DIMS&#160;</td><td class="fielddoc">
 <p>Size of the std::vector&lt;idx&gt; representing the permutation is different from the size of the std::vector&lt;idx&gt; of dimensions </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a91985c96dc408d3538b8f88cf1eaae7ca59cd9d366a63cb07bc3fa90ef8760dda"></a>NOT_QUBIT_GATE&#160;</td><td class="fielddoc">
+<tr><td class="fieldname"><a class="anchor" id="a91985c96dc408d3538b8f88cf1eaae7cac1925a2bcbd4d90fb390389214bdc0a3"></a>NOT_QUBIT_MATRIX&#160;</td><td class="fielddoc">
 <p>Eigen::Matrix is not 2 x 2 </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a91985c96dc408d3538b8f88cf1eaae7cae4f75323cc566d705c4a4b024a877752"></a>NOT_QUBIT_CVECTOR&#160;</td><td class="fielddoc">
+<p>Eigen::Matrix is not 2 x 1 </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a91985c96dc408d3538b8f88cf1eaae7cac719df7c7b74ca351cd46961319b779f"></a>NOT_QUBIT_RVECTOR&#160;</td><td class="fielddoc">
+<p>Eigen::Matrix is not 1 x 2 </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a91985c96dc408d3538b8f88cf1eaae7cab6243b2d62522da950d9d287ed650b34"></a>NOT_QUBIT_VECTOR&#160;</td><td class="fielddoc">
+<p>Eigen::Matrix is not 1 x 2 nor 2 x 1 </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a91985c96dc408d3538b8f88cf1eaae7ca51e12e991aab139c75ad2b329af05b14"></a>NOT_QUBIT_SUBSYS&#160;</td><td class="fielddoc">
 <p>Subsystems are not 2-dimensional </p>
@@ -384,7 +397,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_exception.html">Exception</a></li>
-    <li class="footer">Generated on Sat Mar 7 2015 15:46:18 for Quantum++ by
+    <li class="footer">Generated on Sat Mar 7 2015 22:55:35 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

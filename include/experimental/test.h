@@ -36,7 +36,6 @@ namespace qpp
 namespace experimental
 {
 
-// sequential partial measurements
 /**
 * \brief Sequentially measures the part \a subsys
 * of the multi-partite state vector or density matrix \a A
@@ -88,7 +87,7 @@ measure_seq(
     std::sort(std::begin(subsys), std::end(subsys), std::greater<idx>{});
 
     //************ density matrix or column vector ************//
-    if (internal::_check_square_mat(cA) || internal::_check_col_vector(cA))
+    if (internal::_check_square_mat(cA) || internal::_check_cvector(cA))
     {
         while (subsys.size() > 0)
         {
@@ -110,7 +109,6 @@ measure_seq(
     return std::make_tuple(result, prob, cA);
 }
 
-// sequential partial measurements
 /**
 * \brief Sequentially measures the part \a subsys
 * of the multi-partite state vector or density matrix \a A
@@ -141,6 +139,47 @@ measure_seq(
     std::vector<idx> dims(n, d); // local dimensions vector
 
     return measure_seq(rA, subsys, dims);
+}
+
+/**
+* \brief Computes the Bloch vector of the qubit density matrix \a A
+*
+* \note It is implicitly assumed that the density matrix is Hermitian
+*
+* \param A Eigen expression
+* \return 3-dimensional Bloch vector
+*/
+template<typename Derived>
+std::vector<double> rho2bloch(
+        const Eigen::MatrixBase<Derived>& A)
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A;
+
+    // check qubit matrix
+    if (!internal::_check_qubit_matrix(rA))
+        throw Exception("qpp::rho2bloch()", Exception::Type::NOT_QUBIT_MATRIX);
+
+    std::vector<double> result(3);
+    result[0] = std::real(trace(rA * Gates::get_instance().X));
+    result[1] = std::real(trace(rA * Gates::get_instance().Y));
+    result[2] = std::real(trace(rA * Gates::get_instance().Z));
+
+    return result;
+}
+
+/**
+* \brief Computes the density matrix from 3-dimensional real Bloch vector \a r
+*
+* \param r 3-dimensional real vector
+* \return Density matrix corresponding to the Bloch vector \a r
+*/
+cmat bloch2rho(const std::vector<double>& r)
+{
+    // check 3-dimensional vector
+    if (r.size() != 3)
+        throw Exception("qpp::bloch2rho", "r is not a 3-dimensional vector!");
+
+    return (gt.Id2 + r[0] * gt.X + r[1] * gt.Y + r[2] * gt.Z) / 2.;
 }
 
 } /* namespace experimental */

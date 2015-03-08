@@ -1,6 +1,6 @@
 var util_8h =
 [
-    [ "_check_col_vector", "util_8h.html#add886736621946a87cbc404ad955a605", null ],
+    [ "_check_cvector", "util_8h.html#a88116de0ca257a3117ca43623a1d7272", null ],
     [ "_check_dims", "util_8h.html#a0a4a25bc623c39d21898fd6c4e3177ca", null ],
     [ "_check_dims_match_cvect", "util_8h.html#ac65903c07823d69fb7a75e2b215ed0a7", null ],
     [ "_check_dims_match_mat", "util_8h.html#a91aa370280d653933744a64a55cd0ff3", null ],
@@ -8,7 +8,11 @@ var util_8h =
     [ "_check_eq_dims", "util_8h.html#a9e6a986c8253d69ffd7b78bdcc96fbfc", null ],
     [ "_check_nonzero_size", "util_8h.html#a06ca054b0436fb4b9b445574dec47f82", null ],
     [ "_check_perm", "util_8h.html#a5c90e71ef74abcb25b5943025ee003c1", null ],
-    [ "_check_row_vector", "util_8h.html#ab2181932161b010bf7e7ede26f83d050", null ],
+    [ "_check_qubit_cvector", "util_8h.html#ae3fd4f3961c2f3df7eb089355cd18c94", null ],
+    [ "_check_qubit_matrix", "util_8h.html#a988f3f5031ea85fd690a18923fa92e2a", null ],
+    [ "_check_qubit_rvector", "util_8h.html#a55b68b469c7eb8c8bf9801cdc536f6f0", null ],
+    [ "_check_qubit_vector", "util_8h.html#aa82d0423e1e8329b95d29c46701ec430", null ],
+    [ "_check_rvector", "util_8h.html#a3ad75adeee335fef3b225a7859043022", null ],
     [ "_check_square_mat", "util_8h.html#ace7cfa182baf987f8a3374bd700b4276", null ],
     [ "_check_subsys_match_dims", "util_8h.html#a40b09454ce4959a4fd231e67518d6abe", null ],
     [ "_check_vector", "util_8h.html#ad27f82cc41710292417948f5f4b91999", null ],

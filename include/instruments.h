@@ -82,7 +82,7 @@ std::tuple<idx, std::vector<double>, std::vector<cmat>> measure(
         }
     }
         //************ ket ************//
-    else if (internal::_check_col_vector(rA)) // column vector
+    else if (internal::_check_cvector(rA)) // column vector
     {
         for (idx i = 0; i < Ks.size(); ++i)
         {
@@ -259,7 +259,7 @@ measure(
         }
     }
         //************ ket ************//
-    else if (internal::_check_col_vector(rA)) // column vector
+    else if (internal::_check_cvector(rA)) // column vector
     {
         for (idx i = 0; i < Ks.size(); ++i)
         {

@@ -54,7 +54,7 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
     if (dims.size() != 2)
         throw Exception("qpp::schmidtcoeffs()", Exception::Type::NOT_BIPARTITE);
     // check column vector
-    if (!internal::_check_col_vector(rA))
+    if (!internal::_check_cvector(rA))
         throw Exception("qpp::schmidtcoeffs()",
                 Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
@@ -85,7 +85,7 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
     if (dims.size() != 2)
         throw Exception("qpp::schmidtU()", Exception::Type::NOT_BIPARTITE);
     // check column vector
-    if (!internal::_check_col_vector(rA))
+    if (!internal::_check_cvector(rA))
         throw Exception("qpp::schmidtU()",
                 Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
@@ -116,7 +116,7 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
     if (dims.size() != 2)
         throw Exception("qpp::schmidtV()", Exception::Type::NOT_BIPARTITE);
     // check column vector
-    if (!internal::_check_col_vector(rA))
+    if (!internal::_check_cvector(rA))
         throw Exception("qpp::schmidtV()",
                 Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
@@ -152,7 +152,7 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
     if (dims.size() != 2)
         throw Exception("qpp::schmidtprobs()", Exception::Type::NOT_BIPARTITE);
     // check column vector
-    if (!internal::_check_col_vector(rA))
+    if (!internal::_check_cvector(rA))
         throw Exception("qpp::schmidtprobs()",
                 Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
@@ -191,7 +191,7 @@ double entanglement(const Eigen::MatrixBase<Derived>& A,
     if (dims.size() != 2)
         throw Exception("qpp::entanglement()", Exception::Type::NOT_BIPARTITE);
     // check column vector
-    if (!internal::_check_col_vector(rA))
+    if (!internal::_check_cvector(rA))
         throw Exception("qpp::entanglement()",
                 Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
@@ -223,7 +223,7 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::gconcurrence()", Exception::Type::ZERO_SIZE);
     // check column vector
-    if (!internal::_check_col_vector(rA))
+    if (!internal::_check_cvector(rA))
         throw Exception("qpp::gconcurrence()",
                 Exception::Type::MATRIX_NOT_CVECTOR);
 

@@ -98,7 +98,7 @@ bool _check_vector(const Eigen::MatrixBase<Derived>& A)
 
 // check whether input is a row vector or not
 template<typename Derived>
-bool _check_row_vector(const Eigen::MatrixBase<Derived>& A)
+bool _check_rvector(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -107,7 +107,7 @@ bool _check_row_vector(const Eigen::MatrixBase<Derived>& A)
 
 // check whether input is a column vector or not
 template<typename Derived>
-bool _check_col_vector(const Eigen::MatrixBase<Derived>& A)
+bool _check_cvector(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -213,6 +213,44 @@ bool _check_subsys_match_dims(const std::vector<idx>& subsys,
                 return i > dims.size() - 1;
             }) == std::end(subsyssort);
 }
+
+// check matrix is 2 x 2
+template<typename Derived>
+bool _check_qubit_matrix(const Eigen::MatrixBase<Derived>& A) noexcept
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A;
+
+    return rA.rows() == 2 && rA.cols() == 2;
+}
+
+// check column vector is 2 x 1
+template<typename Derived>
+bool _check_qubit_cvector(const Eigen::MatrixBase<Derived>& V) noexcept
+{
+    const dyn_mat<typename Derived::Scalar>& rV = V;
+
+    return rV.rows() == 2 && rV.cols() == 1;
+}
+
+// check row vector is 1 x 2
+template<typename Derived>
+bool _check_qubit_rvector(const Eigen::MatrixBase<Derived>& V) noexcept
+{
+    const dyn_mat<typename Derived::Scalar>& rV = V;
+
+    return rV.rows() == 1 && rV.cols() == 2;
+}
+
+// check row vector is 1 x 2 or 2 x 1
+template<typename Derived>
+bool _check_qubit_vector(const Eigen::MatrixBase<Derived>& V) noexcept
+{
+    const dyn_mat<typename Derived::Scalar>& rV = V;
+
+    return (rV.rows() == 1 && rV.cols() == 2) ||
+            (rV.rows() == 2 && rV.cols() == 1);
+}
+
 
 // check valid permutation
 bool _check_perm(const std::vector<idx>& perm)
