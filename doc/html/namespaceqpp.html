@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Quantum++
-   &#160;<span id="projectnumber">v0.1</span>
+   &#160;<span id="projectnumber">v0.4</span>
    </div>
    <div id="projectbrief">C++11 quantum computing library</div>
   </td>
@@ -3867,7 +3867,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Tuple of: 1. Vector of outcome results of the measurement, 2. Outcome probability, and 3. Post-measurement normalized state </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Tuple of: 1. Vector of outcome results of the measurement (ordered in increasing order with respect to <em>subsys</em>, i.e. first measurement result corresponds to the subsystem with the smallest index), 2. Outcome probability, and 3. Post-measurement normalized state </dd></dl>
 
 </div>
 </div>
@@ -3913,7 +3913,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Tuple of: 1. Vector of measurement outcomes, 2. Outcome probability, and 3. Post-measurement normalized state </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Tuple of: 1. Vector of outcome results of the measurement (ordered in increasing order with respect to <em>subsys</em>, i.e. first measurement result corresponds to the subsystem with the smallest index), 2. Outcome probability, and 3. Post-measurement normalized state </dd></dl>
 
 </div>
 </div>
@@ -6803,7 +6803,7 @@ template&lt;typename Derived &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Sun Mar 8 2015 05:14:27 for Quantum++ by
+    <li class="footer">Generated on Sun Mar 8 2015 14:05:00 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -507,7 +507,9 @@ measure(
 * \param subsys Subsystem indexes that are measured
 * \param dims Dimensions of the multi-partite system
 * \return Tuple of: 1. Vector of outcome results of the
-* measurement, 2. Outcome probability, and 3. Post-measurement normalized state
+* measurement (ordered in increasing order with respect to \a subsys, i.e. first
+* measurement result corresponds to the subsystem with the smallest index), 2.
+* Outcome probability, and 3. Post-measurement normalized state
 */
 template<typename Derived>
 std::tuple<std::vector<idx>, double, cmat>
@@ -562,6 +564,8 @@ measure_seq(
             dims.erase(std::next(dims.begin(), subsys[0]));
             subsys.erase(subsys.begin());
         }
+        // order result in increasing order with respect to subsys
+        std::reverse(std::begin(result), std::end(result));
     }
     else
         throw Exception("qpp::measure_seq()",
@@ -579,7 +583,9 @@ measure_seq(
 * \param A Eigen expression
 * \param subsys Subsystem indexes that are measured
 * \param d Subsystem dimensions
-* \return Tuple of: 1. Vector of measurement outcomes, 2.
+* \return Tuple of: 1. Vector of outcome results of the
+* measurement (ordered in increasing order with respect to \a subsys, i.e. first
+* measurement result corresponds to the subsystem with the smallest index), 2.
 * Outcome probability, and 3. Post-measurement normalized state
 */
 template<typename Derived>
