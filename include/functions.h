@@ -1664,6 +1664,61 @@ std::vector<T> complement(std::vector<T> subsys, idx N)
     return subsys_bar;
 }
 
+/**
+* \brief Computes the 3-dimensional real Bloch vector
+* corresponding to the qubit density matrix \a A
+* \see qpp::bloch2rho()
+*
+* \note It is implicitly assumed that the density matrix is Hermitian
+*
+* \param A Eigen expression
+* \return 3-dimensional Bloch vector
+*/
+template<typename Derived>
+std::vector<double> rho2bloch(
+        const Eigen::MatrixBase<Derived>& A)
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A;
+
+    // check qubit matrix
+    if (!internal::_check_qubit_matrix(rA))
+        throw Exception("qpp::rho2bloch()", Exception::Type::NOT_QUBIT_MATRIX);
+
+    std::vector<double> result(3);
+    cmat X(2, 2), Y(2, 2), Z(2, 2);
+    X << 0, 1, 1, 0;
+    Y << 0, -1_i, 1_i, 0;
+    Z << 1, 0, 0, -1;
+    result[0] = std::real(trace(rA * X));
+    result[1] = std::real(trace(rA * Y));
+    result[2] = std::real(trace(rA * Z));
+
+    return result;
+}
+
+/**
+* \brief Computes the density matrix corresponding to
+* the 3-dimensional real Bloch vector \a r
+* \see qpp::rho2bloch()
+*
+* \param r 3-dimensional real vector
+* \return Qubit density matrix
+*/
+cmat bloch2rho(const std::vector<double>& r)
+{
+    // check 3-dimensional vector
+    if (r.size() != 3)
+        throw Exception("qpp::bloch2rho", "r is not a 3-dimensional vector!");
+
+    cmat X(2, 2), Y(2, 2), Z(2, 2), Id2(2, 2);
+    X << 0, 1, 1, 0;
+    Y << 0, -1_i, 1_i, 0;
+    Z << 1, 0, 0, -1;
+    Id2 << 1, 0, 0, 1;
+
+    return (Id2 + r[0] * X + r[1] * Y + r[2] * Z) / 2.;
+}
+
 } /* namespace qpp */
 
 #endif /* FUNCTIONS_H_ */

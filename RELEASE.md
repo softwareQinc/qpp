@@ -1,4 +1,4 @@
-### Quantum++ v0.3
+### Quantum++ v0.4
 
 Bugs may still be lingering around. I welcome any comments or bug reports.
 
