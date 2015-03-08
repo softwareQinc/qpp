@@ -142,7 +142,9 @@ measure_seq(
 }
 
 /**
-* \brief Computes the Bloch vector of the qubit density matrix \a A
+* \brief Computes the 3-dimensional real Bloch vector
+* corresponding to the qubit density matrix \a A
+* \see qpp::bloch2rho()
 *
 * \note It is implicitly assumed that the density matrix is Hermitian
 *
@@ -168,10 +170,12 @@ std::vector<double> rho2bloch(
 }
 
 /**
-* \brief Computes the density matrix from 3-dimensional real Bloch vector \a r
+* \brief Computes the density matrix corresponding to
+* the 3-dimensional real Bloch vector \a r
+* \see qpp::rho2bloch()
 *
 * \param r 3-dimensional real vector
-* \return Density matrix corresponding to the Bloch vector \a r
+* \return Qubit density matrix
 */
 cmat bloch2rho(const std::vector<double>& r)
 {
