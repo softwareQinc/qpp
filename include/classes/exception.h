@@ -95,8 +95,14 @@ public:
                 PERM_MISMATCH_DIMS,
         /*!< Size of the std::vector<idx> representing the permutation
          * is different from the size of the std::vector<idx> of dimensions */
-                NOT_QUBIT_GATE,
-        /*!<  Eigen::Matrix is not 2 x 2 */
+                NOT_QUBIT_MATRIX,
+        /*!<  Eigen::Matrix is not 2 x 2*/
+                NOT_QUBIT_CVECTOR,
+        /*!<  Eigen::Matrix is not 2 x 1*/
+                NOT_QUBIT_RVECTOR,
+        /*!<  Eigen::Matrix is not 1 x 2*/
+                NOT_QUBIT_VECTOR,
+        /*!<  Eigen::Matrix is not 1 x 2 nor 2 x 1*/
                 NOT_QUBIT_SUBSYS,
         /*!< Subsystems are not 2-dimensional */
                 NOT_BIPARTITE,
@@ -121,7 +127,7 @@ public:
     * \param type Exception type, defined in qpp::Exception::Type
     */
     Exception(const std::string& where, const Type& type) :
-            _where(where), _msg(), _type(type), _custom()
+            _where{where}, _msg{}, _type{type}, _custom{}
     {
         _construct_exception_msg();
     }
@@ -135,8 +141,8 @@ public:
     * \param custom Exception description
     */
     Exception(const std::string& where, const std::string& custom) :
-            _where(where), _msg(), _type(Type::CUSTOM_EXCEPTION), _custom(
-            custom)
+            _where{where}, _msg{}, _type{Type::CUSTOM_EXCEPTION},
+            _custom{custom}
     {
         _construct_exception_msg();
         _msg += custom; // add the custom message at the end
@@ -228,8 +234,17 @@ private:
             case Type::PERM_MISMATCH_DIMS:
                 _msg += "Permutation mismatch dimensions!";
                 break;
-            case Type::NOT_QUBIT_GATE:
-                _msg += "Matrix is not qubit gate!";
+            case Type::NOT_QUBIT_MATRIX:
+                _msg += "Matrix is not 2 x 2!";
+                break;
+            case Type::NOT_QUBIT_CVECTOR:
+                _msg += "Column vector is not 2 x 1!";
+                break;
+            case Type::NOT_QUBIT_RVECTOR:
+                _msg += "Row vector is not 1 x 2!";
+                break;
+            case Type::NOT_QUBIT_VECTOR:
+                _msg += "Vector is not 2 x 1 nor 1 x 2!";
                 break;
             case Type::NOT_QUBIT_SUBSYS:
                 _msg += "Subsystems are not qubits!";

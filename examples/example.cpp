@@ -20,8 +20,8 @@
  */
 
 #include <qpp.h>
-
 // #include <MATLAB/matlab.h> // support for MATLAB
+// #include <experimental/test.h> // support for testing features
 
 using namespace qpp;
 
@@ -94,8 +94,36 @@ void MEASUREMENTS()
     rho_out_bar = ptrace(apply(rho, randkraus(3, 4), {1, 3}), {1, 3});
 
     // verification
-    cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar)
-            << endl << endl;
+    cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar) << endl;
+
+    cout << ">> Sequential measurements on the state/density matrix:" << endl;
+    psi = 0.8 * mket({0, 1}) + 0.6 * mket({1, 0});
+    rho = psi * adjoint(psi);
+    cout << disp(psi) << endl;
+
+    std::vector<idx> subsys_ket{0};
+    std::vector<idx> subsys_rho{1};
+
+    auto meas_ket = measure_seq(psi, subsys_ket);
+    auto meas_rho = measure_seq(rho, subsys_rho);
+
+    // ket
+    cout << ">> Ket, measuring subsystem(s) ";
+    cout << disp(subsys_ket, " ") << endl;
+    cout << ">> Outcome(s): " << disp(std::get<0>(meas_ket), " ") <<
+            endl;
+    cout << ">> Probability:  " << std::get<1>(meas_ket) << endl;
+    cout << ">> Resulting state:  " << endl;
+    cout << disp(std::get<2>(meas_ket)) << endl;
+
+    // density matrix
+    cout << ">> Density matrix, measuring subsystem(s) ";
+    cout << disp(subsys_rho, " ") << endl;
+    cout << ">> Outcome(s): " << disp(std::get<0>(meas_rho), " ") <<
+            endl;
+    cout << ">> Probability:  " << std::get<1>(meas_rho) << endl;
+    cout << ">> Resulting state:  " << endl;
+    cout << disp(std::get<2>(meas_rho)) << endl << endl;
 }
 
 void TELEPORTATION()

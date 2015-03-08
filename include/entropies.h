@@ -295,30 +295,20 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
     std::vector<idx> subsysAsorted{subsysA};
     std::vector<idx> subsysBsorted{subsysB};
 
-    // sort the input subsystems (as needed by std::set_difference)
+    // sort the input subsystems (as needed by std::set_union)
     std::sort(std::begin(subsysAsorted), std::end(subsysAsorted));
     std::sort(std::begin(subsysBsorted), std::end(subsysBsorted));
 
-    // construct the complement of subsys
-    std::vector<idx> subsysAbar;
-    std::vector<idx> subsysBbar;
-    std::vector<idx> subsysABbar;
+    // construct the union of A and B
     std::vector<idx> subsysAB;
-
-    std::set_difference(std::begin(full_system), std::end(full_system),
-            std::begin(subsysAsorted), std::end(subsysAsorted),
-            std::back_inserter(subsysAbar));
-    std::set_difference(std::begin(full_system), std::end(full_system),
-            std::begin(subsysBsorted), std::end(subsysBsorted),
-            std::back_inserter(subsysBbar));
     std::set_union(std::begin(subsysAsorted), std::end(subsysAsorted),
             std::begin(subsysBsorted), std::end(subsysBsorted),
             std::back_inserter(subsysAB));
-    std::sort(std::begin(subsysAB), std::end(subsysAB));
 
-    std::set_difference(std::begin(full_system), std::end(full_system),
-            std::begin(subsysAB), std::end(subsysAB),
-            std::back_inserter(subsysABbar));
+    // construct the complements
+    std::vector<idx> subsysAbar = complement(subsysA, dims.size());
+    std::vector<idx> subsysBbar = complement(subsysB, dims.size());;
+    std::vector<idx> subsysABbar = complement(subsysAB, dims.size());
 
     cmat rhoA = ptrace(rA, subsysAbar, dims);
     cmat rhoB = ptrace(rA, subsysBbar, dims);

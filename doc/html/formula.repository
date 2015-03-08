@@ -21,30 +21,30 @@
 \form#20:$A^0 = I$
 \form#21:$A^z$
 \form#22:$A^n$
-\form#23:$A^{\otimes n}$
-\form#24:$A^{\oplus n}$
-\form#25:$ [A,B] = AB - BA $
-\form#26:$AB -BA$
-\form#27:$ \{A,B\} = AB + BA $
-\form#28:$AB +BA$
-\form#29:$|\mathrm{mask}\rangle$
-\form#30:$\circ$
-\form#31:$\{|i\rangle\langle j|\}$
-\form#32:$|0\rangle\langle 0|$
-\form#33:$|0\rangle\langle 1|$
-\form#34:$S$
-\form#35:$ C$
-\form#36:$ S_{ab,mn} = C_{ma,nb}$
-\form#37:$Tr(K_i^\dagger K_j)=\delta_{ij}$
-\form#38:$i\neq j$
-\form#39:$Tr_{A}(\cdot)$
-\form#40:$A$
-\form#41:$A\otimes B$
-\form#42:$Tr_{B}(\cdot)$
-\form#43:$B$
-\form#44:$Tr_{subsys}(\cdot)$
-\form#45:$(\cdot)^{T_{subsys}}$
-\form#46:$ \sum_i K_i^\dagger K_i = I$
-\form#47:$p = \infty$
-\form#48:$\mathcal(O)(\sqrt(n))$
-\form#49:$\mathcal{O}(\sqrt{n})$
+\form#23:$p = \infty$
+\form#24:$A^{\otimes n}$
+\form#25:$A^{\oplus n}$
+\form#26:$ [A,B] = AB - BA $
+\form#27:$AB -BA$
+\form#28:$ \{A,B\} = AB + BA $
+\form#29:$AB +BA$
+\form#30:$|\mathrm{mask}\rangle$
+\form#31:$\{0, 1, \ldots, N - 1\}$
+\form#32:$\circ$
+\form#33:$\mathcal{O}(\sqrt{n})$
+\form#34:$\{|i\rangle\langle j|\}$
+\form#35:$|0\rangle\langle 0|$
+\form#36:$|0\rangle\langle 1|$
+\form#37:$S$
+\form#38:$ C$
+\form#39:$ S_{ab,mn} = C_{ma,nb}$
+\form#40:$Tr(K_i^\dagger K_j)=\delta_{ij}$
+\form#41:$i\neq j$
+\form#42:$Tr_{A}(\cdot)$
+\form#43:$A$
+\form#44:$A\otimes B$
+\form#45:$Tr_{B}(\cdot)$
+\form#46:$B$
+\form#47:$Tr_{subsys}(\cdot)$
+\form#48:$(\cdot)^{T_{subsys}}$
+\form#49:$ \sum_i K_i^\dagger K_i = I$

@@ -773,6 +773,7 @@ dyn_mat<OutputScalar> cwise(const Eigen::MatrixBase<Derived>& A,
     dyn_mat<OutputScalar> result(rA.rows(), rA.cols());
 
 #pragma omp parallel for collapse(2)
+    // column major order for speed
     for (idx j = 0; j < static_cast<idx>(rA.cols()); ++j)
         for (idx i = 0; i < static_cast<idx>(rA.rows()); ++i)
             result(i, j) = (*f)(rA(i, j));
@@ -1147,7 +1148,7 @@ dyn_mat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& V)
         throw Exception("qpp::prj()", Exception::Type::ZERO_SIZE);
 
     // check column vector
-    if (!internal::_check_col_vector(rV))
+    if (!internal::_check_cvector(rV))
         throw Exception("qpp::prj()", Exception::Type::MATRIX_NOT_CVECTOR);
 
     double normV = norm(rV);
@@ -1177,7 +1178,7 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
             throw Exception("qpp::grams()", Exception::Type::ZERO_SIZE);
 
     // check that Vs[0] is a column vector
-    if (!internal::_check_col_vector(Vs[0]))
+    if (!internal::_check_cvector(Vs[0]))
         throw Exception("qpp::grams()", Exception::Type::MATRIX_NOT_CVECTOR);
 
     // now check that all the rest match the size of the first vector
@@ -1276,18 +1277,13 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A)
 * \param dims Dimensions of the multi-partite system
 * \return Multi-index of the same size as \a dims
 */
-std::vector<idx> n2multiidx(idx n,
-        const std::vector<idx>& dims)
+std::vector<idx> n2multiidx(idx n, const std::vector<idx>& dims)
 {
     if (!internal::_check_dims(dims))
         throw Exception("qpp::n2multiidx()", Exception::Type::DIMS_INVALID);
 
-    auto multiply = [](const idx x, const idx y) -> idx
-    {
-        return x * y;
-    };
-
-    if (n >= std::accumulate(std::begin(dims), std::end(dims), 1u, multiply))
+    if (n >= std::accumulate(std::begin(dims), std::end(dims),
+            static_cast<idx>(1), std::multiplies<idx>()))
         throw Exception("qpp::n2multiidx()", Exception::Type::OUT_OF_RANGE);
 
     // double the size for matrices reshaped as vectors
@@ -1337,13 +1333,9 @@ ket mket(const std::vector<idx>& mask,
         const std::vector<idx>& dims)
 {
     idx n = mask.size();
-    auto multiply = [](idx x, idx y) -> idx
-    {
-        return x * y;
-    };
 
-    idx D = std::accumulate(std::begin(dims), std::end(dims), 1u,
-            multiply);
+    idx D = std::accumulate(std::begin(dims), std::end(dims),
+            static_cast<idx>(1), std::multiplies<idx>());
 
     // check zero size
     if (n == 0)
@@ -1422,13 +1414,9 @@ cmat mprj(const std::vector<idx>& mask,
         const std::vector<idx>& dims)
 {
     idx n = mask.size();
-    auto multiply = [](idx x, idx y) -> idx
-    {
-        return x * y;
-    };
 
-    idx D = std::accumulate(std::begin(dims), std::end(dims), 1u,
-            multiply);
+    idx D = std::accumulate(std::begin(dims), std::end(dims),
+            static_cast<idx>(1), std::multiplies<idx>());
 
     // check zero size
     if (n == 0)
@@ -1492,7 +1480,7 @@ cmat mprj(const std::vector<idx>& mask, idx d = 2)
 }
 
 /**
-* \brief Computes the absolut values squared of a range of complex numbers
+* \brief Computes the absolute values squared of a range of complex numbers
 
 * \param first Iterator to the first element of the range
 * \param last  Iterator to the last element of the range
@@ -1501,18 +1489,18 @@ cmat mprj(const std::vector<idx>& mask, idx d = 2)
 template<typename InputIterator>
 std::vector<double> abssq(InputIterator first, InputIterator last)
 {
-    std::vector<double> weights(last - first);
+    std::vector<double> weights(std::distance(first, last));
     std::transform(first, last, std::begin(weights),
-            [](const cplx& z) -> double
+            [](cplx z) -> double
             {
-                return std::pow(std::abs(z), 2);
+                return std::norm(z);
             });
 
     return weights;
 }
 
 /**
-* \brief Computes the absolut values squared of a column vector
+* \brief Computes the absolute values squared of a column vector
 
 * \param V Eigen expression
 * \return Real vector consisting of the absolut values squared
@@ -1527,21 +1515,14 @@ std::vector<double> abssq(const Eigen::MatrixBase<Derived>& V)
         throw Exception("qpp::abssq()", Exception::Type::ZERO_SIZE);
 
     // check column vector
-    if (!internal::_check_col_vector(rV))
+    if (!internal::_check_cvector(rV))
         throw Exception("qpp::abssq()", Exception::Type::MATRIX_NOT_CVECTOR);
 
-    std::vector<double> weights(rV.rows());
-    std::transform(rV.data(), rV.data() + rV.rows(), std::begin(weights),
-            [](const cplx& z) -> double
-            {
-                return std::pow(std::abs(z), 2);
-            });
-
-    return weights;
+    return abssq(rV.data(), rV.data() + rV.rows());
 }
 
 /**
-* \brief Element-wise sum of a range
+* \brief Element-wise sum of an STL-like range
 *
 * \param first Iterator to the first element of the range
 * \param last  Iterator to the last element of the range
@@ -1552,14 +1533,31 @@ template<typename InputIterator>
 typename std::iterator_traits<InputIterator>::value_type
 sum(InputIterator first, InputIterator last)
 {
-    return std::accumulate(first, last,
-            static_cast<
-                    typename std::iterator_traits<InputIterator>::value_type>
-            (0));
+    using value_type =
+    typename std::iterator_traits<InputIterator>::value_type;
+
+    return std::accumulate(first, last, static_cast<value_type>(0));
 }
 
 /**
-* \brief Element-wise product of a range
+* \brief Element-wise sum of the elements of an STL-like container
+*
+* \param c STL-like container
+* \return Element-wise sum of the elements of the container,
+* as a scalar in the same scalar field as the container
+*/
+template<typename Container>
+typename Container::value_type
+sum(const Container& c)
+{
+    using value_type = typename Container::value_type;
+
+    return std::accumulate(std::begin(c), std::end(c),
+            static_cast<value_type>(0));
+}
+
+/**
+* \brief Element-wise product of an STL-like range
 *
 * \param first Iterator to the first element of the range
 * \param last  Iterator to the last element of the range
@@ -1570,17 +1568,29 @@ template<typename InputIterator>
 typename std::iterator_traits<InputIterator>::value_type
 prod(InputIterator first, InputIterator last)
 {
-    return std::accumulate(first, last,
-            static_cast<
-                    typename std::iterator_traits<InputIterator>::value_type>
-            (1),
-            [](const typename
-            std::iterator_traits<InputIterator>::value_type& x,
-                    const typename
-                    std::iterator_traits<InputIterator>::value_type& y)
-            {
-                return x * y;
-            });
+    using value_type =
+    typename std::iterator_traits<InputIterator>::value_type;
+
+    return std::accumulate(first, last, static_cast<value_type>(1),
+            std::multiplies<value_type>());
+}
+
+
+/**
+* \brief Element-wise product of the elements of an STL-like container
+*
+* \param c STL-like container
+* \return Element-wise product of the elements of the container,
+* as a scalar in the same scalar field as the container
+*/
+template<typename Container>
+typename Container::value_type
+prod(const Container& c)
+{
+    using value_type = typename Container::value_type;
+
+    return std::accumulate(std::begin(c), std::end(c),
+            static_cast<value_type>(1), std::multiplies<value_type>());
 }
 
 /**
@@ -1588,7 +1598,7 @@ prod(InputIterator first, InputIterator last)
 * proportional to a projector onto a pure state
 *
 * \note No purity check is done, the input state \a A must have rank one,
-* otherwise the function returs the first non-zero eigenvector of \a A
+* otherwise the function returns the first non-zero eigenvector of \a A
 *
 * \param A Eigen expression, assumed to be proportional
 * to a projector onto a pure state, i.e. \a A is assumed to have rank one
@@ -1626,6 +1636,87 @@ dyn_col_vect<typename Derived::Scalar> rho2pure(
     }
 
     return result;
+}
+
+/**
+* \brief Constructs the complement of a subsystem vector
+*
+* \param subsys Subsystem vector
+* \param N Total number of systems
+* \return The complement of \a subsys with respect to the set
+* \f$\{0, 1, \ldots, N - 1\}\f$
+*/
+template<typename T>
+std::vector<T> complement(std::vector<T> subsys, idx N)
+{
+    if (N < subsys.size())
+        throw Exception("qpp::complement()", Exception::Type::OUT_OF_RANGE);
+
+    std::vector<T> all(N);
+    std::vector<T> subsys_bar(N - subsys.size());
+
+    std::iota(std::begin(all), std::end(all), 0);
+    std::sort(std::begin(subsys), std::end(subsys));
+    std::set_difference(std::begin(all), std::end(all),
+            std::begin(subsys), std::end(subsys),
+            std::begin(subsys_bar));
+
+    return subsys_bar;
+}
+
+/**
+* \brief Computes the 3-dimensional real Bloch vector
+* corresponding to the qubit density matrix \a A
+* \see qpp::bloch2rho()
+*
+* \note It is implicitly assumed that the density matrix is Hermitian
+*
+* \param A Eigen expression
+* \return 3-dimensional Bloch vector
+*/
+template<typename Derived>
+std::vector<double> rho2bloch(
+        const Eigen::MatrixBase<Derived>& A)
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A;
+
+    // check qubit matrix
+    if (!internal::_check_qubit_matrix(rA))
+        throw Exception("qpp::rho2bloch()", Exception::Type::NOT_QUBIT_MATRIX);
+
+    std::vector<double> result(3);
+    cmat X(2, 2), Y(2, 2), Z(2, 2);
+    X << 0, 1, 1, 0;
+    Y << 0, -1_i, 1_i, 0;
+    Z << 1, 0, 0, -1;
+    result[0] = std::real(trace(rA * X));
+    result[1] = std::real(trace(rA * Y));
+    result[2] = std::real(trace(rA * Z));
+
+    return result;
+}
+
+/**
+* \brief Computes the density matrix corresponding to
+* the 3-dimensional real Bloch vector \a r
+* \see qpp::rho2bloch()
+*
+* \param r 3-dimensional real vector
+* \return Qubit density matrix
+*/
+cmat bloch2rho(const std::vector<double>& r)
+{
+    // check 3-dimensional vector
+    if (r.size() != 3)
+        throw Exception("qpp::bloch2rho", "r is not a 3-dimensional vector!");
+
+    cmat X(2, 2), Y(2, 2), Z(2, 2), Id2(2, 2);
+    X << 0, 1, 1, 0;
+    Y << 0, -1_i, 1_i, 0;
+    Z << 1, 0, 0, -1;
+    Id2 << 1, 0, 0, 1;
+
+    return (Id2 + r[0] * X + r[1] * Y + r[2] * Z) / 2.;
 }
 
 } /* namespace qpp */

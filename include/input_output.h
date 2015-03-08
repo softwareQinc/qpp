@@ -56,8 +56,7 @@ internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
 * than \a chop
 * \return Instance of qpp::internal::internal::IOManipEigen
 */
-internal::IOManipEigen disp(cplx z,
-        double chop = qpp::chop)
+internal::IOManipEigen disp(cplx z, double chop = qpp::chop)
 {
     return internal::IOManipEigen(z, chop);
 }
@@ -97,7 +96,7 @@ internal::IOManipRange<typename Container::const_iterator> disp(
         const std::string& start = "[", const std::string& end = "]")
 {
     return internal::IOManipRange<typename Container::const_iterator>(
-            c.cbegin(), c.cend(), separator, start, end);
+            c.begin(), c.end(), separator, start, end);
 }
 
 /**

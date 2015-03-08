@@ -9,19 +9,18 @@ For additional [Eigen 3](http://eigen.tuxfamily.org) documentation see
 [Eigen 3](http://eigen.tuxfamily.org) quick ASCII reference see
 <http://eigen.tuxfamily.org/dox/AsciiQuickReference.txt>.
 
+Quantum++ is not restricted to qubit systems or specific quantum 
+information processing tasks, being capable of simulating arbitrary quantum 
+processes. The main design factors taken in consideration were the ease of 
+use, high portability, and high performance.
+
+If you are interesting in contributing, please contact me. 
+To contribute, you need to have a decent knowledge of C++ (preferably C++11), 
+including templates and the standard library, a basic knowledge of 
+quantum computing and linear algebra, and some working experience 
+with [Eigen 3](http://eigen.tuxfamily.org).
+
 Copyright (c) 2013 - 2015 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
-
-If you are interesting in contributing, please let me know. 
-There is still work left to be done, and I can provide you with more details 
-about what I have in mind. To contribute, you need to have a decent knowledge 
-of C++ (preferably C++11), including templates and the standard library, 
-a basic knowledge of quantum computing and linear algebra, 
-and some working experience with [Eigen 3](http://eigen.tuxfamily.org).
-
-The ultimate goal of this project is to build a universal quantum simulator, 
-applicable to a vast majority of problems in quantum information/computation.
-The simulator should be fast but nevertheless user-friendly 
-for anyone with a basic knowledge of C/C++. 
 
 ---
 Quantum++ is free software: you can redistribute it and/or modify

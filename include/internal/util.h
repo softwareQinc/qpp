@@ -29,9 +29,9 @@
 
 // silence g++ bogus warning -Warray-bounds in _multiidx2n() in line
 // part_prod[numdims - 1] = 1;
-#if (__GNUC__)
-#pragma GCC diagnostic ignored "-Warray-bounds"
-#endif
+// #if (__GNUC__)
+// #pragma GCC diagnostic ignored "-Warray-bounds"
+// #endif
 
 namespace qpp
 {
@@ -45,6 +45,7 @@ namespace internal
 // integer index to multi-index, use C-style array for speed
 // standard lexicographical order, e.g. 00, 01, 10, 11
 inline void _n2multiidx(idx n, idx numdims, const idx* dims, idx* result)
+noexcept
 {
     // no error checks to improve speed
     for (idx i = 0; i < numdims; ++i)
@@ -57,6 +58,7 @@ inline void _n2multiidx(idx n, idx numdims, const idx* dims, idx* result)
 // multi-index to integer index, use C-style array for speed,
 // standard lexicographical order, e.g. 00->0, 01->1, 10->2, 11->3
 inline idx _multiidx2n(const idx* midx, idx numdims, const idx* dims)
+noexcept
 {
     // no error checks to improve speed
 
@@ -82,10 +84,7 @@ bool _check_square_mat(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
-    if (rA.rows() != rA.cols())
-        return false;
-
-    return true;
+    return rA.rows() == rA.cols();
 }
 
 // check whether input is a vector or not
@@ -94,44 +93,32 @@ bool _check_vector(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
-    if (rA.rows() != 1 && rA.cols() != 1)
-        return false;
-
-    return true;
+    return rA.rows() == 1 || rA.cols() == 1;
 }
 
 // check whether input is a row vector or not
 template<typename Derived>
-bool _check_row_vector(const Eigen::MatrixBase<Derived>& A)
+bool _check_rvector(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
-    if (rA.rows() != 1)
-        return false;
-
-    return true;
+    return rA.rows() == 1;
 }
 
 // check whether input is a column vector or not
 template<typename Derived>
-bool _check_col_vector(const Eigen::MatrixBase<Derived>& A)
+bool _check_cvector(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
-    if (rA.cols() != 1)
-        return false;
-
-    return true;
+    return rA.cols() == 1;
 }
 
 // check non-zero size of object that supports size() function
 template<typename T>
-bool _check_nonzero_size(const T& x)
+bool _check_nonzero_size(const T& x) noexcept
 {
-    if (x.size() == 0)
-        return false;
-
-    return true;
+    return x.size() != 0;
 }
 
 // check that dims is a valid dimension vector
@@ -140,15 +127,12 @@ bool _check_dims(const std::vector<idx>& dims)
     if (dims.size() == 0)
         return false;
 
-    if (std::find_if(std::begin(dims), std::end(dims),
+    return std::find_if(std::begin(dims), std::end(dims),
             [dims](idx i) -> bool
             {
                 if (i == 0) return true;
                 else return false;
-            }) != std::end(dims))
-        return false;
-
-    return true;
+            }) == std::end(dims);
 }
 
 // check that valid dims match the dimensions
@@ -159,13 +143,10 @@ bool _check_dims_match_mat(const std::vector<idx>& dims,
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
-    idx proddim = 1;
-    for (idx i : dims)
-        proddim *= i;
-    if (proddim != static_cast<idx>(rA.rows()))
-        return false;
+    idx proddim = std::accumulate(std::begin(dims), std::end(dims),
+            static_cast<idx>(1), std::multiplies<idx>());
 
-    return true;
+    return proddim == static_cast<idx>(rA.rows());
 }
 
 // check that valid dims match the dimensions of valid column vector
@@ -175,13 +156,10 @@ bool _check_dims_match_cvect(const std::vector<idx>& dims,
 {
     const dyn_mat<typename Derived::Scalar>& rV = V;
 
-    idx proddim = 1;
-    for (idx i : dims)
-        proddim *= i;
-    if (proddim != static_cast<idx>(rV.rows()))
-        return false;
+    idx proddim = std::accumulate(std::begin(dims), std::end(dims),
+            static_cast<idx>(1), std::multiplies<idx>());
 
-    return true;
+    return proddim == static_cast<idx>(rV.rows());
 }
 
 // check that valid dims match the dimensions of valid row vector
@@ -191,17 +169,14 @@ bool _check_dims_match_rvect(const std::vector<idx>& dims,
 {
     const dyn_mat<typename Derived::Scalar>& rV = V;
 
-    idx proddim = 1;
-    for (idx i : dims)
-        proddim *= i;
-    if (proddim != static_cast<idx>(rV.cols()))
-        return false;
+    idx proddim = std::accumulate(std::begin(dims), std::end(dims),
+            static_cast<idx>(1), std::multiplies<idx>());;
 
-    return true;
+    return proddim == static_cast<idx>(rV.cols());
 }
 
 // check that all elements in valid dims equal to dim
-bool _check_eq_dims(const std::vector<idx>& dims, idx dim)
+bool _check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept
 {
     for (idx i : dims)
         if (i != dim)
@@ -232,16 +207,50 @@ bool _check_subsys_match_dims(const std::vector<idx>& subsys,
         return false;
 
     // check range of subsystems
-    if (std::find_if(std::begin(subsyssort), std::end(subsyssort),
+    return std::find_if(std::begin(subsyssort), std::end(subsyssort),
             [dims](idx i) -> bool
             {
-                if (i > dims.size() - 1) return true;
-                else return false;
-            }) != std::end(subsyssort))
-        return false;
-
-    return true;
+                return i > dims.size() - 1;
+            }) == std::end(subsyssort);
 }
+
+// check matrix is 2 x 2
+template<typename Derived>
+bool _check_qubit_matrix(const Eigen::MatrixBase<Derived>& A) noexcept
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A;
+
+    return rA.rows() == 2 && rA.cols() == 2;
+}
+
+// check column vector is 2 x 1
+template<typename Derived>
+bool _check_qubit_cvector(const Eigen::MatrixBase<Derived>& V) noexcept
+{
+    const dyn_mat<typename Derived::Scalar>& rV = V;
+
+    return rV.rows() == 2 && rV.cols() == 1;
+}
+
+// check row vector is 1 x 2
+template<typename Derived>
+bool _check_qubit_rvector(const Eigen::MatrixBase<Derived>& V) noexcept
+{
+    const dyn_mat<typename Derived::Scalar>& rV = V;
+
+    return rV.rows() == 1 && rV.cols() == 2;
+}
+
+// check row vector is 1 x 2 or 2 x 1
+template<typename Derived>
+bool _check_qubit_vector(const Eigen::MatrixBase<Derived>& V) noexcept
+{
+    const dyn_mat<typename Derived::Scalar>& rV = V;
+
+    return (rV.rows() == 1 && rV.cols() == 2) ||
+            (rV.rows() == 2 && rV.cols() == 1);
+}
+
 
 // check valid permutation
 bool _check_perm(const std::vector<idx>& perm)
@@ -252,11 +261,8 @@ bool _check_perm(const std::vector<idx>& perm)
     std::vector<idx> ordered(perm.size());
     std::iota(std::begin(ordered), std::end(ordered), 0);
 
-    if (std::is_permutation(std::begin(ordered), std::end(ordered),
-            std::begin(perm)))
-        return true;
-    else
-        return false;
+    return std::is_permutation(std::begin(ordered), std::end(ordered),
+            std::begin(perm));
 }
 
 // Kronecker product of 2 matrices, preserve return type
@@ -292,12 +298,11 @@ dyn_mat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
     result.resize(Arows * Brows, Acols * Bcols);
 
 #pragma omp parallel for collapse(2)
-    for (idx j = 0; j < Acols; ++j)
+    for (idx j = 0; j < Acols; ++j) // column major order for speed
         for (idx i = 0; i < Arows; ++i)
             result.block(i * Brows, j * Bcols, Brows, Bcols) = rA(i, j) * rB;
 
     return result;
-
 }
 
 // Direct sum of 2 matrices, preserve return type
@@ -337,7 +342,6 @@ dyn_mat<typename Derived1::Scalar> _dirsum2(
     result.block(Arows, Acols, Brows, Bcols) = rB;
 
     return result;
-
 }
 
 // may be useful, extracts variadic template argument pack into a std::vector

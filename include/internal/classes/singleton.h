@@ -42,7 +42,7 @@ namespace internal // internal class, do not modify
 * the constructor of your class as private. To get an instance, use the static
 * member function qpp::internal::Singleton::get_instance()
 * (qpp::internal::Singleton::get_thread_local_instance()), which returns a
-* reference (thread_local reference) to your newly created singleton 
+* reference (thread_local reference) to your newly created singleton
 * (thread-safe in C++11).
 *
 * Example:
@@ -72,7 +72,7 @@ template<typename T>
 class Singleton
 {
 protected:
-    Singleton()
+    Singleton() noexcept
     {
     }
 
@@ -88,7 +88,7 @@ protected:
     Singleton& operator=(const Singleton&) = delete;
 
 public:
-    static T& get_instance()
+    static T& get_instance() noexcept(std::is_nothrow_constructible<T>::value)
     {
         // Guaranteed to be destroyed.
         // Instantiated on first use.
@@ -99,6 +99,7 @@ public:
     }
 
     static thread_local T& get_thread_local_instance()
+    noexcept(std::is_nothrow_constructible<T>::value)
     {
         // Guaranteed to be destroyed.
         // Instantiated on first use.

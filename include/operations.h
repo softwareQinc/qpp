@@ -134,12 +134,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     idx CdimsA[maxn]; // local dimensions
     idx CdimsCTRLAbar[maxn]; // local dimensions
 
-    std::vector<idx> ctrlgatebar(n - ctrlgate.size()); // rest
-    std::vector<idx> allsubsys(n); // all subsystems
-    std::iota(std::begin(allsubsys), std::end(allsubsys), 0);
     // compute the complementary subsystem of ctrlgate w.r.t. dims
-    std::set_difference(std::begin(allsubsys), std::end(allsubsys),
-            std::begin(ctrlgate), std::end(ctrlgate), std::begin(ctrlgatebar));
+    std::vector<idx> ctrlgatebar = complement(ctrlgate, n);
 
     idx DCTRLAbar = 1; // dimension of the rest
     for (idx i = 0; i < ctrlgatebar.size(); ++i)
@@ -155,7 +151,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
     // worker, computes the coefficient and the index for the ket case
     // used in #pragma omp parallel for collapse
-    auto coeff_idx_ket = [=](idx _i, idx _m, idx _r)
+    auto coeff_idx_ket = [=](idx _i, idx _m, idx _r) noexcept
             -> std::pair<typename Derived1::Scalar, idx>
     {
         idx indx = 0;
@@ -210,7 +206,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     // for the density matrix case
     // used in #pragma omp parallel for collapse
     auto coeff_idx_rho = [=](idx _i1, idx _m1,
-            idx _r1, idx _i2, idx _m2, idx _r2)
+            idx _r1, idx _i2, idx _m2, idx _r2) noexcept
             -> std::tuple<typename Derived1::Scalar, idx, idx>
     {
         idx idxrow = 0;
@@ -283,7 +279,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     };
 
     //************ ket ************//
-    if (internal::_check_col_vector(rstate)) // we have a ket
+    if (internal::_check_cvector(rstate)) // we have a ket
     {
         // check that dims match state vector
         if (!internal::_check_dims_match_cvect(dims, rstate))
@@ -314,7 +310,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         return result;
     }
         //************ density matrix ************//
-    else if (internal::_check_square_mat(rstate)) // we have a density matrix
+    else if (internal::_check_square_mat(rstate)) // we have a density operator
     {
         // check that dims match state matrix
         if (!internal::_check_dims_match_mat(dims, rstate))
@@ -355,7 +351,6 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
         return result;
     }
-
         //************ Exception: not ket nor density matrix ************//
     else
         throw Exception("qpp::applyCTRL()",
@@ -458,7 +453,8 @@ dyn_mat<typename Derived1::Scalar> apply(
         throw Exception("qpp::apply()",
                 Exception::Type::MATRIX_MISMATCH_SUBSYS);
 
-    if (internal::_check_col_vector(rstate)) // we have a ket
+    //************ ket ************//
+    if (internal::_check_cvector(rstate)) // we have a ket
     {
         // check that dims match state vector
         if (!internal::_check_dims_match_cvect(dims, rstate))
@@ -467,7 +463,8 @@ dyn_mat<typename Derived1::Scalar> apply(
 
         return applyCTRL(rstate, rA, {}, subsys, dims);
     }
-    else if (internal::_check_square_mat(rstate)) // we have a density matrix
+        //************ density matrix ************//
+    else if (internal::_check_square_mat(rstate)) // we have a density operator
     {
 
         // check that dims match state matrix
@@ -477,6 +474,7 @@ dyn_mat<typename Derived1::Scalar> apply(
 
         return applyCTRL(rstate, rA, {}, subsys, dims);
     }
+        //************ Exception: not ket nor density matrix ************//
     else
         throw Exception("qpp::apply()",
                 Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
@@ -881,8 +879,8 @@ cmat super2choi(const cmat& A)
 * \brief Partial trace
 * \see qpp::ptrace2()
 *
-*  Partial trace of density matrix
-*  over the first subsystem in a bi-partite system
+*  Partial trace over the first subsystem
+*  of bi-partite state vector or density matrix
 *
 * \param A Eigen expression
 * \param dims Dimensions of the bi-partite system
@@ -907,18 +905,9 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
     if (!internal::_check_dims(dims))
         throw Exception("qpp::ptrace1()", Exception::Type::DIMS_INVALID);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("qpp::ptrace1()", Exception::Type::MATRIX_NOT_SQUARE);
-
     // check dims has only 2 elements
     if (dims.size() != 2)
         throw Exception("qpp::ptrace1()", Exception::Type::NOT_BIPARTITE);
-
-    // check that dims match the dimension of A
-    if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::ptrace1()",
-                Exception::Type::DIMS_MISMATCH_MATRIX);
 
     idx DA = dims[0];
     idx DB = dims[1];
@@ -926,26 +915,66 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
     dyn_mat<typename Derived::Scalar> result =
             dyn_mat<typename Derived::Scalar>::Zero(DB, DB);
 
-    auto worker = [=](idx i, idx j)
+    //************ ket ************//
+    if (internal::_check_cvector(rA)) // we have a ket
     {
-        typename Derived::Scalar sum = 0;
-        for (idx m = 0; m < DA; ++m)
-            sum += rA(m * DB + i, m * DB + j);
+        // check that dims match the dimension of A
+        if (!internal::_check_dims_match_cvect(dims, rA))
+            throw Exception("qpp::ptrace1()",
+                    Exception::Type::DIMS_MISMATCH_CVECTOR);
 
-        return sum;
-    };
+        auto worker = [=](idx i, idx j) noexcept
+        {
+            typename Derived::Scalar sum = 0;
+            for (idx m = 0; m < DA; ++m)
+                sum += rA(m * DB + i) * std::conj(rA(m * DB + j));
+
+            return sum;
+        };
 
 #pragma omp parallel for collapse(2)
-    for (idx j = 0; j < DB; ++j) // column major order for speed
-        for (idx i = 0; i < DB; ++i)
-            result(i, j) = worker(i, j);
+        for (idx j = 0; j < DB; ++j) // column major order for speed
+            for (idx i = 0; i < DB; ++i)
+                result(i, j) = worker(i, j);
 
-    return result;
+        return result;
+    }
+        //************ density matrix ************//
+    else if (internal::_check_square_mat(rA)) // we have a density operator
+    {
+        // check that dims match the dimension of A
+        if (!internal::_check_dims_match_mat(dims, rA))
+            throw Exception("qpp::ptrace1()",
+                    Exception::Type::DIMS_MISMATCH_MATRIX);
+
+        auto worker = [=](idx i, idx j) noexcept
+        {
+            typename Derived::Scalar sum = 0;
+            for (idx m = 0; m < DA; ++m)
+                sum += rA(m * DB + i, m * DB + j);
+
+            return sum;
+        };
+
+#pragma omp parallel for collapse(2)
+        for (idx j = 0; j < DB; ++j) // column major order for speed
+            for (idx i = 0; i < DB; ++i)
+                result(i, j) = worker(i, j);
+
+        return result;
+    }
+        //************ Exception: not ket nor density matrix ************//
+    else
+        throw Exception("qpp::ptrace1()",
+                Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 }
 
 /**
 * \brief Partial trace
 * \see qpp::ptrace1()
+*
+*  Partial trace over the second subsystem
+*  of bi-partite state vector or density matrix
 *
 * \param A Eigen expression
 * \param dims Dimensions of the bi-partite system
@@ -970,18 +999,9 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
     if (!internal::_check_dims(dims))
         throw Exception("qpp::ptrace2()", Exception::Type::DIMS_INVALID);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("qpp::ptrace2()", Exception::Type::MATRIX_NOT_SQUARE);
-
     // check dims has only 2 elements
     if (dims.size() != 2)
         throw Exception("qpp::ptrace2()", Exception::Type::NOT_BIPARTITE);
-
-    // check that dims match the dimension of A
-    if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::ptrace2()",
-                Exception::Type::DIMS_MISMATCH_MATRIX);
 
     idx DA = dims[0];
     idx DB = dims[1];
@@ -989,19 +1009,56 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
     dyn_mat<typename Derived::Scalar> result =
             dyn_mat<typename Derived::Scalar>::Zero(DA, DA);
 
-#pragma omp parallel for collapse(2)
-    for (idx j = 0; j < DA; ++j) // column major order for speed
-        for (idx i = 0; i < DA; ++i)
-            result(i, j) = trace(rA.block(i * DB, j * DB, DB, DB));
+    //************ ket ************//
+    if (internal::_check_cvector(rA)) // we have a ket
+    {
+        // check that dims match the dimension of A
+        if (!internal::_check_dims_match_cvect(dims, rA))
+            throw Exception("qpp::ptrace2()",
+                    Exception::Type::DIMS_MISMATCH_CVECTOR);
 
-    return result;
+        auto worker = [=](idx i, idx j) noexcept
+        {
+            typename Derived::Scalar sum = 0;
+            for (idx m = 0; m < DB; ++m)
+                sum += rA(i * DB + m) * std::conj(rA(j * DB + m));
+
+            return sum;
+        };
+
+#pragma omp parallel for collapse(2)
+        for (idx j = 0; j < DA; ++j) // column major order for speed
+            for (idx i = 0; i < DA; ++i)
+                result(i, j) = worker(i, j);
+
+        return result;
+    }
+        //************ density matrix ************//
+    else if (internal::_check_square_mat(rA)) // we have a density operator
+    {
+        // check that dims match the dimension of A
+        if (!internal::_check_dims_match_mat(dims, rA))
+            throw Exception("qpp::ptrace2()",
+                    Exception::Type::DIMS_MISMATCH_MATRIX);
+
+#pragma omp parallel for collapse(2)
+        for (idx j = 0; j < DA; ++j) // column major order for speed
+            for (idx i = 0; i < DA; ++i)
+                result(i, j) = trace(rA.block(i * DB, j * DB, DB, DB));
+
+        return result;
+    }
+        //************ Exception: not ket nor density matrix ************//
+    else
+        throw Exception("qpp::ptrace1()",
+                Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 }
 
 /**
 * \brief Partial trace
 * \see qpp::ptrace1(), qpp::ptrace2()
 *
-*  Partial trace of the multi-partite density matrix
+*  Partial trace of the multi-partite state vector or density matrix
 *  over a list of subsystems
 *
 * \param A Eigen expression
@@ -1028,25 +1085,6 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     if (!internal::_check_dims(dims))
         throw Exception("qpp::ptrace()", Exception::Type::DIMS_INVALID);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("qpp::ptrace()", Exception::Type::MATRIX_NOT_SQUARE);
-
-    // check that dims match the dimension of A
-    if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::ptrace()",
-                Exception::Type::DIMS_MISMATCH_MATRIX);
-
-    if (subsys.size() == dims.size())
-    {
-        dyn_mat<typename Derived::Scalar> result = dyn_mat<
-                typename Derived::Scalar>(1, 1);
-        result(0, 0) = rA.trace();
-
-        return result;
-    }
-    if (subsys.size() == 0)
-        return rA;
     // check that subsys are valid
     if (!internal::_check_subsys_match_dims(subsys, dims))
         throw Exception("qpp::ptrace()",
@@ -1067,86 +1105,175 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     idx Csubsysbar[maxn];
     idx Cdimssubsysbar[maxn];
 
+    idx Cmidxcolsubsysbar[maxn];
+
+    std::vector<idx> subsys_bar = complement(subsys, n);
+    std::copy(std::begin(subsys_bar), std::end(subsys_bar),
+            std::begin(Csubsysbar));
+
     for (idx i = 0; i < n; ++i)
+    {
         Cdims[i] = dims[i];
+    }
     for (idx i = 0; i < nsubsys; ++i)
     {
         Csubsys[i] = subsys[i];
         Cdimssubsys[i] = dims[subsys[i]];
     }
-    // construct the complement of subsys
-    idx cnt = 0;
-    for (idx i = 0; i < n; ++i)
+    for (idx i = 0; i < nsubsysbar; ++i)
     {
-        bool found = false;
-        for (idx m = 0; m < nsubsys; ++m)
-            if (subsys[m] == i)
-            {
-                found = true;
-                break;
-            }
-        if (!found)
-        {
-            Csubsysbar[cnt] = i;
-            Cdimssubsysbar[cnt] = dims[i];
-            cnt++;
-        }
+        Cdimssubsysbar[i] = dims[subsys_bar[i]];
     }
 
     dyn_mat<typename Derived::Scalar> result =
             dyn_mat<typename Derived::Scalar>(dimsubsysbar, dimsubsysbar);
 
-    auto worker = [=](idx i, idx j)
+    //************ ket ************//
+    if (internal::_check_cvector(rA)) // we have a ket
     {
-        // use static allocation for speed!
+        // check that dims match the dimension of A
+        if (!internal::_check_dims_match_cvect(dims, rA))
+            throw Exception("qpp::ptrace()",
+                    Exception::Type::DIMS_MISMATCH_CVECTOR);
 
-        idx Cmidxrow[maxn];
-        idx Cmidxcol[maxn];
-        idx Cmidxrowsubsysbar[maxn];
-        idx Cmidxcolsubsysbar[maxn];
-        idx Cmidxsubsys[maxn];
-
-        /* get the row/col multi-indexes of the complement */
-        internal::_n2multiidx(i, nsubsysbar,
-                Cdimssubsysbar, Cmidxrowsubsysbar);
-        internal::_n2multiidx(j, nsubsysbar,
-                Cdimssubsysbar, Cmidxcolsubsysbar);
-        /* write them in the global row/col multi-indexes */
-        for (idx k = 0; k < nsubsysbar; ++k)
+        if (subsys.size() == dims.size())
         {
-            Cmidxrow[Csubsysbar[k]] = Cmidxrowsubsysbar[k];
-            Cmidxcol[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
-        }
-        typename Derived::Scalar sm = 0;
-        for (idx a = 0; a < dimsubsys; ++a)
-        {
-            // get the multi-index over which we do the summation
-            internal::_n2multiidx(a, nsubsys, Cdimssubsys, Cmidxsubsys);
-            // write it into the global row/col multi-indexes
-            for (idx k = 0; k < nsubsys; ++k)
-                Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]] = Cmidxsubsys[k];
-
-            // now do the sum
-            sm += rA(internal::_multiidx2n(Cmidxrow, n, Cdims),
-                    internal::_multiidx2n(Cmidxcol, n, Cdims));
+            result(0, 0) = (adjoint(rA) * rA).value();
+            return result;
         }
 
-        return sm;
-    };
+        if (subsys.size() == 0)
+            return rA * adjoint(rA);
 
-#pragma omp parallel for collapse(2)
-    for (idx j = 0; j < dimsubsysbar; ++j)
-        for (idx i = 0; i < dimsubsysbar; ++i)
-            result(i, j) = worker(i, j);
+        auto worker = [=, &Cmidxcolsubsysbar](idx i) noexcept
+        {
+            // use static allocation for speed!
 
-    return result;
+            idx Cmidxrow[maxn];
+            idx Cmidxcol[maxn];
+            idx Cmidxrowsubsysbar[maxn];
+            idx Cmidxsubsys[maxn];
+
+            /* get the row multi-indexes of the complement */
+            internal::_n2multiidx(i, nsubsysbar,
+                    Cdimssubsysbar, Cmidxrowsubsysbar);
+            /* write them in the global row/col multi-indexes */
+            for (idx k = 0; k < nsubsysbar; ++k)
+            {
+                Cmidxrow[Csubsysbar[k]] = Cmidxrowsubsysbar[k];
+                Cmidxcol[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
+            }
+            typename Derived::Scalar sm = 0;
+            for (idx a = 0; a < dimsubsys; ++a)
+            {
+                // get the multi-index over which we do the summation
+                internal::_n2multiidx(a, nsubsys, Cdimssubsys, Cmidxsubsys);
+                // write it into the global row/col multi-indexes
+                for (idx k = 0; k < nsubsys; ++k)
+                    Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]]
+                            = Cmidxsubsys[k];
+
+                // now do the sum
+                sm += rA(internal::_multiidx2n(Cmidxrow, n, Cdims)) *
+                        std::conj(rA(internal::_multiidx2n(Cmidxcol, n,
+                                Cdims)));
+            }
+
+            return sm;
+        };
+
+        for (idx j = 0; j < dimsubsysbar; ++j) // column major order for speed
+        {
+            // compute the column multi-indexes of the complement
+            internal::_n2multiidx(j, nsubsysbar,
+                    Cdimssubsysbar, Cmidxcolsubsysbar);
+#pragma omp parallel for
+            for (idx i = 0; i < dimsubsysbar; ++i)
+            {
+                result(i, j) = worker(i);
+            }
+        }
+
+        return result;
+    }
+        //************ density matrix ************//
+    else if (internal::_check_square_mat(rA)) // we have a density operator
+    {
+        // check that dims match the dimension of A
+        if (!internal::_check_dims_match_mat(dims, rA))
+            throw Exception("qpp::ptrace()",
+                    Exception::Type::DIMS_MISMATCH_MATRIX);
+
+        if (subsys.size() == dims.size())
+        {
+            result(0, 0) = rA.trace();
+            return result;
+        }
+
+        if (subsys.size() == 0)
+            return rA;
+
+        auto worker = [=, &Cmidxcolsubsysbar](idx i) noexcept
+        {
+            // use static allocation for speed!
+
+            idx Cmidxrow[maxn];
+            idx Cmidxcol[maxn];
+            idx Cmidxrowsubsysbar[maxn];
+            idx Cmidxsubsys[maxn];
+
+            /* get the row/col multi-indexes of the complement */
+            internal::_n2multiidx(i, nsubsysbar,
+                    Cdimssubsysbar, Cmidxrowsubsysbar);
+            /* write them in the global row/col multi-indexes */
+            for (idx k = 0; k < nsubsysbar; ++k)
+            {
+                Cmidxrow[Csubsysbar[k]] = Cmidxrowsubsysbar[k];
+                Cmidxcol[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
+            }
+            typename Derived::Scalar sm = 0;
+            for (idx a = 0; a < dimsubsys; ++a)
+            {
+                // get the multi-index over which we do the summation
+                internal::_n2multiidx(a, nsubsys, Cdimssubsys, Cmidxsubsys);
+                // write it into the global row/col multi-indexes
+                for (idx k = 0; k < nsubsys; ++k)
+                    Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]]
+                            = Cmidxsubsys[k];
+
+                // now do the sum
+                sm += rA(internal::_multiidx2n(Cmidxrow, n, Cdims),
+                        internal::_multiidx2n(Cmidxcol, n, Cdims));
+            }
+
+            return sm;
+        };
+
+        for (idx j = 0; j < dimsubsysbar; ++j) // column major order for speed
+        {
+            // compute the column multi-indexes of the complement
+            internal::_n2multiidx(j, nsubsysbar,
+                    Cdimssubsysbar, Cmidxcolsubsysbar);
+#pragma omp parallel for
+            for (idx i = 0; i < dimsubsysbar; ++i)
+            {
+                result(i, j) = worker(i);
+            }
+        }
+
+        return result;
+    }
+        //************ Exception: not ket nor density matrix ************//
+    else
+        throw Exception("qpp::ptrace()",
+                Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 }
 
 /**
 * \brief Partial trace
 * \see qpp::ptrace1(), qpp::ptrace2()
 *
-*  Partial trace of the multi-partite density matrix
+*  Partial trace of the multi-partite state vector or density matrix
 *  over a list of subsystems
 *
 * \param A Eigen expression
@@ -1178,7 +1305,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 /**
 * \brief Partial transpose
 *
-*  Partial transpose of the multi-partite density matrix
+*  Partial transpose of the multi-partite state vector or density matrix
 *  over a list of subsystems
 *
 * \param A Eigen expression
@@ -1206,22 +1333,6 @@ dyn_mat<typename Derived::Scalar> ptranspose(
     if (!internal::_check_dims(dims))
         throw Exception("qpp::ptranspose()", Exception::Type::DIMS_INVALID);
 
-    // check square matrix
-    if (!internal::_check_square_mat(rA))
-        throw Exception("qpp::ptranspose()",
-                Exception::Type::MATRIX_NOT_SQUARE);
-
-    // check that dims match the dimension of A
-    if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::ptranspose()",
-                Exception::Type::DIMS_MISMATCH_MATRIX);
-
-    if (subsys.size() == dims.size())
-        return rA.transpose();
-
-    if (subsys.size() == 0)
-        return rA;
-
     // check that subsys are valid
     if (!internal::_check_subsys_match_dims(subsys, dims))
         throw Exception("qpp::ptranspose()",
@@ -1231,7 +1342,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
     idx numdims = dims.size();
     idx numsubsys = subsys.size();
     idx Cdims[maxn];
-    idx midxcol[maxn];
+    idx Cmidxcol[maxn];
     idx Csubsys[maxn];
 
     // copy dims in Cdims and subsys in Csubsys
@@ -1242,43 +1353,107 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 
     dyn_mat<typename Derived::Scalar> result(D, D);
 
-    auto worker = [=, &midxcol](idx i)
+    //************ ket ************//
+    if (internal::_check_cvector(rA)) // we have a ket
     {
-        // use static allocation for speed!
-        idx midxcoltmp[maxn];
-        idx midxrow[maxn];
+        // check that dims match the dimension of A
+        if (!internal::_check_dims_match_cvect(dims, rA))
+            throw Exception("qpp::ptranspose()",
+                    Exception::Type::DIMS_MISMATCH_CVECTOR);
 
-        for (idx k = 0; k < numdims; ++k)
-            midxcoltmp[k] = midxcol[k];
+        if (subsys.size() == dims.size())
+            return (rA * adjoint(rA)).transpose();
 
-        /* compute the row multi-index */
-        internal::_n2multiidx(i, numdims, Cdims, midxrow);
+        if (subsys.size() == 0)
+            return rA * adjoint(rA);
 
-        for (idx k = 0; k < numsubsys; ++k)
-            std::swap(midxcoltmp[Csubsys[k]], midxrow[Csubsys[k]]);
+        auto worker = [=, &Cmidxcol](idx i) noexcept
+        {
+            // use static allocation for speed!
+            idx midxcoltmp[maxn];
+            idx midxrow[maxn];
 
-        /* writes the result */
-        return rA(internal::_multiidx2n(midxrow, numdims, Cdims),
-                internal::_multiidx2n(midxcoltmp, numdims, Cdims));
+            for (idx k = 0; k < numdims; ++k)
+                midxcoltmp[k] = Cmidxcol[k];
 
-    };
+            /* compute the row multi-index */
+            internal::_n2multiidx(i, numdims, Cdims, midxrow);
 
-    for (idx j = 0; j < D; ++j)
-    {
-        // compute the column multi-index
-        internal::_n2multiidx(j, numdims, Cdims, midxcol);
+            for (idx k = 0; k < numsubsys; ++k)
+                std::swap(midxcoltmp[Csubsys[k]], midxrow[Csubsys[k]]);
+
+            /* writes the result */
+            return rA(internal::_multiidx2n(midxrow, numdims, Cdims)) *
+                    std::conj(rA(internal::_multiidx2n(midxcoltmp, numdims,
+                            Cdims)));
+        };
+
+        for (idx j = 0; j < D; ++j)
+        {
+            // compute the column multi-index
+            internal::_n2multiidx(j, numdims, Cdims, Cmidxcol);
 #pragma omp parallel for
-        for (idx i = 0; i < D; ++i)
-            result(i, j) = worker(i);
-    }
+            for (idx i = 0; i < D; ++i)
+                result(i, j) = worker(i);
+        }
 
-    return result;
+        return result;
+    }
+        //************ density matrix ************//
+    else if (internal::_check_square_mat(rA)) // we have a density operator
+    {
+        // check that dims match the dimension of A
+        if (!internal::_check_dims_match_mat(dims, rA))
+            throw Exception("qpp::ptranspose()",
+                    Exception::Type::DIMS_MISMATCH_MATRIX);
+
+        if (subsys.size() == dims.size())
+            return rA.transpose();
+
+        if (subsys.size() == 0)
+            return rA;
+
+        auto worker = [=, &Cmidxcol](idx i) noexcept
+        {
+            // use static allocation for speed!
+            idx midxcoltmp[maxn];
+            idx midxrow[maxn];
+
+            for (idx k = 0; k < numdims; ++k)
+                midxcoltmp[k] = Cmidxcol[k];
+
+            /* compute the row multi-index */
+            internal::_n2multiidx(i, numdims, Cdims, midxrow);
+
+            for (idx k = 0; k < numsubsys; ++k)
+                std::swap(midxcoltmp[Csubsys[k]], midxrow[Csubsys[k]]);
+
+            /* writes the result */
+            return rA(internal::_multiidx2n(midxrow, numdims, Cdims),
+                    internal::_multiidx2n(midxcoltmp, numdims, Cdims));
+        };
+
+        for (idx j = 0; j < D; ++j)
+        {
+            // compute the column multi-index
+            internal::_n2multiidx(j, numdims, Cdims, Cmidxcol);
+#pragma omp parallel for
+            for (idx i = 0; i < D; ++i)
+                result(i, j) = worker(i);
+        }
+
+        return result;
+    }
+        //************ Exception: not ket nor density matrix ************//
+    else
+        throw Exception("qpp::ptranspose()",
+                Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 }
 
 /**
 * \brief Partial transpose
 *
-*  Partial transpose of the multi-partite density matrix
+*  Partial transpose of the multi-partite state vector or density matrix
 *  over a list of subsystems
 *
 * \param A Eigen expression
@@ -1311,7 +1486,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 /**
 * \brief Subsystem permutation
 *
-* Permutes the subsystems in a state vector or density matrix.
+* Permutes the subsystems of a state vector or density matrix.
 * The qubit \a perm[\a i] is permuted to the location \a i.
 *
 * \param A Eigen expression
@@ -1352,8 +1527,8 @@ dyn_mat<typename Derived::Scalar> syspermute(
 
     dyn_mat<typename Derived::Scalar> result;
 
-    // check column vector
-    if (internal::_check_col_vector(rA)) // we have a column vector
+    //************ ket ************//
+    if (internal::_check_cvector(rA)) // we have a column vector
     {
         idx Cdims[maxn];
         idx Cperm[maxn];
@@ -1371,7 +1546,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
         }
         result.resize(D, 1);
 
-        auto worker = [&Cdims, &Cperm, numdims](idx i)
+        auto worker = [&Cdims, &Cperm, numdims](idx i) noexcept
         {
             // use static allocation for speed,
             // double the size for matrices reshaped as vectors
@@ -1397,7 +1572,8 @@ dyn_mat<typename Derived::Scalar> syspermute(
 
         return result;
     }
-    else if (internal::_check_square_mat(rA)) // we have a square matrix
+        //************ density matrix ************//
+    else if (internal::_check_square_mat(rA)) // we have a density operator
     {
         idx Cdims[2 * maxn];
         idx Cperm[2 * maxn];
@@ -1421,7 +1597,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
                 dyn_mat<typename Derived::Scalar >>(
                 const_cast<typename Derived::Scalar*>(rA.data()), D * D, 1);
 
-        auto worker = [&Cdims, &Cperm, numdims](idx i)
+        auto worker = [&Cdims, &Cperm, numdims](idx i) noexcept
         {
             // use static allocation for speed,
             // double the size for matrices reshaped as vectors
@@ -1447,7 +1623,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
 
         return reshape(result, D, D);
     }
-
+        //************ Exception: not ket nor density matrix ************//
     else
         throw Exception("qpp::syspermute()",
                 Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
@@ -1456,7 +1632,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
 /**
 * \brief Subsystem permutation
 *
-* Permutes the subsystems in a state vector or density matrix.
+* Permutes the subsystems of a state vector or density matrix.
 * The qubit \a perm[\a i] is permuted to the location \a i.
 *
 * \param A Eigen expression

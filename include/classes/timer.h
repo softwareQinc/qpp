@@ -47,8 +47,8 @@ public:
     * \brief Constructs an instance with the current time
     * as the starting point
     */
-    Timer() :
-            _start(std::chrono::steady_clock::now()), _end(_start)
+    Timer() noexcept :
+            _start{std::chrono::steady_clock::now()}, _end{_start}
     {
     }
 
@@ -57,7 +57,7 @@ public:
     *
     * Resets the starting/ending point to the current time
     */
-    void tic()
+    void tic() noexcept
     {
         _start = _end = std::chrono::steady_clock::now();
     }
@@ -69,7 +69,7 @@ public:
     *
     * \return Current instance
     */
-    const Timer& toc()
+    const Timer& toc() noexcept
     {
         _end = std::chrono::steady_clock::now();
         return *this;
@@ -81,7 +81,7 @@ public:
     * \return Number of seconds that passed between the instantiation/reset
     * and invocation of qpp::Timer::toc()
     */
-    double seconds() const
+    double seconds() const noexcept
     {
         return std::chrono::duration_cast<std::chrono::duration<double>>(
                 _end - _start).count();

@@ -33,6 +33,37 @@ namespace qpp
 {
 
 /**
+* \brief Generates a random real number uniformly distributed in
+* the interval [a, b)
+* \param a Beginning of the interval, belongs to it
+* \param b End of the interval, does not belong to it
+* \return Random real number (double) uniformly distributed in
+* the interval [a, b)
+*/
+double rand(double a = 0, double b = 1)
+{
+    std::uniform_real_distribution<> ud(a, b);
+
+    return ud(RandomDevices::get_thread_local_instance()._rng);
+}
+
+/**
+* \brief Generates a random index (idx) uniformly distributed in
+* the interval [a, b]
+* \param a Beginning of the interval, belongs to it
+* \param b End of the interval, belongs to it
+* \return Random index (idx) uniformly distributed in
+* the interval [a, b]
+*/
+idx randidx(idx a = std::numeric_limits<idx>::min(),
+        idx b = std::numeric_limits<idx>::max())
+{
+    std::uniform_int_distribution<idx> uid(a, b);
+
+    return uid(RandomDevices::get_thread_local_instance()._rng);
+}
+
+/**
 * \brief Generates a random matrix with entries uniformly
 * distributed in the interval [a, b)
 *
@@ -76,8 +107,11 @@ inline dmat rand(idx rows, idx cols, double a, double b)
     if (rows == 0 || cols == 0)
         throw Exception("qpp::rand()", Exception::Type::ZERO_SIZE);
 
-    return (0.5 * (b - a) * dmat::Random(rows, cols) +
-            0.5 * (b + a) * dmat::Ones(rows, cols));
+    return dmat::Zero(rows, cols).unaryExpr(
+            [a, b](double)
+            {
+                return rand(a, b);
+            });
 }
 
 /**
@@ -109,37 +143,6 @@ inline cmat rand(idx rows, idx cols, double a, double b)
 
     return rand<dmat>(rows, cols, a, b).cast<cplx>() +
             1_i * rand<dmat>(rows, cols, a, b).cast<cplx>();
-}
-
-/**
-* \brief Generates a random real number uniformly distributed in
-* the interval [a, b)
-* \param a Beginning of the interval, belongs to it
-* \param b End of the interval, does not belong to it
-* \return Random real number (double) uniformly distributed in
-* the interval [a, b)
-*/
-double rand(double a = 0, double b = 1)
-{
-    std::uniform_real_distribution<> ud(a, b);
-
-    return ud(RandomDevices::get_thread_local_instance()._rng);
-}
-
-/**
-* \brief Generates a random index (idx) uniformly distributed in
-* the interval [a, b]
-* \param a Beginning of the interval, belongs to it
-* \param b End of the interval, belongs to it
-* \return Random index (idx) uniformly distributed in
-* the interval [a, b]
-*/
-idx randidx(idx a = std::numeric_limits<idx>::min(),
-        idx b = std::numeric_limits<idx>::max())
-{
-    std::uniform_int_distribution<idx> uid(a, b);
-
-    return uid(RandomDevices::get_thread_local_instance()._rng);
 }
 
 /**
@@ -267,7 +270,7 @@ cmat randU(idx D)
     // phase correction so that the resultant matrix is
     // uniformly distributed according to the Haar measure
 
-    Eigen::VectorXcd phases = (rand < dmat > (D, 1)).cast<cplx>();
+    Eigen::VectorXcd phases = (rand<dmat>(D, 1)).cast<cplx>();
     for (idx i = 0; i < static_cast<idx>(phases.rows()); ++i)
         phases(i) = std::exp(2 * pi * 1_i * phases(i));
 
@@ -335,7 +338,7 @@ cmat randH(idx D)
     if (D == 0)
         throw Exception("qpp::randH()", Exception::Type::DIMS_INVALID);
 
-    cmat H = 2 * rand < cmat > (D, D) - (1. + 1_i) * cmat::Ones(D, D);
+    cmat H = 2 * rand<cmat>(D, D) - (1. + 1_i) * cmat::Ones(D, D);
 
     return H + adjoint(H);
 }
