@@ -72,17 +72,10 @@ template<typename T>
 class Singleton
 {
 protected:
-    Singleton() noexcept
-    {
-    }
+    Singleton() noexcept = default;
 
-    virtual ~Singleton()
-    {
-    }
+    virtual ~Singleton() = default;
 
-    // = default yields "looser throw specifer in g++ <= 4.7"
-    // see http://stackoverflow.com
-    // /questions/11497252/default-destructor-nothrow
     Singleton(const Singleton&) = delete;
 
     Singleton& operator=(const Singleton&) = delete;

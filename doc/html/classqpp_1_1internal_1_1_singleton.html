@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Quantum++
-   &#160;<span id="projectnumber">v0.1</span>
+   &#160;<span id="projectnumber">v0.4</span>
    </div>
    <div id="projectbrief">C++11 quantum computing library</div>
   </td>
@@ -92,10 +92,10 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a18117a60454bc17415345055ecef4763"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_singleton.html#a18117a60454bc17415345055ecef4763">Singleton</a> () noexcept</td></tr>
-<tr class="separator:a18117a60454bc17415345055ecef4763"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba717b4ca79fc5f0cfe9b0cd340ef100"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_singleton.html#aba717b4ca79fc5f0cfe9b0cd340ef100">~Singleton</a> ()</td></tr>
-<tr class="separator:aba717b4ca79fc5f0cfe9b0cd340ef100"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d3f298f1de58b32475c0bc1986e564a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_singleton.html#a2d3f298f1de58b32475c0bc1986e564a">Singleton</a> () noexcept=default</td></tr>
+<tr class="separator:a2d3f298f1de58b32475c0bc1986e564a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1338519d694c423036ee981c97625133"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_singleton.html#a1338519d694c423036ee981c97625133">~Singleton</a> ()=default</td></tr>
+<tr class="separator:a1338519d694c423036ee981c97625133"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f5902847d8719a540387dab15409693"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_singleton.html#a9f5902847d8719a540387dab15409693">Singleton</a> (const <a class="el" href="classqpp_1_1internal_1_1_singleton.html">Singleton</a> &amp;)=delete</td></tr>
 <tr class="separator:a9f5902847d8719a540387dab15409693"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9f8d235a7b7e9fc5732e0d049442fa5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1internal_1_1_singleton.html">Singleton</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_singleton.html#ac9f8d235a7b7e9fc5732e0d049442fa5">operator=</a> (const <a class="el" href="classqpp_1_1internal_1_1_singleton.html">Singleton</a> &amp;)=delete</td></tr>
@@ -124,7 +124,7 @@ class qpp::internal::Singleton&lt; T &gt;</h3>
 <div class="line"><span class="comment">// Get a thread_local instance</span></div>
 </div><!-- fragment --><dl class="section see"><dt>See also</dt><dd>Code of <a class="el" href="classqpp_1_1_codes.html" title="const Singleton class that defines quantum error correcting codes ">qpp::Codes</a>, <a class="el" href="classqpp_1_1_gates.html" title="const Singleton class that implements most commonly used gates ">qpp::Gates</a>, <a class="el" href="classqpp_1_1_init.html" title="const Singleton class that performs additional initializations/cleanups ">qpp::Init</a>, <a class="el" href="classqpp_1_1_random_devices.html" title="Singeleton class that manages the source of randomness in the library. ">qpp::RandomDevices</a>, <a class="el" href="classqpp_1_1_states.html" title="const Singleton class that implements most commonly used states ">qpp::States</a> or <a class="el" href="qpp_8h.html" title="Quantum++ main header file, includes all other necessary headers. ">qpp.h</a> for real world examples of usage. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a18117a60454bc17415345055ecef4763"></a>
+<a class="anchor" id="a2d3f298f1de58b32475c0bc1986e564a"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -142,14 +142,14 @@ template&lt;typename T&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="aba717b4ca79fc5f0cfe9b0cd340ef100"></a>
+<a class="anchor" id="a1338519d694c423036ee981c97625133"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -167,7 +167,7 @@ template&lt;typename T&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -286,7 +286,7 @@ template&lt;typename T&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="namespaceqpp_1_1internal.html">internal</a></li><li class="navelem"><a class="el" href="classqpp_1_1internal_1_1_singleton.html">Singleton</a></li>
-    <li class="footer">Generated on Sun Mar 8 2015 01:27:08 for Quantum++ by
+    <li class="footer">Generated on Sun Mar 8 2015 14:05:00 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

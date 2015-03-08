@@ -49,13 +49,12 @@ public:
         SEVEN_QUBIT_STEANE, ///< [[7,1,3]] Steane qubit code
         NINE_QUBIT_SHOR     ///< [[9,1,3]] Shor qubit code
     };
+
 private:
     /**
     * \brief Default constructor
     */
-    Codes()
-    {
-    }
+    Codes() = default;
 
 public:
     /**
