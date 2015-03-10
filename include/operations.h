@@ -924,6 +924,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
                     Exception::Type::DIMS_MISMATCH_CVECTOR);
 
         auto worker = [=](idx i, idx j) noexcept
+                -> typename Derived::Scalar
         {
             typename Derived::Scalar sum = 0;
             for (idx m = 0; m < DA; ++m)
@@ -948,6 +949,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
                     Exception::Type::DIMS_MISMATCH_MATRIX);
 
         auto worker = [=](idx i, idx j) noexcept
+                -> typename Derived::Scalar
         {
             typename Derived::Scalar sum = 0;
             for (idx m = 0; m < DA; ++m)
@@ -1018,6 +1020,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
                     Exception::Type::DIMS_MISMATCH_CVECTOR);
 
         auto worker = [=](idx i, idx j) noexcept
+                -> typename Derived::Scalar
         {
             typename Derived::Scalar sum = 0;
             for (idx m = 0; m < DB; ++m)
@@ -1146,6 +1149,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             return rA * adjoint(rA);
 
         auto worker = [=, &Cmidxcolsubsysbar](idx i) noexcept
+                -> typename Derived::Scalar
         {
             // use static allocation for speed!
 
@@ -1214,6 +1218,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             return rA;
 
         auto worker = [=, &Cmidxcolsubsysbar](idx i) noexcept
+                -> typename Derived::Scalar
         {
             // use static allocation for speed!
 
@@ -1368,6 +1373,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
             return rA * adjoint(rA);
 
         auto worker = [=, &Cmidxcol](idx i) noexcept
+                -> typename Derived::Scalar
         {
             // use static allocation for speed!
             idx midxcoltmp[maxn];
@@ -1414,6 +1420,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
             return rA;
 
         auto worker = [=, &Cmidxcol](idx i) noexcept
+                -> typename Derived::Scalar
         {
             // use static allocation for speed!
             idx midxcoltmp[maxn];
@@ -1547,6 +1554,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
         result.resize(D, 1);
 
         auto worker = [&Cdims, &Cperm, numdims](idx i) noexcept
+                -> idx
         {
             // use static allocation for speed,
             // double the size for matrices reshaped as vectors
@@ -1598,6 +1606,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
                 const_cast<typename Derived::Scalar*>(rA.data()), D * D, 1);
 
         auto worker = [&Cdims, &Cperm, numdims](idx i) noexcept
+                -> idx
         {
             // use static allocation for speed,
             // double the size for matrices reshaped as vectors
