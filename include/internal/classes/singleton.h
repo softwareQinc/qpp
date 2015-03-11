@@ -71,10 +71,13 @@ namespace internal // internal class, do not modify
 template<typename T>
 class Singleton
 {
+    // to prevent deleting pointer to instance
+    void operator delete(void*)
+    {
+    }
+
 protected:
     Singleton() noexcept = default;
-
-    virtual ~Singleton() = default;
 
     Singleton(const Singleton&) = delete;
 
