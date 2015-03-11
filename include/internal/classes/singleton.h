@@ -71,7 +71,7 @@ namespace internal // internal class, do not modify
 template<typename T>
 class Singleton
 {
-    // to prevent deleting pointer to instance
+    // prevents deleting pointer to instance
     void operator delete(void*)
     {
     }
