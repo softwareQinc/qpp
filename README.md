@@ -140,8 +140,8 @@ the `./build` directory before a fresh build!
 
 - The C++ compiler must be C++11 compliant.
 
-- If using Windows, I recommend compiling under [cygwin](https://www.cygwin.com) 
-via [cmake](http://www.cmake.org/)
+- If using [Windows](http://windows.microsoft.com/), I recommend compiling 
+under [cygwin](https://www.cygwin.com) via [cmake](http://www.cmake.org/)
 
 - If your compiler does not support [OpenMP](http://openmp.org/) 
 (as it is the case e.g with [clang++](http://clang.llvm.org/)), 
