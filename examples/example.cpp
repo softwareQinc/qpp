@@ -319,7 +319,8 @@ void ENTANGLEMENT()
     // reconstructed state
     ket psi_from_schmidt =
             schmidtcoeffs(psi, {2, 2})(0) * kron(UA.col(0), UB.col(0))
-                    + schmidtcoeffs(psi, {2, 2})(1) * kron(UA.col(1), UB.col(1));
+                    + schmidtcoeffs(psi, {2, 2})(1)
+                    * kron(UA.col(1), UB.col(1));
     cout << ">> State psi reconstructed from the Schmidt decomposition: "
             << endl;
     cout << disp(psi_from_schmidt) << endl;
