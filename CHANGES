@@ -31,7 +31,7 @@ Version 0.4 - 8 March 2015
     - Added support for unit testing via Google Mock/Google Test, see
         ./unit_tests/testing.cpp.
 
-Version 0.4.1 - development
+Version 0.5 - 19 March 2015
     - Fixed a bug in class qpp::internal::Singleton<T> which allowed deleting
         the instance via a pointer. Now static operator delete(void*) 
         is marked private.
