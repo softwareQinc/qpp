@@ -1,5 +1,5 @@
 # Quantum++ 
-## Version 0.4 - 8 March 2015
+## Version 0.5 - 19 March 2015
 
 Quantum++ is a C++11 general purpose quantum computing library, composed 
 solely of template header files. It uses the 
@@ -136,6 +136,9 @@ the `./build` directory before a fresh build!
 ### Additional remarks
 
 - The C++ compiler must be C++11 compliant.
+
+- If using [Windows](http://windows.microsoft.com/), I recommend compiling 
+under [cygwin](https://www.cygwin.com) via [cmake](http://www.cmake.org/).
 
 - If your compiler does not support [OpenMP](http://openmp.org/) 
 (as it is the case e.g with [clang++](http://clang.llvm.org/)), 

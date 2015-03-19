@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Quantum++
-   &#160;<span id="projectnumber">v0.4</span>
+   &#160;<span id="projectnumber">v0.5</span>
    </div>
    <div id="projectbrief">C++11 quantum computing library</div>
   </td>
@@ -539,9 +539,9 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_html_a65da96cadec88fbbb3cc70b0a82fa90c"><div class="ttname"><a href="namespaceqpp.html#a65da96cadec88fbbb3cc70b0a82fa90c">qpp::measure</a></div><div class="ttdeci">std::tuple&lt; idx, std::vector&lt; double &gt;, std::vector&lt; cmat &gt; &gt; measure(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; cmat &gt; &amp;Ks)</div><div class="ttdoc">Measures the state A using the set of Kraus operators Ks. </div><div class="ttdef"><b>Definition:</b> instruments.h:44</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html"><div class="ttname"><a href="classqpp_1_1_exception.html">qpp::Exception</a></div><div class="ttdoc">Generates custom exceptions, used when validating function parameters. </div><div class="ttdef"><b>Definition:</b> exception.h:39</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a06ca054b0436fb4b9b445574dec47f82"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">qpp::internal::_check_nonzero_size</a></div><div class="ttdeci">bool _check_nonzero_size(const T &amp;x) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:119</div></div>
-<div class="ttc" id="namespaceqpp_html_a1300526d686af7fec966d8760087a168"><div class="ttname"><a href="namespaceqpp.html#a1300526d686af7fec966d8760087a168">qpp::ptrace</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; ptrace(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Partial trace. </div><div class="ttdef"><b>Definition:</b> operations.h:1072</div></div>
+<div class="ttc" id="namespaceqpp_html_a1300526d686af7fec966d8760087a168"><div class="ttname"><a href="namespaceqpp.html#a1300526d686af7fec966d8760087a168">qpp::ptrace</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; ptrace(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Partial trace. </div><div class="ttdef"><b>Definition:</b> operations.h:1075</div></div>
 <div class="ttc" id="namespaceqpp_html_a1e1daff5450728504da1fdfedf8d8b54"><div class="ttname"><a href="namespaceqpp.html#a1e1daff5450728504da1fdfedf8d8b54">qpp::trace</a></div><div class="ttdeci">Derived::Scalar trace(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Trace. </div><div class="ttdef"><b>Definition:</b> functions.h:121</div></div>
-<div class="ttc" id="classqpp_1_1internal_1_1_singleton_html_a4c06f662f70991aa6f84bacf71efc069"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">qpp::internal::Singleton&lt; RandomDevices &gt;::get_instance</a></div><div class="ttdeci">static RandomDevices &amp; get_instance() noexcept(std::is_nothrow_constructible&lt; RandomDevices &gt;::value)</div><div class="ttdef"><b>Definition:</b> singleton.h:84</div></div>
+<div class="ttc" id="classqpp_1_1internal_1_1_singleton_html_a4c06f662f70991aa6f84bacf71efc069"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">qpp::internal::Singleton&lt; RandomDevices &gt;::get_instance</a></div><div class="ttdeci">static RandomDevices &amp; get_instance() noexcept(std::is_nothrow_constructible&lt; RandomDevices &gt;::value)</div><div class="ttdef"><b>Definition:</b> singleton.h:90</div></div>
 <div class="ttc" id="namespaceqpp_html_ab0de67006716bdc8fae52c6a49259276"><div class="ttname"><a href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">qpp::cmat</a></div><div class="ttdeci">Eigen::MatrixXcd cmat</div><div class="ttdoc">Complex (double precision) dynamic Eigen matrix. </div><div class="ttdef"><b>Definition:</b> types.h:56</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7caf6ba7b51754d252579c9daa43dbbfd68"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7caf6ba7b51754d252579c9daa43dbbfd68">qpp::Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR</a></div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2">qpp::Exception::Type::SUBSYS_MISMATCH_DIMS</a></div></div>
@@ -555,7 +555,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="instruments_8h.html">instruments.h</a></li>
-    <li class="footer">Generated on Sun Mar 8 2015 14:05:00 for Quantum++ by
+    <li class="footer">Generated on Thu Mar 19 2015 13:08:07 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

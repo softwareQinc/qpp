@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.0)
+cmake_minimum_required(VERSION 2.8.4)
 project(qpp)
 
 # modify as needed
@@ -9,6 +9,7 @@ set(SOURCE_FILES
 set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pedantic -Wall -Wextra -Weffc++")
 set(EIGEN "$ENV{HOME}/eigen")
+set(MATLAB "/Applications/MATLAB_R2014b.app")
 
 option(WITH_OPENMP "OpenMP support" ON)
 if(${WITH_OPENMP})
@@ -19,8 +20,8 @@ endif(${WITH_OPENMP})
 # modify as needed
 option(WITH_MATLAB "MATLAB integration" OFF)
 if(${WITH_MATLAB})
-    include_directories("/Applications/MATLAB_R2014b.app/extern/include")
-    set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lmx -lmat -L/Applications/MATLAB_R2014b.app/bin/maci64")
+    include_directories("${MATLAB}/extern/include")
+    set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lmx -lmat -L${MATLAB}/bin/maci64")
 endif(${WITH_MATLAB})
 
 # use the "no-weak" debugging flag only when debugging under OS X,
