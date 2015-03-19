@@ -30,6 +30,6 @@ Version 0.4 - 8 March 2015
         qpp::rand() functions.
 
 Version 0.4.1 - development
-    - Fixed a bug in class qpp::Singeleton<T> which allowed deleting
-        the instance via a pointer. Now static operator delete(void*)
+    - Fixed a bug in class qpp::internal::Singleton<T> which allowed deleting
+        the instance via a pointer. Now static operator delete(void*) 
         is marked private.
