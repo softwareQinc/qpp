@@ -72,13 +72,19 @@ template<typename T>
 class Singleton
 {
 protected:
-    Singleton() noexcept = default;
+    // prevents deleting pointer to instance
+    static void operator delete(void*)
+    {
+    }
 
-    virtual ~Singleton() = default;
+    Singleton() noexcept = default;
 
     Singleton(const Singleton&) = delete;
 
     Singleton& operator=(const Singleton&) = delete;
+
+    virtual ~Singleton() = default; // to silence base class Singleton<T> has a
+    // non-virtual destructor [-Weffc++]
 
 public:
     static T& get_instance() noexcept(std::is_nothrow_constructible<T>::value)

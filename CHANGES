@@ -22,9 +22,16 @@ Version 0.4 - 8 March 2015
     - Added new functions in <functions.h>:
         qpp::complement() - computes the complement of a subsystem vector
         qpp::rho2bloch() - qubit density matrix to Bloch vector
-        qpp::rho2bloch - Bloch vector to qubit density matrix
+        qpp::bloch2rho() - Bloch vector to qubit density matrix
     - Added new functions in <instruments.h>:
         qpp::measure_seq() - measures subsystems sequentially
     - Removed support for the C-style random number engine, as it is not thread
         safe. Hence, Eigen::Matrix::Random() should not be used, use instead
         qpp::rand() functions.
+    - Added support for unit testing via Google Mock/Google Test, see
+        ./unit_tests/testing.cpp.
+
+Version 0.5 - 19 March 2015
+    - Fixed a bug in class qpp::internal::Singleton<T> which allowed deleting
+        the instance via a pointer. Now static operator delete(void*) 
+        is marked private.
