@@ -101,8 +101,8 @@ $(document).ready(function(){initNavTree('init_8h_source.html','');});
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
 <div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html#ac8d1cd0592921282440f9287abf4f22c">   40</a></span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;const <a class="code" href="classqpp_1_1_init.html">Init</a>&gt;;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html#a5650a0e31393cf13755262328f2122e9">   46</a></span>&#160;    <a class="code" href="classqpp_1_1_init.html#a5650a0e31393cf13755262328f2122e9">Init</a>()</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="classqpp_1_1_init.html">Init</a>()</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    {</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="comment">// on entry message</span></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; Starting Quantum++...&quot;</span> &lt;&lt; std::endl;</div>
@@ -117,32 +117,30 @@ $(document).ready(function(){initNavTree('init_8h_source.html','');});
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        std::cout &lt;&lt; std::setprecision(4); <span class="comment">// only for fixed/scientific modes</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    ~<a class="code" href="classqpp_1_1_init.html">Init</a>()</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="comment">// on exit message</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        std::cout &lt;&lt; std::endl &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; Exiting Quantum++...&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="comment">// gets and displays current system time</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        std::time_t current_date = std::time(<span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; &quot;</span> &lt;&lt; std::ctime(&amp;current_date);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}; <span class="comment">/* class Init */</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* CLASSES_INIT_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    ~<a class="code" href="classqpp_1_1_init.html">Init</a>()</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="comment">// on exit message</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        std::cout &lt;&lt; std::endl &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; Exiting Quantum++...&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="comment">// gets and displays current system time</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        std::time_t current_date = std::time(<span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; &quot;</span> &lt;&lt; std::ctime(&amp;current_date);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}; <span class="comment">/* class Init */</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* CLASSES_INIT_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="classqpp_1_1internal_1_1_singleton_html"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html">qpp::internal::Singleton</a></div><div class="ttdoc">Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...</div><div class="ttdef"><b>Definition:</b> singleton.h:72</div></div>
 <div class="ttc" id="namespaceqpp_html"><div class="ttname"><a href="namespaceqpp.html">qpp</a></div><div class="ttdoc">Quantum++ main namespace. </div><div class="ttdef"><b>Definition:</b> codes.h:30</div></div>
 <div class="ttc" id="classqpp_1_1_init_html"><div class="ttname"><a href="classqpp_1_1_init.html">qpp::Init</a></div><div class="ttdoc">const Singleton class that performs additional initializations/cleanups </div><div class="ttdef"><b>Definition:</b> init.h:38</div></div>
-<div class="ttc" id="classqpp_1_1_init_html_a5650a0e31393cf13755262328f2122e9"><div class="ttname"><a href="classqpp_1_1_init.html#a5650a0e31393cf13755262328f2122e9">qpp::Init::Init</a></div><div class="ttdeci">Init()</div><div class="ttdoc">Additional initializations. </div><div class="ttdef"><b>Definition:</b> init.h:46</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b02e4219757ae4e3a0f1714873865bbf.html">classes</a></li><li class="navelem"><a class="el" href="init_8h.html">init.h</a></li>
-    <li class="footer">Generated on Thu Mar 19 2015 19:03:19 for Quantum++ by
+    <li class="footer">Generated on Fri Mar 20 2015 19:44:15 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
