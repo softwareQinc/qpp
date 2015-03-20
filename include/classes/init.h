@@ -39,7 +39,7 @@ class Init : public internal::Singleton<const Init> // const Singleton
 {
     friend class internal::Singleton<const Init>;
 
-public:
+private:
     /**
     * \brief Additional initializations
     */
@@ -58,7 +58,6 @@ public:
         std::cout << std::setprecision(4); // only for fixed/scientific modes
     }
 
-private:
     /**
     * \brief Cleanups
     */
