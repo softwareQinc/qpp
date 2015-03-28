@@ -145,7 +145,8 @@ under [cygwin](https://www.cygwin.com) via [cmake](http://www.cmake.org/)
 and [g++](https://gcc.gnu.org/). 
 See also <http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2>
 for a bug related to lack of support for some C++11 math functions, and
-how to fix it.
+how to fix it. Quick fix: patch the standard library header `cmath` 
+using the patch `./cmath_cygwin.patch`
 
 - If your compiler does not support [OpenMP](http://openmp.org/) 
 (as it is the case e.g with [clang++](http://clang.llvm.org/)), 
