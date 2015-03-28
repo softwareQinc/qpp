@@ -142,10 +142,7 @@ the `./build` directory before a fresh build!
 
 - If using [Windows](http://windows.microsoft.com/), I recommend compiling 
 under [cygwin](https://www.cygwin.com) via [cmake](http://www.cmake.org/)
-and [g++](https://gcc.gnu.org/). Pass the `-mno-cygwin` compiler flag 
-if you want to run the application outside [cygwin](https://www.cygwin.com)'s
-console (i.e., as a standalone [Windows](http://windows.microsoft.com/) 
-application). 
+and [g++](https://gcc.gnu.org/). 
 See also <http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2>
 for a bug related to lack of support for some C++11 math functions, and
 a fix for it.
