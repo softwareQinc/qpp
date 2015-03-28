@@ -98,7 +98,7 @@ shared library files:
 
 ### Building using [cmake](http://www.cmake.org/)
 
-The current version of the repository has a `CMakeLists.txt` configuration file
+The current version of the repository has a `./CMakeLists.txt` configuration file
 for building examples using [cmake](http://www.cmake.org/). 
 To build an example using [cmake](http://www.cmake.org/), 
 I recommend an out-of-source build, i.e., from the root of the project 
@@ -131,7 +131,7 @@ Or, to disable [OpenMP](http://openmp.org/) support (enabled by default), type
 To change the name of the example file, the location of the
 [Eigen 3](http://eigen.tuxfamily.org)
 library or the location of [MATLAB](http://www.mathworks.com/products/matlab/) 
-installation, edit the `CMakeLists.txt` file. See also `CMakeLists.txt` 
+installation, edit the `./CMakeLists.txt` file. See also `./CMakeLists.txt` 
 for additional options. Do not forget to remove everything from 
 the `./build` directory before a fresh build!
 
@@ -145,7 +145,7 @@ under [cygwin](https://www.cygwin.com) via [cmake](http://www.cmake.org/)
 and [g++](https://gcc.gnu.org/). 
 See also <http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2>
 for a bug related to lack of support for some C++11 math functions, and
-how to fix it. Quick fix: patch the standard library header `cmath` 
+how to fix it. Quick fix: patch the standard library header file `cmath` 
 using the patch `./cmath_cygwin.patch`
 
 - If your compiler does not support [OpenMP](http://openmp.org/) 
