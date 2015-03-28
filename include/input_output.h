@@ -42,7 +42,7 @@ namespace qpp
 */
 template<typename Derived>
 internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
-        double chop = qpp::chop)
+                            double chop = qpp::chop)
 {
     return internal::IOManipEigen(A, chop);
 }
@@ -73,8 +73,10 @@ internal::IOManipEigen disp(cplx z, double chop = qpp::chop)
 */
 template<typename InputIterator>
 internal::IOManipRange<InputIterator> disp(const InputIterator& first,
-        const InputIterator& last, const std::string& separator,
-        const std::string& start = "[", const std::string& end = "]")
+                                           const InputIterator& last,
+                                           const std::string& separator,
+                                           const std::string& start = "[",
+                                           const std::string& end = "]")
 {
     return internal::IOManipRange<InputIterator
     >(first, last, separator, start, end);
@@ -111,8 +113,9 @@ internal::IOManipRange<typename Container::const_iterator> disp(
 */
 template<typename PointerType>
 internal::IOManipPointer<PointerType> disp(const PointerType* p, idx n,
-        const std::string& separator, const std::string& start = "[",
-        const std::string& end = "]")
+                                           const std::string& separator,
+                                           const std::string& start = "[",
+                                           const std::string& end = "]")
 {
     return internal::IOManipPointer<PointerType>(p, n, separator, start, end);
 }
@@ -141,7 +144,7 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
     {
         throw std::runtime_error(
                 "qpp::save(): Error writing output file \""
-                        + std::string(fname) + "\"!");
+                + std::string(fname) + "\"!");
     }
 
     // write the header to file
@@ -154,7 +157,7 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
     fout.write((char*) &cols, sizeof(cols));
 
     fout.write((char*) rA.data(),
-            sizeof(typename Derived::Scalar) * rows * cols);
+               sizeof(typename Derived::Scalar) * rows * cols);
 
     fout.close();
 }
@@ -187,7 +190,7 @@ dyn_mat<typename Derived::Scalar> load(const std::string& fname)
     {
         throw std::runtime_error(
                 "qpp::load(): Error opening input file \""
-                        + std::string(fname) + "\"!");
+                + std::string(fname) + "\"!");
     }
 
     const char _header[] = "TYPE::Eigen::Matrix";
@@ -200,7 +203,7 @@ dyn_mat<typename Derived::Scalar> load(const std::string& fname)
         delete[] _fheader;
         throw std::runtime_error(
                 "qpp::load(): Input file \"" + std::string(fname)
-                        + "\" is corrupted!");
+                + "\" is corrupted!");
     }
     delete[] _fheader;
 
@@ -211,7 +214,7 @@ dyn_mat<typename Derived::Scalar> load(const std::string& fname)
     dyn_mat<typename Derived::Scalar> A(rows, cols);
 
     fin.read((char*) A.data(),
-            sizeof(typename Derived::Scalar) * rows * cols);
+             sizeof(typename Derived::Scalar) * rows * cols);
 
     fin.close();
 

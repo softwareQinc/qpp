@@ -42,8 +42,9 @@ class IOManipRange
     std::string _separator, _start, _end;
 public:
     explicit IOManipRange(InputIterator first, InputIterator last,
-            const std::string& separator, const std::string& start = "[",
-            const std::string& end = "]") :
+                          const std::string& separator,
+                          const std::string& start = "[",
+                          const std::string& end = "]") :
             _first{first},
             _last{last},
             _separator{separator},
@@ -80,8 +81,9 @@ class IOManipPointer
     std::string _separator, _start, _end;
 public:
     explicit IOManipPointer(const PointerType* p, const idx n,
-            const std::string& separator, const std::string& start = "[",
-            const std::string& end = "]") :
+                            const std::string& separator,
+                            const std::string& start = "[",
+                            const std::string& end = "]") :
             _p{p},
             _n{n},
             _separator{separator},
@@ -98,7 +100,7 @@ public:
     template<typename charT, typename traits>
     friend std::basic_ostream<charT, traits>&
     operator<<(std::basic_ostream<charT, traits>& os,
-            const IOManipPointer& rhs)
+               const IOManipPointer& rhs)
     {
         os << rhs._start;
 
@@ -141,7 +143,7 @@ public:
         if (!internal::_check_nonzero_size(rhs._A))
         {
             os << "Empty [" << rhs._A.rows() << " x "
-                    << rhs._A.cols() << "] matrix";
+            << rhs._A.cols() << "] matrix";
 
             return os;
         };
@@ -214,12 +216,12 @@ public:
              ++i)
         {
             os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
-                    << vstr[i * rhs._A.cols()]; // display first column
+            << vstr[i * rhs._A.cols()]; // display first column
             // then the rest
             for (idx j = 1;
                  j < static_cast<idx>(rhs._A.cols()); ++j)
                 os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
-                        << std::right << vstr[i * rhs._A.cols() + j];
+                << std::right << vstr[i * rhs._A.cols() + j];
 
             if (i < static_cast<idx>(rhs._A.rows()) - 1)
                 os << std::endl;

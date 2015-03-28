@@ -253,9 +253,9 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l00257"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a336521e1a561be170d44dd5a1bc81c1d">  257</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a336521e1a561be170d44dd5a1bc81c1d">qmutualinfo</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsysA,</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsysB,</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                   <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsysA,</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                   <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsysB,</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                   <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;{</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;</div>
@@ -272,18 +272,18 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="comment">// check square matrix</span></div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">internal::_check_square_mat</a>(rA))</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::qmutualinfo()&quot;</span>,</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cacb2cab32e9061c686a6664d06c8bac94">Exception::Type::MATRIX_NOT_SQUARE</a>);</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                        <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cacb2cab32e9061c686a6664d06c8bac94">Exception::Type::MATRIX_NOT_SQUARE</a>);</div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;</div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="comment">// check that dims match the dimension of A</span></div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a91aa370280d653933744a64a55cd0ff3">internal::_check_dims_match_mat</a>(dims, rA))</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::qmutualinfo()&quot;</span>,</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d">Exception::Type::DIMS_MISMATCH_MATRIX</a>);</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                        <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d">Exception::Type::DIMS_MISMATCH_MATRIX</a>);</div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;</div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="comment">// check that subsys are valid</span></div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a40b09454ce4959a4fd231e67518d6abe">internal::_check_subsys_match_dims</a>(subsysA, dims)</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            || !<a class="code" href="namespaceqpp_1_1internal.html#a40b09454ce4959a4fd231e67518d6abe">internal::_check_subsys_match_dims</a>(subsysB, dims))</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        || !<a class="code" href="namespaceqpp_1_1internal.html#a40b09454ce4959a4fd231e67518d6abe">internal::_check_subsys_match_dims</a>(subsysB, dims))</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::qmutualinfo()&quot;</span>,</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;                <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2">Exception::Type::SUBSYS_MISMATCH_DIMS</a>);</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;                        <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2">Exception::Type::SUBSYS_MISMATCH_DIMS</a>);</div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="comment">// The full system indexes {0,1,...,n-1}</span></div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    std::vector&lt;idx&gt; full_system(dims.size());</div>
@@ -300,8 +300,8 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="comment">// construct the union of A and B</span></div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    std::vector&lt;idx&gt; subsysAB;</div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    std::set_union(std::begin(subsysAsorted), std::end(subsysAsorted),</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;            std::begin(subsysBsorted), std::end(subsysBsorted),</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;            std::back_inserter(subsysAB));</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;                   std::begin(subsysBsorted), std::end(subsysBsorted),</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;                   std::back_inserter(subsysAB));</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="comment">// construct the complements</span></div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    std::vector&lt;idx&gt; subsysAbar = <a class="code" href="namespaceqpp.html#a87ad5b3e58dedde05467ac1961e44892">complement</a>(subsysA, dims.size());</div>
@@ -317,9 +317,9 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;</div>
 <div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l00330"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a1dfb291551237e2a5b45e335141e759a">  330</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a336521e1a561be170d44dd5a1bc81c1d">qmutualinfo</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsysA,</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsysB,</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;                   <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsysA,</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;                   <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsysB,</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                   <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
 <div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;{</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;</div>
@@ -331,7 +331,7 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;</div>
 <div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n =</div>
 <div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;            <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(rA.rows()) /</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                    std::log2(d)));</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                                          std::log2(d)));</div>
 <div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    std::vector&lt;idx&gt; dims(n, d); <span class="comment">// local dimensions vector</span></div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
 <div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a336521e1a561be170d44dd5a1bc81c1d">qmutualinfo</a>(rA, subsysA, subsysB, dims);</div>
@@ -350,14 +350,14 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_1_1internal_html_ace7cfa182baf987f8a3374bd700b4276"><div class="ttname"><a href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">qpp::internal::_check_square_mat</a></div><div class="ttdeci">bool _check_square_mat(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:83</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">qpp::Exception::Type::DIMS_INVALID</a></div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">qpp::Exception::Type::ZERO_SIZE</a></div></div>
-<div class="ttc" id="namespaceqpp_html_a87ad5b3e58dedde05467ac1961e44892"><div class="ttname"><a href="namespaceqpp.html#a87ad5b3e58dedde05467ac1961e44892">qpp::complement</a></div><div class="ttdeci">std::vector&lt; T &gt; complement(std::vector&lt; T &gt; subsys, idx N)</div><div class="ttdoc">Constructs the complement of a subsystem vector. </div><div class="ttdef"><b>Definition:</b> functions.h:1650</div></div>
-<div class="ttc" id="namespaceqpp_html_abe012650e8ff95fc346dd75cdbb3625a"><div class="ttname"><a href="namespaceqpp.html#abe012650e8ff95fc346dd75cdbb3625a">qpp::svals</a></div><div class="ttdeci">dyn_col_vect&lt; double &gt; svals(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Singular values. </div><div class="ttdef"><b>Definition:</b> functions.h:425</div></div>
+<div class="ttc" id="namespaceqpp_html_a87ad5b3e58dedde05467ac1961e44892"><div class="ttname"><a href="namespaceqpp.html#a87ad5b3e58dedde05467ac1961e44892">qpp::complement</a></div><div class="ttdeci">std::vector&lt; T &gt; complement(std::vector&lt; T &gt; subsys, idx N)</div><div class="ttdoc">Constructs the complement of a subsystem vector. </div><div class="ttdef"><b>Definition:</b> functions.h:1652</div></div>
+<div class="ttc" id="namespaceqpp_html_abe012650e8ff95fc346dd75cdbb3625a"><div class="ttname"><a href="namespaceqpp.html#abe012650e8ff95fc346dd75cdbb3625a">qpp::svals</a></div><div class="ttdeci">dyn_col_vect&lt; double &gt; svals(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Singular values. </div><div class="ttdef"><b>Definition:</b> functions.h:426</div></div>
 <div class="ttc" id="namespaceqpp_html_a922127fa0dd6659113c8277de8731c41"><div class="ttname"><a href="namespaceqpp.html#a922127fa0dd6659113c8277de8731c41">qpp::entropy</a></div><div class="ttdeci">double entropy(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">von-Neumann entropy of the density matrix A </div><div class="ttdef"><b>Definition:</b> entropies.h:43</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html"><div class="ttname"><a href="classqpp_1_1_exception.html">qpp::Exception</a></div><div class="ttdoc">Generates custom exceptions, used when validating function parameters. </div><div class="ttdef"><b>Definition:</b> exception.h:39</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">qpp::Exception::Type::OUT_OF_RANGE</a></div></div>
 <div class="ttc" id="namespaceqpp_html_a991bc6df4280943452bfbedafa65b9f7"><div class="ttname"><a href="namespaceqpp.html#a991bc6df4280943452bfbedafa65b9f7">qpp::renyi</a></div><div class="ttdeci">double renyi(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, double alpha)</div><div class="ttdoc">Renyi-  entropy of the density matrix A, for . </div><div class="ttdef"><b>Definition:</b> entropies.h:97</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a06ca054b0436fb4b9b445574dec47f82"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">qpp::internal::_check_nonzero_size</a></div><div class="ttdeci">bool _check_nonzero_size(const T &amp;x) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:119</div></div>
-<div class="ttc" id="namespaceqpp_html_a1300526d686af7fec966d8760087a168"><div class="ttname"><a href="namespaceqpp.html#a1300526d686af7fec966d8760087a168">qpp::ptrace</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; ptrace(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Partial trace. </div><div class="ttdef"><b>Definition:</b> operations.h:1075</div></div>
+<div class="ttc" id="namespaceqpp_html_a1300526d686af7fec966d8760087a168"><div class="ttname"><a href="namespaceqpp.html#a1300526d686af7fec966d8760087a168">qpp::ptrace</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; ptrace(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Partial trace. </div><div class="ttdef"><b>Definition:</b> operations.h:1079</div></div>
 <div class="ttc" id="namespaceqpp_html_aecd9c0f42f21f1d3b29868b6a8cac4c7"><div class="ttname"><a href="namespaceqpp.html#aecd9c0f42f21f1d3b29868b6a8cac4c7">qpp::infty</a></div><div class="ttdeci">constexpr double infty</div><div class="ttdoc">Used to denote infinity in double precision. </div><div class="ttdef"><b>Definition:</b> constants.h:96</div></div>
 <div class="ttc" id="namespaceqpp_html_ab0de67006716bdc8fae52c6a49259276"><div class="ttname"><a href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">qpp::cmat</a></div><div class="ttdeci">Eigen::MatrixXcd cmat</div><div class="ttdoc">Complex (double precision) dynamic Eigen matrix. </div><div class="ttdef"><b>Definition:</b> types.h:56</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2">qpp::Exception::Type::SUBSYS_MISMATCH_DIMS</a></div></div>
@@ -371,7 +371,7 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="entropies_8h.html">entropies.h</a></li>
-    <li class="footer">Generated on Fri Mar 20 2015 19:44:15 for Quantum++ by
+    <li class="footer">Generated on Sat Mar 28 2015 19:50:24 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

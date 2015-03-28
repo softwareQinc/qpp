@@ -169,7 +169,7 @@ typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A)
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::logdet()",
-                Exception::Type::MATRIX_NOT_SQUARE);
+                        Exception::Type::MATRIX_NOT_SQUARE);
 
     Eigen::PartialPivLU<dyn_mat<typename Derived::Scalar>> lu(rA);
     dyn_mat<typename Derived::Scalar> U =
@@ -383,7 +383,7 @@ cmat hevects(const Eigen::MatrixBase<Derived>& A)
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::hevects()",
-                Exception::Type::MATRIX_NOT_SQUARE);
+                        Exception::Type::MATRIX_NOT_SQUARE);
 
     return heig(rA).second;
 }
@@ -407,9 +407,10 @@ svd(const Eigen::MatrixBase<Derived>& A)
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::svd()", Exception::Type::ZERO_SIZE);
 
-    Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>> sv(rA,
-            Eigen::DecompositionOptions::ComputeFullU |
-                    Eigen::DecompositionOptions::ComputeFullV);
+    Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>>
+            sv(rA,
+               Eigen::DecompositionOptions::ComputeFullU |
+               Eigen::DecompositionOptions::ComputeFullV);
 
     return std::make_tuple(sv.matrixU(), sv.singularValues(), sv.matrixV());
 }
@@ -451,8 +452,8 @@ cmat svdU(const Eigen::MatrixBase<Derived>& A)
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::svdU()", Exception::Type::ZERO_SIZE);
 
-    Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>> sv(rA,
-            Eigen::DecompositionOptions::ComputeFullU);
+    Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>>
+            sv(rA, Eigen::DecompositionOptions::ComputeFullU);
 
     return sv.matrixU();
 }
@@ -473,8 +474,8 @@ cmat svdV(const Eigen::MatrixBase<Derived>& A)
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::svdV()", Exception::Type::ZERO_SIZE);
 
-    Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>> sv(rA,
-            Eigen::DecompositionOptions::ComputeFullV);
+    Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>>
+            sv(rA, Eigen::DecompositionOptions::ComputeFullV);
 
     return sv.matrixV();
 }
@@ -667,7 +668,7 @@ cmat spectralpowm(const Eigen::MatrixBase<Derived>& A, const cplx z)
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::spectralpowm()",
-                Exception::Type::MATRIX_NOT_SQUARE);
+                        Exception::Type::MATRIX_NOT_SQUARE);
 
     // Define A^0 = Id, for z IDENTICALLY zero
     if (real(z) == 0 && imag(z) == 0)
@@ -698,7 +699,7 @@ cmat spectralpowm(const Eigen::MatrixBase<Derived>& A, const cplx z)
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived>& A,
-        idx n)
+                                       idx n)
 {
     dyn_mat<typename Derived::Scalar> cA = A;
 
@@ -762,7 +763,7 @@ double schatten(const Eigen::MatrixBase<Derived>& A, double p)
 */
 template<typename OutputScalar, typename Derived>
 dyn_mat<OutputScalar> cwise(const Eigen::MatrixBase<Derived>& A,
-        OutputScalar (* f)(const typename Derived::Scalar&))
+                            OutputScalar (* f)(const typename Derived::Scalar&))
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -873,7 +874,7 @@ dyn_mat<typename Derived::Scalar> kron(
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> kronpow(const Eigen::MatrixBase<Derived>& A,
-        idx n)
+                                          idx n)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -1023,7 +1024,7 @@ dyn_mat<typename Derived::Scalar> dirsumpow(
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived>& A,
-        idx rows, idx cols)
+                                          idx rows, idx cols)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -1036,7 +1037,7 @@ dyn_mat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived>& A,
 
     if (Arows * Acols != rows * cols)
         throw Exception("qpp::reshape()",
-                Exception::Type::DIMS_MISMATCH_MATRIX);
+                        Exception::Type::DIMS_MISMATCH_MATRIX);
 
     return Eigen::Map<dyn_mat<typename Derived::Scalar>>(
             const_cast<typename Derived::Scalar*>(rA.data()), rows, cols);
@@ -1056,7 +1057,7 @@ dyn_mat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1>& A,
-        const Eigen::MatrixBase<Derived2>& B)
+                                        const Eigen::MatrixBase<Derived2>& B)
 {
     const dyn_mat<typename Derived1::Scalar>& rA = A;
     const dyn_mat<typename Derived2::Scalar>& rB = B;
@@ -1070,7 +1071,7 @@ dyn_mat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1>& A,
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA)
-            || !internal::_check_nonzero_size(rB))
+        || !internal::_check_nonzero_size(rB))
         throw Exception("qpp::comm()", Exception::Type::ZERO_SIZE);
 
     // check square matrices
@@ -1113,13 +1114,13 @@ dyn_mat<typename Derived1::Scalar> anticomm(
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA)
-            || !internal::_check_nonzero_size(rB))
+        || !internal::_check_nonzero_size(rB))
         throw Exception("qpp::anticomm()", Exception::Type::ZERO_SIZE);
 
     // check square matrices
     if (!internal::_check_square_mat(rA) || !internal::_check_square_mat(rB))
         throw Exception("qpp::anticomm()",
-                Exception::Type::MATRIX_NOT_SQUARE);
+                        Exception::Type::MATRIX_NOT_SQUARE);
 
     // check equal dimensions
     if (rA.rows() != rB.rows())
@@ -1188,7 +1189,7 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
 
     dyn_mat<typename Derived::Scalar> cut =
             dyn_mat<typename Derived::Scalar>::Identity(Vs[0].rows(),
-                    Vs[0].rows());
+                                                        Vs[0].rows());
 
     dyn_mat<typename Derived::Scalar> vi =
             dyn_mat<typename Derived::Scalar>::Zero(Vs[0].rows(), 1);
@@ -1283,7 +1284,7 @@ std::vector<idx> n2multiidx(idx n, const std::vector<idx>& dims)
         throw Exception("qpp::n2multiidx()", Exception::Type::DIMS_INVALID);
 
     if (n >= std::accumulate(std::begin(dims), std::end(dims),
-            static_cast<idx>(1), std::multiplies<idx>()))
+                             static_cast<idx>(1), std::multiplies<idx>()))
         throw Exception("qpp::n2multiidx()", Exception::Type::OUT_OF_RANGE);
 
     // double the size for matrices reshaped as vectors
@@ -1304,7 +1305,7 @@ std::vector<idx> n2multiidx(idx n, const std::vector<idx>& dims)
 * \return Non-negative integer index
 */
 idx multiidx2n(const std::vector<idx>& midx,
-        const std::vector<idx>& dims)
+               const std::vector<idx>& dims)
 {
     if (!internal::_check_dims(dims))
         throw Exception("qpp::multiidx2n()", Exception::Type::DIMS_INVALID);
@@ -1312,7 +1313,7 @@ idx multiidx2n(const std::vector<idx>& midx,
     for (idx i = 0; i < dims.size(); ++i)
         if (midx[i] >= dims[i])
             throw Exception("qpp::multiidx2n()",
-                    Exception::Type::OUT_OF_RANGE);
+                            Exception::Type::OUT_OF_RANGE);
 
     return internal::_multiidx2n(midx.data(), dims.size(), dims.data());
 }
@@ -1330,12 +1331,12 @@ idx multiidx2n(const std::vector<idx>& midx,
 * \return Multi-partite qudit state vector, as a complex dynamic column vector
 */
 ket mket(const std::vector<idx>& mask,
-        const std::vector<idx>& dims)
+         const std::vector<idx>& dims)
 {
     idx n = mask.size();
 
     idx D = std::accumulate(std::begin(dims), std::end(dims),
-            static_cast<idx>(1), std::multiplies<idx>());
+                            static_cast<idx>(1), std::multiplies<idx>());
 
     // check zero size
     if (n == 0)
@@ -1350,7 +1351,7 @@ ket mket(const std::vector<idx>& mask,
     for (idx i = 0; i < n; ++i)
         if (mask[i] >= dims[i])
             throw Exception("qpp::mket()",
-                    Exception::Type::SUBSYS_MISMATCH_DIMS);
+                            Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     ket result = ket::Zero(D);
     idx pos = multiidx2n(mask, dims);
@@ -1386,7 +1387,7 @@ ket mket(const std::vector<idx>& mask, idx d = 2)
     for (idx i = 0; i < n; ++i)
         if (mask[i] >= d)
             throw Exception("qpp::mket()",
-                    Exception::Type::SUBSYS_MISMATCH_DIMS);
+                            Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     ket result = ket::Zero(D);
     std::vector<idx> dims(n, d);
@@ -1411,12 +1412,12 @@ ket mket(const std::vector<idx>& mask, idx d = 2)
 * as a complex dynamic matrix
 */
 cmat mprj(const std::vector<idx>& mask,
-        const std::vector<idx>& dims)
+          const std::vector<idx>& dims)
 {
     idx n = mask.size();
 
     idx D = std::accumulate(std::begin(dims), std::end(dims),
-            static_cast<idx>(1), std::multiplies<idx>());
+                            static_cast<idx>(1), std::multiplies<idx>());
 
     // check zero size
     if (n == 0)
@@ -1431,7 +1432,7 @@ cmat mprj(const std::vector<idx>& mask,
     for (idx i = 0; i < n; ++i)
         if (mask[i] >= dims[i])
             throw Exception("qpp::mprj()",
-                    Exception::Type::SUBSYS_MISMATCH_DIMS);
+                            Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     cmat result = cmat::Zero(D, D);
     idx pos = multiidx2n(mask, dims);
@@ -1469,7 +1470,7 @@ cmat mprj(const std::vector<idx>& mask, idx d = 2)
     for (idx i = 0; i < n; ++i)
         if (mask[i] >= d)
             throw Exception("qpp::mprj()",
-                    Exception::Type::SUBSYS_MISMATCH_DIMS);
+                            Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     cmat result = cmat::Zero(D, D);
     std::vector<idx> dims(n, d);
@@ -1491,10 +1492,10 @@ std::vector<double> abssq(InputIterator first, InputIterator last)
 {
     std::vector<double> weights(std::distance(first, last));
     std::transform(first, last, std::begin(weights),
-            [](cplx z) -> double
-            {
-                return std::norm(z);
-            });
+                   [](cplx z) -> double
+                   {
+                       return std::norm(z);
+                   });
 
     return weights;
 }
@@ -1553,7 +1554,7 @@ sum(const Container& c)
     using value_type = typename Container::value_type;
 
     return std::accumulate(std::begin(c), std::end(c),
-            static_cast<value_type>(0));
+                           static_cast<value_type>(0));
 }
 
 /**
@@ -1572,7 +1573,7 @@ prod(InputIterator first, InputIterator last)
     typename std::iterator_traits<InputIterator>::value_type;
 
     return std::accumulate(first, last, static_cast<value_type>(1),
-            std::multiplies<value_type>());
+                           std::multiplies<value_type>());
 }
 
 
@@ -1590,7 +1591,8 @@ prod(const Container& c)
     using value_type = typename Container::value_type;
 
     return std::accumulate(std::begin(c), std::end(c),
-            static_cast<value_type>(1), std::multiplies<value_type>());
+                           static_cast<value_type>(1),
+                           std::multiplies<value_type>());
 }
 
 /**
@@ -1658,8 +1660,8 @@ std::vector<T> complement(std::vector<T> subsys, idx N)
     std::iota(std::begin(all), std::end(all), 0);
     std::sort(std::begin(subsys), std::end(subsys));
     std::set_difference(std::begin(all), std::end(all),
-            std::begin(subsys), std::end(subsys),
-            std::begin(subsys_bar));
+                        std::begin(subsys), std::end(subsys),
+                        std::begin(subsys_bar));
 
     return subsys_bar;
 }

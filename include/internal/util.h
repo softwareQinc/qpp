@@ -128,23 +128,23 @@ bool _check_dims(const std::vector<idx>& dims)
         return false;
 
     return std::find_if(std::begin(dims), std::end(dims),
-            [dims](idx i) -> bool
-            {
-                if (i == 0) return true;
-                else return false;
-            }) == std::end(dims);
+                        [dims](idx i) -> bool
+                        {
+                            if (i == 0) return true;
+                            else return false;
+                        }) == std::end(dims);
 }
 
 // check that valid dims match the dimensions
 // of valid (non-zero sized) quare matrix
 template<typename Derived>
 bool _check_dims_match_mat(const std::vector<idx>& dims,
-        const Eigen::MatrixBase<Derived>& A)
+                           const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
-            static_cast<idx>(1), std::multiplies<idx>());
+                                  static_cast<idx>(1), std::multiplies<idx>());
 
     return proddim == static_cast<idx>(rA.rows());
 }
@@ -152,12 +152,12 @@ bool _check_dims_match_mat(const std::vector<idx>& dims,
 // check that valid dims match the dimensions of valid column vector
 template<typename Derived>
 bool _check_dims_match_cvect(const std::vector<idx>& dims,
-        const Eigen::MatrixBase<Derived>& V)
+                             const Eigen::MatrixBase<Derived>& V)
 {
     const dyn_mat<typename Derived::Scalar>& rV = V;
 
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
-            static_cast<idx>(1), std::multiplies<idx>());
+                                  static_cast<idx>(1), std::multiplies<idx>());
 
     return proddim == static_cast<idx>(rV.rows());
 }
@@ -165,12 +165,12 @@ bool _check_dims_match_cvect(const std::vector<idx>& dims,
 // check that valid dims match the dimensions of valid row vector
 template<typename Derived>
 bool _check_dims_match_rvect(const std::vector<idx>& dims,
-        const Eigen::MatrixBase<Derived>& V)
+                             const Eigen::MatrixBase<Derived>& V)
 {
     const dyn_mat<typename Derived::Scalar>& rV = V;
 
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
-            static_cast<idx>(1), std::multiplies<idx>());;
+                                  static_cast<idx>(1), std::multiplies<idx>());;
 
     return proddim == static_cast<idx>(rV.cols());
 }
@@ -187,7 +187,7 @@ bool _check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept
 
 // check that subsys is valid with respect to valid dims
 bool _check_subsys_match_dims(const std::vector<idx>& subsys,
-        const std::vector<idx>& dims)
+                              const std::vector<idx>& dims)
 {
     //	// check non-zero sized subsystems
     //	if (subsys.size() == 0)
@@ -203,15 +203,15 @@ bool _check_subsys_match_dims(const std::vector<idx>& subsys,
 
     // check duplicates
     if (std::unique(std::begin(subsyssort), std::end(subsyssort))
-            != std::end(subsyssort))
+        != std::end(subsyssort))
         return false;
 
     // check range of subsystems
     return std::find_if(std::begin(subsyssort), std::end(subsyssort),
-            [dims](idx i) -> bool
-            {
-                return i > dims.size() - 1;
-            }) == std::end(subsyssort);
+                        [dims](idx i) -> bool
+                        {
+                            return i > dims.size() - 1;
+                        }) == std::end(subsyssort);
 }
 
 // check matrix is 2 x 2
@@ -248,7 +248,7 @@ bool _check_qubit_vector(const Eigen::MatrixBase<Derived>& V) noexcept
     const dyn_mat<typename Derived::Scalar>& rV = V;
 
     return (rV.rows() == 1 && rV.cols() == 2) ||
-            (rV.rows() == 2 && rV.cols() == 1);
+           (rV.rows() == 2 && rV.cols() == 1);
 }
 
 
@@ -262,14 +262,14 @@ bool _check_perm(const std::vector<idx>& perm)
     std::iota(std::begin(ordered), std::end(ordered), 0);
 
     return std::is_permutation(std::begin(ordered), std::end(ordered),
-            std::begin(perm));
+                               std::begin(perm));
 }
 
 // Kronecker product of 2 matrices, preserve return type
 // internal function for the variadic template function wrapper kron()
 template<typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
-        const Eigen::MatrixBase<Derived2>& B)
+                                          const Eigen::MatrixBase<Derived2>& B)
 {
     const dyn_mat<typename Derived1::Scalar>& rA = A;
     const dyn_mat<typename Derived2::Scalar>& rB = B;
@@ -336,7 +336,8 @@ dyn_mat<typename Derived1::Scalar> _dirsum2(
     idx Brows = static_cast<idx>(rB.rows());
 
     dyn_mat<typename Derived1::Scalar> result =
-            dyn_mat<typename Derived1::Scalar>::Zero(Arows + Brows, Acols + Bcols);
+            dyn_mat<typename Derived1::Scalar>::Zero(Arows + Brows,
+                                                     Acols + Bcols);
 
     result.block(0, 0, Arows, Acols) = rA;
     result.block(Arows, Acols, Brows, Bcols) = rB;

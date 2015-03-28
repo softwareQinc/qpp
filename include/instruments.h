@@ -58,7 +58,7 @@ std::tuple<idx, std::vector<double>, std::vector<cmat>> measure(
         throw Exception("qpp::measure()", Exception::Type::MATRIX_NOT_SQUARE);
     if (Ks[0].rows() != rA.rows())
         throw Exception("qpp::measure()",
-                Exception::Type::DIMS_MISMATCH_MATRIX);
+                        Exception::Type::DIMS_MISMATCH_MATRIX);
     for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
             throw Exception("qpp::measure()", Exception::Type::DIMS_NOT_EQUAL);
@@ -96,11 +96,11 @@ std::tuple<idx, std::vector<double>, std::vector<cmat>> measure(
     }
     else
         throw Exception("qpp::measure()",
-                Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+                        Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 
     // sample from the probability distribution
     std::discrete_distribution<idx> dd(std::begin(prob),
-            std::end(prob));
+                                       std::end(prob));
     idx result = dd(RandomDevices::get_instance()._rng);
 
     return std::make_tuple(result, prob, outstates);
@@ -154,7 +154,7 @@ std::tuple<idx, std::vector<double>, std::vector<cmat>> measure(
         throw Exception("qpp::measure()", Exception::Type::MATRIX_NOT_SQUARE);
     if (U.rows() != rA.rows())
         throw Exception("qpp::measure()",
-                Exception::Type::DIMS_MISMATCH_MATRIX);
+                        Exception::Type::DIMS_MISMATCH_MATRIX);
     // END EXCEPTION CHECKS
 
     std::vector<cmat> Ks(U.rows());
@@ -205,12 +205,12 @@ measure(
     // check that dims match rho matrix
     if (!internal::_check_dims_match_mat(dims, rA))
         throw Exception("qpp::measure()",
-                Exception::Type::DIMS_MISMATCH_MATRIX);
+                        Exception::Type::DIMS_MISMATCH_MATRIX);
 
     // check subsys is valid w.r.t. dims
     if (!internal::_check_subsys_match_dims(subsys, dims))
         throw Exception("qpp::measure()",
-                Exception::Type::SUBSYS_MISMATCH_DIMS);
+                        Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     std::vector<idx> subsys_dims(subsys.size());
     for (idx i = 0; i < subsys.size(); ++i)
@@ -223,17 +223,17 @@ measure(
     // check the Kraus operators
     if (Ks.size() == 0)
         throw Exception("qpp::measure()",
-                Exception::Type::ZERO_SIZE);
+                        Exception::Type::ZERO_SIZE);
     if (!internal::_check_square_mat(Ks[0]))
         throw Exception("qpp::measure()",
-                Exception::Type::MATRIX_NOT_SQUARE);
+                        Exception::Type::MATRIX_NOT_SQUARE);
     if (Dsubsys != static_cast<idx>(Ks[0].rows()))
         throw Exception("qpp::measure()",
-                Exception::Type::DIMS_MISMATCH_MATRIX);
+                        Exception::Type::DIMS_MISMATCH_MATRIX);
     for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
             throw Exception("qpp::measure()",
-                    Exception::Type::DIMS_NOT_EQUAL);
+                            Exception::Type::DIMS_NOT_EQUAL);
     // END EXCEPTION CHECKS
 
     // probabilities
@@ -277,11 +277,11 @@ measure(
     }
     else
         throw Exception("qpp::measure()",
-                Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+                        Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 
     // sample from the probability distribution
     std::discrete_distribution<idx> dd(std::begin(prob),
-            std::end(prob));
+                                       std::end(prob));
     idx result = dd(RandomDevices::get_instance()._rng);
 
     return std::make_tuple(result, prob, outstates);
@@ -351,7 +351,7 @@ measure(
 
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
-                    std::log2(d)));
+                                          std::log2(d)));
     std::vector<idx> dims(n, d); // local dimensions vector
 
     return measure(rA, Ks, subsys, dims);
@@ -428,12 +428,12 @@ measure(
     // check that dims match rho matrix
     if (!internal::_check_dims_match_mat(dims, rA))
         throw Exception("qpp::measure()",
-                Exception::Type::DIMS_MISMATCH_MATRIX);
+                        Exception::Type::DIMS_MISMATCH_MATRIX);
 
     // check subsys is valid w.r.t. dims
     if (!internal::_check_subsys_match_dims(subsys, dims))
         throw Exception("qpp::measure()",
-                Exception::Type::SUBSYS_MISMATCH_DIMS);
+                        Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     std::vector<idx> subsys_dims(subsys.size());
     for (idx i = 0; i < subsys.size(); ++i)
@@ -448,7 +448,7 @@ measure(
         throw Exception("qpp::measure()", Exception::Type::MATRIX_NOT_SQUARE);
     if (Dsubsys != static_cast<idx>(U.rows()))
         throw Exception("qpp::measure()",
-                Exception::Type::DIMS_MISMATCH_MATRIX);
+                        Exception::Type::DIMS_MISMATCH_MATRIX);
     // END EXCEPTION CHECKS
 
     std::vector<cmat> Ks(U.rows());
@@ -491,7 +491,7 @@ measure(
 
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
-                    std::log2(d)));
+                                          std::log2(d)));
     std::vector<idx> dims(n, d); // local dimensions vector
 
     return measure(rA, U, subsys, dims);
@@ -533,12 +533,12 @@ measure_seq(
     // check that dims match rho matrix
     if (!internal::_check_dims_match_mat(dims, cA))
         throw Exception("qpp::measure_seq()",
-                Exception::Type::DIMS_MISMATCH_MATRIX);
+                        Exception::Type::DIMS_MISMATCH_MATRIX);
 
     // check subsys is valid w.r.t. dims
     if (!internal::_check_subsys_match_dims(subsys, dims))
         throw Exception("qpp::measure_seq()",
-                Exception::Type::SUBSYS_MISMATCH_DIMS);
+                        Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     // END EXCEPTION CHECKS
 
@@ -555,7 +555,7 @@ measure_seq(
         while (subsys.size() > 0)
         {
             auto tmp = measure(cA, Gates::get_instance().Id(dims[subsys[0]]),
-                    {subsys[0]}, dims);
+                               {subsys[0]}, dims);
             result.push_back(std::get<0>(tmp));
             prob *= std::get<1>(tmp)[std::get<0>(tmp)];
             cA = std::get<2>(tmp)[std::get<0>(tmp)];
@@ -569,7 +569,7 @@ measure_seq(
     }
     else
         throw Exception("qpp::measure_seq()",
-                Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+                        Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 
     return std::make_tuple(result, prob, cA);
 }
@@ -602,7 +602,7 @@ measure_seq(
 
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
-                    std::log2(d)));
+                                          std::log2(d)));
     std::vector<idx> dims(n, d); // local dimensions vector
 
     return measure_seq(rA, subsys, dims);

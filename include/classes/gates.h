@@ -49,7 +49,7 @@ public:
     cmat T{cmat::Zero(2, 2)};           ///< T gate
 
     // two qubit gates
-    cmat CNOT{cmat::Identity(4, 4)};  ///< Controlled-NOT control target gate
+    cmat CNOT{cmat::Identity(4, 4)};    ///< Controlled-NOT control target gate
     cmat CZ{cmat::Identity(4, 4)};      ///< Controlled-Phase gate
     cmat CNOTba{cmat::Zero(4, 4)};      ///< Controlled-NOT target control gate
     cmat SWAP{cmat::Identity(4, 4)};    ///< SWAP gate
@@ -63,8 +63,8 @@ private:
     */
     Gates()
     {
-        H << 1 / std::sqrt(2.), 1 / std::sqrt(2.), 1 / std::sqrt(2.), -1
-                / std::sqrt(2.);
+        H << 1 / std::sqrt(2.), 1 / std::sqrt(2.),
+                1 / std::sqrt(2.), -1 / std::sqrt(2.);
         X << 0, 1, 1, 0;
         Z << 1, 0, 0, -1;
         Y << 0, -1_i, 1_i, 0;
@@ -98,11 +98,12 @@ public:
     {
         // check 3-dimensional vector
         if (n.size() != 3)
-            throw Exception("qpp::Gates::Rn()", "n is not a 3-dimensional vector!");
+            throw Exception("qpp::Gates::Rn()",
+                            "n is not a 3-dimensional vector!");
 
         cmat result(2, 2);
         result = std::cos(theta / 2) * Id2
-                - 1_i * std::sin(theta / 2) * (n[0] * X + n[1] * Y + n[2] * Z);
+                 - 1_i * std::sin(theta / 2) * (n[0] * X + n[1] * Y + n[2] * Z);
 
         return result;
     }
@@ -148,7 +149,7 @@ public:
         for (idx j = 0; j < D; ++j) // column major order for speed
             for (idx i = 0; i < D; ++i)
                 result(i, j) = 1 / std::sqrt(static_cast<double>(D))
-                        * std::pow(omega(D), i * j);
+                               * std::pow(omega(D), i * j);
 
         return result;
     }
@@ -204,9 +205,9 @@ public:
     */
     template<typename Derived>
     dyn_mat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived>& A,
-            const std::vector<idx>& ctrl,
-            const std::vector<idx>& subsys,
-            idx n, idx d = 2) const
+                                           const std::vector<idx>& ctrl,
+                                           const std::vector<idx>& subsys,
+                                           idx n, idx d = 2) const
     {
         const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -218,7 +219,7 @@ public:
         // check square matrix
         if (!internal::_check_square_mat(rA))
             throw Exception("qpp::Gates::CTRL()",
-                    Exception::Type::MATRIX_NOT_SQUARE);
+                            Exception::Type::MATRIX_NOT_SQUARE);
 
         // check lists zero size
         if (ctrl.size() == 0)
@@ -229,17 +230,17 @@ public:
         // check out of range
         if (n == 0)
             throw Exception("qpp::Gates::CTRL()",
-                    Exception::Type::OUT_OF_RANGE);
+                            Exception::Type::OUT_OF_RANGE);
 
         // check valid local dimension
         if (d == 0)
             throw Exception("qpp::Gates::CTRL()",
-                    Exception::Type::DIMS_INVALID);
+                            Exception::Type::DIMS_INVALID);
 
         // ctrl + gate subsystem vector
         std::vector<idx> ctrlgate = ctrl;
         ctrlgate.insert(std::end(ctrlgate), std::begin(subsys),
-                std::end(subsys));
+                        std::end(subsys));
         std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
         std::vector<idx> dims(n, d); // local dimensions vector
@@ -248,12 +249,12 @@ public:
         // with respect to local dimensions
         if (!internal::_check_subsys_match_dims(ctrlgate, dims))
             throw Exception("qpp::Gates::CTRL()",
-                    Exception::Type::SUBSYS_MISMATCH_DIMS);
+                            Exception::Type::SUBSYS_MISMATCH_DIMS);
 
         // check that subsys list match the dimension of the matrix
         if (rA.rows() != std::llround(std::pow(d, subsys.size())))
             throw Exception("qpp::Gates::CTRL()",
-                    Exception::Type::DIMS_MISMATCH_MATRIX);
+                            Exception::Type::DIMS_MISMATCH_MATRIX);
         // END EXCEPTION CHECKS
 
         // Use static allocation for speed!
@@ -280,7 +281,7 @@ public:
         // compute the complementary subsystem of ctrlgate w.r.t. dims
         std::vector<idx> subsys_bar = complement(ctrlgate, n);
         std::copy(std::begin(subsys_bar), std::end(subsys_bar),
-                std::begin(Csubsys_bar));
+                  std::begin(Csubsys_bar));
 
         for (idx k = 0; k < n; ++k)
         {
@@ -345,11 +346,10 @@ public:
 
                         // finally write the values
                         result(internal::_multiidx2n(midx_row, n, Cdims),
-                                internal::_multiidx2n(midx_col, n, Cdims))
+                               internal::_multiidx2n(midx_col, n, Cdims))
                                 = Ak(a, b);
                     }
                 }
-
             }
         }
 
@@ -381,30 +381,30 @@ public:
         // check zero-size
         if (!internal::_check_nonzero_size(rA))
             throw Exception("qpp::Gates::expandout()",
-                    Exception::Type::ZERO_SIZE);
+                            Exception::Type::ZERO_SIZE);
 
         // check that dims is a valid dimension vector
         if (!internal::_check_dims(dims))
             throw Exception("qpp::Gates::expandout()",
-                    Exception::Type::DIMS_INVALID);
+                            Exception::Type::DIMS_INVALID);
 
         // check square matrix
         if (!internal::_check_square_mat(rA))
             throw Exception("qpp::Gates::expandout()",
-                    Exception::Type::MATRIX_NOT_SQUARE);
+                            Exception::Type::MATRIX_NOT_SQUARE);
 
         // check that position is valid
         if (pos > dims.size() - 1)
             throw Exception("qpp::Gates::expandout()",
-                    Exception::Type::OUT_OF_RANGE);
+                            Exception::Type::OUT_OF_RANGE);
 
         // check that dims[pos] match the dimension of A
         if (static_cast<idx>(rA.rows()) != dims[pos])
             throw Exception("qpp::Gates::expandout()",
-                    Exception::Type::DIMS_MISMATCH_MATRIX);
+                            Exception::Type::DIMS_MISMATCH_MATRIX);
 
         idx D = std::accumulate(std::begin(dims), std::end(dims),
-                static_cast<idx>(1), std::multiplies<idx>());
+                                static_cast<idx>(1), std::multiplies<idx>());
         dyn_mat<typename Derived::Scalar> result = dyn_mat<
                 typename Derived::Scalar>::Identity(D, D);
 
@@ -441,7 +441,7 @@ public:
 
                     // finally write the values
                     result(internal::_multiidx2n(midx_row, dims.size(), Cdims),
-                            internal::_multiidx2n(midx_col, dims.size(), Cdims))
+                           internal::_multiidx2n(midx_col, dims.size(), Cdims))
                             = rA(a, b);
                 }
             }

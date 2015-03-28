@@ -43,7 +43,7 @@ namespace qpp
 * a shorter vector with \a m components is returned.
 */
 std::vector<int> x2contfrac(double x, idx n,
-        idx cut = 1e5)
+                            idx cut = 1e5)
 {
     if (n == 0)
         throw Exception("qpp::x2contfrac()", Exception::Type::OUT_OF_RANGE);
@@ -200,9 +200,11 @@ unsigned long long int lcm(const std::vector<unsigned long long int>& ns)
     if (std::find(std::begin(ns), std::end(ns), 0) != std::end(ns))
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
 
-    unsigned long long int prod = std::accumulate(std::begin(ns), std::end(ns),
-            static_cast<unsigned long long int>(1),
-            std::multiplies<unsigned long long int>());
+    unsigned long long int prod =
+            std::accumulate(std::begin(ns),
+                            std::end(ns),
+                            static_cast<unsigned long long int>(1),
+                            std::multiplies<unsigned long long int>());
 
     return prod / gcd(ns);
 }
@@ -235,7 +237,7 @@ std::vector<idx> invperm(const std::vector<idx>& perm)
 *  = perm(sigma)
 */
 std::vector<idx> compperm(const std::vector<idx>& perm,
-        const std::vector<idx>& sigma)
+                          const std::vector<idx>& sigma)
 {
     if (!internal::_check_perm(perm))
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);

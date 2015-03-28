@@ -255,9 +255,9 @@ double tsallis(const std::vector<double>& prob, double q)
 */
 template<typename Derived>
 double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<idx>& subsysA,
-        const std::vector<idx>& subsysB,
-        const std::vector<idx>& dims)
+                   const std::vector<idx>& subsysA,
+                   const std::vector<idx>& subsysB,
+                   const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -274,18 +274,18 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::qmutualinfo()",
-                Exception::Type::MATRIX_NOT_SQUARE);
+                        Exception::Type::MATRIX_NOT_SQUARE);
 
     // check that dims match the dimension of A
     if (!internal::_check_dims_match_mat(dims, rA))
         throw Exception("qpp::qmutualinfo()",
-                Exception::Type::DIMS_MISMATCH_MATRIX);
+                        Exception::Type::DIMS_MISMATCH_MATRIX);
 
     // check that subsys are valid
     if (!internal::_check_subsys_match_dims(subsysA, dims)
-            || !internal::_check_subsys_match_dims(subsysB, dims))
+        || !internal::_check_subsys_match_dims(subsysB, dims))
         throw Exception("qpp::qmutualinfo()",
-                Exception::Type::SUBSYS_MISMATCH_DIMS);
+                        Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     // The full system indexes {0,1,...,n-1}
     std::vector<idx> full_system(dims.size());
@@ -302,8 +302,8 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
     // construct the union of A and B
     std::vector<idx> subsysAB;
     std::set_union(std::begin(subsysAsorted), std::end(subsysAsorted),
-            std::begin(subsysBsorted), std::end(subsysBsorted),
-            std::back_inserter(subsysAB));
+                   std::begin(subsysBsorted), std::end(subsysBsorted),
+                   std::back_inserter(subsysAB));
 
     // construct the complements
     std::vector<idx> subsysAbar = complement(subsysA, dims.size());
@@ -328,9 +328,9 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<idx>& subsysA,
-        const std::vector<idx>& subsysB,
-        idx d = 2)
+                   const std::vector<idx>& subsysA,
+                   const std::vector<idx>& subsysB,
+                   idx d = 2)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -342,7 +342,7 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
-                    std::log2(d)));
+                                          std::log2(d)));
     std::vector<idx> dims(n, d); // local dimensions vector
 
     return qmutualinfo(rA, subsysA, subsysB, dims);

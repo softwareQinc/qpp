@@ -56,7 +56,7 @@ double rand(double a = 0, double b = 1)
 * the interval [a, b]
 */
 idx randidx(idx a = std::numeric_limits<idx>::min(),
-        idx b = std::numeric_limits<idx>::max())
+            idx b = std::numeric_limits<idx>::max())
 {
     std::uniform_int_distribution<idx> uid(a, b);
 
@@ -142,7 +142,7 @@ inline cmat rand(idx rows, idx cols, double a, double b)
         throw Exception("qpp::rand()", Exception::Type::ZERO_SIZE);
 
     return rand<dmat>(rows, cols, a, b).cast<cplx>() +
-            1_i * rand<dmat>(rows, cols, a, b).cast<cplx>();
+           1_i * rand<dmat>(rows, cols, a, b).cast<cplx>();
 }
 
 /**
@@ -158,7 +158,7 @@ inline cmat rand(idx rows, idx cols, double a, double b)
 */
 template<typename Derived>
 Derived randn(idx rows, idx cols, double mean = 0,
-        double sigma = 1)
+              double sigma = 1)
 {
     throw Exception("qpp::randn()", Exception::Type::UNDEFINED_TYPE);
 }
@@ -186,7 +186,7 @@ Derived randn(idx rows, idx cols, double mean = 0,
 */
 template<>
 inline dmat randn(idx rows, idx cols,
-        double mean, double sigma)
+                  double mean, double sigma)
 {
     if (rows == 0 || cols == 0)
         throw Exception("qpp::randn()", Exception::Type::ZERO_SIZE);
@@ -224,13 +224,13 @@ inline dmat randn(idx rows, idx cols,
 */
 template<>
 inline cmat randn(idx rows, idx cols,
-        double mean, double sigma)
+                  double mean, double sigma)
 {
     if (rows == 0 || cols == 0)
         throw Exception("qpp::randn()", Exception::Type::ZERO_SIZE);
 
     return randn<dmat>(rows, cols, mean, sigma).cast<cplx>() +
-            1_i * randn<dmat>(rows, cols, mean, sigma).cast<cplx>();
+           1_i * randn<dmat>(rows, cols, mean, sigma).cast<cplx>();
 }
 
 /**
@@ -403,7 +403,7 @@ std::vector<idx> randperm(idx n)
     std::iota(std::begin(result), std::end(result), 0);
     // shuffle
     std::shuffle(std::begin(result), std::end(result),
-            RandomDevices::get_thread_local_instance()._rng);
+                 RandomDevices::get_thread_local_instance()._rng);
 
     return result;
 }

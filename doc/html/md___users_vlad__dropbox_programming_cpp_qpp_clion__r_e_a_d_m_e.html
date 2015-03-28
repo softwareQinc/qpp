@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('md___users_vlad__dropbox_programming_c
      -L /Applications/MATLAB_R2014b.app/bin/maci64 \
      -lmx -lmat example.cpp -o example
 </pre><h3>Building using <a href="http://www.cmake.org/">cmake</a></h3>
-<p>The current version of the repository has a <code>CMakeLists.txt</code> configuration file for building examples using <a href="http://www.cmake.org/">cmake</a>. To build an example using <a href="http://www.cmake.org/">cmake</a>, I recommend an out-of-source build, i.e., from the root of the project (where <code>./include</code> is located), type </p><pre class="fragment">mkdir ./build
+<p>The current version of the repository has a <code>./CMakeLists.txt</code> configuration file for building examples using <a href="http://www.cmake.org/">cmake</a>. To build an example using <a href="http://www.cmake.org/">cmake</a>, I recommend an out-of-source build, i.e., from the root of the project (where <code>./include</code> is located), type </p><pre class="fragment">mkdir ./build
 cd ./build
 cmake ..
 make
@@ -127,11 +127,11 @@ make
 rm -rf *
 cmake -DWITH_OPENMP=OFF ..
 make
-</pre><p>To change the name of the example file, the location of the <a href="http://eigen.tuxfamily.org">Eigen 3</a> library or the location of <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> installation, edit the <code>CMakeLists.txt</code> file. See also <code>CMakeLists.txt</code> for additional options. Do not forget to remove everything from the <code>./build</code> directory before a fresh build!</p>
+</pre><p>To change the name of the example file, the location of the <a href="http://eigen.tuxfamily.org">Eigen 3</a> library or the location of <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> installation, edit the <code>./CMakeLists.txt</code> file. See also <code>./CMakeLists.txt</code> for additional options. Do not forget to remove everything from the <code>./build</code> directory before a fresh build!</p>
 <h3>Additional remarks</h3>
 <ul>
 <li>The C++ compiler must be C++11 compliant.</li>
-<li>If using <a href="http://windows.microsoft.com/">Windows</a>, I recommend compiling under <a href="https://www.cygwin.com">cygwin</a> via <a href="http://www.cmake.org/">cmake</a>.</li>
+<li>If using <a href="http://windows.microsoft.com/">Windows</a>, I recommend compiling under <a href="https://www.cygwin.com">cygwin</a> via <a href="http://www.cmake.org/">cmake</a> and <a href="https://gcc.gnu.org/">g++</a>. See also <a href="http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2">http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2</a> for a bug related to lack of support for some C++11 math functions, and how to fix it. Quick fix: patch the standard library header file <code>cmath</code> using the patch <code>./cmath_cygwin.patch</code>.</li>
 <li>If your compiler does not support <a href="http://openmp.org/">OpenMP</a> (as it is the case e.g with <a href="http://clang.llvm.org/">clang++</a>), disable <a href="http://openmp.org/">OpenMP</a> in your build, as otherwise the linker may not find the <a href="https://gcc.gnu.org/projects/gomp/">gomp</a> library.</li>
 <li>If you run the program on <a href="http://www.apple.com/osx">OS X</a> with <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support, make sure that the environment variable <code>DYLD_LIBRARY_PATH</code> is set to point to the <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> compiler library location, see the <code>run_OSX_MATLAB</code> script. Otherwise, you will get a runtime error like <code>dyld: Library not loaded: @rpath/libmat.dylib</code>. <pre class="fragment">* I recommend running via a script, as otherwise setting the 
 `DYLD_LIBRARY_PATH` globally may interfere with 
@@ -156,7 +156,7 @@ the executable `qpp` is located:
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Mar 20 2015 19:44:16 for Quantum++ by
+    <li class="footer">Generated on Sat Mar 28 2015 19:50:25 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
