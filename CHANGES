@@ -41,3 +41,6 @@ Version 0.6 - 16 April 2015
         static void operator delete(void*)), but enforce clients to make
         both constructor and destructor private.
     - Minor cosmetic changes
+
+Version 0.6.1 - development
+    
