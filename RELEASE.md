@@ -1,5 +1,5 @@
 ### Quantum++ 
-#### Version 0.5.1 - development
+#### Version 0.6 - 16 April 2015
 
 Bugs may still be lingering around. I welcome any comments or bug reports.
 

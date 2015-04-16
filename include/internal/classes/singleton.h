@@ -39,7 +39,8 @@ namespace internal // internal class, do not modify
 *
 * To implement a singleton, derive your class from qpp::internal::Singleton,
 * make qpp::internal::Singleton a friend of your class, then declare
-* the constructor of your class as private. To get an instance, use the static
+* the constructor and destructor of your class as private. 
+* To get an instance, use the static
 * member function qpp::internal::Singleton::get_instance()
 * (qpp::internal::Singleton::get_thread_local_instance()), which returns a
 * reference (thread_local reference) to your newly created singleton
@@ -57,6 +58,10 @@ namespace internal // internal class, do not modify
 *     {
 *         // Implement the constructor here
 *     }
+*     ~MySingleton()
+*     {
+*         // Implement the destructor here
+*     }
 * };
 *
 * MySingleton& mySingleton = MySingleton::get_instance(); // Get an instance
@@ -72,11 +77,6 @@ template<typename T>
 class Singleton
 {
 protected:
-    // prevents deleting pointer to instance
-    static void operator delete(void*)
-    {
-    }
-
     Singleton() noexcept = default;
 
     Singleton(const Singleton&) = delete;

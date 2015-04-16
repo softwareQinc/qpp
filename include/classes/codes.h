@@ -56,6 +56,11 @@ private:
     */
     Codes() = default;
 
+    /**
+    * \brief Default destructor
+    */
+    ~Codes() = default;
+
 public:
     /**
     * \brief Returns the codeword of the specified code type

@@ -36,4 +36,8 @@ Version 0.5 - 19 March 2015
         the instance via a pointer. Now static void operator delete(void*) 
         is marked private.
 
-Version 0.5.1 - development
+Version 0.6 - 16 April 2015
+    - Revert changes to qpp::internal::Singleton<T> (no need anymore for
+        static void operator delete(void*)), but enforce clients to make
+        both constructor and destructor private.
+    - Minor cosmetic changes

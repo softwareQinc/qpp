@@ -129,6 +129,11 @@ private:
         pGHZ = GHZ * GHZ.adjoint();
         pW = W * W.adjoint();
     }
+
+    /**
+    * \brief Default destructor
+    */
+    ~States() = default;
 }; /* class States */
 
 } /* namespace qpp */

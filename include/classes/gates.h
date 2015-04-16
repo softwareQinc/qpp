@@ -82,6 +82,11 @@ private:
         FRED.block(4, 4, 4, 4) = SWAP;
     }
 
+    /**
+    * \brief Default destructor
+    */
+    ~Gates() = default;
+
 public:
     // variable gates
 

@@ -57,6 +57,11 @@ private:
     RandomDevices() : _rd{}, _rng{_rd()}
     {
     }
+
+    /**
+    * \brief Default destructor
+    */
+    ~RandomDevices() = default;
 }; /* class RandomDevices */
 
 } /* namespace qpp */
