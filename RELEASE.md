@@ -1,5 +1,5 @@
 # Quantum++ 
-## Version 0.6.1 - development
+## Version 0.7 - 22 April 2015
 
 ### Development branch, use it at your own risk!
 ### Switch to the master branch for the latest stable version.
