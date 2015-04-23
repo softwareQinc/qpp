@@ -17,7 +17,7 @@ Version 0.4 - 8 March 2015
         NOT_QUBIT_CVECTOR, NOT_QUBIT_RVECTOR and NOT_QUBIT_VECTOR
     - Added overloads of qpp::ptrace1(), qpp::ptrace2(), qpp::ptrace() and
         qpp::ptranspose() that allow a pure state input, as it was the case
-        before with qpp::syspermute().
+        before with qpp::syspermute()
     - Added overloads of qpp::prod() and qpp::sum() for STL-like containers
     - Added new functions in <functions.h>:
         qpp::complement() - computes the complement of a subsystem vector
@@ -29,7 +29,7 @@ Version 0.4 - 8 March 2015
         thread safe. Hence, Eigen::Matrix::Random() should not be used, 
         use instead qpp::rand() functions.
     - Added support for unit testing via Google Mock/Google Test, see
-        ./unit_tests/testing.cpp.
+        ./unit_tests/testing.cpp
 
 Version 0.5 - 19 March 2015
     - Fixed a bug in class qpp::internal::Singleton<T> which allowed deleting
@@ -39,14 +39,14 @@ Version 0.5 - 19 March 2015
 Version 0.6 - 16 April 2015
     - Revert changes to qpp::internal::Singleton<T> (no need anymore for
         static void operator delete(void*)), but enforce clients to make
-        both constructor and destructor private.
+        both constructor and destructor private
     - Minor cosmetic changes
 
 Version 0.7 - 22 April 2015
     - Marked all non-template functions defined in headers as "inline" and
         all singletons as "static", since otherwise including <qpp.h> in
         separate compilation units led to linker errors due to duplicated
-        symbols.
+        symbols
 
 Version 0.7.1 - development
         
