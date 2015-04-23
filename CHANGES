@@ -47,4 +47,6 @@ Version 0.7 - 22 April 2015
         all singletons as "static", since otherwise including <qpp.h> in
         separate compilation units led to linker errors due to duplicated
         symbols.
-    
+
+Version 0.7.1 - development
+        
