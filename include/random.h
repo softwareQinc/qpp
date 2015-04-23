@@ -40,7 +40,7 @@ namespace qpp
 * \return Random real number (double) uniformly distributed in
 * the interval [a, b)
 */
-double rand(double a = 0, double b = 1)
+inline double rand(double a = 0, double b = 1)
 {
     std::uniform_real_distribution<> ud(a, b);
 
@@ -55,8 +55,8 @@ double rand(double a = 0, double b = 1)
 * \return Random index (idx) uniformly distributed in
 * the interval [a, b]
 */
-idx randidx(idx a = std::numeric_limits<idx>::min(),
-            idx b = std::numeric_limits<idx>::max())
+inline idx randidx(idx a = std::numeric_limits<idx>::min(),
+                   idx b = std::numeric_limits<idx>::max())
 {
     std::uniform_int_distribution<idx> uid(a, b);
 
@@ -241,7 +241,7 @@ inline cmat randn(idx rows, idx cols,
 * \param sigma Standard deviation
 * \return Random real number normally distributed in N(mean, sigma)
 */
-double randn(double mean = 0, double sigma = 1)
+inline double randn(double mean = 0, double sigma = 1)
 {
     std::normal_distribution<> nd(mean, sigma);
 
@@ -254,7 +254,7 @@ double randn(double mean = 0, double sigma = 1)
 * \param D Dimension of the Hilbert space
 * \return Random unitary
 */
-cmat randU(idx D)
+inline cmat randU(idx D)
 // ~3 times slower than Toby Cubitt's MATLAB corresponding routine,
 // because Eigen 3 QR algorithm is not parallelized
 {
@@ -286,7 +286,7 @@ cmat randU(idx D)
 * \param Dout Size of the output Hilbert space
 * \return Random isometry matrix
 */
-cmat randV(idx Din, idx Dout)
+inline cmat randV(idx Din, idx Dout)
 {
     if (Din == 0 || Dout == 0 || Din > Dout)
         throw Exception("qpp::randV()", Exception::Type::DIMS_INVALID);
@@ -304,7 +304,7 @@ cmat randV(idx Din, idx Dout)
 * \param D Dimension of the Hilbert space
 * \return Set of \a N Kraus operators satisfying the closure condition
 */
-std::vector<cmat> randkraus(idx N, idx D)
+inline std::vector<cmat> randkraus(idx N, idx D)
 {
     if (N == 0)
         throw Exception("qpp::randkraus()", Exception::Type::OUT_OF_RANGE);
@@ -333,7 +333,7 @@ std::vector<cmat> randkraus(idx N, idx D)
 * \param D Dimension of the Hilbert space
 * \return Random Hermitian matrix
 */
-cmat randH(idx D)
+inline cmat randH(idx D)
 {
     if (D == 0)
         throw Exception("qpp::randH()", Exception::Type::DIMS_INVALID);
@@ -349,7 +349,7 @@ cmat randH(idx D)
 * \param D Dimension of the Hilbert space
 * \return Random normalized ket
 */
-ket randket(idx D)
+inline ket randket(idx D)
 {
     if (D == 0)
         throw Exception("qpp::randket()", Exception::Type::DIMS_INVALID);
@@ -372,7 +372,7 @@ ket randket(idx D)
 * \param D Dimension of the Hilbert space
 * \return Random density matrix
 */
-cmat randrho(idx D)
+inline cmat randrho(idx D)
 {
     if (D == 0)
         throw Exception("qpp::randrho()", Exception::Type::DIMS_INVALID);
@@ -392,7 +392,7 @@ cmat randrho(idx D)
 * \param n Size of the permutation
 * \return Random permutation of size \a n
 */
-std::vector<idx> randperm(idx n)
+inline std::vector<idx> randperm(idx n)
 {
     if (n == 0)
         throw Exception("qpp::randperm()", Exception::Type::PERM_INVALID);

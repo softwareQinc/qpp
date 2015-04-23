@@ -42,8 +42,7 @@ namespace qpp
 * of \a x. If there are \a m less than \a n terms in the expansion,
 * a shorter vector with \a m components is returned.
 */
-std::vector<int> x2contfrac(double x, idx n,
-                            idx cut = 1e5)
+inline std::vector<int> x2contfrac(double x, idx n, idx cut = 1e5)
 {
     if (n == 0)
         throw Exception("qpp::x2contfrac()", Exception::Type::OUT_OF_RANGE);
@@ -71,7 +70,7 @@ std::vector<int> x2contfrac(double x, idx n,
 * are considered.
 * \return Real representation of the simple continued fraction
 */
-double contfrac2x(const std::vector<int>& cf, idx n)
+inline double contfrac2x(const std::vector<int>& cf, idx n)
 {
     if (cf.size() == 0)
         throw Exception("qpp::contfrac2x()", Exception::Type::ZERO_SIZE);
@@ -101,7 +100,7 @@ double contfrac2x(const std::vector<int>& cf, idx n)
 * \param cf Integer vector containing the simple continued fraction expansion
 * \return Real representation of the simple continued fraction
 */
-double contfrac2x(const std::vector<int>& cf)
+inline double contfrac2x(const std::vector<int>& cf)
 {
     if (cf.size() == 0)
         throw Exception("qpp::contfrac2x()", Exception::Type::ZERO_SIZE);
@@ -126,7 +125,8 @@ double contfrac2x(const std::vector<int>& cf)
 * \param n Non-negative integer
 * \return Greatest common divisor of \a m and \a n
 */
-unsigned long long int gcd(unsigned long long int m, unsigned long long int n)
+inline unsigned long long int
+gcd(unsigned long long int m, unsigned long long int n)
 {
     if (m == 0 && n == 0)
         throw Exception("qpp::gcd()", Exception::Type::OUT_OF_RANGE);
@@ -152,7 +152,8 @@ unsigned long long int gcd(unsigned long long int m, unsigned long long int n)
 * \param ns List of non-negative integers
 * \return Greatest common divisor of all numbers in \a ns
 */
-unsigned long long int gcd(const std::vector<unsigned long long int>& ns)
+inline unsigned long long int
+gcd(const std::vector<unsigned long long int>& ns)
 {
     if (ns.size() == 0)
         throw Exception("qpp::gcd()", Exception::Type::ZERO_SIZE);
@@ -174,7 +175,8 @@ unsigned long long int gcd(const std::vector<unsigned long long int>& ns)
 * \param n Positive integer
 * \return Least common multiple of \a m and \a n
 */
-unsigned long long int lcm(unsigned long long int m, unsigned long long int n)
+inline unsigned long long int
+lcm(unsigned long long int m, unsigned long long int n)
 {
     if (m == 0 || n == 0)
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
@@ -189,7 +191,8 @@ unsigned long long int lcm(unsigned long long int m, unsigned long long int n)
 * \param ns List of positive integers
 * \return Least common multiple of all numbers in \a ns
 */
-unsigned long long int lcm(const std::vector<unsigned long long int>& ns)
+inline unsigned long long int
+lcm(const std::vector<unsigned long long int>& ns)
 {
     if (ns.size() == 0)
         throw Exception("qpp::lcm()", Exception::Type::ZERO_SIZE);
@@ -215,7 +218,7 @@ unsigned long long int lcm(const std::vector<unsigned long long int>& ns)
 * \param perm Permutation
 * \return Inverse of the permutation \a perm
 */
-std::vector<idx> invperm(const std::vector<idx>& perm)
+inline std::vector<idx> invperm(const std::vector<idx>& perm)
 {
     if (!internal::_check_perm(perm))
         throw Exception("qpp::invperm()", Exception::Type::PERM_INVALID);
@@ -236,8 +239,8 @@ std::vector<idx> invperm(const std::vector<idx>& perm)
 * \return Composition of the permutations \a perm \f$\circ\f$ \a sigma
 *  = perm(sigma)
 */
-std::vector<idx> compperm(const std::vector<idx>& perm,
-                          const std::vector<idx>& sigma)
+inline std::vector<idx> compperm(const std::vector<idx>& perm,
+                                 const std::vector<idx>& sigma)
 {
     if (!internal::_check_perm(perm))
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
@@ -262,7 +265,7 @@ std::vector<idx> compperm(const std::vector<idx>& perm,
 * \param n Integer strictly greater than 1
 * \return Integer vector containing the factors
 */
-std::vector<unsigned long long int> factors(unsigned long long int n)
+inline std::vector<unsigned long long int> factors(unsigned long long int n)
 {
     if (n == 0 || n == 1)
         throw Exception("qpp::factors()", Exception::Type::OUT_OF_RANGE);
@@ -299,7 +302,7 @@ std::vector<unsigned long long int> factors(unsigned long long int n)
 * \param n Integer strictly greater than 1
 * \return True if the number is prime, false otherwise
 */
-bool isprime(unsigned long long int n)
+inline bool isprime(unsigned long long int n)
 {
     if (n == 0 or n == 1)
         throw Exception("qpp::isprime()", Exception::Type::OUT_OF_RANGE);

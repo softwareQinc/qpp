@@ -122,7 +122,7 @@ bool _check_nonzero_size(const T& x) noexcept
 }
 
 // check that dims is a valid dimension vector
-bool _check_dims(const std::vector<idx>& dims)
+inline bool _check_dims(const std::vector<idx>& dims)
 {
     if (dims.size() == 0)
         return false;
@@ -176,7 +176,7 @@ bool _check_dims_match_rvect(const std::vector<idx>& dims,
 }
 
 // check that all elements in valid dims equal to dim
-bool _check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept
+inline bool _check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept
 {
     for (idx i : dims)
         if (i != dim)
@@ -186,8 +186,8 @@ bool _check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept
 }
 
 // check that subsys is valid with respect to valid dims
-bool _check_subsys_match_dims(const std::vector<idx>& subsys,
-                              const std::vector<idx>& dims)
+inline bool _check_subsys_match_dims(const std::vector<idx>& subsys,
+                                     const std::vector<idx>& dims)
 {
     //	// check non-zero sized subsystems
     //	if (subsys.size() == 0)
@@ -253,7 +253,7 @@ bool _check_qubit_vector(const Eigen::MatrixBase<Derived>& V) noexcept
 
 
 // check valid permutation
-bool _check_perm(const std::vector<idx>& perm)
+inline bool _check_perm(const std::vector<idx>& perm)
 {
     if (perm.size() == 0)
         return false;

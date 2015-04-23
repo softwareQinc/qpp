@@ -12,7 +12,7 @@ var files =
     [ "instruments.h", "instruments_8h.html", "instruments_8h" ],
     [ "number_theory.h", "number__theory_8h.html", "number__theory_8h" ],
     [ "operations.h", "operations_8h.html", "operations_8h" ],
-    [ "qpp.h", "qpp_8h.html", "qpp_8h" ],
+    [ "qpp.h", "qpp_8h.html", null ],
     [ "random.h", "random_8h.html", "random_8h" ],
     [ "types.h", "types_8h.html", "types_8h" ]
 ];

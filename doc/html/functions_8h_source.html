@@ -947,7 +947,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01268"></a><span class="lineno"> 1268</span>&#160;    <span class="keywordflow">return</span> grams&lt;dyn_mat&lt;typename Derived::Scalar&gt;&gt;(input);</div>
 <div class="line"><a name="l01269"></a><span class="lineno"> 1269</span>&#160;}</div>
 <div class="line"><a name="l01270"></a><span class="lineno"> 1270</span>&#160;</div>
-<div class="line"><a name="l01281"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a5c6a9fc4e463ff3397ced98bc9df0a1c"> 1281</a></span>&#160;std::vector&lt;idx&gt; <a class="code" href="namespaceqpp.html#a5c6a9fc4e463ff3397ced98bc9df0a1c">n2multiidx</a>(<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n, <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l01281"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a5c6a9fc4e463ff3397ced98bc9df0a1c"> 1281</a></span>&#160;<span class="keyword">inline</span> std::vector&lt;idx&gt; <a class="code" href="namespaceqpp.html#a5c6a9fc4e463ff3397ced98bc9df0a1c">n2multiidx</a>(<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n, <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l01282"></a><span class="lineno"> 1282</span>&#160;{</div>
 <div class="line"><a name="l01283"></a><span class="lineno"> 1283</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a0a4a25bc623c39d21898fd6c4e3177ca">internal::_check_dims</a>(dims))</div>
 <div class="line"><a name="l01284"></a><span class="lineno"> 1284</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::n2multiidx()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
@@ -963,8 +963,8 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01294"></a><span class="lineno"> 1294</span>&#160;    <span class="keywordflow">return</span> std::vector&lt;idx&gt;(result, result + dims.size());</div>
 <div class="line"><a name="l01295"></a><span class="lineno"> 1295</span>&#160;}</div>
 <div class="line"><a name="l01296"></a><span class="lineno"> 1296</span>&#160;</div>
-<div class="line"><a name="l01307"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f"> 1307</a></span>&#160;<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> <a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">multiidx2n</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; midx,</div>
-<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;               <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l01307"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f"> 1307</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> <a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">multiidx2n</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; midx,</div>
+<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;                      <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l01309"></a><span class="lineno"> 1309</span>&#160;{</div>
 <div class="line"><a name="l01310"></a><span class="lineno"> 1310</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a0a4a25bc623c39d21898fd6c4e3177ca">internal::_check_dims</a>(dims))</div>
 <div class="line"><a name="l01311"></a><span class="lineno"> 1311</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::multiidx2n()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
@@ -977,8 +977,8 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01318"></a><span class="lineno"> 1318</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceqpp_1_1internal.html#a58bbe3e0db088a311d6ec053950602cf">internal::_multiidx2n</a>(midx.data(), dims.size(), dims.data());</div>
 <div class="line"><a name="l01319"></a><span class="lineno"> 1319</span>&#160;}</div>
 <div class="line"><a name="l01320"></a><span class="lineno"> 1320</span>&#160;</div>
-<div class="line"><a name="l01333"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a2f09ed5c440772b552a289b800d4415a"> 1333</a></span>&#160;<a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> <a class="code" href="namespaceqpp.html#a2f09ed5c440772b552a289b800d4415a">mket</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; mask,</div>
-<div class="line"><a name="l01334"></a><span class="lineno"> 1334</span>&#160;         <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l01333"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a2f09ed5c440772b552a289b800d4415a"> 1333</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> <a class="code" href="namespaceqpp.html#a2f09ed5c440772b552a289b800d4415a">mket</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; mask,</div>
+<div class="line"><a name="l01334"></a><span class="lineno"> 1334</span>&#160;                <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l01335"></a><span class="lineno"> 1335</span>&#160;{</div>
 <div class="line"><a name="l01336"></a><span class="lineno"> 1336</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n = mask.size();</div>
 <div class="line"><a name="l01337"></a><span class="lineno"> 1337</span>&#160;</div>
@@ -1007,7 +1007,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;    <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160;}</div>
 <div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160;</div>
-<div class="line"><a name="l01375"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a3d054252433fbf793575092697f9d985"> 1375</a></span>&#160;<a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> <a class="code" href="namespaceqpp.html#a2f09ed5c440772b552a289b800d4415a">mket</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; mask, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
+<div class="line"><a name="l01375"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a3d054252433fbf793575092697f9d985"> 1375</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> <a class="code" href="namespaceqpp.html#a2f09ed5c440772b552a289b800d4415a">mket</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; mask, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
 <div class="line"><a name="l01376"></a><span class="lineno"> 1376</span>&#160;{</div>
 <div class="line"><a name="l01377"></a><span class="lineno"> 1377</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n = mask.size();</div>
 <div class="line"><a name="l01378"></a><span class="lineno"> 1378</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::pow(d, n)));</div>
@@ -1032,8 +1032,8 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01397"></a><span class="lineno"> 1397</span>&#160;    <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l01398"></a><span class="lineno"> 1398</span>&#160;}</div>
 <div class="line"><a name="l01399"></a><span class="lineno"> 1399</span>&#160;</div>
-<div class="line"><a name="l01414"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a3ee4bf8befeea8079ad61c7070ba9fa2"> 1414</a></span>&#160;<a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a3ee4bf8befeea8079ad61c7070ba9fa2">mprj</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; mask,</div>
-<div class="line"><a name="l01415"></a><span class="lineno"> 1415</span>&#160;          <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l01414"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a3ee4bf8befeea8079ad61c7070ba9fa2"> 1414</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a3ee4bf8befeea8079ad61c7070ba9fa2">mprj</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; mask,</div>
+<div class="line"><a name="l01415"></a><span class="lineno"> 1415</span>&#160;                 <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l01416"></a><span class="lineno"> 1416</span>&#160;{</div>
 <div class="line"><a name="l01417"></a><span class="lineno"> 1417</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n = mask.size();</div>
 <div class="line"><a name="l01418"></a><span class="lineno"> 1418</span>&#160;</div>
@@ -1062,7 +1062,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01441"></a><span class="lineno"> 1441</span>&#160;    <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l01442"></a><span class="lineno"> 1442</span>&#160;}</div>
 <div class="line"><a name="l01443"></a><span class="lineno"> 1443</span>&#160;</div>
-<div class="line"><a name="l01458"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a7a4e06590399ad3a7b4a15ba62849e82"> 1458</a></span>&#160;<a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a3ee4bf8befeea8079ad61c7070ba9fa2">mprj</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; mask, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
+<div class="line"><a name="l01458"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a7a4e06590399ad3a7b4a15ba62849e82"> 1458</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a3ee4bf8befeea8079ad61c7070ba9fa2">mprj</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; mask, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
 <div class="line"><a name="l01459"></a><span class="lineno"> 1459</span>&#160;{</div>
 <div class="line"><a name="l01460"></a><span class="lineno"> 1460</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n = mask.size();</div>
 <div class="line"><a name="l01461"></a><span class="lineno"> 1461</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::pow(d, n)));</div>
@@ -1232,7 +1232,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01698"></a><span class="lineno"> 1698</span>&#160;    <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l01699"></a><span class="lineno"> 1699</span>&#160;}</div>
 <div class="line"><a name="l01700"></a><span class="lineno"> 1700</span>&#160;</div>
-<div class="line"><a name="l01709"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a7e5c413d74d838e78264444307e81576"> 1709</a></span>&#160;<a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a7e5c413d74d838e78264444307e81576">bloch2rho</a>(<span class="keyword">const</span> std::vector&lt;double&gt;&amp; r)</div>
+<div class="line"><a name="l01709"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a7e5c413d74d838e78264444307e81576"> 1709</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a7e5c413d74d838e78264444307e81576">bloch2rho</a>(<span class="keyword">const</span> std::vector&lt;double&gt;&amp; r)</div>
 <div class="line"><a name="l01710"></a><span class="lineno"> 1710</span>&#160;{</div>
 <div class="line"><a name="l01711"></a><span class="lineno"> 1711</span>&#160;    <span class="comment">// check 3-dimensional vector</span></div>
 <div class="line"><a name="l01712"></a><span class="lineno"> 1712</span>&#160;    <span class="keywordflow">if</span> (r.size() != 3)</div>
@@ -1335,7 +1335,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="functions_8h.html">functions.h</a></li>
-    <li class="footer">Generated on Thu Apr 16 2015 11:46:35 for Quantum++ by
+    <li class="footer">Generated on Wed Apr 22 2015 20:57:27 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

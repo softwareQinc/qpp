@@ -94,10 +94,9 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#ifndef OPERATIONS_H_</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define OPERATIONS_H_</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// silence g++ bogus warning -Wunused-but-set-variable in lambda functions</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#if (__GNUC__)</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wunused-but-set-variable&quot;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">//#if (__GNUC__)</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">//#pragma GCC diagnostic ignored &quot;-Wunused-but-set-variable&quot;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//#endif</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceqpp.html">qpp</a></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
@@ -636,7 +635,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a6cc60c95fa5b4158e153269699d245bc">apply</a>(rrho, Ks, subsys, dims);</div>
 <div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;}</div>
 <div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;</div>
-<div class="line"><a name="l00668"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a474d2e8fdbac3fb577c835e5416fecaa">  668</a></span>&#160;<a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a474d2e8fdbac3fb577c835e5416fecaa">kraus2super</a>(<span class="keyword">const</span> std::vector&lt;cmat&gt;&amp; Ks)</div>
+<div class="line"><a name="l00668"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a474d2e8fdbac3fb577c835e5416fecaa">  668</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a474d2e8fdbac3fb577c835e5416fecaa">kraus2super</a>(<span class="keyword">const</span> std::vector&lt;cmat&gt;&amp; Ks)</div>
 <div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;{</div>
 <div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;    <span class="keywordflow">if</span> (Ks.size() == 0)</div>
@@ -692,7 +691,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;    <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;}</div>
 <div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;</div>
-<div class="line"><a name="l00739"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a9f23aa8ee0eb007532b29ada39091d4f">  739</a></span>&#160;<a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a9f23aa8ee0eb007532b29ada39091d4f">kraus2choi</a>(<span class="keyword">const</span> std::vector&lt;cmat&gt;&amp; Ks)</div>
+<div class="line"><a name="l00739"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a9f23aa8ee0eb007532b29ada39091d4f">  739</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a9f23aa8ee0eb007532b29ada39091d4f">kraus2choi</a>(<span class="keyword">const</span> std::vector&lt;cmat&gt;&amp; Ks)</div>
 <div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;{</div>
 <div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;    <span class="keywordflow">if</span> (Ks.size() == 0)</div>
@@ -731,7 +730,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;    <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;}</div>
 <div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;</div>
-<div class="line"><a name="l00791"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ac08330f1578fa6b6e382a80132dffb46">  791</a></span>&#160;std::vector&lt;cmat&gt; <a class="code" href="namespaceqpp.html#ac08330f1578fa6b6e382a80132dffb46">choi2kraus</a>(<span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; A)</div>
+<div class="line"><a name="l00791"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ac08330f1578fa6b6e382a80132dffb46">  791</a></span>&#160;<span class="keyword">inline</span> std::vector&lt;cmat&gt; <a class="code" href="namespaceqpp.html#ac08330f1578fa6b6e382a80132dffb46">choi2kraus</a>(<span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; A)</div>
 <div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;{</div>
 <div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">internal::_check_nonzero_size</a>(A))</div>
@@ -758,7 +757,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;    <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;}</div>
 <div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;</div>
-<div class="line"><a name="l00825"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a8b5fb595977b62ea764f9362828678f2">  825</a></span>&#160;<a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a8b5fb595977b62ea764f9362828678f2">choi2super</a>(<span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; A)</div>
+<div class="line"><a name="l00825"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a8b5fb595977b62ea764f9362828678f2">  825</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a8b5fb595977b62ea764f9362828678f2">choi2super</a>(<span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; A)</div>
 <div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;{</div>
 <div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">internal::_check_nonzero_size</a>(A))</div>
@@ -783,7 +782,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;    <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;}</div>
 <div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;</div>
-<div class="line"><a name="l00857"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ad2b8ee9e2f9b51a281f7c42f61571c9a">  857</a></span>&#160;<a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#ad2b8ee9e2f9b51a281f7c42f61571c9a">super2choi</a>(<span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; A)</div>
+<div class="line"><a name="l00857"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ad2b8ee9e2f9b51a281f7c42f61571c9a">  857</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#ad2b8ee9e2f9b51a281f7c42f61571c9a">super2choi</a>(<span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; A)</div>
 <div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;{</div>
 <div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">internal::_check_nonzero_size</a>(A))</div>
@@ -1561,7 +1560,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="operations_8h.html">operations.h</a></li>
-    <li class="footer">Generated on Thu Apr 16 2015 11:46:35 for Quantum++ by
+    <li class="footer">Generated on Wed Apr 22 2015 20:57:27 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

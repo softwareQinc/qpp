@@ -1278,7 +1278,7 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A)
 * \param dims Dimensions of the multi-partite system
 * \return Multi-index of the same size as \a dims
 */
-std::vector<idx> n2multiidx(idx n, const std::vector<idx>& dims)
+inline std::vector<idx> n2multiidx(idx n, const std::vector<idx>& dims)
 {
     if (!internal::_check_dims(dims))
         throw Exception("qpp::n2multiidx()", Exception::Type::DIMS_INVALID);
@@ -1304,8 +1304,8 @@ std::vector<idx> n2multiidx(idx n, const std::vector<idx>& dims)
 * \param dims Dimensions of the multi-partite system
 * \return Non-negative integer index
 */
-idx multiidx2n(const std::vector<idx>& midx,
-               const std::vector<idx>& dims)
+inline idx multiidx2n(const std::vector<idx>& midx,
+                      const std::vector<idx>& dims)
 {
     if (!internal::_check_dims(dims))
         throw Exception("qpp::multiidx2n()", Exception::Type::DIMS_INVALID);
@@ -1330,8 +1330,8 @@ idx multiidx2n(const std::vector<idx>& midx,
 * \param dims Dimensions of the multi-partite system
 * \return Multi-partite qudit state vector, as a complex dynamic column vector
 */
-ket mket(const std::vector<idx>& mask,
-         const std::vector<idx>& dims)
+inline ket mket(const std::vector<idx>& mask,
+                const std::vector<idx>& dims)
 {
     idx n = mask.size();
 
@@ -1372,7 +1372,7 @@ ket mket(const std::vector<idx>& mask,
 * \param d Subsystem dimensions
 * \return Multi-partite qudit state vector, as a complex dynamic column vector
 */
-ket mket(const std::vector<idx>& mask, idx d = 2)
+inline ket mket(const std::vector<idx>& mask, idx d = 2)
 {
     idx n = mask.size();
     idx D = static_cast<idx>(std::llround(std::pow(d, n)));
@@ -1411,8 +1411,8 @@ ket mket(const std::vector<idx>& mask, idx d = 2)
 * \return Projector onto multi-partite qudit state vector,
 * as a complex dynamic matrix
 */
-cmat mprj(const std::vector<idx>& mask,
-          const std::vector<idx>& dims)
+inline cmat mprj(const std::vector<idx>& mask,
+                 const std::vector<idx>& dims)
 {
     idx n = mask.size();
 
@@ -1455,7 +1455,7 @@ cmat mprj(const std::vector<idx>& mask,
 * \return Projector onto multi-partite qudit state vector,
 * as a complex dynamic matrix
 */
-cmat mprj(const std::vector<idx>& mask, idx d = 2)
+inline cmat mprj(const std::vector<idx>& mask, idx d = 2)
 {
     idx n = mask.size();
     idx D = static_cast<idx>(std::llround(std::pow(d, n)));
@@ -1706,7 +1706,7 @@ std::vector<double> rho2bloch(
 * \param r 3-dimensional real vector
 * \return Qubit density matrix
 */
-cmat bloch2rho(const std::vector<double>& r)
+inline cmat bloch2rho(const std::vector<double>& r)
 {
     // check 3-dimensional vector
     if (r.size() != 3)

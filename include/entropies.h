@@ -67,7 +67,7 @@ double entropy(const Eigen::MatrixBase<Derived>& A)
 * \param prob Real probability vector
 * \return Shannon entropy, with the logarithm in base 2
 */
-double entropy(const std::vector<double>& prob)
+inline double entropy(const std::vector<double>& prob)
 {
     // check zero-size
     if (!internal::_check_nonzero_size(prob))
@@ -139,7 +139,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
 * use qpp::infty for \f$\alpha = \infty\f$
 * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
 */
-double renyi(const std::vector<double>& prob, double alpha)
+inline double renyi(const std::vector<double>& prob, double alpha)
 {
     // check zero-size
     if (!internal::_check_nonzero_size(prob))
@@ -224,7 +224,7 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double q)
 *
 * \return Tsallis-\f$q\f$ entropy
 */
-double tsallis(const std::vector<double>& prob, double q)
+inline double tsallis(const std::vector<double>& prob, double q)
 {
     // check zero-size
     if (!internal::_check_nonzero_size(prob))

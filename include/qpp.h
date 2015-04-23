@@ -34,6 +34,11 @@
 #ifndef QPP_H_
 #define QPP_H_
 
+// silence g++ warning -Wunused-variable for Singletons
+#if (__GNUC__)
+#pragma GCC diagnostic ignored "-Wunused-variable"
+#endif
+
 #include <algorithm>
 #include <chrono>
 #include <cmath>
@@ -104,28 +109,28 @@ namespace qpp
 *
 * Additional initializations/cleanups, see the class qpp::Init
 */
-const Init& init = Init::get_instance();
+static const Init& init = Init::get_instance();
 
 /**
 * \brief qpp::Codes const Singleton
 *
 * Initializes the codes, see the class qpp::Codes
 */
-const Codes& codes = Codes::get_instance();
+static const Codes& codes = Codes::get_instance();
 
 /**
 * \brief qpp::Gates const Singleton
 *
 * Initializes the gates, see the class qpp::Gates
 */
-const Gates& gt = Gates::get_instance();
+static const Gates& gt = Gates::get_instance();
 
 /**
 * \brief qpp::States const Singleton
 *
 * Initializes the states, see the class qpp::States
 */
-const States& st = States::get_instance();
+static const States& st = States::get_instance();
 
 /**
 * \brief qpp::RandomDevices Singleton
@@ -135,7 +140,8 @@ const States& st = States::get_instance();
 * \note Has thread storage duration, due to mutability of its public member
 * std::mt19937 and possible data races
 */
-thread_local RandomDevices& rdevs = RandomDevices::get_thread_local_instance();
+static thread_local RandomDevices& rdevs =
+        RandomDevices::get_thread_local_instance();
 
 } /* namespace qpp */
 

@@ -43,4 +43,8 @@ Version 0.6 - 16 April 2015
     - Minor cosmetic changes
 
 Version 0.6.1 - development
+    - Marked all non-template functions defined in headers as "inline" and
+        all singletons as "static", since otherwise including <qpp.h> in
+        separate compilation units led to linker errors due to duplicated
+        symbols.
     

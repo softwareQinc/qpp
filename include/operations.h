@@ -27,10 +27,10 @@
 #ifndef OPERATIONS_H_
 #define OPERATIONS_H_
 
-// silence g++ bogus warning -Wunused-but-set-variable in lambda functions
-#if (__GNUC__)
-#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
-#endif
+//// silence g++ bogus warning -Wunused-but-set-variable in lambda functions
+//#if (__GNUC__)
+//#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+//#endif
 
 namespace qpp
 {
@@ -665,7 +665,7 @@ cmat apply(const Eigen::MatrixBase<Derived>& rho,
 * \param Ks Set of Kraus operators
 * \return Superoperator matrix
 */
-cmat kraus2super(const std::vector<cmat>& Ks)
+inline cmat kraus2super(const std::vector<cmat>& Ks)
 {
     // EXCEPTION CHECKS
     if (Ks.size() == 0)
@@ -736,7 +736,7 @@ cmat kraus2super(const std::vector<cmat>& Ks)
 * \param Ks Set of Kraus operators
 * \return Choi matrix
 */
-cmat kraus2choi(const std::vector<cmat>& Ks)
+inline cmat kraus2choi(const std::vector<cmat>& Ks)
 {
     // EXCEPTION CHECKS
     if (Ks.size() == 0)
@@ -788,7 +788,7 @@ cmat kraus2choi(const std::vector<cmat>& Ks)
 * \param A Choi matrix
 * \return Set of orthogonal Kraus operators
 */
-std::vector<cmat> choi2kraus(const cmat& A)
+inline std::vector<cmat> choi2kraus(const cmat& A)
 {
     // EXCEPTION CHECKS
     if (!internal::_check_nonzero_size(A))
@@ -822,7 +822,7 @@ std::vector<cmat> choi2kraus(const cmat& A)
 * \param A Choi matrix
 * \return Superoperator matrix
 */
-cmat choi2super(const cmat& A)
+inline cmat choi2super(const cmat& A)
 {
     // EXCEPTION CHECKS
     if (!internal::_check_nonzero_size(A))
@@ -854,7 +854,7 @@ cmat choi2super(const cmat& A)
 * \param A Superoperator matrix
 * \return Choi matrix
 */
-cmat super2choi(const cmat& A)
+inline cmat super2choi(const cmat& A)
 {
     // EXCEPTION CHECKS
     if (!internal::_check_nonzero_size(A))

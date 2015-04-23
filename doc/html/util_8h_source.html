@@ -185,7 +185,7 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;}</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">// check that dims is a valid dimension vector</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a0a4a25bc623c39d21898fd6c4e3177ca">  125</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespaceqpp_1_1internal.html#a0a4a25bc623c39d21898fd6c4e3177ca">_check_dims</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a0a4a25bc623c39d21898fd6c4e3177ca">  125</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespaceqpp_1_1internal.html#a0a4a25bc623c39d21898fd6c4e3177ca">_check_dims</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;{</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordflow">if</span> (dims.size() == 0)</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
@@ -239,7 +239,7 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;}</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="comment">// check that all elements in valid dims equal to dim</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a9e6a986c8253d69ffd7b78bdcc96fbfc">  179</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespaceqpp_1_1internal.html#a9e6a986c8253d69ffd7b78bdcc96fbfc">_check_eq_dims</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> dim) noexcept</div>
+<div class="line"><a name="l00179"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a9e6a986c8253d69ffd7b78bdcc96fbfc">  179</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespaceqpp_1_1internal.html#a9e6a986c8253d69ffd7b78bdcc96fbfc">_check_eq_dims</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> dim) noexcept</div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;{</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i : dims)</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        <span class="keywordflow">if</span> (i != dim)</div>
@@ -249,8 +249,8 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;}</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="comment">// check that subsys is valid with respect to valid dims</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a40b09454ce4959a4fd231e67518d6abe">  189</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespaceqpp_1_1internal.html#a40b09454ce4959a4fd231e67518d6abe">_check_subsys_match_dims</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsys,</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                              <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a40b09454ce4959a4fd231e67518d6abe">  189</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespaceqpp_1_1internal.html#a40b09454ce4959a4fd231e67518d6abe">_check_subsys_match_dims</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsys,</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                                     <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;{</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="comment">//  // check non-zero sized subsystems</span></div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="comment">//  if (subsys.size() == 0)</span></div>
@@ -316,7 +316,7 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="comment">// check valid permutation</span></div>
-<div class="line"><a name="l00256"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a5c90e71ef74abcb25b5943025ee003c1">  256</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespaceqpp_1_1internal.html#a5c90e71ef74abcb25b5943025ee003c1">_check_perm</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; perm)</div>
+<div class="line"><a name="l00256"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a5c90e71ef74abcb25b5943025ee003c1">  256</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespaceqpp_1_1internal.html#a5c90e71ef74abcb25b5943025ee003c1">_check_perm</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; perm)</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;{</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="keywordflow">if</span> (perm.size() == 0)</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
@@ -461,7 +461,7 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7374381ecdb819c64ee9b6ea2bd3370d.html">internal</a></li><li class="navelem"><a class="el" href="util_8h.html">util.h</a></li>
-    <li class="footer">Generated on Thu Apr 16 2015 11:46:35 for Quantum++ by
+    <li class="footer">Generated on Wed Apr 22 2015 20:57:27 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

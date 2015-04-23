@@ -56,7 +56,7 @@ internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
 * than \a chop
 * \return Instance of qpp::internal::internal::IOManipEigen
 */
-internal::IOManipEigen disp(cplx z, double chop = qpp::chop)
+inline internal::IOManipEigen disp(cplx z, double chop = qpp::chop)
 {
     return internal::IOManipEigen(z, chop);
 }
