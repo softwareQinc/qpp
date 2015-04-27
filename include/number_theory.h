@@ -315,6 +315,34 @@ inline bool isprime(unsigned long long int n)
     return false;
 }
 
+/**
+* \brief Integer power modulo p
+*
+* Computes \f$a^n\mathrm{ mod }p\f$
+*
+* \param a Non-negative integer
+* \param n Non-negative integer
+* \param p Strictly positive integer
+* \return \f$a^n\mathrm{ mod }p\f$
+*/
+inline std::size_t modpow(std::size_t a, std::size_t n, std::size_t p)
+{
+    if (p == 0 || (a == 0 && n == 0))
+        throw Exception("qpp::modpow()",
+                        Exception::Type::OUT_OF_RANGE);
+
+    std::size_t result = 1;
+
+    for (; n > 0; n /= 2)
+    {
+        if (n % 2)
+            result = (result * a) % p;
+        a = (a * a) % p;
+    }
+
+    return result;
+}
+
 } /* namespace qpp */
 
 #endif /* NUMBER_THEORY_H_ */

@@ -48,3 +48,7 @@
 \form#47:$Tr_{subsys}(\cdot)$
 \form#48:$(\cdot)^{T_{subsys}}$
 \form#49:$ \sum_i K_i^\dagger K_i = I$
+\form#50:$a^n \mathrm{mod} p$
+\form#51:$x^n \mathrm{mod} p$
+\form#52:$a^n\mathrm{ mod }p$
+\form#53:$x^n\mathrm{ mod }p$

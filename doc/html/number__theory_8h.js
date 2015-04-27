@@ -10,5 +10,6 @@ var number__theory_8h =
     [ "isprime", "number__theory_8h.html#a2853f3470078b224952bca34d0bc1b18", null ],
     [ "lcm", "number__theory_8h.html#acd5dad75a06447fb3b195f01e5540029", null ],
     [ "lcm", "number__theory_8h.html#ab334247d212f78c5c00c3dc3a28f2f48", null ],
+    [ "modpow", "number__theory_8h.html#abc3843e04ccc5c828cbc56e8708b3839", null ],
     [ "x2contfrac", "number__theory_8h.html#ac5f5d1d0cc8230b512e8514eb89549db", null ]
 ];

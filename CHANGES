@@ -49,4 +49,5 @@ Version 0.7 - 22 April 2015
         symbols
 
 Version 0.7.1 - development
-        
+    - Added new functions in <number_theory.h>:
+        qpp::modpow() - computes a^n mod p for non-negative integers
