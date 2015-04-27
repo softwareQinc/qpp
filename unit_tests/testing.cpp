@@ -57,14 +57,14 @@ TEST(qpp_prod_test, PositiveNumbers)
 }
 // ********** END qpp::prod() **********
 
-// ********** qpp::experimental::modpow() **********
+// ********** qpp::modpow() **********
 TEST(qpp_modpow_test, PositiveNumbers)
 {
     EXPECT_EQ (0, qpp::modpow(2, 3, 4));
     EXPECT_EQ (34, qpp::modpow(17, 176, 37));
     EXPECT_EQ (4042, qpp::modpow(178373, 9281623, 6217));
 }
-// ********** END qpp::experimental::modpow() **********
+// ********** END qpp::modpow() **********
 
 
 int main(int argc, char** argv)
