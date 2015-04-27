@@ -18,7 +18,7 @@ IF(${WITH_OPENMP})
     # no OpenMP support for clang++ yet
     IF(NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
-	      SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp")
+        SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp")
     ENDIF()
 ENDIF(${WITH_OPENMP})
 
