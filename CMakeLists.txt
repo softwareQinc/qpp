@@ -57,7 +57,7 @@ SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DEIGEN_NO
 
 IF( NOT CMAKE_BUILD_TYPE )
   SET( CMAKE_BUILD_TYPE Release CACHE STRING
-       "Choose the type of build, options are: None Debug Release MinSizeRel RelWithDebInfo MinSizeRel."
+       "Choose the type of build, options are: None Debug Release MinSizeRel RelWithDebInfo."
        FORCE )
 ENDIF()
 
