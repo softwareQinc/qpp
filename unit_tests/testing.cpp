@@ -66,7 +66,6 @@ TEST(qpp_modpow_test, PositiveNumbers)
 }
 // ********** END qpp::modpow() **********
 
-
 int main(int argc, char** argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
