@@ -97,13 +97,19 @@ public:
         return instance;
     }
 
-    static thread_local T& get_thread_local_instance()
+    #ifndef _NO_THREAD_LOCAL
+    thread_local
+    #endif    
+    static T& get_thread_local_instance()
     noexcept(std::is_nothrow_constructible<T>::value)
     {
         // Guaranteed to be destroyed.
         // Instantiated on first use.
         // Thread safe in C++11
-        static thread_local T instance;
+        #ifndef _NO_THREAD_LOCAL
+        thread_local
+        #endif
+        static T instance;
 
         return instance;
     }

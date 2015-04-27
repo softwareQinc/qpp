@@ -54,7 +54,10 @@ private:
     /**
     * \brief Default constructor
     */
-    Codes() = default;
+    Codes() {} // = default; // clang++ spits the error below if defaulted:
+    //    error:
+    //    default initialization of an object of const type 'const qpp::Codes'
+    //    requires a user-provided default constructor
 
     /**
     * \brief Default destructor
