@@ -27,10 +27,10 @@
 #ifndef OPERATIONS_H_
 #define OPERATIONS_H_
 
-//// silence g++ bogus warning -Wunused-but-set-variable in lambda functions
-//#if (__GNUC__)
-//#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
-//#endif
+//// silence g++4.8 bogus warning -Wunused-but-set-variable in lambda functions
+#if (__GNUC__)
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+#endif
 
 namespace qpp
 {

@@ -77,6 +77,11 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
 template<typename Derived>
 Derived rand(idx rows, idx cols, double a = 0, double b = 1)
 {
+    // silence -Wunused-parameter in clang++
+    (void)rows; 
+    (void)cols; 
+    (void)a; 
+    (void)b; 
     throw Exception("qpp::rand()", Exception::Type::UNDEFINED_TYPE);
 }
 
@@ -160,6 +165,11 @@ template<typename Derived>
 Derived randn(idx rows, idx cols, double mean = 0,
               double sigma = 1)
 {
+    // silence -Wunused-parameter in clang++
+    (void)rows;
+    (void)cols;
+    (void)mean; 
+    (void)sigma; 
     throw Exception("qpp::randn()", Exception::Type::UNDEFINED_TYPE);
 }
 
@@ -198,7 +208,6 @@ inline dmat randn(idx rows, idx cols,
             {
                 return nd(RandomDevices::get_thread_local_instance()._rng);
             });
-
 }
 
 /**
