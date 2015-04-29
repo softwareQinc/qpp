@@ -27,7 +27,7 @@ IF(${WITH_OPENMP})
         SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp")
     #### no OpenMP support for clang++ yet
     ELSEIF (NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "GNU") 
-        MESSAGE(WARNING "Your compiler is detected as: ${CMAKE_CXX_COMPILER_ID}. Suport for OpenMP is enabled only for the GNU gcc compiler.")
+        MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID}. Support for OpenMP is enabled only for the GNU gcc compiler.")
     ENDIF()
 ENDIF()
 
