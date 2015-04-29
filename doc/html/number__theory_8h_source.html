@@ -294,27 +294,29 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;}</div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;</div>
-<div class="line"><a name="l00328"></a><span class="lineno"><a class="line" href="namespaceqpp.html#abc3843e04ccc5c828cbc56e8708b3839">  328</a></span>&#160;<span class="keyword">inline</span> std::size_t <a class="code" href="namespaceqpp.html#abc3843e04ccc5c828cbc56e8708b3839">modpow</a>(std::size_t a, std::size_t n, std::size_t p)</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;{</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <span class="keywordflow">if</span> (p == 0 || (a == 0 &amp;&amp; n == 0))</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::modpow()&quot;</span>,</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;                        <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    std::size_t result = 1;</div>
+<div class="line"><a name="l00328"></a><span class="lineno"><a class="line" href="namespaceqpp.html#aa62f14337f48f21eb0c506898e596f7a">  328</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> <a class="code" href="namespaceqpp.html#aa62f14337f48f21eb0c506898e596f7a">modpow</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> a,</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;                                     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> n,</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;                                     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> p)</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;{</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="keywordflow">if</span> (p == 0 || (a == 0 &amp;&amp; n == 0))</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::modpow()&quot;</span>,</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;                        <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <span class="keywordflow">for</span> (; n &gt; 0; n /= 2)</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    {</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        <span class="keywordflow">if</span> (n % 2)</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;            result = (result * a) % p;</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        a = (a * a) % p;</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    }</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;}</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> result = 1;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <span class="keywordflow">for</span> (; n &gt; 0; n /= 2)</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    {</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        <span class="keywordflow">if</span> (n % 2)</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;            result = (result * a) % p;</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        a = (a * a) % p;</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    }</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;}</div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* NUMBER_THEORY_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* NUMBER_THEORY_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="namespaceqpp_html_acd5dad75a06447fb3b195f01e5540029"><div class="ttname"><a href="namespaceqpp.html#acd5dad75a06447fb3b195f01e5540029">qpp::lcm</a></div><div class="ttdeci">unsigned long long int lcm(unsigned long long int m, unsigned long long int n)</div><div class="ttdoc">Least common multiple of two positive integers. </div><div class="ttdef"><b>Definition:</b> number_theory.h:179</div></div>
 <div class="ttc" id="namespaceqpp_html_a215c720d5f42667fb6113fe77b56873d"><div class="ttname"><a href="namespaceqpp.html#a215c720d5f42667fb6113fe77b56873d">qpp::factors</a></div><div class="ttdeci">std::vector&lt; unsigned long long int &gt; factors(unsigned long long int n)</div><div class="ttdoc">Prime factor decomposition. </div><div class="ttdef"><b>Definition:</b> number_theory.h:268</div></div>
 <div class="ttc" id="namespaceqpp_html_a78595ec429a5df51dbe682cdb9711d9c"><div class="ttname"><a href="namespaceqpp.html#a78595ec429a5df51dbe682cdb9711d9c">qpp::prod</a></div><div class="ttdeci">Derived::Scalar prod(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Element-wise product of A. </div><div class="ttdef"><b>Definition:</b> functions.h:213</div></div>
@@ -327,7 +329,7 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_1_1internal_html_a5c90e71ef74abcb25b5943025ee003c1"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a5c90e71ef74abcb25b5943025ee003c1">qpp::internal::_check_perm</a></div><div class="ttdeci">bool _check_perm(const std::vector&lt; idx &gt; &amp;perm)</div><div class="ttdef"><b>Definition:</b> util.h:250</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html"><div class="ttname"><a href="classqpp_1_1_exception.html">qpp::Exception</a></div><div class="ttdoc">Generates custom exceptions, used when validating function parameters. </div><div class="ttdef"><b>Definition:</b> exception.h:39</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">qpp::Exception::Type::OUT_OF_RANGE</a></div></div>
-<div class="ttc" id="namespaceqpp_html_abc3843e04ccc5c828cbc56e8708b3839"><div class="ttname"><a href="namespaceqpp.html#abc3843e04ccc5c828cbc56e8708b3839">qpp::modpow</a></div><div class="ttdeci">std::size_t modpow(std::size_t a, std::size_t n, std::size_t p)</div><div class="ttdoc">Integer power modulo p. </div><div class="ttdef"><b>Definition:</b> number_theory.h:328</div></div>
+<div class="ttc" id="namespaceqpp_html_aa62f14337f48f21eb0c506898e596f7a"><div class="ttname"><a href="namespaceqpp.html#aa62f14337f48f21eb0c506898e596f7a">qpp::modpow</a></div><div class="ttdeci">unsigned long long int modpow(unsigned long long int a, unsigned long long int n, unsigned long long int p)</div><div class="ttdoc">Integer power modulo p. </div><div class="ttdef"><b>Definition:</b> number_theory.h:328</div></div>
 <div class="ttc" id="namespaceqpp_html_a6d775eb89c0bd90605168089805d2e71"><div class="ttname"><a href="namespaceqpp.html#a6d775eb89c0bd90605168089805d2e71">qpp::gcd</a></div><div class="ttdeci">unsigned long long int gcd(unsigned long long int m, unsigned long long int n)</div><div class="ttdoc">Greatest common divisor of two non-negative integers. </div><div class="ttdef"><b>Definition:</b> number_theory.h:129</div></div>
 <div class="ttc" id="namespaceqpp_html_ac5f5d1d0cc8230b512e8514eb89549db"><div class="ttname"><a href="namespaceqpp.html#ac5f5d1d0cc8230b512e8514eb89549db">qpp::x2contfrac</a></div><div class="ttdeci">std::vector&lt; int &gt; x2contfrac(double x, idx n, idx cut=1e5)</div><div class="ttdoc">Simple continued fraction expansion. </div><div class="ttdef"><b>Definition:</b> number_theory.h:45</div></div>
 <div class="ttc" id="namespaceqpp_html_a1f5f7137e8551cf82db04d3b81cdd706"><div class="ttname"><a href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">qpp::idx</a></div><div class="ttdeci">std::size_t idx</div><div class="ttdoc">Non-negative integer index. </div><div class="ttdef"><b>Definition:</b> types.h:36</div></div>
@@ -338,7 +340,7 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="number__theory_8h.html">number_theory.h</a></li>
-    <li class="footer">Generated on Tue Apr 28 2015 22:19:56 for Quantum++ by
+    <li class="footer">Generated on Wed Apr 29 2015 14:10:03 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

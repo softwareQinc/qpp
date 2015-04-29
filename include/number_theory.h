@@ -325,13 +325,15 @@ inline bool isprime(unsigned long long int n)
 * \param p Strictly positive integer
 * \return \f$a^n\mathrm{ mod }p\f$
 */
-inline std::size_t modpow(std::size_t a, std::size_t n, std::size_t p)
+inline unsigned long long int modpow(unsigned long long int a,
+                                     unsigned long long int n,
+                                     unsigned long long int p)
 {
     if (p == 0 || (a == 0 && n == 0))
         throw Exception("qpp::modpow()",
                         Exception::Type::OUT_OF_RANGE);
 
-    std::size_t result = 1;
+    unsigned long long int result = 1;
 
     for (; n > 0; n /= 2)
     {
