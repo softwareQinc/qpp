@@ -123,23 +123,25 @@ $(document).ready(function(){initNavTree('singleton_8h_source.html','');});
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">return</span> instance;</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    }</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_singleton.html#aaf4b1c567e5b672354c026c7ae02ae16">  100</a></span>&#160;    <span class="keyword">static</span> thread_local T&amp; <a class="code" href="classqpp_1_1internal_1_1_singleton.html#aaf4b1c567e5b672354c026c7ae02ae16">get_thread_local_instance</a>()</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    noexcept(<a class="code" href="namespacestd.html">std</a>::is_nothrow_constructible&lt;T&gt;::value)</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    {</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="comment">// Guaranteed to be destroyed.</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="comment">// Instantiated on first use.</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="comment">// Thread safe in C++11</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keyword">static</span> thread_local T instance;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordflow">return</span> instance;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    }</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;}; <span class="comment">/* class Singleton */</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;} <span class="comment">/* namespace internal */</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INTERNAL_CLASSES_SINGLETON_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="classqpp_1_1internal_1_1_singleton_html_aaf4b1c567e5b672354c026c7ae02ae16"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html#aaf4b1c567e5b672354c026c7ae02ae16">qpp::internal::Singleton::get_thread_local_instance</a></div><div class="ttdeci">static thread_local T &amp; get_thread_local_instance() noexcept(std::is_nothrow_constructible&lt; T &gt;::value)</div><div class="ttdef"><b>Definition:</b> singleton.h:100</div></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">    #ifndef _NO_THREAD_LOCAL</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_singleton.html#aaf4b1c567e5b672354c026c7ae02ae16">  101</a></span>&#160;    thread_local <span class="keyword">static</span> T&amp; <a class="code" href="classqpp_1_1internal_1_1_singleton.html#aaf4b1c567e5b672354c026c7ae02ae16">get_thread_local_instance</a>()</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    noexcept(<a class="code" href="namespacestd.html">std</a>::is_nothrow_constructible&lt;T&gt;::value)</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    {</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="comment">// Guaranteed to be destroyed.</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="comment">// Instantiated on first use.</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="comment">// Thread safe in C++11</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        thread_local <span class="keyword">static</span> T instance;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordflow">return</span> instance;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    }</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">    #endif // _NO_THREAD_LOCAL</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}; <span class="comment">/* class Singleton */</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;} <span class="comment">/* namespace internal */</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INTERNAL_CLASSES_SINGLETON_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="classqpp_1_1internal_1_1_singleton_html_aaf4b1c567e5b672354c026c7ae02ae16"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html#aaf4b1c567e5b672354c026c7ae02ae16">qpp::internal::Singleton::get_thread_local_instance</a></div><div class="ttdeci">static thread_local T &amp; get_thread_local_instance() noexcept(std::is_nothrow_constructible&lt; T &gt;::value)</div><div class="ttdef"><b>Definition:</b> singleton.h:101</div></div>
 <div class="ttc" id="classqpp_1_1internal_1_1_singleton_html"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html">qpp::internal::Singleton</a></div><div class="ttdoc">Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...</div><div class="ttdef"><b>Definition:</b> singleton.h:77</div></div>
 <div class="ttc" id="namespaceqpp_html"><div class="ttname"><a href="namespaceqpp.html">qpp</a></div><div class="ttdoc">Quantum++ main namespace. </div><div class="ttdef"><b>Definition:</b> codes.h:30</div></div>
 <div class="ttc" id="namespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdoc">STL namespace. </div></div>
@@ -153,7 +155,7 @@ $(document).ready(function(){initNavTree('singleton_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7374381ecdb819c64ee9b6ea2bd3370d.html">internal</a></li><li class="navelem"><a class="el" href="dir_0287916e3084ede6e6e90e400eca2f39.html">classes</a></li><li class="navelem"><a class="el" href="singleton_8h.html">singleton.h</a></li>
-    <li class="footer">Generated on Sun Apr 26 2015 20:19:19 for Quantum++ by
+    <li class="footer">Generated on Tue Apr 28 2015 22:19:56 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

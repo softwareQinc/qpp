@@ -1,4 +1,4 @@
-/* 
+/*
  * Quantum++
  *
  * Copyright (c) 2013 - 2015 Vlad Gheorghiu (vgheorgh@gmail.com)
@@ -34,7 +34,7 @@
 #ifndef QPP_H_
 #define QPP_H_
 
-// silence g++ warning -Wunused-variable for Singletons
+// silence bogus warning -Wunused-variable for Singletons
 #if (__GNUC__)
 #pragma GCC diagnostic ignored "-Wunused-variable"
 #endif
@@ -141,11 +141,13 @@ static const States& st = States::get_instance();
 * std::mt19937 and possible data races
 */
 #ifndef _NO_THREAD_LOCAL
-thread_local
-#endif
+thread_local static RandomDevices& rdevs =
+    RandomDevices::get_thread_local_instance();
+#else
 static RandomDevices& rdevs =
-        RandomDevices::get_thread_local_instance();
+    RandomDevices::get_instance();
+#endif // _NO_THREAD_LOCAL
 
 } /* namespace qpp */
 
-#endif	/* QPP_H_ */
+#endif  /* QPP_H_ */

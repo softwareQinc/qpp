@@ -98,21 +98,17 @@ public:
     }
 
     #ifndef _NO_THREAD_LOCAL
-    thread_local
-    #endif    
-    static T& get_thread_local_instance()
+    thread_local static T& get_thread_local_instance()
     noexcept(std::is_nothrow_constructible<T>::value)
     {
         // Guaranteed to be destroyed.
         // Instantiated on first use.
         // Thread safe in C++11
-        #ifndef _NO_THREAD_LOCAL
-        thread_local
-        #endif
-        static T instance;
+        thread_local static T instance;
 
         return instance;
     }
+    #endif // _NO_THREAD_LOCAL
 }; /* class Singleton */
 
 } /* namespace internal */

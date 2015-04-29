@@ -11,22 +11,23 @@ SET(SOURCE_FILES
     examples/example.cpp)
 
 #### modify as needed
-SET(ADDITIONAL_FLAGS  "-std=c++11 -pedantic -Wall -Wextra -Weffc++")
-
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
 SET(EIGEN "$ENV{HOME}/eigen")
-
+SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
 INCLUDE_DIRECTORIES(include)
 INCLUDE_DIRECTORIES(SYSTEM ${EIGEN})
 
+#### modify as needed
+SET(ADDITIONAL_FLAGS  "-std=c++11 -pedantic -Wall -Wextra -Weffc++")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
+
 OPTION(WITH_OPENMP "OpenMP support" ON)
 IF(${WITH_OPENMP})
-    #### no OpenMP support for clang++ yet
     IF(${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
         SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp")
-    ELSEIF (NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
-        MESSAGE(WARNING "Suport for OpenMP is enabled only for GNU gcc compiler. Your compiler seems to be: ${CMAKE_CXX_COMPILER_ID}")
+    #### no OpenMP support for clang++ yet
+    ELSEIF (NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "GNU") 
+        MESSAGE(WARNING "Your compiler is detected as: ${CMAKE_CXX_COMPILER_ID}. Suport for OpenMP is enabled only for the GNU gcc compiler.")
     ENDIF()
 ENDIF(${WITH_OPENMP})
 

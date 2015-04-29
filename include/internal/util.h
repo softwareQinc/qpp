@@ -27,12 +27,6 @@
 #ifndef INTERNAL_UTIL_H_
 #define INTERNAL_UTIL_H_
 
-// silence g++ bogus warning -Warray-bounds in _multiidx2n() in line
-// part_prod[numdims - 1] = 1;
-// #if (__GNUC__)
-// #pragma GCC diagnostic ignored "-Warray-bounds"
-// #endif
-
 namespace qpp
 {
 /**

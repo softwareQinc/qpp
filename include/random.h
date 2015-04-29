@@ -44,7 +44,11 @@ inline double rand(double a = 0, double b = 1)
 {
     std::uniform_real_distribution<> ud(a, b);
 
+    #ifndef _NO_THREAD_LOCAL
     return ud(RandomDevices::get_thread_local_instance()._rng);
+    #else
+    return ud(RandomDevices::get_instance()._rng);
+    #endif // _NO_THREAD_LOCAL
 }
 
 /**
@@ -60,7 +64,11 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
 {
     std::uniform_int_distribution<idx> uid(a, b);
 
+    #ifndef _NO_THREAD_LOCAL
     return uid(RandomDevices::get_thread_local_instance()._rng);
+    #else
+    return uid(RandomDevices::get_instance()._rng);
+    #endif // _NO_THREAD_LOCAL
 }
 
 /**
@@ -206,7 +214,11 @@ inline dmat randn(idx rows, idx cols,
     return dmat::Zero(rows, cols).unaryExpr(
             [&nd](double)
             {
-                return nd(RandomDevices::get_thread_local_instance()._rng);
+                    #ifndef _NO_THREAD_LOCAL
+                    return nd(RandomDevices::get_thread_local_instance()._rng);
+                    #else
+                    return nd(RandomDevices::get_instance()._rng);
+                    #endif // _NO_THREAD_LOCAL
             });
 }
 
@@ -254,7 +266,11 @@ inline double randn(double mean = 0, double sigma = 1)
 {
     std::normal_distribution<> nd(mean, sigma);
 
+    #ifndef _NO_THREAD_LOCAL
     return nd(RandomDevices::get_thread_local_instance()._rng);
+    #else
+    return nd(RandomDevices::get_instance()._rng);
+    #endif // _NO_THREAD_LOCAL
 }
 
 /**
@@ -411,8 +427,13 @@ inline std::vector<idx> randperm(idx n)
     // fill in increasing order
     std::iota(std::begin(result), std::end(result), 0);
     // shuffle
+    #ifndef _NO_THREAD_LOCAL
     std::shuffle(std::begin(result), std::end(result),
                  RandomDevices::get_thread_local_instance()._rng);
+    #else
+    std::shuffle(std::begin(result), std::end(result),
+                 RandomDevices::get_instance()._rng);
+    #endif // _NO_THREAD_LOCAL
 
     return result;
 }

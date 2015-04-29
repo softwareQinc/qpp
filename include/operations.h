@@ -28,7 +28,7 @@
 #define OPERATIONS_H_
 
 //// silence g++4.8 bogus warning -Wunused-but-set-variable in lambda functions
-#if (__GNUC__)
+#if (__GNUC__ && !__clang__)
 #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 #endif
 
