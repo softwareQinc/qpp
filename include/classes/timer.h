@@ -101,6 +101,11 @@ public:
     {
         return os << rhs.seconds();
     }
+
+    /**
+    * \brief Default virtual destructor
+    */
+    virtual ~Timer() = default;
 }; /* class Timer */
 
 } /* namespace qpp */

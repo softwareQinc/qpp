@@ -34,7 +34,7 @@ namespace qpp
 {
 namespace internal
 {
-
+// TODO: make an abstract base class
 template<typename InputIterator>
 class IOManipRange
 {

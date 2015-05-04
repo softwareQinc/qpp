@@ -158,6 +158,11 @@ public:
         return _msg.c_str();
     }
 
+    /**
+    * \brief Default virtual destructor
+    */
+    virtual ~Exception() = default;
+
 private:
     std::string _where, _msg;
     Type _type;
