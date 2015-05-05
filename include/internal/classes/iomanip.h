@@ -34,7 +34,6 @@ namespace qpp
 {
 namespace internal
 {
-// TODO: make an abstract base class
 class IOManipBase
 {
     virtual std::ostream& display(std::ostream& os) const = 0;
