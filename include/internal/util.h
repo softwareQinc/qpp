@@ -116,7 +116,7 @@ bool _check_nonzero_size(const T& x) noexcept
 }
 
 // check that dims is a valid dimension vector
-inline bool _check_dims(const std::vector<idx>& dims)
+inline bool _check_dims(const std::vector <idx>& dims)
 {
     if (dims.size() == 0)
         return false;
@@ -132,7 +132,7 @@ inline bool _check_dims(const std::vector<idx>& dims)
 // check that valid dims match the dimensions
 // of valid (non-zero sized) quare matrix
 template<typename Derived>
-bool _check_dims_match_mat(const std::vector<idx>& dims,
+bool _check_dims_match_mat(const std::vector <idx>& dims,
                            const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
@@ -145,7 +145,7 @@ bool _check_dims_match_mat(const std::vector<idx>& dims,
 
 // check that valid dims match the dimensions of valid column vector
 template<typename Derived>
-bool _check_dims_match_cvect(const std::vector<idx>& dims,
+bool _check_dims_match_cvect(const std::vector <idx>& dims,
                              const Eigen::MatrixBase<Derived>& V)
 {
     const dyn_mat<typename Derived::Scalar>& rV = V;
@@ -158,7 +158,7 @@ bool _check_dims_match_cvect(const std::vector<idx>& dims,
 
 // check that valid dims match the dimensions of valid row vector
 template<typename Derived>
-bool _check_dims_match_rvect(const std::vector<idx>& dims,
+bool _check_dims_match_rvect(const std::vector <idx>& dims,
                              const Eigen::MatrixBase<Derived>& V)
 {
     const dyn_mat<typename Derived::Scalar>& rV = V;
@@ -170,7 +170,7 @@ bool _check_dims_match_rvect(const std::vector<idx>& dims,
 }
 
 // check that all elements in valid dims equal to dim
-inline bool _check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept
+inline bool _check_eq_dims(const std::vector <idx>& dims, idx dim) noexcept
 {
     for (idx i : dims)
         if (i != dim)
@@ -180,8 +180,8 @@ inline bool _check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept
 }
 
 // check that subsys is valid with respect to valid dims
-inline bool _check_subsys_match_dims(const std::vector<idx>& subsys,
-                                     const std::vector<idx>& dims)
+inline bool _check_subsys_match_dims(const std::vector <idx>& subsys,
+                                     const std::vector <idx>& dims)
 {
     //	// check non-zero sized subsystems
     //	if (subsys.size() == 0)
@@ -192,7 +192,7 @@ inline bool _check_subsys_match_dims(const std::vector<idx>& subsys,
         return false;
 
     // sort the subsystems
-    std::vector<idx> subsyssort = subsys;
+    std::vector <idx> subsyssort = subsys;
     std::sort(std::begin(subsyssort), std::end(subsyssort));
 
     // check duplicates
@@ -247,12 +247,12 @@ bool _check_qubit_vector(const Eigen::MatrixBase<Derived>& V) noexcept
 
 
 // check valid permutation
-inline bool _check_perm(const std::vector<idx>& perm)
+inline bool _check_perm(const std::vector <idx>& perm)
 {
     if (perm.size() == 0)
         return false;
 
-    std::vector<idx> ordered(perm.size());
+    std::vector <idx> ordered(perm.size());
     std::iota(std::begin(ordered), std::end(ordered), 0);
 
     return std::is_permutation(std::begin(ordered), std::end(ordered),
@@ -330,8 +330,8 @@ dyn_mat<typename Derived1::Scalar> _dirsum2(
     idx Brows = static_cast<idx>(rB.rows());
 
     dyn_mat<typename Derived1::Scalar> result =
-            dyn_mat<typename Derived1::Scalar>::Zero(Arows + Brows,
-                                                     Acols + Bcols);
+            dyn_mat < typename Derived1::Scalar > ::Zero(Arows + Brows,
+                                                         Acols + Bcols);
 
     result.block(0, 0, Arows, Acols) = rA;
     result.block(Arows, Acols, Brows, Bcols) = rB;
@@ -342,13 +342,13 @@ dyn_mat<typename Derived1::Scalar> _dirsum2(
 // may be useful, extracts variadic template argument pack into a std::vector
 template<typename T>
 // ends the recursion
-void variadic_vector_emplace(std::vector<T>&)
+void variadic_vector_emplace(std::vector <T>&)
 {
 }
 
 // may be useful, extracts variadic template argument pack into a std::vector
 template<typename T, typename First, typename ... Args>
-void variadic_vector_emplace(std::vector<T>& v, First&& first, Args&& ... args)
+void variadic_vector_emplace(std::vector <T>& v, First&& first, Args&& ... args)
 {
     v.emplace_back(std::forward<First>(first));
     variadic_vector_emplace(v, std::forward<Args>(args)...);

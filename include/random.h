@@ -44,9 +44,9 @@ inline double rand(double a = 0, double b = 1)
 {
     std::uniform_real_distribution<> ud(a, b);
 
-    #ifndef _NO_THREAD_LOCAL
+#ifndef _NO_THREAD_LOCAL
     return ud(RandomDevices::get_thread_local_instance()._rng);
-    #else
+#else
     return ud(RandomDevices::get_instance()._rng);
     #endif // _NO_THREAD_LOCAL
 }
@@ -62,11 +62,11 @@ inline double rand(double a = 0, double b = 1)
 inline idx randidx(idx a = std::numeric_limits<idx>::min(),
                    idx b = std::numeric_limits<idx>::max())
 {
-    std::uniform_int_distribution<idx> uid(a, b);
+    std::uniform_int_distribution <idx> uid(a, b);
 
-    #ifndef _NO_THREAD_LOCAL
+#ifndef _NO_THREAD_LOCAL
     return uid(RandomDevices::get_thread_local_instance()._rng);
-    #else
+#else
     return uid(RandomDevices::get_instance()._rng);
     #endif // _NO_THREAD_LOCAL
 }
@@ -86,10 +86,10 @@ template<typename Derived>
 Derived rand(idx rows, idx cols, double a = 0, double b = 1)
 {
     // silence -Wunused-parameter in clang++
-    (void)rows; 
-    (void)cols; 
-    (void)a; 
-    (void)b; 
+    (void) rows;
+    (void) cols;
+    (void) a;
+    (void) b;
     throw Exception("qpp::rand()", Exception::Type::UNDEFINED_TYPE);
 }
 
@@ -174,10 +174,10 @@ Derived randn(idx rows, idx cols, double mean = 0,
               double sigma = 1)
 {
     // silence -Wunused-parameter in clang++
-    (void)rows;
-    (void)cols;
-    (void)mean; 
-    (void)sigma; 
+    (void) rows;
+    (void) cols;
+    (void) mean;
+    (void) sigma;
     throw Exception("qpp::randn()", Exception::Type::UNDEFINED_TYPE);
 }
 
@@ -214,9 +214,9 @@ inline dmat randn(idx rows, idx cols,
     return dmat::Zero(rows, cols).unaryExpr(
             [&nd](double)
             {
-                    #ifndef _NO_THREAD_LOCAL
-                    return nd(RandomDevices::get_thread_local_instance()._rng);
-                    #else
+#ifndef _NO_THREAD_LOCAL
+                return nd(RandomDevices::get_thread_local_instance()._rng);
+#else
                     return nd(RandomDevices::get_instance()._rng);
                     #endif // _NO_THREAD_LOCAL
             });
@@ -266,9 +266,9 @@ inline double randn(double mean = 0, double sigma = 1)
 {
     std::normal_distribution<> nd(mean, sigma);
 
-    #ifndef _NO_THREAD_LOCAL
+#ifndef _NO_THREAD_LOCAL
     return nd(RandomDevices::get_thread_local_instance()._rng);
-    #else
+#else
     return nd(RandomDevices::get_instance()._rng);
     #endif // _NO_THREAD_LOCAL
 }
@@ -289,7 +289,7 @@ inline cmat randU(idx D)
     cmat X(D, D);
 
     X = 1 / std::sqrt(2.) * randn < cmat > (D, D);
-    Eigen::HouseholderQR<cmat> qr(X);
+    Eigen::HouseholderQR <cmat> qr(X);
 
     cmat Q = qr.householderQ();
     // phase correction so that the resultant matrix is
@@ -329,14 +329,14 @@ inline cmat randV(idx Din, idx Dout)
 * \param D Dimension of the Hilbert space
 * \return Set of \a N Kraus operators satisfying the closure condition
 */
-inline std::vector<cmat> randkraus(idx N, idx D)
+inline std::vector <cmat> randkraus(idx N, idx D)
 {
     if (N == 0)
         throw Exception("qpp::randkraus()", Exception::Type::OUT_OF_RANGE);
     if (D == 0)
         throw Exception("qpp::randkraus()", Exception::Type::DIMS_INVALID);
 
-    std::vector<cmat> result(N);
+    std::vector <cmat> result(N);
     for (idx i = 0; i < N; ++i)
         result[i] = cmat::Zero(D, D);
 
@@ -417,20 +417,20 @@ inline cmat randrho(idx D)
 * \param n Size of the permutation
 * \return Random permutation of size \a n
 */
-inline std::vector<idx> randperm(idx n)
+inline std::vector <idx> randperm(idx n)
 {
     if (n == 0)
         throw Exception("qpp::randperm()", Exception::Type::PERM_INVALID);
 
-    std::vector<idx> result(n);
+    std::vector <idx> result(n);
 
     // fill in increasing order
     std::iota(std::begin(result), std::end(result), 0);
     // shuffle
-    #ifndef _NO_THREAD_LOCAL
+#ifndef _NO_THREAD_LOCAL
     std::shuffle(std::begin(result), std::end(result),
                  RandomDevices::get_thread_local_instance()._rng);
-    #else
+#else
     std::shuffle(std::begin(result), std::end(result),
                  RandomDevices::get_instance()._rng);
     #endif // _NO_THREAD_LOCAL

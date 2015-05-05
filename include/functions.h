@@ -712,7 +712,7 @@ dyn_mat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::powm()", Exception::Type::MATRIX_NOT_SQUARE);
 
     dyn_mat<typename Derived::Scalar> result =
-            dyn_mat<typename Derived::Scalar>::Identity(
+            dyn_mat < typename Derived::Scalar > ::Identity(
                     cA.rows(), cA.rows());
 
     // fast matrix power
@@ -951,7 +951,7 @@ dyn_mat<typename Derived::Scalar> dirsum(const std::vector<Derived>& As)
         total_cols += static_cast<idx>(As[i].cols());
     }
     dyn_mat<typename Derived::Scalar> result =
-            dyn_mat<typename Derived::Scalar>::Zero(total_rows, total_cols);
+            dyn_mat < typename Derived::Scalar > ::Zero(total_rows, total_cols);
 
     idx cur_row = 0, cur_col = 0;
     for (idx i = 0; i < As.size(); ++i)
@@ -1156,7 +1156,8 @@ dyn_mat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& V)
     if (normV > eps)
         return rV * adjoint(rV) / (normV * normV);
     else
-        return dyn_mat<typename Derived::Scalar>::Zero(rV.rows(), rV.rows());
+        return dyn_mat < typename Derived::Scalar >
+               ::Zero(rV.rows(), rV.rows());
 
 }
 
@@ -1188,11 +1189,11 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
             throw Exception("qpp::grams()", Exception::Type::DIMS_NOT_EQUAL);
 
     dyn_mat<typename Derived::Scalar> cut =
-            dyn_mat<typename Derived::Scalar>::Identity(Vs[0].rows(),
-                                                        Vs[0].rows());
+            dyn_mat < typename Derived::Scalar > ::Identity(Vs[0].rows(),
+                                                            Vs[0].rows());
 
     dyn_mat<typename Derived::Scalar> vi =
-            dyn_mat<typename Derived::Scalar>::Zero(Vs[0].rows(), 1);
+            dyn_mat < typename Derived::Scalar > ::Zero(Vs[0].rows(), 1);
 
     std::vector<dyn_mat<typename Derived::Scalar>> outvecs;
     // find the first non-zero vector in the list
@@ -1625,7 +1626,7 @@ dyn_col_vect<typename Derived::Scalar> rho2pure(
     dyn_col_vect<double> tmp_evals = hevals(rA);
     cmat tmp_evects = hevects(rA);
     dyn_col_vect<typename Derived::Scalar> result =
-            dyn_col_vect<typename Derived::Scalar>::Zero(rA.rows());
+            dyn_col_vect < typename Derived::Scalar > ::Zero(rA.rows());
     // find the non-zero eigenvector
     // there is only one, assuming the state is pure
     for (idx k = 0; k < static_cast<idx>(rA.rows()); ++k)

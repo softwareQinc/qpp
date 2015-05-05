@@ -35,8 +35,31 @@ namespace qpp
 namespace internal
 {
 // TODO: make an abstract base class
+class IOManipBase
+{
+    virtual std::ostream& display(std::ostream& os) const = 0;
+
+public:
+    IOManipBase() = default;
+
+    IOManipBase(const IOManipBase&) = default;
+
+    IOManipBase(IOManipBase&&) = default;
+
+    IOManipBase& operator=(const IOManipBase&) = default;
+
+    IOManipBase& operator=(IOManipBase&&) = default;
+
+    virtual ~IOManipBase() = default;
+
+    friend std::ostream& operator<<(std::ostream& os, const IOManipBase& rhs)
+    {
+        return rhs.display(os);
+    }
+};
+
 template<typename InputIterator>
-class IOManipRange
+class IOManipRange : public IOManipBase
 {
     InputIterator _first, _last;
     std::string _separator, _start, _end;
@@ -53,28 +76,27 @@ public:
     {
     }
 
-    template<typename charT, typename traits>
-    friend std::basic_ostream<charT, traits>&
-    operator<<(std::basic_ostream<charT, traits>& os, const IOManipRange& rhs)
+private:
+    std::ostream& display(std::ostream& os) const override
     {
-        os << rhs._start;
+        os << _start;
 
         bool first = true;
-        for (auto it = rhs._first; it != rhs._last; ++it)
+        for (auto it = _first; it != _last; ++it)
         {
             if (!first)
-                os << rhs._separator;
+                os << _separator;
             first = false;
             os << *it;
         }
-        os << rhs._end;
+        os << _end;
 
         return os;
     }
 }; // class IOManipRange
 
 template<typename PointerType>
-class IOManipPointer
+class IOManipPointer : public IOManipBase
 {
     const PointerType* _p;
     idx _n;
@@ -97,25 +119,23 @@ public:
 
     IOManipPointer& operator=(const IOManipPointer&) = default;
 
-    template<typename charT, typename traits>
-    friend std::basic_ostream<charT, traits>&
-    operator<<(std::basic_ostream<charT, traits>& os,
-               const IOManipPointer& rhs)
+private:
+    std::ostream& display(std::ostream& os) const override
     {
-        os << rhs._start;
+        os << _start;
 
-        for (idx i = 0; i < rhs._n - 1; ++i)
-            os << rhs._p[i] << rhs._separator;
-        if (rhs._n > 0)
-            os << rhs._p[rhs._n - 1];
+        for (idx i = 0; i < _n - 1; ++i)
+            os << _p[i] << _separator;
+        if (_n > 0)
+            os << _p[_n - 1];
 
-        os << rhs._end;
+        os << _end;
 
         return os;
     }
 }; // class IOManipPointer
 
-class IOManipEigen
+class IOManipEigen : public IOManipBase
 {
     cmat _A;
     double _chop;
@@ -136,14 +156,12 @@ public:
         _A(0, 0) = z;
     }
 
-    template<typename charT, typename traits>
-    friend std::basic_ostream<charT, traits>&
-    operator<<(std::basic_ostream<charT, traits>& os, const IOManipEigen& rhs)
+private:
+    std::ostream& display(std::ostream& os) const override
     {
-        if (!internal::_check_nonzero_size(rhs._A))
+        if (!internal::_check_nonzero_size(_A))
         {
-            os << "Empty [" << rhs._A.rows() << " x "
-            << rhs._A.cols() << "] matrix";
+            os << "Empty [" << _A.rows() << " x " << _A.cols() << "] matrix";
 
             return os;
         };
@@ -151,36 +169,35 @@ public:
         std::ostringstream ostr;
         ostr.copyfmt(os); // copy os' state
 
-        std::vector<std::string> vstr;
+        std::vector <std::string> vstr;
         std::string strA;
 
-        for (idx i = 0; i < static_cast<idx>(rhs._A.rows());
-             ++i)
+        for (idx i = 0; i < static_cast<idx>(_A.rows()); ++i)
         {
             for (idx j = 0;
-                 j < static_cast<idx>(rhs._A.cols()); ++j)
+                 j < static_cast<idx>(_A.cols()); ++j)
             {
                 strA.clear(); // clear the temporary string
                 ostr.clear();
                 ostr.str(std::string {}); // clear the ostringstream
 
                 // convert to complex
-                double re = static_cast<cplx>(rhs._A(i, j)).real();
-                double im = static_cast<cplx>(rhs._A(i, j)).imag();
+                double re = static_cast<cplx>(_A(i, j)).real();
+                double im = static_cast<cplx>(_A(i, j)).imag();
 
-                if (std::abs(re) < rhs._chop && std::abs(im) < rhs._chop)
+                if (std::abs(re) < _chop && std::abs(im) < _chop)
                 {
                     ostr << "0 "; // otherwise segfault on destruction
                     // if using only vstr.push_back("0 ");
                     // bug in MATLAB libmx
                     vstr.push_back(ostr.str());
                 }
-                else if (std::abs(re) < rhs._chop)
+                else if (std::abs(re) < _chop)
                 {
                     ostr << im;
                     vstr.push_back(ostr.str() + "i");
                 }
-                else if (std::abs(im) < rhs._chop)
+                else if (std::abs(im) < _chop)
                 {
                     ostr << re;
                     vstr.push_back(ostr.str() + " ");
@@ -202,28 +219,27 @@ public:
         }
 
         // determine the maximum lenght of the entries in each column
-        std::vector<idx> maxlengthcols(rhs._A.cols(), 0);
+        std::vector <idx> maxlengthcols(_A.cols(), 0);
 
-        for (idx i = 0; i < static_cast<idx>(rhs._A.rows());
+        for (idx i = 0; i < static_cast<idx>(_A.rows());
              ++i)
             for (idx j = 0;
-                 j < static_cast<idx>(rhs._A.cols()); ++j)
-                if (vstr[i * rhs._A.cols() + j].size() > maxlengthcols[j])
-                    maxlengthcols[j] = vstr[i * rhs._A.cols() + j].size();
+                 j < static_cast<idx>(_A.cols()); ++j)
+                if (vstr[i * _A.cols() + j].size() > maxlengthcols[j])
+                    maxlengthcols[j] = vstr[i * _A.cols() + j].size();
 
         // finally display it!
-        for (idx i = 0; i < static_cast<idx>(rhs._A.rows());
-             ++i)
+        for (idx i = 0; i < static_cast<idx>(_A.rows()); ++i)
         {
             os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
-            << vstr[i * rhs._A.cols()]; // display first column
+            << vstr[i * _A.cols()]; // display first column
             // then the rest
             for (idx j = 1;
-                 j < static_cast<idx>(rhs._A.cols()); ++j)
+                 j < static_cast<idx>(_A.cols()); ++j)
                 os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
-                << std::right << vstr[i * rhs._A.cols() + j];
+                << std::right << vstr[i * _A.cols() + j];
 
-            if (i < static_cast<idx>(rhs._A.rows()) - 1)
+            if (i < static_cast<idx>(_A.rows()) - 1)
                 os << std::endl;
         }
 

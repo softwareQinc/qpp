@@ -142,7 +142,7 @@ static const States& st = States::get_instance();
 */
 #ifndef _NO_THREAD_LOCAL
 thread_local static RandomDevices& rdevs =
-    RandomDevices::get_thread_local_instance();
+        RandomDevices::get_thread_local_instance();
 #else
 static RandomDevices& rdevs =
     RandomDevices::get_instance();

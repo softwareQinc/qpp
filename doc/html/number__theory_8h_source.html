@@ -98,12 +98,12 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceqpp.html">qpp</a></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ac5f5d1d0cc8230b512e8514eb89549db">   45</a></span>&#160;<span class="keyword">inline</span> std::vector&lt;int&gt; <a class="code" href="namespaceqpp.html#ac5f5d1d0cc8230b512e8514eb89549db">x2contfrac</a>(<span class="keywordtype">double</span> x, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cut = 1e5)</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ac5f5d1d0cc8230b512e8514eb89549db">   45</a></span>&#160;<span class="keyword">inline</span> std::vector &lt;int&gt; <a class="code" href="namespaceqpp.html#ac5f5d1d0cc8230b512e8514eb89549db">x2contfrac</a>(<span class="keywordtype">double</span> x, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cut = 1e5)</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">if</span> (n == 0)</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::x2contfrac()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    std::vector&lt;int&gt; result;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    std::vector &lt;int&gt; result;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; n; ++i)</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    {</div>
@@ -116,7 +116,7 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a392505168b9760af20ed641d86fe3a7d">   73</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a392505168b9760af20ed641d86fe3a7d">contfrac2x</a>(<span class="keyword">const</span> std::vector&lt;int&gt;&amp; cf, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n)</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a392505168b9760af20ed641d86fe3a7d">   73</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a392505168b9760af20ed641d86fe3a7d">contfrac2x</a>(<span class="keyword">const</span> std::vector &lt;int&gt;&amp; cf, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n)</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;{</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordflow">if</span> (cf.size() == 0)</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::contfrac2x()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
@@ -139,7 +139,7 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordflow">return</span> cf[0] + tmp;</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;}</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a155296775ac0c0cd0cfe52c2ade8f14c">  103</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a392505168b9760af20ed641d86fe3a7d">contfrac2x</a>(<span class="keyword">const</span> std::vector&lt;int&gt;&amp; cf)</div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a155296775ac0c0cd0cfe52c2ade8f14c">  103</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a392505168b9760af20ed641d86fe3a7d">contfrac2x</a>(<span class="keyword">const</span> std::vector &lt;int&gt;&amp; cf)</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;{</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">if</span> (cf.size() == 0)</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::contfrac2x()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
@@ -177,7 +177,7 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;}</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="keyword">inline</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ae8f774cd0c5fe0232f427188ee8e98bc">  156</a></span>&#160;<a class="code" href="namespaceqpp.html#a6d775eb89c0bd90605168089805d2e71">gcd</a>(<span class="keyword">const</span> std::vector&lt;unsigned long long int&gt;&amp; ns)</div>
+<div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ae8f774cd0c5fe0232f427188ee8e98bc">  156</a></span>&#160;<a class="code" href="namespaceqpp.html#a6d775eb89c0bd90605168089805d2e71">gcd</a>(<span class="keyword">const</span> std::vector &lt;unsigned long long int&gt;&amp; ns)</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;{</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keywordflow">if</span> (ns.size() == 0)</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::gcd()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
@@ -201,7 +201,7 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;}</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="keyword">inline</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ab334247d212f78c5c00c3dc3a28f2f48">  195</a></span>&#160;<a class="code" href="namespaceqpp.html#acd5dad75a06447fb3b195f01e5540029">lcm</a>(<span class="keyword">const</span> std::vector&lt;unsigned long long int&gt;&amp; ns)</div>
+<div class="line"><a name="l00195"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ab334247d212f78c5c00c3dc3a28f2f48">  195</a></span>&#160;<a class="code" href="namespaceqpp.html#acd5dad75a06447fb3b195f01e5540029">lcm</a>(<span class="keyword">const</span> std::vector &lt;unsigned long long int&gt;&amp; ns)</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;{</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordflow">if</span> (ns.size() == 0)</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::lcm()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
@@ -221,21 +221,21 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keywordflow">return</span> prod / <a class="code" href="namespaceqpp.html#a6d775eb89c0bd90605168089805d2e71">gcd</a>(ns);</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;}</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;</div>
-<div class="line"><a name="l00221"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a396e880587519c2861caf0bcdfb219a0">  221</a></span>&#160;<span class="keyword">inline</span> std::vector&lt;idx&gt; <a class="code" href="namespaceqpp.html#a396e880587519c2861caf0bcdfb219a0">invperm</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; perm)</div>
+<div class="line"><a name="l00221"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a396e880587519c2861caf0bcdfb219a0">  221</a></span>&#160;<span class="keyword">inline</span> std::vector &lt;idx&gt; <a class="code" href="namespaceqpp.html#a396e880587519c2861caf0bcdfb219a0">invperm</a>(<span class="keyword">const</span> std::vector &lt;idx&gt;&amp; perm)</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;{</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a5c90e71ef74abcb25b5943025ee003c1">internal::_check_perm</a>(perm))</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::invperm()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca97c98bf66b3a4ad201dceb1f5ef5417f">Exception::Type::PERM_INVALID</a>);</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="comment">// construct the inverse</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    std::vector&lt;idx&gt; result(perm.size());</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    std::vector &lt;idx&gt; result(perm.size());</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; perm.size(); ++i)</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        result[perm[i]] = i;</div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;}</div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;</div>
-<div class="line"><a name="l00242"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a9a0cdf917f1a5e398e9978fb36141a27">  242</a></span>&#160;<span class="keyword">inline</span> std::vector&lt;idx&gt; <a class="code" href="namespaceqpp.html#a9a0cdf917f1a5e398e9978fb36141a27">compperm</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; perm,</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;                                 <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; sigma)</div>
+<div class="line"><a name="l00242"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a9a0cdf917f1a5e398e9978fb36141a27">  242</a></span>&#160;<span class="keyword">inline</span> std::vector &lt;idx&gt; <a class="code" href="namespaceqpp.html#a9a0cdf917f1a5e398e9978fb36141a27">compperm</a>(<span class="keyword">const</span> std::vector &lt;idx&gt;&amp; perm,</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;                                  <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; sigma)</div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;{</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a5c90e71ef74abcb25b5943025ee003c1">internal::_check_perm</a>(perm))</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::compperm()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca97c98bf66b3a4ad201dceb1f5ef5417f">Exception::Type::PERM_INVALID</a>);</div>
@@ -245,19 +245,19 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::compperm()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca97c98bf66b3a4ad201dceb1f5ef5417f">Exception::Type::PERM_INVALID</a>);</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="comment">// construct the composition perm(sigma)</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    std::vector&lt;idx&gt; result(perm.size());</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    std::vector &lt;idx&gt; result(perm.size());</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; perm.size(); ++i)</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        result[i] = perm[sigma[i]];</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;}</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;</div>
-<div class="line"><a name="l00268"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a215c720d5f42667fb6113fe77b56873d">  268</a></span>&#160;<span class="keyword">inline</span> std::vector&lt;unsigned long long int&gt; <a class="code" href="namespaceqpp.html#a215c720d5f42667fb6113fe77b56873d">factors</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> n)</div>
+<div class="line"><a name="l00268"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a215c720d5f42667fb6113fe77b56873d">  268</a></span>&#160;<span class="keyword">inline</span> std::vector &lt;unsigned long long int&gt; <a class="code" href="namespaceqpp.html#a215c720d5f42667fb6113fe77b56873d">factors</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> n)</div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;{</div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keywordflow">if</span> (n == 0 || n == 1)</div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::factors()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    std::vector&lt;unsigned long long int&gt; result;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    std::vector &lt;unsigned long long int&gt; result;</div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> d = 2;</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    <span class="keywordflow">while</span> (n &gt; 1)</div>
@@ -286,7 +286,7 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <span class="keywordflow">if</span> (n == 0 or n == 1)</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::isprime()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    std::vector&lt;unsigned long long int&gt; facts = <a class="code" href="namespaceqpp.html#a215c720d5f42667fb6113fe77b56873d">factors</a>(n);</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    std::vector &lt;unsigned long long int&gt; facts = <a class="code" href="namespaceqpp.html#a215c720d5f42667fb6113fe77b56873d">factors</a>(n);</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="keywordflow">if</span> (facts.size() == 1)</div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
@@ -340,7 +340,7 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="number__theory_8h.html">number_theory.h</a></li>
-    <li class="footer">Generated on Wed Apr 29 2015 14:10:03 for Quantum++ by
+    <li class="footer">Generated on Tue May 5 2015 18:55:41 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

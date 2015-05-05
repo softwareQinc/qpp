@@ -37,9 +37,9 @@ Version 0.5 - 19 March 2015
         is marked private.
 
 Version 0.6 - 16 April 2015
-    - Revert changes to qpp::internal::Singleton<T> (no need anymore for
-        static void operator delete(void*)), but enforce clients to make
-        both constructor and destructor private
+    - Reverted changes to qpp::internal::Singleton<T> (no need anymore for
+        static void operator delete(void*)), but clients have to explicitly
+        mark both constructor and destructor private
     - Minor cosmetic changes
 
 Version 0.7 - 22 April 2015
@@ -51,3 +51,12 @@ Version 0.7 - 22 April 2015
 Version 0.7.1 - development
     - Added new functions in <number_theory.h>:
         qpp::modpow() - computes a^n mod p for non-negative integers
+    - Added IOManipBase as abstract base class for manipulators
+    - Replaced std::basic_ostream<charT, traits> by std::ostream, as using
+        traits over-complicated the design and it was not worth it
+    - Modified the CMakeLists.txt, which now:
+            - supports only GNU gcc and LLVM clang, emits an error otherwise
+            - adds -D_NO_THREAD_LOCAL definition for conditional compiling
+            the source code without support for std::thread_local
+            (if using e.g. LLVM clang)
+            - uses OpenMP only if the compiler is detected as GNU gcc

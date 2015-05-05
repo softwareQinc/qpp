@@ -97,7 +97,8 @@ public:
         return instance;
     }
 
-    #ifndef _NO_THREAD_LOCAL
+#ifndef _NO_THREAD_LOCAL
+
     thread_local static T& get_thread_local_instance()
     noexcept(std::is_nothrow_constructible<T>::value)
     {
@@ -108,7 +109,8 @@ public:
 
         return instance;
     }
-    #endif // _NO_THREAD_LOCAL
+
+#endif // _NO_THREAD_LOCAL
 }; /* class Singleton */
 
 } /* namespace internal */
