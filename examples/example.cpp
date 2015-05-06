@@ -619,6 +619,8 @@ void TIMING()
     cout << ">> It took " << t.toc() << " seconds." << endl << endl;
 }
 
+class Derived: public Exception{};
+
 int main()
 {
     // Examples
@@ -636,4 +638,6 @@ int main()
     ENTROPIES();
     GRAPHSTATES();
     TIMING();
+
+
 }

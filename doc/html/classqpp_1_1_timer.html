@@ -72,17 +72,31 @@ $(document).ready(function(){initNavTree('classqpp_1_1_timer.html','');});
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="#friends">Friends</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="classqpp_1_1_timer-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">qpp::Timer Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Measures time.  
+<p>Chronometer.  
  <a href="classqpp_1_1_timer.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="timer_8h_source.html">classes/timer.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for qpp::Timer:</div>
+<div class="dyncontent">
+<div class="center"><img src="classqpp_1_1_timer__inherit__graph.png" border="0" usemap="#qpp_1_1_timer_inherit__map" alt="Inheritance graph"/></div>
+<map name="qpp_1_1_timer_inherit__map" id="qpp_1_1_timer_inherit__map">
+<area shape="rect" id="node2" href="classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="5,5,104,32"/></map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for qpp::Timer:</div>
+<div class="dyncontent">
+<div class="center"><img src="classqpp_1_1_timer__coll__graph.png" border="0" usemap="#qpp_1_1_timer_coll__map" alt="Collaboration graph"/></div>
+<map name="qpp_1_1_timer_coll__map" id="qpp_1_1_timer_coll__map">
+<area shape="rect" id="node2" href="classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="5,5,104,32"/></map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -98,9 +112,40 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a76a1a118cb0a5dd1980caa6184a98f4d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_timer.html#a76a1a118cb0a5dd1980caa6184a98f4d">seconds</a> () const noexcept</td></tr>
 <tr class="memdesc:a76a1a118cb0a5dd1980caa6184a98f4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time passed in seconds.  <a href="#a76a1a118cb0a5dd1980caa6184a98f4d">More...</a><br /></td></tr>
 <tr class="separator:a76a1a118cb0a5dd1980caa6184a98f4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5aa25c683ff6431b46231b2d15dceff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_timer.html#ae5aa25c683ff6431b46231b2d15dceff">Timer</a> (const <a class="el" href="classqpp_1_1_timer.html">Timer</a> &amp;)=default</td></tr>
+<tr class="memdesc:ae5aa25c683ff6431b46231b2d15dceff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default copy constructor.  <a href="#ae5aa25c683ff6431b46231b2d15dceff">More...</a><br /></td></tr>
+<tr class="separator:ae5aa25c683ff6431b46231b2d15dceff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83488eba2d1de80a0782b9c237b2b94b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_timer.html#a83488eba2d1de80a0782b9c237b2b94b">Timer</a> (<a class="el" href="classqpp_1_1_timer.html">Timer</a> &amp;&amp;)=default</td></tr>
+<tr class="memdesc:a83488eba2d1de80a0782b9c237b2b94b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default move constructor.  <a href="#a83488eba2d1de80a0782b9c237b2b94b">More...</a><br /></td></tr>
+<tr class="separator:a83488eba2d1de80a0782b9c237b2b94b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef4f2e32b1fbb664d0622d0141c76d63"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_timer.html">Timer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_timer.html#aef4f2e32b1fbb664d0622d0141c76d63">operator=</a> (const <a class="el" href="classqpp_1_1_timer.html">Timer</a> &amp;)=default</td></tr>
+<tr class="memdesc:aef4f2e32b1fbb664d0622d0141c76d63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default copy assignment operator.  <a href="#aef4f2e32b1fbb664d0622d0141c76d63">More...</a><br /></td></tr>
+<tr class="separator:aef4f2e32b1fbb664d0622d0141c76d63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc62f00aafe88567e5dc7c52e0da7626"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_timer.html">Timer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_timer.html#adc62f00aafe88567e5dc7c52e0da7626">operator=</a> (<a class="el" href="classqpp_1_1_timer.html">Timer</a> &amp;&amp;)=default</td></tr>
+<tr class="memdesc:adc62f00aafe88567e5dc7c52e0da7626"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default move assignment operator.  <a href="#adc62f00aafe88567e5dc7c52e0da7626">More...</a><br /></td></tr>
+<tr class="separator:adc62f00aafe88567e5dc7c52e0da7626"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7117e5a7290e914a4c0222d14d726871"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_timer.html#a7117e5a7290e914a4c0222d14d726871">~Timer</a> ()=default</td></tr>
 <tr class="memdesc:a7117e5a7290e914a4c0222d14d726871"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default virtual destructor.  <a href="#a7117e5a7290e914a4c0222d14d726871">More...</a><br /></td></tr>
 <tr class="separator:a7117e5a7290e914a4c0222d14d726871"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classqpp_1_1_i_display"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classqpp_1_1_i_display')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classqpp_1_1_i_display.html">qpp::IDisplay</a></td></tr>
+<tr class="memitem:a55e1bbd2dc9b151bb18159f90ecb9979 inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#a55e1bbd2dc9b151bb18159f90ecb9979">IDisplay</a> ()=default</td></tr>
+<tr class="memdesc:a55e1bbd2dc9b151bb18159f90ecb9979 inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a55e1bbd2dc9b151bb18159f90ecb9979">More...</a><br /></td></tr>
+<tr class="separator:a55e1bbd2dc9b151bb18159f90ecb9979 inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a064e38eca7302c89056bbd25d377a7bb inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#a064e38eca7302c89056bbd25d377a7bb">IDisplay</a> (const <a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;)=default</td></tr>
+<tr class="memdesc:a064e38eca7302c89056bbd25d377a7bb inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default copy constructor.  <a href="#a064e38eca7302c89056bbd25d377a7bb">More...</a><br /></td></tr>
+<tr class="separator:a064e38eca7302c89056bbd25d377a7bb inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9de3d7480d4513ea22f12bd0a4b41e9 inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#af9de3d7480d4513ea22f12bd0a4b41e9">IDisplay</a> (<a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;&amp;)=default</td></tr>
+<tr class="memdesc:af9de3d7480d4513ea22f12bd0a4b41e9 inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default move constructor.  <a href="#af9de3d7480d4513ea22f12bd0a4b41e9">More...</a><br /></td></tr>
+<tr class="separator:af9de3d7480d4513ea22f12bd0a4b41e9 inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0a7689867b780cc003bf7519e24f37d inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#ab0a7689867b780cc003bf7519e24f37d">operator=</a> (const <a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;)=default</td></tr>
+<tr class="memdesc:ab0a7689867b780cc003bf7519e24f37d inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default copy assignment operator.  <a href="#ab0a7689867b780cc003bf7519e24f37d">More...</a><br /></td></tr>
+<tr class="separator:ab0a7689867b780cc003bf7519e24f37d inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cf8c712df6541518a43925f0ba1e7de inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#a7cf8c712df6541518a43925f0ba1e7de">operator=</a> (<a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;&amp;)=default</td></tr>
+<tr class="memdesc:a7cf8c712df6541518a43925f0ba1e7de inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default move assignment operator.  <a href="#a7cf8c712df6541518a43925f0ba1e7de">More...</a><br /></td></tr>
+<tr class="separator:a7cf8c712df6541518a43925f0ba1e7de inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56969401a70c2893d72d2509f9c84d2c inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#a56969401a70c2893d72d2509f9c84d2c">~IDisplay</a> ()=default</td></tr>
+<tr class="memdesc:a56969401a70c2893d72d2509f9c84d2c inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default virtual destructor.  <a href="#a56969401a70c2893d72d2509f9c84d2c">More...</a><br /></td></tr>
+<tr class="separator:a56969401a70c2893d72d2509f9c84d2c inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -109,14 +154,14 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a9a7916516dfc50e4eb8c4e45a9ef9358"><td class="memItemLeft" align="right" valign="top">std::chrono::steady_clock::time_point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_timer.html#a9a7916516dfc50e4eb8c4e45a9ef9358">_end</a></td></tr>
 <tr class="separator:a9a7916516dfc50e4eb8c4e45a9ef9358"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
-Friends</h2></td></tr>
-<tr class="memitem:ac925ce7106d65680a2d32ae33e6f892b"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_timer.html#ac925ce7106d65680a2d32ae33e6f892b">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classqpp_1_1_timer.html">Timer</a> &amp;rhs)</td></tr>
-<tr class="memdesc:ac925ce7106d65680a2d32ae33e6f892b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload for std::ostream operators.  <a href="#ac925ce7106d65680a2d32ae33e6f892b">More...</a><br /></td></tr>
-<tr class="separator:ac925ce7106d65680a2d32ae33e6f892b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a4567054e63d5e43fe736546d9bc341cd"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_timer.html#a4567054e63d5e43fe736546d9bc341cd">display</a> (std::ostream &amp;os) const override</td></tr>
+<tr class="memdesc:a4567054e63d5e43fe736546d9bc341cd"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classqpp_1_1_i_display.html#ae994cbe2f2a0302dc0acc377fc3d51ab" title="Must be overridden by all derived classes. ">qpp::IDisplay::display()</a> override  <a href="#a4567054e63d5e43fe736546d9bc341cd">More...</a><br /></td></tr>
+<tr class="separator:a4567054e63d5e43fe736546d9bc341cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Measures time. </p>
+<div class="textblock"><p>Chronometer. </p>
 <p>Uses a std::chrono::steady_clock. It is not affected by wall clock changes during runtime. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a04d6c617a56ac388a89a5ad5756f3b53"></a>
@@ -141,6 +186,58 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Constructs an instance with the current time as the starting point. </p>
+
+</div>
+</div>
+<a class="anchor" id="ae5aa25c683ff6431b46231b2d15dceff"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">qpp::Timer::Timer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classqpp_1_1_timer.html">Timer</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default copy constructor. </p>
+
+</div>
+</div>
+<a class="anchor" id="a83488eba2d1de80a0782b9c237b2b94b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">qpp::Timer::Timer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classqpp_1_1_timer.html">Timer</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default move constructor. </p>
 
 </div>
 </div>
@@ -170,6 +267,93 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a4567054e63d5e43fe736546d9bc341cd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; qpp::Timer::display </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">private</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classqpp_1_1_i_display.html#ae994cbe2f2a0302dc0acc377fc3d51ab" title="Must be overridden by all derived classes. ">qpp::IDisplay::display()</a> override </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">os</td><td>Output stream </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Writes to the output stream the number of seconds that passed between the instantiation/reset and invocation of <a class="el" href="classqpp_1_1_timer.html#acb2019b9cd1b32129a85ea5fe9c3b338" title="Stops the chronometer. ">qpp::Timer::toc()</a>. </dd></dl>
+
+<p>Implements <a class="el" href="classqpp_1_1_i_display.html#ae994cbe2f2a0302dc0acc377fc3d51ab">qpp::IDisplay</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aef4f2e32b1fbb664d0622d0141c76d63"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classqpp_1_1_timer.html">Timer</a>&amp; qpp::Timer::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classqpp_1_1_timer.html">Timer</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default copy assignment operator. </p>
+
+</div>
+</div>
+<a class="anchor" id="adc62f00aafe88567e5dc7c52e0da7626"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classqpp_1_1_timer.html">Timer</a>&amp; qpp::Timer::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classqpp_1_1_timer.html">Timer</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default move assignment operator. </p>
+
+</div>
+</div>
 <a class="anchor" id="a76a1a118cb0a5dd1980caa6184a98f4d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -249,51 +433,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a class="anchor" id="ac925ce7106d65680a2d32ae33e6f892b"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::ostream&amp; operator&lt;&lt; </td>
-          <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>os</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classqpp_1_1_timer.html">Timer</a> &amp;&#160;</td>
-          <td class="paramname"><em>rhs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Overload for std::ostream operators. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">os</td><td>Output stream </td></tr>
-    <tr><td class="paramname">rhs</td><td><a class="el" href="classqpp_1_1_timer.html" title="Measures time. ">Timer</a> instance </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Writes to the output stream the number of seconds that passed between the instantiation/reset and invocation of <a class="el" href="classqpp_1_1_timer.html#acb2019b9cd1b32129a85ea5fe9c3b338" title="Stops the chronometer. ">qpp::Timer::toc()</a>. </dd></dl>
-
-</div>
-</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="a9a7916516dfc50e4eb8c4e45a9ef9358"></a>
 <div class="memitem">
@@ -344,7 +483,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_timer.html">Timer</a></li>
-    <li class="footer">Generated on Tue May 5 2015 19:01:45 for Quantum++ by
+    <li class="footer">Generated on Tue May 5 2015 20:52:50 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

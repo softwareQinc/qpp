@@ -33,7 +33,7 @@ namespace qpp
 {
 
 /**
-* \brief Eigen expression ostream manipulator.
+* \brief Eigen expression ostream manipulator
 *
 * \param A Eigen expression
 * \param chop Set to zero the elements smaller in absolute value
@@ -48,7 +48,7 @@ internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Complex number ostream manipulator.
+* \brief Complex number ostream manipulator
 *
 * \param z Complex number (or any other type implicitly cast-able
 * to std::complex<double>)

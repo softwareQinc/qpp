@@ -72,6 +72,7 @@
 #include "types.h"
 #include "classes/exception.h"
 #include "constants.h"
+#include "classes/idisplay.h"
 #include "internal/util.h"
 #include "internal/classes/iomanip.h"
 #include "input_output.h"

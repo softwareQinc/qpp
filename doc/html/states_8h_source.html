@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('states_8h_source.html','');});
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceqpp.html">qpp</a></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classqpp_1_1_states.html">   37</a></span>&#160;<span class="keyword">class </span><a class="code" href="classqpp_1_1_states.html">States</a> : <span class="keyword">public</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;const States&gt; <span class="comment">// const Singleton</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classqpp_1_1_states.html">   37</a></span>&#160;<span class="keyword">class </span><a class="code" href="classqpp_1_1_states.html">States</a> final : <span class="keyword">public</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;const States&gt; <span class="comment">// const Singleton</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
 <div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classqpp_1_1_states.html#a26e1e3eb022ed5c80dcd445dd165b79e">   39</a></span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;const <a class="code" href="classqpp_1_1_states.html">States</a>&gt;;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
@@ -138,7 +138,7 @@ $(document).ready(function(){initNavTree('states_8h_source.html','');});
 <div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="classqpp_1_1_states.html#a012e01a42673e00a17ff22e3d7b787ee">   85</a></span>&#160;    <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="classqpp_1_1_states.html#a012e01a42673e00a17ff22e3d7b787ee">pGHZ</a>{cmat::Zero(8, 8)};    </div>
 <div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="classqpp_1_1_states.html#a8d78ae613c111732dd8db49a2e613433">   86</a></span>&#160;    <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="classqpp_1_1_states.html#a8d78ae613c111732dd8db49a2e613433">pW</a>{cmat::Zero(8, 8)};      </div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <a class="code" href="classqpp_1_1_states.html">States</a>()</div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="classqpp_1_1_states.html#a121912b87cb97231dd2277aa641cbc5f">   91</a></span>&#160;    <a class="code" href="classqpp_1_1_states.html#a121912b87cb97231dd2277aa641cbc5f">States</a>()</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    {</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="comment">// initialize</span></div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <a class="code" href="classqpp_1_1_states.html#a478d95a9ad019692c48f9a8329d38c46">x0</a> &lt;&lt; 1 / std::sqrt(2.), 1 / std::sqrt(2.);</div>
@@ -180,7 +180,7 @@ $(document).ready(function(){initNavTree('states_8h_source.html','');});
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        <a class="code" href="classqpp_1_1_states.html#a8d78ae613c111732dd8db49a2e613433">pW</a> = <a class="code" href="classqpp_1_1_states.html#abb7fad547373f8bda37595c84271d45f">W</a> * <a class="code" href="classqpp_1_1_states.html#abb7fad547373f8bda37595c84271d45f">W</a>.adjoint();</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    }</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    ~States() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <a class="code" href="classqpp_1_1_states.html#a440339ee7ef6c69aebfbe3afa465b4f5">~States</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;}; <span class="comment">/* class States */</span></div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
@@ -201,6 +201,7 @@ $(document).ready(function(){initNavTree('states_8h_source.html','');});
 <div class="ttc" id="classqpp_1_1_states_html_a31f8f36c6686a86d7c79d0dcdb27f678"><div class="ttname"><a href="classqpp_1_1_states.html#a31f8f36c6686a86d7c79d0dcdb27f678">qpp::States::b00</a></div><div class="ttdeci">ket b00</div><div class="ttdoc">Bell-00 state (following the convention in Nielsen and Chuang) </div><div class="ttdef"><b>Definition:</b> states.h:65</div></div>
 <div class="ttc" id="classqpp_1_1_states_html_a7031984cd24f265827a4eced6033ae63"><div class="ttname"><a href="classqpp_1_1_states.html#a7031984cd24f265827a4eced6033ae63">qpp::States::pb10</a></div><div class="ttdeci">cmat pb10</div><div class="ttdoc">Projector onto the Bell-10 state. </div><div class="ttdef"><b>Definition:</b> states.h:77</div></div>
 <div class="ttc" id="classqpp_1_1_states_html_a8d78ae613c111732dd8db49a2e613433"><div class="ttname"><a href="classqpp_1_1_states.html#a8d78ae613c111732dd8db49a2e613433">qpp::States::pW</a></div><div class="ttdeci">cmat pW</div><div class="ttdoc">Projector onto the W state. </div><div class="ttdef"><b>Definition:</b> states.h:86</div></div>
+<div class="ttc" id="classqpp_1_1_states_html_a440339ee7ef6c69aebfbe3afa465b4f5"><div class="ttname"><a href="classqpp_1_1_states.html#a440339ee7ef6c69aebfbe3afa465b4f5">qpp::States::~States</a></div><div class="ttdeci">~States()=default</div><div class="ttdoc">Default destructor. </div></div>
 <div class="ttc" id="classqpp_1_1_states_html_a6e6f338bcf1cd400831698ee89227927"><div class="ttname"><a href="classqpp_1_1_states.html#a6e6f338bcf1cd400831698ee89227927">qpp::States::py0</a></div><div class="ttdeci">cmat py0</div><div class="ttdoc">Projector onto the Pauli Sigma-Y 0-eigenstate |y+><y+|. </div><div class="ttdef"><b>Definition:</b> states.h:55</div></div>
 <div class="ttc" id="classqpp_1_1_states_html_a3153e8d6a523e4261582eed48c40d78e"><div class="ttname"><a href="classqpp_1_1_states.html#a3153e8d6a523e4261582eed48c40d78e">qpp::States::px0</a></div><div class="ttdeci">cmat px0</div><div class="ttdoc">Projector onto the Pauli Sigma-X 0-eigenstate |+><+|. </div><div class="ttdef"><b>Definition:</b> states.h:51</div></div>
 <div class="ttc" id="classqpp_1_1_states_html_afcfdb0c09b7331950aa118aaaa4db248"><div class="ttname"><a href="classqpp_1_1_states.html#afcfdb0c09b7331950aa118aaaa4db248">qpp::States::x1</a></div><div class="ttdeci">ket x1</div><div class="ttdoc">Pauli Sigma-X 1-eigenstate |-> </div><div class="ttdef"><b>Definition:</b> states.h:44</div></div>
@@ -215,13 +216,14 @@ $(document).ready(function(){initNavTree('states_8h_source.html','');});
 <div class="ttc" id="classqpp_1_1_states_html_aadaa8e698bb69e4e5a453eebc50caf19"><div class="ttname"><a href="classqpp_1_1_states.html#aadaa8e698bb69e4e5a453eebc50caf19">qpp::States::py1</a></div><div class="ttdeci">cmat py1</div><div class="ttdoc">Projector onto the Pauli Sigma-Y 1-eigenstate |y-><y-|. </div><div class="ttdef"><b>Definition:</b> states.h:57</div></div>
 <div class="ttc" id="classqpp_1_1_states_html_a07affdec8538ce7860d0f1ac6f2b24f5"><div class="ttname"><a href="classqpp_1_1_states.html#a07affdec8538ce7860d0f1ac6f2b24f5">qpp::States::px1</a></div><div class="ttdeci">cmat px1</div><div class="ttdoc">Projector onto the Pauli Sigma-X 1-eigenstate |-><-|. </div><div class="ttdef"><b>Definition:</b> states.h:53</div></div>
 <div class="ttc" id="classqpp_1_1_states_html_a77d6179704ba5fed986f1c8e21156e1c"><div class="ttname"><a href="classqpp_1_1_states.html#a77d6179704ba5fed986f1c8e21156e1c">qpp::States::pz1</a></div><div class="ttdeci">cmat pz1</div><div class="ttdoc">Projector onto the Pauli Sigma-Z 1-eigenstate |1><1|. </div><div class="ttdef"><b>Definition:</b> states.h:61</div></div>
+<div class="ttc" id="classqpp_1_1_states_html_a121912b87cb97231dd2277aa641cbc5f"><div class="ttname"><a href="classqpp_1_1_states.html#a121912b87cb97231dd2277aa641cbc5f">qpp::States::States</a></div><div class="ttdeci">States()</div><div class="ttdef"><b>Definition:</b> states.h:91</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b02e4219757ae4e3a0f1714873865bbf.html">classes</a></li><li class="navelem"><a class="el" href="states_8h.html">states.h</a></li>
-    <li class="footer">Generated on Tue May 5 2015 19:01:43 for Quantum++ by
+    <li class="footer">Generated on Tue May 5 2015 20:52:49 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

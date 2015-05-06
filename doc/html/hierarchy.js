@@ -3,10 +3,11 @@ var hierarchy =
     [ "std::exception", null, [
       [ "qpp::Exception", "classqpp_1_1_exception.html", null ]
     ] ],
-    [ "qpp::internal::IOManipBase", "classqpp_1_1internal_1_1_i_o_manip_base.html", [
+    [ "qpp::IDisplay", "classqpp_1_1_i_display.html", [
       [ "qpp::internal::IOManipEigen", "classqpp_1_1internal_1_1_i_o_manip_eigen.html", null ],
       [ "qpp::internal::IOManipPointer< PointerType >", "classqpp_1_1internal_1_1_i_o_manip_pointer.html", null ],
-      [ "qpp::internal::IOManipRange< InputIterator >", "classqpp_1_1internal_1_1_i_o_manip_range.html", null ]
+      [ "qpp::internal::IOManipRange< InputIterator >", "classqpp_1_1internal_1_1_i_o_manip_range.html", null ],
+      [ "qpp::Timer", "classqpp_1_1_timer.html", null ]
     ] ],
     [ "qpp::internal::Singleton< T >", "classqpp_1_1internal_1_1_singleton.html", null ],
     [ "qpp::internal::Singleton< const Codes >", "classqpp_1_1internal_1_1_singleton.html", [
@@ -23,6 +24,5 @@ var hierarchy =
     ] ],
     [ "qpp::internal::Singleton< RandomDevices >", "classqpp_1_1internal_1_1_singleton.html", [
       [ "qpp::RandomDevices", "classqpp_1_1_random_devices.html", null ]
-    ] ],
-    [ "qpp::Timer", "classqpp_1_1_timer.html", null ]
+    ] ]
 ];

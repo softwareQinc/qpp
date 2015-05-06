@@ -9,6 +9,9 @@ var dir_b02e4219757ae4e3a0f1714873865bbf =
     [ "gates.h", "gates_8h.html", [
       [ "Gates", "classqpp_1_1_gates.html", "classqpp_1_1_gates" ]
     ] ],
+    [ "idisplay.h", "idisplay_8h.html", [
+      [ "IDisplay", "classqpp_1_1_i_display.html", "classqpp_1_1_i_display" ]
+    ] ],
     [ "init.h", "init_8h.html", [
       [ "Init", "classqpp_1_1_init.html", "classqpp_1_1_init" ]
     ] ],

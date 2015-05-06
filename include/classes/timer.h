@@ -32,12 +32,12 @@ namespace qpp
 
 /**
 * \class qpp::Timer
-* \brief Measures time
+* \brief Chronometer
 *
 * Uses a std::chrono::steady_clock.
 * It is not affected by wall clock changes during runtime.
 */
-class Timer
+class Timer : public IDisplay
 {
 protected:
     std::chrono::steady_clock::time_point _start, _end;
@@ -87,23 +87,43 @@ public:
                 _end - _start).count();
     }
 
-    /**
-    * \brief Overload for std::ostream operators
-    *
-    * \param os Output stream
-    * \param rhs Timer instance
-    * \return Writes to the output stream the number of seconds that passed
-    * between the instantiation/reset and invocation of qpp::Timer::toc().
+/**
+    * \brief Default copy constructor
     */
-    friend std::ostream& operator<<(std::ostream& os, const Timer& rhs)
-    {
-        return os << rhs.seconds();
-    }
+    Timer(const Timer&) = default;
+
+    /**
+    * \brief Default move constructor
+    */
+    Timer(Timer&&) = default;
+
+    /**
+    * \brief Default copy assignment operator
+    */
+    Timer& operator=(const Timer&) = default;
+
+    /**
+    * \brief Default move assignment operator
+    */
+    Timer& operator=(Timer&&) = default;
 
     /**
     * \brief Default virtual destructor
     */
     virtual ~Timer() = default;
+
+private:
+    /**
+    * \brief qpp::IDisplay::display() override
+    *
+    * \param os Output stream
+    * \return Writes to the output stream the number of seconds that passed
+    * between the instantiation/reset and invocation of qpp::Timer::toc().
+    */
+    std::ostream& display(std::ostream& os) const override
+    {
+        return os << seconds();
+    }
 }; /* class Timer */
 
 } /* namespace qpp */

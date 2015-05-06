@@ -35,7 +35,7 @@ namespace qpp
 * \brief const Singleton class that performs
 * additional initializations/cleanups
 */
-class Init : public internal::Singleton<const Init> // const Singleton
+class Init final : public internal::Singleton<const Init> // const Singleton
 {
     friend class internal::Singleton<const Init>;
 

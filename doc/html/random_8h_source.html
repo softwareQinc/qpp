@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('random_8h_source.html','');});
 <div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ab2e295b33fd56735f0bffb21d61d21dd">   62</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> <a class="code" href="namespaceqpp.html#ab2e295b33fd56735f0bffb21d61d21dd">randidx</a>(<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> a = std::numeric_limits&lt;idx&gt;::min(),</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                   <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> b = std::numeric_limits&lt;idx&gt;::max())</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;{</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::uniform_int_distribution &lt;idx&gt; uid(a, b);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::uniform_int_distribution&lt;idx&gt; uid(a, b);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#ifndef _NO_THREAD_LOCAL</span></div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">return</span> uid(<a class="code" href="classqpp_1_1internal_1_1_singleton.html#aaf4b1c567e5b672354c026c7ae02ae16">RandomDevices::get_thread_local_instance</a>()._rng);</div>
@@ -220,13 +220,13 @@ $(document).ready(function(){initNavTree('random_8h_source.html','');});
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> X(D, D);</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    X = 1 / std::sqrt(2.) * randn &lt; cmat &gt; (D, D);</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    Eigen::HouseholderQR &lt;cmat&gt; qr(X);</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    Eigen::HouseholderQR&lt;cmat&gt; qr(X);</div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> Q = qr.householderQ();</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <span class="comment">// phase correction so that the resultant matrix is</span></div>
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <span class="comment">// uniformly distributed according to the Haar measure</span></div>
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    Eigen::VectorXcd phases = (rand&lt;dmat&gt;(D, 1)).cast&lt;<a class="code" href="namespaceqpp.html#abd3f98369d66d31f40fc7a4031bb6c24">cplx</a>&gt;();</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    Eigen::VectorXcd phases = (rand&lt;dmat&gt;(D, 1)).cast&lt;<a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt;();</div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(phases.rows()); ++i)</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        phases(i) = std::exp(2 * <a class="code" href="namespaceqpp.html#a73c04db6f636b236d64fddb069bef492">pi</a> * 1_i * phases(i));</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
@@ -341,7 +341,7 @@ $(document).ready(function(){initNavTree('random_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_html_afaecc4713bdcb1767b3188aa495ecd0b"><div class="ttname"><a href="namespaceqpp.html#afaecc4713bdcb1767b3188aa495ecd0b">qpp::randperm</a></div><div class="ttdeci">std::vector&lt; idx &gt; randperm(idx n)</div><div class="ttdoc">Generates a random uniformly distributed permutation. </div><div class="ttdef"><b>Definition:</b> random.h:420</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530">qpp::Exception::Type::UNDEFINED_TYPE</a></div></div>
 <div class="ttc" id="namespaceqpp_html_aba2b3538ec37539e56f77addfb9ea1dd"><div class="ttname"><a href="namespaceqpp.html#aba2b3538ec37539e56f77addfb9ea1dd">qpp::adjoint</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; adjoint(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Adjoint. </div><div class="ttdef"><b>Definition:</b> functions.h:84</div></div>
-<div class="ttc" id="namespaceqpp_html_abd3f98369d66d31f40fc7a4031bb6c24"><div class="ttname"><a href="namespaceqpp.html#abd3f98369d66d31f40fc7a4031bb6c24">qpp::cplx</a></div><div class="ttdeci">std::complex&lt; double &gt; cplx</div><div class="ttdoc">Complex number in double precision. </div><div class="ttdef"><b>Definition:</b> types.h:41</div></div>
+<div class="ttc" id="namespaceqpp_html_aad7ccc50a6b139279d7b56d07112b183"><div class="ttname"><a href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">qpp::cplx</a></div><div class="ttdeci">std::complex&lt; double &gt; cplx</div><div class="ttdoc">Complex number in double precision. </div><div class="ttdef"><b>Definition:</b> types.h:41</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html"><div class="ttname"><a href="classqpp_1_1_exception.html">qpp::Exception</a></div><div class="ttdoc">Generates custom exceptions, used when validating function parameters. </div><div class="ttdef"><b>Definition:</b> exception.h:39</div></div>
 <div class="ttc" id="namespaceqpp_html_aeeb9fb000b5bb9056653c3d2c10a1d65"><div class="ttname"><a href="namespaceqpp.html#aeeb9fb000b5bb9056653c3d2c10a1d65">qpp::randn</a></div><div class="ttdeci">Derived randn(idx rows, idx cols, double mean=0, double sigma=1)</div><div class="ttdoc">Generates a random matrix with entries normally distributed in N(mean, sigma) </div><div class="ttdef"><b>Definition:</b> random.h:173</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">qpp::Exception::Type::OUT_OF_RANGE</a></div></div>
@@ -362,7 +362,7 @@ $(document).ready(function(){initNavTree('random_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="random_8h.html">random.h</a></li>
-    <li class="footer">Generated on Tue May 5 2015 19:01:43 for Quantum++ by
+    <li class="footer">Generated on Tue May 5 2015 20:52:49 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

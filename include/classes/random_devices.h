@@ -43,7 +43,8 @@ namespace qpp
 * Eigen::Matrix::Random() or functions that depend on the C style random
 * number engine, but use qpp::rand() instead!
 */
-class RandomDevices : public internal::Singleton<RandomDevices> // Singleton
+class RandomDevices final : public internal::Singleton<RandomDevices> //
+// Singleton
 {
     friend class internal::Singleton<RandomDevices>;
 

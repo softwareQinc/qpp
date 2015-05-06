@@ -826,7 +826,7 @@ dyn_mat<typename T::Scalar> kron(const T& head, const Args& ... tail)
 * over the same scalar field as its arguments
 */
 template<typename Derived>
-dyn_mat<typename Derived::Scalar> kron(const std::vector<Derived>& As)
+dyn_mat<typename Derived::Scalar> kron(const std::vector <Derived>& As)
 {
     if (As.size() == 0)
         throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
@@ -886,7 +886,7 @@ dyn_mat<typename Derived::Scalar> kronpow(const Eigen::MatrixBase<Derived>& A,
     if (n == 0)
         throw Exception("qpp::kronpow()", Exception::Type::OUT_OF_RANGE);
 
-    std::vector<dyn_mat<typename Derived::Scalar>> As(n, rA);
+    std::vector <dyn_mat<typename Derived::Scalar>> As(n, rA);
 
     return kron(As);
 }
@@ -935,7 +935,7 @@ dyn_mat<typename T::Scalar> dirsum(const T& head, const Args& ... tail)
 * over the same scalar field as its arguments
 */
 template<typename Derived>
-dyn_mat<typename Derived::Scalar> dirsum(const std::vector<Derived>& As)
+dyn_mat<typename Derived::Scalar> dirsum(const std::vector <Derived>& As)
 {
     if (As.size() == 0)
         throw Exception("qpp::dirsum()", Exception::Type::ZERO_SIZE);
@@ -1006,7 +1006,7 @@ dyn_mat<typename Derived::Scalar> dirsumpow(
     if (n == 0)
         throw Exception("qpp::dirsumpow()", Exception::Type::OUT_OF_RANGE);
 
-    std::vector<dyn_mat<typename Derived::Scalar>> As(n, rA);
+    std::vector <dyn_mat<typename Derived::Scalar>> As(n, rA);
 
     return dirsum(As);
 }
@@ -1169,7 +1169,7 @@ dyn_mat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& V)
 * over the same scalar field as its arguments
 */
 template<typename Derived>
-dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
+dyn_mat<typename Derived::Scalar> grams(const std::vector <Derived>& Vs)
 {
     // check empty list
     if (!internal::_check_nonzero_size(Vs))
@@ -1195,7 +1195,7 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
     dyn_mat<typename Derived::Scalar> vi =
             dyn_mat < typename Derived::Scalar > ::Zero(Vs[0].rows(), 1);
 
-    std::vector<dyn_mat<typename Derived::Scalar>> outvecs;
+    std::vector <dyn_mat<typename Derived::Scalar>> outvecs;
     // find the first non-zero vector in the list
     idx pos = 0;
     for (pos = 0; pos < Vs.size(); ++pos)
@@ -1261,7 +1261,7 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A)
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::grams()", Exception::Type::ZERO_SIZE);
 
-    std::vector<dyn_mat<typename Derived::Scalar>> input;
+    std::vector <dyn_mat<typename Derived::Scalar>> input;
 
     for (idx i = 0; i < static_cast<idx>(rA.cols()); ++i)
         input.push_back(rA.col(i));
@@ -1279,7 +1279,7 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A)
 * \param dims Dimensions of the multi-partite system
 * \return Multi-index of the same size as \a dims
 */
-inline std::vector<idx> n2multiidx(idx n, const std::vector<idx>& dims)
+inline std::vector <idx> n2multiidx(idx n, const std::vector <idx>& dims)
 {
     if (!internal::_check_dims(dims))
         throw Exception("qpp::n2multiidx()", Exception::Type::DIMS_INVALID);
@@ -1305,8 +1305,8 @@ inline std::vector<idx> n2multiidx(idx n, const std::vector<idx>& dims)
 * \param dims Dimensions of the multi-partite system
 * \return Non-negative integer index
 */
-inline idx multiidx2n(const std::vector<idx>& midx,
-                      const std::vector<idx>& dims)
+inline idx multiidx2n(const std::vector <idx>& midx,
+                      const std::vector <idx>& dims)
 {
     if (!internal::_check_dims(dims))
         throw Exception("qpp::multiidx2n()", Exception::Type::DIMS_INVALID);
@@ -1331,8 +1331,8 @@ inline idx multiidx2n(const std::vector<idx>& midx,
 * \param dims Dimensions of the multi-partite system
 * \return Multi-partite qudit state vector, as a complex dynamic column vector
 */
-inline ket mket(const std::vector<idx>& mask,
-                const std::vector<idx>& dims)
+inline ket mket(const std::vector <idx>& mask,
+                const std::vector <idx>& dims)
 {
     idx n = mask.size();
 
@@ -1373,7 +1373,7 @@ inline ket mket(const std::vector<idx>& mask,
 * \param d Subsystem dimensions
 * \return Multi-partite qudit state vector, as a complex dynamic column vector
 */
-inline ket mket(const std::vector<idx>& mask, idx d = 2)
+inline ket mket(const std::vector <idx>& mask, idx d = 2)
 {
     idx n = mask.size();
     idx D = static_cast<idx>(std::llround(std::pow(d, n)));
@@ -1391,7 +1391,7 @@ inline ket mket(const std::vector<idx>& mask, idx d = 2)
                             Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     ket result = ket::Zero(D);
-    std::vector<idx> dims(n, d);
+    std::vector <idx> dims(n, d);
     idx pos = multiidx2n(mask, dims);
     result(pos) = 1;
 
@@ -1412,8 +1412,8 @@ inline ket mket(const std::vector<idx>& mask, idx d = 2)
 * \return Projector onto multi-partite qudit state vector,
 * as a complex dynamic matrix
 */
-inline cmat mprj(const std::vector<idx>& mask,
-                 const std::vector<idx>& dims)
+inline cmat mprj(const std::vector <idx>& mask,
+                 const std::vector <idx>& dims)
 {
     idx n = mask.size();
 
@@ -1456,7 +1456,7 @@ inline cmat mprj(const std::vector<idx>& mask,
 * \return Projector onto multi-partite qudit state vector,
 * as a complex dynamic matrix
 */
-inline cmat mprj(const std::vector<idx>& mask, idx d = 2)
+inline cmat mprj(const std::vector <idx>& mask, idx d = 2)
 {
     idx n = mask.size();
     idx D = static_cast<idx>(std::llround(std::pow(d, n)));
@@ -1474,7 +1474,7 @@ inline cmat mprj(const std::vector<idx>& mask, idx d = 2)
                             Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     cmat result = cmat::Zero(D, D);
-    std::vector<idx> dims(n, d);
+    std::vector <idx> dims(n, d);
     idx pos = multiidx2n(mask, dims);
     result(pos, pos) = 1;
 
@@ -1489,9 +1489,9 @@ inline cmat mprj(const std::vector<idx>& mask, idx d = 2)
 * \return Real vector consisting of the range absolut values squared
 */
 template<typename InputIterator>
-std::vector<double> abssq(InputIterator first, InputIterator last)
+std::vector <double> abssq(InputIterator first, InputIterator last)
 {
-    std::vector<double> weights(std::distance(first, last));
+    std::vector <double> weights(std::distance(first, last));
     std::transform(first, last, std::begin(weights),
                    [](cplx z) -> double
                    {
@@ -1508,7 +1508,7 @@ std::vector<double> abssq(InputIterator first, InputIterator last)
 * \return Real vector consisting of the absolut values squared
 */
 template<typename Derived>
-std::vector<double> abssq(const Eigen::MatrixBase<Derived>& V)
+std::vector <double> abssq(const Eigen::MatrixBase<Derived>& V)
 {
     const dyn_mat<typename Derived::Scalar>& rV = V;
 
@@ -1650,13 +1650,13 @@ dyn_col_vect<typename Derived::Scalar> rho2pure(
 * \f$\{0, 1, \ldots, N - 1\}\f$
 */
 template<typename T>
-std::vector<T> complement(std::vector<T> subsys, idx N)
+std::vector <T> complement(std::vector <T> subsys, idx N)
 {
     if (N < subsys.size())
         throw Exception("qpp::complement()", Exception::Type::OUT_OF_RANGE);
 
-    std::vector<T> all(N);
-    std::vector<T> subsys_bar(N - subsys.size());
+    std::vector <T> all(N);
+    std::vector <T> subsys_bar(N - subsys.size());
 
     std::iota(std::begin(all), std::end(all), 0);
     std::sort(std::begin(subsys), std::end(subsys));
@@ -1678,7 +1678,7 @@ std::vector<T> complement(std::vector<T> subsys, idx N)
 * \return 3-dimensional Bloch vector
 */
 template<typename Derived>
-std::vector<double> rho2bloch(
+std::vector <double> rho2bloch(
         const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
@@ -1687,7 +1687,7 @@ std::vector<double> rho2bloch(
     if (!internal::_check_qubit_matrix(rA))
         throw Exception("qpp::rho2bloch()", Exception::Type::NOT_QUBIT_MATRIX);
 
-    std::vector<double> result(3);
+    std::vector <double> result(3);
     cmat X(2, 2), Y(2, 2), Z(2, 2);
     X << 0, 1, 1, 0;
     Y << 0, -1_i, 1_i, 0;
@@ -1707,7 +1707,7 @@ std::vector<double> rho2bloch(
 * \param r 3-dimensional real vector
 * \return Qubit density matrix
 */
-inline cmat bloch2rho(const std::vector<double>& r)
+inline cmat bloch2rho(const std::vector <double>& r)
 {
     // check 3-dimensional vector
     if (r.size() != 3)

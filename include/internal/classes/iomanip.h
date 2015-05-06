@@ -34,31 +34,8 @@ namespace qpp
 {
 namespace internal
 {
-class IOManipBase
-{
-    virtual std::ostream& display(std::ostream& os) const = 0;
-
-public:
-    IOManipBase() = default;
-
-    IOManipBase(const IOManipBase&) = default;
-
-    IOManipBase(IOManipBase&&) = default;
-
-    IOManipBase& operator=(const IOManipBase&) = default;
-
-    IOManipBase& operator=(IOManipBase&&) = default;
-
-    virtual ~IOManipBase() = default;
-
-    friend std::ostream& operator<<(std::ostream& os, const IOManipBase& rhs)
-    {
-        return rhs.display(os);
-    }
-};
-
 template<typename InputIterator>
-class IOManipRange : public IOManipBase
+class IOManipRange : public IDisplay
 {
     InputIterator _first, _last;
     std::string _separator, _start, _end;
@@ -95,7 +72,7 @@ private:
 }; // class IOManipRange
 
 template<typename PointerType>
-class IOManipPointer : public IOManipBase
+class IOManipPointer : public IDisplay
 {
     const PointerType* _p;
     idx _n;
@@ -134,7 +111,7 @@ private:
     }
 }; // class IOManipPointer
 
-class IOManipEigen : public IOManipBase
+class IOManipEigen : public IDisplay
 {
     cmat _A;
     double _chop;

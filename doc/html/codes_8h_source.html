@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('codes_8h_source.html','');});
 <div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="namespaceqpp.html">   30</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceqpp.html">qpp</a></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classqpp_1_1_codes.html">   37</a></span>&#160;<span class="keyword">class </span><a class="code" href="classqpp_1_1_codes.html">Codes</a> : <span class="keyword">public</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;const Codes&gt; <span class="comment">// const Singleton</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classqpp_1_1_codes.html">   37</a></span>&#160;<span class="keyword">class </span><a class="code" href="classqpp_1_1_codes.html">Codes</a> final : <span class="keyword">public</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;const Codes&gt; <span class="comment">// const Singleton</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
 <div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classqpp_1_1_codes.html#afa80fa4eb477dc795abed5a4951c6ceb">   39</a></span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;const <a class="code" href="classqpp_1_1_codes.html">Codes</a>&gt;;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
@@ -110,13 +110,13 @@ $(document).ready(function(){initNavTree('codes_8h_source.html','');});
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    };</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="classqpp_1_1_codes.html">Codes</a>()</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classqpp_1_1_codes.html#a2514d858077e81e6e8b7d06057201748">   57</a></span>&#160;    <a class="code" href="classqpp_1_1_codes.html#a2514d858077e81e6e8b7d06057201748">Codes</a>()</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    { } <span class="comment">// = default; // clang++ spits the error below if defaulted:</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="comment">//    error:</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="comment">//    default initialization of an object of const type &#39;const qpp::Codes&#39;</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">//    requires a user-provided default constructor</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    ~Codes() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="classqpp_1_1_codes.html#afdfdc7499544df599241167ab785c953">~Codes</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classqpp_1_1_codes.html#a7e86e08f62d809e5387fb2f09db86f38">   77</a></span>&#160;    <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> <a class="code" href="classqpp_1_1_codes.html#a7e86e08f62d809e5387fb2f09db86f38">codeword</a>(<a class="code" href="classqpp_1_1_codes.html#a85e62bf712ed89202e8d1c6cc3f3a718">Type</a> type, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i)<span class="keyword"> const</span></div>
@@ -231,11 +231,13 @@ $(document).ready(function(){initNavTree('codes_8h_source.html','');});
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* CLASSES_CODES_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="classqpp_1_1_codes_html_a2514d858077e81e6e8b7d06057201748"><div class="ttname"><a href="classqpp_1_1_codes.html#a2514d858077e81e6e8b7d06057201748">qpp::Codes::Codes</a></div><div class="ttdeci">Codes()</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> codes.h:57</div></div>
 <div class="ttc" id="classqpp_1_1internal_1_1_singleton_html"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html">qpp::internal::Singleton</a></div><div class="ttdoc">Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...</div><div class="ttdef"><b>Definition:</b> singleton.h:77</div></div>
 <div class="ttc" id="namespaceqpp_html_a5d7185dfc7bee58c937abc243c3692ea"><div class="ttname"><a href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">qpp::ket</a></div><div class="ttdeci">Eigen::VectorXcd ket</div><div class="ttdoc">Complex (double precision) dynamic Eigen column vector. </div><div class="ttdef"><b>Definition:</b> types.h:46</div></div>
 <div class="ttc" id="namespaceqpp_html"><div class="ttname"><a href="namespaceqpp.html">qpp</a></div><div class="ttdoc">Quantum++ main namespace. </div><div class="ttdef"><b>Definition:</b> codes.h:30</div></div>
 <div class="ttc" id="classqpp_1_1_codes_html_a85e62bf712ed89202e8d1c6cc3f3a718"><div class="ttname"><a href="classqpp_1_1_codes.html#a85e62bf712ed89202e8d1c6cc3f3a718">qpp::Codes::Type</a></div><div class="ttdeci">Type</div><div class="ttdoc">Code types, add more codes here if needed. </div><div class="ttdef"><b>Definition:</b> codes.h:46</div></div>
 <div class="ttc" id="classqpp_1_1_codes_html"><div class="ttname"><a href="classqpp_1_1_codes.html">qpp::Codes</a></div><div class="ttdoc">const Singleton class that defines quantum error correcting codes </div><div class="ttdef"><b>Definition:</b> codes.h:37</div></div>
+<div class="ttc" id="classqpp_1_1_codes_html_afdfdc7499544df599241167ab785c953"><div class="ttname"><a href="classqpp_1_1_codes.html#afdfdc7499544df599241167ab785c953">qpp::Codes::~Codes</a></div><div class="ttdeci">~Codes()=default</div><div class="ttdoc">Default destructor. </div></div>
 <div class="ttc" id="classqpp_1_1_codes_html_a85e62bf712ed89202e8d1c6cc3f3a718aeee75197ae019616474b4a627671805b"><div class="ttname"><a href="classqpp_1_1_codes.html#a85e62bf712ed89202e8d1c6cc3f3a718aeee75197ae019616474b4a627671805b">qpp::Codes::Type::SEVEN_QUBIT_STEANE</a></div><div class="ttdoc">[[7,1,3]] Steane qubit code </div></div>
 <div class="ttc" id="namespaceqpp_html_a9294ebd345fe1c99731bf2b776e610d7"><div class="ttname"><a href="namespaceqpp.html#a9294ebd345fe1c99731bf2b776e610d7">qpp::kron</a></div><div class="ttdeci">dyn_mat&lt; typename T::Scalar &gt; kron(const T &amp;head)</div><div class="ttdoc">Kronecker product. </div><div class="ttdef"><b>Definition:</b> functions.h:798</div></div>
 <div class="ttc" id="classqpp_1_1_codes_html_a85e62bf712ed89202e8d1c6cc3f3a718aa18faf404732978dbb70365fbab303bf"><div class="ttname"><a href="classqpp_1_1_codes.html#a85e62bf712ed89202e8d1c6cc3f3a718aa18faf404732978dbb70365fbab303bf">qpp::Codes::Type::NINE_QUBIT_SHOR</a></div><div class="ttdoc">[[9,1,3]] Shor qubit code </div></div>
@@ -251,7 +253,7 @@ $(document).ready(function(){initNavTree('codes_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b02e4219757ae4e3a0f1714873865bbf.html">classes</a></li><li class="navelem"><a class="el" href="codes_8h.html">codes.h</a></li>
-    <li class="footer">Generated on Tue May 5 2015 19:01:42 for Quantum++ by
+    <li class="footer">Generated on Tue May 5 2015 20:52:49 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

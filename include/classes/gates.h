@@ -34,7 +34,7 @@ namespace qpp
 * \class qpp::Gates
 * \brief const Singleton class that implements most commonly used gates
 */
-class Gates : public internal::Singleton<const Gates> // const Singleton
+class Gates final : public internal::Singleton<const Gates> // const Singleton
 {
     friend class internal::Singleton<const Gates>;
 

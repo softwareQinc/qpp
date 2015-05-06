@@ -62,7 +62,7 @@ inline double rand(double a = 0, double b = 1)
 inline idx randidx(idx a = std::numeric_limits<idx>::min(),
                    idx b = std::numeric_limits<idx>::max())
 {
-    std::uniform_int_distribution <idx> uid(a, b);
+    std::uniform_int_distribution<idx> uid(a, b);
 
 #ifndef _NO_THREAD_LOCAL
     return uid(RandomDevices::get_thread_local_instance()._rng);
@@ -289,7 +289,7 @@ inline cmat randU(idx D)
     cmat X(D, D);
 
     X = 1 / std::sqrt(2.) * randn < cmat > (D, D);
-    Eigen::HouseholderQR <cmat> qr(X);
+    Eigen::HouseholderQR<cmat> qr(X);
 
     cmat Q = qr.householderQ();
     // phase correction so that the resultant matrix is
