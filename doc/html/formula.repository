@@ -32,23 +32,20 @@
 \form#31:$\{0, 1, \ldots, N - 1\}$
 \form#32:$\circ$
 \form#33:$\mathcal{O}(\sqrt{n})$
-\form#34:$\{|i\rangle\langle j|\}$
-\form#35:$|0\rangle\langle 0|$
-\form#36:$|0\rangle\langle 1|$
-\form#37:$S$
-\form#38:$ C$
-\form#39:$ S_{ab,mn} = C_{ma,nb}$
-\form#40:$Tr(K_i^\dagger K_j)=\delta_{ij}$
-\form#41:$i\neq j$
-\form#42:$Tr_{A}(\cdot)$
-\form#43:$A$
-\form#44:$A\otimes B$
-\form#45:$Tr_{B}(\cdot)$
-\form#46:$B$
-\form#47:$Tr_{subsys}(\cdot)$
-\form#48:$(\cdot)^{T_{subsys}}$
-\form#49:$ \sum_i K_i^\dagger K_i = I$
-\form#50:$a^n \mathrm{mod} p$
-\form#51:$x^n \mathrm{mod} p$
-\form#52:$a^n\mathrm{ mod }p$
-\form#53:$x^n\mathrm{ mod }p$
+\form#34:$a^n\mathrm{ mod }p$
+\form#35:$\{|i\rangle\langle j|\}$
+\form#36:$|0\rangle\langle 0|$
+\form#37:$|0\rangle\langle 1|$
+\form#38:$S$
+\form#39:$ C$
+\form#40:$ S_{ab,mn} = C_{ma,nb}$
+\form#41:$Tr(K_i^\dagger K_j)=\delta_{ij}$
+\form#42:$i\neq j$
+\form#43:$Tr_{A}(\cdot)$
+\form#44:$A$
+\form#45:$A\otimes B$
+\form#46:$Tr_{B}(\cdot)$
+\form#47:$B$
+\form#48:$Tr_{subsys}(\cdot)$
+\form#49:$(\cdot)^{T_{subsys}}$
+\form#50:$ \sum_i K_i^\dagger K_i = I$
