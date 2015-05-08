@@ -125,8 +125,7 @@ inline double contfrac2x(const std::vector <int>& cf)
 * \param n Non-negative integer
 * \return Greatest common divisor of \a m and \a n
 */
-inline unsigned long long int
-gcd(unsigned long long int m, unsigned long long int n)
+inline ubigint gcd(ubigint m, ubigint n)
 {
     if (m == 0 && n == 0)
         throw Exception("qpp::gcd()", Exception::Type::OUT_OF_RANGE);
@@ -134,7 +133,7 @@ gcd(unsigned long long int m, unsigned long long int n)
     if (m == 0 || n == 0)
         return (std::max(m, n));
 
-    unsigned long long int result = 1;
+    ubigint result = 1;
     while (n)
     {
         result = n;
@@ -152,13 +151,12 @@ gcd(unsigned long long int m, unsigned long long int n)
 * \param ns List of non-negative integers
 * \return Greatest common divisor of all numbers in \a ns
 */
-inline unsigned long long int
-gcd(const std::vector <unsigned long long int>& ns)
+inline ubigint gcd(const std::vector <ubigint>& ns)
 {
     if (ns.size() == 0)
         throw Exception("qpp::gcd()", Exception::Type::ZERO_SIZE);
 
-    unsigned long long int result = ns[0]; // convention: gcd({n}) = n
+    ubigint result = ns[0]; // convention: gcd({n}) = n
     for (idx i = 1; i < ns.size(); ++i)
     {
         result = gcd(result, ns[i]);
@@ -175,8 +173,7 @@ gcd(const std::vector <unsigned long long int>& ns)
 * \param n Positive integer
 * \return Least common multiple of \a m and \a n
 */
-inline unsigned long long int
-lcm(unsigned long long int m, unsigned long long int n)
+inline ubigint lcm(ubigint m, ubigint n)
 {
     if (m == 0 || n == 0)
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
@@ -191,8 +188,7 @@ lcm(unsigned long long int m, unsigned long long int n)
 * \param ns List of positive integers
 * \return Least common multiple of all numbers in \a ns
 */
-inline unsigned long long int
-lcm(const std::vector <unsigned long long int>& ns)
+inline ubigint lcm(const std::vector <ubigint>& ns)
 {
     if (ns.size() == 0)
         throw Exception("qpp::lcm()", Exception::Type::ZERO_SIZE);
@@ -203,11 +199,11 @@ lcm(const std::vector <unsigned long long int>& ns)
     if (std::find(std::begin(ns), std::end(ns), 0) != std::end(ns))
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
 
-    unsigned long long int prod =
+    ubigint prod =
             std::accumulate(std::begin(ns),
                             std::end(ns),
-                            static_cast<unsigned long long int>(1),
-                            std::multiplies<unsigned long long int>());
+                            static_cast<ubigint>(1),
+                            std::multiplies<ubigint>());
 
     return prod / gcd(ns);
 }
@@ -265,13 +261,13 @@ inline std::vector <idx> compperm(const std::vector <idx>& perm,
 * \param n Integer strictly greater than 1
 * \return Integer vector containing the factors
 */
-inline std::vector <unsigned long long int> factors(unsigned long long int n)
+inline std::vector <ubigint> factors(ubigint n)
 {
     if (n == 0 || n == 1)
         throw Exception("qpp::factors()", Exception::Type::OUT_OF_RANGE);
 
-    std::vector <unsigned long long int> result;
-    unsigned long long int d = 2;
+    std::vector <ubigint> result;
+    ubigint d = 2;
 
     while (n > 1)
     {
@@ -302,12 +298,12 @@ inline std::vector <unsigned long long int> factors(unsigned long long int n)
 * \param n Integer strictly greater than 1
 * \return True if the number is prime, false otherwise
 */
-inline bool isprime(unsigned long long int n)
+inline bool isprime(ubigint n)
 {
     if (n == 0 or n == 1)
         throw Exception("qpp::isprime()", Exception::Type::OUT_OF_RANGE);
 
-    std::vector <unsigned long long int> facts = factors(n);
+    std::vector <ubigint> facts = factors(n);
 
     if (facts.size() == 1)
         return true;
@@ -325,15 +321,13 @@ inline bool isprime(unsigned long long int n)
 * \param p Strictly positive integer
 * \return \f$a^n\mathrm{ mod }p\f$
 */
-inline unsigned long long int modpow(unsigned long long int a,
-                                     unsigned long long int n,
-                                     unsigned long long int p)
+inline ubigint modpow(ubigint a, ubigint n, ubigint p)
 {
     if (p == 0 || (a == 0 && n == 0))
         throw Exception("qpp::modpow()",
                         Exception::Type::OUT_OF_RANGE);
 
-    unsigned long long int result = 1;
+    ubigint result = 1;
 
     for (; n > 0; n /= 2)
     {

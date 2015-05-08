@@ -42,6 +42,7 @@ namespace qpp
 */
 class IDisplay
 {
+private:
     /**
     * \brief Must be overridden by all derived classes
     *

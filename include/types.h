@@ -36,6 +36,17 @@ namespace qpp
 using idx = std::size_t;
 
 /**
+* \brief Big integer
+*/
+using bigint = long long int;
+
+/**
+* \brief Non-negative big integer
+*/
+using ubigint = unsigned long long int;
+
+
+/**
 * \brief Complex number in double precision
 */
 using cplx = std::complex<double>;

@@ -49,6 +49,11 @@ Version 0.7 - 22 April 2015
         symbols
 
 Version 0.7.1 - development
+    - Added new data type aliases in <types.h>
+        bigint  - Big integer, alias for long long int
+        ubigint - Non-negative big integer, alias for unsigned long long int
+    - Added new overloads in <random.h>:
+            qpp::rand() - overloads for bigint and ubigint
     - Added new functions in <number_theory.h>:
         qpp::modpow() - computes a^n mod p for non-negative integers
     - Added IDisplay as an abstract base class for enforcing the override of

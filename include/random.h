@@ -52,6 +52,46 @@ inline double rand(double a = 0, double b = 1)
 }
 
 /**
+* \brief Generates a random big integer uniformly distributed in
+* the interval [a, b]
+* \param a Beginning of the interval, belongs to it
+* \param b End of the interval, belongs to it
+* \return Random big integer uniformly distributed in
+* the interval [a, b]
+*/
+inline bigint rand(bigint a = std::numeric_limits<bigint>::min(),
+                   bigint b = std::numeric_limits<bigint>::max())
+{
+    std::uniform_int_distribution<bigint> uid(a, b);
+
+#ifndef _NO_THREAD_LOCAL
+    return uid(RandomDevices::get_thread_local_instance()._rng);
+#else
+    return uid(RandomDevices::get_instance()._rng);
+    #endif // _NO_THREAD_LOCAL
+}
+
+/**
+* \brief Generates a random non-negative big integer uniformly distributed in
+* the interval [a, b]
+* \param a Beginning of the interval, belongs to it
+* \param b End of the interval, belongs to it
+* \return Random non-negative big integer uniformly distributed in
+* the interval [a, b]
+*/
+inline ubigint rand(ubigint a = std::numeric_limits<ubigint>::min(),
+                    ubigint b = std::numeric_limits<ubigint>::max())
+{
+    std::uniform_int_distribution<ubigint> uid(a, b);
+
+#ifndef _NO_THREAD_LOCAL
+    return uid(RandomDevices::get_thread_local_instance()._rng);
+#else
+    return uid(RandomDevices::get_instance()._rng);
+    #endif // _NO_THREAD_LOCAL
+}
+
+/**
 * \brief Generates a random index (idx) uniformly distributed in
 * the interval [a, b]
 * \param a Beginning of the interval, belongs to it
