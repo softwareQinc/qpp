@@ -77,3 +77,6 @@ Version 0.8 - 8 May 2015
                 (if using e.g. LLVM/Apple clang with libc++, as libc++ does not
                  yet support std::thread_local)
             - uses OpenMP only if the compiler is detected as GNU gcc
+
+Version 0.8.1 - development
+
