@@ -49,11 +49,6 @@ Version 0.7 - 22 April 2015
         symbols
 
 Version 0.7.1 - development
-    - Added new data type aliases in <types.h>
-        bigint  - Big integer, alias for long long int
-        ubigint - Non-negative big integer, alias for unsigned long long int
-    - Added new overloads in <random.h>:
-            qpp::rand() - overloads for bigint and ubigint
     - Added new functions in <number_theory.h>:
         qpp::modpow() - computes a^n mod p for non-negative integers
     - Added IDisplay as an abstract base class for enforcing the override of
@@ -64,16 +59,16 @@ Version 0.7.1 - development
         defined inline in qpp::IDisplay. In other words, the extraction
         operator delegates the work to the virtual display() function.
         Finally, all classes that support stream extraction (qpp::IOManipEigen,
-        qpp::IOManipPointer, qpp::IOManipRange and qpp::Timer) now all inherit
+        qpp::IOManipPointer, qpp::IOManipRange and qpp::Timer) now inherit
         from qpp::IDisplay.
     - Replaced std::basic_ostream<charT, traits> by std::ostream in all code,
         as using traits over-complicated the design and it was not worth it
     - Marked final all classes that are not intended to be used as base classes
     - Modified the CMakeLists.txt, which now:
-            - supports only GNU gcc and LLVM clang, otherwise emits an
+            - supports only GNU gcc and LLVM/Apple clang, otherwise emits an
                 error during the cmake running phase
             - adds -D_NO_THREAD_LOCAL definition for conditional compiling
                 the source code without support for std::thread_local
-                (if using e.g. LLVM clang with libc++, as libc++ does not yet
-                 support std::thread_local)
+                (if using e.g. LLVM/Apple clang with libc++, as libc++ does not
+                 yet support std::thread_local)
             - uses OpenMP only if the compiler is detected as GNU gcc
