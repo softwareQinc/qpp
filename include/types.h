@@ -45,7 +45,6 @@ using bigint = long long int;
 */
 using ubigint = unsigned long long int;
 
-
 /**
 * \brief Complex number in double precision
 */
