@@ -638,6 +638,4 @@ int main()
     ENTROPIES();
     GRAPHSTATES();
     TIMING();
-
-
 }
