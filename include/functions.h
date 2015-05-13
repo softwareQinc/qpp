@@ -1552,10 +1552,7 @@ template<typename Container>
 typename Container::value_type
 sum(const Container& c)
 {
-    using value_type = typename Container::value_type;
-
-    return std::accumulate(std::begin(c), std::end(c),
-                           static_cast<value_type>(0));
+    return sum(std::begin(c), std::end(c));
 }
 
 /**
@@ -1589,11 +1586,7 @@ template<typename Container>
 typename Container::value_type
 prod(const Container& c)
 {
-    using value_type = typename Container::value_type;
-
-    return std::accumulate(std::begin(c), std::end(c),
-                           static_cast<value_type>(1),
-                           std::multiplies<value_type>());
+    return prod(std::begin(c), std::end(c));
 }
 
 /**
