@@ -306,12 +306,16 @@ Functions</h2></td></tr>
 <tr class="separator:a7a4e06590399ad3a7b4a15ba62849e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e9825a190c56286a68989b67620bbb9"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator &gt; </td></tr>
 <tr class="memitem:a3e9825a190c56286a68989b67620bbb9"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a3e9825a190c56286a68989b67620bbb9">qpp::abssq</a> (InputIterator first, InputIterator last)</td></tr>
-<tr class="memdesc:a3e9825a190c56286a68989b67620bbb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the absolute values squared of a range of complex numbers.  <a href="#a3e9825a190c56286a68989b67620bbb9">More...</a><br /></td></tr>
+<tr class="memdesc:a3e9825a190c56286a68989b67620bbb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the absolute values squared of an STL-like range of complex numbers.  <a href="#a3e9825a190c56286a68989b67620bbb9">More...</a><br /></td></tr>
 <tr class="separator:a3e9825a190c56286a68989b67620bbb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7149763a7b4353138499b349d967303d"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:a7149763a7b4353138499b349d967303d"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a7149763a7b4353138499b349d967303d">qpp::abssq</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;V)</td></tr>
-<tr class="memdesc:a7149763a7b4353138499b349d967303d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the absolute values squared of a column vector.  <a href="#a7149763a7b4353138499b349d967303d">More...</a><br /></td></tr>
-<tr class="separator:a7149763a7b4353138499b349d967303d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31fc4d84b7de3be27d575d823611ed08"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
+<tr class="memitem:a31fc4d84b7de3be27d575d823611ed08"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a31fc4d84b7de3be27d575d823611ed08">qpp::abssq</a> (const Container &amp;c, typename std::enable_if&lt; is_iterable&lt; Container &gt;::value &gt;::type *=nullptr)</td></tr>
+<tr class="memdesc:a31fc4d84b7de3be27d575d823611ed08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the absolute values squared of an STL-like container.  <a href="#a31fc4d84b7de3be27d575d823611ed08">More...</a><br /></td></tr>
+<tr class="separator:a31fc4d84b7de3be27d575d823611ed08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07276990fbab7f30c1e9ad0a339e5215"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a07276990fbab7f30c1e9ad0a339e5215"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a07276990fbab7f30c1e9ad0a339e5215">qpp::abssq</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</td></tr>
+<tr class="memdesc:a07276990fbab7f30c1e9ad0a339e5215"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the absolute values squared of an Eigen expression.  <a href="#a07276990fbab7f30c1e9ad0a339e5215">More...</a><br /></td></tr>
+<tr class="separator:a07276990fbab7f30c1e9ad0a339e5215"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71fdacbcc8284b5088c582310f9962f1"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator &gt; </td></tr>
 <tr class="memitem:a71fdacbcc8284b5088c582310f9962f1"><td class="memTemplItemLeft" align="right" valign="top">std::iterator_traits&lt; InputIterator &gt;::value_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a71fdacbcc8284b5088c582310f9962f1">qpp::sum</a> (InputIterator first, InputIterator last)</td></tr>
 <tr class="memdesc:a71fdacbcc8284b5088c582310f9962f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Element-wise sum of an STL-like range.  <a href="#a71fdacbcc8284b5088c582310f9962f1">More...</a><br /></td></tr>
@@ -328,6 +332,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a6538a46dc3a8c15466f2a85a1b9b6d61"><td class="memTemplItemLeft" align="right" valign="top">Container::value_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a6538a46dc3a8c15466f2a85a1b9b6d61">qpp::prod</a> (const Container &amp;c)</td></tr>
 <tr class="memdesc:a6538a46dc3a8c15466f2a85a1b9b6d61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Element-wise product of the elements of an STL-like container.  <a href="#a6538a46dc3a8c15466f2a85a1b9b6d61">More...</a><br /></td></tr>
 <tr class="separator:a6538a46dc3a8c15466f2a85a1b9b6d61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11b324c0a07440aac997e4c43760b17c"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator &gt; </td></tr>
+<tr class="memitem:a11b324c0a07440aac997e4c43760b17c"><td class="memTemplItemLeft" align="right" valign="top">std::conditional&lt; is_complex&lt; typename std::iterator_traits&lt; InputIterator &gt;::value_type &gt;::value, cplx, double &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a11b324c0a07440aac997e4c43760b17c">qpp::avg</a> (InputIterator first, InputIterator last)</td></tr>
+<tr class="memdesc:a11b324c0a07440aac997e4c43760b17c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Average of the elements of an STL-like range.  <a href="#a11b324c0a07440aac997e4c43760b17c">More...</a><br /></td></tr>
+<tr class="separator:a11b324c0a07440aac997e4c43760b17c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d80e61377f9625c9819ea0d3d577a6c"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
+<tr class="memitem:a8d80e61377f9625c9819ea0d3d577a6c"><td class="memTemplItemLeft" align="right" valign="top">std::conditional&lt; is_complex&lt; typename Container::value_type &gt;::value, cplx, double &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a8d80e61377f9625c9819ea0d3d577a6c">qpp::avg</a> (const Container &amp;c)</td></tr>
+<tr class="memdesc:a8d80e61377f9625c9819ea0d3d577a6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Average of the elements of an STL-like container.  <a href="#a8d80e61377f9625c9819ea0d3d577a6c">More...</a><br /></td></tr>
+<tr class="separator:a8d80e61377f9625c9819ea0d3d577a6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af41ba111e6a7f99fb6eb0290ed566861"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:af41ba111e6a7f99fb6eb0290ed566861"><td class="memTemplItemLeft" align="right" valign="top">std::conditional&lt; is_complex&lt; typename Derived::Scalar &gt;::value, cplx, double &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#af41ba111e6a7f99fb6eb0290ed566861">qpp::avg</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</td></tr>
+<tr class="memdesc:af41ba111e6a7f99fb6eb0290ed566861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Average of the elements of an Eigen expression.  <a href="#af41ba111e6a7f99fb6eb0290ed566861">More...</a><br /></td></tr>
+<tr class="separator:af41ba111e6a7f99fb6eb0290ed566861"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3b0046735db751418aea0b81d0cb048"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:ad3b0046735db751418aea0b81d0cb048"><td class="memTemplItemLeft" align="right" valign="top">dyn_col_vect&lt; typename Derived::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ad3b0046735db751418aea0b81d0cb048">qpp::rho2pure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</td></tr>
 <tr class="memdesc:ad3b0046735db751418aea0b81d0cb048"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the pure state representation of a matrix proportional to a projector onto a pure state.  <a href="#ad3b0046735db751418aea0b81d0cb048">More...</a><br /></td></tr>
@@ -352,7 +368,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="functions_8h.html">functions.h</a></li>
-    <li class="footer">Generated on Fri May 8 2015 12:14:57 for Quantum++ by
+    <li class="footer">Generated on Thu May 14 2015 17:00:37 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

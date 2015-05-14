@@ -636,4 +636,10 @@ int main()
     ENTROPIES();
     GRAPHSTATES();
     TIMING();
+
+    std::vector<cplx> v{1.,2.,3.,4};
+    auto average1 = avg(v);
+    auto average2 = avg(v.begin(), v.end());
+    std::cout << average1 << " " << average2;
+
 }

@@ -72,6 +72,7 @@
 #include "types.h"
 #include "classes/exception.h"
 #include "constants.h"
+#include "traits.h"
 #include "classes/idisplay.h"
 #include "internal/util.h"
 #include "internal/classes/iomanip.h"
@@ -155,10 +156,5 @@ static RandomDevices& rdevs =
 
 // TODO: look at how "qpp::measure" order the eigenvalues
 // TODO: maybe implement "qpp::measure" for observables
-// TODO: maybe implement "qpp::avg" for averages
-// TODO: maybe implement "qpp::sigma" for stadard deviation
-// TODO: write an STL-like adapter for EigenBase<Derived> template expressions
-// TODO: when adapter is implemented, get rid of the sum(EigenMatrix) etc,
-// and use the adapter, switch everything to iterator model
-// TODO: code formatting
+// TODO: maybe implement "qpp::sigma" for standard deviation
 // TODO: check pass by value and get rid of the rA (cA) additional ref/copy

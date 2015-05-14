@@ -115,7 +115,7 @@ dyn_mat<typename Derived::Scalar> inverse(const Eigen::MatrixBase<Derived>& A)
 * \brief Trace
 *
 * \param A Eigen expression
-* \return Trace of \a A, as a scalar in the same scalar field as \a A
+* \return Trace of \a A, as a scalar over the same scalar field as \a A
 */
 template<typename Derived>
 typename Derived::Scalar trace(const Eigen::MatrixBase<Derived>& A)
@@ -133,7 +133,7 @@ typename Derived::Scalar trace(const Eigen::MatrixBase<Derived>& A)
 * \brief Determinant
 *
 * \param A Eigen expression
-* \return Determinant of \a A, as a scalar in the same scalar field as \a A.
+* \return Determinant of \a A, as a scalar over the same scalar field as \a A.
 * Returns \f$\pm \infty\f$ when the determinant overflows/underflows.
 */
 template<typename Derived>
@@ -155,7 +155,7 @@ typename Derived::Scalar det(const Eigen::MatrixBase<Derived>& A)
 *
 * \param A Eigen expression
 * \return Logarithm of the determinant of \a A, as a scalar
-* in the same scalar field as \a A
+* over the same scalar field as \a A
 */
 template<typename Derived>
 typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A)
@@ -188,7 +188,7 @@ typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A)
 *
 * \param A Eigen expression
 * \return Element-wise sum of \a A, as a scalar
-* in the same scalar field as \a A
+* over the same scalar field as \a A
 */
 template<typename Derived>
 typename Derived::Scalar sum(const Eigen::MatrixBase<Derived>& A)
@@ -207,7 +207,7 @@ typename Derived::Scalar sum(const Eigen::MatrixBase<Derived>& A)
 *
 * \param A Eigen expression
 * \return Element-wise product of \a A, as a scalar
-* in the same scalar field as \a A
+* over the same scalar field as \a A
 */
 template<typename Derived>
 typename Derived::Scalar prod(const Eigen::MatrixBase<Derived>& A)
@@ -1482,14 +1482,15 @@ inline cmat mprj(const std::vector <idx>& mask, idx d = 2)
 }
 
 /**
-* \brief Computes the absolute values squared of a range of complex numbers
+* \brief Computes the absolute values squared of an STL-like range
+* of complex numbers
 
 * \param first Iterator to the first element of the range
 * \param last  Iterator to the last element of the range
 * \return Real vector consisting of the range absolut values squared
 */
 template<typename InputIterator>
-std::vector <double> abssq(InputIterator first, InputIterator last)
+std::vector<double> abssq(InputIterator first, InputIterator last)
 {
     std::vector <double> weights(std::distance(first, last));
     std::transform(first, last, std::begin(weights),
@@ -1502,25 +1503,42 @@ std::vector <double> abssq(InputIterator first, InputIterator last)
 }
 
 /**
-* \brief Computes the absolute values squared of a column vector
+* \brief Computes the absolute values squared of an STL-like container
+*
+* \param c STL-like container
+* \return Real vector consisting of the container's absolut values squared
+*/
+template<typename Container>
+std::vector<double> abssq(const Container& c,
+                          // need the enable_if to SFINAE out Eigen expressions
+                          // that will otherwise match, instead of matching
+                          // the overload below:
 
-* \param V Eigen expression
+                          // template<typename Derived>
+                          // abssq(const Eigen::MatrixBase<Derived>& V)
+                          typename std::enable_if<
+                                  is_iterable<Container>::value
+                          >::type* = nullptr)
+{
+    return abssq(std::begin(c), std::end(c));
+}
+
+/**
+* \brief Computes the absolute values squared of an Eigen expression
+
+* \param A Eigen expression
 * \return Real vector consisting of the absolut values squared
 */
 template<typename Derived>
-std::vector <double> abssq(const Eigen::MatrixBase<Derived>& V)
+std::vector <double> abssq(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rV = V;
+    const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rV))
+    if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::abssq()", Exception::Type::ZERO_SIZE);
 
-    // check column vector
-    if (!internal::_check_cvector(rV))
-        throw Exception("qpp::abssq()", Exception::Type::MATRIX_NOT_CVECTOR);
-
-    return abssq(rV.data(), rV.data() + rV.rows());
+    return abssq(rA.data(), rA.data() + rA.size());
 }
 
 /**
@@ -1529,7 +1547,7 @@ std::vector <double> abssq(const Eigen::MatrixBase<Derived>& V)
 * \param first Iterator to the first element of the range
 * \param last  Iterator to the last element of the range
 * \return Element-wise sum of the range,
-* as a scalar in the same scalar field as the range
+* as a scalar over the same scalar field as the range
 */
 template<typename InputIterator>
 typename std::iterator_traits<InputIterator>::value_type
@@ -1546,7 +1564,7 @@ sum(InputIterator first, InputIterator last)
 *
 * \param c STL-like container
 * \return Element-wise sum of the elements of the container,
-* as a scalar in the same scalar field as the container
+* as a scalar over the same scalar field as the container
 */
 template<typename Container>
 typename Container::value_type
@@ -1561,7 +1579,7 @@ sum(const Container& c)
 * \param first Iterator to the first element of the range
 * \param last  Iterator to the last element of the range
 * \return Element-wise product of the range,
-* as a scalar in the same scalar field as the range
+* as a scalar over the same scalar field as the range
 */
 template<typename InputIterator>
 typename std::iterator_traits<InputIterator>::value_type
@@ -1574,19 +1592,79 @@ prod(InputIterator first, InputIterator last)
                            std::multiplies<value_type>());
 }
 
-
 /**
 * \brief Element-wise product of the elements of an STL-like container
 *
 * \param c STL-like container
 * \return Element-wise product of the elements of the container,
-* as a scalar in the same scalar field as the container
+* as a scalar over the same scalar field as the container
 */
 template<typename Container>
 typename Container::value_type
 prod(const Container& c)
 {
     return prod(std::begin(c), std::end(c));
+}
+
+/**
+* \brief Average of the elements of an STL-like range
+*
+* \param first Iterator to the first element of the range
+* \param last  Iterator to the last element of the range
+* \return Average of the range, as a scalar over
+* the same scalar field as the range
+*/
+template<typename InputIterator>
+typename std::conditional< // return cplx or double, depending on the type
+            is_complex<
+                typename std::iterator_traits<InputIterator>::value_type
+            >::value,
+        cplx, double>::type
+avg(InputIterator first, InputIterator last)
+{
+    return sum(first, last)/static_cast<double>(std::distance(first, last));
+}
+
+/**
+* \brief Average of the elements of an STL-like container
+*
+* \param c STL-like container
+* \return Average of the elements of the container,
+* as a scalar over the same scalar field as the container
+*/
+template<typename Container>
+typename std::conditional<
+            is_complex<
+                typename Container::value_type
+            >::value,
+        cplx, double>::type
+avg(const Container& c)
+{
+    return avg(std::begin(c), std::end(c));
+}
+
+/**
+* \brief Average of the elements of an Eigen expression
+*
+* \param A Eigen expression
+* \return Average of the elements of the Eigen expression,
+* as a scalar over the same scalar field as \a A
+*/
+template<typename Derived>
+typename std::conditional<
+        is_complex<
+                typename Derived::Scalar
+        >::value,
+        cplx, double>::type
+avg(const Eigen::MatrixBase<Derived>& A)
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A;
+
+    // check zero-size
+    if (!internal::_check_nonzero_size(rA))
+        throw Exception("qpp::avg()", Exception::Type::ZERO_SIZE);
+
+    return avg(rA.data(), rA.data() + rA.size());
 }
 
 /**
