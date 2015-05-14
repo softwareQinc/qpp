@@ -1605,8 +1605,8 @@ dyn_mat<typename Derived::Scalar> syspermute(
         }
         result.resize(D * D, 1);
         // map A to a column vector
-        dyn_mat<typename Derived::Scalar> vectA = Eigen::Map<
-                dyn_mat<typename Derived::Scalar >>(
+        dyn_mat<typename Derived::Scalar> vectA = 
+            Eigen::Map<dyn_mat<typename Derived::Scalar>>(
                 const_cast<typename Derived::Scalar*>(rA.data()), D * D, 1);
 
         auto worker = [&Cdims, &Cperm, numdims](idx i) noexcept
