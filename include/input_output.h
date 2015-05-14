@@ -98,7 +98,7 @@ internal::IOManipRange<typename Container::const_iterator> disp(
         const std::string& start = "[", const std::string& end = "]")
 {
     return internal::IOManipRange<typename Container::const_iterator>(
-            c.begin(), c.end(), separator, start, end);
+            std::begin(c), std::end(c), separator, start, end);
 }
 
 /**

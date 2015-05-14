@@ -41,10 +41,8 @@ namespace qpp
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
-
-measure(
-        const Eigen::MatrixBase<Derived>& A, const std::vector <cmat>& Ks)
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
+measure(const Eigen::MatrixBase<Derived>& A, const std::vector <cmat>& Ks)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -121,10 +119,8 @@ measure(
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
-
-measure(
-        const Eigen::MatrixBase<Derived>& A,
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
+measure(const Eigen::MatrixBase<Derived>& A,
         const std::initializer_list<cmat>& Ks)
 {
     return measure(A, std::vector<cmat>(Ks));
@@ -141,10 +137,8 @@ measure(
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
-
-measure(
-        const Eigen::MatrixBase<Derived>& A, const cmat& U)
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
+measure(const Eigen::MatrixBase<Derived>& A, const cmat& U)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -189,10 +183,8 @@ measure(
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
-
-measure(
-        const Eigen::MatrixBase<Derived>& A,
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
+measure(const Eigen::MatrixBase<Derived>& A,
         const std::vector <cmat>& Ks,
         const std::vector <idx>& subsys,
         const std::vector <idx>& dims)
@@ -223,8 +215,8 @@ measure(
     for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
 
-    idx D = prod(dims.begin(), dims.end());
-    idx Dsubsys = prod(subsys_dims.begin(), subsys_dims.end());
+    idx D = prod(std::begin(dims), std::end(dims));
+    idx Dsubsys = prod(std::begin(subsys_dims), std::end(subsys_dims));
     idx Dbar = D / Dsubsys;
 
     // check the Kraus operators
@@ -315,10 +307,8 @@ measure(
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
-
-measure(
-        const Eigen::MatrixBase<Derived>& A,
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
+measure(const Eigen::MatrixBase<Derived>& A,
         const std::initializer_list<cmat>& Ks,
         const std::vector <idx>& subsys,
         const std::vector <idx>& dims)
@@ -344,10 +334,8 @@ measure(
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
-
-measure(
-        const Eigen::MatrixBase<Derived>& A,
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
+measure(const Eigen::MatrixBase<Derived>& A,
         const std::vector <cmat>& Ks,
         const std::vector <idx>& subsys,
         const idx d = 2)
@@ -387,10 +375,8 @@ measure(
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
-
-measure(
-        const Eigen::MatrixBase<Derived>& A,
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
+measure(const Eigen::MatrixBase<Derived>& A,
         const std::initializer_list<cmat>& Ks,
         const std::vector <idx>& subsys,
         const idx d = 2)
@@ -416,10 +402,8 @@ measure(
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
-
-measure(
-        const Eigen::MatrixBase<Derived>& A,
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
+measure(const Eigen::MatrixBase<Derived>& A,
         const cmat& U,
         const std::vector <idx>& subsys,
         const std::vector <idx>& dims)
@@ -450,7 +434,7 @@ measure(
     for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
 
-    idx Dsubsys = prod(subsys_dims.begin(), subsys_dims.end());
+    idx Dsubsys = prod(std::begin(subsys_dims), std::end(subsys_dims));
 
     // check the unitary basis matrix U
     if (!internal::_check_nonzero_size(U))
@@ -487,10 +471,8 @@ measure(
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
-
-measure(
-        const Eigen::MatrixBase<Derived>& A,
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
+measure(const Eigen::MatrixBase<Derived>& A,
         const cmat& U,
         const std::vector <idx>& subsys,
         const idx d = 2)
@@ -524,10 +506,8 @@ measure(
 * Outcome probability, and 3. Post-measurement normalized state
 */
 template<typename Derived>
-std::tuple<std::vector < idx>, double, cmat>
-
-measure_seq(
-        const Eigen::MatrixBase<Derived>& A,
+std::tuple<std::vector<idx>, double, cmat>
+measure_seq(const Eigen::MatrixBase<Derived>& A,
         std::vector <idx> subsys,
         std::vector <idx> dims)
 {
@@ -574,8 +554,8 @@ measure_seq(
             cA = std::get<2>(tmp)[std::get<0>(tmp)];
 
             // remove the subsystem
-            dims.erase(std::next(dims.begin(), subsys[0]));
-            subsys.erase(subsys.begin());
+            dims.erase(std::next(std::begin(dims), subsys[0]));
+            subsys.erase(std::begin(subsys));
         }
         // order result in increasing order with respect to subsys
         std::reverse(std::begin(result), std::end(result));
@@ -602,10 +582,8 @@ measure_seq(
 * Outcome probability, and 3. Post-measurement normalized state
 */
 template<typename Derived>
-std::tuple<std::vector < idx>, double, cmat>
-
-measure_seq(
-        const Eigen::MatrixBase<Derived>& A,
+std::tuple<std::vector<idx>, double, cmat>
+measure_seq(const Eigen::MatrixBase<Derived>& A,
         std::vector <idx> subsys, idx d = 2)
 {
     const cmat& rA = A;
