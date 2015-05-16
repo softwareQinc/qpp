@@ -1607,67 +1607,6 @@ prod(const Container& c)
 }
 
 /**
-* \brief Average of the elements of an STL-like range
-*
-* \param first Iterator to the first element of the range
-* \param last  Iterator to the last element of the range
-* \return Average of the range, as a scalar over
-* the same scalar field as the range
-*/
-template<typename InputIterator>
-typename std::conditional< // return cplx or double, depending on the type
-            is_complex<
-                typename std::iterator_traits<InputIterator>::value_type
-            >::value,
-        cplx, double>::type
-avg(InputIterator first, InputIterator last)
-{
-    return sum(first, last)/static_cast<double>(std::distance(first, last));
-}
-
-/**
-* \brief Average of the elements of an STL-like container
-*
-* \param c STL-like container
-* \return Average of the elements of the container,
-* as a scalar over the same scalar field as the container
-*/
-template<typename Container>
-typename std::conditional<
-            is_complex<
-                typename Container::value_type
-            >::value,
-        cplx, double>::type
-avg(const Container& c)
-{
-    return avg(std::begin(c), std::end(c));
-}
-
-/**
-* \brief Average of the elements of an Eigen expression
-*
-* \param A Eigen expression
-* \return Average of the elements of the Eigen expression,
-* as a scalar over the same scalar field as \a A
-*/
-template<typename Derived>
-typename std::conditional<
-        is_complex<
-                typename Derived::Scalar
-        >::value,
-        cplx, double>::type
-avg(const Eigen::MatrixBase<Derived>& A)
-{
-    const dyn_mat<typename Derived::Scalar>& rA = A;
-
-    // check zero-size
-    if (!internal::_check_nonzero_size(rA))
-        throw Exception("qpp::avg()", Exception::Type::ZERO_SIZE);
-
-    return avg(rA.data(), rA.data() + rA.size());
-}
-
-/**
 * \brief Finds the pure state representation of a matrix
 * proportional to a projector onto a pure state
 *

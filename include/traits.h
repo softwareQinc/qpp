@@ -20,8 +20,8 @@
  */
 
 /**
-* \file functions.h
-* \brief Generic quantum computing functions
+* \file traits.h
+* \brief Type traits
 */
 
 #ifndef TRAITS_H_
