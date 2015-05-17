@@ -102,11 +102,11 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived1, <span class="keyword">typename</span> Derived2&gt;</div>
 <div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a1e583ad0b10c1250e39c9d9bc8bade78">   54</a></span>&#160;<a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a> <a class="code" href="namespaceqpp.html#a1e583ad0b10c1250e39c9d9bc8bade78">applyCTRL</a>(</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived1&gt;&amp; state,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived2&gt;&amp; A,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; ctrl,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; subsys,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived1&gt;&amp; state,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived2&gt;&amp; A,</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; ctrl,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; subsys,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a>&amp; rstate = state;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived2::Scalar&gt;</a>&amp; rA = A;</div>
@@ -114,7 +114,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="comment">// check types</span></div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">if</span> (!std::is_same&lt;<span class="keyword">typename</span> Derived1::Scalar,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keyword">typename</span> Derived2::Scalar&gt;::value)</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keyword">typename</span> Derived2::Scalar&gt;::value)</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::applyCTRL()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca2f93918ef99e03b7b8e7230b2a28fb52">Exception::Type::TYPE_MISMATCH</a>);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="comment">// check zero sizes</span></div>
@@ -202,7 +202,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="comment">// worker, computes the coefficient and the index for the ket case</span></div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="comment">// used in #pragma omp parallel for collapse</span></div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keyword">auto</span> coeff_idx_ket = [=](<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> _i, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> _m, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> _r) noexcept</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            -&gt; std::pair&lt;typename Derived1::Scalar, idx&gt;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        -&gt; std::pair&lt;typename Derived1::Scalar, idx&gt;</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    {</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> indx = 0;</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keyword">typename</span> Derived1::Scalar coeff = 0;</div>
@@ -257,7 +257,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="comment">// used in #pragma omp parallel for collapse</span></div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keyword">auto</span> coeff_idx_rho = [=](<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> _i1, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> _m1,</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;                             <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> _r1, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> _i2, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> _m2, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> _r2) noexcept</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            -&gt; std::tuple&lt;typename Derived1::Scalar, idx, idx&gt;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        -&gt; std::tuple&lt;typename Derived1::Scalar, idx, idx&gt;</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    {</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> idxrow = 0;</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> idxcol = 0;</div>
@@ -347,13 +347,13 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;                <span class="keywordflow">if</span> (ctrlsize == 0) <span class="comment">// no control</span></div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;                {</div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                    result(coeff_idx_ket(1, m, r).second) =</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                            coeff_idx_ket(1, m, r).first;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                        coeff_idx_ket(1, m, r).first;</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;                }</div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; d; ++i)</div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                    {</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;                        result(coeff_idx_ket(i, m, r).second) =</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;                                coeff_idx_ket(i, m, r).first;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;                            coeff_idx_ket(i, m, r).first;</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                    }</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;            }</div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;</div>
@@ -383,7 +383,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                                                             1, m2, r2);</div>
 <div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;                            result(std::get&lt;1&gt;(coeff_idxes),</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;                                   std::get&lt;2&gt;(coeff_idxes)) =</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;                                    std::get&lt;0&gt;(coeff_idxes);</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;                                std::get&lt;0&gt;(coeff_idxes);</div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;                        }</div>
 <div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;                        <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;                        {</div>
@@ -391,11 +391,11 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;                                <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i2 = 0; i2 &lt; d; ++i2)</div>
 <div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;                                {</div>
 <div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;                                    <span class="keyword">auto</span> coeff_idxes = coeff_idx_rho(</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                                            i1, m1, r1,</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                                            i2, m2, r2);</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                                        i1, m1, r1,</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                                        i2, m2, r2);</div>
 <div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;                                    result(std::get&lt;1&gt;(coeff_idxes),</div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;                                           std::get&lt;2&gt;(coeff_idxes)) =</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;                                            std::get&lt;0&gt;(coeff_idxes);</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;                                        std::get&lt;0&gt;(coeff_idxes);</div>
 <div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;                                }</div>
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;                        }</div>
 <div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;</div>
@@ -409,11 +409,11 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;</div>
 <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived1, <span class="keyword">typename</span> Derived2&gt;</div>
 <div class="line"><a name="l00376"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a3c3fc9e33a8a12fe082359b2b86bf504">  376</a></span>&#160;<a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a> <a class="code" href="namespaceqpp.html#a1e583ad0b10c1250e39c9d9bc8bade78">applyCTRL</a>(</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived1&gt;&amp; state,</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived2&gt;&amp; A,</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; ctrl,</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; subsys,</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived1&gt;&amp; state,</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived2&gt;&amp; A,</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; ctrl,</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; subsys,</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;{</div>
 <div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a>&amp; rstate = state;</div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a>&amp; rA = A;</div>
@@ -423,8 +423,8 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::applyCTRL()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;</div>
 <div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n =</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;            <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(rstate.rows()) /</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;                                          std::log2(d)));</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(rstate.rows()) /</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;                                      std::log2(d)));</div>
 <div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    std::vector &lt;idx&gt; dims(n, d); <span class="comment">// local dimensions vector</span></div>
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;</div>
 <div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a1e583ad0b10c1250e39c9d9bc8bade78">applyCTRL</a>(rstate, rA, ctrl, subsys, dims);</div>
@@ -432,10 +432,10 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;</div>
 <div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived1, <span class="keyword">typename</span> Derived2&gt;</div>
 <div class="line"><a name="l00412"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a6cc60c95fa5b4158e153269699d245bc">  412</a></span>&#160;<a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a> <a class="code" href="namespaceqpp.html#a6cc60c95fa5b4158e153269699d245bc">apply</a>(</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived1&gt;&amp; state,</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived2&gt;&amp; A,</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; subsys,</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived1&gt;&amp; state,</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived2&gt;&amp; A,</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; subsys,</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;{</div>
 <div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a>&amp; rstate = state;</div>
 <div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived2::Scalar&gt;</a>&amp; rA = A;</div>
@@ -444,7 +444,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;</div>
 <div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    <span class="comment">// check types</span></div>
 <div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;    <span class="keywordflow">if</span> (!std::is_same&lt;<span class="keyword">typename</span> Derived1::Scalar,</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;            <span class="keyword">typename</span> Derived2::Scalar&gt;::value)</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;        <span class="keyword">typename</span> Derived2::Scalar&gt;::value)</div>
 <div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::apply()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca2f93918ef99e03b7b8e7230b2a28fb52">Exception::Type::TYPE_MISMATCH</a>);</div>
 <div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;</div>
 <div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    <span class="comment">// check zero sizes</span></div>
@@ -504,10 +504,10 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;</div>
 <div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived1, <span class="keyword">typename</span> Derived2&gt;</div>
 <div class="line"><a name="l00497"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a08b0262b2151f6e37a7e86ca8213597f">  497</a></span>&#160;<a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a> <a class="code" href="namespaceqpp.html#a6cc60c95fa5b4158e153269699d245bc">apply</a>(</div>
-<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived1&gt;&amp; state,</div>
-<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived2&gt;&amp; A,</div>
-<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; subsys,</div>
-<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;    <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived1&gt;&amp; state,</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;    <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived2&gt;&amp; A,</div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;    <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; subsys,</div>
+<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
 <div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;{</div>
 <div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a>&amp; rstate = state;</div>
 <div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a>&amp; rA = A;</div>
@@ -517,8 +517,8 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::apply()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;</div>
 <div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n =</div>
-<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;            <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(rstate.rows()) /</div>
-<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;                                          std::log2(d)));</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;        <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(rstate.rows()) /</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;                                      std::log2(d)));</div>
 <div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;    std::vector &lt;idx&gt; dims(n, d); <span class="comment">// local dimensions vector</span></div>
 <div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;</div>
 <div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a6cc60c95fa5b4158e153269699d245bc">apply</a>(rstate, rA, subsys, dims);</div>
@@ -628,8 +628,8 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::apply()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;</div>
 <div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n =</div>
-<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;            <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(rrho.rows()) /</div>
-<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;                                          std::log2(d)));</div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;        <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(rrho.rows()) /</div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;                                      std::log2(d)));</div>
 <div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;    std::vector &lt;idx&gt; dims(n, d); <span class="comment">// local dimensions vector</span></div>
 <div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;</div>
 <div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a6cc60c95fa5b4158e153269699d245bc">apply</a>(rrho, Ks, subsys, dims);</div>
@@ -678,7 +678,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;                        <span class="comment">// compute result(ab,mn)=&lt;a|E(|m&gt;&lt;n)|b&gt;</span></div>
 <div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;                        B(b) = 1;</div>
 <div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;                        result(a * D + b, m * D + n) =</div>
-<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;                                <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a><span class="keyword">&gt;</span>(A * EMN * B).value();</div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;                            <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a><span class="keyword">&gt;</span>(A * EMN * B).value();</div>
 <div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;                        B(b) = 0;</div>
 <div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;                    }</div>
 <div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;                    A(a) = 0;</div>
@@ -739,7 +739,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::choi2kraus()&quot;</span>,</div>
 <div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;                        <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cacb2cab32e9061c686a6664d06c8bac94">Exception::Type::MATRIX_NOT_SQUARE</a>);</div>
 <div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(</div>
-<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;            std::sqrt(static_cast&lt;double&gt;(A.rows()))));</div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;        std::sqrt(static_cast&lt;double&gt;(A.rows()))));</div>
 <div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;    <span class="keywordflow">if</span> (D * D != static_cast&lt;idx&gt;(A.rows()))</div>
 <div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::choi2kraus()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;</div>
@@ -751,7 +751,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;    {</div>
 <div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;        <span class="keywordflow">if</span> (std::abs(ev(i)) &gt; <a class="code" href="namespaceqpp.html#a9a99ccccd473a9006dfaadb5761ac4f6">eps</a>)</div>
 <div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;            result.push_back(</div>
-<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;                    std::sqrt(std::abs(ev(i))) * <a class="code" href="namespaceqpp.html#afa33bacb26cad466156dc3f8f3980da7">reshape</a>(evec.col(i), D, D));</div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;                std::sqrt(std::abs(ev(i))) * <a class="code" href="namespaceqpp.html#afa33bacb26cad466156dc3f8f3980da7">reshape</a>(evec.col(i), D, D));</div>
 <div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;    }</div>
 <div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;</div>
 <div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;    <span class="keywordflow">return</span> result;</div>
@@ -766,7 +766,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::choi2super()&quot;</span>,</div>
 <div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;                        <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cacb2cab32e9061c686a6664d06c8bac94">Exception::Type::MATRIX_NOT_SQUARE</a>);</div>
 <div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(</div>
-<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;            std::sqrt(static_cast&lt;double&gt;(A.rows()))));</div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;        std::sqrt(static_cast&lt;double&gt;(A.rows()))));</div>
 <div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;    <span class="keywordflow">if</span> (D * D != static_cast&lt;idx&gt;(A.rows()))</div>
 <div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::choi2super()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;</div>
@@ -791,7 +791,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::super2choi()&quot;</span>,</div>
 <div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;                        <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cacb2cab32e9061c686a6664d06c8bac94">Exception::Type::MATRIX_NOT_SQUARE</a>);</div>
 <div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(</div>
-<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;            std::sqrt(static_cast&lt;double&gt;(A.rows()))));</div>
+<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;        std::sqrt(static_cast&lt;double&gt;(A.rows()))));</div>
 <div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;    <span class="keywordflow">if</span> (D * D != static_cast&lt;idx&gt;(A.rows()))</div>
 <div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::super2choi()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;</div>
@@ -831,7 +831,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> DB = dims[1];</div>
 <div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;</div>
 <div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> result =</div>
-<div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160;            <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat &lt; typename Derived::Scalar &gt;</a> ::Zero(DB, DB);</div>
+<div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160;        <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat &lt; typename Derived::Scalar &gt;</a> ::Zero(DB, DB);</div>
 <div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;</div>
 <div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160;    <span class="comment">//************ ket ************//</span></div>
 <div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespaceqpp_1_1internal.html#a88116de0ca257a3117ca43623a1d7272">internal::_check_cvector</a>(rA)) <span class="comment">// we have a ket</span></div>
@@ -842,7 +842,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00928"></a><span class="lineno">  928</span>&#160;                            <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca8e50b38bf4bfc1c10f6d65283db18c47">Exception::Type::DIMS_MISMATCH_CVECTOR</a>);</div>
 <div class="line"><a name="l00929"></a><span class="lineno">  929</span>&#160;</div>
 <div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160;        <span class="keyword">auto</span> worker = [=](<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j) noexcept</div>
-<div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;                -&gt; <span class="keyword">typename</span> Derived::Scalar</div>
+<div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;            -&gt; <span class="keyword">typename</span> Derived::Scalar</div>
 <div class="line"><a name="l00932"></a><span class="lineno">  932</span>&#160;        {</div>
 <div class="line"><a name="l00933"></a><span class="lineno">  933</span>&#160;            <span class="keyword">typename</span> Derived::Scalar <a class="code" href="namespaceqpp.html#a48a92e8a327ff86f87c6236965103797">sum</a> = 0;</div>
 <div class="line"><a name="l00934"></a><span class="lineno">  934</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> m = 0; m &lt; DA; ++m)</div>
@@ -867,7 +867,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00953"></a><span class="lineno">  953</span>&#160;                            <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d">Exception::Type::DIMS_MISMATCH_MATRIX</a>);</div>
 <div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;</div>
 <div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160;        <span class="keyword">auto</span> worker = [=](<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j) noexcept</div>
-<div class="line"><a name="l00956"></a><span class="lineno">  956</span>&#160;                -&gt; <span class="keyword">typename</span> Derived::Scalar</div>
+<div class="line"><a name="l00956"></a><span class="lineno">  956</span>&#160;            -&gt; <span class="keyword">typename</span> Derived::Scalar</div>
 <div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;        {</div>
 <div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;            <span class="keyword">typename</span> Derived::Scalar <a class="code" href="namespaceqpp.html#a48a92e8a327ff86f87c6236965103797">sum</a> = 0;</div>
 <div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> m = 0; m &lt; DA; ++m)</div>
@@ -913,7 +913,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01013"></a><span class="lineno"> 1013</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> DB = dims[1];</div>
 <div class="line"><a name="l01014"></a><span class="lineno"> 1014</span>&#160;</div>
 <div class="line"><a name="l01015"></a><span class="lineno"> 1015</span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> result =</div>
-<div class="line"><a name="l01016"></a><span class="lineno"> 1016</span>&#160;            <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat &lt; typename Derived::Scalar &gt;</a> ::Zero(DA, DA);</div>
+<div class="line"><a name="l01016"></a><span class="lineno"> 1016</span>&#160;        <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat &lt; typename Derived::Scalar &gt;</a> ::Zero(DA, DA);</div>
 <div class="line"><a name="l01017"></a><span class="lineno"> 1017</span>&#160;</div>
 <div class="line"><a name="l01018"></a><span class="lineno"> 1018</span>&#160;    <span class="comment">//************ ket ************//</span></div>
 <div class="line"><a name="l01019"></a><span class="lineno"> 1019</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespaceqpp_1_1internal.html#a88116de0ca257a3117ca43623a1d7272">internal::_check_cvector</a>(rA)) <span class="comment">// we have a ket</span></div>
@@ -924,7 +924,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01024"></a><span class="lineno"> 1024</span>&#160;                            <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca8e50b38bf4bfc1c10f6d65283db18c47">Exception::Type::DIMS_MISMATCH_CVECTOR</a>);</div>
 <div class="line"><a name="l01025"></a><span class="lineno"> 1025</span>&#160;</div>
 <div class="line"><a name="l01026"></a><span class="lineno"> 1026</span>&#160;        <span class="keyword">auto</span> worker = [=](<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j) noexcept</div>
-<div class="line"><a name="l01027"></a><span class="lineno"> 1027</span>&#160;                -&gt; <span class="keyword">typename</span> Derived::Scalar</div>
+<div class="line"><a name="l01027"></a><span class="lineno"> 1027</span>&#160;            -&gt; <span class="keyword">typename</span> Derived::Scalar</div>
 <div class="line"><a name="l01028"></a><span class="lineno"> 1028</span>&#160;        {</div>
 <div class="line"><a name="l01029"></a><span class="lineno"> 1029</span>&#160;            <span class="keyword">typename</span> Derived::Scalar <a class="code" href="namespaceqpp.html#a48a92e8a327ff86f87c6236965103797">sum</a> = 0;</div>
 <div class="line"><a name="l01030"></a><span class="lineno"> 1030</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> m = 0; m &lt; DB; ++m)</div>
@@ -1019,7 +1019,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01133"></a><span class="lineno"> 1133</span>&#160;    }</div>
 <div class="line"><a name="l01134"></a><span class="lineno"> 1134</span>&#160;</div>
 <div class="line"><a name="l01135"></a><span class="lineno"> 1135</span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> result =</div>
-<div class="line"><a name="l01136"></a><span class="lineno"> 1136</span>&#160;            <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat &lt; typename Derived::Scalar &gt;</a> (dimsubsysbar, dimsubsysbar);</div>
+<div class="line"><a name="l01136"></a><span class="lineno"> 1136</span>&#160;        <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat &lt; typename Derived::Scalar &gt;</a> (dimsubsysbar, dimsubsysbar);</div>
 <div class="line"><a name="l01137"></a><span class="lineno"> 1137</span>&#160;</div>
 <div class="line"><a name="l01138"></a><span class="lineno"> 1138</span>&#160;    <span class="comment">//************ ket ************//</span></div>
 <div class="line"><a name="l01139"></a><span class="lineno"> 1139</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespaceqpp_1_1internal.html#a88116de0ca257a3117ca43623a1d7272">internal::_check_cvector</a>(rA)) <span class="comment">// we have a ket</span></div>
@@ -1039,7 +1039,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01153"></a><span class="lineno"> 1153</span>&#160;            <span class="keywordflow">return</span> rA * <a class="code" href="namespaceqpp.html#aba2b3538ec37539e56f77addfb9ea1dd">adjoint</a>(rA);</div>
 <div class="line"><a name="l01154"></a><span class="lineno"> 1154</span>&#160;</div>
 <div class="line"><a name="l01155"></a><span class="lineno"> 1155</span>&#160;        <span class="keyword">auto</span> worker = [=, &amp;Cmidxcolsubsysbar](<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i) noexcept</div>
-<div class="line"><a name="l01156"></a><span class="lineno"> 1156</span>&#160;                -&gt; <span class="keyword">typename</span> Derived::Scalar</div>
+<div class="line"><a name="l01156"></a><span class="lineno"> 1156</span>&#160;            -&gt; <span class="keyword">typename</span> Derived::Scalar</div>
 <div class="line"><a name="l01157"></a><span class="lineno"> 1157</span>&#160;        {</div>
 <div class="line"><a name="l01158"></a><span class="lineno"> 1158</span>&#160;            <span class="comment">// use static allocation for speed!</span></div>
 <div class="line"><a name="l01159"></a><span class="lineno"> 1159</span>&#160;</div>
@@ -1065,7 +1065,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01179"></a><span class="lineno"> 1179</span>&#160;                <span class="comment">// write it into the global row/col multi-indexes</span></div>
 <div class="line"><a name="l01180"></a><span class="lineno"> 1180</span>&#160;                <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> k = 0; k &lt; nsubsys; ++k)</div>
 <div class="line"><a name="l01181"></a><span class="lineno"> 1181</span>&#160;                    Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]]</div>
-<div class="line"><a name="l01182"></a><span class="lineno"> 1182</span>&#160;                            = Cmidxsubsys[k];</div>
+<div class="line"><a name="l01182"></a><span class="lineno"> 1182</span>&#160;                        = Cmidxsubsys[k];</div>
 <div class="line"><a name="l01183"></a><span class="lineno"> 1183</span>&#160;</div>
 <div class="line"><a name="l01184"></a><span class="lineno"> 1184</span>&#160;                <span class="comment">// now do the sum</span></div>
 <div class="line"><a name="l01185"></a><span class="lineno"> 1185</span>&#160;                sm += rA(<a class="code" href="namespaceqpp_1_1internal.html#a58bbe3e0db088a311d6ec053950602cf">internal::_multiidx2n</a>(Cmidxrow, n, Cdims)) *</div>
@@ -1108,7 +1108,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01222"></a><span class="lineno"> 1222</span>&#160;            <span class="keywordflow">return</span> rA;</div>
 <div class="line"><a name="l01223"></a><span class="lineno"> 1223</span>&#160;</div>
 <div class="line"><a name="l01224"></a><span class="lineno"> 1224</span>&#160;        <span class="keyword">auto</span> worker = [=, &amp;Cmidxcolsubsysbar](<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i) noexcept</div>
-<div class="line"><a name="l01225"></a><span class="lineno"> 1225</span>&#160;                -&gt; <span class="keyword">typename</span> Derived::Scalar</div>
+<div class="line"><a name="l01225"></a><span class="lineno"> 1225</span>&#160;            -&gt; <span class="keyword">typename</span> Derived::Scalar</div>
 <div class="line"><a name="l01226"></a><span class="lineno"> 1226</span>&#160;        {</div>
 <div class="line"><a name="l01227"></a><span class="lineno"> 1227</span>&#160;            <span class="comment">// use static allocation for speed!</span></div>
 <div class="line"><a name="l01228"></a><span class="lineno"> 1228</span>&#160;</div>
@@ -1134,7 +1134,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01248"></a><span class="lineno"> 1248</span>&#160;                <span class="comment">// write it into the global row/col multi-indexes</span></div>
 <div class="line"><a name="l01249"></a><span class="lineno"> 1249</span>&#160;                <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> k = 0; k &lt; nsubsys; ++k)</div>
 <div class="line"><a name="l01250"></a><span class="lineno"> 1250</span>&#160;                    Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]]</div>
-<div class="line"><a name="l01251"></a><span class="lineno"> 1251</span>&#160;                            = Cmidxsubsys[k];</div>
+<div class="line"><a name="l01251"></a><span class="lineno"> 1251</span>&#160;                        = Cmidxsubsys[k];</div>
 <div class="line"><a name="l01252"></a><span class="lineno"> 1252</span>&#160;</div>
 <div class="line"><a name="l01253"></a><span class="lineno"> 1253</span>&#160;                <span class="comment">// now do the sum</span></div>
 <div class="line"><a name="l01254"></a><span class="lineno"> 1254</span>&#160;                sm += rA(<a class="code" href="namespaceqpp_1_1internal.html#a58bbe3e0db088a311d6ec053950602cf">internal::_multiidx2n</a>(Cmidxrow, n, Cdims),</div>
@@ -1176,8 +1176,8 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01304"></a><span class="lineno"> 1304</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::ptrace()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l01305"></a><span class="lineno"> 1305</span>&#160;</div>
 <div class="line"><a name="l01306"></a><span class="lineno"> 1306</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n =</div>
-<div class="line"><a name="l01307"></a><span class="lineno"> 1307</span>&#160;            <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(rA.rows()) /</div>
-<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;                                          std::log2(d)));</div>
+<div class="line"><a name="l01307"></a><span class="lineno"> 1307</span>&#160;        <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(rA.rows()) /</div>
+<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;                                      std::log2(d)));</div>
 <div class="line"><a name="l01309"></a><span class="lineno"> 1309</span>&#160;    std::vector &lt;idx&gt; dims(n, d); <span class="comment">// local dimensions vector</span></div>
 <div class="line"><a name="l01310"></a><span class="lineno"> 1310</span>&#160;</div>
 <div class="line"><a name="l01311"></a><span class="lineno"> 1311</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a1300526d686af7fec966d8760087a168">ptrace</a>(rA, subsys, dims);</div>
@@ -1185,9 +1185,9 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01313"></a><span class="lineno"> 1313</span>&#160;</div>
 <div class="line"><a name="l01327"></a><span class="lineno"> 1327</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l01328"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a97eda566cbbf3baaf8d897d5d49fb5f1"> 1328</a></span>&#160;<a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> <a class="code" href="namespaceqpp.html#a97eda566cbbf3baaf8d897d5d49fb5f1">ptranspose</a>(</div>
-<div class="line"><a name="l01329"></a><span class="lineno"> 1329</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
-<div class="line"><a name="l01330"></a><span class="lineno"> 1330</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; subsys,</div>
-<div class="line"><a name="l01331"></a><span class="lineno"> 1331</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l01329"></a><span class="lineno"> 1329</span>&#160;    <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
+<div class="line"><a name="l01330"></a><span class="lineno"> 1330</span>&#160;    <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; subsys,</div>
+<div class="line"><a name="l01331"></a><span class="lineno"> 1331</span>&#160;    <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l01332"></a><span class="lineno"> 1332</span>&#160;{</div>
 <div class="line"><a name="l01333"></a><span class="lineno"> 1333</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l01334"></a><span class="lineno"> 1334</span>&#160;</div>
@@ -1236,7 +1236,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01377"></a><span class="lineno"> 1377</span>&#160;            <span class="keywordflow">return</span> rA * <a class="code" href="namespaceqpp.html#aba2b3538ec37539e56f77addfb9ea1dd">adjoint</a>(rA);</div>
 <div class="line"><a name="l01378"></a><span class="lineno"> 1378</span>&#160;</div>
 <div class="line"><a name="l01379"></a><span class="lineno"> 1379</span>&#160;        <span class="keyword">auto</span> worker = [=, &amp;Cmidxcol](<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i) noexcept</div>
-<div class="line"><a name="l01380"></a><span class="lineno"> 1380</span>&#160;                -&gt; <span class="keyword">typename</span> Derived::Scalar</div>
+<div class="line"><a name="l01380"></a><span class="lineno"> 1380</span>&#160;            -&gt; <span class="keyword">typename</span> Derived::Scalar</div>
 <div class="line"><a name="l01381"></a><span class="lineno"> 1381</span>&#160;        {</div>
 <div class="line"><a name="l01382"></a><span class="lineno"> 1382</span>&#160;            <span class="comment">// use static allocation for speed!</span></div>
 <div class="line"><a name="l01383"></a><span class="lineno"> 1383</span>&#160;            <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> midxcoltmp[<a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
@@ -1283,7 +1283,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01424"></a><span class="lineno"> 1424</span>&#160;            <span class="keywordflow">return</span> rA;</div>
 <div class="line"><a name="l01425"></a><span class="lineno"> 1425</span>&#160;</div>
 <div class="line"><a name="l01426"></a><span class="lineno"> 1426</span>&#160;        <span class="keyword">auto</span> worker = [=, &amp;Cmidxcol](<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i) noexcept</div>
-<div class="line"><a name="l01427"></a><span class="lineno"> 1427</span>&#160;                -&gt; <span class="keyword">typename</span> Derived::Scalar</div>
+<div class="line"><a name="l01427"></a><span class="lineno"> 1427</span>&#160;            -&gt; <span class="keyword">typename</span> Derived::Scalar</div>
 <div class="line"><a name="l01428"></a><span class="lineno"> 1428</span>&#160;        {</div>
 <div class="line"><a name="l01429"></a><span class="lineno"> 1429</span>&#160;            <span class="comment">// use static allocation for speed!</span></div>
 <div class="line"><a name="l01430"></a><span class="lineno"> 1430</span>&#160;            <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> midxcoltmp[<a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
@@ -1322,9 +1322,9 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01463"></a><span class="lineno"> 1463</span>&#160;</div>
 <div class="line"><a name="l01477"></a><span class="lineno"> 1477</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l01478"></a><span class="lineno"><a class="line" href="namespaceqpp.html#aaa62e91772d192f1a7981f651ff9072c"> 1478</a></span>&#160;<a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> <a class="code" href="namespaceqpp.html#a97eda566cbbf3baaf8d897d5d49fb5f1">ptranspose</a>(</div>
-<div class="line"><a name="l01479"></a><span class="lineno"> 1479</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
-<div class="line"><a name="l01480"></a><span class="lineno"> 1480</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; subsys,</div>
-<div class="line"><a name="l01481"></a><span class="lineno"> 1481</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
+<div class="line"><a name="l01479"></a><span class="lineno"> 1479</span>&#160;    <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
+<div class="line"><a name="l01480"></a><span class="lineno"> 1480</span>&#160;    <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; subsys,</div>
+<div class="line"><a name="l01481"></a><span class="lineno"> 1481</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
 <div class="line"><a name="l01482"></a><span class="lineno"> 1482</span>&#160;{</div>
 <div class="line"><a name="l01483"></a><span class="lineno"> 1483</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l01484"></a><span class="lineno"> 1484</span>&#160;</div>
@@ -1333,8 +1333,8 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01487"></a><span class="lineno"> 1487</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::ptranspose()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l01488"></a><span class="lineno"> 1488</span>&#160;</div>
 <div class="line"><a name="l01489"></a><span class="lineno"> 1489</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n =</div>
-<div class="line"><a name="l01490"></a><span class="lineno"> 1490</span>&#160;            <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(rA.rows()) /</div>
-<div class="line"><a name="l01491"></a><span class="lineno"> 1491</span>&#160;                                          std::log2(d)));</div>
+<div class="line"><a name="l01490"></a><span class="lineno"> 1490</span>&#160;        <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(rA.rows()) /</div>
+<div class="line"><a name="l01491"></a><span class="lineno"> 1491</span>&#160;                                      std::log2(d)));</div>
 <div class="line"><a name="l01492"></a><span class="lineno"> 1492</span>&#160;    std::vector &lt;idx&gt; dims(n, d); <span class="comment">// local dimensions vector</span></div>
 <div class="line"><a name="l01493"></a><span class="lineno"> 1493</span>&#160;</div>
 <div class="line"><a name="l01494"></a><span class="lineno"> 1494</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a97eda566cbbf3baaf8d897d5d49fb5f1">ptranspose</a>(rA, subsys, dims);</div>
@@ -1342,9 +1342,9 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01496"></a><span class="lineno"> 1496</span>&#160;</div>
 <div class="line"><a name="l01509"></a><span class="lineno"> 1509</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l01510"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a4cf8dec8978b57214c806094f69e05ca"> 1510</a></span>&#160;<a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> <a class="code" href="namespaceqpp.html#a4cf8dec8978b57214c806094f69e05ca">syspermute</a>(</div>
-<div class="line"><a name="l01511"></a><span class="lineno"> 1511</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
-<div class="line"><a name="l01512"></a><span class="lineno"> 1512</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; perm,</div>
-<div class="line"><a name="l01513"></a><span class="lineno"> 1513</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; dims)</div>
+<div class="line"><a name="l01511"></a><span class="lineno"> 1511</span>&#160;    <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
+<div class="line"><a name="l01512"></a><span class="lineno"> 1512</span>&#160;    <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; perm,</div>
+<div class="line"><a name="l01513"></a><span class="lineno"> 1513</span>&#160;    <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l01514"></a><span class="lineno"> 1514</span>&#160;{</div>
 <div class="line"><a name="l01515"></a><span class="lineno"> 1515</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l01516"></a><span class="lineno"> 1516</span>&#160;</div>
@@ -1392,7 +1392,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01558"></a><span class="lineno"> 1558</span>&#160;        result.resize(D, 1);</div>
 <div class="line"><a name="l01559"></a><span class="lineno"> 1559</span>&#160;</div>
 <div class="line"><a name="l01560"></a><span class="lineno"> 1560</span>&#160;        <span class="keyword">auto</span> worker = [&amp;Cdims, &amp;Cperm, numdims](<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i) noexcept</div>
-<div class="line"><a name="l01561"></a><span class="lineno"> 1561</span>&#160;                -&gt; <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a></div>
+<div class="line"><a name="l01561"></a><span class="lineno"> 1561</span>&#160;            -&gt; <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a></div>
 <div class="line"><a name="l01562"></a><span class="lineno"> 1562</span>&#160;        {</div>
 <div class="line"><a name="l01563"></a><span class="lineno"> 1563</span>&#160;            <span class="comment">// use static allocation for speed,</span></div>
 <div class="line"><a name="l01564"></a><span class="lineno"> 1564</span>&#160;            <span class="comment">// double the size for matrices reshaped as vectors</span></div>
@@ -1439,12 +1439,12 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01605"></a><span class="lineno"> 1605</span>&#160;        }</div>
 <div class="line"><a name="l01606"></a><span class="lineno"> 1606</span>&#160;        result.resize(D * D, 1);</div>
 <div class="line"><a name="l01607"></a><span class="lineno"> 1607</span>&#160;        <span class="comment">// map A to a column vector</span></div>
-<div class="line"><a name="l01608"></a><span class="lineno"> 1608</span>&#160;        <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> vectA = </div>
+<div class="line"><a name="l01608"></a><span class="lineno"> 1608</span>&#160;        <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> vectA =</div>
 <div class="line"><a name="l01609"></a><span class="lineno"> 1609</span>&#160;            Eigen::Map&lt;dyn_mat&lt;typename Derived::Scalar&gt;&gt;(</div>
 <div class="line"><a name="l01610"></a><span class="lineno"> 1610</span>&#160;                <span class="keyword">const_cast&lt;</span>typename Derived::Scalar*<span class="keyword">&gt;</span>(rA.data()), D * D, 1);</div>
 <div class="line"><a name="l01611"></a><span class="lineno"> 1611</span>&#160;</div>
 <div class="line"><a name="l01612"></a><span class="lineno"> 1612</span>&#160;        <span class="keyword">auto</span> worker = [&amp;Cdims, &amp;Cperm, numdims](<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i) noexcept</div>
-<div class="line"><a name="l01613"></a><span class="lineno"> 1613</span>&#160;                -&gt; <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a></div>
+<div class="line"><a name="l01613"></a><span class="lineno"> 1613</span>&#160;            -&gt; <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a></div>
 <div class="line"><a name="l01614"></a><span class="lineno"> 1614</span>&#160;        {</div>
 <div class="line"><a name="l01615"></a><span class="lineno"> 1615</span>&#160;            <span class="comment">// use static allocation for speed,</span></div>
 <div class="line"><a name="l01616"></a><span class="lineno"> 1616</span>&#160;            <span class="comment">// double the size for matrices reshaped as vectors</span></div>
@@ -1478,9 +1478,9 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01644"></a><span class="lineno"> 1644</span>&#160;</div>
 <div class="line"><a name="l01657"></a><span class="lineno"> 1657</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l01658"></a><span class="lineno"><a class="line" href="namespaceqpp.html#af9de352ae53eb3ad8141721b487869b0"> 1658</a></span>&#160;<a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> <a class="code" href="namespaceqpp.html#a4cf8dec8978b57214c806094f69e05ca">syspermute</a>(</div>
-<div class="line"><a name="l01659"></a><span class="lineno"> 1659</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
-<div class="line"><a name="l01660"></a><span class="lineno"> 1660</span>&#160;        <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; perm,</div>
-<div class="line"><a name="l01661"></a><span class="lineno"> 1661</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
+<div class="line"><a name="l01659"></a><span class="lineno"> 1659</span>&#160;    <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
+<div class="line"><a name="l01660"></a><span class="lineno"> 1660</span>&#160;    <span class="keyword">const</span> std::vector &lt;idx&gt;&amp; perm,</div>
+<div class="line"><a name="l01661"></a><span class="lineno"> 1661</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
 <div class="line"><a name="l01662"></a><span class="lineno"> 1662</span>&#160;{</div>
 <div class="line"><a name="l01663"></a><span class="lineno"> 1663</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
 <div class="line"><a name="l01664"></a><span class="lineno"> 1664</span>&#160;</div>
@@ -1489,8 +1489,8 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01667"></a><span class="lineno"> 1667</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::syspermute()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l01668"></a><span class="lineno"> 1668</span>&#160;</div>
 <div class="line"><a name="l01669"></a><span class="lineno"> 1669</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n =</div>
-<div class="line"><a name="l01670"></a><span class="lineno"> 1670</span>&#160;            <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(rA.rows()) /</div>
-<div class="line"><a name="l01671"></a><span class="lineno"> 1671</span>&#160;                                          std::log2(d)));</div>
+<div class="line"><a name="l01670"></a><span class="lineno"> 1670</span>&#160;        <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(rA.rows()) /</div>
+<div class="line"><a name="l01671"></a><span class="lineno"> 1671</span>&#160;                                      std::log2(d)));</div>
 <div class="line"><a name="l01672"></a><span class="lineno"> 1672</span>&#160;    std::vector &lt;idx&gt; dims(n, d); <span class="comment">// local dimensions vector</span></div>
 <div class="line"><a name="l01673"></a><span class="lineno"> 1673</span>&#160;</div>
 <div class="line"><a name="l01674"></a><span class="lineno"> 1674</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a4cf8dec8978b57214c806094f69e05ca">syspermute</a>(rA, perm, dims);</div>
@@ -1503,10 +1503,10 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_html_aea80be6c57ee43e43aa9629942cd3608"><div class="ttname"><a href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">qpp::maxn</a></div><div class="ttdeci">constexpr idx maxn</div><div class="ttdoc">Maximum number of allowed qu(d)its (subsystems) </div><div class="ttdef"><b>Definition:</b> constants.h:82</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca8e50b38bf4bfc1c10f6d65283db18c47"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca8e50b38bf4bfc1c10f6d65283db18c47">qpp::Exception::Type::DIMS_MISMATCH_CVECTOR</a></div></div>
 <div class="ttc" id="namespaceqpp_html_ac08330f1578fa6b6e382a80132dffb46"><div class="ttname"><a href="namespaceqpp.html#ac08330f1578fa6b6e382a80132dffb46">qpp::choi2kraus</a></div><div class="ttdeci">std::vector&lt; cmat &gt; choi2kraus(const cmat &amp;A)</div><div class="ttdoc">Orthogonal Kraus operators from Choi matrix. </div><div class="ttdef"><b>Definition:</b> operations.h:791</div></div>
-<div class="ttc" id="namespaceqpp_1_1internal_html_a40b09454ce4959a4fd231e67518d6abe"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a40b09454ce4959a4fd231e67518d6abe">qpp::internal::_check_subsys_match_dims</a></div><div class="ttdeci">bool _check_subsys_match_dims(const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdef"><b>Definition:</b> util.h:183</div></div>
-<div class="ttc" id="namespaceqpp_1_1internal_html_a91aa370280d653933744a64a55cd0ff3"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a91aa370280d653933744a64a55cd0ff3">qpp::internal::_check_dims_match_mat</a></div><div class="ttdeci">bool _check_dims_match_mat(const std::vector&lt; idx &gt; &amp;dims, const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:135</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a40b09454ce4959a4fd231e67518d6abe"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a40b09454ce4959a4fd231e67518d6abe">qpp::internal::_check_subsys_match_dims</a></div><div class="ttdeci">bool _check_subsys_match_dims(const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdef"><b>Definition:</b> util.h:190</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a91aa370280d653933744a64a55cd0ff3"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a91aa370280d653933744a64a55cd0ff3">qpp::internal::_check_dims_match_mat</a></div><div class="ttdeci">bool _check_dims_match_mat(const std::vector&lt; idx &gt; &amp;dims, const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:142</div></div>
 <div class="ttc" id="namespaceqpp_html_a923e2becc99eb818c04c71ae913902ff"><div class="ttname"><a href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff">qpp::dmat</a></div><div class="ttdeci">Eigen::MatrixXd dmat</div><div class="ttdoc">Real (double precision) dynamic Eigen matrix. </div><div class="ttdef"><b>Definition:</b> types.h:71</div></div>
-<div class="ttc" id="namespaceqpp_1_1internal_html_ac65903c07823d69fb7a75e2b215ed0a7"><div class="ttname"><a href="namespaceqpp_1_1internal.html#ac65903c07823d69fb7a75e2b215ed0a7">qpp::internal::_check_dims_match_cvect</a></div><div class="ttdeci">bool _check_dims_match_cvect(const std::vector&lt; idx &gt; &amp;dims, const Eigen::MatrixBase&lt; Derived &gt; &amp;V)</div><div class="ttdef"><b>Definition:</b> util.h:148</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_ac65903c07823d69fb7a75e2b215ed0a7"><div class="ttname"><a href="namespaceqpp_1_1internal.html#ac65903c07823d69fb7a75e2b215ed0a7">qpp::internal::_check_dims_match_cvect</a></div><div class="ttdeci">bool _check_dims_match_cvect(const std::vector&lt; idx &gt; &amp;dims, const Eigen::MatrixBase&lt; Derived &gt; &amp;V)</div><div class="ttdef"><b>Definition:</b> util.h:155</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca2f93918ef99e03b7b8e7230b2a28fb52"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca2f93918ef99e03b7b8e7230b2a28fb52">qpp::Exception::Type::TYPE_MISMATCH</a></div></div>
 <div class="ttc" id="namespaceqpp_html_a9a99ccccd473a9006dfaadb5761ac4f6"><div class="ttname"><a href="namespaceqpp.html#a9a99ccccd473a9006dfaadb5761ac4f6">qpp::eps</a></div><div class="ttdeci">constexpr double eps</div><div class="ttdoc">Used to decide whether a number or expression in double precision is zero or not. ...</div><div class="ttdef"><b>Definition:</b> constants.h:75</div></div>
 <div class="ttc" id="namespaceqpp_html_a8886624a4a55a9b45c96a623a20bf163"><div class="ttname"><a href="namespaceqpp.html#a8886624a4a55a9b45c96a623a20bf163">qpp::bra</a></div><div class="ttdeci">Eigen::RowVectorXcd bra</div><div class="ttdoc">Complex (double precision) dynamic Eigen row vector. </div><div class="ttdef"><b>Definition:</b> types.h:61</div></div>
@@ -1522,14 +1522,14 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7caae0e67b77fc0b11803a4f7a791ecd5b7"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7caae0e67b77fc0b11803a4f7a791ecd5b7">qpp::Exception::Type::DIMS_NOT_EQUAL</a></div></div>
 <div class="ttc" id="namespaceqpp_html_a8b5fb595977b62ea764f9362828678f2"><div class="ttname"><a href="namespaceqpp.html#a8b5fb595977b62ea764f9362828678f2">qpp::choi2super</a></div><div class="ttdeci">cmat choi2super(const cmat &amp;A)</div><div class="ttdoc">Converts Choi matrix to superoperator matrix. </div><div class="ttdef"><b>Definition:</b> operations.h:825</div></div>
 <div class="ttc" id="namespaceqpp_html_ad2b8ee9e2f9b51a281f7c42f61571c9a"><div class="ttname"><a href="namespaceqpp.html#ad2b8ee9e2f9b51a281f7c42f61571c9a">qpp::super2choi</a></div><div class="ttdeci">cmat super2choi(const cmat &amp;A)</div><div class="ttdoc">Converts superoperator matrix to Choi matrix. </div><div class="ttdef"><b>Definition:</b> operations.h:857</div></div>
-<div class="ttc" id="namespaceqpp_html_a87ad5b3e58dedde05467ac1961e44892"><div class="ttname"><a href="namespaceqpp.html#a87ad5b3e58dedde05467ac1961e44892">qpp::complement</a></div><div class="ttdeci">std::vector&lt; T &gt; complement(std::vector&lt; T &gt; subsys, idx N)</div><div class="ttdoc">Constructs the complement of a subsystem vector. </div><div class="ttdef"><b>Definition:</b> functions.h:1724</div></div>
+<div class="ttc" id="namespaceqpp_html_a87ad5b3e58dedde05467ac1961e44892"><div class="ttname"><a href="namespaceqpp.html#a87ad5b3e58dedde05467ac1961e44892">qpp::complement</a></div><div class="ttdeci">std::vector&lt; T &gt; complement(std::vector&lt; T &gt; subsys, idx N)</div><div class="ttdoc">Constructs the complement of a subsystem vector. </div><div class="ttdef"><b>Definition:</b> functions.h:1663</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca6f5a157d66050b57e1fdf39e78ca5680"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6f5a157d66050b57e1fdf39e78ca5680">qpp::Exception::Type::PERM_MISMATCH_DIMS</a></div></div>
 <div class="ttc" id="namespaceqpp_html_a3e1f6add4257e7a92af4378a848110b7"><div class="ttname"><a href="namespaceqpp.html#a3e1f6add4257e7a92af4378a848110b7">qpp::ptrace1</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; ptrace1(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Partial trace. </div><div class="ttdef"><b>Definition:</b> operations.h:897</div></div>
 <div class="ttc" id="namespaceqpp_html_aba2b3538ec37539e56f77addfb9ea1dd"><div class="ttname"><a href="namespaceqpp.html#aba2b3538ec37539e56f77addfb9ea1dd">qpp::adjoint</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; adjoint(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Adjoint. </div><div class="ttdef"><b>Definition:</b> functions.h:84</div></div>
 <div class="ttc" id="namespaceqpp_html_a9294ebd345fe1c99731bf2b776e610d7"><div class="ttname"><a href="namespaceqpp.html#a9294ebd345fe1c99731bf2b776e610d7">qpp::kron</a></div><div class="ttdeci">dyn_mat&lt; typename T::Scalar &gt; kron(const T &amp;head)</div><div class="ttdoc">Kronecker product. </div><div class="ttdef"><b>Definition:</b> functions.h:798</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7cae5cf555f5690014691094e79b5c737f2"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cae5cf555f5690014691094e79b5c737f2">qpp::Exception::Type::MATRIX_MISMATCH_SUBSYS</a></div></div>
 <div class="ttc" id="namespaceqpp_html_a9c0652daea1cfc2385239956ca80b356"><div class="ttname"><a href="namespaceqpp.html#a9c0652daea1cfc2385239956ca80b356">qpp::ptrace2</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; ptrace2(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Partial trace. </div><div class="ttdef"><b>Definition:</b> operations.h:993</div></div>
-<div class="ttc" id="namespaceqpp_1_1internal_html_a5c90e71ef74abcb25b5943025ee003c1"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a5c90e71ef74abcb25b5943025ee003c1">qpp::internal::_check_perm</a></div><div class="ttdeci">bool _check_perm(const std::vector&lt; idx &gt; &amp;perm)</div><div class="ttdef"><b>Definition:</b> util.h:250</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a5c90e71ef74abcb25b5943025ee003c1"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a5c90e71ef74abcb25b5943025ee003c1">qpp::internal::_check_perm</a></div><div class="ttdeci">bool _check_perm(const std::vector&lt; idx &gt; &amp;perm)</div><div class="ttdef"><b>Definition:</b> util.h:257</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a58bbe3e0db088a311d6ec053950602cf"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a58bbe3e0db088a311d6ec053950602cf">qpp::internal::_multiidx2n</a></div><div class="ttdeci">idx _multiidx2n(const idx *midx, idx numdims, const idx *dims) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:54</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html"><div class="ttname"><a href="classqpp_1_1_exception.html">qpp::Exception</a></div><div class="ttdoc">Generates custom exceptions, used when validating function parameters. </div><div class="ttdef"><b>Definition:</b> exception.h:39</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca93a1b69163069e595edb06c2af7183dd"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca93a1b69163069e595edb06c2af7183dd">qpp::Exception::Type::NOT_BIPARTITE</a></div></div>
@@ -1550,7 +1550,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_html_a1f5f7137e8551cf82db04d3b81cdd706"><div class="ttname"><a href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">qpp::idx</a></div><div class="ttdeci">std::size_t idx</div><div class="ttdoc">Non-negative integer index. </div><div class="ttdef"><b>Definition:</b> types.h:36</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d">qpp::Exception::Type::DIMS_MISMATCH_MATRIX</a></div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca97c98bf66b3a4ad201dceb1f5ef5417f"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca97c98bf66b3a4ad201dceb1f5ef5417f">qpp::Exception::Type::PERM_INVALID</a></div></div>
-<div class="ttc" id="namespaceqpp_1_1internal_html_a0a4a25bc623c39d21898fd6c4e3177ca"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a0a4a25bc623c39d21898fd6c4e3177ca">qpp::internal::_check_dims</a></div><div class="ttdeci">bool _check_dims(const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdef"><b>Definition:</b> util.h:119</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a0a4a25bc623c39d21898fd6c4e3177ca"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a0a4a25bc623c39d21898fd6c4e3177ca">qpp::internal::_check_dims</a></div><div class="ttdeci">bool _check_dims(const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdef"><b>Definition:</b> util.h:126</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7cacb2cab32e9061c686a6664d06c8bac94"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cacb2cab32e9061c686a6664d06c8bac94">qpp::Exception::Type::MATRIX_NOT_SQUARE</a></div></div>
 <div class="ttc" id="namespaceqpp_html_a48a92e8a327ff86f87c6236965103797"><div class="ttname"><a href="namespaceqpp.html#a48a92e8a327ff86f87c6236965103797">qpp::sum</a></div><div class="ttdeci">Derived::Scalar sum(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Element-wise sum of A. </div><div class="ttdef"><b>Definition:</b> functions.h:194</div></div>
 <div class="ttc" id="namespaceqpp_html_afa33bacb26cad466156dc3f8f3980da7"><div class="ttname"><a href="namespaceqpp.html#afa33bacb26cad466156dc3f8f3980da7">qpp::reshape</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; reshape(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, idx rows, idx cols)</div><div class="ttdoc">Reshape. </div><div class="ttdef"><b>Definition:</b> functions.h:1026</div></div>
@@ -1560,7 +1560,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="operations_8h.html">operations.h</a></li>
-    <li class="footer">Generated on Thu May 14 2015 17:00:36 for Quantum++ by
+    <li class="footer">Generated on Sun May 17 2015 16:27:40 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

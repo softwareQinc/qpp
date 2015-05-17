@@ -43,7 +43,7 @@ inline constexpr cplx operator
 _i(unsigned long long int x) noexcept
 {
     return
-            {0., static_cast<double>(x)};
+        {0., static_cast<double>(x)};
 }
 
 /**
@@ -57,7 +57,7 @@ inline constexpr cplx operator
 _i(long double x) noexcept
 {
     return
-            {0., static_cast<double>(x)};
+        {0., static_cast<double>(x)};
 }
 
 /**

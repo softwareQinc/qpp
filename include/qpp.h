@@ -88,6 +88,7 @@
 #include "classes/random_devices.h"
 
 // do not change the order in this group, inter-dependencies
+#include "statistics.h"
 #include "operations.h"
 #include "entropies.h"
 #include "entanglement.h"
@@ -144,7 +145,7 @@ static const States& st = States::get_instance();
 */
 #ifndef _NO_THREAD_LOCAL
 thread_local static RandomDevices& rdevs =
-        RandomDevices::get_thread_local_instance();
+    RandomDevices::get_thread_local_instance();
 #else
 static RandomDevices& rdevs =
     RandomDevices::get_instance();
@@ -156,5 +157,4 @@ static RandomDevices& rdevs =
 
 // TODO: look at how "qpp::measure" order the eigenvalues
 // TODO: maybe implement "qpp::measure" for observables
-// TODO: maybe implement "qpp::sigma" for standard deviation
-// TODO: check pass by value and get rid of the rA (cA) additional ref/copy
+// TODO: check pass by value and get rid (if possible) of the rA (cA)

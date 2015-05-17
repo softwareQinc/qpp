@@ -29,6 +29,7 @@ var classqpp_1_1_exception =
       [ "NO_CODEWORD", "classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca765d62c3ecb450227a1985539db58050", null ],
       [ "OUT_OF_RANGE", "classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad", null ],
       [ "TYPE_MISMATCH", "classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca2f93918ef99e03b7b8e7230b2a28fb52", null ],
+      [ "SIZE_MISMATCH", "classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca7c1c8b4aeec68191db15e2d46fc4aeb1", null ],
       [ "UNDEFINED_TYPE", "classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530", null ],
       [ "CUSTOM_EXCEPTION", "classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cae0cff7ecbef91c65bce0458b4aaa3d85", null ]
     ] ],

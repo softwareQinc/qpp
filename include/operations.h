@@ -52,11 +52,11 @@ namespace qpp
 */
 template<typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> applyCTRL(
-        const Eigen::MatrixBase<Derived1>& state,
-        const Eigen::MatrixBase<Derived2>& A,
-        const std::vector <idx>& ctrl,
-        const std::vector <idx>& subsys,
-        const std::vector <idx>& dims)
+    const Eigen::MatrixBase<Derived1>& state,
+    const Eigen::MatrixBase<Derived2>& A,
+    const std::vector <idx>& ctrl,
+    const std::vector <idx>& subsys,
+    const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived1::Scalar>& rstate = state;
     const dyn_mat<typename Derived2::Scalar>& rA = A;
@@ -64,7 +64,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     // EXCEPTION CHECKS
     // check types
     if (!std::is_same<typename Derived1::Scalar,
-            typename Derived2::Scalar>::value)
+        typename Derived2::Scalar>::value)
         throw Exception("qpp::applyCTRL()", Exception::Type::TYPE_MISMATCH);
 
     // check zero sizes
@@ -152,7 +152,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     // worker, computes the coefficient and the index for the ket case
     // used in #pragma omp parallel for collapse
     auto coeff_idx_ket = [=](idx _i, idx _m, idx _r) noexcept
-            -> std::pair<typename Derived1::Scalar, idx>
+        -> std::pair<typename Derived1::Scalar, idx>
     {
         idx indx = 0;
         typename Derived1::Scalar coeff = 0;
@@ -207,7 +207,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     // used in #pragma omp parallel for collapse
     auto coeff_idx_rho = [=](idx _i1, idx _m1,
                              idx _r1, idx _i2, idx _m2, idx _r2) noexcept
-            -> std::tuple<typename Derived1::Scalar, idx, idx>
+        -> std::tuple<typename Derived1::Scalar, idx, idx>
     {
         idx idxrow = 0;
         idx idxcol = 0;
@@ -297,13 +297,13 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
                 if (ctrlsize == 0) // no control
                 {
                     result(coeff_idx_ket(1, m, r).second) =
-                            coeff_idx_ket(1, m, r).first;
+                        coeff_idx_ket(1, m, r).first;
                 }
                 else
                     for (idx i = 0; i < d; ++i)
                     {
                         result(coeff_idx_ket(i, m, r).second) =
-                                coeff_idx_ket(i, m, r).first;
+                            coeff_idx_ket(i, m, r).first;
                     }
             }
 
@@ -333,7 +333,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
                                                              1, m2, r2);
                             result(std::get<1>(coeff_idxes),
                                    std::get<2>(coeff_idxes)) =
-                                    std::get<0>(coeff_idxes);
+                                std::get<0>(coeff_idxes);
                         }
                         else
                         {
@@ -341,11 +341,11 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
                                 for (idx i2 = 0; i2 < d; ++i2)
                                 {
                                     auto coeff_idxes = coeff_idx_rho(
-                                            i1, m1, r1,
-                                            i2, m2, r2);
+                                        i1, m1, r1,
+                                        i2, m2, r2);
                                     result(std::get<1>(coeff_idxes),
                                            std::get<2>(coeff_idxes)) =
-                                            std::get<0>(coeff_idxes);
+                                        std::get<0>(coeff_idxes);
                                 }
                         }
 
@@ -374,11 +374,11 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 */
 template<typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> applyCTRL(
-        const Eigen::MatrixBase<Derived1>& state,
-        const Eigen::MatrixBase<Derived2>& A,
-        const std::vector <idx>& ctrl,
-        const std::vector <idx>& subsys,
-        idx d = 2)
+    const Eigen::MatrixBase<Derived1>& state,
+    const Eigen::MatrixBase<Derived2>& A,
+    const std::vector <idx>& ctrl,
+    const std::vector <idx>& subsys,
+    idx d = 2)
 {
     const dyn_mat<typename Derived1::Scalar>& rstate = state;
     const dyn_mat<typename Derived1::Scalar>& rA = A;
@@ -388,8 +388,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         throw Exception("qpp::applyCTRL()", Exception::Type::ZERO_SIZE);
 
     idx n =
-            static_cast<idx>(std::llround(std::log2(rstate.rows()) /
-                                          std::log2(d)));
+        static_cast<idx>(std::llround(std::log2(rstate.rows()) /
+                                      std::log2(d)));
     std::vector <idx> dims(n, d); // local dimensions vector
 
     return applyCTRL(rstate, rA, ctrl, subsys, dims);
@@ -410,10 +410,10 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 */
 template<typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> apply(
-        const Eigen::MatrixBase<Derived1>& state,
-        const Eigen::MatrixBase<Derived2>& A,
-        const std::vector <idx>& subsys,
-        const std::vector <idx>& dims)
+    const Eigen::MatrixBase<Derived1>& state,
+    const Eigen::MatrixBase<Derived2>& A,
+    const std::vector <idx>& subsys,
+    const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived1::Scalar>& rstate = state;
     const dyn_mat<typename Derived2::Scalar>& rA = A;
@@ -422,7 +422,7 @@ dyn_mat<typename Derived1::Scalar> apply(
 
     // check types
     if (!std::is_same<typename Derived1::Scalar,
-            typename Derived2::Scalar>::value)
+        typename Derived2::Scalar>::value)
         throw Exception("qpp::apply()", Exception::Type::TYPE_MISMATCH);
 
     // check zero sizes
@@ -495,10 +495,10 @@ dyn_mat<typename Derived1::Scalar> apply(
 */
 template<typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> apply(
-        const Eigen::MatrixBase<Derived1>& state,
-        const Eigen::MatrixBase<Derived2>& A,
-        const std::vector <idx>& subsys,
-        idx d = 2)
+    const Eigen::MatrixBase<Derived1>& state,
+    const Eigen::MatrixBase<Derived2>& A,
+    const std::vector <idx>& subsys,
+    idx d = 2)
 {
     const dyn_mat<typename Derived1::Scalar>& rstate = state;
     const dyn_mat<typename Derived1::Scalar>& rA = A;
@@ -508,8 +508,8 @@ dyn_mat<typename Derived1::Scalar> apply(
         throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
 
     idx n =
-            static_cast<idx>(std::llround(std::log2(rstate.rows()) /
-                                          std::log2(d)));
+        static_cast<idx>(std::llround(std::log2(rstate.rows()) /
+                                      std::log2(d)));
     std::vector <idx> dims(n, d); // local dimensions vector
 
     return apply(rstate, rA, subsys, dims);
@@ -647,8 +647,8 @@ cmat apply(const Eigen::MatrixBase<Derived>& rho,
         throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
 
     idx n =
-            static_cast<idx>(std::llround(std::log2(rrho.rows()) /
-                                          std::log2(d)));
+        static_cast<idx>(std::llround(std::log2(rrho.rows()) /
+                                      std::log2(d)));
     std::vector <idx> dims(n, d); // local dimensions vector
 
     return apply(rrho, Ks, subsys, dims);
@@ -708,7 +708,7 @@ inline cmat kraus2super(const std::vector <cmat>& Ks)
                         // compute result(ab,mn)=<a|E(|m><n)|b>
                         B(b) = 1;
                         result(a * D + b, m * D + n) =
-                                static_cast<cmat>(A * EMN * B).value();
+                            static_cast<cmat>(A * EMN * B).value();
                         B(b) = 0;
                     }
                     A(a) = 0;
@@ -797,7 +797,7 @@ inline std::vector <cmat> choi2kraus(const cmat& A)
         throw Exception("qpp::choi2kraus()",
                         Exception::Type::MATRIX_NOT_SQUARE);
     idx D = static_cast<idx>(std::llround(
-            std::sqrt(static_cast<double>(A.rows()))));
+        std::sqrt(static_cast<double>(A.rows()))));
     if (D * D != static_cast<idx>(A.rows()))
         throw Exception("qpp::choi2kraus()", Exception::Type::DIMS_INVALID);
 
@@ -809,7 +809,7 @@ inline std::vector <cmat> choi2kraus(const cmat& A)
     {
         if (std::abs(ev(i)) > eps)
             result.push_back(
-                    std::sqrt(std::abs(ev(i))) * reshape(evec.col(i), D, D));
+                std::sqrt(std::abs(ev(i))) * reshape(evec.col(i), D, D));
     }
 
     return result;
@@ -831,7 +831,7 @@ inline cmat choi2super(const cmat& A)
         throw Exception("qpp::choi2super()",
                         Exception::Type::MATRIX_NOT_SQUARE);
     idx D = static_cast<idx>(std::llround(
-            std::sqrt(static_cast<double>(A.rows()))));
+        std::sqrt(static_cast<double>(A.rows()))));
     if (D * D != static_cast<idx>(A.rows()))
         throw Exception("qpp::choi2super()", Exception::Type::DIMS_INVALID);
 
@@ -863,7 +863,7 @@ inline cmat super2choi(const cmat& A)
         throw Exception("qpp::super2choi()",
                         Exception::Type::MATRIX_NOT_SQUARE);
     idx D = static_cast<idx>(std::llround(
-            std::sqrt(static_cast<double>(A.rows()))));
+        std::sqrt(static_cast<double>(A.rows()))));
     if (D * D != static_cast<idx>(A.rows()))
         throw Exception("qpp::super2choi()", Exception::Type::DIMS_INVALID);
 
@@ -917,7 +917,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
     idx DB = dims[1];
 
     dyn_mat<typename Derived::Scalar> result =
-            dyn_mat < typename Derived::Scalar > ::Zero(DB, DB);
+        dyn_mat < typename Derived::Scalar > ::Zero(DB, DB);
 
     //************ ket ************//
     if (internal::_check_cvector(rA)) // we have a ket
@@ -928,7 +928,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
                             Exception::Type::DIMS_MISMATCH_CVECTOR);
 
         auto worker = [=](idx i, idx j) noexcept
-                -> typename Derived::Scalar
+            -> typename Derived::Scalar
         {
             typename Derived::Scalar sum = 0;
             for (idx m = 0; m < DA; ++m)
@@ -953,7 +953,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
                             Exception::Type::DIMS_MISMATCH_MATRIX);
 
         auto worker = [=](idx i, idx j) noexcept
-                -> typename Derived::Scalar
+            -> typename Derived::Scalar
         {
             typename Derived::Scalar sum = 0;
             for (idx m = 0; m < DA; ++m)
@@ -1013,7 +1013,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
     idx DB = dims[1];
 
     dyn_mat<typename Derived::Scalar> result =
-            dyn_mat < typename Derived::Scalar > ::Zero(DA, DA);
+        dyn_mat < typename Derived::Scalar > ::Zero(DA, DA);
 
     //************ ket ************//
     if (internal::_check_cvector(rA)) // we have a ket
@@ -1024,7 +1024,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
                             Exception::Type::DIMS_MISMATCH_CVECTOR);
 
         auto worker = [=](idx i, idx j) noexcept
-                -> typename Derived::Scalar
+            -> typename Derived::Scalar
         {
             typename Derived::Scalar sum = 0;
             for (idx m = 0; m < DB; ++m)
@@ -1133,7 +1133,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     }
 
     dyn_mat<typename Derived::Scalar> result =
-            dyn_mat < typename Derived::Scalar > (dimsubsysbar, dimsubsysbar);
+        dyn_mat < typename Derived::Scalar > (dimsubsysbar, dimsubsysbar);
 
     //************ ket ************//
     if (internal::_check_cvector(rA)) // we have a ket
@@ -1153,7 +1153,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             return rA * adjoint(rA);
 
         auto worker = [=, &Cmidxcolsubsysbar](idx i) noexcept
-                -> typename Derived::Scalar
+            -> typename Derived::Scalar
         {
             // use static allocation for speed!
 
@@ -1179,7 +1179,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
                 // write it into the global row/col multi-indexes
                 for (idx k = 0; k < nsubsys; ++k)
                     Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]]
-                            = Cmidxsubsys[k];
+                        = Cmidxsubsys[k];
 
                 // now do the sum
                 sm += rA(internal::_multiidx2n(Cmidxrow, n, Cdims)) *
@@ -1222,7 +1222,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             return rA;
 
         auto worker = [=, &Cmidxcolsubsysbar](idx i) noexcept
-                -> typename Derived::Scalar
+            -> typename Derived::Scalar
         {
             // use static allocation for speed!
 
@@ -1248,7 +1248,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
                 // write it into the global row/col multi-indexes
                 for (idx k = 0; k < nsubsys; ++k)
                     Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]]
-                            = Cmidxsubsys[k];
+                        = Cmidxsubsys[k];
 
                 // now do the sum
                 sm += rA(internal::_multiidx2n(Cmidxrow, n, Cdims),
@@ -1304,8 +1304,8 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::ptrace()", Exception::Type::ZERO_SIZE);
 
     idx n =
-            static_cast<idx>(std::llround(std::log2(rA.rows()) /
-                                          std::log2(d)));
+        static_cast<idx>(std::llround(std::log2(rA.rows()) /
+                                      std::log2(d)));
     std::vector <idx> dims(n, d); // local dimensions vector
 
     return ptrace(rA, subsys, dims);
@@ -1326,9 +1326,9 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> ptranspose(
-        const Eigen::MatrixBase<Derived>& A,
-        const std::vector <idx>& subsys,
-        const std::vector <idx>& dims)
+    const Eigen::MatrixBase<Derived>& A,
+    const std::vector <idx>& subsys,
+    const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -1377,7 +1377,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
             return rA * adjoint(rA);
 
         auto worker = [=, &Cmidxcol](idx i) noexcept
-                -> typename Derived::Scalar
+            -> typename Derived::Scalar
         {
             // use static allocation for speed!
             idx midxcoltmp[maxn];
@@ -1424,7 +1424,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
             return rA;
 
         auto worker = [=, &Cmidxcol](idx i) noexcept
-                -> typename Derived::Scalar
+            -> typename Derived::Scalar
         {
             // use static allocation for speed!
             idx midxcoltmp[maxn];
@@ -1476,9 +1476,9 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> ptranspose(
-        const Eigen::MatrixBase<Derived>& A,
-        const std::vector <idx>& subsys,
-        idx d = 2)
+    const Eigen::MatrixBase<Derived>& A,
+    const std::vector <idx>& subsys,
+    idx d = 2)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -1487,8 +1487,8 @@ dyn_mat<typename Derived::Scalar> ptranspose(
         throw Exception("qpp::ptranspose()", Exception::Type::ZERO_SIZE);
 
     idx n =
-            static_cast<idx>(std::llround(std::log2(rA.rows()) /
-                                          std::log2(d)));
+        static_cast<idx>(std::llround(std::log2(rA.rows()) /
+                                      std::log2(d)));
     std::vector <idx> dims(n, d); // local dimensions vector
 
     return ptranspose(rA, subsys, dims);
@@ -1508,9 +1508,9 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> syspermute(
-        const Eigen::MatrixBase<Derived>& A,
-        const std::vector <idx>& perm,
-        const std::vector <idx>& dims)
+    const Eigen::MatrixBase<Derived>& A,
+    const std::vector <idx>& perm,
+    const std::vector <idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -1558,7 +1558,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
         result.resize(D, 1);
 
         auto worker = [&Cdims, &Cperm, numdims](idx i) noexcept
-                -> idx
+            -> idx
         {
             // use static allocation for speed,
             // double the size for matrices reshaped as vectors
@@ -1605,12 +1605,12 @@ dyn_mat<typename Derived::Scalar> syspermute(
         }
         result.resize(D * D, 1);
         // map A to a column vector
-        dyn_mat<typename Derived::Scalar> vectA = 
+        dyn_mat<typename Derived::Scalar> vectA =
             Eigen::Map<dyn_mat<typename Derived::Scalar>>(
                 const_cast<typename Derived::Scalar*>(rA.data()), D * D, 1);
 
         auto worker = [&Cdims, &Cperm, numdims](idx i) noexcept
-                -> idx
+            -> idx
         {
             // use static allocation for speed,
             // double the size for matrices reshaped as vectors
@@ -1656,9 +1656,9 @@ dyn_mat<typename Derived::Scalar> syspermute(
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> syspermute(
-        const Eigen::MatrixBase<Derived>& A,
-        const std::vector <idx>& perm,
-        idx d = 2)
+    const Eigen::MatrixBase<Derived>& A,
+    const std::vector <idx>& perm,
+    idx d = 2)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -1667,8 +1667,8 @@ dyn_mat<typename Derived::Scalar> syspermute(
         throw Exception("qpp::syspermute()", Exception::Type::ZERO_SIZE);
 
     idx n =
-            static_cast<idx>(std::llround(std::log2(rA.rows()) /
-                                          std::log2(d)));
+        static_cast<idx>(std::llround(std::log2(rA.rows()) /
+                                      std::log2(d)));
     std::vector <idx> dims(n, d); // local dimensions vector
 
     return syspermute(rA, perm, dims);

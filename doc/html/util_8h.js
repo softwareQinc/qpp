@@ -6,6 +6,7 @@ var util_8h =
     [ "_check_dims_match_mat", "util_8h.html#a91aa370280d653933744a64a55cd0ff3", null ],
     [ "_check_dims_match_rvect", "util_8h.html#ad8800097960ac547687de1287a3d5d68", null ],
     [ "_check_eq_dims", "util_8h.html#a9e6a986c8253d69ffd7b78bdcc96fbfc", null ],
+    [ "_check_matching_sizes", "util_8h.html#a54c31e1649dffa40e39e4b9cf78db1ce", null ],
     [ "_check_nonzero_size", "util_8h.html#a06ca054b0436fb4b9b445574dec47f82", null ],
     [ "_check_perm", "util_8h.html#a5c90e71ef74abcb25b5943025ee003c1", null ],
     [ "_check_qubit_cvector", "util_8h.html#ae3fd4f3961c2f3df7eb089355cd18c94", null ],

@@ -47,76 +47,78 @@ public:
     {
         UNKNOWN_EXCEPTION = 1,
         /*!< Unknown exception */
-                ZERO_SIZE,
+            ZERO_SIZE,
         /*!< Zero sized object, e.g. empty Eigen::Matrix
          * or std::vector<> with no elements */
-                MATRIX_NOT_SQUARE,
+            MATRIX_NOT_SQUARE,
         /*!< Eigen::Matrix is not square */
-                MATRIX_NOT_CVECTOR,
+            MATRIX_NOT_CVECTOR,
         /*!< Eigen::Matrix is not a column vector */
-                MATRIX_NOT_RVECTOR,
+            MATRIX_NOT_RVECTOR,
         /*!< Eigen::Matrix is not a row vector */
-                MATRIX_NOT_VECTOR,
+            MATRIX_NOT_VECTOR,
         /*!< Eigen::Matrix is not a row/column vector */
-                MATRIX_NOT_SQUARE_OR_CVECTOR,
+            MATRIX_NOT_SQUARE_OR_CVECTOR,
         /*!< Eigen::Matrix is not square nor a column vector */
-                MATRIX_NOT_SQUARE_OR_RVECTOR,
+            MATRIX_NOT_SQUARE_OR_RVECTOR,
         /*!< Eigen::Matrix is not square nor a row vector */
-                MATRIX_NOT_SQUARE_OR_VECTOR,
+            MATRIX_NOT_SQUARE_OR_VECTOR,
         /*!< Eigen::Matrix is not square nor a row/column vector */
-                MATRIX_MISMATCH_SUBSYS,
+            MATRIX_MISMATCH_SUBSYS,
         /*!< Matrix size mismatch subsystem sizes (e.g. in qpp::apply()) */
-                DIMS_INVALID,
+            DIMS_INVALID,
         /*!< std::vector<idx> of dimensions has zero size or contains zeros */
-                DIMS_NOT_EQUAL,
+            DIMS_NOT_EQUAL,
         /*!< Local/global dimensions are not equal */
-                DIMS_MISMATCH_MATRIX,
+            DIMS_MISMATCH_MATRIX,
         /*!< Product of the elements of std::vector<idx> of dimensions
          * is not equal to the number of rows of Eigen::Matrix
          * (assumed to be a square matrix) */
-                DIMS_MISMATCH_CVECTOR,
+            DIMS_MISMATCH_CVECTOR,
         /*!< Product of the elements of std::vector<idx> of dimensions
          * is not equal to the number of elements of Eigen::Matrix
          * (assumed to be a column vector) */
-                DIMS_MISMATCH_RVECTOR,
+            DIMS_MISMATCH_RVECTOR,
         /*!< Product of the elements of std::vector<idx> of dimensions
          * is not equal to the number of elements of Eigen::Matrix
          * (assumed to be a row vector) */
-                DIMS_MISMATCH_VECTOR,
+            DIMS_MISMATCH_VECTOR,
         /*!< Product of the elements of std::vector<idx> of dimensions
          * is not equal to the number of elements of Eigen::Matrix
          * (assumed to be a row/column vector) */
-                SUBSYS_MISMATCH_DIMS,
+            SUBSYS_MISMATCH_DIMS,
         /*!< std::vector<idx> of subsystem labels has duplicates,
          * or has entries that are larger than the size of
          * the std::vector<idx> of dimensions */
-                PERM_INVALID,
+            PERM_INVALID,
         /*!< std::vector<idx> does note represent a valid permutation */
-                PERM_MISMATCH_DIMS,
+            PERM_MISMATCH_DIMS,
         /*!< Size of the std::vector<idx> representing the permutation
          * is different from the size of the std::vector<idx> of dimensions */
-                NOT_QUBIT_MATRIX,
+            NOT_QUBIT_MATRIX,
         /*!<  Eigen::Matrix is not 2 x 2*/
-                NOT_QUBIT_CVECTOR,
+            NOT_QUBIT_CVECTOR,
         /*!<  Eigen::Matrix is not 2 x 1*/
-                NOT_QUBIT_RVECTOR,
+            NOT_QUBIT_RVECTOR,
         /*!<  Eigen::Matrix is not 1 x 2*/
-                NOT_QUBIT_VECTOR,
+            NOT_QUBIT_VECTOR,
         /*!<  Eigen::Matrix is not 1 x 2 nor 2 x 1*/
-                NOT_QUBIT_SUBSYS,
+            NOT_QUBIT_SUBSYS,
         /*!< Subsystems are not 2-dimensional */
-                NOT_BIPARTITE,
+            NOT_BIPARTITE,
         /*!< std::vector<idx> of dimensions has size different from 2 */
-                NO_CODEWORD,
+            NO_CODEWORD,
         /*!< Codeword does not exist, thrown when calling
          * qpp::Codes::codeword() with invalid index \a i */
-                OUT_OF_RANGE,
+            OUT_OF_RANGE,
         /*!< Parameter out of range */
-                TYPE_MISMATCH,
+            TYPE_MISMATCH,
         /*!< Scalar types do not match */
-                UNDEFINED_TYPE,
+            SIZE_MISMATCH,
+        /*!< Sizes do not match */
+            UNDEFINED_TYPE,
         /*!< Templated specialization not defined for this type */
-                CUSTOM_EXCEPTION
+            CUSTOM_EXCEPTION
         /*!< Custom exception, user must provide a custom message */
     };
 
@@ -127,7 +129,7 @@ public:
     * \param type Exception type, defined in qpp::Exception::Type
     */
     Exception(const std::string& where, const Type& type) :
-            _where{where}, _msg{}, _type{type}, _custom{}
+        _where{where}, _msg{}, _type{type}, _custom{}
     {
         _construct_exception_msg();
     }
@@ -141,8 +143,8 @@ public:
     * \param custom Exception description
     */
     Exception(const std::string& where, const std::string& custom) :
-            _where{where}, _msg{}, _type{Type::CUSTOM_EXCEPTION},
-            _custom{custom}
+        _where{where}, _msg{}, _type{Type::CUSTOM_EXCEPTION},
+        _custom{custom}
     {
         _construct_exception_msg();
         _msg += custom; // add the custom message at the end
@@ -260,6 +262,9 @@ private:
                 break;
             case Type::TYPE_MISMATCH:
                 _msg += "Type mismatch!";
+                break;
+            case Type::SIZE_MISMATCH:
+                _msg += "Size mismatch!";
                 break;
             case Type::UNDEFINED_TYPE:
                 _msg += "Not defined for this type!";

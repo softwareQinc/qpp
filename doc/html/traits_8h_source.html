@@ -99,50 +99,62 @@ $(document).ready(function(){initNavTree('traits_8h_source.html','');});
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceqpp.html">qpp</a></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">template</span>&lt; <span class="keyword">class </span>... &gt;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a1c1026ab33fa827dd322249a1d402dc6">   41</a></span>&#160;<span class="keyword">using</span> <a class="code" href="namespaceqpp.html#a1c1026ab33fa827dd322249a1d402dc6">my_void_t</a> = void;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class </span>...&gt;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="namespaceqpp.html#ac5a6269e292ff74510dcde54072d9437">   41</a></span>&#160;<span class="keyword">using</span> <a class="code" href="namespaceqpp.html#ac5a6269e292ff74510dcde54072d9437">to_void</a> = void;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> = <span class="keywordtype">void</span>&gt;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="structqpp_1_1is__iterable.html">   52</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structqpp_1_1is__iterable.html">is_iterable</a> : std::false_type { };</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="structqpp_1_1is__iterable_3_01_t_00_01my__void__t_3_01decltype_07std_1_1declval_3_01_t_01_4_07_0da9e691eb6aa07c04d913e4b36d00d61.html">   59</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structqpp_1_1is__iterable.html">is_iterable</a>&lt;T,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <a class="code" href="namespaceqpp.html#a1c1026ab33fa827dd322249a1d402dc6">my_void_t</a>&lt;decltype(<a class="code" href="namespacestd.html">std</a>::declval&lt;T&gt;().begin()),</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                decltype(std::declval&lt;T&gt;().end()),</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                typename T::value_type</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        &gt;&gt; : std::true_type { };</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="structqpp_1_1is__matrix__expression.html">   74</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structqpp_1_1is__matrix__expression.html">is_matrix_expression</a> : std::false_type { };</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="structqpp_1_1is__matrix__expression_3_01typename_01_eigen_1_1_matrix_base_3_01_derived_01_4_01_4.html">   81</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structqpp_1_1is__matrix__expression.html">is_matrix_expression</a>&lt;typename Eigen::MatrixBase&lt;Derived&gt;&gt; :</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        std::true_type{ };</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="structqpp_1_1is__complex.html">   91</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structqpp_1_1is__complex.html">is_complex</a> : std::false_type { };</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="structqpp_1_1is__complex_3_01std_1_1complex_3_01_t_01_4_01_4.html">   98</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structqpp_1_1is__complex.html">is_complex</a>&lt;<a class="code" href="namespacestd.html">std</a>::complex&lt;T&gt;&gt; : std::true_type { };</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> = <span class="keywordtype">void</span>&gt;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="structqpp_1_1is__iterable.html">   52</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structqpp_1_1is__iterable.html">is_iterable</a> : std::false_type</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;{</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;};</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="structqpp_1_1is__iterable_3_01_t_00_01to__void_3_01decltype_07std_1_1declval_3_01_t_01_4_07_08_8b9d39a7d62e9cf13651119292b7aa4db.html">   61</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structqpp_1_1is__iterable.html">is_iterable</a>&lt;T,</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="namespaceqpp.html#ac5a6269e292ff74510dcde54072d9437">to_void&lt;decltype(std::declval&lt;T&gt;</a>().begin()),</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        decltype(std::declval&lt;T&gt;().end()),</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keyword">typename</span> T::value_type</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    &gt;&gt; : std::true_type</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;{</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;};</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="structqpp_1_1is__matrix__expression.html">   78</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structqpp_1_1is__matrix__expression.html">is_matrix_expression</a> : std::false_type</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;};</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="structqpp_1_1is__matrix__expression_3_01typename_01_eigen_1_1_matrix_base_3_01_derived_01_4_01_4.html">   87</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structqpp_1_1is__matrix__expression.html">is_matrix_expression&lt;typename Eigen::MatrixBase&lt;Derived&gt;</a>&gt; :</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    std::true_type</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;{</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;};</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="structqpp_1_1is__complex.html">   99</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structqpp_1_1is__complex.html">is_complex</a> : std::false_type</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;{</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* TRAITS_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="structqpp_1_1is__complex_3_01std_1_1complex_3_01_t_01_4_01_4.html">  108</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structqpp_1_1is__complex.html">is_complex</a>&lt;<a class="code" href="namespacestd.html">std</a>::complex&lt;T&gt;&gt; : std::true_type</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;{</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;};</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* TRAITS_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
 <div class="ttc" id="namespaceqpp_html"><div class="ttname"><a href="namespaceqpp.html">qpp</a></div><div class="ttdoc">Quantum++ main namespace. </div><div class="ttdef"><b>Definition:</b> codes.h:30</div></div>
 <div class="ttc" id="namespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdoc">STL namespace. </div></div>
 <div class="ttc" id="structqpp_1_1is__iterable_html"><div class="ttname"><a href="structqpp_1_1is__iterable.html">qpp::is_iterable</a></div><div class="ttdoc">Checks whether T is compatible with an STL-like iterable container. </div><div class="ttdef"><b>Definition:</b> traits.h:52</div></div>
-<div class="ttc" id="structqpp_1_1is__matrix__expression_html"><div class="ttname"><a href="structqpp_1_1is__matrix__expression.html">qpp::is_matrix_expression</a></div><div class="ttdoc">Checks whether the type is an Eigen matrix expression. </div><div class="ttdef"><b>Definition:</b> traits.h:74</div></div>
-<div class="ttc" id="structqpp_1_1is__complex_html"><div class="ttname"><a href="structqpp_1_1is__complex.html">qpp::is_complex</a></div><div class="ttdoc">Checks whether the type is a complex type. </div><div class="ttdef"><b>Definition:</b> traits.h:91</div></div>
-<div class="ttc" id="namespaceqpp_html_a1c1026ab33fa827dd322249a1d402dc6"><div class="ttname"><a href="namespaceqpp.html#a1c1026ab33fa827dd322249a1d402dc6">qpp::my_void_t</a></div><div class="ttdeci">void my_void_t</div><div class="ttdoc">Alias template that implements the proposal for void_t. </div><div class="ttdef"><b>Definition:</b> traits.h:41</div></div>
+<div class="ttc" id="structqpp_1_1is__matrix__expression_html"><div class="ttname"><a href="structqpp_1_1is__matrix__expression.html">qpp::is_matrix_expression</a></div><div class="ttdoc">Checks whether the type is an Eigen matrix expression. </div><div class="ttdef"><b>Definition:</b> traits.h:78</div></div>
+<div class="ttc" id="namespaceqpp_html_ac5a6269e292ff74510dcde54072d9437"><div class="ttname"><a href="namespaceqpp.html#ac5a6269e292ff74510dcde54072d9437">qpp::to_void</a></div><div class="ttdeci">void to_void</div><div class="ttdoc">Alias template that implements the proposal for void_t. </div><div class="ttdef"><b>Definition:</b> traits.h:41</div></div>
+<div class="ttc" id="structqpp_1_1is__complex_html"><div class="ttname"><a href="structqpp_1_1is__complex.html">qpp::is_complex</a></div><div class="ttdoc">Checks whether the type is a complex type. </div><div class="ttdef"><b>Definition:</b> traits.h:99</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="traits_8h.html">traits.h</a></li>
-    <li class="footer">Generated on Thu May 14 2015 17:00:36 for Quantum++ by
+    <li class="footer">Generated on Sun May 17 2015 16:27:40 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

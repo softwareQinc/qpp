@@ -229,7 +229,7 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 
     // check equal local dimensions
     idx D = static_cast<idx>(std::llround(
-            std::sqrt(static_cast<double>(rA.rows()))));
+        std::sqrt(static_cast<double>(rA.rows()))));
     if (D * D != static_cast<idx>(rA.rows()))
         throw Exception("qpp::gconcurrence()",
                         Exception::Type::DIMS_NOT_EQUAL);
@@ -323,9 +323,9 @@ double concurrence(const Eigen::MatrixBase<Derived>& A)
 
     cmat sigmaY = Gates::get_instance().Y;
     dyn_col_vect<double> lambdas =
-            evals(
-                    rA * kron(sigmaY, sigmaY) * conjugate(rA)
-                    * kron(sigmaY, sigmaY)).real();
+        evals(
+            rA * kron(sigmaY, sigmaY) * conjugate(rA)
+            * kron(sigmaY, sigmaY)).real();
 
     std::vector <double> lambdas_sorted(lambdas.data(),
                                         lambdas.data() + lambdas.size());

@@ -37,8 +37,8 @@ namespace qpp
 *
 * \see http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3911
 */
-template< class ... >
-using my_void_t = void;
+template<class ...>
+using to_void = void;
 
 /**
 * \brief Checks whether \a T is compatible with an STL-like iterable container
@@ -48,19 +48,23 @@ using my_void_t = void;
 * \a begin() and \a end() member functions.
 * Otherwise, \a value is equal to \a false.
 */
-template <typename T, typename = void>
-struct is_iterable : std::false_type { };
+template<typename T, typename = void>
+struct is_iterable : std::false_type
+{
+};
 
 /**
 * \brief Checks whether \a T is compatible with an STL-like iterable container,
 * specialization for STL-like iterable containers
 */
-template <typename T>
+template<typename T>
 struct is_iterable<T,
-        my_void_t<decltype(std::declval<T>().begin()),
-                decltype(std::declval<T>().end()),
-                typename T::value_type
-        >> : std::true_type { };
+    to_void<decltype(std::declval<T>().begin()),
+        decltype(std::declval<T>().end()),
+        typename T::value_type
+    >> : std::true_type
+{
+};
 
 /**
 * \brief Checks whether the type is an Eigen matrix expression
@@ -70,16 +74,20 @@ struct is_iterable<T,
 * Eigen::MatrixBase<Derived>.
 * Otherwise, \a value is equal to \a false.
 */
-template <typename Derived>
-struct is_matrix_expression : std::false_type { };
+template<typename Derived>
+struct is_matrix_expression : std::false_type
+{
+};
 
 /**
 * \brief Checks whether the type is an Eigen matrix expression,
 * specialization for Eigen matrix expressions
 */
-template <typename Derived>
+template<typename Derived>
 struct is_matrix_expression<typename Eigen::MatrixBase<Derived>> :
-        std::true_type{ };
+    std::true_type
+{
+};
 
 /**
 * \brief Checks whether the type is a complex type
@@ -87,15 +95,19 @@ struct is_matrix_expression<typename Eigen::MatrixBase<Derived>> :
 * Provides the member constant \a value which is equal to \a true,
 * if the type is a complex type (i.e. \a std::complex<T>)
 */
-template <typename T>
-struct is_complex : std::false_type { };
+template<typename T>
+struct is_complex : std::false_type
+{
+};
 
 /**
 * \brief \brief Checks whether the type is a complex number type,
 * specialization for complex types
 */
-template <typename T>
-struct is_complex<std::complex<T>> : std::true_type { };
+template<typename T>
+struct is_complex<std::complex<T>> : std::true_type
+{
+};
 
 
 } /* namespace qpp */

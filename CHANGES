@@ -21,8 +21,8 @@ Version 0.4 - 8 March 2015
     - Added overloads of qpp::prod() and qpp::sum() for STL-like containers
     - Added new functions in <functions.h>:
         qpp::complement() - computes the complement of a subsystem vector
-        qpp::rho2bloch() - qubit density matrix to Bloch vector
-        qpp::bloch2rho() - Bloch vector to qubit density matrix
+        qpp::rho2bloch()  - qubit density matrix to Bloch vector
+        qpp::bloch2rho()  - Bloch vector to qubit density matrix
     - Added new functions in <instruments.h>:
         qpp::measure_seq() - measures subsystems sequentially
     - Removed support for the C-style random number engine, as it is not 
@@ -82,9 +82,13 @@ Version 0.8.1 - development
     - Added <traits.h> type traits header file with the following type traits:
         qpp::is_iterable<> - checks for iterable STL-like containers
         qpp::is_matrix_expression<> - checks for Eigen::MatrixBase<> expressions
-        qpp::is_complex<> - checks if the type is std::complex<>
-    - Added new functions in <functions.h>
-        qpp::avg - average, overloads for ranges, containers, matrix expressions
-        qpp::sigma - standard deviation, overloads for ranges, containers,
-                     matrix expressions
-
+        qpp::is_complex<> - checks whether the type is std::complex<>
+    - Added <statistics.h> header file containing the following new functions:
+        qpp::uniform   - uniform probability distribution vector
+        qpp::marginalX - marginal distribution
+        qpp::marginalY - marginal distribution
+        qpp::avg       - average
+        qpp::sigma     - standard deviation
+        qpp::cov       - covariance
+        qpp::cor       - correlation
+        qpp::var       - variance

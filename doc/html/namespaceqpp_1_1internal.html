@@ -111,6 +111,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a06ca054b0436fb4b9b445574dec47f82"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a06ca054b0436fb4b9b445574dec47f82"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">_check_nonzero_size</a> (const T &amp;x) noexcept</td></tr>
 <tr class="separator:a06ca054b0436fb4b9b445574dec47f82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54c31e1649dffa40e39e4b9cf78db1ce"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 &gt; </td></tr>
+<tr class="memitem:a54c31e1649dffa40e39e4b9cf78db1ce"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#a54c31e1649dffa40e39e4b9cf78db1ce">_check_matching_sizes</a> (const T1 &amp;lhs, const T2 &amp;rhs) noexcept</td></tr>
+<tr class="separator:a54c31e1649dffa40e39e4b9cf78db1ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a4a25bc623c39d21898fd6c4e3177ca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#a0a4a25bc623c39d21898fd6c4e3177ca">_check_dims</a> (const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;dims)</td></tr>
 <tr class="separator:a0a4a25bc623c39d21898fd6c4e3177ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91aa370280d653933744a64a55cd0ff3"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
@@ -310,6 +313,42 @@ template&lt;typename Derived &gt; </div>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a54c31e1649dffa40e39e4b9cf78db1ce"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T1 , typename T2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool qpp::internal::_check_matching_sizes </td>
+          <td>(</td>
+          <td class="paramtype">const T1 &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T2 &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -758,7 +797,7 @@ template&lt;typename T , typename First , typename... Args&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="namespaceqpp_1_1internal.html">internal</a></li>
-    <li class="footer">Generated on Thu May 14 2015 17:00:37 for Quantum++ by
+    <li class="footer">Generated on Sun May 17 2015 16:27:41 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

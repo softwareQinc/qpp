@@ -111,11 +111,11 @@ $(document).ready(function(){initNavTree('iomanip_8h_source.html','');});
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                          <span class="keyword">const</span> std::string&amp; separator,</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                          <span class="keyword">const</span> std::string&amp; start = <span class="stringliteral">&quot;[&quot;</span>,</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                          <span class="keyword">const</span> std::string&amp; end = <span class="stringliteral">&quot;]&quot;</span>) :</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            _first{first},</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            _last{last},</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            _separator{separator},</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            _start{start},</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            _end{end}</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        _first{first},</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        _last{last},</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        _separator{separator},</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        _start{start},</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        _end{end}</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    {</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
@@ -149,11 +149,11 @@ $(document).ready(function(){initNavTree('iomanip_8h_source.html','');});
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                            <span class="keyword">const</span> std::string&amp; separator,</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                            <span class="keyword">const</span> std::string&amp; start = <span class="stringliteral">&quot;[&quot;</span>,</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                            <span class="keyword">const</span> std::string&amp; end = <span class="stringliteral">&quot;]&quot;</span>) :</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            _p{p},</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            _n{n},</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            _separator{separator},</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            _start{start},</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            _end{end}</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        _p{p},</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        _n{n},</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        _separator{separator},</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        _start{start},</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        _end{end}</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    {</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
@@ -187,13 +187,13 @@ $(document).ready(function(){initNavTree('iomanip_8h_source.html','');});
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#aa4e5ec41f773261047e2ddf27663a597">  121</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#aa4e5ec41f773261047e2ddf27663a597">IOManipEigen</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A, <span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a> =</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>) :</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            _A{A.template cast&lt;cplx&gt;()}, _chop{<a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>}</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        _A{A.template cast&lt;cplx&gt;()}, _chop{<a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>}</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    {</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    }</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="comment">// Complex numbers</span></div>
 <div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#aa9a8701df886f9fd693975b4a6632f63">  128</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#aa9a8701df886f9fd693975b4a6632f63">IOManipEigen</a>(<span class="keyword">const</span> <a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> z, <span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a> = <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>) :</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            _A{cmat::Zero(1, 1)}, _chop{<a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>}</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        _A{cmat::Zero(1, 1)}, _chop{<a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>}</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    {</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <span class="comment">// put the complex number inside an Eigen matrix</span></div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#ae3632b9603001e9aee9d145dec2c9aba">_A</a>(0, 0) = z;</div>
@@ -330,7 +330,7 @@ $(document).ready(function(){initNavTree('iomanip_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7374381ecdb819c64ee9b6ea2bd3370d.html">internal</a></li><li class="navelem"><a class="el" href="dir_0287916e3084ede6e6e90e400eca2f39.html">classes</a></li><li class="navelem"><a class="el" href="iomanip_8h.html">iomanip.h</a></li>
-    <li class="footer">Generated on Thu May 14 2015 17:00:36 for Quantum++ by
+    <li class="footer">Generated on Sun May 17 2015 16:27:40 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

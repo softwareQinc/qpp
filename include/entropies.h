@@ -341,8 +341,8 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::qmutualinfo()", Exception::Type::ZERO_SIZE);
 
     idx n =
-            static_cast<idx>(std::llround(std::log2(rA.rows()) /
-                                          std::log2(d)));
+        static_cast<idx>(std::llround(std::log2(rA.rows()) /
+                                      std::log2(d)));
     std::vector <idx> dims(n, d); // local dimensions vector
 
     return qmutualinfo(rA, subsysA, subsysB, dims);
