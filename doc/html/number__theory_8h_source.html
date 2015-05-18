@@ -209,10 +209,10 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::lcm()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <a class="code" href="namespaceqpp.html#afc096e016bb523c42964a4ace6f8a0a4">ubigint</a> <a class="code" href="namespaceqpp.html#a78595ec429a5df51dbe682cdb9711d9c">prod</a> =</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        std::accumulate(std::begin(ns),</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                        std::end(ns),</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                        static_cast&lt;ubigint&gt;(1),</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                        std::multiplies&lt;ubigint&gt;());</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            std::accumulate(std::begin(ns),</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                            std::end(ns),</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                            static_cast&lt;ubigint&gt;(1),</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                            std::multiplies&lt;ubigint&gt;());</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keywordflow">return</span> prod / <a class="code" href="namespaceqpp.html#a41658dfcab1751972cf1574581f838fe">gcd</a>(ns);</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;}</div>
@@ -336,7 +336,7 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="number__theory_8h.html">number_theory.h</a></li>
-    <li class="footer">Generated on Sun May 17 2015 16:27:40 for Quantum++ by
+    <li class="footer">Generated on Sun May 17 2015 21:16:47 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

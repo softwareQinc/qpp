@@ -86,7 +86,7 @@ $(document).ready(function(){initNavTree('md___users_vlad__dropbox_programming_c
 </ul>
 <h3>Building without a build system</h3>
 <ul>
-<li>Example file: <code>$HOME/qpp/examples/example.cpp</code></li>
+<li>Example file: <code>$HOME/qpp/examples/minimal.cpp</code></li>
 <li>Output executable: <code>$HOME/qpp/examples/example</code></li>
 <li>Must run the commands below from inside the directory <code>$HOME/qpp/examples</code></li>
 </ul>
@@ -94,32 +94,32 @@ $(document).ready(function(){initNavTree('md___users_vlad__dropbox_programming_c
 <pre class="fragment">g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
      -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
      -isystem $HOME/eigen -I $HOME/qpp/include \
-     example.cpp -o example
+     minimal.cpp -o minimal
 </pre><h4>Debug version (without <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support):</h4>
 <pre class="fragment">g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
      -g3 -DDEBUG \
      -isystem $HOME/eigen -I $HOME/qpp/include \
-      example.cpp -o example
+      minimal.cpp -o minimal
 </pre><h4>Release version (with <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support):</h4>
 <pre class="fragment">g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
      -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
      -isystem $HOME/eigen -I $HOME/qpp/include \
      -I/Applications/MATLAB_R2014b.app/extern/include \
      -L/Applications/MATLAB_R2014b.app/bin/maci64 \
-     -lmx -lmat example.cpp -o example
+     -lmx -lmat minimal.cpp -o minimal
 </pre><h4>Debug version (with <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support):</h4>
 <pre class="fragment">g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
      -g3 -DDEBUG \
      -isystem $HOME/eigen -I $HOME/qpp/include \
      -I /Applications/MATLAB_R2014b.app/extern/include \
      -L /Applications/MATLAB_R2014b.app/bin/maci64 \
-     -lmx -lmat example.cpp -o example
+     -lmx -lmat minimal.cpp -o minimal
 </pre><h3>Building using <a href="http://www.cmake.org/">cmake</a></h3>
 <p>The current version of the repository has a <code>./CMakeLists.txt</code> configuration file for building examples using <a href="http://www.cmake.org/">cmake</a>. To build an example using <a href="http://www.cmake.org/">cmake</a>, I recommend an out-of-source build, i.e., from the root of the project (where <code>./include</code> is located), type </p><pre class="fragment">mkdir ./build
 cd ./build
 cmake ..
 make
-</pre><p>The above commands build the relase version (default) executable <code>qpp</code>, from the source file <code>./examples/example.cpp</code>, without <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support (default), inside the directory <code>./build</code>. To build a different configuration, e.g. debug version with <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support, type from the root of the project </p><pre class="fragment">cd ./build
+</pre><p>The above commands build the relase version (default) executable <code>qpp</code>, from the source file <code>./examples/minimal.cpp</code>, without <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support (default), inside the directory <code>./build</code>. To build a different configuration, e.g. debug version with <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support, type from the root of the project </p><pre class="fragment">cd ./build
 rm -rf *
 cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB=ON ..
 make
@@ -156,7 +156,7 @@ the executable `qpp` is located:
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun May 17 2015 16:27:40 for Quantum++ by
+    <li class="footer">Generated on Sun May 17 2015 21:16:47 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -94,11 +94,11 @@ internal::IOManipRange<InputIterator> disp(InputIterator first,
 */
 template<typename Container>
 internal::IOManipRange<typename Container::const_iterator> disp(
-    const Container& c, const std::string& separator,
-    const std::string& start = "[", const std::string& end = "]")
+        const Container& c, const std::string& separator,
+        const std::string& start = "[", const std::string& end = "]")
 {
     return internal::IOManipRange<typename Container::const_iterator>(
-        std::begin(c), std::end(c), separator, start, end);
+            std::begin(c), std::end(c), separator, start, end);
 }
 
 /**
@@ -143,8 +143,8 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
     if (fout.fail())
     {
         throw std::runtime_error(
-            "qpp::save(): Error writing output file \""
-            + std::string(fname) + "\"!");
+                "qpp::save(): Error writing output file \""
+                + std::string(fname) + "\"!");
     }
 
     // write the header to file
@@ -189,8 +189,8 @@ dyn_mat<typename Derived::Scalar> load(const std::string& fname)
     if (fin.fail())
     {
         throw std::runtime_error(
-            "qpp::load(): Error opening input file \""
-            + std::string(fname) + "\"!");
+                "qpp::load(): Error opening input file \""
+                + std::string(fname) + "\"!");
     }
 
     const char _header[] = "TYPE::Eigen::Matrix";
@@ -202,8 +202,8 @@ dyn_mat<typename Derived::Scalar> load(const std::string& fname)
     {
         delete[] _fheader;
         throw std::runtime_error(
-            "qpp::load(): Input file \"" + std::string(fname)
-            + "\" is corrupted!");
+                "qpp::load(): Input file \"" + std::string(fname)
+                + "\" is corrupted!");
     }
     delete[] _fheader;
 

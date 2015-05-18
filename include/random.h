@@ -62,7 +62,7 @@ inline double rand(double a = 0, double b = 1)
 inline bigint rand(bigint a = std::numeric_limits<bigint>::min(),
                    bigint b = std::numeric_limits<bigint>::max())
 {
-    std::uniform_int_distribution<bigint> uid(a, b);
+    std::uniform_int_distribution <bigint> uid(a, b);
 
 #ifndef _NO_THREAD_LOCAL
     return uid(RandomDevices::get_thread_local_instance()._rng);
@@ -82,7 +82,7 @@ inline bigint rand(bigint a = std::numeric_limits<bigint>::min(),
 inline ubigint rand(ubigint a = std::numeric_limits<ubigint>::min(),
                     ubigint b = std::numeric_limits<ubigint>::max())
 {
-    std::uniform_int_distribution<ubigint> uid(a, b);
+    std::uniform_int_distribution <ubigint> uid(a, b);
 
 #ifndef _NO_THREAD_LOCAL
     return uid(RandomDevices::get_thread_local_instance()._rng);
@@ -102,7 +102,7 @@ inline ubigint rand(ubigint a = std::numeric_limits<ubigint>::min(),
 inline idx randidx(idx a = std::numeric_limits<idx>::min(),
                    idx b = std::numeric_limits<idx>::max())
 {
-    std::uniform_int_distribution<idx> uid(a, b);
+    std::uniform_int_distribution <idx> uid(a, b);
 
 #ifndef _NO_THREAD_LOCAL
     return uid(RandomDevices::get_thread_local_instance()._rng);
@@ -161,10 +161,10 @@ inline dmat rand(idx rows, idx cols, double a, double b)
         throw Exception("qpp::rand()", Exception::Type::ZERO_SIZE);
 
     return dmat::Zero(rows, cols).unaryExpr(
-        [a, b](double)
-        {
-            return rand(a, b);
-        });
+            [a, b](double)
+            {
+                return rand(a, b);
+            });
 }
 
 /**
@@ -252,14 +252,14 @@ inline dmat randn(idx rows, idx cols,
     std::normal_distribution<> nd(mean, sigma);
 
     return dmat::Zero(rows, cols).unaryExpr(
-        [&nd](double)
-        {
+            [&nd](double)
+            {
 #ifndef _NO_THREAD_LOCAL
-            return nd(RandomDevices::get_thread_local_instance()._rng);
+                return nd(RandomDevices::get_thread_local_instance()._rng);
 #else
                     return nd(RandomDevices::get_instance()._rng);
                     #endif // _NO_THREAD_LOCAL
-        });
+            });
 }
 
 /**
@@ -329,7 +329,7 @@ inline cmat randU(idx D)
     cmat X(D, D);
 
     X = 1 / std::sqrt(2.) * randn < cmat > (D, D);
-    Eigen::HouseholderQR<cmat> qr(X);
+    Eigen::HouseholderQR <cmat> qr(X);
 
     cmat Q = qr.householderQ();
     // phase correction so that the resultant matrix is
@@ -369,14 +369,14 @@ inline cmat randV(idx Din, idx Dout)
 * \param D Dimension of the Hilbert space
 * \return Set of \a N Kraus operators satisfying the closure condition
 */
-inline std::vector<cmat> randkraus(idx N, idx D)
+inline std::vector <cmat> randkraus(idx N, idx D)
 {
     if (N == 0)
         throw Exception("qpp::randkraus()", Exception::Type::OUT_OF_RANGE);
     if (D == 0)
         throw Exception("qpp::randkraus()", Exception::Type::DIMS_INVALID);
 
-    std::vector<cmat> result(N);
+    std::vector <cmat> result(N);
     for (idx i = 0; i < N; ++i)
         result[i] = cmat::Zero(D, D);
 
@@ -457,12 +457,12 @@ inline cmat randrho(idx D)
 * \param n Size of the permutation
 * \return Random permutation of size \a n
 */
-inline std::vector<idx> randperm(idx n)
+inline std::vector <idx> randperm(idx n)
 {
     if (n == 0)
         throw Exception("qpp::randperm()", Exception::Type::PERM_INVALID);
 
-    std::vector<idx> result(n);
+    std::vector <idx> result(n);
 
     // fill in increasing order
     std::iota(std::begin(result), std::end(result), 0);

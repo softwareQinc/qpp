@@ -200,10 +200,10 @@ inline ubigint lcm(const std::vector <ubigint>& ns)
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
 
     ubigint prod =
-        std::accumulate(std::begin(ns),
-                        std::end(ns),
-                        static_cast<ubigint>(1),
-                        std::multiplies<ubigint>());
+            std::accumulate(std::begin(ns),
+                            std::end(ns),
+                            static_cast<ubigint>(1),
+                            std::multiplies<ubigint>());
 
     return prod / gcd(ns);
 }

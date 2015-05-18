@@ -42,7 +42,7 @@ namespace qpp
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> transpose(
-    const Eigen::MatrixBase<Derived>& A)
+        const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -62,7 +62,7 @@ dyn_mat<typename Derived::Scalar> transpose(
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> conjugate(
-    const Eigen::MatrixBase<Derived>& A)
+        const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -173,7 +173,7 @@ typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A)
 
     Eigen::PartialPivLU<dyn_mat<typename Derived::Scalar>> lu(rA);
     dyn_mat<typename Derived::Scalar> U =
-        lu.matrixLU().template triangularView<Eigen::Upper>();
+            lu.matrixLU().template triangularView<Eigen::Upper>();
     typename Derived::Scalar result = std::log(U(0, 0));
 
     for (idx i = 1; i < static_cast<idx>(rA.rows()); ++i)
@@ -324,7 +324,7 @@ cmat evects(const Eigen::MatrixBase<Derived>& A)
 */
 template<typename Derived>
 std::pair<dyn_col_vect<double>, cmat> heig(
-    const Eigen::MatrixBase<Derived>& A)
+        const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -408,9 +408,9 @@ svd(const Eigen::MatrixBase<Derived>& A)
         throw Exception("qpp::svd()", Exception::Type::ZERO_SIZE);
 
     Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>>
-        sv(rA,
-           Eigen::DecompositionOptions::ComputeFullU |
-           Eigen::DecompositionOptions::ComputeFullV);
+            sv(rA,
+               Eigen::DecompositionOptions::ComputeFullU |
+               Eigen::DecompositionOptions::ComputeFullV);
 
     return std::make_tuple(sv.matrixU(), sv.singularValues(), sv.matrixV());
 }
@@ -453,7 +453,7 @@ cmat svdU(const Eigen::MatrixBase<Derived>& A)
         throw Exception("qpp::svdU()", Exception::Type::ZERO_SIZE);
 
     Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>>
-        sv(rA, Eigen::DecompositionOptions::ComputeFullU);
+            sv(rA, Eigen::DecompositionOptions::ComputeFullU);
 
     return sv.matrixU();
 }
@@ -475,7 +475,7 @@ cmat svdV(const Eigen::MatrixBase<Derived>& A)
         throw Exception("qpp::svdV()", Exception::Type::ZERO_SIZE);
 
     Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>>
-        sv(rA, Eigen::DecompositionOptions::ComputeFullV);
+            sv(rA, Eigen::DecompositionOptions::ComputeFullV);
 
     return sv.matrixV();
 }
@@ -712,8 +712,8 @@ dyn_mat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::powm()", Exception::Type::MATRIX_NOT_SQUARE);
 
     dyn_mat<typename Derived::Scalar> result =
-        dyn_mat < typename Derived::Scalar > ::Identity(
-            cA.rows(), cA.rows());
+            dyn_mat < typename Derived::Scalar > ::Identity(
+                    cA.rows(), cA.rows());
 
     // fast matrix power
     for (; n > 0; n /= 2)
@@ -858,7 +858,7 @@ dyn_mat<typename Derived::Scalar> kron(const std::vector <Derived>& As)
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> kron(
-    const std::initializer_list<Derived>& As)
+        const std::initializer_list<Derived>& As)
 {
     return kron(std::vector<Derived>(As));
 }
@@ -951,7 +951,7 @@ dyn_mat<typename Derived::Scalar> dirsum(const std::vector <Derived>& As)
         total_cols += static_cast<idx>(As[i].cols());
     }
     dyn_mat<typename Derived::Scalar> result =
-        dyn_mat < typename Derived::Scalar > ::Zero(total_rows, total_cols);
+            dyn_mat < typename Derived::Scalar > ::Zero(total_rows, total_cols);
 
     idx cur_row = 0, cur_col = 0;
     for (idx i = 0; i < As.size(); ++i)
@@ -978,7 +978,7 @@ dyn_mat<typename Derived::Scalar> dirsum(const std::vector <Derived>& As)
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> dirsum(
-    const std::initializer_list<Derived>& As)
+        const std::initializer_list<Derived>& As)
 {
     return dirsum(std::vector<Derived>(As));
 }
@@ -994,7 +994,7 @@ dyn_mat<typename Derived::Scalar> dirsum(
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> dirsumpow(
-    const Eigen::MatrixBase<Derived>& A, idx n)
+        const Eigen::MatrixBase<Derived>& A, idx n)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -1040,7 +1040,7 @@ dyn_mat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived>& A,
                         Exception::Type::DIMS_MISMATCH_MATRIX);
 
     return Eigen::Map<dyn_mat<typename Derived::Scalar>>(
-        const_cast<typename Derived::Scalar*>(rA.data()), rows, cols);
+            const_cast<typename Derived::Scalar*>(rA.data()), rows, cols);
 }
 
 /**
@@ -1066,7 +1066,7 @@ dyn_mat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1>& A,
 
     // check types
     if (!std::is_same<typename Derived1::Scalar,
-        typename Derived2::Scalar>::value)
+            typename Derived2::Scalar>::value)
         throw Exception("qpp::comm()", Exception::Type::TYPE_MISMATCH);
 
     // check zero-size
@@ -1099,8 +1099,8 @@ dyn_mat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1>& A,
 */
 template<typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> anticomm(
-    const Eigen::MatrixBase<Derived1>& A,
-    const Eigen::MatrixBase<Derived2>& B)
+        const Eigen::MatrixBase<Derived1>& A,
+        const Eigen::MatrixBase<Derived2>& B)
 {
     const dyn_mat<typename Derived1::Scalar>& rA = A;
     const dyn_mat<typename Derived2::Scalar>& rB = B;
@@ -1109,7 +1109,7 @@ dyn_mat<typename Derived1::Scalar> anticomm(
 
     // check types
     if (!std::is_same<typename Derived1::Scalar,
-        typename Derived2::Scalar>::value)
+            typename Derived2::Scalar>::value)
         throw Exception("qpp::anticomm()", Exception::Type::TYPE_MISMATCH);
 
     // check zero-size
@@ -1189,11 +1189,11 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector <Derived>& Vs)
             throw Exception("qpp::grams()", Exception::Type::DIMS_NOT_EQUAL);
 
     dyn_mat<typename Derived::Scalar> cut =
-        dyn_mat < typename Derived::Scalar > ::Identity(Vs[0].rows(),
-                                                        Vs[0].rows());
+            dyn_mat < typename Derived::Scalar > ::Identity(Vs[0].rows(),
+                                                            Vs[0].rows());
 
     dyn_mat<typename Derived::Scalar> vi =
-        dyn_mat < typename Derived::Scalar > ::Zero(Vs[0].rows(), 1);
+            dyn_mat < typename Derived::Scalar > ::Zero(Vs[0].rows(), 1);
 
     std::vector <dyn_mat<typename Derived::Scalar>> outvecs;
     // find the first non-zero vector in the list
@@ -1241,7 +1241,7 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector <Derived>& Vs)
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> grams(
-    const std::initializer_list<Derived>& Vs)
+        const std::initializer_list<Derived>& Vs)
 {
     return grams(std::vector<Derived>(Vs));
 }
@@ -1510,14 +1510,14 @@ std::vector <double> abssq(InputIterator first, InputIterator last)
 */
 template<typename Container>
 std::vector <double> abssq(const Container& c,
-    // need the enable_if to SFINAE out Eigen expressions
-    // that will otherwise match, instead of matching
-    // the overload below:
+        // need the enable_if to SFINAE out Eigen expressions
+        // that will otherwise match, instead of matching
+        // the overload below:
 
-    // template<typename Derived>
-    // abssq(const Eigen::MatrixBase<Derived>& V)
+        // template<typename Derived>
+        // abssq(const Eigen::MatrixBase<Derived>& V)
                            typename std::enable_if<
-                               is_iterable<Container>::value
+                                   is_iterable<Container>::value
                            >::type* = nullptr)
 {
     return abssq(std::begin(c), std::end(c));
@@ -1620,7 +1620,7 @@ prod(const Container& c)
 */
 template<typename Derived>
 dyn_col_vect<typename Derived::Scalar> rho2pure(
-    const Eigen::MatrixBase<Derived>& A)
+        const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -1636,7 +1636,7 @@ dyn_col_vect<typename Derived::Scalar> rho2pure(
     dyn_col_vect<double> tmp_evals = hevals(rA);
     cmat tmp_evects = hevects(rA);
     dyn_col_vect<typename Derived::Scalar> result =
-        dyn_col_vect < typename Derived::Scalar > ::Zero(rA.rows());
+            dyn_col_vect < typename Derived::Scalar > ::Zero(rA.rows());
     // find the non-zero eigenvector
     // there is only one, assuming the state is pure
     for (idx k = 0; k < static_cast<idx>(rA.rows()); ++k)
@@ -1689,7 +1689,7 @@ std::vector <T> complement(std::vector <T> subsys, idx N)
 */
 template<typename Derived>
 std::vector <double> rho2bloch(
-    const Eigen::MatrixBase<Derived>& A)
+        const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 

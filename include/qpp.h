@@ -145,7 +145,7 @@ static const States& st = States::get_instance();
 */
 #ifndef _NO_THREAD_LOCAL
 thread_local static RandomDevices& rdevs =
-    RandomDevices::get_thread_local_instance();
+        RandomDevices::get_thread_local_instance();
 #else
 static RandomDevices& rdevs =
     RandomDevices::get_instance();
@@ -154,7 +154,3 @@ static RandomDevices& rdevs =
 } /* namespace qpp */
 
 #endif  /* QPP_H_ */
-
-// TODO: look at how "qpp::measure" order the eigenvalues
-// TODO: maybe implement "qpp::measure" for observables
-// TODO: check pass by value and get rid (if possible) of the rA (cA)

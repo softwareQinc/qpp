@@ -56,10 +56,9 @@ include header files:
 shared library files:
 `/Applications/MATLAB_R2014b.app/bin/maci64`
 
-
 ### Building without a build system
 
-- Example file: `$HOME/qpp/examples/example.cpp`
+- Example file: `$HOME/qpp/examples/minimal.cpp`
 - Output executable: `$HOME/qpp/examples/example`
 - Must run the commands below from inside the directory `$HOME/qpp/examples` 
 
@@ -68,14 +67,14 @@ shared library files:
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
          -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
          -isystem $HOME/eigen -I $HOME/qpp/include \
-         example.cpp -o example
+         minimal.cpp -o minimal
 
 #### Debug version (without [MATLAB](http://www.mathworks.com/products/matlab/) support): 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
          -g3 -DDEBUG \
          -isystem $HOME/eigen -I $HOME/qpp/include \
-          example.cpp -o example
+          minimal.cpp -o minimal
 
 #### Release version (with [MATLAB](http://www.mathworks.com/products/matlab/) support): 
 
@@ -84,7 +83,7 @@ shared library files:
          -isystem $HOME/eigen -I $HOME/qpp/include \
          -I/Applications/MATLAB_R2014b.app/extern/include \
          -L/Applications/MATLAB_R2014b.app/bin/maci64 \
-         -lmx -lmat example.cpp -o example
+         -lmx -lmat minimal.cpp -o minimal
 
 #### Debug version (with [MATLAB](http://www.mathworks.com/products/matlab/) support):  
 
@@ -93,8 +92,7 @@ shared library files:
          -isystem $HOME/eigen -I $HOME/qpp/include \
          -I /Applications/MATLAB_R2014b.app/extern/include \
          -L /Applications/MATLAB_R2014b.app/bin/maci64 \
-         -lmx -lmat example.cpp -o example
-
+         -lmx -lmat minimal.cpp -o minimal
 
 ### Building using [cmake](http://www.cmake.org/)
 
@@ -110,7 +108,7 @@ I recommend an out-of-source build, i.e., from the root of the project
     make
 
 The above commands build the relase version (default) executable `qpp`, 
-from the source file `./examples/example.cpp`,
+from the source file `./examples/minimal.cpp`,
 without [MATLAB](http://www.mathworks.com/products/matlab/) support (default), 
 inside the directory `./build`. To build a different configuration, 
 e.g. debug version with [MATLAB](http://www.mathworks.com/products/matlab/) 
@@ -134,7 +132,6 @@ library or the location of [MATLAB](http://www.mathworks.com/products/matlab/)
 installation, edit the `./CMakeLists.txt` file. See also `./CMakeLists.txt` 
 for additional options. Do not forget to remove everything from 
 the `./build` directory before a fresh build!
-
 
 ### Additional remarks
 
@@ -184,4 +181,3 @@ Otherwise, you will get a runtime error like
 you may want to add `-fno-weak` compiler flag. See 
 <http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks>
 for more details about this problem.
-
