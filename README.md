@@ -59,7 +59,7 @@ shared library files:
 ### Building without a build system
 
 - Example file: `$HOME/qpp/examples/minimal.cpp`
-- Output executable: `$HOME/qpp/examples/example`
+- Output executable: `$HOME/qpp/examples/minimal`
 - Must run the commands below from inside the directory `$HOME/qpp/examples` 
 
 #### Release version (without [MATLAB](http://www.mathworks.com/products/matlab/) support): 
