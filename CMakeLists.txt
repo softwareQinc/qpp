@@ -8,7 +8,8 @@ ENDIF()
 
 #### modify as needed
 SET(SOURCE_FILES
-    examples/minimal.cpp)
+#    examples/minimal.cpp)
+    examples/test.cpp)
 
 #### modify as needed
 SET(EIGEN "$ENV{HOME}/eigen")
