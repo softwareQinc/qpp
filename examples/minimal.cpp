@@ -6,3 +6,4 @@ int main()
 {
     std::cout << "Hello Quantum++!" << std::endl;
 }
+
