@@ -9,8 +9,7 @@ using std::endl;
 
 int main()
 {
-    ket psi = kron(st.z0, st.z0); // Measure the singlet Bell state (|01>-|10>)
-    // /sqrt(2)
+    ket psi = st.b11; // Measure the singlet Bell state (|01>-|10>)/sqrt(2)
     idx N = 1; // number of measurements each party does
 
     // gates
