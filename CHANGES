@@ -92,3 +92,4 @@ Version 0.8.1 - development
         qpp::cov       - covariance
         qpp::cor       - correlation
         qpp::var       - variance
+    - New examples in ./examples
