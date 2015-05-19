@@ -105,7 +105,7 @@ struct is_complex : std::false_type
 * specialization for complex types
 */
 template<typename T>
-struct is_complex<std::complex < T>> : std::true_type
+struct is_complex<std::complex<T>> : std::true_type
 {
 };
 

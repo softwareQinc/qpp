@@ -64,7 +64,7 @@ private:
     Gates()
     {
         H << 1 / std::sqrt(2.), 1 / std::sqrt(2.),
-            1 / std::sqrt(2.), -1 / std::sqrt(2.);
+                1 / std::sqrt(2.), -1 / std::sqrt(2.);
         X << 0, 1, 1, 0;
         Z << 1, 0, 0, -1;
         Y << 0, -1_i, 1_i, 0;
@@ -281,7 +281,7 @@ public:
         idx D = static_cast<idx>(std::llround(std::pow(d, n)));
         idx DA = static_cast<idx>(rA.rows());
         idx Dsubsys_bar = static_cast<idx>(
-            std::llround(std::pow(d, nsubsys_bar)));
+                std::llround(std::pow(d, nsubsys_bar)));
 
         // compute the complementary subsystem of ctrlgate w.r.t. dims
         std::vector <idx> subsys_bar = complement(ctrlgate, n);
@@ -334,7 +334,7 @@ public:
                     // then the complement part (equal for column)
                     for (idx c = 0; c < nsubsys_bar; ++c)
                         midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =
-                            midx_bar[c];
+                                midx_bar[c];
 
                     // then the subsys part
                     for (idx c = 0; c < ngate; ++c)
@@ -353,7 +353,7 @@ public:
                         // finally write the values
                         result(internal::_multiidx2n(midx_row, n, Cdims),
                                internal::_multiidx2n(midx_col, n, Cdims))
-                            = Ak(a, b);
+                                = Ak(a, b);
                     }
                 }
             }
@@ -379,8 +379,8 @@ public:
     */
     template<typename Derived>
     dyn_mat<typename Derived::Scalar> expandout(
-        const Eigen::MatrixBase<Derived>& A, idx pos,
-        const std::vector <idx>& dims) const
+            const Eigen::MatrixBase<Derived>& A, idx pos,
+            const std::vector <idx>& dims) const
     {
         const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -449,7 +449,7 @@ public:
                     // finally write the values
                     result(internal::_multiidx2n(midx_row, dims.size(), Cdims),
                            internal::_multiidx2n(midx_col, dims.size(), Cdims))
-                        = rA(a, b);
+                            = rA(a, b);
                 }
             }
         }

@@ -48,7 +48,7 @@ using ubigint = unsigned long long int;
 /**
 * \brief Complex number in double precision
 */
-using cplx = std::complex <double>;
+using cplx = std::complex<double>;
 
 /**
 * \brief Complex (double precision) dynamic Eigen column vector
@@ -80,7 +80,7 @@ using dmat = Eigen::MatrixXd;
 * \endcode
 */
 template<typename Scalar> // Eigen::MatrixX_type (where type = Scalar)
-using dyn_mat = Eigen::Matrix <Scalar, Eigen::Dynamic, Eigen::Dynamic>;
+using dyn_mat = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 
 /**
 * \brief Dynamic Eigen column vector over the field specified by \a Scalar
@@ -92,7 +92,7 @@ using dyn_mat = Eigen::Matrix <Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 * \endcode
 */
 template<typename Scalar> // Eigen::VectorX_type (where type = Scalar)
-using dyn_col_vect = Eigen::Matrix <Scalar, Eigen::Dynamic, 1>;
+using dyn_col_vect = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 
 /**
 * \brief Dynamic Eigen row vector over the field specified by \a Scalar
@@ -104,7 +104,7 @@ using dyn_col_vect = Eigen::Matrix <Scalar, Eigen::Dynamic, 1>;
 * \endcode
 */
 template<typename Scalar> // Eigen::RowVectorX_type (where type = Scalar)
-using dyn_row_vect = Eigen::Matrix <Scalar, 1, Eigen::Dynamic>;
+using dyn_row_vect = Eigen::Matrix<Scalar, 1, Eigen::Dynamic>;
 
 } /* namespace qpp */
 

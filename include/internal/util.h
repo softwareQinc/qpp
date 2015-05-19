@@ -65,7 +65,7 @@ noexcept
     for (idx i = 1; i < numdims; ++i)
     {
         part_prod[numdims - i - 1] =
-            part_prod[numdims - i] * dims[numdims - i];
+                part_prod[numdims - i] * dims[numdims - i];
         result += midx[numdims - i - 1] * part_prod[numdims - i - 1];
     }
 
@@ -279,7 +279,7 @@ dyn_mat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
 
     // check types
     if (!std::is_same<typename Derived1::Scalar,
-        typename Derived2::Scalar>::value)
+            typename Derived2::Scalar>::value)
         throw Exception("qpp::kron()", Exception::Type::TYPE_MISMATCH);
 
     // check zero-size
@@ -310,8 +310,8 @@ dyn_mat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
 // internal function for the variadic template function wrapper dirsum()
 template<typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> _dirsum2(
-    const Eigen::MatrixBase<Derived1>& A,
-    const Eigen::MatrixBase<Derived2>& B)
+        const Eigen::MatrixBase<Derived1>& A,
+        const Eigen::MatrixBase<Derived2>& B)
 {
     const dyn_mat<typename Derived1::Scalar>& rA = A;
     const dyn_mat<typename Derived2::Scalar>& rB = B;
@@ -320,7 +320,7 @@ dyn_mat<typename Derived1::Scalar> _dirsum2(
 
     // check types
     if (!std::is_same<typename Derived1::Scalar,
-        typename Derived2::Scalar>::value)
+            typename Derived2::Scalar>::value)
         throw Exception("qpp::dirsum()", Exception::Type::TYPE_MISMATCH);
 
     // check zero-size
@@ -337,8 +337,8 @@ dyn_mat<typename Derived1::Scalar> _dirsum2(
     idx Brows = static_cast<idx>(rB.rows());
 
     dyn_mat<typename Derived1::Scalar> result =
-        dyn_mat < typename Derived1::Scalar > ::Zero(Arows + Brows,
-                                                     Acols + Bcols);
+            dyn_mat < typename Derived1::Scalar > ::Zero(Arows + Brows,
+                                                         Acols + Bcols);
 
     result.block(0, 0, Arows, Acols) = rA;
     result.block(Arows, Acols, Brows, Bcols) = rB;

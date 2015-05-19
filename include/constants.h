@@ -37,7 +37,10 @@ namespace qpp
 *
 * Example: \code auto z = 4_i; // type of z is std::complex<double> \endcode
 */
-inline constexpr cplx operator""_i(unsigned long long int x) noexcept
+inline constexpr cplx operator
+""
+
+_i(unsigned long long int x) noexcept
 {
     return {0., static_cast<double>(x)};
 }
@@ -47,7 +50,10 @@ inline constexpr cplx operator""_i(unsigned long long int x) noexcept
 *
 * Example: \code auto z = 4.5_i; // type of z is std::complex<double> \endcode
 */
-inline constexpr cplx operator""_i(long double x) noexcept
+inline constexpr cplx operator
+""
+
+_i(long double x) noexcept
 {
     return {0., static_cast<double>(x)};
 }

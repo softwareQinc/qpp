@@ -48,7 +48,7 @@ public:
     * as the starting point
     */
     Timer() noexcept :
-        _start{std::chrono::steady_clock::now()}, _end{_start}
+            _start{std::chrono::steady_clock::now()}, _end{_start}
     {
     }
 
@@ -84,7 +84,7 @@ public:
     double seconds() const noexcept
     {
         return std::chrono::duration_cast<std::chrono::duration<double>>(
-            _end - _start).count();
+                _end - _start).count();
     }
 
 /**

@@ -44,13 +44,20 @@ public:
                           const std::string& separator,
                           const std::string& start = "[",
                           const std::string& end = "]") :
-        _first{first},
-        _last{last},
-        _separator{separator},
-        _start{start},
-        _end{end}
+            _first{first},
+            _last{last},
+            _separator{separator},
+            _start{start},
+            _end{end}
     {
     }
+
+    // to silence -Weffc++ warnings for classes that have pointer members
+    // (whenever we have a pointer instantiation,
+    // i.e. iterator is a raw pointer)
+    IOManipRange(const IOManipRange&) = default;
+
+    IOManipRange& operator=(const IOManipRange&) = default;
 
 private:
     std::ostream& display(std::ostream& os) const override
@@ -82,15 +89,15 @@ public:
                             const std::string& separator,
                             const std::string& start = "[",
                             const std::string& end = "]") :
-        _p{p},
-        _n{n},
-        _separator{separator},
-        _start{start},
-        _end{end}
+            _p{p},
+            _n{n},
+            _separator{separator},
+            _start{start},
+            _end{end}
     {
     }
 
-    // to silence -Weffc++ warnings
+    // to silence -Weffc++ warnings for classes that have pointer members
     IOManipPointer(const IOManipPointer&) = default;
 
     IOManipPointer& operator=(const IOManipPointer&) = default;
@@ -120,13 +127,13 @@ public:
     template<typename Derived>
     explicit IOManipEigen(const Eigen::MatrixBase<Derived>& A, double chop =
     qpp::chop) :
-        _A{A.template cast<cplx>()}, _chop{chop}
+            _A{A.template cast<cplx>()}, _chop{chop}
     {
     }
 
     // Complex numbers
     explicit IOManipEigen(const cplx z, double chop = qpp::chop) :
-        _A{cmat::Zero(1, 1)}, _chop{chop}
+            _A{cmat::Zero(1, 1)}, _chop{chop}
     {
         // put the complex number inside an Eigen matrix
         _A(0, 0) = z;
