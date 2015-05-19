@@ -1,7 +1,6 @@
 // Bell inequalities (CHSH) violation
 // Source: ./examples/bell_inequalities.cpp
 #include <qpp.h>
-
 using namespace qpp;
 using std::cout;
 using std::endl;
