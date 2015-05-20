@@ -23,13 +23,13 @@ int main()
         else              // +1
             res++;
     }
-    cout << "N = " << N << " measurements" << std::endl;
-    cout << "The experimental average of the observable" << endl;
+    cout << ">> N = " << N << " measurements" << std::endl;
+    cout << ">> The experimental average of the observable" << endl;
     cout << disp(A) << endl;
     cout << "on the state" << endl;
     cout << disp(psi) << endl;
     cout << "is: " << res / static_cast<double>(N) << endl;
-    cout << "Theoretical average <psi | A | psi> = ";
+    cout << ">> Theoretical average <psi | A | psi> = ";
     cout << disp((adjoint(psi) * A * psi).value()) << endl;
 }
 

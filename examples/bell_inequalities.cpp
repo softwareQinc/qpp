@@ -17,7 +17,7 @@ int main()
 
     // number of "experiments" for each of the 4 detector settings
     idx N = 10000;
-    std::cout << "Number N of experiments for each of the 4 measurement";
+    std::cout << ">> Number N of experiments for each of the 4 measurement";
     std::cout << " settings = " << N << std::endl;
 
     idx statistics[4][4] = {0}; // total statistics
@@ -81,15 +81,15 @@ int main()
 
     // Experimental average
     auto exp_avg = (E[0] - E[1] + E[2] + E[3]) / static_cast<double>(N);
-    std::cout << "Experimental estimate of <QS> + <RS> + <RT> - <QT> = ";
+    std::cout << ">> Experimental estimate of <QS> + <RS> + <RT> - <QT> = ";
     std::cout << exp_avg << std::endl;
 
     // Theoretical average
     double th_avg = (adjoint(psi) *
                      (kron(Q, S) + kron(R, S) + kron(R, T) - kron(Q, T)) *
                      psi).value().real();
-    std::cout << "Theoretical value of <QS> + <RS> + <RT> - <QT> = ";
+    std::cout << ">> Theoretical value of <QS> + <RS> + <RT> - <QT> = ";
     std::cout << th_avg << std::endl;
 
-    std::cout << "2 * sqrt(2) = " << 2 * std::sqrt(2) << std::endl;
+    std::cout << ">> 2 * sqrt(2) = " << 2 * std::sqrt(2) << std::endl;
 }
