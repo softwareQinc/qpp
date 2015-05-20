@@ -119,25 +119,25 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordflow">if</span> (!pmat)</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    {</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                <span class="stringliteral">&quot;qpp::loadMATLABmatrix(): Can not open MATLAB file &quot;</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                + mat_file + <span class="stringliteral">&quot;!&quot;</span>);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="stringliteral">&quot;qpp::loadMATLABmatrix(): Can not open MATLAB file &quot;</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            + mat_file + <span class="stringliteral">&quot;!&quot;</span>);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    }</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    mxArray* pa = matGetVariable(pmat, var_name.c_str());</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordflow">if</span> (!pa)</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                <span class="stringliteral">&quot;qpp::loadMATLABmatrix(): Can not load the variable &quot;</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                + var_name + <span class="stringliteral">&quot; from MATLAB file &quot;</span> + mat_file + <span class="stringliteral">&quot;!&quot;</span>);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="stringliteral">&quot;qpp::loadMATLABmatrix(): Can not load the variable &quot;</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            + var_name + <span class="stringliteral">&quot; from MATLAB file &quot;</span> + mat_file + <span class="stringliteral">&quot;!&quot;</span>);</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordflow">if</span> (mxGetNumberOfDimensions(pa) != 2) <span class="comment">// not a matrix</span></div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                <span class="stringliteral">&quot;qpp::loadMATLABmatrix(): Loaded variable &quot;</span> + var_name</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                + <span class="stringliteral">&quot; is not 2-dimensional!&quot;</span>);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="stringliteral">&quot;qpp::loadMATLABmatrix(): Loaded variable &quot;</span> + var_name</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            + <span class="stringliteral">&quot; is not 2-dimensional!&quot;</span>);</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordflow">if</span> (!mxIsDouble(pa))</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                <span class="stringliteral">&quot;qpp::loadMATLABmatrix(): Loaded variable &quot;</span> + var_name</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                + <span class="stringliteral">&quot; is not in double-precision format!&quot;</span>);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="stringliteral">&quot;qpp::loadMATLABmatrix(): Loaded variable &quot;</span> + var_name</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            + <span class="stringliteral">&quot; is not in double-precision format!&quot;</span>);</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows = mxGetM(pa);</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols = mxGetN(pa);</div>
@@ -161,25 +161,25 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordflow">if</span> (!pmat)</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    {</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                <span class="stringliteral">&quot;qpp::loadMATLABmatrix(): Can not open MATLAB file &quot;</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                + mat_file + <span class="stringliteral">&quot;!&quot;</span>);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;            <span class="stringliteral">&quot;qpp::loadMATLABmatrix(): Can not open MATLAB file &quot;</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            + mat_file + <span class="stringliteral">&quot;!&quot;</span>);</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    }</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    mxArray* pa = matGetVariable(pmat, var_name.c_str());</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordflow">if</span> (!pa)</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                <span class="stringliteral">&quot;qpp::loadMATLABmatrix(): Can not load the variable &quot;</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                + var_name + <span class="stringliteral">&quot; from MATLAB file &quot;</span> + mat_file + <span class="stringliteral">&quot;!&quot;</span>);</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            <span class="stringliteral">&quot;qpp::loadMATLABmatrix(): Can not load the variable &quot;</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            + var_name + <span class="stringliteral">&quot; from MATLAB file &quot;</span> + mat_file + <span class="stringliteral">&quot;!&quot;</span>);</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keywordflow">if</span> (mxGetNumberOfDimensions(pa) != 2) <span class="comment">// not a matrix</span></div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                <span class="stringliteral">&quot;qpp::loadMATLABmatrix(): Loaded variable &quot;</span> + var_name</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                + <span class="stringliteral">&quot; is not 2-dimensional!&quot;</span>);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="stringliteral">&quot;qpp::loadMATLABmatrix(): Loaded variable &quot;</span> + var_name</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            + <span class="stringliteral">&quot; is not 2-dimensional!&quot;</span>);</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordflow">if</span> (!mxIsDouble(pa))</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                <span class="stringliteral">&quot;qpp::loadMATLABmatrix(): Loaded variable &quot;</span> + var_name</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                + <span class="stringliteral">&quot; is not in double-precision format!&quot;</span>);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <span class="stringliteral">&quot;qpp::loadMATLABmatrix(): Loaded variable &quot;</span> + var_name</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            + <span class="stringliteral">&quot; is not in double-precision format!&quot;</span>);</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows = mxGetM(pa);</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols = mxGetN(pa);</div>
@@ -210,7 +210,7 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    mxDestroyArray(pa);</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    matClose(pmat);</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordflow">return</span> (result_re.cast&lt;<a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt;()) + 1_i * (result_im.cast&lt;<a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt;());</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordflow">return</span> (result_re.cast&lt;<a class="code" href="namespaceqpp.html#abd3f98369d66d31f40fc7a4031bb6c24">cplx</a>&gt;()) + 1_i * (result_im.cast&lt;<a class="code" href="namespaceqpp.html#abd3f98369d66d31f40fc7a4031bb6c24">cplx</a>&gt;());</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;}</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
@@ -238,20 +238,20 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keywordflow">if</span> (!pmat)</div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                <span class="stringliteral">&quot;qpp::saveMATLABmatrix(): Can not open/create MATLAB file &quot;</span></div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;                + mat_file + <span class="stringliteral">&quot;!&quot;</span>);</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            <span class="stringliteral">&quot;qpp::saveMATLABmatrix(): Can not open/create MATLAB file &quot;</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            + mat_file + <span class="stringliteral">&quot;!&quot;</span>);</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    mxArray* pa = mxCreateDoubleMatrix(rA.rows(), rA.cols(), mxREAL);</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="keywordflow">if</span> (!pa)</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                <span class="stringliteral">&quot;qpp::saveMATLABmatrix(): mxCreateDoubleMatrix failed!&quot;</span>);</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            <span class="stringliteral">&quot;qpp::saveMATLABmatrix(): mxCreateDoubleMatrix failed!&quot;</span>);</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    std::memcpy(mxGetPr(pa), rA.data(), <span class="keyword">sizeof</span>(double) * rA.size());</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="keywordflow">if</span> (matPutVariable(pmat, var_name.c_str(), pa))</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                <span class="stringliteral">&quot;qpp::saveMATLABmatrix(): Can not write the variable &quot;</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                + var_name + <span class="stringliteral">&quot; to MATLAB file &quot;</span> + mat_file + <span class="stringliteral">&quot;!&quot;</span>);</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            <span class="stringliteral">&quot;qpp::saveMATLABmatrix(): Can not write the variable &quot;</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            + var_name + <span class="stringliteral">&quot; to MATLAB file &quot;</span> + mat_file + <span class="stringliteral">&quot;!&quot;</span>);</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;</div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    mxDestroyArray(pa);</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    matClose(pmat);</div>
@@ -277,14 +277,14 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());</div>
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="keywordflow">if</span> (!pmat)</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;                <span class="stringliteral">&quot;qpp::saveMATLABmatrix(): Can not open/create MATLAB file &quot;</span></div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;                + mat_file + <span class="stringliteral">&quot;!&quot;</span>);</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;            <span class="stringliteral">&quot;qpp::saveMATLABmatrix(): Can not open/create MATLAB file &quot;</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;            + mat_file + <span class="stringliteral">&quot;!&quot;</span>);</div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;</div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    mxArray* pa = mxCreateDoubleMatrix(</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;            tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    <span class="keywordflow">if</span> (!pa)</div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                <span class="stringliteral">&quot;qpp::saveMATLABmatrix(): mxCreateDoubleMatrix failed!&quot;</span>);</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;            <span class="stringliteral">&quot;qpp::saveMATLABmatrix(): mxCreateDoubleMatrix failed!&quot;</span>);</div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="keywordtype">double</span>* pa_re, * pa_im;</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
@@ -298,8 +298,8 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <span class="keywordflow">if</span> (matPutVariable(pmat, var_name.c_str(), pa))</div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                <span class="stringliteral">&quot;qpp::saveMATLABmatrix(): Can not write the variable &quot;</span></div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                + var_name + <span class="stringliteral">&quot; to MATLAB file &quot;</span> + mat_file + <span class="stringliteral">&quot;!&quot;</span>);</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;            <span class="stringliteral">&quot;qpp::saveMATLABmatrix(): Can not write the variable &quot;</span></div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;            + var_name + <span class="stringliteral">&quot; to MATLAB file &quot;</span> + mat_file + <span class="stringliteral">&quot;!&quot;</span>);</div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;</div>
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    mxDestroyArray(pa);</div>
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    matClose(pmat);</div>
@@ -311,7 +311,7 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_html"><div class="ttname"><a href="namespaceqpp.html">qpp</a></div><div class="ttdoc">Quantum++ main namespace. </div><div class="ttdef"><b>Definition:</b> codes.h:30</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">qpp::Exception::Type::ZERO_SIZE</a></div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530">qpp::Exception::Type::UNDEFINED_TYPE</a></div></div>
-<div class="ttc" id="namespaceqpp_html_aad7ccc50a6b139279d7b56d07112b183"><div class="ttname"><a href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">qpp::cplx</a></div><div class="ttdeci">std::complex&lt; double &gt; cplx</div><div class="ttdoc">Complex number in double precision. </div><div class="ttdef"><b>Definition:</b> types.h:51</div></div>
+<div class="ttc" id="namespaceqpp_html_abd3f98369d66d31f40fc7a4031bb6c24"><div class="ttname"><a href="namespaceqpp.html#abd3f98369d66d31f40fc7a4031bb6c24">qpp::cplx</a></div><div class="ttdeci">std::complex&lt; double &gt; cplx</div><div class="ttdoc">Complex number in double precision. </div><div class="ttdef"><b>Definition:</b> types.h:51</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html"><div class="ttname"><a href="classqpp_1_1_exception.html">qpp::Exception</a></div><div class="ttdoc">Generates custom exceptions, used when validating function parameters. </div><div class="ttdef"><b>Definition:</b> exception.h:39</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a06ca054b0436fb4b9b445574dec47f82"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">qpp::internal::_check_nonzero_size</a></div><div class="ttdeci">bool _check_nonzero_size(const T &amp;x) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:113</div></div>
 <div class="ttc" id="namespaceqpp_html_a84a0f3023e1895d22de4e5f3e727e1dd"><div class="ttname"><a href="namespaceqpp.html#a84a0f3023e1895d22de4e5f3e727e1dd">qpp::loadMATLABmatrix</a></div><div class="ttdeci">Derived loadMATLABmatrix(const std::string &amp;mat_file, const std::string &amp;var_name)</div><div class="ttdoc">Loads an Eigen dynamic matrix from a MATLAB .mat file, generic version. </div><div class="ttdef"><b>Definition:</b> matlab.h:48</div></div>
@@ -324,7 +324,7 @@ $(document).ready(function(){initNavTree('matlab_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_26e95c14e39a3b2aa874b4ad85a981a5.html">MATLAB</a></li><li class="navelem"><a class="el" href="matlab_8h.html">matlab.h</a></li>
-    <li class="footer">Generated on Wed May 20 2015 14:55:23 for Quantum++ by
+    <li class="footer">Generated on Sun May 17 2015 21:16:47 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

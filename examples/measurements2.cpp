@@ -13,7 +13,7 @@ int main()
     std::vector<double> probs;
     std::vector<cmat> states;
 
-    // measures the first subsystem of the Bell state (|00> + |11>) / sqrt(2)
+    // measures the first subsystem of the Bell state (|00> + |11>)/sqrt(2)
     // in the X basis
     std::tie(result, probs, states) = measure(psi, gt.H, {0});
     cout << ">> Measuring part " << disp(subsys, " ")
