@@ -93,3 +93,5 @@ Version 0.8.2 - 20 May 2015
         qpp::cor       - correlation
         qpp::var       - variance
     - New examples in ./examples
+
+Version 0.8.3 - development
