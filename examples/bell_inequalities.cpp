@@ -45,23 +45,23 @@ int main()
                 auto measurementB = measure(rhoB, basisB);
                 auto mB = std::get<0>(measurementB); // measurement result B
                 short evalB = static_cast<short>(std::round(evalsB[mB]));
-                // count the coincidences
-                if (evalA == 1 && evalB == 1)        // +1 +1
+                // count the correlations
+                if (evalA == 1 && evalB == 1)        // +1 +1 correlation
                 {
                     statistics[gate_idx][0]++;
                     E[gate_idx]++;
                 }
-                else if (evalA == 1 && evalB == -1)  // +1 -1
+                else if (evalA == 1 && evalB == -1)  // +1 -1 anti-correlation
                 {
                     statistics[gate_idx][1]++;
                     E[gate_idx]--;
                 }
-                else if (evalA == -1 && evalB == 1)  // -1 +1
+                else if (evalA == -1 && evalB == 1)  // -1 +1 anti-correlation
                 {
                     statistics[gate_idx][2]++;
                     E[gate_idx]--;
                 }
-                else if (evalA == -1 && evalB == -1) // -1 -1
+                else if (evalA == -1 && evalB == -1) // -1 -1 correlation
                 {
                     statistics[gate_idx][3]++;
                     E[gate_idx]++;
