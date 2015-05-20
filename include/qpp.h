@@ -154,7 +154,3 @@ static RandomDevices& rdevs =
 } /* namespace qpp */
 
 #endif  /* QPP_H_ */
-
-// TODO: look at how "qpp::measure" order the eigenvalues
-// TODO: maybe implement "qpp::measure" for observables
-// TODO: check pass by value and get rid (if possible) of the rA (cA)
