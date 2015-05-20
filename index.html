@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Quantum++ : C++11 quantum computing library">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Quantum++</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/vsoftco/qpp">View on GitHub</a>
+
+          <h1 id="project_title">Quantum++</h1>
+          <h2 id="project_tagline">C++11 quantum computing library</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/vsoftco/qpp/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/vsoftco/qpp/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>
+<a id="version-08---8-may-2015" class="anchor" href="#version-08---8-may-2015" aria-hidden="true"><span class="octicon octicon-link"></span></a>Version 0.8 - 8 May 2015</h2>
+
+
+
+<p>Quantum++ is a C++11 general purpose quantum computing library, composed 
+solely of template header files. It uses the 
+<a href="http://eigen.tuxfamily.org">Eigen 3</a> linear algebra library and, 
+if available, the <a href="http://openmp.org/">OpenMP</a> multi-processing library. 
+For additional <a href="http://eigen.tuxfamily.org">Eigen 3</a> documentation see 
+<a href="http://eigen.tuxfamily.org/dox/">http://eigen.tuxfamily.org/dox/</a>. For a simple 
+<a href="http://eigen.tuxfamily.org">Eigen 3</a> quick ASCII reference see
+<a href="http://eigen.tuxfamily.org/dox/AsciiQuickReference.txt">http://eigen.tuxfamily.org/dox/AsciiQuickReference.txt</a>.</p>
+
+<p>Quantum++ is not restricted to qubit systems or specific quantum 
+information processing tasks, being capable of simulating arbitrary quantum 
+processes. The main design factors taken in consideration were the ease of 
+use, high portability, and high performance.</p>
+
+<p>If you are interesting in contributing, please contact me. 
+To contribute, you need to have a decent knowledge of C++ (preferably C++11), 
+including templates and the standard library, a basic knowledge of 
+quantum computing and linear algebra, and some working experience 
+with <a href="http://eigen.tuxfamily.org">Eigen 3</a>.</p>
+
+<p>Copyright (c) 2013 - 2015 Vlad Gheorghiu, vgheorgh AT gmail DOT com.</p>
+
+<hr>
+
+<p>Quantum++ is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+
+<p>Quantum++ is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+
+<p>You should have received a copy of the GNU General Public License
+along with Quantum++.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+
+<hr>
+
+<h2>
+<a id="building-instructions" class="anchor" href="#building-instructions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building instructions</h2>
+
+<h3>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration:</h3>
+
+<ul>
+<li>Compiler: <a href="https://gcc.gnu.org/">g++</a> version 4.8 or later 
+(for good C++11 support)</li>
+<li>
+<a href="http://eigen.tuxfamily.org">Eigen 3</a> library located in <code>$HOME/eigen</code>
+</li>
+<li>Quantum++ library located in <code>$HOME/qpp</code>
+</li>
+<li>
+<a href="http://www.mathworks.com/products/matlab/">MATLAB</a> compiler 
+include header files:
+<code>/Applications/MATLAB_R2014b.app/extern/include</code>
+</li>
+<li>
+<a href="http://www.mathworks.com/products/matlab/">MATLAB</a> compiler 
+shared library files:
+<code>/Applications/MATLAB_R2014b.app/bin/maci64</code>
+</li>
+</ul>
+
+<h3>
+<a id="building-without-a-build-system" class="anchor" href="#building-without-a-build-system" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building without a build system</h3>
+
+<ul>
+<li>Example file: <code>$HOME/qpp/examples/example.cpp</code>
+</li>
+<li>Output executable: <code>$HOME/qpp/examples/example</code>
+</li>
+<li>Must run the commands below from inside the directory <code>$HOME/qpp/examples</code> </li>
+</ul>
+
+<h4>
+<a id="release-version-without-matlab-support" class="anchor" href="#release-version-without-matlab-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Release version (without <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support):</h4>
+
+<pre><code>g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
+     -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
+     -isystem $HOME/eigen -I $HOME/qpp/include \
+     example.cpp -o example
+</code></pre>
+
+<h4>
+<a id="debug-version-without-matlab-support" class="anchor" href="#debug-version-without-matlab-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Debug version (without <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support):</h4>
+
+<pre><code>g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
+     -g3 -DDEBUG \
+     -isystem $HOME/eigen -I $HOME/qpp/include \
+      example.cpp -o example
+</code></pre>
+
+<h4>
+<a id="release-version-with-matlab-support" class="anchor" href="#release-version-with-matlab-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Release version (with <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support):</h4>
+
+<pre><code>g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
+     -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
+     -isystem $HOME/eigen -I $HOME/qpp/include \
+     -I/Applications/MATLAB_R2014b.app/extern/include \
+     -L/Applications/MATLAB_R2014b.app/bin/maci64 \
+     -lmx -lmat example.cpp -o example
+</code></pre>
+
+<h4>
+<a id="debug-version-with-matlab-support" class="anchor" href="#debug-version-with-matlab-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Debug version (with <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support):</h4>
+
+<pre><code>g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
+     -g3 -DDEBUG \
+     -isystem $HOME/eigen -I $HOME/qpp/include \
+     -I /Applications/MATLAB_R2014b.app/extern/include \
+     -L /Applications/MATLAB_R2014b.app/bin/maci64 \
+     -lmx -lmat example.cpp -o example
+</code></pre>
+
+<h3>
+<a id="building-using-cmake" class="anchor" href="#building-using-cmake" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building using <a href="http://www.cmake.org/">cmake</a>
+</h3>
+
+<p>The current version of the repository has a <code>./CMakeLists.txt</code> configuration file
+for building examples using <a href="http://www.cmake.org/">cmake</a>. 
+To build an example using <a href="http://www.cmake.org/">cmake</a>, 
+I recommend an out-of-source build, i.e., from the root of the project 
+(where <code>./include</code> is located), type</p>
+
+<pre><code>mkdir ./build
+cd ./build
+cmake ..
+make
+</code></pre>
+
+<p>The above commands build the relase version (default) executable <code>qpp</code>, 
+from the source file <code>./examples/example.cpp</code>,
+without <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support (default), 
+inside the directory <code>./build</code>. To build a different configuration, 
+e.g. debug version with <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> 
+support, type from the root of the project</p>
+
+<pre><code>cd ./build
+rm -rf *
+cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB=ON ..
+make
+</code></pre>
+
+<p>Or, to disable <a href="http://openmp.org/">OpenMP</a> support (enabled by default), type</p>
+
+<pre><code>cd ./build
+rm -rf *
+cmake -DWITH_OPENMP=OFF ..
+make
+</code></pre>
+
+<p>To change the name of the example file, the location of the
+<a href="http://eigen.tuxfamily.org">Eigen 3</a>
+library or the location of <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> 
+installation, edit the <code>./CMakeLists.txt</code> file. See also <code>./CMakeLists.txt</code> 
+for additional options. Do not forget to remove everything from 
+the <code>./build</code> directory before a fresh build!</p>
+
+<h3>
+<a id="additional-remarks" class="anchor" href="#additional-remarks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Additional remarks</h3>
+
+<ul>
+<li><p>The C++ compiler must be C++11 compliant.</p></li>
+<li><p>If using <a href="http://windows.microsoft.com/">Windows</a>, I recommend compiling 
+under <a href="https://www.cygwin.com">cygwin</a> via <a href="http://www.cmake.org/">cmake</a>
+and <a href="https://gcc.gnu.org/">g++</a>. 
+See also <a href="http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2">http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2</a>
+for a bug related to lack of support for some C++11 math functions, and
+how to fix it. Quick fix: patch the standard library header file <code>&lt;cmath&gt;</code> 
+using the provided patch <code>./cmath_cygwin.patch</code>.</p></li>
+<li><p>If your compiler does not support <a href="http://openmp.org/">OpenMP</a> 
+(as it is the case e.g with <a href="http://clang.llvm.org/">clang++</a>), 
+disable <a href="http://openmp.org/">OpenMP</a> in your build, 
+as otherwise the linker may not find the 
+<a href="https://gcc.gnu.org/projects/gomp/">gomp</a> library.</p></li>
+<li>
+<p>If you run the program on <a href="http://www.apple.com/osx">OS X</a> with 
+<a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support, make sure that 
+the environment variable <code>DYLD_LIBRARY_PATH</code> is set to point to the 
+<a href="http://www.mathworks.com/products/matlab/">MATLAB</a> 
+compiler library location, see the <code>run_OSX_MATLAB</code> script. 
+Otherwise, you will get a runtime error like 
+<code>dyld: Library not loaded: @rpath/libmat.dylib</code>.</p>
+
+<ul>
+<li><p>I recommend running via a script, as otherwise setting the 
+<code>DYLD_LIBRARY_PATH</code> globally may interfere with 
+<a href="https://www.macports.org/">macports</a>' <a href="http://www.cmake.org/">cmake</a> 
+installation (in case you use <a href="http://www.cmake.org/">cmake</a> from 
+<a href="https://www.macports.org/">macports</a>). If you use a script, 
+then the environment variable is local to the script and 
+does not interfere with the rest of the system.</p></li>
+<li>
+<p>Example of running script, run from inside the directory where 
+the executable <code>qpp</code> is located:</p>
+
+<pre><code>#!/bin/sh # Run Quantum++ under OS X with MATLAB support
+
+export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"
+./qpp
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>If you build a debug version with <a href="https://gcc.gnu.org/">g++</a> under 
+<a href="http://www.apple.com/osx">OS X</a> and use 
+<a href="http://www.gnu.org/software/gdb/">gdb</a> to step inside template functions 
+you may want to add <code>-fno-weak</code> compiler flag. See 
+<a href="http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks">http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks</a>
+for more details about this problem.</p></li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Quantum++ maintained by <a href="https://github.com/vsoftco">vsoftco</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-56739447-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>

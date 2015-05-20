@@ -1,8 +1,5 @@
 # Quantum++ 
-## Version 0.8.1 - development
-
-### Development branch, use it at your own risk!
-### Switch to the master branch for the latest stable version.
+## Version 0.8.2 - 20 May 2015
 
 Bugs may still be lingering around. I welcome any comments or bug reports.
 
