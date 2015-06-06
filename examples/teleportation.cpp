@@ -19,7 +19,7 @@ int main()
     cmat Bell_aA = adjoint(gt.CTRL(gt.Xd(D), {0}, {1}, 2, D)
                            * kron(gt.Fd(D), gt.Id(D)));
 
-    ket psi_a = randket(D); // random state as input on a
+    ket psi_a = randket(D); // random qudit state
     cout << ">> Initial state:" << endl;
     cout << disp(psi_a) << endl;
 
