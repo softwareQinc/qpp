@@ -326,9 +326,7 @@ inline cmat randU(idx D)
     if (D == 0)
         throw Exception("qpp::randU()", Exception::Type::DIMS_INVALID);
 
-    cmat X(D, D);
-
-    X = 1 / std::sqrt(2.) * randn < cmat > (D, D);
+    cmat X = 1 / std::sqrt(2.) * randn < cmat > (D, D);
     Eigen::HouseholderQR<cmat> qr(X);
 
     cmat Q = qr.householderQ();
