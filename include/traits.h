@@ -37,7 +37,7 @@ namespace qpp
 *
 * \see http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3911
 */
-template<class ...>
+template<typename ...>
 using to_void = void;
 
 /**
