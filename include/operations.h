@@ -125,10 +125,10 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         Aidagger.push_back(powm(adjoint(rA), i));
     }
 
-    idx D = rstate.rows(); // total dimension
+    idx D = static_cast<idx>(rstate.rows()); // total dimension
     idx n = dims.size();   // total number of subsystems
     idx ctrlsize = ctrl.size(); // dimension of ctrl subsystem
-    idx DA = rA.rows(); // dimension of gate subsystem
+    idx DA = static_cast<idx>(rA.rows()); // dimension of gate subsystem
 
     idx Cdims[maxn]; // local dimensions
     idx CdimsA[maxn]; // local dimensions
