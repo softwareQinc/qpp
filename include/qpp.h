@@ -147,8 +147,7 @@ static const States& st = States::get_instance();
 thread_local static RandomDevices& rdevs =
         RandomDevices::get_thread_local_instance();
 #else
-static RandomDevices& rdevs =
-    RandomDevices::get_instance();
+static RandomDevices& rdevs = RandomDevices::get_instance();
 #endif // _NO_THREAD_LOCAL
 
 } /* namespace qpp */

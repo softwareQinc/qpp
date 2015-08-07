@@ -73,13 +73,13 @@ inline internal::IOManipEigen disp(cplx z, double chop = qpp::chop)
 */
 template<typename InputIterator>
 internal::IOManipRange<InputIterator> disp(InputIterator first,
-                                           InputIterator last,
-                                           const std::string& separator,
-                                           const std::string& start = "[",
-                                           const std::string& end = "]")
+                                            InputIterator last,
+                                            const std::string& separator,
+                                            const std::string& start = "[",
+                                            const std::string& end = "]")
 {
-    return internal::IOManipRange<InputIterator
-    >(first, last, separator, start, end);
+    return internal::IOManipRange<InputIterator>(
+            first, last, separator, start, end);
 }
 
 /**
@@ -112,10 +112,10 @@ internal::IOManipRange<typename Container::const_iterator> disp(
 * \return Instance of qpp::internal::internal::IOManipPointer
 */
 template<typename PointerType>
-internal::IOManipPointer<PointerType> disp(const PointerType* p, idx n,
-                                           const std::string& separator,
-                                           const std::string& start = "[",
-                                           const std::string& end = "]")
+internal::IOManipPointer <PointerType> disp(const PointerType* p, idx n,
+                                            const std::string& separator,
+                                            const std::string& start = "[",
+                                            const std::string& end = "]")
 {
     return internal::IOManipPointer<PointerType>(p, n, separator, start, end);
 }

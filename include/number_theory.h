@@ -236,7 +236,7 @@ inline std::vector<idx> invperm(const std::vector<idx>& perm)
 *  = perm(sigma)
 */
 inline std::vector<idx> compperm(const std::vector<idx>& perm,
-                                  const std::vector<idx>& sigma)
+                                 const std::vector<idx>& sigma)
 {
     if (!internal::_check_perm(perm))
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);

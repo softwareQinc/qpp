@@ -142,7 +142,7 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
-                                  const std::vector<idx>& dims)
+                                 const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -327,7 +327,7 @@ double concurrence(const Eigen::MatrixBase<Derived>& A)
                   * kron(sigmaY, sigmaY)).real();
 
     std::vector<double> lambdas_sorted(lambdas.data(),
-                                        lambdas.data() + lambdas.size());
+                                       lambdas.data() + lambdas.size());
 
     std::sort(std::begin(lambdas_sorted), std::end(lambdas_sorted),
               std::greater<double>());

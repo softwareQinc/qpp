@@ -18,7 +18,7 @@ var functions_8h =
     [ "dirsum", "functions_8h.html#afe168752758afc9c072a852559d0733b", null ],
     [ "dirsum", "functions_8h.html#aca56da00877956ddae60bdb12e2964ae", null ],
     [ "dirsumpow", "functions_8h.html#ac0cea183ce30cc864b16a8583af6b2a6", null ],
-    [ "eig", "functions_8h.html#afa6eb666202bc76f713c4deadf8624a6", null ],
+    [ "eig", "functions_8h.html#a45ce1db7346d338e4171096f23cc0876", null ],
     [ "evals", "functions_8h.html#a2f9801291f336021f67fd1a022664c24", null ],
     [ "evects", "functions_8h.html#acc9597bacc39c501eb8e2e5e8530fcd8", null ],
     [ "expm", "functions_8h.html#a6855dd77c49ae0b96baf10c12b4bc722", null ],

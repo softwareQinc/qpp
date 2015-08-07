@@ -182,13 +182,12 @@ $(document).ready(function(){initNavTree('qpp_8h_source.html','');});
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;thread_local <span class="keyword">static</span> RandomDevices&amp; rdevs =</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <a class="code" href="classqpp_1_1internal_1_1_singleton.html#aaf4b1c567e5b672354c026c7ae02ae16">RandomDevices::get_thread_local_instance</a>();</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="keyword">static</span> RandomDevices&amp; rdevs =</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <a class="code" href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">RandomDevices::get_instance</a>();</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="preprocessor">#endif // _NO_THREAD_LOCAL</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">/* QPP_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="keyword">static</span> RandomDevices&amp; rdevs = <a class="code" href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">RandomDevices::get_instance</a>();</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="preprocessor">#endif // _NO_THREAD_LOCAL</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">/* QPP_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="classqpp_1_1internal_1_1_singleton_html_aaf4b1c567e5b672354c026c7ae02ae16"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html#aaf4b1c567e5b672354c026c7ae02ae16">qpp::internal::Singleton&lt; RandomDevices &gt;::get_thread_local_instance</a></div><div class="ttdeci">static thread_local RandomDevices &amp; get_thread_local_instance() noexcept(std::is_nothrow_constructible&lt; RandomDevices &gt;::value)</div><div class="ttdef"><b>Definition:</b> singleton.h:102</div></div>
 <div class="ttc" id="singleton_8h_html"><div class="ttname"><a href="singleton_8h.html">singleton.h</a></div><div class="ttdoc">Singleton pattern via CRTP. </div></div>
 <div class="ttc" id="types_8h_html"><div class="ttname"><a href="types_8h.html">types.h</a></div><div class="ttdoc">Type aliases. </div></div>
@@ -221,7 +220,7 @@ $(document).ready(function(){initNavTree('qpp_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="qpp_8h.html">qpp.h</a></li>
-    <li class="footer">Generated on Fri Aug 7 2015 02:56:58 for Quantum++ by
+    <li class="footer">Generated on Fri Aug 7 2015 14:03:20 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

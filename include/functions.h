@@ -249,7 +249,8 @@ double norm(const Eigen::MatrixBase<Derived>& A)
 * and 2. Eigenvectors of \a A, as columns of a complex dynamic matrix
 */
 template<typename Derived>
-std::pair<dyn_col_vect<cplx>, cmat> eig(const Eigen::MatrixBase<Derived>& A)
+std::pair<dyn_col_vect < cplx>, cmat>
+eig(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -323,8 +324,7 @@ cmat evects(const Eigen::MatrixBase<Derived>& A)
 * and 2. Eigenvectors of \a A, as columns of a complex dynamic matrix
 */
 template<typename Derived>
-std::pair<dyn_col_vect<double>, cmat> heig(
-        const Eigen::MatrixBase<Derived>& A)
+std::pair<dyn_col_vect<double>, cmat> heig(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -762,8 +762,9 @@ double schatten(const Eigen::MatrixBase<Derived>& A, double p)
 * over the \a OutputScalar scalar field
 */
 template<typename OutputScalar, typename Derived>
-dyn_mat<OutputScalar> cwise(const Eigen::MatrixBase<Derived>& A,
-                            OutputScalar (* f)(const typename Derived::Scalar&))
+dyn_mat <OutputScalar> cwise(const Eigen::MatrixBase<Derived>& A,
+                             OutputScalar (* f)(
+                                     const typename Derived::Scalar&))
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -1516,9 +1517,9 @@ std::vector<double> abssq(const Container& c,
 
         // template<typename Derived>
         // abssq(const Eigen::MatrixBase<Derived>& V)
-                           typename std::enable_if<
-                                   is_iterable<Container>::value
-                           >::type* = nullptr)
+                          typename std::enable_if<
+                                  is_iterable<Container>::value
+                          >::type* = nullptr)
 {
     return abssq(std::begin(c), std::end(c));
 }
