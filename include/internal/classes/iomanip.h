@@ -152,7 +152,7 @@ private:
         std::ostringstream ostr;
         ostr.copyfmt(os); // copy os' state
 
-        std::vector <std::string> vstr;
+        std::vector<std::string> vstr;
         std::string strA;
 
         for (idx i = 0; i < static_cast<idx>(_A.rows()); ++i)
@@ -202,7 +202,7 @@ private:
         }
 
         // determine the maximum lenght of the entries in each column
-        std::vector <idx> maxlengthcols(_A.cols(), 0);
+        std::vector<idx> maxlengthcols(_A.cols(), 0);
 
         for (idx i = 0; i < static_cast<idx>(_A.rows());
              ++i)

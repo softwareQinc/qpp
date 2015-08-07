@@ -38,7 +38,7 @@ namespace qpp
 * \param N Size of the alphabet
 * \return Real vector consisting of a uniform distribution of size \a N
 */
-inline std::vector <double> uniform(idx N)
+inline std::vector<double> uniform(idx N)
 {
     if (N == 0)
         throw Exception("qpp::uniform", Exception::Type::ZERO_SIZE);
@@ -54,12 +54,12 @@ inline std::vector <double> uniform(idx N)
 * labels the columns)
 * \return Real vector consisting of the marginal distribution of \a X
 */
-inline std::vector <double> marginalX(const dmat& probXY)
+inline std::vector<double> marginalX(const dmat& probXY)
 {
     if (!internal::_check_nonzero_size(probXY))
         throw Exception("qpp::marginalX", Exception::Type::ZERO_SIZE);
 
-    std::vector <double> result(probXY.rows(), 0);
+    std::vector<double> result(probXY.rows(), 0);
     for (idx i = 0; i < static_cast<idx>(probXY.rows()); ++i)
     {
         for (idx j = 0; j < static_cast<idx>(probXY.cols()); ++j)
@@ -79,7 +79,7 @@ inline std::vector <double> marginalX(const dmat& probXY)
 * labels the columns)
 * \return Real vector consisting of the marginal distribution of \a Y
 */
-inline std::vector <double> marginalY(const dmat& probXY)
+inline std::vector<double> marginalY(const dmat& probXY)
 {
     if (!internal::_check_nonzero_size(probXY))
         throw Exception("qpp::marginalY", Exception::Type::ZERO_SIZE);
@@ -95,7 +95,7 @@ inline std::vector <double> marginalY(const dmat& probXY)
 * \return Average of \a X
 */
 template<typename Container>
-double avg(const std::vector <double>& prob, const Container& X)
+double avg(const std::vector<double>& prob, const Container& X)
 {
     if (!internal::_check_nonzero_size(prob))
         throw Exception("qpp:avg", Exception::Type::ZERO_SIZE);
@@ -130,8 +130,8 @@ double cov(const dmat& probXY,
         static_cast<idx>(probXY.cols()) != Y.size())
         throw Exception("qpp:cov", Exception::Type::SIZE_MISMATCH);
 
-    std::vector <double> probX = marginalX(probXY); // marginals
-    std::vector <double> probY = marginalY(probXY); // marginals
+    std::vector<double> probX = marginalX(probXY); // marginals
+    std::vector<double> probY = marginalY(probXY); // marginals
 
     double result = 0;
     for (idx i = 0; i < X.size(); ++i)
@@ -154,7 +154,7 @@ double cov(const dmat& probXY,
 * \return Variance of \a X
 */
 template<typename Container>
-double var(const std::vector <double>& prob, const Container& X)
+double var(const std::vector<double>& prob, const Container& X)
 {
     if (!internal::_check_nonzero_size(prob))
         throw Exception("qpp:var", Exception::Type::ZERO_SIZE);
@@ -178,7 +178,7 @@ double var(const std::vector <double>& prob, const Container& X)
 * \return Standard deviation of \a X
 */
 template<typename Container>
-double sigma(const std::vector <double>& prob, const Container& X)
+double sigma(const std::vector<double>& prob, const Container& X)
 {
     if (!internal::_check_nonzero_size(prob))
         throw Exception("qpp:sigma", Exception::Type::ZERO_SIZE);

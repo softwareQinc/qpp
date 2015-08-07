@@ -67,7 +67,7 @@ double entropy(const Eigen::MatrixBase<Derived>& A)
 * \param prob Real probability vector
 * \return Shannon entropy, with the logarithm in base 2
 */
-inline double entropy(const std::vector <double>& prob)
+inline double entropy(const std::vector<double>& prob)
 {
     // check zero-size
     if (!internal::_check_nonzero_size(prob))
@@ -139,7 +139,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
 * use qpp::infty for \f$\alpha = \infty\f$
 * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
 */
-inline double renyi(const std::vector <double>& prob, double alpha)
+inline double renyi(const std::vector<double>& prob, double alpha)
 {
     // check zero-size
     if (!internal::_check_nonzero_size(prob))
@@ -224,7 +224,7 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double q)
 *
 * \return Tsallis-\f$q\f$ entropy
 */
-inline double tsallis(const std::vector <double>& prob, double q)
+inline double tsallis(const std::vector<double>& prob, double q)
 {
     // check zero-size
     if (!internal::_check_nonzero_size(prob))
@@ -255,9 +255,9 @@ inline double tsallis(const std::vector <double>& prob, double q)
 */
 template<typename Derived>
 double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
-                   const std::vector <idx>& subsysA,
-                   const std::vector <idx>& subsysB,
-                   const std::vector <idx>& dims)
+                   const std::vector<idx>& subsysA,
+                   const std::vector<idx>& subsysB,
+                   const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -288,27 +288,27 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
                         Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     // The full system indexes {0,1,...,n-1}
-    std::vector <idx> full_system(dims.size());
+    std::vector<idx> full_system(dims.size());
     std::iota(std::begin(full_system), std::end(full_system), 0);
 
     // Sorted input subsystems
-    std::vector <idx> subsysAsorted{subsysA};
-    std::vector <idx> subsysBsorted{subsysB};
+    std::vector<idx> subsysAsorted{subsysA};
+    std::vector<idx> subsysBsorted{subsysB};
 
     // sort the input subsystems (as needed by std::set_union)
     std::sort(std::begin(subsysAsorted), std::end(subsysAsorted));
     std::sort(std::begin(subsysBsorted), std::end(subsysBsorted));
 
     // construct the union of A and B
-    std::vector <idx> subsysAB;
+    std::vector<idx> subsysAB;
     std::set_union(std::begin(subsysAsorted), std::end(subsysAsorted),
                    std::begin(subsysBsorted), std::end(subsysBsorted),
                    std::back_inserter(subsysAB));
 
     // construct the complements
-    std::vector <idx> subsysAbar = complement(subsysA, dims.size());
-    std::vector <idx> subsysBbar = complement(subsysB, dims.size());;
-    std::vector <idx> subsysABbar = complement(subsysAB, dims.size());
+    std::vector<idx> subsysAbar = complement(subsysA, dims.size());
+    std::vector<idx> subsysBbar = complement(subsysB, dims.size());;
+    std::vector<idx> subsysABbar = complement(subsysAB, dims.size());
 
     cmat rhoA = ptrace(rA, subsysAbar, dims);
     cmat rhoB = ptrace(rA, subsysBbar, dims);
@@ -328,8 +328,8 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
-                   const std::vector <idx>& subsysA,
-                   const std::vector <idx>& subsysB,
+                   const std::vector<idx>& subsysA,
+                   const std::vector<idx>& subsysB,
                    idx d = 2)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
@@ -343,7 +343,7 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
                                           std::log2(d)));
-    std::vector <idx> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return qmutualinfo(rA, subsysA, subsysB, dims);
 }

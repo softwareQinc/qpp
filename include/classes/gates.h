@@ -99,7 +99,7 @@ public:
     * \param n 3-dimensional real unit vector
     * \return Rotation gate
     */
-    cmat Rn(double theta, const std::vector <double>& n) const
+    cmat Rn(double theta, const std::vector<double>& n) const
     {
         // check 3-dimensional vector
         if (n.size() != 3)
@@ -210,8 +210,8 @@ public:
     */
     template<typename Derived>
     dyn_mat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived>& A,
-                                           const std::vector <idx>& ctrl,
-                                           const std::vector <idx>& subsys,
+                                           const std::vector<idx>& ctrl,
+                                           const std::vector<idx>& subsys,
                                            idx n, idx d = 2) const
     {
         const dyn_mat<typename Derived::Scalar>& rA = A;
@@ -243,12 +243,12 @@ public:
                             Exception::Type::DIMS_INVALID);
 
         // ctrl + gate subsystem vector
-        std::vector <idx> ctrlgate = ctrl;
+        std::vector<idx> ctrlgate = ctrl;
         ctrlgate.insert(std::end(ctrlgate), std::begin(subsys),
                         std::end(subsys));
         std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
-        std::vector <idx> dims(n, d); // local dimensions vector
+        std::vector<idx> dims(n, d); // local dimensions vector
 
         // check that ctrl + gate subsystem is valid
         // with respect to local dimensions
@@ -284,7 +284,7 @@ public:
                 std::llround(std::pow(d, nsubsys_bar)));
 
         // compute the complementary subsystem of ctrlgate w.r.t. dims
-        std::vector <idx> subsys_bar = complement(ctrlgate, n);
+        std::vector<idx> subsys_bar = complement(ctrlgate, n);
         std::copy(std::begin(subsys_bar), std::end(subsys_bar),
                   std::begin(Csubsys_bar));
 
@@ -380,7 +380,7 @@ public:
     template<typename Derived>
     dyn_mat<typename Derived::Scalar> expandout(
             const Eigen::MatrixBase<Derived>& A, idx pos,
-            const std::vector <idx>& dims) const
+            const std::vector<idx>& dims) const
     {
         const dyn_mat<typename Derived::Scalar>& rA = A;
 

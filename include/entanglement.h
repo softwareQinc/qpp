@@ -44,7 +44,7 @@ namespace qpp
 */
 template<typename Derived>
 dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
-                                   const std::vector <idx>& dims)
+                                   const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -75,7 +75,7 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
-              const std::vector <idx>& dims)
+              const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -106,7 +106,7 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
-              const std::vector <idx>& dims)
+              const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -141,8 +141,8 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
 * \return Real vector consisting of the Schmidt probabilites of \a A
 */
 template<typename Derived>
-std::vector <double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
-                                  const std::vector <idx>& dims)
+std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
+                                  const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -160,7 +160,7 @@ std::vector <double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::schmidtprobs()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
 
-    std::vector <double> result;
+    std::vector<double> result;
     dyn_col_vect<double> scf = schmidtcoeffs(rA, dims);
     for (idx i = 0; i < static_cast<idx>(scf.rows()); ++i)
         result.push_back(std::pow(scf(i), 2));
@@ -181,7 +181,7 @@ std::vector <double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 double entanglement(const Eigen::MatrixBase<Derived>& A,
-                    const std::vector <idx>& dims)
+                    const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -247,7 +247,7 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 */
 template<typename Derived>
 double negativity(const Eigen::MatrixBase<Derived>& A,
-                  const std::vector <idx>& dims)
+                  const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -277,7 +277,7 @@ double negativity(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 double lognegativity(const Eigen::MatrixBase<Derived>& A,
-                     const std::vector <idx>& dims)
+                     const std::vector<idx>& dims)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
     // check zero-size
@@ -326,7 +326,7 @@ double concurrence(const Eigen::MatrixBase<Derived>& A)
             evals(rA * kron(sigmaY, sigmaY) * conjugate(rA)
                   * kron(sigmaY, sigmaY)).real();
 
-    std::vector <double> lambdas_sorted(lambdas.data(),
+    std::vector<double> lambdas_sorted(lambdas.data(),
                                         lambdas.data() + lambdas.size());
 
     std::sort(std::begin(lambdas_sorted), std::end(lambdas_sorted),

@@ -41,9 +41,9 @@ namespace qpp
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
 
-measure(const Eigen::MatrixBase<Derived>& A, const std::vector <cmat>& Ks)
+measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
@@ -66,9 +66,9 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector <cmat>& Ks)
     // END EXCEPTION CHECKS
 
     // probabilities
-    std::vector <double> prob(Ks.size());
+    std::vector<double> prob(Ks.size());
     // resulting states
-    std::vector <cmat> outstates(Ks.size());
+    std::vector<cmat> outstates(Ks.size());
 
     //************ density matrix ************//
     if (internal::_check_square_mat(rA)) // square matrix
@@ -120,7 +120,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector <cmat>& Ks)
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
 
 measure(const Eigen::MatrixBase<Derived>& A,
         const std::initializer_list<cmat>& Ks)
@@ -139,7 +139,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
 
 measure(const Eigen::MatrixBase<Derived>& A, const cmat& U)
 {
@@ -160,7 +160,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U)
                         Exception::Type::DIMS_MISMATCH_MATRIX);
     // END EXCEPTION CHECKS
 
-    std::vector <cmat> Ks(U.rows());
+    std::vector<cmat> Ks(U.rows());
     for (idx i = 0; i < static_cast<idx>(U.rows()); i++)
         Ks[i] = U.col(i) * adjoint(U.col(i));
 
@@ -186,12 +186,12 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U)
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
 
 measure(const Eigen::MatrixBase<Derived>& A,
-        const std::vector <cmat>& Ks,
-        const std::vector <idx>& subsys,
-        const std::vector <idx>& dims)
+        const std::vector<cmat>& Ks,
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
 {
     const cmat& rA = A;
 
@@ -215,7 +215,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::measure()",
                         Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-    std::vector <idx> subsys_dims(subsys.size());
+    std::vector<idx> subsys_dims(subsys.size());
     for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
 
@@ -240,9 +240,9 @@ measure(const Eigen::MatrixBase<Derived>& A,
     // END EXCEPTION CHECKS
 
     // probabilities
-    std::vector <double> prob(Ks.size());
+    std::vector<double> prob(Ks.size());
     // resulting states
-    std::vector <cmat> outstates(Ks.size());
+    std::vector<cmat> outstates(Ks.size());
 
     //************ density matrix ************//
     if (internal::_check_square_mat(rA)) // square matrix
@@ -311,12 +311,12 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
 
 measure(const Eigen::MatrixBase<Derived>& A,
         const std::initializer_list<cmat>& Ks,
-        const std::vector <idx>& subsys,
-        const std::vector <idx>& dims)
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
 {
     return measure(A, std::vector<cmat>(Ks), subsys, dims);
 }
@@ -339,11 +339,11 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
 
 measure(const Eigen::MatrixBase<Derived>& A,
-        const std::vector <cmat>& Ks,
-        const std::vector <idx>& subsys,
+        const std::vector<cmat>& Ks,
+        const std::vector<idx>& subsys,
         const idx d = 2)
 {
     const cmat& rA = A;
@@ -355,7 +355,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
                                           std::log2(d)));
-    std::vector <idx> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return measure(rA, Ks, subsys, dims);
 }
@@ -381,11 +381,11 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
 
 measure(const Eigen::MatrixBase<Derived>& A,
         const std::initializer_list<cmat>& Ks,
-        const std::vector <idx>& subsys,
+        const std::vector<idx>& subsys,
         const idx d = 2)
 {
     return measure(A, std::vector<cmat>(Ks), subsys, d);
@@ -409,12 +409,12 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
 
 measure(const Eigen::MatrixBase<Derived>& A,
         const cmat& U,
-        const std::vector <idx>& subsys,
-        const std::vector <idx>& dims)
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
 {
     const cmat& rA = A;
 
@@ -438,7 +438,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::measure()",
                         Exception::Type::SUBSYS_MISMATCH_DIMS);
 
-    std::vector <idx> subsys_dims(subsys.size());
+    std::vector<idx> subsys_dims(subsys.size());
     for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
 
@@ -454,7 +454,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
                         Exception::Type::DIMS_MISMATCH_MATRIX);
     // END EXCEPTION CHECKS
 
-    std::vector <cmat> Ks(U.rows());
+    std::vector<cmat> Ks(U.rows());
     for (idx i = 0; i < static_cast<idx>(U.rows()); i++)
         Ks[i] = U.col(i) * adjoint(U.col(i));
 
@@ -479,11 +479,11 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * normalized states
 */
 template<typename Derived>
-std::tuple<idx, std::vector < double>, std::vector<cmat>>
+std::tuple<idx, std::vector<double>, std::vector<cmat>>
 
 measure(const Eigen::MatrixBase<Derived>& A,
         const cmat& U,
-        const std::vector <idx>& subsys,
+        const std::vector<idx>& subsys,
         const idx d = 2)
 {
     const cmat& rA = A;
@@ -495,7 +495,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
                                           std::log2(d)));
-    std::vector <idx> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return measure(rA, U, subsys, dims);
 }
@@ -515,11 +515,11 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * Outcome probability, and 3. Post-measurement normalized state
 */
 template<typename Derived>
-std::tuple<std::vector < idx>, double, cmat>
+std::tuple<std::vector<idx>, double, cmat>
 
 measure_seq(const Eigen::MatrixBase<Derived>& A,
-            std::vector <idx> subsys,
-            std::vector <idx> dims)
+            std::vector<idx> subsys,
+            std::vector<idx> dims)
 {
     dyn_mat<typename Derived::Scalar> cA = A;
 
@@ -545,7 +545,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
 
     // END EXCEPTION CHECKS
 
-    std::vector <idx> result;
+    std::vector<idx> result;
     double prob = 1;
 
     // sort subsys in decreasing order,
@@ -592,10 +592,10 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
 * Outcome probability, and 3. Post-measurement normalized state
 */
 template<typename Derived>
-std::tuple<std::vector < idx>, double, cmat>
+std::tuple<std::vector<idx>, double, cmat>
 
 measure_seq(const Eigen::MatrixBase<Derived>& A,
-            std::vector <idx> subsys, idx d = 2)
+            std::vector<idx> subsys, idx d = 2)
 {
     const cmat& rA = A;
 
@@ -606,7 +606,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
                                           std::log2(d)));
-    std::vector <idx> dims(n, d); // local dimensions vector
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return measure_seq(rA, subsys, dims);
 }

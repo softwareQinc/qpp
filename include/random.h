@@ -367,14 +367,14 @@ inline cmat randV(idx Din, idx Dout)
 * \param D Dimension of the Hilbert space
 * \return Set of \a N Kraus operators satisfying the closure condition
 */
-inline std::vector <cmat> randkraus(idx N, idx D)
+inline std::vector<cmat> randkraus(idx N, idx D)
 {
     if (N == 0)
         throw Exception("qpp::randkraus()", Exception::Type::OUT_OF_RANGE);
     if (D == 0)
         throw Exception("qpp::randkraus()", Exception::Type::DIMS_INVALID);
 
-    std::vector <cmat> result(N);
+    std::vector<cmat> result(N);
     for (idx i = 0; i < N; ++i)
         result[i] = cmat::Zero(D, D);
 
@@ -455,12 +455,12 @@ inline cmat randrho(idx D)
 * \param n Size of the permutation
 * \return Random permutation of size \a n
 */
-inline std::vector <idx> randperm(idx n)
+inline std::vector<idx> randperm(idx n)
 {
     if (n == 0)
         throw Exception("qpp::randperm()", Exception::Type::PERM_INVALID);
 
-    std::vector <idx> result(n);
+    std::vector<idx> result(n);
 
     // fill in increasing order
     std::iota(std::begin(result), std::end(result), 0);

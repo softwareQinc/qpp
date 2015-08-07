@@ -42,12 +42,12 @@ namespace qpp
 * of \a x. If there are \a m less than \a n terms in the expansion,
 * a shorter vector with \a m components is returned.
 */
-inline std::vector <int> x2contfrac(double x, idx n, idx cut = 1e5)
+inline std::vector<int> x2contfrac(double x, idx n, idx cut = 1e5)
 {
     if (n == 0)
         throw Exception("qpp::x2contfrac()", Exception::Type::OUT_OF_RANGE);
 
-    std::vector <int> result;
+    std::vector<int> result;
 
     for (idx i = 0; i < n; ++i)
     {
@@ -70,7 +70,7 @@ inline std::vector <int> x2contfrac(double x, idx n, idx cut = 1e5)
 * are considered.
 * \return Real representation of the simple continued fraction
 */
-inline double contfrac2x(const std::vector <int>& cf, idx n)
+inline double contfrac2x(const std::vector<int>& cf, idx n)
 {
     if (cf.size() == 0)
         throw Exception("qpp::contfrac2x()", Exception::Type::ZERO_SIZE);
@@ -100,7 +100,7 @@ inline double contfrac2x(const std::vector <int>& cf, idx n)
 * \param cf Integer vector containing the simple continued fraction expansion
 * \return Real representation of the simple continued fraction
 */
-inline double contfrac2x(const std::vector <int>& cf)
+inline double contfrac2x(const std::vector<int>& cf)
 {
     if (cf.size() == 0)
         throw Exception("qpp::contfrac2x()", Exception::Type::ZERO_SIZE);
@@ -151,7 +151,7 @@ inline ubigint gcd(ubigint m, ubigint n)
 * \param ns List of non-negative integers
 * \return Greatest common divisor of all numbers in \a ns
 */
-inline ubigint gcd(const std::vector <ubigint>& ns)
+inline ubigint gcd(const std::vector<ubigint>& ns)
 {
     if (ns.size() == 0)
         throw Exception("qpp::gcd()", Exception::Type::ZERO_SIZE);
@@ -188,7 +188,7 @@ inline ubigint lcm(ubigint m, ubigint n)
 * \param ns List of positive integers
 * \return Least common multiple of all numbers in \a ns
 */
-inline ubigint lcm(const std::vector <ubigint>& ns)
+inline ubigint lcm(const std::vector<ubigint>& ns)
 {
     if (ns.size() == 0)
         throw Exception("qpp::lcm()", Exception::Type::ZERO_SIZE);
@@ -214,13 +214,13 @@ inline ubigint lcm(const std::vector <ubigint>& ns)
 * \param perm Permutation
 * \return Inverse of the permutation \a perm
 */
-inline std::vector <idx> invperm(const std::vector <idx>& perm)
+inline std::vector<idx> invperm(const std::vector<idx>& perm)
 {
     if (!internal::_check_perm(perm))
         throw Exception("qpp::invperm()", Exception::Type::PERM_INVALID);
 
     // construct the inverse
-    std::vector <idx> result(perm.size());
+    std::vector<idx> result(perm.size());
     for (idx i = 0; i < perm.size(); ++i)
         result[perm[i]] = i;
 
@@ -235,8 +235,8 @@ inline std::vector <idx> invperm(const std::vector <idx>& perm)
 * \return Composition of the permutations \a perm \f$\circ\f$ \a sigma
 *  = perm(sigma)
 */
-inline std::vector <idx> compperm(const std::vector <idx>& perm,
-                                  const std::vector <idx>& sigma)
+inline std::vector<idx> compperm(const std::vector<idx>& perm,
+                                  const std::vector<idx>& sigma)
 {
     if (!internal::_check_perm(perm))
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
@@ -246,7 +246,7 @@ inline std::vector <idx> compperm(const std::vector <idx>& perm,
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
 
     // construct the composition perm(sigma)
-    std::vector <idx> result(perm.size());
+    std::vector<idx> result(perm.size());
     for (idx i = 0; i < perm.size(); ++i)
         result[i] = perm[sigma[i]];
 
@@ -261,12 +261,12 @@ inline std::vector <idx> compperm(const std::vector <idx>& perm,
 * \param n Integer strictly greater than 1
 * \return Integer vector containing the factors
 */
-inline std::vector <ubigint> factors(ubigint n)
+inline std::vector<ubigint> factors(ubigint n)
 {
     if (n == 0 || n == 1)
         throw Exception("qpp::factors()", Exception::Type::OUT_OF_RANGE);
 
-    std::vector <ubigint> result;
+    std::vector<ubigint> result;
     ubigint d = 2;
 
     while (n > 1)
@@ -303,7 +303,7 @@ inline bool isprime(ubigint n)
     if (n == 0 or n == 1)
         throw Exception("qpp::isprime()", Exception::Type::OUT_OF_RANGE);
 
-    std::vector <ubigint> facts = factors(n);
+    std::vector<ubigint> facts = factors(n);
 
     if (facts.size() == 1)
         return true;

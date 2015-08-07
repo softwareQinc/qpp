@@ -265,14 +265,14 @@ $(document).ready(function(){initNavTree('random_8h_source.html','');});
 <div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a9243d9d697e5718a95d9743d2ff131dc">randU</a>(Dout).block(0, 0, Dout, Din);</div>
 <div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;}</div>
 <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;</div>
-<div class="line"><a name="l00370"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a783ca89e0e036359f768b4d56f89d83b">  370</a></span>&#160;<span class="keyword">inline</span> std::vector &lt;cmat&gt; <a class="code" href="namespaceqpp.html#a783ca89e0e036359f768b4d56f89d83b">randkraus</a>(<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D)</div>
+<div class="line"><a name="l00370"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a783ca89e0e036359f768b4d56f89d83b">  370</a></span>&#160;<span class="keyword">inline</span> std::vector&lt;cmat&gt; <a class="code" href="namespaceqpp.html#a783ca89e0e036359f768b4d56f89d83b">randkraus</a>(<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D)</div>
 <div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;{</div>
 <div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <span class="keywordflow">if</span> (N == 0)</div>
 <div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::randkraus()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
 <div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <span class="keywordflow">if</span> (D == 0)</div>
 <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::randkraus()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    std::vector &lt;cmat&gt; result(N);</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    std::vector&lt;cmat&gt; result(N);</div>
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; N; ++i)</div>
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        result[i] = cmat::Zero(D, D);</div>
 <div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;</div>
@@ -326,12 +326,12 @@ $(document).ready(function(){initNavTree('random_8h_source.html','');});
 <div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;    <span class="keywordflow">return</span> result / <a class="code" href="namespaceqpp.html#a1e1daff5450728504da1fdfedf8d8b54">trace</a>(result);</div>
 <div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;}</div>
 <div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;</div>
-<div class="line"><a name="l00458"></a><span class="lineno"><a class="line" href="namespaceqpp.html#afaecc4713bdcb1767b3188aa495ecd0b">  458</a></span>&#160;<span class="keyword">inline</span> std::vector &lt;idx&gt; <a class="code" href="namespaceqpp.html#afaecc4713bdcb1767b3188aa495ecd0b">randperm</a>(<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n)</div>
+<div class="line"><a name="l00458"></a><span class="lineno"><a class="line" href="namespaceqpp.html#afaecc4713bdcb1767b3188aa495ecd0b">  458</a></span>&#160;<span class="keyword">inline</span> std::vector&lt;idx&gt; <a class="code" href="namespaceqpp.html#afaecc4713bdcb1767b3188aa495ecd0b">randperm</a>(<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n)</div>
 <div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;{</div>
 <div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;    <span class="keywordflow">if</span> (n == 0)</div>
 <div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::randperm()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca97c98bf66b3a4ad201dceb1f5ef5417f">Exception::Type::PERM_INVALID</a>);</div>
 <div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;    std::vector &lt;idx&gt; result(n);</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;    std::vector&lt;idx&gt; result(n);</div>
 <div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;</div>
 <div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;    <span class="comment">// fill in increasing order</span></div>
 <div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;    std::iota(std::begin(result), std::end(result), 0);</div>
@@ -387,7 +387,7 @@ $(document).ready(function(){initNavTree('random_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="random_8h.html">random.h</a></li>
-    <li class="footer">Generated on Mon Jun 15 2015 18:18:03 for Quantum++ by
+    <li class="footer">Generated on Fri Aug 7 2015 02:43:13 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
