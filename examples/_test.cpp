@@ -7,8 +7,9 @@ using std::cout;
 using std::endl;
 
 // TODO: circuit description language, load/save from/to file
+// TODO: measure pure state (full Hilbert space)
 
 int main()
 {
-
+    std::cout << disp(gt.T*gt.T) << std::endl;
 }
