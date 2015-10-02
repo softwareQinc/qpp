@@ -27,7 +27,7 @@
 
 using namespace qpp;
 
-// TODO: write your unit tests here
+// Write your unit tests here. Some examples are provided below.
 
 // ********** qpp::sum() **********
 TEST(qpp_sum_test, PositiveNumbers)

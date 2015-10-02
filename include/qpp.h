@@ -153,3 +153,8 @@ static RandomDevices& rdevs = RandomDevices::get_instance();
 } /* namespace qpp */
 
 #endif  /* QPP_H_ */
+
+// TODO: circuit description language, load/save from/to file
+// TODO: measure pure state
+// TODO: check that all functions are either templates or marked inline
+// TODO: write a Matrix_view class, for multi-index lazy evaluation view
