@@ -7,9 +7,18 @@ using std::cout;
 using std::endl;
 
 // TODO: circuit description language, load/save from/to file
-// TODO: measure pure state (full Hilbert space)
+// TODO: measure pure state
+// TODO: check that all functions are either templates or marked inline
 
 int main()
 {
-    std::cout << disp(gt.T*gt.T) << std::endl;
+    ket psi = st.b00;
+    auto meas = experimental::_measure(psi, gt.Id2, {0}, {2, 2});
+    auto m = std::get<0>(meas);
+    auto probs = std::get<1>(meas);
+    auto outs = std::get<2>(meas);
+
+    std::cout << m << std::endl;
+    std::cout << disp(probs, " ") << std::endl << std::endl;
+    std::cout << disp(outs[0]) << std::endl << std::endl << disp(outs[1]);
 }
