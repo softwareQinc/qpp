@@ -161,7 +161,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U)
     // END EXCEPTION CHECKS
 
     std::vector<cmat> Ks(U.rows());
-    for (idx i = 0; i < static_cast<idx>(U.rows()); i++)
+    for (idx i = 0; i < static_cast<idx>(U.rows()); ++i)
         Ks[i] = U.col(i) * adjoint(U.col(i));
 
     return measure(rA, Ks);
@@ -455,7 +455,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
     // END EXCEPTION CHECKS
 
     std::vector<cmat> Ks(U.rows());
-    for (idx i = 0; i < static_cast<idx>(U.rows()); i++)
+    for (idx i = 0; i < static_cast<idx>(U.rows()); ++i)
         Ks[i] = U.col(i) * adjoint(U.col(i));
 
     return measure(rA, Ks, subsys, dims);

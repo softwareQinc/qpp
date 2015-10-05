@@ -24,8 +24,8 @@
 * \brief Experimental/test functions/classes
 */
 
-#ifndef EXPERIMENTAL_TEST_H_
-#define EXPERIMENTAL_TEST_H_
+#ifndef EXPERIMENTAL_EXPERIMENTAL_H_
+#define EXPERIMENTAL_EXPERIMENTAL_H_
 
 namespace qpp
 {
@@ -39,16 +39,17 @@ namespace experimental
 /**
 * \brief Measures the part \a subsys of
 * the multi-partite state vector or density matrix \a A
-* in the orthonormal basis specified by the unitary matrix \a U
+* in the orthonormal basis or rank-1 POVM specified by the matrix \a V
 * \see qpp::measure_seq()
 *
-* \note The dimension of \a U must match the dimension of \a subsys.
+* \note The dimension of \a V must match the dimension of \a subsys.
 * The measurement is destructive, i.e. the measured subsystems are traced away.
 *
 * \param A Eigen expression
 * \param subsys Subsystem indexes that are measured
 * \param dims Dimensions of the multi-partite system
-* \param U Unitary matrix whose columns represent the measurement basis vectors
+* \param V Matrix whose columns represent the measurement basis vectors or the
+* bra parts of the rank-1 POVM
 * \return Tuple of: 1. Result of the measurement, 2.
 * Vector of outcome probabilities, and 3. Vector of post-measurement
 * normalized states
@@ -57,7 +58,7 @@ template<typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 
 _measure(const Eigen::MatrixBase<Derived>& A,
-        const cmat& U,
+        const cmat& V,
         const std::vector<idx>& subsys,
         const std::vector<idx>& dims)
 {
@@ -73,11 +74,6 @@ _measure(const Eigen::MatrixBase<Derived>& A,
     if (!internal::_check_dims(dims))
         throw Exception("qpp::measure()", Exception::Type::DIMS_INVALID);
 
-    // check that dims match rho matrix
-    if (!internal::_check_dims_match_mat(dims, rA))
-        throw Exception("qpp::measure()",
-                        Exception::Type::DIMS_MISMATCH_MATRIX);
-
     // check subsys is valid w.r.t. dims
     if (!internal::_check_subsys_match_dims(subsys, dims))
         throw Exception("qpp::measure()",
@@ -89,38 +85,83 @@ _measure(const Eigen::MatrixBase<Derived>& A,
 
     idx Dsubsys = prod(std::begin(subsys_dims), std::end(subsys_dims));
 
-    // check the unitary basis matrix U
-    if (!internal::_check_nonzero_size(U))
+    // check the matrix V
+    if (!internal::_check_nonzero_size(V))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
-    if (!internal::_check_square_mat(U))
-        throw Exception("qpp::measure()", Exception::Type::MATRIX_NOT_SQUARE);
-    if (Dsubsys != static_cast<idx>(U.rows()))
+//    if (!internal::_check_square_mat(U))
+//        throw Exception("qpp::measure()", Exception::Type::MATRIX_NOT_SQUARE);
+    if (Dsubsys != static_cast<idx>(V.rows()))
         throw Exception("qpp::measure()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
     // END EXCEPTION CHECKS
 
-    // TODO: or modify this!!! (and document U in case of rank-one POVMs)
+    // number of basis (rank-1 POVM) elements
+    idx N = static_cast<idx>(V.cols());
 
-    std::vector<cmat> Ks(U.rows());
-    for (idx i = 0; i < static_cast<idx>(U.rows()); i++)
-        Ks[i] = U.col(i) * adjoint(U.col(i));
+    // TODO: modify this!!! (and document U in case of rank-one POVMs)
+    //************ ket ************//
+    if(internal::_check_cvector(rA))
+    {
+        PRINTLN("Ket");
+        // check that dims match state vector
+        if (!internal::_check_dims_match_cvect(dims, rA))
+            throw Exception("qpp::measure()",
+                            Exception::Type::DIMS_MISMATCH_CVECTOR);
 
-    return measure(rA, Ks, subsys, dims);
+        // probabilities
+        std::vector<double> prob(N);
+        // resulting states
+        std::vector<cmat> outstates(N);
+
+        std::vector<ket> phi(N); // basis (rank-1 POVM) elements
+        for (idx i = 0; i < N; ++i)
+            phi[i] = V.col(i);
+
+
+
+
+
+        // sample from the probability distribution
+        std::discrete_distribution<idx> dd(std::begin(prob),
+                                           std::end(prob));
+        idx result = dd(RandomDevices::get_instance()._rng);
+
+        return std::make_tuple(result, prob, outstates);
+    }
+    //************ density matrix ************//
+    else if(internal::_check_square_mat(rA))
+    {
+        PRINTLN("Matrix");
+        // check that dims match rho matrix
+        if (!internal::_check_dims_match_mat(dims, rA))
+            throw Exception("qpp::measure()",
+                            Exception::Type::DIMS_MISMATCH_MATRIX);
+
+        std::vector<cmat> Ks(N);
+        for (idx i = 0; i < N; ++i)
+            Ks[i] = V.col(i) * adjoint(V.col(i));
+
+        return measure(rA, Ks, subsys, dims);
+    }
+    //************ Exception: not ket nor density matrix ************//
+    throw Exception("qpp::measure()",
+                    Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 }
 
 /**
 * \brief Measures the part \a subsys of
-* the multi-partite state vector or density matrix \a A\ in the orthonormal
-* basis specified by the unitary matrix \a U
+* the multi-partite state vector or density matrix \a A
+* in the orthonormal basis or rank-1 POVM specified by the matrix \a V
 * \see qpp::measure_seq()
 *
-* \note The dimension of \a U must match the dimension of \a subsys.
+* \note The dimension of \a V must match the dimension of \a subsys.
 * The measurement is destructive, i.e. the measured subsystems are traced away.
 *
 * \param A Eigen expression
 * \param subsys Subsystem indexes that are measured
 * \param d Subsystem dimensions
-* \param U Unitary matrix whose columns represent the measurement basis vectors
+* \param V Matrix whose columns represent the measurement basis vectors or the
+* bra parts of the rank-1 POVM
 * \return Tuple of: 1. Result of the measurement, 2.
 * Vector of outcome probabilities, and 3. Vector of post-measurement
 * normalized states
@@ -129,7 +170,7 @@ template<typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 
 _measure(const Eigen::MatrixBase<Derived>& A,
-        const cmat& U,
+        const cmat& V,
         const std::vector<idx>& subsys,
         const idx d = 2)
 {
@@ -144,7 +185,7 @@ _measure(const Eigen::MatrixBase<Derived>& A,
                                           std::log2(d)));
     std::vector<idx> dims(n, d); // local dimensions vector
 
-    return _measure(rA, U, subsys, dims);
+    return _measure(rA, V, subsys, dims);
 }
 
 /**
@@ -262,4 +303,4 @@ _measure_seq(const Eigen::MatrixBase<Derived>& A,
 } /* namespace experimental */
 } /* namespace qpp */
 
-#endif /* EXPERIMENTAL_TEST_H_ */
+#endif /* EXPERIMENTAL_EXPERIMENTAL_H_ */
