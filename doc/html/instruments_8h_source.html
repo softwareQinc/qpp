@@ -48,6 +48,7 @@
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
+      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -200,7 +201,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    std::vector&lt;cmat&gt; Ks(U.rows());</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(U.rows()); i++)</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(U.rows()); ++i)</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        Ks[i] = U.col(i) * <a class="code" href="namespaceqpp.html#aba2b3538ec37539e56f77addfb9ea1dd">adjoint</a>(U.col(i));</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a65da96cadec88fbbb3cc70b0a82fa90c">measure</a>(rA, Ks);</div>
@@ -409,7 +410,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;</div>
 <div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    std::vector&lt;cmat&gt; Ks(U.rows());</div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(U.rows()); i++)</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(U.rows()); ++i)</div>
 <div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;        Ks[i] = U.col(i) * <a class="code" href="namespaceqpp.html#aba2b3538ec37539e56f77addfb9ea1dd">adjoint</a>(U.col(i));</div>
 <div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;</div>
 <div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a65da96cadec88fbbb3cc70b0a82fa90c">measure</a>(rA, Ks, subsys, dims);</div>
@@ -558,7 +559,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="instruments_8h.html">instruments.h</a></li>
-    <li class="footer">Generated on Fri Aug 7 2015 14:03:19 for Quantum++ by
+    <li class="footer">Generated on Mon Oct 5 2015 11:50:42 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

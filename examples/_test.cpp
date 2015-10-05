@@ -22,10 +22,4 @@ int main()
     std::cout << m << std::endl;
     std::cout << disp(probs, " ") << std::endl << std::endl;
     std::cout << disp(outs[0]) << std::endl << std::endl << disp(outs[1]);
-
-
-    dmat a(2,2);
-    a<< 1,2,3,4;
-    ket b = a;
-    std::cout << b;
 }

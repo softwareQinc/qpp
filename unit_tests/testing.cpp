@@ -23,7 +23,7 @@
 
 #include <qpp.h>
 // #include <MATLAB/matlab.h> // support for MATLAB
-// #include <experimental/experimental.h> // support for testing features
+// #include <experimental/experimental.h> // support for experimental features
 
 using namespace qpp;
 
