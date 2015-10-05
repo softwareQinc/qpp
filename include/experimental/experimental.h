@@ -20,7 +20,7 @@
  */
 
 /**
-* \file experimental/test.h
+* \file experimental/experimental.h
 * \brief Experimental/test functions/classes
 */
 
