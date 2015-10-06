@@ -11,6 +11,7 @@ using std::endl;
 // TODO: modify measure_seq (if necessary)
 // TODO: check that all functions are either templates or marked inline
 // TODO: modify the pure-states examples accordingly
+// TODO: check normalization in measure functions
 // TODO: add a duration-outputting member function to Timer
 
 // Future work
@@ -20,8 +21,11 @@ using std::endl;
 int main()
 {
     auto psi = st.GHZ;
-    auto subsys{std::vector<idx>{0, 1}};
-    auto V = gt.Id(4);
+    auto subsys{std::vector<idx>{0}};
+    cmat Ybasis{2,2};
+    Ybasis << 1, 1, 1_i, - 1_i;
+    Ybasis /= std::sqrt(2);
+    auto V = Ybasis;
 
     // Testing experimental::_measure()
     {
@@ -36,12 +40,12 @@ int main()
         std::cout << "Subsystems: " << disp(subsys, " ") << std::endl;
         std::cout << "Measurement matrix: \n";
         std::cout << disp(V) << std::endl;
-        std::cout << "Result: " << m << std::endl;
         std::cout << "Probabilities: " << disp(probs, " ") << std::endl;
         std::cout << "Possible output states: \n";
         for (auto&& elem: outs)
             std::cout << disp(elem) << std::endl << std::endl;
-        std::cout << "Output result: \n";
+        std::cout << "Result: " << m << std::endl;
+        std::cout << "Output state: \n";
         std::cout << disp(outs[0]) << std::endl << std::endl;
     }
 
@@ -60,6 +64,6 @@ int main()
         std::cout << disp(V) << std::endl;
         std::cout << "Results: " << disp(results, " ") << std::endl;
         std::cout << "Probability: " << prob << std::endl;
-        std::cout << "Output result: \n" << disp(out);
+        std::cout << "Output state: \n" << disp(out);
     }
 }
