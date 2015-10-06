@@ -47,7 +47,7 @@ int main()
                         powm(adjoint(gt.Xd(D)), midx[1]);
     // apply correction on B
     cout << ">> Bob must apply the correction operator Z^" << midx[0]
-        << " X^" << D - midx[1] << endl;
+        << " X^" << (D - midx[1]) % D << endl;
     ket psi_B = correction_B * output_m_B;
 
     cout << ">> Bob's final state (after correction): " << endl;
