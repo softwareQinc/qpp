@@ -306,9 +306,9 @@ public:
             CdimsA[k] = d;
         }
 
-        dyn_mat<typename Derived::Scalar> result = dyn_mat <
-                                                   typename Derived::Scalar >
-                                                   ::Identity(D, D);
+        dyn_mat<typename Derived::Scalar> result = dyn_mat<
+                typename Derived::Scalar>
+        ::Identity(D, D);
         dyn_mat<typename Derived::Scalar> Ak;
 
         // run over the complement indexes
@@ -411,9 +411,9 @@ public:
 
         idx D = std::accumulate(std::begin(dims), std::end(dims),
                                 static_cast<idx>(1), std::multiplies<idx>());
-        dyn_mat<typename Derived::Scalar> result = dyn_mat <
-                                                   typename Derived::Scalar >
-                                                   ::Identity(D, D);
+        dyn_mat<typename Derived::Scalar> result = dyn_mat<
+                typename Derived::Scalar>
+        ::Identity(D, D);
 
         idx Cdims[maxn];
         idx midx_row[maxn];

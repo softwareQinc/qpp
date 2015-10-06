@@ -72,7 +72,7 @@ inline internal::IOManipEigen disp(cplx z, double chop = qpp::chop)
 * \return Instance of qpp::internal::internal::IOManipRange
 */
 template<typename InputIterator>
-internal::IOManipRange<InputIterator> disp(InputIterator first,
+internal::IOManipRange <InputIterator> disp(InputIterator first,
                                             InputIterator last,
                                             const std::string& separator,
                                             const std::string& start = "[",

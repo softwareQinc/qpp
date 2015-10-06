@@ -242,14 +242,13 @@ measure(const Eigen::MatrixBase<Derived>& A,
     // probabilities
     std::vector<double> prob(Ks.size());
     // resulting states
-    std::vector<cmat> outstates(Ks.size());
+    std::vector<cmat> outstates(Ks.size(), cmat::Zero(Dbar, Dbar));
 
     //************ density matrix ************//
     if (internal::_check_square_mat(rA)) // square matrix
     {
         for (idx i = 0; i < Ks.size(); ++i)
         {
-            outstates[i] = cmat::Zero(Dbar, Dbar);
             cmat tmp = apply(rA, Ks[i], subsys, dims);
             tmp = ptrace(tmp, subsys, dims);
             prob[i] = std::abs(trace(tmp)); // probability
@@ -266,7 +265,6 @@ measure(const Eigen::MatrixBase<Derived>& A,
     {
         for (idx i = 0; i < Ks.size(); ++i)
         {
-            outstates[i] = cmat::Zero(Dbar, Dbar);
             ket tmp = apply(rA, Ks[i], subsys, dims);
             prob[i] = std::pow(norm(tmp), 2);
             if (prob[i] > eps)

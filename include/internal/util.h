@@ -337,8 +337,8 @@ dyn_mat<typename Derived1::Scalar> _dirsum2(
     idx Brows = static_cast<idx>(rB.rows());
 
     dyn_mat<typename Derived1::Scalar> result =
-            dyn_mat < typename Derived1::Scalar > ::Zero(Arows + Brows,
-                                                         Acols + Bcols);
+            dyn_mat<typename Derived1::Scalar>::Zero(Arows + Brows,
+                                                     Acols + Bcols);
 
     result.block(0, 0, Arows, Acols) = rA;
     result.block(Arows, Acols, Brows, Bcols) = rB;

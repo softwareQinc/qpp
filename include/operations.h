@@ -917,7 +917,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
     idx DB = dims[1];
 
     dyn_mat<typename Derived::Scalar> result =
-            dyn_mat < typename Derived::Scalar > ::Zero(DB, DB);
+            dyn_mat<typename Derived::Scalar>::Zero(DB, DB);
 
     //************ ket ************//
     if (internal::_check_cvector(rA)) // we have a ket
@@ -1013,7 +1013,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
     idx DB = dims[1];
 
     dyn_mat<typename Derived::Scalar> result =
-            dyn_mat < typename Derived::Scalar > ::Zero(DA, DA);
+            dyn_mat<typename Derived::Scalar>::Zero(DA, DA);
 
     //************ ket ************//
     if (internal::_check_cvector(rA)) // we have a ket
@@ -1133,7 +1133,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     }
 
     dyn_mat<typename Derived::Scalar> result =
-            dyn_mat < typename Derived::Scalar > (dimsubsysbar, dimsubsysbar);
+            dyn_mat<typename Derived::Scalar>(dimsubsysbar, dimsubsysbar);
 
     //************ ket ************//
     if (internal::_check_cvector(rA)) // we have a ket
