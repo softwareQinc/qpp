@@ -20,17 +20,46 @@ using std::endl;
 int main()
 {
     auto psi = st.GHZ;
-    auto meas = experimental::_measure(psi, gt.Id(4), {0, 1});
-    auto m = std::get<0>(meas);
-    auto probs = std::get<1>(meas);
-    auto outs = std::get<2>(meas);
+    auto subsys{std::vector<idx>{0, 1}};
+    auto V = gt.Id(4);
 
-    std::cout << m << std::endl;
-    std::cout << disp(probs, " ") << std::endl << std::endl;
-    std::cout << disp(outs[0]) << std::endl << std::endl << disp(outs[1]);
+    // Testing experimental::_measure()
+    {
+        std::cout << ">> experimental::_measure() ***\n";
+        auto meas = experimental::_measure(psi, V, subsys);
+        auto m = std::get<0>(meas);
+        auto probs = std::get<1>(meas);
+        auto outs = std::get<2>(meas);
 
-    std::cout << std::endl << "HERE\n";
+        std::cout << "Initial state: \n";
+        std::cout << disp(psi) << std::endl;
+        std::cout << "Subsystems: " << disp(subsys, " ") << std::endl;
+        std::cout << "Measurement matrix: \n";
+        std::cout << disp(V) << std::endl;
+        std::cout << "Result: " << m << std::endl;
+        std::cout << "Probabilities: " << disp(probs, " ") << std::endl;
+        std::cout << "Possible output states: \n";
+        for (auto&& elem: outs)
+            std::cout << disp(elem) << std::endl << std::endl;
+        std::cout << "Output result: \n";
+        std::cout << disp(outs[0]) << std::endl << std::endl;
+    }
 
-    for(auto&& elem: outs)
-        std::cout << disp(elem) << std::endl << std::endl;
+    // Testing experimental::_measure_seq()
+    {
+        std::cout << std::endl << ">> experimental::_measure_seq()\n";
+        auto meas = experimental::_measure_seq(psi, subsys);
+        auto results = std::get<0>(meas);
+        auto prob = std::get<1>(meas);
+        auto out = std::get<2>(meas);
+
+        std::cout << "Initial state: \n";
+        std::cout << disp(psi) << std::endl;
+        std::cout << "Subsystems: " << disp(subsys, " ") << std::endl;
+        std::cout << "Measurement matrix: \n";
+        std::cout << disp(V) << std::endl;
+        std::cout << "Results: " << disp(results, " ") << std::endl;
+        std::cout << "Probability: " << prob << std::endl;
+        std::cout << "Output result: \n" << disp(out);
+    }
 }

@@ -177,7 +177,8 @@ _measure(const Eigen::MatrixBase<Derived>& A,
                 // compute the row index
                 idx i = internal::_multiidx2n(Cmidxrow, n, Cdims);
 
-                result += rA(i) * V.col(m)(a);
+                // TODO: check whether need adjoint(V.col(m)(a))
+                result += rA(i) * std::conj(V.col(m)(a));
             }
 
             return result;
@@ -258,7 +259,7 @@ _measure(const Eigen::MatrixBase<Derived>& A,
 
     // check zero size
     if (!internal::_check_nonzero_size(rA))
-        throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::_measure()", Exception::Type::ZERO_SIZE);
 
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
@@ -326,8 +327,10 @@ _measure_seq(const Eigen::MatrixBase<Derived>& A,
     {
         while (subsys.size() > 0)
         {
-            auto tmp = measure(cA, Gates::get_instance().Id(dims[subsys[0]]),
-                               {subsys[0]}, dims);
+            auto tmp = experimental::_measure(
+                    cA, Gates::get_instance().Id(dims[subsys[0]]),
+                    {subsys[0]}, dims
+            );
             result.push_back(std::get<0>(tmp));
             prob *= std::get<1>(tmp)[std::get<0>(tmp)];
             cA = std::get<2>(tmp)[std::get<0>(tmp)];
@@ -340,7 +343,7 @@ _measure_seq(const Eigen::MatrixBase<Derived>& A,
         std::reverse(std::begin(result), std::end(result));
     }
     else
-        throw Exception("qpp::measure_seq()",
+        throw Exception("qpp::_measure_seq()",
                         Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
 
     return std::make_tuple(result, prob, cA);
@@ -370,14 +373,14 @@ _measure_seq(const Eigen::MatrixBase<Derived>& A,
 
     // check zero size
     if (!internal::_check_nonzero_size(rA))
-        throw Exception("qpp::measure_seq()", Exception::Type::ZERO_SIZE);
+        throw Exception("qpp::_measure_seq()", Exception::Type::ZERO_SIZE);
 
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
                                           std::log2(d)));
     std::vector<idx> dims(n, d); // local dimensions vector
 
-    return measure_seq(rA, subsys, dims);
+    return experimental::_measure_seq(rA, subsys, dims);
 }
 
 } /* namespace experimental */
