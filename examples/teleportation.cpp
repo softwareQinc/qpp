@@ -5,6 +5,9 @@ using namespace qpp;
 using std::cout;
 using std::endl;
 
+#include <experimental/experimental.h>
+using namespace experimental;
+
 int main()
 {
     idx D = 3; // size of the system
@@ -28,7 +31,7 @@ int main()
     ket output_aAB = apply(input_aAB, Bell_aA, {0, 1}, D);
 
     // measure on aA
-    auto measured_aA = measure(output_aAB, gt.Id(D * D), {0, 1}, D);
+    auto measured_aA = _measure(output_aAB, gt.Id(D * D), {0, 1}, D);
     idx m = std::get<0>(measured_aA); // measurement result
 
     auto midx = n2multiidx(m, {D, D});
@@ -38,18 +41,18 @@ int main()
     cout << disp(std::get<1>(measured_aA), ", ") << endl;
 
     // conditional result on B before correction
-    cmat output_m_B = std::get<2>(measured_aA)[m];
+    ket output_m_B = std::get<2>(measured_aA)[m];
     // correction operator
     cmat correction_B = powm(gt.Zd(D), midx[0]) *
                         powm(adjoint(gt.Xd(D)), midx[1]);
     // apply correction on B
     cout << ">> Bob must apply the correction operator Z^" << midx[0]
         << " X^" << D - midx[1] << endl;
-    cmat rho_B = correction_B * output_m_B * adjoint(correction_B);
+    ket psi_B = correction_B * output_m_B;
 
     cout << ">> Bob's final state (after correction): " << endl;
-    cout << disp(rho_B) << endl;
+    cout << disp(psi_B) << endl;
 
     // verification
-    cout << ">> Norm difference: " << norm(rho_B - prj(psi_a)) << endl;
+    cout << ">> Norm difference: " << norm(psi_B - psi_a) << endl;
 }

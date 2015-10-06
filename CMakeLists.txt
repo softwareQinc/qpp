@@ -8,7 +8,7 @@ ENDIF()
 
 #### modify as needed
 SET(SOURCE_FILES
-    examples/_test.cpp)
+    examples/teleportation.cpp)
 
 #### modify as needed
 SET(EIGEN "$ENV{HOME}/eigen")
