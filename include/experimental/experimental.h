@@ -187,9 +187,8 @@ _measure(const Eigen::MatrixBase<Derived>& A,
 #pragma omp parallel for collapse(2)
         for (idx i = 0; i < M; ++i)
             for (idx b = 0; b < Dbar; ++b)
-            {
                 outstates[i](b) = worker(i, b);
-            }
+
         for (idx i = 0; i < M; ++i)
         {
             double tmp = norm(outstates[i]);
