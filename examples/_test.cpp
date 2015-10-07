@@ -13,6 +13,7 @@ using std::endl;
 // TODO: modify the pure-states examples accordingly
 // TODO: check normalization in measure functions
 // TODO: add a duration-outputting member function to Timer
+// TODO: throw exception when d = 0
 
 // Future work
 // TODO: Implement a circuit description language, load/save from/to file

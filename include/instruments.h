@@ -42,7 +42,6 @@ namespace qpp
 */
 template<typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-
 measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
@@ -121,7 +120,6 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)
 */
 template<typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-
 measure(const Eigen::MatrixBase<Derived>& A,
         const std::initializer_list<cmat>& Ks)
 {
@@ -140,7 +138,6 @@ measure(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-
 measure(const Eigen::MatrixBase<Derived>& A, const cmat& U)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
@@ -187,7 +184,6 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U)
 */
 template<typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-
 measure(const Eigen::MatrixBase<Derived>& A,
         const std::vector<cmat>& Ks,
         const std::vector<idx>& subsys,
@@ -310,7 +306,6 @@ measure(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-
 measure(const Eigen::MatrixBase<Derived>& A,
         const std::initializer_list<cmat>& Ks,
         const std::vector<idx>& subsys,
@@ -338,7 +333,6 @@ measure(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-
 measure(const Eigen::MatrixBase<Derived>& A,
         const std::vector<cmat>& Ks,
         const std::vector<idx>& subsys,
@@ -380,7 +374,6 @@ measure(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-
 measure(const Eigen::MatrixBase<Derived>& A,
         const std::initializer_list<cmat>& Ks,
         const std::vector<idx>& subsys,
@@ -408,7 +401,6 @@ measure(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-
 measure(const Eigen::MatrixBase<Derived>& A,
         const cmat& U,
         const std::vector<idx>& subsys,
@@ -478,7 +470,6 @@ measure(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-
 measure(const Eigen::MatrixBase<Derived>& A,
         const cmat& U,
         const std::vector<idx>& subsys,
@@ -514,7 +505,6 @@ measure(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 std::tuple<std::vector<idx>, double, cmat>
-
 measure_seq(const Eigen::MatrixBase<Derived>& A,
             std::vector<idx> subsys,
             std::vector<idx> dims)
@@ -591,7 +581,6 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 std::tuple<std::vector<idx>, double, cmat>
-
 measure_seq(const Eigen::MatrixBase<Derived>& A,
             std::vector<idx> subsys, idx d = 2)
 {

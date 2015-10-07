@@ -284,7 +284,6 @@ _measure(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 std::tuple<std::vector<idx>, double, cmat>
-
 _measure_seq(const Eigen::MatrixBase<Derived>& A,
              std::vector<idx> subsys,
              std::vector<idx> dims)
@@ -364,9 +363,9 @@ _measure_seq(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 std::tuple<std::vector<idx>, double, cmat>
-
 _measure_seq(const Eigen::MatrixBase<Derived>& A,
-             std::vector<idx> subsys, idx d = 2)
+             std::vector<idx> subsys,
+             idx d = 2)
 {
     const cmat& rA = A;
 
@@ -380,6 +379,55 @@ _measure_seq(const Eigen::MatrixBase<Derived>& A,
     std::vector<idx> dims(n, d); // local dimensions vector
 
     return experimental::_measure_seq(rA, subsys, dims);
+}
+
+/**
+* \brief Inner product
+*
+* \param phi Column vector Eigen expression
+* \param psi Column vector Eigen expression
+* \param subsys Subsystem indexes over which \a phi is defined
+* \param dims Dimensions of the multi-partite system
+* \return The inner product \f$\langle phi|psi\rangle\f$, as a scalar or column
+* vector over the remaining Hilbert space
+*/
+template<typename Derived>
+dyn_mat<typename Derived::Scalar> ip(const dyn_col_vect <Derived>& phi,
+                                     const dyn_col_vect <Derived>& psi,
+                                     const std::vector<idx>& subsys,
+                                     const std::vector<idx>& dims)
+{
+    const dyn_col_vect<Derived>& rphi = phi;
+    const dyn_col_vect<Derived>& rpsi = psi;
+
+    // EXCEPTION CHECKS
+
+}
+
+/**
+* \brief Inner product
+*
+* \param phi Column vector Eigen expression
+* \param psi Column vector Eigen expression
+* \param subsys Subsystem indexes over which \a phi is defined
+* \param d Subsystem dimensions
+* \return The inner product \f$\langle phi|psi\rangle\f$, as a scalar or column
+* vector over the remaining Hilbert space
+*/
+template<typename Derived>
+dyn_mat<typename Derived::Scalar> ip(const dyn_col_vect <Derived>& phi,
+                                     const dyn_col_vect <Derived>& psi,
+                                     const std::vector<idx>& subsys,
+                                     idx d = 2)
+{
+    const dyn_col_vect<Derived>& rphi = phi;
+    const dyn_col_vect<Derived>& rpsi = psi;
+
+    idx n =
+            static_cast<idx>(std::llround(std::log2(rpsi.rows()) /
+                                          std::log2(d)));
+    std::vector<idx> dims(n, d); // local dimensions vector
+    return ip(phi, psi, subsys, dims);
 }
 
 } /* namespace experimental */
