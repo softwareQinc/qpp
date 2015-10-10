@@ -30,7 +30,7 @@ int main()
 
     // Testing experimental::_measure()
     {
-        cout << ">> experimental::_measure() ***\n";
+        cout << ">> experimental::_measure()\n";
         auto meas = experimental::_measure(psi, V, subsys);
         auto m = std::get<0>(meas);
         auto probs = std::get<1>(meas);
@@ -70,7 +70,7 @@ int main()
 
     // Testing experimental::ip()
     {
-        cout << endl << ">> experimental::ip() ***\n";
+        cout << endl << ">> experimental::ip()\n";
         psi = 0.8 * mket({0, 0}) + 0.6 * mket({1, 1});
         auto phi = st.y1;
         auto result = experimental::ip(phi, psi, {1});
@@ -78,6 +78,6 @@ int main()
         cout << disp(psi) << endl;
         cout << "Subsystems: " << disp(subsys, " ") << endl;
         cout << "Generalized inner product:\n";
-        cout << disp(result);
+        cout << disp(result) << endl;
     }
 }
