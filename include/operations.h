@@ -935,7 +935,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
                 sum += rA(m * DB + i) * std::conj(rA(m * DB + j));
 
             return sum;
-        };
+        }; /* end worker */
 
 #pragma omp parallel for collapse(2)
         for (idx j = 0; j < DB; ++j) // column major order for speed
@@ -960,7 +960,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
                 sum += rA(m * DB + i, m * DB + j);
 
             return sum;
-        };
+        }; /* end worker */
 
 #pragma omp parallel for collapse(2)
         for (idx j = 0; j < DB; ++j) // column major order for speed
@@ -1031,7 +1031,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
                 sum += rA(i * DB + m) * std::conj(rA(j * DB + m));
 
             return sum;
-        };
+        }; /* end worker */
 
 #pragma omp parallel for collapse(2)
         for (idx j = 0; j < DA; ++j) // column major order for speed
@@ -1188,7 +1188,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             }
 
             return sm;
-        };
+        }; /* end worker */
 
         for (idx j = 0; j < dimsubsysbar; ++j) // column major order for speed
         {
@@ -1256,7 +1256,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             }
 
             return sm;
-        };
+        }; /* end worker */
 
         for (idx j = 0; j < dimsubsysbar; ++j) // column major order for speed
         {
@@ -1396,7 +1396,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
             return rA(internal::_multiidx2n(midxrow, numdims, Cdims)) *
                    std::conj(rA(internal::_multiidx2n(midxcoltmp, numdims,
                                                       Cdims)));
-        };
+        }; /* end worker */
 
         for (idx j = 0; j < D; ++j)
         {
@@ -1442,7 +1442,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
             /* writes the result */
             return rA(internal::_multiidx2n(midxrow, numdims, Cdims),
                       internal::_multiidx2n(midxcoltmp, numdims, Cdims));
-        };
+        }; /* end worker */
 
         for (idx j = 0; j < D; ++j)
         {
@@ -1576,7 +1576,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
             }
 
             return internal::_multiidx2n(midxtmp, numdims, permdims);
-        };
+        }; /* end worker */
 
 #pragma omp parallel for
         for (idx i = 0; i < D; ++i)
@@ -1629,7 +1629,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
             }
 
             return internal::_multiidx2n(midxtmp, 2 * numdims, permdims);
-        };
+        }; /* end worker */
 
 #pragma omp parallel for
         for (idx i = 0; i < D * D; ++i)

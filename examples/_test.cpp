@@ -23,8 +23,8 @@ int main()
 {
     auto psi = st.GHZ;
     auto subsys{std::vector<idx>{0}};
-    cmat Ybasis{2,2};
-    Ybasis << 1, 1, 1_i, - 1_i;
+    cmat Ybasis{2, 2};
+    Ybasis << 1, 1, 1_i, -1_i;
     Ybasis /= std::sqrt(2);
     auto V = Ybasis;
 
@@ -47,7 +47,7 @@ int main()
             std::cout << disp(elem) << std::endl << std::endl;
         std::cout << "Result: " << m << std::endl;
         std::cout << "Output state: \n";
-        std::cout << disp(outs[0]) << std::endl << std::endl;
+        std::cout << disp(outs[0]) << std::endl;
     }
 
     // Testing experimental::_measure_seq()
@@ -65,6 +65,19 @@ int main()
         std::cout << disp(V) << std::endl;
         std::cout << "Results: " << disp(results, " ") << std::endl;
         std::cout << "Probability: " << prob << std::endl;
-        std::cout << "Output state: \n" << disp(out);
+        std::cout << "Output state: \n" << disp(out) << std::endl;
+    }
+
+    // Testing experimental::ip()
+    {
+        std::cout << std::endl << ">> experimental::ip() ***\n";
+        psi = 0.8 * mket({0, 0}) + 0.6 * mket({1, 1});
+        auto phi = st.z0;
+        auto result = experimental::ip(phi, psi, {1});
+        std::cout << "Initial state: \n";
+        std::cout << disp(psi) << std::endl;
+        std::cout << "Subsystems: " << disp(subsys, " ") << std::endl;
+        std::cout << "Generalized inner product:\n";
+        std::cout << disp(result);
     }
 }

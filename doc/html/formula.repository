@@ -49,3 +49,6 @@
 \form#48:$Tr_{subsys}(\cdot)$
 \form#49:$(\cdot)^{T_{subsys}}$
 \form#50:$ \sum_i K_i^\dagger K_i = I$
+\form#51:$\langle phi_{subsys}|psi\rangle$
+\form#52:$\langle phi|psi\rangle$
+\form#53:$\langle \phi_{subsys}|\psi\rangle$

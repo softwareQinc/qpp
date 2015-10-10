@@ -79,6 +79,14 @@ $(document).ready(function(){initNavTree('namespaceqpp_1_1experimental.html','')
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a5e6a8d9b6fa0a5ef065c04d408adf7f0"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a5e6a8d9b6fa0a5ef065c04d408adf7f0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt; typename Derived::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#a5e6a8d9b6fa0a5ef065c04d408adf7f0">ip</a> (const <a class="el" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect</a>&lt; Derived &gt; &amp;phi, const <a class="el" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect</a>&lt; Derived &gt; &amp;psi, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;subsys, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;dims)</td></tr>
+<tr class="memdesc:a5e6a8d9b6fa0a5ef065c04d408adf7f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generalized inner product.  <a href="#a5e6a8d9b6fa0a5ef065c04d408adf7f0">More...</a><br /></td></tr>
+<tr class="separator:a5e6a8d9b6fa0a5ef065c04d408adf7f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cbf1bdd3c2bab00f1ac1c140335f124"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a0cbf1bdd3c2bab00f1ac1c140335f124"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt; typename Derived::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#a0cbf1bdd3c2bab00f1ac1c140335f124">ip</a> (const <a class="el" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect</a>&lt; Derived &gt; &amp;phi, const <a class="el" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect</a>&lt; Derived &gt; &amp;psi, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;subsys, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d=2)</td></tr>
+<tr class="memdesc:a0cbf1bdd3c2bab00f1ac1c140335f124"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inner product.  <a href="#a0cbf1bdd3c2bab00f1ac1c140335f124">More...</a><br /></td></tr>
+<tr class="separator:a0cbf1bdd3c2bab00f1ac1c140335f124"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dcfcabd82123f0b6e49b57666a5ca84"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a8dcfcabd82123f0b6e49b57666a5ca84"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>, std::vector&lt; double &gt;, std::vector&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#a8dcfcabd82123f0b6e49b57666a5ca84">_measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;V, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;subsys, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;dims)</td></tr>
 <tr class="memdesc:a8dcfcabd82123f0b6e49b57666a5ca84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the part <em>subsys</em> of the multi-partite state vector or density matrix <em>A</em> in the orthonormal basis or rank-1 POVM specified by the matrix <em>V</em>.  <a href="#a8dcfcabd82123f0b6e49b57666a5ca84">More...</a><br /></td></tr>
@@ -299,13 +307,117 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="a5e6a8d9b6fa0a5ef065c04d408adf7f0"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt;typename Derived::Scalar&gt; qpp::experimental::ip </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect</a>&lt; Derived &gt; &amp;&#160;</td>
+          <td class="paramname"><em>phi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect</a>&lt; Derived &gt; &amp;&#160;</td>
+          <td class="paramname"><em>psi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>subsys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dims</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Generalized inner product. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">phi</td><td>Column vector Eigen expression </td></tr>
+    <tr><td class="paramname">psi</td><td>Column vector Eigen expression </td></tr>
+    <tr><td class="paramname">subsys</td><td>Subsystem indexes over which <em>phi</em> is defined </td></tr>
+    <tr><td class="paramname">dims</td><td>Dimensions of the multi-partite system </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The inner product <img class="formulaInl" alt="$\langle \phi_{subsys}|\psi\rangle$" src="form_53.png"/>, as a scalar or column vector over the remaining Hilbert space </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a0cbf1bdd3c2bab00f1ac1c140335f124"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt;typename Derived::Scalar&gt; qpp::experimental::ip </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect</a>&lt; Derived &gt; &amp;&#160;</td>
+          <td class="paramname"><em>phi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect</a>&lt; Derived &gt; &amp;&#160;</td>
+          <td class="paramname"><em>psi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>subsys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>d</em> = <code>2</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Inner product. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">phi</td><td>Column vector Eigen expression </td></tr>
+    <tr><td class="paramname">psi</td><td>Column vector Eigen expression </td></tr>
+    <tr><td class="paramname">subsys</td><td>Subsystem indexes over which <em>phi</em> is defined </td></tr>
+    <tr><td class="paramname">d</td><td>Subsystem dimensions </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The inner product <img class="formulaInl" alt="$\langle \phi_{subsys}|\psi\rangle$" src="form_53.png"/>, as a scalar or column vector over the remaining Hilbert space </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="namespaceqpp_1_1experimental.html">experimental</a></li>
-    <li class="footer">Generated on Mon Oct 5 2015 11:50:46 for Quantum++ by
+    <li class="footer">Generated on Sat Oct 10 2015 16:00:02 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

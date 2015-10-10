@@ -37,6 +37,143 @@ namespace experimental
 {
 
 /**
+* \brief Generalized inner product
+*
+* \param phi Column vector Eigen expression
+* \param psi Column vector Eigen expression
+* \param subsys Subsystem indexes over which \a phi is defined
+* \param dims Dimensions of the multi-partite system
+* \return The inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar
+* or column vector over the remaining Hilbert space
+*/
+template<typename Scalar>
+dyn_col_vect <Scalar> ip(
+        const dyn_col_vect <Scalar>& phi,
+        const dyn_col_vect <Scalar>& psi,
+        const std::vector<idx>& subsys,
+        const std::vector<idx>& dims)
+{
+    const dyn_col_vect<Scalar>& rphi = phi;
+    const dyn_col_vect<Scalar>& rpsi = psi;
+
+    // EXCEPTION CHECKS TODO
+    if (!internal::_check_dims_match_cvect(dims, rpsi))
+        throw Exception("qpp::ip()",
+                        Exception::Type::DIMS_MISMATCH_CVECTOR);
+
+    std::vector<idx> subsys_dims(subsys.size());
+    for (idx i = 0; i < subsys.size(); ++i)
+        subsys_dims[i] = dims[subsys[i]];
+
+    idx Dsubsys = prod(std::begin(subsys_dims), std::end(subsys_dims));
+
+    idx D = static_cast<idx>(rpsi.rows());
+    idx Dbar = D / Dsubsys;
+
+    idx n = dims.size();
+    idx nsubsys = subsys.size();
+    idx nsubsysbar = n - nsubsys;
+
+    idx Cdims[maxn];
+    idx Csubsys[maxn];
+    idx Cdimssubsys[maxn];
+    idx Csubsysbar[maxn];
+    idx Cdimssubsysbar[maxn];
+
+    std::vector<idx> subsys_bar = complement(subsys, n);
+    std::copy(std::begin(subsys_bar), std::end(subsys_bar),
+              std::begin(Csubsysbar));
+
+    for (idx i = 0; i < n; ++i)
+    {
+        Cdims[i] = dims[i];
+    }
+    for (idx i = 0; i < nsubsys; ++i)
+    {
+        Csubsys[i] = subsys[i];
+        Cdimssubsys[i] = dims[subsys[i]];
+    }
+    for (idx i = 0; i < nsubsysbar; ++i)
+    {
+        Cdimssubsysbar[i] = dims[subsys_bar[i]];
+    }
+
+    auto worker = [=](idx b) noexcept
+            -> Scalar
+    {
+        idx Cmidxrow[maxn];
+        idx Cmidxrowsubsys[maxn];
+        idx Cmidxcolsubsysbar[maxn];
+
+        /* get the col multi-indexes of the complement */
+        internal::_n2multiidx(b, nsubsysbar,
+                              Cdimssubsysbar, Cmidxcolsubsysbar);
+        /* write it in the global row multi-index */
+        for (idx k = 0; k < nsubsysbar; ++k)
+        {
+            Cmidxrow[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
+        }
+
+        Scalar result{};
+
+        for (idx a = 0; a < Dsubsys; ++a)
+        {
+            /* get the row multi-indexes of the subsys */
+            internal::_n2multiidx(a, nsubsys,
+                                  Cdimssubsys, Cmidxrowsubsys);
+            /* write it in the global row multi-index */
+            for (idx k = 0; k < nsubsys; ++k)
+            {
+                Cmidxrow[Csubsys[k]] = Cmidxrowsubsys[k];
+            }
+            // compute the row index
+            idx i = internal::_multiidx2n(Cmidxrow, n, Cdims);
+
+            // TODO: check whether need adjoint(V.col(m)(a))
+            result += std::conj(rphi(a)) * rpsi(i);
+        }
+
+        return result;
+    }; /* end worker */
+
+    dyn_col_vect<Scalar> result(Dbar);
+#pragma omp parallel for
+    for (idx m = 0; m < Dbar; ++m)
+        result(m) = worker(m);
+
+    return result;
+}
+
+/**
+* \brief Inner product
+*
+* \param phi Column vector Eigen expression
+* \param psi Column vector Eigen expression
+* \param subsys Subsystem indexes over which \a phi is defined
+* \param d Subsystem dimensions
+* \return The inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar
+* or column vector over the remaining Hilbert space
+*/
+template<typename Scalar>
+dyn_col_vect <Scalar> ip(
+        const dyn_col_vect <Scalar>& phi,
+        const dyn_col_vect <Scalar>& psi,
+        const std::vector<idx>& subsys,
+        idx d = 2)
+{
+    const dyn_col_vect<Scalar>& rphi = phi;
+    const dyn_col_vect<Scalar>& rpsi = psi;
+
+    // EXCEPTION CHECKS TODO
+
+    idx n =
+            static_cast<idx>(std::llround(std::log2(rpsi.rows()) /
+                                          std::log2(d)));
+    std::vector<idx> dims(n, d); // local dimensions vector
+    return ip(phi, psi, subsys, dims);
+}
+
+/**
 * \brief Measures the part \a subsys of
 * the multi-partite state vector or density matrix \a A
 * in the orthonormal basis or rank-1 POVM specified by the matrix \a V
@@ -182,7 +319,7 @@ _measure(const Eigen::MatrixBase<Derived>& A,
             }
 
             return result;
-        };
+        }; /* end worker */
 
 #pragma omp parallel for collapse(2)
         for (idx i = 0; i < M; ++i)
@@ -379,55 +516,6 @@ _measure_seq(const Eigen::MatrixBase<Derived>& A,
     std::vector<idx> dims(n, d); // local dimensions vector
 
     return experimental::_measure_seq(rA, subsys, dims);
-}
-
-/**
-* \brief Inner product
-*
-* \param phi Column vector Eigen expression
-* \param psi Column vector Eigen expression
-* \param subsys Subsystem indexes over which \a phi is defined
-* \param dims Dimensions of the multi-partite system
-* \return The inner product \f$\langle phi|psi\rangle\f$, as a scalar or column
-* vector over the remaining Hilbert space
-*/
-template<typename Derived>
-dyn_mat<typename Derived::Scalar> ip(const dyn_col_vect <Derived>& phi,
-                                     const dyn_col_vect <Derived>& psi,
-                                     const std::vector<idx>& subsys,
-                                     const std::vector<idx>& dims)
-{
-    const dyn_col_vect<Derived>& rphi = phi;
-    const dyn_col_vect<Derived>& rpsi = psi;
-
-    // EXCEPTION CHECKS
-
-}
-
-/**
-* \brief Inner product
-*
-* \param phi Column vector Eigen expression
-* \param psi Column vector Eigen expression
-* \param subsys Subsystem indexes over which \a phi is defined
-* \param d Subsystem dimensions
-* \return The inner product \f$\langle phi|psi\rangle\f$, as a scalar or column
-* vector over the remaining Hilbert space
-*/
-template<typename Derived>
-dyn_mat<typename Derived::Scalar> ip(const dyn_col_vect <Derived>& phi,
-                                     const dyn_col_vect <Derived>& psi,
-                                     const std::vector<idx>& subsys,
-                                     idx d = 2)
-{
-    const dyn_col_vect<Derived>& rphi = phi;
-    const dyn_col_vect<Derived>& rpsi = psi;
-
-    idx n =
-            static_cast<idx>(std::llround(std::log2(rpsi.rows()) /
-                                          std::log2(d)));
-    std::vector<idx> dims(n, d); // local dimensions vector
-    return ip(phi, psi, subsys, dims);
 }
 
 } /* namespace experimental */
