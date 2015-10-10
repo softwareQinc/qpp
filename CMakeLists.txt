@@ -1,25 +1,31 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.4)
 PROJECT(qpp)
 
-#### supports only g++ and clang++
+#### CMake support only for g++ and clang++
 IF (NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" AND NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
     MESSAGE(FATAL_ERROR "This CMakeLists.txt works only with g++/clang++")
 ENDIF()
 
-#### modify as needed
+#### Quantum++ headers
+INCLUDE_DIRECTORIES(include)
+
+#### Source file(s) to be compiled, modify as needed
 SET(SOURCE_FILES
     examples/_test.cpp)
 
-#### modify as needed
-SET(EIGEN "$ENV{HOME}/eigen")
-INCLUDE_DIRECTORIES(include)
-INCLUDE_DIRECTORIES(SYSTEM ${EIGEN})
+#### Eigen3, modify as needed
+SET( EIGEN3_INCLUDE_DIR "$ENV{HOME}/eigen" )
+IF( NOT EIGEN3_INCLUDE_DIR )
+    MESSAGE( FATAL_ERROR "Please point the environment variable EIGEN3_INCLUDE_DIR to the include directory of your Eigen3 installation.")
+ENDIF()
+INCLUDE_DIRECTORIES (SYSTEM "${EIGEN3_INCLUDE_DIR}" )
 
-#### modify as needed
+#### Compiler flags
 SET(ADDITIONAL_FLAGS  "-std=c++11 -pedantic -Wall -Wextra -Weffc++")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
 SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
 
+#### OpenMP support
 OPTION(WITH_OPENMP "OpenMP support" ON)
 IF(${WITH_OPENMP})
     IF(${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
@@ -31,6 +37,7 @@ IF(${WITH_OPENMP})
     ENDIF()
 ENDIF()
 
+#### MATLAB integration
 OPTION(WITH_MATLAB "MATLAB integration" OFF)
 IF(${WITH_MATLAB})
     #### modify as needed 
@@ -39,7 +46,7 @@ IF(${WITH_MATLAB})
     SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lmx -lmat -L${MATLAB}/bin/maci64")
 ENDIF()
 
-#### disable support for thread_local storage when using clang++
+#### Disable support for thread_local storage when using clang++
 #### as libc++ doesn't yet support it
 IF (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     ADD_DEFINITIONS(-D_NO_THREAD_LOCAL)
@@ -55,8 +62,9 @@ IF(${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
     ENDIF()
     SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og -D_GLIBCXX_DEBUG")
 ENDIF()
-SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 
+#### Configurations
+SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 SET(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} -DEIGEN_NO_DEBUG")
 SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DEIGEN_NO_DEBUG")
 SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DEIGEN_NO_DEBUG")
