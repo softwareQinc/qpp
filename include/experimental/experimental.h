@@ -240,91 +240,19 @@ _measure(const Eigen::MatrixBase<Derived>& A,
     if (internal::_check_cvector(rA))
     {
         PRINTLN("Ket");
+        const ket& rpsi = A;
         // check that dims match state vector
         if (!internal::_check_dims_match_cvect(dims, rA))
             throw Exception("qpp::_measure()",
                             Exception::Type::DIMS_MISMATCH_CVECTOR);
 
-        idx D = static_cast<idx>(rA.rows());
-        idx Dbar = D / Dsubsys;
-
-        idx n = dims.size();
-        idx nsubsys = subsys.size();
-        idx nsubsysbar = n - nsubsys;
-
-        idx Cdims[maxn];
-        idx Csubsys[maxn];
-        idx Cdimssubsys[maxn];
-        idx Csubsysbar[maxn];
-        idx Cdimssubsysbar[maxn];
-
-        std::vector<idx> subsys_bar = complement(subsys, n);
-        std::copy(std::begin(subsys_bar), std::end(subsys_bar),
-                  std::begin(Csubsysbar));
-
-        for (idx i = 0; i < n; ++i)
-        {
-            Cdims[i] = dims[i];
-        }
-        for (idx i = 0; i < nsubsys; ++i)
-        {
-            Csubsys[i] = subsys[i];
-            Cdimssubsys[i] = dims[subsys[i]];
-        }
-        for (idx i = 0; i < nsubsysbar; ++i)
-        {
-            Cdimssubsysbar[i] = dims[subsys_bar[i]];
-        }
-
         std::vector<double> prob(M); // probabilities
-        std::vector<cmat> outstates(M, ket::Zero(Dbar)); // resulting states
+        std::vector<cmat> outstates(M); // resulting states
 
-        std::vector<ket> phi(M); // basis (rank-1 POVM) elements
+#pragma omp parallel for
         for (idx i = 0; i < M; ++i)
-            phi[i] = V.col(i);
-
-        auto worker = [=](idx m, idx b) noexcept
-                -> typename Derived::Scalar
-        {
-            idx Cmidxrow[maxn];
-            idx Cmidxrowsubsys[maxn];
-            idx Cmidxcolsubsysbar[maxn];
-
-            /* get the col multi-indexes of the complement */
-            internal::_n2multiidx(b, nsubsysbar,
-                                  Cdimssubsysbar, Cmidxcolsubsysbar);
-            /* write it in the global row multi-index */
-            for (idx k = 0; k < nsubsysbar; ++k)
-            {
-                Cmidxrow[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
-            }
-
-            typename Derived::Scalar result{};
-
-            for (idx a = 0; a < Dsubsys; ++a)
-            {
-                /* get the row multi-indexes of the subsys */
-                internal::_n2multiidx(a, nsubsys,
-                                      Cdimssubsys, Cmidxrowsubsys);
-                /* write it in the global row multi-index */
-                for (idx k = 0; k < nsubsys; ++k)
-                {
-                    Cmidxrow[Csubsys[k]] = Cmidxrowsubsys[k];
-                }
-                // compute the row index
-                idx i = internal::_multiidx2n(Cmidxrow, n, Cdims);
-
-                // TODO: check whether need adjoint(V.col(m)(a))
-                result += rA(i) * std::conj(V.col(m)(a));
-            }
-
-            return result;
-        }; /* end worker */
-
-#pragma omp parallel for collapse(2)
-        for (idx i = 0; i < M; ++i)
-            for (idx b = 0; b < Dbar; ++b)
-                outstates[i](b) = worker(i, b);
+            outstates[i] = ip(static_cast<const ket&>(V.col(i)),
+                              rpsi, subsys, dims);
 
         for (idx i = 0; i < M; ++i)
         {
