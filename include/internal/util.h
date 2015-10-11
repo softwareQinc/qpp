@@ -137,7 +137,7 @@ inline bool _check_dims(const std::vector<idx>& dims)
 }
 
 // check that valid dims match the dimensions
-// of valid (non-zero sized) quare matrix
+// of valid (non-zero sized) square matrix
 template<typename Derived>
 bool _check_dims_match_mat(const std::vector<idx>& dims,
                            const Eigen::MatrixBase<Derived>& A)

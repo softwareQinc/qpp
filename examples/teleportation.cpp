@@ -5,9 +5,6 @@ using namespace qpp;
 using std::cout;
 using std::endl;
 
-#include <experimental/experimental.h>
-using namespace experimental;
-
 int main()
 {
     idx D = 3; // size of the system
@@ -31,7 +28,7 @@ int main()
     ket output_aAB = apply(input_aAB, Bell_aA, {0, 1}, D);
 
     // measure on aA
-    auto measured_aA = _measure(output_aAB, gt.Id(D * D), {0, 1}, D);
+    auto measured_aA = measure(output_aAB, gt.Id(D * D), {0, 1}, D);
     idx m = std::get<0>(measured_aA); // measurement result
 
     auto midx = n2multiidx(m, {D, D});

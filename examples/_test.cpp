@@ -28,10 +28,10 @@ int main()
     Ybasis /= std::sqrt(2);
     auto V = Ybasis;
 
-    // Testing experimental::_measure()
+    // Testing measure()
     {
-        cout << ">> experimental::_measure()\n";
-        auto meas = experimental::_measure(psi, V, subsys);
+        cout << ">> measure()\n";
+        auto meas = measure(psi, V, subsys);
         auto m = std::get<0>(meas);
         auto probs = std::get<1>(meas);
         auto outs = std::get<2>(meas);
@@ -50,10 +50,10 @@ int main()
         cout << disp(outs[0]) << endl;
     }
 
-    // Testing experimental::_measure_seq()
+    // Testing measure_seq()
     {
-        cout << endl << ">> experimental::_measure_seq()\n";
-        auto meas = experimental::_measure_seq(psi, subsys);
+        cout << endl << ">> measure_seq()\n";
+        auto meas = measure_seq(psi, subsys);
         auto results = std::get<0>(meas);
         auto prob = std::get<1>(meas);
         auto out = std::get<2>(meas);
@@ -68,19 +68,20 @@ int main()
         cout << "Output state: \n" << disp(out) << endl;
     }
 
-    // Testing experimental::ip()
+    // Testing ip()
     {
-        cout << endl << ">> experimental::ip()\n";
+        cout << endl << ">> ip()\n";
         psi = 0.8 * mket({0, 0}) + 0.6 * mket({1, 1});
-        auto phi = st.y1;
-        auto result = experimental::ip(phi, psi, {1});
+        auto phi = st.y0;
+        auto result = ip(phi, psi, {0});
         cout << "Initial state: \n";
         cout << disp(psi) << endl;
         cout << "Subsystems: " << disp(subsys, " ") << endl;
         cout << "Generalized inner product:\n";
         cout << disp(result) << endl;
 
-        cout << disp(experimental::ip(st.z0, st.y0, {0})) << endl;
+        // additional testing, dim(phi) == dim(psi)
+        cout << disp(ip(st.z0, st.y0, {0})) << endl;
         cout << disp(adjoint(st.z0) * st.y0) << endl;
     }
 }

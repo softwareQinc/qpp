@@ -85,7 +85,7 @@ class IOManipPointer : public IDisplay
     idx _n;
     std::string _separator, _start, _end;
 public:
-    explicit IOManipPointer(const PointerType* p, const idx n,
+    explicit IOManipPointer(const PointerType* p, idx n,
                             const std::string& separator,
                             const std::string& start = "[",
                             const std::string& end = "]") :
