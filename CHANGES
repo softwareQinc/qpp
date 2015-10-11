@@ -95,7 +95,7 @@ Version 0.8.2 - 20 May 2015
     - New examples in ./examples
 
 Version 0.8.3 - development
-    - Added new functions in <operations.h>
+    - Added new functions in <operations.h>:
         qpp::ip() - Generalized inner product
     - Modified qpp::measure() so that the output consists of pure states
         whenever the input is a pure state and the measurement operators are
