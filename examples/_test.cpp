@@ -79,5 +79,8 @@ int main()
         cout << "Subsystems: " << disp(subsys, " ") << endl;
         cout << "Generalized inner product:\n";
         cout << disp(result) << endl;
+
+        cout << disp(experimental::ip(st.z0, st.y0, {0})) << endl;
+        cout << disp(adjoint(st.z0) * st.y0) << endl;
     }
 }
