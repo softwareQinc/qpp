@@ -850,7 +850,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00935"></a><span class="lineno">  935</span>&#160;                sum += rA(m * DB + i) * std::conj(rA(m * DB + j));</div>
 <div class="line"><a name="l00936"></a><span class="lineno">  936</span>&#160;</div>
 <div class="line"><a name="l00937"></a><span class="lineno">  937</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a48a92e8a327ff86f87c6236965103797">sum</a>;</div>
-<div class="line"><a name="l00938"></a><span class="lineno">  938</span>&#160;        };</div>
+<div class="line"><a name="l00938"></a><span class="lineno">  938</span>&#160;        }; <span class="comment">/* end worker */</span></div>
 <div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160;</div>
 <div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160;<span class="preprocessor">#pragma omp parallel for collapse(2)</span></div>
 <div class="line"><a name="l00941"></a><span class="lineno">  941</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; DB; ++j) <span class="comment">// column major order for speed</span></div>
@@ -875,7 +875,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;                sum += rA(m * DB + i, m * DB + j);</div>
 <div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160;</div>
 <div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a48a92e8a327ff86f87c6236965103797">sum</a>;</div>
-<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;        };</div>
+<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;        }; <span class="comment">/* end worker */</span></div>
 <div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160;</div>
 <div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;<span class="preprocessor">#pragma omp parallel for collapse(2)</span></div>
 <div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; DB; ++j) <span class="comment">// column major order for speed</span></div>
@@ -932,7 +932,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01031"></a><span class="lineno"> 1031</span>&#160;                sum += rA(i * DB + m) * std::conj(rA(j * DB + m));</div>
 <div class="line"><a name="l01032"></a><span class="lineno"> 1032</span>&#160;</div>
 <div class="line"><a name="l01033"></a><span class="lineno"> 1033</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a48a92e8a327ff86f87c6236965103797">sum</a>;</div>
-<div class="line"><a name="l01034"></a><span class="lineno"> 1034</span>&#160;        };</div>
+<div class="line"><a name="l01034"></a><span class="lineno"> 1034</span>&#160;        }; <span class="comment">/* end worker */</span></div>
 <div class="line"><a name="l01035"></a><span class="lineno"> 1035</span>&#160;</div>
 <div class="line"><a name="l01036"></a><span class="lineno"> 1036</span>&#160;<span class="preprocessor">#pragma omp parallel for collapse(2)</span></div>
 <div class="line"><a name="l01037"></a><span class="lineno"> 1037</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; DA; ++j) <span class="comment">// column major order for speed</span></div>
@@ -1075,7 +1075,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01188"></a><span class="lineno"> 1188</span>&#160;            }</div>
 <div class="line"><a name="l01189"></a><span class="lineno"> 1189</span>&#160;</div>
 <div class="line"><a name="l01190"></a><span class="lineno"> 1190</span>&#160;            <span class="keywordflow">return</span> sm;</div>
-<div class="line"><a name="l01191"></a><span class="lineno"> 1191</span>&#160;        };</div>
+<div class="line"><a name="l01191"></a><span class="lineno"> 1191</span>&#160;        }; <span class="comment">/* end worker */</span></div>
 <div class="line"><a name="l01192"></a><span class="lineno"> 1192</span>&#160;</div>
 <div class="line"><a name="l01193"></a><span class="lineno"> 1193</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; dimsubsysbar; ++j) <span class="comment">// column major order for speed</span></div>
 <div class="line"><a name="l01194"></a><span class="lineno"> 1194</span>&#160;        {</div>
@@ -1143,7 +1143,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01256"></a><span class="lineno"> 1256</span>&#160;            }</div>
 <div class="line"><a name="l01257"></a><span class="lineno"> 1257</span>&#160;</div>
 <div class="line"><a name="l01258"></a><span class="lineno"> 1258</span>&#160;            <span class="keywordflow">return</span> sm;</div>
-<div class="line"><a name="l01259"></a><span class="lineno"> 1259</span>&#160;        };</div>
+<div class="line"><a name="l01259"></a><span class="lineno"> 1259</span>&#160;        }; <span class="comment">/* end worker */</span></div>
 <div class="line"><a name="l01260"></a><span class="lineno"> 1260</span>&#160;</div>
 <div class="line"><a name="l01261"></a><span class="lineno"> 1261</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; dimsubsysbar; ++j) <span class="comment">// column major order for speed</span></div>
 <div class="line"><a name="l01262"></a><span class="lineno"> 1262</span>&#160;        {</div>
@@ -1256,7 +1256,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01396"></a><span class="lineno"> 1396</span>&#160;            <span class="keywordflow">return</span> rA(<a class="code" href="namespaceqpp_1_1internal.html#a58bbe3e0db088a311d6ec053950602cf">internal::_multiidx2n</a>(midxrow, numdims, Cdims)) *</div>
 <div class="line"><a name="l01397"></a><span class="lineno"> 1397</span>&#160;                   std::conj(rA(<a class="code" href="namespaceqpp_1_1internal.html#a58bbe3e0db088a311d6ec053950602cf">internal::_multiidx2n</a>(midxcoltmp, numdims,</div>
 <div class="line"><a name="l01398"></a><span class="lineno"> 1398</span>&#160;                                                      Cdims)));</div>
-<div class="line"><a name="l01399"></a><span class="lineno"> 1399</span>&#160;        };</div>
+<div class="line"><a name="l01399"></a><span class="lineno"> 1399</span>&#160;        }; <span class="comment">/* end worker */</span></div>
 <div class="line"><a name="l01400"></a><span class="lineno"> 1400</span>&#160;</div>
 <div class="line"><a name="l01401"></a><span class="lineno"> 1401</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; D; ++j)</div>
 <div class="line"><a name="l01402"></a><span class="lineno"> 1402</span>&#160;        {</div>
@@ -1302,7 +1302,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01442"></a><span class="lineno"> 1442</span>&#160;            <span class="comment">/* writes the result */</span></div>
 <div class="line"><a name="l01443"></a><span class="lineno"> 1443</span>&#160;            <span class="keywordflow">return</span> rA(<a class="code" href="namespaceqpp_1_1internal.html#a58bbe3e0db088a311d6ec053950602cf">internal::_multiidx2n</a>(midxrow, numdims, Cdims),</div>
 <div class="line"><a name="l01444"></a><span class="lineno"> 1444</span>&#160;                      <a class="code" href="namespaceqpp_1_1internal.html#a58bbe3e0db088a311d6ec053950602cf">internal::_multiidx2n</a>(midxcoltmp, numdims, Cdims));</div>
-<div class="line"><a name="l01445"></a><span class="lineno"> 1445</span>&#160;        };</div>
+<div class="line"><a name="l01445"></a><span class="lineno"> 1445</span>&#160;        }; <span class="comment">/* end worker */</span></div>
 <div class="line"><a name="l01446"></a><span class="lineno"> 1446</span>&#160;</div>
 <div class="line"><a name="l01447"></a><span class="lineno"> 1447</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; D; ++j)</div>
 <div class="line"><a name="l01448"></a><span class="lineno"> 1448</span>&#160;        {</div>
@@ -1411,7 +1411,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01576"></a><span class="lineno"> 1576</span>&#160;            }</div>
 <div class="line"><a name="l01577"></a><span class="lineno"> 1577</span>&#160;</div>
 <div class="line"><a name="l01578"></a><span class="lineno"> 1578</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespaceqpp_1_1internal.html#a58bbe3e0db088a311d6ec053950602cf">internal::_multiidx2n</a>(midxtmp, numdims, permdims);</div>
-<div class="line"><a name="l01579"></a><span class="lineno"> 1579</span>&#160;        };</div>
+<div class="line"><a name="l01579"></a><span class="lineno"> 1579</span>&#160;        }; <span class="comment">/* end worker */</span></div>
 <div class="line"><a name="l01580"></a><span class="lineno"> 1580</span>&#160;</div>
 <div class="line"><a name="l01581"></a><span class="lineno"> 1581</span>&#160;<span class="preprocessor">#pragma omp parallel for</span></div>
 <div class="line"><a name="l01582"></a><span class="lineno"> 1582</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; D; ++i)</div>
@@ -1464,7 +1464,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01629"></a><span class="lineno"> 1629</span>&#160;            }</div>
 <div class="line"><a name="l01630"></a><span class="lineno"> 1630</span>&#160;</div>
 <div class="line"><a name="l01631"></a><span class="lineno"> 1631</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespaceqpp_1_1internal.html#a58bbe3e0db088a311d6ec053950602cf">internal::_multiidx2n</a>(midxtmp, 2 * numdims, permdims);</div>
-<div class="line"><a name="l01632"></a><span class="lineno"> 1632</span>&#160;        };</div>
+<div class="line"><a name="l01632"></a><span class="lineno"> 1632</span>&#160;        }; <span class="comment">/* end worker */</span></div>
 <div class="line"><a name="l01633"></a><span class="lineno"> 1633</span>&#160;</div>
 <div class="line"><a name="l01634"></a><span class="lineno"> 1634</span>&#160;<span class="preprocessor">#pragma omp parallel for</span></div>
 <div class="line"><a name="l01635"></a><span class="lineno"> 1635</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; D * D; ++i)</div>
@@ -1562,7 +1562,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="operations_8h.html">operations.h</a></li>
-    <li class="footer">Generated on Sat Oct 10 2015 16:00:01 for Quantum++ by
+    <li class="footer">Generated on Sat Oct 10 2015 22:41:49 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
