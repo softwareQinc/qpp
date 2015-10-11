@@ -1,5 +1,5 @@
 Version 0.1 - 21 December 2014
-    - First stable version, public release
+    - First stable version, initial public release
 
 Version 0.2 - 26 January 2015
     - Minor fixes
@@ -92,7 +92,7 @@ Version 0.8.2 - 20 May 2015
         qpp::cov()         - covariance
         qpp::cor()         - correlation
         qpp::var()         - variance
-    - New examples in ./examples
+    - Added new examples in ./examples
 
 Version 0.8.3 - development
     - Added new functions in <operations.h>:
