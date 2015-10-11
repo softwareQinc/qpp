@@ -113,7 +113,6 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     if (!internal::_check_subsys_match_dims(ctrlgate, dims))
         throw Exception("qpp::applyCTRL()",
                         Exception::Type::SUBSYS_MISMATCH_DIMS);
-
     // END EXCEPTION CHECKS
 
     // construct the table of A^i and (A^dagger)^i
@@ -383,9 +382,16 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     const dyn_mat<typename Derived1::Scalar>& rstate = state;
     const dyn_mat<typename Derived1::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+    
     // check zero size
     if (!internal::_check_nonzero_size(rstate))
         throw Exception("qpp::applyCTRL()", Exception::Type::ZERO_SIZE);
+
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
 
     idx n =
             static_cast<idx>(std::llround(std::log2(rstate.rows()) /
@@ -503,9 +509,16 @@ dyn_mat<typename Derived1::Scalar> apply(
     const dyn_mat<typename Derived1::Scalar>& rstate = state;
     const dyn_mat<typename Derived1::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+    
     // check zero size
     if (!internal::_check_nonzero_size(rstate))
         throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
+
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::apply()", Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
 
     idx n =
             static_cast<idx>(std::llround(std::log2(rstate.rows()) /
@@ -642,9 +655,16 @@ cmat apply(const Eigen::MatrixBase<Derived>& rho,
 {
     const cmat& rrho = rho;
 
+    // EXCEPTION CHECKS
+    
     // check zero sizes
     if (!internal::_check_nonzero_size(rrho))
         throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
+
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::apply()", Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
 
     idx n =
             static_cast<idx>(std::llround(std::log2(rrho.rows()) /
@@ -899,7 +919,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
-    // Error checks
+    // EXCEPTION CHECKS
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
@@ -912,6 +932,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
     // check dims has only 2 elements
     if (dims.size() != 2)
         throw Exception("qpp::ptrace1()", Exception::Type::NOT_BIPARTITE);
+    // END EXCEPTION CHECKS
 
     idx DA = dims[0];
     idx DB = dims[1];
@@ -995,7 +1016,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
-    // Error checks
+    // EXCEPTION CHECKS
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
@@ -1008,6 +1029,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
     // check dims has only 2 elements
     if (dims.size() != 2)
         throw Exception("qpp::ptrace2()", Exception::Type::NOT_BIPARTITE);
+    // END EXCEPTION CHECKS
 
     idx DA = dims[0];
     idx DB = dims[1];
@@ -1082,7 +1104,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
-    // error checks
+    // EXCEPTION CHECKS
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
@@ -1096,6 +1118,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     if (!internal::_check_subsys_match_dims(subsys, dims))
         throw Exception("qpp::ptrace()",
                         Exception::Type::SUBSYS_MISMATCH_DIMS);
+    // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
     idx n = dims.size();
@@ -1299,9 +1322,16 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+    
     // check zero size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::ptrace()", Exception::Type::ZERO_SIZE);
+
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::ptrace()", Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
 
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
@@ -1332,7 +1362,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
-    // error checks
+    // EXCEPTION CHECKS
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
@@ -1346,6 +1376,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
     if (!internal::_check_subsys_match_dims(subsys, dims))
         throw Exception("qpp::ptranspose()",
                         Exception::Type::SUBSYS_MISMATCH_DIMS);
+    // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
     idx numdims = dims.size();
@@ -1482,9 +1513,16 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+    
     // check zero size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::ptranspose()", Exception::Type::ZERO_SIZE);
+
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::ptranspose()", Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
 
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
@@ -1514,7 +1552,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
-    // Error checks
+    // EXCEPTION CHECKS
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
@@ -1532,6 +1570,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
     if (perm.size() != dims.size())
         throw Exception("qpp::syspermute()",
                         Exception::Type::PERM_MISMATCH_DIMS);
+    // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
     idx numdims = dims.size();
@@ -1663,9 +1702,16 @@ dyn_mat<typename Derived::Scalar> syspermute(
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+    
     // check zero size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::syspermute()", Exception::Type::ZERO_SIZE);
+
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::syspermute()", Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
 
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /

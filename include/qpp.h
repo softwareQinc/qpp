@@ -99,18 +99,8 @@
 #include "instruments.h"
 #include "number_theory.h"
 
-// Useful macros
-#ifdef DEBUG
-#define PRINT(x) std::cout << (x)
-#define PRINTLN(x) std::cout << (x) << std::endl
-#define ERROR(x) std::cerr << (x)
-#define ERRORLN(x) std::cerr << (x) << std::endl
-#else
-#define PRINT(x)
-#define PRINTLN(x)
-#define ERROR(x)
-#define ERRORLN(x)
-#endif
+// pre-processor macros
+#include "macros.h"
 
 /**
 * \namespace qpp

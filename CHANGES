@@ -97,8 +97,13 @@ Version 0.8.2 - 20 May 2015
     - Added new examples in ./examples
 
 Version 0.8.3 - development
+    - Added <macros.h> preprocessor debug macros header
+        PRINT(x)   - std::cout << (x)
+        PRINTLN(x) - std::cout << (x) << std::endl
+        ERROR(x)   - std::cerr << (x)
+        ERRORLN(x) - std::cerr << (x) << std::endl
     - Added new functions in <operations.h>:
-        qpp::ip() - Generalized inner product
+        qpp::ip()  - Generalized inner product
     - Modified qpp::measure() so that the output consists of pure states
         whenever the input is a pure state and the measurement operators are
         rank-one POVMs (technically rank-one Kraus operators). Includes basis

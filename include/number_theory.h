@@ -263,8 +263,11 @@ inline std::vector<idx> compperm(const std::vector<idx>& perm,
 */
 inline std::vector<ubigint> factors(ubigint n)
 {
+    // EXCEPTION CHECKS
+
     if (n == 0 || n == 1)
         throw Exception("qpp::factors()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     std::vector<ubigint> result;
     ubigint d = 2;

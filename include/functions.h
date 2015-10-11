@@ -1383,17 +1383,22 @@ inline ket mket(const std::vector<idx>& mask, idx d = 2)
     idx n = mask.size();
     idx D = static_cast<idx>(std::llround(std::pow(d, n)));
 
+    // EXCEPTION CHECKS
+
     // check zero size
     if (n == 0)
         throw Exception("qpp::mket()", Exception::Type::ZERO_SIZE);
+
     // check valid dims
     if (d == 0)
         throw Exception("qpp::mket()", Exception::Type::DIMS_INVALID);
+
     // check mask is a valid vector
     for (idx i = 0; i < n; ++i)
         if (mask[i] >= d)
             throw Exception("qpp::mket()",
                             Exception::Type::SUBSYS_MISMATCH_DIMS);
+    // END EXCEPTION CHECKS
 
     ket result = ket::Zero(D);
     std::vector<idx> dims(n, d);
@@ -1466,17 +1471,22 @@ inline cmat mprj(const std::vector<idx>& mask, idx d = 2)
     idx n = mask.size();
     idx D = static_cast<idx>(std::llround(std::pow(d, n)));
 
+    // EXCEPTION CHECKS
+
     // check zero size
     if (n == 0)
         throw Exception("qpp::mprj()", Exception::Type::ZERO_SIZE);
+
     // check valid dims
     if (d == 0)
         throw Exception("qpp::mprj()", Exception::Type::DIMS_INVALID);
+
     // check mask is a valid vector
     for (idx i = 0; i < n; ++i)
         if (mask[i] >= d)
             throw Exception("qpp::mprj()",
                             Exception::Type::SUBSYS_MISMATCH_DIMS);
+    // END EXCEPTION CHECKS
 
     cmat result = cmat::Zero(D, D);
     std::vector<idx> dims(n, d);

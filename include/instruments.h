@@ -27,7 +27,7 @@
 #ifndef INSTRUMENTS_H_
 #define INSTRUMENTS_H_
 
-// intruments
+// instruments
 namespace qpp
 {
 /**
@@ -182,6 +182,7 @@ dyn_col_vect <Scalar> ip(
     const dyn_col_vect<Scalar>& rpsi = psi;
 
     // EXCEPTION CHECKS
+
     if (!internal::_check_nonzero_size(rpsi))
         throw Exception("qpp::ip()", Exception::Type::ZERO_SIZE);
 
@@ -507,10 +508,17 @@ measure(const Eigen::MatrixBase<Derived>& A,
 {
     const cmat& rA = A;
 
+    // EXCEPTION CHECKS
+    
     // check zero size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::measure()", Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
+    
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
                                           std::log2(d)));
@@ -615,7 +623,6 @@ measure(const Eigen::MatrixBase<Derived>& A,
     //************ ket ************//
     if (internal::_check_cvector(rA))
     {
-        //PRINTLN("Ket");
         const ket& rpsi = A;
         // check that dims match state vector
         if (!internal::_check_dims_match_cvect(dims, rA))
@@ -652,7 +659,6 @@ measure(const Eigen::MatrixBase<Derived>& A,
         //************ density matrix ************//
     else if (internal::_check_square_mat(rA))
     {
-        //PRINTLN("Matrix");
         // check that dims match rho matrix
         if (!internal::_check_dims_match_mat(dims, rA))
             throw Exception("qpp::measure()",
@@ -698,6 +704,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
     const cmat& rA = A;
 
     // EXCEPTION CHECKS
+
     // check zero size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
@@ -824,7 +831,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
     // check valid dims
     if (d == 0)
         throw Exception("qpp::measure_seq()", Exception::Type::DIMS_INVALID);
-    // EXCEPTION CHECKS
+    // END EXCEPTION CHECKS
 
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /

@@ -6,11 +6,9 @@ using namespace qpp;
 using std::cout;
 using std::endl;
 
-// TODO: check that all functions are either templates or marked inline
 // TODO: modify the pure-states examples accordingly
-// TODO: check normalization in measure functions
 // TODO: add a duration-outputting member function to Timer
-// TODO: throw exceptions when d = 0
+// TODO: Extensive testing of qpp::ip(), qpp::measure() (rank-one POVMs)
 
 // Future work
 // TODO: Implement a circuit description language, load/save from/to file
@@ -77,7 +75,7 @@ int main()
         cout << "Generalized inner product:\n";
         cout << disp(result) << endl;
 
-        // additional testing, dim(phi) == dim(psi)
+        cout << "Additional testing, dim(phi) == dim(psi)\n";
         cout << disp(ip(st.z0, st.y0, {0})) << endl;
         cout << disp(adjoint(st.z0) * st.y0) << endl;
     }

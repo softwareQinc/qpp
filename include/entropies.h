@@ -261,7 +261,7 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
-    // error checks
+    // EXCEPTION CHECKS
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
@@ -286,6 +286,7 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
         || !internal::_check_subsys_match_dims(subsysB, dims))
         throw Exception("qpp::qmutualinfo()",
                         Exception::Type::SUBSYS_MISMATCH_DIMS);
+    // END EXCEPTION CHECKS
 
     // The full system indexes {0,1,...,n-1}
     std::vector<idx> full_system(dims.size());
@@ -334,11 +335,16 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
-    // error checks
+    // EXCEPTION CHECKS
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::qmutualinfo()", Exception::Type::ZERO_SIZE);
+    
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::qmutualinfo()", Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
 
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
