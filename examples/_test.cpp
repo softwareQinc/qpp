@@ -6,6 +6,7 @@ using namespace qpp;
 using std::cout;
 using std::endl;
 
+// TODO: write ptrace in terms of ip(), test it, time it
 // TODO: modify the pure-states examples accordingly
 // TODO: add a duration-outputting member function to Timer
 // TODO: Extensive testing of qpp::ip(), qpp::measure() (rank-one POVMs)
