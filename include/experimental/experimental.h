@@ -115,7 +115,7 @@ dyn_col_vect <Scalar> ip(
         }
 
         Scalar result = 0;
-
+// TODO check complexity
         for (idx a = 0; a < Dsubsys; ++a)
         {
             /* get the row multi-indexes of the subsys */

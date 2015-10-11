@@ -20,9 +20,9 @@ Version 0.4 - 8 March 2015
         before with qpp::syspermute()
     - Added overloads of qpp::prod() and qpp::sum() for STL-like containers
     - Added new functions in <functions.h>:
-        qpp::complement() - computes the complement of a subsystem vector
-        qpp::rho2bloch()  - qubit density matrix to Bloch vector
-        qpp::bloch2rho()  - Bloch vector to qubit density matrix
+        qpp::complement()  - computes the complement of a subsystem vector
+        qpp::rho2bloch()   - qubit density matrix to Bloch vector
+        qpp::bloch2rho()   - Bloch vector to qubit density matrix
     - Added new functions in <instruments.h>:
         qpp::measure_seq() - measures subsystems sequentially
     - Removed support for the C-style random number engine, as it is not 
@@ -50,10 +50,10 @@ Version 0.7 - 22 April 2015
 
 Version 0.8 - 8 May 2015
     - Added new data type aliases in <types.h>
-        bigint  - Big integer, alias for long long int
-        ubigint - Non-negative big integer, alias for unsigned long long int
+        bigint        - Big integer, alias for long long int
+        ubigint       - Non-negative big integer, alias for unsigned long long int
     - Added new overloads in <random.h>:
-        qpp::rand() - overloads for bigint and ubigint
+        qpp::rand()   - overloads for bigint and ubigint
     - Added new functions in <number_theory.h>:
         qpp::modpow() - computes a^n mod p for non-negative integers
     - Added IDisplay as an abstract base class for enforcing the override of
@@ -82,16 +82,22 @@ Version 0.8.2 - 20 May 2015
     - Added <traits.h> type traits header file with the following type traits:
         qpp::is_iterable<> - checks for iterable STL-like containers
         qpp::is_matrix_expression<> - checks for Eigen::MatrixBase<> expressions
-        qpp::is_complex<> - checks whether the type is std::complex<>
+        qpp::is_complex<>  - checks whether the type is std::complex<>
     - Added <statistics.h> header file containing the following new functions:
-        qpp::uniform   - uniform probability distribution vector
-        qpp::marginalX - marginal distribution
-        qpp::marginalY - marginal distribution
-        qpp::avg       - average
-        qpp::sigma     - standard deviation
-        qpp::cov       - covariance
-        qpp::cor       - correlation
-        qpp::var       - variance
+        qpp::uniform()     - uniform probability distribution vector
+        qpp::marginalX()   - marginal distribution
+        qpp::marginalY()   - marginal distribution
+        qpp::avg()         - average
+        qpp::sigma()       - standard deviation
+        qpp::cov()         - covariance
+        qpp::cor()         - correlation
+        qpp::var()         - variance
     - New examples in ./examples
 
 Version 0.8.3 - development
+    - Added new functions in <operations.h>
+        qpp::ip() - Generalized inner product
+    - Modified qpp::measure() so that the output consists of pure states
+        whenever the input is a pure state and the measurement operators are
+        rank-one POVMs (technically rank-one Kraus operators), includes basis
+        measurements as a particular case
