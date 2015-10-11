@@ -200,7 +200,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         }
 
         return std::make_pair(coeff, indx);
-    };
+    }; /* end coeff_idx_ket */
 
     // worker, computes the coefficient and the index
     // for the density matrix case
@@ -276,7 +276,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         }
 
         return std::make_tuple(coeff, idxrow, idxcol);
-    };
+    }; /* end coeff_idx_rho */
 
     //************ ket ************//
     if (internal::_check_cvector(rstate)) // we have a ket

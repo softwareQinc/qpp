@@ -114,7 +114,7 @@ dyn_col_vect <Scalar> ip(
             Cmidxrow[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
         }
 
-        Scalar result{};
+        Scalar result = 0;
 
         for (idx a = 0; a < Dsubsys; ++a)
         {
