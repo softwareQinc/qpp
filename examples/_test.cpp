@@ -6,9 +6,6 @@ using namespace qpp;
 using std::cout;
 using std::endl;
 
-// TODO: write a generalized inner product function (non-equal dimensions)
-// TODO: measure pure state DONE, need testing
-// TODO: modify measure_seq (if necessary)
 // TODO: check that all functions are either templates or marked inline
 // TODO: modify the pure-states examples accordingly
 // TODO: check normalization in measure functions
