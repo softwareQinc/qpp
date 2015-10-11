@@ -21,7 +21,7 @@ including templates and the standard library, a basic knowledge of
 quantum computing and linear algebra, and some working experience 
 with [Eigen 3](http://eigen.tuxfamily.org).
 
-Copyright (c) 2013 - 2015 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
+Copyright (c) 2013 - 2016 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
 
 ---
 Quantum++ is free software: you can redistribute it and/or modify
