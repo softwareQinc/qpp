@@ -79,36 +79,4 @@ int main()
         cout << disp(ip(st.z0, st.y0, {0})) << endl;
         cout << disp(adjoint(st.z0) * st.y0) << endl;
     }
-
-    // Testing ptrace()
-    {
-        cout << endl << ">> ptrace()\n";
-        idx N = 4;
-        idx D = std::round(std::pow(2, N));
-        std::vector<idx> dims(2, N); // N qubits
-        std::vector<idx> subsys(N / 2);
-        std::iota(std::begin(subsys), std::end(subsys), 0);
-        std::cout << "Generating a random matrix on N = ";
-        std::cout << N << " qubits..\n";
-        cmat rho = rand<cmat>(D, D);
-        cout << "Taking the partial trace over: " << disp(subsys, " ") << endl;
-        Timer t;
-
-        // qpp::experimental::ptrace()
-        t.tic();
-        cmat result2 = experimental::ptrace(rho, subsys);
-        t.toc();
-        cout << "qpp::experimental::ptrace() took: " << t << " seconds\n";
-
-        // qpp::ptrace
-        t.tic();
-        cmat result1 = ptrace(rho, subsys);
-        t.toc();
-        cout << "qpp::ptrace() took: " << t << " seconds\n";
-
-//        cout << disp(result1) << endl << endl;
-//        cout << disp(result2) << endl << endl;
-
-        cout << "Norm difference: " << norm(result2 - result1) << endl;
-    }
 }
