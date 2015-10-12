@@ -80,4 +80,29 @@ int main()
         cout << disp(ip(st.z0, st.y0, {0})) << endl;
         cout << disp(adjoint(st.z0) * st.y0) << endl;
     }
+
+    // Testing ptrace()
+    {
+        cout << endl << ">> ptrace()\n";
+        idx N = 11;
+        idx D = std::round(std::pow(2, N));
+        auto dims{std::vector<idx>(2, N)}; // N qubits
+        auto subsys{std::vector<idx>(N / 2)};
+        std::iota(std::begin(subsys), std::end(subsys), 0);
+        std::cout << "Generating a random rho on N = " << N << " qubits...\n";
+        auto rho = randrho(D);
+        cout << "Taking the partial trace over: " << disp(subsys, " ") << endl;
+        Timer t;
+
+        // qpp::ptrace
+        auto result = ptrace(rho, subsys);
+        t.toc();
+        cout << "qpp::ptrace() took: " << t << " seconds\n";
+
+        // qpp::experimental::ptrace()
+        t.tic();
+        result = experimental::ptrace(rho, subsys);
+        t.toc();
+        cout << "qpp::experimental::ptrace() took: " << t << " seconds\n";
+    }
 }
