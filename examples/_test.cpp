@@ -84,13 +84,14 @@ int main()
     // Testing ptrace()
     {
         cout << endl << ">> ptrace()\n";
-        idx N = 11;
+        idx N = 13;
         idx D = std::round(std::pow(2, N));
         auto dims{std::vector<idx>(2, N)}; // N qubits
         auto subsys{std::vector<idx>(N / 2)};
         std::iota(std::begin(subsys), std::end(subsys), 0);
-        std::cout << "Generating a random rho on N = " << N << " qubits...\n";
-        auto rho = randrho(D);
+        std::cout << "Generating a random matrix on N = ";
+        std::cout << N << " qubits..\n";
+        auto rho = rand<cmat>(D, D);
         cout << "Taking the partial trace over: " << disp(subsys, " ") << endl;
         Timer t;
 

@@ -82,32 +82,6 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         dimsubsys *= dims[subsys[i]];
     idx dimsubsysbar = D / dimsubsys;
 
-    idx Cdims[maxn];
-    idx Csubsys[maxn];
-    idx Cdimssubsys[maxn];
-    idx Csubsysbar[maxn];
-    idx Cdimssubsysbar[maxn];
-
-    idx Cmidxcolsubsysbar[maxn];
-
-    std::vector<idx> subsys_bar = complement(subsys, n);
-    std::copy(std::begin(subsys_bar), std::end(subsys_bar),
-              std::begin(Csubsysbar));
-
-    for (idx i = 0; i < n; ++i)
-    {
-        Cdims[i] = dims[i];
-    }
-    for (idx i = 0; i < nsubsys; ++i)
-    {
-        Csubsys[i] = subsys[i];
-        Cdimssubsys[i] = dims[subsys[i]];
-    }
-    for (idx i = 0; i < nsubsysbar; ++i)
-    {
-        Cdimssubsysbar[i] = dims[subsys_bar[i]];
-    }
-
     dyn_mat<typename Derived::Scalar> result =
             dyn_mat<typename Derived::Scalar>(dimsubsysbar, dimsubsysbar);
 
@@ -128,56 +102,6 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         if (subsys.size() == 0)
             return rA * adjoint(rA);
 
-        auto worker = [=, &Cmidxcolsubsysbar](idx i) noexcept
-                -> typename Derived::Scalar
-        {
-            // use static allocation for speed!
-
-            idx Cmidxrow[maxn];
-            idx Cmidxcol[maxn];
-            idx Cmidxrowsubsysbar[maxn];
-            idx Cmidxsubsys[maxn];
-
-            /* get the row multi-indexes of the complement */
-            internal::_n2multiidx(i, nsubsysbar,
-                                  Cdimssubsysbar, Cmidxrowsubsysbar);
-            /* write them in the global row/col multi-indexes */
-            for (idx k = 0; k < nsubsysbar; ++k)
-            {
-                Cmidxrow[Csubsysbar[k]] = Cmidxrowsubsysbar[k];
-                Cmidxcol[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
-            }
-            typename Derived::Scalar sm = 0;
-            for (idx a = 0; a < dimsubsys; ++a)
-            {
-                // get the multi-index over which we do the summation
-                internal::_n2multiidx(a, nsubsys, Cdimssubsys, Cmidxsubsys);
-                // write it into the global row/col multi-indexes
-                for (idx k = 0; k < nsubsys; ++k)
-                    Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]]
-                            = Cmidxsubsys[k];
-
-                // now do the sum
-                sm += rA(internal::_multiidx2n(Cmidxrow, n, Cdims)) *
-                      std::conj(rA(internal::_multiidx2n(Cmidxcol, n,
-                                                         Cdims)));
-            }
-
-            return sm;
-        }; /* end worker */
-
-        for (idx j = 0; j < dimsubsysbar; ++j) // column major order for speed
-        {
-            // compute the column multi-indexes of the complement
-            internal::_n2multiidx(j, nsubsysbar,
-                                  Cdimssubsysbar, Cmidxcolsubsysbar);
-#pragma omp parallel for
-            for (idx i = 0; i < dimsubsysbar; ++i)
-            {
-                result(i, j) = worker(i);
-            }
-        }
-
         return result;
     }
         //************ density matrix ************//
@@ -196,55 +120,6 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 
         if (subsys.size() == 0)
             return rA;
-
-        auto worker = [=, &Cmidxcolsubsysbar](idx i) noexcept
-                -> typename Derived::Scalar
-        {
-            // use static allocation for speed!
-
-            idx Cmidxrow[maxn];
-            idx Cmidxcol[maxn];
-            idx Cmidxrowsubsysbar[maxn];
-            idx Cmidxsubsys[maxn];
-
-            /* get the row/col multi-indexes of the complement */
-            internal::_n2multiidx(i, nsubsysbar,
-                                  Cdimssubsysbar, Cmidxrowsubsysbar);
-            /* write them in the global row/col multi-indexes */
-            for (idx k = 0; k < nsubsysbar; ++k)
-            {
-                Cmidxrow[Csubsysbar[k]] = Cmidxrowsubsysbar[k];
-                Cmidxcol[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
-            }
-            typename Derived::Scalar sm = 0;
-            for (idx a = 0; a < dimsubsys; ++a)
-            {
-                // get the multi-index over which we do the summation
-                internal::_n2multiidx(a, nsubsys, Cdimssubsys, Cmidxsubsys);
-                // write it into the global row/col multi-indexes
-                for (idx k = 0; k < nsubsys; ++k)
-                    Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]]
-                            = Cmidxsubsys[k];
-
-                // now do the sum
-                sm += rA(internal::_multiidx2n(Cmidxrow, n, Cdims),
-                         internal::_multiidx2n(Cmidxcol, n, Cdims));
-            }
-
-            return sm;
-        }; /* end worker */
-
-        for (idx j = 0; j < dimsubsysbar; ++j) // column major order for speed
-        {
-            // compute the column multi-indexes of the complement
-            internal::_n2multiidx(j, nsubsysbar,
-                                  Cdimssubsysbar, Cmidxcolsubsysbar);
-#pragma omp parallel for
-            for (idx i = 0; i < dimsubsysbar; ++i)
-            {
-                result(i, j) = worker(i);
-            }
-        }
 
         return result;
     }
