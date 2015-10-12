@@ -74,16 +74,13 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
-    idx n = dims.size();
-    idx nsubsys = subsys.size();
-    idx nsubsysbar = n - nsubsys;
     idx dimsubsys = 1;
-    for (idx i = 0; i < nsubsys; ++i)
+    for (idx i = 0; i < subsys.size(); ++i)
         dimsubsys *= dims[subsys[i]];
     idx dimsubsysbar = D / dimsubsys;
 
     dyn_mat<typename Derived::Scalar> result =
-            dyn_mat<typename Derived::Scalar>(dimsubsysbar, dimsubsysbar);
+            dyn_mat<typename Derived::Scalar>::Zero(dimsubsysbar, dimsubsysbar);
 
     //************ ket ************//
     if (internal::_check_cvector(rA)) // we have a ket
@@ -101,6 +98,19 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 
         if (subsys.size() == 0)
             return rA * adjoint(rA);
+
+        const dyn_col_vect<typename Derived::Scalar>& rpsi = rA;
+        dyn_col_vect<typename Derived::Scalar> e_i =
+                dyn_col_vect<typename Derived::Scalar>::Zero(dimsubsys);
+        dyn_col_vect<typename Derived::Scalar> tmp(dimsubsysbar);
+
+        for (idx i = 0; i < dimsubsys; ++i)
+        {
+            e_i(i) = 1;
+            tmp = ip(e_i, rpsi, subsys);
+            result += tmp * adjoint(tmp);
+            e_i(i) = 0;
+        }
 
         return result;
     }
@@ -120,6 +130,29 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 
         if (subsys.size() == 0)
             return rA;
+        dyn_col_vect<typename Derived::Scalar> e_i =
+                dyn_col_vect<typename Derived::Scalar>::Zero(dimsubsys);
+        dyn_col_vect<typename Derived::Scalar> e_m =
+                dyn_col_vect<typename Derived::Scalar>::Zero(D);
+        dyn_col_vect<typename Derived::Scalar> phi_m =
+                dyn_col_vect<typename Derived::Scalar>::Zero(D);
+        dyn_col_vect<typename Derived::Scalar> tmp1(dimsubsysbar);
+        dyn_col_vect<typename Derived::Scalar> tmp2(dimsubsysbar);
+
+        for (idx i = 0; i < dimsubsys; ++i)
+        {
+            e_i(i) = 1;
+            for (idx m = 0; m < D; ++m)
+            {
+                e_m(m) = 1;
+                phi_m = rA.col(m);
+                tmp1 = ip(e_i, phi_m, subsys);
+                tmp2 = ip(e_i, e_m, subsys);
+                result += tmp1 * adjoint(tmp2);
+                e_m(m) = 0;
+            }
+            e_i(i) = 0;
+        }
 
         return result;
     }

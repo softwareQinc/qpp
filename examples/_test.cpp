@@ -7,7 +7,6 @@ using std::cout;
 using std::endl;
 
 // TODO: Extensive testing of qpp::ip(), qpp::measure() (rank-one POVMs)
-// TODO: write qpp::ptrace() in terms of qpp::ip(), test it, time it
 // TODO: modify the pure-states examples that use qpp::measure()
 // TODO: add a duration-outputting member function to qpp::Timer
 
@@ -17,12 +16,12 @@ using std::endl;
 
 int main()
 {
-    auto psi = st.GHZ;
-    auto subsys{std::vector<idx>{0}};
+    ket psi = st.GHZ;
+    std::vector<idx> subsys{0};
     cmat Ybasis{2, 2};
     Ybasis << 1, 1, 1_i, -1_i;
     Ybasis /= std::sqrt(2);
-    auto V = Ybasis;
+    cmat V = Ybasis;
 
     // Testing measure()
     {
@@ -68,8 +67,8 @@ int main()
     {
         cout << endl << ">> ip()\n";
         psi = 0.8 * mket({0, 0}) + 0.6 * mket({1, 1});
-        auto phi = st.y0;
-        auto result = ip(phi, psi, {0});
+        ket phi = st.y0;
+        ket result = ip(phi, psi, {0});
         cout << "Initial state: \n";
         cout << disp(psi) << endl;
         cout << "Subsystems: " << disp(subsys, " ") << endl;
@@ -84,26 +83,32 @@ int main()
     // Testing ptrace()
     {
         cout << endl << ">> ptrace()\n";
-        idx N = 13;
+        idx N = 4;
         idx D = std::round(std::pow(2, N));
-        auto dims{std::vector<idx>(2, N)}; // N qubits
-        auto subsys{std::vector<idx>(N / 2)};
+        std::vector<idx> dims(2, N); // N qubits
+        std::vector<idx> subsys(N / 2);
         std::iota(std::begin(subsys), std::end(subsys), 0);
         std::cout << "Generating a random matrix on N = ";
         std::cout << N << " qubits..\n";
-        auto rho = rand<cmat>(D, D);
+        cmat rho = rand<cmat>(D, D);
         cout << "Taking the partial trace over: " << disp(subsys, " ") << endl;
         Timer t;
 
+        // qpp::experimental::ptrace()
+        t.tic();
+        cmat result2 = experimental::ptrace(rho, subsys);
+        t.toc();
+        cout << "qpp::experimental::ptrace() took: " << t << " seconds\n";
+
         // qpp::ptrace
-        auto result = ptrace(rho, subsys);
+        t.tic();
+        cmat result1 = ptrace(rho, subsys);
         t.toc();
         cout << "qpp::ptrace() took: " << t << " seconds\n";
 
-        // qpp::experimental::ptrace()
-        t.tic();
-        result = experimental::ptrace(rho, subsys);
-        t.toc();
-        cout << "qpp::experimental::ptrace() took: " << t << " seconds\n";
+//        cout << disp(result1) << endl << endl;
+//        cout << disp(result2) << endl << endl;
+
+        cout << "Norm difference: " << norm(result2 - result1) << endl;
     }
 }

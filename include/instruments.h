@@ -40,15 +40,15 @@ namespace qpp
 * \return The inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar
 * or column vector over the remaining Hilbert space
 */
-template<typename Scalar>
-dyn_col_vect <Scalar> ip(
-        const dyn_col_vect <Scalar>& phi,
-        const dyn_col_vect <Scalar>& psi,
+template<typename Derived>
+dyn_col_vect<typename Derived::Scalar> ip(
+        const Eigen::MatrixBase<Derived>& phi,
+        const Eigen::MatrixBase<Derived>& psi,
         const std::vector<idx>& subsys,
         const std::vector<idx>& dims)
 {
-    const dyn_col_vect<Scalar>& rphi = phi;
-    const dyn_col_vect<Scalar>& rpsi = psi;
+    const dyn_col_vect<typename Derived::Scalar>& rphi = phi;
+    const dyn_col_vect<typename Derived::Scalar>& rpsi = psi;
 
     // EXCEPTION CHECKS
     // check zero-size
@@ -58,6 +58,16 @@ dyn_col_vect <Scalar> ip(
     // check zero-size
     if (!internal::_check_nonzero_size(rpsi))
         throw Exception("qpp::ip()", Exception::Type::ZERO_SIZE);
+
+    // check column vector
+    if (!internal::_check_cvector(rphi))
+        throw Exception("qpp::schmidtcoeffs()",
+                        Exception::Type::MATRIX_NOT_CVECTOR);
+
+    // check column vector
+    if (!internal::_check_cvector(rpsi))
+        throw Exception("qpp::schmidtcoeffs()",
+                        Exception::Type::MATRIX_NOT_CVECTOR);
 
     // check that dims is a valid dimension vector
     if (!internal::_check_dims(dims))
@@ -116,7 +126,7 @@ dyn_col_vect <Scalar> ip(
     }
 
     auto worker = [=](idx b) noexcept
-            -> Scalar
+            -> typename Derived::Scalar
     {
         idx Cmidxrow[maxn];
         idx Cmidxrowsubsys[maxn];
@@ -131,8 +141,7 @@ dyn_col_vect <Scalar> ip(
             Cmidxrow[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
         }
 
-        Scalar result = 0;
-// TODO check complexity
+        typename Derived::Scalar result = 0;
         for (idx a = 0; a < Dsubsys; ++a)
         {
             /* get the row multi-indexes of the subsys */
@@ -146,14 +155,13 @@ dyn_col_vect <Scalar> ip(
             // compute the row index
             idx i = internal::_multiidx2n(Cmidxrow, n, Cdims);
 
-            // TODO: check whether need adjoint(V.col(m)(a))
             result += std::conj(rphi(a)) * rpsi(i);
         }
 
         return result;
     }; /* end worker */
 
-    dyn_col_vect<Scalar> result(Dbar);
+    dyn_col_vect<typename Derived::Scalar> result(Dbar);
 #pragma omp parallel for
     for (idx m = 0; m < Dbar; ++m)
         result(m) = worker(m);
@@ -171,15 +179,15 @@ dyn_col_vect <Scalar> ip(
 * \return The inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar
 * or column vector over the remaining Hilbert space
 */
-template<typename Scalar>
-dyn_col_vect <Scalar> ip(
-        const dyn_col_vect <Scalar>& phi,
-        const dyn_col_vect <Scalar>& psi,
+template<typename Derived>
+dyn_col_vect<typename Derived::Scalar> ip(
+        const Eigen::MatrixBase<Derived>& phi,
+        const Eigen::MatrixBase<Derived>& psi,
         const std::vector<idx>& subsys,
         idx d = 2)
 {
-    const dyn_col_vect<Scalar>& rphi = phi;
-    const dyn_col_vect<Scalar>& rpsi = psi;
+    const dyn_col_vect<typename Derived::Scalar>& rphi = phi;
+    const dyn_col_vect<typename Derived::Scalar>& rpsi = psi;
 
     // EXCEPTION CHECKS
 
@@ -509,7 +517,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
     const cmat& rA = A;
 
     // EXCEPTION CHECKS
-    
+
     // check zero size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
@@ -518,7 +526,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
     if (d == 0)
         throw Exception("qpp::measure()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
-    
+
     idx n =
             static_cast<idx>(std::llround(std::log2(rA.rows()) /
                                           std::log2(d)));
@@ -619,7 +627,6 @@ measure(const Eigen::MatrixBase<Derived>& A,
     // number of basis (rank-1 POVM) elements
     idx M = static_cast<idx>(V.cols());
 
-    // TODO: modify this!!! (and document U in case of rank-one POVMs)
     //************ ket ************//
     if (internal::_check_cvector(rA))
     {
@@ -772,7 +779,6 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
     // the order of measurements does not matter
     std::sort(std::begin(subsys), std::end(subsys), std::greater<idx>{});
 
-    // TODO: modify this so it treats both density matrices and column vectors
     //************ density matrix or column vector ************//
     if (internal::_check_square_mat(cA) || internal::_check_cvector(cA))
     {
