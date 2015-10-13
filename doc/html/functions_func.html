@@ -125,7 +125,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 , <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#ae098e0c4bf3fa14013f88e73e0506e02">qpp::internal::IOManipEigen</a>
 , <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html#a0beb83b88c16e51b13949d4a1ec5122b">qpp::internal::IOManipPointer&lt; PointerType &gt;</a>
 , <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html#ade5ff982e7724c1a4e7ceb14a79ef5b9">qpp::internal::IOManipRange&lt; InputIterator &gt;</a>
-, <a class="el" href="classqpp_1_1_timer.html#a4567054e63d5e43fe736546d9bc341cd">qpp::Timer</a>
+, <a class="el" href="classqpp_1_1_timer.html#a7e9ee6299f0120020075ad4f41bf1801">qpp::Timer&lt; T, CLOCK_T &gt;</a>
 </li>
 </ul>
 
@@ -150,6 +150,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <h3><a class="anchor" id="index_g"></a>- g -</h3><ul>
 <li>Gates()
 : <a class="el" href="classqpp_1_1_gates.html#af8d87a811249d288454f5b30017eccea">qpp::Gates</a>
+</li>
+<li>get_duration()
+: <a class="el" href="classqpp_1_1_timer.html#a8bec0069bd9849e31ed7337663c60666">qpp::Timer&lt; T, CLOCK_T &gt;</a>
 </li>
 <li>get_instance()
 : <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">qpp::internal::Singleton&lt; T &gt;</a>
@@ -188,7 +191,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 , <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html#aaebd54e51b45ec5ba2849e6c5c33640d">qpp::internal::IOManipPointer&lt; PointerType &gt;</a>
 , <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html#a32bc91344b36488b2db0179f08a0f051">qpp::internal::IOManipRange&lt; InputIterator &gt;</a>
 , <a class="el" href="classqpp_1_1internal_1_1_singleton.html#ac9f8d235a7b7e9fc5732e0d049442fa5">qpp::internal::Singleton&lt; T &gt;</a>
-, <a class="el" href="classqpp_1_1_timer.html#aef4f2e32b1fbb664d0622d0141c76d63">qpp::Timer</a>
+, <a class="el" href="classqpp_1_1_timer.html#aa3b8dd24ad12798d6905af13b549618e">qpp::Timer&lt; T, CLOCK_T &gt;</a>
 </li>
 </ul>
 
@@ -204,9 +207,6 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
-<li>seconds()
-: <a class="el" href="classqpp_1_1_timer.html#a76a1a118cb0a5dd1980caa6184a98f4d">qpp::Timer</a>
-</li>
 <li>Singleton()
 : <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a2d3f298f1de58b32475c0bc1986e564a">qpp::internal::Singleton&lt; T &gt;</a>
 </li>
@@ -218,13 +218,16 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 <h3><a class="anchor" id="index_t"></a>- t -</h3><ul>
 <li>tic()
-: <a class="el" href="classqpp_1_1_timer.html#a421e902e9b852875f873dd4ce2ca6de9">qpp::Timer</a>
+: <a class="el" href="classqpp_1_1_timer.html#ad6b987fe17ac3c5208da02f5714531e7">qpp::Timer&lt; T, CLOCK_T &gt;</a>
+</li>
+<li>tics()
+: <a class="el" href="classqpp_1_1_timer.html#af20efd87cf89264e9bc73c25abe6b69b">qpp::Timer&lt; T, CLOCK_T &gt;</a>
 </li>
 <li>Timer()
-: <a class="el" href="classqpp_1_1_timer.html#a04d6c617a56ac388a89a5ad5756f3b53">qpp::Timer</a>
+: <a class="el" href="classqpp_1_1_timer.html#ac98de320538976bfd054e663b72d4f35">qpp::Timer&lt; T, CLOCK_T &gt;</a>
 </li>
 <li>toc()
-: <a class="el" href="classqpp_1_1_timer.html#acb2019b9cd1b32129a85ea5fe9c3b338">qpp::Timer</a>
+: <a class="el" href="classqpp_1_1_timer.html#a05a542928cd438e98300051789ab846a">qpp::Timer&lt; T, CLOCK_T &gt;</a>
 </li>
 </ul>
 
@@ -273,7 +276,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="classqpp_1_1_states.html#a440339ee7ef6c69aebfbe3afa465b4f5">qpp::States</a>
 </li>
 <li>~Timer()
-: <a class="el" href="classqpp_1_1_timer.html#a7117e5a7290e914a4c0222d14d726871">qpp::Timer</a>
+: <a class="el" href="classqpp_1_1_timer.html#abc5b4ddd75ab1e37943648413e832907">qpp::Timer&lt; T, CLOCK_T &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -281,7 +284,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Oct 12 2015 21:16:04 for Quantum++ by
+    <li class="footer">Generated on Tue Oct 13 2015 12:36:22 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

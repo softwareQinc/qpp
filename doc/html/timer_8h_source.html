@@ -98,73 +98,81 @@ $(document).ready(function(){initNavTree('timer_8h_source.html','');});
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceqpp.html">qpp</a></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html">   40</a></span>&#160;<span class="keyword">class </span><a class="code" href="classqpp_1_1_timer.html">Timer</a> : <span class="keyword">public</span> <a class="code" href="classqpp_1_1_i_display.html">IDisplay</a></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#a63f565f4d3000f83acb5208ab6b123da">   43</a></span>&#160;    std::chrono::steady_clock::time_point <a class="code" href="classqpp_1_1_timer.html#a63f565f4d3000f83acb5208ab6b123da">_start</a>, <a class="code" href="classqpp_1_1_timer.html#a9a7916516dfc50e4eb8c4e45a9ef9358">_end</a>;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#a04d6c617a56ac388a89a5ad5756f3b53">   50</a></span>&#160;    <a class="code" href="classqpp_1_1_timer.html#a04d6c617a56ac388a89a5ad5756f3b53">Timer</a>() noexcept :</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            _start{std::chrono::steady_clock::now()}, _end{_start}</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#a421e902e9b852875f873dd4ce2ca6de9">   60</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classqpp_1_1_timer.html#a421e902e9b852875f873dd4ce2ca6de9">tic</a>() noexcept</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        _start = _end = std::chrono::steady_clock::now();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#acb2019b9cd1b32129a85ea5fe9c3b338">   72</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classqpp_1_1_timer.html">Timer</a>&amp; <a class="code" href="classqpp_1_1_timer.html#acb2019b9cd1b32129a85ea5fe9c3b338">toc</a>() noexcept</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        _end = std::chrono::steady_clock::now();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#a76a1a118cb0a5dd1980caa6184a98f4d">   84</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="classqpp_1_1_timer.html#a76a1a118cb0a5dd1980caa6184a98f4d">seconds</a>() const noexcept</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">return</span> std::chrono::duration_cast&lt;std::chrono::duration&lt;double&gt;&gt;(</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                _end - <a class="code" href="classqpp_1_1_timer.html#a63f565f4d3000f83acb5208ab6b123da">_start</a>).count();</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <a class="code" href="classqpp_1_1_timer.html#a04d6c617a56ac388a89a5ad5756f3b53">Timer</a>(<span class="keyword">const</span> <a class="code" href="classqpp_1_1_timer.html">Timer</a>&amp;) = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <a class="code" href="classqpp_1_1_timer.html#a04d6c617a56ac388a89a5ad5756f3b53">Timer</a>(<a class="code" href="classqpp_1_1_timer.html">Timer</a>&amp;&amp;) = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <a class="code" href="classqpp_1_1_timer.html">Timer</a>&amp; <a class="code" href="classqpp_1_1_timer.html#aef4f2e32b1fbb664d0622d0141c76d63">operator=</a>(<span class="keyword">const</span> <a class="code" href="classqpp_1_1_timer.html">Timer</a>&amp;) = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <a class="code" href="classqpp_1_1_timer.html">Timer</a>&amp; <a class="code" href="classqpp_1_1_timer.html#aef4f2e32b1fbb664d0622d0141c76d63">operator=</a>(<a class="code" href="classqpp_1_1_timer.html">Timer</a>&amp;&amp;) = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classqpp_1_1_timer.html#a7117e5a7290e914a4c0222d14d726871">~Timer</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#a4567054e63d5e43fe736546d9bc341cd">  123</a></span>&#160;    std::ostream&amp; <a class="code" href="classqpp_1_1_timer.html#a4567054e63d5e43fe736546d9bc341cd">display</a>(std::ostream&amp; os)<span class="keyword"> const override</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <span class="keywordflow">return</span> os &lt;&lt; <a class="code" href="classqpp_1_1_timer.html#a76a1a118cb0a5dd1980caa6184a98f4d">seconds</a>();</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    }</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;}; <span class="comment">/* class Timer */</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* CLASSES_TIMER_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="classqpp_1_1_timer_html_acb2019b9cd1b32129a85ea5fe9c3b338"><div class="ttname"><a href="classqpp_1_1_timer.html#acb2019b9cd1b32129a85ea5fe9c3b338">qpp::Timer::toc</a></div><div class="ttdeci">const Timer &amp; toc() noexcept</div><div class="ttdoc">Stops the chronometer. </div><div class="ttdef"><b>Definition:</b> timer.h:72</div></div>
-<div class="ttc" id="classqpp_1_1_timer_html_a04d6c617a56ac388a89a5ad5756f3b53"><div class="ttname"><a href="classqpp_1_1_timer.html#a04d6c617a56ac388a89a5ad5756f3b53">qpp::Timer::Timer</a></div><div class="ttdeci">Timer() noexcept</div><div class="ttdoc">Constructs an instance with the current time as the starting point. </div><div class="ttdef"><b>Definition:</b> timer.h:50</div></div>
-<div class="ttc" id="classqpp_1_1_timer_html_a9a7916516dfc50e4eb8c4e45a9ef9358"><div class="ttname"><a href="classqpp_1_1_timer.html#a9a7916516dfc50e4eb8c4e45a9ef9358">qpp::Timer::_end</a></div><div class="ttdeci">std::chrono::steady_clock::time_point _end</div><div class="ttdef"><b>Definition:</b> timer.h:43</div></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T = std::chrono::duration&lt;<span class="keywordtype">double</span>&gt;,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keyword">typename</span> CLOCK_T = std::chrono::steady_clock&gt;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html">   44</a></span>&#160;<span class="keyword">class </span><a class="code" href="classqpp_1_1_timer.html">Timer</a> : <span class="keyword">public</span> <a class="code" href="classqpp_1_1_i_display.html">IDisplay</a></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#a29ae1096be8c051860cd5f6d4670e1f1">   47</a></span>&#160;    <span class="keyword">typename</span> CLOCK_T::time_point <a class="code" href="classqpp_1_1_timer.html#a29ae1096be8c051860cd5f6d4670e1f1">_start</a>, <a class="code" href="classqpp_1_1_timer.html#a25f8a3e88727d1e931911fff9a8cc162">_end</a>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#a508a8df2570ce6717e7e5db1edc345cc">   54</a></span>&#160;    <a class="code" href="classqpp_1_1_timer.html#a508a8df2570ce6717e7e5db1edc345cc">Timer</a>() noexcept :</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            _start{CLOCK_T::now()}, _end{_start}</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#ad6b987fe17ac3c5208da02f5714531e7">   64</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classqpp_1_1_timer.html#ad6b987fe17ac3c5208da02f5714531e7">tic</a>() noexcept</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        _start = _end = CLOCK_T::now();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#a05a542928cd438e98300051789ab846a">   76</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classqpp_1_1_timer.html">Timer</a>&amp; <a class="code" href="classqpp_1_1_timer.html#a05a542928cd438e98300051789ab846a">toc</a>() noexcept</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        _end = CLOCK_T::now();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#af20efd87cf89264e9bc73c25abe6b69b">   88</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="classqpp_1_1_timer.html#af20efd87cf89264e9bc73c25abe6b69b">tics</a>() const noexcept</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordflow">return</span> std::chrono::duration_cast&lt;T&gt;(_end - <a class="code" href="classqpp_1_1_timer.html#a29ae1096be8c051860cd5f6d4670e1f1">_start</a>).count();</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> U = T&gt;</div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#a8bec0069bd9849e31ed7337663c60666">  103</a></span>&#160;    U <a class="code" href="classqpp_1_1_timer.html#a8bec0069bd9849e31ed7337663c60666">get_duration</a>()</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    {</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordflow">return</span> std::chrono::duration_cast&lt;U&gt;(_end - <a class="code" href="classqpp_1_1_timer.html#a29ae1096be8c051860cd5f6d4670e1f1">_start</a>);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <a class="code" href="classqpp_1_1_timer.html#a508a8df2570ce6717e7e5db1edc345cc">Timer</a>(<span class="keyword">const</span> <a class="code" href="classqpp_1_1_timer.html">Timer</a>&amp;) = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <a class="code" href="classqpp_1_1_timer.html#a508a8df2570ce6717e7e5db1edc345cc">Timer</a>(<a class="code" href="classqpp_1_1_timer.html">Timer</a>&amp;&amp;) = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <a class="code" href="classqpp_1_1_timer.html">Timer</a>&amp; <a class="code" href="classqpp_1_1_timer.html#aa3b8dd24ad12798d6905af13b549618e">operator=</a>(<span class="keyword">const</span> <a class="code" href="classqpp_1_1_timer.html">Timer</a>&amp;) = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <a class="code" href="classqpp_1_1_timer.html">Timer</a>&amp; <a class="code" href="classqpp_1_1_timer.html#aa3b8dd24ad12798d6905af13b549618e">operator=</a>(<a class="code" href="classqpp_1_1_timer.html">Timer</a>&amp;&amp;) = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classqpp_1_1_timer.html#abc5b4ddd75ab1e37943648413e832907">~Timer</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00142"></a><span class="lineno"><a class="line" href="classqpp_1_1_timer.html#a7e9ee6299f0120020075ad4f41bf1801">  142</a></span>&#160;    std::ostream&amp; <a class="code" href="classqpp_1_1_timer.html#a7e9ee6299f0120020075ad4f41bf1801">display</a>(std::ostream&amp; os)<span class="keyword"> const override</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        <span class="keywordflow">return</span> os &lt;&lt; <a class="code" href="classqpp_1_1_timer.html#af20efd87cf89264e9bc73c25abe6b69b">tics</a>();</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    }</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;}; <span class="comment">/* class Timer */</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* CLASSES_TIMER_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="classqpp_1_1_timer_html_a29ae1096be8c051860cd5f6d4670e1f1"><div class="ttname"><a href="classqpp_1_1_timer.html#a29ae1096be8c051860cd5f6d4670e1f1">qpp::Timer::_start</a></div><div class="ttdeci">CLOCK_T::time_point _start</div><div class="ttdef"><b>Definition:</b> timer.h:47</div></div>
+<div class="ttc" id="classqpp_1_1_timer_html_a7e9ee6299f0120020075ad4f41bf1801"><div class="ttname"><a href="classqpp_1_1_timer.html#a7e9ee6299f0120020075ad4f41bf1801">qpp::Timer::display</a></div><div class="ttdeci">std::ostream &amp; display(std::ostream &amp;os) const override</div><div class="ttdoc">qpp::IDisplay::display() override </div><div class="ttdef"><b>Definition:</b> timer.h:142</div></div>
 <div class="ttc" id="namespaceqpp_html"><div class="ttname"><a href="namespaceqpp.html">qpp</a></div><div class="ttdoc">Quantum++ main namespace. </div><div class="ttdef"><b>Definition:</b> codes.h:30</div></div>
-<div class="ttc" id="classqpp_1_1_timer_html_a7117e5a7290e914a4c0222d14d726871"><div class="ttname"><a href="classqpp_1_1_timer.html#a7117e5a7290e914a4c0222d14d726871">qpp::Timer::~Timer</a></div><div class="ttdeci">virtual ~Timer()=default</div><div class="ttdoc">Default virtual destructor. </div></div>
-<div class="ttc" id="classqpp_1_1_timer_html"><div class="ttname"><a href="classqpp_1_1_timer.html">qpp::Timer</a></div><div class="ttdoc">Chronometer. </div><div class="ttdef"><b>Definition:</b> timer.h:40</div></div>
-<div class="ttc" id="classqpp_1_1_timer_html_aef4f2e32b1fbb664d0622d0141c76d63"><div class="ttname"><a href="classqpp_1_1_timer.html#aef4f2e32b1fbb664d0622d0141c76d63">qpp::Timer::operator=</a></div><div class="ttdeci">Timer &amp; operator=(const Timer &amp;)=default</div><div class="ttdoc">Default copy assignment operator. </div></div>
+<div class="ttc" id="classqpp_1_1_timer_html"><div class="ttname"><a href="classqpp_1_1_timer.html">qpp::Timer</a></div><div class="ttdoc">Chronometer. </div><div class="ttdef"><b>Definition:</b> timer.h:44</div></div>
+<div class="ttc" id="classqpp_1_1_timer_html_a508a8df2570ce6717e7e5db1edc345cc"><div class="ttname"><a href="classqpp_1_1_timer.html#a508a8df2570ce6717e7e5db1edc345cc">qpp::Timer::Timer</a></div><div class="ttdeci">Timer() noexcept</div><div class="ttdoc">Constructs an instance with the current time as the starting point. </div><div class="ttdef"><b>Definition:</b> timer.h:54</div></div>
+<div class="ttc" id="classqpp_1_1_timer_html_aa3b8dd24ad12798d6905af13b549618e"><div class="ttname"><a href="classqpp_1_1_timer.html#aa3b8dd24ad12798d6905af13b549618e">qpp::Timer::operator=</a></div><div class="ttdeci">Timer &amp; operator=(const Timer &amp;)=default</div><div class="ttdoc">Default copy assignment operator. </div></div>
 <div class="ttc" id="classqpp_1_1_i_display_html"><div class="ttname"><a href="classqpp_1_1_i_display.html">qpp::IDisplay</a></div><div class="ttdoc">Abstract class (interface) that mandates the definition of virtual std::ostream& display(std::ostream...</div><div class="ttdef"><b>Definition:</b> idisplay.h:43</div></div>
-<div class="ttc" id="classqpp_1_1_timer_html_a63f565f4d3000f83acb5208ab6b123da"><div class="ttname"><a href="classqpp_1_1_timer.html#a63f565f4d3000f83acb5208ab6b123da">qpp::Timer::_start</a></div><div class="ttdeci">std::chrono::steady_clock::time_point _start</div><div class="ttdef"><b>Definition:</b> timer.h:43</div></div>
-<div class="ttc" id="classqpp_1_1_timer_html_a76a1a118cb0a5dd1980caa6184a98f4d"><div class="ttname"><a href="classqpp_1_1_timer.html#a76a1a118cb0a5dd1980caa6184a98f4d">qpp::Timer::seconds</a></div><div class="ttdeci">double seconds() const noexcept</div><div class="ttdoc">Time passed in seconds. </div><div class="ttdef"><b>Definition:</b> timer.h:84</div></div>
-<div class="ttc" id="classqpp_1_1_timer_html_a4567054e63d5e43fe736546d9bc341cd"><div class="ttname"><a href="classqpp_1_1_timer.html#a4567054e63d5e43fe736546d9bc341cd">qpp::Timer::display</a></div><div class="ttdeci">std::ostream &amp; display(std::ostream &amp;os) const override</div><div class="ttdoc">qpp::IDisplay::display() override </div><div class="ttdef"><b>Definition:</b> timer.h:123</div></div>
-<div class="ttc" id="classqpp_1_1_timer_html_a421e902e9b852875f873dd4ce2ca6de9"><div class="ttname"><a href="classqpp_1_1_timer.html#a421e902e9b852875f873dd4ce2ca6de9">qpp::Timer::tic</a></div><div class="ttdeci">void tic() noexcept</div><div class="ttdoc">Resets the chronometer. </div><div class="ttdef"><b>Definition:</b> timer.h:60</div></div>
+<div class="ttc" id="classqpp_1_1_timer_html_a8bec0069bd9849e31ed7337663c60666"><div class="ttname"><a href="classqpp_1_1_timer.html#a8bec0069bd9849e31ed7337663c60666">qpp::Timer::get_duration</a></div><div class="ttdeci">U get_duration()</div><div class="ttdoc">Duration specified by U. </div><div class="ttdef"><b>Definition:</b> timer.h:103</div></div>
+<div class="ttc" id="classqpp_1_1_timer_html_a25f8a3e88727d1e931911fff9a8cc162"><div class="ttname"><a href="classqpp_1_1_timer.html#a25f8a3e88727d1e931911fff9a8cc162">qpp::Timer::_end</a></div><div class="ttdeci">CLOCK_T::time_point _end</div><div class="ttdef"><b>Definition:</b> timer.h:47</div></div>
+<div class="ttc" id="classqpp_1_1_timer_html_abc5b4ddd75ab1e37943648413e832907"><div class="ttname"><a href="classqpp_1_1_timer.html#abc5b4ddd75ab1e37943648413e832907">qpp::Timer::~Timer</a></div><div class="ttdeci">virtual ~Timer()=default</div><div class="ttdoc">Default virtual destructor. </div></div>
+<div class="ttc" id="classqpp_1_1_timer_html_af20efd87cf89264e9bc73c25abe6b69b"><div class="ttname"><a href="classqpp_1_1_timer.html#af20efd87cf89264e9bc73c25abe6b69b">qpp::Timer::tics</a></div><div class="ttdeci">double tics() const noexcept</div><div class="ttdoc">Time passed in the duration specified by T. </div><div class="ttdef"><b>Definition:</b> timer.h:88</div></div>
+<div class="ttc" id="classqpp_1_1_timer_html_ad6b987fe17ac3c5208da02f5714531e7"><div class="ttname"><a href="classqpp_1_1_timer.html#ad6b987fe17ac3c5208da02f5714531e7">qpp::Timer::tic</a></div><div class="ttdeci">void tic() noexcept</div><div class="ttdoc">Resets the chronometer. </div><div class="ttdef"><b>Definition:</b> timer.h:64</div></div>
+<div class="ttc" id="classqpp_1_1_timer_html_a05a542928cd438e98300051789ab846a"><div class="ttname"><a href="classqpp_1_1_timer.html#a05a542928cd438e98300051789ab846a">qpp::Timer::toc</a></div><div class="ttdeci">const Timer &amp; toc() noexcept</div><div class="ttdoc">Stops the chronometer. </div><div class="ttdef"><b>Definition:</b> timer.h:76</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b02e4219757ae4e3a0f1714873865bbf.html">classes</a></li><li class="navelem"><a class="el" href="timer_8h.html">timer.h</a></li>
-    <li class="footer">Generated on Mon Oct 12 2015 21:16:03 for Quantum++ by
+    <li class="footer">Generated on Tue Oct 13 2015 12:36:20 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

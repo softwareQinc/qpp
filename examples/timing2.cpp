@@ -18,7 +18,7 @@ int main()
     std::vector<idx> subsys_ptrace = {0};
     cout << ">> Subsytem(s): ";
     cout << disp(subsys_ptrace, ", ") << endl;
-    Timer t;
+    Timer<> t;
     ptrace(randcmat, subsys_ptrace);
     cout << ">> It took " << t.toc() << " seconds." << endl << endl;
 

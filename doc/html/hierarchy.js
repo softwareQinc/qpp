@@ -12,7 +12,7 @@ var hierarchy =
       [ "qpp::internal::IOManipEigen", "classqpp_1_1internal_1_1_i_o_manip_eigen.html", null ],
       [ "qpp::internal::IOManipPointer< PointerType >", "classqpp_1_1internal_1_1_i_o_manip_pointer.html", null ],
       [ "qpp::internal::IOManipRange< InputIterator >", "classqpp_1_1internal_1_1_i_o_manip_range.html", null ],
-      [ "qpp::Timer", "classqpp_1_1_timer.html", null ]
+      [ "qpp::Timer< T, CLOCK_T >", "classqpp_1_1_timer.html", null ]
     ] ],
     [ "qpp::internal::Singleton< T >", "classqpp_1_1internal_1_1_singleton.html", null ],
     [ "qpp::internal::Singleton< const Codes >", "classqpp_1_1internal_1_1_singleton.html", [

@@ -10,7 +10,7 @@ int main()
     // get the first codeword from Shor's [[9,1,3]] code
     ket c0 = codes.codeword(Codes::Type::NINE_QUBIT_SHOR, 0);
 
-    Timer t; // declare and start a timer
+    Timer<> t; // declare and start a timer
     std::vector<idx> perm = randperm(9); // declare a random permutation
     ket c0perm = syspermute(c0, perm); // permute the system
     t.toc(); // stops the timer

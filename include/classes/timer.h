@@ -34,13 +34,17 @@ namespace qpp
 * \class qpp::Timer
 * \brief Chronometer
 *
-* Uses a std::chrono::steady_clock.
-* It is not affected by wall clock changes during runtime.
+* \tparam T Tics duration, default is std::chrono::duration<double, 1>
+* i.e. seconds in double precision
+* \tparam CLOCK_T Clock's type, default is std::chrono::steady_clock,
+* not affected by wall clock changes during runtime
 */
+template<typename T = std::chrono::duration<double>,
+        typename CLOCK_T = std::chrono::steady_clock>
 class Timer : public IDisplay
 {
 protected:
-    std::chrono::steady_clock::time_point _start, _end;
+    typename CLOCK_T::time_point _start, _end;
 
 public:
     /**
@@ -48,7 +52,7 @@ public:
     * as the starting point
     */
     Timer() noexcept :
-            _start{std::chrono::steady_clock::now()}, _end{_start}
+            _start{CLOCK_T::now()}, _end{_start}
     {
     }
 
@@ -59,7 +63,7 @@ public:
     */
     void tic() noexcept
     {
-        _start = _end = std::chrono::steady_clock::now();
+        _start = _end = CLOCK_T::now();
     }
 
     /**
@@ -71,20 +75,34 @@ public:
     */
     const Timer& toc() noexcept
     {
-        _end = std::chrono::steady_clock::now();
+        _end = CLOCK_T::now();
         return *this;
     }
 
     /**
-    * \brief Time passed in seconds
+    * \brief Time passed in the duration specified by T
     *
-    * \return Number of seconds that passed between the instantiation/reset
-    * and invocation of qpp::Timer::toc()
+    * \return Number of tics (specified by T) that passed between the
+    * instantiation/reset and invocation of qpp::Timer::toc()
     */
-    double seconds() const noexcept
+    double tics() const noexcept
     {
-        return std::chrono::duration_cast<std::chrono::duration<double>>(
-                _end - _start).count();
+        return std::chrono::duration_cast<T>(_end - _start).count();
+    }
+
+    /**
+    * \brief Duration specified by U
+    *
+    * \tparam U Duration, default is T, which defaults to
+    * std::chrono::duration<double, 1>, i.e. seconds in double precision
+    *
+    * \return Duration that passed between the
+    * instantiation/reset and invocation of qpp::Timer::toc()
+    */
+    template<typename U = T>
+    U get_duration()
+    {
+        return std::chrono::duration_cast<U>(_end - _start);
     }
 
 /**
@@ -117,12 +135,13 @@ private:
     * \brief qpp::IDisplay::display() override
     *
     * \param os Output stream
-    * \return Writes to the output stream the number of seconds that passed
-    * between the instantiation/reset and invocation of qpp::Timer::toc().
+    * \return Writes to the output stream the number of tics (specified by T)
+    * that passed between the instantiation/reset and invocation
+    * of qpp::Timer::toc().
     */
     std::ostream& display(std::ostream& os) const override
     {
-        return os << seconds();
+        return os << tics();
     }
 }; /* class Timer */
 

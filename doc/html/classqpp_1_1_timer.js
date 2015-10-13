@@ -1,15 +1,16 @@
 var classqpp_1_1_timer =
 [
-    [ "Timer", "classqpp_1_1_timer.html#a04d6c617a56ac388a89a5ad5756f3b53", null ],
-    [ "Timer", "classqpp_1_1_timer.html#ae5aa25c683ff6431b46231b2d15dceff", null ],
-    [ "Timer", "classqpp_1_1_timer.html#a83488eba2d1de80a0782b9c237b2b94b", null ],
-    [ "~Timer", "classqpp_1_1_timer.html#a7117e5a7290e914a4c0222d14d726871", null ],
-    [ "display", "classqpp_1_1_timer.html#a4567054e63d5e43fe736546d9bc341cd", null ],
-    [ "operator=", "classqpp_1_1_timer.html#aef4f2e32b1fbb664d0622d0141c76d63", null ],
-    [ "operator=", "classqpp_1_1_timer.html#adc62f00aafe88567e5dc7c52e0da7626", null ],
-    [ "seconds", "classqpp_1_1_timer.html#a76a1a118cb0a5dd1980caa6184a98f4d", null ],
-    [ "tic", "classqpp_1_1_timer.html#a421e902e9b852875f873dd4ce2ca6de9", null ],
-    [ "toc", "classqpp_1_1_timer.html#acb2019b9cd1b32129a85ea5fe9c3b338", null ],
-    [ "_end", "classqpp_1_1_timer.html#a9a7916516dfc50e4eb8c4e45a9ef9358", null ],
-    [ "_start", "classqpp_1_1_timer.html#a63f565f4d3000f83acb5208ab6b123da", null ]
+    [ "Timer", "classqpp_1_1_timer.html#a508a8df2570ce6717e7e5db1edc345cc", null ],
+    [ "Timer", "classqpp_1_1_timer.html#ad78c320feaed2547f75850a92544bc10", null ],
+    [ "Timer", "classqpp_1_1_timer.html#ac98de320538976bfd054e663b72d4f35", null ],
+    [ "~Timer", "classqpp_1_1_timer.html#abc5b4ddd75ab1e37943648413e832907", null ],
+    [ "display", "classqpp_1_1_timer.html#a7e9ee6299f0120020075ad4f41bf1801", null ],
+    [ "get_duration", "classqpp_1_1_timer.html#a8bec0069bd9849e31ed7337663c60666", null ],
+    [ "operator=", "classqpp_1_1_timer.html#aa3b8dd24ad12798d6905af13b549618e", null ],
+    [ "operator=", "classqpp_1_1_timer.html#a22a107dcf41ff7e75cc659d92930f47d", null ],
+    [ "tic", "classqpp_1_1_timer.html#ad6b987fe17ac3c5208da02f5714531e7", null ],
+    [ "tics", "classqpp_1_1_timer.html#af20efd87cf89264e9bc73c25abe6b69b", null ],
+    [ "toc", "classqpp_1_1_timer.html#a05a542928cd438e98300051789ab846a", null ],
+    [ "_end", "classqpp_1_1_timer.html#a25f8a3e88727d1e931911fff9a8cc162", null ],
+    [ "_start", "classqpp_1_1_timer.html#a29ae1096be8c051860cd5f6d4670e1f1", null ]
 ];

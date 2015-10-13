@@ -97,7 +97,7 @@ Version 0.8.2 - 20 May 2015
     - Added new examples in ./examples
 
 Version 0.8.3 - development
-    - Added <macros.h> preprocessor debug macros header
+    - Added <macros.h> preprocessor debug macros header, containing:
         PRINT(x)   - std::cout << (x)
         PRINTLN(x) - std::cout << (x) << std::endl
         ERROR(x)   - std::cerr << (x)
@@ -108,3 +108,7 @@ Version 0.8.3 - development
         whenever the input is a pure state and the measurement operators are
         rank-one POVMs (technically rank-one Kraus operators). Includes basis
         measurements as a particular case.
+    - Improved qpp::Timer<>, now both the duration and the clock's type can be
+        specified as template parameters, defaulted to
+        std::chrono::duration<double> and std::chrono::steady_clock,
+        respectively
