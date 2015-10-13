@@ -96,7 +96,7 @@ Version 0.8.2 - 20 May 2015
         qpp::var()         - variance
     - Added new examples in ./examples
 
-Version 0.8.3 - development
+Version 0.8.4 - 14 October 2015
     - Added <macros.h> preprocessor debug macros header, containing:
         PRINT(x)   - std::cout << (x)
         PRINTLN(x) - std::cout << (x) << std::endl
