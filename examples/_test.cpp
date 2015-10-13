@@ -76,7 +76,7 @@ int main()
         cout << disp(result) << endl;
 
         cout << "Additional testing, dim(phi) == dim(psi)\n";
-        cout << disp(ip(st.z0, st.y0, {0})) << endl;
-        cout << disp(adjoint(st.z0) * st.y0) << endl;
+        cout << "ip(): " << disp(ip(st.z0, st.y0, {0})) << endl;
+        cout << "Inner product: " << disp(adjoint(st.z0) * st.y0) << endl;
     }
 }

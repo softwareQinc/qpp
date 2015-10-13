@@ -145,11 +145,11 @@ static const States& st = States::get_instance();
 * \note Has thread storage duration, due to mutability of its public member
 * std::mt19937 and possible data races
 */
-#ifndef _NO_THREAD_LOCAL
+#ifdef _NO_THREAD_LOCAL
+static RandomDevices& rdevs = RandomDevices::get_instance();
+#else
 thread_local static RandomDevices& rdevs =
         RandomDevices::get_thread_local_instance();
-#else
-static RandomDevices& rdevs = RandomDevices::get_instance();
 #endif // _NO_THREAD_LOCAL
 
 } /* namespace qpp */

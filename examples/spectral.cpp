@@ -8,7 +8,7 @@ using std::endl;
 int main()
 {
     idx D = 4;
-    cmat rH = randH(D);
+    cmat rH = randH(D); // random Hermitian matrix
     cout << ">> Original matrix: " << endl << disp(rH) << endl;
 
     // spectral decomposition here

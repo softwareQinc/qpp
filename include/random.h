@@ -44,10 +44,10 @@ inline double rand(double a = 0, double b = 1)
 {
     std::uniform_real_distribution<> ud(a, b);
 
-#ifndef _NO_THREAD_LOCAL
-    return ud(RandomDevices::get_thread_local_instance()._rng);
-#else
+#ifdef _NO_THREAD_LOCAL
     return ud(RandomDevices::get_instance()._rng);
+#else
+    return ud(RandomDevices::get_thread_local_instance()._rng);
 #endif // _NO_THREAD_LOCAL
 }
 
@@ -64,10 +64,10 @@ inline bigint rand(bigint a = std::numeric_limits<bigint>::min(),
 {
     std::uniform_int_distribution<bigint> uid(a, b);
 
-#ifndef _NO_THREAD_LOCAL
-    return uid(RandomDevices::get_thread_local_instance()._rng);
-#else
+#ifdef _NO_THREAD_LOCAL
     return uid(RandomDevices::get_instance()._rng);
+#else
+    return uid(RandomDevices::get_thread_local_instance()._rng);
 #endif // _NO_THREAD_LOCAL
 }
 
@@ -84,10 +84,10 @@ inline ubigint rand(ubigint a = std::numeric_limits<ubigint>::min(),
 {
     std::uniform_int_distribution<ubigint> uid(a, b);
 
-#ifndef _NO_THREAD_LOCAL
-    return uid(RandomDevices::get_thread_local_instance()._rng);
-#else
+#ifdef _NO_THREAD_LOCAL
     return uid(RandomDevices::get_instance()._rng);
+#else
+    return uid(RandomDevices::get_thread_local_instance()._rng);
 #endif // _NO_THREAD_LOCAL
 }
 
@@ -104,10 +104,10 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
 {
     std::uniform_int_distribution<idx> uid(a, b);
 
-#ifndef _NO_THREAD_LOCAL
-    return uid(RandomDevices::get_thread_local_instance()._rng);
-#else
+#ifdef _NO_THREAD_LOCAL
     return uid(RandomDevices::get_instance()._rng);
+#else
+    return uid(RandomDevices::get_thread_local_instance()._rng);
 #endif // _NO_THREAD_LOCAL
 }
 
@@ -157,8 +157,11 @@ Derived rand(idx rows, idx cols, double a = 0, double b = 1)
 template<>
 inline dmat rand(idx rows, idx cols, double a, double b)
 {
+    // EXCEPTION CHECKS
+
     if (rows == 0 || cols == 0)
         throw Exception("qpp::rand()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     return dmat::Zero(rows, cols).unaryExpr(
             [a, b](double)
@@ -191,8 +194,11 @@ inline dmat rand(idx rows, idx cols, double a, double b)
 template<>
 inline cmat rand(idx rows, idx cols, double a, double b)
 {
+    // EXCEPTION CHECKS
+
     if (rows == 0 || cols == 0)
         throw Exception("qpp::rand()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     return rand<dmat>(rows, cols, a, b).cast<cplx>() +
            1_i * rand<dmat>(rows, cols, a, b).cast<cplx>();
@@ -246,18 +252,21 @@ template<>
 inline dmat randn(idx rows, idx cols,
                   double mean, double sigma)
 {
+    // EXCEPTION CHECKS
+
     if (rows == 0 || cols == 0)
         throw Exception("qpp::randn()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     std::normal_distribution<> nd(mean, sigma);
 
     return dmat::Zero(rows, cols).unaryExpr(
             [&nd](double)
             {
-#ifndef _NO_THREAD_LOCAL
-                return nd(RandomDevices::get_thread_local_instance()._rng);
-#else
+#ifdef _NO_THREAD_LOCAL
                 return nd(RandomDevices::get_instance()._rng);
+#else
+                return nd(RandomDevices::get_thread_local_instance()._rng);
 #endif // _NO_THREAD_LOCAL
             });
 }
@@ -287,8 +296,11 @@ template<>
 inline cmat randn(idx rows, idx cols,
                   double mean, double sigma)
 {
+    // EXCEPTION CHECKS
+
     if (rows == 0 || cols == 0)
         throw Exception("qpp::randn()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     return randn<dmat>(rows, cols, mean, sigma).cast<cplx>() +
            1_i * randn<dmat>(rows, cols, mean, sigma).cast<cplx>();
@@ -306,10 +318,10 @@ inline double randn(double mean = 0, double sigma = 1)
 {
     std::normal_distribution<> nd(mean, sigma);
 
-#ifndef _NO_THREAD_LOCAL
-    return nd(RandomDevices::get_thread_local_instance()._rng);
-#else
+#ifdef _NO_THREAD_LOCAL
     return nd(RandomDevices::get_instance()._rng);
+#else
+    return nd(RandomDevices::get_thread_local_instance()._rng);
 #endif // _NO_THREAD_LOCAL
 }
 
@@ -323,8 +335,11 @@ inline cmat randU(idx D)
 // ~3 times slower than Toby Cubitt's MATLAB corresponding routine,
 // because Eigen 3 QR algorithm is not parallelized
 {
+    // EXCEPTION CHECKS
+
     if (D == 0)
         throw Exception("qpp::randU()", Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
 
     cmat X = 1 / std::sqrt(2.) * randn < cmat > (D, D);
     Eigen::HouseholderQR<cmat> qr(X);
@@ -351,8 +366,11 @@ inline cmat randU(idx D)
 */
 inline cmat randV(idx Din, idx Dout)
 {
+    // EXCEPTION CHECKS
+
     if (Din == 0 || Dout == 0 || Din > Dout)
         throw Exception("qpp::randV()", Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
 
     return randU(Dout).block(0, 0, Dout, Din);
 }
@@ -369,10 +387,13 @@ inline cmat randV(idx Din, idx Dout)
 */
 inline std::vector<cmat> randkraus(idx N, idx D)
 {
+    // EXCEPTION CHECKS
+
     if (N == 0)
         throw Exception("qpp::randkraus()", Exception::Type::OUT_OF_RANGE);
     if (D == 0)
         throw Exception("qpp::randkraus()", Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
 
     std::vector<cmat> result(N);
     for (idx i = 0; i < N; ++i)
@@ -398,8 +419,11 @@ inline std::vector<cmat> randkraus(idx N, idx D)
 */
 inline cmat randH(idx D)
 {
+    // EXCEPTION CHECKS
+
     if (D == 0)
         throw Exception("qpp::randH()", Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
 
     cmat H = 2 * rand<cmat>(D, D) - (1. + 1_i) * cmat::Ones(D, D);
 
@@ -414,8 +438,11 @@ inline cmat randH(idx D)
 */
 inline ket randket(idx D)
 {
+    // EXCEPTION CHECKS
+
     if (D == 0)
         throw Exception("qpp::randket()", Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
 
     /* slow
      ket kt = ket::Ones(D);
@@ -437,8 +464,11 @@ inline ket randket(idx D)
 */
 inline cmat randrho(idx D)
 {
+    // EXCEPTION CHECKS
+
     if (D == 0)
         throw Exception("qpp::randrho()", Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
 
     cmat result = 10 * randH(D);
     result = result * adjoint(result);
@@ -457,20 +487,24 @@ inline cmat randrho(idx D)
 */
 inline std::vector<idx> randperm(idx n)
 {
+    // EXCEPTION CHECKS
+
     if (n == 0)
         throw Exception("qpp::randperm()", Exception::Type::PERM_INVALID);
+    // END EXCEPTION CHECKS
 
     std::vector<idx> result(n);
 
     // fill in increasing order
     std::iota(std::begin(result), std::end(result), 0);
     // shuffle
-#ifndef _NO_THREAD_LOCAL
-    std::shuffle(std::begin(result), std::end(result),
-                 RandomDevices::get_thread_local_instance()._rng);
-#else
+#ifdef _NO_THREAD_LOCAL
     std::shuffle(std::begin(result), std::end(result),
                  RandomDevices::get_instance()._rng);
+#else
+    std::shuffle(std::begin(result), std::end(result),
+                 RandomDevices::get_thread_local_instance()._rng);
+
 #endif // _NO_THREAD_LOCAL
 
     return result;

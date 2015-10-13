@@ -44,6 +44,8 @@ double entropy(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::entropy()", Exception::Type::ZERO_SIZE);
@@ -51,6 +53,7 @@ double entropy(const Eigen::MatrixBase<Derived>& A)
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::entropy()", Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     dmat ev = svals(rA); // get the singular values
     double result = 0;
@@ -69,9 +72,12 @@ double entropy(const Eigen::MatrixBase<Derived>& A)
 */
 inline double entropy(const std::vector<double>& prob)
 {
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(prob))
         throw Exception("qpp::entropy()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     double result = 0;
     for (idx i = 0; i < prob.size(); ++i)
@@ -98,6 +104,8 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::renyi()", Exception::Type::ZERO_SIZE);
@@ -108,6 +116,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
 
     if (alpha < 0)
         throw Exception("qpp::renyi()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     if (alpha == 0) // H max
         return std::log2(static_cast<double>( rA.rows()));
@@ -141,6 +150,8 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
 */
 inline double renyi(const std::vector<double>& prob, double alpha)
 {
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(prob))
         throw Exception("qpp::renyi()", Exception::Type::ZERO_SIZE);
@@ -153,6 +164,7 @@ inline double renyi(const std::vector<double>& prob, double alpha)
 
     if (alpha == 1) // Shannon/von-Neumann
         return entropy(prob);
+    // END EXCEPTION CHECKS
 
     if (alpha == infty) // H min
     {
@@ -189,6 +201,8 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double q)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::tsallis()", Exception::Type::ZERO_SIZE);
@@ -199,6 +213,7 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double q)
 
     if (q < 0)
         throw Exception("qpp::tsallis()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     if (q == 1) // Shannon/von-Neumann with base e logarithm
         return entropy(rA) * std::log(2.);
@@ -226,12 +241,15 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double q)
 */
 inline double tsallis(const std::vector<double>& prob, double q)
 {
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(prob))
         throw Exception("qpp::tsallis()", Exception::Type::ZERO_SIZE);
 
     if (q < 0)
         throw Exception("qpp::tsallis()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     if (q == 1) // Shannon/von-Neumann with base e logarithm
         return entropy(prob) * std::log(2.);

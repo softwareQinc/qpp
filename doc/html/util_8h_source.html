@@ -353,82 +353,84 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    <span class="comment">// check zero-size</span></div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">internal::_check_nonzero_size</a>(rB))</div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::kron()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Acols = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rA.cols());</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Arows = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rA.rows());</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Bcols = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rB.cols());</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Brows = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rB.rows());</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a> result;</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    result.resize(Arows * Brows, Acols * Bcols);</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="preprocessor">#pragma omp parallel for collapse(2)</span></div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; Acols; ++j) <span class="comment">// column major order for speed</span></div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; Arows; ++i)</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            result.block(i * Brows, j * Bcols, Brows, Bcols) = rA(i, j) * rB;</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;}</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="comment">// Direct sum of 2 matrices, preserve return type</span></div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="comment">// internal function for the variadic template function wrapper dirsum()</span></div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived1, <span class="keyword">typename</span> Derived2&gt;</div>
-<div class="line"><a name="l00312"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a164486ba597d10ddf2f1f573366d7e7c">  312</a></span>&#160;<a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a> <a class="code" href="namespaceqpp_1_1internal.html#a164486ba597d10ddf2f1f573366d7e7c">_dirsum2</a>(</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived1&gt;&amp; A,</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived2&gt;&amp; B)</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;{</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a>&amp; rA = A;</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived2::Scalar&gt;</a>&amp; rB = B;</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    <span class="comment">// check types</span></div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="keywordflow">if</span> (!std::is_same&lt;<span class="keyword">typename</span> Derived1::Scalar,</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;            <span class="keyword">typename</span> Derived2::Scalar&gt;::value)</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::dirsum()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca2f93918ef99e03b7b8e7230b2a28fb52">Exception::Type::TYPE_MISMATCH</a>);</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <span class="comment">// check zero-size</span></div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">internal::_check_nonzero_size</a>(rA))</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::dirsum()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <span class="comment">// check zero-size</span></div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">internal::_check_nonzero_size</a>(rB))</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::dirsum()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Acols = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rA.cols());</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Arows = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rA.rows());</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Bcols = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rB.cols());</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Brows = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rB.rows());</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a> result =</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;            <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;::Zero</a>(Arows + Brows,</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;                                                     Acols + Bcols);</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    result.block(0, 0, Arows, Acols) = rA;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    result.block(Arows, Acols, Brows, Bcols) = rB;</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;}</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="comment">// may be useful, extracts variadic template argument pack into a std::vector</span></div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="comment">// ends the recursion</span></div>
-<div class="line"><a name="l00352"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a5f99527a1f1e06fd6d62e094cd2e97f0">  352</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespaceqpp_1_1internal.html#a5f99527a1f1e06fd6d62e094cd2e97f0">variadic_vector_emplace</a>(std::vector&lt;T&gt;&amp;)</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;{</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;}</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="comment">// may be useful, extracts variadic template argument pack into a std::vector</span></div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> First, <span class="keyword">typename</span> ... Args&gt;</div>
-<div class="line"><a name="l00358"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a9e4550a948eedf249d041743c91f2708">  358</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespaceqpp_1_1internal.html#a5f99527a1f1e06fd6d62e094cd2e97f0">variadic_vector_emplace</a>(std::vector&lt;T&gt;&amp; v, First&amp;&amp; first, Args&amp;&amp; ... args)</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;{</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    v.emplace_back(std::forward&lt;First&gt;(first));</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <a class="code" href="namespaceqpp_1_1internal.html#a5f99527a1f1e06fd6d62e094cd2e97f0">variadic_vector_emplace</a>(v, std::forward&lt;Args&gt;(args)...);</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;}</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;} <span class="comment">/* namespace internal */</span></div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INTERNAL_UTIL_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Acols = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rA.cols());</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Arows = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rA.rows());</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Bcols = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rB.cols());</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Brows = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rB.rows());</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a> result;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    result.resize(Arows * Brows, Acols * Bcols);</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="preprocessor">#pragma omp parallel for collapse(2)</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; Acols; ++j) <span class="comment">// column major order for speed</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; Arows; ++i)</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;            result.block(i * Brows, j * Bcols, Brows, Bcols) = rA(i, j) * rB;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;}</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="comment">// Direct sum of 2 matrices, preserve return type</span></div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="comment">// internal function for the variadic template function wrapper dirsum()</span></div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived1, <span class="keyword">typename</span> Derived2&gt;</div>
+<div class="line"><a name="l00313"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a164486ba597d10ddf2f1f573366d7e7c">  313</a></span>&#160;<a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a> <a class="code" href="namespaceqpp_1_1internal.html#a164486ba597d10ddf2f1f573366d7e7c">_dirsum2</a>(</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived1&gt;&amp; A,</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived2&gt;&amp; B)</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;{</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a>&amp; rA = A;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived2::Scalar&gt;</a>&amp; rB = B;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="comment">// check types</span></div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <span class="keywordflow">if</span> (!std::is_same&lt;<span class="keyword">typename</span> Derived1::Scalar,</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            <span class="keyword">typename</span> Derived2::Scalar&gt;::value)</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::dirsum()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca2f93918ef99e03b7b8e7230b2a28fb52">Exception::Type::TYPE_MISMATCH</a>);</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <span class="comment">// check zero-size</span></div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">internal::_check_nonzero_size</a>(rA))</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::dirsum()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="comment">// check zero-size</span></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">internal::_check_nonzero_size</a>(rB))</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::dirsum()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Acols = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rA.cols());</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Arows = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rA.rows());</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Bcols = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rB.cols());</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Brows = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rB.rows());</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a> result =</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;            <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;::Zero</a>(Arows + Brows,</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;                                                     Acols + Bcols);</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    result.block(0, 0, Arows, Acols) = rA;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    result.block(Arows, Acols, Brows, Bcols) = rB;</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;}</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="comment">// may be useful, extracts variadic template argument pack into a std::vector</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="comment">// ends the recursion</span></div>
+<div class="line"><a name="l00354"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a5f99527a1f1e06fd6d62e094cd2e97f0">  354</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespaceqpp_1_1internal.html#a5f99527a1f1e06fd6d62e094cd2e97f0">variadic_vector_emplace</a>(std::vector&lt;T&gt;&amp;)</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;{</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;}</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="comment">// may be useful, extracts variadic template argument pack into a std::vector</span></div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> First, <span class="keyword">typename</span> ... Args&gt;</div>
+<div class="line"><a name="l00360"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a9e4550a948eedf249d041743c91f2708">  360</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespaceqpp_1_1internal.html#a5f99527a1f1e06fd6d62e094cd2e97f0">variadic_vector_emplace</a>(std::vector&lt;T&gt;&amp; v, First&amp;&amp; first, Args&amp;&amp; ... args)</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;{</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    v.emplace_back(std::forward&lt;First&gt;(first));</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    <a class="code" href="namespaceqpp_1_1internal.html#a5f99527a1f1e06fd6d62e094cd2e97f0">variadic_vector_emplace</a>(v, std::forward&lt;Args&gt;(args)...);</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;}</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;} <span class="comment">/* namespace internal */</span></div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INTERNAL_UTIL_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a88116de0ca257a3117ca43623a1d7272"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a88116de0ca257a3117ca43623a1d7272">qpp::internal::_check_cvector</a></div><div class="ttdeci">bool _check_cvector(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:104</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_ae3fd4f3961c2f3df7eb089355cd18c94"><div class="ttname"><a href="namespaceqpp_1_1internal.html#ae3fd4f3961c2f3df7eb089355cd18c94">qpp::internal::_check_qubit_cvector</a></div><div class="ttdeci">bool _check_qubit_cvector(const Eigen::MatrixBase&lt; Derived &gt; &amp;V) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:229</div></div>
 <div class="ttc" id="namespaceqpp_html_aea80be6c57ee43e43aa9629942cd3608"><div class="ttname"><a href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">qpp::maxn</a></div><div class="ttdeci">constexpr idx maxn</div><div class="ttdoc">Maximum number of allowed qu(d)its (subsystems) </div><div class="ttdef"><b>Definition:</b> constants.h:80</div></div>
@@ -449,9 +451,9 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_1_1internal_html_a5c90e71ef74abcb25b5943025ee003c1"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a5c90e71ef74abcb25b5943025ee003c1">qpp::internal::_check_perm</a></div><div class="ttdeci">bool _check_perm(const std::vector&lt; idx &gt; &amp;perm)</div><div class="ttdef"><b>Definition:</b> util.h:257</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a58bbe3e0db088a311d6ec053950602cf"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a58bbe3e0db088a311d6ec053950602cf">qpp::internal::_multiidx2n</a></div><div class="ttdeci">idx _multiidx2n(const idx *midx, idx numdims, const idx *dims) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:54</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html"><div class="ttname"><a href="classqpp_1_1_exception.html">qpp::Exception</a></div><div class="ttdoc">Generates custom exceptions, used when validating function parameters. </div><div class="ttdef"><b>Definition:</b> exception.h:39</div></div>
-<div class="ttc" id="namespaceqpp_1_1internal_html_a5f99527a1f1e06fd6d62e094cd2e97f0"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a5f99527a1f1e06fd6d62e094cd2e97f0">qpp::internal::variadic_vector_emplace</a></div><div class="ttdeci">void variadic_vector_emplace(std::vector&lt; T &gt; &amp;)</div><div class="ttdef"><b>Definition:</b> util.h:352</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a5f99527a1f1e06fd6d62e094cd2e97f0"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a5f99527a1f1e06fd6d62e094cd2e97f0">qpp::internal::variadic_vector_emplace</a></div><div class="ttdeci">void variadic_vector_emplace(std::vector&lt; T &gt; &amp;)</div><div class="ttdef"><b>Definition:</b> util.h:354</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a06ca054b0436fb4b9b445574dec47f82"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">qpp::internal::_check_nonzero_size</a></div><div class="ttdeci">bool _check_nonzero_size(const T &amp;x) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:113</div></div>
-<div class="ttc" id="namespaceqpp_1_1internal_html_a164486ba597d10ddf2f1f573366d7e7c"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a164486ba597d10ddf2f1f573366d7e7c">qpp::internal::_dirsum2</a></div><div class="ttdeci">dyn_mat&lt; typename Derived1::Scalar &gt; _dirsum2(const Eigen::MatrixBase&lt; Derived1 &gt; &amp;A, const Eigen::MatrixBase&lt; Derived2 &gt; &amp;B)</div><div class="ttdef"><b>Definition:</b> util.h:312</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a164486ba597d10ddf2f1f573366d7e7c"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a164486ba597d10ddf2f1f573366d7e7c">qpp::internal::_dirsum2</a></div><div class="ttdeci">dyn_mat&lt; typename Derived1::Scalar &gt; _dirsum2(const Eigen::MatrixBase&lt; Derived1 &gt; &amp;A, const Eigen::MatrixBase&lt; Derived2 &gt; &amp;B)</div><div class="ttdef"><b>Definition:</b> util.h:313</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_aa82d0423e1e8329b95d29c46701ec430"><div class="ttname"><a href="namespaceqpp_1_1internal.html#aa82d0423e1e8329b95d29c46701ec430">qpp::internal::_check_qubit_vector</a></div><div class="ttdeci">bool _check_qubit_vector(const Eigen::MatrixBase&lt; Derived &gt; &amp;V) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:247</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a89cac06eec76f72440a339270153e975"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a89cac06eec76f72440a339270153e975">qpp::internal::_n2multiidx</a></div><div class="ttdeci">void _n2multiidx(idx n, idx numdims, const idx *dims, idx *result) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:41</div></div>
 <div class="ttc" id="namespaceqpp_html_a1f5f7137e8551cf82db04d3b81cdd706"><div class="ttname"><a href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">qpp::idx</a></div><div class="ttdeci">std::size_t idx</div><div class="ttdoc">Non-negative integer index. </div><div class="ttdef"><b>Definition:</b> types.h:36</div></div>
@@ -464,7 +466,7 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7374381ecdb819c64ee9b6ea2bd3370d.html">internal</a></li><li class="navelem"><a class="el" href="util_8h.html">util.h</a></li>
-    <li class="footer">Generated on Sun Oct 11 2015 15:32:44 for Quantum++ by
+    <li class="footer">Generated on Mon Oct 12 2015 20:01:20 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

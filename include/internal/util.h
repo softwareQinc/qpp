@@ -289,6 +289,7 @@ dyn_mat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
     // check zero-size
     if (!internal::_check_nonzero_size(rB))
         throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     idx Acols = static_cast<idx>(rA.cols());
     idx Arows = static_cast<idx>(rA.rows());
@@ -330,6 +331,7 @@ dyn_mat<typename Derived1::Scalar> _dirsum2(
     // check zero-size
     if (!internal::_check_nonzero_size(rB))
         throw Exception("qpp::dirsum()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     idx Acols = static_cast<idx>(rA.cols());
     idx Arows = static_cast<idx>(rA.rows());

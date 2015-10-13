@@ -101,10 +101,13 @@ public:
     */
     cmat Rn(double theta, const std::vector<double>& n) const
     {
+        // EXCEPTION CHECKS
+
         // check 3-dimensional vector
         if (n.size() != 3)
             throw Exception("qpp::Gates::Rn()",
                             "n is not a 3-dimensional vector!");
+        // END EXCEPTION CHECKS
 
         cmat result(2, 2);
         result = std::cos(theta / 2) * Id2
@@ -125,8 +128,11 @@ public:
     */
     cmat Zd(idx D) const
     {
+        // EXCEPTION CHECKS
+
         if (D == 0)
             throw Exception("qpp::Gates::Zd()", Exception::Type::DIMS_INVALID);
+        // END EXCEPTION CHECKS
 
         cmat result = cmat::Zero(D, D);
         for (idx i = 0; i < D; ++i)
@@ -146,8 +152,11 @@ public:
     */
     cmat Fd(idx D) const
     {
+        // EXCEPTION CHECKS
+
         if (D == 0)
             throw Exception("qpp::Gates::Fd()", Exception::Type::DIMS_INVALID);
+        // END EXCEPTION CHECKS
 
         cmat result(D, D);
 #pragma omp parallel for collapse(2)
@@ -169,8 +178,11 @@ public:
     */
     cmat Xd(idx D) const
     {
+        // EXCEPTION CHECKS
+
         if (D == 0)
             throw Exception("qpp::Gates::Xd()", Exception::Type::DIMS_INVALID);
+        // END EXCEPTION CHECKS
 
         return Fd(D).inverse() * Zd(D) * Fd(D);
     }
@@ -187,8 +199,11 @@ public:
     template<typename Derived = Eigen::MatrixXcd>
     Derived Id(idx D) const
     {
+        // EXCEPTION CHECKS
+
         if (D == 0)
             throw Exception("qpp::Gates::Id()", Exception::Type::DIMS_INVALID);
+        // END EXCEPTION CHECKS
 
         return Derived::Identity(D, D);
     }
@@ -217,6 +232,7 @@ public:
         const dyn_mat<typename Derived::Scalar>& rA = A;
 
         // EXCEPTION CHECKS
+
         // check matrix zero size
         if (!internal::_check_nonzero_size(rA))
             throw Exception("qpp::Gates::CTRL()", Exception::Type::ZERO_SIZE);
@@ -384,6 +400,8 @@ public:
     {
         const dyn_mat<typename Derived::Scalar>& rA = A;
 
+        // EXCEPTION CHECKS
+
         // check zero-size
         if (!internal::_check_nonzero_size(rA))
             throw Exception("qpp::Gates::expandout()",
@@ -408,6 +426,7 @@ public:
         if (static_cast<idx>(rA.rows()) != dims[pos])
             throw Exception("qpp::Gates::expandout()",
                             Exception::Type::DIMS_MISMATCH_MATRIX);
+        // END EXCEPTION CHECKS
 
         idx D = std::accumulate(std::begin(dims), std::end(dims),
                                 static_cast<idx>(1), std::multiplies<idx>());

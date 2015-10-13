@@ -44,8 +44,11 @@ namespace qpp
 */
 inline std::vector<int> x2contfrac(double x, idx n, idx cut = 1e5)
 {
+    // EXCEPTION CHECKS
+
     if (n == 0)
         throw Exception("qpp::x2contfrac()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     std::vector<int> result;
 
@@ -72,11 +75,14 @@ inline std::vector<int> x2contfrac(double x, idx n, idx cut = 1e5)
 */
 inline double contfrac2x(const std::vector<int>& cf, idx n)
 {
+    // EXCEPTION CHECKS
+
     if (cf.size() == 0)
         throw Exception("qpp::contfrac2x()", Exception::Type::ZERO_SIZE);
 
     if (n == 0)
         throw Exception("qpp::contfrac2x()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     if (n > cf.size())
         n = cf.size();
@@ -102,8 +108,11 @@ inline double contfrac2x(const std::vector<int>& cf, idx n)
 */
 inline double contfrac2x(const std::vector<int>& cf)
 {
+    // EXCEPTION CHECKS
+
     if (cf.size() == 0)
         throw Exception("qpp::contfrac2x()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     if (cf.size() == 1) // degenerate case, integer
         return cf[0];
@@ -127,8 +136,11 @@ inline double contfrac2x(const std::vector<int>& cf)
 */
 inline ubigint gcd(ubigint m, ubigint n)
 {
+    // EXCEPTION CHECKS
+
     if (m == 0 && n == 0)
         throw Exception("qpp::gcd()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     if (m == 0 || n == 0)
         return (std::max(m, n));
@@ -153,8 +165,11 @@ inline ubigint gcd(ubigint m, ubigint n)
 */
 inline ubigint gcd(const std::vector<ubigint>& ns)
 {
+    // EXCEPTION CHECKS
+
     if (ns.size() == 0)
         throw Exception("qpp::gcd()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     ubigint result = ns[0]; // convention: gcd({n}) = n
     for (idx i = 1; i < ns.size(); ++i)
@@ -190,6 +205,8 @@ inline ubigint lcm(ubigint m, ubigint n)
 */
 inline ubigint lcm(const std::vector<ubigint>& ns)
 {
+    // EXCEPTION CHECKS
+
     if (ns.size() == 0)
         throw Exception("qpp::lcm()", Exception::Type::ZERO_SIZE);
 
@@ -198,6 +215,7 @@ inline ubigint lcm(const std::vector<ubigint>& ns)
 
     if (std::find(std::begin(ns), std::end(ns), 0) != std::end(ns))
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     ubigint prod =
             std::accumulate(std::begin(ns),
@@ -216,8 +234,11 @@ inline ubigint lcm(const std::vector<ubigint>& ns)
 */
 inline std::vector<idx> invperm(const std::vector<idx>& perm)
 {
+    // EXCEPTION CHECKS
+
     if (!internal::_check_perm(perm))
         throw Exception("qpp::invperm()", Exception::Type::PERM_INVALID);
+    // END EXCEPTION CHECKS
 
     // construct the inverse
     std::vector<idx> result(perm.size());
@@ -238,12 +259,15 @@ inline std::vector<idx> invperm(const std::vector<idx>& perm)
 inline std::vector<idx> compperm(const std::vector<idx>& perm,
                                  const std::vector<idx>& sigma)
 {
+    // EXCEPTION CHECKS
+
     if (!internal::_check_perm(perm))
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
     if (!internal::_check_perm(sigma))
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
     if (perm.size() != sigma.size())
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
+    // END EXCEPTION CHECKS
 
     // construct the composition perm(sigma)
     std::vector<idx> result(perm.size());
@@ -303,8 +327,11 @@ inline std::vector<ubigint> factors(ubigint n)
 */
 inline bool isprime(ubigint n)
 {
+    // EXCEPTION CHECKS
+
     if (n == 0 or n == 1)
         throw Exception("qpp::isprime()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     std::vector<ubigint> facts = factors(n);
 
@@ -326,9 +353,12 @@ inline bool isprime(ubigint n)
 */
 inline ubigint modpow(ubigint a, ubigint n, ubigint p)
 {
+    // EXCEPTION CHECKS
+
     if (p == 0 || (a == 0 && n == 0))
         throw Exception("qpp::modpow()",
                         Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     ubigint result = 1;
 

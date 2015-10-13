@@ -51,6 +51,7 @@ dyn_col_vect<typename Derived::Scalar> ip(
     const dyn_col_vect<typename Derived::Scalar>& rpsi = psi;
 
     // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rphi))
         throw Exception("qpp::ip()", Exception::Type::ZERO_SIZE);
@@ -223,6 +224,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
@@ -319,6 +321,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U)
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
     // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);

@@ -80,6 +80,9 @@ inline dmat loadMATLABmatrix(const std::string& mat_file,
                              const std::string& var_name)
 {
     MATFile* pmat = matOpen(mat_file.c_str(), "r");
+
+    // EXCEPTION CHECKS
+
     if (!pmat)
     {
         throw std::runtime_error(
@@ -102,6 +105,7 @@ inline dmat loadMATLABmatrix(const std::string& mat_file,
         throw std::runtime_error(
                 "qpp::loadMATLABmatrix(): Loaded variable " + var_name
                 + " is not in double-precision format!");
+    // END EXCEPTION CHECKS
 
     idx rows = mxGetM(pa);
     idx cols = mxGetN(pa);
@@ -142,6 +146,9 @@ inline cmat loadMATLABmatrix(const std::string& mat_file,
                              const std::string& var_name)
 {
     MATFile* pmat = matOpen(mat_file.c_str(), "r");
+
+    // EXCEPTION CHECKS
+
     if (!pmat)
     {
         throw std::runtime_error(
@@ -164,6 +171,7 @@ inline cmat loadMATLABmatrix(const std::string& mat_file,
         throw std::runtime_error(
                 "qpp::loadMATLABmatrix(): Loaded variable " + var_name
                 + " is not in double-precision format!");
+    // END EXCEPTION CHECKS
 
     idx rows = mxGetM(pa);
     idx cols = mxGetN(pa);
@@ -235,6 +243,8 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <dmat>& A,
 {
     const dmat& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::saveMATLABmatrix()", Exception::Type::ZERO_SIZE);
@@ -249,6 +259,7 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <dmat>& A,
     if (!pa)
         throw std::runtime_error(
                 "qpp::saveMATLABmatrix(): mxCreateDoubleMatrix failed!");
+    // END EXCEPTION CHECKS
 
     std::memcpy(mxGetPr(pa), rA.data(), sizeof(double) * rA.size());
 
@@ -282,6 +293,8 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <cmat>& A,
 {
     const cmat& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::saveMATLABmatrix()", Exception::Type::ZERO_SIZE);
@@ -301,6 +314,7 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <cmat>& A,
     if (!pa)
         throw std::runtime_error(
                 "qpp::saveMATLABmatrix(): mxCreateDoubleMatrix failed!");
+    // END EXCEPTION CHECKS
 
     double* pa_re, * pa_im;
 

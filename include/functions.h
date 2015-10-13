@@ -85,9 +85,12 @@ dyn_mat<typename Derived::Scalar> adjoint(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::adjoint()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     return rA.adjoint();
 }
@@ -104,9 +107,12 @@ dyn_mat<typename Derived::Scalar> inverse(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::inverse()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     return rA.inverse();
 }
@@ -122,9 +128,12 @@ typename Derived::Scalar trace(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::trace()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     return rA.trace();
 }
@@ -141,9 +150,12 @@ typename Derived::Scalar det(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::det()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     return rA.determinant();
 }
@@ -162,6 +174,8 @@ typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::logdet()", Exception::Type::ZERO_SIZE);
@@ -170,6 +184,7 @@ typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A)
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::logdet()",
                         Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     Eigen::PartialPivLU<dyn_mat<typename Derived::Scalar>> lu(rA);
     dyn_mat<typename Derived::Scalar> U =
@@ -195,9 +210,12 @@ typename Derived::Scalar sum(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::sum()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     return rA.sum();
 }
@@ -214,9 +232,12 @@ typename Derived::Scalar prod(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::prod()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     return rA.prod();
 }
@@ -232,9 +253,12 @@ double norm(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::norm()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     // convert matrix to complex then return its norm
     return (rA.template cast<cplx>()).norm();
@@ -255,6 +279,8 @@ eig(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::eig()", Exception::Type::ZERO_SIZE);
@@ -262,6 +288,7 @@ eig(const Eigen::MatrixBase<Derived>& A)
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::eig()", Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
 
@@ -280,6 +307,8 @@ dyn_col_vect <cplx> evals(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::evals()", Exception::Type::ZERO_SIZE);
@@ -287,6 +316,7 @@ dyn_col_vect <cplx> evals(const Eigen::MatrixBase<Derived>& A)
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::evals()", Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     return eig(rA).first;
 }
@@ -303,6 +333,8 @@ cmat evects(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::evects()", Exception::Type::ZERO_SIZE);
@@ -310,6 +342,7 @@ cmat evects(const Eigen::MatrixBase<Derived>& A)
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::evects()", Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
 
@@ -331,6 +364,8 @@ heig(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::heig()", Exception::Type::ZERO_SIZE);
@@ -338,6 +373,7 @@ heig(const Eigen::MatrixBase<Derived>& A)
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::heig()", Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     Eigen::SelfAdjointEigenSolver<cmat> es(rA.template cast<cplx>());
 
@@ -356,6 +392,8 @@ dyn_col_vect<double> hevals(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::hevals()", Exception::Type::ZERO_SIZE);
@@ -363,6 +401,7 @@ dyn_col_vect<double> hevals(const Eigen::MatrixBase<Derived>& A)
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::hevals()", Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     return heig(rA).first;
 }
@@ -379,6 +418,8 @@ cmat hevects(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::hevects()", Exception::Type::ZERO_SIZE);
@@ -387,6 +428,7 @@ cmat hevects(const Eigen::MatrixBase<Derived>& A)
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::hevects()",
                         Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     return heig(rA).second;
 }
@@ -407,9 +449,12 @@ svd(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::svd()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>>
             sv(rA,
@@ -431,9 +476,12 @@ dyn_col_vect<double> svals(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::svals()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>> sv(rA);
 
@@ -452,9 +500,12 @@ cmat svdU(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::svdU()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>>
             sv(rA, Eigen::DecompositionOptions::ComputeFullU);
@@ -474,9 +525,12 @@ cmat svdV(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::svdV()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>>
             sv(rA, Eigen::DecompositionOptions::ComputeFullV);
@@ -498,6 +552,8 @@ cmat funm(const Eigen::MatrixBase<Derived>& A, cplx (* f)(const cplx&))
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::funm()", Exception::Type::ZERO_SIZE);
@@ -505,6 +561,7 @@ cmat funm(const Eigen::MatrixBase<Derived>& A, cplx (* f)(const cplx&))
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::funm()", Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
     cmat evects = es.eigenvectors();
@@ -528,6 +585,8 @@ cmat sqrtm(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::sqrtm()", Exception::Type::ZERO_SIZE);
@@ -535,6 +594,7 @@ cmat sqrtm(const Eigen::MatrixBase<Derived>& A)
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::sqrtm()", Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     return funm(rA, &std::sqrt);
 }
@@ -550,6 +610,8 @@ cmat absm(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::absm()", Exception::Type::ZERO_SIZE);
@@ -557,6 +619,7 @@ cmat absm(const Eigen::MatrixBase<Derived>& A)
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::absm()", Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     return sqrtm(adjoint(rA) * rA);
 }
@@ -572,6 +635,8 @@ cmat expm(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::expm()", Exception::Type::ZERO_SIZE);
@@ -579,6 +644,7 @@ cmat expm(const Eigen::MatrixBase<Derived>& A)
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::expm()", Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     return funm(rA, &std::exp);
 }
@@ -594,6 +660,8 @@ cmat logm(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::logm()", Exception::Type::ZERO_SIZE);
@@ -601,6 +669,7 @@ cmat logm(const Eigen::MatrixBase<Derived>& A)
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::logm()", Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     return funm(rA, &std::log);
 }
@@ -616,6 +685,8 @@ cmat sinm(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::sinm()", Exception::Type::ZERO_SIZE);
@@ -623,6 +694,7 @@ cmat sinm(const Eigen::MatrixBase<Derived>& A)
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::sinm()", Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     return funm(rA, &std::sin);
 }
@@ -638,6 +710,8 @@ cmat cosm(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::cosm()", Exception::Type::ZERO_SIZE);
@@ -645,6 +719,7 @@ cmat cosm(const Eigen::MatrixBase<Derived>& A)
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::cosm()", Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     return funm(rA, &std::cos);
 }
@@ -665,6 +740,8 @@ cmat spectralpowm(const Eigen::MatrixBase<Derived>& A, const cplx z)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::spectralpowm()", Exception::Type::ZERO_SIZE);
@@ -673,6 +750,7 @@ cmat spectralpowm(const Eigen::MatrixBase<Derived>& A, const cplx z)
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::spectralpowm()",
                         Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     // Define A^0 = Id, for z IDENTICALLY zero
     if (real(z) == 0 && imag(z) == 0)
@@ -707,6 +785,8 @@ dyn_mat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived>& A,
 {
     dyn_mat<typename Derived::Scalar> cA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(cA))
         throw Exception("qpp::powm()", Exception::Type::ZERO_SIZE);
@@ -714,6 +794,7 @@ dyn_mat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived>& A,
     // check square matrix
     if (!internal::_check_square_mat(cA))
         throw Exception("qpp::powm()", Exception::Type::MATRIX_NOT_SQUARE);
+    // END EXCEPTION CHECKS
 
     dyn_mat<typename Derived::Scalar> result =
             dyn_mat<typename Derived::Scalar>::Identity(
@@ -743,11 +824,14 @@ double schatten(const Eigen::MatrixBase<Derived>& A, double p)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::schatten()", Exception::Type::ZERO_SIZE);
     if (p < 1)
         throw Exception("qpp::schatten()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     if (p == infty) // infinity norm (largest singular value)
         return svals(rA)(0);
@@ -772,9 +856,12 @@ dyn_mat <OutputScalar> cwise(const Eigen::MatrixBase<Derived>& A,
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::cwise()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     dyn_mat<OutputScalar> result(rA.rows(), rA.cols());
 
@@ -833,12 +920,15 @@ dyn_mat<typename T::Scalar> kron(const T& head, const Args& ... tail)
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> kron(const std::vector<Derived>& As)
 {
+    // EXCEPTION CHECKS
+
     if (As.size() == 0)
         throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
 
     for (auto&& it : As)
         if (!internal::_check_nonzero_size(it))
             throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     dyn_mat<typename Derived::Scalar> result = As[0];
     for (idx i = 1; i < As.size(); ++i)
@@ -883,6 +973,8 @@ dyn_mat<typename Derived::Scalar> kronpow(const Eigen::MatrixBase<Derived>& A,
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::kronpow()", Exception::Type::ZERO_SIZE);
@@ -890,6 +982,7 @@ dyn_mat<typename Derived::Scalar> kronpow(const Eigen::MatrixBase<Derived>& A,
     // check out of range
     if (n == 0)
         throw Exception("qpp::kronpow()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     std::vector<dyn_mat<typename Derived::Scalar>> As(n, rA);
 
@@ -942,12 +1035,15 @@ dyn_mat<typename T::Scalar> dirsum(const T& head, const Args& ... tail)
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> dirsum(const std::vector<Derived>& As)
 {
+    // EXCEPTION CHECKS
+
     if (As.size() == 0)
         throw Exception("qpp::dirsum()", Exception::Type::ZERO_SIZE);
 
     for (auto&& it : As)
         if (!internal::_check_nonzero_size(it))
             throw Exception("qpp::dirsum()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     idx total_rows = 0, total_cols = 0;
     for (idx i = 0; i < As.size(); ++i)
@@ -1003,6 +1099,8 @@ dyn_mat<typename Derived::Scalar> dirsumpow(
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::dirsumpow()", Exception::Type::ZERO_SIZE);
@@ -1010,6 +1108,7 @@ dyn_mat<typename Derived::Scalar> dirsumpow(
     // check out of range
     if (n == 0)
         throw Exception("qpp::dirsumpow()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     std::vector<dyn_mat<typename Derived::Scalar>> As(n, rA);
 
@@ -1036,6 +1135,8 @@ dyn_mat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived>& A,
     idx Arows = static_cast<idx>(rA.rows());
     idx Acols = static_cast<idx>(rA.cols());
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::reshape()", Exception::Type::ZERO_SIZE);
@@ -1043,6 +1144,7 @@ dyn_mat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived>& A,
     if (Arows * Acols != rows * cols)
         throw Exception("qpp::reshape()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
+    // END EXCEPTION CHECKS
 
     return Eigen::Map<dyn_mat<typename Derived::Scalar>>(
             const_cast<typename Derived::Scalar*>(rA.data()), rows, cols);
@@ -1086,6 +1188,7 @@ dyn_mat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1>& A,
     // check equal dimensions
     if (rA.rows() != rB.rows())
         throw Exception("qpp::comm()", Exception::Type::DIMS_NOT_EQUAL);
+    // END EXCEPTION CHECKS
 
     return rA * rB - rB * rA;
 }
@@ -1130,6 +1233,7 @@ dyn_mat<typename Derived1::Scalar> anticomm(
     // check equal dimensions
     if (rA.rows() != rB.rows())
         throw Exception("qpp::anticomm()", Exception::Type::DIMS_NOT_EQUAL);
+    // END EXCEPTION CHECKS
 
     return rA * rB + rB * rA;
 }
@@ -1149,6 +1253,8 @@ dyn_mat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& V)
 {
     const dyn_mat<typename Derived::Scalar>& rV = V;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rV))
         throw Exception("qpp::prj()", Exception::Type::ZERO_SIZE);
@@ -1156,6 +1262,7 @@ dyn_mat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& V)
     // check column vector
     if (!internal::_check_cvector(rV))
         throw Exception("qpp::prj()", Exception::Type::MATRIX_NOT_CVECTOR);
+    // END EXCEPTION CHECKS
 
     double normV = norm(rV);
     if (normV > eps)
@@ -1176,6 +1283,8 @@ dyn_mat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& V)
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
 {
+    // EXCEPTION CHECKS
+
     // check empty list
     if (!internal::_check_nonzero_size(Vs))
         throw Exception("qpp::grams()", Exception::Type::ZERO_SIZE);
@@ -1192,6 +1301,7 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
     for (auto&& it : Vs)
         if (it.rows() != Vs[0].rows() || it.cols() != 1)
             throw Exception("qpp::grams()", Exception::Type::DIMS_NOT_EQUAL);
+    // END EXCEPTION CHECKS
 
     dyn_mat<typename Derived::Scalar> cut =
             dyn_mat<typename Derived::Scalar>::Identity(Vs[0].rows(),
@@ -1263,8 +1373,11 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::grams()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     std::vector<dyn_mat<typename Derived::Scalar>> input;
 
@@ -1286,12 +1399,15 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A)
 */
 inline std::vector<idx> n2multiidx(idx n, const std::vector<idx>& dims)
 {
+    // EXCEPTION CHECKS
+
     if (!internal::_check_dims(dims))
         throw Exception("qpp::n2multiidx()", Exception::Type::DIMS_INVALID);
 
     if (n >= std::accumulate(std::begin(dims), std::end(dims),
                              static_cast<idx>(1), std::multiplies<idx>()))
         throw Exception("qpp::n2multiidx()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     // double the size for matrices reshaped as vectors
     idx result[2 * maxn];
@@ -1313,6 +1429,8 @@ inline std::vector<idx> n2multiidx(idx n, const std::vector<idx>& dims)
 inline idx multiidx2n(const std::vector<idx>& midx,
                       const std::vector<idx>& dims)
 {
+    // EXCEPTION CHECKS
+
     if (!internal::_check_dims(dims))
         throw Exception("qpp::multiidx2n()", Exception::Type::DIMS_INVALID);
 
@@ -1320,6 +1438,7 @@ inline idx multiidx2n(const std::vector<idx>& midx,
         if (midx[i] >= dims[i])
             throw Exception("qpp::multiidx2n()",
                             Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     return internal::_multiidx2n(midx.data(), dims.size(), dims.data());
 }
@@ -1344,6 +1463,8 @@ inline ket mket(const std::vector<idx>& mask,
     idx D = std::accumulate(std::begin(dims), std::end(dims),
                             static_cast<idx>(1), std::multiplies<idx>());
 
+    // EXCEPTION CHECKS
+
     // check zero size
     if (n == 0)
         throw Exception("qpp::mket()", Exception::Type::ZERO_SIZE);
@@ -1358,6 +1479,7 @@ inline ket mket(const std::vector<idx>& mask,
         if (mask[i] >= dims[i])
             throw Exception("qpp::mket()",
                             Exception::Type::SUBSYS_MISMATCH_DIMS);
+    // END EXCEPTION CHECKS
 
     ket result = ket::Zero(D);
     idx pos = multiidx2n(mask, dims);
@@ -1430,6 +1552,8 @@ inline cmat mprj(const std::vector<idx>& mask,
     idx D = std::accumulate(std::begin(dims), std::end(dims),
                             static_cast<idx>(1), std::multiplies<idx>());
 
+    // EXCEPTION CHECKS
+
     // check zero size
     if (n == 0)
         throw Exception("qpp::mprj()", Exception::Type::ZERO_SIZE);
@@ -1444,6 +1568,7 @@ inline cmat mprj(const std::vector<idx>& mask,
         if (mask[i] >= dims[i])
             throw Exception("qpp::mprj()",
                             Exception::Type::SUBSYS_MISMATCH_DIMS);
+    // END EXCEPTION CHECKS
 
     cmat result = cmat::Zero(D, D);
     idx pos = multiidx2n(mask, dims);
@@ -1549,9 +1674,12 @@ std::vector<double> abssq(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::abssq()", Exception::Type::ZERO_SIZE);
+    // END EXCEPTION CHECKS
 
     return abssq(rA.data(), rA.data() + rA.size());
 }
@@ -1646,7 +1774,7 @@ dyn_col_vect<typename Derived::Scalar> rho2pure(
     // check square matrix
     if (!internal::_check_square_mat(rA))
         throw Exception("qpp::rho2pure()", Exception::Type::MATRIX_NOT_SQUARE);
-    // END EXPCEPTION CHECKS
+    // END EXCEPTION CHECKS
 
     dyn_col_vect<double> tmp_evals = hevals(rA);
     cmat tmp_evects = hevects(rA);
@@ -1677,8 +1805,11 @@ dyn_col_vect<typename Derived::Scalar> rho2pure(
 template<typename T>
 std::vector<T> complement(std::vector<T> subsys, idx N)
 {
+    // EXCEPTION CHECKS
+
     if (N < subsys.size())
         throw Exception("qpp::complement()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     std::vector<T> all(N);
     std::vector<T> subsys_bar(N - subsys.size());
@@ -1708,9 +1839,12 @@ std::vector<double> rho2bloch(
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check qubit matrix
     if (!internal::_check_qubit_matrix(rA))
         throw Exception("qpp::rho2bloch()", Exception::Type::NOT_QUBIT_MATRIX);
+    // END EXCEPTION CHECKS
 
     std::vector<double> result(3);
     cmat X(2, 2), Y(2, 2), Z(2, 2);
@@ -1734,9 +1868,12 @@ std::vector<double> rho2bloch(
 */
 inline cmat bloch2rho(const std::vector<double>& r)
 {
+    // EXCEPTION CHECKS
+
     // check 3-dimensional vector
     if (r.size() != 3)
         throw Exception("qpp::bloch2rho", "r is not a 3-dimensional vector!");
+    // END EXCEPTION CHECKS
 
     cmat X(2, 2), Y(2, 2), Z(2, 2), Id2(2, 2);
     X << 0, 1, 1, 0;

@@ -133,6 +133,8 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A;
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::save()", Exception::Type::ZERO_SIZE);
@@ -146,6 +148,7 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
                 "qpp::save(): Error writing output file \""
                 + std::string(fname) + "\"!");
     }
+    // END EXCEPTION CHECKS
 
     // write the header to file
     const char _header[] = "TYPE::Eigen::Matrix";
@@ -186,6 +189,8 @@ dyn_mat<typename Derived::Scalar> load(const std::string& fname)
     std::fstream fin;
     fin.open(fname, std::ios::in | std::ios::binary);
 
+    // EXCEPTION CHECKS
+
     if (fin.fail())
     {
         throw std::runtime_error(
@@ -206,6 +211,7 @@ dyn_mat<typename Derived::Scalar> load(const std::string& fname)
                 + "\" is corrupted!");
     }
     delete[] _fheader;
+    // END EXCEPTION CHECKS
 
     idx rows, cols;
     fin.read((char*) &rows, sizeof(rows));
