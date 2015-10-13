@@ -358,7 +358,7 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
         throw Exception("qpp::qmutualinfo()", Exception::Type::ZERO_SIZE);
-    
+
     // check valid dims
     if (d == 0)
         throw Exception("qpp::qmutualinfo()", Exception::Type::DIMS_INVALID);
