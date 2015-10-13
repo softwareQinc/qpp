@@ -16,8 +16,8 @@ use, high portability, and high performance.
 If you are interesting in contributing, please contact me. 
 To contribute, you need to have a good knowledge of C++ (preferably C++11), 
 including templates and the standard library, a basic knowledge of 
-quantum computing and linear algebra, and preferably working experience 
-with [Eigen 3](http://eigen.tuxfamily.org).
+quantum computing and linear algebra, and working experience with 
+[Eigen 3](http://eigen.tuxfamily.org).
 
 For additional [Eigen 3](http://eigen.tuxfamily.org) documentation 
 see <http://eigen.tuxfamily.org/dox/>. For a simple 
