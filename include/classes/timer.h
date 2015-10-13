@@ -105,7 +105,7 @@ public:
         return std::chrono::duration_cast<U>(_end - _start);
     }
 
-/**
+    /**
     * \brief Default copy constructor
     */
     Timer(const Timer&) = default;
