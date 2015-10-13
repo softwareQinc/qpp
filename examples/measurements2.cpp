@@ -78,24 +78,22 @@ int main()
     std::vector<idx> subsys_ket{0};
     std::vector<idx> subsys_rho{1};
 
-    auto meas_ket = measure_seq(psi, subsys_ket);
-    auto meas_rho = measure_seq(rho, subsys_rho);
+    auto measured_ket = measure_seq(psi, subsys_ket);
+    auto measured_rho = measure_seq(rho, subsys_rho);
 
     // ket
     cout << ">> Ket, measuring subsystem(s) ";
     cout << disp(subsys_ket, " ") << endl;
-    cout << ">> Outcome(s): " << disp(std::get<0>(meas_ket), " ") <<
-            endl;
-    cout << ">> Probability:  " << std::get<1>(meas_ket) << endl;
+    cout << ">> Outcome(s): " << disp(std::get<0>(measured_ket), " ") << endl;
+    cout << ">> Probability:  " << std::get<1>(measured_ket) << endl;
     cout << ">> Resulting state:  " << endl;
-    cout << disp(std::get<2>(meas_ket)) << endl;
+    cout << disp(std::get<2>(measured_ket)) << endl;
 
     // density matrix
     cout << ">> Density matrix, measuring subsystem(s) ";
     cout << disp(subsys_rho, " ") << endl;
-    cout << ">> Outcome(s): " << disp(std::get<0>(meas_rho), " ") <<
-            endl;
-    cout << ">> Probability:  " << std::get<1>(meas_rho) << endl;
+    cout << ">> Outcome(s): " << disp(std::get<0>(measured_rho), " ") << endl;
+    cout << ">> Probability:  " << std::get<1>(measured_rho) << endl;
     cout << ">> Resulting state:  " << endl;
-    cout << disp(std::get<2>(meas_rho)) << endl;
+    cout << disp(std::get<2>(measured_rho)) << endl;
 }

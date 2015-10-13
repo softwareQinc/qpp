@@ -1142,10 +1142,10 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     idx n = dims.size();
     idx nsubsys = subsys.size();
     idx nsubsysbar = n - nsubsys;
-    idx dimsubsys = 1;
+    idx Dsubsys = 1;
     for (idx i = 0; i < nsubsys; ++i)
-        dimsubsys *= dims[subsys[i]];
-    idx dimsubsysbar = D / dimsubsys;
+        Dsubsys *= dims[subsys[i]];
+    idx Dsubsysbar = D / Dsubsys;
 
     idx Cdims[maxn];
     idx Csubsys[maxn];
@@ -1174,7 +1174,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     }
 
     dyn_mat<typename Derived::Scalar> result =
-            dyn_mat<typename Derived::Scalar>(dimsubsysbar, dimsubsysbar);
+            dyn_mat<typename Derived::Scalar>(Dsubsysbar, Dsubsysbar);
 
     //************ ket ************//
     if (internal::_check_cvector(rA)) // we have a ket
@@ -1213,7 +1213,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
                 Cmidxcol[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
             }
             typename Derived::Scalar sm = 0;
-            for (idx a = 0; a < dimsubsys; ++a)
+            for (idx a = 0; a < Dsubsys; ++a)
             {
                 // get the multi-index over which we do the summation
                 internal::_n2multiidx(a, nsubsys, Cdimssubsys, Cmidxsubsys);
@@ -1231,13 +1231,13 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             return sm;
         }; /* end worker */
 
-        for (idx j = 0; j < dimsubsysbar; ++j) // column major order for speed
+        for (idx j = 0; j < Dsubsysbar; ++j) // column major order for speed
         {
             // compute the column multi-indexes of the complement
             internal::_n2multiidx(j, nsubsysbar,
                                   Cdimssubsysbar, Cmidxcolsubsysbar);
 #pragma omp parallel for
-            for (idx i = 0; i < dimsubsysbar; ++i)
+            for (idx i = 0; i < Dsubsysbar; ++i)
             {
                 result(i, j) = worker(i);
             }
@@ -1282,7 +1282,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
                 Cmidxcol[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
             }
             typename Derived::Scalar sm = 0;
-            for (idx a = 0; a < dimsubsys; ++a)
+            for (idx a = 0; a < Dsubsys; ++a)
             {
                 // get the multi-index over which we do the summation
                 internal::_n2multiidx(a, nsubsys, Cdimssubsys, Cmidxsubsys);
@@ -1299,13 +1299,13 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             return sm;
         }; /* end worker */
 
-        for (idx j = 0; j < dimsubsysbar; ++j) // column major order for speed
+        for (idx j = 0; j < Dsubsysbar; ++j) // column major order for speed
         {
             // compute the column multi-indexes of the complement
             internal::_n2multiidx(j, nsubsysbar,
                                   Cdimssubsysbar, Cmidxcolsubsysbar);
 #pragma omp parallel for
-            for (idx i = 0; i < dimsubsysbar; ++i)
+            for (idx i = 0; i < Dsubsysbar; ++i)
             {
                 result(i, j) = worker(i);
             }

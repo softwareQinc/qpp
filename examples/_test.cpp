@@ -26,10 +26,10 @@ int main()
     // Testing measure()
     {
         cout << ">> measure()\n";
-        auto meas = measure(psi, V, subsys);
-        auto m = std::get<0>(meas);
-        auto probs = std::get<1>(meas);
-        auto outs = std::get<2>(meas);
+        auto measured = measure(psi, V, subsys);
+        idx m = std::get<0>(measured);
+        std::vector<double> probs = std::get<1>(measured);
+        std::vector<cmat> outs = std::get<2>(measured);
 
         cout << "Initial state: \n";
         cout << disp(psi) << endl;
@@ -48,10 +48,10 @@ int main()
     // Testing measure_seq()
     {
         cout << endl << ">> measure_seq()\n";
-        auto meas = measure_seq(psi, subsys);
-        auto results = std::get<0>(meas);
-        auto prob = std::get<1>(meas);
-        auto out = std::get<2>(meas);
+        auto measured = measure_seq(psi, subsys);
+        std::vector<idx> results = std::get<0>(measured);
+        double prob = std::get<1>(measured);
+        ket out = std::get<2>(measured);
 
         cout << "Initial state: \n";
         cout << disp(psi) << endl;

@@ -1,6 +1,7 @@
 // Grover's searching
 // Source: ./examples/grover.cpp
 #include <qpp.h>
+
 using namespace qpp;
 using std::cout;
 using std::endl;
@@ -39,7 +40,7 @@ int main()
     // we now measure the state in the computational basis
     auto measured = measure(psi, gt.Id(N));
     cout << ">> Probability of the marked state: "
-    << std::get<1>(measured)[marked] << endl;
+         << std::get<1>(measured)[marked] << endl;
     cout << ">> Probability of all results: ";
     cout << disp(std::get<1>(measured), ", ") << endl;
 

@@ -9,15 +9,15 @@ int main()
 {
     ket psi = mket({0}); // same as st.z0;
     cmat A = gt.X;
-    auto evals = hevals(A);
-    auto evects = hevects(A);
+    dyn_col_vect<double> evals = hevals(A);
+    cmat evects = hevects(A);
 
     long res = 0;
     idx N = 10000; // number of "measurement experiments"
     for (idx i = 0; i < N; ++i)
     {
-        auto measurement = measure(psi, evects);
-        idx m = std::get<0>(measurement); // measurement result
+        auto measured = measure(psi, evects);
+        idx m = std::get<0>(measured); // measurement result
         if (evals[m] < 0) // -1
             res--;
         else              // +1

@@ -96,7 +96,7 @@ dyn_col_vect<typename Derived::Scalar> ip(
     idx Dsubsys = prod(std::begin(subsys_dims), std::end(subsys_dims));
 
     idx D = static_cast<idx>(rpsi.rows());
-    idx Dbar = D / Dsubsys;
+    idx Dsubsysbar = D / Dsubsys;
 
     idx n = dims.size();
     idx nsubsys = subsys.size();
@@ -162,9 +162,9 @@ dyn_col_vect<typename Derived::Scalar> ip(
         return result;
     }; /* end worker */
 
-    dyn_col_vect<typename Derived::Scalar> result(Dbar);
+    dyn_col_vect<typename Derived::Scalar> result(Dsubsysbar);
 #pragma omp parallel for
-    for (idx m = 0; m < Dbar; ++m)
+    for (idx m = 0; m < Dsubsysbar; ++m)
         result(m) = worker(m);
 
     return result;
@@ -396,7 +396,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
 
     idx D = prod(std::begin(dims), std::end(dims));
     idx Dsubsys = prod(std::begin(subsys_dims), std::end(subsys_dims));
-    idx Dbar = D / Dsubsys;
+    idx Dsubsysbar = D / Dsubsys;
 
     // check the Kraus operators
     if (Ks.size() == 0)
@@ -417,7 +417,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
     // probabilities
     std::vector<double> prob(Ks.size());
     // resulting states
-    std::vector<cmat> outstates(Ks.size(), cmat::Zero(Dbar, Dbar));
+    std::vector<cmat> outstates(Ks.size(), cmat::Zero(Dsubsysbar, Dsubsysbar));
 
     //************ density matrix ************//
     if (internal::_check_square_mat(rA)) // square matrix
@@ -476,9 +476,9 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * The measurement is destructive, i.e. the measured subsystems are traced away.
 *
 * \param A Eigen expression
+* \param Ks Set of Kraus operators
 * \param subsys Subsystem indexes that are measured
 * \param dims Dimensions of the multi-partite system
-* \param Ks Set of Kraus operators
 * \return Tuple of: 1. Result of the measurement, 2.
 * Vector of outcome probabilities, and 3. Vector of post-measurement
 * normalized states
@@ -503,9 +503,9 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * The measurement is destructive, i.e. the measured subsystems are traced away.
 *
 * \param A Eigen expression
+* \param Ks Set of Kraus operators
 * \param subsys Subsystem indexes that are measured
 * \param d Subsystem dimensions
-* \param Ks Set of Kraus operators
 * \return Tuple of: 1. Result of the measurement, 2.
 * Vector of outcome probabilities, and 3. Vector of post-measurement
 * normalized states
@@ -551,9 +551,9 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * The measurement is destructive, i.e. the measured subsystems are traced away.
 *
 * \param A Eigen expression
+* \param Ks Set of Kraus operators
 * \param subsys Subsystem indexes that are measured
 * \param d Subsystem dimensions
-* \param Ks Set of Kraus operators
 * \return Tuple of: 1. Result of the measurement, 2.
 * Vector of outcome probabilities, and 3. Vector of post-measurement
 * normalized states
@@ -578,10 +578,10 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * The measurement is destructive, i.e. the measured subsystems are traced away.
 *
 * \param A Eigen expression
-* \param subsys Subsystem indexes that are measured
-* \param dims Dimensions of the multi-partite system
 * \param V Matrix whose columns represent the measurement basis vectors or the
 * bra parts of the rank-1 POVM
+* \param subsys Subsystem indexes that are measured
+* \param dims Dimensions of the multi-partite system
 * \return Tuple of: 1. Result of the measurement, 2.
 * Vector of outcome probabilities, and 3. Vector of post-measurement
 * normalized states
@@ -695,10 +695,10 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * The measurement is destructive, i.e. the measured subsystems are traced away.
 *
 * \param A Eigen expression
-* \param subsys Subsystem indexes that are measured
-* \param d Subsystem dimensions
 * \param V Matrix whose columns represent the measurement basis vectors or the
 * bra parts of the rank-1 POVM
+* \param subsys Subsystem indexes that are measured
+* \param d Subsystem dimensions
 * \return Tuple of: 1. Result of the measurement, 2.
 * Vector of outcome probabilities, and 3. Vector of post-measurement
 * normalized states

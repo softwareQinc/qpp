@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Dsubsys = <a class="code" href="namespaceqpp.html#a78595ec429a5df51dbe682cdb9711d9c">prod</a>(std::begin(subsys_dims), std::end(subsys_dims));</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rpsi.rows());</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Dbar = D / Dsubsys;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Dsubsysbar = D / Dsubsys;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n = dims.size();</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> nsubsys = subsys.size();</div>
@@ -220,9 +220,9 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    }; <span class="comment">/* end worker */</span></div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;typename Derived::Scalar&gt;</a> result(Dbar);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;typename Derived::Scalar&gt;</a> result(Dsubsysbar);</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="preprocessor">#pragma omp parallel for</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> m = 0; m &lt; Dbar; ++m)</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> m = 0; m &lt; Dsubsysbar; ++m)</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        result(m) = worker(m);</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keywordflow">return</span> result;</div>
@@ -399,7 +399,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;</div>
 <div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = <a class="code" href="namespaceqpp.html#a78595ec429a5df51dbe682cdb9711d9c">prod</a>(std::begin(dims), std::end(dims));</div>
 <div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Dsubsys = <a class="code" href="namespaceqpp.html#a78595ec429a5df51dbe682cdb9711d9c">prod</a>(std::begin(subsys_dims), std::end(subsys_dims));</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Dbar = D / Dsubsys;</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Dsubsysbar = D / Dsubsys;</div>
 <div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;</div>
 <div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    <span class="comment">// check the Kraus operators</span></div>
 <div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    <span class="keywordflow">if</span> (Ks.size() == 0)</div>
@@ -420,7 +420,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    <span class="comment">// probabilities</span></div>
 <div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;    std::vector&lt;double&gt; prob(Ks.size());</div>
 <div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    <span class="comment">// resulting states</span></div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    std::vector&lt;cmat&gt; outstates(Ks.size(), cmat::Zero(Dbar, Dbar));</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    std::vector&lt;cmat&gt; outstates(Ks.size(), cmat::Zero(Dsubsysbar, Dsubsysbar));</div>
 <div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;</div>
 <div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    <span class="comment">//************ density matrix ************//</span></div>
 <div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">internal::_check_square_mat</a>(rA)) <span class="comment">// square matrix</span></div>
@@ -785,7 +785,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="instruments_8h.html">instruments.h</a></li>
-    <li class="footer">Generated on Mon Oct 12 2015 20:01:20 for Quantum++ by
+    <li class="footer">Generated on Mon Oct 12 2015 21:16:03 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

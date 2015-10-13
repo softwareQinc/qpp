@@ -18,11 +18,11 @@ int main()
     std::cout << disp(result) << std::endl;
 
     // measure the first qubit in the X basis
-    auto m = measure(result, gt.H, {0});
-    std::cout << ">> Measurement result: " << std::get<0>(m);
+    auto measured = measure(result, gt.H, {0});
+    std::cout << ">> Measurement result: " << std::get<0>(measured);
     std::cout << std::endl << ">> Probabilities: ";
-    std::cout << disp(std::get<1>(m), ", ") << std::endl;
+    std::cout << disp(std::get<1>(measured), ", ") << std::endl;
     std::cout << ">> Resulting states: " << std::endl;
-    for (auto&& it : std::get<2>(m))
+    for (auto&& it : std::get<2>(measured))
         std::cout << disp(it) << std::endl;
 }

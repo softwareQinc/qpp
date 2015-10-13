@@ -31,7 +31,7 @@ int main()
     auto measured_aA = measure(output_aAB, gt.Id(D * D), {0, 1}, D);
     idx m = std::get<0>(measured_aA); // measurement result
 
-    auto midx = n2multiidx(m, {D, D});
+    std::vector<idx> midx = n2multiidx(m, {D, D});
     cout << ">> Alice's measurement result: ";
     cout << m << " -> " << disp(midx, " ") << endl;
     cout << ">> Alice's measurement probabilities: ";
@@ -44,7 +44,7 @@ int main()
                         powm(adjoint(gt.Xd(D)), midx[1]);
     // apply correction on B
     cout << ">> Bob must apply the correction operator Z^" << midx[0]
-        << " X^" << (D - midx[1]) % D << endl;
+         << " X^" << (D - midx[1]) % D << endl;
     ket psi_B = correction_B * output_m_B;
 
     cout << ">> Bob's final state (after correction): " << endl;

@@ -21,7 +21,7 @@ int main()
 
     // equal probabilities of choosing a message
     idx m_A = randidx(0, D * D - 1);
-    auto midx = n2multiidx(m_A, {D, D});
+    std::vector<idx> midx = n2multiidx(m_A, {D, D});
     cout << ">> Alice sent: " << m_A << " -> ";
     cout << disp(midx, " ") << endl;
 
