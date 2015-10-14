@@ -113,4 +113,3 @@ Version 0.8.4 - 14 October 2015
         std::chrono::duration<double> and std::chrono::steady_clock,
         respectively
 
-Version 0.8.5 - development
