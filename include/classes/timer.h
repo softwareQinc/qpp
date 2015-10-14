@@ -100,7 +100,7 @@ public:
     * instantiation/reset and invocation of qpp::Timer::toc()
     */
     template<typename U = T>
-    U get_duration()
+    U get_duration() const noexcept
     {
         return std::chrono::duration_cast<U>(_end - _start);
     }
