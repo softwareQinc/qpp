@@ -114,3 +114,4 @@ Version 0.8.4 - 14 October 2015
         respectively
 
 Version 0.8.5 - development
+    - Work in progress at qpp::experimental::MatrixView class

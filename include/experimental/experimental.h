@@ -36,6 +36,35 @@ namespace qpp
 namespace experimental
 {
 
+/**
+* \class qpp::experimental::MatrixView
+* \brief Matrix view class
+*/
+template<typename Derived>
+class MatrixView
+{
+private:
+    const Eigen::MatrixBase<Derived>& _data;
+public:
+    MatrixView(Eigen::MatrixBase<Derived>& exp): _data(exp) {}
+    typename Derived::Scalar operator()(std::size_t i, std::size_t j) const
+    {
+        return _data(i, j);
+    }
+    explicit operator
+    Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic>()
+    {
+        return _data;
+    }
+    virtual ~MatrixView() = default;
+};
+
+template<typename Derived>
+MatrixView<Derived> make_MatrixView(Eigen::MatrixBase<Derived>& A)
+{
+    return MatrixView<Derived>(A);
+}
+
 } /* namespace experimental */
 } /* namespace qpp */
 

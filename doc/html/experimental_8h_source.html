@@ -100,18 +100,49 @@ $(document).ready(function(){initNavTree('experimental_8h_source.html','');});
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span>experimental</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;} <span class="comment">/* namespace experimental */</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* EXPERIMENTAL_EXPERIMENTAL_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html">   44</a></span>&#160;<span class="keyword">class </span><a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html">MatrixView</a></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#acd824478f0fe69f7caf03397a103ad6f">   47</a></span>&#160;    <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#acd824478f0fe69f7caf03397a103ad6f">_data</a>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#a602e3e497dcbc3537acc06dcac03a0bf">   49</a></span>&#160;    <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a602e3e497dcbc3537acc06dcac03a0bf">MatrixView</a>(Eigen::MatrixBase&lt;Derived&gt;&amp; exp): _data(exp) {}</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#a205ad27743bc336f105dc8c7b2223c45">   50</a></span>&#160;    <span class="keyword">typename</span> Derived::Scalar <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a205ad27743bc336f105dc8c7b2223c45">operator()</a>(std::size_t i, std::size_t j)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#acd824478f0fe69f7caf03397a103ad6f">_data</a>(i, j);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">explicit</span> <span class="keyword">operator</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#a169267a6fb03ca0a3716d9f26dbc3a60">   55</a></span>&#160;    Eigen::Matrix&lt;typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic&gt;()</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#acd824478f0fe69f7caf03397a103ad6f">_data</a>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a0d976afea3582ffe96f71196ba809041">~MatrixView</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;};</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1experimental.html#a8421092e9db2207bf992e8c7d0b486a6">   63</a></span>&#160;<a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html">MatrixView&lt;Derived&gt;</a> <a class="code" href="namespaceqpp_1_1experimental.html#a8421092e9db2207bf992e8c7d0b486a6">make_MatrixView</a>(Eigen::MatrixBase&lt;Derived&gt;&amp; A)</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;{</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html">MatrixView&lt;Derived&gt;</a>(A);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;} <span class="comment">/* namespace experimental */</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* EXPERIMENTAL_EXPERIMENTAL_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html">qpp::experimental::MatrixView</a></div><div class="ttdoc">Matrix view class. </div><div class="ttdef"><b>Definition:</b> experimental.h:44</div></div>
+<div class="ttc" id="namespaceqpp_1_1experimental_html_a8421092e9db2207bf992e8c7d0b486a6"><div class="ttname"><a href="namespaceqpp_1_1experimental.html#a8421092e9db2207bf992e8c7d0b486a6">qpp::experimental::make_MatrixView</a></div><div class="ttdeci">MatrixView&lt; Derived &gt; make_MatrixView(Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> experimental.h:63</div></div>
 <div class="ttc" id="namespaceqpp_html"><div class="ttname"><a href="namespaceqpp.html">qpp</a></div><div class="ttdoc">Quantum++ main namespace. </div><div class="ttdef"><b>Definition:</b> codes.h:30</div></div>
+<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_a205ad27743bc336f105dc8c7b2223c45"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#a205ad27743bc336f105dc8c7b2223c45">qpp::experimental::MatrixView::operator()</a></div><div class="ttdeci">Derived::Scalar operator()(std::size_t i, std::size_t j) const </div><div class="ttdef"><b>Definition:</b> experimental.h:50</div></div>
+<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_a602e3e497dcbc3537acc06dcac03a0bf"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#a602e3e497dcbc3537acc06dcac03a0bf">qpp::experimental::MatrixView::MatrixView</a></div><div class="ttdeci">MatrixView(Eigen::MatrixBase&lt; Derived &gt; &amp;exp)</div><div class="ttdef"><b>Definition:</b> experimental.h:49</div></div>
+<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_acd824478f0fe69f7caf03397a103ad6f"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#acd824478f0fe69f7caf03397a103ad6f">qpp::experimental::MatrixView::_data</a></div><div class="ttdeci">const Eigen::MatrixBase&lt; Derived &gt; &amp; _data</div><div class="ttdef"><b>Definition:</b> experimental.h:47</div></div>
+<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_a0d976afea3582ffe96f71196ba809041"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#a0d976afea3582ffe96f71196ba809041">qpp::experimental::MatrixView::~MatrixView</a></div><div class="ttdeci">virtual ~MatrixView()=default</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_8c0381a6091af7a47ae909a45b674508.html">experimental</a></li><li class="navelem"><a class="el" href="experimental_8h.html">experimental.h</a></li>
-    <li class="footer">Generated on Wed Oct 14 2015 14:16:13 for Quantum++ by
+    <li class="footer">Generated on Fri Oct 16 2015 18:28:03 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
