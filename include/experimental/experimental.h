@@ -55,6 +55,7 @@ public:
     }
     explicit operator
     Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic>()
+    const
     {
         return _data;
     }
