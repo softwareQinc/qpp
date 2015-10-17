@@ -40,4 +40,5 @@ int main()
     cmat result = static_cast<cmat>(viewA); // convert
     std::cout << std::endl;
     std::cout << disp(result) << std::endl;
+    // std::cout << disp(viewA) << std::endl;
 }

@@ -68,6 +68,9 @@
 #include <Eigen/Dense>
 #include <Eigen/SVD>
 
+// pre-processor macros, make them visible to the whole library
+#include "macros.h"
+
 // do not change the order in this group, inter-dependencies
 #include "types.h"
 #include "classes/exception.h"
@@ -98,9 +101,6 @@
 #include "classes/timer.h"
 #include "instruments.h"
 #include "number_theory.h"
-
-// pre-processor macros
-#include "macros.h"
 
 /**
 * \namespace qpp
