@@ -8,6 +8,13 @@ using namespace qpp;
 // TODO: Implement a circuit description language, load/save from/to file
 // TODO: Write a MatrixView class, for multi-index lazy evaluation view - wip
 
+cmat gettmp()
+{
+    cmat tmp(2, 2);
+    tmp << 10, 20, 30, 40;
+    return tmp;
+}
+
 int main()
 {
     // testing qpp::experimental::MatrixView
@@ -17,6 +24,9 @@ int main()
 
     auto viewA = experimental::make_MatrixView(A);
     experimental::MatrixView<cmat> viewB = viewA;
+
+    // this should not compile, and it doesn't :)
+    // experimental::MatrixView<cmat> tmpview{gettmp()};
 
     for (idx i = 0; i < ROWS; ++i)
     {

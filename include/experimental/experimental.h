@@ -46,7 +46,9 @@ class MatrixView
 private:
     const Eigen::MatrixBase<Derived>& _data;
 public:
-    MatrixView(Eigen::MatrixBase<Derived>& exp): _data(exp) {}
+    MatrixView(const Eigen::MatrixBase<Derived>& exp): _data(exp) {}
+    // disable temporaries, as they don't bind to _data via function arguments
+    MatrixView(Eigen::MatrixBase<Derived>&& exp) = delete;
     typename Derived::Scalar operator()(std::size_t i, std::size_t j) const
     {
         return _data(i, j);
