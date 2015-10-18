@@ -18,11 +18,11 @@ cmat gettmp()
 int main()
 {
     // testing qpp::experimental::MatrixView
-    idx ROWS = 2, COLS = 2;
-    cmat A(ROWS, COLS);
-    A << 1, 2., 3., 4.;
+    idx ROWS = 4, COLS = 4;
+    cmat A = gt.CNOT;
+    //A << 1, 2., 3., 4.;
 
-    auto viewA = experimental::make_MatrixView(A);
+    auto viewA = experimental::make_MatrixView(A, {1, 0});
     experimental::MatrixView<cmat> viewB = viewA;
 
     // this should not compile, and it doesn't :)

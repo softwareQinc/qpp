@@ -45,28 +45,69 @@ class MatrixView
 {
 private:
     const Eigen::MatrixBase<Derived>& _data;
+    const std::vector<idx> _subsys;
+    const std::vector<idx> _dims;
 public:
-    MatrixView(const Eigen::MatrixBase<Derived>& exp): _data(exp) {}
+    // TODO: exception checking
+    MatrixView(const Eigen::MatrixBase<Derived>& exp,
+               const std::vector<idx> subsys,
+               const std::vector<idx> dims) :
+            _data(exp), _subsys(subsys), _dims(dims)
+    { }
+
+    MatrixView(const Eigen::MatrixBase<Derived>& exp,
+               const std::vector<idx> subsys,
+               idx d = 2) :
+            MatrixView(exp, subsys, std::vector<idx>(subsys.size(), d))
+    { }
+
     // disable temporaries, as they don't bind to _data via function arguments
     MatrixView(Eigen::MatrixBase<Derived>&& exp) = delete;
+
     typename Derived::Scalar operator()(std::size_t i, std::size_t j) const
     {
+        static idx rowmidx0[maxn], colmidx0[maxn];
+        static idx rowmidx1[maxn], colmidx1[maxn];
+        internal::_n2multiidx(i, _dims.size(), _dims.data(), rowmidx0);
+        internal::_n2multiidx(j, _dims.size(), _dims.data(), colmidx0);
+        // TODO: check here
+        for(idx i = 0 ; i < _dims.size(); ++i)
+        {
+            rowmidx1[i] = rowmidx0[_subsys[i]];
+            colmidx1[i] = colmidx0[_subsys[i]];
+        }
+        i = internal::_multiidx2n(rowmidx1, _dims.size(), _dims.data());
+        j = internal::_multiidx2n(colmidx1, _dims.size(), _dims.data());
+
         return _data(i, j);
     }
+
     explicit operator
     Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic>()
     const
     {
         return _data;
     }
+
     virtual ~MatrixView() = default;
 };
 
 template<typename Derived>
-MatrixView<Derived> make_MatrixView(Eigen::MatrixBase<Derived>& A)
+MatrixView<Derived> make_MatrixView(Eigen::MatrixBase<Derived>& A,
+                                    const std::vector<idx> subsys,
+                                    const std::vector<idx> dims)
 {
-    return MatrixView<Derived>(A);
+    return MatrixView<Derived>(A, subsys, dims);
 }
+
+template<typename Derived>
+MatrixView<Derived> make_MatrixView(Eigen::MatrixBase<Derived>& A,
+                                    const std::vector<idx> subsys,
+                                    idx d = 2)
+{
+    return MatrixView<Derived>(A, subsys, d);
+}
+
 
 } /* namespace experimental */
 } /* namespace qpp */
