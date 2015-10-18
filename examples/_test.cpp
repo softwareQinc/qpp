@@ -34,7 +34,7 @@ int main()
     std::cout << "Copy via static_cast/get() of the MatrixView:\n";
     cmat result = static_cast<cmat>(viewA); // convert
     cmat result1 = viewA.get(); // force evaluation
-    std::cout << disp(result) << std::endl;
+    std::cout << disp(result) << std::endl << std::endl;
     std::cout << disp(result1) << std::endl << std::endl;
 
     std::cout << "Copy MatrixView:\n";
