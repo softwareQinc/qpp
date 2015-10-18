@@ -222,7 +222,8 @@ public:
     template<typename Derived>
     explicit IOManipEigen(const Eigen::MatrixBase<Derived>& A,
                           double chop = qpp::chop) :
-            _A{A.template cast<cplx>()}, _chop{chop}
+            _A{A.template cast<cplx>()}, // copy, so we can bind rvalues safely
+            _chop{chop}
     {
     }
 
