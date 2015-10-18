@@ -40,40 +40,43 @@ namespace experimental
 * \class qpp::experimental::MatrixView
 * \brief Matrix view class, maps between a matrix and a multi-dimensional array
 */
+
+// The qubit \a perm[\a i] is permuted to the location \a i.
 template<typename Derived>
 class MatrixView
 {
 private:
     const Eigen::MatrixBase<Derived>& _viewA;
-    const std::vector<idx> _subsys;
+    const std::vector<idx> _perm;
     const std::vector<idx> _dims;
     idx _rows, _cols;
 public:
     // TODO: exception checking
     // TODO: check for noexcept
     // TODO: remove duplicate code in IOManipEigen and IOManipMatrixView
-    // TODO: write documentation
+    // TODO: write the documentation
+    // TODO: test
     MatrixView(const Eigen::MatrixBase<Derived>& A,
-               const std::vector<idx> subsys,
+               const std::vector<idx> perm,
                const std::vector<idx> dims) :
-            _viewA(A), _subsys(subsys), _dims(dims),
+            _viewA(A), _perm(perm), _dims(dims),
             _rows(A.rows()), _cols(A.cols())
     { }
 
     MatrixView(const Eigen::MatrixBase<Derived>& A,
-               const std::vector<idx> subsys,
+               const std::vector<idx> perm,
                idx d = 2) :
-            MatrixView(A, subsys, std::vector<idx>(subsys.size(), d))
+            MatrixView(A, perm, std::vector<idx>(perm.size(), d))
     { }
 
     // disable temporaries
     MatrixView(const Eigen::MatrixBase<Derived>&& A,
-               const std::vector<idx> subsys,
+               const std::vector<idx> perm,
                const std::vector<idx> dims) = delete;
 
     // disable temporaries
     MatrixView(const Eigen::MatrixBase<Derived>&& A,
-               const std::vector<idx> subsys,
+               const std::vector<idx> perm,
                idx d = 2) = delete;
 
 
@@ -87,9 +90,9 @@ public:
         return _cols;
     }
 
-    std::vector<idx> subsys() const noexcept
+    std::vector<idx> perm() const noexcept
     {
-        return _subsys;
+        return _perm;
     }
 
     std::vector<idx> dims() const noexcept
@@ -110,9 +113,9 @@ public:
         // TODO: check this loop
         for (idx k = 0; k < _dims.size(); ++k)
         {
-            Cdims_shuffled[k] = _dims[_subsys[k]];
-            Crowmidx_shuffled[k] = Crowmidx[_subsys[k]];
-            Ccolmidx_shuffled[k] = Ccolmidx[_subsys[k]];
+            Cdims_shuffled[_perm[k]] = _dims[k];
+            Crowmidx_shuffled[_perm[k]] = Crowmidx[k];
+            Ccolmidx_shuffled[_perm[k]] = Ccolmidx[k];
         }
 
         i = internal::_multiidx2n(Crowmidx_shuffled, _dims.size(),
@@ -167,31 +170,31 @@ public:
 
 template<typename Derived>
 MatrixView<Derived> make_MatrixView(const Eigen::MatrixBase<Derived>& A,
-                                    const std::vector<idx> subsys,
+                                    const std::vector<idx> perm,
                                     const std::vector<idx> dims)
 {
-    return MatrixView<Derived>(A, subsys, dims);
+    return MatrixView<Derived>(A, perm, dims);
 }
 
 
 template<typename Derived>
 MatrixView<Derived> make_MatrixView(const Eigen::MatrixBase<Derived>& A,
-                                    const std::vector<idx> subsys,
+                                    const std::vector<idx> perm,
                                     idx d = 2)
 {
-    return MatrixView<Derived>(A, subsys, d);
+    return MatrixView<Derived>(A, perm, d);
 }
 
 // disable temporaries
 template<typename Derived>
 MatrixView<Derived> make_MatrixView(const Eigen::MatrixBase<Derived>&& A,
-                                    const std::vector<idx> subsys,
+                                    const std::vector<idx> perm,
                                     const std::vector<idx> dims) = delete;
 
 // disable temporaries
 template<typename Derived>
 MatrixView<Derived> make_MatrixView(const Eigen::MatrixBase<Derived>&& A,
-                                    const std::vector<idx> subsys,
+                                    const std::vector<idx> perm,
                                     idx d = 2) = delete;
 
 } /* namespace experimental */

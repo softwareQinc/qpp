@@ -56,10 +56,10 @@ int main()
     std::cout << std::endl;
 
     std::cout << "Testing MatrixView via syspermute:\n";
-    std::vector<idx> subsys{1, 2, 3, 7, 4, 6, 5, 0};
-    idx N = std::pow(2, subsys.size());
+    std::vector<idx> perm{1, 2, 3, 7, 4, 6, 5, 0};
+    idx N = std::pow(2, perm.size());
     cmat rho = qpp::rand<cmat>(256, 256);
-    cmat B = syspermute(rho, subsys);
-    cmat C = experimental::make_MatrixView(rho, invperm(subsys)).get();
+    cmat B = syspermute(rho, perm);
+    cmat C = experimental::make_MatrixView(rho, perm).get();
     std::cout << "Norm difference: " << norm(B - C) << std::endl;
 }
