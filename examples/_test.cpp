@@ -54,4 +54,12 @@ int main()
     std::cout << "MatrixValue as a rvalue:\n";
     std::cout << disp(qpp::experimental::make_MatrixView(A, {1, 0}));
     std::cout << std::endl;
+
+    std::cout << "Testing MatrixView via syspermute:\n";
+    std::vector<idx> subsys{1, 2, 3, 7, 4, 6, 5, 0};
+    idx N = std::pow(2, subsys.size());
+    cmat rho = qpp::rand<cmat>(256, 256);
+    cmat B = syspermute(rho, subsys);
+    cmat C = experimental::make_MatrixView(rho, invperm(subsys)).get();
+    std::cout << "Norm difference: " << norm(B - C) << std::endl;
 }
