@@ -7,6 +7,7 @@ using namespace qpp;
 // Future work
 // TODO: Implement a circuit description language, load/save from/to file
 // TODO: Write a MatrixView class, for multi-index lazy evaluation view - wip
+// TODO: use assert in performance-critical functions (qpp::internal)
 
 cmat gettmp()
 {

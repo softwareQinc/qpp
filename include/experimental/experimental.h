@@ -97,7 +97,8 @@ public:
         return _dims;
     }
 
-    typename Derived::Scalar operator()(std::size_t i, std::size_t j) const
+    // fast, no exception checkings
+    typename Derived::Scalar operator()(std::size_t i, std::size_t j = 0) const
     {
         idx Crowmidx[maxn], Ccolmidx[maxn];
         idx Crowmidx_shuffled[maxn], Ccolmidx_shuffled[maxn];
@@ -120,6 +121,16 @@ public:
                                   Cdims_shuffled);
 
         return _viewA(i, j);
+    }
+
+    // this may throw
+    typename Derived::Scalar at(std::size_t i, std::size_t j = 0) const
+    {
+        // EXCEPTION CHECKS
+
+
+        // END EXCEPTION CHECKS
+        return this->operator()(i, j);
     }
 
     explicit operator // only explicit conversions
