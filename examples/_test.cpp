@@ -50,4 +50,7 @@ int main()
     // this line should not compile, and it doesn't :)
     // experimental::MatrixView<cmat> tmpview{gettmp(), {0, 1}};
 
+    std::cout << "MatrixValue as a rvalue:\n";
+    std::cout << disp(qpp::experimental::make_MatrixView(A, {1, 0}));
+    std::cout << std::endl;
 }

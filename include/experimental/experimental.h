@@ -38,7 +38,7 @@ namespace experimental
 
 /**
 * \class qpp::experimental::MatrixView
-* \brief Matrix view class
+* \brief Matrix view class, maps between a matrix and a multi-dimensional array
 */
 template<typename Derived>
 class MatrixView
@@ -87,6 +87,16 @@ public:
         return _cols;
     }
 
+    std::vector<idx> subsys() const noexcept
+    {
+        return _subsys;
+    }
+
+    std::vector<idx> dims() const noexcept
+    {
+        return _dims;
+    }
+
     typename Derived::Scalar operator()(std::size_t i, std::size_t j) const
     {
         idx Crowmidx[maxn], Ccolmidx[maxn];
@@ -112,7 +122,7 @@ public:
         return _viewA(i, j);
     }
 
-    explicit operator
+    explicit operator // only explicit conversions
     Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic>()
     const
     {
