@@ -50,7 +50,9 @@ private:
     idx _rows, _cols;
 public:
     // TODO: exception checking
-    // TODO check for noexcept
+    // TODO: check for noexcept
+    // TODO: remove duplicate code in IOManipEigen and IOManipMatrixView
+    // TODO: write documentation
     MatrixView(const Eigen::MatrixBase<Derived>& A,
                const std::vector<idx> subsys,
                const std::vector<idx> dims) :
@@ -64,8 +66,16 @@ public:
             MatrixView(A, subsys, std::vector<idx>(subsys.size(), d))
     { }
 
-    // disable temporaries, as they don't bind to _viewA via function arguments
-    MatrixView(Eigen::MatrixBase<Derived>&& exp) = delete;
+    // disable temporaries
+    MatrixView(const Eigen::MatrixBase<Derived>&& A,
+               const std::vector<idx> subsys,
+               const std::vector<idx> dims) = delete;
+
+    // disable temporaries
+    MatrixView(const Eigen::MatrixBase<Derived>&& A,
+               const std::vector<idx> subsys,
+               idx d = 2) = delete;
+
 
     idx rows() const noexcept
     {
@@ -87,7 +97,7 @@ public:
         internal::_n2multiidx(j, _dims.size(), _dims.data(), Ccolmidx);
 
         // TODO: check this loop
-        for(idx k = 0 ; k < _dims.size(); ++k)
+        for (idx k = 0; k < _dims.size(); ++k)
         {
             Cdims_shuffled[k] = _dims[_subsys[k]];
             Crowmidx_shuffled[k] = Crowmidx[_subsys[k]];
@@ -112,9 +122,9 @@ public:
                 Eigen::Dynamic
         > result(_rows, _cols);
 
-        for(idx i = 0; i < _rows; ++i)
+        for (idx i = 0; i < _rows; ++i)
         {
-            for(idx j = 0; j < _rows; ++j)
+            for (idx j = 0; j < _rows; ++j)
             {
                 result(i, j) = this->operator()(i, j);
             }
@@ -126,22 +136,35 @@ public:
     virtual ~MatrixView() = default;
 };
 
+
 template<typename Derived>
-MatrixView<Derived> make_MatrixView(Eigen::MatrixBase<Derived>& A,
+MatrixView<Derived> make_MatrixView(const Eigen::MatrixBase<Derived>& A,
                                     const std::vector<idx> subsys,
                                     const std::vector<idx> dims)
 {
     return MatrixView<Derived>(A, subsys, dims);
 }
 
+
 template<typename Derived>
-MatrixView<Derived> make_MatrixView(Eigen::MatrixBase<Derived>& A,
+MatrixView<Derived> make_MatrixView(const Eigen::MatrixBase<Derived>& A,
                                     const std::vector<idx> subsys,
                                     idx d = 2)
 {
     return MatrixView<Derived>(A, subsys, d);
 }
 
+// disable temporaries
+template<typename Derived>
+MatrixView<Derived> make_MatrixView(const Eigen::MatrixBase<Derived>&& A,
+                                    const std::vector<idx> subsys,
+                                    const std::vector<idx> dims) = delete;
+
+// disable temporaries
+template<typename Derived>
+MatrixView<Derived> make_MatrixView(const Eigen::MatrixBase<Derived>&& A,
+                                    const std::vector<idx> subsys,
+                                    idx d = 2) = delete;
 
 } /* namespace experimental */
 } /* namespace qpp */

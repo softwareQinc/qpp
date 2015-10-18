@@ -28,9 +28,6 @@ int main()
     auto viewA = experimental::make_MatrixView(A, {1, 0});
     experimental::MatrixView<cmat> viewB = viewA;
 
-    // this should not compile, and it doesn't :)
-    // experimental::MatrixView<cmat> tmpview{gettmp()};
-
     std::cout << "MatrixView: \n";
     std::cout << disp(viewA) << std::endl << std::endl;
 
@@ -40,5 +37,15 @@ int main()
 
     std::cout << "Copy MatrixView:\n";
     auto viewAcopy = viewA; // copy
-    std::cout << disp(viewAcopy) << std::endl;
+    std::cout << disp(viewAcopy) << std::endl << std::endl;
+
+    // rvalues should not bind
+
+    // should not compile, and it doesn't :)
+    // auto view_expression = experimental::make_MatrixView(A + A, {0, 1});
+    // std::cout << disp(view_expression) << std::endl;
+
+    // this line should not compile, and it doesn't :)
+    // experimental::MatrixView<cmat> tmpview{gettmp(), {0, 1}};
+
 }
