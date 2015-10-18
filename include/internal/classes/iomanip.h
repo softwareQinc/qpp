@@ -235,13 +235,13 @@ private:
 template<typename Derived>
 class IOManipMatrixView : public IDisplay
 {
-    const qpp::experimental::MatrixView<Derived>& _A;
+    const qpp::experimental::MatrixView<Derived>& _viewA;
     double _chop;
 public:
     // Eigen matrices
     explicit IOManipMatrixView(const qpp::experimental::MatrixView<Derived>& A,
                                double chop = qpp::chop) :
-            _A{A}, _chop{chop}
+            _viewA{A}, _chop{chop}
     {
     }
 
@@ -254,18 +254,18 @@ private:
         std::vector<std::string> vstr;
         std::string strA;
 
-        for (idx i = 0; i < static_cast<idx>(_A.rows()); ++i)
+        for (idx i = 0; i < static_cast<idx>(_viewA.rows()); ++i)
         {
             for (idx j = 0;
-                 j < static_cast<idx>(_A.cols()); ++j)
+                 j < static_cast<idx>(_viewA.cols()); ++j)
             {
                 strA.clear(); // clear the temporary string
                 ostr.clear();
                 ostr.str(std::string {}); // clear the ostringstream
 
                 // convert to complex
-                double re = static_cast<cplx>(_A(i, j)).real();
-                double im = static_cast<cplx>(_A(i, j)).imag();
+                double re = static_cast<cplx>(_viewA(i, j)).real();
+                double im = static_cast<cplx>(_viewA(i, j)).imag();
 
                 if (std::abs(re) < _chop && std::abs(im) < _chop)
                 {
@@ -301,33 +301,33 @@ private:
         }
 
         // determine the maximum lenght of the entries in each column
-        std::vector<idx> maxlengthcols(_A.cols(), 0);
+        std::vector<idx> maxlengthcols(_viewA.cols(), 0);
 
-        for (idx i = 0; i < static_cast<idx>(_A.rows());
+        for (idx i = 0; i < static_cast<idx>(_viewA.rows());
              ++i)
             for (idx j = 0;
-                 j < static_cast<idx>(_A.cols()); ++j)
-                if (vstr[i * _A.cols() + j].size() > maxlengthcols[j])
-                    maxlengthcols[j] = vstr[i * _A.cols() + j].size();
+                 j < static_cast<idx>(_viewA.cols()); ++j)
+                if (vstr[i * _viewA.cols() + j].size() > maxlengthcols[j])
+                    maxlengthcols[j] = vstr[i * _viewA.cols() + j].size();
 
         // finally display it!
-        for (idx i = 0; i < static_cast<idx>(_A.rows()); ++i)
+        for (idx i = 0; i < static_cast<idx>(_viewA.rows()); ++i)
         {
             os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
-            << vstr[i * _A.cols()]; // display first column
+            << vstr[i * _viewA.cols()]; // display first column
             // then the rest
             for (idx j = 1;
-                 j < static_cast<idx>(_A.cols()); ++j)
+                 j < static_cast<idx>(_viewA.cols()); ++j)
                 os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
-                << std::right << vstr[i * _A.cols() + j];
+                << std::right << vstr[i * _viewA.cols() + j];
 
-            if (i < static_cast<idx>(_A.rows()) - 1)
+            if (i < static_cast<idx>(_viewA.rows()) - 1)
                 os << std::endl;
         }
 
         return os;
     }
-}; // class IOManipEigen
+}; // class IOManipMatrixView
 
 } /* namespace internal */
 } /* namespace qpp */

@@ -44,7 +44,7 @@ template<typename Derived>
 class MatrixView
 {
 private:
-    const Eigen::MatrixBase<Derived>& _data;
+    const Eigen::MatrixBase<Derived>& _viewA;
     const std::vector<idx> _subsys;
     const std::vector<idx> _dims;
     idx _rows, _cols;
@@ -54,7 +54,7 @@ public:
     MatrixView(const Eigen::MatrixBase<Derived>& A,
                const std::vector<idx> subsys,
                const std::vector<idx> dims) :
-            _data(A), _subsys(subsys), _dims(dims),
+            _viewA(A), _subsys(subsys), _dims(dims),
             _rows(A.rows()), _cols(A.cols())
     { }
 
@@ -64,7 +64,7 @@ public:
             MatrixView(A, subsys, std::vector<idx>(subsys.size(), d))
     { }
 
-    // disable temporaries, as they don't bind to _data via function arguments
+    // disable temporaries, as they don't bind to _viewA via function arguments
     MatrixView(Eigen::MatrixBase<Derived>&& exp) = delete;
 
     idx rows() const noexcept
@@ -99,7 +99,7 @@ public:
         j = internal::_multiidx2n(Ccolmidx_shuffled, _dims.size(),
                                   Cdims_shuffled);
 
-        return _data(i, j);
+        return _viewA(i, j);
     }
 
     explicit operator
