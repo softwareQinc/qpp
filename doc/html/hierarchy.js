@@ -1,5 +1,9 @@
 var hierarchy =
 [
+    [ "qpp::internal::_details::_Display_Impl", "structqpp_1_1internal_1_1__details_1_1___display___impl.html", [
+      [ "qpp::internal::IOManipEigen", "classqpp_1_1internal_1_1_i_o_manip_eigen.html", null ],
+      [ "qpp::internal::IOManipMatrixView< Derived >", "classqpp_1_1internal_1_1_i_o_manip_matrix_view.html", null ]
+    ] ],
     [ "std::exception", null, [
       [ "qpp::Exception", "classqpp_1_1_exception.html", null ]
     ] ],
@@ -10,6 +14,7 @@ var hierarchy =
     ] ],
     [ "qpp::IDisplay", "classqpp_1_1_i_display.html", [
       [ "qpp::internal::IOManipEigen", "classqpp_1_1internal_1_1_i_o_manip_eigen.html", null ],
+      [ "qpp::internal::IOManipMatrixView< Derived >", "classqpp_1_1internal_1_1_i_o_manip_matrix_view.html", null ],
       [ "qpp::internal::IOManipPointer< PointerType >", "classqpp_1_1internal_1_1_i_o_manip_pointer.html", null ],
       [ "qpp::internal::IOManipRange< InputIterator >", "classqpp_1_1internal_1_1_i_o_manip_range.html", null ],
       [ "qpp::Timer< T, CLOCK_T >", "classqpp_1_1_timer.html", null ]

@@ -29,101 +29,17 @@
 
 #include "experimental/experimental.h"
 
-// ostream manipulators for nice formatting of
-// Eigen matrices and STL/C-style containers/vectors
-
 namespace qpp
 {
 namespace internal
 {
-template<typename InputIterator>
-class IOManipRange : public IDisplay
-{
-    InputIterator _first, _last;
-    std::string _separator, _start, _end;
-public:
-    explicit IOManipRange(InputIterator first, InputIterator last,
-                          const std::string& separator,
-                          const std::string& start = "[",
-                          const std::string& end = "]") :
-            _first{first},
-            _last{last},
-            _separator{separator},
-            _start{start},
-            _end{end}
-    {
-    }
-
-    // to silence -Weffc++ warnings for classes that have pointer members
-    // (whenever we have a pointer instantiation,
-    // i.e. iterator is a raw pointer)
-    IOManipRange(const IOManipRange&) = default;
-
-    IOManipRange& operator=(const IOManipRange&) = default;
-
-private:
-    std::ostream& display(std::ostream& os) const override
-    {
-        os << _start;
-
-        bool first = true;
-        for (auto it = _first; it != _last; ++it)
-        {
-            if (!first)
-                os << _separator;
-            first = false;
-            os << *it;
-        }
-        os << _end;
-
-        return os;
-    }
-}; // class IOManipRange
-
-template<typename PointerType>
-class IOManipPointer : public IDisplay
-{
-    const PointerType* _p;
-    idx _n;
-    std::string _separator, _start, _end;
-public:
-    explicit IOManipPointer(const PointerType* p, idx n,
-                            const std::string& separator,
-                            const std::string& start = "[",
-                            const std::string& end = "]") :
-            _p{p},
-            _n{n},
-            _separator{separator},
-            _start{start},
-            _end{end}
-    {
-    }
-
-    // to silence -Weffc++ warnings for classes that have pointer members
-    IOManipPointer(const IOManipPointer&) = default;
-
-    IOManipPointer& operator=(const IOManipPointer&) = default;
-
-private:
-    std::ostream& display(std::ostream& os) const override
-    {
-        os << _start;
-
-        for (idx i = 0; i < _n - 1; ++i)
-            os << _p[i] << _separator;
-        if (_n > 0)
-            os << _p[_n - 1];
-
-        os << _end;
-
-        return os;
-    }
-}; // class IOManipPointer
-
 // implementation details
+namespace _details
+{
 struct _Display_Impl
 {
-    template<typename T> // T must support rows(), cols(), operator()(idx, idx)
+    template<typename T>
+    // T must support rows(), cols(), operator()(idx, idx)
     std::ostream& _display_impl(const T& _A,
                                 std::ostream& _os,
                                 double _chop = qpp::chop) const
@@ -208,8 +124,96 @@ struct _Display_Impl
         return _os;
     }
 };
+} /* namespace _details */
 
-class IOManipEigen : public IDisplay, private _Display_Impl
+// ostream manipulators for nice formatting of
+// Eigen matrices and STL/C-style containers/vectors
+
+template<typename InputIterator>
+class IOManipRange : public IDisplay
+{
+    InputIterator _first, _last;
+    std::string _separator, _start, _end;
+public:
+    explicit IOManipRange(InputIterator first, InputIterator last,
+                          const std::string& separator,
+                          const std::string& start = "[",
+                          const std::string& end = "]") :
+            _first{first},
+            _last{last},
+            _separator{separator},
+            _start{start},
+            _end{end}
+    {
+    }
+
+    // to silence -Weffc++ warnings for classes that have pointer members
+    // (whenever we have a pointer instantiation,
+    // i.e. iterator is a raw pointer)
+    IOManipRange(const IOManipRange&) = default;
+
+    IOManipRange& operator=(const IOManipRange&) = default;
+
+private:
+    std::ostream& display(std::ostream& os) const override
+    {
+        os << _start;
+
+        bool first = true;
+        for (auto it = _first; it != _last; ++it)
+        {
+            if (!first)
+                os << _separator;
+            first = false;
+            os << *it;
+        }
+        os << _end;
+
+        return os;
+    }
+}; // class IOManipRange
+
+template<typename PointerType>
+class IOManipPointer : public IDisplay
+{
+    const PointerType* _p;
+    idx _n;
+    std::string _separator, _start, _end;
+public:
+    explicit IOManipPointer(const PointerType* p, idx n,
+                            const std::string& separator,
+                            const std::string& start = "[",
+                            const std::string& end = "]") :
+            _p{p},
+            _n{n},
+            _separator{separator},
+            _start{start},
+            _end{end}
+    {
+    }
+
+    // to silence -Weffc++ warnings for classes that have pointer members
+    IOManipPointer(const IOManipPointer&) = default;
+
+    IOManipPointer& operator=(const IOManipPointer&) = default;
+
+private:
+    std::ostream& display(std::ostream& os) const override
+    {
+        os << _start;
+
+        for (idx i = 0; i < _n - 1; ++i)
+            os << _p[i] << _separator;
+        if (_n > 0)
+            os << _p[_n - 1];
+
+        os << _end;
+
+        return os;
+    }
+}; // class IOManipPointer
+
+class IOManipEigen : public IDisplay, private _details::_Display_Impl
 {
     cmat _A;
     double _chop;
@@ -237,9 +241,8 @@ private:
     }
 }; // class IOManipEigen
 
-
 template<typename Derived>
-class IOManipMatrixView : public IDisplay, private _Display_Impl
+class IOManipMatrixView : public IDisplay, private _details::_Display_Impl
 {
     const qpp::experimental::MatrixView<Derived>& _viewA;
     double _chop;
@@ -256,6 +259,7 @@ private:
         return _display_impl(_viewA, os, chop);
     }
 }; // class IOManipMatrixView
+
 
 } /* namespace internal */
 } /* namespace qpp */

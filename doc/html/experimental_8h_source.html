@@ -104,40 +104,157 @@ $(document).ready(function(){initNavTree('experimental_8h_source.html','');});
 <div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html">   44</a></span>&#160;<span class="keyword">class </span><a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html">MatrixView</a></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#acd824478f0fe69f7caf03397a103ad6f">   47</a></span>&#160;    <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#acd824478f0fe69f7caf03397a103ad6f">_data</a>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#a52d498be7fbc9d2a7d3838795976ecb6">   49</a></span>&#160;    <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a52d498be7fbc9d2a7d3838795976ecb6">MatrixView</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; exp): _data(exp) {}</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="comment">// disable temporaries, as they don&#39;t bind to _data via function arguments</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a52d498be7fbc9d2a7d3838795976ecb6">MatrixView</a>(Eigen::MatrixBase&lt;Derived&gt;&amp;&amp; exp) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#a205ad27743bc336f105dc8c7b2223c45">   52</a></span>&#160;    <span class="keyword">typename</span> Derived::Scalar <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a205ad27743bc336f105dc8c7b2223c45">operator()</a>(std::size_t i, std::size_t j)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#acd824478f0fe69f7caf03397a103ad6f">_data</a>(i, j);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">explicit</span> <span class="keyword">operator</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#ad3ee8a66f13d09ab373869fc12f1056b">   57</a></span>&#160;    Eigen::Matrix&lt;typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic&gt;()</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">const</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#acd824478f0fe69f7caf03397a103ad6f">_data</a>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a0d976afea3582ffe96f71196ba809041">~MatrixView</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1experimental.html#a8421092e9db2207bf992e8c7d0b486a6">   66</a></span>&#160;<a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html">MatrixView&lt;Derived&gt;</a> <a class="code" href="namespaceqpp_1_1experimental.html#a8421092e9db2207bf992e8c7d0b486a6">make_MatrixView</a>(Eigen::MatrixBase&lt;Derived&gt;&amp; A)</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html">MatrixView&lt;Derived&gt;</a>(A);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;} <span class="comment">/* namespace experimental */</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#a8f52b0295d224d210c34afc052463a0a">   47</a></span>&#160;    <span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a8f52b0295d224d210c34afc052463a0a">_viewA</a>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#af63985b6a20b8b220763e8a63f920f1b">   48</a></span>&#160;    <span class="keyword">const</span> std::vector&lt;idx&gt; <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#af63985b6a20b8b220763e8a63f920f1b">_subsys</a>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#aefa56deb012310170faa24d147487e54">   49</a></span>&#160;    <span class="keyword">const</span> std::vector&lt;idx&gt; <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#aefa56deb012310170faa24d147487e54">_dims</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#a4fcee997b69950bcec426c170ea4d0cd">   50</a></span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a4fcee997b69950bcec426c170ea4d0cd">_rows</a>, <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a3639f64e81b4be4006a26d4f5aa56433">_cols</a>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">// TODO: exception checking</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">// TODO: check for noexcept</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="comment">// TODO: remove duplicate code in IOManipEigen and IOManipMatrixView</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">// TODO: write documentation</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#a3f2e037b8a8c1ddcab40d95de13740d4">   56</a></span>&#160;    <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a3f2e037b8a8c1ddcab40d95de13740d4">MatrixView</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;               <span class="keyword">const</span> std::vector&lt;idx&gt; subsys,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;               <span class="keyword">const</span> std::vector&lt;idx&gt; dims) :</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            _viewA(A), _subsys(subsys), _dims(dims),</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            _rows(A.<a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#abb89581a5555f850bd36a6d779fab53f">rows</a>()), _cols(A.<a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#af66c162f0da8c046e073c7bc677f34c4">cols</a>())</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    { }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#a95945f243a2ca0d160fd89a96d46517f">   63</a></span>&#160;    <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a95945f243a2ca0d160fd89a96d46517f">MatrixView</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;               <span class="keyword">const</span> std::vector&lt;idx&gt; subsys,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;               <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2) :</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html">MatrixView</a>(A, subsys, <a class="code" href="namespacestd.html">std</a>::vector&lt;<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&gt;(subsys.size(), d))</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    { }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="comment">// disable temporaries</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a3f2e037b8a8c1ddcab40d95de13740d4">MatrixView</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp;&amp; A,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;               <span class="keyword">const</span> std::vector&lt;idx&gt; subsys,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;               <span class="keyword">const</span> std::vector&lt;idx&gt; dims) = <span class="keyword">delete</span>;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* EXPERIMENTAL_EXPERIMENTAL_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// disable temporaries</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a3f2e037b8a8c1ddcab40d95de13740d4">MatrixView</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp;&amp; A,</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;               <span class="keyword">const</span> std::vector&lt;idx&gt; subsys,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;               <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#abb89581a5555f850bd36a6d779fab53f">   80</a></span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#abb89581a5555f850bd36a6d779fab53f">rows</a>() const noexcept</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a4fcee997b69950bcec426c170ea4d0cd">_rows</a>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#af66c162f0da8c046e073c7bc677f34c4">   85</a></span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#af66c162f0da8c046e073c7bc677f34c4">cols</a>() const noexcept</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a3639f64e81b4be4006a26d4f5aa56433">_cols</a>;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    }</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#a205ad27743bc336f105dc8c7b2223c45">   90</a></span>&#160;    <span class="keyword">typename</span> Derived::Scalar <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a205ad27743bc336f105dc8c7b2223c45">operator()</a>(std::size_t i, std::size_t j)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Crowmidx[<a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>], Ccolmidx[<a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Crowmidx_shuffled[<a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>], Ccolmidx_shuffled[<a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> Cdims_shuffled[<a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <a class="code" href="namespaceqpp_1_1internal.html#a89cac06eec76f72440a339270153e975">internal::_n2multiidx</a>(i, _dims.size(), _dims.data(), Crowmidx);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <a class="code" href="namespaceqpp_1_1internal.html#a89cac06eec76f72440a339270153e975">internal::_n2multiidx</a>(j, _dims.size(), _dims.data(), Ccolmidx);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="comment">// TODO: check this loop</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> k = 0; k &lt; _dims.size(); ++k)</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            Cdims_shuffled[k] = _dims[_subsys[k]];</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            Crowmidx_shuffled[k] = Crowmidx[_subsys[k]];</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            Ccolmidx_shuffled[k] = Ccolmidx[_subsys[k]];</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        i = <a class="code" href="namespaceqpp_1_1internal.html#a58bbe3e0db088a311d6ec053950602cf">internal::_multiidx2n</a>(Crowmidx_shuffled, _dims.size(),</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                                  Cdims_shuffled);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        j = <a class="code" href="namespaceqpp_1_1internal.html#a58bbe3e0db088a311d6ec053950602cf">internal::_multiidx2n</a>(Ccolmidx_shuffled, _dims.size(),</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                                  Cdims_shuffled);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a8f52b0295d224d210c34afc052463a0a">_viewA</a>(i, j);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    }</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keyword">explicit</span> <span class="keyword">operator</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#ad3ee8a66f13d09ab373869fc12f1056b">  116</a></span>&#160;    Eigen::Matrix&lt;typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic&gt;()</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keyword">const</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    {</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        Eigen::Matrix&lt;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                <span class="keyword">typename</span> Derived::Scalar,</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                Eigen::Dynamic,</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                Eigen::Dynamic</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        &gt; result(_rows, _cols);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a4fcee997b69950bcec426c170ea4d0cd">_rows</a>; ++i)</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        {</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a4fcee997b69950bcec426c170ea4d0cd">_rows</a>; ++j)</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            {</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                result(i, j) = this-&gt;<a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a205ad27743bc336f105dc8c7b2223c45">operator()</a>(i, j);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            }</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        }</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    }</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    Eigen::Matrix&lt;typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic&gt;</div>
+<div class="line"><a name="l00137"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#a714c08903aeab9c42c1bd828ed6ee4b5">  137</a></span>&#160;    <span class="keyword">get</span>() <span class="keyword">const</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    {</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Eigen::Matrix&lt;typename Derived::Scalar,</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                Eigen::Dynamic, Eigen::Dynamic<span class="keyword">&gt;</span>&gt;(*this);</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    }</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a0d976afea3582ffe96f71196ba809041">~MatrixView</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;};</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
+<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1experimental.html#a88b8d1fd82385011582b20e15190a162">  148</a></span>&#160;<a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html">MatrixView&lt;Derived&gt;</a> <a class="code" href="namespaceqpp_1_1experimental.html#a88b8d1fd82385011582b20e15190a162">make_MatrixView</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                                    <span class="keyword">const</span> std::vector&lt;idx&gt; subsys,</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                                    <span class="keyword">const</span> std::vector&lt;idx&gt; dims)</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;{</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html">MatrixView&lt;Derived&gt;</a>(A, subsys, dims);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;}</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
+<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1experimental.html#a71142b035d39874d2d2afe7993012c2a">  157</a></span>&#160;<a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html">MatrixView&lt;Derived&gt;</a> <a class="code" href="namespaceqpp_1_1experimental.html#a88b8d1fd82385011582b20e15190a162">make_MatrixView</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                                    <span class="keyword">const</span> std::vector&lt;idx&gt; subsys,</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                                    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;{</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html">MatrixView&lt;Derived&gt;</a>(A, subsys, d);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;}</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">// disable temporaries</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;MatrixView&lt;Derived&gt; <a class="code" href="namespaceqpp_1_1experimental.html#a88b8d1fd82385011582b20e15190a162">make_MatrixView</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp;&amp; A,</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                                    <span class="keyword">const</span> std::vector&lt;idx&gt; subsys,</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                                    <span class="keyword">const</span> std::vector&lt;idx&gt; dims) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">// disable temporaries</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;MatrixView&lt;Derived&gt; <a class="code" href="namespaceqpp_1_1experimental.html#a88b8d1fd82385011582b20e15190a162">make_MatrixView</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp;&amp; A,</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                                    <span class="keyword">const</span> std::vector&lt;idx&gt; subsys,</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                                    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;} <span class="comment">/* namespace experimental */</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* EXPERIMENTAL_EXPERIMENTAL_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html">qpp::experimental::MatrixView</a></div><div class="ttdoc">Matrix view class. </div><div class="ttdef"><b>Definition:</b> experimental.h:44</div></div>
-<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_a52d498be7fbc9d2a7d3838795976ecb6"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#a52d498be7fbc9d2a7d3838795976ecb6">qpp::experimental::MatrixView::MatrixView</a></div><div class="ttdeci">MatrixView(const Eigen::MatrixBase&lt; Derived &gt; &amp;exp)</div><div class="ttdef"><b>Definition:</b> experimental.h:49</div></div>
-<div class="ttc" id="namespaceqpp_1_1experimental_html_a8421092e9db2207bf992e8c7d0b486a6"><div class="ttname"><a href="namespaceqpp_1_1experimental.html#a8421092e9db2207bf992e8c7d0b486a6">qpp::experimental::make_MatrixView</a></div><div class="ttdeci">MatrixView&lt; Derived &gt; make_MatrixView(Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> experimental.h:66</div></div>
+<div class="ttc" id="namespaceqpp_html_aea80be6c57ee43e43aa9629942cd3608"><div class="ttname"><a href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">qpp::maxn</a></div><div class="ttdeci">constexpr idx maxn</div><div class="ttdoc">Maximum number of allowed qu(d)its (subsystems) </div><div class="ttdef"><b>Definition:</b> constants.h:80</div></div>
+<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_a3639f64e81b4be4006a26d4f5aa56433"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#a3639f64e81b4be4006a26d4f5aa56433">qpp::experimental::MatrixView::_cols</a></div><div class="ttdeci">idx _cols</div><div class="ttdef"><b>Definition:</b> experimental.h:50</div></div>
+<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_a3f2e037b8a8c1ddcab40d95de13740d4"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#a3f2e037b8a8c1ddcab40d95de13740d4">qpp::experimental::MatrixView::MatrixView</a></div><div class="ttdeci">MatrixView(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; subsys, const std::vector&lt; idx &gt; dims)</div><div class="ttdef"><b>Definition:</b> experimental.h:56</div></div>
+<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_af66c162f0da8c046e073c7bc677f34c4"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#af66c162f0da8c046e073c7bc677f34c4">qpp::experimental::MatrixView::cols</a></div><div class="ttdeci">idx cols() const noexcept</div><div class="ttdef"><b>Definition:</b> experimental.h:85</div></div>
+<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_a95945f243a2ca0d160fd89a96d46517f"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#a95945f243a2ca0d160fd89a96d46517f">qpp::experimental::MatrixView::MatrixView</a></div><div class="ttdeci">MatrixView(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; subsys, idx d=2)</div><div class="ttdef"><b>Definition:</b> experimental.h:63</div></div>
 <div class="ttc" id="namespaceqpp_html"><div class="ttname"><a href="namespaceqpp.html">qpp</a></div><div class="ttdoc">Quantum++ main namespace. </div><div class="ttdef"><b>Definition:</b> codes.h:30</div></div>
-<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_a205ad27743bc336f105dc8c7b2223c45"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#a205ad27743bc336f105dc8c7b2223c45">qpp::experimental::MatrixView::operator()</a></div><div class="ttdeci">Derived::Scalar operator()(std::size_t i, std::size_t j) const </div><div class="ttdef"><b>Definition:</b> experimental.h:52</div></div>
-<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_acd824478f0fe69f7caf03397a103ad6f"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#acd824478f0fe69f7caf03397a103ad6f">qpp::experimental::MatrixView::_data</a></div><div class="ttdeci">const Eigen::MatrixBase&lt; Derived &gt; &amp; _data</div><div class="ttdef"><b>Definition:</b> experimental.h:47</div></div>
+<div class="ttc" id="namespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdoc">STL namespace. </div></div>
+<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_af63985b6a20b8b220763e8a63f920f1b"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#af63985b6a20b8b220763e8a63f920f1b">qpp::experimental::MatrixView::_subsys</a></div><div class="ttdeci">const std::vector&lt; idx &gt; _subsys</div><div class="ttdef"><b>Definition:</b> experimental.h:48</div></div>
+<div class="ttc" id="namespaceqpp_1_1experimental_html_a88b8d1fd82385011582b20e15190a162"><div class="ttname"><a href="namespaceqpp_1_1experimental.html#a88b8d1fd82385011582b20e15190a162">qpp::experimental::make_MatrixView</a></div><div class="ttdeci">MatrixView&lt; Derived &gt; make_MatrixView(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; subsys, const std::vector&lt; idx &gt; dims)</div><div class="ttdef"><b>Definition:</b> experimental.h:148</div></div>
+<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_a8f52b0295d224d210c34afc052463a0a"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#a8f52b0295d224d210c34afc052463a0a">qpp::experimental::MatrixView::_viewA</a></div><div class="ttdeci">const Eigen::MatrixBase&lt; Derived &gt; &amp; _viewA</div><div class="ttdef"><b>Definition:</b> experimental.h:47</div></div>
+<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_a205ad27743bc336f105dc8c7b2223c45"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#a205ad27743bc336f105dc8c7b2223c45">qpp::experimental::MatrixView::operator()</a></div><div class="ttdeci">Derived::Scalar operator()(std::size_t i, std::size_t j) const </div><div class="ttdef"><b>Definition:</b> experimental.h:90</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a58bbe3e0db088a311d6ec053950602cf"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a58bbe3e0db088a311d6ec053950602cf">qpp::internal::_multiidx2n</a></div><div class="ttdeci">idx _multiidx2n(const idx *midx, idx numdims, const idx *dims) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:54</div></div>
+<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_abb89581a5555f850bd36a6d779fab53f"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#abb89581a5555f850bd36a6d779fab53f">qpp::experimental::MatrixView::rows</a></div><div class="ttdeci">idx rows() const noexcept</div><div class="ttdef"><b>Definition:</b> experimental.h:80</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a89cac06eec76f72440a339270153e975"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a89cac06eec76f72440a339270153e975">qpp::internal::_n2multiidx</a></div><div class="ttdeci">void _n2multiidx(idx n, idx numdims, const idx *dims, idx *result) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:41</div></div>
+<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_aefa56deb012310170faa24d147487e54"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#aefa56deb012310170faa24d147487e54">qpp::experimental::MatrixView::_dims</a></div><div class="ttdeci">const std::vector&lt; idx &gt; _dims</div><div class="ttdef"><b>Definition:</b> experimental.h:49</div></div>
+<div class="ttc" id="namespaceqpp_html_a1f5f7137e8551cf82db04d3b81cdd706"><div class="ttname"><a href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">qpp::idx</a></div><div class="ttdeci">std::size_t idx</div><div class="ttdoc">Non-negative integer index. </div><div class="ttdef"><b>Definition:</b> types.h:36</div></div>
+<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_a4fcee997b69950bcec426c170ea4d0cd"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#a4fcee997b69950bcec426c170ea4d0cd">qpp::experimental::MatrixView::_rows</a></div><div class="ttdeci">idx _rows</div><div class="ttdef"><b>Definition:</b> experimental.h:50</div></div>
 <div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_a0d976afea3582ffe96f71196ba809041"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#a0d976afea3582ffe96f71196ba809041">qpp::experimental::MatrixView::~MatrixView</a></div><div class="ttdeci">virtual ~MatrixView()=default</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -145,7 +262,7 @@ $(document).ready(function(){initNavTree('experimental_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_8c0381a6091af7a47ae909a45b674508.html">experimental</a></li><li class="navelem"><a class="el" href="experimental_8h.html">experimental.h</a></li>
-    <li class="footer">Generated on Sat Oct 17 2015 16:53:20 for Quantum++ by
+    <li class="footer">Generated on Sun Oct 18 2015 16:32:24 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

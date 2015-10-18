@@ -1,3 +1,4 @@
 <map id="qpp::internal::IOManipEigen" name="qpp::internal::IOManipEigen">
-<area shape="rect" id="node2" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="49,5,148,32"/>
+<area shape="rect" id="node2" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="5,13,104,39"/>
+<area shape="rect" id="node3" href="$structqpp_1_1internal_1_1__details_1_1___display___impl.html" title="qpp::internal::_details\l::_Display_Impl" alt="" coords="128,5,277,47"/>
 </map>
