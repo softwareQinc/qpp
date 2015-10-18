@@ -66,18 +66,25 @@ public:
 
     typename Derived::Scalar operator()(std::size_t i, std::size_t j) const
     {
-        static idx rowmidx0[maxn], colmidx0[maxn];
-        static idx rowmidx1[maxn], colmidx1[maxn];
-        internal::_n2multiidx(i, _dims.size(), _dims.data(), rowmidx0);
-        internal::_n2multiidx(j, _dims.size(), _dims.data(), colmidx0);
-        // TODO: check here
-        for(idx i = 0 ; i < _dims.size(); ++i)
+        idx Crowmidx[maxn], Ccolmidx[maxn];
+        idx Crowmidx_shuffled[maxn], Ccolmidx_shuffled[maxn];
+        idx Cdims_shuffled[maxn];
+
+        internal::_n2multiidx(i, _dims.size(), _dims.data(), Crowmidx);
+        internal::_n2multiidx(j, _dims.size(), _dims.data(), Ccolmidx);
+
+        // TODO: check this loop
+        for(idx k = 0 ; k < _dims.size(); ++k)
         {
-            rowmidx1[i] = rowmidx0[_subsys[i]];
-            colmidx1[i] = colmidx0[_subsys[i]];
+            Cdims_shuffled[k] = _dims[_subsys[k]];
+            Crowmidx_shuffled[k] = Crowmidx[_subsys[k]];
+            Ccolmidx_shuffled[k] = Ccolmidx[_subsys[k]];
         }
-        i = internal::_multiidx2n(rowmidx1, _dims.size(), _dims.data());
-        j = internal::_multiidx2n(colmidx1, _dims.size(), _dims.data());
+
+        i = internal::_multiidx2n(Crowmidx_shuffled, _dims.size(),
+                                  Cdims_shuffled);
+        j = internal::_multiidx2n(Ccolmidx_shuffled, _dims.size(),
+                                  Cdims_shuffled);
 
         return _data(i, j);
     }

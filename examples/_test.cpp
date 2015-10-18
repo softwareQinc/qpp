@@ -32,7 +32,7 @@ int main()
     {
         for (idx j = 0; j < COLS; ++j)
         {
-            std::cout << disp(viewA(i, j)) << " ";
+            std::cout << disp(viewA(i, j)) << "\t";
         }
         std::cout << std::endl;
     }
