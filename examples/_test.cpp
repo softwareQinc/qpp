@@ -22,23 +22,19 @@ int main()
     cmat A = gt.CNOT;
     //A << 1, 2., 3., 4.;
 
+    std::cout << "Initial:\n";
+    std::cout << disp(A) << std::endl << std::endl;
+
     auto viewA = experimental::make_MatrixView(A, {1, 0});
     experimental::MatrixView<cmat> viewB = viewA;
 
     // this should not compile, and it doesn't :)
     // experimental::MatrixView<cmat> tmpview{gettmp()};
 
-    for (idx i = 0; i < ROWS; ++i)
-    {
-        for (idx j = 0; j < COLS; ++j)
-        {
-            std::cout << disp(viewA(i, j)) << "\t";
-        }
-        std::cout << std::endl;
-    }
+    std::cout << "MatrixView: \n";
+    std::cout << disp(viewA) << std::endl << std::endl;
 
+    std::cout << "Copy via static_cast of the MatrixView:\n";
     cmat result = static_cast<cmat>(viewA); // convert
-    std::cout << std::endl;
     std::cout << disp(result) << std::endl;
-    // std::cout << disp(viewA) << std::endl;
 }

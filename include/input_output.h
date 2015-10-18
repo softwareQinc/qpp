@@ -27,6 +27,8 @@
 #ifndef INPUT_OUTPUT_H_
 #define INPUT_OUTPUT_H_
 
+#include "experimental/experimental.h"
+
 // input/output
 
 namespace qpp
@@ -45,6 +47,21 @@ internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
                             double chop = qpp::chop)
 {
     return internal::IOManipEigen(A, chop);
+}
+
+/**
+* \brief qpp::MatrixView ostream manipulator
+*
+* \param A MatrixView
+* \param chop Set to zero the elements smaller in absolute value
+* than \a chop
+* \return Instance of qpp::internal::internal::IOManipMatrixView
+*/
+template<typename Derived>
+internal::IOManipMatrixView <Derived>
+disp(const qpp::experimental::MatrixView<Derived>& A, double chop = qpp::chop)
+{
+    return internal::IOManipMatrixView<Derived>(A, chop);
 }
 
 /**

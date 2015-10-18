@@ -47,22 +47,35 @@ private:
     const Eigen::MatrixBase<Derived>& _data;
     const std::vector<idx> _subsys;
     const std::vector<idx> _dims;
+    idx _rows, _cols;
 public:
     // TODO: exception checking
-    MatrixView(const Eigen::MatrixBase<Derived>& exp,
+    // TODO check for noexcept
+    MatrixView(const Eigen::MatrixBase<Derived>& A,
                const std::vector<idx> subsys,
                const std::vector<idx> dims) :
-            _data(exp), _subsys(subsys), _dims(dims)
+            _data(A), _subsys(subsys), _dims(dims),
+            _rows(A.rows()), _cols(A.cols())
     { }
 
-    MatrixView(const Eigen::MatrixBase<Derived>& exp,
+    MatrixView(const Eigen::MatrixBase<Derived>& A,
                const std::vector<idx> subsys,
                idx d = 2) :
-            MatrixView(exp, subsys, std::vector<idx>(subsys.size(), d))
+            MatrixView(A, subsys, std::vector<idx>(subsys.size(), d))
     { }
 
     // disable temporaries, as they don't bind to _data via function arguments
     MatrixView(Eigen::MatrixBase<Derived>&& exp) = delete;
+
+    idx rows() const noexcept
+    {
+        return _rows;
+    }
+
+    idx cols() const noexcept
+    {
+        return _cols;
+    }
 
     typename Derived::Scalar operator()(std::size_t i, std::size_t j) const
     {
@@ -93,7 +106,21 @@ public:
     Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic>()
     const
     {
-        return _data;
+        Eigen::Matrix<
+                typename Derived::Scalar,
+                Eigen::Dynamic,
+                Eigen::Dynamic
+        > result(_rows, _cols);
+
+        for(idx i = 0; i < _rows; ++i)
+        {
+            for(idx j = 0; j < _rows; ++j)
+            {
+                result(i, j) = this->operator()(i, j);
+            }
+        }
+
+        return result;
     }
 
     virtual ~MatrixView() = default;

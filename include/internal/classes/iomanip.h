@@ -27,6 +27,8 @@
 #ifndef INTERNAL_CLASSES_IOMANIP_H_
 #define INTERNAL_CLASSES_IOMANIP_H_
 
+#include "experimental/experimental.h"
+
 // ostream manipulators for nice formatting of
 // Eigen matrices and STL/C-style containers/vectors
 
@@ -125,8 +127,8 @@ class IOManipEigen : public IDisplay
 public:
     // Eigen matrices
     template<typename Derived>
-    explicit IOManipEigen(const Eigen::MatrixBase<Derived>& A, double chop =
-    qpp::chop) :
+    explicit IOManipEigen(const Eigen::MatrixBase<Derived>& A,
+                          double chop = qpp::chop) :
             _A{A.template cast<cplx>()}, _chop{chop}
     {
     }
@@ -149,6 +151,103 @@ private:
             return os;
         };
 
+        std::ostringstream ostr;
+        ostr.copyfmt(os); // copy os' state
+
+        std::vector<std::string> vstr;
+        std::string strA;
+
+        for (idx i = 0; i < static_cast<idx>(_A.rows()); ++i)
+        {
+            for (idx j = 0;
+                 j < static_cast<idx>(_A.cols()); ++j)
+            {
+                strA.clear(); // clear the temporary string
+                ostr.clear();
+                ostr.str(std::string {}); // clear the ostringstream
+
+                // convert to complex
+                double re = static_cast<cplx>(_A(i, j)).real();
+                double im = static_cast<cplx>(_A(i, j)).imag();
+
+                if (std::abs(re) < _chop && std::abs(im) < _chop)
+                {
+                    ostr << "0 "; // otherwise segfault on destruction
+                    // if using only vstr.push_back("0 ");
+                    // bug in MATLAB libmx
+                    vstr.push_back(ostr.str());
+                }
+                else if (std::abs(re) < _chop)
+                {
+                    ostr << im;
+                    vstr.push_back(ostr.str() + "i");
+                }
+                else if (std::abs(im) < _chop)
+                {
+                    ostr << re;
+                    vstr.push_back(ostr.str() + " ");
+                }
+                else
+                {
+                    ostr << re;
+                    strA = ostr.str();
+
+                    strA += (im > 0 ? " + " : " - ");
+                    ostr.clear();
+                    ostr.str(std::string()); // clear
+                    ostr << std::abs(im);
+                    strA += ostr.str();
+                    strA += "i";
+                    vstr.push_back(strA);
+                }
+            }
+        }
+
+        // determine the maximum lenght of the entries in each column
+        std::vector<idx> maxlengthcols(_A.cols(), 0);
+
+        for (idx i = 0; i < static_cast<idx>(_A.rows());
+             ++i)
+            for (idx j = 0;
+                 j < static_cast<idx>(_A.cols()); ++j)
+                if (vstr[i * _A.cols() + j].size() > maxlengthcols[j])
+                    maxlengthcols[j] = vstr[i * _A.cols() + j].size();
+
+        // finally display it!
+        for (idx i = 0; i < static_cast<idx>(_A.rows()); ++i)
+        {
+            os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
+            << vstr[i * _A.cols()]; // display first column
+            // then the rest
+            for (idx j = 1;
+                 j < static_cast<idx>(_A.cols()); ++j)
+                os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
+                << std::right << vstr[i * _A.cols() + j];
+
+            if (i < static_cast<idx>(_A.rows()) - 1)
+                os << std::endl;
+        }
+
+        return os;
+    }
+}; // class IOManipEigen
+
+template<typename Derived>
+class IOManipMatrixView : public IDisplay
+{
+    const qpp::experimental::MatrixView<Derived>& _A;
+    double _chop;
+public:
+    // Eigen matrices
+    explicit IOManipMatrixView(const qpp::experimental::MatrixView<Derived>& A,
+                               double chop = qpp::chop) :
+            _A{A}, _chop{chop}
+    {
+    }
+
+private:
+    std::ostream& display(std::ostream& os) const override
+    {
         std::ostringstream ostr;
         ostr.copyfmt(os); // copy os' state
 
