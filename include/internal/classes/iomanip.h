@@ -120,39 +120,16 @@ private:
     }
 }; // class IOManipPointer
 
-class IOManipEigen : public IDisplay
+// implementation details
+struct _Display_Impl
 {
-    cmat _A;
-    double _chop;
-public:
-    // Eigen matrices
-    template<typename Derived>
-    explicit IOManipEigen(const Eigen::MatrixBase<Derived>& A,
-                          double chop = qpp::chop) :
-            _A{A.template cast<cplx>()}, _chop{chop}
+    template<typename T> // T must support rows(), cols(), operator()(idx, idx)
+    std::ostream& _display_impl(const T& _A,
+                                std::ostream& _os,
+                                double _chop = qpp::chop) const
     {
-    }
-
-    // Complex numbers
-    explicit IOManipEigen(const cplx z, double chop = qpp::chop) :
-            _A{cmat::Zero(1, 1)}, _chop{chop}
-    {
-        // put the complex number inside an Eigen matrix
-        _A(0, 0) = z;
-    }
-
-private:
-    std::ostream& display(std::ostream& os) const override
-    {
-        if (!internal::_check_nonzero_size(_A))
-        {
-            os << "Empty [" << _A.rows() << " x " << _A.cols() << "] matrix";
-
-            return os;
-        };
-
         std::ostringstream ostr;
-        ostr.copyfmt(os); // copy os' state
+        ostr.copyfmt(_os); // copy os' state
 
         std::vector<std::string> vstr;
         std::string strA;
@@ -216,29 +193,57 @@ private:
         // finally display it!
         for (idx i = 0; i < static_cast<idx>(_A.rows()); ++i)
         {
-            os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
+            _os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
             << vstr[i * _A.cols()]; // display first column
             // then the rest
             for (idx j = 1;
                  j < static_cast<idx>(_A.cols()); ++j)
-                os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
+                _os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
                 << std::right << vstr[i * _A.cols() + j];
 
             if (i < static_cast<idx>(_A.rows()) - 1)
-                os << std::endl;
+                _os << std::endl;
         }
 
-        return os;
+        return _os;
+    }
+};
+
+class IOManipEigen : public IDisplay, private _Display_Impl
+{
+    cmat _A;
+    double _chop;
+public:
+    // Eigen matrices
+    template<typename Derived>
+    explicit IOManipEigen(const Eigen::MatrixBase<Derived>& A,
+                          double chop = qpp::chop) :
+            _A{A.template cast<cplx>()}, _chop{chop}
+    {
+    }
+
+    // Complex numbers
+    explicit IOManipEigen(const cplx z, double chop = qpp::chop) :
+            _A{cmat::Zero(1, 1)}, _chop{chop}
+    {
+        // put the complex number inside an Eigen matrix
+        _A(0, 0) = z;
+    }
+
+private:
+    std::ostream& display(std::ostream& os) const override
+    {
+        return _display_impl(_A, os, chop);
     }
 }; // class IOManipEigen
 
+
 template<typename Derived>
-class IOManipMatrixView : public IDisplay
+class IOManipMatrixView : public IDisplay, private _Display_Impl
 {
     const qpp::experimental::MatrixView<Derived>& _viewA;
     double _chop;
 public:
-    // Eigen matrices
     explicit IOManipMatrixView(const qpp::experimental::MatrixView<Derived>& A,
                                double chop = qpp::chop) :
             _viewA{A}, _chop{chop}
@@ -248,84 +253,7 @@ public:
 private:
     std::ostream& display(std::ostream& os) const override
     {
-        std::ostringstream ostr;
-        ostr.copyfmt(os); // copy os' state
-
-        std::vector<std::string> vstr;
-        std::string strA;
-
-        for (idx i = 0; i < static_cast<idx>(_viewA.rows()); ++i)
-        {
-            for (idx j = 0;
-                 j < static_cast<idx>(_viewA.cols()); ++j)
-            {
-                strA.clear(); // clear the temporary string
-                ostr.clear();
-                ostr.str(std::string {}); // clear the ostringstream
-
-                // convert to complex
-                double re = static_cast<cplx>(_viewA(i, j)).real();
-                double im = static_cast<cplx>(_viewA(i, j)).imag();
-
-                if (std::abs(re) < _chop && std::abs(im) < _chop)
-                {
-                    ostr << "0 "; // otherwise segfault on destruction
-                    // if using only vstr.push_back("0 ");
-                    // bug in MATLAB libmx
-                    vstr.push_back(ostr.str());
-                }
-                else if (std::abs(re) < _chop)
-                {
-                    ostr << im;
-                    vstr.push_back(ostr.str() + "i");
-                }
-                else if (std::abs(im) < _chop)
-                {
-                    ostr << re;
-                    vstr.push_back(ostr.str() + " ");
-                }
-                else
-                {
-                    ostr << re;
-                    strA = ostr.str();
-
-                    strA += (im > 0 ? " + " : " - ");
-                    ostr.clear();
-                    ostr.str(std::string()); // clear
-                    ostr << std::abs(im);
-                    strA += ostr.str();
-                    strA += "i";
-                    vstr.push_back(strA);
-                }
-            }
-        }
-
-        // determine the maximum lenght of the entries in each column
-        std::vector<idx> maxlengthcols(_viewA.cols(), 0);
-
-        for (idx i = 0; i < static_cast<idx>(_viewA.rows());
-             ++i)
-            for (idx j = 0;
-                 j < static_cast<idx>(_viewA.cols()); ++j)
-                if (vstr[i * _viewA.cols() + j].size() > maxlengthcols[j])
-                    maxlengthcols[j] = vstr[i * _viewA.cols() + j].size();
-
-        // finally display it!
-        for (idx i = 0; i < static_cast<idx>(_viewA.rows()); ++i)
-        {
-            os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
-            << vstr[i * _viewA.cols()]; // display first column
-            // then the rest
-            for (idx j = 1;
-                 j < static_cast<idx>(_viewA.cols()); ++j)
-                os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
-                << std::right << vstr[i * _viewA.cols() + j];
-
-            if (i < static_cast<idx>(_viewA.rows()) - 1)
-                os << std::endl;
-        }
-
-        return os;
+        return _display_impl(_viewA, os, chop);
     }
 }; // class IOManipMatrixView
 

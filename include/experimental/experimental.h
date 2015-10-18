@@ -133,6 +133,13 @@ public:
         return result;
     }
 
+    Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic>
+    get() const
+    {
+        return static_cast<Eigen::Matrix<typename Derived::Scalar,
+                Eigen::Dynamic, Eigen::Dynamic>>(*this);
+    }
+
     virtual ~MatrixView() = default;
 };
 
