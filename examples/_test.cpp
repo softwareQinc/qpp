@@ -4,10 +4,13 @@
 // #include <MATLAB/matlab.h>
 using namespace qpp;
 
+// TODO: write a MatrixView class, for multi-index lazy evaluation view - wip
+// TODO: use assert in performance-critical functions (qpp::internal)
+// TODO: make sure we use column major order for performance-critical code
+// TODO: remove "experimental/experimental.h" include directive at the end
+
 // Future work
 // TODO: Implement a circuit description language, load/save from/to file
-// TODO: Write a MatrixView class, for multi-index lazy evaluation view - wip
-// TODO: use assert in performance-critical functions (qpp::internal)
 
 cmat gettmp()
 {
