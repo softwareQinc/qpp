@@ -146,13 +146,10 @@ public:
                 Eigen::Dynamic
         > result(_rows, _cols);
 
-        for (idx i = 0; i < _rows; ++i)
-        {
-            for (idx j = 0; j < _rows; ++j)
-            {
+#pragma omp parallel for collapse(2)
+        for (idx j = 0; j < _cols; ++j)
+            for (idx i = 0; i < _rows; ++i)
                 result(i, j) = this->operator()(i, j);
-            }
-        }
 
         return result;
     }
