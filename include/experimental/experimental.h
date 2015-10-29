@@ -27,6 +27,11 @@
 #ifndef EXPERIMENTAL_EXPERIMENTAL_H_
 #define EXPERIMENTAL_EXPERIMENTAL_H_
 
+// TODO: exception checking
+// TODO: check for noexcept
+// TODO: write the documentation
+// TODO: test
+
 namespace qpp
 {
 /**
@@ -36,50 +41,30 @@ namespace qpp
 namespace experimental
 {
 
+
 /**
-* \class qpp::experimental::MatrixView
-* \brief Matrix view class, maps between a matrix and a multi-dimensional array
+* \class qpp::experimental::MatrixViewBase
+* \brief Matrix view base class for all other views
 */
 
-// The qubit \a perm[\a i] is permuted to the location \a i.
 template<typename Derived>
-class MatrixView
+class MatrixViewBase
 {
-private:
+protected:
     const Eigen::MatrixBase<Derived>& _viewA;
-    const std::vector<idx> _perm;
-    const std::vector<idx> _dims;
+private:
     idx _rows, _cols;
 public:
-    // TODO: exception checking
-    // TODO: check for noexcept
-    // TODO: remove duplicate code in IOManipEigen and IOManipMatrixView
-    // TODO: write the documentation
-    // TODO: test
-    MatrixView(const Eigen::MatrixBase<Derived>& A,
-               const std::vector<idx> perm,
-               const std::vector<idx> dims) :
-            _viewA(A), _perm(perm), _dims(dims),
-            _rows(A.rows()), _cols(A.cols())
-    { }
-
-    MatrixView(const Eigen::MatrixBase<Derived>& A,
-               const std::vector<idx> perm,
-               idx d = 2) :
-            MatrixView(A, perm, std::vector<idx>(perm.size(), d))
+    MatrixViewBase(const Eigen::MatrixBase<Derived>& A) :
+            _viewA(A),
+            _rows(static_cast<idx>(A.rows())),
+            _cols(static_cast<idx>(A.cols()))
     { }
 
     // disable temporaries
-    MatrixView(const Eigen::MatrixBase<Derived>&& A,
-               const std::vector<idx> perm,
-               const std::vector<idx> dims) = delete;
+    MatrixViewBase(const Eigen::MatrixBase<Derived>&& A) = delete;
 
-    // disable temporaries
-    MatrixView(const Eigen::MatrixBase<Derived>&& A,
-               const std::vector<idx> perm,
-               idx d = 2) = delete;
-
-
+    // getters and setters
     idx rows() const noexcept
     {
         return _rows;
@@ -90,6 +75,93 @@ public:
         return _cols;
     }
 
+    // raw reference
+    const Eigen::MatrixBase<Derived>& get_ref() const noexcept
+    {
+        return _viewA;
+    }
+
+    // get a copy of the reference
+    Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic>
+    get_copy() const
+    {
+        return static_cast<Eigen::Matrix<typename Derived::Scalar,
+                Eigen::Dynamic, Eigen::Dynamic>>(*this);
+    }
+
+    // conversions
+
+    // allow only explicit conversions
+    explicit operator
+    Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic>()
+    const
+    {
+        Eigen::Matrix<
+                typename Derived::Scalar,
+                Eigen::Dynamic,
+                Eigen::Dynamic
+        > result(_rows, _cols);
+
+#pragma omp parallel for collapse(2)
+        for (idx j = 0; j < _cols; ++j)
+            for (idx i = 0; i < _rows; ++i)
+                result(i, j) = this->operator()(i, j);
+
+        return result;
+    }
+
+    // check out of bounds access, slower than raw operator()(idx, idx)
+    typename Derived::Scalar at(idx i, idx j = 0) const
+    {
+        // EXCEPTION CHECKS
+
+        // END EXCEPTION CHECKS
+        return this->operator()(i, j);
+    }
+
+    // abstract functions
+
+    // doesn't throw in case of out of bound access
+    virtual typename Derived::Scalar operator()(idx i, idx j = 0) const = 0;
+
+    virtual ~MatrixViewBase() = default;
+};
+
+// default implementation
+template<typename Derived>
+typename Derived::Scalar
+MatrixViewBase<Derived>::operator()(idx i, idx j) const
+{
+    assert(i < this->_rows && j < this->_cols);
+    return this->_viewA(i, j);
+}
+
+/**
+* \class qpp::experimental::MatrixView
+* \brief Matrix view class, maps between a matrix and a multi-dimensional array
+*/
+
+// The qubit \a perm[\a i] is permuted to the location \a i.
+template<typename Derived>
+class MatrixView : public MatrixViewBase<Derived>
+{
+private:
+    const std::vector<idx> _perm;
+    const std::vector<idx> _dims;
+public:
+    MatrixView(const Eigen::MatrixBase<Derived>& A,
+               const std::vector<idx> perm,
+               const std::vector<idx> dims) :
+            MatrixViewBase<Derived>(A), _perm(perm), _dims(dims)
+    { }
+
+    MatrixView(const Eigen::MatrixBase<Derived>& A,
+               const std::vector<idx> perm,
+               idx d = 2) :
+            MatrixView(A, perm, std::vector<idx>(perm.size(), d))
+    { }
+
+    // additional getters
     std::vector<idx> perm() const noexcept
     {
         return _perm;
@@ -100,8 +172,8 @@ public:
         return _dims;
     }
 
-    // fast, no exception checkings
-    typename Derived::Scalar operator()(std::size_t i, std::size_t j = 0) const
+    // interface implementation
+    typename Derived::Scalar operator()(idx i, idx j = 0) const override
     {
         idx Crowmidx[maxn], Ccolmidx[maxn];
         idx Crowmidx_shuffled[maxn], Ccolmidx_shuffled[maxn];
@@ -123,47 +195,10 @@ public:
         j = internal::_multiidx2n(Ccolmidx_shuffled, _dims.size(),
                                   Cdims_shuffled);
 
-        return _viewA(i, j);
+        return this->_viewA(i, j);
+        /*return MatrixViewBase<Derived>::operator()(i, j);*/
     }
-
-    // this may throw
-    typename Derived::Scalar at(std::size_t i, std::size_t j = 0) const
-    {
-        // EXCEPTION CHECKS
-
-
-        // END EXCEPTION CHECKS
-        return this->operator()(i, j);
-    }
-
-    explicit operator // only explicit conversions
-    Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic>()
-    const
-    {
-        Eigen::Matrix<
-                typename Derived::Scalar,
-                Eigen::Dynamic,
-                Eigen::Dynamic
-        > result(_rows, _cols);
-
-#pragma omp parallel for collapse(2)
-        for (idx j = 0; j < _cols; ++j)
-            for (idx i = 0; i < _rows; ++i)
-                result(i, j) = this->operator()(i, j);
-
-        return result;
-    }
-
-    Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic>
-    get() const
-    {
-        return static_cast<Eigen::Matrix<typename Derived::Scalar,
-                Eigen::Dynamic, Eigen::Dynamic>>(*this);
-    }
-
-    virtual ~MatrixView() = default;
 };
-
 
 template<typename Derived>
 MatrixView<Derived> make_MatrixView(const Eigen::MatrixBase<Derived>& A,

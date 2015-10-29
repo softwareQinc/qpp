@@ -37,7 +37,7 @@ int main()
 
     std::cout << "Copy via static_cast/get() of the MatrixView:\n";
     cmat result = static_cast<cmat>(viewA); // convert
-    cmat result1 = viewA.get(); // force evaluation
+    cmat result1 = viewA.get_copy(); // force evaluation
     std::cout << disp(result) << std::endl << std::endl;
     std::cout << disp(result1) << std::endl << std::endl;
 
@@ -63,6 +63,6 @@ int main()
     idx N = std::pow(2, perm.size());
     cmat rho = qpp::rand<cmat>(256, 256);
     cmat B = syspermute(rho, perm);
-    cmat C = experimental::make_MatrixView(rho, perm).get();
+    cmat C = experimental::make_MatrixView(rho, perm).get_copy();
     std::cout << "Norm difference: " << norm(B - C) << std::endl;
 }

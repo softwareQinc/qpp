@@ -341,7 +341,7 @@ inline cmat randU(idx D)
         throw Exception("qpp::randU()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
-    cmat X = 1 / std::sqrt(2.) * randn < cmat > (D, D);
+    cmat X = 1 / std::sqrt(2.) * randn<cmat>(D, D);
     Eigen::HouseholderQR<cmat> qr(X);
 
     cmat Q = qr.householderQ();
@@ -451,7 +451,7 @@ inline ket randket(idx D)
      return result;
      */
 
-    ket kt = randn < cmat > (D, 1);
+    ket kt = randn<cmat>(D, 1);
 
     return kt / norm(kt);
 }

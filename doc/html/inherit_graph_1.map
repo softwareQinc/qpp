@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classqpp_1_1experimental_1_1_matrix_view.html" title="Matrix view class, maps between a matrix and a multi&#45;dimensional array. " alt="" coords="5,5,161,47"/>
+<area shape="rect" id="node1" href="$classqpp_1_1experimental_1_1_matrix_view_base.html" title="Matrix view base class for all other views. " alt="" coords="5,5,192,47"/>
+<area shape="rect" id="node2" href="$classqpp_1_1experimental_1_1_matrix_view.html" title="Matrix view class, maps between a matrix and a multi&#45;dimensional array. " alt="" coords="240,5,396,47"/>
 </map>

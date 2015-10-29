@@ -30,25 +30,23 @@
 \form#29:$AB +BA$
 \form#30:$|\mathrm{mask}\rangle$
 \form#31:$\{0, 1, \ldots, N - 1\}$
-\form#32:$\circ$
-\form#33:$\mathcal{O}(\sqrt{n})$
-\form#34:$a^n\mathrm{ mod }p$
-\form#35:$\{|i\rangle\langle j|\}$
-\form#36:$|0\rangle\langle 0|$
-\form#37:$|0\rangle\langle 1|$
-\form#38:$S$
-\form#39:$ C$
-\form#40:$ S_{ab,mn} = C_{ma,nb}$
-\form#41:$Tr(K_i^\dagger K_j)=\delta_{ij}$
-\form#42:$i\neq j$
-\form#43:$Tr_{A}(\cdot)$
-\form#44:$A$
-\form#45:$A\otimes B$
-\form#46:$Tr_{B}(\cdot)$
-\form#47:$B$
-\form#48:$Tr_{subsys}(\cdot)$
-\form#49:$(\cdot)^{T_{subsys}}$
-\form#50:$ \sum_i K_i^\dagger K_i = I$
-\form#51:$\langle phi_{subsys}|psi\rangle$
-\form#52:$\langle phi|psi\rangle$
-\form#53:$\langle \phi_{subsys}|\psi\rangle$
+\form#32:$\langle \phi_{subsys}|\psi\rangle$
+\form#33:$\circ$
+\form#34:$\mathcal{O}(\sqrt{n})$
+\form#35:$a^n\mathrm{ mod }p$
+\form#36:$\{|i\rangle\langle j|\}$
+\form#37:$|0\rangle\langle 0|$
+\form#38:$|0\rangle\langle 1|$
+\form#39:$S$
+\form#40:$ C$
+\form#41:$ S_{ab,mn} = C_{ma,nb}$
+\form#42:$Tr(K_i^\dagger K_j)=\delta_{ij}$
+\form#43:$i\neq j$
+\form#44:$Tr_{A}(\cdot)$
+\form#45:$A$
+\form#46:$A\otimes B$
+\form#47:$Tr_{B}(\cdot)$
+\form#48:$B$
+\form#49:$Tr_{subsys}(\cdot)$
+\form#50:$(\cdot)^{T_{subsys}}$
+\form#51:$ \sum_i K_i^\dagger K_i = I$

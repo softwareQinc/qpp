@@ -29,23 +29,23 @@
 
 // Useful macros
 #ifdef DEBUG
-    /*! Prints a message */
-    #define PRINT(x)    std::cout << (x)
-    /*! Prints a message and adds a new line */
-    #define PRINTLN(x)  std::cout << (x) << std::endl
-    /*! Prints an error message to std::cerr */
-    #define ERROR(x)    std::cerr << (x)
-    /*! Prints an error message to std::cerr and adds a new line */
-    #define ERRORLN(x)  std::cerr << (x) << std::endl
+/*! Prints a message */
+#define PRINT(x)    std::cout << (x)
+/*! Prints a message and adds a new line */
+#define PRINTLN(x)  std::cout << (x) << std::endl
+/*! Prints an error message to std::cerr */
+#define ERROR(x)    std::cerr << (x)
+/*! Prints an error message to std::cerr and adds a new line */
+#define ERRORLN(x)  std::cerr << (x) << std::endl
 #else
-    /*! Prints a message */
-    #define PRINT(x)
-    /*! Prints a message and adds a new line */
-    #define PRINTLN(x)
-    /*! Prints an error message to std::cerr */
-    #define ERROR(x)
-    /*! Prints an error message to std::cerr and adds a new line */
-    #define ERRORLN(x)
+/*! Prints a message */
+#define PRINT(x)
+/*! Prints a message and adds a new line */
+#define PRINTLN(x)
+/*! Prints an error message to std::cerr */
+#define ERROR(x)
+/*! Prints an error message to std::cerr and adds a new line */
+#define ERRORLN(x)
 #endif
 
 #endif /* MACROS_H_ */

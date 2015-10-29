@@ -114,7 +114,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 <h3><a class="anchor" id="index_a"></a>- a -</h3><ul>
 <li>at()
-: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view.html#a7b642c69fcf8a2856d8bcf314776b6f8">qpp::experimental::MatrixView&lt; Derived &gt;</a>
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a46034ccf2dcc1a0983d582ab0417d87b">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
 </li>
 </ul>
 
@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="classqpp_1_1_codes.html#a7e86e08f62d809e5387fb2f09db86f38">qpp::Codes</a>
 </li>
 <li>cols()
-: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view.html#af66c162f0da8c046e073c7bc677f34c4">qpp::experimental::MatrixView&lt; Derived &gt;</a>
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a9ebc980a6fb67e3351b30d2582403727">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
 </li>
 <li>CTRL()
 : <a class="el" href="classqpp_1_1_gates.html#ae75fe932917ec2d75d2110cbe76876a2">qpp::Gates</a>
@@ -171,14 +171,17 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>Gates()
 : <a class="el" href="classqpp_1_1_gates.html#af8d87a811249d288454f5b30017eccea">qpp::Gates</a>
 </li>
-<li>get()
-: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view.html#a714c08903aeab9c42c1bd828ed6ee4b5">qpp::experimental::MatrixView&lt; Derived &gt;</a>
+<li>get_copy()
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a823d828c989f71961e08650500ebf2d7">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
 </li>
 <li>get_duration()
 : <a class="el" href="classqpp_1_1_timer.html#a6a0e5c32b4091168b3d0c3eeba99a2d3">qpp::Timer&lt; T, CLOCK_T &gt;</a>
 </li>
 <li>get_instance()
 : <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">qpp::internal::Singleton&lt; T &gt;</a>
+</li>
+<li>get_ref()
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a61fdcbd1415c12e5b49be0b924a334c8">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
 </li>
 <li>get_thread_local_instance()
 : <a class="el" href="classqpp_1_1internal_1_1_singleton.html#aaf4b1c567e5b672354c026c7ae02ae16">qpp::internal::Singleton&lt; T &gt;</a>
@@ -215,22 +218,26 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>MatrixView()
 : <a class="el" href="classqpp_1_1experimental_1_1_matrix_view.html#a334cf576d3026da8c6dba26c65664670">qpp::experimental::MatrixView&lt; Derived &gt;</a>
 </li>
+<li>MatrixViewBase()
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#acf7cddb23e0f393879a48d137df774de">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
+</li>
 </ul>
 
 
 <h3><a class="anchor" id="index_o"></a>- o -</h3><ul>
 <li>operator Eigen::Matrix&lt; typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic &gt;()
-: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view.html#ad3ee8a66f13d09ab373869fc12f1056b">qpp::experimental::MatrixView&lt; Derived &gt;</a>
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a9507a48b248d72a1ce0600ebf17ddbc0">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
 </li>
 <li>operator()()
-: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view.html#a77aa37b468e7e1dfc3fac4d0332a976d">qpp::experimental::MatrixView&lt; Derived &gt;</a>
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view.html#ae5d2f827ad2d5b2cd5f00454ae3a0845">qpp::experimental::MatrixView&lt; Derived &gt;</a>
+, <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a6e63b8d4cdceb04103fc00d5a2419b95">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
 </li>
 <li>operator=()
 : <a class="el" href="classqpp_1_1_i_display.html#ab0a7689867b780cc003bf7519e24f37d">qpp::IDisplay</a>
 , <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html#aaebd54e51b45ec5ba2849e6c5c33640d">qpp::internal::IOManipPointer&lt; PointerType &gt;</a>
 , <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html#a32bc91344b36488b2db0179f08a0f051">qpp::internal::IOManipRange&lt; InputIterator &gt;</a>
 , <a class="el" href="classqpp_1_1internal_1_1_singleton.html#ac9f8d235a7b7e9fc5732e0d049442fa5">qpp::internal::Singleton&lt; T &gt;</a>
-, <a class="el" href="classqpp_1_1_timer.html#aa3b8dd24ad12798d6905af13b549618e">qpp::Timer&lt; T, CLOCK_T &gt;</a>
+, <a class="el" href="classqpp_1_1_timer.html#a22a107dcf41ff7e75cc659d92930f47d">qpp::Timer&lt; T, CLOCK_T &gt;</a>
 </li>
 </ul>
 
@@ -250,7 +257,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="classqpp_1_1_gates.html#a96c1a26d7209dc3be8fb41b2d9ed1b6f">qpp::Gates</a>
 </li>
 <li>rows()
-: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view.html#abb89581a5555f850bd36a6d779fab53f">qpp::experimental::MatrixView&lt; Derived &gt;</a>
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#abd608ea66c03a2ab6c18767e3c270699">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
 </li>
 </ul>
 
@@ -315,8 +322,8 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>~Init()
 : <a class="el" href="classqpp_1_1_init.html#af6c4566d220d568199e1ca9d954cb8da">qpp::Init</a>
 </li>
-<li>~MatrixView()
-: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view.html#a0d976afea3582ffe96f71196ba809041">qpp::experimental::MatrixView&lt; Derived &gt;</a>
+<li>~MatrixViewBase()
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a563346b0a44beac5cb595a822555ba2d">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
 </li>
 <li>~RandomDevices()
 : <a class="el" href="classqpp_1_1_random_devices.html#a0d9c72bed8a55706b5005d05055ed4cb">qpp::RandomDevices</a>
@@ -336,7 +343,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Oct 18 2015 20:31:10 for Quantum++ by
+    <li class="footer">Generated on Thu Oct 29 2015 12:46:26 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
