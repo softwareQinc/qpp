@@ -95,8 +95,6 @@ int main()
     // result when using CTRL-U(rho)CTRL-U^\dagger
     qpp::cmat result_rho = B;
 
-    std::cout << norm(result_psi - result_rho) << std::endl;
-
     std::cout << "|psi><psi| = RHO =" << std::endl;
     std::cout << disp(rho) << std::endl << std::endl;
 
