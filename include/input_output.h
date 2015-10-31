@@ -27,6 +27,8 @@
 #ifndef INPUT_OUTPUT_H_
 #define INPUT_OUTPUT_H_
 
+#include "experimental/experimental.h"
+
 // input/output
 
 namespace qpp
@@ -45,6 +47,21 @@ internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
                             double chop = qpp::chop)
 {
     return internal::IOManipEigen(A, chop);
+}
+
+/**
+* \brief qpp::MatrixView ostream manipulator
+*
+* \param A MatrixView
+* \param chop Set to zero the elements smaller in absolute value
+* than \a chop
+* \return Instance of qpp::internal::internal::IOManipMatrixView
+*/
+template<typename Derived>
+internal::IOManipMatrixView <Derived>
+disp(const qpp::experimental::MatrixView<Derived>& A, double chop = qpp::chop)
+{
+    return internal::IOManipMatrixView<Derived>(A, chop);
 }
 
 /**
@@ -180,7 +197,8 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 * auto mat = load<cmat>("input.bin");
 * \endcode
 *
-* \param fname Input file name
+* \param A Eigen expression
+* \param fname Output file name
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> load(const std::string& fname)
