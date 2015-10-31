@@ -1,6 +1,7 @@
 // Exceptions
 // Source: ./examples/exceptions.cpp
 #include <qpp.h>
+
 using namespace qpp;
 
 int main()

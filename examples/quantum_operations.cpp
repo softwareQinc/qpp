@@ -1,6 +1,7 @@
 // Quantum operations
 // Source: ./examples/quantum_operations.cpp
 #include <qpp.h>
+
 using namespace qpp;
 
 int main()

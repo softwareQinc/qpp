@@ -2,6 +2,7 @@
 // Source: ./examples/input_output.cpp
 #include <qpp.h>
 #include <MATLAB/matlab.h> // must be explicitly included
+
 using namespace qpp;
 
 int main()

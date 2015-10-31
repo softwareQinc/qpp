@@ -1,6 +1,7 @@
 // Experimental average
 // Source: ./examples/experimental_average.cpp
 #include <qpp.h>
+
 using namespace qpp;
 using std::cout;
 using std::endl;

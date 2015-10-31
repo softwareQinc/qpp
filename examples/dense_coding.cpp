@@ -1,6 +1,7 @@
 // Qudit dense coding
 // Source: ./examples/dense_coding.cpp
 #include <qpp.h>
+
 using namespace qpp;
 using std::cout;
 using std::endl;

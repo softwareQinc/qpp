@@ -101,6 +101,8 @@ inline std::vector<double> marginalY(const dmat& probXY)
 *
 * \param prob Real probability vector representing the probability
 * distribution of \a X
+*
+* \param X Random variable values represented by an STL-like container 
 * \return Average of \a X
 */
 template<typename Container>

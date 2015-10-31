@@ -1,6 +1,7 @@
 // Gram-Schmidt orthogonalization
 // Source: ./examples/gram_schmidt.cpp
 #include <qpp.h>
+
 using namespace qpp;
 using std::cout;
 using std::endl;

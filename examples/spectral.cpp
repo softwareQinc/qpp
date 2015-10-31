@@ -1,6 +1,7 @@
 // Spectral decomposition
 // Source: ./examples/spectral.cpp
 #include <qpp.h>
+
 using namespace qpp;
 using std::cout;
 using std::endl;

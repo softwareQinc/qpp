@@ -1,6 +1,7 @@
 // Measurements
 // Source: ./examples/measurements.cpp
 #include <qpp.h>
+
 using namespace qpp;
 
 int main()

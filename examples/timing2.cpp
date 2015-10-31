@@ -1,6 +1,7 @@
 // Timing, second take
 // Source: ./examples/timing2.cpp
 #include <qpp.h>
+
 using namespace qpp;
 using std::cout;
 using std::endl;

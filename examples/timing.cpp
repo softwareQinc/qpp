@@ -1,6 +1,7 @@
 // Timing
 // Source: ./examples/timing.cpp
 #include <qpp.h>
+
 using namespace qpp;
 
 int main()
