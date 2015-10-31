@@ -51,10 +51,10 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 - Quantum++ library located in `$HOME/qpp`
 - [MATLAB](http://www.mathworks.com/products/matlab/) compiler 
 include header files:
-`/Applications/MATLAB_R2014b.app/extern/include`
+`/Applications/MATLAB_R2015b.app/extern/include`
 - [MATLAB](http://www.mathworks.com/products/matlab/) compiler 
 shared library files:
-`/Applications/MATLAB_R2014b.app/bin/maci64`
+`/Applications/MATLAB_R2015b.app/bin/maci64`
 
 ### Building without a build system
 
@@ -81,8 +81,8 @@ shared library files:
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
          -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
          -isystem $HOME/eigen -I $HOME/qpp/include \
-         -I/Applications/MATLAB_R2014b.app/extern/include \
-         -L/Applications/MATLAB_R2014b.app/bin/maci64 \
+         -I/Applications/MATLAB_R2015b.app/extern/include \
+         -L/Applications/MATLAB_R2015b.app/bin/maci64 \
          -lmx -lmat minimal.cpp -o minimal
 
 #### Debug version (with [MATLAB](http://www.mathworks.com/products/matlab/) support):  
@@ -90,8 +90,8 @@ shared library files:
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
          -g3 -DDEBUG \
          -isystem $HOME/eigen -I $HOME/qpp/include \
-         -I /Applications/MATLAB_R2014b.app/extern/include \
-         -L /Applications/MATLAB_R2014b.app/bin/maci64 \
+         -I /Applications/MATLAB_R2015b.app/extern/include \
+         -L /Applications/MATLAB_R2015b.app/bin/maci64 \
          -lmx -lmat minimal.cpp -o minimal
 
 ### Building using [cmake](http://www.cmake.org/)
@@ -170,10 +170,12 @@ Otherwise, you will get a runtime error like
     * Example of running script, run from inside the directory where 
     the executable `qpp` is located:
 	    
-            #!/bin/sh # Run Quantum++ under OS X with MATLAB support
+            #!/bin/sh
             
-            export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"/Applications/MATLAB_R2014b.app/bin/maci64"
-            ./qpp
+            MATLAB=/Applications/MATLAB_R2015b.app
+            export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$MATLAB/bin/maci64
+            
+            ./build/qpp
 
 - If you build a debug version with [g++](https://gcc.gnu.org/) under 
 [OS X](http://www.apple.com/osx) and use 
