@@ -167,8 +167,7 @@ Otherwise, you will get a runtime error like
     then the environment variable is local to the script and 
     does not interfere with the rest of the system.
 
-    * Example of running script, run from inside the directory where 
-    the executable `qpp` is located:
+    * Example of script, run from inside the root directory of `qpp`:
 	    
             #!/bin/sh
             
