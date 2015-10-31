@@ -127,11 +127,14 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
     idx D = static_cast<idx>(rstate.rows()); // total dimension
     idx n = dims.size();   // total number of subsystems
-    idx ctrlsize = ctrl.size(); // dimension of ctrl subsystem
+    idx ctrlsize = ctrl.size(); // number of ctrl subsystem
+    // dimension of ctrl subsystem
+    idx Dctrl = static_cast<idx>(std::llround(std::pow(d, ctrlsize)));
     idx DA = static_cast<idx>(rA.rows()); // dimension of gate subsystem
 
     idx Cdims[maxn]; // local dimensions
     idx CdimsA[maxn]; // local dimensions
+    idx CdimsCTRL[maxn]; // local dimensions
     idx CdimsCTRLAbar[maxn]; // local dimensions
 
     // compute the complementary subsystem of ctrlgate w.r.t. dims
@@ -145,6 +148,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         Cdims[k] = dims[k];
     for (idx k = 0; k < subsys.size(); ++k)
         CdimsA[k] = dims[subsys[k]];
+    for (idx k = 0; k < ctrlsize; ++k)
+        CdimsCTRL[k] = d;
     for (idx k = 0; k < ctrlgatebar.size(); ++k)
         CdimsCTRLAbar[k] = dims[ctrlgatebar[k]];
 
@@ -164,7 +169,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         // compute the index
 
         // set the CTRL part
-        for (idx k = 0; k < ctrl.size(); ++k)
+        for (idx k = 0; k < ctrlsize; ++k)
         {
             Cmidx[ctrl[k]] = _i;
         }
@@ -205,13 +210,13 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     // worker, computes the coefficient and the index
     // for the density matrix case
     // used in #pragma omp parallel for collapse
-    auto coeff_idx_rho = [=](idx _i1, idx _m1,
+    auto coeff_idx_rho = [&](idx _i1, idx _m1,
                              idx _r1, idx _i2, idx _m2, idx _r2) noexcept
             -> std::tuple<typename Derived1::Scalar, idx, idx>
     {
         idx idxrow = 0;
         idx idxcol = 0;
-        typename Derived1::Scalar coeff = 0;
+        typename Derived1::Scalar coeff = 0, lhs = 1, rhs = 1;
 
         idx Cmidxrow[maxn]; // the total row multi-index
         idx Cmidxcol[maxn];// the total col multi-index
@@ -219,14 +224,20 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         idx CmidxAcol[maxn];// the gate part col multi-index
         idx CmidxCTRLAbarrow[maxn];// the rest row multi-index
         idx CmidxCTRLAbarcol[maxn];// the rest col multi-index
+        idx CmidxCTRLrow[maxn]; // the control row multi-index
+        idx CmidxCTRLcol[maxn]; // the control col multi-index
 
         // compute the ket/bra indexes
 
         // set the CTRL part
-        for (idx k = 0; k < ctrl.size(); ++k)
+        internal::_n2multiidx(_i1, ctrlsize,
+                              CdimsCTRL, CmidxCTRLrow);
+        internal::_n2multiidx(_i2, ctrlsize,
+                              CdimsCTRL, CmidxCTRLcol);
+        for (idx k = 0; k < ctrlsize; ++k)
         {
-            Cmidxrow[ctrl[k]] = _i1;
-            Cmidxcol[ctrl[k]] = _i2;
+            Cmidxrow[ctrl[k]] = CmidxCTRLrow[k];
+            Cmidxcol[ctrl[k]] = CmidxCTRLcol[k];
         }
 
         // set the rest
@@ -253,7 +264,29 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         idxrow = internal::_multiidx2n(Cmidxrow, n, Cdims);
         idxcol = internal::_multiidx2n(Cmidxcol, n, Cdims);
 
-        // compute the coefficient
+        // check whether all CTRL row and col multi indexes are equal
+        bool all_ctrl_rows_equal = true;
+        bool all_ctrl_cols_equal = true;
+        idx first_ctrl_row = CmidxCTRLrow[0];
+        idx first_ctrl_col = CmidxCTRLcol[0];
+        for (idx k = 1; k < ctrlsize; ++k)
+        {
+            if (CmidxCTRLrow[k] != first_ctrl_row)
+            {
+                all_ctrl_rows_equal = false;
+                break;
+            }
+        }
+        for (idx k = 1; k < ctrlsize; ++k)
+        {
+            if (CmidxCTRLcol[k] != first_ctrl_col)
+            {
+                all_ctrl_cols_equal = false;
+                break;
+            }
+        }
+
+        // at least one control activated, compute the coefficient
         for (idx _n1 = 0; _n1 < DA; ++_n1)
         {
             internal::_n2multiidx(_n1, subsys.size(), CdimsA, CmidxArow);
@@ -261,6 +294,14 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
             {
                 Cmidxrow[subsys[k]] = CmidxArow[k];
             }
+            idx idxrowtmp = internal::_multiidx2n(Cmidxrow, n, Cdims);
+
+            lhs = 1;
+            if (all_ctrl_rows_equal)
+                lhs = Ai[first_ctrl_row](_m1, _n1);
+            else
+                lhs = (_m1 == _n1) ? 1 : 0; // identity matrix
+
             for (idx _n2 = 0; _n2 < DA; ++_n2)
             {
                 internal::_n2multiidx(_n2, subsys.size(), CdimsA, CmidxAcol);
@@ -268,10 +309,16 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
                 {
                     Cmidxcol[subsys[k]] = CmidxAcol[k];
                 }
-                coeff += Ai[_i1](_m1, _n1) *
-                         rstate(internal::_multiidx2n(Cmidxrow, n, Cdims),
-                                internal::_multiidx2n(Cmidxcol, n, Cdims)) *
-                         Aidagger[_i2](_n2, _m2);
+
+                rhs = 1;
+                if (all_ctrl_cols_equal)
+                    rhs = Aidagger[first_ctrl_col](_n2, _m2);
+                else
+                    rhs = (_n2 == _m2) ? 1 : 0; // identity matrix
+
+                idx idxcoltmp = internal::_multiidx2n(Cmidxcol, n, Cdims);
+
+                coeff += lhs * rstate(idxrowtmp, idxcoltmp) * rhs;
             }
         }
 
@@ -337,8 +384,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
                         }
                         else
                         {
-                            for (idx i1 = 0; i1 < d; ++i1)
-                                for (idx i2 = 0; i2 < d; ++i2)
+                            for (idx i1 = 0; i1 < Dctrl; ++i1)
+                                for (idx i2 = 0; i2 < Dctrl; ++i2)
                                 {
                                     auto coeff_idxes = coeff_idx_rho(
                                             i1, m1, r1,

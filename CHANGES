@@ -114,4 +114,6 @@ Version 0.8.4 - 14 October 2015
         respectively
 
 Version 0.8.5 - development
+    - Fixed serious bug in qpp::applyCTRL, which was failing before for
+        control gates with 2 or more controls
     - Work in progress at qpp::experimental::MatrixView class
