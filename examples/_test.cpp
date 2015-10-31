@@ -10,6 +10,7 @@ using namespace qpp;
 // TODO: use assert in performance-critical functions (qpp::internal)
 // TODO: make sure we use column major order for performance-critical code
 // TODO: remove "experimental/experimental.h" include directive at the end
+// TODO: test applyCTRL with no controls
 
 // In experimental.h
 // TODO: exception checking
