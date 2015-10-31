@@ -27,8 +27,6 @@
 #ifndef INTERNAL_CLASSES_IOMANIP_H_
 #define INTERNAL_CLASSES_IOMANIP_H_
 
-#include "experimental/experimental.h"
-
 namespace qpp
 {
 namespace internal
