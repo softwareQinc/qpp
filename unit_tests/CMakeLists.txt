@@ -36,7 +36,7 @@ ENDIF()
 OPTION(WITH_MATLAB "MATLAB integration" OFF)
 IF(${WITH_MATLAB})
     #### modify as needed 
-    SET(MATLAB "/Applications/MATLAB_R2014b.app")
+    SET(MATLAB "/Applications/MATLAB_R2015b.app")
     INCLUDE_DIRECTORIES(SYSTEM "${MATLAB}/extern/include")
     SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lmx -lmat -L${MATLAB}/bin/maci64")
 ENDIF()
