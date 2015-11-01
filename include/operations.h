@@ -234,6 +234,9 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
                               CdimsCTRL, CmidxCTRLrow);
         internal::_n2multiidx(_i2, ctrlsize,
                               CdimsCTRL, CmidxCTRLcol);
+
+std::cerr << "HERE3" << std::endl;
+
         for (idx k = 0; k < ctrlsize; ++k)
         {
             Cmidxrow[ctrl[k]] = CmidxCTRLrow[k];
@@ -264,11 +267,21 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         idxrow = internal::_multiidx2n(Cmidxrow, n, Cdims);
         idxcol = internal::_multiidx2n(Cmidxcol, n, Cdims);
 
+std::cerr << "HERE4" << std::endl;        
+
         // check whether all CTRL row and col multi indexes are equal
         bool all_ctrl_rows_equal = true;
         bool all_ctrl_cols_equal = true;
-        idx first_ctrl_row = CmidxCTRLrow[0];
-        idx first_ctrl_col = CmidxCTRLcol[0];
+        
+        idx first_ctrl_row = 0, first_ctrl_col = 0;
+        if (ctrlsize > 0)
+        {
+            first_ctrl_row = CmidxCTRLrow[0];
+            first_ctrl_col = CmidxCTRLcol[0];
+        }
+        else
+            first_ctrl_row = first_ctrl_col = 1;
+
         for (idx k = 1; k < ctrlsize; ++k)
         {
             if (CmidxCTRLrow[k] != first_ctrl_row)
@@ -286,9 +299,12 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
             }
         }
 
+std::cerr << "HERE5" << std::endl;        
+
         // at least one control activated, compute the coefficient
         for (idx _n1 = 0; _n1 < DA; ++_n1)
         {
+            std::cerr << "HERE6" << std::endl;        
             internal::_n2multiidx(_n1, subsys.size(), CdimsA, CmidxArow);
             for (idx k = 0; k < subsys.size(); ++k)
             {
@@ -296,7 +312,6 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
             }
             idx idxrowtmp = internal::_multiidx2n(Cmidxrow, n, Cdims);
 
-            lhs = 1;
             if (all_ctrl_rows_equal)
                 lhs = Ai[first_ctrl_row](_m1, _n1);
             else
@@ -304,13 +319,13 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
             for (idx _n2 = 0; _n2 < DA; ++_n2)
             {
+                std::cerr << "HERE7" << std::endl;        
                 internal::_n2multiidx(_n2, subsys.size(), CdimsA, CmidxAcol);
                 for (idx k = 0; k < subsys.size(); ++k)
                 {
                     Cmidxcol[subsys[k]] = CmidxAcol[k];
                 }
 
-                rhs = 1;
                 if (all_ctrl_cols_equal)
                     rhs = Aidagger[first_ctrl_col](_n2, _m2);
                 else
@@ -376,6 +391,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
                     for (idx r2 = 0; r2 < DCTRLAbar; ++r2)
                         if (ctrlsize == 0) // no control
                         {
+                            std::cerr << "YES" << std::endl;
                             auto coeff_idxes = coeff_idx_rho(1, m1, r1,
                                                              1, m2, r2);
                             result(std::get<1>(coeff_idxes),
