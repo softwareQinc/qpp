@@ -1,5 +1,5 @@
 # Quantum++ 
-## Version 0.8.7 - development
+## Version 0.8.6 - 1 November 2015
 
 Quantum++ is a C++11 general purpose quantum computing library, composed 
 solely of template header files. Quantum++ is written in standard C++11 and 

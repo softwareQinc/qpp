@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Quantum++
-   &#160;<span id="projectnumber">v0.8.7-devel</span>
+   &#160;<span id="projectnumber">v0.8.6</span>
    </div>
    <div id="projectbrief">C++11 quantum computing library</div>
   </td>
@@ -68,9 +68,7 @@ $(document).ready(function(){initNavTree('experimental_8h.html','');});
 <div id="doc-content">
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
 <div class="title">experimental.h File Reference</div>  </div>
 </div><!--header-->
@@ -78,25 +76,9 @@ $(document).ready(function(){initNavTree('experimental_8h.html','');});
 
 <p>Experimental/test functions/classes.  
 <a href="#details">More...</a></p>
-<div class="textblock"><div class="dynheader">
-This graph shows which files directly or indirectly include this file:</div>
-<div class="dyncontent">
-<div class="center"><img src="experimental_8h__dep__incl.png" border="0" usemap="#experimental_2experimental_8hdep" alt=""/></div>
-<map name="experimental_2experimental_8hdep" id="experimental_2experimental_8hdep">
-<area shape="rect" id="node2" href="input__output_8h.html" title="Input/output functions. " alt="" coords="5,80,112,107"/><area shape="rect" id="node4" href="iomanip_8h.html" title="Input/output manipulators. " alt="" coords="136,80,312,107"/><area shape="rect" id="node3" href="qpp_8h.html" title="Quantum++ main header file, includes all other necessary headers. " alt="" coords="113,155,169,181"/></map>
-</div>
-</div>
+
 <p><a href="experimental_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix view base class for all other views.  <a href="classqpp_1_1experimental_1_1_matrix_view_base.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_matrix_view.html">qpp::experimental::MatrixView&lt; Derived &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix view class, maps between a matrix and a multi-dimensional array.  <a href="classqpp_1_1experimental_1_1_matrix_view.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceqpp"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html">qpp</a></td></tr>
@@ -105,21 +87,6 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceqpp_1_1experimental"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html">qpp::experimental</a></td></tr>
 <tr class="memdesc:namespaceqpp_1_1experimental"><td class="mdescLeft">&#160;</td><td class="mdescRight">Experimental/test functions/classes, do not use or modify. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:afebb3e4376086a99f1d96471891ebc09"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:afebb3e4376086a99f1d96471891ebc09"><td class="memTemplItemLeft" align="right" valign="top">MatrixView&lt; Derived &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#afebb3e4376086a99f1d96471891ebc09">qpp::experimental::make_MatrixView</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; perm, const std::vector&lt; idx &gt; dims)</td></tr>
-<tr class="separator:afebb3e4376086a99f1d96471891ebc09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afea2da98efb6f996a4175a0ffab41459"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:afea2da98efb6f996a4175a0ffab41459"><td class="memTemplItemLeft" align="right" valign="top">MatrixView&lt; Derived &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#afea2da98efb6f996a4175a0ffab41459">qpp::experimental::make_MatrixView</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; perm, idx d=2)</td></tr>
-<tr class="separator:afea2da98efb6f996a4175a0ffab41459"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfdfa00dcba823ab559cc1aaf36f7ae4"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:adfdfa00dcba823ab559cc1aaf36f7ae4"><td class="memTemplItemLeft" align="right" valign="top">MatrixView&lt; Derived &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#adfdfa00dcba823ab559cc1aaf36f7ae4">qpp::experimental::make_MatrixView</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;&amp;A, const std::vector&lt; idx &gt; perm, const std::vector&lt; idx &gt; dims)=delete</td></tr>
-<tr class="separator:adfdfa00dcba823ab559cc1aaf36f7ae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c0b594357e0f5a722f01a8dee41d2bc"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:a7c0b594357e0f5a722f01a8dee41d2bc"><td class="memTemplItemLeft" align="right" valign="top">MatrixView&lt; Derived &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1experimental.html#a7c0b594357e0f5a722f01a8dee41d2bc">qpp::experimental::make_MatrixView</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;&amp;A, const std::vector&lt; idx &gt; perm, idx d=2)=delete</td></tr>
-<tr class="separator:a7c0b594357e0f5a722f01a8dee41d2bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Experimental/test functions/classes. </p>
@@ -129,7 +96,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_8c0381a6091af7a47ae909a45b674508.html">experimental</a></li><li class="navelem"><a class="el" href="experimental_8h.html">experimental.h</a></li>
-    <li class="footer">Generated on Sat Oct 31 2015 17:28:35 for Quantum++ by
+    <li class="footer">Generated on Sun Nov 1 2015 12:36:14 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

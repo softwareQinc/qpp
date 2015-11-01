@@ -157,7 +157,6 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     for (idx k = 0; k < ctrlgatebarsize; ++k)
         CdimsCTRLAbar[k] = dims[ctrlgatebar[k]];
 
-
     // worker, computes the coefficient and the index for the ket case
     // used in #pragma omp parallel for collapse
     auto coeff_idx_ket = [=](idx _i, idx _m, idx _r) noexcept
@@ -226,10 +225,10 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         idx Cmidxcol[maxn];         // the total col multi-index
         idx CmidxArow[maxn];        // the gate part row multi-index
         idx CmidxAcol[maxn];        // the gate part col multi-index
-        idx CmidxCTRLAbarrow[maxn]; // the rest row multi-index
-        idx CmidxCTRLAbarcol[maxn]; // the rest col multi-index
         idx CmidxCTRLrow[maxn];     // the control row multi-index
         idx CmidxCTRLcol[maxn];     // the control col multi-index
+        idx CmidxCTRLAbarrow[maxn]; // the rest row multi-index
+        idx CmidxCTRLAbarcol[maxn]; // the rest col multi-index
 
         // compute the ket/bra indexes
 
@@ -272,15 +271,17 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         // check whether all CTRL row and col multi indexes are equal
         bool all_ctrl_rows_equal = true;
         bool all_ctrl_cols_equal = true;
-        
-        idx first_ctrl_row = 0, first_ctrl_col = 0;
+
+        idx first_ctrl_row, first_ctrl_col;
         if (ctrlsize > 0)
         {
             first_ctrl_row = CmidxCTRLrow[0];
             first_ctrl_col = CmidxCTRLcol[0];
         }
         else
+        {
             first_ctrl_row = first_ctrl_col = 1;
+        }
 
         for (idx k = 1; k < ctrlsize; ++k)
         {
@@ -310,9 +311,13 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
             idx idxrowtmp = internal::_multiidx2n(Cmidxrow, n, Cdims);
 
             if (all_ctrl_rows_equal)
+            {
                 lhs = Ai[first_ctrl_row](_m1, _n1);
+            }
             else
+            {
                 lhs = (_m1 == _n1) ? 1 : 0; // identity matrix
+            }
 
             for (idx _n2 = 0; _n2 < DA; ++_n2)
             {
@@ -323,9 +328,13 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
                 }
 
                 if (all_ctrl_cols_equal)
+                {
                     rhs = Aidagger[first_ctrl_col](_n2, _m2);
+                }
                 else
+                {
                     rhs = (_n2 == _m2) ? 1 : 0; // identity matrix
+                }
 
                 idx idxcoltmp = internal::_multiidx2n(Cmidxcol, n, Cdims);
 
