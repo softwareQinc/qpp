@@ -235,8 +235,6 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         internal::_n2multiidx(_i2, ctrlsize,
                               CdimsCTRL, CmidxCTRLcol);
 
-std::cerr << "HERE3" << std::endl;
-
         for (idx k = 0; k < ctrlsize; ++k)
         {
             Cmidxrow[ctrl[k]] = CmidxCTRLrow[k];
@@ -266,8 +264,6 @@ std::cerr << "HERE3" << std::endl;
         // we now got the total row/col indexes
         idxrow = internal::_multiidx2n(Cmidxrow, n, Cdims);
         idxcol = internal::_multiidx2n(Cmidxcol, n, Cdims);
-
-std::cerr << "HERE4" << std::endl;        
 
         // check whether all CTRL row and col multi indexes are equal
         bool all_ctrl_rows_equal = true;
@@ -299,12 +295,9 @@ std::cerr << "HERE4" << std::endl;
             }
         }
 
-std::cerr << "HERE5" << std::endl;        
-
         // at least one control activated, compute the coefficient
         for (idx _n1 = 0; _n1 < DA; ++_n1)
         {
-            std::cerr << "HERE6" << std::endl;        
             internal::_n2multiidx(_n1, subsys.size(), CdimsA, CmidxArow);
             for (idx k = 0; k < subsys.size(); ++k)
             {
@@ -319,7 +312,6 @@ std::cerr << "HERE5" << std::endl;
 
             for (idx _n2 = 0; _n2 < DA; ++_n2)
             {
-                std::cerr << "HERE7" << std::endl;        
                 internal::_n2multiidx(_n2, subsys.size(), CdimsA, CmidxAcol);
                 for (idx k = 0; k < subsys.size(); ++k)
                 {
@@ -391,7 +383,6 @@ std::cerr << "HERE5" << std::endl;
                     for (idx r2 = 0; r2 < DCTRLAbar; ++r2)
                         if (ctrlsize == 0) // no control
                         {
-                            std::cerr << "YES" << std::endl;
                             auto coeff_idxes = coeff_idx_rho(1, m1, r1,
                                                              1, m2, r2);
                             result(std::get<1>(coeff_idxes),

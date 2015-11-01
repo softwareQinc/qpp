@@ -80,7 +80,7 @@ int main()
     idx n = dims.size();            // total number of qudits
     idx D = prod(dims);             // total dimension
 
-    std::vector<idx> ctrl{};    // where we apply the control
+    std::vector<idx> ctrl{2};    // where we apply the control
     std::vector<idx> target{1, 3};     // target
 
     idx Dtarget = 1;                // dimension of the target subsystems
