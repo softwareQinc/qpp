@@ -126,31 +126,35 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     }
 
     idx D = static_cast<idx>(rstate.rows()); // total dimension
-    idx n = dims.size();   // total number of subsystems
-    idx ctrlsize = ctrl.size(); // number of ctrl subsystem
+    idx n = dims.size();                // total number of subsystems
+    idx ctrlsize = ctrl.size();         // number of ctrl subsystem
+    idx ctrlgatesize = ctrlgate.size(); // number of ctrl+gate subsystems
+    idx subsyssize = subsys.size();     // number of subsystems of the target
     // dimension of ctrl subsystem
     idx Dctrl = static_cast<idx>(std::llround(std::pow(d, ctrlsize)));
     idx DA = static_cast<idx>(rA.rows()); // dimension of gate subsystem
 
-    idx Cdims[maxn]; // local dimensions
-    idx CdimsA[maxn]; // local dimensions
-    idx CdimsCTRL[maxn]; // local dimensions
+    idx Cdims[maxn];         // local dimensions
+    idx CdimsA[maxn];        // local dimensions
+    idx CdimsCTRL[maxn];     // local dimensions
     idx CdimsCTRLAbar[maxn]; // local dimensions
 
     // compute the complementary subsystem of ctrlgate w.r.t. dims
     std::vector<idx> ctrlgatebar = complement(ctrlgate, n);
+    // number of subsystems that are complementary to the ctrl+gate
+    idx ctrlgatebarsize = ctrlgatebar.size();
 
     idx DCTRLAbar = 1; // dimension of the rest
-    for (idx i = 0; i < ctrlgatebar.size(); ++i)
+    for (idx i = 0; i < ctrlgatebarsize; ++i)
         DCTRLAbar *= dims[ctrlgatebar[i]];
 
     for (idx k = 0; k < n; ++k)
         Cdims[k] = dims[k];
-    for (idx k = 0; k < subsys.size(); ++k)
+    for (idx k = 0; k < subsyssize; ++k)
         CdimsA[k] = dims[subsys[k]];
     for (idx k = 0; k < ctrlsize; ++k)
         CdimsCTRL[k] = d;
-    for (idx k = 0; k < ctrlgatebar.size(); ++k)
+    for (idx k = 0; k < ctrlgatebarsize; ++k)
         CdimsCTRLAbar[k] = dims[ctrlgatebar[k]];
 
 
@@ -162,9 +166,9 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         idx indx = 0;
         typename Derived1::Scalar coeff = 0;
 
-        idx Cmidx[maxn]; // the total multi-index
-        idx CmidxA[maxn];// the gate part multi-index
-        idx CmidxCTRLAbar[maxn];// the rest multi-index
+        idx Cmidx[maxn];         // the total multi-index
+        idx CmidxA[maxn];        // the gate part multi-index
+        idx CmidxCTRLAbar[maxn]; // the rest multi-index
 
         // compute the index
 
@@ -175,16 +179,16 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         }
 
         // set the rest
-        internal::_n2multiidx(_r, n - ctrlgate.size(),
+        internal::_n2multiidx(_r, n - ctrlgatesize,
                               CdimsCTRLAbar, CmidxCTRLAbar);
-        for (idx k = 0; k < n - ctrlgate.size(); ++k)
+        for (idx k = 0; k < n - ctrlgatesize; ++k)
         {
             Cmidx[ctrlgatebar[k]] = CmidxCTRLAbar[k];
         }
 
         // set the A part
-        internal::_n2multiidx(_m, subsys.size(), CdimsA, CmidxA);
-        for (idx k = 0; k < subsys.size(); ++k)
+        internal::_n2multiidx(_m, subsyssize, CdimsA, CmidxA);
+        for (idx k = 0; k < subsyssize; ++k)
         {
             Cmidx[subsys[k]] = CmidxA[k];
         }
@@ -195,8 +199,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         // compute the coefficient
         for (idx _n = 0; _n < DA; ++_n)
         {
-            internal::_n2multiidx(_n, subsys.size(), CdimsA, CmidxA);
-            for (idx k = 0; k < subsys.size(); ++k)
+            internal::_n2multiidx(_n, subsyssize, CdimsA, CmidxA);
+            for (idx k = 0; k < subsyssize; ++k)
             {
                 Cmidx[subsys[k]] = CmidxA[k];
             }
@@ -218,14 +222,14 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         idx idxcol = 0;
         typename Derived1::Scalar coeff = 0, lhs = 1, rhs = 1;
 
-        idx Cmidxrow[maxn]; // the total row multi-index
-        idx Cmidxcol[maxn];// the total col multi-index
-        idx CmidxArow[maxn];// the gate part row multi-index
-        idx CmidxAcol[maxn];// the gate part col multi-index
-        idx CmidxCTRLAbarrow[maxn];// the rest row multi-index
-        idx CmidxCTRLAbarcol[maxn];// the rest col multi-index
-        idx CmidxCTRLrow[maxn]; // the control row multi-index
-        idx CmidxCTRLcol[maxn]; // the control col multi-index
+        idx Cmidxrow[maxn];         // the total row multi-index
+        idx Cmidxcol[maxn];         // the total col multi-index
+        idx CmidxArow[maxn];        // the gate part row multi-index
+        idx CmidxAcol[maxn];        // the gate part col multi-index
+        idx CmidxCTRLAbarrow[maxn]; // the rest row multi-index
+        idx CmidxCTRLAbarcol[maxn]; // the rest col multi-index
+        idx CmidxCTRLrow[maxn];     // the control row multi-index
+        idx CmidxCTRLcol[maxn];     // the control col multi-index
 
         // compute the ket/bra indexes
 
@@ -242,19 +246,19 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         }
 
         // set the rest
-        internal::_n2multiidx(_r1, n - ctrlgate.size(),
+        internal::_n2multiidx(_r1, n - ctrlgatesize,
                               CdimsCTRLAbar, CmidxCTRLAbarrow);
-        internal::_n2multiidx(_r2, n - ctrlgate.size(),
+        internal::_n2multiidx(_r2, n - ctrlgatesize,
                               CdimsCTRLAbar, CmidxCTRLAbarcol);
-        for (idx k = 0; k < n - ctrlgate.size(); ++k)
+        for (idx k = 0; k < n - ctrlgatesize; ++k)
         {
             Cmidxrow[ctrlgatebar[k]] = CmidxCTRLAbarrow[k];
             Cmidxcol[ctrlgatebar[k]] = CmidxCTRLAbarcol[k];
         }
 
         // set the A part
-        internal::_n2multiidx(_m1, subsys.size(), CdimsA, CmidxArow);
-        internal::_n2multiidx(_m2, subsys.size(), CdimsA, CmidxAcol);
+        internal::_n2multiidx(_m1, subsyssize, CdimsA, CmidxArow);
+        internal::_n2multiidx(_m2, subsyssize, CdimsA, CmidxAcol);
         for (idx k = 0; k < subsys.size(); ++k)
         {
             Cmidxrow[subsys[k]] = CmidxArow[k];
@@ -298,8 +302,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         // at least one control activated, compute the coefficient
         for (idx _n1 = 0; _n1 < DA; ++_n1)
         {
-            internal::_n2multiidx(_n1, subsys.size(), CdimsA, CmidxArow);
-            for (idx k = 0; k < subsys.size(); ++k)
+            internal::_n2multiidx(_n1, subsyssize, CdimsA, CmidxArow);
+            for (idx k = 0; k < subsyssize; ++k)
             {
                 Cmidxrow[subsys[k]] = CmidxArow[k];
             }
@@ -312,8 +316,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
             for (idx _n2 = 0; _n2 < DA; ++_n2)
             {
-                internal::_n2multiidx(_n2, subsys.size(), CdimsA, CmidxAcol);
-                for (idx k = 0; k < subsys.size(); ++k)
+                internal::_n2multiidx(_n2, subsyssize, CdimsA, CmidxAcol);
+                for (idx k = 0; k < subsyssize; ++k)
                 {
                     Cmidxcol[subsys[k]] = CmidxAcol[k];
                 }

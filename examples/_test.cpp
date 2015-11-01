@@ -76,22 +76,22 @@ int main()
     cmat C = experimental::make_MatrixView(rho, perm).get_copy();
     std::cout << "Norm difference: " << norm(B - C) << std::endl;
 */
-    std::vector<idx> dims{2, 2, 2, 2}; // 3 qubits
-    idx n = dims.size();            // total number of qudits
-    idx D = prod(dims);             // total dimension
+    std::vector<idx> dims{2, 2, 2, 2};  // 3 qubits
+    idx n = dims.size();                // total number of qudits
+    idx D = prod(dims);                 // total dimension
 
-    std::vector<idx> ctrl{2};    // where we apply the control
-    std::vector<idx> target{1, 3};     // target
+    std::vector<idx> ctrl{2};           // where we apply the control
+    std::vector<idx> target{1, 0, 3};   // target
 
-    idx Dtarget = 1;                // dimension of the target subsystems
+    idx Dtarget = 1;                    // dimension of the target subsystems
     for(idx i = 0; i < target.size(); ++i)
-        Dtarget *= dims[target[i]]; // compute it here
+        Dtarget *= dims[target[i]];     // compute it here
 
     // some random n qudit pure state
     ket psi = randket(D);
 
     cmat rho = psi * adjoint(psi); // the corresponding density matrix
-    cmat U = randU(Dtarget); // some random unitary on the target
+    cmat U = randU(Dtarget);       // some random unitary on the target
 
     // applyCTRL on pure state
     ket A = applyCTRL(psi, U, ctrl, target, dims);
