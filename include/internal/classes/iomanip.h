@@ -27,6 +27,8 @@
 #ifndef INTERNAL_CLASSES_IOMANIP_H_
 #define INTERNAL_CLASSES_IOMANIP_H_
 
+#include "experimental/experimental.h"
+
 namespace qpp
 {
 namespace internal
@@ -46,7 +48,7 @@ struct _Display_Impl
         std::ostringstream ostr;
         ostr.copyfmt(_os); // copy os' state
 
-        std::vector<std::string> vstr;
+        std::vector <std::string> vstr;
         std::string strA;
 
         for (idx i = 0; i < static_cast<idx>(_A.rows()); ++i)
@@ -96,7 +98,7 @@ struct _Display_Impl
         }
 
         // determine the maximum lenght of the entries in each column
-        std::vector<idx> maxlengthcols(_A.cols(), 0);
+        std::vector <idx> maxlengthcols(_A.cols(), 0);
 
         for (idx i = 0; i < static_cast<idx>(_A.rows());
              ++i)
@@ -219,7 +221,7 @@ class IOManipEigen : public IDisplay, private _details::_Display_Impl
 public:
     // Eigen matrices
     template<typename Derived>
-    explicit IOManipEigen(const Eigen::MatrixBase<Derived>& A,
+    explicit IOManipEigen(const Eigen::MatrixBase <Derived>& A,
                           double chop = qpp::chop) :
             _A{A.template cast<cplx>()}, // copy, so we can bind rvalues safely
             _chop{chop}
@@ -240,6 +242,25 @@ private:
         return _display_impl(_A, os, chop);
     }
 }; // class IOManipEigen
+
+template<typename Derived>
+class IOManipMatrixView : public IDisplay, private _details::_Display_Impl
+{
+    const qpp::experimental::MatrixView<Derived>& _viewA;
+    double _chop;
+public:
+    explicit IOManipMatrixView(const qpp::experimental::MatrixView<Derived>& A,
+                               double chop = qpp::chop) :
+            _viewA{A}, _chop{chop}
+    {
+    }
+
+private:
+    std::ostream& display(std::ostream& os) const override
+    {
+        return _display_impl(_viewA, os, chop);
+    }
+}; // class IOManipMatrixView
 
 } /* namespace internal */
 } /* namespace qpp */

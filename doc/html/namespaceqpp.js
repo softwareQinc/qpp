@@ -1,5 +1,6 @@
 var namespaceqpp =
 [
+    [ "experimental", "namespaceqpp_1_1experimental.html", "namespaceqpp_1_1experimental" ],
     [ "internal", "namespaceqpp_1_1internal.html", "namespaceqpp_1_1internal" ],
     [ "Codes", "classqpp_1_1_codes.html", "classqpp_1_1_codes" ],
     [ "Exception", "classqpp_1_1_exception.html", "classqpp_1_1_exception" ],
