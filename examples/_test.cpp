@@ -10,7 +10,6 @@ using namespace qpp;
 // TODO: use assert in performance-critical functions (qpp::internal)
 // TODO: make sure we use column major order for performance-critical code
 // TODO: remove "experimental/experimental.h" include directive at the end
-// TODO: test applyCTRL with no controls
 
 // In experimental.h
 // TODO: exception checking
@@ -76,6 +75,7 @@ int main()
     cmat C = experimental::make_MatrixView(rho, perm).get_copy();
     std::cout << "Norm difference: " << norm(B - C) << std::endl;
 */
+
     std::vector<idx> dims{2, 2, 2, 2};  // 3 qubits
     idx n = dims.size();                // total number of qudits
     idx D = prod(dims);                 // total dimension
