@@ -67,7 +67,7 @@ TEST(qpp_modpow_test, PositiveNumbers)
 // ********** END qpp::modpow() **********
 
 // ********** qpp::applyCTRL() **********
-TEST(qpp_applyCTRL, EmptyControl)
+TEST(qpp_applyCTRL, NonEmptyControl)
 {
     std::vector<idx> dims{2, 2, 2, 2};  // 3 qubits
     idx n = dims.size();                // total number of qudits
@@ -101,7 +101,7 @@ TEST(qpp_applyCTRL, EmptyControl)
     EXPECT_NEAR (0, res, 1e-8);
 }
 
-TEST(qpp_applyCTRL, NonEmptyControl)
+TEST(qpp_applyCTRL, EmptyControl)
 {
     std::vector<idx> dims{2, 2, 2, 2};  // 3 qubits
     idx n = dims.size();                // total number of qudits
