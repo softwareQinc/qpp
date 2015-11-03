@@ -48,7 +48,7 @@ struct _Display_Impl
         std::ostringstream ostr;
         ostr.copyfmt(_os); // copy os' state
 
-        std::vector <std::string> vstr;
+        std::vector<std::string> vstr;
         std::string strA;
 
         for (idx i = 0; i < static_cast<idx>(_A.rows()); ++i)
@@ -98,7 +98,7 @@ struct _Display_Impl
         }
 
         // determine the maximum lenght of the entries in each column
-        std::vector <idx> maxlengthcols(_A.cols(), 0);
+        std::vector<idx> maxlengthcols(_A.cols(), 0);
 
         for (idx i = 0; i < static_cast<idx>(_A.rows());
              ++i)
@@ -221,7 +221,7 @@ class IOManipEigen : public IDisplay, private _details::_Display_Impl
 public:
     // Eigen matrices
     template<typename Derived>
-    explicit IOManipEigen(const Eigen::MatrixBase <Derived>& A,
+    explicit IOManipEigen(const Eigen::MatrixBase<Derived>& A,
                           double chop = qpp::chop) :
             _A{A.template cast<cplx>()}, // copy, so we can bind rvalues safely
             _chop{chop}
