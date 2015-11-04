@@ -34,7 +34,7 @@
 #ifndef QPP_H_
 #define QPP_H_
 
-// silence bogus warning -Wunused-variable for Singletons
+// silence bogus warning -Wunused-variable for singletons
 #if (__GNUC__)
 #pragma GCC diagnostic ignored "-Wunused-variable"
 #endif

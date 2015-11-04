@@ -865,7 +865,9 @@ dyn_mat <OutputScalar> cwise(const Eigen::MatrixBase<Derived>& A,
 
     dyn_mat<OutputScalar> result(rA.rows(), rA.cols());
 
+#ifdef WITH_OPENMP
 #pragma omp parallel for collapse(2)
+#endif
     // column major order for speed
     for (idx j = 0; j < static_cast<idx>(rA.cols()); ++j)
         for (idx i = 0; i < static_cast<idx>(rA.rows()); ++i)

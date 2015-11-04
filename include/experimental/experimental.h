@@ -96,7 +96,9 @@ public:
                 Eigen::Dynamic
         > result(_rows, _cols);
 
+#ifdef WITH_OPENMP
 #pragma omp parallel for collapse(2)
+#endif        
         for (idx j = 0; j < _cols; ++j)
             for (idx i = 0; i < _rows; ++i)
                 result(i, j) = this->operator()(i, j);
