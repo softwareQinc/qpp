@@ -116,7 +116,7 @@ $(document).ready(function(){initNavTree('iomanip_8h_source.html','');});
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        std::ostringstream ostr;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        ostr.copyfmt(_os); <span class="comment">// copy os&#39; state</span></div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        std::vector &lt;std::string&gt; vstr;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        std::vector&lt;std::string&gt; vstr;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        std::string strA;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(_A.rows()); ++i)</div>
@@ -166,7 +166,7 @@ $(document).ready(function(){initNavTree('iomanip_8h_source.html','');});
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="comment">// determine the maximum lenght of the entries in each column</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        std::vector &lt;idx&gt; maxlengthcols(_A.cols(), 0);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        std::vector&lt;idx&gt; maxlengthcols(_A.cols(), 0);</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(_A.rows());</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;             ++i)</div>
@@ -289,7 +289,7 @@ $(document).ready(function(){initNavTree('iomanip_8h_source.html','');});
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="comment">// Eigen matrices</span></div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#aa4e5ec41f773261047e2ddf27663a597">  224</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#aa4e5ec41f773261047e2ddf27663a597">IOManipEigen</a>(<span class="keyword">const</span> Eigen::MatrixBase &lt;Derived&gt;&amp; A,</div>
+<div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#aa4e5ec41f773261047e2ddf27663a597">  224</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#aa4e5ec41f773261047e2ddf27663a597">IOManipEigen</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;                          <span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a> = <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>) :</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            _A{A.template cast&lt;cplx&gt;()}, <span class="comment">// copy, so we can bind rvalues safely</span></div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            _chop{<a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>}</div>
@@ -334,7 +334,7 @@ $(document).ready(function(){initNavTree('iomanip_8h_source.html','');});
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;</div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INTERNAL_CLASSES_IOMANIP_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html">qpp::experimental::MatrixView</a></div><div class="ttdoc">Matrix view class, maps between a matrix and a multi-dimensional array. </div><div class="ttdef"><b>Definition:</b> experimental.h:140</div></div>
+<div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html">qpp::experimental::MatrixView</a></div><div class="ttdoc">Matrix view class, maps between a matrix and a multi-dimensional array. </div><div class="ttdef"><b>Definition:</b> experimental.h:142</div></div>
 <div class="ttc" id="namespaceqpp_html_a3a6d2c509bdcf240869e1bebb3be4e94"><div class="ttname"><a href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a></div><div class="ttdeci">constexpr double chop</div><div class="ttdoc">Used in qpp::disp() for setting to zero numbers that have their absolute value smaller than qpp::chop...</div><div class="ttdef"><b>Definition:</b> constants.h:65</div></div>
 <div class="ttc" id="classqpp_1_1internal_1_1_i_o_manip_matrix_view_html_ab21a34f9edb836b0bcdcd2028b590e5b"><div class="ttname"><a href="classqpp_1_1internal_1_1_i_o_manip_matrix_view.html#ab21a34f9edb836b0bcdcd2028b590e5b">qpp::internal::IOManipMatrixView::_chop</a></div><div class="ttdeci">double _chop</div><div class="ttdef"><b>Definition:</b> iomanip.h:250</div></div>
 <div class="ttc" id="classqpp_1_1internal_1_1_i_o_manip_pointer_html_a994c9abbae7ac25b9fcadd4661a2ef5a"><div class="ttname"><a href="classqpp_1_1internal_1_1_i_o_manip_pointer.html#a994c9abbae7ac25b9fcadd4661a2ef5a">qpp::internal::IOManipPointer::_start</a></div><div class="ttdeci">std::string _start</div><div class="ttdef"><b>Definition:</b> iomanip.h:182</div></div>
@@ -379,7 +379,7 @@ $(document).ready(function(){initNavTree('iomanip_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7374381ecdb819c64ee9b6ea2bd3370d.html">internal</a></li><li class="navelem"><a class="el" href="dir_0287916e3084ede6e6e90e400eca2f39.html">classes</a></li><li class="navelem"><a class="el" href="iomanip_8h.html">iomanip.h</a></li>
-    <li class="footer">Generated on Sun Nov 1 2015 13:45:49 for Quantum++ by
+    <li class="footer">Generated on Fri Nov 6 2015 13:47:10 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

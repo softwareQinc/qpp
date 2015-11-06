@@ -13,7 +13,7 @@ var files =
     [ "macros.h", "macros_8h.html", "macros_8h" ],
     [ "number_theory.h", "number__theory_8h.html", "number__theory_8h" ],
     [ "operations.h", "operations_8h.html", "operations_8h" ],
-    [ "qpp.h", "qpp_8h.html", null ],
+    [ "qpp.h", "qpp_8h.html", "qpp_8h" ],
     [ "random.h", "random_8h.html", "random_8h" ],
     [ "statistics.h", "statistics_8h.html", "statistics_8h" ],
     [ "traits.h", "traits_8h.html", "traits_8h" ],
