@@ -44,7 +44,7 @@ template<typename Derived>
 dyn_mat<typename Derived::Scalar> transpose(
         const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
@@ -64,7 +64,7 @@ template<typename Derived>
 dyn_mat<typename Derived::Scalar> conjugate(
         const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // check zero-size
     if (!internal::_check_nonzero_size(rA))
@@ -83,7 +83,7 @@ dyn_mat<typename Derived::Scalar> conjugate(
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> adjoint(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -105,7 +105,7 @@ dyn_mat<typename Derived::Scalar> adjoint(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> inverse(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -126,7 +126,7 @@ dyn_mat<typename Derived::Scalar> inverse(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 typename Derived::Scalar trace(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -148,7 +148,7 @@ typename Derived::Scalar trace(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 typename Derived::Scalar det(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -172,7 +172,7 @@ typename Derived::Scalar det(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -208,7 +208,7 @@ typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 typename Derived::Scalar sum(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -230,7 +230,7 @@ typename Derived::Scalar sum(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 typename Derived::Scalar prod(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -251,7 +251,7 @@ typename Derived::Scalar prod(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 double norm(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -277,7 +277,7 @@ std::pair<dyn_col_vect < cplx>, cmat>
 
 eig(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -305,7 +305,7 @@ eig(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 dyn_col_vect <cplx> evals(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -331,7 +331,7 @@ dyn_col_vect <cplx> evals(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 cmat evects(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -362,7 +362,7 @@ std::pair<dyn_col_vect < double>, cmat>
 
 heig(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -390,7 +390,7 @@ heig(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 dyn_col_vect<double> hevals(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -416,7 +416,7 @@ dyn_col_vect<double> hevals(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 cmat hevects(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -447,7 +447,7 @@ std::tuple<cmat, dyn_col_vect < double>, cmat>
 
 svd(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -474,7 +474,7 @@ svd(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 dyn_col_vect<double> svals(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -498,7 +498,7 @@ dyn_col_vect<double> svals(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 cmat svdU(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -523,7 +523,7 @@ cmat svdU(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 cmat svdV(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -550,7 +550,7 @@ cmat svdV(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 cmat funm(const Eigen::MatrixBase<Derived>& A, cplx (* f)(const cplx&))
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -583,7 +583,7 @@ cmat funm(const Eigen::MatrixBase<Derived>& A, cplx (* f)(const cplx&))
 template<typename Derived>
 cmat sqrtm(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -608,7 +608,7 @@ cmat sqrtm(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 cmat absm(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -633,7 +633,7 @@ cmat absm(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 cmat expm(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -658,7 +658,7 @@ cmat expm(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 cmat logm(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -683,7 +683,7 @@ cmat logm(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 cmat sinm(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -708,7 +708,7 @@ cmat sinm(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 cmat cosm(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -738,7 +738,7 @@ cmat cosm(const Eigen::MatrixBase<Derived>& A)
 template<typename Derived>
 cmat spectralpowm(const Eigen::MatrixBase<Derived>& A, const cplx z)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -822,7 +822,7 @@ dyn_mat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived>& A,
 template<typename Derived>
 double schatten(const Eigen::MatrixBase<Derived>& A, double p)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -854,7 +854,7 @@ dyn_mat <OutputScalar> cwise(const Eigen::MatrixBase<Derived>& A,
                              OutputScalar (* f)(
                                      const typename Derived::Scalar&))
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -971,7 +971,7 @@ template<typename Derived>
 dyn_mat<typename Derived::Scalar> kronpow(const Eigen::MatrixBase<Derived>& A,
                                           idx n)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1097,7 +1097,7 @@ template<typename Derived>
 dyn_mat<typename Derived::Scalar> dirsumpow(
         const Eigen::MatrixBase<Derived>& A, idx n)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1130,7 +1130,7 @@ template<typename Derived>
 dyn_mat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived>& A,
                                           idx rows, idx cols)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     idx Arows = static_cast<idx>(rA.rows());
     idx Acols = static_cast<idx>(rA.cols());
@@ -1166,8 +1166,8 @@ template<typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1>& A,
                                         const Eigen::MatrixBase<Derived2>& B)
 {
-    const dyn_mat<typename Derived1::Scalar>& rA = A;
-    const dyn_mat<typename Derived2::Scalar>& rB = B;
+    const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
+    const dyn_mat<typename Derived2::Scalar>& rB = B.derived();
 
     // EXCEPTION CHECKS
 
@@ -1210,8 +1210,8 @@ dyn_mat<typename Derived1::Scalar> anticomm(
         const Eigen::MatrixBase<Derived1>& A,
         const Eigen::MatrixBase<Derived2>& B)
 {
-    const dyn_mat<typename Derived1::Scalar>& rA = A;
-    const dyn_mat<typename Derived2::Scalar>& rB = B;
+    const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
+    const dyn_mat<typename Derived2::Scalar>& rB = B.derived();
 
     // EXCEPTION CHECKS
 
@@ -1251,7 +1251,7 @@ dyn_mat<typename Derived1::Scalar> anticomm(
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& V)
 {
-    const dyn_mat<typename Derived::Scalar>& rV = V;
+    const dyn_mat<typename Derived::Scalar>& rV = V.derived();
 
     // EXCEPTION CHECKS
 
@@ -1371,7 +1371,7 @@ dyn_mat<typename Derived::Scalar> grams(
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1672,7 +1672,7 @@ std::vector<double> abssq(const Container& c,
 template<typename Derived>
 std::vector<double> abssq(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1765,7 +1765,7 @@ template<typename Derived>
 dyn_col_vect<typename Derived::Scalar> rho2pure(
         const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero-size
@@ -1837,7 +1837,7 @@ template<typename Derived>
 std::vector<double> rho2bloch(
         const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 

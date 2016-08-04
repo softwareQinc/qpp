@@ -76,36 +76,28 @@ noexcept
 template<typename Derived>
 bool _check_square_mat(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
-
-    return rA.rows() == rA.cols();
+    return A.rows() == A.cols();
 }
 
 // check whether input is a vector or not
 template<typename Derived>
 bool _check_vector(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
-
-    return rA.rows() == 1 || rA.cols() == 1;
+    return A.rows() == 1 || A.cols() == 1;
 }
 
 // check whether input is a row vector or not
 template<typename Derived>
 bool _check_rvector(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
-
-    return rA.rows() == 1;
+    return A.rows() == 1;
 }
 
 // check whether input is a column vector or not
 template<typename Derived>
 bool _check_cvector(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
-
-    return rA.cols() == 1;
+    return A.cols() == 1;
 }
 
 // check non-zero size of object that supports size() function
@@ -142,12 +134,10 @@ template<typename Derived>
 bool _check_dims_match_mat(const std::vector<idx>& dims,
                            const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
-
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
                                   static_cast<idx>(1), std::multiplies<idx>());
 
-    return proddim == static_cast<idx>(rA.rows());
+    return proddim == static_cast<idx>(A.rows());
 }
 
 // check that valid dims match the dimensions of valid column vector
@@ -155,12 +145,10 @@ template<typename Derived>
 bool _check_dims_match_cvect(const std::vector<idx>& dims,
                              const Eigen::MatrixBase<Derived>& V)
 {
-    const dyn_mat<typename Derived::Scalar>& rV = V;
-
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
                                   static_cast<idx>(1), std::multiplies<idx>());
 
-    return proddim == static_cast<idx>(rV.rows());
+    return proddim == static_cast<idx>(V.rows());
 }
 
 // check that valid dims match the dimensions of valid row vector
@@ -168,12 +156,10 @@ template<typename Derived>
 bool _check_dims_match_rvect(const std::vector<idx>& dims,
                              const Eigen::MatrixBase<Derived>& V)
 {
-    const dyn_mat<typename Derived::Scalar>& rV = V;
-
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
                                   static_cast<idx>(1), std::multiplies<idx>());;
 
-    return proddim == static_cast<idx>(rV.cols());
+    return proddim == static_cast<idx>(V.cols());
 }
 
 // check that all elements in valid dims equal to dim
@@ -219,37 +205,29 @@ inline bool _check_subsys_match_dims(const std::vector<idx>& subsys,
 template<typename Derived>
 bool _check_qubit_matrix(const Eigen::MatrixBase<Derived>& A) noexcept
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
-
-    return rA.rows() == 2 && rA.cols() == 2;
+    return A.rows() == 2 && A.cols() == 2;
 }
 
 // check column vector is 2 x 1
 template<typename Derived>
 bool _check_qubit_cvector(const Eigen::MatrixBase<Derived>& V) noexcept
 {
-    const dyn_mat<typename Derived::Scalar>& rV = V;
-
-    return rV.rows() == 2 && rV.cols() == 1;
+    return V.rows() == 2 && V.cols() == 1;
 }
 
 // check row vector is 1 x 2
 template<typename Derived>
 bool _check_qubit_rvector(const Eigen::MatrixBase<Derived>& V) noexcept
 {
-    const dyn_mat<typename Derived::Scalar>& rV = V;
-
-    return rV.rows() == 1 && rV.cols() == 2;
+    return V.rows() == 1 && V.cols() == 2;
 }
 
 // check row vector is 1 x 2 or 2 x 1
 template<typename Derived>
 bool _check_qubit_vector(const Eigen::MatrixBase<Derived>& V) noexcept
 {
-    const dyn_mat<typename Derived::Scalar>& rV = V;
-
-    return (rV.rows() == 1 && rV.cols() == 2) ||
-           (rV.rows() == 2 && rV.cols() == 1);
+    return (V.rows() == 1 && V.cols() == 2) ||
+           (V.rows() == 2 && V.cols() == 1);
 }
 
 
