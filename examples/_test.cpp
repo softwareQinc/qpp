@@ -16,6 +16,7 @@ using namespace qpp;
 // TODO: check for noexcept
 // TODO: write the documentation
 // TODO: test
+// TODO: check all psi, phi, A .derived() !!!!
 
 // Future work
 // TODO: Implement a circuit description language, load/save from/to file
