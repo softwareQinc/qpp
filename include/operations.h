@@ -58,8 +58,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         const std::vector<idx>& subsys,
         const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived1::Scalar>& rstate = state;
-    const dyn_mat<typename Derived2::Scalar>& rA = A;
+    typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate = state.derived();
+    const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -159,7 +159,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
     // worker, computes the coefficient and the index for the ket case
     // used in #pragma omp parallel for collapse
-    auto coeff_idx_ket = [=](idx _i, idx _m, idx _r) noexcept
+    auto coeff_idx_ket = [&](idx _i, idx _m, idx _r) noexcept
             -> std::pair<typename Derived1::Scalar, idx>
     {
         idx indx = 0;
@@ -451,8 +451,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         const std::vector<idx>& subsys,
         idx d = 2)
 {
-    const dyn_mat<typename Derived1::Scalar>& rstate = state;
-    const dyn_mat<typename Derived1::Scalar>& rA = A;
+    typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate = state.derived();
+    const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -493,8 +493,8 @@ dyn_mat<typename Derived1::Scalar> apply(
         const std::vector<idx>& subsys,
         const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived1::Scalar>& rstate = state;
-    const dyn_mat<typename Derived2::Scalar>& rA = A;
+    typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate = state.derived();
+    const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -579,8 +579,8 @@ dyn_mat<typename Derived1::Scalar> apply(
         const std::vector<idx>& subsys,
         idx d = 2)
 {
-    const dyn_mat<typename Derived1::Scalar>& rstate = state;
-    const dyn_mat<typename Derived1::Scalar>& rA = A;
+    typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate = state.derived();
+    const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1022,7 +1022,7 @@ template<typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
                                           const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1123,7 +1123,7 @@ template<typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
                                           const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1215,7 +1215,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
                                          const std::vector<idx>& subsys,
                                          const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1437,7 +1437,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
                                          const std::vector<idx>& subsys,
                                          idx d = 2)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1477,7 +1477,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
         const std::vector<idx>& subsys,
         const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1634,7 +1634,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
         const std::vector<idx>& subsys,
         idx d = 2)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1673,7 +1673,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
         const std::vector<idx>& perm,
         const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1827,7 +1827,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
         const std::vector<idx>& perm,
         idx d = 2)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
