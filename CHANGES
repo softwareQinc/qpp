@@ -117,3 +117,6 @@ Version 0.8.6 - 1 November 2015
     - Fixed serious bug in qpp::applyCTRL(), which was failing before for
         control gates with 2 or more controls. Added unit test in
         ./unit_tests/testing.cpp.
+
+Version 0.8.7 - development
+    - Started work on a Matrix view lazy evaluation class hierarchy

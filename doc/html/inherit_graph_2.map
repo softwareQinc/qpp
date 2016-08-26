@@ -1,4 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classqpp_1_1internal_1_1_singleton.html" title="qpp::internal::Singleton\l\&lt; const Codes \&gt;" alt="" coords="5,5,164,47"/>
-<area shape="rect" id="node2" href="$classqpp_1_1_codes.html" title="const Singleton class that defines quantum error correcting codes " alt="" coords="212,13,303,39"/>
+<area shape="rect" id="node1" href="$structqpp_1_1internal_1_1__details_1_1___display___impl.html" title="qpp::internal::_details\l::_Display_Impl" alt="" coords="5,35,155,76"/>
+<area shape="rect" id="node2" href="$classqpp_1_1internal_1_1_i_o_manip_eigen.html" title="qpp::internal::IOManipEigen" alt="" coords="207,71,394,98"/>
+<area shape="rect" id="node3" href="$classqpp_1_1internal_1_1_i_o_manip_matrix_view.html" title="qpp::internal::IOManipMatrix\lView\&lt; Derived \&gt;" alt="" coords="206,5,395,47"/>
+<area shape="rect" id="node4" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="31,130,129,157"/>
+<area shape="rect" id="node5" href="$classqpp_1_1internal_1_1_i_o_manip_pointer.html" title="qpp::internal::IOManipPointer\l\&lt; PointerType \&gt;" alt="" coords="203,123,399,164"/>
+<area shape="rect" id="node6" href="$classqpp_1_1internal_1_1_i_o_manip_range.html" title="qpp::internal::IOManipRange\l\&lt; InputIterator \&gt;" alt="" coords="205,188,397,229"/>
+<area shape="rect" id="node7" href="$classqpp_1_1_timer.html" title="Chronometer. " alt="" coords="208,254,393,281"/>
 </map>

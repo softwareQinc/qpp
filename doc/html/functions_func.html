@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Quantum++
-   &#160;<span id="projectnumber">v0.8.6</span>
+   &#160;<span id="projectnumber">v0.8.7-devel</span>
    </div>
    <div id="projectbrief">C++11 quantum computing library</div>
   </td>
@@ -65,13 +65,16 @@
   <div id="navrow4" class="tabs3">
     <ul class="tablist">
       <li><a href="#index__"><span>_</span></a></li>
+      <li><a href="#index_a"><span>a</span></a></li>
       <li><a href="#index_c"><span>c</span></a></li>
       <li><a href="#index_d"><span>d</span></a></li>
       <li><a href="#index_e"><span>e</span></a></li>
       <li><a href="#index_f"><span>f</span></a></li>
       <li><a href="#index_g"><span>g</span></a></li>
       <li><a href="#index_i"><span>i</span></a></li>
+      <li><a href="#index_m"><span>m</span></a></li>
       <li><a href="#index_o"><span>o</span></a></li>
+      <li><a href="#index_p"><span>p</span></a></li>
       <li><a href="#index_r"><span>r</span></a></li>
       <li><a href="#index_s"><span>s</span></a></li>
       <li><a href="#index_t"><span>t</span></a></li>
@@ -109,12 +112,22 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 </ul>
 
 
+<h3><a class="anchor" id="index_a"></a>- a -</h3><ul>
+<li>at()
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a46034ccf2dcc1a0983d582ab0417d87b">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
+</li>
+</ul>
+
+
 <h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
 <li>Codes()
 : <a class="el" href="classqpp_1_1_codes.html#a2514d858077e81e6e8b7d06057201748">qpp::Codes</a>
 </li>
 <li>codeword()
 : <a class="el" href="classqpp_1_1_codes.html#a7e86e08f62d809e5387fb2f09db86f38">qpp::Codes</a>
+</li>
+<li>cols()
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a9ebc980a6fb67e3351b30d2582403727">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
 </li>
 <li>CTRL()
 : <a class="el" href="classqpp_1_1_gates.html#ae75fe932917ec2d75d2110cbe76876a2">qpp::Gates</a>
@@ -123,9 +136,13 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 
 <h3><a class="anchor" id="index_d"></a>- d -</h3><ul>
+<li>dims()
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view.html#a7487346e79defefa6fb87f348fccf6b6">qpp::experimental::MatrixView&lt; Derived &gt;</a>
+</li>
 <li>display()
 : <a class="el" href="classqpp_1_1_i_display.html#ae994cbe2f2a0302dc0acc377fc3d51ab">qpp::IDisplay</a>
 , <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#ae098e0c4bf3fa14013f88e73e0506e02">qpp::internal::IOManipEigen</a>
+, <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_matrix_view.html#a5d9a49a2676ee13a2b5123003af0ac35">qpp::internal::IOManipMatrixView&lt; Derived &gt;</a>
 , <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html#a0beb83b88c16e51b13949d4a1ec5122b">qpp::internal::IOManipPointer&lt; PointerType &gt;</a>
 , <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html#ade5ff982e7724c1a4e7ceb14a79ef5b9">qpp::internal::IOManipRange&lt; InputIterator &gt;</a>
 , <a class="el" href="classqpp_1_1_timer.html#a7e9ee6299f0120020075ad4f41bf1801">qpp::Timer&lt; T, CLOCK_T &gt;</a>
@@ -154,11 +171,17 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>Gates()
 : <a class="el" href="classqpp_1_1_gates.html#af8d87a811249d288454f5b30017eccea">qpp::Gates</a>
 </li>
+<li>get_copy()
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a823d828c989f71961e08650500ebf2d7">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
+</li>
 <li>get_duration()
 : <a class="el" href="classqpp_1_1_timer.html#a6a0e5c32b4091168b3d0c3eeba99a2d3">qpp::Timer&lt; T, CLOCK_T &gt;</a>
 </li>
 <li>get_instance()
 : <a class="el" href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">qpp::internal::Singleton&lt; T &gt;</a>
+</li>
+<li>get_ref()
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a61fdcbd1415c12e5b49be0b924a334c8">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
 </li>
 <li>get_thread_local_instance()
 : <a class="el" href="classqpp_1_1internal_1_1_singleton.html#aaf4b1c567e5b672354c026c7ae02ae16">qpp::internal::Singleton&lt; T &gt;</a>
@@ -177,24 +200,51 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="classqpp_1_1_init.html#a5650a0e31393cf13755262328f2122e9">qpp::Init</a>
 </li>
 <li>IOManipEigen()
-: <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#aa9a8701df886f9fd693975b4a6632f63">qpp::internal::IOManipEigen</a>
+: <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#aa4e5ec41f773261047e2ddf27663a597">qpp::internal::IOManipEigen</a>
+</li>
+<li>IOManipMatrixView()
+: <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_matrix_view.html#a23815c7f5e85f2cf9c7ebcc9fe0e8916">qpp::internal::IOManipMatrixView&lt; Derived &gt;</a>
 </li>
 <li>IOManipPointer()
 : <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html#ad35804604a7e9fa9682a303bac8b04c4">qpp::internal::IOManipPointer&lt; PointerType &gt;</a>
 </li>
 <li>IOManipRange()
-: <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html#a25d87df59d9262e30a9d49f189aaa2b7">qpp::internal::IOManipRange&lt; InputIterator &gt;</a>
+: <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html#accb36abc2740f69e4b17826aee293ced">qpp::internal::IOManipRange&lt; InputIterator &gt;</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
+<li>MatrixView()
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view.html#a334cf576d3026da8c6dba26c65664670">qpp::experimental::MatrixView&lt; Derived &gt;</a>
+</li>
+<li>MatrixViewBase()
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#acf7cddb23e0f393879a48d137df774de">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_o"></a>- o -</h3><ul>
+<li>operator Eigen::Matrix&lt; typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic &gt;()
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a9507a48b248d72a1ce0600ebf17ddbc0">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
+</li>
+<li>operator()()
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view.html#ae5d2f827ad2d5b2cd5f00454ae3a0845">qpp::experimental::MatrixView&lt; Derived &gt;</a>
+, <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a6e63b8d4cdceb04103fc00d5a2419b95">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
+</li>
 <li>operator=()
 : <a class="el" href="classqpp_1_1_i_display.html#ab0a7689867b780cc003bf7519e24f37d">qpp::IDisplay</a>
 , <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html#aaebd54e51b45ec5ba2849e6c5c33640d">qpp::internal::IOManipPointer&lt; PointerType &gt;</a>
 , <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html#a32bc91344b36488b2db0179f08a0f051">qpp::internal::IOManipRange&lt; InputIterator &gt;</a>
 , <a class="el" href="classqpp_1_1internal_1_1_singleton.html#ac9f8d235a7b7e9fc5732e0d049442fa5">qpp::internal::Singleton&lt; T &gt;</a>
-, <a class="el" href="classqpp_1_1_timer.html#aa3b8dd24ad12798d6905af13b549618e">qpp::Timer&lt; T, CLOCK_T &gt;</a>
+, <a class="el" href="classqpp_1_1_timer.html#a22a107dcf41ff7e75cc659d92930f47d">qpp::Timer&lt; T, CLOCK_T &gt;</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_p"></a>- p -</h3><ul>
+<li>perm()
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view.html#aff08d0092c9abd376afc139f5ad7ed65">qpp::experimental::MatrixView&lt; Derived &gt;</a>
 </li>
 </ul>
 
@@ -205,6 +255,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 </li>
 <li>Rn()
 : <a class="el" href="classqpp_1_1_gates.html#a96c1a26d7209dc3be8fb41b2d9ed1b6f">qpp::Gates</a>
+</li>
+<li>rows()
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#abd608ea66c03a2ab6c18767e3c270699">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
 </li>
 </ul>
 
@@ -227,7 +280,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="classqpp_1_1_timer.html#af20efd87cf89264e9bc73c25abe6b69b">qpp::Timer&lt; T, CLOCK_T &gt;</a>
 </li>
 <li>Timer()
-: <a class="el" href="classqpp_1_1_timer.html#ac98de320538976bfd054e663b72d4f35">qpp::Timer&lt; T, CLOCK_T &gt;</a>
+: <a class="el" href="classqpp_1_1_timer.html#a508a8df2570ce6717e7e5db1edc345cc">qpp::Timer&lt; T, CLOCK_T &gt;</a>
 </li>
 <li>toc()
 : <a class="el" href="classqpp_1_1_timer.html#a05a542928cd438e98300051789ab846a">qpp::Timer&lt; T, CLOCK_T &gt;</a>
@@ -269,6 +322,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>~Init()
 : <a class="el" href="classqpp_1_1_init.html#af6c4566d220d568199e1ca9d954cb8da">qpp::Init</a>
 </li>
+<li>~MatrixViewBase()
+: <a class="el" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a563346b0a44beac5cb595a822555ba2d">qpp::experimental::MatrixViewBase&lt; Derived &gt;</a>
+</li>
 <li>~RandomDevices()
 : <a class="el" href="classqpp_1_1_random_devices.html#a0d9c72bed8a55706b5005d05055ed4cb">qpp::RandomDevices</a>
 </li>
@@ -287,7 +343,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Nov 1 2015 12:36:58 for Quantum++ by
+    <li class="footer">Generated on Fri Nov 6 2015 13:47:12 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

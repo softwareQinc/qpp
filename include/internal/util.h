@@ -27,6 +27,13 @@
 #ifndef INTERNAL_UTIL_H_
 #define INTERNAL_UTIL_H_
 
+// silence g++4.9 bogus warning -Warray-bounds and -Wmaybe-uninitialized
+// in qpp::util::__multiidx2n()
+#if (__GNUC__ && !__clang__)
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
+
 namespace qpp
 {
 /**
@@ -277,7 +284,9 @@ dyn_mat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
     dyn_mat<typename Derived1::Scalar> result;
     result.resize(Arows * Brows, Acols * Bcols);
 
+#ifdef WITH_OPENMP
 #pragma omp parallel for collapse(2)
+#endif    
     for (idx j = 0; j < Acols; ++j) // column major order for speed
         for (idx i = 0; i < Arows; ++i)
             result.block(i * Brows, j * Bcols, Brows, Bcols) = rA(i, j) * rB;
