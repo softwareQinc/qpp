@@ -342,7 +342,7 @@ inline bool isprime(ubigint n)
 }
 
 /**
-* \brief Integer power modulo p
+* \brief Fast integer power modulo p based on the SQUARE-AND-MULTIPLY algorithm
 *
 * Computes \f$a^n\mathrm{ mod }p\f$
 *
@@ -365,8 +365,8 @@ inline ubigint modpow(ubigint a, ubigint n, ubigint p)
     for (; n > 0; n /= 2)
     {
         if (n % 2)
-            result = (result * a) % p;
-        a = (a * a) % p;
+            result = (result * a) % p; // MULTIPLY
+        a = (a * a) % p; // SQUARE
     }
 
     return result;
