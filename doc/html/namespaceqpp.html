@@ -648,7 +648,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a5b6f56832ec0f783ff14d9d938a8c19d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Primality test.  <a href="#a5b6f56832ec0f783ff14d9d938a8c19d">More...</a><br /></td></tr>
 <tr class="separator:a5b6f56832ec0f783ff14d9d938a8c19d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33c5abdca880346a87211b1f8c7abcca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#afc096e016bb523c42964a4ace6f8a0a4">ubigint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a33c5abdca880346a87211b1f8c7abcca">modpow</a> (<a class="el" href="namespaceqpp.html#afc096e016bb523c42964a4ace6f8a0a4">ubigint</a> a, <a class="el" href="namespaceqpp.html#afc096e016bb523c42964a4ace6f8a0a4">ubigint</a> n, <a class="el" href="namespaceqpp.html#afc096e016bb523c42964a4ace6f8a0a4">ubigint</a> p)</td></tr>
-<tr class="memdesc:a33c5abdca880346a87211b1f8c7abcca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integer power modulo p.  <a href="#a33c5abdca880346a87211b1f8c7abcca">More...</a><br /></td></tr>
+<tr class="memdesc:a33c5abdca880346a87211b1f8c7abcca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fast integer power modulo p based on the SQUARE-AND-MULTIPLY algorithm.  <a href="#a33c5abdca880346a87211b1f8c7abcca">More...</a><br /></td></tr>
 <tr class="separator:a33c5abdca880346a87211b1f8c7abcca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e583ad0b10c1250e39c9d9bc8bade78"><td class="memTemplParams" colspan="2">template&lt;typename Derived1 , typename Derived2 &gt; </td></tr>
 <tr class="memitem:a1e583ad0b10c1250e39c9d9bc8bade78"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt; typename Derived1::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a1e583ad0b10c1250e39c9d9bc8bade78">applyCTRL</a> (const Eigen::MatrixBase&lt; Derived1 &gt; &amp;state, const Eigen::MatrixBase&lt; Derived2 &gt; &amp;A, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;ctrl, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;subsys, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;dims)</td></tr>
@@ -4669,7 +4669,7 @@ template&lt;typename Derived &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Integer power modulo p. </p>
+<p>Fast integer power modulo p based on the SQUARE-AND-MULTIPLY algorithm. </p>
 <p>Computes <img class="formulaInl" alt="$a^n\mathrm{ mod }p$" src="form_35.png"/></p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -7760,7 +7760,7 @@ template&lt;typename Container &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Fri Nov 6 2015 13:47:11 for Quantum++ by
+    <li class="footer">Generated on Wed Sep 7 2016 20:44:28 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
