@@ -51,10 +51,10 @@ struct _Display_Impl
         std::vector<std::string> vstr;
         std::string strA;
 
-        for (idx i = 0; i < static_cast<idx>(_A.rows()); ++i)
+        for ( idx i = 0; i < static_cast<idx>(_A.rows()); ++i )
         {
-            for (idx j = 0;
-                 j < static_cast<idx>(_A.cols()); ++j)
+            for ( idx j = 0;
+                  j < static_cast<idx>(_A.cols()); ++j )
             {
                 strA.clear(); // clear the temporary string
                 ostr.clear();
@@ -64,19 +64,19 @@ struct _Display_Impl
                 double re = static_cast<cplx>(_A(i, j)).real();
                 double im = static_cast<cplx>(_A(i, j)).imag();
 
-                if (std::abs(re) < _chop && std::abs(im) < _chop)
+                if ( std::abs(re) < _chop && std::abs(im) < _chop )
                 {
                     ostr << "0 "; // otherwise segfault on destruction
                     // if using only vstr.push_back("0 ");
                     // bug in MATLAB libmx
                     vstr.push_back(ostr.str());
                 }
-                else if (std::abs(re) < _chop)
+                else if ( std::abs(re) < _chop )
                 {
                     ostr << im;
                     vstr.push_back(ostr.str() + "i");
                 }
-                else if (std::abs(im) < _chop)
+                else if ( std::abs(im) < _chop )
                 {
                     ostr << re;
                     vstr.push_back(ostr.str() + " ");
@@ -100,25 +100,25 @@ struct _Display_Impl
         // determine the maximum lenght of the entries in each column
         std::vector<idx> maxlengthcols(_A.cols(), 0);
 
-        for (idx i = 0; i < static_cast<idx>(_A.rows());
-             ++i)
-            for (idx j = 0;
-                 j < static_cast<idx>(_A.cols()); ++j)
-                if (vstr[i * _A.cols() + j].size() > maxlengthcols[j])
+        for ( idx i = 0; i < static_cast<idx>(_A.rows());
+              ++i )
+            for ( idx j = 0;
+                  j < static_cast<idx>(_A.cols()); ++j )
+                if ( vstr[i * _A.cols() + j].size() > maxlengthcols[j] )
                     maxlengthcols[j] = vstr[i * _A.cols() + j].size();
 
         // finally display it!
-        for (idx i = 0; i < static_cast<idx>(_A.rows()); ++i)
+        for ( idx i = 0; i < static_cast<idx>(_A.rows()); ++i )
         {
             _os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
-            << vstr[i * _A.cols()]; // display first column
+                << vstr[i * _A.cols()]; // display first column
             // then the rest
-            for (idx j = 1;
-                 j < static_cast<idx>(_A.cols()); ++j)
+            for ( idx j = 1;
+                  j < static_cast<idx>(_A.cols()); ++j )
                 _os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
-                << std::right << vstr[i * _A.cols() + j];
+                    << std::right << vstr[i * _A.cols() + j];
 
-            if (i < static_cast<idx>(_A.rows()) - 1)
+            if ( i < static_cast<idx>(_A.rows()) - 1 )
                 _os << std::endl;
         }
 
@@ -161,9 +161,9 @@ private:
         os << _start;
 
         bool first = true;
-        for (auto it = _first; it != _last; ++it)
+        for ( auto it = _first; it != _last; ++it )
         {
-            if (!first)
+            if ( !first )
                 os << _separator;
             first = false;
             os << *it;
@@ -203,9 +203,9 @@ private:
     {
         os << _start;
 
-        for (idx i = 0; i < _n - 1; ++i)
+        for ( idx i = 0; i < _n - 1; ++i )
             os << _p[i] << _separator;
-        if (_n > 0)
+        if ( _n > 0 )
             os << _p[_n - 1];
 
         os << _end;

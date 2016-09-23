@@ -12,7 +12,7 @@ int main()
     cout << ">> Qudit teleportation, D = " << D << endl;
 
     ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
-    for (idx i = 0; i < D; ++i)
+    for ( idx i = 0; i < D; ++i )
         mes_AB += mket({i, i}, D);
     mes_AB /= std::sqrt((double) D);
 

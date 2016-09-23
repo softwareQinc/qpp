@@ -83,7 +83,7 @@ inline dmat loadMATLABmatrix(const std::string& mat_file,
 
     // EXCEPTION CHECKS
 
-    if (!pmat)
+    if ( !pmat )
     {
         throw std::runtime_error(
                 "qpp::loadMATLABmatrix(): Can not open MATLAB file "
@@ -91,17 +91,17 @@ inline dmat loadMATLABmatrix(const std::string& mat_file,
     }
 
     mxArray* pa = matGetVariable(pmat, var_name.c_str());
-    if (!pa)
+    if ( !pa )
         throw std::runtime_error(
                 "qpp::loadMATLABmatrix(): Can not load the variable "
                 + var_name + " from MATLAB file " + mat_file + "!");
 
-    if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
+    if ( mxGetNumberOfDimensions(pa) != 2 ) // not a matrix
         throw std::runtime_error(
                 "qpp::loadMATLABmatrix(): Loaded variable " + var_name
                 + " is not 2-dimensional!");
 
-    if (!mxIsDouble(pa))
+    if ( !mxIsDouble(pa))
         throw std::runtime_error(
                 "qpp::loadMATLABmatrix(): Loaded variable " + var_name
                 + " is not in double-precision format!");
@@ -149,7 +149,7 @@ inline cmat loadMATLABmatrix(const std::string& mat_file,
 
     // EXCEPTION CHECKS
 
-    if (!pmat)
+    if ( !pmat )
     {
         throw std::runtime_error(
                 "qpp::loadMATLABmatrix(): Can not open MATLAB file "
@@ -157,17 +157,17 @@ inline cmat loadMATLABmatrix(const std::string& mat_file,
     }
 
     mxArray* pa = matGetVariable(pmat, var_name.c_str());
-    if (!pa)
+    if ( !pa )
         throw std::runtime_error(
                 "qpp::loadMATLABmatrix(): Can not load the variable "
                 + var_name + " from MATLAB file " + mat_file + "!");
 
-    if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
+    if ( mxGetNumberOfDimensions(pa) != 2 ) // not a matrix
         throw std::runtime_error(
                 "qpp::loadMATLABmatrix(): Loaded variable " + var_name
                 + " is not 2-dimensional!");
 
-    if (!mxIsDouble(pa))
+    if ( !mxIsDouble(pa))
         throw std::runtime_error(
                 "qpp::loadMATLABmatrix(): Loaded variable " + var_name
                 + " is not in double-precision format!");
@@ -187,7 +187,7 @@ inline cmat loadMATLABmatrix(const std::string& mat_file,
     std::memcpy(result_re.data(), pa_re,
                 sizeof(double) * mxGetNumberOfElements(pa));
 
-    if (mxIsComplex(pa)) // populate the imaginary part if exists
+    if ( mxIsComplex(pa)) // populate the imaginary part if exists
     {
         pa_im = static_cast<double*>(mxGetPi(pa));
         std::memcpy(result_im.data(), pa_im,
@@ -246,24 +246,24 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <dmat>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if ( !internal::_check_nonzero_size(rA))
         throw Exception("qpp::saveMATLABmatrix()", Exception::Type::ZERO_SIZE);
 
     MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
-    if (!pmat)
+    if ( !pmat )
         throw std::runtime_error(
                 "qpp::saveMATLABmatrix(): Can not open/create MATLAB file "
                 + mat_file + "!");
 
     mxArray* pa = mxCreateDoubleMatrix(rA.rows(), rA.cols(), mxREAL);
-    if (!pa)
+    if ( !pa )
         throw std::runtime_error(
                 "qpp::saveMATLABmatrix(): mxCreateDoubleMatrix failed!");
     // END EXCEPTION CHECKS
 
     std::memcpy(mxGetPr(pa), rA.data(), sizeof(double) * rA.size());
 
-    if (matPutVariable(pmat, var_name.c_str(), pa))
+    if ( matPutVariable(pmat, var_name.c_str(), pa))
         throw std::runtime_error(
                 "qpp::saveMATLABmatrix(): Can not write the variable "
                 + var_name + " to MATLAB file " + mat_file + "!");
@@ -296,7 +296,7 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <cmat>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if ( !internal::_check_nonzero_size(rA))
         throw Exception("qpp::saveMATLABmatrix()", Exception::Type::ZERO_SIZE);
 
     // cast the input to a double (internal MATLAB format)
@@ -304,14 +304,14 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <cmat>& A,
     dmat tmp_im = rA.imag();
 
     MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
-    if (!pmat)
+    if ( !pmat )
         throw std::runtime_error(
                 "qpp::saveMATLABmatrix(): Can not open/create MATLAB file "
                 + mat_file + "!");
 
     mxArray* pa = mxCreateDoubleMatrix(
             tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);
-    if (!pa)
+    if ( !pa )
         throw std::runtime_error(
                 "qpp::saveMATLABmatrix(): mxCreateDoubleMatrix failed!");
     // END EXCEPTION CHECKS
@@ -326,7 +326,7 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <cmat>& A,
     pa_im = static_cast<double*>(mxGetPi(pa));
     std::memcpy(pa_im, tmp_im.data(), sizeof(double) * tmp_im.size());
 
-    if (matPutVariable(pmat, var_name.c_str(), pa))
+    if ( matPutVariable(pmat, var_name.c_str(), pa))
         throw std::runtime_error(
                 "qpp::saveMATLABmatrix(): Can not write the variable "
                 + var_name + " to MATLAB file " + mat_file + "!");

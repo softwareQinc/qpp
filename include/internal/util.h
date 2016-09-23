@@ -49,7 +49,7 @@ inline void _n2multiidx(idx n, idx numdims, const idx* dims, idx* result)
 noexcept
 {
     // no error checks to improve speed
-    for (idx i = 0; i < numdims; ++i)
+    for ( idx i = 0; i < numdims; ++i )
     {
         result[numdims - i - 1] = n % (dims[numdims - i - 1]);
         n /= (dims[numdims - i - 1]);
@@ -69,7 +69,7 @@ noexcept
 
     idx result = 0;
     part_prod[numdims - 1] = 1;
-    for (idx i = 1; i < numdims; ++i)
+    for ( idx i = 1; i < numdims; ++i )
     {
         part_prod[numdims - i - 1] =
                 part_prod[numdims - i] * dims[numdims - i];
@@ -124,13 +124,13 @@ bool _check_matching_sizes(const T1& lhs, const T2& rhs) noexcept
 // check that dims is a valid dimension vector
 inline bool _check_dims(const std::vector<idx>& dims)
 {
-    if (dims.size() == 0)
+    if ( dims.size() == 0 )
         return false;
 
     return std::find_if(std::begin(dims), std::end(dims),
                         [dims](idx i) -> bool
                         {
-                            if (i == 0) return true;
+                            if ( i == 0 ) return true;
                             else return false;
                         }) == std::end(dims);
 }
@@ -172,8 +172,8 @@ bool _check_dims_match_rvect(const std::vector<idx>& dims,
 // check that all elements in valid dims equal to dim
 inline bool _check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept
 {
-    for (idx i : dims)
-        if (i != dim)
+    for ( idx i : dims )
+        if ( i != dim )
             return false;
 
     return true;
@@ -188,7 +188,7 @@ inline bool _check_subsys_match_dims(const std::vector<idx>& subsys,
     //		return false;
 
     // check valid number of subsystems
-    if (subsys.size() > dims.size())
+    if ( subsys.size() > dims.size())
         return false;
 
     // sort the subsystems
@@ -196,8 +196,8 @@ inline bool _check_subsys_match_dims(const std::vector<idx>& subsys,
     std::sort(std::begin(subsyssort), std::end(subsyssort));
 
     // check duplicates
-    if (std::unique(std::begin(subsyssort), std::end(subsyssort))
-        != std::end(subsyssort))
+    if ( std::unique(std::begin(subsyssort), std::end(subsyssort))
+         != std::end(subsyssort))
         return false;
 
     // check range of subsystems
@@ -241,7 +241,7 @@ bool _check_qubit_vector(const Eigen::MatrixBase<Derived>& V) noexcept
 // check valid permutation
 inline bool _check_perm(const std::vector<idx>& perm)
 {
-    if (perm.size() == 0)
+    if ( perm.size() == 0 )
         return false;
 
     std::vector<idx> ordered(perm.size());
@@ -263,16 +263,16 @@ dyn_mat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
     // EXCEPTION CHECKS
 
     // check types
-    if (!std::is_same<typename Derived1::Scalar,
-            typename Derived2::Scalar>::value)
+    if ( !std::is_same<typename Derived1::Scalar,
+            typename Derived2::Scalar>::value )
         throw Exception("qpp::kron()", Exception::Type::TYPE_MISMATCH);
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if ( !internal::_check_nonzero_size(rA))
         throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rB))
+    if ( !internal::_check_nonzero_size(rB))
         throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
     // END EXCEPTION CHECKS
 
@@ -286,9 +286,9 @@ dyn_mat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for collapse(2)
-#endif    
-    for (idx j = 0; j < Acols; ++j) // column major order for speed
-        for (idx i = 0; i < Arows; ++i)
+#endif
+    for ( idx j = 0; j < Acols; ++j ) // column major order for speed
+        for ( idx i = 0; i < Arows; ++i )
             result.block(i * Brows, j * Bcols, Brows, Bcols) = rA(i, j) * rB;
 
     return result;
@@ -307,16 +307,16 @@ dyn_mat<typename Derived1::Scalar> _dirsum2(
     // EXCEPTION CHECKS
 
     // check types
-    if (!std::is_same<typename Derived1::Scalar,
-            typename Derived2::Scalar>::value)
+    if ( !std::is_same<typename Derived1::Scalar,
+            typename Derived2::Scalar>::value )
         throw Exception("qpp::dirsum()", Exception::Type::TYPE_MISMATCH);
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if ( !internal::_check_nonzero_size(rA))
         throw Exception("qpp::dirsum()", Exception::Type::ZERO_SIZE);
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rB))
+    if ( !internal::_check_nonzero_size(rB))
         throw Exception("qpp::dirsum()", Exception::Type::ZERO_SIZE);
     // END EXCEPTION CHECKS
 

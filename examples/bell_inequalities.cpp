@@ -25,17 +25,17 @@ int main()
     long E[4] = {0}; // experimental estimate
 
     idx gate_idx = 0; // gate index (0, 1, 2 or 3)
-    for (auto&& gateA: {Q, R}) // measure Alice's side
+    for ( auto&& gateA: {Q, R} ) // measure Alice's side
     {
         // eigenvalues, so we know the order
         dyn_col_vect<double> evalsA = hevals(gateA);
         cmat basisA = hevects(gateA); // eigenvectors, ordered by eigenvalues
-        for (auto&& gateB: {S, T}) // measure Bob's side
+        for ( auto&& gateB: {S, T} ) // measure Bob's side
         {
             // eigenvalues, so we know the order
             dyn_col_vect<double> evalsB = hevals(gateB);
             cmat basisB = hevects(gateB);
-            for (idx i = 0; i < N; ++i) // repeat the "experiment" N times
+            for ( idx i = 0; i < N; ++i ) // repeat the "experiment" N times
             {
                 auto measuredA = measure(psi, basisA, {0});
                 idx mA = std::get<0>(measuredA); // result on A
@@ -47,22 +47,22 @@ int main()
                 idx mB = std::get<0>(measuredB); // measurement result B
                 double evalB = evalsB[mB];
                 // count the correlations
-                if (evalA > 0 && evalB > 0)        // +1 +1 correlation
+                if ( evalA > 0 && evalB > 0 )        // +1 +1 correlation
                 {
                     statistics[gate_idx][0]++;
                     E[gate_idx]++;
                 }
-                else if (evalA > 0 && evalB < 0)  // +1 -1 anti-correlation
+                else if ( evalA > 0 && evalB < 0 )  // +1 -1 anti-correlation
                 {
                     statistics[gate_idx][1]++;
                     E[gate_idx]--;
                 }
-                else if (evalA < 0 && evalB > 0)  // -1 +1 anti-correlation
+                else if ( evalA < 0 && evalB > 0 )  // -1 +1 anti-correlation
                 {
                     statistics[gate_idx][2]++;
                     E[gate_idx]--;
                 }
-                else if (evalA < 0 && evalB < 0) // -1 -1 correlation
+                else if ( evalA < 0 && evalB < 0 ) // -1 -1 correlation
                 {
                     statistics[gate_idx][3]++;
                     E[gate_idx]++;

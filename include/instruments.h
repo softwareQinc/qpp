@@ -53,42 +53,42 @@ dyn_col_vect<typename Derived::Scalar> ip(
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rphi))
+    if ( !internal::_check_nonzero_size(rphi))
         throw Exception("qpp::ip()", Exception::Type::ZERO_SIZE);
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rpsi))
+    if ( !internal::_check_nonzero_size(rpsi))
         throw Exception("qpp::ip()", Exception::Type::ZERO_SIZE);
 
     // check column vector
-    if (!internal::_check_cvector(rphi))
+    if ( !internal::_check_cvector(rphi))
         throw Exception("qpp::schmidtcoeffs()",
                         Exception::Type::MATRIX_NOT_CVECTOR);
 
     // check column vector
-    if (!internal::_check_cvector(rpsi))
+    if ( !internal::_check_cvector(rpsi))
         throw Exception("qpp::schmidtcoeffs()",
                         Exception::Type::MATRIX_NOT_CVECTOR);
 
     // check that dims is a valid dimension vector
-    if (!internal::_check_dims(dims))
+    if ( !internal::_check_dims(dims))
         throw Exception("qpp::ip()", Exception::Type::DIMS_INVALID);
 
     // check that subsys are valid
-    if (!internal::_check_subsys_match_dims(subsys, dims))
+    if ( !internal::_check_subsys_match_dims(subsys, dims))
         throw Exception("qpp::ip()",
                         Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     // check that dims match state vector psi
-    if (!internal::_check_dims_match_cvect(dims, rpsi))
+    if ( !internal::_check_dims_match_cvect(dims, rpsi))
         throw Exception("qpp::ip()",
                         Exception::Type::DIMS_MISMATCH_CVECTOR);
 
     // check that subsys match state vector phi
     std::vector<idx> subsys_dims(subsys.size());
-    for (idx i = 0; i < subsys.size(); ++i)
+    for ( idx i = 0; i < subsys.size(); ++i )
         subsys_dims[i] = dims[subsys[i]];
-    if (!internal::_check_dims_match_cvect(subsys_dims, rphi))
+    if ( !internal::_check_dims_match_cvect(subsys_dims, rphi))
         throw Exception("qpp::ip()",
                         Exception::Type::DIMS_MISMATCH_CVECTOR);
     // END EXCEPTION CHECKS
@@ -112,16 +112,16 @@ dyn_col_vect<typename Derived::Scalar> ip(
     std::copy(std::begin(subsys_bar), std::end(subsys_bar),
               std::begin(Csubsysbar));
 
-    for (idx i = 0; i < n; ++i)
+    for ( idx i = 0; i < n; ++i )
     {
         Cdims[i] = dims[i];
     }
-    for (idx i = 0; i < nsubsys; ++i)
+    for ( idx i = 0; i < nsubsys; ++i )
     {
         Csubsys[i] = subsys[i];
         Cdimssubsys[i] = dims[subsys[i]];
     }
-    for (idx i = 0; i < nsubsysbar; ++i)
+    for ( idx i = 0; i < nsubsysbar; ++i )
     {
         Cdimssubsysbar[i] = dims[subsys_bar[i]];
     }
@@ -137,19 +137,19 @@ dyn_col_vect<typename Derived::Scalar> ip(
         internal::_n2multiidx(b, nsubsysbar,
                               Cdimssubsysbar, Cmidxcolsubsysbar);
         /* write it in the global row multi-index */
-        for (idx k = 0; k < nsubsysbar; ++k)
+        for ( idx k = 0; k < nsubsysbar; ++k )
         {
             Cmidxrow[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
         }
 
         typename Derived::Scalar result = 0;
-        for (idx a = 0; a < Dsubsys; ++a)
+        for ( idx a = 0; a < Dsubsys; ++a )
         {
             /* get the row multi-indexes of the subsys */
             internal::_n2multiidx(a, nsubsys,
                                   Cdimssubsys, Cmidxrowsubsys);
             /* write it in the global row multi-index */
-            for (idx k = 0; k < nsubsys; ++k)
+            for ( idx k = 0; k < nsubsys; ++k )
             {
                 Cmidxrow[Csubsys[k]] = Cmidxrowsubsys[k];
             }
@@ -166,7 +166,7 @@ dyn_col_vect<typename Derived::Scalar> ip(
 #ifdef WITH_OPENMP
 #pragma omp parallel for
 #endif
-    for (idx m = 0; m < Dsubsysbar; ++m)
+    for ( idx m = 0; m < Dsubsysbar; ++m )
         result(m) = worker(m);
 
     return result;
@@ -194,11 +194,11 @@ dyn_col_vect<typename Derived::Scalar> ip(
 
     // EXCEPTION CHECKS
 
-    if (!internal::_check_nonzero_size(rpsi))
+    if ( !internal::_check_nonzero_size(rpsi))
         throw Exception("qpp::ip()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if ( d == 0 )
         throw Exception("qpp::ip()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
@@ -228,19 +228,19 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if ( !internal::_check_nonzero_size(rA))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
     // check the Kraus operators
-    if (Ks.size() == 0)
+    if ( Ks.size() == 0 )
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
-    if (!internal::_check_square_mat(Ks[0]))
+    if ( !internal::_check_square_mat(Ks[0]))
         throw Exception("qpp::measure()", Exception::Type::MATRIX_NOT_SQUARE);
-    if (Ks[0].rows() != rA.rows())
+    if ( Ks[0].rows() != rA.rows())
         throw Exception("qpp::measure()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
-    for (auto&& it : Ks)
-        if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+    for ( auto&& it : Ks )
+        if ( it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
             throw Exception("qpp::measure()", Exception::Type::DIMS_NOT_EQUAL);
     // END EXCEPTION CHECKS
 
@@ -250,27 +250,27 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)
     std::vector<cmat> outstates(Ks.size());
 
     //************ density matrix ************//
-    if (internal::_check_square_mat(rA)) // square matrix
+    if ( internal::_check_square_mat(rA)) // square matrix
     {
-        for (idx i = 0; i < Ks.size(); ++i)
+        for ( idx i = 0; i < Ks.size(); ++i )
         {
             outstates[i] = cmat::Zero(rA.rows(), rA.rows());
             cmat tmp = Ks[i] * rA * adjoint(Ks[i]); // un-normalized;
             prob[i] = std::abs(trace(tmp)); // probability
-            if (prob[i] > eps)
+            if ( prob[i] > eps )
                 outstates[i] = tmp / prob[i]; // normalized
         }
     }
         //************ ket ************//
-    else if (internal::_check_cvector(rA)) // column vector
+    else if ( internal::_check_cvector(rA)) // column vector
     {
-        for (idx i = 0; i < Ks.size(); ++i)
+        for ( idx i = 0; i < Ks.size(); ++i )
         {
             outstates[i] = ket::Zero(rA.rows());
             ket tmp = Ks[i] * rA; // un-normalized;
             // probability
             prob[i] = std::pow(norm(tmp), 2);
-            if (prob[i] > eps)
+            if ( prob[i] > eps )
                 outstates[i] = tmp / std::sqrt(prob[i]); // normalized
         }
     }
@@ -325,21 +325,21 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U)
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if ( !internal::_check_nonzero_size(rA))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
     // check the unitary basis matrix U
-    if (!internal::_check_nonzero_size(U))
+    if ( !internal::_check_nonzero_size(U))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
-    if (!internal::_check_square_mat(U))
+    if ( !internal::_check_square_mat(U))
         throw Exception("qpp::measure()", Exception::Type::MATRIX_NOT_SQUARE);
-    if (U.rows() != rA.rows())
+    if ( U.rows() != rA.rows())
         throw Exception("qpp::measure()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
     // END EXCEPTION CHECKS
 
     std::vector<cmat> Ks(U.rows());
-    for (idx i = 0; i < static_cast<idx>(U.rows()); ++i)
+    for ( idx i = 0; i < static_cast<idx>(U.rows()); ++i )
         Ks[i] = U.col(i) * adjoint(U.col(i));
 
     return measure(rA, Ks);
@@ -375,25 +375,25 @@ measure(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if ( !internal::_check_nonzero_size(rA))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
     // check that dimension is valid
-    if (!internal::_check_dims(dims))
+    if ( !internal::_check_dims(dims))
         throw Exception("qpp::measure()", Exception::Type::DIMS_INVALID);
 
     // check that dims match rho matrix
-    if (!internal::_check_dims_match_mat(dims, rA))
+    if ( !internal::_check_dims_match_mat(dims, rA))
         throw Exception("qpp::measure()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
 
     // check subsys is valid w.r.t. dims
-    if (!internal::_check_subsys_match_dims(subsys, dims))
+    if ( !internal::_check_subsys_match_dims(subsys, dims))
         throw Exception("qpp::measure()",
                         Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     std::vector<idx> subsys_dims(subsys.size());
-    for (idx i = 0; i < subsys.size(); ++i)
+    for ( idx i = 0; i < subsys.size(); ++i )
         subsys_dims[i] = dims[subsys[i]];
 
     idx D = prod(std::begin(dims), std::end(dims));
@@ -401,17 +401,17 @@ measure(const Eigen::MatrixBase<Derived>& A,
     idx Dsubsysbar = D / Dsubsys;
 
     // check the Kraus operators
-    if (Ks.size() == 0)
+    if ( Ks.size() == 0 )
         throw Exception("qpp::measure()",
                         Exception::Type::ZERO_SIZE);
-    if (!internal::_check_square_mat(Ks[0]))
+    if ( !internal::_check_square_mat(Ks[0]))
         throw Exception("qpp::measure()",
                         Exception::Type::MATRIX_NOT_SQUARE);
-    if (Dsubsys != static_cast<idx>(Ks[0].rows()))
+    if ( Dsubsys != static_cast<idx>(Ks[0].rows()))
         throw Exception("qpp::measure()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
-    for (auto&& it : Ks)
-        if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+    for ( auto&& it : Ks )
+        if ( it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
             throw Exception("qpp::measure()",
                             Exception::Type::DIMS_NOT_EQUAL);
     // END EXCEPTION CHECKS
@@ -422,14 +422,14 @@ measure(const Eigen::MatrixBase<Derived>& A,
     std::vector<cmat> outstates(Ks.size(), cmat::Zero(Dsubsysbar, Dsubsysbar));
 
     //************ density matrix ************//
-    if (internal::_check_square_mat(rA)) // square matrix
+    if ( internal::_check_square_mat(rA)) // square matrix
     {
-        for (idx i = 0; i < Ks.size(); ++i)
+        for ( idx i = 0; i < Ks.size(); ++i )
         {
             cmat tmp = apply(rA, Ks[i], subsys, dims);
             tmp = ptrace(tmp, subsys, dims);
             prob[i] = std::abs(trace(tmp)); // probability
-            if (prob[i] > eps)
+            if ( prob[i] > eps )
             {
                 // normalized output state
                 // corresponding to measurement result i
@@ -438,13 +438,13 @@ measure(const Eigen::MatrixBase<Derived>& A,
         }
     }
         //************ ket ************//
-    else if (internal::_check_cvector(rA)) // column vector
+    else if ( internal::_check_cvector(rA)) // column vector
     {
-        for (idx i = 0; i < Ks.size(); ++i)
+        for ( idx i = 0; i < Ks.size(); ++i )
         {
             ket tmp = apply(rA, Ks[i], subsys, dims);
             prob[i] = std::pow(norm(tmp), 2);
-            if (prob[i] > eps)
+            if ( prob[i] > eps )
             {
                 // normalized output state
                 // corresponding to measurement result i
@@ -524,11 +524,11 @@ measure(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero size
-    if (!internal::_check_nonzero_size(rA))
+    if ( !internal::_check_nonzero_size(rA))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if ( d == 0 )
         throw Exception("qpp::measure()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
@@ -601,30 +601,30 @@ measure(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if ( !internal::_check_nonzero_size(rA))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
     // check that dimension is valid
-    if (!internal::_check_dims(dims))
+    if ( !internal::_check_dims(dims))
         throw Exception("qpp::measure()", Exception::Type::DIMS_INVALID);
 
     // check subsys is valid w.r.t. dims
-    if (!internal::_check_subsys_match_dims(subsys, dims))
+    if ( !internal::_check_subsys_match_dims(subsys, dims))
         throw Exception("qpp::measure()",
                         Exception::Type::SUBSYS_MISMATCH_DIMS);
 
     std::vector<idx> subsys_dims(subsys.size());
-    for (idx i = 0; i < subsys.size(); ++i)
+    for ( idx i = 0; i < subsys.size(); ++i )
         subsys_dims[i] = dims[subsys[i]];
 
     idx Dsubsys = prod(std::begin(subsys_dims), std::end(subsys_dims));
 
     // check the matrix V
-    if (!internal::_check_nonzero_size(V))
+    if ( !internal::_check_nonzero_size(V))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 //    if (!internal::_check_square_mat(U))
 //        throw Exception("qpp::measure()", Exception::Type::MATRIX_NOT_SQUARE);
-    if (Dsubsys != static_cast<idx>(V.rows()))
+    if ( Dsubsys != static_cast<idx>(V.rows()))
         throw Exception("qpp::measure()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
     // END EXCEPTION CHECKS
@@ -633,11 +633,11 @@ measure(const Eigen::MatrixBase<Derived>& A,
     idx M = static_cast<idx>(V.cols());
 
     //************ ket ************//
-    if (internal::_check_cvector(rA))
+    if ( internal::_check_cvector(rA))
     {
         const ket& rpsi = A;
         // check that dims match state vector
-        if (!internal::_check_dims_match_cvect(dims, rA))
+        if ( !internal::_check_dims_match_cvect(dims, rA))
             throw Exception("qpp::measure()",
                             Exception::Type::DIMS_MISMATCH_CVECTOR);
 
@@ -647,15 +647,15 @@ measure(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP
 #pragma omp parallel for
 #endif
-        for (idx i = 0; i < M; ++i)
+        for ( idx i = 0; i < M; ++i )
             outstates[i] = ip(static_cast<const ket&>(V.col(i)),
                               rpsi, subsys, dims);
 
-        for (idx i = 0; i < M; ++i)
+        for ( idx i = 0; i < M; ++i )
         {
             double tmp = norm(outstates[i]);
             prob[i] = tmp * tmp;
-            if (prob[i] > eps)
+            if ( prob[i] > eps )
             {
                 // normalized output state
                 // corresponding to measurement result m
@@ -671,15 +671,15 @@ measure(const Eigen::MatrixBase<Derived>& A,
         return std::make_tuple(result, prob, outstates);
     }
         //************ density matrix ************//
-    else if (internal::_check_square_mat(rA))
+    else if ( internal::_check_square_mat(rA))
     {
         // check that dims match rho matrix
-        if (!internal::_check_dims_match_mat(dims, rA))
+        if ( !internal::_check_dims_match_mat(dims, rA))
             throw Exception("qpp::measure()",
                             Exception::Type::DIMS_MISMATCH_MATRIX);
 
         std::vector<cmat> Ks(M);
-        for (idx i = 0; i < M; ++i)
+        for ( idx i = 0; i < M; ++i )
             Ks[i] = V.col(i) * adjoint(V.col(i));
 
         return measure(rA, Ks, subsys, dims);
@@ -720,11 +720,11 @@ measure(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero size
-    if (!internal::_check_nonzero_size(rA))
+    if ( !internal::_check_nonzero_size(rA))
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if ( d == 0 )
         throw Exception("qpp::measure()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
@@ -761,20 +761,20 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(cA))
+    if ( !internal::_check_nonzero_size(cA))
         throw Exception("qpp::measure_seq()", Exception::Type::ZERO_SIZE);
 
     // check that dimension is valid
-    if (!internal::_check_dims(dims))
+    if ( !internal::_check_dims(dims))
         throw Exception("qpp::measure_seq()", Exception::Type::DIMS_INVALID);
 
     // check that dims match rho matrix
-    if (!internal::_check_dims_match_mat(dims, cA))
+    if ( !internal::_check_dims_match_mat(dims, cA))
         throw Exception("qpp::measure_seq()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
 
     // check subsys is valid w.r.t. dims
-    if (!internal::_check_subsys_match_dims(subsys, dims))
+    if ( !internal::_check_subsys_match_dims(subsys, dims))
         throw Exception("qpp::measure_seq()",
                         Exception::Type::SUBSYS_MISMATCH_DIMS);
     // END EXCEPTION CHECKS
@@ -787,7 +787,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
     std::sort(std::begin(subsys), std::end(subsys), std::greater<idx>{});
 
     //************ density matrix or column vector ************//
-    if (internal::_check_square_mat(cA) || internal::_check_cvector(cA))
+    if ( internal::_check_square_mat(cA) || internal::_check_cvector(cA))
     {
         while (subsys.size() > 0)
         {
@@ -838,11 +838,11 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero size
-    if (!internal::_check_nonzero_size(rA))
+    if ( !internal::_check_nonzero_size(rA))
         throw Exception("qpp::measure_seq()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if ( d == 0 )
         throw Exception("qpp::measure_seq()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 

@@ -18,13 +18,13 @@ int main()
     // in the X basis
     std::tie(result, probs, states) = measure(psi, gt.H, {0});
     cout << ">> Measuring part " << disp(subsys, " ")
-            << " of the state: " << endl;
+         << " of the state: " << endl;
     cout << disp(psi) << endl;
     cout << ">> Measurement result: " << result << endl;
     cout << ">> Probabilities: " << disp(probs, ", ") << endl;
     cout << ">> Resulting normalized post-measurement states: " << endl;
 
-    for (auto&& it: states)
+    for ( auto&& it: states )
         cout << disp(it) << endl << endl;
 
     // measure 2 subsystems out of a 4-qubit random density matrix
@@ -33,17 +33,17 @@ int main()
     cmat U = randU(4); // random basis on 2 qubits
 
     cout << ">> Measuring qubits " << disp(subsys, " ")
-            << " of a 4-qubit random state in the random basis:" << endl;
+         << " of a 4-qubit random state in the random basis:" << endl;
     cout << disp(U) << endl;
 
     std::tie(result, probs, states) = measure(rho, U, {1, 2});
     cout << ">> Measurement result: " << result << endl;
     cout << ">> Probabilities: " << disp(probs, ", ") << endl;
     cout << ">> Sum of the probabilities: "
-            << sum(probs.begin(), probs.end()) << endl;
+         << sum(probs.begin(), probs.end()) << endl;
     cout << ">> Resulting normalized post-measurement states: " << endl;
 
-    for (auto&& it: states)
+    for ( auto&& it: states )
         cout << disp(it) << endl << endl;
 
     // check now how the state after the measurement "looks"
@@ -57,7 +57,7 @@ int main()
     cmat rho_out_bar = cmat::Zero(4, 4);
 
     // compute the resulting mixed state after the measurement
-    for (idx i = 0; i < probs.size(); ++i)
+    for ( idx i = 0; i < probs.size(); ++i )
         rho_out_bar += probs[i] * states[i];
 
     // verification

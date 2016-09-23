@@ -17,6 +17,7 @@ using namespace qpp;
 // TODO: write the documentation
 // TODO: test
 // TODO: check all psi, phi, A .derived() !!!!
+// TODO: check Eigen3 issues with channels.cpp
 
 // Future work
 // TODO: Implement a circuit description language, load/save from/to file

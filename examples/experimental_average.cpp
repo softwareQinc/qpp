@@ -15,11 +15,11 @@ int main()
 
     long res = 0;
     idx N = 10000; // number of "measurement experiments"
-    for (idx i = 0; i < N; ++i)
+    for ( idx i = 0; i < N; ++i )
     {
         auto measured = measure(psi, evects);
         idx m = std::get<0>(measured); // measurement result
-        if (evals[m] < 0) // -1
+        if ( evals[m] < 0 ) // -1
             res--;
         else              // +1
             res++;

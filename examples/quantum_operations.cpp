@@ -13,11 +13,11 @@ int main()
     // partial transpose of first subsystem
     cmat rhoTA = ptranspose(rho, {0});
     std::cout << ">> Eigenvalues of the partial transpose "
-                         "of Bell-0 state are:\n";
+            "of Bell-0 state are:\n";
     std::cout << disp(transpose(hevals(rhoTA))) << std::endl;
 
     std::cout << ">> Measurement channel with 2 Kraus operators:\n";
-    std::vector<cmat> Ks {st.pz0, st.pz1}; // 2 Kraus operators
+    std::vector<cmat> Ks{st.pz0, st.pz1}; // 2 Kraus operators
     std::cout << disp(Ks[0]) << "\n    and \n" << disp(Ks[1]) << std::endl;
 
     std::cout << ">> Superoperator matrix of the channel:\n";
@@ -29,7 +29,7 @@ int main()
     // apply the channel onto the first subsystem
     cmat rhoOut = apply(rho, Ks, {0});
     std::cout << ">> After applying the measurement channel "
-                         "on the first qubit:\n";
+            "on the first qubit:\n";
     std::cout << disp(rhoOut) << std::endl;
 
     // take the partial trace over the second subsystem

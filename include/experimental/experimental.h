@@ -53,7 +53,7 @@ public:
             _viewA(A),
             _rows(static_cast<idx>(A.rows())),
             _cols(static_cast<idx>(A.cols()))
-    { }
+    {}
 
     // disable temporaries
     MatrixViewBase(const Eigen::MatrixBase<Derived>&& A) = delete;
@@ -98,9 +98,9 @@ public:
 
 #ifdef WITH_OPENMP
 #pragma omp parallel for collapse(2)
-#endif        
-        for (idx j = 0; j < _cols; ++j)
-            for (idx i = 0; i < _rows; ++i)
+#endif
+        for ( idx j = 0; j < _cols; ++j )
+            for ( idx i = 0; i < _rows; ++i )
                 result(i, j) = this->operator()(i, j);
 
         return result;
@@ -149,13 +149,13 @@ public:
                const std::vector<idx> perm,
                const std::vector<idx> dims) :
             MatrixViewBase<Derived>(A), _perm(perm), _dims(dims)
-    { }
+    {}
 
     MatrixView(const Eigen::MatrixBase<Derived>& A,
                const std::vector<idx> perm,
                idx d = 2) :
             MatrixView(A, perm, std::vector<idx>(perm.size(), d))
-    { }
+    {}
 
     // additional getters
     std::vector<idx> perm() const noexcept
@@ -178,7 +178,7 @@ public:
         internal::_n2multiidx(i, _dims.size(), _dims.data(), Crowmidx);
         internal::_n2multiidx(j, _dims.size(), _dims.data(), Ccolmidx);
 
-        for (idx k = 0; k < _dims.size(); ++k)
+        for ( idx k = 0; k < _dims.size(); ++k )
         {
             Cdims_shuffled[_perm[k]] = _dims[k];
             Crowmidx_shuffled[_perm[k]] = Crowmidx[k];

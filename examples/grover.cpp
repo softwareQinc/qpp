@@ -31,7 +31,7 @@ int main()
     // number of queries
     idx nqueries = std::ceil(pi * std::sqrt((double) N) / 4.);
     cout << ">> We run " << nqueries << " queries" << endl;
-    for (idx i = 0; i < nqueries; ++i)
+    for ( idx i = 0; i < nqueries; ++i )
     {
         psi(marked) = -psi(marked); // apply the oracle first, no aliasing
         psi = (G * psi).eval(); // then the diffusion operator, no aliasing
@@ -47,7 +47,7 @@ int main()
     // sample
     cout << ">> Let's sample..." << endl;
     idx result = std::get<0>(measured);
-    if (result == marked)
+    if ( result == marked )
         cout << ">> Hooray, we obtained the correct result: ";
     else
         cout << ">> Not there yet... we obtained: ";

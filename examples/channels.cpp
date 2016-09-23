@@ -11,7 +11,7 @@ int main()
     idx nk = 5;
     idx D = 3; // nk Kraus on d-dimensional system
     cout << ">> Generating a random channel with " << nk
-    << " Kraus operators on a " << D << " dimensional space" << endl;
+         << " Kraus operators on a " << D << " dimensional space" << endl;
     std::vector<cmat> Ks = randkraus(nk, D);
 
     cmat rho_in = randrho(D); // random input state
@@ -22,7 +22,7 @@ int main()
     cout << ">> Choi matrix:" << endl << disp(choim) << endl;
 
     cout << ">> The eigenvalues of the Choi matrix are: "
-    << endl << disp(transpose(hevals(choim))) << endl;
+         << endl << disp(transpose(hevals(choim))) << endl;
 
     cout << ">> Their sum is: " << sum(hevals(choim)) << endl;
 
@@ -32,7 +32,7 @@ int main()
     cmat rho_out1 = apply(rho_in, Kperps);
     // verification
     cout << ">> Norm difference on output states: "
-    << norm(rho_out1 - rho_out) << endl;
+         << norm(rho_out1 - rho_out) << endl;
 
     cout << ">> Superoperator matrix:" << endl;
     cmat smat = kraus2super(Ks);
@@ -43,7 +43,7 @@ int main()
     cout << disp(transpose(evalsupop)) << endl;
 
     cout << ">> Their absolute values are: " << endl;
-    for (idx i = 0; i < (idx) evalsupop.size(); ++i)
+    for ( idx i = 0; i < (idx) evalsupop.size(); ++i )
         cout << std::abs(evalsupop(i)) << " ";
 
     // verification

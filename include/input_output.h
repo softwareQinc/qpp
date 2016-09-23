@@ -153,13 +153,13 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if ( !internal::_check_nonzero_size(rA))
         throw Exception("qpp::save()", Exception::Type::ZERO_SIZE);
 
     std::fstream fout;
     fout.open(fname, std::ios::out | std::ios::binary);
 
-    if (fout.fail())
+    if ( fout.fail())
     {
         throw std::runtime_error(
                 "qpp::save(): Error writing output file \""
@@ -208,7 +208,7 @@ dyn_mat<typename Derived::Scalar> load(const std::string& fname)
 
     // EXCEPTION CHECKS
 
-    if (fin.fail())
+    if ( fin.fail())
     {
         throw std::runtime_error(
                 "qpp::load(): Error opening input file \""
@@ -220,7 +220,7 @@ dyn_mat<typename Derived::Scalar> load(const std::string& fname)
 
     // read the header from file
     fin.read(_fheader, sizeof(_header));
-    if (strcmp(_fheader, _header))
+    if ( strcmp(_fheader, _header))
     {
         delete[] _fheader;
         throw std::runtime_error(

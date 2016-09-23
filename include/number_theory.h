@@ -46,17 +46,17 @@ inline std::vector<int> x2contfrac(double x, idx n, idx cut = 1e5)
 {
     // EXCEPTION CHECKS
 
-    if (n == 0)
+    if ( n == 0 )
         throw Exception("qpp::x2contfrac()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
     std::vector<int> result;
 
-    for (idx i = 0; i < n; ++i)
+    for ( idx i = 0; i < n; ++i )
     {
         result.push_back(std::llround(std::floor(x)));
         x = 1 / (x - std::floor(x));
-        if (!std::isfinite(x) || x > cut)
+        if ( !std::isfinite(x) || x > cut )
             return result;
     }
 
@@ -77,21 +77,21 @@ inline double contfrac2x(const std::vector<int>& cf, idx n)
 {
     // EXCEPTION CHECKS
 
-    if (cf.size() == 0)
+    if ( cf.size() == 0 )
         throw Exception("qpp::contfrac2x()", Exception::Type::ZERO_SIZE);
 
-    if (n == 0)
+    if ( n == 0 )
         throw Exception("qpp::contfrac2x()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
-    if (n > cf.size())
+    if ( n > cf.size())
         n = cf.size();
 
-    if (n == 1) // degenerate case, integer
+    if ( n == 1 ) // degenerate case, integer
         return cf[0];
 
     double tmp = 1. / cf[n - 1];
-    for (idx i = n - 2; i != 0; --i)
+    for ( idx i = n - 2; i != 0; --i )
     {
         tmp = 1. / (tmp + cf[i]);
     }
@@ -110,15 +110,15 @@ inline double contfrac2x(const std::vector<int>& cf)
 {
     // EXCEPTION CHECKS
 
-    if (cf.size() == 0)
+    if ( cf.size() == 0 )
         throw Exception("qpp::contfrac2x()", Exception::Type::ZERO_SIZE);
     // END EXCEPTION CHECKS
 
-    if (cf.size() == 1) // degenerate case, integer
+    if ( cf.size() == 1 ) // degenerate case, integer
         return cf[0];
 
     double tmp = 1. / cf[cf.size() - 1];
-    for (idx i = cf.size() - 2; i != 0; --i)
+    for ( idx i = cf.size() - 2; i != 0; --i )
     {
         tmp = 1. / (tmp + cf[i]);
     }
@@ -138,11 +138,11 @@ inline ubigint gcd(ubigint m, ubigint n)
 {
     // EXCEPTION CHECKS
 
-    if (m == 0 && n == 0)
+    if ( m == 0 && n == 0 )
         throw Exception("qpp::gcd()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
-    if (m == 0 || n == 0)
+    if ( m == 0 || n == 0 )
         return (std::max(m, n));
 
     ubigint result = 1;
@@ -167,12 +167,12 @@ inline ubigint gcd(const std::vector<ubigint>& ns)
 {
     // EXCEPTION CHECKS
 
-    if (ns.size() == 0)
+    if ( ns.size() == 0 )
         throw Exception("qpp::gcd()", Exception::Type::ZERO_SIZE);
     // END EXCEPTION CHECKS
 
     ubigint result = ns[0]; // convention: gcd({n}) = n
-    for (idx i = 1; i < ns.size(); ++i)
+    for ( idx i = 1; i < ns.size(); ++i )
     {
         result = gcd(result, ns[i]);
     }
@@ -190,7 +190,7 @@ inline ubigint gcd(const std::vector<ubigint>& ns)
 */
 inline ubigint lcm(ubigint m, ubigint n)
 {
-    if (m == 0 || n == 0)
+    if ( m == 0 || n == 0 )
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
 
     return m * n / gcd(m, n);
@@ -207,13 +207,13 @@ inline ubigint lcm(const std::vector<ubigint>& ns)
 {
     // EXCEPTION CHECKS
 
-    if (ns.size() == 0)
+    if ( ns.size() == 0 )
         throw Exception("qpp::lcm()", Exception::Type::ZERO_SIZE);
 
-    if (ns.size() == 1) // convention: lcm({n}) = n
+    if ( ns.size() == 1 ) // convention: lcm({n}) = n
         return ns[0];
 
-    if (std::find(std::begin(ns), std::end(ns), 0) != std::end(ns))
+    if ( std::find(std::begin(ns), std::end(ns), 0) != std::end(ns))
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
@@ -236,13 +236,13 @@ inline std::vector<idx> invperm(const std::vector<idx>& perm)
 {
     // EXCEPTION CHECKS
 
-    if (!internal::_check_perm(perm))
+    if ( !internal::_check_perm(perm))
         throw Exception("qpp::invperm()", Exception::Type::PERM_INVALID);
     // END EXCEPTION CHECKS
 
     // construct the inverse
     std::vector<idx> result(perm.size());
-    for (idx i = 0; i < perm.size(); ++i)
+    for ( idx i = 0; i < perm.size(); ++i )
         result[perm[i]] = i;
 
     return result;
@@ -261,17 +261,17 @@ inline std::vector<idx> compperm(const std::vector<idx>& perm,
 {
     // EXCEPTION CHECKS
 
-    if (!internal::_check_perm(perm))
+    if ( !internal::_check_perm(perm))
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
-    if (!internal::_check_perm(sigma))
+    if ( !internal::_check_perm(sigma))
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
-    if (perm.size() != sigma.size())
+    if ( perm.size() != sigma.size())
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
     // END EXCEPTION CHECKS
 
     // construct the composition perm(sigma)
     std::vector<idx> result(perm.size());
-    for (idx i = 0; i < perm.size(); ++i)
+    for ( idx i = 0; i < perm.size(); ++i )
         result[i] = perm[sigma[i]];
 
     return result;
@@ -289,7 +289,7 @@ inline std::vector<ubigint> factors(ubigint n)
 {
     // EXCEPTION CHECKS
 
-    if (n == 0 || n == 1)
+    if ( n == 0 || n == 1 )
         throw Exception("qpp::factors()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
@@ -304,9 +304,9 @@ inline std::vector<ubigint> factors(ubigint n)
             n /= d;
         }
         ++d;
-        if (d * d > n) // changes the running time from O(n) to O(sqrt(n))
+        if ( d * d > n ) // changes the running time from O(n) to O(sqrt(n))
         {
-            if (n > 1)
+            if ( n > 1 )
             {
                 result.push_back(n);
             }
@@ -329,20 +329,21 @@ inline bool isprime(ubigint n)
 {
     // EXCEPTION CHECKS
 
-    if (n == 0 or n == 1)
+    if ( n == 0 or n == 1 )
         throw Exception("qpp::isprime()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
     std::vector<ubigint> facts = factors(n);
 
-    if (facts.size() == 1)
+    if ( facts.size() == 1 )
         return true;
 
     return false;
 }
 
 /**
-* \brief Fast integer power modulo p based on the SQUARE-AND-MULTIPLY algorithm
+* \brief Fast integer power modulo \a p based on
+* the SQUARE-AND-MULTIPLY algorithm
 *
 * Computes \f$a^n\mathrm{ mod }p\f$
 *
@@ -355,16 +356,16 @@ inline ubigint modpow(ubigint a, ubigint n, ubigint p)
 {
     // EXCEPTION CHECKS
 
-    if (p == 0 || (a == 0 && n == 0))
+    if ( p == 0 || (a == 0 && n == 0))
         throw Exception("qpp::modpow()",
                         Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
     ubigint result = 1;
 
-    for (; n > 0; n /= 2)
+    for ( ; n > 0; n /= 2 )
     {
-        if (n % 2)
+        if ( n % 2 )
             result = (result * a) % p; // MULTIPLY
         a = (a * a) % p; // SQUARE
     }

@@ -20,9 +20,9 @@ int main()
     cout << ">> Tsallis-1 entropy: " << tsallis(rhoA, 1) << endl;
     cout << ">> Tsallis-2 entropy: " << tsallis(rhoA, 2) << endl;
     cout << ">> Quantum mutual information between A and B: "
-            << qmutualinfo(rho, {0}, {1}) << endl;
+         << qmutualinfo(rho, {0}, {1}) << endl;
     cout << ">> Quantum mutual information between A and A: "
-            << qmutualinfo(rho, {0}, {0}) << endl;
+         << qmutualinfo(rho, {0}, {0}) << endl;
     cout << ">> Quantum mutual information between B and B: "
-            << qmutualinfo(rho, {1}, {1}) << endl;
+         << qmutualinfo(rho, {1}, {1}) << endl;
 }

@@ -11,7 +11,7 @@ int main()
     idx n = 10; // number of qubits
     idx N = std::round(std::pow(2, n));
     cout << ">> n = " << n << " qubits, matrix size " << N << " x " << N
-            << "." << endl << endl;
+         << "." << endl << endl;
     cmat randcmat = cmat::Random(N, N);
 
     // qpp::ptrace()
@@ -27,7 +27,7 @@ int main()
     cout << "**** qpp::ptranspose() timing ****" << endl;
     // partially transpose n-1 subsystems
     std::vector<idx> subsys_ptranspose;
-    for (idx i = 0; i < n - 1; ++i)
+    for ( idx i = 0; i < n - 1; ++i )
         subsys_ptranspose.push_back(i);
     cout << ">> Subsytem(s): ";
     cout << disp(subsys_ptranspose, ", ") << endl;
@@ -38,7 +38,7 @@ int main()
     // qpp::syspermute()
     cout << "**** qpp::syspermute() timing ****" << endl;
     std::vector<idx> perm; // left-shift all subsystems by 1
-    for (idx i = 0; i < n; ++i)
+    for ( idx i = 0; i < n; ++i )
         perm.push_back((i + 1) % n);
     cout << ">> Subsytem(s): ";
     cout << disp(perm, ", ") << endl;

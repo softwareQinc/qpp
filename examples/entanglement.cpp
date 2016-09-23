@@ -15,7 +15,7 @@ int main()
     cout << ">> Concurrence of rho: " << concurrence(rho) << endl;
     cout << ">> Negativity of rho: " << negativity(rho, {2, 2}) << endl;
     cout << ">> Logarithimc negativity of rho: "
-            << lognegativity(rho, {2, 2}) << endl;
+         << lognegativity(rho, {2, 2}) << endl;
 
     ket psi = 0.8 * mket({0, 0}) + 0.6 * mket({1, 1});
 
