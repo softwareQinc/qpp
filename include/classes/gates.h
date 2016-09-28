@@ -160,7 +160,7 @@ public:
 
         cmat result(D, D);
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif
         for ( idx j = 0; j < D; ++j ) // column major order for speed

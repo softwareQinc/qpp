@@ -357,7 +357,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
         dyn_mat<typename Derived1::Scalar> result = rstate;
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif
         for ( idx m = 0; m < DA; ++m )
@@ -391,7 +391,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
         dyn_mat<typename Derived1::Scalar> result = rstate;
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for collapse(4)
 #endif
         for ( idx m1 = 0; m1 < DA; ++m1 )
@@ -635,12 +635,12 @@ cmat apply(const Eigen::MatrixBase<Derived>& rho,
 
     cmat result = cmat::Zero(rrho.rows(), rrho.rows());
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for
 #endif
     for ( idx i = 0; i < Ks.size(); ++i )
     {
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp critical
 #endif
         {
@@ -791,14 +791,14 @@ inline cmat kraus2super(const std::vector<cmat>& Ks)
     ket B = ket::Zero(D);
     cmat EMN = cmat::Zero(D, D);
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif
     for ( idx m = 0; m < D; ++m )
     {
         for ( idx n = 0; n < D; ++n )
         {
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp critical
 #endif
             {
@@ -873,12 +873,12 @@ inline cmat kraus2choi(const std::vector<cmat>& Ks)
 
     cmat result = cmat::Zero(D * D, D * D);
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for
 #endif
     for ( idx i = 0; i < Ks.size(); ++i )
     {
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp critical
 #endif
         {
@@ -956,7 +956,7 @@ inline cmat choi2super(const cmat& A)
 
     cmat result(D * D, D * D);
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for collapse(4)
 #endif
     for ( idx a = 0; a < D; ++a )
@@ -992,7 +992,7 @@ inline cmat super2choi(const cmat& A)
 
     cmat result(D * D, D * D);
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for collapse(4)
 #endif
     for ( idx a = 0; a < D; ++a )
@@ -1063,7 +1063,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
             return sum;
         }; /* end worker */
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif
         for ( idx j = 0; j < DB; ++j ) // column major order for speed
@@ -1090,7 +1090,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
             return sum;
         }; /* end worker */
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif
         for ( idx j = 0; j < DB; ++j ) // column major order for speed
@@ -1164,7 +1164,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
             return sum;
         }; /* end worker */
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif
         for ( idx j = 0; j < DA; ++j ) // column major order for speed
@@ -1181,7 +1181,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
             throw Exception("qpp::ptrace2()",
                             Exception::Type::DIMS_MISMATCH_MATRIX);
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif
         for ( idx j = 0; j < DA; ++j ) // column major order for speed
@@ -1331,7 +1331,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             // compute the column multi-indexes of the complement
             internal::_n2multiidx(j, nsubsysbar,
                                   Cdimssubsysbar, Cmidxcolsubsysbar);
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for
 #endif
             for ( idx i = 0; i < Dsubsysbar; ++i )
@@ -1401,7 +1401,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             // compute the column multi-indexes of the complement
             internal::_n2multiidx(j, nsubsysbar,
                                   Cdimssubsysbar, Cmidxcolsubsysbar);
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for
 #endif
             for ( idx i = 0; i < Dsubsysbar; ++i )
@@ -1551,7 +1551,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
             // compute the column multi-index
             internal::_n2multiidx(j, numdims, Cdims, Cmidxcol);
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for
 #endif
             for ( idx i = 0; i < D; ++i )
@@ -1600,7 +1600,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
             // compute the column multi-index
             internal::_n2multiidx(j, numdims, Cdims, Cmidxcol);
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for
 #endif
             for ( idx i = 0; i < D; ++i )
@@ -1740,7 +1740,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
             return internal::_multiidx2n(midxtmp, numdims, permdims);
         }; /* end worker */
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for
 #endif
         for ( idx i = 0; i < D; ++i )
@@ -1795,7 +1795,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
             return internal::_multiidx2n(midxtmp, 2 * numdims, permdims);
         }; /* end worker */
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for
 #endif
         for ( idx i = 0; i < D * D; ++i )

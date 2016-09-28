@@ -45,8 +45,8 @@ namespace qpp
 * qpp::dmat and qpp::cmat (the only matrix types that can be loaded)
 */
 template<typename Derived>
-Derived loadMATLABmatrix(const std::string& mat_file,
-                         const std::string& var_name)
+Derived loadMATLABmatrix(const std::string& /* mat_file */,
+                         const std::string& /* var_name */)
 {
     throw Exception("qpp::loadMATLABmatrix()",
                     Exception::Type::UNDEFINED_TYPE);
@@ -214,9 +214,10 @@ inline cmat loadMATLABmatrix(const std::string& mat_file,
 * qpp::dmat and qpp::cmat (the only matrix types that can be saved)
 */
 template<typename Derived>
-void saveMATLABmatrix(const Eigen::MatrixBase <Derived>& A,
-                      const std::string& mat_file, const std::string& var_name,
-                      const std::string& mode)
+void saveMATLABmatrix(const Eigen::MatrixBase<Derived>& /* A */,
+                      const std::string& /* mat_file */,
+                      const std::string& /* var_name */,
+                      const std::string& /* mode */)
 {
     throw Exception("qpp::saveMATLABmatrix()",
                     Exception::Type::UNDEFINED_TYPE);
@@ -236,7 +237,7 @@ void saveMATLABmatrix(const Eigen::MatrixBase <Derived>& A,
 */
 template<>
 // Eigen::MatrixXd specialization
-inline void saveMATLABmatrix(const Eigen::MatrixBase <dmat>& A,
+inline void saveMATLABmatrix(const Eigen::MatrixBase<dmat>& A,
                              const std::string& mat_file,
                              const std::string& var_name,
                              const std::string& mode)
@@ -286,7 +287,7 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <dmat>& A,
 */
 template<>
 // Eigen::MatrixXcd specialization
-inline void saveMATLABmatrix(const Eigen::MatrixBase <cmat>& A,
+inline void saveMATLABmatrix(const Eigen::MatrixBase<cmat>& A,
                              const std::string& mat_file,
                              const std::string& var_name,
                              const std::string& mode)

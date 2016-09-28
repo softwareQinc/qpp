@@ -80,8 +80,8 @@ $(document).ready(function(){initNavTree('md___users_vlad__dropbox_programming_c
 <li>Compiler: <a href="https://gcc.gnu.org/">g++</a> version 4.8 or later (for good C++11 support)</li>
 <li><a href="http://eigen.tuxfamily.org">Eigen 3</a> library located in <code>$HOME/eigen</code></li>
 <li>Quantum++ library located in <code>$HOME/qpp</code></li>
-<li><a href="http://www.mathworks.com/products/matlab/">MATLAB</a> compiler include header files: <code>/Applications/MATLAB_R2015b.app/extern/include</code></li>
-<li><a href="http://www.mathworks.com/products/matlab/">MATLAB</a> compiler shared library files: <code>/Applications/MATLAB_R2015b.app/bin/maci64</code></li>
+<li><a href="http://www.mathworks.com/products/matlab/">MATLAB</a> compiler include header files: <code>/Applications/MATLAB_R2016a.app/extern/include</code></li>
+<li><a href="http://www.mathworks.com/products/matlab/">MATLAB</a> compiler shared library files: <code>/Applications/MATLAB_R2016a.app/bin/maci64</code></li>
 </ul>
 <h3>Building without a build system</h3>
 <ul>
@@ -103,15 +103,15 @@ $(document).ready(function(){initNavTree('md___users_vlad__dropbox_programming_c
 <pre class="fragment">g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
      -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
      -isystem $HOME/eigen -I $HOME/qpp/include \
-     -I/Applications/MATLAB_R2015b.app/extern/include \
-     -L/Applications/MATLAB_R2015b.app/bin/maci64 \
+     -I/Applications/MATLAB_R2016a.app/extern/include \
+     -L/Applications/MATLAB_R2016a.app/bin/maci64 \
      -lmx -lmat minimal.cpp -o minimal
 </pre><h4>Debug version (with <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support):</h4>
 <pre class="fragment">g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
      -g3 -DDEBUG \
      -isystem $HOME/eigen -I $HOME/qpp/include \
-     -I /Applications/MATLAB_R2015b.app/extern/include \
-     -L /Applications/MATLAB_R2015b.app/bin/maci64 \
+     -I /Applications/MATLAB_R2016a.app/extern/include \
+     -L /Applications/MATLAB_R2016a.app/bin/maci64 \
      -lmx -lmat minimal.cpp -o minimal
 </pre><h3>Building using <a href="http://www.cmake.org/">cmake</a></h3>
 <p>The current version of the repository has a <code>./CMakeLists.txt</code> configuration file for building examples using <a href="http://www.cmake.org/">cmake</a>. To build an example using <a href="http://www.cmake.org/">cmake</a>, I recommend an out-of-source build, i.e., from the root of the project (where <code>./include</code> is located), type </p><pre class="fragment">mkdir ./build
@@ -145,7 +145,7 @@ of Quantum++:
 
         #!/bin/sh
 
-        MATLAB=/Applications/MATLAB_R2015b.app
+        MATLAB=/Applications/MATLAB_R2016a.app
         export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$MATLAB/bin/maci64
 
         ./build/qpp
@@ -157,7 +157,7 @@ of Quantum++:
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Sep 7 2016 20:44:28 for Quantum++ by
+    <li class="footer">Generated on Wed Sep 28 2016 17:23:02 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

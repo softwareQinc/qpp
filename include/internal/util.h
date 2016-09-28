@@ -284,7 +284,7 @@ dyn_mat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
     dyn_mat<typename Derived1::Scalar> result;
     result.resize(Arows * Brows, Acols * Bcols);
 
-#ifdef WITH_OPENMP
+#ifdef _WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif
     for ( idx j = 0; j < Acols; ++j ) // column major order for speed

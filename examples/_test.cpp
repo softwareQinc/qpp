@@ -75,4 +75,6 @@ int main()
     cmat B = syspermute(rho, perm);
     cmat C = experimental::make_MatrixView(rho, perm).get_copy();
     std::cout << "Norm difference: " << norm(B - C) << std::endl;
+
+//    saveMATLABmatrix(rho, "rho.dat", "rho", "w");
 }

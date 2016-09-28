@@ -148,12 +148,12 @@ static const States& st _QPP_UNUSED_ = States::get_instance();
 * \note Has thread storage duration, due to mutability of its public member
 * std::mt19937 and possible data races
 */
-#ifdef _NO_THREAD_LOCAL
+#ifdef _NO_THREAD_LOCAL_
 static RandomDevices& rdevs _QPP_UNUSED_= RandomDevices::get_instance();
 #else
 thread_local static RandomDevices& rdevs _QPP_UNUSED_ =
         RandomDevices::get_thread_local_instance();
-#endif // _NO_THREAD_LOCAL
+#endif // _NO_THREAD_LOCAL_
 
 } /* namespace qpp */
 

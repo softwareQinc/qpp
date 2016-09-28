@@ -112,7 +112,7 @@ $(document).ready(function(){initNavTree('experimental_8h_source.html','');});
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            _viewA(A),</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            _rows(static_cast&lt;<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&gt;(A.<a class="code" href="classqpp_1_1experimental_1_1_matrix_view_base.html#abd608ea66c03a2ab6c18767e3c270699">rows</a>())),</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            _cols(static_cast&lt;<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&gt;(A.<a class="code" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a9ebc980a6fb67e3351b30d2582403727">cols</a>()))</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    { }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    {}</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="comment">// disable temporaries</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="classqpp_1_1experimental_1_1_matrix_view_base.html#acf7cddb23e0f393879a48d137df774de">MatrixViewBase</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp;&amp; A) = <span class="keyword">delete</span>;</div>
@@ -155,11 +155,11 @@ $(document).ready(function(){initNavTree('experimental_8h_source.html','');});
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                Eigen::Dynamic</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        &gt; result(_rows, _cols);</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#ifdef WITH_OPENMP</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#ifdef _WITH_OPENMP_</span></div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#pragma omp parallel for collapse(2)</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#endif        </span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; <a class="code" href="classqpp_1_1experimental_1_1_matrix_view_base.html#ad85f1cd3b3d5f8deb55efec8bec141bf">_cols</a>; ++j)</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; <a class="code" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a7a2f1c0d161a3f726011959dce5455a2">_rows</a>; ++i)</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordflow">for</span> ( <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; <a class="code" href="classqpp_1_1experimental_1_1_matrix_view_base.html#ad85f1cd3b3d5f8deb55efec8bec141bf">_cols</a>; ++j )</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordflow">for</span> ( <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; <a class="code" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a7a2f1c0d161a3f726011959dce5455a2">_rows</a>; ++i )</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                result(i, j) = this-&gt;<a class="code" href="classqpp_1_1experimental_1_1_matrix_view_base.html#a6e63b8d4cdceb04103fc00d5a2419b95">operator()</a>(i, j);</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keywordflow">return</span> result;</div>
@@ -203,13 +203,13 @@ $(document).ready(function(){initNavTree('experimental_8h_source.html','');});
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;               <span class="keyword">const</span> std::vector&lt;idx&gt; <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#aff08d0092c9abd376afc139f5ad7ed65">perm</a>,</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;               <span class="keyword">const</span> std::vector&lt;idx&gt; <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#a7487346e79defefa6fb87f348fccf6b6">dims</a>) :</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <a class="code" href="classqpp_1_1experimental_1_1_matrix_view_base.html">MatrixViewBase</a>&lt;Derived&gt;(A), _perm(perm), _dims(dims)</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    { }</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    {}</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
 <div class="line"><a name="l00154"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#aae2b1760ab068b5e3b09785715b4adaf">  154</a></span>&#160;    <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#aae2b1760ab068b5e3b09785715b4adaf">MatrixView</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;               <span class="keyword">const</span> std::vector&lt;idx&gt; <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#aff08d0092c9abd376afc139f5ad7ed65">perm</a>,</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;               <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2) :</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html">MatrixView</a>(A, perm, <a class="code" href="namespacestd.html">std</a>::vector&lt;<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&gt;(perm.size(), d))</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    { }</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    {}</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="comment">// additional getters</span></div>
 <div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="classqpp_1_1experimental_1_1_matrix_view.html#aff08d0092c9abd376afc139f5ad7ed65">  161</a></span>&#160;    std::vector&lt;idx&gt; <a class="code" href="classqpp_1_1experimental_1_1_matrix_view.html#aff08d0092c9abd376afc139f5ad7ed65">perm</a>() const noexcept</div>
@@ -232,7 +232,7 @@ $(document).ready(function(){initNavTree('experimental_8h_source.html','');});
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        <a class="code" href="namespaceqpp_1_1internal.html#a89cac06eec76f72440a339270153e975">internal::_n2multiidx</a>(i, _dims.size(), _dims.data(), Crowmidx);</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <a class="code" href="namespaceqpp_1_1internal.html#a89cac06eec76f72440a339270153e975">internal::_n2multiidx</a>(j, _dims.size(), _dims.data(), Ccolmidx);</div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> k = 0; k &lt; _dims.size(); ++k)</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        <span class="keywordflow">for</span> ( <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> k = 0; k &lt; _dims.size(); ++k )</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        {</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            Cdims_shuffled[_perm[k]] = _dims[k];</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            Crowmidx_shuffled[_perm[k]] = Crowmidx[k];</div>
@@ -285,7 +285,7 @@ $(document).ready(function(){initNavTree('experimental_8h_source.html','');});
 <div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_base_html_a99c59da1a4be1c9868b4e452e2ceb4c1"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view_base.html#a99c59da1a4be1c9868b4e452e2ceb4c1">qpp::experimental::MatrixViewBase::_viewA</a></div><div class="ttdeci">const Eigen::MatrixBase&lt; Derived &gt; &amp; _viewA</div><div class="ttdef"><b>Definition:</b> experimental.h:48</div></div>
 <div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html">qpp::experimental::MatrixView</a></div><div class="ttdoc">Matrix view class, maps between a matrix and a multi-dimensional array. </div><div class="ttdef"><b>Definition:</b> experimental.h:142</div></div>
 <div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_base_html_abd608ea66c03a2ab6c18767e3c270699"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view_base.html#abd608ea66c03a2ab6c18767e3c270699">qpp::experimental::MatrixViewBase::rows</a></div><div class="ttdeci">idx rows() const noexcept</div><div class="ttdef"><b>Definition:</b> experimental.h:62</div></div>
-<div class="ttc" id="namespaceqpp_html_aea80be6c57ee43e43aa9629942cd3608"><div class="ttname"><a href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">qpp::maxn</a></div><div class="ttdeci">constexpr idx maxn</div><div class="ttdoc">Maximum number of allowed qu(d)its (subsystems) </div><div class="ttdef"><b>Definition:</b> constants.h:80</div></div>
+<div class="ttc" id="namespaceqpp_html_aea80be6c57ee43e43aa9629942cd3608"><div class="ttname"><a href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">qpp::maxn</a></div><div class="ttdeci">constexpr idx maxn</div><div class="ttdoc">Maximum number of allowed qu(d)its (subsystems) </div><div class="ttdef"><b>Definition:</b> constants.h:74</div></div>
 <div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_html_a334cf576d3026da8c6dba26c65664670"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view.html#a334cf576d3026da8c6dba26c65664670">qpp::experimental::MatrixView::MatrixView</a></div><div class="ttdeci">MatrixView(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; perm, const std::vector&lt; idx &gt; dims)</div><div class="ttdef"><b>Definition:</b> experimental.h:148</div></div>
 <div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_base_html_a7a2f1c0d161a3f726011959dce5455a2"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view_base.html#a7a2f1c0d161a3f726011959dce5455a2">qpp::experimental::MatrixViewBase::_rows</a></div><div class="ttdeci">idx _rows</div><div class="ttdef"><b>Definition:</b> experimental.h:50</div></div>
 <div class="ttc" id="classqpp_1_1experimental_1_1_matrix_view_base_html_a61fdcbd1415c12e5b49be0b924a334c8"><div class="ttname"><a href="classqpp_1_1experimental_1_1_matrix_view_base.html#a61fdcbd1415c12e5b49be0b924a334c8">qpp::experimental::MatrixViewBase::get_ref</a></div><div class="ttdeci">const Eigen::MatrixBase&lt; Derived &gt; &amp; get_ref() const noexcept</div><div class="ttdef"><b>Definition:</b> experimental.h:73</div></div>
@@ -315,7 +315,7 @@ $(document).ready(function(){initNavTree('experimental_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_8c0381a6091af7a47ae909a45b674508.html">experimental</a></li><li class="navelem"><a class="el" href="experimental_8h.html">experimental.h</a></li>
-    <li class="footer">Generated on Wed Sep 7 2016 20:44:28 for Quantum++ by
+    <li class="footer">Generated on Wed Sep 28 2016 17:23:02 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
