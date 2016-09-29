@@ -157,3 +157,45 @@ TEST(qpp_egcd_test, NegativeNumbers)
 }
 ///// END std::tuple<bigint, bigint, bigint> qpp::egcd(bigint m, bigint n)
 
+///// BEGIN std::vector<idx> qpp::invperm(const std::vector<idx>& perm)
+TEST(qpp_invperm_test, NonNegativeNumbers)
+{
+    std::vector<idx> perm1{0};
+    std::vector<idx> result1{0};
+    EXPECT_EQ(result1, qpp::invperm(perm1));
+
+    std::vector<idx> perm2{0, 1, 2, 3, 4, 5, 6};
+    std::vector<idx> result2{0, 1, 2, 3, 4, 5, 6};
+    EXPECT_EQ(result2, qpp::invperm(perm2));
+
+    std::vector<idx> perm3{6, 5, 4, 3, 2, 1, 0};
+    std::vector<idx> result3{6, 5, 4, 3, 2, 1, 0};
+    EXPECT_EQ(result3, qpp::invperm(perm3));
+
+    std::vector<idx> perm4{3, 0, 1, 4, 5, 2, 6};
+    std::vector<idx> result4{1, 2, 5, 0, 3, 4, 6};
+    EXPECT_EQ(result4, qpp::invperm(perm4));
+}
+///// END std::vector<idx> qpp::invperm(const std::vector<idx>& perm)
+
+///// BEGIN std::vector<idx> qpp::compperm(const std::vector<idx>& perm,
+/////       const std::vector<idx>& sigma)
+TEST(qpp_compperm_test, NonNegativeNumbers)
+{
+    std::vector<idx> sigma1{0};
+    std::vector<idx> tau1{0};
+    std::vector<idx> result1{0};
+    EXPECT_EQ(result1, qpp::compperm(sigma1, tau1));
+
+    std::vector<idx> sigma2{0, 1, 2};
+    std::vector<idx> tau2{0, 1, 2};
+    std::vector<idx> result2{0, 1, 2};
+    EXPECT_EQ(result2, qpp::compperm(sigma2, tau2));
+
+    std::vector<idx> sigma3{3, 0, 1, 4, 5, 2, 6};
+    std::vector<idx> tau3{1, 2, 5, 0, 3, 4, 6}; // inverse permutation
+    std::vector<idx> result3{0, 1, 2, 3, 4, 5, 6};
+    EXPECT_EQ(result3, qpp::compperm(sigma3, tau3));
+}
+///// END std::vector<idx> qpp::compperm(const std::vector<idx>& perm,
+/////     const std::vector<idx>& sigma)

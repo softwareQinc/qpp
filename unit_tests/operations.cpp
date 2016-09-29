@@ -26,12 +26,12 @@ using namespace qpp;
 // Write your unit tests here. Some examples are provided below.
 
 ///// BEGIN template<typename Derived1, typename Derived2>
-///// dyn_mat<typename Derived1::Scalar> qpp::applyCTRL(
-/////        const Eigen::MatrixBase<Derived1>& state,
-/////        const Eigen::MatrixBase<Derived2>& A,
-/////        const std::vector<idx>& ctrl,
-/////        const std::vector<idx>& subsys,
-/////        const std::vector<idx>& dims)
+/////       dyn_mat<typename Derived1::Scalar> qpp::applyCTRL(
+/////       const Eigen::MatrixBase<Derived1>& state,
+/////       const Eigen::MatrixBase<Derived2>& A,
+/////       const std::vector<idx>& ctrl,
+/////       const std::vector<idx>& subsys,
+/////       const std::vector<idx>& dims)
 TEST(qpp_applyCTRL, NonEmptyControl)
 {
     std::vector<idx> dims{2, 2, 2, 2};  // 3 qubits
@@ -98,9 +98,9 @@ TEST(qpp_applyCTRL, EmptyControl)
     EXPECT_NEAR (0, res, 1e-8);
 }
 ///// END template<typename Derived1, typename Derived2>
-///// dyn_mat<typename Derived1::Scalar> qpp::applyCTRL(
-/////        const Eigen::MatrixBase<Derived1>& state,
-/////        const Eigen::MatrixBase<Derived2>& A,
-/////        const std::vector<idx>& ctrl,
-/////        const std::vector<idx>& subsys,
-/////        const std::vector<idx>& dims)
+/////     dyn_mat<typename Derived1::Scalar> qpp::applyCTRL(
+/////     const Eigen::MatrixBase<Derived1>& state,
+/////     const Eigen::MatrixBase<Derived2>& A,
+/////     const std::vector<idx>& ctrl,
+/////     const std::vector<idx>& subsys,
+/////     const std::vector<idx>& dims)
