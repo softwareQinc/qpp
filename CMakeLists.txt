@@ -3,8 +3,10 @@ PROJECT(qpp)
 
 #### CMake support only for GNU gcc and Clang/AppleClang
 #### AppleClang does not support OpenMP; only Clang >= 3.7 supports OpenMP
-IF (NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" AND NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
-    MESSAGE(FATAL_ERROR "This CMakeLists.txt works only with GNU gcc/Clang/AppleClang")
+IF (NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang"
+        AND NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
+    MESSAGE(FATAL_ERROR
+            "This CMakeLists.txt works only with GNU gcc/Clang/AppleClang")
 ENDIF ()
 
 #### Quantum++ headers
@@ -30,7 +32,8 @@ IF (${WITH_MATLAB})
     #### modify as needed
     SET(MATLAB "/Applications/MATLAB_R2016a.app")
     INCLUDE_DIRECTORIES(SYSTEM "${MATLAB}/extern/include")
-    SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L${MATLAB}/bin/maci64")
+    SET(CMAKE_EXE_LINKER_FLAGS
+            "${CMAKE_EXE_LINKER_FLAGS} -L${MATLAB}/bin/maci64")
 ENDIF ()
 
 #### OpenMP support
@@ -50,7 +53,8 @@ IF (${WITH_OPENMP})
             SET (CLANG_LIBOMP_INCLUDE "/opt/local/include/libomp/")
             INCLUDE_DIRECTORIES(SYSTEM "${CLANG_LIBOMP_INCLUDE}")
             SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp=libomp")
-            SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L${CLANG_LIBOMP}")
+            SET (CMAKE_EXE_LINKER_FLAGS
+                    "${CMAKE_EXE_LINKER_FLAGS} -L${CLANG_LIBOMP}")
         ENDIF()
     #### no OpenMP support for other compilers
     ELSE ()
@@ -73,8 +77,10 @@ ENDIF ()
 IF (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
     IF (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         ## use the "no-weak" debugging flag only when debugging under OS X,
-        ## as gdb cannot step in template functions when debugging code produced by g++
-        ## see http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks
+        ## as gdb cannot step in template functions when debugging code
+        ## produced by g++
+        ## see http://stackoverflow.com/questions/
+        ## 23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks
         SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-weak")
     ENDIF ()
     SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og -D_GLIBCXX_DEBUG")
@@ -82,14 +88,17 @@ ENDIF ()
 
 #### Configurations
 SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
-SET(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} -DEIGEN_NO_DEBUG")
+SET(CMAKE_CXX_FLAGS_MINSIZEREL
+        "${CMAKE_CXX_FLAGS_MINSIZEREL} -DEIGEN_NO_DEBUG")
 SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DEIGEN_NO_DEBUG")
-SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DEIGEN_NO_DEBUG")
+SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO
+        "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DEIGEN_NO_DEBUG")
 
 IF (NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE Release CACHE STRING
-        "Choose the type of build, options are: None Debug Release MinSizeRel RelWithDebInfo."
-        FORCE)
+        "Choose the type of build, options are: \
+         None Debug Release MinSizeRel RelWithDebInfo."
+    FORCE)
 ENDIF ()
 
 ADD_EXECUTABLE(qpp ${SOURCE_FILES})
@@ -98,6 +107,7 @@ IF (${WITH_MATLAB})
     TARGET_LINK_LIBRARIES (qpp mx mat)
 ENDIF ()
 
-IF ($WITH_OPENMP$ AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.7")
+IF ($WITH_OPENMP$ AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang"
+        AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.7")
     TARGET_LINK_LIBRARIES (qpp omp)
 ENDIF ()
