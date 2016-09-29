@@ -8,7 +8,6 @@ using namespace qpp;
 // General TODOs:
 // TODO: write a MatrixView class, for multi-index lazy evaluation view - wip
 // TODO: use assert in performance-critical functions (qpp::internal)
-// TODO: make sure we use column major order for performance-critical code
 // TODO: remove "experimental/experimental.h" include directive from headers
 
 // In experimental.h
@@ -16,8 +15,6 @@ using namespace qpp;
 // TODO: check for noexcept
 // TODO: write the documentation
 // TODO: test
-// TODO: check all psi, phi, A .derived() !!!!
-// TODO: check Eigen3 issues with channels.cpp
 
 // Future work
 // TODO: Implement a circuit description language, load/save from/to file
