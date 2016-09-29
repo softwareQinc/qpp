@@ -257,8 +257,8 @@ template<typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
                                           const Eigen::MatrixBase<Derived2>& B)
 {
-    const dyn_mat<typename Derived1::Scalar>& rA = A;
-    const dyn_mat<typename Derived2::Scalar>& rB = B;
+    const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
+    const dyn_mat<typename Derived2::Scalar>& rB = B.derived();
 
     // EXCEPTION CHECKS
 
@@ -301,8 +301,8 @@ dyn_mat<typename Derived1::Scalar> _dirsum2(
         const Eigen::MatrixBase<Derived1>& A,
         const Eigen::MatrixBase<Derived2>& B)
 {
-    const dyn_mat<typename Derived1::Scalar>& rA = A;
-    const dyn_mat<typename Derived2::Scalar>& rB = B;
+    const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
+    const dyn_mat<typename Derived2::Scalar>& rB = B.derived();
 
     // EXCEPTION CHECKS
 

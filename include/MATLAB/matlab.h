@@ -242,7 +242,7 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase<dmat>& A,
                              const std::string& var_name,
                              const std::string& mode)
 {
-    const dmat& rA = A;
+    const dmat& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -292,7 +292,7 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase<cmat>& A,
                              const std::string& var_name,
                              const std::string& mode)
 {
-    const cmat& rA = A;
+    const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
 

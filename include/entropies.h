@@ -42,7 +42,7 @@ namespace qpp
 template<typename Derived>
 double entropy(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -102,7 +102,7 @@ inline double entropy(const std::vector<double>& prob)
 template<typename Derived>
 double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -199,7 +199,7 @@ inline double renyi(const std::vector<double>& prob, double alpha)
 template<typename Derived>
 double tsallis(const Eigen::MatrixBase<Derived>& A, double q)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -277,7 +277,7 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
                    const std::vector<idx>& subsysB,
                    const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -351,7 +351,7 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
                    const std::vector<idx>& subsysB,
                    idx d = 2)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 

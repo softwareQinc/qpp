@@ -47,8 +47,8 @@ dyn_col_vect<typename Derived::Scalar> ip(
         const std::vector<idx>& subsys,
         const std::vector<idx>& dims)
 {
-    const dyn_col_vect<typename Derived::Scalar>& rphi = phi;
-    const dyn_col_vect<typename Derived::Scalar>& rpsi = psi;
+    const dyn_col_vect<typename Derived::Scalar>& rphi = phi.derived();
+    const dyn_col_vect<typename Derived::Scalar>& rpsi = psi.derived();
 
     // EXCEPTION CHECKS
 
@@ -189,8 +189,8 @@ dyn_col_vect<typename Derived::Scalar> ip(
         const std::vector<idx>& subsys,
         idx d = 2)
 {
-    const dyn_col_vect<typename Derived::Scalar>& rphi = phi;
-    const dyn_col_vect<typename Derived::Scalar>& rpsi = psi;
+    const dyn_col_vect<typename Derived::Scalar>& rphi = phi.derived();
+    const dyn_col_vect<typename Derived::Scalar>& rpsi = psi.derived();
 
     // EXCEPTION CHECKS
 
@@ -223,7 +223,7 @@ template<typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -320,7 +320,7 @@ template<typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A, const cmat& U)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -370,7 +370,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
         const std::vector<idx>& subsys,
         const std::vector<idx>& dims)
 {
-    const cmat& rA = A;
+    const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -519,7 +519,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
         const std::vector<idx>& subsys,
         idx d = 2)
 {
-    const cmat& rA = A;
+    const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -596,7 +596,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
         const std::vector<idx>& subsys,
         const std::vector<idx>& dims)
 {
-    const cmat& rA = A;
+    const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -635,7 +635,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
     //************ ket ************//
     if ( internal::_check_cvector(rA))
     {
-        const ket& rpsi = A;
+        const ket& rpsi = A.derived();
         // check that dims match state vector
         if ( !internal::_check_dims_match_cvect(dims, rA))
             throw Exception("qpp::measure()",
@@ -715,7 +715,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
         const std::vector<idx>& subsys,
         idx d = 2)
 {
-    const cmat& rA = A;
+    const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -833,7 +833,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
             std::vector<idx> subsys,
             idx d = 2)
 {
-    const cmat& rA = A;
+    const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
 

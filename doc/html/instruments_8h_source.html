@@ -105,8 +105,8 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsys,</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;typename Derived::Scalar&gt;</a>&amp; rphi = phi;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;typename Derived::Scalar&gt;</a>&amp; rpsi = psi;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;typename Derived::Scalar&gt;</a>&amp; rphi = phi.derived();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;typename Derived::Scalar&gt;</a>&amp; rpsi = psi.derived();</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
@@ -237,8 +237,8 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsys,</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;{</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;typename Derived::Scalar&gt;</a>&amp; rphi = phi;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;typename Derived::Scalar&gt;</a>&amp; rpsi = psi;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;typename Derived::Scalar&gt;</a>&amp; rphi = phi.derived();</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;typename Derived::Scalar&gt;</a>&amp; rpsi = psi.derived();</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
@@ -262,7 +262,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;std::tuple&lt;idx, std::vector&lt;double&gt;, std::vector&lt;cmat&gt;&gt;</div>
 <div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a65da96cadec88fbbb3cc70b0a82fa90c">  224</a></span>&#160;<a class="code" href="namespaceqpp.html#a65da96cadec88fbbb3cc70b0a82fa90c">measure</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A, <span class="keyword">const</span> std::vector&lt;cmat&gt;&amp; Ks)</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;{</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A.derived();</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;</div>
@@ -340,7 +340,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;std::tuple&lt;idx, std::vector&lt;double&gt;, std::vector&lt;cmat&gt;&gt;</div>
 <div class="line"><a name="l00321"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a0dcb1c411953ecda5ed943c7afec47c4">  321</a></span>&#160;<a class="code" href="namespaceqpp.html#a65da96cadec88fbbb3cc70b0a82fa90c">measure</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A, <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; U)</div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;{</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A.derived();</div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;</div>
 <div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;</div>
@@ -373,7 +373,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsys,</div>
 <div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;{</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; rA = A;</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; rA = A.derived();</div>
 <div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;</div>
 <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;</div>
@@ -488,7 +488,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsys,</div>
 <div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
 <div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;{</div>
-<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; rA = A;</div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; rA = A.derived();</div>
 <div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;</div>
 <div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;</div>
@@ -530,7 +530,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsys,</div>
 <div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;{</div>
-<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; rA = A;</div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; rA = A.derived();</div>
 <div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;</div>
 <div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;</div>
@@ -569,7 +569,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;    <span class="comment">//************ ket ************//</span></div>
 <div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="namespaceqpp_1_1internal.html#a88116de0ca257a3117ca43623a1d7272">internal::_check_cvector</a>(rA))</div>
 <div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;    {</div>
-<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;        <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a>&amp; rpsi = A;</div>
+<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;        <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a>&amp; rpsi = A.derived();</div>
 <div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;        <span class="comment">// check that dims match state vector</span></div>
 <div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;        <span class="keywordflow">if</span> ( !<a class="code" href="namespaceqpp_1_1internal.html#ac65903c07823d69fb7a75e2b215ed0a7">internal::_check_dims_match_cvect</a>(dims, rA))</div>
 <div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::measure()&quot;</span>,</div>
@@ -631,7 +631,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;        <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; subsys,</div>
 <div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
 <div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;{</div>
-<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; rA = A;</div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; rA = A.derived();</div>
 <div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;</div>
 <div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;</div>
@@ -721,7 +721,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;            std::vector&lt;idx&gt; subsys,</div>
 <div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;            <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
 <div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;{</div>
-<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; rA = A;</div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&amp; rA = A.derived();</div>
 <div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;</div>
 <div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;</div>
@@ -755,7 +755,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_html_a9a99ccccd473a9006dfaadb5761ac4f6"><div class="ttname"><a href="namespaceqpp.html#a9a99ccccd473a9006dfaadb5761ac4f6">qpp::eps</a></div><div class="ttdeci">constexpr double eps</div><div class="ttdoc">Used to decide whether a number or expression in double precision is zero or not. ...</div><div class="ttdef"><b>Definition:</b> constants.h:67</div></div>
 <div class="ttc" id="namespaceqpp_html_ac39e7c2b66f0209911cc3afc06223648"><div class="ttname"><a href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">qpp::dyn_mat</a></div><div class="ttdeci">Eigen::Matrix&lt; Scalar, Eigen::Dynamic, Eigen::Dynamic &gt; dyn_mat</div><div class="ttdoc">Dynamic Eigen matrix over the field specified by Scalar. </div><div class="ttdef"><b>Definition:</b> types.h:83</div></div>
 <div class="ttc" id="namespaceqpp_html_a5d7185dfc7bee58c937abc243c3692ea"><div class="ttname"><a href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">qpp::ket</a></div><div class="ttdeci">Eigen::VectorXcd ket</div><div class="ttdoc">Complex (double precision) dynamic Eigen column vector. </div><div class="ttdef"><b>Definition:</b> types.h:56</div></div>
-<div class="ttc" id="namespaceqpp_html_a6cc60c95fa5b4158e153269699d245bc"><div class="ttname"><a href="namespaceqpp.html#a6cc60c95fa5b4158e153269699d245bc">qpp::apply</a></div><div class="ttdeci">dyn_mat&lt; typename Derived1::Scalar &gt; apply(const Eigen::MatrixBase&lt; Derived1 &gt; &amp;state, const Eigen::MatrixBase&lt; Derived2 &gt; &amp;A, const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Applies the gate A to the part subsys of the multi-partite state vector or density matrix state...</div><div class="ttdef"><b>Definition:</b> operations.h:490</div></div>
+<div class="ttc" id="namespaceqpp_html_a6cc60c95fa5b4158e153269699d245bc"><div class="ttname"><a href="namespaceqpp.html#a6cc60c95fa5b4158e153269699d245bc">qpp::apply</a></div><div class="ttdeci">dyn_mat&lt; typename Derived1::Scalar &gt; apply(const Eigen::MatrixBase&lt; Derived1 &gt; &amp;state, const Eigen::MatrixBase&lt; Derived2 &gt; &amp;A, const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Applies the gate A to the part subsys of the multi-partite state vector or density matrix state...</div><div class="ttdef"><b>Definition:</b> operations.h:492</div></div>
 <div class="ttc" id="namespaceqpp_html"><div class="ttname"><a href="namespaceqpp.html">qpp</a></div><div class="ttdoc">Quantum++ main namespace. </div><div class="ttdef"><b>Definition:</b> codes.h:30</div></div>
 <div class="ttc" id="namespaceqpp_html_af2e4740854c958579228593dd639aa6c"><div class="ttname"><a href="namespaceqpp.html#af2e4740854c958579228593dd639aa6c">qpp::norm</a></div><div class="ttdeci">double norm(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Frobenius norm. </div><div class="ttdef"><b>Definition:</b> functions.h:252</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_ace7cfa182baf987f8a3374bd700b4276"><div class="ttname"><a href="namespaceqpp_1_1internal.html#ace7cfa182baf987f8a3374bd700b4276">qpp::internal::_check_square_mat</a></div><div class="ttdeci">bool _check_square_mat(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:84</div></div>
@@ -771,7 +771,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="ttc" id="classqpp_1_1_exception_html"><div class="ttname"><a href="classqpp_1_1_exception.html">qpp::Exception</a></div><div class="ttdoc">Generates custom exceptions, used when validating function parameters. </div><div class="ttdef"><b>Definition:</b> exception.h:39</div></div>
 <div class="ttc" id="namespaceqpp_html_a484e5b57c3236108d853fd3b83d64a20"><div class="ttname"><a href="namespaceqpp.html#a484e5b57c3236108d853fd3b83d64a20">qpp::ip</a></div><div class="ttdeci">dyn_col_vect&lt; typename Derived::Scalar &gt; ip(const Eigen::MatrixBase&lt; Derived &gt; &amp;phi, const Eigen::MatrixBase&lt; Derived &gt; &amp;psi, const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Generalized inner product. </div><div class="ttdef"><b>Definition:</b> instruments.h:44</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a06ca054b0436fb4b9b445574dec47f82"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a06ca054b0436fb4b9b445574dec47f82">qpp::internal::_check_nonzero_size</a></div><div class="ttdeci">bool _check_nonzero_size(const T &amp;x) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:112</div></div>
-<div class="ttc" id="namespaceqpp_html_a1300526d686af7fec966d8760087a168"><div class="ttname"><a href="namespaceqpp.html#a1300526d686af7fec966d8760087a168">qpp::ptrace</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; ptrace(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Partial trace. </div><div class="ttdef"><b>Definition:</b> operations.h:1214</div></div>
+<div class="ttc" id="namespaceqpp_html_a1300526d686af7fec966d8760087a168"><div class="ttname"><a href="namespaceqpp.html#a1300526d686af7fec966d8760087a168">qpp::ptrace</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; ptrace(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Partial trace. </div><div class="ttdef"><b>Definition:</b> operations.h:1218</div></div>
 <div class="ttc" id="namespaceqpp_html_a1e1daff5450728504da1fdfedf8d8b54"><div class="ttname"><a href="namespaceqpp.html#a1e1daff5450728504da1fdfedf8d8b54">qpp::trace</a></div><div class="ttdeci">Derived::Scalar trace(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Trace. </div><div class="ttdef"><b>Definition:</b> functions.h:127</div></div>
 <div class="ttc" id="namespaceqpp_html_a07c62992d1a236f062887990eea26b15"><div class="ttname"><a href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">qpp::dyn_col_vect</a></div><div class="ttdeci">Eigen::Matrix&lt; Scalar, Eigen::Dynamic, 1 &gt; dyn_col_vect</div><div class="ttdoc">Dynamic Eigen column vector over the field specified by Scalar. </div><div class="ttdef"><b>Definition:</b> types.h:95</div></div>
 <div class="ttc" id="classqpp_1_1internal_1_1_singleton_html_a4c06f662f70991aa6f84bacf71efc069"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">qpp::internal::Singleton&lt; RandomDevices &gt;::get_instance</a></div><div class="ttdeci">static RandomDevices &amp; get_instance() noexcept(std::is_nothrow_constructible&lt; RandomDevices &gt;::value)</div><div class="ttdef"><b>Definition:</b> singleton.h:90</div></div>
@@ -789,7 +789,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="instruments_8h.html">instruments.h</a></li>
-    <li class="footer">Generated on Wed Sep 28 2016 17:23:02 for Quantum++ by
+    <li class="footer">Generated on Wed Sep 28 2016 21:00:01 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

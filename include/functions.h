@@ -806,7 +806,7 @@ dyn_mat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived>& A,
     if ( n == 0 )
         return result;
 
-    dyn_mat<typename Derived::Scalar> cA = A;
+    dyn_mat<typename Derived::Scalar> cA = A.derived(); // copy
 
     // fast matrix power
     for ( ; n > 0; n /= 2 )
@@ -940,7 +940,7 @@ dyn_mat<typename Derived::Scalar> kron(const std::vector<Derived>& As)
             throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
     // END EXCEPTION CHECKS
 
-    dyn_mat<typename Derived::Scalar> result = As[0];
+    dyn_mat<typename Derived::Scalar> result = As[0].derived();
     for ( idx i = 1; i < As.size(); ++i )
     {
         result = kron(result, As[i]);

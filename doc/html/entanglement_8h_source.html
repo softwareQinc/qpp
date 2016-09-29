@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a643a3f3073b38757ad670ad3d0c64850">   46</a></span>&#160;<a class="code" href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">dyn_col_vect&lt;double&gt;</a> <a class="code" href="namespaceqpp.html#a643a3f3073b38757ad670ad3d0c64850">schmidtcoeffs</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                                   <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A.derived();</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
@@ -131,7 +131,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a27d0cd12502123ea1fe7c48d1043439a">   81</a></span>&#160;<a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a27d0cd12502123ea1fe7c48d1043439a">schmidtA</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;              <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;{</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A.derived();</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
@@ -158,7 +158,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a9843ae59cf424139b3537d21fbfd5860">  116</a></span>&#160;<a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a9843ae59cf424139b3537d21fbfd5860">schmidtB</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;              <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;{</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A.derived();</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
@@ -187,7 +187,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a61ff269f163f35f9e929ca800fe8b32f">  156</a></span>&#160;std::vector&lt;double&gt; <a class="code" href="namespaceqpp.html#a61ff269f163f35f9e929ca800fe8b32f">schmidtprobs</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                                 <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;{</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A.derived();</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
@@ -219,7 +219,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00199"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a9fe919380a14cf18d8c845ee2e3a8f31">  199</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a9fe919380a14cf18d8c845ee2e3a8f31">entanglement</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                    <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;{</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A.derived();</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;</div>
@@ -246,7 +246,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;<span class="comment">// the G-concurrence</span></div>
 <div class="line"><a name="l00238"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a100bf63d3dabba74e049aff37ea7e383">  238</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a100bf63d3dabba74e049aff37ea7e383">gconcurrence</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A)</div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;{</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A.derived();</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;</div>
@@ -274,7 +274,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00272"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a7e79a2383dc47a848ea3e88337070e62">  272</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a7e79a2383dc47a848ea3e88337070e62">negativity</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                  <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;{</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A.derived();</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;</div>
@@ -301,7 +301,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00306"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a825e4812d1b111b04bc3744e4abc1246">  306</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a825e4812d1b111b04bc3744e4abc1246">lognegativity</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A,</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                     <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;{</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A.derived();</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;</div>
@@ -328,7 +328,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
 <div class="line"><a name="l00340"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a6f899cb6e3ea3a13ffd3d8cf0a0bcc6b">  340</a></span>&#160;<span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a6f899cb6e3ea3a13ffd3d8cf0a0bcc6b">concurrence</a>(<span class="keyword">const</span> Eigen::MatrixBase&lt;Derived&gt;&amp; A)</div>
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;{</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A;</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a>&amp; rA = A.derived();</div>
 <div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;</div>
 <div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;</div>
@@ -399,7 +399,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_html_a9fe919380a14cf18d8c845ee2e3a8f31"><div class="ttname"><a href="namespaceqpp.html#a9fe919380a14cf18d8c845ee2e3a8f31">qpp::entanglement</a></div><div class="ttdeci">double entanglement(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Entanglement of the bi-partite pure state A. </div><div class="ttdef"><b>Definition:</b> entanglement.h:199</div></div>
 <div class="ttc" id="namespaceqpp_html_a07c62992d1a236f062887990eea26b15"><div class="ttname"><a href="namespaceqpp.html#a07c62992d1a236f062887990eea26b15">qpp::dyn_col_vect</a></div><div class="ttdeci">Eigen::Matrix&lt; Scalar, Eigen::Dynamic, 1 &gt; dyn_col_vect</div><div class="ttdoc">Dynamic Eigen column vector over the field specified by Scalar. </div><div class="ttdef"><b>Definition:</b> types.h:95</div></div>
 <div class="ttc" id="classqpp_1_1internal_1_1_singleton_html_a4c06f662f70991aa6f84bacf71efc069"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">qpp::internal::Singleton&lt; const Gates &gt;::get_instance</a></div><div class="ttdeci">static const Gates &amp; get_instance() noexcept(std::is_nothrow_constructible&lt; const Gates &gt;::value)</div><div class="ttdef"><b>Definition:</b> singleton.h:90</div></div>
-<div class="ttc" id="namespaceqpp_html_a97eda566cbbf3baaf8d897d5d49fb5f1"><div class="ttname"><a href="namespaceqpp.html#a97eda566cbbf3baaf8d897d5d49fb5f1">qpp::ptranspose</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; ptranspose(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Partial transpose. </div><div class="ttdef"><b>Definition:</b> operations.h:1475</div></div>
+<div class="ttc" id="namespaceqpp_html_a97eda566cbbf3baaf8d897d5d49fb5f1"><div class="ttname"><a href="namespaceqpp.html#a97eda566cbbf3baaf8d897d5d49fb5f1">qpp::ptranspose</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; ptranspose(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Partial transpose. </div><div class="ttdef"><b>Definition:</b> operations.h:1479</div></div>
 <div class="ttc" id="namespaceqpp_html_ab0de67006716bdc8fae52c6a49259276"><div class="ttname"><a href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">qpp::cmat</a></div><div class="ttdeci">Eigen::MatrixXcd cmat</div><div class="ttdoc">Complex (double precision) dynamic Eigen matrix. </div><div class="ttdef"><b>Definition:</b> types.h:66</div></div>
 <div class="ttc" id="namespaceqpp_html_a1f5f7137e8551cf82db04d3b81cdd706"><div class="ttname"><a href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">qpp::idx</a></div><div class="ttdeci">std::size_t idx</div><div class="ttdoc">Non-negative integer index. </div><div class="ttdef"><b>Definition:</b> types.h:36</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca76a02252d5fd8eaccfd1ac419dd8150d">qpp::Exception::Type::DIMS_MISMATCH_MATRIX</a></div></div>
@@ -415,7 +415,7 @@ $(document).ready(function(){initNavTree('entanglement_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="entanglement_8h.html">entanglement.h</a></li>
-    <li class="footer">Generated on Wed Sep 28 2016 17:23:02 for Quantum++ by
+    <li class="footer">Generated on Wed Sep 28 2016 21:00:01 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

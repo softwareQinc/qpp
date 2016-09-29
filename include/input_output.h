@@ -148,7 +148,7 @@ internal::IOManipPointer <PointerType> disp(const PointerType* p, idx n,
 template<typename Derived>
 void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 

@@ -232,7 +232,7 @@ public:
                                            const std::vector<idx>& subsys,
                                            idx n, idx d = 2) const
     {
-        const dyn_mat<typename Derived::Scalar>& rA = A;
+        const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
         // EXCEPTION CHECKS
 
@@ -401,7 +401,7 @@ public:
             const Eigen::MatrixBase<Derived>& A, idx pos,
             const std::vector<idx>& dims) const
     {
-        const dyn_mat<typename Derived::Scalar>& rA = A;
+        const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
         // EXCEPTION CHECKS
 

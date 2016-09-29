@@ -58,7 +58,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         const std::vector<idx>& subsys,
         const std::vector<idx>& dims)
 {
-    typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate = state.derived();
+    typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate
+            = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -451,7 +452,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         const std::vector<idx>& subsys,
         idx d = 2)
 {
-    typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate = state.derived();
+    typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate
+            = state.derived();
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -493,7 +495,8 @@ dyn_mat<typename Derived1::Scalar> apply(
         const std::vector<idx>& subsys,
         const std::vector<idx>& dims)
 {
-    typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate = state.derived();
+    typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate
+            = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -579,7 +582,8 @@ dyn_mat<typename Derived1::Scalar> apply(
         const std::vector<idx>& subsys,
         idx d = 2)
 {
-    typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate = state.derived();
+    typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate
+            = state.derived();
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -613,7 +617,7 @@ template<typename Derived>
 cmat apply(const Eigen::MatrixBase<Derived>& rho,
            const std::vector<cmat>& Ks)
 {
-    const cmat& rrho = rho;
+    const cmat& rrho = rho.derived();
 
     // EXCEPTION CHECKS
 
@@ -667,7 +671,7 @@ cmat apply(const Eigen::MatrixBase<Derived>& rho,
            const std::vector<idx>& subsys,
            const std::vector<idx>& dims)
 {
-    const cmat& rrho = rho;
+    const cmat& rrho = rho.derived();
 
     // EXCEPTION CHECKS
 
@@ -734,7 +738,7 @@ cmat apply(const Eigen::MatrixBase<Derived>& rho,
            const std::vector<idx>& subsys,
            idx d = 2)
 {
-    const cmat& rrho = rho;
+    const cmat& rrho = rho.derived();
 
     // EXCEPTION CHECKS
 

@@ -46,7 +46,7 @@ template<typename Derived>
 dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
                                    const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -81,7 +81,7 @@ template<typename Derived>
 cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
               const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -116,7 +116,7 @@ template<typename Derived>
 cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
               const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -156,7 +156,7 @@ template<typename Derived>
 std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
                                  const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -199,7 +199,7 @@ template<typename Derived>
 double entanglement(const Eigen::MatrixBase<Derived>& A,
                     const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -237,7 +237,7 @@ template<typename Derived>
 // the G-concurrence
 double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -272,7 +272,7 @@ template<typename Derived>
 double negativity(const Eigen::MatrixBase<Derived>& A,
                   const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -306,7 +306,7 @@ template<typename Derived>
 double lognegativity(const Eigen::MatrixBase<Derived>& A,
                      const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -339,7 +339,7 @@ double lognegativity(const Eigen::MatrixBase<Derived>& A,
 template<typename Derived>
 double concurrence(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A;
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 

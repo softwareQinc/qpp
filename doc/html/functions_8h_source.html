@@ -664,7 +664,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;    <span class="keywordflow">if</span> ( n == 0 )</div>
 <div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;        <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;</div>
-<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> cA = A;</div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> cA = A.derived(); <span class="comment">// copy</span></div>
 <div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;</div>
 <div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;    <span class="comment">// fast matrix power</span></div>
 <div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;    <span class="keywordflow">for</span> ( ; n &gt; 0; n /= 2 )</div>
@@ -753,7 +753,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::kron()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l00941"></a><span class="lineno">  941</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00942"></a><span class="lineno">  942</span>&#160;</div>
-<div class="line"><a name="l00943"></a><span class="lineno">  943</span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> result = As[0];</div>
+<div class="line"><a name="l00943"></a><span class="lineno">  943</span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> result = As[0].derived();</div>
 <div class="line"><a name="l00944"></a><span class="lineno">  944</span>&#160;    <span class="keywordflow">for</span> ( <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 1; i &lt; As.size(); ++i )</div>
 <div class="line"><a name="l00945"></a><span class="lineno">  945</span>&#160;    {</div>
 <div class="line"><a name="l00946"></a><span class="lineno">  946</span>&#160;        result = <a class="code" href="namespaceqpp.html#a9294ebd345fe1c99731bf2b776e610d7">kron</a>(result, As[i]);</div>
@@ -1503,7 +1503,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="functions_8h.html">functions.h</a></li>
-    <li class="footer">Generated on Wed Sep 28 2016 17:23:02 for Quantum++ by
+    <li class="footer">Generated on Wed Sep 28 2016 21:00:01 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
