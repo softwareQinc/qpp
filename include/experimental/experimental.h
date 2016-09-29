@@ -48,6 +48,7 @@ protected:
     const Eigen::MatrixBase<Derived>& _viewA;
 private:
     idx _rows, _cols;
+
 public:
     MatrixViewBase(const Eigen::MatrixBase<Derived>& A) :
             _viewA(A),
@@ -79,17 +80,6 @@ public:
     Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic>
     get_copy() const
     {
-        return static_cast<Eigen::Matrix<typename Derived::Scalar,
-                Eigen::Dynamic, Eigen::Dynamic>>(*this);
-    }
-
-    // conversions
-
-    // allow only explicit conversions
-    explicit operator
-    Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic>()
-    const
-    {
         Eigen::Matrix<
                 typename Derived::Scalar,
                 Eigen::Dynamic,
@@ -104,6 +94,16 @@ public:
                 result(i, j) = this->operator()(i, j);
 
         return result;
+    }
+
+    // conversions
+
+    // allow only explicit conversions
+    explicit operator
+    Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic>()
+    const
+    {
+        return get_copy();
     }
 
     // check out of bounds access, slower than raw operator()(idx, idx)
