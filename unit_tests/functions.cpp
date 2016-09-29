@@ -27,6 +27,18 @@ using namespace qpp;
 
 ///// BEGIN template<typename InputIterator>
 ///// typename std::iterator_traits<InputIterator>::value_type
+///// qpp::prod(InputIterator first, InputIterator last)
+TEST(qpp_prod_test, PositiveNumbers)
+{
+std::vector<int> v{1, 2, 3, 4};
+EXPECT_EQ (24, qpp::prod(v.begin(), v.end()));
+}
+///// END template<typename InputIterator>
+///// typename std::iterator_traits<InputIterator>::value_type
+///// qpp::prod(InputIterator first, InputIterator last)
+
+///// BEGIN template<typename InputIterator>
+///// typename std::iterator_traits<InputIterator>::value_type
 ///// qpp::sum(InputIterator first, InputIterator last)
 TEST(qpp_sum_test, PositiveNumbers)
 {
@@ -48,16 +60,4 @@ TEST(qpp_sum_test, MixedNumbers)
 ///// END template<typename InputIterator>
 ///// typename std::iterator_traits<InputIterator>::value_type
 ///// qpp::sum(InputIterator first, InputIterator last)
-
-///// BEGIN template<typename InputIterator>
-///// typename std::iterator_traits<InputIterator>::value_type
-///// qpp::prod(InputIterator first, InputIterator last)
-TEST(qpp_prod_test, PositiveNumbers)
-{
-    std::vector<int> v{1, 2, 3, 4};
-    EXPECT_EQ (24, qpp::prod(v.begin(), v.end()));
-}
-///// END template<typename InputIterator>
-///// typename std::iterator_traits<InputIterator>::value_type
-///// qpp::prod(InputIterator first, InputIterator last)
 

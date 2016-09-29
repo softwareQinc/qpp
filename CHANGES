@@ -122,6 +122,7 @@ Version 0.8.7 - development
     - cmake required minimum version updated to 3.0.0
     - Added OpenMP support for clang >= 3.7 in CmakeLists.txt
     - Split unit testing in separate files according to the tested header file
+    - More unit testing, <number_theory.h> is now fully tested
     - SFINAE for all functions that have STL-containers as parameters
     - Fixed typo in CMakeLists.txt which in effect disabled OpenMP
         for version 0.8.6. PLEASE use the CMakeLists.txt from current version!

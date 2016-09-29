@@ -366,10 +366,19 @@ inline bigint modpow(bigint a, bigint n, bigint p)
 {
     // EXCEPTION CHECKS
 
-    if (p == 0 || (a == 0 && n == 0))
-        throw Exception("qpp::modpow()",
-                        Exception::Type::OUT_OF_RANGE);
+    if (a < 0 || n < 0 || p < 1)
+        throw Exception("qpp::modpow()", Exception::Type::OUT_OF_RANGE);
+
+    if (a == 0 && n == 0)
+        throw Exception("qpp::modpow()", Exception::Type::OUT_OF_RANGE);
+
     // END EXCEPTION CHECKS
+
+    if (a == 0 && n > 0)
+        return 0;
+
+    if (n == 0 && p == 1)
+        return 0;
 
     bigint result = 1;
 

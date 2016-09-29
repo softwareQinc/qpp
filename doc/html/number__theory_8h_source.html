@@ -334,79 +334,88 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;{</div>
 <div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    <span class="keywordflow">if</span> (p == 0 || (a == 0 &amp;&amp; n == 0))</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::modpow()&quot;</span>,</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;                        <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> result = 1;</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    <span class="keywordflow">for</span> (; n &gt; 0; n /= 2)</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    {</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        <span class="keywordflow">if</span> (n % 2)</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;            result = (result * a) % p; <span class="comment">// MULTIPLY</span></div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        a = (a * a) % p; <span class="comment">// SQUARE</span></div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    }</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    <span class="keywordflow">if</span> (a &lt; 0 || n &lt; 0 || p &lt; 1)</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::modpow()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <span class="keywordflow">if</span> (a == 0 &amp;&amp; n == 0)</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::modpow()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    <span class="keywordflow">if</span> (a == 0 &amp;&amp; n &gt; 0)</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    <span class="keywordflow">if</span> (n == 0 &amp;&amp; p == 1)</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;}</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;</div>
-<div class="line"><a name="l00396"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a6c3d4cf2e88be0e884c904e4d6d68a0e">  396</a></span>&#160;<span class="keyword">inline</span> std::tuple&lt;bigint, bigint, bigint&gt; <a class="code" href="namespaceqpp.html#a6c3d4cf2e88be0e884c904e4d6d68a0e">egcd</a>(<a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> m, <a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> n)</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;{</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    <span class="keywordflow">if</span> (m == 0 &amp;&amp; n == 0)</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::egcd()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;    <a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> a, b, c;</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    <a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> q, r, a1, a2, b1, b2;</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    <a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> result = 1;</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    <span class="keywordflow">for</span> (; n &gt; 0; n /= 2)</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    {</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        <span class="keywordflow">if</span> (n % 2)</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;            result = (result * a) % p; <span class="comment">// MULTIPLY</span></div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        a = (a * a) % p; <span class="comment">// SQUARE</span></div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    }</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;}</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;</div>
+<div class="line"><a name="l00405"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a6c3d4cf2e88be0e884c904e4d6d68a0e">  405</a></span>&#160;<span class="keyword">inline</span> std::tuple&lt;bigint, bigint, bigint&gt; <a class="code" href="namespaceqpp.html#a6c3d4cf2e88be0e884c904e4d6d68a0e">egcd</a>(<a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> m, <a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> n)</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;{</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    a2 = 1, a1 = 0, b2 = 0, b1 = 1;</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    <span class="keywordflow">while</span> (n)</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    {</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;        q = m / n, r = m - q * n;</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        a = a2 - q * a1, b = b2 - q * b1;</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        m = n, n = r;</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;        a2 = a1, a1 = a, b2 = b1, b1 = b;</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    }</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    c = m, a = a2, b = b2;</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    <span class="comment">// correct the signs</span></div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    <span class="keywordflow">if</span>( c &lt; 0)</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;    {</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;        a = -a;</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;        b = -b;</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;        c = -c;</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    <span class="keywordflow">if</span> (m == 0 &amp;&amp; n == 0)</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::egcd()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    <a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> a, b, c;</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    <a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> q, r, a1, a2, b1, b2;</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;    a2 = 1, a1 = 0, b2 = 0, b1 = 1;</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    <span class="keywordflow">while</span> (n)</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    {</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        q = m / n, r = m - q * n;</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;        a = a2 - q * a1, b = b2 - q * b1;</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;        m = n, n = r;</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;        a2 = a1, a1 = a, b2 = b1, b1 = b;</div>
 <div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    }</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    <span class="keywordflow">return</span> std::make_tuple(a, b, c);</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;}</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;</div>
-<div class="line"><a name="l00440"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a7e53beed2f6bb8d374ac2e2460aee2c2">  440</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> <a class="code" href="namespaceqpp.html#a7e53beed2f6bb8d374ac2e2460aee2c2">modinv</a>(<a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> a, <a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> p)</div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;{</div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;</div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;    <span class="keywordflow">if</span> (a == 0 || p == 0 || a &lt; 0 || p &lt; 0)</div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::modinv()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;</div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;    <a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> x, y;</div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;    <a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> gcd_ap;</div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;    std::tie(x, y, gcd_ap) = <a class="code" href="namespaceqpp.html#a6c3d4cf2e88be0e884c904e4d6d68a0e">egcd</a>(p, a);</div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;</div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;    <span class="keywordflow">if</span> (gcd_ap != 1)</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::modinv()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;    c = m, a = a2, b = b2;</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    <span class="comment">// correct the signs</span></div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    <span class="keywordflow">if</span>( c &lt; 0)</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;    {</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;        a = -a;</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;        b = -b;</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;        c = -c;</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;    }</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;    <span class="keywordflow">return</span> std::make_tuple(a, b, c);</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;}</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;</div>
+<div class="line"><a name="l00449"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a7e53beed2f6bb8d374ac2e2460aee2c2">  449</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> <a class="code" href="namespaceqpp.html#a7e53beed2f6bb8d374ac2e2460aee2c2">modinv</a>(<a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> a, <a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> p)</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;{</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;    <span class="keywordflow">if</span> (a == 0 || p == 0 || a &lt; 0 || p &lt; 0)</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::modinv()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
 <div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;</div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;    <span class="keywordflow">return</span> (y &gt; 0) ? y : y + p;</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;}</div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;</div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;</div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* NUMBER_THEORY_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;    <a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> x, y;</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    <a class="code" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> gcd_ap;</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    std::tie(x, y, gcd_ap) = <a class="code" href="namespaceqpp.html#a6c3d4cf2e88be0e884c904e4d6d68a0e">egcd</a>(p, a);</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;    <span class="keywordflow">if</span> (gcd_ap != 1)</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::modinv()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;    <span class="keywordflow">return</span> (y &gt; 0) ? y : y + p;</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;}</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* NUMBER_THEORY_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="namespaceqpp_html_a269fcdf6397f3808852224eea0c2d220"><div class="ttname"><a href="namespaceqpp.html#a269fcdf6397f3808852224eea0c2d220">qpp::factors</a></div><div class="ttdeci">std::vector&lt; bigint &gt; factors(bigint n)</div><div class="ttdoc">Prime factor decomposition. </div><div class="ttdef"><b>Definition:</b> number_theory.h:291</div></div>
 <div class="ttc" id="namespaceqpp_html_a1643f1e2f1e7e74e3a4a0f4f25a0c940"><div class="ttname"><a href="namespaceqpp.html#a1643f1e2f1e7e74e3a4a0f4f25a0c940">qpp::lcm</a></div><div class="ttdeci">bigint lcm(bigint m, bigint n)</div><div class="ttdoc">Least common multiple of two integers. </div><div class="ttdef"><b>Definition:</b> number_theory.h:191</div></div>
 <div class="ttc" id="namespaceqpp_html_a1a1a10bb387568dba500d2bb996c96e6"><div class="ttname"><a href="namespaceqpp.html#a1a1a10bb387568dba500d2bb996c96e6">qpp::isprime</a></div><div class="ttdeci">bool isprime(bigint n)</div><div class="ttdoc">Primality test. </div><div class="ttdef"><b>Definition:</b> number_theory.h:335</div></div>
@@ -414,12 +423,12 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_html"><div class="ttname"><a href="namespaceqpp.html">qpp</a></div><div class="ttdoc">Quantum++ main namespace. </div><div class="ttdef"><b>Definition:</b> codes.h:30</div></div>
 <div class="ttc" id="namespaceqpp_html_a5dac002761cbcfb72cdb6a573e2689c3"><div class="ttname"><a href="namespaceqpp.html#a5dac002761cbcfb72cdb6a573e2689c3">qpp::sigma</a></div><div class="ttdeci">double sigma(const std::vector&lt; double &gt; &amp;prob, const Container &amp;X, typename std::enable_if&lt; is_iterable&lt; Container &gt;::value &gt;::type *=nullptr)</div><div class="ttdoc">Standard deviation. </div><div class="ttdef"><b>Definition:</b> statistics.h:207</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">qpp::Exception::Type::ZERO_SIZE</a></div></div>
-<div class="ttc" id="namespaceqpp_html_a6c3d4cf2e88be0e884c904e4d6d68a0e"><div class="ttname"><a href="namespaceqpp.html#a6c3d4cf2e88be0e884c904e4d6d68a0e">qpp::egcd</a></div><div class="ttdeci">std::tuple&lt; bigint, bigint, bigint &gt; egcd(bigint m, bigint n)</div><div class="ttdoc">Extended greatest common divisor of two integers. </div><div class="ttdef"><b>Definition:</b> number_theory.h:396</div></div>
+<div class="ttc" id="namespaceqpp_html_a6c3d4cf2e88be0e884c904e4d6d68a0e"><div class="ttname"><a href="namespaceqpp.html#a6c3d4cf2e88be0e884c904e4d6d68a0e">qpp::egcd</a></div><div class="ttdeci">std::tuple&lt; bigint, bigint, bigint &gt; egcd(bigint m, bigint n)</div><div class="ttdoc">Extended greatest common divisor of two integers. </div><div class="ttdef"><b>Definition:</b> number_theory.h:405</div></div>
 <div class="ttc" id="namespaceqpp_html_a9a0cdf917f1a5e398e9978fb36141a27"><div class="ttname"><a href="namespaceqpp.html#a9a0cdf917f1a5e398e9978fb36141a27">qpp::compperm</a></div><div class="ttdeci">std::vector&lt; idx &gt; compperm(const std::vector&lt; idx &gt; &amp;perm, const std::vector&lt; idx &gt; &amp;sigma)</div><div class="ttdoc">Compose permutations. </div><div class="ttdef"><b>Definition:</b> number_theory.h:262</div></div>
 <div class="ttc" id="namespaceqpp_html_a392505168b9760af20ed641d86fe3a7d"><div class="ttname"><a href="namespaceqpp.html#a392505168b9760af20ed641d86fe3a7d">qpp::contfrac2x</a></div><div class="ttdeci">double contfrac2x(const std::vector&lt; int &gt; &amp;cf, idx n)</div><div class="ttdoc">Real representation of a simple continued fraction. </div><div class="ttdef"><b>Definition:</b> number_theory.h:76</div></div>
 <div class="ttc" id="namespaceqpp_html_a396e880587519c2861caf0bcdfb219a0"><div class="ttname"><a href="namespaceqpp.html#a396e880587519c2861caf0bcdfb219a0">qpp::invperm</a></div><div class="ttdeci">std::vector&lt; idx &gt; invperm(const std::vector&lt; idx &gt; &amp;perm)</div><div class="ttdoc">Inverse permutation. </div><div class="ttdef"><b>Definition:</b> number_theory.h:238</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a5c90e71ef74abcb25b5943025ee003c1"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a5c90e71ef74abcb25b5943025ee003c1">qpp::internal::_check_perm</a></div><div class="ttdeci">bool _check_perm(const std::vector&lt; idx &gt; &amp;perm)</div><div class="ttdef"><b>Definition:</b> util.h:242</div></div>
-<div class="ttc" id="namespaceqpp_html_a7e53beed2f6bb8d374ac2e2460aee2c2"><div class="ttname"><a href="namespaceqpp.html#a7e53beed2f6bb8d374ac2e2460aee2c2">qpp::modinv</a></div><div class="ttdeci">bigint modinv(bigint a, bigint p)</div><div class="ttdoc">Modular inverse of a mod p. </div><div class="ttdef"><b>Definition:</b> number_theory.h:440</div></div>
+<div class="ttc" id="namespaceqpp_html_a7e53beed2f6bb8d374ac2e2460aee2c2"><div class="ttname"><a href="namespaceqpp.html#a7e53beed2f6bb8d374ac2e2460aee2c2">qpp::modinv</a></div><div class="ttdeci">bigint modinv(bigint a, bigint p)</div><div class="ttdoc">Modular inverse of a mod p. </div><div class="ttdef"><b>Definition:</b> number_theory.h:449</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html"><div class="ttname"><a href="classqpp_1_1_exception.html">qpp::Exception</a></div><div class="ttdoc">Generates custom exceptions, used when validating function parameters. </div><div class="ttdef"><b>Definition:</b> exception.h:39</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">qpp::Exception::Type::OUT_OF_RANGE</a></div></div>
 <div class="ttc" id="namespaceqpp_html_ad029d4ada2887a761a9672403008680b"><div class="ttname"><a href="namespaceqpp.html#ad029d4ada2887a761a9672403008680b">qpp::gcd</a></div><div class="ttdeci">bigint gcd(bigint m, bigint n)</div><div class="ttdoc">Greatest common divisor of two integers. </div><div class="ttdef"><b>Definition:</b> number_theory.h:137</div></div>
@@ -433,7 +442,7 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="number__theory_8h.html">number_theory.h</a></li>
-    <li class="footer">Generated on Thu Sep 29 2016 15:48:56 for Quantum++ by
+    <li class="footer">Generated on Thu Sep 29 2016 17:14:34 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>
