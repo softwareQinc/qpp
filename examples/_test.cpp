@@ -9,6 +9,8 @@ using namespace qpp;
 // TODO: write a MatrixView class, for multi-index lazy evaluation view - wip
 // TODO: use assert in performance-critical functions (qpp::internal)
 // TODO: remove "experimental/experimental.h" include directive from headers
+// TODO: figure out why channels.cpp compiles only with the stable Eigen version
+// TODO: FIX above - SFINAE on is_iterable for containers
 
 // In experimental.h
 // TODO: exception checking

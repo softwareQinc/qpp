@@ -1660,15 +1660,15 @@ std::vector<double> abssq(InputIterator first, InputIterator last)
 */
 template<typename Container>
 std::vector<double> abssq(const Container& c,
-        // need the enable_if to SFINAE out Eigen expressions
-        // that will otherwise match, instead of matching
-        // the overload below:
-
-        // template<typename Derived>
-        // abssq(const Eigen::MatrixBase<Derived>& V)
                           typename std::enable_if<
                                   is_iterable<Container>::value
                           >::type* = nullptr)
+// we need the std::enable_if to SFINAE out Eigen expressions
+// that will otherwise match, instead of matching
+// the overload below:
+
+// template<typename Derived>
+// abssq(const Eigen::MatrixBase<Derived>& V)
 {
     return abssq(std::begin(c), std::end(c));
 }
@@ -1721,7 +1721,8 @@ sum(InputIterator first, InputIterator last)
 */
 template<typename Container>
 typename Container::value_type
-sum(const Container& c)
+sum(const Container& c,
+    typename std::enable_if<is_iterable<Container>::value>::type* = nullptr)
 {
     return sum(std::begin(c), std::end(c));
 }
