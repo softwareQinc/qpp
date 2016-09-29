@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 PROJECT(qpp)
 
 #### CMake support only for GNU gcc and Clang/AppleClang
