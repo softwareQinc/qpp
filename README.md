@@ -96,8 +96,8 @@ shared library files:
 
 ### Building using [cmake](http://www.cmake.org/) (version 3.0 or later)
 
-The current version of the repository has a `./CMakeLists.txt` configuration file
-for building examples using [cmake](http://www.cmake.org/). 
+The current version of the repository has a `./CMakeLists.txt` configuration 
+file for building examples using [cmake](http://www.cmake.org/). 
 To build an example using [cmake](http://www.cmake.org/), 
 I recommend an out-of-source build, i.e., from the root of the project 
 (where `./include` is located), type
@@ -139,8 +139,8 @@ the `./build` directory before a fresh build!
 
 - If using [Windows](http://windows.microsoft.com/), I recommend compiling 
 under [cygwin](https://www.cygwin.com) via [cmake](http://www.cmake.org/)
-and [g++](https://gcc.gnu.org/). 
-See also <http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2>
+and [g++](https://gcc.gnu.org/). See also 
+<http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2>
 for a bug related to lack of support for some C++11 math functions, and
 how to fix it. Quick fix: patch the standard library header file `<cmath>` 
 using the provided patch `./cmath_cygwin.patch`.
@@ -169,7 +169,7 @@ Otherwise, you will get a runtime error like
 
     * Example of script, assumed to be located in the root directory 
     of Quantum++:
-	    
+        
             #!/bin/sh
             
             MATLAB=/Applications/MATLAB_R2016a.app
