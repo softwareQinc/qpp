@@ -54,7 +54,9 @@ IF (${WITH_OPENMP})
         ENDIF()
     #### no OpenMP support for other compilers
     ELSE ()
-        MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}. Support for OpenMP is enabled only for the GNU gcc compiler or Clang >= 3.7.")
+        MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} \
+        ${CMAKE_CXX_COMPILER_VERSION}. Support for OpenMP is enabled only for \
+        the GNU gcc compiler or Clang >= 3.7.")
     ENDIF ()
 ENDIF ()
 
@@ -63,7 +65,8 @@ ENDIF ()
 IF (${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang")
     #### inject definition (as #define) in the source files
     ADD_DEFINITIONS(-D_NO_THREAD_LOCAL_)
-    MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}. thread_local not supported.")
+    MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} \
+    ${CMAKE_CXX_COMPILER_VERSION}. thread_local not supported.")
 ENDIF ()
 
 #### GNU gcc additional debug settings
