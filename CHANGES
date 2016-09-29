@@ -124,7 +124,7 @@ Version 0.8.7 - development
     - Split unit testing in separate files according to the tested header file
     - SFINAE for all functions that have STL-containers as parameters
     - Fixed typo in CMakeLists.txt which in effect disabled OpenMP
-        for version 0.8.6. PLEASE use the CMakeLists.txt from 0.8.7!
+        for version 0.8.6. PLEASE use the CMakeLists.txt from current version!
     - Improved performance via removing unnecessary copy, see Issue #31,
         thanks @vasekp
     - Corrected code typo in qpp::internal::Singleton<T>, see Issue #35,
