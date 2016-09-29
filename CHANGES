@@ -129,6 +129,7 @@ Version 0.8.7 - development
         thanks @vasekp
     - Corrected code typo in qpp::internal::Singleton<T>, see Issue #35,
         thanks @titaschanda
+    - critical bug fix in qpp::lcm(const std::vector<bigint>&)
     - Added new functions in <number_theory.h>:
         qpp::egcd()   - extended greatest common divisor algorithm
         qpp::modinv() - modular inverse of a mod p

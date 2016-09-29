@@ -143,7 +143,7 @@ inline bigint gcd(bigint m, bigint n)
     // END EXCEPTION CHECKS
 
     if (m == 0 || n == 0)
-        return (std::max(m, n));
+        return (std::max(std::abs(m), std::abs(n)));
 
     bigint result = 1;
     while (n)
@@ -190,7 +190,7 @@ inline bigint gcd(const std::vector<bigint>& ns)
 */
 inline bigint lcm(bigint m, bigint n)
 {
-    if (m == 0 || n == 0)
+    if (m == 0 && n == 0)
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
 
     bigint result = m * n / gcd(m, n);
@@ -219,13 +219,12 @@ inline bigint lcm(const std::vector<bigint>& ns)
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
-    bigint prod =
-            std::accumulate(std::begin(ns),
-                            std::end(ns),
-                            static_cast<bigint>(1),
-                            std::multiplies<bigint>());
+    bigint result = ns[0]; // convention: lcm({n}) = n
 
-    bigint result = prod / gcd(ns);
+    for (idx i = 1; i < ns.size(); ++i)
+    {
+        result = lcm(result, ns[i]);
+    }
 
     return  (result > 0) ?  result : -result;
 }
@@ -442,7 +441,7 @@ inline bigint modinv(bigint a, bigint p)
 {
     // EXCEPTION CHECKS
 
-    if (a == 0 || p == 0)
+    if (a == 0 || p == 0 || a < 0 || p < 0)
         throw Exception("qpp::modinv()", Exception::Type::OUT_OF_RANGE);
 
     bigint x, y;
