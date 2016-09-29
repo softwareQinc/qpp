@@ -370,7 +370,8 @@ measure(const Eigen::MatrixBase<Derived>& A,
         const std::vector<idx>& subsys,
         const std::vector<idx>& dims)
 {
-    const cmat& rA = A.derived();
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA
+            = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -519,7 +520,8 @@ measure(const Eigen::MatrixBase<Derived>& A,
         const std::vector<idx>& subsys,
         idx d = 2)
 {
-    const cmat& rA = A.derived();
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA
+            = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -596,7 +598,8 @@ measure(const Eigen::MatrixBase<Derived>& A,
         const std::vector<idx>& subsys,
         const std::vector<idx>& dims)
 {
-    const cmat& rA = A.derived();
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA
+            = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -715,7 +718,8 @@ measure(const Eigen::MatrixBase<Derived>& A,
         const std::vector<idx>& subsys,
         idx d = 2)
 {
-    const cmat& rA = A.derived();
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA
+            = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -756,7 +760,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
             std::vector<idx> subsys,
             std::vector<idx> dims)
 {
-    dyn_mat<typename Derived::Scalar> cA = A;
+    typename Eigen::MatrixBase<Derived>::EvalReturnType cA = A;
 
     // EXCEPTION CHECKS
 
@@ -833,7 +837,8 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
             std::vector<idx> subsys,
             idx d = 2)
 {
-    const cmat& rA = A.derived();
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA
+            = A.derived();
 
     // EXCEPTION CHECKS
 

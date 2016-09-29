@@ -32,7 +32,7 @@ cmat gettmp() // prvalue
 int main()
 {
     // testing qpp::experimental::MatrixView
-    idx ROWS = 4, COLS = 4;
+    //idx ROWS = 4, COLS = 4;
     cmat A = gt.CNOT;
     //A << 1, 2., 3., 4.;
 
@@ -71,7 +71,7 @@ int main()
     std::cout << "Testing MatrixView via syspermute:\n";
     std::vector<idx> perm{1, 2, 3, 7, 4, 6, 5, 0};
     idx N = std::pow(2, perm.size());
-    cmat rho = qpp::rand<cmat>(256, 256);
+    cmat rho = qpp::rand<cmat>(N, N);
     cmat B = syspermute(rho, perm);
     cmat C = experimental::make_MatrixView(rho, perm).get_copy();
     std::cout << "Norm difference: " << norm(B - C) << std::endl;

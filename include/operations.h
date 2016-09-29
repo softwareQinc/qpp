@@ -58,7 +58,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         const std::vector<idx>& subsys,
         const std::vector<idx>& dims)
 {
-    typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate
+    const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate
             = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
@@ -452,7 +452,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         const std::vector<idx>& subsys,
         idx d = 2)
 {
-    typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate
+    const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate
             = state.derived();
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
@@ -495,7 +495,7 @@ dyn_mat<typename Derived1::Scalar> apply(
         const std::vector<idx>& subsys,
         const std::vector<idx>& dims)
 {
-    typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate
+    const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate
             = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
@@ -582,7 +582,7 @@ dyn_mat<typename Derived1::Scalar> apply(
         const std::vector<idx>& subsys,
         idx d = 2)
 {
-    typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate
+    const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate
             = state.derived();
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
