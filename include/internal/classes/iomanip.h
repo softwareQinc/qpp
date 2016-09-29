@@ -27,8 +27,6 @@
 #ifndef INTERNAL_CLASSES_IOMANIP_H_
 #define INTERNAL_CLASSES_IOMANIP_H_
 
-#include "experimental/experimental.h"
-
 namespace qpp
 {
 namespace internal
@@ -242,25 +240,6 @@ private:
         return _display_impl(_A, os, chop);
     }
 }; // class IOManipEigen
-
-template<typename Derived>
-class IOManipMatrixView : public IDisplay, private _details::_Display_Impl
-{
-    const qpp::experimental::MatrixView<Derived>& _viewA;
-    double _chop;
-public:
-    explicit IOManipMatrixView(const qpp::experimental::MatrixView<Derived>& A,
-                               double chop = qpp::chop) :
-            _viewA{A}, _chop{chop}
-    {
-    }
-
-private:
-    std::ostream& display(std::ostream& os) const override
-    {
-        return _display_impl(_viewA, os, chop);
-    }
-}; // class IOManipMatrixView
 
 } /* namespace internal */
 } /* namespace qpp */

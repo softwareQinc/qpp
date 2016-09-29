@@ -50,3 +50,12 @@
 \form#49:$Tr_{subsys}(\cdot)$
 \form#50:$(\cdot)^{T_{subsys}}$
 \form#51:$ \sum_i K_i^\dagger K_i = I$
+\form#52:$a^n \mathrm{ mod } p$
+\form#53:$a$
+\form#54:$b$
+\form#55:$c=gcd(a, b)$
+\form#56:$am+bn=c=gcd(a, b)$
+\form#57:$am+bn = c = gcd(a, b)$
+\form#58:$gcd(a, b)$
+\form#59:$am + bn = gcd(a, b)$
+\form#60:$a^{-1}$
