@@ -45,7 +45,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 ### Configuration:
 
-- Compiler: [g++](https://gcc.gnu.org/) version 4.8 or later 
+- Compiler: [g++](https://gcc.gnu.org/) version 4.8.2 or later 
 (for good C++11 support)
 - [Eigen 3](http://eigen.tuxfamily.org) library located in `$HOME/eigen`
 - Quantum++ library located in `$HOME/qpp`
@@ -94,7 +94,7 @@ shared library files:
          -L /Applications/MATLAB_R2016a.app/bin/maci64 \
          -lmx -lmat minimal.cpp -o minimal
 
-### Building using [cmake](http://www.cmake.org/)
+### Building using [cmake](http://www.cmake.org/) (version 3.0.0 or later)
 
 The current version of the repository has a `./CMakeLists.txt` configuration file
 for building examples using [cmake](http://www.cmake.org/). 
