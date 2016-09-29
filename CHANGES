@@ -120,7 +120,8 @@ Version 0.8.6 - 1 November 2015
 
 Version 0.8.7 - development
     - cmake required minimum version updated to 3.0.0
-    - Added support for OpenMP for clang >= 3.7 in CmakeLists.txt
+    - Added OpenMP support for clang >= 3.7 in CmakeLists.txt
+    - SFINAE for all functions that have STL-containers as parameters
     - Fixed typo in CMakeLists.txt which in effect disabled OpenMP
         for version 0.8.6. PLEASE use the CMakeLists.txt from 0.8.7!
     - Improved performance via removing unnecessary copy, see Issue #31,

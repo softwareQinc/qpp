@@ -111,10 +111,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a7cc152d12deb461b1a0b1d8eac7c9815"><td class="memTemplItemLeft" align="right" valign="top">internal::IOManipRange&lt; InputIterator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a7cc152d12deb461b1a0b1d8eac7c9815">qpp::disp</a> (InputIterator first, InputIterator last, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;)</td></tr>
 <tr class="memdesc:a7cc152d12deb461b1a0b1d8eac7c9815"><td class="mdescLeft">&#160;</td><td class="mdescRight">Range ostream manipulator.  <a href="#a7cc152d12deb461b1a0b1d8eac7c9815">More...</a><br /></td></tr>
 <tr class="separator:a7cc152d12deb461b1a0b1d8eac7c9815"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc2ad6985e72b70282708a637cf42e7b"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
-<tr class="memitem:afc2ad6985e72b70282708a637cf42e7b"><td class="memTemplItemLeft" align="right" valign="top">internal::IOManipRange&lt; typename Container::const_iterator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#afc2ad6985e72b70282708a637cf42e7b">qpp::disp</a> (const Container &amp;c, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;)</td></tr>
-<tr class="memdesc:afc2ad6985e72b70282708a637cf42e7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard container ostream manipulator. The container must support std::begin(), std::end() and forward iteration.  <a href="#afc2ad6985e72b70282708a637cf42e7b">More...</a><br /></td></tr>
-<tr class="separator:afc2ad6985e72b70282708a637cf42e7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a511ed948dfcfc43535412d9cc9a586a6"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
+<tr class="memitem:a511ed948dfcfc43535412d9cc9a586a6"><td class="memTemplItemLeft" align="right" valign="top">internal::IOManipRange&lt; typename Container::const_iterator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a511ed948dfcfc43535412d9cc9a586a6">qpp::disp</a> (const Container &amp;c, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;, typename std::enable_if&lt; is_iterable&lt; Container &gt;::value &gt;::type *=nullptr)</td></tr>
+<tr class="memdesc:a511ed948dfcfc43535412d9cc9a586a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard container ostream manipulator. The container must support std::begin(), std::end() and forward iteration.  <a href="#a511ed948dfcfc43535412d9cc9a586a6">More...</a><br /></td></tr>
+<tr class="separator:a511ed948dfcfc43535412d9cc9a586a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0d94fac0c249e0c34ed5ff9e9b6a4be"><td class="memTemplParams" colspan="2">template&lt;typename PointerType &gt; </td></tr>
 <tr class="memitem:aa0d94fac0c249e0c34ed5ff9e9b6a4be"><td class="memTemplItemLeft" align="right" valign="top">internal::IOManipPointer&lt; PointerType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aa0d94fac0c249e0c34ed5ff9e9b6a4be">qpp::disp</a> (const PointerType *p, idx n, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;)</td></tr>
 <tr class="memdesc:aa0d94fac0c249e0c34ed5ff9e9b6a4be"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-style pointer ostream manipulator.  <a href="#aa0d94fac0c249e0c34ed5ff9e9b6a4be">More...</a><br /></td></tr>
@@ -136,7 +136,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="input__output_8h.html">input_output.h</a></li>
-    <li class="footer">Generated on Wed Sep 28 2016 22:15:04 for Quantum++ by
+    <li class="footer">Generated on Wed Sep 28 2016 23:01:31 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

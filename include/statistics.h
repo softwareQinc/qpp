@@ -106,7 +106,9 @@ inline std::vector<double> marginalY(const dmat& probXY)
 * \return Average of \a X
 */
 template<typename Container>
-double avg(const std::vector<double>& prob, const Container& X)
+double avg(const std::vector<double>& prob, const Container& X,
+           typename std::enable_if<is_iterable<Container>::value>::type*
+           = nullptr)
 {
     // EXCEPTION CHECKS
 
@@ -136,7 +138,9 @@ double avg(const std::vector<double>& prob, const Container& X)
 template<typename Container>
 double cov(const dmat& probXY,
            const Container& X,
-           const Container& Y)
+           const Container& Y,
+           typename std::enable_if<is_iterable<Container>::value>::type*
+           = nullptr)
 {
     // EXCEPTION CHECKS
 
@@ -171,7 +175,9 @@ double cov(const dmat& probXY,
 * \return Variance of \a X
 */
 template<typename Container>
-double var(const std::vector<double>& prob, const Container& X)
+double var(const std::vector<double>& prob, const Container& X,
+           typename std::enable_if<is_iterable<Container>::value>::type*
+           = nullptr)
 {
     // EXCEPTION CHECKS
 
@@ -198,7 +204,9 @@ double var(const std::vector<double>& prob, const Container& X)
 * \return Standard deviation of \a X
 */
 template<typename Container>
-double sigma(const std::vector<double>& prob, const Container& X)
+double sigma(const std::vector<double>& prob, const Container& X,
+             typename std::enable_if<is_iterable<Container>::value>::type*
+             = nullptr)
 {
     // EXCEPTION CHECKS
 
@@ -224,7 +232,9 @@ double sigma(const std::vector<double>& prob, const Container& X)
 template<typename Container>
 double cor(const dmat& probXY,
            const Container& X,
-           const Container& Y)
+           const Container& Y,
+           typename std::enable_if<is_iterable<Container>::value>::type*
+           = nullptr)
 {
     // EXCEPTION CHECKS
 

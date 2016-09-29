@@ -112,7 +112,8 @@ internal::IOManipRange <InputIterator> disp(InputIterator first,
 template<typename Container>
 internal::IOManipRange<typename Container::const_iterator> disp(
         const Container& c, const std::string& separator,
-        const std::string& start = "[", const std::string& end = "]")
+        const std::string& start = "[", const std::string& end = "]",
+        typename std::enable_if<is_iterable<Container>::value>::type* = nullptr)
 {
     return internal::IOManipRange<typename Container::const_iterator>(
             std::begin(c), std::end(c), separator, start, end);

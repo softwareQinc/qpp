@@ -1755,7 +1755,8 @@ prod(InputIterator first, InputIterator last)
 */
 template<typename Container>
 typename Container::value_type
-prod(const Container& c)
+prod(const Container& c,
+     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr)
 {
     return prod(std::begin(c), std::end(c));
 }
