@@ -16,3 +16,6 @@ is provided in the file `./doc/refman.pdf`,
 and the corresponding `html` reference in the file `./doc/html/index.html`
 
 - A set of changes from previous versions is provided in the file `./CHANGES`
+
+- Unit tests (not yet covering the whole codebase) via GoogleMock are 
+provided under ./unit_tests
