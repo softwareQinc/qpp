@@ -30,8 +30,8 @@ using namespace qpp;
 ///// qpp::prod(InputIterator first, InputIterator last)
 TEST(qpp_prod_test, PositiveNumbers)
 {
-std::vector<int> v{1, 2, 3, 4};
-EXPECT_EQ (24, qpp::prod(v.begin(), v.end()));
+    std::vector<int> v{1, 2, 3, 4};
+    EXPECT_EQ (24, qpp::prod(v.begin(), v.end()));
 }
 ///// END template<typename InputIterator>
 ///// typename std::iterator_traits<InputIterator>::value_type
