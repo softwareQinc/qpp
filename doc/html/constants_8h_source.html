@@ -100,12 +100,12 @@ $(document).ready(function(){initNavTree('constants_8h_source.html','');});
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceqpp.html">qpp</a></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a68dbaeedba77b9ec1a17e221be6b4d30">   40</a></span>&#160;<span class="keyword">inline</span> constexpr <a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> <span class="keyword">operator</span> <span class="stringliteral">&quot;&quot;</span>_i(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> x) noexcept</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a68dbaeedba77b9ec1a17e221be6b4d30">   40</a></span>&#160;<span class="keyword">inline</span> constexpr <a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> <span class="keyword">operator</span> <span class="stringliteral">&quot;&quot;</span> _i(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> x) noexcept</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordflow">return</span> {0., <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(x)};</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a87c576529508f6b193df4931340d15c3">   50</a></span>&#160;<span class="keyword">inline</span> constexpr <a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> <span class="keyword">operator</span> <span class="stringliteral">&quot;&quot;</span>_i(<span class="keywordtype">long</span> <span class="keywordtype">double</span> x) noexcept</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a87c576529508f6b193df4931340d15c3">   50</a></span>&#160;<span class="keyword">inline</span> constexpr <a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> <span class="keyword">operator</span> <span class="stringliteral">&quot;&quot;</span> _i(<span class="keywordtype">long</span> <span class="keywordtype">double</span> x) noexcept</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">return</span> {0., <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(x)};</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
@@ -123,7 +123,7 @@ $(document).ready(function(){initNavTree('constants_8h_source.html','');});
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
 <div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a621afdaae12a94a5e10a874fc2073dc0">   96</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> <a class="code" href="namespaceqpp.html#a621afdaae12a94a5e10a874fc2073dc0">omega</a>(<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D)</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;{</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordflow">if</span> ( D == 0 )</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordflow">if</span> (D == 0)</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordflow">return</span> exp(2.0 * pi * 1_i / static_cast&lt;double&gt;(D));</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('constants_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="constants_8h.html">constants.h</a></li>
-    <li class="footer">Generated on Thu Sep 29 2016 22:22:35 for Quantum++ by
+    <li class="footer">Generated on Fri Sep 30 2016 11:33:36 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
