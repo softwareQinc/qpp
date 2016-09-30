@@ -135,5 +135,3 @@ Version 0.8.8 - 29 September 2016
     - Added new functions in <number_theory.h>:
         qpp::egcd()   - extended greatest common divisor algorithm
         qpp::modinv() - modular inverse of a mod p
-
-Version 0.8.9 - development
