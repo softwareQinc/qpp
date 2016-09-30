@@ -60,4 +60,3 @@ TEST(qpp_sum_test, MixedNumbers)
 ///// END template<typename InputIterator>
 ///// typename std::iterator_traits<InputIterator>::value_type
 ///// qpp::sum(InputIterator first, InputIterator last)
-
