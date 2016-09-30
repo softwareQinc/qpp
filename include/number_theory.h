@@ -36,7 +36,7 @@ namespace qpp
 * \see qpp::contfrac2x()
 *
 * \param x Real number
-* \param n Number of terms in the expansion
+* \param n Maximum number of terms in the expansion
 * \param cut Stop the expansion when the next term is greater than \a cut
 * \return Integer vector containing the simple continued fraction expansion
 * of \a x. If there are \a m less than \a n terms in the expansion,
@@ -54,9 +54,17 @@ inline std::vector<int> x2contfrac(double x, idx n, idx cut = 1e5)
 
     for (idx i = 0; i < n; ++i)
     {
-        result.push_back(std::llround(std::floor(x)));
-        x = 1 / (x - std::floor(x));
-        if (!std::isfinite(x) || x > cut)
+        if( x > 0)
+        {
+            result.push_back(std::llround(std::floor(x)));
+            x = 1 / (x - std::floor(x));
+        }
+        else // x < 0
+        {
+            result.push_back(std::llround(std::ceil(x)));
+            x = 1 / (x - std::ceil(x));
+        }
+        if (!std::isfinite(x) || std::abs(x) > cut)
             return result;
     }
 

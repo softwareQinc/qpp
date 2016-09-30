@@ -50,14 +50,26 @@ TEST(qpp_compperm_test, NonNegativeNumbers)
 ///// BEGIN double qpp::contfrac2x(const std::vector<int>& cf)
 TEST(qpp_contfrac2x_test, AllTests)
 {
-
+    EXPECT_NEAR(0, qpp::contfrac2x({0}), 1e-10);
+    EXPECT_NEAR(42, qpp::contfrac2x({42}), 1e-10);
+    EXPECT_NEAR(-42, qpp::contfrac2x({-42}), 1e-10);
+    EXPECT_NEAR(qpp::pi, qpp::contfrac2x({3, 7, 15, 1, 292, 1}), 1e-5);
+    EXPECT_NEAR(-qpp::pi, qpp::contfrac2x({-3, -7, -15, -1, -292, -1}), 1e-5);
+    EXPECT_NEAR(0.1234, qpp::contfrac2x({0, 8, 9, 1, 1, 1}), 1e-5);
+    EXPECT_NEAR(-0.4321, qpp::contfrac2x({0, -2, -3, -5, -2}), 1e-5);
 }
 ///// END double qpp::contfrac2x(const std::vector<int>& cf)
 
 ///// BEGIN double qpp::contfrac2x(const std::vector<int>& cf, idx n)
 TEST(qpp_contfrac2x_n_test, AllTests)
 {
-
+    EXPECT_NEAR(0, qpp::contfrac2x({0}, 1), 1e-10);
+    EXPECT_NEAR(42, qpp::contfrac2x({42}, 1), 1e-10);
+    EXPECT_NEAR(-42, qpp::contfrac2x({-42}, 1), 1e-10);
+    EXPECT_NEAR(3.141, qpp::contfrac2x({3, 7, 15, 1, 292, 1}, 3), 1e-2);
+    EXPECT_NEAR(-3.141, qpp::contfrac2x({-3, -7, -15, -1, -292, -1}, 3), 1e-2);
+    EXPECT_NEAR(0.1234, qpp::contfrac2x({0, 8, 9, 1, 1, 1}, 4), 1e-3);
+    EXPECT_NEAR(-0.4321, qpp::contfrac2x({0, -2, -3, -5, -2}, 4), 1e-3);
 }
 ///// END double qpp::contfrac2x(const std::vector<int>& cf, idx n)
 
@@ -280,6 +292,17 @@ TEST(qpp_modpow_exception_test, ParameterOutOfRange)
 ///// BEGIN std::vector<int> qpp::x2contfrac(double x, idx n, idx cut = 1e5)
 TEST(qpp_x2contfrac_test, AllTests)
 {
-
+    EXPECT_EQ(std::vector<int>({0}), qpp::x2contfrac(0, 3));
+    EXPECT_EQ(std::vector<int>({1}), qpp::x2contfrac(1, 3));
+    EXPECT_EQ(std::vector<int>({3, 7, 15, 1, 292, 1, 1, 1, 2, 1}),
+            qpp::x2contfrac(qpp::pi, 10));
+    EXPECT_EQ(std::vector<int>({0, -8, -9, -1, -135665, -1}),
+        qpp::x2contfrac(-0.123456789, 6, 1e6)); // due to large term in c.f.e.
+    EXPECT_EQ(std::vector<int>({0, -8, -9, -1}),
+        qpp::x2contfrac(-0.123456789, 6)); // cuts the expansion at the 4th term
+    EXPECT_EQ(std::vector<int>({0, -1, -80}),
+        qpp::x2contfrac(-0.987654321, 10));
+    EXPECT_EQ(std::vector<int>({-1, -4, -3, -1, -3, -1, -13565, -1, -8}),
+        qpp::x2contfrac(-1.23456789, 9, 1e7));
 }
 ///// END std::vector<int> qpp::x2contfrac(double x, idx n, idx cut = 1e5)
