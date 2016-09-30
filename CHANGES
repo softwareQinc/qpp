@@ -118,7 +118,7 @@ Version 0.8.6 - 1 November 2015
         control gates with 2 or more controls. Added unit test in
         ./unit_tests/testing.cpp.
 
-Version 0.8.7 - development
+Version 0.8.8 - 29 September 2016
     - Added OpenMP support for clang >= 3.7 in CmakeLists.txt
     - Required minimum cmake version is now 3.0
     - Added more unit testing, <number_theory.h> is now fully tested
