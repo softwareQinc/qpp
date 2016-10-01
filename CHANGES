@@ -1,52 +1,60 @@
-Version 0.1 - 21 December 2014
-    - First stable version, initial public release
+Version 0.8.9 - development
 
-Version 0.2 - 26 January 2015
-    - Minor fixes
-    - Added prime-number related functions in <number_theory.h>:
-        qpp::factors() - prime factors of positive integer
-        qpp::isprime() - primality test
+Version 0.8.8 - 30 September 2016
+    - Added OpenMP support for clang >= 3.7 in CmakeLists.txt
+    - Required minimum cmake version is now 3.0
+    - Added more unit testing, <number_theory.h> is now fully tested
+    - Split unit testing in separate files according to the tested header file
+    - Fixed typo in CMakeLists.txt which in effect disabled OpenMP
+            for version 0.8.6. PLEASE use the CMakeLists.txt from current version!
+    - SFINAE for all functions that have STL-containers as parameters
+    - Improved performance via removing unnecessary copy, see Issue #31,
+        thanks @vasekp
+    - Corrected code typo in qpp::internal::Singleton<T>, see Issue #35,
+        thanks @titaschanda
+    - Fixed critical bug in qpp::lcm(const std::vector<bigint>&)
+    - Fixed critical bug in qpp::x2contfrac()
+    - Added new functions in <number_theory.h>:
+        qpp::egcd()   - extended greatest common divisor algorithm
+        qpp::modinv() - modular inverse of a mod p
 
-Version 0.3 - 15 February 2015
-    - Added qpp::internal::Singleton<T>::get_thread_local_instance()
+Version 0.8.6 - 1 November 2015
+    - Fixed serious bug in qpp::applyCTRL(), which was failing before for
+        control gates with 2 or more controls. Added unit test in
+        ./unit_tests/testing.cpp.
 
-Version 0.4 - 8 March 2015
-    - Added noexcept specification where suitable
-    - Added the following exception types to the qpp::Exception::Type strong
-        enumeration: NOT_QUBIT_MATRIX (replaces previous NOT_QUBIT_GATE),
-        NOT_QUBIT_CVECTOR, NOT_QUBIT_RVECTOR and NOT_QUBIT_VECTOR
-    - Added overloads of qpp::ptrace1(), qpp::ptrace2(), qpp::ptrace() and
-        qpp::ptranspose() that allow a pure state input, as it was the case
-        before with qpp::syspermute()
-    - Added overloads of qpp::prod() and qpp::sum() for STL-like containers
-    - Added new functions in <functions.h>:
-        qpp::complement()  - computes the complement of a subsystem vector
-        qpp::rho2bloch()   - qubit density matrix to Bloch vector
-        qpp::bloch2rho()   - Bloch vector to qubit density matrix
-    - Added new functions in <instruments.h>:
-        qpp::measure_seq() - measures subsystems sequentially
-    - Removed support for the C-style random number engine, as it is not 
-        thread safe. Hence, Eigen::Matrix::Random() should not be used, 
-        use instead qpp::rand() functions.
-    - Added support for unit testing via Google Mock/Google Test, see
-        ./unit_tests/testing.cpp
+Version 0.8.4 - 14 October 2015
+    - Added <macros.h> preprocessor debug macros header, containing:
+        PRINT(x)   - std::cout << (x)
+        PRINTLN(x) - std::cout << (x) << std::endl
+        ERROR(x)   - std::cerr << (x)
+        ERRORLN(x) - std::cerr << (x) << std::endl
+    - Added new functions in <operations.h>:
+        qpp::ip()  - Generalized inner product
+    - Modified qpp::measure() so that the output consists of pure states
+        whenever the input is a pure state and the measurement operators are
+        rank-one POVMs (technically rank-one Kraus operators). Includes basis
+        measurements as a particular case.
+    - Improved qpp::Timer<>, now both the duration and the clock's type can be
+        specified as template parameters, defaulted to
+        std::chrono::duration<double> and std::chrono::steady_clock,
+        respectively
 
-Version 0.5 - 19 March 2015
-    - Fixed a bug in class qpp::internal::Singleton<T> which allowed deleting
-        the instance via a pointer. Now static void operator delete(void*) 
-        is marked private.
-
-Version 0.6 - 16 April 2015
-    - Reverted changes to qpp::internal::Singleton<T> (no need anymore for
-        static void operator delete(void*)), but clients have to explicitly
-        mark both constructor and destructor private
-    - Minor cosmetic changes
-
-Version 0.7 - 22 April 2015
-    - Marked all non-template functions defined in headers as "inline" and
-        all singletons as "static", since otherwise including <qpp.h> in
-        separate compilation units led to linker errors due to duplicated
-        symbols
+Version 0.8.2 - 20 May 2015
+    - Added <traits.h> type traits header file with the following type traits:
+        qpp::is_iterable<> - checks for iterable STL-like containers
+        qpp::is_matrix_expression<> - checks for Eigen::MatrixBase<> expressions
+        qpp::is_complex<>  - checks whether the type is std::complex<>
+    - Added <statistics.h> header file containing the following new functions:
+        qpp::uniform()     - uniform probability distribution vector
+        qpp::marginalX()   - marginal distribution
+        qpp::marginalY()   - marginal distribution
+        qpp::avg()         - average
+        qpp::sigma()       - standard deviation
+        qpp::cov()         - covariance
+        qpp::cor()         - correlation
+        qpp::var()         - variance
+    - Added new examples in ./examples
 
 Version 0.8 - 8 May 2015
     - Added new data type aliases in <types.h>
@@ -80,60 +88,55 @@ Version 0.8 - 8 May 2015
           std::thread_local)
         - uses OpenMP only if the compiler is detected as GNU gcc
 
-Version 0.8.2 - 20 May 2015
-    - Added <traits.h> type traits header file with the following type traits:
-        qpp::is_iterable<> - checks for iterable STL-like containers
-        qpp::is_matrix_expression<> - checks for Eigen::MatrixBase<> expressions
-        qpp::is_complex<>  - checks whether the type is std::complex<>
-    - Added <statistics.h> header file containing the following new functions:
-        qpp::uniform()     - uniform probability distribution vector
-        qpp::marginalX()   - marginal distribution
-        qpp::marginalY()   - marginal distribution
-        qpp::avg()         - average
-        qpp::sigma()       - standard deviation
-        qpp::cov()         - covariance
-        qpp::cor()         - correlation
-        qpp::var()         - variance
-    - Added new examples in ./examples
+Version 0.7 - 22 April 2015
+    - Marked all non-template functions defined in headers as "inline" and
+        all singletons as "static", since otherwise including <qpp.h> in
+        separate compilation units led to linker errors due to duplicated
+        symbols
 
-Version 0.8.4 - 14 October 2015
-    - Added <macros.h> preprocessor debug macros header, containing:
-        PRINT(x)   - std::cout << (x)
-        PRINTLN(x) - std::cout << (x) << std::endl
-        ERROR(x)   - std::cerr << (x)
-        ERRORLN(x) - std::cerr << (x) << std::endl
-    - Added new functions in <operations.h>:
-        qpp::ip()  - Generalized inner product
-    - Modified qpp::measure() so that the output consists of pure states
-        whenever the input is a pure state and the measurement operators are
-        rank-one POVMs (technically rank-one Kraus operators). Includes basis
-        measurements as a particular case.
-    - Improved qpp::Timer<>, now both the duration and the clock's type can be
-        specified as template parameters, defaulted to
-        std::chrono::duration<double> and std::chrono::steady_clock,
-        respectively
+Version 0.6 - 16 April 2015
+    - Reverted changes to qpp::internal::Singleton<T> (no need anymore for
+        static void operator delete(void*)), but clients have to explicitly
+        mark both constructor and destructor private
+    - Minor cosmetic changes
 
-Version 0.8.6 - 1 November 2015
-    - Fixed serious bug in qpp::applyCTRL(), which was failing before for
-        control gates with 2 or more controls. Added unit test in
-        ./unit_tests/testing.cpp.
+Version 0.5 - 19 March 2015
+    - Fixed a bug in class qpp::internal::Singleton<T> which allowed deleting
+        the instance via a pointer. Now static void operator delete(void*) 
+        is marked private.
 
-Version 0.8.8 - 30 September 2016
-    - Added OpenMP support for clang >= 3.7 in CmakeLists.txt
-    - Required minimum cmake version is now 3.0
-    - Added more unit testing, <number_theory.h> is now fully tested
-    - Split unit testing in separate files according to the tested header file
-    - Fixed typo in CMakeLists.txt which in effect disabled OpenMP
-            for version 0.8.6. PLEASE use the CMakeLists.txt from current version!
-    - SFINAE for all functions that have STL-containers as parameters
-    - Improved performance via removing unnecessary copy, see Issue #31,
-        thanks @vasekp
-    - Corrected code typo in qpp::internal::Singleton<T>, see Issue #35,
-        thanks @titaschanda
-    - Fixed critical bug in qpp::lcm(const std::vector<bigint>&)
-    - Fixed critical bug in qpp::x2contfrac()
-    - Added new functions in <number_theory.h>:
-        qpp::egcd()   - extended greatest common divisor algorithm
-        qpp::modinv() - modular inverse of a mod p
+Version 0.4 - 8 March 2015
+    - Added noexcept specification where suitable
+    - Added the following exception types to the qpp::Exception::Type strong
+        enumeration: NOT_QUBIT_MATRIX (replaces previous NOT_QUBIT_GATE),
+        NOT_QUBIT_CVECTOR, NOT_QUBIT_RVECTOR and NOT_QUBIT_VECTOR
+    - Added overloads of qpp::ptrace1(), qpp::ptrace2(), qpp::ptrace() and
+        qpp::ptranspose() that allow a pure state input, as it was the case
+        before with qpp::syspermute()
+    - Added overloads of qpp::prod() and qpp::sum() for STL-like containers
+    - Added new functions in <functions.h>:
+        qpp::complement()  - computes the complement of a subsystem vector
+        qpp::rho2bloch()   - qubit density matrix to Bloch vector
+        qpp::bloch2rho()   - Bloch vector to qubit density matrix
+    - Added new functions in <instruments.h>:
+        qpp::measure_seq() - measures subsystems sequentially
+    - Removed support for the C-style random number engine, as it is not 
+        thread safe. Hence, Eigen::Matrix::Random() should not be used, 
+        use instead qpp::rand() functions.
+    - Added support for unit testing via Google Mock/Google Test, see
+        ./unit_tests/testing.cpp
 
-Version 0.8.9 - development
+Version 0.3 - 15 February 2015
+    - Added qpp::internal::Singleton<T>::get_thread_local_instance()
+
+Version 0.2 - 26 January 2015
+    - Minor fixes
+    - Added prime-number related functions in <number_theory.h>:
+        qpp::factors() - prime factors of positive integer
+        qpp::isprime() - primality test
+
+Version 0.1 - 21 December 2014
+    - First stable version, initial public release
+
+
+
