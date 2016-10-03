@@ -1026,7 +1026,8 @@ template<typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
                                           const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA
+            = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1127,7 +1128,8 @@ template<typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
                                           const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA
+            = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1219,7 +1221,8 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
                                          const std::vector<idx>& subsys,
                                          const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA
+            = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1441,7 +1444,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
                                          const std::vector<idx>& subsys,
                                          idx d = 2)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1481,7 +1484,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
         const std::vector<idx>& subsys,
         const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1638,7 +1641,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
         const std::vector<idx>& subsys,
         idx d = 2)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1677,7 +1680,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
         const std::vector<idx>& perm,
         const std::vector<idx>& dims)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1831,7 +1834,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
         const std::vector<idx>& perm,
         idx d = 2)
 {
-    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
 
