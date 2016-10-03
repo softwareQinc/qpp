@@ -23,7 +23,7 @@ SET(SOURCE_FILES
 INCLUDE_DIRECTORIES(SYSTEM "$ENV{HOME}/eigen")
 
 #### GoogleMock, modify as needed
-SET(GMOCK "$ENV{HOME}/gmock-1.7.0")
+SET(GMOCK "$ENV{HOME}/gmock")
 INCLUDE_DIRECTORIES(../include)
 INCLUDE_DIRECTORIES(SYSTEM "${GMOCK}/gtest/include")
 
