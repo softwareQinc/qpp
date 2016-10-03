@@ -760,9 +760,11 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
             std::vector<idx> subsys,
             std::vector<idx> dims)
 {
-    typename std::remove_const<
-            typename Eigen::MatrixBase<Derived>::EvalReturnType
-    >::type cA = A.derived();
+//    typename std::remove_const<
+//            typename Eigen::MatrixBase<Derived>::EvalReturnType
+//    >::type cA = A.derived();
+
+    dyn_mat<typename Derived::Scalar> cA = A.derived();
 
     // EXCEPTION CHECKS
 

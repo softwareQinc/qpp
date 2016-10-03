@@ -21,7 +21,7 @@ int main()
     cout << ">> Number N of experiments for each of the 4 measurement";
     cout << " settings = " << N << endl;
 
-    idx statistics[4][4] = {0}; // total statistics
+    idx statistics[4][4] = {{0}}; // total statistics
     long E[4] = {0}; // experimental estimate
 
     idx gate_idx = 0; // gate index (0, 1, 2 or 3)
