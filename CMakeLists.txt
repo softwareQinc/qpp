@@ -18,7 +18,7 @@
 # along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
-PROJECT(qpp VERSION 0.8.9 LANGUAGES CXX)
+PROJECT(qpp VERSION 0.8.8.2 LANGUAGES CXX)
 
 #### CMake support only for GNU gcc and Clang/AppleClang
 #### AppleClang does not support OpenMP; only Clang >= 3.7 supports OpenMP
@@ -33,7 +33,7 @@ INCLUDE_DIRECTORIES(include)
 
 #### Source file(s) to be compiled, modify as needed
 SET(SOURCE_FILES
-        examples/experimental_average.cpp)
+        examples/_test.cpp)
 
 #### Eigen3, modify as needed
 INCLUDE_DIRECTORIES(SYSTEM "$ENV{HOME}/eigen")

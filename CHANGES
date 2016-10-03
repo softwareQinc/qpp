@@ -1,4 +1,7 @@
-Version 0.8.9 - development
+Version 0.8.8.2 - 3 October 2016
+    - This is a bug-fix release
+    - Fixed compile bug in qpp::measure_seq() due to trying to modify a const
+        copy, which should have been non-const
 
 Version 0.8.8 - 30 September 2016
     - Added OpenMP support for clang >= 3.7 in CmakeLists.txt
