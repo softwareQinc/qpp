@@ -14,10 +14,10 @@ INCLUDE_DIRECTORIES(include)
 
 #### Source file(s) to be compiled and tested, modify as needed
 SET(SOURCE_FILES
-        testing_main.cpp
-        functions.cpp
-        number_theory.cpp
-        operations.cpp)
+        src/testing_main.cpp
+        src/functions.cpp
+        src/number_theory.cpp
+        src/operations.cpp)
 
 #### Eigen3, modify as needed
 INCLUDE_DIRECTORIES(SYSTEM "$ENV{HOME}/eigen")
