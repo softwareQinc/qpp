@@ -33,4 +33,3 @@ int main()
     cout << ">> Theoretical average <psi | A | psi> = ";
     cout << disp((adjoint(psi) * A * psi).value()) << endl;
 }
-
