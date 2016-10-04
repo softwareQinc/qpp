@@ -368,7 +368,7 @@ Functions</h2></td></tr>
 <tr class="separator:a62d7f0db6a049f254c2a7a77af8eb29e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc34b7cd0bcbdddf99c4835489c47b5d"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:adc34b7cd0bcbdddf99c4835489c47b5d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt; typename Derived::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#adc34b7cd0bcbdddf99c4835489c47b5d">powm</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n)</td></tr>
-<tr class="memdesc:adc34b7cd0bcbdddf99c4835489c47b5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix power.  <a href="#adc34b7cd0bcbdddf99c4835489c47b5d">More...</a><br /></td></tr>
+<tr class="memdesc:adc34b7cd0bcbdddf99c4835489c47b5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fast matrix power based on the SQUARE-AND-MULTIPLY algorithm.  <a href="#adc34b7cd0bcbdddf99c4835489c47b5d">More...</a><br /></td></tr>
 <tr class="separator:adc34b7cd0bcbdddf99c4835489c47b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1865cddc66aa88d853512abd39e584e1"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a1865cddc66aa88d853512abd39e584e1"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a1865cddc66aa88d853512abd39e584e1">schatten</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, double p)</td></tr>
@@ -5122,7 +5122,7 @@ template&lt;typename Derived &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Matrix power. </p>
+<p>Fast matrix power based on the SQUARE-AND-MULTIPLY algorithm. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a62d7f0db6a049f254c2a7a77af8eb29e" title="Matrix power. ">qpp::spectralpowm()</a></dd></dl>
 <p>Explicitly multiplies the matrix <em>A</em> with itself <em>n</em> times. By convention <img class="formulaInl" alt="$A^0 = I$" src="form_20.png"/>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -7135,7 +7135,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Matrix power. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#adc34b7cd0bcbdddf99c4835489c47b5d" title="Matrix power. ">qpp::powm()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#adc34b7cd0bcbdddf99c4835489c47b5d" title="Fast matrix power based on the SQUARE-AND-MULTIPLY algorithm. ">qpp::powm()</a></dd></dl>
 <p>Uses the spectral decomposition of <em>A</em> to compute the matrix power. By convention <img class="formulaInl" alt="$A^0 = I$" src="form_20.png"/>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -7871,7 +7871,7 @@ template&lt;typename Container &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Mon Oct 3 2016 17:13:45 for Quantum++ by
+    <li class="footer">Generated on Tue Oct 4 2016 15:51:43 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

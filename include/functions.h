@@ -768,7 +768,7 @@ cmat spectralpowm(const Eigen::MatrixBase<Derived>& A, const cplx z)
 }
 
 /**
-* \brief Matrix power
+* \brief Fast matrix power based on the SQUARE-AND-MULTIPLY algorithm
 * \see qpp::spectralpowm()
 *
 * Explicitly multiplies the matrix \a A with itself \a n times.
