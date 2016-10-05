@@ -54,12 +54,11 @@ inline std::vector<int> x2contfrac(double x, idx n, idx cut = 1e5)
 
     for (idx i = 0; i < n; ++i)
     {
-        if( x > 0)
+        if (x > 0)
         {
             result.push_back(std::llround(std::floor(x)));
             x = 1 / (x - std::floor(x));
-        }
-        else // x < 0
+        } else // x < 0
         {
             result.push_back(std::llround(std::ceil(x)));
             x = 1 / (x - std::ceil(x));
@@ -161,7 +160,7 @@ inline bigint gcd(bigint m, bigint n)
         m = result;
     }
 
-    return (result > 0) ?  result : -result;
+    return (result > 0) ? result : -result;
 }
 
 /**
@@ -185,7 +184,7 @@ inline bigint gcd(const std::vector<bigint>& ns)
         result = gcd(result, ns[i]);
     }
 
-    return  (result > 0) ?  result : -result;
+    return (result > 0) ? result : -result;
 }
 
 /**
@@ -203,7 +202,7 @@ inline bigint lcm(bigint m, bigint n)
 
     bigint result = m * n / gcd(m, n);
 
-    return  (result > 0) ?  result : -result;
+    return (result > 0) ? result : -result;
 }
 
 /**
@@ -234,7 +233,7 @@ inline bigint lcm(const std::vector<bigint>& ns)
         result = lcm(result, ns[i]);
     }
 
-    return  (result > 0) ?  result : -result;
+    return (result > 0) ? result : -result;
 }
 
 /**
@@ -434,7 +433,7 @@ inline std::tuple<bigint, bigint, bigint> egcd(bigint m, bigint n)
     c = m, a = a2, b = b2;
 
     // correct the signs
-    if( c < 0)
+    if (c < 0)
     {
         a = -a;
         b = -b;

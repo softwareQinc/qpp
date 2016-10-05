@@ -104,7 +104,7 @@ public:
         // EXCEPTION CHECKS
 
         // check 3-dimensional vector
-        if ( n.size() != 3 )
+        if (n.size() != 3)
             throw Exception("qpp::Gates::Rn()",
                             "n is not a 3-dimensional vector!");
         // END EXCEPTION CHECKS
@@ -130,12 +130,12 @@ public:
     {
         // EXCEPTION CHECKS
 
-        if ( D == 0 )
+        if (D == 0)
             throw Exception("qpp::Gates::Zd()", Exception::Type::DIMS_INVALID);
         // END EXCEPTION CHECKS
 
         cmat result = cmat::Zero(D, D);
-        for ( idx i = 0; i < D; ++i )
+        for (idx i = 0; i < D; ++i)
             result(i, i) = std::pow(omega(D), i);
 
         return result;
@@ -154,7 +154,7 @@ public:
     {
         // EXCEPTION CHECKS
 
-        if ( D == 0 )
+        if (D == 0)
             throw Exception("qpp::Gates::Fd()", Exception::Type::DIMS_INVALID);
         // END EXCEPTION CHECKS
 
@@ -163,8 +163,8 @@ public:
 #ifdef _WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif
-        for ( idx j = 0; j < D; ++j ) // column major order for speed
-            for ( idx i = 0; i < D; ++i )
+        for (idx j = 0; j < D; ++j) // column major order for speed
+            for (idx i = 0; i < D; ++i)
                 result(i, j) = 1 / std::sqrt(static_cast<double>(D))
                                * std::pow(omega(D), i * j);
 
@@ -183,7 +183,7 @@ public:
     {
         // EXCEPTION CHECKS
 
-        if ( D == 0 )
+        if (D == 0)
             throw Exception("qpp::Gates::Xd()", Exception::Type::DIMS_INVALID);
         // END EXCEPTION CHECKS
 
@@ -204,7 +204,7 @@ public:
     {
         // EXCEPTION CHECKS
 
-        if ( D == 0 )
+        if (D == 0)
             throw Exception("qpp::Gates::Id()", Exception::Type::DIMS_INVALID);
         // END EXCEPTION CHECKS
 
@@ -237,27 +237,27 @@ public:
         // EXCEPTION CHECKS
 
         // check matrix zero size
-        if ( !internal::_check_nonzero_size(rA))
+        if (!internal::_check_nonzero_size(rA))
             throw Exception("qpp::Gates::CTRL()", Exception::Type::ZERO_SIZE);
 
         // check square matrix
-        if ( !internal::_check_square_mat(rA))
+        if (!internal::_check_square_mat(rA))
             throw Exception("qpp::Gates::CTRL()",
                             Exception::Type::MATRIX_NOT_SQUARE);
 
         // check lists zero size
-        if ( ctrl.size() == 0 )
+        if (ctrl.size() == 0)
             throw Exception("qpp::Gates::CTRL()", Exception::Type::ZERO_SIZE);
-        if ( subsys.size() == 0 )
+        if (subsys.size() == 0)
             throw Exception("qpp::Gates::CTRL()", Exception::Type::ZERO_SIZE);
 
         // check out of range
-        if ( n == 0 )
+        if (n == 0)
             throw Exception("qpp::Gates::CTRL()",
                             Exception::Type::OUT_OF_RANGE);
 
         // check valid local dimension
-        if ( d == 0 )
+        if (d == 0)
             throw Exception("qpp::Gates::CTRL()",
                             Exception::Type::DIMS_INVALID);
 
@@ -271,12 +271,12 @@ public:
 
         // check that ctrl + gate subsystem is valid
         // with respect to local dimensions
-        if ( !internal::_check_subsys_match_dims(ctrlgate, dims))
+        if (!internal::_check_subsys_match_dims(ctrlgate, dims))
             throw Exception("qpp::Gates::CTRL()",
                             Exception::Type::SUBSYS_MISMATCH_DIMS);
 
         // check that subsys list match the dimension of the matrix
-        if ( rA.rows() != std::llround(std::pow(d, subsys.size())))
+        if (rA.rows() != std::llround(std::pow(d, subsys.size())))
             throw Exception("qpp::Gates::CTRL()",
                             Exception::Type::DIMS_MISMATCH_MATRIX);
         // END EXCEPTION CHECKS
@@ -307,19 +307,19 @@ public:
         std::copy(std::begin(subsys_bar), std::end(subsys_bar),
                   std::begin(Csubsys_bar));
 
-        for ( idx k = 0; k < n; ++k )
+        for (idx k = 0; k < n; ++k)
         {
             midx_row[k] = midx_col[k] = 0;
             Cdims[k] = d;
         }
 
-        for ( idx k = 0; k < nsubsys_bar; ++k )
+        for (idx k = 0; k < nsubsys_bar; ++k)
         {
             Cdims_bar[k] = d;
             midx_bar[k] = 0;
         }
 
-        for ( idx k = 0; k < ngate; ++k )
+        for (idx k = 0; k < ngate; ++k)
         {
             midxA_row[k] = midxA_col[k] = 0;
             CdimsA[k] = d;
@@ -331,15 +331,15 @@ public:
         dyn_mat<typename Derived::Scalar> Ak;
 
         // run over the complement indexes
-        for ( idx i = 0; i < Dsubsys_bar; ++i )
+        for (idx i = 0; i < Dsubsys_bar; ++i)
         {
             // get the complement row multi-index
             internal::_n2multiidx(i, nsubsys_bar, Cdims_bar, midx_bar);
-            for ( idx k = 0; k < d; ++k )
+            for (idx k = 0; k < d; ++k)
             {
                 Ak = powm(rA, k); // compute rA^k
                 // run over the subsys row multi-index
-                for ( idx a = 0; a < DA; ++a )
+                for (idx a = 0; a < DA; ++a)
                 {
                     // get the subsys row multi-index
                     internal::_n2multiidx(a, ngate, CdimsA, midxA_row);
@@ -347,26 +347,26 @@ public:
                     // construct the result row multi-index
 
                     // first the ctrl part (equal for both row and column)
-                    for ( idx c = 0; c < nctrl; ++c )
+                    for (idx c = 0; c < nctrl; ++c)
                         midx_row[ctrl[c]] = midx_col[ctrl[c]] = k;
 
                     // then the complement part (equal for column)
-                    for ( idx c = 0; c < nsubsys_bar; ++c )
+                    for (idx c = 0; c < nsubsys_bar; ++c)
                         midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =
                                 midx_bar[c];
 
                     // then the subsys part
-                    for ( idx c = 0; c < ngate; ++c )
+                    for (idx c = 0; c < ngate; ++c)
                         midx_row[subsys[c]] = midxA_row[c];
 
                     // run over the subsys column multi-index
-                    for ( idx b = 0; b < DA; ++b )
+                    for (idx b = 0; b < DA; ++b)
                     {
                         // get the subsys column multi-index
                         internal::_n2multiidx(b, ngate, CdimsA, midxA_col);
 
                         // construct the result column multi-index
-                        for ( idx c = 0; c < ngate; ++c )
+                        for (idx c = 0; c < ngate; ++c)
                             midx_col[subsys[c]] = midxA_col[c];
 
                         // finally write the values
@@ -406,27 +406,27 @@ public:
         // EXCEPTION CHECKS
 
         // check zero-size
-        if ( !internal::_check_nonzero_size(rA))
+        if (!internal::_check_nonzero_size(rA))
             throw Exception("qpp::Gates::expandout()",
                             Exception::Type::ZERO_SIZE);
 
         // check that dims is a valid dimension vector
-        if ( !internal::_check_dims(dims))
+        if (!internal::_check_dims(dims))
             throw Exception("qpp::Gates::expandout()",
                             Exception::Type::DIMS_INVALID);
 
         // check square matrix
-        if ( !internal::_check_square_mat(rA))
+        if (!internal::_check_square_mat(rA))
             throw Exception("qpp::Gates::expandout()",
                             Exception::Type::MATRIX_NOT_SQUARE);
 
         // check that position is valid
-        if ( pos > dims.size() - 1 )
+        if (pos > dims.size() - 1)
             throw Exception("qpp::Gates::expandout()",
                             Exception::Type::OUT_OF_RANGE);
 
         // check that dims[pos] match the dimension of A
-        if ( static_cast<idx>(rA.rows()) != dims[pos] )
+        if (static_cast<idx>(rA.rows()) != dims[pos])
             throw Exception("qpp::Gates::expandout()",
                             Exception::Type::DIMS_MISMATCH_MATRIX);
         // END EXCEPTION CHECKS
@@ -441,29 +441,29 @@ public:
         idx midx_row[maxn];
         idx midx_col[maxn];
 
-        for ( idx k = 0; k < dims.size(); ++k )
+        for (idx k = 0; k < dims.size(); ++k)
         {
             midx_row[k] = midx_col[k] = 0;
             Cdims[k] = dims[k];
         }
 
         // run over the main diagonal multi-indexes
-        for ( idx i = 0; i < D; ++i )
+        for (idx i = 0; i < D; ++i)
         {
             // get row multi_index
             internal::_n2multiidx(i, dims.size(), Cdims, midx_row);
             // get column multi_index (same as row)
             internal::_n2multiidx(i, dims.size(), Cdims, midx_col);
             // run over the gate row multi-index
-            for ( idx a = 0; a < static_cast<idx>(rA.rows());
-                  ++a )
+            for (idx a = 0; a < static_cast<idx>(rA.rows());
+                 ++a)
             {
                 // construct the total row multi-index
                 midx_row[pos] = a;
 
                 // run over the gate column multi-index
-                for ( idx b = 0;
-                      b < static_cast<idx>(rA.cols()); ++b )
+                for (idx b = 0;
+                     b < static_cast<idx>(rA.cols()); ++b)
                 {
                     // construct the total column multi-index
                     midx_col[pos] = b;

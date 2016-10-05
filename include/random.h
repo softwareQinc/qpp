@@ -159,7 +159,7 @@ inline dmat rand(idx rows, idx cols, double a, double b)
 {
     // EXCEPTION CHECKS
 
-    if ( rows == 0 || cols == 0 )
+    if (rows == 0 || cols == 0)
         throw Exception("qpp::rand()", Exception::Type::ZERO_SIZE);
     // END EXCEPTION CHECKS
 
@@ -196,7 +196,7 @@ inline cmat rand(idx rows, idx cols, double a, double b)
 {
     // EXCEPTION CHECKS
 
-    if ( rows == 0 || cols == 0 )
+    if (rows == 0 || cols == 0)
         throw Exception("qpp::rand()", Exception::Type::ZERO_SIZE);
     // END EXCEPTION CHECKS
 
@@ -254,7 +254,7 @@ inline dmat randn(idx rows, idx cols,
 {
     // EXCEPTION CHECKS
 
-    if ( rows == 0 || cols == 0 )
+    if (rows == 0 || cols == 0)
         throw Exception("qpp::randn()", Exception::Type::ZERO_SIZE);
     // END EXCEPTION CHECKS
 
@@ -298,7 +298,7 @@ inline cmat randn(idx rows, idx cols,
 {
     // EXCEPTION CHECKS
 
-    if ( rows == 0 || cols == 0 )
+    if (rows == 0 || cols == 0)
         throw Exception("qpp::randn()", Exception::Type::ZERO_SIZE);
     // END EXCEPTION CHECKS
 
@@ -337,7 +337,7 @@ inline cmat randU(idx D)
 {
     // EXCEPTION CHECKS
 
-    if ( D == 0 )
+    if (D == 0)
         throw Exception("qpp::randU()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
@@ -349,7 +349,7 @@ inline cmat randU(idx D)
     // uniformly distributed according to the Haar measure
 
     Eigen::VectorXcd phases = (rand<dmat>(D, 1)).cast<cplx>();
-    for ( idx i = 0; i < static_cast<idx>(phases.rows()); ++i )
+    for (idx i = 0; i < static_cast<idx>(phases.rows()); ++i)
         phases(i) = std::exp(2 * pi * 1_i * phases(i));
 
     Q = Q * phases.asDiagonal();
@@ -368,7 +368,7 @@ inline cmat randV(idx Din, idx Dout)
 {
     // EXCEPTION CHECKS
 
-    if ( Din == 0 || Dout == 0 || Din > Dout )
+    if (Din == 0 || Dout == 0 || Din > Dout)
         throw Exception("qpp::randV()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
@@ -389,14 +389,14 @@ inline std::vector<cmat> randkraus(idx N, idx D)
 {
     // EXCEPTION CHECKS
 
-    if ( N == 0 )
+    if (N == 0)
         throw Exception("qpp::randkraus()", Exception::Type::OUT_OF_RANGE);
-    if ( D == 0 )
+    if (D == 0)
         throw Exception("qpp::randkraus()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
     std::vector<cmat> result(N);
-    for ( idx i = 0; i < N; ++i )
+    for (idx i = 0; i < N; ++i)
         result[i] = cmat::Zero(D, D);
 
     cmat Fk(D, D);
@@ -405,9 +405,9 @@ inline std::vector<cmat> randkraus(idx N, idx D)
 #ifdef _WITH_OPENMP_
 #pragma omp parallel for collapse(3)
 #endif
-    for ( idx k = 0; k < N; ++k )
-        for ( idx a = 0; a < D; ++a )
-            for ( idx b = 0; b < D; ++b )
+    for (idx k = 0; k < N; ++k)
+        for (idx a = 0; a < D; ++a)
+            for (idx b = 0; b < D; ++b)
                 result[k](a, b) = U(a * N + k, b * N);
 
     return result;
@@ -423,7 +423,7 @@ inline cmat randH(idx D)
 {
     // EXCEPTION CHECKS
 
-    if ( D == 0 )
+    if (D == 0)
         throw Exception("qpp::randH()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
@@ -442,7 +442,7 @@ inline ket randket(idx D)
 {
     // EXCEPTION CHECKS
 
-    if ( D == 0 )
+    if (D == 0)
         throw Exception("qpp::randket()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
@@ -468,7 +468,7 @@ inline cmat randrho(idx D)
 {
     // EXCEPTION CHECKS
 
-    if ( D == 0 )
+    if (D == 0)
         throw Exception("qpp::randrho()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
@@ -491,7 +491,7 @@ inline std::vector<idx> randperm(idx n)
 {
     // EXCEPTION CHECKS
 
-    if ( n == 0 )
+    if (n == 0)
         throw Exception("qpp::randperm()", Exception::Type::PERM_INVALID);
     // END EXCEPTION CHECKS
 
