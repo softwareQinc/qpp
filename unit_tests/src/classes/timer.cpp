@@ -22,7 +22,7 @@
 #include <gtest/gtest.h>
 #include <qpp.h>
 
-#include <thread> // for std::sleep_for()
+#include <thread> // for std::this_thread::sleep_for()
 
 using namespace qpp;
 
