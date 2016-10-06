@@ -9,6 +9,5 @@ var types_8h =
     [ "dyn_mat", "types_8h.html#ac39e7c2b66f0209911cc3afc06223648", null ],
     [ "dyn_row_vect", "types_8h.html#ad94b7f2170b530b81ea9e1d167938589", null ],
     [ "idx", "types_8h.html#a1f5f7137e8551cf82db04d3b81cdd706", null ],
-    [ "ket", "types_8h.html#a5d7185dfc7bee58c937abc243c3692ea", null ],
-    [ "ubigint", "types_8h.html#afc096e016bb523c42964a4ace6f8a0a4", null ]
+    [ "ket", "types_8h.html#a5d7185dfc7bee58c937abc243c3692ea", null ]
 ];

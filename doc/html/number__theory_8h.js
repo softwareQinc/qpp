@@ -8,10 +8,12 @@ var number__theory_8h =
     [ "gcd", "number__theory_8h.html#ad029d4ada2887a761a9672403008680b", null ],
     [ "gcd", "number__theory_8h.html#a0fa2a62c0d5af08514338b966ad9d480", null ],
     [ "invperm", "number__theory_8h.html#a396e880587519c2861caf0bcdfb219a0", null ],
-    [ "isprime", "number__theory_8h.html#a1a1a10bb387568dba500d2bb996c96e6", null ],
+    [ "isprime", "number__theory_8h.html#a34c4f64ac24dc0706b96751c5d0e635a", null ],
     [ "lcm", "number__theory_8h.html#a1643f1e2f1e7e74e3a4a0f4f25a0c940", null ],
     [ "lcm", "number__theory_8h.html#a47f2481bae07e49b96eee200d70b23d5", null ],
     [ "modinv", "number__theory_8h.html#a7e53beed2f6bb8d374ac2e2460aee2c2", null ],
+    [ "modmul", "number__theory_8h.html#ae8fdd19c2fc0dc7fac791974f283e375", null ],
     [ "modpow", "number__theory_8h.html#a0ff25c25c0ff9304255495eb90b98d1b", null ],
+    [ "randprime", "number__theory_8h.html#ac7a4e9b856bf9a858b71c536acbbab39", null ],
     [ "x2contfrac", "number__theory_8h.html#ac5f5d1d0cc8230b512e8514eb89549db", null ]
 ];

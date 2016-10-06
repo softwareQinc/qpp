@@ -197,8 +197,11 @@ inline bigint gcd(const std::vector<bigint>& ns)
 */
 inline bigint lcm(bigint m, bigint n)
 {
+    // EXCEPTION CHECKS
+
     if (m == 0 && n == 0)
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
 
     bigint result = m * n / gcd(m, n);
 
@@ -297,6 +300,7 @@ inline std::vector<idx> compperm(const std::vector<idx>& perm,
 */
 inline std::vector<bigint> factors(bigint n)
 {
+    // flip the sign if necessary
     if (n < 0)
         n = -n;
 
@@ -330,51 +334,53 @@ inline std::vector<bigint> factors(bigint n)
     return result;
 }
 
-
-namespace internal
+/**
+ * \brief Modular multiplication without overflow
+ *
+ * \param m Integer
+ * \param n Integer
+ * \param p Positive integer
+ * \return The product of \a m and \a n modulo \a p, avoiding overflow
+ */
+inline bigint modmul(bigint m, bigint n, bigint p)
 {
-// answer by @danaj
-// https://programmingpraxis.com/2013/05/28/modular-multiplication-without-overflow/
-inline bigint mulmod(bigint a, bigint b, bigint m)
+    // EXCEPTION CHECKS
+
+    if (p < 1)
+        throw Exception("qpp::modmul()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
+
+    m %= p;
+    n %= p;
+
+    bigint res = 0;
+    // this is a variant of SQUARE-AND-MULTIPLY, now MULTIPLY-AND-ADD
+    for (; n > 0; n /= 2)
+    {
+        // if n is odd, add m to result
+        if (n % 2 == 1)
+            res = (res + m) % p;
+
+        // multiply m with 2
+        m = (m * 2) % p;
+    }
+
+    return res % p;
+}
+
+inline bigint modmul1(bigint a, bigint b, bigint m)
 {
     bigint r = 0;
     /* Remove these mods if the caller can ensure a and b are in range */
     a %= m;
     b %= m;
-    while (b > 0)
-    {
-        if (b & 1) // last bit is one
-            r = ((m - r) > a) ? r + a : r + a - m;    /* r = (r + a) % m */
-        b >>= 1; // shift right, i.e. divide by 2
-        if (b)
-            a = ((m - a) > a) ? a + a : a + a - m;    /* a = (a + a) % m */
+    while (b > 0) {
+        if (b & 1)  r = ((m-r) > a) ? r+a : r+a-m;    /* r = (r + a) % m */
+        b >>= 1;
+        if (b)      a = ((m-a) > a) ? a+a : a+a-m;    /* a = (a + a) % m */
     }
     return r;
 }
-
-// http://www.geeksforgeeks.org/how-to-avoid-overflow-in-modular-multiplication/
-// To compute (a * b) % mod
-inline bigint mulmod1(bigint a, bigint b, bigint mod)
-{
-    bigint res = 0; // Initialize result
-    a = a % mod;
-    while (b > 0)
-    {
-        // If b is odd, add 'a' to result
-        if (b % 2 == 1)
-            res = (res + a) % mod;
-
-        // Multiply 'a' with 2
-        a = (a * 2) % mod;
-
-        // Divide b by 2
-        b /= 2;
-    }
-
-    // Return result
-    return res % mod;
-}
-} // end namespace internal
 
 /**
 * \brief Fast integer power modulo \a p based on
@@ -396,7 +402,6 @@ inline bigint modpow(bigint a, bigint n, bigint p)
 
     if (a == 0 && n == 0)
         throw Exception("qpp::modpow()", Exception::Type::OUT_OF_RANGE);
-
     // END EXCEPTION CHECKS
 
     if (a == 0 && n > 0)
@@ -410,8 +415,8 @@ inline bigint modpow(bigint a, bigint n, bigint p)
     for (; n > 0; n /= 2)
     {
         if (n % 2)
-            result = (internal::mulmod1(result, a, p)) % p; // MULTIPLY
-        a = (internal::mulmod1(a, a, p)) % p; // SQUARE
+            result = modmul(result, a, p) % p; // MULTIPLY
+        a = modmul(a, a, p) % p; // SQUARE
     }
 
     return result;
@@ -433,7 +438,6 @@ inline std::tuple<bigint, bigint, bigint> egcd(bigint m, bigint n)
 
     if (m == 0 && n == 0)
         throw Exception("qpp::egcd()", Exception::Type::OUT_OF_RANGE);
-
     // END EXCEPTION CHECKS
 
     bigint a, b, c, q, r;
@@ -537,7 +541,7 @@ inline bool isprime(bigint n, idx k = 80)
         bool jump = false;
         for (idx j = 0; j < static_cast<idx>(u); ++j)
         {
-            z = ((z % n) * (z % n)) % n;
+            z = (modmul(z, z, n)) % n;
             if (z == 1)
             {
                 // composite

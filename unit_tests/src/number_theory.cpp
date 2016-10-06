@@ -279,6 +279,55 @@ TEST(qpp_modinv_test, NonNegativeNumbers)
 }
 ///// END bigint qpp::modinv(bigint a, bigint p)
 
+///// BEGIN bigint qpp::modmul(bigint a, bigint n, bigint p)
+TEST(qpp_modmul_test, NonNegativeNumbers)
+{
+    EXPECT_EQ(0, qpp::modmul(0, 0, 1));
+    EXPECT_EQ(0, qpp::modmul(0, 0, 2));
+    EXPECT_EQ(0, qpp::modmul(1, 0, 2));
+    EXPECT_EQ(0, qpp::modmul(0, 1, 2));
+    EXPECT_EQ(2611, qpp::modmul(12127, 71623, 12345));
+
+    // test some really large numbers
+    bigint maxbigint = std::numeric_limits<bigint>::max();
+
+    EXPECT_EQ(42, qpp::modmul(maxbigint - 1, maxbigint, 123));
+    EXPECT_EQ(49, qpp::modmul(maxbigint , maxbigint, 123));
+    EXPECT_EQ(2262, qpp::modmul(maxbigint - 189 , maxbigint - 2345, 7891));
+}
+
+TEST(qpp_modmul_test, MixedNumbers)
+{
+    EXPECT_EQ(0, qpp::modmul(-1, 0, 2));
+    EXPECT_EQ(0, qpp::modmul(0, -1, 2));
+    EXPECT_EQ(9734, qpp::modmul(12127, -71623, 12345));
+    EXPECT_EQ(9734, qpp::modmul(-12127, 71623, 12345));
+
+    // test some really large numbers
+    bigint minbigint = std::numeric_limits<bigint>::min();
+    bigint maxbigint = std::numeric_limits<bigint>::max();
+
+    EXPECT_EQ(1114, qpp::modmul(minbigint , maxbigint, 2314));
+    EXPECT_EQ(21, qpp::modmul(-maxbigint, maxbigint, 34));
+    EXPECT_EQ(240, qpp::modmul(maxbigint , -1234567890, 314));
+    EXPECT_EQ(219, qpp::modmul(maxbigint , (maxbigint - 1)/2, 1314));
+}
+
+TEST(qpp_modmul_test, NegativeNumbers)
+{
+    // test some really large numbers
+    bigint minbigint = std::numeric_limits<bigint>::min();
+    bigint maxbigint = std::numeric_limits<bigint>::max();
+    EXPECT_EQ(21, qpp::modmul(-maxbigint, -maxbigint, 34));
+    EXPECT_EQ(74, qpp::modmul(-maxbigint , -1234567890, 314));
+    EXPECT_EQ(1799, qpp::modmul(minbigint + 1234, -maxbigint + 2345, 7891));
+
+    EXPECT_EQ(64, qpp::modmul(minbigint , minbigint, 123));
+    EXPECT_EQ(56, qpp::modmul(minbigint + 1, minbigint, 123));
+    EXPECT_EQ(1799, qpp::modmul(minbigint + 1234, -maxbigint + 2345, 7891));
+}
+///// END bigint qpp::modmul(bigint a, bigint n, bigint p)
+
 ///// BEGIN bigint qpp::modpow(bigint a, bigint n, bigint p)
 TEST(qpp_modpow_test, PositiveNumbers)
 {
@@ -286,6 +335,7 @@ TEST(qpp_modpow_test, PositiveNumbers)
     EXPECT_EQ (0, qpp::modpow(0, 100, 5));
     EXPECT_EQ (0, qpp::modpow(100, 0, 1));
     EXPECT_EQ (1, qpp::modpow(100, 0, 5));
+    EXPECT_EQ (0, qpp::modpow(12, 23, 1));
     EXPECT_EQ (0, qpp::modpow(2, 3, 4));
     EXPECT_EQ (34, qpp::modpow(17, 176, 37));
     EXPECT_EQ (4042, qpp::modpow(178373, 9281623, 6217));

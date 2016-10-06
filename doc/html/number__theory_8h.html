@@ -125,9 +125,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a269fcdf6397f3808852224eea0c2d220"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bigint &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a269fcdf6397f3808852224eea0c2d220">qpp::factors</a> (bigint n)</td></tr>
 <tr class="memdesc:a269fcdf6397f3808852224eea0c2d220"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prime factor decomposition.  <a href="#a269fcdf6397f3808852224eea0c2d220">More...</a><br /></td></tr>
 <tr class="separator:a269fcdf6397f3808852224eea0c2d220"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a1a10bb387568dba500d2bb996c96e6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a1a1a10bb387568dba500d2bb996c96e6">qpp::isprime</a> (bigint n)</td></tr>
-<tr class="memdesc:a1a1a10bb387568dba500d2bb996c96e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Primality test.  <a href="#a1a1a10bb387568dba500d2bb996c96e6">More...</a><br /></td></tr>
-<tr class="separator:a1a1a10bb387568dba500d2bb996c96e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8fdd19c2fc0dc7fac791974f283e375"><td class="memItemLeft" align="right" valign="top">bigint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ae8fdd19c2fc0dc7fac791974f283e375">qpp::modmul</a> (bigint m, bigint n, bigint p)</td></tr>
+<tr class="memdesc:ae8fdd19c2fc0dc7fac791974f283e375"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modular multiplication without overflow.  <a href="#ae8fdd19c2fc0dc7fac791974f283e375">More...</a><br /></td></tr>
+<tr class="separator:ae8fdd19c2fc0dc7fac791974f283e375"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ff25c25c0ff9304255495eb90b98d1b"><td class="memItemLeft" align="right" valign="top">bigint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a0ff25c25c0ff9304255495eb90b98d1b">qpp::modpow</a> (bigint a, bigint n, bigint p)</td></tr>
 <tr class="memdesc:a0ff25c25c0ff9304255495eb90b98d1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fast integer power modulo <em>p</em> based on the SQUARE-AND-MULTIPLY algorithm.  <a href="#a0ff25c25c0ff9304255495eb90b98d1b">More...</a><br /></td></tr>
 <tr class="separator:a0ff25c25c0ff9304255495eb90b98d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -137,6 +137,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a7e53beed2f6bb8d374ac2e2460aee2c2"><td class="memItemLeft" align="right" valign="top">bigint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a7e53beed2f6bb8d374ac2e2460aee2c2">qpp::modinv</a> (bigint a, bigint p)</td></tr>
 <tr class="memdesc:a7e53beed2f6bb8d374ac2e2460aee2c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modular inverse of <em>a</em> mod <em>p</em>.  <a href="#a7e53beed2f6bb8d374ac2e2460aee2c2">More...</a><br /></td></tr>
 <tr class="separator:a7e53beed2f6bb8d374ac2e2460aee2c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34c4f64ac24dc0706b96751c5d0e635a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a34c4f64ac24dc0706b96751c5d0e635a">qpp::isprime</a> (bigint n, idx k=80)</td></tr>
+<tr class="memdesc:a34c4f64ac24dc0706b96751c5d0e635a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Primality test based on the Miller-Rabin's algorithm.  <a href="#a34c4f64ac24dc0706b96751c5d0e635a">More...</a><br /></td></tr>
+<tr class="separator:a34c4f64ac24dc0706b96751c5d0e635a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7a4e9b856bf9a858b71c536acbbab39"><td class="memItemLeft" align="right" valign="top">bigint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ac7a4e9b856bf9a858b71c536acbbab39">qpp::randprime</a> (bigint a, bigint b, idx N=1000)</td></tr>
+<tr class="memdesc:ac7a4e9b856bf9a858b71c536acbbab39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random big prime uniformly distributed in the interval [a, b].  <a href="#ac7a4e9b856bf9a858b71c536acbbab39">More...</a><br /></td></tr>
+<tr class="separator:ac7a4e9b856bf9a858b71c536acbbab39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Number theory functions. </p>
@@ -146,7 +152,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="number__theory_8h.html">number_theory.h</a></li>
-    <li class="footer">Generated on Tue Oct 4 2016 23:27:49 for Quantum++ by
+    <li class="footer">Generated on Thu Oct 6 2016 01:46:18 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
