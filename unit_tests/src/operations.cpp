@@ -63,7 +63,7 @@ TEST(qpp_applyCTRL, NonEmptyControl)
     cmat result_rho = B;
 
     double res = norm(result_psi - result_rho);
-    EXPECT_NEAR (0, res, 1e-8);
+    EXPECT_NEAR (0, res, 1e-10);
 }
 
 TEST(qpp_applyCTRL, EmptyControl)
@@ -96,6 +96,6 @@ TEST(qpp_applyCTRL, EmptyControl)
     cmat result_rho = B;
 
     double res = norm(result_psi - result_rho);
-    EXPECT_NEAR (0, res, 1e-8);
+    EXPECT_NEAR (0, res, 1e-10);
 }
 /******************************************************************************/

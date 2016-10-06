@@ -93,7 +93,7 @@ struct is_matrix_expression<typename Eigen::MatrixBase<Derived>> :
 * \brief Checks whether the type is a complex type
 *
 * Provides the member constant \a value which is equal to \a true,
-* if the type is a complex type (i.e. \a std::complex<T>)
+* if the type is a complex type, i.e. \a std::complex<T>
 */
 template<typename T>
 struct is_complex : std::false_type

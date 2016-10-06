@@ -31,9 +31,93 @@ using namespace qpp;
 ///        const std::vector<idx>& ctrl,
 ///        const std::vector<idx>& subsys,
 ///        idx n, idx d = 2) const
-TEST(qpp_Gates_CTRL, AllTests)
+TEST(qpp_Gates_CTRL, Qubits)
 {
+    // CNOT control-target on 2 qubits
+    cmat CTRL1 = gt.CTRL(gt.X, {0}, {1}, 2);
+    EXPECT_EQ(CTRL1, gt.CNOT);
 
+    // CNOT target-control on 2 qubits
+    cmat CTRL2 = gt.CTRL(gt.X, {1}, {0}, 2);
+    EXPECT_EQ(CTRL2, gt.CNOTba);
+
+    // TOFOLI
+    cmat CTRL3 = gt.CTRL(gt.X, {0, 1}, {2}, 3);
+    EXPECT_EQ(CTRL3, gt.TOF);
+    CTRL3 = gt.CTRL(gt.X, {0, 1}, {2}, 3, 2); // test non-default args
+    EXPECT_EQ(CTRL3, gt.TOF);
+
+    // random gate as multiple control on 2 qubits
+    cmat U = rand<cmat>(2, 2);
+    cmat CTRL4 = gt.CTRL(U, {0, 2}, {1}, 3);
+    ket psi1 = mket({0, 0, 1});
+    ket res1 = mket({0, 0, 1});
+    EXPECT_NEAR(0, norm(CTRL4 * psi1 - res1), 1e-10);
+
+    ket psi2 = mket({1, 1, 1});
+    ket res2 = kron(st.z1, U * st.z1, st.z1);
+    EXPECT_NEAR(0, norm(CTRL4 * psi2 - res2), 1e-10);
+}
+
+TEST(qpp_Gates_CTRL, Qudits)
+{
+    idx D = 3; // qutrits
+
+    // CNOT control-target on 2 qutrits
+    cmat CTRL1 = gt.CTRL(gt.Xd(3), {0}, {1}, 2, D);
+    EXPECT_NEAR(0, qpp::norm(CTRL1 * qpp::mket({0, 0}, {D, D}) -
+                                     qpp::mket({0, 0}, {D,D})), 1e-10);
+    EXPECT_NEAR(0, qpp::norm(CTRL1 * qpp::mket({0, 1}, {D, D}) -
+                                     qpp::mket({0, 1}, {D, D})), 1e-10);
+    EXPECT_NEAR(0, qpp::norm(CTRL1 * qpp::mket({0, 2}, {D, D}) -
+                                     qpp::mket({0, 2}, {D, D})), 1e-10);
+    EXPECT_NEAR(0, qpp::norm(CTRL1 * qpp::mket({1, 0}, {D, D}) -
+                                     qpp::mket({1, 1}, {D, D})), 1e-10);
+    EXPECT_NEAR(0, qpp::norm(CTRL1 * qpp::mket({1, 1}, {D, D}) -
+                                     qpp::mket({1, 2}, {D, D})), 1e-10);
+    EXPECT_NEAR(0, qpp::norm(CTRL1 * qpp::mket({1, 2}, {D, D}) -
+                                     qpp::mket({1, 0}, {D, D})), 1e-10);
+    EXPECT_NEAR(0, qpp::norm(CTRL1 * qpp::mket({2, 0}, {D, D}) -
+                                     qpp::mket({2, 2}, {D, D})), 1e-10);
+    EXPECT_NEAR(0, qpp::norm(CTRL1 * qpp::mket({2, 1}, {D, D}) -
+                                     qpp::mket({2, 0}, {D, D})), 1e-10);
+    EXPECT_NEAR(0, qpp::norm(CTRL1 * qpp::mket({2, 2}, {D, D}) -
+                                     qpp::mket({2, 1}, {D, D})), 1e-10);
+
+    // CNOT target-control on 2 qutrits
+    cmat CTRL2 = gt.CTRL(gt.Xd(3), {1}, {0}, 2, D);
+    EXPECT_NEAR(0, qpp::norm(CTRL2 * qpp::mket({0, 0}, {D, D}) -
+                                     qpp::mket({0, 0}, {D,D})), 1e-10);
+    EXPECT_NEAR(0, qpp::norm(CTRL2 * qpp::mket({0, 1}, {D, D}) -
+                                     qpp::mket({1, 1}, {D, D})), 1e-10);
+    EXPECT_NEAR(0, qpp::norm(CTRL2 * qpp::mket({0, 2}, {D, D}) -
+                                     qpp::mket({2, 2}, {D, D})), 1e-10);
+    EXPECT_NEAR(0, qpp::norm(CTRL2 * qpp::mket({1, 0}, {D, D}) -
+                                     qpp::mket({1, 0}, {D, D})), 1e-10);
+    EXPECT_NEAR(0, qpp::norm(CTRL2 * qpp::mket({1, 1}, {D, D}) -
+                                     qpp::mket({2, 1}, {D, D})), 1e-10);
+    EXPECT_NEAR(0, qpp::norm(CTRL2 * qpp::mket({1, 2}, {D, D}) -
+                                     qpp::mket({0, 2}, {D, D})), 1e-10);
+    EXPECT_NEAR(0, qpp::norm(CTRL2 * qpp::mket({2, 0}, {D, D}) -
+                                     qpp::mket({2, 0}, {D, D})), 1e-10);
+    EXPECT_NEAR(0, qpp::norm(CTRL2 * qpp::mket({2, 1}, {D, D}) -
+                                     qpp::mket({0, 1}, {D, D})), 1e-10);
+    EXPECT_NEAR(0, qpp::norm(CTRL2 * qpp::mket({2, 2}, {D, D}) -
+                                     qpp::mket({1, 2}, {D, D})), 1e-10);
+
+    // multiple Control-X-X, partial testing
+    cmat CTRL3 = gt.CTRL(qpp::kron(gt.Xd(3), gt.Xd(3)), {1, 4}, {2, 3}, 6, 3);
+    ket psi1 = mket({0, 1, 2, 2, 1, 1}, {D, D, D, D ,D ,D});
+    ket res1 = mket({0, 1, 0, 0, 1, 1}, {D, D, D, D ,D ,D});
+    EXPECT_NEAR(0, qpp::norm(CTRL3 * psi1 - res1), 1e-10);
+
+    ket psi2 = mket({0, 1, 2, 2, 2, 1}, {D, D, D, D ,D ,D});
+    ket res2 = mket({0, 1, 2, 2, 2, 1}, {D, D, D, D ,D ,D});
+    EXPECT_NEAR(0, qpp::norm(CTRL3 * psi2 - res2), 1e-10);
+
+    ket psi3 = mket({1, 2, 1, 0, 2, 2}, {D, D, D, D ,D ,D});
+    ket res3 = mket({1, 2, 0, 2, 2, 2}, {D, D, D, D ,D ,D});
+    EXPECT_NEAR(0, qpp::norm(CTRL3 * psi3 - res3), 1e-10);
 }
 /******************************************************************************/
 /// BEGIN template<typename Derived>

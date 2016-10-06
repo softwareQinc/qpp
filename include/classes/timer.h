@@ -34,7 +34,7 @@ namespace qpp
 * \class qpp::Timer
 * \brief Chronometer
 *
-* \tparam T Tics duration, default is std::chrono::duration<double, 1>
+* \tparam T Tics duration, default is std::chrono::duration<double, 1>, 
 * i.e. seconds in double precision
 * \tparam CLOCK_T Clock's type, default is std::chrono::steady_clock,
 * not affected by wall clock changes during runtime

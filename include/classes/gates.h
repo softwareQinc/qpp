@@ -174,7 +174,8 @@ public:
     /**
     * \brief Generalized X gate for qudits
     *
-    * \note Defined as \f$ X = \sum_j |j\oplus 1\rangle\langle j| \f$
+    * \note Defined as \f$ X = \sum_j |j\oplus 1\rangle\langle j| \f$,
+    * i.e. raising operator \f$ X|j\rangle = |j\oplus 1\rangle>\f$
     *
     * \param D Dimension of the Hilbert space
     * \return Generalized X gate for qudits
