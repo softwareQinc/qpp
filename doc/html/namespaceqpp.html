@@ -4745,6 +4745,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Modular multiplication without overflow. </p>
+<p>Computes <img class="formulaInl" alt="$mn \mathrm{ mod } p$" src="form_62.png"/> without overflow</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">m</td><td>Integer </td></tr>
@@ -4753,7 +4754,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The product of <em>m</em> and <em>n</em> modulo <em>p</em>, avoiding overflow </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><img class="formulaInl" alt="$mn \mathrm{ mod } p$" src="form_62.png"/> avoiding overflow </dd></dl>
 
 </div>
 </div>
@@ -4796,6 +4797,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Fast integer power modulo <em>p</em> based on the SQUARE-AND-MULTIPLY algorithm. </p>
+<dl class="section note"><dt>Note</dt><dd>Uses <a class="el" href="namespaceqpp.html#ae8fdd19c2fc0dc7fac791974f283e375" title="Modular multiplication without overflow. ">qpp::modmul()</a> that avoids overflows</dd></dl>
 <p>Computes <img class="formulaInl" alt="$a^n \mathrm{ mod } p$" src="form_52.png"/></p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -7925,7 +7927,7 @@ template&lt;typename Container &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Thu Oct 6 2016 01:46:18 for Quantum++ by
+    <li class="footer">Generated on Thu Oct 6 2016 11:49:20 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -60,3 +60,4 @@
 \form#59:$am + bn = gcd(a, b)$
 \form#60:$a^{-1}$
 \form#61:$2^{-k}$
+\form#62:$mn \mathrm{ mod } p$

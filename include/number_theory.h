@@ -337,10 +337,12 @@ inline std::vector<bigint> factors(bigint n)
 /**
  * \brief Modular multiplication without overflow
  *
+ * Computes \f$mn \mathrm{ mod } p\f$ without overflow
+ *
  * \param m Integer
  * \param n Integer
  * \param p Positive integer
- * \return The product of \a m and \a n modulo \a p, avoiding overflow
+ * \return \f$mn \mathrm{ mod } p\f$ avoiding overflow
  */
 inline bigint modmul(bigint m, bigint n, bigint p)
 {
@@ -350,41 +352,77 @@ inline bigint modmul(bigint m, bigint n, bigint p)
         throw Exception("qpp::modmul()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
-    m %= p;
-    n %= p;
+    if (m == 0 || n == 0)
+        return 0;
 
-    bigint res = 0;
-    // this is a variant of SQUARE-AND-MULTIPLY, now MULTIPLY-AND-ADD
-    for (; n > 0; n /= 2)
+    unsigned long long um, un, up;
+
+    bool is_positive = true;
+    if (m < 0)
     {
-        // if n is odd, add m to result
-        if (n % 2 == 1)
-            res = (res + m) % p;
+        um = -m;
+        is_positive = false;
+    } else
+        um = m;
+    if (n < 0)
+    {
+        un = -n;
+        is_positive = false;
+    } else
+        un = n;
 
-        // multiply m with 2
-        m = (m * 2) % p;
+    if (m < 0 && n < 0)
+        is_positive = true;
+
+    up = static_cast<unsigned long long>(p);
+    um %= up;
+    un %= up;
+
+    // the code below is taken from
+    // http://stackoverflow.com/a/18680280/3093378
+    unsigned long long res = 0;
+    unsigned long long temp_n;
+
+    if (un > um)
+        std::swap(un, um);
+
+    /* Only needed if un may be >= up */
+    if (un >= up)
+    {
+        if (up > std::numeric_limits<unsigned long long>::max() / 2u)
+            un -= up;
+        else
+            un %= up;
     }
 
-    return res % p;
-}
+    while (um != 0)
+    {
+        if (um & 1)
+        {
+            /* Add un to res, modulo p, without overflow */
+            /* Equiv to if (res + un >= p), without overflow */
+            if (un >= up - res)
+                res -= up;
+            res += un;
+        }
+        um >>= 1;
 
-inline bigint modmul1(bigint a, bigint b, bigint m)
-{
-    bigint r = 0;
-    /* Remove these mods if the caller can ensure a and b are in range */
-    a %= m;
-    b %= m;
-    while (b > 0) {
-        if (b & 1)  r = ((m-r) > a) ? r+a : r+a-m;    /* r = (r + a) % m */
-        b >>= 1;
-        if (b)      a = ((m-a) > a) ? a+a : a+a-m;    /* a = (a + a) % m */
+        /* Double b, modulo m */
+        temp_n = un;
+        if (un >= up - un) /* Equiv to if (2 * un >= p), without overflow */
+            temp_n -= up;
+        un += temp_n;
     }
-    return r;
+
+    return is_positive ? static_cast<bigint>(res) :
+           static_cast<bigint>(p - res);
 }
 
 /**
 * \brief Fast integer power modulo \a p based on
 * the SQUARE-AND-MULTIPLY algorithm
+*
+* \note Uses qpp::modmul() that avoids overflows
 *
 * Computes \f$a^n \mathrm{ mod } p\f$
 *
@@ -441,7 +479,7 @@ inline std::tuple<bigint, bigint, bigint> egcd(bigint m, bigint n)
     // END EXCEPTION CHECKS
 
     bigint a, b, c, q, r;
-    bigint a1 = 0, a2 = 1, b1 =1, b2 = 0;
+    bigint a1 = 0, a2 = 1, b1 = 1, b2 = 0;
 
     while (n)
     {

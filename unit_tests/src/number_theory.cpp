@@ -139,6 +139,13 @@ TEST(qpp_gcd_test, NonNegativeNumbers)
     EXPECT_EQ (1, qpp::gcd(1, 1));
     EXPECT_EQ (4, qpp::gcd(120, 1124));
     EXPECT_EQ (1, qpp::gcd(17, 131));
+
+    // test some really large numbers
+    // assumes that qpp::bigint is 64 bits
+    bigint maxbigint = std::numeric_limits<bigint>::max();
+    EXPECT_EQ(maxbigint, qpp::gcd(maxbigint, maxbigint));
+    EXPECT_EQ(1, qpp::gcd(maxbigint, maxbigint - 1));
+    EXPECT_EQ(3, qpp::gcd(maxbigint - 1, maxbigint - 10));
 }
 
 TEST(qpp_gcd_test, MixedNumbers)
@@ -289,11 +296,16 @@ TEST(qpp_modmul_test, NonNegativeNumbers)
     EXPECT_EQ(2611, qpp::modmul(12127, 71623, 12345));
 
     // test some really large numbers
+    // assumes that qpp::bigint is 64 bits
     bigint maxbigint = std::numeric_limits<bigint>::max();
 
     EXPECT_EQ(42, qpp::modmul(maxbigint - 1, maxbigint, 123));
-    EXPECT_EQ(49, qpp::modmul(maxbigint , maxbigint, 123));
-    EXPECT_EQ(2262, qpp::modmul(maxbigint - 189 , maxbigint - 2345, 7891));
+    EXPECT_EQ(49, qpp::modmul(maxbigint, maxbigint, 123));
+    EXPECT_EQ(2262, qpp::modmul(maxbigint - 189, maxbigint - 2345, 7891));
+    EXPECT_EQ(0, qpp::modmul(maxbigint, maxbigint, maxbigint));
+    EXPECT_EQ(14884, qpp::modmul(maxbigint - 1,
+                                 maxbigint - 1,
+                                 maxbigint - 123));
 }
 
 TEST(qpp_modmul_test, MixedNumbers)
@@ -304,25 +316,28 @@ TEST(qpp_modmul_test, MixedNumbers)
     EXPECT_EQ(9734, qpp::modmul(-12127, 71623, 12345));
 
     // test some really large numbers
+    // assumes that qpp::bigint is 64 bits
     bigint minbigint = std::numeric_limits<bigint>::min();
     bigint maxbigint = std::numeric_limits<bigint>::max();
 
-    EXPECT_EQ(1114, qpp::modmul(minbigint , maxbigint, 2314));
+    EXPECT_EQ(1114, qpp::modmul(minbigint, maxbigint, 2314));
     EXPECT_EQ(21, qpp::modmul(-maxbigint, maxbigint, 34));
-    EXPECT_EQ(240, qpp::modmul(maxbigint , -1234567890, 314));
-    EXPECT_EQ(219, qpp::modmul(maxbigint , (maxbigint - 1)/2, 1314));
+    EXPECT_EQ(240, qpp::modmul(maxbigint, -1234567890, 314));
+    EXPECT_EQ(219, qpp::modmul(maxbigint, (maxbigint - 1)/2, 1314));
 }
 
 TEST(qpp_modmul_test, NegativeNumbers)
 {
     // test some really large numbers
+    // assumes that qpp::bigint is 64 bits
     bigint minbigint = std::numeric_limits<bigint>::min();
     bigint maxbigint = std::numeric_limits<bigint>::max();
-    EXPECT_EQ(21, qpp::modmul(-maxbigint, -maxbigint, 34));
-    EXPECT_EQ(74, qpp::modmul(-maxbigint , -1234567890, 314));
+    EXPECT_EQ(13, qpp::modmul(-maxbigint, -maxbigint, 34));
+    EXPECT_EQ(1, qpp::modmul(-maxbigint, -maxbigint, maxbigint - 1));
+    EXPECT_EQ(74, qpp::modmul(-maxbigint, -1234567890, 314));
     EXPECT_EQ(1799, qpp::modmul(minbigint + 1234, -maxbigint + 2345, 7891));
 
-    EXPECT_EQ(64, qpp::modmul(minbigint , minbigint, 123));
+    EXPECT_EQ(64, qpp::modmul(minbigint, minbigint, 123));
     EXPECT_EQ(56, qpp::modmul(minbigint + 1, minbigint, 123));
     EXPECT_EQ(1799, qpp::modmul(minbigint + 1234, -maxbigint + 2345, 7891));
 }
@@ -331,6 +346,8 @@ TEST(qpp_modmul_test, NegativeNumbers)
 ///// BEGIN bigint qpp::modpow(bigint a, bigint n, bigint p)
 TEST(qpp_modpow_test, PositiveNumbers)
 {
+    bigint maxbigint = std::numeric_limits<bigint>::max();
+
     EXPECT_EQ (0, qpp::modpow(0, 100, 1));
     EXPECT_EQ (0, qpp::modpow(0, 100, 5));
     EXPECT_EQ (0, qpp::modpow(100, 0, 1));
@@ -341,10 +358,14 @@ TEST(qpp_modpow_test, PositiveNumbers)
     EXPECT_EQ (4042, qpp::modpow(178373, 9281623, 6217));
 
     // test some really large numbers
+    // assumes that qpp::bigint is 64 bits
     EXPECT_EQ(24502114, qpp::modpow(10000000019, 10000000019, 26527121));
     EXPECT_EQ(1847779, qpp::modpow(9000000019, 10000000119, 2652711));
     EXPECT_EQ(1099, qpp::modpow(9000000019, 10000000119, 1980));
     EXPECT_EQ(1, qpp::modpow(6897998630, 10000000018, 10000000019));
+    EXPECT_EQ(0, qpp::modpow(maxbigint, maxbigint, maxbigint));
+    EXPECT_EQ(1, qpp::modpow(maxbigint - 1, maxbigint - 1, maxbigint));
+    EXPECT_EQ(32, qpp::modpow(maxbigint - 1, maxbigint - 2, maxbigint - 3));
 }
 
 TEST(qpp_modpow_exception_test, ParameterOutOfRange)
