@@ -17,7 +17,7 @@ Version 0.8.8 - 30 September 2016
     - Added more unit testing, <number_theory.h> is now fully tested
     - Split unit testing in separate files according to the tested header file
     - Fixed typo in CMakeLists.txt which in effect disabled OpenMP
-            for version 0.8.6. PLEASE use the CMakeLists.txt from current version!
+        for version 0.8.6. PLEASE use the CMakeLists.txt from current version!
     - SFINAE for all functions that have STL-containers as parameters
     - Improved performance via removing unnecessary copy, see Issue #31,
         thanks @vasekp
