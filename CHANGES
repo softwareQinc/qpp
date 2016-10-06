@@ -1,7 +1,7 @@
 Version 0.8.9 - development
-    - removed the qpp::ubigint type so there is no more danger of mixing
-        signed and unsigned. All related functions now use qpp::bigint.
-    - fixed overflow bug in qpp::powm() when numbers were very large
+    - Removed the qpp::ubigint type so there is no more danger of mixing
+        signed and unsigned types. All related functions now use qpp::bigint.
+    - Fixed overflow bug in qpp::powm() when numbers were very large
     - qpp::isprime() is now based on the Miller-Rabin primality test
     - qpp::rand(Type a, Type b) family of functions now throw if b > a for
         integer types or when a == b for floating-point types
