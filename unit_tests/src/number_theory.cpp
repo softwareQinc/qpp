@@ -119,6 +119,15 @@ TEST(qpp_factors_test, MixedNumbers)
     bigint n4 = -35750;
     std::vector<bigint> result4{2, 5, 5, 5,11, 13};
     EXPECT_EQ(result4, qpp::factors(n4));
+
+    // test some really large numbers
+    bigint n5 = 1000000000001112;
+    std::vector<bigint> result5{2, 2, 2, 3, 11, 29, 1217, 1637, 65563};
+    EXPECT_EQ(result5, qpp::factors(n5));
+
+    bigint n6 = 1000000000001118;
+    std::vector<bigint> result6{2, 3, 897649, 185670197};
+    EXPECT_EQ(result6, qpp::factors(n6));
 }
 ///// END std::vector<bigint> qpp::factors(bigint n)
 
@@ -210,7 +219,7 @@ TEST(qpp_isprime_test, MixedNonPrimeNumbers)
     EXPECT_EQ(false, qpp::isprime(110011));
     EXPECT_EQ(false, qpp::isprime(10000000119));
 
-    // Test some Charmichael numbers
+    // test some Charmichael numbers
     EXPECT_EQ(false, qpp::isprime(561));
     EXPECT_EQ(false, qpp::isprime(6601));
     EXPECT_EQ(false, qpp::isprime(8911));
@@ -281,7 +290,7 @@ TEST(qpp_modpow_test, PositiveNumbers)
     EXPECT_EQ (34, qpp::modpow(17, 176, 37));
     EXPECT_EQ (4042, qpp::modpow(178373, 9281623, 6217));
 
-    // Test some really large numbers
+    // test some really large numbers
     EXPECT_EQ(24502114, qpp::modpow(10000000019, 10000000019, 26527121));
     EXPECT_EQ(1847779, qpp::modpow(9000000019, 10000000119, 2652711));
     EXPECT_EQ(1099, qpp::modpow(9000000019, 10000000119, 1980));

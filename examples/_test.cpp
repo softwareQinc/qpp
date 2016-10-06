@@ -7,6 +7,4 @@ using namespace qpp;
 int main()
 {
     std::cout << "Testing..." << std::endl;
-
-    std::cout << std::boolalpha << isprime(10000000019) << std::endl;
 }
