@@ -197,32 +197,32 @@ TEST(qpp_invperm_test, NonNegativeNumbers)
 /// BEGIN bool qpp::isprime(bigint n, idx k = 80)
 TEST(qpp_isprime_test, MixedPrimeNumbers)
 {
-    EXPECT_EQ(true, qpp::isprime(2));
-    EXPECT_EQ(true, qpp::isprime(-2));
-    EXPECT_EQ(true, qpp::isprime(11));
-    EXPECT_EQ(true, qpp::isprime(-17));
-    EXPECT_EQ(true, qpp::isprime(19));
-    EXPECT_EQ(true, qpp::isprime(127));
-    EXPECT_EQ(true, qpp::isprime(541));
-    EXPECT_EQ(true, qpp::isprime(-104729));
-    EXPECT_EQ(true, qpp::isprime(10000000019));
+    EXPECT_TRUE(qpp::isprime(2));
+    EXPECT_TRUE(qpp::isprime(-2));
+    EXPECT_TRUE(qpp::isprime(11));
+    EXPECT_TRUE(qpp::isprime(-17));
+    EXPECT_TRUE(qpp::isprime(19));
+    EXPECT_TRUE(qpp::isprime(127));
+    EXPECT_TRUE(qpp::isprime(541));
+    EXPECT_TRUE(qpp::isprime(-104729));
+    EXPECT_TRUE(qpp::isprime(10000000019));
 }
 
 TEST(qpp_isprime_test, MixedNonPrimeNumbers)
 {
-    EXPECT_EQ(false, qpp::isprime(4));
-    EXPECT_EQ(false, qpp::isprime(-4));
-    EXPECT_EQ(false, qpp::isprime(110));
-    EXPECT_EQ(false, qpp::isprime(-4891));
-    EXPECT_EQ(false, qpp::isprime(-13101));
-    EXPECT_EQ(false, qpp::isprime(110011));
-    EXPECT_EQ(false, qpp::isprime(10000000119));
+    EXPECT_FALSE(qpp::isprime(4));
+    EXPECT_FALSE(qpp::isprime(-4));
+    EXPECT_FALSE(qpp::isprime(110));
+    EXPECT_FALSE(qpp::isprime(-4891));
+    EXPECT_FALSE(qpp::isprime(-13101));
+    EXPECT_FALSE(qpp::isprime(110011));
+    EXPECT_FALSE(qpp::isprime(10000000119));
 
     // test some Charmichael numbers
-    EXPECT_EQ(false, qpp::isprime(561));
-    EXPECT_EQ(false, qpp::isprime(6601));
-    EXPECT_EQ(false, qpp::isprime(8911));
-    EXPECT_EQ(false, qpp::isprime(41041));
+    EXPECT_FALSE(qpp::isprime(561));
+    EXPECT_FALSE(qpp::isprime(6601));
+    EXPECT_FALSE(qpp::isprime(8911));
+    EXPECT_FALSE(qpp::isprime(41041));
 }
 /******************************************************************************/
 /// BEGIN bigint qpp::lcm(bigint m, bigint n)
@@ -376,9 +376,9 @@ TEST(qpp_modpow_exception_test, ParameterOutOfRange)
 /// BEGIN bigint qpp::randprime(bigint a, bigint b, idx N = 1000)
 TEST(qpp_randprime_test, AllTests)
 {
-    EXPECT_EQ(true, qpp::isprime(qpp::randprime(0,100)));
-    EXPECT_EQ(true, qpp::isprime(qpp::randprime(100,1000)));
-    EXPECT_EQ(true, qpp::isprime(qpp::randprime(10000,10100)));
+    EXPECT_TRUE(qpp::isprime(qpp::randprime(0,100)));
+    EXPECT_TRUE(qpp::isprime(qpp::randprime(100,1000)));
+    EXPECT_TRUE(qpp::isprime(qpp::randprime(10000,10100)));
 }
 /******************************************************************************/
 /// BEGIN std::vector<int> qpp::x2contfrac(double x, idx n, idx cut = 1e5)
