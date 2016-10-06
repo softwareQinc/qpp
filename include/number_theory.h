@@ -330,32 +330,51 @@ inline std::vector<bigint> factors(bigint n)
     return result;
 }
 
-/**
-* \brief Primality test
-*
-* \note Runs in \f$\mathcal{O}(\sqrt{n})\f$ time complexity. Use Miller-Rabin
-* or something similar if you need high performance.
-*
-* \param n Integer different for 0, 1 or -1
-* \return True if the number is prime, false otherwise
-*/
-inline bool isprime(bigint n)
+
+namespace internal
 {
-    if (n < 0)
-        n = -n;
+//https://programmingpraxis.com/2013/05/28/modular-multiplication-without
+// -overflow/
+// @danaj
+inline ubigint mulmod(ubigint a, ubigint b, ubigint m)
+{
+    ubigint r = 0;
+    /* Remove these mods if the caller can ensure a and b are in range */
+    a %= m;
+    b %= m;
+    while (b > 0)
+    {
+        if (b & 1) // last bit is one
+            r = ((m - r) > a) ? r + a : r + a - m;    /* r = (r + a) % m */
+        b >>= 1; // shift right, i.e. divide by 2
+        if (b)
+            a = ((m - a) > a) ? a + a : a + a - m;    /* a = (a + a) % m */
+    }
+    return r;
+}
 
-    // EXCEPTION CHECKS
+// http://www.geeksforgeeks.org/how-to-avoid-overflow-in-modular-multiplication/
+// To compute (a * b) % mod
+inline bigint mulmod1(bigint a, bigint b, bigint mod)
+{
+    bigint res = 0; // Initialize result
+    a = a % mod;
+    while (b > 0)
+    {
+        // If b is odd, add 'a' to result
+        if (b % 2 == 1)
+            res = (res + a) % mod;
 
-    if (n == 0 or n == 1)
-        throw Exception("qpp::isprime()", Exception::Type::OUT_OF_RANGE);
-    // END EXCEPTION CHECKS
+        // Multiply 'a' with 2
+        a = (a * 2) % mod;
 
-    auto facts = factors(n);
+        // Divide b by 2
+        b /= 2;
+    }
 
-    if (facts.size() == 1)
-        return true;
-
-    return false;
+    // Return result
+    return res % mod;
+}
 }
 
 /**
@@ -392,8 +411,8 @@ inline bigint modpow(bigint a, bigint n, bigint p)
     for (; n > 0; n /= 2)
     {
         if (n % 2)
-            result = (result * a) % p; // MULTIPLY
-        a = (a * a) % p; // SQUARE
+            result = (internal::mulmod1(result, a, p)) % p; // MULTIPLY
+        a = (internal::mulmod1(a, a, p)) % p; // SQUARE
     }
 
     return result;
@@ -470,6 +489,123 @@ inline bigint modinv(bigint a, bigint p)
     // END EXCEPTION CHECKS
 
     return (y > 0) ? y : y + p;
+}
+
+/**
+ * \brief Primality test based on the Miller-Rabin's algorithm
+ *
+ * \param n Integer different from 0, 1 or -1
+ * \param k Number of iterations. The probability of a
+ * false positive is \f$2^{-k}\f$.
+ * \return True if the number is (most-likely) prime, false otherwise
+ */
+inline bool isprime(bigint n, idx k = 80)
+{
+    if (n < 0)
+        n = -n;
+
+    // EXCEPTION CHECKS
+
+    if (n == 0 or n == 1)
+        throw Exception("qpp::isprime()", Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
+
+    if (n == 2 || n == 3)
+        return true;
+
+//    // perform a Fermat test
+    bigint x = rand(2, n - 1);
+    if (modpow(x, n - 1, n) != 1)
+        return false;
+
+    // compute u and r
+    bigint u = 0, r = 1;
+
+    // write n − 1 as 2^u * r
+    for (bigint i = n - 1; i % 2 == 0; ++u, i /= 2);
+    r = (n - 1) / static_cast<bigint>(std::llround(std::pow(2, u)));
+
+    // repeat k times
+    for (idx i = 0; i < k; ++i)
+    {
+        // pick a random integer a in the range [2, n − 2]
+        bigint a = rand(2, n - 2);
+
+        // set z = a^r mod n
+        bigint z = modpow(a, r, n);
+
+        if (z == 1 || z == n - 1)
+            continue;
+
+        // repeat u - 1 times
+        bool jump = false;
+        for (idx j = 0; j < static_cast<idx>(u); ++j)
+        {
+            z = ((z % n) * (z % n)) % n;
+            if (z == 1)
+            {
+                // composite
+                return false;
+            }
+            if (z == n - 1)
+            {
+                jump = true;
+                break;
+            }
+        }
+        if (jump)
+            continue;
+
+        return false;
+    }
+
+    return true;
+}
+
+/**
+* \brief Generates a random big prime uniformly distributed in
+* the interval [a, b]
+*
+* \param a Beginning of the interval, belongs to it
+* \param b End of the interval, belongs to it
+* \param N Maximum number of candidates
+* \return Random big integer uniformly distributed in
+* the interval [a, b]
+*/
+// A std::optional<bigint> return type would have been awesome here!
+inline bigint randprime(bigint a, bigint b, idx N = 1000)
+{
+    // EXCEPTION CHECKS
+
+    if (a > b)
+        throw qpp::Exception("qpp::randprime()",
+                             qpp::Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
+
+    int i = 0;
+    for (; i < static_cast<bigint>(N); ++i)
+    {
+        // select a candidate
+        bigint candidate = rand(a, b);
+        if (std::abs(candidate) < 2)
+            continue;
+        if (std::abs(candidate) == 2)
+            return candidate;
+
+        // perform a Fermat test
+        bigint x = rand(2, candidate - 1);
+        if (modpow(x, candidate - 1, candidate) != 1)
+            continue; // candidate fails
+
+        // passed the Fermat test, perform a Miller-Rabin test
+        if (isprime(candidate))
+            return candidate;
+    }
+
+    if (i == static_cast<bigint>(N))
+        throw qpp::Exception("qpp::randprime()", "Prime not found!");
+
+    return 0; // so we don't get a warning
 }
 
 } /* namespace qpp */

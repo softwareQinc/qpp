@@ -1,4 +1,10 @@
 Version 0.8.9 - development
+    - fixed overflow bug in qpp::powm() when numbers were very large
+    - qpp::isprime() is now based on the Miller-Rabin primality test
+    - qpp::rand(Type a, Type b) family of functions now throw if b > a for
+        integer types or when a == b for floating-point types
+    - Added new functions in <number_theory.h>:
+            qpp::randprime() - random prime number generator
 
 Version 0.8.8.2 - 3 October 2016
     - This is a bug-fix release

@@ -35,13 +35,20 @@ namespace qpp
 /**
 * \brief Generates a random real number uniformly distributed in
 * the interval [a, b)
+*
 * \param a Beginning of the interval, belongs to it
 * \param b End of the interval, does not belong to it
 * \return Random real number (double) uniformly distributed in
 * the interval [a, b)
 */
-inline double rand(double a = 0, double b = 1)
+inline double rand(double a, double b)
 {
+    // EXCEPTION CHECKS
+
+    if (a >= b)
+        throw qpp::Exception("qpp::rand()", qpp::Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
+
     std::uniform_real_distribution<> ud(a, b);
 
 #ifdef _NO_THREAD_LOCAL_
@@ -54,14 +61,20 @@ inline double rand(double a = 0, double b = 1)
 /**
 * \brief Generates a random big integer uniformly distributed in
 * the interval [a, b]
+*
 * \param a Beginning of the interval, belongs to it
 * \param b End of the interval, belongs to it
 * \return Random big integer uniformly distributed in
 * the interval [a, b]
 */
-inline bigint rand(bigint a = std::numeric_limits<bigint>::min(),
-                   bigint b = std::numeric_limits<bigint>::max())
+inline bigint rand(bigint a, bigint b)
 {
+    // EXCEPTION CHECKS
+
+    if (a > b)
+        throw qpp::Exception("qpp::rand()", qpp::Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
+
     std::uniform_int_distribution<bigint> uid(a, b);
 
 #ifdef _NO_THREAD_LOCAL_
@@ -74,14 +87,20 @@ inline bigint rand(bigint a = std::numeric_limits<bigint>::min(),
 /**
 * \brief Generates a random non-negative big integer uniformly distributed in
 * the interval [a, b]
+*
 * \param a Beginning of the interval, belongs to it
 * \param b End of the interval, belongs to it
 * \return Random non-negative big integer uniformly distributed in
 * the interval [a, b]
 */
-inline ubigint rand(ubigint a = std::numeric_limits<ubigint>::min(),
-                    ubigint b = std::numeric_limits<ubigint>::max())
+inline ubigint rand(ubigint a, ubigint b)
 {
+    // EXCEPTION CHECKS
+
+    if (a > b)
+        throw qpp::Exception("qpp::rand()", qpp::Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
+
     std::uniform_int_distribution<ubigint> uid(a, b);
 
 #ifdef _NO_THREAD_LOCAL_
@@ -94,6 +113,7 @@ inline ubigint rand(ubigint a = std::numeric_limits<ubigint>::min(),
 /**
 * \brief Generates a random index (idx) uniformly distributed in
 * the interval [a, b]
+*
 * \param a Beginning of the interval, belongs to it
 * \param b End of the interval, belongs to it
 * \return Random index (idx) uniformly distributed in
@@ -102,6 +122,12 @@ inline ubigint rand(ubigint a = std::numeric_limits<ubigint>::min(),
 inline idx randidx(idx a = std::numeric_limits<idx>::min(),
                    idx b = std::numeric_limits<idx>::max())
 {
+    // EXCEPTION CHECKS
+
+    if (a > b)
+        throw qpp::Exception("qpp::rand()", qpp::Exception::Type::OUT_OF_RANGE);
+    // END EXCEPTION CHECKS
+
     std::uniform_int_distribution<idx> uid(a, b);
 
 #ifdef _NO_THREAD_LOCAL_
@@ -161,6 +187,8 @@ inline dmat rand(idx rows, idx cols, double a, double b)
 
     if (rows == 0 || cols == 0)
         throw Exception("qpp::rand()", Exception::Type::ZERO_SIZE);
+    if (a >= b)
+        throw qpp::Exception("qpp::rand()", qpp::Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
     return dmat::Zero(rows, cols).unaryExpr(
@@ -198,6 +226,8 @@ inline cmat rand(idx rows, idx cols, double a, double b)
 
     if (rows == 0 || cols == 0)
         throw Exception("qpp::rand()", Exception::Type::ZERO_SIZE);
+    if (a >= b)
+        throw qpp::Exception("qpp::rand()", qpp::Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
     return rand<dmat>(rows, cols, a, b).cast<cplx>() +

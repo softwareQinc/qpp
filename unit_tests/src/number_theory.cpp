@@ -186,14 +186,18 @@ TEST(qpp_invperm_test, NonNegativeNumbers)
 }
 ///// END std::vector<idx> qpp::invperm(const std::vector<idx>& perm)
 
-///// BEGIN bool qpp::isprime(bigint n)
+///// BEGIN bool qpp::isprime(bigint n, idx k = 80)
 TEST(qpp_isprime_test, MixedPrimeNumbers)
 {
     EXPECT_EQ(true, qpp::isprime(2));
     EXPECT_EQ(true, qpp::isprime(-2));
     EXPECT_EQ(true, qpp::isprime(11));
+    EXPECT_EQ(true, qpp::isprime(-17));
+    EXPECT_EQ(true, qpp::isprime(19));
+    EXPECT_EQ(true, qpp::isprime(127));
     EXPECT_EQ(true, qpp::isprime(541));
     EXPECT_EQ(true, qpp::isprime(-104729));
+    EXPECT_EQ(true, qpp::isprime(10000000019));
 }
 
 TEST(qpp_isprime_test, MixedNonPrimeNumbers)
@@ -201,10 +205,18 @@ TEST(qpp_isprime_test, MixedNonPrimeNumbers)
     EXPECT_EQ(false, qpp::isprime(4));
     EXPECT_EQ(false, qpp::isprime(-4));
     EXPECT_EQ(false, qpp::isprime(110));
-    EXPECT_EQ(false, qpp::isprime(110011));
+    EXPECT_EQ(false, qpp::isprime(-4891));
     EXPECT_EQ(false, qpp::isprime(-13101));
+    EXPECT_EQ(false, qpp::isprime(110011));
+    EXPECT_EQ(false, qpp::isprime(10000000119));
+
+    // Test some Charmichael numbers
+    EXPECT_EQ(false, qpp::isprime(561));
+    EXPECT_EQ(false, qpp::isprime(6601));
+    EXPECT_EQ(false, qpp::isprime(8911));
+    EXPECT_EQ(false, qpp::isprime(41041));
 }
-///// END bool qpp::isprime(bigint n)
+///// END bool qpp::isprime(bigint n, idx k = 80)
 
 ///// BEGIN bigint qpp::lcm(bigint m, bigint n)
 TEST(qpp_lcm_test, NonNegativeNumbers)
@@ -268,6 +280,12 @@ TEST(qpp_modpow_test, PositiveNumbers)
     EXPECT_EQ (0, qpp::modpow(2, 3, 4));
     EXPECT_EQ (34, qpp::modpow(17, 176, 37));
     EXPECT_EQ (4042, qpp::modpow(178373, 9281623, 6217));
+
+    // Test some really large numbers
+    EXPECT_EQ(24502114, qpp::modpow(10000000019, 10000000019, 26527121));
+    EXPECT_EQ(1847779, qpp::modpow(9000000019, 10000000119, 2652711));
+    EXPECT_EQ(1099, qpp::modpow(9000000019, 10000000119, 1980));
+    EXPECT_EQ(1, qpp::modpow(6897998630, 10000000018, 10000000019));
 }
 
 TEST(qpp_modpow_exception_test, ParameterOutOfRange)
@@ -288,6 +306,15 @@ TEST(qpp_modpow_exception_test, ParameterOutOfRange)
     }
 }
 ///// END bigint qpp::modpow(bigint a, bigint n, bigint p)
+
+///// BEGIN bigint qpp::randprime(bigint a, bigint b, idx N = 1000)
+TEST(qpp_randprime_test, AllTests)
+{
+    EXPECT_EQ(true, qpp::isprime(qpp::randprime(0,100)));
+    EXPECT_EQ(true, qpp::isprime(qpp::randprime(100,1000)));
+    EXPECT_EQ(true, qpp::isprime(qpp::randprime(10000,10100)));
+}
+///// END bigint qpp::randprime(bigint a, bigint b, idx N = 1000)
 
 ///// BEGIN std::vector<int> qpp::x2contfrac(double x, idx n, idx cut = 1e5)
 TEST(qpp_x2contfrac_test, AllTests)
