@@ -85,32 +85,6 @@ inline bigint rand(bigint a, bigint b)
 }
 
 /**
-* \brief Generates a random non-negative big integer uniformly distributed in
-* the interval [a, b]
-*
-* \param a Beginning of the interval, belongs to it
-* \param b End of the interval, belongs to it
-* \return Random non-negative big integer uniformly distributed in
-* the interval [a, b]
-*/
-inline ubigint rand(ubigint a, ubigint b)
-{
-    // EXCEPTION CHECKS
-
-    if (a > b)
-        throw qpp::Exception("qpp::rand()", qpp::Exception::Type::OUT_OF_RANGE);
-    // END EXCEPTION CHECKS
-
-    std::uniform_int_distribution<ubigint> uid(a, b);
-
-#ifdef _NO_THREAD_LOCAL_
-    return uid(RandomDevices::get_instance()._rng);
-#else
-    return uid(RandomDevices::get_thread_local_instance()._rng);
-#endif // _NO_THREAD_LOCAL_
-}
-
-/**
 * \brief Generates a random index (idx) uniformly distributed in
 * the interval [a, b]
 *

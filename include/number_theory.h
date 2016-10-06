@@ -333,12 +333,11 @@ inline std::vector<bigint> factors(bigint n)
 
 namespace internal
 {
-//https://programmingpraxis.com/2013/05/28/modular-multiplication-without
-// -overflow/
-// @danaj
-inline ubigint mulmod(ubigint a, ubigint b, ubigint m)
+// answer by @danaj
+// https://programmingpraxis.com/2013/05/28/modular-multiplication-without-overflow/
+inline bigint mulmod(bigint a, bigint b, bigint m)
 {
-    ubigint r = 0;
+    bigint r = 0;
     /* Remove these mods if the caller can ensure a and b are in range */
     a %= m;
     b %= m;
@@ -375,7 +374,7 @@ inline bigint mulmod1(bigint a, bigint b, bigint mod)
     // Return result
     return res % mod;
 }
-}
+} // end namespace internal
 
 /**
 * \brief Fast integer power modulo \a p based on
@@ -437,11 +436,9 @@ inline std::tuple<bigint, bigint, bigint> egcd(bigint m, bigint n)
 
     // END EXCEPTION CHECKS
 
-    bigint a, b, c;
+    bigint a, b, c, q, r;
+    bigint a1 = 0, a2 = 1, b1 =1, b2 = 0;
 
-    bigint q, r, a1, a2, b1, b2;
-
-    a2 = 1, a1 = 0, b2 = 0, b1 = 1;
     while (n)
     {
         q = m / n, r = m - q * n;
@@ -476,7 +473,7 @@ inline bigint modinv(bigint a, bigint p)
 {
     // EXCEPTION CHECKS
 
-    if (a == 0 || p == 0 || a < 0 || p < 0)
+    if (a <= 0 || p <= 0)
         throw Exception("qpp::modinv()", Exception::Type::OUT_OF_RANGE);
 
     bigint x, y;
@@ -485,7 +482,6 @@ inline bigint modinv(bigint a, bigint p)
 
     if (gcd_ap != 1)
         throw Exception("qpp::modinv()", Exception::Type::OUT_OF_RANGE);
-
     // END EXCEPTION CHECKS
 
     return (y > 0) ? y : y + p;
@@ -506,14 +502,14 @@ inline bool isprime(bigint n, idx k = 80)
 
     // EXCEPTION CHECKS
 
-    if (n == 0 or n == 1)
+    if (n < 2)
         throw Exception("qpp::isprime()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
     if (n == 2 || n == 3)
         return true;
 
-//    // perform a Fermat test
+//    // perform a Fermat primality test
     bigint x = rand(2, n - 1);
     if (modpow(x, n - 1, n) != 1)
         return false;
@@ -582,7 +578,7 @@ inline bigint randprime(bigint a, bigint b, idx N = 1000)
                              qpp::Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
-    int i = 0;
+    idx i = 0;
     for (; i < static_cast<bigint>(N); ++i)
     {
         // select a candidate
