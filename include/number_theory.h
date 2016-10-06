@@ -579,7 +579,7 @@ inline bigint randprime(bigint a, bigint b, idx N = 1000)
     // END EXCEPTION CHECKS
 
     idx i = 0;
-    for (; i < static_cast<bigint>(N); ++i)
+    for (; i < N; ++i)
     {
         // select a candidate
         bigint candidate = rand(a, b);
@@ -598,7 +598,7 @@ inline bigint randprime(bigint a, bigint b, idx N = 1000)
             return candidate;
     }
 
-    if (i == static_cast<bigint>(N))
+    if (i == N)
         throw qpp::Exception("qpp::randprime()", "Prime not found!");
 
     return 0; // so we don't get a warning
