@@ -137,27 +137,27 @@ inline double contfrac2x(const std::vector<int>& cf)
 * \brief Greatest common divisor of two integers
 * \see qpp::lcm()
 *
-* \param m Integer
-* \param n Integer
-* \return Greatest common divisor of \a m and \a n
+* \param a Integer
+* \param b Integer
+* \return Greatest common divisor of \a a and \a b
 */
-inline bigint gcd(bigint m, bigint n)
+inline bigint gcd(bigint a, bigint b)
 {
     // EXCEPTION CHECKS
 
-    if (m == 0 && n == 0)
+    if (a == 0 && b == 0)
         throw Exception("qpp::gcd()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
-    if (m == 0 || n == 0)
-        return (std::max(std::abs(m), std::abs(n)));
+    if (a == 0 || b == 0)
+        return (std::max(std::abs(a), std::abs(b)));
 
     bigint result = 1;
-    while (n)
+    while (b)
     {
-        result = n;
-        n = m % result;
-        m = result;
+        result = b;
+        b = a % result;
+        a = result;
     }
 
     return (result > 0) ? result : -result;
@@ -167,21 +167,21 @@ inline bigint gcd(bigint m, bigint n)
 * \brief Greatest common divisor of a list of integers
 * \see qpp::lcm()
 *
-* \param ns List of integers
-* \return Greatest common divisor of all numbers in \a ns
+* \param as List of integers
+* \return Greatest common divisor of all numbers in \a as
 */
-inline bigint gcd(const std::vector<bigint>& ns)
+inline bigint gcd(const std::vector<bigint>& as)
 {
     // EXCEPTION CHECKS
 
-    if (ns.size() == 0)
+    if (as.size() == 0)
         throw Exception("qpp::gcd()", Exception::Type::ZERO_SIZE);
     // END EXCEPTION CHECKS
 
-    bigint result = ns[0]; // convention: gcd({n}) = n
-    for (idx i = 1; i < ns.size(); ++i)
+    bigint result = as[0]; // convention: gcd({a}) = a
+    for (idx i = 1; i < as.size(); ++i)
     {
-        result = gcd(result, ns[i]);
+        result = gcd(result, as[i]);
     }
 
     return (result > 0) ? result : -result;
@@ -191,19 +191,19 @@ inline bigint gcd(const std::vector<bigint>& ns)
 * \brief Least common multiple of two integers
 * \see qpp::gcd()
 *
-* \param m Integer
-* \param n Integer
-* \return Least common multiple of \a m and \a n
+* \param a Integer
+* \param b Integer
+* \return Least common multiple of \a a and \a b
 */
-inline bigint lcm(bigint m, bigint n)
+inline bigint lcm(bigint a, bigint b)
 {
     // EXCEPTION CHECKS
 
-    if (m == 0 && n == 0)
+    if (a == 0 && b == 0)
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
-    bigint result = m * n / gcd(m, n);
+    bigint result = a * b / gcd(a, b);
 
     return (result > 0) ? result : -result;
 }
@@ -212,28 +212,28 @@ inline bigint lcm(bigint m, bigint n)
 * \brief Least common multiple of a list of integers
 * \see qpp::gcd()
 *
-* \param ns List of integers
-* \return Least common multiple of all numbers in \a ns
+* \param as List of integers
+* \return Least common multiple of all numbers in \a as
 */
-inline bigint lcm(const std::vector<bigint>& ns)
+inline bigint lcm(const std::vector<bigint>& as)
 {
     // EXCEPTION CHECKS
 
-    if (ns.size() == 0)
+    if (as.size() == 0)
         throw Exception("qpp::lcm()", Exception::Type::ZERO_SIZE);
 
-    if (ns.size() == 1) // convention: lcm({n}) = n
-        return ns[0];
+    if (as.size() == 1) // convention: lcm({a}) = a
+        return as[0];
 
-    if (std::find(std::begin(ns), std::end(ns), 0) != std::end(ns))
+    if (std::find(std::begin(as), std::end(as), 0) != std::end(as))
         throw Exception("qpp::lcm()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
-    bigint result = ns[0]; // convention: lcm({n}) = n
+    bigint result = as[0]; // convention: lcm({n}) = a
 
-    for (idx i = 1; i < ns.size(); ++i)
+    for (idx i = 1; i < as.size(); ++i)
     {
-        result = lcm(result, ns[i]);
+        result = lcm(result, as[i]);
     }
 
     return (result > 0) ? result : -result;
