@@ -93,10 +93,11 @@ public:
     // one qubit gates
 
     /**
-    * \brief Rotation of \a theta about the 3-dimensional real unit vector \a n
+    * \brief Qubit rotation of \a theta about the
+    * 3-dimensional real (unit) vector \a n
     *
     * \param theta Rotation angle
-    * \param n 3-dimensional real unit vector
+    * \param n 3-dimensional real (unit) vector
     * \return Rotation gate
     */
     cmat Rn(double theta, const std::vector<double>& n) const

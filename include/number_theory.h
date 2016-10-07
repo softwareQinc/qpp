@@ -346,6 +346,8 @@ inline std::vector<bigint> factors(bigint n)
  */
 inline bigint modmul(bigint m, bigint n, bigint p)
 {
+    using ubigint = unsigned long long int;
+
     // EXCEPTION CHECKS
 
     if (p < 1)
@@ -355,7 +357,7 @@ inline bigint modmul(bigint m, bigint n, bigint p)
     if (m == 0 || n == 0)
         return 0;
 
-    unsigned long long um, un, up;
+    ubigint um, un, up;
 
     bool is_positive = true;
     if (m < 0)
@@ -374,14 +376,14 @@ inline bigint modmul(bigint m, bigint n, bigint p)
     if (m < 0 && n < 0)
         is_positive = true;
 
-    up = static_cast<unsigned long long>(p);
+    up = static_cast<ubigint>(p);
     um %= up;
     un %= up;
 
     // the code below is taken from
     // http://stackoverflow.com/a/18680280/3093378
-    unsigned long long res = 0;
-    unsigned long long temp_n;
+    ubigint res = 0;
+    ubigint temp_n;
 
     if (un > um)
         std::swap(un, um);
@@ -389,7 +391,7 @@ inline bigint modmul(bigint m, bigint n, bigint p)
     /* Only needed if un may be >= up */
     if (un >= up)
     {
-        if (up > std::numeric_limits<unsigned long long>::max() / 2u)
+        if (up > std::numeric_limits<ubigint>::max() / 2u)
             un -= up;
         else
             un %= up;
