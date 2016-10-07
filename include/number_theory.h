@@ -295,37 +295,36 @@ inline std::vector<idx> compperm(const std::vector<idx>& perm,
 *
 * \note Runs in \f$\mathcal{O}(\sqrt{n})\f$ time complexity
 *
-* \param n Integer different from 0, 1 or -1
+* \param a Integer different from 0, 1 or -1
 * \return Integer vector containing the factors
 */
-inline std::vector<bigint> factors(bigint n)
+inline std::vector<bigint> factors(bigint a)
 {
     // flip the sign if necessary
-    if (n < 0)
-        n = -n;
+    a = std::abs(a);
 
     // EXCEPTION CHECKS
 
-    if (n == 0 || n == 1)
+    if (a == 0 || a == 1)
         throw Exception("qpp::factors()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
     std::vector<bigint> result;
     bigint d = 2;
 
-    while (n > 1)
+    while (a > 1)
     {
-        while (n % d == 0)
+        while (a % d == 0)
         {
             result.push_back(d);
-            n /= d;
+            a /= d;
         }
         ++d;
-        if (d * d > n) // changes the running time from O(n) to O(sqrt(n))
+        if (d * d > a) // changes the running time from O(a) to O(sqrt(a))
         {
-            if (n > 1)
+            if (a > 1)
             {
-                result.push_back(n);
+                result.push_back(a);
             }
             break;
         }
@@ -337,14 +336,14 @@ inline std::vector<bigint> factors(bigint n)
 /**
  * \brief Modular multiplication without overflow
  *
- * Computes \f$mn \mathrm{ mod } p\f$ without overflow
+ * Computes \f$ab\f$ \f$\mathrm{ mod }\f$ \f$p\f$ without overflow
  *
- * \param m Integer
- * \param n Integer
+ * \param a Integer
+ * \param b Integer
  * \param p Positive integer
- * \return \f$mn \mathrm{ mod } p\f$ avoiding overflow
+ * \return \f$ab\f$ \f$\mathrm{ mod }\f$ \f$p\f$ avoiding overflow
  */
-inline bigint modmul(bigint m, bigint n, bigint p)
+inline bigint modmul(bigint a, bigint b, bigint p)
 {
     using ubigint = unsigned long long int;
 
@@ -354,66 +353,66 @@ inline bigint modmul(bigint m, bigint n, bigint p)
         throw Exception("qpp::modmul()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
-    if (m == 0 || n == 0)
+    if (a == 0 || b == 0)
         return 0;
 
-    ubigint um, un, up;
+    ubigint ua, ub, up;
 
     bool is_positive = true;
-    if (m < 0)
+    if (a < 0)
     {
-        um = -m;
+        ua = -a;
         is_positive = false;
     } else
-        um = m;
-    if (n < 0)
+        ua = a;
+    if (b < 0)
     {
-        un = -n;
+        ub = -b;
         is_positive = false;
     } else
-        un = n;
+        ub = b;
 
-    if (m < 0 && n < 0)
+    if (a < 0 && b < 0)
         is_positive = true;
 
     up = static_cast<ubigint>(p);
-    um %= up;
-    un %= up;
+    ua %= up;
+    ub %= up;
 
     // the code below is taken from
     // http://stackoverflow.com/a/18680280/3093378
     ubigint res = 0;
-    ubigint temp_n;
+    ubigint temp_b;
 
-    if (un > um)
-        std::swap(un, um);
+    if (ub > ua)
+        std::swap(ua, ub);
 
-    /* Only needed if un may be >= up */
-    if (un >= up)
+    /* only needed if un may be >= up */
+    if (ub >= up)
     {
         if (up > std::numeric_limits<ubigint>::max() / 2u)
-            un -= up;
+            ub -= up;
         else
-            un %= up;
+            ub %= up;
     }
 
-    while (um != 0)
+    while (ua != 0)
     {
-        if (um & 1)
+        if (ua & 1)
         {
-            /* Add un to res, modulo p, without overflow */
-            /* Equiv to if (res + un >= p), without overflow */
-            if (un >= up - res)
+            /* add un to res, modulo p, without overflow */
+            /* equiv to if (res + ub >= p), without overflow */
+            if (ub >= up - res)
                 res -= up;
-            res += un;
+            res += ub;
         }
-        um >>= 1;
+        ua >>= 1;
 
-        /* Double b, modulo m */
-        temp_n = un;
-        if (un >= up - un) /* Equiv to if (2 * un >= p), without overflow */
-            temp_n -= up;
-        un += temp_n;
+        /* double b, modulo a */
+        temp_b = ub;
+        if (ub >= up - ub) /* equiv to if (2 * ub >= p), without overflow */
+            temp_b -= up;
+        ub += temp_b;
     }
 
     return is_positive ? static_cast<bigint>(res) :
@@ -426,12 +425,12 @@ inline bigint modmul(bigint m, bigint n, bigint p)
 *
 * \note Uses qpp::modmul() that avoids overflows
 *
-* Computes \f$a^n \mathrm{ mod } p\f$
+* Computes \f$a^n\f$ \f$\mathrm{ mod }\f$ \f$p\f$
 *
 * \param a Non-negative integer
 * \param n Non-negative integer
 * \param p Strictly positive integer
-* \return \f$a^n\mathrm{ mod }p\f$
+* \return \f$a^n\f$ \f$\mathrm{ mod }\f$ \f$p\f$
 */
 inline bigint modpow(bigint a, bigint n, bigint p)
 {
@@ -466,41 +465,41 @@ inline bigint modpow(bigint a, bigint n, bigint p)
  * \brief Extended greatest common divisor of two integers
  * \see qpp::gcd()
  *
- * \param m Integer
- * \param n Integer
- * \return Tuple of: 1. Integer \f$a\f$, 2. Integer \f$b\f$,
+ * \param a Integer
+ * \param b Integer
+ * \return Tuple of: 1. Integer \f$m\f$, 2. Integer \f$n\f$,
  * and 3. Non-negative integer \f$gcd(a, b)\f$ such that
- * \f$am + bn = gcd(a, b)\f$
+ * \f$ma + nb = gcd(a, b)\f$
  */
-inline std::tuple<bigint, bigint, bigint> egcd(bigint m, bigint n)
+inline std::tuple<bigint, bigint, bigint> egcd(bigint a, bigint b)
 {
     // EXCEPTION CHECKS
 
-    if (m == 0 && n == 0)
+    if (a == 0 && b == 0)
         throw Exception("qpp::egcd()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
-    bigint a, b, c, q, r;
-    bigint a1 = 0, a2 = 1, b1 = 1, b2 = 0;
+    bigint m, n, c, q, r;
+    bigint m1 = 0, m2 = 1, n1 = 1, n2 = 0;
 
-    while (n)
+    while (b)
     {
-        q = m / n, r = m - q * n;
-        a = a2 - q * a1, b = b2 - q * b1;
-        m = n, n = r;
-        a2 = a1, a1 = a, b2 = b1, b1 = b;
+        q = a / b, r = a - q * b;
+        m = m2 - q * m1, n = n2 - q * n1;
+        a = b, b = r;
+        m2 = m1, m1 = m, n2 = n1, n1 = n;
     }
-    c = m, a = a2, b = b2;
+    c = a, m = m2, n = n2;
 
     // correct the signs
     if (c < 0)
     {
-        a = -a;
-        b = -b;
+        m = -m;
+        n = -n;
         c = -c;
     }
 
-    return std::make_tuple(a, b, c);
+    return std::make_tuple(m, n, c);
 }
 
 /**
@@ -511,7 +510,7 @@ inline std::tuple<bigint, bigint, bigint> egcd(bigint m, bigint n)
  *
  * \param a Non-negative integer
  * \param p Non-negative integer
- * \return Modular inverse \f$a^{-1}\f$ of \a a mod \a p
+ * \return Modular inverse \f$a^{-1}\f$ \f$\textrm{ mod }\f$ \f$p\f$
  */
 inline bigint modinv(bigint a, bigint p)
 {
@@ -534,60 +533,59 @@ inline bigint modinv(bigint a, bigint p)
 /**
  * \brief Primality test based on the Miller-Rabin's algorithm
  *
- * \param n Integer different from 0, 1 or -1
+ * \param p Integer different from 0, 1 or -1
  * \param k Number of iterations. The probability of a
  * false positive is \f$2^{-k}\f$.
  * \return True if the number is (most-likely) prime, false otherwise
  */
-inline bool isprime(bigint n, idx k = 80)
+inline bool isprime(bigint p, idx k = 80)
 {
-    if (n < 0)
-        n = -n;
+    p = std::abs(p);
 
     // EXCEPTION CHECKS
 
-    if (n < 2)
+    if (p < 2)
         throw Exception("qpp::isprime()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
-    if (n == 2 || n == 3)
+    if (p == 2 || p == 3)
         return true;
 
 //    // perform a Fermat primality test
-    bigint x = rand(2, n - 1);
-    if (modpow(x, n - 1, n) != 1)
+    bigint x = rand(2, p - 1);
+    if (modpow(x, p - 1, p) != 1)
         return false;
 
     // compute u and r
     bigint u = 0, r = 1;
 
     // write n − 1 as 2^u * r
-    for (bigint i = n - 1; i % 2 == 0; ++u, i /= 2);
-    r = (n - 1) / static_cast<bigint>(std::llround(std::pow(2, u)));
+    for (bigint i = p - 1; i % 2 == 0; ++u, i /= 2);
+    r = (p - 1) / static_cast<bigint>(std::llround(std::pow(2, u)));
 
     // repeat k times
     for (idx i = 0; i < k; ++i)
     {
-        // pick a random integer a in the range [2, n − 2]
-        bigint a = rand(2, n - 2);
+        // pick a random integer a in the range [2, p − 2]
+        bigint a = rand(2, p - 2);
 
-        // set z = a^r mod n
-        bigint z = modpow(a, r, n);
+        // set z = a^r mod p
+        bigint z = modpow(a, r, p);
 
-        if (z == 1 || z == n - 1)
+        if (z == 1 || z == p - 1)
             continue;
 
         // repeat u - 1 times
         bool jump = false;
         for (idx j = 0; j < static_cast<idx>(u); ++j)
         {
-            z = (modmul(z, z, n)) % n;
+            z = (modmul(z, z, p)) % p;
             if (z == 1)
             {
                 // composite
                 return false;
             }
-            if (z == n - 1)
+            if (z == p - 1)
             {
                 jump = true;
                 break;

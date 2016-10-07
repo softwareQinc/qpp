@@ -62,3 +62,12 @@
 \form#61:$2^{-k}$
 \form#62:$mn \mathrm{ mod } p$
 \form#63:$ X|j\rangle = |j\oplus 1\rangle>$
+\form#64:$ab \mathrm{ mod } p$
+\form#65:$m$
+\form#66:$n$
+\form#67:$ma + nb = gcd(a, b)$
+\form#68:$ab$
+\form#69:$\mathrm{ mod }$
+\form#70:$p$
+\form#71:$a^n$
+\form#72:$\textrm{ mod }$
