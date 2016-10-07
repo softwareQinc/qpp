@@ -199,12 +199,31 @@ TEST(qpp_Gates_Rn, AllTests)
 /// BEGIN cmat qpp::Gates::Xd(idx D) const
 TEST(qpp_Gates_Xd, AllTests)
 {
-    EXPECT_EQ(gt.Xd(1), Eigen::MatrixXcd::Identity(1, 1));
+    for (idx D = 1; D < 10; ++D)
+    {
+        cmat Xd = gt.Xd(D);
+        for (idx i = 0; i < D; ++i)
+        {
+            ket psi = mket({i}, D);
+            ket res = mket({(i + 1) % D}, D);
+            EXPECT_NEAR(0, norm(res - Xd * psi), 1e-10);
+        }
+    }
 }
 /******************************************************************************/
 /// BEGIN cmat qpp::Gates::Zd(idx D) const
 TEST(qpp_Gates_Zd, AllTests)
 {
-    EXPECT_EQ(gt.Xd(1), Eigen::MatrixXcd::Identity(1, 1));
+    for (idx D = 1; D < 10; ++D)
+    {
+        cmat Zd = gt.Zd(D);
+        cplx oD = omega(D);
+        for (idx i = 0; i < D; ++i)
+        {
+            ket psi = mket({i}, D);
+            ket res = std::pow(oD, i) * psi;
+            EXPECT_NEAR(0, norm(res - Zd * psi), 1e-10);
+        }
+    }
 }
 /******************************************************************************/

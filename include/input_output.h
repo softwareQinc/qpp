@@ -181,7 +181,6 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 * auto mat = load<cmat>("input.bin");
 * \endcode
 *
-* \param A Eigen expression
 * \param fname Output file name
 */
 template<typename Derived>

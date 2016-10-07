@@ -509,7 +509,7 @@ inline std::tuple<bigint, bigint, bigint> egcd(bigint m, bigint n)
  *
  * \note \a a and \a p must be co-prime
  *
- * \param m Non-negative integer
+ * \param a Non-negative integer
  * \param p Non-negative integer
  * \return Modular inverse \f$a^{-1}\f$ of \a a mod \a p
  */
