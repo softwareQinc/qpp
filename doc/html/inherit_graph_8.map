@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="node2" href="$structqpp_1_1is__complex_3_01std_1_1complex_3_01_t_01_4_01_4.html" title="Checks whether the type is a complex number type, specialization for complex types. " alt="" coords="159,5,307,47"/>
-<area shape="rect" id="node3" href="$structqpp_1_1is__iterable_3_01_t_00_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_bed4284c2130360c21138c4443e786da.html" title="Checks whether T is compatible with an STL&#45;like iterable container, specialization for STL&#45;like itera..." alt="" coords="148,71,317,317"/>
-<area shape="rect" id="node4" href="$structqpp_1_1is__matrix__expression_3_01typename_01_eigen_1_1_matrix_base_3_01_derived_01_4_01_4.html" title="Checks whether the type is an Eigen matrix expression, specialization for Eigen matrix expressions..." alt="" coords="131,342,335,398"/>
+<area shape="rect" id="node3" href="$structqpp_1_1is__iterable_3_01_t_00_01to__void_3_01decltype_07std_1_1declval_3_01_t_01_4_07_08_8b9d39a7d62e9cf13651119292b7aa4db.html" title="Checks whether T is compatible with an STL&#45;like iterable container, specialization for STL&#45;like itera..." alt="" coords="143,71,322,171"/>
+<area shape="rect" id="node4" href="$structqpp_1_1is__matrix__expression_3_01typename_01_eigen_1_1_matrix_base_3_01_derived_01_4_01_4.html" title="Checks whether the type is an Eigen matrix expression, specialization for Eigen matrix expressions..." alt="" coords="131,195,335,251"/>
 </map>

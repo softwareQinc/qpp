@@ -7,4 +7,8 @@ using namespace qpp;
 int main()
 {
     std::cout << "Testing..." << std::endl;
+#define DEBUG
+    ERRORLN("Oops");
+#undef DEBUG
+    ERRORLN("Not printed");
 }
