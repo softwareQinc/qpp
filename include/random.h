@@ -297,8 +297,7 @@ inline dmat randn(idx rows, idx cols,
 * \return Random complex matrix
 */
 template<>
-inline cmat randn(idx rows, idx cols,
-                  double mean, double sigma)
+inline cmat randn(idx rows, idx cols, double mean, double sigma)
 {
     // EXCEPTION CHECKS
 

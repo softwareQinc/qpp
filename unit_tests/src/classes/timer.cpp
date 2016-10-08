@@ -57,7 +57,9 @@ TEST(qpp_Timer_get_duration, AllTests)
 }
 /******************************************************************************/
 /// BEGIN void qpp::Timer::tic() noexcept
+///
 ///       double qpp::Timer::tics() const noexcept
+///
 ///       double qpp::Timer::toc() const noexcept
 TEST(qpp_Timer_tic_tics_toc, AllTests)
 {

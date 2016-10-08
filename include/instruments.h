@@ -590,7 +590,6 @@ measure(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-
 measure(const Eigen::MatrixBase<Derived>& A,
         const cmat& V,
         const std::vector<idx>& subsys,
@@ -710,7 +709,6 @@ measure(const Eigen::MatrixBase<Derived>& A,
 */
 template<typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-
 measure(const Eigen::MatrixBase<Derived>& A,
         const cmat& V,
         const std::vector<idx>& subsys,

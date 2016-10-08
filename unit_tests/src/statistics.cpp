@@ -26,3 +26,73 @@ using namespace qpp;
 // Unit testing <statistics.h>
 
 /******************************************************************************/
+/// BEGIN template<typename Container> double qpp::avg(
+///       const std::vector<double>& prob,
+///       const Container& X,
+///       typename std::enable_if<is_iterable<Container>::value>::type*
+///       = nullptr)
+TEST(qpp_avg, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Container> double qpp::cor(
+///       const dmat& probXY,
+///       const Container& X,
+///       const Container& Y,
+///       typename std::enable_if<is_iterable<Container>::value>::type*
+///       = nullptr)
+TEST(qpp_cor, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Container> double qpp::cov(
+///       const dmat& probXY,
+///       const Container& X,
+///       const Container& Y,
+///       typename std::enable_if<is_iterable<Container>::value>::type*
+///       = nullptr)
+TEST(qpp_cov, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline std::vector<double> qpp::marginalX(const dmat& probXY)
+TEST(qpp_marginalX, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline std::vector<double> qpp::marginalY(const dmat& probXY)
+TEST(qpp_marginalY, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Container> double qpp::sigma(
+///       const std::vector<double>& prob,
+///       const Container& X,
+///       typename std::enable_if<is_iterable<Container>::value>::type*
+///       = nullptr)
+TEST(qpp_sigma, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline std::vector<double> qpp::uniform(idx N)
+TEST(qpp_uniform, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Container> double qpp::var(
+///       const std::vector<double>& prob,
+///       const Container& X,
+///       typename std::enable_if<is_iterable<Container>::value>::type*
+///       = nullptr)
+TEST(qpp_var, AllTests)
+{
+
+}
+/******************************************************************************/

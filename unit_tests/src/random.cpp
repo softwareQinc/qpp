@@ -26,3 +26,99 @@ using namespace qpp;
 // Unit testing <random.h>
 
 /******************************************************************************/
+/// BEGIN inline bigint qpp::rand(bigint a, bigint b)
+TEST(qpp_rand_integer, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline double qpp::rand(double a, double b)
+TEST(qpp_rand_double, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<> inline cmat qpp::rand(
+///       idx rows, idx cols, double a, double b)
+TEST(qpp_rand_cmat, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<> inline dmat qpp::rand(
+///       idx rows, idx cols, double a, double b)
+TEST(qpp_rand_dmat, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline cmat qpp::randH(idx D)
+TEST(qpp_randH, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline idx qpp::randidx(
+///       idx a = std::numeric_limits<idx>::min(),
+///       idx b = std::numeric_limits<idx>::max())
+TEST(qpp_randidx, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline ket qpp::randket(idx D)
+TEST(qpp_randket, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline std::vector<cmat> qpp::randkraus(idx N, idx D)
+TEST(qpp_randkraus, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline double qpp::randn(double mean = 0, double sigma = 1)
+TEST(qpp_randn_double, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<> inline cmat qpp::randn(
+///       idx rows, idx cols, double mean, double sigma)
+TEST(qpp_randn_cmat, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<> inline dmat qpp::randn(
+///       idx rows, idx cols, double mean, double sigma)
+TEST(qpp_randn_dmat, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline std::vector<idx> qpp::randperm(idx n)
+TEST(qpp_randperm, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline cmat qpp::randrho(idx D)
+TEST(qpp_randrho, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline cmat qpp::randU(idx D)
+TEST(qpp_randU, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline cmat qpp::randV(idx Din, idx Dout)
+TEST(qpp_randV, AllTests)
+{
+
+}
+/******************************************************************************/

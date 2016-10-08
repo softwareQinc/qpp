@@ -26,3 +26,13 @@ using namespace qpp;
 // Unit testing <input_output.h>
 
 /******************************************************************************/
+/// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
+///       qpp::load(const std::string& fname)
+///
+///       template<typename Derived> void qpp::save(
+///       const Eigen::MatrixBase<Derived>& A, const std::string& fname)
+TEST(qpp_load_save, AllTests)
+{
+
+}
+/******************************************************************************/

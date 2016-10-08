@@ -27,6 +27,55 @@ using namespace qpp;
 
 /******************************************************************************/
 /// BEGIN template<typename Derived1, typename Derived2>
+///       dyn_mat<typename Derived1::Scalar> qpp::apply(
+///       const Eigen::MatrixBase<Derived1>& state,
+///       const Eigen::MatrixBase<Derived2>& A,
+///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& dims)
+TEST(qpp_apply, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived1, typename Derived2>
+///       dyn_mat<typename Derived1::Scalar> qpp::apply(
+///       const Eigen::MatrixBase<Derived1>& state,
+///       const Eigen::MatrixBase<Derived2>& A,
+///       const std::vector<idx>& subsys,
+///       idx d = 2)
+TEST(qpp_apply_qubits, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> cmat qpp::apply(
+///       const Eigen::MatrixBase<Derived>& rho, const std::vector<cmat>& Ks)
+TEST(qpp_apply_full_kraus, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> cmat qpp::apply(
+///       const Eigen::MatrixBase<Derived>& rho,
+///       const std::vector<cmat>& Ks,
+///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& dims)
+TEST(qpp_apply_kraus, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> cmat qpp::apply(
+///       const Eigen::MatrixBase<Derived>& rho,
+///       const std::vector<cmat>& Ks,
+///       const std::vector<idx>& subsys,
+///       idx d = 2)
+TEST(qpp_apply_kraus_qubits, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived1, typename Derived2>
 ///       dyn_mat<typename Derived1::Scalar> qpp::applyCTRL(
 ///       const Eigen::MatrixBase<Derived1>& state,
 ///       const Eigen::MatrixBase<Derived2>& A,
@@ -97,5 +146,117 @@ TEST(qpp_applyCTRL, EmptyControl)
 
     double res = norm(result_psi - result_rho);
     EXPECT_NEAR (0, res, 1e-10);
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived1, typename Derived2>
+///       dyn_mat<typename Derived1::Scalar> qpp::applyCTRL(
+///       const Eigen::MatrixBase<Derived1>& state,
+///       const Eigen::MatrixBase<Derived2>& A,
+///       const std::vector<idx>& ctrl,
+///       const std::vector<idx>& subsys,
+///       idx d = 2)
+TEST(qpp_applyCTRL_qubits, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline std::vector<cmat> qpp::choi2kraus(const cmat& A)
+TEST(qpp_choi2kraus, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline cmat qpp::choi2super(const cmat& A)
+TEST(qpp_choi2super, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline cmat qpp::kraus2choi(const std::vector<cmat>& Ks)
+TEST(qpp_kraus2choi, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline cmat qpp::kraus2super(const std::vector<cmat>& Ks)
+TEST(qpp_kraus2super, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
+///       qpp::ptrace(const Eigen::MatrixBase<Derived>& A,
+///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& dims)
+TEST(qpp_ptrace, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
+///       qpp::ptrace(const Eigen::MatrixBase<Derived>& A,
+///       const std::vector<idx>& subsys,
+///       idx d = 2)
+TEST(qpp_ptrace_qubits, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
+///       qpp::ptrace1(const Eigen::MatrixBase<Derived>& A,
+///       const std::vector<idx>& dims)
+TEST(qpp_ptrace1, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
+///       qpp::ptrace2(const Eigen::MatrixBase<Derived>& A,
+///       const std::vector<idx>& dims)
+TEST(qpp_ptrace2, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
+///       qpp::ptranspose(const Eigen::MatrixBase<Derived>& A,
+///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& dims)
+TEST(qpp_ptranspose, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
+///       qpp::ptranspose(const Eigen::MatrixBase<Derived>& A,
+///       const std::vector<idx>& subsys,
+///       idx d = 2)
+TEST(qpp_ptranspose_qubits, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN inline cmat qpp::super2choi(const cmat& A)
+TEST(qpp_super2choi, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
+///       qpp::syspermute(const Eigen::MatrixBase<Derived>& A,
+///       const std::vector<idx>& perm,
+///       const std::vector<idx>& dims)
+TEST(qpp_syspermute, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
+///       qpp::syspermute(const Eigen::MatrixBase<Derived>& A,
+///       const std::vector<idx>& perm,
+///       idx d = 2)
+TEST(qpp_syspermute_qubits, AllTests)
+{
+
 }
 /******************************************************************************/

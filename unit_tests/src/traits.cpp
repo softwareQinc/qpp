@@ -26,3 +26,21 @@ using namespace qpp;
 // Unit testing <traits.h>
 
 /******************************************************************************/
+/// BEGIN template<typename T> struct qpp::is_complex
+TEST(qpp_is_complex, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename T> struct qpp::is_iterable
+TEST(qpp_is_iterable, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename T> struct qpp::is_matrix_expression
+TEST(qpp_is_matrix_expression, AllTests)
+{
+
+}
+/******************************************************************************/

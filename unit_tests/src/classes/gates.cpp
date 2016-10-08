@@ -30,7 +30,8 @@ using namespace qpp;
 ///        qpp::Gates::CTRL(const Eigen::MatrixBase<Derived>& A,
 ///        const std::vector<idx>& ctrl,
 ///        const std::vector<idx>& subsys,
-///        idx n, idx d = 2) const
+///        idx n,
+///        idx d = 2) const
 TEST(qpp_Gates_CTRL, Qubits)
 {
     // CNOT control-target on 2 qubits
@@ -122,7 +123,8 @@ TEST(qpp_Gates_CTRL, Qudits)
 /******************************************************************************/
 /// BEGIN template<typename Derived>
 ///       dyn_mat<typename Derived::Scalar> qpp::Gates::expandout(
-///       const Eigen::MatrixBase<Derived>& A, idx pos,
+///       const Eigen::MatrixBase<Derived>& A,
+///       idx pos,
 ///       const std::vector<idx>& dims) const
 TEST(qpp_Gates_expandout, AllTests)
 {

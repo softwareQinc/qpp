@@ -273,9 +273,7 @@ double norm(const Eigen::MatrixBase<Derived>& A)
 * and 2. Eigenvectors of \a A, as columns of a complex dynamic matrix
 */
 template<typename Derived>
-std::pair<dyn_col_vect < cplx>, cmat>
-
-eig(const Eigen::MatrixBase<Derived>& A)
+std::pair<dyn_col_vect<cplx>, cmat> eig(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
@@ -358,9 +356,7 @@ cmat evects(const Eigen::MatrixBase<Derived>& A)
 * and 2. Eigenvectors of \a A, as columns of a complex dynamic matrix
 */
 template<typename Derived>
-std::pair<dyn_col_vect < double>, cmat>
-
-heig(const Eigen::MatrixBase<Derived>& A)
+std::pair<dyn_col_vect<double>, cmat> heig(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
@@ -443,8 +439,7 @@ cmat hevects(const Eigen::MatrixBase<Derived>& A)
 * as columns of a complex dynamic matrix
 */
 template<typename Derived>
-std::tuple<cmat, dyn_col_vect < double>, cmat>
-
+std::tuple<cmat, dyn_col_vect<double>, cmat>
 svd(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
@@ -600,10 +595,10 @@ cmat sqrtm(const Eigen::MatrixBase<Derived>& A)
 }
 
 /**
-* \brief Matrix absolut value
+* \brief Matrix absolute value
 *
 * \param A Eigen expression
-* \return Matrix absolut value of \a A
+* \return Matrix absolute value of \a A
 */
 template<typename Derived>
 cmat absm(const Eigen::MatrixBase<Derived>& A)
@@ -1638,7 +1633,7 @@ inline cmat mprj(const std::vector<idx>& mask, idx d = 2)
 
 * \param first Iterator to the first element of the range
 * \param last  Iterator to the last element of the range
-* \return Real vector consisting of the range absolut values squared
+* \return Real vector consisting of the range absolute values squared
 */
 template<typename InputIterator>
 std::vector<double> abssq(InputIterator first, InputIterator last)
@@ -1657,7 +1652,7 @@ std::vector<double> abssq(InputIterator first, InputIterator last)
 * \brief Computes the absolute values squared of an STL-like container
 *
 * \param c STL-like container
-* \return Real vector consisting of the container's absolut values squared
+* \return Real vector consisting of the container's absolute values squared
 */
 template<typename Container>
 std::vector<double> abssq(const Container& c,
@@ -1678,7 +1673,7 @@ std::vector<double> abssq(const Container& c,
 * \brief Computes the absolute values squared of an Eigen expression
 
 * \param A Eigen expression
-* \return Real vector consisting of the absolut values squared
+* \return Real vector consisting of the absolute values squared
 */
 template<typename Derived>
 std::vector<double> abssq(const Eigen::MatrixBase<Derived>& A)
