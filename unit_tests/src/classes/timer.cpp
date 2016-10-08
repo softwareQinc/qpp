@@ -26,7 +26,7 @@
 
 using namespace qpp;
 
-// Write your unit tests here. Some examples are provided below.
+// Unit testing <classes/timer.h>
 
 // All test below test std::chrono::steady_clock timers,
 // i.e Timer<T, CLOCK_T = std::chrono::steady_clock>

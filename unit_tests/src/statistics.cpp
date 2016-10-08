@@ -23,6 +23,6 @@
 #include <qpp.h>
 using namespace qpp;
 
-// Write your unit tests here. Some examples are provided below.
+// Unit testing <statistics.h>
 
 /******************************************************************************/

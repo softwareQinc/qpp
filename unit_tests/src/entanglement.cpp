@@ -23,6 +23,69 @@
 #include <qpp.h>
 using namespace qpp;
 
-// Write your unit tests here. Some examples are provided below.
+// Unit testing <entanglement.h>
 
+/******************************************************************************/
+/// BEGIN template<typename Derived> double qpp::concurrence(
+///       const Eigen::MatrixBase<Derived>& A)
+TEST(qpp_concurrence_test, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> double qpp::entanglement(
+///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
+TEST(qpp_entanglement_test, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> double qpp::gconcurrence(
+///       const Eigen::MatrixBase<Derived>& A)
+TEST(qpp_gconcurrence_test, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> double qpp::lognegativity(
+///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
+TEST(qpp_lognegativity_test, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> double qpp::negativity(
+///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
+TEST(qpp_negativity_test, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> cmat qpp::schmidtA(
+///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
+TEST(qpp_schmidtA_test, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> cmat qpp::schmidtB(
+///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
+TEST(qpp_schmidtB_test, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> dyn_col_vect<double> qpp::schmidtcoeffs(
+///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
+TEST(qpp_schmidtcoeffs_test, AllTests)
+{
+
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> std::vector<double> qpp::schmidtprobs(
+///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
+TEST(qpp_schmidtprobs, AllTests)
+{
+
+}
 /******************************************************************************/

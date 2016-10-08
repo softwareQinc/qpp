@@ -23,7 +23,7 @@
 #include <qpp.h>
 using namespace qpp;
 
-// Write your unit tests here. Some examples are provided below.
+// Unit testing <classes/gates.h>
 
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>

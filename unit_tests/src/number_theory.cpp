@@ -23,7 +23,7 @@
 #include <qpp.h>
 using namespace qpp;
 
-// Write your unit tests here. Some examples are provided below.
+// Unit testing <number_theory.h>
 
 /******************************************************************************/
 /// BEGIN std::vector<idx> qpp::compperm(const std::vector<idx>& perm,

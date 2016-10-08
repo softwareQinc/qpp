@@ -233,8 +233,8 @@ double entanglement(const Eigen::MatrixBase<Derived>& A,
 * \param A Eigen expression
 * \return G-concurrence
 */
-template<typename Derived>
 // the G-concurrence
+template<typename Derived>
 double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();

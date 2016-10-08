@@ -23,12 +23,12 @@
 #include <qpp.h>
 using namespace qpp;
 
-// Write your unit tests here. Some examples are provided below.
+// Unit testing <functions.h>
 
 /******************************************************************************/
 /// BEGIN template<typename InputIterator>
-/// typename std::iterator_traits<InputIterator>::value_type
-/// qpp::prod(InputIterator first, InputIterator last)
+///       typename std::iterator_traits<InputIterator>::value_type
+///       qpp::prod(InputIterator first, InputIterator last)
 TEST(qpp_prod_test, PositiveNumbers)
 {
     std::vector<int> v{1, 2, 3, 4};
@@ -36,8 +36,8 @@ TEST(qpp_prod_test, PositiveNumbers)
 }
 /******************************************************************************/
 /// BEGIN template<typename InputIterator>
-/// typename std::iterator_traits<InputIterator>::value_type
-/// qpp::sum(InputIterator first, InputIterator last)
+///       typename std::iterator_traits<InputIterator>::value_type
+///       qpp::sum(InputIterator first, InputIterator last)
 TEST(qpp_sum_test, PositiveNumbers)
 {
     std::vector<int> v{0, 1, 2, 3};
