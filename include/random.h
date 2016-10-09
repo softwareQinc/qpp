@@ -51,11 +51,11 @@ inline double rand(double a, double b)
 
     std::uniform_real_distribution<> ud(a, b);
 
-#ifdef _NO_THREAD_LOCAL_
+#ifdef NO_THREAD_LOCAL_
     return ud(RandomDevices::get_instance()._rng);
 #else
     return ud(RandomDevices::get_thread_local_instance()._rng);
-#endif // _NO_THREAD_LOCAL_
+#endif // NO_THREAD_LOCAL_
 }
 
 /**
@@ -77,11 +77,11 @@ inline bigint rand(bigint a, bigint b)
 
     std::uniform_int_distribution<bigint> uid(a, b);
 
-#ifdef _NO_THREAD_LOCAL_
+#ifdef NO_THREAD_LOCAL_
     return uid(RandomDevices::get_instance()._rng);
 #else
     return uid(RandomDevices::get_thread_local_instance()._rng);
-#endif // _NO_THREAD_LOCAL_
+#endif // NO_THREAD_LOCAL_
 }
 
 /**
@@ -104,11 +104,11 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
 
     std::uniform_int_distribution<idx> uid(a, b);
 
-#ifdef _NO_THREAD_LOCAL_
+#ifdef NO_THREAD_LOCAL_
     return uid(RandomDevices::get_instance()._rng);
 #else
     return uid(RandomDevices::get_thread_local_instance()._rng);
-#endif // _NO_THREAD_LOCAL_
+#endif // NO_THREAD_LOCAL_
 }
 
 /**
@@ -267,11 +267,11 @@ inline dmat randn(idx rows, idx cols,
     return dmat::Zero(rows, cols).unaryExpr(
             [&nd](double)
             {
-#ifdef _NO_THREAD_LOCAL_
+#ifdef NO_THREAD_LOCAL_
                 return nd(RandomDevices::get_instance()._rng);
 #else
                 return nd(RandomDevices::get_thread_local_instance()._rng);
-#endif // _NO_THREAD_LOCAL_
+#endif // NO_THREAD_LOCAL_
             });
 }
 
@@ -321,11 +321,11 @@ inline double randn(double mean = 0, double sigma = 1)
 {
     std::normal_distribution<> nd(mean, sigma);
 
-#ifdef _NO_THREAD_LOCAL_
+#ifdef NO_THREAD_LOCAL_
     return nd(RandomDevices::get_instance()._rng);
 #else
     return nd(RandomDevices::get_thread_local_instance()._rng);
-#endif // _NO_THREAD_LOCAL_
+#endif // NO_THREAD_LOCAL_
 }
 
 /**
@@ -405,9 +405,9 @@ inline std::vector<cmat> randkraus(idx N, idx D)
     cmat Fk(D, D);
     cmat U = randU(N * D);
 
-#ifdef _WITH_OPENMP_
+#ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(3)
-#endif
+#endif // WITH_OPENMP_
     for (idx k = 0; k < N; ++k)
         for (idx a = 0; a < D; ++a)
             for (idx b = 0; b < D; ++b)
@@ -503,14 +503,14 @@ inline std::vector<idx> randperm(idx N)
     // fill in increasing order
     std::iota(std::begin(result), std::end(result), 0);
     // shuffle
-#ifdef _NO_THREAD_LOCAL_
+#ifdef NO_THREAD_LOCAL_
     std::shuffle(std::begin(result), std::end(result),
                  RandomDevices::get_instance()._rng);
 #else
     std::shuffle(std::begin(result), std::end(result),
                  RandomDevices::get_thread_local_instance()._rng);
 
-#endif // _NO_THREAD_LOCAL_
+#endif // NO_THREAD_LOCAL_
 
     return result;
 }

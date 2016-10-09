@@ -35,11 +35,11 @@ namespace internal
 // implementation details
 namespace _details
 {
-struct _Display_Impl
+struct Display_Impl_
 {
     template<typename T>
     // T must support rows(), cols(), operator()(idx, idx)
-    std::ostream& _display_impl(const T& _A,
+    std::ostream& _display_impl(const T& A,
                                 std::ostream& _os,
                                 double _chop = qpp::chop) const
     {
@@ -49,18 +49,18 @@ struct _Display_Impl
         std::vector<std::string> vstr;
         std::string strA;
 
-        for (idx i = 0; i < static_cast<idx>(_A.rows()); ++i)
+        for (idx i = 0; i < static_cast<idx>(A.rows()); ++i)
         {
             for (idx j = 0;
-                 j < static_cast<idx>(_A.cols()); ++j)
+                 j < static_cast<idx>(A.cols()); ++j)
             {
                 strA.clear(); // clear the temporary string
                 ostr.clear();
                 ostr.str(std::string {}); // clear the ostringstream
 
                 // convert to complex
-                double re = static_cast<cplx>(_A(i, j)).real();
-                double im = static_cast<cplx>(_A(i, j)).imag();
+                double re = static_cast<cplx>(A(i, j)).real();
+                double im = static_cast<cplx>(A(i, j)).imag();
 
                 if (std::abs(re) < _chop && std::abs(im) < _chop)
                 {
@@ -93,27 +93,27 @@ struct _Display_Impl
         }
 
         // determine the maximum lenght of the entries in each column
-        std::vector<idx> maxlengthcols(_A.cols(), 0);
+        std::vector<idx> maxlengthcols(A.cols(), 0);
 
-        for (idx i = 0; i < static_cast<idx>(_A.rows());
+        for (idx i = 0; i < static_cast<idx>(A.rows());
              ++i)
             for (idx j = 0;
-                 j < static_cast<idx>(_A.cols()); ++j)
-                if (vstr[i * _A.cols() + j].size() > maxlengthcols[j])
-                    maxlengthcols[j] = vstr[i * _A.cols() + j].size();
+                 j < static_cast<idx>(A.cols()); ++j)
+                if (vstr[i * A.cols() + j].size() > maxlengthcols[j])
+                    maxlengthcols[j] = vstr[i * A.cols() + j].size();
 
         // finally display it!
-        for (idx i = 0; i < static_cast<idx>(_A.rows()); ++i)
+        for (idx i = 0; i < static_cast<idx>(A.rows()); ++i)
         {
             _os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
-                << vstr[i * _A.cols()]; // display first column
+                << vstr[i * A.cols()]; // display first column
             // then the rest
             for (idx j = 1;
-                 j < static_cast<idx>(_A.cols()); ++j)
+                 j < static_cast<idx>(A.cols()); ++j)
                 _os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
-                    << std::right << vstr[i * _A.cols() + j];
+                    << std::right << vstr[i * A.cols() + j];
 
-            if (i < static_cast<idx>(_A.rows()) - 1)
+            if (i < static_cast<idx>(A.rows()) - 1)
                 _os << std::endl;
         }
 
@@ -173,7 +173,7 @@ template<typename PointerType>
 class IOManipPointer : public IDisplay
 {
     const PointerType* _p;
-    idx _N;
+    idx N_;
     std::string _separator, _start, _end;
 public:
     explicit IOManipPointer(const PointerType* p, idx N,
@@ -181,7 +181,7 @@ public:
                             const std::string& start = "[",
                             const std::string& end = "]") :
             _p{p},
-            _N{N},
+            N_{N},
             _separator{separator},
             _start{start},
             _end{end}
@@ -198,10 +198,10 @@ private:
     {
         os << _start;
 
-        for (idx i = 0; i < _N - 1; ++i)
+        for (idx i = 0; i < N_ - 1; ++i)
             os << _p[i] << _separator;
-        if (_N > 0)
-            os << _p[_N - 1];
+        if (N_ > 0)
+            os << _p[N_ - 1];
 
         os << _end;
 
@@ -209,32 +209,32 @@ private:
     }
 }; // class IOManipPointer
 
-class IOManipEigen : public IDisplay, private _details::_Display_Impl
+class IOManipEigen : public IDisplay, private _details::Display_Impl_
 {
-    cmat _A;
+    cmat A_;
     double _chop;
 public:
     // Eigen matrices
     template<typename Derived>
     explicit IOManipEigen(const Eigen::MatrixBase<Derived>& A,
                           double chop = qpp::chop) :
-            _A{A.template cast<cplx>()}, // copy, so we can bind rvalues safely
+            A_{A.template cast<cplx>()}, // copy, so we can bind rvalues safely
             _chop{chop}
     {
     }
 
     // Complex numbers
     explicit IOManipEigen(const cplx z, double chop = qpp::chop) :
-            _A{cmat::Zero(1, 1)}, _chop{chop}
+            A_{cmat::Zero(1, 1)}, _chop{chop}
     {
         // put the complex number inside an Eigen matrix
-        _A(0, 0) = z;
+        A_(0, 0) = z;
     }
 
 private:
     std::ostream& display(std::ostream& os) const override
     {
-        return _display_impl(_A, os, chop);
+        return _display_impl(A_, os, chop);
     }
 }; // class IOManipEigen
 

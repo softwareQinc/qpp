@@ -163,9 +163,9 @@ dyn_col_vect<typename Derived::Scalar> ip(
     }; /* end worker */
 
     dyn_col_vect<typename Derived::Scalar> result(Dsubsys_bar);
-#ifdef _WITH_OPENMP_
+#ifdef WITH_OPENMP_
 #pragma omp parallel for
-#endif
+#endif // WITH_OPENMP_
     for (idx m = 0; m < Dsubsys_bar; ++m)
         result(m) = worker(m);
 
@@ -640,9 +640,9 @@ measure(const Eigen::MatrixBase<Derived>& A,
         std::vector<double> prob(M); // probabilities
         std::vector<cmat> outstates(M); // resulting states
 
-#ifdef _WITH_OPENMP_
+#ifdef WITH_OPENMP_
 #pragma omp parallel for
-#endif
+#endif // WITH_OPENMP_
         for (idx i = 0; i < M; ++i)
             outstates[i] = ip(static_cast<const ket&>(V.col(i)),
                               rpsi, subsys, dims);

@@ -36,9 +36,9 @@
 
 // silence bogus warning -Wunused-variable for singletons
 #if (__GNUC__ && !__clang__)
-#define _QPP_UNUSED_  __attribute__ ((unused))
+#define QPP_UNUSED_  __attribute__ ((unused))
 #else
-#define _QPP_UNUSED_ 
+#define QPP_UNUSED_
 #endif
 
 #include <algorithm>
@@ -117,28 +117,28 @@ namespace qpp
 *
 * Additional initializations/cleanups, see the class qpp::Init
 */
-static const Init& init _QPP_UNUSED_ = Init::get_instance();
+static const Init& init QPP_UNUSED_ = Init::get_instance();
 
 /**
 * \brief qpp::Codes const Singleton
 *
 * Initializes the codes, see the class qpp::Codes
 */
-static const Codes& codes _QPP_UNUSED_ = Codes::get_instance();
+static const Codes& codes QPP_UNUSED_ = Codes::get_instance();
 
 /**
 * \brief qpp::Gates const Singleton
 *
 * Initializes the gates, see the class qpp::Gates
 */
-static const Gates& gt _QPP_UNUSED_ = Gates::get_instance();
+static const Gates& gt QPP_UNUSED_ = Gates::get_instance();
 
 /**
 * \brief qpp::States const Singleton
 *
 * Initializes the states, see the class qpp::States
 */
-static const States& st _QPP_UNUSED_ = States::get_instance();
+static const States& st QPP_UNUSED_ = States::get_instance();
 
 /**
 * \brief qpp::RandomDevices Singleton
@@ -148,12 +148,12 @@ static const States& st _QPP_UNUSED_ = States::get_instance();
 * \note Has thread storage duration, due to mutability of its public member
 * std::mt19937 and possible data races
 */
-#ifdef _NO_THREAD_LOCAL_
-static RandomDevices& rdevs _QPP_UNUSED_= RandomDevices::get_instance();
+#ifdef NO_THREAD_LOCAL_
+static RandomDevices& rdevs QPP_UNUSED_= RandomDevices::get_instance();
 #else
-thread_local static RandomDevices& rdevs _QPP_UNUSED_ =
+thread_local static RandomDevices& rdevs QPP_UNUSED_ =
         RandomDevices::get_thread_local_instance();
-#endif // _NO_THREAD_LOCAL_
+#endif // NO_THREAD_LOCAL_
 
 } /* namespace qpp */
 

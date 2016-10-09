@@ -13,4 +13,4 @@ ADD_EXECUTABLE(qpp_testing
         statistics.cpp
         testing_main.cpp
         traits.cpp)
-TARGET_LINK_LIBRARIES(qpp_testing gmock pthread)
+TARGET_LINK_LIBRARIES(qpp_testing gmock)

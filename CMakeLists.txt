@@ -17,13 +17,18 @@
 # You should have received a copy of the GNU General Public License
 # along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.1.3)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0)
 PROJECT(qpp VERSION 0.8.9 LANGUAGES CXX)
 
-#### Use C++11 and disable any compiler extensions
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+#### Use C++11
+IF (CYGWIN)
+    #### cygwin has issues with std=c++11, use std=gnu++11 instead
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
+ELSE ()
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+ENDIF ()
+SET(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra -Weffc++")
+SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
 
 #### CMake support only for GNU gcc and Clang/AppleClang
 #### AppleClang does not support OpenMP; only Clang >= 3.7 supports OpenMP
@@ -32,10 +37,6 @@ IF (NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang"
     MESSAGE(FATAL_ERROR
             "This CMakeLists.txt works only with GNU gcc/Clang/AppleClang")
 ENDIF ()
-
-#### Compiler flags
-SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
-SET(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra -Weffc++")
 
 #### Quantum++ headers
 INCLUDE_DIRECTORIES(include)
@@ -51,7 +52,7 @@ INCLUDE_DIRECTORIES(SYSTEM "$ENV{HOME}/eigen")
 OPTION(WITH_MATLAB "MATLAB support" OFF)
 IF (${WITH_MATLAB})
     #### inject definition (as #define) in the source files
-    ADD_DEFINITIONS(-D_WITH_MATLAB_)
+    ADD_DEFINITIONS(-DWITH_MATLAB_)
     #### modify as needed
     SET(MATLAB "/Applications/MATLAB_R2016a.app")
     INCLUDE_DIRECTORIES(SYSTEM "${MATLAB}/extern/include")
@@ -63,7 +64,7 @@ ENDIF ()
 OPTION(WITH_OPENMP "OpenMP support" ON)
 IF (${WITH_OPENMP})
     #### inject definition (as #define) in the source files
-    ADD_DEFINITIONS(-D_WITH_OPENMP_)
+    ADD_DEFINITIONS(-DWITH_OPENMP_)
     #### GNU gcc
     IF (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
@@ -100,7 +101,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
 #### when using AppleClang as libc++ doesn't yet support it
 IF (${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang")
     #### inject definition (as #define) in the source files
-    ADD_DEFINITIONS(-D_NO_THREAD_LOCAL_)
+    ADD_DEFINITIONS(-DNO_THREAD_LOCAL_)
     MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} \
     ${CMAKE_CXX_COMPILER_VERSION}. thread_local not supported.")
 ENDIF ()

@@ -161,9 +161,9 @@ public:
 
         cmat result(D, D);
 
-#ifdef _WITH_OPENMP_
+#ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
-#endif
+#endif // WITH_OPENMP_
         for (idx j = 0; j < D; ++j) // column major order for speed
             for (idx i = 0; i < D; ++i)
                 result(i, j) = 1 / std::sqrt(static_cast<double>(D))
