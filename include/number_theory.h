@@ -249,7 +249,7 @@ inline std::vector<idx> invperm(const std::vector<idx>& perm)
 {
     // EXCEPTION CHECKS
 
-    if (!internal::_check_perm(perm))
+    if (!internal::check_perm(perm))
         throw Exception("qpp::invperm()", Exception::Type::PERM_INVALID);
     // END EXCEPTION CHECKS
 
@@ -274,9 +274,9 @@ inline std::vector<idx> compperm(const std::vector<idx>& perm,
 {
     // EXCEPTION CHECKS
 
-    if (!internal::_check_perm(perm))
+    if (!internal::check_perm(perm))
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
-    if (!internal::_check_perm(sigma))
+    if (!internal::check_perm(sigma))
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);
     if (perm.size() != sigma.size())
         throw Exception("qpp::compperm()", Exception::Type::PERM_INVALID);

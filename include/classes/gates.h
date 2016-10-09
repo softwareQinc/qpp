@@ -239,11 +239,11 @@ public:
         // EXCEPTION CHECKS
 
         // check matrix zero size
-        if (!internal::_check_nonzero_size(rA))
+        if (!internal::check_nonzero_size(rA))
             throw Exception("qpp::Gates::CTRL()", Exception::Type::ZERO_SIZE);
 
         // check square matrix
-        if (!internal::_check_square_mat(rA))
+        if (!internal::check_square_mat(rA))
             throw Exception("qpp::Gates::CTRL()",
                             Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -273,7 +273,7 @@ public:
 
         // check that ctrl + gate subsystem is valid
         // with respect to local dimensions
-        if (!internal::_check_subsys_match_dims(ctrlgate, dims))
+        if (!internal::check_subsys_match_dims(ctrlgate, dims))
             throw Exception("qpp::Gates::CTRL()",
                             Exception::Type::SUBSYS_MISMATCH_DIMS);
 
@@ -336,7 +336,7 @@ public:
         for (idx i = 0; i < Dsubsys_bar; ++i)
         {
             // get the complement row multi-index
-            internal::_n2multiidx(i, Nsubsys_bar, Cdims_bar, midx_bar);
+            internal::n2multiidx(i, Nsubsys_bar, Cdims_bar, midx_bar);
             for (idx k = 0; k < d; ++k)
             {
                 Ak = powm(rA, k); // compute rA^k
@@ -344,7 +344,7 @@ public:
                 for (idx a = 0; a < DA; ++a)
                 {
                     // get the subsys row multi-index
-                    internal::_n2multiidx(a, Ngate, CdimsA, midxA_row);
+                    internal::n2multiidx(a, Ngate, CdimsA, midxA_row);
 
                     // construct the result row multi-index
 
@@ -365,15 +365,15 @@ public:
                     for (idx b = 0; b < DA; ++b)
                     {
                         // get the subsys column multi-index
-                        internal::_n2multiidx(b, Ngate, CdimsA, midxA_col);
+                        internal::n2multiidx(b, Ngate, CdimsA, midxA_col);
 
                         // construct the result column multi-index
                         for (idx c = 0; c < Ngate; ++c)
                             midx_col[subsys[c]] = midxA_col[c];
 
                         // finally write the values
-                        result(internal::_multiidx2n(midx_row, N, Cdims),
-                               internal::_multiidx2n(midx_col, N, Cdims))
+                        result(internal::multiidx2n(midx_row, N, Cdims),
+                               internal::multiidx2n(midx_col, N, Cdims))
                                 = Ak(a, b);
                     }
                 }
@@ -408,17 +408,17 @@ public:
         // EXCEPTION CHECKS
 
         // check zero-size
-        if (!internal::_check_nonzero_size(rA))
+        if (!internal::check_nonzero_size(rA))
             throw Exception("qpp::Gates::expandout()",
                             Exception::Type::ZERO_SIZE);
 
         // check that dims is a valid dimension vector
-        if (!internal::_check_dims(dims))
+        if (!internal::check_dims(dims))
             throw Exception("qpp::Gates::expandout()",
                             Exception::Type::DIMS_INVALID);
 
         // check square matrix
-        if (!internal::_check_square_mat(rA))
+        if (!internal::check_square_mat(rA))
             throw Exception("qpp::Gates::expandout()",
                             Exception::Type::MATRIX_NOT_SQUARE);
 
@@ -453,9 +453,9 @@ public:
         for (idx i = 0; i < D; ++i)
         {
             // get row multi_index
-            internal::_n2multiidx(i, dims.size(), Cdims, midx_row);
+            internal::n2multiidx(i, dims.size(), Cdims, midx_row);
             // get column multi_index (same as row)
-            internal::_n2multiidx(i, dims.size(), Cdims, midx_col);
+            internal::n2multiidx(i, dims.size(), Cdims, midx_col);
             // run over the gate row multi-index
             for (idx a = 0; a < static_cast<idx>(rA.rows());
                  ++a)
@@ -471,8 +471,8 @@ public:
                     midx_col[pos] = b;
 
                     // finally write the values
-                    result(internal::_multiidx2n(midx_row, dims.size(), Cdims),
-                           internal::_multiidx2n(midx_col, dims.size(), Cdims))
+                    result(internal::multiidx2n(midx_row, dims.size(), Cdims),
+                           internal::multiidx2n(midx_col, dims.size(), Cdims))
                             = rA(a, b);
                 }
             }

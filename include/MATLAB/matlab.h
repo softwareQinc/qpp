@@ -246,7 +246,7 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <dmat>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA))
         throw Exception("qpp::saveMATLABmatrix()", Exception::Type::ZERO_SIZE);
 
     MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
@@ -296,7 +296,7 @@ inline void saveMATLABmatrix(const Eigen::MatrixBase <cmat>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA))
         throw Exception("qpp::saveMATLABmatrix()", Exception::Type::ZERO_SIZE);
 
     // cast the input to a double (internal MATLAB format)

@@ -137,7 +137,7 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA))
         throw Exception("qpp::save()", Exception::Type::ZERO_SIZE);
 
     std::fstream fout;

@@ -47,11 +47,11 @@ double entropy(const Eigen::MatrixBase<Derived>& A)
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA))
         throw Exception("qpp::entropy()", Exception::Type::ZERO_SIZE);
 
     // check square matrix
-    if (!internal::_check_square_mat(rA))
+    if (!internal::check_square_mat(rA))
         throw Exception("qpp::entropy()", Exception::Type::MATRIX_NOT_SQUARE);
     // END EXCEPTION CHECKS
 
@@ -75,7 +75,7 @@ inline double entropy(const std::vector<double>& prob)
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(prob))
+    if (!internal::check_nonzero_size(prob))
         throw Exception("qpp::entropy()", Exception::Type::ZERO_SIZE);
     // END EXCEPTION CHECKS
 
@@ -107,11 +107,11 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA))
         throw Exception("qpp::renyi()", Exception::Type::ZERO_SIZE);
 
     // check square matrix
-    if (!internal::_check_square_mat(rA))
+    if (!internal::check_square_mat(rA))
         throw Exception("qpp::renyi()", Exception::Type::MATRIX_NOT_SQUARE);
 
     if (alpha < 0)
@@ -153,7 +153,7 @@ inline double renyi(const std::vector<double>& prob, double alpha)
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(prob))
+    if (!internal::check_nonzero_size(prob))
         throw Exception("qpp::renyi()", Exception::Type::ZERO_SIZE);
 
     if (alpha < 0)
@@ -204,11 +204,11 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double q)
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA))
         throw Exception("qpp::tsallis()", Exception::Type::ZERO_SIZE);
 
     // check square matrix
-    if (!internal::_check_square_mat(rA))
+    if (!internal::check_square_mat(rA))
         throw Exception("qpp::tsallis()", Exception::Type::MATRIX_NOT_SQUARE);
 
     if (q < 0)
@@ -244,7 +244,7 @@ inline double tsallis(const std::vector<double>& prob, double q)
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(prob))
+    if (!internal::check_nonzero_size(prob))
         throw Exception("qpp::tsallis()", Exception::Type::ZERO_SIZE);
 
     if (q < 0)
@@ -282,26 +282,26 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA))
         throw Exception("qpp::qmutualinfo()", Exception::Type::ZERO_SIZE);
 
     // check that dims is a valid dimension vector
-    if (!internal::_check_dims(dims))
+    if (!internal::check_dims(dims))
         throw Exception("qpp::qmutualinfo()", Exception::Type::DIMS_INVALID);
 
     // check square matrix
-    if (!internal::_check_square_mat(rA))
+    if (!internal::check_square_mat(rA))
         throw Exception("qpp::qmutualinfo()",
                         Exception::Type::MATRIX_NOT_SQUARE);
 
     // check that dims match the dimension of A
-    if (!internal::_check_dims_match_mat(dims, rA))
+    if (!internal::check_dims_match_mat(dims, rA))
         throw Exception("qpp::qmutualinfo()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
 
     // check that subsys are valid
-    if (!internal::_check_subsys_match_dims(subsysA, dims)
-        || !internal::_check_subsys_match_dims(subsysB, dims))
+    if (!internal::check_subsys_match_dims(subsysA, dims)
+        || !internal::check_subsys_match_dims(subsysB, dims))
         throw Exception("qpp::qmutualinfo()",
                         Exception::Type::SUBSYS_MISMATCH_DIMS);
     // END EXCEPTION CHECKS
@@ -356,7 +356,7 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA))
         throw Exception("qpp::qmutualinfo()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
@@ -364,7 +364,7 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::qmutualinfo()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
-    idx N = internal::_get_num_subsys(static_cast<idx>(rA.rows()), d);
+    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
     std::vector<idx> dims(N, d); // local dimensions vector
 
     return qmutualinfo(rA, subsysA, subsysB, dims);

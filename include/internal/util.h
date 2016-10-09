@@ -45,7 +45,7 @@ namespace internal
 
 // integer index to multi-index, use C-style array for speed
 // standard lexicographical order, e.g. 00, 01, 10, 11
-inline void _n2multiidx(idx n, idx numdims, const idx* dims, idx* result)
+inline void n2multiidx(idx n, idx numdims, const idx* dims, idx* result)
 noexcept
 {
     // no error checks to improve speed
@@ -58,7 +58,7 @@ noexcept
 
 // multi-index to integer index, use C-style array for speed,
 // standard lexicographical order, e.g. 00->0, 01->1, 10->2, 11->3
-inline idx _multiidx2n(const idx* midx, idx numdims, const idx* dims)
+inline idx multiidx2n(const idx* midx, idx numdims, const idx* dims)
 noexcept
 {
     // no error checks to improve speed
@@ -81,48 +81,48 @@ noexcept
 
 // check square matrix
 template<typename Derived>
-bool _check_square_mat(const Eigen::MatrixBase<Derived>& A)
+bool check_square_mat(const Eigen::MatrixBase<Derived>& A)
 {
     return A.rows() == A.cols();
 }
 
 // check whether input is a vector or not
 template<typename Derived>
-bool _check_vector(const Eigen::MatrixBase<Derived>& A)
+bool check_vector(const Eigen::MatrixBase<Derived>& A)
 {
     return A.rows() == 1 || A.cols() == 1;
 }
 
 // check whether input is a row vector or not
 template<typename Derived>
-bool _check_rvector(const Eigen::MatrixBase<Derived>& A)
+bool check_rvector(const Eigen::MatrixBase<Derived>& A)
 {
     return A.rows() == 1;
 }
 
 // check whether input is a column vector or not
 template<typename Derived>
-bool _check_cvector(const Eigen::MatrixBase<Derived>& A)
+bool check_cvector(const Eigen::MatrixBase<Derived>& A)
 {
     return A.cols() == 1;
 }
 
 // check non-zero size of object that supports size() function
 template<typename T>
-bool _check_nonzero_size(const T& x) noexcept
+bool check_nonzero_size(const T& x) noexcept
 {
     return x.size() != 0;
 }
 
 // check that all sizes match
 template<typename T1, typename T2>
-bool _check_matching_sizes(const T1& lhs, const T2& rhs) noexcept
+bool check_matching_sizes(const T1& lhs, const T2& rhs) noexcept
 {
     return lhs.size() == rhs.size();
 }
 
 // check that dims is a valid dimension vector
-inline bool _check_dims(const std::vector<idx>& dims)
+inline bool check_dims(const std::vector<idx>& dims)
 {
     if (dims.size() == 0)
         return false;
@@ -138,7 +138,7 @@ inline bool _check_dims(const std::vector<idx>& dims)
 // check that valid dims match the dimensions
 // of valid (non-zero sized) square matrix
 template<typename Derived>
-bool _check_dims_match_mat(const std::vector<idx>& dims,
+bool check_dims_match_mat(const std::vector<idx>& dims,
                            const Eigen::MatrixBase<Derived>& A)
 {
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
@@ -149,7 +149,7 @@ bool _check_dims_match_mat(const std::vector<idx>& dims,
 
 // check that valid dims match the dimensions of valid column vector
 template<typename Derived>
-bool _check_dims_match_cvect(const std::vector<idx>& dims,
+bool check_dims_match_cvect(const std::vector<idx>& dims,
                              const Eigen::MatrixBase<Derived>& V)
 {
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
@@ -160,7 +160,7 @@ bool _check_dims_match_cvect(const std::vector<idx>& dims,
 
 // check that valid dims match the dimensions of valid row vector
 template<typename Derived>
-bool _check_dims_match_rvect(const std::vector<idx>& dims,
+bool check_dims_match_rvect(const std::vector<idx>& dims,
                              const Eigen::MatrixBase<Derived>& V)
 {
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
@@ -170,7 +170,7 @@ bool _check_dims_match_rvect(const std::vector<idx>& dims,
 }
 
 // check that all elements in valid dims equal to dim
-inline bool _check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept
+inline bool check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept
 {
     for (idx i : dims)
         if (i != dim)
@@ -180,7 +180,7 @@ inline bool _check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept
 }
 
 // check that subsys is valid with respect to valid dims
-inline bool _check_subsys_match_dims(const std::vector<idx>& subsys,
+inline bool check_subsys_match_dims(const std::vector<idx>& subsys,
                                      const std::vector<idx>& dims)
 {
     //	// check non-zero sized subsystems
@@ -210,28 +210,28 @@ inline bool _check_subsys_match_dims(const std::vector<idx>& subsys,
 
 // check matrix is 2 x 2
 template<typename Derived>
-bool _check_qubit_matrix(const Eigen::MatrixBase<Derived>& A) noexcept
+bool check_qubit_matrix(const Eigen::MatrixBase<Derived>& A) noexcept
 {
     return A.rows() == 2 && A.cols() == 2;
 }
 
 // check column vector is 2 x 1
 template<typename Derived>
-bool _check_qubit_cvector(const Eigen::MatrixBase<Derived>& V) noexcept
+bool check_qubit_cvector(const Eigen::MatrixBase<Derived>& V) noexcept
 {
     return V.rows() == 2 && V.cols() == 1;
 }
 
 // check row vector is 1 x 2
 template<typename Derived>
-bool _check_qubit_rvector(const Eigen::MatrixBase<Derived>& V) noexcept
+bool check_qubit_rvector(const Eigen::MatrixBase<Derived>& V) noexcept
 {
     return V.rows() == 1 && V.cols() == 2;
 }
 
 // check row vector is 1 x 2 or 2 x 1
 template<typename Derived>
-bool _check_qubit_vector(const Eigen::MatrixBase<Derived>& V) noexcept
+bool check_qubit_vector(const Eigen::MatrixBase<Derived>& V) noexcept
 {
     return (V.rows() == 1 && V.cols() == 2) ||
            (V.rows() == 2 && V.cols() == 1);
@@ -239,7 +239,7 @@ bool _check_qubit_vector(const Eigen::MatrixBase<Derived>& V) noexcept
 
 
 // check valid permutation
-inline bool _check_perm(const std::vector<idx>& perm)
+inline bool check_perm(const std::vector<idx>& perm)
 {
     if (perm.size() == 0)
         return false;
@@ -254,7 +254,7 @@ inline bool _check_perm(const std::vector<idx>& perm)
 // Kronecker product of 2 matrices, preserve return type
 // internal function for the variadic template function wrapper kron()
 template<typename Derived1, typename Derived2>
-dyn_mat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
+dyn_mat<typename Derived1::Scalar> kron2(const Eigen::MatrixBase<Derived1>& A,
                                           const Eigen::MatrixBase<Derived2>& B)
 {
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
@@ -268,11 +268,11 @@ dyn_mat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
         throw Exception("qpp::kron()", Exception::Type::TYPE_MISMATCH);
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA))
         throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rB))
+    if (!internal::check_nonzero_size(rB))
         throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
     // END EXCEPTION CHECKS
 
@@ -297,7 +297,7 @@ dyn_mat<typename Derived1::Scalar> _kron2(const Eigen::MatrixBase<Derived1>& A,
 // Direct sum of 2 matrices, preserve return type
 // internal function for the variadic template function wrapper dirsum()
 template<typename Derived1, typename Derived2>
-dyn_mat<typename Derived1::Scalar> _dirsum2(
+dyn_mat<typename Derived1::Scalar> dirsum2(
         const Eigen::MatrixBase<Derived1>& A,
         const Eigen::MatrixBase<Derived2>& B)
 {
@@ -312,11 +312,11 @@ dyn_mat<typename Derived1::Scalar> _dirsum2(
         throw Exception("qpp::dirsum()", Exception::Type::TYPE_MISMATCH);
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA))
         throw Exception("qpp::dirsum()", Exception::Type::ZERO_SIZE);
 
     // check zero-size
-    if (!internal::_check_nonzero_size(rB))
+    if (!internal::check_nonzero_size(rB))
         throw Exception("qpp::dirsum()", Exception::Type::ZERO_SIZE);
     // END EXCEPTION CHECKS
 
@@ -352,7 +352,7 @@ void variadic_vector_emplace(std::vector<T>& v, First&& first, Args&& ... args)
 
 // returns the number of subsystems (each subsystem assumed of the same
 // dimension d) from an object (ket/bra/density matrix) of size sz
-inline idx _get_num_subsys(idx sz, idx d)
+inline idx get_num_subsys(idx sz, idx d)
 {
     return static_cast<idx>(std::llround(std::log2(sz) / std::log2(d)));
 }
@@ -360,7 +360,7 @@ inline idx _get_num_subsys(idx sz, idx d)
 // returns the dimension of a subsystem (each subsystem assumed of the same
 // dimension d) from an object (ket/bra/density matrix) of size sz consisting
 // of N subsystems
-inline idx _get_dim_subsys(idx sz, idx N)
+inline idx get_dim_subsys(idx sz, idx N)
 {
     if (N == 2)
         return static_cast<idx>(
