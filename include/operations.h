@@ -127,7 +127,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     }
 
     idx D = static_cast<idx>(rstate.rows()); // total dimension
-    idx n = dims.size();                // total number of subsystems
+    idx N = dims.size();                // total number of subsystems
     idx ctrlsize = ctrl.size();         // number of ctrl subsystem
     idx ctrlgatesize = ctrlgate.size(); // number of ctrl+gate subsystems
     idx subsyssize = subsys.size();     // number of subsystems of the target
@@ -138,25 +138,25 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     idx Cdims[maxn];         // local dimensions
     idx CdimsA[maxn];        // local dimensions
     idx CdimsCTRL[maxn];     // local dimensions
-    idx CdimsCTRLAbar[maxn]; // local dimensions
+    idx CdimsCTRLA_bar[maxn]; // local dimensions
 
     // compute the complementary subsystem of ctrlgate w.r.t. dims
-    std::vector<idx> ctrlgatebar = complement(ctrlgate, n);
+    std::vector<idx> ctrlgate_bar = complement(ctrlgate, N);
     // number of subsystems that are complementary to the ctrl+gate
-    idx ctrlgatebarsize = ctrlgatebar.size();
+    idx ctrlgate_barsize = ctrlgate_bar.size();
 
-    idx DCTRLAbar = 1; // dimension of the rest
-    for (idx i = 0; i < ctrlgatebarsize; ++i)
-        DCTRLAbar *= dims[ctrlgatebar[i]];
+    idx DCTRLA_bar = 1; // dimension of the rest
+    for (idx i = 0; i < ctrlgate_barsize; ++i)
+        DCTRLA_bar *= dims[ctrlgate_bar[i]];
 
-    for (idx k = 0; k < n; ++k)
+    for (idx k = 0; k < N; ++k)
         Cdims[k] = dims[k];
     for (idx k = 0; k < subsyssize; ++k)
         CdimsA[k] = dims[subsys[k]];
     for (idx k = 0; k < ctrlsize; ++k)
         CdimsCTRL[k] = d;
-    for (idx k = 0; k < ctrlgatebarsize; ++k)
-        CdimsCTRLAbar[k] = dims[ctrlgatebar[k]];
+    for (idx k = 0; k < ctrlgate_barsize; ++k)
+        CdimsCTRLA_bar[k] = dims[ctrlgate_bar[k]];
 
     // worker, computes the coefficient and the index for the ket case
     // used in #pragma omp parallel for collapse
@@ -168,7 +168,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
         idx Cmidx[maxn];         // the total multi-index
         idx CmidxA[maxn];        // the gate part multi-index
-        idx CmidxCTRLAbar[maxn]; // the rest multi-index
+        idx CmidxCTRLA_bar[maxn]; // the rest multi-index
 
         // compute the index
 
@@ -179,11 +179,11 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         }
 
         // set the rest
-        internal::_n2multiidx(_r, n - ctrlgatesize,
-                              CdimsCTRLAbar, CmidxCTRLAbar);
-        for (idx k = 0; k < n - ctrlgatesize; ++k)
+        internal::_n2multiidx(_r, N - ctrlgatesize,
+                              CdimsCTRLA_bar, CmidxCTRLA_bar);
+        for (idx k = 0; k < N - ctrlgatesize; ++k)
         {
-            Cmidx[ctrlgatebar[k]] = CmidxCTRLAbar[k];
+            Cmidx[ctrlgate_bar[k]] = CmidxCTRLA_bar[k];
         }
 
         // set the A part
@@ -194,7 +194,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         }
 
         // we now got the total index
-        indx = internal::_multiidx2n(Cmidx, n, Cdims);
+        indx = internal::_multiidx2n(Cmidx, N, Cdims);
 
         // compute the coefficient
         for (idx _n = 0; _n < DA; ++_n)
@@ -205,7 +205,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
                 Cmidx[subsys[k]] = CmidxA[k];
             }
             coeff += Ai[_i](_m, _n) *
-                     rstate(internal::_multiidx2n(Cmidx, n, Cdims));
+                     rstate(internal::_multiidx2n(Cmidx, N, Cdims));
         }
 
         return std::make_pair(coeff, indx);
@@ -228,8 +228,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         idx CmidxAcol[maxn];        // the gate part col multi-index
         idx CmidxCTRLrow[maxn];     // the control row multi-index
         idx CmidxCTRLcol[maxn];     // the control col multi-index
-        idx CmidxCTRLAbarrow[maxn]; // the rest row multi-index
-        idx CmidxCTRLAbarcol[maxn]; // the rest col multi-index
+        idx CmidxCTRLA_barrow[maxn]; // the rest row multi-index
+        idx CmidxCTRLA_barcol[maxn]; // the rest col multi-index
 
         // compute the ket/bra indexes
 
@@ -246,14 +246,14 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         }
 
         // set the rest
-        internal::_n2multiidx(_r1, n - ctrlgatesize,
-                              CdimsCTRLAbar, CmidxCTRLAbarrow);
-        internal::_n2multiidx(_r2, n - ctrlgatesize,
-                              CdimsCTRLAbar, CmidxCTRLAbarcol);
-        for (idx k = 0; k < n - ctrlgatesize; ++k)
+        internal::_n2multiidx(_r1, N - ctrlgatesize,
+                              CdimsCTRLA_bar, CmidxCTRLA_barrow);
+        internal::_n2multiidx(_r2, N - ctrlgatesize,
+                              CdimsCTRLA_bar, CmidxCTRLA_barcol);
+        for (idx k = 0; k < N - ctrlgatesize; ++k)
         {
-            Cmidxrow[ctrlgatebar[k]] = CmidxCTRLAbarrow[k];
-            Cmidxcol[ctrlgatebar[k]] = CmidxCTRLAbarcol[k];
+            Cmidxrow[ctrlgate_bar[k]] = CmidxCTRLA_barrow[k];
+            Cmidxcol[ctrlgate_bar[k]] = CmidxCTRLA_barcol[k];
         }
 
         // set the A part
@@ -266,8 +266,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         }
 
         // we now got the total row/col indexes
-        idxrow = internal::_multiidx2n(Cmidxrow, n, Cdims);
-        idxcol = internal::_multiidx2n(Cmidxcol, n, Cdims);
+        idxrow = internal::_multiidx2n(Cmidxrow, N, Cdims);
+        idxcol = internal::_multiidx2n(Cmidxcol, N, Cdims);
 
         // check whether all CTRL row and col multi indexes are equal
         bool all_ctrl_rows_equal = true;
@@ -308,7 +308,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
             {
                 Cmidxrow[subsys[k]] = CmidxArow[k];
             }
-            idx idxrowtmp = internal::_multiidx2n(Cmidxrow, n, Cdims);
+            idx idxrowtmp = internal::_multiidx2n(Cmidxrow, N, Cdims);
 
             if (all_ctrl_rows_equal)
             {
@@ -334,7 +334,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
                     rhs = (_n2 == _m2) ? 1 : 0; // identity matrix
                 }
 
-                idx idxcoltmp = internal::_multiidx2n(Cmidxcol, n, Cdims);
+                idx idxcoltmp = internal::_multiidx2n(Cmidxcol, N, Cdims);
 
                 coeff += lhs * rstate(idxrowtmp, idxcoltmp) * rhs;
             }
@@ -359,7 +359,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 #pragma omp parallel for collapse(2)
 #endif
         for (idx m = 0; m < DA; ++m)
-            for (idx r = 0; r < DCTRLAbar; ++r)
+            for (idx r = 0; r < DCTRLA_bar; ++r)
             {
                 if (ctrlsize == 0) // no control
                 {
@@ -392,9 +392,9 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 #pragma omp parallel for collapse(4)
 #endif
         for (idx m1 = 0; m1 < DA; ++m1)
-            for (idx r1 = 0; r1 < DCTRLAbar; ++r1)
+            for (idx r1 = 0; r1 < DCTRLA_bar; ++r1)
                 for (idx m2 = 0; m2 < DA; ++m2)
-                    for (idx r2 = 0; r2 < DCTRLAbar; ++r2)
+                    for (idx r2 = 0; r2 < DCTRLA_bar; ++r2)
                         if (ctrlsize == 0) // no control
                         {
                             auto coeff_idxes = coeff_idx_rho(1, m1, r1,
@@ -462,10 +462,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
-    idx n =
-            static_cast<idx>(std::llround(std::log2(rstate.rows()) /
-                                          std::log2(d)));
-    std::vector<idx> dims(n, d); // local dimensions vector
+    idx N = internal::_get_num_subsys(static_cast<idx>(rstate.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
 
     return applyCTRL(rstate, rA, ctrl, subsys, dims);
 }
@@ -592,10 +590,8 @@ dyn_mat<typename Derived1::Scalar> apply(
         throw Exception("qpp::apply()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
-    idx n =
-            static_cast<idx>(std::llround(std::log2(rstate.rows()) /
-                                          std::log2(d)));
-    std::vector<idx> dims(n, d); // local dimensions vector
+    idx N = internal::_get_num_subsys(static_cast<idx>(rstate.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
 
     return apply(rstate, rA, subsys, dims);
 }
@@ -746,10 +742,8 @@ cmat apply(const Eigen::MatrixBase<Derived>& rho,
         throw Exception("qpp::apply()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
-    idx n =
-            static_cast<idx>(std::llround(std::log2(rrho.rows()) /
-                                          std::log2(d)));
-    std::vector<idx> dims(n, d); // local dimensions vector
+    idx N = internal::_get_num_subsys(static_cast<idx>(rrho.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
 
     return apply(rrho, Ks, subsys, dims);
 }
@@ -911,8 +905,8 @@ inline std::vector<cmat> choi2kraus(const cmat& A)
     if (!internal::_check_square_mat(A))
         throw Exception("qpp::choi2kraus()",
                         Exception::Type::MATRIX_NOT_SQUARE);
-    idx D = static_cast<idx>(std::llround(
-            std::sqrt(static_cast<double>(A.rows()))));
+    idx D = internal::_get_dim_subsys(static_cast<double>(A.rows()), 2);
+    // check equal dimensions
     if (D * D != static_cast<idx>(A.rows()))
         throw Exception("qpp::choi2kraus()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
@@ -947,8 +941,8 @@ inline cmat choi2super(const cmat& A)
     if (!internal::_check_square_mat(A))
         throw Exception("qpp::choi2super()",
                         Exception::Type::MATRIX_NOT_SQUARE);
-    idx D = static_cast<idx>(std::llround(
-            std::sqrt(static_cast<double>(A.rows()))));
+    idx D = internal::_get_dim_subsys(static_cast<idx>(A.rows()), 2);
+    // check equal dimensions
     if (D * D != static_cast<idx>(A.rows()))
         throw Exception("qpp::choi2super()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
@@ -983,8 +977,8 @@ inline cmat super2choi(const cmat& A)
     if (!internal::_check_square_mat(A))
         throw Exception("qpp::super2choi()",
                         Exception::Type::MATRIX_NOT_SQUARE);
-    idx D = static_cast<idx>(std::llround(
-            std::sqrt(static_cast<double>(A.rows()))));
+    idx D = internal::_get_dim_subsys(static_cast<idx>(A.rows()),2);
+    // check equal dimensions
     if (D * D != static_cast<idx>(A.rows()))
         throw Exception("qpp::super2choi()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
@@ -1236,42 +1230,42 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
-    idx n = dims.size();
-    idx nsubsys = subsys.size();
-    idx nsubsysbar = n - nsubsys;
+    idx N = dims.size();
+    idx Nsubsys = subsys.size();
+    idx Nsubsys_bar = N - Nsubsys;
     idx Dsubsys = 1;
-    for (idx i = 0; i < nsubsys; ++i)
+    for (idx i = 0; i < Nsubsys; ++i)
         Dsubsys *= dims[subsys[i]];
-    idx Dsubsysbar = D / Dsubsys;
+    idx Dsubsys_bar = D / Dsubsys;
 
     idx Cdims[maxn];
     idx Csubsys[maxn];
     idx Cdimssubsys[maxn];
-    idx Csubsysbar[maxn];
-    idx Cdimssubsysbar[maxn];
+    idx Csubsys_bar[maxn];
+    idx Cdimssubsys_bar[maxn];
 
-    idx Cmidxcolsubsysbar[maxn];
+    idx Cmidxcolsubsys_bar[maxn];
 
-    std::vector<idx> subsys_bar = complement(subsys, n);
+    std::vector<idx> subsys_bar = complement(subsys, N);
     std::copy(std::begin(subsys_bar), std::end(subsys_bar),
-              std::begin(Csubsysbar));
+              std::begin(Csubsys_bar));
 
-    for (idx i = 0; i < n; ++i)
+    for (idx i = 0; i < N; ++i)
     {
         Cdims[i] = dims[i];
     }
-    for (idx i = 0; i < nsubsys; ++i)
+    for (idx i = 0; i < Nsubsys; ++i)
     {
         Csubsys[i] = subsys[i];
         Cdimssubsys[i] = dims[subsys[i]];
     }
-    for (idx i = 0; i < nsubsysbar; ++i)
+    for (idx i = 0; i < Nsubsys_bar; ++i)
     {
-        Cdimssubsysbar[i] = dims[subsys_bar[i]];
+        Cdimssubsys_bar[i] = dims[subsys_bar[i]];
     }
 
     dyn_mat<typename Derived::Scalar> result =
-            dyn_mat<typename Derived::Scalar>(Dsubsysbar, Dsubsysbar);
+            dyn_mat<typename Derived::Scalar>(Dsubsys_bar, Dsubsys_bar);
 
     //************ ket ************//
     if (internal::_check_cvector(rA)) // we have a ket
@@ -1290,53 +1284,53 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         if (subsys.size() == 0)
             return rA * adjoint(rA);
 
-        auto worker = [=, &Cmidxcolsubsysbar](idx i) noexcept
+        auto worker = [=, &Cmidxcolsubsys_bar](idx i) noexcept
                 -> typename Derived::Scalar
         {
             // use static allocation for speed!
 
             idx Cmidxrow[maxn];
             idx Cmidxcol[maxn];
-            idx Cmidxrowsubsysbar[maxn];
+            idx Cmidxrowsubsys_bar[maxn];
             idx Cmidxsubsys[maxn];
 
             /* get the row multi-indexes of the complement */
-            internal::_n2multiidx(i, nsubsysbar,
-                                  Cdimssubsysbar, Cmidxrowsubsysbar);
+            internal::_n2multiidx(i, Nsubsys_bar,
+                                  Cdimssubsys_bar, Cmidxrowsubsys_bar);
             /* write them in the global row/col multi-indexes */
-            for (idx k = 0; k < nsubsysbar; ++k)
+            for (idx k = 0; k < Nsubsys_bar; ++k)
             {
-                Cmidxrow[Csubsysbar[k]] = Cmidxrowsubsysbar[k];
-                Cmidxcol[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
+                Cmidxrow[Csubsys_bar[k]] = Cmidxrowsubsys_bar[k];
+                Cmidxcol[Csubsys_bar[k]] = Cmidxcolsubsys_bar[k];
             }
             typename Derived::Scalar sm = 0;
             for (idx a = 0; a < Dsubsys; ++a)
             {
                 // get the multi-index over which we do the summation
-                internal::_n2multiidx(a, nsubsys, Cdimssubsys, Cmidxsubsys);
+                internal::_n2multiidx(a, Nsubsys, Cdimssubsys, Cmidxsubsys);
                 // write it into the global row/col multi-indexes
-                for (idx k = 0; k < nsubsys; ++k)
+                for (idx k = 0; k < Nsubsys; ++k)
                     Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]]
                             = Cmidxsubsys[k];
 
                 // now do the sum
-                sm += rA(internal::_multiidx2n(Cmidxrow, n, Cdims)) *
-                      std::conj(rA(internal::_multiidx2n(Cmidxcol, n,
+                sm += rA(internal::_multiidx2n(Cmidxrow, N, Cdims)) *
+                      std::conj(rA(internal::_multiidx2n(Cmidxcol, N,
                                                          Cdims)));
             }
 
             return sm;
         }; /* end worker */
 
-        for (idx j = 0; j < Dsubsysbar; ++j) // column major order for speed
+        for (idx j = 0; j < Dsubsys_bar; ++j) // column major order for speed
         {
             // compute the column multi-indexes of the complement
-            internal::_n2multiidx(j, nsubsysbar,
-                                  Cdimssubsysbar, Cmidxcolsubsysbar);
+            internal::_n2multiidx(j, Nsubsys_bar,
+                                  Cdimssubsys_bar, Cmidxcolsubsys_bar);
 #ifdef _WITH_OPENMP_
 #pragma omp parallel for
 #endif
-            for (idx i = 0; i < Dsubsysbar; ++i)
+            for (idx i = 0; i < Dsubsys_bar; ++i)
             {
                 result(i, j) = worker(i);
             }
@@ -1361,52 +1355,52 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         if (subsys.size() == 0)
             return rA;
 
-        auto worker = [=, &Cmidxcolsubsysbar](idx i) noexcept
+        auto worker = [=, &Cmidxcolsubsys_bar](idx i) noexcept
                 -> typename Derived::Scalar
         {
             // use static allocation for speed!
 
             idx Cmidxrow[maxn];
             idx Cmidxcol[maxn];
-            idx Cmidxrowsubsysbar[maxn];
+            idx Cmidxrowsubsys_bar[maxn];
             idx Cmidxsubsys[maxn];
 
             /* get the row/col multi-indexes of the complement */
-            internal::_n2multiidx(i, nsubsysbar,
-                                  Cdimssubsysbar, Cmidxrowsubsysbar);
+            internal::_n2multiidx(i, Nsubsys_bar,
+                                  Cdimssubsys_bar, Cmidxrowsubsys_bar);
             /* write them in the global row/col multi-indexes */
-            for (idx k = 0; k < nsubsysbar; ++k)
+            for (idx k = 0; k < Nsubsys_bar; ++k)
             {
-                Cmidxrow[Csubsysbar[k]] = Cmidxrowsubsysbar[k];
-                Cmidxcol[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
+                Cmidxrow[Csubsys_bar[k]] = Cmidxrowsubsys_bar[k];
+                Cmidxcol[Csubsys_bar[k]] = Cmidxcolsubsys_bar[k];
             }
             typename Derived::Scalar sm = 0;
             for (idx a = 0; a < Dsubsys; ++a)
             {
                 // get the multi-index over which we do the summation
-                internal::_n2multiidx(a, nsubsys, Cdimssubsys, Cmidxsubsys);
+                internal::_n2multiidx(a, Nsubsys, Cdimssubsys, Cmidxsubsys);
                 // write it into the global row/col multi-indexes
-                for (idx k = 0; k < nsubsys; ++k)
+                for (idx k = 0; k < Nsubsys; ++k)
                     Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]]
                             = Cmidxsubsys[k];
 
                 // now do the sum
-                sm += rA(internal::_multiidx2n(Cmidxrow, n, Cdims),
-                         internal::_multiidx2n(Cmidxcol, n, Cdims));
+                sm += rA(internal::_multiidx2n(Cmidxrow, N, Cdims),
+                         internal::_multiidx2n(Cmidxcol, N, Cdims));
             }
 
             return sm;
         }; /* end worker */
 
-        for (idx j = 0; j < Dsubsysbar; ++j) // column major order for speed
+        for (idx j = 0; j < Dsubsys_bar; ++j) // column major order for speed
         {
             // compute the column multi-indexes of the complement
-            internal::_n2multiidx(j, nsubsysbar,
-                                  Cdimssubsysbar, Cmidxcolsubsysbar);
+            internal::_n2multiidx(j, Nsubsys_bar,
+                                  Cdimssubsys_bar, Cmidxcolsubsys_bar);
 #ifdef _WITH_OPENMP_
 #pragma omp parallel for
 #endif
-            for (idx i = 0; i < Dsubsysbar; ++i)
+            for (idx i = 0; i < Dsubsys_bar; ++i)
             {
                 result(i, j) = worker(i);
             }
@@ -1452,10 +1446,8 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::ptrace()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
-    idx n =
-            static_cast<idx>(std::llround(std::log2(rA.rows()) /
-                                          std::log2(d)));
-    std::vector<idx> dims(n, d); // local dimensions vector
+    idx N = internal::_get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
 
     return ptrace(rA, subsys, dims);
 }
@@ -1498,16 +1490,16 @@ dyn_mat<typename Derived::Scalar> ptranspose(
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
-    idx numdims = dims.size();
-    idx numsubsys = subsys.size();
+    idx N = dims.size();
+    idx Nsubsys = subsys.size();
     idx Cdims[maxn];
     idx Cmidxcol[maxn];
     idx Csubsys[maxn];
 
     // copy dims in Cdims and subsys in Csubsys
-    for (idx i = 0; i < numdims; ++i)
+    for (idx i = 0; i < N; ++i)
         Cdims[i] = dims[i];
-    for (idx i = 0; i < numsubsys; ++i)
+    for (idx i = 0; i < Nsubsys; ++i)
         Csubsys[i] = subsys[i];
 
     dyn_mat<typename Derived::Scalar> result(D, D);
@@ -1533,25 +1525,25 @@ dyn_mat<typename Derived::Scalar> ptranspose(
             idx midxcoltmp[maxn];
             idx midxrow[maxn];
 
-            for (idx k = 0; k < numdims; ++k)
+            for (idx k = 0; k < N; ++k)
                 midxcoltmp[k] = Cmidxcol[k];
 
             /* compute the row multi-index */
-            internal::_n2multiidx(i, numdims, Cdims, midxrow);
+            internal::_n2multiidx(i, N, Cdims, midxrow);
 
-            for (idx k = 0; k < numsubsys; ++k)
+            for (idx k = 0; k < Nsubsys; ++k)
                 std::swap(midxcoltmp[Csubsys[k]], midxrow[Csubsys[k]]);
 
             /* writes the result */
-            return rA(internal::_multiidx2n(midxrow, numdims, Cdims)) *
-                   std::conj(rA(internal::_multiidx2n(midxcoltmp, numdims,
+            return rA(internal::_multiidx2n(midxrow, N, Cdims)) *
+                   std::conj(rA(internal::_multiidx2n(midxcoltmp, N,
                                                       Cdims)));
         }; /* end worker */
 
         for (idx j = 0; j < D; ++j)
         {
             // compute the column multi-index
-            internal::_n2multiidx(j, numdims, Cdims, Cmidxcol);
+            internal::_n2multiidx(j, N, Cdims, Cmidxcol);
 
 #ifdef _WITH_OPENMP_
 #pragma omp parallel for
@@ -1583,24 +1575,24 @@ dyn_mat<typename Derived::Scalar> ptranspose(
             idx midxcoltmp[maxn];
             idx midxrow[maxn];
 
-            for (idx k = 0; k < numdims; ++k)
+            for (idx k = 0; k < N; ++k)
                 midxcoltmp[k] = Cmidxcol[k];
 
             /* compute the row multi-index */
-            internal::_n2multiidx(i, numdims, Cdims, midxrow);
+            internal::_n2multiidx(i, N, Cdims, midxrow);
 
-            for (idx k = 0; k < numsubsys; ++k)
+            for (idx k = 0; k < Nsubsys; ++k)
                 std::swap(midxcoltmp[Csubsys[k]], midxrow[Csubsys[k]]);
 
             /* writes the result */
-            return rA(internal::_multiidx2n(midxrow, numdims, Cdims),
-                      internal::_multiidx2n(midxcoltmp, numdims, Cdims));
+            return rA(internal::_multiidx2n(midxrow, N, Cdims),
+                      internal::_multiidx2n(midxcoltmp, N, Cdims));
         }; /* end worker */
 
         for (idx j = 0; j < D; ++j)
         {
             // compute the column multi-index
-            internal::_n2multiidx(j, numdims, Cdims, Cmidxcol);
+            internal::_n2multiidx(j, N, Cdims, Cmidxcol);
 
 #ifdef _WITH_OPENMP_
 #pragma omp parallel for
@@ -1649,10 +1641,8 @@ dyn_mat<typename Derived::Scalar> ptranspose(
         throw Exception("qpp::ptranspose()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
-    idx n =
-            static_cast<idx>(std::llround(std::log2(rA.rows()) /
-                                          std::log2(d)));
-    std::vector<idx> dims(n, d); // local dimensions vector
+    idx N = internal::_get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
 
     return ptranspose(rA, subsys, dims);
 }
@@ -1698,7 +1688,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
-    idx numdims = dims.size();
+    idx N = dims.size();
 
     dyn_mat<typename Derived::Scalar> result;
 
@@ -1714,14 +1704,14 @@ dyn_mat<typename Derived::Scalar> syspermute(
                             Exception::Type::DIMS_MISMATCH_CVECTOR);
 
         // copy dims in Cdims and perm in Cperm
-        for (idx i = 0; i < numdims; ++i)
+        for (idx i = 0; i < N; ++i)
         {
             Cdims[i] = dims[i];
             Cperm[i] = perm[i];
         }
         result.resize(D, 1);
 
-        auto worker = [&Cdims, &Cperm, numdims](idx i) noexcept
+        auto worker = [&Cdims, &Cperm, N](idx i) noexcept
                 -> idx
         {
             // use static allocation for speed,
@@ -1731,15 +1721,15 @@ dyn_mat<typename Derived::Scalar> syspermute(
             idx permdims[maxn];
 
             /* compute the multi-index */
-            internal::_n2multiidx(i, numdims, Cdims, midx);
+            internal::_n2multiidx(i, N, Cdims, midx);
 
-            for (idx k = 0; k < numdims; ++k)
+            for (idx k = 0; k < N; ++k)
             {
                 permdims[k] = Cdims[Cperm[k]]; // permuted dimensions
                 midxtmp[k] = midx[Cperm[k]];// permuted multi-indexes
             }
 
-            return internal::_multiidx2n(midxtmp, numdims, permdims);
+            return internal::_multiidx2n(midxtmp, N, permdims);
         }; /* end worker */
 
 #ifdef _WITH_OPENMP_
@@ -1762,12 +1752,12 @@ dyn_mat<typename Derived::Scalar> syspermute(
                             Exception::Type::DIMS_MISMATCH_MATRIX);
 
         // copy dims in Cdims and perm in Cperm
-        for (idx i = 0; i < numdims; ++i)
+        for (idx i = 0; i < N; ++i)
         {
             Cdims[i] = dims[i];
-            Cdims[i + numdims] = dims[i];
+            Cdims[i + N] = dims[i];
             Cperm[i] = perm[i];
-            Cperm[i + numdims] = perm[i] + numdims;
+            Cperm[i + N] = perm[i] + N;
         }
         result.resize(D * D, 1);
         // map A to a column vector
@@ -1777,7 +1767,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
                                                                           D,
                         1);
 
-        auto worker = [&Cdims, &Cperm, numdims](idx i) noexcept
+        auto worker = [&Cdims, &Cperm, N](idx i) noexcept
                 -> idx
         {
             // use static allocation for speed,
@@ -1787,15 +1777,15 @@ dyn_mat<typename Derived::Scalar> syspermute(
             idx permdims[2 * maxn];
 
             /* compute the multi-index */
-            internal::_n2multiidx(i, 2 * numdims, Cdims, midx);
+            internal::_n2multiidx(i, 2 * N, Cdims, midx);
 
-            for (idx k = 0; k < 2 * numdims; ++k)
+            for (idx k = 0; k < 2 * N; ++k)
             {
                 permdims[k] = Cdims[Cperm[k]]; // permuted dimensions
                 midxtmp[k] = midx[Cperm[k]];// permuted multi-indexes
             }
 
-            return internal::_multiidx2n(midxtmp, 2 * numdims, permdims);
+            return internal::_multiidx2n(midxtmp, 2 * N, permdims);
         }; /* end worker */
 
 #ifdef _WITH_OPENMP_
@@ -1843,10 +1833,8 @@ dyn_mat<typename Derived::Scalar> syspermute(
         throw Exception("qpp::syspermute()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
-    idx n =
-            static_cast<idx>(std::llround(std::log2(rA.rows()) /
-                                          std::log2(d)));
-    std::vector<idx> dims(n, d); // local dimensions vector
+    idx N = internal::_get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
 
     return syspermute(rA, perm, dims);
 }

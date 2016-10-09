@@ -173,15 +173,15 @@ template<typename PointerType>
 class IOManipPointer : public IDisplay
 {
     const PointerType* _p;
-    idx _n;
+    idx _N;
     std::string _separator, _start, _end;
 public:
-    explicit IOManipPointer(const PointerType* p, idx n,
+    explicit IOManipPointer(const PointerType* p, idx N,
                             const std::string& separator,
                             const std::string& start = "[",
                             const std::string& end = "]") :
             _p{p},
-            _n{n},
+            _N{N},
             _separator{separator},
             _start{start},
             _end{end}
@@ -198,10 +198,10 @@ private:
     {
         os << _start;
 
-        for (idx i = 0; i < _n - 1; ++i)
+        for (idx i = 0; i < _N - 1; ++i)
             os << _p[i] << _separator;
-        if (_n > 0)
-            os << _p[_n - 1];
+        if (_N > 0)
+            os << _p[_N - 1];
 
         os << _end;
 

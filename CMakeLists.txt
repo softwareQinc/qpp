@@ -17,8 +17,13 @@
 # You should have received a copy of the GNU General Public License
 # along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1.3)
 PROJECT(qpp VERSION 0.8.9 LANGUAGES CXX)
+
+#### Use C++11 and disable any compiler extensions
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 #### CMake support only for GNU gcc and Clang/AppleClang
 #### AppleClang does not support OpenMP; only Clang >= 3.7 supports OpenMP
@@ -27,6 +32,10 @@ IF (NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang"
     MESSAGE(FATAL_ERROR
             "This CMakeLists.txt works only with GNU gcc/Clang/AppleClang")
 ENDIF ()
+
+#### Compiler flags
+SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
+SET(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra -Weffc++")
 
 #### Quantum++ headers
 INCLUDE_DIRECTORIES(include)
@@ -37,11 +46,6 @@ SET(SOURCE_FILES
 
 #### Eigen3, modify as needed
 INCLUDE_DIRECTORIES(SYSTEM "$ENV{HOME}/eigen")
-
-#### Compiler flags
-SET(ADDITIONAL_FLAGS "-std=c++11 -pedantic -Wall -Wextra -Weffc++")
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
-SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
 
 #### MATLAB support
 OPTION(WITH_MATLAB "MATLAB support" OFF)
@@ -82,6 +86,12 @@ IF (${WITH_OPENMP})
         the GNU gcc compiler or Clang >= 3.7.")
     ENDIF ()
 ENDIF ()
+
+#### GoogleTest
+ADD_SUBDIRECTORY(unit_tests)
+
+#### Enable all warnings
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
 
 #### Disable support for thread_local storage duration specifier
 #### when using AppleClang as libc++ doesn't yet support it

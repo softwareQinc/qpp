@@ -1,4 +1,7 @@
 Version 0.8.9 - development
+    - Required minimum cmake version is now 3.1.3
+    - GoogleMock 1.7.0 is now included in the project for uniform unit testing
+        (see the README.md file for more details)
     - Removed the qpp::ubigint type so there is no more danger of mixing
         signed and unsigned types. All related functions now use qpp::bigint.
     - Fixed overflow bug in qpp::powm() when numbers were very large
@@ -8,6 +11,7 @@ Version 0.8.9 - development
     - Added new functions in <number_theory.h>:
         qpp::randprime() - random prime number generator
         qpp::modmul()    - modular multiplication that avoids overflows
+    - Extensive unit testing
 
 Version 0.8.8.2 - 3 October 2016
     - This is a bug-fix release

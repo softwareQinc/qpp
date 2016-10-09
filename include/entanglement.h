@@ -249,16 +249,16 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
         throw Exception("qpp::gconcurrence()",
                         Exception::Type::MATRIX_NOT_CVECTOR);
 
+    idx d = internal::_get_dim_subsys(static_cast<idx>(rA.rows()), 2);
+
     // check equal local dimensions
-    idx D = static_cast<idx>(std::llround(
-            std::sqrt(static_cast<double>(rA.rows()))));
-    if (D * D != static_cast<idx>(rA.rows()))
+    if (d * d != static_cast<idx>(rA.rows()))
         throw Exception("qpp::gconcurrence()",
                         Exception::Type::DIMS_NOT_EQUAL);
     // END EXCEPTION CHECKS
 
     // we compute exp(logdet()) to avoid underflow
-    return D * std::abs(std::exp(2. / D * logdet(reshape(rA, D, D))));
+    return d * std::abs(std::exp(2. / d * logdet(reshape(rA, d, d))));
 }
 
 /**

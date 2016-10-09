@@ -106,19 +106,19 @@ internal::IOManipRange<typename Container::const_iterator> disp(
 * \brief C-style pointer ostream manipulator
 *
 * \param p Pointer to the first element
-* \param n Number of elements to be displayed
+* \param N Number of elements to be displayed
 * \param separator Separator
 * \param start Left marking
 * \param end Right marking
 * \return Instance of qpp::internal::internal::IOManipPointer
 */
 template<typename PointerType>
-internal::IOManipPointer <PointerType> disp(const PointerType* p, idx n,
+internal::IOManipPointer <PointerType> disp(const PointerType* p, idx N,
                                             const std::string& separator,
                                             const std::string& start = "[",
                                             const std::string& end = "]")
 {
-    return internal::IOManipPointer<PointerType>(p, n, separator, start, end);
+    return internal::IOManipPointer<PointerType>(p, N, separator, start, end);
 }
 
 /**

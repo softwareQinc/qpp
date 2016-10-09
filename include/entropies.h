@@ -325,13 +325,13 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
                    std::back_inserter(subsysAB));
 
     // construct the complements
-    std::vector<idx> subsysAbar = complement(subsysA, dims.size());
-    std::vector<idx> subsysBbar = complement(subsysB, dims.size());;
-    std::vector<idx> subsysABbar = complement(subsysAB, dims.size());
+    std::vector<idx> subsysA_bar = complement(subsysA, dims.size());
+    std::vector<idx> subsysB_bar = complement(subsysB, dims.size());;
+    std::vector<idx> subsysAB_bar = complement(subsysAB, dims.size());
 
-    cmat rhoA = ptrace(rA, subsysAbar, dims);
-    cmat rhoB = ptrace(rA, subsysBbar, dims);
-    cmat rhoAB = ptrace(rA, subsysABbar, dims);
+    cmat rhoA = ptrace(rA, subsysA_bar, dims);
+    cmat rhoB = ptrace(rA, subsysB_bar, dims);
+    cmat rhoAB = ptrace(rA, subsysAB_bar, dims);
 
     return entropy(rhoA) + entropy(rhoB) - entropy(rhoAB);
 }
@@ -364,10 +364,8 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::qmutualinfo()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
-    idx n =
-            static_cast<idx>(std::llround(std::log2(rA.rows()) /
-                                          std::log2(d)));
-    std::vector<idx> dims(n, d); // local dimensions vector
+    idx N = internal::_get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
 
     return qmutualinfo(rA, subsysA, subsysB, dims);
 }

@@ -487,18 +487,18 @@ inline cmat randrho(idx D)
 * Uses Knuth shuffle method (as implemented by std::shuffle),
 * so that all permutations are equally probable
 *
-* \param n Size of the permutation
-* \return Random permutation of size \a n
+* \param N Size of the permutation
+* \return Random permutation of size \a N
 */
-inline std::vector<idx> randperm(idx n)
+inline std::vector<idx> randperm(idx N)
 {
     // EXCEPTION CHECKS
 
-    if (n == 0)
+    if (N == 0)
         throw Exception("qpp::randperm()", Exception::Type::PERM_INVALID);
     // END EXCEPTION CHECKS
 
-    std::vector<idx> result(n);
+    std::vector<idx> result(N);
 
     // fill in increasing order
     std::iota(std::begin(result), std::end(result), 0);

@@ -1464,7 +1464,7 @@ inline idx multiidx2n(const std::vector<idx>& midx,
 inline ket mket(const std::vector<idx>& mask,
                 const std::vector<idx>& dims)
 {
-    idx n = mask.size();
+    idx N = mask.size();
 
     idx D = std::accumulate(std::begin(dims), std::end(dims),
                             static_cast<idx>(1), std::multiplies<idx>());
@@ -1472,7 +1472,7 @@ inline ket mket(const std::vector<idx>& mask,
     // EXCEPTION CHECKS
 
     // check zero size
-    if (n == 0)
+    if (N == 0)
         throw Exception("qpp::mket()", Exception::Type::ZERO_SIZE);
     // check valid dims
     if (!internal::_check_dims(dims))
@@ -1481,7 +1481,7 @@ inline ket mket(const std::vector<idx>& mask,
     if (mask.size() != dims.size())
         throw Exception("qpp::mket()", Exception::Type::SUBSYS_MISMATCH_DIMS);
     // check mask is a valid vector
-    for (idx i = 0; i < n; ++i)
+    for (idx i = 0; i < N; ++i)
         if (mask[i] >= dims[i])
             throw Exception("qpp::mket()",
                             Exception::Type::SUBSYS_MISMATCH_DIMS);
@@ -1508,13 +1508,13 @@ inline ket mket(const std::vector<idx>& mask,
 */
 inline ket mket(const std::vector<idx>& mask, idx d = 2)
 {
-    idx n = mask.size();
-    idx D = static_cast<idx>(std::llround(std::pow(d, n)));
+    idx N = mask.size();
+    idx D = static_cast<idx>(std::llround(std::pow(d, N)));
 
     // EXCEPTION CHECKS
 
     // check zero size
-    if (n == 0)
+    if (N == 0)
         throw Exception("qpp::mket()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
@@ -1522,14 +1522,14 @@ inline ket mket(const std::vector<idx>& mask, idx d = 2)
         throw Exception("qpp::mket()", Exception::Type::DIMS_INVALID);
 
     // check mask is a valid vector
-    for (idx i = 0; i < n; ++i)
+    for (idx i = 0; i < N; ++i)
         if (mask[i] >= d)
             throw Exception("qpp::mket()",
                             Exception::Type::SUBSYS_MISMATCH_DIMS);
     // END EXCEPTION CHECKS
 
     ket result = ket::Zero(D);
-    std::vector<idx> dims(n, d);
+    std::vector<idx> dims(N, d);
     idx pos = multiidx2n(mask, dims);
     result(pos) = 1;
 
@@ -1553,7 +1553,7 @@ inline ket mket(const std::vector<idx>& mask, idx d = 2)
 inline cmat mprj(const std::vector<idx>& mask,
                  const std::vector<idx>& dims)
 {
-    idx n = mask.size();
+    idx N = mask.size();
 
     idx D = std::accumulate(std::begin(dims), std::end(dims),
                             static_cast<idx>(1), std::multiplies<idx>());
@@ -1561,7 +1561,7 @@ inline cmat mprj(const std::vector<idx>& mask,
     // EXCEPTION CHECKS
 
     // check zero size
-    if (n == 0)
+    if (N == 0)
         throw Exception("qpp::mprj()", Exception::Type::ZERO_SIZE);
     // check valid dims
     if (!internal::_check_dims(dims))
@@ -1570,7 +1570,7 @@ inline cmat mprj(const std::vector<idx>& mask,
     if (mask.size() != dims.size())
         throw Exception("qpp::mprj()", Exception::Type::SUBSYS_MISMATCH_DIMS);
     // check mask is a valid vector
-    for (idx i = 0; i < n; ++i)
+    for (idx i = 0; i < N; ++i)
         if (mask[i] >= dims[i])
             throw Exception("qpp::mprj()",
                             Exception::Type::SUBSYS_MISMATCH_DIMS);
@@ -1599,13 +1599,13 @@ inline cmat mprj(const std::vector<idx>& mask,
 */
 inline cmat mprj(const std::vector<idx>& mask, idx d = 2)
 {
-    idx n = mask.size();
-    idx D = static_cast<idx>(std::llround(std::pow(d, n)));
+    idx N = mask.size();
+    idx D = static_cast<idx>(std::llround(std::pow(d, N)));
 
     // EXCEPTION CHECKS
 
     // check zero size
-    if (n == 0)
+    if (N == 0)
         throw Exception("qpp::mprj()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
@@ -1613,14 +1613,14 @@ inline cmat mprj(const std::vector<idx>& mask, idx d = 2)
         throw Exception("qpp::mprj()", Exception::Type::DIMS_INVALID);
 
     // check mask is a valid vector
-    for (idx i = 0; i < n; ++i)
+    for (idx i = 0; i < N; ++i)
         if (mask[i] >= d)
             throw Exception("qpp::mprj()",
                             Exception::Type::SUBSYS_MISMATCH_DIMS);
     // END EXCEPTION CHECKS
 
     cmat result = cmat::Zero(D, D);
-    std::vector<idx> dims(n, d);
+    std::vector<idx> dims(N, d);
     idx pos = multiidx2n(mask, dims);
     result(pos, pos) = 1;
 

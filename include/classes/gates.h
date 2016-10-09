@@ -224,7 +224,7 @@ public:
     * \param A Eigen expression
     * \param ctrl Control subsystem indexes
     * \param subsys Subsystem indexes where the gate \a A is applied
-    * \param n Total number of subsystems
+    * \param N Total number of subsystems
     * \param d Subsystem dimensions
     * \return CTRL-A gate, as a matrix over the same scalar field as \a A
     */
@@ -232,7 +232,7 @@ public:
     dyn_mat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived>& A,
                                            const std::vector<idx>& ctrl,
                                            const std::vector<idx>& subsys,
-                                           idx n, idx d = 2) const
+                                           idx N, idx d = 2) const
     {
         const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
@@ -254,7 +254,7 @@ public:
             throw Exception("qpp::Gates::CTRL()", Exception::Type::ZERO_SIZE);
 
         // check out of range
-        if (n == 0)
+        if (N == 0)
             throw Exception("qpp::Gates::CTRL()",
                             Exception::Type::OUT_OF_RANGE);
 
@@ -269,7 +269,7 @@ public:
                         std::end(subsys));
         std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
-        std::vector<idx> dims(n, d); // local dimensions vector
+        std::vector<idx> dims(N, d); // local dimensions vector
 
         // check that ctrl + gate subsystem is valid
         // with respect to local dimensions
@@ -296,32 +296,32 @@ public:
         idx Csubsys_bar[maxn];
         idx midx_bar[maxn];
 
-        idx ngate = subsys.size();
-        idx nctrl = ctrl.size();
-        idx nsubsys_bar = n - ctrlgate.size();
-        idx D = static_cast<idx>(std::llround(std::pow(d, n)));
+        idx Ngate = subsys.size();
+        idx Nctrl = ctrl.size();
+        idx Nsubsys_bar = N - ctrlgate.size();
+        idx D = static_cast<idx>(std::llround(std::pow(d, N)));
         idx DA = static_cast<idx>(rA.rows());
         idx Dsubsys_bar = static_cast<idx>(
-                std::llround(std::pow(d, nsubsys_bar)));
+                std::llround(std::pow(d, Nsubsys_bar)));
 
         // compute the complementary subsystem of ctrlgate w.r.t. dims
-        std::vector<idx> subsys_bar = complement(ctrlgate, n);
+        std::vector<idx> subsys_bar = complement(ctrlgate, N);
         std::copy(std::begin(subsys_bar), std::end(subsys_bar),
                   std::begin(Csubsys_bar));
 
-        for (idx k = 0; k < n; ++k)
+        for (idx k = 0; k < N; ++k)
         {
             midx_row[k] = midx_col[k] = 0;
             Cdims[k] = d;
         }
 
-        for (idx k = 0; k < nsubsys_bar; ++k)
+        for (idx k = 0; k < Nsubsys_bar; ++k)
         {
             Cdims_bar[k] = d;
             midx_bar[k] = 0;
         }
 
-        for (idx k = 0; k < ngate; ++k)
+        for (idx k = 0; k < Ngate; ++k)
         {
             midxA_row[k] = midxA_col[k] = 0;
             CdimsA[k] = d;
@@ -336,7 +336,7 @@ public:
         for (idx i = 0; i < Dsubsys_bar; ++i)
         {
             // get the complement row multi-index
-            internal::_n2multiidx(i, nsubsys_bar, Cdims_bar, midx_bar);
+            internal::_n2multiidx(i, Nsubsys_bar, Cdims_bar, midx_bar);
             for (idx k = 0; k < d; ++k)
             {
                 Ak = powm(rA, k); // compute rA^k
@@ -344,36 +344,36 @@ public:
                 for (idx a = 0; a < DA; ++a)
                 {
                     // get the subsys row multi-index
-                    internal::_n2multiidx(a, ngate, CdimsA, midxA_row);
+                    internal::_n2multiidx(a, Ngate, CdimsA, midxA_row);
 
                     // construct the result row multi-index
 
                     // first the ctrl part (equal for both row and column)
-                    for (idx c = 0; c < nctrl; ++c)
+                    for (idx c = 0; c < Nctrl; ++c)
                         midx_row[ctrl[c]] = midx_col[ctrl[c]] = k;
 
                     // then the complement part (equal for column)
-                    for (idx c = 0; c < nsubsys_bar; ++c)
+                    for (idx c = 0; c < Nsubsys_bar; ++c)
                         midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =
                                 midx_bar[c];
 
                     // then the subsys part
-                    for (idx c = 0; c < ngate; ++c)
+                    for (idx c = 0; c < Ngate; ++c)
                         midx_row[subsys[c]] = midxA_row[c];
 
                     // run over the subsys column multi-index
                     for (idx b = 0; b < DA; ++b)
                     {
                         // get the subsys column multi-index
-                        internal::_n2multiidx(b, ngate, CdimsA, midxA_col);
+                        internal::_n2multiidx(b, Ngate, CdimsA, midxA_col);
 
                         // construct the result column multi-index
-                        for (idx c = 0; c < ngate; ++c)
+                        for (idx c = 0; c < Ngate; ++c)
                             midx_col[subsys[c]] = midxA_col[c];
 
                         // finally write the values
-                        result(internal::_multiidx2n(midx_row, n, Cdims),
-                               internal::_multiidx2n(midx_col, n, Cdims))
+                        result(internal::_multiidx2n(midx_row, N, Cdims),
+                               internal::_multiidx2n(midx_col, N, Cdims))
                                 = Ak(a, b);
                     }
                 }

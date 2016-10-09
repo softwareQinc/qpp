@@ -36,23 +36,23 @@ namespace qpp
 * \see qpp::contfrac2x()
 *
 * \param x Real number
-* \param n Maximum number of terms in the expansion
+* \param N Maximum number of terms in the expansion
 * \param cut Stop the expansion when the next term is greater than \a cut
 * \return Integer vector containing the simple continued fraction expansion
-* of \a x. If there are \a m less than \a n terms in the expansion,
-* a shorter vector with \a m components is returned.
+* of \a x. If there are \a M less than \a N terms in the expansion,
+* a shorter vector with \a M components is returned.
 */
-inline std::vector<int> x2contfrac(double x, idx n, idx cut = 1e5)
+inline std::vector<int> x2contfrac(double x, idx N, idx cut = 1e5)
 {
     // EXCEPTION CHECKS
 
-    if (n == 0)
+    if (N == 0)
         throw Exception("qpp::x2contfrac()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
     std::vector<int> result;
 
-    for (idx i = 0; i < n; ++i)
+    for (idx i = 0; i < N; ++i)
     {
         if (x > 0)
         {
@@ -75,30 +75,30 @@ inline std::vector<int> x2contfrac(double x, idx n, idx cut = 1e5)
 * \see qpp::x2contfrac()
 *
 * \param cf Integer vector containing the simple continued fraction expansion
-* \param n Number of terms considered in the continued fraction expansion.
-* If \a n is greater than the size of \a cf,then all terms in \a cf
+* \param N Number of terms considered in the continued fraction expansion.
+* If \a N is greater than the size of \a cf,then all terms in \a cf
 * are considered.
 * \return Real representation of the simple continued fraction
 */
-inline double contfrac2x(const std::vector<int>& cf, idx n)
+inline double contfrac2x(const std::vector<int>& cf, idx N)
 {
     // EXCEPTION CHECKS
 
     if (cf.size() == 0)
         throw Exception("qpp::contfrac2x()", Exception::Type::ZERO_SIZE);
 
-    if (n == 0)
+    if (N == 0)
         throw Exception("qpp::contfrac2x()", Exception::Type::OUT_OF_RANGE);
     // END EXCEPTION CHECKS
 
-    if (n > cf.size())
-        n = cf.size();
+    if (N > cf.size())
+        N = cf.size();
 
-    if (n == 1) // degenerate case, integer
+    if (N == 1) // degenerate case, integer
         return cf[0];
 
-    double tmp = 1. / cf[n - 1];
-    for (idx i = n - 2; i != 0; --i)
+    double tmp = 1. / cf[N - 1];
+    for (idx i = N - 2; i != 0; --i)
     {
         tmp = 1. / (tmp + cf[i]);
     }

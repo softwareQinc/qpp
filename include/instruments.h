@@ -96,34 +96,34 @@ dyn_col_vect<typename Derived::Scalar> ip(
     idx Dsubsys = prod(std::begin(subsys_dims), std::end(subsys_dims));
 
     idx D = static_cast<idx>(rpsi.rows());
-    idx Dsubsysbar = D / Dsubsys;
+    idx Dsubsys_bar = D / Dsubsys;
 
-    idx n = dims.size();
-    idx nsubsys = subsys.size();
-    idx nsubsysbar = n - nsubsys;
+    idx N = dims.size();
+    idx Nsubsys = subsys.size();
+    idx Nsubsys_bar = N - Nsubsys;
 
     idx Cdims[maxn];
     idx Csubsys[maxn];
     idx Cdimssubsys[maxn];
-    idx Csubsysbar[maxn];
-    idx Cdimssubsysbar[maxn];
+    idx Csubsys_bar[maxn];
+    idx Cdimssubsys_bar[maxn];
 
-    std::vector<idx> subsys_bar = complement(subsys, n);
+    std::vector<idx> subsys_bar = complement(subsys, N);
     std::copy(std::begin(subsys_bar), std::end(subsys_bar),
-              std::begin(Csubsysbar));
+              std::begin(Csubsys_bar));
 
-    for (idx i = 0; i < n; ++i)
+    for (idx i = 0; i < N; ++i)
     {
         Cdims[i] = dims[i];
     }
-    for (idx i = 0; i < nsubsys; ++i)
+    for (idx i = 0; i < Nsubsys; ++i)
     {
         Csubsys[i] = subsys[i];
         Cdimssubsys[i] = dims[subsys[i]];
     }
-    for (idx i = 0; i < nsubsysbar; ++i)
+    for (idx i = 0; i < Nsubsys_bar; ++i)
     {
-        Cdimssubsysbar[i] = dims[subsys_bar[i]];
+        Cdimssubsys_bar[i] = dims[subsys_bar[i]];
     }
 
     auto worker = [=](idx b) noexcept
@@ -131,30 +131,30 @@ dyn_col_vect<typename Derived::Scalar> ip(
     {
         idx Cmidxrow[maxn];
         idx Cmidxrowsubsys[maxn];
-        idx Cmidxcolsubsysbar[maxn];
+        idx Cmidxcolsubsys_bar[maxn];
 
         /* get the col multi-indexes of the complement */
-        internal::_n2multiidx(b, nsubsysbar,
-                              Cdimssubsysbar, Cmidxcolsubsysbar);
+        internal::_n2multiidx(b, Nsubsys_bar,
+                              Cdimssubsys_bar, Cmidxcolsubsys_bar);
         /* write it in the global row multi-index */
-        for (idx k = 0; k < nsubsysbar; ++k)
+        for (idx k = 0; k < Nsubsys_bar; ++k)
         {
-            Cmidxrow[Csubsysbar[k]] = Cmidxcolsubsysbar[k];
+            Cmidxrow[Csubsys_bar[k]] = Cmidxcolsubsys_bar[k];
         }
 
         typename Derived::Scalar result = 0;
         for (idx a = 0; a < Dsubsys; ++a)
         {
             /* get the row multi-indexes of the subsys */
-            internal::_n2multiidx(a, nsubsys,
+            internal::_n2multiidx(a, Nsubsys,
                                   Cdimssubsys, Cmidxrowsubsys);
             /* write it in the global row multi-index */
-            for (idx k = 0; k < nsubsys; ++k)
+            for (idx k = 0; k < Nsubsys; ++k)
             {
                 Cmidxrow[Csubsys[k]] = Cmidxrowsubsys[k];
             }
             // compute the row index
-            idx i = internal::_multiidx2n(Cmidxrow, n, Cdims);
+            idx i = internal::_multiidx2n(Cmidxrow, N, Cdims);
 
             result += std::conj(rphi(a)) * rpsi(i);
         }
@@ -162,11 +162,11 @@ dyn_col_vect<typename Derived::Scalar> ip(
         return result;
     }; /* end worker */
 
-    dyn_col_vect<typename Derived::Scalar> result(Dsubsysbar);
+    dyn_col_vect<typename Derived::Scalar> result(Dsubsys_bar);
 #ifdef _WITH_OPENMP_
 #pragma omp parallel for
 #endif
-    for (idx m = 0; m < Dsubsysbar; ++m)
+    for (idx m = 0; m < Dsubsys_bar; ++m)
         result(m) = worker(m);
 
     return result;
@@ -202,10 +202,8 @@ dyn_col_vect<typename Derived::Scalar> ip(
         throw Exception("qpp::ip()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
-    idx n =
-            static_cast<idx>(std::llround(std::log2(rpsi.rows()) /
-                                          std::log2(d)));
-    std::vector<idx> dims(n, d); // local dimensions vector
+    idx N = internal::_get_num_subsys(static_cast<idx>(rpsi.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
     return ip(phi, psi, subsys, dims);
 }
 
@@ -398,7 +396,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
 
     idx D = prod(std::begin(dims), std::end(dims));
     idx Dsubsys = prod(std::begin(subsys_dims), std::end(subsys_dims));
-    idx Dsubsysbar = D / Dsubsys;
+    idx Dsubsys_bar = D / Dsubsys;
 
     // check the Kraus operators
     if (Ks.size() == 0)
@@ -419,7 +417,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
     // probabilities
     std::vector<double> prob(Ks.size());
     // resulting states
-    std::vector<cmat> outstates(Ks.size(), cmat::Zero(Dsubsysbar, Dsubsysbar));
+    std::vector<cmat> outstates(Ks.size(), cmat::Zero(Dsubsys_bar, Dsubsys_bar));
 
     //************ density matrix ************//
     if (internal::_check_square_mat(rA)) // square matrix
@@ -532,10 +530,8 @@ measure(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::measure()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
-    idx n =
-            static_cast<idx>(std::llround(std::log2(rA.rows()) /
-                                          std::log2(d)));
-    std::vector<idx> dims(n, d); // local dimensions vector
+    idx N = internal::_get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
 
     return measure(rA, Ks, subsys, dims);
 }
@@ -728,10 +724,8 @@ measure(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::measure()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
-    idx n =
-            static_cast<idx>(std::llround(std::log2(rA.rows()) /
-                                          std::log2(d)));
-    std::vector<idx> dims(n, d); // local dimensions vector
+    idx N = internal::_get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
 
     return measure(rA, V, subsys, dims);
 }
@@ -850,10 +844,8 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::measure_seq()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
-    idx n =
-            static_cast<idx>(std::llround(std::log2(rA.rows()) /
-                                          std::log2(d)));
-    std::vector<idx> dims(n, d); // local dimensions vector
+    idx N = internal::_get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
 
     return measure_seq(rA, subsys, dims);
 }
