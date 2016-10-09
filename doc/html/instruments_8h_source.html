@@ -317,7 +317,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="comment">// sample from the probability distribution</span></div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    std::discrete_distribution&lt;idx&gt; dd(std::begin(prob),</div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                                       std::end(prob));</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> result = dd(<a class="code" href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">RandomDevices::get_instance</a>()._rng);</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> result = dd(<a class="code" href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">RandomDevices::get_instance</a>().rng_);</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="keywordflow">return</span> std::make_tuple(result, prob, outstates);</div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;}</div>
@@ -460,7 +460,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    <span class="comment">// sample from the probability distribution</span></div>
 <div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    std::discrete_distribution&lt;idx&gt; dd(std::begin(prob),</div>
 <div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;                                       std::end(prob));</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> result = dd(<a class="code" href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">RandomDevices::get_instance</a>()._rng);</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> result = dd(<a class="code" href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">RandomDevices::get_instance</a>().rng_);</div>
 <div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;</div>
 <div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;    <span class="keywordflow">return</span> std::make_tuple(result, prob, outstates);</div>
 <div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;}</div>
@@ -596,7 +596,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;        <span class="comment">// sample from the probability distribution</span></div>
 <div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;        std::discrete_distribution&lt;idx&gt; dd(std::begin(prob),</div>
 <div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;                                           std::end(prob));</div>
-<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> result = dd(<a class="code" href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">RandomDevices::get_instance</a>()._rng);</div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> result = dd(<a class="code" href="classqpp_1_1internal_1_1_singleton.html#a4c06f662f70991aa6f84bacf71efc069">RandomDevices::get_instance</a>().rng_);</div>
 <div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;</div>
 <div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;        <span class="keywordflow">return</span> std::make_tuple(result, prob, outstates);</div>
 <div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;    }</div>
@@ -786,7 +786,7 @@ $(document).ready(function(){initNavTree('instruments_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="instruments_8h.html">instruments.h</a></li>
-    <li class="footer">Generated on Sun Oct 9 2016 16:42:36 for Quantum++ by
+    <li class="footer">Generated on Sun Oct 9 2016 18:00:51 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

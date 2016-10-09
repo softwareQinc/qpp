@@ -35,10 +35,10 @@ var classqpp_1_1_exception =
     ] ],
     [ "Exception", "classqpp_1_1_exception.html#af31368e08ce7c7161ddaf65b3f27d5b2", null ],
     [ "Exception", "classqpp_1_1_exception.html#af0e2b4649f0288edaf9436fcaac88755", null ],
-    [ "_construct_exception_msg", "classqpp_1_1_exception.html#af93e5b4b45b5d9e19cea929ce08a8e34", null ],
+    [ "construct_exception_msg_", "classqpp_1_1_exception.html#ad477096ae45fece50fce169940343549", null ],
     [ "what", "classqpp_1_1_exception.html#a59e464cb761133e41eb3cdb4a77ac55b", null ],
-    [ "_custom", "classqpp_1_1_exception.html#ae97ce74ba0750c77428a4f79431062d4", null ],
-    [ "_msg", "classqpp_1_1_exception.html#a78c2cb9721e9fcd729f49134ea29ebdd", null ],
-    [ "_type", "classqpp_1_1_exception.html#a7ab4219dbe5da043d51a49be62e10573", null ],
-    [ "_where", "classqpp_1_1_exception.html#af3709e1bb0b6ac684e18bf332fcab90e", null ]
+    [ "custom_", "classqpp_1_1_exception.html#afac532841ab6af346e5a3e0f3849f366", null ],
+    [ "msg_", "classqpp_1_1_exception.html#a20496cb7520418334e82a6aa29de196e", null ],
+    [ "type_", "classqpp_1_1_exception.html#a73c739a2fee22c0f31afa8f376b5db27", null ],
+    [ "where_", "classqpp_1_1_exception.html#a1e7b0d6572cecebfa272c03f14ff1002", null ]
 ];

@@ -1,8 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structqpp_1_1internal_1_1__details_1_1___display___impl.html" title="qpp::internal::_details\l::_Display_Impl" alt="" coords="5,5,155,47"/>
-<area shape="rect" id="node2" href="$classqpp_1_1internal_1_1_i_o_manip_eigen.html" title="qpp::internal::IOManipEigen" alt="" coords="207,13,394,39"/>
-<area shape="rect" id="node3" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="31,105,129,131"/>
-<area shape="rect" id="node4" href="$classqpp_1_1internal_1_1_i_o_manip_pointer.html" title="qpp::internal::IOManipPointer\l\&lt; PointerType \&gt;" alt="" coords="203,64,399,105"/>
-<area shape="rect" id="node5" href="$classqpp_1_1internal_1_1_i_o_manip_range.html" title="qpp::internal::IOManipRange\l\&lt; InputIterator \&gt;" alt="" coords="205,129,397,171"/>
-<area shape="rect" id="node6" href="$classqpp_1_1_timer.html" title="Chronometer. " alt="" coords="208,195,393,222"/>
+<area shape="rect" id="node1" href="$structqpp_1_1internal_1_1details___1_1_display___impl__.html" title="qpp::internal::details\l_::Display_Impl_" alt="" coords="5,5,147,47"/>
+<area shape="rect" id="node2" href="$classqpp_1_1internal_1_1_i_o_manip_eigen.html" title="qpp::internal::IOManipEigen" alt="" coords="199,13,386,39"/>
+<area shape="rect" id="node3" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="27,105,125,131"/>
+<area shape="rect" id="node4" href="$classqpp_1_1internal_1_1_i_o_manip_pointer.html" title="qpp::internal::IOManipPointer\l\&lt; PointerType \&gt;" alt="" coords="195,64,391,105"/>
+<area shape="rect" id="node5" href="$classqpp_1_1internal_1_1_i_o_manip_range.html" title="qpp::internal::IOManipRange\l\&lt; InputIterator \&gt;" alt="" coords="197,129,389,171"/>
+<area shape="rect" id="node6" href="$classqpp_1_1_timer.html" title="Chronometer. " alt="" coords="200,195,385,222"/>
 </map>

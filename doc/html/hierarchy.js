@@ -1,6 +1,6 @@
 var hierarchy =
 [
-    [ "qpp::internal::_details::Display_Impl_", "structqpp_1_1internal_1_1__details_1_1_display___impl__.html", [
+    [ "qpp::internal::details_::Display_Impl_", "structqpp_1_1internal_1_1details___1_1_display___impl__.html", [
       [ "qpp::internal::IOManipEigen", "classqpp_1_1internal_1_1_i_o_manip_eigen.html", null ]
     ] ],
     [ "std::exception", null, [
