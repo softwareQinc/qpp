@@ -1,7 +1,7 @@
 var number__theory_8h =
 [
     [ "compperm", "number__theory_8h.html#a9a0cdf917f1a5e398e9978fb36141a27", null ],
-    [ "contfrac2x", "number__theory_8h.html#a392505168b9760af20ed641d86fe3a7d", null ],
+    [ "contfrac2x", "number__theory_8h.html#aa255ece30b2b162c7694faaf5eccfc19", null ],
     [ "contfrac2x", "number__theory_8h.html#a155296775ac0c0cd0cfe52c2ade8f14c", null ],
     [ "egcd", "number__theory_8h.html#a0d115963145ca884c5d9ef8f3b18bf83", null ],
     [ "factors", "number__theory_8h.html#a048622e398319b61f9ea62a6c66e67fb", null ],
@@ -15,5 +15,5 @@ var number__theory_8h =
     [ "modmul", "number__theory_8h.html#affc15bf57e2a45f720b0f49034c22827", null ],
     [ "modpow", "number__theory_8h.html#a0ff25c25c0ff9304255495eb90b98d1b", null ],
     [ "randprime", "number__theory_8h.html#ac7a4e9b856bf9a858b71c536acbbab39", null ],
-    [ "x2contfrac", "number__theory_8h.html#ac5f5d1d0cc8230b512e8514eb89549db", null ]
+    [ "x2contfrac", "number__theory_8h.html#ace6723d802f5d4c15f0d14fa1abee7bb", null ]
 ];

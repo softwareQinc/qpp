@@ -18,6 +18,8 @@ var util_8h =
     [ "_check_subsys_match_dims", "util_8h.html#a40b09454ce4959a4fd231e67518d6abe", null ],
     [ "_check_vector", "util_8h.html#ad27f82cc41710292417948f5f4b91999", null ],
     [ "_dirsum2", "util_8h.html#a164486ba597d10ddf2f1f573366d7e7c", null ],
+    [ "_get_dim_subsys", "util_8h.html#acbbfae6f324fc6049be1a0eb0402e5fd", null ],
+    [ "_get_num_subsys", "util_8h.html#a57fdab5c286a535f2d26f8a21c901367", null ],
     [ "_kron2", "util_8h.html#ab192c1e640124a4a578bf43ef97afd47", null ],
     [ "_multiidx2n", "util_8h.html#a58bbe3e0db088a311d6ec053950602cf", null ],
     [ "_n2multiidx", "util_8h.html#a89cac06eec76f72440a339270153e975", null ],

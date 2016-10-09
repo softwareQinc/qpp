@@ -161,6 +161,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a9e4550a948eedf249d041743c91f2708"><td class="memTemplParams" colspan="2">template&lt;typename T , typename First , typename... Args&gt; </td></tr>
 <tr class="memitem:a9e4550a948eedf249d041743c91f2708"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#a9e4550a948eedf249d041743c91f2708">variadic_vector_emplace</a> (std::vector&lt; T &gt; &amp;v, First &amp;&amp;first, Args &amp;&amp;...args)</td></tr>
 <tr class="separator:a9e4550a948eedf249d041743c91f2708"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57fdab5c286a535f2d26f8a21c901367"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#a57fdab5c286a535f2d26f8a21c901367">_get_num_subsys</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> sz, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d)</td></tr>
+<tr class="separator:a57fdab5c286a535f2d26f8a21c901367"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbbfae6f324fc6049be1a0eb0402e5fd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#acbbfae6f324fc6049be1a0eb0402e5fd">_get_dim_subsys</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> sz, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N)</td></tr>
+<tr class="separator:acbbfae6f324fc6049be1a0eb0402e5fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Internal utility functions, do not use/modify. </p>
@@ -631,6 +635,74 @@ template&lt;typename Derived1 , typename Derived2 &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="acbbfae6f324fc6049be1a0eb0402e5fd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::internal::_get_dim_subsys </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>sz</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>N</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a57fdab5c286a535f2d26f8a21c901367"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::internal::_get_num_subsys </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>sz</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>d</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="ab192c1e640124a4a578bf43ef97afd47"></a>
 <div class="memitem">
 <div class="memproto">
@@ -803,7 +875,7 @@ template&lt;typename T , typename First , typename... Args&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="namespaceqpp_1_1internal.html">internal</a></li>
-    <li class="footer">Generated on Sat Oct 8 2016 15:19:25 for Quantum++ by
+    <li class="footer">Generated on Sun Oct 9 2016 16:42:36 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

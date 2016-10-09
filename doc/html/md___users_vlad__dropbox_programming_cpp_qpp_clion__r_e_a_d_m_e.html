@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('md___users_vlad__dropbox_programming_c
      -I /Applications/MATLAB_R2016a.app/extern/include \
      -L /Applications/MATLAB_R2016a.app/bin/maci64 \
      -lmx -lmat minimal.cpp -o minimal
-</pre><h3>Building using <a href="http://www.cmake.org/">cmake</a> (version 3.0 or later)</h3>
+</pre><h3>Building using <a href="http://www.cmake.org/">cmake</a> (version 3.0.0 or later)</h3>
 <p>The current version of the repository has a <code>./CMakeLists.txt</code> configuration file for building examples using <a href="http://www.cmake.org/">cmake</a>. To build an example using <a href="http://www.cmake.org/">cmake</a>, I recommend an out-of-source build, i.e., from the root of the project (where <code>./include</code> is located), type </p><pre class="fragment">mkdir ./build
 cd ./build
 cmake ..
@@ -127,6 +127,9 @@ rm -rf *
 cmake -DWITH_OPENMP=OFF ..
 make
 </pre><p>To change the name of the example file, the location of the <a href="http://eigen.tuxfamily.org">Eigen 3</a> library or the location of <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> installation, edit the <code>./CMakeLists.txt</code> file. See also <code>./CMakeLists.txt</code> for additional options. Do not forget to remove everything from the <code>./build</code> directory before a fresh build!</p>
+<h3>Unit testing</h3>
+<p><a href="https://github.com/google/googletest">Google Mock 1.7.0</a> is included with the project. I strongly recommend to use <a href="http://www.cmake.org/">cmake</a> version 3.0.0 or later as a building system. By default the current <code>CMakeLists.txt</code> automatically builds all unit tests as <code>./build/unit_tests/tests/qpp_testing</code>. To disable automatic building of unit tests, type </p><pre class="fragment">cmake -DWITH_UNIT_TESTS=OFF ..
+</pre><p>from inside <code>./build</code>.</p>
 <h3>Additional remarks</h3>
 <ul>
 <li>The C++ compiler must be C++11 compliant.</li>
@@ -157,7 +160,7 @@ of Quantum++:
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Oct 8 2016 15:19:25 for Quantum++ by
+    <li class="footer">Generated on Sun Oct 9 2016 16:42:36 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

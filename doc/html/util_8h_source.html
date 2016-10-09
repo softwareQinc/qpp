@@ -348,9 +348,9 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived1::Scalar&gt;</a> result;</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    result.resize(Arows * Brows, Acols * Bcols);</div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="preprocessor">#ifdef _WITH_OPENMP_</span></div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="preprocessor">#ifdef WITH_OPENMP_</span></div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="preprocessor">#pragma omp parallel for collapse(2)</span></div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="preprocessor">#endif // WITH_OPENMP_</span></div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; Acols; ++j) <span class="comment">// column major order for speed</span></div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; Arows; ++i)</div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            result.block(i * Brows, j * Bcols, Brows, Bcols) = rA(i, j) * rB;</div>
@@ -414,14 +414,36 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <a class="code" href="namespaceqpp_1_1internal.html#a5f99527a1f1e06fd6d62e094cd2e97f0">variadic_vector_emplace</a>(v, std::forward&lt;Args&gt;(args)...);</div>
 <div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;}</div>
 <div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;} <span class="comment">/* namespace internal */</span></div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INTERNAL_UTIL_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="comment">// returns the number of subsystems (each subsystem assumed of the same</span></div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<span class="comment">// dimension d) from an object (ket/bra/density matrix) of size sz</span></div>
+<div class="line"><a name="l00355"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a57fdab5c286a535f2d26f8a21c901367">  355</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> <a class="code" href="namespaceqpp_1_1internal.html#a57fdab5c286a535f2d26f8a21c901367">_get_num_subsys</a>(<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> sz, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d)</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;{</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(sz) / std::log2(d)));</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;}</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="comment">// returns the dimension of a subsystem (each subsystem assumed of the same</span></div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="comment">// dimension d) from an object (ket/bra/density matrix) of size sz consisting</span></div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="comment">// of N subsystems</span></div>
+<div class="line"><a name="l00363"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#acbbfae6f324fc6049be1a0eb0402e5fd">  363</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> <a class="code" href="namespaceqpp_1_1internal.html#acbbfae6f324fc6049be1a0eb0402e5fd">_get_dim_subsys</a>(<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> sz, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N)</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;{</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    <span class="keywordflow">if</span> (N == 2)</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                std::llround(std::sqrt(static_cast&lt;double&gt;(sz))));</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;            std::pow(static_cast&lt;double&gt;(sz), 1./N)));</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;}</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;} <span class="comment">/* namespace internal */</span></div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INTERNAL_UTIL_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a88116de0ca257a3117ca43623a1d7272"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a88116de0ca257a3117ca43623a1d7272">qpp::internal::_check_cvector</a></div><div class="ttdeci">bool _check_cvector(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:105</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_acbbfae6f324fc6049be1a0eb0402e5fd"><div class="ttname"><a href="namespaceqpp_1_1internal.html#acbbfae6f324fc6049be1a0eb0402e5fd">qpp::internal::_get_dim_subsys</a></div><div class="ttdeci">idx _get_dim_subsys(idx sz, idx N)</div><div class="ttdef"><b>Definition:</b> util.h:363</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_ae3fd4f3961c2f3df7eb089355cd18c94"><div class="ttname"><a href="namespaceqpp_1_1internal.html#ae3fd4f3961c2f3df7eb089355cd18c94">qpp::internal::_check_qubit_cvector</a></div><div class="ttdeci">bool _check_qubit_cvector(const Eigen::MatrixBase&lt; Derived &gt; &amp;V) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:220</div></div>
 <div class="ttc" id="namespaceqpp_html_aea80be6c57ee43e43aa9629942cd3608"><div class="ttname"><a href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">qpp::maxn</a></div><div class="ttdeci">constexpr idx maxn</div><div class="ttdoc">Maximum number of allowed qu(d)its (subsystems) </div><div class="ttdef"><b>Definition:</b> constants.h:74</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a54c31e1649dffa40e39e4b9cf78db1ce"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a54c31e1649dffa40e39e4b9cf78db1ce">qpp::internal::_check_matching_sizes</a></div><div class="ttdeci">bool _check_matching_sizes(const T1 &amp;lhs, const T2 &amp;rhs) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:119</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a57fdab5c286a535f2d26f8a21c901367"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a57fdab5c286a535f2d26f8a21c901367">qpp::internal::_get_num_subsys</a></div><div class="ttdeci">idx _get_num_subsys(idx sz, idx d)</div><div class="ttdef"><b>Definition:</b> util.h:355</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a40b09454ce4959a4fd231e67518d6abe"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a40b09454ce4959a4fd231e67518d6abe">qpp::internal::_check_subsys_match_dims</a></div><div class="ttdeci">bool _check_subsys_match_dims(const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdef"><b>Definition:</b> util.h:183</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a91aa370280d653933744a64a55cd0ff3"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a91aa370280d653933744a64a55cd0ff3">qpp::internal::_check_dims_match_mat</a></div><div class="ttdeci">bool _check_dims_match_mat(const std::vector&lt; idx &gt; &amp;dims, const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:141</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_ac65903c07823d69fb7a75e2b215ed0a7"><div class="ttname"><a href="namespaceqpp_1_1internal.html#ac65903c07823d69fb7a75e2b215ed0a7">qpp::internal::_check_dims_match_cvect</a></div><div class="ttdeci">bool _check_dims_match_cvect(const std::vector&lt; idx &gt; &amp;dims, const Eigen::MatrixBase&lt; Derived &gt; &amp;V)</div><div class="ttdef"><b>Definition:</b> util.h:152</div></div>
@@ -453,7 +475,7 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7374381ecdb819c64ee9b6ea2bd3370d.html">internal</a></li><li class="navelem"><a class="el" href="util_8h.html">util.h</a></li>
-    <li class="footer">Generated on Sat Oct 8 2016 15:19:24 for Quantum++ by
+    <li class="footer">Generated on Sun Oct 9 2016 16:42:36 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -710,9 +710,9 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;</div>
 <div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;OutputScalar&gt;</a> result(rA.rows(), rA.cols());</div>
 <div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;</div>
-<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;<span class="preprocessor">#ifdef _WITH_OPENMP_</span></div>
+<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;<span class="preprocessor">#ifdef WITH_OPENMP_</span></div>
 <div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;<span class="preprocessor">#pragma omp parallel for collapse(2)</span></div>
-<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;<span class="preprocessor">#endif // WITH_OPENMP_</span></div>
 <div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;    <span class="comment">// column major order for speed</span></div>
 <div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; static_cast&lt;idx&gt;(rA.cols()); ++j)</div>
 <div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(rA.rows()); ++i)</div>
@@ -1112,7 +1112,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01464"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a2f09ed5c440772b552a289b800d4415a"> 1464</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> <a class="code" href="namespaceqpp.html#a2f09ed5c440772b552a289b800d4415a">mket</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; mask,</div>
 <div class="line"><a name="l01465"></a><span class="lineno"> 1465</span>&#160;                <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l01466"></a><span class="lineno"> 1466</span>&#160;{</div>
-<div class="line"><a name="l01467"></a><span class="lineno"> 1467</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n = mask.size();</div>
+<div class="line"><a name="l01467"></a><span class="lineno"> 1467</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N = mask.size();</div>
 <div class="line"><a name="l01468"></a><span class="lineno"> 1468</span>&#160;</div>
 <div class="line"><a name="l01469"></a><span class="lineno"> 1469</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = std::accumulate(std::begin(dims), std::end(dims),</div>
 <div class="line"><a name="l01470"></a><span class="lineno"> 1470</span>&#160;                            static_cast&lt;idx&gt;(1), std::multiplies&lt;idx&gt;());</div>
@@ -1120,7 +1120,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01472"></a><span class="lineno"> 1472</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l01473"></a><span class="lineno"> 1473</span>&#160;</div>
 <div class="line"><a name="l01474"></a><span class="lineno"> 1474</span>&#160;    <span class="comment">// check zero size</span></div>
-<div class="line"><a name="l01475"></a><span class="lineno"> 1475</span>&#160;    <span class="keywordflow">if</span> (n == 0)</div>
+<div class="line"><a name="l01475"></a><span class="lineno"> 1475</span>&#160;    <span class="keywordflow">if</span> (N == 0)</div>
 <div class="line"><a name="l01476"></a><span class="lineno"> 1476</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::mket()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l01477"></a><span class="lineno"> 1477</span>&#160;    <span class="comment">// check valid dims</span></div>
 <div class="line"><a name="l01478"></a><span class="lineno"> 1478</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a0a4a25bc623c39d21898fd6c4e3177ca">internal::_check_dims</a>(dims))</div>
@@ -1129,7 +1129,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01481"></a><span class="lineno"> 1481</span>&#160;    <span class="keywordflow">if</span> (mask.size() != dims.size())</div>
 <div class="line"><a name="l01482"></a><span class="lineno"> 1482</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::mket()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2">Exception::Type::SUBSYS_MISMATCH_DIMS</a>);</div>
 <div class="line"><a name="l01483"></a><span class="lineno"> 1483</span>&#160;    <span class="comment">// check mask is a valid vector</span></div>
-<div class="line"><a name="l01484"></a><span class="lineno"> 1484</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; n; ++i)</div>
+<div class="line"><a name="l01484"></a><span class="lineno"> 1484</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; N; ++i)</div>
 <div class="line"><a name="l01485"></a><span class="lineno"> 1485</span>&#160;        <span class="keywordflow">if</span> (mask[i] &gt;= dims[i])</div>
 <div class="line"><a name="l01486"></a><span class="lineno"> 1486</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::mket()&quot;</span>,</div>
 <div class="line"><a name="l01487"></a><span class="lineno"> 1487</span>&#160;                            <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2">Exception::Type::SUBSYS_MISMATCH_DIMS</a>);</div>
@@ -1144,13 +1144,13 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01496"></a><span class="lineno"> 1496</span>&#160;</div>
 <div class="line"><a name="l01509"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a3d054252433fbf793575092697f9d985"> 1509</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> <a class="code" href="namespaceqpp.html#a2f09ed5c440772b552a289b800d4415a">mket</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; mask, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
 <div class="line"><a name="l01510"></a><span class="lineno"> 1510</span>&#160;{</div>
-<div class="line"><a name="l01511"></a><span class="lineno"> 1511</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n = mask.size();</div>
-<div class="line"><a name="l01512"></a><span class="lineno"> 1512</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::pow(d, n)));</div>
+<div class="line"><a name="l01511"></a><span class="lineno"> 1511</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N = mask.size();</div>
+<div class="line"><a name="l01512"></a><span class="lineno"> 1512</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::pow(d, N)));</div>
 <div class="line"><a name="l01513"></a><span class="lineno"> 1513</span>&#160;</div>
 <div class="line"><a name="l01514"></a><span class="lineno"> 1514</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l01515"></a><span class="lineno"> 1515</span>&#160;</div>
 <div class="line"><a name="l01516"></a><span class="lineno"> 1516</span>&#160;    <span class="comment">// check zero size</span></div>
-<div class="line"><a name="l01517"></a><span class="lineno"> 1517</span>&#160;    <span class="keywordflow">if</span> (n == 0)</div>
+<div class="line"><a name="l01517"></a><span class="lineno"> 1517</span>&#160;    <span class="keywordflow">if</span> (N == 0)</div>
 <div class="line"><a name="l01518"></a><span class="lineno"> 1518</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::mket()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l01519"></a><span class="lineno"> 1519</span>&#160;</div>
 <div class="line"><a name="l01520"></a><span class="lineno"> 1520</span>&#160;    <span class="comment">// check valid dims</span></div>
@@ -1158,14 +1158,14 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01522"></a><span class="lineno"> 1522</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::mket()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l01523"></a><span class="lineno"> 1523</span>&#160;</div>
 <div class="line"><a name="l01524"></a><span class="lineno"> 1524</span>&#160;    <span class="comment">// check mask is a valid vector</span></div>
-<div class="line"><a name="l01525"></a><span class="lineno"> 1525</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; n; ++i)</div>
+<div class="line"><a name="l01525"></a><span class="lineno"> 1525</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; N; ++i)</div>
 <div class="line"><a name="l01526"></a><span class="lineno"> 1526</span>&#160;        <span class="keywordflow">if</span> (mask[i] &gt;= d)</div>
 <div class="line"><a name="l01527"></a><span class="lineno"> 1527</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::mket()&quot;</span>,</div>
 <div class="line"><a name="l01528"></a><span class="lineno"> 1528</span>&#160;                            <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2">Exception::Type::SUBSYS_MISMATCH_DIMS</a>);</div>
 <div class="line"><a name="l01529"></a><span class="lineno"> 1529</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l01530"></a><span class="lineno"> 1530</span>&#160;</div>
 <div class="line"><a name="l01531"></a><span class="lineno"> 1531</span>&#160;    <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> result = ket::Zero(D);</div>
-<div class="line"><a name="l01532"></a><span class="lineno"> 1532</span>&#160;    std::vector&lt;idx&gt; dims(n, d);</div>
+<div class="line"><a name="l01532"></a><span class="lineno"> 1532</span>&#160;    std::vector&lt;idx&gt; dims(N, d);</div>
 <div class="line"><a name="l01533"></a><span class="lineno"> 1533</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> pos = <a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">multiidx2n</a>(mask, dims);</div>
 <div class="line"><a name="l01534"></a><span class="lineno"> 1534</span>&#160;    result(pos) = 1;</div>
 <div class="line"><a name="l01535"></a><span class="lineno"> 1535</span>&#160;</div>
@@ -1175,7 +1175,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01553"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a3ee4bf8befeea8079ad61c7070ba9fa2"> 1553</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a3ee4bf8befeea8079ad61c7070ba9fa2">mprj</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; mask,</div>
 <div class="line"><a name="l01554"></a><span class="lineno"> 1554</span>&#160;                 <span class="keyword">const</span> std::vector&lt;idx&gt;&amp; dims)</div>
 <div class="line"><a name="l01555"></a><span class="lineno"> 1555</span>&#160;{</div>
-<div class="line"><a name="l01556"></a><span class="lineno"> 1556</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n = mask.size();</div>
+<div class="line"><a name="l01556"></a><span class="lineno"> 1556</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N = mask.size();</div>
 <div class="line"><a name="l01557"></a><span class="lineno"> 1557</span>&#160;</div>
 <div class="line"><a name="l01558"></a><span class="lineno"> 1558</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = std::accumulate(std::begin(dims), std::end(dims),</div>
 <div class="line"><a name="l01559"></a><span class="lineno"> 1559</span>&#160;                            static_cast&lt;idx&gt;(1), std::multiplies&lt;idx&gt;());</div>
@@ -1183,7 +1183,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01561"></a><span class="lineno"> 1561</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l01562"></a><span class="lineno"> 1562</span>&#160;</div>
 <div class="line"><a name="l01563"></a><span class="lineno"> 1563</span>&#160;    <span class="comment">// check zero size</span></div>
-<div class="line"><a name="l01564"></a><span class="lineno"> 1564</span>&#160;    <span class="keywordflow">if</span> (n == 0)</div>
+<div class="line"><a name="l01564"></a><span class="lineno"> 1564</span>&#160;    <span class="keywordflow">if</span> (N == 0)</div>
 <div class="line"><a name="l01565"></a><span class="lineno"> 1565</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::mprj()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l01566"></a><span class="lineno"> 1566</span>&#160;    <span class="comment">// check valid dims</span></div>
 <div class="line"><a name="l01567"></a><span class="lineno"> 1567</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a0a4a25bc623c39d21898fd6c4e3177ca">internal::_check_dims</a>(dims))</div>
@@ -1192,7 +1192,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01570"></a><span class="lineno"> 1570</span>&#160;    <span class="keywordflow">if</span> (mask.size() != dims.size())</div>
 <div class="line"><a name="l01571"></a><span class="lineno"> 1571</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::mprj()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2">Exception::Type::SUBSYS_MISMATCH_DIMS</a>);</div>
 <div class="line"><a name="l01572"></a><span class="lineno"> 1572</span>&#160;    <span class="comment">// check mask is a valid vector</span></div>
-<div class="line"><a name="l01573"></a><span class="lineno"> 1573</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; n; ++i)</div>
+<div class="line"><a name="l01573"></a><span class="lineno"> 1573</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; N; ++i)</div>
 <div class="line"><a name="l01574"></a><span class="lineno"> 1574</span>&#160;        <span class="keywordflow">if</span> (mask[i] &gt;= dims[i])</div>
 <div class="line"><a name="l01575"></a><span class="lineno"> 1575</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::mprj()&quot;</span>,</div>
 <div class="line"><a name="l01576"></a><span class="lineno"> 1576</span>&#160;                            <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2">Exception::Type::SUBSYS_MISMATCH_DIMS</a>);</div>
@@ -1207,13 +1207,13 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01585"></a><span class="lineno"> 1585</span>&#160;</div>
 <div class="line"><a name="l01600"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a7a4e06590399ad3a7b4a15ba62849e82"> 1600</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> <a class="code" href="namespaceqpp.html#a3ee4bf8befeea8079ad61c7070ba9fa2">mprj</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; mask, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d = 2)</div>
 <div class="line"><a name="l01601"></a><span class="lineno"> 1601</span>&#160;{</div>
-<div class="line"><a name="l01602"></a><span class="lineno"> 1602</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n = mask.size();</div>
-<div class="line"><a name="l01603"></a><span class="lineno"> 1603</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::pow(d, n)));</div>
+<div class="line"><a name="l01602"></a><span class="lineno"> 1602</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N = mask.size();</div>
+<div class="line"><a name="l01603"></a><span class="lineno"> 1603</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::pow(d, N)));</div>
 <div class="line"><a name="l01604"></a><span class="lineno"> 1604</span>&#160;</div>
 <div class="line"><a name="l01605"></a><span class="lineno"> 1605</span>&#160;    <span class="comment">// EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l01606"></a><span class="lineno"> 1606</span>&#160;</div>
 <div class="line"><a name="l01607"></a><span class="lineno"> 1607</span>&#160;    <span class="comment">// check zero size</span></div>
-<div class="line"><a name="l01608"></a><span class="lineno"> 1608</span>&#160;    <span class="keywordflow">if</span> (n == 0)</div>
+<div class="line"><a name="l01608"></a><span class="lineno"> 1608</span>&#160;    <span class="keywordflow">if</span> (N == 0)</div>
 <div class="line"><a name="l01609"></a><span class="lineno"> 1609</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::mprj()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l01610"></a><span class="lineno"> 1610</span>&#160;</div>
 <div class="line"><a name="l01611"></a><span class="lineno"> 1611</span>&#160;    <span class="comment">// check valid dims</span></div>
@@ -1221,14 +1221,14 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01613"></a><span class="lineno"> 1613</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::mprj()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l01614"></a><span class="lineno"> 1614</span>&#160;</div>
 <div class="line"><a name="l01615"></a><span class="lineno"> 1615</span>&#160;    <span class="comment">// check mask is a valid vector</span></div>
-<div class="line"><a name="l01616"></a><span class="lineno"> 1616</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; n; ++i)</div>
+<div class="line"><a name="l01616"></a><span class="lineno"> 1616</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; N; ++i)</div>
 <div class="line"><a name="l01617"></a><span class="lineno"> 1617</span>&#160;        <span class="keywordflow">if</span> (mask[i] &gt;= d)</div>
 <div class="line"><a name="l01618"></a><span class="lineno"> 1618</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::mprj()&quot;</span>,</div>
 <div class="line"><a name="l01619"></a><span class="lineno"> 1619</span>&#160;                            <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca9d3e4f41a0b0e525e0e69b7a9ef961d2">Exception::Type::SUBSYS_MISMATCH_DIMS</a>);</div>
 <div class="line"><a name="l01620"></a><span class="lineno"> 1620</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l01621"></a><span class="lineno"> 1621</span>&#160;</div>
 <div class="line"><a name="l01622"></a><span class="lineno"> 1622</span>&#160;    <a class="code" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> result = cmat::Zero(D, D);</div>
-<div class="line"><a name="l01623"></a><span class="lineno"> 1623</span>&#160;    std::vector&lt;idx&gt; dims(n, d);</div>
+<div class="line"><a name="l01623"></a><span class="lineno"> 1623</span>&#160;    std::vector&lt;idx&gt; dims(N, d);</div>
 <div class="line"><a name="l01624"></a><span class="lineno"> 1624</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> pos = <a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">multiidx2n</a>(mask, dims);</div>
 <div class="line"><a name="l01625"></a><span class="lineno"> 1625</span>&#160;    result(pos, pos) = 1;</div>
 <div class="line"><a name="l01626"></a><span class="lineno"> 1626</span>&#160;</div>
@@ -1501,7 +1501,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="functions_8h.html">functions.h</a></li>
-    <li class="footer">Generated on Sat Oct 8 2016 15:19:24 for Quantum++ by
+    <li class="footer">Generated on Sun Oct 9 2016 16:42:36 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

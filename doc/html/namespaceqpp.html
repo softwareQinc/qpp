@@ -519,10 +519,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a511ed948dfcfc43535412d9cc9a586a6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html">internal::IOManipRange</a>&lt; typename Container::const_iterator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a511ed948dfcfc43535412d9cc9a586a6">disp</a> (const Container &amp;c, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;, typename std::enable_if&lt; <a class="el" href="structqpp_1_1is__iterable.html">is_iterable</a>&lt; Container &gt;::value &gt;::type *=nullptr)</td></tr>
 <tr class="memdesc:a511ed948dfcfc43535412d9cc9a586a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard container ostream manipulator. The container must support std::begin(), std::end() and forward iteration.  <a href="#a511ed948dfcfc43535412d9cc9a586a6">More...</a><br /></td></tr>
 <tr class="separator:a511ed948dfcfc43535412d9cc9a586a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0d94fac0c249e0c34ed5ff9e9b6a4be"><td class="memTemplParams" colspan="2">template&lt;typename PointerType &gt; </td></tr>
-<tr class="memitem:aa0d94fac0c249e0c34ed5ff9e9b6a4be"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html">internal::IOManipPointer</a>&lt; PointerType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aa0d94fac0c249e0c34ed5ff9e9b6a4be">disp</a> (const PointerType *p, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;)</td></tr>
-<tr class="memdesc:aa0d94fac0c249e0c34ed5ff9e9b6a4be"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-style pointer ostream manipulator.  <a href="#aa0d94fac0c249e0c34ed5ff9e9b6a4be">More...</a><br /></td></tr>
-<tr class="separator:aa0d94fac0c249e0c34ed5ff9e9b6a4be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7a947f46b0a59a26de227e1c4d786b9"><td class="memTemplParams" colspan="2">template&lt;typename PointerType &gt; </td></tr>
+<tr class="memitem:ad7a947f46b0a59a26de227e1c4d786b9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html">internal::IOManipPointer</a>&lt; PointerType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ad7a947f46b0a59a26de227e1c4d786b9">disp</a> (const PointerType *p, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;)</td></tr>
+<tr class="memdesc:ad7a947f46b0a59a26de227e1c4d786b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-style pointer ostream manipulator.  <a href="#ad7a947f46b0a59a26de227e1c4d786b9">More...</a><br /></td></tr>
+<tr class="separator:ad7a947f46b0a59a26de227e1c4d786b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a238cf516513837235fbc7d7d283f7b78"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a238cf516513837235fbc7d7d283f7b78"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a238cf516513837235fbc7d7d283f7b78">save</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::string &amp;fname)</td></tr>
 <tr class="memdesc:a238cf516513837235fbc7d7d283f7b78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves Eigen expression to a binary file (internal format) in double precision.  <a href="#a238cf516513837235fbc7d7d283f7b78">More...</a><br /></td></tr>
@@ -607,12 +607,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a2f5cc697b513a7f0e5bdab3f357df173"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a2f5cc697b513a7f0e5bdab3f357df173">saveMATLABmatrix</a> (const Eigen::MatrixBase&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &amp;A, const std::string &amp;mat_file, const std::string &amp;var_name, const std::string &amp;mode)</td></tr>
 <tr class="memdesc:a2f5cc697b513a7f0e5bdab3f357df173"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves an Eigen dynamic matrix to a MATLAB .mat file, specialization for complex matrices (<a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a>)  <a href="#a2f5cc697b513a7f0e5bdab3f357df173">More...</a><br /></td></tr>
 <tr class="separator:a2f5cc697b513a7f0e5bdab3f357df173"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5f5d1d0cc8230b512e8514eb89549db"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ac5f5d1d0cc8230b512e8514eb89549db">x2contfrac</a> (double x, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cut=1e5)</td></tr>
-<tr class="memdesc:ac5f5d1d0cc8230b512e8514eb89549db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple continued fraction expansion.  <a href="#ac5f5d1d0cc8230b512e8514eb89549db">More...</a><br /></td></tr>
-<tr class="separator:ac5f5d1d0cc8230b512e8514eb89549db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a392505168b9760af20ed641d86fe3a7d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a392505168b9760af20ed641d86fe3a7d">contfrac2x</a> (const std::vector&lt; int &gt; &amp;cf, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n)</td></tr>
-<tr class="memdesc:a392505168b9760af20ed641d86fe3a7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Real representation of a simple continued fraction.  <a href="#a392505168b9760af20ed641d86fe3a7d">More...</a><br /></td></tr>
-<tr class="separator:a392505168b9760af20ed641d86fe3a7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace6723d802f5d4c15f0d14fa1abee7bb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ace6723d802f5d4c15f0d14fa1abee7bb">x2contfrac</a> (double x, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cut=1e5)</td></tr>
+<tr class="memdesc:ace6723d802f5d4c15f0d14fa1abee7bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple continued fraction expansion.  <a href="#ace6723d802f5d4c15f0d14fa1abee7bb">More...</a><br /></td></tr>
+<tr class="separator:ace6723d802f5d4c15f0d14fa1abee7bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa255ece30b2b162c7694faaf5eccfc19"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aa255ece30b2b162c7694faaf5eccfc19">contfrac2x</a> (const std::vector&lt; int &gt; &amp;cf, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N)</td></tr>
+<tr class="memdesc:aa255ece30b2b162c7694faaf5eccfc19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Real representation of a simple continued fraction.  <a href="#aa255ece30b2b162c7694faaf5eccfc19">More...</a><br /></td></tr>
+<tr class="separator:aa255ece30b2b162c7694faaf5eccfc19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a155296775ac0c0cd0cfe52c2ade8f14c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a155296775ac0c0cd0cfe52c2ade8f14c">contfrac2x</a> (const std::vector&lt; int &gt; &amp;cf)</td></tr>
 <tr class="memdesc:a155296775ac0c0cd0cfe52c2ade8f14c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Real representation of a simple continued fraction.  <a href="#a155296775ac0c0cd0cfe52c2ade8f14c">More...</a><br /></td></tr>
 <tr class="separator:a155296775ac0c0cd0cfe52c2ade8f14c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -784,9 +784,9 @@ Functions</h2></td></tr>
 <tr class="memitem:abdb1f9fda9cfbf02264cd4c05e0b0070"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#abdb1f9fda9cfbf02264cd4c05e0b0070">randrho</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D)</td></tr>
 <tr class="memdesc:abdb1f9fda9cfbf02264cd4c05e0b0070"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random density matrix.  <a href="#abdb1f9fda9cfbf02264cd4c05e0b0070">More...</a><br /></td></tr>
 <tr class="separator:abdb1f9fda9cfbf02264cd4c05e0b0070"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afaecc4713bdcb1767b3188aa495ecd0b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#afaecc4713bdcb1767b3188aa495ecd0b">randperm</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n)</td></tr>
-<tr class="memdesc:afaecc4713bdcb1767b3188aa495ecd0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random uniformly distributed permutation.  <a href="#afaecc4713bdcb1767b3188aa495ecd0b">More...</a><br /></td></tr>
-<tr class="separator:afaecc4713bdcb1767b3188aa495ecd0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34aa968f8779cff8a973798557f38bc3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a34aa968f8779cff8a973798557f38bc3">randperm</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N)</td></tr>
+<tr class="memdesc:a34aa968f8779cff8a973798557f38bc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random uniformly distributed permutation.  <a href="#a34aa968f8779cff8a973798557f38bc3">More...</a><br /></td></tr>
+<tr class="separator:a34aa968f8779cff8a973798557f38bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc09834bbfdd7aebe3cd95d01c99b869"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#abc09834bbfdd7aebe3cd95d01c99b869">uniform</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N)</td></tr>
 <tr class="memdesc:abc09834bbfdd7aebe3cd95d01c99b869"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uniform probability distribution vector.  <a href="#abc09834bbfdd7aebe3cd95d01c99b869">More...</a><br /></td></tr>
 <tr class="separator:abc09834bbfdd7aebe3cd95d01c99b869"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1500,7 +1500,7 @@ template&lt;typename Derived1 , typename Derived2 &gt; </div>
 </div><div class="memdoc">
 
 <p>Applies the controlled-gate <em>A</em> to the part <em>subsys</em> of the multi-partite state vector or density matrix <em>state</em>. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classqpp_1_1_gates.html#ae75fe932917ec2d75d2110cbe76876a2" title="Generates the multi-partite multiple-controlled-A gate in matrix form. ">qpp::Gates::CTRL()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classqpp_1_1_gates.html#ab390c9b9e6cc1bd4e95738550c964935" title="Generates the multi-partite multiple-controlled-A gate in matrix form. ">qpp::Gates::CTRL()</a></dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The dimension of the gate <em>A</em> must match the dimension of <em>subsys</em>. Also, all control subsystems in <em>ctrl</em> must have the same dimension.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1561,7 +1561,7 @@ template&lt;typename Derived1 , typename Derived2 &gt; </div>
 </div><div class="memdoc">
 
 <p>Applies the controlled-gate <em>A</em> to the part <em>subsys</em> of the multi-partite state vector or density matrix <em>state</em>. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classqpp_1_1_gates.html#ae75fe932917ec2d75d2110cbe76876a2" title="Generates the multi-partite multiple-controlled-A gate in matrix form. ">qpp::Gates::CTRL()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classqpp_1_1_gates.html#ab390c9b9e6cc1bd4e95738550c964935" title="Generates the multi-partite multiple-controlled-A gate in matrix form. ">qpp::Gates::CTRL()</a></dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The dimension of the gate <em>A</em> must match the dimension of <em>subsys</em> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1901,7 +1901,7 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a392505168b9760af20ed641d86fe3a7d"></a>
+<a class="anchor" id="aa255ece30b2b162c7694faaf5eccfc19"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1918,7 +1918,7 @@ template&lt;typename Derived &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>n</em>&#160;</td>
+          <td class="paramname"><em>N</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1934,11 +1934,11 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Real representation of a simple continued fraction. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ac5f5d1d0cc8230b512e8514eb89549db" title="Simple continued fraction expansion. ">qpp::x2contfrac()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ace6723d802f5d4c15f0d14fa1abee7bb" title="Simple continued fraction expansion. ">qpp::x2contfrac()</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cf</td><td>Integer vector containing the simple continued fraction expansion </td></tr>
-    <tr><td class="paramname">n</td><td>Number of terms considered in the continued fraction expansion. If <em>n</em> is greater than the size of <em>cf</em>,then all terms in <em>cf</em> are considered. </td></tr>
+    <tr><td class="paramname">N</td><td>Number of terms considered in the continued fraction expansion. If <em>N</em> is greater than the size of <em>cf</em>,then all terms in <em>cf</em> are considered. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1969,7 +1969,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Real representation of a simple continued fraction. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ac5f5d1d0cc8230b512e8514eb89549db" title="Simple continued fraction expansion. ">qpp::x2contfrac()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ace6723d802f5d4c15f0d14fa1abee7bb" title="Simple continued fraction expansion. ">qpp::x2contfrac()</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cf</td><td>Integer vector containing the simple continued fraction expansion </td></tr>
@@ -2536,7 +2536,7 @@ template&lt;typename Container &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="aa0d94fac0c249e0c34ed5ff9e9b6a4be"></a>
+<a class="anchor" id="ad7a947f46b0a59a26de227e1c4d786b9"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -2552,7 +2552,7 @@ template&lt;typename PointerType &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>n</em>, </td>
+          <td class="paramname"><em>N</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -2584,7 +2584,7 @@ template&lt;typename PointerType &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">p</td><td>Pointer to the first element </td></tr>
-    <tr><td class="paramname">n</td><td>Number of elements to be displayed </td></tr>
+    <tr><td class="paramname">N</td><td>Number of elements to be displayed </td></tr>
     <tr><td class="paramname">separator</td><td>Separator </td></tr>
     <tr><td class="paramname">start</td><td>Left marking </td></tr>
     <tr><td class="paramname">end</td><td>Right marking </td></tr>
@@ -6315,7 +6315,7 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="afaecc4713bdcb1767b3188aa495ecd0b"></a>
+<a class="anchor" id="a34aa968f8779cff8a973798557f38bc3"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -6326,7 +6326,7 @@ template&lt;&gt; </div>
           <td class="memname">std::vector&lt;<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&gt; qpp::randperm </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>n</em></td><td>)</td>
+          <td class="paramname"><em>N</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -6341,11 +6341,11 @@ template&lt;&gt; </div>
 <p>Uses Knuth shuffle method (as implemented by std::shuffle), so that all permutations are equally probable</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">n</td><td>Size of the permutation </td></tr>
+    <tr><td class="paramname">N</td><td>Size of the permutation </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Random permutation of size <em>n</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Random permutation of size <em>N</em> </dd></dl>
 
 </div>
 </div>
@@ -7781,7 +7781,7 @@ template&lt;typename Container &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="ac5f5d1d0cc8230b512e8514eb89549db"></a>
+<a class="anchor" id="ace6723d802f5d4c15f0d14fa1abee7bb"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -7798,7 +7798,7 @@ template&lt;typename Container &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>n</em>, </td>
+          <td class="paramname"><em>N</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -7820,16 +7820,16 @@ template&lt;typename Container &gt; </div>
 </div><div class="memdoc">
 
 <p>Simple continued fraction expansion. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a392505168b9760af20ed641d86fe3a7d" title="Real representation of a simple continued fraction. ">qpp::contfrac2x()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#aa255ece30b2b162c7694faaf5eccfc19" title="Real representation of a simple continued fraction. ">qpp::contfrac2x()</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td>Real number </td></tr>
-    <tr><td class="paramname">n</td><td>Maximum number of terms in the expansion </td></tr>
+    <tr><td class="paramname">N</td><td>Maximum number of terms in the expansion </td></tr>
     <tr><td class="paramname">cut</td><td>Stop the expansion when the next term is greater than <em>cut</em> </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Integer vector containing the simple continued fraction expansion of <em>x</em>. If there are <em>m</em> less than <em>n</em> terms in the expansion, a shorter vector with <em>m</em> components is returned. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Integer vector containing the simple continued fraction expansion of <em>x</em>. If there are <em>M</em> less than <em>N</em> terms in the expansion, a shorter vector with <em>M</em> components is returned. </dd></dl>
 
 </div>
 </div>
@@ -7926,7 +7926,7 @@ template&lt;typename Container &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Sat Oct 8 2016 15:19:25 for Quantum++ by
+    <li class="footer">Generated on Sun Oct 9 2016 16:42:36 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

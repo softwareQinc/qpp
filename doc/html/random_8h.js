@@ -13,7 +13,7 @@ var random_8h =
     [ "randn", "random_8h.html#a793a175c6092603d8d4518ede7176fce", null ],
     [ "randn", "random_8h.html#a97b7474e691f0a85940ef6265645a716", null ],
     [ "randn", "random_8h.html#ab967280114b9e2003bd559c840a5f0e6", null ],
-    [ "randperm", "random_8h.html#afaecc4713bdcb1767b3188aa495ecd0b", null ],
+    [ "randperm", "random_8h.html#a34aa968f8779cff8a973798557f38bc3", null ],
     [ "randrho", "random_8h.html#abdb1f9fda9cfbf02264cd4c05e0b0070", null ],
     [ "randU", "random_8h.html#a9243d9d697e5718a95d9743d2ff131dc", null ],
     [ "randV", "random_8h.html#a7e4eff328bfb8e86da723c6659052d90", null ]
