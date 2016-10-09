@@ -21,6 +21,7 @@
 
 #include <gtest/gtest.h>
 #include <qpp.h>
+
 using namespace qpp;
 
 // Unit testing <operations.h>
@@ -91,8 +92,8 @@ TEST(qpp_applyCTRL, NonEmptyControl)
     std::vector<idx> target{1, 3};   // target
 
     idx Dtarget = 1;                    // dimension of the target subsystems
-    for(idx i = 0; i < target.size(); ++i)
-    Dtarget *= dims[target[i]];         // compute it here
+    for (idx i = 0; i < target.size(); ++i)
+        Dtarget *= dims[target[i]];         // compute it here
 
     // some random n qudit pure state
     ket psi = randket(D);
@@ -124,8 +125,8 @@ TEST(qpp_applyCTRL, EmptyControl)
     std::vector<idx> target{1, 0, 3};   // target
 
     idx Dtarget = 1;                    // dimension of the target subsystems
-    for(idx i = 0; i < target.size(); ++i)
-    Dtarget *= dims[target[i]];         // compute it here
+    for (idx i = 0; i < target.size(); ++i)
+        Dtarget *= dims[target[i]];         // compute it here
 
     // some random n qudit pure state
     ket psi = randket(D);

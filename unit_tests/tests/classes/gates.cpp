@@ -21,6 +21,7 @@
 
 #include <gtest/gtest.h>
 #include <qpp.h>
+
 using namespace qpp;
 
 // Unit testing <classes/gates.h>
@@ -67,57 +68,57 @@ TEST(qpp_Gates_CTRL, Qudits)
     // CNOT control-target on 2 qutrits
     cmat CTRL1 = gt.CTRL(gt.Xd(3), {0}, {1}, 2, D);
     EXPECT_NEAR(0, norm(CTRL1 * mket({0, 0}, {D, D}) -
-                                     mket({0, 0}, {D,D})), 1e-10);
+                        mket({0, 0}, {D, D})), 1e-10);
     EXPECT_NEAR(0, norm(CTRL1 * mket({0, 1}, {D, D}) -
-                                     mket({0, 1}, {D, D})), 1e-10);
+                        mket({0, 1}, {D, D})), 1e-10);
     EXPECT_NEAR(0, norm(CTRL1 * mket({0, 2}, {D, D}) -
-                                     mket({0, 2}, {D, D})), 1e-10);
+                        mket({0, 2}, {D, D})), 1e-10);
     EXPECT_NEAR(0, norm(CTRL1 * mket({1, 0}, {D, D}) -
-                                     mket({1, 1}, {D, D})), 1e-10);
+                        mket({1, 1}, {D, D})), 1e-10);
     EXPECT_NEAR(0, norm(CTRL1 * mket({1, 1}, {D, D}) -
-                                     mket({1, 2}, {D, D})), 1e-10);
+                        mket({1, 2}, {D, D})), 1e-10);
     EXPECT_NEAR(0, norm(CTRL1 * mket({1, 2}, {D, D}) -
-                                     mket({1, 0}, {D, D})), 1e-10);
+                        mket({1, 0}, {D, D})), 1e-10);
     EXPECT_NEAR(0, norm(CTRL1 * mket({2, 0}, {D, D}) -
-                                     mket({2, 2}, {D, D})), 1e-10);
+                        mket({2, 2}, {D, D})), 1e-10);
     EXPECT_NEAR(0, norm(CTRL1 * mket({2, 1}, {D, D}) -
-                                     mket({2, 0}, {D, D})), 1e-10);
+                        mket({2, 0}, {D, D})), 1e-10);
     EXPECT_NEAR(0, norm(CTRL1 * mket({2, 2}, {D, D}) -
-                                     mket({2, 1}, {D, D})), 1e-10);
+                        mket({2, 1}, {D, D})), 1e-10);
 
     // CNOT target-control on 2 qutrits
     cmat CTRL2 = gt.CTRL(gt.Xd(3), {1}, {0}, 2, D);
     EXPECT_NEAR(0, norm(CTRL2 * mket({0, 0}, {D, D}) -
-                                     mket({0, 0}, {D,D})), 1e-10);
+                        mket({0, 0}, {D, D})), 1e-10);
     EXPECT_NEAR(0, norm(CTRL2 * mket({0, 1}, {D, D}) -
-                                     mket({1, 1}, {D, D})), 1e-10);
+                        mket({1, 1}, {D, D})), 1e-10);
     EXPECT_NEAR(0, norm(CTRL2 * mket({0, 2}, {D, D}) -
-                                     mket({2, 2}, {D, D})), 1e-10);
+                        mket({2, 2}, {D, D})), 1e-10);
     EXPECT_NEAR(0, norm(CTRL2 * mket({1, 0}, {D, D}) -
-                                     mket({1, 0}, {D, D})), 1e-10);
+                        mket({1, 0}, {D, D})), 1e-10);
     EXPECT_NEAR(0, norm(CTRL2 * mket({1, 1}, {D, D}) -
-                                     mket({2, 1}, {D, D})), 1e-10);
+                        mket({2, 1}, {D, D})), 1e-10);
     EXPECT_NEAR(0, norm(CTRL2 * mket({1, 2}, {D, D}) -
-                                     mket({0, 2}, {D, D})), 1e-10);
+                        mket({0, 2}, {D, D})), 1e-10);
     EXPECT_NEAR(0, norm(CTRL2 * mket({2, 0}, {D, D}) -
-                                     mket({2, 0}, {D, D})), 1e-10);
+                        mket({2, 0}, {D, D})), 1e-10);
     EXPECT_NEAR(0, norm(CTRL2 * mket({2, 1}, {D, D}) -
-                                     mket({0, 1}, {D, D})), 1e-10);
+                        mket({0, 1}, {D, D})), 1e-10);
     EXPECT_NEAR(0, norm(CTRL2 * mket({2, 2}, {D, D}) -
-                                     mket({1, 2}, {D, D})), 1e-10);
+                        mket({1, 2}, {D, D})), 1e-10);
 
     // multiple Control-X-X, partial testing
     cmat CTRL3 = gt.CTRL(kron(gt.Xd(3), gt.Xd(3)), {1, 4}, {2, 3}, 6, 3);
-    ket psi1 = mket({0, 1, 2, 2, 1, 1}, {D, D, D, D ,D ,D});
-    ket res1 = mket({0, 1, 0, 0, 1, 1}, {D, D, D, D ,D ,D});
+    ket psi1 = mket({0, 1, 2, 2, 1, 1}, {D, D, D, D, D, D});
+    ket res1 = mket({0, 1, 0, 0, 1, 1}, {D, D, D, D, D, D});
     EXPECT_NEAR(0, norm(CTRL3 * psi1 - res1), 1e-10);
 
-    ket psi2 = mket({0, 1, 2, 2, 2, 1}, {D, D, D, D ,D ,D});
-    ket res2 = mket({0, 1, 2, 2, 2, 1}, {D, D, D, D ,D ,D});
+    ket psi2 = mket({0, 1, 2, 2, 2, 1}, {D, D, D, D, D, D});
+    ket res2 = mket({0, 1, 2, 2, 2, 1}, {D, D, D, D, D, D});
     EXPECT_NEAR(0, norm(CTRL3 * psi2 - res2), 1e-10);
 
-    ket psi3 = mket({1, 2, 1, 0, 2, 2}, {D, D, D, D ,D ,D});
-    ket res3 = mket({1, 2, 0, 2, 2, 2}, {D, D, D, D ,D ,D});
+    ket psi3 = mket({1, 2, 1, 0, 2, 2}, {D, D, D, D, D, D});
+    ket res3 = mket({1, 2, 0, 2, 2, 2}, {D, D, D, D, D, D});
     EXPECT_NEAR(0, norm(CTRL3 * psi3 - res3), 1e-10);
 }
 /******************************************************************************/
@@ -146,18 +147,18 @@ TEST(qpp_Gates_Fd, AllTests)
 
     EXPECT_NEAR(0, norm(gt.Fd(2) - gt.H), 1e-10);
 
-    cmat F3(3,3);
+    cmat F3(3, 3);
     cplx o3 = omega(3);
     F3 << 1, 1, 1, 1, o3, o3 * o3, 1, o3 * o3, o3;
     F3 /= std::sqrt(3);
     EXPECT_NEAR(0, norm(gt.Fd(3) - F3), 1e-10);
 
-    cmat F4(4,4);
+    cmat F4(4, 4);
     cplx o4 = omega(4);
     F4 << 1, 1, 1, 1,
-          1, o4, o4 * o4, o4 * o4 * o4,
-          1, o4 * o4, 1, o4 * o4,
-          1, o4 * o4 * o4, o4 * o4, o4;
+            1, o4, o4 * o4, o4 * o4 * o4,
+            1, o4 * o4, 1, o4 * o4,
+            1, o4 * o4 * o4, o4 * o4, o4;
     F4 /= std::sqrt(4);
     EXPECT_NEAR(0, norm(gt.Fd(4) - F4), 1e-10);
 }
@@ -180,19 +181,19 @@ TEST(qpp_Gates_Rn, AllTests)
     EXPECT_NEAR(0, norm(st.pz0 - prj(gt.Rn(2.345, {0, 0, 1}) * st.z0)), 1e-10);
 
     // |z0> gets a (-1) phase if rotated by 2pi around the X axis
-    EXPECT_NEAR(0, norm(st.z0 + gt.Rn(2*pi, {1, 0, 0}) * st.z0), 1e-10);
+    EXPECT_NEAR(0, norm(st.z0 + gt.Rn(2 * pi, {1, 0, 0}) * st.z0), 1e-10);
 
     // |z0> gets a (-1) phase if rotated by 2pi around the Y axis
-    EXPECT_NEAR(0, norm(st.z0 + gt.Rn(2*pi, {0, 1, 0}) * st.z0), 1e-10);
+    EXPECT_NEAR(0, norm(st.z0 + gt.Rn(2 * pi, {0, 1, 0}) * st.z0), 1e-10);
 
     // rotate |x0> by pi/2 around the Z axis, must obtain |y0> (up to a phase)
-    EXPECT_NEAR(0, norm(st.py0 - prj(gt.Rn(pi/2, {0, 0, 1}) * st.x0)), 1e-10);
+    EXPECT_NEAR(0, norm(st.py0 - prj(gt.Rn(pi / 2, {0, 0, 1}) * st.x0)), 1e-10);
 
     // rotate |y0> by pi/2 around the X axis, must obtain |z0> (up to a phase)
-    EXPECT_NEAR(0, norm(st.pz0 - prj(gt.Rn(pi/2, {1, 0, 0}) * st.y0)), 1e-10);
+    EXPECT_NEAR(0, norm(st.pz0 - prj(gt.Rn(pi / 2, {1, 0, 0}) * st.y0)), 1e-10);
 
     // rotate |z0> by pi/2 around the Y axis, must obtain |x0> (up to a phase)
-    EXPECT_NEAR(0, norm(st.px0 - prj(gt.Rn(pi/2, {0, 1, 0}) * st.z0)), 1e-10);
+    EXPECT_NEAR(0, norm(st.px0 - prj(gt.Rn(pi / 2, {0, 1, 0}) * st.z0)), 1e-10);
 
     // rotate |y0> by pi around the Z axis, must obtain |y1> (up to a phase)
     EXPECT_NEAR(0, norm(st.py1 - prj(gt.Rn(pi, {0, 0, 1}) * st.y0)), 1e-10);
