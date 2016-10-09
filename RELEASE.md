@@ -15,5 +15,5 @@ and the corresponding `html` reference in the file `./doc/html/index.html`
 
 - A set of changes from previous versions is provided in the file `./CHANGES`
 
-- Unit tests via [GoogleTest](https://github.com/google/googletest) 
-are provided under `./unit_tests`
+- Unit tests via [Google Mock 1.7.0](https://github.com/google/googletest) 
+(included with the project) are provided under `./unit_tests`
