@@ -27,6 +27,7 @@ IF(CYGWIN)
 ELSE()
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 ENDIF()
+
 SET(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra -Weffc++")
 SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
 
