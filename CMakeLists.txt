@@ -88,7 +88,10 @@ IF (${WITH_OPENMP})
 ENDIF ()
 
 #### GoogleTest
-ADD_SUBDIRECTORY(unit_tests)
+OPTION(WITH_UNIT_TESTS "Enable unit tests" ON)
+IF (${WITH_UNIT_TESTS})
+    ADD_SUBDIRECTORY(unit_tests)
+ENDIF ()
 
 #### Enable all warnings
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
