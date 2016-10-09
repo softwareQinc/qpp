@@ -160,7 +160,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
     // worker, computes the coefficient and the index for the ket case
     // used in #pragma omp parallel for collapse
-    auto coeff_idx_ket = [&](idx _i, idx _m, idx _r) noexcept
+    auto coeff_idx_ket = [&](idx i_, idx m_, idx r_) noexcept
             -> std::pair<typename Derived1::Scalar, idx>
     {
         idx indx = 0;
@@ -175,11 +175,11 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         // set the CTRL part
         for (idx k = 0; k < ctrlsize; ++k)
         {
-            Cmidx[ctrl[k]] = _i;
+            Cmidx[ctrl[k]] = i_;
         }
 
         // set the rest
-        internal::_n2multiidx(_r, N - ctrlgatesize,
+        internal::_n2multiidx(r_, N - ctrlgatesize,
                               CdimsCTRLA_bar, CmidxCTRLA_bar);
         for (idx k = 0; k < N - ctrlgatesize; ++k)
         {
@@ -187,7 +187,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         }
 
         // set the A part
-        internal::_n2multiidx(_m, subsyssize, CdimsA, CmidxA);
+        internal::_n2multiidx(m_, subsyssize, CdimsA, CmidxA);
         for (idx k = 0; k < subsyssize; ++k)
         {
             Cmidx[subsys[k]] = CmidxA[k];
@@ -197,14 +197,14 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         indx = internal::_multiidx2n(Cmidx, N, Cdims);
 
         // compute the coefficient
-        for (idx _n = 0; _n < DA; ++_n)
+        for (idx n_ = 0; n_ < DA; ++n_)
         {
-            internal::_n2multiidx(_n, subsyssize, CdimsA, CmidxA);
+            internal::_n2multiidx(n_, subsyssize, CdimsA, CmidxA);
             for (idx k = 0; k < subsyssize; ++k)
             {
                 Cmidx[subsys[k]] = CmidxA[k];
             }
-            coeff += Ai[_i](_m, _n) *
+            coeff += Ai[i_](m_, n_) *
                      rstate(internal::_multiidx2n(Cmidx, N, Cdims));
         }
 
@@ -214,8 +214,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     // worker, computes the coefficient and the index
     // for the density matrix case
     // used in #pragma omp parallel for collapse
-    auto coeff_idx_rho = [&](idx _i1, idx _m1,
-                             idx _r1, idx _i2, idx _m2, idx _r2) noexcept
+    auto coeff_idx_rho = [&](idx i1_, idx m1_,
+                             idx r1_, idx i2_, idx m2_, idx r2_) noexcept
             -> std::tuple<typename Derived1::Scalar, idx, idx>
     {
         idx idxrow = 0;
@@ -234,9 +234,9 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         // compute the ket/bra indexes
 
         // set the CTRL part
-        internal::_n2multiidx(_i1, ctrlsize,
+        internal::_n2multiidx(i1_, ctrlsize,
                               CdimsCTRL, CmidxCTRLrow);
-        internal::_n2multiidx(_i2, ctrlsize,
+        internal::_n2multiidx(i2_, ctrlsize,
                               CdimsCTRL, CmidxCTRLcol);
 
         for (idx k = 0; k < ctrlsize; ++k)
@@ -246,9 +246,9 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         }
 
         // set the rest
-        internal::_n2multiidx(_r1, N - ctrlgatesize,
+        internal::_n2multiidx(r1_, N - ctrlgatesize,
                               CdimsCTRLA_bar, CmidxCTRLA_barrow);
-        internal::_n2multiidx(_r2, N - ctrlgatesize,
+        internal::_n2multiidx(r2_, N - ctrlgatesize,
                               CdimsCTRLA_bar, CmidxCTRLA_barcol);
         for (idx k = 0; k < N - ctrlgatesize; ++k)
         {
@@ -257,8 +257,8 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         }
 
         // set the A part
-        internal::_n2multiidx(_m1, subsyssize, CdimsA, CmidxArow);
-        internal::_n2multiidx(_m2, subsyssize, CdimsA, CmidxAcol);
+        internal::_n2multiidx(m1_, subsyssize, CdimsA, CmidxArow);
+        internal::_n2multiidx(m2_, subsyssize, CdimsA, CmidxAcol);
         for (idx k = 0; k < subsys.size(); ++k)
         {
             Cmidxrow[subsys[k]] = CmidxArow[k];
@@ -301,9 +301,9 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         }
 
         // at least one control activated, compute the coefficient
-        for (idx _n1 = 0; _n1 < DA; ++_n1)
+        for (idx n1_ = 0; n1_ < DA; ++n1_)
         {
-            internal::_n2multiidx(_n1, subsyssize, CdimsA, CmidxArow);
+            internal::_n2multiidx(n1_, subsyssize, CdimsA, CmidxArow);
             for (idx k = 0; k < subsyssize; ++k)
             {
                 Cmidxrow[subsys[k]] = CmidxArow[k];
@@ -312,15 +312,15 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
             if (all_ctrl_rows_equal)
             {
-                lhs = Ai[first_ctrl_row](_m1, _n1);
+                lhs = Ai[first_ctrl_row](m1_, n1_);
             } else
             {
-                lhs = (_m1 == _n1) ? 1 : 0; // identity matrix
+                lhs = (m1_ == n1_) ? 1 : 0; // identity matrix
             }
 
-            for (idx _n2 = 0; _n2 < DA; ++_n2)
+            for (idx n2_ = 0; n2_ < DA; ++n2_)
             {
-                internal::_n2multiidx(_n2, subsyssize, CdimsA, CmidxAcol);
+                internal::_n2multiidx(n2_, subsyssize, CdimsA, CmidxAcol);
                 for (idx k = 0; k < subsyssize; ++k)
                 {
                     Cmidxcol[subsys[k]] = CmidxAcol[k];
@@ -328,10 +328,10 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
                 if (all_ctrl_cols_equal)
                 {
-                    rhs = Aidagger[first_ctrl_col](_n2, _m2);
+                    rhs = Aidagger[first_ctrl_col](n2_, m2_);
                 } else
                 {
-                    rhs = (_n2 == _m2) ? 1 : 0; // identity matrix
+                    rhs = (n2_ == m2_) ? 1 : 0; // identity matrix
                 }
 
                 idx idxcoltmp = internal::_multiidx2n(Cmidxcol, N, Cdims);

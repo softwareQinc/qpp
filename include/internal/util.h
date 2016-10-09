@@ -28,7 +28,7 @@
 #define INTERNAL_UTIL_H_
 
 // silence g++4.9 bogus warning -Warray-bounds and -Wmaybe-uninitialized
-// in qpp::util::__multiidx2n()
+// in qpp::util::_multiidx2n()
 #if (__GNUC__ && !__clang__)
 #pragma GCC diagnostic ignored "-Warray-bounds"
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
