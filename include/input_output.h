@@ -152,8 +152,8 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
     // END EXCEPTION CHECKS
 
     // write the header to file
-    const char _header[] = "TYPE::Eigen::Matrix";
-    fout.write(_header, sizeof(_header));
+    const char header_[] = "TYPE::Eigen::Matrix";
+    fout.write(header_, sizeof(header_));
 
     idx rows = static_cast<idx>(rA.rows());
     idx cols = static_cast<idx>(rA.cols());
@@ -198,19 +198,19 @@ dyn_mat<typename Derived::Scalar> load(const std::string& fname)
                 + std::string(fname) + "\"!");
     }
 
-    const char _header[] = "TYPE::Eigen::Matrix";
-    char* _fheader = new char[sizeof(_header)];
+    const char header_[] = "TYPE::Eigen::Matrix";
+    char* fheader_ = new char[sizeof(header_)];
 
     // read the header from file
-    fin.read(_fheader, sizeof(_header));
-    if (strcmp(_fheader, _header))
+    fin.read(fheader_, sizeof(header_));
+    if (strcmp(fheader_, header_))
     {
-        delete[] _fheader;
+        delete[] fheader_;
         throw std::runtime_error(
                 "qpp::load(): Input file \"" + std::string(fname)
                 + "\" is corrupted!");
     }
-    delete[] _fheader;
+    delete[] fheader_;
     // END EXCEPTION CHECKS
 
     idx rows, cols;

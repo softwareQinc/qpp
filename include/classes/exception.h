@@ -41,7 +41,7 @@ class Exception : public std::exception
 public:
     /**
     * \brief Exception types, add more here if needed
-    * \see qpp::Exception::_construct_exception_msg()
+    * \see qpp::Exception::construct_exception_msg_()
     */
     enum class Type // exception types
     {
@@ -129,9 +129,9 @@ public:
     * \param type Exception type, defined in qpp::Exception::Type
     */
     Exception(const std::string& where, const Type& type) :
-            _where{where}, _msg{}, _type{type}, _custom{}
+            where_{where}, msg_{}, type_{type}, custom_{}
     {
-        _construct_exception_msg();
+        construct_exception_msg_();
     }
 
     /**
@@ -143,11 +143,11 @@ public:
     * \param custom Exception description
     */
     Exception(const std::string& where, const std::string& custom) :
-            _where{where}, _msg{}, _type{Type::CUSTOM_EXCEPTION},
-            _custom{custom}
+            where_{where}, msg_{}, type_{Type::CUSTOM_EXCEPTION},
+            custom_{custom}
     {
-        _construct_exception_msg();
-        _msg += custom; // add the custom message at the end
+        construct_exception_msg_();
+        msg_ += custom; // add the custom message at the end
     }
 
     /**
@@ -157,13 +157,13 @@ public:
     */
     virtual const char* what() const noexcept override
     {
-        return _msg.c_str();
+        return msg_.c_str();
     }
 
 private:
-    std::string _where, _msg;
-    Type _type;
-    std::string _custom;
+    std::string where_, msg_;
+    Type type_;
+    std::string custom_;
 
     /**
     * \brief Constructs the exception description from its type
@@ -171,106 +171,106 @@ private:
     *
     * Must modify the code of this function if more exceptions are added
     */
-    void _construct_exception_msg()
+    void construct_exception_msg_()
     {
-        _msg += "IN ";
-        _msg += _where;
-        _msg += ": ";
+        msg_ += "IN ";
+        msg_ += where_;
+        msg_ += ": ";
 
-        switch (_type)
+        switch (type_)
         {
             case Type::UNKNOWN_EXCEPTION:
-                _msg += "UNKNOWN EXCEPTION!";
+                msg_ += "UNKNOWN EXCEPTION!";
                 break;
             case Type::ZERO_SIZE:
-                _msg += "Object has zero size!";
+                msg_ += "Object has zero size!";
                 break;
             case Type::MATRIX_NOT_SQUARE:
-                _msg += "Matrix is not square!";
+                msg_ += "Matrix is not square!";
                 break;
             case Type::MATRIX_NOT_CVECTOR:
-                _msg += "Matrix is not column vector!";
+                msg_ += "Matrix is not column vector!";
                 break;
             case Type::MATRIX_NOT_RVECTOR:
-                _msg += "Matrix is not row vector!";
+                msg_ += "Matrix is not row vector!";
                 break;
             case Type::MATRIX_NOT_VECTOR:
-                _msg += "Matrix is not vector!";
+                msg_ += "Matrix is not vector!";
                 break;
             case Type::MATRIX_NOT_SQUARE_OR_CVECTOR:
-                _msg += "Matrix is not square nor column vector!";
+                msg_ += "Matrix is not square nor column vector!";
                 break;
             case Type::MATRIX_NOT_SQUARE_OR_RVECTOR:
-                _msg += "Matrix is not square nor row vector!";
+                msg_ += "Matrix is not square nor row vector!";
                 break;
             case Type::MATRIX_NOT_SQUARE_OR_VECTOR:
-                _msg += "Matrix is not square nor vector!";
+                msg_ += "Matrix is not square nor vector!";
                 break;
             case Type::MATRIX_MISMATCH_SUBSYS:
-                _msg += "Matrix mismatch subsystems!";
+                msg_ += "Matrix mismatch subsystems!";
                 break;
             case Type::DIMS_INVALID:
-                _msg += "Invalid dimension(s)!";
+                msg_ += "Invalid dimension(s)!";
                 break;
             case Type::DIMS_NOT_EQUAL:
-                _msg += "Dimensions not equal!";
+                msg_ += "Dimensions not equal!";
                 break;
             case Type::DIMS_MISMATCH_MATRIX:
-                _msg += "Dimension(s) mismatch matrix size!";
+                msg_ += "Dimension(s) mismatch matrix size!";
                 break;
             case Type::DIMS_MISMATCH_CVECTOR:
-                _msg += "Dimension(s) mismatch column vector!";
+                msg_ += "Dimension(s) mismatch column vector!";
                 break;
             case Type::DIMS_MISMATCH_RVECTOR:
-                _msg += "Dimension(s) mismatch row vector!";
+                msg_ += "Dimension(s) mismatch row vector!";
                 break;
             case Type::DIMS_MISMATCH_VECTOR:
-                _msg += "Dimension(s) mismatch vector!";
+                msg_ += "Dimension(s) mismatch vector!";
                 break;
             case Type::SUBSYS_MISMATCH_DIMS:
-                _msg += "Subsystems mismatch dimensions!";
+                msg_ += "Subsystems mismatch dimensions!";
                 break;
             case Type::PERM_INVALID:
-                _msg += "Invalid permutation!";
+                msg_ += "Invalid permutation!";
                 break;
             case Type::PERM_MISMATCH_DIMS:
-                _msg += "Permutation mismatch dimensions!";
+                msg_ += "Permutation mismatch dimensions!";
                 break;
             case Type::NOT_QUBIT_MATRIX:
-                _msg += "Matrix is not 2 x 2!";
+                msg_ += "Matrix is not 2 x 2!";
                 break;
             case Type::NOT_QUBIT_CVECTOR:
-                _msg += "Column vector is not 2 x 1!";
+                msg_ += "Column vector is not 2 x 1!";
                 break;
             case Type::NOT_QUBIT_RVECTOR:
-                _msg += "Row vector is not 1 x 2!";
+                msg_ += "Row vector is not 1 x 2!";
                 break;
             case Type::NOT_QUBIT_VECTOR:
-                _msg += "Vector is not 2 x 1 nor 1 x 2!";
+                msg_ += "Vector is not 2 x 1 nor 1 x 2!";
                 break;
             case Type::NOT_QUBIT_SUBSYS:
-                _msg += "Subsystems are not qubits!";
+                msg_ += "Subsystems are not qubits!";
                 break;
             case Type::NOT_BIPARTITE:
-                _msg += "Not bi-partite!";
+                msg_ += "Not bi-partite!";
                 break;
             case Type::NO_CODEWORD:
-                _msg += "Codeword does not exist!";
+                msg_ += "Codeword does not exist!";
                 break;
             case Type::OUT_OF_RANGE:
-                _msg += "Parameter out of range!";
+                msg_ += "Parameter out of range!";
                 break;
             case Type::TYPE_MISMATCH:
-                _msg += "Type mismatch!";
+                msg_ += "Type mismatch!";
                 break;
             case Type::SIZE_MISMATCH:
-                _msg += "Size mismatch!";
+                msg_ += "Size mismatch!";
                 break;
             case Type::UNDEFINED_TYPE:
-                _msg += "Not defined for this type!";
+                msg_ += "Not defined for this type!";
                 break;
             case Type::CUSTOM_EXCEPTION:
-                _msg += "CUSTOM EXCEPTION ";
+                msg_ += "CUSTOM EXCEPTION ";
                 break;
         }
     }

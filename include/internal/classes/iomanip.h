@@ -33,18 +33,18 @@ namespace internal
 {
 
 // implementation details
-namespace _details
+namespace details_
 {
 struct Display_Impl_
 {
     template<typename T>
     // T must support rows(), cols(), operator()(idx, idx)
-    std::ostream& _display_impl(const T& A,
-                                std::ostream& _os,
-                                double _chop = qpp::chop) const
+    std::ostream& display_impl_(const T& A,
+                                std::ostream& os,
+                                double chop = qpp::chop) const
     {
         std::ostringstream ostr;
-        ostr.copyfmt(_os); // copy os' state
+        ostr.copyfmt(os); // copy os' state
 
         std::vector<std::string> vstr;
         std::string strA;
@@ -62,17 +62,17 @@ struct Display_Impl_
                 double re = static_cast<cplx>(A(i, j)).real();
                 double im = static_cast<cplx>(A(i, j)).imag();
 
-                if (std::abs(re) < _chop && std::abs(im) < _chop)
+                if (std::abs(re) < chop && std::abs(im) < chop)
                 {
                     ostr << "0 "; // otherwise segfault on destruction
                     // if using only vstr.push_back("0 ");
                     // bug in MATLAB libmx
                     vstr.push_back(ostr.str());
-                } else if (std::abs(re) < _chop)
+                } else if (std::abs(re) < chop)
                 {
                     ostr << im;
                     vstr.push_back(ostr.str() + "i");
-                } else if (std::abs(im) < _chop)
+                } else if (std::abs(im) < chop)
                 {
                     ostr << re;
                     vstr.push_back(ostr.str() + " ");
@@ -105,22 +105,22 @@ struct Display_Impl_
         // finally display it!
         for (idx i = 0; i < static_cast<idx>(A.rows()); ++i)
         {
-            _os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
+            os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
                 << vstr[i * A.cols()]; // display first column
             // then the rest
             for (idx j = 1;
                  j < static_cast<idx>(A.cols()); ++j)
-                _os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
+                os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
                     << std::right << vstr[i * A.cols() + j];
 
             if (i < static_cast<idx>(A.rows()) - 1)
-                _os << std::endl;
+                os << std::endl;
         }
 
-        return _os;
+        return os;
     }
 };
-} /* namespace _details */
+} /* namespace details_ */
 
 // ostream manipulators for nice formatting of
 // Eigen matrices and STL/C-style containers/vectors
@@ -128,18 +128,18 @@ struct Display_Impl_
 template<typename InputIterator>
 class IOManipRange : public IDisplay
 {
-    InputIterator _first, _last;
-    std::string _separator, _start, _end;
+    InputIterator first_, last_;
+    std::string separator_, start_, end_;
 public:
     explicit IOManipRange(InputIterator first, InputIterator last,
                           const std::string& separator,
                           const std::string& start = "[",
                           const std::string& end = "]") :
-            _first{first},
-            _last{last},
-            _separator{separator},
-            _start{start},
-            _end{end}
+            first_{first},
+            last_{last},
+            separator_{separator},
+            start_{start},
+            end_{end}
     {
     }
 
@@ -153,17 +153,17 @@ public:
 private:
     std::ostream& display(std::ostream& os) const override
     {
-        os << _start;
+        os << start_;
 
         bool first = true;
-        for (auto it = _first; it != _last; ++it)
+        for (auto it = first_; it != last_; ++it)
         {
             if (!first)
-                os << _separator;
+                os << separator_;
             first = false;
             os << *it;
         }
-        os << _end;
+        os << end_;
 
         return os;
     }
@@ -172,19 +172,19 @@ private:
 template<typename PointerType>
 class IOManipPointer : public IDisplay
 {
-    const PointerType* _p;
+    const PointerType* p_;
     idx N_;
-    std::string _separator, _start, _end;
+    std::string separator_, start_, end_;
 public:
     explicit IOManipPointer(const PointerType* p, idx N,
                             const std::string& separator,
                             const std::string& start = "[",
                             const std::string& end = "]") :
-            _p{p},
+            p_{p},
             N_{N},
-            _separator{separator},
-            _start{start},
-            _end{end}
+            separator_{separator},
+            start_{start},
+            end_{end}
     {
     }
 
@@ -196,36 +196,36 @@ public:
 private:
     std::ostream& display(std::ostream& os) const override
     {
-        os << _start;
+        os << start_;
 
         for (idx i = 0; i < N_ - 1; ++i)
-            os << _p[i] << _separator;
+            os << p_[i] << separator_;
         if (N_ > 0)
-            os << _p[N_ - 1];
+            os << p_[N_ - 1];
 
-        os << _end;
+        os << end_;
 
         return os;
     }
 }; // class IOManipPointer
 
-class IOManipEigen : public IDisplay, private _details::Display_Impl_
+class IOManipEigen : public IDisplay, private details_::Display_Impl_
 {
     cmat A_;
-    double _chop;
+    double chop_;
 public:
     // Eigen matrices
     template<typename Derived>
     explicit IOManipEigen(const Eigen::MatrixBase<Derived>& A,
                           double chop = qpp::chop) :
             A_{A.template cast<cplx>()}, // copy, so we can bind rvalues safely
-            _chop{chop}
+            chop_{chop}
     {
     }
 
     // Complex numbers
     explicit IOManipEigen(const cplx z, double chop = qpp::chop) :
-            A_{cmat::Zero(1, 1)}, _chop{chop}
+            A_{cmat::Zero(1, 1)}, chop_{chop}
     {
         // put the complex number inside an Eigen matrix
         A_(0, 0) = z;
@@ -234,7 +234,7 @@ public:
 private:
     std::ostream& display(std::ostream& os) const override
     {
-        return _display_impl(A_, os, chop);
+        return display_impl_(A_, os, chop);
     }
 }; // class IOManipEigen
 

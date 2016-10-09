@@ -44,7 +44,7 @@ template<typename T = std::chrono::duration<double>,
 class Timer : public IDisplay
 {
 protected:
-    typename CLOCK_T::time_point _start, _end;
+    typename CLOCK_T::time_point start_, end_;
 
 public:
     /**
@@ -52,7 +52,7 @@ public:
     * as the starting point
     */
     Timer() noexcept :
-            _start{CLOCK_T::now()}, _end{_start}
+            start_{CLOCK_T::now()}, end_{start_}
     {
     }
 
@@ -63,7 +63,7 @@ public:
     */
     void tic() noexcept
     {
-        _start = _end = CLOCK_T::now();
+        start_ = end_ = CLOCK_T::now();
     }
 
     /**
@@ -75,7 +75,7 @@ public:
     */
     const Timer& toc() noexcept
     {
-        _end = CLOCK_T::now();
+        end_ = CLOCK_T::now();
         return *this;
     }
 
@@ -87,7 +87,7 @@ public:
     */
     double tics() const noexcept
     {
-        return std::chrono::duration_cast<T>(_end - _start).count();
+        return std::chrono::duration_cast<T>(end_ - start_).count();
     }
 
     /**
@@ -102,7 +102,7 @@ public:
     template<typename U = T>
     U get_duration() const noexcept
     {
-        return std::chrono::duration_cast<U>(_end - _start);
+        return std::chrono::duration_cast<U>(end_ - start_);
     }
 
     /**

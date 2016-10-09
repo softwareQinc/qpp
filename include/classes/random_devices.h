@@ -48,14 +48,14 @@ class RandomDevices final : public internal::Singleton<RandomDevices> //
 {
     friend class internal::Singleton<RandomDevices>;
 
-    std::random_device _rd; ///< used to seed std::mt19937 _rng
+    std::random_device rd_; ///< used to seed std::mt19937 rng_
 public:
-    std::mt19937 _rng;      ///< Mersenne twister random number generator
+    std::mt19937 rng_;      ///< Mersenne twister random number generator
 private:
     /**
     * \brief Initializes and seeds the random number generators
     */
-    RandomDevices() : _rd{}, _rng{_rd()}
+    RandomDevices() : rd_{}, rng_{rd_()}
     {
     }
 

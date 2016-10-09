@@ -278,7 +278,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)
     // sample from the probability distribution
     std::discrete_distribution<idx> dd(std::begin(prob),
                                        std::end(prob));
-    idx result = dd(RandomDevices::get_instance()._rng);
+    idx result = dd(RandomDevices::get_instance().rng_);
 
     return std::make_tuple(result, prob, outstates);
 }
@@ -457,7 +457,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
     // sample from the probability distribution
     std::discrete_distribution<idx> dd(std::begin(prob),
                                        std::end(prob));
-    idx result = dd(RandomDevices::get_instance()._rng);
+    idx result = dd(RandomDevices::get_instance().rng_);
 
     return std::make_tuple(result, prob, outstates);
 }
@@ -662,7 +662,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
         // sample from the probability distribution
         std::discrete_distribution<idx> dd(std::begin(prob),
                                            std::end(prob));
-        idx result = dd(RandomDevices::get_instance()._rng);
+        idx result = dd(RandomDevices::get_instance().rng_);
 
         return std::make_tuple(result, prob, outstates);
     }

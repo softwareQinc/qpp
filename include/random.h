@@ -52,9 +52,9 @@ inline double rand(double a, double b)
     std::uniform_real_distribution<> ud(a, b);
 
 #ifdef NO_THREAD_LOCAL_
-    return ud(RandomDevices::get_instance()._rng);
+    return ud(RandomDevices::get_instance().rng_);
 #else
-    return ud(RandomDevices::get_thread_local_instance()._rng);
+    return ud(RandomDevices::get_thread_local_instance().rng_);
 #endif // NO_THREAD_LOCAL_
 }
 
@@ -78,9 +78,9 @@ inline bigint rand(bigint a, bigint b)
     std::uniform_int_distribution<bigint> uid(a, b);
 
 #ifdef NO_THREAD_LOCAL_
-    return uid(RandomDevices::get_instance()._rng);
+    return uid(RandomDevices::get_instance().rng_);
 #else
-    return uid(RandomDevices::get_thread_local_instance()._rng);
+    return uid(RandomDevices::get_thread_local_instance().rng_);
 #endif // NO_THREAD_LOCAL_
 }
 
@@ -105,9 +105,9 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
     std::uniform_int_distribution<idx> uid(a, b);
 
 #ifdef NO_THREAD_LOCAL_
-    return uid(RandomDevices::get_instance()._rng);
+    return uid(RandomDevices::get_instance().rng_);
 #else
-    return uid(RandomDevices::get_thread_local_instance()._rng);
+    return uid(RandomDevices::get_thread_local_instance().rng_);
 #endif // NO_THREAD_LOCAL_
 }
 
@@ -268,9 +268,9 @@ inline dmat randn(idx rows, idx cols,
             [&nd](double)
             {
 #ifdef NO_THREAD_LOCAL_
-                return nd(RandomDevices::get_instance()._rng);
+                return nd(RandomDevices::get_instance().rng_);
 #else
-                return nd(RandomDevices::get_thread_local_instance()._rng);
+                return nd(RandomDevices::get_thread_local_instance().rng_);
 #endif // NO_THREAD_LOCAL_
             });
 }
@@ -322,9 +322,9 @@ inline double randn(double mean = 0, double sigma = 1)
     std::normal_distribution<> nd(mean, sigma);
 
 #ifdef NO_THREAD_LOCAL_
-    return nd(RandomDevices::get_instance()._rng);
+    return nd(RandomDevices::get_instance().rng_);
 #else
-    return nd(RandomDevices::get_thread_local_instance()._rng);
+    return nd(RandomDevices::get_thread_local_instance().rng_);
 #endif // NO_THREAD_LOCAL_
 }
 
@@ -505,10 +505,10 @@ inline std::vector<idx> randperm(idx N)
     // shuffle
 #ifdef NO_THREAD_LOCAL_
     std::shuffle(std::begin(result), std::end(result),
-                 RandomDevices::get_instance()._rng);
+                 RandomDevices::get_instance().rng_);
 #else
     std::shuffle(std::begin(result), std::end(result),
-                 RandomDevices::get_thread_local_instance()._rng);
+                 RandomDevices::get_thread_local_instance().rng_);
 
 #endif // NO_THREAD_LOCAL_
 
