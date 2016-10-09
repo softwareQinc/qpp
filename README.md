@@ -94,7 +94,7 @@ shared library files:
          -L /Applications/MATLAB_R2016a.app/bin/maci64 \
          -lmx -lmat minimal.cpp -o minimal
 
-### Building using [cmake](http://www.cmake.org/) (version 3.1.3 or later)
+### Building using [cmake](http://www.cmake.org/) (version 3.0.0 or later)
 
 The current version of the repository has a `./CMakeLists.txt` configuration 
 file for building examples using [cmake](http://www.cmake.org/). 
@@ -136,7 +136,7 @@ the `./build` directory before a fresh build!
 ### Unit testing
 [Google Mock 1.7.0](https://github.com/google/googletest) is included with 
 the project. I strongly recommend to use [cmake](http://www.cmake.org/) 
-version 3.1.3 or later as a building system. By default the current 
+version 3.0.0 or later as a building system. By default the current 
 `CMakeLists.txt` automatically builds all unit tests as 
 `./build/unit_tests/tests/qpp_testing`. To disable automatic building of unit 
 tests, type  
