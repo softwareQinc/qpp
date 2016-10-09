@@ -1,8 +1,6 @@
 # Quantum++ 
 ## Version 0.8.9 - development
 
-Bugs may still be lingering around. I welcome any comments or bug reports.
-
 - For building instructions and additional information 
 see the file `./README.md` or the main repository page 
 at https://github.com/vsoftco/qpp
@@ -17,5 +15,5 @@ and the corresponding `html` reference in the file `./doc/html/index.html`
 
 - A set of changes from previous versions is provided in the file `./CHANGES`
 
-- Unit tests built with [GoogleTest](https://github.com/google/googletest) 
+- Unit tests via [GoogleTest](https://github.com/google/googletest) 
 are provided under `./unit_tests`
