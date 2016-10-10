@@ -15,19 +15,19 @@ cplx pow3(const cplx& z)
 int main()
 {
     // functor test
-    std::cout << ">> Functor z^3 acting component-wise on:" << std::endl;
+    std::cout << ">> Functor z^3 acting component-wise on:\n";
     cmat A(2, 2);
     A << 1, 2, 3, 4;
-    std::cout << disp(A) << std::endl;
+    std::cout << disp(A) << '\n';
 
-    std::cout << ">> Result (with lambda):" << std::endl;
+    std::cout << ">> Result (with lambda):\n";
     // functor z^3 componentwise, specify OutputScalar and Derived for lambdas
     std::cout << disp(cwise<cplx, cmat>(A, [](const cplx& z) -> cplx
     {
         return z * z * z;
-    })) << std::endl;
+    })) << '\n';
 
-    std::cout << ">> Result (with genuine function):" << std::endl;
+    std::cout << ">> Result (with genuine function):\n";
     // automatic type deduction for proper functions
-    std::cout << disp(cwise(A, &pow3)) << std::endl;
+    std::cout << disp(cwise(A, &pow3)) << '\n';
 }

@@ -119,7 +119,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
     // END EXCEPTION CHECKS
 
     if (alpha == 0) // H max
-        return std::log2(static_cast<double>( rA.rows()));
+        return std::log2(rA.rows());
 
     if (alpha == 1) // Shannon/von-Neumann
         return entropy(rA);
@@ -160,7 +160,7 @@ inline double renyi(const std::vector<double>& prob, double alpha)
         throw Exception("qpp::renyi()", Exception::Type::OUT_OF_RANGE);
 
     if (alpha == 0) // H max
-        return std::log2(static_cast<double>( prob.size()));
+        return std::log2(prob.size());
 
     if (alpha == 1) // Shannon/von-Neumann
         return entropy(prob);

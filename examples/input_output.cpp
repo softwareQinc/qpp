@@ -14,12 +14,12 @@ int main()
     cmat loaded_rho = load<cmat>("rho.dat"); // load it back
     // display the difference in norm, should be 0
     std::cout << ">> Norm difference load/save: ";
-    std::cout << norm(loaded_rho - rho) << std::endl;
+    std::cout << norm(loaded_rho - rho) << '\n';
 
     // interfacing with MATLAB
     saveMATLABmatrix(rho, "rho.mat", "rho", "w");
     loaded_rho = loadMATLABmatrix<cmat>("rho.mat", "rho");
     // display the difference in norm, should be 0
     std::cout << ">> Norm difference MATLAB load/save: ";
-    std::cout << norm(loaded_rho - rho) << std::endl;
+    std::cout << norm(loaded_rho - rho) << '\n';
 }

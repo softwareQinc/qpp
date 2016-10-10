@@ -24,12 +24,12 @@ int main()
         else              // +1
             res++;
     }
-    std::cout << ">> N = " << N << " measurements" << std::endl;
-    std::cout << ">> The experimental average of the observable" << std::endl;
-    std::cout << disp(A) << std::endl;
-    std::cout << "on the state" << std::endl;
-    std::cout << disp(psi) << std::endl;
-    std::cout << "is: " << res / static_cast<double>(N) << std::endl;
+    std::cout << ">> N = " << N << " measurements\n";
+    std::cout << ">> The experimental average of the observable\n";
+    std::cout << disp(A) << '\n';
+    std::cout << "on the state\n";
+    std::cout << disp(psi) << '\n';
+    std::cout << "is: " << res / static_cast<double>(N) << '\n';
     std::cout << ">> Theoretical average <psi | A | psi> = ";
-    std::cout << disp((adjoint(psi) * A * psi).value()) << std::endl;
+    std::cout << disp((adjoint(psi) * A * psi).value()) << '\n';
 }

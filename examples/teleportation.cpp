@@ -11,20 +11,20 @@ using namespace qpp;
 int main()
 {
     idx D = 3; // size of the system
-    std::cout << ">> Qudit teleportation, D = " << D << std::endl;
+    std::cout << ">> Qudit teleportation, D = " << D << '\n';
 
     ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
     for (idx i = 0; i < D; ++i)
         mes_AB += mket({i, i}, D);
-    mes_AB /= std::sqrt((double) D);
+    mes_AB /= std::sqrt(D);
 
     // circuit that measures in the qudit Bell basis
     cmat Bell_aA = adjoint(gt.CTRL(gt.Xd(D), {0}, {1}, 2, D)
                            * kron(gt.Fd(D), gt.Id(D)));
 
     ket psi_a = randket(D); // random qudit state
-    std::cout << ">> Initial state:" << std::endl;
-    std::cout << disp(psi_a) << std::endl;
+    std::cout << ">> Initial state:\n";
+    std::cout << disp(psi_a) << '\n';
 
     ket input_aAB = kron(psi_a, mes_AB); // joint input state aAB
     // output before measurement
@@ -36,9 +36,9 @@ int main()
 
     std::vector<idx> midx = n2multiidx(m, {D, D});
     std::cout << ">> Alice's measurement result: ";
-    std::cout << m << " -> " << disp(midx, " ") << std::endl;
+    std::cout << m << " -> " << disp(midx, " ") << '\n';
     std::cout << ">> Alice's measurement probabilities: ";
-    std::cout << disp(std::get<1>(measured_aA), ", ") << std::endl;
+    std::cout << disp(std::get<1>(measured_aA), ", ") << '\n';
 
     // conditional result on B before correction
     ket output_m_B = std::get<2>(measured_aA)[m];
@@ -47,12 +47,12 @@ int main()
                         powm(adjoint(gt.Xd(D)), midx[1]);
     // apply correction on B
     std::cout << ">> Bob must apply the correction operator Z^" << midx[0]
-              << " X^" << (D - midx[1]) % D << std::endl;
+              << " X^" << (D - midx[1]) % D << '\n';
     ket psi_B = correction_B * output_m_B;
 
-    std::cout << ">> Bob's final state (after correction): " << std::endl;
-    std::cout << disp(psi_B) << std::endl;
+    std::cout << ">> Bob's final state (after correction):\n";
+    std::cout << disp(psi_B) << '\n';
 
     // verification
-    std::cout << ">> Norm difference: " << norm(psi_B - psi_a) << std::endl;
+    std::cout << ">> Norm difference: " << norm(psi_B - psi_a) << '\n';
 }

@@ -23,10 +23,10 @@ int main()
 
     t.tic(); // restart the timer
     std::cout << ">> Inverse permutation: ";
-    std::cout << disp(invperm(perm), ", ") << std::endl;
+    std::cout << disp(invperm(perm), ", ") << '\n';
     ket c0invperm = syspermute(c0perm, invperm(perm)); // permute again
     std::cout << ">> It took " << t.toc();
     std::cout << " seconds to un-permute the subsystems.\n";
 
-    std::cout << ">> Norm difference: " << norm(c0invperm - c0) << std::endl;
+    std::cout << ">> Norm difference: " << norm(c0invperm - c0) << '\n';
 }

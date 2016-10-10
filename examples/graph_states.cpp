@@ -42,17 +42,17 @@ int main()
         }
     // end construction
 
-    std::cout << ">> Resulting graph states: " << std::endl;
-    std::cout << disp(G0) << std::endl << std::endl;
-    std::cout << disp(G1) << std::endl;
+    std::cout << ">> Resulting graph states:\n";
+    std::cout << disp(G0) << "\n\n";
+    std::cout << disp(G1) << '\n';
     // verification
-    std::cout << ">> Norm difference: " << norm(G0 - G1) << std::endl;
+    std::cout << ">> Norm difference: " << norm(G0 - G1) << '\n';
 
     // check the corresponding density matrices
-    std::cout << ">> Resulting density matrices: " << std::endl;
-    std::cout << disp(rhoG0) << std::endl << std::endl;
-    std::cout << disp(rhoG1) << std::endl;
-    std::cout << ">> Norm difference: " << norm(rhoG0 - rhoG1) << std::endl;
+    std::cout << ">> Resulting density matrices:\n";
+    std::cout << disp(rhoG0) << "\n\n";
+    std::cout << disp(rhoG1) << '\n';
+    std::cout << ">> Norm difference: " << norm(rhoG0 - rhoG1) << '\n';
 
     // check the X-Z rule
     // applying X to a vertex is equivalent to applying Z to its neighbors
@@ -62,10 +62,10 @@ int main()
     cmat rhoG0Z1Z2 = apply(rhoG0, kron(gt.Z, gt.Z), {1, 2});
 
     // verification
-    std::cout << ">> Checking the X-Z rule" << std::endl;
+    std::cout << ">> Checking the X-Z rule\n";
     std::cout << ">> X-Z rule. Norm difference for the kets: ";
-    std::cout << norm(G0X0 - G0Z1Z2) << std::endl;
+    std::cout << norm(G0X0 - G0Z1Z2) << '\n';
     std::cout << ">> X-Z rule. Norm difference for the corresponding "
-            "density matrices: ";
-    std::cout << norm(rhoG0X0 - rhoG0Z1Z2) << std::endl;
+              << "density matrices: ";
+    std::cout << norm(rhoG0X0 - rhoG0Z1Z2) << '\n';
 }

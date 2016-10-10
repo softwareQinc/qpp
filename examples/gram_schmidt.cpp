@@ -9,11 +9,11 @@ int main()
 {
     cmat A(3, 3);
     A << 1, 1, 0, 0, 2, 0, 0, 0, 0;
-    std::cout << ">> Input matrix:" << std::endl << disp(A) << std::endl;
+    std::cout << ">> Input matrix:\n" << disp(A) << '\n';
 
     cmat Ags = grams(A);
-    std::cout << ">> Result:" << std::endl << disp(Ags) << std::endl;
+    std::cout << ">> Result:\n" << disp(Ags) << '\n';
 
-    std::cout << ">> Projector onto G.S. vectors:" << std::endl;
-    std::cout << disp(Ags * adjoint(Ags)) << std::endl;
+    std::cout << ">> Projector onto G.S. vectors:\n";
+    std::cout << disp(Ags * adjoint(Ags)) << '\n';
 }

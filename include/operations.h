@@ -905,7 +905,7 @@ inline std::vector<cmat> choi2kraus(const cmat& A)
     if (!internal::check_square_mat(A))
         throw Exception("qpp::choi2kraus()",
                         Exception::Type::MATRIX_NOT_SQUARE);
-    idx D = internal::get_dim_subsys(static_cast<double>(A.rows()), 2);
+    idx D = internal::get_dim_subsys(A.rows(), 2);
     // check equal dimensions
     if (D * D != static_cast<idx>(A.rows()))
         throw Exception("qpp::choi2kraus()", Exception::Type::DIMS_INVALID);

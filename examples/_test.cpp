@@ -7,5 +7,5 @@ using namespace qpp;
 
 int main()
 {
-    std::cout << "Testing..." << std::endl;
+    std::cout << "Testing...\n";
 }

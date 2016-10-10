@@ -163,7 +163,7 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keywordflow">if</span> (alpha == 0) <span class="comment">// H max</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keywordflow">return</span> std::log2(static_cast&lt;double&gt;( rA.rows()));</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keywordflow">return</span> std::log2(rA.rows());</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordflow">if</span> (alpha == 1) <span class="comment">// Shannon/von-Neumann</span></div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a922127fa0dd6659113c8277de8731c41">entropy</a>(rA);</div>
@@ -192,7 +192,7 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::renyi()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6feaf66704b269610cff9431d5519cad">Exception::Type::OUT_OF_RANGE</a>);</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keywordflow">if</span> (alpha == 0) <span class="comment">// H max</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <span class="keywordflow">return</span> std::log2(static_cast&lt;double&gt;( prob.size()));</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <span class="keywordflow">return</span> std::log2(prob.size());</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordflow">if</span> (alpha == 1) <span class="comment">// Shannon/von-Neumann</span></div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a922127fa0dd6659113c8277de8731c41">entropy</a>(prob);</div>
@@ -395,7 +395,7 @@ $(document).ready(function(){initNavTree('entropies_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="entropies_8h.html">entropies.h</a></li>
-    <li class="footer">Generated on Mon Oct 10 2016 09:55:27 for Quantum++ by
+    <li class="footer">Generated on Mon Oct 10 2016 11:07:26 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

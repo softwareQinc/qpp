@@ -19,7 +19,7 @@ int main()
     // number of "experiments" for each of the 4 detector settings
     idx N = 10000;
     std::cout << ">> Number N of experiments for each of the 4 measurement";
-    std::cout << " settings = " << N << std::endl;
+    std::cout << " settings = " << N << '\n';
 
     idx statistics[4][4] = {{0}}; // total statistics
     long E[4] = {0}; // experimental estimate
@@ -70,25 +70,25 @@ int main()
     }
     std::cout << "[N++ | N+- | N-+ | N-- | (N++ + N-- - N+- - N-+)]\n";
     std::cout << "QS: " << disp(statistics[0], 4, " ");
-    std::cout << "  " << E[0] << std::endl;
+    std::cout << "  " << E[0] << '\n';
     std::cout << "QT: " << disp(statistics[1], 4, " ");
-    std::cout << "  " << E[1] << std::endl;
+    std::cout << "  " << E[1] << '\n';
     std::cout << "RS: " << disp(statistics[2], 4, " ");
-    std::cout << "  " << E[2] << std::endl;
+    std::cout << "  " << E[2] << '\n';
     std::cout << "RT: " << disp(statistics[3], 4, " ");
-    std::cout << "  " << E[3] << std::endl;
+    std::cout << "  " << E[3] << '\n';
 
     // Experimental average
     double exp_avg = (E[0] - E[1] + E[2] + E[3]) / static_cast<double>(N);
     std::cout << ">> Experimental estimate of <QS> + <RS> + <RT> - <QT> = ";
-    std::cout << exp_avg << std::endl;
+    std::cout << exp_avg << '\n';
 
     // Theoretical average
     double th_avg = (adjoint(psi) *
                      (kron(Q, S) + kron(R, S) + kron(R, T) - kron(Q, T)) *
                      psi).value().real();
     std::cout << ">> Theoretical value of <QS> + <RS> + <RT> - <QT> = ";
-    std::cout << th_avg << std::endl;
+    std::cout << th_avg << '\n';
 
-    std::cout << ">> 2 * sqrt(2) = " << 2 * sqrt(2) << std::endl;
+    std::cout << ">> 2 * sqrt(2) = " << 2 * sqrt(2) << '\n';
 }

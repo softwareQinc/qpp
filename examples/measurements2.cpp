@@ -19,15 +19,14 @@ int main()
     // in the X basis
     std::tie(result, probs, states) = measure(psi, gt.H, {0});
     std::cout << ">> Measuring part " << disp(subsys, " ")
-              << " of the state: " << std::endl;
-    std::cout << disp(psi) << std::endl;
-    std::cout << ">> Measurement result: " << result << std::endl;
-    std::cout << ">> Probabilities: " << disp(probs, ", ") << std::endl;
-    std::cout << ">> Resulting normalized post-measurement states: "
-              << std::endl;
+              << " of the state:\n";
+    std::cout << disp(psi) << '\n';
+    std::cout << ">> Measurement result: " << result << '\n';
+    std::cout << ">> Probabilities: " << disp(probs, ", ") << '\n';
+    std::cout << ">> Resulting normalized post-measurement states:\n";
 
     for (auto&& it: states)
-        std::cout << disp(it) << std::endl << std::endl;
+        std::cout << disp(it) << "\n\n";
 
     // measure 2 subsystems out of a 4-qubit random density matrix
     cmat rho = randrho(16);
@@ -35,19 +34,18 @@ int main()
     cmat U = randU(4); // random basis on 2 qubits
 
     std::cout << ">> Measuring qubits " << disp(subsys, " ")
-              << " of a 4-qubit random state in the random basis:" << std::endl;
-    std::cout << disp(U) << std::endl;
+              << " of a 4-qubit random state in the random basis:\n";
+    std::cout << disp(U) << '\n';
 
     std::tie(result, probs, states) = measure(rho, U, {1, 2});
-    std::cout << ">> Measurement result: " << result << std::endl;
-    std::cout << ">> Probabilities: " << disp(probs, ", ") << std::endl;
+    std::cout << ">> Measurement result: " << result << '\n';
+    std::cout << ">> Probabilities: " << disp(probs, ", ") << '\n';
     std::cout << ">> Sum of the probabilities: "
-              << sum(probs.begin(), probs.end()) << std::endl;
-    std::cout << ">> Resulting normalized post-measurement states: "
-              << std::endl;
+              << sum(probs.begin(), probs.end()) << '\n';
+    std::cout << ">> Resulting normalized post-measurement states:\n";
 
     for (auto&& it: states)
-        std::cout << disp(it) << std::endl << std::endl;
+        std::cout << disp(it) << "\n\n";
 
     // check now how the state after the measurement "looks"
     // on the left over subsystems {0, 3}
@@ -64,23 +62,20 @@ int main()
         rho_out_bar += probs[i] * states[i];
 
     // verification
-    std::cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar)
-              << std::endl;
+    std::cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar) << '\n';
 
     // random Kraus
-    std::cout << ">> Random channel on part of the state " << std::endl;
+    std::cout << ">> Random channel on part of the state\n";
     rho_bar = ptrace(rho, {1, 3});
     rho_out_bar = ptrace(apply(rho, randkraus(3, 4), {1, 3}), {1, 3});
 
     // verification
-    std::cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar)
-              << std::endl;
+    std::cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar) << '\n';
 
-    std::cout << ">> Sequential measurements on the state/density matrix:"
-              << std::endl;
+    std::cout << ">> Sequential measurements on the state/density matrix:\n";
     psi = 0.8 * mket({0, 1}) + 0.6 * mket({1, 0});
     rho = psi * adjoint(psi);
-    std::cout << disp(psi) << std::endl;
+    std::cout << disp(psi) << '\n';
 
     std::vector<idx> subsys_ket{0};
     std::vector<idx> subsys_rho{1};
@@ -90,19 +85,19 @@ int main()
 
     // ket
     std::cout << ">> Ket, measuring subsystem(s) ";
-    std::cout << disp(subsys_ket, " ") << std::endl;
+    std::cout << disp(subsys_ket, " ") << '\n';
     std::cout << ">> Outcome(s): " << disp(std::get<0>(measured_ket), " ")
-              << std::endl;
-    std::cout << ">> Probability:  " << std::get<1>(measured_ket) << std::endl;
-    std::cout << ">> Resulting state:  " << std::endl;
-    std::cout << disp(std::get<2>(measured_ket)) << std::endl;
+              << '\n';
+    std::cout << ">> Probability:  " << std::get<1>(measured_ket) << '\n';
+    std::cout << ">> Resulting state:\n";
+    std::cout << disp(std::get<2>(measured_ket)) << '\n';
 
     // density matrix
     std::cout << ">> Density matrix, measuring subsystem(s) ";
-    std::cout << disp(subsys_rho, " ") << std::endl;
+    std::cout << disp(subsys_rho, " ") << '\n';
     std::cout << ">> Outcome(s): " << disp(std::get<0>(measured_rho), " ")
-              << std::endl;
-    std::cout << ">> Probability:  " << std::get<1>(measured_rho) << std::endl;
-    std::cout << ">> Resulting state:  " << std::endl;
-    std::cout << disp(std::get<2>(measured_rho)) << std::endl;
+              << '\n';
+    std::cout << ">> Probability:  " << std::get<1>(measured_rho) << '\n';
+    std::cout << ">> Resulting state:\n";
+    std::cout << disp(std::get<2>(measured_rho)) << '\n';
 }

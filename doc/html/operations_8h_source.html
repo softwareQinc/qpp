@@ -849,7 +849,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceqpp_1_1internal.html#a852fb36cdefe0308752d02ee32269bf5">internal::check_square_mat</a>(A))</div>
 <div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::choi2kraus()&quot;</span>,</div>
 <div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160;                        <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7cacb2cab32e9061c686a6664d06c8bac94">Exception::Type::MATRIX_NOT_SQUARE</a>);</div>
-<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = <a class="code" href="namespaceqpp_1_1internal.html#a321de4158dbe66d77f480d8f0b7ffd6d">internal::get_dim_subsys</a>(static_cast&lt;double&gt;(A.rows()), 2);</div>
+<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = <a class="code" href="namespaceqpp_1_1internal.html#a321de4158dbe66d77f480d8f0b7ffd6d">internal::get_dim_subsys</a>(A.rows(), 2);</div>
 <div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;    <span class="comment">// check equal dimensions</span></div>
 <div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;    <span class="keywordflow">if</span> (D * D != static_cast&lt;idx&gt;(A.rows()))</div>
 <div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::choi2kraus()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
@@ -1729,7 +1729,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="operations_8h.html">operations.h</a></li>
-    <li class="footer">Generated on Mon Oct 10 2016 09:55:27 for Quantum++ by
+    <li class="footer">Generated on Mon Oct 10 2016 11:07:27 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

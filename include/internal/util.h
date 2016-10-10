@@ -363,11 +363,9 @@ inline idx get_num_subsys(idx sz, idx d)
 inline idx get_dim_subsys(idx sz, idx N)
 {
     if (N == 2)
-        return static_cast<idx>(
-                std::llround(std::sqrt(static_cast<double>(sz))));
+        return static_cast<idx>(std::llround(std::sqrt(sz)));
 
-    return static_cast<idx>(std::llround(
-            std::pow(static_cast<double>(sz), 1./N)));
+    return static_cast<idx>(std::llround(std::pow(sz, 1./N)));
 }
 
 } /* namespace internal */

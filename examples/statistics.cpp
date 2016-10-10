@@ -18,17 +18,17 @@ int main()
     std::vector<double> probX = marginalX(probXY);
     std::vector<double> probY = marginalY(probXY);
 
-    std::cout << ">> ProbX: " << disp(marginalX(probXY), ", ") << std::endl;
-    std::cout << ">> ProbY: " << disp(marginalY(probXY), ", ") << std::endl;
+    std::cout << ">> ProbX: " << disp(marginalX(probXY), ", ") << '\n';
+    std::cout << ">> ProbY: " << disp(marginalY(probXY), ", ") << '\n';
 
     std::cout << "Mean (X/Y): " << avg(probX, X) << " " << avg(probY, Y)
-              << std::endl;
+              << '\n';
     std::cout << "Standard deviation (X/Y):" << sigma(probX, X) << " "
-              << sigma(probY, Y) << std::endl;
+              << sigma(probY, Y) << '\n';
     std::cout << "Variance (X/Y): " << var(probX, X) << " " << var(probY, Y)
-              << std::endl;
-    std::cout << "Covariance: " << cov(probXY, X, Y) << std::endl;
+              << '\n';
+    std::cout << "Covariance: " << cov(probXY, X, Y) << '\n';
 
     // display a uniform probability distribution
-    std::cout << "Uniform(5): " << disp(uniform(5), ", ") << std::endl;
+    std::cout << "Uniform(5): " << disp(uniform(5), ", ") << '\n';
 }
