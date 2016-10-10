@@ -18,7 +18,7 @@
 # along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0)
-PROJECT(qpp VERSION 0.8.9 LANGUAGES CXX)
+PROJECT(qpp VERSION 1.0.0 LANGUAGES CXX)
 
 #### Use C++11
 IF(CYGWIN)

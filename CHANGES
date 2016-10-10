@@ -1,4 +1,4 @@
-Version 0.8.9 - development
+Version 1.0.0-beta1 - 10 October 2016
     - GoogleMock 1.7.0 is now included in the project for portable unit testing
         (see the README.md file for more details)
     - Removed the qpp::ubigint type so there is no more danger of mixing
@@ -10,7 +10,7 @@ Version 0.8.9 - development
     - Added new functions in "number_theory.h":
         qpp::randprime() - random prime number generator
         qpp::modmul()    - modular multiplication that avoids overflows
-    - Extensive unit testing
+    - Additional unit testing, added unit testing skeleton for all codebase
 
 Version 0.8.8.2 - 3 October 2016
     - This is a bug-fix release
