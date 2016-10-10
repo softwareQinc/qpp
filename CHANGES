@@ -1,5 +1,5 @@
 Version 0.8.9 - development
-    - GoogleMock 1.7.0 is now included in the project for uniform unit testing
+    - GoogleMock 1.7.0 is now included in the project for portable unit testing
         (see the README.md file for more details)
     - Removed the qpp::ubigint type so there is no more danger of mixing
         signed and unsigned types. All related functions now use qpp::bigint.
@@ -7,7 +7,7 @@ Version 0.8.9 - development
     - qpp::isprime() is now based on the Miller-Rabin primality test
     - qpp::rand(Type a, Type b) family of functions now throw if b > a for
         integer types or when a == b for floating-point types
-    - Added new functions in <number_theory.h>:
+    - Added new functions in "number_theory.h":
         qpp::randprime() - random prime number generator
         qpp::modmul()    - modular multiplication that avoids overflows
     - Extensive unit testing
@@ -20,7 +20,7 @@ Version 0.8.8.2 - 3 October 2016
 Version 0.8.8 - 30 September 2016
     - Added OpenMP support for clang >= 3.7 in CmakeLists.txt
     - Required minimum cmake version is now 3.0
-    - Added more unit testing, <number_theory.h> is now fully tested
+    - Added more unit testing, "number_theory.h" is now fully tested
     - Split unit testing in separate files according to the tested header file
     - Fixed typo in CMakeLists.txt which in effect disabled OpenMP
         for version 0.8.6. PLEASE use the CMakeLists.txt from current version!
@@ -31,7 +31,7 @@ Version 0.8.8 - 30 September 2016
         thanks @titaschanda
     - Fixed critical bug in qpp::lcm(const std::vector<bigint>&)
     - Fixed critical bug in qpp::x2contfrac()
-    - Added new functions in <number_theory.h>:
+    - Added new functions in "number_theory.h":
         qpp::egcd()   - extended greatest common divisor algorithm
         qpp::modinv() - modular inverse of a mod p
 
@@ -41,12 +41,12 @@ Version 0.8.6 - 1 November 2015
         ./unit_tests/testing.cpp.
 
 Version 0.8.4 - 14 October 2015
-    - Added <macros.h> preprocessor debug macros header, containing:
+    - Added "macros.h" preprocessor debug macros header, containing:
         PRINT(x)   - std::cout << (x)
         PRINTLN(x) - std::cout << (x) << std::endl
         ERROR(x)   - std::cerr << (x)
         ERRORLN(x) - std::cerr << (x) << std::endl
-    - Added new functions in <operations.h>:
+    - Added new functions in "operations.h":
         qpp::ip()  - Generalized inner product
     - Modified qpp::measure() so that the output consists of pure states
         whenever the input is a pure state and the measurement operators are
@@ -58,11 +58,11 @@ Version 0.8.4 - 14 October 2015
         respectively
 
 Version 0.8.2 - 20 May 2015
-    - Added <traits.h> type traits header file with the following type traits:
+    - Added "traits.h" type traits header file with the following type traits:
         qpp::is_iterable<> - checks for iterable STL-like containers
         qpp::is_matrix_expression<> - checks for Eigen::MatrixBase<> expressions
         qpp::is_complex<>  - checks whether the type is std::complex<>
-    - Added <statistics.h> header file containing the following new functions:
+    - Added "statistics.h" header file containing the following new functions:
         qpp::uniform()     - uniform probability distribution vector
         qpp::marginalX()   - marginal distribution
         qpp::marginalY()   - marginal distribution
@@ -74,13 +74,13 @@ Version 0.8.2 - 20 May 2015
     - Added new examples in ./examples
 
 Version 0.8 - 8 May 2015
-    - Added new data type aliases in <types.h>
+    - Added new data type aliases in "types.h"
         bigint        - Big integer, alias for long long int
         ubigint       - Non-negative big integer, alias for
                         unsigned long long int
-    - Added new overloads in <random.h>:
+    - Added new overloads in "random.h":
         qpp::rand()   - overloads for bigint and ubigint
-    - Added new functions in <number_theory.h>:
+    - Added new functions in "number_theory.h":
         qpp::modpow() - computes a^n mod p for non-negative integers
     - Added IDisplay as an abstract base class for enforcing the override of
         its member function
@@ -107,7 +107,7 @@ Version 0.8 - 8 May 2015
 
 Version 0.7 - 22 April 2015
     - Marked all non-template functions defined in headers as "inline" and
-        all singletons as "static", since otherwise including <qpp.h> in
+        all singletons as "static", since otherwise including "qpp.h" in
         separate compilation units led to linker errors due to duplicated
         symbols
 
@@ -131,11 +131,11 @@ Version 0.4 - 8 March 2015
         qpp::ptranspose() that allow a pure state input, as it was the case
         before with qpp::syspermute()
     - Added overloads of qpp::prod() and qpp::sum() for STL-like containers
-    - Added new functions in <functions.h>:
+    - Added new functions in "functions.h":
         qpp::complement()  - computes the complement of a subsystem vector
         qpp::rho2bloch()   - qubit density matrix to Bloch vector
         qpp::bloch2rho()   - Bloch vector to qubit density matrix
-    - Added new functions in <instruments.h>:
+    - Added new functions in "instruments.h":
         qpp::measure_seq() - measures subsystems sequentially
     - Removed support for the C-style random number engine, as it is not 
         thread safe. Hence, Eigen::Matrix::Random() should not be used, 
@@ -148,7 +148,7 @@ Version 0.3 - 15 February 2015
 
 Version 0.2 - 26 January 2015
     - Minor fixes
-    - Added prime-number related functions in <number_theory.h>:
+    - Added prime-number related functions in "number_theory.h":
         qpp::factors() - prime factors of positive integer
         qpp::isprime() - primality test
 
