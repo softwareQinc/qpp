@@ -19,12 +19,12 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include <qpp.h>
+#include "gtest/gtest.h"
+#include "qpp.h"
 
 using namespace qpp;
 
-// Unit testing <statistics.h>
+// Unit testing "statistics.h"
 
 /******************************************************************************/
 /// BEGIN template<typename Container> double qpp::avg(

@@ -1,6 +1,7 @@
 // Gates and states
 // Source: ./examples/gates_states.cpp
-#include <qpp.h>
+#include <iostream>
+#include "qpp.h"
 
 using namespace qpp;
 

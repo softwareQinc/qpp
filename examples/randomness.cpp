@@ -1,20 +1,20 @@
 // Randomness
 // Source: ./examples/randomness.cpp
-#include <qpp.h>
+#include <iostream>
+#include <vector>
+#include "qpp.h"
 
 using namespace qpp;
-using std::cout;
-using std::endl;
 
 int main()
 {
-    cout << ">> Generating a random ket on D = 5" << endl;
+    std::cout << ">> Generating a random ket on D = 5" << std::endl;
     ket rket = randket(5);
-    cout << disp(rket) << endl;
+    std::cout << disp(rket) << std::endl;
 
     std::vector<double> probs = abssq(rket);
-    cout << ">> Probabilities: " << disp(probs, ", ") << endl;
+    std::cout << ">> Probabilities: " << disp(probs, ", ") << std::endl;
 
-    cout << ">> Sum of the probabilities: ";
-    cout << sum(probs.begin(), probs.end()) << endl;
+    std::cout << ">> Sum of the probabilities: ";
+    std::cout << sum(probs.begin(), probs.end()) << std::endl;
 }

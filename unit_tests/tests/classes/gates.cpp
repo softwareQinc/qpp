@@ -19,12 +19,14 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include <qpp.h>
+#include <cmath>
+#include <complex>
+#include "gtest/gtest.h"
+#include "qpp.h"
 
 using namespace qpp;
 
-// Unit testing <classes/gates.h>
+// Unit testing "classes/gates.h"
 
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>

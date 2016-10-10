@@ -1,6 +1,8 @@
 // Measurements
 // Source: ./examples/measurements.cpp
-#include <qpp.h>
+#include <iostream>
+#include <tuple>
+#include "qpp.h"
 
 using namespace qpp;
 
@@ -24,6 +26,6 @@ int main()
     std::cout << std::endl << ">> Probabilities: ";
     std::cout << disp(std::get<1>(measured), ", ") << std::endl;
     std::cout << ">> Resulting states: " << std::endl;
-    for ( auto&& it : std::get<2>(measured))
+    for (auto&& it : std::get<2>(measured))
         std::cout << disp(it) << std::endl;
 }

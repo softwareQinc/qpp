@@ -1,10 +1,10 @@
 // Functor
 // Source: ./examples/functor.cpp
-#include <qpp.h>
+#include <complex>
+#include <iostream>
+#include "qpp.h"
 
 using namespace qpp;
-using std::cout;
-using std::endl;
 
 // test function used by qpp::cwise()
 cplx pow3(const cplx& z)
@@ -15,19 +15,19 @@ cplx pow3(const cplx& z)
 int main()
 {
     // functor test
-    cout << ">> Functor z^3 acting component-wise on:" << endl;
+    std::cout << ">> Functor z^3 acting component-wise on:" << std::endl;
     cmat A(2, 2);
     A << 1, 2, 3, 4;
-    cout << disp(A) << endl;
+    std::cout << disp(A) << std::endl;
 
-    cout << ">> Result (with lambda):" << endl;
+    std::cout << ">> Result (with lambda):" << std::endl;
     // functor z^3 componentwise, specify OutputScalar and Derived for lambdas
-    cout << disp(cwise<cplx, cmat>(A, [](const cplx& z) -> cplx
+    std::cout << disp(cwise<cplx, cmat>(A, [](const cplx& z) -> cplx
     {
         return z * z * z;
-    })) << endl;
+    })) << std::endl;
 
-    cout << ">> Result (with genuine function):" << endl;
+    std::cout << ">> Result (with genuine function):" << std::endl;
     // automatic type deduction for proper functions
-    cout << disp(cwise(A, &pow3)) << endl;
+    std::cout << disp(cwise(A, &pow3)) << std::endl;
 }

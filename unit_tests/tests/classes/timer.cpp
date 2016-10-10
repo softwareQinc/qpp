@@ -19,14 +19,14 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include <qpp.h>
-
+#include <chrono>
 #include <thread> // for std::this_thread::sleep_for()
+#include "gtest/gtest.h"
+#include "qpp.h"
 
 using namespace qpp;
 
-// Unit testing <classes/timer.h>
+// Unit testing "classes/timer.h"
 
 // All test below test std::chrono::steady_clock timers,
 // i.e Timer<T, CLOCK_T = std::chrono::steady_clock>

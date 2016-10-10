@@ -1,60 +1,64 @@
 // Entanglement
 // Source: ./examples/entanglement.cpp
-#include <qpp.h>
+#include <iostream>
+#include "qpp.h"
 
 using namespace qpp;
-using std::cout;
-using std::endl;
 
 int main()
 {
     cmat rho = 0.2 * st.pb00 + 0.8 * st.pb11;
-    cout << ">> State rho: " << endl;
-    cout << disp(rho) << endl;
+    std::cout << ">> State rho: " << std::endl;
+    std::cout << disp(rho) << std::endl;
 
-    cout << ">> Concurrence of rho: " << concurrence(rho) << endl;
-    cout << ">> Negativity of rho: " << negativity(rho, {2, 2}) << endl;
-    cout << ">> Logarithimc negativity of rho: "
-         << lognegativity(rho, {2, 2}) << endl;
+    std::cout << ">> Concurrence of rho: " << concurrence(rho) << std::endl;
+    std::cout << ">> Negativity of rho: " << negativity(rho, {2, 2})
+              << std::endl;
+    std::cout << ">> Logarithimc negativity of rho: "
+              << lognegativity(rho, {2, 2}) << std::endl;
 
     ket psi = 0.8 * mket({0, 0}) + 0.6 * mket({1, 1});
 
     // apply some local random unitaries
     psi = kron(randU(2), randU(2)) * psi;
 
-    cout << ">> State psi: " << endl;
-    cout << disp(psi) << endl;
+    std::cout << ">> State psi: " << std::endl;
+    std::cout << disp(psi) << std::endl;
 
-    cout << ">> Entanglement of psi: " << entanglement(psi, {2, 2}) << endl;
-    cout << ">> Concurrence of psi: " << concurrence(prj(psi)) << endl;
-    cout << ">> G-Concurrence of psi: " << gconcurrence(psi) << endl;
+    std::cout << ">> Entanglement of psi: " << entanglement(psi, {2, 2})
+              << std::endl;
+    std::cout << ">> Concurrence of psi: " << concurrence(prj(psi))
+              << std::endl;
+    std::cout << ">> G-Concurrence of psi: " << gconcurrence(psi)
+              << std::endl;
 
-    cout << ">> Schmidt coefficients of psi: " << endl;
-    cout << disp(schmidtcoeffs(psi, {2, 2})) << endl;
+    std::cout << ">> Schmidt coefficients of psi: " << std::endl;
+    std::cout << disp(schmidtcoeffs(psi, {2, 2})) << std::endl;
 
-    cout << ">> Schmidt probabilities of psi: " << endl;
-    cout << disp(schmidtprobs(psi, {2, 2}), ", ") << endl;
+    std::cout << ">> Schmidt probabilities of psi: " << std::endl;
+    std::cout << disp(schmidtprobs(psi, {2, 2}), ", ") << std::endl;
 
     cmat UA = schmidtA(psi, {2, 2});
     cmat UB = schmidtB(psi, {2, 2});
 
-    cout << ">> Schmidt vectors on Alice's side: " << endl;
-    cout << disp(UA) << endl;
+    std::cout << ">> Schmidt vectors on Alice's side: " << std::endl;
+    std::cout << disp(UA) << std::endl;
 
-    cout << ">> Schmidt vectors on Bob's side: " << endl;
-    cout << disp(UB) << endl;
+    std::cout << ">> Schmidt vectors on Bob's side: " << std::endl;
+    std::cout << disp(UB) << std::endl;
 
-    cout << ">> State psi in the Schmidt basis: " << endl;
-    cout << disp(adjoint(kron(UA, UB)) * psi) << endl;
+    std::cout << ">> State psi in the Schmidt basis: " << std::endl;
+    std::cout << disp(adjoint(kron(UA, UB)) * psi) << std::endl;
 
     // reconstructed state
     ket psi_from_schmidt =
             schmidtcoeffs(psi, {2, 2})(0) * kron(UA.col(0), UB.col(0))
             + schmidtcoeffs(psi, {2, 2})(1)
               * kron(UA.col(1), UB.col(1));
-    cout << ">> State psi reconstructed from the Schmidt decomposition:\n";
-    cout << disp(psi_from_schmidt) << endl;
+    std::cout << ">> State psi reconstructed from the Schmidt decomposition:\n";
+    std::cout << disp(psi_from_schmidt) << std::endl;
 
     // verification
-    cout << ">> Norm difference: " << norm(psi - psi_from_schmidt) << endl;
+    std::cout << ">> Norm difference: " << norm(psi - psi_from_schmidt)
+              << std::endl;
 }

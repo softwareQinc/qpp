@@ -19,12 +19,16 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include <qpp.h>
+#include <limits>
+#include <string>
+#include <tuple>
+#include <vector>
+#include "gtest/gtest.h"
+#include "qpp.h"
 
 using namespace qpp;
 
-// Unit testing <number_theory.h>
+// Unit testing "number_theory.h"
 
 /******************************************************************************/
 /// BEGIN std::vector<idx> qpp::compperm(const std::vector<idx>& perm,

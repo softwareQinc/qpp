@@ -45,17 +45,17 @@ private:
     */
     Init()
     {
-        // on entry message
-        std::cout << ">>> Starting Quantum++..." << std::endl;
-
-        // gets and displays current system time
-        std::time_t current_date = std::time(nullptr);
-        std::cout << ">>> " << std::ctime(&current_date) << std::endl;
-
-        // set default output format and precision
-        std::cout << std::fixed; // use fixed format for nice formatting
-        // std::cout << std::scientific;
-        std::cout << std::setprecision(4); // only for fixed/scientific modes
+//        // on entry message
+//        std::cout << ">>> Starting Quantum++..." << std::endl;
+//
+//        // gets and displays current system time
+//        std::time_t current_date = std::time(nullptr);
+//        std::cout << ">>> " << std::ctime(&current_date) << std::endl;
+//
+//        // set default output format and precision
+//        std::cout << std::fixed; // use fixed format for nice formatting
+//        // std::cout << std::scientific;
+//        std::cout << std::setprecision(4); // only for fixed/scientific modes
     }
 
     /**
@@ -63,12 +63,12 @@ private:
     */
     ~Init()
     {
-        // on exit message
-        std::cout << std::endl << ">>> Exiting Quantum++..." << std::endl;
-
-        // gets and displays current system time
-        std::time_t current_date = std::time(nullptr);
-        std::cout << ">>> " << std::ctime(&current_date);
+//        // on exit message
+//        std::cout << std::endl << ">>> Exiting Quantum++..." << std::endl;
+//
+//        // gets and displays current system time
+//        std::time_t current_date = std::time(nullptr);
+//        std::cout << ">>> " << std::ctime(&current_date);
     }
 }; /* class Init */
 

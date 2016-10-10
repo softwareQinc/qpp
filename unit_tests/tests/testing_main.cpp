@@ -19,9 +19,9 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Do not add anything to this file
+// Unit testing entry point
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 int main(int argc, char** argv)
 {

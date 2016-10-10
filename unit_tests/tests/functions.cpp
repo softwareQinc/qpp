@@ -19,12 +19,13 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include <qpp.h>
+#include <vector>
+#include "gtest/gtest.h"
+#include "qpp.h"
 
 using namespace qpp;
 
-// Unit testing <functions.h>
+// Unit testing "functions.h"
 
 /******************************************************************************/
 /// BEGIN template<typename Derived> cmat qpp::absm(

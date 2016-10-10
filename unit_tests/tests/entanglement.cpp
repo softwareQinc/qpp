@@ -19,12 +19,12 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include <qpp.h>
+#include "gtest/gtest.h"
+#include "qpp.h"
 
 using namespace qpp;
 
-// Unit testing <entanglement.h>
+// Unit testing "entanglement.h"
 
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::concurrence(

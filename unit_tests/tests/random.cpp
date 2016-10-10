@@ -19,12 +19,12 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include <qpp.h>
+#include "gtest/gtest.h"
+#include "qpp.h"
 
 using namespace qpp;
 
-// Unit testing <random.h>
+// Unit testing "random.h"
 
 /******************************************************************************/
 /// BEGIN inline bigint qpp::rand(bigint a, bigint b)

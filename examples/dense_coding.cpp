@@ -1,18 +1,20 @@
 // Qudit dense coding
 // Source: ./examples/dense_coding.cpp
-#include <qpp.h>
+#include <cmath>
+#include <iostream>
+#include <tuple>
+#include <vector>
+#include "qpp.h"
 
 using namespace qpp;
-using std::cout;
-using std::endl;
 
 int main()
 {
     idx D = 3; // size of the system
-    cout << ">> Qudit dense coding, D = " << D << endl;
+    std::cout << ">> Qudit dense coding, D = " << D << std::endl;
 
     ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
-    for ( idx i = 0; i < D; ++i )
+    for (idx i = 0; i < D; ++i)
         mes_AB += mket({i, i}, D);
     mes_AB /= std::sqrt((double) D);
 
@@ -23,8 +25,8 @@ int main()
     // equal probabilities of choosing a message
     idx m_A = randidx(0, D * D - 1);
     std::vector<idx> midx = n2multiidx(m_A, {D, D});
-    cout << ">> Alice sent: " << m_A << " -> ";
-    cout << disp(midx, " ") << endl;
+    std::cout << ">> Alice sent: " << m_A << " -> ";
+    std::cout << disp(midx, " ") << std::endl;
 
     // Alice's operation
     cmat U_A = powm(gt.Zd(D), midx[0]) * powm(adjoint(gt.Xd(D)), midx[1]);
@@ -36,11 +38,12 @@ int main()
     psi_AB = apply(psi_AB, Bell_AB, {0, 1}, D);
 
     auto measured = measure(psi_AB, gt.Id(D * D));
-    cout << ">> Bob's measurement probabilities: ";
-    cout << disp(std::get<1>(measured), ", ") << endl;
+    std::cout << ">> Bob's measurement probabilities: ";
+    std::cout << disp(std::get<1>(measured), ", ") << std::endl;
 
     // Bob samples according to the measurement probabilities
     idx m_B = std::get<0>(measured);
-    cout << ">> Bob received: ";
-    cout << m_B << " -> " << disp(n2multiidx(m_B, {D, D}), " ") << endl;
+    std::cout << ">> Bob received: ";
+    std::cout << m_B << " -> " << disp(n2multiidx(m_B, {D, D}), " ")
+              << std::endl;
 }

@@ -1,18 +1,20 @@
 // Qudit teleporation
 // Source: ./examples/teleportation.cpp
-#include <qpp.h>
+#include <cmath>
+#include <iostream>
+#include <tuple>
+#include <vector>
+#include "qpp.h"
 
 using namespace qpp;
-using std::cout;
-using std::endl;
 
 int main()
 {
     idx D = 3; // size of the system
-    cout << ">> Qudit teleportation, D = " << D << endl;
+    std::cout << ">> Qudit teleportation, D = " << D << std::endl;
 
     ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
-    for ( idx i = 0; i < D; ++i )
+    for (idx i = 0; i < D; ++i)
         mes_AB += mket({i, i}, D);
     mes_AB /= std::sqrt((double) D);
 
@@ -21,8 +23,8 @@ int main()
                            * kron(gt.Fd(D), gt.Id(D)));
 
     ket psi_a = randket(D); // random qudit state
-    cout << ">> Initial state:" << endl;
-    cout << disp(psi_a) << endl;
+    std::cout << ">> Initial state:" << std::endl;
+    std::cout << disp(psi_a) << std::endl;
 
     ket input_aAB = kron(psi_a, mes_AB); // joint input state aAB
     // output before measurement
@@ -33,10 +35,10 @@ int main()
     idx m = std::get<0>(measured_aA); // measurement result
 
     std::vector<idx> midx = n2multiidx(m, {D, D});
-    cout << ">> Alice's measurement result: ";
-    cout << m << " -> " << disp(midx, " ") << endl;
-    cout << ">> Alice's measurement probabilities: ";
-    cout << disp(std::get<1>(measured_aA), ", ") << endl;
+    std::cout << ">> Alice's measurement result: ";
+    std::cout << m << " -> " << disp(midx, " ") << std::endl;
+    std::cout << ">> Alice's measurement probabilities: ";
+    std::cout << disp(std::get<1>(measured_aA), ", ") << std::endl;
 
     // conditional result on B before correction
     ket output_m_B = std::get<2>(measured_aA)[m];
@@ -44,13 +46,13 @@ int main()
     cmat correction_B = powm(gt.Zd(D), midx[0]) *
                         powm(adjoint(gt.Xd(D)), midx[1]);
     // apply correction on B
-    cout << ">> Bob must apply the correction operator Z^" << midx[0]
-         << " X^" << (D - midx[1]) % D << endl;
+    std::cout << ">> Bob must apply the correction operator Z^" << midx[0]
+              << " X^" << (D - midx[1]) % D << std::endl;
     ket psi_B = correction_B * output_m_B;
 
-    cout << ">> Bob's final state (after correction): " << endl;
-    cout << disp(psi_B) << endl;
+    std::cout << ">> Bob's final state (after correction): " << std::endl;
+    std::cout << disp(psi_B) << std::endl;
 
     // verification
-    cout << ">> Norm difference: " << norm(psi_B - psi_a) << endl;
+    std::cout << ">> Norm difference: " << norm(psi_B - psi_a) << std::endl;
 }

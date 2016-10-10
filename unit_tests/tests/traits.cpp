@@ -19,12 +19,12 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include <qpp.h>
+#include "gtest/gtest.h"
+#include "qpp.h"
 
 using namespace qpp;
 
-// Unit testing <traits.h>
+// Unit testing "traits.h"
 
 /******************************************************************************/
 /// BEGIN template<typename T> struct qpp::is_complex

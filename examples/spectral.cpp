@@ -1,28 +1,27 @@
 // Spectral decomposition
 // Source: ./examples/spectral.cpp
-#include <qpp.h>
+#include <iostream>
+#include "qpp.h"
 
 using namespace qpp;
-using std::cout;
-using std::endl;
 
 int main()
 {
     idx D = 4;
     cmat rH = randH(D); // random Hermitian matrix
-    cout << ">> Original matrix: " << endl << disp(rH) << endl;
+    std::cout << ">> Original matrix: " << std::endl << disp(rH) << std::endl;
 
     // spectral decomposition here
     dyn_col_vect<double> evalsH = hevals(rH);
     cmat evectsH = hevects(rH);
     cmat spec = cmat::Zero(D, D);
     // reconstruct the matrix
-    for ( idx i = 0; i < D; ++i )
+    for (idx i = 0; i < D; ++i)
         spec += evalsH(i) * prj(evectsH.col(i));
 
-    cout << ">> Reconstructed from spectral decomposition: " << endl;
-    cout << disp(spec) << endl;
+    std::cout << ">> Reconstructed from spectral decomposition: " << std::endl;
+    std::cout << disp(spec) << std::endl;
 
     // verification
-    cout << ">> Norm difference: " << norm(spec - rH) << endl;
+    std::cout << ">> Norm difference: " << norm(spec - rH) << std::endl;
 }

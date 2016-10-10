@@ -1,6 +1,9 @@
 // Timing
 // Source: ./examples/timing.cpp
-#include <qpp.h>
+#include <iomanip>
+#include <iostream>
+#include <vector>
+#include "qpp.h"
 
 using namespace qpp;
 

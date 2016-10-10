@@ -1,10 +1,9 @@
 // Graph states
 // Source: ./examples/graph_states.cpp
-#include <qpp.h>
+#include <iostream>
+#include "qpp.h"
 
 using namespace qpp;
-using std::cout;
-using std::endl;
 
 int main()
 {
@@ -30,10 +29,10 @@ int main()
     rhoG0 = (H3 * rhoG0 * adjoint(H3)).eval();
     rhoG1 = rhoG0;
     // apply pairwise Control-Phases
-    for ( idx i = 0; i < 3; ++i )
-        for ( idx j = i + 1; j < 3; ++j )
+    for (idx i = 0; i < 3; ++i)
+        for (idx j = i + 1; j < 3; ++j)
         {
-            if ( Gamma[i][j] )
+            if (Gamma[i][j])
             {
                 G0 = apply(G0, gt.CZ, {i, j});
                 G1 = applyCTRL(G1, gt.Z, {i}, {j});
@@ -43,17 +42,17 @@ int main()
         }
     // end construction
 
-    cout << ">> Resulting graph states: " << endl;
-    cout << disp(G0) << endl << endl;
-    cout << disp(G1) << endl;
+    std::cout << ">> Resulting graph states: " << std::endl;
+    std::cout << disp(G0) << std::endl << std::endl;
+    std::cout << disp(G1) << std::endl;
     // verification
-    cout << ">> Norm difference: " << norm(G0 - G1) << endl;
+    std::cout << ">> Norm difference: " << norm(G0 - G1) << std::endl;
 
     // check the corresponding density matrices
-    cout << ">> Resulting density matrices: " << endl;
-    cout << disp(rhoG0) << endl << endl;
-    cout << disp(rhoG1) << endl;
-    cout << ">> Norm difference: " << norm(rhoG0 - rhoG1) << endl;
+    std::cout << ">> Resulting density matrices: " << std::endl;
+    std::cout << disp(rhoG0) << std::endl << std::endl;
+    std::cout << disp(rhoG1) << std::endl;
+    std::cout << ">> Norm difference: " << norm(rhoG0 - rhoG1) << std::endl;
 
     // check the X-Z rule
     // applying X to a vertex is equivalent to applying Z to its neighbors
@@ -63,10 +62,10 @@ int main()
     cmat rhoG0Z1Z2 = apply(rhoG0, kron(gt.Z, gt.Z), {1, 2});
 
     // verification
-    cout << ">> Checking the X-Z rule" << endl;
-    cout << ">> X-Z rule. Norm difference for the kets: ";
-    cout << norm(G0X0 - G0Z1Z2) << endl;
-    cout << ">> X-Z rule. Norm difference for the corresponding "
+    std::cout << ">> Checking the X-Z rule" << std::endl;
+    std::cout << ">> X-Z rule. Norm difference for the kets: ";
+    std::cout << norm(G0X0 - G0Z1Z2) << std::endl;
+    std::cout << ">> X-Z rule. Norm difference for the corresponding "
             "density matrices: ";
-    cout << norm(rhoG0X0 - rhoG0Z1Z2) << endl;
+    std::cout << norm(rhoG0X0 - rhoG0Z1Z2) << std::endl;
 }
