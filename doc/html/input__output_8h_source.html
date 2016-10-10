@@ -165,15 +165,15 @@ $(document).ready(function(){initNavTree('input__output_8h_source.html','');});
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="comment">// write the header to file</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> header_[] = <span class="stringliteral">&quot;TYPE::Eigen::Matrix&quot;</span>;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    fout.write(header_, <span class="keyword">sizeof</span>(header_));</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keyword">const</span> std::string header_ = <span class="stringliteral">&quot;TYPE::Eigen::Matrix&quot;</span>;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    fout.write(header_.c_str(), header_.length());</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rA.rows());</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rA.cols());</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    fout.write((<span class="keywordtype">char</span>*) &amp;rows, <span class="keyword">sizeof</span>(rows));</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    fout.write((<span class="keywordtype">char</span>*) &amp;cols, <span class="keyword">sizeof</span>(cols));</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    fout.write(reinterpret_cast&lt;char*&gt;(&amp;rows), <span class="keyword">sizeof</span>(rows));</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    fout.write(reinterpret_cast&lt;char*&gt;(&amp;cols), <span class="keyword">sizeof</span>(cols));</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    fout.write((<span class="keywordtype">char</span>*) rA.data(),</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    fout.write(reinterpret_cast&lt;const char*&gt;(rA.data()),</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;               <span class="keyword">sizeof</span>(<span class="keyword">typename</span> Derived::Scalar) * rows * cols);</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    fout.close();</div>
@@ -194,38 +194,36 @@ $(document).ready(function(){initNavTree('input__output_8h_source.html','');});
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;                + std::string(fname) + <span class="stringliteral">&quot;\&quot;!&quot;</span>);</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    }</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> header_[] = <span class="stringliteral">&quot;TYPE::Eigen::Matrix&quot;</span>;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keywordtype">char</span>* fheader_ = <span class="keyword">new</span> <span class="keywordtype">char</span>[<span class="keyword">sizeof</span>(header_)];</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keyword">const</span> std::string header_ = <span class="stringliteral">&quot;TYPE::Eigen::Matrix&quot;</span>;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    std::unique_ptr&lt;char[]&gt; fheader_{<span class="keyword">new</span> <span class="keywordtype">char</span>[header_.length()]};</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="comment">// read the header from file</span></div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    fin.read(fheader_, <span class="keyword">sizeof</span>(header_));</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keywordflow">if</span> (strcmp(fheader_, header_))</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    fin.read(fheader_.get(), header_.length());</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keywordflow">if</span> (std::string(fheader_.get(), header_.length()) != header_)</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    {</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keyword">delete</span>[] fheader_;</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;                <span class="stringliteral">&quot;qpp::load(): Input file \&quot;&quot;</span> + std::string(fname)</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                + <span class="stringliteral">&quot;\&quot; is corrupted!&quot;</span>);</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    }</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keyword">delete</span>[] fheader_;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows, cols;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    fin.read((<span class="keywordtype">char</span>*) &amp;rows, <span class="keyword">sizeof</span>(rows));</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    fin.read((<span class="keywordtype">char</span>*) &amp;cols, <span class="keyword">sizeof</span>(cols));</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;                <span class="stringliteral">&quot;qpp::load(): Input file \&quot;&quot;</span> + std::string(fname)</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;                + <span class="stringliteral">&quot;\&quot; is corrupted!&quot;</span>);</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    }</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows, cols;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    fin.read(reinterpret_cast&lt;char*&gt;(&amp;rows), <span class="keyword">sizeof</span>(rows));</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    fin.read(reinterpret_cast&lt;char*&gt;(&amp;cols), <span class="keyword">sizeof</span>(cols));</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> A(rows, cols);</div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <a class="code" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat&lt;typename Derived::Scalar&gt;</a> A(rows, cols);</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    fin.read((<span class="keywordtype">char</span>*) A.data(),</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;             <span class="keyword">sizeof</span>(<span class="keyword">typename</span> Derived::Scalar) * rows * cols);</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    fin.read(reinterpret_cast&lt;char*&gt;(A.data()),</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;             <span class="keyword">sizeof</span>(<span class="keyword">typename</span> Derived::Scalar) * rows * cols);</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    fin.close();</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    fin.close();</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keywordflow">return</span> A;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;}</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="keywordflow">return</span> A;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;}</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INPUT_OUTPUT_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INPUT_OUTPUT_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_adba60d4cfda710c1a5b735d81767b530"><div class="ttname"><a href="namespaceqpp_1_1internal.html#adba60d4cfda710c1a5b735d81767b530">qpp::internal::check_nonzero_size</a></div><div class="ttdeci">bool check_nonzero_size(const T &amp;x) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:112</div></div>
 <div class="ttc" id="namespaceqpp_html_a3a6d2c509bdcf240869e1bebb3be4e94"><div class="ttname"><a href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a></div><div class="ttdeci">constexpr double chop</div><div class="ttdoc">Used in qpp::disp() for setting to zero numbers that have their absolute value smaller than qpp::chop...</div><div class="ttdef"><b>Definition:</b> constants.h:59</div></div>
 <div class="ttc" id="namespaceqpp_html_ac39e7c2b66f0209911cc3afc06223648"><div class="ttname"><a href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">qpp::dyn_mat</a></div><div class="ttdeci">Eigen::Matrix&lt; Scalar, Eigen::Dynamic, Eigen::Dynamic &gt; dyn_mat</div><div class="ttdoc">Dynamic Eigen matrix over the field specified by Scalar. </div><div class="ttdef"><b>Definition:</b> types.h:78</div></div>
@@ -247,7 +245,7 @@ $(document).ready(function(){initNavTree('input__output_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="input__output_8h.html">input_output.h</a></li>
-    <li class="footer">Generated on Mon Oct 10 2016 01:01:06 for Quantum++ by
+    <li class="footer">Generated on Mon Oct 10 2016 09:55:27 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
