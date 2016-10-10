@@ -1,3 +1,5 @@
+Version 1.0.0-devel
+
 Version 1.0.0-beta1 - 10 October 2016
     - GoogleMock 1.7.0 is now included in the project for portable unit testing
         (see the README.md file for more details)
