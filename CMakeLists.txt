@@ -22,7 +22,7 @@ PROJECT(qpp VERSION 1.0.0 LANGUAGES CXX)
 
 #### Use C++11
 IF(CYGWIN)
-    #### cygwin has issues with std=c++11, use std=gnu++11 instead
+    #### Cygwin has issues with std=c++11, use std=gnu++11 instead
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
 ELSE()
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
