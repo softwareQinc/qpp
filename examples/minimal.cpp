@@ -7,6 +7,6 @@ using namespace qpp;
 
 int main()
 {
-    std::cout << "Hello Quantum++!\nThis is the |z0> state:" << std::endl;
+    std::cout << "Hello Quantum++!\nThis is the |0> state:" << std::endl;
     std::cout << disp(st.z0);
 }
