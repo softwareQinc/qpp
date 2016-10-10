@@ -55,6 +55,7 @@
 #include <iomanip>
 #include <iterator>
 #include <limits>
+#include <memory>
 #include <numeric>
 #include <ostream>
 #include <random>

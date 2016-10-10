@@ -152,15 +152,15 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
     // END EXCEPTION CHECKS
 
     // write the header to file
-    const char header_[] = "TYPE::Eigen::Matrix";
-    fout.write(header_, sizeof(header_));
+    const std::string header_ = "TYPE::Eigen::Matrix";
+    fout.write(header_.c_str(), header_.length());
 
     idx rows = static_cast<idx>(rA.rows());
     idx cols = static_cast<idx>(rA.cols());
-    fout.write((char*) &rows, sizeof(rows));
-    fout.write((char*) &cols, sizeof(cols));
+    fout.write(reinterpret_cast<char*>(&rows), sizeof(rows));
+    fout.write(reinterpret_cast<char*>(&cols), sizeof(cols));
 
-    fout.write((char*) rA.data(),
+    fout.write(reinterpret_cast<const char*>(rA.data()),
                sizeof(typename Derived::Scalar) * rows * cols);
 
     fout.close();
@@ -198,28 +198,26 @@ dyn_mat<typename Derived::Scalar> load(const std::string& fname)
                 + std::string(fname) + "\"!");
     }
 
-    const char header_[] = "TYPE::Eigen::Matrix";
-    char* fheader_ = new char[sizeof(header_)];
+    const std::string header_ = "TYPE::Eigen::Matrix";
+    std::unique_ptr<char[]> fheader_{new char[header_.length()]};
 
     // read the header from file
-    fin.read(fheader_, sizeof(header_));
-    if (strcmp(fheader_, header_))
+    fin.read(fheader_.get(), header_.length());
+    if (std::string(fheader_.get(), header_.length()) != header_)
     {
-        delete[] fheader_;
         throw std::runtime_error(
                 "qpp::load(): Input file \"" + std::string(fname)
                 + "\" is corrupted!");
     }
-    delete[] fheader_;
     // END EXCEPTION CHECKS
 
     idx rows, cols;
-    fin.read((char*) &rows, sizeof(rows));
-    fin.read((char*) &cols, sizeof(cols));
+    fin.read(reinterpret_cast<char*>(&rows), sizeof(rows));
+    fin.read(reinterpret_cast<char*>(&cols), sizeof(cols));
 
     dyn_mat<typename Derived::Scalar> A(rows, cols);
 
-    fin.read((char*) A.data(),
+    fin.read(reinterpret_cast<char*>(A.data()),
              sizeof(typename Derived::Scalar) * rows * cols);
 
     fin.close();
