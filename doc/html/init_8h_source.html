@@ -105,27 +105,27 @@ $(document).ready(function(){initNavTree('init_8h_source.html','');});
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html#a5650a0e31393cf13755262328f2122e9">   46</a></span>&#160;    <a class="code" href="classqpp_1_1_init.html#a5650a0e31393cf13755262328f2122e9">Init</a>()</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="comment">// on entry message</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; Starting Quantum++...&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="comment">// gets and displays current system time</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        std::time_t current_date = std::time(<span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; &quot;</span> &lt;&lt; std::ctime(&amp;current_date) &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="comment">// set default output format and precision</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        std::cout &lt;&lt; std::fixed; <span class="comment">// use fixed format for nice formatting</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="comment">// std::cout &lt;&lt; std::scientific;</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        std::cout &lt;&lt; std::setprecision(4); <span class="comment">// only for fixed/scientific modes</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">//        // on entry message</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">//        std::cout &lt;&lt; &quot;&gt;&gt;&gt; Starting Quantum++...&quot; &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">//        // gets and displays current system time</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">//        std::time_t current_date = std::time(nullptr);</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">//        std::cout &lt;&lt; &quot;&gt;&gt;&gt; &quot; &lt;&lt; std::ctime(&amp;current_date) &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">//        // set default output format and precision</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">//        std::cout &lt;&lt; std::fixed; // use fixed format for nice formatting</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">//        // std::cout &lt;&lt; std::scientific;</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">//        std::cout &lt;&lt; std::setprecision(4); // only for fixed/scientific modes</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
 <div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html#af6c4566d220d568199e1ca9d954cb8da">   64</a></span>&#160;    <a class="code" href="classqpp_1_1_init.html#af6c4566d220d568199e1ca9d954cb8da">~Init</a>()</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="comment">// on exit message</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        std::cout &lt;&lt; std::endl &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; Exiting Quantum++...&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="comment">// gets and displays current system time</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        std::time_t current_date = std::time(<span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;&gt;&gt;&gt; &quot;</span> &lt;&lt; std::ctime(&amp;current_date);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">//        // on exit message</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">//        std::cout &lt;&lt; std::endl &lt;&lt; &quot;&gt;&gt;&gt; Exiting Quantum++...&quot; &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">//        // gets and displays current system time</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">//        std::time_t current_date = std::time(nullptr);</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">//        std::cout &lt;&lt; &quot;&gt;&gt;&gt; &quot; &lt;&lt; std::ctime(&amp;current_date);</span></div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}; <span class="comment">/* class Init */</span></div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('init_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b02e4219757ae4e3a0f1714873865bbf.html">classes</a></li><li class="navelem"><a class="el" href="init_8h.html">init.h</a></li>
-    <li class="footer">Generated on Sun Oct 9 2016 19:16:04 for Quantum++ by
+    <li class="footer">Generated on Sun Oct 9 2016 23:40:40 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
