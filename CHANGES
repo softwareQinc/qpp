@@ -1,5 +1,5 @@
 Version 1.0.0-devel
-    - Update to GoogleTest 1.8.0 for unit testing
+    - Updated to GoogleTest 1.8.0 for unit testing
 
 Version 1.0.0-beta1 - 10 October 2016
     - GoogleMock 1.7.0 is now included in the project for portable unit testing
