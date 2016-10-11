@@ -49,6 +49,9 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 (for good C++11 support)
 - [Eigen 3](http://eigen.tuxfamily.org) library located in `$HOME/eigen`
 - Quantum++ library located in `$HOME/qpp`
+
+###### Optional:
+
 - [MATLAB](http://www.mathworks.com/products/matlab/) compiler 
 include header files:
 `/Applications/MATLAB_R2016a.app/extern/include`
