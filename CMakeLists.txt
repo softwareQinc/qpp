@@ -1,6 +1,6 @@
 # Quantum++
 #
-# Copyright (c) 2013 - 2016 Vlad Gheorghiu (vgheorgh@gmail.com)
+# Copyright (c) 2013 - 2017 Vlad Gheorghiu (vgheorgh@gmail.com)
 #
 # This file is part of Quantum++.
 #
