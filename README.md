@@ -134,14 +134,14 @@ for additional options. Do not forget to remove everything from
 the `./build` directory before a fresh build!
 
 ### Unit testing
-[Google Mock 1.7.0](https://github.com/google/googletest) is included with 
+[Google Test 1.8.0](https://github.com/google/googletest) is included with 
 the project. I strongly recommend to use [cmake](http://www.cmake.org/) 
 version 3.0.0 or later as a building system. By default the current 
 `CMakeLists.txt` automatically builds all unit tests as 
-`./build/unit_tests/tests/qpp_testing`. To disable automatic building of unit 
-tests, type  
+`./build/unit_tests/tests/qpp_testing`. To build without unit tests, type 
     
     cmake -DWITH_UNIT_TESTS=OFF ..
+    make
     
 from inside `./build`.
 

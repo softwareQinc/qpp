@@ -1,3 +1,3 @@
 PROJECT(qpp_testing)
-ADD_SUBDIRECTORY(lib/gmock-1.7.0)
+ADD_SUBDIRECTORY(lib/gtest-1.8.0)
 ADD_SUBDIRECTORY(tests)
