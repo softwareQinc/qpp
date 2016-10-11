@@ -50,7 +50,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 - [Eigen 3](http://eigen.tuxfamily.org) library located in `$HOME/eigen`
 - Quantum++ library located in `$HOME/qpp`
 
-###### Optional:
+##### Optional:
 
 - [MATLAB](http://www.mathworks.com/products/matlab/) compiler 
 include header files:
@@ -161,7 +161,7 @@ how to fix it. Quick fix: patch the standard library header file `<cmath>`
 using the provided patch `./cmath_cygwin.patch`.
 
 - If your compiler does not support [OpenMP](http://openmp.org/) 
-(as it is the case e.g with [clang++](http://clang.llvm.org/)), 
+(as it is the case e.g with [clang++](http://clang.llvm.org/) pre version 3.7), 
 disable [OpenMP](http://openmp.org/) in your build, 
 as otherwise the linker may not find the 
 [gomp](https://gcc.gnu.org/projects/gomp/) library.
