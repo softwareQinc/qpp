@@ -119,7 +119,7 @@ public:
                 UNDEFINED_TYPE,
         /*!< Templated specialization not defined for this type */
                 CUSTOM_EXCEPTION
-        /*!< Custom exception, user must provide a custom message */
+        /*!< Custom exception, the user must provide a custom message */
     };
 
     /**
