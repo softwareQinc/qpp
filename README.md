@@ -59,44 +59,6 @@ include header files:
 shared library files:
 `/Applications/MATLAB_R2016a.app/bin/maci64`
 
-### Building without a build system
-
-- Example file: `$HOME/qpp/examples/minimal.cpp`
-- Output executable: `$HOME/qpp/examples/minimal`
-- Must run the commands below from inside the directory `$HOME/qpp/examples` 
-
-#### Release version (without [MATLAB](http://www.mathworks.com/products/matlab/) support): 
-
-	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
-         -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
-         -isystem $HOME/eigen -I $HOME/qpp/include \
-         minimal.cpp -o minimal
-
-#### Debug version (without [MATLAB](http://www.mathworks.com/products/matlab/) support): 
-
-	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
-         -g3 -DDEBUG \
-         -isystem $HOME/eigen -I $HOME/qpp/include \
-          minimal.cpp -o minimal
-
-#### Release version (with [MATLAB](http://www.mathworks.com/products/matlab/) support): 
-
-	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
-         -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
-         -isystem $HOME/eigen -I $HOME/qpp/include \
-         -I/Applications/MATLAB_R2016a.app/extern/include \
-         -L/Applications/MATLAB_R2016a.app/bin/maci64 \
-         -lmx -lmat minimal.cpp -o minimal
-
-#### Debug version (with [MATLAB](http://www.mathworks.com/products/matlab/) support):  
-
-	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
-         -g3 -DDEBUG \
-         -isystem $HOME/eigen -I $HOME/qpp/include \
-         -I /Applications/MATLAB_R2016a.app/extern/include \
-         -L /Applications/MATLAB_R2016a.app/bin/maci64 \
-         -lmx -lmat minimal.cpp -o minimal
-
 ### Building using [cmake](http://www.cmake.org/) (version 3.0.0 or later)
 
 The current version of the repository has a `./CMakeLists.txt` configuration 
@@ -133,8 +95,47 @@ To change the name of the example file, the location of the
 [Eigen 3](http://eigen.tuxfamily.org)
 library or the location of [MATLAB](http://www.mathworks.com/products/matlab/) 
 installation, edit the `./CMakeLists.txt` file. See also `./CMakeLists.txt` 
-for additional options. Do not forget to remove everything from 
-the `./build` directory before a fresh build!
+for additional options. Do not forget to clean the `./build` directory before 
+a fresh build!
+
+### Building without an automatic build system
+
+- Example file: `$HOME/qpp/examples/minimal.cpp`
+- Output executable: `$HOME/qpp/examples/minimal`
+- You must run the commands below from inside the directory 
+`$HOME/qpp/examples` 
+
+#### Release version (without [MATLAB](http://www.mathworks.com/products/matlab/) support): 
+
+	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
+         -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
+         -isystem $HOME/eigen -I $HOME/qpp/include \
+         minimal.cpp -o minimal
+
+#### Debug version (without [MATLAB](http://www.mathworks.com/products/matlab/) support): 
+
+	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
+         -g3 -DDEBUG \
+         -isystem $HOME/eigen -I $HOME/qpp/include \
+          minimal.cpp -o minimal
+
+#### Release version (with [MATLAB](http://www.mathworks.com/products/matlab/) support): 
+
+	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
+         -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
+         -isystem $HOME/eigen -I $HOME/qpp/include \
+         -I/Applications/MATLAB_R2016a.app/extern/include \
+         -L/Applications/MATLAB_R2016a.app/bin/maci64 \
+         -lmx -lmat minimal.cpp -o minimal
+
+#### Debug version (with [MATLAB](http://www.mathworks.com/products/matlab/) support):  
+
+	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
+         -g3 -DDEBUG \
+         -isystem $HOME/eigen -I $HOME/qpp/include \
+         -I /Applications/MATLAB_R2016a.app/extern/include \
+         -L /Applications/MATLAB_R2016a.app/bin/maci64 \
+         -lmx -lmat minimal.cpp -o minimal
 
 ### Unit testing
 [Google Test 1.8.0](https://github.com/google/googletest) is included with 
