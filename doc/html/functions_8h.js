@@ -2,7 +2,7 @@ var functions_8h =
 [
     [ "absm", "functions_8h.html#a3a4cb16d97f9cc763bd133b64f2b6f6d", null ],
     [ "abssq", "functions_8h.html#a3e9825a190c56286a68989b67620bbb9", null ],
-    [ "abssq", "functions_8h.html#a31fc4d84b7de3be27d575d823611ed08", null ],
+    [ "abssq", "functions_8h.html#ac1c12650953204a9dead68c854efc169", null ],
     [ "abssq", "functions_8h.html#a07276990fbab7f30c1e9ad0a339e5215", null ],
     [ "adjoint", "functions_8h.html#aba2b3538ec37539e56f77addfb9ea1dd", null ],
     [ "anticomm", "functions_8h.html#af2f54909fe5801ad4bc179be28ad7a41", null ],
@@ -11,7 +11,7 @@ var functions_8h =
     [ "complement", "functions_8h.html#a87ad5b3e58dedde05467ac1961e44892", null ],
     [ "conjugate", "functions_8h.html#ad430508f45480e4d7a8ac83ae7d00aae", null ],
     [ "cosm", "functions_8h.html#a369c7a2f9f27121178519ddba186fbcd", null ],
-    [ "cwise", "functions_8h.html#a18e336b2319f89d7817aa7979de9190f", null ],
+    [ "cwise", "functions_8h.html#abfe889a586f201ae37a0e0a69dde004e", null ],
     [ "det", "functions_8h.html#a4f6e426d47b5bf66afc0f7cc0321e0eb", null ],
     [ "dirsum", "functions_8h.html#aee0f3ad6d1892783a265e5d373eec4a9", null ],
     [ "dirsum", "functions_8h.html#a9133294c2b005d11ba2063b6027b13a0", null ],

@@ -36,7 +36,7 @@ var classqpp_1_1_exception =
     [ "Exception", "classqpp_1_1_exception.html#af31368e08ce7c7161ddaf65b3f27d5b2", null ],
     [ "Exception", "classqpp_1_1_exception.html#af0e2b4649f0288edaf9436fcaac88755", null ],
     [ "construct_exception_msg_", "classqpp_1_1_exception.html#ad477096ae45fece50fce169940343549", null ],
-    [ "what", "classqpp_1_1_exception.html#a59e464cb761133e41eb3cdb4a77ac55b", null ],
+    [ "what", "classqpp_1_1_exception.html#a6d2b9a19d101bac561bf079ed7bef177", null ],
     [ "custom_", "classqpp_1_1_exception.html#afac532841ab6af346e5a3e0f3849f366", null ],
     [ "msg_", "classqpp_1_1_exception.html#a20496cb7520418334e82a6aa29de196e", null ],
     [ "type_", "classqpp_1_1_exception.html#a73c739a2fee22c0f31afa8f376b5db27", null ],
