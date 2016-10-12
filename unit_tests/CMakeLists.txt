@@ -87,6 +87,8 @@ ENDIF()
 
 #### GoogleTest
 ADD_SUBDIRECTORY(lib/gtest-1.8.0)
+
+#### Unit tests
 ADD_SUBDIRECTORY(tests)
 
 #### Enable all warnings
