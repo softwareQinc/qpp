@@ -43,14 +43,14 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 ---
 ## Building instructions
 
-### Configuration:
+### Configuration
 
 - Compiler: [g++](https://gcc.gnu.org/) version 4.8.2 or later 
 (for good C++11 support)
 - [Eigen 3](http://eigen.tuxfamily.org) library located in `$HOME/eigen`
 - Quantum++ library located in `$HOME/qpp`
 
-##### Optional:
+##### Optional
 
 - [MATLAB](http://www.mathworks.com/products/matlab/) compiler 
 include header files:
@@ -105,21 +105,21 @@ a fresh build!
 - You must run the commands below from inside the directory 
 `$HOME/qpp/examples` 
 
-#### Release version (without [MATLAB](http://www.mathworks.com/products/matlab/) support): 
+#### Release version (without [MATLAB](http://www.mathworks.com/products/matlab/) support) 
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
          -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
          -isystem $HOME/eigen -I $HOME/qpp/include \
          minimal.cpp -o minimal
 
-#### Debug version (without [MATLAB](http://www.mathworks.com/products/matlab/) support): 
+#### Debug version (without [MATLAB](http://www.mathworks.com/products/matlab/) support)
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
          -g3 -DDEBUG \
          -isystem $HOME/eigen -I $HOME/qpp/include \
           minimal.cpp -o minimal
 
-#### Release version (with [MATLAB](http://www.mathworks.com/products/matlab/) support): 
+#### Release version (with [MATLAB](http://www.mathworks.com/products/matlab/) support)
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
          -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
@@ -128,7 +128,7 @@ a fresh build!
          -L/Applications/MATLAB_R2016a.app/bin/maci64 \
          -lmx -lmat minimal.cpp -o minimal
 
-#### Debug version (with [MATLAB](http://www.mathworks.com/products/matlab/) support):  
+#### Debug version (with [MATLAB](http://www.mathworks.com/products/matlab/) support)
 
 	g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
          -g3 -DDEBUG \
@@ -201,7 +201,7 @@ Otherwise, you get a runtime error similar to
     does not interfere with the rest of the system.
 
     * Example of script, assumed to be located in the root directory 
-    of Quantum++:
+    of Quantum++
         
             #!/bin/sh
             
