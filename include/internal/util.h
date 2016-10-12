@@ -45,7 +45,7 @@ namespace internal
 
 // integer index to multi-index, use C-style array for speed
 // standard lexicographical order, e.g. 00, 01, 10, 11
-inline void n2multiidx(idx n, idx numdims, const idx* dims, idx* result)
+inline void n2multiidx(idx n, idx numdims, const idx* const dims, idx* result)
 noexcept
 {
     // no error checks to improve speed
@@ -58,7 +58,7 @@ noexcept
 
 // multi-index to integer index, use C-style array for speed,
 // standard lexicographical order, e.g. 00->0, 01->1, 10->2, 11->3
-inline idx multiidx2n(const idx* midx, idx numdims, const idx* dims)
+inline idx multiidx2n(const idx* const midx, idx numdims, const idx* const dims)
 noexcept
 {
     // no error checks to improve speed
