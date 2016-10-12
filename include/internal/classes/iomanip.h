@@ -38,7 +38,7 @@ namespace details_
 struct Display_Impl_
 {
     template<typename T>
-    // T must support rows(), cols(), operator()(idx, idx)
+    // T must support rows(), cols(), operator()(idx, idx) const
     std::ostream& display_impl_(const T& A,
                                 std::ostream& os,
                                 double chop = qpp::chop) const
