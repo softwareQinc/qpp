@@ -1248,122 +1248,122 @@ dyn_mat<typename Derived1::Scalar> anticomm(
 *
 *  Normalized projector onto state vector
 *
-* \param V Eigen expression
-* \return Projector onto the state vector \a V, or the matrix \a Zero
-* if \a V has norm zero (i.e. smaller than qpp::eps),
+* \param A Eigen expression
+* \return Projector onto the state vector \a A, or the matrix \a Zero
+* if \a A has norm zero (i.e. smaller than qpp::eps),
 * as a dynamic matrix over the same scalar field as \a A
 */
 template<typename Derived>
-dyn_mat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& V)
+dyn_mat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& A)
 {
-    const dyn_mat<typename Derived::Scalar>& rV = V.derived();
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rV))
+    if (!internal::check_nonzero_size(rA))
         throw Exception("qpp::prj()", Exception::Type::ZERO_SIZE);
 
     // check column vector
-    if (!internal::check_cvector(rV))
+    if (!internal::check_cvector(rA))
         throw Exception("qpp::prj()", Exception::Type::MATRIX_NOT_CVECTOR);
     // END EXCEPTION CHECKS
 
-    double normV = norm(rV);
-    if (normV > eps)
-        return rV * adjoint(rV) / (normV * normV);
+    double normA = norm(rA);
+    if (normA > eps)
+        return rA * adjoint(rA) / (normA * normA);
     else
         return dyn_mat<typename Derived::Scalar>
-        ::Zero(rV.rows(), rV.rows());
+        ::Zero(rA.rows(), rA.rows());
 
 }
 
 /**
 * \brief Gram-Schmidt orthogonalization
 *
-* \param Vs std::vector of Eigen expressions as column vectors
-* \return Gram-Schmidt vectors of \a Vs as columns of a dynamic matrix
+* \param As std::vector of Eigen expressions as column vectors
+* \return Gram-Schmidt vectors of \a As as columns of a dynamic matrix
 * over the same scalar field as its arguments
 */
 template<typename Derived>
-dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& Vs)
+dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& As)
 {
     // EXCEPTION CHECKS
 
     // check empty list
-    if (!internal::check_nonzero_size(Vs))
+    if (!internal::check_nonzero_size(As))
         throw Exception("qpp::grams()", Exception::Type::ZERO_SIZE);
 
-    for (auto&& it : Vs)
+    for (auto&& it : As)
         if (!internal::check_nonzero_size(it))
             throw Exception("qpp::grams()", Exception::Type::ZERO_SIZE);
 
-    // check that Vs[0] is a column vector
-    if (!internal::check_cvector(Vs[0]))
+    // check that As[0] is a column vector
+    if (!internal::check_cvector(As[0]))
         throw Exception("qpp::grams()", Exception::Type::MATRIX_NOT_CVECTOR);
 
     // now check that all the rest match the size of the first vector
-    for (auto&& it : Vs)
-        if (it.rows() != Vs[0].rows() || it.cols() != 1)
+    for (auto&& it : As)
+        if (it.rows() != As[0].rows() || it.cols() != 1)
             throw Exception("qpp::grams()", Exception::Type::DIMS_NOT_EQUAL);
     // END EXCEPTION CHECKS
 
     dyn_mat<typename Derived::Scalar> cut =
-            dyn_mat<typename Derived::Scalar>::Identity(Vs[0].rows(),
-                                                        Vs[0].rows());
+            dyn_mat<typename Derived::Scalar>::Identity(As[0].rows(),
+                                                        As[0].rows());
 
     dyn_mat<typename Derived::Scalar> vi =
-            dyn_mat<typename Derived::Scalar>::Zero(Vs[0].rows(), 1);
+            dyn_mat<typename Derived::Scalar>::Zero(As[0].rows(), 1);
 
     std::vector<dyn_mat<typename Derived::Scalar>> outvecs;
     // find the first non-zero vector in the list
     idx pos = 0;
-    for (pos = 0; pos < Vs.size(); ++pos)
+    for (pos = 0; pos < As.size(); ++pos)
     {
-        if (norm(Vs[pos]) > eps) // add it as the first element
+        if (norm(As[pos]) > eps) // add it as the first element
         {
-            outvecs.push_back(Vs[pos]);
+            outvecs.push_back(As[pos]);
             break;
         }
     }
 
     // start the process
-    for (idx i = pos + 1; i < Vs.size(); ++i)
+    for (idx i = pos + 1; i < As.size(); ++i)
     {
         cut -= prj(outvecs[i - 1 - pos]);
-        vi = cut * Vs[i];
+        vi = cut * As[i];
         outvecs.push_back(vi);
     }
 
-    dyn_mat<typename Derived::Scalar> result(Vs[0].rows(), outvecs.size());
+    dyn_mat<typename Derived::Scalar> result(As[0].rows(), outvecs.size());
 
     idx cnt = 0;
     for (auto&& it : outvecs)
     {
-        double normV = norm(it);
-        if (normV > eps) // we add only the non-zero vectors
+        double normA = norm(it);
+        if (normA > eps) // we add only the non-zero vectors
         {
-            result.col(cnt) = it / normV;
+            result.col(cnt) = it / normA;
             cnt++;
         }
     }
 
-    return result.block(0, 0, Vs[0].rows(), cnt);
+    return result.block(0, 0, As[0].rows(), cnt);
 }
 
 // deduce the template parameters from initializer_list
 /**
 * \brief Gram-Schmidt orthogonalization
 *
-* \param Vs std::initializer_list of Eigen expressions as column vectors
-* \return Gram-Schmidt vectors of \a Vs as columns of a dynamic matrix
+* \param As std::initializer_list of Eigen expressions as column vectors
+* \return Gram-Schmidt vectors of \a As as columns of a dynamic matrix
 * over the same scalar field as its arguments
 */
 template<typename Derived>
 dyn_mat<typename Derived::Scalar> grams(
-        const std::initializer_list<Derived>& Vs)
+        const std::initializer_list<Derived>& As)
 {
-    return grams(std::vector<Derived>(Vs));
+    return grams(std::vector<Derived>(As));
 }
 
 /**
@@ -1664,7 +1664,7 @@ std::vector<double> abssq(const Container& c,
 // the overload below:
 
 // template<typename Derived>
-// abssq(const Eigen::MatrixBase<Derived>& V)
+// abssq(const Eigen::MatrixBase<Derived>& A)
 {
     return abssq(std::begin(c), std::end(c));
 }

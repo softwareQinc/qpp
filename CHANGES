@@ -1,5 +1,7 @@
 Version 1.0.0-devel
     - Updated to GoogleTest 1.8.0 for unit testing
+    - Added d = 2 overloads for all functions that take a list of dimensions
+      as one of their arguments
 
 Version 1.0.0-beta1 - 10 October 2016
     - GoogleMock 1.7.0 is now included in the project for portable unit testing

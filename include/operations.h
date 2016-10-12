@@ -598,29 +598,29 @@ dyn_mat<typename Derived1::Scalar> apply(
 
 /**
 * \brief Applies the channel specified by the set of Kraus operators \a Ks
-* to the density matrix \a rho
+* to the density matrix \a A
 *
-* \param rho Eigen expression
+* \param A Eigen expression
 * \param Ks Set of Kraus operators
 * \return Output density matrix after the action of the channel
 */
 template<typename Derived>
-cmat apply(const Eigen::MatrixBase<Derived>& rho,
+cmat apply(const Eigen::MatrixBase<Derived>& A,
            const std::vector<cmat>& Ks)
 {
-    const cmat& rrho = rho.derived();
+    const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
 
-    if (!internal::check_nonzero_size(rrho))
+    if (!internal::check_nonzero_size(rA))
         throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
-    if (!internal::check_square_mat(rrho))
+    if (!internal::check_square_mat(rA))
         throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE);
     if (Ks.size() == 0)
         throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
     if (!internal::check_square_mat(Ks[0]))
         throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE);
-    if (Ks[0].rows() != rrho.rows())
+    if (Ks[0].rows() != rA.rows())
         throw Exception("qpp::apply()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
     for (auto&& it : Ks)
@@ -628,7 +628,7 @@ cmat apply(const Eigen::MatrixBase<Derived>& rho,
             throw Exception("qpp::apply()", Exception::Type::DIMS_NOT_EQUAL);
     // END EXCEPTION CHECKS
 
-    cmat result = cmat::Zero(rrho.rows(), rrho.rows());
+    cmat result = cmat::Zero(rA.rows(), rA.rows());
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for
@@ -639,7 +639,7 @@ cmat apply(const Eigen::MatrixBase<Derived>& rho,
 #pragma omp critical
 #endif // WITH_OPENMP_
         {
-            result += Ks[i] * rrho * adjoint(Ks[i]);
+            result += Ks[i] * rA * adjoint(Ks[i]);
         }
     }
 
@@ -648,38 +648,38 @@ cmat apply(const Eigen::MatrixBase<Derived>& rho,
 
 /**
 * \brief Applies the channel specified by the set of Kraus operators \a Ks to
-* the part \a subsys of the multi-partite density matrix \a rho
+* the part \a subsys of the multi-partite density matrix \a A
 *
-* \param rho Eigen expression
+* \param A Eigen expression
 * \param Ks Set of Kraus operators
 * \param subsys Subsystem indexes where the Kraus operators \a Ks are applied
 * \param dims Dimensions of the multi-partite system
 * \return Output density matrix after the action of the channel
 */
 template<typename Derived>
-cmat apply(const Eigen::MatrixBase<Derived>& rho,
+cmat apply(const Eigen::MatrixBase<Derived>& A,
            const std::vector<cmat>& Ks,
            const std::vector<idx>& subsys,
            const std::vector<idx>& dims)
 {
-    const cmat& rrho = rho.derived();
+    const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
 
     // check zero sizes
-    if (!internal::check_nonzero_size(rrho))
+    if (!internal::check_nonzero_size(rA))
         throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
 
-    // check square matrix for the rho
-    if (!internal::check_square_mat(rrho))
+    // check square matrix for the A
+    if (!internal::check_square_mat(rA))
         throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE);
 
     // check that dimension is valid
     if (!internal::check_dims(dims))
         throw Exception("qpp::apply()", Exception::Type::DIMS_INVALID);
 
-    // check that dims match rho matrix
-    if (!internal::check_dims_match_mat(dims, rrho))
+    // check that dims match A matrix
+    if (!internal::check_dims_match_mat(dims, rA))
         throw Exception("qpp::apply()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
 
@@ -705,36 +705,36 @@ cmat apply(const Eigen::MatrixBase<Derived>& rho,
             throw Exception("qpp::apply()", Exception::Type::DIMS_NOT_EQUAL);
     // END EXCEPTION CHECKS
 
-    cmat result = cmat::Zero(rrho.rows(), rrho.rows());
+    cmat result = cmat::Zero(rA.rows(), rA.rows());
 
     for (idx i = 0; i < Ks.size(); ++i)
-        result += apply(rrho, Ks[i], subsys, dims);
+        result += apply(rA, Ks[i], subsys, dims);
 
     return result;
 }
 
 /**
 * \brief Applies the channel specified by the set of Kraus operators \a Ks to
-* the part \a subsys of the multi-partite density matrix \a rho
+* the part \a subsys of the multi-partite density matrix \a A
 *
-* \param rho Eigen expression
+* \param A Eigen expression
 * \param Ks Set of Kraus operators
 * \param subsys Subsystem indexes where the Kraus operators \a Ks are applied
 * \param d Subsystem dimensions
 * \return Output density matrix after the action of the channel
 */
 template<typename Derived>
-cmat apply(const Eigen::MatrixBase<Derived>& rho,
+cmat apply(const Eigen::MatrixBase<Derived>& A,
            const std::vector<cmat>& Ks,
            const std::vector<idx>& subsys,
            idx d = 2)
 {
-    const cmat& rrho = rho.derived();
+    const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
 
     // check zero sizes
-    if (!internal::check_nonzero_size(rrho))
+    if (!internal::check_nonzero_size(rA))
         throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
@@ -742,10 +742,10 @@ cmat apply(const Eigen::MatrixBase<Derived>& rho,
         throw Exception("qpp::apply()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rrho.rows()), d);
+    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
     std::vector<idx> dims(N, d); // local dimensions vector
 
-    return apply(rrho, Ks, subsys, dims);
+    return apply(rA, Ks, subsys, dims);
 }
 
 /**
@@ -1001,12 +1001,11 @@ inline cmat super2choi(const cmat& A)
 * \brief Partial trace
 * \see qpp::ptrace2()
 *
-*  Partial trace over the first subsystem
-*  of bi-partite state vector or density matrix
+* Partial trace over the first subsystem
+* of bi-partite state vector or density matrix
 *
 * \param A Eigen expression
 * \param dims Dimensions of the bi-partite system
-* (must be a std::vector with 2 elements)
 * \return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$
 * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
 * over the same scalar field as \a A
@@ -1101,14 +1100,49 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 
 /**
 * \brief Partial trace
+* \see qpp::ptrace2()
+*
+* Partial trace over the first subsystem
+* of bi-partite state vector or density matrix
+*
+* \param A Eigen expression
+* \param d Subsystem dimensions
+* \return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$
+* in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
+* over the same scalar field as \a A
+*/
+template<typename Derived>
+dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
+                                          idx d = 2)
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero size
+    if (!internal::check_nonzero_size(A))
+        throw Exception("qpp::ptrace1()", Exception::Type::ZERO_SIZE);
+
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::ptrace1()",
+                        Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
+
+    std::vector<idx> dims(2, d); // local dimensions vector
+
+    return ptrace1(A, dims);
+}
+
+/**
+* \brief Partial trace
 * \see qpp::ptrace1()
 *
-*  Partial trace over the second subsystem
-*  of bi-partite state vector or density matrix
+* Partial trace over the second subsystem
+* of bi-partite state vector or density matrix
 *
 * \param A Eigen expression
 * \param dims Dimensions of the bi-partite system
-* (must be a std::vector with 2 elements)
 * \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$
 * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
 * over the same scalar field as \a A
@@ -1189,6 +1223,42 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
     else
         throw Exception("qpp::ptrace1()",
                         Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+}
+
+/**
+* \brief Partial trace
+* \see qpp::ptrace1()
+*
+*  Partial trace over the second subsystem
+*  of bi-partite state vector or density matrix
+*
+* \param A Eigen expression
+* \param d Subsystem dimensions
+* \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$
+* in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
+* over the same scalar field as \a A
+*/
+template<typename Derived>
+dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
+                                          idx d = 2)
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero size
+    if (!internal::check_nonzero_size(A))
+        throw Exception("qpp::ptrace2()", Exception::Type::ZERO_SIZE);
+
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::ptrace2()",
+                        Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
+
+    std::vector<idx> dims(2, d); // local dimensions vector
+
+    return ptrace2(A, dims);
 }
 
 /**

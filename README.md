@@ -138,16 +138,32 @@ a fresh build!
          -lmx -lmat minimal.cpp -o minimal
 
 ### Unit testing
-[Google Test 1.8.0](https://github.com/google/googletest) is included with 
-the project. I strongly recommend to use [cmake](http://www.cmake.org/) 
-version 3.0.0 or later as a building system. By default the current 
-`CMakeLists.txt` automatically builds all unit tests as 
-`./build/unit_tests/tests/qpp_testing`. To build without unit tests, type 
-    
-    cmake -DWITH_UNIT_TESTS=OFF ..
+
+Quantum++ was extensively tested via a suite of unit tests constructed with
+[Google Test 1.8.0](https://github.com/google/googletest) (included with the 
+project in `./unit_tests/lib/gtest-1.8.0`). The source code of the unit tests 
+is provided under `./unit_tests/tests`. To build and run the unit tests, I 
+strongly recommend to use [cmake](http://www.cmake.org/) version 3.0.0 or 
+later. Assuming you do use [cmake](http://www.cmake.org/), switch to the  
+`./unit_tests` directory, create a `build` directory inside it, then from the 
+newly created `./unit_tests/build` type
+
+    cmake ..
     make
     
-from inside `./build`.
+The commands above build `./unit_tests/tests/qpp_testing`, which you 
+then may run.
+
+##### Note
+
+The [cmake](http://www.cmake.org/) configuration file 
+`./unit_tests/CMakeLists.txt` defines the same building options and default 
+choices as the main `./CMakeLists.txt` of Quantum++.  Therefore you can use the 
+same flags as the ones mentioned at the beginning of this document when 
+customizing the build. You should modify `./unit_tests/CMakeLists.txt` 
+accordingly in case your [Eigen 3](http://eigen.tuxfamily.org) library or 
+[MATLAB](http://www.mathworks.com/products/matlab/) include/library files are 
+in a different location than the one assumed in this document.
 
 ### Additional remarks
 
@@ -172,8 +188,9 @@ as otherwise the linker may not find the
 the environment variable `DYLD_LIBRARY_PATH` is set to point to the 
 [MATLAB](http://www.mathworks.com/products/matlab/) 
 compiler library location, see the `run_OSX_MATLAB` script. 
-Otherwise, you will get a runtime error like 
-`dyld: Library not loaded: @rpath/libmat.dylib`.
+Otherwise, you get a runtime error similar to  
+
+    > dyld: Library not loaded: @rpath/libmat.dylib.
 
     * I recommend running via a script, as otherwise setting the 
     `DYLD_LIBRARY_PATH` globally may interfere with 

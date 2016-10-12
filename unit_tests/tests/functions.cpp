@@ -189,7 +189,7 @@ TEST(qpp_funm, AllTests)
 }
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::grams(const std::initializer_list<Derived>& Vs)
+///       qpp::grams(const std::initializer_list<Derived>& As)
 TEST(qpp_grams_initlist, AllTests)
 {
 
@@ -203,7 +203,7 @@ TEST(qpp_grams_matrix, AllTests)
 }
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::grams(const std::vector<Derived>& Vs)
+///       qpp::grams(const std::vector<Derived>& As)
 TEST(qpp_grams_vector, AllTests)
 {
 
@@ -334,7 +334,7 @@ TEST(qpp_powm, AllTests)
 }
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::prj(const Eigen::MatrixBase<Derived>& V)
+///       qpp::prj(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_prj, AllTests)
 {
 

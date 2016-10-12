@@ -139,7 +139,7 @@ inline bool check_dims(const std::vector<idx>& dims)
 // of valid (non-zero sized) square matrix
 template<typename Derived>
 bool check_dims_match_mat(const std::vector<idx>& dims,
-                           const Eigen::MatrixBase<Derived>& A)
+                          const Eigen::MatrixBase<Derived>& A)
 {
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
                                   static_cast<idx>(1), std::multiplies<idx>());
@@ -150,23 +150,23 @@ bool check_dims_match_mat(const std::vector<idx>& dims,
 // check that valid dims match the dimensions of valid column vector
 template<typename Derived>
 bool check_dims_match_cvect(const std::vector<idx>& dims,
-                             const Eigen::MatrixBase<Derived>& V)
+                            const Eigen::MatrixBase<Derived>& A)
 {
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
                                   static_cast<idx>(1), std::multiplies<idx>());
 
-    return proddim == static_cast<idx>(V.rows());
+    return proddim == static_cast<idx>(A.rows());
 }
 
 // check that valid dims match the dimensions of valid row vector
 template<typename Derived>
 bool check_dims_match_rvect(const std::vector<idx>& dims,
-                             const Eigen::MatrixBase<Derived>& V)
+                            const Eigen::MatrixBase<Derived>& A)
 {
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
                                   static_cast<idx>(1), std::multiplies<idx>());;
 
-    return proddim == static_cast<idx>(V.cols());
+    return proddim == static_cast<idx>(A.cols());
 }
 
 // check that all elements in valid dims equal to dim
@@ -181,7 +181,7 @@ inline bool check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept
 
 // check that subsys is valid with respect to valid dims
 inline bool check_subsys_match_dims(const std::vector<idx>& subsys,
-                                     const std::vector<idx>& dims)
+                                    const std::vector<idx>& dims)
 {
     //	// check non-zero sized subsystems
     //	if (subsys.size() == 0)
@@ -217,24 +217,24 @@ bool check_qubit_matrix(const Eigen::MatrixBase<Derived>& A) noexcept
 
 // check column vector is 2 x 1
 template<typename Derived>
-bool check_qubit_cvector(const Eigen::MatrixBase<Derived>& V) noexcept
+bool check_qubit_cvector(const Eigen::MatrixBase<Derived>& A) noexcept
 {
-    return V.rows() == 2 && V.cols() == 1;
+    return A.rows() == 2 && A.cols() == 1;
 }
 
 // check row vector is 1 x 2
 template<typename Derived>
-bool check_qubit_rvector(const Eigen::MatrixBase<Derived>& V) noexcept
+bool check_qubit_rvector(const Eigen::MatrixBase<Derived>& A) noexcept
 {
-    return V.rows() == 1 && V.cols() == 2;
+    return A.rows() == 1 && A.cols() == 2;
 }
 
 // check row vector is 1 x 2 or 2 x 1
 template<typename Derived>
-bool check_qubit_vector(const Eigen::MatrixBase<Derived>& V) noexcept
+bool check_qubit_vector(const Eigen::MatrixBase<Derived>& A) noexcept
 {
-    return (V.rows() == 1 && V.cols() == 2) ||
-           (V.rows() == 2 && V.cols() == 1);
+    return (A.rows() == 1 && A.cols() == 2) ||
+           (A.rows() == 2 && A.cols() == 1);
 }
 
 
@@ -255,7 +255,7 @@ inline bool check_perm(const std::vector<idx>& perm)
 // internal function for the variadic template function wrapper kron()
 template<typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> kron2(const Eigen::MatrixBase<Derived1>& A,
-                                          const Eigen::MatrixBase<Derived2>& B)
+                                         const Eigen::MatrixBase<Derived2>& B)
 {
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
     const dyn_mat<typename Derived2::Scalar>& rB = B.derived();
@@ -365,7 +365,7 @@ inline idx get_dim_subsys(idx sz, idx N)
     if (N == 2)
         return static_cast<idx>(std::llround(std::sqrt(sz)));
 
-    return static_cast<idx>(std::llround(std::pow(sz, 1./N)));
+    return static_cast<idx>(std::llround(std::pow(sz, 1. / N)));
 }
 
 } /* namespace internal */

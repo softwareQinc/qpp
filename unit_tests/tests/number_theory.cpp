@@ -54,9 +54,9 @@ TEST(qpp_compperm, NonNegativeNumbers)
 /// BEGIN double qpp::contfrac2x(const std::vector<int>& cf)
 TEST(qpp_contfrac2x, AllTests)
 {
-    EXPECT_NEAR(0, qpp::contfrac2x({0}), 1e-10);
-    EXPECT_NEAR(42, qpp::contfrac2x({42}), 1e-10);
-    EXPECT_NEAR(-42, qpp::contfrac2x({-42}), 1e-10);
+    EXPECT_NEAR(0, qpp::contfrac2x({0}), 1e-7);
+    EXPECT_NEAR(42, qpp::contfrac2x({42}), 1e-7);
+    EXPECT_NEAR(-42, qpp::contfrac2x({-42}), 1e-7);
     EXPECT_NEAR(qpp::pi, qpp::contfrac2x({3, 7, 15, 1, 292, 1}), 1e-5);
     EXPECT_NEAR(-qpp::pi, qpp::contfrac2x({-3, -7, -15, -1, -292, -1}), 1e-5);
     EXPECT_NEAR(0.1234, qpp::contfrac2x({0, 8, 9, 1, 1, 1}), 1e-5);
@@ -66,9 +66,9 @@ TEST(qpp_contfrac2x, AllTests)
 /// BEGIN double qpp::contfrac2x(const std::vector<int>& cf, idx n)
 TEST(qpp_contfrac2x_n, AllTests)
 {
-    EXPECT_NEAR(0, qpp::contfrac2x({0}, 1), 1e-10);
-    EXPECT_NEAR(42, qpp::contfrac2x({42}, 1), 1e-10);
-    EXPECT_NEAR(-42, qpp::contfrac2x({-42}, 1), 1e-10);
+    EXPECT_NEAR(0, qpp::contfrac2x({0}, 1), 1e-7);
+    EXPECT_NEAR(42, qpp::contfrac2x({42}, 1), 1e-7);
+    EXPECT_NEAR(-42, qpp::contfrac2x({-42}, 1), 1e-7);
     EXPECT_NEAR(3.141, qpp::contfrac2x({3, 7, 15, 1, 292, 1}, 3), 1e-2);
     EXPECT_NEAR(-3.141, qpp::contfrac2x({-3, -7, -15, -1, -292, -1}, 3), 1e-2);
     EXPECT_NEAR(0.1234, qpp::contfrac2x({0, 8, 9, 1, 1, 1}, 4), 1e-3);
@@ -362,6 +362,7 @@ TEST(qpp_modpow, PositiveNumbers)
 
 TEST(qpp_modpow_exception, ParameterOutOfRange)
 {
+    EXPECT_THROW(qpp::modpow(0, 0, 2), qpp::Exception);
     // example of how to unit-test for an exception
     try
     {

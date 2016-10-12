@@ -70,6 +70,40 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
+* \brief Schmidt coefficients of the bi-partite pure state \a A
+*
+* \note The sum of the squares of the Schmidt coefficients equals 1
+* \see qpp::schmidtprobs()
+*
+* \param A Eigen expression
+* \param d Subsystem dimensions
+* \return Schmidt coefficients of \a A, as a real dynamic column vector
+*/
+template<typename Derived>
+dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
+                                   idx d = 2)
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero size
+    if (!internal::check_nonzero_size(A))
+        throw Exception("qpp::schmidtcoeffs()", Exception::Type::ZERO_SIZE);
+
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::schmidtcoeffs()",
+                        Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
+
+    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
+
+    return schmidtcoeffs(A, dims);
+}
+
+/**
 * \brief Schmidt basis on Alice side
 *
 * \param A Eigen expression
@@ -102,6 +136,37 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
     // END EXCEPTION CHECKS
 
     return svdU(transpose(reshape(rA, dims[1], dims[0])));
+}
+
+/**
+* \brief Schmidt basis on Alice side
+*
+* \param A Eigen expression
+* \param d Subsystem dimensions
+* \return Unitary matrix \f$ U \f$ whose columns represent
+* the Schmidt basis vectors on Alice side.
+*/
+template<typename Derived>
+cmat schmidtA(const Eigen::MatrixBase<Derived>& A, idx d = 2)
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero size
+    if (!internal::check_nonzero_size(A))
+        throw Exception("qpp::schmidtA()", Exception::Type::ZERO_SIZE);
+
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::schmidtA()",
+                        Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
+
+    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
+
+    return schmidtA(A, dims);
 }
 
 /**
@@ -139,6 +204,37 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
     // by default returns V^*, we need V, i.e. the complex conjugate,
     // i.e. adjoint(transpose(V))
     return svdV(transpose(reshape(conjugate(rA), dims[1], dims[0])));
+}
+
+/**
+* \brief Schmidt basis on Bob side
+*
+* \param A Eigen expression
+* \param d Subsystem dimensions
+* \return Unitary matrix \f$ V \f$ whose columns represent
+* the Schmidt basis vectors on Bob side.
+*/
+template<typename Derived>
+cmat schmidtB(const Eigen::MatrixBase<Derived>& A, idx d = 2)
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero size
+    if (!internal::check_nonzero_size(A))
+        throw Exception("qpp::schmidtB()", Exception::Type::ZERO_SIZE);
+
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::schmidtB()",
+                        Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
+
+    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
+
+    return schmidtB(A, dims);
 }
 
 /**
@@ -185,6 +281,40 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
+* \brief Schmidt probabilities of the bi-partite pure state \a A
+*
+* Defined as the squares of the Schmidt coefficients.
+* The sum of the Schmidt probabilities equals 1.
+* \see qpp::schmidtcoeffs()
+*
+* \param A Eigen expression
+* \param d Subsystem dimensions
+* \return Real vector consisting of the Schmidt probabilites of \a A
+*/
+template<typename Derived>
+std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A, idx d = 2)
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero size
+    if (!internal::check_nonzero_size(A))
+        throw Exception("qpp::schmidtprobs()", Exception::Type::ZERO_SIZE);
+
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::schmidtprobs()",
+                        Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
+
+    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
+
+    return schmidtprobs(A, dims);
+}
+
+/**
 * \brief Entanglement of the bi-partite pure state \a A
 *
 * Defined as the von-Neumann entropy of the reduced density matrix
@@ -220,6 +350,40 @@ double entanglement(const Eigen::MatrixBase<Derived>& A,
     // END EXCEPTION CHECKS
 
     return entropy(schmidtprobs(rA, dims));
+}
+
+/**
+* \brief Entanglement of the bi-partite pure state \a A
+*
+* Defined as the von-Neumann entropy of the reduced density matrix
+* of one of the subsystems
+* \see qpp::entropy()
+*
+* \param A Eigen expression
+* \param d Subsystem dimensions
+* \return Entanglement, with the logarithm in base 2
+*/
+template<typename Derived>
+double entanglement(const Eigen::MatrixBase<Derived>& A, idx d = 2)
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero size
+    if (!internal::check_nonzero_size(A))
+        throw Exception("qpp::entanglement()", Exception::Type::ZERO_SIZE);
+
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::entanglement()",
+                        Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
+
+    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
+
+    return entanglement(A, dims);
 }
 
 /**
@@ -296,6 +460,36 @@ double negativity(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
+* \brief Negativity of the bi-partite mixed state \a A
+*
+* \param A Eigen expression
+* \param d Subsystem dimensions
+* \return Negativity
+*/
+template<typename Derived>
+double negativity(const Eigen::MatrixBase<Derived>& A, idx d = 2)
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero size
+    if (!internal::check_nonzero_size(A))
+        throw Exception("qpp::negativity()", Exception::Type::ZERO_SIZE);
+
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::negativity()",
+                        Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
+
+    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
+
+    return negativity(A, dims);
+}
+
+/**
 * \brief Logarithmic negativity of the bi-partite mixed state \a A
 *
 * \param A Eigen expression
@@ -328,6 +522,36 @@ double lognegativity(const Eigen::MatrixBase<Derived>& A,
     // END EXCEPTION CHECKS
 
     return std::log2(2 * negativity(rA, dims) + 1);
+}
+
+/**
+* \brief Logarithmic negativity of the bi-partite mixed state \a A
+*
+* \param A Eigen expression
+* \param d Subsystem dimensions
+* \return Logarithmic negativity, with the logarithm in base 2
+*/
+template<typename Derived>
+double lognegativity(const Eigen::MatrixBase<Derived>& A, idx d = 2)
+{
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero size
+    if (!internal::check_nonzero_size(A))
+        throw Exception("qpp::lognegativity()", Exception::Type::ZERO_SIZE);
+
+    // check valid dims
+    if (d == 0)
+        throw Exception("qpp::lognegativity()",
+                        Exception::Type::DIMS_INVALID);
+    // END EXCEPTION CHECKS
+
+    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(N, d); // local dimensions vector
+
+    return lognegativity(A, dims);
 }
 
 /**
