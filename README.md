@@ -72,7 +72,7 @@ I recommend an out-of-source build, i.e., from the root of the project
     cmake ..
     make
 
-The above commands build the relase version (default) executable `qpp`, 
+The commands above build the relase version (default) executable `qpp`, 
 from the source file `./examples/minimal.cpp`,
 without [MATLAB](http://www.mathworks.com/products/matlab/) support (default), 
 inside the directory `./build`. To build a different configuration, 

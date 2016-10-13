@@ -50,13 +50,15 @@ noexcept
 {
     // error checks only in DEBUG version
 #ifndef NDEBUG
-    idx D = 1;
-    for(idx i = 0 ; i < numdims; ++i)
-        D *= dims[i];
-    assert(n < D);
-    assert(numdims > 0);
+    if(numdims > 0) // numdims equal zero is a no-op
+    {
+        idx D = 1;
+        for (idx i = 0; i < numdims; ++i)
+            D *= dims[i];
+        assert(n < D);
+    }
 #endif
-    // no error checks in release to improve speed
+    // no error checks in release version to improve speed
     for (idx i = 0; i < numdims; ++i)
     {
         result[numdims - i - 1] = n % (dims[numdims - i - 1]);
@@ -74,7 +76,7 @@ noexcept
     assert(numdims > 0);
 #endif
 
-    // no error checks in release to improve speed
+    // no error checks in release version to improve speed
 
     // Static allocation for speed!
     // double the size for matrices reshaped as vectors
