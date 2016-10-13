@@ -157,8 +157,8 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 
     idx rows = static_cast<idx>(rA.rows());
     idx cols = static_cast<idx>(rA.cols());
-    fout.write(reinterpret_cast<char*>(&rows), sizeof(rows));
-    fout.write(reinterpret_cast<char*>(&cols), sizeof(cols));
+    fout.write(reinterpret_cast<const char*>(&rows), sizeof(rows));
+    fout.write(reinterpret_cast<const char*>(&cols), sizeof(cols));
 
     fout.write(reinterpret_cast<const char*>(rA.data()),
                sizeof(typename Derived::Scalar) * rows * cols);

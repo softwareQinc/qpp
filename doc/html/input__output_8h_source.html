@@ -170,8 +170,8 @@ $(document).ready(function(){initNavTree('input__output_8h_source.html','');});
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rA.rows());</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(rA.cols());</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    fout.write(reinterpret_cast&lt;char*&gt;(&amp;rows), <span class="keyword">sizeof</span>(rows));</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    fout.write(reinterpret_cast&lt;char*&gt;(&amp;cols), <span class="keyword">sizeof</span>(cols));</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    fout.write(reinterpret_cast&lt;const char*&gt;(&amp;rows), <span class="keyword">sizeof</span>(rows));</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    fout.write(reinterpret_cast&lt;const char*&gt;(&amp;cols), <span class="keyword">sizeof</span>(cols));</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    fout.write(reinterpret_cast&lt;const char*&gt;(rA.data()),</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;               <span class="keyword">sizeof</span>(<span class="keyword">typename</span> Derived::Scalar) * rows * cols);</div>
@@ -245,7 +245,7 @@ $(document).ready(function(){initNavTree('input__output_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="input__output_8h.html">input_output.h</a></li>
-    <li class="footer">Generated on Wed Oct 12 2016 22:03:39 for Quantum++ by
+    <li class="footer">Generated on Wed Oct 12 2016 22:08:36 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>
