@@ -368,6 +368,93 @@ inline idx get_dim_subsys(idx sz, idx N)
     return static_cast<idx>(std::llround(std::pow(sz, 1. / N)));
 }
 
+// implementation details for pretty formatting
+struct Display_Impl_
+{
+    template<typename T>
+    // T must support rows(), cols(), operator()(idx, idx) const
+    std::ostream& display_impl_(const T& A,
+                                std::ostream& os,
+                                double chop = qpp::chop) const
+    {
+        std::ostringstream ostr;
+        ostr.copyfmt(os); // copy os' state
+
+        std::vector<std::string> vstr;
+        std::string strA;
+
+        for (idx i = 0; i < static_cast<idx>(A.rows()); ++i)
+        {
+            for (idx j = 0;
+                 j < static_cast<idx>(A.cols()); ++j)
+            {
+                strA.clear(); // clear the temporary string
+                ostr.clear();
+                ostr.str(std::string {}); // clear the ostringstream
+
+                // convert to complex
+                double re = static_cast<cplx>(A(i, j)).real();
+                double im = static_cast<cplx>(A(i, j)).imag();
+
+                if (std::abs(re) < chop && std::abs(im) < chop)
+                {
+                    ostr << "0 "; // otherwise segfault on destruction
+                    // if using only vstr.push_back("0 ");
+                    // bug in MATLAB libmx
+                    vstr.push_back(ostr.str());
+                } else if (std::abs(re) < chop)
+                {
+                    ostr << im;
+                    vstr.push_back(ostr.str() + "i");
+                } else if (std::abs(im) < chop)
+                {
+                    ostr << re;
+                    vstr.push_back(ostr.str() + " ");
+                } else
+                {
+                    ostr << re;
+                    strA = ostr.str();
+
+                    strA += (im > 0 ? " + " : " - ");
+                    ostr.clear();
+                    ostr.str(std::string()); // clear
+                    ostr << std::abs(im);
+                    strA += ostr.str();
+                    strA += "i";
+                    vstr.push_back(strA);
+                }
+            }
+        }
+
+        // determine the maximum lenght of the entries in each column
+        std::vector<idx> maxlengthcols(A.cols(), 0);
+
+        for (idx i = 0; i < static_cast<idx>(A.rows());
+             ++i)
+            for (idx j = 0;
+                 j < static_cast<idx>(A.cols()); ++j)
+                if (vstr[i * A.cols() + j].size() > maxlengthcols[j])
+                    maxlengthcols[j] = vstr[i * A.cols() + j].size();
+
+        // finally display it!
+        for (idx i = 0; i < static_cast<idx>(A.rows()); ++i)
+        {
+            os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
+               << vstr[i * A.cols()]; // display first column
+            // then the rest
+            for (idx j = 1;
+                 j < static_cast<idx>(A.cols()); ++j)
+                os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
+                   << std::right << vstr[i * A.cols() + j];
+
+            if (i < static_cast<idx>(A.rows()) - 1)
+                os << std::endl;
+        }
+
+        return os;
+    }
+};
+
 } /* namespace internal */
 } /* namespace qpp */
 
