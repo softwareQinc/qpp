@@ -145,8 +145,6 @@ var NAVTREEINDEX1 =
 "namespaceqpp_1_1experimental.html":[1,0,0,0],
 "namespaceqpp_1_1internal.html":[1,0,0,1],
 "namespaceqpp_1_1internal.html":[2,0,0,0],
-"namespaceqpp_1_1internal_1_1details__.html":[1,0,0,1,0],
-"namespaceqpp_1_1internal_1_1details__.html":[2,0,0,0,0],
 "namespaces.html":[1,0],
 "number__theory_8h.html":[3,0,11],
 "number__theory_8h.html#a048622e398319b61f9ea62a6c66e67fb":[3,0,11,4],
@@ -229,8 +227,8 @@ var NAVTREEINDEX1 =
 "statistics_8h.html#abc09834bbfdd7aebe3cd95d01c99b869":[3,0,15,6],
 "statistics_8h.html#acc5cef3ac2601b63d4afef384fd7499b":[3,0,15,1],
 "statistics_8h_source.html":[3,0,15],
-"structqpp_1_1internal_1_1details___1_1_display___impl__.html":[2,0,0,0,0,0],
-"structqpp_1_1internal_1_1details___1_1_display___impl__.html#aa0aefb190cf73896eccc95ad6f68972f":[2,0,0,0,0,0,0],
+"structqpp_1_1internal_1_1_display___impl__.html":[2,0,0,0,0],
+"structqpp_1_1internal_1_1_display___impl__.html#a755cc3da7ab2564107cea5fa3d571aa8":[2,0,0,0,0,0],
 "structqpp_1_1is__complex.html":[2,0,0,6],
 "structqpp_1_1is__complex_3_01std_1_1complex_3_01_t_01_4_01_4.html":[2,0,0,7],
 "structqpp_1_1is__iterable.html":[2,0,0,8],
@@ -249,5 +247,7 @@ var NAVTREEINDEX1 =
 "types_8h.html#a8886624a4a55a9b45c96a623a20bf163":[3,0,17,1],
 "types_8h.html#a923e2becc99eb818c04c71ae913902ff":[3,0,17,4],
 "types_8h.html#aad7ccc50a6b139279d7b56d07112b183":[3,0,17,3],
-"types_8h.html#ab0de67006716bdc8fae52c6a49259276":[3,0,17,2]
+"types_8h.html#ab0de67006716bdc8fae52c6a49259276":[3,0,17,2],
+"types_8h.html#ac39e7c2b66f0209911cc3afc06223648":[3,0,17,6],
+"types_8h.html#ad199ade0836f0d8488e7f6c7c8aa1949":[3,0,17,0]
 };

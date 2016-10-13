@@ -1,5 +1,6 @@
 var util_8h =
 [
+    [ "Display_Impl_", "structqpp_1_1internal_1_1_display___impl__.html", "structqpp_1_1internal_1_1_display___impl__" ],
     [ "check_cvector", "util_8h.html#a85177fd977a0e44b3b7e70ef1802e9a5", null ],
     [ "check_dims", "util_8h.html#a7abb5871441abcf45ce0e379a4267047", null ],
     [ "check_dims_match_cvect", "util_8h.html#abb10c264874e20180c7c0944e0bf7657", null ],
@@ -21,8 +22,8 @@ var util_8h =
     [ "get_dim_subsys", "util_8h.html#a321de4158dbe66d77f480d8f0b7ffd6d", null ],
     [ "get_num_subsys", "util_8h.html#ab2e7b985d75c45198899b3aa1f2c0f77", null ],
     [ "kron2", "util_8h.html#a66c954a3de84c422f6080936477c86d4", null ],
-    [ "multiidx2n", "util_8h.html#a833352425de7302f081d19ebb649e00e", null ],
-    [ "n2multiidx", "util_8h.html#a8909f8860d9fa7e09e9d0291b38e8133", null ],
+    [ "multiidx2n", "util_8h.html#a7132297b40fb958750942d6bed9d4ff3", null ],
+    [ "n2multiidx", "util_8h.html#a3e8ed22ae3490cd81beff37931d8ca25", null ],
     [ "variadic_vector_emplace", "util_8h.html#a5f99527a1f1e06fd6d62e094cd2e97f0", null ],
     [ "variadic_vector_emplace", "util_8h.html#a9e4550a948eedf249d041743c91f2708", null ]
 ];
