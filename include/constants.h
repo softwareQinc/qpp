@@ -67,11 +67,11 @@ constexpr double chop = 1e-10;
 constexpr double eps = 1e-12;
 
 /**
-* \brief Maximum number of allowed qu(d)its (subsystems)
+* \brief Maximum number of allowed qubits/qudits (subsystems)
 *
-* Used internally to allocate arrays on the stack (for speed reasons)
+* Used internally to allocate arrays on the stack (for performance reasons):
 */
-constexpr idx maxn = 64; // maximum number of qudits a state may have
+constexpr idx maxn = 64; // maximum number of qubits/qudits a state may have
 
 /**
 * \brief \f$ \pi \f$
