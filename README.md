@@ -192,7 +192,7 @@ Otherwise, you get a runtime error similar to
 
     > dyld: Library not loaded: @rpath/libmat.dylib.
     
-   - I recommend running via a script, as otherwise setting the 
+   * I recommend running via a script, as otherwise setting the 
     `DYLD_LIBRARY_PATH` globally may interfere with 
     [macports](https://www.macports.org/)' [CMake](http://www.cmake.org/) 
     installation (in case you use [CMake](http://www.cmake.org/) from 
@@ -200,7 +200,7 @@ Otherwise, you get a runtime error similar to
     then the environment variable is local to the script and 
     does not interfere with the rest of the system.
 
-   - Example of script, assumed to be located in the root directory 
+   * Example of script, assumed to be located in the root directory 
     of Quantum++
         
             #!/bin/sh
