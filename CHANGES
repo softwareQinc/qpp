@@ -24,7 +24,7 @@ Version 0.8.8.2 - 3 October 2016
 
 Version 0.8.8 - 30 September 2016
     - Added OpenMP support for clang >= 3.7 in CmakeLists.txt
-    - Required minimum cmake version is now 3.0
+    - Required minimum CMake version is now 3.0
     - Added more unit testing, "number_theory.h" is now fully tested
     - Split unit testing in separate files according to the tested header file
     - Fixed typo in CMakeLists.txt which in effect disabled OpenMP
@@ -103,7 +103,7 @@ Version 0.8 - 8 May 2015
     - Marked final all classes that are not intended to be used as base classes
     - Modified the CMakeLists.txt, which now:
         - supports only GNU gcc and LLVM/Apple clang, otherwise emits an error
-          during the cmake running phase
+          during the CMake running phase
         - adds -D_NO_THREAD_LOCAL definition for conditional compiling the
           source code without support for std::thread_local (if using e.g.
           LLVM/Apple clang with libc++, as libc++ does not yet support

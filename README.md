@@ -59,11 +59,11 @@ include header files:
 shared library files:
 `/Applications/MATLAB_R2016a.app/bin/maci64`
 
-### Building using [cmake](http://www.cmake.org/) (version 3.0.0 or later)
+### Building using [CMake](http://www.cmake.org/) (version 3.0.0 or later)
 
 The current version of the repository has a `./CMakeLists.txt` configuration 
-file for building examples using [cmake](http://www.cmake.org/). 
-To build an example using [cmake](http://www.cmake.org/), 
+file for building examples using [CMake](http://www.cmake.org/). 
+To build an example using [CMake](http://www.cmake.org/), 
 I recommend an out-of-source build, i.e., from the root of the project 
 (where `./include` is located), type
 
@@ -143,8 +143,8 @@ Quantum++ was extensively tested via a suite of unit tests constructed with
 [Google Test 1.8.0](https://github.com/google/googletest) (included with the 
 project in `./unit_tests/lib/gtest-1.8.0`). The source code of the unit tests 
 is provided under `./unit_tests/tests`. To build and run the unit tests, I 
-strongly recommend to use [cmake](http://www.cmake.org/) version 3.0.0 or 
-later. Assuming you do use [cmake](http://www.cmake.org/), switch to the  
+strongly recommend to use [CMake](http://www.cmake.org/) version 3.0.0 or 
+later. Assuming you do use [CMake](http://www.cmake.org/), switch to the  
 `./unit_tests` directory, create a `build` directory inside it, then from the 
 newly created `./unit_tests/build` type
 
@@ -156,7 +156,7 @@ then may run.
 
 ##### Note
 
-The [cmake](http://www.cmake.org/) configuration file 
+The [CMake](http://www.cmake.org/) configuration file 
 `./unit_tests/CMakeLists.txt` defines the same building options and default 
 choices as the main `./CMakeLists.txt` of Quantum++.  Therefore you can use the 
 same flags as the ones mentioned at the beginning of this document when 
@@ -170,7 +170,7 @@ in a different location than the one assumed in this document.
 - The C++ compiler must be C++11 compliant.
 
 - If using [Windows](http://windows.microsoft.com/), I recommend compiling 
-under [cygwin](https://www.cygwin.com) via [cmake](http://www.cmake.org/)
+under [cygwin](https://www.cygwin.com) via [CMake](http://www.cmake.org/)
 and [g++](https://gcc.gnu.org/). See also 
 <http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2>
 for a bug related to lack of support for some C++11 math functions, and
@@ -194,8 +194,8 @@ Otherwise, you get a runtime error similar to
 
     * I recommend running via a script, as otherwise setting the 
     `DYLD_LIBRARY_PATH` globally may interfere with 
-    [macports](https://www.macports.org/)' [cmake](http://www.cmake.org/) 
-    installation (in case you use [cmake](http://www.cmake.org/) from 
+    [macports](https://www.macports.org/)' [CMake](http://www.cmake.org/) 
+    installation (in case you use [CMake](http://www.cmake.org/) from 
     [macports](https://www.macports.org/)). If you use a script, 
     then the environment variable is local to the script and 
     does not interfere with the rest of the system.
