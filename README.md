@@ -11,7 +11,11 @@ library.
 Quantum++ is not restricted to qubit systems or specific quantum 
 information processing tasks, being capable of simulating arbitrary quantum 
 processes. The main design factors taken in consideration were the ease of 
-use, high portability, and high performance.
+use, high portability, and high performance. The library's simulation
+capabilities are only restricted by the amount of physical memory. On a
+typical machine (Intel i5 8Gb RAM) Quantum++ can successfully simulate the
+evolution of 25 qubits in a pure state or of 12 qubits in a mixed state
+reasonably fast.
 
 If you are interesting in contributing, please contact me. 
 To contribute, you need to have a good knowledge of C++ (preferably C++11), 

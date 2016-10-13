@@ -61,6 +61,7 @@ TEST(qpp_contfrac2x, AllTests)
     EXPECT_NEAR(-qpp::pi, qpp::contfrac2x({-3, -7, -15, -1, -292, -1}), 1e-5);
     EXPECT_NEAR(0.1234, qpp::contfrac2x({0, 8, 9, 1, 1, 1}), 1e-5);
     EXPECT_NEAR(-0.4321, qpp::contfrac2x({0, -2, -3, -5, -2}), 1e-5);
+    EXPECT_NEAR(std::sqrt(19), qpp::contfrac2x({4, 2, 1, 3, 1, 2, 8}), 1e-3);
 }
 /******************************************************************************/
 /// BEGIN double qpp::contfrac2x(const std::vector<int>& cf, idx n)
