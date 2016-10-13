@@ -38,7 +38,7 @@ namespace qpp
 * \param A Eigen expression
 * \param chop Set to zero the elements smaller in absolute value
 * than \a chop
-* \return Instance of qpp::internal::internal::IOManipEigen
+* \return Instance of qpp::internal::IOManipEigen
 */
 template<typename Derived>
 internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
@@ -54,7 +54,7 @@ internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
 * to std::complex<double>)
 * \param chop Set to zero the elements smaller in absolute value
 * than \a chop
-* \return Instance of qpp::internal::internal::IOManipEigen
+* \return Instance of qpp::internal::IOManipEigen
 */
 inline internal::IOManipEigen disp(cplx z, double chop = qpp::chop)
 {
@@ -69,7 +69,7 @@ inline internal::IOManipEigen disp(cplx z, double chop = qpp::chop)
 * \param separator Separator
 * \param start Left marking
 * \param end Right marking
-* \return Instance of qpp::internal::internal::IOManipRange
+* \return Instance of qpp::internal::IOManipRange
 */
 template<typename InputIterator>
 internal::IOManipRange <InputIterator> disp(InputIterator first,
@@ -90,7 +90,7 @@ internal::IOManipRange <InputIterator> disp(InputIterator first,
 * \param separator Separator
 * \param start Left marking
 * \param end Right marking
-* \return Instance of qpp::internal::internal::IOManipRange
+* \return Instance of qpp::internal::IOManipRange
 */
 template<typename Container>
 internal::IOManipRange<typename Container::const_iterator> disp(
@@ -110,7 +110,7 @@ internal::IOManipRange<typename Container::const_iterator> disp(
 * \param separator Separator
 * \param start Left marking
 * \param end Right marking
-* \return Instance of qpp::internal::internal::IOManipPointer
+* \return Instance of qpp::internal::IOManipPointer
 */
 template<typename PointerType>
 internal::IOManipPointer <PointerType> disp(const PointerType* p, idx N,
