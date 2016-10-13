@@ -28,7 +28,7 @@
 #define MACROS_H_
 
 // Useful macros
-#ifdef DEBUG
+#ifndef NDEBUG // activate only in DEBUG version
 /*! Prints a message */
 #define PRINT(x)    std::cout << (x)
 /*! Prints a message and adds a new line */
@@ -37,7 +37,7 @@
 #define ERROR(x)    std::cerr << (x)
 /*! Prints an error message to std::cerr and adds a new line */
 #define ERRORLN(x)  std::cerr << (x) << std::endl
-#else
+#else // deactivate in release version
 /*! Prints a message */
 #define PRINT(x)
 /*! Prints a message and adds a new line */

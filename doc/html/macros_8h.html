@@ -89,19 +89,19 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ad61844ab25ea35139950e67e9693bc9f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8h.html#ad61844ab25ea35139950e67e9693bc9f">PRINT</a>(x)</td></tr>
-<tr class="separator:ad61844ab25ea35139950e67e9693bc9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1066d64ca1f5b865b189616551600dc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8h.html#af1066d64ca1f5b865b189616551600dc">PRINTLN</a>(x)</td></tr>
+<tr class="memitem:a1a768673a1f1a07732183f5f65f1605d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8h.html#a1a768673a1f1a07732183f5f65f1605d">PRINT</a>(x)    &#160;&#160;&#160;std::cout &lt;&lt; (x)</td></tr>
+<tr class="separator:a1a768673a1f1a07732183f5f65f1605d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1066d64ca1f5b865b189616551600dc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8h.html#af1066d64ca1f5b865b189616551600dc">PRINTLN</a>(x)&#160;&#160;&#160;std::cout &lt;&lt; (x) &lt;&lt; std::endl</td></tr>
 <tr class="separator:af1066d64ca1f5b865b189616551600dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abac57baaff13f3a1ddbb0c8a193b7e32"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8h.html#abac57baaff13f3a1ddbb0c8a193b7e32">ERROR</a>(x)</td></tr>
-<tr class="separator:abac57baaff13f3a1ddbb0c8a193b7e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb0f07c44f4d337175653f905dac3a5a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8h.html#adb0f07c44f4d337175653f905dac3a5a">ERRORLN</a>(x)</td></tr>
+<tr class="memitem:af1e28f78f5be6cee7406a3cd10c70272"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8h.html#af1e28f78f5be6cee7406a3cd10c70272">ERROR</a>(x)    &#160;&#160;&#160;std::cerr &lt;&lt; (x)</td></tr>
+<tr class="separator:af1e28f78f5be6cee7406a3cd10c70272"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb0f07c44f4d337175653f905dac3a5a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8h.html#adb0f07c44f4d337175653f905dac3a5a">ERRORLN</a>(x)&#160;&#160;&#160;std::cerr &lt;&lt; (x) &lt;&lt; std::endl</td></tr>
 <tr class="separator:adb0f07c44f4d337175653f905dac3a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Preprocessor macros. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="abac57baaff13f3a1ddbb0c8a193b7e32"></a>
+<a class="anchor" id="af1e28f78f5be6cee7406a3cd10c70272"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -110,7 +110,7 @@ Macros</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">x</td><td>)</td>
-          <td></td>
+          <td>&#160;&#160;&#160;std::cerr &lt;&lt; (x)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -127,7 +127,7 @@ Macros</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">x</td><td>)</td>
-          <td></td>
+          <td>&#160;&#160;&#160;std::cerr &lt;&lt; (x) &lt;&lt; std::endl</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -135,7 +135,7 @@ Macros</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ad61844ab25ea35139950e67e9693bc9f"></a>
+<a class="anchor" id="a1a768673a1f1a07732183f5f65f1605d"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -144,7 +144,7 @@ Macros</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">x</td><td>)</td>
-          <td></td>
+          <td>&#160;&#160;&#160;std::cout &lt;&lt; (x)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -161,7 +161,7 @@ Macros</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">x</td><td>)</td>
-          <td></td>
+          <td>&#160;&#160;&#160;std::cout &lt;&lt; (x) &lt;&lt; std::endl</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -175,7 +175,7 @@ Macros</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="macros_8h.html">macros.h</a></li>
-    <li class="footer">Generated on Thu Oct 13 2016 08:09:59 for Quantum++ by
+    <li class="footer">Generated on Thu Oct 13 2016 10:00:23 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

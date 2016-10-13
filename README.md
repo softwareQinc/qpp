@@ -151,7 +151,7 @@ newly created `./unit_tests/build` type
     cmake ..
     make
     
-The commands above build `./unit_tests/tests/qpp_testing`, which you 
+The commands above build `./unit_tests/build/tests/qpp_testing`, which you 
 then may run.
 
 ##### Note

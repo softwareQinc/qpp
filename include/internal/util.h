@@ -48,7 +48,15 @@ namespace internal
 inline void n2multiidx(idx n, idx numdims, const idx* const dims, idx* result)
 noexcept
 {
-    // no error checks to improve speed
+    // error checks only in DEBUG version
+#ifndef NDEBUG
+    idx D = 1;
+    for(idx i = 0 ; i < numdims; ++i)
+        D *= dims[i];
+    assert(n < D);
+    assert(numdims > 0);
+#endif
+    // no error checks in release to improve speed
     for (idx i = 0; i < numdims; ++i)
     {
         result[numdims - i - 1] = n % (dims[numdims - i - 1]);
@@ -61,7 +69,12 @@ noexcept
 inline idx multiidx2n(const idx* const midx, idx numdims, const idx* const dims)
 noexcept
 {
-    // no error checks to improve speed
+    // error checks only in DEBUG version
+#ifndef NDEBUG
+    assert(numdims > 0);
+#endif
+
+    // no error checks in release to improve speed
 
     // Static allocation for speed!
     // double the size for matrices reshaped as vectors
