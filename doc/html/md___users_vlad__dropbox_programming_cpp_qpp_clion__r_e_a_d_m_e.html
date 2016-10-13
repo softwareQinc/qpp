@@ -142,25 +142,17 @@ make
 <li>If using <a href="http://windows.microsoft.com/">Windows</a>, I recommend compiling under <a href="https://www.cygwin.com">cygwin</a> via <a href="http://www.cmake.org/">CMake</a> and <a href="https://gcc.gnu.org/">g++</a>. See also <a href="http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2">http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2</a> for a bug related to lack of support for some C++11 math functions, and how to fix it. Quick fix: patch the standard library header file <code>&lt;cmath&gt;</code> using the provided patch <code>./cmath_cygwin.patch</code>.</li>
 <li>If your compiler does not support <a href="http://openmp.org/">OpenMP</a> (as it is the case e.g with <a href="http://clang.llvm.org/">clang++</a> pre version 3.7), disable <a href="http://openmp.org/">OpenMP</a> in your build, as otherwise the linker may not find the <a href="https://gcc.gnu.org/projects/gomp/">gomp</a> library.</li>
 <li>If you run the program on <a href="http://www.apple.com/osx">OS X</a> with <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support, make sure that the environment variable <code>DYLD_LIBRARY_PATH</code> is set to point to the <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> compiler library location, see the <code>run_OSX_MATLAB</code> script. Otherwise, you get a runtime error similar to <pre class="fragment">&gt; dyld: Library not loaded: @rpath/libmat.dylib.
+</pre><ul>
+<li>I recommend running via a script, as otherwise setting the <code>DYLD_LIBRARY_PATH</code> globally may interfere with <a href="https://www.macports.org/">macports</a>' <a href="http://www.cmake.org/">CMake</a> installation (in case you use <a href="http://www.cmake.org/">CMake</a> from <a href="https://www.macports.org/">macports</a>). If you use a script, then the environment variable is local to the script and does not interfere with the rest of the system.</li>
+<li>Example of script, assumed to be located in the root directory of Quantum++ <pre class="fragment">    #!/bin/sh
 
-* I recommend running via a script, as otherwise setting the 
-`DYLD_LIBRARY_PATH` globally may interfere with 
-[macports](https://www.macports.org/)' [CMake](http://www.cmake.org/) 
-installation (in case you use [CMake](http://www.cmake.org/) from 
-[macports](https://www.macports.org/)). If you use a script, 
-then the environment variable is local to the script and 
-does not interfere with the rest of the system.
+    MATLAB=/Applications/MATLAB_R2016a.app
+    export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$MATLAB/bin/maci64
 
-* Example of script, assumed to be located in the root directory 
-of Quantum++
-
-        #!/bin/sh
-
-        MATLAB=/Applications/MATLAB_R2016a.app
-        export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$MATLAB/bin/maci64
-
-        ./build/qpp
+    ./build/qpp
 </pre></li>
+</ul>
+</li>
 <li>If you build a debug version with <a href="https://gcc.gnu.org/">g++</a> under <a href="http://www.apple.com/osx">OS X</a> and use <a href="http://www.gnu.org/software/gdb/">gdb</a> to step inside template functions you may want to add <code>-fno-weak</code> compiler flag. See <a href="http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks">http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks</a> for more details about this problem. </li>
 </ul>
 </div></div><!-- contents -->
@@ -168,7 +160,7 @@ of Quantum++
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Oct 13 2016 07:57:35 for Quantum++ by
+    <li class="footer">Generated on Thu Oct 13 2016 08:06:57 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>
