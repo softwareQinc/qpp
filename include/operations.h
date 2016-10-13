@@ -34,6 +34,7 @@
 
 namespace qpp
 {
+
 /**
 * \brief Applies the controlled-gate \a A to the part \a subsys
 * of the multi-partite state vector or density matrix \a state
