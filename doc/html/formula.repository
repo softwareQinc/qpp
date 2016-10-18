@@ -64,3 +64,9 @@
 \form#63:$1\sqrt{d}\sum{j=0}^{d-1}$
 \form#64:$\frac{1}{\sqrt{d}}\sum_{j=0}^{d-1}$
 \form#65:$\frac{1}{\sqrt{d}}\sum_{j=0}^{d-1}|jj\rangle$
+\form#66:$ X|j\rangle = |j\oplus 1\rangle$
+\form#67:$ Z = \sum_{j=0}^{D-1} \exp(2\pi \mathrm{i} j/D) |j\rangle\langle j| $
+\form#68:$ F = \sum_{j,k\in\{0\ldots D-1\}} \exp(2\pi i jk/D) |j\rangle\langle k| $
+\form#69:$ F = \sum_{j,k\in\{0\ldots D-1\}} \exp(2\pi \mathrm{i} jk/D) |j\rangle\langle k| $
+\form#70:$ X = \sum_{j=0}^{D-1} |j\oplus 1\rangle\langle j| $
+\form#71:$ F = \sum_{j,k=0}^{D-1} \exp(2\pi \mathrm{i} jk/D) |j\rangle\langle k| $

@@ -122,7 +122,7 @@ public:
     /**
     * \brief Generalized Z gate for qudits
     *
-    * \note Defined as \f$ Z = \sum_j \exp(2\pi i j/D) |j\rangle\langle j| \f$
+    * \note Defined as \f$ Z = \sum_{j=0}^{D-1} \exp(2\pi \mathrm{i} j/D) |j\rangle\langle j| \f$
     *
     * \param D Dimension of the Hilbert space
     * \return Generalized Z gate for qudits
@@ -146,7 +146,7 @@ public:
     * \brief Fourier transform gate for qudits
     *
     * \note Defined as
-    * \f$ F = \sum_{jk} \exp(2\pi i jk/D) |j\rangle\langle k| \f$
+    * \f$ F = \sum_{j,k=0}^{D-1} \exp(2\pi \mathrm{i} jk/D) |j\rangle\langle k| \f$
     *
     * \param D Dimension of the Hilbert space
     * \return Fourier transform gate for qudits
@@ -174,8 +174,8 @@ public:
     /**
     * \brief Generalized X gate for qudits
     *
-    * \note Defined as \f$ X = \sum_j |j\oplus 1\rangle\langle j| \f$,
-    * i.e. raising operator \f$ X|j\rangle = |j\oplus 1\rangle>\f$
+    * \note Defined as \f$ X = \sum_{j=0}^{D-1} |j\oplus 1\rangle\langle j| \f$,
+    * i.e. raising operator \f$ X|j\rangle = |j\oplus 1\rangle\f$
     *
     * \param D Dimension of the Hilbert space
     * \return Generalized X gate for qudits
@@ -198,7 +198,7 @@ public:
     * by explicitly specifying the template parameter
     *
     * \param D Dimension of the Hilbert space
-    * \return Identity gate
+    * \return Identity gate on a Hilbert space of dimension \a D
     */
     template<typename Derived = Eigen::MatrixXcd>
     Derived Id(idx D) const

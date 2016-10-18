@@ -402,7 +402,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Fourier transform gate for qudits. </p>
-<dl class="section note"><dt>Note</dt><dd>Defined as <img class="formulaInl" alt="$ F = \sum_{jk} \exp(2\pi i jk/D) |j\rangle\langle k| $" src="form_1.png"/></dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Defined as <img class="formulaInl" alt="$ F = \sum_{j,k=0}^{D-1} \exp(2\pi \mathrm{i} jk/D) |j\rangle\langle k| $" src="form_71.png"/></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">D</td><td>Dimension of the Hilbert space </td></tr>
@@ -445,7 +445,7 @@ template&lt;typename Derived  = Eigen::MatrixXcd&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Identity gate </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Identity gate on a Hilbert space of dimension <em>D</em> </dd></dl>
 
 </div>
 </div>
@@ -516,7 +516,7 @@ template&lt;typename Derived  = Eigen::MatrixXcd&gt; </div>
 </div><div class="memdoc">
 
 <p>Generalized X gate for qudits. </p>
-<dl class="section note"><dt>Note</dt><dd>Defined as <img class="formulaInl" alt="$ X = \sum_j |j\oplus 1\rangle\langle j| $" src="form_2.png"/>, i.e. raising operator <img class="formulaInl" alt="$ X|j\rangle = |j\oplus 1\rangle>$" src="form_3.png"/></dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Defined as <img class="formulaInl" alt="$ X = \sum_{j=0}^{D-1} |j\oplus 1\rangle\langle j| $" src="form_70.png"/>, i.e. raising operator <img class="formulaInl" alt="$ X|j\rangle = |j\oplus 1\rangle$" src="form_66.png"/></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">D</td><td>Dimension of the Hilbert space </td></tr>
@@ -550,7 +550,7 @@ template&lt;typename Derived  = Eigen::MatrixXcd&gt; </div>
 </div><div class="memdoc">
 
 <p>Generalized Z gate for qudits. </p>
-<dl class="section note"><dt>Note</dt><dd>Defined as <img class="formulaInl" alt="$ Z = \sum_j \exp(2\pi i j/D) |j\rangle\langle j| $" src="form_0.png"/></dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Defined as <img class="formulaInl" alt="$ Z = \sum_{j=0}^{D-1} \exp(2\pi \mathrm{i} j/D) |j\rangle\langle j| $" src="form_67.png"/></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">D</td><td>Dimension of the Hilbert space </td></tr>
@@ -774,7 +774,7 @@ template&lt;typename Derived  = Eigen::MatrixXcd&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_gates.html">Gates</a></li>
-    <li class="footer">Generated on Tue Oct 18 2016 19:38:47 for Quantum++ by
+    <li class="footer">Generated on Tue Oct 18 2016 19:52:20 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>
