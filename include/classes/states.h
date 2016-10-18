@@ -98,7 +98,7 @@ public:
 
         // check valid dims
         if (d == 0)
-            throw Exception("qpp::mprj()", Exception::Type::DIMS_INVALID);
+            throw Exception("qpp::States::mes()", Exception::Type::DIMS_INVALID);
         // END EXCEPTION CHECKS
 
         ket psi = mket({0, 0}, {d, d});
