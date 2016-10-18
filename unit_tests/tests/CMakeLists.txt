@@ -20,6 +20,7 @@
 INCLUDE_DIRECTORIES(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 ADD_EXECUTABLE(qpp_testing
         classes/gates.cpp
+        classes/states.cpp
         classes/timer.cpp
         entanglement.cpp
         entropies.cpp

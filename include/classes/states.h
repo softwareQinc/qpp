@@ -84,6 +84,32 @@ public:
     // projectors onto GHZ and W
     cmat pGHZ{cmat::Zero(8, 8)};    ///< Projector onto the GHZ state
     cmat pW{cmat::Zero(8, 8)};      ///< Projector onto the W state
+
+    /**
+    * \brief Maximally entangled state of 2 qudits
+    *
+    * \param d Subsystem dimensions
+    * \return Maximally entangled state \f$\frac{1}{\sqrt{d}}\sum_{j=0}^{d-1}|jj\rangle\f$ of 2
+    * qudits
+    */
+    ket mes(idx d = 2) const
+    {
+        // EXCEPTION CHECKS
+
+        // check valid dims
+        if (d == 0)
+            throw Exception("qpp::mprj()", Exception::Type::DIMS_INVALID);
+        // END EXCEPTION CHECKS
+
+        ket psi = mket({0, 0}, {d, d});
+        for(idx i = 1; i < d; ++i)
+        {
+            psi += mket({i, i}, {d, d});
+        }
+
+        return psi/std::sqrt(d);
+    }
+
 private:
     /**
     * Initialize the states

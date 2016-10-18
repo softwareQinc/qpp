@@ -123,7 +123,33 @@ TEST(qpp_gconcurrence, AllTests)
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_lognegativity, AllTests)
 {
+    // zero on product states (2 qutrits)
+    cmat rho = randrho(3);
+    cmat sigma = randrho(3);
+    EXPECT_NEAR(0, qpp::lognegativity(kron(rho, sigma), {3, 3}), 1e-7);
 
+    // additivity (2 ququads)
+    rho = randrho(4);
+    sigma = randrho(4);
+    EXPECT_NEAR(qpp::lognegativity(syspermute(kron(rho, sigma), {0, 2, 1, 3}),
+                                   {4, 4}),
+                qpp::lognegativity(rho, {2, 2}) +
+                qpp::lognegativity(sigma, {2, 2}), 1e-7);
+
+    // maximally entangled state (2 qutrits)
+    idx d = 3;
+    rho = prj(st.mes(d));
+    EXPECT_NEAR(std::log2(d), qpp::lognegativity(rho, {d, d}), 1e-7);
+
+    // maximally entangled state (2 ququads)
+    d = 4;
+    rho = prj(st.mes(d));
+    EXPECT_NEAR(std::log2(d), qpp::lognegativity(rho, {d, d}), 1e-7);
+
+    // maximally entangled state (d = 7)
+    d = 7;
+    rho = prj(st.mes(d));
+    EXPECT_NEAR(std::log2(d), qpp::lognegativity(rho, {d, d}), 1e-7);
 }
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::lognegativity(
@@ -137,7 +163,7 @@ TEST(qpp_lognegativity_qubits, AllTests)
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_negativity, AllTests)
 {
-
+    // (d - 1)/2 on MES
 }
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::negativity(

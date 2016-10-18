@@ -61,3 +61,6 @@
 \form#60:$Tr_{subsys}(\cdot)$
 \form#61:$(\cdot)^{T_{subsys}}$
 \form#62:$ \sum_i K_i^\dagger K_i = I$
+\form#63:$1\sqrt{d}\sum{j=0}^{d-1}$
+\form#64:$\frac{1}{\sqrt{d}}\sum_{j=0}^{d-1}$
+\form#65:$\frac{1}{\sqrt{d}}\sum_{j=0}^{d-1}|jj\rangle$
