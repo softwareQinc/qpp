@@ -89,8 +89,8 @@ public:
     * \brief Maximally entangled state of 2 qudits
     *
     * \param d Subsystem dimensions
-    * \return Maximally entangled state \f$\frac{1}{\sqrt{d}}\sum_{j=0}^{d-1}|jj\rangle\f$ of 2
-    * qudits
+    * \return Maximally entangled state 
+    * \f$\frac{1}{\sqrt{d}}\sum_{j=0}^{d-1}|jj\rangle\f$ of 2 qudits
     */
     ket mes(idx d = 2) const
     {
@@ -98,7 +98,8 @@ public:
 
         // check valid dims
         if (d == 0)
-            throw Exception("qpp::States::mes()", Exception::Type::DIMS_INVALID);
+            throw Exception("qpp::States::mes()", 
+                    Exception::Type::DIMS_INVALID);
         // END EXCEPTION CHECKS
 
         ket psi = mket({0, 0}, {d, d});
