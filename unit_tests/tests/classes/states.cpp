@@ -28,7 +28,7 @@ using namespace qpp;
 // Unit testing "classes/states.h"
 
 /******************************************************************************/
-/// BEGIN qpp::gates::mes(idx d = 2) const
+/// BEGIN qpp::States::mes(idx d = 2) const
 TEST(qpp_States_mes, AllTests)
 {
     // d = 1 (number)
