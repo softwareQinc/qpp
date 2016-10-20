@@ -17,8 +17,12 @@ On a typical machine (Intel i5 8Gb RAM) Quantum++ can successfully simulate
 the evolution of 25 qubits in a pure state or of 12 qubits in a mixed state 
 reasonably fast.
 
-If you are interesting in contributing, please contact me. 
-To contribute, you need to have a good knowledge of C++ (preferably C++11), 
+To report any bugs or ask for additional features/enhancements, please 
+[submit an issue](https://github.com/vsoftco/qpp/issues) with an appropriate 
+label.
+
+If you are interesting in contributing to this project, please contact me. 
+To contribute, you need to have a solid knowledge of C++ (preferably C++11), 
 including templates and the standard library, a basic knowledge of 
 quantum computing and linear algebra, and working experience with 
 [Eigen 3](http://eigen.tuxfamily.org).
