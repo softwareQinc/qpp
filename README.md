@@ -1,6 +1,8 @@
 # Quantum++ 
 ## Version 1.0.0-devel - development
 
+[![Build Status](https://api.travis-ci.org/vsoftco/qpp.svg?branch=v1.0.0-devel)](https://travis-ci.org/vsoftco/qpp)
+
 Quantum++ is a modern C++11 general purpose quantum computing library, composed 
 solely of template header files. Quantum++ is written in standard C++11 and 
 has very low external dependencies, using only the 
