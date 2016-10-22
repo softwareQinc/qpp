@@ -27,9 +27,18 @@ addons:
 
 script:
   - $CXX --version
+  
+  # Install Eigen3
   - hg clone https://bitbucket.org/eigen/eigen/
   - ln -s $HOME/build/vsoftco/qpp/eigen $HOME/eigen
-  - cd unit_tests
+  
+  # Minimal example
   - mkdir build
   - cd build
-  - cmake .. && make
+  - cmake -DCMAKE_BUILD_TYPE=Debug ..  & make
+  
+  # Unit tests
+  - cd ../unit_tests
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Debug .. && make

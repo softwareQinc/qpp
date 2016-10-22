@@ -1,4 +1,5 @@
 Version 1.0.0-devel - development
+    - Added support for Travis CI automated testing platform
     - Added new functions in "classes/states.h":
         qpp::States::mes() - maximally entangled state of 2 qudits
     - Added new functions in "random.h":
