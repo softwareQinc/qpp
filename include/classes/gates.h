@@ -480,6 +480,74 @@ public:
         return result;
     }
 
+    /**
+    * \brief Expands out
+    * \see qpp::kron()
+    *
+    *  Expands out \a A as a matrix in a multi-partite system.
+    *  Faster than using qpp::kron(I, I, ..., I, A, I, ..., I).
+    *
+    * \note The std::initializer_list overload exists because otherwise, in the
+    * degenerate case when \a dims has only one element, the one element list is
+    * implicitly converted to the element's underlying type, i.e. qpp::idx,
+    * which has the net effect of picking the wrong (non-vector)
+    * qpp::expandout() overload
+    *
+    * \param A Eigen expression
+    * \param pos Position
+    * \param dims Dimensions of the multi-partite system
+    * \return Tensor product
+    * \f$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
+    * with \a A on position \a pos, as a dynamic matrix
+    * over the same scalar field as \a A
+    */
+    template<typename Derived>
+    dyn_mat<typename Derived::Scalar> expandout(
+            const Eigen::MatrixBase<Derived>& A, idx pos,
+            const std::initializer_list<idx>& dims) const
+    {
+        return this->expandout(A, pos, std::vector<idx>(dims));
+    }
+
+    /**
+    * \brief Expands out
+    * \see qpp::kron()
+    *
+    *  Expands out \a A as a matrix in a multi-partite system.
+    *  Faster than using qpp::kron(I, I, ..., I, A, I, ..., I).
+    *
+    * \param A Eigen expression
+    * \param pos Position
+    * \param N Number of subsystems
+    * \param d Subsystem dimension
+    * \return Tensor product
+    * \f$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
+    * with \a A on position \a pos, as a dynamic matrix
+    * over the same scalar field as \a A
+    */
+    template<typename Derived>
+    dyn_mat<typename Derived::Scalar> expandout(
+            const Eigen::MatrixBase<Derived>& A, idx pos, idx N, idx d = 2)
+    const
+    {
+        // EXCEPTION CHECKS
+
+        // check zero size
+        if (!internal::check_nonzero_size(A))
+            throw Exception("qpp::Gates::expandout()",
+                            Exception::Type::ZERO_SIZE);
+
+        // check valid dims
+        if (d == 0)
+            throw Exception("qpp::Gates::expandout()",
+                            Exception::Type::DIMS_INVALID);
+        // END EXCEPTION CHECKS
+
+        std::vector<idx> dims(N, d); // local dimensions vector
+
+        return this->expandout(A, pos, dims);
+    }
+
 }; /* class Gates */
 
 } /* namespace qpp */

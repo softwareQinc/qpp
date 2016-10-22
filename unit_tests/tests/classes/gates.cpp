@@ -33,7 +33,7 @@ using namespace qpp;
 ///        qpp::Gates::CTRL(const Eigen::MatrixBase<Derived>& A,
 ///        const std::vector<idx>& ctrl,
 ///        const std::vector<idx>& subsys,
-///        idx n,
+///        idx N,
 ///        idx d = 2) const
 TEST(qpp_Gates_CTRL, Qubits)
 {
@@ -128,18 +128,49 @@ TEST(qpp_Gates_CTRL, Qudits)
 ///       dyn_mat<typename Derived::Scalar> qpp::Gates::expandout(
 ///       const Eigen::MatrixBase<Derived>& A,
 ///       idx pos,
+///       const std::initializer_list<idx>& dims) const
+TEST(qpp_Gates_expandout_init_list, AllTests)
+{
+    // single qutrit (degenerate case) random gate expansion
+    cmat U = randU(3);
+    EXPECT_EQ(gt.expandout(U, 0, {3}), U);
+}
+
+/******************************************************************************/
+/// BEGIN template<typename Derived>
+///       dyn_mat<typename Derived::Scalar> qpp::Gates::expandout(
+///       const Eigen::MatrixBase<Derived>& A,
+///       idx pos,
 ///       const std::vector<idx>& dims) const
-TEST(qpp_Gates_expandout, AllTests)
+TEST(qpp_Gates_expandout_vector, AllTests)
 {
     // single qubit (degenerate case) random gate expansion
     cmat U = randU(2);
-    EXPECT_EQ(gt.expandout(U, 0, {2}), U);
+    EXPECT_EQ(gt.expandout(U, 0, std::vector<idx>{2}), U);
 
     // 4 qutrits, identity on qutrit 3 expansion
     EXPECT_EQ(gt.expandout(gt.Id(3), 2, {3, 3, 3, 3}), gt.Id(81));
 
-    // 3 qubits, X on qudit 2 expansion
+    // 3 qubits, X on qubit 2 expansion
     EXPECT_EQ(gt.expandout(gt.X, 1, {2, 2, 2}), kron(gt.Id2, gt.X, gt.Id2));
+}
+/******************************************************************************/
+/// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
+///       qpp::expandout(const Eigen::MatrixBase<Derived>& A,
+///       idx pos,
+///       idx N,
+///       idx d = 2) const
+TEST(qpp_Gates_expandout_qubits, AllTests)
+{
+    // single qubit (degenerate case) random gate expansion
+    cmat U = randU(2);
+    EXPECT_EQ(gt.expandout(U, 0, 1), U);
+
+    // 4 qutrits, identity on qutrit 3 expansion
+    EXPECT_EQ(gt.expandout(gt.Id(3), 2, 4, 3), gt.Id(81));
+
+    // 3 qubits, X on qubit 2 expansion
+    EXPECT_EQ(gt.expandout(gt.X, 1, 3), kron(gt.Id2, gt.X, gt.Id2));
 }
 /******************************************************************************/
 /// BEGIN cmat qpp::Gates::Fd(idx D) const

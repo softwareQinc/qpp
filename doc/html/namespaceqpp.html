@@ -823,6 +823,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a34aa968f8779cff8a973798557f38bc3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a34aa968f8779cff8a973798557f38bc3">randperm</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N)</td></tr>
 <tr class="memdesc:a34aa968f8779cff8a973798557f38bc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random uniformly distributed permutation.  <a href="#a34aa968f8779cff8a973798557f38bc3">More...</a><br /></td></tr>
 <tr class="separator:a34aa968f8779cff8a973798557f38bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80909feea5c4e3ab6fbf5394f9485a1f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a80909feea5c4e3ab6fbf5394f9485a1f">randprob</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N)</td></tr>
+<tr class="memdesc:a80909feea5c4e3ab6fbf5394f9485a1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random probability vector uniformly distributed over the probability simplex.  <a href="#a80909feea5c4e3ab6fbf5394f9485a1f">More...</a><br /></td></tr>
+<tr class="separator:a80909feea5c4e3ab6fbf5394f9485a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc09834bbfdd7aebe3cd95d01c99b869"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#abc09834bbfdd7aebe3cd95d01c99b869">uniform</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N)</td></tr>
 <tr class="memdesc:abc09834bbfdd7aebe3cd95d01c99b869"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uniform probability distribution vector.  <a href="#abc09834bbfdd7aebe3cd95d01c99b869">More...</a><br /></td></tr>
 <tr class="separator:abc09834bbfdd7aebe3cd95d01c99b869"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -6631,6 +6634,39 @@ template&lt;&gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="a80909feea5c4e3ab6fbf5394f9485a1f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; qpp::randprob </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>N</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Generates a random probability vector uniformly distributed over the probability simplex. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">N</td><td>Size of the probability vector </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Random probability vector </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="abdb1f9fda9cfbf02264cd4c05e0b0070"></a>
 <div class="memitem">
 <div class="memproto">
@@ -8312,7 +8348,7 @@ template&lt;typename Container &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Tue Oct 18 2016 19:52:20 for Quantum++ by
+    <li class="footer">Generated on Sat Oct 22 2016 13:56:44 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

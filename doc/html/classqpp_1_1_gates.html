@@ -127,6 +127,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a34f16eb2518f7406a1836c9361c231da"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt; typename Derived::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classqpp_1_1_gates.html#a34f16eb2518f7406a1836c9361c231da">expandout</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> pos, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;dims) const </td></tr>
 <tr class="memdesc:a34f16eb2518f7406a1836c9361c231da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands out.  <a href="#a34f16eb2518f7406a1836c9361c231da">More...</a><br /></td></tr>
 <tr class="separator:a34f16eb2518f7406a1836c9361c231da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5014ffc8efc8e6495891eaadb30895a9"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a5014ffc8efc8e6495891eaadb30895a9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt; typename Derived::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classqpp_1_1_gates.html#a5014ffc8efc8e6495891eaadb30895a9">expandout</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> pos, const std::initializer_list&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;dims) const </td></tr>
+<tr class="memdesc:a5014ffc8efc8e6495891eaadb30895a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands out.  <a href="#a5014ffc8efc8e6495891eaadb30895a9">More...</a><br /></td></tr>
+<tr class="separator:a5014ffc8efc8e6495891eaadb30895a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a358b9c74a625899d3e20a5cb62012692"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a358b9c74a625899d3e20a5cb62012692"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt; typename Derived::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classqpp_1_1_gates.html#a358b9c74a625899d3e20a5cb62012692">expandout</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> pos, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d=2) const </td></tr>
+<tr class="memdesc:a358b9c74a625899d3e20a5cb62012692"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands out.  <a href="#a358b9c74a625899d3e20a5cb62012692">More...</a><br /></td></tr>
+<tr class="separator:a358b9c74a625899d3e20a5cb62012692"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -372,6 +380,124 @@ template&lt;typename Derived &gt; </div>
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
     <tr><td class="paramname">pos</td><td>Position </td></tr>
     <tr><td class="paramname">dims</td><td>Dimensions of the multi-partite system </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Tensor product <img class="formulaInl" alt="$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I$" src="form_4.png"/>, with <em>A</em> on position <em>pos</em>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a5014ffc8efc8e6495891eaadb30895a9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt;typename Derived::Scalar&gt; qpp::Gates::expandout </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::initializer_list&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dims</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Expands out. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a9294ebd345fe1c99731bf2b776e610d7" title="Kronecker product. ">qpp::kron()</a></dd></dl>
+<p>Expands out <em>A</em> as a matrix in a multi-partite system. Faster than using <a class="el" href="namespaceqpp.html#a9294ebd345fe1c99731bf2b776e610d7" title="Kronecker product. ">qpp::kron</a>(I, I, ..., I, A, I, ..., I).</p>
+<dl class="section note"><dt>Note</dt><dd>The std::initializer_list overload exists because otherwise, in the degenerate case when <em>dims</em> has only one element, the one element list is implicitly converted to the element's underlying type, i.e. <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706" title="Non-negative integer index. ">qpp::idx</a>, which has the net effect of picking the wrong (non-vector) qpp::expandout() overload</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
+    <tr><td class="paramname">pos</td><td>Position </td></tr>
+    <tr><td class="paramname">dims</td><td>Dimensions of the multi-partite system </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Tensor product <img class="formulaInl" alt="$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I$" src="form_4.png"/>, with <em>A</em> on position <em>pos</em>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a358b9c74a625899d3e20a5cb62012692"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt;typename Derived::Scalar&gt; qpp::Gates::expandout </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>N</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>d</em> = <code>2</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Expands out. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a9294ebd345fe1c99731bf2b776e610d7" title="Kronecker product. ">qpp::kron()</a></dd></dl>
+<p>Expands out <em>A</em> as a matrix in a multi-partite system. Faster than using <a class="el" href="namespaceqpp.html#a9294ebd345fe1c99731bf2b776e610d7" title="Kronecker product. ">qpp::kron</a>(I, I, ..., I, A, I, ..., I).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
+    <tr><td class="paramname">pos</td><td>Position </td></tr>
+    <tr><td class="paramname">N</td><td>Number of subsystems </td></tr>
+    <tr><td class="paramname">d</td><td>Subsystem dimension </td></tr>
   </table>
   </dd>
 </dl>
@@ -774,7 +900,7 @@ template&lt;typename Derived  = Eigen::MatrixXcd&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_gates.html">Gates</a></li>
-    <li class="footer">Generated on Tue Oct 18 2016 19:52:20 for Quantum++ by
+    <li class="footer">Generated on Sat Oct 22 2016 13:56:44 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

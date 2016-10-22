@@ -1,6 +1,9 @@
 Version 1.0.0-devel - development
     - Added new functions in "classes/states.h":
         qpp::States::mes() - maximally entangled state of 2 qudits
+    - Added new functions in "random.h":
+        qpp::randprob() - random probability vector uniformly distributed over
+                          the probability simplex
 
 Version 1.0.0-beta2 - 13 October 2016
     - Updated to GoogleTest 1.8.0 for unit testing

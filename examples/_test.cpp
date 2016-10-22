@@ -10,6 +10,4 @@ int main()
     std::cout << "Testing...\n";
     PRINTLN("Testing debug messages");
     ERRORLN("Testing debug error messages");
-
-    std::cout << negativity(prj(st.mes(7)), {7, 7}); // (d - 1) / 2
 }

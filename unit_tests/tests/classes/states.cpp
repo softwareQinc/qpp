@@ -46,19 +46,14 @@ TEST(qpp_States_mes, AllTests)
     {
         psi += mket({i, i}, {d, d});
     }
-    ket mes_qutrit(3, 3);
+    ket mes_qutrit(d * d);
     mes_qutrit << 1, 0, 0, 0, 1, 0, 0, 0, 1;
     mes_qutrit /= std::sqrt(d);
     EXPECT_NEAR(0, norm(qpp::st.mes(d) - mes_qutrit), 1e-7);
 
     // ququads
     d = 4;
-    psi = mket({0, 0}, {d, d}) / std::sqrt(d);
-    for (idx i = 1; i < d; ++i)
-    {
-        psi += mket({i, i}, {d, d});
-    }
-    ket mes_ququad(4, 4);
+    ket mes_ququad(d * d);
     mes_ququad << 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1;
     mes_ququad /= std::sqrt(d);
     EXPECT_NEAR(0, norm(qpp::st.mes(d) - mes_ququad), 1e-7);

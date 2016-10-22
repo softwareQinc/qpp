@@ -13,10 +13,7 @@ int main()
     idx D = 3; // size of the system
     std::cout << ">> Qudit teleportation, D = " << D << '\n';
 
-    ket mes_AB = ket::Zero(D * D); // maximally entangled state resource
-    for (idx i = 0; i < D; ++i)
-        mes_AB += mket({i, i}, D);
-    mes_AB /= std::sqrt(D);
+    ket mes_AB = st.mes(D); // maximally entangled state resource
 
     // circuit that measures in the qudit Bell basis
     cmat Bell_aA = adjoint(gt.CTRL(gt.Xd(D), {0}, {1}, 2, D)

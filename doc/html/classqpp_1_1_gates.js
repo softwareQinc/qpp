@@ -4,6 +4,8 @@ var classqpp_1_1_gates =
     [ "~Gates", "classqpp_1_1_gates.html#a47b7da2245ec1318103c10ada76b6ff3", null ],
     [ "CTRL", "classqpp_1_1_gates.html#ab390c9b9e6cc1bd4e95738550c964935", null ],
     [ "expandout", "classqpp_1_1_gates.html#a34f16eb2518f7406a1836c9361c231da", null ],
+    [ "expandout", "classqpp_1_1_gates.html#a5014ffc8efc8e6495891eaadb30895a9", null ],
+    [ "expandout", "classqpp_1_1_gates.html#a358b9c74a625899d3e20a5cb62012692", null ],
     [ "Fd", "classqpp_1_1_gates.html#a0cb90c08dd6eb0e9c19333b00478dc54", null ],
     [ "Id", "classqpp_1_1_gates.html#a401d12cb3fedafac911ae343d6f37da0", null ],
     [ "Rn", "classqpp_1_1_gates.html#a96c1a26d7209dc3be8fb41b2d9ed1b6f", null ],

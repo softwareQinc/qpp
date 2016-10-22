@@ -515,6 +515,42 @@ inline std::vector<idx> randperm(idx N)
     return result;
 }
 
+/**
+* \brief Generates a random probability vector uniformly distributed over the
+* probability simplex
+*
+* \param N Size of the probability vector
+* \return Random probability vector
+*/
+inline std::vector<double> randprob(idx N)
+{
+    // EXCEPTION CHECKS
+
+    if (N == 0)
+        throw Exception("qpp::randprob()", Exception::Type::PERM_INVALID);
+    // END EXCEPTION CHECKS
+
+    std::vector<double> result(N);
+
+    // generate
+    std::exponential_distribution<> ed(1);
+    for (idx i = 0; i < N; ++i)
+    {
+#ifdef NO_THREAD_LOCAL_
+        result[i] = ed(qpp::RandomDevices::get_instance().rng_);
+#else
+        result[i] = ed(qpp::RandomDevices::get_thread_local_instance().rng_);
+#endif // NO_THREAD_LOCAL_
+    }
+
+    // normalize
+    double sumprob = sum(result);
+    for (idx i = 0; i < N; ++i)
+        result[i] /= sumprob;
+
+    return result;
+}
+
 } /* namespace qpp */
 
 #endif /* RANDOM_H_ */

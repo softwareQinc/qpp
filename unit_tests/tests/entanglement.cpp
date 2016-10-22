@@ -61,8 +61,7 @@ TEST(qpp_entanglement, AllTests)
                 0.01 * std::log2(0.01), qpp::entanglement(psi2, {3, 3}), 1e-7);
 
     // random maximally entangled 2-qutrit state
-    ket psi3 = 1 / std::sqrt(3) * kron(randU(3), randU(3)) *
-               (mket({0, 0}, 3) + mket({1, 1}, 3) + mket({2, 2}, 3));
+    ket psi3 = kron(randU(3), randU(3)) * st.mes(3);
     EXPECT_NEAR(std::log2(3), qpp::entanglement(psi3, {3, 3}), 1e-7);
 }
 /******************************************************************************/
@@ -103,8 +102,7 @@ TEST(qpp_gconcurrence, AllTests)
     EXPECT_NEAR(2 * 0.8 * 0.6, qpp::gconcurrence(psi3), 1e-7);
 
     // random maximally entangled 2-qutrit state
-    ket psi4 = 1 / std::sqrt(3) * kron(randU(3), randU(3)) *
-               (mket({0, 0}, 3) + mket({1, 1}, 3) + mket({2, 2}, 3));
+    ket psi4 = kron(randU(3), randU(3)) * st.mes(3);
     EXPECT_NEAR(1, qpp::gconcurrence(psi4), 1e-7);
 
     // random 2-qutrit state with Schmidt coefficients 0.36, 0.09 and 0.01
@@ -136,19 +134,19 @@ TEST(qpp_lognegativity, AllTests)
                 qpp::lognegativity(rho, {2, 2}) +
                 qpp::lognegativity(sigma, {2, 2}), 1e-7);
 
-    // maximally entangled state (2 qutrits)
+    // random maximally entangled 2-qutrit state
     idx d = 3;
-    rho = prj(st.mes(d));
+    rho = prj(kron(randU(d), randU(d)) * st.mes(d));
     EXPECT_NEAR(std::log2(d), qpp::lognegativity(rho, {d, d}), 1e-7);
 
-    // maximally entangled state (2 ququads)
+    // random maximally entangled 2-ququad state
     d = 4;
-    rho = prj(st.mes(d));
+    rho = prj(kron(randU(d), randU(d)) * st.mes(d));
     EXPECT_NEAR(std::log2(d), qpp::lognegativity(rho, {d, d}), 1e-7);
 
-    // maximally entangled state (d = 7)
+    // random maximally entangled state (d = 7)
     d = 7;
-    rho = prj(st.mes(d));
+    rho = prj(kron(randU(d), randU(d)) * st.mes(d));
     EXPECT_NEAR(std::log2(d), qpp::lognegativity(rho, {d, d}), 1e-7);
 }
 /******************************************************************************/
@@ -156,21 +154,86 @@ TEST(qpp_lognegativity, AllTests)
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_lognegativity_qubits, AllTests)
 {
+    // zero on product states (2 qubits)
+    cmat rho = randrho(2);
+    cmat sigma = randrho(2);
+    EXPECT_NEAR(0, qpp::lognegativity(kron(rho, sigma)), 1e-7);
 
+    // random 2-qubit state with Schmidt coefficients 0.8 and 0.6
+    ket psi = kron(randU(2), randU(2)) *
+              (0.8 * mket({0, 0}) + 0.6 * mket({1, 1}));
+    rho = prj(psi);
+    EXPECT_NEAR(0.9708536, qpp::lognegativity(rho), 1e-7);
+
+    // random maximally entangled 2-qubit state
+    idx d = 2;
+    rho = prj(kron(randU(d), randU(d)) * st.mes(d));
+    EXPECT_NEAR(std::log2(d), qpp::lognegativity(rho), 1e-7);
 }
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::negativity(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_negativity, AllTests)
 {
-    // (d - 1)/2 on MES
+    // Must be (d - 1)/2 on MES
+
+    // zero on product states (2 qutrits)
+    cmat rho = randrho(3);
+    cmat sigma = randrho(3);
+    EXPECT_NEAR(0, qpp::negativity(kron(rho, sigma), {3, 3}), 1e-7);
+
+    // convexity (10 ququads)
+    idx N = 10;
+    idx d = 4;
+    std::vector<cmat> rhos(N);
+    auto probs = randprob(N);
+    rho = cmat::Zero(d * d, d * d);
+    double sum_neg = 0;
+    for (idx i = 0; i < N; ++i)
+    {
+        cmat rho_i = randrho(d * d);
+        sum_neg += probs[i] * qpp::negativity(rho_i, {d, d});
+        rho += probs[i] * rho_i;
+    }
+    EXPECT_LE(qpp::negativity(rho, {d, d}), sum_neg);
+
+    // random maximally entangled 2-qutrit state
+    d = 3;
+    rho = prj(kron(randU(d), randU(d)) * st.mes(d));
+    EXPECT_NEAR((d - 1) / 2., qpp::negativity(rho, {d, d}), 1e-7);
+
+    // random maximally entangled 2-ququad state
+    d = 4;
+    rho = prj(kron(randU(d), randU(d)) * st.mes(d));
+    EXPECT_NEAR((d - 1) / 2., qpp::negativity(rho, {d, d}), 1e-7);
+
+    // random maximally entangled state (d = 7)
+    d = 7;
+    rho = prj(kron(randU(d), randU(d)) * st.mes(d));
+    EXPECT_NEAR((d - 1) / 2., qpp::negativity(rho, {d, d}), 1e-7);
 }
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::negativity(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_negativity_qubits, AllTests)
 {
+    // Must be (d - 1)/2 on MES
 
+    // zero on product states (2 qutrits)
+    cmat rho = randrho(2);
+    cmat sigma = randrho(2);
+    EXPECT_NEAR(0, qpp::negativity(kron(rho, sigma)), 1e-7);
+
+    // random 2-qubit state with Schmidt coefficients 0.8 and 0.6
+    ket psi = kron(randU(2), randU(2)) *
+              (0.8 * mket({0, 0}) + 0.6 * mket({1, 1}));
+    rho = prj(psi);
+    EXPECT_NEAR(0.48, qpp::negativity(rho), 1e-7);
+
+    // random maximally entangled 2-qubit state
+    psi = kron(randU(2), randU(2)) * st.mes(2);
+    rho = prj(psi);
+    EXPECT_NEAR(0.5, qpp::negativity(rho), 1e-7);
 }
 /******************************************************************************/
 /// BEGIN template<typename Derived> cmat qpp::schmidtA(

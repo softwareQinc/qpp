@@ -19,6 +19,7 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include "gtest/gtest.h"
 #include "qpp.h"
 
@@ -99,10 +100,53 @@ TEST(qpp_randn_dmat, AllTests)
 
 }
 /******************************************************************************/
-/// BEGIN inline std::vector<idx> qpp::randperm(idx n)
+/// BEGIN inline std::vector<idx> qpp::randperm(idx N)
 TEST(qpp_randperm, AllTests)
 {
+    idx N = 1;
+    auto result = qpp::randperm(N);
+    std::sort(std::begin(result), std::end(result));
+    std::vector<idx> expected(N);
+    std::iota(std::begin(expected), std::end(expected), 0u);
+    EXPECT_TRUE(result == expected);
 
+    N = 2;
+    result = qpp::randperm(N);
+    std::sort(std::begin(result), std::end(result));
+    expected.resize(N);
+    std::iota(std::begin(expected), std::end(expected), 0u);
+    EXPECT_TRUE(result == expected);
+
+    N = 20;
+    result = qpp::randperm(N);
+    expected.resize(N);
+    std::iota(std::begin(expected), std::end(expected), 0u);
+    EXPECT_FALSE(result == expected); // very very likely
+    std::sort(std::begin(result), std::end(result));
+    EXPECT_TRUE(result == expected);
+}
+/******************************************************************************/
+/// BEGIN inline std::vector<double> qpp::randprob(idx N)
+TEST(qpp_randprob, AllTests)
+{
+    idx N = 1;
+    auto result = qpp::randprob(N);
+    EXPECT_EQ(1, result.size());
+    EXPECT_NEAR(1, sum(result), 1e-7);
+
+    N = 2;
+    result = qpp::randprob(N);
+    for (idx i = 0; i < N; ++i)
+        EXPECT_GE(result[i], 0);
+    EXPECT_EQ(2, result.size());
+    EXPECT_NEAR(1, sum(result), 1e-7);
+
+    N = 10;
+    result = qpp::randprob(N);
+    for (idx i = 0; i < N; ++i)
+        EXPECT_GE(result[i], 0);
+    EXPECT_EQ(10, result.size());
+    EXPECT_NEAR(1, sum(result), 1e-7);
 }
 /******************************************************************************/
 /// BEGIN inline cmat qpp::randrho(idx D)
