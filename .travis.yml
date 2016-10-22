@@ -4,16 +4,12 @@ env:
   - SH = bash
 
 compiler:
-  - clang
   - gcc
 
 before_install:
 
 install:
     - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
-    # /usr/bin/clang is 3.4, lets override with modern one.
-    - if [ "$CXX" = "clang++" ] && [ "$TRAVIS_OS_NAME" = "linux" ];\
-      then export CXX="clang++-3.7" CC="clang-3.7"; fi
 
 addons:
   apt:
@@ -26,7 +22,6 @@ addons:
     # install toolchains
     - gcc-6
     - g++-6
-    - clang-3.7
     - cmake
     - cmake-data
 
