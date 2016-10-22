@@ -8,7 +8,6 @@ compiler:
   - gcc
 
 before_install:
-  - sudo apt-get -qq update
 
 addons:
   apt:
@@ -33,7 +32,7 @@ script:
   - $CXX --version
   - pwd
   - hg clone https://bitbucket.org/eigen/eigen/
-  - ln -s $HOME/build/vsoftco/eigen $HOME/eigen
+  - ln -s $HOME/build/vsoftco/qpp/eigen $HOME/eigen
   - cd unit_tests
   - mkdir build
   - cd build
