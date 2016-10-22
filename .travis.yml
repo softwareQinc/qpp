@@ -4,7 +4,10 @@ language: cpp
 compiler:
   - clang
   - gcc
-# Build steps
+# Ubuntu 14.04 Trusty support
+sudo: required
+dist: trusty
+# Addons
 addons:
   apt:
     sources:
@@ -17,6 +20,8 @@ addons:
     - g++-5
     - clang-3.6
     - libeigen3-dev
+    - cmake3
+# Build steps
 script:
   - mkdir build
   - cd build
