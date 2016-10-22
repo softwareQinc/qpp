@@ -1,5 +1,8 @@
-# Enable C++ support
 language: cpp
+
+env:
+  - SH = bash
+  - CXX = g++
 
 compiler:
   - clang
@@ -20,16 +23,12 @@ addons:
     # install toolchains
     - gcc-6
     - g++-6
-    - clang-3.6
     - cmake
     - cmake-data
 
 install:
     - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
-    - if [ "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
-    - export EIGEN
 
-# Build steps
 script:
   - $CXX --version
   - ln -s /usr/include/eigen3 $HOME/eigen
