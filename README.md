@@ -1,7 +1,7 @@
 # Quantum++ 
-## Version 1.0.0-beta3 - 22 October 2016
+## Version 1.0.0-devel - development
 
-**Build status :**
+**Build status:**
 Master
 [![Build Status](https://api.travis-ci.org/vsoftco/qpp.svg?branch=master)](https://travis-ci.org/vsoftco/qpp)
 Devel
