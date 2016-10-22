@@ -5,8 +5,19 @@ compiler:
   - clang
   - gcc
 # Build steps
+addons:
+  apt:
+    sources:
+    # add PPAs with more up-to-date toolchains
+    - ubuntu-toolchain-r-test
+    - llvm-toolchain-precise-3.6
+    packages:
+    # install toolchains
+    - gcc-5
+    - g++-5
+    - clang-3.6
+    - libeigen3-dev
 script:
   - mkdir build
   - cd build
   - cmake .. && make
-  
