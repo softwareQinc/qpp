@@ -31,7 +31,7 @@ install:
 
 script:
   - $CXX --version
-  - ln -s /usr/include/eigen3 $HOME/eigen
+  - hg clone https://bitbucket.org/eigen/eigen/
   - cd unit_tests
   - mkdir build
   - cd build
