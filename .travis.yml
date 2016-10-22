@@ -1,12 +1,11 @@
 # Enable C++ support
 language: cpp
+
 # Compiler selection
 compiler:
   - clang
   - gcc
-# Ubuntu 14.04 Trusty support
-sudo: required
-dist: trusty
+
 # Addons
 addons:
   apt:
@@ -14,13 +13,16 @@ addons:
     # add PPAs with more up-to-date toolchains
     - ubuntu-toolchain-r-test
     - llvm-toolchain-precise-3.6
+    - george-edison55-precise-backports # cmake 3.2.3 / doxygen 1.8.3
     packages:
     # install toolchains
     - gcc-5
     - g++-5
     - clang-3.6
     - libeigen3-dev
-    - cmake3
+    - cmake
+    - cmake-data
+
 # Build steps
 script:
   - mkdir build
