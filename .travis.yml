@@ -25,6 +25,9 @@ addons:
     - cmake
     - cmake-data
 
+notifications:
+  email: false
+
 script:
   - $CXX --version
   
