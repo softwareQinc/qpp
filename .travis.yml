@@ -33,7 +33,6 @@ install:
 
 script:
   - $CXX --version
-  - pwd
   - hg clone https://bitbucket.org/eigen/eigen/
   - ln -s $HOME/build/vsoftco/qpp/eigen $HOME/eigen
   - cd unit_tests
