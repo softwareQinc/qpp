@@ -20,7 +20,7 @@ addons:
     # install toolchains
     - gcc-6
     - g++-6
-    - clang-3.7
+    - clang-3.6
     - cmake
     - cmake-data
 
