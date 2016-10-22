@@ -1,7 +1,6 @@
 language: cpp
 
 env:
-  - SH = bash
   - CXX = g++
 
 compiler:
