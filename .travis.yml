@@ -8,9 +8,6 @@ compiler:
   - gcc
 
 before_install:
-  - sudo add-apt-repository ppa:adrozdoff/llvm-backport -y
-  - sudo apt-get update -q
-  - sudo apt-get install clang-3.7 -y
 
 addons:
   apt:
@@ -23,7 +20,7 @@ addons:
     # install toolchains
     - gcc-6
     - g++-6
-    - clang++-3.7
+    - clang-3.7
     - cmake
     - cmake-data
 
