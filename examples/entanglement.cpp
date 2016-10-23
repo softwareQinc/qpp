@@ -19,7 +19,7 @@ int main()
     ket psi = 0.8 * mket({0, 0}) + 0.6 * mket({1, 1});
 
     // apply some local random unitaries
-    psi = kron(randU(2), randU(2)) * psi;
+    psi = kron(randU(), randU()) * psi;
 
     std::cout << ">> State psi:\n";
     std::cout << disp(psi) << '\n';

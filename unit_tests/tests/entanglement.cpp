@@ -32,15 +32,15 @@ using namespace qpp;
 TEST(qpp_concurrence, AllTests)
 {
     // random qubit product state
-    cmat rho1 = prj(kron(randU(2), randU(2)) * mket({0, 0}));
+    cmat rho1 = prj(kron(randU(), randU()) * mket({0, 0}));
     EXPECT_NEAR(0, qpp::concurrence(rho1), 1e-7);
 
     // random maximally entangled 2-qubit state
-    cmat rho2 = prj(kron(randU(2), randU(2)) * st.b00);
+    cmat rho2 = prj(kron(randU(), randU()) * st.b00);
     EXPECT_NEAR(1, qpp::concurrence(rho2), 1e-7);
 
     // random 2-qubit state with Schmidt coefficients 0.8 and 0.6
-    cmat rho3 = prj(kron(randU(2), randU(2)) *
+    cmat rho3 = prj(kron(randU(), randU()) *
                     (0.8 * mket({0, 0}) + 0.6 * mket({1, 1})));
     EXPECT_NEAR(2 * 0.8 * 0.6, qpp::concurrence(rho3), 1e-7);
 }
@@ -70,15 +70,15 @@ TEST(qpp_entanglement, AllTests)
 TEST(qpp_entanglement_qubits, AllTests)
 {
     // random qubit product state
-    ket psi1 = kron(randU(2), randU(2)) * mket({0, 0});
+    ket psi1 = kron(randU(), randU()) * mket({0, 0});
     EXPECT_NEAR(0, qpp::entanglement(psi1), 1e-7);
 
     // random maximally entangled 2-qubit state
-    ket psi2 = kron(randU(2), randU(2)) * st.b00;
+    ket psi2 = kron(randU(), randU()) * st.b00;
     EXPECT_NEAR(1, qpp::entanglement(psi2), 1e-7);
 
     // random 2-qubit state with Schmidt coefficients 0.8 and 0.6
-    ket psi3 = kron(randU(2), randU(2)) *
+    ket psi3 = kron(randU(), randU()) *
                (0.8 * mket({0, 0}) + 0.6 * mket({1, 1}));
     EXPECT_NEAR(-0.64 * std::log2(0.64) - 0.36 * std::log2(0.36),
                 qpp::entanglement(psi3), 1e-7);
@@ -89,15 +89,15 @@ TEST(qpp_entanglement_qubits, AllTests)
 TEST(qpp_gconcurrence, AllTests)
 {
     // random qubit product state
-    ket psi1 = kron(randU(2), randU(2)) * mket({0, 0});
+    ket psi1 = kron(randU(), randU()) * mket({0, 0});
     EXPECT_NEAR(0, qpp::gconcurrence(psi1), 1e-7);
 
     // random maximally entangled 2-qubit state
-    ket psi2 = kron(randU(2), randU(2)) * st.b00;
+    ket psi2 = kron(randU(), randU()) * st.b00;
     EXPECT_NEAR(1, qpp::gconcurrence(psi2), 1e-7);
 
     // random 2-qubit state with Schmidt coefficients 0.8 and 0.6
-    ket psi3 = kron(randU(2), randU(2)) *
+    ket psi3 = kron(randU(), randU()) *
                (0.8 * mket({0, 0}) + 0.6 * mket({1, 1}));
     EXPECT_NEAR(2 * 0.8 * 0.6, qpp::gconcurrence(psi3), 1e-7);
 
@@ -155,12 +155,12 @@ TEST(qpp_lognegativity, AllTests)
 TEST(qpp_lognegativity_qubits, AllTests)
 {
     // zero on product states (2 qubits)
-    cmat rho = randrho(2);
-    cmat sigma = randrho(2);
+    cmat rho = randrho();
+    cmat sigma = randrho();
     EXPECT_NEAR(0, qpp::lognegativity(kron(rho, sigma)), 1e-7);
 
     // random 2-qubit state with Schmidt coefficients 0.8 and 0.6
-    ket psi = kron(randU(2), randU(2)) *
+    ket psi = kron(randU(), randU()) *
               (0.8 * mket({0, 0}) + 0.6 * mket({1, 1}));
     rho = prj(psi);
     EXPECT_NEAR(0.9708536, qpp::lognegativity(rho), 1e-7);
@@ -220,18 +220,18 @@ TEST(qpp_negativity_qubits, AllTests)
     // Must be (d - 1)/2 on MES
 
     // zero on product states (2 qutrits)
-    cmat rho = randrho(2);
-    cmat sigma = randrho(2);
+    cmat rho = randrho();
+    cmat sigma = randrho();
     EXPECT_NEAR(0, qpp::negativity(kron(rho, sigma)), 1e-7);
 
     // random 2-qubit state with Schmidt coefficients 0.8 and 0.6
-    ket psi = kron(randU(2), randU(2)) *
+    ket psi = kron(randU(), randU()) *
               (0.8 * mket({0, 0}) + 0.6 * mket({1, 1}));
     rho = prj(psi);
     EXPECT_NEAR(0.48, qpp::negativity(rho), 1e-7);
 
     // random maximally entangled 2-qubit state
-    psi = kron(randU(2), randU(2)) * st.mes(2);
+    psi = kron(randU(), randU()) * st.mes(2);
     rho = prj(psi);
     EXPECT_NEAR(0.5, qpp::negativity(rho), 1e-7);
 }

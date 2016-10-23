@@ -21,7 +21,7 @@ int main()
     std::cout << ">> The result of applying the gate CNOT on |10> is:\n";
     std::cout << disp(result) << '\n';
 
-    U = randU(2);
+    U = randU();
     std::cout << ">> Generating a random one-qubit gate U:\n";
     std::cout << disp(U) << '\n';
 

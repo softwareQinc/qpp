@@ -52,7 +52,7 @@ TEST(qpp_Gates_CTRL, Qubits)
     EXPECT_EQ(CTRL3, gt.TOF);
 
     // random gate as multiple control on 2 qubits
-    cmat U = randU(2);
+    cmat U = randU();
     cmat CTRL4 = gt.CTRL(U, {0, 2}, {1}, 3);
     ket psi1 = mket({0, 0, 1});
     ket res1 = mket({0, 0, 1});
@@ -145,7 +145,7 @@ TEST(qpp_Gates_expandout_init_list, AllTests)
 TEST(qpp_Gates_expandout_vector, AllTests)
 {
     // single qubit (degenerate case) random gate expansion
-    cmat U = randU(2);
+    cmat U = randU();
     EXPECT_EQ(gt.expandout(U, 0, std::vector<idx>{2}), U);
 
     // 4 qutrits, identity on qutrit 3 expansion
@@ -163,7 +163,7 @@ TEST(qpp_Gates_expandout_vector, AllTests)
 TEST(qpp_Gates_expandout_qubits, AllTests)
 {
     // single qubit (degenerate case) random gate expansion
-    cmat U = randU(2);
+    cmat U = randU();
     EXPECT_EQ(gt.expandout(U, 0, 1), U);
 
     // 4 qutrits, identity on qutrit 3 expansion
@@ -173,7 +173,7 @@ TEST(qpp_Gates_expandout_qubits, AllTests)
     EXPECT_EQ(gt.expandout(gt.X, 1, 3), kron(gt.Id2, gt.X, gt.Id2));
 }
 /******************************************************************************/
-/// BEGIN cmat qpp::Gates::Fd(idx D) const
+/// BEGIN cmat qpp::Gates::Fd(idx D = 2) const
 TEST(qpp_Gates_Fd, AllTests)
 {
     EXPECT_NEAR(0, norm(gt.Fd(1) - gt.Id(1)), 1e-7);
@@ -197,7 +197,7 @@ TEST(qpp_Gates_Fd, AllTests)
 }
 /******************************************************************************/
 /// BEGIN  template<typename Derived = Eigen::MatrixXcd>
-///        qpp::Gates::Id(idx D) const
+///        qpp::Gates::Id(idx D = 2) const
 TEST(qpp_Gates_Id, AllTests)
 {
     EXPECT_EQ(gt.Id(1), Eigen::MatrixXcd::Identity(1, 1));
@@ -232,7 +232,7 @@ TEST(qpp_Gates_Rn, AllTests)
     EXPECT_NEAR(0, norm(st.py1 - prj(gt.Rn(pi, {0, 0, 1}) * st.y0)), 1e-7);
 }
 /******************************************************************************/
-/// BEGIN cmat qpp::Gates::Xd(idx D) const
+/// BEGIN cmat qpp::Gates::Xd(idx D = 2) const
 TEST(qpp_Gates_Xd, AllTests)
 {
     for (idx D = 1; D < 10; ++D)
@@ -247,7 +247,7 @@ TEST(qpp_Gates_Xd, AllTests)
     }
 }
 /******************************************************************************/
-/// BEGIN cmat qpp::Gates::Zd(idx D) const
+/// BEGIN cmat qpp::Gates::Zd(idx D = 2) const
 TEST(qpp_Gates_Zd, AllTests)
 {
     for (idx D = 1; D < 10; ++D)

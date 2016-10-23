@@ -54,7 +54,7 @@ TEST(qpp_rand_dmat, AllTests)
 
 }
 /******************************************************************************/
-/// BEGIN inline cmat qpp::randH(idx D)
+/// BEGIN inline cmat qpp::randH(idx D = 2)
 TEST(qpp_randH, AllTests)
 {
 
@@ -68,13 +68,13 @@ TEST(qpp_randidx, AllTests)
 
 }
 /******************************************************************************/
-/// BEGIN inline ket qpp::randket(idx D)
+/// BEGIN inline ket qpp::randket(idx D = 2)
 TEST(qpp_randket, AllTests)
 {
 
 }
 /******************************************************************************/
-/// BEGIN inline std::vector<cmat> qpp::randkraus(idx N, idx D)
+/// BEGIN inline std::vector<cmat> qpp::randkraus(idx N, idx D = 2)
 TEST(qpp_randkraus, AllTests)
 {
 
@@ -149,13 +149,13 @@ TEST(qpp_randprob, AllTests)
     EXPECT_NEAR(1, sum(result), 1e-7);
 }
 /******************************************************************************/
-/// BEGIN inline cmat qpp::randrho(idx D)
+/// BEGIN inline cmat qpp::randrho(idx D = 2)
 TEST(qpp_randrho, AllTests)
 {
 
 }
 /******************************************************************************/
-/// BEGIN inline cmat qpp::randU(idx D)
+/// BEGIN inline cmat qpp::randU(idx D = 2)
 TEST(qpp_randU, AllTests)
 {
 
