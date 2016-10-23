@@ -127,7 +127,7 @@ public:
     * \param D Dimension of the Hilbert space
     * \return Generalized Z gate for qudits
     */
-    cmat Zd(idx D) const
+    cmat Zd(idx D = 2) const
     {
         // EXCEPTION CHECKS
 
@@ -151,7 +151,7 @@ public:
     * \param D Dimension of the Hilbert space
     * \return Fourier transform gate for qudits
     */
-    cmat Fd(idx D) const
+    cmat Fd(idx D = 2) const
     {
         // EXCEPTION CHECKS
 
@@ -180,7 +180,7 @@ public:
     * \param D Dimension of the Hilbert space
     * \return Generalized X gate for qudits
     */
-    cmat Xd(idx D) const
+    cmat Xd(idx D = 2) const
     {
         // EXCEPTION CHECKS
 
@@ -201,7 +201,7 @@ public:
     * \return Identity gate on a Hilbert space of dimension \a D
     */
     template<typename Derived = Eigen::MatrixXcd>
-    Derived Id(idx D) const
+    Derived Id(idx D = 2) const
     {
         // EXCEPTION CHECKS
 

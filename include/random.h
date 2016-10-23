@@ -334,7 +334,7 @@ inline double randn(double mean = 0, double sigma = 1)
 * \param D Dimension of the Hilbert space
 * \return Random unitary
 */
-inline cmat randU(idx D)
+inline cmat randU(idx D = 2)
 // ~3 times slower than Toby Cubitt's MATLAB corresponding routine,
 // because Eigen 3 QR algorithm is not parallelized
 {
@@ -388,7 +388,7 @@ inline cmat randV(idx Din, idx Dout)
 * \param D Dimension of the Hilbert space
 * \return Set of \a N Kraus operators satisfying the closure condition
 */
-inline std::vector<cmat> randkraus(idx N, idx D)
+inline std::vector<cmat> randkraus(idx N, idx D = 2)
 {
     // EXCEPTION CHECKS
 
@@ -422,7 +422,7 @@ inline std::vector<cmat> randkraus(idx N, idx D)
 * \param D Dimension of the Hilbert space
 * \return Random Hermitian matrix
 */
-inline cmat randH(idx D)
+inline cmat randH(idx D = 2)
 {
     // EXCEPTION CHECKS
 
@@ -441,7 +441,7 @@ inline cmat randH(idx D)
 * \param D Dimension of the Hilbert space
 * \return Random normalized ket
 */
-inline ket randket(idx D)
+inline ket randket(idx D = 2)
 {
     // EXCEPTION CHECKS
 
@@ -467,7 +467,7 @@ inline ket randket(idx D)
 * \param D Dimension of the Hilbert space
 * \return Random density matrix
 */
-inline cmat randrho(idx D)
+inline cmat randrho(idx D = 2)
 {
     // EXCEPTION CHECKS
 
