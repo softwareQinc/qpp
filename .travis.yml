@@ -3,6 +3,10 @@ language: cpp
 env:
   - SH = bash
 
+os:
+  - linux
+  - osx
+
 compiler:
   - gcc
 
