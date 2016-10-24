@@ -13,7 +13,7 @@ compiler:
 before_install:
 
 install:
-    - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
+    - if [ "$CXX" = "g++" ]; then export CXX="g++" CC="gcc"; fi
 
 addons:
   apt:
