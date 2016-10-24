@@ -37,7 +37,7 @@ namespace qpp
 * \param psi Column vector Eigen expression
 * \param subsys Subsystem indexes over which \a phi is defined
 * \param dims Dimensions of the multi-partite system
-* \return The inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar
+* \return Inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar
 * or column vector over the remaining Hilbert space
 */
 template<typename Derived>
@@ -179,7 +179,7 @@ dyn_col_vect<typename Derived::Scalar> ip(
 * \param psi Column vector Eigen expression
 * \param subsys Subsystem indexes over which \a phi is defined
 * \param d Subsystem dimensions
-* \return The inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar
+* \return Inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar
 * or column vector over the remaining Hilbert space
 */
 template<typename Derived>

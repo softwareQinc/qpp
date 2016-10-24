@@ -10,4 +10,7 @@ int main()
     std::cout << "Testing...\n";
     PRINTLN("Testing debug messages");
     ERRORLN("Testing debug error messages");
+
+    std::cout << disp(st.plus(1)) << "\n\n";
+    std::cout << disp(st.zero(1)) << "\n\n";
 }

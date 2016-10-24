@@ -1807,7 +1807,7 @@ dyn_col_vect<typename Derived::Scalar> rho2pure(
 *
 * \param subsys Subsystem vector
 * \param N Total number of systems
-* \return The complement of \a subsys with respect to the set
+* \return Complement of \a subsys with respect to the set
 * \f$\{0, 1, \ldots, N - 1\}\f$
 */
 template<typename T>

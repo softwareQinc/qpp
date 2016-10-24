@@ -1,4 +1,10 @@
 Version 1.0.0-devel - development
+    - Added new functions in "classes/states.h":
+        qpp::States::zero()  - zero state of n qudits
+        qpp::States::one()   - one state of n qudits
+        qpp::States::jn()    - |jj...j> state of n qudits
+        qpp::States::plus()  - plus state of n qubits
+        qpp::States::minus() - minus state of n qubits
 
 Version 1.0.0-beta3 - 22 October 2016
     - Added support for Travis CI automated testing platform

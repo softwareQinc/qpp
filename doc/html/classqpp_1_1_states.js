@@ -2,7 +2,12 @@ var classqpp_1_1_states =
 [
     [ "States", "classqpp_1_1_states.html#a121912b87cb97231dd2277aa641cbc5f", null ],
     [ "~States", "classqpp_1_1_states.html#a440339ee7ef6c69aebfbe3afa465b4f5", null ],
+    [ "jn", "classqpp_1_1_states.html#a45f8ef049f7e9addd4b2109d618b7bae", null ],
     [ "mes", "classqpp_1_1_states.html#a824cac4b8826dd23f1dfd8a2284b5b93", null ],
+    [ "minus", "classqpp_1_1_states.html#ab27401847c5ed1530ba96ee2d5bca4f6", null ],
+    [ "one", "classqpp_1_1_states.html#abbf6577404628d1e0bb47a8673f9dc9d", null ],
+    [ "plus", "classqpp_1_1_states.html#a8681dc12f7d1ccb8095c2352165899c2", null ],
+    [ "zero", "classqpp_1_1_states.html#a69cf079bf4f3b57d5a62d9ebe1c4a8a3", null ],
     [ "internal::Singleton< const States >", "classqpp_1_1_states.html#a26e1e3eb022ed5c80dcd445dd165b79e", null ],
     [ "b00", "classqpp_1_1_states.html#a31f8f36c6686a86d7c79d0dcdb27f678", null ],
     [ "b01", "classqpp_1_1_states.html#a0fea22ff4e769aab2f275809379c12c2", null ],

@@ -98,17 +98,146 @@ public:
 
         // check valid dims
         if (d == 0)
-            throw Exception("qpp::States::mes()", 
-                    Exception::Type::DIMS_INVALID);
+            throw Exception("qpp::States::mes()",
+                            Exception::Type::DIMS_INVALID);
         // END EXCEPTION CHECKS
 
         ket psi = mket({0, 0}, {d, d});
-        for(idx i = 1; i < d; ++i)
+        for (idx i = 1; i < d; ++i)
         {
             psi += mket({i, i}, {d, d});
         }
 
-        return psi/std::sqrt(d);
+        return psi / std::sqrt(d);
+    }
+
+    /**
+    * \brief Zero state of \a n qudits
+    *
+    * \param n Non-negative integer
+    * \param d Subsystem dimensions
+    * \return Zero state \f$|0\rangle^{\otimes n}\f$ of \a n qudits
+    */
+    ket zero(idx n, idx d = 2) const
+    {
+        // EXCEPTION CHECKS
+
+        // check out of range
+        if (n == 0)
+            throw Exception("qpp::States::zero()",
+                            Exception::Type::OUT_OF_RANGE);
+        // check valid dims
+        if (d == 0)
+            throw Exception("qpp::States::zero()",
+                            Exception::Type::DIMS_INVALID);
+        // END EXCEPTION CHECKS
+
+        idx D = std::pow(d, n);
+        ket result = ket::Zero(D);
+        result(0) = 1;
+
+        return result;
+    }
+
+    /**
+    * \brief One state of \a n qudits
+    *
+    * \param n Non-negative integer
+    * \param d Subsystem dimensions
+    * \return One state \f$|1\rangle^{\otimes n}\f$ of \a n qudits
+    */
+    ket one(idx n, idx d = 2) const
+    {
+        // EXCEPTION CHECKS
+
+        // check out of range
+        if (n == 0)
+            throw Exception("qpp::States::one()",
+                            Exception::Type::OUT_OF_RANGE);
+        // check valid dims
+        if (d == 0)
+            throw Exception("qpp::States::one()",
+                            Exception::Type::DIMS_INVALID);
+        // END EXCEPTION CHECKS
+
+        ket result = ket::Zero(std::pow(d, n));
+        result(multiidx2n(std::vector<idx>(n, 1), std::vector<idx>(n, d))) = 1;
+
+        return result;
+    }
+
+    /**
+    * \brief \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
+    *
+    * \param j Non-negative integer
+    * \param n Non-negative integer
+    * \param d Subsystem dimensions
+    * \return \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
+    */
+    ket jn(idx j, idx n, idx d = 2) const
+    {
+        // EXCEPTION CHECKS
+
+        // check out of range
+        if (n == 0)
+            throw Exception("qpp::States::jn()",
+                            Exception::Type::OUT_OF_RANGE);
+        // check valid subsystem
+        if (j >= d)
+            throw Exception("qpp::States::jn()",
+                            Exception::Type::SUBSYS_MISMATCH_DIMS);
+
+        // check valid dims
+        if (d == 0)
+            throw Exception("qpp::States::jn()",
+                            Exception::Type::DIMS_INVALID);
+        // END EXCEPTION CHECKS
+
+        ket result = ket::Zero(std::pow(d, n));
+        result(multiidx2n(std::vector<idx>(n, j), std::vector<idx>(n, d))) = 1;
+
+        return result;
+    }
+
+    /**
+    * \brief Plus state of \a n qubits
+    *
+    * \param n Non-negative integer
+    * \return Plus state \f$|+\rangle^{\otimes n}\f$ of \a n qubits
+    */
+    ket plus(idx n) const
+    {
+        // EXCEPTION CHECKS
+
+        // check out of range
+        if (n == 0)
+            throw Exception("qpp::States::plus()",
+                            Exception::Type::OUT_OF_RANGE);
+        // END EXCEPTION CHECKS
+
+        idx D = std::pow(2, n);
+        ket result = ket::Ones(D);
+
+        return result / std::sqrt(D);
+    }
+
+    /**
+    * \brief Minus state of \a n qubits
+    *
+    * \param n Non-negative integer
+    * \return Minus state \f$|-\rangle^{\otimes n}\f$ of \a n qubits
+    */
+    ket minus(idx n) const
+    {
+        // EXCEPTION CHECKS
+
+        // check out of range
+        if (n == 0)
+            throw Exception("qpp::States::minus()",
+                            Exception::Type::OUT_OF_RANGE);
+        // END EXCEPTION CHECKS
+
+        return kronpow(this->x1, n);
     }
 
 private:
