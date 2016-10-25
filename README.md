@@ -181,7 +181,7 @@ in a different location than the one assumed in this document.
 
 ### Additional remarks
 
-- The C++ compiler must be C++11 compliant.
+- The C++ compiler must be fully standard-C++11 compliant.
 
 - If using [Windows](http://windows.microsoft.com/), I recommend compiling 
 under [cygwin](https://www.cygwin.com) via [CMake](http://www.cmake.org/)
@@ -191,11 +191,16 @@ for a bug related to lack of support for some C++11 math functions, and
 how to fix it. Quick fix: patch the standard library header file `<cmath>` 
 using the provided patch `./cmath_cygwin.patch`.
 
-- If your compiler does not support [OpenMP](http://openmp.org/) 
-(as it is the case e.g with [clang++](http://clang.llvm.org/) pre version 3.7), 
-disable [OpenMP](http://openmp.org/) in your build, 
-as otherwise the linker may not find the 
-[gomp](https://gcc.gnu.org/projects/gomp/) library.
+- In case you use [OS X](http://www.apple.com/osx) and want to install
+[clang++](http://clang.llvm.org/) version 3.7 or later, I highly recommend 
+to install it via [macports](https://www.macports.org/). 
+
+- If you use [clang++](http://clang.llvm.org/) version 3.7 or later and want 
+to use [OpenMP](http://openmp.org/) (enabled by default), make sure to modify 
+`CLANG_LIBOMP` and `CLANG_LIBOMP_INCLUDE` in `CMakeLists.txt` so they point to 
+the correct location of the [OpenMP](http://openmp.org/) library, as otherwise 
+[clang++](http://clang.llvm.org/) will not find `<omp.h>` and the `libomp` 
+shared library. 
 
 - If you run the program on [OS X](http://www.apple.com/osx) with 
 [MATLAB](http://www.mathworks.com/products/matlab/) support, make sure that 
