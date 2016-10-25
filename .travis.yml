@@ -11,11 +11,6 @@ compiler:
   - gcc
   - clang
 
-before_install:
-
-install:
-    - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
-
 addons:
   apt:
     sources:
@@ -27,8 +22,15 @@ addons:
     # install toolchains
     - gcc-6
     - g++-6
+    - clang-3.7
     - cmake
     - cmake-data
+
+before_install:
+
+install:
+    - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
+    - if [ "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
 
 notifications:
   email: false
