@@ -15,15 +15,15 @@ addons:
     sources:
     # add PPAs with more up-to-date toolchains
     - ubuntu-toolchain-r-test
-    # - llvm-toolchain-precise-3.7
     - george-edison55-precise-backports # cmake 3.2.3 / doxygen 1.8.3
+    # - llvm-toolchain-precise-3.7
     packages:
     # install toolchains
     - gcc-6
     - g++-6
-    # - clang-3.7
     - cmake
     - cmake-data
+    # - clang-3.7
 
 before_install:
 
