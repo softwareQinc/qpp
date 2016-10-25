@@ -49,6 +49,15 @@ SET(SOURCE_FILES
 #### Eigen3, modify as needed
 INCLUDE_DIRECTORIES(SYSTEM "$ENV{HOME}/eigen")
 
+#### Disable support for thread_local storage duration specifier
+#### when using AppleClang as libc++ doesn't yet support it
+IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang")
+    #### inject definition (as #define) in the source files
+    ADD_DEFINITIONS(-DNO_THREAD_LOCAL_)
+    MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} \
+    ${CMAKE_CXX_COMPILER_VERSION}. thread_local not supported.")
+ENDIF()
+
 #### MATLAB support
 OPTION(WITH_MATLAB "MATLAB support" OFF)
 IF(${WITH_MATLAB})
@@ -91,15 +100,6 @@ ENDIF()
 
 #### Enable all warnings
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
-
-#### Disable support for thread_local storage duration specifier
-#### when using AppleClang as libc++ doesn't yet support it
-IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang")
-    #### inject definition (as #define) in the source files
-    ADD_DEFINITIONS(-DNO_THREAD_LOCAL_)
-    MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} \
-    ${CMAKE_CXX_COMPILER_VERSION}. thread_local not supported.")
-ENDIF()
 
 #### GNU gcc additional debug settings
 IF(${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
