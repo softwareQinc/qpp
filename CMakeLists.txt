@@ -20,6 +20,16 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0)
 PROJECT(qpp VERSION 1.0.0 LANGUAGES CXX)
 
+#### Quantum++ headers
+INCLUDE_DIRECTORIES(include)
+
+#### Source file(s) to be compiled, modify as needed
+SET(SOURCE_FILES
+        examples/_test.cpp)
+
+#### Eigen3, modify as needed
+INCLUDE_DIRECTORIES(SYSTEM "$ENV{HOME}/eigen")
+
 #### Use C++11
 IF(CYGWIN)
     #### Cygwin has issues with std=c++11, use std=gnu++11 instead
@@ -38,16 +48,6 @@ IF(NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang"
     MESSAGE(FATAL_ERROR
             "This CMakeLists.txt works only with GNU gcc/Clang/AppleClang")
 ENDIF()
-
-#### Quantum++ headers
-INCLUDE_DIRECTORIES(include)
-
-#### Source file(s) to be compiled, modify as needed
-SET(SOURCE_FILES
-        examples/_test.cpp)
-
-#### Eigen3, modify as needed
-INCLUDE_DIRECTORIES(SYSTEM "$ENV{HOME}/eigen")
 
 #### Disable support for thread_local storage duration specifier
 #### when using AppleClang as libc++ doesn't yet support it
