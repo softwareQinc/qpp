@@ -459,7 +459,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         throw Exception("qpp::applyCTRL()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
@@ -587,7 +587,7 @@ dyn_mat<typename Derived1::Scalar> apply(
         throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::apply()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
@@ -739,7 +739,7 @@ cmat apply(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::apply()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
@@ -1513,7 +1513,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::ptrace()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::ptrace()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
@@ -1708,7 +1708,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
         throw Exception("qpp::ptranspose()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::ptranspose()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
@@ -1900,7 +1900,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
         throw Exception("qpp::syspermute()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::syspermute()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 

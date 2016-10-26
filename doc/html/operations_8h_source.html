@@ -496,7 +496,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::applyCTRL()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;</div>
 <div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;    <span class="comment">// check valid dims</span></div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;    <span class="keywordflow">if</span> (d == 0)</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;    <span class="keywordflow">if</span> (d &lt; 2)</div>
 <div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::applyCTRL()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;</div>
@@ -598,7 +598,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::apply()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;</div>
 <div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;    <span class="comment">// check valid dims</span></div>
-<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;    <span class="keywordflow">if</span> (d == 0)</div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;    <span class="keywordflow">if</span> (d &lt; 2)</div>
 <div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::apply()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;</div>
@@ -722,7 +722,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::apply()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;</div>
 <div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;    <span class="comment">// check valid dims</span></div>
-<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;    <span class="keywordflow">if</span> (d == 0)</div>
+<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;    <span class="keywordflow">if</span> (d &lt; 2)</div>
 <div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::apply()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;</div>
@@ -1363,7 +1363,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01513"></a><span class="lineno"> 1513</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::ptrace()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l01514"></a><span class="lineno"> 1514</span>&#160;</div>
 <div class="line"><a name="l01515"></a><span class="lineno"> 1515</span>&#160;    <span class="comment">// check valid dims</span></div>
-<div class="line"><a name="l01516"></a><span class="lineno"> 1516</span>&#160;    <span class="keywordflow">if</span> (d == 0)</div>
+<div class="line"><a name="l01516"></a><span class="lineno"> 1516</span>&#160;    <span class="keywordflow">if</span> (d &lt; 2)</div>
 <div class="line"><a name="l01517"></a><span class="lineno"> 1517</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::ptrace()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l01518"></a><span class="lineno"> 1518</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l01519"></a><span class="lineno"> 1519</span>&#160;</div>
@@ -1532,7 +1532,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01708"></a><span class="lineno"> 1708</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::ptranspose()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l01709"></a><span class="lineno"> 1709</span>&#160;</div>
 <div class="line"><a name="l01710"></a><span class="lineno"> 1710</span>&#160;    <span class="comment">// check valid dims</span></div>
-<div class="line"><a name="l01711"></a><span class="lineno"> 1711</span>&#160;    <span class="keywordflow">if</span> (d == 0)</div>
+<div class="line"><a name="l01711"></a><span class="lineno"> 1711</span>&#160;    <span class="keywordflow">if</span> (d &lt; 2)</div>
 <div class="line"><a name="l01712"></a><span class="lineno"> 1712</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::ptranspose()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l01713"></a><span class="lineno"> 1713</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l01714"></a><span class="lineno"> 1714</span>&#160;</div>
@@ -1700,7 +1700,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01900"></a><span class="lineno"> 1900</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::syspermute()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">Exception::Type::ZERO_SIZE</a>);</div>
 <div class="line"><a name="l01901"></a><span class="lineno"> 1901</span>&#160;</div>
 <div class="line"><a name="l01902"></a><span class="lineno"> 1902</span>&#160;    <span class="comment">// check valid dims</span></div>
-<div class="line"><a name="l01903"></a><span class="lineno"> 1903</span>&#160;    <span class="keywordflow">if</span> (d == 0)</div>
+<div class="line"><a name="l01903"></a><span class="lineno"> 1903</span>&#160;    <span class="keywordflow">if</span> (d &lt; 2)</div>
 <div class="line"><a name="l01904"></a><span class="lineno"> 1904</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;qpp::syspermute()&quot;</span>, <a class="code" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca6c96aba816cac541b5c5d2311af37092">Exception::Type::DIMS_INVALID</a>);</div>
 <div class="line"><a name="l01905"></a><span class="lineno"> 1905</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l01906"></a><span class="lineno"> 1906</span>&#160;</div>
@@ -1751,7 +1751,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca93a1b69163069e595edb06c2af7183dd"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca93a1b69163069e595edb06c2af7183dd">qpp::Exception::Type::NOT_BIPARTITE</a></div></div>
 <div class="ttc" id="namespaceqpp_html_a2d40b2372b7537b8a5b9e0a92d729769"><div class="ttname"><a href="namespaceqpp.html#a2d40b2372b7537b8a5b9e0a92d729769">qpp::transpose</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; transpose(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Transpose. </div><div class="ttdef"><b>Definition:</b> functions.h:44</div></div>
 <div class="ttc" id="namespaceqpp_html_adc34b7cd0bcbdddf99c4835489c47b5d"><div class="ttname"><a href="namespaceqpp.html#adc34b7cd0bcbdddf99c4835489c47b5d">qpp::powm</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; powm(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, idx n)</div><div class="ttdoc">Fast matrix power based on the SQUARE-AND-MULTIPLY algorithm. </div><div class="ttdef"><b>Definition:</b> functions.h:778</div></div>
-<div class="ttc" id="namespaceqpp_1_1internal_html_a321de4158dbe66d77f480d8f0b7ffd6d"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a321de4158dbe66d77f480d8f0b7ffd6d">qpp::internal::get_dim_subsys</a></div><div class="ttdeci">idx get_dim_subsys(idx sz, idx N)</div><div class="ttdef"><b>Definition:</b> util.h:378</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a321de4158dbe66d77f480d8f0b7ffd6d"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a321de4158dbe66d77f480d8f0b7ffd6d">qpp::internal::get_dim_subsys</a></div><div class="ttdeci">idx get_dim_subsys(idx sz, idx N)</div><div class="ttdef"><b>Definition:</b> util.h:379</div></div>
 <div class="ttc" id="namespaceqpp_html_abeadaf6395c78a52339bec119c4a331b"><div class="ttname"><a href="namespaceqpp.html#abeadaf6395c78a52339bec119c4a331b">qpp::hevects</a></div><div class="ttdeci">cmat hevects(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Hermitian eigenvectors. </div><div class="ttdef"><b>Definition:</b> functions.h:413</div></div>
 <div class="ttc" id="namespaceqpp_html_a9f23aa8ee0eb007532b29ada39091d4f"><div class="ttname"><a href="namespaceqpp.html#a9f23aa8ee0eb007532b29ada39091d4f">qpp::kraus2choi</a></div><div class="ttdeci">cmat kraus2choi(const std::vector&lt; cmat &gt; &amp;Ks)</div><div class="ttdoc">Choi matrix. </div><div class="ttdef"><b>Definition:</b> operations.h:841</div></div>
 <div class="ttc" id="namespaceqpp_html_a1300526d686af7fec966d8760087a168"><div class="ttname"><a href="namespaceqpp.html#a1300526d686af7fec966d8760087a168">qpp::ptrace</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; ptrace(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;subsys, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Partial trace. </div><div class="ttdef"><b>Definition:</b> operations.h:1280</div></div>
@@ -1776,7 +1776,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="operations_8h.html">operations.h</a></li>
-    <li class="footer">Generated on Mon Oct 24 2016 12:13:46 for Quantum++ by
+    <li class="footer">Generated on Wed Oct 26 2016 12:47:13 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

@@ -40,7 +40,8 @@ namespace qpp
 *
 * \param A Eigen expression
 * \param dims Dimensions of the bi-partite system
-* \return Schmidt coefficients of \a A, as a real dynamic column vector
+* \return Schmidt coefficients of \a A, ordered in decreasing order, as a
+* real dynamic column vector
 */
 template<typename Derived>
 dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
@@ -77,7 +78,8 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
 *
 * \param A Eigen expression
 * \param d Subsystem dimensions
-* \return Schmidt coefficients of \a A, as a real dynamic column vector
+* \return Schmidt coefficients of \a A, ordered in decreasing order, as a
+* real dynamic column vector
 */
 template<typename Derived>
 dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
@@ -92,7 +94,7 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::schmidtcoeffs()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::schmidtcoeffs()",
                         Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
@@ -158,7 +160,7 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A, idx d = 2)
         throw Exception("qpp::schmidtA()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::schmidtA()",
                         Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
@@ -226,7 +228,7 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A, idx d = 2)
         throw Exception("qpp::schmidtB()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::schmidtB()",
                         Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
@@ -246,7 +248,8 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A, idx d = 2)
 *
 * \param A Eigen expression
 * \param dims Dimensions of the bi-partite system
-* \return Real vector consisting of the Schmidt probabilites of \a A
+* \return Real vector consisting of the Schmidt probabilites of \a A,
+* ordered in decreasing order
 */
 template<typename Derived>
 std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
@@ -289,7 +292,8 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
 *
 * \param A Eigen expression
 * \param d Subsystem dimensions
-* \return Real vector consisting of the Schmidt probabilites of \a A
+* \return Real vector consisting of the Schmidt probabilites of \a A,
+* ordered in decreasing order
 */
 template<typename Derived>
 std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A, idx d = 2)
@@ -303,7 +307,7 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A, idx d = 2)
         throw Exception("qpp::schmidtprobs()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::schmidtprobs()",
                         Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
@@ -375,7 +379,7 @@ double entanglement(const Eigen::MatrixBase<Derived>& A, idx d = 2)
         throw Exception("qpp::entanglement()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::entanglement()",
                         Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
@@ -478,7 +482,7 @@ double negativity(const Eigen::MatrixBase<Derived>& A, idx d = 2)
         throw Exception("qpp::negativity()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::negativity()",
                         Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
@@ -543,7 +547,7 @@ double lognegativity(const Eigen::MatrixBase<Derived>& A, idx d = 2)
         throw Exception("qpp::lognegativity()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::lognegativity()",
                         Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS

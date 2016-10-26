@@ -114,7 +114,7 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="comment">// error checks only in DEBUG version</span></div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#ifndef NDEBUG</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">if</span>(numdims &gt; 0) <span class="comment">// numdims equal zero is a no-op</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">if</span> (numdims &gt; 0) <span class="comment">// numdims equal zero is a no-op</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    {</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = 1;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; numdims; ++i)</div>
@@ -433,111 +433,112 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;<span class="comment">// dimension d) from an object (ket/bra/density matrix) of size sz</span></div>
 <div class="line"><a name="l00370"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#ab2e7b985d75c45198899b3aa1f2c0f77">  370</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> <a class="code" href="namespaceqpp_1_1internal.html#ab2e7b985d75c45198899b3aa1f2c0f77">get_num_subsys</a>(<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> sz, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d)</div>
 <div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;{</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(sz) / std::log2(d)));</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;}</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="comment">// returns the dimension of a subsystem (each subsystem assumed of the same</span></div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="comment">// dimension d) from an object (ket/bra/density matrix) of size sz consisting</span></div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;<span class="comment">// of N subsystems</span></div>
-<div class="line"><a name="l00378"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a321de4158dbe66d77f480d8f0b7ffd6d">  378</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> <a class="code" href="namespaceqpp_1_1internal.html#a321de4158dbe66d77f480d8f0b7ffd6d">get_dim_subsys</a>(<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> sz, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N)</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;{</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    <span class="keywordflow">if</span> (N == 2)</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::sqrt(sz)));</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::pow(sz, 1. / N)));</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;}</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="comment">// implementation details for pretty formatting</span></div>
-<div class="line"><a name="l00387"></a><span class="lineno"><a class="line" href="structqpp_1_1internal_1_1_display___impl__.html">  387</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structqpp_1_1internal_1_1_display___impl__.html">Display_Impl_</a></div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;{</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <span class="comment">// T must support rows(), cols(), operator()(idx, idx) const</span></div>
-<div class="line"><a name="l00391"></a><span class="lineno"><a class="line" href="structqpp_1_1internal_1_1_display___impl__.html#a755cc3da7ab2564107cea5fa3d571aa8">  391</a></span>&#160;    std::ostream&amp; <a class="code" href="structqpp_1_1internal_1_1_display___impl__.html#a755cc3da7ab2564107cea5fa3d571aa8">display_impl_</a>(<span class="keyword">const</span> T&amp; A,</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;                                std::ostream&amp; os,</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;                                <span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a> = <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        std::ostringstream ostr;</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        ostr.copyfmt(os); <span class="comment">// copy os&#39; state</span></div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        std::vector&lt;std::string&gt; vstr;</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        std::string strA;</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(A.rows()); ++i)</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        {</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0;</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;                 j &lt; static_cast&lt;idx&gt;(A.cols()); ++j)</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;            {</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;                strA.clear(); <span class="comment">// clear the temporary string</span></div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;                ostr.clear();</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;                ostr.str(std::string {}); <span class="comment">// clear the ostringstream</span></div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;                <span class="comment">// convert to complex</span></div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;                <span class="keywordtype">double</span> re = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a><span class="keyword">&gt;</span>(A(i, j)).real();</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;                <span class="keywordtype">double</span> im = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a><span class="keyword">&gt;</span>(A(i, j)).imag();</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;                <span class="keywordflow">if</span> (std::abs(re) &lt; <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a> &amp;&amp; std::abs(im) &lt; <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>)</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;                {</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;                    ostr &lt;&lt; <span class="stringliteral">&quot;0 &quot;</span>; <span class="comment">// otherwise segfault on destruction</span></div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;                    <span class="comment">// if using only vstr.push_back(&quot;0 &quot;);</span></div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;                    <span class="comment">// bug in MATLAB libmx</span></div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;                    vstr.push_back(ostr.str());</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;                } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (std::abs(re) &lt; <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>)</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;                {</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;                    ostr &lt;&lt; im;</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;                    vstr.push_back(ostr.str() + <span class="stringliteral">&quot;i&quot;</span>);</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;                } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (std::abs(im) &lt; <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>)</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;                {</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;                    ostr &lt;&lt; re;</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;                    vstr.push_back(ostr.str() + <span class="stringliteral">&quot; &quot;</span>);</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;                } <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;                {</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;                    ostr &lt;&lt; re;</div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;                    strA = ostr.str();</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;                    strA += (im &gt; 0 ? <span class="stringliteral">&quot; + &quot;</span> : <span class="stringliteral">&quot; - &quot;</span>);</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;                    ostr.clear();</div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;                    ostr.str(std::string()); <span class="comment">// clear</span></div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;                    ostr &lt;&lt; std::abs(im);</div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;                    strA += ostr.str();</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;                    strA += <span class="stringliteral">&quot;i&quot;</span>;</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;                    vstr.push_back(strA);</div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;                }</div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;            }</div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;        }</div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;</div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;        <span class="comment">// determine the maximum lenght of the entries in each column</span></div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;        std::vector&lt;idx&gt; maxlengthcols(A.cols(), 0);</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;</div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(A.rows());</div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;             ++i)</div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0;</div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;                 j &lt; static_cast&lt;idx&gt;(A.cols()); ++j)</div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;                <span class="keywordflow">if</span> (vstr[i * A.cols() + j].size() &gt; maxlengthcols[j])</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;                    maxlengthcols[j] = vstr[i * A.cols() + j].size();</div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;        <span class="comment">// finally display it!</span></div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(A.rows()); ++i)</div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;        {</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;            os &lt;&lt; std::setw(static_cast&lt;int&gt;(maxlengthcols[0])) &lt;&lt; std::right</div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;               &lt;&lt; vstr[i * A.cols()]; <span class="comment">// display first column</span></div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;            <span class="comment">// then the rest</span></div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 1;</div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;                 j &lt; static_cast&lt;idx&gt;(A.cols()); ++j)</div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;                os &lt;&lt; std::setw(static_cast&lt;int&gt;(maxlengthcols[j] + 2))</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;                   &lt;&lt; std::right &lt;&lt; vstr[i * A.cols() + j];</div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;</div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;            <span class="keywordflow">if</span> (i &lt; static_cast&lt;idx&gt;(A.rows()) - 1)</div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;                os &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;        }</div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;</div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;        <span class="keywordflow">return</span> os;</div>
-<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;    }</div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;};</div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;</div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;} <span class="comment">/* namespace internal */</span></div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;</div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INTERNAL_UTIL_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    assert(d &gt; 1);</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::log2(sz) / std::log2(d)));</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;}</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="comment">// returns the dimension of a subsystem (each subsystem assumed of the same</span></div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;<span class="comment">// dimension d) from an object (ket/bra/density matrix) of size sz consisting</span></div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;<span class="comment">// of N subsystems</span></div>
+<div class="line"><a name="l00379"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a321de4158dbe66d77f480d8f0b7ffd6d">  379</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> <a class="code" href="namespaceqpp_1_1internal.html#a321de4158dbe66d77f480d8f0b7ffd6d">get_dim_subsys</a>(<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> sz, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N)</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;{</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    <span class="keywordflow">if</span> (N == 2)</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::sqrt(sz)));</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::llround(std::pow(sz, 1. / N)));</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;}</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="comment">// implementation details for pretty formatting</span></div>
+<div class="line"><a name="l00388"></a><span class="lineno"><a class="line" href="structqpp_1_1internal_1_1_display___impl__.html">  388</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structqpp_1_1internal_1_1_display___impl__.html">Display_Impl_</a></div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;{</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    <span class="comment">// T must support rows(), cols(), operator()(idx, idx) const</span></div>
+<div class="line"><a name="l00392"></a><span class="lineno"><a class="line" href="structqpp_1_1internal_1_1_display___impl__.html#a755cc3da7ab2564107cea5fa3d571aa8">  392</a></span>&#160;    std::ostream&amp; <a class="code" href="structqpp_1_1internal_1_1_display___impl__.html#a755cc3da7ab2564107cea5fa3d571aa8">display_impl_</a>(<span class="keyword">const</span> T&amp; A,</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;                                std::ostream&amp; os,</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;                                <span class="keywordtype">double</span> <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a> = <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        std::ostringstream ostr;</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        ostr.copyfmt(os); <span class="comment">// copy os&#39; state</span></div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        std::vector&lt;std::string&gt; vstr;</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        std::string strA;</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(A.rows()); ++i)</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        {</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0;</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;                 j &lt; static_cast&lt;idx&gt;(A.cols()); ++j)</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;            {</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;                strA.clear(); <span class="comment">// clear the temporary string</span></div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;                ostr.clear();</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;                ostr.str(std::string {}); <span class="comment">// clear the ostringstream</span></div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;                <span class="comment">// convert to complex</span></div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;                <span class="keywordtype">double</span> re = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a><span class="keyword">&gt;</span>(A(i, j)).real();</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;                <span class="keywordtype">double</span> im = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a><span class="keyword">&gt;</span>(A(i, j)).imag();</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;                <span class="keywordflow">if</span> (std::abs(re) &lt; <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a> &amp;&amp; std::abs(im) &lt; <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>)</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;                {</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;                    ostr &lt;&lt; <span class="stringliteral">&quot;0 &quot;</span>; <span class="comment">// otherwise segfault on destruction</span></div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;                    <span class="comment">// if using only vstr.push_back(&quot;0 &quot;);</span></div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;                    <span class="comment">// bug in MATLAB libmx</span></div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;                    vstr.push_back(ostr.str());</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;                } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (std::abs(re) &lt; <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>)</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;                {</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;                    ostr &lt;&lt; im;</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;                    vstr.push_back(ostr.str() + <span class="stringliteral">&quot;i&quot;</span>);</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;                } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (std::abs(im) &lt; <a class="code" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>)</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;                {</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;                    ostr &lt;&lt; re;</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;                    vstr.push_back(ostr.str() + <span class="stringliteral">&quot; &quot;</span>);</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;                } <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;                {</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;                    ostr &lt;&lt; re;</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;                    strA = ostr.str();</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;                    strA += (im &gt; 0 ? <span class="stringliteral">&quot; + &quot;</span> : <span class="stringliteral">&quot; - &quot;</span>);</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;                    ostr.clear();</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;                    ostr.str(std::string()); <span class="comment">// clear</span></div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;                    ostr &lt;&lt; std::abs(im);</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;                    strA += ostr.str();</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;                    strA += <span class="stringliteral">&quot;i&quot;</span>;</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;                    vstr.push_back(strA);</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;                }</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;            }</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;        }</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;        <span class="comment">// determine the maximum lenght of the entries in each column</span></div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;        std::vector&lt;idx&gt; maxlengthcols(A.cols(), 0);</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(A.rows());</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;             ++i)</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0;</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;                 j &lt; static_cast&lt;idx&gt;(A.cols()); ++j)</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;                <span class="keywordflow">if</span> (vstr[i * A.cols() + j].size() &gt; maxlengthcols[j])</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;                    maxlengthcols[j] = vstr[i * A.cols() + j].size();</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;        <span class="comment">// finally display it!</span></div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 0; i &lt; static_cast&lt;idx&gt;(A.rows()); ++i)</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;        {</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;            os &lt;&lt; std::setw(static_cast&lt;int&gt;(maxlengthcols[0])) &lt;&lt; std::right</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;               &lt;&lt; vstr[i * A.cols()]; <span class="comment">// display first column</span></div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;            <span class="comment">// then the rest</span></div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 1;</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;                 j &lt; static_cast&lt;idx&gt;(A.cols()); ++j)</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;                os &lt;&lt; std::setw(static_cast&lt;int&gt;(maxlengthcols[j] + 2))</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;                   &lt;&lt; std::right &lt;&lt; vstr[i * A.cols() + j];</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;            <span class="keywordflow">if</span> (i &lt; static_cast&lt;idx&gt;(A.rows()) - 1)</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;                os &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;        }</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;        <span class="keywordflow">return</span> os;</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;    }</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;};</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;} <span class="comment">/* namespace internal */</span></div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;</div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* INTERNAL_UTIL_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_adba60d4cfda710c1a5b735d81767b530"><div class="ttname"><a href="namespaceqpp_1_1internal.html#adba60d4cfda710c1a5b735d81767b530">qpp::internal::check_nonzero_size</a></div><div class="ttdeci">bool check_nonzero_size(const T &amp;x) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:127</div></div>
 <div class="ttc" id="namespaceqpp_html_a3a6d2c509bdcf240869e1bebb3be4e94"><div class="ttname"><a href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a></div><div class="ttdeci">constexpr double chop</div><div class="ttdoc">Used in qpp::disp() for setting to zero numbers that have their absolute value smaller than qpp::chop...</div><div class="ttdef"><b>Definition:</b> constants.h:59</div></div>
 <div class="ttc" id="namespaceqpp_html_aea80be6c57ee43e43aa9629942cd3608"><div class="ttname"><a href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">qpp::maxn</a></div><div class="ttdeci">constexpr idx maxn</div><div class="ttdoc">Maximum number of allowed qubits/qudits (subsystems) </div><div class="ttdef"><b>Definition:</b> constants.h:74</div></div>
@@ -548,7 +549,7 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_html_ac39e7c2b66f0209911cc3afc06223648"><div class="ttname"><a href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">qpp::dyn_mat</a></div><div class="ttdeci">Eigen::Matrix&lt; Scalar, Eigen::Dynamic, Eigen::Dynamic &gt; dyn_mat</div><div class="ttdoc">Dynamic Eigen matrix over the field specified by Scalar. </div><div class="ttdef"><b>Definition:</b> types.h:78</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_ac902276e8bbd993712a8c421a7e81672"><div class="ttname"><a href="namespaceqpp_1_1internal.html#ac902276e8bbd993712a8c421a7e81672">qpp::internal::check_dims_match_mat</a></div><div class="ttdeci">bool check_dims_match_mat(const std::vector&lt; idx &gt; &amp;dims, const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:156</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a7132297b40fb958750942d6bed9d4ff3"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">qpp::internal::multiidx2n</a></div><div class="ttdeci">idx multiidx2n(const idx *const midx, idx numdims, const idx *const dims) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:71</div></div>
-<div class="ttc" id="structqpp_1_1internal_1_1_display___impl___html_a755cc3da7ab2564107cea5fa3d571aa8"><div class="ttname"><a href="structqpp_1_1internal_1_1_display___impl__.html#a755cc3da7ab2564107cea5fa3d571aa8">qpp::internal::Display_Impl_::display_impl_</a></div><div class="ttdeci">std::ostream &amp; display_impl_(const T &amp;A, std::ostream &amp;os, double chop=qpp::chop) const </div><div class="ttdef"><b>Definition:</b> util.h:391</div></div>
+<div class="ttc" id="structqpp_1_1internal_1_1_display___impl___html_a755cc3da7ab2564107cea5fa3d571aa8"><div class="ttname"><a href="structqpp_1_1internal_1_1_display___impl__.html#a755cc3da7ab2564107cea5fa3d571aa8">qpp::internal::Display_Impl_::display_impl_</a></div><div class="ttdeci">std::ostream &amp; display_impl_(const T &amp;A, std::ostream &amp;os, double chop=qpp::chop) const </div><div class="ttdef"><b>Definition:</b> util.h:392</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a3e8ed22ae3490cd81beff37931d8ca25"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a3e8ed22ae3490cd81beff37931d8ca25">qpp::internal::n2multiidx</a></div><div class="ttdeci">void n2multiidx(idx n, idx numdims, const idx *const dims, idx *result) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:48</div></div>
 <div class="ttc" id="namespaceqpp_html"><div class="ttname"><a href="namespaceqpp.html">qpp</a></div><div class="ttdoc">Quantum++ main namespace. </div><div class="ttdef"><b>Definition:</b> codes.h:30</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_ae80a9b16dc1bdacf9426675ec490eb43"><div class="ttname"><a href="namespaceqpp_1_1internal.html#ae80a9b16dc1bdacf9426675ec490eb43">qpp::internal::check_perm</a></div><div class="ttdeci">bool check_perm(const std::vector&lt; idx &gt; &amp;perm)</div><div class="ttdef"><b>Definition:</b> util.h:257</div></div>
@@ -557,14 +558,14 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div class="ttc" id="classqpp_1_1_exception_html_a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596"><div class="ttname"><a href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca5b72596ce56f549811178b9ca0a97596">qpp::Exception::Type::ZERO_SIZE</a></div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a9b40c9baf797599411a129dd21c50f84"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a9b40c9baf797599411a129dd21c50f84">qpp::internal::check_eq_dims</a></div><div class="ttdeci">bool check_eq_dims(const std::vector&lt; idx &gt; &amp;dims, idx dim) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:188</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a0da254af40c8f53d655ebf645c2af4ad"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a0da254af40c8f53d655ebf645c2af4ad">qpp::internal::check_vector</a></div><div class="ttdeci">bool check_vector(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:106</div></div>
-<div class="ttc" id="structqpp_1_1internal_1_1_display___impl___html"><div class="ttname"><a href="structqpp_1_1internal_1_1_display___impl__.html">qpp::internal::Display_Impl_</a></div><div class="ttdef"><b>Definition:</b> util.h:387</div></div>
+<div class="ttc" id="structqpp_1_1internal_1_1_display___impl___html"><div class="ttname"><a href="structqpp_1_1internal_1_1_display___impl__.html">qpp::internal::Display_Impl_</a></div><div class="ttdef"><b>Definition:</b> util.h:388</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_abb10c264874e20180c7c0944e0bf7657"><div class="ttname"><a href="namespaceqpp_1_1internal.html#abb10c264874e20180c7c0944e0bf7657">qpp::internal::check_dims_match_cvect</a></div><div class="ttdeci">bool check_dims_match_cvect(const std::vector&lt; idx &gt; &amp;dims, const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:167</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_af3faf90b54974a79d2e6637316312bfa"><div class="ttname"><a href="namespaceqpp_1_1internal.html#af3faf90b54974a79d2e6637316312bfa">qpp::internal::check_dims_match_rvect</a></div><div class="ttdeci">bool check_dims_match_rvect(const std::vector&lt; idx &gt; &amp;dims, const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:178</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a4890923b3f352fff0f991691f6241c4e"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a4890923b3f352fff0f991691f6241c4e">qpp::internal::check_matching_sizes</a></div><div class="ttdeci">bool check_matching_sizes(const T1 &amp;lhs, const T2 &amp;rhs) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:134</div></div>
 <div class="ttc" id="namespaceqpp_html_aad7ccc50a6b139279d7b56d07112b183"><div class="ttname"><a href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">qpp::cplx</a></div><div class="ttdeci">std::complex&lt; double &gt; cplx</div><div class="ttdoc">Complex number in double precision. </div><div class="ttdef"><b>Definition:</b> types.h:46</div></div>
 <div class="ttc" id="classqpp_1_1_exception_html"><div class="ttname"><a href="classqpp_1_1_exception.html">qpp::Exception</a></div><div class="ttdoc">Generates custom exceptions, used when validating function parameters. </div><div class="ttdef"><b>Definition:</b> exception.h:39</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a5f99527a1f1e06fd6d62e094cd2e97f0"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a5f99527a1f1e06fd6d62e094cd2e97f0">qpp::internal::variadic_vector_emplace</a></div><div class="ttdeci">void variadic_vector_emplace(std::vector&lt; T &gt; &amp;)</div><div class="ttdef"><b>Definition:</b> util.h:356</div></div>
-<div class="ttc" id="namespaceqpp_1_1internal_html_a321de4158dbe66d77f480d8f0b7ffd6d"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a321de4158dbe66d77f480d8f0b7ffd6d">qpp::internal::get_dim_subsys</a></div><div class="ttdeci">idx get_dim_subsys(idx sz, idx N)</div><div class="ttdef"><b>Definition:</b> util.h:378</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a321de4158dbe66d77f480d8f0b7ffd6d"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a321de4158dbe66d77f480d8f0b7ffd6d">qpp::internal::get_dim_subsys</a></div><div class="ttdeci">idx get_dim_subsys(idx sz, idx N)</div><div class="ttdef"><b>Definition:</b> util.h:379</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a852fb36cdefe0308752d02ee32269bf5"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a852fb36cdefe0308752d02ee32269bf5">qpp::internal::check_square_mat</a></div><div class="ttdeci">bool check_square_mat(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:99</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a0746c62a6b84967551ab2e1049c7f463"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a0746c62a6b84967551ab2e1049c7f463">qpp::internal::dirsum2</a></div><div class="ttdeci">dyn_mat&lt; typename Derived1::Scalar &gt; dirsum2(const Eigen::MatrixBase&lt; Derived1 &gt; &amp;A, const Eigen::MatrixBase&lt; Derived2 &gt; &amp;B)</div><div class="ttdef"><b>Definition:</b> util.h:315</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_add678162734229bf658731de2cac638a"><div class="ttname"><a href="namespaceqpp_1_1internal.html#add678162734229bf658731de2cac638a">qpp::internal::check_qubit_rvector</a></div><div class="ttdeci">bool check_qubit_rvector(const Eigen::MatrixBase&lt; Derived &gt; &amp;A) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:242</div></div>
@@ -579,7 +580,7 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7374381ecdb819c64ee9b6ea2bd3370d.html">internal</a></li><li class="navelem"><a class="el" href="util_8h.html">util.h</a></li>
-    <li class="footer">Generated on Mon Oct 24 2016 12:13:46 for Quantum++ by
+    <li class="footer">Generated on Wed Oct 26 2016 12:47:13 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

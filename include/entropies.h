@@ -360,7 +360,7 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::qmutualinfo()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::qmutualinfo()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 

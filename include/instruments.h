@@ -198,7 +198,7 @@ dyn_col_vect<typename Derived::Scalar> ip(
         throw Exception("qpp::ip()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::ip()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
@@ -526,7 +526,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::measure()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
@@ -720,7 +720,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::measure()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::measure()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 
@@ -840,7 +840,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::measure_seq()", Exception::Type::ZERO_SIZE);
 
     // check valid dims
-    if (d == 0)
+    if (d < 2)
         throw Exception("qpp::measure_seq()", Exception::Type::DIMS_INVALID);
     // END EXCEPTION CHECKS
 

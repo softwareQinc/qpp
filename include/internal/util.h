@@ -50,7 +50,7 @@ noexcept
 {
     // error checks only in DEBUG version
 #ifndef NDEBUG
-    if(numdims > 0) // numdims equal zero is a no-op
+    if (numdims > 0) // numdims equal zero is a no-op
     {
         idx D = 1;
         for (idx i = 0; i < numdims; ++i)
@@ -369,6 +369,7 @@ void variadic_vector_emplace(std::vector<T>& v, First&& first, Args&& ... args)
 // dimension d) from an object (ket/bra/density matrix) of size sz
 inline idx get_num_subsys(idx sz, idx d)
 {
+    assert(d > 1);
     return static_cast<idx>(std::llround(std::log2(sz) / std::log2(d)));
 }
 
