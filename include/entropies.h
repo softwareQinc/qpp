@@ -216,7 +216,7 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double q)
     // END EXCEPTION CHECKS
 
     if (q == 1) // Shannon/von-Neumann with base e logarithm
-        return entropy(rA) * std::log(2.);
+        return entropy(rA) * std::log(2);
 
     dmat ev = svals(rA); // get the singular values
     double result = 0;
@@ -252,7 +252,7 @@ inline double tsallis(const std::vector<double>& prob, double q)
     // END EXCEPTION CHECKS
 
     if (q == 1) // Shannon/von-Neumann with base e logarithm
-        return entropy(prob) * std::log(2.);
+        return entropy(prob) * std::log(2);
 
     double result = 0;
     for (idx i = 0; i < prob.size(); ++i)
