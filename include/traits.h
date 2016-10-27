@@ -88,8 +88,8 @@ template<typename Derived>
 struct is_matrix_expression<Derived>
         : std::is_base_of
                   <
-                          Eigen::MatrixBase<typename std::decay<Derived>::type>,
-                          typename std::decay<Derived>::type
+                      Eigen::MatrixBase<typename std::decay<Derived>::type>,
+                      typename std::decay<Derived>
                   >
 {
 };

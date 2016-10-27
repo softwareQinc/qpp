@@ -35,6 +35,7 @@ TEST(qpp_is_complex, AllTests)
 {
     EXPECT_TRUE(qpp::is_complex<std::complex<double>>::value);
     EXPECT_TRUE(qpp::is_complex<std::complex<int>>::value);
+
     EXPECT_FALSE(qpp::is_complex<double>::value);
     EXPECT_FALSE(qpp::is_complex<cmat>::value);
 }
@@ -44,6 +45,7 @@ TEST(qpp_is_iterable, AllTests)
 {
     EXPECT_TRUE(qpp::is_iterable<std::vector<int>>::value);
     EXPECT_TRUE(qpp::is_iterable<std::list<double>>::value);
+
     EXPECT_FALSE(qpp::is_iterable<cmat>::value);
     EXPECT_FALSE(qpp::is_iterable<int[10]>::value);
 }
