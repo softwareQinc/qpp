@@ -76,7 +76,7 @@ struct is_iterable<T,
 */
 // thanks to @davidhigh http://stackoverflow.com/a/40293333/3093378
 template<typename Derived>
-struct is_matrix_expression: std::is_base_of
+struct is_matrix_expression : std::is_base_of
                 <
                     Eigen::MatrixBase<typename std::decay<Derived>::type>,
                     typename std::decay<Derived>
