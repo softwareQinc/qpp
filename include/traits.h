@@ -74,7 +74,7 @@ struct is_iterable<T,
 * Eigen::MatrixBase<Derived>.
 * Otherwise, \a value is equal to \a false.
 */
-template<typename Derived>
+template<typename... Derived>
 struct is_matrix_expression : std::false_type
 {
 };
@@ -83,9 +83,14 @@ struct is_matrix_expression : std::false_type
 * \brief Checks whether the type is an Eigen matrix expression,
 * specialization for Eigen matrix expressions
 */
+// thanks to @davidhigh http://stackoverflow.com/a/40293333/3093378
 template<typename Derived>
-struct is_matrix_expression<typename Eigen::MatrixBase<Derived>> :
-        std::true_type
+struct is_matrix_expression<Derived>
+        : std::is_base_of
+                  <
+                          Eigen::MatrixBase<typename std::decay<Derived>::type>,
+                          typename std::decay<Derived>::type
+                  >
 {
 };
 
