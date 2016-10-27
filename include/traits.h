@@ -43,7 +43,7 @@ using to_void = void;
 /**
 * \brief Checks whether \a T is compatible with an STL-like iterable container
 *
-* Provides the member constant \a value which is equal to \a true,
+* Provides the constant member \a value which is equal to \a true,
 * if \a T is compatible with an iterable container, i.e. provides at least
 * \a begin() and \a end() member functions.
 * Otherwise, \a value is equal to \a false.
@@ -69,35 +69,25 @@ struct is_iterable<T,
 /**
 * \brief Checks whether the type is an Eigen matrix expression
 *
-* Provides the member constant \a value which is equal to \a true,
+* Provides the constant member \a value which is equal to \a true,
 * if the type is an Eigen matrix expression of type \a
 * Eigen::MatrixBase<Derived>.
 * Otherwise, \a value is equal to \a false.
 */
-template<typename... Derived>
-struct is_matrix_expression : std::false_type
-{
-};
-
-/**
-* \brief Checks whether the type is an Eigen matrix expression,
-* specialization for Eigen matrix expressions
-*/
 // thanks to @davidhigh http://stackoverflow.com/a/40293333/3093378
 template<typename Derived>
-struct is_matrix_expression<Derived>
-        : std::is_base_of
-                  <
-                      Eigen::MatrixBase<typename std::decay<Derived>::type>,
-                      typename std::decay<Derived>
-                  >
+struct is_matrix_expression: std::is_base_of
+                <
+                    Eigen::MatrixBase<typename std::decay<Derived>::type>,
+                    typename std::decay<Derived>
+                >
 {
 };
 
 /**
 * \brief Checks whether the type is a complex type
 *
-* Provides the member constant \a value which is equal to \a true,
+* Provides the constant member \a value which is equal to \a true,
 * if the type is a complex type, i.e. \a std::complex<T>
 */
 template<typename T>
