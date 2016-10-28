@@ -102,7 +102,7 @@ inline std::vector<double> marginalY(const dmat& probXY)
 * \param prob Real probability vector representing the probability
 * distribution of \a X
 *
-* \param X Random variable values represented by an STL-like container 
+* \param X Real random variable values represented by an STL-like container
 * \return Average of \a X
 */
 template<typename Container>
@@ -131,8 +131,8 @@ double avg(const std::vector<double>& prob, const Container& X,
 * \param probXY Real matrix representing the joint probability distribution
 * of \a X and \a Y in lexicographical order (\a X labels the rows, \a Y
 * labels the columns)
-* \param X Random variable values represented by an STL-like container
-* \param Y Random variable values represented by an STL-like container
+* \param X Real random variable values represented by an STL-like container
+* \param Y Real random variable values represented by an STL-like container
 * \return Covariance of \a X and \a Y
 */
 template<typename Container>
@@ -171,7 +171,7 @@ double cov(const dmat& probXY,
 *
 * \param prob Real probability vector representing the probability
 * distribution of \a X
-* \param X Random variable values represented by an STL-like container
+* \param X Real random variable values represented by an STL-like container
 * \return Variance of \a X
 */
 template<typename Container>
@@ -200,7 +200,7 @@ double var(const std::vector<double>& prob, const Container& X,
 *
 * \param prob Real probability vector representing the probability
 * distribution of \a X
-* \param X Random variable values represented by an STL-like container
+* \param X Real random variable values represented by an STL-like container
 * \return Standard deviation of \a X
 */
 template<typename Container>
@@ -225,8 +225,8 @@ double sigma(const std::vector<double>& prob, const Container& X,
 * \param probXY Real matrix representing the joint probability distribution
 * of \a X and \a Y in lexicographical order (\a X labels the rows, \a Y
 * labels the columns)
-* \param X Random variable values represented by an STL-like container
-* \param Y Random variable values represented by an STL-like container
+* \param X Real random variable values represented by an STL-like container
+* \param Y Real random variable values represented by an STL-like container
 * \return Correlation of \a X and \a Y
 */
 template<typename Container>
@@ -246,7 +246,7 @@ double cor(const dmat& probXY,
     // END EXCEPTION CHECKS
 
     return cov(probXY, X, Y) / (sigma(marginalX(probXY), X) *
-                                sigma(marginalX(probXY), Y));
+                                sigma(marginalY(probXY), Y));
 }
 
 } /* namespace qpp */

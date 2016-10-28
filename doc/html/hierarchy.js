@@ -8,14 +8,16 @@ var hierarchy =
     ] ],
     [ "false_type", null, [
       [ "qpp::is_complex< T >", "structqpp_1_1is__complex.html", null ],
-      [ "qpp::is_iterable< T, typename >", "structqpp_1_1is__iterable.html", null ],
-      [ "qpp::is_matrix_expression< Derived >", "structqpp_1_1is__matrix__expression.html", null ]
+      [ "qpp::is_iterable< T, typename >", "structqpp_1_1is__iterable.html", null ]
     ] ],
     [ "qpp::IDisplay", "classqpp_1_1_i_display.html", [
       [ "qpp::internal::IOManipEigen", "classqpp_1_1internal_1_1_i_o_manip_eigen.html", null ],
       [ "qpp::internal::IOManipPointer< PointerType >", "classqpp_1_1internal_1_1_i_o_manip_pointer.html", null ],
       [ "qpp::internal::IOManipRange< InputIterator >", "classqpp_1_1internal_1_1_i_o_manip_range.html", null ],
       [ "qpp::Timer< T, CLOCK_T >", "classqpp_1_1_timer.html", null ]
+    ] ],
+    [ "is_base_of                                                    ", null, [
+      [ "qpp::is_matrix_expression< Derived >", "structqpp_1_1is__matrix__expression.html", null ]
     ] ],
     [ "qpp::internal::Singleton< T >", "classqpp_1_1internal_1_1_singleton.html", null ],
     [ "qpp::internal::Singleton< const Codes >", "classqpp_1_1internal_1_1_singleton.html", [
@@ -35,7 +37,6 @@ var hierarchy =
     ] ],
     [ "true_type", null, [
       [ "qpp::is_complex< std::complex< T > >", "structqpp_1_1is__complex_3_01std_1_1complex_3_01_t_01_4_01_4.html", null ],
-      [ "qpp::is_iterable< T,                                           to_void< decltype(std::declval< T >().begin()),                                                                                                           decltype(std::declval< T >().end()),                                                                                                           typename T::value_type                                           > >", "structqpp_1_1is__iterable_3_01_t_00_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_bed4284c2130360c21138c4443e786da.html", null ],
-      [ "qpp::is_matrix_expression< typename Eigen::MatrixBase< Derived > >", "structqpp_1_1is__matrix__expression_3_01typename_01_eigen_1_1_matrix_base_3_01_derived_01_4_01_4.html", null ]
+      [ "qpp::is_iterable< T,                                           to_void< decltype(std::declval< T >().begin()),                                                                                                           decltype(std::declval< T >().end()),                                                                                                           typename T::value_type                                           > >", "structqpp_1_1is__iterable_3_01_t_00_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_bed4284c2130360c21138c4443e786da.html", null ]
     ] ]
 ];

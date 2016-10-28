@@ -151,8 +151,8 @@ var NAVTREEINDEX1 =
 "namespaceqpp.html":[1,0,0],
 "namespaceqpp.html":[2,0,0],
 "namespaceqpp_1_1experimental.html":[1,0,0,0],
-"namespaceqpp_1_1internal.html":[2,0,0,0],
 "namespaceqpp_1_1internal.html":[1,0,0,1],
+"namespaceqpp_1_1internal.html":[2,0,0,0],
 "namespaces.html":[1,0],
 "number__theory_8h.html":[3,0,11],
 "number__theory_8h.html#a048622e398319b61f9ea62a6c66e67fb":[3,0,11,4],
@@ -243,11 +243,11 @@ var NAVTREEINDEX1 =
 "structqpp_1_1is__iterable.html":[2,0,0,8],
 "structqpp_1_1is__iterable_3_01_t_00_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_bed4284c2130360c21138c4443e786da.html":[2,0,0,9],
 "structqpp_1_1is__matrix__expression.html":[2,0,0,10],
-"structqpp_1_1is__matrix__expression_3_01typename_01_eigen_1_1_matrix_base_3_01_derived_01_4_01_4.html":[2,0,0,11],
 "timer_8h.html":[3,0,0,7],
 "timer_8h_source.html":[3,0,0,7],
 "traits_8h.html":[3,0,16],
-"traits_8h.html#ac5a6269e292ff74510dcde54072d9437":[3,0,16,6],
+"traits_8h.html#ac5a6269e292ff74510dcde54072d9437":[3,0,16,5],
 "traits_8h_source.html":[3,0,16],
-"types_8h.html":[3,0,17]
+"types_8h.html":[3,0,17],
+"types_8h.html#a07c62992d1a236f062887990eea26b15":[3,0,17,5]
 };

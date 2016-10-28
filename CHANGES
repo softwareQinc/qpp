@@ -7,6 +7,7 @@ Version 1.0.0-devel - development
         qpp::States::minus() - minus state of n qubits
     - Corrected qpp::is_matrix_expression<> type trait so now it works fine
         Thanks to @davidhigh http://stackoverflow.com/a/40293333/3093378
+    - Fixed bug in qpp::cor()
 
 Version 1.0.0-beta3 - 22 October 2016
     - Added support for Travis CI automated testing platform
