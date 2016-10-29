@@ -19,8 +19,8 @@
  * along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gtest/gtest.h"
 #include "gmock/gmock.h" // for matchers
+#include "gtest/gtest.h"
 #include "qpp.h"
 
 using namespace qpp;

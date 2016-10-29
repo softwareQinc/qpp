@@ -62,10 +62,12 @@ inline double rand(double a, double b)
 * \brief Generates a random big integer uniformly distributed in
 * the interval [a, b]
 *
+* \note To avoid ambiguity with double qpp::rand(double, double) cast at
+* least one of the arguments to qpp::bigint
+*
 * \param a Beginning of the interval, belongs to it
 * \param b End of the interval, belongs to it
-* \return Random big integer uniformly distributed in
-* the interval [a, b]
+* \return Random big integer uniformly distributed in the interval [a, b]
 */
 inline bigint rand(bigint a, bigint b)
 {
@@ -90,8 +92,7 @@ inline bigint rand(bigint a, bigint b)
 *
 * \param a Beginning of the interval, belongs to it
 * \param b End of the interval, belongs to it
-* \return Random index (idx) uniformly distributed in
-* the interval [a, b]
+* \return Random index (idx) uniformly distributed in the interval [a, b]
 */
 inline idx randidx(idx a = std::numeric_limits<idx>::min(),
                    idx b = std::numeric_limits<idx>::max())
