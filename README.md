@@ -206,7 +206,7 @@ shared library.
 [MATLAB](http://www.mathworks.com/products/matlab/) support, make sure that 
 the environment variable `DYLD_LIBRARY_PATH` is set to point to the 
 [MATLAB](http://www.mathworks.com/products/matlab/) 
-compiler library location, see the `run_OSX_MATLAB` script. 
+compiler library location, see the `run_mac_MATLAB` script. 
 Otherwise, you get a runtime error similar to  
 
     > dyld: Library not loaded: @rpath/libmat.dylib.
