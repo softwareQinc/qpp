@@ -191,7 +191,7 @@ for a bug related to lack of support for some C++11 math functions, and
 how to fix it. Quick fix: patch the standard library header file `<cmath>` 
 using the provided patch `./cmath_cygwin.patch`.
 
-- In case you use [OS X](http://www.apple.com/osx) and want to install
+- In case you use [OS X/macOS](http://www.apple.com/osx) and want to install
 [clang++](http://clang.llvm.org/) version 3.7 or later, I highly recommend 
 to install it via [macports](https://www.macports.org/). 
 
@@ -202,7 +202,7 @@ the correct location of the [OpenMP](http://openmp.org/) library, as otherwise
 [clang++](http://clang.llvm.org/) will not find `<omp.h>` and the `libomp` 
 shared library. 
 
-- If you run the program on [OS X](http://www.apple.com/osx) with 
+- If you run the program on [OS X/macOS](http://www.apple.com/osx) with 
 [MATLAB](http://www.mathworks.com/products/matlab/) support, make sure that 
 the environment variable `DYLD_LIBRARY_PATH` is set to point to the 
 [MATLAB](http://www.mathworks.com/products/matlab/) 
@@ -230,7 +230,7 @@ Otherwise, you get a runtime error similar to
             ./build/qpp
 
 - If you build a debug version with [g++](https://gcc.gnu.org/) under 
-[OS X](http://www.apple.com/osx) and use 
+[OS X/macOS](http://www.apple.com/osx) and use 
 [gdb](http://www.gnu.org/software/gdb/) to step inside template functions 
 you may want to add `-fno-weak` compiler flag. See 
 <http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks>
