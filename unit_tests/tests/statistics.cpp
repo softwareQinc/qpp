@@ -69,8 +69,8 @@ TEST(qpp_cor, AllTests)
     probX << 0.6, 0.4;
     probY << 0.8, 0.2;
     dmat probXY = kron(probX, probY);
-    auto X = std::vector<double>{1, 2};
-    auto Y = std::vector<double>{3, 4};
+    std::vector<double> X{1, 2};
+    std::vector<double> Y{3, 4};
     EXPECT_NEAR(0, qpp::cor(probXY, X, Y), 1e-7);
 
     // fully correlated size 2

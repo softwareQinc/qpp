@@ -188,7 +188,7 @@ TEST(qpp_negativity, AllTests)
     idx N = 10;
     idx d = 4;
     std::vector<cmat> rhos(N);
-    auto probs = randprob(N);
+    std::vector<double> probs = randprob(N);
     rho = cmat::Zero(d * d, d * d);
     double sum_neg = 0;
     for (idx i = 0; i < N; ++i)
@@ -247,13 +247,13 @@ TEST(qpp_schmidtA_schmidtB, AllTests)
     cmat UA = randU(dA);
     cmat UB = randU(dB);
     ket psi = kron(UA, UB) * mket({0, 0}, {dA, dB});
-    auto basisA = qpp::schmidtA(psi, {dA, dB});
-    auto basisB = qpp::schmidtB(psi, {dA, dB});
+    cmat basisA = qpp::schmidtA(psi, {dA, dB});
+    cmat basisB = qpp::schmidtB(psi, {dA, dB});
     // unitarity
     EXPECT_NEAR(0, norm(adjoint(basisA) * basisA - gt.Id(dA)), 1e-7);
     EXPECT_NEAR(0, norm(adjoint(basisB) * basisB - gt.Id(dB)), 1e-7);
     // get the Schmidt coefficients and test the result
-    auto scf = schmidtcoeffs(psi, {dA, dB});
+    dyn_col_vect<double> scf = schmidtcoeffs(psi, {dA, dB});
     ket expected = ket::Zero(D);
     for (idx i = 0; i < minD; ++i)
     {
@@ -326,13 +326,13 @@ TEST(qpp_schmidtA_schmidtB_qubits, AllTests)
     cmat UA = randU(d);
     cmat UB = randU(d);
     ket psi = kron(UA, UB) * st.zero(2, d);
-    auto basisA = qpp::schmidtA(psi, d);
-    auto basisB = qpp::schmidtB(psi, d);
+    cmat basisA = qpp::schmidtA(psi, d);
+    cmat basisB = qpp::schmidtB(psi, d);
     // unitarity
     EXPECT_NEAR(0, norm(adjoint(basisA) * basisA - gt.Id(d)), 1e-7);
     EXPECT_NEAR(0, norm(adjoint(basisB) * basisB - gt.Id(d)), 1e-7);
     // get the Schmidt coefficients and test the result
-    auto scf = schmidtcoeffs(psi, d);
+    dyn_col_vect<double> scf = schmidtcoeffs(psi, d);
     ket expected = ket::Zero(D);
     for (idx i = 0; i < d; ++i)
     {
@@ -386,7 +386,7 @@ TEST(qpp_schmidtcoeffs, AllTests)
     cmat UA = randU(dA);
     cmat UB = randU(dB);
     ket psi = kron(UA, UB) * mket({0, 0}, {dA, dB});
-    auto result = qpp::schmidtcoeffs(psi, {dA, dB});
+    dyn_col_vect<double> result = qpp::schmidtcoeffs(psi, {dA, dB});
     dyn_col_vect<double> expected(minD);
     expected << 1;
     EXPECT_NEAR(0, norm(result - expected), 1e-7);
@@ -448,7 +448,7 @@ TEST(qpp_schmidtcoeffs_qubits, AllTests)
     cmat UA = randU(d);
     cmat UB = randU(d);
     ket psi = kron(UA, UB) * mket({0, 0});
-    auto result = qpp::schmidtcoeffs(psi);
+    dyn_col_vect<double> result = qpp::schmidtcoeffs(psi);
     dyn_col_vect<double> expected = dyn_col_vect<double>::Zero(d);
     expected(0) = 1;
     EXPECT_NEAR(0, norm(result - expected), 1e-7);
@@ -500,7 +500,7 @@ TEST(qpp_schmidtprobs, AllTests)
     cmat UA = randU(dA);
     cmat UB = randU(dB);
     ket psi = kron(UA, UB) * mket({0, 0}, {dA, dB});
-    auto result_vect = qpp::schmidtprobs(psi, {dA, dB});
+    std::vector<double> result_vect = qpp::schmidtprobs(psi, {dA, dB});
     dyn_col_vect<double> result =
             Eigen::Map<dyn_col_vect<double>>(result_vect.data(),
                                              result_vect.size());
@@ -573,7 +573,7 @@ TEST(qpp_schmidtprobs_qubits, AllTests)
     cmat UA = randU(d);
     cmat UB = randU(d);
     ket psi = kron(UA, UB) * mket({0, 0});
-    auto result_vect = qpp::schmidtprobs(psi);
+    std::vector<double> result_vect = qpp::schmidtprobs(psi);
     dyn_col_vect<double> result =
             Eigen::Map<dyn_col_vect<double>>(result_vect.data(),
                                              result_vect.size());

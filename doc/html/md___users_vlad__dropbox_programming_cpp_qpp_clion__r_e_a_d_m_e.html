@@ -142,9 +142,9 @@ make
 <ul>
 <li>The C++ compiler must be fully standard-C++11 compliant.</li>
 <li>If using <a href="http://windows.microsoft.com/">Windows</a>, I recommend compiling under <a href="https://www.cygwin.com">cygwin</a> via <a href="http://www.cmake.org/">CMake</a> and <a href="https://gcc.gnu.org/">g++</a>. See also <a href="http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2">http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2</a> for a bug related to lack of support for some C++11 math functions, and how to fix it. Quick fix: patch the standard library header file <code>&lt;cmath&gt;</code> using the provided patch <code>./cmath_cygwin.patch</code>.</li>
-<li>In case you use <a href="http://www.apple.com/osx">OS X</a> and want to install <a href="http://clang.llvm.org/">clang++</a> version 3.7 or later, I highly recommend to install it via <a href="https://www.macports.org/">macports</a>.</li>
+<li>In case you use <a href="http://www.apple.com/osx">OS X/macOS</a> and want to install <a href="http://clang.llvm.org/">clang++</a> version 3.7 or later, I highly recommend to install it via <a href="https://www.macports.org/">macports</a>.</li>
 <li>If you use <a href="http://clang.llvm.org/">clang++</a> version 3.7 or later and want to use <a href="http://openmp.org/">OpenMP</a> (enabled by default), make sure to modify <code>CLANG_LIBOMP</code> and <code>CLANG_LIBOMP_INCLUDE</code> in <code>CMakeLists.txt</code> so they point to the correct location of the <a href="http://openmp.org/">OpenMP</a> library, as otherwise <a href="http://clang.llvm.org/">clang++</a> will not find <code>&lt;omp.h&gt;</code> and the <code>libomp</code> shared library.</li>
-<li>If you run the program on <a href="http://www.apple.com/osx">OS X</a> with <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support, make sure that the environment variable <code>DYLD_LIBRARY_PATH</code> is set to point to the <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> compiler library location, see the <code>run_OSX_MATLAB</code> script. Otherwise, you get a runtime error similar to <pre class="fragment">&gt; dyld: Library not loaded: @rpath/libmat.dylib.
+<li>If you run the program on <a href="http://www.apple.com/osx">OS X/macOS</a> with <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support, make sure that the environment variable <code>DYLD_LIBRARY_PATH</code> is set to point to the <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> compiler library location, see the <code>run_mac_MATLAB</code> script. Otherwise, you get a runtime error similar to <pre class="fragment">&gt; dyld: Library not loaded: @rpath/libmat.dylib.
 </pre><ul>
 <li>I recommend running via a script, as otherwise setting the <code>DYLD_LIBRARY_PATH</code> globally may interfere with <a href="https://www.macports.org/">macports</a>' <a href="http://www.cmake.org/">CMake</a> installation (in case you use <a href="http://www.cmake.org/">CMake</a> from <a href="https://www.macports.org/">macports</a>). If you use a script, then the environment variable is local to the script and does not interfere with the rest of the system.</li>
 <li>Example of script, assumed to be located in the root directory of Quantum++ <pre class="fragment">    #!/bin/sh
@@ -156,14 +156,14 @@ make
 </pre></li>
 </ul>
 </li>
-<li>If you build a debug version with <a href="https://gcc.gnu.org/">g++</a> under <a href="http://www.apple.com/osx">OS X</a> and use <a href="http://www.gnu.org/software/gdb/">gdb</a> to step inside template functions you may want to add <code>-fno-weak</code> compiler flag. See <a href="http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks">http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks</a> for more details about this problem. </li>
+<li>If you build a debug version with <a href="https://gcc.gnu.org/">g++</a> under <a href="http://www.apple.com/osx">OS X/macOS</a> and use <a href="http://www.gnu.org/software/gdb/">gdb</a> to step inside template functions you may want to add <code>-fno-weak</code> compiler flag. See <a href="http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks">http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks</a> for more details about this problem. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Oct 28 2016 18:49:02 for Quantum++ by
+    <li class="footer">Generated on Tue Nov 1 2016 16:50:23 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

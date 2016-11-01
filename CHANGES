@@ -8,6 +8,11 @@ Version 1.0.0-devel - development
     - Corrected qpp::is_matrix_expression<> type trait so now it works fine
         Thanks to @davidhigh http://stackoverflow.com/a/40293333/3093378
     - Fixed bug in qpp::cor()
+    - Renamed qpp::loadMATLABmatrix() and saveMATLABmatrix() to 
+        qpp::loadMATLAB() and qpp::saveMATLAB(), respectively. Slightly 
+        changed their implementation so now one can load/save any Eigen type,
+        similar to qpp::load() and qpp::save().
+    - Almost full code coverage via unit testing
 
 Version 1.0.0-beta3 - 22 October 2016
     - Added support for Travis CI automated testing platform

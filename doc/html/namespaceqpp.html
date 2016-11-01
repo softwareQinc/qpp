@@ -608,30 +608,22 @@ Functions</h2></td></tr>
 <tr class="memitem:a49fc09ba403372739d5a1f6105ef973f"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;, double, <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a49fc09ba403372739d5a1f6105ef973f">measure_seq</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; subsys, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d=2)</td></tr>
 <tr class="memdesc:a49fc09ba403372739d5a1f6105ef973f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sequentially measures the part <em>subsys</em> of the multi-partite state vector or density matrix <em>A</em> in the computational basis.  <a href="#a49fc09ba403372739d5a1f6105ef973f">More...</a><br /></td></tr>
 <tr class="separator:a49fc09ba403372739d5a1f6105ef973f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada3803e048351193fe927f6c30b8474a"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:ada3803e048351193fe927f6c30b8474a"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ada3803e048351193fe927f6c30b8474a">loadMATLABmatrix</a> (const std::string &amp;, const std::string &amp;)</td></tr>
-<tr class="memdesc:ada3803e048351193fe927f6c30b8474a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads an Eigen dynamic matrix from a MATLAB .mat file, generic version.  <a href="#ada3803e048351193fe927f6c30b8474a">More...</a><br /></td></tr>
-<tr class="separator:ada3803e048351193fe927f6c30b8474a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2030161b0158746beaac80612a3464e"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
-<tr class="memitem:aa2030161b0158746beaac80612a3464e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff">dmat</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aa2030161b0158746beaac80612a3464e">loadMATLABmatrix</a> (const std::string &amp;mat_file, const std::string &amp;var_name)</td></tr>
-<tr class="memdesc:aa2030161b0158746beaac80612a3464e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads an Eigen dynamic matrix from a MATLAB .mat file, specialization for double matrices (<a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a>)  <a href="#aa2030161b0158746beaac80612a3464e">More...</a><br /></td></tr>
-<tr class="separator:aa2030161b0158746beaac80612a3464e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26858bfbbec50369d19270c7bf329afa"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
-<tr class="memitem:a26858bfbbec50369d19270c7bf329afa"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a26858bfbbec50369d19270c7bf329afa">loadMATLABmatrix</a> (const std::string &amp;mat_file, const std::string &amp;var_name)</td></tr>
-<tr class="memdesc:a26858bfbbec50369d19270c7bf329afa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads an Eigen dynamic matrix from a MATLAB .mat file, specialization for complex matrices (<a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a>)  <a href="#a26858bfbbec50369d19270c7bf329afa">More...</a><br /></td></tr>
-<tr class="separator:a26858bfbbec50369d19270c7bf329afa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75a0be9dccd042a0818db403dba6965e"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:a75a0be9dccd042a0818db403dba6965e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a75a0be9dccd042a0818db403dba6965e">saveMATLABmatrix</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;, const std::string &amp;, const std::string &amp;, const std::string &amp;)</td></tr>
-<tr class="memdesc:a75a0be9dccd042a0818db403dba6965e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves an Eigen dynamic matrix to a MATLAB .mat file, generic version.  <a href="#a75a0be9dccd042a0818db403dba6965e">More...</a><br /></td></tr>
-<tr class="separator:a75a0be9dccd042a0818db403dba6965e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37a40410f15a82495cabcd3641a788cd"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
-<tr class="memitem:a37a40410f15a82495cabcd3641a788cd"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a37a40410f15a82495cabcd3641a788cd">saveMATLABmatrix</a> (const Eigen::MatrixBase&lt; <a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff">dmat</a> &gt; &amp;A, const std::string &amp;mat_file, const std::string &amp;var_name, const std::string &amp;mode)</td></tr>
-<tr class="memdesc:a37a40410f15a82495cabcd3641a788cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves an Eigen dynamic matrix to a MATLAB .mat file, specialization for double matrices (<a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a>)  <a href="#a37a40410f15a82495cabcd3641a788cd">More...</a><br /></td></tr>
-<tr class="separator:a37a40410f15a82495cabcd3641a788cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f5cc697b513a7f0e5bdab3f357df173"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
-<tr class="memitem:a2f5cc697b513a7f0e5bdab3f357df173"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a2f5cc697b513a7f0e5bdab3f357df173">saveMATLABmatrix</a> (const Eigen::MatrixBase&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &amp;A, const std::string &amp;mat_file, const std::string &amp;var_name, const std::string &amp;mode)</td></tr>
-<tr class="memdesc:a2f5cc697b513a7f0e5bdab3f357df173"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves an Eigen dynamic matrix to a MATLAB .mat file, specialization for complex matrices (<a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a>)  <a href="#a2f5cc697b513a7f0e5bdab3f357df173">More...</a><br /></td></tr>
-<tr class="separator:a2f5cc697b513a7f0e5bdab3f357df173"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a624018095ea24ab31e6a9d93c33b3aa2"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a624018095ea24ab31e6a9d93c33b3aa2"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; std::is_same&lt; typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> &gt;::value, <a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt; <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a624018095ea24ab31e6a9d93c33b3aa2">loadMATLAB</a> (const std::string &amp;mat_file, const std::string &amp;var_name)</td></tr>
+<tr class="memdesc:a624018095ea24ab31e6a9d93c33b3aa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a complex Eigen dynamic matrix from a MATLAB .mat file,.  <a href="#a624018095ea24ab31e6a9d93c33b3aa2">More...</a><br /></td></tr>
+<tr class="separator:a624018095ea24ab31e6a9d93c33b3aa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af46ebc145afb868fcb89b3e2f98e808b"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:af46ebc145afb868fcb89b3e2f98e808b"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt;!std::is_same&lt; typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> &gt;::value, <a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt; typename Derived::Scalar &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#af46ebc145afb868fcb89b3e2f98e808b">loadMATLAB</a> (const std::string &amp;mat_file, const std::string &amp;var_name)</td></tr>
+<tr class="memdesc:af46ebc145afb868fcb89b3e2f98e808b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a non-complex Eigen dynamic matrix from a MATLAB .mat file,.  <a href="#af46ebc145afb868fcb89b3e2f98e808b">More...</a><br /></td></tr>
+<tr class="separator:af46ebc145afb868fcb89b3e2f98e808b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5e91e774a6fce553cadf6482c13a1ca"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:ab5e91e774a6fce553cadf6482c13a1ca"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; std::is_same&lt; typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> &gt;::value &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ab5e91e774a6fce553cadf6482c13a1ca">saveMATLAB</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::string &amp;mat_file, const std::string &amp;var_name, const std::string &amp;mode)</td></tr>
+<tr class="memdesc:ab5e91e774a6fce553cadf6482c13a1ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves a complex Eigen dynamic matrix to a MATLAB .mat file,.  <a href="#ab5e91e774a6fce553cadf6482c13a1ca">More...</a><br /></td></tr>
+<tr class="separator:ab5e91e774a6fce553cadf6482c13a1ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6188e743be57592515e4a0c34bffa7f8"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a6188e743be57592515e4a0c34bffa7f8"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt;!std::is_same&lt; typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> &gt;::value &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a6188e743be57592515e4a0c34bffa7f8">saveMATLAB</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::string &amp;mat_file, const std::string &amp;var_name, const std::string &amp;mode)</td></tr>
+<tr class="memdesc:a6188e743be57592515e4a0c34bffa7f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves a non-complex Eigen dynamic matrix to a MATLAB .mat file,.  <a href="#a6188e743be57592515e4a0c34bffa7f8">More...</a><br /></td></tr>
+<tr class="separator:a6188e743be57592515e4a0c34bffa7f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace6723d802f5d4c15f0d14fa1abee7bb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ace6723d802f5d4c15f0d14fa1abee7bb">x2contfrac</a> (double x, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cut=1e5)</td></tr>
 <tr class="memdesc:ace6723d802f5d4c15f0d14fa1abee7bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple continued fraction expansion.  <a href="#ace6723d802f5d4c15f0d14fa1abee7bb">More...</a><br /></td></tr>
 <tr class="separator:ace6723d802f5d4c15f0d14fa1abee7bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3820,49 +3812,14 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="ada3803e048351193fe927f6c30b8474a"></a>
+<a class="anchor" id="a624018095ea24ab31e6a9d93c33b3aa2"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Derived &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">Derived qpp::loadMATLABmatrix </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Loads an Eigen dynamic matrix from a MATLAB .mat file, generic version. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a75a0be9dccd042a0818db403dba6965e" title="Saves an Eigen dynamic matrix to a MATLAB .mat file, generic version. ">qpp::saveMATLABmatrix()</a></dd></dl>
-<p>This is the generic version that always throws <a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530">qpp::Exception::Type::UNDEFINED_TYPE</a>. It is specialized only for <a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a> and <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a> (the only matrix types that can be loaded) </p>
-
-</div>
-</div>
-<a class="anchor" id="aa2030161b0158746beaac80612a3464e"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff">dmat</a> qpp::loadMATLABmatrix </td>
+          <td class="memname">std::enable_if&lt;std::is_same&lt;typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt;::value, <a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt;<a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt; &gt;::type qpp::loadMATLAB </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>mat_file</em>, </td>
@@ -3879,20 +3836,20 @@ template&lt;&gt; </div>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Loads an Eigen dynamic matrix from a MATLAB .mat file, specialization for double matrices (<a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a>) </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a75a0be9dccd042a0818db403dba6965e" title="Saves an Eigen dynamic matrix to a MATLAB .mat file, generic version. ">qpp::saveMATLABmatrix()</a></dd></dl>
+<p>Loads a complex Eigen dynamic matrix from a MATLAB .mat file,. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ab5e91e774a6fce553cadf6482c13a1ca" title="Saves a complex Eigen dynamic matrix to a MATLAB .mat file,. ">qpp::saveMATLAB()</a></dd></dl>
 <p>The template parameter cannot be automatically deduced and must be explicitly provided</p>
-<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// loads a previously saved Eigen dynamic double matrix</span></div>
+<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// loads a previously saved Eigen ket</span></div>
 <div class="line"><span class="comment">// from the MATLAB file &quot;input.mat&quot;</span></div>
-<div class="line"><span class="keyword">auto</span> mat = loadMATLABmatrix&lt;dmat&gt;(<span class="stringliteral">&quot;input.mat&quot;</span>);</div>
-</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>If <em>var_name</em> is a complex matrix, only the real part is loaded</dd></dl>
+<div class="line"><span class="keyword">auto</span> mat = loadMATLAB&lt;ket&gt;(<span class="stringliteral">&quot;input.mat&quot;</span>);</div>
+</div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Derived</td><td>Complex Eigen type </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mat_file</td><td>MATALB .mat file </td></tr>
@@ -3900,21 +3857,18 @@ template&lt;&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Eigen double dynamic matrix (<a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a>) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Eigen dynamic matrix </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a26858bfbbec50369d19270c7bf329afa"></a>
+<a class="anchor" id="af46ebc145afb868fcb89b3e2f98e808b"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
+template&lt;typename Derived &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> qpp::loadMATLABmatrix </td>
+          <td class="memname">std::enable_if&lt;!std::is_same&lt;typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt;::value, <a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt;typename Derived::Scalar&gt; &gt;::type qpp::loadMATLAB </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>mat_file</em>, </td>
@@ -3931,27 +3885,28 @@ template&lt;&gt; </div>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Loads an Eigen dynamic matrix from a MATLAB .mat file, specialization for complex matrices (<a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a>) </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a75a0be9dccd042a0818db403dba6965e" title="Saves an Eigen dynamic matrix to a MATLAB .mat file, generic version. ">qpp::saveMATLABmatrix()</a></dd></dl>
+<p>Loads a non-complex Eigen dynamic matrix from a MATLAB .mat file,. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ab5e91e774a6fce553cadf6482c13a1ca" title="Saves a complex Eigen dynamic matrix to a MATLAB .mat file,. ">qpp::saveMATLAB()</a></dd></dl>
 <p>The template parameter cannot be automatically deduced and must be explicitly provided</p>
-<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// loads a previously saved Eigen dynamic complex matrix</span></div>
+<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// loads a previously saved Eigen dynamic double matrix</span></div>
 <div class="line"><span class="comment">// from the MATLAB file &quot;input.mat&quot;</span></div>
-<div class="line"><span class="keyword">auto</span> mat = loadMATLABmatrix&lt;cmat&gt;(<span class="stringliteral">&quot;input.mat&quot;</span>);</div>
-</div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">mat_file</td><td>MATALB .mat file </td></tr>
-    <tr><td class="paramname">var_name</td><td>Variable name in the .mat file representing the matrix to be loaded </td></tr>
+<div class="line"><span class="keyword">auto</span> mat = loadMATLAB&lt;dmat&gt;(<span class="stringliteral">&quot;input.mat&quot;</span>);</div>
+</div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Derived</td><td>Non-complex Eigen type </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Eigen complex dynamic matrix (<a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a>) </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mat_file</td><td>MATALB .mat file </td></tr>
+    <tr><td class="paramname">var_name</td><td>Variable name in the .mat file representing the matrix to be loaded</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Eigen dynamic matrix </dd></dl>
 
 </div>
 </div>
@@ -7000,63 +6955,16 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a75a0be9dccd042a0818db403dba6965e"></a>
+<a class="anchor" id="ab5e91e774a6fce553cadf6482c13a1ca"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Derived &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::saveMATLABmatrix </td>
+          <td class="memname">std::enable_if&lt;std::is_same&lt;typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt;::value&gt;::type qpp::saveMATLAB </td>
           <td>(</td>
           <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Saves an Eigen dynamic matrix to a MATLAB .mat file, generic version. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ada3803e048351193fe927f6c30b8474a" title="Loads an Eigen dynamic matrix from a MATLAB .mat file, generic version. ">qpp::loadMATLABmatrix()</a></dd></dl>
-<p>This is the generic version that always throws <a class="el" href="classqpp_1_1_exception.html#a91985c96dc408d3538b8f88cf1eaae7ca4e1a1a494e699e494ab9368f62629530">qpp::Exception::Type::UNDEFINED_TYPE</a>. It is specialized only for <a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a> and <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a> (the only matrix types that can be saved) </p>
-
-</div>
-</div>
-<a class="anchor" id="a37a40410f15a82495cabcd3641a788cd"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void qpp::saveMATLABmatrix </td>
-          <td>(</td>
-          <td class="paramtype">const Eigen::MatrixBase&lt; <a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff">dmat</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>A</em>, </td>
         </tr>
         <tr>
@@ -7083,15 +6991,16 @@ template&lt;&gt; </div>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Saves an Eigen dynamic matrix to a MATLAB .mat file, specialization for double matrices (<a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a>) </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ada3803e048351193fe927f6c30b8474a" title="Loads an Eigen dynamic matrix from a MATLAB .mat file, generic version. ">qpp::loadMATLABmatrix()</a></dd></dl>
+<p>Saves a complex Eigen dynamic matrix to a MATLAB .mat file,. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a624018095ea24ab31e6a9d93c33b3aa2" title="Loads a complex Eigen dynamic matrix from a MATLAB .mat file,. ">qpp::loadMATLAB()</a></dd></dl>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Complex</td><td>Eigen type </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression over the complex field </td></tr>
@@ -7104,19 +7013,16 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a2f5cc697b513a7f0e5bdab3f357df173"></a>
+<a class="anchor" id="a6188e743be57592515e4a0c34bffa7f8"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
+template&lt;typename Derived &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::saveMATLABmatrix </td>
+          <td class="memname">std::enable_if&lt;!std::is_same&lt;typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt;::value&gt;::type qpp::saveMATLAB </td>
           <td>(</td>
-          <td class="paramtype">const Eigen::MatrixBase&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
           <td class="paramname"><em>A</em>, </td>
         </tr>
         <tr>
@@ -7143,18 +7049,19 @@ template&lt;&gt; </div>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Saves an Eigen dynamic matrix to a MATLAB .mat file, specialization for complex matrices (<a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a>) </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ada3803e048351193fe927f6c30b8474a" title="Loads an Eigen dynamic matrix from a MATLAB .mat file, generic version. ">qpp::loadMATLABmatrix()</a></dd></dl>
+<p>Saves a non-complex Eigen dynamic matrix to a MATLAB .mat file,. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a624018095ea24ab31e6a9d93c33b3aa2" title="Loads a complex Eigen dynamic matrix from a MATLAB .mat file,. ">qpp::loadMATLAB()</a></dd></dl>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Npn-complex</td><td>Eigen type </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">A</td><td>Eigen expression over the complex field </td></tr>
+    <tr><td class="paramname">A</td><td>Non-complex Eigen expression </td></tr>
     <tr><td class="paramname">mat_file</td><td>MATALB .mat file </td></tr>
     <tr><td class="paramname">var_name</td><td>Variable name in the .mat file representing the matrix to be saved </td></tr>
     <tr><td class="paramname">mode</td><td>Saving mode (append, overwrite etc.), see MATLAB <em>matOpen()</em> documentation for details </td></tr>
@@ -8346,7 +8253,7 @@ template&lt;typename Container &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Fri Oct 28 2016 18:49:02 for Quantum++ by
+    <li class="footer">Generated on Tue Nov 1 2016 16:50:24 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

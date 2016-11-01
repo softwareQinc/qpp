@@ -221,8 +221,7 @@ inline cmat rand(idx rows, idx cols, double a, double b)
 * qpp::dmat and qpp::cmat
 */
 template<typename Derived>
-Derived randn(idx rows, idx cols, double mean = 0,
-              double sigma = 1)
+Derived randn(idx rows, idx cols, double mean = 0, double sigma = 1)
 {
     // silence -Wunused-parameter in clang++
     (void) rows;
@@ -254,8 +253,7 @@ Derived randn(idx rows, idx cols, double mean = 0,
 * \return Random real matrix
 */
 template<>
-inline dmat randn(idx rows, idx cols,
-                  double mean, double sigma)
+inline dmat randn(idx rows, idx cols, double mean, double sigma)
 {
     // EXCEPTION CHECKS
 

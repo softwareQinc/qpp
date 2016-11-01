@@ -130,12 +130,3 @@ IF(NOT CMAKE_BUILD_TYPE)
          None Debug Release MinSizeRel RelWithDebInfo."
     FORCE)
 ENDIF()
-
-IF(${WITH_MATLAB})
-    TARGET_LINK_LIBRARIES(qpp_testing mx mat)
-ENDIF()
-
-IF($WITH_OPENMP$ AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang"
-        AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.7")
-    TARGET_LINK_LIBRARIES(qpp_testing omp)
-ENDIF()

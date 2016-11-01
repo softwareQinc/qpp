@@ -92,12 +92,10 @@ var NAVTREEINDEX1 =
 "macros_8h.html#af1e28f78f5be6cee7406a3cd10c70272":[3,0,10,0],
 "macros_8h_source.html":[3,0,10],
 "matlab_8h.html":[3,0,3,0],
-"matlab_8h.html#a26858bfbbec50369d19270c7bf329afa":[3,0,3,0,2],
-"matlab_8h.html#a2f5cc697b513a7f0e5bdab3f357df173":[3,0,3,0,5],
-"matlab_8h.html#a37a40410f15a82495cabcd3641a788cd":[3,0,3,0,4],
-"matlab_8h.html#a75a0be9dccd042a0818db403dba6965e":[3,0,3,0,3],
-"matlab_8h.html#aa2030161b0158746beaac80612a3464e":[3,0,3,0,1],
-"matlab_8h.html#ada3803e048351193fe927f6c30b8474a":[3,0,3,0,0],
+"matlab_8h.html#a6188e743be57592515e4a0c34bffa7f8":[3,0,3,0,3],
+"matlab_8h.html#a624018095ea24ab31e6a9d93c33b3aa2":[3,0,3,0,0],
+"matlab_8h.html#ab5e91e774a6fce553cadf6482c13a1ca":[3,0,3,0,2],
+"matlab_8h.html#af46ebc145afb868fcb89b3e2f98e808b":[3,0,3,0,1],
 "matlab_8h_source.html":[3,0,3,0],
 "md___users_vlad__dropbox_programming_cpp_qpp_clion__r_e_a_d_m_e.html":[0],
 "namespacemembers.html":[1,1,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX1 =
 "traits_8h.html#ac5a6269e292ff74510dcde54072d9437":[3,0,16,5],
 "traits_8h_source.html":[3,0,16],
 "types_8h.html":[3,0,17],
-"types_8h.html#a07c62992d1a236f062887990eea26b15":[3,0,17,5]
+"types_8h.html#a07c62992d1a236f062887990eea26b15":[3,0,17,5],
+"types_8h.html#a1f5f7137e8551cf82db04d3b81cdd706":[3,0,17,8],
+"types_8h.html#a5d7185dfc7bee58c937abc243c3692ea":[3,0,17,9]
 };

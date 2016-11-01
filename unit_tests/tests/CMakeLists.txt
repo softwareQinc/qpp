@@ -22,6 +22,7 @@ ADD_EXECUTABLE(qpp_testing
         classes/gates.cpp
         classes/states.cpp
         classes/timer.cpp
+        MATLAB/matlab.cpp
         entanglement.cpp
         entropies.cpp
         functions.cpp
@@ -34,3 +35,12 @@ ADD_EXECUTABLE(qpp_testing
         testing_main.cpp
         traits.cpp)
 TARGET_LINK_LIBRARIES(qpp_testing gmock)
+
+IF(${WITH_MATLAB})
+    TARGET_LINK_LIBRARIES(qpp_testing mx mat)
+ENDIF()
+
+IF($WITH_OPENMP$ AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang"
+        AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.7")
+    TARGET_LINK_LIBRARIES(qpp_testing omp)
+ENDIF()
