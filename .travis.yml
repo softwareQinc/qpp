@@ -40,13 +40,16 @@ script:
   - hg clone https://bitbucket.org/eigen/eigen/
   - ln -s $HOME/build/vsoftco/qpp/eigen $HOME/eigen
   
-  # Minimal example
+  # Build a minimal example
   - mkdir build
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Debug ..  && make
   
-  # Unit tests
+  # Build the unit tests
   - cd ../unit_tests
   - mkdir build
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Debug .. && make
+
+  # Run the unit tests
+  - ./tests/qpp_testing
