@@ -1,4 +1,4 @@
-Version 1.0.0-devel - development
+Version 1.0.0-beta4 - 2 November 2016
     - Added new functions in "classes/states.h":
         qpp::States::zero()  - zero state of n qudits
         qpp::States::one()   - one state of n qudits
@@ -11,7 +11,7 @@ Version 1.0.0-devel - development
     - Renamed qpp::loadMATLABmatrix() and saveMATLABmatrix() to 
         qpp::loadMATLAB() and qpp::saveMATLAB(), respectively. Slightly 
         changed their implementation so now one can load/save any Eigen type,
-        similar to qpp::load() and qpp::save().
+        similarly to qpp::load() and qpp::save().
     - Almost full code coverage via unit testing
 
 Version 1.0.0-beta3 - 22 October 2016
