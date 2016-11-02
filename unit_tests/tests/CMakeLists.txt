@@ -28,6 +28,7 @@ ADD_EXECUTABLE(qpp_testing
         functions.cpp
         input_output.cpp
         instruments.cpp
+        issues.cpp
         number_theory.cpp
         operations.cpp
         random.cpp

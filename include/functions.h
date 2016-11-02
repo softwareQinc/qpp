@@ -273,7 +273,9 @@ double norm(const Eigen::MatrixBase<Derived>& A)
 * and 2. Eigenvectors of \a A, as columns of a complex dynamic matrix
 */
 template<typename Derived>
-std::pair<dyn_col_vect<cplx>, cmat> eig(const Eigen::MatrixBase<Derived>& A)
+std::pair<dyn_col_vect < cplx>, cmat>
+
+eig(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
@@ -356,7 +358,9 @@ cmat evects(const Eigen::MatrixBase<Derived>& A)
 * and 2. Eigenvectors of \a A, as columns of a complex dynamic matrix
 */
 template<typename Derived>
-std::pair<dyn_col_vect<double>, cmat> heig(const Eigen::MatrixBase<Derived>& A)
+std::pair<dyn_col_vect < double>, cmat>
+
+heig(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
@@ -439,7 +443,8 @@ cmat hevects(const Eigen::MatrixBase<Derived>& A)
 * as columns of a complex dynamic matrix
 */
 template<typename Derived>
-std::tuple<cmat, dyn_col_vect<double>, cmat>
+std::tuple<cmat, dyn_col_vect < double>, cmat>
+
 svd(const Eigen::MatrixBase<Derived>& A)
 {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
@@ -839,7 +844,12 @@ double schatten(const Eigen::MatrixBase<Derived>& A, double p)
     if (p == infty) // infinity norm (largest singular value)
         return svals(rA)(0);
 
-    return std::pow(trace(powm(absm(rA), p)).real(), 1. / p);
+    const dyn_col_vect<double> sv = svals(rA);
+    double result = 0;
+    for (idx i = 0; i < static_cast<idx>(sv.rows()); ++i)
+        result += std::pow(sv[i], p);
+
+    return std::pow(result, 1. / p);
 }
 
 // other functions

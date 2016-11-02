@@ -233,7 +233,7 @@ TEST(qpp_negativity_qubits, AllTests)
     EXPECT_NEAR(0.48, qpp::negativity(rho), 1e-7);
 
     // random maximally entangled 2-qubit state
-    psi = kron(randU(), randU()) * st.mes(2);
+    psi = kron(randU(), randU()) * st.mes();
     rho = prj(psi);
     EXPECT_NEAR(0.5, qpp::negativity(rho), 1e-7);
 }
