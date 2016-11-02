@@ -17,8 +17,8 @@ int main()
     std::cout << norm(loaded_rho - rho) << '\n';
 
     // interfacing with MATLAB
-    saveMATLABmatrix(rho, "rho.mat", "rho", "w");
-    loaded_rho = loadMATLABmatrix<cmat>("rho.mat", "rho");
+    saveMATLAB(rho, "rho.mat", "rho", "w");
+    loaded_rho = loadMATLAB<cmat>("rho.mat", "rho");
     // display the difference in norm, should be 0
     std::cout << ">> Norm difference MATLAB load/save: ";
     std::cout << norm(loaded_rho - rho) << '\n';
