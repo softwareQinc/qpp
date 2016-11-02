@@ -1,5 +1,5 @@
 # Quantum++ 
-## Version 1.0.0-beta4 - 2 November 2016
+## Version 1.0.0-devel - development
 
 **Build status:**
 Master

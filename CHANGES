@@ -1,3 +1,5 @@
+Version 1.0.0-devel - development
+
 Version 1.0.0-beta4 - 2 November 2016
     - Added new functions in "classes/states.h":
         qpp::States::zero()  - zero state of n qudits
