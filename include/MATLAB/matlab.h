@@ -47,7 +47,7 @@ namespace qpp
 * \code
 * // loads a previously saved Eigen ket
 * // from the MATLAB file "input.mat"
-* auto mat = loadMATLAB<ket>("input.mat");
+* ket psi = loadMATLAB<ket>("input.mat");
 * \endcode
 *
 * \tparam Derived Complex Eigen type
@@ -134,7 +134,7 @@ loadMATLAB(const std::string& mat_file, const std::string& var_name)
 * \code
 * // loads a previously saved Eigen dynamic double matrix
 * // from the MATLAB file "input.mat"
-* auto mat = loadMATLAB<dmat>("input.mat");
+* dmat mat = loadMATLAB<dmat>("input.mat");
 * \endcode
 *
 * \tparam Derived Non-complex Eigen type
@@ -261,7 +261,6 @@ saveMATLAB(const Eigen::MatrixBase<Derived>& A,
 /**
 * \brief Saves a non-complex Eigen dynamic matrix to a MATLAB .mat file,
 * \see qpp::loadMATLAB()
-*
 *
 * \tparam Npn-complex Eigen type
 * \param A Non-complex Eigen expression

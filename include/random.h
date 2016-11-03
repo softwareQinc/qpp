@@ -27,8 +27,6 @@
 #ifndef RANDOM_H_
 #define RANDOM_H_
 
-// random matrices/states
-
 namespace qpp
 {
 
@@ -146,7 +144,7 @@ Derived rand(idx rows, idx cols, double a = 0, double b = 1)
 * \code
 * // generates a 3 x 3 random Eigen::MatrixXd,
 * // with entries uniformly distributed in [-1,1)
-* auto mat = rand<dmat>(3, 3, -1, 1);
+* dmat mat = rand<dmat>(3, 3, -1, 1);
 * \endcode
 *
 * \param rows Number of rows of the random generated matrix
@@ -185,7 +183,7 @@ inline dmat rand(idx rows, idx cols, double a, double b)
 * \code
 * // generates a 3 x 3 random Eigen::MatrixXcd,
 * // with entries (both real and imaginary) uniformly distributed in [-1,1)
-* auto mat = rand<cmat>(3, 3, -1, 1);
+* cmat mat = rand<cmat>(3, 3, -1, 1);
 * \endcode
 *
 * \param rows Number of rows of the random generated matrix
@@ -243,7 +241,7 @@ Derived randn(idx rows, idx cols, double mean = 0, double sigma = 1)
 * \code
 * // generates a 3 x 3 random Eigen::MatrixXd,
 * // with entries normally distributed in N(0,2)
-* auto mat = randn<dmat>(3, 3, 0, 2);
+* dmat mat = randn<dmat>(3, 3, 0, 2);
 * \endcode
 *
 * \param rows Number of rows of the random generated matrix
@@ -286,7 +284,7 @@ inline dmat randn(idx rows, idx cols, double mean, double sigma)
 * \code
 * // generates a 3 x 3 random Eigen::MatrixXcd,
 * // with entries (both real and imaginary) normally distributed in N(0,2)
-* auto mat = randn<cmat>(3, 3, 0, 2);
+* cmat mat = randn<cmat>(3, 3, 0, 2);
 * \endcode
 *
 * \param rows Number of rows of the random generated matrix

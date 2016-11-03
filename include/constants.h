@@ -35,7 +35,7 @@ namespace qpp
 /**
 * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (integer overload)
 *
-* Example: \code auto z = 4_i; // type of z is std::complex<double> \endcode
+* Example: \code cplx z = 4_i; // type of z is std::complex<double> \endcode
 */
 inline constexpr cplx operator "" _i(unsigned long long int x) noexcept
 {
@@ -45,7 +45,7 @@ inline constexpr cplx operator "" _i(unsigned long long int x) noexcept
 /**
 * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (real overload)
 *
-* Example: \code auto z = 4.5_i; // type of z is std::complex<double> \endcode
+* Example: \code cplx z = 4.5_i; // type of z is std::complex<double> \endcode
 */
 inline constexpr cplx operator "" _i(long double x) noexcept
 {

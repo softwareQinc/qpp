@@ -126,7 +126,7 @@ dyn_col_vect<typename Derived::Scalar> ip(
         Cdimssubsys_bar[i] = dims[subsys_bar[i]];
     }
 
-    auto worker = [=](idx b) noexcept
+    auto worker = [&](idx b) noexcept
             -> typename Derived::Scalar
     {
         idx Cmidxrow[maxn];

@@ -62,7 +62,7 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::schmidtcoeffs()",
                         Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
-    if (!internal::check_dims_match_mat(dims, rA))
+    if (!internal::check_dims_match_cvect(dims, rA))
         throw Exception("qpp::schmidtcoeffs()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
     // END EXCEPTION CHECKS
@@ -132,7 +132,7 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::schmidtU()",
                         Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
-    if (!internal::check_dims_match_mat(dims, rA))
+    if (!internal::check_dims_match_cvect(dims, rA))
         throw Exception("qpp::schmidtU()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
     // END EXCEPTION CHECKS
@@ -198,7 +198,7 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::schmidtV()",
                         Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
-    if (!internal::check_dims_match_mat(dims, rA))
+    if (!internal::check_dims_match_cvect(dims, rA))
         throw Exception("qpp::schmidtV()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
     // END EXCEPTION CHECKS
@@ -270,7 +270,7 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::schmidtprobs()",
                         Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
-    if (!internal::check_dims_match_mat(dims, rA))
+    if (!internal::check_dims_match_cvect(dims, rA))
         throw Exception("qpp::schmidtprobs()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
     // END EXCEPTION CHECKS
@@ -348,7 +348,7 @@ double entanglement(const Eigen::MatrixBase<Derived>& A,
         throw Exception("qpp::entanglement()",
                         Exception::Type::MATRIX_NOT_CVECTOR);
     // check matching dimensions
-    if (!internal::check_dims_match_mat(dims, rA))
+    if (!internal::check_dims_match_cvect(dims, rA))
         throw Exception("qpp::entanglement()",
                         Exception::Type::DIMS_MISMATCH_MATRIX);
     // END EXCEPTION CHECKS

@@ -176,7 +176,7 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 * Example:
 * \code
 * // loads a previously saved Eigen dynamic complex matrix from "input.bin"
-* auto mat = load<cmat>("input.bin");
+* cmat mat = load<cmat>("input.bin");
 * \endcode
 *
 * \param fname Output file name

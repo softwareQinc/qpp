@@ -27,13 +27,6 @@
 #ifndef INTERNAL_UTIL_H_
 #define INTERNAL_UTIL_H_
 
-// silence g++4.9 bogus warning -Warray-bounds and -Wmaybe-uninitialized
-// in qpp::util::_multiidx2n()
-#if (__GNUC__ && !__clang__)
-#pragma GCC diagnostic ignored "-Warray-bounds"
-#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-#endif
-
 namespace qpp
 {
 /**
@@ -66,6 +59,14 @@ noexcept
     }
 }
 
+// silence g++4.9 bogus warning -Warray-bounds and -Wmaybe-uninitialized
+// in qpp::internal::multiidx2n()
+#if (__GNUC__ && !__clang__)
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+
 // multi-index to integer index, use C-style array for speed,
 // standard lexicographical order, e.g. 00->0, 01->1, 10->2, 11->3
 inline idx multiidx2n(const idx* const midx, idx numdims, const idx* const dims)
@@ -93,6 +94,8 @@ noexcept
 
     return result + midx[numdims - 1];
 }
+#pragma GCC diagnostic pop
+#endif
 
 // check square matrix
 template<typename Derived>
@@ -156,6 +159,11 @@ template<typename Derived>
 bool check_dims_match_mat(const std::vector<idx>& dims,
                           const Eigen::MatrixBase<Derived>& A)
 {
+// error checks only in DEBUG version
+#ifndef NDEBUG
+    assert(dims.size() > 0);
+    assert(A.rows() == A.cols());
+#endif
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
                                   static_cast<idx>(1), std::multiplies<idx>());
 
@@ -167,6 +175,12 @@ template<typename Derived>
 bool check_dims_match_cvect(const std::vector<idx>& dims,
                             const Eigen::MatrixBase<Derived>& A)
 {
+// error checks only in DEBUG version
+#ifndef NDEBUG
+    assert(dims.size() > 0);
+    assert(A.rows() > 0);
+    assert(A.cols() == 1);
+#endif
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
                                   static_cast<idx>(1), std::multiplies<idx>());
 
@@ -178,6 +192,12 @@ template<typename Derived>
 bool check_dims_match_rvect(const std::vector<idx>& dims,
                             const Eigen::MatrixBase<Derived>& A)
 {
+// error checks only in DEBUG version
+#ifndef NDEBUG
+    assert(dims.size() > 0);
+    assert(A.cols() > 0);
+    assert(A.rows() == 1);
+#endif
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
                                   static_cast<idx>(1), std::multiplies<idx>());;
 
@@ -187,6 +207,10 @@ bool check_dims_match_rvect(const std::vector<idx>& dims,
 // check that all elements in valid dims equal to dim
 inline bool check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept
 {
+// error checks only in DEBUG version
+#ifndef NDEBUG
+    assert(dims.size() > 0);
+#endif
     for (idx i : dims)
         if (i != dim)
             return false;
@@ -198,9 +222,7 @@ inline bool check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept
 inline bool check_subsys_match_dims(const std::vector<idx>& subsys,
                                     const std::vector<idx>& dims)
 {
-    //	// check non-zero sized subsystems
-    //	if (subsys.size() == 0)
-    //		return false;
+    // subsys can be empty
 
     // check valid number of subsystems
     if (subsys.size() > dims.size())
@@ -369,7 +391,11 @@ void variadic_vector_emplace(std::vector<T>& v, First&& first, Args&& ... args)
 // dimension d) from an object (ket/bra/density matrix) of size sz
 inline idx get_num_subsys(idx sz, idx d)
 {
+// error checks only in DEBUG version
+#ifndef NDEBUG
+    assert(sz > 0);
     assert(d > 1);
+#endif
     return static_cast<idx>(std::llround(std::log2(sz) / std::log2(d)));
 }
 
@@ -378,6 +404,11 @@ inline idx get_num_subsys(idx sz, idx d)
 // of N subsystems
 inline idx get_dim_subsys(idx sz, idx N)
 {
+// error checks only in DEBUG version
+#ifndef NDEBUG
+    assert(N > 0);
+    assert(sz > 0);
+#endif
     if (N == 2)
         return static_cast<idx>(std::llround(std::sqrt(sz)));
 

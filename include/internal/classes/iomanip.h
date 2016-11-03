@@ -65,7 +65,7 @@ private:
         os << start_;
 
         bool first = true;
-        for (auto it = first_; it != last_; ++it)
+        for (InputIterator it = first_; it != last_; ++it)
         {
             if (!first)
                 os << separator_;

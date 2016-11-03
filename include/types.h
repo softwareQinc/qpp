@@ -71,7 +71,7 @@ using dmat = Eigen::MatrixXd;
 * Example:
 * \code
 * // type of mat is Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>
-* auto mat = dyn_mat<float>(2,3);
+* dyn_mat<float> mat(2, 3);
 * \endcode
 */
 template<typename Scalar> // Eigen::MatrixX_type (where type = Scalar)
@@ -83,7 +83,7 @@ using dyn_mat = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 * Example:
 * \code
 * // type of colvect is Eigen::Matrix<float, Eigen::Dynamic, 1>
-* auto colvect = dyn_col_vect<float>(2);
+* dyn_col_vect<float> colvect(2);
 * \endcode
 */
 template<typename Scalar> // Eigen::VectorX_type (where type = Scalar)
@@ -95,7 +95,7 @@ using dyn_col_vect = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 * Example:
 * \code
 * // type of rowvect is Eigen::Matrix<float, 1, Eigen::Dynamic>
-* auto rowvect = dyn_row_vect<float>(3);
+* dyn_row_vect<float> rowvect(3);
 * \endcode
 */
 template<typename Scalar> // Eigen::RowVectorX_type (where type = Scalar)
