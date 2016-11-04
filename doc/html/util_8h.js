@@ -22,6 +22,7 @@ var util_8h =
     [ "get_dim_subsys", "util_8h.html#a321de4158dbe66d77f480d8f0b7ffd6d", null ],
     [ "get_num_subsys", "util_8h.html#ab2e7b985d75c45198899b3aa1f2c0f77", null ],
     [ "kron2", "util_8h.html#a66c954a3de84c422f6080936477c86d4", null ],
+    [ "multiidx2n", "util_8h.html#a7132297b40fb958750942d6bed9d4ff3", null ],
     [ "n2multiidx", "util_8h.html#a3e8ed22ae3490cd81beff37931d8ca25", null ],
     [ "variadic_vector_emplace", "util_8h.html#a5f99527a1f1e06fd6d62e094cd2e97f0", null ],
     [ "variadic_vector_emplace", "util_8h.html#a9e4550a948eedf249d041743c91f2708", null ]

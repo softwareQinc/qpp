@@ -242,7 +242,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        }</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        <span class="comment">// we now got the total index</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        indx = <a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(Cmidx, N, Cdims);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        indx = <a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(Cmidx, N, Cdims);</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="comment">// compute the coefficient</span></div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n_ = 0; n_ &lt; DA; ++n_)</div>
@@ -253,7 +253,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                Cmidx[subsys[k]] = CmidxA[k];</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            }</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            coeff += Ai[i_](m_, n_) *</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                     rstate(<a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(Cmidx, N, Cdims));</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                     rstate(<a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(Cmidx, N, Cdims));</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        }</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="keywordflow">return</span> std::make_pair(coeff, indx);</div>
@@ -314,8 +314,8 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        }</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        <span class="comment">// we now got the total row/col indexes</span></div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        idxrow = <a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(Cmidxrow, N, Cdims);</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        idxcol = <a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(Cmidxcol, N, Cdims);</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        idxrow = <a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(Cmidxrow, N, Cdims);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        idxcol = <a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(Cmidxcol, N, Cdims);</div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;</div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        <span class="comment">// check whether all CTRL row and col multi indexes are equal</span></div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        <span class="keywordtype">bool</span> all_ctrl_rows_equal = <span class="keyword">true</span>;</div>
@@ -356,7 +356,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            {</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;                Cmidxrow[subsys[k]] = CmidxArow[k];</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;            }</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;            <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> idxrowtmp = <a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(Cmidxrow, N, Cdims);</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;            <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> idxrowtmp = <a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(Cmidxrow, N, Cdims);</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;</div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;            <span class="keywordflow">if</span> (all_ctrl_rows_equal)</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;            {</div>
@@ -382,7 +382,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;                    rhs = (n2_ == m2_) ? 1 : 0; <span class="comment">// identity matrix</span></div>
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;                }</div>
 <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> idxcoltmp = <a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(Cmidxcol, N, Cdims);</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> idxcoltmp = <a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(Cmidxcol, N, Cdims);</div>
 <div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;                coeff += lhs * rstate(idxrowtmp, idxcoltmp) * rhs;</div>
 <div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;            }</div>
@@ -1212,8 +1212,8 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01348"></a><span class="lineno"> 1348</span>&#160;                            = Cmidxsubsys[k];</div>
 <div class="line"><a name="l01349"></a><span class="lineno"> 1349</span>&#160;</div>
 <div class="line"><a name="l01350"></a><span class="lineno"> 1350</span>&#160;                <span class="comment">// now do the sum</span></div>
-<div class="line"><a name="l01351"></a><span class="lineno"> 1351</span>&#160;                sm += rA(<a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(Cmidxrow, N, Cdims)) *</div>
-<div class="line"><a name="l01352"></a><span class="lineno"> 1352</span>&#160;                      std::conj(rA(<a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(Cmidxcol, N,</div>
+<div class="line"><a name="l01351"></a><span class="lineno"> 1351</span>&#160;                sm += rA(<a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(Cmidxrow, N, Cdims)) *</div>
+<div class="line"><a name="l01352"></a><span class="lineno"> 1352</span>&#160;                      std::conj(rA(<a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(Cmidxcol, N,</div>
 <div class="line"><a name="l01353"></a><span class="lineno"> 1353</span>&#160;                                                        Cdims)));</div>
 <div class="line"><a name="l01354"></a><span class="lineno"> 1354</span>&#160;            }</div>
 <div class="line"><a name="l01355"></a><span class="lineno"> 1355</span>&#160;</div>
@@ -1281,8 +1281,8 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01417"></a><span class="lineno"> 1417</span>&#160;                            = Cmidxsubsys[k];</div>
 <div class="line"><a name="l01418"></a><span class="lineno"> 1418</span>&#160;</div>
 <div class="line"><a name="l01419"></a><span class="lineno"> 1419</span>&#160;                <span class="comment">// now do the sum</span></div>
-<div class="line"><a name="l01420"></a><span class="lineno"> 1420</span>&#160;                sm += rA(<a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(Cmidxrow, N, Cdims),</div>
-<div class="line"><a name="l01421"></a><span class="lineno"> 1421</span>&#160;                         <a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(Cmidxcol, N, Cdims));</div>
+<div class="line"><a name="l01420"></a><span class="lineno"> 1420</span>&#160;                sm += rA(<a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(Cmidxrow, N, Cdims),</div>
+<div class="line"><a name="l01421"></a><span class="lineno"> 1421</span>&#160;                         <a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(Cmidxcol, N, Cdims));</div>
 <div class="line"><a name="l01422"></a><span class="lineno"> 1422</span>&#160;            }</div>
 <div class="line"><a name="l01423"></a><span class="lineno"> 1423</span>&#160;</div>
 <div class="line"><a name="l01424"></a><span class="lineno"> 1424</span>&#160;            <span class="keywordflow">return</span> sm;</div>
@@ -1400,8 +1400,8 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01563"></a><span class="lineno"> 1563</span>&#160;                std::swap(midxcoltmp[Csubsys[k]], midxrow[Csubsys[k]]);</div>
 <div class="line"><a name="l01564"></a><span class="lineno"> 1564</span>&#160;</div>
 <div class="line"><a name="l01565"></a><span class="lineno"> 1565</span>&#160;            <span class="comment">/* writes the result */</span></div>
-<div class="line"><a name="l01566"></a><span class="lineno"> 1566</span>&#160;            <span class="keywordflow">return</span> rA(<a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(midxrow, N, Cdims)) *</div>
-<div class="line"><a name="l01567"></a><span class="lineno"> 1567</span>&#160;                   std::conj(rA(<a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(midxcoltmp, N,</div>
+<div class="line"><a name="l01566"></a><span class="lineno"> 1566</span>&#160;            <span class="keywordflow">return</span> rA(<a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(midxrow, N, Cdims)) *</div>
+<div class="line"><a name="l01567"></a><span class="lineno"> 1567</span>&#160;                   std::conj(rA(<a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(midxcoltmp, N,</div>
 <div class="line"><a name="l01568"></a><span class="lineno"> 1568</span>&#160;                                                     Cdims)));</div>
 <div class="line"><a name="l01569"></a><span class="lineno"> 1569</span>&#160;        }; <span class="comment">/* end worker */</span></div>
 <div class="line"><a name="l01570"></a><span class="lineno"> 1570</span>&#160;</div>
@@ -1448,8 +1448,8 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01611"></a><span class="lineno"> 1611</span>&#160;                std::swap(midxcoltmp[Csubsys[k]], midxrow[Csubsys[k]]);</div>
 <div class="line"><a name="l01612"></a><span class="lineno"> 1612</span>&#160;</div>
 <div class="line"><a name="l01613"></a><span class="lineno"> 1613</span>&#160;            <span class="comment">/* writes the result */</span></div>
-<div class="line"><a name="l01614"></a><span class="lineno"> 1614</span>&#160;            <span class="keywordflow">return</span> rA(<a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(midxrow, N, Cdims),</div>
-<div class="line"><a name="l01615"></a><span class="lineno"> 1615</span>&#160;                      <a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(midxcoltmp, N, Cdims));</div>
+<div class="line"><a name="l01614"></a><span class="lineno"> 1614</span>&#160;            <span class="keywordflow">return</span> rA(<a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(midxrow, N, Cdims),</div>
+<div class="line"><a name="l01615"></a><span class="lineno"> 1615</span>&#160;                      <a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(midxcoltmp, N, Cdims));</div>
 <div class="line"><a name="l01616"></a><span class="lineno"> 1616</span>&#160;        }; <span class="comment">/* end worker */</span></div>
 <div class="line"><a name="l01617"></a><span class="lineno"> 1617</span>&#160;</div>
 <div class="line"><a name="l01618"></a><span class="lineno"> 1618</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j = 0; j &lt; D; ++j)</div>
@@ -1563,7 +1563,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01751"></a><span class="lineno"> 1751</span>&#160;                midxtmp[k] = midx[Cperm[k]];<span class="comment">// permuted multi-indexes</span></div>
 <div class="line"><a name="l01752"></a><span class="lineno"> 1752</span>&#160;            }</div>
 <div class="line"><a name="l01753"></a><span class="lineno"> 1753</span>&#160;</div>
-<div class="line"><a name="l01754"></a><span class="lineno"> 1754</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(midxtmp, N, permdims);</div>
+<div class="line"><a name="l01754"></a><span class="lineno"> 1754</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(midxtmp, N, permdims);</div>
 <div class="line"><a name="l01755"></a><span class="lineno"> 1755</span>&#160;        }; <span class="comment">/* end worker */</span></div>
 <div class="line"><a name="l01756"></a><span class="lineno"> 1756</span>&#160;</div>
 <div class="line"><a name="l01757"></a><span class="lineno"> 1757</span>&#160;<span class="preprocessor">#ifdef WITH_OPENMP_</span></div>
@@ -1617,7 +1617,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="line"><a name="l01805"></a><span class="lineno"> 1805</span>&#160;                midxtmp[k] = midx[Cperm[k]];<span class="comment">// permuted multi-indexes</span></div>
 <div class="line"><a name="l01806"></a><span class="lineno"> 1806</span>&#160;            }</div>
 <div class="line"><a name="l01807"></a><span class="lineno"> 1807</span>&#160;</div>
-<div class="line"><a name="l01808"></a><span class="lineno"> 1808</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(midxtmp, 2 * N, permdims);</div>
+<div class="line"><a name="l01808"></a><span class="lineno"> 1808</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(midxtmp, 2 * N, permdims);</div>
 <div class="line"><a name="l01809"></a><span class="lineno"> 1809</span>&#160;        }; <span class="comment">/* end worker */</span></div>
 <div class="line"><a name="l01810"></a><span class="lineno"> 1810</span>&#160;</div>
 <div class="line"><a name="l01811"></a><span class="lineno"> 1811</span>&#160;<span class="preprocessor">#ifdef WITH_OPENMP_</span></div>
@@ -1674,6 +1674,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_html_a4cf8dec8978b57214c806094f69e05ca"><div class="ttname"><a href="namespaceqpp.html#a4cf8dec8978b57214c806094f69e05ca">qpp::syspermute</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; syspermute(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;perm, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Subsystem permutation. </div><div class="ttdef"><b>Definition:</b> operations.h:1688</div></div>
 <div class="ttc" id="namespaceqpp_html_ac39e7c2b66f0209911cc3afc06223648"><div class="ttname"><a href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">qpp::dyn_mat</a></div><div class="ttdeci">Eigen::Matrix&lt; Scalar, Eigen::Dynamic, Eigen::Dynamic &gt; dyn_mat</div><div class="ttdoc">Dynamic Eigen matrix over the field specified by Scalar. </div><div class="ttdef"><b>Definition:</b> types.h:78</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_ac902276e8bbd993712a8c421a7e81672"><div class="ttname"><a href="namespaceqpp_1_1internal.html#ac902276e8bbd993712a8c421a7e81672">qpp::internal::check_dims_match_mat</a></div><div class="ttdeci">bool check_dims_match_mat(const std::vector&lt; idx &gt; &amp;dims, const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:159</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a7132297b40fb958750942d6bed9d4ff3"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">qpp::internal::multiidx2n</a></div><div class="ttdeci">idx multiidx2n(const idx *const midx, idx numdims, const idx *const dims) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:71</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a3e8ed22ae3490cd81beff37931d8ca25"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a3e8ed22ae3490cd81beff37931d8ca25">qpp::internal::n2multiidx</a></div><div class="ttdeci">void n2multiidx(idx n, idx numdims, const idx *const dims, idx *result) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:41</div></div>
 <div class="ttc" id="classqpp_1_1exception_1_1_subsys_mismatch_dims_html"><div class="ttname"><a href="classqpp_1_1exception_1_1_subsys_mismatch_dims.html">qpp::exception::SubsysMismatchDims</a></div><div class="ttdoc">Subsystems mismatch dimensions exception. </div><div class="ttdef"><b>Definition:</b> exception.h:393</div></div>
 <div class="ttc" id="namespaceqpp_html_a5d7185dfc7bee58c937abc243c3692ea"><div class="ttname"><a href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">qpp::ket</a></div><div class="ttdeci">Eigen::VectorXcd ket</div><div class="ttdoc">Complex (double precision) dynamic Eigen column vector. </div><div class="ttdef"><b>Definition:</b> types.h:51</div></div>
@@ -1692,7 +1693,6 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_html_a3e1f6add4257e7a92af4378a848110b7"><div class="ttname"><a href="namespaceqpp.html#a3e1f6add4257e7a92af4378a848110b7">qpp::ptrace1</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; ptrace1(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Partial trace. </div><div class="ttdef"><b>Definition:</b> operations.h:992</div></div>
 <div class="ttc" id="classqpp_1_1exception_1_1_perm_invalid_html"><div class="ttname"><a href="classqpp_1_1exception_1_1_perm_invalid.html">qpp::exception::PermInvalid</a></div><div class="ttdoc">Invalid permutation exception. </div><div class="ttdef"><b>Definition:</b> exception.h:410</div></div>
 <div class="ttc" id="namespaceqpp_html_aba2b3538ec37539e56f77addfb9ea1dd"><div class="ttname"><a href="namespaceqpp.html#aba2b3538ec37539e56f77addfb9ea1dd">qpp::adjoint</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; adjoint(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Adjoint. </div><div class="ttdef"><b>Definition:</b> functions.h:84</div></div>
-<div class="ttc" id="namespaceqpp_html_a9f0ce02aa3e299e610cf5f7715c1a43f"><div class="ttname"><a href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">qpp::multiidx2n</a></div><div class="ttdeci">idx multiidx2n(const std::vector&lt; idx &gt; &amp;midx, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Multi-index to non-negative integer index. </div><div class="ttdef"><b>Definition:</b> functions.h:1440</div></div>
 <div class="ttc" id="namespaceqpp_html_a9294ebd345fe1c99731bf2b776e610d7"><div class="ttname"><a href="namespaceqpp.html#a9294ebd345fe1c99731bf2b776e610d7">qpp::kron</a></div><div class="ttdeci">dyn_mat&lt; typename T::Scalar &gt; kron(const T &amp;head)</div><div class="ttdoc">Kronecker product. </div><div class="ttdef"><b>Definition:</b> functions.h:902</div></div>
 <div class="ttc" id="namespaceqpp_html_a9c0652daea1cfc2385239956ca80b356"><div class="ttname"><a href="namespaceqpp.html#a9c0652daea1cfc2385239956ca80b356">qpp::ptrace2</a></div><div class="ttdeci">dyn_mat&lt; typename Derived::Scalar &gt; ptrace2(const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Partial trace. </div><div class="ttdef"><b>Definition:</b> operations.h:1123</div></div>
 <div class="ttc" id="classqpp_1_1exception_1_1_matrix_mismatch_subsys_html"><div class="ttname"><a href="classqpp_1_1exception_1_1_matrix_mismatch_subsys.html">qpp::exception::MatrixMismatchSubsys</a></div><div class="ttdoc">Matrix mismatch subsystems exception. </div><div class="ttdef"><b>Definition:</b> exception.h:268</div></div>
@@ -1723,7 +1723,7 @@ $(document).ready(function(){initNavTree('operations_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="operations_8h.html">operations.h</a></li>
-    <li class="footer">Generated on Thu Nov 3 2016 22:49:40 for Quantum++ by
+    <li class="footer">Generated on Thu Nov 3 2016 23:28:25 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

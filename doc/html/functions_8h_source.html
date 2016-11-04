@@ -1110,7 +1110,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="line"><a name="l01450"></a><span class="lineno"> 1450</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1exception_1_1_out_of_range.html">exception::OutOfRange</a>(<span class="stringliteral">&quot;qpp::multiidx2n()&quot;</span>);</div>
 <div class="line"><a name="l01451"></a><span class="lineno"> 1451</span>&#160;    <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l01452"></a><span class="lineno"> 1452</span>&#160;</div>
-<div class="line"><a name="l01453"></a><span class="lineno"> 1453</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">internal::multiidx2n</a>(midx.data(), dims.size(), dims.data());</div>
+<div class="line"><a name="l01453"></a><span class="lineno"> 1453</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">internal::multiidx2n</a>(midx.data(), dims.size(), dims.data());</div>
 <div class="line"><a name="l01454"></a><span class="lineno"> 1454</span>&#160;}</div>
 <div class="line"><a name="l01455"></a><span class="lineno"> 1455</span>&#160;</div>
 <div class="line"><a name="l01468"></a><span class="lineno"><a class="line" href="namespaceqpp.html#a2f09ed5c440772b552a289b800d4415a"> 1468</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> <a class="code" href="namespaceqpp.html#a2f09ed5c440772b552a289b800d4415a">mket</a>(<span class="keyword">const</span> std::vector&lt;idx&gt;&amp; mask,</div>
@@ -1430,6 +1430,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_html_a9a99ccccd473a9006dfaadb5761ac4f6"><div class="ttname"><a href="namespaceqpp.html#a9a99ccccd473a9006dfaadb5761ac4f6">qpp::eps</a></div><div class="ttdeci">constexpr double eps</div><div class="ttdoc">Used to decide whether a number or expression in double precision is zero or not. ...</div><div class="ttdef"><b>Definition:</b> constants.h:67</div></div>
 <div class="ttc" id="namespaceqpp_html_aee0f3ad6d1892783a265e5d373eec4a9"><div class="ttname"><a href="namespaceqpp.html#aee0f3ad6d1892783a265e5d373eec4a9">qpp::dirsum</a></div><div class="ttdeci">dyn_mat&lt; typename T::Scalar &gt; dirsum(const T &amp;head)</div><div class="ttdoc">Direct sum. </div><div class="ttdef"><b>Definition:</b> functions.h:1017</div></div>
 <div class="ttc" id="namespaceqpp_html_ac39e7c2b66f0209911cc3afc06223648"><div class="ttname"><a href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">qpp::dyn_mat</a></div><div class="ttdeci">Eigen::Matrix&lt; Scalar, Eigen::Dynamic, Eigen::Dynamic &gt; dyn_mat</div><div class="ttdoc">Dynamic Eigen matrix over the field specified by Scalar. </div><div class="ttdef"><b>Definition:</b> types.h:78</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a7132297b40fb958750942d6bed9d4ff3"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">qpp::internal::multiidx2n</a></div><div class="ttdeci">idx multiidx2n(const idx *const midx, idx numdims, const idx *const dims) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:71</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a3e8ed22ae3490cd81beff37931d8ca25"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a3e8ed22ae3490cd81beff37931d8ca25">qpp::internal::n2multiidx</a></div><div class="ttdeci">void n2multiidx(idx n, idx numdims, const idx *const dims, idx *result) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:41</div></div>
 <div class="ttc" id="namespaceqpp_html_a2b8b1ec9320981f9b5d6984810f14737"><div class="ttname"><a href="namespaceqpp.html#a2b8b1ec9320981f9b5d6984810f14737">qpp::rho2bloch</a></div><div class="ttdeci">std::vector&lt; double &gt; rho2bloch(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdoc">Computes the 3-dimensional real Bloch vector corresponding to the qubit density matrix A...</div><div class="ttdef"><b>Definition:</b> functions.h:1845</div></div>
 <div class="ttc" id="classqpp_1_1exception_1_1_subsys_mismatch_dims_html"><div class="ttname"><a href="classqpp_1_1exception_1_1_subsys_mismatch_dims.html">qpp::exception::SubsysMismatchDims</a></div><div class="ttdoc">Subsystems mismatch dimensions exception. </div><div class="ttdef"><b>Definition:</b> exception.h:393</div></div>
@@ -1500,7 +1501,7 @@ $(document).ready(function(){initNavTree('functions_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="functions_8h.html">functions.h</a></li>
-    <li class="footer">Generated on Thu Nov 3 2016 22:49:40 for Quantum++ by
+    <li class="footer">Generated on Thu Nov 3 2016 23:28:25 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

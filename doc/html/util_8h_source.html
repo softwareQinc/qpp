@@ -126,38 +126,38 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">// silence g++4.9 bogus warning -Warray-bounds and -Wmaybe-uninitialized</span></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">// in qpp::internal::multiidx2n()</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#if (__GNUC__ &amp;&amp; !__clang__)</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#pragma GCC diagnostic push</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Warray-bounds&quot;</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wmaybe-uninitialized&quot;</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">// multi-index to integer index, use C-style array for speed,</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">// standard lexicographical order, e.g. 00-&gt;0, 01-&gt;1, 10-&gt;2, 11-&gt;3</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> <a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">multiidx2n</a>(<span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>* <span class="keyword">const</span> midx, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> numdims, <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>* <span class="keyword">const</span> dims)</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;noexcept</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;{</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">// error checks only in DEBUG version</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#ifndef NDEBUG</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    assert(numdims &gt; 0);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">// no error checks in release version to improve speed</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// Static allocation for speed!</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">// double the size for matrices reshaped as vectors</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> part_prod[2 * <a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> result = 0;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    part_prod[numdims - 1] = 1;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 1; i &lt; numdims; ++i)</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        part_prod[numdims - i - 1] =</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                part_prod[numdims - i] * dims[numdims - i];</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        result += midx[numdims - i - 1] * part_prod[numdims - i - 1];</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordflow">return</span> result + midx[numdims - 1];</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#pragma GCC diagnostic push</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Warray-bounds&quot;</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wmaybe-uninitialized&quot;</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">// multi-index to integer index, use C-style array for speed,</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">// standard lexicographical order, e.g. 00-&gt;0, 01-&gt;1, 10-&gt;2, 11-&gt;3</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">   71</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> <a class="code" href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">multiidx2n</a>(<span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>* <span class="keyword">const</span> midx, <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> numdims, <span class="keyword">const</span> <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>* <span class="keyword">const</span> dims)</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;noexcept</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;{</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// error checks only in DEBUG version</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    assert(numdims &gt; 0);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">// no error checks in release version to improve speed</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="comment">// Static allocation for speed!</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// double the size for matrices reshaped as vectors</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> part_prod[2 * <a class="code" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a>];</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> result = 0;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    part_prod[numdims - 1] = 1;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i = 1; i &lt; numdims; ++i)</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        part_prod[numdims - i - 1] =</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                part_prod[numdims - i] * dims[numdims - i];</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        result += midx[numdims - i - 1] * part_prod[numdims - i - 1];</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">return</span> result + midx[numdims - 1];</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#if (__GNUC__ &amp;&amp; !__clang__)</span></div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#pragma GCC diagnostic pop</span></div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
@@ -578,6 +578,7 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_1_1internal_html_a85177fd977a0e44b3b7e70ef1802e9a5"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a85177fd977a0e44b3b7e70ef1802e9a5">qpp::internal::check_cvector</a></div><div class="ttdeci">bool check_cvector(const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:123</div></div>
 <div class="ttc" id="namespaceqpp_html_ac39e7c2b66f0209911cc3afc06223648"><div class="ttname"><a href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">qpp::dyn_mat</a></div><div class="ttdeci">Eigen::Matrix&lt; Scalar, Eigen::Dynamic, Eigen::Dynamic &gt; dyn_mat</div><div class="ttdoc">Dynamic Eigen matrix over the field specified by Scalar. </div><div class="ttdef"><b>Definition:</b> types.h:78</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_ac902276e8bbd993712a8c421a7e81672"><div class="ttname"><a href="namespaceqpp_1_1internal.html#ac902276e8bbd993712a8c421a7e81672">qpp::internal::check_dims_match_mat</a></div><div class="ttdeci">bool check_dims_match_mat(const std::vector&lt; idx &gt; &amp;dims, const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:159</div></div>
+<div class="ttc" id="namespaceqpp_1_1internal_html_a7132297b40fb958750942d6bed9d4ff3"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a7132297b40fb958750942d6bed9d4ff3">qpp::internal::multiidx2n</a></div><div class="ttdeci">idx multiidx2n(const idx *const midx, idx numdims, const idx *const dims) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:71</div></div>
 <div class="ttc" id="structqpp_1_1internal_1_1_display___impl___html_a755cc3da7ab2564107cea5fa3d571aa8"><div class="ttname"><a href="structqpp_1_1internal_1_1_display___impl__.html#a755cc3da7ab2564107cea5fa3d571aa8">qpp::internal::Display_Impl_::display_impl_</a></div><div class="ttdeci">std::ostream &amp; display_impl_(const T &amp;A, std::ostream &amp;os, double chop=qpp::chop) const </div><div class="ttdef"><b>Definition:</b> util.h:423</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a3e8ed22ae3490cd81beff37931d8ca25"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a3e8ed22ae3490cd81beff37931d8ca25">qpp::internal::n2multiidx</a></div><div class="ttdeci">void n2multiidx(idx n, idx numdims, const idx *const dims, idx *result) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:41</div></div>
 <div class="ttc" id="namespaceqpp_html"><div class="ttname"><a href="namespaceqpp.html">qpp</a></div><div class="ttdoc">Quantum++ main namespace. </div><div class="ttdef"><b>Definition:</b> codes.h:30</div></div>
@@ -590,7 +591,6 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div class="ttc" id="namespaceqpp_1_1internal_html_abb10c264874e20180c7c0944e0bf7657"><div class="ttname"><a href="namespaceqpp_1_1internal.html#abb10c264874e20180c7c0944e0bf7657">qpp::internal::check_dims_match_cvect</a></div><div class="ttdeci">bool check_dims_match_cvect(const std::vector&lt; idx &gt; &amp;dims, const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:175</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_af3faf90b54974a79d2e6637316312bfa"><div class="ttname"><a href="namespaceqpp_1_1internal.html#af3faf90b54974a79d2e6637316312bfa">qpp::internal::check_dims_match_rvect</a></div><div class="ttdeci">bool check_dims_match_rvect(const std::vector&lt; idx &gt; &amp;dims, const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</div><div class="ttdef"><b>Definition:</b> util.h:192</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a4890923b3f352fff0f991691f6241c4e"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a4890923b3f352fff0f991691f6241c4e">qpp::internal::check_matching_sizes</a></div><div class="ttdeci">bool check_matching_sizes(const T1 &amp;lhs, const T2 &amp;rhs) noexcept</div><div class="ttdef"><b>Definition:</b> util.h:137</div></div>
-<div class="ttc" id="namespaceqpp_html_a9f0ce02aa3e299e610cf5f7715c1a43f"><div class="ttname"><a href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">qpp::multiidx2n</a></div><div class="ttdeci">idx multiidx2n(const std::vector&lt; idx &gt; &amp;midx, const std::vector&lt; idx &gt; &amp;dims)</div><div class="ttdoc">Multi-index to non-negative integer index. </div><div class="ttdef"><b>Definition:</b> functions.h:1440</div></div>
 <div class="ttc" id="namespaceqpp_html_aad7ccc50a6b139279d7b56d07112b183"><div class="ttname"><a href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">qpp::cplx</a></div><div class="ttdeci">std::complex&lt; double &gt; cplx</div><div class="ttdoc">Complex number in double precision. </div><div class="ttdef"><b>Definition:</b> types.h:46</div></div>
 <div class="ttc" id="namespaceqpp_1_1internal_html_a5f99527a1f1e06fd6d62e094cd2e97f0"><div class="ttname"><a href="namespaceqpp_1_1internal.html#a5f99527a1f1e06fd6d62e094cd2e97f0">qpp::internal::variadic_vector_emplace</a></div><div class="ttdeci">void variadic_vector_emplace(std::vector&lt; T &gt; &amp;)</div><div class="ttdef"><b>Definition:</b> util.h:378</div></div>
 <div class="ttc" id="classqpp_1_1exception_1_1_type_mismatch_html"><div class="ttname"><a href="classqpp_1_1exception_1_1_type_mismatch.html">qpp::exception::TypeMismatch</a></div><div class="ttdoc">Type mismatch exception. </div><div class="ttdef"><b>Definition:</b> exception.h:583</div></div>
@@ -610,7 +610,7 @@ $(document).ready(function(){initNavTree('util_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7374381ecdb819c64ee9b6ea2bd3370d.html">internal</a></li><li class="navelem"><a class="el" href="util_8h.html">util.h</a></li>
-    <li class="footer">Generated on Thu Nov 3 2016 22:49:40 for Quantum++ by
+    <li class="footer">Generated on Thu Nov 3 2016 23:28:25 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

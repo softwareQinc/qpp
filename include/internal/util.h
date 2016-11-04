@@ -62,11 +62,10 @@ noexcept
 // silence g++4.9 bogus warning -Warray-bounds and -Wmaybe-uninitialized
 // in qpp::internal::multiidx2n()
 #if (__GNUC__ && !__clang__)
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Warray-bounds"
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-
+#endif
 // multi-index to integer index, use C-style array for speed,
 // standard lexicographical order, e.g. 00->0, 01->1, 10->2, 11->3
 inline idx multiidx2n(const idx* const midx, idx numdims, const idx* const dims)
@@ -94,6 +93,7 @@ noexcept
 
     return result + midx[numdims - 1];
 }
+#if (__GNUC__ && !__clang__)
 #pragma GCC diagnostic pop
 #endif
 
