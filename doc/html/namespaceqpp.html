@@ -608,14 +608,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a49fc09ba403372739d5a1f6105ef973f"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;, double, <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a49fc09ba403372739d5a1f6105ef973f">measure_seq</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; subsys, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d=2)</td></tr>
 <tr class="memdesc:a49fc09ba403372739d5a1f6105ef973f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sequentially measures the part <em>subsys</em> of the multi-partite state vector or density matrix <em>A</em> in the computational basis.  <a href="#a49fc09ba403372739d5a1f6105ef973f">More...</a><br /></td></tr>
 <tr class="separator:a49fc09ba403372739d5a1f6105ef973f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a624018095ea24ab31e6a9d93c33b3aa2"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:a624018095ea24ab31e6a9d93c33b3aa2"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; std::is_same&lt; typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> &gt;::value, <a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt; <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a624018095ea24ab31e6a9d93c33b3aa2">loadMATLAB</a> (const std::string &amp;mat_file, const std::string &amp;var_name)</td></tr>
-<tr class="memdesc:a624018095ea24ab31e6a9d93c33b3aa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a complex Eigen dynamic matrix from a MATLAB .mat file,.  <a href="#a624018095ea24ab31e6a9d93c33b3aa2">More...</a><br /></td></tr>
-<tr class="separator:a624018095ea24ab31e6a9d93c33b3aa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af46ebc145afb868fcb89b3e2f98e808b"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:af46ebc145afb868fcb89b3e2f98e808b"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt;!std::is_same&lt; typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> &gt;::value, <a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt; typename Derived::Scalar &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#af46ebc145afb868fcb89b3e2f98e808b">loadMATLAB</a> (const std::string &amp;mat_file, const std::string &amp;var_name)</td></tr>
-<tr class="memdesc:af46ebc145afb868fcb89b3e2f98e808b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a non-complex Eigen dynamic matrix from a MATLAB .mat file,.  <a href="#af46ebc145afb868fcb89b3e2f98e808b">More...</a><br /></td></tr>
-<tr class="separator:af46ebc145afb868fcb89b3e2f98e808b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa993678c656323f6c3bc23fa68830b57"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:aa993678c656323f6c3bc23fa68830b57"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; std::is_same&lt; typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> &gt;::value, <a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt; <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aa993678c656323f6c3bc23fa68830b57">loadMATLAB</a> (const std::string &amp;mat_file, const std::string &amp;var_name)</td></tr>
+<tr class="memdesc:aa993678c656323f6c3bc23fa68830b57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a complex Eigen dynamic matrix from a MATLAB .mat file,.  <a href="#aa993678c656323f6c3bc23fa68830b57">More...</a><br /></td></tr>
+<tr class="separator:aa993678c656323f6c3bc23fa68830b57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a975ed5076305f27cca17eb13c738ac81"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a975ed5076305f27cca17eb13c738ac81"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt;!std::is_same&lt; typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> &gt;::value, <a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt; typename Derived::Scalar &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a975ed5076305f27cca17eb13c738ac81">loadMATLAB</a> (const std::string &amp;mat_file, const std::string &amp;var_name)</td></tr>
+<tr class="memdesc:a975ed5076305f27cca17eb13c738ac81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a non-complex Eigen dynamic matrix from a MATLAB .mat file,.  <a href="#a975ed5076305f27cca17eb13c738ac81">More...</a><br /></td></tr>
+<tr class="separator:a975ed5076305f27cca17eb13c738ac81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5e91e774a6fce553cadf6482c13a1ca"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:ab5e91e774a6fce553cadf6482c13a1ca"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; std::is_same&lt; typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> &gt;::value &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ab5e91e774a6fce553cadf6482c13a1ca">saveMATLAB</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::string &amp;mat_file, const std::string &amp;var_name, const std::string &amp;mode)</td></tr>
 <tr class="memdesc:ab5e91e774a6fce553cadf6482c13a1ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves a complex Eigen dynamic matrix to a MATLAB .mat file,.  <a href="#ab5e91e774a6fce553cadf6482c13a1ca">More...</a><br /></td></tr>
@@ -3776,14 +3776,14 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a624018095ea24ab31e6a9d93c33b3aa2"></a>
+<a class="anchor" id="aa993678c656323f6c3bc23fa68830b57"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Derived &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::enable_if&lt;std::is_same&lt;typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt;::value, <a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt;<a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt; &gt;::type qpp::loadMATLAB </td>
+          <td class="memname">std::enable_if&lt;std::is_same&lt;typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt;::value, <a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a> &lt; <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt; &gt;::type qpp::loadMATLAB </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>mat_file</em>, </td>
@@ -3825,14 +3825,14 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="af46ebc145afb868fcb89b3e2f98e808b"></a>
+<a class="anchor" id="a975ed5076305f27cca17eb13c738ac81"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Derived &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::enable_if&lt;!std::is_same&lt;typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt;::value, <a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt;typename Derived::Scalar&gt; &gt;::type qpp::loadMATLAB </td>
+          <td class="memname">std::enable_if&lt;!std::is_same&lt;typename Derived::Scalar, <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&gt;::value, <a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a> &lt; typename Derived::Scalar&gt; &gt;::type qpp::loadMATLAB </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>mat_file</em>, </td>
@@ -6958,7 +6958,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Saves a complex Eigen dynamic matrix to a MATLAB .mat file,. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a624018095ea24ab31e6a9d93c33b3aa2" title="Loads a complex Eigen dynamic matrix from a MATLAB .mat file,. ">qpp::loadMATLAB()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#aa993678c656323f6c3bc23fa68830b57" title="Loads a complex Eigen dynamic matrix from a MATLAB .mat file,. ">qpp::loadMATLAB()</a></dd></dl>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Complex</td><td>Eigen type </td></tr>
@@ -7016,7 +7016,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Saves a non-complex Eigen dynamic matrix to a MATLAB .mat file,. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a624018095ea24ab31e6a9d93c33b3aa2" title="Loads a complex Eigen dynamic matrix from a MATLAB .mat file,. ">qpp::loadMATLAB()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#aa993678c656323f6c3bc23fa68830b57" title="Loads a complex Eigen dynamic matrix from a MATLAB .mat file,. ">qpp::loadMATLAB()</a></dd></dl>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Npn-complex</td><td>Eigen type </td></tr>
@@ -8217,7 +8217,7 @@ template&lt;typename Container &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Thu Nov 3 2016 23:28:25 for Quantum++ by
+    <li class="footer">Generated on Fri Nov 4 2016 00:16:47 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>
