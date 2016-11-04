@@ -44,7 +44,7 @@ inline double rand(double a, double b)
     // EXCEPTION CHECKS
 
     if (a >= b)
-        throw qpp::Exception("qpp::rand()", qpp::Exception::Type::OUT_OF_RANGE);
+        throw exception::OutOfRange("qpp::rand()");
     // END EXCEPTION CHECKS
 
     std::uniform_real_distribution<> ud(a, b);
@@ -72,7 +72,7 @@ inline bigint rand(bigint a, bigint b)
     // EXCEPTION CHECKS
 
     if (a > b)
-        throw qpp::Exception("qpp::rand()", qpp::Exception::Type::OUT_OF_RANGE);
+        throw exception::OutOfRange("qpp::rand()");
     // END EXCEPTION CHECKS
 
     std::uniform_int_distribution<bigint> uid(a, b);
@@ -98,7 +98,7 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
     // EXCEPTION CHECKS
 
     if (a > b)
-        throw qpp::Exception("qpp::rand()", qpp::Exception::Type::OUT_OF_RANGE);
+        throw exception::OutOfRange("qpp::randidx()");
     // END EXCEPTION CHECKS
 
     std::uniform_int_distribution<idx> uid(a, b);
@@ -129,7 +129,7 @@ Derived rand(idx rows, idx cols, double a = 0, double b = 1)
     (void) cols;
     (void) a;
     (void) b;
-    throw Exception("qpp::rand()", Exception::Type::UNDEFINED_TYPE);
+    throw exception::UndefinedType("qpp::rand()");
 }
 
 /**
@@ -159,9 +159,9 @@ inline dmat rand(idx rows, idx cols, double a, double b)
     // EXCEPTION CHECKS
 
     if (rows == 0 || cols == 0)
-        throw Exception("qpp::rand()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::rand()");
     if (a >= b)
-        throw qpp::Exception("qpp::rand()", qpp::Exception::Type::OUT_OF_RANGE);
+        throw exception::OutOfRange("qpp::rand()");
     // END EXCEPTION CHECKS
 
     return dmat::Zero(rows, cols).unaryExpr(
@@ -198,9 +198,9 @@ inline cmat rand(idx rows, idx cols, double a, double b)
     // EXCEPTION CHECKS
 
     if (rows == 0 || cols == 0)
-        throw Exception("qpp::rand()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::rand()");
     if (a >= b)
-        throw qpp::Exception("qpp::rand()", qpp::Exception::Type::OUT_OF_RANGE);
+        throw exception::OutOfRange("qpp::rand()");
     // END EXCEPTION CHECKS
 
     return rand<dmat>(rows, cols, a, b).cast<cplx>() +
@@ -226,7 +226,7 @@ Derived randn(idx rows, idx cols, double mean = 0, double sigma = 1)
     (void) cols;
     (void) mean;
     (void) sigma;
-    throw Exception("qpp::randn()", Exception::Type::UNDEFINED_TYPE);
+    throw exception::UndefinedType("qpp::randn()");
 }
 
 /**
@@ -256,7 +256,7 @@ inline dmat randn(idx rows, idx cols, double mean, double sigma)
     // EXCEPTION CHECKS
 
     if (rows == 0 || cols == 0)
-        throw Exception("qpp::randn()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::randn()");
     // END EXCEPTION CHECKS
 
     std::normal_distribution<> nd(mean, sigma);
@@ -299,7 +299,7 @@ inline cmat randn(idx rows, idx cols, double mean, double sigma)
     // EXCEPTION CHECKS
 
     if (rows == 0 || cols == 0)
-        throw Exception("qpp::randn()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::randn()");
     // END EXCEPTION CHECKS
 
     return randn<dmat>(rows, cols, mean, sigma).cast<cplx>() +
@@ -338,7 +338,7 @@ inline cmat randU(idx D = 2)
     // EXCEPTION CHECKS
 
     if (D == 0)
-        throw Exception("qpp::randU()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::randU()");
     // END EXCEPTION CHECKS
 
     cmat X = 1 / std::sqrt(2.) * randn<cmat>(D, D);
@@ -369,7 +369,7 @@ inline cmat randV(idx Din, idx Dout)
     // EXCEPTION CHECKS
 
     if (Din == 0 || Dout == 0 || Din > Dout)
-        throw Exception("qpp::randV()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::randV()");
     // END EXCEPTION CHECKS
 
     return randU(Dout).block(0, 0, Dout, Din);
@@ -390,9 +390,9 @@ inline std::vector<cmat> randkraus(idx N, idx D = 2)
     // EXCEPTION CHECKS
 
     if (N == 0)
-        throw Exception("qpp::randkraus()", Exception::Type::OUT_OF_RANGE);
+        throw exception::OutOfRange("qpp::randkraus()");
     if (D == 0)
-        throw Exception("qpp::randkraus()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::randkraus()");
     // END EXCEPTION CHECKS
 
     std::vector<cmat> result(N);
@@ -424,7 +424,7 @@ inline cmat randH(idx D = 2)
     // EXCEPTION CHECKS
 
     if (D == 0)
-        throw Exception("qpp::randH()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::randH()");
     // END EXCEPTION CHECKS
 
     cmat H = 2 * rand<cmat>(D, D) - (1. + 1_i) * cmat::Ones(D, D);
@@ -443,7 +443,7 @@ inline ket randket(idx D = 2)
     // EXCEPTION CHECKS
 
     if (D == 0)
-        throw Exception("qpp::randket()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::randket()");
     // END EXCEPTION CHECKS
 
     /* slow
@@ -469,7 +469,7 @@ inline cmat randrho(idx D = 2)
     // EXCEPTION CHECKS
 
     if (D == 0)
-        throw Exception("qpp::randrho()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::randrho()");
     // END EXCEPTION CHECKS
 
     cmat result = 10 * randH(D);
@@ -492,7 +492,7 @@ inline std::vector<idx> randperm(idx N)
     // EXCEPTION CHECKS
 
     if (N == 0)
-        throw Exception("qpp::randperm()", Exception::Type::PERM_INVALID);
+        throw exception::PermInvalid("qpp::randperm()");
     // END EXCEPTION CHECKS
 
     std::vector<idx> result(N);
@@ -524,7 +524,7 @@ inline std::vector<double> randprob(idx N)
     // EXCEPTION CHECKS
 
     if (N == 0)
-        throw Exception("qpp::randprob()", Exception::Type::PERM_INVALID);
+        throw exception::OutOfRange("qpp::randprob()");
     // END EXCEPTION CHECKS
 
     std::vector<double> result(N);

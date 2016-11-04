@@ -6,64 +6,64 @@
 \form#5:$\frac{1}{\sqrt{d}}\sum_{j=0}^{d-1}|jj\rangle$
 \form#6:$|0\rangle^{\otimes n}$
 \form#7:$|1\rangle^{\otimes n}$
-\form#8:$i=\sqrt{-1}$
-\form#9:$ \pi $
-\form#10:$e$
-\form#11:$\exp(2\pi i/D)$
-\form#12:$ U $
-\form#13:$ V $
-\form#14:$\alpha$
-\form#15:$\alpha\geq 0$
-\form#16:$ \alpha\to 1$
-\form#17:$\alpha = \infty$
-\form#18:$q$
-\form#19:$q\geq 0$
-\form#20:$ q\to 1$
-\form#21:$ e $
-\form#22:$\pm \infty$
-\form#23:$f(A)$
-\form#24:$A^0 = I$
-\form#25:$A^z$
-\form#26:$A^n$
-\form#27:$p = \infty$
-\form#28:$A^{\otimes n}$
-\form#29:$A^{\oplus n}$
-\form#30:$ [A,B] = AB - BA $
-\form#31:$AB -BA$
-\form#32:$ \{A,B\} = AB + BA $
-\form#33:$AB +BA$
-\form#34:$|\mathrm{mask}\rangle$
-\form#35:$\{0, 1, \ldots, N - 1\}$
-\form#36:$\langle \phi_{subsys}|\psi\rangle$
-\form#37:$\circ$
-\form#38:$\mathcal{O}(\sqrt{n})$
-\form#39:$ab$
-\form#40:$\mathrm{ mod }$
-\form#41:$p$
-\form#42:$a^n$
-\form#43:$m$
-\form#44:$n$
-\form#45:$gcd(a, b)$
-\form#46:$ma + nb = gcd(a, b)$
-\form#47:$a^{-1}$
-\form#48:$\textrm{ mod }$
-\form#49:$2^{-k}$
-\form#50:$\{|i\rangle\langle j|\}$
-\form#51:$|0\rangle\langle 0|$
-\form#52:$|0\rangle\langle 1|$
-\form#53:$S$
-\form#54:$ C$
-\form#55:$ S_{ab,mn} = C_{ma,nb}$
-\form#56:$Tr(K_i^\dagger K_j)=\delta_{ij}$
-\form#57:$i\neq j$
-\form#58:$Tr_{A}(\cdot)$
-\form#59:$A$
-\form#60:$A\otimes B$
-\form#61:$Tr_{B}(\cdot)$
-\form#62:$B$
-\form#63:$Tr_{subsys}(\cdot)$
-\form#64:$(\cdot)^{T_{subsys}}$
-\form#65:$ \sum_i K_i^\dagger K_i = I$
-\form#66:$|j\rangle^{\otimes n}$
-\form#67:$|+\rangle^{\otimes n}$
-\form#68:$|-\rangle^{\otimes n}$
+\form#8:$|j\rangle^{\otimes n}$
+\form#9:$|+\rangle^{\otimes n}$
+\form#10:$|-\rangle^{\otimes n}$
+\form#11:$i=\sqrt{-1}$
+\form#12:$ \pi $
+\form#13:$e$
+\form#14:$\exp(2\pi i/D)$
+\form#15:$ U $
+\form#16:$ V $
+\form#17:$\alpha$
+\form#18:$\alpha\geq 0$
+\form#19:$ \alpha\to 1$
+\form#20:$\alpha = \infty$
+\form#21:$q$
+\form#22:$q\geq 0$
+\form#23:$ q\to 1$
+\form#24:$ e $
+\form#25:$\pm \infty$
+\form#26:$f(A)$
+\form#27:$A^0 = I$
+\form#28:$A^z$
+\form#29:$A^n$
+\form#30:$p = \infty$
+\form#31:$A^{\otimes n}$
+\form#32:$A^{\oplus n}$
+\form#33:$ [A,B] = AB - BA $
+\form#34:$AB -BA$
+\form#35:$ \{A,B\} = AB + BA $
+\form#36:$AB +BA$
+\form#37:$|\mathrm{mask}\rangle$
+\form#38:$\{0, 1, \ldots, N - 1\}$
+\form#39:$\langle \phi_{subsys}|\psi\rangle$
+\form#40:$\circ$
+\form#41:$\mathcal{O}(\sqrt{n})$
+\form#42:$ab$
+\form#43:$\mathrm{ mod }$
+\form#44:$p$
+\form#45:$a^n$
+\form#46:$m$
+\form#47:$n$
+\form#48:$gcd(a, b)$
+\form#49:$ma + nb = gcd(a, b)$
+\form#50:$a^{-1}$
+\form#51:$\textrm{ mod }$
+\form#52:$2^{-k}$
+\form#53:$\{|i\rangle\langle j|\}$
+\form#54:$|0\rangle\langle 0|$
+\form#55:$|0\rangle\langle 1|$
+\form#56:$S$
+\form#57:$ C$
+\form#58:$ S_{ab,mn} = C_{ma,nb}$
+\form#59:$Tr(K_i^\dagger K_j)=\delta_{ij}$
+\form#60:$i\neq j$
+\form#61:$Tr_{A}(\cdot)$
+\form#62:$A$
+\form#63:$A\otimes B$
+\form#64:$Tr_{B}(\cdot)$
+\form#65:$B$
+\form#66:$Tr_{subsys}(\cdot)$
+\form#67:$(\cdot)^{T_{subsys}}$
+\form#68:$ \sum_i K_i^\dagger K_i = I$

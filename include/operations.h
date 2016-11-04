@@ -68,44 +68,40 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     // check types
     if (!std::is_same<typename Derived1::Scalar,
             typename Derived2::Scalar>::value)
-        throw Exception("qpp::applyCTRL()", Exception::Type::TYPE_MISMATCH);
+        throw exception::TypeMismatch("qpp::applyCTRL()");
 
     // check zero sizes
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::applyCTRL()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::applyCTRL()");
 
     // check zero sizes
     if (!internal::check_nonzero_size(rstate))
-        throw Exception("qpp::applyCTRL()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::applyCTRL()");
 
     // check square matrix for the gate
     if (!internal::check_square_mat(rA))
-        throw Exception("qpp::applyCTRL()",
-                        Exception::Type::MATRIX_NOT_SQUARE);
+        throw exception::MatrixNotSquare("qpp::applyCTRL()");
 
     // check that all control subsystems have the same dimension
     idx d = ctrl.size() > 0 ? dims[ctrl[0]] : 1;
     for (idx i = 1; i < ctrl.size(); ++i)
         if (dims[ctrl[i]] != d)
-            throw Exception("qpp::applyCTRL()",
-                            Exception::Type::DIMS_NOT_EQUAL);
+            throw exception::DimsNotEqual("qpp::applyCTRL()");
 
     // check that dimension is valid
     if (!internal::check_dims(dims))
-        throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::applyCTRL()");
 
     // check subsys is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(subsys, dims))
-        throw Exception("qpp::applyCTRL()",
-                        Exception::Type::SUBSYS_MISMATCH_DIMS);
+        throw exception::SubsysMismatchDims("qpp::applyCTRL()");
 
     // check that gate matches the dimensions of the subsys
     std::vector<idx> subsys_dims(subsys.size());
     for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
     if (!internal::check_dims_match_mat(subsys_dims, rA))
-        throw Exception("qpp::applyCTRL()",
-                        Exception::Type::MATRIX_MISMATCH_SUBSYS);
+        throw exception::MatrixMismatchSubsys("qpp::applyCTRL()");
 
     std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
     ctrlgate.insert(std::end(ctrlgate), std::begin(subsys), std::end(subsys));
@@ -114,8 +110,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     // check that ctrl + gate subsystem is valid
     // with respect to local dimensions
     if (!internal::check_subsys_match_dims(ctrlgate, dims))
-        throw Exception("qpp::applyCTRL()",
-                        Exception::Type::SUBSYS_MISMATCH_DIMS);
+        throw exception::SubsysMismatchDims("qpp::applyCTRL()");
     // END EXCEPTION CHECKS
 
     // construct the table of A^i and (A^dagger)^i
@@ -181,7 +176,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
         // set the rest
         internal::n2multiidx(r_, N - ctrlgatesize,
-                              CdimsCTRLA_bar, CmidxCTRLA_bar);
+                             CdimsCTRLA_bar, CmidxCTRLA_bar);
         for (idx k = 0; k < N - ctrlgatesize; ++k)
         {
             Cmidx[ctrlgate_bar[k]] = CmidxCTRLA_bar[k];
@@ -236,9 +231,9 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
         // set the CTRL part
         internal::n2multiidx(i1_, ctrlsize,
-                              CdimsCTRL, CmidxCTRLrow);
+                             CdimsCTRL, CmidxCTRLrow);
         internal::n2multiidx(i2_, ctrlsize,
-                              CdimsCTRL, CmidxCTRLcol);
+                             CdimsCTRL, CmidxCTRLcol);
 
         for (idx k = 0; k < ctrlsize; ++k)
         {
@@ -248,9 +243,9 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
         // set the rest
         internal::n2multiidx(r1_, N - ctrlgatesize,
-                              CdimsCTRLA_bar, CmidxCTRLA_barrow);
+                             CdimsCTRLA_bar, CmidxCTRLA_barrow);
         internal::n2multiidx(r2_, N - ctrlgatesize,
-                              CdimsCTRLA_bar, CmidxCTRLA_barcol);
+                             CdimsCTRLA_bar, CmidxCTRLA_barcol);
         for (idx k = 0; k < N - ctrlgatesize; ++k)
         {
             Cmidxrow[ctrlgate_bar[k]] = CmidxCTRLA_barrow[k];
@@ -349,8 +344,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     {
         // check that dims match state vector
         if (!internal::check_dims_match_cvect(dims, rstate))
-            throw Exception("qpp::applyCTRL()",
-                            Exception::Type::DIMS_MISMATCH_CVECTOR);
+            throw exception::DimsMismatchCvector("qpp::applyCTRL()");
         if (D == 1)
             return rstate;
 
@@ -381,8 +375,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     {
         // check that dims match state matrix
         if (!internal::check_dims_match_mat(dims, rstate))
-            throw Exception("qpp::applyCTRL()",
-                            Exception::Type::DIMS_MISMATCH_MATRIX);
+            throw exception::DimsMismatchMatrix("qpp::applyCTRL()");
 
         if (D == 1)
             return rstate;
@@ -421,8 +414,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     }
         //************ Exception: not ket nor density matrix ************//
     else
-        throw Exception("qpp::applyCTRL()",
-                        Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+        throw exception::MatrixNotSquareNorCvector("qpp::applyCTRL()");
 }
 
 /**
@@ -456,11 +448,11 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 
     // check zero size
     if (!internal::check_nonzero_size(rstate))
-        throw Exception("qpp::applyCTRL()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::applyCTRL()");
 
     // check valid dims
     if (d < 2)
-        throw Exception("qpp::applyCTRL()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::applyCTRL()");
     // END EXCEPTION CHECKS
 
     idx N = internal::get_num_subsys(static_cast<idx>(rstate.rows()), d);
@@ -498,35 +490,34 @@ dyn_mat<typename Derived1::Scalar> apply(
     // check types
     if (!std::is_same<typename Derived1::Scalar,
             typename Derived2::Scalar>::value)
-        throw Exception("qpp::apply()", Exception::Type::TYPE_MISMATCH);
+        throw exception::TypeMismatch("qpp::apply()");
 
     // check zero sizes
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::apply()");
 
     // check zero sizes
     if (!internal::check_nonzero_size(rstate))
-        throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::apply()");
 
     // check square matrix for the gate
     if (!internal::check_square_mat(rA))
-        throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw exception::MatrixNotSquare("qpp::apply()");
 
     // check that dimension is valid
     if (!internal::check_dims(dims))
-        throw Exception("qpp::apply()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::apply()");
 
     // check subsys is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(subsys, dims))
-        throw Exception("qpp::apply()", Exception::Type::SUBSYS_MISMATCH_DIMS);
+        throw exception::SubsysMismatchDims("qpp::apply()");
 
     // check that gate matches the dimensions of the subsys
     std::vector<idx> subsys_dims(subsys.size());
     for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
     if (!internal::check_dims_match_mat(subsys_dims, rA))
-        throw Exception("qpp::apply()",
-                        Exception::Type::MATRIX_MISMATCH_SUBSYS);
+        throw exception::MatrixMismatchSubsys("qpp::apply()");
     // END EXCEPTION CHECKS
 
     //************ ket ************//
@@ -534,8 +525,7 @@ dyn_mat<typename Derived1::Scalar> apply(
     {
         // check that dims match state vector
         if (!internal::check_dims_match_cvect(dims, rstate))
-            throw Exception("qpp::apply()",
-                            Exception::Type::DIMS_MISMATCH_CVECTOR);
+            throw exception::DimsMismatchCvector("qpp::apply()");
 
         return applyCTRL(rstate, rA, {}, subsys, dims);
     }
@@ -545,15 +535,13 @@ dyn_mat<typename Derived1::Scalar> apply(
 
         // check that dims match state matrix
         if (!internal::check_dims_match_mat(dims, rstate))
-            throw Exception("qpp::apply()",
-                            Exception::Type::DIMS_MISMATCH_MATRIX);
+            throw exception::DimsMismatchMatrix("qpp::apply()");
 
         return applyCTRL(rstate, rA, {}, subsys, dims);
     }
         //************ Exception: not ket nor density matrix ************//
     else
-        throw Exception("qpp::apply()",
-                        Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+        throw exception::MatrixNotSquareNorCvector("qpp::apply()");
 }
 
 /**
@@ -584,11 +572,11 @@ dyn_mat<typename Derived1::Scalar> apply(
 
     // check zero size
     if (!internal::check_nonzero_size(rstate))
-        throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::apply()");
 
     // check valid dims
     if (d < 2)
-        throw Exception("qpp::apply()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::apply()");
     // END EXCEPTION CHECKS
 
     idx N = internal::get_num_subsys(static_cast<idx>(rstate.rows()), d);
@@ -614,19 +602,18 @@ cmat apply(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::apply()");
     if (!internal::check_square_mat(rA))
-        throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw exception::MatrixNotSquare("qpp::apply()");
     if (Ks.size() == 0)
-        throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::apply()");
     if (!internal::check_square_mat(Ks[0]))
-        throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw exception::MatrixNotSquare("qpp::apply()");
     if (Ks[0].rows() != rA.rows())
-        throw Exception("qpp::apply()",
-                        Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw exception::DimsMismatchMatrix("qpp::apply()");
     for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-            throw Exception("qpp::apply()", Exception::Type::DIMS_NOT_EQUAL);
+            throw exception::DimsNotEqual("qpp::apply()");
     // END EXCEPTION CHECKS
 
     cmat result = cmat::Zero(rA.rows(), rA.rows());
@@ -669,25 +656,23 @@ cmat apply(const Eigen::MatrixBase<Derived>& A,
 
     // check zero sizes
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::apply()");
 
     // check square matrix for the A
     if (!internal::check_square_mat(rA))
-        throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw exception::MatrixNotSquare("qpp::apply()");
 
     // check that dimension is valid
     if (!internal::check_dims(dims))
-        throw Exception("qpp::apply()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::apply()");
 
     // check that dims match A matrix
     if (!internal::check_dims_match_mat(dims, rA))
-        throw Exception("qpp::apply()",
-                        Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw exception::DimsMismatchMatrix("qpp::apply()");
 
     // check subsys is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(subsys, dims))
-        throw Exception("qpp::apply()",
-                        Exception::Type::SUBSYS_MISMATCH_DIMS);
+        throw exception::SubsysMismatchDims("qpp::apply()");
 
     std::vector<idx> subsys_dims(subsys.size());
     for (idx i = 0; i < subsys.size(); ++i)
@@ -695,15 +680,14 @@ cmat apply(const Eigen::MatrixBase<Derived>& A,
 
     // check the Kraus operators
     if (Ks.size() == 0)
-        throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::apply()");
     if (!internal::check_square_mat(Ks[0]))
-        throw Exception("qpp::apply()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw exception::MatrixNotSquare("qpp::apply()");
     if (!internal::check_dims_match_mat(subsys_dims, Ks[0]))
-        throw Exception("qpp::apply()",
-                        Exception::Type::MATRIX_MISMATCH_SUBSYS);
+        throw exception::MatrixMismatchSubsys("qpp::apply()");
     for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-            throw Exception("qpp::apply()", Exception::Type::DIMS_NOT_EQUAL);
+            throw exception::DimsNotEqual("qpp::apply()");
     // END EXCEPTION CHECKS
 
     cmat result = cmat::Zero(rA.rows(), rA.rows());
@@ -736,11 +720,11 @@ cmat apply(const Eigen::MatrixBase<Derived>& A,
 
     // check zero sizes
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::apply()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::apply()");
 
     // check valid dims
     if (d < 2)
-        throw Exception("qpp::apply()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::apply()");
     // END EXCEPTION CHECKS
 
     idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
@@ -765,16 +749,14 @@ inline cmat kraus2super(const std::vector<cmat>& Ks)
     // EXCEPTION CHECKS
 
     if (Ks.size() == 0)
-        throw Exception("qpp::kraus2super()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::kraus2super()");
     if (!internal::check_nonzero_size(Ks[0]))
-        throw Exception("qpp::kraus2super()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::kraus2super()");
     if (!internal::check_square_mat(Ks[0]))
-        throw Exception("qpp::kraus2super()",
-                        Exception::Type::MATRIX_NOT_SQUARE);
+        throw exception::MatrixNotSquare("qpp::kraus2super()");
     for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-            throw Exception("qpp::kraus2super()",
-                            Exception::Type::DIMS_NOT_EQUAL);
+            throw exception::DimsNotEqual("qpp::kraus2super()");
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(Ks[0].rows());
@@ -843,16 +825,14 @@ inline cmat kraus2choi(const std::vector<cmat>& Ks)
     // EXCEPTION CHECKS
 
     if (Ks.size() == 0)
-        throw Exception("qpp::kraus2choi()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::kraus2choi()");
     if (!internal::check_nonzero_size(Ks[0]))
-        throw Exception("qpp::kraus2choi()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::kraus2choi()");
     if (!internal::check_square_mat(Ks[0]))
-        throw Exception("qpp::kraus2choi()",
-                        Exception::Type::MATRIX_NOT_SQUARE);
+        throw exception::MatrixNotSquare("qpp::kraus2choi()");
     for (auto&& it : Ks)
         if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
-            throw Exception("qpp::kraus2choi()",
-                            Exception::Type::DIMS_NOT_EQUAL);
+            throw exception::DimsNotEqual("qpp::kraus2choi()");
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(Ks[0].rows());
@@ -902,14 +882,13 @@ inline std::vector<cmat> choi2kraus(const cmat& A)
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(A))
-        throw Exception("qpp::choi2kraus()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::choi2kraus()");
     if (!internal::check_square_mat(A))
-        throw Exception("qpp::choi2kraus()",
-                        Exception::Type::MATRIX_NOT_SQUARE);
+        throw exception::MatrixNotSquare("qpp::choi2kraus()");
     idx D = internal::get_dim_subsys(A.rows(), 2);
     // check equal dimensions
     if (D * D != static_cast<idx>(A.rows()))
-        throw Exception("qpp::choi2kraus()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::choi2kraus()");
     // END EXCEPTION CHECKS
 
     dmat ev = hevals(A);
@@ -938,14 +917,13 @@ inline cmat choi2super(const cmat& A)
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(A))
-        throw Exception("qpp::choi2super()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::choi2super()");
     if (!internal::check_square_mat(A))
-        throw Exception("qpp::choi2super()",
-                        Exception::Type::MATRIX_NOT_SQUARE);
+        throw exception::MatrixNotSquare("qpp::choi2super()");
     idx D = internal::get_dim_subsys(static_cast<idx>(A.rows()), 2);
     // check equal dimensions
     if (D * D != static_cast<idx>(A.rows()))
-        throw Exception("qpp::choi2super()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::choi2super()");
     // END EXCEPTION CHECKS
 
     cmat result(D * D, D * D);
@@ -974,14 +952,13 @@ inline cmat super2choi(const cmat& A)
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(A))
-        throw Exception("qpp::super2choi()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::super2choi()");
     if (!internal::check_square_mat(A))
-        throw Exception("qpp::super2choi()",
-                        Exception::Type::MATRIX_NOT_SQUARE);
-    idx D = internal::get_dim_subsys(static_cast<idx>(A.rows()),2);
+        throw exception::MatrixNotSquare("qpp::super2choi()");
+    idx D = internal::get_dim_subsys(static_cast<idx>(A.rows()), 2);
     // check equal dimensions
     if (D * D != static_cast<idx>(A.rows()))
-        throw Exception("qpp::super2choi()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::super2choi()");
     // END EXCEPTION CHECKS
 
     cmat result(D * D, D * D);
@@ -1022,15 +999,15 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::ptrace1()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::ptrace1()");
 
     // check that dims is a valid dimension vector
     if (!internal::check_dims(dims))
-        throw Exception("qpp::ptrace1()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::ptrace1()");
 
     // check dims has only 2 elements
     if (dims.size() != 2)
-        throw Exception("qpp::ptrace1()", Exception::Type::NOT_BIPARTITE);
+        throw exception::NotBipartite("qpp::ptrace1()");
     // END EXCEPTION CHECKS
 
     idx DA = dims[0];
@@ -1044,8 +1021,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
     {
         // check that dims match the dimension of A
         if (!internal::check_dims_match_cvect(dims, rA))
-            throw Exception("qpp::ptrace1()",
-                            Exception::Type::DIMS_MISMATCH_CVECTOR);
+            throw exception::DimsMismatchCvector("qpp::ptrace1()");
 
         auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar
         {
@@ -1070,8 +1046,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
     {
         // check that dims match the dimension of A
         if (!internal::check_dims_match_mat(dims, rA))
-            throw Exception("qpp::ptrace1()",
-                            Exception::Type::DIMS_MISMATCH_MATRIX);
+            throw exception::DimsMismatchMatrix("qpp::ptrace1()");
 
         auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar
         {
@@ -1093,8 +1068,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
     }
         //************ Exception: not ket nor density matrix ************//
     else
-        throw Exception("qpp::ptrace1()",
-                        Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+        throw exception::MatrixNotSquareNorCvector("qpp::ptrace1()");
 }
 
 /**
@@ -1120,12 +1094,11 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 
     // check zero size
     if (!internal::check_nonzero_size(A))
-        throw Exception("qpp::ptrace1()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::ptrace1()");
 
     // check valid dims
     if (d == 0)
-        throw Exception("qpp::ptrace1()",
-                        Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::ptrace1()");
     // END EXCEPTION CHECKS
 
     std::vector<idx> dims(2, d); // local dimensions vector
@@ -1157,15 +1130,15 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::ptrace2()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::ptrace2()");
 
     // check that dims is a valid dimension vector
     if (!internal::check_dims(dims))
-        throw Exception("qpp::ptrace2()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::ptrace2()");
 
     // check dims has only 2 elements
     if (dims.size() != 2)
-        throw Exception("qpp::ptrace2()", Exception::Type::NOT_BIPARTITE);
+        throw exception::NotBipartite("qpp::ptrace2()");
     // END EXCEPTION CHECKS
 
     idx DA = dims[0];
@@ -1179,8 +1152,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
     {
         // check that dims match the dimension of A
         if (!internal::check_dims_match_cvect(dims, rA))
-            throw Exception("qpp::ptrace2()",
-                            Exception::Type::DIMS_MISMATCH_CVECTOR);
+            throw exception::DimsMismatchCvector("qpp::ptrace2()");
 
         auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar
         {
@@ -1205,8 +1177,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
     {
         // check that dims match the dimension of A
         if (!internal::check_dims_match_mat(dims, rA))
-            throw Exception("qpp::ptrace2()",
-                            Exception::Type::DIMS_MISMATCH_MATRIX);
+            throw exception::DimsMismatchMatrix("qpp::ptrace2()");
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
@@ -1219,8 +1190,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
     }
         //************ Exception: not ket nor density matrix ************//
     else
-        throw Exception("qpp::ptrace1()",
-                        Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+        throw exception::MatrixNotSquareNorCvector("qpp::ptrace1()");
 }
 
 /**
@@ -1246,12 +1216,11 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 
     // check zero size
     if (!internal::check_nonzero_size(A))
-        throw Exception("qpp::ptrace2()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::ptrace2()");
 
     // check valid dims
     if (d == 0)
-        throw Exception("qpp::ptrace2()",
-                        Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::ptrace2()");
     // END EXCEPTION CHECKS
 
     std::vector<idx> dims(2, d); // local dimensions vector
@@ -1285,16 +1254,15 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::ptrace()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::ptrace()");
 
     // check that dims is a valid dimension vector
     if (!internal::check_dims(dims))
-        throw Exception("qpp::ptrace()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::ptrace()");
 
     // check that subsys are valid
     if (!internal::check_subsys_match_dims(subsys, dims))
-        throw Exception("qpp::ptrace()",
-                        Exception::Type::SUBSYS_MISMATCH_DIMS);
+        throw exception::SubsysMismatchDims("qpp::ptrace()");
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
@@ -1340,8 +1308,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     {
         // check that dims match the dimension of A
         if (!internal::check_dims_match_cvect(dims, rA))
-            throw Exception("qpp::ptrace()",
-                            Exception::Type::DIMS_MISMATCH_CVECTOR);
+            throw exception::DimsMismatchCvector("qpp::ptrace()");
 
         if (subsys.size() == dims.size())
         {
@@ -1363,7 +1330,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 
             /* get the row multi-indexes of the complement */
             internal::n2multiidx(i, Nsubsys_bar,
-                                  Cdimssubsys_bar, Cmidxrowsubsys_bar);
+                                 Cdimssubsys_bar, Cmidxrowsubsys_bar);
             /* write them in the global row/col multi-indexes */
             for (idx k = 0; k < Nsubsys_bar; ++k)
             {
@@ -1383,7 +1350,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
                 // now do the sum
                 sm += rA(internal::multiidx2n(Cmidxrow, N, Cdims)) *
                       std::conj(rA(internal::multiidx2n(Cmidxcol, N,
-                                                         Cdims)));
+                                                        Cdims)));
             }
 
             return sm;
@@ -1393,7 +1360,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         {
             // compute the column multi-indexes of the complement
             internal::n2multiidx(j, Nsubsys_bar,
-                                  Cdimssubsys_bar, Cmidxcolsubsys_bar);
+                                 Cdimssubsys_bar, Cmidxcolsubsys_bar);
 #ifdef WITH_OPENMP_
 #pragma omp parallel for
 #endif // WITH_OPENMP_
@@ -1410,8 +1377,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     {
         // check that dims match the dimension of A
         if (!internal::check_dims_match_mat(dims, rA))
-            throw Exception("qpp::ptrace()",
-                            Exception::Type::DIMS_MISMATCH_MATRIX);
+            throw exception::DimsMismatchMatrix("qpp::ptrace()");
 
         if (subsys.size() == dims.size())
         {
@@ -1433,7 +1399,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 
             /* get the row/col multi-indexes of the complement */
             internal::n2multiidx(i, Nsubsys_bar,
-                                  Cdimssubsys_bar, Cmidxrowsubsys_bar);
+                                 Cdimssubsys_bar, Cmidxrowsubsys_bar);
             /* write them in the global row/col multi-indexes */
             for (idx k = 0; k < Nsubsys_bar; ++k)
             {
@@ -1462,7 +1428,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         {
             // compute the column multi-indexes of the complement
             internal::n2multiidx(j, Nsubsys_bar,
-                                  Cdimssubsys_bar, Cmidxcolsubsys_bar);
+                                 Cdimssubsys_bar, Cmidxcolsubsys_bar);
 #ifdef WITH_OPENMP_
 #pragma omp parallel for
 #endif // WITH_OPENMP_
@@ -1476,8 +1442,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     }
         //************ Exception: not ket nor density matrix ************//
     else
-        throw Exception("qpp::ptrace()",
-                        Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+        throw exception::MatrixNotSquareNorCvector("qpp::ptrace()");
 }
 
 /**
@@ -1505,11 +1470,11 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 
     // check zero size
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::ptrace()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::ptrace()");
 
     // check valid dims
     if (d < 2)
-        throw Exception("qpp::ptrace()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::ptrace()");
     // END EXCEPTION CHECKS
 
     idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
@@ -1543,16 +1508,15 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::ptranspose()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::ptranspose()");
 
     // check that dims is a valid dimension vector
     if (!internal::check_dims(dims))
-        throw Exception("qpp::ptranspose()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::ptranspose()");
 
     // check that subsys are valid
     if (!internal::check_subsys_match_dims(subsys, dims))
-        throw Exception("qpp::ptranspose()",
-                        Exception::Type::SUBSYS_MISMATCH_DIMS);
+        throw exception::SubsysMismatchDims("qpp::ptranspose()");
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
@@ -1575,8 +1539,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
     {
         // check that dims match the dimension of A
         if (!internal::check_dims_match_cvect(dims, rA))
-            throw Exception("qpp::ptranspose()",
-                            Exception::Type::DIMS_MISMATCH_CVECTOR);
+            throw exception::DimsMismatchCvector("qpp::ptranspose()");
 
         if (subsys.size() == dims.size())
             return (rA * adjoint(rA)).transpose();
@@ -1602,7 +1565,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
             /* writes the result */
             return rA(internal::multiidx2n(midxrow, N, Cdims)) *
                    std::conj(rA(internal::multiidx2n(midxcoltmp, N,
-                                                      Cdims)));
+                                                     Cdims)));
         }; /* end worker */
 
         for (idx j = 0; j < D; ++j)
@@ -1624,8 +1587,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
     {
         // check that dims match the dimension of A
         if (!internal::check_dims_match_mat(dims, rA))
-            throw Exception("qpp::ptranspose()",
-                            Exception::Type::DIMS_MISMATCH_MATRIX);
+            throw exception::DimsMismatchMatrix("qpp::ptranspose()");
 
         if (subsys.size() == dims.size())
             return rA.transpose();
@@ -1669,8 +1631,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
     }
         //************ Exception: not ket nor density matrix ************//
     else
-        throw Exception("qpp::ptranspose()",
-                        Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+        throw exception::MatrixNotSquareNorCvector("qpp::ptranspose()");
 }
 
 /**
@@ -1698,11 +1659,11 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 
     // check zero size
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::ptranspose()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::ptranspose()");
 
     // check valid dims
     if (d < 2)
-        throw Exception("qpp::ptranspose()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::ptranspose()");
     // END EXCEPTION CHECKS
 
     idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
@@ -1735,20 +1696,19 @@ dyn_mat<typename Derived::Scalar> syspermute(
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::syspermute()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::syspermute()");
 
     // check that dims is a valid dimension vector
     if (!internal::check_dims(dims))
-        throw Exception("qpp::syspermute()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::syspermute()");
 
     // check that we have a valid permutation
     if (!internal::check_perm(perm))
-        throw Exception("qpp::syspermute()", Exception::Type::PERM_INVALID);
+        throw exception::PermInvalid("qpp::syspermute()");
 
     // check that permutation match dimensions
     if (perm.size() != dims.size())
-        throw Exception("qpp::syspermute()",
-                        Exception::Type::PERM_MISMATCH_DIMS);
+        throw exception::PermMismatchDims("qpp::syspermute()");
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
@@ -1764,8 +1724,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
 
         // check that dims match the dimension of rA
         if (!internal::check_dims_match_cvect(dims, rA))
-            throw Exception("qpp::syspermute()",
-                            Exception::Type::DIMS_MISMATCH_CVECTOR);
+            throw exception::DimsMismatchCvector("qpp::syspermute()");
 
         // copy dims in Cdims and perm in Cperm
         for (idx i = 0; i < N; ++i)
@@ -1811,8 +1770,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
 
         // check that dims match the dimension of rA
         if (!internal::check_dims_match_mat(dims, rA))
-            throw Exception("qpp::syspermute()",
-                            Exception::Type::DIMS_MISMATCH_MATRIX);
+            throw exception::DimsMismatchMatrix("qpp::syspermute()");
 
         // copy dims in Cdims and perm in Cperm
         for (idx i = 0; i < N; ++i)
@@ -1860,8 +1818,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
     }
         //************ Exception: not ket nor density matrix ************//
     else
-        throw Exception("qpp::syspermute()",
-                        Exception::Type::MATRIX_NOT_SQUARE_OR_CVECTOR);
+        throw exception::MatrixNotSquareNorCvector("qpp::syspermute()");
 }
 
 /**
@@ -1888,11 +1845,11 @@ dyn_mat<typename Derived::Scalar> syspermute(
 
     // check zero size
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::syspermute()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::syspermute()");
 
     // check valid dims
     if (d < 2)
-        throw Exception("qpp::syspermute()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::syspermute()");
     // END EXCEPTION CHECKS
 
     idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);

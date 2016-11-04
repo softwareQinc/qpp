@@ -51,8 +51,8 @@ TEST(qpp_compperm, NonNegativeNumbers)
     EXPECT_EQ(result3, qpp::compperm(sigma3, tau3));
 }
 /******************************************************************************/
-/// BEGIN double qpp::contfrac2x(const std::vector<int>& cf)
-TEST(qpp_contfrac2x, AllTests)
+/// BEGIN double qpp::contfrac2x(const std::vector<int>& cf, idx N = idx(-1))
+TEST(qpp_contfrac2x, DefaultN)
 {
     EXPECT_NEAR(0, qpp::contfrac2x({0}), 1e-7);
     EXPECT_NEAR(42, qpp::contfrac2x({42}), 1e-7);
@@ -63,9 +63,8 @@ TEST(qpp_contfrac2x, AllTests)
     EXPECT_NEAR(-0.4321, qpp::contfrac2x({0, -2, -3, -5, -2}), 1e-5);
     EXPECT_NEAR(std::sqrt(19), qpp::contfrac2x({4, 2, 1, 3, 1, 2, 8}), 1e-3);
 }
-/******************************************************************************/
-/// BEGIN double qpp::contfrac2x(const std::vector<int>& cf, idx n)
-TEST(qpp_contfrac2x_n, AllTests)
+
+TEST(qpp_contfrac2x, UserSpecifiedN)
 {
     EXPECT_NEAR(0, qpp::contfrac2x({0}, 1), 1e-7);
     EXPECT_NEAR(42, qpp::contfrac2x({42}, 1), 1e-7);
@@ -363,22 +362,8 @@ TEST(qpp_modpow, PositiveNumbers)
 
 TEST(qpp_modpow_exception, ParameterOutOfRange)
 {
-    EXPECT_THROW(qpp::modpow(0, 0, 2), qpp::Exception);
     // example of how to unit-test for an exception
-    try
-    {
-        qpp::modpow(0, 0, 2); // 0^0 is not defined
-        FAIL() << "Exception: qpp::modpow() ";
-    }
-    catch (const qpp::Exception& err)
-    {
-        std::string err_what{"IN qpp::modpow(): Parameter out of range!"};
-        EXPECT_EQ(err.what(), err_what);
-    }
-    catch (...)
-    {
-        FAIL() << "Other exception";
-    }
+    EXPECT_THROW(qpp::modpow(0, 0, 2), qpp::exception::OutOfRange);
 }
 /******************************************************************************/
 /// BEGIN bigint qpp::randprime(bigint a, bigint b, idx N = 1000)

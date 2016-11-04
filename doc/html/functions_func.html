@@ -108,11 +108,11 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>codeword()
 : <a class="el" href="classqpp_1_1_codes.html#a7e86e08f62d809e5387fb2f09db86f38">qpp::Codes</a>
 </li>
-<li>construct_exception_msg_()
-: <a class="el" href="classqpp_1_1_exception.html#ad477096ae45fece50fce169940343549">qpp::Exception</a>
-</li>
 <li>CTRL()
 : <a class="el" href="classqpp_1_1_gates.html#ab390c9b9e6cc1bd4e95738550c964935">qpp::Gates</a>
+</li>
+<li>CustomException()
+: <a class="el" href="classqpp_1_1exception_1_1_custom_exception.html#a0553a8f4323e79ce85f0daaaaf266b7d">qpp::exception::CustomException</a>
 </li>
 </ul>
 
@@ -133,10 +133,10 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 <h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
 <li>Exception()
-: <a class="el" href="classqpp_1_1_exception.html#af31368e08ce7c7161ddaf65b3f27d5b2">qpp::Exception</a>
+: <a class="el" href="classqpp_1_1exception_1_1_exception.html#ace80f0387fb88cdf04d9790c04e84e34">qpp::exception::Exception</a>
 </li>
 <li>expandout()
-: <a class="el" href="classqpp_1_1_gates.html#a5014ffc8efc8e6495891eaadb30895a9">qpp::Gates</a>
+: <a class="el" href="classqpp_1_1_gates.html#a358b9c74a625899d3e20a5cb62012692">qpp::Gates</a>
 </li>
 </ul>
 
@@ -257,12 +257,46 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>toc()
 : <a class="el" href="classqpp_1_1_timer.html#a05a542928cd438e98300051789ab846a">qpp::Timer&lt; T, CLOCK_T &gt;</a>
 </li>
+<li>type_description()
+: <a class="el" href="classqpp_1_1exception_1_1_custom_exception.html#a7de72730361536cd1d440032dbf41d2e">qpp::exception::CustomException</a>
+, <a class="el" href="classqpp_1_1exception_1_1_dims_invalid.html#a36774717234e82d3b805b35306815027">qpp::exception::DimsInvalid</a>
+, <a class="el" href="classqpp_1_1exception_1_1_dims_mismatch_cvector.html#a13a2f5f67399be066a5493102a98e328">qpp::exception::DimsMismatchCvector</a>
+, <a class="el" href="classqpp_1_1exception_1_1_dims_mismatch_matrix.html#a7afde3694c84842e5090909b8eb69f5d">qpp::exception::DimsMismatchMatrix</a>
+, <a class="el" href="classqpp_1_1exception_1_1_dims_mismatch_rvector.html#aa8bafb43fa723c2ef742b52f89b6e5ad">qpp::exception::DimsMismatchRvector</a>
+, <a class="el" href="classqpp_1_1exception_1_1_dims_mismatch_vector.html#af9e13951af27be0e78e31290c9b8c617">qpp::exception::DimsMismatchVector</a>
+, <a class="el" href="classqpp_1_1exception_1_1_dims_not_equal.html#a678c3afac31e41a9ad7ef8c923af6026">qpp::exception::DimsNotEqual</a>
+, <a class="el" href="classqpp_1_1exception_1_1_exception.html#ad168fa9286728cb4600352b5ccbf7093">qpp::exception::Exception</a>
+, <a class="el" href="classqpp_1_1exception_1_1_matrix_mismatch_subsys.html#a27acc13a55bb7f28f1812e6ebe0e0db2">qpp::exception::MatrixMismatchSubsys</a>
+, <a class="el" href="classqpp_1_1exception_1_1_matrix_not_cvector.html#aadba74190d65a9a42ef7fbafb362b1c8">qpp::exception::MatrixNotCvector</a>
+, <a class="el" href="classqpp_1_1exception_1_1_matrix_not_rvector.html#a328d3f45af33cd6595e5f74576161ea4">qpp::exception::MatrixNotRvector</a>
+, <a class="el" href="classqpp_1_1exception_1_1_matrix_not_square.html#adc9e4258225acec4947dacb62dadecf5">qpp::exception::MatrixNotSquare</a>
+, <a class="el" href="classqpp_1_1exception_1_1_matrix_not_square_nor_cvector.html#a191b1f8130465d08436148a2cb7bd937">qpp::exception::MatrixNotSquareNorCvector</a>
+, <a class="el" href="classqpp_1_1exception_1_1_matrix_not_square_nor_rvector.html#a2f011e1f682afa014c5f72c33feb08fb">qpp::exception::MatrixNotSquareNorRvector</a>
+, <a class="el" href="classqpp_1_1exception_1_1_matrix_not_square_nor_vector.html#a095b0550f6b30243d05dffbce127700c">qpp::exception::MatrixNotSquareNorVector</a>
+, <a class="el" href="classqpp_1_1exception_1_1_matrix_not_vector.html#ae3a8e0d1bdbeee6bee50df3663691f6d">qpp::exception::MatrixNotVector</a>
+, <a class="el" href="classqpp_1_1exception_1_1_no_codeword.html#a5a05899d59b2ef5561f3d7ede736d9e8">qpp::exception::NoCodeword</a>
+, <a class="el" href="classqpp_1_1exception_1_1_not_bipartite.html#ae191d8e230f056799c442b0397dc3897">qpp::exception::NotBipartite</a>
+, <a class="el" href="classqpp_1_1exception_1_1_not_qubit_cvector.html#a4443587d306d5b3a8651b8fc8a3d1968">qpp::exception::NotQubitCvector</a>
+, <a class="el" href="classqpp_1_1exception_1_1_not_qubit_matrix.html#ac3052142962583222bdeb168bfd50c8f">qpp::exception::NotQubitMatrix</a>
+, <a class="el" href="classqpp_1_1exception_1_1_not_qubit_rvector.html#ad6fc9fe34ad06f099cfe671ffb09af23">qpp::exception::NotQubitRvector</a>
+, <a class="el" href="classqpp_1_1exception_1_1_not_qubit_subsys.html#a1b0914e6d3afe7ab1d01838a23a2253d">qpp::exception::NotQubitSubsys</a>
+, <a class="el" href="classqpp_1_1exception_1_1_not_qubit_vector.html#a565d5af9da18b4f28b213b3cb125dab9">qpp::exception::NotQubitVector</a>
+, <a class="el" href="classqpp_1_1exception_1_1_out_of_range.html#a3fccbae1d089e1ca69834670a926833d">qpp::exception::OutOfRange</a>
+, <a class="el" href="classqpp_1_1exception_1_1_perm_invalid.html#ac6a7f455ebba1d1b0945ce4026fba515">qpp::exception::PermInvalid</a>
+, <a class="el" href="classqpp_1_1exception_1_1_perm_mismatch_dims.html#a4e2ca3fa7656c3d79b5981950f27675e">qpp::exception::PermMismatchDims</a>
+, <a class="el" href="classqpp_1_1exception_1_1_size_mismatch.html#ab954808711509b692fb5f23dae8d2886">qpp::exception::SizeMismatch</a>
+, <a class="el" href="classqpp_1_1exception_1_1_subsys_mismatch_dims.html#a4047a84c1b236d9c50aaa7d8ecf49f85">qpp::exception::SubsysMismatchDims</a>
+, <a class="el" href="classqpp_1_1exception_1_1_type_mismatch.html#af0ee99da8c103db10d906076311c2277">qpp::exception::TypeMismatch</a>
+, <a class="el" href="classqpp_1_1exception_1_1_undefined_type.html#a328734b31818d46a05f54c2cec4ad921">qpp::exception::UndefinedType</a>
+, <a class="el" href="classqpp_1_1exception_1_1_unknown.html#aa8ee3393db4e3100da83a8a3fbbaaa9e">qpp::exception::Unknown</a>
+, <a class="el" href="classqpp_1_1exception_1_1_zero_size.html#ae2a0cf38a84a116926e61fd5bbf8b5f4">qpp::exception::ZeroSize</a>
+</li>
 </ul>
 
 
 <h3><a class="anchor" id="index_w"></a>- w -</h3><ul>
 <li>what()
-: <a class="el" href="classqpp_1_1_exception.html#a6d2b9a19d101bac561bf079ed7bef177">qpp::Exception</a>
+: <a class="el" href="classqpp_1_1exception_1_1_exception.html#abb94523d706510494700248ad6a36665">qpp::exception::Exception</a>
 </li>
 </ul>
 
@@ -315,7 +349,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 2 2016 18:57:05 for Quantum++ by
+    <li class="footer">Generated on Thu Nov 3 2016 22:49:43 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

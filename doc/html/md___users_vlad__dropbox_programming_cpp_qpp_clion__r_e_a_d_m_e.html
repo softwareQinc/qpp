@@ -135,7 +135,7 @@ make
 </pre><h3>Unit testing</h3>
 <p>Quantum++ was extensively tested via a suite of unit tests constructed with <a href="https://github.com/google/googletest">Google Test 1.8.0</a> (included with the project in <code>./unit_tests/lib/gtest-1.8.0</code>). The source code of the unit tests is provided under <code>./unit_tests/tests</code>. To build and run the unit tests, I strongly recommend to use <a href="http://www.cmake.org/">CMake</a> version 3.0.0 or later. Assuming you do use <a href="http://www.cmake.org/">CMake</a>, switch to the <code>./unit_tests</code> directory, create a <code>build</code> directory inside it, then from the newly created <code>./unit_tests/build</code> type </p><pre class="fragment">cmake ..
 make
-</pre><p>The commands above build <code>./unit_tests/build/tests/qpp_testing</code>, which you then may run.</p>
+</pre><p>The commands above build <code>./unit_tests/build/tests/qpp_testing</code>, which you then may run. Note that <code><a class="el" href="classqpp_1_1_timer.html" title="Chronometer. ">qpp::Timer</a></code> tests or tests related to random functions such as <code><a class="el" href="namespaceqpp.html#a2f1ee80e9136dc4c16d964b45d7e188d" title="Generates a random real number uniformly distributed in the interval [a, b) ">qpp::rand()</a></code> may sometime (very rarely) fail, due to timing imprecision or statistical errors. Such a behaviour is perfectly normal.</p>
 <h5>Note</h5>
 <p>The <a href="http://www.cmake.org/">CMake</a> configuration file <code>./unit_tests/CMakeLists.txt</code> defines the same building options and default choices as the main <code>./CMakeLists.txt</code> of Quantum++. Therefore you can use the same flags as the ones mentioned at the beginning of this document when customizing the build. You should modify <code>./unit_tests/CMakeLists.txt</code> accordingly in case your <a href="http://eigen.tuxfamily.org">Eigen 3</a> library or <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> include/library files are in a different location than the one assumed in this document.</p>
 <h3>Additional remarks</h3>
@@ -163,7 +163,7 @@ make
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 2 2016 18:57:04 for Quantum++ by
+    <li class="footer">Generated on Thu Nov 3 2016 22:49:41 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

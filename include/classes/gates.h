@@ -106,8 +106,8 @@ public:
 
         // check 3-dimensional vector
         if (n.size() != 3)
-            throw Exception("qpp::Gates::Rn()",
-                            "n is not a 3-dimensional vector!");
+            throw exception::CustomException("qpp::Gates::Rn()",
+                                             "n is not a 3-dimensional vector!");
         // END EXCEPTION CHECKS
 
         cmat result(2, 2);
@@ -132,7 +132,7 @@ public:
         // EXCEPTION CHECKS
 
         if (D == 0)
-            throw Exception("qpp::Gates::Zd()", Exception::Type::DIMS_INVALID);
+            throw exception::DimsInvalid("qpp::Gates::Zd()");
         // END EXCEPTION CHECKS
 
         cmat result = cmat::Zero(D, D);
@@ -156,7 +156,7 @@ public:
         // EXCEPTION CHECKS
 
         if (D == 0)
-            throw Exception("qpp::Gates::Fd()", Exception::Type::DIMS_INVALID);
+            throw exception::DimsInvalid("qpp::Gates::Fd()");
         // END EXCEPTION CHECKS
 
         cmat result(D, D);
@@ -185,7 +185,7 @@ public:
         // EXCEPTION CHECKS
 
         if (D == 0)
-            throw Exception("qpp::Gates::Xd()", Exception::Type::DIMS_INVALID);
+            throw exception::DimsInvalid("qpp::Gates::Xd()");
         // END EXCEPTION CHECKS
 
         return Fd(D).inverse() * Zd(D) * Fd(D);
@@ -206,7 +206,7 @@ public:
         // EXCEPTION CHECKS
 
         if (D == 0)
-            throw Exception("qpp::Gates::Id()", Exception::Type::DIMS_INVALID);
+            throw exception::DimsInvalid("qpp::Gates::Id()");
         // END EXCEPTION CHECKS
 
         return Derived::Identity(D, D);
@@ -239,28 +239,25 @@ public:
 
         // check matrix zero size
         if (!internal::check_nonzero_size(rA))
-            throw Exception("qpp::Gates::CTRL()", Exception::Type::ZERO_SIZE);
+            throw exception::ZeroSize("qpp::Gates::CTRL()");
 
         // check square matrix
         if (!internal::check_square_mat(rA))
-            throw Exception("qpp::Gates::CTRL()",
-                            Exception::Type::MATRIX_NOT_SQUARE);
+            throw exception::MatrixNotSquare("qpp::Gates::CTRL()");
 
         // check lists zero size
         if (ctrl.size() == 0)
-            throw Exception("qpp::Gates::CTRL()", Exception::Type::ZERO_SIZE);
+            throw exception::ZeroSize("qpp::Gates::CTRL()");
         if (subsys.size() == 0)
-            throw Exception("qpp::Gates::CTRL()", Exception::Type::ZERO_SIZE);
+            throw exception::ZeroSize("qpp::Gates::CTRL()");
 
         // check out of range
         if (N == 0)
-            throw Exception("qpp::Gates::CTRL()",
-                            Exception::Type::OUT_OF_RANGE);
+            throw exception::OutOfRange("qpp::Gates::CTRL()");
 
         // check valid local dimension
         if (d == 0)
-            throw Exception("qpp::Gates::CTRL()",
-                            Exception::Type::DIMS_INVALID);
+            throw exception::DimsInvalid("qpp::Gates::CTRL()");
 
         // ctrl + gate subsystem vector
         std::vector<idx> ctrlgate = ctrl;
@@ -273,13 +270,11 @@ public:
         // check that ctrl + gate subsystem is valid
         // with respect to local dimensions
         if (!internal::check_subsys_match_dims(ctrlgate, dims))
-            throw Exception("qpp::Gates::CTRL()",
-                            Exception::Type::SUBSYS_MISMATCH_DIMS);
+            throw exception::SubsysMismatchDims("qpp::Gates::CTRL()");
 
         // check that subsys list match the dimension of the matrix
         if (rA.rows() != std::llround(std::pow(d, subsys.size())))
-            throw Exception("qpp::Gates::CTRL()",
-                            Exception::Type::DIMS_MISMATCH_MATRIX);
+            throw exception::DimsMismatchMatrix("qpp::Gates::CTRL()");
         // END EXCEPTION CHECKS
 
         // Use static allocation for speed!
@@ -408,28 +403,23 @@ public:
 
         // check zero-size
         if (!internal::check_nonzero_size(rA))
-            throw Exception("qpp::Gates::expandout()",
-                            Exception::Type::ZERO_SIZE);
+            throw exception::ZeroSize("qpp::Gates::expandout()");
 
         // check that dims is a valid dimension vector
         if (!internal::check_dims(dims))
-            throw Exception("qpp::Gates::expandout()",
-                            Exception::Type::DIMS_INVALID);
+            throw exception::DimsInvalid("qpp::Gates::expandout()");
 
         // check square matrix
         if (!internal::check_square_mat(rA))
-            throw Exception("qpp::Gates::expandout()",
-                            Exception::Type::MATRIX_NOT_SQUARE);
+            throw exception::MatrixNotSquare("qpp::Gates::expandout()");
 
         // check that position is valid
         if (pos > dims.size() - 1)
-            throw Exception("qpp::Gates::expandout()",
-                            Exception::Type::OUT_OF_RANGE);
+            throw exception::OutOfRange("qpp::Gates::expandout()");
 
         // check that dims[pos] match the dimension of A
         if (static_cast<idx>(rA.rows()) != dims[pos])
-            throw Exception("qpp::Gates::expandout()",
-                            Exception::Type::DIMS_MISMATCH_MATRIX);
+            throw exception::DimsMismatchMatrix("qpp::Gates::expandout()");
         // END EXCEPTION CHECKS
 
         idx D = std::accumulate(std::begin(dims), std::end(dims),
@@ -534,13 +524,11 @@ public:
 
         // check zero size
         if (!internal::check_nonzero_size(A))
-            throw Exception("qpp::Gates::expandout()",
-                            Exception::Type::ZERO_SIZE);
+            throw exception::ZeroSize("qpp::Gates::expandout()");
 
         // check valid dims
         if (d == 0)
-            throw Exception("qpp::Gates::expandout()",
-                            Exception::Type::DIMS_INVALID);
+            throw exception::DimsInvalid("qpp::Gates::expandout()");
         // END EXCEPTION CHECKS
 
         std::vector<idx> dims(N, d); // local dimensions vector

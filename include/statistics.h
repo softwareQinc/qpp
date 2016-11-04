@@ -43,7 +43,7 @@ inline std::vector<double> uniform(idx N)
     // EXCEPTION CHECKS
 
     if (N == 0)
-        throw Exception("qpp::uniform", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::uniform()");
     // END EXCEPTION CHECKS
 
     return std::vector<double>(N, 1. / N);
@@ -62,7 +62,7 @@ inline std::vector<double> marginalX(const dmat& probXY)
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(probXY))
-        throw Exception("qpp::marginalX", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::marginalX()");
     // END EXCEPTION CHECKS
 
     std::vector<double> result(probXY.rows(), 0);
@@ -90,7 +90,7 @@ inline std::vector<double> marginalY(const dmat& probXY)
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(probXY))
-        throw Exception("qpp::marginalY", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::marginalY()");
     // END EXCEPTION CHECKS
 
     return marginalX(probXY.transpose());
@@ -113,9 +113,9 @@ double avg(const std::vector<double>& prob, const Container& X,
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(prob))
-        throw Exception("qpp:avg", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::avg()");
     if (!internal::check_matching_sizes(prob, X))
-        throw Exception("qpp:avg", Exception::Type::SIZE_MISMATCH);
+        throw exception::SizeMismatch("qpp::avg()");
     // END EXCEPTION CHECKS
 
     double result = 0;
@@ -145,10 +145,10 @@ double cov(const dmat& probXY,
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(X) || !internal::check_nonzero_size(Y))
-        throw Exception("qpp:cov", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::cov()");
     if (static_cast<idx>(probXY.rows()) != X.size() ||
         static_cast<idx>(probXY.cols()) != Y.size())
-        throw Exception("qpp:cov", Exception::Type::SIZE_MISMATCH);
+        throw exception::SizeMismatch("qpp::cov()");
     // END EXCEPTION CHECKS
 
     std::vector<double> probX = marginalX(probXY); // marginals
@@ -182,9 +182,9 @@ double var(const std::vector<double>& prob, const Container& X,
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(prob))
-        throw Exception("qpp:var", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::var()");
     if (!internal::check_matching_sizes(prob, X))
-        throw Exception("qpp:var", Exception::Type::SIZE_MISMATCH);
+        throw exception::SizeMismatch("qpp::var()");
     // END EXCEPTION CHECKS
 
     Eigen::VectorXd diag(prob.size());
@@ -211,9 +211,9 @@ double sigma(const std::vector<double>& prob, const Container& X,
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(prob))
-        throw Exception("qpp:sigma", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::sigma()");
     if (!internal::check_matching_sizes(prob, X))
-        throw Exception("qpp:sigma", Exception::Type::SIZE_MISMATCH);
+        throw exception::SizeMismatch("qpp::sigma()");
     // END EXCEPTION CHECKS
 
     return std::sqrt(var(prob, X));
@@ -239,10 +239,10 @@ double cor(const dmat& probXY,
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(X) || !internal::check_nonzero_size(Y))
-        throw Exception("qpp:cor", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::cor()");
     if (static_cast<idx>(probXY.rows()) != X.size() ||
         static_cast<idx>(probXY.cols()) != Y.size())
-        throw Exception("qpp:cor", Exception::Type::SIZE_MISMATCH);
+        throw exception::SizeMismatch("qpp::cor()");
     // END EXCEPTION CHECKS
 
     return cov(probXY, X, Y) / (sigma(marginalX(probXY), X) *

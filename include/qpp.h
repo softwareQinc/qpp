@@ -41,6 +41,7 @@
 #define QPP_UNUSED_
 #endif
 
+// standard C++ library headers
 #include <algorithm>
 #include <cassert>
 #include <chrono>
@@ -68,8 +69,11 @@
 #include <utility>
 #include <vector>
 
+// Eigen headers
 #include <Eigen/Dense>
 #include <Eigen/SVD>
+
+// Quantum++ headers
 
 // pre-processor macros, make them visible to the whole library
 #include "macros.h"

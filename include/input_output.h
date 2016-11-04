@@ -136,7 +136,7 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::save()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::save()");
 
     std::fstream fout;
     fout.open(fname, std::ios::out | std::ios::binary);
@@ -191,9 +191,8 @@ dyn_mat<typename Derived::Scalar> load(const std::string& fname)
 
     if (fin.fail())
     {
-        throw std::runtime_error(
-                "qpp::load(): Error opening input file \""
-                + std::string(fname) + "\"!");
+        throw std::runtime_error("qpp::load(): Error opening input file \""
+                                 + std::string(fname) + "\"!");
     }
 
     const std::string header_ = "TYPE::Eigen::Matrix";

@@ -4,7 +4,39 @@ var hierarchy =
       [ "qpp::internal::IOManipEigen", "classqpp_1_1internal_1_1_i_o_manip_eigen.html", null ]
     ] ],
     [ "std::exception", null, [
-      [ "qpp::Exception", "classqpp_1_1_exception.html", null ]
+      [ "qpp::exception::Exception", "classqpp_1_1exception_1_1_exception.html", [
+        [ "qpp::exception::CustomException", "classqpp_1_1exception_1_1_custom_exception.html", null ],
+        [ "qpp::exception::DimsInvalid", "classqpp_1_1exception_1_1_dims_invalid.html", null ],
+        [ "qpp::exception::DimsMismatchCvector", "classqpp_1_1exception_1_1_dims_mismatch_cvector.html", null ],
+        [ "qpp::exception::DimsMismatchMatrix", "classqpp_1_1exception_1_1_dims_mismatch_matrix.html", null ],
+        [ "qpp::exception::DimsMismatchRvector", "classqpp_1_1exception_1_1_dims_mismatch_rvector.html", null ],
+        [ "qpp::exception::DimsMismatchVector", "classqpp_1_1exception_1_1_dims_mismatch_vector.html", null ],
+        [ "qpp::exception::DimsNotEqual", "classqpp_1_1exception_1_1_dims_not_equal.html", null ],
+        [ "qpp::exception::MatrixMismatchSubsys", "classqpp_1_1exception_1_1_matrix_mismatch_subsys.html", null ],
+        [ "qpp::exception::MatrixNotCvector", "classqpp_1_1exception_1_1_matrix_not_cvector.html", null ],
+        [ "qpp::exception::MatrixNotRvector", "classqpp_1_1exception_1_1_matrix_not_rvector.html", null ],
+        [ "qpp::exception::MatrixNotSquare", "classqpp_1_1exception_1_1_matrix_not_square.html", null ],
+        [ "qpp::exception::MatrixNotSquareNorCvector", "classqpp_1_1exception_1_1_matrix_not_square_nor_cvector.html", null ],
+        [ "qpp::exception::MatrixNotSquareNorRvector", "classqpp_1_1exception_1_1_matrix_not_square_nor_rvector.html", null ],
+        [ "qpp::exception::MatrixNotSquareNorVector", "classqpp_1_1exception_1_1_matrix_not_square_nor_vector.html", null ],
+        [ "qpp::exception::MatrixNotVector", "classqpp_1_1exception_1_1_matrix_not_vector.html", null ],
+        [ "qpp::exception::NoCodeword", "classqpp_1_1exception_1_1_no_codeword.html", null ],
+        [ "qpp::exception::NotBipartite", "classqpp_1_1exception_1_1_not_bipartite.html", null ],
+        [ "qpp::exception::NotQubitCvector", "classqpp_1_1exception_1_1_not_qubit_cvector.html", null ],
+        [ "qpp::exception::NotQubitMatrix", "classqpp_1_1exception_1_1_not_qubit_matrix.html", null ],
+        [ "qpp::exception::NotQubitRvector", "classqpp_1_1exception_1_1_not_qubit_rvector.html", null ],
+        [ "qpp::exception::NotQubitSubsys", "classqpp_1_1exception_1_1_not_qubit_subsys.html", null ],
+        [ "qpp::exception::NotQubitVector", "classqpp_1_1exception_1_1_not_qubit_vector.html", null ],
+        [ "qpp::exception::OutOfRange", "classqpp_1_1exception_1_1_out_of_range.html", null ],
+        [ "qpp::exception::PermInvalid", "classqpp_1_1exception_1_1_perm_invalid.html", null ],
+        [ "qpp::exception::PermMismatchDims", "classqpp_1_1exception_1_1_perm_mismatch_dims.html", null ],
+        [ "qpp::exception::SizeMismatch", "classqpp_1_1exception_1_1_size_mismatch.html", null ],
+        [ "qpp::exception::SubsysMismatchDims", "classqpp_1_1exception_1_1_subsys_mismatch_dims.html", null ],
+        [ "qpp::exception::TypeMismatch", "classqpp_1_1exception_1_1_type_mismatch.html", null ],
+        [ "qpp::exception::UndefinedType", "classqpp_1_1exception_1_1_undefined_type.html", null ],
+        [ "qpp::exception::Unknown", "classqpp_1_1exception_1_1_unknown.html", null ],
+        [ "qpp::exception::ZeroSize", "classqpp_1_1exception_1_1_zero_size.html", null ]
+      ] ]
     ] ],
     [ "false_type", null, [
       [ "qpp::is_complex< T >", "structqpp_1_1is__complex.html", null ],

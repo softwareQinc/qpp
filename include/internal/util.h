@@ -31,7 +31,7 @@ namespace qpp
 {
 /**
 * \namespace qpp::internal
-* \brief Internal utility functions, do not use/modify
+* \brief Internal utility functions, do not use them directly or modify them
 */
 namespace internal
 {
@@ -302,15 +302,15 @@ dyn_mat<typename Derived1::Scalar> kron2(const Eigen::MatrixBase<Derived1>& A,
     // check types
     if (!std::is_same<typename Derived1::Scalar,
             typename Derived2::Scalar>::value)
-        throw Exception("qpp::kron()", Exception::Type::TYPE_MISMATCH);
+        throw exception::TypeMismatch("qpp::kron()");
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::kron()");
 
     // check zero-size
     if (!internal::check_nonzero_size(rB))
-        throw Exception("qpp::kron()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::kron()");
     // END EXCEPTION CHECKS
 
     idx Acols = static_cast<idx>(rA.cols());
@@ -346,15 +346,15 @@ dyn_mat<typename Derived1::Scalar> dirsum2(
     // check types
     if (!std::is_same<typename Derived1::Scalar,
             typename Derived2::Scalar>::value)
-        throw Exception("qpp::dirsum()", Exception::Type::TYPE_MISMATCH);
+        throw exception::TypeMismatch("qpp::dirsum()");
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::dirsum()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::dirsum()");
 
     // check zero-size
     if (!internal::check_nonzero_size(rB))
-        throw Exception("qpp::dirsum()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::dirsum()");
     // END EXCEPTION CHECKS
 
     idx Acols = static_cast<idx>(rA.cols());

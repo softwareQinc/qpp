@@ -48,11 +48,11 @@ double entropy(const Eigen::MatrixBase<Derived>& A)
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::entropy()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::entropy()");
 
     // check square matrix
     if (!internal::check_square_mat(rA))
-        throw Exception("qpp::entropy()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw exception::MatrixNotSquare("qpp::entropy()");
     // END EXCEPTION CHECKS
 
     dmat ev = svals(rA); // get the singular values
@@ -76,7 +76,7 @@ inline double entropy(const std::vector<double>& prob)
 
     // check zero-size
     if (!internal::check_nonzero_size(prob))
-        throw Exception("qpp::entropy()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::entropy()");
     // END EXCEPTION CHECKS
 
     double result = 0;
@@ -108,14 +108,14 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::renyi()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::renyi()");
 
     // check square matrix
     if (!internal::check_square_mat(rA))
-        throw Exception("qpp::renyi()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw exception::MatrixNotSquare("qpp::renyi()");
 
     if (alpha < 0)
-        throw Exception("qpp::renyi()", Exception::Type::OUT_OF_RANGE);
+        throw exception::OutOfRange("qpp::renyi()");
     // END EXCEPTION CHECKS
 
     if (alpha == 0) // H max
@@ -154,10 +154,10 @@ inline double renyi(const std::vector<double>& prob, double alpha)
 
     // check zero-size
     if (!internal::check_nonzero_size(prob))
-        throw Exception("qpp::renyi()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::renyi()");
 
     if (alpha < 0)
-        throw Exception("qpp::renyi()", Exception::Type::OUT_OF_RANGE);
+        throw exception::OutOfRange("qpp::renyi()");
 
     if (alpha == 0) // H max
         return std::log2(prob.size());
@@ -205,14 +205,14 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double q)
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::tsallis()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::tsallis()");
 
     // check square matrix
     if (!internal::check_square_mat(rA))
-        throw Exception("qpp::tsallis()", Exception::Type::MATRIX_NOT_SQUARE);
+        throw exception::MatrixNotSquare("qpp::tsallis()");
 
     if (q < 0)
-        throw Exception("qpp::tsallis()", Exception::Type::OUT_OF_RANGE);
+        throw exception::OutOfRange("qpp::tsallis()");
     // END EXCEPTION CHECKS
 
     if (q == 1) // Shannon/von-Neumann with base e logarithm
@@ -245,10 +245,10 @@ inline double tsallis(const std::vector<double>& prob, double q)
 
     // check zero-size
     if (!internal::check_nonzero_size(prob))
-        throw Exception("qpp::tsallis()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::tsallis()");
 
     if (q < 0)
-        throw Exception("qpp::tsallis()", Exception::Type::OUT_OF_RANGE);
+        throw exception::OutOfRange("qpp::tsallis()");
     // END EXCEPTION CHECKS
 
     if (q == 1) // Shannon/von-Neumann with base e logarithm
@@ -283,27 +283,24 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::qmutualinfo()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::qmutualinfo()");
 
     // check that dims is a valid dimension vector
     if (!internal::check_dims(dims))
-        throw Exception("qpp::qmutualinfo()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::qmutualinfo()");
 
     // check square matrix
     if (!internal::check_square_mat(rA))
-        throw Exception("qpp::qmutualinfo()",
-                        Exception::Type::MATRIX_NOT_SQUARE);
+        throw exception::MatrixNotSquare("qpp::qmutualinfo()");
 
     // check that dims match the dimension of A
     if (!internal::check_dims_match_mat(dims, rA))
-        throw Exception("qpp::qmutualinfo()",
-                        Exception::Type::DIMS_MISMATCH_MATRIX);
+        throw exception::DimsMismatchMatrix("qpp::qmutualinfo()");
 
     // check that subsys are valid
     if (!internal::check_subsys_match_dims(subsysA, dims)
         || !internal::check_subsys_match_dims(subsysB, dims))
-        throw Exception("qpp::qmutualinfo()",
-                        Exception::Type::SUBSYS_MISMATCH_DIMS);
+        throw exception::SubsysMismatchDims("qpp::qmutualinfo()");
     // END EXCEPTION CHECKS
 
     // The full system indexes {0,1,...,n-1}
@@ -357,11 +354,11 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw Exception("qpp::qmutualinfo()", Exception::Type::ZERO_SIZE);
+        throw exception::ZeroSize("qpp::qmutualinfo()");
 
     // check valid dims
     if (d < 2)
-        throw Exception("qpp::qmutualinfo()", Exception::Type::DIMS_INVALID);
+        throw exception::DimsInvalid("qpp::qmutualinfo()");
     // END EXCEPTION CHECKS
 
     idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);

@@ -24,131 +24,59 @@
 * \brief Exceptions
 */
 
-#ifndef CLASSES_EXCEPTION_H_
-#define CLASSES_EXCEPTION_H_
+#ifndef CLASSES_EXCEPTION1_H_
+#define CLASSES_EXCEPTION1_H_
 
 namespace qpp
 {
-
 /**
-* \class qpp::Exception
-* \brief Generates custom exceptions, used when validating function parameters
+* \namespace qpp::exception
+* \brief Quantum++ exception hierarchy namespace
+*/
+namespace exception
+{
+/**
+* \class qpp::exception::Exception
+* \brief Base class for generating Quantum++ custom exceptions
 *
-* Customize this class if more exceptions are needed
+* Derive from this class if more exceptions are needed, making sure to override
+* qpp::exception::Exception::type_description() in the derived class and to
+* inherit the constructor qpp::exception::Exception::Exception. Preferably keep
+* your newly defined exception classes in the namespace qpp::exception
+*
+* Example:
+* \code
+* namespace qpp
+* {
+* namespace exception
+* {
+*     class ZeroSize : public Exception
+*     {
+*     public:
+*         std::string type_description() const override
+*         {
+*             return "Object has zero size";
+*         }
+*
+*         // inherit the qpp::exception::Exception constructor
+*         using Exception::Exception;
+*     };
+* } // namespace exception
+* } // namespace qpp
+* \endcode
 */
 class Exception : public std::exception
 {
+private:
+    std::string where_;
 public:
     /**
-    * \brief Exception types, add more here if needed
-    * \see qpp::Exception::construct_exception_msg_()
-    */
-    enum class Type // exception types
-    {
-        UNKNOWN_EXCEPTION = 1,
-        /*!< Unknown exception */
-                ZERO_SIZE,
-        /*!< Zero sized object, e.g. empty Eigen::Matrix
-         * or std::vector with no elements */
-                MATRIX_NOT_SQUARE,
-        /*!< Eigen::Matrix is not square */
-                MATRIX_NOT_CVECTOR,
-        /*!< Eigen::Matrix is not a column vector */
-                MATRIX_NOT_RVECTOR,
-        /*!< Eigen::Matrix is not a row vector */
-                MATRIX_NOT_VECTOR,
-        /*!< Eigen::Matrix is not a row/column vector */
-                MATRIX_NOT_SQUARE_OR_CVECTOR,
-        /*!< Eigen::Matrix is not square nor a column vector */
-                MATRIX_NOT_SQUARE_OR_RVECTOR,
-        /*!< Eigen::Matrix is not square nor a row vector */
-                MATRIX_NOT_SQUARE_OR_VECTOR,
-        /*!< Eigen::Matrix is not square nor a row/column vector */
-                MATRIX_MISMATCH_SUBSYS,
-        /*!< Matrix size mismatch subsystem sizes (e.g. in qpp::apply()) */
-                DIMS_INVALID,
-        /*!< std::vector<idx> of dimensions has zero size or contains zeros */
-                DIMS_NOT_EQUAL,
-        /*!< Local/global dimensions are not equal */
-                DIMS_MISMATCH_MATRIX,
-        /*!< Product of the elements of std::vector<idx> of dimensions
-         * is not equal to the number of rows of Eigen::Matrix
-         * (assumed to be a square matrix) */
-                DIMS_MISMATCH_CVECTOR,
-        /*!< Product of the elements of std::vector<idx> of dimensions
-         * is not equal to the number of elements of Eigen::Matrix
-         * (assumed to be a column vector) */
-                DIMS_MISMATCH_RVECTOR,
-        /*!< Product of the elements of std::vector<idx> of dimensions
-         * is not equal to the number of elements of Eigen::Matrix
-         * (assumed to be a row vector) */
-                DIMS_MISMATCH_VECTOR,
-        /*!< Product of the elements of std::vector<idx> of dimensions
-         * is not equal to the number of elements of Eigen::Matrix
-         * (assumed to be a row/column vector) */
-                SUBSYS_MISMATCH_DIMS,
-        /*!< std::vector<idx> of subsystem labels has duplicates,
-         * or has entries that are larger than the size of
-         * the std::vector<idx> of dimensions */
-                PERM_INVALID,
-        /*!< std::vector<idx> does note represent a valid permutation */
-                PERM_MISMATCH_DIMS,
-        /*!< Size of the std::vector<idx> representing the permutation
-         * is different from the size of the std::vector<idx> of dimensions */
-                NOT_QUBIT_MATRIX,
-        /*!<  Eigen::Matrix is not 2 x 2*/
-                NOT_QUBIT_CVECTOR,
-        /*!<  Eigen::Matrix is not 2 x 1*/
-                NOT_QUBIT_RVECTOR,
-        /*!<  Eigen::Matrix is not 1 x 2*/
-                NOT_QUBIT_VECTOR,
-        /*!<  Eigen::Matrix is not 1 x 2 nor 2 x 1*/
-                NOT_QUBIT_SUBSYS,
-        /*!< Subsystems are not 2-dimensional */
-                NOT_BIPARTITE,
-        /*!< std::vector<idx> of dimensions has size different from 2 */
-                NO_CODEWORD,
-        /*!< Codeword does not exist, thrown when calling
-         * qpp::Codes::codeword() with invalid index \a i */
-                OUT_OF_RANGE,
-        /*!< Parameter out of range */
-                TYPE_MISMATCH,
-        /*!< Scalar types do not match */
-                SIZE_MISMATCH,
-        /*!< Sizes do not match */
-                UNDEFINED_TYPE,
-        /*!< Templated specialization not defined for this type */
-                CUSTOM_EXCEPTION
-        /*!< Custom exception, the user must provide a custom message */
-    };
-
-    /**
     * \brief Constructs an exception
     *
-    * \param where Text representing where the exception occured
-    * \param type Exception type, defined in qpp::Exception::Type
+    * \param where Text representing where the exception occurred
     */
-    Exception(const std::string& where, const Type& type) :
-            where_{where}, msg_{}, type_{type}, custom_{}
-    {
-        construct_exception_msg_();
-    }
-
-    /**
-    * \brief Constructs an exception
-    *
-    * \overload
-    *
-    * \param where Text representing where the exception occured
-    * \param custom Exception description
-    */
-    Exception(const std::string& where, const std::string& custom) :
-            where_{where}, msg_{}, type_{Type::CUSTOM_EXCEPTION},
-            custom_{custom}
-    {
-        construct_exception_msg_();
-        msg_ += custom; // add the custom message at the end
-    }
+    Exception(const std::string& where) : where_{where}
+    {}
 
     /**
     * \brief Overrides std::exception::what()
@@ -157,125 +85,568 @@ public:
     */
     virtual const char* what() const noexcept override
     {
-        return msg_.c_str();
-    }
-
-private:
-    std::string where_, msg_;
-    Type type_;
-    std::string custom_;
-
-    /**
-    * \brief Constructs the exception description from its type
-    * \see qpp::Exception::Type
-    *
-    * Must modify the code of this function if more exceptions are added
-    */
-    void construct_exception_msg_()
-    {
+        std::string msg_;
         msg_ += "IN ";
         msg_ += where_;
         msg_ += ": ";
-
-        switch (type_)
-        {
-            case Type::UNKNOWN_EXCEPTION:
-                msg_ += "UNKNOWN EXCEPTION!";
-                break;
-            case Type::ZERO_SIZE:
-                msg_ += "Object has zero size!";
-                break;
-            case Type::MATRIX_NOT_SQUARE:
-                msg_ += "Matrix is not square!";
-                break;
-            case Type::MATRIX_NOT_CVECTOR:
-                msg_ += "Matrix is not column vector!";
-                break;
-            case Type::MATRIX_NOT_RVECTOR:
-                msg_ += "Matrix is not row vector!";
-                break;
-            case Type::MATRIX_NOT_VECTOR:
-                msg_ += "Matrix is not vector!";
-                break;
-            case Type::MATRIX_NOT_SQUARE_OR_CVECTOR:
-                msg_ += "Matrix is not square nor column vector!";
-                break;
-            case Type::MATRIX_NOT_SQUARE_OR_RVECTOR:
-                msg_ += "Matrix is not square nor row vector!";
-                break;
-            case Type::MATRIX_NOT_SQUARE_OR_VECTOR:
-                msg_ += "Matrix is not square nor vector!";
-                break;
-            case Type::MATRIX_MISMATCH_SUBSYS:
-                msg_ += "Matrix mismatch subsystems!";
-                break;
-            case Type::DIMS_INVALID:
-                msg_ += "Invalid dimension(s)!";
-                break;
-            case Type::DIMS_NOT_EQUAL:
-                msg_ += "Dimensions not equal!";
-                break;
-            case Type::DIMS_MISMATCH_MATRIX:
-                msg_ += "Dimension(s) mismatch matrix size!";
-                break;
-            case Type::DIMS_MISMATCH_CVECTOR:
-                msg_ += "Dimension(s) mismatch column vector!";
-                break;
-            case Type::DIMS_MISMATCH_RVECTOR:
-                msg_ += "Dimension(s) mismatch row vector!";
-                break;
-            case Type::DIMS_MISMATCH_VECTOR:
-                msg_ += "Dimension(s) mismatch vector!";
-                break;
-            case Type::SUBSYS_MISMATCH_DIMS:
-                msg_ += "Subsystems mismatch dimensions!";
-                break;
-            case Type::PERM_INVALID:
-                msg_ += "Invalid permutation!";
-                break;
-            case Type::PERM_MISMATCH_DIMS:
-                msg_ += "Permutation mismatch dimensions!";
-                break;
-            case Type::NOT_QUBIT_MATRIX:
-                msg_ += "Matrix is not 2 x 2!";
-                break;
-            case Type::NOT_QUBIT_CVECTOR:
-                msg_ += "Column vector is not 2 x 1!";
-                break;
-            case Type::NOT_QUBIT_RVECTOR:
-                msg_ += "Row vector is not 1 x 2!";
-                break;
-            case Type::NOT_QUBIT_VECTOR:
-                msg_ += "Vector is not 2 x 1 nor 1 x 2!";
-                break;
-            case Type::NOT_QUBIT_SUBSYS:
-                msg_ += "Subsystems are not qubits!";
-                break;
-            case Type::NOT_BIPARTITE:
-                msg_ += "Not bi-partite!";
-                break;
-            case Type::NO_CODEWORD:
-                msg_ += "Codeword does not exist!";
-                break;
-            case Type::OUT_OF_RANGE:
-                msg_ += "Parameter out of range!";
-                break;
-            case Type::TYPE_MISMATCH:
-                msg_ += "Type mismatch!";
-                break;
-            case Type::SIZE_MISMATCH:
-                msg_ += "Size mismatch!";
-                break;
-            case Type::UNDEFINED_TYPE:
-                msg_ += "Not defined for this type!";
-                break;
-            case Type::CUSTOM_EXCEPTION:
-                msg_ += "CUSTOM EXCEPTION ";
-                break;
-        }
+        msg_ += this->type_description();
+        msg_ += "!";
+        return msg_.c_str();
     }
+
+    /**
+    * \brief Exception type description
+    *
+    * \return Exception type description
+    */
+    virtual std::string type_description() const = 0;
 }; /* class Exception */
 
+inline std::string Exception::type_description() const
+{
+    return "qpp::exception::Exception";
+}
+
+/**
+* \class qpp::exception::Unknown
+* \brief Unknown exception
+*
+* Thrown when no other exception is suitable (not recommended, it is better to
+* define another suitable exception type)
+*/
+class Unknown : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "UNKNOWN EXCEPTION";
+    }
+};
+
+/**
+* \class qpp::exception::ZeroSize
+* \brief Object has zero size exception
+*
+* Zero sized object, e.g. empty Eigen::Matrix or std::vector with no elements
+*/
+class ZeroSize : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Object has zero size";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::MatrixNotSquare
+* \brief Matrix is not square exception
+*
+* Eigen::Matrix is not a square matrix
+*/
+class MatrixNotSquare : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Matrix is not square";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::MatrixNotCvector
+* \brief Matrix is not a column vector exception
+*
+* Eigen::Matrix is not a column vector
+*/
+class MatrixNotCvector : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Matrix is not a column vector";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::MatrixNotRvector
+* \brief Matrix is not a row vector exception
+*
+* Eigen::Matrix is not a row vector
+*/
+class MatrixNotRvector : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Matrix is not a row vector";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::MatrixNotVector
+* \brief Matrix is not a vector exception
+*
+* Eigen::Matrix is not a row or column vector
+*/
+class MatrixNotVector : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Matrix is not a vector";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::MatrixNotSquareNorCvector
+* \brief Matrix is not square nor column vector exception
+*
+* Eigen::Matrix is not a square matrix nor a column vector
+*/
+class MatrixNotSquareNorCvector : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Matrix is not square nor column vector";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::MatrixNotSquareNorRvector
+* \brief Matrix is not square nor row vector exception
+*
+* Eigen::Matrix is not a square matrix nor a row vector
+*/
+class MatrixNotSquareNorRvector : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Matrix is not square nor row vector";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::MatrixNotSquareNorVector
+* \brief Matrix is not square nor vector exception
+*
+* Eigen::Matrix is not a square matrix nor a row/column vector
+*/
+class MatrixNotSquareNorVector : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Matrix is not square nor vector";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::MatrixMismatchSubsys
+* \brief Matrix mismatch subsystems exception
+*
+* Matrix size mismatch subsystem sizes (e.g. in qpp::apply())
+*/
+class MatrixMismatchSubsys : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Matrix mismatch subsystems";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::DimsInvalid
+* \brief Invalid dimension(s) exception
+*
+* std::vector<idx> of dimensions has zero size or contains zeros
+*/
+class DimsInvalid : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Invalid dimension(s)";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::DimsNotEqual
+* \brief Dimensions not equal exception
+*
+* Local/global dimensions are not equal
+*/
+class DimsNotEqual : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Dimensions not equal";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::DimsMismatchMatrix
+* \brief Dimension(s) mismatch matrix size exception
+*
+* Product of the elements of std::vector<idx> of dimensions is not equal to
+* the number of rows of the Eigen::Matrix (assumed to be a square matrix)
+*/
+class DimsMismatchMatrix : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Dimension(s) mismatch matrix size";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::DimsMismatchCvector
+* \brief Dimension(s) mismatch column vector size exception
+*
+* Product of the elements of std::vector<idx> of dimensions is not equal to
+* the number of elements of the Eigen::Matrix (assumed to be a column vector)
+*/
+class DimsMismatchCvector : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Dimension(s) mismatch column vector size";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::DimsMismatchRvector
+* \brief Dimension(s) mismatch row vector size exception
+*
+* Product of the elements of std::vector<idx> of dimensions is not equal to
+* the number of elements of the Eigen::Matrix (assumed to be a row vector)
+*/
+class DimsMismatchRvector : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Dimension(s) mismatch row vector size";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::DimsMismatchVector
+* \brief Dimension(s) mismatch vector size exception
+*
+* Product of the elements of std::vector<idx> of dimensions is not equal to
+* the number of elements of the Eigen::Matrix (assumed to be a row/column
+* vector)
+*/
+class DimsMismatchVector : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Dimension(s) mismatch vector size";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::SubsysMismatchDims
+* \brief Subsystems mismatch dimensions exception
+*
+* std::vector<idx> of subsystem labels has duplicates, or has entries that are
+* larger than the size of the std::vector<idx> of dimensions
+*/
+class SubsysMismatchDims : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Subsystems mismatch dimensions";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::PermInvalid
+* \brief Invalid permutation exception
+*
+* std::vector<idx> does note represent a valid permutation
+*/
+class PermInvalid : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Invalid permutation";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::PermMismatchDims
+* \brief Permutation mismatch dimensions exception
+*
+* Size of the std::vector<idx> representing the permutation is different from
+* the size of the std::vector<idx> of dimensions
+*/
+class PermMismatchDims : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Permutation mismatch dimensions";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::NotQubitMatrix
+* \brief Matrix is not 2 x 2 exception
+*
+* Eigen::Matrix is not 2 x 2
+*/
+class NotQubitMatrix : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Matrix is not 2 x 2";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::NotQubitCvector
+* \brief Column vector is not 2 x 1 exception
+*
+* Eigen::Matrix is not 2 x 1
+*/
+class NotQubitCvector : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Column vector is not 2 x 1";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::NotQubitRvector
+* \brief Row vector is not 1 x 2 exception
+*
+* Eigen::Matrix is not 1 x 2
+*/
+class NotQubitRvector : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Row vector is not 1 x 2";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::NotQubitVector
+* \brief Vector is not 2 x 1 nor 1 x 2 exception
+*
+* Eigen::Matrix is not 2 x 1 nor 1 x 2
+*/
+class NotQubitVector : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Vector is not 2 x 1 nor 1 x 2";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::NotQubitSubsys
+* \brief Subsystems are not qubits exception
+*
+* Subsystems are not 2-dimensional (qubits)
+*/
+class NotQubitSubsys : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Subsystems are not qubits";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::NotBipartite
+* \brief Not bi-partite exception
+*
+* std::vector<idx> of dimensions has size different from 2
+*/
+class NotBipartite : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Not bi-partite";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::NoCodeword
+* \brief Codeword does not exist exception
+*
+* Codeword does not exist, thrown when calling qpp::Codes::codeword() with an
+* invalid index
+*/
+class NoCodeword : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Codeword does not exist";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::OutOfRange
+* \brief Parameter out of range exception
+*
+* Parameter out of range
+*/
+class OutOfRange : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Parameter out of range";
+    }
+
+    using Exception::Exception;
+};
+
+
+/**
+* \class qpp::exception::TypeMismatch
+* \brief Type mismatch exception
+*
+* Scalar types do not match
+*/
+class TypeMismatch : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Type mismatch";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::SizeMismatch
+* \brief Size mismatch exception
+*
+* Sizes do not match
+*/
+class SizeMismatch : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Size mismatch";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::UndefinedType
+* \brief Not defined for this type exception
+*
+* Templated specialization is not defined for this type
+*/
+class UndefinedType : public Exception
+{
+public:
+    std::string type_description() const override
+    {
+        return "Not defined for this type";
+    }
+
+    using Exception::Exception;
+};
+
+/**
+* \class qpp::exception::CustomException
+* \brief Custom exception
+*
+* Custom exception, the user must provide a custom message
+*/
+class CustomException : public Exception
+{
+    std::string what_{};
+
+    std::string type_description() const override
+    {
+        return "CUSTOM EXCEPTION " + what_;
+    }
+
+public:
+    CustomException(const std::string& where, const std::string& what) :
+            Exception{where}, what_{what}
+    {}
+};
+
+} /* namespace exceptions */
 } /* namespace qpp */
 
-#endif /* CLASSES_EXCEPTION_H_ */
+#endif /* CLASSES_EXCEPTION1_H_ */

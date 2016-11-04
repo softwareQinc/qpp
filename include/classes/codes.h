@@ -122,8 +122,7 @@ public:
                                  / 4.;
                         break;
                     default:
-                        throw Exception("qpp::Codes::codeword()",
-                                        Exception::Type::NO_CODEWORD);
+                        throw exception::NoCodeword("qpp::Codes::codeword()");
                 }
                 break;
                 // [[7,1,3]] Steane code according to Nielsen and Chuang)
@@ -154,8 +153,7 @@ public:
                                  std::sqrt(8.);
                         break;
                     default:
-                        throw Exception("qpp::Codes::codeword()",
-                                        Exception::Type::NO_CODEWORD);
+                        throw exception::NoCodeword("qpp::Codes::codeword()");
                 }
                 break;
                 // [[9,1,3]] Shor code
@@ -174,8 +172,7 @@ public:
                                  / std::sqrt(8.);
                         break;
                     default:
-                        throw Exception("qpp::Codes::codeword()",
-                                        Exception::Type::NO_CODEWORD);
+                        throw exception::NoCodeword("qpp::Codes::codeword()");
                 }
         }
 

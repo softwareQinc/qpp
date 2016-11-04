@@ -1,8 +1,7 @@
 var number__theory_8h =
 [
     [ "compperm", "number__theory_8h.html#a9a0cdf917f1a5e398e9978fb36141a27", null ],
-    [ "contfrac2x", "number__theory_8h.html#aa255ece30b2b162c7694faaf5eccfc19", null ],
-    [ "contfrac2x", "number__theory_8h.html#a155296775ac0c0cd0cfe52c2ade8f14c", null ],
+    [ "contfrac2x", "number__theory_8h.html#a33f4dd20b7c8cdd7d07c596e5b83ee2e", null ],
     [ "egcd", "number__theory_8h.html#a0d115963145ca884c5d9ef8f3b18bf83", null ],
     [ "factors", "number__theory_8h.html#a048622e398319b61f9ea62a6c66e67fb", null ],
     [ "gcd", "number__theory_8h.html#a51f32c6f38bc3b174ee257b26c7750a2", null ],

@@ -98,8 +98,7 @@ public:
 
         // check valid dims
         if (d == 0)
-            throw Exception("qpp::States::mes()",
-                            Exception::Type::DIMS_INVALID);
+            throw exception::DimsInvalid("qpp::States::mes()");
         // END EXCEPTION CHECKS
 
         ket psi = mket({0, 0}, {d, d});
@@ -124,12 +123,10 @@ public:
 
         // check out of range
         if (n == 0)
-            throw Exception("qpp::States::zero()",
-                            Exception::Type::OUT_OF_RANGE);
+            throw exception::OutOfRange("qpp::States::zero()");
         // check valid dims
         if (d == 0)
-            throw Exception("qpp::States::zero()",
-                            Exception::Type::DIMS_INVALID);
+            throw exception::DimsInvalid("qpp::States::zero()");
         // END EXCEPTION CHECKS
 
         idx D = std::pow(d, n);
@@ -152,12 +149,10 @@ public:
 
         // check out of range
         if (n == 0)
-            throw Exception("qpp::States::one()",
-                            Exception::Type::OUT_OF_RANGE);
+            throw exception::OutOfRange("qpp::States::one()");
         // check valid dims
         if (d == 0)
-            throw Exception("qpp::States::one()",
-                            Exception::Type::DIMS_INVALID);
+            throw exception::DimsInvalid("qpp::States::one()");
         // END EXCEPTION CHECKS
 
         ket result = ket::Zero(std::pow(d, n));
@@ -180,17 +175,14 @@ public:
 
         // check out of range
         if (n == 0)
-            throw Exception("qpp::States::jn()",
-                            Exception::Type::OUT_OF_RANGE);
+            throw exception::OutOfRange("qpp::States::jn()");
         // check valid subsystem
         if (j >= d)
-            throw Exception("qpp::States::jn()",
-                            Exception::Type::SUBSYS_MISMATCH_DIMS);
+            throw exception::SubsysMismatchDims("qpp::States::jn()");
 
         // check valid dims
         if (d == 0)
-            throw Exception("qpp::States::jn()",
-                            Exception::Type::DIMS_INVALID);
+            throw exception::DimsInvalid("qpp::States::jn()");
         // END EXCEPTION CHECKS
 
         ket result = ket::Zero(std::pow(d, n));
@@ -211,8 +203,7 @@ public:
 
         // check out of range
         if (n == 0)
-            throw Exception("qpp::States::plus()",
-                            Exception::Type::OUT_OF_RANGE);
+            throw exception::OutOfRange("qpp::States::plus()");
         // END EXCEPTION CHECKS
 
         idx D = std::pow(2, n);
@@ -233,8 +224,7 @@ public:
 
         // check out of range
         if (n == 0)
-            throw Exception("qpp::States::minus()",
-                            Exception::Type::OUT_OF_RANGE);
+            throw exception::OutOfRange("qpp::States::minus()");
         // END EXCEPTION CHECKS
 
         return kronpow(this->x1, n);
