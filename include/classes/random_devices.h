@@ -29,7 +29,6 @@
 
 namespace qpp
 {
-
 /**
 * \class qpp::RandomDevices
 * \brief Singeleton class that manages the source of randomness in the library

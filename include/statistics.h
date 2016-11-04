@@ -27,11 +27,8 @@
 #ifndef STATISTICS_H_
 #define STATISTICS_H_
 
-// Collection of statistics-related functions
-
 namespace qpp
 {
-
 /**
 * \brief Uniform probability distribution vector
 *

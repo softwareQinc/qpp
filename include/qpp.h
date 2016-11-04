@@ -115,7 +115,6 @@
 */
 namespace qpp
 {
-
 /**
 * \brief qpp::Init const Singleton
 *

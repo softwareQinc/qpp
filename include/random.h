@@ -29,7 +29,6 @@
 
 namespace qpp
 {
-
 /**
 * \brief Generates a random real number uniformly distributed in
 * the interval [a, b)

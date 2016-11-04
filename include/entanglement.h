@@ -27,11 +27,8 @@
 #ifndef ENTANGLEMENT_H_
 #define ENTANGLEMENT_H_
 
-// entanglement
-
 namespace qpp
 {
-
 /**
 * \brief Schmidt coefficients of the bi-partite pure state \a A
 *

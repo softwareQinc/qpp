@@ -35,7 +35,6 @@
 
 namespace qpp
 {
-
 /**
 * \brief Loads a complex Eigen dynamic matrix from a MATLAB .mat file,
 * \see qpp::saveMATLAB()

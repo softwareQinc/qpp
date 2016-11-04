@@ -46,8 +46,9 @@ TEST(qpp_is_iterable, AllTests)
     EXPECT_TRUE(qpp::is_iterable<std::vector<int>>::value);
     EXPECT_TRUE(qpp::is_iterable<std::list<double>>::value);
 
-    EXPECT_FALSE(qpp::is_iterable<cmat>::value);
-    EXPECT_FALSE(qpp::is_iterable<int[10]>::value);
+    class X{};
+    EXPECT_FALSE(qpp::is_iterable<X>::value);
+    EXPECT_FALSE(qpp::is_iterable<qpp::States>::value);
 }
 /******************************************************************************/
 /// BEGIN template<typename T> struct qpp::is_matrix_expression

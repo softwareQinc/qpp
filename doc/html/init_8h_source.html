@@ -97,41 +97,40 @@ $(document).ready(function(){initNavTree('init_8h_source.html','');});
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceqpp.html">qpp</a></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html">   38</a></span>&#160;<span class="keyword">class </span><a class="code" href="classqpp_1_1_init.html">Init</a> final : <span class="keyword">public</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;const Init&gt; <span class="comment">// const Singleton</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html#ac8d1cd0592921282440f9287abf4f22c">   40</a></span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;const <a class="code" href="classqpp_1_1_init.html">Init</a>&gt;;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html#a5650a0e31393cf13755262328f2122e9">   46</a></span>&#160;    <a class="code" href="classqpp_1_1_init.html#a5650a0e31393cf13755262328f2122e9">Init</a>()</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="comment">// set default output format and precision</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        std::cout &lt;&lt; std::fixed; <span class="comment">// use fixed format for nice formatting</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="comment">// std::cout &lt;&lt; std::scientific;</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        std::cout &lt;&lt; std::setprecision(4); <span class="comment">// only for fixed/scientific modes</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html#af6c4566d220d568199e1ca9d954cb8da">   57</a></span>&#160;    <a class="code" href="classqpp_1_1_init.html#af6c4566d220d568199e1ca9d954cb8da">~Init</a>()</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}; <span class="comment">/* class Init */</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* CLASSES_INIT_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="classqpp_1_1internal_1_1_singleton_html"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html">qpp::internal::Singleton</a></div><div class="ttdoc">Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...</div><div class="ttdef"><b>Definition:</b> singleton.h:77</div></div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html">   37</a></span>&#160;<span class="keyword">class </span><a class="code" href="classqpp_1_1_init.html">Init</a> final : <span class="keyword">public</span> <a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;const Init&gt; <span class="comment">// const Singleton</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html#ac8d1cd0592921282440f9287abf4f22c">   39</a></span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classqpp_1_1internal_1_1_singleton.html">internal::Singleton</a>&lt;const <a class="code" href="classqpp_1_1_init.html">Init</a>&gt;;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html#a5650a0e31393cf13755262328f2122e9">   45</a></span>&#160;    <a class="code" href="classqpp_1_1_init.html#a5650a0e31393cf13755262328f2122e9">Init</a>()</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="comment">// set default output format and precision</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        std::cout &lt;&lt; std::fixed; <span class="comment">// use fixed format for nice formatting</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="comment">// std::cout &lt;&lt; std::scientific;</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        std::cout &lt;&lt; std::setprecision(4); <span class="comment">// only for fixed/scientific modes</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classqpp_1_1_init.html#af6c4566d220d568199e1ca9d954cb8da">   56</a></span>&#160;    <a class="code" href="classqpp_1_1_init.html#af6c4566d220d568199e1ca9d954cb8da">~Init</a>()</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}; <span class="comment">/* class Init */</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;} <span class="comment">/* namespace qpp */</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* CLASSES_INIT_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="classqpp_1_1internal_1_1_singleton_html"><div class="ttname"><a href="classqpp_1_1internal_1_1_singleton.html">qpp::internal::Singleton</a></div><div class="ttdoc">Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr...</div><div class="ttdef"><b>Definition:</b> singleton.h:76</div></div>
 <div class="ttc" id="namespaceqpp_html"><div class="ttname"><a href="namespaceqpp.html">qpp</a></div><div class="ttdoc">Quantum++ main namespace. </div><div class="ttdef"><b>Definition:</b> codes.h:30</div></div>
-<div class="ttc" id="classqpp_1_1_init_html"><div class="ttname"><a href="classqpp_1_1_init.html">qpp::Init</a></div><div class="ttdoc">const Singleton class that performs additional initializations/cleanups </div><div class="ttdef"><b>Definition:</b> init.h:38</div></div>
-<div class="ttc" id="classqpp_1_1_init_html_af6c4566d220d568199e1ca9d954cb8da"><div class="ttname"><a href="classqpp_1_1_init.html#af6c4566d220d568199e1ca9d954cb8da">qpp::Init::~Init</a></div><div class="ttdeci">~Init()</div><div class="ttdoc">Cleanups. </div><div class="ttdef"><b>Definition:</b> init.h:57</div></div>
-<div class="ttc" id="classqpp_1_1_init_html_a5650a0e31393cf13755262328f2122e9"><div class="ttname"><a href="classqpp_1_1_init.html#a5650a0e31393cf13755262328f2122e9">qpp::Init::Init</a></div><div class="ttdeci">Init()</div><div class="ttdoc">Additional initializations. </div><div class="ttdef"><b>Definition:</b> init.h:46</div></div>
+<div class="ttc" id="classqpp_1_1_init_html"><div class="ttname"><a href="classqpp_1_1_init.html">qpp::Init</a></div><div class="ttdoc">const Singleton class that performs additional initializations/cleanups </div><div class="ttdef"><b>Definition:</b> init.h:37</div></div>
+<div class="ttc" id="classqpp_1_1_init_html_af6c4566d220d568199e1ca9d954cb8da"><div class="ttname"><a href="classqpp_1_1_init.html#af6c4566d220d568199e1ca9d954cb8da">qpp::Init::~Init</a></div><div class="ttdeci">~Init()</div><div class="ttdoc">Cleanups. </div><div class="ttdef"><b>Definition:</b> init.h:56</div></div>
+<div class="ttc" id="classqpp_1_1_init_html_a5650a0e31393cf13755262328f2122e9"><div class="ttname"><a href="classqpp_1_1_init.html#a5650a0e31393cf13755262328f2122e9">qpp::Init::Init</a></div><div class="ttdeci">Init()</div><div class="ttdoc">Additional initializations. </div><div class="ttdef"><b>Definition:</b> init.h:45</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b02e4219757ae4e3a0f1714873865bbf.html">classes</a></li><li class="navelem"><a class="el" href="init_8h.html">init.h</a></li>
-    <li class="footer">Generated on Fri Nov 4 2016 00:16:44 for Quantum++ by
+    <li class="footer">Generated on Fri Nov 4 2016 11:12:12 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

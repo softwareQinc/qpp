@@ -29,7 +29,6 @@
 
 namespace qpp
 {
-
 /**
 * \class qpp::States
 * \brief const Singleton class that implements most commonly used states

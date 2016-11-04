@@ -118,8 +118,18 @@ private:
     }
 }; // class IOManipPointer
 
+// silence g++4.8.x bogus warning -Wnon-virtual-dtor for
+// qpp::internal::Display_impl_ when class qpp::internal::IOManipEigen
+// privately inherits from it
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#endif
 class IOManipEigen : public IDisplay, private Display_Impl_
 {
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#pragma GCC diagnostic pop
+#endif    
     cmat A_;
     double chop_;
 public:

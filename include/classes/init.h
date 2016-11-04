@@ -29,7 +29,6 @@
 
 namespace qpp
 {
-
 /**
 * \class qpp::Init
 * \brief const Singleton class that performs

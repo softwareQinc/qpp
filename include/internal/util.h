@@ -35,7 +35,6 @@ namespace qpp
 */
 namespace internal
 {
-
 // integer index to multi-index, use C-style array for speed
 // standard lexicographical order, e.g. 00, 01, 10, 11
 inline void n2multiidx(idx n, idx numdims, const idx* const dims, idx* result)

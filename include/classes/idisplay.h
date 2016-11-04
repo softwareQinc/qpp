@@ -29,7 +29,6 @@
 
 namespace qpp
 {
-
 /**
 * \class qpp::IDisplay
 * \brief Abstract class (interface) that mandates the definition of

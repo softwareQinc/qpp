@@ -27,8 +27,6 @@
 #ifndef NUMBER_THEORY_H_
 #define NUMBER_THEORY_H_
 
-// number theory functions
-
 namespace qpp
 {
 /**

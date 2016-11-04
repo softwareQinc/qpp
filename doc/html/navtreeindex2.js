@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"singleton_8h.html":[3,0,2,0,1],
 "singleton_8h_source.html":[3,0,2,0,1],
 "states_8h.html":[3,0,0,6],
 "states_8h_source.html":[3,0,0,6],
@@ -20,10 +21,12 @@ var NAVTREEINDEX2 =
 "structqpp_1_1is__iterable.html":[2,0,0,8],
 "structqpp_1_1is__iterable_3_01_t_00_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_bed4284c2130360c21138c4443e786da.html":[2,0,0,9],
 "structqpp_1_1is__matrix__expression.html":[2,0,0,10],
+"structqpp_1_1make__void.html":[2,0,0,11],
+"structqpp_1_1make__void.html#a131e8cf5e1c59a5bed4a97dd31ce713c":[2,0,0,11,0],
 "timer_8h.html":[3,0,0,7],
 "timer_8h_source.html":[3,0,0,7],
 "traits_8h.html":[3,0,16],
-"traits_8h.html#ac5a6269e292ff74510dcde54072d9437":[3,0,16,5],
+"traits_8h.html#adf4dc551c8858cac37c90b561c5767cc":[3,0,16,6],
 "traits_8h_source.html":[3,0,16],
 "types_8h.html":[3,0,17],
 "types_8h.html#a07c62992d1a236f062887990eea26b15":[3,0,17,5],

@@ -29,7 +29,6 @@
 
 namespace qpp
 {
-
 /**
 * \class qpp::Gates
 * \brief const Singleton class that implements most commonly used gates
@@ -535,7 +534,6 @@ public:
 
         return this->expandout(A, pos, dims);
     }
-
 }; /* class Gates */
 
 } /* namespace qpp */

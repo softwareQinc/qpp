@@ -27,12 +27,8 @@
 #ifndef ENTROPY_H_
 #define ENTROPY_H_
 
-// various entropies, assume as input either
-// a normalized Hermitian matrix or a probability vector
-
 namespace qpp
 {
-
 /**
 * \brief von-Neumann entropy of the density matrix \a A
 *

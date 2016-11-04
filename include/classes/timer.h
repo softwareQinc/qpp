@@ -29,7 +29,6 @@
 
 namespace qpp
 {
-
 /**
 * \class qpp::Timer
 * \brief Chronometer

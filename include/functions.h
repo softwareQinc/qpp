@@ -27,11 +27,8 @@
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 
-// Collection of generic quantum computing functions
-
 namespace qpp
 {
-
 // Eigen function wrappers
 /**
 * \brief Transpose

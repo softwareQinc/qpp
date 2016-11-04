@@ -29,7 +29,6 @@
 
 namespace qpp
 {
-
 /**
 * \class qpp::Codes
 * \brief const Singleton class that defines quantum error correcting codes

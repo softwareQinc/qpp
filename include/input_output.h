@@ -27,11 +27,8 @@
 #ifndef INPUT_OUTPUT_H_
 #define INPUT_OUTPUT_H_
 
-// input/output
-
 namespace qpp
 {
-
 /**
 * \brief Eigen expression ostream manipulator
 *

@@ -31,7 +31,6 @@ namespace qpp
 {
 namespace internal // internal class, do not modify
 {
-
 /**
 * \class qpp::internal::Singleton
 * \brief Singleton policy class, used internally to implement

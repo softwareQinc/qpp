@@ -51,6 +51,7 @@ var hierarchy =
     [ "is_base_of                                                    ", null, [
       [ "qpp::is_matrix_expression< Derived >", "structqpp_1_1is__matrix__expression.html", null ]
     ] ],
+    [ "qpp::make_void< Ts >", "structqpp_1_1make__void.html", null ],
     [ "qpp::internal::Singleton< T >", "classqpp_1_1internal_1_1_singleton.html", null ],
     [ "qpp::internal::Singleton< const Codes >", "classqpp_1_1internal_1_1_singleton.html", [
       [ "qpp::Codes", "classqpp_1_1_codes.html", null ]

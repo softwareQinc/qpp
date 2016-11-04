@@ -27,7 +27,6 @@
 #ifndef INSTRUMENTS_H_
 #define INSTRUMENTS_H_
 
-// instruments
 namespace qpp
 {
 /**

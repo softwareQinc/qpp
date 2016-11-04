@@ -29,7 +29,6 @@
 
 namespace qpp
 {
-
 /**
 * \brief Non-negative integer index
 */

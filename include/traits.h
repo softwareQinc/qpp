@@ -27,18 +27,19 @@
 #ifndef TRAITS_H_
 #define TRAITS_H_
 
-// Collection of some useful type traits
-
 namespace qpp
 {
-
 /**
 * \brief Alias template that implements the proposal for void_t
 *
 * \see http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3911
 */
-template<typename ...>
-using to_void = void;
+// Citing from http://en.cppreference.com/w/cpp/types/void_t:
+// "Until CWG 1558 (a C++14 defect), unused parameters in alias templates were
+// not guaranteed to ensure SFINAE and could be ignored, so earlier compilers
+// require a more complex definition of void_t, such as:" 
+template<typename... Ts> struct make_void { typedef void type;};
+template<typename... Ts> using to_void = typename make_void<Ts...>::type;
 
 /**
 * \brief Checks whether \a T is compatible with an STL-like iterable container
@@ -48,15 +49,28 @@ using to_void = void;
 * \a begin() and \a end() member functions.
 * Otherwise, \a value is equal to \a false.
 */
+// silence g++4.8.x warning about non-virtual destructor in inherited class
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#endif
 template<typename T, typename = void>
 struct is_iterable : std::false_type
 {
 };
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#pragma GCC diagnostic pop
+#endif
 
 /**
 * \brief Checks whether \a T is compatible with an STL-like iterable container,
 * specialization for STL-like iterable containers
 */
+// silence g++4.8.x warning about non-virtual destructor in inherited class
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#endif
 template<typename T>
 struct is_iterable<T,
         to_void<decltype(std::declval<T>().begin()),
@@ -65,6 +79,9 @@ struct is_iterable<T,
         >> : std::true_type
 {
 };
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#pragma GCC diagnostic pop
+#endif
 
 /**
 * \brief Checks whether the type is an Eigen matrix expression
@@ -75,6 +92,11 @@ struct is_iterable<T,
 * Otherwise, \a value is equal to \a false.
 */
 // thanks to @davidhigh http://stackoverflow.com/a/40293333/3093378
+// silence g++4.8.x warning about non-virtual destructor in inherited class
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#endif
 template<typename Derived>
 struct is_matrix_expression : std::is_base_of
                 <
@@ -83,6 +105,9 @@ struct is_matrix_expression : std::is_base_of
                 >
 {
 };
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#pragma GCC diagnostic pop
+#endif
 
 /**
 * \brief Checks whether the type is a complex type
@@ -90,19 +115,35 @@ struct is_matrix_expression : std::is_base_of
 * Provides the constant member \a value which is equal to \a true,
 * if the type is a complex type, i.e. \a std::complex<T>
 */
+// silence g++4.8.x warning about non-virtual destructor in inherited class
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#endif
 template<typename T>
 struct is_complex : std::false_type
 {
 };
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#pragma GCC diagnostic pop
+#endif
 
 /**
 * \brief \brief Checks whether the type is a complex number type,
 * specialization for complex types
 */
+// silence g++4.8.x warning about non-virtual destructor in inherited class
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#endif
 template<typename T>
 struct is_complex<std::complex<T>> : std::true_type
 {
 };
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#pragma GCC diagnostic pop
+#endif
 
 
 } /* namespace qpp */
