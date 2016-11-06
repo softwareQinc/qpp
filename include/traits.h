@@ -29,16 +29,21 @@
 
 namespace qpp
 {
+// Citing from http://en.cppreference.com/w/cpp/types/void_t:
+// "Until CWG 1558 (a C++14 defect), unused parameters in alias templates were
+// not guaranteed to ensure SFINAE and could be ignored, so earlier compilers
+// require a more complex definition of void_t, such as:" 
+/**
+* \brief Helper for qpp::to_void<> alias template
+* \see qpp::to_void<>
+*/  
+template<typename... Ts> struct make_void { typedef void type;};
+
 /**
 * \brief Alias template that implements the proposal for void_t
 *
 * \see http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3911
 */
-// Citing from http://en.cppreference.com/w/cpp/types/void_t:
-// "Until CWG 1558 (a C++14 defect), unused parameters in alias templates were
-// not guaranteed to ensure SFINAE and could be ignored, so earlier compilers
-// require a more complex definition of void_t, such as:" 
-template<typename... Ts> struct make_void { typedef void type;};
 template<typename... Ts> using to_void = typename make_void<Ts...>::type;
 
 /**

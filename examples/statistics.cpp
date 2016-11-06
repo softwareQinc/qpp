@@ -23,7 +23,7 @@ int main()
 
     std::cout << "Mean (X/Y): " << avg(probX, X) << " " << avg(probY, Y)
               << '\n';
-    std::cout << "Standard deviation (X/Y):" << sigma(probX, X) << " "
+    std::cout << "Standard deviation (X/Y): " << sigma(probX, X) << " "
               << sigma(probY, Y) << '\n';
     std::cout << "Variance (X/Y): " << var(probX, X) << " " << var(probY, Y)
               << '\n';

@@ -27,5 +27,5 @@ int main()
     std::cout << disp(std::get<1>(measured), ", ") << '\n';
     std::cout << ">> Resulting states:\n";
     for (auto&& it : std::get<2>(measured))
-        std::cout << disp(it) << '\n';
+        std::cout << disp(it) << "\n\n";
 }

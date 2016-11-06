@@ -151,7 +151,7 @@ Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for generating Quantum++ custom exceptions. </p>
-<p>Derive from this class if more exceptions are needed, making sure to override <a class="el" href="classqpp_1_1exception_1_1_exception.html#ad168fa9286728cb4600352b5ccbf7093" title="Exception type description. ">qpp::exception::Exception::type_description()</a> in the derived class and to inherit the constructor <a class="el" href="classqpp_1_1exception_1_1_exception.html#ace80f0387fb88cdf04d9790c04e84e34" title="Constructs an exception. ">qpp::exception::Exception::Exception</a>. Preferably keep your newly defined exception classes in the namespace <a class="el" href="namespaceqpp_1_1exception.html" title="Quantum++ exception hierarchy namespace. ">qpp::exception</a></p>
+<p>Derive from this class if more exceptions are needed, making sure to override <a class="el" href="classqpp_1_1exception_1_1_exception.html#ad168fa9286728cb4600352b5ccbf7093" title="Exception type description. ">qpp::exception::Exception::type_description()</a> in the derived class and to inherit the constructor <a class="el" href="classqpp_1_1exception_1_1_exception.html#ace80f0387fb88cdf04d9790c04e84e34" title="Constructs an exception. ">qpp::exception::Exception::Exception()</a>. Preferably keep your newly defined exception classes in the namespace <a class="el" href="namespaceqpp_1_1exception.html" title="Quantum++ exception hierarchy namespace. ">qpp::exception</a>.</p>
 <p>Example: </p><div class="fragment"><div class="line"><span class="keyword">namespace </span><a class="code" href="namespaceqpp.html">qpp</a></div>
 <div class="line">{</div>
 <div class="line"><span class="keyword">namespace </span>exception</div>
@@ -164,7 +164,7 @@ Private Attributes</h2></td></tr>
 <div class="line">            <span class="keywordflow">return</span> <span class="stringliteral">&quot;Object has zero size&quot;</span>;</div>
 <div class="line">        }</div>
 <div class="line"></div>
-<div class="line">        <span class="comment">// inherit the qpp::exception::Exception constructor</span></div>
+<div class="line">        <span class="comment">// inherit the base class&#39; qpp::exception::Exception constructor</span></div>
 <div class="line">        <span class="keyword">using</span> <a class="code" href="classqpp_1_1exception_1_1_exception.html#ace80f0387fb88cdf04d9790c04e84e34">Exception::Exception</a>;</div>
 <div class="line">    };</div>
 <div class="line">} <span class="comment">// namespace exception</span></div>
@@ -287,7 +287,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="namespaceqpp_1_1exception.html">exception</a></li><li class="navelem"><a class="el" href="classqpp_1_1exception_1_1_exception.html">Exception</a></li>
-    <li class="footer">Generated on Fri Nov 4 2016 11:12:28 for Quantum++ by
+    <li class="footer">Generated on Sun Nov 6 2016 18:03:46 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

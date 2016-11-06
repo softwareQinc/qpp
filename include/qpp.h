@@ -54,7 +54,6 @@
 #include <functional>
 #include <initializer_list>
 #include <iomanip>
-#include <iostream>
 #include <iterator>
 #include <limits>
 #include <memory>
@@ -74,9 +73,6 @@
 #include <Eigen/SVD>
 
 // Quantum++ headers
-
-// pre-processor macros, make them visible to the whole library
-#include "macros.h"
 
 // do not change the order in this group, inter-dependencies
 #include "types.h"

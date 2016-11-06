@@ -8,8 +8,6 @@ using namespace qpp;
 int main()
 {
     std::cout << "Testing...\n";
-    PRINTLN("Testing debug messages");
-    ERRORLN("Testing debug error messages");
 
     std::cout << "Playing with exceptions...\n";
     try

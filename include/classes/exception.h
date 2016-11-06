@@ -41,8 +41,8 @@ namespace exception
 *
 * Derive from this class if more exceptions are needed, making sure to override
 * qpp::exception::Exception::type_description() in the derived class and to
-* inherit the constructor qpp::exception::Exception::Exception. Preferably keep
-* your newly defined exception classes in the namespace qpp::exception
+* inherit the constructor qpp::exception::Exception::Exception(). Preferably 
+* keep your newly defined exception classes in the namespace qpp::exception.
 *
 * Example:
 * \code
@@ -58,7 +58,7 @@ namespace exception
 *             return "Object has zero size";
 *         }
 *
-*         // inherit the qpp::exception::Exception constructor
+*         // inherit the base class' qpp::exception::Exception constructor
 *         using Exception::Exception;
 *     };
 * } // namespace exception

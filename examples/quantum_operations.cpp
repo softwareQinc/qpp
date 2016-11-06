@@ -20,7 +20,7 @@ int main()
 
     std::cout << ">> Measurement channel with 2 Kraus operators:\n";
     std::vector<cmat> Ks{st.pz0, st.pz1}; // 2 Kraus operators
-    std::cout << disp(Ks[0]) << "\n    and \n" << disp(Ks[1]) << '\n';
+    std::cout << disp(Ks[0]) << "\nand\n" << disp(Ks[1]) << '\n';
 
     std::cout << ">> Superoperator matrix of the channel:\n";
     std::cout << disp(kraus2super(Ks)) << '\n';

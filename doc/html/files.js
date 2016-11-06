@@ -10,7 +10,6 @@ var files =
     [ "functions.h", "functions_8h.html", "functions_8h" ],
     [ "input_output.h", "input__output_8h.html", "input__output_8h" ],
     [ "instruments.h", "instruments_8h.html", "instruments_8h" ],
-    [ "macros.h", "macros_8h.html", "macros_8h" ],
     [ "number_theory.h", "number__theory_8h.html", "number__theory_8h" ],
     [ "operations.h", "operations_8h.html", "operations_8h" ],
     [ "qpp.h", "qpp_8h.html", "qpp_8h" ],

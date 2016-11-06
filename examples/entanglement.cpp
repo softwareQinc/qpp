@@ -8,7 +8,7 @@ using namespace qpp;
 int main()
 {
     cmat rho = 0.2 * st.pb00 + 0.8 * st.pb11;
-    std::cout << ">> State rho:n";
+    std::cout << ">> State rho:\n";
     std::cout << disp(rho) << '\n';
 
     std::cout << ">> Concurrence of rho: " << concurrence(rho) << '\n';
