@@ -128,7 +128,7 @@ public:
             throw exception::DimsInvalid("qpp::States::zero()");
         // END EXCEPTION CHECKS
 
-        idx D = std::pow(d, n);
+        idx D = static_cast<idx>(std::pow(d, n));
         ket result = ket::Zero(D);
         result(0) = 1;
 
@@ -154,7 +154,7 @@ public:
             throw exception::DimsInvalid("qpp::States::one()");
         // END EXCEPTION CHECKS
 
-        ket result = ket::Zero(std::pow(d, n));
+        ket result = ket::Zero(static_cast<ket::Index>(std::pow(d, n)));
         result(multiidx2n(std::vector<idx>(n, 1), std::vector<idx>(n, d))) = 1;
 
         return result;
@@ -184,7 +184,7 @@ public:
             throw exception::DimsInvalid("qpp::States::jn()");
         // END EXCEPTION CHECKS
 
-        ket result = ket::Zero(std::pow(d, n));
+        ket result = ket::Zero(static_cast<ket::Index>(std::pow(d, n)));
         result(multiidx2n(std::vector<idx>(n, j), std::vector<idx>(n, d))) = 1;
 
         return result;
@@ -205,7 +205,7 @@ public:
             throw exception::OutOfRange("qpp::States::plus()");
         // END EXCEPTION CHECKS
 
-        idx D = std::pow(2, n);
+        idx D = static_cast<idx>(std::pow(2, n));
         ket result = ket::Ones(D);
 
         return result / std::sqrt(D);

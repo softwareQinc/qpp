@@ -54,11 +54,11 @@ inline std::vector<int> x2contfrac(double x, idx N, idx cut = 1e5)
     {
         if (x > 0)
         {
-            result.push_back(std::llround(std::floor(x)));
+            result.push_back(static_cast<int>(std::llround(std::floor(x))));
             x = 1 / (x - std::floor(x));
         } else // x < 0
         {
-            result.push_back(std::llround(std::ceil(x)));
+            result.push_back(static_cast<int>(std::llround(std::ceil(x))));
             x = 1 / (x - std::ceil(x));
         }
         if (!std::isfinite(x) || std::abs(x) > cut)
