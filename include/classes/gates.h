@@ -272,7 +272,8 @@ public:
             throw exception::SubsysMismatchDims("qpp::Gates::CTRL()");
 
         // check that subsys list match the dimension of the matrix
-        if (rA.rows() != std::llround(std::pow(d, subsys.size())))
+        if (rA.rows() != 
+            static_cast<int>(std::llround(std::pow(d, subsys.size()))))
             throw exception::DimsMismatchMatrix("qpp::Gates::CTRL()");
         // END EXCEPTION CHECKS
 
