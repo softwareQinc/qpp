@@ -272,8 +272,9 @@ public:
             throw exception::SubsysMismatchDims("qpp::Gates::CTRL()");
 
         // check that subsys list match the dimension of the matrix
+        using Index = typename dyn_mat<typename Derived::Scalar>::Index;
         if (rA.rows() != 
-            static_cast<int>(std::llround(std::pow(d, subsys.size()))))
+            static_cast<Index>(std::llround(std::pow(d, subsys.size()))))
             throw exception::DimsMismatchMatrix("qpp::Gates::CTRL()");
         // END EXCEPTION CHECKS
 
