@@ -55,7 +55,7 @@ You should have received a copy of the GNU General Public License
 along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 ---
-## Building instructions
+## Building instructions on POSIX-compliant platforms
 
 ### Configuration
 
@@ -66,11 +66,12 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 ##### Optional
 
-- [MATLAB](http://www.mathworks.com/products/matlab/) compiler 
-include header files:
+- [CMake](http://www.cmake.org/) version 3.0.0 or later, highly recommended
+- [MATLAB](http://www.mathworks.com/products/matlab/) compiler include header 
+files:
 `/Applications/MATLAB_R2016a.app/extern/include`
-- [MATLAB](http://www.mathworks.com/products/matlab/) compiler 
-shared library files:
+- [MATLAB](http://www.mathworks.com/products/matlab/) compiler shared library 
+files:
 `/Applications/MATLAB_R2016a.app/bin/maci64`
 
 ### Building using [CMake](http://www.cmake.org/) (version 3.0.0 or later)
@@ -151,60 +152,75 @@ a fresh build!
          -L /Applications/MATLAB_R2016a.app/bin/maci64 \
          -lmx -lmat minimal.cpp -o minimal
 
-### Unit testing
 
-Quantum++ was extensively tested via a suite of unit tests constructed with
-[Google Test 1.8.0](https://github.com/google/googletest) (included with the 
-project in `./unit_tests/lib/gtest-1.8.0`). The source code of the unit tests 
-is provided under `./unit_tests/tests`. To build and run the unit tests, I 
-strongly recommend to use [CMake](http://www.cmake.org/) version 3.0.0 or 
-later. Assuming you do use [CMake](http://www.cmake.org/), switch to the  
-`./unit_tests` directory, create a `build` directory inside it, then from the 
-newly created `./unit_tests/build` type
+## Additional building instructions for particular platforms
 
-    cmake ..
-    make
-    
-The commands above build `./unit_tests/build/tests/qpp_testing`, which you 
-then may run. Note that `qpp::Timer` tests or tests related to random functions
-such as `qpp::rand()` may sometime (very rarely) fail, due to timing 
-imprecision or statistical errors. Such a behaviour is perfectly normal.
+### [Windows](http://windows.microsoft.com/) via [Cygwin](https://www.cygwin.com)
 
-##### Note
-
-The [CMake](http://www.cmake.org/) configuration file 
-`./unit_tests/CMakeLists.txt` defines the same building options and default 
-choices as the main `./CMakeLists.txt` of Quantum++.  Therefore you can use the 
-same flags as the ones mentioned at the beginning of this document when 
-customizing the build. You should modify `./unit_tests/CMakeLists.txt` 
-accordingly in case your [Eigen 3](http://eigen.tuxfamily.org) library or 
-[MATLAB](http://www.mathworks.com/products/matlab/) include/library files are 
-in a different location than the one assumed in this document.
-
-### Additional remarks
-
-- The C++ compiler must be fully standard-C++11 compliant.
-
-- If using [Windows](http://windows.microsoft.com/), I recommend compiling 
-under [cygwin](https://www.cygwin.com) via [CMake](http://www.cmake.org/)
-and [g++](https://gcc.gnu.org/). See also 
+- Some earlier versions of 
+[Cygwin](https://www.cygwin.com) had a bug related to lack of support for some 
+C++11 math functions, see
 <http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2>
-for a bug related to lack of support for some C++11 math functions, and
-how to fix it. Quick fix: patch the standard library header file `<cmath>` 
-using the provided patch `./cmath_cygwin.patch`.
+for more details. Quick fix: patch the standard library header file `<cmath>` 
+using the provided patch `./cmath_cygwin.patch`. Latest 
+[Cygwin](https://www.cygwin.com) (as of Nov. 11, 2016) seem to have fixed
+the issue.
 
-- In case you use [OS X/macOS](http://www.apple.com/osx) and want to install
-[clang++](http://clang.llvm.org/) version 3.7 or later, I highly recommend 
-to install it via [macports](https://www.macports.org/). 
+### [Windows](http://windows.microsoft.com/) via [Visual Studio](https://www.visualstudio.com)
 
-- If you use [clang++](http://clang.llvm.org/) version 3.7 or later and want 
-to use [OpenMP](http://openmp.org/) (enabled by default), make sure to modify 
-`CLANG_LIBOMP` and `CLANG_LIBOMP_INCLUDE` in `CMakeLists.txt` so they point to 
-the correct location of the [OpenMP](http://openmp.org/) library, as otherwise 
-[clang++](http://clang.llvm.org/) will not find `<omp.h>` and the `libomp` 
-shared library. 
+-  [Visual Studio](https://www.visualstudio.com) versions preceeding 
+version 2015 do not have full C++11 support. If you decide to use 
+[Visual Studio](https://www.visualstudio.com) make sure you install version
+2015 or later. 
+    
+- [Visual Studio 2015](https://www.visualstudio.com) only
+supports [OpenMP 2.0](http://openmp.org/). Quantum++ uses features
+from [OpenMP 3.0](http://openmp.org/), hence Quantum++ will not compile
+on [Visual Studio 2015](https://www.visualstudio.com) if you enable 
+[OpenMP](http://openmp.org/) (disabled by default) in
+    
+    *Project/Properties/Configuration Properties/C_C++/Language/Open MP Support*
+    
+and `#define WITH_OPENMP_` in your source file.
 
-- If you run the program on [OS X/macOS](http://www.apple.com/osx) with 
+- To create a [Visual Studio 2015](https://www.visualstudio.com) or later 
+console solution, start by creating a *Win32 Console Application*
+
+    *File/New/Project.../Installed/Templates/Visual C++/Win32/Win32 Console Application*
+
+    Click *Next* then select *Console Application* as *Application Type*. 
+    Click *Finish* to create the solution. Next select 
+
+    *Project/Properties* 
+
+    from the main menu. The *Property Pages* configuration window will open.
+    From the latter select *All configurations* from the top left 
+    *Configuration* drop box. Next select
+
+    *Configuration Properties/C_C++/General*
+
+    and add to the field *Additional Include Directories* the location of 
+    Quantum++ `./include` folder as well as the location of 
+    [Eigen 3](http://eigen.tuxfamily.org). It should look similar to 
+
+    **C:\Users\User\Downloads\eigen;C:\Users\User\Downloads\qpp\include;\
+    %(AdditionalIncludeDirectories)**
+
+    Finally select 
+
+    *Configuration Properties/C_C++/Advanced*
+
+    and add to the field *Disable Specific Warnings* the values **4503;4996**. 
+    Click *Ok* to save the settings and close the *Property Pages* window. 
+    You are now ready to go.
+
+### [OS X/macOS](http://www.apple.com/osx)
+
+- If you want to compile with [clang++](http://clang.llvm.org/) version 3.7 or
+later, I highly recommend to install it via [
+macports](https://www.macports.org/). 
+
+- If you run the program with 
 [MATLAB](http://www.mathworks.com/products/matlab/) support, make sure that 
 the environment variable `DYLD_LIBRARY_PATH` is set to point to the 
 [MATLAB](http://www.mathworks.com/products/matlab/) 
@@ -231,9 +247,53 @@ Otherwise, you get a runtime error similar to
             
             ./build/qpp
 
-- If you build a debug version with [g++](https://gcc.gnu.org/) under 
-[OS X/macOS](http://www.apple.com/osx) and use 
+- If you build a debug version with [g++](https://gcc.gnu.org/) and use 
 [gdb](http://www.gnu.org/software/gdb/) to step inside template functions 
 you may want to add `-fno-weak` compiler flag. See 
 <http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks>
 for more details about this problem.
+
+
+## Unit testing
+
+Quantum++ was extensively tested under multiple flavours of Linux,
+[OS X/macOS](http://www.apple.com/osx), 
+[Windows XP/7/10](http://windows.microsoft.com/),
+[Solaris 11.x](https://www.oracle.com/solaris/solaris11/index.html)
+via a suite of unit tests constructed with
+[Google Test 1.8.0](https://github.com/google/googletest) (included with the 
+project in `./unit_tests/lib/gtest-1.8.0`). The source code of the unit tests 
+is provided under `./unit_tests/tests`. To build and run the unit tests, I 
+strongly recommend to use [CMake](http://www.cmake.org/) version 3.0.0 or 
+later. Assuming you do use [CMake](http://www.cmake.org/), switch to the  
+`./unit_tests` directory, create a `build` directory inside it, then from the 
+newly created `./unit_tests/build` type
+
+    cmake ..
+    make
+    
+The commands above build `./unit_tests/build/tests/qpp_testing`, which you 
+then may run. Note that `qpp::Timer` tests or tests related to random functions
+such as `qpp::rand()` may sometime (very rarely) fail, due to timing 
+imprecision or statistical errors. Such a behaviour is perfectly normal.
+
+#### Note
+
+The [CMake](http://www.cmake.org/) configuration file 
+`./unit_tests/CMakeLists.txt` defines the same building options and default 
+choices as the main `./CMakeLists.txt` of Quantum++.  Therefore you can use the 
+same flags as the ones mentioned at the beginning of this document when 
+customizing the build. You should modify `./unit_tests/CMakeLists.txt` 
+accordingly in case your [Eigen 3](http://eigen.tuxfamily.org) library or 
+[MATLAB](http://www.mathworks.com/products/matlab/) include/library files are 
+in a different location than the one assumed in this document.
+
+
+## Additional remarks
+
+- If you use [clang++](http://clang.llvm.org/) version 3.7 or later and want 
+to use [OpenMP](http://openmp.org/) (enabled by default), make sure to modify 
+`CLANG_LIBOMP` and `CLANG_LIBOMP_INCLUDE` in `CMakeLists.txt` so they point to 
+the correct location of the [OpenMP](http://openmp.org/) library, as otherwise 
+[clang++](http://clang.llvm.org/) will not find `<omp.h>` and the `libomp` 
+shared library. 
