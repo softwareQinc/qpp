@@ -203,8 +203,7 @@ console solution, start by creating a *Win32 Console Application*
     Quantum++ `./include` folder as well as the location of 
     [Eigen 3](http://eigen.tuxfamily.org). It should look similar to 
 
-    **C:\Users\User\Downloads\eigen;C:\Users\User\Downloads\qpp\include;\
-    %(AdditionalIncludeDirectories)**
+    **C:\Users\User\Downloads\eigen;C:\Users\User\Downloads\qpp\include;%(AdditionalIncludeDirectories)**
 
     Finally select 
 
