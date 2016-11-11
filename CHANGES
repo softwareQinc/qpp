@@ -1,3 +1,5 @@
+Version 1.0-rc1-devel - development
+
 Version 1.0-rc1 - Release Candidate 1, 11 November 2016
     - Slight performance improvements (lambda workers do not capture by value
         anymore)

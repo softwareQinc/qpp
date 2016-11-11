@@ -1,5 +1,5 @@
 # Quantum++ 
-## Version 1.0-rc1 - Release Candidate 1, 11 November 2016
+## Version 1.0-rc1-devel - development
 
 **Build status:**
 Master
