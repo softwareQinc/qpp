@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Quantum++
-   &#160;<span id="projectnumber">v1.0.0-devel</span>
+   &#160;<span id="projectnumber">v1.0.0-rc1</span>
    </div>
    <div id="projectbrief">A modern C++11 quantum computing library</div>
   </td>
@@ -168,7 +168,7 @@ $(document).ready(function(){initNavTree('states_8h_source.html','');});
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1exception_1_1_dims_invalid.html">exception::DimsInvalid</a>(<span class="stringliteral">&quot;qpp::States::zero()&quot;</span>);</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = std::pow(d, n);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::pow(d, n));</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> result = ket::Zero(D);</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        result(0) = 1;</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
@@ -187,7 +187,7 @@ $(document).ready(function(){initNavTree('states_8h_source.html','');});
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1exception_1_1_dims_invalid.html">exception::DimsInvalid</a>(<span class="stringliteral">&quot;qpp::States::one()&quot;</span>);</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> result = ket::Zero(std::pow(d, n));</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> result = ket::Zero(static_cast&lt;ket::Index&gt;(std::pow(d, n)));</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        result(<a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">multiidx2n</a>(std::vector&lt;idx&gt;(n, 1), std::vector&lt;idx&gt;(n, d))) = 1;</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <span class="keywordflow">return</span> result;</div>
@@ -209,7 +209,7 @@ $(document).ready(function(){initNavTree('states_8h_source.html','');});
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1exception_1_1_dims_invalid.html">exception::DimsInvalid</a>(<span class="stringliteral">&quot;qpp::States::jn()&quot;</span>);</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> result = ket::Zero(std::pow(d, n));</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> result = ket::Zero(static_cast&lt;ket::Index&gt;(std::pow(d, n)));</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        result(<a class="code" href="namespaceqpp.html#a9f0ce02aa3e299e610cf5f7715c1a43f">multiidx2n</a>(std::vector&lt;idx&gt;(n, j), std::vector&lt;idx&gt;(n, d))) = 1;</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        <span class="keywordflow">return</span> result;</div>
@@ -224,7 +224,7 @@ $(document).ready(function(){initNavTree('states_8h_source.html','');});
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            <span class="keywordflow">throw</span> <a class="code" href="classqpp_1_1exception_1_1_out_of_range.html">exception::OutOfRange</a>(<span class="stringliteral">&quot;qpp::States::plus()&quot;</span>);</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        <span class="comment">// END EXCEPTION CHECKS</span></div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = std::pow(2, n);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a><span class="keyword">&gt;</span>(std::pow(2, n));</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <a class="code" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> result = ket::Ones(D);</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordflow">return</span> result / std::sqrt(D);</div>
@@ -341,7 +341,7 @@ $(document).ready(function(){initNavTree('states_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b02e4219757ae4e3a0f1714873865bbf.html">classes</a></li><li class="navelem"><a class="el" href="states_8h.html">states.h</a></li>
-    <li class="footer">Generated on Sun Nov 6 2016 18:03:45 for Quantum++ by
+    <li class="footer">Generated on Fri Nov 11 2016 12:25:09 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

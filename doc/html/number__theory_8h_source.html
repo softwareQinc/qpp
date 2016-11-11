@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Quantum++
-   &#160;<span id="projectnumber">v1.0.0-devel</span>
+   &#160;<span id="projectnumber">v1.0.0-rc1</span>
    </div>
    <div id="projectbrief">A modern C++11 quantum computing library</div>
   </td>
@@ -111,11 +111,11 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    {</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordflow">if</span> (x &gt; 0)</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            result.push_back(std::llround(std::floor(x)));</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            result.push_back(static_cast&lt;int&gt;(std::llround(std::floor(x))));</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            x = 1 / (x - std::floor(x));</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        } <span class="keywordflow">else</span> <span class="comment">// x &lt; 0</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            result.push_back(std::llround(std::ceil(x)));</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            result.push_back(static_cast&lt;int&gt;(std::llround(std::ceil(x))));</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            x = 1 / (x - std::ceil(x));</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        }</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">if</span> (!std::isfinite(x) || std::abs(x) &gt; cut)</div>
@@ -582,7 +582,7 @@ $(document).ready(function(){initNavTree('number__theory_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="number__theory_8h.html">number_theory.h</a></li>
-    <li class="footer">Generated on Sun Nov 6 2016 18:03:45 for Quantum++ by
+    <li class="footer">Generated on Fri Nov 11 2016 12:25:09 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

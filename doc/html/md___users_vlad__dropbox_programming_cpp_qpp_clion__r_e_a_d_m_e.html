@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Quantum++
-   &#160;<span id="projectnumber">v1.0.0-devel</span>
+   &#160;<span id="projectnumber">v1.0.0-rc1</span>
    </div>
    <div id="projectbrief">A modern C++11 quantum computing library</div>
   </td>
@@ -65,7 +65,7 @@ $(document).ready(function(){initNavTree('md___users_vlad__dropbox_programming_c
 <div class="title">Quantum++ </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2>Version 1.0.0-devel - development</h2>
+<div class="textblock"><h2>Version 1.0-rc1 - Release Candidate 1, 11 November 2016</h2>
 <p><b>Build status:</b> Master <a href="https://travis-ci.org/vsoftco/qpp">![Build Status](https://api.travis-ci.org/vsoftco/qpp.svg?branch=master)</a> Devel <a href="https://travis-ci.org/vsoftco/qpp">![Build Status](https://api.travis-ci.org/vsoftco/qpp.svg?branch=v1.0.0-devel)</a></p>
 <p>Quantum++ is a modern C++11 general purpose quantum computing library, composed solely of template header files. Quantum++ is written in standard C++11 and has very low external dependencies, using only the <a href="http://eigen.tuxfamily.org">Eigen 3</a> linear algebra header-only template library and, if available, the <a href="http://openmp.org/">OpenMP</a> multi-processing library.</p>
 <p>Quantum++ is not restricted to qubit systems or specific quantum information processing tasks, being capable of simulating arbitrary quantum processes. The main design factors taken in consideration were the ease of use, high portability, and high performance. The library's simulation capabilities are only restricted by the amount of available physical memory. On a typical machine (Intel i5 8Gb RAM) Quantum++ can successfully simulate the evolution of 25 qubits in a pure state or of 12 qubits in a mixed state reasonably fast.</p>
@@ -76,7 +76,7 @@ $(document).ready(function(){initNavTree('md___users_vlad__dropbox_programming_c
 <p> Quantum++ is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
 <p>Quantum++ is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
 <p>You should have received a copy of the GNU General Public License along with Quantum++. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. </p><hr/>
- <h2>Building instructions</h2>
+ <h2>Building instructions on POSIX-compliant platforms</h2>
 <h3>Configuration</h3>
 <ul>
 <li>Compiler: <a href="https://gcc.gnu.org/">g++</a> version 4.8.2 or later (for good C++11 support)</li>
@@ -85,6 +85,7 @@ $(document).ready(function(){initNavTree('md___users_vlad__dropbox_programming_c
 </ul>
 <h5>Optional</h5>
 <ul>
+<li><a href="http://www.cmake.org/">CMake</a> version 3.0.0 or later, highly recommended</li>
 <li><a href="http://www.mathworks.com/products/matlab/">MATLAB</a> compiler include header files: <code>/Applications/MATLAB_R2016a.app/extern/include</code></li>
 <li><a href="http://www.mathworks.com/products/matlab/">MATLAB</a> compiler shared library files: <code>/Applications/MATLAB_R2016a.app/bin/maci64</code></li>
 </ul>
@@ -132,19 +133,51 @@ make
      -I /Applications/MATLAB_R2016a.app/extern/include \
      -L /Applications/MATLAB_R2016a.app/bin/maci64 \
      -lmx -lmat minimal.cpp -o minimal
-</pre><h3>Unit testing</h3>
-<p>Quantum++ was extensively tested via a suite of unit tests constructed with <a href="https://github.com/google/googletest">Google Test 1.8.0</a> (included with the project in <code>./unit_tests/lib/gtest-1.8.0</code>). The source code of the unit tests is provided under <code>./unit_tests/tests</code>. To build and run the unit tests, I strongly recommend to use <a href="http://www.cmake.org/">CMake</a> version 3.0.0 or later. Assuming you do use <a href="http://www.cmake.org/">CMake</a>, switch to the <code>./unit_tests</code> directory, create a <code>build</code> directory inside it, then from the newly created <code>./unit_tests/build</code> type </p><pre class="fragment">cmake ..
-make
-</pre><p>The commands above build <code>./unit_tests/build/tests/qpp_testing</code>, which you then may run. Note that <code><a class="el" href="classqpp_1_1_timer.html" title="Chronometer. ">qpp::Timer</a></code> tests or tests related to random functions such as <code><a class="el" href="namespaceqpp.html#a2f1ee80e9136dc4c16d964b45d7e188d" title="Generates a random real number uniformly distributed in the interval [a, b) ">qpp::rand()</a></code> may sometime (very rarely) fail, due to timing imprecision or statistical errors. Such a behaviour is perfectly normal.</p>
-<h5>Note</h5>
-<p>The <a href="http://www.cmake.org/">CMake</a> configuration file <code>./unit_tests/CMakeLists.txt</code> defines the same building options and default choices as the main <code>./CMakeLists.txt</code> of Quantum++. Therefore you can use the same flags as the ones mentioned at the beginning of this document when customizing the build. You should modify <code>./unit_tests/CMakeLists.txt</code> accordingly in case your <a href="http://eigen.tuxfamily.org">Eigen 3</a> library or <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> include/library files are in a different location than the one assumed in this document.</p>
-<h3>Additional remarks</h3>
+</pre><h2>Additional building instructions for particular platforms</h2>
+<h3><a href="http://windows.microsoft.com/">Windows</a> via <a href="https://www.cygwin.com">Cygwin</a></h3>
 <ul>
-<li>The C++ compiler must be fully standard-C++11 compliant.</li>
-<li>If using <a href="http://windows.microsoft.com/">Windows</a>, I recommend compiling under <a href="https://www.cygwin.com">cygwin</a> via <a href="http://www.cmake.org/">CMake</a> and <a href="https://gcc.gnu.org/">g++</a>. See also <a href="http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2">http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2</a> for a bug related to lack of support for some C++11 math functions, and how to fix it. Quick fix: patch the standard library header file <code>&lt;cmath&gt;</code> using the provided patch <code>./cmath_cygwin.patch</code>.</li>
-<li>In case you use <a href="http://www.apple.com/osx">OS X/macOS</a> and want to install <a href="http://clang.llvm.org/">clang++</a> version 3.7 or later, I highly recommend to install it via <a href="https://www.macports.org/">macports</a>.</li>
-<li>If you use <a href="http://clang.llvm.org/">clang++</a> version 3.7 or later and want to use <a href="http://openmp.org/">OpenMP</a> (enabled by default), make sure to modify <code>CLANG_LIBOMP</code> and <code>CLANG_LIBOMP_INCLUDE</code> in <code>CMakeLists.txt</code> so they point to the correct location of the <a href="http://openmp.org/">OpenMP</a> library, as otherwise <a href="http://clang.llvm.org/">clang++</a> will not find <code>&lt;omp.h&gt;</code> and the <code>libomp</code> shared library.</li>
-<li>If you run the program on <a href="http://www.apple.com/osx">OS X/macOS</a> with <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support, make sure that the environment variable <code>DYLD_LIBRARY_PATH</code> is set to point to the <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> compiler library location, see the <code>run_mac_MATLAB</code> script. Otherwise, you get a runtime error similar to <pre class="fragment">&gt; dyld: Library not loaded: @rpath/libmat.dylib.
+<li>Some earlier versions of <a href="https://www.cygwin.com">Cygwin</a> had a bug related to lack of support for some C++11 math functions, see <a href="http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2">http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2</a> for more details. Quick fix: patch the standard library header file <code>&lt;cmath&gt;</code> using the provided patch <code>./cmath_cygwin.patch</code>. Latest <a href="https://www.cygwin.com">Cygwin</a> (as of Nov. 11, 2016) seem to have fixed the issue.</li>
+</ul>
+<h3><a href="http://windows.microsoft.com/">Windows</a> via <a href="https://www.visualstudio.com">Visual Studio</a></h3>
+<ul>
+<li><a href="https://www.visualstudio.com">Visual Studio</a> versions preceeding version 2015 do not have full C++11 support. If you decide to use <a href="https://www.visualstudio.com">Visual Studio</a> make sure you install version 2015 or later.</li>
+<li><a href="https://www.visualstudio.com">Visual Studio 2015</a> only supports <a href="http://openmp.org/">OpenMP 2.0</a>. Quantum++ uses features from <a href="http://openmp.org/">OpenMP 3.0</a>, hence Quantum++ will not compile on <a href="https://www.visualstudio.com">Visual Studio 2015</a> if you enable <a href="http://openmp.org/">OpenMP</a> (disabled by default) in <pre class="fragment">*Project/Properties/Configuration Properties/C_C++/Language/Open MP Support*
+</pre></li>
+</ul>
+<p>and <code>#define WITH_OPENMP_</code> in your source file.</p>
+<ul>
+<li>To create a <a href="https://www.visualstudio.com">Visual Studio 2015</a> or later console solution, start by creating a <em>Win32 Console Application</em> <pre class="fragment">*File/New/Project.../Installed/Templates/Visual C++/Win32/Win32 Console Application*
+
+Click *Next* then select *Console Application* as *Application Type*. 
+Click *Finish* to create the solution. Next select 
+
+*Project/Properties* 
+
+from the main menu. The *Property Pages* configuration window will open.
+From the latter select *All configurations* from the top left 
+*Configuration* drop box. Next select
+
+*Configuration Properties/C_C++/General*
+
+and add to the field *Additional Include Directories* the location of 
+Quantum++ `./include` folder as well as the location of 
+[Eigen 3](http://eigen.tuxfamily.org). It should look similar to 
+
+**C:\Users\User\Downloads\eigen;C:\Users\User\Downloads\qpp\include;%(AdditionalIncludeDirectories)**
+
+Finally select 
+
+*Configuration Properties/C_C++/Advanced*
+
+and add to the field *Disable Specific Warnings* the values **4503;4996**. 
+Click *Ok* to save the settings and close the *Property Pages* window. 
+You are now ready to go.
+</pre></li>
+</ul>
+<h3><a href="http://www.apple.com/osx">OS X/macOS</a></h3>
+<ul>
+<li>If you want to compile with <a href="http://clang.llvm.org/">clang++</a> version 3.7 or later, I highly recommend to install it via <a href="https://www.macports.org/">macports</a>.</li>
+<li>If you run the program with <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> support, make sure that the environment variable <code>DYLD_LIBRARY_PATH</code> is set to point to the <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> compiler library location, see the <code>run_mac_MATLAB</code> script. Otherwise, you get a runtime error similar to <pre class="fragment">&gt; dyld: Library not loaded: @rpath/libmat.dylib.
 </pre><ul>
 <li>I recommend running via a script, as otherwise setting the <code>DYLD_LIBRARY_PATH</code> globally may interfere with <a href="https://www.macports.org/">macports</a>' <a href="http://www.cmake.org/">CMake</a> installation (in case you use <a href="http://www.cmake.org/">CMake</a> from <a href="https://www.macports.org/">macports</a>). If you use a script, then the environment variable is local to the script and does not interfere with the rest of the system.</li>
 <li>Example of script, assumed to be located in the root directory of Quantum++ <pre class="fragment">    #!/bin/sh
@@ -156,14 +189,24 @@ make
 </pre></li>
 </ul>
 </li>
-<li>If you build a debug version with <a href="https://gcc.gnu.org/">g++</a> under <a href="http://www.apple.com/osx">OS X/macOS</a> and use <a href="http://www.gnu.org/software/gdb/">gdb</a> to step inside template functions you may want to add <code>-fno-weak</code> compiler flag. See <a href="http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks">http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks</a> for more details about this problem. </li>
+<li>If you build a debug version with <a href="https://gcc.gnu.org/">g++</a> and use <a href="http://www.gnu.org/software/gdb/">gdb</a> to step inside template functions you may want to add <code>-fno-weak</code> compiler flag. See <a href="http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks">http://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks</a> for more details about this problem.</li>
+</ul>
+<h2>Unit testing</h2>
+<p>Quantum++ was extensively tested under multiple flavours of Linux, <a href="http://www.apple.com/osx">OS X/macOS</a>, <a href="http://windows.microsoft.com/">Windows XP/7/10</a>, <a href="https://www.oracle.com/solaris/solaris11/index.html">Solaris 11.x</a> via a suite of unit tests constructed with <a href="https://github.com/google/googletest">Google Test 1.8.0</a> (included with the project in <code>./unit_tests/lib/gtest-1.8.0</code>). The source code of the unit tests is provided under <code>./unit_tests/tests</code>. To build and run the unit tests, I strongly recommend to use <a href="http://www.cmake.org/">CMake</a> version 3.0.0 or later. Assuming you do use <a href="http://www.cmake.org/">CMake</a>, switch to the <code>./unit_tests</code> directory, create a <code>build</code> directory inside it, then from the newly created <code>./unit_tests/build</code> type </p><pre class="fragment">cmake ..
+make
+</pre><p>The commands above build <code>./unit_tests/build/tests/qpp_testing</code>, which you then may run. Note that <code><a class="el" href="classqpp_1_1_timer.html" title="Chronometer. ">qpp::Timer</a></code> tests or tests related to random functions such as <code><a class="el" href="namespaceqpp.html#a2f1ee80e9136dc4c16d964b45d7e188d" title="Generates a random real number uniformly distributed in the interval [a, b) ">qpp::rand()</a></code> may sometime (very rarely) fail, due to timing imprecision or statistical errors. Such a behaviour is perfectly normal.</p>
+<h4>Note</h4>
+<p>The <a href="http://www.cmake.org/">CMake</a> configuration file <code>./unit_tests/CMakeLists.txt</code> defines the same building options and default choices as the main <code>./CMakeLists.txt</code> of Quantum++. Therefore you can use the same flags as the ones mentioned at the beginning of this document when customizing the build. You should modify <code>./unit_tests/CMakeLists.txt</code> accordingly in case your <a href="http://eigen.tuxfamily.org">Eigen 3</a> library or <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> include/library files are in a different location than the one assumed in this document.</p>
+<h2>Additional remarks</h2>
+<ul>
+<li>If you use <a href="http://clang.llvm.org/">clang++</a> version 3.7 or later and want to use <a href="http://openmp.org/">OpenMP</a> (enabled by default), make sure to modify <code>CLANG_LIBOMP</code> and <code>CLANG_LIBOMP_INCLUDE</code> in <code>CMakeLists.txt</code> so they point to the correct location of the <a href="http://openmp.org/">OpenMP</a> library, as otherwise <a href="http://clang.llvm.org/">clang++</a> will not find <code>&lt;omp.h&gt;</code> and the <code>libomp</code> shared library. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Nov 6 2016 18:03:45 for Quantum++ by
+    <li class="footer">Generated on Fri Nov 11 2016 12:25:21 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>
