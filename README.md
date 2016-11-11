@@ -55,7 +55,7 @@ You should have received a copy of the GNU General Public License
 along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 ---
-## Building instructions on POSIX-compliant platforms
+## Building instructions for POSIX-compliant platforms
 
 ### Configuration
 
