@@ -274,7 +274,7 @@ newly created `./unit_tests/build` type
 The commands above build `./unit_tests/build/tests/qpp_testing`, which you 
 then may run. Note that `qpp::Timer` tests or tests related to random functions
 such as `qpp::rand()` may sometime (very rarely) fail, due to timing 
-imprecision or statistical errors. Such a behaviour is perfectly normal.
+imprecision or statistical errors. Such behaviour is perfectly normal.
 
 #### Note
 
