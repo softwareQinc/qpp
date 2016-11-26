@@ -47,7 +47,7 @@ class RandomDevices final : public internal::Singleton<RandomDevices> //
 {
     friend class internal::Singleton<RandomDevices>;
 
-    std::random_device rd_; ///< used to seed std::mt19937 rng_
+    std::random_device rd_; ///< used to seed std::mt19937 prng_
     std::mt19937 prng_;     ///< Mersenne twister random number generator
 public:
     /**
