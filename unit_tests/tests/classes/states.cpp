@@ -28,7 +28,7 @@ using namespace qpp;
 // Unit testing "classes/states.h"
 
 /******************************************************************************/
-/// BEGIN ket qpp::jn(idx j, idx n, idx d = 2) const
+/// BEGIN ket qpp::States::jn(idx j, idx n, idx d = 2) const
 TEST(qpp_States_jn, AllTests)
 {
     // qubits
@@ -59,7 +59,7 @@ TEST(qpp_States_jn, AllTests)
     EXPECT_NEAR(0, norm(kronpow(mket({4}, d), n) - qpp::st.jn(4, n, d)), 1e-7);
 }
 /******************************************************************************/
-/// BEGIN qpp::States::mes(idx d = 2) const
+/// BEGIN ket qpp::States::mes(idx d = 2) const
 TEST(qpp_States_mes, AllTests)
 {
     // d = 1 (number)
@@ -90,7 +90,7 @@ TEST(qpp_States_mes, AllTests)
     EXPECT_NEAR(0, norm(qpp::st.mes(d) - mes_ququad), 1e-7);
 }
 /******************************************************************************/
-/// BEGIN qpp::States::minus(idx n) const
+/// BEGIN ket qpp::States::minus(idx n) const
 TEST(qpp_States_minus, AllTests)
 {
     idx n = 1;
@@ -105,7 +105,7 @@ TEST(qpp_States_minus, AllTests)
                         qpp::st.minus(n)), 1e-7);
 }
 /******************************************************************************/
-/// BEGIN qpp::States::one(idx n, idx d = 2) const
+/// BEGIN ket qpp::States::one(idx n, idx d = 2) const
 TEST(qpp_States_one, AllTests)
 {
     // qubits
@@ -129,7 +129,7 @@ TEST(qpp_States_one, AllTests)
     EXPECT_NEAR(0, norm(kronpow(mket({1}, d), n) - qpp::st.one(n, d)), 1e-7);
 }
 /******************************************************************************/
-/// BEGIN qpp::States::plus(idx n) const
+/// BEGIN ket qpp::States::plus(idx n) const
 TEST(qpp_States_plus, AllTests)
 {
     idx n = 1;
@@ -144,7 +144,7 @@ TEST(qpp_States_plus, AllTests)
                         qpp::st.plus(n)), 1e-7);
 }
 /******************************************************************************/
-/// BEGIN qpp::States::zero(idx n, idx d = 2) const
+/// BEGIN ket qpp::States::zero(idx n, idx d = 2) const
 TEST(qpp_States_zero, AllTests)
 {
     // qubits

@@ -48,13 +48,42 @@ class RandomDevices final : public internal::Singleton<RandomDevices> //
     friend class internal::Singleton<RandomDevices>;
 
     std::random_device rd_; ///< used to seed std::mt19937 rng_
+    std::mt19937 prng_;     ///< Mersenne twister random number generator
 public:
-    std::mt19937 rng_;      ///< Mersenne twister random number generator
+    /**
+    * \brief Returns a reference to the internal PRNG object
+    * \return Reference to the internal PRNG object
+    */
+    std::mt19937& get_prng()
+    {
+        return prng_;
+    }
+
+    /**
+    * \brief Loads the state of the PRNG from an input stream
+    * \param is Input stream
+    * \return The input stream
+    */
+    std::istream& load(std::istream& is)
+    {
+        return is >> prng_;
+    }
+
+    /**
+    * \brief Saves the state of the PRNG to an output stream
+    * \param os Output stream
+    * \return The output stream
+    */
+    std::ostream& save(std::ostream& os) const
+    {
+        return os << prng_;
+    }
+
 private:
     /**
     * \brief Initializes and seeds the random number generators
     */
-    RandomDevices() : rd_{}, rng_{rd_()}
+    RandomDevices() : rd_{}, prng_{rd_()}
     {
     }
 

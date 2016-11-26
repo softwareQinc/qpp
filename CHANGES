@@ -1,4 +1,10 @@
 Version 1.0-rc1-devel - development
+    - Added serialization capabilities for the PRNG in qpp::RandomDevices from
+      "classes/random_devices.h":
+        qpp::RandomDevices::load() - loads the state of PRNG from a stream
+        qpp::RandomDevices::save() - saves the state of PRNG to a stream
+    - Added a getter for qpp::RandomDevices::prng_ (now with private access):
+        qpp::RandomDevices::get_prng()
 
 Version 1.0-rc1 - Release Candidate 1, 11 November 2016
     - Slight performance improvements (lambda workers do not capture by value
