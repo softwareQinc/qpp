@@ -121,6 +121,8 @@ public:
     {
         return "UNKNOWN EXCEPTION";
     }
+
+    using Exception::Exception;
 };
 
 /**
