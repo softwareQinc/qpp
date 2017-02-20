@@ -32,13 +32,14 @@ using namespace qpp;
 
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
-///       loadMATLAB(const std::string& mat_file, const std::string& var_name)
+///       qpp::loadMATLAB(const std::string& mat_file,
+//                        const std::string& var_name)
 ///
 ///       template<typename Derived> dyn_mat<typename Derived::Scalar>
-///       void saveMATLAB(const Eigen::MatrixBase <Derived>& A,
-///                       const std::string& mat_file,
-///                       const std::string& var_name,
-///                       const std::string& mode)
+///       void qpp::saveMATLAB(const Eigen::MatrixBase <Derived>& A,
+///                            const std::string& mat_file,
+///                            const std::string& var_name,
+     ///                       const std::string& mode)
 TEST(qpp_MATLAB_load_save_MATLAB_Matrices, AllTests)
 {
     // matrices,complex, real and integer
