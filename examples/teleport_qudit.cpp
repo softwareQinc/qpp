@@ -39,14 +39,15 @@ int main()
 
     // conditional result on B before correction
     ket output_m_B = std::get<2>(measured_aA)[m];
-    // correction operator
+
+    // perform the correction on B
     cmat correction_B = powm(gt.Zd(D), midx[0]) *
                         powm(adjoint(gt.Xd(D)), midx[1]);
-    // apply correction on B
     std::cout << ">> Bob must apply the correction operator Z^"
               << midx[0] << " X^" << (D - midx[1]) % D << '\n';
     ket psi_B = correction_B * output_m_B;
 
+    // display the output
     std::cout << ">> Bob's final state (after correction):\n";
     std::cout << disp(psi_B) << '\n';
 

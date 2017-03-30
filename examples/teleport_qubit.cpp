@@ -42,13 +42,15 @@ int main()
     std::cout << ">> Bob's state (before correction):\n";
     std::cout << disp(out_B) << '\n';
 
-    // perform the corrections
+    // perform the correction on B
     out_B = powm(gt.Z, z) * powm(gt.X, x) * out_B;
-
-    // display the output
     std::cout << ">> Bob must apply the correction operator Z^"
               << z << " X^" << x << '\n';
-    std::cout << ">> Bob's state (after correction):\n";
+
+    // display the output
+    std::cout << ">> Bob's final state (after correction):\n";
     std::cout << disp(out_B) << '\n';
+
+    // verification
     std::cout << ">> Norm difference: " << norm(out_B - psi_a) << '\n';
 }
