@@ -1,8 +1,7 @@
 // Qubit teleporation
-// Source: ./examples/teleportation_qubit.cpp
+// Source: ./examples/teleport_qubit.cpp
 #include <iostream>
 #include <tuple>
-
 #include "qpp.h"
 
 using namespace qpp;
