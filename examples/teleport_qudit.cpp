@@ -43,8 +43,8 @@ int main()
     cmat correction_B = powm(gt.Zd(D), midx[0]) *
                         powm(adjoint(gt.Xd(D)), midx[1]);
     // apply correction on B
-    std::cout << ">> Bob must apply the correction operator Z^" << midx[0]
-              << " X^" << (D - midx[1]) % D << '\n';
+    std::cout << ">> Bob must apply the correction operator Z^"
+              << midx[0] << " X^" << (D - midx[1]) % D << '\n';
     ket psi_B = correction_B * output_m_B;
 
     std::cout << ">> Bob's final state (after correction):\n";
