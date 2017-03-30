@@ -129,7 +129,7 @@ dyn_col_vect<typename Derived::Scalar> ip(
 
         /* get the col multi-indexes of the complement */
         internal::n2multiidx(b, Nsubsys_bar,
-                              Cdimssubsys_bar, Cmidxcolsubsys_bar);
+                             Cdimssubsys_bar, Cmidxcolsubsys_bar);
         /* write it in the global row multi-index */
         for (idx k = 0; k < Nsubsys_bar; ++k)
         {
@@ -141,7 +141,7 @@ dyn_col_vect<typename Derived::Scalar> ip(
         {
             /* get the row multi-indexes of the subsys */
             internal::n2multiidx(a, Nsubsys,
-                                  Cdimssubsys, Cmidxrowsubsys);
+                                 Cdimssubsys, Cmidxrowsubsys);
             /* write it in the global row multi-index */
             for (idx k = 0; k < Nsubsys; ++k)
             {
@@ -401,7 +401,8 @@ measure(const Eigen::MatrixBase<Derived>& A,
     // probabilities
     std::vector<double> prob(Ks.size());
     // resulting states
-    std::vector<cmat> outstates(Ks.size(), cmat::Zero(Dsubsys_bar, Dsubsys_bar));
+    std::vector<cmat> outstates(Ks.size(),
+                                cmat::Zero(Dsubsys_bar, Dsubsys_bar));
 
     //************ density matrix ************//
     if (internal::check_square_mat(rA)) // square matrix
@@ -742,9 +743,20 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::measure_seq()");
 
-    // check that dims match rho matrix
-    if (!internal::check_dims_match_mat(dims, cA))
-        throw exception::DimsMismatchMatrix("qpp::measure_seq()");
+
+    // check square matrix or column vector
+    if (internal::check_square_mat(cA))
+    {
+        // check that dims match rho matrix
+        if (!internal::check_dims_match_mat(dims, cA))
+            throw exception::DimsMismatchMatrix("qpp::measure_seq()");
+    } else if (internal::check_cvector(cA))
+    {
+        // check that dims match psi column vector
+        if (!internal::check_dims_match_cvect(dims, cA))
+            throw exception::DimsMismatchMatrix("qpp::measure_seq()");
+    } else
+        throw exception::MatrixNotSquareNorCvector("qpp::measure_seq()");
 
     // check subsys is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(subsys, dims))
@@ -759,26 +771,22 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
     std::sort(std::begin(subsys), std::end(subsys), std::greater<idx> {});
 
     //************ density matrix or column vector ************//
-    if (internal::check_square_mat(cA) || internal::check_cvector(cA))
+    while (subsys.size() > 0)
     {
-        while (subsys.size() > 0)
-        {
-            auto tmp = measure(
-                    cA, Gates::get_instance().Id(dims[subsys[0]]),
-                    {subsys[0]}, dims
-            );
-            result.push_back(std::get<0>(tmp));
-            prob *= std::get<1>(tmp)[std::get<0>(tmp)];
-            cA = std::get<2>(tmp)[std::get<0>(tmp)];
+        auto tmp = measure(
+                cA, Gates::get_instance().Id(dims[subsys[0]]),
+                {subsys[0]}, dims
+        );
+        result.push_back(std::get<0>(tmp));
+        prob *= std::get<1>(tmp)[std::get<0>(tmp)];
+        cA = std::get<2>(tmp)[std::get<0>(tmp)];
 
-            // remove the subsystem
-            dims.erase(std::next(std::begin(dims), subsys[0]));
-            subsys.erase(std::begin(subsys));
-        }
-        // order result in increasing order with respect to subsys
-        std::reverse(std::begin(result), std::end(result));
-    } else
-        throw exception::MatrixNotSquareNorCvector("qpp::measure_seq()");
+        // remove the subsystem
+        dims.erase(std::next(std::begin(dims), subsys[0]));
+        subsys.erase(std::begin(subsys));
+    }
+    // order result in increasing order with respect to subsys
+    std::reverse(std::begin(result), std::end(result));
 
     return std::make_tuple(result, prob, cA);
 }

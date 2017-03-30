@@ -99,4 +99,4 @@ inline cplx omega(idx D)
 
 } /* namespace qpp */
 
-#endif	/* CONSTANTS_H_ */
+#endif /* CONSTANTS_H_ */
