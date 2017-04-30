@@ -20,9 +20,9 @@ int main()
         auto measured = measure(psi, evects);
         idx m = std::get<0>(measured); // measurement result
         if (evals[m] < 0) // -1
-            res--;
+            --res;
         else              // +1
-            res++;
+            ++res;
     }
     std::cout << ">> N = " << N << " measurements\n";
     std::cout << ">> The experimental average of the observable\n";

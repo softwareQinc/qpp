@@ -49,20 +49,20 @@ int main()
                 // count the correlations
                 if (evalA > 0 && evalB > 0)        // +1 +1 correlation
                 {
-                    statistics[gate_idx][0]++;
-                    E[gate_idx]++;
+                    ++statistics[gate_idx][0];
+                    ++E[gate_idx];
                 } else if (evalA > 0 && evalB < 0)  // +1 -1 anti-correlation
                 {
-                    statistics[gate_idx][1]++;
-                    E[gate_idx]--;
+                    ++statistics[gate_idx][1];
+                    --E[gate_idx];
                 } else if (evalA < 0 && evalB > 0)  // -1 +1 anti-correlation
                 {
-                    statistics[gate_idx][2]++;
-                    E[gate_idx]--;
+                    ++statistics[gate_idx][2];
+                    --E[gate_idx];
                 } else if (evalA < 0 && evalB < 0) // -1 -1 correlation
                 {
-                    statistics[gate_idx][3]++;
-                    E[gate_idx]++;
+                    ++statistics[gate_idx][3];
+                    ++E[gate_idx];
                 }
             } // N experiments are done
             ++gate_idx;
