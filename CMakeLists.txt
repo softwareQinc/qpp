@@ -27,8 +27,19 @@ INCLUDE_DIRECTORIES(include)
 SET(SOURCE_FILES
         examples/_test.cpp)
 
-#### Eigen3, modify as needed
-INCLUDE_DIRECTORIES(SYSTEM "$ENV{HOME}/eigen")
+#### Eigen3
+FIND_PACKAGE(Eigen3 3.3 NO_MODULE) # try to find it automatically
+IF(NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
+    IF(NOT EIGEN3_INCLUDE_DIR) # no manual location specified either
+        MESSAGE(FATAL_ERROR
+            "Eigen3 not detected! Please point the EIGEN3_INCLUDE_DIR\
+            to your Eigen3 location when building with cmake,\
+            for example\ 
+            cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen")
+    ELSE() # manual location specified
+        INCLUDE_DIRECTORIES(SYSTEM "$EIGEN3_INCLUDE_DIR")
+    ENDIF()
+ENDIF()
 
 #### Use C++11
 IF(CYGWIN)
@@ -130,6 +141,10 @@ IF(NOT CMAKE_BUILD_TYPE)
 ENDIF()
 
 ADD_EXECUTABLE(qpp ${SOURCE_FILES})
+#### Eigen3 was found automatically
+IF(TARGET Eigen3::Eigen)
+    TARGET_LINK_LIBRARIES(qpp Eigen3::Eigen)
+ENDIF()
 
 IF(${WITH_MATLAB})
     TARGET_LINK_LIBRARIES(qpp mx mat)

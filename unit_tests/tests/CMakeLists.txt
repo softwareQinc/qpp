@@ -38,6 +38,11 @@ ADD_EXECUTABLE(qpp_testing
         traits.cpp)
 TARGET_LINK_LIBRARIES(qpp_testing gmock)
 
+#### Eigen3 was found automatically
+IF(TARGET Eigen3::Eigen)
+    TARGET_LINK_LIBRARIES(qpp_testing Eigen3::Eigen)
+ENDIF()
+
 IF(${WITH_MATLAB})
     TARGET_LINK_LIBRARIES(qpp_testing mx mat)
 ENDIF()
