@@ -24,7 +24,7 @@ PROJECT(qpp_testing)
 INCLUDE_DIRECTORIES(../include)
 
 #### Eigen3
-FIND_PACKAGE(Eigen3 3.3 NO_MODULE) # try to find it automatically
+FIND_PACKAGE(Eigen3 3.0 QUIET NO_MODULE) # try to find it automatically
 IF(NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
     IF(NOT EIGEN3_INCLUDE_DIR) # no manual location specified either
         MESSAGE(FATAL_ERROR
@@ -33,7 +33,7 @@ IF(NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
             for example\ 
             cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen")
     ELSE() # manual location specified
-        INCLUDE_DIRECTORIES(SYSTEM "$EIGEN3_INCLUDE_DIR")
+        INCLUDE_DIRECTORIES(SYSTEM "${EIGEN3_INCLUDE_DIR}")
     ENDIF()
 ENDIF()
 
