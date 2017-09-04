@@ -36,8 +36,7 @@ script:
   - $CXX --version
   
   # Install Eigen3
-  - hg clone https://bitbucket.org/eigen/eigen/
-  - ln -s $HOME/build/vsoftco/qpp/eigen $HOME/eigen
+  - apt-get install eigen3
   
   # Build a minimal example
   - mkdir build
