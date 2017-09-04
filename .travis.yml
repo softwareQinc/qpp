@@ -22,8 +22,6 @@ addons:
     - g++-6
     - cmake
     - cmake-data
-    # Eigen3
-    - libeigen3-dev
     # - clang-3.7
 
 before_install:
@@ -37,16 +35,20 @@ notifications:
 script:
   - $CXX --version
   
+  # Install Eigen3
+  - hg clone https://bitbucket.org/eigen/eigen/
+  - ln -s $HOME/build/vsoftco/qpp/eigen $HOME/eigen
+  
   # Build a minimal example
   - mkdir build
   - cd build
-  - cmake -DCMAKE_BUILD_TYPE=Debug ..  && make
+  - cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make
   
   # Build the unit tests
   - cd ../unit_tests
   - mkdir build
   - cd build
-  - cmake -DCMAKE_BUILD_TYPE=Debug .. && make
+  - cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make
 
   # Run the unit tests
   - ./tests/qpp_testing
