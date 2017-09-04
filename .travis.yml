@@ -22,6 +22,8 @@ addons:
     - g++-6
     - cmake
     - cmake-data
+    # Eigen3
+    - libeigen3-dev
     # - clang-3.7
 
 before_install:
@@ -34,9 +36,6 @@ notifications:
 
 script:
   - $CXX --version
-  
-  # Install Eigen3
-  - apt-get install eigen3
   
   # Build a minimal example
   - mkdir build
