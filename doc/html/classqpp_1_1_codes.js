@@ -7,6 +7,6 @@ var classqpp_1_1_codes =
     ] ],
     [ "Codes", "classqpp_1_1_codes.html#a2514d858077e81e6e8b7d06057201748", null ],
     [ "~Codes", "classqpp_1_1_codes.html#afdfdc7499544df599241167ab785c953", null ],
-    [ "codeword", "classqpp_1_1_codes.html#a7e86e08f62d809e5387fb2f09db86f38", null ],
+    [ "codeword", "classqpp_1_1_codes.html#a837be09ffec12631958467bcf1f9222d", null ],
     [ "internal::Singleton< const Codes >", "classqpp_1_1_codes.html#afa80fa4eb477dc795abed5a4951c6ceb", null ]
 ];

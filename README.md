@@ -1,5 +1,5 @@
 # Quantum++ 
-## Version 1.0-rc1-devel - development
+## Version 1.0-rc2 - Release Candidate 2, 5 September 2017
 
 **Build status:**
 Master
@@ -63,7 +63,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 (for good C++11 support)
 - [Eigen 3](http://eigen.tuxfamily.org) linear algebra library. I assume here that 
 the library is installed in `$HOME/eigen`, although the location may vary, e.g. if 
-the libary was installed with a package manager.
+the libary was installed using a package manager.
 - Quantum++ library located in `$HOME/qpp`
 
 ##### Optional
@@ -76,7 +76,7 @@ files:
 files:
 `/Applications/MATLAB_R2016a.app/bin/maci64`
 
-### Building using [CMake](http://www.cmake.org/) (version 3.0.0 or later)
+### Building using [CMake](http://www.cmake.org/) (version 3.0 or later)
 
 The current version of the repository has a `./CMakeLists.txt` configuration 
 file for building examples using [CMake](http://www.cmake.org/). 
@@ -89,16 +89,16 @@ I recommend an out-of-source build, i.e., from the root of the project
     cmake ..
     make
 
-The commands above build the relase version (default) executable `qpp`, 
+The commands above build the release version (default) executable `qpp`, 
 from the source file `./examples/minimal.cpp`,
 without [MATLAB](http://www.mathworks.com/products/matlab/) support (default), 
 inside the directory `./build`. 
 
 If the location of [Eigen 3](http://eigen.tuxfamily.org) is not detected
 automatically by the [CMake](http://www.cmake.org/) build script, 
-then the build script will fail (with an error message) and the location of 
-[Eigen 3](http://eigen.tuxfamily.org) will need to be specified
-manually in the [CMake](http://www.cmake.org/) build command by passing
+then the build script will fail (with an error message). In this case 
+the location of [Eigen 3](http://eigen.tuxfamily.org) needs to be specified
+manually in the [CMake](http://www.cmake.org/) build command line by passing
 the `-DEIGEN3_INCLUDE_DIR=path_to_eigen3` flag, e.g.
 
     cmake .. -DEIGEN3_INCLUDE_DIR=/usr/local/eigen3
@@ -275,7 +275,7 @@ via a suite of unit tests constructed with
 [Google Test 1.8.0](https://github.com/google/googletest) (included with the 
 project in `./unit_tests/lib/gtest-1.8.0`). The source code of the unit tests 
 is provided under `./unit_tests/tests`. To build and run the unit tests, I 
-strongly recommend to use [CMake](http://www.cmake.org/) version 3.0.0 or 
+strongly recommend to use [CMake](http://www.cmake.org/) version 3.0 or 
 later. Assuming you do use [CMake](http://www.cmake.org/), switch to the  
 `./unit_tests` directory, create a `build` directory inside it, then from the 
 newly created `./unit_tests/build` type

@@ -1,6 +1,6 @@
 <map id="qpp::exception::DimsNotEqual" name="qpp::exception::DimsNotEqual">
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="19,185,193,212"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="14,96,118,123"/>
-<area shape="rect" id="node4" title="STL class. " alt="" coords="142,96,222,123"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="119,5,245,47"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="15,185,151,212"/>
+<area shape="rect" id="node3" title="STL class. " alt="" coords="7,96,91,123"/>
+<area shape="rect" id="node4" title="STL class. " alt="" coords="115,96,180,123"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="97,5,197,47"/>
 </map>

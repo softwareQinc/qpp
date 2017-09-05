@@ -1,8 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structqpp_1_1internal_1_1_display___impl__.html" title="qpp::internal::Display\l_Impl_" alt="" coords="5,5,152,47"/>
-<area shape="rect" id="node2" href="$classqpp_1_1internal_1_1_i_o_manip_eigen.html" title="qpp::internal::IOManipEigen" alt="" coords="205,13,391,39"/>
-<area shape="rect" id="node3" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="29,105,128,131"/>
-<area shape="rect" id="node4" href="$classqpp_1_1internal_1_1_i_o_manip_pointer.html" title="qpp::internal::IOManipPointer\l\&lt; PointerType \&gt;" alt="" coords="200,64,396,105"/>
-<area shape="rect" id="node5" href="$classqpp_1_1internal_1_1_i_o_manip_range.html" title="qpp::internal::IOManipRange\l\&lt; InputIterator \&gt;" alt="" coords="202,129,394,171"/>
-<area shape="rect" id="node6" href="$classqpp_1_1_timer.html" title="Chronometer. " alt="" coords="205,195,391,222"/>
+<area shape="rect" id="node1" href="$structqpp_1_1internal_1_1_display___impl__.html" title="qpp::internal::Display\l_Impl_" alt="" coords="5,5,121,47"/>
+<area shape="rect" id="node2" href="$classqpp_1_1internal_1_1_i_o_manip_eigen.html" title="qpp::internal::IOManipEigen" alt="" coords="173,13,318,39"/>
+<area shape="rect" id="node3" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="23,103,103,130"/>
+<area shape="rect" id="node4" href="$classqpp_1_1internal_1_1_i_o_manip_pointer.html" title="qpp::internal::IOManipPointer\l\&lt; PointerType \&gt;" alt="" coords="169,64,321,105"/>
+<area shape="rect" id="node5" href="$classqpp_1_1internal_1_1_i_o_manip_range.html" title="qpp::internal::IOManipRange\l\&lt; InputIterator \&gt;" alt="" coords="171,129,320,171"/>
+<area shape="rect" id="node6" href="$classqpp_1_1_timer.html" title="Chronometer. " alt="" coords="173,195,318,222"/>
 </map>

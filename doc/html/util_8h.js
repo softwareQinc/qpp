@@ -25,5 +25,5 @@ var util_8h =
     [ "multiidx2n", "util_8h.html#a7132297b40fb958750942d6bed9d4ff3", null ],
     [ "n2multiidx", "util_8h.html#a3e8ed22ae3490cd81beff37931d8ca25", null ],
     [ "variadic_vector_emplace", "util_8h.html#a5f99527a1f1e06fd6d62e094cd2e97f0", null ],
-    [ "variadic_vector_emplace", "util_8h.html#a9e4550a948eedf249d041743c91f2708", null ]
+    [ "variadic_vector_emplace", "util_8h.html#a07129646081f2a3a6cd04db0c68d0d22", null ]
 ];
