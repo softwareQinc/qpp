@@ -28,6 +28,7 @@ SET(SOURCE_FILES
         examples/_test.cpp)
 
 #### Eigen3
+MESSAGE("-- Detecting Eigen3")
 FIND_PACKAGE(Eigen3 3.0 QUIET NO_MODULE) # try to find it automatically
 IF(NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
     IF(NOT EIGEN3_INCLUDE_DIR) # no manual location specified either
@@ -39,6 +40,8 @@ IF(NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
     ELSE() # manual location specified
         INCLUDE_DIRECTORIES(SYSTEM "${EIGEN3_INCLUDE_DIR}")
     ENDIF()
+ELSE()
+    MESSAGE("-- Detecting Eigen3 - done")
 ENDIF()
 
 #### Use C++11
