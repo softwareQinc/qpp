@@ -1,3 +1,5 @@
+Version 1.0-rc2-devel - development
+    -
 Version 1.0-rc2 - Release Candidate 2, 5 September 2017
     - Added serialization capabilities for the PRNG in qpp::RandomDevices from
       "classes/random_devices.h":
