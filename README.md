@@ -61,12 +61,14 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 - Compiler: [g++](https://gcc.gnu.org/) version 4.8.2 or later 
 (for good C++11 support)
-- [Eigen 3](http://eigen.tuxfamily.org) library located in `$HOME/eigen`
+- [Eigen 3](http://eigen.tuxfamily.org) linear algebra library. I assume here that 
+the library is installed in `$HOME/eigen`, although the location may vary, e.g. if 
+the libary was installed with a package manager.
 - Quantum++ library located in `$HOME/qpp`
 
 ##### Optional
 
-- [CMake](http://www.cmake.org/) version 3.0.0 or later, highly recommended
+- [CMake](http://www.cmake.org/) version 3.0 or later, highly recommended
 - [MATLAB](http://www.mathworks.com/products/matlab/) compiler include header 
 files:
 `/Applications/MATLAB_R2016a.app/extern/include`
@@ -90,8 +92,19 @@ I recommend an out-of-source build, i.e., from the root of the project
 The commands above build the relase version (default) executable `qpp`, 
 from the source file `./examples/minimal.cpp`,
 without [MATLAB](http://www.mathworks.com/products/matlab/) support (default), 
-inside the directory `./build`. To build a different configuration, 
-e.g. debug version with [MATLAB](http://www.mathworks.com/products/matlab/) 
+inside the directory `./build`. 
+
+If the location of [Eigen 3](http://eigen.tuxfamily.org) is not detected
+automatically by the [CMake](http://www.cmake.org/) build script, 
+then the build script will fail (with an error message) and the location of 
+[Eigen 3](http://eigen.tuxfamily.org) will need to be specified
+manually in the [CMake](http://www.cmake.org/) build command by passing
+the `-DEIGEN3_INCLUDE_DIR=path_to_eigen3` flag, e.g.
+
+    cmake .. -DEIGEN3_INCLUDE_DIR=/usr/local/eigen3
+
+To build a different configuration, 
+e.g. the debug version with [MATLAB](http://www.mathworks.com/products/matlab/)
 support, type from the root of the project
 
     cd ./build
@@ -106,12 +119,11 @@ Or, to disable [OpenMP](http://openmp.org/) support (enabled by default), type
     cmake -DWITH_OPENMP=OFF ..
     make
 
-To change the name of the example file, the location of the
-[Eigen 3](http://eigen.tuxfamily.org)
-library or the location of [MATLAB](http://www.mathworks.com/products/matlab/) 
-installation, edit the `./CMakeLists.txt` file. See also `./CMakeLists.txt` 
-for additional options. Do not forget to clean the `./build` directory before 
-a fresh build!
+To change the name of the example file or the location of 
+[MATLAB](http://www.mathworks.com/products/matlab/) installation, 
+edit the `./CMakeLists.txt` file. Inspect also `./CMakeLists.txt` 
+for additional fine-tuning options. Do not forget to clean the `./build` 
+directory before a fresh build!
 
 ### Building without an automatic build system
 
