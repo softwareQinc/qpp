@@ -34,7 +34,7 @@ IF(NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
             for example\ 
             cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen")
     ELSE() # manual location specified
-        MESSAGE("-- Detecting Eigen3 - location manually specified")
+        MESSAGE("-- Detecting Eigen3 - done (location manually specified)")
         INCLUDE_DIRECTORIES(SYSTEM "${EIGEN3_INCLUDE_DIR}")
     ENDIF()
 ELSE()
