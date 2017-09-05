@@ -33,7 +33,7 @@ FIND_PACKAGE(Eigen3 3.0 QUIET NO_MODULE) # try to find it automatically
 IF(NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
     IF(NOT EIGEN3_INCLUDE_DIR) # no manual location specified either
         MESSAGE(FATAL_ERROR
-            "Eigen3 not detected! Please point the EIGEN3_INCLUDE_DIR\
+            "Eigen3 not detected! Please point EIGEN3_INCLUDE_DIR\
             to your Eigen3 location when building with cmake,\
             for example\ 
             cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen")
