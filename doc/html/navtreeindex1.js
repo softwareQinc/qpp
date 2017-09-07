@@ -123,7 +123,7 @@ var NAVTREEINDEX1 =
 "matlab_8h.html#aa993678c656323f6c3bc23fa68830b57":[3,0,3,0,0],
 "matlab_8h.html#ab5e91e774a6fce553cadf6482c13a1ca":[3,0,3,0,2],
 "matlab_8h_source.html":[3,0,3,0],
-"md___users_vlad__dropbox_programming_cpp_qpp_clion__r_e_a_d_m_e.html":[0],
+"md___users_vlad__dropbox_programming_cpp_qpp__r_e_a_d_m_e.html":[0],
 "namespacemembers.html":[1,1,0],
 "namespacemembers.html":[1,1,0,0],
 "namespacemembers_b.html":[1,1,0,1],
