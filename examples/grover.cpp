@@ -31,7 +31,7 @@ int main()
     cmat G = 2 * prj(psi) - gt.Id(N); // Diffusion operator
 
     // number of queries
-    idx nqueries = std::ceil(pi * std::sqrt(N / 4.));
+    idx nqueries = std::ceil(pi/4 * std::sqrt(N));
     std::cout << ">> We run " << nqueries << " queries\n";
     for (idx i = 0; i < nqueries; ++i)
     {
