@@ -9,4 +9,8 @@ using namespace qpp;
 int main()
 {
     std::cout << "Testing...\n";
+
+    experimental::Dynamic_bitset b(9);
+    b.rand();
+    std::cout << b << '\n';
 }
