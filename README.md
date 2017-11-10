@@ -178,9 +178,8 @@ directory before a fresh build!
 C++11 math functions, see
 <http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2>
 for more details. Quick fix: patch the standard library header file `<cmath>` 
-using the provided patch `./cmath_cygwin.patch`. Latest 
-[Cygwin](https://www.cygwin.com) (as of Nov. 11, 2016) seem to have fixed
-the issue.
+using the provided patch `./cmath_cygwin.patch`. Later 
+[Cygwin](https://www.cygwin.com) versions seem to have fixed the issue (as of Nov. 2016).
 
 ### [Windows](http://windows.microsoft.com/) via [Visual Studio](https://www.visualstudio.com)
 
