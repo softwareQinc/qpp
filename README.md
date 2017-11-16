@@ -63,7 +63,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 ### Configuration
 
-- Compiler: [g++](https://gcc.gnu.org/) version 4.8.2 or later 
+- Compiler: [g++](https://gcc.gnu.org/) version 5.0 or later 
 (for good C++11 support)
 - [Eigen 3](http://eigen.tuxfamily.org) linear algebra library. I assume here that 
 the library is installed in `$HOME/eigen`, although the location may vary, e.g. if 
