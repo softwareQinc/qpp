@@ -2,10 +2,16 @@ version: 1.0.{build}
 
 image: Visual Studio 2017
 
+platform: x64
+
 build:
     project: VisualStudio/VisualStudio.sln
     verbosity: normal 
 
-configuration:
-    - Release
+install:
+  - ps: wget http://bitbucket.org/eigen/eigen/get/3.2.10.zip -outfile eigen3.zip
+  - cmd: 7z x eigen3.zip -o"C:\eigen" -y > nul
 
+configuration:
+    - Debug
+    - Release
