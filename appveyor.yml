@@ -9,7 +9,7 @@ build:
     verbosity: normal 
 
 install:
-  - ps: wget http://bitbucket.org/eigen/eigen/get/3.2.10.zip -outfile eigen3.zip
+  - ps: wget http://bitbucket.org/eigen/eigen/get/3.3.4.zip -O eigen3.zip
   - cmd: 7z x eigen3.zip -o"C:\eigen" -y > nul
 
 configuration:
