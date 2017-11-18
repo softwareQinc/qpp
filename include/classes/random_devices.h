@@ -31,7 +31,7 @@ namespace qpp
 {
 /**
 * \class qpp::RandomDevices
-* \brief Singeleton class that manages the source of randomness in the library
+* \brief Singleton class that manages the source of randomness in the library
 *
 * Consists of a wrapper around an std::mt19937 Mersenne twister
 * random number generator engine and an std::random_device engine. The latter

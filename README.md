@@ -1,5 +1,5 @@
 # Quantum++ 
-## Version 1.0-rc2 - Release Candidate 2, 6 September 2017
+## Version 1.0-rc2-devel - development
 
 **Build status:**
 Master
@@ -63,7 +63,7 @@ along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 ### Configuration
 
-- Compiler: [g++](https://gcc.gnu.org/) version 4.8.2 or later 
+- Compiler: [g++](https://gcc.gnu.org/) version 5.0 or later 
 (for good C++11 support)
 - [Eigen 3](http://eigen.tuxfamily.org) linear algebra library. I assume here that 
 the library is installed in `$HOME/eigen`, although the location may vary, e.g. if 
@@ -178,9 +178,8 @@ directory before a fresh build!
 C++11 math functions, see
 <http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2>
 for more details. Quick fix: patch the standard library header file `<cmath>` 
-using the provided patch `./cmath_cygwin.patch`. Latest 
-[Cygwin](https://www.cygwin.com) (as of Nov. 11, 2016) seem to have fixed
-the issue.
+using the provided patch `./cmath_cygwin.patch`. Later 
+[Cygwin](https://www.cygwin.com) versions seem to have fixed the issue (as of Nov. 2016).
 
 ### [Windows](http://windows.microsoft.com/) via [Visual Studio](https://www.visualstudio.com)
 
