@@ -4,7 +4,7 @@ image: Visual Studio 2017
 
 build:
     project: VisualStudio/VisualStudio.sln
-#    verbosity: minimal
+    verbosity: detailed
 
 configuration:
     - Release
