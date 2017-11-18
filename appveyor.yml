@@ -3,7 +3,7 @@ version: 1.0.{build}
 image: Visual Studio 2017
 
 build:
-    project: qpp 
+    project: VisualStudio 
 #    verbosity: minimal
 
 configuration:
