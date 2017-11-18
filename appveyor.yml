@@ -3,8 +3,9 @@ version: 1.0.{build}
 image: Visual Studio 2017
 
 build:
-  verbosity: minimal
+    project: VisualStudio\VisualStudio.sln
+    verbosity: minimal
 
 configuration:
-  - Release
+    - Release
 
