@@ -136,7 +136,7 @@ public:
 
         cmat result = cmat::Zero(D, D);
         for (idx i = 0; i < D; ++i)
-            result(i, i) = std::pow(omega(D), i);
+            result(i, i) = std::pow(omega(D), std::cast<double>(i));
 
         return result;
     }
@@ -165,7 +165,8 @@ public:
 #endif // WITH_OPENMP_
         for (idx j = 0; j < D; ++j) // column major order for speed
             for (idx i = 0; i < D; ++i)
-                result(i, j) = 1 / std::sqrt(D) * std::pow(omega(D), i * j);
+                result(i, j) = 1 / std::sqrt(D) * 
+                    std::pow(omega(D), std::cast<double>(i * j));
 
         return result;
     }
