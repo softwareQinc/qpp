@@ -45,18 +45,8 @@ see <http://eigen.tuxfamily.org/dox/>. For a simple
 Copyright (c) 2013 - 2017 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
 
 ---
-Quantum++ is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Quantum++ is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
+Quantum++ is licensed under the MIT license, see COPYING for the full terms 
+and conditions of the license.
 
 ---
 ## Building instructions for POSIX-compliant platforms
@@ -183,6 +173,11 @@ using the provided patch `./cmath_cygwin.patch`. Later
 
 ### [Windows](http://windows.microsoft.com/) via [Visual Studio](https://www.visualstudio.com)
 
+- Quantum++ contains a full Visual Studio 2017 solution under the folder 
+`./VisualStudio`. The solution expects [Eigen 3](http://eigen.tuxfamily.org)
+to be installed under `C:\eigen`. Use this solution at first to get you
+started.
+
 -  [Visual Studio](https://www.visualstudio.com) versions preceeding 
 version 2015 do not have full C++11 support. If you decide to use 
 [Visual Studio](https://www.visualstudio.com) make sure you install version
@@ -198,7 +193,7 @@ on [Visual Studio 2015](https://www.visualstudio.com) if you enable
     
 and `#define WITH_OPENMP_` in your source file.
 
-- To create a [Visual Studio 2015](https://www.visualstudio.com) or later 
+- To create a new [Visual Studio 2015](https://www.visualstudio.com) or later 
 console solution, start by creating a *Win32 Console Application*
 
     *File/New/Project.../Installed/Templates/Visual C++/Win32/Win32 Console Application*
