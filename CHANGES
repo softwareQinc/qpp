@@ -1,5 +1,7 @@
-Since last release (master branch)
+Since lastest release (master branch)
     - License change from GPL to MIT
+    - Added Visual Studio 2017 solution
+    - Added support for AppVeyor continuous integration 
     - Added support for reversible classical circuits, via the following
       classes in "experimental.h":
         qpp::experimental::Dynamic_bitset
@@ -41,7 +43,7 @@ Version 1.0.0-beta4 - 2 November 2016
     - Almost full code coverage via unit testing
 
 Version 1.0.0-beta3 - 22 October 2016
-    - Added support for Travis CI automated testing platform
+    - Added support for Travis CI continuous integration
     - Added new functions in "classes/states.h":
         qpp::States::mes() - maximally entangled state of 2 qudits
     - Added new functions in "random.h":
