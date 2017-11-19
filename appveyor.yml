@@ -9,9 +9,12 @@ build:
     verbosity: normal 
 
 install:
-  - ps: wget http://bitbucket.org/eigen/eigen/get/3.3.4.zip -O eigen3.zip
-  - cmd: 7z x eigen3.zip -o"C:\" -y > nul
-  - cmd: mv c:\eigen-eigen-5a0156e40feb c:\eigen
+    #  - ps: wget http://bitbucket.org/eigen/eigen/get/3.3.4.zip -O eigen3.zip
+    #  - cmd: 7z x eigen3.zip -o"C:\" -y > nul
+    #  - cmd: mv c:\eigen-eigen-5a0156e40feb c:\eigen
+    - ps: wget http://bitbucket.org/eigen/eigen/get/3.3.4.zip
+    - cmd: unzip 3.3.4.zip
+    - cmd: mv eigen-eigen-5a0156e40feb c:\eigen
 
 configuration:
     - Debug
