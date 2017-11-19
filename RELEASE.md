@@ -1,5 +1,5 @@
 # Quantum++ 
-## Version 1.0-rc2-devel - development
+## Version 1.0-rc2 - 6 September 2017 
 
 - For building instructions and additional information 
 see the file `./README.md` or the main repository page 

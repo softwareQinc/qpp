@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Quantum++
-   &#160;<span id="projectnumber">v1.0-rc2-devel</span>
+   &#160;<span id="projectnumber">v1.0-rc2</span>
    </div>
    <div id="projectbrief">A modern C++11 quantum computing library</div>
   </td>
@@ -71,7 +71,7 @@ $(document).ready(function(){initNavTree('classqpp_1_1_random_devices.html','');
 </div><!--header-->
 <div class="contents">
 
-<p>Singeleton class that manages the source of randomness in the library.  
+<p>Singleton class that manages the source of randomness in the library.  
  <a href="classqpp_1_1_random_devices.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="random__devices_8h_source.html">classes/random_devices.h</a>&gt;</code></p>
@@ -145,7 +145,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a1338519d694c423036ee981c97625133 inherit pro_methods_classqpp_1_1internal_1_1_singleton"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Singeleton class that manages the source of randomness in the library. </p>
+<div class="textblock"><p>Singleton class that manages the source of randomness in the library. </p>
 <p>Consists of a wrapper around an std::mt19937 Mersenne twister random number generator engine and an std::random_device engine. The latter is used to seed the Mersenne twister.</p>
 <dl class="section warning"><dt>Warning</dt><dd>This class DOES NOT seed the standard C number generator used by Eigen::Matrix::Random(), since it is not thread safe. Do not use Eigen::Matrix::Random() or functions that depend on the C style random number engine, but use <a class="el" href="namespaceqpp.html#a2f1ee80e9136dc4c16d964b45d7e188d" title="Generates a random real number uniformly distributed in the interval [a, b) ">qpp::rand()</a> instead! </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -383,7 +383,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_random_devices.html">RandomDevices</a></li>
-    <li class="footer">Generated on Wed Sep 6 2017 22:39:32 for Quantum++ by
+    <li class="footer">Generated on Sun Nov 19 2017 10:04:49 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

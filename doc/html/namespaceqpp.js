@@ -1,8 +1,11 @@
 var namespaceqpp =
 [
     [ "exception", "namespaceqpp_1_1exception.html", "namespaceqpp_1_1exception" ],
+    [ "experimental", "namespaceqpp_1_1experimental.html", "namespaceqpp_1_1experimental" ],
     [ "internal", "namespaceqpp_1_1internal.html", "namespaceqpp_1_1internal" ],
+    [ "Bit_circuit", "classqpp_1_1_bit__circuit.html", null ],
     [ "Codes", "classqpp_1_1_codes.html", "classqpp_1_1_codes" ],
+    [ "Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html", null ],
     [ "Gates", "classqpp_1_1_gates.html", "classqpp_1_1_gates" ],
     [ "IDisplay", "classqpp_1_1_i_display.html", "classqpp_1_1_i_display" ],
     [ "Init", "classqpp_1_1_init.html", "classqpp_1_1_init" ],

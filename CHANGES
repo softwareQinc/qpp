@@ -1,10 +1,10 @@
-Version 1.0-rc2-devel - development
+Since last release (master branch)
     - License change from GPL to MIT
     - Added support for reversible classical circuits, via the following
       classes in "experimental.h":
         qpp::experimental::Dynamic_bitset
         qpp::experimental::Bit_circuit
-        
+
 Version 1.0-rc2 - Release Candidate 2, 6 September 2017
     - Added serialization capabilities for the PRNG in qpp::RandomDevices from
       "classes/random_devices.h":
