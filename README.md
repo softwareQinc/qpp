@@ -181,47 +181,18 @@ Use this solution at first to get you started.
 -  [Visual Studio](https://www.visualstudio.com) versions preceeding 
 version 2015 do not have full C++11 support. If you decide to use 
 [Visual Studio](https://www.visualstudio.com) make sure you install version
-2015 or later. 
+2015 or later. I recommend using 
+[Visual Studio 2017](https://www.visualstudio.com).
     
-- [Visual Studio 2015](https://www.visualstudio.com) only
+- [Visual Studio 2015/2017](https://www.visualstudio.com) only
 supports [OpenMP 2.0](http://openmp.org/). Quantum++ uses features
 from [OpenMP 3.0](http://openmp.org/), hence Quantum++ will not compile
-on [Visual Studio 2015](https://www.visualstudio.com) if you enable 
+on [Visual Studio 2015/2017](https://www.visualstudio.com) if you enable 
 [OpenMP](http://openmp.org/) (disabled by default) in
     
     *Project/Properties/Configuration Properties/C_C++/Language/Open MP Support*
     
 and `#define WITH_OPENMP_` in your source file.
-
-- To create a new [Visual Studio 2015](https://www.visualstudio.com) or later 
-console solution, start by creating a *Win32 Console Application*
-
-    *File/New/Project.../Installed/Templates/Visual C++/Win32/Win32 Console Application*
-
-    Click *Next* then select *Console Application* as *Application Type*. 
-    Click *Finish* to create the solution. Next select 
-
-    *Project/Properties* 
-
-    from the main menu. The *Property Pages* configuration window will open.
-    From the latter select *All configurations* from the top left 
-    *Configuration* drop box. Next select
-
-    *Configuration Properties/C_C++/General*
-
-    and add to the field *Additional Include Directories* the location of 
-    Quantum++ `./include` folder as well as the location of 
-    [Eigen 3](http://eigen.tuxfamily.org). It should look similar to 
-
-    **C:\Users\User\Downloads\eigen;C:\Users\User\Downloads\qpp\include;%(AdditionalIncludeDirectories)**
-
-    Finally select 
-
-    *Configuration Properties/C_C++/Advanced*
-
-    and add to the field *Disable Specific Warnings* the values **4503;4996**. 
-    Click *Ok* to save the settings and close the *Property Pages* window. 
-    You are now ready to go.
 
 ### [OS X/macOS](http://www.apple.com/osx)
 
