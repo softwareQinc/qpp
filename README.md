@@ -173,10 +173,10 @@ using the provided patch `./cmath_cygwin.patch`. Later
 
 ### [Windows](http://windows.microsoft.com/) via [Visual Studio](https://www.visualstudio.com)
 
-- Quantum++ contains a full Visual Studio 2017 solution under the folder 
-`./VisualStudio`. The solution expects [Eigen 3](http://eigen.tuxfamily.org)
-to be installed under `C:\eigen`. Use this solution at first to get you
-started.
+- Quantum++ contains a full [Visual Studio 2017](https://www.visualstudio.com) 
+solution under the folder `./VisualStudio`. The solution expects 
+[Eigen 3](http://eigen.tuxfamily.org) to be installed under `C:\eigen`. 
+Use this solution at first to get you started.
 
 -  [Visual Studio](https://www.visualstudio.com) versions preceeding 
 version 2015 do not have full C++11 support. If you decide to use 
