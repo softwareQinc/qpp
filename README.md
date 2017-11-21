@@ -164,22 +164,15 @@ directory before a fresh build!
 
 ## Additional building instructions for particular platforms
 
-### [Windows](http://windows.microsoft.com/) via [Cygwin](https://www.cygwin.com)
-
-- Some earlier versions of 
-[Cygwin](https://www.cygwin.com) had a bug related to lack of support for some 
-C++11 math functions, see
-<http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2>
-for more details. Quick fix: patch the standard library header file `<cmath>` 
-using the provided patch `./cmath_cygwin.patch`. Later 
-[Cygwin](https://www.cygwin.com) versions seem to have fixed the issue (as of Nov. 2016).
-
 ### [Windows](http://windows.microsoft.com/) via [Visual Studio](https://www.visualstudio.com)
 
 - Quantum++ contains a full [Visual Studio 2017](https://www.visualstudio.com) 
 solution under the folder `./VisualStudio`. The solution 
 expects [Eigen 3](http://eigen.tuxfamily.org) to be installed 
-under `C:\eigen`. Use this solution at first to get you started.
+under `C:\eigen`. Use this solution at first to get you started. 
+A unit testing project (`qpp_testing`) with 
+[Google Test 1.8.0](https://github.com/google/googletest) is also 
+included in the solution.
 
 -  [Visual Studio](https://www.visualstudio.com) versions preceeding 
 version 2015 do not have full C++11 support. If you decide to use 
@@ -196,6 +189,16 @@ on [Visual Studio 2015/2017](https://www.visualstudio.com) if you enable
     *Project/Properties/Configuration Properties/C_C++/Language/Open MP Support*
     
 and `#define WITH_OPENMP_` in your source file.
+
+### [Windows](http://windows.microsoft.com/) via [Cygwin](https://www.cygwin.com)
+
+- Some earlier versions of 
+[Cygwin](https://www.cygwin.com) had a bug related to lack of support for some 
+C++11 math functions, see
+<http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2>
+for more details. Quick fix: patch the standard library header file `<cmath>` 
+using the provided patch `./cmath_cygwin.patch`. Later 
+[Cygwin](https://www.cygwin.com) versions seem to have fixed the issue (as of Nov. 2016).
 
 ### [OS X/macOS](http://www.apple.com/osx)
 
@@ -246,7 +249,9 @@ Quantum++ was extensively tested under multiple flavours of Linux,
 via a suite of unit tests constructed with
 [Google Test 1.8.0](https://github.com/google/googletest) (included with the 
 project in `./unit_tests/lib/gtest-1.8.0`). The source code of the unit tests 
-is provided under `./unit_tests/tests`. To build and run the unit tests, I 
+is provided under `./unit_tests/tests`. 
+
+To build and run the unit tests under any POSIX-compliant platform, I 
 strongly recommend to use [CMake](http://www.cmake.org/) version 3.0 or 
 later. Assuming you do use [CMake](http://www.cmake.org/), switch to the  
 `./unit_tests` directory, create a `build` directory inside it, then from the 
@@ -259,6 +264,10 @@ The commands above build `./unit_tests/build/tests/qpp_testing`, which you
 then may run. Note that `qpp::Timer` tests or tests related to random functions
 such as `qpp::rand()` may sometime (very rarely) fail, due to timing 
 imprecision or statistical errors. Such behaviour is perfectly normal.
+
+To run the unit tests in [Windows](http://windows.microsoft.com/) under
+[Visual Studio](https://www.visualstudio.com), use the provided solution and 
+run the `qpp_testing` project from the Solution Explorer.
 
 #### Note
 
