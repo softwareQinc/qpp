@@ -16,3 +16,6 @@ install:
 configuration:
     - Debug
     - Release
+
+test_script:
+    - cmd: VisualStudio/qpp_testing/x64/%configuration%/qpp_testing.exe
