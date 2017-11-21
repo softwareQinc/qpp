@@ -6,7 +6,7 @@ platform: x64
 
 build:
     project: VisualStudio/VisualStudio.sln
-    verbosity: normal 
+    verbosity: minimal 
 
 install:
     - ps: wget http://bitbucket.org/eigen/eigen/get/3.3.4.zip -O eigen3.zip
