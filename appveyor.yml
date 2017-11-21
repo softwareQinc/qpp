@@ -19,4 +19,4 @@ configuration:
 
 test_script:
     - cmd: >-
-        C:\projects\qpp\VisualStudio\qpp_testing\x64\%configuration%\qpp_testing.exe
+        C:\projects\qpp\VisualStudio\x64\%configuration%\qpp_testing.exe
