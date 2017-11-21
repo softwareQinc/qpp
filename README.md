@@ -1,6 +1,8 @@
 # Quantum++ 
 ## Version 1.0-rc2 - 6 September 2017
 
+[![Join the chat at https://gitter.im/vsoftco_qpp/Lobby](https://badges.gitter.im/vsoftco_qpp/Lobby.svg)](https://gitter.im/vsoftco_qpp/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 **Build status:**
 
 [![Build Status](https://api.travis-ci.org/vsoftco/qpp.svg?branch=master)](https://travis-ci.org/vsoftco/qpp)
