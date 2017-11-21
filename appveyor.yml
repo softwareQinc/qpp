@@ -19,5 +19,4 @@ configuration:
 
 test_script:
     - cmd: >-
-        %APPVEYOR_BUILD_FOLDER%\%APPVEYOR_PROJECT_NAME%
-        \VisualStudio\x64\%configuration%\qpp_testing.exe
+        %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\qpp_testing.exe
