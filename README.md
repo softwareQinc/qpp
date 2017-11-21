@@ -2,9 +2,13 @@
 ## Version 1.0-rc2 - 6 September 2017
 
 **Build status:**
-Master
+
 [![Build Status](https://api.travis-ci.org/vsoftco/qpp.svg?branch=master)](https://travis-ci.org/vsoftco/qpp)
 [![Build status](https://ci.appveyor.com/api/projects/status/684ht8hu8js0wjmm?svg=true)](https://ci.appveyor.com/project/vsoftco/qpp)
+
+**Chat (questions/issues)**
+
+[![Join the chat at https://gitter.im/vsoftco_qpp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/vsoftco_qpp/Lobby/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Quantum++ is a modern C++11 general purpose quantum computing library, composed 
 solely of template header files. Quantum++ is written in standard C++11 and 
