@@ -32,7 +32,7 @@ matrix:
             apt:
                 packages:
                     - clang-3.7
-                    - libomp-dev
+                    - libiomp-dev
                     - cmake
                     - cmake-data
 
