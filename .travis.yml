@@ -40,7 +40,7 @@ matrix:
 before_install:
 
 install:
-    - if [ "$CXX" = "g++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="g++-6" CC="gcc-6"; fi
+    - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
 
 notifications:
   email: false
