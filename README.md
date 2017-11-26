@@ -52,7 +52,7 @@ Quantum++ is licensed under the MIT license, see COPYING for the full terms
 and conditions of the license.
 
 ---
-## Building instructions for POSIX-compliant platforms
+## [Building instructions for POSIX-compliant platforms](buidling-POSIX)
 
 ### Configuration
 
@@ -162,7 +162,7 @@ directory before a fresh build!
          -lmx -lmat minimal.cpp -o minimal
 
 
-## Additional building instructions for particular platforms
+## [Additional building instructions for particular platforms](building-additional-platforms)
 
 ### [Windows](http://windows.microsoft.com/) via [Visual Studio](https://www.visualstudio.com)
 
@@ -174,7 +174,7 @@ A unit testing project (`qpp_testing`) with
 [Google Test 1.8.0](https://github.com/google/googletest) is also 
 included in the solution.
 
--  [Visual Studio](https://www.visualstudio.com) versions preceeding 
+-  [Visual Studio](https://www.visualstudio.com) versions preceding 
 version 2015 do not have full C++11 support. If you decide to use 
 [Visual Studio](https://www.visualstudio.com) make sure you install version
 2015 or later. I recommend using 
@@ -183,13 +183,13 @@ version 2015 do not have full C++11 support. If you decide to use
 - [Visual Studio 2015/2017](https://www.visualstudio.com) only
 supports [OpenMP 2.0](http://openmp.org/). Quantum++ uses features
 from [OpenMP 3.0](http://openmp.org/), hence Quantum++ will not compile
-on [Visual Studio 2015/2017](https://www.visualstudio.com) if you enable 
+on [Visual Studio 2015/2017](https://www.visualstudio.com) if you 
+`#define WITH_OPENMP_` in your source file and enable 
 [OpenMP](http://openmp.org/) (disabled by default) in
     
     *Project/Properties/Configuration Properties/C_C++/Language/Open MP Support*
+.
     
-and `#define WITH_OPENMP_` in your source file.
-
 ### [Windows](http://windows.microsoft.com/) via [Cygwin](https://www.cygwin.com)
 
 - Some earlier versions of 
@@ -204,7 +204,8 @@ using the provided patch `./cmath_cygwin.patch`. Later
 
 - If you want to compile with [clang++](http://clang.llvm.org/) version 3.7 or
 later, I highly recommend to install it via [
-macports](https://www.macports.org/). 
+macports](https://www.macports.org/). See 
+[Additional remarks](#additional-remarks) for more details.
 
 - If you run the program with 
 [MATLAB](http://www.mathworks.com/products/matlab/) support, make sure that 
@@ -240,7 +241,7 @@ you may want to add `-fno-weak` compiler flag. See
 for more details about this problem.
 
 
-## Unit testing
+## [Unit testing](unit-testing)
 
 Quantum++ was extensively tested under multiple flavours of Linux,
 [OS X/macOS](http://www.apple.com/osx), 
@@ -281,11 +282,13 @@ accordingly in case your [Eigen 3](http://eigen.tuxfamily.org) library or
 in a different location than the one assumed in this document.
 
 
-## Additional remarks
+## [Additional remarks](additional-remarks)
 
 - If you use [clang++](http://clang.llvm.org/) version 3.7 or later and want 
 to use [OpenMP](http://openmp.org/) (enabled by default), make sure to modify 
 `CLANG_LIBOMP` and `CLANG_LIBOMP_INCLUDE` in `CMakeLists.txt` so they point to 
 the correct location of the [OpenMP](http://openmp.org/) library, as otherwise 
 [clang++](http://clang.llvm.org/) will not find `<omp.h>` and the `libomp` 
-shared library. 
+shared library. Under Linux, you may need to modify also `-fopenmp=...` flag
+as well. As such, I do not recommend using [clang++](http://clang.llvm.org/)
+with [OpenMP](http://openmp.org/) due to various platform-dependent issues.
