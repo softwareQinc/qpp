@@ -31,7 +31,6 @@ matrix:
 
             apt:
                 packages:
-                    - clang
                     - cmake
                     - cmake-data
 
