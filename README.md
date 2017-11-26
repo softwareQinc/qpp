@@ -52,7 +52,7 @@ Quantum++ is licensed under the MIT license, see COPYING for the full terms
 and conditions of the license.
 
 ---
-## [Building instructions for POSIX-compliant platforms](buidling-POSIX)
+## Building instructions for POSIX-compliant platforms
 
 ### Configuration
 
@@ -162,7 +162,7 @@ directory before a fresh build!
          -lmx -lmat minimal.cpp -o minimal
 
 
-## [Additional building instructions for particular platforms](building-additional-platforms)
+## Additional building instructions for particular platforms
 
 ### [Windows](http://windows.microsoft.com/) via [Visual Studio](https://www.visualstudio.com)
 
@@ -241,7 +241,7 @@ you may want to add `-fno-weak` compiler flag. See
 for more details about this problem.
 
 
-## [Unit testing](unit-testing)
+## Unit testing
 
 Quantum++ was extensively tested under multiple flavours of Linux,
 [OS X/macOS](http://www.apple.com/osx), 
@@ -282,7 +282,7 @@ accordingly in case your [Eigen 3](http://eigen.tuxfamily.org) library or
 in a different location than the one assumed in this document.
 
 
-## [Additional remarks](additional-remarks)
+## Additional remarks
 
 - If you use [clang++](http://clang.llvm.org/) version 3.7 or later and want 
 to use [OpenMP](http://openmp.org/) (enabled by default), make sure to modify 
