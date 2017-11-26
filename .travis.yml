@@ -31,8 +31,7 @@ matrix:
 
             apt:
                 packages:
-                    - clang-3.7
-                    - libiomp-dev
+                    - clang
                     - cmake
                     - cmake-data
 
