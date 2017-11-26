@@ -3,6 +3,7 @@ dist: trusty
 
 matrix:
     include:
+        # Linux gcc6
         - os: linux
           compiler: gcc
           env:
@@ -19,25 +20,22 @@ matrix:
                     - cmake
                     - cmake-data
 
-        - os: linux
-          compiler: clang
-          env:
-          addons:
-            apt:
-                sources:
-                     # add PPAs with more up-to-date toolchains
-                    - ubuntu-toolchain-r-test
-                    - george-edison55-precise-backports # cmake 3.2.3 / doxygen 1.8.3
-
-            apt:
-                packages:
-                    - clang-3.6
-                    - cmake
-                    - cmake-data
-
+        # OSX Apple Clang 
         - os: osx
           osx_image: xcode8.3
           compiler: clang
+
+        # OSX gcc6
+        - os: osx
+          compiler: gcc
+          env:
+          addons:
+              apt:
+              packages:
+                  - gcc-6
+                  - g++6
+                  - cmake
+                  - cmake-data  
 
 before_install:
 
