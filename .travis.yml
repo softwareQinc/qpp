@@ -20,27 +20,18 @@ matrix:
                     - cmake
                     - cmake-data
 
-        # OSX Apple Clang 
+        # OSX Apple Clang and gcc6
         - os: osx
           osx_image: xcode8.3
-          compiler: clang
-
-        # OSX gcc6
-        - os: osx
-          compiler: gcc
-          env:
-          addons:
-              apt:
-              packages:
-                  - gcc-6
-                  - g++6
-                  - cmake
-                  - cmake-data  
+          compiler: 
+            - gcc
+            - clang
 
 before_install:
 
 install:
-    - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
+    - if [ "$CXX" = "g++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="g++-6" CC="gcc-6"; fi
+    - if [ "$CXX" = "g++" ] && [ "$TRAVIS_OS_NAME" = "osx" ]; then port install gcc6; fi
 
 notifications:
   email: false
