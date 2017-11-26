@@ -31,7 +31,7 @@ matrix:
         - os: osx
           compiler: gcc
           before_install:
-              port install gcc6
+              brew install gcc6
 
 notifications:
   email: false
