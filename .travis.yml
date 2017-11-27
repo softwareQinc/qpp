@@ -32,8 +32,8 @@ matrix:
         - os: osx
           compiler: gcc
           before_install:
-              brew update
-              brew install gcc6
+              - brew update
+              - brew install gcc6
 
 notifications:
   email: false
