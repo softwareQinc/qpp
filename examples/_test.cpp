@@ -1,6 +1,6 @@
 // Used for testing, do not use it as an example
 #include <iostream>
-//#include "qpp.h"
+#include "qpp.h"
 #include "experimental/experimental.h"
 
 using namespace qpp;
@@ -73,9 +73,12 @@ int main()
     std::cout << vlad << '\n';
 
     std::vector<unsigned int> vv(20);
-    for(auto & elem: vv)
+    for (auto& elem: vv)
     {
         std::cout << elem;
     }
     std::cout << '\n';
+
+    ket x = (10_q + 01_q) / std::sqrt(2);
+    std::cout << disp(x);
 }

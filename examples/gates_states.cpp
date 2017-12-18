@@ -14,7 +14,7 @@ int main()
     std::cout << ">> The result of applying the bit-flip gate X on |0> is:\n";
     std::cout << disp(result) << '\n';
 
-    psi = mket({1, 0}); // |10> state
+    psi = 10_q; // |10> state
     U = gt.CNOT; // Controlled-NOT
     result = U * psi;
 

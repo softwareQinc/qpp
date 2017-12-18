@@ -16,7 +16,7 @@ int main()
     std::cout << ">> Logarithimc negativity of rho: "
               << lognegativity(rho, {2, 2}) << '\n';
 
-    ket psi = 0.8 * mket({0, 0}) + 0.6 * mket({1, 1});
+    ket psi = 0.8 * 00_q + 0.6 * 11_q;
 
     // apply some local random unitaries
     psi = kron(randU(), randU()) * psi;

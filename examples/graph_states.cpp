@@ -13,8 +13,8 @@ int main()
                        {1, 1, 0}};
 
     // start with 2 states in |000>
-    ket G0 = mket({0, 0, 0});
-    ket G1 = mket({0, 0, 0});
+    ket G0 = 000_q;
+    ket G1 = 000_q;
 
     // and their density matrices
     cmat rhoG0 = prj(G0);

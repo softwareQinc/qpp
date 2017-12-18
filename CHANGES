@@ -6,6 +6,8 @@ Since latest release (master branch)
       classes in "experimental.h":
         qpp::experimental::Dynamic_bitset
         qpp::experimental::Bit_circuit
+    - Added qpp::ket operator "" _q() helper in "functions.h" for constructing
+        multi-partite qubit kets
 
 Version 1.0-rc2 - Release Candidate 2, 6 September 2017
     - Added serialization capabilities for the PRNG in qpp::RandomDevices from

@@ -73,7 +73,7 @@ int main()
     std::cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar) << '\n';
 
     std::cout << ">> Sequential measurements on the state/density matrix:\n";
-    psi = 0.8 * mket({0, 1}) + 0.6 * mket({1, 0});
+    psi = 0.8 * 01_q + 0.6 * 10_q;
     rho = psi * adjoint(psi);
     std::cout << disp(psi) << '\n';
 
