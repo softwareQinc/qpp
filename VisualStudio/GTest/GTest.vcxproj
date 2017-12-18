@@ -89,7 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions);_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING</PreprocessorDefinitions>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <AdditionalIncludeDirectories>C:\eigen;$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock;</AdditionalIncludeDirectories>
@@ -105,7 +105,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions);_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING</PreprocessorDefinitions>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <AdditionalIncludeDirectories>C:\eigen;$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock;</AdditionalIncludeDirectories>
@@ -123,7 +123,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions);_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING</PreprocessorDefinitions>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <AdditionalIncludeDirectories>C:\eigen;$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock;</AdditionalIncludeDirectories>
@@ -143,7 +143,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING</PreprocessorDefinitions>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <AdditionalIncludeDirectories>C:\eigen;$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock;</AdditionalIncludeDirectories>
