@@ -32,6 +32,7 @@ matrix:
         - os: osx
           compiler: gcc
           before_install:
+              - rm -rf /usr/local/include/c++
               - brew update
               - brew install gcc6
               - export CXX="g++-6" CC="gcc-6"
