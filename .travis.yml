@@ -59,4 +59,4 @@ script:
   - cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make
 
   # Run the unit tests
-  - ./tests/qpp_testing
+  - ./tests/qpp_testing --gtest_filter=-qpp_Timer*

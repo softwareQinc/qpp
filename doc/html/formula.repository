@@ -23,47 +23,33 @@
 \form#22:$q\geq 0$
 \form#23:$ q\to 1$
 \form#24:$ e $
-\form#25:$\pm \infty$
-\form#26:$f(A)$
-\form#27:$A^0 = I$
-\form#28:$A^z$
-\form#29:$A^n$
-\form#30:$p = \infty$
-\form#31:$A^{\otimes n}$
-\form#32:$A^{\oplus n}$
-\form#33:$ [A,B] = AB - BA $
-\form#34:$AB -BA$
-\form#35:$ \{A,B\} = AB + BA $
-\form#36:$AB +BA$
-\form#37:$|\mathrm{mask}\rangle$
-\form#38:$\{0, 1, \ldots, N - 1\}$
-\form#39:$\langle \phi_{subsys}|\psi\rangle$
-\form#40:$\circ$
-\form#41:$\mathcal{O}(\sqrt{n})$
-\form#42:$ab$
-\form#43:$\mathrm{ mod }$
-\form#44:$p$
-\form#45:$a^n$
-\form#46:$m$
-\form#47:$n$
-\form#48:$gcd(a, b)$
-\form#49:$ma + nb = gcd(a, b)$
-\form#50:$a^{-1}$
-\form#51:$\textrm{ mod }$
-\form#52:$2^{-k}$
-\form#53:$\{|i\rangle\langle j|\}$
-\form#54:$|0\rangle\langle 0|$
-\form#55:$|0\rangle\langle 1|$
-\form#56:$S$
-\form#57:$ C$
-\form#58:$ S_{ab,mn} = C_{ma,nb}$
-\form#59:$Tr(K_i^\dagger K_j)=\delta_{ij}$
-\form#60:$i\neq j$
-\form#61:$Tr_{A}(\cdot)$
-\form#62:$A$
-\form#63:$A\otimes B$
-\form#64:$Tr_{B}(\cdot)$
-\form#65:$B$
-\form#66:$Tr_{subsys}(\cdot)$
-\form#67:$(\cdot)^{T_{subsys}}$
-\form#68:$ \sum_i K_i^\dagger K_i = I$
+\form#25:$\langle \phi_{subsys}|\psi\rangle$
+\form#26:$\circ$
+\form#27:$\mathcal{O}(\sqrt{n})$
+\form#28:$ab$
+\form#29:$\mathrm{ mod }$
+\form#30:$p$
+\form#31:$a^n$
+\form#32:$m$
+\form#33:$n$
+\form#34:$gcd(a, b)$
+\form#35:$ma + nb = gcd(a, b)$
+\form#36:$a^{-1}$
+\form#37:$\textrm{ mod }$
+\form#38:$2^{-k}$
+\form#39:$\{|i\rangle\langle j|\}$
+\form#40:$|0\rangle\langle 0|$
+\form#41:$|0\rangle\langle 1|$
+\form#42:$S$
+\form#43:$ C$
+\form#44:$ S_{ab,mn} = C_{ma,nb}$
+\form#45:$Tr(K_i^\dagger K_j)=\delta_{ij}$
+\form#46:$i\neq j$
+\form#47:$Tr_{A}(\cdot)$
+\form#48:$A$
+\form#49:$A\otimes B$
+\form#50:$Tr_{B}(\cdot)$
+\form#51:$B$
+\form#52:$Tr_{subsys}(\cdot)$
+\form#53:$(\cdot)^{T_{subsys}}$
+\form#54:$ \sum_i K_i^\dagger K_i = I$
