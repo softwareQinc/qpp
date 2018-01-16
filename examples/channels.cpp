@@ -3,11 +3,11 @@
 #include <complex>
 #include <iostream>
 #include <vector>
+
 #include "qpp.h"
 
-using namespace qpp;
-
 int main() {
+    using namespace qpp;
     idx nk = 5;
     idx D = 3; // nk Kraus on d-dimensional system
     std::cout << ">> Generating a random channel with " << nk

@@ -3,11 +3,11 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
+
 #include "qpp.h"
 
-using namespace qpp;
-
 int main() {
+    using namespace qpp;
     idx n = 10; // number of qubits
     idx N = std::round(std::pow(2, n));
     std::cout << ">> n = " << n << " qubits, matrix size " << N << " x " << N

@@ -2,14 +2,14 @@
 // Source: ./examples/functor.cpp
 #include <complex>
 #include <iostream>
+
 #include "qpp.h"
 
-using namespace qpp;
-
 // test function used by qpp::cwise()
-cplx pow3(const cplx& z) { return std::pow(z, 3); }
+qpp::cplx pow3(const qpp::cplx& z) { return std::pow(z, 3); }
 
 int main() {
+    using namespace qpp;
     // functor test
     std::cout << ">> Functor z^3 acting component-wise on:\n";
     cmat A(2, 2);

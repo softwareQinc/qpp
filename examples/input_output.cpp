@@ -1,12 +1,12 @@
 // Input/output
 // Source: ./examples/input_output.cpp
 #include <iostream>
+
 #include "qpp.h"
 #include "MATLAB/matlab.h" // must be explicitly included
 
-using namespace qpp;
-
 int main() {
+    using namespace qpp;
     // Quantum++ native input/output
     cmat rho = randrho(256);                 // an 8 qubit density operator
     save(rho, "rho.dat");                    // save it

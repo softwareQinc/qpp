@@ -1,11 +1,11 @@
 // Spectral decomposition
 // Source: ./examples/spectral.cpp
 #include <iostream>
+
 #include "qpp.h"
 
-using namespace qpp;
-
 int main() {
+    using namespace qpp;
     idx D = 4;
     cmat rH = randH(D); // random Hermitian matrix
     std::cout << ">> Original matrix:\n" << disp(rH) << '\n';

@@ -1,11 +1,11 @@
 // Used for testing, do not use it as an example
 #include <iostream>
+
 #include "qpp.h"
 #include "experimental/experimental.h"
 
-using namespace qpp;
-
 int main() {
+    using namespace qpp;
     std::cout << "Testing\n";
 
     const idx bits = 70; // number of bits

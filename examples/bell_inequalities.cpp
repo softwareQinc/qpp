@@ -2,11 +2,11 @@
 // Source: ./examples/bell_inequalities.cpp
 #include <iostream>
 #include <tuple>
+
 #include "qpp.h"
 
-using namespace qpp;
-
 int main() {
+    using namespace qpp;
     ket psi = st.b11; // Bell singlet state (|01> - |10>) / sqrt(2)
 
     // detector settings (Q and R on Alice's side, S and T on Bob's side)

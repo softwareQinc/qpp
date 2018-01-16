@@ -1,11 +1,11 @@
 // Quantum error correcting codes
 // Source: ./examples/qecc.cpp
 #include <iostream>
+
 #include "qpp.h"
 
-using namespace qpp;
-
 int main() {
+    using namespace qpp;
     ket a0 = codes.codeword(Codes::Type::FIVE_QUBIT, 0);
     ket a1 = codes.codeword(Codes::Type::FIVE_QUBIT, 1);
 

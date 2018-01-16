@@ -2,11 +2,11 @@
 // Source: ./examples/teleport_qubit.cpp
 #include <iostream>
 #include <tuple>
+
 #include "qpp.h"
 
-using namespace qpp;
-
 int main() {
+    using namespace qpp;
     // input state
     ket psi_a = randket();
 

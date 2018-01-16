@@ -1,13 +1,13 @@
 // Measurements, second take
 // Source: ./examples/measurements2.cpp
 #include <iostream>
-#include <vector>
 #include <tuple>
+#include <vector>
+
 #include "qpp.h"
 
-using namespace qpp;
-
 int main() {
+    using namespace qpp;
     ket psi = st.b00;
     std::vector<idx> subsys = {0};
     idx result;

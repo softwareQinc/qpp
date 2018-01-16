@@ -2,11 +2,11 @@
 // Source: ./examples/experimental_average.cpp
 #include <iostream>
 #include <tuple>
+
 #include "qpp.h"
 
-using namespace qpp;
-
 int main() {
+    using namespace qpp;
     ket psi = 0_q; // same as st.z0;
     cmat A = gt.X;
     dyn_col_vect<double> evals = hevals(A);

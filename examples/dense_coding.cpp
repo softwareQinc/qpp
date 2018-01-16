@@ -4,11 +4,11 @@
 #include <iostream>
 #include <tuple>
 #include <vector>
+
 #include "qpp.h"
 
-using namespace qpp;
-
 int main() {
+    using namespace qpp;
     idx D = 3; // size of the system
     std::cout << ">> Qudit dense coding, D = " << D << '\n';
 

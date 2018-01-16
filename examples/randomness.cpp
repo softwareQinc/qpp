@@ -2,11 +2,11 @@
 // Source: ./examples/randomness.cpp
 #include <iostream>
 #include <vector>
+
 #include "qpp.h"
 
-using namespace qpp;
-
 int main() {
+    using namespace qpp;
     std::cout << ">> Generating a random ket on D = 5\n";
     ket rket = randket(5);
     std::cout << disp(rket) << '\n';

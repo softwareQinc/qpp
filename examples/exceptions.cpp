@@ -2,11 +2,11 @@
 // Source: ./examples/exceptions.cpp
 #include <exception>
 #include <iostream>
+
 #include "qpp.h"
 
-using namespace qpp;
-
 int main() {
+    using namespace qpp;
     cmat rho = randrho(16); // 4 qubits (subsystems)
     try {
         // the line below throws qpp::exception::SubsysMismatchDims
