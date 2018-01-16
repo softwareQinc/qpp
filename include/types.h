@@ -32,8 +32,7 @@
 #ifndef TYPES_H_
 #define TYPES_H_
 
-namespace qpp
-{
+namespace qpp {
 /**
 * \brief Non-negative integer index
 */
@@ -78,7 +77,7 @@ using dmat = Eigen::MatrixXd;
 * dyn_mat<float> mat(2, 3);
 * \endcode
 */
-template<typename Scalar> // Eigen::MatrixX_type (where type = Scalar)
+template <typename Scalar> // Eigen::MatrixX_type (where type = Scalar)
 using dyn_mat = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 
 /**
@@ -90,7 +89,7 @@ using dyn_mat = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 * dyn_col_vect<float> colvect(2);
 * \endcode
 */
-template<typename Scalar> // Eigen::VectorX_type (where type = Scalar)
+template <typename Scalar> // Eigen::VectorX_type (where type = Scalar)
 using dyn_col_vect = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 
 /**
@@ -102,7 +101,7 @@ using dyn_col_vect = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 * dyn_row_vect<float> rowvect(3);
 * \endcode
 */
-template<typename Scalar> // Eigen::RowVectorX_type (where type = Scalar)
+template <typename Scalar> // Eigen::RowVectorX_type (where type = Scalar)
 using dyn_row_vect = Eigen::Matrix<Scalar, 1, Eigen::Dynamic>;
 
 } /* namespace qpp */

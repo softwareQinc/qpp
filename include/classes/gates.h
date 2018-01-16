@@ -32,8 +32,7 @@
 #ifndef CLASSES_GATES_H_
 #define CLASSES_GATES_H_
 
-namespace qpp
-{
+namespace qpp {
 /**
 * \class qpp::Gates
 * \brief const Singleton class that implements most commonly used gates
@@ -42,33 +41,32 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 {
     friend class internal::Singleton<const Gates>;
 
-public:
+  public:
     // One qubit gates
-    cmat Id2{cmat::Identity(2, 2)};     ///< Identity gate
-    cmat H{cmat::Zero(2, 2)};           ///< Hadamard gate
-    cmat X{cmat::Zero(2, 2)};           ///< Pauli Sigma-X gate
-    cmat Y{cmat::Zero(2, 2)};           ///< Pauli Sigma-Y gate
-    cmat Z{cmat::Zero(2, 2)};           ///< Pauli Sigma-Z gate
-    cmat S{cmat::Zero(2, 2)};           ///< S gate
-    cmat T{cmat::Zero(2, 2)};           ///< T gate
+    cmat Id2{cmat::Identity(2, 2)}; ///< Identity gate
+    cmat H{cmat::Zero(2, 2)};       ///< Hadamard gate
+    cmat X{cmat::Zero(2, 2)};       ///< Pauli Sigma-X gate
+    cmat Y{cmat::Zero(2, 2)};       ///< Pauli Sigma-Y gate
+    cmat Z{cmat::Zero(2, 2)};       ///< Pauli Sigma-Z gate
+    cmat S{cmat::Zero(2, 2)};       ///< S gate
+    cmat T{cmat::Zero(2, 2)};       ///< T gate
 
     // two qubit gates
-    cmat CNOT{cmat::Identity(4, 4)};    ///< Controlled-NOT control target gate
-    cmat CZ{cmat::Identity(4, 4)};      ///< Controlled-Phase gate
-    cmat CNOTba{cmat::Zero(4, 4)};      ///< Controlled-NOT target control gate
-    cmat SWAP{cmat::Identity(4, 4)};    ///< SWAP gate
+    cmat CNOT{cmat::Identity(4, 4)}; ///< Controlled-NOT control target gate
+    cmat CZ{cmat::Identity(4, 4)};   ///< Controlled-Phase gate
+    cmat CNOTba{cmat::Zero(4, 4)};   ///< Controlled-NOT target control gate
+    cmat SWAP{cmat::Identity(4, 4)}; ///< SWAP gate
 
     // three qubit gates
-    cmat TOF{cmat::Identity(8, 8)};     ///< Toffoli gate
-    cmat FRED{cmat::Identity(8, 8)};    ///< Fredkin gate
-private:
+    cmat TOF{cmat::Identity(8, 8)};  ///< Toffoli gate
+    cmat FRED{cmat::Identity(8, 8)}; ///< Fredkin gate
+  private:
     /**
     * \brief Initializes the gates
     */
-    Gates()
-    {
-        H << 1 / std::sqrt(2.), 1 / std::sqrt(2.),
-                1 / std::sqrt(2.), -1 / std::sqrt(2.);
+    Gates() {
+        H << 1 / std::sqrt(2.), 1 / std::sqrt(2.), 1 / std::sqrt(2.),
+            -1 / std::sqrt(2.);
         X << 0, 1, 1, 0;
         Z << 1, 0, 0, -1;
         Y << 0, -1_i, 1_i, 0;
@@ -91,7 +89,7 @@ private:
     */
     ~Gates() = default;
 
-public:
+  public:
     // variable gates
 
     // one qubit gates
@@ -104,19 +102,18 @@ public:
     * \param n 3-dimensional real (unit) vector
     * \return Rotation gate
     */
-    cmat Rn(double theta, const std::vector<double>& n) const
-    {
+    cmat Rn(double theta, const std::vector<double>& n) const {
         // EXCEPTION CHECKS
 
         // check 3-dimensional vector
         if (n.size() != 3)
-            throw exception::CustomException("qpp::Gates::Rn()",
-                                             "n is not a 3-dimensional vector!");
+            throw exception::CustomException(
+                "qpp::Gates::Rn()", "n is not a 3-dimensional vector!");
         // END EXCEPTION CHECKS
 
         cmat result(2, 2);
-        result = std::cos(theta / 2) * Id2
-                 - 1_i * std::sin(theta / 2) * (n[0] * X + n[1] * Y + n[2] * Z);
+        result = std::cos(theta / 2) * Id2 -
+                 1_i * std::sin(theta / 2) * (n[0] * X + n[1] * Y + n[2] * Z);
 
         return result;
     }
@@ -126,13 +123,13 @@ public:
     /**
     * \brief Generalized Z gate for qudits
     *
-    * \note Defined as \f$ Z = \sum_{j=0}^{D-1} \exp(2\pi \mathrm{i} j/D) |j\rangle\langle j| \f$
+    * \note Defined as \f$ Z = \sum_{j=0}^{D-1} \exp(2\pi \mathrm{i} j/D)
+    * |j\rangle\langle j| \f$
     *
     * \param D Dimension of the Hilbert space
     * \return Generalized Z gate for qudits
     */
-    cmat Zd(idx D = 2) const
-    {
+    cmat Zd(idx D = 2) const {
         // EXCEPTION CHECKS
 
         if (D == 0)
@@ -150,13 +147,13 @@ public:
     * \brief Fourier transform gate for qudits
     *
     * \note Defined as
-    * \f$ F = \sum_{j,k=0}^{D-1} \exp(2\pi \mathrm{i} jk/D) |j\rangle\langle k| \f$
+    * \f$ F = \sum_{j,k=0}^{D-1} \exp(2\pi \mathrm{i} jk/D) |j\rangle\langle k|
+    * \f$
     *
     * \param D Dimension of the Hilbert space
     * \return Fourier transform gate for qudits
     */
-    cmat Fd(idx D = 2) const
-    {
+    cmat Fd(idx D = 2) const {
         // EXCEPTION CHECKS
 
         if (D == 0)
@@ -168,10 +165,11 @@ public:
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        for (idx j = 0; j < D; ++j) // column major order for speed
+        // column major order for speed
+        for (idx j = 0; j < D; ++j)
             for (idx i = 0; i < D; ++i)
-                result(i, j) = 1 / std::sqrt(D) * 
-                    std::pow(omega(D), static_cast<double>(i * j));
+                result(i, j) = 1 / std::sqrt(D) *
+                               std::pow(omega(D), static_cast<double>(i * j));
 
         return result;
     }
@@ -185,8 +183,7 @@ public:
     * \param D Dimension of the Hilbert space
     * \return Generalized X gate for qudits
     */
-    cmat Xd(idx D = 2) const
-    {
+    cmat Xd(idx D = 2) const {
         // EXCEPTION CHECKS
 
         if (D == 0)
@@ -205,9 +202,8 @@ public:
     * \param D Dimension of the Hilbert space
     * \return Identity gate on a Hilbert space of dimension \a D
     */
-    template<typename Derived = Eigen::MatrixXcd>
-    Derived Id(idx D = 2) const
-    {
+    template <typename Derived = Eigen::MatrixXcd>
+    Derived Id(idx D = 2) const {
         // EXCEPTION CHECKS
 
         if (D == 0)
@@ -232,12 +228,10 @@ public:
     * \param d Subsystem dimensions
     * \return CTRL-A gate, as a matrix over the same scalar field as \a A
     */
-    template<typename Derived>
-    dyn_mat<typename Derived::Scalar> CTRL(const Eigen::MatrixBase<Derived>& A,
-                                           const std::vector<idx>& ctrl,
-                                           const std::vector<idx>& subsys,
-                                           idx N, idx d = 2) const
-    {
+    template <typename Derived>
+    dyn_mat<typename Derived::Scalar>
+    CTRL(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& ctrl,
+         const std::vector<idx>& subsys, idx N, idx d = 2) const {
         const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
         // EXCEPTION CHECKS
@@ -279,7 +273,7 @@ public:
 
         // check that subsys list match the dimension of the matrix
         using Index = typename dyn_mat<typename Derived::Scalar>::Index;
-        if (rA.rows() != 
+        if (rA.rows() !=
             static_cast<Index>(std::llround(std::pow(d, subsys.size()))))
             throw exception::DimsMismatchMatrix("qpp::Gates::CTRL()");
         // END EXCEPTION CHECKS
@@ -302,48 +296,41 @@ public:
         idx Nsubsys_bar = N - ctrlgate.size();
         idx D = static_cast<idx>(std::llround(std::pow(d, N)));
         idx DA = static_cast<idx>(rA.rows());
-        idx Dsubsys_bar = static_cast<idx>(
-                std::llround(std::pow(d, Nsubsys_bar)));
+        idx Dsubsys_bar =
+            static_cast<idx>(std::llround(std::pow(d, Nsubsys_bar)));
 
         // compute the complementary subsystem of ctrlgate w.r.t. dims
         std::vector<idx> subsys_bar = complement(ctrlgate, N);
         std::copy(std::begin(subsys_bar), std::end(subsys_bar),
                   std::begin(Csubsys_bar));
 
-        for (idx k = 0; k < N; ++k)
-        {
+        for (idx k = 0; k < N; ++k) {
             midx_row[k] = midx_col[k] = 0;
             Cdims[k] = d;
         }
 
-        for (idx k = 0; k < Nsubsys_bar; ++k)
-        {
+        for (idx k = 0; k < Nsubsys_bar; ++k) {
             Cdims_bar[k] = d;
             midx_bar[k] = 0;
         }
 
-        for (idx k = 0; k < Ngate; ++k)
-        {
+        for (idx k = 0; k < Ngate; ++k) {
             midxA_row[k] = midxA_col[k] = 0;
             CdimsA[k] = d;
         }
 
-        dyn_mat<typename Derived::Scalar> result = dyn_mat<
-                typename Derived::Scalar>
-        ::Identity(D, D);
+        dyn_mat<typename Derived::Scalar> result =
+            dyn_mat<typename Derived::Scalar>::Identity(D, D);
         dyn_mat<typename Derived::Scalar> Ak;
 
         // run over the complement indexes
-        for (idx i = 0; i < Dsubsys_bar; ++i)
-        {
+        for (idx i = 0; i < Dsubsys_bar; ++i) {
             // get the complement row multi-index
             internal::n2multiidx(i, Nsubsys_bar, Cdims_bar, midx_bar);
-            for (idx k = 0; k < d; ++k)
-            {
+            for (idx k = 0; k < d; ++k) {
                 Ak = powm(rA, k); // compute rA^k
                 // run over the subsys row multi-index
-                for (idx a = 0; a < DA; ++a)
-                {
+                for (idx a = 0; a < DA; ++a) {
                     // get the subsys row multi-index
                     internal::n2multiidx(a, Ngate, CdimsA, midxA_row);
 
@@ -356,15 +343,14 @@ public:
                     // then the complement part (equal for column)
                     for (idx c = 0; c < Nsubsys_bar; ++c)
                         midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =
-                                midx_bar[c];
+                            midx_bar[c];
 
                     // then the subsys part
                     for (idx c = 0; c < Ngate; ++c)
                         midx_row[subsys[c]] = midxA_row[c];
 
                     // run over the subsys column multi-index
-                    for (idx b = 0; b < DA; ++b)
-                    {
+                    for (idx b = 0; b < DA; ++b) {
                         // get the subsys column multi-index
                         internal::n2multiidx(b, Ngate, CdimsA, midxA_col);
 
@@ -374,8 +360,8 @@ public:
 
                         // finally write the values
                         result(internal::multiidx2n(midx_row, N, Cdims),
-                               internal::multiidx2n(midx_col, N, Cdims))
-                                = Ak(a, b);
+                               internal::multiidx2n(midx_col, N, Cdims)) =
+                            Ak(a, b);
                     }
                 }
             }
@@ -399,11 +385,10 @@ public:
     * with \a A on position \a pos, as a dynamic matrix
     * over the same scalar field as \a A
     */
-    template<typename Derived>
-    dyn_mat<typename Derived::Scalar> expandout(
-            const Eigen::MatrixBase<Derived>& A, idx pos,
-            const std::vector<idx>& dims) const
-    {
+    template <typename Derived>
+    dyn_mat<typename Derived::Scalar>
+    expandout(const Eigen::MatrixBase<Derived>& A, idx pos,
+              const std::vector<idx>& dims) const {
         const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
         // EXCEPTION CHECKS
@@ -431,45 +416,38 @@ public:
 
         idx D = std::accumulate(std::begin(dims), std::end(dims),
                                 static_cast<idx>(1), std::multiplies<idx>());
-        dyn_mat<typename Derived::Scalar> result = dyn_mat<
-                typename Derived::Scalar>
-        ::Identity(D, D);
+        dyn_mat<typename Derived::Scalar> result =
+            dyn_mat<typename Derived::Scalar>::Identity(D, D);
 
         idx Cdims[maxn];
         idx midx_row[maxn];
         idx midx_col[maxn];
 
-        for (idx k = 0; k < dims.size(); ++k)
-        {
+        for (idx k = 0; k < dims.size(); ++k) {
             midx_row[k] = midx_col[k] = 0;
             Cdims[k] = dims[k];
         }
 
         // run over the main diagonal multi-indexes
-        for (idx i = 0; i < D; ++i)
-        {
+        for (idx i = 0; i < D; ++i) {
             // get row multi_index
             internal::n2multiidx(i, dims.size(), Cdims, midx_row);
             // get column multi_index (same as row)
             internal::n2multiidx(i, dims.size(), Cdims, midx_col);
             // run over the gate row multi-index
-            for (idx a = 0; a < static_cast<idx>(rA.rows());
-                 ++a)
-            {
+            for (idx a = 0; a < static_cast<idx>(rA.rows()); ++a) {
                 // construct the total row multi-index
                 midx_row[pos] = a;
 
                 // run over the gate column multi-index
-                for (idx b = 0;
-                     b < static_cast<idx>(rA.cols()); ++b)
-                {
+                for (idx b = 0; b < static_cast<idx>(rA.cols()); ++b) {
                     // construct the total column multi-index
                     midx_col[pos] = b;
 
                     // finally write the values
                     result(internal::multiidx2n(midx_row, dims.size(), Cdims),
-                           internal::multiidx2n(midx_col, dims.size(), Cdims))
-                            = rA(a, b);
+                           internal::multiidx2n(midx_col, dims.size(), Cdims)) =
+                        rA(a, b);
                 }
             }
         }
@@ -498,11 +476,10 @@ public:
     * with \a A on position \a pos, as a dynamic matrix
     * over the same scalar field as \a A
     */
-    template<typename Derived>
-    dyn_mat<typename Derived::Scalar> expandout(
-            const Eigen::MatrixBase<Derived>& A, idx pos,
-            const std::initializer_list<idx>& dims) const
-    {
+    template <typename Derived>
+    dyn_mat<typename Derived::Scalar>
+    expandout(const Eigen::MatrixBase<Derived>& A, idx pos,
+              const std::initializer_list<idx>& dims) const {
         return this->expandout(A, pos, std::vector<idx>(dims));
     }
 
@@ -522,11 +499,10 @@ public:
     * with \a A on position \a pos, as a dynamic matrix
     * over the same scalar field as \a A
     */
-    template<typename Derived>
-    dyn_mat<typename Derived::Scalar> expandout(
-            const Eigen::MatrixBase<Derived>& A, idx pos, idx N, idx d = 2)
-    const
-    {
+    template <typename Derived>
+    dyn_mat<typename Derived::Scalar>
+    expandout(const Eigen::MatrixBase<Derived>& A, idx pos, idx N,
+              idx d = 2) const {
         // EXCEPTION CHECKS
 
         // check zero size

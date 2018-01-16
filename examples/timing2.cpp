@@ -7,12 +7,11 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     idx n = 10; // number of qubits
     idx N = std::round(std::pow(2, n));
-    std::cout << ">> n = " << n << " qubits, matrix size "
-              << N << " x " << N << ".\n\n";
+    std::cout << ">> n = " << n << " qubits, matrix size " << N << " x " << N
+              << ".\n\n";
     cmat randcmat = cmat::Random(N, N);
 
     // qpp::ptrace()

@@ -8,16 +8,15 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     idx D = 3; // size of the system
     std::cout << ">> Qudit dense coding, D = " << D << '\n';
 
     ket mes_AB = st.mes(D); // maximally entangled state resource
-    
+
     // circuit that measures in the qudit Bell basis
-    cmat Bell_AB = adjoint(gt.CTRL(gt.Xd(D), {0}, {1}, 2, D)
-                           * kron(gt.Fd(D), gt.Id(D)));
+    cmat Bell_AB =
+        adjoint(gt.CTRL(gt.Xd(D), {0}, {1}, 2, D) * kron(gt.Fd(D), gt.Id(D)));
 
     // equal probabilities of choosing a message
     idx m_A = randidx(0, D * D - 1);

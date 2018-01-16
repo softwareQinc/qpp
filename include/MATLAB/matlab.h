@@ -35,11 +35,10 @@
 // MATLAB I/O interfacing
 // add the path to $MATLAB_INSTALLATION_FOLDER/extern/include in include path
 
-#include "mat.h"  // path to this file is defined in the Makefile
-#include "mex.h"  // path to this file is defined in the Makefile
+#include "mat.h" // path to this file is defined in the Makefile
+#include "mex.h" // path to this file is defined in the Makefile
 
-namespace qpp
-{
+namespace qpp {
 /**
 * \brief Loads a complex Eigen dynamic matrix from a MATLAB .mat file,
 * \see qpp::saveMATLAB()
@@ -61,39 +60,33 @@ namespace qpp
 *
 * \return Eigen dynamic matrix
 */
-template<typename Derived> // double
+template <typename Derived> // double
 typename std::enable_if<std::is_same<typename Derived::Scalar, cplx>::value,
-        dyn_mat < cplx>>
-
-::type
-loadMATLAB(const std::string& mat_file, const std::string& var_name)
-{
+                        dyn_mat<cplx>>::type
+loadMATLAB(const std::string& mat_file, const std::string& var_name) {
     MATFile* pmat = matOpen(mat_file.c_str(), "r");
 
     // EXCEPTION CHECKS
 
-    if (!pmat)
-    {
+    if (!pmat) {
         throw std::runtime_error(
-                "qpp::loadMATLAB(): Can not open MATLAB file "
-                + mat_file + "!");
+            "qpp::loadMATLAB(): Can not open MATLAB file " + mat_file + "!");
     }
 
     mxArray* pa = matGetVariable(pmat, var_name.c_str());
     if (!pa)
         throw std::runtime_error(
-                "qpp::loadMATLAB(): Can not load the variable "
-                + var_name + " from MATLAB file " + mat_file + "!");
+            "qpp::loadMATLAB(): Can not load the variable " + var_name +
+            " from MATLAB file " + mat_file + "!");
 
     if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
-        throw std::runtime_error(
-                "qpp::loadMATLAB(): Loaded variable " + var_name
-                + " is not 2-dimensional!");
+        throw std::runtime_error("qpp::loadMATLAB(): Loaded variable " +
+                                 var_name + " is not 2-dimensional!");
 
     if (!mxIsDouble(pa))
-        throw std::runtime_error(
-                "qpp::loadMATLAB(): Loaded variable " + var_name
-                + " is not in double-precision format!");
+        throw std::runtime_error("qpp::loadMATLAB(): Loaded variable " +
+                                 var_name +
+                                 " is not in double-precision format!");
     // END EXCEPTION CHECKS
 
     idx rows = mxGetM(pa);
@@ -128,7 +121,6 @@ loadMATLAB(const std::string& mat_file, const std::string& var_name)
     return (result_re.cast<cplx>()) + 1_i * (result_im.cast<cplx>());
 }
 
-
 /**
 * \brief Loads a non-complex Eigen dynamic matrix from a MATLAB .mat file,
 * \see qpp::saveMATLAB()
@@ -150,39 +142,33 @@ loadMATLAB(const std::string& mat_file, const std::string& var_name)
 *
 * \return Eigen dynamic matrix
 */
-template<typename Derived> // cplx
+template <typename Derived> // cplx
 typename std::enable_if<!std::is_same<typename Derived::Scalar, cplx>::value,
-        dyn_mat < typename Derived::Scalar>>
-
-::type
-loadMATLAB(const std::string& mat_file, const std::string& var_name)
-{
+                        dyn_mat<typename Derived::Scalar>>::type
+loadMATLAB(const std::string& mat_file, const std::string& var_name) {
     MATFile* pmat = matOpen(mat_file.c_str(), "r");
 
     // EXCEPTION CHECKS
 
-    if (!pmat)
-    {
+    if (!pmat) {
         throw std::runtime_error(
-                "qpp::loadMATLAB(): Can not open MATLAB file "
-                + mat_file + "!");
+            "qpp::loadMATLAB(): Can not open MATLAB file " + mat_file + "!");
     }
 
     mxArray* pa = matGetVariable(pmat, var_name.c_str());
     if (!pa)
         throw std::runtime_error(
-                "qpp::loadMATLAB(): Can not load the variable "
-                + var_name + " from MATLAB file " + mat_file + "!");
+            "qpp::loadMATLAB(): Can not load the variable " + var_name +
+            " from MATLAB file " + mat_file + "!");
 
     if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
-        throw std::runtime_error(
-                "qpp::loadMATLAB(): Loaded variable " + var_name
-                + " is not 2-dimensional!");
+        throw std::runtime_error("qpp::loadMATLAB(): Loaded variable " +
+                                 var_name + " is not 2-dimensional!");
 
     if (!mxIsDouble(pa))
-        throw std::runtime_error(
-                "qpp::loadMATLAB(): Loaded variable " + var_name
-                + " is not in double-precision format!");
+        throw std::runtime_error("qpp::loadMATLAB(): Loaded variable " +
+                                 var_name +
+                                 " is not in double-precision format!");
     // END EXCEPTION CHECKS
 
     idx rows = mxGetM(pa);
@@ -212,16 +198,13 @@ loadMATLAB(const std::string& mat_file, const std::string& var_name)
 * \param mode Saving mode (append, overwrite etc.),
 * see MATLAB \a matOpen() documentation for details
 */
-template<typename Derived>
+template <typename Derived>
 // double
-typename
-std::enable_if<std::is_same<typename Derived::Scalar, cplx>::value>::type
-saveMATLAB(const Eigen::MatrixBase <Derived>& A,
-           const std::string& mat_file,
-           const std::string& var_name,
-           const std::string& mode)
-{
-    const dyn_mat <cplx>& rA = A.derived();
+typename std::enable_if<
+    std::is_same<typename Derived::Scalar, cplx>::value>::type
+saveMATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
+           const std::string& var_name, const std::string& mode) {
+    const dyn_mat<cplx>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -236,14 +219,13 @@ saveMATLAB(const Eigen::MatrixBase <Derived>& A,
     MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
     if (!pmat)
         throw std::runtime_error(
-                "qpp::saveMATLAB(): Can not open/create MATLAB file "
-                + mat_file + "!");
+            "qpp::saveMATLAB(): Can not open/create MATLAB file " + mat_file +
+            "!");
 
-    mxArray* pa = mxCreateDoubleMatrix(
-            tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);
+    mxArray* pa = mxCreateDoubleMatrix(tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);
     if (!pa)
         throw std::runtime_error(
-                "qpp::saveMATLAB(): mxCreateDoubleMatrix failed!");
+            "qpp::saveMATLAB(): mxCreateDoubleMatrix failed!");
     // END EXCEPTION CHECKS
 
     // real part and imaginary part pointers
@@ -260,8 +242,8 @@ saveMATLAB(const Eigen::MatrixBase <Derived>& A,
 
     if (matPutVariable(pmat, var_name.c_str(), pa))
         throw std::runtime_error(
-                "qpp::saveMATLAB(): Can not write the variable "
-                + var_name + " to MATLAB file " + mat_file + "!");
+            "qpp::saveMATLAB(): Can not write the variable " + var_name +
+            " to MATLAB file " + mat_file + "!");
 
     mxDestroyArray(pa);
     matClose(pmat);
@@ -279,15 +261,12 @@ saveMATLAB(const Eigen::MatrixBase <Derived>& A,
 * \param mode Saving mode (append, overwrite etc.),
 * see MATLAB \a matOpen() documentation for details
 */
-template<typename Derived>
+template <typename Derived>
 // cplx
-typename
-std::enable_if<!std::is_same<typename Derived::Scalar, cplx>::value>::type
-saveMATLAB(const Eigen::MatrixBase <Derived>& A,
-           const std::string& mat_file,
-           const std::string& var_name,
-           const std::string& mode)
-{
+typename std::enable_if<
+    !std::is_same<typename Derived::Scalar, cplx>::value>::type
+saveMATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
+           const std::string& var_name, const std::string& mode) {
     // cast to double, as MATLAB doesn't work with other types
     const dyn_mat<double>& rA = A.template cast<double>();
 
@@ -300,21 +279,21 @@ saveMATLAB(const Eigen::MatrixBase <Derived>& A,
     MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
     if (!pmat)
         throw std::runtime_error(
-                "qpp::saveMATLAB(): Can not open/create MATLAB file "
-                + mat_file + "!");
+            "qpp::saveMATLAB(): Can not open/create MATLAB file " + mat_file +
+            "!");
 
     mxArray* pa = mxCreateDoubleMatrix(rA.rows(), rA.cols(), mxREAL);
     if (!pa)
         throw std::runtime_error(
-                "qpp::saveMATLAB(): mxCreateDoubleMatrix failed!");
+            "qpp::saveMATLAB(): mxCreateDoubleMatrix failed!");
     // END EXCEPTION CHECKS
 
     std::memcpy(mxGetPr(pa), rA.data(), sizeof(double) * rA.size());
 
     if (matPutVariable(pmat, var_name.c_str(), pa))
         throw std::runtime_error(
-                "qpp::saveMATLAB(): Can not write the variable "
-                + var_name + " to MATLAB file " + mat_file + "!");
+            "qpp::saveMATLAB(): Can not write the variable " + var_name +
+            " to MATLAB file " + mat_file + "!");
 
     mxDestroyArray(pa);
     matClose(pmat);

@@ -32,24 +32,27 @@
 #ifndef TRAITS_H_
 #define TRAITS_H_
 
-namespace qpp
-{
+namespace qpp {
 // Citing from http://en.cppreference.com/w/cpp/types/void_t:
 // "Until CWG 1558 (a C++14 defect), unused parameters in alias templates were
 // not guaranteed to ensure SFINAE and could be ignored, so earlier compilers
-// require a more complex definition of void_t, such as:" 
+// require a more complex definition of void_t, such as:"
 /**
 * \brief Helper for qpp::to_void<> alias template
 * \see qpp::to_void<>
-*/  
-template<typename... Ts> struct make_void { typedef void type;};
+*/
+template <typename... Ts>
+struct make_void {
+    typedef void type;
+};
 
 /**
 * \brief Alias template that implements the proposal for void_t
 *
 * \see http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3911
 */
-template<typename... Ts> using to_void = typename make_void<Ts...>::type;
+template <typename... Ts>
+using to_void = typename make_void<Ts...>::type;
 
 /**
 * \brief Checks whether \a T is compatible with an STL-like iterable container
@@ -60,15 +63,13 @@ template<typename... Ts> using to_void = typename make_void<Ts...>::type;
 * Otherwise, \a value is equal to \a false.
 */
 // silence g++4.8.x warning about non-virtual destructor in inherited class
-#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
-template<typename T, typename = void>
-struct is_iterable : std::false_type
-{
-};
-#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+template <typename T, typename = void>
+struct is_iterable : std::false_type {};
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)
 #pragma GCC diagnostic pop
 #endif
 
@@ -77,19 +78,16 @@ struct is_iterable : std::false_type
 * specialization for STL-like iterable containers
 */
 // silence g++4.8.x warning about non-virtual destructor in inherited class
-#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
-template<typename T>
-struct is_iterable<T,
-        to_void<decltype(std::declval<T>().begin()),
-                decltype(std::declval<T>().end()),
-                typename T::value_type
-        >> : std::true_type
-{
-};
-#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+template <typename T>
+struct is_iterable<
+    T, to_void<decltype(std::declval<T>().begin()),
+               decltype(std::declval<T>().end()), typename T::value_type>>
+    : std::true_type {};
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)
 #pragma GCC diagnostic pop
 #endif
 
@@ -103,19 +101,15 @@ struct is_iterable<T,
 */
 // thanks to @davidhigh http://stackoverflow.com/a/40293333/3093378
 // silence g++4.8.x warning about non-virtual destructor in inherited class
-#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
-template<typename Derived>
-struct is_matrix_expression : std::is_base_of
-                <
-                    Eigen::MatrixBase<typename std::decay<Derived>::type>,
-                    typename std::decay<Derived>::type
-                >
-{
-};
-#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+template <typename Derived>
+struct is_matrix_expression
+    : std::is_base_of<Eigen::MatrixBase<typename std::decay<Derived>::type>,
+                      typename std::decay<Derived>::type> {};
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)
 #pragma GCC diagnostic pop
 #endif
 
@@ -126,15 +120,13 @@ struct is_matrix_expression : std::is_base_of
 * if the type is a complex type, i.e. \a std::complex<T>
 */
 // silence g++4.8.x warning about non-virtual destructor in inherited class
-#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
-template<typename T>
-struct is_complex : std::false_type
-{
-};
-#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+template <typename T>
+struct is_complex : std::false_type {};
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)
 #pragma GCC diagnostic pop
 #endif
 
@@ -143,18 +135,15 @@ struct is_complex : std::false_type
 * specialization for complex types
 */
 // silence g++4.8.x warning about non-virtual destructor in inherited class
-#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
-template<typename T>
-struct is_complex<std::complex<T>> : std::true_type
-{
-};
-#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8)  && !__clang__)
+template <typename T>
+struct is_complex<std::complex<T>> : std::true_type {};
+#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)
 #pragma GCC diagnostic pop
 #endif
-
 
 } /* namespace qpp */
 

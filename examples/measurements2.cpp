@@ -7,8 +7,7 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     ket psi = st.b00;
     std::vector<idx> subsys = {0};
     idx result;
@@ -25,7 +24,7 @@ int main()
     std::cout << ">> Probabilities: " << disp(probs, ", ") << '\n';
     std::cout << ">> Resulting normalized post-measurement states:\n";
 
-    for (auto&& it: states)
+    for (auto&& it : states)
         std::cout << disp(it) << "\n\n";
 
     // measure 2 subsystems out of a 4-qubit random density matrix
@@ -44,7 +43,7 @@ int main()
               << sum(probs.begin(), probs.end()) << '\n';
     std::cout << ">> Resulting normalized post-measurement states:\n";
 
-    for (auto&& it: states)
+    for (auto&& it : states)
         std::cout << disp(it) << "\n\n";
 
     // check now how the state after the measurement "looks"

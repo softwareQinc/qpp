@@ -5,8 +5,7 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     cmat rho = 0.2 * st.pb00 + 0.8 * st.pb11;
     std::cout << ">> State rho:\n";
     std::cout << disp(rho) << '\n';
@@ -49,9 +48,8 @@ int main()
 
     // reconstructed state
     ket psi_from_schmidt =
-            schmidtcoeffs(psi, {2, 2})(0) * kron(UA.col(0), UB.col(0))
-            + schmidtcoeffs(psi, {2, 2})(1)
-              * kron(UA.col(1), UB.col(1));
+        schmidtcoeffs(psi, {2, 2})(0) * kron(UA.col(0), UB.col(0)) +
+        schmidtcoeffs(psi, {2, 2})(1) * kron(UA.col(1), UB.col(1));
     std::cout << ">> State psi reconstructed from the Schmidt decomposition:\n";
     std::cout << disp(psi_from_schmidt) << '\n';
 

@@ -5,8 +5,7 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     idx D = 4;
     cmat rH = randH(D); // random Hermitian matrix
     std::cout << ">> Original matrix:\n" << disp(rH) << '\n';

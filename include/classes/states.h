@@ -32,8 +32,7 @@
 #ifndef CLASSES_STATES_H_
 #define CLASSES_STATES_H_
 
-namespace qpp
-{
+namespace qpp {
 /**
 * \class qpp::States
 * \brief const Singleton class that implements most commonly used states
@@ -42,14 +41,14 @@ class States final : public internal::Singleton<const States> // const Singleton
 {
     friend class internal::Singleton<const States>;
 
-public:
+  public:
     // Pauli eigen-states
-    ket x0{ket::Zero(2)};           ///< Pauli Sigma-X 0-eigenstate |+>
-    ket x1{ket::Zero(2)};           ///< Pauli Sigma-X 1-eigenstate |->
-    ket y0{ket::Zero(2)};           ///< Pauli Sigma-Y 0-eigenstate |y+>
-    ket y1{ket::Zero(2)};           ///< Pauli Sigma-Y 1-eigenstate |y->
-    ket z0{ket::Zero(2)};           ///< Pauli Sigma-Z 0-eigenstate |0>
-    ket z1{ket::Zero(2)};           ///< Pauli Sigma-Z 1-eigenstate |1>
+    ket x0{ket::Zero(2)}; ///< Pauli Sigma-X 0-eigenstate |+>
+    ket x1{ket::Zero(2)}; ///< Pauli Sigma-X 1-eigenstate |->
+    ket y0{ket::Zero(2)}; ///< Pauli Sigma-Y 0-eigenstate |y+>
+    ket y1{ket::Zero(2)}; ///< Pauli Sigma-Y 1-eigenstate |y->
+    ket z0{ket::Zero(2)}; ///< Pauli Sigma-Z 0-eigenstate |0>
+    ket z1{ket::Zero(2)}; ///< Pauli Sigma-Z 1-eigenstate |1>
 
     // projectors onto Pauli eigen-states
     cmat px0{cmat::Zero(2, 2)};
@@ -76,28 +75,27 @@ public:
     ///< Bell-11 state (following the convention in Nielsen and Chuang)
 
     // projectors onto Bell states
-    cmat pb00{cmat::Zero(4, 4)};    ///< Projector onto the Bell-00 state
-    cmat pb01{cmat::Zero(4, 4)};    ///< Projector onto the Bell-01 state
-    cmat pb10{cmat::Zero(4, 4)};    ///< Projector onto the Bell-10 state
-    cmat pb11{cmat::Zero(4, 4)};    ///< Projector onto the Bell-11 state
+    cmat pb00{cmat::Zero(4, 4)}; ///< Projector onto the Bell-00 state
+    cmat pb01{cmat::Zero(4, 4)}; ///< Projector onto the Bell-01 state
+    cmat pb10{cmat::Zero(4, 4)}; ///< Projector onto the Bell-10 state
+    cmat pb11{cmat::Zero(4, 4)}; ///< Projector onto the Bell-11 state
 
     // W and GHZ states
-    ket GHZ{ket::Zero(8)};          ///< GHZ state
-    ket W{ket::Zero(8)};            ///< W state
+    ket GHZ{ket::Zero(8)}; ///< GHZ state
+    ket W{ket::Zero(8)};   ///< W state
 
     // projectors onto GHZ and W
-    cmat pGHZ{cmat::Zero(8, 8)};    ///< Projector onto the GHZ state
-    cmat pW{cmat::Zero(8, 8)};      ///< Projector onto the W state
+    cmat pGHZ{cmat::Zero(8, 8)}; ///< Projector onto the GHZ state
+    cmat pW{cmat::Zero(8, 8)};   ///< Projector onto the W state
 
     /**
     * \brief Maximally entangled state of 2 qudits
     *
     * \param d Subsystem dimensions
-    * \return Maximally entangled state 
+    * \return Maximally entangled state
     * \f$\frac{1}{\sqrt{d}}\sum_{j=0}^{d-1}|jj\rangle\f$ of 2 qudits
     */
-    ket mes(idx d = 2) const
-    {
+    ket mes(idx d = 2) const {
         // EXCEPTION CHECKS
 
         // check valid dims
@@ -106,8 +104,7 @@ public:
         // END EXCEPTION CHECKS
 
         ket psi = mket({0, 0}, {d, d});
-        for (idx i = 1; i < d; ++i)
-        {
+        for (idx i = 1; i < d; ++i) {
             psi += mket({i, i}, {d, d});
         }
 
@@ -121,8 +118,7 @@ public:
     * \param d Subsystem dimensions
     * \return Zero state \f$|0\rangle^{\otimes n}\f$ of \a n qudits
     */
-    ket zero(idx n, idx d = 2) const
-    {
+    ket zero(idx n, idx d = 2) const {
         // EXCEPTION CHECKS
 
         // check out of range
@@ -147,8 +143,7 @@ public:
     * \param d Subsystem dimensions
     * \return One state \f$|1\rangle^{\otimes n}\f$ of \a n qudits
     */
-    ket one(idx n, idx d = 2) const
-    {
+    ket one(idx n, idx d = 2) const {
         // EXCEPTION CHECKS
 
         // check out of range
@@ -173,8 +168,7 @@ public:
     * \param d Subsystem dimensions
     * \return \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
     */
-    ket jn(idx j, idx n, idx d = 2) const
-    {
+    ket jn(idx j, idx n, idx d = 2) const {
         // EXCEPTION CHECKS
 
         // check out of range
@@ -201,8 +195,7 @@ public:
     * \param n Non-negative integer
     * \return Plus state \f$|+\rangle^{\otimes n}\f$ of \a n qubits
     */
-    ket plus(idx n) const
-    {
+    ket plus(idx n) const {
         // EXCEPTION CHECKS
 
         // check out of range
@@ -222,8 +215,7 @@ public:
     * \param n Non-negative integer
     * \return Minus state \f$|-\rangle^{\otimes n}\f$ of \a n qubits
     */
-    ket minus(idx n) const
-    {
+    ket minus(idx n) const {
         // EXCEPTION CHECKS
 
         // check out of range
@@ -234,12 +226,11 @@ public:
         return kronpow(this->x1, n);
     }
 
-private:
+  private:
     /**
     * Initialize the states
     */
-    States()
-    {
+    States() {
         // initialize
         x0 << 1 / std::sqrt(2.), 1 / std::sqrt(2.);
         x1 << 1 / std::sqrt(2.), -1 / std::sqrt(2.);

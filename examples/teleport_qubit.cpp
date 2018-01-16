@@ -6,8 +6,7 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     // input state
     ket psi_a = randket();
 
@@ -44,8 +43,8 @@ int main()
 
     // perform the correction on B
     out_B = powm(gt.Z, z) * powm(gt.X, x) * out_B;
-    std::cout << ">> Bob must apply the correction operator Z^"
-              << z << " X^" << x << '\n';
+    std::cout << ">> Bob must apply the correction operator Z^" << z << " X^"
+              << x << '\n';
 
     // display the output
     std::cout << ">> Bob's final state (after correction):\n";

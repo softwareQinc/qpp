@@ -41,7 +41,7 @@
 
 // silence bogus warning -Wunused-variable for singletons
 #if (__GNUC__ && !__clang__)
-#define QPP_UNUSED_  __attribute__ ((unused))
+#define QPP_UNUSED_ __attribute__((unused))
 #else
 #define QPP_UNUSED_
 #endif
@@ -114,8 +114,7 @@
 * \namespace qpp
 * \brief Quantum++ main namespace
 */
-namespace qpp
-{
+namespace qpp {
 /**
 * \brief qpp::Init const Singleton
 *
@@ -153,10 +152,10 @@ static const States& st QPP_UNUSED_ = States::get_instance();
 * std::mt19937 and possible data races
 */
 #ifdef NO_THREAD_LOCAL_
-static RandomDevices& rdevs QPP_UNUSED_= RandomDevices::get_instance();
+static RandomDevices& rdevs QPP_UNUSED_ = RandomDevices::get_instance();
 #else
 thread_local static RandomDevices& rdevs QPP_UNUSED_ =
-        RandomDevices::get_thread_local_instance();
+    RandomDevices::get_thread_local_instance();
 #endif // NO_THREAD_LOCAL_
 
 } /* namespace qpp */

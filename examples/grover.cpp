@@ -8,8 +8,7 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     idx n = 4; // number of qubits
     std::cout << ">> Grover on n = " << n << " qubits\n";
 
@@ -31,12 +30,11 @@ int main()
     cmat G = 2 * prj(psi) - gt.Id(N); // Diffusion operator
 
     // number of queries
-    idx nqueries = std::ceil(pi/4 * std::sqrt(N));
+    idx nqueries = std::ceil(pi / 4 * std::sqrt(N));
     std::cout << ">> We run " << nqueries << " queries\n";
-    for (idx i = 0; i < nqueries; ++i)
-    {
+    for (idx i = 0; i < nqueries; ++i) {
         psi(marked) = -psi(marked); // apply the oracle first, no aliasing
-        psi = (G * psi).eval(); // then the diffusion operator, no aliasing
+        psi = (G * psi).eval();     // then the diffusion operator, no aliasing
     }
 
     // we now measure the state in the computational basis

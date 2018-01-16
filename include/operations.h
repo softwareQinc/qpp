@@ -32,8 +32,7 @@
 #ifndef OPERATIONS_H_
 #define OPERATIONS_H_
 
-namespace qpp
-{
+namespace qpp {
 
 /**
 * \brief Applies the controlled-gate \a A to the part \a subsys
@@ -51,23 +50,20 @@ namespace qpp
 * \param dims Dimensions of the multi-partite system
 * \return CTRL-A gate applied to the part \a subsys of \a state
 */
-template<typename Derived1, typename Derived2>
-dyn_mat<typename Derived1::Scalar> applyCTRL(
-        const Eigen::MatrixBase<Derived1>& state,
-        const Eigen::MatrixBase<Derived2>& A,
-        const std::vector<idx>& ctrl,
-        const std::vector<idx>& subsys,
-        const std::vector<idx>& dims)
-{
-    const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate
-            = state.derived();
+template <typename Derived1, typename Derived2>
+dyn_mat<typename Derived1::Scalar>
+applyCTRL(const Eigen::MatrixBase<Derived1>& state,
+          const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
+          const std::vector<idx>& subsys, const std::vector<idx>& dims) {
+    const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate =
+        state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
     // check types
     if (!std::is_same<typename Derived1::Scalar,
-            typename Derived2::Scalar>::value)
+                      typename Derived2::Scalar>::value)
         throw exception::TypeMismatch("qpp::applyCTRL()");
 
     // check zero sizes
@@ -116,24 +112,23 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     // construct the table of A^i and (A^dagger)^i
     std::vector<dyn_mat<typename Derived1::Scalar>> Ai;
     std::vector<dyn_mat<typename Derived1::Scalar>> Aidagger;
-    for (idx i = 0; i < std::max(d, static_cast<idx>(2)); ++i)
-    {
+    for (idx i = 0; i < std::max(d, static_cast<idx>(2)); ++i) {
         Ai.push_back(powm(rA, i));
         Aidagger.push_back(powm(adjoint(rA), i));
     }
 
     idx D = static_cast<idx>(rstate.rows()); // total dimension
-    idx N = dims.size();                // total number of subsystems
-    idx ctrlsize = ctrl.size();         // number of ctrl subsystem
-    idx ctrlgatesize = ctrlgate.size(); // number of ctrl+gate subsystems
-    idx subsyssize = subsys.size();     // number of subsystems of the target
+    idx N = dims.size();                     // total number of subsystems
+    idx ctrlsize = ctrl.size();              // number of ctrl subsystem
+    idx ctrlgatesize = ctrlgate.size();      // number of ctrl+gate subsystems
+    idx subsyssize = subsys.size(); // number of subsystems of the target
     // dimension of ctrl subsystem
     idx Dctrl = static_cast<idx>(std::llround(std::pow(d, ctrlsize)));
     idx DA = static_cast<idx>(rA.rows()); // dimension of gate subsystem
 
-    idx Cdims[maxn];         // local dimensions
-    idx CdimsA[maxn];        // local dimensions
-    idx CdimsCTRL[maxn];     // local dimensions
+    idx Cdims[maxn];          // local dimensions
+    idx CdimsA[maxn];         // local dimensions
+    idx CdimsCTRL[maxn];      // local dimensions
     idx CdimsCTRLA_bar[maxn]; // local dimensions
 
     // compute the complementary subsystem of ctrlgate w.r.t. dims
@@ -157,35 +152,31 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     // worker, computes the coefficient and the index for the ket case
     // used in #pragma omp parallel for collapse
     auto coeff_idx_ket = [&](idx i_, idx m_, idx r_) noexcept
-            -> std::pair<typename Derived1::Scalar, idx>
-    {
+                             ->std::pair<typename Derived1::Scalar, idx> {
         idx indx = 0;
         typename Derived1::Scalar coeff = 0;
 
-        idx Cmidx[maxn];         // the total multi-index
-        idx CmidxA[maxn];        // the gate part multi-index
+        idx Cmidx[maxn];          // the total multi-index
+        idx CmidxA[maxn];         // the gate part multi-index
         idx CmidxCTRLA_bar[maxn]; // the rest multi-index
 
         // compute the index
 
         // set the CTRL part
-        for (idx k = 0; k < ctrlsize; ++k)
-        {
+        for (idx k = 0; k < ctrlsize; ++k) {
             Cmidx[ctrl[k]] = i_;
         }
 
         // set the rest
-        internal::n2multiidx(r_, N - ctrlgatesize,
-                             CdimsCTRLA_bar, CmidxCTRLA_bar);
-        for (idx k = 0; k < N - ctrlgatesize; ++k)
-        {
+        internal::n2multiidx(r_, N - ctrlgatesize, CdimsCTRLA_bar,
+                             CmidxCTRLA_bar);
+        for (idx k = 0; k < N - ctrlgatesize; ++k) {
             Cmidx[ctrlgate_bar[k]] = CmidxCTRLA_bar[k];
         }
 
         // set the A part
         internal::n2multiidx(m_, subsyssize, CdimsA, CmidxA);
-        for (idx k = 0; k < subsyssize; ++k)
-        {
+        for (idx k = 0; k < subsyssize; ++k) {
             Cmidx[subsys[k]] = CmidxA[k];
         }
 
@@ -193,15 +184,13 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         indx = internal::multiidx2n(Cmidx, N, Cdims);
 
         // compute the coefficient
-        for (idx n_ = 0; n_ < DA; ++n_)
-        {
+        for (idx n_ = 0; n_ < DA; ++n_) {
             internal::n2multiidx(n_, subsyssize, CdimsA, CmidxA);
-            for (idx k = 0; k < subsyssize; ++k)
-            {
+            for (idx k = 0; k < subsyssize; ++k) {
                 Cmidx[subsys[k]] = CmidxA[k];
             }
-            coeff += Ai[i_](m_, n_) *
-                     rstate(internal::multiidx2n(Cmidx, N, Cdims));
+            coeff +=
+                Ai[i_](m_, n_) * rstate(internal::multiidx2n(Cmidx, N, Cdims));
         }
 
         return std::make_pair(coeff, indx);
@@ -210,44 +199,39 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
     // worker, computes the coefficient and the index
     // for the density matrix case
     // used in #pragma omp parallel for collapse
-    auto coeff_idx_rho = [&](idx i1_, idx m1_,
-                             idx r1_, idx i2_, idx m2_, idx r2_) noexcept
-            -> std::tuple<typename Derived1::Scalar, idx, idx>
-    {
+    auto coeff_idx_rho = [&](idx i1_, idx m1_, idx r1_, idx i2_, idx m2_,
+                             idx r2_) noexcept
+                             ->std::tuple<typename Derived1::Scalar, idx, idx> {
         idx idxrow = 0;
         idx idxcol = 0;
         typename Derived1::Scalar coeff = 0, lhs = 1, rhs = 1;
 
-        idx Cmidxrow[maxn];         // the total row multi-index
-        idx Cmidxcol[maxn];         // the total col multi-index
-        idx CmidxArow[maxn];        // the gate part row multi-index
-        idx CmidxAcol[maxn];        // the gate part col multi-index
-        idx CmidxCTRLrow[maxn];     // the control row multi-index
-        idx CmidxCTRLcol[maxn];     // the control col multi-index
+        idx Cmidxrow[maxn];          // the total row multi-index
+        idx Cmidxcol[maxn];          // the total col multi-index
+        idx CmidxArow[maxn];         // the gate part row multi-index
+        idx CmidxAcol[maxn];         // the gate part col multi-index
+        idx CmidxCTRLrow[maxn];      // the control row multi-index
+        idx CmidxCTRLcol[maxn];      // the control col multi-index
         idx CmidxCTRLA_barrow[maxn]; // the rest row multi-index
         idx CmidxCTRLA_barcol[maxn]; // the rest col multi-index
 
         // compute the ket/bra indexes
 
         // set the CTRL part
-        internal::n2multiidx(i1_, ctrlsize,
-                             CdimsCTRL, CmidxCTRLrow);
-        internal::n2multiidx(i2_, ctrlsize,
-                             CdimsCTRL, CmidxCTRLcol);
+        internal::n2multiidx(i1_, ctrlsize, CdimsCTRL, CmidxCTRLrow);
+        internal::n2multiidx(i2_, ctrlsize, CdimsCTRL, CmidxCTRLcol);
 
-        for (idx k = 0; k < ctrlsize; ++k)
-        {
+        for (idx k = 0; k < ctrlsize; ++k) {
             Cmidxrow[ctrl[k]] = CmidxCTRLrow[k];
             Cmidxcol[ctrl[k]] = CmidxCTRLcol[k];
         }
 
         // set the rest
-        internal::n2multiidx(r1_, N - ctrlgatesize,
-                             CdimsCTRLA_bar, CmidxCTRLA_barrow);
-        internal::n2multiidx(r2_, N - ctrlgatesize,
-                             CdimsCTRLA_bar, CmidxCTRLA_barcol);
-        for (idx k = 0; k < N - ctrlgatesize; ++k)
-        {
+        internal::n2multiidx(r1_, N - ctrlgatesize, CdimsCTRLA_bar,
+                             CmidxCTRLA_barrow);
+        internal::n2multiidx(r2_, N - ctrlgatesize, CdimsCTRLA_bar,
+                             CmidxCTRLA_barcol);
+        for (idx k = 0; k < N - ctrlgatesize; ++k) {
             Cmidxrow[ctrlgate_bar[k]] = CmidxCTRLA_barrow[k];
             Cmidxcol[ctrlgate_bar[k]] = CmidxCTRLA_barcol[k];
         }
@@ -255,8 +239,7 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         // set the A part
         internal::n2multiidx(m1_, subsyssize, CdimsA, CmidxArow);
         internal::n2multiidx(m2_, subsyssize, CdimsA, CmidxAcol);
-        for (idx k = 0; k < subsys.size(); ++k)
-        {
+        for (idx k = 0; k < subsys.size(); ++k) {
             Cmidxrow[subsys[k]] = CmidxArow[k];
             Cmidxcol[subsys[k]] = CmidxAcol[k];
         }
@@ -270,63 +253,49 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
         bool all_ctrl_cols_equal = true;
 
         idx first_ctrl_row, first_ctrl_col;
-        if (ctrlsize > 0)
-        {
+        if (ctrlsize > 0) {
             first_ctrl_row = CmidxCTRLrow[0];
             first_ctrl_col = CmidxCTRLcol[0];
-        } else
-        {
+        } else {
             first_ctrl_row = first_ctrl_col = 1;
         }
 
-        for (idx k = 1; k < ctrlsize; ++k)
-        {
-            if (CmidxCTRLrow[k] != first_ctrl_row)
-            {
+        for (idx k = 1; k < ctrlsize; ++k) {
+            if (CmidxCTRLrow[k] != first_ctrl_row) {
                 all_ctrl_rows_equal = false;
                 break;
             }
         }
-        for (idx k = 1; k < ctrlsize; ++k)
-        {
-            if (CmidxCTRLcol[k] != first_ctrl_col)
-            {
+        for (idx k = 1; k < ctrlsize; ++k) {
+            if (CmidxCTRLcol[k] != first_ctrl_col) {
                 all_ctrl_cols_equal = false;
                 break;
             }
         }
 
         // at least one control activated, compute the coefficient
-        for (idx n1_ = 0; n1_ < DA; ++n1_)
-        {
+        for (idx n1_ = 0; n1_ < DA; ++n1_) {
             internal::n2multiidx(n1_, subsyssize, CdimsA, CmidxArow);
-            for (idx k = 0; k < subsyssize; ++k)
-            {
+            for (idx k = 0; k < subsyssize; ++k) {
                 Cmidxrow[subsys[k]] = CmidxArow[k];
             }
             idx idxrowtmp = internal::multiidx2n(Cmidxrow, N, Cdims);
 
-            if (all_ctrl_rows_equal)
-            {
+            if (all_ctrl_rows_equal) {
                 lhs = Ai[first_ctrl_row](m1_, n1_);
-            } else
-            {
+            } else {
                 lhs = (m1_ == n1_) ? 1 : 0; // identity matrix
             }
 
-            for (idx n2_ = 0; n2_ < DA; ++n2_)
-            {
+            for (idx n2_ = 0; n2_ < DA; ++n2_) {
                 internal::n2multiidx(n2_, subsyssize, CdimsA, CmidxAcol);
-                for (idx k = 0; k < subsyssize; ++k)
-                {
+                for (idx k = 0; k < subsyssize; ++k) {
                     Cmidxcol[subsys[k]] = CmidxAcol[k];
                 }
 
-                if (all_ctrl_cols_equal)
-                {
+                if (all_ctrl_cols_equal) {
                     rhs = Aidagger[first_ctrl_col](n2_, m2_);
-                } else
-                {
+                } else {
                     rhs = (n2_ == m2_) ? 1 : 0; // identity matrix
                 }
 
@@ -354,23 +323,21 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
         for (idx m = 0; m < DA; ++m)
-            for (idx r = 0; r < DCTRLA_bar; ++r)
-            {
+            for (idx r = 0; r < DCTRLA_bar; ++r) {
                 if (ctrlsize == 0) // no control
                 {
                     result(coeff_idx_ket(1, m, r).second) =
-                            coeff_idx_ket(1, m, r).first;
+                        coeff_idx_ket(1, m, r).first;
                 } else
-                    for (idx i = 0; i < d; ++i)
-                    {
+                    for (idx i = 0; i < d; ++i) {
                         result(coeff_idx_ket(i, m, r).second) =
-                                coeff_idx_ket(i, m, r).first;
+                            coeff_idx_ket(i, m, r).first;
                     }
             }
 
         return result;
     }
-        //************ density matrix ************//
+    //************ density matrix ************//
     else if (internal::check_square_mat(rstate)) // we have a density operator
     {
         // check that dims match state matrix
@@ -391,28 +358,25 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
                     for (idx r2 = 0; r2 < DCTRLA_bar; ++r2)
                         if (ctrlsize == 0) // no control
                         {
-                            auto coeff_idxes = coeff_idx_rho(1, m1, r1,
-                                                             1, m2, r2);
+                            auto coeff_idxes =
+                                coeff_idx_rho(1, m1, r1, 1, m2, r2);
                             result(std::get<1>(coeff_idxes),
                                    std::get<2>(coeff_idxes)) =
-                                    std::get<0>(coeff_idxes);
-                        } else
-                        {
+                                std::get<0>(coeff_idxes);
+                        } else {
                             for (idx i1 = 0; i1 < Dctrl; ++i1)
-                                for (idx i2 = 0; i2 < Dctrl; ++i2)
-                                {
-                                    auto coeff_idxes = coeff_idx_rho(
-                                            i1, m1, r1,
-                                            i2, m2, r2);
+                                for (idx i2 = 0; i2 < Dctrl; ++i2) {
+                                    auto coeff_idxes =
+                                        coeff_idx_rho(i1, m1, r1, i2, m2, r2);
                                     result(std::get<1>(coeff_idxes),
                                            std::get<2>(coeff_idxes)) =
-                                            std::get<0>(coeff_idxes);
+                                        std::get<0>(coeff_idxes);
                                 }
                         }
 
         return result;
     }
-        //************ Exception: not ket nor density matrix ************//
+    //************ Exception: not ket nor density matrix ************//
     else
         throw exception::MatrixNotSquareNorCvector("qpp::applyCTRL()");
 }
@@ -432,16 +396,13 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 * \param d Subsystem dimensions
 * \return CTRL-A gate applied to the part \a subsys of \a state
 */
-template<typename Derived1, typename Derived2>
-dyn_mat<typename Derived1::Scalar> applyCTRL(
-        const Eigen::MatrixBase<Derived1>& state,
-        const Eigen::MatrixBase<Derived2>& A,
-        const std::vector<idx>& ctrl,
-        const std::vector<idx>& subsys,
-        idx d = 2)
-{
-    const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate
-            = state.derived();
+template <typename Derived1, typename Derived2>
+dyn_mat<typename Derived1::Scalar>
+applyCTRL(const Eigen::MatrixBase<Derived1>& state,
+          const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
+          const std::vector<idx>& subsys, idx d = 2) {
+    const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate =
+        state.derived();
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -474,22 +435,20 @@ dyn_mat<typename Derived1::Scalar> applyCTRL(
 * \param dims Dimensions of the multi-partite system
 * \return Gate \a A applied to the part \a subsys of \a state
 */
-template<typename Derived1, typename Derived2>
-dyn_mat<typename Derived1::Scalar> apply(
-        const Eigen::MatrixBase<Derived1>& state,
-        const Eigen::MatrixBase<Derived2>& A,
-        const std::vector<idx>& subsys,
-        const std::vector<idx>& dims)
-{
-    const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate
-            = state.derived();
+template <typename Derived1, typename Derived2>
+dyn_mat<typename Derived1::Scalar>
+apply(const Eigen::MatrixBase<Derived1>& state,
+      const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& subsys,
+      const std::vector<idx>& dims) {
+    const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate =
+        state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
     // check types
     if (!std::is_same<typename Derived1::Scalar,
-            typename Derived2::Scalar>::value)
+                      typename Derived2::Scalar>::value)
         throw exception::TypeMismatch("qpp::apply()");
 
     // check zero sizes
@@ -529,7 +488,7 @@ dyn_mat<typename Derived1::Scalar> apply(
 
         return applyCTRL(rstate, rA, {}, subsys, dims);
     }
-        //************ density matrix ************//
+    //************ density matrix ************//
     else if (internal::check_square_mat(rstate)) // we have a density operator
     {
 
@@ -539,7 +498,7 @@ dyn_mat<typename Derived1::Scalar> apply(
 
         return applyCTRL(rstate, rA, {}, subsys, dims);
     }
-        //************ Exception: not ket nor density matrix ************//
+    //************ Exception: not ket nor density matrix ************//
     else
         throw exception::MatrixNotSquareNorCvector("qpp::apply()");
 }
@@ -557,15 +516,13 @@ dyn_mat<typename Derived1::Scalar> apply(
 * \param d Subsystem dimensions
 * \return Gate \a A applied to the part \a subsys of \a state
 */
-template<typename Derived1, typename Derived2>
-dyn_mat<typename Derived1::Scalar> apply(
-        const Eigen::MatrixBase<Derived1>& state,
-        const Eigen::MatrixBase<Derived2>& A,
-        const std::vector<idx>& subsys,
-        idx d = 2)
-{
-    const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate
-            = state.derived();
+template <typename Derived1, typename Derived2>
+dyn_mat<typename Derived1::Scalar>
+apply(const Eigen::MatrixBase<Derived1>& state,
+      const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& subsys,
+      idx d = 2) {
+    const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate =
+        state.derived();
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -593,10 +550,8 @@ dyn_mat<typename Derived1::Scalar> apply(
 * \param Ks Set of Kraus operators
 * \return Output density matrix after the action of the channel
 */
-template<typename Derived>
-cmat apply(const Eigen::MatrixBase<Derived>& A,
-           const std::vector<cmat>& Ks)
-{
+template <typename Derived>
+cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
     const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -621,14 +576,11 @@ cmat apply(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for
 #endif // WITH_OPENMP_
-    for (idx i = 0; i < Ks.size(); ++i)
-    {
+    for (idx i = 0; i < Ks.size(); ++i) {
 #ifdef WITH_OPENMP_
 #pragma omp critical
 #endif // WITH_OPENMP_
-        {
-            result += Ks[i] * rA * adjoint(Ks[i]);
-        }
+        { result += Ks[i] * rA * adjoint(Ks[i]); }
     }
 
     return result;
@@ -644,12 +596,9 @@ cmat apply(const Eigen::MatrixBase<Derived>& A,
 * \param dims Dimensions of the multi-partite system
 * \return Output density matrix after the action of the channel
 */
-template<typename Derived>
-cmat apply(const Eigen::MatrixBase<Derived>& A,
-           const std::vector<cmat>& Ks,
-           const std::vector<idx>& subsys,
-           const std::vector<idx>& dims)
-{
+template <typename Derived>
+cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
+           const std::vector<idx>& subsys, const std::vector<idx>& dims) {
     const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -708,12 +657,9 @@ cmat apply(const Eigen::MatrixBase<Derived>& A,
 * \param d Subsystem dimensions
 * \return Output density matrix after the action of the channel
 */
-template<typename Derived>
-cmat apply(const Eigen::MatrixBase<Derived>& A,
-           const std::vector<cmat>& Ks,
-           const std::vector<idx>& subsys,
-           idx d = 2)
-{
+template <typename Derived>
+cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
+           const std::vector<idx>& subsys, idx d = 2) {
     const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -744,8 +690,7 @@ cmat apply(const Eigen::MatrixBase<Derived>& A,
 * \param Ks Set of Kraus operators
 * \return Superoperator matrix
 */
-inline cmat kraus2super(const std::vector<cmat>& Ks)
-{
+inline cmat kraus2super(const std::vector<cmat>& Ks) {
     // EXCEPTION CHECKS
 
     if (Ks.size() == 0)
@@ -770,10 +715,8 @@ inline cmat kraus2super(const std::vector<cmat>& Ks)
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-    for (idx m = 0; m < D; ++m)
-    {
-        for (idx n = 0; n < D; ++n)
-        {
+    for (idx m = 0; m < D; ++m) {
+        for (idx n = 0; n < D; ++n) {
 #ifdef WITH_OPENMP_
 #pragma omp critical
 #endif // WITH_OPENMP_
@@ -784,15 +727,13 @@ inline cmat kraus2super(const std::vector<cmat>& Ks)
                     EMN += Ks[i] * MN * adjoint(Ks[i]);
                 MN(m, n) = 0;
 
-                for (idx a = 0; a < D; ++a)
-                {
+                for (idx a = 0; a < D; ++a) {
                     A(a) = 1;
-                    for (idx b = 0; b < D; ++b)
-                    {
+                    for (idx b = 0; b < D; ++b) {
                         // compute result(ab,mn)=<a|E(|m><n)|b>
                         B(b) = 1;
                         result(a * D + b, m * D + n) =
-                                static_cast<cmat>(A * EMN * B).value();
+                            static_cast<cmat>(A * EMN * B).value();
                         B(b) = 0;
                     }
                     A(a) = 0;
@@ -820,8 +761,7 @@ inline cmat kraus2super(const std::vector<cmat>& Ks)
 * \param Ks Set of Kraus operators
 * \return Choi matrix
 */
-inline cmat kraus2choi(const std::vector<cmat>& Ks)
-{
+inline cmat kraus2choi(const std::vector<cmat>& Ks) {
     // EXCEPTION CHECKS
 
     if (Ks.size() == 0)
@@ -850,14 +790,13 @@ inline cmat kraus2choi(const std::vector<cmat>& Ks)
 #ifdef WITH_OPENMP_
 #pragma omp parallel for
 #endif // WITH_OPENMP_
-    for (idx i = 0; i < Ks.size(); ++i)
-    {
+    for (idx i = 0; i < Ks.size(); ++i) {
 #ifdef WITH_OPENMP_
 #pragma omp critical
 #endif // WITH_OPENMP_
         {
-            result += kron(cmat::Identity(D, D), Ks[i]) * Omega
-                      * adjoint(kron(cmat::Identity(D, D), Ks[i]));
+            result += kron(cmat::Identity(D, D), Ks[i]) * Omega *
+                      adjoint(kron(cmat::Identity(D, D), Ks[i]));
         }
     }
 
@@ -877,8 +816,7 @@ inline cmat kraus2choi(const std::vector<cmat>& Ks)
 * \param A Choi matrix
 * \return Set of orthogonal Kraus operators
 */
-inline std::vector<cmat> choi2kraus(const cmat& A)
-{
+inline std::vector<cmat> choi2kraus(const cmat& A) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(A))
@@ -895,11 +833,10 @@ inline std::vector<cmat> choi2kraus(const cmat& A)
     cmat evec = hevects(A);
     std::vector<cmat> result;
 
-    for (idx i = 0; i < D * D; ++i)
-    {
+    for (idx i = 0; i < D * D; ++i) {
         if (std::abs(ev(i)) > eps)
-            result.push_back(
-                    std::sqrt(std::abs(ev(i))) * reshape(evec.col(i), D, D));
+            result.push_back(std::sqrt(std::abs(ev(i))) *
+                             reshape(evec.col(i), D, D));
     }
 
     return result;
@@ -912,8 +849,7 @@ inline std::vector<cmat> choi2kraus(const cmat& A)
 * \param A Choi matrix
 * \return Superoperator matrix
 */
-inline cmat choi2super(const cmat& A)
-{
+inline cmat choi2super(const cmat& A) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(A))
@@ -947,8 +883,7 @@ inline cmat choi2super(const cmat& A)
 * \param A Superoperator matrix
 * \return Choi matrix
 */
-inline cmat super2choi(const cmat& A)
-{
+inline cmat super2choi(const cmat& A) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(A))
@@ -988,12 +923,10 @@ inline cmat super2choi(const cmat& A)
 * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
 * over the same scalar field as \a A
 */
-template<typename Derived>
+template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
-                                          const std::vector<idx>& dims)
-{
-    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA
-            = A.derived();
+                                          const std::vector<idx>& dims) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1014,7 +947,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
     idx DB = dims[1];
 
     dyn_mat<typename Derived::Scalar> result =
-            dyn_mat<typename Derived::Scalar>::Zero(DB, DB);
+        dyn_mat<typename Derived::Scalar>::Zero(DB, DB);
 
     //************ ket ************//
     if (internal::check_cvector(rA)) // we have a ket
@@ -1023,8 +956,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
         if (!internal::check_dims_match_cvect(dims, rA))
             throw exception::DimsMismatchCvector("qpp::ptrace1()");
 
-        auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar
-        {
+        auto worker = [&](idx i, idx j) noexcept->typename Derived::Scalar {
             typename Derived::Scalar sum = 0;
             for (idx m = 0; m < DA; ++m)
                 sum += rA(m * DB + i) * std::conj(rA(m * DB + j));
@@ -1035,21 +967,21 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        for (idx j = 0; j < DB; ++j) // column major order for speed
+        // column major order for speed
+        for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
 
         return result;
     }
-        //************ density matrix ************//
+    //************ density matrix ************//
     else if (internal::check_square_mat(rA)) // we have a density operator
     {
         // check that dims match the dimension of A
         if (!internal::check_dims_match_mat(dims, rA))
             throw exception::DimsMismatchMatrix("qpp::ptrace1()");
 
-        auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar
-        {
+        auto worker = [&](idx i, idx j) noexcept->typename Derived::Scalar {
             typename Derived::Scalar sum = 0;
             for (idx m = 0; m < DA; ++m)
                 sum += rA(m * DB + i, m * DB + j);
@@ -1060,13 +992,14 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        for (idx j = 0; j < DB; ++j) // column major order for speed
+        // column major order for speed
+        for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
 
         return result;
     }
-        //************ Exception: not ket nor density matrix ************//
+    //************ Exception: not ket nor density matrix ************//
     else
         throw exception::MatrixNotSquareNorCvector("qpp::ptrace1()");
 }
@@ -1084,10 +1017,9 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
 * over the same scalar field as \a A
 */
-template<typename Derived>
+template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
-                                          idx d = 2)
-{
+                                          idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1119,12 +1051,10 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
 * over the same scalar field as \a A
 */
-template<typename Derived>
+template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
-                                          const std::vector<idx>& dims)
-{
-    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA
-            = A.derived();
+                                          const std::vector<idx>& dims) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1145,7 +1075,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
     idx DB = dims[1];
 
     dyn_mat<typename Derived::Scalar> result =
-            dyn_mat<typename Derived::Scalar>::Zero(DA, DA);
+        dyn_mat<typename Derived::Scalar>::Zero(DA, DA);
 
     //************ ket ************//
     if (internal::check_cvector(rA)) // we have a ket
@@ -1154,8 +1084,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
         if (!internal::check_dims_match_cvect(dims, rA))
             throw exception::DimsMismatchCvector("qpp::ptrace2()");
 
-        auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar
-        {
+        auto worker = [&](idx i, idx j) noexcept->typename Derived::Scalar {
             typename Derived::Scalar sum = 0;
             for (idx m = 0; m < DB; ++m)
                 sum += rA(i * DB + m) * std::conj(rA(j * DB + m));
@@ -1166,13 +1095,14 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        for (idx j = 0; j < DA; ++j) // column major order for speed
+        // column major order for speed
+        for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
                 result(i, j) = worker(i, j);
 
         return result;
     }
-        //************ density matrix ************//
+    //************ density matrix ************//
     else if (internal::check_square_mat(rA)) // we have a density operator
     {
         // check that dims match the dimension of A
@@ -1182,13 +1112,14 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        for (idx j = 0; j < DA; ++j) // column major order for speed
+        // column major order for speed
+        for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
                 result(i, j) = trace(rA.block(i * DB, j * DB, DB, DB));
 
         return result;
     }
-        //************ Exception: not ket nor density matrix ************//
+    //************ Exception: not ket nor density matrix ************//
     else
         throw exception::MatrixNotSquareNorCvector("qpp::ptrace1()");
 }
@@ -1206,10 +1137,9 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
 * over the same scalar field as \a A
 */
-template<typename Derived>
+template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
-                                          idx d = 2)
-{
+                                          idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1242,13 +1172,11 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 * in a multi-partite system, as a dynamic matrix
 * over the same scalar field as \a A
 */
-template<typename Derived>
+template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
                                          const std::vector<idx>& subsys,
-                                         const std::vector<idx>& dims)
-{
-    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA
-            = A.derived();
+                                         const std::vector<idx>& dims) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -1286,22 +1214,19 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     std::copy(std::begin(subsys_bar), std::end(subsys_bar),
               std::begin(Csubsys_bar));
 
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         Cdims[i] = dims[i];
     }
-    for (idx i = 0; i < Nsubsys; ++i)
-    {
+    for (idx i = 0; i < Nsubsys; ++i) {
         Csubsys[i] = subsys[i];
         Cdimssubsys[i] = dims[subsys[i]];
     }
-    for (idx i = 0; i < Nsubsys_bar; ++i)
-    {
+    for (idx i = 0; i < Nsubsys_bar; ++i) {
         Cdimssubsys_bar[i] = dims[subsys_bar[i]];
     }
 
     dyn_mat<typename Derived::Scalar> result =
-            dyn_mat<typename Derived::Scalar>(Dsubsys_bar, Dsubsys_bar);
+        dyn_mat<typename Derived::Scalar>(Dsubsys_bar, Dsubsys_bar);
 
     //************ ket ************//
     if (internal::check_cvector(rA)) // we have a ket
@@ -1310,8 +1235,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         if (!internal::check_dims_match_cvect(dims, rA))
             throw exception::DimsMismatchCvector("qpp::ptrace()");
 
-        if (subsys.size() == dims.size())
-        {
+        if (subsys.size() == dims.size()) {
             result(0, 0) = (adjoint(rA) * rA).value();
             return result;
         }
@@ -1319,8 +1243,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         if (subsys.size() == 0)
             return rA * adjoint(rA);
 
-        auto worker = [&](idx i) noexcept -> typename Derived::Scalar
-        {
+        auto worker = [&](idx i) noexcept->typename Derived::Scalar {
             // use static allocation for speed!
 
             idx Cmidxrow[maxn];
@@ -1329,28 +1252,25 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             idx Cmidxsubsys[maxn];
 
             /* get the row multi-indexes of the complement */
-            internal::n2multiidx(i, Nsubsys_bar,
-                                 Cdimssubsys_bar, Cmidxrowsubsys_bar);
+            internal::n2multiidx(i, Nsubsys_bar, Cdimssubsys_bar,
+                                 Cmidxrowsubsys_bar);
             /* write them in the global row/col multi-indexes */
-            for (idx k = 0; k < Nsubsys_bar; ++k)
-            {
+            for (idx k = 0; k < Nsubsys_bar; ++k) {
                 Cmidxrow[Csubsys_bar[k]] = Cmidxrowsubsys_bar[k];
                 Cmidxcol[Csubsys_bar[k]] = Cmidxcolsubsys_bar[k];
             }
             typename Derived::Scalar sm = 0;
-            for (idx a = 0; a < Dsubsys; ++a)
-            {
+            for (idx a = 0; a < Dsubsys; ++a) {
                 // get the multi-index over which we do the summation
                 internal::n2multiidx(a, Nsubsys, Cdimssubsys, Cmidxsubsys);
                 // write it into the global row/col multi-indexes
                 for (idx k = 0; k < Nsubsys; ++k)
-                    Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]]
-                            = Cmidxsubsys[k];
+                    Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]] =
+                        Cmidxsubsys[k];
 
                 // now do the sum
                 sm += rA(internal::multiidx2n(Cmidxrow, N, Cdims)) *
-                      std::conj(rA(internal::multiidx2n(Cmidxcol, N,
-                                                        Cdims)));
+                      std::conj(rA(internal::multiidx2n(Cmidxcol, N, Cdims)));
             }
 
             return sm;
@@ -1359,28 +1279,26 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         for (idx j = 0; j < Dsubsys_bar; ++j) // column major order for speed
         {
             // compute the column multi-indexes of the complement
-            internal::n2multiidx(j, Nsubsys_bar,
-                                 Cdimssubsys_bar, Cmidxcolsubsys_bar);
+            internal::n2multiidx(j, Nsubsys_bar, Cdimssubsys_bar,
+                                 Cmidxcolsubsys_bar);
 #ifdef WITH_OPENMP_
 #pragma omp parallel for
 #endif // WITH_OPENMP_
-            for (idx i = 0; i < Dsubsys_bar; ++i)
-            {
+            for (idx i = 0; i < Dsubsys_bar; ++i) {
                 result(i, j) = worker(i);
             }
         }
 
         return result;
     }
-        //************ density matrix ************//
+    //************ density matrix ************//
     else if (internal::check_square_mat(rA)) // we have a density operator
     {
         // check that dims match the dimension of A
         if (!internal::check_dims_match_mat(dims, rA))
             throw exception::DimsMismatchMatrix("qpp::ptrace()");
 
-        if (subsys.size() == dims.size())
-        {
+        if (subsys.size() == dims.size()) {
             result(0, 0) = rA.trace();
             return result;
         }
@@ -1388,8 +1306,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         if (subsys.size() == 0)
             return rA;
 
-        auto worker = [&](idx i) noexcept -> typename Derived::Scalar
-        {
+        auto worker = [&](idx i) noexcept->typename Derived::Scalar {
             // use static allocation for speed!
 
             idx Cmidxrow[maxn];
@@ -1398,23 +1315,21 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             idx Cmidxsubsys[maxn];
 
             /* get the row/col multi-indexes of the complement */
-            internal::n2multiidx(i, Nsubsys_bar,
-                                 Cdimssubsys_bar, Cmidxrowsubsys_bar);
+            internal::n2multiidx(i, Nsubsys_bar, Cdimssubsys_bar,
+                                 Cmidxrowsubsys_bar);
             /* write them in the global row/col multi-indexes */
-            for (idx k = 0; k < Nsubsys_bar; ++k)
-            {
+            for (idx k = 0; k < Nsubsys_bar; ++k) {
                 Cmidxrow[Csubsys_bar[k]] = Cmidxrowsubsys_bar[k];
                 Cmidxcol[Csubsys_bar[k]] = Cmidxcolsubsys_bar[k];
             }
             typename Derived::Scalar sm = 0;
-            for (idx a = 0; a < Dsubsys; ++a)
-            {
+            for (idx a = 0; a < Dsubsys; ++a) {
                 // get the multi-index over which we do the summation
                 internal::n2multiidx(a, Nsubsys, Cdimssubsys, Cmidxsubsys);
                 // write it into the global row/col multi-indexes
                 for (idx k = 0; k < Nsubsys; ++k)
-                    Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]]
-                            = Cmidxsubsys[k];
+                    Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]] =
+                        Cmidxsubsys[k];
 
                 // now do the sum
                 sm += rA(internal::multiidx2n(Cmidxrow, N, Cdims),
@@ -1427,20 +1342,19 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         for (idx j = 0; j < Dsubsys_bar; ++j) // column major order for speed
         {
             // compute the column multi-indexes of the complement
-            internal::n2multiidx(j, Nsubsys_bar,
-                                 Cdimssubsys_bar, Cmidxcolsubsys_bar);
+            internal::n2multiidx(j, Nsubsys_bar, Cdimssubsys_bar,
+                                 Cmidxcolsubsys_bar);
 #ifdef WITH_OPENMP_
 #pragma omp parallel for
 #endif // WITH_OPENMP_
-            for (idx i = 0; i < Dsubsys_bar; ++i)
-            {
+            for (idx i = 0; i < Dsubsys_bar; ++i) {
                 result(i, j) = worker(i);
             }
         }
 
         return result;
     }
-        //************ Exception: not ket nor density matrix ************//
+    //************ Exception: not ket nor density matrix ************//
     else
         throw exception::MatrixNotSquareNorCvector("qpp::ptrace()");
 }
@@ -1459,11 +1373,10 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 * in a multi-partite system, as a dynamic matrix
 * over the same scalar field as \a A
 */
-template<typename Derived>
+template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
                                          const std::vector<idx>& subsys,
-                                         idx d = 2)
-{
+                                         idx d = 2) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1496,12 +1409,10 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 * over the subsytems \a subsys in a multi-partite system, as a dynamic matrix
 * over the same scalar field as \a A
 */
-template<typename Derived>
-dyn_mat<typename Derived::Scalar> ptranspose(
-        const Eigen::MatrixBase<Derived>& A,
-        const std::vector<idx>& subsys,
-        const std::vector<idx>& dims)
-{
+template <typename Derived>
+dyn_mat<typename Derived::Scalar>
+ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
+           const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1547,8 +1458,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
         if (subsys.size() == 0)
             return rA * adjoint(rA);
 
-        auto worker = [&](idx i) noexcept -> typename Derived::Scalar
-        {
+        auto worker = [&](idx i) noexcept->typename Derived::Scalar {
             // use static allocation for speed!
             idx midxcoltmp[maxn];
             idx midxrow[maxn];
@@ -1564,12 +1474,10 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 
             /* writes the result */
             return rA(internal::multiidx2n(midxrow, N, Cdims)) *
-                   std::conj(rA(internal::multiidx2n(midxcoltmp, N,
-                                                     Cdims)));
+                   std::conj(rA(internal::multiidx2n(midxcoltmp, N, Cdims)));
         }; /* end worker */
 
-        for (idx j = 0; j < D; ++j)
-        {
+        for (idx j = 0; j < D; ++j) {
             // compute the column multi-index
             internal::n2multiidx(j, N, Cdims, Cmidxcol);
 
@@ -1582,7 +1490,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 
         return result;
     }
-        //************ density matrix ************//
+    //************ density matrix ************//
     else if (internal::check_square_mat(rA)) // we have a density operator
     {
         // check that dims match the dimension of A
@@ -1595,8 +1503,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
         if (subsys.size() == 0)
             return rA;
 
-        auto worker = [&](idx i) noexcept -> typename Derived::Scalar
-        {
+        auto worker = [&](idx i) noexcept->typename Derived::Scalar {
             // use static allocation for speed!
             idx midxcoltmp[maxn];
             idx midxrow[maxn];
@@ -1615,8 +1522,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
                       internal::multiidx2n(midxcoltmp, N, Cdims));
         }; /* end worker */
 
-        for (idx j = 0; j < D; ++j)
-        {
+        for (idx j = 0; j < D; ++j) {
             // compute the column multi-index
             internal::n2multiidx(j, N, Cdims, Cmidxcol);
 
@@ -1629,7 +1535,7 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 
         return result;
     }
-        //************ Exception: not ket nor density matrix ************//
+    //************ Exception: not ket nor density matrix ************//
     else
         throw exception::MatrixNotSquareNorCvector("qpp::ptranspose()");
 }
@@ -1647,12 +1553,10 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 * over the subsytems \a subsys in a multi-partite system, as a dynamic matrix
 * over the same scalar field as \a A
 */
-template<typename Derived>
-dyn_mat<typename Derived::Scalar> ptranspose(
-        const Eigen::MatrixBase<Derived>& A,
-        const std::vector<idx>& subsys,
-        idx d = 2)
-{
+template <typename Derived>
+dyn_mat<typename Derived::Scalar>
+ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
+           idx d = 2) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1684,12 +1588,10 @@ dyn_mat<typename Derived::Scalar> ptranspose(
 * \return Permuted system, as a dynamic matrix
 * over the same scalar field as \a A
 */
-template<typename Derived>
-dyn_mat<typename Derived::Scalar> syspermute(
-        const Eigen::MatrixBase<Derived>& A,
-        const std::vector<idx>& perm,
-        const std::vector<idx>& dims)
-{
+template <typename Derived>
+dyn_mat<typename Derived::Scalar>
+syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
+           const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1727,15 +1629,13 @@ dyn_mat<typename Derived::Scalar> syspermute(
             throw exception::DimsMismatchCvector("qpp::syspermute()");
 
         // copy dims in Cdims and perm in Cperm
-        for (idx i = 0; i < N; ++i)
-        {
+        for (idx i = 0; i < N; ++i) {
             Cdims[i] = dims[i];
             Cperm[i] = perm[i];
         }
         result.resize(D, 1);
 
-        auto worker = [&Cdims, &Cperm, N](idx i) noexcept -> idx
-        {
+        auto worker = [&Cdims, &Cperm, N ](idx i) noexcept->idx {
             // use static allocation for speed,
             // double the size for matrices reshaped as vectors
             idx midx[maxn];
@@ -1745,10 +1645,9 @@ dyn_mat<typename Derived::Scalar> syspermute(
             /* compute the multi-index */
             internal::n2multiidx(i, N, Cdims, midx);
 
-            for (idx k = 0; k < N; ++k)
-            {
+            for (idx k = 0; k < N; ++k) {
                 permdims[k] = Cdims[Cperm[k]]; // permuted dimensions
-                midxtmp[k] = midx[Cperm[k]];// permuted multi-indexes
+                midxtmp[k] = midx[Cperm[k]];   // permuted multi-indexes
             }
 
             return internal::multiidx2n(midxtmp, N, permdims);
@@ -1762,7 +1661,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
 
         return result;
     }
-        //************ density matrix ************//
+    //************ density matrix ************//
     else if (internal::check_square_mat(rA)) // we have a density operator
     {
         idx Cdims[2 * maxn];
@@ -1773,8 +1672,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
             throw exception::DimsMismatchMatrix("qpp::syspermute()");
 
         // copy dims in Cdims and perm in Cperm
-        for (idx i = 0; i < N; ++i)
-        {
+        for (idx i = 0; i < N; ++i) {
             Cdims[i] = dims[i];
             Cdims[i + N] = dims[i];
             Cperm[i] = perm[i];
@@ -1783,12 +1681,10 @@ dyn_mat<typename Derived::Scalar> syspermute(
         result.resize(D * D, 1);
         // map A to a column vector
         dyn_mat<typename Derived::Scalar> vectA =
-                Eigen::Map<dyn_mat<typename Derived::Scalar >>(
-                        const_cast<typename Derived::Scalar*>(rA.data()),
-                        D * D, 1);
+            Eigen::Map<dyn_mat<typename Derived::Scalar>>(
+                const_cast<typename Derived::Scalar*>(rA.data()), D * D, 1);
 
-        auto worker = [&Cdims, &Cperm, N](idx i) noexcept -> idx
-        {
+        auto worker = [&Cdims, &Cperm, N ](idx i) noexcept->idx {
             // use static allocation for speed,
             // double the size for matrices reshaped as vectors
             idx midx[2 * maxn];
@@ -1798,10 +1694,9 @@ dyn_mat<typename Derived::Scalar> syspermute(
             /* compute the multi-index */
             internal::n2multiidx(i, 2 * N, Cdims, midx);
 
-            for (idx k = 0; k < 2 * N; ++k)
-            {
+            for (idx k = 0; k < 2 * N; ++k) {
                 permdims[k] = Cdims[Cperm[k]]; // permuted dimensions
-                midxtmp[k] = midx[Cperm[k]];// permuted multi-indexes
+                midxtmp[k] = midx[Cperm[k]];   // permuted multi-indexes
             }
 
             return internal::multiidx2n(midxtmp, 2 * N, permdims);
@@ -1815,7 +1710,7 @@ dyn_mat<typename Derived::Scalar> syspermute(
 
         return reshape(result, D, D);
     }
-        //************ Exception: not ket nor density matrix ************//
+    //************ Exception: not ket nor density matrix ************//
     else
         throw exception::MatrixNotSquareNorCvector("qpp::syspermute()");
 }
@@ -1832,12 +1727,10 @@ dyn_mat<typename Derived::Scalar> syspermute(
 * \return Permuted system, as a dynamic matrix
 * over the same scalar field as \a A
 */
-template<typename Derived>
-dyn_mat<typename Derived::Scalar> syspermute(
-        const Eigen::MatrixBase<Derived>& A,
-        const std::vector<idx>& perm,
-        idx d = 2)
-{
+template <typename Derived>
+dyn_mat<typename Derived::Scalar>
+syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
+           idx d = 2) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS

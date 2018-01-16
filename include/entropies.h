@@ -32,17 +32,15 @@
 #ifndef ENTROPY_H_
 #define ENTROPY_H_
 
-namespace qpp
-{
+namespace qpp {
 /**
 * \brief von-Neumann entropy of the density matrix \a A
 *
 * \param A Eigen expression
 * \return von-Neumann entropy, with the logarithm in base 2
 */
-template<typename Derived>
-double entropy(const Eigen::MatrixBase<Derived>& A)
-{
+template <typename Derived>
+double entropy(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -71,8 +69,7 @@ double entropy(const Eigen::MatrixBase<Derived>& A)
 * \param prob Real probability vector
 * \return Shannon entropy, with the logarithm in base 2
 */
-inline double entropy(const std::vector<double>& prob)
-{
+inline double entropy(const std::vector<double>& prob) {
     // EXCEPTION CHECKS
 
     // check zero-size
@@ -100,9 +97,8 @@ inline double entropy(const std::vector<double>& prob)
 * use qpp::infty for \f$\alpha = \infty\f$
 * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
 */
-template<typename Derived>
-double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
-{
+template <typename Derived>
+double renyi(const Eigen::MatrixBase<Derived>& A, double alpha) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -149,8 +145,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha)
 * use qpp::infty for \f$\alpha = \infty\f$
 * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
 */
-inline double renyi(const std::vector<double>& prob, double alpha)
-{
+inline double renyi(const std::vector<double>& prob, double alpha) {
     // EXCEPTION CHECKS
 
     // check zero-size
@@ -197,9 +192,8 @@ inline double renyi(const std::vector<double>& prob, double alpha)
 *
 * \return Tsallis-\f$q\f$ entropy
 */
-template<typename Derived>
-double tsallis(const Eigen::MatrixBase<Derived>& A, double q)
-{
+template <typename Derived>
+double tsallis(const Eigen::MatrixBase<Derived>& A, double q) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -240,8 +234,7 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double q)
 *
 * \return Tsallis-\f$q\f$ entropy
 */
-inline double tsallis(const std::vector<double>& prob, double q)
-{
+inline double tsallis(const std::vector<double>& prob, double q) {
     // EXCEPTION CHECKS
 
     // check zero-size
@@ -272,12 +265,11 @@ inline double tsallis(const std::vector<double>& prob, double q)
 * \param dims Dimensions of the multi-partite system
 * \return Mutual information between the 2 subsystems
 */
-template<typename Derived>
+template <typename Derived>
 double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
                    const std::vector<idx>& subsysA,
                    const std::vector<idx>& subsysB,
-                   const std::vector<idx>& dims)
-{
+                   const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -299,8 +291,8 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
         throw exception::DimsMismatchMatrix("qpp::qmutualinfo()");
 
     // check that subsys are valid
-    if (!internal::check_subsys_match_dims(subsysA, dims)
-        || !internal::check_subsys_match_dims(subsysB, dims))
+    if (!internal::check_subsys_match_dims(subsysA, dims) ||
+        !internal::check_subsys_match_dims(subsysB, dims))
         throw exception::SubsysMismatchDims("qpp::qmutualinfo()");
     // END EXCEPTION CHECKS
 
@@ -324,7 +316,8 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 
     // construct the complements
     std::vector<idx> subsysA_bar = complement(subsysA, dims.size());
-    std::vector<idx> subsysB_bar = complement(subsysB, dims.size());;
+    std::vector<idx> subsysB_bar = complement(subsysB, dims.size());
+    ;
     std::vector<idx> subsysAB_bar = complement(subsysAB, dims.size());
 
     cmat rhoA = ptrace(rA, subsysA_bar, dims);
@@ -343,12 +336,10 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 * \param d Subsystem dimensions
 * \return Mutual information between the 2 subsystems
 */
-template<typename Derived>
+template <typename Derived>
 double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
                    const std::vector<idx>& subsysA,
-                   const std::vector<idx>& subsysB,
-                   idx d = 2)
-{
+                   const std::vector<idx>& subsysB, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS

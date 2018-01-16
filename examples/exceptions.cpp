@@ -6,18 +6,14 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     cmat rho = randrho(16); // 4 qubits (subsystems)
-    try
-    {
+    try {
         // the line below throws qpp::exception::SubsysMismatchDims
-        double mInfo = qmutualinfo(rho, {0}, {4}); 
+        double mInfo = qmutualinfo(rho, {0}, {4});
         std::cout << ">> Mutual information between first and last subsystem: ";
         std::cout << mInfo << '\n';
-    }
-    catch (const std::exception& e)
-    {
+    } catch (const std::exception& e) {
         std::cout << ">> Exception caught: " << e.what() << '\n';
     }
 }

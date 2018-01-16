@@ -5,8 +5,7 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     std::cout << "Testing\n";
 
     const idx bits = 70; // number of bits
@@ -14,16 +13,15 @@ int main()
 
     const idx trials = 20; // number of trials
 
-    b.rand();  // randomize the vector
-    //b.set();
+    b.rand(); // randomize the vector
+    // b.set();
     auto c = b;
 
     std::random_device rd;
     std::mt19937 gen{rd()};
     std::vector<std::vector<idx>> indices(trials);
     // generate the indices
-    for (idx i = 0; i < trials; ++i)
-    {
+    for (idx i = 0; i < trials; ++i) {
         std::vector<idx> v(bits);
         std::iota(v.begin(), v.end(), 0);
         std::shuffle(v.begin(), v.end(), gen);
@@ -32,8 +30,7 @@ int main()
     }
 
     // apply the Toffoli gate to random places
-    for (idx i = 0; i < trials; ++i)
-    {
+    for (idx i = 0; i < trials; ++i) {
         std::cout << "First: ";
         for (auto&& elem : indices[i])
             std::cout << elem << " ";
@@ -42,8 +39,7 @@ int main()
     }
 
     // do it again in reverse order
-    for (idx i = trials; i-- > 0;)
-    {
+    for (idx i = trials; i-- > 0;) {
         std::cout << "Second: ";
         for (auto&& elem : indices[i])
             std::cout << elem << " ";
@@ -55,8 +51,8 @@ int main()
     std::cout << "Final:   " << c << '\n';
     std::cout << "Hamming weight: " << b.count() << '\n';
 
-    std::cout << b.gate_count.NOT << " " << b.gate_count.X
-              << " " << b.gate_count.TOF << '\n';
+    std::cout << b.gate_count.NOT << " " << b.gate_count.X << " "
+              << b.gate_count.TOF << '\n';
 
     std::cout << (b == c) << '\n';
     std::cout << (b != c) << '\n';
@@ -64,7 +60,7 @@ int main()
     experimental::Dynamic_bitset bb(9);
     bb.set(1).set(3).set(8);
     std::cout << bb << '\n';
-    //std::cout << (32 & ~(!false << 5));
+    // std::cout << (32 & ~(!false << 5));
 
     std::cout << "here\n";
     std::cout << bb.to_string('o', 'X') << '\n';
@@ -73,8 +69,7 @@ int main()
     std::cout << vlad << '\n';
 
     std::vector<unsigned int> vv(20);
-    for (auto& elem: vv)
-    {
+    for (auto& elem : vv) {
         std::cout << elem;
     }
     std::cout << '\n';

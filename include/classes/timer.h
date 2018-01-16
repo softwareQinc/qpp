@@ -32,43 +32,35 @@
 #ifndef CLASSES_TIMER_H_
 #define CLASSES_TIMER_H_
 
-namespace qpp
-{
+namespace qpp {
 /**
 * \class qpp::Timer
 * \brief Chronometer
 *
-* \tparam T Tics duration, default is std::chrono::duration<double, 1>, 
+* \tparam T Tics duration, default is std::chrono::duration<double, 1>,
 * i.e. seconds in double precision
 * \tparam CLOCK_T Clock's type, default is std::chrono::steady_clock,
 * not affected by wall clock changes during runtime
 */
-template<typename T = std::chrono::duration<double>,
-        typename CLOCK_T = std::chrono::steady_clock>
-class Timer : public IDisplay
-{
-protected:
+template <typename T = std::chrono::duration<double>,
+          typename CLOCK_T = std::chrono::steady_clock>
+class Timer : public IDisplay {
+  protected:
     typename CLOCK_T::time_point start_, end_;
 
-public:
+  public:
     /**
     * \brief Constructs an instance with the current time
     * as the starting point
     */
-    Timer() noexcept :
-            start_{CLOCK_T::now()}, end_{start_}
-    {
-    }
+    Timer() noexcept : start_{CLOCK_T::now()}, end_{start_} {}
 
     /**
     * \brief Resets the chronometer
     *
     * Resets the starting/ending point to the current time
     */
-    void tic() noexcept
-    {
-        start_ = end_ = CLOCK_T::now();
-    }
+    void tic() noexcept { start_ = end_ = CLOCK_T::now(); }
 
     /**
     * \brief Stops the chronometer
@@ -77,8 +69,7 @@ public:
     *
     * \return Current instance
     */
-    const Timer& toc() noexcept
-    {
+    const Timer& toc() noexcept {
         end_ = CLOCK_T::now();
         return *this;
     }
@@ -89,8 +80,7 @@ public:
     * \return Number of tics (specified by T) that passed between the
     * instantiation/reset and invocation of qpp::Timer::toc()
     */
-    double tics() const noexcept
-    {
+    double tics() const noexcept {
         return std::chrono::duration_cast<T>(end_ - start_).count();
     }
 
@@ -103,9 +93,8 @@ public:
     * \return Duration that passed between the
     * instantiation/reset and invocation of qpp::Timer::toc()
     */
-    template<typename U = T>
-    U get_duration() const noexcept
-    {
+    template <typename U = T>
+    U get_duration() const noexcept {
         return std::chrono::duration_cast<U>(end_ - start_);
     }
 
@@ -134,7 +123,7 @@ public:
     */
     virtual ~Timer() = default;
 
-private:
+  private:
     /**
     * \brief qpp::IDisplay::display() override
     *
@@ -143,8 +132,7 @@ private:
     * that passed between the instantiation/reset and invocation
     * of qpp::Timer::toc().
     */
-    std::ostream& display(std::ostream& os) const override
-    {
+    std::ostream& display(std::ostream& os) const override {
         return os << tics();
     }
 }; /* class Timer */

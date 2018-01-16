@@ -7,13 +7,9 @@
 using namespace qpp;
 
 // test function used by qpp::cwise()
-cplx pow3(const cplx& z)
-{
-    return std::pow(z, 3);
-}
+cplx pow3(const cplx& z) { return std::pow(z, 3); }
 
-int main()
-{
+int main() {
     // functor test
     std::cout << ">> Functor z^3 acting component-wise on:\n";
     cmat A(2, 2);
@@ -22,8 +18,7 @@ int main()
 
     std::cout << ">> Result (with lambda):\n";
     // functor z^3 componentwise, specify OutputScalar and Derived for lambdas
-    std::cout << disp(cwise<cplx, cmat>(A, [](const cplx& z) -> cplx
-    {
+    std::cout << disp(cwise<cplx, cmat>(A, [](const cplx& z) -> cplx {
         return z * z * z;
     })) << '\n';
 

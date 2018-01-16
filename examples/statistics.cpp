@@ -6,9 +6,8 @@
 
 using namespace qpp;
 
-int main()
-{
-    // random variables 
+int main() {
+    // random variables
     std::vector<int> X{1, 2};
     std::vector<int> Y{1, 2, 3};
 

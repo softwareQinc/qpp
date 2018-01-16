@@ -32,8 +32,7 @@
 #ifndef CLASSES_IDISPLAY_H_
 #define CLASSES_IDISPLAY_H_
 
-namespace qpp
-{
+namespace qpp {
 /**
 * \class qpp::IDisplay
 * \brief Abstract class (interface) that mandates the definition of
@@ -44,9 +43,8 @@ namespace qpp
 * the work to the pure private virtual function qpp::IDisplay::display()
 * which has to be overridden by all derived classes.
 */
-class IDisplay
-{
-private:
+class IDisplay {
+  private:
     /**
     * \brief Must be overridden by all derived classes
     *
@@ -57,7 +55,7 @@ private:
     */
     virtual std::ostream& display(std::ostream& os) const = 0;
 
-public:
+  public:
     /**
     * \brief Default constructor
     */
@@ -93,9 +91,8 @@ public:
     *
     * Delegates the work to the virtual function qpp::IDisplay::display()
     */
-    friend inline
-    std::ostream& operator<<(std::ostream& os, const IDisplay& rhs)
-    {
+    friend inline std::ostream& operator<<(std::ostream& os,
+                                           const IDisplay& rhs) {
         return rhs.display(os);
     }
 }; /* class IDisplay */

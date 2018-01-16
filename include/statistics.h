@@ -32,16 +32,14 @@
 #ifndef STATISTICS_H_
 #define STATISTICS_H_
 
-namespace qpp
-{
+namespace qpp {
 /**
 * \brief Uniform probability distribution vector
 *
 * \param N Size of the alphabet
 * \return Real vector consisting of a uniform distribution of size \a N
 */
-inline std::vector<double> uniform(idx N)
-{
+inline std::vector<double> uniform(idx N) {
     // EXCEPTION CHECKS
 
     if (N == 0)
@@ -59,8 +57,7 @@ inline std::vector<double> uniform(idx N)
 * labels the columns)
 * \return Real vector consisting of the marginal distribution of \a X
 */
-inline std::vector<double> marginalX(const dmat& probXY)
-{
+inline std::vector<double> marginalX(const dmat& probXY) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(probXY))
@@ -68,10 +65,8 @@ inline std::vector<double> marginalX(const dmat& probXY)
     // END EXCEPTION CHECKS
 
     std::vector<double> result(probXY.rows(), 0);
-    for (idx i = 0; i < static_cast<idx>(probXY.rows()); ++i)
-    {
-        for (idx j = 0; j < static_cast<idx>(probXY.cols()); ++j)
-        {
+    for (idx i = 0; i < static_cast<idx>(probXY.rows()); ++i) {
+        for (idx j = 0; j < static_cast<idx>(probXY.cols()); ++j) {
             result[i] += probXY(i, j);
         }
     }
@@ -87,8 +82,7 @@ inline std::vector<double> marginalX(const dmat& probXY)
 * labels the columns)
 * \return Real vector consisting of the marginal distribution of \a Y
 */
-inline std::vector<double> marginalY(const dmat& probXY)
-{
+inline std::vector<double> marginalY(const dmat& probXY) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(probXY))
@@ -107,11 +101,10 @@ inline std::vector<double> marginalY(const dmat& probXY)
 * \param X Real random variable values represented by an STL-like container
 * \return Average of \a X
 */
-template<typename Container>
-double avg(const std::vector<double>& prob, const Container& X,
-           typename std::enable_if<is_iterable<Container>::value>::type*
-           = nullptr)
-{
+template <typename Container>
+double
+avg(const std::vector<double>& prob, const Container& X,
+    typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(prob))
@@ -137,13 +130,10 @@ double avg(const std::vector<double>& prob, const Container& X,
 * \param Y Real random variable values represented by an STL-like container
 * \return Covariance of \a X and \a Y
 */
-template<typename Container>
-double cov(const dmat& probXY,
-           const Container& X,
-           const Container& Y,
-           typename std::enable_if<is_iterable<Container>::value>::type*
-           = nullptr)
-{
+template <typename Container>
+double
+cov(const dmat& probXY, const Container& X, const Container& Y,
+    typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(X) || !internal::check_nonzero_size(Y))
@@ -157,10 +147,8 @@ double cov(const dmat& probXY,
     std::vector<double> probY = marginalY(probXY); // marginals
 
     double result = 0;
-    for (idx i = 0; i < X.size(); ++i)
-    {
-        for (idx j = 0; j < Y.size(); ++j)
-        {
+    for (idx i = 0; i < X.size(); ++i) {
+        for (idx j = 0; j < Y.size(); ++j) {
             result += probXY(i, j) * X[i] * Y[j];
         }
     }
@@ -176,11 +164,10 @@ double cov(const dmat& probXY,
 * \param X Real random variable values represented by an STL-like container
 * \return Variance of \a X
 */
-template<typename Container>
-double var(const std::vector<double>& prob, const Container& X,
-           typename std::enable_if<is_iterable<Container>::value>::type*
-           = nullptr)
-{
+template <typename Container>
+double
+var(const std::vector<double>& prob, const Container& X,
+    typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(prob))
@@ -205,11 +192,10 @@ double var(const std::vector<double>& prob, const Container& X,
 * \param X Real random variable values represented by an STL-like container
 * \return Standard deviation of \a X
 */
-template<typename Container>
-double sigma(const std::vector<double>& prob, const Container& X,
-             typename std::enable_if<is_iterable<Container>::value>::type*
-             = nullptr)
-{
+template <typename Container>
+double
+sigma(const std::vector<double>& prob, const Container& X,
+      typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(prob))
@@ -231,13 +217,10 @@ double sigma(const std::vector<double>& prob, const Container& X,
 * \param Y Real random variable values represented by an STL-like container
 * \return Correlation of \a X and \a Y
 */
-template<typename Container>
-double cor(const dmat& probXY,
-           const Container& X,
-           const Container& Y,
-           typename std::enable_if<is_iterable<Container>::value>::type*
-           = nullptr)
-{
+template <typename Container>
+double
+cor(const dmat& probXY, const Container& X, const Container& Y,
+    typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(X) || !internal::check_nonzero_size(Y))
@@ -247,8 +230,8 @@ double cor(const dmat& probXY,
         throw exception::SizeMismatch("qpp::cor()");
     // END EXCEPTION CHECKS
 
-    return cov(probXY, X, Y) / (sigma(marginalX(probXY), X) *
-                                sigma(marginalY(probXY), Y));
+    return cov(probXY, X, Y) /
+           (sigma(marginalX(probXY), X) * sigma(marginalY(probXY), Y));
 }
 
 } /* namespace qpp */

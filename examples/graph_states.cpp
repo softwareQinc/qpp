@@ -5,12 +5,9 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     // adjacency matrix, triangle graph (LU equivalent to a GHZ state)
-    idx Gamma[3][3] = {{0, 1, 1},
-                       {1, 0, 1},
-                       {1, 1, 0}};
+    idx Gamma[3][3] = {{0, 1, 1}, {1, 0, 1}, {1, 1, 0}};
 
     // start with 2 states in |000>
     ket G0 = 000_q;
@@ -30,10 +27,8 @@ int main()
     rhoG1 = rhoG0;
     // apply pairwise Control-Phases
     for (idx i = 0; i < 3; ++i)
-        for (idx j = i + 1; j < 3; ++j)
-        {
-            if (Gamma[i][j])
-            {
+        for (idx j = i + 1; j < 3; ++j) {
+            if (Gamma[i][j]) {
                 G0 = apply(G0, gt.CZ, {i, j});
                 G1 = applyCTRL(G1, gt.Z, {i}, {j});
                 rhoG0 = apply(rhoG0, gt.CZ, {i, j});

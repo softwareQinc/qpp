@@ -6,8 +6,7 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     ket psi = st.b11; // Bell singlet state (|01> - |10>) / sqrt(2)
 
     // detector settings (Q and R on Alice's side, S and T on Bob's side)
@@ -22,15 +21,15 @@ int main()
     std::cout << " settings = " << N << '\n';
 
     idx statistics[4][4] = {{0}}; // total statistics
-    long E[4] = {0}; // experimental estimate
+    long E[4] = {0};              // experimental estimate
 
-    idx gate_idx = 0; // gate index (0, 1, 2 or 3)
-    for (auto&& gateA: {Q, R}) // measure Alice's side
+    idx gate_idx = 0;           // gate index (0, 1, 2 or 3)
+    for (auto&& gateA : {Q, R}) // measure Alice's side
     {
         // eigenvalues, so we know the order
         dyn_col_vect<double> evalsA = hevals(gateA);
         cmat basisA = hevects(gateA); // eigenvectors, ordered by eigenvalues
-        for (auto&& gateB: {S, T}) // measure Bob's side
+        for (auto&& gateB : {S, T})   // measure Bob's side
         {
             // eigenvalues, so we know the order
             dyn_col_vect<double> evalsB = hevals(gateB);
@@ -47,15 +46,15 @@ int main()
                 idx mB = std::get<0>(measuredB); // measurement result B
                 double evalB = evalsB[mB];
                 // count the correlations
-                if (evalA > 0 && evalB > 0)        // +1 +1 correlation
+                if (evalA > 0 && evalB > 0) // +1 +1 correlation
                 {
                     ++statistics[gate_idx][0];
                     ++E[gate_idx];
-                } else if (evalA > 0 && evalB < 0)  // +1 -1 anti-correlation
+                } else if (evalA > 0 && evalB < 0) // +1 -1 anti-correlation
                 {
                     ++statistics[gate_idx][1];
                     --E[gate_idx];
-                } else if (evalA < 0 && evalB > 0)  // -1 +1 anti-correlation
+                } else if (evalA < 0 && evalB > 0) // -1 +1 anti-correlation
                 {
                     ++statistics[gate_idx][2];
                     --E[gate_idx];
@@ -85,8 +84,9 @@ int main()
 
     // Theoretical average
     double th_avg = (adjoint(psi) *
-                     (kron(Q, S) + kron(R, S) + kron(R, T) - kron(Q, T)) *
-                     psi).value().real();
+                     (kron(Q, S) + kron(R, S) + kron(R, T) - kron(Q, T)) * psi)
+                        .value()
+                        .real();
     std::cout << ">> Theoretical value of <QS> + <RS> + <RT> - <QT> = ";
     std::cout << th_avg << '\n';
 

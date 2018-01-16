@@ -8,6 +8,7 @@
 *.swp
 
 documentation.Doxyfile
-update_git
+update_git.sh
 TODO.txt
 conventions.txt
+

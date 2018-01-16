@@ -32,8 +32,7 @@
 #ifndef NUMBER_THEORY_H_
 #define NUMBER_THEORY_H_
 
-namespace qpp
-{
+namespace qpp {
 /**
 * \brief Simple continued fraction expansion
 * \see qpp::contfrac2x()
@@ -45,8 +44,7 @@ namespace qpp
 * of \a x. If there are \a M less than \a N terms in the expansion,
 * a shorter vector with \a M components is returned.
 */
-inline std::vector<int> x2contfrac(double x, idx N, idx cut = 1e5)
-{
+inline std::vector<int> x2contfrac(double x, idx N, idx cut = 1e5) {
     // EXCEPTION CHECKS
 
     if (N == 0)
@@ -55,10 +53,8 @@ inline std::vector<int> x2contfrac(double x, idx N, idx cut = 1e5)
 
     std::vector<int> result;
 
-    for (idx i = 0; i < N; ++i)
-    {
-        if (x > 0)
-        {
+    for (idx i = 0; i < N; ++i) {
+        if (x > 0) {
             result.push_back(static_cast<int>(std::llround(std::floor(x))));
             x = 1 / (x - std::floor(x));
         } else // x < 0
@@ -85,8 +81,7 @@ inline std::vector<int> x2contfrac(double x, idx N, idx cut = 1e5)
 *
 * \return Real representation of the simple continued fraction
 */
-inline double contfrac2x(const std::vector<int>& cf, idx N = idx(-1))
-{
+inline double contfrac2x(const std::vector<int>& cf, idx N = idx(-1)) {
     // EXCEPTION CHECKS
 
     if (cf.size() == 0)
@@ -103,8 +98,7 @@ inline double contfrac2x(const std::vector<int>& cf, idx N = idx(-1))
         return cf[0];
 
     double tmp = 1. / cf[N - 1];
-    for (idx i = N - 2; i != 0; --i)
-    {
+    for (idx i = N - 2; i != 0; --i) {
         tmp = 1. / (tmp + cf[i]);
     }
 
@@ -119,8 +113,7 @@ inline double contfrac2x(const std::vector<int>& cf, idx N = idx(-1))
 * \param b Integer
 * \return Greatest common divisor of \a a and \a b
 */
-inline bigint gcd(bigint a, bigint b)
-{
+inline bigint gcd(bigint a, bigint b) {
     // EXCEPTION CHECKS
 
     if (a == 0 && b == 0)
@@ -131,8 +124,7 @@ inline bigint gcd(bigint a, bigint b)
         return (std::max(std::abs(a), std::abs(b)));
 
     bigint result = 1;
-    while (b)
-    {
+    while (b) {
         result = b;
         b = a % result;
         a = result;
@@ -148,8 +140,7 @@ inline bigint gcd(bigint a, bigint b)
 * \param as List of integers
 * \return Greatest common divisor of all numbers in \a as
 */
-inline bigint gcd(const std::vector<bigint>& as)
-{
+inline bigint gcd(const std::vector<bigint>& as) {
     // EXCEPTION CHECKS
 
     if (as.size() == 0)
@@ -157,8 +148,7 @@ inline bigint gcd(const std::vector<bigint>& as)
     // END EXCEPTION CHECKS
 
     bigint result = as[0]; // convention: gcd({a}) = a
-    for (idx i = 1; i < as.size(); ++i)
-    {
+    for (idx i = 1; i < as.size(); ++i) {
         result = gcd(result, as[i]);
     }
 
@@ -173,8 +163,7 @@ inline bigint gcd(const std::vector<bigint>& as)
 * \param b Integer
 * \return Least common multiple of \a a and \a b
 */
-inline bigint lcm(bigint a, bigint b)
-{
+inline bigint lcm(bigint a, bigint b) {
     // EXCEPTION CHECKS
 
     if (a == 0 && b == 0)
@@ -193,8 +182,7 @@ inline bigint lcm(bigint a, bigint b)
 * \param as List of integers
 * \return Least common multiple of all numbers in \a as
 */
-inline bigint lcm(const std::vector<bigint>& as)
-{
+inline bigint lcm(const std::vector<bigint>& as) {
     // EXCEPTION CHECKS
 
     if (as.size() == 0)
@@ -209,8 +197,7 @@ inline bigint lcm(const std::vector<bigint>& as)
 
     bigint result = as[0]; // convention: lcm({n}) = a
 
-    for (idx i = 1; i < as.size(); ++i)
-    {
+    for (idx i = 1; i < as.size(); ++i) {
         result = lcm(result, as[i]);
     }
 
@@ -223,8 +210,7 @@ inline bigint lcm(const std::vector<bigint>& as)
 * \param perm Permutation
 * \return Inverse of the permutation \a perm
 */
-inline std::vector<idx> invperm(const std::vector<idx>& perm)
-{
+inline std::vector<idx> invperm(const std::vector<idx>& perm) {
     // EXCEPTION CHECKS
 
     if (!internal::check_perm(perm))
@@ -248,8 +234,7 @@ inline std::vector<idx> invperm(const std::vector<idx>& perm)
 *  = perm(sigma)
 */
 inline std::vector<idx> compperm(const std::vector<idx>& perm,
-                                 const std::vector<idx>& sigma)
-{
+                                 const std::vector<idx>& sigma) {
     // EXCEPTION CHECKS
 
     if (!internal::check_perm(perm))
@@ -276,8 +261,7 @@ inline std::vector<idx> compperm(const std::vector<idx>& perm,
 * \param a Integer different from 0, 1 or -1
 * \return Integer vector containing the factors
 */
-inline std::vector<bigint> factors(bigint a)
-{
+inline std::vector<bigint> factors(bigint a) {
     // flip the sign if necessary
     a = std::abs(a);
 
@@ -290,18 +274,15 @@ inline std::vector<bigint> factors(bigint a)
     std::vector<bigint> result;
     bigint d = 2;
 
-    while (a > 1)
-    {
-        while (a % d == 0)
-        {
+    while (a > 1) {
+        while (a % d == 0) {
             result.push_back(d);
             a /= d;
         }
         ++d;
         if (d * d > a) // changes the running time from O(a) to O(sqrt(a))
         {
-            if (a > 1)
-            {
+            if (a > 1) {
                 result.push_back(a);
             }
             break;
@@ -321,8 +302,7 @@ inline std::vector<bigint> factors(bigint a)
  * \param p Positive integer
  * \return \f$ab\f$ \f$\mathrm{ mod }\f$ \f$p\f$ avoiding overflow
  */
-inline bigint modmul(bigint a, bigint b, bigint p)
-{
+inline bigint modmul(bigint a, bigint b, bigint p) {
     using ubigint = unsigned long long int;
 
     // EXCEPTION CHECKS
@@ -337,14 +317,12 @@ inline bigint modmul(bigint a, bigint b, bigint p)
     ubigint ua, ub, up;
 
     bool is_positive = true;
-    if (a < 0)
-    {
+    if (a < 0) {
         ua = -a;
         is_positive = false;
     } else
         ua = a;
-    if (b < 0)
-    {
+    if (b < 0) {
         ub = -b;
         is_positive = false;
     } else
@@ -366,18 +344,15 @@ inline bigint modmul(bigint a, bigint b, bigint p)
         std::swap(ua, ub);
 
     /* only needed if un may be >= up */
-    if (ub >= up)
-    {
+    if (ub >= up) {
         if (up > std::numeric_limits<ubigint>::max() / 2u)
             ub -= up;
         else
             ub %= up;
     }
 
-    while (ua != 0)
-    {
-        if (ua & 1)
-        {
+    while (ua != 0) {
+        if (ua & 1) {
             /* add un to res, modulo p, without overflow */
             /* equiv to if (res + ub >= p), without overflow */
             if (ub >= up - res)
@@ -393,8 +368,8 @@ inline bigint modmul(bigint a, bigint b, bigint p)
         ub += temp_b;
     }
 
-    return is_positive ? static_cast<bigint>(res) :
-           static_cast<bigint>(p - res);
+    return is_positive ? static_cast<bigint>(res)
+                       : static_cast<bigint>(p - res);
 }
 
 /**
@@ -410,8 +385,7 @@ inline bigint modmul(bigint a, bigint b, bigint p)
 * \param p Strictly positive integer
 * \return \f$a^n\f$ \f$\mathrm{ mod }\f$ \f$p\f$
 */
-inline bigint modpow(bigint a, bigint n, bigint p)
-{
+inline bigint modpow(bigint a, bigint n, bigint p) {
     // EXCEPTION CHECKS
 
     if (a < 0 || n < 0 || p < 1)
@@ -429,11 +403,10 @@ inline bigint modpow(bigint a, bigint n, bigint p)
 
     bigint result = 1;
 
-    for (; n > 0; n /= 2)
-    {
+    for (; n > 0; n /= 2) {
         if (n % 2)
             result = modmul(result, a, p) % p; // MULTIPLY
-        a = modmul(a, a, p) % p; // SQUARE
+        a = modmul(a, a, p) % p;               // SQUARE
     }
 
     return result;
@@ -449,8 +422,7 @@ inline bigint modpow(bigint a, bigint n, bigint p)
  * and 3. Non-negative integer \f$gcd(a, b)\f$ such that
  * \f$ma + nb = gcd(a, b)\f$
  */
-inline std::tuple<bigint, bigint, bigint> egcd(bigint a, bigint b)
-{
+inline std::tuple<bigint, bigint, bigint> egcd(bigint a, bigint b) {
     // EXCEPTION CHECKS
 
     if (a == 0 && b == 0)
@@ -460,8 +432,7 @@ inline std::tuple<bigint, bigint, bigint> egcd(bigint a, bigint b)
     bigint m, n, c, q, r;
     bigint m1 = 0, m2 = 1, n1 = 1, n2 = 0;
 
-    while (b)
-    {
+    while (b) {
         q = a / b, r = a - q * b;
         m = m2 - q * m1, n = n2 - q * n1;
         a = b, b = r;
@@ -470,8 +441,7 @@ inline std::tuple<bigint, bigint, bigint> egcd(bigint a, bigint b)
     c = a, m = m2, n = n2;
 
     // correct the signs
-    if (c < 0)
-    {
+    if (c < 0) {
         m = -m;
         n = -n;
         c = -c;
@@ -490,8 +460,7 @@ inline std::tuple<bigint, bigint, bigint> egcd(bigint a, bigint b)
  * \param p Non-negative integer
  * \return Modular inverse \f$a^{-1}\f$ \f$\textrm{ mod }\f$ \f$p\f$
  */
-inline bigint modinv(bigint a, bigint p)
-{
+inline bigint modinv(bigint a, bigint p) {
     // EXCEPTION CHECKS
 
     if (a <= 0 || p <= 0)
@@ -516,8 +485,7 @@ inline bigint modinv(bigint a, bigint p)
  * false positive is \f$2^{-k}\f$.
  * \return True if the number is (most-likely) prime, false otherwise
  */
-inline bool isprime(bigint p, idx k = 80)
-{
+inline bool isprime(bigint p, idx k = 80) {
     p = std::abs(p);
 
     // EXCEPTION CHECKS
@@ -529,7 +497,7 @@ inline bool isprime(bigint p, idx k = 80)
     if (p == 2 || p == 3)
         return true;
 
-//    // perform a Fermat primality test
+    //    // perform a Fermat primality test
     bigint x = rand(2, p - 1);
     if (modpow(x, p - 1, p) != 1)
         return false;
@@ -538,12 +506,12 @@ inline bool isprime(bigint p, idx k = 80)
     bigint u = 0, r = 1;
 
     // write n − 1 as 2^u * r
-    for (bigint i = p - 1; i % 2 == 0; ++u, i /= 2);
+    for (bigint i = p - 1; i % 2 == 0; ++u, i /= 2)
+        ;
     r = (p - 1) / static_cast<bigint>(std::llround(std::pow(2, u)));
 
     // repeat k times
-    for (idx i = 0; i < k; ++i)
-    {
+    for (idx i = 0; i < k; ++i) {
         // pick a random integer a in the range [2, p − 2]
         bigint a = rand(2, p - 2);
 
@@ -555,16 +523,13 @@ inline bool isprime(bigint p, idx k = 80)
 
         // repeat u - 1 times
         bool jump = false;
-        for (idx j = 0; j < static_cast<idx>(u); ++j)
-        {
+        for (idx j = 0; j < static_cast<idx>(u); ++j) {
             z = (modmul(z, z, p)) % p;
-            if (z == 1)
-            {
+            if (z == 1) {
                 // composite
                 return false;
             }
-            if (z == p - 1)
-            {
+            if (z == p - 1) {
                 jump = true;
                 break;
             }
@@ -589,8 +554,7 @@ inline bool isprime(bigint p, idx k = 80)
 * the interval [a, b]
 */
 // A std::optional<bigint> return type would have been awesome here!
-inline bigint randprime(bigint a, bigint b, idx N = 1000)
-{
+inline bigint randprime(bigint a, bigint b, idx N = 1000) {
     // EXCEPTION CHECKS
 
     if (a > b)
@@ -598,8 +562,7 @@ inline bigint randprime(bigint a, bigint b, idx N = 1000)
     // END EXCEPTION CHECKS
 
     idx i = 0;
-    for (; i < N; ++i)
-    {
+    for (; i < N; ++i) {
         // select a candidate
         bigint candidate = rand(a, b);
         if (std::abs(candidate) < 2)
@@ -618,7 +581,8 @@ inline bigint randprime(bigint a, bigint b, idx N = 1000)
     }
 
     if (i == N)
-        throw exception::CustomException("qpp::randprime()", "Prime not found!");
+        throw exception::CustomException("qpp::randprime()",
+                                         "Prime not found!");
 
     return 0; // so we don't get a warning
 }

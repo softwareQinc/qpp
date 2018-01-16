@@ -6,8 +6,7 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     cmat rho = st.pb00; // projector onto the Bell state (|00> + |11>) / sqrt(2)
     std::cout << ">> Initial state:\n";
     std::cout << disp(rho) << '\n';

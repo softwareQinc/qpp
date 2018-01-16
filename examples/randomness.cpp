@@ -6,8 +6,7 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     std::cout << ">> Generating a random ket on D = 5\n";
     ket rket = randket(5);
     std::cout << disp(rket) << '\n';

@@ -32,15 +32,13 @@
 #ifndef CONSTANTS_H_
 #define CONSTANTS_H_
 
-namespace qpp
-{
+namespace qpp {
 /**
 * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (integer overload)
 *
 * Example: \code cplx z = 4_i; // type of z is std::complex<double> \endcode
 */
-inline constexpr cplx operator "" _i(unsigned long long int x) noexcept
-{
+inline constexpr cplx operator"" _i(unsigned long long int x) noexcept {
     return {0., static_cast<double>(x)};
 }
 
@@ -49,8 +47,7 @@ inline constexpr cplx operator "" _i(unsigned long long int x) noexcept
 *
 * Example: \code cplx z = 4.5_i; // type of z is std::complex<double> \endcode
 */
-inline constexpr cplx operator "" _i(long double x) noexcept
-{
+inline constexpr cplx operator"" _i(long double x) noexcept {
     return {0., static_cast<double>(x)};
 }
 
@@ -95,8 +92,7 @@ constexpr double infty = std::numeric_limits<double>::max();
 * \param D Non-negative integer
 * \return D-th root of unity \f$\exp(2\pi i/D)\f$
 */
-inline cplx omega(idx D)
-{
+inline cplx omega(idx D) {
     if (D == 0)
         throw exception::OutOfRange("qpp::omega()");
     return exp(2.0 * pi * 1_i / static_cast<double>(D));

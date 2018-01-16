@@ -32,8 +32,7 @@
 #ifndef ENTANGLEMENT_H_
 #define ENTANGLEMENT_H_
 
-namespace qpp
-{
+namespace qpp {
 /**
 * \brief Schmidt coefficients of the bi-partite pure state \a A
 *
@@ -45,10 +44,9 @@ namespace qpp
 * \return Schmidt coefficients of \a A, ordered in decreasing order, as a
 * real dynamic column vector
 */
-template<typename Derived>
+template <typename Derived>
 dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
-                                   const std::vector<idx>& dims)
-{
+                                   const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -81,10 +79,9 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
 * \return Schmidt coefficients of \a A, ordered in decreasing order, as a
 * real dynamic column vector
 */
-template<typename Derived>
+template <typename Derived>
 dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
-                                   idx d = 2)
-{
+                                   idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -112,10 +109,9 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
 * \return Unitary matrix \f$ U \f$ whose columns represent
 * the Schmidt basis vectors on Alice side.
 */
-template<typename Derived>
+template <typename Derived>
 cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
-              const std::vector<idx>& dims)
-{
+              const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -145,9 +141,8 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
 * \return Unitary matrix \f$ U \f$ whose columns represent
 * the Schmidt basis vectors on Alice side.
 */
-template<typename Derived>
-cmat schmidtA(const Eigen::MatrixBase<Derived>& A, idx d = 2)
-{
+template <typename Derived>
+cmat schmidtA(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -175,10 +170,9 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A, idx d = 2)
 * \return Unitary matrix \f$ V \f$ whose columns represent
 * the Schmidt basis vectors on Bob side.
 */
-template<typename Derived>
+template <typename Derived>
 cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
-              const std::vector<idx>& dims)
-{
+              const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -210,9 +204,8 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
 * \return Unitary matrix \f$ V \f$ whose columns represent
 * the Schmidt basis vectors on Bob side.
 */
-template<typename Derived>
-cmat schmidtB(const Eigen::MatrixBase<Derived>& A, idx d = 2)
-{
+template <typename Derived>
+cmat schmidtB(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -244,10 +237,9 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A, idx d = 2)
 * \return Real vector consisting of the Schmidt probabilites of \a A,
 * ordered in decreasing order
 */
-template<typename Derived>
+template <typename Derived>
 std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
-                                 const std::vector<idx>& dims)
-{
+                                 const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -286,9 +278,9 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
 * \return Real vector consisting of the Schmidt probabilites of \a A,
 * ordered in decreasing order
 */
-template<typename Derived>
-std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A, idx d = 2)
-{
+template <typename Derived>
+std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
+                                 idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -319,10 +311,9 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A, idx d = 2)
 * \param dims Dimensions of the bi-partite system
 * \return Entanglement, with the logarithm in base 2
 */
-template<typename Derived>
+template <typename Derived>
 double entanglement(const Eigen::MatrixBase<Derived>& A,
-                    const std::vector<idx>& dims)
-{
+                    const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -355,9 +346,8 @@ double entanglement(const Eigen::MatrixBase<Derived>& A,
 * \param d Subsystem dimensions
 * \return Entanglement, with the logarithm in base 2
 */
-template<typename Derived>
-double entanglement(const Eigen::MatrixBase<Derived>& A, idx d = 2)
-{
+template <typename Derived>
+double entanglement(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -389,9 +379,8 @@ double entanglement(const Eigen::MatrixBase<Derived>& A, idx d = 2)
 * \return G-concurrence
 */
 // the G-concurrence
-template<typename Derived>
-double gconcurrence(const Eigen::MatrixBase<Derived>& A)
-{
+template <typename Derived>
+double gconcurrence(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -421,10 +410,9 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A)
 * \param dims Dimensions of the bi-partite system
 * \return Negativity
 */
-template<typename Derived>
+template <typename Derived>
 double negativity(const Eigen::MatrixBase<Derived>& A,
-                  const std::vector<idx>& dims)
-{
+                  const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -453,9 +441,8 @@ double negativity(const Eigen::MatrixBase<Derived>& A,
 * \param d Subsystem dimensions
 * \return Negativity
 */
-template<typename Derived>
-double negativity(const Eigen::MatrixBase<Derived>& A, idx d = 2)
-{
+template <typename Derived>
+double negativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -482,10 +469,9 @@ double negativity(const Eigen::MatrixBase<Derived>& A, idx d = 2)
 * \param dims Dimensions of the bi-partite system
 * \return Logarithmic negativity, with the logarithm in base 2
 */
-template<typename Derived>
+template <typename Derived>
 double lognegativity(const Eigen::MatrixBase<Derived>& A,
-                     const std::vector<idx>& dims)
-{
+                     const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -514,9 +500,8 @@ double lognegativity(const Eigen::MatrixBase<Derived>& A,
 * \param d Subsystem dimensions
 * \return Logarithmic negativity, with the logarithm in base 2
 */
-template<typename Derived>
-double lognegativity(const Eigen::MatrixBase<Derived>& A, idx d = 2)
-{
+template <typename Derived>
+double lognegativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -542,9 +527,8 @@ double lognegativity(const Eigen::MatrixBase<Derived>& A, idx d = 2)
 * \param A Eigen expression
 * \return Wootters concurrence
 */
-template<typename Derived>
-double concurrence(const Eigen::MatrixBase<Derived>& A)
-{
+template <typename Derived>
+double concurrence(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -562,8 +546,8 @@ double concurrence(const Eigen::MatrixBase<Derived>& A)
 
     cmat sigmaY = Gates::get_instance().Y;
     dyn_col_vect<double> lambdas =
-            evals(rA * kron(sigmaY, sigmaY) * conjugate(rA)
-                  * kron(sigmaY, sigmaY)).real();
+        evals(rA * kron(sigmaY, sigmaY) * conjugate(rA) * kron(sigmaY, sigmaY))
+            .real();
 
     std::vector<double> lambdas_sorted(lambdas.data(),
                                        lambdas.data() + lambdas.size());
@@ -571,14 +555,12 @@ double concurrence(const Eigen::MatrixBase<Derived>& A)
     std::sort(std::begin(lambdas_sorted), std::end(lambdas_sorted),
               std::greater<double>());
     std::transform(std::begin(lambdas_sorted), std::end(lambdas_sorted),
-                   std::begin(lambdas_sorted), [](double elem)
-                   {
+                   std::begin(lambdas_sorted), [](double elem) {
                        return std::sqrt(std::abs(elem));
                    }); // chop tiny negatives
 
-    return std::max(0.,
-                    lambdas_sorted[0] - lambdas_sorted[1] - lambdas_sorted[2]
-                    - lambdas_sorted[3]);
+    return std::max(0., lambdas_sorted[0] - lambdas_sorted[1] -
+                            lambdas_sorted[2] - lambdas_sorted[3]);
 }
 
 } /* namespace qpp */

@@ -8,16 +8,15 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     idx D = 3; // size of the system
     std::cout << ">> Qudit teleportation, D = " << D << '\n';
 
     ket mes_AB = st.mes(D); // maximally entangled state resource
 
     // circuit that measures in the qudit Bell basis
-    cmat Bell_aA = adjoint(gt.CTRL(gt.Xd(D), {0}, {1}, 2, D)
-                           * kron(gt.Fd(D), gt.Id(D)));
+    cmat Bell_aA =
+        adjoint(gt.CTRL(gt.Xd(D), {0}, {1}, 2, D) * kron(gt.Fd(D), gt.Id(D)));
 
     ket psi_a = randket(D); // random qudit state
     std::cout << ">> Initial state:\n";
@@ -41,10 +40,10 @@ int main()
     ket output_m_B = std::get<2>(measured_aA)[m];
 
     // perform the correction on B
-    cmat correction_B = powm(gt.Zd(D), midx[0]) *
-                        powm(adjoint(gt.Xd(D)), midx[1]);
-    std::cout << ">> Bob must apply the correction operator Z^"
-              << midx[0] << " X^" << (D - midx[1]) % D << '\n';
+    cmat correction_B =
+        powm(gt.Zd(D), midx[0]) * powm(adjoint(gt.Xd(D)), midx[1]);
+    std::cout << ">> Bob must apply the correction operator Z^" << midx[0]
+              << " X^" << (D - midx[1]) % D << '\n';
     ket psi_B = correction_B * output_m_B;
 
     // display the output

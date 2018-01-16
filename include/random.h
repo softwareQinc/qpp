@@ -32,8 +32,7 @@
 #ifndef RANDOM_H_
 #define RANDOM_H_
 
-namespace qpp
-{
+namespace qpp {
 /**
 * \brief Generates a random real number uniformly distributed in
 * the interval [a, b)
@@ -43,8 +42,7 @@ namespace qpp
 * \return Random real number (double) uniformly distributed in
 * the interval [a, b)
 */
-inline double rand(double a, double b)
-{
+inline double rand(double a, double b) {
     // EXCEPTION CHECKS
 
     if (a >= b)
@@ -71,8 +69,7 @@ inline double rand(double a, double b)
 * \param b End of the interval, belongs to it
 * \return Random big integer uniformly distributed in the interval [a, b]
 */
-inline bigint rand(bigint a, bigint b)
-{
+inline bigint rand(bigint a, bigint b) {
     // EXCEPTION CHECKS
 
     if (a > b)
@@ -97,8 +94,7 @@ inline bigint rand(bigint a, bigint b)
 * \return Random index (idx) uniformly distributed in the interval [a, b]
 */
 inline idx randidx(idx a = std::numeric_limits<idx>::min(),
-                   idx b = std::numeric_limits<idx>::max())
-{
+                   idx b = std::numeric_limits<idx>::max()) {
     // EXCEPTION CHECKS
 
     if (a > b)
@@ -125,9 +121,8 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
 * qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
 * qpp::dmat and qpp::cmat
 */
-template<typename Derived>
-Derived rand(idx rows, idx cols, double a = 0, double b = 1)
-{
+template <typename Derived>
+Derived rand(idx rows, idx cols, double a = 0, double b = 1) {
     // silence -Wunused-parameter in clang++
     (void) rows;
     (void) cols;
@@ -157,9 +152,8 @@ Derived rand(idx rows, idx cols, double a = 0, double b = 1)
 * \param b End of the interval, does not belong to it
 * \return Random real matrix
 */
-template<>
-inline dmat rand(idx rows, idx cols, double a, double b)
-{
+template <>
+inline dmat rand(idx rows, idx cols, double a, double b) {
     // EXCEPTION CHECKS
 
     if (rows == 0 || cols == 0)
@@ -168,11 +162,9 @@ inline dmat rand(idx rows, idx cols, double a, double b)
         throw exception::OutOfRange("qpp::rand()");
     // END EXCEPTION CHECKS
 
-    return dmat::Zero(rows, cols).unaryExpr(
-            [a, b](double)
-            {
-                return rand(a, b);
-            });
+    return dmat::Zero(rows, cols).unaryExpr([a, b](double) {
+        return rand(a, b);
+    });
 }
 
 /**
@@ -196,9 +188,8 @@ inline dmat rand(idx rows, idx cols, double a, double b)
 * \param b End of the interval, does not belong to it
 * \return Random complex matrix
 */
-template<>
-inline cmat rand(idx rows, idx cols, double a, double b)
-{
+template <>
+inline cmat rand(idx rows, idx cols, double a, double b) {
     // EXCEPTION CHECKS
 
     if (rows == 0 || cols == 0)
@@ -222,9 +213,8 @@ inline cmat rand(idx rows, idx cols, double a, double b)
 * qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
 * qpp::dmat and qpp::cmat
 */
-template<typename Derived>
-Derived randn(idx rows, idx cols, double mean = 0, double sigma = 1)
-{
+template <typename Derived>
+Derived randn(idx rows, idx cols, double mean = 0, double sigma = 1) {
     // silence -Wunused-parameter in clang++
     (void) rows;
     (void) cols;
@@ -254,9 +244,8 @@ Derived randn(idx rows, idx cols, double mean = 0, double sigma = 1)
 * \param sigma Standard deviation
 * \return Random real matrix
 */
-template<>
-inline dmat randn(idx rows, idx cols, double mean, double sigma)
-{
+template <>
+inline dmat randn(idx rows, idx cols, double mean, double sigma) {
     // EXCEPTION CHECKS
 
     if (rows == 0 || cols == 0)
@@ -265,16 +254,13 @@ inline dmat randn(idx rows, idx cols, double mean, double sigma)
 
     std::normal_distribution<> nd(mean, sigma);
 
-    return dmat::Zero(rows, cols).unaryExpr(
-            [&nd](double)
-            {
+    return dmat::Zero(rows, cols).unaryExpr([&nd](double) {
 #ifdef NO_THREAD_LOCAL_
-                return nd(RandomDevices::get_instance().get_prng());
+        return nd(RandomDevices::get_instance().get_prng());
 #else
-                return nd(
-                        RandomDevices::get_thread_local_instance().get_prng());
+        return nd(RandomDevices::get_thread_local_instance().get_prng());
 #endif // NO_THREAD_LOCAL_
-            });
+    });
 }
 
 /**
@@ -298,9 +284,8 @@ inline dmat randn(idx rows, idx cols, double mean, double sigma)
 * \param sigma Standard deviation
 * \return Random complex matrix
 */
-template<>
-inline cmat randn(idx rows, idx cols, double mean, double sigma)
-{
+template <>
+inline cmat randn(idx rows, idx cols, double mean, double sigma) {
     // EXCEPTION CHECKS
 
     if (rows == 0 || cols == 0)
@@ -319,8 +304,7 @@ inline cmat randn(idx rows, idx cols, double mean, double sigma)
 * \param sigma Standard deviation
 * \return Random real number normally distributed in N(mean, sigma)
 */
-inline double randn(double mean = 0, double sigma = 1)
-{
+inline double randn(double mean = 0, double sigma = 1) {
     std::normal_distribution<> nd(mean, sigma);
 
 #ifdef NO_THREAD_LOCAL_
@@ -369,8 +353,7 @@ inline cmat randU(idx D = 2)
 * \param Dout Size of the output Hilbert space
 * \return Random isometry matrix
 */
-inline cmat randV(idx Din, idx Dout)
-{
+inline cmat randV(idx Din, idx Dout) {
     // EXCEPTION CHECKS
 
     if (Din == 0 || Dout == 0 || Din > Dout)
@@ -390,8 +373,7 @@ inline cmat randV(idx Din, idx Dout)
 * \param D Dimension of the Hilbert space
 * \return Set of \a N Kraus operators satisfying the closure condition
 */
-inline std::vector<cmat> randkraus(idx N, idx D = 2)
-{
+inline std::vector<cmat> randkraus(idx N, idx D = 2) {
     // EXCEPTION CHECKS
 
     if (N == 0)
@@ -424,8 +406,7 @@ inline std::vector<cmat> randkraus(idx N, idx D = 2)
 * \param D Dimension of the Hilbert space
 * \return Random Hermitian matrix
 */
-inline cmat randH(idx D = 2)
-{
+inline cmat randH(idx D = 2) {
     // EXCEPTION CHECKS
 
     if (D == 0)
@@ -443,8 +424,7 @@ inline cmat randH(idx D = 2)
 * \param D Dimension of the Hilbert space
 * \return Random normalized ket
 */
-inline ket randket(idx D = 2)
-{
+inline ket randket(idx D = 2) {
     // EXCEPTION CHECKS
 
     if (D == 0)
@@ -469,8 +449,7 @@ inline ket randket(idx D = 2)
 * \param D Dimension of the Hilbert space
 * \return Random density matrix
 */
-inline cmat randrho(idx D = 2)
-{
+inline cmat randrho(idx D = 2) {
     // EXCEPTION CHECKS
 
     if (D == 0)
@@ -492,8 +471,7 @@ inline cmat randrho(idx D = 2)
 * \param N Size of the permutation
 * \return Random permutation of size \a N
 */
-inline std::vector<idx> randperm(idx N)
-{
+inline std::vector<idx> randperm(idx N) {
     // EXCEPTION CHECKS
 
     if (N == 0)
@@ -504,7 +482,7 @@ inline std::vector<idx> randperm(idx N)
 
     // fill in increasing order
     std::iota(std::begin(result), std::end(result), 0);
-    // shuffle
+// shuffle
 #ifdef NO_THREAD_LOCAL_
     std::shuffle(std::begin(result), std::end(result),
                  RandomDevices::get_instance().get_prng());
@@ -524,8 +502,7 @@ inline std::vector<idx> randperm(idx N)
 * \param N Size of the probability vector
 * \return Random probability vector
 */
-inline std::vector<double> randprob(idx N)
-{
+inline std::vector<double> randprob(idx N) {
     // EXCEPTION CHECKS
 
     if (N == 0)
@@ -536,13 +513,12 @@ inline std::vector<double> randprob(idx N)
 
     // generate
     std::exponential_distribution<> ed(1);
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
 #ifdef NO_THREAD_LOCAL_
         result[i] = ed(qpp::RandomDevices::get_instance().get_prng());
 #else
         result[i] =
-                ed(qpp::RandomDevices::get_thread_local_instance().get_prng());
+            ed(qpp::RandomDevices::get_thread_local_instance().get_prng());
 #endif // NO_THREAD_LOCAL_
     }
 

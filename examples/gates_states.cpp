@@ -5,8 +5,7 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     ket psi = st.z0; // |0> state
     cmat U = gt.X;
     ket result = U * psi;
@@ -14,7 +13,7 @@ int main()
     std::cout << ">> The result of applying the bit-flip gate X on |0> is:\n";
     std::cout << disp(result) << '\n';
 
-    psi = 10_q; // |10> state
+    psi = 10_q;  // |10> state
     U = gt.CNOT; // Controlled-NOT
     result = U * psi;
 

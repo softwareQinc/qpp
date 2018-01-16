@@ -32,8 +32,7 @@
 #ifndef INSTRUMENTS_H_
 #define INSTRUMENTS_H_
 
-namespace qpp
-{
+namespace qpp {
 /**
 * \brief Generalized inner product
 *
@@ -44,13 +43,10 @@ namespace qpp
 * \return Inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar
 * or column vector over the remaining Hilbert space
 */
-template<typename Derived>
-dyn_col_vect<typename Derived::Scalar> ip(
-        const Eigen::MatrixBase<Derived>& phi,
-        const Eigen::MatrixBase<Derived>& psi,
-        const std::vector<idx>& subsys,
-        const std::vector<idx>& dims)
-{
+template <typename Derived>
+dyn_col_vect<typename Derived::Scalar>
+ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
+   const std::vector<idx>& subsys, const std::vector<idx>& dims) {
     const dyn_col_vect<typename Derived::Scalar>& rphi = phi.derived();
     const dyn_col_vect<typename Derived::Scalar>& rpsi = psi.derived();
 
@@ -111,45 +107,36 @@ dyn_col_vect<typename Derived::Scalar> ip(
     std::copy(std::begin(subsys_bar), std::end(subsys_bar),
               std::begin(Csubsys_bar));
 
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         Cdims[i] = dims[i];
     }
-    for (idx i = 0; i < Nsubsys; ++i)
-    {
+    for (idx i = 0; i < Nsubsys; ++i) {
         Csubsys[i] = subsys[i];
         Cdimssubsys[i] = dims[subsys[i]];
     }
-    for (idx i = 0; i < Nsubsys_bar; ++i)
-    {
+    for (idx i = 0; i < Nsubsys_bar; ++i) {
         Cdimssubsys_bar[i] = dims[subsys_bar[i]];
     }
 
-    auto worker = [&](idx b) noexcept
-            -> typename Derived::Scalar
-    {
+    auto worker = [&](idx b) noexcept->typename Derived::Scalar {
         idx Cmidxrow[maxn];
         idx Cmidxrowsubsys[maxn];
         idx Cmidxcolsubsys_bar[maxn];
 
         /* get the col multi-indexes of the complement */
-        internal::n2multiidx(b, Nsubsys_bar,
-                             Cdimssubsys_bar, Cmidxcolsubsys_bar);
+        internal::n2multiidx(b, Nsubsys_bar, Cdimssubsys_bar,
+                             Cmidxcolsubsys_bar);
         /* write it in the global row multi-index */
-        for (idx k = 0; k < Nsubsys_bar; ++k)
-        {
+        for (idx k = 0; k < Nsubsys_bar; ++k) {
             Cmidxrow[Csubsys_bar[k]] = Cmidxcolsubsys_bar[k];
         }
 
         typename Derived::Scalar result = 0;
-        for (idx a = 0; a < Dsubsys; ++a)
-        {
+        for (idx a = 0; a < Dsubsys; ++a) {
             /* get the row multi-indexes of the subsys */
-            internal::n2multiidx(a, Nsubsys,
-                                 Cdimssubsys, Cmidxrowsubsys);
+            internal::n2multiidx(a, Nsubsys, Cdimssubsys, Cmidxrowsubsys);
             /* write it in the global row multi-index */
-            for (idx k = 0; k < Nsubsys; ++k)
-            {
+            for (idx k = 0; k < Nsubsys; ++k) {
                 Cmidxrow[Csubsys[k]] = Cmidxrowsubsys[k];
             }
             // compute the row index
@@ -181,13 +168,10 @@ dyn_col_vect<typename Derived::Scalar> ip(
 * \return Inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar
 * or column vector over the remaining Hilbert space
 */
-template<typename Derived>
-dyn_col_vect<typename Derived::Scalar> ip(
-        const Eigen::MatrixBase<Derived>& phi,
-        const Eigen::MatrixBase<Derived>& psi,
-        const std::vector<idx>& subsys,
-        idx d = 2)
-{
+template <typename Derived>
+dyn_col_vect<typename Derived::Scalar>
+ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
+   const std::vector<idx>& subsys, idx d = 2) {
     const dyn_col_vect<typename Derived::Scalar>& rphi = phi.derived();
     const dyn_col_vect<typename Derived::Scalar>& rpsi = psi.derived();
 
@@ -216,10 +200,9 @@ dyn_col_vect<typename Derived::Scalar> ip(
 * Vector of outcome probabilities, and 3. Vector of post-measurement
 * normalized states
 */
-template<typename Derived>
+template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)
-{
+measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -248,20 +231,18 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)
     //************ density matrix ************//
     if (internal::check_square_mat(rA)) // square matrix
     {
-        for (idx i = 0; i < Ks.size(); ++i)
-        {
+        for (idx i = 0; i < Ks.size(); ++i) {
             outstates[i] = cmat::Zero(rA.rows(), rA.rows());
             cmat tmp = Ks[i] * rA * adjoint(Ks[i]); // un-normalized;
-            prob[i] = std::abs(trace(tmp)); // probability
+            prob[i] = std::abs(trace(tmp));         // probability
             if (prob[i] > eps)
                 outstates[i] = tmp / prob[i]; // normalized
         }
     }
-        //************ ket ************//
+    //************ ket ************//
     else if (internal::check_cvector(rA)) // column vector
     {
-        for (idx i = 0; i < Ks.size(); ++i)
-        {
+        for (idx i = 0; i < Ks.size(); ++i) {
             outstates[i] = ket::Zero(rA.rows());
             ket tmp = Ks[i] * rA; // un-normalized;
             // probability
@@ -273,8 +254,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)
         throw exception::MatrixNotSquareNorCvector("qpp::measure()");
 
     // sample from the probability distribution
-    std::discrete_distribution<idx> dd(std::begin(prob),
-                                       std::end(prob));
+    std::discrete_distribution<idx> dd(std::begin(prob), std::end(prob));
     idx result = dd(RandomDevices::get_instance().get_prng());
 
     return std::make_tuple(result, prob, outstates);
@@ -292,11 +272,10 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)
 * Vector of outcome probabilities, and 3. Vector of post-measurement
 * normalized states
 */
-template<typename Derived>
+template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A,
-        const std::initializer_list<cmat>& Ks)
-{
+        const std::initializer_list<cmat>& Ks) {
     return measure(A, std::vector<cmat>(Ks));
 }
 
@@ -310,10 +289,9 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * Vector of outcome probabilities, and 3. Vector of post-measurement
 * normalized states
 */
-template<typename Derived>
+template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-measure(const Eigen::MatrixBase<Derived>& A, const cmat& U)
-{
+measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -356,13 +334,10 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U)
 * Vector of outcome probabilities, and 3. Vector of post-measurement
 * normalized states
 */
-template<typename Derived>
+template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-measure(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<cmat>& Ks,
-        const std::vector<idx>& subsys,
-        const std::vector<idx>& dims)
-{
+measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
+        const std::vector<idx>& subsys, const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -412,28 +387,24 @@ measure(const Eigen::MatrixBase<Derived>& A,
     //************ density matrix ************//
     if (internal::check_square_mat(rA)) // square matrix
     {
-        for (idx i = 0; i < Ks.size(); ++i)
-        {
+        for (idx i = 0; i < Ks.size(); ++i) {
             cmat tmp = apply(rA, Ks[i], subsys, dims);
             tmp = ptrace(tmp, subsys, dims);
             prob[i] = std::abs(trace(tmp)); // probability
-            if (prob[i] > eps)
-            {
+            if (prob[i] > eps) {
                 // normalized output state
                 // corresponding to measurement result i
                 outstates[i] = tmp / prob[i];
             }
         }
     }
-        //************ ket ************//
+    //************ ket ************//
     else if (internal::check_cvector(rA)) // column vector
     {
-        for (idx i = 0; i < Ks.size(); ++i)
-        {
+        for (idx i = 0; i < Ks.size(); ++i) {
             ket tmp = apply(rA, Ks[i], subsys, dims);
             prob[i] = std::pow(norm(tmp), 2);
-            if (prob[i] > eps)
-            {
+            if (prob[i] > eps) {
                 // normalized output state
                 // corresponding to measurement result i
                 tmp /= std::sqrt(prob[i]);
@@ -444,8 +415,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
         throw exception::MatrixNotSquareNorCvector("qpp::measure()");
 
     // sample from the probability distribution
-    std::discrete_distribution<idx> dd(std::begin(prob),
-                                       std::end(prob));
+    std::discrete_distribution<idx> dd(std::begin(prob), std::end(prob));
     idx result = dd(RandomDevices::get_instance().get_prng());
 
     return std::make_tuple(result, prob, outstates);
@@ -471,13 +441,11 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * Vector of outcome probabilities, and 3. Vector of post-measurement
 * normalized states
 */
-template<typename Derived>
+template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A,
-        const std::initializer_list<cmat>& Ks,
-        const std::vector<idx>& subsys,
-        const std::vector<idx>& dims)
-{
+        const std::initializer_list<cmat>& Ks, const std::vector<idx>& subsys,
+        const std::vector<idx>& dims) {
     return measure(A, std::vector<cmat>(Ks), subsys, dims);
 }
 
@@ -498,15 +466,11 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * Vector of outcome probabilities, and 3. Vector of post-measurement
 * normalized states
 */
-template<typename Derived>
+template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-measure(const Eigen::MatrixBase<Derived>& A,
-        const std::vector<cmat>& Ks,
-        const std::vector<idx>& subsys,
-        idx d = 2)
-{
-    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA
-            = A.derived();
+measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
+        const std::vector<idx>& subsys, idx d = 2) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -545,13 +509,11 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * Vector of outcome probabilities, and 3. Vector of post-measurement
 * normalized states
 */
-template<typename Derived>
+template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A,
-        const std::initializer_list<cmat>& Ks,
-        const std::vector<idx>& subsys,
-        idx d = 2)
-{
+        const std::initializer_list<cmat>& Ks, const std::vector<idx>& subsys,
+        idx d = 2) {
     return measure(A, std::vector<cmat>(Ks), subsys, d);
 }
 
@@ -573,15 +535,11 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * Vector of outcome probabilities, and 3. Vector of post-measurement
 * normalized states
 */
-template<typename Derived>
+template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-measure(const Eigen::MatrixBase<Derived>& A,
-        const cmat& V,
-        const std::vector<idx>& subsys,
-        const std::vector<idx>& dims)
-{
-    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA
-            = A.derived();
+measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
+        const std::vector<idx>& subsys, const std::vector<idx>& dims) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -614,29 +572,26 @@ measure(const Eigen::MatrixBase<Derived>& A,
     idx M = static_cast<idx>(V.cols());
 
     //************ ket ************//
-    if (internal::check_cvector(rA))
-    {
+    if (internal::check_cvector(rA)) {
         const ket& rpsi = A.derived();
         // check that dims match state vector
         if (!internal::check_dims_match_cvect(dims, rA))
             throw exception::DimsMismatchCvector("qpp::measure()");
 
-        std::vector<double> prob(M); // probabilities
+        std::vector<double> prob(M);    // probabilities
         std::vector<cmat> outstates(M); // resulting states
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for
 #endif // WITH_OPENMP_
         for (idx i = 0; i < M; ++i)
-            outstates[i] = ip(static_cast<const ket&>(V.col(i)),
-                              rpsi, subsys, dims);
+            outstates[i] =
+                ip(static_cast<const ket&>(V.col(i)), rpsi, subsys, dims);
 
-        for (idx i = 0; i < M; ++i)
-        {
+        for (idx i = 0; i < M; ++i) {
             double tmp = norm(outstates[i]);
             prob[i] = tmp * tmp;
-            if (prob[i] > eps)
-            {
+            if (prob[i] > eps) {
                 // normalized output state
                 // corresponding to measurement result m
                 outstates[i] /= tmp;
@@ -644,15 +599,13 @@ measure(const Eigen::MatrixBase<Derived>& A,
         }
 
         // sample from the probability distribution
-        std::discrete_distribution<idx> dd(std::begin(prob),
-                                           std::end(prob));
+        std::discrete_distribution<idx> dd(std::begin(prob), std::end(prob));
         idx result = dd(RandomDevices::get_instance().get_prng());
 
         return std::make_tuple(result, prob, outstates);
     }
-        //************ density matrix ************//
-    else if (internal::check_square_mat(rA))
-    {
+    //************ density matrix ************//
+    else if (internal::check_square_mat(rA)) {
         // check that dims match rho matrix
         if (!internal::check_dims_match_mat(dims, rA))
             throw exception::DimsMismatchMatrix("qpp::measure()");
@@ -685,15 +638,11 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * Vector of outcome probabilities, and 3. Vector of post-measurement
 * normalized states
 */
-template<typename Derived>
+template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
-measure(const Eigen::MatrixBase<Derived>& A,
-        const cmat& V,
-        const std::vector<idx>& subsys,
-        idx d = 2)
-{
-    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA
-            = A.derived();
+measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
+        const std::vector<idx>& subsys, idx d = 2) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -726,15 +675,13 @@ measure(const Eigen::MatrixBase<Derived>& A,
 * measurement result corresponds to the subsystem with the smallest index), 2.
 * Outcome probability, and 3. Post-measurement normalized state
 */
-template<typename Derived>
+template <typename Derived>
 std::tuple<std::vector<idx>, double, cmat>
-measure_seq(const Eigen::MatrixBase<Derived>& A,
-            std::vector<idx> subsys,
-            std::vector<idx> dims)
-{
-//    typename std::remove_const<
-//            typename Eigen::MatrixBase<Derived>::EvalReturnType
-//    >::type cA = A.derived();
+measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> subsys,
+            std::vector<idx> dims) {
+    //    typename std::remove_const<
+    //            typename Eigen::MatrixBase<Derived>::EvalReturnType
+    //    >::type cA = A.derived();
 
     dyn_mat<typename Derived::Scalar> cA = A.derived();
 
@@ -748,15 +695,12 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::measure_seq()");
 
-
     // check square matrix or column vector
-    if (internal::check_square_mat(cA))
-    {
+    if (internal::check_square_mat(cA)) {
         // check that dims match rho matrix
         if (!internal::check_dims_match_mat(dims, cA))
             throw exception::DimsMismatchMatrix("qpp::measure_seq()");
-    } else if (internal::check_cvector(cA))
-    {
+    } else if (internal::check_cvector(cA)) {
         // check that dims match psi column vector
         if (!internal::check_dims_match_cvect(dims, cA))
             throw exception::DimsMismatchMatrix("qpp::measure_seq()");
@@ -773,15 +717,12 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
 
     // sort subsys in decreasing order,
     // the order of measurements does not matter
-    std::sort(std::begin(subsys), std::end(subsys), std::greater<idx> {});
+    std::sort(std::begin(subsys), std::end(subsys), std::greater<idx>{});
 
     //************ density matrix or column vector ************//
-    while (subsys.size() > 0)
-    {
-        auto tmp = measure(
-                cA, Gates::get_instance().Id(dims[subsys[0]]),
-                {subsys[0]}, dims
-        );
+    while (subsys.size() > 0) {
+        auto tmp = measure(cA, Gates::get_instance().Id(dims[subsys[0]]),
+                           {subsys[0]}, dims);
         result.push_back(std::get<0>(tmp));
         prob *= std::get<1>(tmp)[std::get<0>(tmp)];
         cA = std::get<2>(tmp)[std::get<0>(tmp)];
@@ -810,14 +751,11 @@ measure_seq(const Eigen::MatrixBase<Derived>& A,
 * measurement result corresponds to the subsystem with the smallest index), 2.
 * Outcome probability, and 3. Post-measurement normalized state
 */
-template<typename Derived>
+template <typename Derived>
 std::tuple<std::vector<idx>, double, cmat>
-measure_seq(const Eigen::MatrixBase<Derived>& A,
-            std::vector<idx> subsys,
-            idx d = 2)
-{
-    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA
-            = A.derived();
+measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> subsys,
+            idx d = 2) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
 

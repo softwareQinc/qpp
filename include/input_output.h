@@ -32,8 +32,7 @@
 #ifndef INPUT_OUTPUT_H_
 #define INPUT_OUTPUT_H_
 
-namespace qpp
-{
+namespace qpp {
 /**
 * \brief Eigen expression ostream manipulator
 *
@@ -41,10 +40,9 @@ namespace qpp
 * \param chop Set to zero the elements smaller in absolute value than \a chop
 * \return Instance of qpp::internal::IOManipEigen
 */
-template<typename Derived>
+template <typename Derived>
 internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
-                            double chop = qpp::chop)
-{
+                            double chop = qpp::chop) {
     return internal::IOManipEigen(A, chop);
 }
 
@@ -56,8 +54,7 @@ internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
 * \param chop Set to zero the elements smaller in absolute value than \a chop
 * \return Instance of qpp::internal::IOManipEigen
 */
-inline internal::IOManipEigen disp(cplx z, double chop = qpp::chop)
-{
+inline internal::IOManipEigen disp(cplx z, double chop = qpp::chop) {
     return internal::IOManipEigen(z, chop);
 }
 
@@ -71,15 +68,12 @@ inline internal::IOManipEigen disp(cplx z, double chop = qpp::chop)
 * \param end Right marking
 * \return Instance of qpp::internal::IOManipRange
 */
-template<typename InputIterator>
-internal::IOManipRange <InputIterator> disp(InputIterator first,
-                                            InputIterator last,
-                                            const std::string& separator,
-                                            const std::string& start = "[",
-                                            const std::string& end = "]")
-{
-    return internal::IOManipRange<InputIterator>(
-            first, last, separator, start, end);
+template <typename InputIterator>
+internal::IOManipRange<InputIterator>
+disp(InputIterator first, InputIterator last, const std::string& separator,
+     const std::string& start = "[", const std::string& end = "]") {
+    return internal::IOManipRange<InputIterator>(first, last, separator, start,
+                                                 end);
 }
 
 /**
@@ -92,14 +86,13 @@ internal::IOManipRange <InputIterator> disp(InputIterator first,
 * \param end Right marking
 * \return Instance of qpp::internal::IOManipRange
 */
-template<typename Container>
-internal::IOManipRange<typename Container::const_iterator> disp(
-        const Container& c, const std::string& separator,
-        const std::string& start = "[", const std::string& end = "]",
-        typename std::enable_if<is_iterable<Container>::value>::type* = nullptr)
-{
+template <typename Container>
+internal::IOManipRange<typename Container::const_iterator>
+disp(const Container& c, const std::string& separator,
+     const std::string& start = "[", const std::string& end = "]",
+     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     return internal::IOManipRange<typename Container::const_iterator>(
-            std::begin(c), std::end(c), separator, start, end);
+        std::begin(c), std::end(c), separator, start, end);
 }
 
 /**
@@ -112,12 +105,10 @@ internal::IOManipRange<typename Container::const_iterator> disp(
 * \param end Right marking
 * \return Instance of qpp::internal::IOManipPointer
 */
-template<typename PointerType>
-internal::IOManipPointer <PointerType> disp(const PointerType* p, idx N,
-                                            const std::string& separator,
-                                            const std::string& start = "[",
-                                            const std::string& end = "]")
-{
+template <typename PointerType>
+internal::IOManipPointer<PointerType>
+disp(const PointerType* p, idx N, const std::string& separator,
+     const std::string& start = "[", const std::string& end = "]") {
     return internal::IOManipPointer<PointerType>(p, N, separator, start, end);
 }
 
@@ -129,9 +120,8 @@ internal::IOManipPointer <PointerType> disp(const PointerType* p, idx N,
 * \param A Eigen expression
 * \param fname Output file name
 */
-template<typename Derived>
-void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
-{
+template <typename Derived>
+void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -143,11 +133,9 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
     std::fstream fout;
     fout.open(fname, std::ios::out | std::ios::binary);
 
-    if (fout.fail())
-    {
-        throw std::runtime_error(
-                "qpp::save(): Error writing output file \""
-                + std::string(fname) + "\"!");
+    if (fout.fail()) {
+        throw std::runtime_error("qpp::save(): Error writing output file \"" +
+                                 std::string(fname) + "\"!");
     }
     // END EXCEPTION CHECKS
 
@@ -183,18 +171,16 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname)
 *
 * \param fname Output file name
 */
-template<typename Derived>
-dyn_mat<typename Derived::Scalar> load(const std::string& fname)
-{
+template <typename Derived>
+dyn_mat<typename Derived::Scalar> load(const std::string& fname) {
     std::fstream fin;
     fin.open(fname, std::ios::in | std::ios::binary);
 
     // EXCEPTION CHECKS
 
-    if (fin.fail())
-    {
-        throw std::runtime_error("qpp::load(): Error opening input file \""
-                                 + std::string(fname) + "\"!");
+    if (fin.fail()) {
+        throw std::runtime_error("qpp::load(): Error opening input file \"" +
+                                 std::string(fname) + "\"!");
     }
 
     const std::string header_ = "TYPE::Eigen::Matrix";
@@ -202,11 +188,9 @@ dyn_mat<typename Derived::Scalar> load(const std::string& fname)
 
     // read the header from file
     fin.read(fheader_.get(), header_.length());
-    if (std::string(fheader_.get(), header_.length()) != header_)
-    {
-        throw std::runtime_error(
-                "qpp::load(): Input file \"" + std::string(fname)
-                + "\" is corrupted!");
+    if (std::string(fheader_.get(), header_.length()) != header_) {
+        throw std::runtime_error("qpp::load(): Input file \"" +
+                                 std::string(fname) + "\" is corrupted!");
     }
     // END EXCEPTION CHECKS
 

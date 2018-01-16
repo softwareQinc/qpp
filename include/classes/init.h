@@ -32,8 +32,7 @@
 #ifndef CLASSES_INIT_H_
 #define CLASSES_INIT_H_
 
-namespace qpp
-{
+namespace qpp {
 /**
 * \class qpp::Init
 * \brief const Singleton class that performs
@@ -43,25 +42,23 @@ class Init final : public internal::Singleton<const Init> // const Singleton
 {
     friend class internal::Singleton<const Init>;
 
-private:
+  private:
     /**
     * \brief Additional initializations
     */
-    Init()
-    {
+    Init() {
         // set default output format and precision
-//        std::cout << std::fixed; // use fixed format for nice formatting
-          // std::cout << std::scientific;
-//        std::cout << std::setprecision(4); // only for fixed/scientific modes
+        //        std::cout << std::fixed; // use fixed format for nice
+        //        formatting
+        // std::cout << std::scientific;
+        //        std::cout << std::setprecision(4); // only for
+        //        fixed/scientific modes
     }
 
     /**
     * \brief Cleanups
     */
-    ~Init()
-    {
-
-    }
+    ~Init() {}
 }; /* class Init */
 
 } /* namespace qpp */

@@ -7,15 +7,14 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     idx nk = 5;
     idx D = 3; // nk Kraus on d-dimensional system
     std::cout << ">> Generating a random channel with " << nk
               << " Kraus operators on a " << D << " dimensional space\n";
     std::vector<cmat> Ks = randkraus(nk, D);
 
-    cmat rho_in = randrho(D); // random input state
+    cmat rho_in = randrho(D);         // random input state
     cmat rho_out = apply(rho_in, Ks); // output state
 
     std::cout << ">> Computing its Choi matrix...\n";
@@ -50,7 +49,7 @@ int main()
 
     // verification
     std::cout << "\n>> Norm difference for the superoperator action: ";
-    cmat rho_out2 = transpose(
-            reshape(smat * reshape(transpose(rho_in), D * D, 1), D, D));
+    cmat rho_out2 =
+        transpose(reshape(smat * reshape(transpose(rho_in), D * D, 1), D, D));
     std::cout << norm(rho_out - rho_out2) << '\n';
 }

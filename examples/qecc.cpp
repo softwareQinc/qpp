@@ -5,8 +5,7 @@
 
 using namespace qpp;
 
-int main()
-{
+int main() {
     ket a0 = codes.codeword(Codes::Type::FIVE_QUBIT, 0);
     ket a1 = codes.codeword(Codes::Type::FIVE_QUBIT, 1);
 
