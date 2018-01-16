@@ -34,8 +34,7 @@ using namespace qpp;
 
 /******************************************************************************/
 /// BEGIN ket qpp::States::jn(idx j, idx n, idx d = 2) const
-TEST(qpp_States_jn, AllTests)
-{
+TEST(qpp_States_jn, AllTests) {
     // qubits
 
     idx n = 1;
@@ -65,8 +64,7 @@ TEST(qpp_States_jn, AllTests)
 }
 /******************************************************************************/
 /// BEGIN ket qpp::States::mes(idx d = 2) const
-TEST(qpp_States_mes, AllTests)
-{
+TEST(qpp_States_mes, AllTests) {
     // d = 1 (number)
     ket ket_one(1);
     ket_one << 1;
@@ -78,8 +76,7 @@ TEST(qpp_States_mes, AllTests)
     // qutrits
     idx d = 3;
     ket psi = mket({0, 0}, {d, d}) / std::sqrt(d);
-    for (idx i = 1; i < d; ++i)
-    {
+    for (idx i = 1; i < d; ++i) {
         psi += mket({i, i}, {d, d});
     }
     ket mes_qutrit(d * d);
@@ -96,8 +93,7 @@ TEST(qpp_States_mes, AllTests)
 }
 /******************************************************************************/
 /// BEGIN ket qpp::States::minus(idx n) const
-TEST(qpp_States_minus, AllTests)
-{
+TEST(qpp_States_minus, AllTests) {
     idx n = 1;
     EXPECT_NEAR(0, norm(qpp::st.x1 - qpp::st.minus(n)), 1e-7);
 
@@ -107,12 +103,12 @@ TEST(qpp_States_minus, AllTests)
 
     n = 4;
     EXPECT_NEAR(0, norm(kronpow(gt.H, n) * mket(std::vector<idx>(n, 1)) -
-                        qpp::st.minus(n)), 1e-7);
+                        qpp::st.minus(n)),
+                1e-7);
 }
 /******************************************************************************/
 /// BEGIN ket qpp::States::one(idx n, idx d = 2) const
-TEST(qpp_States_one, AllTests)
-{
+TEST(qpp_States_one, AllTests) {
     // qubits
 
     idx n = 1;
@@ -135,8 +131,7 @@ TEST(qpp_States_one, AllTests)
 }
 /******************************************************************************/
 /// BEGIN ket qpp::States::plus(idx n) const
-TEST(qpp_States_plus, AllTests)
-{
+TEST(qpp_States_plus, AllTests) {
     idx n = 1;
     EXPECT_NEAR(0, norm(qpp::st.x0 - qpp::st.plus(n)), 1e-7);
 
@@ -146,12 +141,12 @@ TEST(qpp_States_plus, AllTests)
 
     n = 4;
     EXPECT_NEAR(0, norm(kronpow(gt.H, n) * mket(std::vector<idx>(n, 0)) -
-                        qpp::st.plus(n)), 1e-7);
+                        qpp::st.plus(n)),
+                1e-7);
 }
 /******************************************************************************/
 /// BEGIN ket qpp::States::zero(idx n, idx d = 2) const
-TEST(qpp_States_zero, AllTests)
-{
+TEST(qpp_States_zero, AllTests) {
     // qubits
 
     idx n = 1;

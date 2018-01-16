@@ -34,8 +34,7 @@ using namespace qpp;
 
 /******************************************************************************/
 /// BEGIN inline bigint qpp::rand(bigint a, bigint b)
-TEST(qpp_rand_integer, AllTests)
-{
+TEST(qpp_rand_integer, AllTests) {
     // 1 element equal boundaries
     bigint a = 42, b = a;
     EXPECT_EQ(a, qpp::rand(a, b));
@@ -43,8 +42,7 @@ TEST(qpp_rand_integer, AllTests)
     // 1000 elements between 0 and 1
     idx N = 1000;
     a = 0, b = 1;
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         bigint n = qpp::rand(a, b);
         EXPECT_GE(n, a);
         EXPECT_LE(n, b);
@@ -54,8 +52,7 @@ TEST(qpp_rand_integer, AllTests)
     N = 10000;
     a = -10, b = 10;
     double average = 0;
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         bigint n = qpp::rand(a, b);
 
         EXPECT_GE(n, a);
@@ -67,13 +64,11 @@ TEST(qpp_rand_integer, AllTests)
 }
 /******************************************************************************/
 /// BEGIN inline double qpp::rand(double a, double b)
-TEST(qpp_rand_double, AllTests)
-{
+TEST(qpp_rand_double, AllTests) {
     // 1000 elements between 0 and 1
     idx N = 1000;
     double a = 0, b = 1;
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         double n = qpp::rand(a, b);
         EXPECT_GE(n, a);
         EXPECT_LE(n, b);
@@ -83,8 +78,7 @@ TEST(qpp_rand_double, AllTests)
     N = 10000;
     a = -10, b = 10;
     double average = 0;
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         double n = qpp::rand(a, b);
         EXPECT_GE(n, a);
         EXPECT_LE(n, b);
@@ -96,14 +90,12 @@ TEST(qpp_rand_double, AllTests)
 /******************************************************************************/
 /// BEGIN template<> inline cmat qpp::rand(
 ///       idx rows, idx cols, double a, double b)
-TEST(qpp_rand_cmat, AllTests)
-{
+TEST(qpp_rand_cmat, AllTests) {
     // 1 x 1 matrix with elements between -1 and 1
     idx NA = 1, NB = 1;
     double a = -1, b = 1;
     cmat A = qpp::rand<cmat>(NA, NB, a, b);
-    for (idx i = 0; i < NA * NB; ++i)
-    {
+    for (idx i = 0; i < NA * NB; ++i) {
         cplx elem = A.data()[i];
         EXPECT_GE(elem.real(), a);
         EXPECT_GE(elem.imag(), a);
@@ -115,8 +107,7 @@ TEST(qpp_rand_cmat, AllTests)
     NA = 1, NB = 10;
     a = -10, b = 10;
     A = qpp::rand<cmat>(NA, NB, a, b);
-    for (idx i = 0; i < NA * NB; ++i)
-    {
+    for (idx i = 0; i < NA * NB; ++i) {
         cplx elem = A.data()[i];
         EXPECT_GE(elem.real(), a);
         EXPECT_GE(elem.imag(), a);
@@ -129,8 +120,7 @@ TEST(qpp_rand_cmat, AllTests)
     a = -10, b = 10;
     A = qpp::rand<cmat>(NA, NB, a, b);
     cplx average = 0;
-    for (idx i = 0; i < NA * NB; ++i)
-    {
+    for (idx i = 0; i < NA * NB; ++i) {
         cplx elem = A.data()[i];
         EXPECT_GE(elem.real(), a);
         EXPECT_GE(elem.imag(), a);
@@ -145,14 +135,12 @@ TEST(qpp_rand_cmat, AllTests)
 /******************************************************************************/
 /// BEGIN template<> inline dmat qpp::rand(
 ///       idx rows, idx cols, double a, double b)
-TEST(qpp_rand_dmat, AllTests)
-{
+TEST(qpp_rand_dmat, AllTests) {
     // 1 x 1 matrix with elements between -1 and 1
     idx NA = 1, NB = 1;
     double a = -1, b = 1;
     dmat A = qpp::rand<dmat>(NA, NB, a, b);
-    for (idx i = 0; i < NA * NB; ++i)
-    {
+    for (idx i = 0; i < NA * NB; ++i) {
         double elem = A.data()[i];
         EXPECT_GE(elem, a);
         EXPECT_LT(elem, b);
@@ -162,8 +150,7 @@ TEST(qpp_rand_dmat, AllTests)
     NA = 1, NB = 10;
     a = -10, b = 10;
     A = qpp::rand<dmat>(NA, NB, a, b);
-    for (idx i = 0; i < NA * NB; ++i)
-    {
+    for (idx i = 0; i < NA * NB; ++i) {
         double elem = A.data()[i];
         EXPECT_GE(elem, a);
         EXPECT_LT(elem, b);
@@ -174,8 +161,7 @@ TEST(qpp_rand_dmat, AllTests)
     a = -10, b = 10;
     A = qpp::rand<dmat>(NA, NB, a, b);
     double average = 0;
-    for (idx i = 0; i < NA * NB; ++i)
-    {
+    for (idx i = 0; i < NA * NB; ++i) {
         double elem = A.data()[i];
         EXPECT_GE(elem, a);
         EXPECT_LT(elem, b);
@@ -186,8 +172,7 @@ TEST(qpp_rand_dmat, AllTests)
 }
 /******************************************************************************/
 /// BEGIN inline cmat qpp::randH(idx D = 2)
-TEST(qpp_randH, AllTests)
-{
+TEST(qpp_randH, AllTests) {
     // D = 1 degenerate case
     idx D = 1;
     cmat A = randH(D);
@@ -207,8 +192,7 @@ TEST(qpp_randH, AllTests)
 /// BEGIN inline idx qpp::randidx(
 ///       idx a = std::numeric_limits<idx>::min(),
 ///       idx b = std::numeric_limits<idx>::max())
-TEST(qpp_randidx, AllTests)
-{
+TEST(qpp_randidx, AllTests) {
     // 1 element equal boundaries
     idx a = 42, b = a;
     EXPECT_EQ(a, qpp::randidx(a, b));
@@ -216,8 +200,7 @@ TEST(qpp_randidx, AllTests)
     // 1000 elements between 0 and 1
     idx N = 1000;
     a = 0, b = 1;
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         idx n = qpp::randidx(a, b);
         EXPECT_GE(n, a);
         EXPECT_LE(n, b);
@@ -227,8 +210,7 @@ TEST(qpp_randidx, AllTests)
     N = 10000;
     a = 0, b = 10;
     double average = 0;
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         idx n = qpp::randidx(a, b);
         EXPECT_GE(n, a);
         EXPECT_LE(n, b);
@@ -239,8 +221,7 @@ TEST(qpp_randidx, AllTests)
 }
 /******************************************************************************/
 /// BEGIN inline ket qpp::randket(idx D = 2)
-TEST(qpp_randket, AllTests)
-{
+TEST(qpp_randket, AllTests) {
     // D = 1 degenerate case
     idx D = 1;
     ket expected = ket::Ones(D);
@@ -250,8 +231,7 @@ TEST(qpp_randket, AllTests)
     D = 2;
     idx N = 100000; // number of runs
     ket avg_state = ket::Zero(D);
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         avg_state += qpp::randket(D);
     }
     expected = ket::Zero(D);
@@ -261,8 +241,7 @@ TEST(qpp_randket, AllTests)
     D = 5;
     N = 100000; // number of runs
     avg_state = ket::Zero(D);
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         avg_state += qpp::randket(D);
     }
     expected = ket::Zero(D);
@@ -270,14 +249,12 @@ TEST(qpp_randket, AllTests)
 }
 /******************************************************************************/
 /// BEGIN inline std::vector<cmat> qpp::randkraus(idx N, idx D = 2)
-TEST(qpp_randkraus, AllTests)
-{
+TEST(qpp_randkraus, AllTests) {
     // D = 1, N = 1 degenerate case
     idx D = 1, N = 1;
     std::vector<cmat> Ks = qpp::randkraus(N, D);
     cmat closure = cmat::Zero(D, D);
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         closure += adjoint(Ks[i]) * Ks[i];
     }
     EXPECT_NEAR(0, norm(closure - gt.Id(D)), 1e-7);
@@ -286,8 +263,7 @@ TEST(qpp_randkraus, AllTests)
     D = 1, N = 10;
     Ks = qpp::randkraus(N, D);
     closure = cmat::Zero(D, D);
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         closure += adjoint(Ks[i]) * Ks[i];
     }
     EXPECT_NEAR(0, norm(closure - gt.Id(D)), 1e-7);
@@ -296,8 +272,7 @@ TEST(qpp_randkraus, AllTests)
     D = 2, N = 1;
     Ks = qpp::randkraus(N);
     closure = cmat::Zero(D, D);
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         closure += adjoint(Ks[i]) * Ks[i];
     }
     EXPECT_NEAR(0, norm(closure - gt.Id(D)), 1e-7);
@@ -306,8 +281,7 @@ TEST(qpp_randkraus, AllTests)
     D = 2, N = 10;
     Ks = qpp::randkraus(N);
     closure = cmat::Zero(D, D);
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         closure += adjoint(Ks[i]) * Ks[i];
     }
     EXPECT_NEAR(0, norm(closure - gt.Id(D)), 1e-7);
@@ -316,22 +290,19 @@ TEST(qpp_randkraus, AllTests)
     D = 5, N = 10;
     Ks = qpp::randkraus(N, D);
     closure = cmat::Zero(D, D);
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         closure += adjoint(Ks[i]) * Ks[i];
     }
     EXPECT_NEAR(0, norm(closure - gt.Id(D)), 1e-7);
 }
 /******************************************************************************/
 /// BEGIN inline double qpp::randn(double mean = 0, double sigma = 1)
-TEST(qpp_randn_double, AllTests)
-{
+TEST(qpp_randn_double, AllTests) {
     // 10000 elements with mean = 0 and sigma = 1
     double mean = 0, sigma = 1;
     idx N = 10000;
     double average = 0;
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         double n = qpp::randn(mean, sigma);
         average += n;
     }
@@ -342,8 +313,7 @@ TEST(qpp_randn_double, AllTests)
     mean = 1, sigma = 2;
     N = 10000;
     average = 0;
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         double n = qpp::randn(mean, sigma);
         average += n;
     }
@@ -354,8 +324,7 @@ TEST(qpp_randn_double, AllTests)
     mean = 1, sigma = 1e-7;
     N = 10000;
     average = 0;
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         double n = qpp::randn(mean, sigma);
         average += n;
     }
@@ -365,15 +334,13 @@ TEST(qpp_randn_double, AllTests)
 /******************************************************************************/
 /// BEGIN template<> inline cmat qpp::randn(
 ///       idx rows, idx cols, double mean, double sigma)
-TEST(qpp_randn_cmat, AllTests)
-{
+TEST(qpp_randn_cmat, AllTests) {
     // 1 x 1 matrix with elements of mean = 0 and sigma = 0.1
     idx NA = 1, NB = 1;
     double mean = 0, sigma = 0.1;
     cmat A = qpp::randn<cmat>(NA, NB, mean, sigma);
     cplx average = 0;
-    for (idx i = 0; i < NA * NB; ++i)
-    {
+    for (idx i = 0; i < NA * NB; ++i) {
         cplx elem = A.data()[i];
         average += elem;
     }
@@ -386,8 +353,7 @@ TEST(qpp_randn_cmat, AllTests)
     mean = -1, sigma = 0.1;
     A = qpp::randn<cmat>(NA, NB, mean, sigma);
     average = 0;
-    for (idx i = 0; i < NA * NB; ++i)
-    {
+    for (idx i = 0; i < NA * NB; ++i) {
         cplx elem = A.data()[i];
         average += elem;
     }
@@ -400,8 +366,7 @@ TEST(qpp_randn_cmat, AllTests)
     mean = 10, sigma = 1e-7;
     A = qpp::randn<cmat>(NA, NB, mean, sigma);
     average = 0;
-    for (idx i = 0; i < NA * NB; ++i)
-    {
+    for (idx i = 0; i < NA * NB; ++i) {
         cplx elem = A.data()[i];
         average += elem;
     }
@@ -412,15 +377,13 @@ TEST(qpp_randn_cmat, AllTests)
 /******************************************************************************/
 /// BEGIN template<> inline dmat qpp::randn(
 ///       idx rows, idx cols, double mean, double sigma)
-TEST(qpp_randn_dmat, AllTests)
-{
+TEST(qpp_randn_dmat, AllTests) {
     // 1 x 1 matrix with elements of mean = 0 and sigma = 0.1
     idx NA = 1, NB = 1;
     double mean = 0, sigma = 0.1;
     dmat A = qpp::randn<dmat>(NA, NB, mean, sigma);
     double average = 0;
-    for (idx i = 0; i < NA * NB; ++i)
-    {
+    for (idx i = 0; i < NA * NB; ++i) {
         double elem = A.data()[i];
         average += elem;
     }
@@ -432,8 +395,7 @@ TEST(qpp_randn_dmat, AllTests)
     mean = -1, sigma = 0.1;
     A = qpp::randn<dmat>(NA, NB, mean, sigma);
     average = 0;
-    for (idx i = 0; i < NA * NB; ++i)
-    {
+    for (idx i = 0; i < NA * NB; ++i) {
         double elem = A.data()[i];
         average += elem;
     }
@@ -445,8 +407,7 @@ TEST(qpp_randn_dmat, AllTests)
     mean = 10, sigma = 1e-7;
     A = qpp::randn<dmat>(NA, NB, mean, sigma);
     average = 0;
-    for (idx i = 0; i < NA * NB; ++i)
-    {
+    for (idx i = 0; i < NA * NB; ++i) {
         double elem = A.data()[i];
         average += elem;
     }
@@ -455,8 +416,7 @@ TEST(qpp_randn_dmat, AllTests)
 }
 /******************************************************************************/
 /// BEGIN inline std::vector<idx> qpp::randperm(idx N)
-TEST(qpp_randperm, AllTests)
-{
+TEST(qpp_randperm, AllTests) {
     idx N = 1;
     std::vector<idx> result = qpp::randperm(N);
     std::sort(std::begin(result), std::end(result));
@@ -481,8 +441,7 @@ TEST(qpp_randperm, AllTests)
 }
 /******************************************************************************/
 /// BEGIN inline std::vector<double> qpp::randprob(idx N)
-TEST(qpp_randprob, AllTests)
-{
+TEST(qpp_randprob, AllTests) {
     idx N = 1;
     std::vector<double> result = qpp::randprob(N);
     EXPECT_EQ(1, result.size());
@@ -504,15 +463,13 @@ TEST(qpp_randprob, AllTests)
 }
 /******************************************************************************/
 /// BEGIN inline cmat qpp::randrho(idx D = 2)
-TEST(qpp_randrho, AllTests)
-{
+TEST(qpp_randrho, AllTests) {
     // D = 1 degenerate case
     idx D = 1;
     cmat rho = qpp::randrho(D);
     EXPECT_NEAR(0, norm(rho - adjoint(rho)), 1e-7);
     dyn_col_vect<double> lambdas = hevals(rho);
-    for (idx i = 0; i < lambdas.size(); ++i)
-    {
+    for (idx i = 0; i < lambdas.size(); ++i) {
         EXPECT_GE(lambdas[i], 0);
         EXPECT_LE(lambdas[i], 1);
     }
@@ -524,8 +481,7 @@ TEST(qpp_randrho, AllTests)
     rho = qpp::randrho(D);
     EXPECT_NEAR(0, norm(rho - adjoint(rho)), 1e-7);
     lambdas = hevals(rho);
-    for (idx i = 0; i < lambdas.size(); ++i)
-    {
+    for (idx i = 0; i < lambdas.size(); ++i) {
         EXPECT_GE(lambdas[i], 0);
         EXPECT_LE(lambdas[i], 1);
     }
@@ -537,8 +493,7 @@ TEST(qpp_randrho, AllTests)
     rho = qpp::randrho(D);
     EXPECT_NEAR(0, norm(rho - adjoint(rho)), 1e-7);
     lambdas = hevals(rho);
-    for (idx i = 0; i < lambdas.size(); ++i)
-    {
+    for (idx i = 0; i < lambdas.size(); ++i) {
         EXPECT_GE(lambdas[i], 0);
         EXPECT_LE(lambdas[i], 1);
     }
@@ -547,8 +502,7 @@ TEST(qpp_randrho, AllTests)
 }
 /******************************************************************************/
 /// BEGIN inline cmat qpp::randU(idx D = 2)
-TEST(qpp_randU, AllTests)
-{
+TEST(qpp_randU, AllTests) {
     // D = 1 degenerate case
     idx D = 1;
     cmat U = qpp::randU(D);
@@ -561,8 +515,7 @@ TEST(qpp_randU, AllTests)
 
     idx N = 10000; // number of runs, average over random unitaries
     ket avg_state = ket::Zero(D);
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         avg_state += qpp::randU() * st.z0;
     }
     ket expected = ket::Zero(D);
@@ -575,8 +528,7 @@ TEST(qpp_randU, AllTests)
 }
 /******************************************************************************/
 /// BEGIN inline cmat qpp::randV(idx Din, idx Dout)
-TEST(qpp_randV, AllTests)
-{
+TEST(qpp_randV, AllTests) {
     // Din = 1, Dout = 1 degenerate case
     idx Din = 1, Dout = 1;
     cmat V = qpp::randV(Din, Dout);

@@ -36,8 +36,7 @@ using namespace qpp;
 /// BEGIN qpp::RandomDevices::load(std::istream& is)
 ///
 ///       qpp::RandomDevices::save(std::ostream& os) const
-TEST(qpp_RandomDevices_load_save, AllTests)
-{
+TEST(qpp_RandomDevices_load_save, AllTests) {
     // save the state of the PRNG
     std::stringstream ss;
     qpp::rdevs.save(ss);

@@ -36,8 +36,7 @@ using namespace qpp;
 
 /******************************************************************************/
 /// BEGIN template<typename T> struct qpp::is_complex
-TEST(qpp_is_complex, AllTests)
-{
+TEST(qpp_is_complex, AllTests) {
     EXPECT_TRUE(qpp::is_complex<std::complex<double>>::value);
     EXPECT_TRUE(qpp::is_complex<std::complex<int>>::value);
 
@@ -46,19 +45,17 @@ TEST(qpp_is_complex, AllTests)
 }
 /******************************************************************************/
 /// BEGIN template<typename T> struct qpp::is_iterable
-TEST(qpp_is_iterable, AllTests)
-{
+TEST(qpp_is_iterable, AllTests) {
     EXPECT_TRUE(qpp::is_iterable<std::vector<int>>::value);
     EXPECT_TRUE(qpp::is_iterable<std::list<double>>::value);
 
-    class X{};
+    class X {};
     EXPECT_FALSE(qpp::is_iterable<X>::value);
     EXPECT_FALSE(qpp::is_iterable<qpp::States>::value);
 }
 /******************************************************************************/
 /// BEGIN template<typename T> struct qpp::is_matrix_expression
-TEST(qpp_is_matrix_expression, AllTests)
-{
+TEST(qpp_is_matrix_expression, AllTests) {
     dmat A, B, C, D;
     int x{}, y{}, z{};
 

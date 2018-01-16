@@ -44,9 +44,8 @@ using namespace qpp;
 ///       void qpp::saveMATLAB(const Eigen::MatrixBase <Derived>& A,
 ///                            const std::string& mat_file,
 ///                            const std::string& var_name,
-     ///                       const std::string& mode)
-TEST(qpp_MATLAB_load_save_MATLAB_Matrices, AllTests)
-{
+///                       const std::string& mode)
+TEST(qpp_MATLAB_load_save_MATLAB_Matrices, AllTests) {
     // matrices,complex, real and integer
 
     // DA = 1, DB = 1 degenerate case
@@ -64,8 +63,7 @@ TEST(qpp_MATLAB_load_save_MATLAB_Matrices, AllTests)
     EXPECT_NEAR(0, norm(loadB - B), 1e-7);
 
     qpp::saveMATLAB(C, "out.mat", "C", "w");
-    Eigen::MatrixXi loadC =
-            qpp::loadMATLAB<Eigen::MatrixXi>("out.mat", "C");
+    Eigen::MatrixXi loadC = qpp::loadMATLAB<Eigen::MatrixXi>("out.mat", "C");
     EXPECT_NEAR(0, norm(loadC - C), 1e-7);
 
     // DA = 1, DB = 10
@@ -112,8 +110,7 @@ TEST(qpp_MATLAB_load_save_MATLAB_Matrices, AllTests)
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-7);
 }
 
-TEST(qpp_MATLAB_load_save_MATLAB_Vectors, AllTests)
-{
+TEST(qpp_MATLAB_load_save_MATLAB_Vectors, AllTests) {
     // kets/row vectors, complex, real and integer
 
     // D = 1 degenerate case
@@ -123,17 +120,17 @@ TEST(qpp_MATLAB_load_save_MATLAB_Vectors, AllTests)
     dyn_row_vect<int> C = dyn_row_vect<int>::Random(D);
 
     qpp::saveMATLAB(A, "out.mat", "A", "w");
-    ket loadA = qpp::loadMATLAB < ket > ("out.mat", "A");
+    ket loadA = qpp::loadMATLAB<ket>("out.mat", "A");
     EXPECT_NEAR(0, norm(loadA - A), 1e-7);
 
     qpp::saveMATLAB(B, "out.mat", "B", "w");
     dyn_row_vect<double> loadB =
-            qpp::loadMATLAB<dyn_row_vect<double>>("out.mat", "B");
+        qpp::loadMATLAB<dyn_row_vect<double>>("out.mat", "B");
     EXPECT_NEAR(0, norm(loadB - B), 1e-7);
 
     qpp::saveMATLAB(C, "out.mat", "C", "w");
     dyn_row_vect<int> loadC =
-            qpp::loadMATLAB<dyn_row_vect<int>>("out.mat", "C");
+        qpp::loadMATLAB<dyn_row_vect<int>>("out.mat", "C");
     EXPECT_NEAR(0, norm(loadC - C), 1e-7);
 
     // D = 32
@@ -158,7 +155,7 @@ TEST(qpp_MATLAB_load_save_MATLAB_Vectors, AllTests)
     dyn_row_vect<int> expression = 3. * C + C;
     qpp::saveMATLAB(3. * C + C, "out.mat", "expression", "w");
     dyn_row_vect<int> load_expression =
-            qpp::loadMATLAB<dyn_row_vect<int>>("out.mat", "expression");
+        qpp::loadMATLAB<dyn_row_vect<int>>("out.mat", "expression");
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-7);
 }
 /******************************************************************************/

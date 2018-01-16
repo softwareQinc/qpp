@@ -38,8 +38,7 @@ using namespace qpp;
 ///       const Container& X,
 ///       typename std::enable_if<is_iterable<Container>::value>::type*
 ///       = nullptr)
-TEST(qpp_avg, AllTests)
-{
+TEST(qpp_avg, AllTests) {
     // size 1
     std::vector<double> prob{1};
     std::vector<double> X{10};
@@ -67,8 +66,7 @@ TEST(qpp_avg, AllTests)
 ///       const Container& Y,
 ///       typename std::enable_if<is_iterable<Container>::value>::type*
 ///       = nullptr)
-TEST(qpp_cor, AllTests)
-{
+TEST(qpp_cor, AllTests) {
     // decoupled size 2
     dmat probX(2, 1), probY(1, 2);
     probX << 0.6, 0.4;
@@ -89,13 +87,12 @@ TEST(qpp_cor, AllTests)
     X = std::vector<double>{1, 2};
     Y = std::vector<double>{3, 4, 5};
     double result = qpp::cor(probXY, X, Y);
-    double expected = cov(probXY, X, Y) /
-                      (sigma(marginalX(probXY), X) *
-                       sigma(marginalY(probXY), Y));
+    double expected = cov(probXY, X, Y) / (sigma(marginalX(probXY), X) *
+                                           sigma(marginalY(probXY), Y));
     EXPECT_NEAR(expected, result, 1e-7);
     // symmetry
-    EXPECT_NEAR(qpp::cor(probXY, X, Y),
-                qpp::cor(transpose(probXY), Y, X), 1e-7);
+    EXPECT_NEAR(qpp::cor(probXY, X, Y), qpp::cor(transpose(probXY), Y, X),
+                1e-7);
 }
 /******************************************************************************/
 /// BEGIN template<typename Container> double qpp::cov(
@@ -104,8 +101,7 @@ TEST(qpp_cor, AllTests)
 ///       const Container& Y,
 ///       typename std::enable_if<is_iterable<Container>::value>::type*
 ///       = nullptr)
-TEST(qpp_cov, AllTests)
-{
+TEST(qpp_cov, AllTests) {
     // size 1
     dmat probXY(1, 1);
     std::vector<double> X{10};
@@ -138,13 +134,12 @@ TEST(qpp_cov, AllTests)
 
     EXPECT_NEAR(expected, result, 1e-7);
     // symmetry
-    EXPECT_NEAR(qpp::cov(probXY, X, Y),
-                qpp::cov(transpose(probXY), Y, X), 1e-7);
+    EXPECT_NEAR(qpp::cov(probXY, X, Y), qpp::cov(transpose(probXY), Y, X),
+                1e-7);
 }
 /******************************************************************************/
 /// BEGIN inline std::vector<double> qpp::marginalX(const dmat& probXY)
-TEST(qpp_marginalX, AllTests)
-{
+TEST(qpp_marginalX, AllTests) {
     // size 1
     dmat probXY(1, 1);
     probXY << 1;
@@ -152,8 +147,7 @@ TEST(qpp_marginalX, AllTests)
     std::vector<double> expected{1};
     EXPECT_EQ(result.size(), expected.size());
     EXPECT_NEAR(1, sum(result.begin(), result.end()), 1e-7);
-    for (idx i = 0; i < result.size(); ++i)
-    {
+    for (idx i = 0; i < result.size(); ++i) {
         EXPECT_GE(result[i], 0);
         EXPECT_NEAR(result[i], expected[i], 1e-7);
     }
@@ -165,8 +159,7 @@ TEST(qpp_marginalX, AllTests)
     expected = std::vector<double>{1};
     EXPECT_EQ(result.size(), expected.size());
     EXPECT_NEAR(1, sum(result.begin(), result.end()), 1e-7);
-    for (idx i = 0; i < result.size(); ++i)
-    {
+    for (idx i = 0; i < result.size(); ++i) {
         EXPECT_GE(result[i], 0);
         EXPECT_NEAR(result[i], expected[i], 1e-7);
     }
@@ -178,8 +171,7 @@ TEST(qpp_marginalX, AllTests)
     expected = std::vector<double>{0.15, 0.3, 0.55};
     EXPECT_EQ(result.size(), expected.size());
     EXPECT_NEAR(1, sum(result.begin(), result.end()), 1e-7);
-    for (idx i = 0; i < result.size(); ++i)
-    {
+    for (idx i = 0; i < result.size(); ++i) {
         EXPECT_GE(result[i], 0);
         EXPECT_NEAR(result[i], expected[i], 1e-7);
     }
@@ -191,16 +183,14 @@ TEST(qpp_marginalX, AllTests)
     expected = std::vector<double>{0.3, 0.35, 0.35};
     EXPECT_EQ(result.size(), expected.size());
     EXPECT_NEAR(1, sum(result.begin(), result.end()), 1e-7);
-    for (idx i = 0; i < result.size(); ++i)
-    {
+    for (idx i = 0; i < result.size(); ++i) {
         EXPECT_GE(result[i], 0);
         EXPECT_NEAR(result[i], expected[i], 1e-7);
     }
 }
 /******************************************************************************/
 /// BEGIN inline std::vector<double> qpp::marginalY(const dmat& probXY)
-TEST(qpp_marginalY, AllTests)
-{
+TEST(qpp_marginalY, AllTests) {
     // size 1
     dmat probXY(1, 1);
     probXY << 1;
@@ -208,8 +198,7 @@ TEST(qpp_marginalY, AllTests)
     std::vector<double> expected{1};
     EXPECT_EQ(result.size(), expected.size());
     EXPECT_NEAR(1, sum(result.begin(), result.end()), 1e-7);
-    for (idx i = 0; i < result.size(); ++i)
-    {
+    for (idx i = 0; i < result.size(); ++i) {
         EXPECT_GE(result[i], 0);
         EXPECT_NEAR(result[i], expected[i], 1e-7);
     }
@@ -221,8 +210,7 @@ TEST(qpp_marginalY, AllTests)
     expected = std::vector<double>{0.15, 0.3, 0.55};
     EXPECT_EQ(result.size(), expected.size());
     EXPECT_NEAR(1, sum(result.begin(), result.end()), 1e-7);
-    for (idx i = 0; i < result.size(); ++i)
-    {
+    for (idx i = 0; i < result.size(); ++i) {
         EXPECT_GE(result[i], 0);
         EXPECT_NEAR(result[i], expected[i], 1e-7);
     }
@@ -234,8 +222,7 @@ TEST(qpp_marginalY, AllTests)
     expected = std::vector<double>{1};
     EXPECT_EQ(result.size(), expected.size());
     EXPECT_NEAR(1, sum(result.begin(), result.end()), 1e-7);
-    for (idx i = 0; i < result.size(); ++i)
-    {
+    for (idx i = 0; i < result.size(); ++i) {
         EXPECT_GE(result[i], 0);
         EXPECT_NEAR(result[i], expected[i], 1e-7);
     }
@@ -247,8 +234,7 @@ TEST(qpp_marginalY, AllTests)
     expected = std::vector<double>{0.55, 0.45};
     EXPECT_EQ(result.size(), expected.size());
     EXPECT_NEAR(1, sum(result.begin(), result.end()), 1e-7);
-    for (idx i = 0; i < result.size(); ++i)
-    {
+    for (idx i = 0; i < result.size(); ++i) {
         EXPECT_GE(result[i], 0);
         EXPECT_NEAR(result[i], expected[i], 1e-7);
     }
@@ -259,8 +245,7 @@ TEST(qpp_marginalY, AllTests)
 ///       const Container& X,
 ///       typename std::enable_if<is_iterable<Container>::value>::type*
 ///       = nullptr)
-TEST(qpp_sigma, AllTests)
-{
+TEST(qpp_sigma, AllTests) {
     // size 1
     std::vector<double> prob{1};
     std::vector<double> X{10};
@@ -283,8 +268,7 @@ TEST(qpp_sigma, AllTests)
 }
 /******************************************************************************/
 /// BEGIN inline std::vector<double> qpp::uniform(idx N)
-TEST(qpp_uniform, AllTests)
-{
+TEST(qpp_uniform, AllTests) {
     // size 1
     idx N = 1;
     EXPECT_THAT(qpp::uniform(N), testing::Each(1. / N));
@@ -303,8 +287,7 @@ TEST(qpp_uniform, AllTests)
 ///       const Container& X,
 ///       typename std::enable_if<is_iterable<Container>::value>::type*
 ///       = nullptr)
-TEST(qpp_var, AllTests)
-{
+TEST(qpp_var, AllTests) {
     // size 1
     std::vector<double> prob{1};
     std::vector<double> X{10};

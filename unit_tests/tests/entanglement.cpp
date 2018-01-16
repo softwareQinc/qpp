@@ -36,8 +36,7 @@ using namespace qpp;
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::concurrence(
 ///       const Eigen::MatrixBase<Derived>& A)
-TEST(qpp_concurrence, AllTests)
-{
+TEST(qpp_concurrence, AllTests) {
     // random qubit product state
     cmat rho1 = prj(kron(randU(), randU()) * mket({0, 0}));
     EXPECT_NEAR(0, qpp::concurrence(rho1), 1e-7);
@@ -47,25 +46,25 @@ TEST(qpp_concurrence, AllTests)
     EXPECT_NEAR(1, qpp::concurrence(rho2), 1e-7);
 
     // random 2-qubit state with Schmidt coefficients 0.8 and 0.6
-    cmat rho3 = prj(kron(randU(), randU()) *
-                    (0.8 * mket({0, 0}) + 0.6 * mket({1, 1})));
+    cmat rho3 =
+        prj(kron(randU(), randU()) * (0.8 * mket({0, 0}) + 0.6 * mket({1, 1})));
     EXPECT_NEAR(2 * 0.8 * 0.6, qpp::concurrence(rho3), 1e-7);
 }
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::entanglement(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
-TEST(qpp_entanglement, AllTests)
-{
+TEST(qpp_entanglement, AllTests) {
     // random qutrit product state
     ket psi1 = kron(randU(3), randU(3)) * mket({0, 0}, 3);
     EXPECT_NEAR(0, qpp::entanglement(psi1, {3, 3}), 1e-7);
 
     // random 2-qutrit state with Schmidt coefficients 0.36, 0.09 and 0.01
-    ket psi2 = kron(randU(3), randU(3)) * (0.6 * mket({0, 0}, 3) +
-                                           0.3 * mket({1, 1}, 3) +
-                                           0.1 * mket({2, 2}, 3));
+    ket psi2 =
+        kron(randU(3), randU(3)) *
+        (0.6 * mket({0, 0}, 3) + 0.3 * mket({1, 1}, 3) + 0.1 * mket({2, 2}, 3));
     EXPECT_NEAR(-0.36 * std::log2(0.36) - 0.09 * std::log2(0.09) -
-                0.01 * std::log2(0.01), qpp::entanglement(psi2, {3, 3}), 1e-7);
+                    0.01 * std::log2(0.01),
+                qpp::entanglement(psi2, {3, 3}), 1e-7);
 
     // random maximally entangled 2-qutrit state
     ket psi3 = kron(randU(3), randU(3)) * st.mes(3);
@@ -74,8 +73,7 @@ TEST(qpp_entanglement, AllTests)
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::entanglement(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
-TEST(qpp_entanglement_qubits, AllTests)
-{
+TEST(qpp_entanglement_qubits, AllTests) {
     // random qubit product state
     ket psi1 = kron(randU(), randU()) * mket({0, 0});
     EXPECT_NEAR(0, qpp::entanglement(psi1), 1e-7);
@@ -85,16 +83,15 @@ TEST(qpp_entanglement_qubits, AllTests)
     EXPECT_NEAR(1, qpp::entanglement(psi2), 1e-7);
 
     // random 2-qubit state with Schmidt coefficients 0.8 and 0.6
-    ket psi3 = kron(randU(), randU()) *
-               (0.8 * mket({0, 0}) + 0.6 * mket({1, 1}));
+    ket psi3 =
+        kron(randU(), randU()) * (0.8 * mket({0, 0}) + 0.6 * mket({1, 1}));
     EXPECT_NEAR(-0.64 * std::log2(0.64) - 0.36 * std::log2(0.36),
                 qpp::entanglement(psi3), 1e-7);
 }
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::gconcurrence(
 ///       const Eigen::MatrixBase<Derived>& A)
-TEST(qpp_gconcurrence, AllTests)
-{
+TEST(qpp_gconcurrence, AllTests) {
     // random qubit product state
     ket psi1 = kron(randU(), randU()) * mket({0, 0});
     EXPECT_NEAR(0, qpp::gconcurrence(psi1), 1e-7);
@@ -104,8 +101,8 @@ TEST(qpp_gconcurrence, AllTests)
     EXPECT_NEAR(1, qpp::gconcurrence(psi2), 1e-7);
 
     // random 2-qubit state with Schmidt coefficients 0.8 and 0.6
-    ket psi3 = kron(randU(), randU()) *
-               (0.8 * mket({0, 0}) + 0.6 * mket({1, 1}));
+    ket psi3 =
+        kron(randU(), randU()) * (0.8 * mket({0, 0}) + 0.6 * mket({1, 1}));
     EXPECT_NEAR(2 * 0.8 * 0.6, qpp::gconcurrence(psi3), 1e-7);
 
     // random maximally entangled 2-qutrit state
@@ -113,9 +110,9 @@ TEST(qpp_gconcurrence, AllTests)
     EXPECT_NEAR(1, qpp::gconcurrence(psi4), 1e-7);
 
     // random 2-qutrit state with Schmidt coefficients 0.36, 0.09 and 0.01
-    ket psi5 = kron(randU(3), randU(3)) * (0.6 * mket({0, 0}, 3) +
-                                           0.3 * mket({1, 1}, 3) +
-                                           0.1 * mket({2, 2}, 3));
+    ket psi5 =
+        kron(randU(3), randU(3)) *
+        (0.6 * mket({0, 0}, 3) + 0.3 * mket({1, 1}, 3) + 0.1 * mket({2, 2}, 3));
     EXPECT_NEAR(3 * std::pow(0.36 * 0.09 * 0.01, 1. / 3),
                 qpp::gconcurrence(psi5), 1e-7);
 
@@ -126,8 +123,7 @@ TEST(qpp_gconcurrence, AllTests)
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::lognegativity(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
-TEST(qpp_lognegativity, AllTests)
-{
+TEST(qpp_lognegativity, AllTests) {
     // zero on product states (2 qutrits)
     cmat rho = randrho(3);
     cmat sigma = randrho(3);
@@ -136,10 +132,10 @@ TEST(qpp_lognegativity, AllTests)
     // additivity (2 ququads)
     rho = randrho(4);
     sigma = randrho(4);
-    EXPECT_NEAR(qpp::lognegativity(syspermute(kron(rho, sigma), {0, 2, 1, 3}),
-                                   {4, 4}),
-                qpp::lognegativity(rho, {2, 2}) +
-                qpp::lognegativity(sigma, {2, 2}), 1e-7);
+    EXPECT_NEAR(
+        qpp::lognegativity(syspermute(kron(rho, sigma), {0, 2, 1, 3}), {4, 4}),
+        qpp::lognegativity(rho, {2, 2}) + qpp::lognegativity(sigma, {2, 2}),
+        1e-7);
 
     // random maximally entangled 2-qutrit state
     idx d = 3;
@@ -159,16 +155,15 @@ TEST(qpp_lognegativity, AllTests)
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::lognegativity(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
-TEST(qpp_lognegativity_qubits, AllTests)
-{
+TEST(qpp_lognegativity_qubits, AllTests) {
     // zero on product states (2 qubits)
     cmat rho = randrho();
     cmat sigma = randrho();
     EXPECT_NEAR(0, qpp::lognegativity(kron(rho, sigma)), 1e-7);
 
     // random 2-qubit state with Schmidt coefficients 0.8 and 0.6
-    ket psi = kron(randU(), randU()) *
-              (0.8 * mket({0, 0}) + 0.6 * mket({1, 1}));
+    ket psi =
+        kron(randU(), randU()) * (0.8 * mket({0, 0}) + 0.6 * mket({1, 1}));
     rho = prj(psi);
     EXPECT_NEAR(0.9708536, qpp::lognegativity(rho), 1e-7);
 
@@ -180,8 +175,7 @@ TEST(qpp_lognegativity_qubits, AllTests)
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::negativity(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
-TEST(qpp_negativity, AllTests)
-{
+TEST(qpp_negativity, AllTests) {
     // Must be (d - 1)/2 on MES
 
     // zero on product states (2 qutrits)
@@ -196,8 +190,7 @@ TEST(qpp_negativity, AllTests)
     std::vector<double> probs = randprob(N);
     rho = cmat::Zero(d * d, d * d);
     double sum_neg = 0;
-    for (idx i = 0; i < N; ++i)
-    {
+    for (idx i = 0; i < N; ++i) {
         cmat rho_i = randrho(d * d);
         sum_neg += probs[i] * qpp::negativity(rho_i, {d, d});
         rho += probs[i] * rho_i;
@@ -222,8 +215,7 @@ TEST(qpp_negativity, AllTests)
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::negativity(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
-TEST(qpp_negativity_qubits, AllTests)
-{
+TEST(qpp_negativity_qubits, AllTests) {
     // Must be (d - 1)/2 on MES
 
     // zero on product states (2 qutrits)
@@ -232,8 +224,8 @@ TEST(qpp_negativity_qubits, AllTests)
     EXPECT_NEAR(0, qpp::negativity(kron(rho, sigma)), 1e-7);
 
     // random 2-qubit state with Schmidt coefficients 0.8 and 0.6
-    ket psi = kron(randU(), randU()) *
-              (0.8 * mket({0, 0}) + 0.6 * mket({1, 1}));
+    ket psi =
+        kron(randU(), randU()) * (0.8 * mket({0, 0}) + 0.6 * mket({1, 1}));
     rho = prj(psi);
     EXPECT_NEAR(0.48, qpp::negativity(rho), 1e-7);
 
@@ -245,8 +237,7 @@ TEST(qpp_negativity_qubits, AllTests)
 /******************************************************************************/
 /// BEGIN template<typename Derived> cmat qpp::schmidtA/B(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
-TEST(qpp_schmidtA_schmidtB, AllTests)
-{
+TEST(qpp_schmidtA_schmidtB, AllTests) {
     // random degenerate 1 x 1 product state
     idx dA = 1, dB = 1, D = dA * dB, minD = std::min(dA, dB);
     cmat UA = randU(dA);
@@ -260,8 +251,7 @@ TEST(qpp_schmidtA_schmidtB, AllTests)
     // get the Schmidt coefficients and test the result
     dyn_col_vect<double> scf = schmidtcoeffs(psi, {dA, dB});
     ket expected = ket::Zero(D);
-    for (idx i = 0; i < minD; ++i)
-    {
+    for (idx i = 0; i < minD; ++i) {
         expected += scf(i) * kron(basisA.col(i), basisB.col(i));
     }
     EXPECT_NEAR(0, norm(expected - psi), 1e-7);
@@ -279,8 +269,7 @@ TEST(qpp_schmidtA_schmidtB, AllTests)
     // get the Schmidt coefficients and test the result
     scf = schmidtcoeffs(psi, {dA, dB});
     expected = ket::Zero(D);
-    for (idx i = 0; i < minD; ++i)
-    {
+    for (idx i = 0; i < minD; ++i) {
         expected += scf(i) * kron(basisA.col(i), basisB.col(i));
     }
     EXPECT_NEAR(0, norm(expected - psi), 1e-7);
@@ -298,8 +287,7 @@ TEST(qpp_schmidtA_schmidtB, AllTests)
     // get the Schmidt coefficients and test the result
     scf = schmidtcoeffs(psi, {dA, dB});
     expected = ket::Zero(D);
-    for (idx i = 0; i < minD; ++i)
-    {
+    for (idx i = 0; i < minD; ++i) {
         expected += scf(i) * kron(basisA.col(i), basisB.col(i));
     }
     EXPECT_NEAR(0, norm(expected - psi), 1e-7);
@@ -315,8 +303,7 @@ TEST(qpp_schmidtA_schmidtB, AllTests)
     // get the Schmidt coefficients and test the result
     scf = schmidtcoeffs(psi, {dA, dB});
     expected = ket::Zero(D);
-    for (idx i = 0; i < minD; ++i)
-    {
+    for (idx i = 0; i < minD; ++i) {
         expected += scf(i) * kron(basisA.col(i), basisB.col(i));
     }
     EXPECT_NEAR(0, norm(expected - psi), 1e-7);
@@ -324,8 +311,7 @@ TEST(qpp_schmidtA_schmidtB, AllTests)
 /******************************************************************************/
 /// BEGIN template<typename Derived> cmat qpp::schmidtA/B(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
-TEST(qpp_schmidtA_schmidtB_qubits, AllTests)
-{
+TEST(qpp_schmidtA_schmidtB_qubits, AllTests) {
     // random 2 x 2 product state
     idx d = 2, D = d * d;
     cmat UA = randU(d);
@@ -339,8 +325,7 @@ TEST(qpp_schmidtA_schmidtB_qubits, AllTests)
     // get the Schmidt coefficients and test the result
     dyn_col_vect<double> scf = schmidtcoeffs(psi, d);
     ket expected = ket::Zero(D);
-    for (idx i = 0; i < d; ++i)
-    {
+    for (idx i = 0; i < d; ++i) {
         expected += scf(i) * kron(basisA.col(i), basisB.col(i));
     }
     EXPECT_NEAR(0, norm(expected - psi), 1e-7);
@@ -358,8 +343,7 @@ TEST(qpp_schmidtA_schmidtB_qubits, AllTests)
     // get the Schmidt coefficients and test the result
     scf = schmidtcoeffs(psi, d);
     expected = ket::Zero(D);
-    for (idx i = 0; i < d; ++i)
-    {
+    for (idx i = 0; i < d; ++i) {
         expected += scf(i) * kron(basisA.col(i), basisB.col(i));
     }
     EXPECT_NEAR(0, norm(expected - psi), 1e-7);
@@ -375,8 +359,7 @@ TEST(qpp_schmidtA_schmidtB_qubits, AllTests)
     // get the Schmidt coefficients and test the result
     scf = schmidtcoeffs(psi, d);
     expected = ket::Zero(D);
-    for (idx i = 0; i < d; ++i)
-    {
+    for (idx i = 0; i < d; ++i) {
         expected += scf(i) * kron(basisA.col(i), basisB.col(i));
     }
     EXPECT_NEAR(0, norm(expected - psi), 1e-7);
@@ -384,8 +367,7 @@ TEST(qpp_schmidtA_schmidtB_qubits, AllTests)
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_col_vect<double> qpp::schmidtcoeffs(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
-TEST(qpp_schmidtcoeffs, AllTests)
-{
+TEST(qpp_schmidtcoeffs, AllTests) {
     // random degenerate 1 x 1 product state
     idx dA = 1, dB = 1, D = dA * dB, minD = std::min(dA, dB);
     cmat UA = randU(dA);
@@ -435,8 +417,7 @@ TEST(qpp_schmidtcoeffs, AllTests)
     UA = randU(dA);
     UB = randU(dB);
     psi = kron(UA, UB) *
-          (c0 * mket({0, 0}, {dA, dB}) +
-           c1 * mket({1, 1}, {dA, dB}) +
+          (c0 * mket({0, 0}, {dA, dB}) + c1 * mket({1, 1}, {dA, dB}) +
            c2 * mket({2, 2}, {dA, dB}));
     result = qpp::schmidtcoeffs(psi, {dA, dB});
     expected = dyn_col_vect<double>::Zero(minD);
@@ -446,8 +427,7 @@ TEST(qpp_schmidtcoeffs, AllTests)
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_col_vect<double> qpp::schmidtcoeffs(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
-TEST(qpp_schmidtcoeffs_qubits, AllTests)
-{
+TEST(qpp_schmidtcoeffs_qubits, AllTests) {
     // random 2 x 2 product state
     idx d = 2;
     cmat UA = randU(d);
@@ -473,8 +453,7 @@ TEST(qpp_schmidtcoeffs_qubits, AllTests)
     double c0 = 0.8, c1 = 0.6;
     UA = randU(d);
     UB = randU(d);
-    psi = kron(UA, UB) *
-          (c0 * st.zero(2) + c1 * st.one(2));
+    psi = kron(UA, UB) * (c0 * st.zero(2) + c1 * st.one(2));
     result = qpp::schmidtcoeffs(psi);
     expected = dyn_col_vect<double>::Zero(d);
     expected << c0, c1;
@@ -487,9 +466,7 @@ TEST(qpp_schmidtcoeffs_qubits, AllTests)
     UA = randU(d);
     UB = randU(d);
     psi = kron(UA, UB) *
-          (c0 * mket({0, 0}, d) +
-           c1 * mket({1, 1}, d) +
-           c2 * mket({2, 2}, d));
+          (c0 * mket({0, 0}, d) + c1 * mket({1, 1}, d) + c2 * mket({2, 2}, d));
     result = qpp::schmidtcoeffs(psi, d);
     expected = dyn_col_vect<double>::Zero(d);
     expected << c0, c1, c2;
@@ -498,17 +475,15 @@ TEST(qpp_schmidtcoeffs_qubits, AllTests)
 /******************************************************************************/
 /// BEGIN template<typename Derived> std::vector<double> qpp::schmidtprobs(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
-TEST(qpp_schmidtprobs, AllTests)
-{
+TEST(qpp_schmidtprobs, AllTests) {
     // random degenerate 1 x 1 product state
     idx dA = 1, dB = 1, D = dA * dB, minD = std::min(dA, dB);
     cmat UA = randU(dA);
     cmat UB = randU(dB);
     ket psi = kron(UA, UB) * mket({0, 0}, {dA, dB});
     std::vector<double> result_vect = qpp::schmidtprobs(psi, {dA, dB});
-    dyn_col_vect<double> result =
-            Eigen::Map<dyn_col_vect<double>>(result_vect.data(),
-                                             result_vect.size());
+    dyn_col_vect<double> result = Eigen::Map<dyn_col_vect<double>>(
+        result_vect.data(), result_vect.size());
     dyn_col_vect<double> expected(minD);
     expected << 1;
     EXPECT_NEAR(0, norm(result - expected), 1e-7);
@@ -558,8 +533,7 @@ TEST(qpp_schmidtprobs, AllTests)
     UA = randU(dA);
     UB = randU(dB);
     psi = kron(UA, UB) *
-          (c0 * mket({0, 0}, {dA, dB}) +
-           c1 * mket({1, 1}, {dA, dB}) +
+          (c0 * mket({0, 0}, {dA, dB}) + c1 * mket({1, 1}, {dA, dB}) +
            c2 * mket({2, 2}, {dA, dB}));
     result_vect = qpp::schmidtprobs(psi, {dA, dB});
     result = Eigen::Map<dyn_col_vect<double>>(result_vect.data(),
@@ -571,17 +545,15 @@ TEST(qpp_schmidtprobs, AllTests)
 /******************************************************************************/
 /// BEGIN template<typename Derived> std::vector<double> qpp::schmidtprobs(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
-TEST(qpp_schmidtprobs_qubits, AllTests)
-{
+TEST(qpp_schmidtprobs_qubits, AllTests) {
     // random 2 x 2 product state
     idx d = 2;
     cmat UA = randU(d);
     cmat UB = randU(d);
     ket psi = kron(UA, UB) * mket({0, 0});
     std::vector<double> result_vect = qpp::schmidtprobs(psi);
-    dyn_col_vect<double> result =
-            Eigen::Map<dyn_col_vect<double>>(result_vect.data(),
-                                             result_vect.size());
+    dyn_col_vect<double> result = Eigen::Map<dyn_col_vect<double>>(
+        result_vect.data(), result_vect.size());
     dyn_col_vect<double> expected = dyn_col_vect<double>::Zero(d);
     expected(0) = 1;
     EXPECT_NEAR(0, norm(result - expected), 1e-7);
@@ -603,8 +575,7 @@ TEST(qpp_schmidtprobs_qubits, AllTests)
     double c0 = 0.8, c1 = 0.6;
     UA = randU(d);
     UB = randU(d);
-    psi = kron(UA, UB) *
-          (c0 * st.zero(2) + c1 * st.one(2));
+    psi = kron(UA, UB) * (c0 * st.zero(2) + c1 * st.one(2));
     result_vect = qpp::schmidtprobs(psi);
     result = Eigen::Map<dyn_col_vect<double>>(result_vect.data(),
                                               result_vect.size());
@@ -619,9 +590,7 @@ TEST(qpp_schmidtprobs_qubits, AllTests)
     UA = randU(d);
     UB = randU(d);
     psi = kron(UA, UB) *
-          (c0 * mket({0, 0}, d) +
-           c1 * mket({1, 1}, d) +
-           c2 * mket({2, 2}, d));
+          (c0 * mket({0, 0}, d) + c1 * mket({1, 1}, d) + c2 * mket({2, 2}, d));
     result_vect = qpp::schmidtprobs(psi, d);
     result = Eigen::Map<dyn_col_vect<double>>(result_vect.data(),
                                               result_vect.size());

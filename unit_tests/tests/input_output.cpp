@@ -37,8 +37,7 @@ using namespace qpp;
 ///
 ///       template<typename Derived> void qpp::save(
 ///       const Eigen::MatrixBase<Derived>& A, const std::string& fname)
-TEST(qpp_load_save, Matrices)
-{
+TEST(qpp_load_save, Matrices) {
     // matrices,complex, real and integer
 
     // DA = 1, DB = 1 degenerate case
@@ -103,8 +102,7 @@ TEST(qpp_load_save, Matrices)
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-7);
 }
 
-TEST(qpp_load_save, Vectors)
-{
+TEST(qpp_load_save, Vectors) {
     // kets/row vectors, complex, real and integer
 
     // D = 1 degenerate case
