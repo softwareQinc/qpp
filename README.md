@@ -52,6 +52,10 @@ Quantum++ is licensed under the MIT license, see COPYING for the full terms
 and conditions of the license.
 
 ---
+## Quick starting guide
+Please [see the Wiki](https://github.com/vsoftco/qpp/wiki).
+
+---
 ## Building instructions for POSIX-compliant platforms
 
 ### Configuration

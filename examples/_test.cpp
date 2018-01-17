@@ -75,5 +75,5 @@ int main() {
     std::cout << '\n';
 
     ket x = (10_q + 01_q) / std::sqrt(2);
-    std::cout << disp(x);
+    std::cout << disp(x) << '\n';
 }
