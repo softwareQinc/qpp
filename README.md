@@ -10,6 +10,9 @@
 
 [![Join the chat at https://gitter.im/vsoftco_qpp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/vsoftco_qpp/Lobby/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+---
+## About
+
 Quantum++ is a modern C++11 general purpose quantum computing library, composed 
 solely of template header files. Quantum++ is written in standard C++11 and 
 has very low external dependencies, using only the 
