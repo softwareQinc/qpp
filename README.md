@@ -48,7 +48,7 @@ see <http://eigen.tuxfamily.org/dox/>. For a simple
 [Eigen 3](http://eigen.tuxfamily.org) quick ASCII reference see
 <http://eigen.tuxfamily.org/dox/AsciiQuickReference.txt>.
 
-Copyright (c) 2013 - 2017 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
+Copyright (c) 2013 - 2018 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
 
 ---
 Quantum++ is licensed under the MIT license, see COPYING for the full terms 
