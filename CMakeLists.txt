@@ -79,7 +79,7 @@ IF(${WITH_MATLAB})
     #### inject definition (as #define) in the source files
     ADD_DEFINITIONS(-DWITH_MATLAB_)
     #### modify as needed
-    SET(MATLAB "/Applications/MATLAB_R2016a.app")
+    SET(MATLAB "/Applications/MATLAB_R2017b.app")
     INCLUDE_DIRECTORIES(SYSTEM "${MATLAB}/extern/include")
     SET(CMAKE_EXE_LINKER_FLAGS
             "${CMAKE_EXE_LINKER_FLAGS} -L${MATLAB}/bin/maci64")

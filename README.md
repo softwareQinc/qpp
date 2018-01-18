@@ -51,6 +51,8 @@ see <http://eigen.tuxfamily.org/dox/>. For a simple
 Copyright (c) 2013 - 2018 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
 
 ---
+## License
+
 Quantum++ is licensed under the MIT license, see COPYING for the full terms 
 and conditions of the license.
 
