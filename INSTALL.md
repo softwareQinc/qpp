@@ -235,7 +235,7 @@ with [OpenMP](http://openmp.org/) due to various platform-dependent issues.
 
 ### Building with [clang++](http://clang.llvm.org/) on [OS X/macOS](http://www.apple.com/osx)
 
-- I highly recommend to install [clang++](http://clang.llvm.org/) version 3.7 or later via [macports](https://www.macports.org/). 
+- I highly recommend to install [clang++](http://clang.llvm.org/) version 3.7 or later via [MacPorts](https://www.macports.org/). 
 - If you enable
 [MATLAB](http://www.mathworks.com/products/matlab/) support, make sure that 
 the environment variable `DYLD_LIBRARY_PATH` is set to point to the 
@@ -247,9 +247,9 @@ compiler library location. Otherwise, you get a runtime error similar to
     You can use the 
 [`run_mac_MATLAB.sh`](https://github.com/vsoftco/qpp/blob/master/run_mac_MATLAB.sh)
 script to wrap the exectuable you want to run in, as otherwise setting the `DYLD_LIBRARY_PATH` globally may interfere with 
-[macports](https://www.macports.org/)' [CMake](http://www.cmake.org/) 
+[MacPorts](https://www.macports.org/)' [CMake](http://www.cmake.org/) 
 installation (in case you use [CMake](http://www.cmake.org/) from 
-[macports](https://www.macports.org/)). If you use a script, 
+[MacPorts](https://www.macports.org/)). If you use a script, 
 then the environment variable is local to the script and 
 does not interfere with the rest of the system.
 
