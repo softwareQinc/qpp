@@ -19,8 +19,8 @@ current document I will use `$HOME/eigen` as the location of the
 directory as `$HOME/qpp`. Finally, make sure that your compiler supports
 C++11 and preferably [OpenMP](http://openmp.org/). As a compiler I
 recommend [g++](https://gcc.gnu.org/) version 5.0 or later or
-[clang](http://clang.llvm.org) version 3.7 or later (previous versions
-of [clang](http://clang.llvm.org) do not support
+[clang++](http://clang.llvm.org) version 3.7 or later (previous versions
+of [clang++](http://clang.llvm.org) do not support
 [OpenMP](http://openmp.org/)). You are now ready to go!
 
 Next, we will build a simple minimal example to test that the installation was
@@ -223,7 +223,7 @@ g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
 
 ## Additional remarks
 
-### Building with [Clang++](http://clang.llvm.org/)
+### Building with [clang++](http://clang.llvm.org/)
 - If you use [clang++](http://clang.llvm.org/) version 3.7 or later (previous versions do not have [OpenMP](http://openmp.org/) support) and want 
 to use [OpenMP](http://openmp.org/) (enabled by default in the library), make sure to modify 
 `CLANG_LIBOMP` and `CLANG_LIBOMP_INCLUDE` in [`CMakeLists.txt`](https://github.com/vsoftco/qpp/blob/master/CMakeLists.txt) so they point to 
