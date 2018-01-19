@@ -111,10 +111,10 @@ the libary was installed using a package manager.
 - [CMake](http://www.cmake.org/) version 3.0 or later, highly recommended
 - [MATLAB](http://www.mathworks.com/products/matlab/) compiler include header 
 files:
-`/Applications/MATLAB_R2016a.app/extern/include`
+`/Applications/MATLAB_R2017b.app/extern/include`
 - [MATLAB](http://www.mathworks.com/products/matlab/) compiler shared library 
 files:
-`/Applications/MATLAB_R2016a.app/bin/maci64`
+`/Applications/MATLAB_R2017b.app/bin/maci64`
 
 ## Building using [CMake](http://www.cmake.org/) (version 3.0 or later)
 
@@ -192,8 +192,8 @@ directory before a fresh build!
     g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
          -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
          -isystem $HOME/eigen -I $HOME/qpp/include \
-         -I/Applications/MATLAB_R2016a.app/extern/include \
-         -L/Applications/MATLAB_R2016a.app/bin/maci64 \
+         -I/Applications/MATLAB_R2017b.app/extern/include \
+         -L/Applications/MATLAB_R2017b.app/bin/maci64 \
          -lmx -lmat minimal.cpp -o minimal
 
 ### Debug version (with [MATLAB](http://www.mathworks.com/products/matlab/) support)
@@ -201,8 +201,8 @@ directory before a fresh build!
     g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
          -g3 -DDEBUG \
          -isystem $HOME/eigen -I $HOME/qpp/include \
-         -I /Applications/MATLAB_R2016a.app/extern/include \
-         -L /Applications/MATLAB_R2016a.app/bin/maci64 \
+         -I /Applications/MATLAB_R2017b.app/extern/include \
+         -L /Applications/MATLAB_R2017b.app/bin/maci64 \
          -lmx -lmat minimal.cpp -o minimal
 
 ## Additional remarks
@@ -224,28 +224,18 @@ with [OpenMP](http://openmp.org/) due to various platform-dependent issues.
 [MATLAB](http://www.mathworks.com/products/matlab/) support, make sure that 
 the environment variable `DYLD_LIBRARY_PATH` is set to point to the 
 [MATLAB](http://www.mathworks.com/products/matlab/) 
-compiler library location, see the `run_mac_MATLAB.sh` script. 
-Otherwise, you get a runtime error similar to  
+compiler library location. Otherwise, you get a runtime error similar to  
 
     > dyld: Library not loaded: @rpath/libmat.dylib.
     
-   * I recommend running via a script, as otherwise setting the 
-    `DYLD_LIBRARY_PATH` globally may interfere with 
-    [macports](https://www.macports.org/)' [CMake](http://www.cmake.org/) 
-    installation (in case you use [CMake](http://www.cmake.org/) from 
-    [macports](https://www.macports.org/)). If you use a script, 
-    then the environment variable is local to the script and 
-    does not interfere with the rest of the system.
-
-   * Example of running script, assumed to be located in the root directory 
-    of [Quantum++](https://github.com/vsoftco/qpp)
-        
-            #!/bin/sh
-            
-            MATLAB=/Applications/MATLAB_R2016a.app
-            export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$MATLAB/bin/maci64
-            
-            ./build/qpp
+    You can use the 
+[`run_mac_MATLAB.sh`](https://github.com/vsoftco/qpp/blob/master/run_mac_MATLAB.sh)
+script to wrap the exectuable you want to run in, as otherwise setting the `DYLD_LIBRARY_PATH` globally may interfere with 
+[macports](https://www.macports.org/)' [CMake](http://www.cmake.org/) 
+installation (in case you use [CMake](http://www.cmake.org/) from 
+[macports](https://www.macports.org/)). If you use a script, 
+then the environment variable is local to the script and 
+does not interfere with the rest of the system.
 
 ### Building debug versions with [g++](https://gcc.gnu.org/) on [OS X/macOS](http://www.apple.com/osx)
 
