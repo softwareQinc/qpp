@@ -58,7 +58,7 @@ command should build an executable `minimal` in `$HOME/testing`, which
 can be run by typing `./minimal`. The output should be similar to the
 following:
 
-```text
+```
 Hello Quantum++!
 This is the |0> state:
 1
@@ -125,10 +125,12 @@ To build an example using [CMake](http://www.cmake.org/),
 I recommend an out-of-source build, i.e., from the root of the project 
 (where the `include` folder is located), type
 
-    mkdir build
-    cd build
-    cmake ..
-    make
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
 
 The commands above build the release version (default) executable `qpp`, 
 from the source file `examples/minimal.cpp`,
@@ -142,23 +144,29 @@ the location of [Eigen 3](http://eigen.tuxfamily.org) needs to be specified
 manually in the [CMake](http://www.cmake.org/) build command line by passing
 the `-DEIGEN3_INCLUDE_DIR=path_to_eigen3` flag, e.g.
 
-    cmake .. -DEIGEN3_INCLUDE_DIR=/usr/local/eigen3
+```bash
+cmake .. -DEIGEN3_INCLUDE_DIR=/usr/local/eigen3
+```
 
 To build a different configuration, 
 e.g. the debug version with [MATLAB](http://www.mathworks.com/products/matlab/)
 support, type from the root of the project
 
-    cd build
-    rm -rf *
-    cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB=ON ..
-    make
+```bash
+cd build
+rm -rf *
+cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB=ON ..
+make
+```
     
 Or, to disable [OpenMP](http://openmp.org/) support (enabled by default), type
    
-    cd build
-    rm -rf *
-    cmake -DWITH_OPENMP=OFF ..
-    make
+```bash
+cd build
+rm -rf *
+cmake -DWITH_OPENMP=OFF ..
+make
+```
 
 To change the name of the example file or the location of 
 [MATLAB](http://www.mathworks.com/products/matlab/) installation, 
@@ -175,35 +183,43 @@ directory before a fresh build!
 
 ### Release version (without [MATLAB](http://www.mathworks.com/products/matlab/) support) 
 
-    g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
-         -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
-         -isystem $HOME/eigen -I $HOME/qpp/include \
-         minimal.cpp -o minimal
+```bash
+g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
+    -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
+    -isystem $HOME/eigen -I $HOME/qpp/include \
+     minimal.cpp -o minimal
+``` 
 
 ### Debug version (without [MATLAB](http://www.mathworks.com/products/matlab/) support)
 
-    g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
-         -g3 -DDEBUG \
-         -isystem $HOME/eigen -I $HOME/qpp/include \
-          minimal.cpp -o minimal
+```bash
+g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
+    -g3 -DDEBUG \
+    -isystem $HOME/eigen -I $HOME/qpp/include \
+     minimal.cpp -o minimal
+```
 
 ### Release version (with [MATLAB](http://www.mathworks.com/products/matlab/) support)
 
-    g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
-         -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
-         -isystem $HOME/eigen -I $HOME/qpp/include \
-         -I/Applications/MATLAB_R2017b.app/extern/include \
-         -L/Applications/MATLAB_R2017b.app/bin/maci64 \
-         -lmx -lmat minimal.cpp -o minimal
+```bash
+g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
+    -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
+    -isystem $HOME/eigen -I $HOME/qpp/include \
+    -I/Applications/MATLAB_R2017b.app/extern/include \
+    -L/Applications/MATLAB_R2017b.app/bin/maci64 \
+    -lmx -lmat minimal.cpp -o minimal
+```
 
 ### Debug version (with [MATLAB](http://www.mathworks.com/products/matlab/) support)
 
-    g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
-         -g3 -DDEBUG \
-         -isystem $HOME/eigen -I $HOME/qpp/include \
-         -I /Applications/MATLAB_R2017b.app/extern/include \
-         -L /Applications/MATLAB_R2017b.app/bin/maci64 \
-         -lmx -lmat minimal.cpp -o minimal
+```bash
+g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
+    -g3 -DDEBUG \
+    -isystem $HOME/eigen -I $HOME/qpp/include \
+    -I /Applications/MATLAB_R2017b.app/extern/include \
+    -L /Applications/MATLAB_R2017b.app/bin/maci64 \
+    -lmx -lmat minimal.cpp -o minimal
+```
 
 ## Additional remarks
 
