@@ -60,4 +60,7 @@ more details.
 ---
 ## Installation instructions and further documentation
 
-Please [see the comprehensive Wiki](https://github.com/vsoftco/qpp/wiki).
+Please see the installation guide [`INSTALL.md`](https://github.com/vsoftco/qpp/blob/master/INSTALL.md) and the comprehensive [Wiki](https://github.com/vsoftco/qpp/wiki) for further documentation and detailed examples. 
+
+The official API documentation is available in PDF and HTML formats in the [`doc`](https://github.com/vsoftco/qpp/tree/master/doc) folder.
+
