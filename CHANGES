@@ -1,4 +1,4 @@
-Since latest release (master branch)
+Version 1.0-rc3 Release Candidate 3, 20 January 2018
     - License change from GPL to MIT
     - Added Visual Studio 2017 solution
     - Added support for AppVeyor continuous integration 
@@ -8,6 +8,7 @@ Since latest release (master branch)
         qpp::experimental::Bit_circuit
     - Added qpp::ket operator "" _q() helper in "functions.h" for constructing
         multi-partite qubit kets
+    - Added comprehensive Wiki instead of the quick starting guide  
 
 Version 1.0-rc2 - Release Candidate 2, 6 September 2017
     - Added serialization capabilities for the PRNG in qpp::RandomDevices from

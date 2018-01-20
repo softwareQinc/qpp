@@ -1473,7 +1473,7 @@ inline ket mket(const std::vector<idx>& mask, idx d = 2) {
 // Idea taken from http://techblog.altplus.co.jp/entry/2017/11/08/130921
 /**
 * \brief Multi-partite qubit ket helper
-* \see qpp::mket
+* \see qpp::mket()
 *
 * Constructs the multi-partite qubit ket \f$|\mathrm{Bits}\rangle\f$
 *
