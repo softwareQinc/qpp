@@ -74,6 +74,12 @@ int main() {
     }
     std::cout << '\n';
 
-    ket x = (10_q + 01_q) / std::sqrt(2);
+    ket x = (10_ket + 01_ket) / std::sqrt(2);
     std::cout << disp(x) << '\n';
+
+    bra y = (10_bra + 01_bra) / std::sqrt(2);
+    std::cout << disp(x) << '\n';
+
+    cmat z = 10_prj;
+    std::cout << disp(z) << '\n';
 }

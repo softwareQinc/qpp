@@ -1477,11 +1477,11 @@ inline ket mket(const std::vector<idx>& mask, idx d = 2) {
 *
 * Constructs the multi-partite qubit ket \f$|\mathrm{Bits}\rangle\f$
 *
-* \tparam Bits String of binary numbers representing the qubit state vector
-* \return Multi-partite qubit state vector, as a complex dynamic column vector
+* \tparam Bits String of binary numbers representing the qubit ket
+* \return Multi-partite qubit ket, as a complex dynamic column vector
 */
 template <char... Bits>
-ket operator"" _q() {
+ket operator"" _ket() {
     constexpr idx n = sizeof...(Bits);
     constexpr char bits[n + 1] = {Bits..., '\0'};
     qpp::ket q = qpp::ket::Zero(std::pow(2, n));
@@ -1492,7 +1492,7 @@ ket operator"" _q() {
     // check valid multi-partite qubit state
     for (idx i = 0; i < n; ++i) {
         if (bits[i] != '0' && bits[i] != '1')
-            throw exception::OutOfRange(R"xxx("qpp::operator "" _q())xxx");
+            throw exception::OutOfRange(R"xxx("qpp::operator "" _ket())xxx");
     }
     // END EXCEPTION CHECKS
 
@@ -1500,6 +1500,65 @@ ket operator"" _q() {
     q(pos) = 1;
 
     return q;
+}
+
+/**
+* \brief Multi-partite qubit bra helper
+* \see qpp::mket() and qpp::adjoint()
+*
+* Constructs the multi-partite qubit bra \f$\langle\mathrm{Bits}|\f$
+*
+* \tparam Bits String of binary numbers representing the qubit bra
+* \return Multi-partite qubit bra, as a complex dynamic row vector
+*/
+template <char... Bits>
+bra operator"" _bra() {
+    constexpr idx n = sizeof...(Bits);
+    constexpr char bits[n + 1] = {Bits..., '\0'};
+    qpp::bra q = qpp::ket::Zero(std::pow(2, n));
+    idx pos = 0;
+
+    // EXCEPTION CHECKS
+
+    // check valid multi-partite qubit state
+    for (idx i = 0; i < n; ++i) {
+        if (bits[i] != '0' && bits[i] != '1')
+            throw exception::OutOfRange(R"xxx("qpp::operator "" _bra())xxx");
+    }
+    // END EXCEPTION CHECKS
+
+    pos = std::stoi(bits, nullptr, 2);
+    q(pos) = 1;
+
+    return q;
+}
+
+/**
+* \brief Multi-partite qubit projector helper
+* \see qpp::mprj()
+*
+* Constructs the multi-partite qubit projector
+* \f$|\mathrm{Bits}\rangle\langle\mathrm{Bits}|\f$
+*
+* \tparam Bits String of binary numbers representing the qubit state
+* we project on
+* \return Multi-partite qubit projector, as a complex dynamic matrix
+*/
+template <char... Bits>
+cmat operator"" _prj() {
+    constexpr idx n = sizeof...(Bits);
+    constexpr char bits[n + 1] = {Bits..., '\0'};
+
+    // EXCEPTION CHECKS
+
+    // check valid multi-partite qubit state
+    for (idx i = 0; i < n; ++i) {
+        if (bits[i] != '0' && bits[i] != '1')
+            throw exception::OutOfRange(R"xxx("qpp::operator "" _prj())xxx");
+    }
+    // END EXCEPTION CHECKS
+
+    return kron(operator""_ket<Bits...>(), operator""_bra<Bits...>());
 }
 
 /**

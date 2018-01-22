@@ -186,8 +186,14 @@ TEST(qpp_mket, AllTests) {}
 /// BEGIN inline ket qpp::mket(const std::vector<idx>& mask, idx d = 2)
 TEST(qpp_mket_qubits, AllTests) {}
 /******************************************************************************/
-/// BEGIN template<char... Bits> ket qpp::operator "" _q()
-TEST(qpp_operator_q, AllTests) {}
+/// BEGIN template<char... Bits> ket qpp::operator "" _ket()
+TEST(qpp_operator_ket, AllTests) {}
+/******************************************************************************/
+/// BEGIN template<char... Bits> bra qpp::operator "" _bra()
+TEST(qpp_operator_bra, AllTests) {}
+/******************************************************************************/
+/// BEGIN template<char... Bits> cmat qpp::operator "" _prj()
+TEST(qpp_operator_prj, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline cmat qpp::mprj(const std::vector<idx>& mask,
 ///       const std::vector<idx>& dims)

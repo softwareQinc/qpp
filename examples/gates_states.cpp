@@ -13,8 +13,8 @@ int main() {
     std::cout << ">> The result of applying the bit-flip gate X on |0> is:\n";
     std::cout << disp(result) << '\n';
 
-    psi = 10_q;  // |10> state
-    U = gt.CNOT; // Controlled-NOT
+    psi = 10_ket; // |10> state
+    U = gt.CNOT;  // Controlled-NOT
     result = U * psi;
 
     std::cout << ">> The result of applying the gate CNOT on |10> is:\n";

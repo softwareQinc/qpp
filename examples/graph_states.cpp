@@ -10,8 +10,8 @@ int main() {
     idx Gamma[3][3] = {{0, 1, 1}, {1, 0, 1}, {1, 1, 0}};
 
     // start with 2 states in |000>
-    ket G0 = 000_q;
-    ket G1 = 000_q;
+    ket G0 = 000_ket;
+    ket G1 = 000_ket;
 
     // and their density matrices
     cmat rhoG0 = prj(G0);

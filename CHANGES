@@ -1,3 +1,7 @@
+Version 1.0-devel
+    - Changed qpp::ket operator "" _q() to qpp::ket operator "" _ket()
+    - Added qpp::bra operator "" _bra() and qpp::cmat operator "" _prj() as well
+
 Version 1.0-rc3 Release Candidate 3, 21 January 2018
     - License change from GPL to MIT
     - Added Visual Studio 2017 solution
