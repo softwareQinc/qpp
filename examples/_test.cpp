@@ -80,6 +80,6 @@ int main() {
     bra y = (10_bra + 01_bra) / std::sqrt(2);
     std::cout << disp(x) << '\n';
 
-    cmat z = 10_prj;
+    cmat z = 110_prj;
     std::cout << disp(z) << '\n';
 }
