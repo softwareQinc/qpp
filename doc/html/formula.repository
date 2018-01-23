@@ -37,33 +37,36 @@
 \form#36:$AB +BA$
 \form#37:$|\mathrm{mask}\rangle$
 \form#38:$\{0, 1, \ldots, N - 1\}$
-\form#39:$\langle \phi_{subsys}|\psi\rangle$
-\form#40:$\circ$
-\form#41:$\mathcal{O}(\sqrt{n})$
-\form#42:$ab$
-\form#43:$\mathrm{ mod }$
-\form#44:$p$
-\form#45:$a^n$
-\form#46:$m$
-\form#47:$n$
-\form#48:$gcd(a, b)$
-\form#49:$ma + nb = gcd(a, b)$
-\form#50:$a^{-1}$
-\form#51:$\textrm{ mod }$
-\form#52:$2^{-k}$
-\form#53:$\{|i\rangle\langle j|\}$
-\form#54:$|0\rangle\langle 0|$
-\form#55:$|0\rangle\langle 1|$
-\form#56:$S$
-\form#57:$ C$
-\form#58:$ S_{ab,mn} = C_{ma,nb}$
-\form#59:$Tr(K_i^\dagger K_j)=\delta_{ij}$
-\form#60:$i\neq j$
-\form#61:$Tr_{A}(\cdot)$
-\form#62:$A$
-\form#63:$A\otimes B$
-\form#64:$Tr_{B}(\cdot)$
-\form#65:$B$
-\form#66:$Tr_{subsys}(\cdot)$
-\form#67:$(\cdot)^{T_{subsys}}$
-\form#68:$ \sum_i K_i^\dagger K_i = I$
+\form#39:$|\mathrm{Bits}\rangle$
+\form#40:$\langle\mathrm{Bits}|$
+\form#41:$|\mathrm{Bits}\rangle\langle\mathrm{Bits}|$
+\form#42:$\langle \phi_{subsys}|\psi\rangle$
+\form#43:$\circ$
+\form#44:$\mathcal{O}(\sqrt{n})$
+\form#45:$ab$
+\form#46:$\mathrm{ mod }$
+\form#47:$p$
+\form#48:$a^n$
+\form#49:$m$
+\form#50:$n$
+\form#51:$gcd(a, b)$
+\form#52:$ma + nb = gcd(a, b)$
+\form#53:$a^{-1}$
+\form#54:$\textrm{ mod }$
+\form#55:$2^{-k}$
+\form#56:$\{|i\rangle\langle j|\}$
+\form#57:$|0\rangle\langle 0|$
+\form#58:$|0\rangle\langle 1|$
+\form#59:$S$
+\form#60:$ C$
+\form#61:$ S_{ab,mn} = C_{ma,nb}$
+\form#62:$Tr(K_i^\dagger K_j)=\delta_{ij}$
+\form#63:$i\neq j$
+\form#64:$Tr_{A}(\cdot)$
+\form#65:$A$
+\form#66:$A\otimes B$
+\form#67:$Tr_{B}(\cdot)$
+\form#68:$B$
+\form#69:$Tr_{subsys}(\cdot)$
+\form#70:$(\cdot)^{T_{subsys}}$
+\form#71:$ \sum_i K_i^\dagger K_i = I$

@@ -7,7 +7,7 @@
 
 *.swp
 
-documentation.Doxyfile
+Doxyfile
 TODO.txt
 conventions.txt
 

@@ -1390,6 +1390,8 @@ inline idx multiidx2n(const std::vector<idx>& midx,
 
 /**
 * \brief Multi-partite qudit ket
+* \see ket template<char... Bits> qpp::operator "" _ket()
+*
 *
 * Constructs the multi-partite qudit ket \f$|\mathrm{mask}\rangle\f$,
 * where \a mask is a std::vector of non-negative integers.
@@ -1432,6 +1434,7 @@ inline ket mket(const std::vector<idx>& mask, const std::vector<idx>& dims) {
 
 /**
 * \brief Multi-partite qudit ket
+* \see ket template<char... Bits> qpp::operator "" _ket()
 *
 * Constructs the multi-partite qudit ket \f$|\mathrm{mask}\rangle\f$,
 * all subsystem having equal dimension \a d.
@@ -1472,6 +1475,7 @@ inline ket mket(const std::vector<idx>& mask, idx d = 2) {
 
 /**
 * \brief Projector onto multi-partite qudit ket
+* \see cmat template<char... Bits> qpp::operator "" _prj()
 *
 * Constructs the projector onto the multi-partite qudit ket
 * \f$|\mathrm{mask}\rangle\f$,
@@ -1516,6 +1520,7 @@ inline cmat mprj(const std::vector<idx>& mask, const std::vector<idx>& dims) {
 
 /**
 * \brief Projector onto multi-partite qudit ket
+* \see cmat template<char... Bits> qpp::operator "" _prj()
 *
 * Constructs the projector onto the multi-partite qudit ket
 * \f$|\mathrm{mask}\rangle\f$,
@@ -1824,7 +1829,7 @@ ket operator"" _ket() {
     // check valid multi-partite qubit state
     for (idx i = 0; i < n; ++i) {
         if (bits[i] != '0' && bits[i] != '1')
-            throw exception::OutOfRange(R"xxx("qpp::operator "" _ket())xxx");
+            throw exception::OutOfRange(R"xxx(qpp::operator "" _ket())xxx");
     }
     // END EXCEPTION CHECKS
 
@@ -1855,7 +1860,7 @@ bra operator"" _bra() {
     // check valid multi-partite qubit state
     for (idx i = 0; i < n; ++i) {
         if (bits[i] != '0' && bits[i] != '1')
-            throw exception::OutOfRange(R"xxx("qpp::operator "" _bra())xxx");
+            throw exception::OutOfRange(R"xxx(qpp::operator "" _bra())xxx");
     }
     // END EXCEPTION CHECKS
 
@@ -1886,7 +1891,7 @@ cmat operator"" _prj() {
     // check valid multi-partite qubit state
     for (idx i = 0; i < n; ++i) {
         if (bits[i] != '0' && bits[i] != '1')
-            throw exception::OutOfRange(R"xxx("qpp::operator "" _prj())xxx");
+            throw exception::OutOfRange(R"xxx(qpp::operator "" _prj())xxx");
     }
     // END EXCEPTION CHECKS
 
