@@ -1804,7 +1804,7 @@ inline cmat bloch2rho(const std::vector<double>& r) {
 
 // Idea taken from http://techblog.altplus.co.jp/entry/2017/11/08/130921
 /**
-* \brief Multi-partite qubit ket helper
+* \brief Multi-partite qubit ket user-defined literal
 * \see qpp::mket()
 *
 * Constructs the multi-partite qubit ket \f$|\mathrm{Bits}\rangle\f$
@@ -1835,7 +1835,7 @@ ket operator"" _ket() {
 }
 
 /**
-* \brief Multi-partite qubit bra helper
+* \brief Multi-partite qubit bra user-defined literal
 * \see qpp::mket() and qpp::adjoint()
 *
 * Constructs the multi-partite qubit bra \f$\langle\mathrm{Bits}|\f$
@@ -1866,14 +1866,14 @@ bra operator"" _bra() {
 }
 
 /**
-* \brief Multi-partite qubit projector helper
+* \brief Multi-partite qubit projector user-defined literal
 * \see qpp::mprj()
 *
 * Constructs the multi-partite qubit projector
-* \f$|\mathrm{Bits}\rangle\langle\mathrm{Bits}|\f$
+* \f$|\mathrm{Bits}\rangle\langle\mathrm{Bits}|\f$ (in the computational basis)
 *
 * \tparam Bits String of binary numbers representing the qubit state
-* we project on
+* to project on
 * \return Multi-partite qubit projector, as a complex dynamic matrix
 */
 template <char... Bits>
