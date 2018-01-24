@@ -7,7 +7,7 @@
 
 int main() {
     using namespace qpp;
-    ket psi = 0_q; // same as st.z0;
+    ket psi = 0_ket; // same as st.z0;
     cmat A = gt.X;
     dyn_col_vect<double> evals = hevals(A);
     cmat evects = hevects(A);

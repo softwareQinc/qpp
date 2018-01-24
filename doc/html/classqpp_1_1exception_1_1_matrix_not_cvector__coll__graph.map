@@ -1,6 +1,6 @@
 <map id="qpp::exception::MatrixNotCvector" name="qpp::exception::MatrixNotCvector">
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="14,185,150,212"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="5,96,89,123"/>
-<area shape="rect" id="node4" title="STL class. " alt="" coords="113,96,179,123"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="96,5,196,47"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="11,185,184,212"/>
+<area shape="rect" id="node3" title="STL class. " alt="" coords="5,96,109,123"/>
+<area shape="rect" id="node4" title="STL class. " alt="" coords="133,96,213,123"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="110,5,237,47"/>
 </map>

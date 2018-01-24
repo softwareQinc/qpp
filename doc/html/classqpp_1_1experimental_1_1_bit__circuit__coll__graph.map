@@ -1,4 +1,4 @@
 <map id="qpp::experimental::Bit_circuit" name="qpp::experimental::Bit_circuit">
-<area shape="rect" id="node2" href="$classqpp_1_1experimental_1_1_dynamic__bitset.html" title="qpp::experimental::\lDynamic_bitset" alt="" coords="5,109,112,151"/>
-<area shape="rect" id="node4" href="$structqpp_1_1experimental_1_1_bit__circuit_1_1_gate__count.html" title="qpp::experimental::\lBit_circuit::Gate_count" alt="" coords="136,109,259,151"/>
+<area shape="rect" id="node2" href="$classqpp_1_1experimental_1_1_dynamic__bitset.html" title="qpp::experimental::\lDynamic_bitset" alt="" coords="5,109,139,151"/>
+<area shape="rect" id="node4" href="$structqpp_1_1experimental_1_1_bit__circuit_1_1_gate__count.html" title="qpp::experimental::\lBit_circuit::Gate_count" alt="" coords="163,109,317,151"/>
 </map>
