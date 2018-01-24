@@ -1,6 +1,7 @@
-Version 1.0-devel
+Version 1.0-rc4 - Release Candidate 4, 24 January 2018
     - Changed qpp::ket operator "" _q() to qpp::ket operator "" _ket()
     - Added qpp::bra operator "" _bra() and qpp::cmat operator "" _prj() as well
+    - Updated documentation
 
 Version 1.0-rc3 - Release Candidate 3, 21 January 2018
     - License change from GPL to MIT

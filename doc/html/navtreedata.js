@@ -1,7 +1,7 @@
 var NAVTREE =
 [
   [ "Quantum++", "index.html", [
-    [ "Quantum++", "md___users_vlad__dropbox_programming_cpp_qpp__r_e_a_d_m_e.html", null ],
+    [ "Quantum++", "md__home_vlad_qpp__r_e_a_d_m_e.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [

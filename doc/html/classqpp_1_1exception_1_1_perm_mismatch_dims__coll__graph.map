@@ -1,6 +1,6 @@
 <map id="qpp::exception::PermMismatchDims" name="qpp::exception::PermMismatchDims">
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="29,185,165,212"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="20,96,104,123"/>
-<area shape="rect" id="node4" title="STL class. " alt="" coords="128,96,193,123"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="111,5,211,47"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="36,185,209,212"/>
+<area shape="rect" id="node3" title="STL class. " alt="" coords="31,96,135,123"/>
+<area shape="rect" id="node4" title="STL class. " alt="" coords="159,96,239,123"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="135,5,262,47"/>
 </map>
