@@ -3,10 +3,5 @@
 /build/
 /cmake-build*/
 /doc/latex/
-/quick/
 
 *.swp
-
-TODO.txt
-conventions.txt
-
