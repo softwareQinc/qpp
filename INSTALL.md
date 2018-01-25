@@ -19,9 +19,7 @@ current document I will use `$HOME/eigen` as the location of the
 directory as `$HOME/qpp`. Finally, make sure that your compiler supports
 C++11 and preferably [OpenMP](http://openmp.org/). As a compiler I
 recommend [g++](https://gcc.gnu.org/) version 5.0 or later or
-[clang++](http://clang.llvm.org) version 3.7 or later (previous versions
-of [clang++](http://clang.llvm.org) do not support
-[OpenMP](http://openmp.org/)). You are now ready to go!
+[clang++](http://clang.llvm.org) version 3.8 or later. You are now ready to go!
 
 Next, we will build a simple minimal example to test that the installation was
 successful. Create a directory called `$HOME/testing`, and inside it
@@ -100,7 +98,7 @@ solution `VisualStudio.sln` located in the
 ## Pre-requisites
 
 - Recommended compiler: [g++](https://gcc.gnu.org/) version 5.0 or later
-(for good C++11 support). You can also use [clang++](http://clang.llvm.org/) version 3.7 or later (to enable [OpenMP](http://openmp.org/) support), please read the "Additional remarks/Building with [clang++](http://clang.llvm.org/)" subsection near the end of this document for more plarform-dependent details.
+(for good C++11 support). You may also use [clang++](http://clang.llvm.org/) version 3.8 or later, please read the "Additional remarks/Building with [clang++](http://clang.llvm.org/)" subsection near the end of this document for more plarform-dependent details.
 - [Eigen 3](http://eigen.tuxfamily.org) linear algebra library. I assume here that 
 the library is installed in `$HOME/eigen`, although the location may vary, e.g. if 
 the libary was installed using a package manager.
@@ -224,29 +222,24 @@ g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
 ## Additional remarks
 
 ### Building with [clang++](http://clang.llvm.org/)
-- If you use [clang++](http://clang.llvm.org/) version 3.7 or later (previous versions do not have [OpenMP](http://openmp.org/) support) and want 
-to use [OpenMP](http://openmp.org/) (enabled by default in the library), make sure to specify the correct values for the variables
-`CLANG_LIBOMP_INCLUDE` and `CLANG_LIBOMP_LINK` defined in [`CMakeLists.txt`](https://github.com/vsoftco/qpp/blob/master/CMakeLists.txt) so that they point to 
-the correct location of the [OpenMP](http://openmp.org/) library, as otherwise 
-[clang++](http://clang.llvm.org/) will not find `<omp.h>` and the `libomp` 
-shared library. To do that, use e.g.
-
-```bash
-cmake -DCLANG_LIBOMP_INCLUDE="/usr/local/include/libomp" -DCLANG_LIBOMP_LINK="/usr/local/lib/libomp" ..
-```
-    
-when building (of course with the path replaced by the one on your system). 
+- Make sure to use [clang++](http://clang.llvm.org/) version 3.8 or later (previous versions lack or do not have good [OpenMP](http://openmp.org/) support).
 
 #### Linux specific instructions
-- Under Linux, you may need to modify the `-fopenmp=...` value as well, set to `libomp` by default. To do that, pass in addition the flag `-DCLANG_FOPENMP=value` to the [CMake](http://www.cmake.org/) command line, such as
+- On Linux, you can install [clang++](http://clang.llvm.org/) version 3.8 or later via the package manager, e.g. in Debian 9 or Ubuntu 16.10
 
 ```bash
-cmake -DCLANG_LIBOMP_INCLUDE="/usr/local/include/libomp" -DCLANG_LIBOMP_LINK="/usr/local/lib/libomp" -DCLANG_FOPENMP=libiomp ..
+sudo apt-get install clang-3.9
+```
+
+- In addition, in case you get any compiler or linker errors, you need to install the `libomp-dev` package, e.g in Debian 9 or Ubuntu 16.10
+
+```bash
+sudo apt-get install libomp-dev
 ```
 
 #### [OS X/macOS](http://www.apple.com/osx) specific instructions
 
-- I highly recommend to install [clang++](http://clang.llvm.org/) version 3.7 or later via [MacPorts](https://www.macports.org/). 
+- I highly recommend to install [clang++](http://clang.llvm.org/) version 3.8 or later via [MacPorts](https://www.macports.org/).
 - If you enable
 [MATLAB](http://www.mathworks.com/products/matlab/) support, make sure that 
 the environment variable `DYLD_LIBRARY_PATH` is set to point to the 
