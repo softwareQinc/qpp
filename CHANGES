@@ -2,14 +2,6 @@ Version 1.0-devel - Development
     - The path to MATLAB can now be specified in the CMake command line
       (not hard coded anymore), such as
           cmake -DWITH_MATLAB="/Applications/MATLAB_R2017b.app" ..
-    - The path to libomp (include and shared files) can now be specified in the
-      CMake command line (not hard coded anymore) when compiling with clang 3.7
-      or later, such as
-          cmake -DCLANG_LIBOMP_INCLUDE="/usr/local/include/libomp" \
-                -DCLANG_LIBOMP_LINK="/usr/local/lib/libomp" ..
-    - Added the CLANG_FOPENMP flag, so now one can specify the value for the
-      -fopenmp flag, such as
-          cmake -DCLANG_FOPENMP=libomp ..
 
 Version 1.0-rc4 - Release Candidate 4, 24 January 2018
     - Changed qpp::ket operator "" _q() to qpp::ket operator "" _ket()

@@ -24,7 +24,6 @@
 # SOFTWARE.
 #
 
-
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0)
 PROJECT(qpp VERSION 1.0.0 LANGUAGES CXX)
 
@@ -38,7 +37,7 @@ SET(SOURCE_FILES
 #### Eigen3
 MESSAGE(STATUS "Detecting Eigen3")
 SET(EIGEN3_INCLUDE_DIR "" CACHE PATH "Path to Eigen3")
-# Location manually specified
+#### Location manually specified
 IF (NOT ${EIGEN3_INCLUDE_DIR} STREQUAL "")
     IF (IS_DIRECTORY ${EIGEN3_INCLUDE_DIR})
         MESSAGE(STATUS "Detecting Eigen3 - done (in ${EIGEN3_INCLUDE_DIR})")
@@ -46,7 +45,7 @@ IF (NOT ${EIGEN3_INCLUDE_DIR} STREQUAL "")
     ELSE ()
         MESSAGE(FATAL_ERROR "Invalid path to Eigen3 installation")
     ENDIF ()
-ELSE () # Try to find it automatically
+ELSE () #### Try to find it automatically
     FIND_PACKAGE(Eigen3 3.0 QUIET NO_MODULE)
     IF (NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
         MESSAGE(FATAL_ERROR
@@ -118,49 +117,17 @@ ENDIF ()
 #### OpenMP support
 OPTION(WITH_OPENMP "OpenMP support" ON)
 IF (${WITH_OPENMP})
-    #### inject definition (as #define) in the source files
-    ADD_DEFINITIONS(-DWITH_OPENMP_)
-    #### GNU gcc
-    IF (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
+    #### Enable only for GNU gcc or clang >= 3.8
+    IF ((${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU") OR
+    (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND
+            CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.8"))
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
-        SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
-        #### Clang but not AppleClang
-    ELSEIF (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-        IF (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.7")
-            # Set the OpenMP library/headers location
-            SET(CLANG_LIBOMP_INCLUDE "/opt/local/include/libomp/" CACHE PATH
-                    "Path to libomp include headers")
-            IF (NOT IS_DIRECTORY ${CLANG_LIBOMP_INCLUDE})
-                MESSAGE(FATAL_ERROR
-                        "Possibly corrupted libomp include headers! Please\
-                point CLANG_LIBOMP_INCLUDE to the correct path when building\
-                with cmake, for example\
-
-                cmake -DCLANG_LIBOMP_INCLUDE=\"/usr/local/include/libomp\" ..")
-            ENDIF ()
-            SET(CLANG_LIBOMP_LINK "/opt/local/lib/libomp/" CACHE PATH
-                    "Path to libomp shared library")
-            IF (NOT IS_DIRECTORY ${CLANG_LIBOMP_LINK})
-                MESSAGE(FATAL_ERROR
-                        "Possibly corrupted libomp linker files! Please point\
-                CLANG_LIBOMP_LINK to the correct path when building\
-                with cmake, for example\
-
-                cmake -DCLANG_LIBOMP_LINK=\"/usr/local/lib/libomp\" ..")
-            ENDIF ()
-            # everything is OK
-            INCLUDE_DIRECTORIES(SYSTEM "${CLANG_LIBOMP_INCLUDE}")
-            SET(CLANG_FOPENMP "libomp" CACHE STRING
-                    "Flag to be passed to -fopenmp argument, libomp by default")
-            SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp=${CLANG_FOPENMP}")
-            SET(CMAKE_EXE_LINKER_FLAGS
-                    "${CMAKE_EXE_LINKER_FLAGS} -L${CLANG_LIBOMP_LINK}")
-        ENDIF ()
-        #### no OpenMP support for other compilers
+        #### inject definition (as #define) in the source files
+        ADD_DEFINITIONS(-DWITH_OPENMP_)
     ELSE ()
         MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} \
         ${CMAKE_CXX_COMPILER_VERSION}. Support for OpenMP is enabled only for \
-        the GNU gcc compiler or Clang >= 3.7.")
+        the GNU gcc compiler or the clang version version 3.8 or higher.")
     ENDIF ()
 ENDIF ()
 
