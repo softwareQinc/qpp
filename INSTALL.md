@@ -70,7 +70,7 @@ The line
 ```
 
 includes the main header file of the
-library `qpp.h` This header file includes all other necessary internal
+library `qpp.h`. This header file includes all other necessary internal
 [Quantum++](https://github.com/vsoftco/qpp) header files. The line
 ```CPP
 using namespace qpp;
