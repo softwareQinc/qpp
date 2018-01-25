@@ -225,13 +225,14 @@ g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
 - Make sure to use [clang++](http://clang.llvm.org/) version 3.8 or later (previous versions lack or do not have good [OpenMP](http://openmp.org/) support).
 
 #### Linux specific instructions
-- On Linux, you can install [clang++](http://clang.llvm.org/) version 3.8 or later via the package manager, e.g. in Debian 9 or Ubuntu 16.10
+- On Linux, you can install [clang++](http://clang.llvm.org/) version 3.8 or later via the package manager, e.g. in Debian 9 or Ubuntu 16.10 use
 
 ```bash
 sudo apt-get install clang-3.8
 ```
 
-- In addition, in case you get any compiler or linker errors, you need to install the `libomp-dev` package, e.g in Debian 9 or Ubuntu 16.10
+- In case you get any compiler or linker errors when 
+[OpenMP](http://openmp.org/) is enabled, you need to install the `libomp-dev` package, e.g in Debian 9 or Ubuntu 16.10 use
 
 ```bash
 sudo apt-get install libomp-dev
@@ -240,6 +241,12 @@ sudo apt-get install libomp-dev
 #### [OS X/macOS](http://www.apple.com/osx) specific instructions
 
 - I highly recommend to install [clang++](http://clang.llvm.org/) version 3.8 or later via [MacPorts](https://www.macports.org/).
+- In case you get any compiler or linker errors when [OpenMP](http://openmp.org/) is enabled, you need to install the `libomp` package, e.g using [MacPorts](https://www.macports.org/)
+
+    ```bash
+    sudo port install libomp
+    ```
+    
 - If you enable
 [MATLAB](http://www.mathworks.com/products/matlab/) support, make sure that 
 the environment variable `DYLD_LIBRARY_PATH` is set to point to the 
