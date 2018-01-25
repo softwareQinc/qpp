@@ -102,7 +102,7 @@ solution `VisualStudio.sln` located in the
 - [Eigen 3](http://eigen.tuxfamily.org) linear algebra library. I assume here that 
 the library is installed in `$HOME/eigen`, although the location may vary, e.g. if 
 the libary was installed using a package manager.
-- [Quantum++](https://github.com/vsoftco/qpp) library located in `$HOME/qpp`
+- [Quantum++](https://github.com/vsoftco/qpp) library located in `$HOME/qpp`.
 
 ## Optional
 
