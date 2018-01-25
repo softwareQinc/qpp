@@ -25,7 +25,7 @@ INCLUDE_DIRECTORIES(include)
 
 #### Source file(s) to be compiled, modify as needed
 SET(SOURCE_FILES
-        examples/input_output.cpp)
+        examples/minimal.cpp)
 
 #### Eigen3
 MESSAGE("-- Detecting Eigen3")
@@ -35,8 +35,9 @@ IF (NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
         MESSAGE(FATAL_ERROR
                 "Eigen3 not detected! Please point EIGEN3_INCLUDE_DIR\
             to your Eigen3 location when building with cmake,\
-            for example\ 
-            cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen")
+            for example\
+
+            cmake -DEIGEN3_INCLUDE_DIR=$HOME/eigen ..")
     ELSE () # manual location specified
         MESSAGE(STATUS "Detecting Eigen3 - done (location manually specified)")
         INCLUDE_DIRECTORIES(SYSTEM "${EIGEN3_INCLUDE_DIR}")
@@ -113,9 +114,28 @@ IF (${WITH_OPENMP})
         #### Clang but not AppleClang
     ELSEIF (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
         IF (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.7")
-            #### modify as needed
-            SET(CLANG_LIBOMP_LINK "/opt/local/lib/libomp/")
-            SET(CLANG_LIBOMP_INCLUDE "/opt/local/include/libomp/")
+            # Set the OpenMP library/headers location
+            SET(CLANG_LIBOMP_INCLUDE "/opt/local/include/libomp/" CACHE PATH
+                    "Path to libomp include headers")
+            IF (NOT IS_DIRECTORY ${CLANG_LIBOMP_INCLUDE})
+                MESSAGE(FATAL_ERROR
+                        "Possibly corrupted libomp include headers! Please\
+                point CLANG_LIBOMP_INCLUDE to the correct path when building\
+                with cmake, for example\
+
+                cmake -DCLANG_LIBOMP_INCLUDE=\"/usr/local/include/libomp\" ..")
+            ENDIF ()
+            SET(CLANG_LIBOMP_LINK "/opt/local/lib/libomp/" CACHE PATH
+                    "Path to libomp shared library")
+            IF (NOT IS_DIRECTORY ${CLANG_LIBOMP_LINK})
+                MESSAGE(FATAL_ERROR
+                        "Possibly corrupted libomp linker files! Please point\
+                CLANG_LIBOMP_LINK to the correct path when building\
+                with cmake, for example\
+
+                cmake -DCLANG_LIBOMP_LINK=\"/usr/local/lib/libomp\" ..")
+            ENDIF ()
+            # everything is OK
             INCLUDE_DIRECTORIES(SYSTEM "${CLANG_LIBOMP_INCLUDE}")
             SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp=libomp")
             SET(CMAKE_EXE_LINKER_FLAGS

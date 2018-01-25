@@ -99,31 +99,50 @@ ENDIF ()
 
 #### OpenMP support
 OPTION(WITH_OPENMP "OpenMP support" ON)
-IF(${WITH_OPENMP})
+IF (${WITH_OPENMP})
     #### inject definition (as #define) in the source files
     ADD_DEFINITIONS(-DWITH_OPENMP_)
     #### GNU gcc
-    IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
+    IF (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
         SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
     #### Clang but not AppleClang
-    ELSEIF(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-        IF(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.7")
-            #### modify as needed
-            SET(CLANG_LIBOMP "/opt/local/lib/libomp/")
-            SET(CLANG_LIBOMP_INCLUDE "/opt/local/include/libomp/")
+    ELSEIF (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+        IF (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.7")
+            # Set the OpenMP library/headers location
+            SET(CLANG_LIBOMP_INCLUDE "/opt/local/include/libomp/" CACHE PATH
+                    "Path to libomp include headers")
+            IF (NOT IS_DIRECTORY ${CLANG_LIBOMP_INCLUDE})
+                MESSAGE(FATAL_ERROR
+                        "Possibly corrupted libomp include headers! Please\
+                point CLANG_LIBOMP_INCLUDE to the correct path when building\
+                with cmake, for example\
+
+                cmake -DCLANG_LIBOMP_INCLUDE=\"/usr/local/include/libomp\" ..")
+            ENDIF ()
+            SET(CLANG_LIBOMP_LINK "/opt/local/lib/libomp/" CACHE PATH
+                    "Path to libomp shared library")
+            IF (NOT IS_DIRECTORY ${CLANG_LIBOMP_LINK})
+                MESSAGE(FATAL_ERROR
+                        "Possibly corrupted libomp linker files! Please point\
+                CLANG_LIBOMP_LINK to the correct path when building\
+                with cmake, for example\
+
+                cmake -DCLANG_LIBOMP_LINK=\"/usr/local/lib/libomp\" ..")
+            ENDIF ()
+            # everything is OK
             INCLUDE_DIRECTORIES(SYSTEM "${CLANG_LIBOMP_INCLUDE}")
             SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp=libomp")
             SET(CMAKE_EXE_LINKER_FLAGS
-                    "${CMAKE_EXE_LINKER_FLAGS} -L${CLANG_LIBOMP}")
-        ENDIF()
-    #### no OpenMP support for other compilers
-    ELSE()
+                    "${CMAKE_EXE_LINKER_FLAGS} -L${CLANG_LIBOMP_LINK}")
+        ENDIF ()
+        #### no OpenMP support for other compilers
+    ELSE ()
         MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} \
         ${CMAKE_CXX_COMPILER_VERSION}. Support for OpenMP is enabled only for \
         the GNU gcc compiler or Clang >= 3.7.")
-    ENDIF()
-ENDIF()
+    ENDIF ()
+ENDIF ()
 
 #### GoogleTest
 ADD_SUBDIRECTORY(lib/gtest-1.8.0)
