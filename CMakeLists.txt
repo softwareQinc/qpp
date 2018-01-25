@@ -118,9 +118,10 @@ ENDIF ()
 OPTION(WITH_OPENMP "OpenMP support" ON)
 IF (${WITH_OPENMP})
     #### Enable only for GNU gcc or clang >= 3.8
-    IF ((${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU") OR
+    IF (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
     (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND
-            CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.8"))
+    (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.8" OR
+            CMAKE_CXX_COMPILER_VERSION VERSION_EQUAL "3.8")))
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
         #### inject definition (as #define) in the source files
         ADD_DEFINITIONS(-DWITH_OPENMP_)
