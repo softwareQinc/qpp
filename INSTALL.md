@@ -237,16 +237,14 @@ cmake -DCLANG_LIBOMP_INCLUDE="/usr/local/include/libomp" -DCLANG_LIBOMP_LINK="/u
     
 when building (of course with the path replaced by the one on your system). 
 
+#### Linux specific instructions
 - Under Linux, you may need to modify the `-fopenmp=...` value as well, set to `libomp` by default. To do that, pass in addition the flag `-DCLANG_FOPENMP=value` to the [CMake](http://www.cmake.org/) command line, such as
 
 ```bash
 cmake -DCLANG_LIBOMP_INCLUDE="/usr/local/include/libomp" -DCLANG_LIBOMP_LINK="/usr/local/lib/libomp" -DCLANG_FOPENMP=libiomp ..
 ```
 
-As such, I do not recommend using [clang++](http://clang.llvm.org/)
-with [OpenMP](http://openmp.org/) due to various platform-dependent issues.
-
-### Building with [clang++](http://clang.llvm.org/) on [OS X/macOS](http://www.apple.com/osx)
+#### [OS X/macOS](http://www.apple.com/osx) specific instructions
 
 - I highly recommend to install [clang++](http://clang.llvm.org/) version 3.7 or later via [MacPorts](https://www.macports.org/). 
 - If you enable
