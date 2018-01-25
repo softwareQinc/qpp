@@ -225,12 +225,25 @@ g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
 
 ### Building with [clang++](http://clang.llvm.org/)
 - If you use [clang++](http://clang.llvm.org/) version 3.7 or later (previous versions do not have [OpenMP](http://openmp.org/) support) and want 
-to use [OpenMP](http://openmp.org/) (enabled by default in the library), make sure to modify 
-`CLANG_LIBOMP` and `CLANG_LIBOMP_INCLUDE` in [`CMakeLists.txt`](https://github.com/vsoftco/qpp/blob/master/CMakeLists.txt) so they point to 
+to use [OpenMP](http://openmp.org/) (enabled by default in the library), make sure to specify the correct values for the variables
+`CLANG_LIBOMP_INCLUDE` and `CLANG_LIBOMP_LINK` defined in [`CMakeLists.txt`](https://github.com/vsoftco/qpp/blob/master/CMakeLists.txt) so that they point to 
 the correct location of the [OpenMP](http://openmp.org/) library, as otherwise 
 [clang++](http://clang.llvm.org/) will not find `<omp.h>` and the `libomp` 
-shared library. Under Linux, you may need to modify also `-fopenmp=...` flag
-as well. As such, I do not recommend using [clang++](http://clang.llvm.org/)
+shared library. To do that, use e.g.
+
+```bash
+cmake -DCLANG_LIBOMP_INCLUDE="/usr/local/include/libomp" -DCLANG_LIBOMP_LINK="/usr/local/lib/libomp" ..
+```
+    
+when building (of course with the path replaced by the one on your system). 
+
+- Under Linux, you may need to modify the `-fopenmp=...` value as well, set to `libomp` by default. To do that, pass in addition the flag `-DCLANG_FOPENMP=value` to the [CMake](http://www.cmake.org/) command line, such as
+
+```bash
+cmake -DCLANG_LIBOMP_INCLUDE="/usr/local/include/libomp" -DCLANG_LIBOMP_LINK="/usr/local/lib/libomp" -DCLANG_FOPENMP=libiomp ..
+```
+
+As such, I do not recommend using [clang++](http://clang.llvm.org/)
 with [OpenMP](http://openmp.org/) due to various platform-dependent issues.
 
 ### Building with [clang++](http://clang.llvm.org/) on [OS X/macOS](http://www.apple.com/osx)
