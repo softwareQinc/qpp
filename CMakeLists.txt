@@ -25,109 +25,125 @@ INCLUDE_DIRECTORIES(include)
 
 #### Source file(s) to be compiled, modify as needed
 SET(SOURCE_FILES
-        examples/_test.cpp)
+        examples/input_output.cpp)
 
 #### Eigen3
 MESSAGE("-- Detecting Eigen3")
 FIND_PACKAGE(Eigen3 3.0 QUIET NO_MODULE) # try to find it automatically
-IF(NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
-    IF(NOT EIGEN3_INCLUDE_DIR) # no manual location specified either
+IF (NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
+    IF (NOT EIGEN3_INCLUDE_DIR) # no manual location specified either
         MESSAGE(FATAL_ERROR
-            "Eigen3 not detected! Please point EIGEN3_INCLUDE_DIR\
+                "Eigen3 not detected! Please point EIGEN3_INCLUDE_DIR\
             to your Eigen3 location when building with cmake,\
             for example\ 
             cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen")
-    ELSE() # manual location specified
-        MESSAGE("-- Detecting Eigen3 - done (location manually specified)")
+    ELSE () # manual location specified
+        MESSAGE(STATUS "Detecting Eigen3 - done (location manually specified)")
         INCLUDE_DIRECTORIES(SYSTEM "${EIGEN3_INCLUDE_DIR}")
-    ENDIF()
-ELSE()
-    MESSAGE("-- Detecting Eigen3 - done")
-ENDIF()
+    ENDIF ()
+ELSE ()
+    MESSAGE(STATUS "Detecting Eigen3 - done")
+ENDIF ()
 
 #### Use C++11
-IF(CYGWIN)
+IF (CYGWIN)
     #### Cygwin has issues with std=c++11, use std=gnu++11 instead
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
-ELSE()
+ELSE ()
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-ENDIF()
+ENDIF ()
 
 SET(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra -Weffc++")
 SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
 
 #### CMake support only for GNU gcc and Clang/AppleClang
 #### AppleClang does not support OpenMP; only Clang >= 3.7 supports OpenMP
-IF(NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang"
+IF (NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang"
         AND NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     MESSAGE(FATAL_ERROR
             "This CMakeLists.txt works only with GNU gcc/Clang/AppleClang")
-ENDIF()
+ENDIF ()
 
 #### Disable support for thread_local storage duration specifier
 #### when using AppleClang as libc++ doesn't yet support it
-IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang")
+IF (${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang")
     #### inject definition (as #define) in the source files
     ADD_DEFINITIONS(-DNO_THREAD_LOCAL_)
     MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} \
     ${CMAKE_CXX_COMPILER_VERSION}. thread_local not supported.")
-ENDIF()
+ENDIF ()
 
 #### MATLAB support
-OPTION(WITH_MATLAB "MATLAB support" OFF)
-IF(${WITH_MATLAB})
-    #### inject definition (as #define) in the source files
-    ADD_DEFINITIONS(-DWITH_MATLAB_)
-    #### modify as needed
-    SET(MATLAB "/Applications/MATLAB_R2017b.app")
-    INCLUDE_DIRECTORIES(SYSTEM "${MATLAB}/extern/include")
-    SET(CMAKE_EXE_LINKER_FLAGS
-            "${CMAKE_EXE_LINKER_FLAGS} -L${MATLAB}/bin/maci64")
-ENDIF()
+SET(WITH_MATLAB "" CACHE PATH "Path to MATLAB (to enable MATLAB support)")
+# WITH_MATLAB option was activated (set)
+IF (NOT ${WITH_MATLAB} STREQUAL "")
+    IF (IS_DIRECTORY ${WITH_MATLAB})
+        MESSAGE(STATUS "MATLAB support enabled")
+        # MATLAB include files
+        SET(MATLAB_INCLUDE "${WITH_MATLAB}/extern/include")
+        IF (IS_DIRECTORY ${MATLAB_INCLUDE})
+            INCLUDE_DIRECTORIES(SYSTEM ${MATLAB_INCLUDE})
+        ELSE ()
+            MESSAGE(FATAL_ERROR "Possibly corrupted MATLAB include headers")
+        ENDIF ()
+        # MATLAB linker files
+        SET(MATLAB_LINK "${WITH_MATLAB}/bin/maci64")
+        IF (IS_DIRECTORY ${MATLAB_LINK})
+            SET(CMAKE_EXE_LINKER_FLAGS
+                    "${CMAKE_EXE_LINKER_FLAGS} -L${MATLAB_LINK}")
+        ELSE ()
+            MESSAGE(FATAL_ERROR "Possibly corrupted MATLAB linker files")
+        ENDIF ()
+        #### everything is OK, inject definition (as #define) in the source
+        ADD_DEFINITIONS(-DWITH_MATLAB_)
+    ELSE ()
+        MESSAGE(FATAL_ERROR "Invalid path to MATLAB installation")
+    ENDIF ()
+ENDIF ()
 
 #### OpenMP support
 OPTION(WITH_OPENMP "OpenMP support" ON)
-IF(${WITH_OPENMP})
+IF (${WITH_OPENMP})
     #### inject definition (as #define) in the source files
     ADD_DEFINITIONS(-DWITH_OPENMP_)
     #### GNU gcc
-    IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
+    IF (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
         SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
-    #### Clang but not AppleClang
-    ELSEIF(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-        IF(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.7")
+        #### Clang but not AppleClang
+    ELSEIF (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+        IF (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.7")
             #### modify as needed
-            SET(CLANG_LIBOMP "/opt/local/lib/libomp/")
+            SET(CLANG_LIBOMP_LINK "/opt/local/lib/libomp/")
             SET(CLANG_LIBOMP_INCLUDE "/opt/local/include/libomp/")
             INCLUDE_DIRECTORIES(SYSTEM "${CLANG_LIBOMP_INCLUDE}")
             SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp=libomp")
             SET(CMAKE_EXE_LINKER_FLAGS
-                    "${CMAKE_EXE_LINKER_FLAGS} -L${CLANG_LIBOMP}")
-        ENDIF()
-    #### no OpenMP support for other compilers
-    ELSE()
+                    "${CMAKE_EXE_LINKER_FLAGS} -L${CLANG_LIBOMP_LINK}")
+        ENDIF ()
+        #### no OpenMP support for other compilers
+    ELSE ()
         MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} \
         ${CMAKE_CXX_COMPILER_VERSION}. Support for OpenMP is enabled only for \
         the GNU gcc compiler or Clang >= 3.7.")
-    ENDIF()
-ENDIF()
+    ENDIF ()
+ENDIF ()
 
 #### Enable all warnings
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
 
 #### GNU gcc additional debug settings
-IF(${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
-    IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+IF (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
+    IF (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         ## use the "no-weak" debugging flag only when debugging under OS X,
         ## as gdb cannot step in template functions when debugging code
         ## produced by g++
         ## see http://stackoverflow.com/questions/
         ## 23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks
         SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-weak")
-    ENDIF()
+    ENDIF ()
     SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og -D_GLIBCXX_DEBUG")
-ENDIF()
+ENDIF ()
 
 #### Configurations
 SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
@@ -137,24 +153,24 @@ SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DEIGEN_NO_DEBUG")
 SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO
         "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DEIGEN_NO_DEBUG")
 
-IF(NOT CMAKE_BUILD_TYPE)
+IF (NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE Release CACHE STRING
-        "Choose the type of build, options are: \
+            "Choose the type of build, options are: \
          None Debug Release MinSizeRel RelWithDebInfo."
-    FORCE)
-ENDIF()
+            FORCE)
+ENDIF ()
 
 ADD_EXECUTABLE(qpp ${SOURCE_FILES})
 #### Eigen3 was found automatically
-IF(TARGET Eigen3::Eigen)
+IF (TARGET Eigen3::Eigen)
     TARGET_LINK_LIBRARIES(qpp Eigen3::Eigen)
-ENDIF()
+ENDIF ()
 
-IF(${WITH_MATLAB})
+IF (NOT ${WITH_MATLAB} STREQUAL "")
     TARGET_LINK_LIBRARIES(qpp mx mat)
-ENDIF()
+ENDIF ()
 
-IF($WITH_OPENMP$ AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang"
+IF ($WITH_OPENMP$ AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang"
         AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.7")
     TARGET_LINK_LIBRARIES(qpp omp)
-ENDIF()
+ENDIF ()

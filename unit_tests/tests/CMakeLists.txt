@@ -43,7 +43,7 @@ IF(TARGET Eigen3::Eigen)
     TARGET_LINK_LIBRARIES(qpp_testing Eigen3::Eigen)
 ENDIF()
 
-IF(${WITH_MATLAB})
+IF (NOT ${WITH_MATLAB} STREQUAL "")
     TARGET_LINK_LIBRARIES(qpp_testing mx mat)
 ENDIF()
 

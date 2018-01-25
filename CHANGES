@@ -1,5 +1,8 @@
 Version 1.0-devel - Development
-    -
+    - The path to MATLAB can now be specified in the CMake command line
+      (not hard coded anymore), such as
+          cmake -DWITH_MATLAB="/Applications/MATLAB_R2017b.app" ..
+
 Version 1.0-rc4 - Release Candidate 4, 24 January 2018
     - Changed qpp::ket operator "" _q() to qpp::ket operator "" _ket()
     - Added qpp::bra operator "" _bra() and qpp::cmat operator "" _prj() as well

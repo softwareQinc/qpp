@@ -145,7 +145,7 @@ manually in the [CMake](http://www.cmake.org/) build command line by passing
 the `-DEIGEN3_INCLUDE_DIR=path_to_eigen3` flag, e.g.
 
 ```bash
-cmake .. -DEIGEN3_INCLUDE_DIR=/usr/local/eigen3
+cmake -DEIGEN3_INCLUDE_DIR=/usr/local/eigen3 ..
 ```
 
 To build a different configuration, 
@@ -155,7 +155,7 @@ support, type from the root of the project
 ```bash
 cd build
 rm -rf *
-cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB=ON ..
+cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB="/Applications/MATLAB_R2017b.app" ..
 make
 ```
     
@@ -188,7 +188,7 @@ g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
     -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
     -isystem $HOME/eigen -I $HOME/qpp/include \
      minimal.cpp -o minimal
-``` 
+```
 
 ### Debug version (without [MATLAB](http://www.mathworks.com/products/matlab/) support)
 
@@ -240,18 +240,29 @@ with [OpenMP](http://openmp.org/) due to various platform-dependent issues.
 [MATLAB](http://www.mathworks.com/products/matlab/) support, make sure that 
 the environment variable `DYLD_LIBRARY_PATH` is set to point to the 
 [MATLAB](http://www.mathworks.com/products/matlab/) 
-compiler library location. Otherwise, you get a runtime error similar to  
+compiler shared libraries location, such as 
+
+    ```bash
+    export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"Applications/MATLAB_R2017b.app/bin/maci64"
+    ```
+
+    Otherwise, you get a runtime error similar to  
 
     > dyld: Library not loaded: @rpath/libmat.dylib.
     
+    
     You can use the 
 [`run_mac_MATLAB.sh`](https://github.com/vsoftco/qpp/blob/master/run_mac_MATLAB.sh)
-script to wrap the exectuable you want to run in, as otherwise setting the `DYLD_LIBRARY_PATH` globally may interfere with 
+script to wrap the output executable you want to run in, as otherwise setting the `DYLD_LIBRARY_PATH` globally may interfere with 
 [MacPorts](https://www.macports.org/)' [CMake](http://www.cmake.org/) 
 installation (in case you use [CMake](http://www.cmake.org/) from 
-[MacPorts](https://www.macports.org/)). If you use a script, 
+[MacPorts](https://www.macports.org/)). If you use the script, 
 then the environment variable is local to the script and 
-does not interfere with the rest of the system.
+does not interfere with the rest of the system. Usage example:
+
+    ```bash
+    bash ./run_mac_MATLAB.sh ./build/qpp
+    ```
 
 ### Building debug versions with [g++](https://gcc.gnu.org/) on [OS X/macOS](http://www.apple.com/osx)
 

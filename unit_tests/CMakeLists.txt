@@ -70,16 +70,32 @@ IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang")
 ENDIF()
 
 #### MATLAB support
-OPTION(WITH_MATLAB "MATLAB support" OFF)
-IF(${WITH_MATLAB})
-    #### inject definition (as #define) in the source files
-    ADD_DEFINITIONS(-DWITH_MATLAB_)
-    #### modify as needed
-    SET(MATLAB "/Applications/MATLAB_R2017b.app")
-    INCLUDE_DIRECTORIES(SYSTEM "${MATLAB}/extern/include")
-    SET(CMAKE_EXE_LINKER_FLAGS
-            "${CMAKE_EXE_LINKER_FLAGS} -L${MATLAB}/bin/maci64")
-ENDIF()
+SET(WITH_MATLAB "" CACHE PATH "Path to MATLAB (to enable MATLAB support)")
+# WITH_MATLAB option was activated (set)
+IF (NOT ${WITH_MATLAB} STREQUAL "")
+    IF (IS_DIRECTORY ${WITH_MATLAB})
+        MESSAGE(STATUS "MATLAB support enabled")
+        # MATLAB include files
+        SET(MATLAB_INCLUDE "${WITH_MATLAB}/extern/include")
+        IF (IS_DIRECTORY ${MATLAB_INCLUDE})
+            INCLUDE_DIRECTORIES(SYSTEM ${MATLAB_INCLUDE})
+        ELSE ()
+            MESSAGE(FATAL_ERROR "Possibly corrupted MATLAB include headers")
+        ENDIF ()
+        # MATLAB linker files
+        SET(MATLAB_LINK "${WITH_MATLAB}/bin/maci64")
+        IF (IS_DIRECTORY ${MATLAB_LINK})
+            SET(CMAKE_EXE_LINKER_FLAGS
+                    "${CMAKE_EXE_LINKER_FLAGS} -L${MATLAB_LINK}")
+        ELSE ()
+            MESSAGE(FATAL_ERROR "Possibly corrupted MATLAB linker files")
+        ENDIF ()
+        #### everything is OK, inject definition (as #define) in the source
+        ADD_DEFINITIONS(-DWITH_MATLAB_)
+    ELSE ()
+        MESSAGE(FATAL_ERROR "Invalid path to MATLAB installation")
+    ENDIF ()
+ENDIF ()
 
 #### OpenMP support
 OPTION(WITH_OPENMP "OpenMP support" ON)
