@@ -100,7 +100,7 @@ solution `VisualStudio.sln` located in the
 ## Pre-requisites
 
 - Recommended compiler: [g++](https://gcc.gnu.org/) version 5.0 or later
-(for good C++11 support)
+(for good C++11 support). You can also use [clang++](http://clang.llvm.org/) version 3.7 or later (to enable [OpenMP](http://openmp.org/) support), please read the "Additional remarks/Building with [clang++](http://clang.llvm.org/)" subsection near the end of this document for more plarform-dependent details.
 - [Eigen 3](http://eigen.tuxfamily.org) linear algebra library. I assume here that 
 the library is installed in `$HOME/eigen`, although the location may vary, e.g. if 
 the libary was installed using a package manager.
@@ -275,6 +275,7 @@ does not interfere with the rest of the system. Usage example:
     bash ./run_mac_MATLAB.sh ./build/qpp
     ```
 
+---
 ### Building debug versions with [g++](https://gcc.gnu.org/) on [OS X/macOS](http://www.apple.com/osx)
 
 - If you build a debug version with [g++](https://gcc.gnu.org/) and use 
