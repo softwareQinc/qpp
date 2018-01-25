@@ -275,7 +275,6 @@ does not interfere with the rest of the system. Usage example:
     bash ./run_mac_MATLAB.sh ./build/qpp
     ```
 
----
 ### Building debug versions with [g++](https://gcc.gnu.org/) on [OS X/macOS](http://www.apple.com/osx)
 
 - If you build a debug version with [g++](https://gcc.gnu.org/) and use 
