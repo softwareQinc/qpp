@@ -2,9 +2,9 @@
 
 If you really cannot wait anymore, continue reading the remaining. If you afford to be a bit patient, 
 please skip the reminder of this section and read the detailed 
-[building instructions for POSIX-compliant systems](https://github.com/vsoftco/qpp/wiki/2.-Building-instructions-for-POSIX-compliant-platforms) 
+[Building instructions for POSIX-compliant systems](https://github.com/vsoftco/qpp/wiki/2.-Building-instructions-for-POSIX-compliant-platforms) 
 or 
-[Windows](https://github.com/vsoftco/qpp/wiki/3.-Building-instructions-for-Windows-platforms) 
+[Building instructions for Windows](https://github.com/vsoftco/qpp/wiki/3.-Building-instructions-for-Windows-platforms) 
 in the Wiki or in the reminder of this document.
 
 ## Installing and running under POSIX-compliant systems
