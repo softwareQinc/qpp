@@ -1,7 +1,13 @@
-.vs/
-.idea/
-/build/
-/cmake-build*/
-/doc/latex/
-
+# vim
 *.swp
+
+# Visual Studio 
+.vs/
+
+# CLion
+.idea/
+build/
+cmake-build*/
+
+# Latex documentation source files
+doc/latex/
