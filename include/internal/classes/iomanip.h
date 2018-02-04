@@ -138,7 +138,7 @@ class IOManipEigen : public IDisplay, private Display_Impl_ {
 
   private:
     std::ostream& display(std::ostream& os) const override {
-        return display_impl_(A_, os, chop);
+        return display_impl_(A_, os, chop_);
     }
 }; // class IOManipEigen
 

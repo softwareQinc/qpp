@@ -71,6 +71,7 @@ namespace exception {
 class Exception : public std::exception {
   private:
     std::string where_;
+    mutable std::string msg_;
 
   public:
     /**
@@ -78,7 +79,7 @@ class Exception : public std::exception {
     *
     * \param where Text representing where the exception occurred
     */
-    Exception(const std::string& where) : where_{where} {}
+    Exception(const std::string& where) : where_{where}, msg_{} {}
 
     /**
     * \brief Overrides std::exception::what()
@@ -86,12 +87,13 @@ class Exception : public std::exception {
     * \return Exception description
     */
     virtual const char* what() const noexcept override {
-        std::string msg_;
+        msg_.clear();
         msg_ += "IN ";
         msg_ += where_;
         msg_ += ": ";
         msg_ += this->type_description();
         msg_ += "!";
+
         return msg_.c_str();
     }
 
