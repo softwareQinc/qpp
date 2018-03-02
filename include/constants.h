@@ -33,6 +33,7 @@
 #define CONSTANTS_H_
 
 namespace qpp {
+inline namespace literals {
 /**
 * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (integer overload)
 *
@@ -41,6 +42,7 @@ namespace qpp {
 inline constexpr cplx operator"" _i(unsigned long long int x) noexcept {
     return {0., static_cast<double>(x)};
 }
+} /* inline namespace literals */
 
 /**
 * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (real overload)

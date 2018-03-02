@@ -1807,6 +1807,7 @@ inline cmat bloch2rho(const std::vector<double>& r) {
     return (Id2 + r[0] * X + r[1] * Y + r[2] * Z) / 2.;
 }
 
+inline namespace literals {
 // Idea taken from http://techblog.altplus.co.jp/entry/2017/11/08/130921
 /**
 * \brief Multi-partite qubit ket user-defined literal
@@ -1897,6 +1898,7 @@ cmat operator"" _prj() {
 
     return kron(operator""_ket<Bits...>(), operator""_bra<Bits...>());
 }
+} /* inline namespace literals */
 
 } /* namespace qpp */
 
