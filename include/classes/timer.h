@@ -67,7 +67,7 @@ class Timer : public IDisplay {
     *
     * Set the current time as the ending point
     *
-    * \return Current instance
+    * \return Reference to the current instance
     */
     const Timer& toc() noexcept {
         end_ = CLOCK_T::now();
