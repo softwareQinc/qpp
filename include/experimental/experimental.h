@@ -53,7 +53,7 @@ namespace experimental {
 * \brief Dynamic bitset class, allows the specification of the number of bits
 * at runtime (unlike std::bitset<N>)
 */
-class Dynamic_bitset {
+class Dynamic_bitset : public IDisplay {
   public:
     using value_type = unsigned int; ///< Type of the storage elements
     using storage_type = std::vector<value_type>; ///< Type of the storage
@@ -64,6 +64,7 @@ class Dynamic_bitset {
 
     /**
     * \brief Index of the \a pos bit in the storage space
+    *
     * \param pos Bit location
     * \return Index of the \a pos bit in the storage space
     */
@@ -71,6 +72,7 @@ class Dynamic_bitset {
 
     /**
     * \brief Offset of the \a pos bit in the storage space relative to its index
+    *
     * \param pos Bit location
     * \return Offset of the \a pos bit in the storage space relative to its
     * index
@@ -80,6 +82,7 @@ class Dynamic_bitset {
   public:
     /**
     * \brief Constructor, initializes all bits to false (zero)
+    *
     * \param N Number of bits in the bitset
     */
     Dynamic_bitset(idx N)
@@ -90,19 +93,22 @@ class Dynamic_bitset {
 
     /**
     * \brief Raw storage space of the bitset
+    *
     * \return Const reference to the underlying storage space
     */
     const storage_type& data() const { return v_; }
 
     /**
     * \brief Number of bits stored in the bitset
-    * \return Number of bits
+    *
+    * \return Number of bits stored in the bitset
     */
     idx size() const { return N_; }
 
     /**
     * \brief Size of the underlying storage space (in units of value_type,
     * unsigned int by default)
+    *
     * \return Size of the underlying storage space
     */
     idx storage_size() const { return storage_size_; }
@@ -110,8 +116,9 @@ class Dynamic_bitset {
     // count the bits set to true
     // (i.e. computes the Hamming distance)
     /**
-    * \brief
-    * \return
+    * \brief Number of bits set to one in the bitset
+    *
+    * \return Number of bits set to one in the bitset
     */
     idx count() const noexcept {
         std::size_t result = 0;
@@ -125,16 +132,18 @@ class Dynamic_bitset {
 
     // returns the bit at position pos
     /**
-    * \brief
-    * \param pos
-    * \return
+    * \brief The value of the bit at position \a pos
+    *
+    * \param pos Position in the bitset
+    * \return The value of the bit at position \a pos
     */
     bool get(idx pos) const { return 1 & (v_[index_(pos)] >> offset_(pos)); }
 
     // returns true if none of the bits are set
     /**
-    * \brief
-    * \return
+    * \brief Checks whether none of the bits are set
+    *
+    * \return True if none of the bits are set
     */
     bool none() const noexcept {
         bool result = true;
@@ -149,8 +158,9 @@ class Dynamic_bitset {
 
     // returns true if all bits are set to true
     /**
-    * \brief
-    * \return
+    * \brief Checks whether all bits are set
+    *
+    * \return True if all of the bits are set
     */
     bool all() const noexcept {
         bool result = true;
@@ -165,18 +175,20 @@ class Dynamic_bitset {
 
     // returns true if any bit is set to true
     /**
-    * \brief
-    * \return
+    * \brief Checks whether any bit is set
+    *
+    * \return True if any of the bits is set
     */
     bool any() const noexcept { return !(this->none()); }
 
     /* setters */
     // set the bit to a specific value
     /**
-    * \brief
-    * \param pos
-    * \param value
-    * \return
+    * \brief Sets the bit at position \a pos
+    *
+    * \param pos Position in the bitset
+    * \param value Bit value
+    * \return Reference to the current instance
     */
     Dynamic_bitset& set(idx pos, bool value = true) {
         value ? v_[index_(pos)] |= (1 << offset_(pos))
@@ -189,8 +201,9 @@ class Dynamic_bitset {
 
     // sets all bits to true
     /**
-    * \brief
-    * \return
+    * \brief Set all bits to true
+    *
+    * \return Reference to the current instance
     */
     Dynamic_bitset& set() noexcept {
         for (idx i = 0; i < storage_size(); ++i) {
@@ -202,10 +215,12 @@ class Dynamic_bitset {
 
     // set the bit according to a random Bernoulli(p) distribution
     /**
-    * \brief
-    * \param pos
-    * \param p
-    * \return
+    * \brief Sets the bit at position \a pos according to a Bernoulli(p)
+    * distribution
+    *
+    * \param pos Position in the bitset
+    * \param p Probability
+    * \return Reference to the current instance
     */
     Dynamic_bitset& rand(idx pos, double p = 0.5) {
         std::random_device rd;
@@ -219,9 +234,10 @@ class Dynamic_bitset {
 
     // set all bits according to a random Bernoulli(p) distribution
     /**
-    * \brief
-    * \param p
-    * \return
+    * \brief Sets all bits according to a Bernoulli(p) distribution
+    *
+    * \param p Probability
+    * \return Reference to the current instance
     */
     Dynamic_bitset& rand(double p = 0.5) {
         for (idx i = 0; i < size(); ++i) {
@@ -233,9 +249,10 @@ class Dynamic_bitset {
 
     // set the bit false
     /**
-    * \brief
-    * \param pos
-    * \return
+    * \brief Sets the bit at position \a pos to false
+    *
+    * \param pos Position in the bitset
+    * \return Reference to the current instance
     */
     Dynamic_bitset& reset(idx pos) {
         v_[index_(pos)] &= ~(1 << offset_(pos));
@@ -245,8 +262,9 @@ class Dynamic_bitset {
 
     // set all bits to 0
     /**
-    * \brief
-    * \return
+    * \brief Sets all bits to false
+    *
+    * \return Reference to the current instance
     */
     Dynamic_bitset& reset() noexcept {
         for (idx i = 0; i < storage_size(); ++i) {
@@ -258,9 +276,10 @@ class Dynamic_bitset {
 
     // flips the bit
     /**
-    * \brief
-    * \param pos
-    * \return
+    * \brief Flips the bit at position \a pos
+    *
+    * \param pos Position in the bitset
+    * \return Reference to the current instance
     */
     Dynamic_bitset& flip(idx pos) {
         v_[index_(pos)] ^= 1 << (offset_(pos));
@@ -270,8 +289,9 @@ class Dynamic_bitset {
 
     // flip all bits
     /**
-    * \brief
-    * \return
+    * \brief Flips all bits
+    *
+    * \return Reference to the current instance
     */
     Dynamic_bitset& flip() noexcept {
         for (idx i = 0; i < storage_size(); ++i) {
@@ -283,9 +303,10 @@ class Dynamic_bitset {
 
     /* operators */
     /**
-    * \brief
-    * \param rhs
-    * \return
+    * \brief Equality operator
+    *
+    * \param rhs Dynamic_bitset against which the equality is being tested
+    * \return True if the bitsets are equal (bit by bit), false otherwise
     */
     bool operator==(const Dynamic_bitset& rhs) const noexcept {
         assert(this->size() == rhs.size());
@@ -301,9 +322,10 @@ class Dynamic_bitset {
     }
 
     /**
-    * \brief
-    * \param rhs
-    * \return
+    * \brief Inequality operator
+    *
+    * \param rhs Dynamic_bitset against which the inequality is being tested
+    * \return True if the bitsets are not equal (bit by bit), false otherwise
     */
     bool operator!=(const Dynamic_bitset& rhs) const noexcept {
         return !(*this == rhs);
@@ -311,28 +333,14 @@ class Dynamic_bitset {
 
     /* input/output */
     /**
-    * \brief
-    * \param os
-    * \param rhs
-    * \return
-    */
-    friend std::ostream& operator<<(std::ostream& os,
-                                    const Dynamic_bitset& rhs) {
-        for (idx i = rhs.size(); i-- > 0;) {
-            os << rhs.get(i);
-        }
-
-        return os;
-    }
-
-    /**
-    * \brief
-    * \tparam CharT
-    * \tparam Traits
-    * \tparam Allocator
-    * \param zero
-    * \param one
-    * \return
+    * \brief String representation
+    *
+    * \tparam CharT String character type
+    * \tparam Traits String traits
+    * \tparam Allocator String Allocator
+    * \param zero Character representing the zero
+    * \param one Character representing the one
+    * \return The bitset as a string
     */
     template <class CharT = char, class Traits = std::char_traits<CharT>,
               class Allocator = std::allocator<CharT>>
@@ -351,6 +359,22 @@ class Dynamic_bitset {
         }
 
         return result;
+    }
+
+  private:
+    /**
+    * \brief qpp::IDisplay::display() override, displays the bitset bit by bit
+    *
+    * \param os Output stream
+    * \return Reference to the output stream
+    */
+    std::ostream& display(std::ostream& os) const override {
+        idx size = this->size();
+        for (idx i = size; i-- > 0;) {
+            os << this->get(i);
+        }
+
+        return os;
     }
 };
 
