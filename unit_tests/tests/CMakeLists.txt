@@ -21,6 +21,7 @@ INCLUDE_DIRECTORIES(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 ADD_EXECUTABLE(qpp_testing
         classes/gates.cpp
         classes/random_devices.cpp
+        classes/reversible.cpp
         classes/states.cpp
         classes/timer.cpp
         MATLAB/matlab.cpp

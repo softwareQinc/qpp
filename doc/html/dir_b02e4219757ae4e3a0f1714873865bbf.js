@@ -49,6 +49,11 @@ var dir_b02e4219757ae4e3a0f1714873865bbf =
     [ "random_devices.h", "random__devices_8h.html", [
       [ "RandomDevices", "classqpp_1_1_random_devices.html", "classqpp_1_1_random_devices" ]
     ] ],
+    [ "reversible.h", "reversible_8h.html", [
+      [ "Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html", "classqpp_1_1_dynamic__bitset" ],
+      [ "Bit_circuit", "classqpp_1_1_bit__circuit.html", "classqpp_1_1_bit__circuit" ],
+      [ "Gate_count", "structqpp_1_1_bit__circuit_1_1_gate__count.html", "structqpp_1_1_bit__circuit_1_1_gate__count" ]
+    ] ],
     [ "states.h", "states_8h.html", [
       [ "States", "classqpp_1_1_states.html", "classqpp_1_1_states" ]
     ] ],

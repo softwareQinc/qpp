@@ -89,7 +89,7 @@ public:
     *
     * \return Number of bits stored in the bitset
     */
-    idx size() const { return N_; }
+    idx size() const noexcept { return N_; }
 
     /**
     * \brief Size of the underlying storage space (in units of value_type,
@@ -97,7 +97,7 @@ public:
     *
     * \return Size of the underlying storage space
     */
-    idx storage_size() const { return storage_size_; }
+    idx storage_size() const noexcept { return storage_size_; }
 
     // count the bits set to true
     // (i.e. computes the Hamming distance)
@@ -123,7 +123,7 @@ public:
     * \param pos Position in the bitset
     * \return The value of the bit at position \a pos
     */
-    bool get(idx pos) const { return 1 & (v_[index_(pos)] >> offset_(pos)); }
+    bool get(idx pos) const noexcept { return 1 & (v_[index_(pos)] >> offset_(pos)); }
 
     // returns true if none of the bits are set
     /**
@@ -370,7 +370,6 @@ private:
 */
 class Bit_circuit : public Dynamic_bitset {
 public:
-    ///< Gate counters
     struct Gate_count {
         // 1 bit gates
         idx NOT = 0;
@@ -383,7 +382,7 @@ public:
         // 3 bit gates
         idx FRED = 0;
         idx TOF = 0;
-    } gate_count{};
+    } gate_count{}; ///< Gate counters
 
     /**
     * \brief Inherited constructor
@@ -435,7 +434,7 @@ public:
 
     /**
     * \brief Toffoli gate
-
+    *
     * \param pos Bit positions in the circuit, in the order
     * control-control-target
     * \return Reference to the current instance
@@ -467,7 +466,7 @@ public:
 
     /**
     * \brief Fredkin gate (Controlled-SWAP)
-
+    *
     * \param pos Bit positions in the circuit, in the order
     * control-target-target
     * \return Reference to the current instance
@@ -482,7 +481,6 @@ public:
     }
 
     /**
-    *
     * \brief Reset the circuit all zero, clear all gates
     *
     * \return Reference to the current instance
