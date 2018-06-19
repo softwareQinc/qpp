@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"namespaceqpp_1_1literals.html":[1,0,0,3],
+"namespaces.html":[1,0],
 "number__theory_8h.html":[3,0,10],
 "number__theory_8h.html#a048622e398319b61f9ea62a6c66e67fb":[3,0,10,3],
 "number__theory_8h.html#a0d115963145ca884c5d9ef8f3b18bf83":[3,0,10,2],

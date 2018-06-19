@@ -1,6 +1,8 @@
 <map id="qpp::IDisplay" name="qpp::IDisplay">
-<area shape="rect" id="node2" href="$classqpp_1_1internal_1_1_i_o_manip_eigen.html" title="qpp::internal::IOManipEigen" alt="" coords="156,5,339,32"/>
-<area shape="rect" id="node3" href="$classqpp_1_1internal_1_1_i_o_manip_pointer.html" title="qpp::internal::IOManipPointer\l\&lt; PointerType \&gt;" alt="" coords="152,57,343,98"/>
-<area shape="rect" id="node4" href="$classqpp_1_1internal_1_1_i_o_manip_range.html" title="qpp::internal::IOManipRange\l\&lt; InputIterator \&gt;" alt="" coords="153,122,341,163"/>
-<area shape="rect" id="node5" href="$classqpp_1_1_timer.html" title="Chronometer. " alt="" coords="155,188,340,215"/>
+<area shape="rect" id="node2" href="$classqpp_1_1experimental_1_1_dynamic__bitset.html" title="qpp::experimental::\lDynamic_bitset" alt="" coords="156,5,263,47"/>
+<area shape="rect" id="node4" href="$classqpp_1_1internal_1_1_i_o_manip_eigen.html" title="qpp::internal::IOManipEigen" alt="" coords="137,71,282,98"/>
+<area shape="rect" id="node5" href="$classqpp_1_1internal_1_1_i_o_manip_pointer.html" title="qpp::internal::IOManipPointer\l\&lt; PointerType \&gt;" alt="" coords="133,123,285,164"/>
+<area shape="rect" id="node6" href="$classqpp_1_1internal_1_1_i_o_manip_range.html" title="qpp::internal::IOManipRange\l\&lt; InputIterator \&gt;" alt="" coords="135,188,284,229"/>
+<area shape="rect" id="node7" href="$classqpp_1_1_timer.html" title="Chronometer. " alt="" coords="137,254,282,281"/>
+<area shape="rect" id="node3" href="$classqpp_1_1experimental_1_1_bit__circuit.html" title="qpp::experimental::\lBit_circuit" alt="" coords="333,5,440,47"/>
 </map>

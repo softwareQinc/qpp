@@ -78,7 +78,7 @@ class Codes final : public internal::Singleton<const Codes> // const Singleton
     ket codeword(Type type, idx i) const {
         ket result;
         switch (type) {
-        // [[5,1,3]] Five qubit code according to Nielsen and Chuang)
+        // [[5,1,3]] Five qubit code (as in Nielsen and Chuang)
         case Type::FIVE_QUBIT:
             switch (i) {
             case 0:

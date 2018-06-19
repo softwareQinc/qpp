@@ -4,9 +4,6 @@ var hierarchy =
     [ "qpp::internal::Display_Impl_", "structqpp_1_1internal_1_1_display___impl__.html", [
       [ "qpp::internal::IOManipEigen", "classqpp_1_1internal_1_1_i_o_manip_eigen.html", null ]
     ] ],
-    [ "qpp::experimental::Dynamic_bitset", "classqpp_1_1experimental_1_1_dynamic__bitset.html", [
-      [ "qpp::experimental::Bit_circuit", "classqpp_1_1experimental_1_1_bit__circuit.html", null ]
-    ] ],
     [ "qpp::Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html", null ],
     [ "std::exception", null, [
       [ "qpp::exception::Exception", "classqpp_1_1exception_1_1_exception.html", [
@@ -49,6 +46,9 @@ var hierarchy =
     ] ],
     [ "qpp::experimental::Bit_circuit::Gate_count", "structqpp_1_1experimental_1_1_bit__circuit_1_1_gate__count.html", null ],
     [ "qpp::IDisplay", "classqpp_1_1_i_display.html", [
+      [ "qpp::experimental::Dynamic_bitset", "classqpp_1_1experimental_1_1_dynamic__bitset.html", [
+        [ "qpp::experimental::Bit_circuit", "classqpp_1_1experimental_1_1_bit__circuit.html", null ]
+      ] ],
       [ "qpp::internal::IOManipEigen", "classqpp_1_1internal_1_1_i_o_manip_eigen.html", null ],
       [ "qpp::internal::IOManipPointer< PointerType >", "classqpp_1_1internal_1_1_i_o_manip_pointer.html", null ],
       [ "qpp::internal::IOManipRange< InputIterator >", "classqpp_1_1internal_1_1_i_o_manip_range.html", null ],
@@ -58,7 +58,9 @@ var hierarchy =
       [ "qpp::is_matrix_expression< Derived >", "structqpp_1_1is__matrix__expression.html", null ]
     ] ],
     [ "qpp::make_void< Ts >", "structqpp_1_1make__void.html", null ],
-    [ "qpp::internal::Singleton< T >", "classqpp_1_1internal_1_1_singleton.html", null ],
+    [ "qpp::internal::Singleton< T >", "classqpp_1_1internal_1_1_singleton.html", [
+      [ "qpp::States", "classqpp_1_1_states.html", null ]
+    ] ],
     [ "qpp::internal::Singleton< const Codes >", "classqpp_1_1internal_1_1_singleton.html", [
       [ "qpp::Codes", "classqpp_1_1_codes.html", null ]
     ] ],
@@ -68,9 +70,7 @@ var hierarchy =
     [ "qpp::internal::Singleton< const Init >", "classqpp_1_1internal_1_1_singleton.html", [
       [ "qpp::Init", "classqpp_1_1_init.html", null ]
     ] ],
-    [ "qpp::internal::Singleton< const States >", "classqpp_1_1internal_1_1_singleton.html", [
-      [ "qpp::States", "classqpp_1_1_states.html", null ]
-    ] ],
+    [ "qpp::internal::Singleton< const States >", "classqpp_1_1internal_1_1_singleton.html", null ],
     [ "qpp::internal::Singleton< RandomDevices >", "classqpp_1_1internal_1_1_singleton.html", [
       [ "qpp::RandomDevices", "classqpp_1_1_random_devices.html", null ]
     ] ],

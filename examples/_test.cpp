@@ -2,14 +2,13 @@
 #include <iostream>
 
 #include "qpp.h"
-#include "experimental/experimental.h"
 
 int main() {
     using namespace qpp;
     std::cout << "Testing\n";
 
     const idx bits = 70; // number of bits
-    experimental::Bit_circuit b{bits};
+    Bit_circuit b{bits};
 
     const idx trials = 20; // number of trials
 
@@ -57,7 +56,7 @@ int main() {
     std::cout << (b == c) << '\n';
     std::cout << (b != c) << '\n';
 
-    experimental::Dynamic_bitset bb(9);
+    Dynamic_bitset bb(9);
     bb.set(1).set(3).set(8);
     std::cout << bb << '\n';
     // std::cout << (32 & ~(!false << 5));
@@ -65,7 +64,7 @@ int main() {
     std::cout << "here\n";
     std::cout << bb.to_string('o', 'X') << '\n';
 
-    experimental::Dynamic_bitset vlad(20);
+    Dynamic_bitset vlad(20);
     std::cout << vlad << '\n';
 
     std::vector<unsigned int> vv(20);

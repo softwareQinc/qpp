@@ -1,7 +1,7 @@
 var NAVTREE =
 [
   [ "Quantum++", "index.html", [
-    [ "Quantum++", "md__home_vlad_qpp__r_e_a_d_m_e.html", null ],
+    [ "Quantum++", "md___users_vlad_qpp__r_e_a_d_m_e.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -38,8 +38,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"constants_8h.html#a12e22073e741a1057129fa01b4ec10a6",
-"number__theory_8h.html"
+"constants_8h.html",
+"namespaceqpp_1_1literals.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
