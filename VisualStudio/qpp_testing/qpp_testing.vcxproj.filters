@@ -68,6 +68,9 @@
     <ClCompile Include="..\..\unit_tests\tests\classes\random_devices.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\unit_tests\tests\classes\reversible.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\unit_tests\tests\classes\states.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

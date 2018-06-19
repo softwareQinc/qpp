@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\unit_tests\tests\classes\gates.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\classes\random_devices.cpp" />
+    <ClCompile Include="..\..\unit_tests\tests\classes\reversible.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\classes\states.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\classes\timer.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\entanglement.cpp" />
