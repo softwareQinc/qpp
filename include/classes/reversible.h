@@ -99,12 +99,10 @@ public:
     */
     idx storage_size() const noexcept { return storage_size_; }
 
-    // count the bits set to true
-    // (i.e. computes the Hamming distance)
     /**
-    * \brief Number of bits set to one in the bitset
+    * \brief Number of bits set to one in the bitset (Hamming weight)
     *
-    * \return Number of bits set to one in the bitset
+    * \return Hamming weight
     */
     idx count() const noexcept {
         std::size_t result = 0;
@@ -116,7 +114,6 @@ public:
         return result;
     }
 
-    // returns the bit at position pos
     /**
     * \brief The value of the bit at position \a pos
     *
@@ -125,7 +122,6 @@ public:
     */
     bool get(idx pos) const noexcept { return 1 & (v_[index_(pos)] >> offset_(pos)); }
 
-    // returns true if none of the bits are set
     /**
     * \brief Checks whether none of the bits are set
     *
@@ -142,7 +138,6 @@ public:
         return result;
     }
 
-    // returns true if all bits are set to true
     /**
     * \brief Checks whether all bits are set
     *
@@ -159,7 +154,6 @@ public:
         return result;
     }
 
-    // returns true if any bit is set to true
     /**
     * \brief Checks whether any bit is set
     *
@@ -168,7 +162,6 @@ public:
     bool any() const noexcept { return !(this->none()); }
 
     /* setters */
-    // set the bit to a specific value
     /**
     * \brief Sets the bit at position \a pos
     *
@@ -185,7 +178,6 @@ public:
         return *this;
     }
 
-    // sets all bits to true
     /**
     * \brief Set all bits to true
     *
@@ -199,7 +191,6 @@ public:
         return *this;
     }
 
-    // set the bit according to a random Bernoulli(p) distribution
     /**
     * \brief Sets the bit at position \a pos according to a Bernoulli(p)
     * distribution
@@ -218,7 +209,6 @@ public:
         return *this;
     }
 
-    // set all bits according to a random Bernoulli(p) distribution
     /**
     * \brief Sets all bits according to a Bernoulli(p) distribution
     *
@@ -233,7 +223,6 @@ public:
         return *this;
     }
 
-    // set the bit false
     /**
     * \brief Sets the bit at position \a pos to false
     *
@@ -246,7 +235,6 @@ public:
         return *this;
     }
 
-    // set all bits to 0
     /**
     * \brief Sets all bits to false
     *
@@ -260,7 +248,6 @@ public:
         return *this;
     }
 
-    // flips the bit
     /**
     * \brief Flips the bit at position \a pos
     *
@@ -273,7 +260,6 @@ public:
         return *this;
     }
 
-    // flip all bits
     /**
     * \brief Flips all bits
     *
@@ -315,6 +301,23 @@ public:
     */
     bool operator!=(const Dynamic_bitset& rhs) const noexcept {
         return !(*this == rhs);
+    }
+
+    /**
+    * \brief Number of places the two bitsets differ (Hamming distance)
+    *
+    * \param rhs Dynamic_bitset against which the the Hamming distance is
+    * computed
+    * \return Hamming distance
+    */
+    idx operator-(const Dynamic_bitset& rhs) const noexcept {
+        idx result = 0;
+        for (idx i = 0; i < size(); ++i) {
+            if (this->get(i) != rhs.get(i))
+                ++result;
+        }
+
+        return result;
     }
 
     /* input/output */
@@ -405,7 +408,6 @@ public:
 
     /**
     * \brief Bit flip
-    *
     * \see qpp::Bit_circuit::X()
     *
     * \param pos Bit position in the circuit

@@ -93,14 +93,19 @@ TEST(qpp_Dynamic_bitset_flip, AllTests) {
 TEST(qpp_Dynamic_bitset_flip_default, AllTests) {
 }
 /******************************************************************************/
-/// BEGIN bool qpp::Dynamic_bitset::operator==
-///        (const Dynamic_bitset& rhs) const noexcept
+/// BEGIN bool qpp::Dynamic_bitset::operator==(const Dynamic_bitset& rhs)
+///        const noexcept
 TEST(qpp_Dynamic_bitset_operator_eqeq, AllTests) {
 }
 /******************************************************************************/
 /// BEGIN bool qpp::Dynamic_bitset::operator!=
 ///        (const Dynamic_bitset& rhs) const noexcept
 TEST(qpp_Dynamic_bitset_operator_noneq, AllTests) {
+}
+/******************************************************************************/
+/// BEGIN idx qpp::Dynamic_bitset::operator-(const Dynamic_bitset& rhs)
+///        const noexcept
+TEST(qpp_Dynamic_bitset_operator_minus, AllTests) {
 }
 /******************************************************************************/
 /// BEGIN template <class CharT = char, class Traits = std::char_traits<CharT>,
