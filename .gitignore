@@ -1,5 +1,6 @@
 # vim
 *.swp
+out.tmp
 
 # Visual Studio 
 .vs/
