@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"number__theory_8h.html#a0d115963145ca884c5d9ef8f3b18bf83":[3,0,10,2],
 "number__theory_8h.html#a0ff25c25c0ff9304255495eb90b98d1b":[3,0,10,12],
 "number__theory_8h.html#a30154e60ca47ab955ac06b5a31360f2a":[3,0,10,5],
 "number__theory_8h.html#a33f4dd20b7c8cdd7d07c596e5b83ee2e":[3,0,10,1],
