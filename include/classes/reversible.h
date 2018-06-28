@@ -24,7 +24,6 @@
  * SOFTWARE.
  */
 
-
 /**
 * \file classes/reversible.h
 * \brief Support for classical reversible circuits
@@ -40,10 +39,10 @@ namespace qpp {
 * at runtime (unlike std::bitset<N>)
 */
 class Dynamic_bitset : public IDisplay {
-public:
+  public:
     using value_type = unsigned int; ///< Type of the storage elements
     using storage_type = std::vector<value_type>; ///< Type of the storage
-protected:
+  protected:
     idx storage_size_;          ///< Storage size
     idx N_;                     ///< Number of bits
     std::vector<value_type> v_; ///< Storage space
@@ -65,15 +64,15 @@ protected:
     */
     idx offset_(idx pos) const { return pos % (sizeof(value_type) * CHAR_BIT); }
 
-public:
+  public:
     /**
     * \brief Constructor, initializes all bits to false (zero)
     *
     * \param N Number of bits in the bitset
     */
     Dynamic_bitset(idx N)
-            : storage_size_{N / (sizeof(value_type) * CHAR_BIT) + 1}, N_{N},
-              v_(storage_size_) {}
+        : storage_size_{N / (sizeof(value_type) * CHAR_BIT) + 1}, N_{N},
+          v_(storage_size_) {}
 
     /* getters */
 
@@ -120,7 +119,9 @@ public:
     * \param pos Position in the bitset
     * \return The value of the bit at position \a pos
     */
-    bool get(idx pos) const noexcept { return 1 & (v_[index_(pos)] >> offset_(pos)); }
+    bool get(idx pos) const noexcept {
+        return 1 & (v_[index_(pos)] >> offset_(pos));
+    }
 
     /**
     * \brief Checks whether none of the bits are set
@@ -332,7 +333,7 @@ public:
     * \return The bitset as a string
     */
     template <class CharT = char, class Traits = std::char_traits<CharT>,
-            class Allocator = std::allocator<CharT>>
+              class Allocator = std::allocator<CharT>>
     std::basic_string<CharT, Traits, Allocator>
     to_string(CharT zero = CharT('0'), CharT one = CharT('1')) const {
         std::basic_string<CharT, Traits, Allocator> result;
@@ -350,7 +351,7 @@ public:
         return result;
     }
 
-private:
+  private:
     /**
     * \brief qpp::IDisplay::display() override, displays the bitset bit by bit
     *
@@ -372,7 +373,7 @@ private:
 * \brief Classical reversible circuit simulator
 */
 class Bit_circuit : public Dynamic_bitset {
-public:
+  public:
     struct Gate_count {
         // 1 bit gates
         idx NOT = 0;
@@ -428,7 +429,7 @@ public:
     */
     Bit_circuit& CNOT(const std::vector<idx>& pos) {
         v_[index_(pos[1])] ^= (1 & (v_[index_(pos[0])] >> offset_(pos[0])))
-                << offset_(pos[1]);
+                              << offset_(pos[1]);
         ++gate_count.CNOT;
 
         return *this;
@@ -444,7 +445,7 @@ public:
     Bit_circuit& TOF(const std::vector<idx>& pos) {
         v_[index_(pos[2])] ^= ((1 & (v_[index_(pos[1])] >> offset_(pos[1]))) &
                                (1 & (v_[index_(pos[0])] >> offset_(pos[0]))))
-                << offset_(pos[2]);
+                              << offset_(pos[2]);
 
         ++gate_count.TOF;
         return *this;
