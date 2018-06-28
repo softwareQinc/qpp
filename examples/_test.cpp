@@ -3,6 +3,4 @@
 
 #include "qpp.h"
 
-int main() {
-
-}
+int main() {}

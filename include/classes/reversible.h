@@ -462,8 +462,8 @@ class Bit_circuit : public Dynamic_bitset {
             this->X(pos[0]);
             this->X(pos[1]);
         }
-
         ++gate_count.SWAP;
+
         return *this;
     }
 
@@ -478,8 +478,8 @@ class Bit_circuit : public Dynamic_bitset {
         if (this->get(pos[0])) {
             this->SWAP({pos[1], pos[2]});
         }
-
         ++gate_count.FRED;
+
         return *this;
     }
 
@@ -492,6 +492,7 @@ class Bit_circuit : public Dynamic_bitset {
         gate_count.NOT = gate_count.X = 0;
         gate_count.CNOT = gate_count.SWAP = 0;
         gate_count.FRED = gate_count.TOF = 0;
+        Dynamic_bitset::reset();
 
         return *this;
     }
