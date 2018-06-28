@@ -1,13 +1,8 @@
 var hierarchy =
 [
-    [ "qpp::Bit_circuit", "classqpp_1_1_bit__circuit.html", null ],
     [ "qpp::internal::Display_Impl_", "structqpp_1_1internal_1_1_display___impl__.html", [
       [ "qpp::internal::IOManipEigen", "classqpp_1_1internal_1_1_i_o_manip_eigen.html", null ]
     ] ],
-    [ "qpp::experimental::Dynamic_bitset", "classqpp_1_1experimental_1_1_dynamic__bitset.html", [
-      [ "qpp::experimental::Bit_circuit", "classqpp_1_1experimental_1_1_bit__circuit.html", null ]
-    ] ],
-    [ "qpp::Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html", null ],
     [ "std::exception", null, [
       [ "qpp::exception::Exception", "classqpp_1_1exception_1_1_exception.html", [
         [ "qpp::exception::CustomException", "classqpp_1_1exception_1_1_custom_exception.html", null ],
@@ -47,8 +42,11 @@ var hierarchy =
       [ "qpp::is_complex< T >", "structqpp_1_1is__complex.html", null ],
       [ "qpp::is_iterable< T, typename >", "structqpp_1_1is__iterable.html", null ]
     ] ],
-    [ "qpp::experimental::Bit_circuit::Gate_count", "structqpp_1_1experimental_1_1_bit__circuit_1_1_gate__count.html", null ],
+    [ "qpp::Bit_circuit::Gate_count", "structqpp_1_1_bit__circuit_1_1_gate__count.html", null ],
     [ "qpp::IDisplay", "classqpp_1_1_i_display.html", [
+      [ "qpp::Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html", [
+        [ "qpp::Bit_circuit", "classqpp_1_1_bit__circuit.html", null ]
+      ] ],
       [ "qpp::internal::IOManipEigen", "classqpp_1_1internal_1_1_i_o_manip_eigen.html", null ],
       [ "qpp::internal::IOManipPointer< PointerType >", "classqpp_1_1internal_1_1_i_o_manip_pointer.html", null ],
       [ "qpp::internal::IOManipRange< InputIterator >", "classqpp_1_1internal_1_1_i_o_manip_range.html", null ],

@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Quantum++
-   &#160;<span id="projectnumber">v1.0-rc4</span>
+   &#160;<span id="projectnumber">v1.0-devel</span>
    </div>
    <div id="projectbrief">A modern C++11 quantum computing library</div>
   </td>
@@ -84,6 +84,8 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceqpp_1_1internal"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html">internal</a></td></tr>
 <tr class="memdesc:namespaceqpp_1_1internal"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal utility functions, do not use them directly or modify them. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceqpp_1_1literals"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1literals.html">literals</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -176,9 +178,6 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:afe18fabfcd4b816ce93087c78e20dce7"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#afe18fabfcd4b816ce93087c78e20dce7">operator&quot;&quot; _i</a> (unsigned long long int x) noexcept</td></tr>
-<tr class="memdesc:afe18fabfcd4b816ce93087c78e20dce7"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-defined literal for complex <img class="formulaInl" alt="$i=\sqrt{-1}$" src="form_11.png"/> (integer overload)  <a href="#afe18fabfcd4b816ce93087c78e20dce7">More...</a><br /></td></tr>
-<tr class="separator:afe18fabfcd4b816ce93087c78e20dce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12e22073e741a1057129fa01b4ec10a6"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a12e22073e741a1057129fa01b4ec10a6">operator&quot;&quot; _i</a> (long double x) noexcept</td></tr>
 <tr class="memdesc:a12e22073e741a1057129fa01b4ec10a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-defined literal for complex <img class="formulaInl" alt="$i=\sqrt{-1}$" src="form_11.png"/> (real overload)  <a href="#a12e22073e741a1057129fa01b4ec10a6">More...</a><br /></td></tr>
 <tr class="separator:a12e22073e741a1057129fa01b4ec10a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -531,18 +530,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a7e5c413d74d838e78264444307e81576"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a7e5c413d74d838e78264444307e81576">bloch2rho</a> (const std::vector&lt; double &gt; &amp;r)</td></tr>
 <tr class="memdesc:a7e5c413d74d838e78264444307e81576"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the density matrix corresponding to the 3-dimensional real Bloch vector <em>r</em>.  <a href="#a7e5c413d74d838e78264444307e81576">More...</a><br /></td></tr>
 <tr class="separator:a7e5c413d74d838e78264444307e81576"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59a01fc6fefcbbc73b0cd3398ce13b16"><td class="memTemplParams" colspan="2">template&lt;char... Bits&gt; </td></tr>
-<tr class="memitem:a59a01fc6fefcbbc73b0cd3398ce13b16"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a59a01fc6fefcbbc73b0cd3398ce13b16">operator&quot;&quot; _ket</a> ()</td></tr>
-<tr class="memdesc:a59a01fc6fefcbbc73b0cd3398ce13b16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi-partite qubit ket user-defined literal.  <a href="#a59a01fc6fefcbbc73b0cd3398ce13b16">More...</a><br /></td></tr>
-<tr class="separator:a59a01fc6fefcbbc73b0cd3398ce13b16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36d54a6b9c9fcb4a796c08c9f556e596"><td class="memTemplParams" colspan="2">template&lt;char... Bits&gt; </td></tr>
-<tr class="memitem:a36d54a6b9c9fcb4a796c08c9f556e596"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a8886624a4a55a9b45c96a623a20bf163">bra</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a36d54a6b9c9fcb4a796c08c9f556e596">operator&quot;&quot; _bra</a> ()</td></tr>
-<tr class="memdesc:a36d54a6b9c9fcb4a796c08c9f556e596"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi-partite qubit bra user-defined literal.  <a href="#a36d54a6b9c9fcb4a796c08c9f556e596">More...</a><br /></td></tr>
-<tr class="separator:a36d54a6b9c9fcb4a796c08c9f556e596"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16b1499bcca121082c72e4891fc60e29"><td class="memTemplParams" colspan="2">template&lt;char... Bits&gt; </td></tr>
-<tr class="memitem:a16b1499bcca121082c72e4891fc60e29"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a16b1499bcca121082c72e4891fc60e29">operator&quot;&quot; _prj</a> ()</td></tr>
-<tr class="memdesc:a16b1499bcca121082c72e4891fc60e29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi-partite qubit projector user-defined literal.  <a href="#a16b1499bcca121082c72e4891fc60e29">More...</a><br /></td></tr>
-<tr class="separator:a16b1499bcca121082c72e4891fc60e29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f1805e175751ef749374e3c8499f15d"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a4f1805e175751ef749374e3c8499f15d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html">internal::IOManipEigen</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, double <a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>=<a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>)</td></tr>
 <tr class="memdesc:a4f1805e175751ef749374e3c8499f15d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eigen expression ostream manipulator.  <a href="#a4f1805e175751ef749374e3c8499f15d">More...</a><br /></td></tr>
@@ -4842,7 +4829,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Multi-partite qudit ket. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea" title="Complex (double precision) dynamic Eigen column vector. ">ket</a> template&lt;char... Bits&gt; <a class="el" href="namespaceqpp.html#a59a01fc6fefcbbc73b0cd3398ce13b16" title="Multi-partite qubit ket user-defined literal. ">qpp::operator "" _ket()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea" title="Complex (double precision) dynamic Eigen column vector. ">ket</a> template&lt;char... Bits&gt; <a class="el" href="namespaceqpp_1_1literals.html#af1b1b403462748ca5a55c10e8e41d80d" title="Multi-partite qubit ket user-defined literal. ">qpp::operator "" _ket()</a></dd></dl>
 <p>Constructs the multi-partite qudit ket <img class="formulaInl" alt="$|\mathrm{mask}\rangle$" src="form_37.png"/>, where <em>mask</em> is a std::vector of non-negative integers. Each element in <em>mask</em> has to be smaller than the corresponding element in <em>dims</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -4890,7 +4877,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Multi-partite qudit ket. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea" title="Complex (double precision) dynamic Eigen column vector. ">ket</a> template&lt;char... Bits&gt; <a class="el" href="namespaceqpp.html#a59a01fc6fefcbbc73b0cd3398ce13b16" title="Multi-partite qubit ket user-defined literal. ">qpp::operator "" _ket()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea" title="Complex (double precision) dynamic Eigen column vector. ">ket</a> template&lt;char... Bits&gt; <a class="el" href="namespaceqpp_1_1literals.html#af1b1b403462748ca5a55c10e8e41d80d" title="Multi-partite qubit ket user-defined literal. ">qpp::operator "" _ket()</a></dd></dl>
 <p>Constructs the multi-partite qudit ket <img class="formulaInl" alt="$|\mathrm{mask}\rangle$" src="form_37.png"/>, all subsystem having equal dimension <em>d</em>. <em>mask</em> is a std::vector of non-negative integers, and each element in <em>mask</em> has to be strictly smaller than <em>d</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -5095,7 +5082,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Projector onto multi-partite qudit ket. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276" title="Complex (double precision) dynamic Eigen matrix. ">cmat</a> template&lt;char... Bits&gt; <a class="el" href="namespaceqpp.html#a16b1499bcca121082c72e4891fc60e29" title="Multi-partite qubit projector user-defined literal. ">qpp::operator "" _prj()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276" title="Complex (double precision) dynamic Eigen matrix. ">cmat</a> template&lt;char... Bits&gt; <a class="el" href="namespaceqpp_1_1literals.html#a807ed54ce7598a383aa383d1cb60436a" title="Multi-partite qubit projector user-defined literal. ">qpp::operator "" _prj()</a></dd></dl>
 <p>Constructs the projector onto the multi-partite qudit ket <img class="formulaInl" alt="$|\mathrm{mask}\rangle$" src="form_37.png"/>, where <em>mask</em> is a std::vector of non-negative integers. Each element in <em>mask</em> has to be smaller than the corresponding element in <em>dims</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -5143,7 +5130,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Projector onto multi-partite qudit ket. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276" title="Complex (double precision) dynamic Eigen matrix. ">cmat</a> template&lt;char... Bits&gt; <a class="el" href="namespaceqpp.html#a16b1499bcca121082c72e4891fc60e29" title="Multi-partite qubit projector user-defined literal. ">qpp::operator "" _prj()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276" title="Complex (double precision) dynamic Eigen matrix. ">cmat</a> template&lt;char... Bits&gt; <a class="el" href="namespaceqpp_1_1literals.html#a807ed54ce7598a383aa383d1cb60436a" title="Multi-partite qubit projector user-defined literal. ">qpp::operator "" _prj()</a></dd></dl>
 <p>Constructs the projector onto the multi-partite qudit ket <img class="formulaInl" alt="$|\mathrm{mask}\rangle$" src="form_37.png"/>, all subsystem having equal dimension <em>d</em>. <em>mask</em> is a std::vector of non-negative integers, and each element in <em>mask</em> has to be strictly smaller than <em>d</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -5396,66 +5383,8 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a id="a36d54a6b9c9fcb4a796c08c9f556e596"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a36d54a6b9c9fcb4a796c08c9f556e596">&#9670;&nbsp;</a></span>operator"" _bra()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;char... Bits&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespaceqpp.html#a8886624a4a55a9b45c96a623a20bf163">bra</a> qpp::operator&quot;&quot; _bra </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Multi-partite qubit bra user-defined literal. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a2f09ed5c440772b552a289b800d4415a" title="Multi-partite qudit ket. ">qpp::mket()</a> and <a class="el" href="namespaceqpp.html#aba2b3538ec37539e56f77addfb9ea1dd" title="Adjoint. ">qpp::adjoint()</a></dd></dl>
-<p>Constructs the multi-partite qubit bra <img class="formulaInl" alt="$\langle\mathrm{Bits}|$" src="form_40.png"/></p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Bits</td><td>String of binary numbers representing the qubit bra </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Multi-partite qubit bra, as a complex dynamic row vector </dd></dl>
-
-</div>
-</div>
-<a id="afe18fabfcd4b816ce93087c78e20dce7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe18fabfcd4b816ce93087c78e20dce7">&#9670;&nbsp;</a></span>operator"" _i() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> qpp::operator&quot;&quot; _i </td>
-          <td>(</td>
-          <td class="paramtype">unsigned long long int&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>User-defined literal for complex <img class="formulaInl" alt="$i=\sqrt{-1}$" src="form_11.png"/> (integer overload) </p>
-<p>Example:</p><div class="fragment"><div class="line"><a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> z = 4_i; <span class="comment">// type of z is std::complex&lt;double&gt; </span></div></div><!-- fragment --> 
-</div>
-</div>
 <a id="a12e22073e741a1057129fa01b4ec10a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12e22073e741a1057129fa01b4ec10a6">&#9670;&nbsp;</a></span>operator"" _i() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a12e22073e741a1057129fa01b4ec10a6">&#9670;&nbsp;</a></span>operator"" _i()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5480,66 +5409,6 @@ template&lt;char... Bits&gt; </div>
 
 <p>User-defined literal for complex <img class="formulaInl" alt="$i=\sqrt{-1}$" src="form_11.png"/> (real overload) </p>
 <p>Example:</p><div class="fragment"><div class="line"><a class="code" href="namespaceqpp.html#aad7ccc50a6b139279d7b56d07112b183">cplx</a> z = 4.5_i; <span class="comment">// type of z is std::complex&lt;double&gt; </span></div></div><!-- fragment --> 
-</div>
-</div>
-<a id="a59a01fc6fefcbbc73b0cd3398ce13b16"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59a01fc6fefcbbc73b0cd3398ce13b16">&#9670;&nbsp;</a></span>operator"" _ket()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;char... Bits&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea">ket</a> qpp::operator&quot;&quot; _ket </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Multi-partite qubit ket user-defined literal. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a2f09ed5c440772b552a289b800d4415a" title="Multi-partite qudit ket. ">qpp::mket()</a></dd></dl>
-<p>Constructs the multi-partite qubit ket <img class="formulaInl" alt="$|\mathrm{Bits}\rangle$" src="form_39.png"/></p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Bits</td><td>String of binary numbers representing the qubit ket </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Multi-partite qubit ket, as a complex dynamic column vector </dd></dl>
-
-</div>
-</div>
-<a id="a16b1499bcca121082c72e4891fc60e29"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16b1499bcca121082c72e4891fc60e29">&#9670;&nbsp;</a></span>operator"" _prj()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;char... Bits&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> qpp::operator&quot;&quot; _prj </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Multi-partite qubit projector user-defined literal. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a3ee4bf8befeea8079ad61c7070ba9fa2" title="Projector onto multi-partite qudit ket. ">qpp::mprj()</a></dd></dl>
-<p>Constructs the multi-partite qubit projector <img class="formulaInl" alt="$|\mathrm{Bits}\rangle\langle\mathrm{Bits}|$" src="form_41.png"/> (in the computational basis)</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Bits</td><td>String of binary numbers representing the qubit state to project on </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Multi-partite qubit projector, as a complex dynamic matrix </dd></dl>
-
 </div>
 </div>
 <a id="adc34b7cd0bcbdddf99c4835489c47b5d"></a>
@@ -8688,7 +8557,7 @@ template&lt;typename Container &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Wed Jan 24 2018 15:57:23 for Quantum++ by
+    <li class="footer">Generated on Tue Jun 19 2018 13:12:42 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

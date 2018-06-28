@@ -1,6 +1,6 @@
 <map id="qpp::exception::DimsMismatchRvector" name="qpp::exception::DimsMismatchRvector">
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="20,185,193,212"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="15,96,119,123"/>
-<area shape="rect" id="node4" title="STL class. " alt="" coords="143,96,223,123"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="119,5,246,47"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="17,200,153,227"/>
+<area shape="rect" id="node3" title="STL class. " alt="" coords="8,96,92,123"/>
+<area shape="rect" id="node4" title="STL class. " alt="" coords="116,96,181,123"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="99,5,199,47"/>
 </map>

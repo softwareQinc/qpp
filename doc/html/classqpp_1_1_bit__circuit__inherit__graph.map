@@ -1,0 +1,4 @@
+<map id="qpp::Bit_circuit" name="qpp::Bit_circuit">
+<area shape="rect" id="node2" href="$classqpp_1_1_dynamic__bitset.html" title="Dynamic bitset class, allows the specification of the number of bits at runtime (unlike std::bitset&lt;N..." alt="" coords="5,80,117,107"/>
+<area shape="rect" id="node3" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="21,5,101,32"/>
+</map>

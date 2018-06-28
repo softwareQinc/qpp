@@ -109,6 +109,7 @@
 #include "classes/timer.h"
 #include "instruments.h"
 #include "number_theory.h"
+#include "classes/reversible.h"
 
 /**
 * \namespace qpp

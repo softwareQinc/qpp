@@ -1,12 +1,14 @@
-.vs/
-.idea/
-/build/
-/cmake-build*/
-/doc/latex/
-/quick/
-
+# vim
 *.swp
+out.tmp
 
-TODO.txt
-conventions.txt
+# Visual Studio 
+.vs/
 
+# CLion
+.idea/
+build/
+cmake-build*/
+
+# Latex documentation source files
+doc/latex/

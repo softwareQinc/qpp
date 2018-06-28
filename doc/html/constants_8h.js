@@ -1,7 +1,7 @@
 var constants_8h =
 [
     [ "omega", "constants_8h.html#a621afdaae12a94a5e10a874fc2073dc0", null ],
-    [ "operator\"\" _i", "constants_8h.html#afe18fabfcd4b816ce93087c78e20dce7", null ],
+    [ "operator\"\" _i", "constants_8h.html#a93e5d55504a358ec5758ba472b99abcb", null ],
     [ "operator\"\" _i", "constants_8h.html#a12e22073e741a1057129fa01b4ec10a6", null ],
     [ "chop", "constants_8h.html#a3a6d2c509bdcf240869e1bebb3be4e94", null ],
     [ "ee", "constants_8h.html#aca5c7e10fa94db0755cb937250144630", null ],

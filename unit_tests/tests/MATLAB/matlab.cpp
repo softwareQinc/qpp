@@ -152,8 +152,8 @@ TEST(qpp_MATLAB_load_save_MATLAB_Vectors, AllTests) {
     EXPECT_NEAR(0, norm(loadC - C), 1e-7);
 
     // expression
-    dyn_row_vect<int> expression = 3. * C + C;
-    qpp::saveMATLAB(3. * C + C, "out.mat", "expression", "w");
+    dyn_row_vect<int> expression = 3 * C + C;
+    qpp::saveMATLAB(3 * C + C, "out.mat", "expression", "w");
     dyn_row_vect<int> load_expression =
         qpp::loadMATLAB<dyn_row_vect<int>>("out.mat", "expression");
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-7);

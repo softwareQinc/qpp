@@ -1,3 +1,15 @@
+Version 1.0-devel - Development
+    - The path to MATLAB can now be specified in the CMake command line
+      (not hard coded anymore), such as
+          cmake -DWITH_MATLAB="/Applications/MATLAB_R2017b.app" ..
+    - Minor bug in qpp::Exception::what(), thanks Nick Lewycky for spotting it
+    - moved reversible classical circuit support from experimental to the main
+      library, added "classes/reversible.h" header file that contains the
+      following classes:
+        qpp::Dynamic_bitset
+        qpp::Bit_circuit
+    - added "examples/reversible.cpp" example
+
 Version 1.0-rc4 - Release Candidate 4, 24 January 2018
     - Changed qpp::ket operator "" _q() to qpp::ket operator "" _ket()
     - Added qpp::bra operator "" _bra() and qpp::cmat operator "" _prj() as well
@@ -22,9 +34,9 @@ Version 1.0-rc2 - Release Candidate 2, 6 September 2017
         qpp::RandomDevices::save() - saves the state of PRNG to a stream
     - Added a getter for qpp::RandomDevices::prng_ (now with private access):
         qpp::RandomDevices::get_prng()
-    - Eigen3 is detected automatically by cmake (if Eigen3 was installed via a
+    - Eigen3 is detected automatically by CMake (if Eigen3 was installed via a
         package manager). If not, it can be specified manually by passing the
-        -DEIGEN3_INCLUDE_DIR=path_to_eigen3 flag to the cmake command line.
+        -DEIGEN3_INCLUDE_DIR=path_to_eigen3 flag to the CMake command line.
 
 Version 1.0-rc1 - Release Candidate 1, 11 November 2016
     - Slight performance improvements (lambda workers do not capture by value

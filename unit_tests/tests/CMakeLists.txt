@@ -21,6 +21,7 @@ INCLUDE_DIRECTORIES(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 ADD_EXECUTABLE(qpp_testing
         classes/gates.cpp
         classes/random_devices.cpp
+        classes/reversible.cpp
         classes/states.cpp
         classes/timer.cpp
         MATLAB/matlab.cpp
@@ -43,7 +44,7 @@ IF(TARGET Eigen3::Eigen)
     TARGET_LINK_LIBRARIES(qpp_testing Eigen3::Eigen)
 ENDIF()
 
-IF(${WITH_MATLAB})
+IF (NOT ${WITH_MATLAB} STREQUAL "")
     TARGET_LINK_LIBRARIES(qpp_testing mx mat)
 ENDIF()
 

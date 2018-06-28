@@ -2,10 +2,10 @@
 
 If you really cannot wait anymore, continue reading the remaining. If you afford to be a bit patient, 
 please skip the reminder of this section and read the detailed 
-[building instructions for POSIX-compliant systems](https://github.com/vsoftco/qpp/wiki/2.-Building-instructions-for-POSIX-compliant-platforms) 
+[Building instructions for POSIX-compliant systems](https://github.com/vsoftco/qpp/wiki/2.-Building-instructions-for-POSIX-compliant-platforms) 
 or 
-[Windows](https://github.com/vsoftco/qpp/wiki/3.-Building-instructions-for-Windows-platforms) 
-in this Wiki.
+[Building instructions for Windows](https://github.com/vsoftco/qpp/wiki/3.-Building-instructions-for-Windows-platforms) 
+in the Wiki or in the reminder of this document.
 
 ## Installing and running under POSIX-compliant systems
 
@@ -19,9 +19,7 @@ current document I will use `$HOME/eigen` as the location of the
 directory as `$HOME/qpp`. Finally, make sure that your compiler supports
 C++11 and preferably [OpenMP](http://openmp.org/). As a compiler I
 recommend [g++](https://gcc.gnu.org/) version 5.0 or later or
-[clang++](http://clang.llvm.org) version 3.7 or later (previous versions
-of [clang++](http://clang.llvm.org) do not support
-[OpenMP](http://openmp.org/)). You are now ready to go!
+[clang++](http://clang.llvm.org) version 3.8 or later. You are now ready to go!
 
 Next, we will build a simple minimal example to test that the installation was
 successful. Create a directory called `$HOME/testing`, and inside it
@@ -72,7 +70,7 @@ The line
 ```
 
 includes the main header file of the
-library `qpp.h` This header file includes all other necessary internal
+library `qpp.h`. This header file includes all other necessary internal
 [Quantum++](https://github.com/vsoftco/qpp) header files. The line
 ```CPP
 using namespace qpp;
@@ -100,11 +98,11 @@ solution `VisualStudio.sln` located in the
 ## Pre-requisites
 
 - Recommended compiler: [g++](https://gcc.gnu.org/) version 5.0 or later
-(for good C++11 support)
+(for good C++11 support). You may also use [clang++](http://clang.llvm.org/) version 3.8 or later, please read the "Additional remarks/Building with [clang++](http://clang.llvm.org/)" subsection near the end of this document for more plarform-dependent details.
 - [Eigen 3](http://eigen.tuxfamily.org) linear algebra library. I assume here that 
 the library is installed in `$HOME/eigen`, although the location may vary, e.g. if 
 the libary was installed using a package manager.
-- [Quantum++](https://github.com/vsoftco/qpp) library located in `$HOME/qpp`
+- [Quantum++](https://github.com/vsoftco/qpp) library located in `$HOME/qpp`.
 
 ## Optional
 
@@ -145,7 +143,7 @@ manually in the [CMake](http://www.cmake.org/) build command line by passing
 the `-DEIGEN3_INCLUDE_DIR=path_to_eigen3` flag, e.g.
 
 ```bash
-cmake .. -DEIGEN3_INCLUDE_DIR=/usr/local/eigen3
+cmake -DEIGEN3_INCLUDE_DIR=/usr/local/eigen3 ..
 ```
 
 To build a different configuration, 
@@ -155,7 +153,7 @@ support, type from the root of the project
 ```bash
 cd build
 rm -rf *
-cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB=ON ..
+cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB="/Applications/MATLAB_R2017b.app" ..
 make
 ```
     
@@ -188,7 +186,7 @@ g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
     -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
     -isystem $HOME/eigen -I $HOME/qpp/include \
      minimal.cpp -o minimal
-``` 
+```
 
 ### Debug version (without [MATLAB](http://www.mathworks.com/products/matlab/) support)
 
@@ -224,34 +222,58 @@ g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
 ## Additional remarks
 
 ### Building with [clang++](http://clang.llvm.org/)
-- If you use [clang++](http://clang.llvm.org/) version 3.7 or later (previous versions do not have [OpenMP](http://openmp.org/) support) and want 
-to use [OpenMP](http://openmp.org/) (enabled by default in the library), make sure to modify 
-`CLANG_LIBOMP` and `CLANG_LIBOMP_INCLUDE` in [`CMakeLists.txt`](https://github.com/vsoftco/qpp/blob/master/CMakeLists.txt) so they point to 
-the correct location of the [OpenMP](http://openmp.org/) library, as otherwise 
-[clang++](http://clang.llvm.org/) will not find `<omp.h>` and the `libomp` 
-shared library. Under Linux, you may need to modify also `-fopenmp=...` flag
-as well. As such, I do not recommend using [clang++](http://clang.llvm.org/)
-with [OpenMP](http://openmp.org/) due to various platform-dependent issues.
+- Make sure to use [clang++](http://clang.llvm.org/) version 3.8 or later (previous versions lack or do not have good [OpenMP](http://openmp.org/) support).
 
-### Building with [clang++](http://clang.llvm.org/) on [OS X/macOS](http://www.apple.com/osx)
+#### Linux specific instructions
+- On Linux, you can install [clang++](http://clang.llvm.org/) version 3.8 or later via the package manager, e.g. in Debian 9 or Ubuntu 16.10 use
 
-- I highly recommend to install [clang++](http://clang.llvm.org/) version 3.7 or later via [MacPorts](https://www.macports.org/). 
+    ```bash
+    sudo apt-get install clang-3.8
+    ```
+
+- In case you get any compiler or linker errors when 
+[OpenMP](http://openmp.org/) is enabled, you need to install the `libomp-dev` package, e.g in Debian 9 or Ubuntu 16.10 use
+
+    ```bash
+    sudo apt-get install libomp-dev
+    ```
+
+#### [OS X/macOS](http://www.apple.com/osx) specific instructions
+
+- I highly recommend to install [clang++](http://clang.llvm.org/) version 3.8 or later via [MacPorts](https://www.macports.org/).
+- In case you get any compiler or linker errors when [OpenMP](http://openmp.org/) is enabled, you need to install the `libomp` package, e.g using [MacPorts](https://www.macports.org/)
+
+    ```bash
+    sudo port install libomp
+    ```
+    
 - If you enable
 [MATLAB](http://www.mathworks.com/products/matlab/) support, make sure that 
 the environment variable `DYLD_LIBRARY_PATH` is set to point to the 
 [MATLAB](http://www.mathworks.com/products/matlab/) 
-compiler library location. Otherwise, you get a runtime error similar to  
+compiler shared libraries location, such as 
+
+    ```bash
+    export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"Applications/MATLAB_R2017b.app/bin/maci64"
+    ```
+
+    Otherwise, you get a runtime error similar to  
 
     > dyld: Library not loaded: @rpath/libmat.dylib.
     
+    
     You can use the 
 [`run_mac_MATLAB.sh`](https://github.com/vsoftco/qpp/blob/master/run_mac_MATLAB.sh)
-script to wrap the exectuable you want to run in, as otherwise setting the `DYLD_LIBRARY_PATH` globally may interfere with 
+script to wrap the output executable you want to run in, as otherwise setting the `DYLD_LIBRARY_PATH` globally may interfere with 
 [MacPorts](https://www.macports.org/)' [CMake](http://www.cmake.org/) 
 installation (in case you use [CMake](http://www.cmake.org/) from 
-[MacPorts](https://www.macports.org/)). If you use a script, 
+[MacPorts](https://www.macports.org/)). If you use the script, 
 then the environment variable is local to the script and 
-does not interfere with the rest of the system.
+does not interfere with the rest of the system. Usage example:
+
+    ```bash
+    bash ./run_mac_MATLAB.sh ./build/qpp
+    ```
 
 ### Building debug versions with [g++](https://gcc.gnu.org/) on [OS X/macOS](http://www.apple.com/osx)
 
