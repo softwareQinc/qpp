@@ -1,5 +1,5 @@
 // Reversible classical circuits
-// Source: ./examples/reversibles.cpp
+// Source: ./examples/reversible2.cpp
 #include <algorithm>
 #include <iostream>
 #include <random>

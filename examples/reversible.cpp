@@ -1,9 +1,6 @@
 // Reversible classical circuits
 // Source: ./examples/reversible.cpp
-#include <algorithm>
 #include <iostream>
-#include <random>
-#include <vector>
 
 #include "qpp.h"
 
