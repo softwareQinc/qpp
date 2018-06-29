@@ -446,8 +446,8 @@ class Bit_circuit : public Dynamic_bitset {
         v_[index_(pos[2])] ^= ((1 & (v_[index_(pos[1])] >> offset_(pos[1]))) &
                                (1 & (v_[index_(pos[0])] >> offset_(pos[0]))))
                               << offset_(pos[2]);
-
         ++gate_count.TOF;
+        
         return *this;
     }
 
