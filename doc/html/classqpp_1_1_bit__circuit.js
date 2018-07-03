@@ -1,6 +1,7 @@
 var classqpp_1_1_bit__circuit =
 [
     [ "Gate_count", "structqpp_1_1_bit__circuit_1_1_gate__count.html", "structqpp_1_1_bit__circuit_1_1_gate__count" ],
+    [ "Bit_circuit", "classqpp_1_1_bit__circuit.html#a45e0c880532e7be15b837b008b59053e", null ],
     [ "CNOT", "classqpp_1_1_bit__circuit.html#add4baad1b6a0a259cf650e1911cf0447", null ],
     [ "FRED", "classqpp_1_1_bit__circuit.html#ab11411f8fb294e26b7fba82ff13f9d36", null ],
     [ "NOT", "classqpp_1_1_bit__circuit.html#a48ebe703e671acab692ff30b5fccf403", null ],

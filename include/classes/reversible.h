@@ -394,6 +394,15 @@ class Bit_circuit : public Dynamic_bitset {
     using Dynamic_bitset::Dynamic_bitset;
 
     /**
+    * \brief Conversion constructor, used to initialize a qpp::Bit_circuit with
+    * a qpp::Dynamic_bitset
+    *
+    * \param dynamic_bitset Dynamic bitset
+    */
+    Bit_circuit(const Dynamic_bitset& dynamic_bitset)
+        : Dynamic_bitset{dynamic_bitset} {};
+
+    /**
     * \brief Bit flip
     * \see qpp::Bit_circuit::NOT()
     *

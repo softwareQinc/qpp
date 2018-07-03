@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"constants_8h.html":[3,0,4],
 "constants_8h.html#a12e22073e741a1057129fa01b4ec10a6":[3,0,4,2],
 "constants_8h.html#a3a6d2c509bdcf240869e1bebb3be4e94":[3,0,4,3],
 "constants_8h.html#a621afdaae12a94a5e10a874fc2073dc0":[3,0,4,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "namespaceqpp_1_1internal.html":[2,0,0,1],
 "namespaceqpp_1_1literals.html":[1,0,0,3],
 "namespaces.html":[1,0],
-"number__theory_8h.html":[3,0,10],
-"number__theory_8h.html#a048622e398319b61f9ea62a6c66e67fb":[3,0,10,3]
+"number__theory_8h.html":[3,0,10]
 };
