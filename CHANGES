@@ -1,4 +1,4 @@
-Version 1.0 - 1 July 2018
+Version 1.0 - 3 July 2018
     - Added full support for reversible classical circuits, added
       "classes/reversible.h" header file that contains the following classes:
           qpp::Dynamic_bitset - Bitsets of variable length
