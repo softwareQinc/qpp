@@ -44,7 +44,7 @@ int main() {
         bit_circuit.TOF(indices[i]);
     }
     std::cout << ">> Initial/Intermediate bit circuit\n\t";
-    std::cout << bit_circuit << "\n\t" << initial_bit_circuit << '\n';
+    std::cout << initial_bit_circuit << "\n\t" << bit_circuit << '\n';
     std::cout << ">> Hamming weight (intermediate circuit): "
               << bit_circuit.count() << '\n';
     std::cout << ">> Hamming distance (from the initial circuit): "
