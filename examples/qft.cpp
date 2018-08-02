@@ -12,7 +12,8 @@ int main() {
     ket result = psi;
     idx N = qubits.size();  // number of qubits
     idx D = std::pow(2, N); // dimension
-    std::cout << ">> The succession of applied gates are:\n";
+    std::cout << ">> QFT on N = " << N << " qubits. ";
+    std::cout << "The succession of applied gates are:\n";
     for (idx i = 0; i < N; ++i) {
         std::cout << "H" << i << " ";
         result = apply(result, gt.H, {i}); // apply Hadamard on qubit i
@@ -23,13 +24,16 @@ int main() {
             result = applyCTRL(result, Rj, {i + j - 1}, {i});
             std::cout << "R" << j << "(" << i + j - 1 << ", " << i << ") ";
         }
-        std::cout << std::endl;
+        std::cout << '\n';
     }
-    // we have the qubits in reversed order, we must reverse them
+    // we have the qubits in reversed order, we must swap them
     for (idx i = 0; i < N / 2; ++i) {
+        std::cout << "SWAP(" << i << ", " << N - i - 1 << ")\n";
         result = apply(result, gt.SWAP, {i, N - i - 1});
     }
     // check that we got the Fourier transform, compute the norm difference
-    std::cout << ">> Norm difference: " << norm(result - gt.Fd(D) * psi)
-              << '\n';
+    if (N < 14) { // otherwise not enough memory in computing gt.Fd(D) * psi
+        std::cout << ">> Norm difference: " << norm(result - gt.Fd(D) * psi)
+                  << '\n';
+    }
 }
