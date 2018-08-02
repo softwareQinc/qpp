@@ -25,13 +25,11 @@ int main() {
         }
         std::cout << std::endl;
     }
-    // check that indeed we got the Fourier transform
     // we have the qubits in reversed order, we must reverse them
-    std::vector<idx> reversed(N);
-    std::iota(std::begin(reversed), std::end(reversed), 0);
-    std::reverse(std::begin(reversed), std::end(reversed));
-    result = syspermute(result, reversed);
-    // compute the norm diference
+    for (idx i = 0; i < N / 2; ++i) {
+        result = apply(result, gt.SWAP, {i, N - i - 1});
+    }
+    // check that we got the Fourier transform, compute the norm difference
     std::cout << ">> Norm difference: " << norm(result - gt.Fd(D) * psi)
               << '\n';
 }

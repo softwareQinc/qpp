@@ -1,3 +1,5 @@
+Development
+    - Added Quantum Fourier transform example in "examples/qft.cpp"
 Version 1.0 - 3 July 2018
     - Added full support for reversible classical circuits, added
       "classes/reversible.h" header file that contains the following classes:
