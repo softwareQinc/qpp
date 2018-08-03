@@ -1,7 +1,7 @@
 // Quantum Fourier transform
 // Source: ./examples/qft.cpp
-#include <iostream>
 #include <cmath>
+#include <iostream>
 
 #include "qpp.h"
 
