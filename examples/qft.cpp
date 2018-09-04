@@ -2,6 +2,7 @@
 // Source: ./examples/qft.cpp
 #include <cmath>
 #include <iostream>
+#include <vector>
 
 #include "qpp.h"
 
