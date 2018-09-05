@@ -25,12 +25,12 @@
 #
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0)
-PROJECT(qft VERSION 1.0.0 LANGUAGES CXX)
+PROJECT(stress_test VERSION 1.0.0 LANGUAGES CXX)
 
 #### Quantum++ headers
 INCLUDE_DIRECTORIES(../include)
 
-#### Source file(s) to be compiled, modify as needed
+#### Stress test file to be compiled, modify as needed
 SET(SOURCE_FILES
         src/qft.cpp)
 
@@ -163,17 +163,17 @@ IF (NOT CMAKE_BUILD_TYPE)
             FORCE)
 ENDIF ()
 
-ADD_EXECUTABLE(qft ${SOURCE_FILES})
+ADD_EXECUTABLE(stress_test ${SOURCE_FILES})
 #### Eigen3 was found automatically
 IF (TARGET Eigen3::Eigen)
-    TARGET_LINK_LIBRARIES(qft Eigen3::Eigen)
+    TARGET_LINK_LIBRARIES(stress_test Eigen3::Eigen)
 ENDIF ()
 
 IF (NOT ${WITH_MATLAB} STREQUAL "")
-    TARGET_LINK_LIBRARIES(qft mx mat)
+    TARGET_LINK_LIBRARIES(stress_test mx mat)
 ENDIF ()
 
 IF ($WITH_OPENMP$ AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang"
         AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.7")
-    TARGET_LINK_LIBRARIES(qft omp)
+    TARGET_LINK_LIBRARIES(stress_test omp)
 ENDIF ()

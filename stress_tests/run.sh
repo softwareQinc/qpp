@@ -1,19 +1,19 @@
 #!/bin/bash
 
-NUMCORES=8
-NQ_START=2
-NQ_END=20
-DATE=`date '+%Y-%m-%d_%H:%M:%S'`
-OUTFILE=results_$DATE.csv
+NUM_CORES=8                      # number of cores
+NQ_START=2                       # number of qubits to start with
+NQ_END=20                        # number of qubits to end with
+DATE=`date '+%Y-%m-%d_%H-%M-%S'` # current date
+OUT_FILE=results_$DATE.csv       # results output file
 
 echo "QFT stress test, see results_$DATE.csv"
 echo "num_cores num_qubits"
-echo "numcores, nqubits, time_seconds" > $OUTFILE
-for ((numcores=1; numcores < NUMCORES; numcores++));
+echo "numcores, nqubits, time_seconds" > $OUT_FILE
+for ((numcores=1; numcores <= NUM_CORES; numcores++));
 do
-    for ((n=NQ_START; n < NQ_END; n++));
+    for ((n=NQ_START; n <= NQ_END; n++));
     do
         echo "$numcores         $n"
-        ./build/qft $numcores $n >> $OUTFILE 
+        ./build/stress_test $numcores $n >> $OUT_FILE 
     done;
 done;

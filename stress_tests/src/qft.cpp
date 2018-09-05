@@ -12,7 +12,7 @@
 int main(int argc, char **argv) {
     using namespace qpp;
     if (argc != 3) {
-        std::cerr << "Please specify the number of qubits and cores!\n";
+        std::cerr << "Please specify the number of cores and qubits!\n";
         exit(EXIT_FAILURE);
     }
 
