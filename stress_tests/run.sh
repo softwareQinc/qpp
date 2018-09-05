@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NUM_CORES=4                      # number of cores
+NUM_CORES=8                      # number of cores
 NQ_START=2                       # number of qubits to start with
 NQ_END=24                        # number of qubits to end with
 DATE=`date '+%Y-%m-%d_%H-%M-%S'` # current date
