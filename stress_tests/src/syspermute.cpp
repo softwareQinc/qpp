@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
     idx D = std::round(std::pow(2, n));   // dimension
     omp_set_num_threads(num_cores);       // number of cores
 
-    ket randket = ket::Random(D, 1);     // random ket
+    ket randket = ket::Random(D, 1);      // random ket
     std::vector<idx> subsys_syspermute;   // partially syspermute reversed order
     for (idx i = 0; i < n; ++i)
         subsys_syspermute.push_back(i);
