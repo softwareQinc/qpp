@@ -1,5 +1,4 @@
-// Quantum Fourier transform
-// Source: ./examples/qft.cpp
+// Quantum Fourier transform stress test
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
