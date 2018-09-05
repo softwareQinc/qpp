@@ -1,4 +1,4 @@
-#Stress test suite (for POSIX-compliant systems) 
+# Stress test suite (for POSIX-compliant systems) 
 
 Tests some quantum circuit/operation as a function of the number of cores of
 the machine and number of qubits. Records the time for each such run in
