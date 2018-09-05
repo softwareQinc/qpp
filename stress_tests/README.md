@@ -3,6 +3,7 @@
 Tests some quantum circuit/operation as a function of the number of cores of
 the machine and number of qubits. Records the time for each such run in
 `results_$DATE.csv`, where `$DATE` represents the current date of the run.
+Requires [OpenMP](http://openmp.org/).
 
 To compile, I recommend using [CMake](http://www.cmake.org), then perform an
 out-of-source build. Assuming you are

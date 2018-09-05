@@ -1,7 +1,8 @@
-// Quantum Fourier transform stress test
+// Quantum Fourier transform stress test on a pure state of n qubits
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include <omp.h>
@@ -23,7 +24,8 @@ int main(int argc, char **argv) {
     std::vector<idx> qubits(N); // initial state
     ket psi = mket(qubits);
     ket result = psi;
-    Timer<> t;
+
+    Timer<> t; // start timing
     for (idx i = 0; i < N; ++i) {
         result = apply(result, gt.H, {i}); // apply Hadamard on qubit i
         // apply controlled rotations
