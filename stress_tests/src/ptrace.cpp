@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
     cmat randcmat = cmat::Random(D, D);   // random matrix
     std::vector<idx> subsys_ptrace = {0}; // partial trace over first qubit
 
-    Timer<> t;
+    Timer<> t; // start timing
     ptrace(randcmat, subsys_ptrace);
     std::cout << num_cores << ", " << n << ", " << t.toc() << '\n';
 }

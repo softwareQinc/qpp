@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
     for (idx i = 0; i < n; ++i)
         subsys_syspermute.push_back(i);
 
-    Timer<> t;
+    Timer<> t; // start timing
     syspermute(randket, subsys_syspermute);
     std::cout << num_cores << ", " << n << ", " << t.toc() << '\n';
 }
