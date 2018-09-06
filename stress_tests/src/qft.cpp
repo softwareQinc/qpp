@@ -16,7 +16,6 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
 
-    //std::cout << "Max cores: " << omp_get_num_procs() << "\n";
     idx num_cores = std::stoi(argv[1]); // number of cores
     idx N = std::stoi(argv[2]);         // number of qubits
     omp_set_num_threads(num_cores);     // number of cores
