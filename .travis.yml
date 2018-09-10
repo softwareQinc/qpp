@@ -36,7 +36,7 @@ matrix:
               - brew update
               - brew install gcc6
               - export CXX="g++-6" CC="gcc-6"
-              -  sudo softwareupdate -i "Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.3"
+              - sudo softwareupdate -i "Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.3"
 
 notifications:
   email: false
