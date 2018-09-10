@@ -104,8 +104,9 @@ class Dynamic_bitset : public IDisplay {
     * \return Hamming weight
     */
     idx count() const noexcept {
-        std::size_t result = 0;
-        for (idx i = 0; i < size(); ++i) {
+        idx result = 0;
+        idx bitset_size = this->size();
+        for (idx i = 0; i < bitset_size; ++i) {
             if (this->get(i))
                 ++result;
         }
@@ -130,7 +131,8 @@ class Dynamic_bitset : public IDisplay {
     */
     bool none() const noexcept {
         bool result = true;
-        for (idx i = 0; i < storage_size(); ++i) {
+        idx bitset_storage_size = this->storage_size();
+        for (idx i = 0; i < bitset_storage_size; ++i) {
             if (v_[i]) {
                 return false;
             }
@@ -146,7 +148,8 @@ class Dynamic_bitset : public IDisplay {
     */
     bool all() const noexcept {
         bool result = true;
-        for (idx i = 0; i < storage_size(); ++i) {
+        idx bitset_storage_size = this->storage_size();
+        for (idx i = 0; i < bitset_storage_size; ++i) {
             if (~v_[i]) {
                 return false;
             }
@@ -185,7 +188,8 @@ class Dynamic_bitset : public IDisplay {
     * \return Reference to the current instance
     */
     Dynamic_bitset& set() noexcept {
-        for (idx i = 0; i < storage_size(); ++i) {
+        idx bitset_storage_size = this->storage_size();
+        for (idx i = 0; i < bitset_storage_size; ++i) {
             v_[i] = ~0;
         }
 
@@ -217,7 +221,8 @@ class Dynamic_bitset : public IDisplay {
     * \return Reference to the current instance
     */
     Dynamic_bitset& rand(double p = 0.5) {
-        for (idx i = 0; i < size(); ++i) {
+        idx bitset_size = this->size();
+        for (idx i = 0; i < bitset_size; ++i) {
             this->rand(i, p);
         }
 
@@ -242,7 +247,8 @@ class Dynamic_bitset : public IDisplay {
     * \return Reference to the current instance
     */
     Dynamic_bitset& reset() noexcept {
-        for (idx i = 0; i < storage_size(); ++i) {
+        idx bitset_storage_size = this->storage_size();
+        for (idx i = 0; i < bitset_storage_size; ++i) {
             v_[i] = 0;
         }
 
@@ -267,7 +273,8 @@ class Dynamic_bitset : public IDisplay {
     * \return Reference to the current instance
     */
     Dynamic_bitset& flip() noexcept {
-        for (idx i = 0; i < storage_size(); ++i) {
+        idx bitset_storage_size = this->storage_size();
+        for (idx i = 0; i < bitset_storage_size; ++i) {
             v_[i] = ~v_[i];
         }
 
@@ -313,7 +320,8 @@ class Dynamic_bitset : public IDisplay {
     */
     idx operator-(const Dynamic_bitset& rhs) const noexcept {
         idx result = 0;
-        for (idx i = 0; i < size(); ++i) {
+        idx bitset_size = this->size();
+        for (idx i = 0; i < bitset_size; ++i) {
             if (this->get(i) != rhs.get(i))
                 ++result;
         }
@@ -359,8 +367,8 @@ class Dynamic_bitset : public IDisplay {
     * \return Reference to the output stream
     */
     std::ostream& display(std::ostream& os) const override {
-        idx size = this->size();
-        for (idx i = size; i-- > 0;) {
+        idx bitset_size = this->size();
+        for (idx i = bitset_size; i-- > 0;) {
             os << this->get(i);
         }
 

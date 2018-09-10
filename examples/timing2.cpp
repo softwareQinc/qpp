@@ -9,10 +9,10 @@
 int main() {
     using namespace qpp;
     idx n = 10; // number of qubits
-    idx N = std::round(std::pow(2, n));
-    std::cout << ">> n = " << n << " qubits, matrix size " << N << " x " << N
+    idx D = std::round(std::pow(2, n));
+    std::cout << ">> n = " << n << " qubits, matrix size " << D << " x " << D
               << ".\n\n";
-    cmat randcmat = cmat::Random(N, N);
+    cmat randcmat = cmat::Random(D, D);
 
     // qpp::ptrace()
     std::cout << "**** qpp::ptrace() timing ****\n";

@@ -1289,7 +1289,7 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& As) {
         if (normA > eps) // we add only the non-zero vectors
         {
             result.col(cnt) = it / normA;
-            cnt++;
+            ++cnt;
         }
     }
 
