@@ -1,4 +1,4 @@
-Development
+In progress - pre-release
     - Added Quantum Fourier transform example in "examples/qft.cpp"
     - Added a suite of stress tests in "stress_tests" (only for POSIX systems)
 Version 1.0 - 3 July 2018
