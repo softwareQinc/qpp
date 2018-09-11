@@ -11,9 +11,9 @@ int main() {
     using namespace qpp;
     std::cout << ">> Classical reversible circuits\n";
 
-    const idx N = 32;          // number of N
-    const idx num_trials = 10; // number of num_trials
-    Bit_circuit bit_circuit{N};
+    const idx n = 32;          // number of bits
+    const idx num_trials = 10; // number of trials
+    Bit_circuit bit_circuit{n};
     bit_circuit.rand(); // randomize the vector
     Bit_circuit initial_bit_circuit = bit_circuit;
 
@@ -27,7 +27,7 @@ int main() {
 
     // generate the indices
     for (idx i = 0; i < num_trials; ++i) {
-        std::vector<idx> v(N);
+        std::vector<idx> v(n);
         std::iota(v.begin(), v.end(), 0);
         std::shuffle(v.begin(), v.end(), gen);
         std::vector<idx> tof(v.data(), v.data() + 3);
