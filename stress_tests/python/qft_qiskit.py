@@ -1,4 +1,4 @@
-# QuTiP QFT stress tests
+# Qiskit QFT stress tests
 
 from qiskit import *
 
