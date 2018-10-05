@@ -1,3 +1,5 @@
+# QuTiP QFT stress tests
+
 from qiskit import *
 
 import math
