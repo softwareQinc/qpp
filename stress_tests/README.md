@@ -37,3 +37,12 @@ SET(SOURCE_FILES
         src/your_stress_test.cpp)
 ```        
 accordingly.
+
+## Python stress tests
+
+There are also [Qiskit](https://qiskit.org/) and [QuTiP](http://qutip.org/) stress 
+tests scripts located in the `python` directory. The output format they produce is 
+exactly the same as the one produced by the C++ version, so the `run.sh` script can
+be modify to work with them. For more information regarding running the scripts, 
+please referto the corresponding [Qiskit](https://qiskit.org/) and 
+[QuTiP](http://qutip.org/) documentation.
