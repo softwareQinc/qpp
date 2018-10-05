@@ -41,7 +41,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 {
     friend class internal::Singleton<const Gates>;
 
-  public:
+public:
     // One qubit gates
     cmat Id2{cmat::Identity(2, 2)}; ///< Identity gate
     cmat H{cmat::Zero(2, 2)};       ///< Hadamard gate
@@ -60,13 +60,13 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     // three qubit gates
     cmat TOF{cmat::Identity(8, 8)};  ///< Toffoli gate
     cmat FRED{cmat::Identity(8, 8)}; ///< Fredkin gate
-  private:
+private:
     /**
     * \brief Initializes the gates
     */
     Gates() {
         H << 1 / std::sqrt(2.), 1 / std::sqrt(2.), 1 / std::sqrt(2.),
-            -1 / std::sqrt(2.);
+        -1 / std::sqrt(2.);
         X << 0, 1, 1, 0;
         Z << 1, 0, 0, -1;
         Y << 0, -1_i, 1_i, 0;
@@ -89,7 +89,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     */
     ~Gates() = default;
 
-  public:
+public:
     // variable gates
 
     // one qubit gates
@@ -116,6 +116,48 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                  1_i * std::sin(theta / 2) * (n[0] * X + n[1] * Y + n[2] * Z);
 
         return result;
+    }
+
+    /**
+    * \brief Qubit rotation of \a theta about the X axis
+    *
+    * \param theta Rotation angle
+    * \return Rotation gate
+    */
+    cmat RX(double theta) const {
+        // EXCEPTION CHECKS
+
+        // END EXCEPTION CHECKS
+
+        return Rn(theta, {1, 0, 0});
+    }
+
+    /**
+    * \brief Qubit rotation of \a theta about the Y axis
+    *
+    * \param theta Rotation angle
+    * \return Rotation gate
+    */
+    cmat RY(double theta) const {
+        // EXCEPTION CHECKS
+
+        // END EXCEPTION CHECKS
+
+        return Rn(theta, {0, 1, 0});
+    }
+
+    /**
+    * \brief Qubit rotation of \a theta about the Z axis
+    *
+    * \param theta Rotation angle
+    * \return Rotation gate
+    */
+    cmat RZ(double theta) const {
+        // EXCEPTION CHECKS
+
+        // END EXCEPTION CHECKS
+
+        return Rn(theta, {0, 0, 1});
     }
 
     // one quDit gates
@@ -163,7 +205,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         cmat result(D, D);
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for collapse(2)
+        #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
         // column major order for speed
         for (idx j = 0; j < D; ++j)
@@ -274,7 +316,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // check that subsys list match the dimension of the matrix
         using Index = typename dyn_mat<typename Derived::Scalar>::Index;
         if (rA.rows() !=
-            static_cast<Index>(std::llround(std::pow(d, subsys.size()))))
+                static_cast<Index>(std::llround(std::pow(d, subsys.size()))))
             throw exception::DimsMismatchMatrix("qpp::Gates::CTRL()");
         // END EXCEPTION CHECKS
 
@@ -343,7 +385,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                     // then the complement part (equal for column)
                     for (idx c = 0; c < Nsubsys_bar; ++c)
                         midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =
-                            midx_bar[c];
+                                                       midx_bar[c];
 
                     // then the subsys part
                     for (idx c = 0; c < Ngate; ++c)
@@ -361,7 +403,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                         // finally write the values
                         result(internal::multiidx2n(midx_row, N, Cdims),
                                internal::multiidx2n(midx_col, N, Cdims)) =
-                            Ak(a, b);
+                                   Ak(a, b);
                     }
                 }
             }
@@ -447,7 +489,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                     // finally write the values
                     result(internal::multiidx2n(midx_row, dims.size(), Cdims),
                            internal::multiidx2n(midx_col, dims.size(), Cdims)) =
-                        rA(a, b);
+                               rA(a, b);
                 }
             }
         }
