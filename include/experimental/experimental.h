@@ -25,18 +25,18 @@
  */
 
 /**
-* \file experimental/experimental.h
-* \brief Experimental/test functions/classes
-*/
+ * \file experimental/experimental.h
+ * \brief Experimental/test functions/classes
+ */
 
 #ifndef EXPERIMENTAL_EXPERIMENTAL_H_
 #define EXPERIMENTAL_EXPERIMENTAL_H_
 
 namespace qpp {
 /**
-* \namespace qpp::experimental
-* \brief Experimental/test functions/classes, do not use or modify
-*/
+ * \namespace qpp::experimental
+ * \brief Experimental/test functions/classes, do not use or modify
+ */
 namespace experimental {} /* namespace experimental */
 } /* namespace qpp */
 

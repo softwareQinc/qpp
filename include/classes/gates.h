@@ -25,18 +25,18 @@
  */
 
 /**
-* \file classes/gates.h
-* \brief Quantum gates
-*/
+ * \file classes/gates.h
+ * \brief Quantum gates
+ */
 
 #ifndef CLASSES_GATES_H_
 #define CLASSES_GATES_H_
 
 namespace qpp {
 /**
-* \class qpp::Gates
-* \brief const Singleton class that implements most commonly used gates
-*/
+ * \class qpp::Gates
+ * \brief const Singleton class that implements most commonly used gates
+ */
 class Gates final : public internal::Singleton<const Gates> // const Singleton
 {
     friend class internal::Singleton<const Gates>;
@@ -62,8 +62,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     cmat FRED{cmat::Identity(8, 8)}; ///< Fredkin gate
   private:
     /**
-    * \brief Initializes the gates
-    */
+     * \brief Initializes the gates
+     */
     Gates() {
         H << 1 / std::sqrt(2.), 1 / std::sqrt(2.), 1 / std::sqrt(2.),
             -1 / std::sqrt(2.);
@@ -85,8 +85,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-    * \brief Default destructor
-    */
+     * \brief Default destructor
+     */
     ~Gates() = default;
 
   public:
@@ -95,13 +95,13 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     // one qubit gates
 
     /**
-    * \brief Qubit rotation of \a theta about the
-    * 3-dimensional real (unit) vector \a n
-    *
-    * \param theta Rotation angle
-    * \param n 3-dimensional real (unit) vector
-    * \return Rotation gate
-    */
+     * \brief Qubit rotation of \a theta about the
+     * 3-dimensional real (unit) vector \a n
+     *
+     * \param theta Rotation angle
+     * \param n 3-dimensional real (unit) vector
+     * \return Rotation gate
+     */
     cmat Rn(double theta, const std::vector<double>& n) const {
         // EXCEPTION CHECKS
 
@@ -119,11 +119,11 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-    * \brief Qubit rotation of \a theta about the X axis
-    *
-    * \param theta Rotation angle
-    * \return Rotation gate
-    */
+     * \brief Qubit rotation of \a theta about the X axis
+     *
+     * \param theta Rotation angle
+     * \return Rotation gate
+     */
     cmat RX(double theta) const {
         // EXCEPTION CHECKS
 
@@ -133,11 +133,11 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-    * \brief Qubit rotation of \a theta about the Y axis
-    *
-    * \param theta Rotation angle
-    * \return Rotation gate
-    */
+     * \brief Qubit rotation of \a theta about the Y axis
+     *
+     * \param theta Rotation angle
+     * \return Rotation gate
+     */
     cmat RY(double theta) const {
         // EXCEPTION CHECKS
 
@@ -147,11 +147,11 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-    * \brief Qubit rotation of \a theta about the Z axis
-    *
-    * \param theta Rotation angle
-    * \return Rotation gate
-    */
+     * \brief Qubit rotation of \a theta about the Z axis
+     *
+     * \param theta Rotation angle
+     * \return Rotation gate
+     */
     cmat RZ(double theta) const {
         // EXCEPTION CHECKS
 
@@ -163,14 +163,14 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     // one quDit gates
 
     /**
-    * \brief Generalized Z gate for qudits
-    *
-    * \note Defined as \f$ Z = \sum_{j=0}^{D-1} \exp(2\pi \mathrm{i} j/D)
-    * |j\rangle\langle j| \f$
-    *
-    * \param D Dimension of the Hilbert space
-    * \return Generalized Z gate for qudits
-    */
+     * \brief Generalized Z gate for qudits
+     *
+     * \note Defined as \f$ Z = \sum_{j=0}^{D-1} \exp(2\pi \mathrm{i} j/D)
+     * |j\rangle\langle j| \f$
+     *
+     * \param D Dimension of the Hilbert space
+     * \return Generalized Z gate for qudits
+     */
     cmat Zd(idx D = 2) const {
         // EXCEPTION CHECKS
 
@@ -186,15 +186,41 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-    * \brief Fourier transform gate for qudits
-    *
-    * \note Defined as
-    * \f$ F = \sum_{j,k=0}^{D-1} \exp(2\pi \mathrm{i} jk/D) |j\rangle\langle k|
-    * \f$
-    *
-    * \param D Dimension of the Hilbert space
-    * \return Fourier transform gate for qudits
-    */
+     * \brief SWAP gate for qudits
+     *
+     * \param D Dimension of the Hilbert space
+     * \return SWAP gate for qudits
+     */
+    cmat SWAPd(idx D = 2) const {
+        // EXCEPTION CHECKS
+
+        if (D == 0)
+            throw exception::DimsInvalid("qpp::Gates::SWAPd()");
+        // END EXCEPTION CHECKS
+
+        cmat result = cmat::Zero(D * D, D * D);
+
+#ifdef WITH_OPENMP_
+#pragma omp parallel for collapse(2)
+#endif // WITH_OPENMP_
+       // column major order for speed
+        for (idx j = 0; j < D; ++j)
+            for (idx i = 0; i < D; ++i)
+                result(D * i + j, i + D * j) = 1;
+
+        return result;
+    }
+
+    /**
+     * \brief Quantum Fourier transform gate for qudits
+     *
+     * \note Defined as
+     * \f$ F = \sum_{j,k=0}^{D-1} \exp(2\pi \mathrm{i} jk/D) |j\rangle\langle k|
+     * \f$
+     *
+     * \param D Dimension of the Hilbert space
+     * \return Fourier transform gate for qudits
+     */
     cmat Fd(idx D = 2) const {
         // EXCEPTION CHECKS
 
@@ -207,7 +233,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        // column major order for speed
+       // column major order for speed
         for (idx j = 0; j < D; ++j)
             for (idx i = 0; i < D; ++i)
                 result(i, j) = 1 / std::sqrt(D) *
@@ -217,14 +243,14 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-    * \brief Generalized X gate for qudits
-    *
-    * \note Defined as \f$ X = \sum_{j=0}^{D-1} |j\oplus 1\rangle\langle j| \f$,
-    * i.e. raising operator \f$ X|j\rangle = |j\oplus 1\rangle\f$
-    *
-    * \param D Dimension of the Hilbert space
-    * \return Generalized X gate for qudits
-    */
+     * \brief Generalized X gate for qudits
+     *
+     * \note Defined as \f$ X = \sum_{j=0}^{D-1} |j\oplus 1\rangle\langle j|
+     * \f$, i.e. raising operator \f$ X|j\rangle = |j\oplus 1\rangle\f$
+     *
+     * \param D Dimension of the Hilbert space
+     * \return Generalized X gate for qudits
+     */
     cmat Xd(idx D = 2) const {
         // EXCEPTION CHECKS
 
@@ -236,14 +262,14 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-    * \brief Identity gate
-    *
-    * \note Can change the return type from complex matrix (default)
-    * by explicitly specifying the template parameter
-    *
-    * \param D Dimension of the Hilbert space
-    * \return Identity gate on a Hilbert space of dimension \a D
-    */
+     * \brief Identity gate
+     *
+     * \note Can change the return type from complex matrix (default)
+     * by explicitly specifying the template parameter
+     *
+     * \param D Dimension of the Hilbert space
+     * \return Identity gate on a Hilbert space of dimension \a D
+     */
     template <typename Derived = Eigen::MatrixXcd>
     Derived Id(idx D = 2) const {
         // EXCEPTION CHECKS
@@ -256,24 +282,24 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-    * \brief Generates the multi-partite multiple-controlled-\a A gate
-    * in matrix form
-    * \see qpp::applyCTRL()
-    *
-    * \note The dimension of the gate \a A must match
-    * the dimension of \a subsys
-    *
-    * \param A Eigen expression
-    * \param ctrl Control subsystem indexes
-    * \param subsys Subsystem indexes where the gate \a A is applied
-    * \param N Total number of subsystems
-    * \param d Subsystem dimensions
-    * \return CTRL-A gate, as a matrix over the same scalar field as \a A
-    */
+     * \brief Generates the multi-partite multiple-controlled-\a A gate
+     * in matrix form
+     * \see qpp::applyCTRL()
+     *
+     * \note The dimension of the gate \a A must match
+     * the dimension of \a subsys
+     *
+     * \param A Eigen expression
+     * \param ctrl Control subsystem indexes
+     * \param subsys Subsystem indexes where the gate \a A is applied
+     * \param n Total number of subsystems
+     * \param d Subsystem dimensions
+     * \return CTRL-A gate, as a matrix over the same scalar field as \a A
+     */
     template <typename Derived>
     dyn_mat<typename Derived::Scalar>
     CTRL(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& ctrl,
-         const std::vector<idx>& subsys, idx N, idx d = 2) const {
+         const std::vector<idx>& subsys, idx n, idx d = 2) const {
         const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
         // EXCEPTION CHECKS
@@ -293,7 +319,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
             throw exception::ZeroSize("qpp::Gates::CTRL()");
 
         // check out of range
-        if (N == 0)
+        if (n == 0)
             throw exception::OutOfRange("qpp::Gates::CTRL()");
 
         // check valid local dimension
@@ -306,7 +332,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                         std::end(subsys));
         std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
-        std::vector<idx> dims(N, d); // local dimensions vector
+        std::vector<idx> dims(n, d); // local dimensions vector
 
         // check that ctrl + gate subsystem is valid
         // with respect to local dimensions
@@ -333,30 +359,30 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         idx Csubsys_bar[maxn];
         idx midx_bar[maxn];
 
-        idx Ngate = subsys.size();
-        idx Nctrl = ctrl.size();
-        idx Nsubsys_bar = N - ctrlgate.size();
-        idx D = static_cast<idx>(std::llround(std::pow(d, N)));
+        idx n_gate = subsys.size();
+        idx n_ctrl = ctrl.size();
+        idx n_subsys_bar = n - ctrlgate.size();
+        idx D = static_cast<idx>(std::llround(std::pow(d, n)));
         idx DA = static_cast<idx>(rA.rows());
         idx Dsubsys_bar =
-            static_cast<idx>(std::llround(std::pow(d, Nsubsys_bar)));
+            static_cast<idx>(std::llround(std::pow(d, n_subsys_bar)));
 
         // compute the complementary subsystem of ctrlgate w.r.t. dims
-        std::vector<idx> subsys_bar = complement(ctrlgate, N);
+        std::vector<idx> subsys_bar = complement(ctrlgate, n);
         std::copy(std::begin(subsys_bar), std::end(subsys_bar),
                   std::begin(Csubsys_bar));
 
-        for (idx k = 0; k < N; ++k) {
+        for (idx k = 0; k < n; ++k) {
             midx_row[k] = midx_col[k] = 0;
             Cdims[k] = d;
         }
 
-        for (idx k = 0; k < Nsubsys_bar; ++k) {
+        for (idx k = 0; k < n_subsys_bar; ++k) {
             Cdims_bar[k] = d;
             midx_bar[k] = 0;
         }
 
-        for (idx k = 0; k < Ngate; ++k) {
+        for (idx k = 0; k < n_gate; ++k) {
             midxA_row[k] = midxA_col[k] = 0;
             CdimsA[k] = d;
         }
@@ -368,41 +394,41 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // run over the complement indexes
         for (idx i = 0; i < Dsubsys_bar; ++i) {
             // get the complement row multi-index
-            internal::n2multiidx(i, Nsubsys_bar, Cdims_bar, midx_bar);
+            internal::n2multiidx(i, n_subsys_bar, Cdims_bar, midx_bar);
             for (idx k = 0; k < d; ++k) {
                 Ak = powm(rA, k); // compute rA^k
                 // run over the subsys row multi-index
                 for (idx a = 0; a < DA; ++a) {
                     // get the subsys row multi-index
-                    internal::n2multiidx(a, Ngate, CdimsA, midxA_row);
+                    internal::n2multiidx(a, n_gate, CdimsA, midxA_row);
 
                     // construct the result row multi-index
 
                     // first the ctrl part (equal for both row and column)
-                    for (idx c = 0; c < Nctrl; ++c)
+                    for (idx c = 0; c < n_ctrl; ++c)
                         midx_row[ctrl[c]] = midx_col[ctrl[c]] = k;
 
                     // then the complement part (equal for column)
-                    for (idx c = 0; c < Nsubsys_bar; ++c)
+                    for (idx c = 0; c < n_subsys_bar; ++c)
                         midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =
                             midx_bar[c];
 
                     // then the subsys part
-                    for (idx c = 0; c < Ngate; ++c)
+                    for (idx c = 0; c < n_gate; ++c)
                         midx_row[subsys[c]] = midxA_row[c];
 
                     // run over the subsys column multi-index
                     for (idx b = 0; b < DA; ++b) {
                         // get the subsys column multi-index
-                        internal::n2multiidx(b, Ngate, CdimsA, midxA_col);
+                        internal::n2multiidx(b, n_gate, CdimsA, midxA_col);
 
                         // construct the result column multi-index
-                        for (idx c = 0; c < Ngate; ++c)
+                        for (idx c = 0; c < n_gate; ++c)
                             midx_col[subsys[c]] = midxA_col[c];
 
                         // finally write the values
-                        result(internal::multiidx2n(midx_row, N, Cdims),
-                               internal::multiidx2n(midx_col, N, Cdims)) =
+                        result(internal::multiidx2n(midx_row, n, Cdims),
+                               internal::multiidx2n(midx_col, n, Cdims)) =
                             Ak(a, b);
                     }
                 }
@@ -413,20 +439,20 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-    * \brief Expands out
-    * \see qpp::kron()
-    *
-    *  Expands out \a A as a matrix in a multi-partite system.
-    *  Faster than using qpp::kron(I, I, ..., I, A, I, ..., I).
-    *
-    * \param A Eigen expression
-    * \param pos Position
-    * \param dims Dimensions of the multi-partite system
-    * \return Tensor product
-    * \f$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
-    * with \a A on position \a pos, as a dynamic matrix
-    * over the same scalar field as \a A
-    */
+     * \brief Expands out
+     * \see qpp::kron()
+     *
+     *  Expands out \a A as a matrix in a multi-partite system.
+     *  Faster than using qpp::kron(I, I, ..., I, A, I, ..., I).
+     *
+     * \param A Eigen expression
+     * \param pos Position
+     * \param dims Dimensions of the multi-partite system
+     * \return Tensor product
+     * \f$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
+     * with \a A on position \a pos, as a dynamic matrix
+     * over the same scalar field as \a A
+     */
     template <typename Derived>
     dyn_mat<typename Derived::Scalar>
     expandout(const Eigen::MatrixBase<Derived>& A, idx pos,
@@ -498,26 +524,26 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-    * \brief Expands out
-    * \see qpp::kron()
-    *
-    *  Expands out \a A as a matrix in a multi-partite system.
-    *  Faster than using qpp::kron(I, I, ..., I, A, I, ..., I).
-    *
-    * \note The std::initializer_list overload exists because otherwise, in the
-    * degenerate case when \a dims has only one element, the one element list is
-    * implicitly converted to the element's underlying type, i.e. qpp::idx,
-    * which has the net effect of picking the wrong (non-vector)
-    * qpp::expandout() overload
-    *
-    * \param A Eigen expression
-    * \param pos Position
-    * \param dims Dimensions of the multi-partite system
-    * \return Tensor product
-    * \f$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
-    * with \a A on position \a pos, as a dynamic matrix
-    * over the same scalar field as \a A
-    */
+     * \brief Expands out
+     * \see qpp::kron()
+     *
+     *  Expands out \a A as a matrix in a multi-partite system.
+     *  Faster than using qpp::kron(I, I, ..., I, A, I, ..., I).
+     *
+     * \note The std::initializer_list overload exists because otherwise, in the
+     * degenerate case when \a dims has only one element, the one element list
+     * is implicitly converted to the element's underlying type, i.e. qpp::idx,
+     * which has the net effect of picking the wrong (non-vector)
+     * qpp::expandout() overload
+     *
+     * \param A Eigen expression
+     * \param pos Position
+     * \param dims Dimensions of the multi-partite system
+     * \return Tensor product
+     * \f$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
+     * with \a A on position \a pos, as a dynamic matrix
+     * over the same scalar field as \a A
+     */
     template <typename Derived>
     dyn_mat<typename Derived::Scalar>
     expandout(const Eigen::MatrixBase<Derived>& A, idx pos,
@@ -526,24 +552,24 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-    * \brief Expands out
-    * \see qpp::kron()
-    *
-    *  Expands out \a A as a matrix in a multi-partite system.
-    *  Faster than using qpp::kron(I, I, ..., I, A, I, ..., I).
-    *
-    * \param A Eigen expression
-    * \param pos Position
-    * \param N Number of subsystems
-    * \param d Subsystem dimension
-    * \return Tensor product
-    * \f$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
-    * with \a A on position \a pos, as a dynamic matrix
-    * over the same scalar field as \a A
-    */
+     * \brief Expands out
+     * \see qpp::kron()
+     *
+     *  Expands out \a A as a matrix in a multi-partite system.
+     *  Faster than using qpp::kron(I, I, ..., I, A, I, ..., I).
+     *
+     * \param A Eigen expression
+     * \param pos Position
+     * \param n Number of subsystems
+     * \param d Subsystem dimension
+     * \return Tensor product
+     * \f$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
+     * with \a A on position \a pos, as a dynamic matrix
+     * over the same scalar field as \a A
+     */
     template <typename Derived>
     dyn_mat<typename Derived::Scalar>
-    expandout(const Eigen::MatrixBase<Derived>& A, idx pos, idx N,
+    expandout(const Eigen::MatrixBase<Derived>& A, idx pos, idx n,
               idx d = 2) const {
         // EXCEPTION CHECKS
 
@@ -556,7 +582,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
             throw exception::DimsInvalid("qpp::Gates::expandout()");
         // END EXCEPTION CHECKS
 
-        std::vector<idx> dims(N, d); // local dimensions vector
+        std::vector<idx> dims(n, d); // local dimensions vector
 
         return this->expandout(A, pos, dims);
     }

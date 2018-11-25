@@ -95,8 +95,8 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
         throw exception::DimsInvalid("qpp::schmidtcoeffs()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return schmidtcoeffs(A, dims);
 }
@@ -156,8 +156,8 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
         throw exception::DimsInvalid("qpp::schmidtA()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return schmidtA(A, dims);
 }
@@ -219,8 +219,8 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
         throw exception::DimsInvalid("qpp::schmidtB()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return schmidtB(A, dims);
 }
@@ -294,8 +294,8 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
         throw exception::DimsInvalid("qpp::schmidtprobs()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return schmidtprobs(A, dims);
 }
@@ -361,8 +361,8 @@ double entanglement(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
         throw exception::DimsInvalid("qpp::entanglement()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return entanglement(A, dims);
 }
@@ -456,8 +456,8 @@ double negativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
         throw exception::DimsInvalid("qpp::negativity()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return negativity(A, dims);
 }
@@ -515,8 +515,8 @@ double lognegativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
         throw exception::DimsInvalid("qpp::lognegativity()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return lognegativity(A, dims);
 }

@@ -93,9 +93,9 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
     idx D = static_cast<idx>(rpsi.rows());
     idx Dsubsys_bar = D / Dsubsys;
 
-    idx N = dims.size();
-    idx Nsubsys = subsys.size();
-    idx Nsubsys_bar = N - Nsubsys;
+    idx n = dims.size();
+    idx n_subsys = subsys.size();
+    idx n_subsys_bar = n - n_subsys;
 
     idx Cdims[maxn];
     idx Csubsys[maxn];
@@ -103,18 +103,18 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
     idx Csubsys_bar[maxn];
     idx Cdimssubsys_bar[maxn];
 
-    std::vector<idx> subsys_bar = complement(subsys, N);
+    std::vector<idx> subsys_bar = complement(subsys, n);
     std::copy(std::begin(subsys_bar), std::end(subsys_bar),
               std::begin(Csubsys_bar));
 
-    for (idx i = 0; i < N; ++i) {
+    for (idx i = 0; i < n; ++i) {
         Cdims[i] = dims[i];
     }
-    for (idx i = 0; i < Nsubsys; ++i) {
+    for (idx i = 0; i < n_subsys; ++i) {
         Csubsys[i] = subsys[i];
         Cdimssubsys[i] = dims[subsys[i]];
     }
-    for (idx i = 0; i < Nsubsys_bar; ++i) {
+    for (idx i = 0; i < n_subsys_bar; ++i) {
         Cdimssubsys_bar[i] = dims[subsys_bar[i]];
     }
 
@@ -124,23 +124,23 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
         idx Cmidxcolsubsys_bar[maxn];
 
         /* get the col multi-indexes of the complement */
-        internal::n2multiidx(b, Nsubsys_bar, Cdimssubsys_bar,
+        internal::n2multiidx(b, n_subsys_bar, Cdimssubsys_bar,
                              Cmidxcolsubsys_bar);
         /* write it in the global row multi-index */
-        for (idx k = 0; k < Nsubsys_bar; ++k) {
+        for (idx k = 0; k < n_subsys_bar; ++k) {
             Cmidxrow[Csubsys_bar[k]] = Cmidxcolsubsys_bar[k];
         }
 
         typename Derived::Scalar result = 0;
         for (idx a = 0; a < Dsubsys; ++a) {
             /* get the row multi-indexes of the subsys */
-            internal::n2multiidx(a, Nsubsys, Cdimssubsys, Cmidxrowsubsys);
+            internal::n2multiidx(a, n_subsys, Cdimssubsys, Cmidxrowsubsys);
             /* write it in the global row multi-index */
-            for (idx k = 0; k < Nsubsys; ++k) {
+            for (idx k = 0; k < n_subsys; ++k) {
                 Cmidxrow[Csubsys[k]] = Cmidxrowsubsys[k];
             }
             // compute the row index
-            idx i = internal::multiidx2n(Cmidxrow, N, Cdims);
+            idx i = internal::multiidx2n(Cmidxrow, n, Cdims);
 
             result += std::conj(rphi(a)) * rpsi(i);
         }
@@ -185,8 +185,8 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
         throw exception::DimsInvalid("qpp::ip()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rpsi.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rpsi.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
     return ip(phi, psi, subsys, dims);
 }
 
@@ -483,8 +483,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
         throw exception::DimsInvalid("qpp::measure()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return measure(rA, Ks, subsys, dims);
 }
@@ -655,8 +655,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
         throw exception::DimsInvalid("qpp::measure()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return measure(rA, V, subsys, dims);
 }
@@ -768,8 +768,8 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> subsys,
         throw exception::DimsInvalid("qpp::measure_seq()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return measure_seq(rA, subsys, dims);
 }

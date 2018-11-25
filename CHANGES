@@ -1,9 +1,16 @@
 In progress - pre-release
     - Added Quantum Fourier transform example in "examples/qft.cpp"
+    - Added new functions in "operations.h":
+          qpp::qft() - Qudit Quantum Fourier transform (includes qubit QFT as a
+                       special case)
+    - Added new member functions for qpp::Gates:
+          qpp::Gates::RX()   - rotation around X
+          qpp::Gates::RY()   - rotation around Y
+          qpp::Gates::RZ()   - rotation around Z
+          qpp::Gates.SWAPd() - Qudit SWAP gate
     - Added a suite of stress tests in "stress_tests" (only for POSIX systems)
-    - Added rotations about X, Y and Z as member functions of qpp::Gates, 
-      as qpp::Gates::RX/Y/Z respectively
     - Added Qiskit and QuTiP stress tests in "stress_tests/python"
+
 Version 1.0 - 3 July 2018
     - Added full support for reversible classical circuits, added
       "classes/reversible.h" header file that contains the following classes:

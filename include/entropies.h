@@ -353,8 +353,8 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
         throw exception::DimsInvalid("qpp::qmutualinfo()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return qmutualinfo(rA, subsysA, subsysB, dims);
 }

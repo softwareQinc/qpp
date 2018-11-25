@@ -24,6 +24,7 @@
  * SOFTWARE.
  */
 
+#include <cmath>
 #include <vector>
 #include "gtest/gtest.h"
 #include "qpp.h"
@@ -39,7 +40,52 @@ using namespace qpp;
 ///       const Eigen::MatrixBase<Derived2>& A,
 ///       const std::vector<idx>& subsys,
 ///       const std::vector<idx>& dims)
-TEST(qpp_apply, AllTests) {}
+TEST(qpp_apply, AllTests) {
+    // pure states
+    // 1 qubit
+    ket psi = 1_ket;
+    // X, Y, Z and H
+    ket resultX = qpp::apply(psi, gt.X, {0}, std::vector<idx>({2}));
+    EXPECT_EQ(0_ket, resultX);
+    ket resultY = qpp::apply(psi, gt.Y, {0}, std::vector<idx>({2}));
+    EXPECT_EQ(-1_i * 0_ket, resultY);
+    ket resultZ = qpp::apply(psi, gt.Z, {0}, std::vector<idx>({2}));
+    EXPECT_EQ(-1_ket, resultZ);
+    ket resultH = qpp::apply(psi, gt.H, {0}, std::vector<idx>({2}));
+    EXPECT_NEAR(0, norm(resultH - (0_ket - 1_ket) / std::sqrt(2)), 1e-8);
+
+    // 2 qubits
+    psi = 0.8 * 00_ket + 0.6 * 11_ket;
+    resultX = qpp::apply(psi, gt.X, {1}, {2, 2});
+    EXPECT_EQ(0.8 * 01_ket + 0.6 * 10_ket, resultX);
+    resultY = qpp::apply(psi, gt.Y, {1}, {2, 2});
+    EXPECT_EQ(0.8_i * 01_ket - 0.6_i * 10_ket, resultY);
+    resultZ = qpp::apply(psi, gt.Z, {1}, {2, 2});
+    EXPECT_EQ(0.8 * 00_ket - 0.6 * 11_ket, resultZ);
+    ket resultCNOT = qpp::apply(psi, gt.CNOT, {0, 1}, {2, 2});
+    EXPECT_EQ(0.8 * 00_ket + 0.6 * 10_ket, resultCNOT);
+    resultCNOT = qpp::apply(psi, gt.CNOT, {1, 0}, {2, 2});
+    EXPECT_EQ(0.8 * 00_ket + 0.6 * 01_ket, resultCNOT);
+    ket resultZZ = qpp::apply(psi, kron(gt.Z, gt.Z), {0, 1}, {2, 2});
+    EXPECT_EQ(0.8 * 00_ket + 0.6 * 11_ket, resultZZ);
+
+    // 4 qubits
+    psi = 0.8 * 0000_ket + 0.6 * 1111_ket;
+    ket resultXZ = qpp::apply(psi, kron(gt.X, gt.Z), {1, 2}, {2, 2, 2, 2});
+    EXPECT_EQ(0.8 * 0100_ket - 0.6 * 1011_ket, resultXZ);
+    resultXZ = qpp::apply(psi, kron(gt.X, gt.Z), {2, 1}, {2, 2, 2, 2});
+    EXPECT_EQ(0.8 * 0010_ket - 0.6 * 1101_ket, resultXZ);
+    ket resultTOF = qpp::apply(psi, gt.TOF, {1, 2, 0}, {2, 2, 2, 2});
+    EXPECT_EQ(0.8 * 0000_ket + 0.6 * 0111_ket, resultTOF);
+
+    // 1 qudit
+
+    // 2 qudits
+
+    // 4 qudits
+
+    // mixed states
+}
 /******************************************************************************/
 /// BEGIN template<typename Derived1, typename Derived2>
 ///       dyn_mat<typename Derived1::Scalar> qpp::apply(

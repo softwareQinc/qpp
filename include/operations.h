@@ -25,9 +25,9 @@
  */
 
 /**
-* \file operations.h
-* \brief Quantum operation functions
-*/
+ * \file operations.h
+ * \brief Quantum operation functions
+ */
 
 #ifndef OPERATIONS_H_
 #define OPERATIONS_H_
@@ -35,21 +35,21 @@
 namespace qpp {
 
 /**
-* \brief Applies the controlled-gate \a A to the part \a subsys
-* of the multi-partite state vector or density matrix \a state
-* \see qpp::Gates::CTRL()
-*
-* \note The dimension of the gate \a A must match
-* the dimension of \a subsys.
-* Also, all control subsystems in \a ctrl must have the same dimension.
-*
-* \param state Eigen expression
-* \param A Eigen expression
-* \param ctrl Control subsystem indexes
-* \param subsys Subsystem indexes where the gate \a A is applied
-* \param dims Dimensions of the multi-partite system
-* \return CTRL-A gate applied to the part \a subsys of \a state
-*/
+ * \brief Applies the controlled-gate \a A to the part \a subsys
+ * of the multi-partite state vector or density matrix \a state
+ * \see qpp::Gates::CTRL()
+ *
+ * \note The dimension of the gate \a A must match
+ * the dimension of \a subsys.
+ * Also, all control subsystems in \a ctrl must have the same dimension.
+ *
+ * \param state Eigen expression
+ * \param A Eigen expression
+ * \param ctrl Control subsystem indexes
+ * \param subsys Subsystem indexes where the gate \a A is applied
+ * \param dims Dimensions of the multi-partite system
+ * \return CTRL-A gate applied to the part \a subsys of \a state
+ */
 template <typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar>
 applyCTRL(const Eigen::MatrixBase<Derived1>& state,
@@ -118,7 +118,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     }
 
     idx D = static_cast<idx>(rstate.rows()); // total dimension
-    idx N = dims.size();                     // total number of subsystems
+    idx n = dims.size();                     // total number of subsystems
     idx ctrlsize = ctrl.size();              // number of ctrl subsystem
     idx ctrlgatesize = ctrlgate.size();      // number of ctrl+gate subsystems
     idx subsyssize = subsys.size(); // number of subsystems of the target
@@ -132,7 +132,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     idx CdimsCTRLA_bar[maxn]; // local dimensions
 
     // compute the complementary subsystem of ctrlgate w.r.t. dims
-    std::vector<idx> ctrlgate_bar = complement(ctrlgate, N);
+    std::vector<idx> ctrlgate_bar = complement(ctrlgate, n);
     // number of subsystems that are complementary to the ctrl+gate
     idx ctrlgate_barsize = ctrlgate_bar.size();
 
@@ -140,7 +140,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     for (idx i = 0; i < ctrlgate_barsize; ++i)
         DCTRLA_bar *= dims[ctrlgate_bar[i]];
 
-    for (idx k = 0; k < N; ++k)
+    for (idx k = 0; k < n; ++k)
         Cdims[k] = dims[k];
     for (idx k = 0; k < subsyssize; ++k)
         CdimsA[k] = dims[subsys[k]];
@@ -168,9 +168,9 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
         }
 
         // set the rest
-        internal::n2multiidx(r_, N - ctrlgatesize, CdimsCTRLA_bar,
+        internal::n2multiidx(r_, n - ctrlgatesize, CdimsCTRLA_bar,
                              CmidxCTRLA_bar);
-        for (idx k = 0; k < N - ctrlgatesize; ++k) {
+        for (idx k = 0; k < n - ctrlgatesize; ++k) {
             Cmidx[ctrlgate_bar[k]] = CmidxCTRLA_bar[k];
         }
 
@@ -181,7 +181,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
         }
 
         // we now got the total index
-        indx = internal::multiidx2n(Cmidx, N, Cdims);
+        indx = internal::multiidx2n(Cmidx, n, Cdims);
 
         // compute the coefficient
         for (idx n_ = 0; n_ < DA; ++n_) {
@@ -190,7 +190,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
                 Cmidx[subsys[k]] = CmidxA[k];
             }
             coeff +=
-                Ai[i_](m_, n_) * rstate(internal::multiidx2n(Cmidx, N, Cdims));
+                Ai[i_](m_, n_) * rstate(internal::multiidx2n(Cmidx, n, Cdims));
         }
 
         return std::make_pair(coeff, indx);
@@ -227,11 +227,11 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
         }
 
         // set the rest
-        internal::n2multiidx(r1_, N - ctrlgatesize, CdimsCTRLA_bar,
+        internal::n2multiidx(r1_, n - ctrlgatesize, CdimsCTRLA_bar,
                              CmidxCTRLA_barrow);
-        internal::n2multiidx(r2_, N - ctrlgatesize, CdimsCTRLA_bar,
+        internal::n2multiidx(r2_, n - ctrlgatesize, CdimsCTRLA_bar,
                              CmidxCTRLA_barcol);
-        for (idx k = 0; k < N - ctrlgatesize; ++k) {
+        for (idx k = 0; k < n - ctrlgatesize; ++k) {
             Cmidxrow[ctrlgate_bar[k]] = CmidxCTRLA_barrow[k];
             Cmidxcol[ctrlgate_bar[k]] = CmidxCTRLA_barcol[k];
         }
@@ -245,8 +245,8 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
         }
 
         // we now got the total row/col indexes
-        idxrow = internal::multiidx2n(Cmidxrow, N, Cdims);
-        idxcol = internal::multiidx2n(Cmidxcol, N, Cdims);
+        idxrow = internal::multiidx2n(Cmidxrow, n, Cdims);
+        idxcol = internal::multiidx2n(Cmidxcol, n, Cdims);
 
         // check whether all CTRL row and col multi indexes are equal
         bool all_ctrl_rows_equal = true;
@@ -279,7 +279,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
             for (idx k = 0; k < subsyssize; ++k) {
                 Cmidxrow[subsys[k]] = CmidxArow[k];
             }
-            idx idxrowtmp = internal::multiidx2n(Cmidxrow, N, Cdims);
+            idx idxrowtmp = internal::multiidx2n(Cmidxrow, n, Cdims);
 
             if (all_ctrl_rows_equal) {
                 lhs = Ai[first_ctrl_row](m1_, n1_);
@@ -299,7 +299,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
                     rhs = (n2_ == m2_) ? 1 : 0; // identity matrix
                 }
 
-                idx idxcoltmp = internal::multiidx2n(Cmidxcol, N, Cdims);
+                idx idxcoltmp = internal::multiidx2n(Cmidxcol, n, Cdims);
 
                 coeff += lhs * rstate(idxrowtmp, idxcoltmp) * rhs;
             }
@@ -382,20 +382,20 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
-* \brief Applies the controlled-gate \a A to the part \a subsys
-* of the multi-partite state vector or density matrix \a state
-* \see qpp::Gates::CTRL()
-*
-* \note The dimension of the gate \a A must match
-* the dimension of \a subsys
-*
-* \param state Eigen expression
-* \param A Eigen expression
-* \param ctrl Control subsystem indexes
-* \param subsys Subsystem indexes where the gate \a A is applied
-* \param d Subsystem dimensions
-* \return CTRL-A gate applied to the part \a subsys of \a state
-*/
+ * \brief Applies the controlled-gate \a A to the part \a subsys
+ * of the multi-partite state vector or density matrix \a state
+ * \see qpp::Gates::CTRL()
+ *
+ * \note The dimension of the gate \a A must match
+ * the dimension of \a subsys
+ *
+ * \param state Eigen expression
+ * \param A Eigen expression
+ * \param ctrl Control subsystem indexes
+ * \param subsys Subsystem indexes where the gate \a A is applied
+ * \param d Subsystem dimensions
+ * \return CTRL-A gate applied to the part \a subsys of \a state
+ */
 template <typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar>
 applyCTRL(const Eigen::MatrixBase<Derived1>& state,
@@ -416,25 +416,25 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
         throw exception::DimsInvalid("qpp::applyCTRL()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rstate.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rstate.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return applyCTRL(rstate, rA, ctrl, subsys, dims);
 }
 
 /**
-* \brief Applies the gate \a A to the part \a subsys
-* of the multi-partite state vector or density matrix \a state
-*
-* \note The dimension of the gate \a A must match
-* the dimension of \a subsys
-*
-* \param state Eigen expression
-* \param A Eigen expression
-* \param subsys Subsystem indexes where the gate \a A is applied
-* \param dims Dimensions of the multi-partite system
-* \return Gate \a A applied to the part \a subsys of \a state
-*/
+ * \brief Applies the gate \a A to the part \a subsys
+ * of the multi-partite state vector or density matrix \a state
+ *
+ * \note The dimension of the gate \a A must match
+ * the dimension of \a subsys
+ *
+ * \param state Eigen expression
+ * \param A Eigen expression
+ * \param subsys Subsystem indexes where the gate \a A is applied
+ * \param dims Dimensions of the multi-partite system
+ * \return Gate \a A applied to the part \a subsys of \a state
+ */
 template <typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar>
 apply(const Eigen::MatrixBase<Derived1>& state,
@@ -504,18 +504,18 @@ apply(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
-* \brief Applies the gate \a A to the part \a subsys
-* of the multi-partite state vector or density matrix \a state
-*
-* \note The dimension of the gate \a A must match
-* the dimension of \a subsys
-*
-* \param state Eigen expression
-* \param A Eigen expression
-* \param subsys Subsystem indexes where the gate \a A is applied
-* \param d Subsystem dimensions
-* \return Gate \a A applied to the part \a subsys of \a state
-*/
+ * \brief Applies the gate \a A to the part \a subsys
+ * of the multi-partite state vector or density matrix \a state
+ *
+ * \note The dimension of the gate \a A must match
+ * the dimension of \a subsys
+ *
+ * \param state Eigen expression
+ * \param A Eigen expression
+ * \param subsys Subsystem indexes where the gate \a A is applied
+ * \param d Subsystem dimensions
+ * \return Gate \a A applied to the part \a subsys of \a state
+ */
 template <typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar>
 apply(const Eigen::MatrixBase<Derived1>& state,
@@ -536,20 +536,20 @@ apply(const Eigen::MatrixBase<Derived1>& state,
         throw exception::DimsInvalid("qpp::apply()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rstate.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rstate.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return apply(rstate, rA, subsys, dims);
 }
 
 /**
-* \brief Applies the channel specified by the set of Kraus operators \a Ks
-* to the density matrix \a A
-*
-* \param A Eigen expression
-* \param Ks Set of Kraus operators
-* \return Output density matrix after the action of the channel
-*/
+ * \brief Applies the channel specified by the set of Kraus operators \a Ks
+ * to the density matrix \a A
+ *
+ * \param A Eigen expression
+ * \param Ks Set of Kraus operators
+ * \return Output density matrix after the action of the channel
+ */
 template <typename Derived>
 cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
     const cmat& rA = A.derived();
@@ -587,15 +587,15 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
 }
 
 /**
-* \brief Applies the channel specified by the set of Kraus operators \a Ks to
-* the part \a subsys of the multi-partite density matrix \a A
-*
-* \param A Eigen expression
-* \param Ks Set of Kraus operators
-* \param subsys Subsystem indexes where the Kraus operators \a Ks are applied
-* \param dims Dimensions of the multi-partite system
-* \return Output density matrix after the action of the channel
-*/
+ * \brief Applies the channel specified by the set of Kraus operators \a Ks to
+ * the part \a subsys of the multi-partite density matrix \a A
+ *
+ * \param A Eigen expression
+ * \param Ks Set of Kraus operators
+ * \param subsys Subsystem indexes where the Kraus operators \a Ks are applied
+ * \param dims Dimensions of the multi-partite system
+ * \return Output density matrix after the action of the channel
+ */
 template <typename Derived>
 cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
            const std::vector<idx>& subsys, const std::vector<idx>& dims) {
@@ -648,15 +648,15 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 }
 
 /**
-* \brief Applies the channel specified by the set of Kraus operators \a Ks to
-* the part \a subsys of the multi-partite density matrix \a A
-*
-* \param A Eigen expression
-* \param Ks Set of Kraus operators
-* \param subsys Subsystem indexes where the Kraus operators \a Ks are applied
-* \param d Subsystem dimensions
-* \return Output density matrix after the action of the channel
-*/
+ * \brief Applies the channel specified by the set of Kraus operators \a Ks to
+ * the part \a subsys of the multi-partite density matrix \a A
+ *
+ * \param A Eigen expression
+ * \param Ks Set of Kraus operators
+ * \param subsys Subsystem indexes where the Kraus operators \a Ks are applied
+ * \param d Subsystem dimensions
+ * \return Output density matrix after the action of the channel
+ */
 template <typename Derived>
 cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
            const std::vector<idx>& subsys, idx d = 2) {
@@ -673,23 +673,23 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
         throw exception::DimsInvalid("qpp::apply()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return apply(rA, Ks, subsys, dims);
 }
 
 /**
-* \brief Superoperator matrix
-*
-* Constructs the superoperator matrix of the channel specified by the set of
-* Kraus operators \a Ks in the standard operator basis
-* \f$\{|i\rangle\langle j|\}\f$ ordered in lexicographical order, i.e.
-* \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
-*
-* \param Ks Set of Kraus operators
-* \return Superoperator matrix
-*/
+ * \brief Superoperator matrix
+ *
+ * Constructs the superoperator matrix of the channel specified by the set of
+ * Kraus operators \a Ks in the standard operator basis
+ * \f$\{|i\rangle\langle j|\}\f$ ordered in lexicographical order, i.e.
+ * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
+ *
+ * \param Ks Set of Kraus operators
+ * \return Superoperator matrix
+ */
 inline cmat kraus2super(const std::vector<cmat>& Ks) {
     // EXCEPTION CHECKS
 
@@ -747,20 +747,20 @@ inline cmat kraus2super(const std::vector<cmat>& Ks) {
 }
 
 /**
-* \brief Choi matrix
-* \see qpp::choi2kraus()
-*
-* Constructs the Choi matrix of the channel specified by the set of Kraus
-* operators \a Ks in the standard operator basis \f$\{|i\rangle\langle j|\}\f$
-* ordered in lexicographical order, i.e.
-* \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
-*
-* \note The superoperator matrix \f$S\f$ and the Choi matrix \f$ C\f$
-* are related by \f$ S_{ab,mn} = C_{ma,nb}\f$
-*
-* \param Ks Set of Kraus operators
-* \return Choi matrix
-*/
+ * \brief Choi matrix
+ * \see qpp::choi2kraus()
+ *
+ * Constructs the Choi matrix of the channel specified by the set of Kraus
+ * operators \a Ks in the standard operator basis \f$\{|i\rangle\langle j|\}\f$
+ * ordered in lexicographical order, i.e.
+ * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
+ *
+ * \note The superoperator matrix \f$S\f$ and the Choi matrix \f$ C\f$
+ * are related by \f$ S_{ab,mn} = C_{ma,nb}\f$
+ *
+ * \param Ks Set of Kraus operators
+ * \return Choi matrix
+ */
 inline cmat kraus2choi(const std::vector<cmat>& Ks) {
     // EXCEPTION CHECKS
 
@@ -804,18 +804,18 @@ inline cmat kraus2choi(const std::vector<cmat>& Ks) {
 }
 
 /**
-* \brief Orthogonal Kraus operators from Choi matrix
-* \see qpp::kraus2choi()
-*
-* Extracts a set of orthogonal (under Hilbert-Schmidt operator norm) Kraus
-* operators from the Choi matrix \a A
-*
-* \note The Kraus operators satisfy \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$
-* for all \f$i\neq j\f$
-*
-* \param A Choi matrix
-* \return Set of orthogonal Kraus operators
-*/
+ * \brief Orthogonal Kraus operators from Choi matrix
+ * \see qpp::kraus2choi()
+ *
+ * Extracts a set of orthogonal (under Hilbert-Schmidt operator norm) Kraus
+ * operators from the Choi matrix \a A
+ *
+ * \note The Kraus operators satisfy \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$
+ * for all \f$i\neq j\f$
+ *
+ * \param A Choi matrix
+ * \return Set of orthogonal Kraus operators
+ */
 inline std::vector<cmat> choi2kraus(const cmat& A) {
     // EXCEPTION CHECKS
 
@@ -843,12 +843,12 @@ inline std::vector<cmat> choi2kraus(const cmat& A) {
 }
 
 /**
-* \brief Converts Choi matrix to superoperator matrix
-* \see qpp::super2choi()
-*
-* \param A Choi matrix
-* \return Superoperator matrix
-*/
+ * \brief Converts Choi matrix to superoperator matrix
+ * \see qpp::super2choi()
+ *
+ * \param A Choi matrix
+ * \return Superoperator matrix
+ */
 inline cmat choi2super(const cmat& A) {
     // EXCEPTION CHECKS
 
@@ -877,12 +877,12 @@ inline cmat choi2super(const cmat& A) {
 }
 
 /**
-* \brief Converts superoperator matrix to Choi matrix
-* \see qpp::choi2super()
-*
-* \param A Superoperator matrix
-* \return Choi matrix
-*/
+ * \brief Converts superoperator matrix to Choi matrix
+ * \see qpp::choi2super()
+ *
+ * \param A Superoperator matrix
+ * \return Choi matrix
+ */
 inline cmat super2choi(const cmat& A) {
     // EXCEPTION CHECKS
 
@@ -911,18 +911,18 @@ inline cmat super2choi(const cmat& A) {
 }
 
 /**
-* \brief Partial trace
-* \see qpp::ptrace2()
-*
-* Partial trace over the first subsystem
-* of bi-partite state vector or density matrix
-*
-* \param A Eigen expression
-* \param dims Dimensions of the bi-partite system
-* \return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$
-* in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
-* over the same scalar field as \a A
-*/
+ * \brief Partial trace
+ * \see qpp::ptrace2()
+ *
+ * Partial trace over the first subsystem
+ * of bi-partite state vector or density matrix
+ *
+ * \param A Eigen expression
+ * \param dims Dimensions of the bi-partite system
+ * \return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$
+ * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
+ * over the same scalar field as \a A
+ */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
                                           const std::vector<idx>& dims) {
@@ -967,7 +967,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        // column major order for speed
+       // column major order for speed
         for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
@@ -992,7 +992,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        // column major order for speed
+       // column major order for speed
         for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
@@ -1005,18 +1005,18 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Partial trace
-* \see qpp::ptrace2()
-*
-* Partial trace over the first subsystem
-* of bi-partite state vector or density matrix
-*
-* \param A Eigen expression
-* \param d Subsystem dimensions
-* \return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$
-* in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
-* over the same scalar field as \a A
-*/
+ * \brief Partial trace
+ * \see qpp::ptrace2()
+ *
+ * Partial trace over the first subsystem
+ * of bi-partite state vector or density matrix
+ *
+ * \param A Eigen expression
+ * \param d Subsystem dimensions
+ * \return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$
+ * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
+ * over the same scalar field as \a A
+ */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
                                           idx d = 2) {
@@ -1039,18 +1039,18 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Partial trace
-* \see qpp::ptrace1()
-*
-* Partial trace over the second subsystem
-* of bi-partite state vector or density matrix
-*
-* \param A Eigen expression
-* \param dims Dimensions of the bi-partite system
-* \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$
-* in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
-* over the same scalar field as \a A
-*/
+ * \brief Partial trace
+ * \see qpp::ptrace1()
+ *
+ * Partial trace over the second subsystem
+ * of bi-partite state vector or density matrix
+ *
+ * \param A Eigen expression
+ * \param dims Dimensions of the bi-partite system
+ * \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$
+ * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
+ * over the same scalar field as \a A
+ */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
                                           const std::vector<idx>& dims) {
@@ -1095,7 +1095,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        // column major order for speed
+       // column major order for speed
         for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
                 result(i, j) = worker(i, j);
@@ -1112,7 +1112,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        // column major order for speed
+       // column major order for speed
         for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
                 result(i, j) = trace(rA.block(i * DB, j * DB, DB, DB));
@@ -1125,18 +1125,18 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Partial trace
-* \see qpp::ptrace1()
-*
-*  Partial trace over the second subsystem
-*  of bi-partite state vector or density matrix
-*
-* \param A Eigen expression
-* \param d Subsystem dimensions
-* \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$
-* in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
-* over the same scalar field as \a A
-*/
+ * \brief Partial trace
+ * \see qpp::ptrace1()
+ *
+ *  Partial trace over the second subsystem
+ *  of bi-partite state vector or density matrix
+ *
+ * \param A Eigen expression
+ * \param d Subsystem dimensions
+ * \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$
+ * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
+ * over the same scalar field as \a A
+ */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
                                           idx d = 2) {
@@ -1159,19 +1159,19 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Partial trace
-* \see qpp::ptrace1(), qpp::ptrace2()
-*
-*  Partial trace of the multi-partite state vector or density matrix
-*  over a list of subsystems
-*
-* \param A Eigen expression
-* \param subsys Subsystem indexes
-* \param dims Dimensions of the multi-partite system
-* \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a subsys
-* in a multi-partite system, as a dynamic matrix
-* over the same scalar field as \a A
-*/
+ * \brief Partial trace
+ * \see qpp::ptrace1(), qpp::ptrace2()
+ *
+ *  Partial trace of the multi-partite state vector or density matrix
+ *  over a list of subsystems
+ *
+ * \param A Eigen expression
+ * \param subsys Subsystem indexes
+ * \param dims Dimensions of the multi-partite system
+ * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a subsys
+ * in a multi-partite system, as a dynamic matrix
+ * over the same scalar field as \a A
+ */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
                                          const std::vector<idx>& subsys,
@@ -1194,11 +1194,11 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
-    idx N = dims.size();
-    idx Nsubsys = subsys.size();
-    idx Nsubsys_bar = N - Nsubsys;
+    idx n = dims.size();
+    idx n_subsys = subsys.size();
+    idx n_subsys_bar = n - n_subsys;
     idx Dsubsys = 1;
-    for (idx i = 0; i < Nsubsys; ++i)
+    for (idx i = 0; i < n_subsys; ++i)
         Dsubsys *= dims[subsys[i]];
     idx Dsubsys_bar = D / Dsubsys;
 
@@ -1210,18 +1210,18 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 
     idx Cmidxcolsubsys_bar[maxn];
 
-    std::vector<idx> subsys_bar = complement(subsys, N);
+    std::vector<idx> subsys_bar = complement(subsys, n);
     std::copy(std::begin(subsys_bar), std::end(subsys_bar),
               std::begin(Csubsys_bar));
 
-    for (idx i = 0; i < N; ++i) {
+    for (idx i = 0; i < n; ++i) {
         Cdims[i] = dims[i];
     }
-    for (idx i = 0; i < Nsubsys; ++i) {
+    for (idx i = 0; i < n_subsys; ++i) {
         Csubsys[i] = subsys[i];
         Cdimssubsys[i] = dims[subsys[i]];
     }
-    for (idx i = 0; i < Nsubsys_bar; ++i) {
+    for (idx i = 0; i < n_subsys_bar; ++i) {
         Cdimssubsys_bar[i] = dims[subsys_bar[i]];
     }
 
@@ -1252,25 +1252,25 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             idx Cmidxsubsys[maxn];
 
             /* get the row multi-indexes of the complement */
-            internal::n2multiidx(i, Nsubsys_bar, Cdimssubsys_bar,
+            internal::n2multiidx(i, n_subsys_bar, Cdimssubsys_bar,
                                  Cmidxrowsubsys_bar);
             /* write them in the global row/col multi-indexes */
-            for (idx k = 0; k < Nsubsys_bar; ++k) {
+            for (idx k = 0; k < n_subsys_bar; ++k) {
                 Cmidxrow[Csubsys_bar[k]] = Cmidxrowsubsys_bar[k];
                 Cmidxcol[Csubsys_bar[k]] = Cmidxcolsubsys_bar[k];
             }
             typename Derived::Scalar sm = 0;
             for (idx a = 0; a < Dsubsys; ++a) {
                 // get the multi-index over which we do the summation
-                internal::n2multiidx(a, Nsubsys, Cdimssubsys, Cmidxsubsys);
+                internal::n2multiidx(a, n_subsys, Cdimssubsys, Cmidxsubsys);
                 // write it into the global row/col multi-indexes
-                for (idx k = 0; k < Nsubsys; ++k)
+                for (idx k = 0; k < n_subsys; ++k)
                     Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]] =
                         Cmidxsubsys[k];
 
                 // now do the sum
-                sm += rA(internal::multiidx2n(Cmidxrow, N, Cdims)) *
-                      std::conj(rA(internal::multiidx2n(Cmidxcol, N, Cdims)));
+                sm += rA(internal::multiidx2n(Cmidxrow, n, Cdims)) *
+                      std::conj(rA(internal::multiidx2n(Cmidxcol, n, Cdims)));
             }
 
             return sm;
@@ -1279,7 +1279,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         for (idx j = 0; j < Dsubsys_bar; ++j) // column major order for speed
         {
             // compute the column multi-indexes of the complement
-            internal::n2multiidx(j, Nsubsys_bar, Cdimssubsys_bar,
+            internal::n2multiidx(j, n_subsys_bar, Cdimssubsys_bar,
                                  Cmidxcolsubsys_bar);
 #ifdef WITH_OPENMP_
 #pragma omp parallel for
@@ -1315,25 +1315,25 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             idx Cmidxsubsys[maxn];
 
             /* get the row/col multi-indexes of the complement */
-            internal::n2multiidx(i, Nsubsys_bar, Cdimssubsys_bar,
+            internal::n2multiidx(i, n_subsys_bar, Cdimssubsys_bar,
                                  Cmidxrowsubsys_bar);
             /* write them in the global row/col multi-indexes */
-            for (idx k = 0; k < Nsubsys_bar; ++k) {
+            for (idx k = 0; k < n_subsys_bar; ++k) {
                 Cmidxrow[Csubsys_bar[k]] = Cmidxrowsubsys_bar[k];
                 Cmidxcol[Csubsys_bar[k]] = Cmidxcolsubsys_bar[k];
             }
             typename Derived::Scalar sm = 0;
             for (idx a = 0; a < Dsubsys; ++a) {
                 // get the multi-index over which we do the summation
-                internal::n2multiidx(a, Nsubsys, Cdimssubsys, Cmidxsubsys);
+                internal::n2multiidx(a, n_subsys, Cdimssubsys, Cmidxsubsys);
                 // write it into the global row/col multi-indexes
-                for (idx k = 0; k < Nsubsys; ++k)
+                for (idx k = 0; k < n_subsys; ++k)
                     Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]] =
                         Cmidxsubsys[k];
 
                 // now do the sum
-                sm += rA(internal::multiidx2n(Cmidxrow, N, Cdims),
-                         internal::multiidx2n(Cmidxcol, N, Cdims));
+                sm += rA(internal::multiidx2n(Cmidxrow, n, Cdims),
+                         internal::multiidx2n(Cmidxcol, n, Cdims));
             }
 
             return sm;
@@ -1342,7 +1342,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         for (idx j = 0; j < Dsubsys_bar; ++j) // column major order for speed
         {
             // compute the column multi-indexes of the complement
-            internal::n2multiidx(j, Nsubsys_bar, Cdimssubsys_bar,
+            internal::n2multiidx(j, n_subsys_bar, Cdimssubsys_bar,
                                  Cmidxcolsubsys_bar);
 #ifdef WITH_OPENMP_
 #pragma omp parallel for
@@ -1360,19 +1360,19 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Partial trace
-* \see qpp::ptrace1(), qpp::ptrace2()
-*
-*  Partial trace of the multi-partite state vector or density matrix
-*  over a list of subsystems
-*
-* \param A Eigen expression
-* \param subsys Subsystem indexes
-* \param d Subsystem dimensions
-* \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a subsys
-* in a multi-partite system, as a dynamic matrix
-* over the same scalar field as \a A
-*/
+ * \brief Partial trace
+ * \see qpp::ptrace1(), qpp::ptrace2()
+ *
+ *  Partial trace of the multi-partite state vector or density matrix
+ *  over a list of subsystems
+ *
+ * \param A Eigen expression
+ * \param subsys Subsystem indexes
+ * \param d Subsystem dimensions
+ * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a subsys
+ * in a multi-partite system, as a dynamic matrix
+ * over the same scalar field as \a A
+ */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
                                          const std::vector<idx>& subsys,
@@ -1390,25 +1390,25 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         throw exception::DimsInvalid("qpp::ptrace()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return ptrace(rA, subsys, dims);
 }
 
 /**
-* \brief Partial transpose
-*
-*  Partial transpose of the multi-partite state vector or density matrix
-*  over a list of subsystems
-*
-* \param A Eigen expression
-* \param subsys Subsystem indexes
-* \param dims Dimensions of the multi-partite system
-* \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$
-* over the subsytems \a subsys in a multi-partite system, as a dynamic matrix
-* over the same scalar field as \a A
-*/
+ * \brief Partial transpose
+ *
+ *  Partial transpose of the multi-partite state vector or density matrix
+ *  over a list of subsystems
+ *
+ * \param A Eigen expression
+ * \param subsys Subsystem indexes
+ * \param dims Dimensions of the multi-partite system
+ * \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$
+ * over the subsytems \a subsys in a multi-partite system, as a dynamic matrix
+ * over the same scalar field as \a A
+ */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
 ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
@@ -1431,16 +1431,16 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
-    idx N = dims.size();
-    idx Nsubsys = subsys.size();
+    idx n = dims.size();
+    idx n_subsys = subsys.size();
     idx Cdims[maxn];
     idx Cmidxcol[maxn];
     idx Csubsys[maxn];
 
     // copy dims in Cdims and subsys in Csubsys
-    for (idx i = 0; i < N; ++i)
+    for (idx i = 0; i < n; ++i)
         Cdims[i] = dims[i];
-    for (idx i = 0; i < Nsubsys; ++i)
+    for (idx i = 0; i < n_subsys; ++i)
         Csubsys[i] = subsys[i];
 
     dyn_mat<typename Derived::Scalar> result(D, D);
@@ -1463,23 +1463,23 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
             idx midxcoltmp[maxn];
             idx midxrow[maxn];
 
-            for (idx k = 0; k < N; ++k)
+            for (idx k = 0; k < n; ++k)
                 midxcoltmp[k] = Cmidxcol[k];
 
             /* compute the row multi-index */
-            internal::n2multiidx(i, N, Cdims, midxrow);
+            internal::n2multiidx(i, n, Cdims, midxrow);
 
-            for (idx k = 0; k < Nsubsys; ++k)
+            for (idx k = 0; k < n_subsys; ++k)
                 std::swap(midxcoltmp[Csubsys[k]], midxrow[Csubsys[k]]);
 
             /* writes the result */
-            return rA(internal::multiidx2n(midxrow, N, Cdims)) *
-                   std::conj(rA(internal::multiidx2n(midxcoltmp, N, Cdims)));
+            return rA(internal::multiidx2n(midxrow, n, Cdims)) *
+                   std::conj(rA(internal::multiidx2n(midxcoltmp, n, Cdims)));
         }; /* end worker */
 
         for (idx j = 0; j < D; ++j) {
             // compute the column multi-index
-            internal::n2multiidx(j, N, Cdims, Cmidxcol);
+            internal::n2multiidx(j, n, Cdims, Cmidxcol);
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for
@@ -1508,23 +1508,23 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
             idx midxcoltmp[maxn];
             idx midxrow[maxn];
 
-            for (idx k = 0; k < N; ++k)
+            for (idx k = 0; k < n; ++k)
                 midxcoltmp[k] = Cmidxcol[k];
 
             /* compute the row multi-index */
-            internal::n2multiidx(i, N, Cdims, midxrow);
+            internal::n2multiidx(i, n, Cdims, midxrow);
 
-            for (idx k = 0; k < Nsubsys; ++k)
+            for (idx k = 0; k < n_subsys; ++k)
                 std::swap(midxcoltmp[Csubsys[k]], midxrow[Csubsys[k]]);
 
             /* writes the result */
-            return rA(internal::multiidx2n(midxrow, N, Cdims),
-                      internal::multiidx2n(midxcoltmp, N, Cdims));
+            return rA(internal::multiidx2n(midxrow, n, Cdims),
+                      internal::multiidx2n(midxcoltmp, n, Cdims));
         }; /* end worker */
 
         for (idx j = 0; j < D; ++j) {
             // compute the column multi-index
-            internal::n2multiidx(j, N, Cdims, Cmidxcol);
+            internal::n2multiidx(j, n, Cdims, Cmidxcol);
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for
@@ -1541,18 +1541,18 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
 }
 
 /**
-* \brief Partial transpose
-*
-*  Partial transpose of the multi-partite state vector or density matrix
-*  over a list of subsystems
-*
-* \param A Eigen expression
-* \param subsys Subsystem indexes
-* \param d Subsystem dimensions
-* \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$
-* over the subsytems \a subsys in a multi-partite system, as a dynamic matrix
-* over the same scalar field as \a A
-*/
+ * \brief Partial transpose
+ *
+ *  Partial transpose of the multi-partite state vector or density matrix
+ *  over a list of subsystems
+ *
+ * \param A Eigen expression
+ * \param subsys Subsystem indexes
+ * \param d Subsystem dimensions
+ * \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$
+ * over the subsytems \a subsys in a multi-partite system, as a dynamic matrix
+ * over the same scalar field as \a A
+ */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
 ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
@@ -1570,24 +1570,24 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
         throw exception::DimsInvalid("qpp::ptranspose()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return ptranspose(rA, subsys, dims);
 }
 
 /**
-* \brief Subsystem permutation
-*
-* Permutes the subsystems of a state vector or density matrix.
-* The qubit \a perm[\a i] is permuted to the location \a i.
-*
-* \param A Eigen expression
-* \param perm Permutation
-* \param dims Dimensions of the multi-partite system
-* \return Permuted system, as a dynamic matrix
-* over the same scalar field as \a A
-*/
+ * \brief Subsystem permutation
+ *
+ * Permutes the subsystems of a state vector or density matrix.
+ * The qubit \a perm[\a i] is permuted to the location \a i.
+ *
+ * \param A Eigen expression
+ * \param perm Permutation
+ * \param dims Dimensions of the multi-partite system
+ * \return Permuted system, as a dynamic matrix
+ * over the same scalar field as \a A
+ */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
 syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
@@ -1614,7 +1614,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
-    idx N = dims.size();
+    idx n = dims.size();
 
     dyn_mat<typename Derived::Scalar> result;
 
@@ -1629,13 +1629,13 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
             throw exception::DimsMismatchCvector("qpp::syspermute()");
 
         // copy dims in Cdims and perm in Cperm
-        for (idx i = 0; i < N; ++i) {
+        for (idx i = 0; i < n; ++i) {
             Cdims[i] = dims[i];
             Cperm[i] = perm[i];
         }
         result.resize(D, 1);
 
-        auto worker = [&Cdims, &Cperm, N ](idx i) noexcept->idx {
+        auto worker = [&Cdims, &Cperm, n ](idx i) noexcept->idx {
             // use static allocation for speed,
             // double the size for matrices reshaped as vectors
             idx midx[maxn];
@@ -1643,14 +1643,14 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
             idx permdims[maxn];
 
             /* compute the multi-index */
-            internal::n2multiidx(i, N, Cdims, midx);
+            internal::n2multiidx(i, n, Cdims, midx);
 
-            for (idx k = 0; k < N; ++k) {
+            for (idx k = 0; k < n; ++k) {
                 permdims[k] = Cdims[Cperm[k]]; // permuted dimensions
                 midxtmp[k] = midx[Cperm[k]];   // permuted multi-indexes
             }
 
-            return internal::multiidx2n(midxtmp, N, permdims);
+            return internal::multiidx2n(midxtmp, n, permdims);
         }; /* end worker */
 
 #ifdef WITH_OPENMP_
@@ -1672,11 +1672,11 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
             throw exception::DimsMismatchMatrix("qpp::syspermute()");
 
         // copy dims in Cdims and perm in Cperm
-        for (idx i = 0; i < N; ++i) {
+        for (idx i = 0; i < n; ++i) {
             Cdims[i] = dims[i];
-            Cdims[i + N] = dims[i];
+            Cdims[i + n] = dims[i];
             Cperm[i] = perm[i];
-            Cperm[i + N] = perm[i] + N;
+            Cperm[i + n] = perm[i] + n;
         }
         result.resize(D * D, 1);
         // map A to a column vector
@@ -1684,7 +1684,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
             Eigen::Map<dyn_mat<typename Derived::Scalar>>(
                 const_cast<typename Derived::Scalar*>(rA.data()), D * D, 1);
 
-        auto worker = [&Cdims, &Cperm, N ](idx i) noexcept->idx {
+        auto worker = [&Cdims, &Cperm, n ](idx i) noexcept->idx {
             // use static allocation for speed,
             // double the size for matrices reshaped as vectors
             idx midx[2 * maxn];
@@ -1692,14 +1692,14 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
             idx permdims[2 * maxn];
 
             /* compute the multi-index */
-            internal::n2multiidx(i, 2 * N, Cdims, midx);
+            internal::n2multiidx(i, 2 * n, Cdims, midx);
 
-            for (idx k = 0; k < 2 * N; ++k) {
+            for (idx k = 0; k < 2 * n; ++k) {
                 permdims[k] = Cdims[Cperm[k]]; // permuted dimensions
                 midxtmp[k] = midx[Cperm[k]];   // permuted multi-indexes
             }
 
-            return internal::multiidx2n(midxtmp, 2 * N, permdims);
+            return internal::multiidx2n(midxtmp, 2 * n, permdims);
         }; /* end worker */
 
 #ifdef WITH_OPENMP_
@@ -1716,17 +1716,17 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
 }
 
 /**
-* \brief Subsystem permutation
-*
-* Permutes the subsystems of a state vector or density matrix.
-* The qubit \a perm[\a i] is permuted to the location \a i.
-*
-* \param A Eigen expression
-* \param perm Permutation
-* \param d Subsystem dimensions
-* \return Permuted system, as a dynamic matrix
-* over the same scalar field as \a A
-*/
+ * \brief Subsystem permutation
+ *
+ * Permutes the subsystems of a state vector or density matrix.
+ * The qubit \a perm[\a i] is permuted to the location \a i.
+ *
+ * \param A Eigen expression
+ * \param perm Permutation
+ * \param d Subsystem dimensions
+ * \return Permuted system, as a dynamic matrix
+ * over the same scalar field as \a A
+ */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
 syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
@@ -1744,10 +1744,89 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
         throw exception::DimsInvalid("qpp::syspermute()");
     // END EXCEPTION CHECKS
 
-    idx N = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(N, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
 
     return syspermute(rA, perm, dims);
+}
+
+// as in https://arxiv.org/abs/1707.08834
+/**
+ * \brief Qudit Quantum Fourier transform
+ *
+ * \param A Eigen expression
+ * \param d Subsystem dimensions
+ * \return Qudit Quantum Fourier transform applied on \a A
+ */
+template <typename Derived>
+dyn_col_vect<typename Derived::Scalar> qft(const Eigen::MatrixBase<Derived>& A,
+                                           idx d = 2) {
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero-size
+    if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::qft()");
+
+    if (d < 2)
+        throw exception::DimsInvalid("qpp::qft()");
+
+    // check column vector
+    if (!internal::check_cvector(rA))
+        throw exception::MatrixNotCvector("qpp::qft()");
+
+    // number of qubits/qudits
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    if (static_cast<idx>(rA.rows()) !=
+        static_cast<idx>(std::llround(std::pow(d, n))))
+        throw exception::DimsMismatchCvector("qpp::qft()");
+    // END EXCEPTION CHECKS
+
+    ket result = rA;
+
+    if (d == 2) // qubits
+    {
+        for (idx i = 0; i < n; ++i) {
+            // apply qudit Fourier on qubit i
+            result = apply(result, Gates::get_instance().H, {i});
+            // apply controlled rotations
+            for (idx j = 2; j <= n - i; ++j) {
+                // construct Rj
+                cmat Rj(2, 2);
+                Rj << 1, 0, 0, omega(std::pow(2, j));
+                result = applyCTRL(result, Rj, {i + j - 1}, {i});
+            }
+        }
+        // we have the qubits in reversed order, we must swap them
+        for (idx i = 0; i < n / 2; ++i) {
+            result = apply(result, Gates::get_instance().SWAP, {i, n - i - 1});
+        }
+
+    } else { // qudits
+        for (idx i = 0; i < n; ++i) {
+            result = apply(result, Gates::get_instance().Fd(d), {i},
+                           d); // apply qudit Fourier on qudit i
+            // apply controlled rotations
+            for (idx j = 2; j <= n - i; ++j) {
+                // construct Rj
+                cmat Rj = cmat::Zero(d, d);
+                for (idx m = 0; m < d; ++m) {
+                    Rj(m, m) = exp(2.0 * pi * m * 1_i / std::pow(d, j));
+                }
+
+                // Rj << 1, 0, 0, omega(std::pow(2, j));
+                result = applyCTRL(result, Rj, {i + j - 1}, {i}, d);
+            }
+        }
+        // we have the qudits in reversed order, we must swap them
+        for (idx i = 0; i < n / 2; ++i) {
+            result = apply(result, Gates::get_instance().SWAPd(d),
+                           {i, n - i - 1}, d);
+        }
+    }
+
+    return result;
 }
 
 } /* namespace qpp */

@@ -19,6 +19,7 @@ var operations_8h =
     [ "ptrace2", "operations_8h.html#a0e59c0f704c3fde8bb8c4fae5cd3cce7", null ],
     [ "ptranspose", "operations_8h.html#a97eda566cbbf3baaf8d897d5d49fb5f1", null ],
     [ "ptranspose", "operations_8h.html#aaa62e91772d192f1a7981f651ff9072c", null ],
+    [ "qft", "operations_8h.html#ab1561779b2e1223aec5676f38f378e5d", null ],
     [ "super2choi", "operations_8h.html#ad2b8ee9e2f9b51a281f7c42f61571c9a", null ],
     [ "syspermute", "operations_8h.html#a4cf8dec8978b57214c806094f69e05ca", null ],
     [ "syspermute", "operations_8h.html#af9de352ae53eb3ad8141721b487869b0", null ]
