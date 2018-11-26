@@ -16,9 +16,11 @@ int main() {
 
     ket a = randket(D);
     ket b = randket(D);
-    std::cout << norm(kron(a, b) - gt.SWAPd(D) * kron(b, a)) << '\n';
+    std::cout << norm(kron(a, b) - gt.SWAPd(D) * kron(b, a)) << "\n\n";
 
     ket psi = 0000_ket;
-    ket phi = applyQFT(psi, {1, 2});
-    std::cout << disp(phi) << '\n';
+    ket phi = applyQFT(psi, {0, 1, 3});
+    ket phi1 = apply(psi, gt.Fd(8), {0, 1, 3});
+    std::cout << disp(phi) << "\n\n";
+    std::cout << norm(phi - phi1) << "\n";
 }
