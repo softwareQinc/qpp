@@ -3,27 +3,13 @@ dist: xenial
 
 matrix:
     include:
-        # Linux gcc6
+        # Ubuntu Linux 16.04 gcc5.4
         - os: linux
           compiler: gcc
           before_install:
-              export CXX="g++-6" CC="gcc-6"
-          env:
-          addons:
-              apt:
-                sources:
-                    # add PPAs with more up-to-date toolchains
-                    - ubuntu-toolchain-r-test
-                    # cmake 3.2.3 / doxygen 1.8.3
-                    - george-edison55-precise-backports
-                packages:
-                    # install toolchains
-                    - gcc-6
-                    - g++-6
-                    - cmake
-                    - cmake-data
+              export CXX="g++-5" CC="gcc-5"
 
-        # OSX Apple Clang 
+        # Apple OSX LLVM version 10.0.0 (clang-1000.11.45.5)
         - os: osx
           osx_image: xcode10.1
           compiler: clang
