@@ -193,6 +193,12 @@ TEST(qpp_applyCTRL, EmptyControl) {
 ///       idx d = 2)
 TEST(qpp_applyCTRL_qubits, AllTests) {}
 /******************************************************************************/
+/// BEGIN  template<typename Derived> dyn_mat<typename Derived::Scalar>
+///        qpp::applyQFT(const Eigen::MatrixBase<Derived>& A,
+///        const std::vector<idx>& subsys,
+///        idx d = 2)
+TEST(qpp_applyQFT, AllTests){}
+/******************************************************************************/
 /// BEGIN inline std::vector<cmat> qpp::choi2kraus(const cmat& A)
 TEST(qpp_choi2kraus, AllTests) {}
 /******************************************************************************/
@@ -246,6 +252,10 @@ TEST(qpp_ptranspose, AllTests) {}
 ///       const std::vector<idx>& subsys,
 ///       idx d = 2)
 TEST(qpp_ptranspose_qubits, AllTests) {}
+/******************************************************************************/
+/// BEGIN  template<typename Derived> dyn_col_vect<typename Derived::Scalar>
+///        qpp::QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2)
+TEST(qpp_QFT, AllTests){}
 /******************************************************************************/
 /// BEGIN inline cmat qpp::super2choi(const cmat& A)
 TEST(qpp_super2choi, AllTests) {}

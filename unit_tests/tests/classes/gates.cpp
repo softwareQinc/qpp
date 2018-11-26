@@ -227,6 +227,26 @@ TEST(qpp_Gates_Rn, AllTests) {
     EXPECT_NEAR(0, norm(st.py1 - prj(gt.Rn(pi, {0, 0, 1}) * st.y0)), 1e-7);
 }
 /******************************************************************************/
+/// BEGIN  cmat qpp::Gates::RX(double theta) const
+TEST(qpp_Gates_RX, AllTests) {}
+/******************************************************************************/
+/// BEGIN  cmat qpp::Gates::RY(double theta) const
+TEST(qpp_Gates_RY, AllTests) {}
+/******************************************************************************/
+/// BEGIN  cmat qpp::Gates::RZ(double theta) const
+TEST(qpp_Gates_RZ, AllTests) {}
+/******************************************************************************/
+/// BEGIN  cmat qpp::SWAPd(idx D = 2) const
+TEST(qpp_Gates_SWAPd, AllTests) {
+    for (idx D = 1; D < 6; ++D) {
+        ket psi = randket(D);
+        ket phi = randket(D);
+        ket a = kron(psi, phi);
+        ket b = gt.SWAPd(D) * kron(phi, psi);
+        EXPECT_NEAR(0, norm(a - b), 1e-7);
+    }
+}
+/******************************************************************************/
 /// BEGIN cmat qpp::Gates::Xd(idx D = 2) const
 TEST(qpp_Gates_Xd, AllTests) {
     for (idx D = 1; D < 10; ++D) {

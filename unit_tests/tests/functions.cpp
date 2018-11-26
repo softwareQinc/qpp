@@ -310,3 +310,12 @@ TEST(qpp_trace, AllTests) {}
 ///       qpp::transpose(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_transpose, AllTests) {}
 /******************************************************************************/
+/// BEGIN template <char... Bits> bra qpp::operator"" _bra()
+TEST(qpp_literals_operator_bra, AllTests) {}
+/******************************************************************************/
+/// BEGIN template <char... Bits> ket qpp::operator"" _ket()
+TEST(qpp_literals_operator_ket, AllTests) {}
+/******************************************************************************/
+/// BEGIN template <char... Bits> cmat qpp::operator"" _prj()
+TEST(qpp_literals_operator_prj, AllTests) {}
+/******************************************************************************/
