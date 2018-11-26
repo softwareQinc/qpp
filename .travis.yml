@@ -16,6 +16,7 @@ matrix:
 
         # OSX gcc6
         - os: osx
+          osx_image: xcode10.1
           compiler: gcc
           before_install:
               - xcode-select --install
