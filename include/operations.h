@@ -491,7 +491,6 @@ apply(const Eigen::MatrixBase<Derived1>& state,
     //************ density matrix ************//
     else if (internal::check_square_mat(rstate)) // we have a density operator
     {
-
         // check that dims match state matrix
         if (!internal::check_dims_match_mat(dims, rstate))
             throw exception::DimsMismatchMatrix("qpp::apply()");
@@ -967,7 +966,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-       // column major order for speed
+        // column major order for speed
         for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
@@ -992,7 +991,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-       // column major order for speed
+        // column major order for speed
         for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
@@ -1095,7 +1094,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-       // column major order for speed
+        // column major order for speed
         for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
                 result(i, j) = worker(i, j);
@@ -1112,7 +1111,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-       // column major order for speed
+        // column major order for speed
         for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
                 result(i, j) = trace(rA.block(i * DB, j * DB, DB, DB));
@@ -1750,9 +1749,9 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
     return syspermute(rA, perm, dims);
 }
 
-
+// as in https://arxiv.org/abs/1707.08834
 /**
- * \brief Applies the qudit quantum Fourier transfrom to the part \a subsys
+ * \brief Applies the qudit quantum Fourier transform to the part \a subsys
  * of the multi-partite state vector or density matrix \a A
  *
  * \param A Eigen expression
@@ -1762,46 +1761,59 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
  * of \a A
  */
 template <typename Derived>
-dyn_mat<typename Derived::Scalar>
-applyQFT(const Eigen::MatrixBase<Derived>& A,
-         const std::vector<idx>& subsys, idx d = 2) {
-    const dyn_mat<typename Derived::Scalar>& rstate = A.derived();
+dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
+                                           const std::vector<idx>& subsys,
+                                           idx d = 2) {
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
     // check zero sizes
-    if (!internal::check_nonzero_size(rstate))
+    if (!internal::check_nonzero_size(rA))
         throw exception::ZeroSize("qpp::applyQFT()");
 
     // check valid subsystem dimension
     if (d < 2)
         throw exception::DimsInvalid("qpp::applyQFT()");
 
-    // number of qubits/qudits
-    idx n = internal::get_num_subsys(static_cast<idx>(rstate.rows()), d);
-    if (static_cast<idx>(rstate.rows()) !=
-        static_cast<idx>(std::llround(std::pow(d, n))))
-        throw exception::DimsMismatchCvector("qpp::applyQFT()");
+    // total number of qubits/qudits in the state
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
 
-    // check subsys is valid w.r.t. dims
     std::vector<idx> dims(n, d); // local dimensions vector
+    // check subsys is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(subsys, dims))
         throw exception::SubsysMismatchDims("qpp::applyQFT()");
 
-    // check column vector
-    if (!internal::check_cvector(rstate))
-        throw exception::MatrixNotCvector("qpp::applyQFT()");
+    //************ ket ************//
+    if (internal::check_cvector(rA)) // we have a ket
+    {
+        // check that dims match state vector
+        if (!internal::check_dims_match_cvect(dims, rA))
+            throw exception::DimsMismatchCvector("qpp::applyQFT()");
+    }
+    //************ density matrix ************//
+    else if (internal::check_square_mat(rA)) // we have a density operator
+    {
+        // check that dims match state matrix
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::applyQFT()");
+    }
+    //************ Exception: not ket nor density matrix ************//
+    else
+        throw exception::MatrixNotSquareNorCvector("qpp::applyQFT()");
     // END EXCEPTION CHECKS
 
-    dyn_mat<typename Derived::Scalar> result = rstate;
+    dyn_mat<typename Derived::Scalar> result = rA;
+
+    idx n_subsys = subsys.size();
 
     if (d == 2) // qubits
     {
-        for (idx i = 0; i < subsys.size(); ++i) {
+        for (idx i = 0; i < n_subsys; ++i) {
             // apply qudit Fourier on qubit i
             result = apply(result, Gates::get_instance().H, {subsys[i]});
             // apply controlled rotations
-            for (idx j = 2; j <= subsys.size() - i; ++j) {
+            for (idx j = 2; j <= n_subsys - i; ++j) {
                 // construct Rj
                 cmat Rj(2, 2);
                 Rj << 1, 0, 0, omega(std::pow(2, j));
@@ -1810,17 +1822,17 @@ applyQFT(const Eigen::MatrixBase<Derived>& A,
             }
         }
         // we have the qubits in reversed order, we must swap them
-        for (idx i = 0; i < subsys.size() / 2; ++i) {
+        for (idx i = 0; i < n_subsys / 2; ++i) {
             result = apply(result, Gates::get_instance().SWAP,
-                           {subsys[i], subsys[subsys.size() - i - 1]});
+                           {subsys[i], subsys[n_subsys - i - 1]});
         }
 
     } else { // qudits
-        for (idx i = 0; i < subsys.size(); ++i) {
+        for (idx i = 0; i < n_subsys; ++i) {
             // apply qudit Fourier on qudit i
             result = apply(result, Gates::get_instance().Fd(d), {subsys[i]}, d);
             // apply controlled rotations
-            for (idx j = 2; j <= subsys.size() - i; ++j) {
+            for (idx j = 2; j <= n_subsys - i; ++j) {
                 // construct Rj
                 cmat Rj = cmat::Zero(d, d);
                 for (idx m = 0; m < d; ++m) {
@@ -1831,9 +1843,9 @@ applyQFT(const Eigen::MatrixBase<Derived>& A,
             }
         }
         // we have the qudits in reversed order, we must swap them
-        for (idx i = 0; i < subsys.size() / 2; ++i) {
+        for (idx i = 0; i < n_subsys / 2; ++i) {
             result = apply(result, Gates::get_instance().SWAPd(d),
-                           {subsys[i], subsys[subsys.size() - i - 1]}, d);
+                           {subsys[i], subsys[n_subsys - i - 1]}, d);
         }
     }
 
@@ -1863,57 +1875,33 @@ dyn_col_vect<typename Derived::Scalar> QFT(const Eigen::MatrixBase<Derived>& A,
     if (d < 2)
         throw exception::DimsInvalid("qpp::QFT()");
 
-    // check column vector
-    if (!internal::check_cvector(rA))
-        throw exception::MatrixNotCvector("qpp::QFT()");
-
-    // number of qubits/qudits
+    // total number of qubits/qudits in the state
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    if (static_cast<idx>(rA.rows()) !=
-        static_cast<idx>(std::llround(std::pow(d, n))))
-        throw exception::DimsMismatchCvector("qpp::QFT()");
+
+    std::vector<idx> dims(n, d); // local dimensions vector
+
+    //************ ket ************//
+    if (internal::check_cvector(rA)) // we have a ket
+    {
+        // check that dims match state vector
+        if (!internal::check_dims_match_cvect(dims, rA))
+            throw exception::DimsMismatchCvector("qpp::QFT()");
+    }
+    //************ density matrix ************//
+    else if (internal::check_square_mat(rA)) // we have a density operator
+    {
+        // check that dims match state matrix
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::QFT()");
+    }
+    //************ Exception: not ket nor density matrix ************//
+    else
+        throw exception::MatrixNotSquareNorCvector("qpp::QFT()");
     // END EXCEPTION CHECKS
 
-    ket result = rA;
-
-    if (d == 2) // qubits
-    {
-        for (idx i = 0; i < n; ++i) {
-            // apply qudit Fourier on qubit i
-            result = apply(result, Gates::get_instance().H, {i});
-            // apply controlled rotations
-            for (idx j = 2; j <= n - i; ++j) {
-                // construct Rj
-                cmat Rj(2, 2);
-                Rj << 1, 0, 0, omega(std::pow(2, j));
-                result = applyCTRL(result, Rj, {i + j - 1}, {i});
-            }
-        }
-        // we have the qubits in reversed order, we must swap them
-        for (idx i = 0; i < n / 2; ++i) {
-            result = apply(result, Gates::get_instance().SWAP, {i, n - i - 1});
-        }
-
-    } else { // qudits
-        for (idx i = 0; i < n; ++i) {
-            result = apply(result, Gates::get_instance().Fd(d), {i},
-                           d); // apply qudit Fourier on qudit i
-            // apply controlled rotations
-            for (idx j = 2; j <= n - i; ++j) {
-                // construct Rj
-                cmat Rj = cmat::Zero(d, d);
-                for (idx m = 0; m < d; ++m) {
-                    Rj(m, m) = exp(2.0 * pi * m * 1_i / std::pow(d, j));
-                }
-                result = applyCTRL(result, Rj, {i + j - 1}, {i}, d);
-            }
-        }
-        // we have the qudits in reversed order, we must swap them
-        for (idx i = 0; i < n / 2; ++i) {
-            result = apply(result, Gates::get_instance().SWAPd(d),
-                           {i, n - i - 1}, d);
-        }
-    }
+    std::vector<idx> subsys(n);
+    std::iota(std::begin(subsys), std::end(subsys), 0);
+    ket result = applyQFT(rA, subsys, d);
 
     return result;
 }

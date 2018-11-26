@@ -7,7 +7,7 @@ var operations_8h =
     [ "apply", "operations_8h.html#a8ef6d510aeae580845ba98e8c8ecfa58", null ],
     [ "applyCTRL", "operations_8h.html#a1e583ad0b10c1250e39c9d9bc8bade78", null ],
     [ "applyCTRL", "operations_8h.html#a3c3fc9e33a8a12fe082359b2b86bf504", null ],
-    [ "applyQFT", "operations_8h.html#a4906bdfb64e2d5179b3db9ac10367968", null ],
+    [ "applyQFT", "operations_8h.html#a0bf06fe14ee1adbaa86b9549bd9f0907", null ],
     [ "choi2kraus", "operations_8h.html#ac08330f1578fa6b6e382a80132dffb46", null ],
     [ "choi2super", "operations_8h.html#a8b5fb595977b62ea764f9362828678f2", null ],
     [ "kraus2choi", "operations_8h.html#a9f23aa8ee0eb007532b29ada39091d4f", null ],

@@ -2,9 +2,11 @@ In progress - pre-release
     - Added Quantum Fourier transform example in "examples/qft.cpp"
     - Added new functions in "operations.h":
           qpp::QFT()      - Qudit quantum Fourier transform (includes qubit 
-                            QFT as a special case)
+                            QFT as a special case) on an entire quantum state
+                            (state vector or density matrix)
           qpp::applyQFT() - Apply the qudit quantum Fourier transform on a
-                            subset of qudits
+                            subset of qudits of a state vector or density
+                            matrix
     - Added new member functions for qpp::Gates:
           qpp::Gates::RX()   - rotation around X
           qpp::Gates::RY()   - rotation around Y
