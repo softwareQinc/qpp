@@ -19,7 +19,6 @@ matrix:
           osx_image: xcode10.1
           compiler: gcc
           before_install:
-              - xcode-select --install
               - rm -rf /usr/local/include/c++
               - brew update
               - brew install gcc6
