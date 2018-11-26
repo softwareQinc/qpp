@@ -1752,11 +1752,11 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
 
 // as in https://arxiv.org/abs/1707.08834
 /**
- * \brief Qudit Quantum Fourier transform
+ * \brief Qudit quantum Fourier transform
  *
  * \param A Eigen expression
  * \param d Subsystem dimensions
- * \return Qudit Quantum Fourier transform applied on \a A
+ * \return Qudit quantum Fourier transform applied on \a A
  */
 template <typename Derived>
 dyn_col_vect<typename Derived::Scalar> QFT(const Eigen::MatrixBase<Derived>& A,
@@ -1828,8 +1828,9 @@ dyn_col_vect<typename Derived::Scalar> QFT(const Eigen::MatrixBase<Derived>& A,
     return result;
 }
 
+// TODO: Optimize me
 /**
- * \brief Applies the qudit Quantum Fourier transfrom to the part \a subsys
+ * \brief Applies the qudit quantum Fourier transfrom to the part \a subsys
  * of the multi-partite state vector or density matrix \a state
  *
  * \param state Eigen expression
@@ -1874,41 +1875,43 @@ applyQFT(const Eigen::MatrixBase<Derived>& state,
 
     if (d == 2) // qubits
     {
-        for (idx i = 0; i < n; ++i) {
+        for (idx i = 0; i < subsys.size(); ++i) {
             // apply qudit Fourier on qubit i
-            result = apply(result, Gates::get_instance().H, subsys[i]);
+            result = apply(result, Gates::get_instance().H, {subsys[i]});
             // apply controlled rotations
-            for (idx j = 2; j <= n - i; ++j) {
+            for (idx j = 2; j <= subsys.size() - i; ++j) {
                 // construct Rj
                 cmat Rj(2, 2);
                 Rj << 1, 0, 0, omega(std::pow(2, j));
-                result = applyCTRL(result, Rj, subsys[i + j - 1], subsys[i]);
+                result =
+                    applyCTRL(result, Rj, {subsys[i + j - 1]}, {subsys[i]});
             }
         }
         // we have the qubits in reversed order, we must swap them
-        for (idx i = 0; i < n / 2; ++i) {
+        for (idx i = 0; i < subsys.size() / 2; ++i) {
             result = apply(result, Gates::get_instance().SWAP,
-                           {subsys[i], subsys[n - i - 1]});
+                           {subsys[i], subsys[subsys.size() - i - 1]});
         }
 
     } else { // qudits
-        for (idx i = 0; i < n; ++i) {
+        for (idx i = 0; i < subsys.size(); ++i) {
             // apply qudit Fourier on qudit i
-            result = apply(result, Gates::get_instance().Fd(d), subsys[i], d);
+            result = apply(result, Gates::get_instance().Fd(d), {subsys[i]}, d);
             // apply controlled rotations
-            for (idx j = 2; j <= n - i; ++j) {
+            for (idx j = 2; j <= subsys.size() - i; ++j) {
                 // construct Rj
                 cmat Rj = cmat::Zero(d, d);
                 for (idx m = 0; m < d; ++m) {
                     Rj(m, m) = exp(2.0 * pi * m * 1_i / std::pow(d, j));
                 }
-                result = applyCTRL(result, Rj, subsys[i + j - 1], subsys[i], d);
+                result =
+                    applyCTRL(result, Rj, {subsys[i + j - 1]}, {subsys[i]}, d);
             }
         }
         // we have the qudits in reversed order, we must swap them
-        for (idx i = 0; i < n / 2; ++i) {
+        for (idx i = 0; i < subsys.size() / 2; ++i) {
             result = apply(result, Gates::get_instance().SWAPd(d),
-                           {subsys[i], subsys[n - i - 1]}, d);
+                           {subsys[i], subsys[subsys.size() - i - 1]}, d);
         }
     }
 

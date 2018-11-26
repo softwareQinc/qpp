@@ -8,7 +8,7 @@ int main() {
     using namespace qpp;
     idx d = 2;
     idx n = 3;
-    idx D = std::pow(d,n);
+    idx D = std::pow(d, n);
 
     ket input = randket(D);
     ket result = QFT(input, d);
@@ -16,5 +16,9 @@ int main() {
 
     ket a = randket(D);
     ket b = randket(D);
-    std::cout << norm(kron(a, b) - gt.SWAPd(D) * kron(b, a));
+    std::cout << norm(kron(a, b) - gt.SWAPd(D) * kron(b, a)) << '\n';
+
+    ket psi = 0000_ket;
+    ket phi = applyQFT(psi, {1, 2});
+    std::cout << disp(phi) << '\n';
 }
