@@ -3,7 +3,7 @@
 #
 # MIT License
 #
-# Copyright (c) 2013 - 2018 Vlad Gheorghiu (vgheorgh@gmail.com)
+# Copyright (c) 2013 - 2019 Vlad Gheorghiu (vgheorgh@gmail.com)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@
 #
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0)
-PROJECT(qpp VERSION 1.0.0 LANGUAGES CXX)
+PROJECT(qpp VERSION 1.1 LANGUAGES CXX)
 
 #### Quantum++ headers
 INCLUDE_DIRECTORIES(include)
