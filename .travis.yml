@@ -1,5 +1,5 @@
 language: cpp
-dist: trusty
+dist: xenial
 
 matrix:
     include:
@@ -25,7 +25,7 @@ matrix:
 
         # OSX Apple Clang 
         - os: osx
-          osx_image: xcode8.3
+          osx_image: xcode10.1
           compiler: clang
 
         # OSX gcc6
