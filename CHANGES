@@ -1,4 +1,4 @@
-In progress - pre-release
+Version 1.1 - 26 November 2018
     - Added new functions in "operations.h":
           qpp::QFT()      - Qudit quantum Fourier transform (includes qubit 
                             QFT as a special case) on an entire quantum state
