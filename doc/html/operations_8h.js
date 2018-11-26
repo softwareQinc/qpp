@@ -7,6 +7,7 @@ var operations_8h =
     [ "apply", "operations_8h.html#a8ef6d510aeae580845ba98e8c8ecfa58", null ],
     [ "applyCTRL", "operations_8h.html#a1e583ad0b10c1250e39c9d9bc8bade78", null ],
     [ "applyCTRL", "operations_8h.html#a3c3fc9e33a8a12fe082359b2b86bf504", null ],
+    [ "applyQFT", "operations_8h.html#a4906bdfb64e2d5179b3db9ac10367968", null ],
     [ "choi2kraus", "operations_8h.html#ac08330f1578fa6b6e382a80132dffb46", null ],
     [ "choi2super", "operations_8h.html#a8b5fb595977b62ea764f9362828678f2", null ],
     [ "kraus2choi", "operations_8h.html#a9f23aa8ee0eb007532b29ada39091d4f", null ],
@@ -19,7 +20,7 @@ var operations_8h =
     [ "ptrace2", "operations_8h.html#a0e59c0f704c3fde8bb8c4fae5cd3cce7", null ],
     [ "ptranspose", "operations_8h.html#a97eda566cbbf3baaf8d897d5d49fb5f1", null ],
     [ "ptranspose", "operations_8h.html#aaa62e91772d192f1a7981f651ff9072c", null ],
-    [ "qft", "operations_8h.html#ab1561779b2e1223aec5676f38f378e5d", null ],
+    [ "QFT", "operations_8h.html#a178b231c8be324874eafd5ce8544ade6", null ],
     [ "super2choi", "operations_8h.html#ad2b8ee9e2f9b51a281f7c42f61571c9a", null ],
     [ "syspermute", "operations_8h.html#a4cf8dec8978b57214c806094f69e05ca", null ],
     [ "syspermute", "operations_8h.html#af9de352ae53eb3ad8141721b487869b0", null ]

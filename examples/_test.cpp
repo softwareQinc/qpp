@@ -11,7 +11,7 @@ int main() {
     idx D = std::pow(d,n);
 
     ket input = randket(D);
-    ket result = qft(input, d);
+    ket result = QFT(input, d);
     std::cout << norm(gt.Fd(D) * input - result) << '\n';
 
     ket a = randket(D);
