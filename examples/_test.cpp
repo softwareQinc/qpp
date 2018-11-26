@@ -6,8 +6,8 @@
 
 int main() {
     using namespace qpp;
-    idx d = 2;
-    idx n = 3;
+    idx d = 3;
+    idx n = 4;
     idx D = std::pow(d, n);
 
     ket input = randket(D);
@@ -18,9 +18,10 @@ int main() {
     ket b = randket(D);
     std::cout << norm(kron(a, b) - gt.SWAPd(D) * kron(b, a)) << "\n\n";
 
-    ket psi = 0000_ket;
-    auto x = applyQFT(prj(psi), {3, 1, 2});
-    auto y = apply(prj(psi), gt.Fd(8), {3, 1, 2});
-    std::cout << disp(y) << "\n\n";
+    ket psi = randket(D);
+    idx k = 3;
+    auto x = applyQFT(prj(psi), {3, 1, 2}, d);
+    auto y = apply(prj(psi), gt.Fd(std::pow(d, k)), {3, 1, 2}, d);
+//    std::cout << disp(y) << "\n\n";
     std::cout << norm(x - y) << "\n";
 }
