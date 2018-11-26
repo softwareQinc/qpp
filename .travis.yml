@@ -18,6 +18,7 @@ matrix:
         - os: osx
           compiler: gcc
           before_install:
+              - xcode-select --install
               - rm -rf /usr/local/include/c++
               - brew update
               - brew install gcc6
