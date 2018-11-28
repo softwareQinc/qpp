@@ -242,6 +242,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         return result;
     }
 
+    //TODO: implement
     /**
      * \brief Modular exponentiation gate for qubits
      *
@@ -249,7 +250,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param j
      * \return
      */
-    cmat ModExp(idx a, idx j) const {
+    cmat MODEXP(idx a, idx j) const {
         return {};
     }
 
