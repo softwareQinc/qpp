@@ -7,7 +7,7 @@ In progress - pre-release
                                on a subset of qudits of a state vector or
                                density matrix
     - Added new member functions for qpp::Gates:
-          qpp::Gates::MODEXP() - quantum modular exponentiation
+          qpp::Gates::MODMUL() - quantum modular multiplication
 Version 1.1 - 26 November 2018
     - Added new functions in "operations.h":
           qpp::QFT()      - qudit quantum Fourier transform (includes qubit

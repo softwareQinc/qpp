@@ -115,9 +115,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ace5b3f45601bbe6c646dab08d4f27d95"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_gates.html#ace5b3f45601bbe6c646dab08d4f27d95">Fd</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D=2) const</td></tr>
 <tr class="memdesc:ace5b3f45601bbe6c646dab08d4f27d95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantum Fourier transform gate for qudits.  <a href="#ace5b3f45601bbe6c646dab08d4f27d95">More...</a><br /></td></tr>
 <tr class="separator:ace5b3f45601bbe6c646dab08d4f27d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca3c87dbde5dc5ecd1345db3e1835155"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_gates.html#aca3c87dbde5dc5ecd1345db3e1835155">MODEXP</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> a, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j) const</td></tr>
-<tr class="memdesc:aca3c87dbde5dc5ecd1345db3e1835155"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modular exponentiation gate for qubits.  <a href="#aca3c87dbde5dc5ecd1345db3e1835155">More...</a><br /></td></tr>
-<tr class="separator:aca3c87dbde5dc5ecd1345db3e1835155"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ff3e9ff58b6600148b90f58f743c6ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_gates.html#a7ff3e9ff58b6600148b90f58f743c6ee">MODMUL</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> a, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N) const</td></tr>
+<tr class="memdesc:a7ff3e9ff58b6600148b90f58f743c6ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modular multiplication gate for qubits Implements <img class="formulaInl" alt="$ |x\rangle \longrightarrow |x\mathrm{mod} N\rangle $" src="form_73.png"/>.  <a href="#a7ff3e9ff58b6600148b90f58f743c6ee">More...</a><br /></td></tr>
+<tr class="separator:a7ff3e9ff58b6600148b90f58f743c6ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c8ef80183ab2172328b8589a78bbfab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_gates.html#a8c8ef80183ab2172328b8589a78bbfab">Xd</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D=2) const</td></tr>
 <tr class="memdesc:a8c8ef80183ab2172328b8589a78bbfab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generalized X gate for qudits.  <a href="#a8c8ef80183ab2172328b8589a78bbfab">More...</a><br /></td></tr>
 <tr class="separator:a8c8ef80183ab2172328b8589a78bbfab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -597,8 +597,8 @@ template&lt;typename Derived  = Eigen::MatrixXcd&gt; </div>
 
 </div>
 </div>
-<a id="aca3c87dbde5dc5ecd1345db3e1835155"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca3c87dbde5dc5ecd1345db3e1835155">&#9670;&nbsp;</a></span>MODEXP()</h2>
+<a id="a7ff3e9ff58b6600148b90f58f743c6ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ff3e9ff58b6600148b90f58f743c6ee">&#9670;&nbsp;</a></span>MODMUL()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -607,7 +607,7 @@ template&lt;typename Derived  = Eigen::MatrixXcd&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> qpp::Gates::MODEXP </td>
+          <td class="memname"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> qpp::Gates::MODMUL </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
           <td class="paramname"><em>a</em>, </td>
@@ -616,7 +616,7 @@ template&lt;typename Derived  = Eigen::MatrixXcd&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>j</em>&#160;</td>
+          <td class="paramname"><em>N</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -631,15 +631,15 @@ template&lt;typename Derived  = Eigen::MatrixXcd&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Modular exponentiation gate for qubits. </p>
+<p>Modular multiplication gate for qubits Implements <img class="formulaInl" alt="$ |x\rangle \longrightarrow |x\mathrm{mod} N\rangle $" src="form_73.png"/>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">a</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">N</td><td></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Modular multiplication gate </dd></dl>
 
 </div>
 </div>
@@ -1142,7 +1142,7 @@ template&lt;typename Derived  = Eigen::MatrixXcd&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_gates.html">Gates</a></li>
-    <li class="footer">Generated on Wed Nov 28 2018 15:41:37 for Quantum++ by
+    <li class="footer">Generated on Wed Nov 28 2018 17:27:32 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

@@ -244,13 +244,14 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
     //TODO: implement
     /**
-     * \brief Modular exponentiation gate for qubits
+     * \brief Modular multiplication gate for qubits
+     * Implements \f$ |x\rangle  \longrightarrow |x\mathrm{mod} N\rangle \f$
      *
      * \param a
-     * \param j
-     * \return
+     * \param N
+     * \return Modular multiplication gate
      */
-    cmat MODEXP(idx a, idx j) const {
+    cmat MODMUL(idx a, idx N) const {
         return {};
     }
 
