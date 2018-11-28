@@ -1,27 +1,34 @@
 In progress - pre-release
-    -
+    - Added new functions in "operations.h":
+          qpp::INVQFT()      - inverse qudit quantum Fourier transform (includes
+                               qubit QFT as a special case) on an entire quantum
+                               state (state vector or density matrix)
+          qpp::applyINVQFT() - apply the inverse qudit quantum Fourier transform
+                               on a subset of qudits of a state vector or
+                               density matrix
+    - Added new member functions for qpp::Gates:
+          qpp::Gates::MODEXP() - quantum modular exponentiation
 Version 1.1 - 26 November 2018
     - Added new functions in "operations.h":
-          qpp::QFT()      - Qudit quantum Fourier transform (includes qubit 
+          qpp::QFT()      - qudit quantum Fourier transform (includes qubit
                             QFT as a special case) on an entire quantum state
                             (state vector or density matrix)
-          qpp::applyQFT() - Apply the qudit quantum Fourier transform on a
-                            subset of qudits of a state vector or density
-                            matrix
+          qpp::applyQFT() - qpply the qudit quantum Fourier transform on a
+                            subset of qudits of a state vector or density matrix
     - Added Quantum Fourier transform example in "examples/qft.cpp"
     - Added new member functions for qpp::Gates:
           qpp::Gates::RX()   - rotation around X
           qpp::Gates::RY()   - rotation around Y
           qpp::Gates::RZ()   - rotation around Z
-          qpp::Gates.SWAPd() - Qudit SWAP gate
+          qpp::Gates.SWAPd() - qudit SWAP gate
     - Added a suite of stress tests in "stress_tests" (only for POSIX systems)
     - Added Qiskit and QuTiP stress tests in "stress_tests/python"
 
 Version 1.0 - 3 July 2018
     - Added full support for reversible classical circuits, added
       "classes/reversible.h" header file that contains the following classes:
-          qpp::Dynamic_bitset - Bitsets of variable length
-          qpp::Bit_circuit    - Classical reversible circuits
+          qpp::Dynamic_bitset - bitsets of variable length
+          qpp::Bit_circuit    - classical reversible circuits
     - Added "examples/reversible.cpp" example
     - The path to MATLAB can now be specified in the CMake command line (not
       hard coded anymore), such as
@@ -43,8 +50,8 @@ Version 1.0-rc3 - Release Candidate 3, 21 January 2018
     - Added support for AppVeyor continuous integration 
     - Added support for reversible classical circuits, via the following
       classes in "experimental.h":
-          qpp::experimental::Dynamic_bitset - Bitsets of variable length
-          qpp::experimental::Bit_circuit    - Classical reversible circuits
+          qpp::experimental::Dynamic_bitset - bitsets of variable length
+          qpp::experimental::Bit_circuit    - classical reversible circuits
     - Added qpp::ket operator "" _q() helper in "functions.h" for constructing
       multi-partite qubit kets
     - Added comprehensive Wiki instead of the quick starting guide  

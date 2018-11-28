@@ -1757,13 +1757,14 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
  * \param A Eigen expression
  * \param subsys Subsystem indexes where the QFT applied
  * \param d Subsystem dimensions
+ * \param swap Swaps the qubits/qudits at the end (true by default)
  * \return Qudit Quantum Fourier transform applied to the part \a subsys
  * of \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
                                            const std::vector<idx>& subsys,
-                                           idx d = 2) {
+                                           idx d = 2, bool swap = true) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1810,21 +1811,23 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
     if (d == 2) // qubits
     {
         for (idx i = 0; i < n_subsys; ++i) {
-            // apply qudit Fourier on qubit i
+            // apply Hadamard on qubit i
             result = apply(result, Gates::get_instance().H, {subsys[i]});
             // apply controlled rotations
             for (idx j = 2; j <= n_subsys - i; ++j) {
                 // construct Rj
                 cmat Rj(2, 2);
-                Rj << 1, 0, 0, omega(std::pow(2, j));
+                Rj << 1, 0, 0, exp(2.0 * pi * 1_i / std::pow(2, j));
                 result =
                     applyCTRL(result, Rj, {subsys[i + j - 1]}, {subsys[i]});
             }
         }
-        // we have the qubits in reversed order, we must swap them
-        for (idx i = 0; i < n_subsys / 2; ++i) {
-            result = apply(result, Gates::get_instance().SWAP,
-                           {subsys[i], subsys[n_subsys - i - 1]});
+        if (swap) {
+            // we have the qubits in reversed order, we must swap them
+            for (idx i = 0; i < n_subsys / 2; ++i) {
+                result = apply(result, Gates::get_instance().SWAP,
+                               {subsys[i], subsys[n_subsys - i - 1]});
+            }
         }
 
     } else { // qudits
@@ -1842,12 +1845,177 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
                     applyCTRL(result, Rj, {subsys[i + j - 1]}, {subsys[i]}, d);
             }
         }
-        // we have the qudits in reversed order, we must swap them
-        for (idx i = 0; i < n_subsys / 2; ++i) {
-            result = apply(result, Gates::get_instance().SWAPd(d),
-                           {subsys[i], subsys[n_subsys - i - 1]}, d);
+        if (swap) {
+            // we have the qudits in reversed order, we must swap them
+            for (idx i = 0; i < n_subsys / 2; ++i) {
+                result = apply(result, Gates::get_instance().SWAPd(d),
+                               {subsys[i], subsys[n_subsys - i - 1]}, d);
+            }
         }
     }
+
+    return result;
+}
+
+// as in https://arxiv.org/abs/1707.08834
+/**
+ * \brief Applies the inverse (adjoint) qudit quantum Fourier transform to the
+ * part \a subsys of the multi-partite state vector or density matrix \a A
+ *
+ * \param A Eigen expression
+ * \param subsys Subsystem indexes where the QFT applied
+ * \param d Subsystem dimensions
+ * \param swap Swaps the qubits/qudits at the end (true by default)
+ * \return Inverse (adjoint) qudit Quantum Fourier transform applied to the part
+ * \a subsys of \a A
+ */
+template <typename Derived>
+dyn_mat<typename Derived::Scalar>
+applyINVQFT(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
+            idx d = 2, bool swap = true) {
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero sizes
+    if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::applyINVQFT()");
+
+    // check valid subsystem dimension
+    if (d < 2)
+        throw exception::DimsInvalid("qpp::applyINVQFT()");
+
+    // total number of qubits/qudits in the state
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+
+    std::vector<idx> dims(n, d); // local dimensions vector
+    // check subsys is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(subsys, dims))
+        throw exception::SubsysMismatchDims("qpp::applyINVQFT()");
+
+    //************ ket ************//
+    if (internal::check_cvector(rA)) // we have a ket
+    {
+        // check that dims match state vector
+        if (!internal::check_dims_match_cvect(dims, rA))
+            throw exception::DimsMismatchCvector("qpp::applyINVQFT()");
+    }
+    //************ density matrix ************//
+    else if (internal::check_square_mat(rA)) // we have a density operator
+    {
+        // check that dims match state matrix
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::applyINVQFT()");
+    }
+    //************ Exception: not ket nor density matrix ************//
+    else
+        throw exception::MatrixNotSquareNorCvector("qpp::applyINVQFT()");
+    // END EXCEPTION CHECKS
+
+    dyn_mat<typename Derived::Scalar> result = rA;
+
+    idx n_subsys = subsys.size();
+
+    if (d == 2) // qubits
+    {
+        if (swap) {
+            // we have the qubits in reversed order, we must swap them
+            for (idx i = 0; i < n_subsys / 2; ++i) {
+                result = apply(result, Gates::get_instance().SWAP,
+                               {subsys[i], subsys[n_subsys - i - 1]});
+            }
+        }
+        for (idx i = n_subsys; i-- > 0;) {
+            // apply controlled rotations
+            for (idx j = n_subsys - i + 1; j-- > 2;) {
+                // construct Rj
+                cmat Rj(2, 2);
+                Rj << 1, 0, 0, exp(-2.0 * pi * 1_i / std::pow(2, j));
+                result =
+                    applyCTRL(result, Rj, {subsys[i + j - 1]}, {subsys[i]});
+            }
+            // apply Hadamard on qubit i
+            result = apply(result, Gates::get_instance().H, {subsys[i]});
+        }
+    } else { // qudits
+        if (swap) {
+            // we have the qudits in reversed order, we must swap them
+            for (idx i = 0; i < n_subsys / 2; ++i) {
+                result = apply(result, Gates::get_instance().SWAPd(d),
+                               {subsys[i], subsys[n_subsys - i - 1]}, d);
+            }
+        }
+        for (idx i = n_subsys; i-- > 0;) {
+            // apply controlled rotations
+            for (idx j = n_subsys - i + 1; j-- > 2;) {
+                // construct Rj
+                cmat Rj = cmat::Zero(d, d);
+                for (idx m = 0; m < d; ++m) {
+                    Rj(m, m) = exp(-2.0 * pi * m * 1_i / std::pow(d, j));
+                }
+                result =
+                    applyCTRL(result, Rj, {subsys[i + j - 1]}, {subsys[i]}, d);
+            }
+            // apply qudit Fourier on qudit i
+            result = apply(result, adjoint(Gates::get_instance().Fd(d)),
+                    {subsys[i]}, d);
+        }
+    }
+
+    return result;
+}
+
+// as in https://arxiv.org/abs/1707.08834
+/**
+ * \brief Inverse (adjoint) qudit quantum Fourier transform
+ *
+ * \param A Eigen expression
+ * \param d Subsystem dimensions
+ * \param swap Swaps the qubits/qudits at the end (true by default)
+ * \return Inverse (adjoint) qudit quantum Fourier transform applied on \a A
+ */
+template <typename Derived>
+dyn_col_vect<typename Derived::Scalar>
+INVQFT(const Eigen::MatrixBase<Derived>& A, idx d = 2, bool swap = true) {
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero-size
+    if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::INVQFT()");
+
+    // check valid subsystem dimension
+    if (d < 2)
+        throw exception::DimsInvalid("qpp::INVQFT()");
+
+    // total number of qubits/qudits in the state
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+
+    std::vector<idx> dims(n, d); // local dimensions vector
+
+    //************ ket ************//
+    if (internal::check_cvector(rA)) // we have a ket
+    {
+        // check that dims match state vector
+        if (!internal::check_dims_match_cvect(dims, rA))
+            throw exception::DimsMismatchCvector("qpp::INVQFT()");
+    }
+    //************ density matrix ************//
+    else if (internal::check_square_mat(rA)) // we have a density operator
+    {
+        // check that dims match state matrix
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::INVQFT()");
+    }
+    //************ Exception: not ket nor density matrix ************//
+    else
+        throw exception::MatrixNotSquareNorCvector("qpp::INVQFT()");
+    // END EXCEPTION CHECKS
+
+    std::vector<idx> subsys(n);
+    std::iota(std::begin(subsys), std::end(subsys), 0);
+    ket result = applyINVQFT(rA, subsys, d, swap);
 
     return result;
 }
@@ -1858,11 +2026,12 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param d Subsystem dimensions
+ * \param swap Swaps the qubits/qudits at the end (true by default)
  * \return Qudit quantum Fourier transform applied on \a A
  */
 template <typename Derived>
 dyn_col_vect<typename Derived::Scalar> QFT(const Eigen::MatrixBase<Derived>& A,
-                                           idx d = 2) {
+                                           idx d = 2, bool swap = true) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1901,7 +2070,7 @@ dyn_col_vect<typename Derived::Scalar> QFT(const Eigen::MatrixBase<Derived>& A,
 
     std::vector<idx> subsys(n);
     std::iota(std::begin(subsys), std::end(subsys), 0);
-    ket result = applyQFT(rA, subsys, d);
+    ket result = applyQFT(rA, subsys, d, swap);
 
     return result;
 }

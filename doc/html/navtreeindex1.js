@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"classqpp_1_1internal_1_1_singleton.html#a2d3f298f1de58b32475c0bc1986e564a":[2,0,0,1,4,0],
 "classqpp_1_1internal_1_1_singleton.html#a9f5902847d8719a540387dab15409693":[2,0,0,1,4,1],
 "classqpp_1_1internal_1_1_singleton.html#ac9f8d235a7b7e9fc5732e0d049442fa5":[2,0,0,1,4,3],
 "codes_8h.html":[3,0,0,0],
@@ -244,10 +245,9 @@ var NAVTREEINDEX1 =
 "namespacemembers_v.html":[1,1,0,20],
 "namespacemembers_vars.html":[1,1,2],
 "namespacemembers_x.html":[1,1,0,21],
-"namespaceqpp.html":[2,0,0],
 "namespaceqpp.html":[1,0,0],
+"namespaceqpp.html":[2,0,0],
 "namespaceqpp_1_1exception.html":[2,0,0,0],
 "namespaceqpp_1_1exception.html":[1,0,0,0],
-"namespaceqpp_1_1experimental.html":[1,0,0,1],
-"namespaceqpp_1_1internal.html":[1,0,0,2]
+"namespaceqpp_1_1experimental.html":[1,0,0,1]
 };

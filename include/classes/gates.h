@@ -243,6 +243,17 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
+     * \brief Modular exponentiation gate for qubits
+     *
+     * \param a
+     * \param j
+     * \return
+     */
+    cmat ModExp(idx a, idx j) const {
+        return {};
+    }
+
+    /**
      * \brief Generalized X gate for qudits
      *
      * \note Defined as \f$ X = \sum_{j=0}^{D-1} |j\oplus 1\rangle\langle j|

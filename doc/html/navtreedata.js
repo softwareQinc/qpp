@@ -37,7 +37,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classqpp_1_1internal_1_1_singleton.html#a9f5902847d8719a540387dab15409693",
+"classqpp_1_1internal_1_1_singleton.html#a2d3f298f1de58b32475c0bc1986e564a",
 "namespaceqpp_1_1internal.html"
 ];
 

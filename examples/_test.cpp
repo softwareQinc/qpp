@@ -24,4 +24,11 @@ int main() {
     auto y = apply(prj(psi), gt.Fd(std::pow(d, k)), {3, 1, 2}, d);
 //    std::cout << disp(y) << "\n\n";
     std::cout << norm(x - y) << "\n";
+
+
+    ket xx = randket(D);
+    ket yy = applyQFT(xx,{2,0}, d);
+    ket zz = applyINVQFT(yy, {2,0}, d);
+
+    std::cout << norm(xx - zz) << "\n";
 }
