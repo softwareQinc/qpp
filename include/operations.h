@@ -966,7 +966,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        // column major order for speed
+       // column major order for speed
         for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
@@ -991,7 +991,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        // column major order for speed
+       // column major order for speed
         for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
@@ -1094,7 +1094,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        // column major order for speed
+       // column major order for speed
         for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
                 result(i, j) = worker(i, j);
@@ -1111,7 +1111,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        // column major order for speed
+       // column major order for speed
         for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
                 result(i, j) = trace(rA.block(i * DB, j * DB, DB, DB));
@@ -1958,7 +1958,7 @@ applyINVQFT(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
             }
             // apply qudit Fourier on qudit i
             result = apply(result, adjoint(Gates::get_instance().Fd(d)),
-                    {subsys[i]}, d);
+                           {subsys[i]}, d);
         }
     }
 

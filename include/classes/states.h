@@ -25,18 +25,18 @@
  */
 
 /**
-* \file classes/states.h
-* \brief Quantum states
-*/
+ * \file classes/states.h
+ * \brief Quantum states
+ */
 
 #ifndef CLASSES_STATES_H_
 #define CLASSES_STATES_H_
 
 namespace qpp {
 /**
-* \class qpp::States
-* \brief const Singleton class that implements most commonly used states
-*/
+ * \class qpp::States
+ * \brief const Singleton class that implements most commonly used states
+ */
 class States final : public internal::Singleton<const States> // const Singleton
 {
     friend class internal::Singleton<const States>;
@@ -89,12 +89,12 @@ class States final : public internal::Singleton<const States> // const Singleton
     cmat pW{cmat::Zero(8, 8)};   ///< Projector onto the W state
 
     /**
-    * \brief Maximally entangled state of 2 qudits
-    *
-    * \param d Subsystem dimensions
-    * \return Maximally entangled state
-    * \f$\frac{1}{\sqrt{d}}\sum_{j=0}^{d-1}|jj\rangle\f$ of 2 qudits
-    */
+     * \brief Maximally entangled state of 2 qudits
+     *
+     * \param d Subsystem dimensions
+     * \return Maximally entangled state
+     * \f$\frac{1}{\sqrt{d}}\sum_{j=0}^{d-1}|jj\rangle\f$ of 2 qudits
+     */
     ket mes(idx d = 2) const {
         // EXCEPTION CHECKS
 
@@ -112,12 +112,12 @@ class States final : public internal::Singleton<const States> // const Singleton
     }
 
     /**
-    * \brief Zero state of \a n qudits
-    *
-    * \param n Non-negative integer
-    * \param d Subsystem dimensions
-    * \return Zero state \f$|0\rangle^{\otimes n}\f$ of \a n qudits
-    */
+     * \brief Zero state of \a n qudits
+     *
+     * \param n Non-negative integer
+     * \param d Subsystem dimensions
+     * \return Zero state \f$|0\rangle^{\otimes n}\f$ of \a n qudits
+     */
     ket zero(idx n, idx d = 2) const {
         // EXCEPTION CHECKS
 
@@ -129,7 +129,7 @@ class States final : public internal::Singleton<const States> // const Singleton
             throw exception::DimsInvalid("qpp::States::zero()");
         // END EXCEPTION CHECKS
 
-        idx D = static_cast<idx>(std::pow(d, n));
+        idx D = static_cast<idx>(std::llround(std::pow(d, n)));
         ket result = ket::Zero(D);
         result(0) = 1;
 
@@ -137,12 +137,12 @@ class States final : public internal::Singleton<const States> // const Singleton
     }
 
     /**
-    * \brief One state of \a n qudits
-    *
-    * \param n Non-negative integer
-    * \param d Subsystem dimensions
-    * \return One state \f$|1\rangle^{\otimes n}\f$ of \a n qudits
-    */
+     * \brief One state of \a n qudits
+     *
+     * \param n Non-negative integer
+     * \param d Subsystem dimensions
+     * \return One state \f$|1\rangle^{\otimes n}\f$ of \a n qudits
+     */
     ket one(idx n, idx d = 2) const {
         // EXCEPTION CHECKS
 
@@ -161,13 +161,13 @@ class States final : public internal::Singleton<const States> // const Singleton
     }
 
     /**
-    * \brief \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
-    *
-    * \param j Non-negative integer
-    * \param n Non-negative integer
-    * \param d Subsystem dimensions
-    * \return \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
-    */
+     * \brief \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
+     *
+     * \param j Non-negative integer
+     * \param n Non-negative integer
+     * \param d Subsystem dimensions
+     * \return \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
+     */
     ket jn(idx j, idx n, idx d = 2) const {
         // EXCEPTION CHECKS
 
@@ -190,11 +190,11 @@ class States final : public internal::Singleton<const States> // const Singleton
     }
 
     /**
-    * \brief Plus state of \a n qubits
-    *
-    * \param n Non-negative integer
-    * \return Plus state \f$|+\rangle^{\otimes n}\f$ of \a n qubits
-    */
+     * \brief Plus state of \a n qubits
+     *
+     * \param n Non-negative integer
+     * \return Plus state \f$|+\rangle^{\otimes n}\f$ of \a n qubits
+     */
     ket plus(idx n) const {
         // EXCEPTION CHECKS
 
@@ -203,18 +203,18 @@ class States final : public internal::Singleton<const States> // const Singleton
             throw exception::OutOfRange("qpp::States::plus()");
         // END EXCEPTION CHECKS
 
-        idx D = static_cast<idx>(std::pow(2, n));
+        idx D = static_cast<idx>(std::llround(std::pow(2, n)));
         ket result = ket::Ones(D);
 
         return result / std::sqrt(D);
     }
 
     /**
-    * \brief Minus state of \a n qubits
-    *
-    * \param n Non-negative integer
-    * \return Minus state \f$|-\rangle^{\otimes n}\f$ of \a n qubits
-    */
+     * \brief Minus state of \a n qubits
+     *
+     * \param n Non-negative integer
+     * \return Minus state \f$|-\rangle^{\otimes n}\f$ of \a n qubits
+     */
     ket minus(idx n) const {
         // EXCEPTION CHECKS
 
@@ -228,8 +228,8 @@ class States final : public internal::Singleton<const States> // const Singleton
 
   private:
     /**
-    * Initialize the states
-    */
+     * Initialize the states
+     */
     States() {
         // initialize
         x0 << 1 / std::sqrt(2.), 1 / std::sqrt(2.);
@@ -272,8 +272,8 @@ class States final : public internal::Singleton<const States> // const Singleton
     }
 
     /**
-    * \brief Default destructor
-    */
+     * \brief Default destructor
+     */
     ~States() = default;
 }; /* class States */
 

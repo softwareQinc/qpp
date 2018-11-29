@@ -25,9 +25,9 @@
  */
 
 /**
-* \file internal/classes/singleton.h
-* \brief Singleton pattern via CRTP
-*/
+ * \file internal/classes/singleton.h
+ * \brief Singleton pattern via CRTP
+ */
 
 #ifndef INTERNAL_CLASSES_SINGLETON_H_
 #define INTERNAL_CLASSES_SINGLETON_H_
@@ -36,46 +36,46 @@ namespace qpp {
 namespace internal // internal class, do not modify
 {
 /**
-* \class qpp::internal::Singleton
-* \brief Singleton policy class, used internally to implement
-* the singleton pattern via CRTP (Curiously recurring template pattern)
-*
-* To implement a singleton, derive your class from qpp::internal::Singleton,
-* make qpp::internal::Singleton a friend of your class, then declare
-* the constructor and destructor of your class as private.
-* To get an instance, use the static
-* member function qpp::internal::Singleton::get_instance()
-* (qpp::internal::Singleton::get_thread_local_instance()), which returns a
-* reference (thread_local reference) to your newly created singleton
-* (thread-safe in C++11).
-*
-* Example:
-* \code
-* class MySingleton: public qpp::internal::Singleton<MySingleton>
-* {
-* 	   friend class qpp::internal::Singleton<MySingleton>;
-* public:
-*     // Declare all public members here
-* private:
-*     MySingleton()
-*     {
-*         // Implement the constructor here
-*     }
-*     ~MySingleton()
-*     {
-*         // Implement the destructor here
-*     }
-* };
-*
-* MySingleton& mySingleton = MySingleton::get_instance(); // Get an instance
-* thread_local MySingleton& tls = MySingleton::get_thread_local_instance();
-* // Get a thread_local instance
-*
-* \endcode
-*
-* \see Code of qpp::Codes, qpp::Gates, qpp::Init, qpp::RandomDevices,
-* qpp::States or qpp.h for real world examples of usage.
-*/
+ * \class qpp::internal::Singleton
+ * \brief Singleton policy class, used internally to implement
+ * the singleton pattern via CRTP (Curiously recurring template pattern)
+ *
+ * To implement a singleton, derive your class from qpp::internal::Singleton,
+ * make qpp::internal::Singleton a friend of your class, then declare
+ * the constructor and destructor of your class as private.
+ * To get an instance, use the static
+ * member function qpp::internal::Singleton::get_instance()
+ * (qpp::internal::Singleton::get_thread_local_instance()), which returns a
+ * reference (thread_local reference) to your newly created singleton
+ * (thread-safe in C++11).
+ *
+ * Example:
+ * \code
+ * class MySingleton: public qpp::internal::Singleton<MySingleton>
+ * {
+ * 	   friend class qpp::internal::Singleton<MySingleton>;
+ * public:
+ *     // Declare all public members here
+ * private:
+ *     MySingleton()
+ *     {
+ *         // Implement the constructor here
+ *     }
+ *     ~MySingleton()
+ *     {
+ *         // Implement the destructor here
+ *     }
+ * };
+ *
+ * MySingleton& mySingleton = MySingleton::get_instance(); // Get an instance
+ * thread_local MySingleton& tls = MySingleton::get_thread_local_instance();
+ * // Get a thread_local instance
+ *
+ * \endcode
+ *
+ * \see Code of qpp::Codes, qpp::Gates, qpp::Init, qpp::RandomDevices,
+ * qpp::States or qpp.h for real world examples of usage.
+ */
 template <typename T>
 class Singleton {
   protected:

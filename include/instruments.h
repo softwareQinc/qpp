@@ -25,24 +25,24 @@
  */
 
 /**
-* \file instruments.h
-* \brief Measurement functions
-*/
+ * \file instruments.h
+ * \brief Measurement functions
+ */
 
 #ifndef INSTRUMENTS_H_
 #define INSTRUMENTS_H_
 
 namespace qpp {
 /**
-* \brief Generalized inner product
-*
-* \param phi Column vector Eigen expression
-* \param psi Column vector Eigen expression
-* \param subsys Subsystem indexes over which \a phi is defined
-* \param dims Dimensions of the multi-partite system
-* \return Inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar
-* or column vector over the remaining Hilbert space
-*/
+ * \brief Generalized inner product
+ *
+ * \param phi Column vector Eigen expression
+ * \param psi Column vector Eigen expression
+ * \param subsys Subsystem indexes over which \a phi is defined
+ * \param dims Dimensions of the multi-partite system
+ * \return Inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar
+ * or column vector over the remaining Hilbert space
+ */
 template <typename Derived>
 dyn_col_vect<typename Derived::Scalar>
 ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
@@ -159,15 +159,15 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
 }
 
 /**
-* \brief Generalized inner product
-*
-* \param phi Column vector Eigen expression
-* \param psi Column vector Eigen expression
-* \param subsys Subsystem indexes over which \a phi is defined
-* \param d Subsystem dimensions
-* \return Inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar
-* or column vector over the remaining Hilbert space
-*/
+ * \brief Generalized inner product
+ *
+ * \param phi Column vector Eigen expression
+ * \param psi Column vector Eigen expression
+ * \param subsys Subsystem indexes over which \a phi is defined
+ * \param d Subsystem dimensions
+ * \return Inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar
+ * or column vector over the remaining Hilbert space
+ */
 template <typename Derived>
 dyn_col_vect<typename Derived::Scalar>
 ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
@@ -192,14 +192,14 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
 
 // full measurements
 /**
-* \brief Measures the state \a A using the set of Kraus operators \a Ks
-*
-* \param A Eigen expression
-* \param Ks Set of Kraus operators
-* \return Tuple of: 1. Result of the measurement, 2.
-* Vector of outcome probabilities, and 3. Vector of post-measurement
-* normalized states
-*/
+ * \brief Measures the state \a A using the set of Kraus operators \a Ks
+ *
+ * \param A Eigen expression
+ * \param Ks Set of Kraus operators
+ * \return Tuple of: 1. Result of the measurement, 2.
+ * Vector of outcome probabilities, and 3. Vector of post-measurement
+ * normalized states
+ */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
@@ -264,14 +264,14 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
 // http://stackoverflow.com
 // /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
-* \brief Measures the state \a A using the set of Kraus operators \a Ks
-*
-* \param A Eigen expression
-* \param Ks Set of Kraus operators
-* \return Tuple of: 1. Result of the measurement, 2.
-* Vector of outcome probabilities, and 3. Vector of post-measurement
-* normalized states
-*/
+ * \brief Measures the state \a A using the set of Kraus operators \a Ks
+ *
+ * \param A Eigen expression
+ * \param Ks Set of Kraus operators
+ * \return Tuple of: 1. Result of the measurement, 2.
+ * Vector of outcome probabilities, and 3. Vector of post-measurement
+ * normalized states
+ */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A,
@@ -280,15 +280,15 @@ measure(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Measures the state \a A in the orthonormal basis
-* specified by the unitary matrix \a U
-*
-* \param A Eigen expression
-* \param U Unitary matrix whose columns represent the measurement basis vectors
-* \return Tuple of: 1. Result of the measurement, 2.
-* Vector of outcome probabilities, and 3. Vector of post-measurement
-* normalized states
-*/
+ * \brief Measures the state \a A in the orthonormal basis
+ * specified by the unitary matrix \a U
+ *
+ * \param A Eigen expression
+ * \param U Unitary matrix whose columns represent the measurement basis vectors
+ * \return Tuple of: 1. Result of the measurement, 2.
+ * Vector of outcome probabilities, and 3. Vector of post-measurement
+ * normalized states
+ */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
@@ -318,22 +318,22 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
 
 // partial measurements
 /**
-* \brief  Measures the part \a subsys of
-* the multi-partite state vector or density matrix \a A
-* using the set of Kraus operators \a Ks
-* \see qpp::measure_seq()
-*
-* \note The dimension of all \a Ks must match the dimension of \a subsys.
-* The measurement is destructive, i.e. the measured subsystems are traced away.
-*
-* \param A Eigen expression
-* \param Ks Set of Kraus operators
-* \param subsys Subsystem indexes that are measured
-* \param dims Dimensions of the multi-partite system
-* \return Tuple of: 1. Result of the measurement, 2.
-* Vector of outcome probabilities, and 3. Vector of post-measurement
-* normalized states
-*/
+ * \brief  Measures the part \a subsys of
+ * the multi-partite state vector or density matrix \a A
+ * using the set of Kraus operators \a Ks
+ * \see qpp::measure_seq()
+ *
+ * \note The dimension of all \a Ks must match the dimension of \a subsys.
+ * The measurement is destructive, i.e. the measured subsystems are traced away.
+ *
+ * \param A Eigen expression
+ * \param Ks Set of Kraus operators
+ * \param subsys Subsystem indexes that are measured
+ * \param dims Dimensions of the multi-partite system
+ * \return Tuple of: 1. Result of the measurement, 2.
+ * Vector of outcome probabilities, and 3. Vector of post-measurement
+ * normalized states
+ */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
@@ -425,22 +425,22 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 // http://stackoverflow.com
 // /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
-* \brief  Measures the part \a subsys of
-* the multi-partite state vector or density matrix \a A
-* using the set of Kraus operators \a Ks
-* \see qpp::measure_seq()
-*
-* \note The dimension of all \a Ks must match the dimension of \a subsys.
-* The measurement is destructive, i.e. the measured subsystems are traced away.
-*
-* \param A Eigen expression
-* \param Ks Set of Kraus operators
-* \param subsys Subsystem indexes that are measured
-* \param dims Dimensions of the multi-partite system
-* \return Tuple of: 1. Result of the measurement, 2.
-* Vector of outcome probabilities, and 3. Vector of post-measurement
-* normalized states
-*/
+ * \brief  Measures the part \a subsys of
+ * the multi-partite state vector or density matrix \a A
+ * using the set of Kraus operators \a Ks
+ * \see qpp::measure_seq()
+ *
+ * \note The dimension of all \a Ks must match the dimension of \a subsys.
+ * The measurement is destructive, i.e. the measured subsystems are traced away.
+ *
+ * \param A Eigen expression
+ * \param Ks Set of Kraus operators
+ * \param subsys Subsystem indexes that are measured
+ * \param dims Dimensions of the multi-partite system
+ * \return Tuple of: 1. Result of the measurement, 2.
+ * Vector of outcome probabilities, and 3. Vector of post-measurement
+ * normalized states
+ */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A,
@@ -450,22 +450,22 @@ measure(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief  Measures the part \a subsys of
-* the multi-partite state vector or density matrix \a A
-* using the set of Kraus operators \a Ks
-* \see qpp::measure_seq()
-*
-* \note The dimension of all \a Ks must match the dimension of \a subsys.
-* The measurement is destructive, i.e. the measured subsystems are traced away.
-*
-* \param A Eigen expression
-* \param Ks Set of Kraus operators
-* \param subsys Subsystem indexes that are measured
-* \param d Subsystem dimensions
-* \return Tuple of: 1. Result of the measurement, 2.
-* Vector of outcome probabilities, and 3. Vector of post-measurement
-* normalized states
-*/
+ * \brief  Measures the part \a subsys of
+ * the multi-partite state vector or density matrix \a A
+ * using the set of Kraus operators \a Ks
+ * \see qpp::measure_seq()
+ *
+ * \note The dimension of all \a Ks must match the dimension of \a subsys.
+ * The measurement is destructive, i.e. the measured subsystems are traced away.
+ *
+ * \param A Eigen expression
+ * \param Ks Set of Kraus operators
+ * \param subsys Subsystem indexes that are measured
+ * \param d Subsystem dimensions
+ * \return Tuple of: 1. Result of the measurement, 2.
+ * Vector of outcome probabilities, and 3. Vector of post-measurement
+ * normalized states
+ */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
@@ -493,22 +493,22 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 // http://stackoverflow.com
 // /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
-* \brief  Measures the part \a subsys of
-* the multi-partite state vector or density matrix \a A
-* using the set of Kraus operators \a Ks
-* \see qpp::measure_seq()
-*
-* \note The dimension of all \a Ks must match the dimension of \a subsys.
-* The measurement is destructive, i.e. the measured subsystems are traced away.
-*
-* \param A Eigen expression
-* \param Ks Set of Kraus operators
-* \param subsys Subsystem indexes that are measured
-* \param d Subsystem dimensions
-* \return Tuple of: 1. Result of the measurement, 2.
-* Vector of outcome probabilities, and 3. Vector of post-measurement
-* normalized states
-*/
+ * \brief  Measures the part \a subsys of
+ * the multi-partite state vector or density matrix \a A
+ * using the set of Kraus operators \a Ks
+ * \see qpp::measure_seq()
+ *
+ * \note The dimension of all \a Ks must match the dimension of \a subsys.
+ * The measurement is destructive, i.e. the measured subsystems are traced away.
+ *
+ * \param A Eigen expression
+ * \param Ks Set of Kraus operators
+ * \param subsys Subsystem indexes that are measured
+ * \param d Subsystem dimensions
+ * \return Tuple of: 1. Result of the measurement, 2.
+ * Vector of outcome probabilities, and 3. Vector of post-measurement
+ * normalized states
+ */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A,
@@ -518,23 +518,23 @@ measure(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Measures the part \a subsys of
-* the multi-partite state vector or density matrix \a A
-* in the orthonormal basis or rank-1 POVM specified by the matrix \a V
-* \see qpp::measure_seq()
-*
-* \note The dimension of \a V must match the dimension of \a subsys.
-* The measurement is destructive, i.e. the measured subsystems are traced away.
-*
-* \param A Eigen expression
-* \param V Matrix whose columns represent the measurement basis vectors or the
-* bra parts of the rank-1 POVM
-* \param subsys Subsystem indexes that are measured
-* \param dims Dimensions of the multi-partite system
-* \return Tuple of: 1. Result of the measurement, 2.
-* Vector of outcome probabilities, and 3. Vector of post-measurement
-* normalized states
-*/
+ * \brief Measures the part \a subsys of
+ * the multi-partite state vector or density matrix \a A
+ * in the orthonormal basis or rank-1 POVM specified by the matrix \a V
+ * \see qpp::measure_seq()
+ *
+ * \note The dimension of \a V must match the dimension of \a subsys.
+ * The measurement is destructive, i.e. the measured subsystems are traced away.
+ *
+ * \param A Eigen expression
+ * \param V Matrix whose columns represent the measurement basis vectors or the
+ * bra parts of the rank-1 POVM
+ * \param subsys Subsystem indexes that are measured
+ * \param dims Dimensions of the multi-partite system
+ * \return Tuple of: 1. Result of the measurement, 2.
+ * Vector of outcome probabilities, and 3. Vector of post-measurement
+ * normalized states
+ */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
@@ -621,23 +621,23 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 }
 
 /**
-* \brief Measures the part \a subsys of
-* the multi-partite state vector or density matrix \a A
-* in the orthonormal basis or rank-1 POVM specified by the matrix \a V
-* \see qpp::measure_seq()
-*
-* \note The dimension of \a V must match the dimension of \a subsys.
-* The measurement is destructive, i.e. the measured subsystems are traced away.
-*
-* \param A Eigen expression
-* \param V Matrix whose columns represent the measurement basis vectors or the
-* bra parts of the rank-1 POVM
-* \param subsys Subsystem indexes that are measured
-* \param d Subsystem dimensions
-* \return Tuple of: 1. Result of the measurement, 2.
-* Vector of outcome probabilities, and 3. Vector of post-measurement
-* normalized states
-*/
+ * \brief Measures the part \a subsys of
+ * the multi-partite state vector or density matrix \a A
+ * in the orthonormal basis or rank-1 POVM specified by the matrix \a V
+ * \see qpp::measure_seq()
+ *
+ * \note The dimension of \a V must match the dimension of \a subsys.
+ * The measurement is destructive, i.e. the measured subsystems are traced away.
+ *
+ * \param A Eigen expression
+ * \param V Matrix whose columns represent the measurement basis vectors or the
+ * bra parts of the rank-1 POVM
+ * \param subsys Subsystem indexes that are measured
+ * \param d Subsystem dimensions
+ * \return Tuple of: 1. Result of the measurement, 2.
+ * Vector of outcome probabilities, and 3. Vector of post-measurement
+ * normalized states
+ */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
@@ -662,19 +662,19 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 }
 
 /**
-* \brief Sequentially measures the part \a subsys
-* of the multi-partite state vector or density matrix \a A
-* in the computational basis
-* \see qpp::measure()
-*
-* \param A Eigen expression
-* \param subsys Subsystem indexes that are measured
-* \param dims Dimensions of the multi-partite system
-* \return Tuple of: 1. Vector of outcome results of the
-* measurement (ordered in increasing order with respect to \a subsys, i.e. first
-* measurement result corresponds to the subsystem with the smallest index), 2.
-* Outcome probability, and 3. Post-measurement normalized state
-*/
+ * \brief Sequentially measures the part \a subsys
+ * of the multi-partite state vector or density matrix \a A
+ * in the computational basis
+ * \see qpp::measure()
+ *
+ * \param A Eigen expression
+ * \param subsys Subsystem indexes that are measured
+ * \param dims Dimensions of the multi-partite system
+ * \return Tuple of: 1. Vector of outcome results of the
+ * measurement (ordered in increasing order with respect to \a subsys, i.e.
+ * first measurement result corresponds to the subsystem with the smallest
+ * index), 2. Outcome probability, and 3. Post-measurement normalized state
+ */
 template <typename Derived>
 std::tuple<std::vector<idx>, double, cmat>
 measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> subsys,
@@ -738,19 +738,19 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> subsys,
 }
 
 /**
-* \brief Sequentially measures the part \a subsys
-* of the multi-partite state vector or density matrix \a A
-* in the computational basis
-* \see qpp::measure()
-*
-* \param A Eigen expression
-* \param subsys Subsystem indexes that are measured
-* \param d Subsystem dimensions
-* \return Tuple of: 1. Vector of outcome results of the
-* measurement (ordered in increasing order with respect to \a subsys, i.e. first
-* measurement result corresponds to the subsystem with the smallest index), 2.
-* Outcome probability, and 3. Post-measurement normalized state
-*/
+ * \brief Sequentially measures the part \a subsys
+ * of the multi-partite state vector or density matrix \a A
+ * in the computational basis
+ * \see qpp::measure()
+ *
+ * \param A Eigen expression
+ * \param subsys Subsystem indexes that are measured
+ * \param d Subsystem dimensions
+ * \return Tuple of: 1. Vector of outcome results of the
+ * measurement (ordered in increasing order with respect to \a subsys, i.e.
+ * first measurement result corresponds to the subsystem with the smallest
+ * index), 2. Outcome probability, and 3. Post-measurement normalized state
+ */
 template <typename Derived>
 std::tuple<std::vector<idx>, double, cmat>
 measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> subsys,

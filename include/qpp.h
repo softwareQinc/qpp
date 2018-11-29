@@ -32,9 +32,9 @@
 // ALWAYS include it in main.cpp
 
 /**
-* \file qpp.h
-* \brief Quantum++ main header file, includes all other necessary headers
-*/
+ * \file qpp.h
+ * \brief Quantum++ main header file, includes all other necessary headers
+ */
 
 #ifndef QPP_H_
 #define QPP_H_
@@ -91,12 +91,16 @@
 
 // do not change the order in this group, inter-dependencies
 #include "internal/classes/singleton.h"
-#include "classes/init.h"
+#include "classes/random_devices.h"
+#include "random.h"
+#include "number_theory.h"
+
+// do not change the order in this group, inter-dependencies
 #include "functions.h"
+#include "classes/init.h"
 #include "classes/codes.h"
 #include "classes/gates.h"
 #include "classes/states.h"
-#include "classes/random_devices.h"
 
 // do not change the order in this group, inter-dependencies
 #include "statistics.h"
@@ -105,53 +109,51 @@
 #include "entanglement.h"
 
 // the ones below can be in any order, no inter-dependencies
-#include "random.h"
 #include "classes/timer.h"
 #include "instruments.h"
-#include "number_theory.h"
 #include "classes/reversible.h"
 
 /**
-* \namespace qpp
-* \brief Quantum++ main namespace
-*/
+ * \namespace qpp
+ * \brief Quantum++ main namespace
+ */
 namespace qpp {
 /**
-* \brief qpp::Init const Singleton
-*
-* Additional initializations/cleanups, see the class qpp::Init
-*/
+ * \brief qpp::Init const Singleton
+ *
+ * Additional initializations/cleanups, see the class qpp::Init
+ */
 static const Init& init QPP_UNUSED_ = Init::get_instance();
 
 /**
-* \brief qpp::Codes const Singleton
-*
-* Initializes the codes, see the class qpp::Codes
-*/
+ * \brief qpp::Codes const Singleton
+ *
+ * Initializes the codes, see the class qpp::Codes
+ */
 static const Codes& codes QPP_UNUSED_ = Codes::get_instance();
 
 /**
-* \brief qpp::Gates const Singleton
-*
-* Initializes the gates, see the class qpp::Gates
-*/
+ * \brief qpp::Gates const Singleton
+ *
+ * Initializes the gates, see the class qpp::Gates
+ */
 static const Gates& gt QPP_UNUSED_ = Gates::get_instance();
 
 /**
-* \brief qpp::States const Singleton
-*
-* Initializes the states, see the class qpp::States
-*/
+ * \brief qpp::States const Singleton
+ *
+ * Initializes the states, see the class qpp::States
+ */
 static const States& st QPP_UNUSED_ = States::get_instance();
 
 /**
-* \brief qpp::RandomDevices Singleton
-*
-* Initializes the random devices, see the class qpp::RandomDevices
-*
-* \note Has thread storage duration, due to mutability of its public member
-* std::mt19937 and possible data races
-*/
+ * \brief qpp::RandomDevices Singleton
+ *
+ * Initializes the random devices, see the class qpp::RandomDevices
+ *
+ * \note Has thread storage duration, due to mutability of its public member
+ * std::mt19937 and possible data races
+ */
 #ifdef NO_THREAD_LOCAL_
 static RandomDevices& rdevs QPP_UNUSED_ = RandomDevices::get_instance();
 #else

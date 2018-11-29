@@ -25,9 +25,9 @@
  */
 
 /**
-* \file internal/classes/iomanip.h
-* \brief Input/output manipulators
-*/
+ * \file internal/classes/iomanip.h
+ * \brief Input/output manipulators
+ */
 
 #ifndef INTERNAL_CLASSES_IOMANIP_H_
 #define INTERNAL_CLASSES_IOMANIP_H_
@@ -47,8 +47,8 @@ class IOManipRange : public IDisplay {
                           const std::string& separator,
                           const std::string& start = "[",
                           const std::string& end = "]")
-        : first_{first}, last_{last}, separator_{separator}, start_{start},
-          end_{end} {}
+        : first_{first}, last_{last},
+          separator_{separator}, start_{start}, end_{end} {}
 
     // to silence -Weffc++ warnings for classes that have pointer members
     // (whenever we have a pointer instantiation,

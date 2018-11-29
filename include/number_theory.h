@@ -25,25 +25,25 @@
  */
 
 /**
-* \file number_theory.h
-* \brief Number theory functions
-*/
+ * \file number_theory.h
+ * \brief Number theory functions
+ */
 
 #ifndef NUMBER_THEORY_H_
 #define NUMBER_THEORY_H_
 
 namespace qpp {
 /**
-* \brief Simple continued fraction expansion
-* \see qpp::contfrac2x()
-*
-* \param x Real number
-* \param N Maximum number of terms in the expansion
-* \param cut Stop the expansion when the next term is greater than \a cut
-* \return Integer vector containing the simple continued fraction expansion
-* of \a x. If there are \a M less than \a N terms in the expansion,
-* a shorter vector with \a M components is returned.
-*/
+ * \brief Simple continued fraction expansion
+ * \see qpp::contfrac2x()
+ *
+ * \param x Real number
+ * \param N Maximum number of terms in the expansion
+ * \param cut Stop the expansion when the next term is greater than \a cut
+ * \return Integer vector containing the simple continued fraction expansion
+ * of \a x. If there are \a M less than \a N terms in the expansion,
+ * a shorter vector with \a M components is returned.
+ */
 inline std::vector<int> x2contfrac(double x, idx N, idx cut = 1e5) {
     // EXCEPTION CHECKS
 
@@ -70,17 +70,17 @@ inline std::vector<int> x2contfrac(double x, idx N, idx cut = 1e5) {
 }
 
 /**
-* \brief Real representation of a simple continued fraction
-* \see qpp::x2contfrac()
-*
-* \note  If \a N is greater than the size of \a cf (by default it is), then all
-* terms in \a cf are considered.
-*
-* \param cf Integer vector containing the simple continued fraction expansion
-* \param N Number of terms considered in the continued fraction expansion.
-*
-* \return Real representation of the simple continued fraction
-*/
+ * \brief Real representation of a simple continued fraction
+ * \see qpp::x2contfrac()
+ *
+ * \note  If \a N is greater than the size of \a cf (by default it is), then all
+ * terms in \a cf are considered.
+ *
+ * \param cf Integer vector containing the simple continued fraction expansion
+ * \param N Number of terms considered in the continued fraction expansion.
+ *
+ * \return Real representation of the simple continued fraction
+ */
 inline double contfrac2x(const std::vector<int>& cf, idx N = idx(-1)) {
     // EXCEPTION CHECKS
 
@@ -106,13 +106,13 @@ inline double contfrac2x(const std::vector<int>& cf, idx N = idx(-1)) {
 }
 
 /**
-* \brief Greatest common divisor of two integers
-* \see qpp::lcm()
-*
-* \param a Integer
-* \param b Integer
-* \return Greatest common divisor of \a a and \a b
-*/
+ * \brief Greatest common divisor of two integers
+ * \see qpp::lcm()
+ *
+ * \param a Integer
+ * \param b Integer
+ * \return Greatest common divisor of \a a and \a b
+ */
 inline bigint gcd(bigint a, bigint b) {
     // EXCEPTION CHECKS
 
@@ -134,12 +134,12 @@ inline bigint gcd(bigint a, bigint b) {
 }
 
 /**
-* \brief Greatest common divisor of a list of integers
-* \see qpp::lcm()
-*
-* \param as List of integers
-* \return Greatest common divisor of all numbers in \a as
-*/
+ * \brief Greatest common divisor of a list of integers
+ * \see qpp::lcm()
+ *
+ * \param as List of integers
+ * \return Greatest common divisor of all numbers in \a as
+ */
 inline bigint gcd(const std::vector<bigint>& as) {
     // EXCEPTION CHECKS
 
@@ -156,13 +156,13 @@ inline bigint gcd(const std::vector<bigint>& as) {
 }
 
 /**
-* \brief Least common multiple of two integers
-* \see qpp::gcd()
-*
-* \param a Integer
-* \param b Integer
-* \return Least common multiple of \a a and \a b
-*/
+ * \brief Least common multiple of two integers
+ * \see qpp::gcd()
+ *
+ * \param a Integer
+ * \param b Integer
+ * \return Least common multiple of \a a and \a b
+ */
 inline bigint lcm(bigint a, bigint b) {
     // EXCEPTION CHECKS
 
@@ -176,12 +176,12 @@ inline bigint lcm(bigint a, bigint b) {
 }
 
 /**
-* \brief Least common multiple of a list of integers
-* \see qpp::gcd()
-*
-* \param as List of integers
-* \return Least common multiple of all numbers in \a as
-*/
+ * \brief Least common multiple of a list of integers
+ * \see qpp::gcd()
+ *
+ * \param as List of integers
+ * \return Least common multiple of all numbers in \a as
+ */
 inline bigint lcm(const std::vector<bigint>& as) {
     // EXCEPTION CHECKS
 
@@ -205,11 +205,11 @@ inline bigint lcm(const std::vector<bigint>& as) {
 }
 
 /**
-* \brief Inverse permutation
-*
-* \param perm Permutation
-* \return Inverse of the permutation \a perm
-*/
+ * \brief Inverse permutation
+ *
+ * \param perm Permutation
+ * \return Inverse of the permutation \a perm
+ */
 inline std::vector<idx> invperm(const std::vector<idx>& perm) {
     // EXCEPTION CHECKS
 
@@ -226,13 +226,13 @@ inline std::vector<idx> invperm(const std::vector<idx>& perm) {
 }
 
 /**
-* \brief Compose permutations
-*
-* \param perm Permutation
-* \param sigma Permutation
-* \return Composition of the permutations \a perm \f$\circ\f$ \a sigma
-*  = perm(sigma)
-*/
+ * \brief Compose permutations
+ *
+ * \param perm Permutation
+ * \param sigma Permutation
+ * \return Composition of the permutations \a perm \f$\circ\f$ \a sigma
+ *  = perm(sigma)
+ */
 inline std::vector<idx> compperm(const std::vector<idx>& perm,
                                  const std::vector<idx>& sigma) {
     // EXCEPTION CHECKS
@@ -254,13 +254,13 @@ inline std::vector<idx> compperm(const std::vector<idx>& perm,
 }
 
 /**
-* \brief Prime factor decomposition
-*
-* \note Runs in \f$\mathcal{O}(\sqrt{n})\f$ time complexity
-*
-* \param a Integer different from 0, 1 or -1
-* \return Integer vector containing the factors
-*/
+ * \brief Prime factor decomposition
+ *
+ * \note Runs in \f$\mathcal{O}(\sqrt{n})\f$ time complexity
+ *
+ * \param a Integer different from 0, 1 or -1
+ * \return Integer vector containing the factors
+ */
 inline std::vector<bigint> factors(bigint a) {
     // flip the sign if necessary
     a = std::abs(a);
@@ -373,18 +373,18 @@ inline bigint modmul(bigint a, bigint b, bigint p) {
 }
 
 /**
-* \brief Fast integer power modulo \a p based on
-* the SQUARE-AND-MULTIPLY algorithm
-*
-* \note Uses qpp::modmul() that avoids overflows
-*
-* Computes \f$a^n\f$ \f$\mathrm{ mod }\f$ \f$p\f$
-*
-* \param a Non-negative integer
-* \param n Non-negative integer
-* \param p Strictly positive integer
-* \return \f$a^n\f$ \f$\mathrm{ mod }\f$ \f$p\f$
-*/
+ * \brief Fast integer power modulo \a p based on
+ * the SQUARE-AND-MULTIPLY algorithm
+ *
+ * \note Uses qpp::modmul() that avoids overflows
+ *
+ * Computes \f$a^n\f$ \f$\mathrm{ mod }\f$ \f$p\f$
+ *
+ * \param a Non-negative integer
+ * \param n Non-negative integer
+ * \param p Strictly positive integer
+ * \return \f$a^n\f$ \f$\mathrm{ mod }\f$ \f$p\f$
+ */
 inline bigint modpow(bigint a, bigint n, bigint p) {
     // EXCEPTION CHECKS
 
@@ -544,15 +544,15 @@ inline bool isprime(bigint p, idx k = 80) {
 }
 
 /**
-* \brief Generates a random big prime uniformly distributed in
-* the interval [a, b]
-*
-* \param a Beginning of the interval, belongs to it
-* \param b End of the interval, belongs to it
-* \param N Maximum number of candidates
-* \return Random big integer uniformly distributed in
-* the interval [a, b]
-*/
+ * \brief Generates a random big prime uniformly distributed in
+ * the interval [a, b]
+ *
+ * \param a Beginning of the interval, belongs to it
+ * \param b End of the interval, belongs to it
+ * \param N Maximum number of candidates
+ * \return Random big integer uniformly distributed in
+ * the interval [a, b]
+ */
 // A std::optional<bigint> return type would have been awesome here!
 inline bigint randprime(bigint a, bigint b, idx N = 1000) {
     // EXCEPTION CHECKS

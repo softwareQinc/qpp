@@ -25,20 +25,20 @@
  */
 
 /**
-* \file entropies.h
-* \brief Entropy functions
-*/
+ * \file entropies.h
+ * \brief Entropy functions
+ */
 
 #ifndef ENTROPY_H_
 #define ENTROPY_H_
 
 namespace qpp {
 /**
-* \brief von-Neumann entropy of the density matrix \a A
-*
-* \param A Eigen expression
-* \return von-Neumann entropy, with the logarithm in base 2
-*/
+ * \brief von-Neumann entropy of the density matrix \a A
+ *
+ * \param A Eigen expression
+ * \return von-Neumann entropy, with the logarithm in base 2
+ */
 template <typename Derived>
 double entropy(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
@@ -64,11 +64,11 @@ double entropy(const Eigen::MatrixBase<Derived>& A) {
 }
 
 /**
-* \brief Shannon entropy of the probability distribution \a prob
-*
-* \param prob Real probability vector
-* \return Shannon entropy, with the logarithm in base 2
-*/
+ * \brief Shannon entropy of the probability distribution \a prob
+ *
+ * \param prob Real probability vector
+ * \return Shannon entropy, with the logarithm in base 2
+ */
 inline double entropy(const std::vector<double>& prob) {
     // EXCEPTION CHECKS
 
@@ -86,17 +86,17 @@ inline double entropy(const std::vector<double>& prob) {
 }
 
 /**
-* \brief Renyi-\f$\alpha\f$ entropy of the density matrix \a A,
-* for \f$\alpha\geq 0\f$
-*
-*\note When \f$ \alpha\to 1\f$ the Renyi entropy converges to the
-* von-Neumann entropy, with the logarithm in base 2
-*
-* \param A Eigen expression
-* \param alpha Non-negative real number,
-* use qpp::infty for \f$\alpha = \infty\f$
-* \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
-*/
+ * \brief Renyi-\f$\alpha\f$ entropy of the density matrix \a A,
+ * for \f$\alpha\geq 0\f$
+ *
+ *\note When \f$ \alpha\to 1\f$ the Renyi entropy converges to the
+ * von-Neumann entropy, with the logarithm in base 2
+ *
+ * \param A Eigen expression
+ * \param alpha Non-negative real number,
+ * use qpp::infty for \f$\alpha = \infty\f$
+ * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
+ */
 template <typename Derived>
 double renyi(const Eigen::MatrixBase<Derived>& A, double alpha) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
@@ -134,17 +134,17 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha) {
 }
 
 /**
-* \brief Renyi-\f$\alpha\f$ entropy of the probability distribution \a prob,
-* for \f$\alpha\geq 0\f$
-*
-*\note When \f$ \alpha\to 1\f$ the Renyi entropy converges to the
-* Shannon entropy, with the logarithm in base 2
-*
-* \param prob Real probability vector
-* \param alpha Non-negative real number,
-* use qpp::infty for \f$\alpha = \infty\f$
-* \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
-*/
+ * \brief Renyi-\f$\alpha\f$ entropy of the probability distribution \a prob,
+ * for \f$\alpha\geq 0\f$
+ *
+ *\note When \f$ \alpha\to 1\f$ the Renyi entropy converges to the
+ * Shannon entropy, with the logarithm in base 2
+ *
+ * \param prob Real probability vector
+ * \param alpha Non-negative real number,
+ * use qpp::infty for \f$\alpha = \infty\f$
+ * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
+ */
 inline double renyi(const std::vector<double>& prob, double alpha) {
     // EXCEPTION CHECKS
 
@@ -181,17 +181,17 @@ inline double renyi(const std::vector<double>& prob, double alpha) {
 }
 
 /**
-* \brief Tsallis-\f$q\f$ entropy of the density matrix \a A,
-* for \f$q\geq 0\f$
-*
-* \note When \f$ q\to 1\f$ the Tsallis entropy converges to the
-* von-Neumann entropy, with the logarithm in base \f$ e \f$
-*
-* \param A Eigen expression
-* \param q Non-negative real number
-*
-* \return Tsallis-\f$q\f$ entropy
-*/
+ * \brief Tsallis-\f$q\f$ entropy of the density matrix \a A,
+ * for \f$q\geq 0\f$
+ *
+ * \note When \f$ q\to 1\f$ the Tsallis entropy converges to the
+ * von-Neumann entropy, with the logarithm in base \f$ e \f$
+ *
+ * \param A Eigen expression
+ * \param q Non-negative real number
+ *
+ * \return Tsallis-\f$q\f$ entropy
+ */
 template <typename Derived>
 double tsallis(const Eigen::MatrixBase<Derived>& A, double q) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
@@ -223,17 +223,17 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double q) {
 }
 
 /**
-* \brief Tsallis-\f$q\f$ entropy of the probability distribution \a prob,
-* for \f$q\geq 0\f$
-*
-* \note When \f$ q\to 1\f$ the Tsallis entropy converges to the
-* Shannon entropy, with the logarithm in base \f$ e \f$
-*
-* \param prob Real probability vector
-* \param q Non-negative real number
-*
-* \return Tsallis-\f$q\f$ entropy
-*/
+ * \brief Tsallis-\f$q\f$ entropy of the probability distribution \a prob,
+ * for \f$q\geq 0\f$
+ *
+ * \note When \f$ q\to 1\f$ the Tsallis entropy converges to the
+ * Shannon entropy, with the logarithm in base \f$ e \f$
+ *
+ * \param prob Real probability vector
+ * \param q Non-negative real number
+ *
+ * \return Tsallis-\f$q\f$ entropy
+ */
 inline double tsallis(const std::vector<double>& prob, double q) {
     // EXCEPTION CHECKS
 
@@ -257,14 +257,14 @@ inline double tsallis(const std::vector<double>& prob, double q) {
 }
 
 /**
-* \brief Quantum mutual information between 2 subsystems of a composite system
-*
-* \param A Eigen expression
-* \param subsysA Indexes of the first subsystem
-* \param subsysB Indexes of the second subsystem
-* \param dims Dimensions of the multi-partite system
-* \return Mutual information between the 2 subsystems
-*/
+ * \brief Quantum mutual information between 2 subsystems of a composite system
+ *
+ * \param A Eigen expression
+ * \param subsysA Indexes of the first subsystem
+ * \param subsysB Indexes of the second subsystem
+ * \param dims Dimensions of the multi-partite system
+ * \return Mutual information between the 2 subsystems
+ */
 template <typename Derived>
 double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
                    const std::vector<idx>& subsysA,
@@ -328,14 +328,14 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Quantum mutual information between 2 subsystems of a composite system
-*
-* \param A Eigen expression
-* \param subsysA Indexes of the first subsystem
-* \param subsysB Indexes of the second subsystem
-* \param d Subsystem dimensions
-* \return Mutual information between the 2 subsystems
-*/
+ * \brief Quantum mutual information between 2 subsystems of a composite system
+ *
+ * \param A Eigen expression
+ * \param subsysA Indexes of the first subsystem
+ * \param subsysB Indexes of the second subsystem
+ * \param d Subsystem dimensions
+ * \return Mutual information between the 2 subsystems
+ */
 template <typename Derived>
 double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
                    const std::vector<idx>& subsysA,

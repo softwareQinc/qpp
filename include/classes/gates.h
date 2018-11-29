@@ -174,6 +174,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     cmat Zd(idx D = 2) const {
         // EXCEPTION CHECKS
 
+        // check valid dimension
         if (D == 0)
             throw exception::DimsInvalid("qpp::Gates::Zd()");
         // END EXCEPTION CHECKS
@@ -194,6 +195,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     cmat SWAPd(idx D = 2) const {
         // EXCEPTION CHECKS
 
+        // check valid dimension
         if (D == 0)
             throw exception::DimsInvalid("qpp::Gates::SWAPd()");
         // END EXCEPTION CHECKS
@@ -224,6 +226,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     cmat Fd(idx D = 2) const {
         // EXCEPTION CHECKS
 
+        // check valid dimension
         if (D == 0)
             throw exception::DimsInvalid("qpp::Gates::Fd()");
         // END EXCEPTION CHECKS
@@ -242,17 +245,54 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         return result;
     }
 
-    //TODO: implement
     /**
      * \brief Modular multiplication gate for qubits
      * Implements \f$ |x\rangle  \longrightarrow |x\mathrm{mod} N\rangle \f$
      *
-     * \param a
-     * \param N
+     * \note For the gate to be unitary, \a a and \a N should be co-prime. The
+     * function does not check co-primality in release versions!
+     *
+     * \param a Positive integer less than \a N
+     * \param N Positive integer
      * \return Modular multiplication gate
      */
     cmat MODMUL(idx a, idx N) const {
-        return {};
+
+// check co-primality (unitarity) only in DEBUG version
+#ifndef NDEBUG
+        assert(gcd(a, N) == 1);
+#endif
+        // EXCEPTION CHECKS
+
+        // check valid arguments
+        if (N < 3 || a >= N) {
+            throw exception::OutOfRange("qpp::Gates::MODMUL()");
+        }
+        // END EXCEPTION CHECKS
+
+        // minimum number of qubits required to implement the gate
+        idx n = static_cast<idx>(std::ceil(std::log2(N)));
+        idx D = static_cast<idx>(std::llround(std::pow(2, n)));
+
+        cmat result = cmat::Zero(D, D);
+
+#ifdef WITH_OPENMP_
+#pragma omp parallel for collapse(2)
+#endif // WITH_OPENMP_
+       // column major order for speed
+        for (idx j = 0; j < N; ++j)
+            for (idx i = 0; i < N; ++i)
+                if (static_cast<idx>(modmul(j, a, N)) == i)
+                    result(i, j) = 1;
+
+#ifdef WITH_OPENMP_
+#pragma omp parallel for
+#endif // WITH_OPENMP_
+        // complete the matrix
+        for (idx i = N; i < D; ++i)
+            result(i, i) = 1;
+
+        return result;
     }
 
     /**
@@ -267,6 +307,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     cmat Xd(idx D = 2) const {
         // EXCEPTION CHECKS
 
+        // check valid dimension
         if (D == 0)
             throw exception::DimsInvalid("qpp::Gates::Xd()");
         // END EXCEPTION CHECKS
@@ -287,6 +328,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     Derived Id(idx D = 2) const {
         // EXCEPTION CHECKS
 
+        // check valid dimension
         if (D == 0)
             throw exception::DimsInvalid("qpp::Gates::Id()");
         // END EXCEPTION CHECKS
@@ -317,7 +359,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // EXCEPTION CHECKS
 
-        // check matrix zero size
+        // check matrix zero-size
         if (!internal::check_nonzero_size(rA))
             throw exception::ZeroSize("qpp::Gates::CTRL()");
 
@@ -325,7 +367,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         if (!internal::check_square_mat(rA))
             throw exception::MatrixNotSquare("qpp::Gates::CTRL()");
 
-        // check lists zero size
+        // check lists zero-size
         if (ctrl.size() == 0)
             throw exception::ZeroSize("qpp::Gates::CTRL()");
         if (subsys.size() == 0)

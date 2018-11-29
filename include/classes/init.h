@@ -25,27 +25,27 @@
  */
 
 /**
-* \file classes/init.h
-* \brief Initialization
-*/
+ * \file classes/init.h
+ * \brief Initialization
+ */
 
 #ifndef CLASSES_INIT_H_
 #define CLASSES_INIT_H_
 
 namespace qpp {
 /**
-* \class qpp::Init
-* \brief const Singleton class that performs
-* additional initializations/cleanups
-*/
+ * \class qpp::Init
+ * \brief const Singleton class that performs
+ * additional initializations/cleanups
+ */
 class Init final : public internal::Singleton<const Init> // const Singleton
 {
     friend class internal::Singleton<const Init>;
 
   private:
     /**
-    * \brief Additional initializations
-    */
+     * \brief Additional initializations
+     */
     Init() {
         // set default output format and precision
         //        std::cout << std::fixed; // use fixed format for nice
@@ -56,8 +56,8 @@ class Init final : public internal::Singleton<const Init> // const Singleton
     }
 
     /**
-    * \brief Cleanups
-    */
+     * \brief Cleanups
+     */
     ~Init() {}
 }; /* class Init */
 

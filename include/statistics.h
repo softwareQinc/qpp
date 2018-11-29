@@ -25,20 +25,20 @@
  */
 
 /**
-* \file statistics.h
-* \brief Statistics functions
-*/
+ * \file statistics.h
+ * \brief Statistics functions
+ */
 
 #ifndef STATISTICS_H_
 #define STATISTICS_H_
 
 namespace qpp {
 /**
-* \brief Uniform probability distribution vector
-*
-* \param N Size of the alphabet
-* \return Real vector consisting of a uniform distribution of size \a N
-*/
+ * \brief Uniform probability distribution vector
+ *
+ * \param N Size of the alphabet
+ * \return Real vector consisting of a uniform distribution of size \a N
+ */
 inline std::vector<double> uniform(idx N) {
     // EXCEPTION CHECKS
 
@@ -50,13 +50,13 @@ inline std::vector<double> uniform(idx N) {
 }
 
 /**
-* \brief Marginal distribution
-*
-* \param probXY Real matrix representing the joint probability distribution
-* of \a X and \a Y in lexicographical order (\a X labels the rows, \a Y
-* labels the columns)
-* \return Real vector consisting of the marginal distribution of \a X
-*/
+ * \brief Marginal distribution
+ *
+ * \param probXY Real matrix representing the joint probability distribution
+ * of \a X and \a Y in lexicographical order (\a X labels the rows, \a Y
+ * labels the columns)
+ * \return Real vector consisting of the marginal distribution of \a X
+ */
 inline std::vector<double> marginalX(const dmat& probXY) {
     // EXCEPTION CHECKS
 
@@ -75,13 +75,13 @@ inline std::vector<double> marginalX(const dmat& probXY) {
 }
 
 /**
-* \brief Marginal distribution
-*
-* \param probXY Real matrix representing the joint probability distribution
-* of \a X and \a Y in lexicographical order (\a X labels the rows, \a Y
-* labels the columns)
-* \return Real vector consisting of the marginal distribution of \a Y
-*/
+ * \brief Marginal distribution
+ *
+ * \param probXY Real matrix representing the joint probability distribution
+ * of \a X and \a Y in lexicographical order (\a X labels the rows, \a Y
+ * labels the columns)
+ * \return Real vector consisting of the marginal distribution of \a Y
+ */
 inline std::vector<double> marginalY(const dmat& probXY) {
     // EXCEPTION CHECKS
 
@@ -93,14 +93,14 @@ inline std::vector<double> marginalY(const dmat& probXY) {
 }
 
 /**
-* \brief Average
-*
-* \param prob Real probability vector representing the probability
-* distribution of \a X
-*
-* \param X Real random variable values represented by an STL-like container
-* \return Average of \a X
-*/
+ * \brief Average
+ *
+ * \param prob Real probability vector representing the probability
+ * distribution of \a X
+ *
+ * \param X Real random variable values represented by an STL-like container
+ * \return Average of \a X
+ */
 template <typename Container>
 double
 avg(const std::vector<double>& prob, const Container& X,
@@ -121,15 +121,15 @@ avg(const std::vector<double>& prob, const Container& X,
 }
 
 /**
-* \brief Covariance
-*
-* \param probXY Real matrix representing the joint probability distribution
-* of \a X and \a Y in lexicographical order (\a X labels the rows, \a Y
-* labels the columns)
-* \param X Real random variable values represented by an STL-like container
-* \param Y Real random variable values represented by an STL-like container
-* \return Covariance of \a X and \a Y
-*/
+ * \brief Covariance
+ *
+ * \param probXY Real matrix representing the joint probability distribution
+ * of \a X and \a Y in lexicographical order (\a X labels the rows, \a Y
+ * labels the columns)
+ * \param X Real random variable values represented by an STL-like container
+ * \param Y Real random variable values represented by an STL-like container
+ * \return Covariance of \a X and \a Y
+ */
 template <typename Container>
 double
 cov(const dmat& probXY, const Container& X, const Container& Y,
@@ -157,13 +157,13 @@ cov(const dmat& probXY, const Container& X, const Container& Y,
 }
 
 /**
-* \brief Variance
-*
-* \param prob Real probability vector representing the probability
-* distribution of \a X
-* \param X Real random variable values represented by an STL-like container
-* \return Variance of \a X
-*/
+ * \brief Variance
+ *
+ * \param prob Real probability vector representing the probability
+ * distribution of \a X
+ * \param X Real random variable values represented by an STL-like container
+ * \return Variance of \a X
+ */
 template <typename Container>
 double
 var(const std::vector<double>& prob, const Container& X,
@@ -185,13 +185,13 @@ var(const std::vector<double>& prob, const Container& X,
 }
 
 /**
-* \brief Standard deviation
-*
-* \param prob Real probability vector representing the probability
-* distribution of \a X
-* \param X Real random variable values represented by an STL-like container
-* \return Standard deviation of \a X
-*/
+ * \brief Standard deviation
+ *
+ * \param prob Real probability vector representing the probability
+ * distribution of \a X
+ * \param X Real random variable values represented by an STL-like container
+ * \return Standard deviation of \a X
+ */
 template <typename Container>
 double
 sigma(const std::vector<double>& prob, const Container& X,
@@ -208,15 +208,15 @@ sigma(const std::vector<double>& prob, const Container& X,
 }
 
 /**
-* \brief Correlation
-*
-* \param probXY Real matrix representing the joint probability distribution
-* of \a X and \a Y in lexicographical order (\a X labels the rows, \a Y
-* labels the columns)
-* \param X Real random variable values represented by an STL-like container
-* \param Y Real random variable values represented by an STL-like container
-* \return Correlation of \a X and \a Y
-*/
+ * \brief Correlation
+ *
+ * \param probXY Real matrix representing the joint probability distribution
+ * of \a X and \a Y in lexicographical order (\a X labels the rows, \a Y
+ * labels the columns)
+ * \param X Real random variable values represented by an STL-like container
+ * \param Y Real random variable values represented by an STL-like container
+ * \return Correlation of \a X and \a Y
+ */
 template <typename Container>
 double
 cor(const dmat& probXY, const Container& X, const Container& Y,

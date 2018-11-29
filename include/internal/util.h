@@ -25,18 +25,18 @@
  */
 
 /**
-* \file internal/util.h
-* \brief Internal utility functions
-*/
+ * \file internal/util.h
+ * \brief Internal utility functions
+ */
 
 #ifndef INTERNAL_UTIL_H_
 #define INTERNAL_UTIL_H_
 
 namespace qpp {
 /**
-* \namespace qpp::internal
-* \brief Internal utility functions, do not use them directly or modify them
-*/
+ * \namespace qpp::internal
+ * \brief Internal utility functions, do not use them directly or modify them
+ */
 namespace internal {
 // integer index to multi-index, use C-style array for speed
 // standard lexicographical order, e.g. 00, 01, 10, 11

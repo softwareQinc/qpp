@@ -25,25 +25,25 @@
  */
 
 /**
-* \file entanglement.h
-* \brief Entanglement functions
-*/
+ * \file entanglement.h
+ * \brief Entanglement functions
+ */
 
 #ifndef ENTANGLEMENT_H_
 #define ENTANGLEMENT_H_
 
 namespace qpp {
 /**
-* \brief Schmidt coefficients of the bi-partite pure state \a A
-*
-* \note The sum of the squares of the Schmidt coefficients equals 1
-* \see qpp::schmidtprobs()
-*
-* \param A Eigen expression
-* \param dims Dimensions of the bi-partite system
-* \return Schmidt coefficients of \a A, ordered in decreasing order, as a
-* real dynamic column vector
-*/
+ * \brief Schmidt coefficients of the bi-partite pure state \a A
+ *
+ * \note The sum of the squares of the Schmidt coefficients equals 1
+ * \see qpp::schmidtprobs()
+ *
+ * \param A Eigen expression
+ * \param dims Dimensions of the bi-partite system
+ * \return Schmidt coefficients of \a A, ordered in decreasing order, as a
+ * real dynamic column vector
+ */
 template <typename Derived>
 dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
                                    const std::vector<idx>& dims) {
@@ -69,16 +69,16 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Schmidt coefficients of the bi-partite pure state \a A
-*
-* \note The sum of the squares of the Schmidt coefficients equals 1
-* \see qpp::schmidtprobs()
-*
-* \param A Eigen expression
-* \param d Subsystem dimensions
-* \return Schmidt coefficients of \a A, ordered in decreasing order, as a
-* real dynamic column vector
-*/
+ * \brief Schmidt coefficients of the bi-partite pure state \a A
+ *
+ * \note The sum of the squares of the Schmidt coefficients equals 1
+ * \see qpp::schmidtprobs()
+ *
+ * \param A Eigen expression
+ * \param d Subsystem dimensions
+ * \return Schmidt coefficients of \a A, ordered in decreasing order, as a
+ * real dynamic column vector
+ */
 template <typename Derived>
 dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
                                    idx d = 2) {
@@ -102,13 +102,13 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Schmidt basis on Alice side
-*
-* \param A Eigen expression
-* \param dims Dimensions of the bi-partite system
-* \return Unitary matrix \f$ U \f$ whose columns represent
-* the Schmidt basis vectors on Alice side.
-*/
+ * \brief Schmidt basis on Alice side
+ *
+ * \param A Eigen expression
+ * \param dims Dimensions of the bi-partite system
+ * \return Unitary matrix \f$ U \f$ whose columns represent
+ * the Schmidt basis vectors on Alice side.
+ */
 template <typename Derived>
 cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
               const std::vector<idx>& dims) {
@@ -134,13 +134,13 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Schmidt basis on Alice side
-*
-* \param A Eigen expression
-* \param d Subsystem dimensions
-* \return Unitary matrix \f$ U \f$ whose columns represent
-* the Schmidt basis vectors on Alice side.
-*/
+ * \brief Schmidt basis on Alice side
+ *
+ * \param A Eigen expression
+ * \param d Subsystem dimensions
+ * \return Unitary matrix \f$ U \f$ whose columns represent
+ * the Schmidt basis vectors on Alice side.
+ */
 template <typename Derived>
 cmat schmidtA(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
@@ -163,13 +163,13 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
 }
 
 /**
-* \brief Schmidt basis on Bob side
-*
-* \param A Eigen expression
-* \param dims Dimensions of the bi-partite system
-* \return Unitary matrix \f$ V \f$ whose columns represent
-* the Schmidt basis vectors on Bob side.
-*/
+ * \brief Schmidt basis on Bob side
+ *
+ * \param A Eigen expression
+ * \param dims Dimensions of the bi-partite system
+ * \return Unitary matrix \f$ V \f$ whose columns represent
+ * the Schmidt basis vectors on Bob side.
+ */
 template <typename Derived>
 cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
               const std::vector<idx>& dims) {
@@ -197,13 +197,13 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Schmidt basis on Bob side
-*
-* \param A Eigen expression
-* \param d Subsystem dimensions
-* \return Unitary matrix \f$ V \f$ whose columns represent
-* the Schmidt basis vectors on Bob side.
-*/
+ * \brief Schmidt basis on Bob side
+ *
+ * \param A Eigen expression
+ * \param d Subsystem dimensions
+ * \return Unitary matrix \f$ V \f$ whose columns represent
+ * the Schmidt basis vectors on Bob side.
+ */
 template <typename Derived>
 cmat schmidtB(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
@@ -226,17 +226,17 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
 }
 
 /**
-* \brief Schmidt probabilities of the bi-partite pure state \a A
-*
-* Defined as the squares of the Schmidt coefficients.
-* The sum of the Schmidt probabilities equals 1.
-* \see qpp::schmidtcoeffs()
-*
-* \param A Eigen expression
-* \param dims Dimensions of the bi-partite system
-* \return Real vector consisting of the Schmidt probabilites of \a A,
-* ordered in decreasing order
-*/
+ * \brief Schmidt probabilities of the bi-partite pure state \a A
+ *
+ * Defined as the squares of the Schmidt coefficients.
+ * The sum of the Schmidt probabilities equals 1.
+ * \see qpp::schmidtcoeffs()
+ *
+ * \param A Eigen expression
+ * \param dims Dimensions of the bi-partite system
+ * \return Real vector consisting of the Schmidt probabilites of \a A,
+ * ordered in decreasing order
+ */
 template <typename Derived>
 std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
                                  const std::vector<idx>& dims) {
@@ -267,17 +267,17 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Schmidt probabilities of the bi-partite pure state \a A
-*
-* Defined as the squares of the Schmidt coefficients.
-* The sum of the Schmidt probabilities equals 1.
-* \see qpp::schmidtcoeffs()
-*
-* \param A Eigen expression
-* \param d Subsystem dimensions
-* \return Real vector consisting of the Schmidt probabilites of \a A,
-* ordered in decreasing order
-*/
+ * \brief Schmidt probabilities of the bi-partite pure state \a A
+ *
+ * Defined as the squares of the Schmidt coefficients.
+ * The sum of the Schmidt probabilities equals 1.
+ * \see qpp::schmidtcoeffs()
+ *
+ * \param A Eigen expression
+ * \param d Subsystem dimensions
+ * \return Real vector consisting of the Schmidt probabilites of \a A,
+ * ordered in decreasing order
+ */
 template <typename Derived>
 std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
                                  idx d = 2) {
@@ -301,16 +301,16 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Entanglement of the bi-partite pure state \a A
-*
-* Defined as the von-Neumann entropy of the reduced density matrix
-* of one of the subsystems
-* \see qpp::entropy()
-*
-* \param A Eigen expression
-* \param dims Dimensions of the bi-partite system
-* \return Entanglement, with the logarithm in base 2
-*/
+ * \brief Entanglement of the bi-partite pure state \a A
+ *
+ * Defined as the von-Neumann entropy of the reduced density matrix
+ * of one of the subsystems
+ * \see qpp::entropy()
+ *
+ * \param A Eigen expression
+ * \param dims Dimensions of the bi-partite system
+ * \return Entanglement, with the logarithm in base 2
+ */
 template <typename Derived>
 double entanglement(const Eigen::MatrixBase<Derived>& A,
                     const std::vector<idx>& dims) {
@@ -336,16 +336,16 @@ double entanglement(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Entanglement of the bi-partite pure state \a A
-*
-* Defined as the von-Neumann entropy of the reduced density matrix
-* of one of the subsystems
-* \see qpp::entropy()
-*
-* \param A Eigen expression
-* \param d Subsystem dimensions
-* \return Entanglement, with the logarithm in base 2
-*/
+ * \brief Entanglement of the bi-partite pure state \a A
+ *
+ * Defined as the von-Neumann entropy of the reduced density matrix
+ * of one of the subsystems
+ * \see qpp::entropy()
+ *
+ * \param A Eigen expression
+ * \param d Subsystem dimensions
+ * \return Entanglement, with the logarithm in base 2
+ */
 template <typename Derived>
 double entanglement(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
@@ -368,16 +368,16 @@ double entanglement(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
 }
 
 /**
-* \brief G-concurrence of the bi-partite pure state \a A
-*
-* \note Both local dimensions must be equal
-*
-* Uses qpp::logdet() to avoid overflows
-* \see qpp::logdet()
-*
-* \param A Eigen expression
-* \return G-concurrence
-*/
+ * \brief G-concurrence of the bi-partite pure state \a A
+ *
+ * \note Both local dimensions must be equal
+ *
+ * Uses qpp::logdet() to avoid overflows
+ * \see qpp::logdet()
+ *
+ * \param A Eigen expression
+ * \return G-concurrence
+ */
 // the G-concurrence
 template <typename Derived>
 double gconcurrence(const Eigen::MatrixBase<Derived>& A) {
@@ -404,12 +404,12 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A) {
 }
 
 /**
-* \brief Negativity of the bi-partite mixed state \a A
-*
-* \param A Eigen expression
-* \param dims Dimensions of the bi-partite system
-* \return Negativity
-*/
+ * \brief Negativity of the bi-partite mixed state \a A
+ *
+ * \param A Eigen expression
+ * \param dims Dimensions of the bi-partite system
+ * \return Negativity
+ */
 template <typename Derived>
 double negativity(const Eigen::MatrixBase<Derived>& A,
                   const std::vector<idx>& dims) {
@@ -435,12 +435,12 @@ double negativity(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Negativity of the bi-partite mixed state \a A
-*
-* \param A Eigen expression
-* \param d Subsystem dimensions
-* \return Negativity
-*/
+ * \brief Negativity of the bi-partite mixed state \a A
+ *
+ * \param A Eigen expression
+ * \param d Subsystem dimensions
+ * \return Negativity
+ */
 template <typename Derived>
 double negativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
@@ -463,12 +463,12 @@ double negativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
 }
 
 /**
-* \brief Logarithmic negativity of the bi-partite mixed state \a A
-*
-* \param A Eigen expression
-* \param dims Dimensions of the bi-partite system
-* \return Logarithmic negativity, with the logarithm in base 2
-*/
+ * \brief Logarithmic negativity of the bi-partite mixed state \a A
+ *
+ * \param A Eigen expression
+ * \param dims Dimensions of the bi-partite system
+ * \return Logarithmic negativity, with the logarithm in base 2
+ */
 template <typename Derived>
 double lognegativity(const Eigen::MatrixBase<Derived>& A,
                      const std::vector<idx>& dims) {
@@ -494,12 +494,12 @@ double lognegativity(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
-* \brief Logarithmic negativity of the bi-partite mixed state \a A
-*
-* \param A Eigen expression
-* \param d Subsystem dimensions
-* \return Logarithmic negativity, with the logarithm in base 2
-*/
+ * \brief Logarithmic negativity of the bi-partite mixed state \a A
+ *
+ * \param A Eigen expression
+ * \param d Subsystem dimensions
+ * \return Logarithmic negativity, with the logarithm in base 2
+ */
 template <typename Derived>
 double lognegativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
@@ -522,11 +522,11 @@ double lognegativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
 }
 
 /**
-* \brief Wootters concurrence of the bi-partite qubit mixed state \a A
-*
-* \param A Eigen expression
-* \return Wootters concurrence
-*/
+ * \brief Wootters concurrence of the bi-partite qubit mixed state \a A
+ *
+ * \param A Eigen expression
+ * \return Wootters concurrence
+ */
 template <typename Derived>
 double concurrence(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();

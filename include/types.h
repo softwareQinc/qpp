@@ -25,82 +25,82 @@
  */
 
 /**
-* \file types.h
-* \brief Type aliases
-*/
+ * \file types.h
+ * \brief Type aliases
+ */
 
 #ifndef TYPES_H_
 #define TYPES_H_
 
 namespace qpp {
 /**
-* \brief Non-negative integer index
-*/
+ * \brief Non-negative integer index
+ */
 using idx = std::size_t;
 
 /**
-* \brief Big integer
-*/
+ * \brief Big integer
+ */
 using bigint = long long int;
 
 /**
-* \brief Complex number in double precision
-*/
+ * \brief Complex number in double precision
+ */
 using cplx = std::complex<double>;
 
 /**
-* \brief Complex (double precision) dynamic Eigen column vector
-*/
+ * \brief Complex (double precision) dynamic Eigen column vector
+ */
 using ket = Eigen::VectorXcd;
 
 /**
-* \brief Complex (double precision) dynamic Eigen row vector
-*/
+ * \brief Complex (double precision) dynamic Eigen row vector
+ */
 using bra = Eigen::RowVectorXcd;
 
 /**
-* \brief Complex (double precision) dynamic Eigen matrix
-*/
+ * \brief Complex (double precision) dynamic Eigen matrix
+ */
 using cmat = Eigen::MatrixXcd;
 
 /**
-* \brief Real (double precision) dynamic Eigen matrix
-*/
+ * \brief Real (double precision) dynamic Eigen matrix
+ */
 using dmat = Eigen::MatrixXd;
 
 /**
-* \brief Dynamic Eigen matrix over the field specified by \a Scalar
-*
-* Example:
-* \code
-* // type of mat is Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>
-* dyn_mat<float> mat(2, 3);
-* \endcode
-*/
+ * \brief Dynamic Eigen matrix over the field specified by \a Scalar
+ *
+ * Example:
+ * \code
+ * // type of mat is Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>
+ * dyn_mat<float> mat(2, 3);
+ * \endcode
+ */
 template <typename Scalar> // Eigen::MatrixX_type (where type = Scalar)
 using dyn_mat = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 
 /**
-* \brief Dynamic Eigen column vector over the field specified by \a Scalar
-*
-* Example:
-* \code
-* // type of colvect is Eigen::Matrix<float, Eigen::Dynamic, 1>
-* dyn_col_vect<float> colvect(2);
-* \endcode
-*/
+ * \brief Dynamic Eigen column vector over the field specified by \a Scalar
+ *
+ * Example:
+ * \code
+ * // type of colvect is Eigen::Matrix<float, Eigen::Dynamic, 1>
+ * dyn_col_vect<float> colvect(2);
+ * \endcode
+ */
 template <typename Scalar> // Eigen::VectorX_type (where type = Scalar)
 using dyn_col_vect = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 
 /**
-* \brief Dynamic Eigen row vector over the field specified by \a Scalar
-*
-* Example:
-* \code
-* // type of rowvect is Eigen::Matrix<float, 1, Eigen::Dynamic>
-* dyn_row_vect<float> rowvect(3);
-* \endcode
-*/
+ * \brief Dynamic Eigen row vector over the field specified by \a Scalar
+ *
+ * Example:
+ * \code
+ * // type of rowvect is Eigen::Matrix<float, 1, Eigen::Dynamic>
+ * dyn_row_vect<float> rowvect(3);
+ * \endcode
+ */
 template <typename Scalar> // Eigen::RowVectorX_type (where type = Scalar)
 using dyn_row_vect = Eigen::Matrix<Scalar, 1, Eigen::Dynamic>;
 

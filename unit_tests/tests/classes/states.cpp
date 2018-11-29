@@ -102,8 +102,9 @@ TEST(qpp_States_minus, AllTests) {
                 1e-7);
 
     n = 4;
-    EXPECT_NEAR(0, norm(kronpow(gt.H, n) * mket(std::vector<idx>(n, 1)) -
-                        qpp::st.minus(n)),
+    EXPECT_NEAR(0,
+                norm(kronpow(gt.H, n) * mket(std::vector<idx>(n, 1)) -
+                     qpp::st.minus(n)),
                 1e-7);
 }
 /******************************************************************************/
@@ -140,9 +141,10 @@ TEST(qpp_States_plus, AllTests) {
                 1e-7);
 
     n = 4;
-    EXPECT_NEAR(0, norm(kronpow(gt.H, n) * mket(std::vector<idx>(n, 0)) -
-                        qpp::st.plus(n)),
-                1e-7);
+    EXPECT_NEAR(
+        0,
+        norm(kronpow(gt.H, n) * mket(std::vector<idx>(n, 0)) - qpp::st.plus(n)),
+        1e-7);
 }
 /******************************************************************************/
 /// BEGIN ket qpp::States::zero(idx n, idx d = 2) const

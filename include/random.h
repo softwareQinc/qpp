@@ -25,23 +25,23 @@
  */
 
 /**
-* \file random.h
-* \brief Randomness-related functions
-*/
+ * \file random.h
+ * \brief Randomness-related functions
+ */
 
 #ifndef RANDOM_H_
 #define RANDOM_H_
 
 namespace qpp {
 /**
-* \brief Generates a random real number uniformly distributed in
-* the interval [a, b)
-*
-* \param a Beginning of the interval, belongs to it
-* \param b End of the interval, does not belong to it
-* \return Random real number (double) uniformly distributed in
-* the interval [a, b)
-*/
+ * \brief Generates a random real number uniformly distributed in
+ * the interval [a, b)
+ *
+ * \param a Beginning of the interval, belongs to it
+ * \param b End of the interval, does not belong to it
+ * \return Random real number (double) uniformly distributed in
+ * the interval [a, b)
+ */
 inline double rand(double a, double b) {
     // EXCEPTION CHECKS
 
@@ -59,16 +59,16 @@ inline double rand(double a, double b) {
 }
 
 /**
-* \brief Generates a random big integer uniformly distributed in
-* the interval [a, b]
-*
-* \note To avoid ambiguity with double qpp::rand(double, double) cast at
-* least one of the arguments to qpp::bigint
-*
-* \param a Beginning of the interval, belongs to it
-* \param b End of the interval, belongs to it
-* \return Random big integer uniformly distributed in the interval [a, b]
-*/
+ * \brief Generates a random big integer uniformly distributed in
+ * the interval [a, b]
+ *
+ * \note To avoid ambiguity with double qpp::rand(double, double) cast at
+ * least one of the arguments to qpp::bigint
+ *
+ * \param a Beginning of the interval, belongs to it
+ * \param b End of the interval, belongs to it
+ * \return Random big integer uniformly distributed in the interval [a, b]
+ */
 inline bigint rand(bigint a, bigint b) {
     // EXCEPTION CHECKS
 
@@ -86,13 +86,13 @@ inline bigint rand(bigint a, bigint b) {
 }
 
 /**
-* \brief Generates a random index (idx) uniformly distributed in
-* the interval [a, b]
-*
-* \param a Beginning of the interval, belongs to it
-* \param b End of the interval, belongs to it
-* \return Random index (idx) uniformly distributed in the interval [a, b]
-*/
+ * \brief Generates a random index (idx) uniformly distributed in
+ * the interval [a, b]
+ *
+ * \param a Beginning of the interval, belongs to it
+ * \param b End of the interval, belongs to it
+ * \return Random index (idx) uniformly distributed in the interval [a, b]
+ */
 inline idx randidx(idx a = std::numeric_limits<idx>::min(),
                    idx b = std::numeric_limits<idx>::max()) {
     // EXCEPTION CHECKS
@@ -111,16 +111,16 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
 }
 
 /**
-* \brief Generates a random matrix with entries uniformly
-* distributed in the interval [a, b)
-*
-* If complex, then both real and imaginary parts are uniformly distributed
-* in [a, b)
-*
-* This is the generic version that always throws
-* qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
-* qpp::dmat and qpp::cmat
-*/
+ * \brief Generates a random matrix with entries uniformly
+ * distributed in the interval [a, b)
+ *
+ * If complex, then both real and imaginary parts are uniformly distributed
+ * in [a, b)
+ *
+ * This is the generic version that always throws
+ * qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
+ * qpp::dmat and qpp::cmat
+ */
 template <typename Derived>
 Derived rand(idx rows, idx cols, double a = 0, double b = 1) {
     // silence -Wunused-parameter in clang++
@@ -132,26 +132,26 @@ Derived rand(idx rows, idx cols, double a = 0, double b = 1) {
 }
 
 /**
-* \brief Generates a random real matrix with entries uniformly
-* distributed in the interval [a, b),
-* specialization for double matrices (qpp::dmat)
-*
-* The template parameter cannot be automatically deduced and
-* must be explicitly provided
-*
-* Example:
-* \code
-* // generates a 3 x 3 random Eigen::MatrixXd,
-* // with entries uniformly distributed in [-1,1)
-* dmat mat = rand<dmat>(3, 3, -1, 1);
-* \endcode
-*
-* \param rows Number of rows of the random generated matrix
-* \param cols Number of columns of the random generated matrix
-* \param a Beginning of the interval, belongs to it
-* \param b End of the interval, does not belong to it
-* \return Random real matrix
-*/
+ * \brief Generates a random real matrix with entries uniformly
+ * distributed in the interval [a, b),
+ * specialization for double matrices (qpp::dmat)
+ *
+ * The template parameter cannot be automatically deduced and
+ * must be explicitly provided
+ *
+ * Example:
+ * \code
+ * // generates a 3 x 3 random Eigen::MatrixXd,
+ * // with entries uniformly distributed in [-1,1)
+ * dmat mat = rand<dmat>(3, 3, -1, 1);
+ * \endcode
+ *
+ * \param rows Number of rows of the random generated matrix
+ * \param cols Number of columns of the random generated matrix
+ * \param a Beginning of the interval, belongs to it
+ * \param b End of the interval, does not belong to it
+ * \return Random real matrix
+ */
 template <>
 inline dmat rand(idx rows, idx cols, double a, double b) {
     // EXCEPTION CHECKS
@@ -168,26 +168,26 @@ inline dmat rand(idx rows, idx cols, double a, double b) {
 }
 
 /**
-* \brief Generates a random complex matrix with entries (both real and
-* imaginary) uniformly distributed in the interval [a, b),
-* specialization for complex matrices (qpp::cmat)
-*
-* The template parameter cannot be automatically deduced and
-* must be explicitly provided
-*
-* Example:
-* \code
-* // generates a 3 x 3 random Eigen::MatrixXcd,
-* // with entries (both real and imaginary) uniformly distributed in [-1,1)
-* cmat mat = rand<cmat>(3, 3, -1, 1);
-* \endcode
-*
-* \param rows Number of rows of the random generated matrix
-* \param cols Number of columns of the random generated matrix
-* \param a Beginning of the interval, belongs to it
-* \param b End of the interval, does not belong to it
-* \return Random complex matrix
-*/
+ * \brief Generates a random complex matrix with entries (both real and
+ * imaginary) uniformly distributed in the interval [a, b),
+ * specialization for complex matrices (qpp::cmat)
+ *
+ * The template parameter cannot be automatically deduced and
+ * must be explicitly provided
+ *
+ * Example:
+ * \code
+ * // generates a 3 x 3 random Eigen::MatrixXcd,
+ * // with entries (both real and imaginary) uniformly distributed in [-1,1)
+ * cmat mat = rand<cmat>(3, 3, -1, 1);
+ * \endcode
+ *
+ * \param rows Number of rows of the random generated matrix
+ * \param cols Number of columns of the random generated matrix
+ * \param a Beginning of the interval, belongs to it
+ * \param b End of the interval, does not belong to it
+ * \return Random complex matrix
+ */
 template <>
 inline cmat rand(idx rows, idx cols, double a, double b) {
     // EXCEPTION CHECKS
@@ -203,16 +203,16 @@ inline cmat rand(idx rows, idx cols, double a, double b) {
 }
 
 /**
-* \brief Generates a random matrix with entries normally
-* distributed in N(mean, sigma)
-*
-* If complex, then both real and imaginary parts are normally distributed
-* in N(mean, sigma)
-*
-* This is the generic version that always throws
-* qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
-* qpp::dmat and qpp::cmat
-*/
+ * \brief Generates a random matrix with entries normally
+ * distributed in N(mean, sigma)
+ *
+ * If complex, then both real and imaginary parts are normally distributed
+ * in N(mean, sigma)
+ *
+ * This is the generic version that always throws
+ * qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
+ * qpp::dmat and qpp::cmat
+ */
 template <typename Derived>
 Derived randn(idx rows, idx cols, double mean = 0, double sigma = 1) {
     // silence -Wunused-parameter in clang++
@@ -224,26 +224,26 @@ Derived randn(idx rows, idx cols, double mean = 0, double sigma = 1) {
 }
 
 /**
-* \brief Generates a random real matrix with entries normally
-* distributed in N(mean, sigma),
-* specialization for double matrices (qpp::dmat)
-*
-* The template parameter cannot be automatically deduced and
-* must be explicitly provided
-*
-* Example:
-* \code
-* // generates a 3 x 3 random Eigen::MatrixXd,
-* // with entries normally distributed in N(0,2)
-* dmat mat = randn<dmat>(3, 3, 0, 2);
-* \endcode
-*
-* \param rows Number of rows of the random generated matrix
-* \param cols Number of columns of the random generated matrix
-* \param mean Mean
-* \param sigma Standard deviation
-* \return Random real matrix
-*/
+ * \brief Generates a random real matrix with entries normally
+ * distributed in N(mean, sigma),
+ * specialization for double matrices (qpp::dmat)
+ *
+ * The template parameter cannot be automatically deduced and
+ * must be explicitly provided
+ *
+ * Example:
+ * \code
+ * // generates a 3 x 3 random Eigen::MatrixXd,
+ * // with entries normally distributed in N(0,2)
+ * dmat mat = randn<dmat>(3, 3, 0, 2);
+ * \endcode
+ *
+ * \param rows Number of rows of the random generated matrix
+ * \param cols Number of columns of the random generated matrix
+ * \param mean Mean
+ * \param sigma Standard deviation
+ * \return Random real matrix
+ */
 template <>
 inline dmat randn(idx rows, idx cols, double mean, double sigma) {
     // EXCEPTION CHECKS
@@ -264,26 +264,26 @@ inline dmat randn(idx rows, idx cols, double mean, double sigma) {
 }
 
 /**
-* \brief Generates a random complex matrix with entries (both real and
-* imaginary) normally distributed in N(mean, sigma),
-* specialization for complex matrices (qpp::cmat)
-*
-* The template parameter cannot be automatically deduced and
-* must be explicitly provided
-*
-* Example:
-* \code
-* // generates a 3 x 3 random Eigen::MatrixXcd,
-* // with entries (both real and imaginary) normally distributed in N(0,2)
-* cmat mat = randn<cmat>(3, 3, 0, 2);
-* \endcode
-*
-* \param rows Number of rows of the random generated matrix
-* \param cols Number of columns of the random generated matrix
-* \param mean Mean
-* \param sigma Standard deviation
-* \return Random complex matrix
-*/
+ * \brief Generates a random complex matrix with entries (both real and
+ * imaginary) normally distributed in N(mean, sigma),
+ * specialization for complex matrices (qpp::cmat)
+ *
+ * The template parameter cannot be automatically deduced and
+ * must be explicitly provided
+ *
+ * Example:
+ * \code
+ * // generates a 3 x 3 random Eigen::MatrixXcd,
+ * // with entries (both real and imaginary) normally distributed in N(0,2)
+ * cmat mat = randn<cmat>(3, 3, 0, 2);
+ * \endcode
+ *
+ * \param rows Number of rows of the random generated matrix
+ * \param cols Number of columns of the random generated matrix
+ * \param mean Mean
+ * \param sigma Standard deviation
+ * \return Random complex matrix
+ */
 template <>
 inline cmat randn(idx rows, idx cols, double mean, double sigma) {
     // EXCEPTION CHECKS
@@ -297,13 +297,13 @@ inline cmat randn(idx rows, idx cols, double mean, double sigma) {
 }
 
 /**
-* \brief Generates a random real number (double) normally distributed in
-* N(mean, sigma)
-*
-* \param mean Mean
-* \param sigma Standard deviation
-* \return Random real number normally distributed in N(mean, sigma)
-*/
+ * \brief Generates a random real number (double) normally distributed in
+ * N(mean, sigma)
+ *
+ * \param mean Mean
+ * \param sigma Standard deviation
+ * \return Random real number normally distributed in N(mean, sigma)
+ */
 inline double randn(double mean = 0, double sigma = 1) {
     std::normal_distribution<> nd(mean, sigma);
 
@@ -315,11 +315,11 @@ inline double randn(double mean = 0, double sigma = 1) {
 }
 
 /**
-* \brief Generates a random unitary matrix
-*
-* \param D Dimension of the Hilbert space
-* \return Random unitary
-*/
+ * \brief Generates a random unitary matrix
+ *
+ * \param D Dimension of the Hilbert space
+ * \return Random unitary
+ */
 inline cmat randU(idx D = 2)
 // ~3 times slower than Toby Cubitt's MATLAB corresponding routine,
 // because Eigen 3 QR algorithm is not parallelized
@@ -347,12 +347,12 @@ inline cmat randU(idx D = 2)
 }
 
 /**
-* \brief Generates a random isometry matrix
-*
-* \param Din Size of the input Hilbert space
-* \param Dout Size of the output Hilbert space
-* \return Random isometry matrix
-*/
+ * \brief Generates a random isometry matrix
+ *
+ * \param Din Size of the input Hilbert space
+ * \param Dout Size of the output Hilbert space
+ * \return Random isometry matrix
+ */
 inline cmat randV(idx Din, idx Dout) {
     // EXCEPTION CHECKS
 
@@ -364,15 +364,15 @@ inline cmat randV(idx Din, idx Dout) {
 }
 
 /**
-* \brief Generates a set of random Kraus operators
-*
-* \note The set of Kraus operators satisfy the closure condition
-* \f$ \sum_i K_i^\dagger K_i = I\f$
-*
-* \param N Number of Kraus operators
-* \param D Dimension of the Hilbert space
-* \return Set of \a N Kraus operators satisfying the closure condition
-*/
+ * \brief Generates a set of random Kraus operators
+ *
+ * \note The set of Kraus operators satisfy the closure condition
+ * \f$ \sum_i K_i^\dagger K_i = I\f$
+ *
+ * \param N Number of Kraus operators
+ * \param D Dimension of the Hilbert space
+ * \return Set of \a N Kraus operators satisfying the closure condition
+ */
 inline std::vector<cmat> randkraus(idx N, idx D = 2) {
     // EXCEPTION CHECKS
 
@@ -401,11 +401,11 @@ inline std::vector<cmat> randkraus(idx N, idx D = 2) {
 }
 
 /**
-* \brief Generates a random Hermitian matrix
-*
-* \param D Dimension of the Hilbert space
-* \return Random Hermitian matrix
-*/
+ * \brief Generates a random Hermitian matrix
+ *
+ * \param D Dimension of the Hilbert space
+ * \return Random Hermitian matrix
+ */
 inline cmat randH(idx D = 2) {
     // EXCEPTION CHECKS
 
@@ -415,15 +415,15 @@ inline cmat randH(idx D = 2) {
 
     cmat H = 2 * rand<cmat>(D, D) - (1. + 1_i) * cmat::Ones(D, D);
 
-    return H + adjoint(H);
+    return H + H.adjoint();
 }
 
 /**
-* \brief Generates a random normalized ket (pure state vector)
-*
-* \param D Dimension of the Hilbert space
-* \return Random normalized ket
-*/
+ * \brief Generates a random normalized ket (pure state vector)
+ *
+ * \param D Dimension of the Hilbert space
+ * \return Random normalized ket
+ */
 inline ket randket(idx D = 2) {
     // EXCEPTION CHECKS
 
@@ -440,15 +440,15 @@ inline ket randket(idx D = 2) {
 
     ket kt = randn<cmat>(D, 1);
 
-    return kt / norm(kt);
+    return kt / kt.norm();
 }
 
 /**
-* \brief Generates a random density matrix
-*
-* \param D Dimension of the Hilbert space
-* \return Random density matrix
-*/
+ * \brief Generates a random density matrix
+ *
+ * \param D Dimension of the Hilbert space
+ * \return Random density matrix
+ */
 inline cmat randrho(idx D = 2) {
     // EXCEPTION CHECKS
 
@@ -457,20 +457,20 @@ inline cmat randrho(idx D = 2) {
     // END EXCEPTION CHECKS
 
     cmat result = 10 * randH(D);
-    result = result * adjoint(result);
+    result = result * result.adjoint();
 
-    return result / trace(result);
+    return result / result.trace();
 }
 
 /**
-* \brief Generates a random uniformly distributed permutation
-*
-* Uses Knuth shuffle method (as implemented by std::shuffle),
-* so that all permutations are equally probable
-*
-* \param N Size of the permutation
-* \return Random permutation of size \a N
-*/
+ * \brief Generates a random uniformly distributed permutation
+ *
+ * Uses Knuth shuffle method (as implemented by std::shuffle),
+ * so that all permutations are equally probable
+ *
+ * \param N Size of the permutation
+ * \return Random permutation of size \a N
+ */
 inline std::vector<idx> randperm(idx N) {
     // EXCEPTION CHECKS
 
@@ -496,12 +496,12 @@ inline std::vector<idx> randperm(idx N) {
 }
 
 /**
-* \brief Generates a random probability vector uniformly distributed over the
-* probability simplex
-*
-* \param N Size of the probability vector
-* \return Random probability vector
-*/
+ * \brief Generates a random probability vector uniformly distributed over the
+ * probability simplex
+ *
+ * \param N Size of the probability vector
+ * \return Random probability vector
+ */
 inline std::vector<double> randprob(idx N) {
     // EXCEPTION CHECKS
 
@@ -523,7 +523,7 @@ inline std::vector<double> randprob(idx N) {
     }
 
     // normalize
-    double sumprob = sum(result);
+    double sumprob = std::accumulate(std::begin(result), std::end(result), 0);
     for (idx i = 0; i < N; ++i)
         result[i] /= sumprob;
 
