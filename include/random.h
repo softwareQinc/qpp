@@ -523,7 +523,7 @@ inline std::vector<double> randprob(idx N) {
     }
 
     // normalize
-    double sumprob = std::accumulate(std::begin(result), std::end(result), 0);
+    double sumprob = std::accumulate(std::begin(result), std::end(result), 0.0);
     for (idx i = 0; i < N; ++i)
         result[i] /= sumprob;
 
