@@ -260,7 +260,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
 // check co-primality (unitarity) only in DEBUG version
 #ifndef NDEBUG
-        //assert(gcd(a, N) == 1);
+        assert(gcd(a, N) == 1);
 #endif
         // EXCEPTION CHECKS
 
