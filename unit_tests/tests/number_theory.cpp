@@ -77,6 +77,14 @@ TEST(qpp_contfrac2x, UserSpecifiedN) {
     EXPECT_NEAR(-0.4321, qpp::contfrac2x({0, -2, -3, -5, -2}, 4), 1e-3);
 }
 /******************************************************************************/
+/// BEGIN std::vector<std::pair<int, int>>
+///       qpp::convergents(const std::vector<int>& cf)
+TEST(qpp_convergents_continued_fraction, AllTests) {}
+/******************************************************************************/
+/// BEGIN std::vector<std::pair<int, int>>
+///       qpp::convergents(double x, idx N) {
+TEST(qpp_convergents_real_number, AllTests) {}
+/******************************************************************************/
 /// BEGIN std::tuple<bigint, bigint, bigint> qpp::egcd(bigint m, bigint n)
 TEST(qpp_egcd, NonNegativeNumbers) {
     EXPECT_EQ(std::make_tuple(1, 0, 10), qpp::egcd(10, 0));

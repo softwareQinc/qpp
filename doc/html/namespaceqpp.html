@@ -674,6 +674,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ac7a4e9b856bf9a858b71c536acbbab39"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ac7a4e9b856bf9a858b71c536acbbab39">randprime</a> (<a class="el" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> a, <a class="el" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> b, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N=1000)</td></tr>
 <tr class="memdesc:ac7a4e9b856bf9a858b71c536acbbab39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random big prime uniformly distributed in the interval [a, b].  <a href="#ac7a4e9b856bf9a858b71c536acbbab39">More...</a><br /></td></tr>
 <tr class="separator:ac7a4e9b856bf9a858b71c536acbbab39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a129cb4fb6244e0428745e4a49122a900"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; int, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a129cb4fb6244e0428745e4a49122a900">convergents</a> (const std::vector&lt; int &gt; &amp;cf)</td></tr>
+<tr class="memdesc:a129cb4fb6244e0428745e4a49122a900"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convergents.  <a href="#a129cb4fb6244e0428745e4a49122a900">More...</a><br /></td></tr>
+<tr class="separator:a129cb4fb6244e0428745e4a49122a900"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8464ee321ec1f9d93712a2f5e97b9df8"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; int, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a8464ee321ec1f9d93712a2f5e97b9df8">convergents</a> (double x, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N)</td></tr>
+<tr class="memdesc:a8464ee321ec1f9d93712a2f5e97b9df8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convergents.  <a href="#a8464ee321ec1f9d93712a2f5e97b9df8">More...</a><br /></td></tr>
+<tr class="separator:a8464ee321ec1f9d93712a2f5e97b9df8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e583ad0b10c1250e39c9d9bc8bade78"><td class="memTemplParams" colspan="2">template&lt;typename Derived1 , typename Derived2 &gt; </td></tr>
 <tr class="memitem:a1e583ad0b10c1250e39c9d9bc8bade78"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ac39e7c2b66f0209911cc3afc06223648">dyn_mat</a>&lt; typename Derived1::Scalar &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a1e583ad0b10c1250e39c9d9bc8bade78">applyCTRL</a> (const Eigen::MatrixBase&lt; Derived1 &gt; &amp;state, const Eigen::MatrixBase&lt; Derived2 &gt; &amp;A, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;ctrl, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;subsys, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;dims)</td></tr>
 <tr class="memdesc:a1e583ad0b10c1250e39c9d9bc8bade78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the controlled-gate <em>A</em> to the part <em>subsys</em> of the multi-partite state vector or density matrix <em>state</em>.  <a href="#a1e583ad0b10c1250e39c9d9bc8bade78">More...</a><br /></td></tr>
@@ -2160,6 +2166,74 @@ template&lt;typename Derived &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Real representation of the simple continued fraction </dd></dl>
+
+</div>
+</div>
+<a id="a129cb4fb6244e0428745e4a49122a900"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a129cb4fb6244e0428745e4a49122a900">&#9670;&nbsp;</a></span>convergents() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::pair&lt;int, int&gt; &gt; qpp::convergents </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convergents. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a33f4dd20b7c8cdd7d07c596e5b83ee2e" title="Real representation of a simple continued fraction. ">qpp::contfrac2x()</a> and <a class="el" href="namespaceqpp.html#ace6723d802f5d4c15f0d14fa1abee7bb" title="Simple continued fraction expansion. ">qpp::x2contfrac()</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cf</td><td>Continued fraction </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Vector of convergents pairs <img class="formulaInl" alt="$ (a_k, b_k) $" src="form_74.png"/> that approximate the number represented by the continued fraction </dd></dl>
+
+</div>
+</div>
+<a id="a8464ee321ec1f9d93712a2f5e97b9df8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8464ee321ec1f9d93712a2f5e97b9df8">&#9670;&nbsp;</a></span>convergents() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::pair&lt;int, int&gt; &gt; qpp::convergents </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>N</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convergents. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a33f4dd20b7c8cdd7d07c596e5b83ee2e" title="Real representation of a simple continued fraction. ">qpp::contfrac2x()</a> and <a class="el" href="namespaceqpp.html#ace6723d802f5d4c15f0d14fa1abee7bb" title="Simple continued fraction expansion. ">qpp::x2contfrac()</a></dd></dl>
+<dl class="section note"><dt>Note</dt><dd>In the continued fraction expansion of <em>x</em> has less terms than <em>N</em>, then the series of convergents is truncated to the number of terms in the continued fraction expansion of <em>x</em>.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>Real number </td></tr>
+    <tr><td class="paramname">N</td><td>Number of convergents. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Vector of convergents pairs <img class="formulaInl" alt="$ (a_k, b_k) $" src="form_74.png"/> that approximate the number <em>x</em> </dd></dl>
 
 </div>
 </div>
@@ -5004,7 +5078,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Multi-partite qudit ket. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea" title="Complex (double precision) dynamic Eigen column vector. ">ket</a> template&lt;char... Bits&gt; <a class="el" href="namespaceqpp_1_1literals.html#af1b1b403462748ca5a55c10e8e41d80d" title="Multi-partite qubit ket user-defined literal. ">qpp::operator "" _ket()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp_1_1literals.html#af1b1b403462748ca5a55c10e8e41d80d" title="Multi-partite qubit ket user-defined literal. ">qpp::operator "" _ket()</a></dd></dl>
 <p>Constructs the multi-partite qudit ket <img class="formulaInl" alt="$|\mathrm{mask}\rangle$" src="form_37.png"/>, where <em>mask</em> is a std::vector of non-negative integers. Each element in <em>mask</em> has to be smaller than the corresponding element in <em>dims</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -5052,7 +5126,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Multi-partite qudit ket. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a5d7185dfc7bee58c937abc243c3692ea" title="Complex (double precision) dynamic Eigen column vector. ">ket</a> template&lt;char... Bits&gt; <a class="el" href="namespaceqpp_1_1literals.html#af1b1b403462748ca5a55c10e8e41d80d" title="Multi-partite qubit ket user-defined literal. ">qpp::operator "" _ket()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp_1_1literals.html#af1b1b403462748ca5a55c10e8e41d80d" title="Multi-partite qubit ket user-defined literal. ">qpp::operator "" _ket()</a></dd></dl>
 <p>Constructs the multi-partite qudit ket <img class="formulaInl" alt="$|\mathrm{mask}\rangle$" src="form_37.png"/>, all subsystem having equal dimension <em>d</em>. <em>mask</em> is a std::vector of non-negative integers, and each element in <em>mask</em> has to be strictly smaller than <em>d</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -5257,7 +5331,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Projector onto multi-partite qudit ket. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276" title="Complex (double precision) dynamic Eigen matrix. ">cmat</a> template&lt;char... Bits&gt; <a class="el" href="namespaceqpp_1_1literals.html#a807ed54ce7598a383aa383d1cb60436a" title="Multi-partite qubit projector user-defined literal. ">qpp::operator "" _prj()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp_1_1literals.html#a807ed54ce7598a383aa383d1cb60436a" title="Multi-partite qubit projector user-defined literal. ">qpp::operator "" _prj()</a></dd></dl>
 <p>Constructs the projector onto the multi-partite qudit ket <img class="formulaInl" alt="$|\mathrm{mask}\rangle$" src="form_37.png"/>, where <em>mask</em> is a std::vector of non-negative integers. Each element in <em>mask</em> has to be smaller than the corresponding element in <em>dims</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -5305,7 +5379,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Projector onto multi-partite qudit ket. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276" title="Complex (double precision) dynamic Eigen matrix. ">cmat</a> template&lt;char... Bits&gt; <a class="el" href="namespaceqpp_1_1literals.html#a807ed54ce7598a383aa383d1cb60436a" title="Multi-partite qubit projector user-defined literal. ">qpp::operator "" _prj()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp_1_1literals.html#a807ed54ce7598a383aa383d1cb60436a" title="Multi-partite qubit projector user-defined literal. ">qpp::operator "" _prj()</a></dd></dl>
 <p>Constructs the projector onto the multi-partite qudit ket <img class="formulaInl" alt="$|\mathrm{mask}\rangle$" src="form_37.png"/>, all subsystem having equal dimension <em>d</em>. <em>mask</em> is a std::vector of non-negative integers, and each element in <em>mask</em> has to be strictly smaller than <em>d</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -8779,7 +8853,7 @@ template&lt;typename Container &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Thu Nov 29 2018 13:11:46 for Quantum++ by
+    <li class="footer">Generated on Thu Nov 29 2018 16:33:14 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

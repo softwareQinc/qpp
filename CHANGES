@@ -1,4 +1,8 @@
 In progress - pre-release
+    - Added new functions in "number_theory.h":
+          qpp::convergents() - overloads that compute the convergents from a
+                               continued fraction or a real number, see
+                               http://mathworld.wolfram.com/Convergent.html
     - Added new functions in "operations.h":
           qpp::INVQFT()      - inverse qudit quantum Fourier transform (includes
                                qubit QFT as a special case) on an entire quantum
@@ -8,6 +12,7 @@ In progress - pre-release
                                density matrix
     - Added new member functions for qpp::Gates:
           qpp::Gates::MODMUL() - quantum modular multiplication
+    - Added Shor's algorithm example in "examples/shor.cpp"
 Version 1.1 - 26 November 2018
     - Added new functions in "operations.h":
           qpp::QFT()      - qudit quantum Fourier transform (includes qubit

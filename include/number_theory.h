@@ -83,7 +83,6 @@ inline std::vector<int> x2contfrac(double x, idx N, idx cut = 1e5) {
  */
 inline double contfrac2x(const std::vector<int>& cf, idx N = idx(-1)) {
     // EXCEPTION CHECKS
-
     if (cf.size() == 0)
         throw exception::ZeroSize("qpp::contfrac2x()");
 
@@ -585,6 +584,72 @@ inline bigint randprime(bigint a, bigint b, idx N = 1000) {
                                          "Prime not found!");
 
     return 0; // so we don't get a warning
+}
+
+// see http://mathworld.wolfram.com/Convergent.html
+/**
+ * \brief Convergents
+ * \see qpp::contfrac2x() and qpp::x2contfrac()
+ *
+ * \param cf Continued fraction
+ * \return Vector of convergents pairs \f$ (a_k, b_k) \f$ that approximate the
+ * number represented by the continued fraction
+ */
+std::vector<std::pair<int, int>> convergents(const std::vector<int>& cf) {
+
+    idx N = cf.size();
+    // EXCEPTIONS CHECKS
+
+    if (N == 0)
+        throw exception::OutOfRange("qpp::convergents()");
+
+    std::vector<std::pair<int, int>> result(N);
+    int a_minus_one = 1;
+    int b_minus_one = 0;
+    int a_0 = cf[0];
+    int b_0 = 1;
+
+    // END EXCEPTIONS CHECKS
+
+    result[0] = std::make_pair(a_0, b_0);
+    result[1] = std::make_pair(cf[1] * std::get<0>(result[0]) + a_minus_one,
+                               cf[1] * std::get<1>(result[0]) + b_minus_one);
+    for (idx i = 2; i < N; ++i) {
+        result[i].first =
+            cf[i] * std::get<0>(result[i - 1]) + std::get<0>(result[i - 2]);
+        result[i].second =
+            cf[i] * std::get<1>(result[i - 1]) + std::get<1>(result[i - 2]);
+    }
+
+    return result;
+}
+
+// see http://mathworld.wolfram.com/Convergent.html
+/**
+ * \brief Convergents
+ * \see qpp::contfrac2x() and qpp::x2contfrac()
+ *
+ * \note In the continued fraction expansion of \a x has less terms than \a N,
+ * then the series of convergents is truncated to the number of terms in the
+ * continued fraction expansion of \a x.
+ *
+ * \param x Real number
+ * \param N Number of convergents.
+ * \return Vector of convergents pairs \f$ (a_k, b_k) \f$ that approximate the
+ * number \a x
+ */
+std::vector<std::pair<int, int>> convergents(double x, idx N) {
+
+    // EXCEPTIONS CHECKS
+
+    if (N == 0)
+        throw exception::OutOfRange("qpp::convergents()");
+
+    auto cf = x2contfrac(x, N);
+    if(cf.size() < N)
+        N = cf.size();
+
+    return convergents(x2contfrac(x, N));
 }
 
 } /* namespace qpp */
