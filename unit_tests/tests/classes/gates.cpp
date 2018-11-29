@@ -193,6 +193,9 @@ TEST(qpp_Gates_Fd, AllTests) {
     EXPECT_NEAR(0, norm(gt.Fd(4) - F4), 1e-7);
 }
 /******************************************************************************/
+/// BEGIN cmat qpp::Gates::MODMUL(idx a, idx N) const
+TEST(qpp_Gates_MODMUL, AllTests) {}
+/******************************************************************************/
 /// BEGIN  template<typename Derived = Eigen::MatrixXcd>
 ///        qpp::Gates::Id(idx D = 2) const
 TEST(qpp_Gates_Id, AllTests) {
