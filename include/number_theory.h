@@ -595,7 +595,8 @@ inline bigint randprime(bigint a, bigint b, idx N = 1000) {
  * \return Vector of convergents pairs \f$ (a_k, b_k) \f$ that approximate the
  * number represented by the continued fraction
  */
-std::vector<std::pair<int, int>> convergents(const std::vector<int>& cf) {
+inline std::vector<std::pair<int, int>>
+convergents(const std::vector<int>& cf) {
 
     idx N = cf.size();
     // EXCEPTIONS CHECKS
@@ -638,7 +639,7 @@ std::vector<std::pair<int, int>> convergents(const std::vector<int>& cf) {
  * \return Vector of convergents pairs \f$ (a_k, b_k) \f$ that approximate the
  * number \a x
  */
-std::vector<std::pair<int, int>> convergents(double x, idx N) {
+inline std::vector<std::pair<int, int>> convergents(double x, idx N) {
 
     // EXCEPTIONS CHECKS
 
@@ -646,7 +647,7 @@ std::vector<std::pair<int, int>> convergents(double x, idx N) {
         throw exception::OutOfRange("qpp::convergents()");
 
     auto cf = x2contfrac(x, N);
-    if(cf.size() < N)
+    if (cf.size() < N)
         N = cf.size();
 
     return convergents(x2contfrac(x, N));
