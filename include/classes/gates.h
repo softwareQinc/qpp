@@ -247,16 +247,20 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
     /**
      * \brief Modular multiplication gate for qubits
-     * Implements \f$ |x\rangle  \longrightarrow |x\mathrm{mod} N\rangle \f$
+     * Implements \f$ |x\rangle  \longrightarrow |ax \mathrm{ mod } N\rangle \f$
      *
      * \note For the gate to be unitary, \a a and \a N should be co-prime. The
      * function does not check co-primality in release versions!
      *
+     * \note The number of qubits required to implement the gate should satisfy
+     * \f$ n \geq \lceil\log_2(N)\rceil \f$
+     *
      * \param a Positive integer less than \a N
      * \param N Positive integer
+     * \param n Number of qubits required for implementing the gate
      * \return Modular multiplication gate
      */
-    cmat MODMUL(idx a, idx N) const {
+    cmat MODMUL(idx a, idx N, idx n) const {
 
 // check co-primality (unitarity) only in DEBUG version
 #ifndef NDEBUG
@@ -268,10 +272,14 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         if (N < 3 || a >= N) {
             throw exception::OutOfRange("qpp::Gates::MODMUL()");
         }
+
+        // check enough qubits
+        if (n < static_cast<idx>(std::ceil(std::log2(N)))) {
+            throw exception::OutOfRange("qpp::Gates::MODMUL()");
+        }
         // END EXCEPTION CHECKS
 
         // minimum number of qubits required to implement the gate
-        idx n = static_cast<idx>(std::ceil(std::log2(N)));
         idx D = static_cast<idx>(std::llround(std::pow(2, n)));
 
         cmat result = cmat::Zero(D, D);
@@ -288,7 +296,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 #ifdef WITH_OPENMP_
 #pragma omp parallel for
 #endif // WITH_OPENMP_
-        // complete the matrix
+       // complete the matrix
         for (idx i = N; i < D; ++i)
             result(i, i) = 1;
 

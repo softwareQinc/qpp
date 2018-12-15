@@ -73,3 +73,6 @@
 \form#72:$ |x\rangle \longrightarrow \mathrm{mod} N\rangle $
 \form#73:$ |x\rangle \longrightarrow |x\mathrm{mod} N\rangle $
 \form#74:$ (a_k, b_k) $
+\form#75:$ n \geq \lceil\log_2(N)\rceil $
+\form#76:$ |x\rangle \longrightarrow |ax\mathrm{ mod }N\rangle $
+\form#77:$ |x\rangle \longrightarrow |ax \mathrm{ mod } N\rangle $
