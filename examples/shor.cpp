@@ -105,7 +105,7 @@ int main() {
     // END SECOND STAGE
 
     // THIRD STAGE, POST-PROCESSING
-    idx r = lcm(r1, r2);
+    idx r = lcm(r1, r2); // order of a mod N
     if (r % 2 == 0 && modpow(a, r / 2, N) != static_cast<bigint>(N - 1)) {
         std::cout << ">> We (possibly) found the order of a (mod N): ";
         std::cout << r << '\n';
