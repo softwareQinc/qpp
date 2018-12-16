@@ -111,7 +111,7 @@ int main() {
     // END SECOND MEASUREMENT STAGE
 
     // THIRD POST-PROCESSING STAGE
-    idx r = lcm(r1, r2); // order of a mod N
+    idx r = lcm(r1, r2); // candidate order of a mod N
     std::cout << ">> r = " << r << '\n';
     if (r % 2 == 0 && modpow(a, r / 2, N) != static_cast<bigint>(N - 1)) {
         std::cout << ">> Possible factors: ";
