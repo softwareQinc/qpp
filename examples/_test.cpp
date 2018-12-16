@@ -36,19 +36,18 @@ int main() {
 //    std::cout << disp(test) << "\n\n";
 //    std::cout << disp(test*adjoint(test)) << "\n\n";
 
-    ket psi = 00_ket;
-    ket phi = st.one(2);
-    std::cout << disp(phi) << std::endl << std::endl;
-    std::cout << disp(01_ket) << std::endl << std::endl;
-    //std::cout << norm(phi - 01_ket) << "\n";
+//    ket psi = 00_ket;
+//    std::cout << disp(01_ket) << std::endl << std::endl;
+//    //std::cout << norm(phi - 01_ket) << "\n";
 
-    auto res = x2contfrac(3.1415927, 4);
+    auto res = x2contfrac(0.5, 4);
     std::cout << disp(res, " ") << "\n";
-    auto conv = convergents(res);
+    auto conv = convergents(0.5, 4);
     for(auto&& elem: conv)
         std::cout << "(" << elem.first << ", " << elem.second << ")" << "\n";
 
-    auto conv1 = convergents(x2contfrac(6.32, 10));
-    for(auto&& elem: conv1)
-        std::cout << "(" << elem.first << ", " << elem.second << ")" << "\n";
+    ket psi = kron(st.x0, st.x0, st.x0, st.x0);
+    auto m = measure_seq(psi,{0});
+    std::cout << disp(std::get<0>(m), " ") << std::endl;
+    std::cout << std::get<1>(m) << std::endl;
 }

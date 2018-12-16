@@ -32,7 +32,7 @@ INCLUDE_DIRECTORIES(include)
 
 #### Source file(s) to be compiled, modify as needed
 SET(SOURCE_FILES
-        examples/minimal.cpp)
+        examples/shor.cpp)
 
 #### Eigen3
 MESSAGE(STATUS "Detecting Eigen3")
