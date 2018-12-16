@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include <tuple>
 #include <vector>
 
 #include "qpp.h"
