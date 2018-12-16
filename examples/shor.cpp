@@ -9,16 +9,20 @@
 
 int main() {
     using namespace qpp;
-    idx N = 35; // number to factor
-    idx a = 4;  // co-prime with N, we need an even order!
-    // number of bits required to represent N
-    // idx n = static_cast<idx>(std::ceil(2 * std::log2(N)));
-    idx n = 7; // suffices for this case, as the order 'r' of 'a' 'mod 35' is 6
-               // and 2^n >= 2 * r^2
+    bigint N = 15; // number to factor
+    bigint a = rand(static_cast<bigint>(3), N - 1); // generate a co-prime a
+    while (gcd(a, N) != 1) {
+        a = rand(static_cast<bigint>(3), N - 1);
+    }
+    // qubits required for half of the circuit, in total we need 2n qubits
+    // if you know the order 'r' of 'a', then you can take the smallest 'n' s.t.
+    // 2^n >= 2 * r^2, i.e. n = ceil(log2(2 * r^2))
+    idx n = static_cast<idx>(std::ceil(2 * std::log2(N)));
     idx D = static_cast<idx>(std::llround(std::pow(2, n))); // dimension 2^n
 
     std::cout << ">> Factoring N = " << N << " with coprime a = " << a << '\n';
-    std::cout << ">> n = " << n << " and 2^n = " << D << '\n';
+    std::cout << ">> n = " << n << ", D = 2^n = " << D << " and 2^(2n) = ";
+    std::cout << D * D << '\n';
 
     // vector with labels of the first half of the qubits
     std::vector<idx> first_subsys(n);
@@ -28,6 +32,7 @@ int main() {
     std::vector<idx> second_subsys(n);
     std::iota(std::begin(second_subsys), std::end(second_subsys), n);
 
+    // QUANTUM STAGE
     // prepare the initial state |0>^\otimes n \otimes |0...01>
     ket psi = kron(st.zero(2 * n - 1), 1_ket);
 
@@ -49,8 +54,9 @@ int main() {
 
     // apply inverse QFT on first half of the qubits
     psi = applyINVQFT(psi, first_subsys);
+    // END QUANTUM STAGE
 
-    // FIRST STAGE
+    // FIRST MEASUREMENT STAGE
     auto measured1 = measure_seq(psi, first_subsys); // measure first n qubits
     auto list_results1 = std::get<0>(measured1);     // measurement results
     auto prob1 = std::get<1>(measured1); // probability of the result
@@ -73,11 +79,11 @@ int main() {
     }
     if (failed) {
         std::cout << ">> Factoring failed at stage 1, please try again!\n";
-        std::exit(EXIT_SUCCESS);
+        std::exit(EXIT_FAILURE);
     }
-    // END FIRST STAGE
+    // END FIRST MEASUREMENT STAGE
 
-    // SECOND STAGE
+    // SECOND MEASUREMENT STAGE
     auto measured2 = measure_seq(psi, first_subsys); // measure first n qubits
     auto list_results2 = std::get<0>(measured2);     // measurement results
     auto prob2 = std::get<1>(measured2); // probability of the result
@@ -100,21 +106,20 @@ int main() {
     }
     if (failed) {
         std::cout << ">> Factoring failed at stage 2, please try again!\n";
-        std::exit(EXIT_SUCCESS);
+        std::exit(EXIT_FAILURE);
     }
-    // END SECOND STAGE
+    // END SECOND MEASUREMENT STAGE
 
-    // THIRD STAGE, POST-PROCESSING
+    // THIRD POST-PROCESSING STAGE
     idx r = lcm(r1, r2); // order of a mod N
+    std::cout << ">> r = " << r << '\n';
     if (r % 2 == 0 && modpow(a, r / 2, N) != static_cast<bigint>(N - 1)) {
-        std::cout << ">> We (possibly) found the order of a (mod N): ";
-        std::cout << r << '\n';
         std::cout << ">> Possible factors: ";
         std::cout << gcd(modpow(a, r / 2, N) - 1, N) << " ";
         std::cout << gcd(modpow(a, r / 2, N) + 1, N) << '\n';
     } else {
         std::cout << ">> Factoring failed at stage 3, please try again!\n";
-        std::exit(EXIT_SUCCESS);
+        std::exit(EXIT_FAILURE);
     }
-    // END THIRD STAGE
+    // END THIRD POST-PROCESSING STAGE
 }
