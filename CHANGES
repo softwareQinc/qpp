@@ -5,11 +5,11 @@ In progress - pre-release
                                http://mathworld.wolfram.com/Convergent.html
     - Added new functions in "operations.h":
           qpp::TFQ()      - inverse qudit quantum Fourier transform (includes
-                               qubit QFT as a special case) on an entire quantum
-                               state (state vector or density matrix)
+                            qubit QFT as a special case) on an entire quantum
+                            state (state vector or density matrix)
           qpp::applyTFQ() - apply the inverse qudit quantum Fourier transform
-                               on a subset of qudits of a state vector or
-                               density matrix
+                            on a subset of qudits of a state vector or
+                            density matrix
     - Added new member functions for qpp::Gates:
           qpp::Gates::MODMUL() - quantum modular multiplication
     - Added Shor's algorithm example in "examples/shor.cpp"
