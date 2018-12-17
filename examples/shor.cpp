@@ -59,12 +59,12 @@ int main() {
 
     // FIRST MEASUREMENT STAGE
     auto measured1 = measure_seq(psi, first_subsys); // measure first n qubits
-    auto list_results1 = std::get<0>(measured1);     // measurement results
-    auto prob1 = std::get<1>(measured1); // probability of the result
-    idx n1 = multiidx2n(list_results1, std::vector<idx>(n, 2)); // binary to int
-    double x1 = static_cast<double>(n1) / D;
+    std::vector<idx> vect_results1 = std::get<0>(measured1); // results
+    double prob1 = std::get<1>(measured1); // probability of the result
+    idx n1 = multiidx2n(vect_results1, std::vector<idx>(n, 2)); // binary to int
+    double x1 = static_cast<double>(n1) / D; // multiple of 1/r
 
-    std::cout << ">> First measurement:  " << disp(list_results1, " ") << " ";
+    std::cout << ">> First measurement:  " << disp(vect_results1, " ") << " ";
     std::cout << "i.e. j = " << n1 << " with probability " << prob1;
     std::cout << '\n';
 
@@ -86,12 +86,12 @@ int main() {
 
     // SECOND MEASUREMENT STAGE
     auto measured2 = measure_seq(psi, first_subsys); // measure first n qubits
-    auto list_results2 = std::get<0>(measured2);     // measurement results
-    auto prob2 = std::get<1>(measured2); // probability of the result
-    idx n2 = multiidx2n(list_results2, std::vector<idx>(n, 2)); // binary to int
-    double x2 = static_cast<double>(n2) / D;
+    std::vector<idx> vect_results2 = std::get<0>(measured2); // results
+    double prob2 = std::get<1>(measured2); // probability of the result
+    idx n2 = multiidx2n(vect_results2, std::vector<idx>(n, 2)); // binary to int
+    double x2 = static_cast<double>(n2) / D; // multiple of 1/r
 
-    std::cout << ">> Second measurement: " << disp(list_results2, " ") << " ";
+    std::cout << ">> Second measurement: " << disp(vect_results2, " ") << " ";
     std::cout << "i.e. j = " << n2 << " with probability " << prob2;
     std::cout << '\n';
 
