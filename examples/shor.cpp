@@ -113,7 +113,7 @@ int main() {
 
     // THIRD POST-PROCESSING STAGE
     idx r = lcm(r1, r2); // candidate order of a mod N
-    std::cout << ">> r = " << r << '\n';
+    std::cout << ">> r = " << r << ", a^r mod N = " << modpow(a, r, N) << '\n';
     if (r % 2 == 0 && modpow(a, r / 2, N) != static_cast<bigint>(N - 1)) {
         std::cout << ">> Possible factors: ";
         std::cout << gcd(modpow(a, r / 2, N) - 1, N) << " ";
