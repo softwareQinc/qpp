@@ -54,7 +54,7 @@ int main() {
     }
 
     // apply inverse QFT on first half of the qubits
-    psi = applyINVQFT(psi, first_subsys);
+    psi = applyTFQ(psi, first_subsys);
     // END QUANTUM STAGE
 
     // FIRST MEASUREMENT STAGE

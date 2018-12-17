@@ -1870,20 +1870,20 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
  * \a subsys of \a A
  */
 template <typename Derived>
-dyn_mat<typename Derived::Scalar>
-applyINVQFT(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
-            idx d = 2, bool swap = true) {
+dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
+                                           const std::vector<idx>& subsys,
+                                           idx d = 2, bool swap = true) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
     // check zero sizes
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::applyINVQFT()");
+        throw exception::ZeroSize("qpp::applyTFQ()");
 
     // check valid subsystem dimension
     if (d < 2)
-        throw exception::DimsInvalid("qpp::applyINVQFT()");
+        throw exception::DimsInvalid("qpp::applyTFQ()");
 
     // total number of qubits/qudits in the state
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
@@ -1891,25 +1891,25 @@ applyINVQFT(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
     std::vector<idx> dims(n, d); // local dimensions vector
     // check subsys is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(subsys, dims))
-        throw exception::SubsysMismatchDims("qpp::applyINVQFT()");
+        throw exception::SubsysMismatchDims("qpp::applyTFQ()");
 
     //************ ket ************//
     if (internal::check_cvector(rA)) // we have a ket
     {
         // check that dims match state vector
         if (!internal::check_dims_match_cvect(dims, rA))
-            throw exception::DimsMismatchCvector("qpp::applyINVQFT()");
+            throw exception::DimsMismatchCvector("qpp::applyTFQ()");
     }
     //************ density matrix ************//
     else if (internal::check_square_mat(rA)) // we have a density operator
     {
         // check that dims match state matrix
         if (!internal::check_dims_match_mat(dims, rA))
-            throw exception::DimsMismatchMatrix("qpp::applyINVQFT()");
+            throw exception::DimsMismatchMatrix("qpp::applyTFQ()");
     }
     //************ Exception: not ket nor density matrix ************//
     else
-        throw exception::MatrixNotSquareNorCvector("qpp::applyINVQFT()");
+        throw exception::MatrixNotSquareNorCvector("qpp::applyTFQ()");
     // END EXCEPTION CHECKS
 
     dyn_mat<typename Derived::Scalar> result = rA;
@@ -1975,19 +1975,19 @@ applyINVQFT(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
  * \return Inverse (adjoint) qudit quantum Fourier transform applied on \a A
  */
 template <typename Derived>
-dyn_col_vect<typename Derived::Scalar>
-INVQFT(const Eigen::MatrixBase<Derived>& A, idx d = 2, bool swap = true) {
+dyn_col_vect<typename Derived::Scalar> TFQ(const Eigen::MatrixBase<Derived>& A,
+                                           idx d = 2, bool swap = true) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::INVQFT()");
+        throw exception::ZeroSize("qpp::TFQ()");
 
     // check valid subsystem dimension
     if (d < 2)
-        throw exception::DimsInvalid("qpp::INVQFT()");
+        throw exception::DimsInvalid("qpp::TFQ()");
 
     // total number of qubits/qudits in the state
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
@@ -1999,23 +1999,23 @@ INVQFT(const Eigen::MatrixBase<Derived>& A, idx d = 2, bool swap = true) {
     {
         // check that dims match state vector
         if (!internal::check_dims_match_cvect(dims, rA))
-            throw exception::DimsMismatchCvector("qpp::INVQFT()");
+            throw exception::DimsMismatchCvector("qpp::TFQ()");
     }
     //************ density matrix ************//
     else if (internal::check_square_mat(rA)) // we have a density operator
     {
         // check that dims match state matrix
         if (!internal::check_dims_match_mat(dims, rA))
-            throw exception::DimsMismatchMatrix("qpp::INVQFT()");
+            throw exception::DimsMismatchMatrix("qpp::TFQ()");
     }
     //************ Exception: not ket nor density matrix ************//
     else
-        throw exception::MatrixNotSquareNorCvector("qpp::INVQFT()");
+        throw exception::MatrixNotSquareNorCvector("qpp::TFQ()");
     // END EXCEPTION CHECKS
 
     std::vector<idx> subsys(n);
     std::iota(std::begin(subsys), std::end(subsys), 0);
-    ket result = applyINVQFT(rA, subsys, d, swap);
+    ket result = applyTFQ(rA, subsys, d, swap);
 
     return result;
 }

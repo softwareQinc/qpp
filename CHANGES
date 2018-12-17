@@ -4,10 +4,10 @@ In progress - pre-release
                                continued fraction or a real number, see
                                http://mathworld.wolfram.com/Convergent.html
     - Added new functions in "operations.h":
-          qpp::INVQFT()      - inverse qudit quantum Fourier transform (includes
+          qpp::TFQ()      - inverse qudit quantum Fourier transform (includes
                                qubit QFT as a special case) on an entire quantum
                                state (state vector or density matrix)
-          qpp::applyINVQFT() - apply the inverse qudit quantum Fourier transform
+          qpp::applyTFQ() - apply the inverse qudit quantum Fourier transform
                                on a subset of qudits of a state vector or
                                density matrix
     - Added new member functions for qpp::Gates:

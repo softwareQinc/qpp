@@ -194,11 +194,11 @@ TEST(qpp_applyCTRL, EmptyControl) {
 TEST(qpp_applyCTRL_qubits, AllTests) {}
 /******************************************************************************/
 /// BEGIN  template<typename Derived> dyn_mat<typename Derived::Scalar>
-///        qpp::applyINVQFT(const Eigen::MatrixBase<Derived>& A,
+///        qpp::applyTFQ(const Eigen::MatrixBase<Derived>& A,
 ///        const std::vector<idx>& subsys,
 ///        idx d = 2,
 ///        bool swap = true)
-TEST(qpp_applyINVQFT, AllTests) {}
+TEST(qpp_applyTQF, AllTests) {}
 /******************************************************************************/
 /// BEGIN  template<typename Derived> dyn_mat<typename Derived::Scalar>
 ///        qpp::applyQFT(const Eigen::MatrixBase<Derived>& A,
@@ -217,10 +217,10 @@ TEST(qpp_choi2super, AllTests) {}
 TEST(qpp_kraus2choi, AllTests) {}
 /******************************************************************************/
 /// BEGIN  template<typename Derived> dyn_col_vect<typename Derived::Scalar>
-///        qpp::INVQFT(const Eigen::MatrixBase<Derived>& A,
+///        qpp::TFQ(const Eigen::MatrixBase<Derived>& A,
 ///        idx d = 2,
 ///        bool swap = true)
-TEST(qpp_INVQFT, AllTests) {}
+TEST(qpp_TFQ, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline cmat qpp::kraus2super(const std::vector<cmat>& Ks)
 TEST(qpp_kraus2super, AllTests) {}
