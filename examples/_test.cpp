@@ -18,8 +18,7 @@ class QCirc {
         idx subsys_size = subsys.size();
         for (idx i = 0; i < subsys_size; ++i) {
             for (idx m = 0; m < subsys[i]; ++m) {
-                if (measured_.get(m)) // if the qubit was measured
-                {
+                if (measured_.get(m)) { // if the qubit m was measured
                     --result[i];
                 }
             }
@@ -37,14 +36,13 @@ class QCirc {
     void measure(std::vector<idx> subsys) {
         // sort subsys in decreasing order
         idx subsys_size = subsys.size();
-        std::vector<idx> subsys_updated = subsys;
         for (idx i = 0; i < subsys_size; ++i) {
             if (measured_.get(subsys[i]) == true)
                 throw exception::CustomException(
                     "qpp::QCirc::measure()", "Subsystem was measured before");
         }
         // update subsystem labels
-        subsys_updated = update_subsys_(subsys);
+        std::vector<idx> subsys_updated = update_subsys_(subsys);
         for (idx i = 0; i < subsys_size; ++i) {
             measured_.set(subsys[i]);
         }
@@ -58,6 +56,22 @@ class QCirc {
         // update psi_
         psi_ = std::get<2>(m);
         // std::cout << disp(psi_) << "\n";
+    }
+
+    // destructive measurement of all remaining qubits
+    void measure_all() {
+        std::vector<idx> subsys;
+        for (idx i = 0; i < nq_; ++i) {
+            if (!measured_.get(i))
+                subsys.push_back(i);
+        }
+        // update subsystem labels
+        std::vector<idx> subsys_updated = update_subsys_(subsys);
+        if (subsys.size() != 0)
+            this->measure(subsys);
+        else
+            throw exception::CustomException("qpp::QCirc::measure_all()",
+                                             "All qubits were measured before");
     }
 
     std::vector<idx> results() const { return results_; }
@@ -91,11 +105,12 @@ int main() {
     QCirc<int> qc(10, 10);
     qc.apply_all(gt.H);
     qc.measure({3, 1, 7});
-    qc.measure({2, 4, 5, 6, 0, 9});
+    qc.measure({2, 4, 5, 6, 0});
     std::cout << disp(qc.results(), " ") << "\n";
     qc.apply_all(gt.H);
     qc.apply_all(gt.X);
-    qc.measure({8});
+    qc.measure_all();
+    qc.measure_all();
     std::cout << disp(qc.results(), "") << "\n";
     std::cout << qc.results_as_int() << "\n";
 }
