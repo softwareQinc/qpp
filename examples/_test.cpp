@@ -46,16 +46,16 @@ class QCirc {
         for (idx i = 0; i < subsys_size; ++i) {
             measured_.set(subsys[i]);
         }
-        //        std::cout << disp(subsys, " ") << "\n";
-        //        std::cout << disp(subsys_updated, " ") << "\n";
-        //        std::cout << measured_ << "\n";
+        //        std::cout << disp(subsys, " ") << '\n';
+        //        std::cout << disp(subsys_updated, " ") << '\n';
+        //        std::cout << measured_ << '\n';
         auto m = measure_seq(psi_, subsys_updated);
         auto result = std::get<0>(m); // measurement result
         for (idx i = 0; i < subsys_size; ++i)
             results_[subsys[i]] = result[i];
         // update psi_
         psi_ = std::get<2>(m);
-        // std::cout << disp(psi_) << "\n";
+        // std::cout << disp(psi_) << '\n';
     }
 
     // destructive measurement of all remaining qubits
@@ -100,45 +100,67 @@ class QCirc {
     void apply_all(const cmat& gate) {
         for (idx i = 0; i < nq_; ++i)
             if (!measured_.get(i)) {
-                // std::cout << "HERE" << disp(transpose(psi_)) << "\n";
-                // std::cout << disp(update_subsys_({i}), " ") << "\n";
+                // std::cout << "HERE" << disp(transpose(psi_)) << '\n';
+                // std::cout << disp(update_subsys_({i}), " ") << '\n';
                 psi_ = qpp::apply(psi_, gate, update_subsys_({i}));
             }
     }
 
     // total number of qubits, regardless of being measured or not
-    idx size() const noexcept
-    {
-        return nq_;
-    }
+    idx size() const noexcept { return nq_; }
 
     // total number of measured qubits
-    idx num_measured_qubits() const noexcept{
-        return measured_.count();
-    }
+    idx num_measured_qubits() const noexcept { return measured_.count(); }
 
     // total number of non-measured qubits
-    idx num_active_qubits() const noexcept{
+    idx num_active_qubits() const noexcept {
         return this->size() - this->num_measured_qubits();
     }
 
+    // resets the circuit
+    void reset() {
+        psi_ = st.zero(nq_);
+        measured_.reset();
+        results_ = std::vector<idx>(nq_, -1);
+    }
+
+    // returns the up-to-date quantum state
+    ket psi() const { return psi_; }
 };
 
 int main() {
     QCirc<int> qc(10, 10);
     qc.apply_all(gt.H);
     qc.measure({3, 1, 7});
-    std::cout << qc.num_measured_qubits() << std::endl;
-    std::cout << qc.num_active_qubits() << std::endl;
+    std::cout << qc.num_measured_qubits() << '\n';
+    std::cout << qc.num_active_qubits() << '\n';
     qc.measure({2, 4, 5, 6, 0});
-    std::cout << disp(qc.results(), " ") << "\n";
+    std::cout << disp(qc.results(), " ") << '\n';
     qc.apply_all(gt.H);
     qc.apply_all(gt.X);
     qc.measure_all();
-    //qc.measure_all();
-    std::cout << disp(qc.results(), "") << "\n";
-    std::cout << qc.results_as_int() << "\n";
-    std::cout << qc.size() << "\n";
-    std::cout << qc.num_measured_qubits() << std::endl;
-    std::cout << qc.num_active_qubits() << std::endl;
+    // qc.measure_all();
+    std::cout << disp(qc.results(), "") << '\n';
+    std::cout << qc.results_as_int() << '\n';
+    std::cout << qc.size() << '\n';
+    std::cout << qc.num_measured_qubits() << '\n';
+    std::cout << qc.num_active_qubits() << "\n\n";
+    std::cout << "\n\n";
+
+    QCirc<int> qc1(2, 0);
+    qc1.apply(gt.H, {0});
+    qc1.applyCTRL(gt.X, {0}, {1});
+    qc1.apply(gt.CNOT, {0, 1});
+    qc1.measure({0});
+
+    std::cout << qc1.num_measured_qubits() << '\n';
+    std::cout << qc1.num_active_qubits() << '\n';
+    std::cout << disp(qc1.results(), " ") << '\n';
+    std::cout << disp(qc1.psi()) << "\n\n";
+
+    qc1.reset();
+    std::cout << qc1.num_measured_qubits() << '\n';
+    std::cout << qc1.num_active_qubits() << '\n';
+    std::cout << disp(qc1.results(), " ") << '\n';
+    std::cout << disp(qc1.psi()) << "\n\n";
 }
