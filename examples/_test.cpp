@@ -12,9 +12,9 @@ class QCirc {
     idx nq_, nc_;                // quantum bits, classical bits/dits
     ket psi_;                    // current state of the circuit
     std::vector<bool> measured_; // set elements to one if the corresponding
-    // qubit had been measured
-    std::vector<idx> results_; // get_results of the measurements
-    std::vector<idx> bits_;    // store the values of the classical bits/dits
+                                 // qubit had been measured
+    std::vector<idx> results_;   // get_results of the measurements
+    std::vector<idx> bits_;      // store the values of the classical bits/dits
 
   protected:
     std::vector<idx> update_subsys_(const std::vector<idx>& subsys) {
