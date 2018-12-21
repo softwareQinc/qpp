@@ -35,26 +35,26 @@
 namespace qpp {
 
 /**
- * \brief Applies the controlled-gate \a A to the part \a subsys
+ * \brief Applies the controlled-gate \a A to the part \a target
  * of the multi-partite state vector or density matrix \a state
  * \see qpp::Gates::CTRL()
  *
  * \note The dimension of the gate \a A must match
- * the dimension of \a subsys.
+ * the dimension of \a target.
  * Also, all control subsystems in \a ctrl must have the same dimension.
  *
  * \param state Eigen expression
  * \param A Eigen expression
  * \param ctrl Control subsystem indexes
- * \param subsys Subsystem indexes where the gate \a A is applied
+ * \param target Subsystem indexes where the gate \a A is applied
  * \param dims Dimensions of the multi-partite system
- * \return CTRL-A gate applied to the part \a subsys of \a state
+ * \return CTRL-A gate applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar>
 applyCTRL(const Eigen::MatrixBase<Derived1>& state,
           const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
-          const std::vector<idx>& subsys, const std::vector<idx>& dims) {
+          const std::vector<idx>& target, const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate =
         state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
@@ -88,19 +88,19 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::applyCTRL()");
 
-    // check subsys is valid w.r.t. dims
-    if (!internal::check_subsys_match_dims(subsys, dims))
+    // check target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::applyCTRL()");
 
-    // check that gate matches the dimensions of the subsys
-    std::vector<idx> subsys_dims(subsys.size());
-    for (idx i = 0; i < subsys.size(); ++i)
-        subsys_dims[i] = dims[subsys[i]];
-    if (!internal::check_dims_match_mat(subsys_dims, rA))
+    // check that gate matches the dimensions of the target
+    std::vector<idx> target_dims(target.size());
+    for (idx i = 0; i < target.size(); ++i)
+        target_dims[i] = dims[target[i]];
+    if (!internal::check_dims_match_mat(target_dims, rA))
         throw exception::MatrixMismatchSubsys("qpp::applyCTRL()");
 
     std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
-    ctrlgate.insert(std::end(ctrlgate), std::begin(subsys), std::end(subsys));
+    ctrlgate.insert(std::end(ctrlgate), std::begin(target), std::end(target));
     std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
     // check that ctrl + gate subsystem is valid
@@ -121,7 +121,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     idx n = dims.size();                     // total number of subsystems
     idx ctrlsize = ctrl.size();              // number of ctrl subsystem
     idx ctrlgatesize = ctrlgate.size();      // number of ctrl+gate subsystems
-    idx subsyssize = subsys.size(); // number of subsystems of the target
+    idx targetsize = target.size(); // number of subsystems of the target
     // dimension of ctrl subsystem
     idx Dctrl = static_cast<idx>(std::llround(std::pow(d, ctrlsize)));
     idx DA = static_cast<idx>(rA.rows()); // dimension of gate subsystem
@@ -142,8 +142,8 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 
     for (idx k = 0; k < n; ++k)
         Cdims[k] = dims[k];
-    for (idx k = 0; k < subsyssize; ++k)
-        CdimsA[k] = dims[subsys[k]];
+    for (idx k = 0; k < targetsize; ++k)
+        CdimsA[k] = dims[target[k]];
     for (idx k = 0; k < ctrlsize; ++k)
         CdimsCTRL[k] = d;
     for (idx k = 0; k < ctrlgate_barsize; ++k)
@@ -175,9 +175,9 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
         }
 
         // set the A part
-        internal::n2multiidx(m_, subsyssize, CdimsA, CmidxA);
-        for (idx k = 0; k < subsyssize; ++k) {
-            Cmidx[subsys[k]] = CmidxA[k];
+        internal::n2multiidx(m_, targetsize, CdimsA, CmidxA);
+        for (idx k = 0; k < targetsize; ++k) {
+            Cmidx[target[k]] = CmidxA[k];
         }
 
         // we now got the total index
@@ -185,9 +185,9 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 
         // compute the coefficient
         for (idx n_ = 0; n_ < DA; ++n_) {
-            internal::n2multiidx(n_, subsyssize, CdimsA, CmidxA);
-            for (idx k = 0; k < subsyssize; ++k) {
-                Cmidx[subsys[k]] = CmidxA[k];
+            internal::n2multiidx(n_, targetsize, CdimsA, CmidxA);
+            for (idx k = 0; k < targetsize; ++k) {
+                Cmidx[target[k]] = CmidxA[k];
             }
             coeff +=
                 Ai[i_](m_, n_) * rstate(internal::multiidx2n(Cmidx, n, Cdims));
@@ -237,11 +237,11 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
         }
 
         // set the A part
-        internal::n2multiidx(m1_, subsyssize, CdimsA, CmidxArow);
-        internal::n2multiidx(m2_, subsyssize, CdimsA, CmidxAcol);
-        for (idx k = 0; k < subsys.size(); ++k) {
-            Cmidxrow[subsys[k]] = CmidxArow[k];
-            Cmidxcol[subsys[k]] = CmidxAcol[k];
+        internal::n2multiidx(m1_, targetsize, CdimsA, CmidxArow);
+        internal::n2multiidx(m2_, targetsize, CdimsA, CmidxAcol);
+        for (idx k = 0; k < target.size(); ++k) {
+            Cmidxrow[target[k]] = CmidxArow[k];
+            Cmidxcol[target[k]] = CmidxAcol[k];
         }
 
         // we now got the total row/col indexes
@@ -275,9 +275,9 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 
         // at least one control activated, compute the coefficient
         for (idx n1_ = 0; n1_ < DA; ++n1_) {
-            internal::n2multiidx(n1_, subsyssize, CdimsA, CmidxArow);
-            for (idx k = 0; k < subsyssize; ++k) {
-                Cmidxrow[subsys[k]] = CmidxArow[k];
+            internal::n2multiidx(n1_, targetsize, CdimsA, CmidxArow);
+            for (idx k = 0; k < targetsize; ++k) {
+                Cmidxrow[target[k]] = CmidxArow[k];
             }
             idx idxrowtmp = internal::multiidx2n(Cmidxrow, n, Cdims);
 
@@ -288,9 +288,9 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
             }
 
             for (idx n2_ = 0; n2_ < DA; ++n2_) {
-                internal::n2multiidx(n2_, subsyssize, CdimsA, CmidxAcol);
-                for (idx k = 0; k < subsyssize; ++k) {
-                    Cmidxcol[subsys[k]] = CmidxAcol[k];
+                internal::n2multiidx(n2_, targetsize, CdimsA, CmidxAcol);
+                for (idx k = 0; k < targetsize; ++k) {
+                    Cmidxcol[target[k]] = CmidxAcol[k];
                 }
 
                 if (all_ctrl_cols_equal) {
@@ -382,25 +382,25 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * \brief Applies the controlled-gate \a A to the part \a subsys
+ * \brief Applies the controlled-gate \a A to the part \a target
  * of the multi-partite state vector or density matrix \a state
  * \see qpp::Gates::CTRL()
  *
  * \note The dimension of the gate \a A must match
- * the dimension of \a subsys
+ * the dimension of \a target
  *
  * \param state Eigen expression
  * \param A Eigen expression
  * \param ctrl Control subsystem indexes
- * \param subsys Subsystem indexes where the gate \a A is applied
+ * \param target Subsystem indexes where the gate \a A is applied
  * \param d Subsystem dimensions
- * \return CTRL-A gate applied to the part \a subsys of \a state
+ * \return CTRL-A gate applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar>
 applyCTRL(const Eigen::MatrixBase<Derived1>& state,
           const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
-          const std::vector<idx>& subsys, idx d = 2) {
+          const std::vector<idx>& target, idx d = 2) {
     const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate =
         state.derived();
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
@@ -419,7 +419,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     idx n = internal::get_num_subsys(static_cast<idx>(rstate.rows()), d);
     std::vector<idx> dims(n, d); // local dimensions vector
 
-    return applyCTRL(rstate, rA, ctrl, subsys, dims);
+    return applyCTRL(rstate, rA, ctrl, target, dims);
 }
 
 /**
@@ -965,8 +965,8 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
-#endif // WITH_OPENMP_
-       // column major order for speed
+#endif  // WITH_OPENMP_
+        // column major order for speed
         for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
@@ -990,8 +990,8 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
-#endif // WITH_OPENMP_
-       // column major order for speed
+#endif  // WITH_OPENMP_
+        // column major order for speed
         for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
@@ -1093,8 +1093,8 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
-#endif // WITH_OPENMP_
-       // column major order for speed
+#endif  // WITH_OPENMP_
+        // column major order for speed
         for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
                 result(i, j) = worker(i, j);
@@ -1110,8 +1110,8 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
-#endif // WITH_OPENMP_
-       // column major order for speed
+#endif  // WITH_OPENMP_
+        // column major order for speed
         for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
                 result(i, j) = trace(rA.block(i * DB, j * DB, DB, DB));

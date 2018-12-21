@@ -76,7 +76,8 @@ class QCirc {
 
     std::vector<idx> results() const { return results_; }
 
-    // returns the current result of the measurement as an integer
+    // returns the current result of the measurement as an integer,
+    // ignores non-measured qubits
     idx results_as_int() const {
         std::vector<idx> tmp;
         for (idx i = 0; i < nq_; ++i) {
@@ -91,6 +92,11 @@ class QCirc {
         psi_ = qpp::apply(psi_, gate, update_subsys_(subsys));
     }
 
+    void applyCTRL(const cmat& gate, const std::vector<idx>& ctrl,
+                   const std::vector<idx>& target) {
+        psi_ = qpp::applyCTRL(psi_, gate, ctrl, target);
+    }
+
     void apply_all(const cmat& gate) {
         for (idx i = 0; i < nq_; ++i)
             if (!measured_.get(i)) {
@@ -99,18 +105,40 @@ class QCirc {
                 psi_ = qpp::apply(psi_, gate, update_subsys_({i}));
             }
     }
+
+    // total number of qubits, regardless of being measured or not
+    idx size() const noexcept
+    {
+        return nq_;
+    }
+
+    // total number of measured qubits
+    idx num_measured_qubits() const noexcept{
+        return measured_.count();
+    }
+
+    // total number of non-measured qubits
+    idx num_active_qubits() const noexcept{
+        return this->size() - this->num_measured_qubits();
+    }
+
 };
 
 int main() {
     QCirc<int> qc(10, 10);
     qc.apply_all(gt.H);
     qc.measure({3, 1, 7});
+    std::cout << qc.num_measured_qubits() << std::endl;
+    std::cout << qc.num_active_qubits() << std::endl;
     qc.measure({2, 4, 5, 6, 0});
     std::cout << disp(qc.results(), " ") << "\n";
     qc.apply_all(gt.H);
     qc.apply_all(gt.X);
     qc.measure_all();
-    qc.measure_all();
+    //qc.measure_all();
     std::cout << disp(qc.results(), "") << "\n";
     std::cout << qc.results_as_int() << "\n";
+    std::cout << qc.size() << "\n";
+    std::cout << qc.num_measured_qubits() << std::endl;
+    std::cout << qc.num_active_qubits() << std::endl;
 }
