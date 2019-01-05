@@ -78,5 +78,6 @@ int main() {
 //    std::cout << disp(res.first) << "\n\n";
 //    std::cout << disp(res.second) << "\n\n";
 
+    Test t{10};
 
 }

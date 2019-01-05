@@ -217,11 +217,12 @@ class LogicalCircuit : public IDisplay {
 };
 
 class Test {
-    ket psi_;                    ///< state vector
     idx nq_;                     ///< number of qubits/qudits
     idx nc_;                     ///< number of classical "dits"
     idx d_;                      ///< dimension
+    ket psi_;                    ///< state vector
     std::vector<bool> measured_; ///< keeps track of measured qubits/qudits
+    std::vector<idx> results_;   ///< keeps track of the measurement results
     std::vector<idx> dits_;      ///< classical bits/dits
 
     /**
@@ -229,7 +230,7 @@ class Test {
      */
     enum class Operation {
         GATE,       ///< unitary gate
-        CTRLGATE,   ///< controlled unitary gate
+        CTRL_GATE,  ///< controlled unitary gate
         MEASURE_Z,  ///< Z measurement
         MEASURE_V,  ///< measurement in the orthonormal basis or rank-1 POVM
                     ///< specified by the columns of matrix \a V
@@ -269,6 +270,10 @@ class Test {
     }
 
   public:
+    Test(idx nq, idx nc = 0, idx d = 2)
+        : nq_{nq}, nc_{nc}, d_{d}, psi_{st.zero(nq_, d_)},
+          measured_(nq_, false), results_(nq_, -1), dits_(nc_, 0) {}
+
     /**
      * \brief Apply quantum gate
      *
@@ -294,7 +299,7 @@ class Test {
     void applyCTRL(const Eigen::MatrixBase<Derived>& A,
                    const std::vector<idx>& ctrl, const std::vector<idx>& target,
                    const std::string& name = "") {
-        circuit_.emplace_back(Operation::CTRLGATE, std::vector<cmat>{A}, ctrl,
+        circuit_.emplace_back(Operation::CTRL_GATE, std::vector<cmat>{A}, ctrl,
                               target, name);
     }
 
@@ -332,7 +337,6 @@ class Test {
      * \param Ks Set of Kraus operators
      * \param target Subsystem indexes that are measured
      */
-    template <typename Derived>
     void measureKs(const std::vector<cmat>& Ks, const std::vector<idx>& target,
                    const std::string& name = "") {
         circuit_.emplace_back(Operation::MEASURE_KS, Ks, std::vector<idx>{},
