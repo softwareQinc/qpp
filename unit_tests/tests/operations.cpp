@@ -38,7 +38,7 @@ using namespace qpp;
 ///       dyn_mat<typename Derived1::Scalar> qpp::apply(
 ///       const Eigen::MatrixBase<Derived1>& state,
 ///       const Eigen::MatrixBase<Derived2>& A,
-///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& target,
 ///       const std::vector<idx>& dims)
 TEST(qpp_apply, AllTests) {
     // pure states
@@ -91,7 +91,7 @@ TEST(qpp_apply, AllTests) {
 ///       dyn_mat<typename Derived1::Scalar> qpp::apply(
 ///       const Eigen::MatrixBase<Derived1>& state,
 ///       const Eigen::MatrixBase<Derived2>& A,
-///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& target,
 ///       idx d = 2)
 TEST(qpp_apply_qubits, AllTests) {}
 /******************************************************************************/
@@ -102,14 +102,14 @@ TEST(qpp_apply_full_kraus, AllTests) {}
 /// BEGIN template<typename Derived> cmat qpp::apply(
 ///       const Eigen::MatrixBase<Derived>& A,
 ///       const std::vector<cmat>& Ks,
-///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& target,
 ///       const std::vector<idx>& dims)
 TEST(qpp_apply_kraus, AllTests) {}
 /******************************************************************************/
 /// BEGIN template<typename Derived> cmat qpp::apply(
 ///       const Eigen::MatrixBase<Derived>& A,
 ///       const std::vector<cmat>& Ks,
-///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& target,
 ///       idx d = 2)
 TEST(qpp_apply_kraus_qubits, AllTests) {}
 /******************************************************************************/
@@ -118,7 +118,7 @@ TEST(qpp_apply_kraus_qubits, AllTests) {}
 ///       const Eigen::MatrixBase<Derived1>& state,
 ///       const Eigen::MatrixBase<Derived2>& A,
 ///       const std::vector<idx>& ctrl,
-///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& target,
 ///       const std::vector<idx>& dims)
 TEST(qpp_applyCTRL, NonEmptyControl) {
     std::vector<idx> dims{2, 2, 2, 2}; // 3 qubits
@@ -189,20 +189,20 @@ TEST(qpp_applyCTRL, EmptyControl) {
 ///       const Eigen::MatrixBase<Derived1>& state,
 ///       const Eigen::MatrixBase<Derived2>& A,
 ///       const std::vector<idx>& ctrl,
-///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& target,
 ///       idx d = 2)
 TEST(qpp_applyCTRL_qubits, AllTests) {}
 /******************************************************************************/
 /// BEGIN  template<typename Derived> dyn_mat<typename Derived::Scalar>
 ///        qpp::applyTFQ(const Eigen::MatrixBase<Derived>& A,
-///        const std::vector<idx>& subsys,
+///        const std::vector<idx>& target,
 ///        idx d = 2,
 ///        bool swap = true)
 TEST(qpp_applyTQF, AllTests) {}
 /******************************************************************************/
 /// BEGIN  template<typename Derived> dyn_mat<typename Derived::Scalar>
 ///        qpp::applyQFT(const Eigen::MatrixBase<Derived>& A,
-///        const std::vector<idx>& subsys,
+///        const std::vector<idx>& target,
 ///        idx d = 2,
 ///        bool swap = true)
 TEST(qpp_applyQFT, AllTests) {}
@@ -227,13 +227,13 @@ TEST(qpp_kraus2super, AllTests) {}
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
 ///       qpp::ptrace(const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& target,
 ///       const std::vector<idx>& dims)
 TEST(qpp_ptrace, AllTests) {}
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
 ///       qpp::ptrace(const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& target,
 ///       idx d = 2)
 TEST(qpp_ptrace_qubits, AllTests) {}
 /******************************************************************************/
@@ -257,13 +257,13 @@ TEST(qpp_ptrace2_qubits, AllTests) {}
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
 ///       qpp::ptranspose(const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& target,
 ///       const std::vector<idx>& dims)
 TEST(qpp_ptranspose, AllTests) {}
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
 ///       qpp::ptranspose(const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& target,
 ///       idx d = 2)
 TEST(qpp_ptranspose_qubits, AllTests) {}
 /******************************************************************************/

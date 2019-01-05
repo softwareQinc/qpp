@@ -350,11 +350,11 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \see qpp::applyCTRL()
      *
      * \note The dimension of the gate \a A must match
-     * the dimension of \a subsys
+     * the dimension of \a target
      *
      * \param A Eigen expression
      * \param ctrl Control subsystem indexes
-     * \param subsys Subsystem indexes where the gate \a A is applied
+     * \param target Subsystem indexes where the gate \a A is applied
      * \param n Total number of subsystems
      * \param d Subsystem dimensions
      * \return CTRL-A gate, as a matrix over the same scalar field as \a A
@@ -362,7 +362,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     template <typename Derived>
     dyn_mat<typename Derived::Scalar>
     CTRL(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& ctrl,
-         const std::vector<idx>& subsys, idx n, idx d = 2) const {
+         const std::vector<idx>& target, idx n, idx d = 2) const {
         const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
         // EXCEPTION CHECKS
@@ -378,7 +378,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // check lists zero-size
         if (ctrl.size() == 0)
             throw exception::ZeroSize("qpp::Gates::CTRL()");
-        if (subsys.size() == 0)
+        if (target.size() == 0)
             throw exception::ZeroSize("qpp::Gates::CTRL()");
 
         // check out of range
@@ -391,8 +391,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // ctrl + gate subsystem vector
         std::vector<idx> ctrlgate = ctrl;
-        ctrlgate.insert(std::end(ctrlgate), std::begin(subsys),
-                        std::end(subsys));
+        ctrlgate.insert(std::end(ctrlgate), std::begin(target),
+                        std::end(target));
         std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
         std::vector<idx> dims(n, d); // local dimensions vector
@@ -402,10 +402,10 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         if (!internal::check_subsys_match_dims(ctrlgate, dims))
             throw exception::SubsysMismatchDims("qpp::Gates::CTRL()");
 
-        // check that subsys list match the dimension of the matrix
+        // check that target list match the dimension of the matrix
         using Index = typename dyn_mat<typename Derived::Scalar>::Index;
         if (rA.rows() !=
-            static_cast<Index>(std::llround(std::pow(d, subsys.size()))))
+            static_cast<Index>(std::llround(std::pow(d, target.size()))))
             throw exception::DimsMismatchMatrix("qpp::Gates::CTRL()");
         // END EXCEPTION CHECKS
 
@@ -422,7 +422,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         idx Csubsys_bar[maxn];
         idx midx_bar[maxn];
 
-        idx n_gate = subsys.size();
+        idx n_gate = target.size();
         idx n_ctrl = ctrl.size();
         idx n_subsys_bar = n - ctrlgate.size();
         idx D = static_cast<idx>(std::llround(std::pow(d, n)));
@@ -460,9 +460,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
             internal::n2multiidx(i, n_subsys_bar, Cdims_bar, midx_bar);
             for (idx k = 0; k < d; ++k) {
                 Ak = powm(rA, k); // compute rA^k
-                // run over the subsys row multi-index
+                // run over the target row multi-index
                 for (idx a = 0; a < DA; ++a) {
-                    // get the subsys row multi-index
+                    // get the target row multi-index
                     internal::n2multiidx(a, n_gate, CdimsA, midxA_row);
 
                     // construct the result row multi-index
@@ -476,18 +476,18 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                         midx_row[Csubsys_bar[c]] = midx_col[Csubsys_bar[c]] =
                             midx_bar[c];
 
-                    // then the subsys part
+                    // then the target part
                     for (idx c = 0; c < n_gate; ++c)
-                        midx_row[subsys[c]] = midxA_row[c];
+                        midx_row[target[c]] = midxA_row[c];
 
-                    // run over the subsys column multi-index
+                    // run over the target column multi-index
                     for (idx b = 0; b < DA; ++b) {
-                        // get the subsys column multi-index
+                        // get the target column multi-index
                         internal::n2multiidx(b, n_gate, CdimsA, midxA_col);
 
                         // construct the result column multi-index
                         for (idx c = 0; c < n_gate; ++c)
-                            midx_col[subsys[c]] = midxA_col[c];
+                            midx_col[target[c]] = midxA_col[c];
 
                         // finally write the values
                         result(internal::multiidx2n(midx_row, n, Cdims),

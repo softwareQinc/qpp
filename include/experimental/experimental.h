@@ -215,6 +215,131 @@ class LogicalCircuit : public IDisplay {
         return os;
     }
 };
+
+class Test {
+    ket psi_;                    ///< state vector
+    idx nq_;                     ///< number of qubits/qudits
+    idx nc_;                     ///< number of classical "dits"
+    idx d_;                      ///< dimension
+    std::vector<bool> measured_; ///< keeps track of measured qubits/qudits
+    std::vector<idx> dits_;      ///< classical bits/dits
+
+    /**
+     * \brief Type of operation being executed at one step
+     */
+    enum class Operation {
+        GATE,       ///< unitary gate
+        CTRLGATE,   ///< controlled unitary gate
+        MEASURE_Z,  ///< Z measurement
+        MEASURE_V,  ///< measurement in the orthonormal basis or rank-1 POVM
+                    ///< specified by the columns of matrix \a V
+        MEASURE_KS, ///< generalized measurement with Kraus operators Ks
+    };
+
+    /**
+     * \brief One step in the circuit
+     */
+    struct StepType {
+        Operation op_;            ///< operation
+        std::vector<cmat> mats_;  ///< matrix/matrices being applied/measured
+        std::vector<idx> ctrl_;   ///< control (empty for measurements)
+        std::vector<idx> target_; ///< target where the gate/measurement is
+                                  ///< being applied
+        std::string name_;        ///< custom name of the step
+        StepType(Operation op, const std::vector<cmat>& mats,
+                 const std::vector<idx>& ctrl, const std::vector<idx>& target,
+                 const std::string& name)
+            : op_{op}, mats_{mats}, ctrl_{ctrl}, target_{target}, name_{name} {}
+    };
+
+    std::vector<StepType> circuit_; ///< quantum circuit representation
+  protected:
+    std::vector<idx> update_subsys_(const std::vector<idx>& subsys) {
+        std::vector<idx> result = subsys;
+        idx subsys_size = subsys.size();
+        for (idx i = 0; i < subsys_size; ++i) {
+            for (idx m = 0; m < subsys[i]; ++m) {
+                if (measured_[m]) { // if the qubit m was measured
+                    --result[i];
+                }
+            }
+        }
+        std::sort(std::begin(result), std::end(result), std::less<idx>{});
+        return result;
+    }
+
+  public:
+    /**
+     * \brief Apply quantum gate
+     *
+     * \param A Eigen expression (quantum gate)
+     * \param target Subsystem indexes where the gate \a A is applied
+     * \param name Optional name of the operation
+     */
+    template <typename Derived>
+    void apply(const Eigen::MatrixBase<Derived>& A,
+               const std::vector<idx>& target, const std::string& name = "") {
+        circuit_.emplace_back(Operation::GATE, std::vector<cmat>{A},
+                              std::vector<idx>{}, target, name);
+    }
+    /**
+     * \brief Apply controlled quantum gate
+
+     * \param A Eigen expression (quantum gate)
+     * \param ctrl Control subsystem indexes
+     * \param target Subsystem indexes where the gate \a A is applied
+     * \param name Optional name of the operation
+     */
+    template <typename Derived>
+    void applyCTRL(const Eigen::MatrixBase<Derived>& A,
+                   const std::vector<idx>& ctrl, const std::vector<idx>& target,
+                   const std::string& name = "") {
+        circuit_.emplace_back(Operation::CTRLGATE, std::vector<cmat>{A}, ctrl,
+                              target, name);
+    }
+
+    /**
+     * \brief Measures the part \a target of state vector in the Z basis
+     *
+     * \param target Subsystem indexes that are measured
+     * \param name Optional name of the operation
+     */
+    void measureZ(const std::vector<idx>& target,
+                  const std::string& name = "") {
+        circuit_.emplace_back(Operation::MEASURE_Z, std::vector<cmat>{},
+                              std::vector<idx>{}, target, name);
+    }
+
+    /**
+     * \brief Measures the part \a target of state vector in the orthonormal
+     * basis or rank-1 POVM specified by the matrix \a V
+     *
+     * \param V Matrix whose columns represent the measurement basis vectors or
+     *        the bra parts of the rank-1 POVM
+     * \param target Subsystem indexes that are measured
+     * \param name Optional name of the operation
+     */
+    void measureV(const cmat& V, const std::vector<idx>& target,
+                  const std::string& name = "") {
+        circuit_.emplace_back(Operation::MEASURE_V, std::vector<cmat>{V},
+                              std::vector<idx>{}, target, name);
+    }
+
+    /**
+     * \brief Measures the part \a target of state vector using the set of
+     * Kraus operators \a Ks
+     *
+     * \param Ks Set of Kraus operators
+     * \param target Subsystem indexes that are measured
+     */
+    template <typename Derived>
+    void measureKs(const std::vector<cmat>& Ks, const std::vector<idx>& target,
+                   const std::string& name = "") {
+        circuit_.emplace_back(Operation::MEASURE_KS, Ks, std::vector<idx>{},
+                              target, name);
+    }
+};
+
 } /* namespace experimental */
 } /* namespace qpp */
 

@@ -37,7 +37,7 @@ using namespace qpp;
 /// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
 ///        qpp::Gates::CTRL(const Eigen::MatrixBase<Derived>& A,
 ///        const std::vector<idx>& ctrl,
-///        const std::vector<idx>& subsys,
+///        const std::vector<idx>& target,
 ///        idx N,
 ///        idx d = 2) const
 TEST(qpp_Gates_CTRL, Qubits) {

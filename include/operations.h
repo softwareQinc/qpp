@@ -423,22 +423,22 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * \brief Applies the gate \a A to the part \a subsys
+ * \brief Applies the gate \a A to the part \a target
  * of the multi-partite state vector or density matrix \a state
  *
  * \note The dimension of the gate \a A must match
- * the dimension of \a subsys
+ * the dimension of \a target
  *
  * \param state Eigen expression
  * \param A Eigen expression
- * \param subsys Subsystem indexes where the gate \a A is applied
+ * \param target Subsystem indexes where the gate \a A is applied
  * \param dims Dimensions of the multi-partite system
- * \return Gate \a A applied to the part \a subsys of \a state
+ * \return Gate \a A applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar>
 apply(const Eigen::MatrixBase<Derived1>& state,
-      const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& subsys,
+      const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& target,
       const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate =
         state.derived();
@@ -467,14 +467,14 @@ apply(const Eigen::MatrixBase<Derived1>& state,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::apply()");
 
-    // check subsys is valid w.r.t. dims
-    if (!internal::check_subsys_match_dims(subsys, dims))
+    // check target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::apply()");
 
-    // check that gate matches the dimensions of the subsys
-    std::vector<idx> subsys_dims(subsys.size());
-    for (idx i = 0; i < subsys.size(); ++i)
-        subsys_dims[i] = dims[subsys[i]];
+    // check that gate matches the dimensions of the target
+    std::vector<idx> subsys_dims(target.size());
+    for (idx i = 0; i < target.size(); ++i)
+        subsys_dims[i] = dims[target[i]];
     if (!internal::check_dims_match_mat(subsys_dims, rA))
         throw exception::MatrixMismatchSubsys("qpp::apply()");
     // END EXCEPTION CHECKS
@@ -486,7 +486,7 @@ apply(const Eigen::MatrixBase<Derived1>& state,
         if (!internal::check_dims_match_cvect(dims, rstate))
             throw exception::DimsMismatchCvector("qpp::apply()");
 
-        return applyCTRL(rstate, rA, {}, subsys, dims);
+        return applyCTRL(rstate, rA, {}, target, dims);
     }
     //************ density matrix ************//
     else if (internal::check_square_mat(rstate)) // we have a density operator
@@ -495,7 +495,7 @@ apply(const Eigen::MatrixBase<Derived1>& state,
         if (!internal::check_dims_match_mat(dims, rstate))
             throw exception::DimsMismatchMatrix("qpp::apply()");
 
-        return applyCTRL(rstate, rA, {}, subsys, dims);
+        return applyCTRL(rstate, rA, {}, target, dims);
     }
     //************ Exception: not ket nor density matrix ************//
     else
@@ -503,22 +503,22 @@ apply(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * \brief Applies the gate \a A to the part \a subsys
+ * \brief Applies the gate \a A to the part \a target
  * of the multi-partite state vector or density matrix \a state
  *
  * \note The dimension of the gate \a A must match
- * the dimension of \a subsys
+ * the dimension of \a target
  *
  * \param state Eigen expression
  * \param A Eigen expression
- * \param subsys Subsystem indexes where the gate \a A is applied
+ * \param target Subsystem indexes where the gate \a A is applied
  * \param d Subsystem dimensions
- * \return Gate \a A applied to the part \a subsys of \a state
+ * \return Gate \a A applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar>
 apply(const Eigen::MatrixBase<Derived1>& state,
-      const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& subsys,
+      const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& target,
       idx d = 2) {
     const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate =
         state.derived();
@@ -538,7 +538,7 @@ apply(const Eigen::MatrixBase<Derived1>& state,
     idx n = internal::get_num_subsys(static_cast<idx>(rstate.rows()), d);
     std::vector<idx> dims(n, d); // local dimensions vector
 
-    return apply(rstate, rA, subsys, dims);
+    return apply(rstate, rA, target, dims);
 }
 
 /**
@@ -587,17 +587,17 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
 
 /**
  * \brief Applies the channel specified by the set of Kraus operators \a Ks to
- * the part \a subsys of the multi-partite density matrix \a A
+ * the part \a target of the multi-partite density matrix \a A
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
- * \param subsys Subsystem indexes where the Kraus operators \a Ks are applied
+ * \param target Subsystem indexes where the Kraus operators \a Ks are applied
  * \param dims Dimensions of the multi-partite system
  * \return Output density matrix after the action of the channel
  */
 template <typename Derived>
 cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
-           const std::vector<idx>& subsys, const std::vector<idx>& dims) {
+           const std::vector<idx>& target, const std::vector<idx>& dims) {
     const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -618,13 +618,13 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     if (!internal::check_dims_match_mat(dims, rA))
         throw exception::DimsMismatchMatrix("qpp::apply()");
 
-    // check subsys is valid w.r.t. dims
-    if (!internal::check_subsys_match_dims(subsys, dims))
+    // check target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::apply()");
 
-    std::vector<idx> subsys_dims(subsys.size());
-    for (idx i = 0; i < subsys.size(); ++i)
-        subsys_dims[i] = dims[subsys[i]];
+    std::vector<idx> subsys_dims(target.size());
+    for (idx i = 0; i < target.size(); ++i)
+        subsys_dims[i] = dims[target[i]];
 
     // check the Kraus operators
     if (Ks.size() == 0)
@@ -641,24 +641,24 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     cmat result = cmat::Zero(rA.rows(), rA.rows());
 
     for (idx i = 0; i < Ks.size(); ++i)
-        result += apply(rA, Ks[i], subsys, dims);
+        result += apply(rA, Ks[i], target, dims);
 
     return result;
 }
 
 /**
  * \brief Applies the channel specified by the set of Kraus operators \a Ks to
- * the part \a subsys of the multi-partite density matrix \a A
+ * the part \a target of the multi-partite density matrix \a A
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
- * \param subsys Subsystem indexes where the Kraus operators \a Ks are applied
+ * \param target Subsystem indexes where the Kraus operators \a Ks are applied
  * \param d Subsystem dimensions
  * \return Output density matrix after the action of the channel
  */
 template <typename Derived>
 cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
-           const std::vector<idx>& subsys, idx d = 2) {
+           const std::vector<idx>& target, idx d = 2) {
     const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -675,7 +675,7 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
     std::vector<idx> dims(n, d); // local dimensions vector
 
-    return apply(rA, Ks, subsys, dims);
+    return apply(rA, Ks, target, dims);
 }
 
 /**
@@ -965,8 +965,8 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
-#endif  // WITH_OPENMP_
-        // column major order for speed
+#endif // WITH_OPENMP_
+       // column major order for speed
         for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
@@ -990,8 +990,8 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
-#endif  // WITH_OPENMP_
-        // column major order for speed
+#endif // WITH_OPENMP_
+       // column major order for speed
         for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
@@ -1093,8 +1093,8 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
-#endif  // WITH_OPENMP_
-        // column major order for speed
+#endif // WITH_OPENMP_
+       // column major order for speed
         for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
                 result(i, j) = worker(i, j);
@@ -1110,8 +1110,8 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
-#endif  // WITH_OPENMP_
-        // column major order for speed
+#endif // WITH_OPENMP_
+       // column major order for speed
         for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
                 result(i, j) = trace(rA.block(i * DB, j * DB, DB, DB));
@@ -1162,18 +1162,18 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
  * \see qpp::ptrace1(), qpp::ptrace2()
  *
  *  Partial trace of the multi-partite state vector or density matrix
- *  over a list of subsystems
+ *  over the list \a target of subsystems
  *
  * \param A Eigen expression
- * \param subsys Subsystem indexes
+ * \param target Subsystem indexes
  * \param dims Dimensions of the multi-partite system
- * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a subsys
+ * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
  * in a multi-partite system, as a dynamic matrix
  * over the same scalar field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
-                                         const std::vector<idx>& subsys,
+                                         const std::vector<idx>& target,
                                          const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
@@ -1187,18 +1187,18 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::ptrace()");
 
-    // check that subsys are valid
-    if (!internal::check_subsys_match_dims(subsys, dims))
+    // check that target are valid
+    if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::ptrace()");
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
     idx n = dims.size();
-    idx n_subsys = subsys.size();
+    idx n_subsys = target.size();
     idx n_subsys_bar = n - n_subsys;
     idx Dsubsys = 1;
     for (idx i = 0; i < n_subsys; ++i)
-        Dsubsys *= dims[subsys[i]];
+        Dsubsys *= dims[target[i]];
     idx Dsubsys_bar = D / Dsubsys;
 
     idx Cdims[maxn];
@@ -1209,7 +1209,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 
     idx Cmidxcolsubsys_bar[maxn];
 
-    std::vector<idx> subsys_bar = complement(subsys, n);
+    std::vector<idx> subsys_bar = complement(target, n);
     std::copy(std::begin(subsys_bar), std::end(subsys_bar),
               std::begin(Csubsys_bar));
 
@@ -1217,8 +1217,8 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         Cdims[i] = dims[i];
     }
     for (idx i = 0; i < n_subsys; ++i) {
-        Csubsys[i] = subsys[i];
-        Cdimssubsys[i] = dims[subsys[i]];
+        Csubsys[i] = target[i];
+        Cdimssubsys[i] = dims[target[i]];
     }
     for (idx i = 0; i < n_subsys_bar; ++i) {
         Cdimssubsys_bar[i] = dims[subsys_bar[i]];
@@ -1234,12 +1234,12 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         if (!internal::check_dims_match_cvect(dims, rA))
             throw exception::DimsMismatchCvector("qpp::ptrace()");
 
-        if (subsys.size() == dims.size()) {
+        if (target.size() == dims.size()) {
             result(0, 0) = (adjoint(rA) * rA).value();
             return result;
         }
 
-        if (subsys.size() == 0)
+        if (target.size() == 0)
             return rA * adjoint(rA);
 
         auto worker = [&](idx i) noexcept->typename Derived::Scalar {
@@ -1297,12 +1297,12 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         if (!internal::check_dims_match_mat(dims, rA))
             throw exception::DimsMismatchMatrix("qpp::ptrace()");
 
-        if (subsys.size() == dims.size()) {
+        if (target.size() == dims.size()) {
             result(0, 0) = rA.trace();
             return result;
         }
 
-        if (subsys.size() == 0)
+        if (target.size() == 0)
             return rA;
 
         auto worker = [&](idx i) noexcept->typename Derived::Scalar {
@@ -1363,18 +1363,18 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
  * \see qpp::ptrace1(), qpp::ptrace2()
  *
  *  Partial trace of the multi-partite state vector or density matrix
- *  over a list of subsystems
+ *  over the list \a target of subsystems
  *
  * \param A Eigen expression
- * \param subsys Subsystem indexes
+ * \param target Subsystem indexes
  * \param d Subsystem dimensions
- * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a subsys
+ * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
  * in a multi-partite system, as a dynamic matrix
  * over the same scalar field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
-                                         const std::vector<idx>& subsys,
+                                         const std::vector<idx>& target,
                                          idx d = 2) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
@@ -1392,25 +1392,25 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
     std::vector<idx> dims(n, d); // local dimensions vector
 
-    return ptrace(rA, subsys, dims);
+    return ptrace(rA, target, dims);
 }
 
 /**
  * \brief Partial transpose
  *
  *  Partial transpose of the multi-partite state vector or density matrix
- *  over a list of subsystems
+ *  over the list \a target of subsystems
  *
  * \param A Eigen expression
- * \param subsys Subsystem indexes
+ * \param target Subsystem indexes
  * \param dims Dimensions of the multi-partite system
  * \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$
- * over the subsytems \a subsys in a multi-partite system, as a dynamic matrix
+ * over the subsytems \a target in a multi-partite system, as a dynamic matrix
  * over the same scalar field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
-ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
+ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
            const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
@@ -1424,23 +1424,23 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::ptranspose()");
 
-    // check that subsys are valid
-    if (!internal::check_subsys_match_dims(subsys, dims))
+    // check that target are valid
+    if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::ptranspose()");
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
     idx n = dims.size();
-    idx n_subsys = subsys.size();
+    idx n_subsys = target.size();
     idx Cdims[maxn];
     idx Cmidxcol[maxn];
     idx Csubsys[maxn];
 
-    // copy dims in Cdims and subsys in Csubsys
+    // copy dims in Cdims and target in Csubsys
     for (idx i = 0; i < n; ++i)
         Cdims[i] = dims[i];
     for (idx i = 0; i < n_subsys; ++i)
-        Csubsys[i] = subsys[i];
+        Csubsys[i] = target[i];
 
     dyn_mat<typename Derived::Scalar> result(D, D);
 
@@ -1451,10 +1451,10 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
         if (!internal::check_dims_match_cvect(dims, rA))
             throw exception::DimsMismatchCvector("qpp::ptranspose()");
 
-        if (subsys.size() == dims.size())
+        if (target.size() == dims.size())
             return (rA * adjoint(rA)).transpose();
 
-        if (subsys.size() == 0)
+        if (target.size() == 0)
             return rA * adjoint(rA);
 
         auto worker = [&](idx i) noexcept->typename Derived::Scalar {
@@ -1496,10 +1496,10 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
         if (!internal::check_dims_match_mat(dims, rA))
             throw exception::DimsMismatchMatrix("qpp::ptranspose()");
 
-        if (subsys.size() == dims.size())
+        if (target.size() == dims.size())
             return rA.transpose();
 
-        if (subsys.size() == 0)
+        if (target.size() == 0)
             return rA;
 
         auto worker = [&](idx i) noexcept->typename Derived::Scalar {
@@ -1543,18 +1543,18 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
  * \brief Partial transpose
  *
  *  Partial transpose of the multi-partite state vector or density matrix
- *  over a list of subsystems
+ *  over the list \a target of subsystems
  *
  * \param A Eigen expression
- * \param subsys Subsystem indexes
+ * \param target Subsystem indexes
  * \param d Subsystem dimensions
  * \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$
- * over the subsytems \a subsys in a multi-partite system, as a dynamic matrix
+ * over the subsytems \a target in a multi-partite system, as a dynamic matrix
  * over the same scalar field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
-ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
+ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
            idx d = 2) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
@@ -1572,7 +1572,7 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsys,
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
     std::vector<idx> dims(n, d); // local dimensions vector
 
-    return ptranspose(rA, subsys, dims);
+    return ptranspose(rA, target, dims);
 }
 
 /**
@@ -1751,19 +1751,19 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
 
 // as in https://arxiv.org/abs/1707.08834
 /**
- * \brief Applies the qudit quantum Fourier transform to the part \a subsys
+ * \brief Applies the qudit quantum Fourier transform to the part \a target
  * of the multi-partite state vector or density matrix \a A
  *
  * \param A Eigen expression
- * \param subsys Subsystem indexes where the QFT applied
+ * \param target Subsystem indexes where the QFT applied
  * \param d Subsystem dimensions
  * \param swap Swaps the qubits/qudits at the end (true by default)
- * \return Qudit Quantum Fourier transform applied to the part \a subsys
+ * \return Qudit Quantum Fourier transform applied to the part \a target
  * of \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
-                                           const std::vector<idx>& subsys,
+                                           const std::vector<idx>& target,
                                            idx d = 2, bool swap = true) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
@@ -1781,8 +1781,8 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
 
     std::vector<idx> dims(n, d); // local dimensions vector
-    // check subsys is valid w.r.t. dims
-    if (!internal::check_subsys_match_dims(subsys, dims))
+    // check target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::applyQFT()");
 
     //************ ket ************//
@@ -1806,34 +1806,34 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
 
     dyn_mat<typename Derived::Scalar> result = rA;
 
-    idx n_subsys = subsys.size();
+    idx n_subsys = target.size();
 
     if (d == 2) // qubits
     {
         for (idx i = 0; i < n_subsys; ++i) {
             // apply Hadamard on qubit i
-            result = apply(result, Gates::get_instance().H, {subsys[i]});
+            result = apply(result, Gates::get_instance().H, {target[i]});
             // apply controlled rotations
             for (idx j = 2; j <= n_subsys - i; ++j) {
                 // construct Rj
                 cmat Rj(2, 2);
                 Rj << 1, 0, 0, exp(2.0 * pi * 1_i / std::pow(2, j));
                 result =
-                    applyCTRL(result, Rj, {subsys[i + j - 1]}, {subsys[i]});
+                    applyCTRL(result, Rj, {target[i + j - 1]}, {target[i]});
             }
         }
         if (swap) {
             // we have the qubits in reversed order, we must swap them
             for (idx i = 0; i < n_subsys / 2; ++i) {
                 result = apply(result, Gates::get_instance().SWAP,
-                               {subsys[i], subsys[n_subsys - i - 1]});
+                               {target[i], target[n_subsys - i - 1]});
             }
         }
 
     } else { // qudits
         for (idx i = 0; i < n_subsys; ++i) {
             // apply qudit Fourier on qudit i
-            result = apply(result, Gates::get_instance().Fd(d), {subsys[i]}, d);
+            result = apply(result, Gates::get_instance().Fd(d), {target[i]}, d);
             // apply controlled rotations
             for (idx j = 2; j <= n_subsys - i; ++j) {
                 // construct Rj
@@ -1842,14 +1842,14 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
                     Rj(m, m) = exp(2.0 * pi * m * 1_i / std::pow(d, j));
                 }
                 result =
-                    applyCTRL(result, Rj, {subsys[i + j - 1]}, {subsys[i]}, d);
+                    applyCTRL(result, Rj, {target[i + j - 1]}, {target[i]}, d);
             }
         }
         if (swap) {
             // we have the qudits in reversed order, we must swap them
             for (idx i = 0; i < n_subsys / 2; ++i) {
                 result = apply(result, Gates::get_instance().SWAPd(d),
-                               {subsys[i], subsys[n_subsys - i - 1]}, d);
+                               {target[i], target[n_subsys - i - 1]}, d);
             }
         }
     }
@@ -1860,18 +1860,18 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
 // as in https://arxiv.org/abs/1707.08834
 /**
  * \brief Applies the inverse (adjoint) qudit quantum Fourier transform to the
- * part \a subsys of the multi-partite state vector or density matrix \a A
+ * part \a target of the multi-partite state vector or density matrix \a A
  *
  * \param A Eigen expression
- * \param subsys Subsystem indexes where the QFT applied
+ * \param target Subsystem indexes where the QFT applied
  * \param d Subsystem dimensions
  * \param swap Swaps the qubits/qudits at the end (true by default)
  * \return Inverse (adjoint) qudit Quantum Fourier transform applied to the part
- * \a subsys of \a A
+ * \a target of \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
-                                           const std::vector<idx>& subsys,
+                                           const std::vector<idx>& target,
                                            idx d = 2, bool swap = true) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
@@ -1889,8 +1889,8 @@ dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
 
     std::vector<idx> dims(n, d); // local dimensions vector
-    // check subsys is valid w.r.t. dims
-    if (!internal::check_subsys_match_dims(subsys, dims))
+    // check target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::applyTFQ()");
 
     //************ ket ************//
@@ -1914,7 +1914,7 @@ dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
 
     dyn_mat<typename Derived::Scalar> result = rA;
 
-    idx n_subsys = subsys.size();
+    idx n_subsys = target.size();
 
     if (d == 2) // qubits
     {
@@ -1922,7 +1922,7 @@ dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
             // we have the qubits in reversed order, we must swap them
             for (idx i = 0; i < n_subsys / 2; ++i) {
                 result = apply(result, Gates::get_instance().SWAP,
-                               {subsys[i], subsys[n_subsys - i - 1]});
+                               {target[i], target[n_subsys - i - 1]});
             }
         }
         for (idx i = n_subsys; i-- > 0;) {
@@ -1932,17 +1932,17 @@ dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
                 cmat Rj(2, 2);
                 Rj << 1, 0, 0, exp(-2.0 * pi * 1_i / std::pow(2, j));
                 result =
-                    applyCTRL(result, Rj, {subsys[i + j - 1]}, {subsys[i]});
+                    applyCTRL(result, Rj, {target[i + j - 1]}, {target[i]});
             }
             // apply Hadamard on qubit i
-            result = apply(result, Gates::get_instance().H, {subsys[i]});
+            result = apply(result, Gates::get_instance().H, {target[i]});
         }
     } else { // qudits
         if (swap) {
             // we have the qudits in reversed order, we must swap them
             for (idx i = 0; i < n_subsys / 2; ++i) {
                 result = apply(result, Gates::get_instance().SWAPd(d),
-                               {subsys[i], subsys[n_subsys - i - 1]}, d);
+                               {target[i], target[n_subsys - i - 1]}, d);
             }
         }
         for (idx i = n_subsys; i-- > 0;) {
@@ -1954,11 +1954,11 @@ dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
                     Rj(m, m) = exp(-2.0 * pi * m * 1_i / std::pow(d, j));
                 }
                 result =
-                    applyCTRL(result, Rj, {subsys[i + j - 1]}, {subsys[i]}, d);
+                    applyCTRL(result, Rj, {target[i + j - 1]}, {target[i]}, d);
             }
             // apply qudit Fourier on qudit i
             result = apply(result, adjoint(Gates::get_instance().Fd(d)),
-                           {subsys[i]}, d);
+                           {target[i]}, d);
         }
     }
 

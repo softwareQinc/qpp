@@ -56,7 +56,7 @@ TEST(qpp_measure_full_orthonormal, AllTests) {}
 ///       std::tuple<idx, std::vector<double>, std::vector<cmat>> qpp::measure(
 ///       const Eigen::MatrixBase<Derived>& A,
 ///       const cmat& V,
-///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& target,
 ///       const std::vector<idx>& dims)
 TEST(qpp_measure_rankone, AllTests) {}
 /******************************************************************************/
@@ -64,7 +64,7 @@ TEST(qpp_measure_rankone, AllTests) {}
 ///       std::tuple<idx, std::vector<double>, std::vector<cmat>> qpp::measure(
 ///       const Eigen::MatrixBase<Derived>& A,
 ///       const cmat& V,
-///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& target,
 ///       idx d = 2)
 TEST(qpp_measure_rankone_qubits, AllTests) {}
 /******************************************************************************/
@@ -78,7 +78,7 @@ TEST(qpp_measure_full_kraus_initlist, AllTests) {}
 ///       std::tuple<idx, std::vector<double>, std::vector<cmat>>
 ///       qpp::measure(const Eigen::MatrixBase<Derived>& A,
 ///       const std::initializer_list<cmat>& Ks,
-///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& target,
 ///       const std::vector<idx>& dims)
 TEST(qpp_measure_kraus_initlist, AllTests) {}
 /******************************************************************************/
@@ -86,7 +86,7 @@ TEST(qpp_measure_kraus_initlist, AllTests) {}
 ///       std::tuple<idx, std::vector<double>, std::vector<cmat>>
 ///       qpp::measure(const Eigen::MatrixBase<Derived>& A,
 ///       const std::initializer_list<cmat>& Ks,
-///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& target,
 ///       idx d = 2)
 TEST(qpp_measure_kraus_initlist_qubits, AllTests) {}
 /******************************************************************************/
@@ -100,7 +100,7 @@ TEST(qpp_measure_full_kraus_vector, AllTests) {}
 ///       std::tuple<idx, std::vector<double>, std::vector<cmat>>
 ///       qpp::measure(const Eigen::MatrixBase<Derived>& A,
 ///       const std::vector<cmat>& Ks,
-///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& target,
 ///       const std::vector<idx>& dims)
 TEST(qpp_measure_kraus_vector, AllTests) {}
 /******************************************************************************/
@@ -108,19 +108,19 @@ TEST(qpp_measure_kraus_vector, AllTests) {}
 ///       std::tuple<idx, std::vector<double>, std::vector<cmat>>
 ///       qpp::measure(const Eigen::MatrixBase<Derived>& A,
 ///       const std::vector<cmat>& Ks,
-///       const std::vector<idx>& subsys,
+///       const std::vector<idx>& target,
 ///       idx d = 2)
 TEST(qpp_measure_kraus_vector_qubits, AllTests) {}
 /******************************************************************************/
 /// BEGIN template<typename Derived> std::tuple<std::vector<idx>, double, cmat>
 ///       qpp::measure_seq(const Eigen::MatrixBase<Derived>& A,
-///       std::vector<idx> subsys,
+///       std::vector<idx> target,
 ///       idx d = 2)
 TEST(qpp_measure_seq_qubits, AllTests) {}
 /******************************************************************************/
 /// BEGIN template<typename Derived> std::tuple<std::vector<idx>, double, cmat>
 ///       qpp::measure_seq(const Eigen::MatrixBase<Derived>& A,
-///       std::vector<idx> subsys,
+///       std::vector<idx> target,
 ///       std::vector<idx> dims)
 TEST(qpp_measure_seq, AllTests) {}
 /******************************************************************************/

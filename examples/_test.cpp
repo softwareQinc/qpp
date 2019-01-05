@@ -70,4 +70,13 @@ int main() {
     lc.add(gt.TOF, "TOF", {0, 1}, {2});
     std::cout << lc << '\n';
     std::cout << lc.get_gate_count() << "\n\n";
+
+    //std::cout << disp(evects(gt.X)) << std::endl;
+
+//    cmat CC = randH(3);
+//    auto res = heig(CC);
+//    std::cout << disp(res.first) << "\n\n";
+//    std::cout << disp(res.second) << "\n\n";
+
+
 }

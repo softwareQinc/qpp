@@ -323,12 +323,12 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
  * using the set of Kraus operators \a Ks
  * \see qpp::measure_seq()
  *
- * \note The dimension of all \a Ks must match the dimension of \a subsys.
+ * \note The dimension of all \a Ks must match the dimension of \a target.
  * The measurement is destructive, i.e. the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
- * \param subsys Subsystem indexes that are measured
+ * \param target Subsystem indexes that are measured
  * \param dims Dimensions of the multi-partite system
  * \return Tuple of: 1. Result of the measurement, 2.
  * Vector of outcome probabilities, and 3. Vector of post-measurement
@@ -337,7 +337,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
-        const std::vector<idx>& subsys, const std::vector<idx>& dims) {
+        const std::vector<idx>& target, const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -354,13 +354,13 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     if (!internal::check_dims_match_mat(dims, rA))
         throw exception::DimsMismatchMatrix("qpp::measure()");
 
-    // check subsys is valid w.r.t. dims
-    if (!internal::check_subsys_match_dims(subsys, dims))
+    // check target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::measure()");
 
-    std::vector<idx> subsys_dims(subsys.size());
-    for (idx i = 0; i < subsys.size(); ++i)
-        subsys_dims[i] = dims[subsys[i]];
+    std::vector<idx> subsys_dims(target.size());
+    for (idx i = 0; i < target.size(); ++i)
+        subsys_dims[i] = dims[target[i]];
 
     idx D = prod(std::begin(dims), std::end(dims));
     idx Dsubsys = prod(std::begin(subsys_dims), std::end(subsys_dims));
@@ -388,8 +388,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     if (internal::check_square_mat(rA)) // square matrix
     {
         for (idx i = 0; i < Ks.size(); ++i) {
-            cmat tmp = apply(rA, Ks[i], subsys, dims);
-            tmp = ptrace(tmp, subsys, dims);
+            cmat tmp = apply(rA, Ks[i], target, dims);
+            tmp = ptrace(tmp, target, dims);
             prob[i] = std::abs(trace(tmp)); // probability
             if (prob[i] > eps) {
                 // normalized output state
@@ -402,13 +402,13 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     else if (internal::check_cvector(rA)) // column vector
     {
         for (idx i = 0; i < Ks.size(); ++i) {
-            ket tmp = apply(rA, Ks[i], subsys, dims);
+            ket tmp = apply(rA, Ks[i], target, dims);
             prob[i] = std::pow(norm(tmp), 2);
             if (prob[i] > eps) {
                 // normalized output state
                 // corresponding to measurement result i
                 tmp /= std::sqrt(prob[i]);
-                outstates[i] = ptrace(tmp, subsys, dims);
+                outstates[i] = ptrace(tmp, target, dims);
             }
         }
     } else
@@ -425,17 +425,17 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 // http://stackoverflow.com
 // /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
- * \brief  Measures the part \a subsys of
+ * \brief  Measures the part \a target of
  * the multi-partite state vector or density matrix \a A
  * using the set of Kraus operators \a Ks
  * \see qpp::measure_seq()
  *
- * \note The dimension of all \a Ks must match the dimension of \a subsys.
+ * \note The dimension of all \a Ks must match the dimension of \a target.
  * The measurement is destructive, i.e. the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
- * \param subsys Subsystem indexes that are measured
+ * \param target Subsystem indexes that are measured
  * \param dims Dimensions of the multi-partite system
  * \return Tuple of: 1. Result of the measurement, 2.
  * Vector of outcome probabilities, and 3. Vector of post-measurement
@@ -444,23 +444,23 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A,
-        const std::initializer_list<cmat>& Ks, const std::vector<idx>& subsys,
+        const std::initializer_list<cmat>& Ks, const std::vector<idx>& target,
         const std::vector<idx>& dims) {
-    return measure(A, std::vector<cmat>(Ks), subsys, dims);
+    return measure(A, std::vector<cmat>(Ks), target, dims);
 }
 
 /**
- * \brief  Measures the part \a subsys of
+ * \brief  Measures the part \a target of
  * the multi-partite state vector or density matrix \a A
  * using the set of Kraus operators \a Ks
  * \see qpp::measure_seq()
  *
- * \note The dimension of all \a Ks must match the dimension of \a subsys.
+ * \note The dimension of all \a Ks must match the dimension of \a target.
  * The measurement is destructive, i.e. the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
- * \param subsys Subsystem indexes that are measured
+ * \param target Subsystem indexes that are measured
  * \param d Subsystem dimensions
  * \return Tuple of: 1. Result of the measurement, 2.
  * Vector of outcome probabilities, and 3. Vector of post-measurement
@@ -469,7 +469,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
-        const std::vector<idx>& subsys, idx d = 2) {
+        const std::vector<idx>& target, idx d = 2) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -486,24 +486,24 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
     std::vector<idx> dims(n, d); // local dimensions vector
 
-    return measure(rA, Ks, subsys, dims);
+    return measure(rA, Ks, target, dims);
 }
 
 // std::initializer_list overload, avoids ambiguity for 2-element lists, see
 // http://stackoverflow.com
 // /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
- * \brief  Measures the part \a subsys of
+ * \brief  Measures the part \a target of
  * the multi-partite state vector or density matrix \a A
  * using the set of Kraus operators \a Ks
  * \see qpp::measure_seq()
  *
- * \note The dimension of all \a Ks must match the dimension of \a subsys.
+ * \note The dimension of all \a Ks must match the dimension of \a target.
  * The measurement is destructive, i.e. the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
- * \param subsys Subsystem indexes that are measured
+ * \param target Subsystem indexes that are measured
  * \param d Subsystem dimensions
  * \return Tuple of: 1. Result of the measurement, 2.
  * Vector of outcome probabilities, and 3. Vector of post-measurement
@@ -512,24 +512,25 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A,
-        const std::initializer_list<cmat>& Ks, const std::vector<idx>& subsys,
+        const std::initializer_list<cmat>& Ks, const std::vector<idx>& target,
         idx d = 2) {
-    return measure(A, std::vector<cmat>(Ks), subsys, d);
+    return measure(A, std::vector<cmat>(Ks), target, d);
 }
 
 /**
- * \brief Measures the part \a subsys of
+ * \brief Measures the part \a target of
  * the multi-partite state vector or density matrix \a A
- * in the orthonormal basis or rank-1 POVM specified by the matrix \a V
+ * in the orthonormal basis or rank-1 POVM specified by the columns of the
+ * matrix \a V
  * \see qpp::measure_seq()
  *
- * \note The dimension of \a V must match the dimension of \a subsys.
+ * \note The dimension of \a V must match the dimension of \a target.
  * The measurement is destructive, i.e. the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param V Matrix whose columns represent the measurement basis vectors or the
  * bra parts of the rank-1 POVM
- * \param subsys Subsystem indexes that are measured
+ * \param target Subsystem indexes that are measured
  * \param dims Dimensions of the multi-partite system
  * \return Tuple of: 1. Result of the measurement, 2.
  * Vector of outcome probabilities, and 3. Vector of post-measurement
@@ -538,7 +539,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
-        const std::vector<idx>& subsys, const std::vector<idx>& dims) {
+        const std::vector<idx>& target, const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -551,13 +552,13 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::measure()");
 
-    // check subsys is valid w.r.t. dims
-    if (!internal::check_subsys_match_dims(subsys, dims))
+    // check target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::measure()");
 
-    std::vector<idx> subsys_dims(subsys.size());
-    for (idx i = 0; i < subsys.size(); ++i)
-        subsys_dims[i] = dims[subsys[i]];
+    std::vector<idx> subsys_dims(target.size());
+    for (idx i = 0; i < target.size(); ++i)
+        subsys_dims[i] = dims[target[i]];
 
     idx Dsubsys = prod(std::begin(subsys_dims), std::end(subsys_dims));
 
@@ -586,7 +587,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 #endif // WITH_OPENMP_
         for (idx i = 0; i < M; ++i)
             outstates[i] =
-                ip(static_cast<const ket&>(V.col(i)), rpsi, subsys, dims);
+                ip(static_cast<const ket&>(V.col(i)), rpsi, target, dims);
 
         for (idx i = 0; i < M; ++i) {
             double tmp = norm(outstates[i]);
@@ -614,25 +615,26 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
         for (idx i = 0; i < M; ++i)
             Ks[i] = V.col(i) * adjoint(V.col(i));
 
-        return measure(rA, Ks, subsys, dims);
+        return measure(rA, Ks, target, dims);
     }
     //************ Exception: not ket nor density matrix ************//
     throw exception::MatrixNotSquareNorCvector("qpp::measure()");
 }
 
 /**
- * \brief Measures the part \a subsys of
+ * \brief Measures the part \a target of
  * the multi-partite state vector or density matrix \a A
- * in the orthonormal basis or rank-1 POVM specified by the matrix \a V
+ * in the orthonormal basis or rank-1 POVM specified by the column of the
+ * matrix \a V
  * \see qpp::measure_seq()
  *
- * \note The dimension of \a V must match the dimension of \a subsys.
+ * \note The dimension of \a V must match the dimension of \a target.
  * The measurement is destructive, i.e. the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param V Matrix whose columns represent the measurement basis vectors or the
  * bra parts of the rank-1 POVM
- * \param subsys Subsystem indexes that are measured
+ * \param target Subsystem indexes that are measured
  * \param d Subsystem dimensions
  * \return Tuple of: 1. Result of the measurement, 2.
  * Vector of outcome probabilities, and 3. Vector of post-measurement
@@ -641,7 +643,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
 measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
-        const std::vector<idx>& subsys, idx d = 2) {
+        const std::vector<idx>& target, idx d = 2) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -658,26 +660,26 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
     std::vector<idx> dims(n, d); // local dimensions vector
 
-    return measure(rA, V, subsys, dims);
+    return measure(rA, V, target, dims);
 }
 
 /**
- * \brief Sequentially measures the part \a subsys
+ * \brief Sequentially measures the part \a target
  * of the multi-partite state vector or density matrix \a A
  * in the computational basis
  * \see qpp::measure()
  *
  * \param A Eigen expression
- * \param subsys Subsystem indexes that are measured
+ * \param target Subsystem indexes that are measured
  * \param dims Dimensions of the multi-partite system
  * \return Tuple of: 1. Vector of outcome results of the
- * measurement (ordered in increasing order with respect to \a subsys, i.e.
+ * measurement (ordered in increasing order with respect to \a target, i.e.
  * first measurement result corresponds to the subsystem with the smallest
  * index), 2. Outcome probability, and 3. Post-measurement normalized state
  */
 template <typename Derived>
 std::tuple<std::vector<idx>, double, cmat>
-measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> subsys,
+measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
             std::vector<idx> dims) {
     //    typename std::remove_const<
     //            typename Eigen::MatrixBase<Derived>::EvalReturnType
@@ -707,53 +709,53 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> subsys,
     } else
         throw exception::MatrixNotSquareNorCvector("qpp::measure_seq()");
 
-    // check subsys is valid w.r.t. dims
-    if (!internal::check_subsys_match_dims(subsys, dims))
+    // check target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::measure_seq()");
     // END EXCEPTION CHECKS
 
     std::vector<idx> result;
     double prob = 1;
 
-    // sort subsys in decreasing order,
+    // sort target in decreasing order,
     // the order of measurements does not matter
-    std::sort(std::begin(subsys), std::end(subsys), std::greater<idx>{});
+    std::sort(std::begin(target), std::end(target), std::greater<idx>{});
 
     //************ density matrix or column vector ************//
-    while (subsys.size() > 0) {
-        auto tmp = measure(cA, Gates::get_instance().Id(dims[subsys[0]]),
-                           {subsys[0]}, dims);
+    while (target.size() > 0) {
+        auto tmp = measure(cA, Gates::get_instance().Id(dims[target[0]]),
+                           {target[0]}, dims);
         result.push_back(std::get<0>(tmp));
         prob *= std::get<1>(tmp)[std::get<0>(tmp)];
         cA = std::get<2>(tmp)[std::get<0>(tmp)];
 
         // remove the subsystem
-        dims.erase(std::next(std::begin(dims), subsys[0]));
-        subsys.erase(std::begin(subsys));
+        dims.erase(std::next(std::begin(dims), target[0]));
+        target.erase(std::begin(target));
     }
-    // order result in increasing order with respect to subsys
+    // order result in increasing order with respect to target
     std::reverse(std::begin(result), std::end(result));
 
     return std::make_tuple(result, prob, cA);
 }
 
 /**
- * \brief Sequentially measures the part \a subsys
+ * \brief Sequentially measures the part \a target
  * of the multi-partite state vector or density matrix \a A
  * in the computational basis
  * \see qpp::measure()
  *
  * \param A Eigen expression
- * \param subsys Subsystem indexes that are measured
+ * \param target Subsystem indexes that are measured
  * \param d Subsystem dimensions
  * \return Tuple of: 1. Vector of outcome results of the
- * measurement (ordered in increasing order with respect to \a subsys, i.e.
+ * measurement (ordered in increasing order with respect to \a target, i.e.
  * first measurement result corresponds to the subsystem with the smallest
  * index), 2. Outcome probability, and 3. Post-measurement normalized state
  */
 template <typename Derived>
 std::tuple<std::vector<idx>, double, cmat>
-measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> subsys,
+measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
             idx d = 2) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
@@ -771,7 +773,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> subsys,
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
     std::vector<idx> dims(n, d); // local dimensions vector
 
-    return measure_seq(rA, subsys, dims);
+    return measure_seq(rA, target, dims);
 }
 
 } /* namespace qpp */

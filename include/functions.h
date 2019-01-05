@@ -263,7 +263,6 @@ double norm(const Eigen::MatrixBase<Derived>& A) {
  */
 template <typename Derived>
 std::pair<dyn_col_vect<cplx>, cmat>
-
 eig(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
@@ -345,7 +344,6 @@ cmat evects(const Eigen::MatrixBase<Derived>& A) {
  */
 template <typename Derived>
 std::pair<dyn_col_vect<double>, cmat>
-
 heig(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
@@ -391,11 +389,11 @@ dyn_col_vect<double> hevals(const Eigen::MatrixBase<Derived>& A) {
 }
 
 /**
- * \brief Hermitian eigenvectors
+ * \brief Eigenvectors of Hermitian matrix
  * \see qpp::evects()
  *
  * \param A Eigen expression
- * \return Eigenvectors of Hermitian \a A, as columns of a complex matrix
+ * \return Eigenvectors of Hermitian matrix \a A, as columns of a complex matrix
  */
 template <typename Derived>
 cmat hevects(const Eigen::MatrixBase<Derived>& A) {
