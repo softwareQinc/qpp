@@ -177,13 +177,13 @@ class QCircuit : public IDisplay {
                                     const MeasureType& measure_type) {
         switch (measure_type) {
         case MeasureType::MEASURE_Z:
-            return os << "\t MEASURE_Z";
+            return os << "  <| MEASURE_Z";
         case MeasureType::MEASURE_V:
-            return os << "\t MEASURE_V";
+            return os << "  <| MEASURE_V";
         case MeasureType::MEASURE_KS:
-            return os << "\t MEASURE_KS";
+            return os << "<| MEASURE_KS";
         case MeasureType::NONE:
-            return os << "\t MEASURE NONE";
+            return os << "  <| MEASURE NONE";
         }
     }
 
