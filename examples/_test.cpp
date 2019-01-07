@@ -13,8 +13,10 @@ int main() {
     circ.apply(gt.CNOT, 1, 3, "CNOT on 1 3");
     circ.measureZ(2, "Z meas on qubit 2");
     circ.apply(gt.TOF, 5, 3, 6, "TOF on 5 3 6");
-    circ.measureZ(6, "");
+    circ.measureZ(6);
+    circ.CTRL(gt.X, 6, 7, "Control X 6->7");
     circ.measureV(gt.H, 7, "Measure in X basis");
+    circ.apply(gt.Y, 8);
     circ.measureKs({std::sqrt(2) * gt.X, std::sqrt(2) * gt.Z}, 9, "Kraus");
 
     std::cout << circ;

@@ -239,7 +239,8 @@ struct QCircuit : public IDisplay {
     }
 
     // single ctrl single target
-    void CTRL(const cmat& U, idx ctrl, idx target, const std::string& name) {
+    void CTRL(const cmat& U, idx ctrl, idx target,
+              const std::string& name = "") {
         gates_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, U,
                             std::vector<idx>{ctrl}, std::vector<idx>{target},
                             name);
@@ -247,33 +248,35 @@ struct QCircuit : public IDisplay {
 
     // single ctrl multiple target
     void CTRL(const cmat& U, idx ctrl, const std::vector<idx>& target,
-              const std::string& name) {
+              const std::string& name = "") {
         gates_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, U,
                             std::vector<idx>{ctrl}, target, name);
     }
 
     // multiple ctrl single target
     void CTRL(const cmat& U, const std::vector<idx>& ctrl, idx target,
-              const std::string& name) {
+              const std::string& name = "") {
         gates_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, U, ctrl,
                             std::vector<idx>{target}, name);
     }
 
     // multiple ctrl multiple target
     void CTRL(const cmat& U, const std::vector<idx>& ctrl,
-              const std::vector<idx>& target, const std::string& name) {
+              const std::vector<idx>& target, const std::string& name = "") {
         gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, U, ctrl,
                             std::vector<idx>{target}, name);
     }
 
     //  custom controlled gate with multiple controls and multiple targets
     void CTRL_custom(const cmat& U, const std::vector<idx>& ctrl,
-                     const std::vector<idx>& target, const std::string& name) {
+                     const std::vector<idx>& target,
+                     const std::string& name = "") {
         gates_.emplace_back(GateType::CUSTOM_CTRL, U, ctrl, target, name);
     }
 
     // single ctrl single target
-    void cCTRL(const cmat& U, idx ctrl, idx target, const std::string& name) {
+    void cCTRL(const cmat& U, idx ctrl, idx target,
+               const std::string& name = "") {
         gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, U,
                             std::vector<idx>{ctrl}, std::vector<idx>{target},
                             name);
@@ -281,47 +284,48 @@ struct QCircuit : public IDisplay {
 
     // single ctrl multiple target
     void cCTRL(const cmat& U, idx ctrl, const std::vector<idx>& target,
-               const std::string& name) {
+               const std::string& name = "") {
         gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, U,
                             std::vector<idx>{ctrl}, target, name);
     }
 
     // multiple ctrl single target
     void cCTRL(const cmat& U, const std::vector<idx>& ctrl, idx target,
-               const std::string& name) {
+               const std::string& name = "") {
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, U, ctrl,
                             std::vector<idx>{target}, name);
     }
 
     // multiple ctrl multiple target
     void cCTRL(const cmat& U, const std::vector<idx>& ctrl,
-               const std::vector<idx>& target, const std::string& name) {
+               const std::vector<idx>& target, const std::string& name = "") {
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, U, ctrl,
                             std::vector<idx>{target}, name);
     }
 
     //  custom controlled gate with multiple controls and multiple targets
     void cCTRL_custom(const cmat& U, const std::vector<idx>& ctrl,
-                      const std::vector<idx>& target, const std::string& name) {
+                      const std::vector<idx>& target,
+                      const std::string& name = "") {
         gates_.emplace_back(GateType::CUSTOM_cCTRL, U, ctrl, target, name);
     }
 
     // Z measurement of single qudit
-    void measureZ(idx i, const std::string& name) {
+    void measureZ(idx i, const std::string& name = "") {
         measurements_.emplace_back(MeasureType::MEASURE_Z, std::vector<cmat>{},
                                    std::vector<idx>{i}, name);
     }
 
     // measurement of single qudit in the orthonormal basis or rank-1 POVM
     // specified by the columns of matrix V
-    void measureV(const cmat& V, idx i, const std::string& name) {
+    void measureV(const cmat& V, idx i, const std::string& name = "") {
         measurements_.emplace_back(MeasureType::MEASURE_V, std::vector<cmat>{V},
                                    std::vector<idx>{i}, name);
     }
 
     // generalized measurement of single qudit with Kraus operators Ks
     void measureKs(const std::vector<cmat>& Ks, idx i,
-                   const std::string& name) {
+                   const std::string& name = "") {
         measurements_.emplace_back(MeasureType::MEASURE_KS, Ks,
                                    std::vector<idx>{i}, name);
     }
