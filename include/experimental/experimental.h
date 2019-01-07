@@ -359,7 +359,8 @@ class QCircuit : public IDisplay {
                            current_measurement_step) {
                         os << measurements_[measurement_ip].measurement_type_
                            << ", "
-                           << "\"" << measurements_[measurement_ip].name_ << "\""
+                           << "\"" << measurements_[measurement_ip].name_
+                           << "\""
                            << ", ";
                         os << disp(measurements_[measurement_ip].target_, ",");
                         os << '\n';
