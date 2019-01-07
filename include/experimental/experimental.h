@@ -38,7 +38,7 @@ namespace qpp {
  * \brief Experimental/test functions/classes, do not use or modify
  */
 namespace experimental {
-struct Test {
+struct QCircuit {
     idx nq_;                     ///< number of qudits
     idx nc_;                     ///< number of classical "dits"
     idx d_;                      ///< dimension
@@ -134,8 +134,8 @@ struct Test {
     };
 
     ///< quantum circuit representation
-    std::vector<GateStep> circuit_;
-    std::vector<MeasureStep> measure_;
+    std::vector<GateStep> gates_;
+    std::vector<MeasureStep> measurements_;
 
   protected:
     std::vector<idx> update_subsys_(const std::vector<idx>& subsys) {
@@ -153,107 +153,106 @@ struct Test {
     }
 
   public:
-    Test(idx nq, idx nc = 0, idx d = 2)
+    QCircuit(idx nq, idx nc = 0, idx d = 2)
         : nq_{nq}, nc_{nc}, d_{d}, psi_{st.zero(nq_, d_)},
           measured_(nq_, false), dits_(nc_, 0) {}
 
     // single gate single qubit/qudit
     void apply(const cmat& U, idx i, const std::string& name = "") {
-        circuit_.emplace_back(GateType::SINGLE, U, std::vector<idx>{},
-                              std::vector<idx>{i}, name);
+        gates_.emplace_back(GateType::SINGLE, U, std::vector<idx>{},
+                            std::vector<idx>{i}, name);
     }
     // single gate 2 qubits/qudits
     void apply(const cmat& U, idx i, idx j, const std::string& name = "") {
-        circuit_.emplace_back(GateType::TWO, U, std::vector<idx>{},
-                              std::vector<idx>{i, j}, name);
+        gates_.emplace_back(GateType::TWO, U, std::vector<idx>{},
+                            std::vector<idx>{i, j}, name);
     }
     // single gate 3 qubits/qudits
     void apply(const cmat& U, idx i, idx j, idx k,
                const std::string& name = "") {
-        circuit_.emplace_back(GateType::THREE, U, std::vector<idx>{},
-                              std::vector<idx>{i, j, k}, name);
+        gates_.emplace_back(GateType::THREE, U, std::vector<idx>{},
+                            std::vector<idx>{i, j, k}, name);
     }
 
     // multiple qubits/qudits same gate
     void apply(const cmat& U, const std::vector<idx>& target,
                const std::string& name = "") {
-        circuit_.emplace_back(GateType::FAN, U, std::vector<idx>{}, target,
-                              name);
+        gates_.emplace_back(GateType::FAN, U, std::vector<idx>{}, target, name);
     }
 
     // custom gate
     void apply_custom(const cmat& U, const std::vector<idx>& target,
                       const std::string& name = "") {
-        circuit_.emplace_back(GateType::CUSTOM, U, std::vector<idx>{}, target,
-                              name);
+        gates_.emplace_back(GateType::CUSTOM, U, std::vector<idx>{}, target,
+                            name);
     }
 
     // single ctrl single target
     void CTRL(const cmat& U, idx ctrl, idx target, const std::string& name) {
-        circuit_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, U,
-                              std::vector<idx>{ctrl}, std::vector<idx>{target},
-                              name);
+        gates_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, U,
+                            std::vector<idx>{ctrl}, std::vector<idx>{target},
+                            name);
     }
 
     // single ctrl multiple target
     void CTRL(const cmat& U, idx ctrl, const std::vector<idx>& target,
               const std::string& name) {
-        circuit_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, U,
-                              std::vector<idx>{ctrl}, target, name);
+        gates_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, U,
+                            std::vector<idx>{ctrl}, target, name);
     }
 
     // multiple ctrl single target
     void CTRL(const cmat& U, const std::vector<idx>& ctrl, idx target,
               const std::string& name) {
-        circuit_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, U, ctrl,
-                              std::vector<idx>{target}, name);
+        gates_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, U, ctrl,
+                            std::vector<idx>{target}, name);
     }
 
     // multiple ctrl multiple target
     void CTRL(const cmat& U, const std::vector<idx>& ctrl,
               const std::vector<idx>& target, const std::string& name) {
-        circuit_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, U, ctrl,
-                              std::vector<idx>{target}, name);
+        gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, U, ctrl,
+                            std::vector<idx>{target}, name);
     }
 
     //  custom controlled gate with multiple controls and multiple targets
     void CTRL_custom(const cmat& U, const std::vector<idx>& ctrl,
                      const std::vector<idx>& target, const std::string& name) {
-        circuit_.emplace_back(GateType::CUSTOM_CTRL, U, ctrl, target, name);
+        gates_.emplace_back(GateType::CUSTOM_CTRL, U, ctrl, target, name);
     }
 
     // single ctrl single target
     void cCTRL(const cmat& U, idx ctrl, idx target, const std::string& name) {
-        circuit_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, U,
-                              std::vector<idx>{ctrl}, std::vector<idx>{target},
-                              name);
+        gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, U,
+                            std::vector<idx>{ctrl}, std::vector<idx>{target},
+                            name);
     }
 
     // single ctrl multiple target
     void cCTRL(const cmat& U, idx ctrl, const std::vector<idx>& target,
                const std::string& name) {
-        circuit_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, U,
-                              std::vector<idx>{ctrl}, target, name);
+        gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, U,
+                            std::vector<idx>{ctrl}, target, name);
     }
 
     // multiple ctrl single target
     void cCTRL(const cmat& U, const std::vector<idx>& ctrl, idx target,
                const std::string& name) {
-        circuit_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, U, ctrl,
-                              std::vector<idx>{target}, name);
+        gates_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, U, ctrl,
+                            std::vector<idx>{target}, name);
     }
 
     // multiple ctrl multiple target
     void cCTRL(const cmat& U, const std::vector<idx>& ctrl,
                const std::vector<idx>& target, const std::string& name) {
-        circuit_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, U, ctrl,
-                              std::vector<idx>{target}, name);
+        gates_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, U, ctrl,
+                            std::vector<idx>{target}, name);
     }
 
     //  custom controlled gate with multiple controls and multiple targets
     void cCTRL_custom(const cmat& U, const std::vector<idx>& ctrl,
                       const std::vector<idx>& target, const std::string& name) {
-        circuit_.emplace_back(GateType::CUSTOM_cCTRL, U, ctrl, target, name);
+        gates_.emplace_back(GateType::CUSTOM_cCTRL, U, ctrl, target, name);
     }
 
     friend std::ostream& operator<<(std::ostream& os,
