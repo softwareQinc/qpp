@@ -346,7 +346,9 @@ struct QCircuit : public IDisplay {
             os << disp(elem.target_, ",");
             os << '\n';
         }
+        os << std::boolalpha;
         os << "measured: " << disp(measured_, ",") << '\n';
+        os << std::noboolalpha;
         os << "dits: " << disp(dits_, ",") << '\n';
 
         return os;
