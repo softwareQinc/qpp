@@ -94,12 +94,11 @@ struct QCircuit : public IDisplay {
         NONE, ///< signals no gate
     };
     enum class MeasureType {
-        MEASURE_Z,  ///< Z measurement of single qubit/qudit
-        MEASURE_V,  ///< measurement of single qubit/qudit in the orthonormal
-                    ///< basis or rank-1 POVM specified by the columns of matrix
-                    ///< \a V
-        MEASURE_KS, ///< generalized measurement of single qubit/qudit with
-                    ///< Kraus operators Ks
+        MEASURE_Z,  ///< Z measurement of single qudit
+        MEASURE_V,  ///< measurement of single qudit in the orthonormal basis
+                    ///< or rank-1 POVM specified by the columns of matrix \a V
+        MEASURE_KS, ///< generalized measurement of single qudit with Kraus
+                    ///< operators Ks
         NONE,       ///< signals no measurement
     };
 
@@ -307,13 +306,28 @@ struct QCircuit : public IDisplay {
         gates_.emplace_back(GateType::CUSTOM_cCTRL, U, ctrl, target, name);
     }
 
-    // Z measurement on single qudit
+    // Z measurement of single qudit
     void measureZ(idx i, const std::string& name) {
         measurements_.emplace_back(MeasureType::MEASURE_Z, std::vector<cmat>{},
                                    std::vector<idx>{i}, name);
     }
 
+    // measurement of single qudit in the orthonormal basis or rank-1 POVM
+    // specified by the columns of matrix V
+    void measureV(const cmat& V, idx i, const std::string& name) {
+        measurements_.emplace_back(MeasureType::MEASURE_V, std::vector<cmat>{V},
+                                   std::vector<idx>{i}, name);
+    }
+
+    // generalized measurement of single qudit with Kraus operators Ks
+    void measureKs(const std::vector<cmat>& Ks, idx i,
+                   const std::string& name) {
+        measurements_.emplace_back(MeasureType::MEASURE_KS, Ks,
+                                   std::vector<idx>{i}, name);
+    }
+
     std::ostream& display(std::ostream& os) const override {
+        os << "nq = " << nq_ << " nc = " << nc_ << " d = " << d_ << '\n';
         for (auto&& elem : gates_) {
             os << elem.gate_type_ << " "
                << "'" << elem.name_ << "'"
@@ -328,6 +342,8 @@ struct QCircuit : public IDisplay {
             os << disp(elem.target_, ",");
             os << '\n';
         }
+        os << "measured: " << disp(measured_, ",") << '\n';
+        os << "dits: " << disp(dits_, ",") << '\n';
 
         return os;
     }

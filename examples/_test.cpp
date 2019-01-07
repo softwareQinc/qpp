@@ -14,6 +14,8 @@ int main() {
     circ.measureZ(2, "Z meas on qubit 2");
     circ.apply(gt.TOF, 5, 3, 6, "TOF on 5 3 6");
     circ.measureZ(6, "");
+    circ.measureV(gt.H, 7, "Measure in X basis");
+    circ.measureKs({std::sqrt(2) * gt.X, std::sqrt(2) * gt.Z}, 9, "Kraus");
 
     std::cout << circ;
 }
