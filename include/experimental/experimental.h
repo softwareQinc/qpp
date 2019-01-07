@@ -38,7 +38,7 @@ namespace qpp {
  * \brief Experimental/test functions/classes, do not use or modify
  */
 namespace experimental {
-struct QCircuit {
+struct QCircuit : public IDisplay {
     idx nq_;                     ///< number of qudits
     idx nc_;                     ///< number of classical "dits"
     idx d_;                      ///< dimension
@@ -132,6 +132,58 @@ struct QCircuit {
             : measurement_type_{measurement_type}, mats_{mats}, target_{target},
               name_{name} {}
     };
+
+    friend std::ostream& operator<<(std::ostream& os,
+                                    const GateType& gate_type) {
+        switch (gate_type) {
+        case GateType::SINGLE:
+            return os << "SINGLE";
+        case GateType::TWO:
+            return os << "TWO";
+        case GateType::THREE:
+            return os << "THREE";
+        case GateType::FAN:
+            return os << "FAN";
+        case GateType::CUSTOM:
+            return os << "CUSTOM";
+        case GateType::SINGLE_CTRL_SINGLE_TARGET:
+            return os << "SINGLE_CTRL_SINGLE_TARGET";
+        case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
+            return os << "SINGLE_CTRL_MULTIPLE_TARGET";
+        case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
+            return os << "MULTIPLE_CTRL_SINGLE_TARGET";
+        case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
+            return os << "MULTIPLE_CTRL_MULTIPLE_TARGET";
+        case GateType::CUSTOM_CTRL:
+            return os << "CUSTOM_CTRL";
+        case GateType::SINGLE_cCTRL_SINGLE_TARGET:
+            return os << "SINGLE_cCTRL_SINGLE_TARGET";
+        case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
+            return os << "SINGLE_cCTRL_MULTIPLE_TARGET";
+        case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
+            return os << "MULTIPLE_cCTRL_SINGLE_TARGET";
+        case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
+            return os << "MULTIPLE_cCTRL_MULTIPLE_TARGET";
+        case GateType::CUSTOM_cCTRL:
+            return os << "CUSTOM_cCTRL";
+        case GateType::NONE:
+            return os << "NONE";
+        }
+    }
+
+    friend std::ostream& operator<<(std::ostream& os,
+                                    const MeasureType& measure_type) {
+        switch (measure_type) {
+        case MeasureType::MEASURE_Z:
+            return os << "MEASURE_Z";
+        case MeasureType::MEASURE_V:
+            return os << "MEASURE_V";
+        case MeasureType::MEASURE_KS:
+            return os << "MEASURE_KS";
+        case MeasureType::NONE:
+            return os << "NONE";
+        }
+    }
 
     ///< quantum circuit representation
     std::vector<GateStep> gates_;
@@ -255,56 +307,29 @@ struct QCircuit {
         gates_.emplace_back(GateType::CUSTOM_cCTRL, U, ctrl, target, name);
     }
 
-    friend std::ostream& operator<<(std::ostream& os,
-                                    const GateType& gate_type) {
-        switch (gate_type) {
-        case GateType::SINGLE:
-            return os << "SINGLE";
-        case GateType::TWO:
-            return os << "TWO";
-        case GateType::THREE:
-            return os << "THREE";
-        case GateType::FAN:
-            return os << "FAN";
-        case GateType::CUSTOM:
-            return os << "CUSTOM";
-        case GateType::SINGLE_CTRL_SINGLE_TARGET:
-            return os << "SINGLE_CTRL_SINGLE_TARGET";
-        case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
-            return os << "SINGLE_CTRL_MULTIPLE_TARGET";
-        case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
-            return os << "MULTIPLE_CTRL_SINGLE_TARGET";
-        case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
-            return os << "MULTIPLE_CTRL_MULTIPLE_TARGET";
-        case GateType::CUSTOM_CTRL:
-            return os << "CUSTOM_CTRL";
-        case GateType::SINGLE_cCTRL_SINGLE_TARGET:
-            return os << "SINGLE_cCTRL_SINGLE_TARGET";
-        case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
-            return os << "SINGLE_cCTRL_MULTIPLE_TARGET";
-        case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
-            return os << "MULTIPLE_cCTRL_SINGLE_TARGET";
-        case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
-            return os << "MULTIPLE_cCTRL_MULTIPLE_TARGET";
-        case GateType::CUSTOM_cCTRL:
-            return os << "CUSTOM_cCTRL";
-        case GateType::NONE:
-            return os << "NONE";
-        }
+    // Z measurement on single qudit
+    void measureZ(idx i, const std::string& name) {
+        measurements_.emplace_back(MeasureType::MEASURE_Z, std::vector<cmat>{},
+                                   std::vector<idx>{i}, name);
     }
 
-    friend std::ostream& operator<<(std::ostream& os,
-                                    const MeasureType& measure_type) {
-        switch (measure_type) {
-        case MeasureType::MEASURE_Z:
-            return os << "MEASURE_Z";
-        case MeasureType::MEASURE_V:
-            return os << "MEASURE_V";
-        case MeasureType::MEASURE_KS:
-            return os << "MEASURE_KS";
-        case MeasureType::NONE:
-            return os << "NONE";
+    std::ostream& display(std::ostream& os) const override {
+        for (auto&& elem : gates_) {
+            os << elem.gate_type_ << " "
+               << "'" << elem.name_ << "'"
+               << " ";
+            os << disp(elem.ctrl_, ",") << " " << disp(elem.target_, ",");
+            os << '\n';
         }
+        for (auto&& elem : measurements_) {
+            os << elem.measurement_type_ << " "
+               << "'" << elem.name_ << "'"
+               << " ";
+            os << disp(elem.target_, ",");
+            os << '\n';
+        }
+
+        return os;
     }
 }; // namespace experimental
 
