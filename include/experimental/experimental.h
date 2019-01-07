@@ -38,222 +38,105 @@ namespace qpp {
  * \brief Experimental/test functions/classes, do not use or modify
  */
 namespace experimental {
-template <class T>
-class QCirc {
-    idx d_;                      // dimension, qubit circuit (d = 2) by default
-    idx nq_, nc_;                // quantum bits, classical bits/dits
-    ket psi_;                    // current state of the circuit
-    std::vector<bool> measured_; // set elements to one if the corresponding
-                                 // qubit had been measured
-    std::vector<idx> results_;   // get_results of the measurements
-    std::vector<idx> bits_;      // store the values of the classical bits/dits
-
-  protected:
-    std::vector<idx> update_subsys_(const std::vector<idx>& subsys) {
-        std::vector<idx> result = subsys;
-        idx subsys_size = subsys.size();
-        for (idx i = 0; i < subsys_size; ++i) {
-            for (idx m = 0; m < subsys[i]; ++m) {
-                if (measured_[m]) { // if the qubit m was measured
-                    --result[i];
-                }
-            }
-        }
-        std::sort(std::begin(result), std::end(result), std::less<idx>{});
-        return result;
-    }
-
-  public:
-    QCirc(idx nq, idx nc, idx d = 2)
-        : d_{d}, nq_{nq}, nc_{nc}, psi_{st.zero(nq_, d_)},
-          measured_(nq_, false), results_(nq_, -1), bits_(nc_, 0) {}
-
-    // destructive measurement
-    void measure(std::vector<idx> subsys) {
-        // sort subsys in decreasing order
-        idx subsys_size = subsys.size();
-        for (idx i = 0; i < subsys_size; ++i) {
-            if (measured_[subsys[i]])
-                throw exception::CustomException(
-                    "qpp::QCirc::measure()", "Subsystem was measured before");
-        }
-        // update subsystem labels
-        std::vector<idx> subsys_updated = update_subsys_(subsys);
-        for (idx i = 0; i < subsys_size; ++i) {
-            measured_[subsys[i]] = true;
-        }
-        auto m = measure_seq(psi_, subsys_updated, d_);
-        auto result = std::get<0>(m); // measurement result
-        for (idx i = 0; i < subsys_size; ++i)
-            results_[subsys[i]] = result[i];
-        // update psi_
-        psi_ = std::get<2>(m);
-        // std::cout << disp(psi_) << '\n';
-    }
-
-    // destructive measurement of all remaining qubits
-    void measure_all() {
-        std::vector<idx> subsys;
-        for (idx i = 0; i < nq_; ++i) {
-            if (!measured_[i])
-                subsys.push_back(i);
-        }
-        // update subsystem labels
-        std::vector<idx> subsys_updated = update_subsys_(subsys);
-        if (subsys.size() != 0)
-            this->measure(subsys);
-        else
-            throw exception::CustomException("qpp::QCirc::measure_all()",
-                                             "All qubits were measured before");
-    }
-
-    void apply(const cmat& gate, const std::vector<idx>& subsys) {
-        psi_ = qpp::apply(psi_, gate, update_subsys_(subsys), d_);
-    }
-
-    void applyCTRL(const cmat& gate, const std::vector<idx>& ctrl,
-                   const std::vector<idx>& target) {
-        psi_ = qpp::applyCTRL(psi_, gate, ctrl, target, d_);
-    }
-
-    void apply_all(const cmat& gate) {
-        for (idx i = 0; i < nq_; ++i)
-            if (!measured_[i]) {
-                psi_ = qpp::apply(psi_, gate, update_subsys_({i}), d_);
-            }
-    }
-
-    // resets the circuit
-    void reset() {
-        psi_ = st.zero(nq_);
-        measured_ = std::vector<bool>(nq_, false);
-        results_ = std::vector<idx>(nq_, -1);
-        bits_ = std::vector<idx>(nc_, 0);
-    }
-
-    /* getters */
-    // local dimension
-    idx d() const noexcept { return d_; }
-
-    // total number of qubits, regardless of being measured or not
-    idx get_nq() const noexcept { return nq_; }
-
-    // total number of classical bits/dits
-    idx get_nc() const noexcept { return nc_; }
-
-    // total number of qubits AND classical bits/dits
-    idx get_size() const noexcept { return nq_ + nc_; }
-
-    // total number of measured qubits
-    idx get_num_measured_qubits() const noexcept {
-        return std::count(std::begin(measured_), std::end(measured_), true);
-    }
-
-    // total number of non-measured qubits
-    idx get_num_active_qubits() const noexcept {
-        return this->get_nq() - this->get_num_measured_qubits();
-    }
-
-    // returns the up-to-date quantum state
-    ket get_psi() const { return psi_; }
-
-    // returns the results of the measurements
-    std::vector<idx> get_results() const { return results_; }
-
-    // returns the current result of the measurement as an integer,
-    // ignores non-measured qubits
-    idx get_results_as_N() const {
-        std::vector<idx> tmp;
-        for (idx i = 0; i < nq_; ++i) {
-            if (measured_[i])
-                tmp.push_back(results_[i]);
-        }
-
-        return multiidx2n(tmp, std::vector<idx>(tmp.size(), d_));
-    }
-
-    // returns the classical bits/dits array
-    std::vector<idx>& bits() noexcept { return bits_; }
-    /* end getters */
-};
-
-class LogicalCircuit : public IDisplay {
-    using idx_vec = std::vector<idx>;
-    // gate, gate name, control, targer
-    using elem_type = std::tuple<cmat, std::string, idx_vec, idx_vec>;
-    std::vector<elem_type> gates_;
-    idx gate_count = 0;
-
-  public:
-    void add(const cmat& gate, const std::string& gate_name,
-             const idx_vec& ctrl, const idx_vec& target) {
-        auto elem = std::make_tuple(gate, gate_name, ctrl, target);
-        gates_.push_back(elem);
-        ++gate_count;
-    }
-
-    idx get_gate_count() const { return gate_count; }
-
-    std::ostream& display(std::ostream& os) const override {
-        os << "[";
-        bool first = true;
-        for (auto&& elem : gates_) {
-            if (first) {
-                os << "(";
-                first = false;
-            } else {
-                os << ", (";
-            }
-            os << std::get<1>(elem) << ", ";
-            os << disp(std::get<2>(elem), ", ");
-            os << ", ";
-            os << disp(std::get<3>(elem), ", ");
-            os << ")";
-        }
-        os << "]";
-
-        return os;
-    }
-};
-
-class Test {
-    idx nq_;                     ///< number of qubits/qudits
+struct Test {
+    idx nq_;                     ///< number of qudits
     idx nc_;                     ///< number of classical "dits"
     idx d_;                      ///< dimension
     ket psi_;                    ///< state vector
-    std::vector<bool> measured_; ///< keeps track of measured qubits/qudits
-    std::vector<idx> results_;   ///< keeps track of the measurement results
-    std::vector<idx> dits_;      ///< classical bits/dits
+    std::vector<bool> measured_; ///< keeps track of measured qudits
+    std::vector<idx> dits_;      ///< classical dits
 
     /**
      * \brief Type of operation being executed at one step
      */
-    enum class Operation {
-        GATE,       ///< unitary gate
-        CTRL_GATE,  ///< controlled unitary gate
-        MEASURE_Z,  ///< Z measurement
-        MEASURE_V,  ///< measurement in the orthonormal basis or rank-1 POVM
-                    ///< specified by the columns of matrix \a V
-        MEASURE_KS, ///< generalized measurement with Kraus operators Ks
+    enum class GateType {
+        SINGLE, ///< unitary gate on a single qudit
+
+        TWO, ///< unitary gate on 2 qudits
+
+        THREE, ///< unitary gate on 3 qudits
+
+        FAN, ///< same unitary gate on multiple qudits
+
+        CUSTOM, ///< custom gate on multiple qudits
+
+        SINGLE_CTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
+                                   ///< one control and one target
+
+        SINGLE_CTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
+                                     ///< one control and multiple targets
+
+        MULTIPLE_CTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
+                                     ///< multiple controls and single target
+
+        MULTIPLE_CTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
+                                       ///< multiple controls and multiple
+                                       ///< targets
+
+        CUSTOM_CTRL, ///< custom controlled gate with multiple
+                     ///< controls and multiple targets
+
+        SINGLE_cCTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
+        ///< one classical control and one target
+
+        SINGLE_cCTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
+        ///< one classical control and multiple targets
+
+        MULTIPLE_cCTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
+        ///< multiple classical controls and single target
+
+        MULTIPLE_cCTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate
+        ///< with multiple classical controls and multiple targets
+
+        CUSTOM_cCTRL, ///< custom controlled gate with multiple
+        ///< controls and multiple targets
+
+        NONE, ///< signals no gate
+    };
+    enum class MeasureType {
+        MEASURE_Z,  ///< Z measurement of single qubit/qudit
+        MEASURE_V,  ///< measurement of single qubit/qudit in the orthonormal
+                    ///< basis or rank-1 POVM specified by the columns of matrix
+                    ///< \a V
+        MEASURE_KS, ///< generalized measurement of single qubit/qudit with
+                    ///< Kraus operators Ks
+        NONE,       ///< signals no measurement
     };
 
     /**
-     * \brief One step in the circuit
+     * \brief One step consisting of unitary gates in the circuit
      */
-    struct StepType {
-        Operation op_;            ///< operation
-        std::vector<cmat> mats_;  ///< matrix/matrices being applied/measured
-        std::vector<idx> ctrl_;   ///< control (empty for measurements)
-        std::vector<idx> target_; ///< target where the gate/measurement is
-                                  ///< being applied
+    struct GateStep {
+        GateType gate_type_ = GateType::NONE; ///< gate type
+        cmat gate_;                           ///< gate
+        std::vector<idx> ctrl_;               ///< control
+        std::vector<idx> target_; ///< target where the gate is being applied
         std::string name_;        ///< custom name of the step
-        StepType(Operation op, const std::vector<cmat>& mats,
+        GateStep() = default;
+        GateStep(GateType gate_type, const cmat& gate,
                  const std::vector<idx>& ctrl, const std::vector<idx>& target,
-                 const std::string& name)
-            : op_{op}, mats_{mats}, ctrl_{ctrl}, target_{target}, name_{name} {}
+                 const std::string& name = "")
+            : gate_type_{gate_type}, gate_{gate}, ctrl_{ctrl}, target_{target},
+              name_{name} {}
     };
 
-    std::vector<StepType> circuit_; ///< quantum circuit representation
+    struct MeasureStep {
+        MeasureType measurement_type_ = MeasureType::NONE; ///< measurement type
+        std::vector<cmat> mats_;  ///< matrix/matrices being measured
+        std::vector<idx> target_; ///< target where the measurement is applied
+        std::string name_;        ///< custom name of the step
+        MeasureStep() = default;
+        MeasureStep(MeasureType measurement_type, const std::vector<cmat>& mats,
+                    const std::vector<idx>& target,
+                    const std::string& name = "")
+            : measurement_type_{measurement_type}, mats_{mats}, target_{target},
+              name_{name} {}
+    };
+
+    ///< quantum circuit representation
+    std::vector<GateStep> circuit_;
+    std::vector<MeasureStep> measure_;
+
   protected:
     std::vector<idx> update_subsys_(const std::vector<idx>& subsys) {
         std::vector<idx> result = subsys;
@@ -272,79 +155,161 @@ class Test {
   public:
     Test(idx nq, idx nc = 0, idx d = 2)
         : nq_{nq}, nc_{nc}, d_{d}, psi_{st.zero(nq_, d_)},
-          measured_(nq_, false), results_(nq_, -1), dits_(nc_, 0) {}
+          measured_(nq_, false), dits_(nc_, 0) {}
 
-    /**
-     * \brief Apply quantum gate
-     *
-     * \param A Eigen expression (quantum gate)
-     * \param target Subsystem indexes where the gate \a A is applied
-     * \param name Optional name of the operation
-     */
-    template <typename Derived>
-    void apply(const Eigen::MatrixBase<Derived>& A,
-               const std::vector<idx>& target, const std::string& name = "") {
-        circuit_.emplace_back(Operation::GATE, std::vector<cmat>{A},
-                              std::vector<idx>{}, target, name);
+    // single gate single qubit/qudit
+    void apply(const cmat& U, idx i, const std::string& name = "") {
+        circuit_.emplace_back(GateType::SINGLE, U, std::vector<idx>{},
+                              std::vector<idx>{i}, name);
     }
-    /**
-     * \brief Apply controlled quantum gate
-
-     * \param A Eigen expression (quantum gate)
-     * \param ctrl Control subsystem indexes
-     * \param target Subsystem indexes where the gate \a A is applied
-     * \param name Optional name of the operation
-     */
-    template <typename Derived>
-    void applyCTRL(const Eigen::MatrixBase<Derived>& A,
-                   const std::vector<idx>& ctrl, const std::vector<idx>& target,
-                   const std::string& name = "") {
-        circuit_.emplace_back(Operation::CTRL_GATE, std::vector<cmat>{A}, ctrl,
-                              target, name);
+    // single gate 2 qubits/qudits
+    void apply(const cmat& U, idx i, idx j, const std::string& name = "") {
+        circuit_.emplace_back(GateType::TWO, U, std::vector<idx>{},
+                              std::vector<idx>{i, j}, name);
+    }
+    // single gate 3 qubits/qudits
+    void apply(const cmat& U, idx i, idx j, idx k,
+               const std::string& name = "") {
+        circuit_.emplace_back(GateType::THREE, U, std::vector<idx>{},
+                              std::vector<idx>{i, j, k}, name);
     }
 
-    /**
-     * \brief Measures the part \a target of state vector in the Z basis
-     *
-     * \param target Subsystem indexes that are measured
-     * \param name Optional name of the operation
-     */
-    void measureZ(const std::vector<idx>& target,
-                  const std::string& name = "") {
-        circuit_.emplace_back(Operation::MEASURE_Z, std::vector<cmat>{},
-                              std::vector<idx>{}, target, name);
+    // multiple qubits/qudits same gate
+    void apply(const cmat& U, const std::vector<idx>& target,
+               const std::string& name = "") {
+        circuit_.emplace_back(GateType::FAN, U, std::vector<idx>{}, target,
+                              name);
     }
 
-    /**
-     * \brief Measures the part \a target of state vector in the orthonormal
-     * basis or rank-1 POVM specified by the matrix \a V
-     *
-     * \param V Matrix whose columns represent the measurement basis vectors or
-     *        the bra parts of the rank-1 POVM
-     * \param target Subsystem indexes that are measured
-     * \param name Optional name of the operation
-     */
-    void measureV(const cmat& V, const std::vector<idx>& target,
-                  const std::string& name = "") {
-        circuit_.emplace_back(Operation::MEASURE_V, std::vector<cmat>{V},
-                              std::vector<idx>{}, target, name);
+    // custom gate
+    void apply_custom(const cmat& U, const std::vector<idx>& target,
+                      const std::string& name = "") {
+        circuit_.emplace_back(GateType::CUSTOM, U, std::vector<idx>{}, target,
+                              name);
     }
 
-    /**
-     * \brief Measures the part \a target of state vector using the set of
-     * Kraus operators \a Ks
-     *
-     * \param Ks Set of Kraus operators
-     * \param target Subsystem indexes that are measured
-     */
-    void measureKs(const std::vector<cmat>& Ks, const std::vector<idx>& target,
-                   const std::string& name = "") {
-        circuit_.emplace_back(Operation::MEASURE_KS, Ks, std::vector<idx>{},
-                              target, name);
+    // single ctrl single target
+    void CTRL(const cmat& U, idx ctrl, idx target, const std::string& name) {
+        circuit_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, U,
+                              std::vector<idx>{ctrl}, std::vector<idx>{target},
+                              name);
     }
-};
 
-} /* namespace experimental */
+    // single ctrl multiple target
+    void CTRL(const cmat& U, idx ctrl, const std::vector<idx>& target,
+              const std::string& name) {
+        circuit_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, U,
+                              std::vector<idx>{ctrl}, target, name);
+    }
+
+    // multiple ctrl single target
+    void CTRL(const cmat& U, const std::vector<idx>& ctrl, idx target,
+              const std::string& name) {
+        circuit_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, U, ctrl,
+                              std::vector<idx>{target}, name);
+    }
+
+    // multiple ctrl multiple target
+    void CTRL(const cmat& U, const std::vector<idx>& ctrl,
+              const std::vector<idx>& target, const std::string& name) {
+        circuit_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, U, ctrl,
+                              std::vector<idx>{target}, name);
+    }
+
+    //  custom controlled gate with multiple controls and multiple targets
+    void CTRL_custom(const cmat& U, const std::vector<idx>& ctrl,
+                     const std::vector<idx>& target, const std::string& name) {
+        circuit_.emplace_back(GateType::CUSTOM_CTRL, U, ctrl, target, name);
+    }
+
+    // single ctrl single target
+    void cCTRL(const cmat& U, idx ctrl, idx target, const std::string& name) {
+        circuit_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, U,
+                              std::vector<idx>{ctrl}, std::vector<idx>{target},
+                              name);
+    }
+
+    // single ctrl multiple target
+    void cCTRL(const cmat& U, idx ctrl, const std::vector<idx>& target,
+               const std::string& name) {
+        circuit_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, U,
+                              std::vector<idx>{ctrl}, target, name);
+    }
+
+    // multiple ctrl single target
+    void cCTRL(const cmat& U, const std::vector<idx>& ctrl, idx target,
+               const std::string& name) {
+        circuit_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, U, ctrl,
+                              std::vector<idx>{target}, name);
+    }
+
+    // multiple ctrl multiple target
+    void cCTRL(const cmat& U, const std::vector<idx>& ctrl,
+               const std::vector<idx>& target, const std::string& name) {
+        circuit_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, U, ctrl,
+                              std::vector<idx>{target}, name);
+    }
+
+    //  custom controlled gate with multiple controls and multiple targets
+    void cCTRL_custom(const cmat& U, const std::vector<idx>& ctrl,
+                      const std::vector<idx>& target, const std::string& name) {
+        circuit_.emplace_back(GateType::CUSTOM_cCTRL, U, ctrl, target, name);
+    }
+
+    friend std::ostream& operator<<(std::ostream& os,
+                                    const GateType& gate_type) {
+        switch (gate_type) {
+        case GateType::SINGLE:
+            return os << "SINGLE";
+        case GateType::TWO:
+            return os << "TWO";
+        case GateType::THREE:
+            return os << "THREE";
+        case GateType::FAN:
+            return os << "FAN";
+        case GateType::CUSTOM:
+            return os << "CUSTOM";
+        case GateType::SINGLE_CTRL_SINGLE_TARGET:
+            return os << "SINGLE_CTRL_SINGLE_TARGET";
+        case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
+            return os << "SINGLE_CTRL_MULTIPLE_TARGET";
+        case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
+            return os << "MULTIPLE_CTRL_SINGLE_TARGET";
+        case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
+            return os << "MULTIPLE_CTRL_MULTIPLE_TARGET";
+        case GateType::CUSTOM_CTRL:
+            return os << "CUSTOM_CTRL";
+        case GateType::SINGLE_cCTRL_SINGLE_TARGET:
+            return os << "SINGLE_cCTRL_SINGLE_TARGET";
+        case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
+            return os << "SINGLE_cCTRL_MULTIPLE_TARGET";
+        case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
+            return os << "MULTIPLE_cCTRL_SINGLE_TARGET";
+        case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
+            return os << "MULTIPLE_cCTRL_MULTIPLE_TARGET";
+        case GateType::CUSTOM_cCTRL:
+            return os << "CUSTOM_cCTRL";
+        case GateType::NONE:
+            return os << "NONE";
+        }
+    }
+
+    friend std::ostream& operator<<(std::ostream& os,
+                                    const MeasureType& measure_type) {
+        switch (measure_type) {
+        case MeasureType::MEASURE_Z:
+            return os << "MEASURE_Z";
+        case MeasureType::MEASURE_V:
+            return os << "MEASURE_V";
+        case MeasureType::MEASURE_KS:
+            return os << "MEASURE_KS";
+        case MeasureType::NONE:
+            return os << "NONE";
+        }
+    }
+}; // namespace experimental
+
+} // namespace experimental
 } /* namespace qpp */
 
 #endif /* EXPERIMENTAL_EXPERIMENTAL_H_ */

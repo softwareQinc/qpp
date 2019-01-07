@@ -79,5 +79,13 @@ int main() {
 //    std::cout << disp(res.second) << "\n\n";
 
     Test t{10};
+    t.apply(gt.X,2,"X gate on qubit 2");
+    t.apply(gt.CNOT,1,2,"CNOT on 12");
+    for(auto elem: t.circuit_)
+    {
+        std::cout << elem.gate_type_ << " " << elem.name_ << '\n';
+    }
 
+    auto x = Test::MeasureType::MEASURE_V;
+    std::cout << x << " ";
 }
