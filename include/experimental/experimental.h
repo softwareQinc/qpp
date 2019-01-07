@@ -327,7 +327,7 @@ struct QCircuit : public IDisplay {
     }
 
     std::ostream& display(std::ostream& os) const override {
-        os << "nq = " << nq_ << " nc = " << nc_ << " d = " << d_ << '\n';
+        os << "nq = " << nq_ << ", nc = " << nc_ << ", d = " << d_ << '\n';
         for (auto&& elem : gates_) {
             os << elem.gate_type_ << " "
                << "'" << elem.name_ << "'"
