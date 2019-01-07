@@ -38,7 +38,7 @@ namespace qpp {
  * \brief Experimental/test functions/classes, do not use or modify
  */
 namespace experimental {
-struct QCircuit : public IDisplay {
+class QCircuit : public IDisplay {
     idx nq_;                             ///< number of qudits
     idx nc_;                             ///< number of classical "dits"
     idx d_;                              ///< dimension
@@ -47,6 +47,7 @@ struct QCircuit : public IDisplay {
     std::vector<idx> dits_;              ///< classical dits
     std::vector<idx> measurement_steps_; ///< keeps track of where the
                                          ///< measurement take place
+    std::string name_;                   ///< optional circuit name
 
     /**
      * \brief Type of operation being executed at one step
@@ -206,9 +207,9 @@ struct QCircuit : public IDisplay {
     }
 
   public:
-    QCircuit(idx nq, idx nc = 0, idx d = 2)
+    QCircuit(idx nq, idx nc = 0, idx d = 2, const std::string& name = "")
         : nq_{nq}, nc_{nc}, d_{d}, psi_{st.zero(nq_, d_)},
-          measured_(nq_, false), dits_(nc_, 0) {}
+          measured_(nq_, false), dits_(nc_, 0), name_{name} {}
 
     // single gate single qubit/qudit
     void apply(const cmat& U, idx i, const std::string& name = "") {
@@ -336,23 +337,34 @@ struct QCircuit : public IDisplay {
     }
 
     std::ostream& display(std::ostream& os) const override {
-        os << "nq = " << nq_ << ", nc = " << nc_ << ", d = " << d_ << '\n';
+        os << "nq = " << nq_ << ", nc = " << nc_ << ", d = " << d_;
+
+        if (name_ != "") // if the circuit is named
+            os << ", name = \"" << name_ << "\"\n";
+        else
+            os << ", name = \"\"\n";
+
         idx gates_size = gates_.size();
+        idx measurements_size = measurement_steps_.size();
 
         idx measurement_ip = 0; // measurement instruction pointer
         for (idx i = 0; i <= gates_size; ++i) {
             // check for measurements before gates
-            idx current_measurement_step = measurement_steps_[measurement_ip];
-            if (current_measurement_step == i) // we have a measurement
-            {
-                while (measurement_steps_[measurement_ip] ==
-                       current_measurement_step) {
-                    os << measurements_[measurement_ip].measurement_type_ << " "
-                       << "'" << measurements_[measurement_ip].name_ << "'"
-                       << " ";
-                    os << disp(measurements_[measurement_ip].target_, ",");
-                    os << '\n';
-                    ++measurement_ip;
+            if (measurements_size != 0) {
+                idx current_measurement_step =
+                    measurement_steps_[measurement_ip];
+                if (current_measurement_step == i) // we have a measurement
+                {
+                    while (measurement_steps_[measurement_ip] ==
+                           current_measurement_step) {
+                        os << measurements_[measurement_ip].measurement_type_
+                           << " "
+                           << "'" << measurements_[measurement_ip].name_ << "'"
+                           << " ";
+                        os << disp(measurements_[measurement_ip].target_, ",");
+                        os << '\n';
+                        ++measurement_ip;
+                    }
                 }
             }
             // check for gates
@@ -371,7 +383,7 @@ struct QCircuit : public IDisplay {
         os << std::noboolalpha;
         os << "dits: " << disp(dits_, ",") << '\n';
 
-        os << "measurement steps (end of gate steps): ";
+        os << "measurement steps (assumed after gate steps): ";
         std::cout << disp(measurement_steps_, ",") << '\n';
 
         return os;

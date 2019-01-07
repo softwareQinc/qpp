@@ -24,8 +24,8 @@ int main() {
     circ.measureZ(9);
     // circ.apply(gt.TOF, 4, 6, 7, "TOF 4 6 7");
 
-    std::cout << circ;
+    std::cout << circ << std::endl;
 
-    QCircuit test{4};
+    QCircuit test{4, 0, 2, "some circuit"};
     std::cout << test;
 }
