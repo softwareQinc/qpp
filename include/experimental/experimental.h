@@ -39,12 +39,14 @@ namespace qpp {
  */
 namespace experimental {
 struct QCircuit : public IDisplay {
-    idx nq_;                     ///< number of qudits
-    idx nc_;                     ///< number of classical "dits"
-    idx d_;                      ///< dimension
-    ket psi_;                    ///< state vector
-    std::vector<bool> measured_; ///< keeps track of measured qudits
-    std::vector<idx> dits_;      ///< classical dits
+    idx nq_;                             ///< number of qudits
+    idx nc_;                             ///< number of classical "dits"
+    idx d_;                              ///< dimension
+    ket psi_;                            ///< state vector
+    std::vector<bool> measured_;         ///< keeps track of measured qudits
+    std::vector<idx> dits_;              ///< classical dits
+    std::vector<idx> measurement_steps_; ///< keeps track of where the
+                                         ///< measurement take place
 
     /**
      * \brief Type of operation being executed at one step
@@ -166,7 +168,7 @@ struct QCircuit : public IDisplay {
         case GateType::CUSTOM_cCTRL:
             return os << "CUSTOM_cCTRL";
         case GateType::NONE:
-            return os << "NONE";
+            return os << "GATE NONE";
         }
     }
 
@@ -174,13 +176,13 @@ struct QCircuit : public IDisplay {
                                     const MeasureType& measure_type) {
         switch (measure_type) {
         case MeasureType::MEASURE_Z:
-            return os << "MEASURE_Z";
+            return os << "\t MEASURE_Z";
         case MeasureType::MEASURE_V:
-            return os << "MEASURE_V";
+            return os << "\t MEASURE_V";
         case MeasureType::MEASURE_KS:
-            return os << "MEASURE_KS";
+            return os << "\t MEASURE_KS";
         case MeasureType::NONE:
-            return os << "NONE";
+            return os << "\t MEASURE NONE";
         }
     }
 
@@ -314,6 +316,7 @@ struct QCircuit : public IDisplay {
     void measureZ(idx i, const std::string& name = "") {
         measurements_.emplace_back(MeasureType::MEASURE_Z, std::vector<cmat>{},
                                    std::vector<idx>{i}, name);
+        measurement_steps_.emplace_back(gates_.size());
     }
 
     // measurement of single qudit in the orthonormal basis or rank-1 POVM
@@ -321,6 +324,7 @@ struct QCircuit : public IDisplay {
     void measureV(const cmat& V, idx i, const std::string& name = "") {
         measurements_.emplace_back(MeasureType::MEASURE_V, std::vector<cmat>{V},
                                    std::vector<idx>{i}, name);
+        measurement_steps_.emplace_back(gates_.size());
     }
 
     // generalized measurement of single qudit with Kraus operators Ks
@@ -328,28 +332,47 @@ struct QCircuit : public IDisplay {
                    const std::string& name = "") {
         measurements_.emplace_back(MeasureType::MEASURE_KS, Ks,
                                    std::vector<idx>{i}, name);
+        measurement_steps_.emplace_back(gates_.size());
     }
 
     std::ostream& display(std::ostream& os) const override {
         os << "nq = " << nq_ << ", nc = " << nc_ << ", d = " << d_ << '\n';
-        for (auto&& elem : gates_) {
-            os << elem.gate_type_ << " "
-               << "'" << elem.name_ << "'"
-               << " ";
-            os << disp(elem.ctrl_, ",") << " " << disp(elem.target_, ",");
-            os << '\n';
+        idx gates_size = gates_.size();
+
+        idx measurement_ip = 0; // measurement instruction pointer
+        for (idx i = 0; i <= gates_size; ++i) {
+            // check for measurements before gates
+            idx current_measurement_step = measurement_steps_[measurement_ip];
+            if (current_measurement_step == i) // we have a measurement
+            {
+                while (measurement_steps_[measurement_ip] ==
+                       current_measurement_step) {
+                    os << measurements_[measurement_ip].measurement_type_ << " "
+                       << "'" << measurements_[measurement_ip].name_ << "'"
+                       << " ";
+                    os << disp(measurements_[measurement_ip].target_, ",");
+                    os << '\n';
+                    ++measurement_ip;
+                }
+            }
+            // check for gates
+            if (i < gates_size) {
+                os << gates_[i].gate_type_ << " "
+                   << "'" << gates_[i].name_ << "'"
+                   << " ";
+                os << disp(gates_[i].ctrl_, ",") << " ";
+                os << disp(gates_[i].target_, ",");
+                os << '\n';
+            }
         }
-        for (auto&& elem : measurements_) {
-            os << elem.measurement_type_ << " "
-               << "'" << elem.name_ << "'"
-               << " ";
-            os << disp(elem.target_, ",");
-            os << '\n';
-        }
+
         os << std::boolalpha;
         os << "measured: " << disp(measured_, ",") << '\n';
         os << std::noboolalpha;
         os << "dits: " << disp(dits_, ",") << '\n';
+
+        os << "measurement steps (end of gate steps): ";
+        std::cout << disp(measurement_steps_, ",") << '\n';
 
         return os;
     }
