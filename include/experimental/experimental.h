@@ -358,9 +358,9 @@ class QCircuit : public IDisplay {
                     while (measurement_steps_[measurement_ip] ==
                            current_measurement_step) {
                         os << measurements_[measurement_ip].measurement_type_
-                           << " "
-                           << "'" << measurements_[measurement_ip].name_ << "'"
-                           << " ";
+                           << ", "
+                           << "\"" << measurements_[measurement_ip].name_ << "\""
+                           << ", ";
                         os << disp(measurements_[measurement_ip].target_, ",");
                         os << '\n';
                         ++measurement_ip;
@@ -369,10 +369,10 @@ class QCircuit : public IDisplay {
             }
             // check for gates
             if (i < gates_size) {
-                os << gates_[i].gate_type_ << " "
-                   << "'" << gates_[i].name_ << "'"
-                   << " ";
-                os << disp(gates_[i].ctrl_, ",") << " ";
+                os << gates_[i].gate_type_ << ", "
+                   << "\"" << gates_[i].name_ << "\""
+                   << ", ";
+                os << disp(gates_[i].ctrl_, ",") << ", ";
                 os << disp(gates_[i].target_, ",");
                 os << '\n';
             }
