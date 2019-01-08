@@ -181,7 +181,7 @@ class QCircuit : public IDisplay {
         case MeasureType::MEASURE_V:
             return os << "  <| MEASURE_V";
         case MeasureType::MEASURE_KS:
-            return os << "<| MEASURE_KS";
+            return os << "  <| MEASURE_KS";
         case MeasureType::NONE:
             return os << "  <| MEASURE NONE";
         }
@@ -353,8 +353,8 @@ class QCircuit : public IDisplay {
             if (measurements_size != 0) {
                 idx current_measurement_step =
                     measurement_steps_[measurement_ip];
-                if (current_measurement_step == i) // we have a measurement
-                {
+                // we have a measurement
+                if (current_measurement_step == i) {
                     while (measurement_steps_[measurement_ip] ==
                            current_measurement_step) {
                         os << measurements_[measurement_ip].measurement_type_
