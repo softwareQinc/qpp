@@ -317,7 +317,7 @@ class QCircuit : public IDisplay {
     }
 
     // Z measurement of single qudit
-    void measureZ(idx i, const std::string& name = "") {
+    void measureZ(idx i, idx c_reg, const std::string& name = "") {
         measurements_.emplace_back(MeasureType::MEASURE_Z, std::vector<cmat>{},
                                    std::vector<idx>{i}, name);
         measurement_steps_.emplace_back(gates_.size());
@@ -325,14 +325,15 @@ class QCircuit : public IDisplay {
 
     // measurement of single qudit in the orthonormal basis or rank-1 POVM
     // specified by the columns of matrix V
-    void measureV(const cmat& V, idx i, const std::string& name = "") {
+    void measureV(const cmat& V, idx i, idx c_reg,
+                  const std::string& name = "") {
         measurements_.emplace_back(MeasureType::MEASURE_V, std::vector<cmat>{V},
                                    std::vector<idx>{i}, name);
         measurement_steps_.emplace_back(gates_.size());
     }
 
     // generalized measurement of single qudit with Kraus operators Ks
-    void measureKs(const std::vector<cmat>& Ks, idx i,
+    void measureKs(const std::vector<cmat>& Ks, idx i, idx c_reg,
                    const std::string& name = "") {
         measurements_.emplace_back(MeasureType::MEASURE_KS, Ks,
                                    std::vector<idx>{i}, name);
