@@ -13,6 +13,10 @@ In progress - pre-release
     - Added new member functions for qpp::Gates:
           qpp::Gates::MODMUL() - quantum modular multiplication
     - Added Shor's algorithm example in "examples/shor.cpp"
+    - Added a qpp::experimental::QCircuit class in "experimental/experimental.h"
+      for simulating qudit quantum circuits
+    - Added a new exception class qpp::exception::QuditAlreadyMeasured
+
 Version 1.1 - 26 November 2018
     - Added new functions in "operations.h":
           qpp::QFT()      - qudit quantum Fourier transform (includes qubit

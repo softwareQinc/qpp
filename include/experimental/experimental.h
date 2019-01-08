@@ -318,26 +318,86 @@ class QCircuit : public IDisplay {
 
     // Z measurement of single qudit
     void measureZ(idx i, idx c_reg, const std::string& name = "") {
+        // EXCEPTION CHECKS
+
+        // measuring non-existing qudit
+        if (i > nq_)
+            throw qpp::exception::OutOfRange("qpp::QCircuit::measureZ()");
+        // measuring an already measured qudit
+        if (measured_[i])
+            throw qpp::exception::QuditAlreadyMeasured(
+                "qpp::QCircuit::measureZ()");
+        // trying to put the result into an non-existing classical slot
+        if (c_reg >= dits_.size())
+            throw qpp::exception::OutOfRange("qpp::QCircuit::measureZ()");
+        // END EXCEPTION CHECKS
+
+        measured_[i] = true;
         measurements_.emplace_back(MeasureType::MEASURE_Z, std::vector<cmat>{},
                                    std::vector<idx>{i}, name);
         measurement_steps_.emplace_back(gates_.size());
+        try {
+        } catch (std::exception& e) {
+            std::cerr << "IN qpp::QCircuit::measureZ()\n";
+            throw;
+        }
     }
 
     // measurement of single qudit in the orthonormal basis or rank-1 POVM
     // specified by the columns of matrix V
     void measureV(const cmat& V, idx i, idx c_reg,
                   const std::string& name = "") {
+        // EXCEPTION CHECKS
+
+        // measuring non-existing qudit
+        if (i > nq_)
+            throw qpp::exception::OutOfRange("qpp::QCircuit::measureV()");
+        // measuring an already measured qudit
+        if (measured_[i])
+            throw qpp::exception::QuditAlreadyMeasured(
+                "qpp::QCircuit::measureV()");
+        // trying to put the result into an non-existing classical slot
+        if (c_reg >= dits_.size())
+            throw qpp::exception::OutOfRange("qpp::QCircuit::measureV()");
+        // END EXCEPTION CHECKS
+
+        measured_[i] = true;
         measurements_.emplace_back(MeasureType::MEASURE_V, std::vector<cmat>{V},
                                    std::vector<idx>{i}, name);
         measurement_steps_.emplace_back(gates_.size());
+        try {
+        } catch (...) {
+            std::cerr << "IN qpp::QCircuit::measureV()\n";
+            throw;
+        }
     }
 
     // generalized measurement of single qudit with Kraus operators Ks
     void measureKs(const std::vector<cmat>& Ks, idx i, idx c_reg,
                    const std::string& name = "") {
+        // EXCEPTION CHECKS
+
+        // measuring non-existing qudit
+        if (i > nq_)
+            throw qpp::exception::OutOfRange("qpp::QCircuit::measureKs()");
+        // measuring an already measured qudit
+        if (measured_[i])
+            throw qpp::exception::QuditAlreadyMeasured(
+                "qpp::QCircuit::measureKs()");
+        // trying to put the result into an non-existing classical slot
+        if (c_reg >= dits_.size())
+            throw qpp::exception::OutOfRange("qpp::QCircuit::measureKs()");
+        // END EXCEPTION CHECKS
+
+        measured_[i] = true;
         measurements_.emplace_back(MeasureType::MEASURE_KS, Ks,
                                    std::vector<idx>{i}, name);
         measurement_steps_.emplace_back(gates_.size());
+        try {
+        } catch (std::exception& e) {
+            std::cerr << "IN qpp::QCircuit::measureKs()\n";
+            throw;
+        }
     }
 
     std::ostream& display(std::ostream& os) const override {
