@@ -97,12 +97,12 @@ class QCircuit : public IDisplay {
                       ///< controls and multiple targets
     };
     enum class MeasureType {
-        NONE,       ///< signals no measurement
+        NONE, ///< signals no measurement
 
-        MEASURE_Z,  ///< Z measurement of single qudit
+        MEASURE_Z, ///< Z measurement of single qudit
 
-        MEASURE_V,  ///< measurement of single qudit in the orthonormal basis
-                    ///< or rank-1 POVM specified by the columns of matrix \a V
+        MEASURE_V, ///< measurement of single qudit in the orthonormal basis
+                   ///< or rank-1 POVM specified by the columns of matrix \a V
 
         MEASURE_KS, ///< generalized measurement of single qudit with Kraus
                     ///< operators Ks
@@ -141,6 +141,8 @@ class QCircuit : public IDisplay {
     friend std::ostream& operator<<(std::ostream& os,
                                     const GateType& gate_type) {
         switch (gate_type) {
+        case GateType::NONE:
+            return os << "GATE NONE";
         case GateType::SINGLE:
             return os << "SINGLE";
         case GateType::TWO:
@@ -171,22 +173,20 @@ class QCircuit : public IDisplay {
             return os << "MULTIPLE_cCTRL_MULTIPLE_TARGET";
         case GateType::CUSTOM_cCTRL:
             return os << "CUSTOM_cCTRL";
-        case GateType::NONE:
-            return os << "GATE NONE";
         }
     }
 
     friend std::ostream& operator<<(std::ostream& os,
                                     const MeasureType& measure_type) {
         switch (measure_type) {
-        case MeasureType::MEASURE_Z:
-            return os << "\t|> MEASURE_Z";
-        case MeasureType::MEASURE_V:
-            return os << "\t|> MEASURE_V";
-        case MeasureType::MEASURE_KS:
-            return os << "\t|> MEASURE_KS";
         case MeasureType::NONE:
-            return os << "\t|> MEASURE NONE";
+            return os << "|> MEASURE NONE";
+        case MeasureType::MEASURE_Z:
+            return os << "|> MEASURE_Z";
+        case MeasureType::MEASURE_V:
+            return os << "|> MEASURE_V";
+        case MeasureType::MEASURE_KS:
+            return os << "|> MEASURE_KS";
         }
     }
 
