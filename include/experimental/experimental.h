@@ -53,6 +53,8 @@ class QCircuit : public IDisplay {
      * \brief Type of operation being executed at one step
      */
     enum class GateType {
+        NONE, ///< signals no gate
+
         SINGLE, ///< unitary gate on a single qudit
 
         TWO, ///< unitary gate on 2 qudits
@@ -92,17 +94,18 @@ class QCircuit : public IDisplay {
         ///< with multiple classical controls and multiple targets
 
         CUSTOM_cCTRL, ///< custom controlled gate with multiple
-        ///< controls and multiple targets
-
-        NONE, ///< signals no gate
+                      ///< controls and multiple targets
     };
     enum class MeasureType {
+        NONE,       ///< signals no measurement
+
         MEASURE_Z,  ///< Z measurement of single qudit
+
         MEASURE_V,  ///< measurement of single qudit in the orthonormal basis
                     ///< or rank-1 POVM specified by the columns of matrix \a V
+
         MEASURE_KS, ///< generalized measurement of single qudit with Kraus
                     ///< operators Ks
-        NONE,       ///< signals no measurement
     };
 
     /**
@@ -177,13 +180,13 @@ class QCircuit : public IDisplay {
                                     const MeasureType& measure_type) {
         switch (measure_type) {
         case MeasureType::MEASURE_Z:
-            return os << "  <| MEASURE_Z";
+            return os << "\t|> MEASURE_Z";
         case MeasureType::MEASURE_V:
-            return os << "  <| MEASURE_V";
+            return os << "\t|> MEASURE_V";
         case MeasureType::MEASURE_KS:
-            return os << "  <| MEASURE_KS";
+            return os << "\t|> MEASURE_KS";
         case MeasureType::NONE:
-            return os << "  <| MEASURE NONE";
+            return os << "\t|> MEASURE NONE";
         }
     }
 
@@ -197,7 +200,7 @@ class QCircuit : public IDisplay {
         idx subsys_size = subsys.size();
         for (idx i = 0; i < subsys_size; ++i) {
             for (idx m = 0; m < subsys[i]; ++m) {
-                if (measured_[m]) { // if the qubit m was measured
+                if (measured_[m]) { // if the qudit m was measured
                     --result[i];
                 }
             }
@@ -211,24 +214,24 @@ class QCircuit : public IDisplay {
         : nq_{nq}, nc_{nc}, d_{d}, psi_{st.zero(nq_, d_)},
           measured_(nq_, false), dits_(nc_, 0), name_{name} {}
 
-    // single gate single qubit/qudit
+    // single gate single qudit
     void apply(const cmat& U, idx i, const std::string& name = "") {
         gates_.emplace_back(GateType::SINGLE, U, std::vector<idx>{},
                             std::vector<idx>{i}, name);
     }
-    // single gate 2 qubits/qudits
+    // single gate 2 qudits
     void apply(const cmat& U, idx i, idx j, const std::string& name = "") {
         gates_.emplace_back(GateType::TWO, U, std::vector<idx>{},
                             std::vector<idx>{i, j}, name);
     }
-    // single gate 3 qubits/qudits
+    // single gate 3 qudits
     void apply(const cmat& U, idx i, idx j, idx k,
                const std::string& name = "") {
         gates_.emplace_back(GateType::THREE, U, std::vector<idx>{},
                             std::vector<idx>{i, j, k}, name);
     }
 
-    // multiple qubits/qudits same gate
+    // multiple qudits same gate
     void apply(const cmat& U, const std::vector<idx>& target,
                const std::string& name = "") {
         gates_.emplace_back(GateType::FAN, U, std::vector<idx>{}, target, name);
@@ -373,7 +376,9 @@ class QCircuit : public IDisplay {
                 os << gates_[i].gate_type_ << ", "
                    << "\"" << gates_[i].name_ << "\""
                    << ", ";
-                os << disp(gates_[i].ctrl_, ",") << ", ";
+                if (gates_[i].gate_type_ >=
+                    GateType ::SINGLE_CTRL_SINGLE_TARGET)
+                    os << disp(gates_[i].ctrl_, ",") << ", ";
                 os << disp(gates_[i].target_, ",");
                 os << '\n';
             }
