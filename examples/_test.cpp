@@ -22,6 +22,8 @@ int main() {
     circ.apply(gt.Y, 8);
     circ.measureKs({std::sqrt(2) * gt.X, std::sqrt(2) * gt.Z}, 9, "Kraus");
     circ.measureZ(9);
+    circ.apply(gt.Z, {1, 2, 3}, "Z on 1 2 3");
+    circ.measureZ(5);
     // circ.apply(gt.TOF, 4, 6, 7, "TOF 4 6 7");
 
     std::cout << circ << std::endl;
