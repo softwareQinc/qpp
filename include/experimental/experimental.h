@@ -40,7 +40,8 @@ namespace qpp {
 namespace experimental {
 
 // TODO: add a quantum instruction pointer and a measurement instruction pointer
-// TODO: perform exception checking before run() (such as wrong idx on apply)
+// TODO: perform exception checking before run() (such as wrong idx on apply or out of range ctrl/targets)
+//  i.e. ROBUST EXCEPTION CHECKING, something like a sanitize function! Do this in apply() and not in run()
 
 class QCircuit : public IDisplay {
     idx nq_;                             ///< number of qudits
@@ -249,6 +250,9 @@ class QCircuit : public IDisplay {
             if (is_measured(v[i]))
                 throw qpp::exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::get_relative_pos_()");
+            if(v[i] >= nq_)
+                throw qpp::exception::SubsysMismatchDims(
+                        "qpp::QCircuit::get_relative_pos_()");
             v[i] = subsys_[v[i]];
         }
         return v;
@@ -308,6 +312,7 @@ class QCircuit : public IDisplay {
     }
 
     // multiple ctrl multiple target
+    // FIXME
     void CTRL(const cmat& U, const std::vector<idx>& ctrl,
               const std::vector<idx>& target, const std::string& name = "") {
         gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, U, ctrl,
@@ -525,9 +530,11 @@ class QCircuit : public IDisplay {
 
             // gates code here
             if (i < gates_size) {
-                /* gates code here */
-                std::vector<idx> relative_pos =
+                std::vector<idx> ctrl_rel_pos =
+                    get_relative_pos_(gates_[i].ctrl_);
+                std::vector<idx> target_rel_pos =
                     get_relative_pos_(gates_[i].target_);
+
                 switch (gates_[i].gate_type_) {
                 case GateType::NONE:
                     break;
@@ -535,22 +542,21 @@ class QCircuit : public IDisplay {
                 case GateType::TWO:
                 case GateType::THREE:
                 case GateType::CUSTOM:
-                    psi_ = qpp::apply(psi_, gates_[i].gate_, relative_pos, d_);
+                    psi_ =
+                        qpp::apply(psi_, gates_[i].gate_, target_rel_pos, d_);
                     break;
                 case GateType::FAN:
                     for (idx m = 0; m < gates_[i].target_.size(); ++m)
                         psi_ = qpp::apply(psi_, gates_[i].gate_,
-                                          {relative_pos[m]}, d_);
+                                          {target_rel_pos[m]}, d_);
                     break;
                 case GateType::SINGLE_CTRL_SINGLE_TARGET:
-                    break;
                 case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
-                    break;
                 case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
-                    break;
                 case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
-                    break;
                 case GateType::CUSTOM_CTRL:
+                    psi_ = qpp::applyCTRL(psi_, gates_[i].gate_, ctrl_rel_pos,
+                                          target_rel_pos, d_);
                     break;
                 case GateType::SINGLE_cCTRL_SINGLE_TARGET:
                     break;

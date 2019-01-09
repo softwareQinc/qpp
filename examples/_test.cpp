@@ -38,7 +38,11 @@ int main() {
     QCircuit bell{2};
     bell.apply_many(gt.X, {0, 1});
     bell.apply(gt.H, 0);
-    bell.apply(gt.CNOT, {0, 1});
+    //bell.apply(gt.CNOT, {0, 1});
+    bell.CTRL(gt.X, 0, 1);
+    bell.CTRL(gt.X, std::vector<idx>{0}, std::vector<idx>{1}); // FIXME
+    //bell.CTRL(gt.X, 0, 1);
+    bell.CTRL_custom(gt.X, {0}, {1});
 
     bell.run();
 
