@@ -28,6 +28,10 @@ int main() {
 
     std::cout << circ << std::endl;
 
-    QCircuit test{4, 0, 2, "some circuit"};
-    std::cout << test;
+    QCircuit test{10, 1, 2, "some circuit"};
+
+    test.measureZ(1, 0);
+    test.measureZ(3, 0);
+
+    std::cout << test << '\n';
 }

@@ -38,17 +38,22 @@ namespace qpp {
  * \brief Experimental/test functions/classes, do not use or modify
  */
 namespace experimental {
+
+//TODO: add a quantum instruction pointer and a measurement instruction pointer
 class QCircuit : public IDisplay {
     idx nq_;                             ///< number of qudits
     idx nc_;                             ///< number of classical "dits"
     idx d_;                              ///< dimension
     ket psi_;                            ///< state vector
-    std::vector<bool> measured_;         ///< keeps track of measured qudits
     std::vector<idx> dits_;              ///< classical dits
+    std::vector<double> probs_;          ///< measurement probabilities
     std::vector<idx> measurement_steps_; ///< keeps track of where the
                                          ///< measurement take place
     std::string name_;                   ///< optional circuit name
+    std::vector<idx> subsys_;            ///< keeps track of the subsystem
+                                         ///< relabeling after measurements
 
+    const idx idx_inf = static_cast<idx>(-1); ///< largest idx
     /**
      * \brief Type of operation being executed at one step
      */
@@ -137,6 +142,8 @@ class QCircuit : public IDisplay {
             : measurement_type_{measurement_type}, mats_{mats}, target_{target},
               name_{name} {}
     };
+    // TODO aa
+    // aaaaa
 
     friend std::ostream& operator<<(std::ostream& os,
                                     const GateType& gate_type) {
@@ -180,13 +187,13 @@ class QCircuit : public IDisplay {
                                     const MeasureType& measure_type) {
         switch (measure_type) {
         case MeasureType::NONE:
-            return os << "|> MEASURE NONE";
+            return os << "\t|> MEASURE NONE";
         case MeasureType::MEASURE_Z:
-            return os << "|> MEASURE_Z";
+            return os << "\t|> MEASURE_Z";
         case MeasureType::MEASURE_V:
-            return os << "|> MEASURE_V";
+            return os << "\t|> MEASURE_V";
         case MeasureType::MEASURE_KS:
-            return os << "|> MEASURE_KS";
+            return os << "\t|> MEASURE_KS";
         }
     }
 
@@ -194,25 +201,12 @@ class QCircuit : public IDisplay {
     std::vector<GateStep> gates_;
     std::vector<MeasureStep> measurements_;
 
-  protected:
-    std::vector<idx> update_subsys_(const std::vector<idx>& subsys) {
-        std::vector<idx> result = subsys;
-        idx subsys_size = subsys.size();
-        for (idx i = 0; i < subsys_size; ++i) {
-            for (idx m = 0; m < subsys[i]; ++m) {
-                if (measured_[m]) { // if the qudit m was measured
-                    --result[i];
-                }
-            }
-        }
-        std::sort(std::begin(result), std::end(result), std::less<idx>{});
-        return result;
-    }
-
   public:
     QCircuit(idx nq, idx nc = 0, idx d = 2, const std::string& name = "")
-        : nq_{nq}, nc_{nc}, d_{d}, psi_{st.zero(nq_, d_)},
-          measured_(nq_, false), dits_(nc_, 0), name_{name} {}
+        : nq_{nq}, nc_{nc}, d_{d}, psi_{st.zero(nq_, d_)}, dits_(nc_, 0),
+          probs_(nc_, 0), name_{name}, subsys_(nq, 0) {
+        std::iota(std::begin(subsys_), std::end(subsys_), 0);
+    }
 
     // single gate single qudit
     void apply(const cmat& U, idx i, const std::string& name = "") {
@@ -321,10 +315,10 @@ class QCircuit : public IDisplay {
         // EXCEPTION CHECKS
 
         // measuring non-existing qudit
-        if (i > nq_)
+        if (i >= nq_)
             throw qpp::exception::OutOfRange("qpp::QCircuit::measureZ()");
         // measuring an already measured qudit
-        if (measured_[i])
+        if (is_measured(i))
             throw qpp::exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::measureZ()");
         // trying to put the result into an non-existing classical slot
@@ -332,15 +326,15 @@ class QCircuit : public IDisplay {
             throw qpp::exception::OutOfRange("qpp::QCircuit::measureZ()");
         // END EXCEPTION CHECKS
 
-        measured_[i] = true;
         measurements_.emplace_back(MeasureType::MEASURE_Z, std::vector<cmat>{},
                                    std::vector<idx>{i}, name);
         measurement_steps_.emplace_back(gates_.size());
-        try {
+        mark_as_measured_(i);
+        /*try {
         } catch (std::exception& e) {
             std::cerr << "IN qpp::QCircuit::measureZ()\n";
             throw;
-        }
+        }*/
     }
 
     // measurement of single qudit in the orthonormal basis or rank-1 POVM
@@ -350,10 +344,10 @@ class QCircuit : public IDisplay {
         // EXCEPTION CHECKS
 
         // measuring non-existing qudit
-        if (i > nq_)
+        if (i >= nq_)
             throw qpp::exception::OutOfRange("qpp::QCircuit::measureV()");
         // measuring an already measured qudit
-        if (measured_[i])
+        if (is_measured(i))
             throw qpp::exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::measureV()");
         // trying to put the result into an non-existing classical slot
@@ -361,15 +355,10 @@ class QCircuit : public IDisplay {
             throw qpp::exception::OutOfRange("qpp::QCircuit::measureV()");
         // END EXCEPTION CHECKS
 
-        measured_[i] = true;
         measurements_.emplace_back(MeasureType::MEASURE_V, std::vector<cmat>{V},
                                    std::vector<idx>{i}, name);
         measurement_steps_.emplace_back(gates_.size());
-        try {
-        } catch (...) {
-            std::cerr << "IN qpp::QCircuit::measureV()\n";
-            throw;
-        }
+        mark_as_measured_(i);
     }
 
     // generalized measurement of single qudit with Kraus operators Ks
@@ -378,10 +367,10 @@ class QCircuit : public IDisplay {
         // EXCEPTION CHECKS
 
         // measuring non-existing qudit
-        if (i > nq_)
+        if (i >= nq_)
             throw qpp::exception::OutOfRange("qpp::QCircuit::measureKs()");
         // measuring an already measured qudit
-        if (measured_[i])
+        if (is_measured(i))
             throw qpp::exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::measureKs()");
         // trying to put the result into an non-existing classical slot
@@ -389,15 +378,10 @@ class QCircuit : public IDisplay {
             throw qpp::exception::OutOfRange("qpp::QCircuit::measureKs()");
         // END EXCEPTION CHECKS
 
-        measured_[i] = true;
         measurements_.emplace_back(MeasureType::MEASURE_KS, Ks,
                                    std::vector<idx>{i}, name);
         measurement_steps_.emplace_back(gates_.size());
-        try {
-        } catch (std::exception& e) {
-            std::cerr << "IN qpp::QCircuit::measureKs()\n";
-            throw;
-        }
+        mark_as_measured_(i);
     }
 
     std::ostream& display(std::ostream& os) const override {
@@ -446,14 +430,138 @@ class QCircuit : public IDisplay {
         }
 
         os << std::boolalpha;
-        os << "measured: " << disp(measured_, ",") << '\n';
+        os << "measured: " << disp(get_measured(), ",") << '\n';
         os << std::noboolalpha;
         os << "dits: " << disp(dits_, ",") << '\n';
+        os << "probs: " << disp(probs_, ",") << '\n';
 
         os << "measurement steps (assumed after gate steps): ";
         std::cout << disp(measurement_steps_, ",") << '\n';
 
+        os << "updated subsystems: ";
+        std::cout << disp(subsys_, ",") << '\n';
+
         return os;
+    }
+
+    void run() {
+        idx gates_size = gates_.size();
+        idx measurements_size = measurement_steps_.size();
+
+        idx measurement_ip = 0; // measurement instruction pointer
+        for (idx i = 0; i <= gates_size; ++i) {
+            // check for measurements before gates
+            if (measurements_size != 0) {
+                idx current_measurement_step =
+                    measurement_steps_[measurement_ip];
+                // we have a measurement
+                if (current_measurement_step == i) {
+                    while (measurement_steps_[measurement_ip] ==
+                           current_measurement_step) {
+
+                        /* measurement code here */
+                        switch (measurements_[i].measurement_type_) {
+                        case MeasureType::NONE:
+                            break;
+                        case MeasureType::MEASURE_Z:
+                            break;
+                        case MeasureType::MEASURE_V:
+                            break;
+                        case MeasureType::MEASURE_KS:
+                            break;
+                        }
+
+                        ++measurement_ip;
+                    }
+                }
+            }
+
+            // gates code here
+            if (i < gates_size) {
+                /* gates code here */
+                switch (gates_[i].gate_type_) {
+                case GateType::NONE:
+                    break;
+                case GateType::SINGLE:
+                case GateType::TWO:
+                case GateType::THREE:
+                    psi_ = qpp::apply(psi_, gates_[i].gate_,
+                                      get_relative_pos_(gates_[i].target_), d_);
+                    break;
+                case GateType::FAN:
+                    for (idx m = 0; m < gates_[i].target_.size(); ++m)
+                        psi_ = qpp::apply(
+                            psi_, gates_[i].gate_,
+                            get_relative_pos_({gates_[i].target_[m]}), d_);
+                case GateType::CUSTOM:
+                    break;
+                case GateType::SINGLE_CTRL_SINGLE_TARGET:
+                    break;
+                case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
+                    break;
+                case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
+                    break;
+                case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
+                    break;
+                case GateType::CUSTOM_CTRL:
+                    break;
+                case GateType::SINGLE_cCTRL_SINGLE_TARGET:
+                    break;
+                case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
+                    break;
+                case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
+                    break;
+                case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
+                    break;
+                case GateType::CUSTOM_cCTRL:
+                    break;
+                }
+            }
+        }
+    }
+
+    // getters
+    // qudit i was measured
+    bool is_measured(idx i) const { return (subsys_[i] == idx_inf); }
+
+    // get the already measured qudits
+    std::vector<idx> get_measured() const {
+        std::vector<idx> result;
+        for (idx i = 0; i < nq_; ++i)
+            if (subsys_[i] == idx_inf)
+                result.emplace_back(i);
+
+        return result;
+    }
+    // end getters
+
+  private:
+    // mark qudit i as measured then re-label accordingly the remaining
+    // non-measured qudits
+    // TODO: set to no-op if measured before?!
+    void mark_as_measured_(idx i) {
+        if (is_measured(i))
+            throw qpp::exception::QuditAlreadyMeasured(
+                "qpp::QCircuit::mark_as_measured_()");
+        subsys_[i] = idx_inf; // set qudit i to measured state
+        for (idx m = i; m < nq_; ++m) {
+            if (!is_measured(m)) {
+                --subsys_[m];
+            }
+        }
+    }
+
+    // giving a vector of non-measured qudits, get their relative position of
+    // the wrt the measured qudits
+    std::vector<idx> get_relative_pos_(std::vector<idx> v) {
+        idx vsize = v.size();
+        for (idx i = 0; i < vsize; ++i) {
+            if (is_measured(v[i]))
+                throw qpp::exception::QuditAlreadyMeasured(
+                    "qpp::QCircuit::get_relative_pos_()");
+            v[i] = subsys_[v[i]];
+        }
+        return v;
     }
 }; // namespace experimental
 
