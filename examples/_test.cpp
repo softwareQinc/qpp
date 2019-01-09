@@ -35,18 +35,16 @@ int main() {
 
     std::cout << test << '\n';
 
-    QCircuit bell{2};
-    bell.apply_many(gt.X, {0, 1});
-    bell.apply(gt.H, 0);
-    //bell.apply(gt.CNOT, {0, 1});
-    bell.CTRL(gt.X, 0, 1);
-    bell.CTRL(gt.X, std::vector<idx>{0}, std::vector<idx>{1}); // FIXME
-    //bell.CTRL(gt.X, 0, 1);
-    bell.CTRL_custom(gt.X, {0}, {1});
+    QCircuit teleport{2, 2};
+    teleport.apply(gt.H, 0);
+    teleport.apply(gt.CNOT, 0, 1);
 
-    bell.run();
+    teleport.measureZ(0, 0);
+    teleport.measureZ(1, 1);
 
-    std::cout << disp(bell.get_psi()) << '\n';
+    teleport.run();
 
-    std::cout << bell << '\n';
+    std::cout << disp(teleport.get_psi()) << '\n';
+
+    std::cout << teleport << '\n';
 }

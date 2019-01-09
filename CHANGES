@@ -15,7 +15,9 @@ In progress - pre-release
     - Added Shor's algorithm example in "examples/shor.cpp"
     - Added a new exception class qpp::exception::QuditAlreadyMeasured
     - Added qpp::experimental::QCircuit class in "experimental/experimental.h"
-      for simulating qudit quantum circuits (work in progress)
+      for simulating qudit quantum circuits
+      BE AWARE: this is work in progress, not tested, not complete, and possibly
+                buggy
 
 Version 1.1 - 26 November 2018
     - Added new functions in "operations.h":
