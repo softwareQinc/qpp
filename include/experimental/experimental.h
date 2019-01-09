@@ -39,7 +39,9 @@ namespace qpp {
  */
 namespace experimental {
 
-//TODO: add a quantum instruction pointer and a measurement instruction pointer
+// TODO: add a quantum instruction pointer and a measurement instruction pointer
+// TODO: perform exception checking before run() (such as wrong idx on apply)
+
 class QCircuit : public IDisplay {
     idx nq_;                             ///< number of qudits
     idx nc_;                             ///< number of classical "dits"
@@ -66,9 +68,9 @@ class QCircuit : public IDisplay {
 
         THREE, ///< unitary gate on 3 qudits
 
-        FAN, ///< same unitary gate on multiple qudits
-
         CUSTOM, ///< custom gate on multiple qudits
+
+        FAN, ///< same unitary gate on multiple qudits
 
         SINGLE_CTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
                                    ///< one control and one target
@@ -142,8 +144,6 @@ class QCircuit : public IDisplay {
             : measurement_type_{measurement_type}, mats_{mats}, target_{target},
               name_{name} {}
     };
-    // TODO aa
-    // aaaaa
 
     friend std::ostream& operator<<(std::ostream& os,
                                     const GateType& gate_type) {
@@ -208,6 +208,53 @@ class QCircuit : public IDisplay {
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
     }
 
+    // getters
+    // qudit i was measured
+    bool is_measured(idx i) const { return (subsys_[i] == idx_inf); }
+
+    // get the already measured qudits
+    std::vector<idx> get_measured() const {
+        std::vector<idx> result;
+        for (idx i = 0; i < nq_; ++i)
+            if (subsys_[i] == idx_inf)
+                result.emplace_back(i);
+
+        return result;
+    }
+
+    ket get_psi() const { return psi_; }
+    // end getters
+
+  private:
+    // mark qudit i as measured then re-label accordingly the remaining
+    // non-measured qudits
+    // TODO: set to no-op if measured before?!
+    void mark_as_measured_(idx i) {
+        if (is_measured(i))
+            throw qpp::exception::QuditAlreadyMeasured(
+                "qpp::QCircuit::mark_as_measured_()");
+        subsys_[i] = idx_inf; // set qudit i to measured state
+        for (idx m = i; m < nq_; ++m) {
+            if (!is_measured(m)) {
+                --subsys_[m];
+            }
+        }
+    }
+
+    // giving a vector of non-measured qudits, get their relative position of
+    // the wrt the measured qudits
+    std::vector<idx> get_relative_pos_(std::vector<idx> v) {
+        idx vsize = v.size();
+        for (idx i = 0; i < vsize; ++i) {
+            if (is_measured(v[i]))
+                throw qpp::exception::QuditAlreadyMeasured(
+                    "qpp::QCircuit::get_relative_pos_()");
+            v[i] = subsys_[v[i]];
+        }
+        return v;
+    }
+
+  public:
     // single gate single qudit
     void apply(const cmat& U, idx i, const std::string& name = "") {
         gates_.emplace_back(GateType::SINGLE, U, std::vector<idx>{},
@@ -226,14 +273,14 @@ class QCircuit : public IDisplay {
     }
 
     // multiple qudits same gate
-    void apply(const cmat& U, const std::vector<idx>& target,
-               const std::string& name = "") {
+    void apply_many(const cmat& U, const std::vector<idx>& target,
+                    const std::string& name = "") {
         gates_.emplace_back(GateType::FAN, U, std::vector<idx>{}, target, name);
     }
 
     // custom gate
-    void apply_custom(const cmat& U, const std::vector<idx>& target,
-                      const std::string& name = "") {
+    void apply(const cmat& U, const std::vector<idx>& target,
+               const std::string& name = "") {
         gates_.emplace_back(GateType::CUSTOM, U, std::vector<idx>{}, target,
                             name);
     }
@@ -479,21 +526,21 @@ class QCircuit : public IDisplay {
             // gates code here
             if (i < gates_size) {
                 /* gates code here */
+                std::vector<idx> relative_pos =
+                    get_relative_pos_(gates_[i].target_);
                 switch (gates_[i].gate_type_) {
                 case GateType::NONE:
                     break;
                 case GateType::SINGLE:
                 case GateType::TWO:
                 case GateType::THREE:
-                    psi_ = qpp::apply(psi_, gates_[i].gate_,
-                                      get_relative_pos_(gates_[i].target_), d_);
+                case GateType::CUSTOM:
+                    psi_ = qpp::apply(psi_, gates_[i].gate_, relative_pos, d_);
                     break;
                 case GateType::FAN:
                     for (idx m = 0; m < gates_[i].target_.size(); ++m)
-                        psi_ = qpp::apply(
-                            psi_, gates_[i].gate_,
-                            get_relative_pos_({gates_[i].target_[m]}), d_);
-                case GateType::CUSTOM:
+                        psi_ = qpp::apply(psi_, gates_[i].gate_,
+                                          {relative_pos[m]}, d_);
                     break;
                 case GateType::SINGLE_CTRL_SINGLE_TARGET:
                     break;
@@ -518,50 +565,6 @@ class QCircuit : public IDisplay {
                 }
             }
         }
-    }
-
-    // getters
-    // qudit i was measured
-    bool is_measured(idx i) const { return (subsys_[i] == idx_inf); }
-
-    // get the already measured qudits
-    std::vector<idx> get_measured() const {
-        std::vector<idx> result;
-        for (idx i = 0; i < nq_; ++i)
-            if (subsys_[i] == idx_inf)
-                result.emplace_back(i);
-
-        return result;
-    }
-    // end getters
-
-  private:
-    // mark qudit i as measured then re-label accordingly the remaining
-    // non-measured qudits
-    // TODO: set to no-op if measured before?!
-    void mark_as_measured_(idx i) {
-        if (is_measured(i))
-            throw qpp::exception::QuditAlreadyMeasured(
-                "qpp::QCircuit::mark_as_measured_()");
-        subsys_[i] = idx_inf; // set qudit i to measured state
-        for (idx m = i; m < nq_; ++m) {
-            if (!is_measured(m)) {
-                --subsys_[m];
-            }
-        }
-    }
-
-    // giving a vector of non-measured qudits, get their relative position of
-    // the wrt the measured qudits
-    std::vector<idx> get_relative_pos_(std::vector<idx> v) {
-        idx vsize = v.size();
-        for (idx i = 0; i < vsize; ++i) {
-            if (is_measured(v[i]))
-                throw qpp::exception::QuditAlreadyMeasured(
-                    "qpp::QCircuit::get_relative_pos_()");
-            v[i] = subsys_[v[i]];
-        }
-        return v;
     }
 }; // namespace experimental
 

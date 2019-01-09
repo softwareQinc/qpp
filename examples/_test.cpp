@@ -34,4 +34,15 @@ int main() {
     test.measureZ(3, 0);
 
     std::cout << test << '\n';
+
+    QCircuit bell{2};
+    bell.apply_many(gt.X, {0, 1});
+    bell.apply(gt.H, 0);
+    bell.apply(gt.CNOT, {0, 1});
+
+    bell.run();
+
+    std::cout << disp(bell.get_psi()) << '\n';
+
+    std::cout << bell << '\n';
 }
