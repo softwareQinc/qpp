@@ -16,8 +16,7 @@ In progress - pre-release
     - Added a new exception class qpp::exception::QuditAlreadyMeasured
     - Added qpp::experimental::QCircuit class in "experimental/experimental.h"
       for simulating qudit quantum circuits
-      BE AWARE: this is work in progress, not tested, not complete, and possibly
-                buggy
+      BE AWARE: this is work in progress, not yet complete, hence still buggy
 
 Version 1.1 - 26 November 2018
     - Added new functions in "operations.h":

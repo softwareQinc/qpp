@@ -48,7 +48,8 @@ namespace experimental {
 
 // TODO: move mark_as_measured_ to run(), more cleanup
 
-class QCircuit : public IDisplay {
+class QCircuitDescription: public IDisplay {
+  protected:
     idx nq_;                             ///< number of qudits
     idx nc_;                             ///< number of classical "dits"
     idx d_;                              ///< dimension
@@ -210,7 +211,8 @@ class QCircuit : public IDisplay {
     std::vector<MeasureStep> measurements_;
 
   public:
-    QCircuit(idx nq, idx nc = 0, idx d = 2, const std::string& name = "")
+    QCircuitDescription(idx nq, idx nc = 0, idx d = 2,
+                        const std::string& name = "")
         : nq_{nq}, nc_{nc}, d_{d}, psi_{st.zero(nq_, d_)}, dits_(nc_, 0),
           probs_(nc_, 0), name_{name}, subsys_(nq, 0) {
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
@@ -231,43 +233,10 @@ class QCircuit : public IDisplay {
     }
 
     ket get_psi() const { return psi_; }
+
+    std::vector<idx> get_dits() const { return dits_; }
     // end getters
 
-    std::vector<idx> get_dits() const { return dits_;}
-
-  private:
-    // mark qudit i as measured then re-label accordingly the remaining
-    // non-measured qudits
-    // TODO: set to no-op if measured before?!
-    void mark_as_measured_(idx i) {
-        if (is_measured(i))
-            throw qpp::exception::QuditAlreadyMeasured(
-                "qpp::QCircuit::mark_as_measured_()");
-        subsys_[i] = idx_inf; // set qudit i to measured state
-        for (idx m = i; m < nq_; ++m) {
-            if (!is_measured(m)) {
-                --subsys_[m];
-            }
-        }
-    }
-
-    // giving a vector of non-measured qudits, get their relative position wrt
-    // the measured qudits
-    std::vector<idx> get_relative_pos_(std::vector<idx> v) {
-        idx vsize = v.size();
-        for (idx i = 0; i < vsize; ++i) {
-            if (is_measured(v[i]))
-                throw qpp::exception::QuditAlreadyMeasured(
-                    "qpp::QCircuit::get_relative_pos_()");
-            //            if (v[i] >= nq_)
-            //                throw qpp::exception::SubsysMismatchDims(
-            //                    "qpp::QCircuit::get_relative_pos_()");
-            v[i] = subsys_[v[i]];
-        }
-        return v;
-    }
-
-  public:
     // single gate single qudit
     void apply(const cmat& U, idx i, const std::string& name = "") {
         gates_.emplace_back(GateType::SINGLE, U, std::vector<idx>{},
@@ -382,7 +351,7 @@ class QCircuit : public IDisplay {
         // measuring an already measured qudit
         if (is_measured(i))
             throw qpp::exception::QuditAlreadyMeasured(
-                "qpp::QCircuit::measureZ()");
+                    "qpp::QCircuit::measureZ()");
         // trying to put the result into an non-existing classical slot
         if (c_reg >= dits_.size())
             throw qpp::exception::OutOfRange("qpp::QCircuit::measureZ()");
@@ -391,7 +360,6 @@ class QCircuit : public IDisplay {
         measurements_.emplace_back(MeasureType::MEASURE_Z, std::vector<cmat>{},
                                    std::vector<idx>{i}, c_reg, name);
         measurement_steps_.emplace_back(gates_.size());
-        mark_as_measured_(i);
         /*try {
         } catch (std::exception& e) {
             std::cerr << "IN qpp::QCircuit::measureZ()\n";
@@ -411,7 +379,7 @@ class QCircuit : public IDisplay {
         // measuring an already measured qudit
         if (is_measured(i))
             throw qpp::exception::QuditAlreadyMeasured(
-                "qpp::QCircuit::measureV()");
+                    "qpp::QCircuit::measureV()");
         // trying to put the result into an non-existing classical slot
         if (c_reg >= dits_.size())
             throw qpp::exception::OutOfRange("qpp::QCircuit::measureV()");
@@ -420,7 +388,6 @@ class QCircuit : public IDisplay {
         measurements_.emplace_back(MeasureType::MEASURE_V, std::vector<cmat>{V},
                                    std::vector<idx>{i}, c_reg, name);
         measurement_steps_.emplace_back(gates_.size());
-        mark_as_measured_(i);
     }
 
     // generalized measurement of single qudit with Kraus operators Ks
@@ -434,7 +401,7 @@ class QCircuit : public IDisplay {
         // measuring an already measured qudit
         if (is_measured(i))
             throw qpp::exception::QuditAlreadyMeasured(
-                "qpp::QCircuit::measureKs()");
+                    "qpp::QCircuit::measureKs()");
         // trying to put the result into an non-existing classical slot
         if (c_reg >= dits_.size())
             throw qpp::exception::OutOfRange("qpp::QCircuit::measureKs()");
@@ -443,9 +410,166 @@ class QCircuit : public IDisplay {
         measurements_.emplace_back(MeasureType::MEASURE_KS, Ks,
                                    std::vector<idx>{i}, c_reg, name);
         measurement_steps_.emplace_back(gates_.size());
-        mark_as_measured_(i);
     }
 
+    std::ostream& display(std::ostream& os) const override {
+        os << "nq = " << nq_ << ", nc = " << nc_ << ", d = " << d_;
+
+        if (name_ != "") // if the circuit is named
+            os << ", name = \"" << name_ << "\"\n";
+        else
+            os << ", name = \"\"\n";
+
+        idx gates_size = gates_.size();
+        idx measurements_size = measurement_steps_.size();
+
+        idx measurement_ip = 0; // measurement instruction pointer
+        for (idx i = 0; i <= gates_size; ++i) {
+            // check for measurements before gates
+            if (measurements_size != 0) {
+                idx current_measurement_step =
+                        measurement_steps_[measurement_ip];
+                // we have a measurement
+                if (current_measurement_step == i) {
+                    while (measurement_steps_[measurement_ip] ==
+                           current_measurement_step) {
+                        os << measurements_[measurement_ip].measurement_type_
+                           << ", "
+                           << "\"" << measurements_[measurement_ip].name_
+                           << "\""
+                           << ", ";
+                        os << disp(measurements_[measurement_ip].target_, ",");
+                        os << '\n';
+                        ++measurement_ip;
+                    }
+                }
+            }
+            // check for gates
+            if (i < gates_size) {
+                os << gates_[i].gate_type_ << ", "
+                   << "\"" << gates_[i].name_ << "\""
+                   << ", ";
+                if (gates_[i].gate_type_ >=
+                    GateType ::SINGLE_CTRL_SINGLE_TARGET)
+                    os << disp(gates_[i].ctrl_, ",") << ", ";
+                os << disp(gates_[i].target_, ",");
+                os << '\n';
+            }
+        }
+
+        os << std::boolalpha;
+        os << "measured: " << disp(get_measured(), ",") << '\n';
+        os << std::noboolalpha;
+        os << "dits: " << disp(dits_, ",") << '\n';
+        os << "probs: " << disp(probs_, ",") << '\n';
+
+        os << "measurement steps (assumed after gate steps): ";
+        std::cout << disp(measurement_steps_, ",") << '\n';
+
+        os << "updated subsystems: ";
+        std::cout << disp(subsys_, ",") << '\n';
+
+        return os;
+    }
+};
+
+class QCircuit : public QCircuitDescription {
+  public:
+    using QCircuitDescription::QCircuitDescription;
+
+    std::ostream& display(std::ostream& os) const override {
+        os << "nq = " << nq_ << ", nc = " << nc_ << ", d = " << d_;
+
+        if (name_ != "") // if the circuit is named
+            os << ", name = \"" << name_ << "\"\n";
+        else
+            os << ", name = \"\"\n";
+
+        idx gates_size = gates_.size();
+        idx measurements_size = measurement_steps_.size();
+
+        idx measurement_ip = 0; // measurement instruction pointer
+        for (idx i = 0; i <= gates_size; ++i) {
+            // check for measurements before gates
+            if (measurements_size != 0) {
+                idx current_measurement_step =
+                        measurement_steps_[measurement_ip];
+                // we have a measurement
+                if (current_measurement_step == i) {
+                    while (measurement_steps_[measurement_ip] ==
+                           current_measurement_step) {
+                        os << measurements_[measurement_ip].measurement_type_
+                           << ", "
+                           << "\"" << measurements_[measurement_ip].name_
+                           << "\""
+                           << ", ";
+                        os << disp(measurements_[measurement_ip].target_, ",");
+                        os << '\n';
+                        ++measurement_ip;
+                    }
+                }
+            }
+            // check for gates
+            if (i < gates_size) {
+                os << gates_[i].gate_type_ << ", "
+                   << "\"" << gates_[i].name_ << "\""
+                   << ", ";
+                if (gates_[i].gate_type_ >=
+                    GateType ::SINGLE_CTRL_SINGLE_TARGET)
+                    os << disp(gates_[i].ctrl_, ",") << ", ";
+                os << disp(gates_[i].target_, ",");
+                os << '\n';
+            }
+        }
+
+        os << std::boolalpha;
+        os << "measured: " << disp(get_measured(), ",") << '\n';
+        os << std::noboolalpha;
+        os << "dits: " << disp(dits_, ",") << '\n';
+        os << "probs: " << disp(probs_, ",") << '\n';
+
+        os << "measurement steps (assumed after gate steps): ";
+        std::cout << disp(measurement_steps_, ",") << '\n';
+
+        os << "updated subsystems: ";
+        std::cout << disp(subsys_, ",") << '\n';
+
+        return os;
+    }
+
+protected:
+    // mark qudit i as measured then re-label accordingly the remaining
+    // non-measured qudits
+    // TODO: set to no-op if measured before?!
+    void mark_as_measured_(idx i) {
+        if (is_measured(i))
+            throw qpp::exception::QuditAlreadyMeasured(
+                    "qpp::QCircuit::mark_as_measured_()");
+        subsys_[i] = idx_inf; // set qudit i to measured state
+        for (idx m = i; m < nq_; ++m) {
+            if (!is_measured(m)) {
+                --subsys_[m];
+            }
+        }
+    }
+
+    // giving a vector of non-measured qudits, get their relative position wrt
+    // the measured qudits
+    std::vector<idx> get_relative_pos_(std::vector<idx> v) {
+        idx vsize = v.size();
+        for (idx i = 0; i < vsize; ++i) {
+            if (is_measured(v[i]))
+                throw qpp::exception::QuditAlreadyMeasured(
+                        "qpp::QCircuit::get_relative_pos_()");
+            //            if (v[i] >= nq_)
+            //                throw qpp::exception::SubsysMismatchDims(
+            //                    "qpp::QCircuit::get_relative_pos_()");
+            v[i] = subsys_[v[i]];
+        }
+        return v;
+    }
+
+public:
     void run() {
         idx gates_size = gates_.size();
         idx measurements_size = measurement_steps_.size();
@@ -546,68 +670,7 @@ class QCircuit : public IDisplay {
             }
         }
     }
-
-    std::ostream& display(std::ostream& os) const override {
-        os << "nq = " << nq_ << ", nc = " << nc_ << ", d = " << d_;
-
-        if (name_ != "") // if the circuit is named
-            os << ", name = \"" << name_ << "\"\n";
-        else
-            os << ", name = \"\"\n";
-
-        idx gates_size = gates_.size();
-        idx measurements_size = measurement_steps_.size();
-
-        idx measurement_ip = 0; // measurement instruction pointer
-        for (idx i = 0; i <= gates_size; ++i) {
-            // check for measurements before gates
-            if (measurements_size != 0) {
-                idx current_measurement_step =
-                    measurement_steps_[measurement_ip];
-                // we have a measurement
-                if (current_measurement_step == i) {
-                    while (measurement_steps_[measurement_ip] ==
-                           current_measurement_step) {
-                        os << measurements_[measurement_ip].measurement_type_
-                           << ", "
-                           << "\"" << measurements_[measurement_ip].name_
-                           << "\""
-                           << ", ";
-                        os << disp(measurements_[measurement_ip].target_, ",");
-                        os << '\n';
-                        ++measurement_ip;
-                    }
-                }
-            }
-            // check for gates
-            if (i < gates_size) {
-                os << gates_[i].gate_type_ << ", "
-                   << "\"" << gates_[i].name_ << "\""
-                   << ", ";
-                if (gates_[i].gate_type_ >=
-                    GateType ::SINGLE_CTRL_SINGLE_TARGET)
-                    os << disp(gates_[i].ctrl_, ",") << ", ";
-                os << disp(gates_[i].target_, ",");
-                os << '\n';
-            }
-        }
-
-        os << std::boolalpha;
-        os << "measured: " << disp(get_measured(), ",") << '\n';
-        os << std::noboolalpha;
-        os << "dits: " << disp(dits_, ",") << '\n';
-        os << "probs: " << disp(probs_, ",") << '\n';
-
-        os << "measurement steps (assumed after gate steps): ";
-        std::cout << disp(measurement_steps_, ",") << '\n';
-
-        os << "updated subsystems: ";
-        std::cout << disp(subsys_, ",") << '\n';
-
-        return os;
-    }
-
-}; // namespace experimental
+};
 
 } // namespace experimental
 } /* namespace qpp */
