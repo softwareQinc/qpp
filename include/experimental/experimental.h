@@ -40,8 +40,10 @@ namespace qpp {
 namespace experimental {
 
 // TODO: add a quantum instruction pointer and a measurement instruction pointer
-// TODO: perform exception checking before run() (such as wrong idx on apply or out of range ctrl/targets)
-//  i.e. ROBUST EXCEPTION CHECKING, something like a sanitize function! Do this in apply() and not in run()
+// TODO: perform exception checking before run() (such as wrong idx on apply or
+// out of range ctrl/targets)
+//  i.e. ROBUST EXCEPTION CHECKING, something like a sanitize function! Do this
+//  in apply() and not in run()
 
 class QCircuit : public IDisplay {
     idx nq_;                             ///< number of qudits
@@ -250,9 +252,9 @@ class QCircuit : public IDisplay {
             if (is_measured(v[i]))
                 throw qpp::exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::get_relative_pos_()");
-            if(v[i] >= nq_)
+            if (v[i] >= nq_)
                 throw qpp::exception::SubsysMismatchDims(
-                        "qpp::QCircuit::get_relative_pos_()");
+                    "qpp::QCircuit::get_relative_pos_()");
             v[i] = subsys_[v[i]];
         }
         return v;
@@ -326,6 +328,7 @@ class QCircuit : public IDisplay {
         gates_.emplace_back(GateType::CUSTOM_CTRL, U, ctrl, target, name);
     }
 
+    // FIXME , use the corresponding dits
     // single ctrl single target
     void cCTRL(const cmat& U, idx ctrl, idx target,
                const std::string& name = "") {
@@ -559,14 +562,13 @@ class QCircuit : public IDisplay {
                                           target_rel_pos, d_);
                     break;
                 case GateType::SINGLE_cCTRL_SINGLE_TARGET:
-                    break;
                 case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
-                    break;
                 case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
-                    break;
                 case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
-                    break;
                 case GateType::CUSTOM_cCTRL:
+                    // FIXME, use a simple apply instead and check on the classical subsystems
+//                    psi_ = qpp::applyCTRL(psi_, gates_[i].gate_,
+//                                          gates_[i].ctrl_, target_rel_pos, d_);
                     break;
                 }
             }
