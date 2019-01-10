@@ -424,7 +424,7 @@ class QCircuitDescription : public IDisplay {
 
         return os;
     }
-};
+}; /* class QCircuitDescription */
 
 class QCircuit : public IDisplay {
     QCircuitDescription qcircuit_description_;
@@ -459,7 +459,7 @@ class QCircuit : public IDisplay {
 
         return os;
     }
-};
+}; /* class QCircuit */
 
 // class QCircuit : public QCircuitDescription {
 //    std::vector<idx> dits_;     ///< classical dits
