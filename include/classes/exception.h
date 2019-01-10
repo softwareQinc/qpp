@@ -1,4 +1,4 @@
-/*
+//*
  * This file is part of Quantum++.
  *
  * MIT License
@@ -515,7 +515,7 @@ class NoCodeword : public Exception {
 class OutOfRange : public Exception {
   public:
     std::string type_description() const override {
-        return "Parameter out of range";
+        return "Argument out of range";
     }
 
     using Exception::Exception;
