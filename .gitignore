@@ -2,7 +2,7 @@
 *.swp
 out.tmp
 
-# Visual Studio 
+# Visual Studio
 .vs/
 
 # CLion
@@ -12,3 +12,7 @@ cmake-build*/
 
 # Latex documentation source files
 doc/latex/
+
+# CMakeLists.txt should be un-changed, with examples/minimal.cpp as standard
+# example
+CMakeLists.txt
