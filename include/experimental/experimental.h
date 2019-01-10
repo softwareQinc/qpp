@@ -47,7 +47,6 @@ namespace experimental {
 //  in gate() and not in run()
 
 // TODO: move mark_as_measured_ to run(), more cleanup
-// TODO: move psi_ outside QCircuitDescription
 // TODO: maybe put d_ argument after name_, or consider using multiple ctors
 
 class QCircuitDescription : public IDisplay {
