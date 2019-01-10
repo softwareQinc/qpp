@@ -26,6 +26,7 @@ var namespaceqpp_1_1exception =
     [ "OutOfRange", "classqpp_1_1exception_1_1_out_of_range.html", "classqpp_1_1exception_1_1_out_of_range" ],
     [ "PermInvalid", "classqpp_1_1exception_1_1_perm_invalid.html", "classqpp_1_1exception_1_1_perm_invalid" ],
     [ "PermMismatchDims", "classqpp_1_1exception_1_1_perm_mismatch_dims.html", "classqpp_1_1exception_1_1_perm_mismatch_dims" ],
+    [ "QuditAlreadyMeasured", "classqpp_1_1exception_1_1_qudit_already_measured.html", "classqpp_1_1exception_1_1_qudit_already_measured" ],
     [ "SizeMismatch", "classqpp_1_1exception_1_1_size_mismatch.html", "classqpp_1_1exception_1_1_size_mismatch" ],
     [ "SubsysMismatchDims", "classqpp_1_1exception_1_1_subsys_mismatch_dims.html", "classqpp_1_1exception_1_1_subsys_mismatch_dims" ],
     [ "TypeMismatch", "classqpp_1_1exception_1_1_type_mismatch.html", "classqpp_1_1exception_1_1_type_mismatch" ],

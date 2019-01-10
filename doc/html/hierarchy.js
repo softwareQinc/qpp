@@ -30,6 +30,7 @@ var hierarchy =
         [ "qpp::exception::OutOfRange", "classqpp_1_1exception_1_1_out_of_range.html", null ],
         [ "qpp::exception::PermInvalid", "classqpp_1_1exception_1_1_perm_invalid.html", null ],
         [ "qpp::exception::PermMismatchDims", "classqpp_1_1exception_1_1_perm_mismatch_dims.html", null ],
+        [ "qpp::exception::QuditAlreadyMeasured", "classqpp_1_1exception_1_1_qudit_already_measured.html", null ],
         [ "qpp::exception::SizeMismatch", "classqpp_1_1exception_1_1_size_mismatch.html", null ],
         [ "qpp::exception::SubsysMismatchDims", "classqpp_1_1exception_1_1_subsys_mismatch_dims.html", null ],
         [ "qpp::exception::TypeMismatch", "classqpp_1_1exception_1_1_type_mismatch.html", null ],
@@ -43,10 +44,13 @@ var hierarchy =
       [ "qpp::is_iterable< T, typename >", "structqpp_1_1is__iterable.html", null ]
     ] ],
     [ "qpp::Bit_circuit::Gate_count", "structqpp_1_1_bit__circuit_1_1_gate__count.html", null ],
+    [ "qpp::experimental::QCircuitDescription::GateStep", "structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html", null ],
     [ "qpp::IDisplay", "classqpp_1_1_i_display.html", [
       [ "qpp::Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html", [
         [ "qpp::Bit_circuit", "classqpp_1_1_bit__circuit.html", null ]
       ] ],
+      [ "qpp::experimental::QCircuit", "classqpp_1_1experimental_1_1_q_circuit.html", null ],
+      [ "qpp::experimental::QCircuitDescription", "classqpp_1_1experimental_1_1_q_circuit_description.html", null ],
       [ "qpp::internal::IOManipEigen", "classqpp_1_1internal_1_1_i_o_manip_eigen.html", null ],
       [ "qpp::internal::IOManipPointer< PointerType >", "classqpp_1_1internal_1_1_i_o_manip_pointer.html", null ],
       [ "qpp::internal::IOManipRange< InputIterator >", "classqpp_1_1internal_1_1_i_o_manip_range.html", null ],
@@ -56,6 +60,7 @@ var hierarchy =
       [ "qpp::is_matrix_expression< Derived >", "structqpp_1_1is__matrix__expression.html", null ]
     ] ],
     [ "qpp::make_void< Ts >", "structqpp_1_1make__void.html", null ],
+    [ "qpp::experimental::QCircuitDescription::MeasureStep", "structqpp_1_1experimental_1_1_q_circuit_description_1_1_measure_step.html", null ],
     [ "qpp::internal::Singleton< T >", "classqpp_1_1internal_1_1_singleton.html", null ],
     [ "qpp::internal::Singleton< const Codes >", "classqpp_1_1internal_1_1_singleton.html", [
       [ "qpp::Codes", "classqpp_1_1_codes.html", null ]

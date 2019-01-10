@@ -35,6 +35,7 @@ var dir_b02e4219757ae4e3a0f1714873865bbf =
       [ "TypeMismatch", "classqpp_1_1exception_1_1_type_mismatch.html", "classqpp_1_1exception_1_1_type_mismatch" ],
       [ "SizeMismatch", "classqpp_1_1exception_1_1_size_mismatch.html", "classqpp_1_1exception_1_1_size_mismatch" ],
       [ "UndefinedType", "classqpp_1_1exception_1_1_undefined_type.html", "classqpp_1_1exception_1_1_undefined_type" ],
+      [ "QuditAlreadyMeasured", "classqpp_1_1exception_1_1_qudit_already_measured.html", "classqpp_1_1exception_1_1_qudit_already_measured" ],
       [ "CustomException", "classqpp_1_1exception_1_1_custom_exception.html", "classqpp_1_1exception_1_1_custom_exception" ]
     ] ],
     [ "gates.h", "gates_8h.html", [
