@@ -24,6 +24,8 @@ int main() {
     circ.measureZ(8, 0);
     circ.gate(gt.Z, {1, 2, 3}, "Z on 1 2 3");
     circ.measureZ(5, 9);
+    circ.QFT({1, 2, 3});
+    circ.TFQ({1, 2, 3});
     // circ.gate(gt.TOF, 4, 6, 7, "TOF 4 6 7");
 
     std::cout << circ << std::endl;
@@ -42,9 +44,9 @@ int main() {
     teleport.measureZ(0, 0);
     teleport.measureZ(1, 1);
 
-    //teleport.run();
+    // teleport.run();
 
-    //std::cout << disp(teleport.get_psi()) << '\n';
+    // std::cout << disp(teleport.get_psi()) << '\n';
 
     std::cout << teleport << '\n';
 

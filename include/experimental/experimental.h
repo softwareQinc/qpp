@@ -40,6 +40,7 @@ namespace qpp {
 namespace experimental {
 
 // TODO: add a quantum instruction pointer and a measurement instruction pointer
+// TODO in progress: add QFT/TFQ as a "gate" type, what about computing depths?!
 
 // TODO: perform exception checking before run() (such as wrong idx on apply or
 //  out of range ctrl/targets)
@@ -75,6 +76,10 @@ class QCircuitDescription : public IDisplay {
         CUSTOM, ///< custom gate on multiple qudits
 
         FAN, ///< same unitary gate on multiple qudits
+
+        QFT, ///< quantum Fourier transform,
+
+        TFQ, ///< quantum inverse Fourier transform,
 
         SINGLE_CTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
                                    ///< one control and one target
@@ -164,6 +169,10 @@ class QCircuitDescription : public IDisplay {
             return os << "THREE";
         case GateType::FAN:
             return os << "FAN";
+        case GateType::QFT:
+            return os << "QFT";
+        case GateType::TFQ:
+            return os << "TFQ";
         case GateType::CUSTOM:
             return os << "CUSTOM";
         case GateType::SINGLE_CTRL_SINGLE_TARGET:
@@ -240,6 +249,18 @@ class QCircuitDescription : public IDisplay {
               const std::string& name = "") {
         gates_.emplace_back(GateType::CUSTOM, U, std::vector<idx>{}, target,
                             name);
+    }
+
+    // quantum Fourier transform
+    void QFT(const std::vector<idx>& target) {
+        gates_.emplace_back(GateType::QFT, cmat{}, std::vector<idx>{}, target,
+                            "QFT");
+    }
+
+    // quantum inverse Fourier transform
+    void TFQ(const std::vector<idx>& target) {
+        gates_.emplace_back(GateType::TFQ, cmat{}, std::vector<idx>{}, target,
+                            "TFQ");
     }
 
     // single ctrl single target
@@ -566,6 +587,8 @@ class QCircuit : public IDisplay {
 //                        psi_ = qpp::gate(psi_, gates_[i].gate_,
 //                                          {target_rel_pos[m]}, d_);
 //                    break;
+//                case GateType::QFT:
+//                case GateType::TFQ:
 //                case GateType::SINGLE_CTRL_SINGLE_TARGET:
 //                case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
 //                case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
