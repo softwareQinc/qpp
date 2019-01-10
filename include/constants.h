@@ -89,6 +89,11 @@ constexpr double ee = 2.718281828459045235360287471352662497;
 constexpr double infty = std::numeric_limits<double>::max();
 
 /**
+ * \brief Used to denote the largest unsigned index
+ */
+const idx idx_infty = static_cast<idx>(-1);
+
+/**
  * \brief D-th root of unity
  *
  * \param D Non-negative integer

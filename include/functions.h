@@ -262,8 +262,7 @@ double norm(const Eigen::MatrixBase<Derived>& A) {
  * and 2. Eigenvectors of \a A, as columns of a complex dynamic matrix
  */
 template <typename Derived>
-std::pair<dyn_col_vect<cplx>, cmat>
-eig(const Eigen::MatrixBase<Derived>& A) {
+std::pair<dyn_col_vect<cplx>, cmat> eig(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS

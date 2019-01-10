@@ -13,6 +13,7 @@ In progress - pre-release
     - Added new member functions for qpp::Gates:
           qpp::Gates::MODMUL() - quantum modular multiplication
     - Added Shor's algorithm example in "examples/shor.cpp"
+    - introduced the largest unsigned index qpp::idx_inf in "constants.h"
     - Added a new exception class qpp::exception::QuditAlreadyMeasured
     - Added qpp::experimental::QCircuit class in "experimental/experimental.h"
       for simulating qudit quantum circuits
