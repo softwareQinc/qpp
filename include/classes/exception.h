@@ -508,9 +508,9 @@ class NoCodeword : public Exception {
 
 /**
  * \class qpp::exception::OutOfRange
- * \brief Parameter out of range exception
+ * \brief Argument out of range exception
  *
- * Parameter out of range
+ * Argument out of range
  */
 class OutOfRange : public Exception {
   public:
