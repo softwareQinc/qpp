@@ -1,4 +1,4 @@
-//*
+/*
  * This file is part of Quantum++.
  *
  * MIT License
