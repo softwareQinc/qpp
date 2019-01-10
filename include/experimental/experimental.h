@@ -41,6 +41,7 @@ namespace experimental {
 
 // TODO: add a quantum instruction pointer and a measurement instruction pointer
 // TODO in progress: add QFT/TFQ as a "gate" type, what about computing depths?!
+//  best is to apply it gate by gate in QCircuitDescription::gate(...)
 
 // TODO: perform exception checking before run() (such as wrong idx on apply or
 //  out of range ctrl/targets)
