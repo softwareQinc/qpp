@@ -483,8 +483,9 @@ class QCircuitDescription : public IDisplay {
             os << ", name = \"\"\n";
 
         idx gates_size = gates_.size();
-        idx measurement_steps_size = measurement_steps_.size();
         idx measurements_size = measurements_.size();
+        // should be the same as measurements_size
+        idx measurement_steps_size = measurement_steps_.size();
 
         idx measurement_ip = 0; // measurement instruction pointer
         for (idx i = 0; i <= gates_size; ++i) {
@@ -499,7 +500,7 @@ class QCircuitDescription : public IDisplay {
                     while (measurement_ip < measurements_size &&
                            measurement_steps_[measurement_ip] ==
                                current_measurement_step) {
-                        //std::cout << measurement_ip << std::endl;
+                        // std::cout << measurement_ip << std::endl;
                         os << measurements_[measurement_ip].measurement_type_
                            << ", "
                            << "\"" << measurements_[measurement_ip].name_
