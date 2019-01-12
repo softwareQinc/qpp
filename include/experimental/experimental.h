@@ -488,7 +488,8 @@ class QCircuitDescription : public IDisplay {
 
         idx measurement_ip = 0; // measurement instruction pointer
         for (idx i = 0; i <= gates_size; ++i) {
-            // check for measurements before gates
+
+            // check for measurements
             if (measurement_ip < measurements_size &&
                 measurement_steps_size != 0) {
                 idx current_measurement_step =
@@ -510,6 +511,7 @@ class QCircuitDescription : public IDisplay {
                     }
                 }
             }
+
             // check for gates
             if (i < gates_size) {
                 os << gates_[i].gate_type_ << ", "
