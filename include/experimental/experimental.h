@@ -484,31 +484,23 @@ class QCircuitDescription : public IDisplay {
 
         idx gates_size = gates_.size();
         idx measurements_size = measurements_.size();
-        // should be the same as measurements_size
-        idx measurement_steps_size = measurement_steps_.size();
 
-        idx measurement_ip = 0; // measurement instruction pointer
+        idx m_ip = 0; // measurement instruction pointer
         for (idx i = 0; i <= gates_size; ++i) {
 
             // check for measurements
-            if (measurement_ip < measurements_size &&
-                measurement_steps_size != 0) {
-                idx current_measurement_step =
-                    measurement_steps_[measurement_ip];
+            if (m_ip < measurements_size) {
+                idx m_step = measurement_steps_[m_ip];
                 // we have a measurement at step i
-                if (current_measurement_step == i) {
-                    while (measurement_ip < measurements_size &&
-                           measurement_steps_[measurement_ip] ==
-                               current_measurement_step) {
-                        // std::cout << measurement_ip << std::endl;
-                        os << measurements_[measurement_ip].measurement_type_
-                           << ", "
-                           << "\"" << measurements_[measurement_ip].name_
-                           << "\""
+                if (m_step == i) {
+                    while (measurement_steps_[m_ip] == m_step) {
+                        os << measurements_[m_ip].measurement_type_ << ", "
+                           << "\"" << measurements_[m_ip].name_ << "\""
                            << ", ";
-                        os << disp(measurements_[measurement_ip].target_, ",");
+                        os << disp(measurements_[m_ip].target_, ",");
                         os << '\n';
-                        ++measurement_ip;
+                        if (++m_ip == measurements_size)
+                            break;
                     }
                 }
             }
