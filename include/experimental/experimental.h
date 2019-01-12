@@ -55,12 +55,13 @@ class QCircuitDescription : public IDisplay {
     friend class QCircuit;
 
   protected:
-    idx nq_;                             ///< number of qudits
-    idx nc_;                             ///< number of classical "dits"
-    idx d_;                              ///< dimension
-    std::vector<idx> measurement_steps_; ///< keeps track of where the
-                                         ///< measurement take place
-    std::string name_;                   ///< optional circuit name
+    idx nq_;                               ///< number of qudits
+    idx nc_;                               ///< number of classical "dits"
+    idx d_;                                ///< dimension
+    std::vector<idx> measurement_steps_{}; ///< keeps track of where the
+                                           ///< measurement take place
+    std::string name_;                     ///< optional circuit name
+    std::vector<bool> measured_; ///< keeps track of the measured qudits
 
     /**
      * \brief Type of operation being executed at one step
@@ -161,66 +162,121 @@ class QCircuitDescription : public IDisplay {
                                     const GateType& gate_type) {
         switch (gate_type) {
         case GateType::NONE:
-            return os << "GATE NONE";
+            os << "GATE NONE";
+            break;
         case GateType::SINGLE:
-            return os << "SINGLE";
+            os << "SINGLE";
+            break;
         case GateType::TWO:
-            return os << "TWO";
+            os << "TWO";
+            break;
         case GateType::THREE:
-            return os << "THREE";
+            os << "THREE";
+            break;
         case GateType::FAN:
-            return os << "FAN";
+            os << "FAN";
+            break;
         case GateType::QFT:
-            return os << "QFT";
+            os << "QFT";
+            break;
         case GateType::TFQ:
-            return os << "TFQ";
+            os << "TFQ";
+            break;
         case GateType::CUSTOM:
-            return os << "CUSTOM";
+            os << "CUSTOM";
+            break;
         case GateType::SINGLE_CTRL_SINGLE_TARGET:
-            return os << "SINGLE_CTRL_SINGLE_TARGET";
+            os << "SINGLE_CTRL_SINGLE_TARGET";
+            break;
         case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
-            return os << "SINGLE_CTRL_MULTIPLE_TARGET";
+            os << "SINGLE_CTRL_MULTIPLE_TARGET";
+            break;
         case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
-            return os << "MULTIPLE_CTRL_SINGLE_TARGET";
+            os << "MULTIPLE_CTRL_SINGLE_TARGET";
+            break;
         case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
-            return os << "MULTIPLE_CTRL_MULTIPLE_TARGET";
+            os << "MULTIPLE_CTRL_MULTIPLE_TARGET";
+            break;
         case GateType::CUSTOM_CTRL:
-            return os << "CUSTOM_CTRL";
+            os << "CUSTOM_CTRL";
+            break;
         case GateType::SINGLE_cCTRL_SINGLE_TARGET:
-            return os << "SINGLE_cCTRL_SINGLE_TARGET";
+            os << "SINGLE_cCTRL_SINGLE_TARGET";
+            break;
         case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
-            return os << "SINGLE_cCTRL_MULTIPLE_TARGET";
+            os << "SINGLE_cCTRL_MULTIPLE_TARGET";
+            break;
         case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
-            return os << "MULTIPLE_cCTRL_SINGLE_TARGET";
+            os << "MULTIPLE_cCTRL_SINGLE_TARGET";
+            break;
         case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
-            return os << "MULTIPLE_cCTRL_MULTIPLE_TARGET";
+            os << "MULTIPLE_cCTRL_MULTIPLE_TARGET";
+            break;
         case GateType::CUSTOM_cCTRL:
-            return os << "CUSTOM_cCTRL";
+            os << "CUSTOM_cCTRL";
+            break;
         }
+
+        return os;
     }
 
     friend std::ostream& operator<<(std::ostream& os,
                                     const MeasureType& measure_type) {
         switch (measure_type) {
         case MeasureType::NONE:
-            return os << "\t|> MEASURE NONE";
+            os << "\t|> MEASURE NONE";
+            break;
         case MeasureType::MEASURE_Z:
-            return os << "\t|> MEASURE_Z";
+            os << "\t|> MEASURE_Z";
+            break;
         case MeasureType::MEASURE_V:
-            return os << "\t|> MEASURE_V";
+            os << "\t|> MEASURE_V";
+            break;
         case MeasureType::MEASURE_KS:
-            return os << "\t|> MEASURE_KS";
+            os << "\t|> MEASURE_KS";
+            break;
         }
+
+        return os;
     }
 
     ///< quantum circuit representation
-    std::vector<GateStep> gates_;
-    std::vector<MeasureStep> measurements_;
+    std::vector<GateStep> gates_{};
+    std::vector<MeasureStep> measurements_{};
 
   public:
     QCircuitDescription(idx nq, idx nc = 0, idx d = 2,
                         const std::string& name = "")
-        : nq_{nq}, nc_{nc}, d_{d}, name_{name} {}
+        : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false) {}
+
+    // getters
+    // number of qudits
+    idx get_nq() const { return nq_; }
+
+    // number of classical dits
+    idx get_nc() const { return nc_; }
+
+    // dimension
+    idx get_d() const { return d_; }
+
+    // measurement steps
+    std::vector<idx> get_measurement_steps() const {
+        return measurement_steps_;
+    }
+
+    // circuit name
+    std::string get_name() const { return name_; }
+
+    // qudits that were measured
+    std::vector<idx> get_measured() const {
+        std::vector<idx> result;
+        for (idx i = 0; i < nq_; ++i)
+            if (measured_[i])
+                result.emplace_back(i);
+
+        return result;
+    }
+    // end getters
 
     // single gate single qudit
     void gate(const cmat& U, idx i, const std::string& name = "") {
@@ -344,12 +400,19 @@ class QCircuitDescription : public IDisplay {
 
         // measuring non-existing qudit
         if (i >= nq_)
-            throw qpp::exception::OutOfRange("qpp::QCircuit::measureZ()");
+            throw qpp::exception::OutOfRange(
+                "qpp::QCircuitDescription::measureZ()");
         // trying to put the result into an non-existing classical slot
         if (c_reg >= nc_)
-            throw qpp::exception::OutOfRange("qpp::QCircuit::measureZ()");
+            throw qpp::exception::OutOfRange(
+                "qpp::QCircuitDescription::measureZ()");
+        // qudit was measured before
+        if (measured_[i] == true)
+            throw qpp::exception::QuditAlreadyMeasured(
+                "qpp:QCircuitDescription::measureZ");
         // END EXCEPTION CHECKS
 
+        measured_[i] = true;
         measurements_.emplace_back(MeasureType::MEASURE_Z, std::vector<cmat>{},
                                    std::vector<idx>{i}, c_reg, name);
         measurement_steps_.emplace_back(gates_.size());
@@ -368,11 +431,19 @@ class QCircuitDescription : public IDisplay {
 
         // measuring non-existing qudit
         if (i >= nq_)
-            throw qpp::exception::OutOfRange("qpp::QCircuit::measureV()");
+            throw qpp::exception::OutOfRange(
+                "qpp::QCircuitDescription::measureV()");
+        // trying to put the result into an non-existing classical slot
         if (c_reg >= nc_)
-            throw qpp::exception::OutOfRange("qpp::QCircuit::measureV()");
+            throw qpp::exception::OutOfRange(
+                "qpp::QCircuitDescription::measureV()");
+        // qudit was measured before
+        if (measured_[i] == true)
+            throw qpp::exception::QuditAlreadyMeasured(
+                "qpp:QCircuitDescription::measureV");
         // END EXCEPTION CHECKS
 
+        measured_[i] = true;
         measurements_.emplace_back(MeasureType::MEASURE_V, std::vector<cmat>{V},
                                    std::vector<idx>{i}, c_reg, name);
         measurement_steps_.emplace_back(gates_.size());
@@ -385,12 +456,19 @@ class QCircuitDescription : public IDisplay {
 
         // measuring non-existing qudit
         if (i >= nq_)
-            throw qpp::exception::OutOfRange("qpp::QCircuit::measureKs()");
+            throw qpp::exception::OutOfRange(
+                "qpp::QCircuitDescription::measureKs()");
         // trying to put the result into an non-existing classical slot
         if (c_reg >= nc_)
-            throw qpp::exception::OutOfRange("qpp::QCircuit::measureKs()");
+            throw qpp::exception::OutOfRange(
+                "qpp::QCircuitDescription::measureKs()");
+        // qudit was measured before
+        if (measured_[i] == true)
+            throw qpp::exception::QuditAlreadyMeasured(
+                "qpp:QCircuitDescription::measureKs");
         // END EXCEPTION CHECKS
 
+        measured_[i] = true;
         measurements_.emplace_back(MeasureType::MEASURE_KS, Ks,
                                    std::vector<idx>{i}, c_reg, name);
         measurement_steps_.emplace_back(gates_.size());
@@ -405,18 +483,22 @@ class QCircuitDescription : public IDisplay {
             os << ", name = \"\"\n";
 
         idx gates_size = gates_.size();
-        idx measurements_size = measurement_steps_.size();
+        idx measurement_steps_size = measurement_steps_.size();
+        idx measurements_size = measurements_.size();
 
         idx measurement_ip = 0; // measurement instruction pointer
         for (idx i = 0; i <= gates_size; ++i) {
             // check for measurements before gates
-            if (measurements_size != 0) {
+            if (measurement_ip < measurements_size &&
+                measurement_steps_size != 0) {
                 idx current_measurement_step =
                     measurement_steps_[measurement_ip];
-                // we have a measurement
+                // we have a measurement at step i
                 if (current_measurement_step == i) {
-                    while (measurement_steps_[measurement_ip] ==
-                           current_measurement_step) {
+                    while (measurement_ip < measurements_size &&
+                           measurement_steps_[measurement_ip] ==
+                               current_measurement_step) {
+                        //std::cout << measurement_ip << std::endl;
                         os << measurements_[measurement_ip].measurement_type_
                            << ", "
                            << "\"" << measurements_[measurement_ip].name_
@@ -441,11 +523,15 @@ class QCircuitDescription : public IDisplay {
             }
         }
 
-        os << "measurement steps (assumed after gate steps): ";
-        std::cout << disp(measurement_steps_, ",") << '\n';
+        os << "measurement steps: " << disp(measurement_steps_, ",") << '\n';
+
+        os << std::boolalpha;
+        os << "measured qudits: " << disp(measured_, ",") << '\n';
+        os << std::noboolalpha;
 
         return os;
     }
+
 }; /* class QCircuitDescription */
 
 class QCircuit : public IDisplay {
@@ -481,7 +567,9 @@ class QCircuit : public IDisplay {
 
         return os;
     }
-}; /* class QCircuit */
+};
+
+/* class QCircuit */
 
 // class QCircuit : public QCircuitDescription {
 //    std::vector<idx> dits_;     ///< classical dits
