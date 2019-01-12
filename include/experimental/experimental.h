@@ -224,18 +224,42 @@ class QCircuitDescription : public IDisplay {
                                     const MeasureType& measure_type) {
         switch (measure_type) {
         case MeasureType::NONE:
-            os << "\t|> MEASURE NONE";
+            os << "MEASURE NONE";
             break;
         case MeasureType::MEASURE_Z:
-            os << "\t|> MEASURE_Z";
+            os << "MEASURE_Z";
             break;
         case MeasureType::MEASURE_V:
-            os << "\t|> MEASURE_V";
+            os << "MEASURE_V";
             break;
         case MeasureType::MEASURE_KS:
-            os << "\t|> MEASURE_KS";
+            os << "MEASURE_KS";
             break;
         }
+
+        return os;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os,
+                                    const GateStep& gate_step) {
+        // os << "gate type = " << ;
+        os << gate_step.gate_type_ << ", ";
+        if (gate_step.gate_type_ >= GateType ::SINGLE_CTRL_SINGLE_TARGET)
+            os << "ctrl = " << disp(gate_step.ctrl_, ",") << ", ";
+        os << "target = " << disp(gate_step.target_, ",") << ", ";
+        os << "name = " << '\"' << gate_step.name_ << '\"';
+
+        return os;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os,
+                                    const MeasureStep& measure_step) {
+        // os << "measurement type = ";
+        os << measure_step.measurement_type_ << ", ";
+        os << "target = " << disp(measure_step.target_, ",") << ", ";
+        os << "c_reg = " << measure_step.c_reg_ << ", ";
+        os << "name = " << '\"' << measure_step.name_ << '\"';
+        os << " ";
 
         return os;
     }
@@ -494,11 +518,7 @@ class QCircuitDescription : public IDisplay {
                 // we have a measurement at step i
                 if (m_step == i) {
                     while (measurement_steps_[m_ip] == m_step) {
-                        os << measurements_[m_ip].measurement_type_ << ", "
-                           << "\"" << measurements_[m_ip].name_ << "\""
-                           << ", ";
-                        os << disp(measurements_[m_ip].target_, ",");
-                        os << '\n';
+                        os << "\t|> " << measurements_[m_ip] << '\n';
                         if (++m_ip == measurements_size)
                             break;
                     }
@@ -507,14 +527,7 @@ class QCircuitDescription : public IDisplay {
 
             // check for gates
             if (i < gates_size) {
-                os << gates_[i].gate_type_ << ", "
-                   << "\"" << gates_[i].name_ << "\""
-                   << ", ";
-                if (gates_[i].gate_type_ >=
-                    GateType ::SINGLE_CTRL_SINGLE_TARGET)
-                    os << disp(gates_[i].ctrl_, ",") << ", ";
-                os << disp(gates_[i].target_, ",");
-                os << '\n';
+                os << gates_[i] << '\n';
             }
         }
 
@@ -523,6 +536,8 @@ class QCircuitDescription : public IDisplay {
         os << std::boolalpha;
         os << "measured qudits: " << disp(measured_, ",") << '\n';
         os << std::noboolalpha;
+
+        os << "measured positions: " << disp(get_measured(), ",") << '\n';
 
         return os;
     }
