@@ -66,5 +66,4 @@ int main() {
     ket psi_final = qc_teleport_qubit.get_psi();
     std::cout << disp(psi_final) << '\n';
     std::cout << "norm difference: " << norm(psi_final - psi_initial) << '\n';
-    std::cout << norm(psi_initial) << " " << norm(psi_final) << '\n';
 }
