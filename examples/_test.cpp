@@ -64,6 +64,40 @@ int main() {
 
     ket psi_initial = U * 0_ket;
     ket psi_final = qc_teleport_qubit.get_psi();
+    std::cout << "teleported state:\n";
+    std::cout << disp(psi_final) << '\n';
+    std::cout << "norm difference: " << norm(psi_final - psi_initial) << "\n\n";
+
+    /////////// qudit teleportation ///////////
+    idx d = 5;
+    QCircuitDescription tele_qudit{3, 2, d, "qudit teleportation"};
+    // set the qubit 0 to a random state
+    U = randU(d);
+    tele_qudit.gate(U, 0);
+
+    // set the MES between qudits 1 and 2
+    tele_qudit.gate(gt.Fd(d), 1);
+    tele_qudit.CTRL(gt.Xd(d), 1, 2);
+
+    // perform the Bell measurement between qudits 0 and 1
+    tele_qudit.CTRL(adjoint(gt.Xd(d)), 0, 1);
+    tele_qudit.gate(adjoint(gt.Fd(d)), 0);
+
+    // perform the measurements
+    tele_qudit.measureZ(0, 0);
+    tele_qudit.measureZ(1, 1);
+
+    // apply the classical controls
+    tele_qudit.cCTRL(adjoint(gt.Xd(d)), 1, 2);
+    tele_qudit.cCTRL(gt.Zd(d), 0, 2);
+
+    QCircuit qc_tele_qudit{tele_qudit};
+    qc_tele_qudit.run();
+    std::cout << qc_tele_qudit << '\n';
+
+    psi_initial = U * mket({0}, d);
+    psi_final = qc_tele_qudit.get_psi();
+    std::cout << "teleported state:\n";
     std::cout << disp(psi_final) << '\n';
     std::cout << "norm difference: " << norm(psi_final - psi_initial) << '\n';
 }

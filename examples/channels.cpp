@@ -8,8 +8,8 @@
 
 int main() {
     using namespace qpp;
-    idx nk = 5;
-    idx D = 3; // nk Kraus on d-dimensional system
+    idx D = 3;  // dimension
+    idx nk = 5; // nk Kraus opertors on a D-dimensional system
     std::cout << ">> Generating a random channel with " << nk
               << " Kraus operators on a " << D << " dimensional space\n";
     std::vector<cmat> Ks = randkraus(nk, D);
