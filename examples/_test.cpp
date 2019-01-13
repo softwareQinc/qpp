@@ -39,33 +39,33 @@ int main() {
     */
     // TODO consider putting d after name for default fn arguments
 
-    QCircuitDescription teleport{3, 2, 2, "teleportation"};
+    QCircuitDescription teleport_qubit{3, 2, 2, "qubit teleportation"};
     // set the qubit 0 to a random state
     cmat U = randU(2);
-    teleport.gate(U, 0);
+    teleport_qubit.gate(U, 0);
 
     // set the MES between qudits 1 and 2
-    teleport.gate(gt.H, 1);
-    teleport.gate(gt.CNOT, 1, 2);
+    teleport_qubit.gate(gt.H, 1);
+    teleport_qubit.gate(gt.CNOT, 1, 2);
 
     // perform the Bell measurement between qudits 0 and 1
-    teleport.gate(gt.CNOT, 0, 1);
-    teleport.gate(gt.H, 0);
+    teleport_qubit.gate(gt.CNOT, 0, 1);
+    teleport_qubit.gate(gt.H, 0);
 
     // perform the measurements
-    teleport.measureZ(0, 0);
-    teleport.measureZ(1, 1);
+    teleport_qubit.measureZ(0, 0);
+    teleport_qubit.measureZ(1, 1);
 
     // apply the classical controls
-    teleport.cCTRL(gt.X, 1, 2);
-    teleport.cCTRL(gt.Z, 0, 2);
+    teleport_qubit.cCTRL(gt.X, 1, 2);
+    teleport_qubit.cCTRL(gt.Z, 0, 2);
 
-    QCircuit qc_teleport{teleport};
-    qc_teleport.run();
-    std::cout << qc_teleport << '\n';
+    QCircuit qc_teleport_qubit{teleport_qubit};
+    qc_teleport_qubit.run();
+    std::cout << qc_teleport_qubit << '\n';
 
     ket psi_initial = U * 0_ket;
-    ket psi_final = qc_teleport.get_psi();
+    ket psi_final = qc_teleport_qubit.get_psi();
     std::cout << disp(psi_final) << '\n';
     std::cout << "norm difference: " << norm(psi_final - psi_initial) << '\n';
 }
