@@ -51,8 +51,6 @@ int main() {
     // perform the Bell measurement between qudits 0 and 1
     teleport_qubit.gate(gt.CNOT, 0, 1);
     teleport_qubit.gate(gt.H, 0);
-
-    // perform the measurements
     teleport_qubit.measureZ(0, 0);
     teleport_qubit.measureZ(1, 1);
 
