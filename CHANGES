@@ -15,8 +15,9 @@ In progress - pre-release
     - Added Shor's algorithm example in "examples/shor.cpp"
     - introduced the largest unsigned index qpp::idx_inf in "constants.h"
     - Added a new exception class qpp::exception::QuditAlreadyMeasured
-    - Added qpp::experimental::QCircuit class in "experimental/experimental.h"
-      for simulating qudit quantum circuits
+    - Added qpp::experimental::QCircuitDescription and
+      qpp::experimental::QCircuit classes in "experimental/experimental.h" for
+      simulating qudit quantum circuits
       BE AWARE: this is work in progress, not yet complete, hence still buggy
 
 Version 1.1 - 26 November 2018

@@ -48,9 +48,6 @@ namespace experimental {
 //  i.e. ROBUST EXCEPTION CHECKING, something like a sanitize function! Do this
 //  in gate() and not in run()
 
-// TODO: move mark_as_measured_ to run(), more cleanup
-// TODO: maybe put d_ argument after name_, or consider using multiple ctors
-
 class QCircuitDescription : public IDisplay {
     friend class QCircuit;
 
@@ -323,8 +320,18 @@ class QCircuitDescription : public IDisplay {
     }
 
     // multiple qudits same gate
-    void gate_many(const cmat& U, const std::vector<idx>& target,
+    void gate_fan(const cmat& U, const std::vector<idx>& target,
                    const std::string& name = "") {
+        gates_.emplace_back(GateType::FAN, U, std::vector<idx>{}, target, name);
+    }
+
+    // multiple qudits same gate on all non-measured qudits
+    void gate_fan(const cmat& U, const std::string& name = "") {
+        std::vector<idx> target;
+        for(idx i = 0; i < nq_; ++i) {
+            if(!is_measured(i))
+                target.emplace_back(i);
+        }
         gates_.emplace_back(GateType::FAN, U, std::vector<idx>{}, target, name);
     }
 
@@ -640,6 +647,7 @@ class QCircuit : public IDisplay {
                             std::tie(res, prob, psi_) =
                                 qpp::measure_seq(psi_, target_rel_pos, qcd_.d_);
                             dits_[qcd_.measurements_[m_ip].c_reg_] = res[0];
+                            probs_[qcd_.measurements_[m_ip].c_reg_] = prob;
                             mark_as_measured_(
                                 qcd_.measurements_[m_ip].target_[0]);
                             break;
@@ -731,8 +739,8 @@ class QCircuit : public IDisplay {
         os << "dits: " << disp(dits_, ",") << '\n';
         os << "probs: " << disp(probs_, ",") << '\n';
 
-        os << "updated subsystems: ";
-        std::cout << disp(subsys_, ",") << '\n';
+//        os << "updated subsystems: ";
+//        std::cout << disp(subsys_, ",") << '\n';
 
         return os;
     }
