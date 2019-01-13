@@ -355,7 +355,7 @@ class QCircuitDescription : public IDisplay {
                             name);
     }
 
-    // single ctrl multiple target
+    // single ctrl multiple targets
     void CTRL(const cmat& U, idx ctrl, const std::vector<idx>& target,
               const std::string& name = "") {
         gates_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, U,
@@ -369,7 +369,7 @@ class QCircuitDescription : public IDisplay {
                             std::vector<idx>{target}, name);
     }
 
-    // multiple ctrl multiple target
+    // multiple ctrl multiple targets
     // FIXME
     void CTRL(const cmat& U, const std::vector<idx>& ctrl,
               const std::vector<idx>& target, const std::string& name = "") {
@@ -393,7 +393,7 @@ class QCircuitDescription : public IDisplay {
                             name);
     }
 
-    // single ctrl multiple target
+    // single ctrl multiple targets
     void cCTRL(const cmat& U, idx ctrl, const std::vector<idx>& target,
                const std::string& name = "") {
         gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, U,
@@ -407,7 +407,7 @@ class QCircuitDescription : public IDisplay {
                             std::vector<idx>{target}, name);
     }
 
-    // multiple ctrl multiple target
+    // multiple ctrl multiple targets
     void cCTRL(const cmat& U, const std::vector<idx>& ctrl,
                const std::vector<idx>& target, const std::string& name = "") {
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, U, ctrl,
@@ -705,7 +705,7 @@ class QCircuit : public IDisplay {
                         bool should_apply = true;
                         idx first_dit = dits_[(qcd_.gates_[i].ctrl_)[0]];
                         for (idx m = 0; m < qcd_.gates_[i].ctrl_.size(); ++m) {
-                            if ((qcd_.gates_[i].ctrl_)[m] != first_dit) {
+                            if (dits_[(qcd_.gates_[i].ctrl_)[m]] != first_dit) {
                                 should_apply = false;
                                 break;
                             }
@@ -716,7 +716,6 @@ class QCircuit : public IDisplay {
                                 target_rel_pos, qcd_.d_);
                         }
                     }
-
                     break;
                 }
             }
