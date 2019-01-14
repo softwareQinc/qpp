@@ -76,11 +76,11 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
     if (!internal::check_subsys_match_dims(subsys, dims))
         throw exception::SubsysMismatchDims("qpp::ip()");
 
-    // check that dims match state vector psi
+    // check that dims match psi column vector
     if (!internal::check_dims_match_cvect(dims, rpsi))
         throw exception::DimsMismatchCvector("qpp::ip()");
 
-    // check that subsys match state vector phi
+    // check that subsys match pho column vector
     std::vector<idx> subsys_dims(subsys.size());
     for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
@@ -192,7 +192,8 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
 
 // full measurements
 /**
- * \brief Measures the state \a A using the set of Kraus operators \a Ks
+ * \brief Measures the state vector or density operator \a A using the set of
+ * Kraus operators \a Ks
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
@@ -264,7 +265,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
 // http://stackoverflow.com
 // /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
- * \brief Measures the state \a A using the set of Kraus operators \a Ks
+ * \brief Measures the state vector or density matrix \a A using the set of
+ * Kraus operators \a Ks
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
@@ -280,8 +282,8 @@ measure(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief Measures the state \a A in the orthonormal basis
- * specified by the unitary matrix \a U
+ * \brief Measures the state vector or density matrix \a A in the orthonormal
+ * basis specified by the unitary matrix \a U
  *
  * \param A Eigen expression
  * \param U Unitary matrix whose columns represent the measurement basis vectors
@@ -318,9 +320,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
 
 // partial measurements
 /**
- * \brief  Measures the part \a subsys of
- * the multi-partite state vector or density matrix \a A
- * using the set of Kraus operators \a Ks
+ * \brief  Measures the part \a subsys of the multi-partite state vector or
+ * density matrix \a A using the set of Kraus operators \a Ks
  * \see qpp::measure_seq()
  *
  * \note The dimension of all \a Ks must match the dimension of \a target.
@@ -350,11 +351,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::measure()");
 
-    // check that dims match rho matrix
-    if (!internal::check_dims_match_mat(dims, rA))
-        throw exception::DimsMismatchMatrix("qpp::measure()");
-
-    // check target is valid w.r.t. dims
+    // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::measure()");
 
@@ -387,6 +384,9 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     //************ density matrix ************//
     if (internal::check_square_mat(rA)) // square matrix
     {
+        // check that dims match rho matrix
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::measure()");
         for (idx i = 0; i < Ks.size(); ++i) {
             cmat tmp = apply(rA, Ks[i], target, dims);
             tmp = ptrace(tmp, target, dims);
@@ -401,6 +401,9 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     //************ ket ************//
     else if (internal::check_cvector(rA)) // column vector
     {
+        // check that dims match psi column vector
+        if (!internal::check_dims_match_cvect(dims, rA))
+            throw exception::DimsMismatchCvector("qpp::measure()");
         for (idx i = 0; i < Ks.size(); ++i) {
             ket tmp = apply(rA, Ks[i], target, dims);
             prob[i] = std::pow(norm(tmp), 2);
@@ -425,9 +428,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 // http://stackoverflow.com
 // /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
- * \brief  Measures the part \a target of
- * the multi-partite state vector or density matrix \a A
- * using the set of Kraus operators \a Ks
+ * \brief  Measures the part \a target of the multi-partite state vector or
+ * density matrix \a A using the set of Kraus operators \a Ks
  * \see qpp::measure_seq()
  *
  * \note The dimension of all \a Ks must match the dimension of \a target.
@@ -450,9 +452,8 @@ measure(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief  Measures the part \a target of
- * the multi-partite state vector or density matrix \a A
- * using the set of Kraus operators \a Ks
+ * \brief  Measures the part \a target of the multi-partite state vector or
+ * density matrix \a A using the set of Kraus operators \a Ks
  * \see qpp::measure_seq()
  *
  * \note The dimension of all \a Ks must match the dimension of \a target.
@@ -493,9 +494,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 // http://stackoverflow.com
 // /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
- * \brief  Measures the part \a target of
- * the multi-partite state vector or density matrix \a A
- * using the set of Kraus operators \a Ks
+ * \brief  Measures the part \a target of the multi-partite state vector or
+ * density matrix \a A using the set of Kraus operators \a Ks
  * \see qpp::measure_seq()
  *
  * \note The dimension of all \a Ks must match the dimension of \a target.
@@ -518,10 +518,9 @@ measure(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief Measures the part \a target of
- * the multi-partite state vector or density matrix \a A
- * in the orthonormal basis or rank-1 POVM specified by the columns of the
- * matrix \a V
+ * \brief Measures the part \a target of the multi-partite state vector or
+ * density matrix \a A in the orthonormal basis or rank-1 POVM specified by the
+ * columns of the matrix \a V
  * \see qpp::measure_seq()
  *
  * \note The dimension of \a V must match the dimension of \a target.
@@ -552,7 +551,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::measure()");
 
-    // check target is valid w.r.t. dims
+    // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::measure()");
 
@@ -622,10 +621,9 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 }
 
 /**
- * \brief Measures the part \a target of
- * the multi-partite state vector or density matrix \a A
- * in the orthonormal basis or rank-1 POVM specified by the column of the
- * matrix \a V
+ * \brief Measures the part \a target of the multi-partite state vector or
+ * density matrix \a A in the orthonormal basis or rank-1 POVM specified by the
+ * column of the matrix \a V
  * \see qpp::measure_seq()
  *
  * \note The dimension of \a V must match the dimension of \a target.
@@ -664,9 +662,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 }
 
 /**
- * \brief Sequentially measures the part \a target
- * of the multi-partite state vector or density matrix \a A
- * in the computational basis
+ * \brief Sequentially measures the part \a target of the multi-partite state
+ * vector or density matrix \a A in the computational basis
  * \see qpp::measure()
  *
  * \param A Eigen expression
@@ -705,11 +702,11 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     } else if (internal::check_cvector(cA)) {
         // check that dims match psi column vector
         if (!internal::check_dims_match_cvect(dims, cA))
-            throw exception::DimsMismatchMatrix("qpp::measure_seq()");
+            throw exception::DimsMismatchCvector("qpp::measure_seq()");
     } else
         throw exception::MatrixNotSquareNorCvector("qpp::measure_seq()");
 
-    // check target is valid w.r.t. dims
+    // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::measure_seq()");
     // END EXCEPTION CHECKS
@@ -740,9 +737,8 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
 }
 
 /**
- * \brief Sequentially measures the part \a target
- * of the multi-partite state vector or density matrix \a A
- * in the computational basis
+ * \brief Sequentially measures the part \a target of the multi-partite state
+ * vector or density matrix \a A in the computational basis
  * \see qpp::measure()
  *
  * \param A Eigen expression

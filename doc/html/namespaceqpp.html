@@ -147,7 +147,7 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:adf4dc551c8858cac37c90b561c5767cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias template that implements the proposal for void_t.  <a href="#adf4dc551c8858cac37c90b561c5767cc">More...</a><br /></td></tr>
 <tr class="separator:adf4dc551c8858cac37c90b561c5767cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f5f7137e8551cf82db04d3b81cdd706"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> = std::size_t</td></tr>
-<tr class="memdesc:a1f5f7137e8551cf82db04d3b81cdd706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-negative integer index.  <a href="#a1f5f7137e8551cf82db04d3b81cdd706">More...</a><br /></td></tr>
+<tr class="memdesc:a1f5f7137e8551cf82db04d3b81cdd706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-negative integer index, make sure you use an unsigned type.  <a href="#a1f5f7137e8551cf82db04d3b81cdd706">More...</a><br /></td></tr>
 <tr class="separator:a1f5f7137e8551cf82db04d3b81cdd706"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad199ade0836f0d8488e7f6c7c8aa1949"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ad199ade0836f0d8488e7f6c7c8aa1949">bigint</a> = long long int</td></tr>
 <tr class="memdesc:ad199ade0836f0d8488e7f6c7c8aa1949"><td class="mdescLeft">&#160;</td><td class="mdescRight">Big integer.  <a href="#ad199ade0836f0d8488e7f6c7c8aa1949">More...</a><br /></td></tr>
@@ -571,15 +571,15 @@ Functions</h2></td></tr>
 <tr class="separator:a09aa9dc2db88b74196c4ea59c2c2ff97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65da96cadec88fbbb3cc70b0a82fa90c"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a65da96cadec88fbbb3cc70b0a82fa90c"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>, std::vector&lt; double &gt;, std::vector&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a65da96cadec88fbbb3cc70b0a82fa90c">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &amp;Ks)</td></tr>
-<tr class="memdesc:a65da96cadec88fbbb3cc70b0a82fa90c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the state <em>A</em> using the set of Kraus operators <em>Ks</em>.  <a href="#a65da96cadec88fbbb3cc70b0a82fa90c">More...</a><br /></td></tr>
+<tr class="memdesc:a65da96cadec88fbbb3cc70b0a82fa90c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the state vector or density operator <em>A</em> using the set of Kraus operators <em>Ks</em>.  <a href="#a65da96cadec88fbbb3cc70b0a82fa90c">More...</a><br /></td></tr>
 <tr class="separator:a65da96cadec88fbbb3cc70b0a82fa90c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a943b1da665384d3076f7118771783e84"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a943b1da665384d3076f7118771783e84"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>, std::vector&lt; double &gt;, std::vector&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a943b1da665384d3076f7118771783e84">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::initializer_list&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &amp;Ks)</td></tr>
-<tr class="memdesc:a943b1da665384d3076f7118771783e84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the state <em>A</em> using the set of Kraus operators <em>Ks</em>.  <a href="#a943b1da665384d3076f7118771783e84">More...</a><br /></td></tr>
+<tr class="memdesc:a943b1da665384d3076f7118771783e84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the state vector or density matrix <em>A</em> using the set of Kraus operators <em>Ks</em>.  <a href="#a943b1da665384d3076f7118771783e84">More...</a><br /></td></tr>
 <tr class="separator:a943b1da665384d3076f7118771783e84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dcb1c411953ecda5ed943c7afec47c4"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a0dcb1c411953ecda5ed943c7afec47c4"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>, std::vector&lt; double &gt;, std::vector&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a0dcb1c411953ecda5ed943c7afec47c4">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U)</td></tr>
-<tr class="memdesc:a0dcb1c411953ecda5ed943c7afec47c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the state <em>A</em> in the orthonormal basis specified by the unitary matrix <em>U</em>.  <a href="#a0dcb1c411953ecda5ed943c7afec47c4">More...</a><br /></td></tr>
+<tr class="memdesc:a0dcb1c411953ecda5ed943c7afec47c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the state vector or density matrix <em>A</em> in the orthonormal basis specified by the unitary matrix <em>U</em>.  <a href="#a0dcb1c411953ecda5ed943c7afec47c4">More...</a><br /></td></tr>
 <tr class="separator:a0dcb1c411953ecda5ed943c7afec47c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa48f31ff7b24228725e2d49c4047d68"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:aaa48f31ff7b24228725e2d49c4047d68"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>, std::vector&lt; double &gt;, std::vector&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aaa48f31ff7b24228725e2d49c4047d68">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const std::vector&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &amp;Ks, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;dims)</td></tr>
@@ -1042,7 +1042,7 @@ template&lt;typename Scalar &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Non-negative integer index. </p>
+<p>Non-negative integer index, make sure you use an unsigned type. </p>
 
 </div>
 </div>
@@ -4491,7 +4491,7 @@ template&lt;typename Derived &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Measures the state <em>A</em> using the set of Kraus operators <em>Ks</em>. </p>
+<p>Measures the state vector or density operator <em>A</em> using the set of Kraus operators <em>Ks</em>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -4531,7 +4531,7 @@ template&lt;typename Derived &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Measures the state <em>A</em> using the set of Kraus operators <em>Ks</em>. </p>
+<p>Measures the state vector or density matrix <em>A</em> using the set of Kraus operators <em>Ks</em>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -4571,7 +4571,7 @@ template&lt;typename Derived &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Measures the state <em>A</em> in the orthonormal basis specified by the unitary matrix <em>U</em>. </p>
+<p>Measures the state vector or density matrix <em>A</em> in the orthonormal basis specified by the unitary matrix <em>U</em>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -4954,7 +4954,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Sequentially measures the part <em>target</em> of the multi-partite state vector or density matrix <em>A</em> in the computational basis. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a65da96cadec88fbbb3cc70b0a82fa90c" title="Measures the state A using the set of Kraus operators Ks. ">qpp::measure()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a65da96cadec88fbbb3cc70b0a82fa90c" title="Measures the state vector or density operator A using the set of Kraus operators Ks. ">qpp::measure()</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -5002,7 +5002,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Sequentially measures the part <em>target</em> of the multi-partite state vector or density matrix <em>A</em> in the computational basis. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a65da96cadec88fbbb3cc70b0a82fa90c" title="Measures the state A using the set of Kraus operators Ks. ">qpp::measure()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a65da96cadec88fbbb3cc70b0a82fa90c" title="Measures the state vector or density operator A using the set of Kraus operators Ks. ">qpp::measure()</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
@@ -8888,7 +8888,7 @@ template&lt;typename Container &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Wed Jan 9 2019 17:36:30 for Quantum++ by
+    <li class="footer">Generated on Mon Jan 14 2019 16:07:53 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

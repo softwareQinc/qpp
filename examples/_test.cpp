@@ -76,7 +76,8 @@ int main() {
     std::cout << "more testing\n";
     QCircuitDescription qcd{3, 3};
     qcd.gate_fan(gt.H);
-    qcd.measureZ(0, 0);
+
+    qcd.measureV(gt.Z, 0, 0);
     qcd.measureZ(2, 2);
 
     QCircuit qc{qcd};

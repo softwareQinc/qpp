@@ -35,8 +35,8 @@
 namespace qpp {
 
 /**
- * \brief Applies the controlled-gate \a A to the part \a target
- * of the multi-partite state vector or density matrix \a state
+ * \brief Applies the controlled-gate \a A to the part \a target of the
+ * multi-partite state vector or density matrix \a state
  * \see qpp::Gates::CTRL()
  *
  * \note The dimension of the gate \a A must match
@@ -88,7 +88,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::applyCTRL()");
 
-    // check target is valid w.r.t. dims
+    // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::applyCTRL()");
 
@@ -382,8 +382,8 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * \brief Applies the controlled-gate \a A to the part \a target
- * of the multi-partite state vector or density matrix \a state
+ * \brief Applies the controlled-gate \a A to the part \a target of the
+ * multi-partite state vector or density matrix \a state
  * \see qpp::Gates::CTRL()
  *
  * \note The dimension of the gate \a A must match
@@ -423,8 +423,8 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * \brief Applies the gate \a A to the part \a target
- * of the multi-partite state vector or density matrix \a state
+ * \brief Applies the gate \a A to the part \a target of the multi-partite state
+ * vector or density matrix \a state
  *
  * \note The dimension of the gate \a A must match
  * the dimension of \a target
@@ -467,7 +467,7 @@ apply(const Eigen::MatrixBase<Derived1>& state,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::apply()");
 
-    // check target is valid w.r.t. dims
+    // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::apply()");
 
@@ -503,8 +503,8 @@ apply(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * \brief Applies the gate \a A to the part \a target
- * of the multi-partite state vector or density matrix \a state
+ * \brief Applies the gate \a A to the part \a target of the multi-partite state
+ * vector or density matrix \a state
  *
  * \note The dimension of the gate \a A must match
  * the dimension of \a target
@@ -542,8 +542,8 @@ apply(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * \brief Applies the channel specified by the set of Kraus operators \a Ks
- * to the density matrix \a A
+ * \brief Applies the channel specified by the set of Kraus operators \a Ks to
+ * the density matrix \a A
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
@@ -618,7 +618,7 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     if (!internal::check_dims_match_mat(dims, rA))
         throw exception::DimsMismatchMatrix("qpp::apply()");
 
-    // check target is valid w.r.t. dims
+    // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::apply()");
 
@@ -913,8 +913,8 @@ inline cmat super2choi(const cmat& A) {
  * \brief Partial trace
  * \see qpp::ptrace2()
  *
- * Partial trace over the first subsystem
- * of bi-partite state vector or density matrix
+ * Partial trace over the first subsystem of bi-partite state vector or density
+ * matrix
  *
  * \param A Eigen expression
  * \param dims Dimensions of the bi-partite system
@@ -1007,8 +1007,8 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
  * \brief Partial trace
  * \see qpp::ptrace2()
  *
- * Partial trace over the first subsystem
- * of bi-partite state vector or density matrix
+ * Partial trace over the first subsystem of bi-partite state vector or density
+ * matrix
  *
  * \param A Eigen expression
  * \param d Subsystem dimensions
@@ -1041,8 +1041,8 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
  * \brief Partial trace
  * \see qpp::ptrace1()
  *
- * Partial trace over the second subsystem
- * of bi-partite state vector or density matrix
+ * Partial trace over the second subsystem of bi-partite state vector or density
+ * matrix
  *
  * \param A Eigen expression
  * \param dims Dimensions of the bi-partite system
@@ -1127,8 +1127,8 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
  * \brief Partial trace
  * \see qpp::ptrace1()
  *
- *  Partial trace over the second subsystem
- *  of bi-partite state vector or density matrix
+ * Partial trace over the second subsystem of bi-partite state vector or density
+ * matrix
  *
  * \param A Eigen expression
  * \param d Subsystem dimensions
@@ -1161,8 +1161,8 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
  * \brief Partial trace
  * \see qpp::ptrace1(), qpp::ptrace2()
  *
- *  Partial trace of the multi-partite state vector or density matrix
- *  over the list \a target of subsystems
+ * Partial trace of the multi-partite state vector or density matrix over the
+ * list \a target of subsystems
  *
  * \param A Eigen expression
  * \param target Subsystem indexes
@@ -1362,8 +1362,8 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
  * \brief Partial trace
  * \see qpp::ptrace1(), qpp::ptrace2()
  *
- *  Partial trace of the multi-partite state vector or density matrix
- *  over the list \a target of subsystems
+ * Partial trace of the multi-partite state vector or density matrix over the
+ * list \a target of subsystems
  *
  * \param A Eigen expression
  * \param target Subsystem indexes
@@ -1398,8 +1398,8 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 /**
  * \brief Partial transpose
  *
- *  Partial transpose of the multi-partite state vector or density matrix
- *  over the list \a target of subsystems
+ * Partial transpose of the multi-partite state vector or density matrix over
+ * the list \a target of subsystems
  *
  * \param A Eigen expression
  * \param target Subsystem indexes
@@ -1542,8 +1542,8 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
 /**
  * \brief Partial transpose
  *
- *  Partial transpose of the multi-partite state vector or density matrix
- *  over the list \a target of subsystems
+ * Partial transpose of the multi-partite state vector or density matrix over
+ * the list \a target of subsystems
  *
  * \param A Eigen expression
  * \param target Subsystem indexes
@@ -1578,8 +1578,8 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
 /**
  * \brief Subsystem permutation
  *
- * Permutes the subsystems of a state vector or density matrix.
- * The qubit \a perm[\a i] is permuted to the location \a i.
+ * Permutes the subsystems of a state vector or density matrix. The qubit
+ * \a perm[\a i] is permuted to the location \a i.
  *
  * \param A Eigen expression
  * \param perm Permutation
@@ -1717,8 +1717,8 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
 /**
  * \brief Subsystem permutation
  *
- * Permutes the subsystems of a state vector or density matrix.
- * The qubit \a perm[\a i] is permuted to the location \a i.
+ * Permutes the subsystems of a state vector or density matrix. The qubit
+ * \a perm[\a i] is permuted to the location \a i.
  *
  * \param A Eigen expression
  * \param perm Permutation
@@ -1751,8 +1751,8 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
 
 // as in https://arxiv.org/abs/1707.08834
 /**
- * \brief Applies the qudit quantum Fourier transform to the part \a target
- * of the multi-partite state vector or density matrix \a A
+ * \brief Applies the qudit quantum Fourier transform to the part \a target of
+ * the multi-partite state vector or density matrix \a A
  *
  * \param A Eigen expression
  * \param target Subsystem indexes where the QFT applied
@@ -1781,7 +1781,7 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
 
     std::vector<idx> dims(n, d); // local dimensions vector
-    // check target is valid w.r.t. dims
+    // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::applyQFT()");
 
@@ -1889,7 +1889,7 @@ dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
 
     std::vector<idx> dims(n, d); // local dimensions vector
-    // check target is valid w.r.t. dims
+    // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::applyTFQ()");
 
