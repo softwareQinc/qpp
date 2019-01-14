@@ -119,8 +119,8 @@ class QCircuitDescription : public IDisplay {
         MEASURE_V, ///< measurement of single qudit in the orthonormal basis
                    ///< or rank-1 POVM specified by the columns of matrix \a V
 
-//        MEASURE_KS, ///< generalized measurement of single qudit with Kraus
-//                    ///< operators Ks
+        MEASURE_V_MANY, ///< measurement of multiple qudits in the orthonormal
+        ///< basis or rank-1 POVM specified by the columns of matrix \a V
     };
 
     /**
@@ -229,9 +229,9 @@ class QCircuitDescription : public IDisplay {
         case MeasureType::MEASURE_V:
             os << "MEASURE_V";
             break;
-//        case MeasureType::MEASURE_KS:
-//            os << "MEASURE_KS";
-//            break;
+        case MeasureType::MEASURE_V_MANY:
+            os << "MEASURE_V_MANY";
+            break;
         }
 
         return os;
@@ -483,30 +483,34 @@ class QCircuitDescription : public IDisplay {
         measurement_steps_.emplace_back(gates_.size());
     }
 
-//    // generalized measurement of single qudit with Kraus operators Ks
-//    void measureKs(const std::vector<cmat>& Ks, idx i, idx c_reg,
-//                   const std::string& name = "") {
-//        // EXCEPTION CHECKS
-//
-//        // measuring non-existing qudit
-//        if (i >= nq_)
-//            throw qpp::exception::OutOfRange(
-//                "qpp::QCircuitDescription::measureKs()");
-//        // trying to put the result into an non-existing classical slot
-//        if (c_reg >= nc_)
-//            throw qpp::exception::OutOfRange(
-//                "qpp::QCircuitDescription::measureKs()");
-//        // qudit was measured before
-//        if (measured_[i] == true)
-//            throw qpp::exception::QuditAlreadyMeasured(
-//                "qpp:QCircuitDescription::measureKs");
-//        // END EXCEPTION CHECKS
-//
-//        measured_[i] = true;
-//        measurements_.emplace_back(MeasureType::MEASURE_KS, Ks,
-//                                   std::vector<idx>{i}, c_reg, name);
-//        measurement_steps_.emplace_back(gates_.size());
-//    }
+    // measurement of multiple qudits in the orthonormal basis or rank-1 POVM
+    // specified by the columns of matrix V
+    void measureV(const cmat& V, const std::vector<idx>& target, idx c_reg,
+                  const std::string& name = "") {
+        // EXCEPTION CHECKS
+
+        // measuring non-existing qudit
+        for (auto&& i : target)
+            if (i >= nq_)
+                throw qpp::exception::OutOfRange(
+                    "qpp::QCircuitDescription::measureV()");
+        // trying to put the result into an non-existing classical slot
+        if (c_reg >= nc_)
+            throw qpp::exception::OutOfRange(
+                "qpp::QCircuitDescription::measureV()");
+        // qudit was measured before
+        for (auto&& i : target)
+            if (measured_[i] == true)
+                throw qpp::exception::QuditAlreadyMeasured(
+                    "qpp:QCircuitDescription::measureV");
+        // END EXCEPTION CHECKS
+
+        for (auto&& i : target)
+            measured_[i] = true;
+        measurements_.emplace_back(MeasureType::MEASURE_V_MANY,
+                                   std::vector<cmat>{V}, target, c_reg, name);
+        measurement_steps_.emplace_back(gates_.size());
+    }
 
     std::ostream& display(std::ostream& os) const override {
         os << "nq = " << nq_ << ", nc = " << nc_ << ", d = " << d_;
@@ -659,13 +663,23 @@ class QCircuit : public IDisplay {
                             std::tie(mres, probs, states_) = qpp::measure(
                                 psi_, qcd_.measurements_[m_ip].mats_[0],
                                 target_rel_pos, qcd_.d_);
-                            std::cout << disp(states_[mres]) << "\n";
                             psi_ = states_[mres];
                             dits_[qcd_.measurements_[m_ip].c_reg_] = mres;
                             probs_[qcd_.measurements_[m_ip].c_reg_] =
                                 probs[mres];
                             mark_as_measured_(
                                 qcd_.measurements_[m_ip].target_[0]);
+                            break;
+                        case QCircuitDescription::MeasureType::MEASURE_V_MANY:
+                            std::tie(mres, probs, states_) = qpp::measure(
+                                psi_, qcd_.measurements_[m_ip].mats_[0],
+                                target_rel_pos, qcd_.d_);
+                            psi_ = states_[mres];
+                            dits_[qcd_.measurements_[m_ip].c_reg_] = mres;
+                            probs_[qcd_.measurements_[m_ip].c_reg_] =
+                                probs[mres];
+                            for (auto&& i : qcd_.measurements_[m_ip].target_)
+                                mark_as_measured_(i);
                             break;
                         }
 

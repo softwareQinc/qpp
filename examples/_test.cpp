@@ -77,8 +77,8 @@ int main() {
     QCircuitDescription qcd{3, 3};
     qcd.gate_fan(gt.H);
 
-    qcd.measureV(gt.Id2, 0, 0);
-    qcd.measureZ(2, 2);
+    qcd.measureV(gt.Id(4), {0, 2}, 0);
+    qcd.measureZ(1, 2);
 
     QCircuit qc{qcd};
     qc.run();
