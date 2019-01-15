@@ -55,6 +55,7 @@ int main() {
 
     // perform the measurements
     tele_qudit.measureZ(0, 0);
+    // tele_qudit.measureZ(0, 0);
     tele_qudit.measureZ(1, 1);
 
     // apply the classical controls
@@ -75,9 +76,8 @@ int main() {
 
     std::cout << "more testing\n";
     QCircuitDescription qcd{3, 3};
-    qcd.gate_fan(gt.H);
+    qcd.gate_fan(gt.H).measureV(gt.Id(4), {0, 2}, 0);
 
-    qcd.measureV(gt.Id(4), {0, 2}, 0);
     qcd.measureZ(1, 2);
 
     QCircuit qc{qcd};
