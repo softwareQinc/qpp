@@ -92,7 +92,6 @@ int main() {
     std::cout << disp(qc.get_psi()) << '\n';
     std::cout << qc.get_q_ip() << " " << qc.get_m_ip() << " " << qc.get_ip()
               << "\n\n";
-
     std::cout << qc.get_circuit_description().get_gate_count() << " "
               << qc.get_circuit_description().get_measurement_count() << " "
               << qc.get_circuit_description().get_total_count() << "\n\n";

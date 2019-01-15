@@ -740,7 +740,7 @@ class QCircuit : public IDisplay {
                 // we have a measurement at step i
                 if (m_step == q_ip_) {
                     while (qcd_.measurement_steps_[m_ip_] == m_step) {
-                        std::cout << "Running step (m) " << ip_ << "\n";
+                        std::cout << "Running step (m) " << get_ip() << "\n";
 
                         std::vector<idx> target_rel_pos = get_relative_pos_(
                             qcd_.measurements_[m_ip_].target_);
@@ -795,7 +795,7 @@ class QCircuit : public IDisplay {
 
             // check for gates
             if (q_ip_ < qcd_.gates_.size()) {
-                std::cout << "Running step (g) " << ip_ << "\n";
+                std::cout << "Running step (g) " << get_ip() << "\n";
 
                 std::vector<idx> ctrl_rel_pos;
                 std::vector<idx> target_rel_pos =
