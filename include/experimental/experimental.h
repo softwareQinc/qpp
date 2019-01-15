@@ -604,8 +604,10 @@ class QCircuitDescription : public IDisplay {
                 // we have a measurement at step i
                 if (m_step == i) {
                     while (measurement_steps_[m_ip] == m_step) {
-                        os << measurements_[m_ip].step_no_ << "\t\t\t|> "
-                           << measurements_[m_ip] << '\n';
+                        os << std::left;
+                        os << std::setw(8) << measurements_[m_ip].step_no_;
+                        os << std::right;
+                        os << "\t|> " << measurements_[m_ip] << '\n';
                         if (++m_ip == measurements_size)
                             break;
                     }
@@ -614,7 +616,10 @@ class QCircuitDescription : public IDisplay {
 
             // check for gates
             if (i < gates_size) {
-                os << gates_[i].step_no_ << "\t\t" << gates_[i] << '\n';
+                os << std::left;
+                os << std::setw(8) << gates_[i].step_no_;
+                os << std::right;
+                os << gates_[i] << '\n';
             }
         }
 
@@ -731,8 +736,7 @@ class QCircuit : public IDisplay {
         ip_ = 0;
     }
 
-    void run(idx step = idx_infty) {
-
+    void run(idx QPP_UNUSED_ step = idx_infty) {
         for (; q_ip_ <= qcd_.gates_.size(); ++q_ip_) {
             // check for measurements
             if (m_ip_ < qcd_.measurements_.size()) {
@@ -866,16 +870,11 @@ class QCircuit : public IDisplay {
     }
 
     std::ostream& display(std::ostream& os) const override {
-        os << "--BEGIN CIRCUIT DESCRIPTION--\n";
-        os << qcd_;
-        os << "--END CIRCUIT DESCRIPTION--\n";
-
         os << "measured: " << disp(get_measured(), ",") << '\n';
         os << "dits: " << disp(dits_, ",") << '\n';
         os << "probs: " << disp(probs_, ",") << '\n';
-
-        os << "updated subsystems: ";
-        std::cout << disp(subsys_, ",") << '\n';
+        //        os << "updated subsystems: ";
+        //        std::cout << disp(subsys_, ",") << '\n';
 
         return os;
     }

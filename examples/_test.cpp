@@ -29,6 +29,11 @@ int main() {
     teleport_qubit.cCTRL(gt.Z, 0, 2);
 
     QCircuit qc_teleport_qubit{teleport_qubit};
+
+    std::cout << ">> BEGIN CIRCUIT DESCRIPTION\n";
+    std::cout << qc_teleport_qubit.get_circuit_description();
+    std::cout << ">> END CIRCUIT DESCRIPTION\n";
+
     qc_teleport_qubit.run();
     std::cout << qc_teleport_qubit << '\n';
 
@@ -63,6 +68,10 @@ int main() {
     tele_qudit.cCTRL(gt.Zd(d), 0, 2);
 
     QCircuit qc_tele_qudit{tele_qudit};
+    std::cout << ">> BEGIN CIRCUIT DESCRIPTION\n";
+    std::cout << qc_tele_qudit.get_circuit_description();
+    std::cout << ">> END CIRCUIT DESCRIPTION\n";
+
     qc_tele_qudit.run();
     std::cout << qc_tele_qudit << '\n';
 
@@ -80,6 +89,10 @@ int main() {
     qcd.measureZ(2, 2);
 
     QCircuit qc{qcd};
+    std::cout << ">> BEGIN CIRCUIT DESCRIPTION\n";
+    std::cout << qc.get_circuit_description();
+    std::cout << ">> END CIRCUIT DESCRIPTION\n";
+
     qc.run();
     std::cout << qc << '\n';
     std::cout << disp(qc.get_psi()) << '\n';
@@ -87,7 +100,9 @@ int main() {
 
     qc.reset();
     std::cout << qc.get_m_ip() << " " << qc.get_q_ip() << "\n\n";
+
     qc.run();
+
     std::cout << qc << '\n';
     std::cout << disp(qc.get_psi()) << '\n';
     std::cout << qc.get_q_ip() << " " << qc.get_m_ip() << " " << qc.get_ip()
