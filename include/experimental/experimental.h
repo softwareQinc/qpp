@@ -619,7 +619,7 @@ class QCircuitDescription : public IDisplay {
 }; /* class QCircuitDescription */
 
 class QCircuit : public IDisplay {
-    QCircuitDescription qcd_;   ///< quantum circuit description
+    const QCircuitDescription qcd_;   ///< quantum circuit description
     ket psi_;                   ///< state vector
     std::vector<idx> dits_;     ///< classical dits
     std::vector<double> probs_; ///< measurement probabilities
@@ -651,9 +651,6 @@ class QCircuit : public IDisplay {
             if (was_measured(v[i]))
                 throw qpp::exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::get_relative_pos_()");
-            //            if (v[i] >= nq_)
-            //                throw qpp::exception::SubsysMismatchDims(
-            //                    "qpp::QCircuit::get_relative_pos_()");
             v[i] = subsys_[v[i]];
         }
         return v;
@@ -698,7 +695,18 @@ class QCircuit : public IDisplay {
 
     // end getters
 
-    void run() {
+    void reset() {
+        psi_ = st.zero(qcd_.nq_, qcd_.d_);
+        dits_ = std::vector<idx>(qcd_.nc_, 0);
+        probs_ = std::vector<double>(qcd_.nc_, 0);
+        std::iota(std::begin(subsys_), std::end(subsys_), 0);
+        m_ip_ = 0;
+        q_ip_ = 0;
+    }
+
+    void run(idx step = idx_infty) {
+
+
         for (idx i = 0; i <= qcd_.gates_.size(); ++i) {
             // check for measurements
             if (m_ip_ < qcd_.measurements_.size()) {
@@ -759,12 +767,7 @@ class QCircuit : public IDisplay {
 
             // check for gates
             if (i < qcd_.gates_.size()) {
-                //                std::cout << "ctrl: " << disp(ctrl_rel_pos,"
-                //                ") << "\n\n";
-                //                std::cout << "target:" <<
-                //                disp(target_rel_pos," ") << "\n\n";
-
-                std::vector<idx> ctrl_rel_pos{};
+                std::vector<idx> ctrl_rel_pos;
                 std::vector<idx> target_rel_pos =
                     get_relative_pos_(qcd_.gates_[i].target_);
 
@@ -829,7 +832,9 @@ class QCircuit : public IDisplay {
     }
 
     std::ostream& display(std::ostream& os) const override {
+        os << "--BEGIN CIRCUIT DESCRIPTION--\n";
         os << qcd_;
+        os << "--END CIRCUIT DESCRIPTION--\n";
 
         os << "measured: " << disp(get_measured(), ",") << '\n';
         os << "dits: " << disp(dits_, ",") << '\n';
