@@ -76,12 +76,24 @@ int main() {
 
     std::cout << "more testing\n";
     QCircuitDescription qcd{3, 3};
-    qcd.gate_fan(gt.H).measureV(gt.Id(4), {0, 2}, 0);
-
-    qcd.measureZ(1, 2);
+    qcd.gate_fan(gt.H).measureV(gt.Id(2), {0}, 0);
+    qcd.measureZ(2, 2);
 
     QCircuit qc{qcd};
     qc.run();
     std::cout << qc << '\n';
     std::cout << disp(qc.get_psi()) << '\n';
+    std::cout << qc.get_m_ip() << " " << qc.get_q_ip() << "\n\n";
+
+    qc.reset();
+    std::cout << qc.get_m_ip() << " " << qc.get_q_ip() << "\n\n";
+    qc.run();
+    std::cout << qc << '\n';
+    std::cout << disp(qc.get_psi()) << '\n';
+    std::cout << qc.get_q_ip() << " " << qc.get_m_ip() << " " << qc.get_ip()
+              << "\n\n";
+
+    std::cout << qc.get_circuit_description().get_gate_count() << " "
+              << qc.get_circuit_description().get_measurement_count() << " "
+              << qc.get_circuit_description().get_total_count() << "\n\n";
 }

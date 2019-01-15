@@ -50,8 +50,6 @@ namespace experimental {
 
 class QCircuitDescription : public IDisplay {
     friend class QCircuit;
-
-  protected:
     idx nq_;                               ///< number of qudits
     idx nc_;                               ///< number of classical "dits"
     idx d_;                                ///< dimension
@@ -59,6 +57,7 @@ class QCircuitDescription : public IDisplay {
     ///< measurement take place
     std::string name_;           ///< optional circuit name
     std::vector<bool> measured_; ///< keeps track of the measured qudits
+    idx step_cnt_;               ///< step counter
 
     /**
      * \brief Type of operation being executed at one step
@@ -131,13 +130,14 @@ class QCircuitDescription : public IDisplay {
         cmat gate_;                           ///< gate
         std::vector<idx> ctrl_;               ///< control
         std::vector<idx> target_; ///< target where the gate is being applied
+        idx step_no_;             ///< step number
         std::string name_;        ///< custom name of the step
         GateStep() = default;
         GateStep(GateType gate_type, const cmat& gate,
                  const std::vector<idx>& ctrl, const std::vector<idx>& target,
-                 const std::string& name = "")
+                 idx step_no, const std::string& name = "")
             : gate_type_{gate_type}, gate_{gate}, ctrl_{ctrl}, target_{target},
-              name_{name} {}
+              step_no_{step_no}, name_{name} {}
     };
 
     struct MeasureStep {
@@ -146,13 +146,14 @@ class QCircuitDescription : public IDisplay {
         std::vector<idx> target_; ///< target where the measurement is applied
         idx c_reg_{}; ///< index of the classical register where the measurement
         ///< result is being stored
+        idx step_no_;      ///< step number
         std::string name_; ///< custom name of the step
         MeasureStep() = default;
         MeasureStep(MeasureType measurement_type, const std::vector<cmat>& mats,
-                    const std::vector<idx>& target, idx c_reg,
+                    const std::vector<idx>& target, idx c_reg, idx step_no,
                     const std::string& name = "")
             : measurement_type_{measurement_type}, mats_{mats}, target_{target},
-              c_reg_{c_reg}, name_{name} {}
+              c_reg_{c_reg}, step_no_{step_no}, name_{name} {}
     };
 
     friend std::ostream& operator<<(std::ostream& os,
@@ -268,7 +269,8 @@ class QCircuitDescription : public IDisplay {
   public:
     QCircuitDescription(idx nq, idx nc = 0, idx d = 2,
                         const std::string& name = "")
-        : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false) {}
+        : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false),
+          step_cnt_{0} {}
 
     // getters
     // number of qudits
@@ -311,21 +313,27 @@ class QCircuitDescription : public IDisplay {
         return result;
     }
 
+    idx get_gate_count() const { return gates_.size(); }
+
+    idx get_measurement_count() const { return measurements_.size(); }
+
+    idx get_total_count() const { return step_cnt_; }
     // end getters
 
     // single gate single qudit
     QCircuitDescription& gate(const cmat& U, idx i,
                               const std::string& name = "") {
         gates_.emplace_back(GateType::SINGLE, U, std::vector<idx>{},
-                            std::vector<idx>{i}, name);
+                            std::vector<idx>{i}, step_cnt_++, name);
 
         return *this;
     }
+
     // single gate 2 qudits
     QCircuitDescription& gate(const cmat& U, idx i, idx j,
                               const std::string& name = "") {
         gates_.emplace_back(GateType::TWO, U, std::vector<idx>{},
-                            std::vector<idx>{i, j}, name);
+                            std::vector<idx>{i, j}, step_cnt_++, name);
 
         return *this;
     }
@@ -333,7 +341,7 @@ class QCircuitDescription : public IDisplay {
     QCircuitDescription& gate(const cmat& U, idx i, idx j, idx k,
                               const std::string& name = "") {
         gates_.emplace_back(GateType::THREE, U, std::vector<idx>{},
-                            std::vector<idx>{i, j, k}, name);
+                            std::vector<idx>{i, j, k}, step_cnt_++, name);
 
         return *this;
     }
@@ -341,7 +349,8 @@ class QCircuitDescription : public IDisplay {
     // multiple qudits same gate
     QCircuitDescription& gate_fan(const cmat& U, const std::vector<idx>& target,
                                   const std::string& name = "") {
-        gates_.emplace_back(GateType::FAN, U, std::vector<idx>{}, target, name);
+        gates_.emplace_back(GateType::FAN, U, std::vector<idx>{}, target,
+                            step_cnt_++, name);
 
         return *this;
     }
@@ -349,7 +358,7 @@ class QCircuitDescription : public IDisplay {
     // multiple qudits same gate on ALL non-measured qudits
     QCircuitDescription& gate_fan(const cmat& U, const std::string& name = "") {
         gates_.emplace_back(GateType::FAN, U, std::vector<idx>{},
-                            get_non_measured(), name);
+                            get_non_measured(), step_cnt_++, name);
 
         return *this;
     }
@@ -358,7 +367,7 @@ class QCircuitDescription : public IDisplay {
     QCircuitDescription& gate(const cmat& U, const std::vector<idx>& target,
                               const std::string& name = "") {
         gates_.emplace_back(GateType::CUSTOM, U, std::vector<idx>{}, target,
-                            name);
+                            step_cnt_++, name);
 
         return *this;
     }
@@ -366,7 +375,7 @@ class QCircuitDescription : public IDisplay {
     // quantum Fourier transform
     QCircuitDescription& QFT(const std::vector<idx>& target) {
         gates_.emplace_back(GateType::QFT, cmat{}, std::vector<idx>{}, target,
-                            "QFT");
+                            step_cnt_++, "QFT");
 
         return *this;
     }
@@ -374,7 +383,7 @@ class QCircuitDescription : public IDisplay {
     // quantum inverse Fourier transform
     QCircuitDescription& TFQ(const std::vector<idx>& target) {
         gates_.emplace_back(GateType::TFQ, cmat{}, std::vector<idx>{}, target,
-                            "TFQ");
+                            step_cnt_++, "TFQ");
 
         return *this;
     }
@@ -384,7 +393,7 @@ class QCircuitDescription : public IDisplay {
                               const std::string& name = "") {
         gates_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, U,
                             std::vector<idx>{ctrl}, std::vector<idx>{target},
-                            name);
+                            step_cnt_++, name);
 
         return *this;
     }
@@ -394,7 +403,7 @@ class QCircuitDescription : public IDisplay {
                               const std::vector<idx>& target,
                               const std::string& name = "") {
         gates_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, U,
-                            std::vector<idx>{ctrl}, target, name);
+                            std::vector<idx>{ctrl}, target, step_cnt_++, name);
 
         return *this;
     }
@@ -403,7 +412,7 @@ class QCircuitDescription : public IDisplay {
     QCircuitDescription& CTRL(const cmat& U, const std::vector<idx>& ctrl,
                               idx target, const std::string& name = "") {
         gates_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, U, ctrl,
-                            std::vector<idx>{target}, name);
+                            std::vector<idx>{target}, step_cnt_++, name);
 
         return *this;
     }
@@ -414,7 +423,7 @@ class QCircuitDescription : public IDisplay {
                               const std::vector<idx>& target,
                               const std::string& name = "") {
         gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, U, ctrl,
-                            std::vector<idx>{target}, name);
+                            std::vector<idx>{target}, step_cnt_++, name);
 
         return *this;
     }
@@ -424,7 +433,8 @@ class QCircuitDescription : public IDisplay {
                                      const std::vector<idx>& ctrl,
                                      const std::vector<idx>& target,
                                      const std::string& name = "") {
-        gates_.emplace_back(GateType::CUSTOM_CTRL, U, ctrl, target, name);
+        gates_.emplace_back(GateType::CUSTOM_CTRL, U, ctrl, target, step_cnt_++,
+                            name);
 
         return *this;
     }
@@ -435,7 +445,7 @@ class QCircuitDescription : public IDisplay {
                                const std::string& name = "") {
         gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, U,
                             std::vector<idx>{ctrl}, std::vector<idx>{target},
-                            name);
+                            step_cnt_++, name);
 
         return *this;
     }
@@ -445,7 +455,7 @@ class QCircuitDescription : public IDisplay {
                                const std::vector<idx>& target,
                                const std::string& name = "") {
         gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, U,
-                            std::vector<idx>{ctrl}, target, name);
+                            std::vector<idx>{ctrl}, target, step_cnt_++, name);
 
         return *this;
     }
@@ -454,7 +464,7 @@ class QCircuitDescription : public IDisplay {
     QCircuitDescription& cCTRL(const cmat& U, const std::vector<idx>& ctrl,
                                idx target, const std::string& name = "") {
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, U, ctrl,
-                            std::vector<idx>{target}, name);
+                            std::vector<idx>{target}, step_cnt_++, name);
 
         return *this;
     }
@@ -464,7 +474,7 @@ class QCircuitDescription : public IDisplay {
                                const std::vector<idx>& target,
                                const std::string& name = "") {
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, U, ctrl,
-                            std::vector<idx>{target}, name);
+                            std::vector<idx>{target}, step_cnt_++, name);
 
         return *this;
     }
@@ -474,7 +484,8 @@ class QCircuitDescription : public IDisplay {
                                       const std::vector<idx>& ctrl,
                                       const std::vector<idx>& target,
                                       const std::string& name = "") {
-        gates_.emplace_back(GateType::CUSTOM_cCTRL, U, ctrl, target, name);
+        gates_.emplace_back(GateType::CUSTOM_cCTRL, U, ctrl, target,
+                            step_cnt_++, name);
 
         return *this;
     }
@@ -500,7 +511,8 @@ class QCircuitDescription : public IDisplay {
 
         measured_[i] = true;
         measurements_.emplace_back(MeasureType::MEASURE_Z, std::vector<cmat>{},
-                                   std::vector<idx>{i}, c_reg, name);
+                                   std::vector<idx>{i}, c_reg, step_cnt_++,
+                                   name);
         measurement_steps_.emplace_back(gates_.size());
         /*try {
         } catch (std::exception& e) {
@@ -533,7 +545,8 @@ class QCircuitDescription : public IDisplay {
 
         measured_[i] = true;
         measurements_.emplace_back(MeasureType::MEASURE_V, std::vector<cmat>{V},
-                                   std::vector<idx>{i}, c_reg, name);
+                                   std::vector<idx>{i}, c_reg, step_cnt_++,
+                                   name);
         measurement_steps_.emplace_back(gates_.size());
 
         return *this;
@@ -564,7 +577,8 @@ class QCircuitDescription : public IDisplay {
         for (auto&& i : target)
             measured_[i] = true;
         measurements_.emplace_back(MeasureType::MEASURE_V_MANY,
-                                   std::vector<cmat>{V}, target, c_reg, name);
+                                   std::vector<cmat>{V}, target, c_reg,
+                                   step_cnt_++, name);
         measurement_steps_.emplace_back(gates_.size());
 
         return *this;
@@ -590,7 +604,8 @@ class QCircuitDescription : public IDisplay {
                 // we have a measurement at step i
                 if (m_step == i) {
                     while (measurement_steps_[m_ip] == m_step) {
-                        os << "\t|> " << measurements_[m_ip] << '\n';
+                        os << measurements_[m_ip].step_no_ << "\t\t\t|> "
+                           << measurements_[m_ip] << '\n';
                         if (++m_ip == measurements_size)
                             break;
                     }
@@ -599,7 +614,7 @@ class QCircuitDescription : public IDisplay {
 
             // check for gates
             if (i < gates_size) {
-                os << gates_[i] << '\n';
+                os << gates_[i].step_no_ << "\t\t" << gates_[i] << '\n';
             }
         }
 
@@ -619,15 +634,16 @@ class QCircuitDescription : public IDisplay {
 }; /* class QCircuitDescription */
 
 class QCircuit : public IDisplay {
-    const QCircuitDescription qcd_;   ///< quantum circuit description
-    ket psi_;                   ///< state vector
-    std::vector<idx> dits_;     ///< classical dits
-    std::vector<double> probs_; ///< measurement probabilities
-    std::vector<idx> subsys_;   ///< keeps track of the measured subsystems,
-    ///< relabel them after measurements
+    const QCircuitDescription qcd_; ///< quantum circuit description
+    ket psi_;                       ///< state vector
+    std::vector<idx> dits_;         ///< classical dits
+    std::vector<double> probs_;     ///< measurement probabilities
+    std::vector<idx> subsys_;       ///< keeps track of the measured subsystems,
+                                    ///< relabel them after measurements
 
     idx m_ip_; ///< measurement instruction pointer
     idx q_ip_; ///< quantum gates instruction pointer
+    idx ip_;   ///< combined (measurements and gates) instruction pointer
 
     // mark qudit i as measured then re-label accordingly the remaining
     // non-measured qudits
@@ -659,12 +675,12 @@ class QCircuit : public IDisplay {
   public:
     QCircuit(const QCircuitDescription& qcd)
         : qcd_{qcd}, psi_{st.zero(qcd.nq_, qcd.d_)}, dits_(qcd.nc_, 0),
-          probs_(qcd.nc_, 0), subsys_(qcd.nq_, 0), m_ip_{0}, q_ip_{0} {
+          probs_(qcd.nc_, 0), subsys_(qcd.nq_, 0), m_ip_{0}, q_ip_{0}, ip_{0} {
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
     }
 
     // getters
-    QCircuitDescription get_circuit_description() const { return qcd_; }
+    // QCircuitDescription get_circuit_description() const { return qcd_; }
 
     ket get_psi() const { return psi_; }
 
@@ -693,6 +709,16 @@ class QCircuit : public IDisplay {
         return result;
     }
 
+    // measurement instruction pointer
+    idx get_m_ip() const { return m_ip_; }
+
+    // quantum instruction pointer
+    idx get_q_ip() const { return q_ip_; }
+
+    // combined instruction pointer
+    idx get_ip() const { return ip_; }
+
+    const QCircuitDescription& get_circuit_description() const { return qcd_; }
     // end getters
 
     void reset() {
@@ -702,25 +728,27 @@ class QCircuit : public IDisplay {
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
         m_ip_ = 0;
         q_ip_ = 0;
+        ip_ = 0;
     }
 
     void run(idx step = idx_infty) {
 
-
-        for (idx i = 0; i <= qcd_.gates_.size(); ++i) {
+        for (; q_ip_ <= qcd_.gates_.size(); ++q_ip_) {
             // check for measurements
             if (m_ip_ < qcd_.measurements_.size()) {
                 idx m_step = qcd_.measurement_steps_[m_ip_];
                 // we have a measurement at step i
-                if (m_step == i) {
+                if (m_step == q_ip_) {
                     while (qcd_.measurement_steps_[m_ip_] == m_step) {
+                        std::cout << "Running step (m) " << ip_ << "\n";
+
                         std::vector<idx> target_rel_pos = get_relative_pos_(
                             qcd_.measurements_[m_ip_].target_);
 
                         std::vector<idx> resZ;
                         double probZ;
 
-                        idx mres{};
+                        idx mres = 0;
                         std::vector<double> probs;
                         std::vector<cmat> states;
 
@@ -758,7 +786,7 @@ class QCircuit : public IDisplay {
                                 mark_as_measured_(i);
                             break;
                         }
-
+                        ++ip_;
                         if (++m_ip_ == qcd_.measurements_.size())
                             break;
                     }
@@ -766,24 +794,26 @@ class QCircuit : public IDisplay {
             }
 
             // check for gates
-            if (i < qcd_.gates_.size()) {
+            if (q_ip_ < qcd_.gates_.size()) {
+                std::cout << "Running step (g) " << ip_ << "\n";
+
                 std::vector<idx> ctrl_rel_pos;
                 std::vector<idx> target_rel_pos =
-                    get_relative_pos_(qcd_.gates_[i].target_);
+                    get_relative_pos_(qcd_.gates_[q_ip_].target_);
 
-                switch (qcd_.gates_[i].gate_type_) {
+                switch (qcd_.gates_[q_ip_].gate_type_) {
                 case QCircuitDescription::GateType::NONE:
                     break;
                 case QCircuitDescription::GateType::SINGLE:
                 case QCircuitDescription::GateType::TWO:
                 case QCircuitDescription::GateType::THREE:
                 case QCircuitDescription::GateType::CUSTOM:
-                    psi_ = qpp::apply(psi_, qcd_.gates_[i].gate_,
+                    psi_ = qpp::apply(psi_, qcd_.gates_[q_ip_].gate_,
                                       target_rel_pos, qcd_.d_);
                     break;
                 case QCircuitDescription::GateType::FAN:
-                    for (idx m = 0; m < qcd_.gates_[i].target_.size(); ++m)
-                        psi_ = qpp::apply(psi_, qcd_.gates_[i].gate_,
+                    for (idx m = 0; m < qcd_.gates_[q_ip_].target_.size(); ++m)
+                        psi_ = qpp::apply(psi_, qcd_.gates_[q_ip_].gate_,
                                           {target_rel_pos[m]}, qcd_.d_);
                     break;
                 case QCircuitDescription::GateType::QFT:
@@ -794,10 +824,10 @@ class QCircuit : public IDisplay {
                 case QCircuitDescription::GateType::
                     MULTIPLE_CTRL_MULTIPLE_TARGET:
                 case QCircuitDescription::GateType::CUSTOM_CTRL:
-                    ctrl_rel_pos = get_relative_pos_(qcd_.gates_[i].ctrl_);
+                    ctrl_rel_pos = get_relative_pos_(qcd_.gates_[q_ip_].ctrl_);
                     psi_ =
-                        qpp::applyCTRL(psi_, qcd_.gates_[i].gate_, ctrl_rel_pos,
-                                       target_rel_pos, qcd_.d_);
+                        qpp::applyCTRL(psi_, qcd_.gates_[q_ip_].gate_,
+                                       ctrl_rel_pos, target_rel_pos, qcd_.d_);
                     break;
                 case QCircuitDescription::GateType::SINGLE_cCTRL_SINGLE_TARGET:
                 case QCircuitDescription::GateType::
@@ -808,27 +838,31 @@ class QCircuit : public IDisplay {
                     MULTIPLE_cCTRL_MULTIPLE_TARGET:
                 case QCircuitDescription::GateType::CUSTOM_cCTRL:
                     if (dits_.size() == 0) {
-                        psi_ = qpp::apply(psi_, qcd_.gates_[i].gate_,
+                        psi_ = qpp::apply(psi_, qcd_.gates_[q_ip_].gate_,
                                           target_rel_pos, qcd_.d_);
                     } else {
                         bool should_apply = true;
-                        idx first_dit = dits_[(qcd_.gates_[i].ctrl_)[0]];
-                        for (idx m = 0; m < qcd_.gates_[i].ctrl_.size(); ++m) {
-                            if (dits_[(qcd_.gates_[i].ctrl_)[m]] != first_dit) {
+                        idx first_dit = dits_[(qcd_.gates_[q_ip_].ctrl_)[0]];
+                        for (idx m = 0; m < qcd_.gates_[q_ip_].ctrl_.size();
+                             ++m) {
+                            if (dits_[(qcd_.gates_[q_ip_].ctrl_)[m]] !=
+                                first_dit) {
                                 should_apply = false;
                                 break;
                             }
                         }
                         if (should_apply) {
                             psi_ = qpp::apply(
-                                psi_, powm(qcd_.gates_[i].gate_, first_dit),
+                                psi_, powm(qcd_.gates_[q_ip_].gate_, first_dit),
                                 target_rel_pos, qcd_.d_);
                         }
                     }
                     break;
                 }
+                ++ip_;
             }
         }
+        --q_ip_;
     }
 
     std::ostream& display(std::ostream& os) const override {
