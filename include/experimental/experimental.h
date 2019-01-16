@@ -742,7 +742,7 @@ class QCircuit : public IDisplay {
             no_steps = qcd_.get_total_count() - ip_;
         else
             no_steps = step;
-        idx entry_ip_ = ip_;
+        idx saved_ip_ = ip_; // save the instruction pointer at entry
 
         if(ip_ + no_steps > qcd_.get_total_count())
             throw exception::OutOfRange("qpp::QCircuit::run()");
@@ -754,7 +754,7 @@ class QCircuit : public IDisplay {
                 // we have a measurement at step i
                 if (m_step == q_ip_) {
                     while (qcd_.measurement_steps_[m_ip_] == m_step) {
-                        if(ip_ - entry_ip_ == no_steps)
+                        if(ip_ - saved_ip_ == no_steps)
                             return;
                         std::cout << "Running step (m) " << get_ip() << "\n";
 
@@ -811,7 +811,7 @@ class QCircuit : public IDisplay {
 
             // check for gates
             if (q_ip_ < qcd_.gates_.size()) {
-                if(ip_ - entry_ip_ == no_steps)
+                if(ip_ - saved_ip_ == no_steps)
                     return;
                 std::cout << "Running step (g) " << get_ip() << "\n";
 
