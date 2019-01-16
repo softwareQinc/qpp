@@ -108,14 +108,17 @@ int main() {
     std::cout << "m_ip_: " << qc.get_m_ip() << ", ";
     std::cout << "q_ip_: " << qc.get_q_ip() << "\n\n";
 
+    std::cout <<"reset\n";
     qc.reset();
     std::cout << "m_ip_: " << qc.get_m_ip() << ", ";
     std::cout << "q_ip_: " << qc.get_q_ip() << "\n\n";
 
     std::cout << "run 2\n";
     qc.run(2, true);
+
     std::cout << "reset\n";
     qc.reset();
+
     std::cout << "run 0\n";
     qc.run(0, true);
     std::cout << "run 1\n";
