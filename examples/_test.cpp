@@ -99,39 +99,41 @@ int main() {
     QCircuit qc{qcd};
     std::cout << ">> BEGIN CIRCUIT DESCRIPTION\n";
     std::cout << qc.get_circuit_description();
-    std::cout << ">> END CIRCUIT DESCRIPTION\n";
+    std::cout << ">> END CIRCUIT DESCRIPTION\n\n";
 
+    std::cout << ">> BEGIN RUN\n";
     qc.run();
-    std::cout << qc << '\n';
+    std::cout << qc;
     std::cout << "psi:\n";
     std::cout << disp(qc.get_psi()) << '\n';
     std::cout << "m_ip_: " << qc.get_m_ip() << ", ";
-    std::cout << "q_ip_: " << qc.get_q_ip() << "\n\n";
+    std::cout << "q_ip_: " << qc.get_q_ip() << "\n";
+    std::cout << ">> END RUN\n";
 
-    std::cout << "reset\n";
+    std::cout << ">> RESET\n";
     qc.reset();
     std::cout << "m_ip_: " << qc.get_m_ip() << ", ";
-    std::cout << "q_ip_: " << qc.get_q_ip() << "\n\n";
+    std::cout << "q_ip_: " << qc.get_q_ip() << "\n";
 
-    std::cout << "run 2\n";
+    std::cout << ">> RUN 2\n";
     qc.run(2, true);
 
-    std::cout << "reset\n";
+    std::cout << ">> RESET\n";
     qc.reset();
 
-    std::cout << "run 0\n";
+    std::cout << ">> RUN 0\n";
     qc.run(0, true);
-    std::cout << "run 1\n";
+    std::cout << ">> RUN 1\n";
     qc.run(1, true);
-    std::cout << "run 2\n";
+    std::cout << ">> RUN 2\n";
     qc.run(2, true);
-    std::cout << "run 2, non-verbose\n";
+    std::cout << ">> RUN 2, non-verbose\n";
     qc.run(2, false);
-    std::cout << "run end\n";
+    std::cout << ">> RUN UNTIL END\n";
     qc.run(idx_infty, true);
-    std::cout << "end run\n";
+    std::cout << ">> END RUN\n";
 
-    std::cout << qc << '\n';
+    std::cout << qc;
     std::cout << "psi:\n";
     std::cout << disp(qc.get_psi()) << '\n';
     std::cout << "m_ip_: " << qc.get_m_ip() << ", ";

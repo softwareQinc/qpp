@@ -48,6 +48,8 @@ namespace experimental {
 //  i.e. ROBUST EXCEPTION CHECKING, something like a sanitize function! Do this
 //  in gate() and not in run()
 
+// TODO: display in JSon format
+
 class QCircuitDescription : public IDisplay {
     const idx nq_;                         ///< number of qudits
     const idx nc_;                         ///< number of classical "dits"
