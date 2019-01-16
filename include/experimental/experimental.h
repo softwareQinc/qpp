@@ -290,13 +290,13 @@ class QCircuitDescription : public IDisplay {
     std::string get_name() const { return name_; }
 
     // return true if qudit i was measured, false otherwise
-    idx was_measured(idx i) const { return measured_[i]; }
+    idx get_measured(idx i) const { return measured_[i]; }
 
     // qudits that were measured
     std::vector<idx> get_measured() const {
         std::vector<idx> result;
         for (idx i = 0; i < nq_; ++i)
-            if (was_measured(i))
+            if (get_measured(i))
                 result.emplace_back(i);
 
         return result;
@@ -306,7 +306,7 @@ class QCircuitDescription : public IDisplay {
     std::vector<idx> get_non_measured() const {
         std::vector<idx> result;
         for (idx i = 0; i < nq_; ++i)
-            if (!was_measured(i))
+            if (!get_measured(i))
                 result.emplace_back(i);
 
         return result;
@@ -682,10 +682,10 @@ class QCircuit : public IDisplay {
 
     // mark qudit i as measured then re-label accordingly the remaining
     // non-measured qudits
-    void mark_as_measured_(idx i) {
+    void set_measured_(idx i) {
         if (was_measured(i))
             throw exception::QuditAlreadyMeasured(
-                "qpp::QCircuit::mark_as_measured_()");
+                "qpp::QCircuit::set_measured_()");
         subsys_[i] = idx_infty; // set qudit i to measured state
         for (idx m = i; m < qcd_.nq_; ++m) {
             if (!was_measured(m)) {
@@ -831,8 +831,8 @@ class QCircuit : public IDisplay {
                                 measure_seq(psi_, target_rel_pos, qcd_.d_);
                             dits_[qcd_.measurements_[m_ip_].c_reg_] = resZ[0];
                             probs_[qcd_.measurements_[m_ip_].c_reg_] = probZ;
-                            mark_as_measured_(
-                                qcd_.measurements_[m_ip_].target_[0]);
+                                set_measured_(
+                                        qcd_.measurements_[m_ip_].target_[0]);
                             break;
                         case QCircuitDescription::MeasureType::MEASURE_V:
                             std::tie(mres, probs, states) = measure(
@@ -842,8 +842,8 @@ class QCircuit : public IDisplay {
                             dits_[qcd_.measurements_[m_ip_].c_reg_] = mres;
                             probs_[qcd_.measurements_[m_ip_].c_reg_] =
                                 probs[mres];
-                            mark_as_measured_(
-                                qcd_.measurements_[m_ip_].target_[0]);
+                                set_measured_(
+                                        qcd_.measurements_[m_ip_].target_[0]);
                             break;
                         case QCircuitDescription::MeasureType::MEASURE_V_MANY:
                             std::tie(mres, probs, states) = measure(
@@ -854,7 +854,7 @@ class QCircuit : public IDisplay {
                             probs_[qcd_.measurements_[m_ip_].c_reg_] =
                                 probs[mres];
                             for (auto&& i : qcd_.measurements_[m_ip_].target_)
-                                mark_as_measured_(i);
+                                set_measured_(i);
                             break;
                         }
                         ++ip_;
