@@ -131,4 +131,6 @@ int main() {
     std::cout << qc.get_circuit_description().get_gate_count() << " "
               << qc.get_circuit_description().get_measurement_count() << " "
               << qc.get_circuit_description().get_total_count() << "\n\n";
+
+    std::cout << gt.get_name(gt.CNOT) << "\n\n";
 }

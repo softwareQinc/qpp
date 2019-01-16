@@ -649,6 +649,71 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         return this->expandout(A, pos, dims);
     }
+
+    // getters
+    std::string get_name(const cmat& U) const {
+        // EXCEPTION CHECKS
+
+        // check zero size
+        if (!internal::check_nonzero_size(U))
+            throw exception::ZeroSize("qpp::Gates::get_name()");
+
+        // check square matrix
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare("qpp::Gates::get_name()");
+
+        // END EXCEPTION CHECKS
+
+        const idx D = static_cast<idx>(U.rows());
+
+        switch (D) {
+        // 1 qubit gates
+        case 2:
+            if (U == this->Id2)
+                return "Id2";
+            else if (U == this->H)
+                return "H";
+            else if (U == this->X)
+                return "X";
+            else if (U == this->Y)
+                return "Y";
+            else if (U == this->Z)
+                return "Z";
+            else if (U == this->S)
+                return "S";
+            else if (U == this->T)
+                return "T";
+            else
+                return "";
+            break;
+        // 2 qubit gates
+        case 4:
+            if (U == this->CNOT)
+                return "CNOT";
+            else if (U == this->CZ)
+                return "CZ";
+            else if (U == this->CNOTba)
+                return "CNOTba";
+            else if (U == this->SWAP)
+                return "SWAP";
+            else
+                return "";
+            break;
+        // 3 qubit gates
+        case 8:
+            if (U == this->TOF)
+                return "TOF";
+            else if (U == this->FRED)
+                return "FRED";
+            else
+                return "";
+            break;
+
+        default:
+            return "";
+        }
+    }
+    // end getters
 }; /* class Gates */
 
 } /* namespace qpp */

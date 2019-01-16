@@ -15,6 +15,8 @@ In progress - pre-release
     - Added Shor's algorithm example in "examples/shor.cpp"
     - introduced the largest unsigned index qpp::idx_inf in "constants.h"
     - Added a new exception class qpp::exception::QuditAlreadyMeasured
+    - Added std::string qpp::Gates::get_name(const cmat&) function which returns
+      the names of the most common (one, two and three) qubit gates
     - Added qpp::experimental::QCircuitDescription and
       qpp::experimental::QCircuit classes in "experimental/experimental.h" for
       simulating qudit quantum circuits
