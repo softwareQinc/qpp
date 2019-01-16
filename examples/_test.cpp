@@ -16,10 +16,10 @@ int main() {
 
     // set the MES between qudits 1 and 2
     teleport_qubit.gate(gt.H, 1);
-    teleport_qubit.gate(gt.CNOT, 1, 2);
+    teleport_qubit.CTRL(gt.X, 1, 2);
 
     // perform the Bell measurement between qudits 0 and 1
-    teleport_qubit.gate(gt.CNOT, 0, 1);
+    teleport_qubit.CTRL(gt.X, 0, 1);
     teleport_qubit.gate(gt.H, 0);
     teleport_qubit.measureZ(0, 0);
     teleport_qubit.measureZ(1, 1);
@@ -85,7 +85,7 @@ int main() {
 
     std::cout << "more testing\n";
     QCircuitDescription qcd{3, 3};
-    qcd.gate_fan(gt.H).measureV(gt.Id(4), {0, 2}, 0);
+    qcd.gate_fan(gt.H).measureV(gt.Id(2), 0, 0);
     qcd.gate(gt.X, 1);
     qcd.gate(gt.X, 1);
     qcd.gate(gt.X, 1);
@@ -94,6 +94,7 @@ int main() {
     qcd.gate(gt.X, 1);
     qcd.gate(gt.X, 1);
     qcd.measureZ(1, 1);
+    qcd.measureV(gt.H, 2, 2);
 
     QCircuit qc{qcd};
     std::cout << ">> BEGIN CIRCUIT DESCRIPTION\n";
