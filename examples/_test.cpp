@@ -109,13 +109,15 @@ int main() {
     std::cout << qc.get_m_ip() << " " << qc.get_q_ip() << "\n\n";
 
     std::cout << "run 2\n";
-    qc.run(2);
+    qc.run(2,true);
+    std::cout << "reset\n";
+    qc.reset();
     std::cout << "run 0\n";
-    qc.run(0);
+    qc.run(0,true);
     std::cout << "run 1\n";
-    qc.run(1);
+    qc.run(1,true);
     std::cout << "run end\n";
-    qc.run();
+    qc.run(idx_infty, true);
     std::cout << "end run\n";
 
     std::cout << qc << '\n';

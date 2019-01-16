@@ -269,8 +269,8 @@ class QCircuitDescription : public IDisplay {
   public:
     QCircuitDescription(idx nq, idx nc = 0, idx d = 2,
                         const std::string& name = "")
-        : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false),
-          step_cnt_{0} {}
+        : nq_{nq}, nc_{nc}, d_{d}, name_{name},
+          measured_(nq, false), step_cnt_{0} {}
 
     // getters
     // number of qudits
@@ -736,15 +736,15 @@ class QCircuit : public IDisplay {
         ip_ = 0;
     }
 
-    void run(idx step = idx_infty) {
-        idx no_steps ;
-        if(step == idx_infty)
+    void run(idx step = idx_infty, bool verbose = false) {
+        idx no_steps;
+        if (step == idx_infty)
             no_steps = qcd_.get_total_count() - ip_;
         else
             no_steps = step;
         idx saved_ip_ = ip_; // save the instruction pointer at entry
 
-        if(ip_ + no_steps > qcd_.get_total_count())
+        if (ip_ + no_steps > qcd_.get_total_count())
             throw exception::OutOfRange("qpp::QCircuit::run()");
 
         for (; q_ip_ <= qcd_.gates_.size(); ++q_ip_) {
@@ -754,9 +754,17 @@ class QCircuit : public IDisplay {
                 // we have a measurement at step i
                 if (m_step == q_ip_) {
                     while (qcd_.measurement_steps_[m_ip_] == m_step) {
-                        if(ip_ - saved_ip_ == no_steps)
+                        if (ip_ - saved_ip_ == no_steps)
                             return;
-                        std::cout << "Running step (m) " << get_ip() << "\n";
+
+                        if (verbose) {
+                            std::cout << std::left;
+                            std::cout << std::setw(8)
+                                      << qcd_.measurements_[m_ip_].step_no_;
+                            std::cout << std::right;
+                            std::cout << "\t|> " << qcd_.measurements_[m_ip_]
+                                      << '\n';
+                        }
 
                         std::vector<idx> target_rel_pos = get_relative_pos_(
                             qcd_.measurements_[m_ip_].target_);
@@ -811,9 +819,14 @@ class QCircuit : public IDisplay {
 
             // check for gates
             if (q_ip_ < qcd_.gates_.size()) {
-                if(ip_ - saved_ip_ == no_steps)
+                if (ip_ - saved_ip_ == no_steps)
                     return;
-                std::cout << "Running step (g) " << get_ip() << "\n";
+                if (verbose) {
+                    std::cout << std::left;
+                    std::cout << std::setw(8) << qcd_.gates_[q_ip_].step_no_;
+                    std::cout << std::right;
+                    std::cout << qcd_.gates_[q_ip_] << '\n';
+                }
 
                 std::vector<idx> ctrl_rel_pos;
                 std::vector<idx> target_rel_pos =
