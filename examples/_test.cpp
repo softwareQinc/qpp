@@ -12,7 +12,7 @@ int main() {
     QCircuitDescription teleport_qubit{3, 2, 2, "qubit teleportation"};
     // set the qubit 0 to a random state
     cmat U = randU(2);
-    teleport_qubit.gate(U, 0);
+    teleport_qubit.gate(U, 0, "randU");
 
     // set the MES between qudits 1 and 2
     teleport_qubit.gate(gt.H, 1);
@@ -103,11 +103,14 @@ int main() {
 
     qc.run();
     std::cout << qc << '\n';
+    std::cout << "psi:\n";
     std::cout << disp(qc.get_psi()) << '\n';
-    std::cout << qc.get_m_ip() << " " << qc.get_q_ip() << "\n\n";
+    std::cout << "m_ip_: " << qc.get_m_ip() << ", ";
+    std::cout << "q_ip_: " << qc.get_q_ip() << "\n\n";
 
     qc.reset();
-    std::cout << qc.get_m_ip() << " " << qc.get_q_ip() << "\n\n";
+    std::cout << "m_ip_: " << qc.get_m_ip() << ", ";
+    std::cout << "q_ip_: " << qc.get_q_ip() << "\n\n";
 
     std::cout << "run 2\n";
     qc.run(2, true);
@@ -126,12 +129,12 @@ int main() {
     std::cout << "end run\n";
 
     std::cout << qc << '\n';
+    std::cout << "psi:\n";
     std::cout << disp(qc.get_psi()) << '\n';
-    std::cout << qc.get_q_ip() << " " << qc.get_m_ip() << " " << qc.get_ip()
-              << "\n\n";
+    std::cout << "m_ip_: " << qc.get_m_ip() << ", ";
+    std::cout << "q_ip_: " << qc.get_q_ip() << ", ";
+    std::cout << "ip_: " << qc.get_ip() << "\n\n";
     std::cout << qc.get_circuit_description().get_gate_count() << " "
               << qc.get_circuit_description().get_measurement_count() << " "
               << qc.get_circuit_description().get_total_count() << "\n\n";
-
-    std::cout << gt.get_name(gt.CNOT) << "\n\n";
 }

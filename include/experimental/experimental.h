@@ -267,8 +267,7 @@ class QCircuitDescription : public IDisplay {
     std::vector<MeasureStep> measurements_{};
 
   public:
-    QCircuitDescription(idx nq, idx nc = 0, idx d = 2,
-                        std::string name = "")
+    QCircuitDescription(idx nq, idx nc = 0, idx d = 2, std::string name = "")
         : nq_{nq}, nc_{nc}, d_{d}, name_{name},
           measured_(nq, false), step_cnt_{0} {}
 
@@ -321,9 +320,8 @@ class QCircuitDescription : public IDisplay {
     // end getters
 
     // single gate single qudit
-    QCircuitDescription& gate(const cmat& U, idx i,
-                              std::string name = "") {
-        if(name == "")
+    QCircuitDescription& gate(const cmat& U, idx i, std::string name = "") {
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::SINGLE, U, std::vector<idx>{},
                             std::vector<idx>{i}, step_cnt_++, name);
@@ -334,7 +332,7 @@ class QCircuitDescription : public IDisplay {
     // single gate 2 qudits
     QCircuitDescription& gate(const cmat& U, idx i, idx j,
                               std::string name = "") {
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::TWO, U, std::vector<idx>{},
                             std::vector<idx>{i, j}, step_cnt_++, name);
@@ -344,7 +342,7 @@ class QCircuitDescription : public IDisplay {
     // single gate 3 qudits
     QCircuitDescription& gate(const cmat& U, idx i, idx j, idx k,
                               std::string name = "") {
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::THREE, U, std::vector<idx>{},
                             std::vector<idx>{i, j, k}, step_cnt_++, name);
@@ -355,7 +353,7 @@ class QCircuitDescription : public IDisplay {
     // multiple qudits same gate
     QCircuitDescription& gate_fan(const cmat& U, const std::vector<idx>& target,
                                   std::string name = "") {
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::FAN, U, std::vector<idx>{}, target,
                             step_cnt_++, name);
@@ -365,7 +363,7 @@ class QCircuitDescription : public IDisplay {
 
     // multiple qudits same gate on ALL non-measured qudits
     QCircuitDescription& gate_fan(const cmat& U, std::string name = "") {
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::FAN, U, std::vector<idx>{},
                             get_non_measured(), step_cnt_++, name);
@@ -376,7 +374,7 @@ class QCircuitDescription : public IDisplay {
     // custom gate
     QCircuitDescription& gate(const cmat& U, const std::vector<idx>& target,
                               std::string name = "") {
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::CUSTOM, U, std::vector<idx>{}, target,
                             step_cnt_++, name);
@@ -403,7 +401,7 @@ class QCircuitDescription : public IDisplay {
     // single ctrl single target
     QCircuitDescription& CTRL(const cmat& U, idx ctrl, idx target,
                               std::string name = "") {
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, U,
                             std::vector<idx>{ctrl}, std::vector<idx>{target},
@@ -416,7 +414,7 @@ class QCircuitDescription : public IDisplay {
     QCircuitDescription& CTRL(const cmat& U, idx ctrl,
                               const std::vector<idx>& target,
                               std::string name = "") {
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, U,
                             std::vector<idx>{ctrl}, target, step_cnt_++, name);
@@ -427,7 +425,7 @@ class QCircuitDescription : public IDisplay {
     // multiple ctrl single target
     QCircuitDescription& CTRL(const cmat& U, const std::vector<idx>& ctrl,
                               idx target, std::string name = "") {
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, U, ctrl,
                             std::vector<idx>{target}, step_cnt_++, name);
@@ -440,7 +438,7 @@ class QCircuitDescription : public IDisplay {
     QCircuitDescription& CTRL(const cmat& U, const std::vector<idx>& ctrl,
                               const std::vector<idx>& target,
                               std::string name = "") {
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, U, ctrl,
                             std::vector<idx>{target}, step_cnt_++, name);
@@ -453,7 +451,7 @@ class QCircuitDescription : public IDisplay {
                                      const std::vector<idx>& ctrl,
                                      const std::vector<idx>& target,
                                      std::string name = "") {
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::CUSTOM_CTRL, U, ctrl, target, step_cnt_++,
                             name);
@@ -465,7 +463,7 @@ class QCircuitDescription : public IDisplay {
     // single ctrl single target
     QCircuitDescription& cCTRL(const cmat& U, idx ctrl, idx target,
                                std::string name = "") {
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, U,
                             std::vector<idx>{ctrl}, std::vector<idx>{target},
@@ -478,7 +476,7 @@ class QCircuitDescription : public IDisplay {
     QCircuitDescription& cCTRL(const cmat& U, idx ctrl,
                                const std::vector<idx>& target,
                                std::string name = "") {
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, U,
                             std::vector<idx>{ctrl}, target, step_cnt_++, name);
@@ -489,7 +487,7 @@ class QCircuitDescription : public IDisplay {
     // multiple ctrl single target
     QCircuitDescription& cCTRL(const cmat& U, const std::vector<idx>& ctrl,
                                idx target, std::string name = "") {
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, U, ctrl,
                             std::vector<idx>{target}, step_cnt_++, name);
@@ -501,7 +499,7 @@ class QCircuitDescription : public IDisplay {
     QCircuitDescription& cCTRL(const cmat& U, const std::vector<idx>& ctrl,
                                const std::vector<idx>& target,
                                std::string name = "") {
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, U, ctrl,
                             std::vector<idx>{target}, step_cnt_++, name);
@@ -514,7 +512,7 @@ class QCircuitDescription : public IDisplay {
                                       const std::vector<idx>& ctrl,
                                       const std::vector<idx>& target,
                                       std::string name = "") {
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::CUSTOM_cCTRL, U, ctrl, target,
                             step_cnt_++, name);
@@ -523,8 +521,7 @@ class QCircuitDescription : public IDisplay {
     }
 
     // Z measurement of single qudit
-    QCircuitDescription& measureZ(idx i, idx c_reg,
-                                  std::string name = "") {
+    QCircuitDescription& measureZ(idx i, idx c_reg, std::string name = "") {
         // EXCEPTION CHECKS
 
         // measuring non-existing qudit
@@ -539,6 +536,8 @@ class QCircuitDescription : public IDisplay {
                 "qpp:QCircuitDescription::measureZ");
         // END EXCEPTION CHECKS
 
+        if (name == "")
+            name = "Measure Z";
         measured_[i] = true;
         measurements_.emplace_back(MeasureType::MEASURE_Z, std::vector<cmat>{},
                                    std::vector<idx>{i}, c_reg, step_cnt_++,
@@ -571,7 +570,7 @@ class QCircuitDescription : public IDisplay {
                 "qpp:QCircuitDescription::measureV");
         // END EXCEPTION CHECKS
 
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(V);
         measured_[i] = true;
         measurements_.emplace_back(MeasureType::MEASURE_V, std::vector<cmat>{V},
@@ -603,7 +602,7 @@ class QCircuitDescription : public IDisplay {
                     "qpp::QCircuitDescription::measureV");
         // END EXCEPTION CHECKS
 
-        if(name == "")
+        if (name == "")
             name = qpp::Gates::get_instance().get_name(V);
         for (auto&& i : target)
             measured_[i] = true;
@@ -723,7 +722,7 @@ class QCircuit : public IDisplay {
     std::vector<idx> get_dits() const { return dits_; }
 
     idx get_dit(idx i) const {
-        if(i > qcd_.nc_)
+        if (i > qcd_.nc_)
             throw exception::OutOfRange("qpp::QCircuit::get_dit()");
 
         return dits_[i];
@@ -765,9 +764,8 @@ class QCircuit : public IDisplay {
     // end getters
 
     // setters
-    QCircuit& set_dit(idx i, idx val)
-    {
-        if(i > qcd_.nc_)
+    QCircuit& set_dit(idx i, idx val) {
+        if (i > qcd_.nc_)
             throw exception::OutOfRange("qpp::QCircuit::set_dit()");
         dits_[i] = val;
 
