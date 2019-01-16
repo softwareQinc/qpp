@@ -736,7 +736,17 @@ class QCircuit : public IDisplay {
         ip_ = 0;
     }
 
-    void run(idx QPP_UNUSED_ step = idx_infty) {
+    void run(idx step = idx_infty) {
+        idx no_steps ;
+        if(step == idx_infty)
+            no_steps = qcd_.get_total_count() - ip_;
+        else
+            no_steps = step;
+        idx entry_ip_ = ip_;
+
+        if(ip_ + no_steps > qcd_.get_total_count())
+            throw exception::OutOfRange("qpp::QCircuit::run()");
+
         for (; q_ip_ <= qcd_.gates_.size(); ++q_ip_) {
             // check for measurements
             if (m_ip_ < qcd_.measurements_.size()) {
@@ -744,6 +754,8 @@ class QCircuit : public IDisplay {
                 // we have a measurement at step i
                 if (m_step == q_ip_) {
                     while (qcd_.measurement_steps_[m_ip_] == m_step) {
+                        if(ip_ - entry_ip_ == no_steps)
+                            return;
                         std::cout << "Running step (m) " << get_ip() << "\n";
 
                         std::vector<idx> target_rel_pos = get_relative_pos_(
@@ -799,6 +811,8 @@ class QCircuit : public IDisplay {
 
             // check for gates
             if (q_ip_ < qcd_.gates_.size()) {
+                if(ip_ - entry_ip_ == no_steps)
+                    return;
                 std::cout << "Running step (g) " << get_ip() << "\n";
 
                 std::vector<idx> ctrl_rel_pos;
