@@ -85,7 +85,7 @@ int main() {
 
     std::cout << "more testing\n";
     QCircuitDescription qcd{3, 3};
-    qcd.gate_fan(gt.H).measureV(gt.Id(2), {0}, 0);
+    qcd.gate_fan(gt.H).measureV(gt.Id(4), {0, 2}, 0);
     qcd.gate(gt.X, 1);
     qcd.gate(gt.X, 1);
     qcd.gate(gt.X, 1);
@@ -93,7 +93,7 @@ int main() {
     qcd.gate(gt.X, 1);
     qcd.gate(gt.X, 1);
     qcd.gate(gt.X, 1);
-    qcd.measureZ(2, 2);
+    qcd.measureZ(1, 1);
 
     QCircuit qc{qcd};
     std::cout << ">> BEGIN CIRCUIT DESCRIPTION\n";
@@ -109,13 +109,17 @@ int main() {
     std::cout << qc.get_m_ip() << " " << qc.get_q_ip() << "\n\n";
 
     std::cout << "run 2\n";
-    qc.run(2,true);
+    qc.run(2, true);
     std::cout << "reset\n";
     qc.reset();
     std::cout << "run 0\n";
-    qc.run(0,true);
+    qc.run(0, true);
     std::cout << "run 1\n";
-    qc.run(1,true);
+    qc.run(1, true);
+    std::cout << "run 2\n";
+    qc.run(2, true);
+    std::cout << "run 2, non-verbose\n";
+    qc.run(2, false);
     std::cout << "run end\n";
     qc.run(idx_infty, true);
     std::cout << "end run\n";

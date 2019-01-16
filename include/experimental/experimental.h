@@ -497,15 +497,13 @@ class QCircuitDescription : public IDisplay {
 
         // measuring non-existing qudit
         if (i >= nq_)
-            throw qpp::exception::OutOfRange(
-                "qpp::QCircuitDescription::measureZ()");
+            throw exception::OutOfRange("qpp::QCircuitDescription::measureZ()");
         // trying to put the result into an non-existing classical slot
         if (c_reg >= nc_)
-            throw qpp::exception::OutOfRange(
-                "qpp::QCircuitDescription::measureZ()");
+            throw exception::OutOfRange("qpp::QCircuitDescription::measureZ()");
         // qudit was measured before
         if (measured_[i] == true)
-            throw qpp::exception::QuditAlreadyMeasured(
+            throw exception::QuditAlreadyMeasured(
                 "qpp:QCircuitDescription::measureZ");
         // END EXCEPTION CHECKS
 
@@ -531,15 +529,13 @@ class QCircuitDescription : public IDisplay {
 
         // measuring non-existing qudit
         if (i >= nq_)
-            throw qpp::exception::OutOfRange(
-                "qpp::QCircuitDescription::measureV()");
+            throw exception::OutOfRange("qpp::QCircuitDescription::measureV()");
         // trying to put the result into an non-existing classical slot
         if (c_reg >= nc_)
-            throw qpp::exception::OutOfRange(
-                "qpp::QCircuitDescription::measureV()");
+            throw exception::OutOfRange("qpp::QCircuitDescription::measureV()");
         // qudit was measured before
         if (measured_[i] == true)
-            throw qpp::exception::QuditAlreadyMeasured(
+            throw exception::QuditAlreadyMeasured(
                 "qpp:QCircuitDescription::measureV");
         // END EXCEPTION CHECKS
 
@@ -561,17 +557,16 @@ class QCircuitDescription : public IDisplay {
         // measuring non-existing qudit
         for (auto&& i : target)
             if (i >= nq_)
-                throw qpp::exception::OutOfRange(
+                throw exception::OutOfRange(
                     "qpp::QCircuitDescription::measureV()");
         // trying to put the result into an non-existing classical slot
         if (c_reg >= nc_)
-            throw qpp::exception::OutOfRange(
-                "qpp::QCircuitDescription::measureV()");
+            throw exception::OutOfRange("qpp::QCircuitDescription::measureV()");
         // qudit was measured before
         for (auto&& i : target)
             if (measured_[i] == true)
-                throw qpp::exception::QuditAlreadyMeasured(
-                    "qpp:QCircuitDescription::measureV");
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuitDescription::measureV");
         // END EXCEPTION CHECKS
 
         for (auto&& i : target)
@@ -607,7 +602,7 @@ class QCircuitDescription : public IDisplay {
                         os << std::left;
                         os << std::setw(8) << measurements_[m_ip].step_no_;
                         os << std::right;
-                        os << "\t|> " << measurements_[m_ip] << '\n';
+                        os << "|> " << measurements_[m_ip] << '\n';
                         if (++m_ip == measurements_size)
                             break;
                     }
@@ -654,7 +649,7 @@ class QCircuit : public IDisplay {
     // non-measured qudits
     void mark_as_measured_(idx i) {
         if (was_measured(i))
-            throw qpp::exception::QuditAlreadyMeasured(
+            throw exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::mark_as_measured_()");
         subsys_[i] = idx_infty; // set qudit i to measured state
         for (idx m = i; m < qcd_.nq_; ++m) {
@@ -670,7 +665,7 @@ class QCircuit : public IDisplay {
         idx vsize = v.size();
         for (idx i = 0; i < vsize; ++i) {
             if (was_measured(v[i]))
-                throw qpp::exception::QuditAlreadyMeasured(
+                throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::get_relative_pos_()");
             v[i] = subsys_[v[i]];
         }
@@ -762,7 +757,7 @@ class QCircuit : public IDisplay {
                             std::cout << std::setw(8)
                                       << qcd_.measurements_[m_ip_].step_no_;
                             std::cout << std::right;
-                            std::cout << "\t|> " << qcd_.measurements_[m_ip_]
+                            std::cout << "|> " << qcd_.measurements_[m_ip_]
                                       << '\n';
                         }
 
@@ -781,14 +776,14 @@ class QCircuit : public IDisplay {
                             break;
                         case QCircuitDescription::MeasureType::MEASURE_Z:
                             std::tie(resZ, probZ, psi_) =
-                                qpp::measure_seq(psi_, target_rel_pos, qcd_.d_);
+                                measure_seq(psi_, target_rel_pos, qcd_.d_);
                             dits_[qcd_.measurements_[m_ip_].c_reg_] = resZ[0];
                             probs_[qcd_.measurements_[m_ip_].c_reg_] = probZ;
                             mark_as_measured_(
                                 qcd_.measurements_[m_ip_].target_[0]);
                             break;
                         case QCircuitDescription::MeasureType::MEASURE_V:
-                            std::tie(mres, probs, states) = qpp::measure(
+                            std::tie(mres, probs, states) = measure(
                                 psi_, qcd_.measurements_[m_ip_].mats_[0],
                                 target_rel_pos, qcd_.d_);
                             psi_ = states[mres];
@@ -799,7 +794,7 @@ class QCircuit : public IDisplay {
                                 qcd_.measurements_[m_ip_].target_[0]);
                             break;
                         case QCircuitDescription::MeasureType::MEASURE_V_MANY:
-                            std::tie(mres, probs, states) = qpp::measure(
+                            std::tie(mres, probs, states) = measure(
                                 psi_, qcd_.measurements_[m_ip_].mats_[0],
                                 target_rel_pos, qcd_.d_);
                             psi_ = states[mres];
@@ -839,13 +834,13 @@ class QCircuit : public IDisplay {
                 case QCircuitDescription::GateType::TWO:
                 case QCircuitDescription::GateType::THREE:
                 case QCircuitDescription::GateType::CUSTOM:
-                    psi_ = qpp::apply(psi_, qcd_.gates_[q_ip_].gate_,
-                                      target_rel_pos, qcd_.d_);
+                    psi_ = apply(psi_, qcd_.gates_[q_ip_].gate_, target_rel_pos,
+                                 qcd_.d_);
                     break;
                 case QCircuitDescription::GateType::FAN:
                     for (idx m = 0; m < qcd_.gates_[q_ip_].target_.size(); ++m)
-                        psi_ = qpp::apply(psi_, qcd_.gates_[q_ip_].gate_,
-                                          {target_rel_pos[m]}, qcd_.d_);
+                        psi_ = apply(psi_, qcd_.gates_[q_ip_].gate_,
+                                     {target_rel_pos[m]}, qcd_.d_);
                     break;
                 case QCircuitDescription::GateType::QFT:
                 case QCircuitDescription::GateType::TFQ:
@@ -856,9 +851,8 @@ class QCircuit : public IDisplay {
                     MULTIPLE_CTRL_MULTIPLE_TARGET:
                 case QCircuitDescription::GateType::CUSTOM_CTRL:
                     ctrl_rel_pos = get_relative_pos_(qcd_.gates_[q_ip_].ctrl_);
-                    psi_ =
-                        qpp::applyCTRL(psi_, qcd_.gates_[q_ip_].gate_,
-                                       ctrl_rel_pos, target_rel_pos, qcd_.d_);
+                    psi_ = applyCTRL(psi_, qcd_.gates_[q_ip_].gate_,
+                                     ctrl_rel_pos, target_rel_pos, qcd_.d_);
                     break;
                 case QCircuitDescription::GateType::SINGLE_cCTRL_SINGLE_TARGET:
                 case QCircuitDescription::GateType::
@@ -869,8 +863,8 @@ class QCircuit : public IDisplay {
                     MULTIPLE_cCTRL_MULTIPLE_TARGET:
                 case QCircuitDescription::GateType::CUSTOM_cCTRL:
                     if (dits_.size() == 0) {
-                        psi_ = qpp::apply(psi_, qcd_.gates_[q_ip_].gate_,
-                                          target_rel_pos, qcd_.d_);
+                        psi_ = apply(psi_, qcd_.gates_[q_ip_].gate_,
+                                     target_rel_pos, qcd_.d_);
                     } else {
                         bool should_apply = true;
                         idx first_dit = dits_[(qcd_.gates_[q_ip_].ctrl_)[0]];
@@ -883,7 +877,7 @@ class QCircuit : public IDisplay {
                             }
                         }
                         if (should_apply) {
-                            psi_ = qpp::apply(
+                            psi_ = apply(
                                 psi_, powm(qcd_.gates_[q_ip_].gate_, first_dit),
                                 target_rel_pos, qcd_.d_);
                         }
