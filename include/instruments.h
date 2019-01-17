@@ -623,7 +623,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 /**
  * \brief Measures the part \a target of the multi-partite state vector or
  * density matrix \a A in the orthonormal basis or rank-1 projectors specified
- * by the column of the matrix \a V
+ * by the columns of the matrix \a V
  * \see qpp::measure_seq()
  *
  * \note The dimension of \a V must match the dimension of \a target.

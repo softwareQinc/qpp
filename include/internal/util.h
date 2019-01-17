@@ -206,6 +206,15 @@ inline bool check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept {
     return true;
 }
 
+// check that vector has no duplicates
+inline bool check_no_duplicates(std::vector<idx> v) {
+    std::sort(std::begin(v), std::end(v));
+    if (std::unique(std::begin(v), std::end(v)) != std::end(v))
+        return false;
+    else
+        return true;
+}
+
 // check that subsys is valid with respect to valid dims
 inline bool check_subsys_match_dims(const std::vector<idx>& subsys,
                                     const std::vector<idx>& dims) {
@@ -215,20 +224,15 @@ inline bool check_subsys_match_dims(const std::vector<idx>& subsys,
     if (subsys.size() > dims.size())
         return false;
 
-    // sort the subsystems
-    std::vector<idx> subsyssort = subsys;
-    std::sort(std::begin(subsyssort), std::end(subsyssort));
-
-    // check duplicates
-    if (std::unique(std::begin(subsyssort), std::end(subsyssort)) !=
-        std::end(subsyssort))
+    // check no duplicates
+    if (!check_no_duplicates(subsys))
         return false;
 
     // check range of subsystems
-    return std::find_if(std::begin(subsyssort), std::end(subsyssort),
+    return std::find_if(std::begin(subsys), std::end(subsys),
                         [dims](idx i) -> bool {
                             return i > dims.size() - 1;
-                        }) == std::end(subsyssort);
+                        }) == std::end(subsys);
 }
 
 // check matrix is 2 x 2

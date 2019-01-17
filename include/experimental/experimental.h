@@ -146,7 +146,8 @@ class QCircuitDescription : public IDisplay {
 
     struct MeasureStep {
         MeasureType measurement_type_ = MeasureType::NONE; ///< measurement type
-        std::vector<cmat> mats_;  ///< matrix/matrices being measured
+        std::vector<cmat> mats_;  ///< matrix/matrices that specify the
+                                  /// measurement
         std::vector<idx> target_; ///< target where the measurement is applied
         idx c_reg_{}; ///< index of the classical register where the measurement
         ///< result is being stored
@@ -272,35 +273,53 @@ class QCircuitDescription : public IDisplay {
 
   public:
     QCircuitDescription(idx nq, idx nc = 0, idx d = 2, std::string name = "")
-        : nq_{nq}, nc_{nc}, d_{d}, name_{name},
-          measured_(nq, false), step_cnt_{0} {}
+        : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false),
+          step_cnt_{0} {
+        // EXCEPTION CHECKS
+
+        if (nq == 0)
+            throw exception::ZeroSize(
+                "qpp::QCircuitDescription::QCircuitDescription()");
+        if (d < 2)
+            throw exception::OutOfRange(
+                "qpp::QCircuitDescription::QCircuitDescription()");
+        // END EXCEPTION CHECKS
+    }
 
     // getters
     // number of qudits
-    idx get_nq() const { return nq_; }
+    idx get_nq() const noexcept { return nq_; }
 
     // number of classical dits
-    idx get_nc() const { return nc_; }
+    idx get_nc() const noexcept { return nc_; }
 
     // dimension
-    idx get_d() const { return d_; }
+    idx get_d() const noexcept { return d_; }
 
     // measurement steps
     std::vector<idx> get_measurement_steps() const {
         return measurement_steps_;
     }
 
-    const std::vector<MeasureStep>& get_measurements() const {
+    const std::vector<MeasureStep>& get_measurements() const noexcept {
         return measurements_;
     }
 
-    const std::vector<GateStep>& get_gates() const { return gates_; }
+    const std::vector<GateStep>& get_gates() const noexcept { return gates_; }
 
     // circuit name
     std::string get_name() const { return name_; }
 
     // return true if qudit i was measured, false otherwise
-    idx get_measured(idx i) const { return measured_[i]; }
+    idx get_measured(idx i) const {
+        // EXCEPTION CHECKS
+
+        if (i > nq_)
+            throw exception::OutOfRange(
+                "qpp::QCircuitDescription::get_measured()");
+        // END EXCEPTION CHECKS
+        return measured_[i];
+    }
 
     // qudits that were measured
     std::vector<idx> get_measured() const {
@@ -322,15 +341,34 @@ class QCircuitDescription : public IDisplay {
         return result;
     }
 
-    idx get_gate_count() const { return gates_.size(); }
+    idx get_gate_count() const noexcept { return gates_.size(); }
 
-    idx get_measurement_count() const { return measurements_.size(); }
+    idx get_measurement_count() const noexcept { return measurements_.size(); }
 
-    idx get_total_count() const { return step_cnt_; }
+    idx get_total_count() const noexcept { return step_cnt_; }
     // end getters
 
     // single gate single qudit
     QCircuitDescription& gate(const cmat& U, idx i, std::string name = "") {
+        // EXCEPTION CHECKS
+
+        // check valid target
+        if (i > nq_)
+            throw exception::OutOfRange("qpp::QCircuitDescription::gate()");
+        // check not measured before
+        if (get_measured(i))
+            throw exception::QuditAlreadyMeasured(
+                "qpp::QCircuitDescription::gate()");
+        // check square matrix for the gate
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare(
+                "qpp::QCircuitDescription::gate()");
+        // check correct dimension
+        if (static_cast<idx>(U.rows()) != d_)
+            throw exception::DimsMismatchMatrix(
+                "qpp::QCircuitDescription::gate()");
+        // END EXCEPTION CHECKS
+
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::SINGLE, U, std::vector<idx>{},
@@ -342,6 +380,24 @@ class QCircuitDescription : public IDisplay {
     // single gate 2 qudits
     QCircuitDescription& gate(const cmat& U, idx i, idx j,
                               std::string name = "") {
+        // EXCEPTION CHECKS
+
+        // check valid target
+        if (i > nq_ || j > nq_ || i == j)
+            throw exception::OutOfRange("qpp::QCircuitDescription::gate()");
+        if (get_measured(i) || get_measured(j))
+            throw exception::QuditAlreadyMeasured(
+                "qpp::QCircuitDescription::gate()");
+        // check square matrix for the gate
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare(
+                "qpp::QCircuitDescription::gate()");
+        // check correct dimension
+        if (static_cast<idx>(U.rows()) != d_ * d_)
+            throw exception::DimsMismatchMatrix(
+                "qpp::QCircuitDescription::gate()");
+        // END EXCEPTION CHECKS
+
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::TWO, U, std::vector<idx>{},
@@ -352,6 +408,23 @@ class QCircuitDescription : public IDisplay {
     // single gate 3 qudits
     QCircuitDescription& gate(const cmat& U, idx i, idx j, idx k,
                               std::string name = "") {
+        // EXCEPTION CHECKS
+
+        // check valid target
+        if (i > nq_ || j > nq_ || k > nq_ || (i == j) || (i == k) || (j == k))
+            throw exception::OutOfRange("qpp::QCircuitDescription::gate()");
+        if (get_measured(i) || get_measured(j) || get_measured(k))
+            throw exception::QuditAlreadyMeasured(
+                "qpp::QCircuitDescription::gate()");
+        // check square matrix for the gate
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare(
+                "qpp::QCircuitDescription::gate()");
+        // check correct dimension
+        if (static_cast<idx>(U.rows()) != d_ * d_ * d_)
+            throw exception::DimsMismatchMatrix(
+                "qpp::QCircuitDescription::gate()");
+        // END EXCEPTION CHECKS
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::THREE, U, std::vector<idx>{},
@@ -363,6 +436,35 @@ class QCircuitDescription : public IDisplay {
     // multiple qudits same gate
     QCircuitDescription& gate_fan(const cmat& U, const std::vector<idx>& target,
                                   std::string name = "") {
+        // EXCEPTION CHECKS
+
+        idx n = static_cast<idx>(target.size());
+        // check valid target
+        if (n == 0)
+            throw exception::ZeroSize("qpp::QCircuitDescription::gate_fan()");
+        for (idx i = 0; i < n; ++i)
+            if (target[i] > nq_)
+                throw exception::OutOfRange(
+                    "qpp::QCircuitDescription::gate_fan()");
+        // check no duplicates
+        if (!internal::check_no_duplicates(target))
+            throw exception::SubsysMismatchDims(
+                "qpp::QCircuitDescription::gate_fan()");
+        // check target was not measured before
+        for (idx i = 0; i < n; ++i)
+            if (get_measured(target[i]))
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuitDescription::gate_fan()");
+        // check square matrix for the gate
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare(
+                "qpp::QCircuitDescription::gate_fan()");
+        // check correct dimension
+        if (static_cast<idx>(U.rows()) != d_)
+            throw exception::DimsMismatchMatrix(
+                "qpp::QCircuitDescription::gate_fan()");
+        // END EXCEPTION CHECKS
+
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::FAN, U, std::vector<idx>{}, target,
@@ -373,6 +475,17 @@ class QCircuitDescription : public IDisplay {
 
     // multiple qudits same gate on ALL non-measured qudits
     QCircuitDescription& gate_fan(const cmat& U, std::string name = "") {
+        // EXCEPTION CHECKS
+
+        // check square matrix for the gate
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare(
+                "qpp::QCircuitDescription::gate_fan()");
+        // check correct dimension
+        if (static_cast<idx>(U.rows()) != d_)
+            throw exception::DimsMismatchMatrix(
+                "qpp::QCircuitDescription::gate_fan()");
+        // END EXCEPTION CHECKS
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::FAN, U, std::vector<idx>{},
@@ -384,6 +497,34 @@ class QCircuitDescription : public IDisplay {
     // custom gate
     QCircuitDescription& gate(const cmat& U, const std::vector<idx>& target,
                               std::string name = "") {
+        // EXCEPTION CHECKS
+
+        idx n = static_cast<idx>(target.size());
+        idx D = static_cast<idx>(std::llround(std::pow(d_, n)));
+        // check valid target
+        if (n == 0)
+            throw exception::ZeroSize("qpp::QCircuitDescription::gate()");
+        for (idx i = 0; i < n; ++i)
+            if (target[i] > nq_)
+                throw exception::OutOfRange("qpp::QCircuitDescription::gate()");
+        // check no duplicates
+        if (!internal::check_no_duplicates(target))
+            throw exception::SubsysMismatchDims(
+                "qpp::QCircuitDescription::gate()");
+        // check target was not measured before
+        for (idx i = 0; i < n; ++i)
+            if (get_measured(target[i]))
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuitDescription::gate()");
+        // check square matrix for the gate
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare(
+                "qpp::QCircuitDescription::gate()");
+        // check correct dimension
+        if (static_cast<idx>(U.rows()) != D)
+            throw exception::DimsMismatchMatrix(
+                "qpp::QCircuitDescription::gate()");
+        // END EXCEPTION CHECKS
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::CUSTOM, U, std::vector<idx>{}, target,
@@ -411,6 +552,23 @@ class QCircuitDescription : public IDisplay {
     // single ctrl single target
     QCircuitDescription& CTRL(const cmat& U, idx ctrl, idx target,
                               std::string name = "") {
+        // EXCEPTION CHECKS
+
+        // check valid ctrl and target
+        if (ctrl > nq_ || target > nq_ || ctrl == target)
+            throw exception::OutOfRange("qpp::QCircuitDescription::CTRL()");
+        if (get_measured(ctrl) || get_measured(target))
+            throw exception::QuditAlreadyMeasured(
+                "qpp::QCircuitDescription::CTRL()");
+        // check square matrix for the gate
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare(
+                "qpp::QCircuitDescription::CTRL()");
+        // check correct dimension
+        if (static_cast<idx>(U.rows()) != d_)
+            throw exception::DimsMismatchMatrix(
+                "qpp::QCircuitDescription::CTRL()");
+        // END EXCEPTION CHECKS
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, U,
@@ -424,6 +582,43 @@ class QCircuitDescription : public IDisplay {
     QCircuitDescription& CTRL(const cmat& U, idx ctrl,
                               const std::vector<idx>& target,
                               std::string name = "") {
+        // EXCEPTION CHECKS
+        idx n = static_cast<idx>(target.size());
+        // check valid ctrl
+        if (ctrl > nq_)
+            throw exception::OutOfRange("qpp::QCircuitDescription::CTRL()");
+        if (get_measured(ctrl))
+            throw exception::QuditAlreadyMeasured(
+                "qpp::QCircuitDescription::CTRL()");
+        // check valid target
+        if (n == 0)
+            throw exception::ZeroSize("qpp::QCircuitDescription::CTRL()");
+        for (idx i = 0; i < n; ++i)
+            if (target[i] > nq_)
+                throw exception::OutOfRange("qpp::QCircuitDescription::CTRL()");
+        // check no duplicates target
+        if (!internal::check_no_duplicates(target))
+            throw exception::SubsysMismatchDims(
+                "qpp::QCircuitDescription::CTRL()");
+        // check target was not measured before and that ctrl is not part of
+        // target
+        for (idx i = 0; i < n; ++i) {
+            if (get_measured(target[i]))
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuitDescription::CTRL()");
+            if (ctrl == target[i])
+                throw exception::OutOfRange("qpp::QCircuitDescription::CTRL()");
+        }
+        // check square matrix for the gate
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare(
+                "qpp::QCircuitDescription::CTRL()");
+        // check correct dimension
+        if (static_cast<idx>(U.rows()) != d_)
+            throw exception::DimsMismatchMatrix(
+                "qpp::QCircuitDescription::CTRL()");
+        // END EXCEPTION CHECKS
+
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, U,
@@ -435,6 +630,40 @@ class QCircuitDescription : public IDisplay {
     // multiple ctrl single target
     QCircuitDescription& CTRL(const cmat& U, const std::vector<idx>& ctrl,
                               idx target, std::string name = "") {
+        // EXCEPTION CHECKS
+
+        // check valid target
+        if (target > nq_)
+            throw exception::OutOfRange("qpp::QCircuitDescription::CTRL()");
+        if (get_measured(target))
+            throw exception::QuditAlreadyMeasured(
+                "qpp::QCircuitDescription::CTRL()");
+        // check valid ctrl
+        for (idx i = 0; i < static_cast<idx>(ctrl.size()); ++i)
+            if (ctrl[i] > nq_)
+                throw exception::OutOfRange("qpp::QCircuitDescription::CTRL()");
+        // check no duplicates ctrl
+        if (!internal::check_no_duplicates(ctrl))
+            throw exception::SubsysMismatchDims(
+                "qpp::QCircuitDescription::CTRL()");
+        // check ctrl was not measured before and that ctrl is not part of
+        // target
+        for (idx i = 0; i < static_cast<idx>(ctrl.size()); ++i) {
+            if (get_measured(ctrl[i]))
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuitDescription::CTRL()");
+            if (target == ctrl[i])
+                throw exception::OutOfRange("qpp::QCircuitDescription::CTRL()");
+        }
+        // check square matrix for the gate
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare(
+                "qpp::QCircuitDescription::CTRL()");
+        // check correct dimension
+        if (static_cast<idx>(U.rows()) != d_)
+            throw exception::DimsMismatchMatrix(
+                "qpp::QCircuitDescription::CTRL()");
+        // END EXCEPTION CHECKS
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, U, ctrl,
@@ -448,6 +677,55 @@ class QCircuitDescription : public IDisplay {
     QCircuitDescription& CTRL(const cmat& U, const std::vector<idx>& ctrl,
                               const std::vector<idx>& target,
                               std::string name = "") {
+        // EXCEPTION CHECKS
+
+        idx n = static_cast<idx>(target.size());
+        // check valid ctrl
+        for (idx i = 0; i < static_cast<idx>(ctrl.size()); ++i)
+            if (ctrl[i] > nq_)
+                throw exception::OutOfRange("qpp::QCircuitDescription::CTRL()");
+        // check no duplicates ctrl
+        if (!internal::check_no_duplicates(ctrl))
+            throw exception::SubsysMismatchDims(
+                "qpp::QCircuitDescription::CTRL()");
+        // check ctrl was not measured before
+        for (idx i = 0; i < static_cast<idx>(ctrl.size()); ++i) {
+            if (get_measured(ctrl[i]))
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuitDescription::CTRL()");
+        }
+        // check valid target
+        if (n == 0)
+            throw exception::ZeroSize("qpp::QCircuitDescription::CTRL()");
+        for (idx i = 0; i < n; ++i)
+            if (target[i] > nq_)
+                throw exception::OutOfRange("qpp::QCircuitDescription::CTRL()");
+        // check no duplicates target
+        if (!internal::check_no_duplicates(target))
+            throw exception::SubsysMismatchDims(
+                "qpp::QCircuitDescription::CTRL()");
+        // check target was not measured before
+        for (idx i = 0; i < n; ++i) {
+            if (get_measured(target[i]))
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuitDescription::CTRL()");
+        }
+        // check ctrl and target don't share common elements
+        for (idx i = 0; i < static_cast<idx>(ctrl.size()); ++i)
+            for (idx j = 0; j < n; ++j)
+                if (ctrl[i] == target[j])
+                    throw exception::OutOfRange(
+                        "qpp::QCircuitDescription::CTRL()");
+
+        // check square matrix for the gate
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare(
+                "qpp::QCircuitDescription::CTRL()");
+        // check correct dimension
+        if (static_cast<idx>(U.rows()) != d_)
+            throw exception::DimsMismatchMatrix(
+                "qpp::QCircuitDescription::CTRL()");
+        // END EXCEPTION CHECKS
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, U, ctrl,
@@ -461,6 +739,57 @@ class QCircuitDescription : public IDisplay {
                                      const std::vector<idx>& ctrl,
                                      const std::vector<idx>& target,
                                      std::string name = "") {
+        idx n = static_cast<idx>(target.size());
+        idx D = static_cast<idx>(std::llround(std::pow(d_, n)));
+        // check valid ctrl
+        for (idx i = 0; i < static_cast<idx>(ctrl.size()); ++i)
+            if (ctrl[i] > nq_)
+                throw exception::OutOfRange(
+                    "qpp::QCircuitDescription::CTRL_custom()");
+        // check no duplicates ctrl
+        if (!internal::check_no_duplicates(ctrl))
+            throw exception::SubsysMismatchDims(
+                "qpp::QCircuitDescription::CTRL_custom()");
+        // check ctrl was not measured before
+        for (idx i = 0; i < static_cast<idx>(ctrl.size()); ++i) {
+            if (get_measured(ctrl[i]))
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuitDescription::CTRL_custom()");
+        }
+        // check valid target
+        if (n == 0)
+            throw exception::ZeroSize(
+                "qpp::QCircuitDescription::CTRL_custom()");
+        for (idx i = 0; i < n; ++i)
+            if (target[i] > nq_)
+                throw exception::OutOfRange(
+                    "qpp::QCircuitDescription::CTRL_custom()");
+        // check no duplicates target
+        if (!internal::check_no_duplicates(target))
+            throw exception::SubsysMismatchDims(
+                "qpp::QCircuitDescription::CTRL_custom()");
+        // check target was not measured before
+        for (idx i = 0; i < n; ++i) {
+            if (get_measured(target[i]))
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuitDescription::CTRL_custom()");
+        }
+        // check ctrl and target don't share common elements
+        for (idx i = 0; i < static_cast<idx>(ctrl.size()); ++i)
+            for (idx j = 0; j < static_cast<idx>(target.size()); ++j)
+                if (ctrl[i] == target[j])
+                    throw exception::OutOfRange(
+                        "qpp::QCircuitDescription::CTRL_custom()");
+
+        // check square matrix for the gate
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare(
+                "qpp::QCircuitDescription::CTRL_custom()");
+        // check correct dimension
+        if (static_cast<idx>(U.rows()) != D)
+            throw exception::DimsMismatchMatrix(
+                "qpp::QCircuitDescription::CTRL_custom()");
+        // END EXCEPTION CHECKS
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::CUSTOM_CTRL, U, ctrl, target, step_cnt_++,
@@ -541,7 +870,7 @@ class QCircuitDescription : public IDisplay {
         if (c_reg >= nc_)
             throw exception::OutOfRange("qpp::QCircuitDescription::measureZ()");
         // qudit was measured before
-        if (measured_[i] == true)
+        if (get_measured(i))
             throw exception::QuditAlreadyMeasured(
                 "qpp:QCircuitDescription::measureZ");
         // END EXCEPTION CHECKS
@@ -575,7 +904,7 @@ class QCircuitDescription : public IDisplay {
         if (c_reg >= nc_)
             throw exception::OutOfRange("qpp::QCircuitDescription::measureV()");
         // qudit was measured before
-        if (measured_[i] == true)
+        if (get_measured(i))
             throw exception::QuditAlreadyMeasured(
                 "qpp:QCircuitDescription::measureV");
         // END EXCEPTION CHECKS
@@ -607,7 +936,7 @@ class QCircuitDescription : public IDisplay {
             throw exception::OutOfRange("qpp::QCircuitDescription::measureV()");
         // qudit was measured before
         for (auto&& i : target)
-            if (measured_[i] == true)
+            if (get_measured(i))
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuitDescription::measureV");
         // END EXCEPTION CHECKS
@@ -726,7 +1055,6 @@ class QCircuit : public IDisplay {
     }
 
     // getters
-    // QCircuitDescription get_circuit_description() const { return qcd_; }
 
     ket get_psi() const { return psi_; }
 
@@ -950,10 +1278,10 @@ class QCircuit : public IDisplay {
                             }
                         }
                         if (should_apply) {
-                            psi_ = apply(
-                                psi_,
-                                powm(qcd_.get_gates()[q_ip_].gate_, first_dit),
-                                target_rel_pos, qcd_.get_d());
+                            psi_ =
+                                apply(psi_, powm(qcd_.get_gates()[q_ip_].gate_,
+                                                 first_dit),
+                                      target_rel_pos, qcd_.get_d());
                         }
                     }
                     break;

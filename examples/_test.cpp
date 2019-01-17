@@ -60,7 +60,6 @@ int main() {
 
     // perform the measurements
     tele_qudit.measureZ(0, 0);
-    // tele_qudit.measureZ(0, 0);
     tele_qudit.measureZ(1, 1);
 
     // apply the classical controls
