@@ -519,8 +519,8 @@ measure(const Eigen::MatrixBase<Derived>& A,
 
 /**
  * \brief Measures the part \a target of the multi-partite state vector or
- * density matrix \a A in the orthonormal basis or rank-1 POVM specified by the
- * columns of the matrix \a V
+ * density matrix \a A in the orthonormal basis or rank-1 projectors specified
+ * by the columns of the matrix \a V
  * \see qpp::measure_seq()
  *
  * \note The dimension of \a V must match the dimension of \a target.
@@ -528,7 +528,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param V Matrix whose columns represent the measurement basis vectors or the
- * bra parts of the rank-1 POVM
+ * bra parts of the rank-1 projectors
  * \param target Subsystem indexes that are measured
  * \param dims Dimensions of the multi-partite system
  * \return Tuple of: 1. Result of the measurement, 2.
@@ -568,7 +568,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
         throw exception::DimsMismatchMatrix("qpp::measure()");
     // END EXCEPTION CHECKS
 
-    // number of basis (rank-1 POVM) elements
+    // number of basis elements or number of rank-1 projectors
     idx M = static_cast<idx>(V.cols());
 
     //************ ket ************//
@@ -622,8 +622,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 
 /**
  * \brief Measures the part \a target of the multi-partite state vector or
- * density matrix \a A in the orthonormal basis or rank-1 POVM specified by the
- * column of the matrix \a V
+ * density matrix \a A in the orthonormal basis or rank-1 projectors specified
+ * by the column of the matrix \a V
  * \see qpp::measure_seq()
  *
  * \note The dimension of \a V must match the dimension of \a target.
@@ -631,7 +631,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
  *
  * \param A Eigen expression
  * \param V Matrix whose columns represent the measurement basis vectors or the
- * bra parts of the rank-1 POVM
+ * bra parts of the rank-1 projectors
  * \param target Subsystem indexes that are measured
  * \param d Subsystem dimensions
  * \return Tuple of: 1. Result of the measurement, 2.

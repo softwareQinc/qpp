@@ -118,10 +118,11 @@ class QCircuitDescription : public IDisplay {
         MEASURE_Z, ///< Z measurement of single qudit
 
         MEASURE_V, ///< measurement of single qudit in the orthonormal basis
-        ///< or rank-1 POVM specified by the columns of matrix \a V
+        ///< or rank-1 projectors specified by the columns of matrix \a V
 
         MEASURE_V_MANY, ///< measurement of multiple qudits in the orthonormal
-        ///< basis or rank-1 POVM specified by the columns of matrix \a V
+        ///< basis or rank-1 projectors specified by the columns of matrix
+        ///< \a V
     };
 
   private:
@@ -561,7 +562,7 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
-    // measurement of single qudit in the orthonormal basis or rank-1 POVM
+    // measurement of single qudit in the orthonormal basis or rank-1 projectors
     // specified by the columns of matrix V
     QCircuitDescription& measureV(const cmat& V, idx i, idx c_reg,
                                   std::string name = "") {
@@ -590,8 +591,8 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
-    // measurement of multiple qudits in the orthonormal basis or rank-1 POVM
-    // specified by the columns of matrix V
+    // measurement of multiple qudits in the orthonormal basis or rank-1
+    // projectors specified by the columns of matrix V
     QCircuitDescription& measureV(const cmat& V, const std::vector<idx>& target,
                                   idx c_reg, std::string name = "") {
         // EXCEPTION CHECKS
