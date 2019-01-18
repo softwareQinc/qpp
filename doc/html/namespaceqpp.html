@@ -130,6 +130,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpp_1_1make__void.html">make_void</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper for <a class="el" href="namespaceqpp.html#adf4dc551c8858cac37c90b561c5767cc" title="Alias template that implements the proposal for void_t. ">qpp::to_void&lt;&gt;</a> alias template.  <a href="structqpp_1_1make__void.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit_description.html">QCircuitDescription</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantum circuit description class.  <a href="classqpp_1_1_q_circuit_description.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_random_devices.html">RandomDevices</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Singleton class that manages the source of randomness in the library.  <a href="classqpp_1_1_random_devices.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -599,11 +602,11 @@ Functions</h2></td></tr>
 <tr class="separator:a6aaa808e50827cfdfbd27933e18190ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34cb030062317d8c8b3d245438ae2779"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a34cb030062317d8c8b3d245438ae2779"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>, std::vector&lt; double &gt;, std::vector&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a34cb030062317d8c8b3d245438ae2779">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;V, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;dims)</td></tr>
-<tr class="memdesc:a34cb030062317d8c8b3d245438ae2779"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the part <em>target</em> of the multi-partite state vector or density matrix <em>A</em> in the orthonormal basis or rank-1 POVM specified by the columns of the matrix <em>V</em>.  <a href="#a34cb030062317d8c8b3d245438ae2779">More...</a><br /></td></tr>
+<tr class="memdesc:a34cb030062317d8c8b3d245438ae2779"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the part <em>target</em> of the multi-partite state vector or density matrix <em>A</em> in the orthonormal basis or rank-1 projectors specified by the columns of the matrix <em>V</em>.  <a href="#a34cb030062317d8c8b3d245438ae2779">More...</a><br /></td></tr>
 <tr class="separator:a34cb030062317d8c8b3d245438ae2779"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57ee7dc0438a826efdb135a3492cfdca"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a57ee7dc0438a826efdb135a3492cfdca"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>, std::vector&lt; double &gt;, std::vector&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a57ee7dc0438a826efdb135a3492cfdca">measure</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;V, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d=2)</td></tr>
-<tr class="memdesc:a57ee7dc0438a826efdb135a3492cfdca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the part <em>target</em> of the multi-partite state vector or density matrix <em>A</em> in the orthonormal basis or rank-1 POVM specified by the column of the matrix <em>V</em>.  <a href="#a57ee7dc0438a826efdb135a3492cfdca">More...</a><br /></td></tr>
+<tr class="memdesc:a57ee7dc0438a826efdb135a3492cfdca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the part <em>target</em> of the multi-partite state vector or density matrix <em>A</em> in the orthonormal basis or rank-1 projectors specified by the columns of the matrix <em>V</em>.  <a href="#a57ee7dc0438a826efdb135a3492cfdca">More...</a><br /></td></tr>
 <tr class="separator:a57ee7dc0438a826efdb135a3492cfdca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bc8a009574198be538d560d88000cf5"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a0bc8a009574198be538d560d88000cf5"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;, double, <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a0bc8a009574198be538d560d88000cf5">measure_seq</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; target, std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; dims)</td></tr>
@@ -1718,7 +1721,7 @@ template&lt;typename Derived &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
-    <tr><td class="paramname">target</td><td>Subsystem indexes where the QFT applied </td></tr>
+    <tr><td class="paramname">target</td><td>Subsystem indexes where the QFT is applied </td></tr>
     <tr><td class="paramname">d</td><td>Subsystem dimensions </td></tr>
     <tr><td class="paramname">swap</td><td>Swaps the qubits/qudits at the end (true by default) </td></tr>
   </table>
@@ -1772,7 +1775,7 @@ template&lt;typename Derived &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
-    <tr><td class="paramname">target</td><td>Subsystem indexes where the QFT applied </td></tr>
+    <tr><td class="paramname">target</td><td>Subsystem indexes where the TFQ is applied </td></tr>
     <tr><td class="paramname">d</td><td>Subsystem dimensions </td></tr>
     <tr><td class="paramname">swap</td><td>Swaps the qubits/qudits at the end (true by default) </td></tr>
   </table>
@@ -4847,13 +4850,13 @@ template&lt;typename Derived &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Measures the part <em>target</em> of the multi-partite state vector or density matrix <em>A</em> in the orthonormal basis or rank-1 POVM specified by the columns of the matrix <em>V</em>. </p>
+<p>Measures the part <em>target</em> of the multi-partite state vector or density matrix <em>A</em> in the orthonormal basis or rank-1 projectors specified by the columns of the matrix <em>V</em>. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a0bc8a009574198be538d560d88000cf5" title="Sequentially measures the part target of the multi-partite state vector or density matrix A in the co...">qpp::measure_seq()</a></dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The dimension of <em>V</em> must match the dimension of <em>target</em>. The measurement is destructive, i.e. the measured subsystems are traced away.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
-    <tr><td class="paramname">V</td><td>Matrix whose columns represent the measurement basis vectors or the bra parts of the rank-1 POVM </td></tr>
+    <tr><td class="paramname">V</td><td>Matrix whose columns represent the measurement basis vectors or the bra parts of the rank-1 projectors </td></tr>
     <tr><td class="paramname">target</td><td>Subsystem indexes that are measured </td></tr>
     <tr><td class="paramname">dims</td><td>Dimensions of the multi-partite system </td></tr>
   </table>
@@ -4903,13 +4906,13 @@ template&lt;typename Derived &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Measures the part <em>target</em> of the multi-partite state vector or density matrix <em>A</em> in the orthonormal basis or rank-1 POVM specified by the column of the matrix <em>V</em>. </p>
+<p>Measures the part <em>target</em> of the multi-partite state vector or density matrix <em>A</em> in the orthonormal basis or rank-1 projectors specified by the columns of the matrix <em>V</em>. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceqpp.html#a0bc8a009574198be538d560d88000cf5" title="Sequentially measures the part target of the multi-partite state vector or density matrix A in the co...">qpp::measure_seq()</a></dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The dimension of <em>V</em> must match the dimension of <em>target</em>. The measurement is destructive, i.e. the measured subsystems are traced away.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
-    <tr><td class="paramname">V</td><td>Matrix whose columns represent the measurement basis vectors or the bra parts of the rank-1 POVM </td></tr>
+    <tr><td class="paramname">V</td><td>Matrix whose columns represent the measurement basis vectors or the bra parts of the rank-1 projectors </td></tr>
     <tr><td class="paramname">target</td><td>Subsystem indexes that are measured </td></tr>
     <tr><td class="paramname">d</td><td>Subsystem dimensions </td></tr>
   </table>
@@ -8888,7 +8891,7 @@ template&lt;typename Container &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Mon Jan 14 2019 16:07:53 for Quantum++ by
+    <li class="footer">Generated on Fri Jan 18 2019 13:24:44 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

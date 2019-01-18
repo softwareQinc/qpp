@@ -1755,7 +1755,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
  * the multi-partite state vector or density matrix \a A
  *
  * \param A Eigen expression
- * \param target Subsystem indexes where the QFT applied
+ * \param target Subsystem indexes where the QFT is applied
  * \param d Subsystem dimensions
  * \param swap Swaps the qubits/qudits at the end (true by default)
  * \return Qudit Quantum Fourier transform applied to the part \a target
@@ -1863,7 +1863,7 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
  * part \a target of the multi-partite state vector or density matrix \a A
  *
  * \param A Eigen expression
- * \param target Subsystem indexes where the QFT applied
+ * \param target Subsystem indexes where the TFQ is applied
  * \param d Subsystem dimensions
  * \param swap Swaps the qubits/qudits at the end (true by default)
  * \return Inverse (adjoint) qudit Quantum Fourier transform applied to the part

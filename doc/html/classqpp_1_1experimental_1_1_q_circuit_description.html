@@ -66,9 +66,9 @@ $(document).ready(function(){initNavTree('classqpp_1_1experimental_1_1_q_circuit
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-types">Protected Types</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classqpp_1_1experimental_1_1_q_circuit_description-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -91,8 +91,8 @@ Collaboration diagram for qpp::experimental::QCircuitDescription:</div>
 <div class="center"><img src="classqpp_1_1experimental_1_1_q_circuit_description__coll__graph.png" border="0" usemap="#qpp_1_1experimental_1_1_q_circuit_description_coll__map" alt="Collaboration graph"/></div>
 <map name="qpp_1_1experimental_1_1_q_circuit_description_coll__map" id="qpp_1_1experimental_1_1_q_circuit_description_coll__map">
 <area shape="rect" id="node2" href="classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="800,5,899,32"/>
-<area shape="rect" id="node5" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_measure_step.html" title="qpp::experimental::\lQCircuitDescription\l::MeasureStep" alt="" coords="411,171,548,227"/>
-<area shape="rect" id="node10" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html" title="One step consisting of unitary gates in the circuit. " alt="" coords="411,251,548,307"/>
+<area shape="rect" id="node5" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. " alt="" coords="411,171,548,227"/>
+<area shape="rect" id="node10" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html" title="One step consisting only of gates/operators in the circuit. " alt="" coords="411,251,548,307"/>
 <area shape="rect" id="node7" title="STL class. " alt="" coords="209,287,289,313"/>
 <area shape="rect" id="node8" title="STL class. " alt="" coords="5,279,132,321"/>
 </map>
@@ -101,94 +101,14 @@ Collaboration diagram for qpp::experimental::QCircuitDescription:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html">GateStep</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One step consisting of unitary gates in the circuit.  <a href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One step consisting only of gates/operators in the circuit.  <a href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_measure_step.html">MeasureStep</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One step consisting only of measurements in the circuit.  <a href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_measure_step.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a9e6beaf449928377fcdfaccd6ec6dd06"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a9e6beaf449928377fcdfaccd6ec6dd06">QCircuitDescription</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> nq, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> nc=0, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d=2, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:a9e6beaf449928377fcdfaccd6ec6dd06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a171227189cecf412269a100f9b552241"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a171227189cecf412269a100f9b552241">get_nq</a> () const</td></tr>
-<tr class="separator:a171227189cecf412269a100f9b552241"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaba1769be3b3e7d9cf7568d46ad68be8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#aaba1769be3b3e7d9cf7568d46ad68be8">get_nc</a> () const</td></tr>
-<tr class="separator:aaba1769be3b3e7d9cf7568d46ad68be8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6e8137b16e18ac46b08c9f4c6594466"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#af6e8137b16e18ac46b08c9f4c6594466">get_d</a> () const</td></tr>
-<tr class="separator:af6e8137b16e18ac46b08c9f4c6594466"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0684aec6bea37733f5ab92636d73a62b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a0684aec6bea37733f5ab92636d73a62b">get_measurement_steps</a> () const</td></tr>
-<tr class="separator:a0684aec6bea37733f5ab92636d73a62b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a379e9740ffd5616887ae20c723ec2a5e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a379e9740ffd5616887ae20c723ec2a5e">get_name</a> () const</td></tr>
-<tr class="separator:a379e9740ffd5616887ae20c723ec2a5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe6a7f7374d1eacb83a831ae7978bcbf"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#afe6a7f7374d1eacb83a831ae7978bcbf">get_measured</a> () const</td></tr>
-<tr class="separator:afe6a7f7374d1eacb83a831ae7978bcbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec9e94582601374a08a9eef486c55952"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#aec9e94582601374a08a9eef486c55952">get_measured</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i) const</td></tr>
-<tr class="separator:aec9e94582601374a08a9eef486c55952"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa42bf55ecd664c25a8f637e9946c737a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#aa42bf55ecd664c25a8f637e9946c737a">gate</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:aa42bf55ecd664c25a8f637e9946c737a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87e83bee4b9289b2ba612c1d2d41ff22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a87e83bee4b9289b2ba612c1d2d41ff22">gate</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:a87e83bee4b9289b2ba612c1d2d41ff22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac574d833eeafeba300dd541713eba452"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ac574d833eeafeba300dd541713eba452">gate</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> k, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:ac574d833eeafeba300dd541713eba452"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a703a40ab94eb9cd15f728521c3fa3fa9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a703a40ab94eb9cd15f728521c3fa3fa9">gate_fan</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:a703a40ab94eb9cd15f728521c3fa3fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62efb64dcf7ec5fe7bba61e7c6b1c1b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a62efb64dcf7ec5fe7bba61e7c6b1c1b1">gate_fan</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:a62efb64dcf7ec5fe7bba61e7c6b1c1b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aafb6d6dbf3ab2cf15573b6c5a65ef5ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#aafb6d6dbf3ab2cf15573b6c5a65ef5ce">gate</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:aafb6d6dbf3ab2cf15573b6c5a65ef5ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad15b19273fe1d583dfa0e6a857267df4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ad15b19273fe1d583dfa0e6a857267df4">QFT</a> (const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target)</td></tr>
-<tr class="separator:ad15b19273fe1d583dfa0e6a857267df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bfb168e550747e818d2c40550a8df93"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a8bfb168e550747e818d2c40550a8df93">TFQ</a> (const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target)</td></tr>
-<tr class="separator:a8bfb168e550747e818d2c40550a8df93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a921728d49d4404640bef7874b66615e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a921728d49d4404640bef7874b66615e7">CTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> ctrl, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> target, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:a921728d49d4404640bef7874b66615e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5ae05f980589e976566a4160c556f2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ab5ae05f980589e976566a4160c556f2c">CTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> ctrl, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:ab5ae05f980589e976566a4160c556f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7901dca7b3ffbe8fb40e8c77b2711a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ab7901dca7b3ffbe8fb40e8c77b2711a4">CTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;ctrl, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> target, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:ab7901dca7b3ffbe8fb40e8c77b2711a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc83df3b5f8578cce933bb761004ba7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#afc83df3b5f8578cce933bb761004ba7d">CTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;ctrl, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:afc83df3b5f8578cce933bb761004ba7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae55d9828c6509d6c71f8b6dec8f6717"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#aae55d9828c6509d6c71f8b6dec8f6717">CTRL_custom</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;ctrl, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:aae55d9828c6509d6c71f8b6dec8f6717"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fbfb8f5803dc159df1c817f31b99155"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a7fbfb8f5803dc159df1c817f31b99155">cCTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> ctrl, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> target, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:a7fbfb8f5803dc159df1c817f31b99155"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcc5658607ab2990dcf96a6c632ae1dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#afcc5658607ab2990dcf96a6c632ae1dd">cCTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> ctrl, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:afcc5658607ab2990dcf96a6c632ae1dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab237c388f4063f8d2285b4408e313350"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ab237c388f4063f8d2285b4408e313350">cCTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;ctrl, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> target, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:ab237c388f4063f8d2285b4408e313350"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3975daf966acb529f4bfa8af1a78b0fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a3975daf966acb529f4bfa8af1a78b0fc">cCTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;ctrl, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:a3975daf966acb529f4bfa8af1a78b0fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24108c2afca7ddc3891de6869c54df5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a24108c2afca7ddc3891de6869c54df5f">cCTRL_custom</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;ctrl, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:a24108c2afca7ddc3891de6869c54df5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1ae7337e5a33e3762dbd193a329bd34"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ae1ae7337e5a33e3762dbd193a329bd34">measureZ</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> c_reg, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:ae1ae7337e5a33e3762dbd193a329bd34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2887e866dd55ad3c189d7d94ec60219d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a2887e866dd55ad3c189d7d94ec60219d">measureV</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;V, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> c_reg, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:a2887e866dd55ad3c189d7d94ec60219d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67ca9c0849122504daed446a84ae7596"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a67ca9c0849122504daed446a84ae7596">display</a> (std::ostream &amp;os) const override</td></tr>
-<tr class="memdesc:a67ca9c0849122504daed446a84ae7596"><td class="mdescLeft">&#160;</td><td class="mdescRight">Must be overridden by all derived classes.  <a href="#a67ca9c0849122504daed446a84ae7596">More...</a><br /></td></tr>
-<tr class="separator:a67ca9c0849122504daed446a84ae7596"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classqpp_1_1_i_display"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classqpp_1_1_i_display')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classqpp_1_1_i_display.html">qpp::IDisplay</a></td></tr>
-<tr class="memitem:a55e1bbd2dc9b151bb18159f90ecb9979 inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#a55e1bbd2dc9b151bb18159f90ecb9979">IDisplay</a> ()=default</td></tr>
-<tr class="memdesc:a55e1bbd2dc9b151bb18159f90ecb9979 inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classqpp_1_1_i_display.html#a55e1bbd2dc9b151bb18159f90ecb9979">More...</a><br /></td></tr>
-<tr class="separator:a55e1bbd2dc9b151bb18159f90ecb9979 inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a064e38eca7302c89056bbd25d377a7bb inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#a064e38eca7302c89056bbd25d377a7bb">IDisplay</a> (const <a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;)=default</td></tr>
-<tr class="memdesc:a064e38eca7302c89056bbd25d377a7bb inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default copy constructor.  <a href="classqpp_1_1_i_display.html#a064e38eca7302c89056bbd25d377a7bb">More...</a><br /></td></tr>
-<tr class="separator:a064e38eca7302c89056bbd25d377a7bb inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9de3d7480d4513ea22f12bd0a4b41e9 inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#af9de3d7480d4513ea22f12bd0a4b41e9">IDisplay</a> (<a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;&amp;)=default</td></tr>
-<tr class="memdesc:af9de3d7480d4513ea22f12bd0a4b41e9 inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default move constructor.  <a href="classqpp_1_1_i_display.html#af9de3d7480d4513ea22f12bd0a4b41e9">More...</a><br /></td></tr>
-<tr class="separator:af9de3d7480d4513ea22f12bd0a4b41e9 inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0a7689867b780cc003bf7519e24f37d inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#ab0a7689867b780cc003bf7519e24f37d">operator=</a> (const <a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;)=default</td></tr>
-<tr class="memdesc:ab0a7689867b780cc003bf7519e24f37d inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default copy assignment operator.  <a href="classqpp_1_1_i_display.html#ab0a7689867b780cc003bf7519e24f37d">More...</a><br /></td></tr>
-<tr class="separator:ab0a7689867b780cc003bf7519e24f37d inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7cf8c712df6541518a43925f0ba1e7de inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#a7cf8c712df6541518a43925f0ba1e7de">operator=</a> (<a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;&amp;)=default</td></tr>
-<tr class="memdesc:a7cf8c712df6541518a43925f0ba1e7de inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default move assignment operator.  <a href="classqpp_1_1_i_display.html#a7cf8c712df6541518a43925f0ba1e7de">More...</a><br /></td></tr>
-<tr class="separator:a7cf8c712df6541518a43925f0ba1e7de inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56969401a70c2893d72d2509f9c84d2c inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#a56969401a70c2893d72d2509f9c84d2c">~IDisplay</a> ()=default</td></tr>
-<tr class="memdesc:a56969401a70c2893d72d2509f9c84d2c inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default virtual destructor.  <a href="classqpp_1_1_i_display.html#a56969401a70c2893d72d2509f9c84d2c">More...</a><br /></td></tr>
-<tr class="separator:a56969401a70c2893d72d2509f9c84d2c inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-types"></a>
-Protected Types</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
 <tr class="memitem:ac24b3eed42fb630f9313b270fa0a546f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ac24b3eed42fb630f9313b270fa0a546f">GateType</a> { <br />
 &#160;&#160;<a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ac24b3eed42fb630f9313b270fa0a546fab50339a10e1de285ac99d4c3990b8693">GateType::NONE</a>, 
 <a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ac24b3eed42fb630f9313b270fa0a546fa0679273e201afd0bf57af3961f8a23b8">GateType::SINGLE</a>, 
@@ -214,26 +134,147 @@ Protected Types</h2></td></tr>
 <a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ac24b3eed42fb630f9313b270fa0a546fa79b326efcb9013f059bd0e83470e150f">GateType::CUSTOM_cCTRL</a>
 <br />
  }</td></tr>
-<tr class="memdesc:ac24b3eed42fb630f9313b270fa0a546f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of operation being executed at one step.  <a href="classqpp_1_1experimental_1_1_q_circuit_description.html#ac24b3eed42fb630f9313b270fa0a546f">More...</a><br /></td></tr>
+<tr class="memdesc:ac24b3eed42fb630f9313b270fa0a546f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of gate being executed at one step.  <a href="classqpp_1_1experimental_1_1_q_circuit_description.html#ac24b3eed42fb630f9313b270fa0a546f">More...</a><br /></td></tr>
 <tr class="separator:ac24b3eed42fb630f9313b270fa0a546f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0017a75359670f16bd1a26f1f914c0b2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a0017a75359670f16bd1a26f1f914c0b2">MeasureType</a> { <a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a0017a75359670f16bd1a26f1f914c0b2ab50339a10e1de285ac99d4c3990b8693">MeasureType::NONE</a>, 
 <a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a0017a75359670f16bd1a26f1f914c0b2a2ab1d76092348e984f9aca92c648ec37">MeasureType::MEASURE_Z</a>, 
-<a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a0017a75359670f16bd1a26f1f914c0b2a8f2c7e7ab229b75a139822637593621d">MeasureType::MEASURE_V</a>
+<a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a0017a75359670f16bd1a26f1f914c0b2a8f2c7e7ab229b75a139822637593621d">MeasureType::MEASURE_V</a>, 
+<a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a0017a75359670f16bd1a26f1f914c0b2a9c11f6f406f8d8e47e50e35b77b9dd8c">MeasureType::MEASURE_V_MANY</a>
  }</td></tr>
+<tr class="memdesc:a0017a75359670f16bd1a26f1f914c0b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of measurement being executed at one step.  <a href="classqpp_1_1experimental_1_1_q_circuit_description.html#a0017a75359670f16bd1a26f1f914c0b2">More...</a><br /></td></tr>
 <tr class="separator:a0017a75359670f16bd1a26f1f914c0b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a54a7066bd66a69eaaf954f69a1b2aa2c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a54a7066bd66a69eaaf954f69a1b2aa2c">nq_</a></td></tr>
-<tr class="memdesc:a54a7066bd66a69eaaf954f69a1b2aa2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of qudits  <a href="#a54a7066bd66a69eaaf954f69a1b2aa2c">More...</a><br /></td></tr>
-<tr class="separator:a54a7066bd66a69eaaf954f69a1b2aa2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30e64359550b5de6fdfef58b336d6320"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a30e64359550b5de6fdfef58b336d6320">nc_</a></td></tr>
-<tr class="memdesc:a30e64359550b5de6fdfef58b336d6320"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of classical "dits"  <a href="#a30e64359550b5de6fdfef58b336d6320">More...</a><br /></td></tr>
-<tr class="separator:a30e64359550b5de6fdfef58b336d6320"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf1b03f58d14f1c53e4b0b745663e4f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#abf1b03f58d14f1c53e4b0b745663e4f1">d_</a></td></tr>
-<tr class="memdesc:abf1b03f58d14f1c53e4b0b745663e4f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">dimension  <a href="#abf1b03f58d14f1c53e4b0b745663e4f1">More...</a><br /></td></tr>
-<tr class="separator:abf1b03f58d14f1c53e4b0b745663e4f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ac627c86c7508d0e9094a9f3732b8dc86"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ac627c86c7508d0e9094a9f3732b8dc86">QCircuitDescription</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> nq, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> nc=0, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> d=2, std::string name=&quot;&quot;)</td></tr>
+<tr class="memdesc:ac627c86c7508d0e9094a9f3732b8dc86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a quantum circuit description.  <a href="#ac627c86c7508d0e9094a9f3732b8dc86">More...</a><br /></td></tr>
+<tr class="separator:ac627c86c7508d0e9094a9f3732b8dc86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bde7c168cbf356691be42c7d0d7dcf7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a3bde7c168cbf356691be42c7d0d7dcf7">get_nq</a> () const noexcept</td></tr>
+<tr class="memdesc:a3bde7c168cbf356691be42c7d0d7dcf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of qudits in the circuit.  <a href="#a3bde7c168cbf356691be42c7d0d7dcf7">More...</a><br /></td></tr>
+<tr class="separator:a3bde7c168cbf356691be42c7d0d7dcf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94a762ea47d3063514606f9e7280f66b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a94a762ea47d3063514606f9e7280f66b">get_nc</a> () const noexcept</td></tr>
+<tr class="memdesc:a94a762ea47d3063514606f9e7280f66b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of classical dits in the circuit.  <a href="#a94a762ea47d3063514606f9e7280f66b">More...</a><br /></td></tr>
+<tr class="separator:a94a762ea47d3063514606f9e7280f66b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c8ac35ab25c8a2c4a360acfec99351a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a7c8ac35ab25c8a2c4a360acfec99351a">get_d</a> () const noexcept</td></tr>
+<tr class="memdesc:a7c8ac35ab25c8a2c4a360acfec99351a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Local dimension of the comprising qudits.  <a href="#a7c8ac35ab25c8a2c4a360acfec99351a">More...</a><br /></td></tr>
+<tr class="separator:a7c8ac35ab25c8a2c4a360acfec99351a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0684aec6bea37733f5ab92636d73a62b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a0684aec6bea37733f5ab92636d73a62b">get_measurement_steps</a> () const</td></tr>
+<tr class="memdesc:a0684aec6bea37733f5ab92636d73a62b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of measurement positions in the circuit, i.e. the indexes where the measurements take place.  <a href="#a0684aec6bea37733f5ab92636d73a62b">More...</a><br /></td></tr>
+<tr class="separator:a0684aec6bea37733f5ab92636d73a62b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bc888c307d16ff54ad4972f67dc1390"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_measure_step.html">MeasureStep</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a0bc888c307d16ff54ad4972f67dc1390">get_measurements</a> () const noexcept</td></tr>
+<tr class="memdesc:a0bc888c307d16ff54ad4972f67dc1390"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of qpp::QCircuitDescription::MeasureStep.  <a href="#a0bc888c307d16ff54ad4972f67dc1390">More...</a><br /></td></tr>
+<tr class="separator:a0bc888c307d16ff54ad4972f67dc1390"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1ad9d1878ca18e6d3ba4f7bc8a23c78"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html">GateStep</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ae1ad9d1878ca18e6d3ba4f7bc8a23c78">get_gates</a> () const noexcept</td></tr>
+<tr class="memdesc:ae1ad9d1878ca18e6d3ba4f7bc8a23c78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of qpp::QCircuitDescription::GateStep.  <a href="#ae1ad9d1878ca18e6d3ba4f7bc8a23c78">More...</a><br /></td></tr>
+<tr class="separator:ae1ad9d1878ca18e6d3ba4f7bc8a23c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a379e9740ffd5616887ae20c723ec2a5e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a379e9740ffd5616887ae20c723ec2a5e">get_name</a> () const</td></tr>
+<tr class="memdesc:a379e9740ffd5616887ae20c723ec2a5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantum circuit name.  <a href="#a379e9740ffd5616887ae20c723ec2a5e">More...</a><br /></td></tr>
+<tr class="separator:a379e9740ffd5616887ae20c723ec2a5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a405cd8d33179bf5032296b2360e9b841"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a405cd8d33179bf5032296b2360e9b841">get_measured</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i) const</td></tr>
+<tr class="memdesc:a405cd8d33179bf5032296b2360e9b841"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether qudit <em>i</em> was already measured.  <a href="#a405cd8d33179bf5032296b2360e9b841">More...</a><br /></td></tr>
+<tr class="separator:a405cd8d33179bf5032296b2360e9b841"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe6a7f7374d1eacb83a831ae7978bcbf"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#afe6a7f7374d1eacb83a831ae7978bcbf">get_measured</a> () const</td></tr>
+<tr class="memdesc:afe6a7f7374d1eacb83a831ae7978bcbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of already measured qudit indexes.  <a href="#afe6a7f7374d1eacb83a831ae7978bcbf">More...</a><br /></td></tr>
+<tr class="separator:afe6a7f7374d1eacb83a831ae7978bcbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5678589f23e282cc7d93db1ee293dd29"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a5678589f23e282cc7d93db1ee293dd29">get_non_measured</a> () const</td></tr>
+<tr class="memdesc:a5678589f23e282cc7d93db1ee293dd29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of non-measured qudit indexes.  <a href="#a5678589f23e282cc7d93db1ee293dd29">More...</a><br /></td></tr>
+<tr class="separator:a5678589f23e282cc7d93db1ee293dd29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28ecc19edb6e031cf3f3827c7fd21e31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a28ecc19edb6e031cf3f3827c7fd21e31">get_gate_count</a> () const noexcept</td></tr>
+<tr class="memdesc:a28ecc19edb6e031cf3f3827c7fd21e31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantum circuit total gate count.  <a href="#a28ecc19edb6e031cf3f3827c7fd21e31">More...</a><br /></td></tr>
+<tr class="separator:a28ecc19edb6e031cf3f3827c7fd21e31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32a8c35da01dec1cc5745d91496fb900"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a32a8c35da01dec1cc5745d91496fb900">get_measurement_count</a> () const noexcept</td></tr>
+<tr class="memdesc:a32a8c35da01dec1cc5745d91496fb900"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantum circuit total measurement count.  <a href="#a32a8c35da01dec1cc5745d91496fb900">More...</a><br /></td></tr>
+<tr class="separator:a32a8c35da01dec1cc5745d91496fb900"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ee44a0bc4dc00988530498b7c093d84"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a1ee44a0bc4dc00988530498b7c093d84">get_total_count</a> () const noexcept</td></tr>
+<tr class="memdesc:a1ee44a0bc4dc00988530498b7c093d84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantum circuit total count, i.e. the sum of gate count and measurement count.  <a href="#a1ee44a0bc4dc00988530498b7c093d84">More...</a><br /></td></tr>
+<tr class="separator:a1ee44a0bc4dc00988530498b7c093d84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ff72a2b0de9e40050fe90cb142cf0f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a5ff72a2b0de9e40050fe90cb142cf0f2">gate</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i, std::string name=&quot;&quot;)</td></tr>
+<tr class="memdesc:a5ff72a2b0de9e40050fe90cb142cf0f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the single qudit gate <em>U</em> on single qudit <em>i</em>.  <a href="#a5ff72a2b0de9e40050fe90cb142cf0f2">More...</a><br /></td></tr>
+<tr class="separator:a5ff72a2b0de9e40050fe90cb142cf0f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa14b47c932eb7c1d0c0c799ec582376a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#aa14b47c932eb7c1d0c0c799ec582376a">gate</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j, std::string name=&quot;&quot;)</td></tr>
+<tr class="memdesc:aa14b47c932eb7c1d0c0c799ec582376a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the two-qudit gate <em>U</em> on qudits <em>i</em> and <em>j</em>.  <a href="#aa14b47c932eb7c1d0c0c799ec582376a">More...</a><br /></td></tr>
+<tr class="separator:aa14b47c932eb7c1d0c0c799ec582376a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34d5e4f7a4aef8a9c9b155a2066f2d2d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a34d5e4f7a4aef8a9c9b155a2066f2d2d">gate</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> j, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> k, std::string name=&quot;&quot;)</td></tr>
+<tr class="memdesc:a34d5e4f7a4aef8a9c9b155a2066f2d2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the three-qudit gate <em>U</em> on qudits <em>i</em>, <em>j</em> and <em>k</em>.  <a href="#a34d5e4f7a4aef8a9c9b155a2066f2d2d">More...</a><br /></td></tr>
+<tr class="separator:a34d5e4f7a4aef8a9c9b155a2066f2d2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bf3b1bf6cfd51b74ad5a4cc3ae6bdb5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a9bf3b1bf6cfd51b74ad5a4cc3ae6bdb5">gate_fan</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, std::string name=&quot;&quot;)</td></tr>
+<tr class="memdesc:a9bf3b1bf6cfd51b74ad5a4cc3ae6bdb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the single qudit gate <em>U</em> on every qudit listed in <em>target</em>.  <a href="#a9bf3b1bf6cfd51b74ad5a4cc3ae6bdb5">More...</a><br /></td></tr>
+<tr class="separator:a9bf3b1bf6cfd51b74ad5a4cc3ae6bdb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1019c709835384e63941bc9be5a5364"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ac1019c709835384e63941bc9be5a5364">gate_fan</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, std::string name=&quot;&quot;)</td></tr>
+<tr class="memdesc:ac1019c709835384e63941bc9be5a5364"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the single qudit gate <em>U</em> on every remaining non-measured qudit.  <a href="#ac1019c709835384e63941bc9be5a5364">More...</a><br /></td></tr>
+<tr class="separator:ac1019c709835384e63941bc9be5a5364"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67a3408ffdb7f1287985c6b69c2607e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a67a3408ffdb7f1287985c6b69c2607e8">gate</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, std::string name=&quot;&quot;)</td></tr>
+<tr class="memdesc:a67a3408ffdb7f1287985c6b69c2607e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the custom multiple qudit gate <em>U</em> on the qudit indexes specified by <em>target</em>.  <a href="#a67a3408ffdb7f1287985c6b69c2607e8">More...</a><br /></td></tr>
+<tr class="separator:a67a3408ffdb7f1287985c6b69c2607e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbc31b900aa08ac9020fdaf28bbc33e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#afbc31b900aa08ac9020fdaf28bbc33e4">QFT</a> (const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, bool swap QPP_UNUSED_=true)</td></tr>
+<tr class="memdesc:afbc31b900aa08ac9020fdaf28bbc33e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the quantum Fourier transform (as a series of gates) on the qudit indexes specified by <em>target</em>.  <a href="#afbc31b900aa08ac9020fdaf28bbc33e4">More...</a><br /></td></tr>
+<tr class="separator:afbc31b900aa08ac9020fdaf28bbc33e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed1a8e93385b690b74bb0fea6dc5fdc1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#aed1a8e93385b690b74bb0fea6dc5fdc1">TFQ</a> (const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, bool swap QPP_UNUSED_=true)</td></tr>
+<tr class="memdesc:aed1a8e93385b690b74bb0fea6dc5fdc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the inverse quantum Fourier transform (as a series of gates) on the qudit indexes specified by <em>target</em>.  <a href="#aed1a8e93385b690b74bb0fea6dc5fdc1">More...</a><br /></td></tr>
+<tr class="separator:aed1a8e93385b690b74bb0fea6dc5fdc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a027abc3df38f6310dfdcfff0b9766004"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a027abc3df38f6310dfdcfff0b9766004">CTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> ctrl, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> target, std::string name=&quot;&quot;)</td></tr>
+<tr class="memdesc:a027abc3df38f6310dfdcfff0b9766004"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the single qudit controlled gate with control qudit <em>i</em> and target qudit <em>j</em>.  <a href="#a027abc3df38f6310dfdcfff0b9766004">More...</a><br /></td></tr>
+<tr class="separator:a027abc3df38f6310dfdcfff0b9766004"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf6e7c68a504f14c3c4038624e5c4bd4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#acf6e7c68a504f14c3c4038624e5c4bd4">CTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> ctrl, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, std::string name=&quot;&quot;)</td></tr>
+<tr class="separator:acf6e7c68a504f14c3c4038624e5c4bd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7204005e39bbac08911b20090aaf1250"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a7204005e39bbac08911b20090aaf1250">CTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;ctrl, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> target, std::string name=&quot;&quot;)</td></tr>
+<tr class="separator:a7204005e39bbac08911b20090aaf1250"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2d099ce5aaf32700e983c7bb92f8143"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ab2d099ce5aaf32700e983c7bb92f8143">CTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;ctrl, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, std::string name=&quot;&quot;)</td></tr>
+<tr class="separator:ab2d099ce5aaf32700e983c7bb92f8143"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa4f00089818237aadbc64520a89c158"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#aaa4f00089818237aadbc64520a89c158">CTRL_custom</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;ctrl, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, std::string name=&quot;&quot;)</td></tr>
+<tr class="separator:aaa4f00089818237aadbc64520a89c158"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a122e0cac57700860725e7697808f7013"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a122e0cac57700860725e7697808f7013">cCTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> ctrl, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> target, std::string name=&quot;&quot;)</td></tr>
+<tr class="separator:a122e0cac57700860725e7697808f7013"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37326047178c77c075c9fdce41a248f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a37326047178c77c075c9fdce41a248f8">cCTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> ctrl, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, std::string name=&quot;&quot;)</td></tr>
+<tr class="separator:a37326047178c77c075c9fdce41a248f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8047541328b948c39c269fb7f07d5f89"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a8047541328b948c39c269fb7f07d5f89">cCTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;ctrl, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> target, std::string name=&quot;&quot;)</td></tr>
+<tr class="separator:a8047541328b948c39c269fb7f07d5f89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c756c277f315e7abb67fb185fd593ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a8c756c277f315e7abb67fb185fd593ec">cCTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;ctrl, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, std::string name=&quot;&quot;)</td></tr>
+<tr class="separator:a8c756c277f315e7abb67fb185fd593ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37de940fe55b1f6dfa29463ffc3d6dff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a37de940fe55b1f6dfa29463ffc3d6dff">cCTRL_custom</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;ctrl, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, std::string name=&quot;&quot;)</td></tr>
+<tr class="separator:a37de940fe55b1f6dfa29463ffc3d6dff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d74f7c0136ce80a5f5a685ab00977c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a8d74f7c0136ce80a5f5a685ab00977c5">measureZ</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> c_reg, std::string name=&quot;&quot;)</td></tr>
+<tr class="separator:a8d74f7c0136ce80a5f5a685ab00977c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7923ceec164f54d0782822ec7eeec096"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a7923ceec164f54d0782822ec7eeec096">measureV</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;V, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> c_reg, std::string name=&quot;&quot;)</td></tr>
+<tr class="separator:a7923ceec164f54d0782822ec7eeec096"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1aa4f2b85e9e2d12cdbd7c5299f8ece"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ac1aa4f2b85e9e2d12cdbd7c5299f8ece">measureV</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;V, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> c_reg, std::string name=&quot;&quot;)</td></tr>
+<tr class="separator:ac1aa4f2b85e9e2d12cdbd7c5299f8ece"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67ca9c0849122504daed446a84ae7596"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a67ca9c0849122504daed446a84ae7596">display</a> (std::ostream &amp;os) const override</td></tr>
+<tr class="memdesc:a67ca9c0849122504daed446a84ae7596"><td class="mdescLeft">&#160;</td><td class="mdescRight">Must be overridden by all derived classes.  <a href="#a67ca9c0849122504daed446a84ae7596">More...</a><br /></td></tr>
+<tr class="separator:a67ca9c0849122504daed446a84ae7596"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classqpp_1_1_i_display"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classqpp_1_1_i_display')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classqpp_1_1_i_display.html">qpp::IDisplay</a></td></tr>
+<tr class="memitem:a55e1bbd2dc9b151bb18159f90ecb9979 inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#a55e1bbd2dc9b151bb18159f90ecb9979">IDisplay</a> ()=default</td></tr>
+<tr class="memdesc:a55e1bbd2dc9b151bb18159f90ecb9979 inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classqpp_1_1_i_display.html#a55e1bbd2dc9b151bb18159f90ecb9979">More...</a><br /></td></tr>
+<tr class="separator:a55e1bbd2dc9b151bb18159f90ecb9979 inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a064e38eca7302c89056bbd25d377a7bb inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#a064e38eca7302c89056bbd25d377a7bb">IDisplay</a> (const <a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;)=default</td></tr>
+<tr class="memdesc:a064e38eca7302c89056bbd25d377a7bb inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default copy constructor.  <a href="classqpp_1_1_i_display.html#a064e38eca7302c89056bbd25d377a7bb">More...</a><br /></td></tr>
+<tr class="separator:a064e38eca7302c89056bbd25d377a7bb inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9de3d7480d4513ea22f12bd0a4b41e9 inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#af9de3d7480d4513ea22f12bd0a4b41e9">IDisplay</a> (<a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;&amp;)=default</td></tr>
+<tr class="memdesc:af9de3d7480d4513ea22f12bd0a4b41e9 inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default move constructor.  <a href="classqpp_1_1_i_display.html#af9de3d7480d4513ea22f12bd0a4b41e9">More...</a><br /></td></tr>
+<tr class="separator:af9de3d7480d4513ea22f12bd0a4b41e9 inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0a7689867b780cc003bf7519e24f37d inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#ab0a7689867b780cc003bf7519e24f37d">operator=</a> (const <a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;)=default</td></tr>
+<tr class="memdesc:ab0a7689867b780cc003bf7519e24f37d inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default copy assignment operator.  <a href="classqpp_1_1_i_display.html#ab0a7689867b780cc003bf7519e24f37d">More...</a><br /></td></tr>
+<tr class="separator:ab0a7689867b780cc003bf7519e24f37d inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cf8c712df6541518a43925f0ba1e7de inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#a7cf8c712df6541518a43925f0ba1e7de">operator=</a> (<a class="el" href="classqpp_1_1_i_display.html">IDisplay</a> &amp;&amp;)=default</td></tr>
+<tr class="memdesc:a7cf8c712df6541518a43925f0ba1e7de inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default move assignment operator.  <a href="classqpp_1_1_i_display.html#a7cf8c712df6541518a43925f0ba1e7de">More...</a><br /></td></tr>
+<tr class="separator:a7cf8c712df6541518a43925f0ba1e7de inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56969401a70c2893d72d2509f9c84d2c inherit pub_methods_classqpp_1_1_i_display"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_display.html#a56969401a70c2893d72d2509f9c84d2c">~IDisplay</a> ()=default</td></tr>
+<tr class="memdesc:a56969401a70c2893d72d2509f9c84d2c inherit pub_methods_classqpp_1_1_i_display"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default virtual destructor.  <a href="classqpp_1_1_i_display.html#a56969401a70c2893d72d2509f9c84d2c">More...</a><br /></td></tr>
+<tr class="separator:a56969401a70c2893d72d2509f9c84d2c inherit pub_methods_classqpp_1_1_i_display"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a8a4dbd022b148613639ad8ce5b10326d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a8a4dbd022b148613639ad8ce5b10326d">nq_</a></td></tr>
+<tr class="memdesc:a8a4dbd022b148613639ad8ce5b10326d"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of qudits  <a href="#a8a4dbd022b148613639ad8ce5b10326d">More...</a><br /></td></tr>
+<tr class="separator:a8a4dbd022b148613639ad8ce5b10326d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0686440084dc30d976adb4ed89b39599"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a0686440084dc30d976adb4ed89b39599">nc_</a></td></tr>
+<tr class="memdesc:a0686440084dc30d976adb4ed89b39599"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of classical "dits"  <a href="#a0686440084dc30d976adb4ed89b39599">More...</a><br /></td></tr>
+<tr class="separator:a0686440084dc30d976adb4ed89b39599"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa11d75ea28bc77a96c621c7ef51b59ce"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#aa11d75ea28bc77a96c621c7ef51b59ce">d_</a></td></tr>
+<tr class="memdesc:aa11d75ea28bc77a96c621c7ef51b59ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">dimension  <a href="#aa11d75ea28bc77a96c621c7ef51b59ce">More...</a><br /></td></tr>
+<tr class="separator:aa11d75ea28bc77a96c621c7ef51b59ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76c03dd4e79e3b0bcd95424a011b1f31"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a76c03dd4e79e3b0bcd95424a011b1f31">measurement_steps_</a> {}</td></tr>
+<tr class="memdesc:a76c03dd4e79e3b0bcd95424a011b1f31"><td class="mdescLeft">&#160;</td><td class="mdescRight">measurements take place  <a href="#a76c03dd4e79e3b0bcd95424a011b1f31">More...</a><br /></td></tr>
 <tr class="separator:a76c03dd4e79e3b0bcd95424a011b1f31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a789cdc593db55faf9d29ea351b97a20d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a789cdc593db55faf9d29ea351b97a20d">name_</a></td></tr>
 <tr class="memdesc:a789cdc593db55faf9d29ea351b97a20d"><td class="mdescLeft">&#160;</td><td class="mdescRight">optional circuit name  <a href="#a789cdc593db55faf9d29ea351b97a20d">More...</a><br /></td></tr>
@@ -241,23 +282,29 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a9f1afe5f40ffcdcd4916cd75b740a9a0"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a9f1afe5f40ffcdcd4916cd75b740a9a0">measured_</a></td></tr>
 <tr class="memdesc:a9f1afe5f40ffcdcd4916cd75b740a9a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">keeps track of the measured qudits  <a href="#a9f1afe5f40ffcdcd4916cd75b740a9a0">More...</a><br /></td></tr>
 <tr class="separator:a9f1afe5f40ffcdcd4916cd75b740a9a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18235222b897ac147536299733840114"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a18235222b897ac147536299733840114">step_cnt_</a></td></tr>
+<tr class="memdesc:a18235222b897ac147536299733840114"><td class="mdescLeft">&#160;</td><td class="mdescRight">step counter  <a href="#a18235222b897ac147536299733840114">More...</a><br /></td></tr>
+<tr class="separator:a18235222b897ac147536299733840114"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07ee31b6aceec5bb1a6b1e32bd339e16"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html">GateStep</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a07ee31b6aceec5bb1a6b1e32bd339e16">gates_</a> {}</td></tr>
+<tr class="memdesc:a07ee31b6aceec5bb1a6b1e32bd339e16"><td class="mdescLeft">&#160;</td><td class="mdescRight">gates  <a href="#a07ee31b6aceec5bb1a6b1e32bd339e16">More...</a><br /></td></tr>
 <tr class="separator:a07ee31b6aceec5bb1a6b1e32bd339e16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af47ae74f14f01389505ab424d0064e1a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_measure_step.html">MeasureStep</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#af47ae74f14f01389505ab424d0064e1a">measurements_</a> {}</td></tr>
+<tr class="memdesc:af47ae74f14f01389505ab424d0064e1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">measurements  <a href="#af47ae74f14f01389505ab424d0064e1a">More...</a><br /></td></tr>
 <tr class="separator:af47ae74f14f01389505ab424d0064e1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:a208d63d107f60e789151f74ae47f2dc3"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a208d63d107f60e789151f74ae47f2dc3">QCircuit</a></td></tr>
-<tr class="separator:a208d63d107f60e789151f74ae47f2dc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9cedd88ac3a4898cda1e966b4978ab3"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ae9cedd88ac3a4898cda1e966b4978ab3">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ac24b3eed42fb630f9313b270fa0a546f">GateType</a> &amp;gate_type)</td></tr>
+<tr class="memdesc:ae9cedd88ac3a4898cda1e966b4978ab3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extraction operator overload for qpp::QCircuitDescription::GateType enum class.  <a href="#ae9cedd88ac3a4898cda1e966b4978ab3">More...</a><br /></td></tr>
 <tr class="separator:ae9cedd88ac3a4898cda1e966b4978ab3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adce377c4688b746b06fd7f1982866de3"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#adce377c4688b746b06fd7f1982866de3">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a0017a75359670f16bd1a26f1f914c0b2">MeasureType</a> &amp;measure_type)</td></tr>
+<tr class="memdesc:adce377c4688b746b06fd7f1982866de3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extraction operator overload for qpp::QCircuitDescription::MeasureType enum class.  <a href="#adce377c4688b746b06fd7f1982866de3">More...</a><br /></td></tr>
 <tr class="separator:adce377c4688b746b06fd7f1982866de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3ac9d56b6651d3f7812625c8d6f904e"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ad3ac9d56b6651d3f7812625c8d6f904e">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html">GateStep</a> &amp;gate_step)</td></tr>
+<tr class="memdesc:ad3ac9d56b6651d3f7812625c8d6f904e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extraction operator overload for qpp::QCircuitDescription::GateStep class.  <a href="#ad3ac9d56b6651d3f7812625c8d6f904e">More...</a><br /></td></tr>
 <tr class="separator:ad3ac9d56b6651d3f7812625c8d6f904e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6d7056ede5934f345e3a37d13f673a4"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#af6d7056ede5934f345e3a37d13f673a4">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_measure_step.html">MeasureStep</a> &amp;measure_step)</td></tr>
-<tr class="memdesc:af6d7056ede5934f345e3a37d13f673a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">quantum circuit representation  <a href="#af6d7056ede5934f345e3a37d13f673a4">More...</a><br /></td></tr>
+<tr class="memdesc:af6d7056ede5934f345e3a37d13f673a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extraction operator overload for qpp::QCircuitDescription::MeasureStep class.  <a href="#af6d7056ede5934f345e3a37d13f673a4">More...</a><br /></td></tr>
 <tr class="separator:af6d7056ede5934f345e3a37d13f673a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
@@ -276,14 +323,14 @@ Friends</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Type of operation being executed at one step. </p>
+<p>Type of gate being executed at one step. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546fab50339a10e1de285ac99d4c3990b8693"></a>NONE&#160;</td><td class="fielddoc"><p>signals no gate </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546fab50339a10e1de285ac99d4c3990b8693"></a>NONE&#160;</td><td class="fielddoc"><p>represents no gate </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546fa0679273e201afd0bf57af3961f8a23b8"></a>SINGLE&#160;</td><td class="fielddoc"><p>unitary gate on a single qudit </p>
 </td></tr>
@@ -299,15 +346,19 @@ Friends</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546fae756763a309c477063b5e2e7d0c455ea"></a>TFQ&#160;</td><td class="fielddoc"><p>quantum inverse Fourier transform, </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546fa88190c1e1f68f85cbbac03cc3ad67429"></a>SINGLE_CTRL_SINGLE_TARGET&#160;</td><td class="fielddoc"><p>controlled 1 qudit unitary gate with one control and one target </p>
+<tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546fa88190c1e1f68f85cbbac03cc3ad67429"></a>SINGLE_CTRL_SINGLE_TARGET&#160;</td><td class="fielddoc"><p>one control and one target </p>
+<p>controlled 1 qudit unitary gate with </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546fa9fdb77d5ae25c12f141716753b077faa"></a>SINGLE_CTRL_MULTIPLE_TARGET&#160;</td><td class="fielddoc"><p>controlled 1 qudit unitary gate with one control and multiple targets </p>
+<tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546fa9fdb77d5ae25c12f141716753b077faa"></a>SINGLE_CTRL_MULTIPLE_TARGET&#160;</td><td class="fielddoc"><p>one control and multiple targets </p>
+<p>controlled 1 qudit unitary gate with </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546fa875e8f8f78f4e5b229ef5e4fb15f71a8"></a>MULTIPLE_CTRL_SINGLE_TARGET&#160;</td><td class="fielddoc"><p>controlled 1 qudit unitary gate with multiple controls and single target </p>
+<tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546fa875e8f8f78f4e5b229ef5e4fb15f71a8"></a>MULTIPLE_CTRL_SINGLE_TARGET&#160;</td><td class="fielddoc"><p>multiple controls and single target </p>
+<p>controlled 1 qudit unitary gate with </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546fab1d9fa96ac88e4295e1ea9c05c4e25e8"></a>MULTIPLE_CTRL_MULTIPLE_TARGET&#160;</td><td class="fielddoc"><p>controlled 1 qudit unitary gate with multiple controls and multiple targets </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546fad305923ad5ac78f0ef86ab4997d277ed"></a>CUSTOM_CTRL&#160;</td><td class="fielddoc"><p>custom controlled gate with multiple controls and multiple targets </p>
+<tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546fad305923ad5ac78f0ef86ab4997d277ed"></a>CUSTOM_CTRL&#160;</td><td class="fielddoc"><p>controls and multiple targets </p>
+<p>custom controlled gate with multiple </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546faf0e4631ba18e2035edf72e0beaf15240"></a>SINGLE_cCTRL_SINGLE_TARGET&#160;</td><td class="fielddoc"><p>one classical control and one target </p>
 <p>controlled 1 qudit unitary gate with </p>
@@ -321,7 +372,8 @@ Friends</h2></td></tr>
 <tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546fac758e25010bdef1cc3f4bc39e39ad557"></a>MULTIPLE_cCTRL_MULTIPLE_TARGET&#160;</td><td class="fielddoc"><p>with multiple classical controls and multiple targets </p>
 <p>controlled 1 qudit unitary gate </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546fa79b326efcb9013f059bd0e83470e150f"></a>CUSTOM_cCTRL&#160;</td><td class="fielddoc"><p>custom controlled gate with multiple controls and multiple targets </p>
+<tr><td class="fieldname"><a id="ac24b3eed42fb630f9313b270fa0a546fa79b326efcb9013f059bd0e83470e150f"></a>CUSTOM_cCTRL&#160;</td><td class="fielddoc"><p>controls and multiple targets </p>
+<p>custom controlled gate with multiple </p>
 </td></tr>
 </table>
 
@@ -342,24 +394,29 @@ Friends</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Type of measurement being executed at one step. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a0017a75359670f16bd1a26f1f914c0b2ab50339a10e1de285ac99d4c3990b8693"></a>NONE&#160;</td><td class="fielddoc"><p>signals no measurement </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a0017a75359670f16bd1a26f1f914c0b2ab50339a10e1de285ac99d4c3990b8693"></a>NONE&#160;</td><td class="fielddoc"><p>represents no measurement </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a0017a75359670f16bd1a26f1f914c0b2a2ab1d76092348e984f9aca92c648ec37"></a>MEASURE_Z&#160;</td><td class="fielddoc"><p>Z measurement of single qudit. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a0017a75359670f16bd1a26f1f914c0b2a8f2c7e7ab229b75a139822637593621d"></a>MEASURE_V&#160;</td><td class="fielddoc"><p>measurement of single qudit in the orthonormal basis or rank-1 POVM specified by the columns of matrix <em>V</em> </p>
+<tr><td class="fieldname"><a id="a0017a75359670f16bd1a26f1f914c0b2a8f2c7e7ab229b75a139822637593621d"></a>MEASURE_V&#160;</td><td class="fielddoc"><p>or rank-1 projectors specified by the columns of matrix <em>V</em> </p>
+<p>measurement of single qudit in the orthonormal basis </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a0017a75359670f16bd1a26f1f914c0b2a9c11f6f406f8d8e47e50e35b77b9dd8c"></a>MEASURE_V_MANY&#160;</td><td class="fielddoc"><p>measurement of multiple qudits in the orthonormal basis or rank-1 projectors specified by the columns of matrix <em>V</em> </p>
 </td></tr>
 </table>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a9e6beaf449928377fcdfaccd6ec6dd06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e6beaf449928377fcdfaccd6ec6dd06">&#9670;&nbsp;</a></span>QCircuitDescription()</h2>
+<a id="ac627c86c7508d0e9094a9f3732b8dc86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac627c86c7508d0e9094a9f3732b8dc86">&#9670;&nbsp;</a></span>QCircuitDescription()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -388,7 +445,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -403,12 +460,23 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Constructs a quantum circuit description. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nq</td><td>Number of qbits </td></tr>
+    <tr><td class="paramname">nc</td><td>Number of classical dits </td></tr>
+    <tr><td class="paramname">d</td><td>Subsystem dimensions (optional, default is qubit, i.e. <em>d</em> = 2) </td></tr>
+    <tr><td class="paramname">name</td><td>Circuit description name (optional) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7fbfb8f5803dc159df1c817f31b99155"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fbfb8f5803dc159df1c817f31b99155">&#9670;&nbsp;</a></span>cCTRL() <span class="overload">[1/4]</span></h2>
+<a id="a122e0cac57700860725e7697808f7013"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a122e0cac57700860725e7697808f7013">&#9670;&nbsp;</a></span>cCTRL() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -417,7 +485,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::cCTRL </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::cCTRL </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
           <td class="paramname"><em>U</em>, </td>
@@ -437,7 +505,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -455,8 +523,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="afcc5658607ab2990dcf96a6c632ae1dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afcc5658607ab2990dcf96a6c632ae1dd">&#9670;&nbsp;</a></span>cCTRL() <span class="overload">[2/4]</span></h2>
+<a id="a37326047178c77c075c9fdce41a248f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37326047178c77c075c9fdce41a248f8">&#9670;&nbsp;</a></span>cCTRL() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -465,7 +533,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::cCTRL </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::cCTRL </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
           <td class="paramname"><em>U</em>, </td>
@@ -485,7 +553,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -503,8 +571,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="ab237c388f4063f8d2285b4408e313350"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab237c388f4063f8d2285b4408e313350">&#9670;&nbsp;</a></span>cCTRL() <span class="overload">[3/4]</span></h2>
+<a id="a8047541328b948c39c269fb7f07d5f89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8047541328b948c39c269fb7f07d5f89">&#9670;&nbsp;</a></span>cCTRL() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -513,7 +581,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::cCTRL </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::cCTRL </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
           <td class="paramname"><em>U</em>, </td>
@@ -533,7 +601,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -551,8 +619,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a3975daf966acb529f4bfa8af1a78b0fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3975daf966acb529f4bfa8af1a78b0fc">&#9670;&nbsp;</a></span>cCTRL() <span class="overload">[4/4]</span></h2>
+<a id="a8c756c277f315e7abb67fb185fd593ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c756c277f315e7abb67fb185fd593ec">&#9670;&nbsp;</a></span>cCTRL() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -561,7 +629,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::cCTRL </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::cCTRL </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
           <td class="paramname"><em>U</em>, </td>
@@ -581,7 +649,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -599,8 +667,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a24108c2afca7ddc3891de6869c54df5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24108c2afca7ddc3891de6869c54df5f">&#9670;&nbsp;</a></span>cCTRL_custom()</h2>
+<a id="a37de940fe55b1f6dfa29463ffc3d6dff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37de940fe55b1f6dfa29463ffc3d6dff">&#9670;&nbsp;</a></span>cCTRL_custom()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -609,7 +677,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::cCTRL_custom </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::cCTRL_custom </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
           <td class="paramname"><em>U</em>, </td>
@@ -629,7 +697,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -647,8 +715,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a921728d49d4404640bef7874b66615e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a921728d49d4404640bef7874b66615e7">&#9670;&nbsp;</a></span>CTRL() <span class="overload">[1/4]</span></h2>
+<a id="a027abc3df38f6310dfdcfff0b9766004"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a027abc3df38f6310dfdcfff0b9766004">&#9670;&nbsp;</a></span>CTRL() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -657,55 +725,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::CTRL </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
-          <td class="paramname"><em>U</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>ctrl</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ab5ae05f980589e976566a4160c556f2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5ae05f980589e976566a4160c556f2c">&#9670;&nbsp;</a></span>CTRL() <span class="overload">[2/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::CTRL </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::CTRL </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
           <td class="paramname"><em>U</em>, </td>
@@ -719,13 +739,73 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Applies the single qudit controlled gate with control qudit <em>i</em> and target qudit <em>j</em>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">U</td><td>Single qudit quantum gate </td></tr>
+    <tr><td class="paramname">ctrl</td><td>Control qudit index </td></tr>
+    <tr><td class="paramname">target</td><td>Target qudit index </td></tr>
+    <tr><td class="paramname">name</td><td>Optional gate name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
+
+</div>
+</div>
+<a id="acf6e7c68a504f14c3c4038624e5c4bd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf6e7c68a504f14c3c4038624e5c4bd4">&#9670;&nbsp;</a></span>CTRL() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::CTRL </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
+          <td class="paramname"><em>U</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>ctrl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>target</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -743,8 +823,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="ab7901dca7b3ffbe8fb40e8c77b2711a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7901dca7b3ffbe8fb40e8c77b2711a4">&#9670;&nbsp;</a></span>CTRL() <span class="overload">[3/4]</span></h2>
+<a id="a7204005e39bbac08911b20090aaf1250"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7204005e39bbac08911b20090aaf1250">&#9670;&nbsp;</a></span>CTRL() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -753,7 +833,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::CTRL </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::CTRL </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
           <td class="paramname"><em>U</em>, </td>
@@ -773,7 +853,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -791,8 +871,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="afc83df3b5f8578cce933bb761004ba7d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc83df3b5f8578cce933bb761004ba7d">&#9670;&nbsp;</a></span>CTRL() <span class="overload">[4/4]</span></h2>
+<a id="ab2d099ce5aaf32700e983c7bb92f8143"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2d099ce5aaf32700e983c7bb92f8143">&#9670;&nbsp;</a></span>CTRL() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -801,7 +881,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::CTRL </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::CTRL </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
           <td class="paramname"><em>U</em>, </td>
@@ -821,7 +901,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -839,8 +919,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="aae55d9828c6509d6c71f8b6dec8f6717"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae55d9828c6509d6c71f8b6dec8f6717">&#9670;&nbsp;</a></span>CTRL_custom()</h2>
+<a id="aaa4f00089818237aadbc64520a89c158"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa4f00089818237aadbc64520a89c158">&#9670;&nbsp;</a></span>CTRL_custom()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -849,7 +929,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::CTRL_custom </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::CTRL_custom </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
           <td class="paramname"><em>U</em>, </td>
@@ -869,7 +949,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -918,8 +998,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="aa42bf55ecd664c25a8f637e9946c737a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa42bf55ecd664c25a8f637e9946c737a">&#9670;&nbsp;</a></span>gate() <span class="overload">[1/4]</span></h2>
+<a id="a5ff72a2b0de9e40050fe90cb142cf0f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ff72a2b0de9e40050fe90cb142cf0f2">&#9670;&nbsp;</a></span>gate() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -928,7 +1008,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::gate </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::gate </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
           <td class="paramname"><em>U</em>, </td>
@@ -942,7 +1022,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -958,10 +1038,21 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Applies the single qudit gate <em>U</em> on single qudit <em>i</em>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">U</td><td>Single qudit quantum gate </td></tr>
+    <tr><td class="paramname">i</td><td>Qudit index </td></tr>
+    <tr><td class="paramname">name</td><td>Optional gate name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
+
 </div>
 </div>
-<a id="a87e83bee4b9289b2ba612c1d2d41ff22"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87e83bee4b9289b2ba612c1d2d41ff22">&#9670;&nbsp;</a></span>gate() <span class="overload">[2/4]</span></h2>
+<a id="aa14b47c932eb7c1d0c0c799ec582376a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa14b47c932eb7c1d0c0c799ec582376a">&#9670;&nbsp;</a></span>gate() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -970,7 +1061,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::gate </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::gate </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
           <td class="paramname"><em>U</em>, </td>
@@ -990,7 +1081,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -1006,10 +1097,22 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Applies the two-qudit gate <em>U</em> on qudits <em>i</em> and <em>j</em>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">U</td><td>Two-qudit quantum gate </td></tr>
+    <tr><td class="paramname">i</td><td>Qudit index </td></tr>
+    <tr><td class="paramname">j</td><td>Qudit index </td></tr>
+    <tr><td class="paramname">name</td><td>Optional gate name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
+
 </div>
 </div>
-<a id="ac574d833eeafeba300dd541713eba452"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac574d833eeafeba300dd541713eba452">&#9670;&nbsp;</a></span>gate() <span class="overload">[3/4]</span></h2>
+<a id="a34d5e4f7a4aef8a9c9b155a2066f2d2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34d5e4f7a4aef8a9c9b155a2066f2d2d">&#9670;&nbsp;</a></span>gate() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1018,7 +1121,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::gate </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::gate </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
           <td class="paramname"><em>U</em>, </td>
@@ -1044,7 +1147,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -1060,10 +1163,23 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Applies the three-qudit gate <em>U</em> on qudits <em>i</em>, <em>j</em> and <em>k</em>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">U</td><td>Three-qudit quantum gate </td></tr>
+    <tr><td class="paramname">i</td><td>Qudit index </td></tr>
+    <tr><td class="paramname">j</td><td>Qudit index </td></tr>
+    <tr><td class="paramname">k</td><td>Qudit index </td></tr>
+    <tr><td class="paramname">name</td><td>Optional gate name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
+
 </div>
 </div>
-<a id="aafb6d6dbf3ab2cf15573b6c5a65ef5ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aafb6d6dbf3ab2cf15573b6c5a65ef5ce">&#9670;&nbsp;</a></span>gate() <span class="overload">[4/4]</span></h2>
+<a id="a67a3408ffdb7f1287985c6b69c2607e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67a3408ffdb7f1287985c6b69c2607e8">&#9670;&nbsp;</a></span>gate() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1072,7 +1188,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::gate </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::gate </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
           <td class="paramname"><em>U</em>, </td>
@@ -1086,7 +1202,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -1102,10 +1218,21 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Applies the custom multiple qudit gate <em>U</em> on the qudit indexes specified by <em>target</em>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">U</td><td>Multiple-qudit quantum gate </td></tr>
+    <tr><td class="paramname">target</td><td>Subsystem indexes where the gate <em>U</em> is applied </td></tr>
+    <tr><td class="paramname">name</td><td>Optional gate name</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
+
 </div>
 </div>
-<a id="a703a40ab94eb9cd15f728521c3fa3fa9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a703a40ab94eb9cd15f728521c3fa3fa9">&#9670;&nbsp;</a></span>gate_fan() <span class="overload">[1/2]</span></h2>
+<a id="a9bf3b1bf6cfd51b74ad5a4cc3ae6bdb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bf3b1bf6cfd51b74ad5a4cc3ae6bdb5">&#9670;&nbsp;</a></span>gate_fan() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1114,7 +1241,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::gate_fan </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::gate_fan </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
           <td class="paramname"><em>U</em>, </td>
@@ -1128,7 +1255,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -1144,10 +1271,21 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Applies the single qudit gate <em>U</em> on every qudit listed in <em>target</em>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">U</td><td>Single qudit quantum gate </td></tr>
+    <tr><td class="paramname">target</td><td>Qudit indexes; the gate <em>U</em> is applied on every one of them </td></tr>
+    <tr><td class="paramname">name</td><td>Optional gate name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
+
 </div>
 </div>
-<a id="a62efb64dcf7ec5fe7bba61e7c6b1c1b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62efb64dcf7ec5fe7bba61e7c6b1c1b1">&#9670;&nbsp;</a></span>gate_fan() <span class="overload">[2/2]</span></h2>
+<a id="ac1019c709835384e63941bc9be5a5364"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1019c709835384e63941bc9be5a5364">&#9670;&nbsp;</a></span>gate_fan() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1156,7 +1294,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::gate_fan </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::gate_fan </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
           <td class="paramname"><em>U</em>, </td>
@@ -1164,7 +1302,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -1180,10 +1318,20 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Applies the single qudit gate <em>U</em> on every remaining non-measured qudit. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">U</td><td>Single qudit quantum gate </td></tr>
+    <tr><td class="paramname">name</td><td>Optional gate name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
+
 </div>
 </div>
-<a id="af6e8137b16e18ac46b08c9f4c6594466"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6e8137b16e18ac46b08c9f4c6594466">&#9670;&nbsp;</a></span>get_d()</h2>
+<a id="a7c8ac35ab25c8a2c4a360acfec99351a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c8ac35ab25c8a2c4a360acfec99351a">&#9670;&nbsp;</a></span>get_d()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1200,15 +1348,109 @@ Friends</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Local dimension of the comprising qudits. </p>
+<dl class="section return"><dt>Returns</dt><dd>Local dimension </dd></dl>
+
+</div>
+</div>
+<a id="a28ecc19edb6e031cf3f3827c7fd21e31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28ecc19edb6e031cf3f3827c7fd21e31">&#9670;&nbsp;</a></span>get_gate_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::experimental::QCircuitDescription::get_gate_count </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Quantum circuit total gate count. </p>
+<dl class="section return"><dt>Returns</dt><dd>Total gate count </dd></dl>
+
+</div>
+</div>
+<a id="ae1ad9d1878ca18e6d3ba4f7bc8a23c78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1ad9d1878ca18e6d3ba4f7bc8a23c78">&#9670;&nbsp;</a></span>get_gates()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt;<a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html">GateStep</a>&gt;&amp; qpp::experimental::QCircuitDescription::get_gates </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Vector of qpp::QCircuitDescription::GateStep. </p>
+<dl class="section return"><dt>Returns</dt><dd>Vector of qpp::QCircuitDescription::GateStep </dd></dl>
+
+</div>
+</div>
+<a id="a405cd8d33179bf5032296b2360e9b841"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a405cd8d33179bf5032296b2360e9b841">&#9670;&nbsp;</a></span>get_measured() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::experimental::QCircuitDescription::get_measured </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p>Check whether qudit <em>i</em> was already measured. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>Qudit index </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if qudit <em>i</em> was already measured, false othwewise </dd></dl>
+
 </div>
 </div>
 <a id="afe6a7f7374d1eacb83a831ae7978bcbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe6a7f7374d1eacb83a831ae7978bcbf">&#9670;&nbsp;</a></span>get_measured()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afe6a7f7374d1eacb83a831ae7978bcbf">&#9670;&nbsp;</a></span>get_measured() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1229,6 +1471,37 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Vector of already measured qudit indexes. </p>
+<dl class="section return"><dt>Returns</dt><dd>Vector of already measured qudit indexes </dd></dl>
+
+</div>
+</div>
+<a id="a32a8c35da01dec1cc5745d91496fb900"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32a8c35da01dec1cc5745d91496fb900">&#9670;&nbsp;</a></span>get_measurement_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::experimental::QCircuitDescription::get_measurement_count </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Quantum circuit total measurement count. </p>
+<dl class="section return"><dt>Returns</dt><dd>Total measurement count </dd></dl>
 
 </div>
 </div>
@@ -1255,6 +1528,38 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Vector of measurement positions in the circuit, i.e. the indexes where the measurements take place. </p>
+<dl class="section note"><dt>Note</dt><dd>If there are more consecutive measurements after step S, then their indexes will all be S, i.e. it is always assumed that the measurements taking place immediately after a gate step have the same index as the preceding gate step.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Vector of measurement positions </dd></dl>
+
+</div>
+</div>
+<a id="a0bc888c307d16ff54ad4972f67dc1390"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0bc888c307d16ff54ad4972f67dc1390">&#9670;&nbsp;</a></span>get_measurements()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt;<a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_measure_step.html">MeasureStep</a>&gt;&amp; qpp::experimental::QCircuitDescription::get_measurements </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Vector of qpp::QCircuitDescription::MeasureStep. </p>
+<dl class="section return"><dt>Returns</dt><dd>Vector of qpp::QCircuitDescription::MeasureStep </dd></dl>
+
 </div>
 </div>
 <a id="a379e9740ffd5616887ae20c723ec2a5e"></a>
@@ -1280,10 +1585,13 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Quantum circuit name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Quantum circuit name </dd></dl>
+
 </div>
 </div>
-<a id="aaba1769be3b3e7d9cf7568d46ad68be8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaba1769be3b3e7d9cf7568d46ad68be8">&#9670;&nbsp;</a></span>get_nc()</h2>
+<a id="a94a762ea47d3063514606f9e7280f66b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94a762ea47d3063514606f9e7280f66b">&#9670;&nbsp;</a></span>get_nc()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1300,15 +1608,46 @@ Friends</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Total number of classical dits in the circuit. </p>
+<dl class="section return"><dt>Returns</dt><dd>Total number of classical dits </dd></dl>
+
+</div>
+</div>
+<a id="a5678589f23e282cc7d93db1ee293dd29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5678589f23e282cc7d93db1ee293dd29">&#9670;&nbsp;</a></span>get_non_measured()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&gt; qpp::experimental::QCircuitDescription::get_non_measured </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p>Vector of non-measured qudit indexes. </p>
+<dl class="section return"><dt>Returns</dt><dd>Vector of non-measured qudit indexes </dd></dl>
+
 </div>
 </div>
-<a id="a171227189cecf412269a100f9b552241"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a171227189cecf412269a100f9b552241">&#9670;&nbsp;</a></span>get_nq()</h2>
+<a id="a3bde7c168cbf356691be42c7d0d7dcf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bde7c168cbf356691be42c7d0d7dcf7">&#9670;&nbsp;</a></span>get_nq()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1325,15 +1664,18 @@ Friends</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p>Total number of qudits in the circuit. </p>
+<dl class="section return"><dt>Returns</dt><dd>Total number of qudits </dd></dl>
+
 </div>
 </div>
-<a id="aec9e94582601374a08a9eef486c55952"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec9e94582601374a08a9eef486c55952">&#9670;&nbsp;</a></span>get_measured()</h2>
+<a id="a1ee44a0bc4dc00988530498b7c093d84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ee44a0bc4dc00988530498b7c093d84">&#9670;&nbsp;</a></span>get_total_count()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1342,24 +1684,26 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::experimental::QCircuitDescription::get_measured </td>
+          <td class="memname"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::experimental::QCircuitDescription::get_total_count </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>i</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p>Quantum circuit total count, i.e. the sum of gate count and measurement count. </p>
+<dl class="section return"><dt>Returns</dt><dd>Total (gates + measurements) count </dd></dl>
+
 </div>
 </div>
-<a id="a2887e866dd55ad3c189d7d94ec60219d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2887e866dd55ad3c189d7d94ec60219d">&#9670;&nbsp;</a></span>measureV()</h2>
+<a id="a7923ceec164f54d0782822ec7eeec096"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7923ceec164f54d0782822ec7eeec096">&#9670;&nbsp;</a></span>measureV() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1368,7 +1712,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::measureV </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::measureV </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
           <td class="paramname"><em>V</em>, </td>
@@ -1388,7 +1732,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -1406,8 +1750,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="ae1ae7337e5a33e3762dbd193a329bd34"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1ae7337e5a33e3762dbd193a329bd34">&#9670;&nbsp;</a></span>measureZ()</h2>
+<a id="ac1aa4f2b85e9e2d12cdbd7c5299f8ece"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1aa4f2b85e9e2d12cdbd7c5299f8ece">&#9670;&nbsp;</a></span>measureV() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1416,7 +1760,55 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::measureZ </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::measureV </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
+          <td class="paramname"><em>V</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>c_reg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8d74f7c0136ce80a5f5a685ab00977c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d74f7c0136ce80a5f5a685ab00977c5">&#9670;&nbsp;</a></span>measureZ()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::measureZ </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
           <td class="paramname"><em>i</em>, </td>
@@ -1430,7 +1822,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -1448,8 +1840,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="ad15b19273fe1d583dfa0e6a857267df4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad15b19273fe1d583dfa0e6a857267df4">&#9670;&nbsp;</a></span>QFT()</h2>
+<a id="afbc31b900aa08ac9020fdaf28bbc33e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbc31b900aa08ac9020fdaf28bbc33e4">&#9670;&nbsp;</a></span>QFT()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1458,11 +1850,21 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::QFT </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::QFT </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>target</em></td><td>)</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool swap&#160;</td>
+          <td class="paramname"><em>QPP_UNUSED_</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -1472,10 +1874,20 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Applies the quantum Fourier transform (as a series of gates) on the qudit indexes specified by <em>target</em>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>Subsystem indexes where the quantum Fourier transform is applied </td></tr>
+    <tr><td class="paramname">swap</td><td>Swaps the qubits at the end (true by default) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
+
 </div>
 </div>
-<a id="a8bfb168e550747e818d2c40550a8df93"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bfb168e550747e818d2c40550a8df93">&#9670;&nbsp;</a></span>TFQ()</h2>
+<a id="aed1a8e93385b690b74bb0fea6dc5fdc1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed1a8e93385b690b74bb0fea6dc5fdc1">&#9670;&nbsp;</a></span>TFQ()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1484,11 +1896,21 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::experimental::QCircuitDescription::TFQ </td>
+          <td class="memname"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a>&amp; qpp::experimental::QCircuitDescription::TFQ </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>target</em></td><td>)</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool swap&#160;</td>
+          <td class="paramname"><em>QPP_UNUSED_</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -1497,6 +1919,16 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Applies the inverse quantum Fourier transform (as a series of gates) on the qudit indexes specified by <em>target</em>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>Subsystem indexes where the inverse quantum Fourier transform is applied </td></tr>
+    <tr><td class="paramname">swap</td><td>Swaps the qubits at the end (true by default) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
 
 </div>
 </div>
@@ -1535,6 +1967,16 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Extraction operator overload for qpp::QCircuitDescription::GateType enum class. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">os</td><td>Output stream </td></tr>
+    <tr><td class="paramname">gate_type</td><td>qpp::QCircuitDescription::GateType enum class </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Output stream </dd></dl>
+
 </div>
 </div>
 <a id="adce377c4688b746b06fd7f1982866de3"></a>
@@ -1570,6 +2012,16 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Extraction operator overload for qpp::QCircuitDescription::MeasureType enum class. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">os</td><td>Output stream </td></tr>
+    <tr><td class="paramname">gate_type</td><td>qpp::QCircuitDescription::MeasureType enum class </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Output stream </dd></dl>
 
 </div>
 </div>
@@ -1607,6 +2059,16 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Extraction operator overload for qpp::QCircuitDescription::GateStep class. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">os</td><td>Output stream </td></tr>
+    <tr><td class="paramname">gate_type</td><td>qpp::QCircuitDescription::GateStep class </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Output stream </dd></dl>
+
 </div>
 </div>
 <a id="af6d7056ede5934f345e3a37d13f673a4"></a>
@@ -1643,35 +2105,21 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>quantum circuit representation </p>
-
-</div>
-</div>
-<a id="a208d63d107f60e789151f74ae47f2dc3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a208d63d107f60e789151f74ae47f2dc3">&#9670;&nbsp;</a></span>QCircuit</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">friend class <a class="el" href="classqpp_1_1experimental_1_1_q_circuit.html">QCircuit</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
+<p>Extraction operator overload for qpp::QCircuitDescription::MeasureStep class. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">os</td><td>Output stream </td></tr>
+    <tr><td class="paramname">gate_type</td><td>qpp::QCircuitDescription::MeasureStep enum class </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Output stream </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="abf1b03f58d14f1c53e4b0b745663e4f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf1b03f58d14f1c53e4b0b745663e4f1">&#9670;&nbsp;</a></span>d_</h2>
+<a id="aa11d75ea28bc77a96c621c7ef51b59ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa11d75ea28bc77a96c621c7ef51b59ce">&#9670;&nbsp;</a></span>d_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1680,12 +2128,12 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::experimental::QCircuitDescription::d_</td>
+          <td class="memname">const <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::experimental::QCircuitDescription::d_</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1709,10 +2157,12 @@ Friends</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>gates </p>
 
 </div>
 </div>
@@ -1731,7 +2181,7 @@ Friends</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1755,11 +2205,13 @@ Friends</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>keeps track of where the measurement take place </p>
+
+<p>measurements take place </p>
+<p>keeps track of where the </p>
 
 </div>
 </div>
@@ -1778,10 +2230,12 @@ Friends</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>measurements </p>
 
 </div>
 </div>
@@ -1800,7 +2254,7 @@ Friends</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1809,8 +2263,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a30e64359550b5de6fdfef58b336d6320"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a30e64359550b5de6fdfef58b336d6320">&#9670;&nbsp;</a></span>nc_</h2>
+<a id="a0686440084dc30d976adb4ed89b39599"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0686440084dc30d976adb4ed89b39599">&#9670;&nbsp;</a></span>nc_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1819,12 +2273,12 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::experimental::QCircuitDescription::nc_</td>
+          <td class="memname">const <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::experimental::QCircuitDescription::nc_</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1833,8 +2287,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a54a7066bd66a69eaaf954f69a1b2aa2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54a7066bd66a69eaaf954f69a1b2aa2c">&#9670;&nbsp;</a></span>nq_</h2>
+<a id="a8a4dbd022b148613639ad8ce5b10326d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a4dbd022b148613639ad8ce5b10326d">&#9670;&nbsp;</a></span>nq_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1843,17 +2297,41 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::experimental::QCircuitDescription::nq_</td>
+          <td class="memname">const <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::experimental::QCircuitDescription::nq_</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>number of qudits </p>
+
+</div>
+</div>
+<a id="a18235222b897ac147536299733840114"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18235222b897ac147536299733840114">&#9670;&nbsp;</a></span>step_cnt_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::experimental::QCircuitDescription::step_cnt_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>step counter </p>
 
 </div>
 </div>
@@ -1866,7 +2344,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="namespaceqpp_1_1experimental.html">experimental</a></li><li class="navelem"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a></li>
-    <li class="footer">Generated on Mon Jan 14 2019 16:07:54 for Quantum++ by
+    <li class="footer">Generated on Fri Jan 18 2019 13:24:45 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

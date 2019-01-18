@@ -609,6 +609,19 @@ class CustomException : public Exception {
         : Exception{where}, what_{what} {}
 };
 
+/**
+ * \class qpp::exception::NotImplemented
+ * \brief Code not yet implemented
+ */
+class NotImplemented : public Exception {
+public:
+    std::string type_description() const override {
+        return "Not yet implemented";
+    }
+
+    using Exception::Exception;
+};
+
 } // namespace exception
 } /* namespace qpp */
 

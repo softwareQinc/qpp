@@ -7,6 +7,7 @@ var classqpp_1_1_gates =
     [ "expandout", "classqpp_1_1_gates.html#a85a017f1aae2373c38d018849dadd21e", null ],
     [ "expandout", "classqpp_1_1_gates.html#a99f235209c8b679ae177b7628ff5e048", null ],
     [ "Fd", "classqpp_1_1_gates.html#ace5b3f45601bbe6c646dab08d4f27d95", null ],
+    [ "get_name", "classqpp_1_1_gates.html#a6346f51588a37293d7c8634023befdb2", null ],
     [ "Id", "classqpp_1_1_gates.html#a43c4b43d5d438721e338ceb0b887d16b", null ],
     [ "MODMUL", "classqpp_1_1_gates.html#aa5fd14aaac513809b471f11e946039c0", null ],
     [ "Rn", "classqpp_1_1_gates.html#a136e04681e89fe4497fe95674b60f26c", null ],

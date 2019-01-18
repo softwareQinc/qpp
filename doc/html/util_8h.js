@@ -8,6 +8,7 @@ var util_8h =
     [ "check_dims_match_rvect", "util_8h.html#af3faf90b54974a79d2e6637316312bfa", null ],
     [ "check_eq_dims", "util_8h.html#a9b40c9baf797599411a129dd21c50f84", null ],
     [ "check_matching_sizes", "util_8h.html#a4890923b3f352fff0f991691f6241c4e", null ],
+    [ "check_no_duplicates", "util_8h.html#a7d3efc87f29cf83e3559c94a712eed2e", null ],
     [ "check_nonzero_size", "util_8h.html#adba60d4cfda710c1a5b735d81767b530", null ],
     [ "check_perm", "util_8h.html#ae80a9b16dc1bdacf9426675ec490eb43", null ],
     [ "check_qubit_cvector", "util_8h.html#a98165a545dc71700f00ac4134f81b4a1", null ],

@@ -73,10 +73,8 @@ $(document).ready(function(){initNavTree('structqpp_1_1experimental_1_1_q_circui
 </div><!--header-->
 <div class="contents">
 
-<p>One step consisting of unitary gates in the circuit.  
+<p>One step consisting only of gates/operators in the circuit.  
  <a href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="experimental_8h_source.html">experimental/experimental.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for qpp::experimental::QCircuitDescription::GateStep:</div>
 <div class="dyncontent">
@@ -91,8 +89,8 @@ Collaboration diagram for qpp::experimental::QCircuitDescription::GateStep:</div
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a610dfc2c0a7f2784a57f327d5f276996"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html#a610dfc2c0a7f2784a57f327d5f276996">GateStep</a> ()=default</td></tr>
 <tr class="separator:a610dfc2c0a7f2784a57f327d5f276996"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaad962c207602e8f567f5baab817fc06"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html#aaad962c207602e8f567f5baab817fc06">GateStep</a> (<a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ac24b3eed42fb630f9313b270fa0a546f">GateType</a> gate_type, const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;<a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#aa42bf55ecd664c25a8f637e9946c737a">gate</a>, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;ctrl, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, const std::string &amp;name=&quot;&quot;)</td></tr>
-<tr class="separator:aaad962c207602e8f567f5baab817fc06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a408648cb1bf0874b60817c59bfb3e2e1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html#a408648cb1bf0874b60817c59bfb3e2e1">GateStep</a> (<a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#ac24b3eed42fb630f9313b270fa0a546f">GateType</a> gate_type, const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;<a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a5ff72a2b0de9e40050fe90cb142cf0f2">gate</a>, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;ctrl, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> step_no, std::string name=&quot;&quot;)</td></tr>
+<tr class="separator:a408648cb1bf0874b60817c59bfb3e2e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -108,12 +106,15 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a75382d5f30fa5233439ba2e4ff1da10e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html#a75382d5f30fa5233439ba2e4ff1da10e">target_</a></td></tr>
 <tr class="memdesc:a75382d5f30fa5233439ba2e4ff1da10e"><td class="mdescLeft">&#160;</td><td class="mdescRight">target where the gate is being applied  <a href="#a75382d5f30fa5233439ba2e4ff1da10e">More...</a><br /></td></tr>
 <tr class="separator:a75382d5f30fa5233439ba2e4ff1da10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8549e1828d776c9ae29b9d34a53fa32d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html#a8549e1828d776c9ae29b9d34a53fa32d">step_no_</a></td></tr>
+<tr class="memdesc:a8549e1828d776c9ae29b9d34a53fa32d"><td class="mdescLeft">&#160;</td><td class="mdescRight">step number  <a href="#a8549e1828d776c9ae29b9d34a53fa32d">More...</a><br /></td></tr>
+<tr class="separator:a8549e1828d776c9ae29b9d34a53fa32d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f8cb6a7fd48aeaf13fb49991964e11a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html#a0f8cb6a7fd48aeaf13fb49991964e11a">name_</a></td></tr>
 <tr class="memdesc:a0f8cb6a7fd48aeaf13fb49991964e11a"><td class="mdescLeft">&#160;</td><td class="mdescRight">custom name of the step  <a href="#a0f8cb6a7fd48aeaf13fb49991964e11a">More...</a><br /></td></tr>
 <tr class="separator:a0f8cb6a7fd48aeaf13fb49991964e11a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>One step consisting of unitary gates in the circuit. </p>
+<div class="textblock"><p>One step consisting only of gates/operators in the circuit. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a610dfc2c0a7f2784a57f327d5f276996"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a610dfc2c0a7f2784a57f327d5f276996">&#9670;&nbsp;</a></span>GateStep() <span class="overload">[1/2]</span></h2>
@@ -140,8 +141,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aaad962c207602e8f567f5baab817fc06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaad962c207602e8f567f5baab817fc06">&#9670;&nbsp;</a></span>GateStep() <span class="overload">[2/2]</span></h2>
+<a id="a408648cb1bf0874b60817c59bfb3e2e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a408648cb1bf0874b60817c59bfb3e2e1">&#9670;&nbsp;</a></span>GateStep() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,7 +177,13 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>step_no</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -259,6 +266,22 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a8549e1828d776c9ae29b9d34a53fa32d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8549e1828d776c9ae29b9d34a53fa32d">&#9670;&nbsp;</a></span>step_no_</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::experimental::QCircuitDescription::GateStep::step_no_</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>step number </p>
+
+</div>
+</div>
 <a id="a75382d5f30fa5233439ba2e4ff1da10e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a75382d5f30fa5233439ba2e4ff1da10e">&#9670;&nbsp;</a></span>target_</h2>
 
@@ -284,7 +307,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="namespaceqpp_1_1experimental.html">experimental</a></li><li class="navelem"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a></li><li class="navelem"><a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html">GateStep</a></li>
-    <li class="footer">Generated on Mon Jan 14 2019 16:07:54 for Quantum++ by
+    <li class="footer">Generated on Fri Jan 18 2019 13:24:45 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

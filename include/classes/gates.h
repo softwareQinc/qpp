@@ -54,7 +54,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     // two qubit gates
     cmat CNOT{cmat::Identity(4, 4)}; ///< Controlled-NOT control target gate
     cmat CZ{cmat::Identity(4, 4)};   ///< Controlled-Phase gate
-    cmat CNOTba{cmat::Zero(4, 4)};   ///< Controlled-NOT target control gate
+    cmat CNOTba{cmat::Zero(4, 4)};   ///< Controlled-NOT target->control gate
     cmat SWAP{cmat::Identity(4, 4)}; ///< SWAP gate
 
     // three qubit gates

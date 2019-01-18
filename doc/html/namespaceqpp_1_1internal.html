@@ -126,6 +126,8 @@ Functions</h2></td></tr>
 <tr class="separator:af3faf90b54974a79d2e6637316312bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b40c9baf797599411a129dd21c50f84"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#a9b40c9baf797599411a129dd21c50f84">check_eq_dims</a> (const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;dims, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> dim) noexcept</td></tr>
 <tr class="separator:a9b40c9baf797599411a129dd21c50f84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d3efc87f29cf83e3559c94a712eed2e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#a7d3efc87f29cf83e3559c94a712eed2e">check_no_duplicates</a> (std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; v)</td></tr>
+<tr class="separator:a7d3efc87f29cf83e3559c94a712eed2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75ff9a7d13340c04a9ad2654d5b517e3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#a75ff9a7d13340c04a9ad2654d5b517e3">check_subsys_match_dims</a> (const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;subsys, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;dims)</td></tr>
 <tr class="separator:a75ff9a7d13340c04a9ad2654d5b517e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1459dee2a49ebb5c1504b9cfa7c95f81"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
@@ -366,6 +368,32 @@ template&lt;typename T1 , typename T2 &gt; </div>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7d3efc87f29cf83e3559c94a712eed2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d3efc87f29cf83e3559c94a712eed2e">&#9670;&nbsp;</a></span>check_no_duplicates()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool qpp::internal::check_no_duplicates </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -918,7 +946,7 @@ template&lt;typename T , typename First , typename... Args&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="namespaceqpp_1_1internal.html">internal</a></li>
-    <li class="footer">Generated on Mon Jan 14 2019 16:07:54 for Quantum++ by
+    <li class="footer">Generated on Fri Jan 18 2019 13:24:45 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

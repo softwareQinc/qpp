@@ -12,6 +12,7 @@ var hierarchy =
         [ "qpp::exception::DimsMismatchRvector", "classqpp_1_1exception_1_1_dims_mismatch_rvector.html", null ],
         [ "qpp::exception::DimsMismatchVector", "classqpp_1_1exception_1_1_dims_mismatch_vector.html", null ],
         [ "qpp::exception::DimsNotEqual", "classqpp_1_1exception_1_1_dims_not_equal.html", null ],
+        [ "qpp::exception::Duplicates", "classqpp_1_1exception_1_1_duplicates.html", null ],
         [ "qpp::exception::MatrixMismatchSubsys", "classqpp_1_1exception_1_1_matrix_mismatch_subsys.html", null ],
         [ "qpp::exception::MatrixNotCvector", "classqpp_1_1exception_1_1_matrix_not_cvector.html", null ],
         [ "qpp::exception::MatrixNotRvector", "classqpp_1_1exception_1_1_matrix_not_rvector.html", null ],
@@ -22,6 +23,7 @@ var hierarchy =
         [ "qpp::exception::MatrixNotVector", "classqpp_1_1exception_1_1_matrix_not_vector.html", null ],
         [ "qpp::exception::NoCodeword", "classqpp_1_1exception_1_1_no_codeword.html", null ],
         [ "qpp::exception::NotBipartite", "classqpp_1_1exception_1_1_not_bipartite.html", null ],
+        [ "qpp::exception::NotImplemented", "classqpp_1_1exception_1_1_not_implemented.html", null ],
         [ "qpp::exception::NotQubitCvector", "classqpp_1_1exception_1_1_not_qubit_cvector.html", null ],
         [ "qpp::exception::NotQubitMatrix", "classqpp_1_1exception_1_1_not_qubit_matrix.html", null ],
         [ "qpp::exception::NotQubitRvector", "classqpp_1_1exception_1_1_not_qubit_rvector.html", null ],
@@ -61,6 +63,7 @@ var hierarchy =
     ] ],
     [ "qpp::make_void< Ts >", "structqpp_1_1make__void.html", null ],
     [ "qpp::experimental::QCircuitDescription::MeasureStep", "structqpp_1_1experimental_1_1_q_circuit_description_1_1_measure_step.html", null ],
+    [ "qpp::QCircuitDescription", "classqpp_1_1_q_circuit_description.html", null ],
     [ "qpp::internal::Singleton< T >", "classqpp_1_1internal_1_1_singleton.html", null ],
     [ "qpp::internal::Singleton< const Codes >", "classqpp_1_1internal_1_1_singleton.html", [
       [ "qpp::Codes", "classqpp_1_1_codes.html", null ]

@@ -113,8 +113,8 @@ class QCircuitDescription : public IDisplay {
         ///< controls and multiple targets
     };
     /**
-    * \brief Type of measurement being executed at one step
-    */
+     * \brief Type of measurement being executed at one step
+     */
     enum class MeasureType {
         NONE, ///< represents no measurement
 
@@ -291,7 +291,7 @@ class QCircuitDescription : public IDisplay {
      * \param os Output stream
      * \param gate_type qpp::QCircuitDescription::MeasureStep enum class
      * \return Output stream
-    */
+     */
     friend std::ostream& operator<<(std::ostream& os,
                                     const MeasureStep& measure_step) {
         os << measure_step.measurement_type_ << ", ";
@@ -311,12 +311,12 @@ class QCircuitDescription : public IDisplay {
      * \brief Constructs a quantum circuit description
      * \param nq Number of qbits
      * \param nc Number of classical dits
-     * \param d Subsystem dimensions (optional, default is qubit, i.e. d = 2)
+     * \param d Subsystem dimensions (optional, default is qubit, i.e. \a d = 2)
      * \param name Circuit description name (optional)
      */
     QCircuitDescription(idx nq, idx nc = 0, idx d = 2, std::string name = "")
-        : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false),
-          step_cnt_{0} {
+        : nq_{nq}, nc_{nc}, d_{d}, name_{name},
+          measured_(nq, false), step_cnt_{0} {
         // EXCEPTION CHECKS
 
         if (nq == 0)
@@ -329,30 +329,70 @@ class QCircuitDescription : public IDisplay {
     }
 
     // getters
-    // number of qudits
+    /**
+     * \brief Total number of qudits in the circuit
+     *
+     * \return Total number of qudits
+     */
     idx get_nq() const noexcept { return nq_; }
 
-    // number of classical dits
+    /**
+     * \brief Total number of classical dits in the circuit
+     *
+     * \return Total number of classical dits
+     */
     idx get_nc() const noexcept { return nc_; }
 
-    // dimension
+    /**
+     * \brief Local dimension of the comprising qudits
+     *
+     * \return Local dimension
+     */
     idx get_d() const noexcept { return d_; }
 
-    // measurement steps
+    /**
+     * \brief Vector of measurement positions in the circuit, i.e. the indexes
+     * where the measurements take place
+     *
+     * \note If there are more consecutive measurements after step S, then their
+     * indexes will all be S, i.e. it is always assumed that the measurements
+     * taking place immediately after a gate step have the same index as the
+     * preceding gate step.
+     *
+     * \return Vector of measurement positions
+     */
     std::vector<idx> get_measurement_steps() const {
         return measurement_steps_;
     }
 
+    /**
+     * \brief Vector of qpp::QCircuitDescription::MeasureStep
+     *
+     * \return Vector of qpp::QCircuitDescription::MeasureStep
+     */
     const std::vector<MeasureStep>& get_measurements() const noexcept {
         return measurements_;
     }
 
+    /**
+     * \brief Vector of qpp::QCircuitDescription::GateStep
+     *
+     * \return Vector of qpp::QCircuitDescription::GateStep
+     */
     const std::vector<GateStep>& get_gates() const noexcept { return gates_; }
 
-    // circuit name
+    /**
+     * \brief Quantum circuit name
+     *
+     * \return Quantum circuit name
+     */
     std::string get_name() const { return name_; }
 
-    // return true if qudit i was measured, false otherwise
+    /**
+     * \brief Check whether qudit \a i was already measured
+     * \param i Qudit index
+     * \return True if qudit \a i was already measured, false othwewise
+     */
     idx get_measured(idx i) const {
         // EXCEPTION CHECKS
 
@@ -364,7 +404,11 @@ class QCircuitDescription : public IDisplay {
         return measured_[i];
     }
 
-    // qudits that were measured
+    /**
+     * \brief Vector of already measured qudit indexes
+     *
+     * \return Vector of already measured qudit indexes
+     */
     std::vector<idx> get_measured() const {
         std::vector<idx> result;
         for (idx i = 0; i < nq_; ++i)
@@ -374,7 +418,11 @@ class QCircuitDescription : public IDisplay {
         return result;
     }
 
-    // qudits that were not (yet) measured
+    /**
+     * \brief Vector of non-measured qudit indexes
+     *
+     * \return Vector of non-measured qudit indexes
+     */
     std::vector<idx> get_non_measured() const {
         std::vector<idx> result;
         for (idx i = 0; i < nq_; ++i)
@@ -384,14 +432,37 @@ class QCircuitDescription : public IDisplay {
         return result;
     }
 
+    /**
+     * \brief Quantum circuit total gate count
+     *
+     * \return Total gate count
+     */
     idx get_gate_count() const noexcept { return gates_.size(); }
 
+    /**
+     * \brief Quantum circuit total measurement count
+     *
+     * \return Total measurement count
+     */
     idx get_measurement_count() const noexcept { return measurements_.size(); }
 
+    /**
+     * \brief Quantum circuit total count, i.e. the sum of gate count and
+     * measurement count
+     *
+     * \return Total (gates + measurements) count
+     */
     idx get_total_count() const noexcept { return step_cnt_; }
     // end getters
 
-    // single gate single qudit
+    /**
+     * \brief Applies the single qudit gate \a U on single qudit \a i
+     *
+     * \param U Single qudit quantum gate
+     * \param i Qudit index
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
     QCircuitDescription& gate(const cmat& U, idx i, std::string name = "") {
         // EXCEPTION CHECKS
 
@@ -426,7 +497,15 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
-    // single gate 2 qudits
+    /**
+     * \brief Applies the two qudit gate \a U on qudits \a i and \a j
+     *
+     * \param U Two qudit quantum gate
+     * \param i Qudit index
+     * \param j Qudit index
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
     QCircuitDescription& gate(const cmat& U, idx i, idx j,
                               std::string name = "") {
         // EXCEPTION CHECKS
@@ -460,7 +539,17 @@ class QCircuitDescription : public IDisplay {
 
         return *this;
     }
-    // single gate 3 qudits
+
+    /**
+     * \brief Applies the three qudit gate \a U on qudits \a i, \a j and \a k
+     *
+     * \param U Three qudit quantum gate
+     * \param i Qudit index
+     * \param j Qudit index
+     * \param k Qudit index
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
     QCircuitDescription& gate(const cmat& U, idx i, idx j, idx k,
                               std::string name = "") {
         // EXCEPTION CHECKS
@@ -496,7 +585,16 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
-    // multiple qudits same gate
+    /**
+     * \brief Applies the single qudit gate \a U on every qudit listed in
+     * \a target
+     *
+     * \param U Single qudit quantum gate
+     * \param target Target qudit indexes; the gate \a U is applied on every one
+     * of them
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
     QCircuitDescription& gate_fan(const cmat& U, const std::vector<idx>& target,
                                   std::string name = "") {
         // EXCEPTION CHECKS
@@ -543,7 +641,14 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
-    // multiple qudits same gate on ALL non-measured qudits
+    /**
+     * \brief Applies the single qudit gate \a U on every remaining non-measured
+     * qudit
+     *
+     * \param U Single qudit quantum gate
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
     QCircuitDescription& gate_fan(const cmat& U, std::string name = "") {
         // EXCEPTION CHECKS
 
@@ -570,7 +675,16 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
-    // custom gate
+    /**
+     * \brief Applies the custom multiple qudit gate \a U on the qudit indexes
+     * specified by \a target
+     *
+     * \param U Multiple qudit quantum gate
+     * \param target Subsystem indexes where the gate \a U is applied
+     * \param name Optional gate name
+     *
+     * \return Reference to the current instance
+     */
     QCircuitDescription& gate(const cmat& U, const std::vector<idx>& target,
                               std::string name = "") {
         // EXCEPTION CHECKS
@@ -617,23 +731,69 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
-    // quantum Fourier transform
-    QCircuitDescription& QFT(const std::vector<idx>& target) {
+    /**
+     * \brief Applies the quantum Fourier transform (as a series of gates) on
+     * the qudit indexes specified by \a target
+     *
+     * \param target Subsystem indexes where the quantum Fourier transform is
+     * applied
+     * \param swap Swaps the qubits at the end (true by default)
+     * \return Reference to the current instance
+     */
+    QCircuitDescription& QFT(const std::vector<idx>& target,
+                             bool swap QPP_UNUSED_ = true) {
+        // EXCEPTION CHECKS
+
+        try {
+            throw exception::NotImplemented("qpp::QCircuitDescription::QFT()");
+        } catch (qpp::exception::Exception& e) {
+            std::cerr << "At STEP " << step_cnt_ << "\n";
+            throw;
+        }
+        // END EXCEPTION CHECKS
+
         gates_.emplace_back(GateType::QFT, cmat{}, std::vector<idx>{}, target,
                             step_cnt_++, "QFT");
 
         return *this;
     }
 
-    // quantum inverse Fourier transform
-    QCircuitDescription& TFQ(const std::vector<idx>& target) {
+    /**
+     * \brief Applies the inverse quantum Fourier transform (as a series of
+     * gates) on the qudit indexes specified by \a target
+     *
+     * \param target Subsystem indexes where the inverse quantum Fourier
+     * transform is applied
+     * \param swap Swaps the qubits at the end (true by default)
+     * \return Reference to the current instance
+     */
+    QCircuitDescription& TFQ(const std::vector<idx>& target,
+                             bool swap QPP_UNUSED_ = true) {
+        // EXCEPTION CHECKS
+
+        try {
+            throw exception::NotImplemented("qpp::QCircuitDescription::QFT()");
+        } catch (qpp::exception::Exception& e) {
+            std::cerr << "At STEP " << step_cnt_ << "\n";
+            throw;
+        }
+        // END EXCEPTION CHECKS
         gates_.emplace_back(GateType::TFQ, cmat{}, std::vector<idx>{}, target,
                             step_cnt_++, "TFQ");
 
         return *this;
     }
 
-    // single ctrl single target
+    /**
+     * \brief Applies the single qudit controlled gate \a U with control qudit
+     * \a ctrl and target qudit \a target
+     *
+     * \param U Single qudit quantum gate
+     * \param ctrl Control qudit index
+     * \param target Target qudit index
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
     QCircuitDescription& CTRL(const cmat& U, idx ctrl, idx target,
                               std::string name = "") {
         // EXCEPTION CHECKS
@@ -669,7 +829,17 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
-    // single ctrl multiple targets
+    /**
+     * \brief Applies the single qudit controlled gate \a U with control qudit
+     * \a ctrl on every qudit listed in \a target
+     *
+     * \param U Single qudit quantum gate
+     * \param ctrl Control qudit index
+     * \param target Target qudit indexes; the gate \a U is applied on every one
+     * of them depending on the values of the control qudits
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
     QCircuitDescription& CTRL(const cmat& U, idx ctrl,
                               const std::vector<idx>& target,
                               std::string name = "") {
@@ -728,7 +898,16 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
-    // multiple ctrl single target
+    /**
+     * \brief Applies the single qudit controlled gate \a U with multiple
+     * control qudits listed in \a ctrl on the target qudit \a target
+     *
+     * \param U Single qudit quantum gate
+     * \param ctrl Control qudits indexes
+     * \param target Target qudit index
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
     QCircuitDescription& CTRL(const cmat& U, const std::vector<idx>& ctrl,
                               idx target, std::string name = "") {
         // EXCEPTION CHECKS
@@ -782,8 +961,18 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
-    // multiple ctrl multiple targets
     // FIXME
+    /**
+     * \brief Applies the single qudit controlled gate \a U with multiple
+     * control qudits listed in \a ctrl on every qudit listed in \a target
+     *
+     * \param U Single qudit quantum gate
+     * \param ctrl Control qudits indexes
+     * \param target Target qudit indexes; the gate \a U is applied on every one
+     * of them depending on the values of the control qudits
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
     QCircuitDescription& CTRL(const cmat& U, const std::vector<idx>& ctrl,
                               const std::vector<idx>& target,
                               std::string name = "") {
@@ -853,7 +1042,18 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
-    //  custom controlled gate with multiple controls and multiple targets
+    /**
+     * \brief Applies the custom multiple-qudit controlled gate \a U with
+     * multiple control qudits listed in \a ctrl on the qudit indexes specified
+     * by \a target
+     *
+     * \param U Multiple-qudit quantum gate
+     * \param ctrl Control qudits indexes
+     * \param target Target qudit indexes where the gate \a U is applied
+     * depending on the values of the control qudits
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
     QCircuitDescription& CTRL_custom(const cmat& U,
                                      const std::vector<idx>& ctrl,
                                      const std::vector<idx>& target,
@@ -928,15 +1128,24 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
-    // FIXME , use the corresponding dits
-    // single ctrl single target
-    QCircuitDescription& cCTRL(const cmat& U, idx ctrl, idx target,
+    // FIXME, use the corresponding dits
+    /**
+     * \brief Applies the single qubit controlled gate \a U with classical
+     * control dit \a ctrl and target qudit \a target
+     *
+     * \param U Single qudit quantum gate
+     * \param ctrl_dit Classical control dit index
+     * \param target Target qudit index
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
+    QCircuitDescription& cCTRL(const cmat& U, idx ctrl_dit, idx target,
                                std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
-            // check valid ctrl and target
-            if (ctrl > nc_ || target > nq_)
+            // check valid ctrl_dit and target
+            if (ctrl_dit > nc_ || target > nq_)
                 throw exception::OutOfRange(
                     "qpp::QCircuitDescription::cCTRL()");
             if (get_measured(target))
@@ -960,13 +1169,24 @@ class QCircuitDescription : public IDisplay {
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, U,
-                            std::vector<idx>{ctrl}, std::vector<idx>{target},
+                            std::vector<idx>{ctrl_dit}, std::vector<idx>{target},
                             step_cnt_++, name);
 
         return *this;
     }
 
     // single ctrl multiple targets
+    /**
+     * \brief Applies the single qudit controlled gate \a U with classical
+     * control dit \a ctrl on every qudit listed in \a target
+     *
+     * \param U Single qudit quantum gate
+     * \param ctrl Classical control dit index
+     * \param target Target qudit indexes; the gate \a U is applied on every one
+     * of them depending on the values of the classical control dits
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
     QCircuitDescription& cCTRL(const cmat& U, idx ctrl,
                                const std::vector<idx>& target,
                                std::string name = "") {
@@ -1021,6 +1241,16 @@ class QCircuitDescription : public IDisplay {
     }
 
     // multiple ctrl single target
+    /**
+     * \brief Applies the single qudit controlled gate \a U with multiple
+     * classical control dits listed in \a ctrl on the target qudit \a target
+     *
+     * \param U Single qudit quantum gate
+     * \param ctrl Classical control dits indexes
+     * \param target Target qudit index
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
     QCircuitDescription& cCTRL(const cmat& U, const std::vector<idx>& ctrl,
                                idx target, std::string name = "") {
         // EXCEPTION CHECKS
@@ -1068,6 +1298,18 @@ class QCircuitDescription : public IDisplay {
     }
 
     // multiple ctrl multiple targets
+    /**
+     * \brief Applies the single qudit controlled gate \a U with multiple
+     * classical control dits listed in \a ctrl on every qudit listed in
+     * \a target
+     *
+     * \param U Single qudit quantum gate
+     * \param ctrl Classical control dits indexes
+     * \param target Target qudit indexes; the gate \a U is applied on every one
+     * of them depending on the values of the classical control dits
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
     QCircuitDescription& cCTRL(const cmat& U, const std::vector<idx>& ctrl,
                                const std::vector<idx>& target,
                                std::string name = "") {
@@ -1127,6 +1369,18 @@ class QCircuitDescription : public IDisplay {
     }
 
     //  custom controlled gate with multiple controls and multiple targets
+    /**
+     * \brief Applies the custom multiple-qudit controlled gate \a U with
+     * multiple classical control dits listed in \a ctrl on the qudit indexes
+     * specified by \a target
+     *
+     * \param U Multiple-qudit quantum gate
+     * \param ctrl Classical control dits indexes
+     * \param target Target qudit indexes where the gate \a U is applied
+     * depending on the values of the classical control dits
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
     QCircuitDescription& cCTRL_custom(const cmat& U,
                                       const std::vector<idx>& ctrl,
                                       const std::vector<idx>& target,
@@ -1622,10 +1876,10 @@ class QCircuit : public IDisplay {
                             }
                         }
                         if (should_apply) {
-                            psi_ =
-                                apply(psi_, powm(qcd_.get_gates()[q_ip_].gate_,
-                                                 first_dit),
-                                      target_rel_pos, qcd_.get_d());
+                            psi_ = apply(
+                                psi_,
+                                powm(qcd_.get_gates()[q_ip_].gate_, first_dit),
+                                target_rel_pos, qcd_.get_d());
                         }
                     }
                     break;
