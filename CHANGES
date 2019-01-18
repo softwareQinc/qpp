@@ -24,7 +24,7 @@ In progress - pre-release
     - Added qpp::experimental::QCircuitDescription and
       qpp::experimental::QCircuit classes in "experimental/experimental.h" for
       simulating qudit quantum circuits
-      BE AWARE: this is work in progress, not yet complete, hence still buggy
+      BE AWARE: this is work in progress, not yet complete, may still be buggy
 
 Version 1.1 - 26 November 2018
     - Added new functions in "operations.h":
