@@ -578,6 +578,20 @@ class QuditAlreadyMeasured : public Exception {
 };
 
 /**
+ * \class qpp::exception::Duplicates
+ * \brief System (e.g. std::vector) has duplicates
+ *
+ */
+class Duplicates : public Exception {
+public:
+    std::string type_description() const override {
+        return "System (e.g. std::vector) has duplicates";
+    }
+
+    using Exception::Exception;
+};
+
+/**
  * \class qpp::exception::CustomException
  * \brief Custom exception
  *

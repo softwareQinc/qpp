@@ -651,6 +651,15 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     // getters
+
+    /**
+     * \brief Get the name of the most common qubit gates
+     * \note Assumes that the gate \a U is represented by a square matrix. If
+     * not, returns the empty string
+     *
+     * \param U Complex matrix representing the quantum gate
+     * \return The name of the gate (if any), otherwise the empty string
+     */
     std::string get_name(const cmat& U) const {
         // EXCEPTION CHECKS
 
@@ -660,7 +669,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // check square matrix
         if (!internal::check_square_mat(U))
-            throw exception::MatrixNotSquare("qpp::Gates::get_name()");
+            return "";
 
         // END EXCEPTION CHECKS
 
