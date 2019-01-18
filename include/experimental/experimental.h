@@ -43,7 +43,18 @@ namespace experimental {
 //  depths?!
 //  best is to apply it gate by gate in QCircuitDescription::gate(...)
 
-// TODO: display in JSon format
+// TODO: display in JSon format, like
+/*
+
+{
+"nq": 3, "nc": 3, "d": 2, "name":"circuit name",
+"steps":
+[{"Step":10, "Type":"|> MEASURE_V", "target" : [0], "c_reg" : 0, "name" :
+"Id2"},
+{"Step":11, "Type":"SINGLE", "target" : [0], "c_reg" : 0, "name" : "Id2"}]
+}
+
+*/
 
 /**
  * \class qpp::QCircuitDescription
