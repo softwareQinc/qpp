@@ -320,13 +320,14 @@ template&lt;typename T  = std::chrono::duration&lt;double&gt;, typename CLOCK_T 
 </div><div class="memdoc">
 
 <p><a class="el" href="classqpp_1_1_i_display.html#ae994cbe2f2a0302dc0acc377fc3d51ab" title="Must be overridden by all derived classes. ">qpp::IDisplay::display()</a> override </p>
+<p>Writes to the output stream the number of tics (specified by T) that passed between the instantiation/reset and invocation of <a class="el" href="classqpp_1_1_timer.html#a05a542928cd438e98300051789ab846a" title="Stops the chronometer. ">qpp::Timer::toc()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">os</td><td>Output stream </td></tr>
+    <tr><td class="paramname">os</td><td>Output stream passed by reference </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Writes to the output stream the number of tics (specified by T) that passed between the instantiation/reset and invocation of <a class="el" href="classqpp_1_1_timer.html#a05a542928cd438e98300051789ab846a" title="Stops the chronometer. ">qpp::Timer::toc()</a>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the output stream </dd></dl>
 
 <p>Implements <a class="el" href="classqpp_1_1_i_display.html#ae994cbe2f2a0302dc0acc377fc3d51ab">qpp::IDisplay</a>.</p>
 
@@ -579,7 +580,7 @@ template&lt;typename T  = std::chrono::duration&lt;double&gt;, typename CLOCK_T 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_timer.html">Timer</a></li>
-    <li class="footer">Generated on Fri Jan 18 2019 13:24:44 for Quantum++ by
+    <li class="footer">Generated on Fri Jan 18 2019 17:38:00 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

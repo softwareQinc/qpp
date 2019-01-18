@@ -76,3 +76,4 @@
 \form#75:$ n \geq \lceil\log_2(N)\rceil $
 \form#76:$ |x\rangle \longrightarrow |ax\mathrm{ mod }N\rangle $
 \form#77:$ |x\rangle \longrightarrow |ax \mathrm{ mod } N\rangle $
+\form#78:$|0\rangle^{\otimes nq}$

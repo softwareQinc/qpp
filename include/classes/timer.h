@@ -131,8 +131,8 @@ class Timer : public IDisplay {
      * that passed between the instantiation/reset and invocation
      * of qpp::Timer::toc().
      *
-     * \param os Output stream
-     * \return Output stream
+     * \param os Output stream passed by reference
+     * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
         return os << tics();

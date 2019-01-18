@@ -88,8 +88,10 @@ Collaboration diagram for qpp::experimental::QCircuitDescription::MeasureStep:</
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac530a1831b631865f7b82e0feb488da7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_measure_step.html#ac530a1831b631865f7b82e0feb488da7">MeasureStep</a> ()=default</td></tr>
+<tr class="memdesc:ac530a1831b631865f7b82e0feb488da7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#ac530a1831b631865f7b82e0feb488da7">More...</a><br /></td></tr>
 <tr class="separator:ac530a1831b631865f7b82e0feb488da7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0275b3050d23ab16e9673c81dcd82f81"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_measure_step.html#a0275b3050d23ab16e9673c81dcd82f81">MeasureStep</a> (<a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html#a0017a75359670f16bd1a26f1f914c0b2">MeasureType</a> measurement_type, const std::vector&lt; <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &amp;mats, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> c_reg, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> step_no, std::string name=&quot;&quot;)</td></tr>
+<tr class="memdesc:a0275b3050d23ab16e9673c81dcd82f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a measurement step instance.  <a href="#a0275b3050d23ab16e9673c81dcd82f81">More...</a><br /></td></tr>
 <tr class="separator:a0275b3050d23ab16e9673c81dcd82f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -137,6 +139,8 @@ Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Default constructor. </p>
 
 </div>
 </div>
@@ -197,6 +201,19 @@ Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Constructs a measurement step instance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">measurement_type</td><td>Measurement type </td></tr>
+    <tr><td class="paramname">mats</td><td>Vector of measurement matrices (can be only one or many for Kraus measurements) </td></tr>
+    <tr><td class="paramname">target</td><td>Target qudit indexes </td></tr>
+    <tr><td class="paramname">c_reg</td><td>Classical register where the value of the measurement is stored </td></tr>
+    <tr><td class="paramname">step_no</td><td>Circuit step number </td></tr>
+    <tr><td class="paramname">name</td><td>Optional gate name </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -306,7 +323,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="namespaceqpp_1_1experimental.html">experimental</a></li><li class="navelem"><a class="el" href="classqpp_1_1experimental_1_1_q_circuit_description.html">QCircuitDescription</a></li><li class="navelem"><a class="el" href="structqpp_1_1experimental_1_1_q_circuit_description_1_1_measure_step.html">MeasureStep</a></li>
-    <li class="footer">Generated on Fri Jan 18 2019 13:24:45 for Quantum++ by
+    <li class="footer">Generated on Fri Jan 18 2019 17:38:01 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

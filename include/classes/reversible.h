@@ -364,7 +364,7 @@ class Dynamic_bitset : public IDisplay {
     /**
      * \brief qpp::IDisplay::display() override, displays the bitset bit by bit
      *
-     * \param os Output stream
+     * \param os Output stream passed by reference
      * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {

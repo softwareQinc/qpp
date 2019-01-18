@@ -62,7 +62,7 @@ class QCircuitDescription : public IDisplay {
 
   public:
     /**
-     * \brief Type of gate being executed at one step
+     * \brief Type of gate being executed in a gate step
      */
     enum class GateType {
         NONE, ///< represents no gate
@@ -91,11 +91,10 @@ class QCircuitDescription : public IDisplay {
         ///< multiple controls and single target
 
         MULTIPLE_CTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< multiple controls and multiple
-        ///< targets
+        ///< multiple controls and multiple targets
 
-        CUSTOM_CTRL, ///< custom controlled gate with multiple
-        ///< controls and multiple targets
+        CUSTOM_CTRL, ///< custom controlled gate with multiple controls
+        ///< and multiple targets
 
         SINGLE_cCTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
         ///< one classical control and one target
@@ -109,11 +108,11 @@ class QCircuitDescription : public IDisplay {
         MULTIPLE_cCTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate
         ///< with multiple classical controls and multiple targets
 
-        CUSTOM_cCTRL, ///< custom controlled gate with multiple
-        ///< controls and multiple targets
+        CUSTOM_cCTRL, ///< custom controlled gate with multiple controls and
+        ///< multiple targets
     };
     /**
-     * \brief Type of measurement being executed at one step
+     * \brief Type of measurement being executed in a measurement step
      */
     enum class MeasureType {
         NONE, ///< represents no measurement
@@ -124,8 +123,7 @@ class QCircuitDescription : public IDisplay {
         ///< or rank-1 projectors specified by the columns of matrix \a V
 
         MEASURE_V_MANY, ///< measurement of multiple qudits in the orthonormal
-        ///< basis or rank-1 projectors specified by the columns of matrix
-        ///< \a V
+        ///< basis or rank-1 projectors specified by the columns of matrix \a V
     };
 
   private:
@@ -139,7 +137,20 @@ class QCircuitDescription : public IDisplay {
         std::vector<idx> target_; ///< target where the gate is being applied
         idx step_no_;             ///< step number
         std::string name_;        ///< custom name of the step
+        /**
+         * \brief Default constructor
+         */
         GateStep() = default;
+        /**
+         * \brief Constructs a gate step instance
+         *
+         * \param gate_type Gate type
+         * \param gate Quantum gate
+         * \param ctrl Control qudit indexes
+         * \param target Target qudit indexes
+         * \param step_no Circuit step number
+         * \param name Optional gate name
+         */
         GateStep(GateType gate_type, const cmat& gate,
                  const std::vector<idx>& ctrl, const std::vector<idx>& target,
                  idx step_no, std::string name = "")
@@ -159,7 +170,22 @@ class QCircuitDescription : public IDisplay {
         ///< result is being stored
         idx step_no_;      ///< step number
         std::string name_; ///< custom name of the step
+        /**
+         * \brief Default constructor
+         */
         MeasureStep() = default;
+        /**
+         * \brief Constructs a measurement step instance
+         *
+         * \param measurement_type Measurement type
+         * \param mats Vector of measurement matrices (can be only one or many
+         * for Kraus measurements)
+         * \param target Target qudit indexes
+         * \param c_reg Classical register where the value of the measurement is
+         * stored
+         * \param step_no Circuit step number
+         * \param name Optional gate name
+         */
         MeasureStep(MeasureType measurement_type, const std::vector<cmat>& mats,
                     const std::vector<idx>& target, idx c_reg, idx step_no,
                     std::string name = "")
@@ -319,8 +345,8 @@ class QCircuitDescription : public IDisplay {
      * \param name Circuit description name (optional)
      */
     QCircuitDescription(idx nq, idx nc = 0, idx d = 2, std::string name = "")
-        : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false),
-          step_cnt_{0} {
+        : nq_{nq}, nc_{nc}, d_{d}, name_{name},
+          measured_(nq, false), step_cnt_{0} {
         // EXCEPTION CHECKS
 
         if (nq == 0)
@@ -915,7 +941,7 @@ class QCircuitDescription : public IDisplay {
      * control qudits listed in \a ctrl on the target qudit \a target
      *
      * \param U Single qudit quantum gate
-     * \param ctrl Control qudits indexes
+     * \param ctrl Control qudit indexes
      * \param target Target qudit index
      * \param name Optional gate name
      * \return Reference to the current instance
@@ -980,7 +1006,7 @@ class QCircuitDescription : public IDisplay {
      * control qudits listed in \a ctrl on every qudit listed in \a target
      *
      * \param U Single qudit quantum gate
-     * \param ctrl Control qudits indexes
+     * \param ctrl Control qudit indexes
      * \param target Target qudit indexes; the gate \a U is applied on every one
      * of them depending on the values of the control qudits
      * \param name Optional gate name
@@ -1062,7 +1088,7 @@ class QCircuitDescription : public IDisplay {
      * specified by \a target
      *
      * \param U Multiple-qudit quantum gate
-     * \param ctrl Control qudits indexes
+     * \param ctrl Control qudit indexes
      * \param target Target qudit indexes where the gate \a U is applied
      * depending on the values of the control qudits
      * \param name Optional gate name
@@ -1605,11 +1631,11 @@ class QCircuitDescription : public IDisplay {
     /**
      * \brief qpp::IDisplay::display() override
      *
-     * Writes to the output stream a textual representation of the
-     * quantum circuit description
+     * Writes to the output stream a textual representation of the quantum
+     * circuit description
      *
-     * \param os Output stream
-     * \return Output stream
+     * \param os Output stream passed by reference
+     * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
         os << "nq = " << nq_ << ", nc = " << nc_ << ", d = " << d_;
@@ -1677,15 +1703,18 @@ class QCircuit : public IDisplay {
     idx q_ip_; ///< quantum gates instruction pointer
     idx ip_;   ///< combined (measurements and gates) instruction pointer
 
-    // mark qudit i as measured then re-label accordingly the remaining
-    // non-measured qudits
+    /**
+     * \brief Marks qudit \a i as measured then re-label accordingly the
+     * remaining non-measured qudits
+     * \param i Qudit index
+     */
     void set_measured_(idx i) {
-        if (was_measured(i))
+        if (get_measured(i))
             throw exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::set_measured_()");
         subsys_[i] = idx_infty; // set qudit i to measured state
         for (idx m = i; m < qcd_.get_nq(); ++m) {
-            if (!was_measured(m)) {
+            if (!get_measured(m)) {
                 --subsys_[m];
             }
         }
@@ -1693,10 +1722,15 @@ class QCircuit : public IDisplay {
 
     // giving a vector of non-measured qudits, get their relative position wrt
     // the measured qudits
+    /**
+     * \brief Giving a vector \a V of non-measured qudits, get their relative
+     * position with respect to the measured qudits
+     * \param v Qudit index
+     */
     std::vector<idx> get_relative_pos_(std::vector<idx> v) {
         idx vsize = v.size();
         for (idx i = 0; i < vsize; ++i) {
-            if (was_measured(v[i]))
+            if (get_measured(v[i]))
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::get_relative_pos_()");
             v[i] = subsys_[v[i]];
@@ -1705,6 +1739,14 @@ class QCircuit : public IDisplay {
     }
 
   public:
+    /**
+     * \brief Constructs a quantum circuit out of a quantum circuit description
+     *
+     * \note The initial underlying quantum state is set to
+     * \f$|0\rangle^{\otimes n}\f$
+     *
+     * \param qcd Quantum circuit description
+     */
     QCircuit(const QCircuitDescription& qcd)
         : qcd_{qcd}, psi_{st.zero(qcd.get_nq(), qcd.get_d())},
           dits_(qcd.get_nc(), 0), probs_(qcd.get_nc(), 0),
@@ -1713,11 +1755,27 @@ class QCircuit : public IDisplay {
     }
 
     // getters
-
+    /**
+     * \brief Underlying quantum state
+     *
+     * \return Underlying quantum state
+     */
     ket get_psi() const { return psi_; }
 
+    /**
+     * \brief Vector with the values of the underlying classical dits
+     *
+     * \return Vector of underlying classical dits
+     */
     std::vector<idx> get_dits() const { return dits_; }
 
+    /**
+     * \brief Value of the classical dit at position \a i
+     *
+     * \param i Classical dit index
+     *
+     * \return Value of the classical dit at position \a i
+     */
     idx get_dit(idx i) const {
         if (i > qcd_.get_nc())
             throw exception::OutOfRange("qpp::QCircuit::get_dit()");
@@ -1725,51 +1783,113 @@ class QCircuit : public IDisplay {
         return dits_[i];
     }
 
+    /**
+     * \brief Vector of underlying measurement outcome probabilities
+     *
+     * \note The probability vector has the same length as the vector of
+     * classical dits. If the measurement result is stored at the index
+     * \a c_reg, then the outcome probability is automatically stored at the
+     * same index \a c_reg in the probability vector.
+     *
+     * \return Vector of underlying measurement outcome probabilities
+     */
     std::vector<double> get_probs() const { return probs_; }
 
-    idx was_measured(idx i) const { return subsys_[i] == idx_infty; }
+    /**
+     * \brief Check whether qudit \a i was already measured
+     *
+     * \param i Qudit index
+     * \return True if qudit \a i was already measured, false othwewise
+     */
+    idx get_measured(idx i) const { return subsys_[i] == idx_infty; }
 
+    /**
+     * \brief Vector of already measured qudit indexes
+     *
+     * \return Vector of already measured qudit indexes
+     */
     std::vector<idx> get_measured() const {
         std::vector<idx> result;
         for (idx i = 0; i < qcd_.get_nq(); ++i)
-            if (was_measured(i))
+            if (get_measured(i))
                 result.emplace_back(i);
 
         return result;
     }
 
-    // qudits that were not (yet) measured
+    /**
+     * \brief Vector of non-measured qudit indexes
+     *
+     * \return Vector of non-measured qudit indexes
+     */
     std::vector<idx> get_not_measured() const {
         std::vector<idx> result;
         for (idx i = 0; i < qcd_.get_nq(); ++i)
-            if (!was_measured(i))
+            if (!get_measured(i))
                 result.emplace_back(i);
 
         return result;
     }
 
-    // measurement instruction pointer
+    /**
+     * \brief Measurement instruction pointer
+     *
+     * Points to the index of the next measurement to be executed from the
+     * std::vector<MeasureStep> of measurements in the circuit description
+     *
+     * \return Measurement instruction pointer
+     */
     idx get_m_ip() const { return m_ip_; }
 
-    // quantum instruction pointer
+    /**
+     * \brief Quantum instruction pointer
+     *
+     * Points to the index of the next quantum gate to be executed from the
+     * std::vector<GateStep> of quantum gates in the circuit description
+     *
+     * \return Quantum instruction pointer
+     */
     idx get_q_ip() const { return q_ip_; }
 
-    // combined instruction pointer
+    /**
+     * \brief Total instruction pointer
+     *
+     * \return The sum of measurement instruction pointer and quantum
+     * instruction pointer
+     */
     idx get_ip() const { return ip_; }
 
+    /**
+     * \brief Quantum circuit description
+     *
+     * \return Quantum circuit description
+     */
     const QCircuitDescription& get_circuit_description() const { return qcd_; }
     // end getters
 
     // setters
-    QCircuit& set_dit(idx i, idx val) {
+    /**
+     * \brief Sets the classical dit at position \a i
+     *
+     * \param i Classical dit index
+     * \param value Classical dit value
+     * \return Reference to the current instance
+     */
+    QCircuit& set_dit(idx i, idx value) {
         if (i > qcd_.get_nc())
             throw exception::OutOfRange("qpp::QCircuit::set_dit()");
-        dits_[i] = val;
+        dits_[i] = value;
 
         return *this;
     }
     // end setters
 
+    /**
+     * \brief Resets the quantum circuit
+     *
+     * Re-initializes everything to zero and sets the initial state to
+     * \f$|0\rangle^{\otimes n}\f$
+     */
     void reset() {
         psi_ = st.zero(qcd_.get_nq(), qcd_.get_d());
         dits_ = std::vector<idx>(qcd_.get_nc(), 0);
@@ -1780,6 +1900,12 @@ class QCircuit : public IDisplay {
         ip_ = 0;
     }
 
+    /**
+     * \brief Executes the quantum circuit
+     *
+     * \param step How many steps to execute, by default executes until the end
+     * \param verbose If true, displays at console every executed step
+     */
     void run(idx step = idx_infty, bool verbose = false) {
         idx no_steps;
         if (step == idx_infty)
@@ -1936,10 +2062,10 @@ class QCircuit : public IDisplay {
                             }
                         }
                         if (should_apply) {
-                            psi_ =
-                                apply(psi_, powm(qcd_.get_gates()[q_ip_].gate_,
-                                                 first_dit),
-                                      target_rel_pos, qcd_.get_d());
+                            psi_ = apply(
+                                psi_,
+                                powm(qcd_.get_gates()[q_ip_].gate_, first_dit),
+                                target_rel_pos, qcd_.get_d());
                         }
                     }
                     break;
@@ -1950,6 +2076,15 @@ class QCircuit : public IDisplay {
         --q_ip_;
     }
 
+    /**
+     * \brief qpp::IDisplay::display() override
+     *
+     * Writes to the output stream a textual representation of the quantum
+     * circuit
+     *
+     * \param os Output stream passed by reference
+     * \return Reference to the output stream
+     */
     std::ostream& display(std::ostream& os) const override {
         os << "measured: " << disp(get_measured(), ",") << '\n';
         os << "dits: " << disp(dits_, ",") << '\n';
