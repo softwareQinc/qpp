@@ -624,7 +624,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param A Eigen expression
      * \param pos Position
      * \param n Number of subsystems
-     * \param d Subsystem dimension
+     * \param d Subsystem dimensions
      * \return Tensor product
      * \f$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
      * with \a A on position \a pos, as a dynamic matrix

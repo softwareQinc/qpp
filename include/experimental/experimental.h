@@ -45,6 +45,11 @@ namespace experimental {
 
 // TODO: display in JSon format
 
+/**
+ * \class qpp::QCircuitDescription
+ * \brief Quantum circuit description class
+ * \see qpp::QCircuit
+ */
 class QCircuitDescription : public IDisplay {
     const idx nq_;                         ///< number of qudits
     const idx nc_;                         ///< number of classical "dits"
@@ -57,10 +62,10 @@ class QCircuitDescription : public IDisplay {
 
   public:
     /**
-     * \brief Type of operation being executed at one step
+     * \brief Type of gate being executed at one step
      */
     enum class GateType {
-        NONE, ///< signals no gate
+        NONE, ///< represents no gate
 
         SINGLE, ///< unitary gate on a single qudit
 
@@ -107,8 +112,11 @@ class QCircuitDescription : public IDisplay {
         CUSTOM_cCTRL, ///< custom controlled gate with multiple
         ///< controls and multiple targets
     };
+    /**
+    * \brief Type of measurement being executed at one step
+    */
     enum class MeasureType {
-        NONE, ///< signals no measurement
+        NONE, ///< represents no measurement
 
         MEASURE_Z, ///< Z measurement of single qudit
 
@@ -122,7 +130,7 @@ class QCircuitDescription : public IDisplay {
 
   private:
     /**
-     * \brief One step consisting of unitary gates in the circuit
+     * \brief One step consisting only of gates/operators in the circuit
      */
     struct GateStep {
         GateType gate_type_ = GateType::NONE; ///< gate type
@@ -139,6 +147,9 @@ class QCircuitDescription : public IDisplay {
               step_no_{step_no}, name_{name} {}
     };
 
+    /**
+     * \brief One step consisting only of measurements in the circuit
+     */
     struct MeasureStep {
         MeasureType measurement_type_ = MeasureType::NONE; ///< measurement type
         std::vector<cmat> mats_;  ///< matrix/matrices that specify the
@@ -156,6 +167,14 @@ class QCircuitDescription : public IDisplay {
               c_reg_{c_reg}, step_no_{step_no}, name_{name} {}
     };
 
+    /**
+     * \brief Extraction operator overload for
+     * qpp::QCircuitDescription::GateType enum class
+     *
+     * \param os Output stream
+     * \param gate_type qpp::QCircuitDescription::GateType enum class
+     * \return Output stream
+     */
     friend std::ostream& operator<<(std::ostream& os,
                                     const GateType& gate_type) {
         switch (gate_type) {
@@ -218,6 +237,14 @@ class QCircuitDescription : public IDisplay {
         return os;
     }
 
+    /**
+     * \brief Extraction operator overload for
+     * qpp::QCircuitDescription::MeasureType enum class
+     *
+     * \param os Output stream
+     * \param gate_type qpp::QCircuitDescription::MeasureType enum class
+     * \return Output stream
+     */
     friend std::ostream& operator<<(std::ostream& os,
                                     const MeasureType& measure_type) {
         switch (measure_type) {
@@ -238,6 +265,14 @@ class QCircuitDescription : public IDisplay {
         return os;
     }
 
+    /**
+     * \brief Extraction operator overload for
+     * qpp::QCircuitDescription::GateStep class
+     *
+     * \param os Output stream
+     * \param gate_type qpp::QCircuitDescription::GateStep class
+     * \return Output stream
+     */
     friend std::ostream& operator<<(std::ostream& os,
                                     const GateStep& gate_step) {
         os << gate_step.gate_type_ << ", ";
@@ -249,6 +284,14 @@ class QCircuitDescription : public IDisplay {
         return os;
     }
 
+    /**
+     * \brief Extraction operator overload for
+     * qpp::QCircuitDescription::MeasureStep class
+     *
+     * \param os Output stream
+     * \param gate_type qpp::QCircuitDescription::MeasureStep enum class
+     * \return Output stream
+    */
     friend std::ostream& operator<<(std::ostream& os,
                                     const MeasureStep& measure_step) {
         os << measure_step.measurement_type_ << ", ";
@@ -260,11 +303,17 @@ class QCircuitDescription : public IDisplay {
         return os;
     }
 
-    ///< quantum circuit representation
-    std::vector<GateStep> gates_{};
-    std::vector<MeasureStep> measurements_{};
+    std::vector<GateStep> gates_{};           ///< gates
+    std::vector<MeasureStep> measurements_{}; ///< measurements
 
   public:
+    /**
+     * \brief Constructs a quantum circuit description
+     * \param nq Number of qbits
+     * \param nc Number of classical dits
+     * \param d Subsystem dimensions (optional, default is qubit, i.e. d = 2)
+     * \param name Circuit description name (optional)
+     */
     QCircuitDescription(idx nq, idx nc = 0, idx d = 2, std::string name = "")
         : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false),
           step_cnt_{0} {
