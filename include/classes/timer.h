@@ -127,10 +127,12 @@ class Timer : public IDisplay {
     /**
      * \brief qpp::IDisplay::display() override
      *
-     * \param os Output stream
-     * \return Writes to the output stream the number of tics (specified by T)
+     * Writes to the output stream the number of tics (specified by T)
      * that passed between the instantiation/reset and invocation
      * of qpp::Timer::toc().
+     *
+     * \param os Output stream
+     * \return Output stream
      */
     std::ostream& display(std::ostream& os) const override {
         return os << tics();

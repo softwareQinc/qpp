@@ -309,14 +309,18 @@ class QCircuitDescription : public IDisplay {
   public:
     /**
      * \brief Constructs a quantum circuit description
+     *
+     * \note The measurement results can only be stored in the classical dits
+     * of which number is specified by \a nc
+     *
      * \param nq Number of qbits
      * \param nc Number of classical dits
      * \param d Subsystem dimensions (optional, default is qubit, i.e. \a d = 2)
      * \param name Circuit description name (optional)
      */
     QCircuitDescription(idx nq, idx nc = 0, idx d = 2, std::string name = "")
-        : nq_{nq}, nc_{nc}, d_{d}, name_{name},
-          measured_(nq, false), step_cnt_{0} {
+        : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false),
+          step_cnt_{0} {
         // EXCEPTION CHECKS
 
         if (nq == 0)
@@ -676,8 +680,8 @@ class QCircuitDescription : public IDisplay {
     }
 
     /**
-     * \brief Applies the custom multiple qudit gate \a U on the qudit indexes
-     * specified by \a target
+     * \brief Jointly applies the custom multiple qudit gate \a U on the qudit
+     * indexes specified by \a target
      *
      * \param U Multiple qudit quantum gate
      * \param target Subsystem indexes where the gate \a U is applied
@@ -685,8 +689,9 @@ class QCircuitDescription : public IDisplay {
      *
      * \return Reference to the current instance
      */
-    QCircuitDescription& gate(const cmat& U, const std::vector<idx>& target,
-                              std::string name = "") {
+    QCircuitDescription& gate_custom(const cmat& U,
+                                     const std::vector<idx>& target,
+                                     std::string name = "") {
         // EXCEPTION CHECKS
 
         idx n = static_cast<idx>(target.size());
@@ -695,28 +700,30 @@ class QCircuitDescription : public IDisplay {
         try {
             // check valid target
             if (n == 0)
-                throw exception::ZeroSize("qpp::QCircuitDescription::gate()");
+                throw exception::ZeroSize(
+                    "qpp::QCircuitDescription::gate_custom()");
             for (idx i = 0; i < n; ++i)
                 if (target[i] > nq_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::gate()");
             // check no duplicates
             if (!internal::check_no_duplicates(target))
-                throw exception::Duplicates("qpp::QCircuitDescription::gate()");
+                throw exception::Duplicates(
+                    "qpp::QCircuitDescription::gate_custom()");
             // check target was not measured before
             for (idx i = 0; i < n; ++i)
                 if (get_measured(target[i]))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuitDescription::gate()");
+                        "qpp::QCircuitDescription::gate_custom()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
                 throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::gate()");
+                    "qpp::QCircuitDescription::gate_custom()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::gate()");
+                    "qpp::QCircuitDescription::gate_custom()");
         } catch (qpp::exception::Exception& e) {
             std::cerr << "At STEP " << step_cnt_ << "\n";
             throw;
@@ -731,6 +738,7 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
+    // QFT
     /**
      * \brief Applies the quantum Fourier transform (as a series of gates) on
      * the qudit indexes specified by \a target
@@ -758,6 +766,7 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
+    // TFQ
     /**
      * \brief Applies the inverse quantum Fourier transform (as a series of
      * gates) on the qudit indexes specified by \a target
@@ -772,7 +781,7 @@ class QCircuitDescription : public IDisplay {
         // EXCEPTION CHECKS
 
         try {
-            throw exception::NotImplemented("qpp::QCircuitDescription::QFT()");
+            throw exception::NotImplemented("qpp::QCircuitDescription::TFQ()");
         } catch (qpp::exception::Exception& e) {
             std::cerr << "At STEP " << step_cnt_ << "\n";
             throw;
@@ -784,6 +793,7 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
+    // single ctrl single target
     /**
      * \brief Applies the single qudit controlled gate \a U with control qudit
      * \a ctrl and target qudit \a target
@@ -829,6 +839,7 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
+    // single ctrl multiple target
     /**
      * \brief Applies the single qudit controlled gate \a U with control qudit
      * \a ctrl on every qudit listed in \a target
@@ -898,6 +909,7 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
+    // multiple ctrl single target
     /**
      * \brief Applies the single qudit controlled gate \a U with multiple
      * control qudits listed in \a ctrl on the target qudit \a target
@@ -961,6 +973,7 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
+    // multiple ctrl multiple target
     // FIXME
     /**
      * \brief Applies the single qudit controlled gate \a U with multiple
@@ -1042,10 +1055,11 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
+    // custom multiple control composed target
     /**
-     * \brief Applies the custom multiple-qudit controlled gate \a U with
-     * multiple control qudits listed in \a ctrl on the qudit indexes specified
-     * by \a target
+     * \brief Jointly applies the custom multiple-qudit controlled gate \a U
+     * with multiple control qudits listed in \a ctrl on the qudit indexes
+     * specified by \a target
      *
      * \param U Multiple-qudit quantum gate
      * \param ctrl Control qudits indexes
@@ -1128,6 +1142,7 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
+    // single ctrl single target
     // FIXME, use the corresponding dits
     /**
      * \brief Applies the single qubit controlled gate \a U with classical
@@ -1169,8 +1184,8 @@ class QCircuitDescription : public IDisplay {
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, U,
-                            std::vector<idx>{ctrl_dit}, std::vector<idx>{target},
-                            step_cnt_++, name);
+                            std::vector<idx>{ctrl_dit},
+                            std::vector<idx>{target}, step_cnt_++, name);
 
         return *this;
     }
@@ -1181,13 +1196,13 @@ class QCircuitDescription : public IDisplay {
      * control dit \a ctrl on every qudit listed in \a target
      *
      * \param U Single qudit quantum gate
-     * \param ctrl Classical control dit index
+     * \param ctrl_dit Classical control dit index
      * \param target Target qudit indexes; the gate \a U is applied on every one
      * of them depending on the values of the classical control dits
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& cCTRL(const cmat& U, idx ctrl,
+    QCircuitDescription& cCTRL(const cmat& U, idx ctrl_dit,
                                const std::vector<idx>& target,
                                std::string name = "") {
         // EXCEPTION CHECKS
@@ -1195,8 +1210,8 @@ class QCircuitDescription : public IDisplay {
         idx n = static_cast<idx>(target.size());
 
         try {
-            // check valid ctrl
-            if (ctrl > nc_)
+            // check valid ctrl_dit
+            if (ctrl_dit > nc_)
                 throw exception::OutOfRange(
                     "qpp::QCircuitDescription::cCTRL()");
 
@@ -1235,7 +1250,8 @@ class QCircuitDescription : public IDisplay {
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, U,
-                            std::vector<idx>{ctrl}, target, step_cnt_++, name);
+                            std::vector<idx>{ctrl_dit}, target, step_cnt_++,
+                            name);
 
         return *this;
     }
@@ -1246,23 +1262,23 @@ class QCircuitDescription : public IDisplay {
      * classical control dits listed in \a ctrl on the target qudit \a target
      *
      * \param U Single qudit quantum gate
-     * \param ctrl Classical control dits indexes
+     * \param ctrl_dits Classical control dits indexes
      * \param target Target qudit index
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& cCTRL(const cmat& U, const std::vector<idx>& ctrl,
+    QCircuitDescription& cCTRL(const cmat& U, const std::vector<idx>& ctrl_dits,
                                idx target, std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
-            // check valid ctrl
-            for (idx i = 0; i < ctrl.size(); ++i)
-                if (ctrl[i] > nc_)
+            // check valid ctrl_dits
+            for (idx i = 0; i < ctrl_dits.size(); ++i)
+                if (ctrl_dits[i] > nc_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::cCTRL()");
-            // check no duplicates ctrl
-            if (!internal::check_no_duplicates(ctrl))
+            // check no duplicates ctrl_dits
+            if (!internal::check_no_duplicates(ctrl_dits))
                 throw exception::Duplicates(
                     "qpp::QCircuitDescription::cCTRL()");
 
@@ -1291,8 +1307,9 @@ class QCircuitDescription : public IDisplay {
 
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
-        gates_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, U, ctrl,
-                            std::vector<idx>{target}, step_cnt_++, name);
+        gates_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, U,
+                            ctrl_dits, std::vector<idx>{target}, step_cnt_++,
+                            name);
 
         return *this;
     }
@@ -1304,13 +1321,13 @@ class QCircuitDescription : public IDisplay {
      * \a target
      *
      * \param U Single qudit quantum gate
-     * \param ctrl Classical control dits indexes
+     * \param ctrl_dits Classical control dits indexes
      * \param target Target qudit indexes; the gate \a U is applied on every one
      * of them depending on the values of the classical control dits
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& cCTRL(const cmat& U, const std::vector<idx>& ctrl,
+    QCircuitDescription& cCTRL(const cmat& U, const std::vector<idx>& ctrl_dits,
                                const std::vector<idx>& target,
                                std::string name = "") {
         // EXCEPTION CHECKS
@@ -1318,13 +1335,13 @@ class QCircuitDescription : public IDisplay {
         idx n = static_cast<idx>(target.size());
 
         try {
-            // check valid ctrl
-            for (idx i = 0; i < ctrl.size(); ++i)
-                if (ctrl[i] > nc_)
+            // check valid ctrl_dits
+            for (idx i = 0; i < ctrl_dits.size(); ++i)
+                if (ctrl_dits[i] > nc_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::cCTRL()");
-            // check no duplicates ctrl
-            if (!internal::check_no_duplicates(ctrl))
+            // check no duplicates ctrl_dits
+            if (!internal::check_no_duplicates(ctrl_dits))
                 throw exception::Duplicates(
                     "qpp::QCircuitDescription::cCTRL()");
 
@@ -1362,27 +1379,28 @@ class QCircuitDescription : public IDisplay {
 
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
-        gates_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, U, ctrl,
-                            std::vector<idx>{target}, step_cnt_++, name);
+        gates_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, U,
+                            ctrl_dits, std::vector<idx>{target}, step_cnt_++,
+                            name);
 
         return *this;
     }
 
     //  custom controlled gate with multiple controls and multiple targets
     /**
-     * \brief Applies the custom multiple-qudit controlled gate \a U with
-     * multiple classical control dits listed in \a ctrl on the qudit indexes
-     * specified by \a target
+     * \brief Jointly applies the custom multiple-qudit controlled gate \a U
+     * with multiple classical control dits listed in \a ctrl on the qudit
+     * indexes specified by \a target
      *
      * \param U Multiple-qudit quantum gate
-     * \param ctrl Classical control dits indexes
+     * \param ctrl_dits Classical control dits indexes
      * \param target Target qudit indexes where the gate \a U is applied
      * depending on the values of the classical control dits
      * \param name Optional gate name
      * \return Reference to the current instance
      */
     QCircuitDescription& cCTRL_custom(const cmat& U,
-                                      const std::vector<idx>& ctrl,
+                                      const std::vector<idx>& ctrl_dits,
                                       const std::vector<idx>& target,
                                       std::string name = "") {
         // EXCEPTION CHECKS
@@ -1391,13 +1409,13 @@ class QCircuitDescription : public IDisplay {
         idx D = static_cast<idx>(std::llround(std::pow(d_, n)));
 
         try {
-            // check valid ctrl
-            for (idx i = 0; i < ctrl.size(); ++i)
-                if (ctrl[i] > nc_)
+            // check valid ctrl_dits
+            for (idx i = 0; i < ctrl_dits.size(); ++i)
+                if (ctrl_dits[i] > nc_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::cCTRL_custom()");
-            // check no duplicates ctrl
-            if (!internal::check_no_duplicates(ctrl))
+            // check no duplicates ctrl_dits
+            if (!internal::check_no_duplicates(ctrl_dits))
                 throw exception::Duplicates(
                     "qpp::QCircuitDescription::cCTRL_custom()");
 
@@ -1436,13 +1454,22 @@ class QCircuitDescription : public IDisplay {
 
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
-        gates_.emplace_back(GateType::CUSTOM_cCTRL, U, ctrl, target,
+        gates_.emplace_back(GateType::CUSTOM_cCTRL, U, ctrl_dits, target,
                             step_cnt_++, name);
 
         return *this;
     }
 
     // Z measurement of single qudit
+    /**
+     * \brief Measurement of single qudit in the computational basis (Z-basis)
+     *
+     * \param i Qudit index
+     * \param c_reg Classical register where the value of the measurement is
+     * being stored
+     * \param name Optional measurement name, default is "Measure Z"
+     * \return Reference to the current instance
+     */
     QCircuitDescription& measureZ(idx i, idx c_reg, std::string name = "") {
         // EXCEPTION CHECKS
 
@@ -1478,6 +1505,18 @@ class QCircuitDescription : public IDisplay {
 
     // measurement of single qudit in the orthonormal basis or rank-1 projectors
     // specified by the columns of matrix V
+    /**
+     * \brief Measurement of single qudit in the orthonormal basis or rank-1
+     * projectors specified by the columns of matrix \a V
+     *
+     * \param V Orthonormal basis or rank-1 projectors specified by the
+     * columns of matrix V
+     * \param i Qudit index
+     * \param c_reg Classical register where the value of the measurement is
+     * stored
+     * \param name Optional measurement name
+     * \return Reference to the current instance
+     */
     QCircuitDescription& measureV(const cmat& V, idx i, idx c_reg,
                                   std::string name = "") {
         // EXCEPTION CHECKS
@@ -1514,6 +1553,18 @@ class QCircuitDescription : public IDisplay {
 
     // measurement of multiple qudits in the orthonormal basis or rank-1
     // projectors specified by the columns of matrix V
+    /**
+     * \brief Joint measurement of multiple qudits in the orthonormal basis or
+     * rank-1 projectors specified by the columns of matrix \a V
+     *
+     * \param V Orthonormal basis or rank-1 projectors specified by the
+     * columns of matrix V
+     * \param target Target qudit indexes that are jointly measured
+     * \param c_reg Classical register where the value of the measurement is
+     * stored
+     * \param name Optional measurement name
+     * \return Reference to the current instance
+     */
     QCircuitDescription& measureV(const cmat& V, const std::vector<idx>& target,
                                   idx c_reg, std::string name = "") {
         // EXCEPTION CHECKS
@@ -1551,6 +1602,15 @@ class QCircuitDescription : public IDisplay {
         return *this;
     }
 
+    /**
+     * \brief qpp::IDisplay::display() override
+     *
+     * Writes to the output stream a textual representation of the
+     * quantum circuit description
+     *
+     * \param os Output stream
+     * \return Output stream
+     */
     std::ostream& display(std::ostream& os) const override {
         os << "nq = " << nq_ << ", nc = " << nc_ << ", d = " << d_;
 
@@ -1876,10 +1936,10 @@ class QCircuit : public IDisplay {
                             }
                         }
                         if (should_apply) {
-                            psi_ = apply(
-                                psi_,
-                                powm(qcd_.get_gates()[q_ip_].gate_, first_dit),
-                                target_rel_pos, qcd_.get_d());
+                            psi_ =
+                                apply(psi_, powm(qcd_.get_gates()[q_ip_].gate_,
+                                                 first_dit),
+                                      target_rel_pos, qcd_.get_d());
                         }
                     }
                     break;

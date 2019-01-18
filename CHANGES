@@ -13,11 +13,11 @@ In progress - pre-release
     - Added new member functions for qpp::Gates:
           qpp::Gates::MODMUL() - quantum modular multiplication
     - Added Shor's algorithm example in "examples/shor.cpp"
-    - introduced the largest unsigned index qpp::idx_inf in "constants.h"
+    - Introduced the largest unsigned index qpp::idx_inf in "constants.h"
     - Added new exception classes in "classes/exception.h":
           qpp::exception::QuditAlreadyMeasured - self-explanatory
-          qpp::exception::Duplicates - thrown when a system such as a std::vector
-                                       contains duplicate elements
+          qpp::exception::Duplicates     - thrown when a system such as a
+                                           std::vector contains duplicates
           qpp::exception::NotImplemented - code not yet implemented
     - Added std::string qpp::Gates::get_name(const cmat&) function which returns
       the names of the most common (one, two and three) qubit gates
