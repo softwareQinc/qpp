@@ -1702,6 +1702,11 @@ class QCircuitDescription : public IDisplay {
 
 }; /* class QCircuitDescription */
 
+/**
+ * \class qpp::QCircuit
+ * \brief Quantum circuit simulator
+ * \see qpp::QCircuitDescription
+ */
 class QCircuit : public IDisplay {
     const QCircuitDescription qcd_; ///< quantum circuit description
     ket psi_;                       ///< state vector

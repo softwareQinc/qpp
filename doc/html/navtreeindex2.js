@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"functions_8h.html#aa4e14900b6eb348ef350c455f1110327":[3,0,7,51],
 "functions_8h.html#aba2b3538ec37539e56f77addfb9ea1dd":[3,0,7,4],
 "functions_8h.html#abe012650e8ff95fc346dd75cdbb3625a":[3,0,7,62],
 "functions_8h.html#abeadaf6395c78a52339bec119c4a331b":[3,0,7,28],
@@ -92,8 +93,8 @@ var NAVTREEINDEX2 =
 "matlab_8h.html#af46ebc145afb868fcb89b3e2f98e808b":[3,0,3,0,1],
 "matlab_8h_source.html":[3,0,3,0],
 "md___users_vlad_qpp__r_e_a_d_m_e.html":[0],
-"namespacemembers.html":[1,1,0],
 "namespacemembers.html":[1,1,0,0],
+"namespacemembers.html":[1,1,0],
 "namespacemembers_b.html":[1,1,0,1],
 "namespacemembers_c.html":[1,1,0,2],
 "namespacemembers_d.html":[1,1,0,3],
@@ -140,10 +141,10 @@ var NAVTREEINDEX2 =
 "namespacemembers_v.html":[1,1,0,20],
 "namespacemembers_vars.html":[1,1,2],
 "namespacemembers_x.html":[1,1,0,21],
-"namespaceqpp.html":[1,0,0],
 "namespaceqpp.html":[2,0,0],
-"namespaceqpp_1_1exception.html":[1,0,0,0],
+"namespaceqpp.html":[1,0,0],
 "namespaceqpp_1_1exception.html":[2,0,0,0],
+"namespaceqpp_1_1exception.html":[1,0,0,0],
 "namespaceqpp_1_1experimental.html":[1,0,0,1],
 "namespaceqpp_1_1experimental.html":[2,0,0,1],
 "namespaceqpp_1_1internal.html":[2,0,0,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "structqpp_1_1_bit__circuit_1_1_gate__count.html#af3452dfca7da1839964bbd2cff8f8400":[2,0,0,3,0,1],
 "structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html":[2,0,0,1,1,0],
 "structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html#a0f8cb6a7fd48aeaf13fb49991964e11a":[2,0,0,1,1,0,5],
-"structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html#a408648cb1bf0874b60817c59bfb3e2e1":[2,0,0,1,1,0,1],
-"structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html#a610dfc2c0a7f2784a57f327d5f276996":[2,0,0,1,1,0,0]
+"structqpp_1_1experimental_1_1_q_circuit_description_1_1_gate_step.html#a408648cb1bf0874b60817c59bfb3e2e1":[2,0,0,1,1,0,1]
 };

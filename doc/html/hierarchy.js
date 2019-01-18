@@ -63,6 +63,7 @@ var hierarchy =
     ] ],
     [ "qpp::make_void< Ts >", "structqpp_1_1make__void.html", null ],
     [ "qpp::experimental::QCircuitDescription::MeasureStep", "structqpp_1_1experimental_1_1_q_circuit_description_1_1_measure_step.html", null ],
+    [ "qpp::QCircuit", "classqpp_1_1_q_circuit.html", null ],
     [ "qpp::QCircuitDescription", "classqpp_1_1_q_circuit_description.html", null ],
     [ "qpp::internal::Singleton< T >", "classqpp_1_1internal_1_1_singleton.html", null ],
     [ "qpp::internal::Singleton< const Codes >", "classqpp_1_1internal_1_1_singleton.html", [
