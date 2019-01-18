@@ -564,7 +564,7 @@ class UndefinedType : public Exception {
 
 /**
  * \class qpp::exception::QuditAlreadyMeasured
- * \brief Qudit was already measured
+ * \brief Qudit was already measured exception
  *
  * The qudit was already measured and cannot be measured again
  */
@@ -579,7 +579,7 @@ class QuditAlreadyMeasured : public Exception {
 
 /**
  * \class qpp::exception::Duplicates
- * \brief System (e.g. std::vector) has duplicates
+ * \brief System (e.g. std::vector) has duplicates exception
  *
  */
 class Duplicates : public Exception {
