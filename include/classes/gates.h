@@ -204,7 +204,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
-#endif  // WITH_OPENMP_
+#endif // WITH_OPENMP_
         // column major order for speed
         for (idx j = 0; j < D; ++j)
             for (idx i = 0; i < D; ++i)
@@ -235,7 +235,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
-#endif  // WITH_OPENMP_
+#endif // WITH_OPENMP_
         // column major order for speed
         for (idx j = 0; j < D; ++j)
             for (idx i = 0; i < D; ++i)
@@ -286,7 +286,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
-#endif  // WITH_OPENMP_
+#endif // WITH_OPENMP_
         // column major order for speed
         for (idx j = 0; j < N; ++j)
             for (idx i = 0; i < N; ++i)
@@ -295,7 +295,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for
-#endif  // WITH_OPENMP_
+#endif // WITH_OPENMP_
         // complete the matrix
         for (idx i = N; i < D; ++i)
             result(i, i) = 1;
@@ -537,7 +537,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
             throw exception::MatrixNotSquare("qpp::Gates::expandout()");
 
         // check that position is valid
-        if (pos > dims.size() - 1)
+        if (pos + 1 > dims.size())
             throw exception::OutOfRange("qpp::Gates::expandout()");
 
         // check that dims[pos] match the dimension of A

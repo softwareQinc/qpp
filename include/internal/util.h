@@ -231,7 +231,7 @@ inline bool check_subsys_match_dims(const std::vector<idx>& subsys,
     // check range of subsystems
     return std::find_if(std::begin(subsys), std::end(subsys),
                         [dims](idx i) -> bool {
-                            return i > dims.size() - 1;
+                            return i + 1 > dims.size();
                         }) == std::end(subsys);
 }
 
