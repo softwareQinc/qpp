@@ -1708,6 +1708,7 @@ class QCircuitDescription : public IDisplay {
  * \see qpp::QCircuitDescription
  */
 class QCircuit : public IDisplay {
+  protected:
     const QCircuitDescription qcd_; ///< quantum circuit description
     ket psi_;                       ///< state vector
     std::vector<idx> dits_;         ///< classical dits
