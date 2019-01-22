@@ -145,4 +145,9 @@ int main() {
               << ", ";
     std::cout << "total count: "
               << qc.get_circuit_description().get_total_count() << "\n\n";
+
+    std::cout << qc.get_circuit_description().to_JSON() << "\n\n";
+
+    std::cout << qcd << " XXXX\n\n";
+    std::cout << qcd << " XXXX\n\n";
 }
