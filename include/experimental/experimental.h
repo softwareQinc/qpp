@@ -141,6 +141,142 @@ class QCircuitDescription : public IDisplay {
         ///< basis or rank-1 projectors specified by the columns of matrix \a V
     };
 
+    class iterator {
+        friend QCircuitDescription;
+
+        const QCircuitDescription& qcd_;
+        bool is_measurement_{false};
+        idx m_ip_ = idx_infty; // no measurement by default
+        idx q_ip_ = idx_infty; // no gates by default;
+        idx ip_ = idx_infty;   // no elements by default;
+
+      public:
+        iterator(const QCircuitDescription& qcd) : qcd_(qcd) {
+            // if the circuit has measurements
+            if (qcd.get_measurement_count() != 0) {
+                m_ip_ = 0;
+                ip_ = 0;
+                if (qcd.get_measurement_steps()[0] == 0) {
+                    is_measurement_ = true;
+                }
+            }
+
+            // if the circuit has gates
+            if (qcd.get_gate_count() != 0) {
+                q_ip_ = 0;
+                ip_ = 0;
+            }
+        }
+
+        iterator& operator++() {
+            // empty circuit, protect against incrementing past end()
+            // so if it == end(), then ++it == end() as well
+            if (q_ip_ == idx_infty && m_ip_ == idx_infty) {
+                return *this;
+            } else {
+                // increment the instruction pointer
+                ++ip_;
+            }
+
+            // only measurements, no gates
+            if (q_ip_ == idx_infty) {
+                is_measurement_ = true;
+                ++m_ip_;
+                return *this;
+            }
+
+            // only gates, no measurements
+            if (m_ip_ == idx_infty) {
+                is_measurement_ = false;
+                ++q_ip_;
+                return *this;
+            }
+
+            // current step is a measurement
+            if (qcd_.measurement_steps_[m_ip_] == q_ip_) {
+                // next step is a measurement
+                if (qcd_.measurement_steps_[m_ip_ + 1] == q_ip_) {
+                    is_measurement_ = true;
+                    ++m_ip_;
+                    return *this;
+                } else
+                // next step is a gate
+                {
+                    is_measurement_ = false;
+                    ++m_ip_;
+                    ++q_ip_;
+                    return *this;
+                }
+            } else
+            // current step is a gate
+            {
+                // next step is a measurement
+                if (qcd_.measurement_steps_[m_ip_] == q_ip_ + 1) {
+                    is_measurement_ = true;
+                    ++q_ip_;
+                    return *this;
+                } else
+                // next step is a gate
+                {
+                    is_measurement_ = false;
+                    ++q_ip_;
+                    return *this;
+                }
+            }
+        }
+
+        iterator operator++(int) {
+            iterator retval = *this;
+            ++(*this);
+            return retval;
+        }
+
+        bool operator==(iterator other) const { return ip_ == other.ip_; }
+
+        bool operator!=(iterator other) const { return !(*this == other); }
+
+        std::tuple<bool, idx, idx, idx> operator*() {
+            return std::make_tuple(is_measurement_, m_ip_, q_ip_, ip_);
+        }
+
+        // iterator traits
+        using difference_type = long long;
+        using value_type = std::tuple<bool, idx, idx, idx>;
+        using pointer = const value_type*;
+        using reference = const value_type&;
+        using iterator_category = std::forward_iterator_tag;
+    };
+
+  public:
+    iterator begin() { return iterator{*this}; }
+    const iterator begin() const noexcept { return iterator{*this}; }
+    const iterator cbegin() const noexcept { return iterator{*this}; }
+
+    iterator end() {
+        iterator it{*this};
+        if (steps_cnt_ == 0) // empty circuit
+            return it;
+        else
+            it.ip_ = this->steps_cnt_;
+        return it;
+    }
+    const iterator end() const noexcept {
+        iterator it{*this};
+        if (steps_cnt_ == 0) // empty circuit
+            return it;
+        else
+            it.ip_ = this->steps_cnt_;
+        return it;
+    }
+    const iterator cend() const noexcept {
+        iterator it{*this};
+        if (steps_cnt_ == 0) // empty circuit
+            return it;
+        else
+            it.ip_ = this->steps_cnt_;
+        return it;
+    }
+
   private:
     /**
      * \brief One step consisting only of gates/operators in the circuit
@@ -371,39 +507,6 @@ class QCircuitDescription : public IDisplay {
             throw exception::OutOfRange(
                 "qpp::QCircuitDescription::QCircuitDescription()");
         // END EXCEPTION CHECKS
-    }
-
-    void rewind() const { q_ip_ = m_ip_ = ip_ = 0; }
-
-    bool has_next() const {
-        if (ip_ < this->get_total_count()) {
-            return true;
-        } else {
-            this->rewind();
-            return false;
-        }
-    }
-
-    // true if measurements, false otherwise (if gates)
-    // meas, gate, step
-    std::tuple<bool, idx, idx, idx> get_next() const {
-        if (ip_ + 1 > this->get_total_count())
-            throw exception::OutOfRange("qpp::QCircuitDescription::get_next()");
-
-        // check for measurements
-        if (m_ip_ < this->get_measurement_count()) {
-            // we have a measurement at step i
-            if (measurement_steps_[m_ip_] == q_ip_) {
-                return std::make_tuple(true, m_ip_++, q_ip_, ip_++);
-            }
-        }
-
-        // check for gates
-        if (q_ip_ < this->get_gate_count()) {
-            return std::make_tuple(false, m_ip_, q_ip_++, ip_++);
-        }
-
-        return {};
     }
 
     // getters
@@ -1693,12 +1796,15 @@ class QCircuitDescription : public IDisplay {
         else
             os << ", name = \"\"\n";
 
-        while (this->has_next()) {
-            auto elem = this->get_next();
+        for (auto&& elem : *this) {
             bool is_measurement = std::get<0>(elem);
             idx m_ip = std::get<1>(elem);    // measurement instruction pointer
             idx q_ip = std::get<2>(elem);    // quantum instruction pointer
             idx step_no = std::get<3>(elem); // current step number
+
+            std::cout << std::boolalpha << is_measurement << std::noboolalpha
+                      << '\t';
+            std::cout << m_ip << " " << q_ip << " " << step_no << "\n";
 
             if (is_measurement) {
                 os << std::left;
