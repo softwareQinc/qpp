@@ -136,7 +136,7 @@ class QCircuitDescription : public IDisplay {
         ///< basis or rank-1 projectors specified by the columns of matrix \a V
     };
 
-    class iterator {
+    class QCD_iterator {
         friend QCircuitDescription;
 
         const QCircuitDescription* qcd_;
@@ -146,7 +146,7 @@ class QCircuitDescription : public IDisplay {
         idx ip_ = idx_infty;   // no elements by default;
 
       public:
-        iterator(const QCircuitDescription* qcd) : qcd_(qcd) {
+        QCD_iterator(const QCircuitDescription* qcd) : qcd_(qcd) {
             // if the circuit is empty, then all m_ip_, q_ip_ and ip_ are
             // equal to idx_infty (i.e. idx(-1))
 
@@ -166,7 +166,7 @@ class QCircuitDescription : public IDisplay {
             }
         }
 
-        iterator& operator++() {
+        QCD_iterator& operator++() {
             // empty circuit, protect against incrementing past end()
             // so if it == end(), then ++it == end() as well
             if (q_ip_ == idx_infty && m_ip_ == idx_infty) {
@@ -223,52 +223,52 @@ class QCircuitDescription : public IDisplay {
             return *this;
         }
 
-        iterator operator++(int) {
-            iterator retval = *this;
+        QCD_iterator operator++(int) {
+            QCD_iterator retval = *this;
             ++(*this);
             return retval;
         }
 
-        bool operator==(iterator other) const { return ip_ == other.ip_; }
+        bool operator==(QCD_iterator other) const { return ip_ == other.ip_; }
 
-        bool operator!=(iterator other) const { return !(*this == other); }
+        bool operator!=(QCD_iterator other) const { return !(*this == other); }
 
         std::tuple<bool, idx, idx, idx> operator*() const {
             return std::make_tuple(is_measurement_, m_ip_, q_ip_, ip_);
         }
 
-        // iterator traits
+        // QCD_iterator traits
         using difference_type = long long;
         using value_type = std::tuple<bool, idx, idx, idx>;
         using pointer = const value_type*;
         using reference = const value_type&;
         using iterator_category = std::forward_iterator_tag;
     };
-    using const_iterator = iterator;
+    using QCD_const_iterator = QCD_iterator;
 
   public:
-    iterator begin() { return {this}; }
-    const_iterator begin() const noexcept { return {this}; }
-    const_iterator cbegin() const noexcept { return {this}; }
+    QCD_iterator begin() { return {this}; }
+    QCD_const_iterator begin() const noexcept { return {this}; }
+    QCD_const_iterator cbegin() const noexcept { return {this}; }
 
-    iterator end() {
-        iterator it{this};
+    QCD_iterator end() {
+        QCD_iterator it{this};
         if (steps_cnt_ == 0) // empty circuit
             return it;
         else
             it.ip_ = steps_cnt_;
         return it;
     }
-    const_iterator end() const noexcept {
-        iterator it{this};
+    QCD_const_iterator end() const noexcept {
+        QCD_iterator it{this};
         if (steps_cnt_ == 0) // empty circuit
             return it;
         else
             it.ip_ = steps_cnt_;
         return it;
     }
-    const_iterator cend() const noexcept {
-        iterator it{this};
+    QCD_const_iterator cend() const noexcept {
+        QCD_iterator it{this};
         if (steps_cnt_ == 0) // empty circuit
             return it;
         else
@@ -1915,7 +1915,7 @@ class QCircuit : public IDisplay {
     std::vector<idx> subsys_; ///< keeps track of the measured subsystems,
                               ///< relabel them after measurements
 
-    QCircuitDescription::const_iterator it_; ///< iterator to current step
+    QCircuitDescription::QCD_const_iterator it_; ///< iterator to current step
 
     /**
      * \brief Marks qudit \a i as measured then re-label accordingly the
@@ -2093,7 +2093,7 @@ class QCircuit : public IDisplay {
      *
      * \return Iterator to current step in the circuit
      */
-    QCircuitDescription::const_iterator get_iter() const { return it_; }
+    QCircuitDescription::QCD_const_iterator get_iter() const { return it_; }
 
     /**
      * \brief Quantum circuit description
@@ -2158,7 +2158,7 @@ class QCircuit : public IDisplay {
         // END EXCEPTION CHECKS
 
         // no steps to run
-        if(step == 0)
+        if (step == 0)
             return;
 
         // main loop
@@ -2296,7 +2296,7 @@ class QCircuit : public IDisplay {
                 } // end switch on gate type
             }     // end else gate step
         }         // end main for loop
-    } // end QCircuit::run(idx, bool)
+    }             // end QCircuit::run(idx, bool)
 
     /**
      * \brief qpp::IDisplay::display() override
