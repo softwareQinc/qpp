@@ -70,11 +70,6 @@ class QCircuitDescription : public IDisplay {
     std::string name_;           ///< optional circuit name
     std::vector<bool> measured_; ///< keeps track of the measured qudits
     idx steps_cnt_;              ///< step counter
-
-    mutable idx m_ip_; ///< measurement instruction pointer
-    mutable idx q_ip_; ///< quantum gates instruction pointer
-    mutable idx ip_;   ///< combined (measurements and gates)
-                       ///< instruction pointer
   public:
     /**
      * \brief Type of gate being executed in a gate step
@@ -144,25 +139,28 @@ class QCircuitDescription : public IDisplay {
     class iterator {
         friend QCircuitDescription;
 
-        const QCircuitDescription& qcd_;
+        const QCircuitDescription* qcd_;
         bool is_measurement_{false};
         idx m_ip_ = idx_infty; // no measurement by default
         idx q_ip_ = idx_infty; // no gates by default;
         idx ip_ = idx_infty;   // no elements by default;
 
       public:
-        iterator(const QCircuitDescription& qcd) : qcd_(qcd) {
+        iterator(const QCircuitDescription* qcd) : qcd_(qcd) {
+            // if the circuit is empty, then all m_ip_, q_ip_ and ip_ are
+            // equal to idx_infty (i.e. idx(-1))
+
             // if the circuit has measurements
-            if (qcd.get_measurement_count() != 0) {
+            if (qcd->get_measurement_count() != 0) {
                 m_ip_ = 0;
                 ip_ = 0;
-                if (qcd.get_measurement_steps()[0] == 0) {
+                if (qcd->get_measurement_steps()[0] == 0) {
                     is_measurement_ = true;
                 }
             }
 
             // if the circuit has gates
-            if (qcd.get_gate_count() != 0) {
+            if (qcd->get_gate_count() != 0) {
                 q_ip_ = 0;
                 ip_ = 0;
             }
@@ -193,36 +191,36 @@ class QCircuitDescription : public IDisplay {
             }
 
             // current step is a measurement
-            if (qcd_.measurement_steps_[m_ip_] == q_ip_) {
+            if (m_ip_ < qcd_->get_measurement_count() &&
+                qcd_->measurement_steps_[m_ip_] == q_ip_) {
                 // next step is a measurement
-                if (qcd_.measurement_steps_[m_ip_ + 1] == q_ip_) {
+                if (m_ip_ + 1 < qcd_->get_measurement_count() &&
+                    qcd_->measurement_steps_[m_ip_ + 1] == q_ip_) {
                     is_measurement_ = true;
                     ++m_ip_;
-                    return *this;
                 } else
                 // next step is a gate
                 {
                     is_measurement_ = false;
                     ++m_ip_;
-                    ++q_ip_;
-                    return *this;
                 }
             } else
             // current step is a gate
             {
                 // next step is a measurement
-                if (qcd_.measurement_steps_[m_ip_] == q_ip_ + 1) {
+                if (m_ip_ < qcd_->get_measurement_count() &&
+                    qcd_->measurement_steps_[m_ip_] == q_ip_ + 1) {
                     is_measurement_ = true;
                     ++q_ip_;
-                    return *this;
                 } else
                 // next step is a gate
                 {
                     is_measurement_ = false;
                     ++q_ip_;
-                    return *this;
                 }
             }
+
+            return *this;
         }
 
         iterator operator++(int) {
@@ -235,7 +233,7 @@ class QCircuitDescription : public IDisplay {
 
         bool operator!=(iterator other) const { return !(*this == other); }
 
-        std::tuple<bool, idx, idx, idx> operator*() {
+        std::tuple<bool, idx, idx, idx> operator*() const {
             return std::make_tuple(is_measurement_, m_ip_, q_ip_, ip_);
         }
 
@@ -246,34 +244,35 @@ class QCircuitDescription : public IDisplay {
         using reference = const value_type&;
         using iterator_category = std::forward_iterator_tag;
     };
+    using const_iterator = iterator;
 
   public:
-    iterator begin() { return iterator{*this}; }
-    const iterator begin() const noexcept { return iterator{*this}; }
-    const iterator cbegin() const noexcept { return iterator{*this}; }
+    iterator begin() { return {this}; }
+    const_iterator begin() const noexcept { return {this}; }
+    const_iterator cbegin() const noexcept { return {this}; }
 
     iterator end() {
-        iterator it{*this};
+        iterator it{this};
         if (steps_cnt_ == 0) // empty circuit
             return it;
         else
-            it.ip_ = this->steps_cnt_;
+            it.ip_ = steps_cnt_;
         return it;
     }
-    const iterator end() const noexcept {
-        iterator it{*this};
+    const_iterator end() const noexcept {
+        iterator it{this};
         if (steps_cnt_ == 0) // empty circuit
             return it;
         else
-            it.ip_ = this->steps_cnt_;
+            it.ip_ = steps_cnt_;
         return it;
     }
-    const iterator cend() const noexcept {
-        iterator it{*this};
+    const_iterator cend() const noexcept {
+        iterator it{this};
         if (steps_cnt_ == 0) // empty circuit
             return it;
         else
-            it.ip_ = this->steps_cnt_;
+            it.ip_ = steps_cnt_;
         return it;
     }
 
@@ -496,8 +495,8 @@ class QCircuitDescription : public IDisplay {
      * \param name Circuit description name (optional)
      */
     QCircuitDescription(idx nq, idx nc = 0, idx d = 2, std::string name = "")
-        : nq_{nq}, nc_{nc}, d_{d}, name_{name},
-          measured_(nq, false), steps_cnt_{0}, m_ip_{0}, q_ip_{0}, ip_{0} {
+        : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false),
+          steps_cnt_{0} {
         // EXCEPTION CHECKS
 
         if (nq == 0)
@@ -628,12 +627,12 @@ class QCircuitDescription : public IDisplay {
     idx get_measurement_count() const noexcept { return measurements_.size(); }
 
     /**
-     * \brief Quantum circuit total count, i.e. the sum of gate count and
+     * \brief Quantum circuit total steps count, i.e. the sum of gate count and
      * measurement count
      *
      * \return Total (gates + measurements) count
      */
-    idx get_total_count() const noexcept { return steps_cnt_; }
+    idx get_steps_count() const noexcept { return steps_cnt_; }
     // end getters
 
     /**
@@ -1797,29 +1796,25 @@ class QCircuitDescription : public IDisplay {
             os << ", name = \"\"\n";
 
         for (auto&& elem : *this) {
-            bool is_measurement = std::get<0>(elem);
-            idx m_ip = std::get<1>(elem);    // measurement instruction pointer
-            idx q_ip = std::get<2>(elem);    // quantum instruction pointer
-            idx step_no = std::get<3>(elem); // current step number
-
-            std::cout << std::boolalpha << is_measurement << std::noboolalpha
-                      << '\t';
-            std::cout << m_ip << " " << q_ip << " " << step_no << "\n";
+            bool is_measurement;     // current step represents a measurement
+            idx m_ip, q_ip, step_no; // measurement/gate/currennt
+                                     // instruction pointer
+            std::tie(is_measurement, m_ip, q_ip, step_no) = elem;
 
             if (is_measurement) {
                 os << std::left;
                 os << std::setw(8) << step_no;
                 os << std::right;
-                os << "|> " << this->get_measurements()[m_ip] << '\n';
+                os << "|> " << get_measurements()[m_ip] << '\n';
             } else {
                 os << std::left;
                 os << std::setw(8) << step_no;
                 os << std::right;
-                os << this->get_gates()[q_ip] << '\n';
+                os << get_gates()[q_ip] << '\n';
             }
         }
 
-        os << "measurement steps: " << disp(this->get_measurement_steps(), ",")
+        os << "measurement steps: " << disp(get_measurement_steps(), ",")
            << '\n';
         os << "measured positions: " << disp(get_measured(), ",") << '\n';
         os << "non-measured positions: " << disp(get_non_measured(), ",")
@@ -1899,7 +1894,7 @@ class QCircuitDescription : public IDisplay {
     std::string to_JSON() const {
         std::string result;
         result += "{";
-        result += this->_to_JSON();
+        result += _to_JSON();
         result += "}";
 
         return result;
@@ -1913,16 +1908,14 @@ class QCircuitDescription : public IDisplay {
  */
 class QCircuit : public IDisplay {
   protected:
-    const QCircuitDescription qcd_; ///< quantum circuit description
-    ket psi_;                       ///< state vector
-    std::vector<idx> dits_;         ///< classical dits
-    std::vector<double> probs_;     ///< measurement probabilities
-    std::vector<idx> subsys_;       ///< keeps track of the measured subsystems,
-                                    ///< relabel them after measurements
+    const QCircuitDescription& qcd_; ///< quantum circuit description
+    ket psi_;                        ///< state vector
+    std::vector<idx> dits_;          ///< classical dits
+    std::vector<double> probs_;      ///< measurement probabilities
+    std::vector<idx> subsys_; ///< keeps track of the measured subsystems,
+                              ///< relabel them after measurements
 
-    idx m_ip_; ///< measurement instruction pointer
-    idx q_ip_; ///< quantum gates instruction pointer
-    idx ip_;   ///< combined (measurements and gates) instruction pointer
+    QCircuitDescription::const_iterator it_; ///< iterator to current step
 
     /**
      * \brief Marks qudit \a i as measured then re-label accordingly the
@@ -1963,6 +1956,9 @@ class QCircuit : public IDisplay {
     /**
      * \brief Constructs a quantum circuit out of a quantum circuit description
      *
+     * \note the quantum circuit description must be an lvalue
+     * \see qpp::QCircuit(QCircuitDescription&&)
+     *
      * \note The initial underlying quantum state is set to
      * \f$|0\rangle^{\otimes n}\f$
      *
@@ -1971,9 +1967,14 @@ class QCircuit : public IDisplay {
     QCircuit(const QCircuitDescription& qcd)
         : qcd_{qcd}, psi_{st.zero(qcd.get_nq(), qcd.get_d())},
           dits_(qcd.get_nc(), 0), probs_(qcd.get_nc(), 0),
-          subsys_(qcd.get_nq(), 0), m_ip_{0}, q_ip_{0}, ip_{0} {
+          subsys_(qcd.get_nq(), 0), it_{qcd_.begin()} {
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
     }
+
+    /**
+     * \brief Disables rvalue QCircuitDescription
+     */
+    QCircuit(QCircuitDescription&&) = delete;
 
     // getters
     /**
@@ -2053,6 +2054,13 @@ class QCircuit : public IDisplay {
     }
 
     /**
+     * \brief Checks whether the current step in the circuit is a measurement
+     * step
+     * @return True if measurement step, false otherwise
+     */
+    bool is_measurement_step() const { return std::get<0>(*it_); }
+
+    /**
      * \brief Measurement instruction pointer
      *
      * Points to the index of the next measurement to be executed from the
@@ -2060,7 +2068,7 @@ class QCircuit : public IDisplay {
      *
      * \return Measurement instruction pointer
      */
-    idx get_m_ip() const { return m_ip_; }
+    idx get_m_ip() const { return std::get<1>(*it_); }
 
     /**
      * \brief Quantum instruction pointer
@@ -2070,7 +2078,7 @@ class QCircuit : public IDisplay {
      *
      * \return Quantum instruction pointer
      */
-    idx get_q_ip() const { return q_ip_; }
+    idx get_q_ip() const { return std::get<2>(*it_); }
 
     /**
      * \brief Total instruction pointer
@@ -2078,7 +2086,14 @@ class QCircuit : public IDisplay {
      * \return The sum of measurement instruction pointer and quantum
      * instruction pointer
      */
-    idx get_ip() const { return ip_; }
+    idx get_ip() const { return std::get<3>(*it_); }
+
+    /**
+     * \brief Iterator to current step
+     *
+     * \return Iterator to current step in the circuit
+     */
+    QCircuitDescription::const_iterator get_iter() const { return it_; }
 
     /**
      * \brief Quantum circuit description
@@ -2116,9 +2131,7 @@ class QCircuit : public IDisplay {
         dits_ = std::vector<idx>(qcd_.get_nc(), 0);
         probs_ = std::vector<double>(qcd_.get_nc(), 0);
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
-        m_ip_ = 0;
-        q_ip_ = 0;
-        ip_ = 0;
+        it_ = qcd_.begin();
     }
 
     /**
@@ -2128,95 +2141,85 @@ class QCircuit : public IDisplay {
      * \param verbose If true, displays at console every executed step
      */
     void run(idx step = idx_infty, bool verbose = false) {
+        // EXCEPTION CHECKS
+
+        // trying to run an empty circuit
+        if (qcd_.get_steps_count() == 0) // same as if(get_ip() == idx_infty)
+            throw exception::ZeroSize("qpp::QCircuit::run()");
+
         idx no_steps;
         if (step == idx_infty)
-            no_steps = qcd_.get_total_count() - ip_;
+            no_steps = qcd_.get_steps_count() - get_ip();
         else
             no_steps = step;
-        idx saved_ip_ = ip_; // save the instruction pointer at entry
 
-        if (ip_ + no_steps > qcd_.get_total_count())
+        if (get_ip() + no_steps > qcd_.get_steps_count())
             throw exception::OutOfRange("qpp::QCircuit::run()");
+        // END EXCEPTION CHECKS
 
-        for (; q_ip_ <= qcd_.get_gates().size(); ++q_ip_) {
-            // check for measurements
-            if (m_ip_ < qcd_.get_measurements().size()) {
-                idx m_step = qcd_.get_measurement_steps()[m_ip_];
-                // we have a measurement at step i
-                if (m_step == q_ip_) {
-                    while (qcd_.get_measurement_steps()[m_ip_] == m_step) {
-                        if (ip_ - saved_ip_ == no_steps)
-                            return;
+        // no steps to run
+        if(step == 0)
+            return;
 
-                        if (verbose) {
-                            std::cout << std::left;
-                            std::cout
-                                << std::setw(8)
-                                << qcd_.get_measurements()[m_ip_].step_no_;
-                            std::cout << std::right;
-                            std::cout << "|> " << qcd_.get_measurements()[m_ip_]
-                                      << '\n';
-                        }
-
-                        std::vector<idx> target_rel_pos = get_relative_pos_(
-                            qcd_.get_measurements()[m_ip_].target_);
-
-                        std::vector<idx> resZ;
-                        double probZ;
-
-                        idx mres = 0;
-                        std::vector<double> probs;
-                        std::vector<cmat> states;
-
-                        switch (
-                            qcd_.get_measurements()[m_ip_].measurement_type_) {
-                        case QCircuitDescription::MeasureType::NONE:
-                            break;
-                        case QCircuitDescription::MeasureType::MEASURE_Z:
-                            std::tie(resZ, probZ, psi_) =
-                                measure_seq(psi_, target_rel_pos, qcd_.get_d());
-                            dits_[qcd_.get_measurements()[m_ip_].c_reg_] =
-                                resZ[0];
-                            probs_[qcd_.get_measurements()[m_ip_].c_reg_] =
-                                probZ;
-                            set_measured_(
-                                qcd_.get_measurements()[m_ip_].target_[0]);
-                            break;
-                        case QCircuitDescription::MeasureType::MEASURE_V:
-                            std::tie(mres, probs, states) = measure(
-                                psi_, qcd_.get_measurements()[m_ip_].mats_[0],
-                                target_rel_pos, qcd_.get_d());
-                            psi_ = states[mres];
-                            dits_[qcd_.get_measurements()[m_ip_].c_reg_] = mres;
-                            probs_[qcd_.get_measurements()[m_ip_].c_reg_] =
-                                probs[mres];
-                            set_measured_(
-                                qcd_.get_measurements()[m_ip_].target_[0]);
-                            break;
-                        case QCircuitDescription::MeasureType::MEASURE_V_MANY:
-                            std::tie(mres, probs, states) = measure(
-                                psi_, qcd_.get_measurements()[m_ip_].mats_[0],
-                                target_rel_pos, qcd_.get_d());
-                            psi_ = states[mres];
-                            dits_[qcd_.get_measurements()[m_ip_].c_reg_] = mres;
-                            probs_[qcd_.get_measurements()[m_ip_].c_reg_] =
-                                probs[mres];
-                            for (auto&& i :
-                                 qcd_.get_measurements()[m_ip_].target_)
-                                set_measured_(i);
-                            break;
-                        }
-                        ++ip_;
-                        if (++m_ip_ == qcd_.get_measurements().size())
-                            break;
-                    }
+        // main loop
+        for (idx i = 0; i < no_steps; ++i) {
+            bool is_measurement_;
+            idx m_ip_, q_ip_, ip_;
+            std::tie(is_measurement_, m_ip_, q_ip_, ip_) = *it_++;
+            // we have a measurement step
+            if (is_measurement_) {
+                if (verbose) {
+                    std::cout << std::left;
+                    std::cout << std::setw(8)
+                              << qcd_.get_measurements()[m_ip_].step_no_;
+                    std::cout << std::right;
+                    std::cout << "|> " << qcd_.get_measurements()[m_ip_]
+                              << '\n';
                 }
-            }
 
-            // check for gates
-            if (q_ip_ < qcd_.get_gates().size()) {
-                if (ip_ - saved_ip_ == no_steps)
-                    return;
+                std::vector<idx> target_rel_pos =
+                    get_relative_pos_(qcd_.get_measurements()[m_ip_].target_);
+
+                std::vector<idx> resZ;
+                double probZ;
+
+                idx mres = 0;
+                std::vector<double> probs;
+                std::vector<cmat> states;
+
+                switch (qcd_.get_measurements()[m_ip_].measurement_type_) {
+                case QCircuitDescription::MeasureType::NONE:
+                    break;
+                case QCircuitDescription::MeasureType::MEASURE_Z:
+                    std::tie(resZ, probZ, psi_) =
+                        measure_seq(psi_, target_rel_pos, qcd_.get_d());
+                    dits_[qcd_.get_measurements()[m_ip_].c_reg_] = resZ[0];
+                    probs_[qcd_.get_measurements()[m_ip_].c_reg_] = probZ;
+                    set_measured_(qcd_.get_measurements()[m_ip_].target_[0]);
+                    break;
+                case QCircuitDescription::MeasureType::MEASURE_V:
+                    std::tie(mres, probs, states) =
+                        measure(psi_, qcd_.get_measurements()[m_ip_].mats_[0],
+                                target_rel_pos, qcd_.get_d());
+                    psi_ = states[mres];
+                    dits_[qcd_.get_measurements()[m_ip_].c_reg_] = mres;
+                    probs_[qcd_.get_measurements()[m_ip_].c_reg_] = probs[mres];
+                    set_measured_(qcd_.get_measurements()[m_ip_].target_[0]);
+                    break;
+                case QCircuitDescription::MeasureType::MEASURE_V_MANY:
+                    std::tie(mres, probs, states) =
+                        measure(psi_, qcd_.get_measurements()[m_ip_].mats_[0],
+                                target_rel_pos, qcd_.get_d());
+                    psi_ = states[mres];
+                    dits_[qcd_.get_measurements()[m_ip_].c_reg_] = mres;
+                    probs_[qcd_.get_measurements()[m_ip_].c_reg_] = probs[mres];
+                    for (auto&& i : qcd_.get_measurements()[m_ip_].target_)
+                        set_measured_(i);
+                    break;
+                } // end switch on measurement type
+            }     // end if measurement step
+            // we have a gate step
+            else {
                 if (verbose) {
                     std::cout << std::left;
                     std::cout << std::setw(8)
@@ -2283,19 +2286,17 @@ class QCircuit : public IDisplay {
                             }
                         }
                         if (should_apply) {
-                            psi_ = apply(
-                                psi_,
-                                powm(qcd_.get_gates()[q_ip_].gate_, first_dit),
-                                target_rel_pos, qcd_.get_d());
+                            psi_ =
+                                apply(psi_, powm(qcd_.get_gates()[q_ip_].gate_,
+                                                 first_dit),
+                                      target_rel_pos, qcd_.get_d());
                         }
                     }
                     break;
-                }
-                ++ip_;
-            }
-        }
-        --q_ip_;
-    }
+                } // end switch on gate type
+            }     // end else gate step
+        }         // end main for loop
+    } // end QCircuit::run(idx, bool)
 
     /**
      * \brief qpp::IDisplay::display() override
