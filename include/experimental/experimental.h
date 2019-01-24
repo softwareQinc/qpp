@@ -141,9 +141,14 @@ class QCircuitDescription : public IDisplay {
 
         const QCircuitDescription* qcd_;
 
-        // is_measurement_ (0), m_ip_ (1), q_ip_ (2), ip_ (3)
-        std::tuple<bool, idx, idx, idx> elem_{false, idx_infty, idx_infty,
-                                              idx_infty};
+        struct Elem_type_ {
+            bool is_measurement_; ///< current step is a measurement
+            idx m_ip_;            ///< measurements instruction pointer
+            idx q_ip_;            ///< gates instruction pointer
+            idx ip_; ///< total (measurements + gates) instruction pointer
+        };
+
+        Elem_type_ elem_{false, idx_infty, idx_infty, idx_infty};
 
       public:
         QCD_iterator(const QCircuitDescription* qcd) : qcd_(qcd) {
@@ -152,75 +157,71 @@ class QCircuitDescription : public IDisplay {
 
             // if the circuit has measurements
             if (qcd->get_measurement_count() != 0) {
-                std::get<1>(elem_) = 0; // m_ip_
-                std::get<3>(elem_) = 0; // ip_
+                elem_.m_ip_ = 0;
+                elem_.ip_ = 0;
                 if (qcd->get_measurement_steps()[0] == 0) {
-                    std::get<0>(elem_) = true; // is_measurement_
+                    elem_.is_measurement_ = true;
                 }
             }
 
             // if the circuit has gates
             if (qcd->get_gate_count() != 0) {
-                std::get<2>(elem_) = 0; // q_ip_
-                std::get<3>(elem_) = 0; // ip_
+                elem_.q_ip_ = 0;
+                elem_.ip_ = 0;
             }
         }
 
         QCD_iterator& operator++() {
             // empty circuit, protect against incrementing past end()
             // so if it == end(), then ++it == end() as well
-            if (std::get<2>(elem_) == idx_infty &&
-                std::get<1>(elem_) == idx_infty) {
+            if (elem_.q_ip_ == idx_infty && elem_.m_ip_ == idx_infty) {
                 return *this;
             } else {
                 // increment the instruction pointer
-                ++std::get<3>(elem_);
+                ++elem_.ip_;
             }
 
             // only measurements, no gates
-            if (std::get<2>(elem_) == idx_infty) {
-                std::get<0>(elem_) = true;
-                ++std::get<1>(elem_);
+            if (elem_.q_ip_ == idx_infty) {
+                elem_.is_measurement_ = true;
+                ++elem_.m_ip_;
                 return *this;
             }
 
             // only gates, no measurements
-            if (std::get<1>(elem_) == idx_infty) {
-                std::get<0>(elem_) = false;
-                ++std::get<2>(elem_);
+            if (elem_.m_ip_ == idx_infty) {
+                elem_.is_measurement_ = false;
+                ++elem_.q_ip_;
                 return *this;
             }
 
             // current step is a measurement
-            if (std::get<1>(elem_) < qcd_->get_measurement_count() &&
-                qcd_->measurement_steps_[std::get<1>(elem_)] ==
-                    std::get<2>(elem_)) {
+            if (elem_.m_ip_ < qcd_->get_measurement_count() &&
+                qcd_->measurement_steps_[elem_.m_ip_] == elem_.q_ip_) {
                 // next step is a measurement
-                if (std::get<1>(elem_) + 1 < qcd_->get_measurement_count() &&
-                    qcd_->measurement_steps_[std::get<1>(elem_) + 1] ==
-                        std::get<2>(elem_)) {
-                    std::get<0>(elem_) = true;
-                    ++std::get<1>(elem_);
+                if (elem_.m_ip_ + 1 < qcd_->get_measurement_count() &&
+                    qcd_->measurement_steps_[elem_.m_ip_ + 1] == elem_.q_ip_) {
+                    elem_.is_measurement_ = true;
+                    ++elem_.m_ip_;
                 } else
                 // next step is a gate
                 {
-                    std::get<0>(elem_) = false;
-                    ++std::get<1>(elem_);
+                    elem_.is_measurement_ = false;
+                    ++elem_.m_ip_;
                 }
             } else
             // current step is a gate
             {
                 // next step is a measurement
-                if (std::get<1>(elem_) < qcd_->get_measurement_count() &&
-                    qcd_->measurement_steps_[std::get<1>(elem_)] ==
-                        std::get<2>(elem_) + 1) {
-                    std::get<0>(elem_) = true;
-                    ++std::get<2>(elem_);
+                if (elem_.m_ip_ < qcd_->get_measurement_count() &&
+                    qcd_->measurement_steps_[elem_.m_ip_] == elem_.q_ip_ + 1) {
+                    elem_.is_measurement_ = true;
+                    ++elem_.q_ip_;
                 } else
                 // next step is a gate
                 {
-                    std::get<0>(elem_) = false;
-                    ++std::get<2>(elem_);
+                    elem_.is_measurement_ = false;
+                    ++elem_.q_ip_;
                 }
             }
 
@@ -234,16 +235,14 @@ class QCircuitDescription : public IDisplay {
         }
 
         bool operator==(QCD_iterator other) const {
-            return std::get<3>(elem_) == std::get<3>(other.elem_);
+            return elem_.ip_ == other.elem_.ip_;
         }
 
         bool operator!=(QCD_iterator other) const { return !(*this == other); }
 
-        std::tuple<bool, idx, idx, idx>& operator*() { return elem_; }
+        Elem_type_& operator*() { return elem_; }
 
-        const std::tuple<bool, idx, idx, idx>& operator*() const {
-            return elem_;
-        }
+        const Elem_type_& operator*() const { return elem_; }
 
         // QCD_iterator traits
         using difference_type = long long;
@@ -264,7 +263,7 @@ class QCircuitDescription : public IDisplay {
         if (steps_cnt_ == 0) // empty circuit
             return it;
         else
-            std::get<3>(it.elem_) = steps_cnt_;
+            it.elem_.ip_ = steps_cnt_;
         return it;
     }
     QCD_const_iterator end() const noexcept {
@@ -272,7 +271,7 @@ class QCircuitDescription : public IDisplay {
         if (steps_cnt_ == 0) // empty circuit
             return it;
         else
-            std::get<3>(it.elem_) = steps_cnt_;
+            it.elem_.ip_ = steps_cnt_;
         return it;
     }
     QCD_const_iterator cend() const noexcept {
@@ -280,7 +279,7 @@ class QCircuitDescription : public IDisplay {
         if (steps_cnt_ == 0) // empty circuit
             return it;
         else
-            std::get<3>(it.elem_) = steps_cnt_;
+            it.elem_.ip_ = steps_cnt_;
         return it;
     }
 
@@ -1804,21 +1803,16 @@ class QCircuitDescription : public IDisplay {
             os << ", name = \"\"\n";
 
         for (auto&& elem : *this) {
-            bool is_measurement;     // current step represents a measurement
-            idx m_ip, q_ip, step_no; // measurement/gate/currennt
-                                     // instruction pointer
-            std::tie(is_measurement, m_ip, q_ip, step_no) = elem;
-
-            if (is_measurement) {
+            if (elem.is_measurement_) {
                 os << std::left;
-                os << std::setw(8) << step_no;
+                os << std::setw(8) << elem.ip_;
                 os << std::right;
-                os << "|> " << get_measurements()[m_ip] << '\n';
+                os << "|> " << get_measurements()[elem.m_ip_] << '\n';
             } else {
                 os << std::left;
-                os << std::setw(8) << step_no;
+                os << std::setw(8) << elem.ip_;
                 os << std::right;
-                os << get_gates()[q_ip] << '\n';
+                os << get_gates()[elem.q_ip_] << '\n';
             }
         }
 
@@ -2066,7 +2060,7 @@ class QCircuit : public IDisplay {
      * step
      * @return True if measurement step, false otherwise
      */
-    bool is_measurement_step() const { return std::get<0>(*it_); }
+    bool is_measurement_step() const { return (*it_).is_measurement_; }
 
     /**
      * \brief Measurement instruction pointer
@@ -2076,7 +2070,7 @@ class QCircuit : public IDisplay {
      *
      * \return Measurement instruction pointer
      */
-    idx get_m_ip() const { return std::get<1>(*it_); }
+    idx get_m_ip() const { return (*it_).m_ip_; }
 
     /**
      * \brief Quantum instruction pointer
@@ -2086,7 +2080,7 @@ class QCircuit : public IDisplay {
      *
      * \return Quantum instruction pointer
      */
-    idx get_q_ip() const { return std::get<2>(*it_); }
+    idx get_q_ip() const { return (*it_).q_ip_; }
 
     /**
      * \brief Total instruction pointer
@@ -2094,7 +2088,7 @@ class QCircuit : public IDisplay {
      * \return The sum of measurement instruction pointer and quantum
      * instruction pointer
      */
-    idx get_ip() const { return std::get<3>(*it_); }
+    idx get_ip() const { return (*it_).ip_; }
 
     /**
      * \brief Iterator to current step
@@ -2171,9 +2165,11 @@ class QCircuit : public IDisplay {
 
         // main loop
         for (idx i = 0; i < no_steps; ++i) {
-            bool is_measurement_;
-            idx m_ip_, q_ip_, ip_;
-            std::tie(is_measurement_, m_ip_, q_ip_, ip_) = *it_++;
+            // unpack the iterator
+            bool is_measurement_ = (*it_).is_measurement_;
+            idx m_ip_ = (*it_).m_ip_;
+            idx q_ip_ = (*it_++).q_ip_; // post-increment the iterator
+
             // we have a measurement step
             if (is_measurement_) {
                 if (verbose) {
