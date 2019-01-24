@@ -25,6 +25,9 @@ In progress - pre-release
       file "classes/circuits.h" for simulating qudit quantum circuits
       BE AWARE: this is (still) work in progress, not yet complete, bugs may
       still lingering around
+    - Added new circuit simulator examples in "examples/circuits":
+          - teleport_qubit_circuit.cpp - qubit teleportation circuit example
+          - teleport_qudit_circuit.cpp - qudit teleportation circuit example
 
 Version 1.1 - 26 November 2018
     - Added new functions in "operations.h":

@@ -163,6 +163,7 @@ class QCircuitDescription : public IDisplay {
                 os << "m_ip_: " << m_ip_;
                 os << ", q_ip_: " << q_ip_;
                 os << ", ip_: " << ip_;
+
                 return os;
             }
         };
@@ -558,8 +559,8 @@ class QCircuitDescription : public IDisplay {
                                     const GateStep& gate_step) {
         os << gate_step.gate_type_ << ", ";
         if (gate_step.gate_type_ >= GateType::SINGLE_CTRL_SINGLE_TARGET)
-            os << "ctrl = " << disp(gate_step.ctrl_, ",") << ", ";
-        os << "target = " << disp(gate_step.target_, ",") << ", ";
+            os << "ctrl = " << disp(gate_step.ctrl_, ", ") << ", ";
+        os << "target = " << disp(gate_step.target_, ", ") << ", ";
         os << "name = " << '\"' << gate_step.name_ << '\"';
 
         return os;
@@ -576,7 +577,7 @@ class QCircuitDescription : public IDisplay {
     friend std::ostream& operator<<(std::ostream& os,
                                     const MeasureStep& measure_step) {
         os << measure_step.measurement_type_ << ", ";
-        os << "target = " << disp(measure_step.target_, ",") << ", ";
+        os << "target = " << disp(measure_step.target_, ", ") << ", ";
         os << "c_reg = " << measure_step.c_reg_ << ", ";
         os << "name = " << '\"' << measure_step.name_ << '\"';
         os << " ";
@@ -1914,11 +1915,10 @@ class QCircuitDescription : public IDisplay {
             }
         }
 
-        os << "measurement steps: " << disp(get_measurement_steps(), ",")
+        os << "measurement steps: " << disp(get_measurement_steps(), ", ")
            << '\n';
-        os << "measured positions: " << disp(get_measured(), ",") << '\n';
-        os << "non-measured positions: " << disp(get_non_measured(), ",")
-           << '\n';
+        os << "measured positions: " << disp(get_measured(), ", ") << '\n';
+        os << "non-measured positions: " << disp(get_non_measured(), ", ");
 
         return os;
     }
@@ -1975,14 +1975,14 @@ class QCircuitDescription : public IDisplay {
             }
         }
 
-        /* os << "measurement steps: " << disp(measurement_steps_, ",") << '\n';
+        /* os << "measurement steps: " << disp(measurement_steps_, ", ") << '\n';
 
          os << std::boolalpha;
-         os << "measured qudits: " << disp(measured_, ",") << '\n';
+         os << "measured qudits: " << disp(measured_, ", ") << '\n';
          os << std::noboolalpha;
 
-         os << "measured positions: " << disp(get_measured(), ",") << '\n';
-         os << "non-measured positions: " << disp(get_non_measured(), ",")
+         os << "measured positions: " << disp(get_measured(), ", ") << '\n';
+         os << "non-measured positions: " << disp(get_non_measured(), ", ")
             << '\n';*/
 
         result += "]";
@@ -2411,11 +2411,9 @@ class QCircuit : public IDisplay {
      * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
-        os << "measured: " << disp(get_measured(), ",") << '\n';
-        os << "dits: " << disp(dits_, ",") << '\n';
-        os << "probs: " << disp(probs_, ",") << '\n';
-        //        os << "updated subsystems: ";
-        //        std::cout << disp(subsys_, ",") << '\n';
+        os << "measured: " << disp(get_measured(), ", ") << '\n';
+        os << "dits: " << disp(dits_, ", ") << '\n';
+        os << "probs: " << disp(probs_, ", ");
 
         return os;
     }
