@@ -21,10 +21,10 @@ In progress - pre-release
           qpp::exception::NotImplemented - code not yet implemented
     - Added std::string qpp::Gates::get_name(const cmat&) function which returns
       the names of the most common (one, two and three) qubit gates
-    - Added qpp::experimental::QCircuitDescription and
-      qpp::experimental::QCircuit classes in "experimental/experimental.h" for
-      simulating qudit quantum circuits
-      BE AWARE: this is work in progress, not yet complete, may still be buggy
+    - Added qpp::QCircuitDescription and qpp::QCircuit classes in the new header
+      file "classes/circuits.h" for simulating qudit quantum circuits
+      BE AWARE: this is (still) work in progress, not yet complete, bugs may
+      still lingering around
 
 Version 1.1 - 26 November 2018
     - Added new functions in "operations.h":

@@ -583,7 +583,7 @@ class QuditAlreadyMeasured : public Exception {
  *
  */
 class Duplicates : public Exception {
-public:
+  public:
     std::string type_description() const override {
         return "System (e.g. std::vector) has duplicates";
     }
@@ -614,7 +614,7 @@ class CustomException : public Exception {
  * \brief Code not yet implemented
  */
 class NotImplemented : public Exception {
-public:
+  public:
     std::string type_description() const override {
         return "Not yet implemented";
     }
