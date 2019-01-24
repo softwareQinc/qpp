@@ -112,6 +112,7 @@
 #include "classes/timer.h"
 #include "instruments.h"
 #include "classes/reversible.h"
+#include "classes/circuits.h"
 
 /**
  * \namespace qpp
