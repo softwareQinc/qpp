@@ -27,7 +27,8 @@ int main() {
     std::cout << ">> END CIRCUIT DESCRIPTION\n\n";
 
     std::cout << ">> BEGIN RUN\n";
-    qc.run();
+    qc.reset();
+    qc.run(true);
     std::cout << qc;
     std::cout << "psi:\n";
     std::cout << disp(qc.get_psi()) << '\n';
@@ -79,9 +80,10 @@ int main() {
 
     QCircuitDescription a(2, 2);
     a.gate(gt.H, 0);
-    std::cout << a;
+    std::cout << a << '\n';
 
     QCircuit q{a};
     q.run(true);
-    std::cout << q;
+    std::cout << q << '\n';
+    std::cout << "ok";
 }

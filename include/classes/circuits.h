@@ -145,7 +145,6 @@ class QCircuitDescription : public IDisplay {
 
         ///< iterator value type
         struct value_type_ : public IDisplay {
-            friend iterator;
             bool is_measurement_{false}; ///< current step is a measurement
             idx m_ip_{idx_infty};        ///< measurements instruction pointer
             idx q_ip_{idx_infty};        ///< gates instruction pointer
@@ -167,8 +166,9 @@ class QCircuitDescription : public IDisplay {
             value_type_& operator=(const value_type_&) = default;
 
             ///< non-owning pointer to the parent iterator
-            const iterator* it_;
-            value_type_(const iterator* it) : it_(it) {}
+            const QCircuitDescription* value_type_qcd_;
+            explicit value_type_(const QCircuitDescription* value_type_qcd)
+                : value_type_qcd_{value_type_qcd} {}
 
             /**
              * \brief qpp::IDisplay::display() override
@@ -186,25 +186,26 @@ class QCircuitDescription : public IDisplay {
 
                 // field spacing for the step number
                 idx text_width =
-                    std::to_string(it_->qcd_->get_steps_count()).size() + 1;
+                    std::to_string(value_type_qcd_->get_steps_count()).size() +
+                    1;
 
                 if (is_measurement_) {
                     os << std::left;
                     os << std::setw(text_width) << ip_;
                     os << std::right;
-                    os << "|> " << it_->qcd_->get_measurements()[m_ip_];
+                    os << "|> " << value_type_qcd_->get_measurements()[m_ip_];
                 } else {
                     os << std::left;
                     os << std::setw(text_width) << ip_;
                     os << std::right;
-                    os << it_->qcd_->get_gates()[q_ip_];
+                    os << value_type_qcd_->get_gates()[q_ip_];
                 }
 
                 return os;
             }
         };
 
-        value_type_ elem_{this}; ///< iterator element
+        value_type_ elem_{nullptr}; ///< de-referenced iterator element
 
         /**
          * \brief Sets the internal quantum circuit description pointer
@@ -213,6 +214,7 @@ class QCircuitDescription : public IDisplay {
          */
         void set_(const QCircuitDescription* qcd) {
             qcd_ = qcd;
+            elem_ = value_type_{qcd};
 
             // if the circuit is empty, then all m_ip_, q_ip_ and ip_ are
             // equal to idx_infty (i.e. idx(-1))
@@ -491,9 +493,10 @@ class QCircuitDescription : public IDisplay {
          * \param step_no Circuit step number
          * \param name Optional gate name
          */
-        GateStep(GateType gate_type, const cmat& gate,
-                 const std::vector<idx>& ctrl, const std::vector<idx>& target,
-                 idx step_no, std::string name = "")
+        explicit GateStep(GateType gate_type, const cmat& gate,
+                          const std::vector<idx>& ctrl,
+                          const std::vector<idx>& target, idx step_no,
+                          std::string name = "")
             : gate_type_{gate_type}, gate_{gate}, ctrl_{ctrl}, target_{target},
               step_no_{step_no}, name_{name} {}
     };
@@ -526,9 +529,10 @@ class QCircuitDescription : public IDisplay {
          * \param step_no Circuit step number
          * \param name Optional gate name
          */
-        MeasureStep(MeasureType measurement_type, const std::vector<cmat>& mats,
-                    const std::vector<idx>& target, idx c_reg, idx step_no,
-                    std::string name = "")
+        explicit MeasureStep(MeasureType measurement_type,
+                             const std::vector<cmat>& mats,
+                             const std::vector<idx>& target, idx c_reg,
+                             idx step_no, std::string name = "")
             : measurement_type_{measurement_type}, mats_{mats}, target_{target},
               c_reg_{c_reg}, step_no_{step_no}, name_{name} {}
     };
@@ -684,9 +688,10 @@ class QCircuitDescription : public IDisplay {
      * \param d Subsystem dimensions (optional, default is qubit, i.e. \a d = 2)
      * \param name Circuit description name (optional)
      */
-    QCircuitDescription(idx nq, idx nc = 0, idx d = 2, std::string name = "")
-        : nq_{nq}, nc_{nc}, d_{d}, name_{name},
-          measured_(nq, false), steps_cnt_{0} {
+    explicit QCircuitDescription(idx nq, idx nc = 0, idx d = 2,
+                                 std::string name = "")
+        : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false),
+          steps_cnt_{0} {
         // EXCEPTION CHECKS
 
         if (nq == 0)
@@ -2139,9 +2144,9 @@ class QCircuit : public IDisplay {
      *
      * \param qcd Quantum circuit description
      */
-    QCircuit(const QCircuitDescription& qcd)
-        : qcd_{qcd}, psi_{States::get_instance().zero(qcd.get_nq(),
-                                                      qcd.get_d())},
+    explicit QCircuit(const QCircuitDescription& qcd)
+        : qcd_{qcd},
+          psi_{States::get_instance().zero(qcd.get_nq(), qcd.get_d())},
           dits_(qcd.get_nc(), 0), probs_(qcd.get_nc(), 0),
           subsys_(qcd.get_nq(), 0), it_{qcd_.begin()} {
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
@@ -2339,6 +2344,11 @@ class QCircuit : public IDisplay {
 
         // main loop
         for (idx i = 0; i < no_steps; ++i) {
+
+            if (verbose) {
+                std::cout << it_.elem_ << '\n';
+            }
+
             // unpack the iterator
             bool is_measurement_ = (*it_).is_measurement_;
             idx m_ip_ = (*it_).m_ip_;
@@ -2346,15 +2356,6 @@ class QCircuit : public IDisplay {
 
             // we have a measurement step
             if (is_measurement_) {
-                if (verbose) {
-                    std::cout << std::left;
-                    std::cout << std::setw(8)
-                              << qcd_.get_measurements()[m_ip_].step_no_;
-                    std::cout << std::right;
-                    std::cout << "|> " << qcd_.get_measurements()[m_ip_]
-                              << '\n';
-                }
-
                 std::vector<idx> target_rel_pos =
                     get_relative_pos_(qcd_.get_measurements()[m_ip_].target_);
 
@@ -2394,18 +2395,9 @@ class QCircuit : public IDisplay {
                     for (auto&& i : qcd_.get_measurements()[m_ip_].target_)
                         set_measured_(i);
                     break;
-                } // end switch on measurement type
-            }     // end if measurement step
-                  // we have a gate step
-            else {
-                if (verbose) {
-                    std::cout << std::left;
-                    std::cout << std::setw(8)
-                              << qcd_.get_gates()[q_ip_].step_no_;
-                    std::cout << std::right;
-                    std::cout << qcd_.get_gates()[q_ip_] << '\n';
-                }
-
+                }  // end switch on measurement type
+            }      // end if measurement step
+            else { // we have a gate step
                 std::vector<idx> ctrl_rel_pos;
                 std::vector<idx> target_rel_pos =
                     get_relative_pos_(qcd_.get_gates()[q_ip_].target_);
@@ -2464,10 +2456,10 @@ class QCircuit : public IDisplay {
                             }
                         }
                         if (should_apply) {
-                            psi_ = apply(
-                                psi_,
-                                powm(qcd_.get_gates()[q_ip_].gate_, first_dit),
-                                target_rel_pos, qcd_.get_d());
+                            psi_ =
+                                apply(psi_, powm(qcd_.get_gates()[q_ip_].gate_,
+                                                 first_dit),
+                                      target_rel_pos, qcd_.get_d());
                         }
                     }
                     break;
