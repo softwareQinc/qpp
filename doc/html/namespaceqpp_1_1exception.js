@@ -9,6 +9,7 @@ var namespaceqpp_1_1exception =
     [ "DimsNotEqual", "classqpp_1_1exception_1_1_dims_not_equal.html", "classqpp_1_1exception_1_1_dims_not_equal" ],
     [ "Duplicates", "classqpp_1_1exception_1_1_duplicates.html", "classqpp_1_1exception_1_1_duplicates" ],
     [ "Exception", "classqpp_1_1exception_1_1_exception.html", "classqpp_1_1exception_1_1_exception" ],
+    [ "InvalidIterator", "classqpp_1_1exception_1_1_invalid_iterator.html", "classqpp_1_1exception_1_1_invalid_iterator" ],
     [ "MatrixMismatchSubsys", "classqpp_1_1exception_1_1_matrix_mismatch_subsys.html", "classqpp_1_1exception_1_1_matrix_mismatch_subsys" ],
     [ "MatrixNotCvector", "classqpp_1_1exception_1_1_matrix_not_cvector.html", "classqpp_1_1exception_1_1_matrix_not_cvector" ],
     [ "MatrixNotRvector", "classqpp_1_1exception_1_1_matrix_not_rvector.html", "classqpp_1_1exception_1_1_matrix_not_rvector" ],

@@ -2078,7 +2078,7 @@ class QCircuitDescription : public IDisplay {
 
 /**
  * \class qpp::QCircuit
- * \brief Quantum circuit simulator
+ * \brief Quantum circuit simulator class
  * \see qpp::QCircuitDescription
  */
 class QCircuit : public IDisplay {
@@ -2487,8 +2487,8 @@ class QCircuit : public IDisplay {
      */
     std::ostream& display(std::ostream& os) const override {
         os << "measured: " << disp(get_measured(), ", ") << '\n';
-        os << "dits: " << disp(dits_, ", ") << '\n';
-        os << "probs: " << disp(probs_, ", ");
+        os << "dits: " << disp(get_dits(), ", ") << '\n';
+        os << "probs: " << disp(get_probs(), ", ");
 
         return os;
     }

@@ -1,5 +1,13 @@
 var dir_b02e4219757ae4e3a0f1714873865bbf =
 [
+    [ "circuits.h", "circuits_8h.html", [
+      [ "QCircuitDescription", "classqpp_1_1_q_circuit_description.html", "classqpp_1_1_q_circuit_description" ],
+      [ "iterator", "classqpp_1_1_q_circuit_description_1_1iterator.html", "classqpp_1_1_q_circuit_description_1_1iterator" ],
+      [ "value_type_", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__" ],
+      [ "GateStep", "structqpp_1_1_q_circuit_description_1_1_gate_step.html", "structqpp_1_1_q_circuit_description_1_1_gate_step" ],
+      [ "MeasureStep", "structqpp_1_1_q_circuit_description_1_1_measure_step.html", "structqpp_1_1_q_circuit_description_1_1_measure_step" ],
+      [ "QCircuit", "classqpp_1_1_q_circuit.html", "classqpp_1_1_q_circuit" ]
+    ] ],
     [ "codes.h", "codes_8h.html", [
       [ "Codes", "classqpp_1_1_codes.html", "classqpp_1_1_codes" ]
     ] ],
@@ -38,7 +46,8 @@ var dir_b02e4219757ae4e3a0f1714873865bbf =
       [ "QuditAlreadyMeasured", "classqpp_1_1exception_1_1_qudit_already_measured.html", "classqpp_1_1exception_1_1_qudit_already_measured" ],
       [ "Duplicates", "classqpp_1_1exception_1_1_duplicates.html", "classqpp_1_1exception_1_1_duplicates" ],
       [ "CustomException", "classqpp_1_1exception_1_1_custom_exception.html", "classqpp_1_1exception_1_1_custom_exception" ],
-      [ "NotImplemented", "classqpp_1_1exception_1_1_not_implemented.html", "classqpp_1_1exception_1_1_not_implemented" ]
+      [ "NotImplemented", "classqpp_1_1exception_1_1_not_implemented.html", "classqpp_1_1exception_1_1_not_implemented" ],
+      [ "InvalidIterator", "classqpp_1_1exception_1_1_invalid_iterator.html", "classqpp_1_1exception_1_1_invalid_iterator" ]
     ] ],
     [ "gates.h", "gates_8h.html", [
       [ "Gates", "classqpp_1_1_gates.html", "classqpp_1_1_gates" ]
