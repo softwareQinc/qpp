@@ -23,7 +23,7 @@ int main() {
 
     QCircuit qc{qcd};
     std::cout << ">> BEGIN CIRCUIT DESCRIPTION\n";
-    std::cout << qc.get_circuit_description();
+    std::cout << qc.get_circuit_description() << '\n';
     std::cout << ">> END CIRCUIT DESCRIPTION\n\n";
 
     std::cout << ">> BEGIN RUN\n";
@@ -58,7 +58,7 @@ int main() {
     qc.run(true);
     std::cout << ">> END RUN\n";
 
-    std::cout << qc;
+    std::cout << qc << '\n';
     std::cout << "psi:\n";
     std::cout << disp(qc.get_psi()) << '\n';
     std::cout << "m_ip_: " << qc.get_m_ip() << ", ";
@@ -70,5 +70,13 @@ int main() {
     std::cout << "gate_count: " << qc.get_circuit_description().get_gate_count()
               << ", ";
     std::cout << "total count: "
-              << qc.get_circuit_description().get_steps_count() << "\n\n";
+              << qc.get_circuit_description().get_steps_count() << '\n';
+
+    for(auto &&elem: qcd)
+        std::cout << elem << '\n';
+
+
+    QCircuitDescription a(2,2);
+    auto it = std::end(qcd);
+    std::cout <<*it;
 }

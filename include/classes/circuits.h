@@ -139,7 +139,7 @@ class QCircuitDescription : public IDisplay {
     class iterator {
         friend QCircuitDescription;
 
-        ///< const non-owning pointer to const circuit description
+        ///< non-owning pointer to const circuit description
         const QCircuitDescription* qcd_;
 
         ///< iterator value type
@@ -150,25 +150,60 @@ class QCircuitDescription : public IDisplay {
             idx ip_{idx_infty}; ///< total (measurements + gates) instruction
             ///< pointer
 
+            // silence -Weffc++ class has pointer data members
+            /**
+             * \brief Default copy constructor
+             */
+            value_type_(const value_type_&) = default;
+
+            // silence -Weffc++ class has pointer data members
+            /**
+             * \brief Default copy assignment operator
+             *
+             * \return Reference to the current instance
+             */
+            value_type_& operator=(const value_type_&) = default;
+
+            ///< non-owning pointer to const circuit description
+            const QCircuitDescription* qcd_;
+            value_type_(const QCircuitDescription* qcd) : qcd_(qcd) {}
+
             /**
              * \brief qpp::IDisplay::display() override
              *
              * Writes to the output stream the textual representation of the
-             * iterator dereferenced element
+             * iterator de-referenced element
              *
              * \param os Output stream passed by reference
              * \return Reference to the output stream
              */
             std::ostream& display(std::ostream& os) const override {
-                os << "m_ip_: " << m_ip_;
-                os << ", q_ip_: " << q_ip_;
-                os << ", ip_: " << ip_;
+                // os << "m_ip_: " << m_ip_;
+                // os << ", q_ip_: " << q_ip_;
+                // os << ", ip_: " << ip_;
+
+                // field spacing for the step number
+                idx text_width = std::to_string(qcd_->get_steps_count()).size();
+                if (text_width > 0 && text_width % 10 == 0)
+                    --text_width;
+
+                if (is_measurement_) {
+                    os << std::left;
+                    os << std::setw(text_width) << ip_;
+                    os << std::right;
+                    os << "|> " << qcd_->get_measurements()[m_ip_];
+                } else {
+                    os << std::left;
+                    os << std::setw(text_width) << ip_;
+                    os << std::right;
+                    os << qcd_->get_gates()[q_ip_];
+                }
 
                 return os;
             }
         };
 
-        value_type_ elem_{}; ///< iterator element
+        value_type_ elem_{qcd_}; ///< iterator element
 
       public:
         /**
@@ -1902,17 +1937,7 @@ class QCircuitDescription : public IDisplay {
             os << ", name = \"\"\n";
 
         for (auto&& elem : *this) {
-            if (elem.is_measurement_) {
-                os << std::left;
-                os << std::setw(8) << elem.ip_;
-                os << std::right;
-                os << "|> " << get_measurements()[elem.m_ip_] << '\n';
-            } else {
-                os << std::left;
-                os << std::setw(8) << elem.ip_;
-                os << std::right;
-                os << get_gates()[elem.q_ip_] << '\n';
-            }
+            os << elem << '\n';
         }
 
         os << "measurement steps: " << disp(get_measurement_steps(), ", ")
@@ -1975,7 +2000,8 @@ class QCircuitDescription : public IDisplay {
             }
         }
 
-        /* os << "measurement steps: " << disp(measurement_steps_, ", ") << '\n';
+        /* os << "measurement steps: " << disp(measurement_steps_, ", ") <<
+         '\n';
 
          os << std::boolalpha;
          os << "measured qudits: " << disp(measured_, ", ") << '\n';
