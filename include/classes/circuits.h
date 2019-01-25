@@ -133,17 +133,19 @@ class QCircuitDescription : public IDisplay {
   public:
     /**
      * \class qpp::QCircuitDescription::iterator
-     * \brief Quantum circuit description iterator
+     * \brief Quantum circuit description bound-checking (safe) iterator
      * \note The iterator is a const_iterator by default
      */
     class iterator {
         friend QCircuitDescription;
+        friend class QCircuit;
 
         ///< non-owning pointer to const circuit description
-        const QCircuitDescription* qcd_;
+        const QCircuitDescription* qcd_{nullptr};
 
         ///< iterator value type
         struct value_type_ : public IDisplay {
+            friend iterator;
             bool is_measurement_{false}; ///< current step is a measurement
             idx m_ip_{idx_infty};        ///< measurements instruction pointer
             idx q_ip_{idx_infty};        ///< gates instruction pointer
@@ -164,9 +166,9 @@ class QCircuitDescription : public IDisplay {
              */
             value_type_& operator=(const value_type_&) = default;
 
-            ///< non-owning pointer to const circuit description
-            const QCircuitDescription* qcd_;
-            value_type_(const QCircuitDescription* qcd) : qcd_(qcd) {}
+            ///< non-owning pointer to the parent iterator
+            const iterator* it_;
+            value_type_(const iterator* it) : it_(it) {}
 
             /**
              * \brief qpp::IDisplay::display() override
@@ -183,35 +185,35 @@ class QCircuitDescription : public IDisplay {
                 // os << ", ip_: " << ip_;
 
                 // field spacing for the step number
-                idx text_width = std::to_string(qcd_->get_steps_count()).size();
-                if (text_width > 0 && text_width % 10 == 0)
-                    --text_width;
+                idx text_width =
+                    std::to_string(it_->qcd_->get_steps_count()).size() + 1;
 
                 if (is_measurement_) {
                     os << std::left;
                     os << std::setw(text_width) << ip_;
                     os << std::right;
-                    os << "|> " << qcd_->get_measurements()[m_ip_];
+                    os << "|> " << it_->qcd_->get_measurements()[m_ip_];
                 } else {
                     os << std::left;
                     os << std::setw(text_width) << ip_;
                     os << std::right;
-                    os << qcd_->get_gates()[q_ip_];
+                    os << it_->qcd_->get_gates()[q_ip_];
                 }
 
                 return os;
             }
         };
 
-        value_type_ elem_{qcd_}; ///< iterator element
+        value_type_ elem_{this}; ///< iterator element
 
-      public:
         /**
-         * \brief Constructs an iterator to a quantum circuit description
+         * \brief Sets the internal quantum circuit description pointer
          *
          * \param qcd Constant pointer to a quantum circuit description
          */
-        iterator(const QCircuitDescription* qcd) : qcd_(qcd) {
+        void set_(const QCircuitDescription* qcd) {
+            qcd_ = qcd;
+
             // if the circuit is empty, then all m_ip_, q_ip_ and ip_ are
             // equal to idx_infty (i.e. idx(-1))
 
@@ -230,6 +232,12 @@ class QCircuitDescription : public IDisplay {
                 elem_.ip_ = 0;
             }
         }
+
+      public:
+        /**
+         * \brief Default constructor
+         */
+        iterator() = default;
 
         // silence -Weffc++ class has pointer data members
         /**
@@ -251,14 +259,29 @@ class QCircuitDescription : public IDisplay {
          * \return Reference to the current instance
          */
         iterator& operator++() {
-            // empty circuit, protect against incrementing past end()
-            // so if it == end(), then ++it == end() as well
-            if (elem_.q_ip_ == idx_infty && elem_.m_ip_ == idx_infty) {
-                return *this;
-            } else {
-                // increment the instruction pointer
-                ++elem_.ip_;
+            // EXCEPTION CHECKS
+
+            // protects against incrementing invalid iterators
+            if (qcd_ == nullptr) {
+                throw qpp::exception::InvalidIterator(
+                    "qpp::QCircuitDescription::iterator::operator++()");
             }
+
+            // protects against incrementing past the end
+            if (elem_.ip_ == qcd_->get_steps_count()) {
+                throw qpp::exception::InvalidIterator(
+                    "qpp::QCircuitDescription::iterator::operator++()");
+            }
+
+            // protect against incrementing an empty circuit iterator
+            if (elem_.q_ip_ == idx_infty && elem_.m_ip_ == idx_infty) {
+                throw qpp::exception::InvalidIterator(
+                    "qpp::QCircuitDescription::iterator::operator++()");
+            }
+            // END EXCEPTION CHECKS
+
+            // increment the instruction pointer
+            ++elem_.ip_;
 
             // only measurements, no gates
             if (elem_.q_ip_ == idx_infty) {
@@ -338,11 +361,22 @@ class QCircuitDescription : public IDisplay {
         bool operator!=(iterator rhs) const { return !(*this == rhs); }
 
         /**
-         * \brief Dereferencing operator
+         * \brief Safe dereferencing operator
          *
          * \return Constant reference to the iterator element
          */
-        const value_type_& operator*() const { return elem_; }
+        const value_type_& operator*() const {
+            // EXCEPTION CHECKS
+
+            // protect against de-referencing past the last element or against
+            // de-referencing invalid iterators
+            if (qcd_ == nullptr || elem_.ip_ == qcd_->get_steps_count())
+                throw exception::InvalidIterator(
+                    "qpp::QCircuitDescription::iterator::operator*()");
+            // END EXCEPTION CHECKS
+
+            return elem_;
+        }
 
         // iterator traits
         using difference_type = long long;                   ///< iterator trait
@@ -359,21 +393,33 @@ class QCircuitDescription : public IDisplay {
      *
      * \return Iterator to the first element
      */
-    iterator begin() { return iterator{this}; }
+    iterator begin() {
+        iterator it;
+        it.set_(this);
+        return it;
+    }
 
     /**
      * \brief Constant iterator to the first element
      *
      * \return Constant iterator to the first element
      */
-    const_iterator begin() const noexcept { return iterator{this}; }
+    const_iterator begin() const noexcept {
+        iterator it;
+        it.set_(this);
+        return it;
+    }
 
     /**
      * \brief Constant iterator to the first element
      *
      * \return Constant iterator to the first element
      */
-    const_iterator cbegin() const noexcept { return iterator{this}; }
+    const_iterator cbegin() const noexcept {
+        iterator it;
+        it.set_(this);
+        return it;
+    }
 
     /**
      * \brief Iterator to the next to the last element
@@ -381,7 +427,8 @@ class QCircuitDescription : public IDisplay {
      * \return Iterator to the next to the last element
      */
     iterator end() {
-        iterator it{this};
+        iterator it;
+        it.set_(this);
         if (steps_cnt_ == 0) // empty circuit
             return it;
         else
@@ -395,7 +442,8 @@ class QCircuitDescription : public IDisplay {
      * \return Constant iterator to the next to the last element
      */
     const_iterator end() const noexcept {
-        iterator it{this};
+        iterator it;
+        it.set_(this);
         if (steps_cnt_ == 0) // empty circuit
             return it;
         else
@@ -409,7 +457,8 @@ class QCircuitDescription : public IDisplay {
      * \return Constant iterator to the next to the last element
      */
     const_iterator cend() const noexcept {
-        iterator it{this};
+        iterator it;
+        it.set_(this);
         if (steps_cnt_ == 0) // empty circuit
             return it;
         else
@@ -2185,7 +2234,7 @@ class QCircuit : public IDisplay {
      * step
      * @return True if measurement step, false otherwise
      */
-    bool is_measurement_step() const { return (*it_).is_measurement_; }
+    bool is_measurement_step() const { return it_.elem_.is_measurement_; }
 
     /**
      * \brief Measurement instruction pointer
@@ -2195,7 +2244,7 @@ class QCircuit : public IDisplay {
      *
      * \return Measurement instruction pointer
      */
-    idx get_m_ip() const { return (*it_).m_ip_; }
+    idx get_m_ip() const { return it_.elem_.m_ip_; }
 
     /**
      * \brief Quantum instruction pointer
@@ -2205,7 +2254,7 @@ class QCircuit : public IDisplay {
      *
      * \return Quantum instruction pointer
      */
-    idx get_q_ip() const { return (*it_).q_ip_; }
+    idx get_q_ip() const { return it_.elem_.q_ip_; }
 
     /**
      * \brief Total instruction pointer
@@ -2213,7 +2262,7 @@ class QCircuit : public IDisplay {
      * \return The sum of measurement instruction pointer and quantum
      * instruction pointer
      */
-    idx get_ip() const { return (*it_).ip_; }
+    idx get_ip() const { return it_.elem_.ip_; }
 
     /**
      * \brief Iterator to current step

@@ -622,6 +622,17 @@ class NotImplemented : public Exception {
     using Exception::Exception;
 };
 
+/**
+ * \class qpp::exception::InvalidIterator
+ * \brief Invalid iterator
+ */
+class InvalidIterator : public Exception {
+  public:
+    std::string type_description() const override { return "Invalid iterator"; }
+
+    using Exception::Exception;
+};
+
 } // namespace exception
 } /* namespace qpp */
 

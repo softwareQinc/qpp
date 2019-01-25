@@ -16,9 +16,11 @@ In progress - pre-release
     - Introduced the largest unsigned index qpp::idx_inf in "constants.h"
     - Added new exception classes in "classes/exception.h":
           qpp::exception::QuditAlreadyMeasured - self-explanatory
-          qpp::exception::Duplicates     - thrown when a system such as a
-                                           std::vector contains duplicates
-          qpp::exception::NotImplemented - code not yet implemented
+          qpp::exception::Duplicates      - thrown when a system such as a
+                                            std::vector contains duplicates
+          qpp::exception::NotImplemented  - code not yet implemented
+          qpp::exception::InvalidIterator - invalid iterator (not initialized,
+                                            past end, etc.)
     - Added std::string qpp::Gates::get_name(const cmat&) function which returns
       the names of the most common (one, two and three) qubit gates
     - Added qpp::QCircuitDescription and qpp::QCircuit classes in the new header

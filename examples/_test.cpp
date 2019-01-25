@@ -65,6 +65,8 @@ int main() {
     std::cout << "q_ip_: " << qc.get_q_ip() << ", ";
     std::cout << "ip_: " << qc.get_ip() << "\n\n";
 
+    // std::cout << *qc.get_iter(); // end, throws exception::InvalidIterator()
+
     std::cout << "measurement count: "
               << qc.get_circuit_description().get_measurement_count() << ", ";
     std::cout << "gate_count: " << qc.get_circuit_description().get_gate_count()
@@ -72,11 +74,14 @@ int main() {
     std::cout << "total count: "
               << qc.get_circuit_description().get_steps_count() << '\n';
 
-    for(auto &&elem: qcd)
+    for (auto&& elem : qcd)
         std::cout << elem << '\n';
 
+    QCircuitDescription a(2, 2);
+    a.gate(gt.H, 0);
+    std::cout << a;
 
-    QCircuitDescription a(2,2);
-    auto it = std::end(qcd);
-    std::cout <<*it;
+    QCircuit q{a};
+    q.run(true);
+    std::cout << q;
 }
