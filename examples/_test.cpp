@@ -85,5 +85,11 @@ int main() {
     QCircuit q{a};
     q.run(true);
     std::cout << q << '\n';
-    std::cout << "ok";
+
+    std::cout << std::boolalpha << is_iterable<QCircuitDescription>::value;
+    std::cout << std::noboolalpha << '\n';
+    std::cout << std::boolalpha << is_iterable<IQCircuit>::value;
+    std::cout << std::noboolalpha << '\n';
+    std::cout << std::boolalpha << is_iterable<QCircuit>::value;
+    std::cout << std::noboolalpha << '\n';
 }

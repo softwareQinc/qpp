@@ -83,9 +83,8 @@ struct is_iterable : std::false_type {};
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
 template <typename T>
-struct is_iterable<
-    T, to_void<decltype(std::declval<T>().begin()),
-               decltype(std::declval<T>().end()), typename T::value_type>>
+struct is_iterable<T, to_void<decltype(std::declval<T>().begin()),
+                              decltype(std::declval<T>().end())>>
     : std::true_type {};
 #if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)
 #pragma GCC diagnostic pop
