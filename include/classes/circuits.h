@@ -363,7 +363,7 @@ class QCircuitDescription : public IDisplay {
         bool operator!=(iterator rhs) const { return !(*this == rhs); }
 
         /**
-         * \brief Safe dereferencing operator
+         * \brief Safe de-referencing operator
          *
          * \return Constant reference to the iterator element
          */

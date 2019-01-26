@@ -59,7 +59,7 @@ using to_void = typename make_void<Ts...>::type;
  *
  * Provides the constant member \a value which is equal to \a true,
  * if \a T is compatible with an iterable container, i.e. provides at least
- * \a begin() and \a end() member functions.
+ * \a begin() and \a end() member functions and allows de-referencing.
  * Otherwise, \a value is equal to \a false.
  */
 // silence g++4.8.x warning about non-virtual destructor in inherited class
@@ -84,7 +84,8 @@ struct is_iterable : std::false_type {};
 #endif
 template <typename T>
 struct is_iterable<T, to_void<decltype(std::declval<T>().begin()),
-                              decltype(std::declval<T>().end())>>
+                              decltype(std::declval<T>().end()),
+                              decltype(*(std::declval<T>().begin()))>>
     : std::true_type {};
 #if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)
 #pragma GCC diagnostic pop
