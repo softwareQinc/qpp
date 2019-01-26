@@ -23,8 +23,13 @@ In progress - pre-release
                                             past end, etc.)
     - Added std::string qpp::Gates::get_name(const cmat&) function which returns
       the names of the most common (one, two and three) qubit gates
-    - Added qpp::QCircuitDescription and qpp::QCircuit classes in the new header
-      file "classes/circuits.h" for simulating qudit quantum circuits
+    - Added new classes in the new header file "classes/circuits.h" for
+      simulating qudit quantum circuits:
+          - qpp::QCircuitDescription - Quantum circuit description, does not
+                                       effectively perform any operations
+          - qpp::IQCircuit           - Abstract base class for quantum circuits
+          - qpp::QCircuit            - Concrete class for simulation of
+                                       noiseless quantum circuits
       BE AWARE: this is (still) work in progress, not yet complete, bugs may
       still lingering around
     - Added new circuit simulator examples in "examples/circuits":

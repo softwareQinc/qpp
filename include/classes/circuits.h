@@ -138,7 +138,7 @@ class QCircuitDescription : public IDisplay {
      */
     class iterator {
         friend QCircuitDescription;
-        friend class QCircuit;
+        friend class IQCircuit;
 
         ///< non-owning pointer to const circuit description
         const QCircuitDescription* qcd_{nullptr};
@@ -690,8 +690,8 @@ class QCircuitDescription : public IDisplay {
      */
     explicit QCircuitDescription(idx nq, idx nc = 0, idx d = 2,
                                  std::string name = "")
-        : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false),
-          steps_cnt_{0} {
+        : nq_{nq}, nc_{nc}, d_{d}, name_{name},
+          measured_(nq, false), steps_cnt_{0} {
         // EXCEPTION CHECKS
 
         if (nq == 0)
@@ -2082,11 +2082,12 @@ class QCircuitDescription : public IDisplay {
 }; /* class QCircuitDescription */
 
 /**
- * \class qpp::QCircuit
- * \brief Quantum circuit simulator class
+ * \class qpp::IQCircuit
+ * \brief Quantum circuit simulator abstract class
  * \see qpp::QCircuitDescription
+ * \note Every further derived class has to override the run() member function
  */
-class QCircuit : public IDisplay {
+class IQCircuit : public IDisplay {
   protected:
     const QCircuitDescription& qcd_; ///< quantum circuit description
     ket psi_;                        ///< state vector
@@ -2144,9 +2145,9 @@ class QCircuit : public IDisplay {
      *
      * \param qcd Quantum circuit description
      */
-    explicit QCircuit(const QCircuitDescription& qcd)
-        : qcd_{qcd},
-          psi_{States::get_instance().zero(qcd.get_nq(), qcd.get_d())},
+    explicit IQCircuit(const QCircuitDescription& qcd)
+        : qcd_{qcd}, psi_{States::get_instance().zero(qcd.get_nq(),
+                                                      qcd.get_d())},
           dits_(qcd.get_nc(), 0), probs_(qcd.get_nc(), 0),
           subsys_(qcd.get_nq(), 0), it_{qcd_.begin()} {
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
@@ -2155,7 +2156,7 @@ class QCircuit : public IDisplay {
     /**
      * \brief Disables rvalue QCircuitDescription
      */
-    QCircuit(QCircuitDescription&&) = delete;
+    IQCircuit(QCircuitDescription&&) = delete;
 
     // getters
     /**
@@ -2237,7 +2238,8 @@ class QCircuit : public IDisplay {
     /**
      * \brief Checks whether the current step in the circuit is a measurement
      * step
-     * @return True if measurement step, false otherwise
+     *
+     * \return True if measurement step, false otherwise
      */
     bool is_measurement_step() const { return it_.elem_.is_measurement_; }
 
@@ -2292,7 +2294,7 @@ class QCircuit : public IDisplay {
      * \param value Classical dit value
      * \return Reference to the current instance
      */
-    QCircuit& set_dit(idx i, idx value) {
+    IQCircuit& set_dit(idx i, idx value) {
         if (i > qcd_.get_nc())
             throw exception::OutOfRange("qpp::QCircuit::set_dit()");
         dits_[i] = value;
@@ -2316,12 +2318,41 @@ class QCircuit : public IDisplay {
     }
 
     /**
+     * \brief qpp::IDisplay::display() override
+     *
+     * Writes to the output stream a textual representation of the quantum
+     * circuit
+     *
+     * \param os Output stream passed by reference
+     * \return Reference to the output stream
+     */
+    std::ostream& display(std::ostream& os) const override {
+        os << "measured: " << disp(get_measured(), ", ") << '\n';
+        os << "dits: " << disp(get_dits(), ", ") << '\n';
+        os << "probs: " << disp(get_probs(), ", ");
+
+        return os;
+    }
+
+    virtual void run(bool verbose = false, idx step = idx_infty) = 0;
+}; /* class IQCircuit */
+
+/**
+ * \class qpp::QCircuit
+ * \brief Quantum circuit simulator class
+ * \see qpp::QCircuitDescription
+ */
+class QCircuit : public IQCircuit {
+  public:
+    using IQCircuit::IQCircuit; ///< Uses the base IQCircuit constructor
+
+    /**
      * \brief Executes the quantum circuit
      *
      * \param step How many steps to execute, by default executes until the end
      * \param verbose If true, displays at console every executed step
      */
-    void run(bool verbose = false, idx step = idx_infty) {
+    void run(bool verbose = false, idx step = idx_infty) override {
         // EXCEPTION CHECKS
 
         // trying to run an empty circuit
@@ -2346,7 +2377,7 @@ class QCircuit : public IDisplay {
         for (idx i = 0; i < no_steps; ++i) {
 
             if (verbose) {
-                std::cout << it_.elem_ << '\n';
+                std::cout << *it_ << '\n';
             }
 
             // unpack the iterator
@@ -2456,10 +2487,10 @@ class QCircuit : public IDisplay {
                             }
                         }
                         if (should_apply) {
-                            psi_ =
-                                apply(psi_, powm(qcd_.get_gates()[q_ip_].gate_,
-                                                 first_dit),
-                                      target_rel_pos, qcd_.get_d());
+                            psi_ = apply(
+                                psi_,
+                                powm(qcd_.get_gates()[q_ip_].gate_, first_dit),
+                                target_rel_pos, qcd_.get_d());
                         }
                     }
                     break;
@@ -2467,24 +2498,7 @@ class QCircuit : public IDisplay {
             }     // end else gate step
         }         // end main for loop
     }             // end QCircuit::run(idx, bool)
-
-    /**
-     * \brief qpp::IDisplay::display() override
-     *
-     * Writes to the output stream a textual representation of the quantum
-     * circuit
-     *
-     * \param os Output stream passed by reference
-     * \return Reference to the output stream
-     */
-    std::ostream& display(std::ostream& os) const override {
-        os << "measured: " << disp(get_measured(), ", ") << '\n';
-        os << "dits: " << disp(get_dits(), ", ") << '\n';
-        os << "probs: " << disp(get_probs(), ", ");
-
-        return os;
-    }
-}; /* class QCircuit */
+};                /* class QCircuit */
 
 } /* namespace qpp */
 

@@ -6,6 +6,7 @@ var dir_b02e4219757ae4e3a0f1714873865bbf =
       [ "value_type_", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__" ],
       [ "GateStep", "structqpp_1_1_q_circuit_description_1_1_gate_step.html", "structqpp_1_1_q_circuit_description_1_1_gate_step" ],
       [ "MeasureStep", "structqpp_1_1_q_circuit_description_1_1_measure_step.html", "structqpp_1_1_q_circuit_description_1_1_measure_step" ],
+      [ "IQCircuit", "classqpp_1_1_i_q_circuit.html", "classqpp_1_1_i_q_circuit" ],
       [ "QCircuit", "classqpp_1_1_q_circuit.html", "classqpp_1_1_q_circuit" ]
     ] ],
     [ "codes.h", "codes_8h.html", [

@@ -29,7 +29,7 @@ int main() {
     std::cout << ">> BEGIN RUN\n";
     qc.reset();
     qc.run(true);
-    std::cout << qc;
+    std::cout << qc << '\n';
     std::cout << "psi:\n";
     std::cout << disp(qc.get_psi()) << '\n';
     std::cout << "m_ip_: " << qc.get_m_ip() << ", ";

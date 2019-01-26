@@ -15,7 +15,7 @@ var classqpp_1_1_q_circuit_description_1_1iterator =
     [ "operator=", "classqpp_1_1_q_circuit_description_1_1iterator.html#ae9cf9240bcab73877ec54f9c63a5256f", null ],
     [ "operator==", "classqpp_1_1_q_circuit_description_1_1iterator.html#a9c5935164465cd927b83acd104c81c84", null ],
     [ "set_", "classqpp_1_1_q_circuit_description_1_1iterator.html#a61d050093c4341bf6ada736e781b24a3", null ],
-    [ "QCircuit", "classqpp_1_1_q_circuit_description_1_1iterator.html#a208d63d107f60e789151f74ae47f2dc3", null ],
+    [ "IQCircuit", "classqpp_1_1_q_circuit_description_1_1iterator.html#a12aa1753d4c43860af2dcd91827c4e6a", null ],
     [ "elem_", "classqpp_1_1_q_circuit_description_1_1iterator.html#aae4d865d54eb8c5e0a5d06cc06cb909d", null ],
     [ "qcd_", "classqpp_1_1_q_circuit_description_1_1iterator.html#ad9e98e6c590ac04e70c6c30a1a38b916", null ],
     [ "QCircuitDescription", "classqpp_1_1_q_circuit_description_1_1iterator.html#a031706fac1f4276125e5076e154c12ad", null ]
