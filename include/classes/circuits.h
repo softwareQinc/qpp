@@ -858,7 +858,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::gate()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -901,7 +901,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_ * d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::gate()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -946,7 +946,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_ * d_ * d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::gate()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1002,7 +1002,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::gate_fan()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1036,7 +1036,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::gate_fan()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1095,7 +1095,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::gate_custom()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1125,7 +1125,7 @@ class QCircuitDescription : public IDisplay {
 
         try {
             throw exception::NotImplemented("qpp::QCircuitDescription::QFT()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1153,7 +1153,7 @@ class QCircuitDescription : public IDisplay {
 
         try {
             throw exception::NotImplemented("qpp::QCircuitDescription::TFQ()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1195,7 +1195,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::CTRL()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1266,7 +1266,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::CTRL()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1330,7 +1330,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::CTRL()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1412,7 +1412,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::CTRL()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1499,7 +1499,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::CTRL_custom()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1546,7 +1546,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::cCTRL()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1612,7 +1612,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::cCTRL()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1670,7 +1670,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::cCTRL()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1742,7 +1742,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::cCTRL()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1817,7 +1817,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::cCTRL_custom()");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1857,7 +1857,7 @@ class QCircuitDescription : public IDisplay {
             if (get_measured(i))
                 throw exception::QuditAlreadyMeasured(
                     "qpp:QCircuitDescription::measureZ");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1905,7 +1905,7 @@ class QCircuitDescription : public IDisplay {
             if (get_measured(i))
                 throw exception::QuditAlreadyMeasured(
                     "qpp:QCircuitDescription::measureV");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
@@ -1955,7 +1955,7 @@ class QCircuitDescription : public IDisplay {
                 if (get_measured(i))
                     throw exception::QuditAlreadyMeasured(
                         "qpp::QCircuitDescription::measureV");
-        } catch (qpp::exception::Exception& e) {
+        } catch (qpp::exception::Exception&) {
             std::cerr << "At STEP " << steps_cnt_ << "\n";
             throw;
         }
