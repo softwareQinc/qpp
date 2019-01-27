@@ -2158,6 +2158,11 @@ class IQCircuit : public IDisplay {
      */
     IQCircuit(QCircuitDescription&&) = delete;
 
+    /**
+     * \brief Default virtual destructor
+     */
+    virtual ~IQCircuit() = default;
+
     // getters
     /**
      * \brief Underlying quantum state

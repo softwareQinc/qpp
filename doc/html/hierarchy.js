@@ -86,6 +86,6 @@ var hierarchy =
     ] ],
     [ "true_type", null, [
       [ "qpp::is_complex< std::complex< T > >", "structqpp_1_1is__complex_3_01std_1_1complex_3_01_t_01_4_01_4.html", null ],
-      [ "qpp::is_iterable< T, to_void< decltype(std::declval< T >().begin()), decltype(std::declval< T >().end())> >", "structqpp_1_1is__iterable_3_01_t_00_01to__void_3_01decltype_07std_1_1declval_3_01_t_01_4_07_08_80eb905a7f9707acbda650e5b0fdc535f.html", null ]
+      [ "qpp::is_iterable< T, to_void< decltype(std::declval< T >().begin()), decltype(std::declval< T >().end()), decltype(*(std::declval< T >().begin()))> >", "structqpp_1_1is__iterable_3_01_t_00_01to__void_3_01decltype_07std_1_1declval_3_01_t_01_4_07_08_8a85a9c2c5a028e47768327c6329d9509.html", null ]
     ] ]
 ];
