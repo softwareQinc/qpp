@@ -92,7 +92,7 @@ class INoise {
 }; /* class INoise */
 
 // template method pattern
-INoise::operator cmat() const {
+inline INoise::operator cmat() const {
 
     std::discrete_distribution<idx> dd{std::begin(probs_), std::end(probs_)};
     auto gen =
