@@ -58,7 +58,7 @@ namespace qpp {
 class QCircuitDescription : public IDisplay {
     const idx nq_;                         ///< number of qudits
     const idx nc_;                         ///< number of classical "dits"
-    const idx d_;                          ///< dimension
+    const idx d_;                          ///< qudit dimension
     std::vector<idx> measurement_steps_{}; ///< keeps track of where the
     ///< measurements take place
     std::string name_;           ///< optional circuit name
@@ -2137,7 +2137,7 @@ class IQCircuit : public IDisplay {
     /**
      * \brief Constructs a quantum circuit out of a quantum circuit description
      *
-     * \note the quantum circuit description must be an lvalue
+     * \note The quantum circuit description must be an lvalue
      * \see qpp::QCircuit(QCircuitDescription&&)
      *
      * \note The initial underlying quantum state is set to
@@ -2170,6 +2170,13 @@ class IQCircuit : public IDisplay {
      * \return Underlying quantum state
      */
     ket get_psi() const { return psi_; }
+
+    /**
+     * \brief Reference to the underlying quantum state
+     *
+     * \return Reference to the underlying quantum state
+     */
+    ket& get_ref_psi() { return psi_; }
 
     /**
      * \brief Vector with the values of the underlying classical dits
@@ -2507,4 +2514,4 @@ class QCircuit : public IQCircuit {
 
 } /* namespace qpp */
 
-#endif // CLASSES_CIRCUITS_H_
+#endif /* CLASSES_CIRCUITS_H_ */

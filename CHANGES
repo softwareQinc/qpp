@@ -23,6 +23,8 @@ In progress - pre-release
                                             past end, etc.)
     - Added std::string qpp::Gates::get_name(const cmat&) function which returns
       the names of the most common (one, two and three) qubit gates
+    - Added new header file "classes/noise.h" and corresponding classes for
+      simulating quantum noise (e.g. depolarizing, dephasing etc)
     - Added new classes in the new header file "classes/circuits.h" for
       simulating qudit quantum circuits:
           - qpp::QCircuitDescription - Quantum circuit description, does not
