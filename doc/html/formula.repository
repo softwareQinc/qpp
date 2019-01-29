@@ -77,3 +77,4 @@
 \form#76:$ |x\rangle \longrightarrow |ax\mathrm{ mod }N\rangle $
 \form#77:$ |x\rangle \longrightarrow |ax \mathrm{ mod } N\rangle $
 \form#78:$|0\rangle^{\otimes nq}$
+\form#79:$\{0, 1, \ldots, n - 1\}$

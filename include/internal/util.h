@@ -366,14 +366,14 @@ void variadic_vector_emplace(std::vector<T>& v, First&& first, Args&&... args) {
 }
 
 // returns the number of subsystems (each subsystem assumed of the same
-// dimension d) from an object (ket/bra/density matrix) of size sz
-inline idx get_num_subsys(idx sz, idx d) {
+// dimension d) from an object (ket/bra/density matrix) of size D
+inline idx get_num_subsys(idx D, idx d) {
 // error checks only in DEBUG version
 #ifndef NDEBUG
-    assert(sz > 0);
+    assert(D > 0);
     assert(d > 1);
 #endif
-    return static_cast<idx>(std::llround(std::log2(sz) / std::log2(d)));
+    return static_cast<idx>(std::llround(std::log2(D) / std::log2(d)));
 }
 
 // returns the dimension of a subsystem (each subsystem assumed of the same

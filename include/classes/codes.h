@@ -78,7 +78,7 @@ class Codes final : public internal::Singleton<const Codes> // const Singleton
     ket codeword(Type type, idx i) const {
         ket result;
         switch (type) {
-        // [[5,1,3]] Five qubit code (as in Nielsen and Chuang)
+        // [[5,1,3]] Five qubit code, as described in Nielsen and Chuang
         case Type::FIVE_QUBIT:
             switch (i) {
             case 0:
@@ -107,7 +107,7 @@ class Codes final : public internal::Singleton<const Codes> // const Singleton
                 throw exception::NoCodeword("qpp::Codes::codeword()");
             }
             break;
-        // [[7,1,3]] Steane code according to Nielsen and Chuang)
+        // [[7,1,3]] Steane code, as described in Nielsen and Chuang
         case Type::SEVEN_QUBIT_STEANE:
             switch (i) {
             case 0:

@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structqpp_1_1_q_circuit_description_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. " alt="" coords="5,5,172,47"/>
+<area shape="rect" id="node1" href="$classqpp_1_1_noise.html" title="qpp::Noise\&lt; StateIndependent\lNoise \&gt;" alt="" coords="5,23,204,65"/>
+<area shape="rect" id="node2" href="$classqpp_1_1_qubit_dephasing_noise.html" title="Qubit dephasing noise. " alt="" coords="257,5,435,32"/>
+<area shape="rect" id="node3" href="$classqpp_1_1_qubit_depolarizing_noise.html" title="Qubit depolarizing noise. " alt="" coords="252,56,440,83"/>
 </map>

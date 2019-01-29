@@ -476,7 +476,7 @@ class QCircuitDescription : public IDisplay {
         GateType gate_type_ = GateType::NONE; ///< gate type
         cmat gate_;                           ///< gate
         std::vector<idx> ctrl_;               ///< control
-        std::vector<idx> target_; ///< target where the gate is being applied
+        std::vector<idx> target_; ///< target where the gate is applied
         idx step_no_;             ///< step number
         std::string name_;        ///< custom name of the step
         /**

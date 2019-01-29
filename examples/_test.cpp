@@ -9,16 +9,17 @@ int main() {
     /////////// testing ///////////
 
     std::cout << "testing...\n";
-    auto qubit_dep_noise = QubitDephasingNoise(0.3);
-    std::cout << disp<cmat>(qubit_dep_noise) << '\n';
 
-    ket psi = st.mes(2);
+    const Noise<StateDependentNoise>& noise = QubitPhaseDampingNoise(0.4);
 
-    cmat x = QubitAmplitudeDampingNoise(0.3, psi, 1);
-    std::cout << disp(x) << "\n\n";
+    ket psi = 0.8 * 0_ket + 0.6 * 1_ket;
 
-    cmat y = QubitPhaseDampingNoise(0.4, psi, 1);
-    std::cout << disp(y) << "\n\n";
+    cmat psi_out = noise(psi, 0);
+    std::cout << disp(psi_out) << "\n\n";
 
-    //std::cout << disp(psi) << "\n\n" << norm(psi) << "\n\n";
+    std::cout << disp(noise.get_probs(), " ") << "\n";
+    std::cout << noise.get_last_idx() << "\n";
+    std::cout << noise.get_last_p() << "\n";
+    std::cout << disp(noise.get_last_K()) << "\n";
+    std::cout << norm(psi_out) << "\n";
 }

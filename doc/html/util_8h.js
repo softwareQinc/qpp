@@ -21,7 +21,7 @@ var util_8h =
     [ "check_vector", "util_8h.html#a0da254af40c8f53d655ebf645c2af4ad", null ],
     [ "dirsum2", "util_8h.html#a0746c62a6b84967551ab2e1049c7f463", null ],
     [ "get_dim_subsys", "util_8h.html#a321de4158dbe66d77f480d8f0b7ffd6d", null ],
-    [ "get_num_subsys", "util_8h.html#ab2e7b985d75c45198899b3aa1f2c0f77", null ],
+    [ "get_num_subsys", "util_8h.html#abc50ce9f80ba0cf904aa3fefaa82cd34", null ],
     [ "kron2", "util_8h.html#a66c954a3de84c422f6080936477c86d4", null ],
     [ "multiidx2n", "util_8h.html#a7132297b40fb958750942d6bed9d4ff3", null ],
     [ "n2multiidx", "util_8h.html#a3e8ed22ae3490cd81beff37931d8ca25", null ],

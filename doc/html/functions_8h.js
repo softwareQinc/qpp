@@ -8,7 +8,7 @@ var functions_8h =
     [ "anticomm", "functions_8h.html#af2f54909fe5801ad4bc179be28ad7a41", null ],
     [ "bloch2rho", "functions_8h.html#a7e5c413d74d838e78264444307e81576", null ],
     [ "comm", "functions_8h.html#aa4c1b998a518e655645a0285f90550e3", null ],
-    [ "complement", "functions_8h.html#a87ad5b3e58dedde05467ac1961e44892", null ],
+    [ "complement", "functions_8h.html#a20741a47bb34a3b9043dfb762f7fab81", null ],
     [ "conjugate", "functions_8h.html#ad430508f45480e4d7a8ac83ae7d00aae", null ],
     [ "cosm", "functions_8h.html#a369c7a2f9f27121178519ddba186fbcd", null ],
     [ "cwise", "functions_8h.html#a18e336b2319f89d7817aa7979de9190f", null ],

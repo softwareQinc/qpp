@@ -66,13 +66,13 @@ class States final : public internal::Singleton<const States> // const Singleton
 
     // Bell states
     ket b00{ket::Zero(4)};
-    ///< Bell-00 state (following the convention in Nielsen and Chuang)
+    ///< Bell-00 state, as described in Nielsen and Chuang
     ket b01{ket::Zero(4)};
-    ///< Bell-01 state (following the convention in Nielsen and Chuang)
+    ///< Bell-01 state, as described in Nielsen and Chuang
     ket b10{ket::Zero(4)};
-    ///< Bell-10 state (following the convention in Nielsen and Chuang)
+    ///< Bell-10 state, as described in Nielsen and Chuang
     ket b11{ket::Zero(4)};
-    ///< Bell-11 state (following the convention in Nielsen and Chuang)
+    ///< Bell-11 state, as described in Nielsen and Chuang
 
     // projectors onto Bell states
     cmat pb00{cmat::Zero(4, 4)}; ///< Projector onto the Bell-00 state
@@ -245,7 +245,7 @@ class States final : public internal::Singleton<const States> // const Singleton
         pz0 = z0 * z0.adjoint();
         pz1 = z1 * z1.adjoint();
 
-        // Bell states, following convention from Nielsen & Chuang
+        // Bell states, as described in Nielsen and Chuang
         // |ij> -> |b_{ij}> by the CNOT*(H x Id) circuit
 
         b00 << 1 / std::sqrt(2.), 0, 0, 1 / std::sqrt(2.);

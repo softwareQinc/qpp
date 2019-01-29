@@ -2,6 +2,7 @@ var classqpp_1_1_i_q_circuit =
 [
     [ "IQCircuit", "classqpp_1_1_i_q_circuit.html#a0f72d26c63b2608cedf1c4dbd0573a30", null ],
     [ "IQCircuit", "classqpp_1_1_i_q_circuit.html#ad2134c78f2d8e54b036515f8ebf54e90", null ],
+    [ "~IQCircuit", "classqpp_1_1_i_q_circuit.html#a71006b73cc3358ae3d1941ef5c55f581", null ],
     [ "display", "classqpp_1_1_i_q_circuit.html#a5c894402b956dd852563e913513a9419", null ],
     [ "get_circuit_description", "classqpp_1_1_i_q_circuit.html#a23b8df087f4be8875366ecaaf8a7043a", null ],
     [ "get_dit", "classqpp_1_1_i_q_circuit.html#ac8762db61db7014522525cc7b3e5f547", null ],
@@ -15,6 +16,7 @@ var classqpp_1_1_i_q_circuit =
     [ "get_probs", "classqpp_1_1_i_q_circuit.html#a35331ede1ecff66dcc8b63ec70fd5046", null ],
     [ "get_psi", "classqpp_1_1_i_q_circuit.html#a3d6230782fab62b9a1ecf24e857d1806", null ],
     [ "get_q_ip", "classqpp_1_1_i_q_circuit.html#a69326aeae913967f03b4f6c4bb1581a1", null ],
+    [ "get_ref_psi", "classqpp_1_1_i_q_circuit.html#a434b1f19e9b052d35ba73ecb75588f69", null ],
     [ "get_relative_pos_", "classqpp_1_1_i_q_circuit.html#a592f6663d4fae1b27cde4de4f96c0f36", null ],
     [ "is_measurement_step", "classqpp_1_1_i_q_circuit.html#a3bef4e5b4ed67037234f0f2949ec9cee", null ],
     [ "reset", "classqpp_1_1_i_q_circuit.html#afa1f904a8673ba8bffe9f8cec6863c1e", null ],

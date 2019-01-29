@@ -33,39 +33,182 @@
 #define CLASSES_NOISE_H_
 
 namespace qpp {
+
+/**
+ * \class qpp::StateDependentNoise
+ * \brief Template tag, used whenever the noise is state-dependent
+ */
+struct StateDependentNoise {};
+
+/**
+ * \class qpp::StateIndependentNoise
+ * \brief Template tag, used whenever the noise is state-independent
+ */
+struct StateIndependentNoise {};
+
 /**
  * \class qpp::INoise
- * \brief Base pure virtual class (interface) for all noise models, derive your
- * particular noise model from this class
+ * \brief Base class for all noise models, derive your particular noise model
  */
-class INoise {
+template <class T>
+class Noise {
+  public:
+    using noise_type = T;
+    static_assert(std::is_same<StateDependentNoise, noise_type>::value ||
+                      std::is_same<StateIndependentNoise, noise_type>::value,
+                  "");
+
   protected:
-    const idx d_;               ///< qudit dimension
-    std::vector<double> probs_; ///< probabilities
-    std::vector<cmat> Ks_;      ///< Kraus operators
+    const std::vector<cmat> Ks_;        ///< Kraus operators
+    mutable std::vector<double> probs_; ///< probabilities
+    mutable idx d_{};                   ///< qudit dimension
+
+    mutable idx i_{}; ///< index of the last occurring noise
+    // element
+    mutable bool generated_{false}; ///< set to true after compute_state_() is
+    // invoked, or if the noise is state-independent
+
+    /**
+     * \brief Compute probability outcomes for StateDependent noise type,
+     * otherwise returns without performing any operation (no-op)
+     *
+     * \param state State vector or density matrix
+     * \param target Qudit index where the noise is applied
+     */
+    void compute_probs_(const cmat& state, idx target) const {
+        if (!std::is_same<StateDependentNoise, noise_type>::value)
+            return; // no-op
+
+        // minimal EXCEPTION CHECKS
+
+        if (!internal::check_nonzero_size(state))
+            throw exception::ZeroSize("qpp::Noise::compute_probs_()");
+        // END EXCEPTION CHECKS
+
+        cmat rho_i;
+        idx n = internal::get_num_subsys(state.rows(), d_);
+
+        for (idx i = 0; i < Ks_.size(); ++i) {
+            rho_i = ptrace(state, complement({target}, n), d_);
+            probs_[i] = trace(Ks_[i] * rho_i * adjoint(Ks_[i])).real();
+            if (probs_[i] < qpp::eps)
+                probs_[i] = 0;
+        }
+    } /* compute_probs_() */
+
+    /**
+     * \brief Compute the resulting state after the noise was applied
+     *
+     * \param state State vector or density matrix
+     * \param target Qudit index where the noise is applied
+     * \return Resulting state after the noise was applied
+     */
+    cmat compute_state_(const cmat& state, idx target) const {
+        cmat result;
+        idx D = static_cast<idx>(state.rows());
+
+        //************ ket ************//
+        if (internal::check_cvector(state)) {
+            result.resize(D, 1);
+        }
+        //************ density matrix ************//
+        else if (internal::check_square_mat(state)) {
+            result.resize(D, D);
+        }
+        //************ Exception: not ket nor density matrix ************//
+        else
+            throw exception::MatrixNotSquareNorCvector(
+                "qpp::Noise::compute_state_()");
+
+        // now do the actual noise generation
+        std::discrete_distribution<idx> dd{std::begin(probs_),
+                                           std::end(probs_)};
+        auto gen =
+#ifdef NO_THREAD_LOCAL_
+            RandomDevices::get_instance().get_prng();
+#else
+            RandomDevices::get_thread_local_instance().get_prng();
+#endif
+        i_ = dd(gen);
+        result = apply(state, Ks_[i_], {target}, d_);
+        generated_ = true;
+
+        return result / norm(result);
+    } /* compute_state_() */
+
   public:
     /**
-     * \brief Constructs a noise instance
+     * \brief Constructs a noise instance for StateDependent noise type
      *
-     * \param d Qudit dimension
-     * \param probs Probabilities of each noise (Kraus) operator
+     * \note SFINAEd-out for StateIndependent noise
+     *
+     * \param A Eigen expression (state vector or density matrix)
      * \param Ks Vector of noise (Kraus) operators that specify the noise
+     * \param d Qudit dimension
      */
-    explicit INoise(idx d, const std::vector<double>& probs,
-                    const std::vector<cmat>& Ks)
-        : d_{d}, probs_{probs}, Ks_{Ks} {}
+    template <typename U = noise_type>
+    explicit Noise(
+        const std::vector<cmat>& Ks,
+        typename std::enable_if<
+            std::is_same<StateDependentNoise, U>::value>::type* = nullptr)
+        : Ks_{Ks}, probs_(Ks.size()) {
+        // EXCEPTION CHECKS
+
+        if (Ks.size() == 0)
+            throw exception::ZeroSize("qpp::Noise::Noise()");
+        if (!internal::check_nonzero_size(Ks[0]))
+            throw exception::ZeroSize("qpp::Noise::Noise()");
+        if (!internal::check_square_mat(Ks[0]))
+            throw exception::MatrixNotSquare("qpp::Noise::Noise()");
+        for (auto&& it : Ks)
+            if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+                throw exception::DimsNotEqual("qpp::Noise::Noise()");
+        // END EXCEPTION CHECKS
+
+        d_ = Ks[0].rows(); // set the local dimension
+    }
+
+    /**
+     * \brief Constructs a noise instance for StateIndependent noise type
+     *
+     * \note SFINAEd-out for StateDependent noise
+     *
+     * \param A Eigen expression (state vector or density matrix)
+     * \param Ks Vector of noise (Kraus) operators that specify the noise
+     * \param d Qudit dimension
+     */
+    template <typename U = noise_type>
+    explicit Noise(
+        const std::vector<cmat>& Ks, const std::vector<double>& probs,
+        typename std::enable_if<
+            std::is_same<StateIndependentNoise, U>::value>::type* = nullptr)
+        : Ks_{Ks}, probs_(probs) {
+        // EXCEPTION CHECKS
+
+        if (Ks.size() == 0)
+            throw exception::ZeroSize("qpp::Noise::Noise()");
+        if (Ks.size() != probs.size())
+            throw exception::SizeMismatch("qpp::Noise::Noise");
+        if (!internal::check_nonzero_size(Ks[0]))
+            throw exception::ZeroSize("qpp::Noise::Noise()");
+        if (!internal::check_square_mat(Ks[0]))
+            throw exception::MatrixNotSquare("qpp::Noise::Noise()");
+        for (auto&& it : Ks)
+            if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+                throw exception::DimsNotEqual("qpp::Noise::Noise()");
+        for (auto&& elem : probs)
+            if (elem < 0 || elem > 1)
+                throw exception::OutOfRange("qpp::Noise::Noise");
+        // END EXCEPTION CHECKS
+
+        d_ = Ks[0].rows(); // set the local dimension
+        probs_ = probs;
+    }
 
     /**
      * \brief Default virtual destructor
      */
-    virtual ~INoise() = default;
-
-    /**
-     * \brief Conversion operator to a complex matrix
-     *
-     * \return Complex matrix
-     */
-    virtual operator cmat() const = 0;
+    virtual ~Noise() = default;
 
     // getters
     /**
@@ -76,39 +219,98 @@ class INoise {
     idx get_d() const { return d_; };
 
     /**
-     * \brief Vector of probabilities corresponding to each noise operator
-     *
-     * \return Probability vector
-     */
-    std::vector<double> get_probs() const { return probs_; }
-
-    /**
      * \brief Vector of noise operators
      *
      * \return Vector of noise operators
      */
     std::vector<cmat> get_Ks() const { return Ks_; }
+
+    /**
+     * \brief Vector of probabilities corresponding to each noise operator
+     *
+     * \return Probability vector
+     */
+    std::vector<double> get_probs() const {
+        if (generated_ ||
+            std::is_same<StateIndependentNoise, noise_type>::value) {
+            return probs_;
+        } else
+            throw exception::CustomException(
+                "qpp::Noise::get_probs()",
+                "Noise::operator() was not yet invoked");
+    }
+
+    /**
+     * \brief Index of the last occurring noise element
+     *
+     * \return Index of the last occurring noise element
+     */
+    idx get_last_idx() const {
+        if (generated_) {
+            return i_;
+        } else
+            throw exception::CustomException(
+                "qpp::Noise::get_last_idx()",
+                "Noise::operator() was not yet invoked");
+    }
+
+    /**
+     * \brief Probability of the last occurring noise element
+     *
+     * \return Probability of the last occurring noise element
+     */
+    double get_last_p() const {
+        if (generated_) {
+            return probs_[i_];
+        } else
+            throw exception::CustomException(
+                "qpp::Noise::get_last_p()",
+                "Noise::operator() was not yet invoked");
+    }
+
+    /**
+     * \brief Last occurring noise element
+     *
+     * \return Last occurring noise element
+     */
+    cmat get_last_K() const {
+        if (generated_) {
+            return Ks_[i_];
+        } else
+            throw exception::CustomException(
+                "qpp::Noise::get_last_K()",
+                "Noise::operator() was not yet invoked");
+    }
     // end getters
-}; /* class INoise */
 
-// template method pattern
-inline INoise::operator cmat() const {
+    /**
+     * \brief Function invocation operator, applies the underlying noise
+     * model on qudit \a target of the multi-partite state vector or density
+     * matrix \a state
+     *
+     * \param state Multi-partite state vector or density matrix
+     * \param target Qudit index where the noise is applied
+     * \return Resulting state vector or density matrix
+     */
+    virtual cmat operator()(const cmat& state, idx target) const {
+        cmat result;
+        try {
+            compute_probs_(state, target);
+            result = compute_state_(state, target);
+        } catch (qpp::exception::Exception&) {
+            std::cerr << "In qpp::Noise::operator()\n";
+            throw;
+        }
 
-    std::discrete_distribution<idx> dd{std::begin(probs_), std::end(probs_)};
-    auto gen =
-#ifdef NO_THREAD_LOCAL_
-        RandomDevices::get_instance().get_prng();
-#else
-        RandomDevices::get_thread_local_instance().get_prng();
-#endif
-    return Ks_[dd(gen)];
-} /* INoise::operator cmat() const */
+        return result;
+    }
+}; /* class Noise */
 
 /**
  * \class qpp::QubitDepolarizingNoise
  * \brief Qubit depolarizing noise
  */
-class QubitDepolarizingNoise : INoise {
+class QubitDepolarizingNoise : public Noise<StateIndependentNoise> {
   public:
     /**
      * \brief Qubit depolarizing noise constructor
@@ -116,9 +318,9 @@ class QubitDepolarizingNoise : INoise {
      * \param p Noise probability
      */
     explicit QubitDepolarizingNoise(double p)
-        : INoise(2, {1 - p, p / 3, p / 3, p / 3},
-                 {Gates::get_instance().Id2, Gates::get_instance().X,
-                  Gates::get_instance().Y, Gates::get_instance().Z}) {
+        : Noise({Gates::get_instance().Id2, Gates::get_instance().X,
+                 Gates::get_instance().Y, Gates::get_instance().Z},
+                {1 - p, p / 3, p / 3, p / 3}) {
         // EXCEPTION CHECKS
 
         if (p < 0 || p > 1)
@@ -126,20 +328,13 @@ class QubitDepolarizingNoise : INoise {
                 "qpp::QubitDepolarizingNoise::QubitDepolarizingNoise()");
         // END EXCEPTION CHECKS
     }
-
-    /**
-     * \brief Complex matrix conversion operator override
-     *
-     * \return Complex matrix
-     */
-    operator cmat() const override { return INoise::operator cmat(); }
 }; /* class QubitDepolarizingNoise */
 
 /**
  * \class qpp::QubitDephasingNoise
  * \brief Qubit dephasing noise
  */
-class QubitDephasingNoise : INoise {
+class QubitDephasingNoise : public Noise<StateIndependentNoise> {
   public:
     /**
      * \brief Qubit dephasing noise constructor
@@ -147,8 +342,8 @@ class QubitDephasingNoise : INoise {
      * \param p Noise probability
      */
     explicit QubitDephasingNoise(double p)
-        : INoise(2, {1 - p, p},
-                 {Gates::get_instance().Id2, Gates::get_instance().Z}) {
+        : Noise({Gates::get_instance().Id2, Gates::get_instance().Z},
+                {1 - p, p}) {
         // EXCEPTION CHECKS
 
         if (p < 0 || p > 1)
@@ -156,125 +351,54 @@ class QubitDephasingNoise : INoise {
                 "qpp::QubitDephasingNoise::QubitDephasingNoise()");
         // END EXCEPTION CHECKS
     }
-
-    /**
-     * \brief Complex matrix conversion operator override
-     *
-     * \return Complex matrix
-     */
-    operator cmat() const override { return INoise::operator cmat(); }
 }; /* class QubitDephasingNoise */
 
 /**
  * \class qpp::QubitAmplitudeDampingNoise
- * \brief Qubit amplitude damping noise
+ * \brief Qubit amplitude damping noise, as described in Nielsen and Chuang
  */
-class QubitAmplitudeDampingNoise : INoise {
+class QubitAmplitudeDampingNoise : public Noise<StateDependentNoise> {
   public:
     /**
      * \brief Qubit amplitude damping noise constructor
      *
      * \param gamma Amplitude damping probability
-     * \param psi Reference to state vector
-     * \param i Qubit index
      */
-    explicit QubitAmplitudeDampingNoise(double gamma, const ket& psi, idx i)
-        : INoise(2, std::vector<double>(2, 0), std::vector<cmat>(2)) {
+    explicit QubitAmplitudeDampingNoise(double gamma)
+        : Noise(std::vector<cmat>{
+              ((cmat(2, 2)) << 1, 0, 0, std::sqrt(gamma)).finished(),
+              ((cmat(2, 2)) << 0, std::sqrt(1 - gamma), 0, 0).finished()}) {
         // EXCEPTION CHECKS
 
         if (gamma < 0 || gamma > 1)
             throw exception::OutOfRange("qpp::QubitAmplitudeDampingNoise::"
                                         "QubitAmplitudeDampingNoise()");
-
-        cmat K0(2, 2);
-        cmat K1(2, 2);
-
-        K0 << 1, 0, 0, std::sqrt(gamma);
-        K1 << 0, std::sqrt(1 - gamma), 0, 0;
-
-        double p = 0;
-
-        try {
-            idx n = internal::get_num_subsys(static_cast<idx>(psi.rows()), d_);
-            cmat rho_i = ptrace(psi, {i}, std::vector<idx>(d_, n));
-            p = trace(K0 * rho_i * adjoint(K0)).real();
-            if (p < qpp::eps)
-                p = 0;
-            probs_[0] = p;
-            probs_[1] = 1 - p;
-            Ks_[0] = K0;
-            Ks_[1] = K1;
-        } catch (qpp::exception::Exception&) {
-            std::cerr << "In "
-                         "qpp::QubitAmplitudeDampingNoise::"
-                         "QubitAmplitudeDampingNoise()\n";
-            throw;
-        }
         // END EXCEPTION CHECKS
     }
-
-    /**
-     * \brief Complex matrix conversion operator override
-     *
-     * \return Complex matrix
-     */
-    operator cmat() const override { return INoise::operator cmat(); }
 }; /* class QubitAmplitudeDampingNoise */
 
 /**
  * \class qpp::QubitPhaseDampingNoise
- * \brief Qubit phase damping noise
+ * \brief Qubit phase damping noise, as described in Nielsen and Chuang
  */
-class QubitPhaseDampingNoise : INoise {
+class QubitPhaseDampingNoise : public Noise<StateDependentNoise> {
   public:
     /**
      * \brief Qubit phase damping noise constructor
      *
      * \param gamma Phase damping probability
-     * \param psi Reference to state vector
-     * \param i Qubit index
      */
-    explicit QubitPhaseDampingNoise(double lambda, const ket& psi, idx i)
-        : INoise(2, std::vector<double>(2, 0), std::vector<cmat>(2)) {
+    explicit QubitPhaseDampingNoise(double lambda)
+        : Noise(std::vector<cmat>{
+              ((cmat(2, 2)) << 1, 0, 0, std::sqrt(1 - lambda)).finished(),
+              ((cmat(2, 2)) << 0, 0, 0, std::sqrt(lambda)).finished()}) {
         // EXCEPTION CHECKS
 
         if (lambda < 0 || lambda > 1)
             throw exception::OutOfRange("qpp::QubitPhaseDampingNoise::"
                                         "QubitPhaseDampingNoise()");
-
-        cmat K0(2, 2);
-        cmat K1(2, 2);
-
-        K0 << 1, 0, 0, std::sqrt(1 - lambda);
-        K1 << 0, 0, 0, std::sqrt(lambda);
-
-        double p = 0;
-
-        try {
-            idx n = internal::get_num_subsys(static_cast<idx>(psi.rows()), d_);
-            cmat rho_i = ptrace(psi, {i}, std::vector<idx>(d_, n));
-            p = trace(K0 * rho_i * adjoint(K0)).real();
-            if (p < qpp::eps)
-                p = 0;
-            probs_[0] = p;
-            probs_[1] = 1 - p;
-            Ks_[0] = K0;
-            Ks_[1] = K1;
-        } catch (qpp::exception::Exception&) {
-            std::cerr << "In "
-                         "qpp::QubitPhaseDampingNoise::"
-                         "QubitPhaseDampingNoise()\n";
-            throw;
-        }
         // END EXCEPTION CHECKS
     }
-
-    /**
-     * \brief Complex matrix conversion operator override
-     *
-     * \return Complex matrix
-     */
-    operator cmat() const override { return INoise::operator cmat(); }
 }; /* class QubitPhaseDampingNoise */
 
 } /* namespace qpp */

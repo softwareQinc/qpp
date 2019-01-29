@@ -1722,20 +1722,22 @@ rho2pure(const Eigen::MatrixBase<Derived>& A) {
  * \brief Constructs the complement of a subsystem vector
  *
  * \param subsys Subsystem vector
- * \param N Total number of systems
+ * \param n Total number of systems
  * \return Complement of \a subsys with respect to the set
- * \f$\{0, 1, \ldots, N - 1\}\f$
+ * \f$\{0, 1, \ldots, n - 1\}\f$
  */
-template <typename T>
-std::vector<T> complement(std::vector<T> subsys, idx N) {
+std::vector<idx> complement(std::vector<idx> subsys, idx n) {
     // EXCEPTION CHECKS
 
-    if (N < subsys.size())
+    if (n < subsys.size())
         throw exception::OutOfRange("qpp::complement()");
+    for (idx i = 0; i < subsys.size(); ++i)
+        if (subsys[i] >= n)
+            throw exception::SubsysMismatchDims("qpp::complement()");
     // END EXCEPTION CHECKS
 
-    std::vector<T> all(N);
-    std::vector<T> subsys_bar(N - subsys.size());
+    std::vector<idx> all(n);
+    std::vector<idx> subsys_bar(n - subsys.size());
 
     std::iota(std::begin(all), std::end(all), 0);
     std::sort(std::begin(subsys), std::end(subsys));
