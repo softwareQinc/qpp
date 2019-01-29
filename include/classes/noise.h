@@ -63,10 +63,9 @@ class Noise {
     mutable std::vector<double> probs_; ///< probabilities
     mutable idx d_{};                   ///< qudit dimension
 
-    mutable idx i_{}; ///< index of the last occurring noise
-    // element
+    mutable idx i_{}; ///< index of the last occurring noise element
     mutable bool generated_{false}; ///< set to true after compute_state_() is
-    // invoked, or if the noise is state-independent
+    ///< invoked, or if the noise is state-independent
 
     /**
      * \brief Compute probability outcomes for StateDependent noise type,
@@ -144,7 +143,7 @@ class Noise {
      *
      * \param A Eigen expression (state vector or density matrix)
      * \param Ks Vector of noise (Kraus) operators that specify the noise
-     * \param d Qudit dimension
+     * \param d Subsystem dimension
      */
     template <typename U = noise_type>
     explicit Noise(
@@ -175,7 +174,7 @@ class Noise {
      *
      * \param A Eigen expression (state vector or density matrix)
      * \param Ks Vector of noise (Kraus) operators that specify the noise
-     * \param d Qudit dimension
+     * \param d Subsystem dimension
      */
     template <typename U = noise_type>
     explicit Noise(
@@ -306,6 +305,8 @@ class Noise {
     }
 }; /* class Noise */
 
+// qubit noise models
+
 /**
  * \class qpp::QubitDepolarizingNoise
  * \brief Qubit depolarizing noise
@@ -400,6 +401,51 @@ class QubitPhaseDampingNoise : public Noise<StateDependentNoise> {
         // END EXCEPTION CHECKS
     }
 }; /* class QubitPhaseDampingNoise */
+
+// qudit noise models
+
+/**
+ * \class qpp::QuditDepolarizingNoise
+ * \brief Qudit depolarizing noise
+ */
+class QuditDepolarizingNoise : public Noise<StateIndependentNoise> {
+    std::vector<cmat> fill_Ks_(idx d) const {
+        std::vector<cmat> Ks(d * d);
+        idx cnt = 0;
+        for (idx i = 0; i < d; ++i)
+            for (idx j = 0; j < d; ++j)
+                Ks[cnt++] = powm(Gates::get_instance().Xd(d), i) *
+                            powm(Gates::get_instance().Zd(d), j);
+
+        return Ks;
+    }
+    std::vector<double> fill_probs_(double p, idx d) const {
+        std::vector<double> probs(d * d);
+        probs[0] = 1 - p;
+        for (idx i = 1; i < d * d; ++i)
+            probs[i] = p / (d - 1) * (d - 1);
+
+        return probs;
+    }
+    const idx d_;
+
+  public:
+    /**
+     * \brief Qudit depolarizing noise constructor
+     *
+     * \param p Noise probability
+     * \param d Subsystem dimension
+     */
+    explicit QuditDepolarizingNoise(double p, idx d)
+        : Noise(fill_Ks_(d), fill_probs_(p, d)), d_{d} {
+        // EXCEPTION CHECKS
+
+        if (d < 2 || p < 0 || p > 1)
+            throw exception::OutOfRange(
+                "qpp::QuditDepolarizingNoise::QuditDepolarizingNoise()");
+        // END EXCEPTION CHECKS
+    }
+}; /* class QuditDepolarizingNoise */
 
 } /* namespace qpp */
 
