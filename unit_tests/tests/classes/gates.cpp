@@ -194,7 +194,7 @@ TEST(qpp_Gates_Fd, AllTests) {
 }
 /******************************************************************************/
 /// BEGIN  std::string qpp::Gates::get_name(const cmat& U) const
-TEST(qpp_Gates_get_name(), AllTests) {}
+TEST(qpp_Gates_get_name, AllTests) {}
 /******************************************************************************/
 /// BEGIN  template<typename Derived = Eigen::MatrixXcd>
 ///        qpp::Gates::Id(idx D = 2) const
