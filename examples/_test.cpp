@@ -17,6 +17,5 @@ int main() {
         result = result + prj(out);
     }
     result = 1. / N * result;
-
     std::cout << disp(result) << '\n'; // we expect to be close to identity
 }
