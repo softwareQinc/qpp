@@ -14,11 +14,9 @@ int main() {
     cmat result = cmat::Zero(2, 2);
     for (idx i = 0; i < N; ++i) {
         ket out = noise(psi, 0);
-        std::cout << disp(out) << std::endl;
         result = result + prj(out);
     }
-    //    //result = 1. / N * result;
+    result = 1. / N * result;
 
     std::cout << disp(result) << '\n'; // we expect to be close to identity
-    std::cout << std::numeric_limits<double>::epsilon();
 }

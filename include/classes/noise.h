@@ -295,7 +295,7 @@ class Noise {
         cmat result;
         try {
             compute_probs_(state, std::vector<idx>{target});
-            result = compute_state_(state, std::vector<idx>(target));
+            result = compute_state_(state, std::vector<idx>{target});
         } catch (qpp::exception::Exception&) {
             std::cerr << "In qpp::Noise::operator()\n";
             throw;
