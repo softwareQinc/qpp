@@ -74,6 +74,10 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     if (!internal::check_nonzero_size(rstate))
         throw exception::ZeroSize("qpp::applyCTRL()");
 
+    // check zero sizes
+    if (!internal::check_nonzero_size(target))
+        throw exception::ZeroSize("qpp::applyCTRL()");
+
     // check square matrix for the gate
     if (!internal::check_square_mat(rA))
         throw exception::MatrixNotSquare("qpp::applyCTRL()");
@@ -459,6 +463,10 @@ apply(const Eigen::MatrixBase<Derived1>& state,
     if (!internal::check_nonzero_size(rstate))
         throw exception::ZeroSize("qpp::apply()");
 
+    // check zero sizes
+    if (!internal::check_nonzero_size(target))
+        throw exception::ZeroSize("qpp::apply()");
+
     // check square matrix for the gate
     if (!internal::check_square_mat(rA))
         throw exception::MatrixNotSquare("qpp::apply()");
@@ -604,6 +612,10 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 
     // check zero sizes
     if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::apply()");
+
+    // check zero sizes
+    if (!internal::check_nonzero_size(target))
         throw exception::ZeroSize("qpp::apply()");
 
     // check square matrix for the A

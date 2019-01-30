@@ -707,7 +707,6 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     // check zero-size
     if (!internal::check_nonzero_size(cA))
         throw exception::ZeroSize("qpp::measure_seq()");
-
     // check that dimension is valid
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::measure_seq()");
