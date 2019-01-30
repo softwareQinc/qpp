@@ -71,9 +71,14 @@ class Dynamic_bitset : public IDisplay {
      *
      * \param N Number of bits in the bitset
      */
-    Dynamic_bitset(idx N)
+    explicit Dynamic_bitset(idx N)
         : storage_size_{N / (sizeof(value_type) * CHAR_BIT) + 1}, N_{N},
           v_(storage_size_) {}
+
+    /**
+     * \brief Default virtual destructor
+     */
+    virtual ~Dynamic_bitset() = default;
 
     /* getters */
 
@@ -408,7 +413,7 @@ class Bit_circuit : public Dynamic_bitset {
      *
      * \param dynamic_bitset Dynamic bitset
      */
-    Bit_circuit(const Dynamic_bitset& dynamic_bitset)
+    explicit Bit_circuit(const Dynamic_bitset& dynamic_bitset)
         : Dynamic_bitset{dynamic_bitset} {};
 
     /**

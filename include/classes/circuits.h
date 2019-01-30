@@ -703,6 +703,11 @@ class QCircuitDescription : public IDisplay {
         // END EXCEPTION CHECKS
     }
 
+    /**
+     * \brief Default virtual destructor
+     */
+    virtual ~QCircuitDescription() = default;
+
     // getters
     /**
      * \brief Total number of qudits in the circuit

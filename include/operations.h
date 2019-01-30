@@ -565,8 +565,8 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
         throw exception::MatrixNotSquare("qpp::apply()");
     if (Ks[0].rows() != rA.rows())
         throw exception::DimsMismatchMatrix("qpp::apply()");
-    for (auto&& it : Ks)
-        if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+    for (auto&& elem : Ks)
+        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
             throw exception::DimsNotEqual("qpp::apply()");
     // END EXCEPTION CHECKS
 
@@ -633,8 +633,8 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
         throw exception::MatrixNotSquare("qpp::apply()");
     if (!internal::check_dims_match_mat(subsys_dims, Ks[0]))
         throw exception::MatrixMismatchSubsys("qpp::apply()");
-    for (auto&& it : Ks)
-        if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+    for (auto&& elem : Ks)
+        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
             throw exception::DimsNotEqual("qpp::apply()");
     // END EXCEPTION CHECKS
 
@@ -698,8 +698,8 @@ inline cmat kraus2super(const std::vector<cmat>& Ks) {
         throw exception::ZeroSize("qpp::kraus2super()");
     if (!internal::check_square_mat(Ks[0]))
         throw exception::MatrixNotSquare("qpp::kraus2super()");
-    for (auto&& it : Ks)
-        if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+    for (auto&& elem : Ks)
+        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
             throw exception::DimsNotEqual("qpp::kraus2super()");
     // END EXCEPTION CHECKS
 
@@ -769,8 +769,8 @@ inline cmat kraus2choi(const std::vector<cmat>& Ks) {
         throw exception::ZeroSize("qpp::kraus2choi()");
     if (!internal::check_square_mat(Ks[0]))
         throw exception::MatrixNotSquare("qpp::kraus2choi()");
-    for (auto&& it : Ks)
-        if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+    for (auto&& elem : Ks)
+        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
             throw exception::DimsNotEqual("qpp::kraus2choi()");
     // END EXCEPTION CHECKS
 

@@ -7,19 +7,18 @@ int main() {
     using namespace qpp;
 
     /////////// testing ///////////
+    // we simulate the action fully depolarizing noise applied multiple times
+    ket psi = 0.8 * 0_ket + 0.6 * 1_ket; // 0.8|0> + 0.6|1>
+    auto noise = QubitDepolarizingNoise(3. / 4);
+    idx N = 10000;
+    cmat result = cmat::Zero(2, 2);
+    for (idx i = 0; i < N; ++i) {
+        ket out = noise(psi, 0);
+        std::cout << disp(out) << std::endl;
+        result = result + prj(out);
+    }
+    //    //result = 1. / N * result;
 
-    std::cout << "testing...\n";
-
-    const Noise<StateDependentNoise>& noise = QubitPhaseDampingNoise(0.4);
-
-    ket psi = 0.8 * 0_ket + 0.6 * 1_ket;
-
-    cmat psi_out = noise(psi, 0);
-    std::cout << disp(psi_out) << "\n\n";
-
-    std::cout << disp(noise.get_probs(), " ") << "\n";
-    std::cout << noise.get_last_idx() << "\n";
-    std::cout << noise.get_last_p() << "\n";
-    std::cout << disp(noise.get_last_K()) << "\n";
-    std::cout << norm(psi_out) << "\n";
+    std::cout << disp(result) << '\n'; // we expect to be close to identity
+    std::cout << std::numeric_limits<double>::epsilon();
 }

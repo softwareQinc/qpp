@@ -3,6 +3,7 @@ var classqpp_1_1_dynamic__bitset =
     [ "storage_type", "classqpp_1_1_dynamic__bitset.html#aecd403d627d99e63c892380bb5c37c3a", null ],
     [ "value_type", "classqpp_1_1_dynamic__bitset.html#a87abb7decde697b3275b5dc19c721315", null ],
     [ "Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html#afc961b247bc241e5e7baa33a257d7f7c", null ],
+    [ "~Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html#a38e2baba11faae2f0001e917fb44835a", null ],
     [ "all", "classqpp_1_1_dynamic__bitset.html#aa496767a8b143f15f707264cdbee48b8", null ],
     [ "any", "classqpp_1_1_dynamic__bitset.html#a7367a2709d226e84c33d87fa9528ef6f", null ],
     [ "count", "classqpp_1_1_dynamic__bitset.html#adb82ffc15d8eeb538a70405acf18556c", null ],

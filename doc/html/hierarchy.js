@@ -75,8 +75,11 @@ var hierarchy =
       [ "qpp::QubitPhaseDampingNoise", "classqpp_1_1_qubit_phase_damping_noise.html", null ]
     ] ],
     [ "qpp::Noise< StateIndependentNoise >", "classqpp_1_1_noise.html", [
-      [ "qpp::QubitDephasingNoise", "classqpp_1_1_qubit_dephasing_noise.html", null ],
-      [ "qpp::QubitDepolarizingNoise", "classqpp_1_1_qubit_depolarizing_noise.html", null ]
+      [ "qpp::QubitBitFlipNoise", "classqpp_1_1_qubit_bit_flip_noise.html", null ],
+      [ "qpp::QubitBitPhaseFlipNoise", "classqpp_1_1_qubit_bit_phase_flip_noise.html", null ],
+      [ "qpp::QubitDepolarizingNoise", "classqpp_1_1_qubit_depolarizing_noise.html", null ],
+      [ "qpp::QubitPhaseFlipNoise", "classqpp_1_1_qubit_phase_flip_noise.html", null ],
+      [ "qpp::QuditDepolarizingNoise", "classqpp_1_1_qudit_depolarizing_noise.html", null ]
     ] ],
     [ "qpp::internal::Singleton< T >", "classqpp_1_1internal_1_1_singleton.html", null ],
     [ "qpp::internal::Singleton< const Codes >", "classqpp_1_1internal_1_1_singleton.html", [

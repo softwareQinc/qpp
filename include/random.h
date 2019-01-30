@@ -50,12 +50,14 @@ inline double rand(double a, double b) {
     // END EXCEPTION CHECKS
 
     std::uniform_real_distribution<> ud(a, b);
-
+    auto& gen =
 #ifdef NO_THREAD_LOCAL_
-    return ud(RandomDevices::get_instance().get_prng());
+        RandomDevices::get_instance().get_prng();
 #else
-    return ud(RandomDevices::get_thread_local_instance().get_prng());
-#endif // NO_THREAD_LOCAL_
+        RandomDevices::get_thread_local_instance().get_prng();
+#endif
+
+    return ud(gen);
 }
 
 /**
@@ -78,11 +80,14 @@ inline bigint rand(bigint a, bigint b) {
 
     std::uniform_int_distribution<bigint> uid(a, b);
 
+    auto& gen =
 #ifdef NO_THREAD_LOCAL_
-    return uid(RandomDevices::get_instance().get_prng());
+        RandomDevices::get_instance().get_prng();
 #else
-    return uid(RandomDevices::get_thread_local_instance().get_prng());
-#endif // NO_THREAD_LOCAL_
+        RandomDevices::get_thread_local_instance().get_prng();
+#endif
+
+    return uid(gen);
 }
 
 /**
@@ -102,12 +107,14 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
     // END EXCEPTION CHECKS
 
     std::uniform_int_distribution<idx> uid(a, b);
-
+    auto& gen =
 #ifdef NO_THREAD_LOCAL_
-    return uid(RandomDevices::get_instance().get_prng());
+        RandomDevices::get_instance().get_prng();
 #else
-    return uid(RandomDevices::get_thread_local_instance().get_prng());
-#endif // NO_THREAD_LOCAL_
+        RandomDevices::get_thread_local_instance().get_prng();
+#endif
+
+    return uid(gen);
 }
 
 /**
@@ -253,13 +260,15 @@ inline dmat randn(idx rows, idx cols, double mean, double sigma) {
     // END EXCEPTION CHECKS
 
     std::normal_distribution<> nd(mean, sigma);
-
-    return dmat::Zero(rows, cols).unaryExpr([&nd](double) {
+    auto& gen =
 #ifdef NO_THREAD_LOCAL_
-        return nd(RandomDevices::get_instance().get_prng());
+        RandomDevices::get_instance().get_prng();
 #else
-        return nd(RandomDevices::get_thread_local_instance().get_prng());
-#endif // NO_THREAD_LOCAL_
+        RandomDevices::get_thread_local_instance().get_prng();
+#endif
+
+    return dmat::Zero(rows, cols).unaryExpr([&nd, &gen](double) {
+        return nd(gen);
     });
 }
 
@@ -306,12 +315,14 @@ inline cmat randn(idx rows, idx cols, double mean, double sigma) {
  */
 inline double randn(double mean = 0, double sigma = 1) {
     std::normal_distribution<> nd(mean, sigma);
-
+    auto& gen =
 #ifdef NO_THREAD_LOCAL_
-    return nd(RandomDevices::get_instance().get_prng());
+        RandomDevices::get_instance().get_prng();
 #else
-    return nd(RandomDevices::get_thread_local_instance().get_prng());
-#endif // NO_THREAD_LOCAL_
+        RandomDevices::get_thread_local_instance().get_prng();
+#endif
+
+    return nd(gen);
 }
 
 /**
@@ -482,15 +493,15 @@ inline std::vector<idx> randperm(idx N) {
 
     // fill in increasing order
     std::iota(std::begin(result), std::end(result), 0);
-// shuffle
-#ifdef NO_THREAD_LOCAL_
-    std::shuffle(std::begin(result), std::end(result),
-                 RandomDevices::get_instance().get_prng());
-#else
-    std::shuffle(std::begin(result), std::end(result),
-                 RandomDevices::get_thread_local_instance().get_prng());
 
-#endif // NO_THREAD_LOCAL_
+    // shuffle
+    auto& gen =
+#ifdef NO_THREAD_LOCAL_
+        RandomDevices::get_instance().get_prng();
+#else
+        RandomDevices::get_thread_local_instance().get_prng();
+#endif
+    std::shuffle(std::begin(result), std::end(result), gen);
 
     return result;
 }
@@ -513,14 +524,14 @@ inline std::vector<double> randprob(idx N) {
 
     // generate
     std::exponential_distribution<> ed(1);
-    for (idx i = 0; i < N; ++i) {
+    auto& gen =
 #ifdef NO_THREAD_LOCAL_
-        result[i] = ed(qpp::RandomDevices::get_instance().get_prng());
+        RandomDevices::get_instance().get_prng();
 #else
-        result[i] =
-            ed(qpp::RandomDevices::get_thread_local_instance().get_prng());
-#endif // NO_THREAD_LOCAL_
-    }
+        RandomDevices::get_thread_local_instance().get_prng();
+#endif
+    for (idx i = 0; i < N; ++i)
+        result[i] = ed(gen);
 
     // normalize
     double sumprob = std::accumulate(std::begin(result), std::end(result), 0.0);

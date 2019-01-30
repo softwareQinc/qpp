@@ -64,9 +64,12 @@ var dir_b02e4219757ae4e3a0f1714873865bbf =
       [ "StateIndependentNoise", "structqpp_1_1_state_independent_noise.html", null ],
       [ "Noise", "classqpp_1_1_noise.html", "classqpp_1_1_noise" ],
       [ "QubitDepolarizingNoise", "classqpp_1_1_qubit_depolarizing_noise.html", "classqpp_1_1_qubit_depolarizing_noise" ],
-      [ "QubitDephasingNoise", "classqpp_1_1_qubit_dephasing_noise.html", "classqpp_1_1_qubit_dephasing_noise" ],
+      [ "QubitPhaseFlipNoise", "classqpp_1_1_qubit_phase_flip_noise.html", "classqpp_1_1_qubit_phase_flip_noise" ],
+      [ "QubitBitFlipNoise", "classqpp_1_1_qubit_bit_flip_noise.html", "classqpp_1_1_qubit_bit_flip_noise" ],
+      [ "QubitBitPhaseFlipNoise", "classqpp_1_1_qubit_bit_phase_flip_noise.html", "classqpp_1_1_qubit_bit_phase_flip_noise" ],
       [ "QubitAmplitudeDampingNoise", "classqpp_1_1_qubit_amplitude_damping_noise.html", "classqpp_1_1_qubit_amplitude_damping_noise" ],
-      [ "QubitPhaseDampingNoise", "classqpp_1_1_qubit_phase_damping_noise.html", "classqpp_1_1_qubit_phase_damping_noise" ]
+      [ "QubitPhaseDampingNoise", "classqpp_1_1_qubit_phase_damping_noise.html", "classqpp_1_1_qubit_phase_damping_noise" ],
+      [ "QuditDepolarizingNoise", "classqpp_1_1_qudit_depolarizing_noise.html", "classqpp_1_1_qudit_depolarizing_noise" ]
     ] ],
     [ "random_devices.h", "random__devices_8h.html", [
       [ "RandomDevices", "classqpp_1_1_random_devices.html", "classqpp_1_1_random_devices" ]

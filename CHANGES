@@ -1,4 +1,7 @@
 In progress - pre-release
+    - Added new function in "functions.h":
+          qpp::normalize() - normalizes a state vector (ket or bra) or density
+                             matrix
     - Added new functions in "number_theory.h":
           qpp::convergents() - overloads that compute the convergents from a
                                continued fraction or a real number, see

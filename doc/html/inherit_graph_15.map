@@ -1,5 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classqpp_1_1_noise.html" title="qpp::Noise\&lt; StateIndependent\lNoise \&gt;" alt="" coords="5,23,204,65"/>
-<area shape="rect" id="node2" href="$classqpp_1_1_qubit_dephasing_noise.html" title="Qubit dephasing noise. " alt="" coords="257,5,435,32"/>
-<area shape="rect" id="node3" href="$classqpp_1_1_qubit_depolarizing_noise.html" title="Qubit depolarizing noise. " alt="" coords="252,56,440,83"/>
+<area shape="rect" id="node1" href="$classqpp_1_1_noise.html" title="qpp::Noise\&lt; StateIndependent\lNoise \&gt;" alt="" coords="5,99,208,141"/>
+<area shape="rect" id="node2" href="$classqpp_1_1_qubit_bit_flip_noise.html" title="Qubit bit flip noise. " alt="" coords="275,5,429,32"/>
+<area shape="rect" id="node3" href="$classqpp_1_1_qubit_bit_phase_flip_noise.html" title="Qubit bit&#45;phase flip (dephasing) noise. " alt="" coords="256,56,448,83"/>
+<area shape="rect" id="node4" href="$classqpp_1_1_qubit_depolarizing_noise.html" title="Qubit depolarizing noise. " alt="" coords="256,107,448,133"/>
+<area shape="rect" id="node5" href="$classqpp_1_1_qubit_phase_flip_noise.html" title="Qubit phase flip (dephasing) noise. " alt="" coords="263,157,441,184"/>
+<area shape="rect" id="node6" href="$classqpp_1_1_qudit_depolarizing_noise.html" title="Qudit depolarizing noise. " alt="" coords="256,208,448,235"/>
 </map>

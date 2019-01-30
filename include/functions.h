@@ -254,6 +254,52 @@ double norm(const Eigen::MatrixBase<Derived>& A) {
 }
 
 /**
+ * \brief Normalizes state vector (column or row vector) or density matrix
+ *
+ * \param A Eigen expression
+ * \return Normalized state vector or density matrix
+ */
+template <typename Derived>
+dyn_mat<typename Derived::Scalar>
+normalize(const Eigen::MatrixBase<Derived>& A) {
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero size
+    if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::normalize()");
+    // END EXCEPTION CHECKS
+
+    dyn_mat<typename Derived::Scalar> result;
+
+    if (internal::check_cvector(rA) || internal::check_rvector(rA)) {
+        double normA = norm(rA);
+        try {
+            if (normA < eps)
+                throw std::overflow_error("Division by zero!");
+        } catch (...) {
+            std::cerr << "In qpp::normalize()\n";
+            throw;
+        }
+        result = rA / normA;
+    } else if (internal::check_square_mat(rA)) {
+        typename Derived::Scalar traceA = trace(rA);
+        try {
+            if (std::abs(traceA) < eps)
+                throw std::overflow_error("Division by zero!");
+        } catch (...) {
+            std::cerr << "In qpp::normalize()\n";
+            throw;
+        }
+        result = rA / trace(rA);
+    } else
+        throw exception::MatrixNotSquareNorVector("qpp::normalize()");
+
+    return result;
+}
+
+/**
  * \brief Full eigen decomposition
  * \see qpp::heig()
  *
@@ -897,8 +943,8 @@ dyn_mat<typename Derived::Scalar> kron(const std::vector<Derived>& As) {
     if (As.size() == 0)
         throw exception::ZeroSize("qpp::kron()");
 
-    for (auto&& it : As)
-        if (!internal::check_nonzero_size(it))
+    for (auto&& elem : As)
+        if (!internal::check_nonzero_size(elem))
             throw exception::ZeroSize("qpp::kron()");
     // END EXCEPTION CHECKS
 
@@ -1006,8 +1052,8 @@ dyn_mat<typename Derived::Scalar> dirsum(const std::vector<Derived>& As) {
     if (As.size() == 0)
         throw exception::ZeroSize("qpp::dirsum()");
 
-    for (auto&& it : As)
-        if (!internal::check_nonzero_size(it))
+    for (auto&& elem : As)
+        if (!internal::check_nonzero_size(elem))
             throw exception::ZeroSize("qpp::dirsum()");
     // END EXCEPTION CHECKS
 
@@ -1240,8 +1286,8 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& As) {
     if (!internal::check_nonzero_size(As))
         throw exception::ZeroSize("qpp::grams()");
 
-    for (auto&& it : As)
-        if (!internal::check_nonzero_size(it))
+    for (auto&& elem : As)
+        if (!internal::check_nonzero_size(elem))
             throw exception::ZeroSize("qpp::grams()");
 
     // check that As[0] is a column vector
@@ -1249,8 +1295,8 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& As) {
         throw exception::MatrixNotCvector("qpp::grams()");
 
     // now check that all the rest match the size of the first vector
-    for (auto&& it : As)
-        if (it.rows() != As[0].rows() || it.cols() != 1)
+    for (auto&& elem : As)
+        if (elem.rows() != As[0].rows() || elem.cols() != 1)
             throw exception::DimsNotEqual("qpp::grams()");
     // END EXCEPTION CHECKS
 
@@ -1281,11 +1327,11 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& As) {
     dyn_mat<typename Derived::Scalar> result(As[0].rows(), outvecs.size());
 
     idx cnt = 0;
-    for (auto&& it : outvecs) {
-        double normA = norm(it);
+    for (auto&& elem : outvecs) {
+        double normA = norm(elem);
         if (normA > eps) // we add only the non-zero vectors
         {
-            result.col(cnt) = it / normA;
+            result.col(cnt) = elem / normA;
             ++cnt;
         }
     }
@@ -1726,7 +1772,7 @@ rho2pure(const Eigen::MatrixBase<Derived>& A) {
  * \return Complement of \a subsys with respect to the set
  * \f$\{0, 1, \ldots, n - 1\}\f$
  */
-std::vector<idx> complement(std::vector<idx> subsys, idx n) {
+inline std::vector<idx> complement(std::vector<idx> subsys, idx n) {
     // EXCEPTION CHECKS
 
     if (n < subsys.size())

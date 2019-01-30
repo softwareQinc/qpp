@@ -11,7 +11,7 @@ int main() {
     std::vector<idx> qubits{1, 0, 1, 1, 0}; // initial state
     ket psi = mket(qubits);
     ket result = psi;
-    idx n = qubits.size(); // number of qubits
+    idx n = qubits.size();                                  // number of qubits
     idx D = static_cast<idx>(std::llround(std::pow(2, n))); // dimension
     std::cout << ">> QFT on N = " << n << " qubits. ";
     std::cout << "The succession of applied gates are:\n";

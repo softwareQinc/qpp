@@ -193,8 +193,8 @@ TEST(qpp_Gates_Fd, AllTests) {
     EXPECT_NEAR(0, norm(gt.Fd(4) - F4), 1e-7);
 }
 /******************************************************************************/
-/// BEGIN cmat qpp::Gates::MODMUL(idx a, idx N) const
-TEST(qpp_Gates_MODMUL, AllTests) {}
+/// BEGIN  std::string qpp::Gates::get_name(const cmat& U) const
+TEST(qpp_Gates_get_name(), AllTests) {}
 /******************************************************************************/
 /// BEGIN  template<typename Derived = Eigen::MatrixXcd>
 ///        qpp::Gates::Id(idx D = 2) const
@@ -204,6 +204,9 @@ TEST(qpp_Gates_Id, AllTests) {
     EXPECT_EQ(gt.Id(3), Eigen::MatrixXcd::Identity(3, 3));
     EXPECT_EQ(gt.Id(100), Eigen::MatrixXcd::Identity(100, 100));
 }
+/******************************************************************************/
+/// BEGIN cmat qpp::Gates::MODMUL(idx a, idx N) const
+TEST(qpp_Gates_MODMUL, AllTests) {}
 /******************************************************************************/
 /// BEGIN  cmat qpp::Gates::Rn(double theta, const std::vector<double>& n) const
 TEST(qpp_Gates_Rn, AllTests) {

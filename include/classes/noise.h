@@ -72,9 +72,10 @@ class Noise {
      * otherwise returns without performing any operation (no-op)
      *
      * \param state State vector or density matrix
-     * \param target Qudit index where the noise is applied
+     * \param target Qudit indexes where the noise is applied
      */
-    void compute_probs_(const cmat& state, idx target) const {
+    void compute_probs_(const cmat& state,
+                        const std::vector<idx>& target) const {
         if (!std::is_same<StateDependentNoise, noise_type>::value)
             return; // no-op
 
@@ -88,10 +89,8 @@ class Noise {
         idx n = internal::get_num_subsys(state.rows(), d_);
 
         for (idx i = 0; i < Ks_.size(); ++i) {
-            rho_i = ptrace(state, complement({target}, n), d_);
+            rho_i = ptrace(state, complement(target, n), d_);
             probs_[i] = trace(Ks_[i] * rho_i * adjoint(Ks_[i])).real();
-            if (probs_[i] < qpp::eps)
-                probs_[i] = 0;
         }
     } /* compute_probs_() */
 
@@ -99,10 +98,11 @@ class Noise {
      * \brief Compute the resulting state after the noise was applied
      *
      * \param state State vector or density matrix
-     * \param target Qudit index where the noise is applied
+     * \param target Qudit indexes where the noise is applied
      * \return Resulting state after the noise was applied
      */
-    cmat compute_state_(const cmat& state, idx target) const {
+    cmat compute_state_(const cmat& state,
+                        const std::vector<idx>& target) const {
         cmat result;
         idx D = static_cast<idx>(state.rows());
 
@@ -122,17 +122,17 @@ class Noise {
         // now do the actual noise generation
         std::discrete_distribution<idx> dd{std::begin(probs_),
                                            std::end(probs_)};
-        auto gen =
+        auto& gen =
 #ifdef NO_THREAD_LOCAL_
             RandomDevices::get_instance().get_prng();
 #else
             RandomDevices::get_thread_local_instance().get_prng();
 #endif
         i_ = dd(gen);
-        result = apply(state, Ks_[i_], {target}, d_);
+        result = apply(state, Ks_[i_], target, d_);
         generated_ = true;
 
-        return result / norm(result);
+        return normalize(result);
     } /* compute_state_() */
 
   public:
@@ -159,8 +159,8 @@ class Noise {
             throw exception::ZeroSize("qpp::Noise::Noise()");
         if (!internal::check_square_mat(Ks[0]))
             throw exception::MatrixNotSquare("qpp::Noise::Noise()");
-        for (auto&& it : Ks)
-            if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+        for (auto&& elem : Ks)
+            if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
                 throw exception::DimsNotEqual("qpp::Noise::Noise()");
         // END EXCEPTION CHECKS
 
@@ -192,8 +192,8 @@ class Noise {
             throw exception::ZeroSize("qpp::Noise::Noise()");
         if (!internal::check_square_mat(Ks[0]))
             throw exception::MatrixNotSquare("qpp::Noise::Noise()");
-        for (auto&& it : Ks)
-            if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+        for (auto&& elem : Ks)
+            if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
                 throw exception::DimsNotEqual("qpp::Noise::Noise()");
         for (auto&& elem : probs)
             if (elem < 0 || elem > 1)
@@ -294,6 +294,29 @@ class Noise {
     virtual cmat operator()(const cmat& state, idx target) const {
         cmat result;
         try {
+            compute_probs_(state, std::vector<idx>{target});
+            result = compute_state_(state, std::vector<idx>(target));
+        } catch (qpp::exception::Exception&) {
+            std::cerr << "In qpp::Noise::operator()\n";
+            throw;
+        }
+
+        return result;
+    }
+
+    /**
+     * \brief Function invocation operator, applies the underlying correlated
+     * noise model on qudits specified by \a target of the multi-partite state
+     * vector or density matrix \a state
+     *
+     * \param state Multi-partite state vector or density matrix
+     * \param target Qudit indexes where the correlated noise is applied
+     * \return Resulting state vector or density matrix
+     */
+    virtual cmat operator()(const cmat& state,
+                            const std::vector<idx>& target) const {
+        cmat result;
+        try {
             compute_probs_(state, target);
             result = compute_state_(state, target);
         } catch (qpp::exception::Exception&) {
@@ -332,27 +355,73 @@ class QubitDepolarizingNoise : public Noise<StateIndependentNoise> {
 }; /* class QubitDepolarizingNoise */
 
 /**
- * \class qpp::QubitDephasingNoise
- * \brief Qubit dephasing noise
+ * \class qpp::QubitPhaseFlipNoise
+ * \brief Qubit phase flip (dephasing) noise
  */
-class QubitDephasingNoise : public Noise<StateIndependentNoise> {
+class QubitPhaseFlipNoise : public Noise<StateIndependentNoise> {
   public:
     /**
-     * \brief Qubit dephasing noise constructor
+     * \brief Qubit phase flip (dephasing) noise constructor
      *
      * \param p Noise probability
      */
-    explicit QubitDephasingNoise(double p)
+    explicit QubitPhaseFlipNoise(double p)
         : Noise({Gates::get_instance().Id2, Gates::get_instance().Z},
                 {1 - p, p}) {
         // EXCEPTION CHECKS
 
         if (p < 0 || p > 1)
             throw exception::OutOfRange(
-                "qpp::QubitDephasingNoise::QubitDephasingNoise()");
+                "qpp::QubitPhaseFlipNoise::QubitPhaseFlipNoise()");
         // END EXCEPTION CHECKS
     }
-}; /* class QubitDephasingNoise */
+}; /* class QubitPhaseFlipNoise */
+
+/**
+ * \class qpp::QubitBitFlipNoise
+ * \brief Qubit bit flip noise
+ */
+class QubitBitFlipNoise : public Noise<StateIndependentNoise> {
+  public:
+    /**
+     * \brief Qubit bit flip noise constructor
+     *
+     * \param p Noise probability
+     */
+    explicit QubitBitFlipNoise(double p)
+        : Noise({Gates::get_instance().Id2, Gates::get_instance().X},
+                {1 - p, p}) {
+        // EXCEPTION CHECKS
+
+        if (p < 0 || p > 1)
+            throw exception::OutOfRange(
+                "qpp::QubitBitFlipNoise::QubitBitFlipNoise()");
+        // END EXCEPTION CHECKS
+    }
+}; /* class QubitBitFlipNoise */
+
+/**
+ * \class qpp::QubitBitPhaseFlipNoise
+ * \brief Qubit bit-phase flip (dephasing) noise
+ */
+class QubitBitPhaseFlipNoise : public Noise<StateIndependentNoise> {
+  public:
+    /**
+     * \brief Qubit bit-phase flip noise constructor
+     *
+     * \param p Noise probability
+     */
+    explicit QubitBitPhaseFlipNoise(double p)
+        : Noise({Gates::get_instance().Id2, Gates::get_instance().Y},
+                {1 - p, p}) {
+        // EXCEPTION CHECKS
+
+        if (p < 0 || p > 1)
+            throw exception::OutOfRange(
+                "qpp::QubitBitPhaseFlipNoise::QubitBitPhaseFlipNoise()");
+        // END EXCEPTION CHECKS
+    }
+}; /* class QubitBitPhaseFlipNoise */
 
 /**
  * \class qpp::QubitAmplitudeDampingNoise

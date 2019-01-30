@@ -219,8 +219,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
         throw exception::MatrixNotSquare("qpp::measure()");
     if (Ks[0].rows() != rA.rows())
         throw exception::DimsMismatchMatrix("qpp::measure()");
-    for (auto&& it : Ks)
-        if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+    for (auto&& elem : Ks)
+        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
             throw exception::DimsNotEqual("qpp::measure()");
     // END EXCEPTION CHECKS
 
@@ -256,7 +256,13 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
 
     // sample from the probability distribution
     std::discrete_distribution<idx> dd(std::begin(prob), std::end(prob));
-    idx result = dd(RandomDevices::get_instance().get_prng());
+    auto& gen =
+#ifdef NO_THREAD_LOCAL_
+        RandomDevices::get_instance().get_prng();
+#else
+        RandomDevices::get_thread_local_instance().get_prng();
+#endif
+    idx result = dd(gen);
 
     return std::make_tuple(result, prob, outstates);
 }
@@ -370,8 +376,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
         throw exception::MatrixNotSquare("qpp::measure()");
     if (Dsubsys != static_cast<idx>(Ks[0].rows()))
         throw exception::DimsMismatchMatrix("qpp::measure()");
-    for (auto&& it : Ks)
-        if (it.rows() != Ks[0].rows() || it.cols() != Ks[0].rows())
+    for (auto&& elem : Ks)
+        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
             throw exception::DimsNotEqual("qpp::measure()");
     // END EXCEPTION CHECKS
 
@@ -419,7 +425,13 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 
     // sample from the probability distribution
     std::discrete_distribution<idx> dd(std::begin(prob), std::end(prob));
-    idx result = dd(RandomDevices::get_instance().get_prng());
+    auto& gen =
+#ifdef NO_THREAD_LOCAL_
+        RandomDevices::get_instance().get_prng();
+#else
+        RandomDevices::get_thread_local_instance().get_prng();
+#endif
+    idx result = dd(gen);
 
     return std::make_tuple(result, prob, outstates);
 }
@@ -600,7 +612,13 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 
         // sample from the probability distribution
         std::discrete_distribution<idx> dd(std::begin(prob), std::end(prob));
-        idx result = dd(RandomDevices::get_instance().get_prng());
+        auto& gen =
+#ifdef NO_THREAD_LOCAL_
+            RandomDevices::get_instance().get_prng();
+#else
+            RandomDevices::get_thread_local_instance().get_prng();
+#endif
+        idx result = dd(gen);
 
         return std::make_tuple(result, prob, outstates);
     }

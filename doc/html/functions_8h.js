@@ -44,6 +44,7 @@ var functions_8h =
     [ "multiidx2n", "functions_8h.html#a9f0ce02aa3e299e610cf5f7715c1a43f", null ],
     [ "n2multiidx", "functions_8h.html#a5c6a9fc4e463ff3397ced98bc9df0a1c", null ],
     [ "norm", "functions_8h.html#af2e4740854c958579228593dd639aa6c", null ],
+    [ "normalize", "functions_8h.html#a4d5ceb57bd904879d5457645c0f6bf66", null ],
     [ "operator\"\" _bra", "functions_8h.html#a2d9afd896b3eca20b85dcbfa7702da91", null ],
     [ "operator\"\" _ket", "functions_8h.html#af1b1b403462748ca5a55c10e8e41d80d", null ],
     [ "operator\"\" _prj", "functions_8h.html#a807ed54ce7598a383aa383d1cb60436a", null ],

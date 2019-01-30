@@ -79,7 +79,7 @@ class Exception : public std::exception {
      *
      * \param where Text representing where the exception occurred
      */
-    Exception(const std::string& where) : where_{where}, msg_{} {}
+    explicit Exception(const std::string& where) : where_{where}, msg_{} {}
 
     /**
      * \brief Overrides std::exception::what()
@@ -88,7 +88,7 @@ class Exception : public std::exception {
      */
     virtual const char* what() const noexcept override {
         msg_.clear();
-        msg_ += "IN ";
+        msg_ += "In ";
         msg_ += where_;
         msg_ += ": ";
         msg_ += this->type_description();

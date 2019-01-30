@@ -70,8 +70,7 @@ TEST(qpp_bloch2rho, AllTests) {}
 ///       const Eigen::MatrixBase<Derived2>& B)
 TEST(qpp_comm, AllTests) {}
 /******************************************************************************/
-/// BEGIN template<typename T> std::vector<T> qpp::complement(
-///       std::vector<T> subsys, idx N)
+/// BEGIN inline std::vector<idx> complement(std::vector<idx> subsys, idx n)
 TEST(qpp_complement, AllTests) {}
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
@@ -213,6 +212,10 @@ TEST(qpp_n2multiidx, AllTests) {}
 /// BEGIN template<typename Derived> double qpp::norm(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_norm, AllTests) {}
+/******************************************************************************/
+/// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
+///       qpp::normalize(const Eigen::MatrixBase<Derived>& A)
+TEST(qpp_normalize, AllTests) {}
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
 ///       qpp::powm(const Eigen::MatrixBase<Derived>& A, idx n)

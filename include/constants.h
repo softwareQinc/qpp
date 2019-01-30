@@ -61,11 +61,11 @@ constexpr double chop = 1e-10;
 
 /**
  * \brief Used to decide whether a number or expression in double precision
- * is zero or not
+ * is zero or not for the purpose of a specific computation
  *
  * Example: \code if(std::abs(x) < qpp::eps) // x is zero \endcode
  */
-constexpr double eps = 1e-12;
+constexpr double eps = std::numeric_limits<double>::epsilon();
 
 /**
  * \brief Maximum number of allowed qubits/qudits (subsystems)

@@ -31,6 +31,7 @@ var classqpp_1_1_q_circuit_description =
       [ "MEASURE_V_MANY", "classqpp_1_1_q_circuit_description.html#ab2cf81303a55affa00c23b3a63abc728a9c11f6f406f8d8e47e50e35b77b9dd8c", null ]
     ] ],
     [ "QCircuitDescription", "classqpp_1_1_q_circuit_description.html#add2def7fb04f2c046243d0d7535031c3", null ],
+    [ "~QCircuitDescription", "classqpp_1_1_q_circuit_description.html#a86b3ef180be9526f0de0607c8df0b462", null ],
     [ "_to_JSON", "classqpp_1_1_q_circuit_description.html#a0fc54a1d97fd298c3328dd605eb3eaf1", null ],
     [ "begin", "classqpp_1_1_q_circuit_description.html#a3e29611f51cb6437f31305988695abb7", null ],
     [ "begin", "classqpp_1_1_q_circuit_description.html#aec30b1b3201e6dfb4e81cabfbf366e37", null ],
