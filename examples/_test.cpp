@@ -13,7 +13,7 @@ int main() {
     idx N = 10000;
     cmat result = cmat::Zero(2, 2);
     for (idx i = 0; i < N; ++i) {
-        ket out = noise(psi, 0);
+        ket out = noise(psi, {0});
         result = result + prj(out);
     }
     result = 1. / N * result;
