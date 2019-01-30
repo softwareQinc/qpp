@@ -35,28 +35,34 @@
 namespace qpp {
 
 /**
- * \class qpp::StateDependentNoise
- * \brief Template tag, used whenever the noise is state-dependent
+ * \class qpp::NoiseType
+ * \brief Contains template tags used to specify the noise type
  */
-struct StateDependentNoise {};
+struct NoiseType {
+    /**
+     * \class qpp::NoiseType::StateDependent
+     * \brief Template tag, used whenever the noise is state-dependent
+     */
+    struct StateDependent;
 
+    /**
+     * \class qpp::NoiseType::StateIndependent
+     * \brief Template tag, used whenever the noise is state-independent
+     */
+    struct StateIndependent;
+};
 /**
- * \class qpp::StateIndependentNoise
- * \brief Template tag, used whenever the noise is state-independent
- */
-struct StateIndependentNoise {};
-
-/**
- * \class qpp::INoise
+ * \class qpp::NoiseBase
  * \brief Base class for all noise models, derive your particular noise model
  */
 template <class T>
-class Noise {
+class NoiseBase {
   public:
     using noise_type = T;
-    static_assert(std::is_same<StateDependentNoise, noise_type>::value ||
-                      std::is_same<StateIndependentNoise, noise_type>::value,
-                  "");
+    static_assert(
+        std::is_same<NoiseType::StateDependent, noise_type>::value ||
+            std::is_same<NoiseType::StateIndependent, noise_type>::value,
+        "");
 
   protected:
     const std::vector<cmat> Ks_;        ///< Kraus operators
@@ -76,7 +82,7 @@ class Noise {
      */
     void compute_probs_(const cmat& state,
                         const std::vector<idx>& target) const {
-        if (!std::is_same<StateDependentNoise, noise_type>::value)
+        if (!std::is_same<NoiseType::StateDependent, noise_type>::value)
             return; // no-op
 
         // minimal EXCEPTION CHECKS
@@ -146,10 +152,10 @@ class Noise {
      * \param d Subsystem dimension
      */
     template <typename U = noise_type>
-    explicit Noise(
+    explicit NoiseBase(
         const std::vector<cmat>& Ks,
         typename std::enable_if<
-            std::is_same<StateDependentNoise, U>::value>::type* = nullptr)
+            std::is_same<NoiseType::StateDependent, U>::value>::type* = nullptr)
         : Ks_{Ks}, probs_(Ks.size()) {
         // EXCEPTION CHECKS
 
@@ -177,10 +183,10 @@ class Noise {
      * \param d Subsystem dimension
      */
     template <typename U = noise_type>
-    explicit Noise(
+    explicit NoiseBase(
         const std::vector<cmat>& Ks, const std::vector<double>& probs,
-        typename std::enable_if<
-            std::is_same<StateIndependentNoise, U>::value>::type* = nullptr)
+        typename std::enable_if<std::is_same<NoiseType::StateIndependent,
+                                             U>::value>::type* = nullptr)
         : Ks_{Ks}, probs_(probs) {
         // EXCEPTION CHECKS
 
@@ -207,7 +213,7 @@ class Noise {
     /**
      * \brief Default virtual destructor
      */
-    virtual ~Noise() = default;
+    virtual ~NoiseBase() = default;
 
     // getters
     /**
@@ -231,7 +237,7 @@ class Noise {
      */
     std::vector<double> get_probs() const {
         if (generated_ ||
-            std::is_same<StateIndependentNoise, noise_type>::value) {
+            std::is_same<NoiseType::StateIndependent, noise_type>::value) {
             return probs_;
         } else
             throw exception::CustomException(
@@ -334,7 +340,7 @@ class Noise {
  * \class qpp::QubitDepolarizingNoise
  * \brief Qubit depolarizing noise
  */
-class QubitDepolarizingNoise : public Noise<StateIndependentNoise> {
+class QubitDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
   public:
     /**
      * \brief Qubit depolarizing noise constructor
@@ -342,9 +348,9 @@ class QubitDepolarizingNoise : public Noise<StateIndependentNoise> {
      * \param p Noise probability
      */
     explicit QubitDepolarizingNoise(double p)
-        : Noise({Gates::get_instance().Id2, Gates::get_instance().X,
-                 Gates::get_instance().Y, Gates::get_instance().Z},
-                {1 - p, p / 3, p / 3, p / 3}) {
+        : NoiseBase({Gates::get_instance().Id2, Gates::get_instance().X,
+                     Gates::get_instance().Y, Gates::get_instance().Z},
+                    {1 - p, p / 3, p / 3, p / 3}) {
         // EXCEPTION CHECKS
 
         if (p < 0 || p > 1)
@@ -358,7 +364,7 @@ class QubitDepolarizingNoise : public Noise<StateIndependentNoise> {
  * \class qpp::QubitPhaseFlipNoise
  * \brief Qubit phase flip (dephasing) noise
  */
-class QubitPhaseFlipNoise : public Noise<StateIndependentNoise> {
+class QubitPhaseFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
   public:
     /**
      * \brief Qubit phase flip (dephasing) noise constructor
@@ -366,8 +372,8 @@ class QubitPhaseFlipNoise : public Noise<StateIndependentNoise> {
      * \param p Noise probability
      */
     explicit QubitPhaseFlipNoise(double p)
-        : Noise({Gates::get_instance().Id2, Gates::get_instance().Z},
-                {1 - p, p}) {
+        : NoiseBase({Gates::get_instance().Id2, Gates::get_instance().Z},
+                    {1 - p, p}) {
         // EXCEPTION CHECKS
 
         if (p < 0 || p > 1)
@@ -381,7 +387,7 @@ class QubitPhaseFlipNoise : public Noise<StateIndependentNoise> {
  * \class qpp::QubitBitFlipNoise
  * \brief Qubit bit flip noise
  */
-class QubitBitFlipNoise : public Noise<StateIndependentNoise> {
+class QubitBitFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
   public:
     /**
      * \brief Qubit bit flip noise constructor
@@ -389,8 +395,8 @@ class QubitBitFlipNoise : public Noise<StateIndependentNoise> {
      * \param p Noise probability
      */
     explicit QubitBitFlipNoise(double p)
-        : Noise({Gates::get_instance().Id2, Gates::get_instance().X},
-                {1 - p, p}) {
+        : NoiseBase({Gates::get_instance().Id2, Gates::get_instance().X},
+                    {1 - p, p}) {
         // EXCEPTION CHECKS
 
         if (p < 0 || p > 1)
@@ -404,7 +410,7 @@ class QubitBitFlipNoise : public Noise<StateIndependentNoise> {
  * \class qpp::QubitBitPhaseFlipNoise
  * \brief Qubit bit-phase flip (dephasing) noise
  */
-class QubitBitPhaseFlipNoise : public Noise<StateIndependentNoise> {
+class QubitBitPhaseFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
   public:
     /**
      * \brief Qubit bit-phase flip noise constructor
@@ -412,8 +418,8 @@ class QubitBitPhaseFlipNoise : public Noise<StateIndependentNoise> {
      * \param p Noise probability
      */
     explicit QubitBitPhaseFlipNoise(double p)
-        : Noise({Gates::get_instance().Id2, Gates::get_instance().Y},
-                {1 - p, p}) {
+        : NoiseBase({Gates::get_instance().Id2, Gates::get_instance().Y},
+                    {1 - p, p}) {
         // EXCEPTION CHECKS
 
         if (p < 0 || p > 1)
@@ -427,7 +433,7 @@ class QubitBitPhaseFlipNoise : public Noise<StateIndependentNoise> {
  * \class qpp::QubitAmplitudeDampingNoise
  * \brief Qubit amplitude damping noise, as described in Nielsen and Chuang
  */
-class QubitAmplitudeDampingNoise : public Noise<StateDependentNoise> {
+class QubitAmplitudeDampingNoise : public NoiseBase<NoiseType::StateDependent> {
   public:
     /**
      * \brief Qubit amplitude damping noise constructor
@@ -435,7 +441,7 @@ class QubitAmplitudeDampingNoise : public Noise<StateDependentNoise> {
      * \param gamma Amplitude damping probability
      */
     explicit QubitAmplitudeDampingNoise(double gamma)
-        : Noise(std::vector<cmat>{
+        : NoiseBase(std::vector<cmat>{
               ((cmat(2, 2)) << 1, 0, 0, std::sqrt(gamma)).finished(),
               ((cmat(2, 2)) << 0, std::sqrt(1 - gamma), 0, 0).finished()}) {
         // EXCEPTION CHECKS
@@ -451,7 +457,7 @@ class QubitAmplitudeDampingNoise : public Noise<StateDependentNoise> {
  * \class qpp::QubitPhaseDampingNoise
  * \brief Qubit phase damping noise, as described in Nielsen and Chuang
  */
-class QubitPhaseDampingNoise : public Noise<StateDependentNoise> {
+class QubitPhaseDampingNoise : public NoiseBase<NoiseType::StateDependent> {
   public:
     /**
      * \brief Qubit phase damping noise constructor
@@ -459,7 +465,7 @@ class QubitPhaseDampingNoise : public Noise<StateDependentNoise> {
      * \param gamma Phase damping probability
      */
     explicit QubitPhaseDampingNoise(double lambda)
-        : Noise(std::vector<cmat>{
+        : NoiseBase(std::vector<cmat>{
               ((cmat(2, 2)) << 1, 0, 0, std::sqrt(1 - lambda)).finished(),
               ((cmat(2, 2)) << 0, 0, 0, std::sqrt(lambda)).finished()}) {
         // EXCEPTION CHECKS
@@ -477,7 +483,7 @@ class QubitPhaseDampingNoise : public Noise<StateDependentNoise> {
  * \class qpp::QuditDepolarizingNoise
  * \brief Qudit depolarizing noise
  */
-class QuditDepolarizingNoise : public Noise<StateIndependentNoise> {
+class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
     std::vector<cmat> fill_Ks_(idx d) const {
         std::vector<cmat> Ks(d * d);
         idx cnt = 0;
@@ -506,7 +512,7 @@ class QuditDepolarizingNoise : public Noise<StateIndependentNoise> {
      * \param d Subsystem dimension
      */
     explicit QuditDepolarizingNoise(double p, idx d)
-        : Noise(fill_Ks_(d), fill_probs_(p, d)), d_{d} {
+        : NoiseBase(fill_Ks_(d), fill_probs_(p, d)), d_{d} {
         // EXCEPTION CHECKS
 
         if (d < 2 || p < 0 || p > 1)

@@ -60,9 +60,11 @@ var dir_b02e4219757ae4e3a0f1714873865bbf =
       [ "Init", "classqpp_1_1_init.html", "classqpp_1_1_init" ]
     ] ],
     [ "noise.h", "noise_8h.html", [
-      [ "StateDependentNoise", "structqpp_1_1_state_dependent_noise.html", null ],
-      [ "StateIndependentNoise", "structqpp_1_1_state_independent_noise.html", null ],
-      [ "Noise", "classqpp_1_1_noise.html", "classqpp_1_1_noise" ],
+      [ "NoiseType", "structqpp_1_1_noise_type.html", [
+        [ "StateDependent", "classqpp_1_1_noise_type_1_1_state_dependent.html", null ],
+        [ "StateIndependent", "classqpp_1_1_noise_type_1_1_state_independent.html", null ]
+      ] ],
+      [ "NoiseBase", "classqpp_1_1_noise_base.html", "classqpp_1_1_noise_base" ],
       [ "QubitDepolarizingNoise", "classqpp_1_1_qubit_depolarizing_noise.html", "classqpp_1_1_qubit_depolarizing_noise" ],
       [ "QubitPhaseFlipNoise", "classqpp_1_1_qubit_phase_flip_noise.html", "classqpp_1_1_qubit_phase_flip_noise" ],
       [ "QubitBitFlipNoise", "classqpp_1_1_qubit_bit_flip_noise.html", "classqpp_1_1_qubit_bit_flip_noise" ],

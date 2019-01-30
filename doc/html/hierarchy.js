@@ -62,25 +62,25 @@ var hierarchy =
       [ "qpp::QCircuitDescription::iterator::value_type_", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html", null ],
       [ "qpp::Timer< T, CLOCK_T >", "classqpp_1_1_timer.html", null ]
     ] ],
-    [ "qpp::INoise", "classqpp_1_1_i_noise.html", null ],
     [ "is_base_of", null, [
       [ "qpp::is_matrix_expression< Derived >", "structqpp_1_1is__matrix__expression.html", null ]
     ] ],
     [ "qpp::QCircuitDescription::iterator", "classqpp_1_1_q_circuit_description_1_1iterator.html", null ],
     [ "qpp::make_void< Ts >", "structqpp_1_1make__void.html", null ],
     [ "qpp::QCircuitDescription::MeasureStep", "structqpp_1_1_q_circuit_description_1_1_measure_step.html", null ],
-    [ "qpp::Noise< T >", "classqpp_1_1_noise.html", null ],
-    [ "qpp::Noise< StateDependentNoise >", "classqpp_1_1_noise.html", [
+    [ "qpp::NoiseBase< T >", "classqpp_1_1_noise_base.html", null ],
+    [ "qpp::NoiseBase< NoiseType::StateDependent >", "classqpp_1_1_noise_base.html", [
       [ "qpp::QubitAmplitudeDampingNoise", "classqpp_1_1_qubit_amplitude_damping_noise.html", null ],
       [ "qpp::QubitPhaseDampingNoise", "classqpp_1_1_qubit_phase_damping_noise.html", null ]
     ] ],
-    [ "qpp::Noise< StateIndependentNoise >", "classqpp_1_1_noise.html", [
+    [ "qpp::NoiseBase< NoiseType::StateIndependent >", "classqpp_1_1_noise_base.html", [
       [ "qpp::QubitBitFlipNoise", "classqpp_1_1_qubit_bit_flip_noise.html", null ],
       [ "qpp::QubitBitPhaseFlipNoise", "classqpp_1_1_qubit_bit_phase_flip_noise.html", null ],
       [ "qpp::QubitDepolarizingNoise", "classqpp_1_1_qubit_depolarizing_noise.html", null ],
       [ "qpp::QubitPhaseFlipNoise", "classqpp_1_1_qubit_phase_flip_noise.html", null ],
       [ "qpp::QuditDepolarizingNoise", "classqpp_1_1_qudit_depolarizing_noise.html", null ]
     ] ],
+    [ "qpp::NoiseType", "structqpp_1_1_noise_type.html", null ],
     [ "qpp::internal::Singleton< T >", "classqpp_1_1internal_1_1_singleton.html", null ],
     [ "qpp::internal::Singleton< const Codes >", "classqpp_1_1internal_1_1_singleton.html", [
       [ "qpp::Codes", "classqpp_1_1_codes.html", null ]
@@ -97,8 +97,8 @@ var hierarchy =
     [ "qpp::internal::Singleton< RandomDevices >", "classqpp_1_1internal_1_1_singleton.html", [
       [ "qpp::RandomDevices", "classqpp_1_1_random_devices.html", null ]
     ] ],
-    [ "qpp::StateDependentNoise", "structqpp_1_1_state_dependent_noise.html", null ],
-    [ "qpp::StateIndependentNoise", "structqpp_1_1_state_independent_noise.html", null ],
+    [ "qpp::NoiseType::StateDependent", "classqpp_1_1_noise_type_1_1_state_dependent.html", null ],
+    [ "qpp::NoiseType::StateIndependent", "classqpp_1_1_noise_type_1_1_state_independent.html", null ],
     [ "true_type", null, [
       [ "qpp::is_complex< std::complex< T > >", "structqpp_1_1is__complex_3_01std_1_1complex_3_01_t_01_4_01_4.html", null ],
       [ "qpp::is_iterable< T, to_void< decltype(std::declval< T >().begin()), decltype(std::declval< T >().end()), decltype(*(std::declval< T >().begin()))> >", "structqpp_1_1is__iterable_3_01_t_00_01to__void_3_01decltype_07std_1_1declval_3_01_t_01_4_07_08_8a85a9c2c5a028e47768327c6329d9509.html", null ]

@@ -8,7 +8,6 @@ var namespaceqpp =
     [ "Gates", "classqpp_1_1_gates.html", "classqpp_1_1_gates" ],
     [ "IDisplay", "classqpp_1_1_i_display.html", "classqpp_1_1_i_display" ],
     [ "Init", "classqpp_1_1_init.html", "classqpp_1_1_init" ],
-    [ "INoise", "classqpp_1_1_i_noise.html", null ],
     [ "IQCircuit", "classqpp_1_1_i_q_circuit.html", "classqpp_1_1_i_q_circuit" ],
     [ "is_complex", "structqpp_1_1is__complex.html", null ],
     [ "is_complex< std::complex< T > >", "structqpp_1_1is__complex_3_01std_1_1complex_3_01_t_01_4_01_4.html", null ],
@@ -16,7 +15,11 @@ var namespaceqpp =
     [ "is_iterable< T, to_void< decltype(std::declval< T >().begin()), decltype(std::declval< T >().end()), decltype(*(std::declval< T >().begin()))> >", "structqpp_1_1is__iterable_3_01_t_00_01to__void_3_01decltype_07std_1_1declval_3_01_t_01_4_07_08_8a85a9c2c5a028e47768327c6329d9509.html", null ],
     [ "is_matrix_expression", "structqpp_1_1is__matrix__expression.html", null ],
     [ "make_void", "structqpp_1_1make__void.html", "structqpp_1_1make__void" ],
-    [ "Noise", "classqpp_1_1_noise.html", "classqpp_1_1_noise" ],
+    [ "NoiseBase", "classqpp_1_1_noise_base.html", "classqpp_1_1_noise_base" ],
+    [ "NoiseType", "structqpp_1_1_noise_type.html", [
+      [ "StateDependent", "classqpp_1_1_noise_type_1_1_state_dependent.html", null ],
+      [ "StateIndependent", "classqpp_1_1_noise_type_1_1_state_independent.html", null ]
+    ] ],
     [ "QCircuit", "classqpp_1_1_q_circuit.html", "classqpp_1_1_q_circuit" ],
     [ "QCircuitDescription", "classqpp_1_1_q_circuit_description.html", "classqpp_1_1_q_circuit_description" ],
     [ "QubitAmplitudeDampingNoise", "classqpp_1_1_qubit_amplitude_damping_noise.html", "classqpp_1_1_qubit_amplitude_damping_noise" ],
@@ -27,8 +30,6 @@ var namespaceqpp =
     [ "QubitPhaseFlipNoise", "classqpp_1_1_qubit_phase_flip_noise.html", "classqpp_1_1_qubit_phase_flip_noise" ],
     [ "QuditDepolarizingNoise", "classqpp_1_1_qudit_depolarizing_noise.html", "classqpp_1_1_qudit_depolarizing_noise" ],
     [ "RandomDevices", "classqpp_1_1_random_devices.html", "classqpp_1_1_random_devices" ],
-    [ "StateDependentNoise", "structqpp_1_1_state_dependent_noise.html", null ],
-    [ "StateIndependentNoise", "structqpp_1_1_state_independent_noise.html", null ],
     [ "States", "classqpp_1_1_states.html", "classqpp_1_1_states" ],
     [ "Timer", "classqpp_1_1_timer.html", "classqpp_1_1_timer" ]
 ];
