@@ -8,7 +8,7 @@ int main() {
 
     /////////// testing ///////////
     // we simulate the action fully depolarizing noise applied multiple times
-    ket psi = 0.8 * 0_ket + 0.6 * 1_ket; // 0.8|0> + 0.6|1>
+    ket psi = randket(2);
     auto noise = QubitDepolarizingNoise(3. / 4);
     idx N = 10000;
     cmat result = cmat::Zero(2, 2);
