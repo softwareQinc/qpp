@@ -2010,6 +2010,7 @@ class QCircuitDescription : public IDisplay {
     }
 
   protected:
+    // FIXME
     std::string _to_JSON() const {
         std::string result;
 
