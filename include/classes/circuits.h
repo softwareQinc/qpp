@@ -38,6 +38,8 @@ namespace qpp {
 //  best is to apply it gate by gate in QCircuitDescription::gate(...)
 
 // TODO: display in JSon format, like
+
+// TODO: add support for noisy circuits
 /*
 
 {
@@ -2351,6 +2353,13 @@ class IQCircuit : public IDisplay {
         return os;
     }
 
+    /**
+     * \brief Executes the quantum circuit, pure virtual member function that
+     * must be overridden by all derived classes
+     *
+     * \param verbose If true, displays at console every executed step
+     * \param step How many steps to execute, by default executes until the end
+     */
     virtual void run(bool verbose = false, idx step = idx_infty) = 0;
 }; /* class IQCircuit */
 
@@ -2364,10 +2373,10 @@ class QCircuit : public IQCircuit {
     using IQCircuit::IQCircuit; ///< Uses the base IQCircuit constructor
 
     /**
-     * \brief Executes the quantum circuit
+     * \brief Executes the quantum circuit, qpp::IQCircuit::run() override
      *
-     * \param step How many steps to execute, by default executes until the end
      * \param verbose If true, displays at console every executed step
+     * \param step How many steps to execute, by default executes until the end
      */
     void run(bool verbose = false, idx step = idx_infty) override {
         // EXCEPTION CHECKS

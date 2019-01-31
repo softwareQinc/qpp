@@ -1,9 +1,32 @@
+/*
+@ @licstart  The following is the entire license notice for the
+JavaScript code in this file.
+
+Copyright (C) 1997-2017 by Dimitri van Heesch
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+@licend  The above is the entire license notice
+for the JavaScript code in this file
+*/
 var NAVTREE =
 [
   [ "Quantum++", "index.html", [
-    [ "Quantum++", "md__home_vlad_qpp__r_e_a_d_m_e.html", null ],
-    [ "Namespaces", null, [
-      [ "Namespace List", "namespaces.html", "namespaces" ],
+    [ "Quantum++", "md___users_vlad_qpp__r_e_a_d_m_e.html", null ],
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", "namespacemembers_dup" ],
         [ "Functions", "namespacemembers_func.html", "namespacemembers_func" ],
@@ -24,8 +47,8 @@ var NAVTREE =
         [ "Related Functions", "functions_rela.html", null ]
       ] ]
     ] ],
-    [ "Files", null, [
-      [ "File List", "files.html", "files" ],
+    [ "Files", "files.html", [
+      [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Macros", "globals_defs.html", null ]
@@ -37,9 +60,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classqpp_1_1_q_circuit_description_1_1iterator.html#aae4d865d54eb8c5e0a5d06cc06cb909d",
-"functions_8h.html#a1865cddc66aa88d853512abd39e584e1",
-"operations_8h.html#a4cf8dec8978b57214c806094f69e05ca"
+"classqpp_1_1_q_circuit_description_1_1iterator.html#a7f3ab43dd3bab653e7c1627503f2a44b",
+"entanglement_8h.html#a3b86cd008bbcf7c8bc3dd1d990225fdb",
+"namespaceqpp_1_1exception.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
