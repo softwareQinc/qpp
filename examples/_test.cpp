@@ -16,6 +16,6 @@ int main() {
         ket out = noise(psi, 0);
         result = result + prj(out);
     }
-    result = 1. / N * result;
+    result /= N;
     std::cout << disp(result) << '\n'; // we expect to be close to identity
 }
