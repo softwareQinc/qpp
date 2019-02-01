@@ -33,25 +33,6 @@
 #define CLASSES_CIRCUITS_H_
 
 namespace qpp {
-// TODO: (in progress) add QFT/TFQ as a "gate" type, what about computing
-//  depths?!
-//  best is to apply it gate by gate in QCircuitDescription::gate(...)
-
-// TODO: display in JSon format, like
-
-// TODO: add support for noisy circuits
-/*
-
-{
-"nq": 3, "nc": 3, "d": 2, "name":"circuit name",
-"steps":
-[{"Step":10, "Type":"|> MEASURE_V", "target" : [0], "c_reg" : 0, "name" :
-"Id2"},
-{"Step":11, "Type":"SINGLE", "target" : [0], "c_reg" : 0, "name" : "Id2"}]
-}
-
-*/
-
 /**
  * \class qpp::QCircuitDescription
  * \brief Quantum circuit description class
@@ -2009,81 +1990,88 @@ class QCircuitDescription : public IDisplay {
         return os;
     }
 
-  protected:
-    // FIXME
-    std::string _to_JSON() const {
+    /**
+     * \brief Displays the circuit description in JSON format
+     *
+     * \param enclosed_in_curly_brackets Encloses the result in curly brackets
+     * if true
+     * \return String containing the JSON representation of the circuit
+     * description
+     */
+    std::string to_JSON(bool enclosed_in_curly_brackets = true) const {
         std::string result;
+
+        if (enclosed_in_curly_brackets)
+            result += "{";
 
         result += "\"nq\" : " + std::to_string(nq_);
         result += ", \"nc\" : " + std::to_string(nc_);
         result += ", \"d\" : " + std::to_string(d_);
         result += ", \"name\" : \"" + name_ + "\"";
 
-        result += ", [";
-
-        idx gates_size = gates_.size();
-        idx measurements_size = measurements_.size();
-
-        idx m_ip = 0; // measurement instruction pointer
         bool is_first = true;
-
-        for (idx i = 0; i <= gates_size; ++i) {
+        std::ostringstream ss;
+        result += ", \"steps\" : [";
+        for (auto&& elem : *this) {
             if (is_first) {
                 is_first = false;
-            } else
+            } else {
                 result += ", ";
-
-            // check for measurements
-            if (m_ip < measurements_size) {
-                idx m_step = measurement_steps_[m_ip];
-                // we have a measurement at step i
-                if (m_step == i) {
-                    while (measurement_steps_[m_ip] == m_step) {
-                        if (!is_first)
-                            result += ", ";
-
-                        result += "{";
-                        result += "\"step\" : " +
-                                  std::to_string(measurements_[m_ip].step_no_);
-
-                        // result += ", measurements_[m_ip] << '\n';
-                        result += "}";
-                        if (++m_ip == measurements_size)
-                            break;
-                    }
+            }
+            result += "{\"step\" : " + std::to_string(elem.ip_) + ", ";
+            result += "\"type\" : ";
+            if (elem.is_measurement_) {
+                ss.str("");
+                ss.clear();
+                ss << measurements_[elem.m_ip_].measurement_type_;
+                result += "\"" + ss.str() + "\", ";
+                ss.str("");
+                ss.clear();
+                ss << disp(measurements_[elem.m_ip_].target_, ", ");
+                result += "\"target\" : " + ss.str() + ", ";
+                result += "\"c_reg\" : " +
+                          std::to_string(measurements_[elem.m_ip_].c_reg_) +
+                          ", ";
+                result += "\"name\" : ";
+                result += "\"" + measurements_[elem.m_ip_].name_ + "\"" + "}";
+            } else {
+                ss.str("");
+                ss.clear();
+                ss << gates_[elem.q_ip_].gate_type_;
+                result += "\"" + ss.str() + "\", ";
+                if (gates_[elem.q_ip_].ctrl_.size() != 0) {
+                    ss.str("");
+                    ss.clear();
+                    ss << disp(gates_[elem.q_ip_].ctrl_, ", ");
+                    result += "\"ctrl\" : " + ss.str() + ", ";
                 }
+                ss.str("");
+                ss.clear();
+                ss << disp(gates_[elem.q_ip_].target_, ", ");
+                result += "\"target\" : " + ss.str() + ", ";
+                result += "\"name\" : ";
+                result += "\"" + gates_[elem.q_ip_].name_ + "\"" + "}";
             }
+        }              // end for
+        result += "]"; // end steps
 
-            // check for gates
-            if (i < gates_size) {
-                result += "{";
-                result += "\"step\" : " + std::to_string(gates_[i].step_no_);
-                result += "}";
-            }
-        }
+        ss.str("");
+        ss.clear();
+        ss << disp(get_measurement_steps(), ", ");
+        result += ", \"measurement steps\" : " + ss.str() + ", ";
 
-        /* os << "measurement steps: " << disp(measurement_steps_, ", ") <<
-         '\n';
+        ss.str("");
+        ss.clear();
+        ss << disp(get_measured(), ", ");
+        result += "\"measured positions\" : " + ss.str() + ", ";
 
-         os << std::boolalpha;
-         os << "measured qudits: " << disp(measured_, ", ") << '\n';
-         os << std::noboolalpha;
+        ss.str("");
+        ss.clear();
+        ss << disp(get_non_measured(), ", ");
+        result += "\"non-measured positions\" : " + ss.str();
 
-         os << "measured positions: " << disp(get_measured(), ", ") << '\n';
-         os << "non-measured positions: " << disp(get_non_measured(), ", ")
-            << '\n';*/
-
-        result += "]";
-
-        return result;
-    }
-
-  public:
-    std::string to_JSON() const {
-        std::string result;
-        result += "{";
-        result += _to_JSON();
-        result += "}";
+        if (enclosed_in_curly_brackets)
+            result += "}";
 
         return result;
     }
@@ -2093,7 +2081,8 @@ class QCircuitDescription : public IDisplay {
  * \class qpp::IQCircuit
  * \brief Quantum circuit simulator abstract class
  * \see qpp::QCircuitDescription
- * \note Every further derived class has to override the run() member function
+ * \note Every further derived class has to override the run() member
+ * function
  */
 class IQCircuit : public IDisplay {
   protected:
@@ -2123,12 +2112,12 @@ class IQCircuit : public IDisplay {
         }
     }
 
-    // giving a vector of non-measured qudits, get their relative position wrt
-    // the measured qudits
+    // giving a vector of non-measured qudits, get their relative
+    // position wrt the measured qudits
     /**
-     * \brief Giving a vector \a V of non-measured qudits, get their relative
-     * position with respect to the measured qudits
-     * \param v Qudit index
+     * \brief Giving a vector \a V of non-measured qudits, get their
+     * relative position with respect to the measured qudits \param v
+     * Qudit index
      */
     std::vector<idx> get_relative_pos_(std::vector<idx> v) {
         idx vsize = v.size();
@@ -2143,7 +2132,8 @@ class IQCircuit : public IDisplay {
 
   public:
     /**
-     * \brief Constructs a quantum circuit out of a quantum circuit description
+     * \brief Constructs a quantum circuit out of a quantum circuit
+     * description
      *
      * \note The quantum circuit description must be an lvalue
      * \see qpp::QCircuit(QCircuitDescription&&)
@@ -2212,8 +2202,8 @@ class IQCircuit : public IDisplay {
      *
      * \note The probability vector has the same length as the vector of
      * classical dits. If the measurement result is stored at the index
-     * \a c_reg, then the outcome probability is automatically stored at the
-     * same index \a c_reg in the probability vector.
+     * \a c_reg, then the outcome probability is automatically stored at
+     * the same index \a c_reg in the probability vector.
      *
      * \return Vector of underlying measurement outcome probabilities
      */
@@ -2256,8 +2246,8 @@ class IQCircuit : public IDisplay {
     }
 
     /**
-     * \brief Checks whether the current step in the circuit is a measurement
-     * step
+     * \brief Checks whether the current step in the circuit is a
+     * measurement step
      *
      * \return True if measurement step, false otherwise
      */
@@ -2266,8 +2256,9 @@ class IQCircuit : public IDisplay {
     /**
      * \brief Measurement instruction pointer
      *
-     * Points to the index of the next measurement to be executed from the
-     * std::vector<MeasureStep> of measurements in the circuit description
+     * Points to the index of the next measurement to be executed from
+     * the std::vector<MeasureStep> of measurements in the circuit
+     * description
      *
      * \return Measurement instruction pointer
      */
@@ -2276,8 +2267,9 @@ class IQCircuit : public IDisplay {
     /**
      * \brief Quantum instruction pointer
      *
-     * Points to the index of the next quantum gate to be executed from the
-     * std::vector<GateStep> of quantum gates in the circuit description
+     * Points to the index of the next quantum gate to be executed from
+     * the std::vector<GateStep> of quantum gates in the circuit
+     * description
      *
      * \return Quantum instruction pointer
      */
@@ -2340,8 +2332,8 @@ class IQCircuit : public IDisplay {
     /**
      * \brief qpp::IDisplay::display() override
      *
-     * Writes to the output stream a textual representation of the quantum
-     * circuit
+     * Writes to the output stream a textual representation of the
+     * quantum circuit
      *
      * \param os Output stream passed by reference
      * \return Reference to the output stream
@@ -2355,11 +2347,12 @@ class IQCircuit : public IDisplay {
     }
 
     /**
-     * \brief Executes the quantum circuit, pure virtual member function that
-     * must be overridden by all derived classes
+     * \brief Executes the quantum circuit, pure virtual member function
+     * that must be overridden by all derived classes
      *
      * \param verbose If true, displays at console every executed step
-     * \param step How many steps to execute, by default executes until the end
+     * \param step How many steps to execute, by default executes until
+     * the end
      */
     virtual void run(bool verbose = false, idx step = idx_infty) = 0;
 }; /* class IQCircuit */

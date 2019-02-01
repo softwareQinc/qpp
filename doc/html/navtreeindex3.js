@@ -1,8 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"namespaceqpp_1_1exception.html":[1,0,0,0],
-"namespaceqpp_1_1experimental.html":[1,0,0,1],
-"namespaceqpp_1_1internal.html":[1,0,0,2],
 "namespaceqpp_1_1internal.html":[2,0,0,1],
 "namespaceqpp_1_1literals.html":[1,0,0,3],
 "namespaces.html":[1,0],

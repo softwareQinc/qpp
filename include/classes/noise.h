@@ -33,7 +33,6 @@
 #define CLASSES_NOISE_H_
 
 namespace qpp {
-
 /**
  * \class qpp::NoiseType
  * \brief Contains template tags used to specify the noise type

@@ -8,14 +8,14 @@ int main() {
 
     /////////// testing ///////////
     // we simulate the action fully depolarizing noise applied multiple times
-    ket psi = randket(2);
-    auto noise = QubitDepolarizingNoise(3. / 4);
-    idx N = 10000;
-    cmat result = cmat::Zero(2, 2);
-    for (idx i = 0; i < N; ++i) {
-        ket out = noise(psi, 0);
-        result = result + prj(out);
-    }
-    result /= N;
-    std::cout << disp(result) << '\n'; // we expect to be close to identity
+    QCircuitDescription qc{3,2,2, "test_circuit"};
+    qc.gate(gt.X, 0, "named_X");
+    qc.gate(gt.Z, 1);
+    qc.CTRL(gt.X, 0, 1, "ctrl_X");
+    qc.measureV(gt.H, 0, 0);
+    qc.measureV(gt.H, 1, 1);
+
+    std::cout << qc << '\n';
+    std::cout << qc.to_JSON() << '\n';
+
 }
