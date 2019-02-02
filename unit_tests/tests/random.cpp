@@ -469,7 +469,7 @@ TEST(qpp_randrho, AllTests) {
     cmat rho = qpp::randrho(D);
     EXPECT_NEAR(0, norm(rho - adjoint(rho)), 1e-7);
     dyn_col_vect<double> lambdas = hevals(rho);
-    for (idx i = 0; i < lambdas.size(); ++i) {
+    for (idx i = 0; i < static_cast<idx>(lambdas.size()); ++i) {
         EXPECT_GE(lambdas[i], 0);
         EXPECT_LE(lambdas[i], 1);
     }
@@ -481,7 +481,7 @@ TEST(qpp_randrho, AllTests) {
     rho = qpp::randrho(D);
     EXPECT_NEAR(0, norm(rho - adjoint(rho)), 1e-7);
     lambdas = hevals(rho);
-    for (idx i = 0; i < lambdas.size(); ++i) {
+    for (idx i = 0; i < static_cast<idx>(lambdas.size()); ++i) {
         EXPECT_GE(lambdas[i], 0);
         EXPECT_LE(lambdas[i], 1);
     }
@@ -493,7 +493,7 @@ TEST(qpp_randrho, AllTests) {
     rho = qpp::randrho(D);
     EXPECT_NEAR(0, norm(rho - adjoint(rho)), 1e-7);
     lambdas = hevals(rho);
-    for (idx i = 0; i < lambdas.size(); ++i) {
+    for (idx i = 0; i < static_cast<idx>(lambdas.size()); ++i) {
         EXPECT_GE(lambdas[i], 0);
         EXPECT_LE(lambdas[i], 1);
     }
