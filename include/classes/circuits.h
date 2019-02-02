@@ -163,10 +163,6 @@ class QCircuitDescription : public IDisplay {
              * \return Reference to the output stream
              */
             std::ostream& display(std::ostream& os) const override {
-                // os << "m_ip_: " << m_ip_;
-                // os << ", q_ip_: " << q_ip_;
-                // os << ", ip_: " << ip_;
-
                 // field spacing for the step number
                 idx text_width =
                     std::to_string(value_type_qcd_->get_steps_count()).size() +
@@ -2295,7 +2291,9 @@ class IQCircuit : public IDisplay {
      *
      * \return Quantum circuit description
      */
-    const QCircuitDescription& get_circuit_description() const { return qcd_; }
+    const QCircuitDescription& get_circuit_description() const noexcept {
+        return qcd_;
+    }
     // end getters
 
     // setters
