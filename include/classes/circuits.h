@@ -2399,73 +2399,28 @@ class QCircuit : public IQCircuit {
                 std::cout << *it_ << '\n';
             }
 
-            // Measurement step
-            if ((*it_).type_ == QCircuitDescription::StepType::MEASUREMENT) {
-                std::vector<idx> target_rel_pos = get_relative_pos_(
-                    qcd_.get_measurements()[get_m_ip()].target_);
-
-                std::vector<idx> resZ;
-                double probZ;
-
-                idx mres = 0;
-                std::vector<double> probs;
-                std::vector<cmat> states;
-
-                switch (qcd_.get_measurements()[get_m_ip()].measurement_type_) {
-                case QCircuitDescription::MeasureType::NONE:
-                    break;
-                case QCircuitDescription::MeasureType::MEASURE_Z:
-                    std::tie(resZ, probZ, psi_) =
-                        measure_seq(psi_, target_rel_pos, qcd_.get_d());
-                    dits_[qcd_.get_measurements()[get_m_ip()].c_reg_] = resZ[0];
-                    probs_[qcd_.get_measurements()[get_m_ip()].c_reg_] = probZ;
-                    set_measured_(
-                        qcd_.get_measurements()[get_m_ip()].target_[0]);
-                    break;
-                case QCircuitDescription::MeasureType::MEASURE_V:
-                    std::tie(mres, probs, states) = measure(
-                        psi_, qcd_.get_measurements()[get_m_ip()].mats_[0],
-                        target_rel_pos, qcd_.get_d());
-                    psi_ = states[mres];
-                    dits_[qcd_.get_measurements()[get_m_ip()].c_reg_] = mres;
-                    probs_[qcd_.get_measurements()[get_m_ip()].c_reg_] =
-                        probs[mres];
-                    set_measured_(
-                        qcd_.get_measurements()[get_m_ip()].target_[0]);
-                    break;
-                case QCircuitDescription::MeasureType::MEASURE_V_MANY:
-                    std::tie(mres, probs, states) = measure(
-                        psi_, qcd_.get_measurements()[get_m_ip()].mats_[0],
-                        target_rel_pos, qcd_.get_d());
-                    psi_ = states[mres];
-                    dits_[qcd_.get_measurements()[get_m_ip()].c_reg_] = mres;
-                    probs_[qcd_.get_measurements()[get_m_ip()].c_reg_] =
-                        probs[mres];
-                    for (auto&& i : qcd_.get_measurements()[get_m_ip()].target_)
-                        set_measured_(i);
-                    break;
-                } // end switch on measurement type
-            }     // end if measurement step
             // Gate step
-            else if ((*it_).type_ == QCircuitDescription::StepType::GATE) {
+            if ((*it_).type_ == QCircuitDescription::StepType::GATE) {
+                auto gates = qcd_.get_gates();
+                idx q_ip = get_q_ip();
+
                 std::vector<idx> ctrl_rel_pos;
                 std::vector<idx> target_rel_pos =
-                    get_relative_pos_(qcd_.get_gates()[get_q_ip()].target_);
+                    get_relative_pos_(gates[q_ip].target_);
 
-                switch (qcd_.get_gates()[get_q_ip()].gate_type_) {
+                switch (gates[q_ip].gate_type_) {
                 case QCircuitDescription::GateType::NONE:
                     break;
                 case QCircuitDescription::GateType::SINGLE:
                 case QCircuitDescription::GateType::TWO:
                 case QCircuitDescription::GateType::THREE:
                 case QCircuitDescription::GateType::CUSTOM:
-                    psi_ = apply(psi_, qcd_.get_gates()[get_q_ip()].gate_,
-                                 target_rel_pos, qcd_.get_d());
+                    psi_ = apply(psi_, gates[q_ip].gate_, target_rel_pos,
+                                 qcd_.get_d());
                     break;
                 case QCircuitDescription::GateType::FAN:
-                    for (idx m = 0;
-                         m < qcd_.get_gates()[get_q_ip()].target_.size(); ++m)
-                        psi_ = apply(psi_, qcd_.get_gates()[get_q_ip()].gate_,
+                    for (idx m = 0; m < gates[q_ip].target_.size(); ++m)
+                        psi_ = apply(psi_, gates[q_ip].gate_,
                                      {target_rel_pos[m]}, qcd_.get_d());
                     break;
                 case QCircuitDescription::GateType::QFT:
@@ -2476,11 +2431,9 @@ class QCircuit : public IQCircuit {
                 case QCircuitDescription::GateType::
                     MULTIPLE_CTRL_MULTIPLE_TARGET:
                 case QCircuitDescription::GateType::CUSTOM_CTRL:
-                    ctrl_rel_pos =
-                        get_relative_pos_(qcd_.get_gates()[get_q_ip()].ctrl_);
-                    psi_ =
-                        applyCTRL(psi_, qcd_.get_gates()[get_q_ip()].gate_,
-                                  ctrl_rel_pos, target_rel_pos, qcd_.get_d());
+                    ctrl_rel_pos = get_relative_pos_(gates[q_ip].ctrl_);
+                    psi_ = applyCTRL(psi_, gates[q_ip].gate_, ctrl_rel_pos,
+                                     target_rel_pos, qcd_.get_d());
                     break;
                 case QCircuitDescription::GateType::SINGLE_cCTRL_SINGLE_TARGET:
                 case QCircuitDescription::GateType::
@@ -2491,33 +2444,73 @@ class QCircuit : public IQCircuit {
                     MULTIPLE_cCTRL_MULTIPLE_TARGET:
                 case QCircuitDescription::GateType::CUSTOM_cCTRL:
                     if (dits_.size() == 0) {
-                        psi_ = apply(psi_, qcd_.get_gates()[get_q_ip()].gate_,
-                                     target_rel_pos, qcd_.get_d());
+                        psi_ = apply(psi_, gates[q_ip].gate_, target_rel_pos,
+                                     qcd_.get_d());
                     } else {
                         bool should_apply = true;
-                        idx first_dit =
-                            dits_[(qcd_.get_gates()[get_q_ip()].ctrl_)[0]];
-                        for (idx m = 0;
-                             m < qcd_.get_gates()[get_q_ip()].ctrl_.size();
-                             ++m) {
-                            if (dits_[(
-                                    qcd_.get_gates()[get_q_ip()].ctrl_)[m]] !=
-                                first_dit) {
+                        idx first_dit = dits_[(gates[q_ip].ctrl_)[0]];
+                        for (idx m = 0; m < gates[q_ip].ctrl_.size(); ++m) {
+                            if (dits_[(gates[q_ip].ctrl_)[m]] != first_dit) {
                                 should_apply = false;
                                 break;
                             }
                         }
                         if (should_apply) {
                             psi_ =
-                                apply(psi_,
-                                      powm(qcd_.get_gates()[get_q_ip()].gate_,
-                                           first_dit),
+                                apply(psi_, powm(gates[q_ip].gate_, first_dit),
                                       target_rel_pos, qcd_.get_d());
                         }
                     }
                     break;
                 } // end switch on gate type
-            }     // end else gate step
+            }     // end if gate step
+            // Measurement step
+            else if ((*it_).type_ ==
+                     QCircuitDescription::StepType::MEASUREMENT) {
+                auto measurements = qcd_.get_measurements();
+                idx m_ip = get_m_ip();
+
+                std::vector<idx> target_rel_pos =
+                    get_relative_pos_(measurements[m_ip].target_);
+
+                std::vector<idx> resZ;
+                double probZ;
+
+                idx mres = 0;
+                std::vector<double> probs;
+                std::vector<cmat> states;
+
+                switch (measurements[m_ip].measurement_type_) {
+                case QCircuitDescription::MeasureType::NONE:
+                    break;
+                case QCircuitDescription::MeasureType::MEASURE_Z:
+                    std::tie(resZ, probZ, psi_) =
+                        measure_seq(psi_, target_rel_pos, qcd_.get_d());
+                    dits_[measurements[m_ip].c_reg_] = resZ[0];
+                    probs_[measurements[m_ip].c_reg_] = probZ;
+                    set_measured_(measurements[m_ip].target_[0]);
+                    break;
+                case QCircuitDescription::MeasureType::MEASURE_V:
+                    std::tie(mres, probs, states) =
+                        measure(psi_, measurements[m_ip].mats_[0],
+                                target_rel_pos, qcd_.get_d());
+                    psi_ = states[mres];
+                    dits_[measurements[m_ip].c_reg_] = mres;
+                    probs_[measurements[m_ip].c_reg_] = probs[mres];
+                    set_measured_(measurements[m_ip].target_[0]);
+                    break;
+                case QCircuitDescription::MeasureType::MEASURE_V_MANY:
+                    std::tie(mres, probs, states) =
+                        measure(psi_, measurements[m_ip].mats_[0],
+                                target_rel_pos, qcd_.get_d());
+                    psi_ = states[mres];
+                    dits_[measurements[m_ip].c_reg_] = mres;
+                    probs_[measurements[m_ip].c_reg_] = probs[mres];
+                    for (auto&& i : measurements[m_ip].target_)
+                        set_measured_(i);
+                    break;
+                } // end switch on measurement type
+            }     // end else if measurement step
             // otherwise
             else {
             }
