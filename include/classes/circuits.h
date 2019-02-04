@@ -347,6 +347,15 @@ class QCircuitDescription : public IDisplay {
             std::vector<MeasureStep>::const_iterator
                 measurements_ip_{}; ///< measurements instruction pointer
 
+            /**
+             * \brief Default value_type_ constructor
+             *
+             * \param value_type_qcd Constant pointer to quantum circuit
+             * description
+             */
+            explicit value_type_(const QCircuitDescription* value_type_qcd)
+                : value_type_qcd_{value_type_qcd} {}
+
             // silence -Weffc++ class has pointer data members
             /**
              * \brief Default copy constructor
@@ -360,15 +369,6 @@ class QCircuitDescription : public IDisplay {
              * \return Reference to the current instance
              */
             value_type_& operator=(const value_type_&) = default;
-
-            /**
-             * \brief Default value_type_ constructor
-             *
-             * \param value_type_qcd Constant pointer to quantum circuit
-             * description
-             */
-            explicit value_type_(const QCircuitDescription* value_type_qcd)
-                : value_type_qcd_{value_type_qcd} {}
 
             /**
              * \brief qpp::IDisplay::display() override

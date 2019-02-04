@@ -1,7 +1,7 @@
 var structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__ =
 [
-    [ "value_type_", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html#a5db72225d9a2602670239a1abe8908b0", null ],
     [ "value_type_", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html#a51f302a18aa4b0fbae87c30ad3396c1f", null ],
+    [ "value_type_", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html#a5db72225d9a2602670239a1abe8908b0", null ],
     [ "display", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html#a8c7964b44573ffcf277517cae6540f66", null ],
     [ "operator=", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html#a19ce119dfe4bc553d5e5ed3b60da1b3b", null ],
     [ "gates_ip_", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html#a8ed84a535f5421065f6880b14ae0f7ab", null ],
