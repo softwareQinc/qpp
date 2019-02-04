@@ -1,7 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"entanglement_8h.html#a3b86cd008bbcf7c8bc3dd1d990225fdb":[3,0,5,11],
-"entanglement_8h.html#a61ff269f163f35f9e929ca800fe8b32f":[3,0,5,14],
 "entanglement_8h.html#a643a3f3073b38757ad670ad3d0c64850":[3,0,5,12],
 "entanglement_8h.html#a6f899cb6e3ea3a13ffd3d8cf0a0bcc6b":[3,0,5,0],
 "entanglement_8h.html#a7e79a2383dc47a848ea3e88337070e62":[3,0,5,6],
@@ -197,8 +195,8 @@ var NAVTREEINDEX2 =
 "matlab_8h.html#af46ebc145afb868fcb89b3e2f98e808b":[3,0,3,0,1],
 "matlab_8h_source.html":[3,0,3,0],
 "md___users_vlad_qpp__r_e_a_d_m_e.html":[0],
-"namespacemembers.html":[1,1,0,0],
 "namespacemembers.html":[1,1,0],
+"namespacemembers.html":[1,1,0,0],
 "namespacemembers_b.html":[1,1,0,1],
 "namespacemembers_c.html":[1,1,0,2],
 "namespacemembers_d.html":[1,1,0,3],
@@ -247,7 +245,9 @@ var NAVTREEINDEX2 =
 "namespacemembers_x.html":[1,1,0,21],
 "namespaceqpp.html":[1,0,0],
 "namespaceqpp.html":[2,0,0],
-"namespaceqpp_1_1exception.html":[2,0,0,0],
 "namespaceqpp_1_1exception.html":[1,0,0,0],
-"namespaceqpp_1_1experimental.html":[1,0,0,1]
+"namespaceqpp_1_1exception.html":[2,0,0,0],
+"namespaceqpp_1_1experimental.html":[1,0,0,1],
+"namespaceqpp_1_1internal.html":[1,0,0,2],
+"namespaceqpp_1_1internal.html":[2,0,0,1]
 };

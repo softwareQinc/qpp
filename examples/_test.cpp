@@ -17,7 +17,7 @@ int main() {
     qc.measureZ(2, 0);
 
     std::cout << qc << '\n';
-    std::cout << qc.to_JSON() << '\n';
+    std::cout << qc.to_JSON() << "\n\n";
 
     auto n = QuditDepolarizingNoise(0.2, 3);
     std::cout << n.get_d() << '\n';

@@ -39,7 +39,6 @@ namespace qpp {
  * \see qpp::QCircuit
  */
 class QCircuitDescription : public IDisplay {
-    //friend class iterator;
     const idx nq_;               ///< number of qudits
     const idx nc_;               ///< number of classical "dits"
     const idx d_;                ///< qudit dimension
@@ -334,9 +333,6 @@ class QCircuitDescription : public IDisplay {
      * \note The iterator is a const_iterator by default
      */
     class iterator {
-        friend QCircuitDescription;
-        friend class IQCircuit;
-
         ///< non-owning pointer to const circuit description
         const QCircuitDescription* qcd_{nullptr};
 
@@ -417,44 +413,6 @@ class QCircuitDescription : public IDisplay {
         };
 
         value_type_ elem_{nullptr};
-
-        /**
-         * \brief Sets the iterator to std::begin(this)
-         *
-         * \param qcd Constant pointer to a quantum circuit description
-         */
-        void set_begin_(const QCircuitDescription* qcd) {
-            qcd_ = qcd;
-            elem_ = value_type_{qcd_};
-
-            if (qcd_ != nullptr) {
-                if (qcd_->get_step_count() != 0) // non-empty circuit
-                {
-                    elem_.type_ = qcd_->step_types_[0];
-                    elem_.ip_ = 0;
-                }
-                elem_.gates_ip_ = std::begin(qcd_->gates_);
-                elem_.measurements_ip_ = std::begin(qcd_->measurements_);
-            }
-        }
-
-        /**
-         * \brief Sets the iterator to std::begin(this)
-         *
-         * \param qcd Constant pointer to a quantum circuit description
-         */
-        void set_end_(const QCircuitDescription* qcd) {
-            qcd_ = qcd;
-            elem_ = value_type_{qcd_};
-
-            if (qcd_ != nullptr) {
-                if (qcd->get_step_count() != 0) {
-                    elem_.ip_ = qcd->get_step_count();
-                }
-                elem_.gates_ip_ = std::end(qcd->gates_);
-                elem_.measurements_ip_ = std::end(qcd->measurements_);
-            }
-        }
 
       public:
         /**
@@ -578,6 +536,44 @@ class QCircuitDescription : public IDisplay {
             // END EXCEPTION CHECKS
 
             return elem_;
+        }
+
+        /**
+         * \brief Sets the iterator to std::begin(this)
+         *
+         * \param qcd Constant pointer to a quantum circuit description
+         */
+        void set_begin_(const QCircuitDescription* qcd) {
+            qcd_ = qcd;
+            elem_ = value_type_{qcd_};
+
+            if (qcd_ != nullptr) {
+                if (qcd_->get_step_count() != 0) // non-empty circuit
+                {
+                    elem_.type_ = qcd_->step_types_[0];
+                    elem_.ip_ = 0;
+                }
+                elem_.gates_ip_ = std::begin(qcd_->gates_);
+                elem_.measurements_ip_ = std::begin(qcd_->measurements_);
+            }
+        }
+
+        /**
+         * \brief Sets the iterator to std::begin(this)
+         *
+         * \param qcd Constant pointer to a quantum circuit description
+         */
+        void set_end_(const QCircuitDescription* qcd) {
+            qcd_ = qcd;
+            elem_ = value_type_{qcd_};
+
+            if (qcd_ != nullptr) {
+                if (qcd->get_step_count() != 0) {
+                    elem_.ip_ = qcd->get_step_count();
+                }
+                elem_.gates_ip_ = std::end(qcd->gates_);
+                elem_.measurements_ip_ = std::end(qcd->measurements_);
+            }
         }
 
         // iterator traits
@@ -2256,8 +2252,8 @@ class IQCircuit : public IDisplay {
      * \return Measurement instruction pointer
      */
     idx get_m_ip() const {
-        idx pos = std::distance(std::begin(it_.qcd_->get_measurements()),
-                                it_.elem_.measurements_ip_);
+        idx pos = std::distance(std::begin(qcd_.get_measurements()),
+                                (*it_).measurements_ip_);
 
         return pos;
     }
@@ -2272,8 +2268,7 @@ class IQCircuit : public IDisplay {
      * \return Quantum instruction pointer
      */
     idx get_q_ip() const {
-        idx pos = std::distance(std::begin(it_.qcd_->get_gates()),
-                                it_.elem_.gates_ip_);
+        idx pos = std::distance(std::begin(qcd_.get_gates()), (*it_).gates_ip_);
         return pos;
     }
 
@@ -2283,7 +2278,7 @@ class IQCircuit : public IDisplay {
      * \return The sum of measurement instruction pointer and quantum
      * instruction pointer
      */
-    idx get_ip() const { return it_.elem_.ip_; }
+    idx get_ip() const { return (*it_).ip_; }
 
     /**
      * \brief Iterator to current step
