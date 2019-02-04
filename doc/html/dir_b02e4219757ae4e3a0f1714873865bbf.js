@@ -2,10 +2,10 @@ var dir_b02e4219757ae4e3a0f1714873865bbf =
 [
     [ "circuits.h", "circuits_8h.html", [
       [ "QCircuitDescription", "classqpp_1_1_q_circuit_description.html", "classqpp_1_1_q_circuit_description" ],
-      [ "iterator", "classqpp_1_1_q_circuit_description_1_1iterator.html", "classqpp_1_1_q_circuit_description_1_1iterator" ],
-      [ "value_type_", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__" ],
       [ "GateStep", "structqpp_1_1_q_circuit_description_1_1_gate_step.html", "structqpp_1_1_q_circuit_description_1_1_gate_step" ],
       [ "MeasureStep", "structqpp_1_1_q_circuit_description_1_1_measure_step.html", "structqpp_1_1_q_circuit_description_1_1_measure_step" ],
+      [ "iterator", "classqpp_1_1_q_circuit_description_1_1iterator.html", "classqpp_1_1_q_circuit_description_1_1iterator" ],
+      [ "value_type_", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__" ],
       [ "IQCircuit", "classqpp_1_1_i_q_circuit.html", "classqpp_1_1_i_q_circuit" ],
       [ "QCircuit", "classqpp_1_1_q_circuit.html", "classqpp_1_1_q_circuit" ]
     ] ],

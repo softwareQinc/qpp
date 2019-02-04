@@ -6,7 +6,7 @@ var classqpp_1_1_noise_base =
     [ "~NoiseBase", "classqpp_1_1_noise_base.html#ae7001fa8dc0f2cf7655bb6073b860d64", null ],
     [ "compute_probs_", "classqpp_1_1_noise_base.html#a9fbed9d758f83901bd51e8e6be3faf9d", null ],
     [ "compute_state_", "classqpp_1_1_noise_base.html#a86d64c08c41e4bb71ec67f4801d053ac", null ],
-    [ "get_d", "classqpp_1_1_noise_base.html#a6e56c4f857d93eb555116f0d07b42c04", null ],
+    [ "get_d", "classqpp_1_1_noise_base.html#a8769aa99f0f2d3ad3f279992bf394596", null ],
     [ "get_Ks", "classqpp_1_1_noise_base.html#a688ed2fd81eb4caf874a91c8e35205a0", null ],
     [ "get_last_idx", "classqpp_1_1_noise_base.html#ae717e8f329fe520e584d8c16694f03ad", null ],
     [ "get_last_K", "classqpp_1_1_noise_base.html#ab683e02a7f1dbdaf28e67b0ec9194839", null ],

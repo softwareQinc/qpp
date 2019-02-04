@@ -30,6 +30,11 @@ var classqpp_1_1_q_circuit_description =
       [ "MEASURE_V", "classqpp_1_1_q_circuit_description.html#ab2cf81303a55affa00c23b3a63abc728a8f2c7e7ab229b75a139822637593621d", null ],
       [ "MEASURE_V_MANY", "classqpp_1_1_q_circuit_description.html#ab2cf81303a55affa00c23b3a63abc728a9c11f6f406f8d8e47e50e35b77b9dd8c", null ]
     ] ],
+    [ "StepType", "classqpp_1_1_q_circuit_description.html#a9f3b1783c5a19055184c4c7654e949ce", [
+      [ "NONE", "classqpp_1_1_q_circuit_description.html#a9f3b1783c5a19055184c4c7654e949ceab50339a10e1de285ac99d4c3990b8693", null ],
+      [ "GATE", "classqpp_1_1_q_circuit_description.html#a9f3b1783c5a19055184c4c7654e949cea1818cedf1c2bed8c63664cc8313b443c", null ],
+      [ "MEASUREMENT", "classqpp_1_1_q_circuit_description.html#a9f3b1783c5a19055184c4c7654e949ceaeb1f81048e02a1d6977cdd9f344b3212", null ]
+    ] ],
     [ "QCircuitDescription", "classqpp_1_1_q_circuit_description.html#add2def7fb04f2c046243d0d7535031c3", null ],
     [ "~QCircuitDescription", "classqpp_1_1_q_circuit_description.html#a86b3ef180be9526f0de0607c8df0b462", null ],
     [ "begin", "classqpp_1_1_q_circuit_description.html#a3e29611f51cb6437f31305988695abb7", null ],
@@ -61,13 +66,12 @@ var classqpp_1_1_q_circuit_description =
     [ "get_measured", "classqpp_1_1_q_circuit_description.html#a10f64017cf05d9d43a111a87b20b7e37", null ],
     [ "get_measured", "classqpp_1_1_q_circuit_description.html#aca85a5329b57d0a3841f6b77b12eeb3c", null ],
     [ "get_measurement_count", "classqpp_1_1_q_circuit_description.html#aa4f99d30c3ef016ccf310abf9eb6763c", null ],
-    [ "get_measurement_steps", "classqpp_1_1_q_circuit_description.html#a1b73d59c5691be3ba21f918bb4ca25b3", null ],
     [ "get_measurements", "classqpp_1_1_q_circuit_description.html#ac9081cb657518ff887cb7099941dc56f", null ],
     [ "get_name", "classqpp_1_1_q_circuit_description.html#a7548d23aa4e01e8c431c716c758fb0b9", null ],
     [ "get_nc", "classqpp_1_1_q_circuit_description.html#ae047bf91daebb62db1b7f6dea556e5d3", null ],
     [ "get_non_measured", "classqpp_1_1_q_circuit_description.html#a838b390fd1539c7a262826af8d32b141", null ],
     [ "get_nq", "classqpp_1_1_q_circuit_description.html#a8cbaad644f672a9b948dc7f0655336e0", null ],
-    [ "get_steps_count", "classqpp_1_1_q_circuit_description.html#a18b81d19d0f87e33422de62c260cc983", null ],
+    [ "get_step_count", "classqpp_1_1_q_circuit_description.html#abf42784216c9fcd68a9739bb329d5f44", null ],
     [ "measureV", "classqpp_1_1_q_circuit_description.html#a5c93e050bcb6e053ff2f1e6a24dd1837", null ],
     [ "measureV", "classqpp_1_1_q_circuit_description.html#aaffbbc75d07459d6c606571d716f5aef", null ],
     [ "measureZ", "classqpp_1_1_q_circuit_description.html#a46b01b74e16f5dcfb0af7fb422db06bf", null ],
@@ -75,16 +79,15 @@ var classqpp_1_1_q_circuit_description =
     [ "TFQ", "classqpp_1_1_q_circuit_description.html#ae1dabff9c7b8d90b574564def8040c4f", null ],
     [ "to_JSON", "classqpp_1_1_q_circuit_description.html#a614760aece3a84c8a739a75c64840a81", null ],
     [ "operator<<", "classqpp_1_1_q_circuit_description.html#ae9cedd88ac3a4898cda1e966b4978ab3", null ],
-    [ "operator<<", "classqpp_1_1_q_circuit_description.html#adce377c4688b746b06fd7f1982866de3", null ],
     [ "operator<<", "classqpp_1_1_q_circuit_description.html#ad3ac9d56b6651d3f7812625c8d6f904e", null ],
+    [ "operator<<", "classqpp_1_1_q_circuit_description.html#adce377c4688b746b06fd7f1982866de3", null ],
     [ "operator<<", "classqpp_1_1_q_circuit_description.html#af6d7056ede5934f345e3a37d13f673a4", null ],
     [ "d_", "classqpp_1_1_q_circuit_description.html#ae552f3e407a2184111b55b1460348c15", null ],
     [ "gates_", "classqpp_1_1_q_circuit_description.html#a51f4ed150d45636121a3c20bce35b7fd", null ],
     [ "measured_", "classqpp_1_1_q_circuit_description.html#afce29aec043695d8e7e15c6db968e51d", null ],
-    [ "measurement_steps_", "classqpp_1_1_q_circuit_description.html#acaae65f3b54c22e8ede345f0feb95f3b", null ],
     [ "measurements_", "classqpp_1_1_q_circuit_description.html#a713cbd82c49471610e8c12918040c44b", null ],
     [ "name_", "classqpp_1_1_q_circuit_description.html#af05825c3723eb18602f090d65bbaa0a6", null ],
     [ "nc_", "classqpp_1_1_q_circuit_description.html#a5ce5331ccc2ea470a0a491801fed90cf", null ],
     [ "nq_", "classqpp_1_1_q_circuit_description.html#a40e03d1e5d30898e1f5354cb055df05e", null ],
-    [ "steps_cnt_", "classqpp_1_1_q_circuit_description.html#a0d145fa5e7717f52811b3fdca5ee8a16", null ]
+    [ "step_types_", "classqpp_1_1_q_circuit_description.html#a4894f5c561eb9eaec8369e0ee548651a", null ]
 ];

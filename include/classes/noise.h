@@ -216,11 +216,11 @@ class NoiseBase {
 
     // getters
     /**
-     * \brief Local dimension
+     * \brief Qudit dimension
      *
-     * \return Local dimension
+     * \return Qudit dimension
      */
-    idx get_d() const { return d_; };
+    idx get_d() const noexcept { return d_; };
 
     /**
      * \brief Vector of noise operators
@@ -483,6 +483,12 @@ class QubitPhaseDampingNoise : public NoiseBase<NoiseType::StateDependent> {
  * \brief Qudit depolarizing noise
  */
 class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
+    /**
+     * \brief Fills the Kraus operator vector
+     *
+     * \param d Qudit dimension
+     * \return Vector of Kraus operators representing the depolarizing noise
+     */
     std::vector<cmat> fill_Ks_(idx d) const {
         std::vector<cmat> Ks(d * d);
         idx cnt = 0;
@@ -493,6 +499,14 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
 
         return Ks;
     }
+
+    /**
+     * \brief Fills the probability vector
+     *
+     * \param p Probability
+     * \param d Qudit dimension
+     * \return Probability vector
+     */
     std::vector<double> fill_probs_(double p, idx d) const {
         std::vector<double> probs(d * d);
         probs[0] = 1 - p;
@@ -501,7 +515,6 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
 
         return probs;
     }
-    const idx d_;
 
   public:
     /**
@@ -511,7 +524,7 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
      * \param d Subsystem dimension
      */
     explicit QuditDepolarizingNoise(double p, idx d)
-        : NoiseBase(fill_Ks_(d), fill_probs_(p, d)), d_{d} {
+        : NoiseBase(fill_Ks_(d), fill_probs_(p, d)) {
         // EXCEPTION CHECKS
 
         if (d < 2 || p < 0 || p > 1)

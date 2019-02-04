@@ -116,7 +116,6 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>d_
 : <a class="el" href="classqpp_1_1_noise_base.html#a3f2a297558ea507b8c291ebf2be7f4d2">qpp::NoiseBase&lt; T &gt;</a>
 , <a class="el" href="classqpp_1_1_q_circuit_description.html#ae552f3e407a2184111b55b1460348c15">qpp::QCircuitDescription</a>
-, <a class="el" href="classqpp_1_1_qudit_depolarizing_noise.html#a333f142dbd9b7305400848b04febc0e0">qpp::QuditDepolarizingNoise</a>
 </li>
 <li>dits_
 : <a class="el" href="classqpp_1_1_i_q_circuit.html#a57f134d3897a0122af59ec177078dcfb">qpp::IQCircuit</a>
@@ -160,6 +159,9 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>gates_
 : <a class="el" href="classqpp_1_1_q_circuit_description.html#a51f4ed150d45636121a3c20bce35b7fd">qpp::QCircuitDescription</a>
 </li>
+<li>gates_ip_
+: <a class="el" href="structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html#a8ed84a535f5421065f6880b14ae0f7ab">qpp::QCircuitDescription::iterator::value_type_</a>
+</li>
 <li>generated_
 : <a class="el" href="classqpp_1_1_noise_base.html#af0a3e8b9a40512ea56826c8b9956be89">qpp::NoiseBase&lt; T &gt;</a>
 </li>
@@ -186,9 +188,6 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>ip_
 : <a class="el" href="structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html#aab9d40c042e923ab07d996b1ce5ee95b">qpp::QCircuitDescription::iterator::value_type_</a>
 </li>
-<li>is_measurement_
-: <a class="el" href="structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html#accb1d820ad9566b028036d0956601d28">qpp::QCircuitDescription::iterator::value_type_</a>
-</li>
 <li>it_
 : <a class="el" href="classqpp_1_1_i_q_circuit.html#ae4fc332d2d9513a560428eaa7987f4de">qpp::IQCircuit</a>
 </li>
@@ -210,23 +209,20 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 
 <h3><a id="index_m"></a>- m -</h3><ul>
-<li>m_ip_
-: <a class="el" href="structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html#a6a93dfbb3df0116b4e60ee3c01b1dda0">qpp::QCircuitDescription::iterator::value_type_</a>
-</li>
 <li>mats_
 : <a class="el" href="structqpp_1_1_q_circuit_description_1_1_measure_step.html#a75ad12e4e8f49754c962868b28a08af6">qpp::QCircuitDescription::MeasureStep</a>
 </li>
 <li>measured_
 : <a class="el" href="classqpp_1_1_q_circuit_description.html#afce29aec043695d8e7e15c6db968e51d">qpp::QCircuitDescription</a>
 </li>
-<li>measurement_steps_
-: <a class="el" href="classqpp_1_1_q_circuit_description.html#acaae65f3b54c22e8ede345f0feb95f3b">qpp::QCircuitDescription</a>
-</li>
 <li>measurement_type_
 : <a class="el" href="structqpp_1_1_q_circuit_description_1_1_measure_step.html#a70a1b14f3e164b7b06524c16ee9ecbef">qpp::QCircuitDescription::MeasureStep</a>
 </li>
 <li>measurements_
 : <a class="el" href="classqpp_1_1_q_circuit_description.html#a713cbd82c49471610e8c12918040c44b">qpp::QCircuitDescription</a>
+</li>
+<li>measurements_ip_
+: <a class="el" href="structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html#af35926e64bd166e6ddc4bbc87b790cf3">qpp::QCircuitDescription::iterator::value_type_</a>
 </li>
 <li>msg_
 : <a class="el" href="classqpp_1_1exception_1_1_exception.html#ac5c2414604183251fc2095b477359996">qpp::exception::Exception</a>
@@ -310,9 +306,6 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 
 <h3><a id="index_q"></a>- q -</h3><ul>
-<li>q_ip_
-: <a class="el" href="structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html#aacc52c565de4cb1f7f943b1dad06ab56">qpp::QCircuitDescription::iterator::value_type_</a>
-</li>
 <li>qcd_
 : <a class="el" href="classqpp_1_1_i_q_circuit.html#ab2a3e1308576be98f059b8b55b70f2c5">qpp::IQCircuit</a>
 , <a class="el" href="classqpp_1_1_q_circuit_description_1_1iterator.html#ad9e98e6c590ac04e70c6c30a1a38b916">qpp::QCircuitDescription::iterator</a>
@@ -343,12 +336,8 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 , <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html#ac922617e85eb199608488f19a725fbc6">qpp::internal::IOManipRange&lt; InputIterator &gt;</a>
 , <a class="el" href="classqpp_1_1_timer.html#aa875f6aeed94940eaf6c7e147035663a">qpp::Timer&lt; T, CLOCK_T &gt;</a>
 </li>
-<li>step_no_
-: <a class="el" href="structqpp_1_1_q_circuit_description_1_1_gate_step.html#ae25f3cac80cfb8c6c3a1f40d40bd656c">qpp::QCircuitDescription::GateStep</a>
-, <a class="el" href="structqpp_1_1_q_circuit_description_1_1_measure_step.html#a904c8d64cd8fb88acae2621120fcb3cb">qpp::QCircuitDescription::MeasureStep</a>
-</li>
-<li>steps_cnt_
-: <a class="el" href="classqpp_1_1_q_circuit_description.html#a0d145fa5e7717f52811b3fdca5ee8a16">qpp::QCircuitDescription</a>
+<li>step_types_
+: <a class="el" href="classqpp_1_1_q_circuit_description.html#a4894f5c561eb9eaec8369e0ee548651a">qpp::QCircuitDescription</a>
 </li>
 <li>storage_size_
 : <a class="el" href="classqpp_1_1_dynamic__bitset.html#a50413fb262ce401ee4fc79faf9c670d8">qpp::Dynamic_bitset</a>
@@ -374,6 +363,9 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>TOF
 : <a class="el" href="structqpp_1_1_bit__circuit_1_1_gate__count.html#a77b95805f5cae32633333c00f5e212ee">qpp::Bit_circuit::Gate_count</a>
 , <a class="el" href="classqpp_1_1_gates.html#a21ca22058677b4c85cda5ba4f6f8f7ca">qpp::Gates</a>
+</li>
+<li>type_
+: <a class="el" href="structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html#aecd5446d7a44c51b4418e04d0c83ba83">qpp::QCircuitDescription::iterator::value_type_</a>
 </li>
 </ul>
 
@@ -444,7 +436,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Feb 1 2019 14:47:36 for Quantum++ by
+    <li class="footer">Generated on Mon Feb 4 2019 10:53:16 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

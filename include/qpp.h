@@ -40,7 +40,7 @@
 #define QPP_H_
 
 // silence bogus warning -Wunused-variable for singletons
-#if (__GNUC__ && !__clang__)
+#if (__GNUC__ || __clang__)
 #define QPP_UNUSED_ __attribute__((unused))
 #else
 #define QPP_UNUSED_

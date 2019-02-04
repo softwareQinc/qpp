@@ -1,9 +1,9 @@
 <map id="qpp::QCircuitDescription::iterator" name="qpp::QCircuitDescription::iterator">
-<area shape="rect" id="node2" href="$classqpp_1_1_q_circuit_description.html" title="Quantum circuit description class. " alt="" coords="1085,123,1251,149"/>
-<area shape="rect" id="node13" href="$structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html" title="qpp::QCircuitDescription\l::iterator::value_type_" alt="" coords="1401,55,1567,97"/>
-<area shape="rect" id="node3" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="798,5,897,32"/>
-<area shape="rect" id="node6" href="$structqpp_1_1_q_circuit_description_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. " alt="" coords="412,233,577,274"/>
-<area shape="rect" id="node11" href="$structqpp_1_1_q_circuit_description_1_1_gate_step.html" title="One step consisting only of gates/operators in the circuit. " alt="" coords="412,115,577,157"/>
-<area shape="rect" id="node8" title="STL class. " alt="" coords="210,101,290,128"/>
-<area shape="rect" id="node9" title="STL class. " alt="" coords="5,94,132,135"/>
+<area shape="rect" id="node2" href="$classqpp_1_1_q_circuit_description.html" title="Quantum circuit description class. " alt="" coords="1019,132,1185,159"/>
+<area shape="rect" id="node14" href="$structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html" title="qpp::QCircuitDescription\l::iterator::value_type_" alt="" coords="1339,181,1505,222"/>
+<area shape="rect" id="node3" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="728,5,827,32"/>
+<area shape="rect" id="node5" href="$structqpp_1_1_q_circuit_description_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. " alt="" coords="411,122,577,163"/>
+<area shape="rect" id="node11" href="$structqpp_1_1_q_circuit_description_1_1_gate_step.html" title="One step consisting only of gates/operators in the circuit. " alt="" coords="411,261,577,302"/>
+<area shape="rect" id="node8" title="STL class. " alt="" coords="209,117,289,144"/>
+<area shape="rect" id="node9" title="STL class. " alt="" coords="5,110,132,151"/>
 </map>
