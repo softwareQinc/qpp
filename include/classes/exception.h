@@ -633,7 +633,7 @@ class InvalidIterator : public Exception {
     using Exception::Exception;
 };
 
-} // namespace exception
+} /* namespace exception */
 } /* namespace qpp */
 
 #endif /* CLASSES_EXCEPTION1_H_ */

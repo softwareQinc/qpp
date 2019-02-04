@@ -1943,7 +1943,7 @@ cmat operator"" _prj() {
 
     return kron(operator""_ket<Bits...>(), operator""_bra<Bits...>());
 }
-} // namespace literals
+} /* namespace literals */
 
 } /* namespace qpp */
 

@@ -42,7 +42,7 @@ inline namespace literals {
 inline constexpr cplx operator"" _i(unsigned long long int x) noexcept {
     return {0., static_cast<double>(x)};
 }
-} // namespace literals
+} /* namespace literals */
 
 /**
  * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (real overload)

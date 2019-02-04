@@ -2252,10 +2252,8 @@ class IQCircuit : public IDisplay {
      * \return Measurement instruction pointer
      */
     idx get_m_ip() const {
-        idx pos = std::distance(std::begin(qcd_.get_measurements()),
-                                (*it_).measurements_ip_);
-
-        return pos;
+        return std::distance(std::begin(qcd_.get_measurements()),
+                             (*it_).measurements_ip_);
     }
 
     /**
@@ -2268,8 +2266,7 @@ class IQCircuit : public IDisplay {
      * \return Quantum instruction pointer
      */
     idx get_q_ip() const {
-        idx pos = std::distance(std::begin(qcd_.get_gates()), (*it_).gates_ip_);
-        return pos;
+        return std::distance(std::begin(qcd_.get_gates()), (*it_).gates_ip_);
     }
 
     /**

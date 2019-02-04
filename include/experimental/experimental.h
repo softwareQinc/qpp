@@ -37,7 +37,7 @@ namespace qpp {
  * \namespace qpp::experimental
  * \brief Experimental/test functions/classes, do not use or modify
  */
-namespace experimental {} // namespace experimental
+namespace experimental {} /* namespace experimental */
 } /* namespace qpp */
 
 #endif /* EXPERIMENTAL_EXPERIMENTAL_H_ */
