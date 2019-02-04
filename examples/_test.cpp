@@ -14,7 +14,7 @@ int main() {
     qcd.gate(gt.Z, 1);
     qcd.CTRL(gt.X, 0, 1, "ctrl_X");
     qcd.gate_fan(gt.H);
-    qcd.gate_fan(gt.H, {0, 2, 3});
+    qcd.gate_fan(gt.H, {0, 2});
     qcd.measureZ(0, 0);
     qcd.measureV(gt.H, 1, 1);
     qcd.measureZ(2, 0);
