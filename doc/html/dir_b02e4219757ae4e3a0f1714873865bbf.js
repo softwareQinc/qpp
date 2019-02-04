@@ -6,7 +6,6 @@ var dir_b02e4219757ae4e3a0f1714873865bbf =
       [ "MeasureStep", "structqpp_1_1_q_circuit_description_1_1_measure_step.html", "structqpp_1_1_q_circuit_description_1_1_measure_step" ],
       [ "iterator", "classqpp_1_1_q_circuit_description_1_1iterator.html", "classqpp_1_1_q_circuit_description_1_1iterator" ],
       [ "value_type_", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__" ],
-      [ "IQCircuit", "classqpp_1_1_i_q_circuit.html", "classqpp_1_1_i_q_circuit" ],
       [ "QCircuit", "classqpp_1_1_q_circuit.html", "classqpp_1_1_q_circuit" ]
     ] ],
     [ "codes.h", "codes_8h.html", [
@@ -54,7 +53,8 @@ var dir_b02e4219757ae4e3a0f1714873865bbf =
       [ "Gates", "classqpp_1_1_gates.html", "classqpp_1_1_gates" ]
     ] ],
     [ "idisplay.h", "idisplay_8h.html", [
-      [ "IDisplay", "classqpp_1_1_i_display.html", "classqpp_1_1_i_display" ]
+      [ "IDisplay", "classqpp_1_1_i_display.html", "classqpp_1_1_i_display" ],
+      [ "IJSON", "classqpp_1_1_i_j_s_o_n.html", "classqpp_1_1_i_j_s_o_n" ]
     ] ],
     [ "init.h", "init_8h.html", [
       [ "Init", "classqpp_1_1_init.html", "classqpp_1_1_init" ]

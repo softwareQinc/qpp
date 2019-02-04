@@ -3,10 +3,9 @@
 <area shape="rect" id="node4" href="$classqpp_1_1internal_1_1_i_o_manip_eigen.html" title="qpp::internal::IOManipEigen" alt="" coords="157,56,343,83"/>
 <area shape="rect" id="node5" href="$classqpp_1_1internal_1_1_i_o_manip_pointer.html" title="qpp::internal::IOManipPointer\l\&lt; PointerType \&gt;" alt="" coords="152,107,348,149"/>
 <area shape="rect" id="node6" href="$classqpp_1_1internal_1_1_i_o_manip_range.html" title="qpp::internal::IOManipRange\l\&lt; InputIterator \&gt;" alt="" coords="154,173,346,214"/>
-<area shape="rect" id="node7" href="$classqpp_1_1_i_q_circuit.html" title="Quantum circuit simulator abstract class. " alt="" coords="198,239,302,265"/>
-<area shape="rect" id="node9" href="$classqpp_1_1_q_circuit_description.html" title="Quantum circuit description class. " alt="" coords="167,289,333,316"/>
-<area shape="rect" id="node10" href="$structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html" title="qpp::QCircuitDescription\l::iterator::value_type_" alt="" coords="167,341,333,382"/>
-<area shape="rect" id="node11" href="$classqpp_1_1_timer.html" title="Chronometer. " alt="" coords="157,407,343,433"/>
+<area shape="rect" id="node7" href="$classqpp_1_1_q_circuit.html" title="Quantum circuit simulator class. " alt="" coords="200,239,300,265"/>
+<area shape="rect" id="node8" href="$classqpp_1_1_q_circuit_description.html" title="Quantum circuit description class. " alt="" coords="167,289,333,316"/>
+<area shape="rect" id="node9" href="$structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html" title="qpp::QCircuitDescription\l::iterator::value_type_" alt="" coords="167,341,333,382"/>
+<area shape="rect" id="node10" href="$classqpp_1_1_timer.html" title="Chronometer. " alt="" coords="157,407,343,433"/>
 <area shape="rect" id="node3" href="$classqpp_1_1_bit__circuit.html" title="Classical reversible circuit simulator. " alt="" coords="396,5,505,32"/>
-<area shape="rect" id="node8" href="$classqpp_1_1_q_circuit.html" title="Quantum circuit simulator class. " alt="" coords="401,239,501,265"/>
 </map>

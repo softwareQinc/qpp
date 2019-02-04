@@ -1,7 +1,8 @@
 <map id="qpp::QCircuitDescription" name="qpp::QCircuitDescription">
-<area shape="rect" id="node2" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="728,63,827,89"/>
-<area shape="rect" id="node4" href="$structqpp_1_1_q_circuit_description_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. " alt="" coords="411,79,577,121"/>
-<area shape="rect" id="node10" href="$structqpp_1_1_q_circuit_description_1_1_gate_step.html" title="One step consisting only of gates/operators in the circuit. " alt="" coords="411,179,577,221"/>
-<area shape="rect" id="node7" title="STL class. " alt="" coords="209,201,289,228"/>
-<area shape="rect" id="node8" title="STL class. " alt="" coords="5,194,132,235"/>
+<area shape="rect" id="node2" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="728,12,827,39"/>
+<area shape="rect" id="node3" href="$classqpp_1_1_i_j_s_o_n.html" title="Abstract class (interface) that mandates the definition of very basic JSON serialization support..." alt="" coords="732,63,823,89"/>
+<area shape="rect" id="node5" href="$structqpp_1_1_q_circuit_description_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. " alt="" coords="411,79,577,121"/>
+<area shape="rect" id="node11" href="$structqpp_1_1_q_circuit_description_1_1_gate_step.html" title="One step consisting only of gates/operators in the circuit. " alt="" coords="411,179,577,221"/>
+<area shape="rect" id="node8" title="STL class. " alt="" coords="209,201,289,228"/>
+<area shape="rect" id="node9" title="STL class. " alt="" coords="5,194,132,235"/>
 </map>

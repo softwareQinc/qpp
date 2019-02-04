@@ -26,7 +26,8 @@
 
 /**
  * \file classes/idisplay.h
- * \brief Display interface via the non-virtual interface (NVI)
+ * \brief Display interface via the non-virtual interface (NVI) and very basic
+ * JSON serialization support interface
  */
 
 #ifndef CLASSES_IDISPLAY_H_
@@ -96,6 +97,55 @@ class IDisplay {
         return rhs.display(os);
     }
 }; /* class IDisplay */
+
+/**
+ * \class qpp::IJSON
+ * \brief Abstract class (interface) that mandates the definition of
+ * very basic JSON serialization support
+ */
+class IJSON {
+  public:
+    /**
+     * \brief Default constructor
+     */
+    IJSON() = default;
+
+    /**
+     * \brief Default copy constructor
+     */
+    IJSON(const IJSON&) = default;
+
+    /**
+     * \brief Default move constructor
+     */
+    IJSON(IJSON&&) = default;
+
+    /**
+     * \brief Default copy assignment operator
+     */
+    IJSON& operator=(const IJSON&) = default;
+
+    /**
+     * \brief Default move assignment operator
+     */
+    IJSON& operator=(IJSON&&) = default;
+
+    /**
+     * \brief Default virtual destructor
+     */
+    virtual ~IJSON() = default;
+
+    /**
+     * \brief JSON representation of the derived instance, must be overridden by
+     * all derived classes
+     *
+     * \param enclosed_in_curly_brackets If true, encloses the result in curly
+     * brackets
+     */
+    virtual std::string
+    to_JSON(bool enclosed_in_curly_brackets = true) const = 0;
+
+}; /* class IJSON */
 
 } /* namespace qpp */
 

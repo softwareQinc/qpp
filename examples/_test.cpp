@@ -7,15 +7,27 @@ int main() {
     using namespace qpp;
     /////////// testing ///////////
 
-    QCircuitDescription qc{4, 2, 2, "test_circuit"};
-    qc.measureZ(3, 0);
-    qc.gate(gt.X, 0, "named_X");
-    qc.gate(gt.Z, 1);
-    qc.CTRL(gt.X, 0, 1, "ctrl_X");
-    qc.measureZ(0, 0);
-    qc.measureV(gt.H, 1, 1);
-    qc.measureZ(2, 0);
+    QCircuitDescription qcd{4, 2, 2, "test_circuit"};
+    qcd.gate(gt.X, 0, "named_X");
+    qcd.measureZ(3, 0);
+    qcd.gate(gt.X, 0, "named_X");
+    qcd.gate(gt.Z, 1);
+    qcd.CTRL(gt.X, 0, 1, "ctrl_X");
+    qcd.gate_fan(gt.H);
+    qcd.gate_fan(gt.H, {0, 2, 3});
+    qcd.measureZ(0, 0);
+    qcd.measureV(gt.H, 1, 1);
+    qcd.measureZ(2, 0);
 
+    std::cout << qcd << '\n';
+    std::cout << qcd.to_JSON() << "\n\n";
+
+    QCircuit qc{qcd};
+    auto it = std::begin(qcd);
+    for (; it != std::end(qcd); ++it) {
+        std::cout << *it << '\n';
+        qc.execute(*it);
+    }
     std::cout << qc << '\n';
     std::cout << qc.to_JSON() << "\n\n";
 

@@ -55,12 +55,14 @@ var hierarchy =
       [ "qpp::internal::IOManipEigen", "classqpp_1_1internal_1_1_i_o_manip_eigen.html", null ],
       [ "qpp::internal::IOManipPointer< PointerType >", "classqpp_1_1internal_1_1_i_o_manip_pointer.html", null ],
       [ "qpp::internal::IOManipRange< InputIterator >", "classqpp_1_1internal_1_1_i_o_manip_range.html", null ],
-      [ "qpp::IQCircuit", "classqpp_1_1_i_q_circuit.html", [
-        [ "qpp::QCircuit", "classqpp_1_1_q_circuit.html", null ]
-      ] ],
+      [ "qpp::QCircuit", "classqpp_1_1_q_circuit.html", null ],
       [ "qpp::QCircuitDescription", "classqpp_1_1_q_circuit_description.html", null ],
       [ "qpp::QCircuitDescription::iterator::value_type_", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html", null ],
       [ "qpp::Timer< T, CLOCK_T >", "classqpp_1_1_timer.html", null ]
+    ] ],
+    [ "qpp::IJSON", "classqpp_1_1_i_j_s_o_n.html", [
+      [ "qpp::QCircuit", "classqpp_1_1_q_circuit.html", null ],
+      [ "qpp::QCircuitDescription", "classqpp_1_1_q_circuit_description.html", null ]
     ] ],
     [ "is_base_of", null, [
       [ "qpp::is_matrix_expression< Derived >", "structqpp_1_1is__matrix__expression.html", null ]

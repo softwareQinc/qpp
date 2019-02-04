@@ -60,9 +60,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classqpp_1_1_q_circuit_description_1_1iterator.html#a9c5935164465cd927b83acd104c81c84",
-"entanglement_8h.html#a643a3f3073b38757ad670ad3d0c64850",
-"namespaceqpp_1_1literals.html"
+"classqpp_1_1_q_circuit_description_1_1iterator.html#a7f3ab43dd3bab653e7c1627503f2a44b",
+"entanglement_8h.html#a3b86cd008bbcf7c8bc3dd1d990225fdb",
+"namespaceqpp_1_1internal.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,6 +1,28 @@
 var classqpp_1_1_q_circuit =
 [
-    [ "IQCircuit", "classqpp_1_1_q_circuit.html#a0f72d26c63b2608cedf1c4dbd0573a30", null ],
-    [ "IQCircuit", "classqpp_1_1_q_circuit.html#ad2134c78f2d8e54b036515f8ebf54e90", null ],
-    [ "run", "classqpp_1_1_q_circuit.html#a876bc358fc729b6a996439e0f8f72856", null ]
+    [ "QCircuit", "classqpp_1_1_q_circuit.html#a9760e3aac1f0438aecc8bd0e117ff78d", null ],
+    [ "QCircuit", "classqpp_1_1_q_circuit.html#ae9ac105bd3d8eee5d25ff5ff4db7bd13", null ],
+    [ "~QCircuit", "classqpp_1_1_q_circuit.html#ac3967f9bff53190b70fe0a8410ffe90e", null ],
+    [ "display", "classqpp_1_1_q_circuit.html#ada022f191fc6534058c800e41578cceb", null ],
+    [ "execute", "classqpp_1_1_q_circuit.html#a824384ad774ab123014061aa9a07e981", null ],
+    [ "execute", "classqpp_1_1_q_circuit.html#af58a783d439eb349a864a88e6850b468", null ],
+    [ "get_circuit_description", "classqpp_1_1_q_circuit.html#a83ec65c47117c1a914c690cb3f523da3", null ],
+    [ "get_dit", "classqpp_1_1_q_circuit.html#ad9a9aff980854f71ebba34f67a291692", null ],
+    [ "get_dits", "classqpp_1_1_q_circuit.html#a69597734ff8cdeb1132c9685fb8687ba", null ],
+    [ "get_measured", "classqpp_1_1_q_circuit.html#a81c331a433f5da496e50934fd534583f", null ],
+    [ "get_measured", "classqpp_1_1_q_circuit.html#a3f9f9aeaac0e47c816f37a6dbdd901cf", null ],
+    [ "get_not_measured", "classqpp_1_1_q_circuit.html#a4f2537c22d734c8a9e701963c84f63d9", null ],
+    [ "get_probs", "classqpp_1_1_q_circuit.html#a21aa6faa4f34746e644f58422afbde92", null ],
+    [ "get_psi", "classqpp_1_1_q_circuit.html#a33866cf56328ca084f8dd05a11fad62b", null ],
+    [ "get_ref_psi", "classqpp_1_1_q_circuit.html#a60678252d3f967788700c7dd69f39884", null ],
+    [ "get_relative_pos_", "classqpp_1_1_q_circuit.html#ad78a7a02799bfc31a2a180f593c7db7c", null ],
+    [ "reset", "classqpp_1_1_q_circuit.html#a01b7c12bcb091ed2a0a444d16927301b", null ],
+    [ "set_dit", "classqpp_1_1_q_circuit.html#a4e1ebf81831eb16cd204724f3ac71dbb", null ],
+    [ "set_measured_", "classqpp_1_1_q_circuit.html#aad08efe2886b46df7b75b8390cc5e239", null ],
+    [ "to_JSON", "classqpp_1_1_q_circuit.html#a7c52f4e2c0ab81f81fa900c08afa07f2", null ],
+    [ "dits_", "classqpp_1_1_q_circuit.html#a7ad52cf24b428b80d10b762efd5116ca", null ],
+    [ "probs_", "classqpp_1_1_q_circuit.html#afec419abf898200fb3bfdfa07e3f1eda", null ],
+    [ "psi_", "classqpp_1_1_q_circuit.html#a09e769c343424c44d17fe7f8050a5bea", null ],
+    [ "qcd_", "classqpp_1_1_q_circuit.html#acf9552336ba2e64cd43a56d0fabe20a0", null ],
+    [ "subsys_", "classqpp_1_1_q_circuit.html#aef3c23d117f0a4b210c908b9c897f8d4", null ]
 ];

@@ -38,7 +38,7 @@ namespace qpp {
  * \brief Quantum circuit description class
  * \see qpp::QCircuit
  */
-class QCircuitDescription : public IDisplay {
+class QCircuitDescription : public IDisplay, public IJSON {
     const idx nq_;               ///< number of qudits
     const idx nc_;               ///< number of classical "dits"
     const idx d_;                ///< qudit dimension
@@ -333,7 +333,7 @@ class QCircuitDescription : public IDisplay {
      * \note The iterator is a const_iterator by default
      */
     class iterator {
-        ///< non-owning pointer to const circuit description
+        ///< non-owning pointer to const quantum circuit description
         const QCircuitDescription* qcd_{nullptr};
 
         struct value_type_ : public IDisplay {
@@ -444,19 +444,19 @@ class QCircuitDescription : public IDisplay {
 
             // protects against incrementing invalid iterators
             if (qcd_ == nullptr) {
-                throw qpp::exception::InvalidIterator(
+                throw exception::InvalidIterator(
                     "qpp::QCircuitDescription::iterator::operator++()");
             }
 
             // protect against incrementing an empty circuit iterator
             if (qcd_->get_step_count() == 0) {
-                throw qpp::exception::InvalidIterator(
+                throw exception::InvalidIterator(
                     "qpp::QCircuitDescription::iterator::operator++()");
             }
 
             // protects against incrementing past the end
             if (elem_.ip_ == qcd_->get_step_count()) {
-                throw qpp::exception::InvalidIterator(
+                throw exception::InvalidIterator(
                     "qpp::QCircuitDescription::iterator::operator++()");
             }
             // END EXCEPTION CHECKS
@@ -829,7 +829,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::gate()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -873,7 +873,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_ * d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::gate()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -919,7 +919,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_ * d_ * d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::gate()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -955,7 +955,7 @@ class QCircuitDescription : public IDisplay {
                 throw exception::ZeroSize(
                     "qpp::QCircuitDescription::gate_fan()");
             for (idx i = 0; i < n; ++i)
-                if (target[i] > nq_)
+                if (target[i] >= nq_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::gate_fan()");
             // check no duplicates
@@ -976,7 +976,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::gate_fan()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -988,6 +988,25 @@ class QCircuitDescription : public IDisplay {
         step_types_.push_back(StepType::GATE);
 
         return *this;
+    }
+
+    // std::initializer_list overload, avoids ambiguity for 2-element lists, see
+    // http://stackoverflow.com
+    // /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
+    /**
+     * \brief Applies the single qudit gate \a U on every qudit listed in
+     * \a target
+     *
+     * \param U Single qudit quantum gate
+     * \param target Target qudit indexes; the gate \a U is applied on every one
+     * of them
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
+    QCircuitDescription& gate_fan(const cmat& U,
+                                  const std::initializer_list<idx>& target,
+                                  std::string name = "") {
+        return gate_fan(U, std::vector<idx>(target), name);
     }
 
     /**
@@ -1010,7 +1029,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::gate_fan()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1049,7 +1068,7 @@ class QCircuitDescription : public IDisplay {
                 throw exception::ZeroSize(
                     "qpp::QCircuitDescription::gate_custom()");
             for (idx i = 0; i < n; ++i)
-                if (target[i] > nq_)
+                if (target[i] >= nq_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::gate()");
             // check no duplicates
@@ -1070,7 +1089,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::gate_custom()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1101,7 +1120,7 @@ class QCircuitDescription : public IDisplay {
 
         try {
             throw exception::NotImplemented("qpp::QCircuitDescription::QFT()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1130,7 +1149,7 @@ class QCircuitDescription : public IDisplay {
 
         try {
             throw exception::NotImplemented("qpp::QCircuitDescription::TFQ()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1173,7 +1192,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::CTRL()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1220,7 +1239,7 @@ class QCircuitDescription : public IDisplay {
             if (n == 0)
                 throw exception::ZeroSize("qpp::QCircuitDescription::CTRL()");
             for (idx i = 0; i < n; ++i)
-                if (target[i] > nq_)
+                if (target[i] >= nq_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::CTRL()");
             // check no duplicates target
@@ -1245,7 +1264,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::CTRL()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1278,7 +1297,7 @@ class QCircuitDescription : public IDisplay {
         try {
             // check valid ctrl
             for (idx i = 0; i < static_cast<idx>(ctrl.size()); ++i)
-                if (ctrl[i] > nq_)
+                if (ctrl[i] >= nq_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::CTRL()");
             // check no duplicates ctrl
@@ -1310,7 +1329,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::CTRL()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1348,7 +1367,7 @@ class QCircuitDescription : public IDisplay {
         try {
             // check valid ctrl
             for (idx i = 0; i < static_cast<idx>(ctrl.size()); ++i)
-                if (ctrl[i] > nq_)
+                if (ctrl[i] >= nq_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::CTRL()");
             // check no duplicates ctrl
@@ -1365,7 +1384,7 @@ class QCircuitDescription : public IDisplay {
             if (n == 0)
                 throw exception::ZeroSize("qpp::QCircuitDescription::CTRL()");
             for (idx i = 0; i < n; ++i)
-                if (target[i] > nq_)
+                if (target[i] >= nq_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::CTRL()");
             // check no duplicates target
@@ -1393,7 +1412,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::CTRL()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1433,7 +1452,7 @@ class QCircuitDescription : public IDisplay {
         try {
             // check valid ctrl
             for (idx i = 0; i < static_cast<idx>(ctrl.size()); ++i)
-                if (ctrl[i] > nq_)
+                if (ctrl[i] >= nq_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::CTRL_custom()");
             // check no duplicates ctrl
@@ -1452,7 +1471,7 @@ class QCircuitDescription : public IDisplay {
                 throw exception::ZeroSize(
                     "qpp::QCircuitDescription::CTRL_custom()");
             for (idx i = 0; i < n; ++i)
-                if (target[i] > nq_)
+                if (target[i] >= nq_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::CTRL_custom()");
             // check no duplicates target
@@ -1481,7 +1500,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::CTRL_custom()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1528,7 +1547,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::cCTRL()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1573,7 +1592,7 @@ class QCircuitDescription : public IDisplay {
             if (n == 0)
                 throw exception::ZeroSize("qpp::QCircuitDescription::cCTRL()");
             for (idx i = 0; i < n; ++i)
-                if (target[i] > nq_)
+                if (target[i] >= nq_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::cCTRL()");
             // check no duplicates target
@@ -1595,7 +1614,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::cCTRL()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1628,7 +1647,7 @@ class QCircuitDescription : public IDisplay {
         try {
             // check valid ctrl_dits
             for (idx i = 0; i < ctrl_dits.size(); ++i)
-                if (ctrl_dits[i] > nc_)
+                if (ctrl_dits[i] >= nc_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::cCTRL()");
             // check no duplicates ctrl_dits
@@ -1653,7 +1672,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::cCTRL()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1691,7 +1710,7 @@ class QCircuitDescription : public IDisplay {
         try {
             // check valid ctrl_dits
             for (idx i = 0; i < ctrl_dits.size(); ++i)
-                if (ctrl_dits[i] > nc_)
+                if (ctrl_dits[i] >= nc_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::cCTRL()");
             // check no duplicates ctrl_dits
@@ -1703,7 +1722,7 @@ class QCircuitDescription : public IDisplay {
             if (n == 0)
                 throw exception::ZeroSize("qpp::QCircuitDescription::cCTRL()");
             for (idx i = 0; i < n; ++i)
-                if (target[i] > nq_)
+                if (target[i] >= nq_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::cCTRL()");
             // check no duplicates target
@@ -1725,7 +1744,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::cCTRL()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1765,7 +1784,7 @@ class QCircuitDescription : public IDisplay {
         try {
             // check valid ctrl_dits
             for (idx i = 0; i < ctrl_dits.size(); ++i)
-                if (ctrl_dits[i] > nc_)
+                if (ctrl_dits[i] >= nc_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::cCTRL_custom()");
             // check no duplicates ctrl_dits
@@ -1778,7 +1797,7 @@ class QCircuitDescription : public IDisplay {
                 throw exception::ZeroSize(
                     "qpp::QCircuitDescription::cCTRL_custom()");
             for (idx i = 0; i < n; ++i)
-                if (target[i] > nq_)
+                if (target[i] >= nq_)
                     throw exception::OutOfRange(
                         "qpp::QCircuitDescription::cCTRL_custom()");
             // check no duplicates target
@@ -1800,7 +1819,7 @@ class QCircuitDescription : public IDisplay {
             if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuitDescription::cCTRL_custom()");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1840,7 +1859,7 @@ class QCircuitDescription : public IDisplay {
             if (get_measured(i))
                 throw exception::QuditAlreadyMeasured(
                     "qpp:QCircuitDescription::measureZ");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1887,7 +1906,7 @@ class QCircuitDescription : public IDisplay {
             if (get_measured(i))
                 throw exception::QuditAlreadyMeasured(
                     "qpp:QCircuitDescription::measureV");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1936,7 +1955,7 @@ class QCircuitDescription : public IDisplay {
                 if (get_measured(i))
                     throw exception::QuditAlreadyMeasured(
                         "qpp::QCircuitDescription::measureV");
-        } catch (qpp::exception::Exception&) {
+        } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
         }
@@ -1981,14 +2000,16 @@ class QCircuitDescription : public IDisplay {
     }
 
     /**
-     * \brief Displays the circuit description in JSON format
+     * \brief qpp::IJOSN::to_JSON() override
      *
-     * \param enclosed_in_curly_brackets Encloses the result in curly brackets
-     * if true
-     * \return String containing the JSON representation of the circuit
+     * Displays the quantum circuit description in JSON format
+     *
+     * \param enclosed_in_curly_brackets If true, encloses the result in curly
+     * brackets
+     * \return String containing the JSON representation of the quantum circuit
      * description
      */
-    std::string to_JSON(bool enclosed_in_curly_brackets = true) const {
+    std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
         std::string result;
 
         if (enclosed_in_curly_brackets)
@@ -2072,16 +2093,14 @@ class QCircuitDescription : public IDisplay {
 
         return result;
     }
-}; /* class QCircuitDescription */
+}; // namespace qpp
 
 /**
- * \class qpp::IQCircuit
- * \brief Quantum circuit simulator abstract class
+ * \class qpp::QCircuit
+ * \brief Quantum circuit simulator class
  * \see qpp::QCircuitDescription
- * \note Every further derived class has to override the run() member
- * function
  */
-class IQCircuit : public IDisplay {
+class QCircuit : public IDisplay, public IJSON {
   protected:
     const QCircuitDescription& qcd_; ///< quantum circuit description
     ket psi_;                        ///< state vector
@@ -2089,8 +2108,6 @@ class IQCircuit : public IDisplay {
     std::vector<double> probs_;      ///< measurement probabilities
     std::vector<idx> subsys_; ///< keeps track of the measured subsystems,
                               ///< relabel them after measurements
-
-    QCircuitDescription::const_iterator it_; ///< iterator to current step
 
     /**
      * \brief Marks qudit \a i as measured then re-label accordingly the
@@ -2140,23 +2157,23 @@ class IQCircuit : public IDisplay {
      *
      * \param qcd Quantum circuit description
      */
-    explicit IQCircuit(const QCircuitDescription& qcd)
+    explicit QCircuit(const QCircuitDescription& qcd)
         : qcd_{qcd}, psi_{States::get_instance().zero(qcd.get_nq(),
                                                       qcd.get_d())},
           dits_(qcd.get_nc(), 0), probs_(qcd.get_nc(), 0),
-          subsys_(qcd.get_nq(), 0), it_{qcd_.begin()} {
+          subsys_(qcd.get_nq(), 0) {
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
     }
 
     /**
      * \brief Disables rvalue QCircuitDescription
      */
-    IQCircuit(QCircuitDescription&&) = delete;
+    QCircuit(QCircuitDescription&&) = delete;
 
     /**
      * \brief Default virtual destructor
      */
-    virtual ~IQCircuit() = default;
+    virtual ~QCircuit() = default;
 
     // getters
     /**
@@ -2243,48 +2260,6 @@ class IQCircuit : public IDisplay {
     }
 
     /**
-     * \brief Measurement instruction pointer
-     *
-     * Points to the index of the next measurement to be executed from
-     * the std::vector<MeasureStep> of measurements in the circuit
-     * description
-     *
-     * \return Measurement instruction pointer
-     */
-    idx get_m_ip() const {
-        return std::distance(std::begin(qcd_.get_measurements()),
-                             (*it_).measurements_ip_);
-    }
-
-    /**
-     * \brief Quantum instruction pointer
-     *
-     * Points to the index of the next quantum gate to be executed from
-     * the std::vector<GateStep> of quantum gates in the circuit
-     * description
-     *
-     * \return Quantum instruction pointer
-     */
-    idx get_q_ip() const {
-        return std::distance(std::begin(qcd_.get_gates()), (*it_).gates_ip_);
-    }
-
-    /**
-     * \brief Total instruction pointer
-     *
-     * \return The sum of measurement instruction pointer and quantum
-     * instruction pointer
-     */
-    idx get_ip() const { return (*it_).ip_; }
-
-    /**
-     * \brief Iterator to current step
-     *
-     * \return Iterator to current step in the circuit
-     */
-    QCircuitDescription::const_iterator get_iter() const { return it_; }
-
-    /**
      * \brief Quantum circuit description
      *
      * \return Quantum circuit description
@@ -2302,7 +2277,7 @@ class IQCircuit : public IDisplay {
      * \param value Classical dit value
      * \return Reference to the current instance
      */
-    IQCircuit& set_dit(idx i, idx value) {
+    QCircuit& set_dit(idx i, idx value) {
         if (i > qcd_.get_nc())
             throw exception::OutOfRange("qpp::QCircuit::set_dit()");
         dits_[i] = value;
@@ -2322,7 +2297,6 @@ class IQCircuit : public IDisplay {
         dits_ = std::vector<idx>(qcd_.get_nc(), 0);
         probs_ = std::vector<double>(qcd_.get_nc(), 0);
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
-        it_ = qcd_.begin();
     }
 
     /**
@@ -2343,177 +2317,178 @@ class IQCircuit : public IDisplay {
     }
 
     /**
-     * \brief Executes the quantum circuit, pure virtual member function
-     * that must be overridden by all derived classes
+     * \brief Executes one step in the quantum circuit
      *
-     * \param verbose If true, displays at console every executed step
-     * \param step How many steps to execute, by default executes until
-     * the end
+     * \param elem Step to be executed
      */
-    virtual void run(bool verbose = false, idx step = idx_infty) = 0;
-}; /* class IQCircuit */
-
-/**
- * \class qpp::QCircuit
- * \brief Quantum circuit simulator class
- * \see qpp::QCircuitDescription
- */
-class QCircuit : public IQCircuit {
-  public:
-    using IQCircuit::IQCircuit; ///< Uses the base IQCircuit constructor
-
-    /**
-     * \brief Executes the quantum circuit, qpp::IQCircuit::run() override
-     *
-     * \param verbose If true, displays at console every executed step
-     * \param step How many steps to execute, by default executes until the end
-     */
-    void run(bool verbose = false, idx step = idx_infty) override {
+    void execute(const QCircuitDescription::iterator::value_type& elem) {
         // EXCEPTION CHECKS
 
-        // trying to run an empty circuit
-        if (qcd_.get_step_count() == 0) // same as if(get_ip() == idx_infty)
-            throw exception::ZeroSize("qpp::QCircuit::run()");
-
-        idx no_steps;
-        if (step == idx_infty)
-            no_steps = qcd_.get_step_count() - get_ip();
-        else
-            no_steps = step;
-
-        if (get_ip() + no_steps > qcd_.get_step_count())
-            throw exception::OutOfRange("qpp::QCircuit::run()");
+        // iterator must point to the same quantum circuit description
+        if (elem.value_type_qcd_ != std::addressof(qcd_))
+            throw exception::InvalidIterator("qpp::QCircuit::execute()");
+        // the rest of exceptions are caught by the iterator::operator*()
         // END EXCEPTION CHECKS
 
-        // no steps to run
-        if (step == 0)
-            return;
+        // Gate step
+        if (elem.type_ == QCircuitDescription::StepType::GATE) {
+            auto gates = qcd_.get_gates();
+            idx q_ip =
+                std::distance(std::begin(qcd_.get_gates()), elem.gates_ip_);
 
-        // main loop
-        for (idx i = 0; i < no_steps; ++i, ++it_) {
+            std::vector<idx> ctrl_rel_pos;
+            std::vector<idx> target_rel_pos =
+                get_relative_pos_(gates[q_ip].target_);
 
-            if (verbose) {
-                std::cout << *it_ << '\n';
-            }
-
-            // Gate step
-            if ((*it_).type_ == QCircuitDescription::StepType::GATE) {
-                auto gates = qcd_.get_gates();
-                idx q_ip = get_q_ip();
-
-                std::vector<idx> ctrl_rel_pos;
-                std::vector<idx> target_rel_pos =
-                    get_relative_pos_(gates[q_ip].target_);
-
-                switch (gates[q_ip].gate_type_) {
-                case QCircuitDescription::GateType::NONE:
-                    break;
-                case QCircuitDescription::GateType::SINGLE:
-                case QCircuitDescription::GateType::TWO:
-                case QCircuitDescription::GateType::THREE:
-                case QCircuitDescription::GateType::CUSTOM:
+            switch (gates[q_ip].gate_type_) {
+            case QCircuitDescription::GateType::NONE:
+                break;
+            case QCircuitDescription::GateType::SINGLE:
+            case QCircuitDescription::GateType::TWO:
+            case QCircuitDescription::GateType::THREE:
+            case QCircuitDescription::GateType::CUSTOM:
+                psi_ = apply(psi_, gates[q_ip].gate_, target_rel_pos,
+                             qcd_.get_d());
+                break;
+            case QCircuitDescription::GateType::FAN:
+                for (idx m = 0; m < gates[q_ip].target_.size(); ++m)
+                    psi_ = apply(psi_, gates[q_ip].gate_, {target_rel_pos[m]},
+                                 qcd_.get_d());
+                break;
+            case QCircuitDescription::GateType::QFT:
+            case QCircuitDescription::GateType::TFQ:
+            case QCircuitDescription::GateType::SINGLE_CTRL_SINGLE_TARGET:
+            case QCircuitDescription::GateType::SINGLE_CTRL_MULTIPLE_TARGET:
+            case QCircuitDescription::GateType::MULTIPLE_CTRL_SINGLE_TARGET:
+            case QCircuitDescription::GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
+            case QCircuitDescription::GateType::CUSTOM_CTRL:
+                ctrl_rel_pos = get_relative_pos_(gates[q_ip].ctrl_);
+                psi_ = applyCTRL(psi_, gates[q_ip].gate_, ctrl_rel_pos,
+                                 target_rel_pos, qcd_.get_d());
+                break;
+            case QCircuitDescription::GateType::SINGLE_cCTRL_SINGLE_TARGET:
+            case QCircuitDescription::GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
+            case QCircuitDescription::GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
+            case QCircuitDescription::GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
+            case QCircuitDescription::GateType::CUSTOM_cCTRL:
+                if (dits_.size() == 0) {
                     psi_ = apply(psi_, gates[q_ip].gate_, target_rel_pos,
                                  qcd_.get_d());
-                    break;
-                case QCircuitDescription::GateType::FAN:
-                    for (idx m = 0; m < gates[q_ip].target_.size(); ++m)
-                        psi_ = apply(psi_, gates[q_ip].gate_,
-                                     {target_rel_pos[m]}, qcd_.get_d());
-                    break;
-                case QCircuitDescription::GateType::QFT:
-                case QCircuitDescription::GateType::TFQ:
-                case QCircuitDescription::GateType::SINGLE_CTRL_SINGLE_TARGET:
-                case QCircuitDescription::GateType::SINGLE_CTRL_MULTIPLE_TARGET:
-                case QCircuitDescription::GateType::MULTIPLE_CTRL_SINGLE_TARGET:
-                case QCircuitDescription::GateType::
-                    MULTIPLE_CTRL_MULTIPLE_TARGET:
-                case QCircuitDescription::GateType::CUSTOM_CTRL:
-                    ctrl_rel_pos = get_relative_pos_(gates[q_ip].ctrl_);
-                    psi_ = applyCTRL(psi_, gates[q_ip].gate_, ctrl_rel_pos,
-                                     target_rel_pos, qcd_.get_d());
-                    break;
-                case QCircuitDescription::GateType::SINGLE_cCTRL_SINGLE_TARGET:
-                case QCircuitDescription::GateType::
-                    SINGLE_cCTRL_MULTIPLE_TARGET:
-                case QCircuitDescription::GateType::
-                    MULTIPLE_cCTRL_SINGLE_TARGET:
-                case QCircuitDescription::GateType::
-                    MULTIPLE_cCTRL_MULTIPLE_TARGET:
-                case QCircuitDescription::GateType::CUSTOM_cCTRL:
-                    if (dits_.size() == 0) {
-                        psi_ = apply(psi_, gates[q_ip].gate_, target_rel_pos,
-                                     qcd_.get_d());
-                    } else {
-                        bool should_apply = true;
-                        idx first_dit = dits_[(gates[q_ip].ctrl_)[0]];
-                        for (idx m = 0; m < gates[q_ip].ctrl_.size(); ++m) {
-                            if (dits_[(gates[q_ip].ctrl_)[m]] != first_dit) {
-                                should_apply = false;
-                                break;
-                            }
-                        }
-                        if (should_apply) {
-                            psi_ =
-                                apply(psi_, powm(gates[q_ip].gate_, first_dit),
-                                      target_rel_pos, qcd_.get_d());
+                } else {
+                    bool should_apply = true;
+                    idx first_dit = dits_[(gates[q_ip].ctrl_)[0]];
+                    for (idx m = 0; m < gates[q_ip].ctrl_.size(); ++m) {
+                        if (dits_[(gates[q_ip].ctrl_)[m]] != first_dit) {
+                            should_apply = false;
+                            break;
                         }
                     }
-                    break;
-                } // end switch on gate type
-            }     // end if gate step
-            // Measurement step
-            else if ((*it_).type_ ==
-                     QCircuitDescription::StepType::MEASUREMENT) {
-                auto measurements = qcd_.get_measurements();
-                idx m_ip = get_m_ip();
+                    if (should_apply) {
+                        psi_ = apply(psi_, powm(gates[q_ip].gate_, first_dit),
+                                     target_rel_pos, qcd_.get_d());
+                    }
+                }
+                break;
+            } // end switch on gate type
+        }     // end if gate step
+        // Measurement step
+        else if (elem.type_ == QCircuitDescription::StepType::MEASUREMENT) {
+            auto measurements = qcd_.get_measurements();
+            idx m_ip = std::distance(std::begin(qcd_.get_measurements()),
+                                     elem.measurements_ip_);
 
-                std::vector<idx> target_rel_pos =
-                    get_relative_pos_(measurements[m_ip].target_);
+            std::vector<idx> target_rel_pos =
+                get_relative_pos_(measurements[m_ip].target_);
 
-                std::vector<idx> resZ;
-                double probZ;
+            std::vector<idx> resZ;
+            double probZ;
 
-                idx mres = 0;
-                std::vector<double> probs;
-                std::vector<cmat> states;
+            idx mres = 0;
+            std::vector<double> probs;
+            std::vector<cmat> states;
 
-                switch (measurements[m_ip].measurement_type_) {
-                case QCircuitDescription::MeasureType::NONE:
-                    break;
-                case QCircuitDescription::MeasureType::MEASURE_Z:
-                    std::tie(resZ, probZ, psi_) =
-                        measure_seq(psi_, target_rel_pos, qcd_.get_d());
-                    dits_[measurements[m_ip].c_reg_] = resZ[0];
-                    probs_[measurements[m_ip].c_reg_] = probZ;
-                    set_measured_(measurements[m_ip].target_[0]);
-                    break;
-                case QCircuitDescription::MeasureType::MEASURE_V:
-                    std::tie(mres, probs, states) =
-                        measure(psi_, measurements[m_ip].mats_[0],
-                                target_rel_pos, qcd_.get_d());
-                    psi_ = states[mres];
-                    dits_[measurements[m_ip].c_reg_] = mres;
-                    probs_[measurements[m_ip].c_reg_] = probs[mres];
-                    set_measured_(measurements[m_ip].target_[0]);
-                    break;
-                case QCircuitDescription::MeasureType::MEASURE_V_MANY:
-                    std::tie(mres, probs, states) =
-                        measure(psi_, measurements[m_ip].mats_[0],
-                                target_rel_pos, qcd_.get_d());
-                    psi_ = states[mres];
-                    dits_[measurements[m_ip].c_reg_] = mres;
-                    probs_[measurements[m_ip].c_reg_] = probs[mres];
-                    for (auto&& i : measurements[m_ip].target_)
-                        set_measured_(i);
-                    break;
-                } // end switch on measurement type
-            }     // end else if measurement step
-            // otherwise
-            else {
-            }
-        } // end main for loop
-    }     // end QCircuit::run(idx, bool)
-};        /* class QCircuit */
+            switch (measurements[m_ip].measurement_type_) {
+            case QCircuitDescription::MeasureType::NONE:
+                break;
+            case QCircuitDescription::MeasureType::MEASURE_Z:
+                std::tie(resZ, probZ, psi_) =
+                    measure_seq(psi_, target_rel_pos, qcd_.get_d());
+                dits_[measurements[m_ip].c_reg_] = resZ[0];
+                probs_[measurements[m_ip].c_reg_] = probZ;
+                set_measured_(measurements[m_ip].target_[0]);
+                break;
+            case QCircuitDescription::MeasureType::MEASURE_V:
+                std::tie(mres, probs, states) =
+                    measure(psi_, measurements[m_ip].mats_[0], target_rel_pos,
+                            qcd_.get_d());
+                psi_ = states[mres];
+                dits_[measurements[m_ip].c_reg_] = mres;
+                probs_[measurements[m_ip].c_reg_] = probs[mres];
+                set_measured_(measurements[m_ip].target_[0]);
+                break;
+            case QCircuitDescription::MeasureType::MEASURE_V_MANY:
+                std::tie(mres, probs, states) =
+                    measure(psi_, measurements[m_ip].mats_[0], target_rel_pos,
+                            qcd_.get_d());
+                psi_ = states[mres];
+                dits_[measurements[m_ip].c_reg_] = mres;
+                probs_[measurements[m_ip].c_reg_] = probs[mres];
+                for (auto&& i : measurements[m_ip].target_)
+                    set_measured_(i);
+                break;
+            } // end switch on measurement type
+        }     // end else if measurement step
+        // otherwise
+        else {
+        }
+    }
+
+    /**
+     * \brief Executes one step in the quantum circuit
+     *
+     * \param it Iterator to the step to be executed
+     */
+    void execute(const QCircuitDescription::iterator& it) { execute(*it); }
+
+    /**
+     * \brief qpp::IJOSN::to_JSON() override
+     *
+     * Displays the quantum circuit in JSON format
+     *
+     * \param enclosed_in_curly_brackets If true, encloses the result in curly
+     * brackets
+     * \return String containing the JSON representation of the quantum circuit
+     */
+    std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
+        std::string result;
+
+        if (enclosed_in_curly_brackets)
+            result += "{";
+
+        std::ostringstream ss;
+
+        result += "\"measured\" : ";
+        ss << disp(get_measured(), ", ");
+        result += ss.str();
+
+        ss.str("");
+        ss.clear();
+        result += ", \"dits\" : ";
+        ss << disp(get_dits(), ", ");
+        result += ss.str();
+
+        ss.str("");
+        ss.clear();
+        result += ", \"probs\" : ";
+        ss << disp(get_probs(), ", ");
+        result += ss.str();
+
+        if (enclosed_in_curly_brackets)
+            result += "}";
+
+        return result;
+    }
+}; /* class QCircuit */
 
 } /* namespace qpp */
 
