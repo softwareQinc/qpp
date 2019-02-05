@@ -247,7 +247,7 @@ var NAVTREEINDEX2 =
 "namespacemembers_x.html":[1,1,0,21],
 "namespaceqpp.html":[2,0,0],
 "namespaceqpp.html":[1,0,0],
-"namespaceqpp_1_1exception.html":[1,0,0,0],
 "namespaceqpp_1_1exception.html":[2,0,0,0],
+"namespaceqpp_1_1exception.html":[1,0,0,0],
 "namespaceqpp_1_1experimental.html":[1,0,0,1]
 };
