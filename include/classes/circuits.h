@@ -97,8 +97,8 @@ class QCircuit : public IDisplay, public IJSON {
     };
 
     /**
-     * \brief Extraction operator overload for
-     * qpp::QCircuit::GateType enum class
+     * \brief Extraction operator overload for qpp::QCircuit::GateType enum
+     * class
      *
      * \param os Output stream
      * \param gate_type qpp::QCircuit::GateType enum class
@@ -197,8 +197,7 @@ class QCircuit : public IDisplay, public IJSON {
     };
 
     /**
-     * \brief Extraction operator overload for
-     * qpp::QCircuit::GateStep class
+     * \brief Extraction operator overload for qpp::QCircuit::GateStep class
      *
      * \param os Output stream
      * \param gate_type qpp::QCircuit::GateStep class
@@ -231,8 +230,8 @@ class QCircuit : public IDisplay, public IJSON {
     };
 
     /**
-     * \brief Extraction operator overload for
-     * qpp::QCircuit::MeasureType enum class
+     * \brief Extraction operator overload for qpp::QCircuit::MeasureType enum
+     * class
      *
      * \param os Output stream
      * \param gate_type qpp::QCircuit::MeasureType enum class
@@ -263,11 +262,11 @@ class QCircuit : public IDisplay, public IJSON {
      */
     struct MeasureStep {
         MeasureType measurement_type_ = MeasureType::NONE; ///< measurement type
-        std::vector<cmat> mats_; ///< matrix/matrices that specify the
-        /// measurement
+        std::vector<cmat> mats_;  ///< matrix/matrices that specify the
+                                  ///< measurement
         std::vector<idx> target_; ///< target where the measurement is applied
         idx c_reg_{}; ///< index of the classical register where the measurement
-        ///< result is being stored
+                      ///< result is being stored
         std::string name_; ///< custom name of the step
         /**
          * \brief Default constructor
@@ -294,8 +293,7 @@ class QCircuit : public IDisplay, public IJSON {
     };
 
     /**
-     * \brief Extraction operator overload for
-     * qpp::QCircuit::MeasureStep class
+     * \brief Extraction operator overload for qpp::QCircuit::MeasureStep class
      *
      * \param os Output stream
      * \param gate_type qpp::QCircuit::MeasureStep enum class
@@ -351,7 +349,6 @@ class QCircuit : public IDisplay, public IJSON {
              * \brief Default value_type_ constructor
              *
              * \param value_type_qcd Constant pointer to quantum circuit
-             * description
              */
             explicit value_type_(const QCircuit* value_type_qcd)
                 : value_type_qcd_{value_type_qcd} {}
@@ -385,7 +382,7 @@ class QCircuit : public IDisplay, public IJSON {
                     std::to_string(value_type_qcd_->get_step_count()).size() +
                     1;
 
-                // Gate step
+                // gate step
                 if (type_ == StepType::GATE) {
                     os << std::left;
                     os << std::setw(text_width) << ip_;
@@ -394,7 +391,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             gates_ip_);
                     os << value_type_qcd_->get_gates()[pos];
                 }
-                // Measurement step
+                // measurement step
                 else if (type_ == StepType::MEASUREMENT) {
                     os << std::left;
                     os << std::setw(text_width) << ip_;
@@ -461,11 +458,11 @@ class QCircuit : public IDisplay, public IJSON {
             }
             // END EXCEPTION CHECKS
 
-            // Gate step
+            // gate step
             if (elem_.type_ == StepType::GATE) {
                 std::advance(elem_.gates_ip_, 1);
             }
-            // Measurement step
+            // measurement step
             else if (elem_.type_ == StepType::MEASUREMENT) {
                 std::advance(elem_.measurements_ip_, 1);
             }
@@ -667,11 +664,11 @@ class QCircuit : public IDisplay, public IJSON {
      * \param nq Number of qbits
      * \param nc Number of classical dits
      * \param d Subsystem dimensions (optional, default is qubit, i.e. \a d = 2)
-     * \param name Circuit description name (optional)
+     * \param name Circuit name (optional)
      */
     explicit QCircuit(idx nq, idx nc = 0, idx d = 2, std::string name = "")
-        : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false),
-          step_types_{} {
+        : nq_{nq}, nc_{nc}, d_{d}, name_{name},
+          measured_(nq, false), step_types_{} {
         // EXCEPTION CHECKS
 
         if (nq == 0)
@@ -1917,7 +1914,6 @@ class QCircuit : public IDisplay, public IJSON {
      * \param enclosed_in_curly_brackets If true, encloses the result in curly
      * brackets
      * \return String containing the JSON representation of the quantum circuit
-     * description
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
         std::string result;
@@ -1941,7 +1937,7 @@ class QCircuit : public IDisplay, public IJSON {
             }
             result += "{\"step\" : " + std::to_string(elem.ip_) + ", ";
             result += "\"type\" : ";
-            // Gate step
+            // gate step
             if (elem.type_ == StepType::GATE) {
                 idx pos = std::distance(
                     std::begin(elem.value_type_qcd_->gates_), elem.gates_ip_);
@@ -1962,7 +1958,7 @@ class QCircuit : public IDisplay, public IJSON {
                 result += "\"name\" : ";
                 result += "\"" + gates_[pos].name_ + "\"" + "}";
             }
-            // Measurement step
+            // measurement step
             else if (elem.type_ == StepType::MEASUREMENT) {
                 idx pos = std::distance(
                     std::begin(elem.value_type_qcd_->measurements_),
@@ -1975,8 +1971,9 @@ class QCircuit : public IDisplay, public IJSON {
                 ss.clear();
                 ss << disp(measurements_[pos].target_, ", ");
                 result += "\"target\" : " + ss.str() + ", ";
-                result += "\"c_reg\" : " +
-                          std::to_string(measurements_[pos].c_reg_) + ", ";
+                result +=
+                    "\"c_reg\" : " + std::to_string(measurements_[pos].c_reg_) +
+                    ", ";
                 result += "\"name\" : ";
                 result += "\"" + measurements_[pos].name_ + "\"" + "}";
 
@@ -2001,12 +1998,12 @@ class QCircuit : public IDisplay, public IJSON {
             result += "}";
 
         return result;
-    }
-}; // namespace qpp
+    } /* to_JSON() */
+};    /* class QCircuit */
 
 /**
  * \class qpp::QEngine
- * \brief Quantum circuit simulator class
+ * \brief Quantum circuit engine, executes qpp::QCircuit
  * \see qpp::QCircuit
  */
 class QEngine : public IDisplay, public IJSON {
@@ -2035,12 +2032,13 @@ class QEngine : public IDisplay, public IJSON {
         }
     }
 
-    // giving a vector of non-measured qudits, get their relative
-    // position wrt the measured qudits
+    // giving a vector of non-measured qudits, get their relative position wrt
+    // the measured qudits
     /**
-     * \brief Giving a vector \a V of non-measured qudits, get their
-     * relative position with respect to the measured qudits \param v
-     * Qudit index
+     * \brief Giving a vector \a V of non-measured qudits, get their relative
+     * position with respect to the measured qudits \param v
+     *
+     * \return Vector of qudit indexes
      */
     std::vector<idx> get_relative_pos_(std::vector<idx> v) {
         idx vsize = v.size();
@@ -2055,8 +2053,7 @@ class QEngine : public IDisplay, public IJSON {
 
   public:
     /**
-     * \brief Constructs a quantum circuit out of a quantum circuit
-     * description
+     * \brief Constructs a quantum engine out of a quantum circuit
      *
      * \note The quantum circuit must be an lvalue
      * \see qpp::QEngine(QCircuit&&)
@@ -2067,8 +2064,8 @@ class QEngine : public IDisplay, public IJSON {
      * \param qcd Quantum circuit
      */
     explicit QEngine(const QCircuit& qcd)
-        : qcd_{qcd},
-          psi_{States::get_instance().zero(qcd.get_nq(), qcd.get_d())},
+        : qcd_{qcd}, psi_{States::get_instance().zero(qcd.get_nq(),
+                                                      qcd.get_d())},
           dits_(qcd.get_nc(), 0), probs_(qcd.get_nc(), 0),
           subsys_(qcd.get_nq(), 0) {
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
@@ -2138,7 +2135,7 @@ class QEngine : public IDisplay, public IJSON {
      * \param i Qudit index
      * \return True if qudit \a i was already measured, false othwewise
      */
-    idx get_measured(idx i) const { return subsys_[i] == idx_infty; }
+    bool get_measured(idx i) const { return subsys_[i] == idx_infty; }
 
     /**
      * \brief Vector of already measured qudit indexes
@@ -2171,9 +2168,9 @@ class QEngine : public IDisplay, public IJSON {
     /**
      * \brief Quantum circuit
      *
-     * \return Quantum circuit
+     * \return Underlying quantum circuit
      */
-    const QCircuit& get_circuit_description() const noexcept { return qcd_; }
+    const QCircuit& get_circuit() const noexcept { return qcd_; }
     // end getters
 
     // setters
@@ -2194,7 +2191,7 @@ class QEngine : public IDisplay, public IJSON {
     // end setters
 
     /**
-     * \brief Resets the quantum circuit
+     * \brief Resets the engine
      *
      * Re-initializes everything to zero and sets the initial state to
      * \f$|0\rangle^{\otimes n}\f$
@@ -2209,8 +2206,8 @@ class QEngine : public IDisplay, public IJSON {
     /**
      * \brief qpp::IDisplay::display() override
      *
-     * Writes to the output stream a textual representation of the
-     * quantum circuit
+     * Writes to the output stream a textual representation of the state of 
+     * the engine
      *
      * \param os Output stream passed by reference
      * \return Reference to the output stream
@@ -2237,7 +2234,7 @@ class QEngine : public IDisplay, public IJSON {
         // the rest of exceptions are caught by the iterator::operator*()
         // END EXCEPTION CHECKS
 
-        // Gate step
+        // gate step
         if (elem.type_ == QCircuit::StepType::GATE) {
             auto gates = qcd_.get_gates();
             idx q_ip =
@@ -2298,7 +2295,7 @@ class QEngine : public IDisplay, public IJSON {
                 break;
             } // end switch on gate type
         }     // end if gate step
-        // Measurement step
+        // measurement step
         else if (elem.type_ == QCircuit::StepType::MEASUREMENT) {
             auto measurements = qcd_.get_measurements();
             idx m_ip = std::distance(std::begin(qcd_.get_measurements()),
@@ -2360,11 +2357,12 @@ class QEngine : public IDisplay, public IJSON {
     /**
      * \brief qpp::IJOSN::to_JSON() override
      *
-     * Displays the quantum circuit in JSON format
+     * Displays the state of the engine in JSON format
      *
      * \param enclosed_in_curly_brackets If true, encloses the result in curly
      * brackets
-     * \return String containing the JSON representation of the quantum circuit
+     * \return String containing the JSON representation of the state of the 
+     * engine
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
         std::string result;

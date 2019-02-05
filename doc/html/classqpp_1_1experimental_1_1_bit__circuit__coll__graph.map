@@ -1,5 +1,0 @@
-<map id="qpp::experimental::Bit_circuit" name="qpp::experimental::Bit_circuit">
-<area shape="rect" id="node2" href="$classqpp_1_1experimental_1_1_dynamic__bitset.html" title="qpp::experimental::\lDynamic_bitset" alt="" coords="49,109,156,151"/>
-<area shape="rect" id="node3" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="5,13,85,39"/>
-<area shape="rect" id="node5" href="$structqpp_1_1experimental_1_1_bit__circuit_1_1_gate__count.html" title="&lt; Gate counters " alt="" coords="180,109,303,151"/>
-</map>

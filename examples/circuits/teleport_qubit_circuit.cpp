@@ -8,7 +8,7 @@ int main() {
     using namespace qpp;
     std::cout << ">> Qubit teleportation quantum circuit simulation\n\n";
 
-    // quantum circuit description with 3 qubits and 2 classical bits
+    // quantum circuit with 3 qubits and 2 classical bits
     QCircuit qc{3, 2};
     // set the qubit 0 to a random state
     cmat U = randU(2);
@@ -31,9 +31,9 @@ int main() {
 
     QEngine engine{qc};
 
-    std::cout << ">> BEGIN CIRCUIT DESCRIPTION\n";
-    std::cout << engine.get_circuit_description() << '\n';
-    std::cout << ">> END CIRCUIT DESCRIPTION\n\n";
+    std::cout << ">> BEGIN CIRCUIT\n";
+    std::cout << engine.get_circuit() << '\n';
+    std::cout << ">> END CIRCUIT\n\n";
 
     // execute the circuit
     for (auto&& elem : qc)

@@ -47,7 +47,7 @@ var hierarchy =
       [ "qpp::is_iterable< T, typename >", "structqpp_1_1is__iterable.html", null ]
     ] ],
     [ "qpp::Bit_circuit::Gate_count", "structqpp_1_1_bit__circuit_1_1_gate__count.html", null ],
-    [ "qpp::QCircuitDescription::GateStep", "structqpp_1_1_q_circuit_description_1_1_gate_step.html", null ],
+    [ "qpp::QCircuit::GateStep", "structqpp_1_1_q_circuit_1_1_gate_step.html", null ],
     [ "qpp::IDisplay", "classqpp_1_1_i_display.html", [
       [ "qpp::Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html", [
         [ "qpp::Bit_circuit", "classqpp_1_1_bit__circuit.html", null ]
@@ -56,20 +56,20 @@ var hierarchy =
       [ "qpp::internal::IOManipPointer< PointerType >", "classqpp_1_1internal_1_1_i_o_manip_pointer.html", null ],
       [ "qpp::internal::IOManipRange< InputIterator >", "classqpp_1_1internal_1_1_i_o_manip_range.html", null ],
       [ "qpp::QCircuit", "classqpp_1_1_q_circuit.html", null ],
-      [ "qpp::QCircuitDescription", "classqpp_1_1_q_circuit_description.html", null ],
-      [ "qpp::QCircuitDescription::iterator::value_type_", "structqpp_1_1_q_circuit_description_1_1iterator_1_1value__type__.html", null ],
+      [ "qpp::QCircuit::iterator::value_type_", "structqpp_1_1_q_circuit_1_1iterator_1_1value__type__.html", null ],
+      [ "qpp::QEngine", "classqpp_1_1_q_engine.html", null ],
       [ "qpp::Timer< T, CLOCK_T >", "classqpp_1_1_timer.html", null ]
     ] ],
     [ "qpp::IJSON", "classqpp_1_1_i_j_s_o_n.html", [
       [ "qpp::QCircuit", "classqpp_1_1_q_circuit.html", null ],
-      [ "qpp::QCircuitDescription", "classqpp_1_1_q_circuit_description.html", null ]
+      [ "qpp::QEngine", "classqpp_1_1_q_engine.html", null ]
     ] ],
     [ "is_base_of", null, [
       [ "qpp::is_matrix_expression< Derived >", "structqpp_1_1is__matrix__expression.html", null ]
     ] ],
-    [ "qpp::QCircuitDescription::iterator", "classqpp_1_1_q_circuit_description_1_1iterator.html", null ],
+    [ "qpp::QCircuit::iterator", "classqpp_1_1_q_circuit_1_1iterator.html", null ],
     [ "qpp::make_void< Ts >", "structqpp_1_1make__void.html", null ],
-    [ "qpp::QCircuitDescription::MeasureStep", "structqpp_1_1_q_circuit_description_1_1_measure_step.html", null ],
+    [ "qpp::QCircuit::MeasureStep", "structqpp_1_1_q_circuit_1_1_measure_step.html", null ],
     [ "qpp::NoiseBase< T >", "classqpp_1_1_noise_base.html", null ],
     [ "qpp::NoiseBase< NoiseType::StateDependent >", "classqpp_1_1_noise_base.html", [
       [ "qpp::QubitAmplitudeDampingNoise", "classqpp_1_1_qubit_amplitude_damping_noise.html", null ],

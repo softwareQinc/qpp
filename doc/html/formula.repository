@@ -1,80 +1,75 @@
-\form#0:$ Z = \sum_{j=0}^{D-1} \exp(2\pi \mathrm{i} j/D) |j\rangle\langle j| $
-\form#1:$ F = \sum_{j,k=0}^{D-1} \exp(2\pi \mathrm{i} jk/D) |j\rangle\langle k| $
-\form#2:$ X = \sum_{j=0}^{D-1} |j\oplus 1\rangle\langle j| $
-\form#3:$ X|j\rangle = |j\oplus 1\rangle$
-\form#4:$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I$
-\form#5:$\frac{1}{\sqrt{d}}\sum_{j=0}^{d-1}|jj\rangle$
-\form#6:$|0\rangle^{\otimes n}$
-\form#7:$|1\rangle^{\otimes n}$
-\form#8:$|j\rangle^{\otimes n}$
-\form#9:$|+\rangle^{\otimes n}$
-\form#10:$|-\rangle^{\otimes n}$
-\form#11:$i=\sqrt{-1}$
-\form#12:$ \pi $
-\form#13:$e$
-\form#14:$\exp(2\pi i/D)$
-\form#15:$ U $
-\form#16:$ V $
-\form#17:$\alpha$
-\form#18:$\alpha\geq 0$
-\form#19:$ \alpha\to 1$
-\form#20:$\alpha = \infty$
-\form#21:$q$
-\form#22:$q\geq 0$
-\form#23:$ q\to 1$
-\form#24:$ e $
-\form#25:$\pm \infty$
-\form#26:$f(A)$
-\form#27:$A^0 = I$
-\form#28:$A^z$
-\form#29:$A^n$
-\form#30:$p = \infty$
-\form#31:$A^{\otimes n}$
-\form#32:$A^{\oplus n}$
-\form#33:$ [A,B] = AB - BA $
-\form#34:$AB -BA$
-\form#35:$ \{A,B\} = AB + BA $
-\form#36:$AB +BA$
-\form#37:$|\mathrm{mask}\rangle$
-\form#38:$\{0, 1, \ldots, N - 1\}$
-\form#39:$|\mathrm{Bits}\rangle$
-\form#40:$\langle\mathrm{Bits}|$
-\form#41:$|\mathrm{Bits}\rangle\langle\mathrm{Bits}|$
-\form#42:$\langle \phi_{subsys}|\psi\rangle$
-\form#43:$\circ$
-\form#44:$\mathcal{O}(\sqrt{n})$
-\form#45:$ab$
-\form#46:$\mathrm{ mod }$
-\form#47:$p$
-\form#48:$a^n$
-\form#49:$m$
-\form#50:$n$
-\form#51:$gcd(a, b)$
-\form#52:$ma + nb = gcd(a, b)$
-\form#53:$a^{-1}$
-\form#54:$\textrm{ mod }$
-\form#55:$2^{-k}$
-\form#56:$\{|i\rangle\langle j|\}$
-\form#57:$|0\rangle\langle 0|$
-\form#58:$|0\rangle\langle 1|$
-\form#59:$S$
-\form#60:$ C$
-\form#61:$ S_{ab,mn} = C_{ma,nb}$
-\form#62:$Tr(K_i^\dagger K_j)=\delta_{ij}$
-\form#63:$i\neq j$
-\form#64:$Tr_{A}(\cdot)$
-\form#65:$A$
-\form#66:$A\otimes B$
-\form#67:$Tr_{B}(\cdot)$
-\form#68:$B$
-\form#69:$Tr_{subsys}(\cdot)$
-\form#70:$(\cdot)^{T_{subsys}}$
-\form#71:$ \sum_i K_i^\dagger K_i = I$
-\form#72:$ |x\rangle \longrightarrow \mathrm{mod} N\rangle $
-\form#73:$ |x\rangle \longrightarrow |x\mathrm{mod} N\rangle $
-\form#74:$ (a_k, b_k) $
-\form#75:$ n \geq \lceil\log_2(N)\rceil $
-\form#76:$ |x\rangle \longrightarrow |ax\mathrm{ mod }N\rangle $
-\form#77:$ |x\rangle \longrightarrow |ax \mathrm{ mod } N\rangle $
-\form#78:$|0\rangle^{\otimes nq}$
-\form#79:$\{0, 1, \ldots, n - 1\}$
+\form#0:$|0\rangle^{\otimes n}$
+\form#1:$ Z = \sum_{j=0}^{D-1} \exp(2\pi \mathrm{i} j/D) |j\rangle\langle j| $
+\form#2:$ F = \sum_{j,k=0}^{D-1} \exp(2\pi \mathrm{i} jk/D) |j\rangle\langle k| $
+\form#3:$ |x\rangle \longrightarrow |ax \mathrm{ mod } N\rangle $
+\form#4:$ n \geq \lceil\log_2(N)\rceil $
+\form#5:$ X = \sum_{j=0}^{D-1} |j\oplus 1\rangle\langle j| $
+\form#6:$ X|j\rangle = |j\oplus 1\rangle$
+\form#7:$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I$
+\form#8:$\frac{1}{\sqrt{d}}\sum_{j=0}^{d-1}|jj\rangle$
+\form#9:$|1\rangle^{\otimes n}$
+\form#10:$|j\rangle^{\otimes n}$
+\form#11:$|+\rangle^{\otimes n}$
+\form#12:$|-\rangle^{\otimes n}$
+\form#13:$i=\sqrt{-1}$
+\form#14:$ \pi $
+\form#15:$e$
+\form#16:$\exp(2\pi i/D)$
+\form#17:$ U $
+\form#18:$ V $
+\form#19:$\alpha$
+\form#20:$\alpha\geq 0$
+\form#21:$ \alpha\to 1$
+\form#22:$\alpha = \infty$
+\form#23:$q$
+\form#24:$q\geq 0$
+\form#25:$ q\to 1$
+\form#26:$ e $
+\form#27:$\pm \infty$
+\form#28:$f(A)$
+\form#29:$A^0 = I$
+\form#30:$A^z$
+\form#31:$A^n$
+\form#32:$p = \infty$
+\form#33:$A^{\otimes n}$
+\form#34:$A^{\oplus n}$
+\form#35:$ [A,B] = AB - BA $
+\form#36:$AB -BA$
+\form#37:$ \{A,B\} = AB + BA $
+\form#38:$AB +BA$
+\form#39:$|\mathrm{mask}\rangle$
+\form#40:$\{0, 1, \ldots, n - 1\}$
+\form#41:$|\mathrm{Bits}\rangle$
+\form#42:$\langle\mathrm{Bits}|$
+\form#43:$|\mathrm{Bits}\rangle\langle\mathrm{Bits}|$
+\form#44:$\langle \phi_{subsys}|\psi\rangle$
+\form#45:$\circ$
+\form#46:$\mathcal{O}(\sqrt{n})$
+\form#47:$ab$
+\form#48:$\mathrm{ mod }$
+\form#49:$p$
+\form#50:$a^n$
+\form#51:$m$
+\form#52:$n$
+\form#53:$gcd(a, b)$
+\form#54:$ma + nb = gcd(a, b)$
+\form#55:$a^{-1}$
+\form#56:$\textrm{ mod }$
+\form#57:$2^{-k}$
+\form#58:$ (a_k, b_k) $
+\form#59:$\{|i\rangle\langle j|\}$
+\form#60:$|0\rangle\langle 0|$
+\form#61:$|0\rangle\langle 1|$
+\form#62:$S$
+\form#63:$ C$
+\form#64:$ S_{ab,mn} = C_{ma,nb}$
+\form#65:$Tr(K_i^\dagger K_j)=\delta_{ij}$
+\form#66:$i\neq j$
+\form#67:$Tr_{A}(\cdot)$
+\form#68:$A$
+\form#69:$A\otimes B$
+\form#70:$Tr_{B}(\cdot)$
+\form#71:$B$
+\form#72:$Tr_{subsys}(\cdot)$
+\form#73:$(\cdot)^{T_{subsys}}$
+\form#74:$ \sum_i K_i^\dagger K_i = I$

@@ -10,8 +10,8 @@ int main() {
     std::cout << ">> Qudit teleportation (d = " << d << ") ";
     std::cout << "quantum circuit simulation\n\n";
 
-    // quantum circuit description with 3 qudits, 2 classical bits, (optional)
-    // dimension d = 5 and (optional) name = "qudit teleportation"
+    // quantum circuit with 3 qudits, 2 classical bits, (optional) dimension
+    // d = 5 and (optional) name = "qudit teleportation"
     QCircuit qc{3, 2, d, "qudit teleportation"};
     // set the qubit 0 to a random state
     cmat U = randU(d);
@@ -34,10 +34,10 @@ int main() {
     qc.cCTRL(adjoint(gt.Xd(d)), 1, 2);
     qc.cCTRL(gt.Zd(d), 0, 2);
 
-    QCircuit engine{qc};
-    std::cout << ">> BEGIN CIRCUIT DESCRIPTION\n";
-    std::cout << qc.get_circuit_description() << '\n';
-    std::cout << ">> END CIRCUIT DESCRIPTION\n\n";
+    QEngine engine{qc};
+    std::cout << ">> BEGIN CIRCUIT\n";
+    std::cout << engine.get_circuit() << '\n';
+    std::cout << ">> END CIRCUIT\n\n";
 
     // execute the circuit
     for (auto&& elem : qc)

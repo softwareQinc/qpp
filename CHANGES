@@ -32,11 +32,9 @@ In progress - pre-release
       JSON serialization support
     - Added new classes in the new header file "classes/circuits.h" for
       simulating qudit quantum circuits:
-          - qpp::QCircuit - Quantum circuit description, does not
-                                       effectively perform any operations
-          - qpp::IQCircuit           - Abstract base class for quantum circuits
-          - qpp::QEngine            - Concrete class for simulation of
-                                       noiseless quantum circuits
+          - qpp::QCircuit - Quantum circuit description, does not effectively 
+                            perform any operations
+          - qpp::QEngine  - Quantum engine for simulation of quantum circuits
       BE AWARE: this is (still) work in progress, not yet complete, bugs may
       still lingering around
     - Added new circuit simulator examples in "examples/circuits":
@@ -180,7 +178,7 @@ Version 0.8.8 - 30 September 2016
 Version 0.8.6 - 1 November 2015
     - Fixed serious bug in qpp::applyCTRL(), which was failing before for
       control gates with 2 or more controls. Added unit test in
-      ./unit_tests/testing.cpp.
+      "unit_tests/testing.cpp".
 
 Version 0.8.4 - 14 October 2015
     - Added "macros.h" preprocessor debug macros header, containing:
@@ -213,7 +211,7 @@ Version 0.8.2 - 20 May 2015
           qpp::cov()        - covariance
           qpp::cor()        - correlation
           qpp::var()        - variance
-    - Added new examples in ./examples
+    - Added new examples in the folder "examples"
 
 Version 0.8 - 8 May 2015
     - Added new data type aliases in "types.h"
@@ -280,7 +278,7 @@ Version 0.4 - 8 March 2015
       safe. Hence, Eigen::Matrix::Random() should not be used, use instead
       qpp::rand() functions.
     - Added support for unit testing via Google Mock/Google Test, see
-      ./unit_tests/testing.cpp
+      "unit_tests/testing.cpp"
 
 Version 0.3 - 15 February 2015
     - Added qpp::internal::Singleton<T>::get_thread_local_instance()

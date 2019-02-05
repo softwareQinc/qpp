@@ -1,4 +1,4 @@
 <map id="qpp::IJSON" name="qpp::IJSON">
-<area shape="rect" id="node2" href="$classqpp_1_1_q_circuit.html" title="Quantum circuit simulator class. " alt="" coords="5,80,105,107"/>
-<area shape="rect" id="node3" href="$classqpp_1_1_q_circuit_description.html" title="Quantum circuit description class. " alt="" coords="129,80,296,107"/>
+<area shape="rect" id="node2" href="$classqpp_1_1_q_circuit.html" title="Quantum circuit class. " alt="" coords="5,80,105,107"/>
+<area shape="rect" id="node3" href="$classqpp_1_1_q_engine.html" title="Quantum circuit engine, executes qpp::QCircuit. " alt="" coords="130,80,234,107"/>
 </map>
