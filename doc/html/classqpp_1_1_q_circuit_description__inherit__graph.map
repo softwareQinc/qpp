@@ -1,4 +1,4 @@
-<map id="qpp::QCircuitDescription" name="qpp::QCircuitDescription">
+<map id="qpp::QCircuit" name="qpp::QCircuit">
 <area shape="rect" id="node2" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="5,5,104,32"/>
 <area shape="rect" id="node3" href="$classqpp_1_1_i_j_s_o_n.html" title="Abstract class (interface) that mandates the definition of very basic JSON serialization support..." alt="" coords="128,5,219,32"/>
 </map>

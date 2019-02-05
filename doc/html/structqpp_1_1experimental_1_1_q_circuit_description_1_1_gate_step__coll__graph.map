@@ -1,4 +1,4 @@
-<map id="qpp::experimental::QCircuitDescription::GateStep" name="qpp::experimental::QCircuitDescription::GateStep">
+<map id="qpp::experimental::QCircuit::GateStep" name="qpp::experimental::QCircuit::GateStep">
 <area shape="rect" id="node3" title="STL class. " alt="" coords="154,96,234,123"/>
 <area shape="rect" id="node4" title="STL class. " alt="" coords="131,5,257,47"/>
 </map>

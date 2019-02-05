@@ -7,7 +7,7 @@ int main() {
     using namespace qpp;
     /////////// testing ///////////
 
-    QCircuitDescription qcd{4, 2, 2, "test_circuit"};
+    QCircuit qcd{4, 2, 2, "test_circuit"};
     qcd.gate(gt.X, 0, "named_X");
     qcd.measureZ(3, 0);
     qcd.gate(gt.X, 0, "named_X");
@@ -22,11 +22,9 @@ int main() {
     std::cout << qcd << '\n';
     std::cout << qcd.to_JSON() << "\n\n";
 
-    QCircuit qc{qcd};
-    auto it = std::begin(qcd);
-    for (; it != std::end(qcd); ++it) {
-        std::cout << *it << '\n';
-        qc.execute(*it);
+    QEngine qc{qcd};
+    for (auto&& elem: qcd) {
+        qc.execute(elem);
     }
     std::cout << qc << '\n';
     std::cout << qc.to_JSON() << "\n\n";

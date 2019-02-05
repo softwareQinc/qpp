@@ -1,4 +1,4 @@
-<map id="qpp::QCircuitDescription::MeasureStep" name="qpp::QCircuitDescription::MeasureStep">
+<map id="qpp::QCircuit::MeasureStep" name="qpp::QCircuit::MeasureStep">
 <area shape="rect" id="node4" title="STL class. " alt="" coords="314,96,394,123"/>
 <area shape="rect" id="node5" title="STL class. " alt="" coords="291,5,417,47"/>
 </map>

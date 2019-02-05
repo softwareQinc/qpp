@@ -34,11 +34,11 @@
 
 namespace qpp {
 /**
- * \class qpp::QCircuitDescription
- * \brief Quantum circuit description class
- * \see qpp::QCircuit
+ * \class qpp::QCircuit
+ * \brief Quantum circuit class
+ * \see qpp::QEngine
  */
-class QCircuitDescription : public IDisplay, public IJSON {
+class QCircuit : public IDisplay, public IJSON {
     const idx nq_;               ///< number of qudits
     const idx nc_;               ///< number of classical "dits"
     const idx d_;                ///< qudit dimension
@@ -98,10 +98,10 @@ class QCircuitDescription : public IDisplay, public IJSON {
 
     /**
      * \brief Extraction operator overload for
-     * qpp::QCircuitDescription::GateType enum class
+     * qpp::QCircuit::GateType enum class
      *
      * \param os Output stream
-     * \param gate_type qpp::QCircuitDescription::GateType enum class
+     * \param gate_type qpp::QCircuit::GateType enum class
      * \return Output stream
      */
     friend std::ostream& operator<<(std::ostream& os,
@@ -198,10 +198,10 @@ class QCircuitDescription : public IDisplay, public IJSON {
 
     /**
      * \brief Extraction operator overload for
-     * qpp::QCircuitDescription::GateStep class
+     * qpp::QCircuit::GateStep class
      *
      * \param os Output stream
-     * \param gate_type qpp::QCircuitDescription::GateStep class
+     * \param gate_type qpp::QCircuit::GateStep class
      * \return Output stream
      */
     friend std::ostream& operator<<(std::ostream& os,
@@ -232,10 +232,10 @@ class QCircuitDescription : public IDisplay, public IJSON {
 
     /**
      * \brief Extraction operator overload for
-     * qpp::QCircuitDescription::MeasureType enum class
+     * qpp::QCircuit::MeasureType enum class
      *
      * \param os Output stream
-     * \param gate_type qpp::QCircuitDescription::MeasureType enum class
+     * \param gate_type qpp::QCircuit::MeasureType enum class
      * \return Output stream
      */
     friend std::ostream& operator<<(std::ostream& os,
@@ -295,10 +295,10 @@ class QCircuitDescription : public IDisplay, public IJSON {
 
     /**
      * \brief Extraction operator overload for
-     * qpp::QCircuitDescription::MeasureStep class
+     * qpp::QCircuit::MeasureStep class
      *
      * \param os Output stream
-     * \param gate_type qpp::QCircuitDescription::MeasureStep enum class
+     * \param gate_type qpp::QCircuit::MeasureStep enum class
      * \return Output stream
      */
     friend std::ostream& operator<<(std::ostream& os,
@@ -328,17 +328,17 @@ class QCircuitDescription : public IDisplay, public IJSON {
 
   public:
     /**
-     * \class qpp::QCircuitDescription::iterator
-     * \brief Quantum circuit description bound-checking (safe) iterator
+     * \class qpp::QCircuit::iterator
+     * \brief Quantum circuit bound-checking (safe) iterator
      * \note The iterator is a const_iterator by default
      */
     class iterator {
-        ///< non-owning pointer to const quantum circuit description
-        const QCircuitDescription* qcd_{nullptr};
+        ///< non-owning pointer to const quantum circuit
+        const QCircuit* qcd_{nullptr};
 
         struct value_type_ : public IDisplay {
             ///< non-owning pointer to the parent iterator
-            const QCircuitDescription* value_type_qcd_;
+            const QCircuit* value_type_qcd_;
 
             StepType type_{StepType::NONE}; ///< step type
             idx ip_{idx_infty};             ///< instruction pointer
@@ -353,7 +353,7 @@ class QCircuitDescription : public IDisplay, public IJSON {
              * \param value_type_qcd Constant pointer to quantum circuit
              * description
              */
-            explicit value_type_(const QCircuitDescription* value_type_qcd)
+            explicit value_type_(const QCircuit* value_type_qcd)
                 : value_type_qcd_{value_type_qcd} {}
 
             // silence -Weffc++ class has pointer data members
@@ -445,19 +445,19 @@ class QCircuitDescription : public IDisplay, public IJSON {
             // protects against incrementing invalid iterators
             if (qcd_ == nullptr) {
                 throw exception::InvalidIterator(
-                    "qpp::QCircuitDescription::iterator::operator++()");
+                    "qpp::QCircuit::iterator::operator++()");
             }
 
             // protect against incrementing an empty circuit iterator
             if (qcd_->get_step_count() == 0) {
                 throw exception::InvalidIterator(
-                    "qpp::QCircuitDescription::iterator::operator++()");
+                    "qpp::QCircuit::iterator::operator++()");
             }
 
             // protects against incrementing past the end
             if (elem_.ip_ == qcd_->get_step_count()) {
                 throw exception::InvalidIterator(
-                    "qpp::QCircuitDescription::iterator::operator++()");
+                    "qpp::QCircuit::iterator::operator++()");
             }
             // END EXCEPTION CHECKS
 
@@ -532,7 +532,7 @@ class QCircuitDescription : public IDisplay, public IJSON {
             // de-referencing invalid iterators
             if (qcd_ == nullptr || elem_.ip_ == qcd_->get_step_count())
                 throw exception::InvalidIterator(
-                    "qpp::QCircuitDescription::iterator::operator*()");
+                    "qpp::QCircuit::iterator::operator*()");
             // END EXCEPTION CHECKS
 
             return elem_;
@@ -541,9 +541,9 @@ class QCircuitDescription : public IDisplay, public IJSON {
         /**
          * \brief Sets the iterator to std::begin(this)
          *
-         * \param qcd Constant pointer to a quantum circuit description
+         * \param qcd Constant pointer to a quantum circuit
          */
-        void set_begin_(const QCircuitDescription* qcd) {
+        void set_begin_(const QCircuit* qcd) {
             qcd_ = qcd;
             elem_ = value_type_{qcd_};
 
@@ -561,9 +561,9 @@ class QCircuitDescription : public IDisplay, public IJSON {
         /**
          * \brief Sets the iterator to std::begin(this)
          *
-         * \param qcd Constant pointer to a quantum circuit description
+         * \param qcd Constant pointer to a quantum circuit
          */
-        void set_end_(const QCircuitDescription* qcd) {
+        void set_end_(const QCircuit* qcd) {
             qcd_ = qcd;
             elem_ = value_type_{qcd_};
 
@@ -659,7 +659,7 @@ class QCircuitDescription : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Constructs a quantum circuit description
+     * \brief Constructs a quantum circuit
      *
      * \note The measurement results can only be stored in the classical dits
      * of which number is specified by \a nc
@@ -669,25 +669,22 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param d Subsystem dimensions (optional, default is qubit, i.e. \a d = 2)
      * \param name Circuit description name (optional)
      */
-    explicit QCircuitDescription(idx nq, idx nc = 0, idx d = 2,
-                                 std::string name = "")
-        : nq_{nq}, nc_{nc}, d_{d}, name_{name},
-          measured_(nq, false), step_types_{} {
+    explicit QCircuit(idx nq, idx nc = 0, idx d = 2, std::string name = "")
+        : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false),
+          step_types_{} {
         // EXCEPTION CHECKS
 
         if (nq == 0)
-            throw exception::ZeroSize(
-                "qpp::QCircuitDescription::QCircuitDescription()");
+            throw exception::ZeroSize("qpp::QCircuit::QCircuit()");
         if (d < 2)
-            throw exception::OutOfRange(
-                "qpp::QCircuitDescription::QCircuitDescription()");
+            throw exception::OutOfRange("qpp::QCircuit::QCircuit()");
         // END EXCEPTION CHECKS
     }
 
     /**
      * \brief Default virtual destructor
      */
-    virtual ~QCircuitDescription() = default;
+    virtual ~QCircuit() = default;
 
     // getters
     /**
@@ -712,18 +709,18 @@ class QCircuitDescription : public IDisplay, public IJSON {
     idx get_d() const noexcept { return d_; }
 
     /**
-     * \brief Vector of qpp::QCircuitDescription::MeasureStep
+     * \brief Vector of qpp::QCircuit::MeasureStep
      *
-     * \return Vector of qpp::QCircuitDescription::MeasureStep
+     * \return Vector of qpp::QCircuit::MeasureStep
      */
     const std::vector<MeasureStep>& get_measurements() const noexcept {
         return measurements_;
     }
 
     /**
-     * \brief Vector of qpp::QCircuitDescription::GateStep
+     * \brief Vector of qpp::QCircuit::GateStep
      *
-     * \return Vector of qpp::QCircuitDescription::GateStep
+     * \return Vector of qpp::QCircuit::GateStep
      */
     const std::vector<GateStep>& get_gates() const noexcept { return gates_; }
 
@@ -743,8 +740,7 @@ class QCircuitDescription : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         if (i >= nq_)
-            throw exception::OutOfRange(
-                "qpp::QCircuitDescription::get_measured()");
+            throw exception::OutOfRange("qpp::QCircuit::get_measured()");
         // END EXCEPTION CHECKS
 
         return measured_[i];
@@ -809,26 +805,23 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& gate(const cmat& U, idx i, std::string name = "") {
+    QCircuit& gate(const cmat& U, idx i, std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
             // check valid target
             if (i >= nq_)
-                throw exception::OutOfRange("qpp::QCircuitDescription::gate()");
+                throw exception::OutOfRange("qpp::QCircuit::gate()");
             // check not measured before
             if (get_measured(i))
-                throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuitDescription::gate()");
+                throw exception::QuditAlreadyMeasured("qpp::QCircuit::gate()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
-                throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::gate()");
+                throw exception::MatrixNotSquare("qpp::QCircuit::gate()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
-                throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::gate()");
+                throw exception::DimsMismatchMatrix("qpp::QCircuit::gate()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -853,26 +846,22 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& gate(const cmat& U, idx i, idx j,
-                              std::string name = "") {
+    QCircuit& gate(const cmat& U, idx i, idx j, std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
             // check valid target
             if (i >= nq_ || j >= nq_ || i == j)
-                throw exception::OutOfRange("qpp::QCircuitDescription::gate()");
+                throw exception::OutOfRange("qpp::QCircuit::gate()");
             if (get_measured(i) || get_measured(j))
-                throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuitDescription::gate()");
+                throw exception::QuditAlreadyMeasured("qpp::QCircuit::gate()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
-                throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::gate()");
+                throw exception::MatrixNotSquare("qpp::QCircuit::gate()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_ * d_)
-                throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::gate()");
+                throw exception::DimsMismatchMatrix("qpp::QCircuit::gate()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -898,27 +887,23 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& gate(const cmat& U, idx i, idx j, idx k,
-                              std::string name = "") {
+    QCircuit& gate(const cmat& U, idx i, idx j, idx k, std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
             // check valid target
             if (i >= nq_ || j >= nq_ || k >= nq_ || (i == j) || (i == k) ||
                 (j == k))
-                throw exception::OutOfRange("qpp::QCircuitDescription::gate()");
+                throw exception::OutOfRange("qpp::QCircuit::gate()");
             if (get_measured(i) || get_measured(j) || get_measured(k))
-                throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuitDescription::gate()");
+                throw exception::QuditAlreadyMeasured("qpp::QCircuit::gate()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
-                throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::gate()");
+                throw exception::MatrixNotSquare("qpp::QCircuit::gate()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_ * d_ * d_)
-                throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::gate()");
+                throw exception::DimsMismatchMatrix("qpp::QCircuit::gate()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -944,37 +929,33 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& gate_fan(const cmat& U, const std::vector<idx>& target,
-                                  std::string name = "") {
+    QCircuit& gate_fan(const cmat& U, const std::vector<idx>& target,
+                       std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
             // check valid target
             if (target.size() == 0)
-                throw exception::ZeroSize(
-                    "qpp::QCircuitDescription::gate_fan()");
+                throw exception::ZeroSize("qpp::QCircuit::gate_fan()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::gate_fan()");
+                    throw exception::OutOfRange("qpp::QCircuit::gate_fan()");
                 // check target was not measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuitDescription::gate_fan()");
+                        "qpp::QCircuit::gate_fan()");
             }
             // check no duplicates target
             if (!internal::check_no_duplicates(target))
-                throw exception::Duplicates(
-                    "qpp::QCircuitDescription::gate_fan()");
+                throw exception::Duplicates("qpp::QCircuit::gate_fan()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
-                throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::gate_fan()");
+                throw exception::MatrixNotSquare("qpp::QCircuit::gate_fan()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::gate_fan()");
+                    "qpp::QCircuit::gate_fan()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1002,9 +983,8 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& gate_fan(const cmat& U,
-                                  const std::initializer_list<idx>& target,
-                                  std::string name = "") {
+    QCircuit& gate_fan(const cmat& U, const std::initializer_list<idx>& target,
+                       std::string name = "") {
         return gate_fan(U, std::vector<idx>(target), name);
     }
 
@@ -1016,18 +996,17 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& gate_fan(const cmat& U, std::string name = "") {
+    QCircuit& gate_fan(const cmat& U, std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
-                throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::gate_fan()");
+                throw exception::MatrixNotSquare("qpp::QCircuit::gate_fan()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::gate_fan()");
+                    "qpp::QCircuit::gate_fan()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1053,9 +1032,8 @@ class QCircuitDescription : public IDisplay, public IJSON {
      *
      * \return Reference to the current instance
      */
-    QCircuitDescription& gate_custom(const cmat& U,
-                                     const std::vector<idx>& target,
-                                     std::string name = "") {
+    QCircuit& gate_custom(const cmat& U, const std::vector<idx>& target,
+                          std::string name = "") {
         // EXCEPTION CHECKS
 
         idx n = static_cast<idx>(target.size());
@@ -1064,30 +1042,27 @@ class QCircuitDescription : public IDisplay, public IJSON {
         try {
             // check valid target
             if (target.size() == 0)
-                throw exception::ZeroSize(
-                    "qpp::QCircuitDescription::gate_custom()");
+                throw exception::ZeroSize("qpp::QCircuit::gate_custom()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::gate_custom()");
+                    throw exception::OutOfRange("qpp::QCircuit::gate_custom()");
                 // check target was not measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuitDescription::gate_custom()");
+                        "qpp::QCircuit::gate_custom()");
             }
             // check no duplicates target
             if (!internal::check_no_duplicates(target))
-                throw exception::Duplicates(
-                    "qpp::QCircuitDescription::gate_custom()");
+                throw exception::Duplicates("qpp::QCircuit::gate_custom()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
                 throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::gate_custom()");
+                    "qpp::QCircuit::gate_custom()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::gate_custom()");
+                    "qpp::QCircuit::gate_custom()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1113,12 +1088,12 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param swap Swaps the qubits at the end (true by default)
      * \return Reference to the current instance
      */
-    QCircuitDescription& QFT(const std::vector<idx>& target,
-                             bool swap QPP_UNUSED_ = true) {
+    QCircuit& QFT(const std::vector<idx>& target,
+                  bool swap QPP_UNUSED_ = true) {
         // EXCEPTION CHECKS
 
         try {
-            throw exception::NotImplemented("qpp::QCircuitDescription::QFT()");
+            throw exception::NotImplemented("qpp::QCircuit::QFT()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1142,12 +1117,12 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param swap Swaps the qubits at the end (true by default)
      * \return Reference to the current instance
      */
-    QCircuitDescription& TFQ(const std::vector<idx>& target,
-                             bool swap QPP_UNUSED_ = true) {
+    QCircuit& TFQ(const std::vector<idx>& target,
+                  bool swap QPP_UNUSED_ = true) {
         // EXCEPTION CHECKS
 
         try {
-            throw exception::NotImplemented("qpp::QCircuitDescription::TFQ()");
+            throw exception::NotImplemented("qpp::QCircuit::TFQ()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1171,26 +1146,22 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& CTRL(const cmat& U, idx ctrl, idx target,
-                              std::string name = "") {
+    QCircuit& CTRL(const cmat& U, idx ctrl, idx target, std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
             // check valid ctrl and target
             if (ctrl >= nq_ || target >= nq_ || ctrl == target)
-                throw exception::OutOfRange("qpp::QCircuitDescription::CTRL()");
+                throw exception::OutOfRange("qpp::QCircuit::CTRL()");
             if (get_measured(ctrl) || get_measured(target))
-                throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuitDescription::CTRL()");
+                throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
-                throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::CTRL()");
+                throw exception::MatrixNotSquare("qpp::QCircuit::CTRL()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
-                throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::CTRL()");
+                throw exception::DimsMismatchMatrix("qpp::QCircuit::CTRL()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1219,49 +1190,43 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& CTRL(const cmat& U, idx ctrl,
-                              const std::vector<idx>& target,
-                              std::string name = "") {
+    QCircuit& CTRL(const cmat& U, idx ctrl, const std::vector<idx>& target,
+                   std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
             // check valid ctrl
             if (ctrl >= nq_)
-                throw exception::OutOfRange("qpp::QCircuitDescription::CTRL()");
+                throw exception::OutOfRange("qpp::QCircuit::CTRL()");
             if (get_measured(ctrl))
-                throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuitDescription::CTRL()");
+                throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()");
 
             // check valid target
             if (target.size() == 0)
-                throw exception::ZeroSize("qpp::QCircuitDescription::CTRL()");
+                throw exception::ZeroSize("qpp::QCircuit::CTRL()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::CTRL()");
+                    throw exception::OutOfRange("qpp::QCircuit::CTRL()");
                 // check target was not measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuitDescription::CTRL()");
+                        "qpp::QCircuit::CTRL()");
             }
             // check no duplicates target
             if (!internal::check_no_duplicates(target))
-                throw exception::Duplicates("qpp::QCircuitDescription::CTRL()");
+                throw exception::Duplicates("qpp::QCircuit::CTRL()");
 
             // check ctrl and target don't share common elements
             for (auto&& elem : target)
                 if (elem == ctrl)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::CTRL()");
+                    throw exception::OutOfRange("qpp::QCircuit::CTRL()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
-                throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::CTRL()");
+                throw exception::MatrixNotSquare("qpp::QCircuit::CTRL()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
-                throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::CTRL()");
+                throw exception::DimsMismatchMatrix("qpp::QCircuit::CTRL()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1288,46 +1253,41 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& CTRL(const cmat& U, const std::vector<idx>& ctrl,
-                              idx target, std::string name = "") {
+    QCircuit& CTRL(const cmat& U, const std::vector<idx>& ctrl, idx target,
+                   std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
             // check valid ctrl
             for (auto&& elem : ctrl) {
                 if (elem >= nq_)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::CTRL()");
+                    throw exception::OutOfRange("qpp::QCircuit::CTRL()");
                 // check ctrl was not measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuitDescription::CTRL()");
+                        "qpp::QCircuit::CTRL()");
             }
             // check no duplicates ctrl
             if (!internal::check_no_duplicates(ctrl))
-                throw exception::Duplicates("qpp::QCircuitDescription::CTRL()");
+                throw exception::Duplicates("qpp::QCircuit::CTRL()");
 
             // check valid target
             if (target >= nq_)
-                throw exception::OutOfRange("qpp::QCircuitDescription::CTRL()");
+                throw exception::OutOfRange("qpp::QCircuit::CTRL()");
             if (get_measured(target))
-                throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuitDescription::CTRL()");
+                throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()");
 
             // check ctrl and target don't share common elements
             for (auto&& elem : ctrl)
                 if (elem == target)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::CTRL()");
+                    throw exception::OutOfRange("qpp::QCircuit::CTRL()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
-                throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::CTRL()");
+                throw exception::MatrixNotSquare("qpp::QCircuit::CTRL()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
-                throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::CTRL()");
+                throw exception::DimsMismatchMatrix("qpp::QCircuit::CTRL()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1356,57 +1316,51 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& CTRL(const cmat& U, const std::vector<idx>& ctrl,
-                              const std::vector<idx>& target,
-                              std::string name = "") {
+    QCircuit& CTRL(const cmat& U, const std::vector<idx>& ctrl,
+                   const std::vector<idx>& target, std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
             // check valid ctrl
             for (auto&& elem : ctrl) {
                 if (elem >= nq_)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::CTRL()");
+                    throw exception::OutOfRange("qpp::QCircuit::CTRL()");
                 // check ctrl was not measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuitDescription::CTRL()");
+                        "qpp::QCircuit::CTRL()");
             }
             // check no duplicates ctrl
             if (!internal::check_no_duplicates(ctrl))
-                throw exception::Duplicates("qpp::QCircuitDescription::CTRL()");
+                throw exception::Duplicates("qpp::QCircuit::CTRL()");
 
             // check valid target
             if (target.size() == 0)
-                throw exception::ZeroSize("qpp::QCircuitDescription::CTRL()");
+                throw exception::ZeroSize("qpp::QCircuit::CTRL()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::CTRL()");
+                    throw exception::OutOfRange("qpp::QCircuit::CTRL()");
                 // check target was not measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuitDescription::CTRL()");
+                        "qpp::QCircuit::CTRL()");
             }
             // check no duplicates target
             if (!internal::check_no_duplicates(target))
-                throw exception::Duplicates("qpp::QCircuitDescription::CTRL()");
+                throw exception::Duplicates("qpp::QCircuit::CTRL()");
 
             // check ctrl and target don't share common elements
             for (auto&& elem_ctrl : ctrl)
                 for (auto&& elem_target : target)
                     if (elem_ctrl == elem_target)
-                        throw exception::OutOfRange(
-                            "qpp::QCircuitDescription::CTRL()");
+                        throw exception::OutOfRange("qpp::QCircuit::CTRL()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
-                throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::CTRL()");
+                throw exception::MatrixNotSquare("qpp::QCircuit::CTRL()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
-                throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::CTRL()");
+                throw exception::DimsMismatchMatrix("qpp::QCircuit::CTRL()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1435,10 +1389,9 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& CTRL_custom(const cmat& U,
-                                     const std::vector<idx>& ctrl,
-                                     const std::vector<idx>& target,
-                                     std::string name = "") {
+    QCircuit& CTRL_custom(const cmat& U, const std::vector<idx>& ctrl,
+                          const std::vector<idx>& target,
+                          std::string name = "") {
         // EXCEPTION CHECKS
 
         idx n = static_cast<idx>(target.size());
@@ -1448,30 +1401,26 @@ class QCircuitDescription : public IDisplay, public IJSON {
             // check valid ctrl
             for (auto&& elem : ctrl) {
                 if (elem >= nq_)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::CTRL_custom()");
+                    throw exception::OutOfRange("qpp::QCircuit::CTRL_custom()");
                 // check ctrl was not measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuitDescription::CTRL_custom()");
+                        "qpp::QCircuit::CTRL_custom()");
             }
             // check no duplicates ctrl
             if (!internal::check_no_duplicates(ctrl))
-                throw exception::Duplicates(
-                    "qpp::QCircuitDescription::CTRL_custom()");
+                throw exception::Duplicates("qpp::QCircuit::CTRL_custom()");
 
             // check valid target
             if (target.size() == 0)
-                throw exception::ZeroSize(
-                    "qpp::QCircuitDescription::CTRL_custom()");
+                throw exception::ZeroSize("qpp::QCircuit::CTRL_custom()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::CTRL_custom()");
+                    throw exception::OutOfRange("qpp::QCircuit::CTRL_custom()");
                 // check target was not measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuitDescription::CTRL_custom()");
+                        "qpp::QCircuit::CTRL_custom()");
             }
 
             // check ctrl and target don't share common elements
@@ -1479,16 +1428,16 @@ class QCircuitDescription : public IDisplay, public IJSON {
                 for (auto&& elem_target : target)
                     if (elem_ctrl == elem_target)
                         throw exception::OutOfRange(
-                            "qpp::QCircuitDescription::CTRL_custom()");
+                            "qpp::QCircuit::CTRL_custom()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
                 throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::CTRL_custom()");
+                    "qpp::QCircuit::CTRL_custom()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::CTRL_custom()");
+                    "qpp::QCircuit::CTRL_custom()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1515,27 +1464,23 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& cCTRL(const cmat& U, idx ctrl_dit, idx target,
-                               std::string name = "") {
+    QCircuit& cCTRL(const cmat& U, idx ctrl_dit, idx target,
+                    std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
             // check valid ctrl_dit and target
             if (ctrl_dit >= nc_ || target >= nq_)
-                throw exception::OutOfRange(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
             if (get_measured(target))
-                throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::QuditAlreadyMeasured("qpp::QCircuit::cCTRL()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
-                throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::MatrixNotSquare("qpp::QCircuit::cCTRL()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
-                throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::DimsMismatchMatrix("qpp::QCircuit::cCTRL()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1564,42 +1509,36 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& cCTRL(const cmat& U, idx ctrl_dit,
-                               const std::vector<idx>& target,
-                               std::string name = "") {
+    QCircuit& cCTRL(const cmat& U, idx ctrl_dit, const std::vector<idx>& target,
+                    std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
             // check valid ctrl_dit
             if (ctrl_dit >= nc_)
-                throw exception::OutOfRange(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
 
             // check valid target
             if (target.size() == 0)
-                throw exception::ZeroSize("qpp::QCircuitDescription::cCTRL()");
+                throw exception::ZeroSize("qpp::QCircuit::cCTRL()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::cCTRL()");
+                    throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
                 // check target was not measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuitDescription::cCTRL()");
+                        "qpp::QCircuit::cCTRL()");
             }
             // check no duplicates target
             if (!internal::check_no_duplicates(target))
-                throw exception::Duplicates(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::Duplicates("qpp::QCircuit::cCTRL()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
-                throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::MatrixNotSquare("qpp::QCircuit::cCTRL()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
-                throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::DimsMismatchMatrix("qpp::QCircuit::cCTRL()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1626,39 +1565,33 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& cCTRL(const cmat& U, const std::vector<idx>& ctrl_dits,
-                               idx target, std::string name = "") {
+    QCircuit& cCTRL(const cmat& U, const std::vector<idx>& ctrl_dits,
+                    idx target, std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
             // check valid ctrl_dits
             for (auto&& elem : ctrl_dits) {
                 if (elem >= nc_)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::cCTRL()");
+                    throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
             }
             // check no duplicates ctrl_dits
             if (!internal::check_no_duplicates(ctrl_dits))
-                throw exception::Duplicates(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::Duplicates("qpp::QCircuit::cCTRL()");
 
             // check valid target
             if (target >= nq_)
-                throw exception::OutOfRange(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
             // check target was not measured before
             if (get_measured(target))
-                throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::QuditAlreadyMeasured("qpp::QCircuit::cCTRL()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
-                throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::MatrixNotSquare("qpp::QCircuit::cCTRL()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
-                throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::DimsMismatchMatrix("qpp::QCircuit::cCTRL()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1687,48 +1620,41 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& cCTRL(const cmat& U, const std::vector<idx>& ctrl_dits,
-                               const std::vector<idx>& target,
-                               std::string name = "") {
+    QCircuit& cCTRL(const cmat& U, const std::vector<idx>& ctrl_dits,
+                    const std::vector<idx>& target, std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
             // check valid ctrl_dits
             for (auto&& elem : ctrl_dits) {
                 if (elem >= nc_)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::cCTRL()");
+                    throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
             }
             // check no duplicates ctrl_dits
             if (!internal::check_no_duplicates(ctrl_dits))
-                throw exception::Duplicates(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::Duplicates("qpp::QCircuit::cCTRL()");
 
             // check valid target
             if (target.size() == 0)
-                throw exception::ZeroSize("qpp::QCircuitDescription::cCTRL()");
+                throw exception::ZeroSize("qpp::QCircuit::cCTRL()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::cCTRL()");
+                    throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
                 // check target was not measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuitDescription::cCTRL()");
+                        "qpp::QCircuit::cCTRL()");
             }
             // check no duplicates target
             if (!internal::check_no_duplicates(target))
-                throw exception::Duplicates(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::Duplicates("qpp::QCircuit::cCTRL()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
-                throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::MatrixNotSquare("qpp::QCircuit::cCTRL()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
-                throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::cCTRL()");
+                throw exception::DimsMismatchMatrix("qpp::QCircuit::cCTRL()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1757,10 +1683,9 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuitDescription& cCTRL_custom(const cmat& U,
-                                      const std::vector<idx>& ctrl_dits,
-                                      const std::vector<idx>& target,
-                                      std::string name = "") {
+    QCircuit& cCTRL_custom(const cmat& U, const std::vector<idx>& ctrl_dits,
+                           const std::vector<idx>& target,
+                           std::string name = "") {
         // EXCEPTION CHECKS
 
         idx n = static_cast<idx>(target.size());
@@ -1771,39 +1696,36 @@ class QCircuitDescription : public IDisplay, public IJSON {
             for (auto&& elem : ctrl_dits) {
                 if (elem >= nc_)
                     throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::cCTRL_custom()");
+                        "qpp::QCircuit::cCTRL_custom()");
             }
             // check no duplicates ctrl_dits
             if (!internal::check_no_duplicates(ctrl_dits))
-                throw exception::Duplicates(
-                    "qpp::QCircuitDescription::cCTRL_custom()");
+                throw exception::Duplicates("qpp::QCircuit::cCTRL_custom()");
 
             // check valid target
             if (target.size() == 0)
-                throw exception::ZeroSize(
-                    "qpp::QCircuitDescription::cCTRL_custom()");
+                throw exception::ZeroSize("qpp::QCircuit::cCTRL_custom()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
                     throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::cCTRL_custom()");
+                        "qpp::QCircuit::cCTRL_custom()");
                 // check target was not measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuitDescription::cCTRL_custom()");
+                        "qpp::QCircuit::cCTRL_custom()");
             }
             // check no duplicates target
             if (!internal::check_no_duplicates(target))
-                throw exception::Duplicates(
-                    "qpp::QCircuitDescription::cCTRL_custom()");
+                throw exception::Duplicates("qpp::QCircuit::cCTRL_custom()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
                 throw exception::MatrixNotSquare(
-                    "qpp::QCircuitDescription::cCTRL_custom()");
+                    "qpp::QCircuit::cCTRL_custom()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuitDescription::cCTRL_custom()");
+                    "qpp::QCircuit::cCTRL_custom()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1828,23 +1750,19 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional measurement name, default is "Measure Z"
      * \return Reference to the current instance
      */
-    QCircuitDescription& measureZ(idx target, idx c_reg,
-                                  std::string name = "") {
+    QCircuit& measureZ(idx target, idx c_reg, std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
             // measuring non-existing qudit
             if (target >= nq_)
-                throw exception::OutOfRange(
-                    "qpp::QCircuitDescription::measureZ()");
+                throw exception::OutOfRange("qpp::QCircuit::measureZ()");
             // trying to put the result into a non-existing classical slot
             if (c_reg >= nc_)
-                throw exception::OutOfRange(
-                    "qpp::QCircuitDescription::measureZ()");
+                throw exception::OutOfRange("qpp::QCircuit::measureZ()");
             // qudit was measured before
             if (get_measured(target))
-                throw exception::QuditAlreadyMeasured(
-                    "qpp:QCircuitDescription::measureZ");
+                throw exception::QuditAlreadyMeasured("qpp:QCircuit::measureZ");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1875,23 +1793,20 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional measurement name
      * \return Reference to the current instance
      */
-    QCircuitDescription& measureV(const cmat& V, idx target, idx c_reg,
-                                  std::string name = "") {
+    QCircuit& measureV(const cmat& V, idx target, idx c_reg,
+                       std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
             // measuring non-existing qudit
             if (target >= nq_)
-                throw exception::OutOfRange(
-                    "qpp::QCircuitDescription::measureV()");
+                throw exception::OutOfRange("qpp::QCircuit::measureV()");
             // trying to put the result into a non-existing classical slot
             if (c_reg >= nc_)
-                throw exception::OutOfRange(
-                    "qpp::QCircuitDescription::measureV()");
+                throw exception::OutOfRange("qpp::QCircuit::measureV()");
             // qudit was measured before
             if (get_measured(target))
-                throw exception::QuditAlreadyMeasured(
-                    "qpp:QCircuitDescription::measureV");
+                throw exception::QuditAlreadyMeasured("qpp:QCircuit::measureV");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1922,38 +1837,34 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \param name Optional measurement name
      * \return Reference to the current instance
      */
-    QCircuitDescription& measureV(const cmat& V, const std::vector<idx>& target,
-                                  idx c_reg, std::string name = "") {
+    QCircuit& measureV(const cmat& V, const std::vector<idx>& target, idx c_reg,
+                       std::string name = "") {
         // EXCEPTION CHECKS
 
         try {
             // check valid target
             if (target.size() == 0)
-                throw exception::ZeroSize(
-                    "qpp::QCircuitDescription::measureV()");
+                throw exception::ZeroSize("qpp::QCircuit::measureV()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuitDescription::measureV()");
+                    throw exception::OutOfRange("qpp::QCircuit::measureV()");
                 // check target was not measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuitDescription::measureV()");
+                        "qpp::QCircuit::measureV()");
             }
             // check no duplicates target
             if (!internal::check_no_duplicates(target))
-                throw exception::Duplicates(
-                    "qpp::QCircuitDescription::measureV()");
+                throw exception::Duplicates("qpp::QCircuit::measureV()");
 
             // trying to put the result into a non-existing classical slot
             if (c_reg >= nc_)
-                throw exception::OutOfRange(
-                    "qpp::QCircuitDescription::measureV()");
+                throw exception::OutOfRange("qpp::QCircuit::measureV()");
             // qudit was measured before
             for (auto&& elem : target)
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuitDescription::measureV");
+                        "qpp::QCircuit::measureV");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1975,7 +1886,7 @@ class QCircuitDescription : public IDisplay, public IJSON {
      * \brief qpp::IDisplay::display() override
      *
      * Writes to the output stream a textual representation of the quantum
-     * circuit description
+     * circuit
      *
      * \param os Output stream passed by reference
      * \return Reference to the output stream
@@ -2001,7 +1912,7 @@ class QCircuitDescription : public IDisplay, public IJSON {
     /**
      * \brief qpp::IJOSN::to_JSON() override
      *
-     * Displays the quantum circuit description in JSON format
+     * Displays the quantum circuit in JSON format
      *
      * \param enclosed_in_curly_brackets If true, encloses the result in curly
      * brackets
@@ -2064,9 +1975,8 @@ class QCircuitDescription : public IDisplay, public IJSON {
                 ss.clear();
                 ss << disp(measurements_[pos].target_, ", ");
                 result += "\"target\" : " + ss.str() + ", ";
-                result +=
-                    "\"c_reg\" : " + std::to_string(measurements_[pos].c_reg_) +
-                    ", ";
+                result += "\"c_reg\" : " +
+                          std::to_string(measurements_[pos].c_reg_) + ", ";
                 result += "\"name\" : ";
                 result += "\"" + measurements_[pos].name_ + "\"" + "}";
 
@@ -2095,18 +2005,18 @@ class QCircuitDescription : public IDisplay, public IJSON {
 }; // namespace qpp
 
 /**
- * \class qpp::QCircuit
+ * \class qpp::QEngine
  * \brief Quantum circuit simulator class
- * \see qpp::QCircuitDescription
+ * \see qpp::QCircuit
  */
-class QCircuit : public IDisplay, public IJSON {
+class QEngine : public IDisplay, public IJSON {
   protected:
-    const QCircuitDescription& qcd_; ///< quantum circuit description
-    ket psi_;                        ///< state vector
-    std::vector<idx> dits_;          ///< classical dits
-    std::vector<double> probs_;      ///< measurement probabilities
-    std::vector<idx> subsys_; ///< keeps track of the measured subsystems,
-                              ///< relabel them after measurements
+    const QCircuit& qcd_;       ///< quantum circuit
+    ket psi_;                   ///< state vector
+    std::vector<idx> dits_;     ///< classical dits
+    std::vector<double> probs_; ///< measurement probabilities
+    std::vector<idx> subsys_;   ///< keeps track of the measured subsystems,
+                                ///< relabel them after measurements
 
     /**
      * \brief Marks qudit \a i as measured then re-label accordingly the
@@ -2116,7 +2026,7 @@ class QCircuit : public IDisplay, public IJSON {
     void set_measured_(idx i) {
         if (get_measured(i))
             throw exception::QuditAlreadyMeasured(
-                "qpp::QCircuit::set_measured_()");
+                "qpp::QEngine::set_measured_()");
         subsys_[i] = idx_infty; // set qudit i to measured state
         for (idx m = i; m < qcd_.get_nq(); ++m) {
             if (!get_measured(m)) {
@@ -2137,7 +2047,7 @@ class QCircuit : public IDisplay, public IJSON {
         for (idx i = 0; i < vsize; ++i) {
             if (get_measured(v[i]))
                 throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuit::get_relative_pos_()");
+                    "qpp::QEngine::get_relative_pos_()");
             v[i] = subsys_[v[i]];
         }
         return v;
@@ -2148,31 +2058,31 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Constructs a quantum circuit out of a quantum circuit
      * description
      *
-     * \note The quantum circuit description must be an lvalue
-     * \see qpp::QCircuit(QCircuitDescription&&)
+     * \note The quantum circuit must be an lvalue
+     * \see qpp::QEngine(QCircuit&&)
      *
      * \note The initial underlying quantum state is set to
      * \f$|0\rangle^{\otimes n}\f$
      *
-     * \param qcd Quantum circuit description
+     * \param qcd Quantum circuit
      */
-    explicit QCircuit(const QCircuitDescription& qcd)
-        : qcd_{qcd}, psi_{States::get_instance().zero(qcd.get_nq(),
-                                                      qcd.get_d())},
+    explicit QEngine(const QCircuit& qcd)
+        : qcd_{qcd},
+          psi_{States::get_instance().zero(qcd.get_nq(), qcd.get_d())},
           dits_(qcd.get_nc(), 0), probs_(qcd.get_nc(), 0),
           subsys_(qcd.get_nq(), 0) {
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
     }
 
     /**
-     * \brief Disables rvalue QCircuitDescription
+     * \brief Disables rvalue QCircuit
      */
-    QCircuit(QCircuitDescription&&) = delete;
+    QEngine(QCircuit&&) = delete;
 
     /**
      * \brief Default virtual destructor
      */
-    virtual ~QCircuit() = default;
+    virtual ~QEngine() = default;
 
     // getters
     /**
@@ -2205,7 +2115,7 @@ class QCircuit : public IDisplay, public IJSON {
      */
     idx get_dit(idx i) const {
         if (i > qcd_.get_nc())
-            throw exception::OutOfRange("qpp::QCircuit::get_dit()");
+            throw exception::OutOfRange("qpp::QEngine::get_dit()");
 
         return dits_[i];
     }
@@ -2259,13 +2169,11 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Quantum circuit description
+     * \brief Quantum circuit
      *
-     * \return Quantum circuit description
+     * \return Quantum circuit
      */
-    const QCircuitDescription& get_circuit_description() const noexcept {
-        return qcd_;
-    }
+    const QCircuit& get_circuit_description() const noexcept { return qcd_; }
     // end getters
 
     // setters
@@ -2276,9 +2184,9 @@ class QCircuit : public IDisplay, public IJSON {
      * \param value Classical dit value
      * \return Reference to the current instance
      */
-    QCircuit& set_dit(idx i, idx value) {
+    QEngine& set_dit(idx i, idx value) {
         if (i > qcd_.get_nc())
-            throw exception::OutOfRange("qpp::QCircuit::set_dit()");
+            throw exception::OutOfRange("qpp::QEngine::set_dit()");
         dits_[i] = value;
 
         return *this;
@@ -2320,17 +2228,17 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \param elem Step to be executed
      */
-    void execute(const QCircuitDescription::iterator::value_type& elem) {
+    void execute(const QCircuit::iterator::value_type& elem) {
         // EXCEPTION CHECKS
 
-        // iterator must point to the same quantum circuit description
+        // iterator must point to the same quantum circuit
         if (elem.value_type_qcd_ != std::addressof(qcd_))
-            throw exception::InvalidIterator("qpp::QCircuit::execute()");
+            throw exception::InvalidIterator("qpp::QEngine::execute()");
         // the rest of exceptions are caught by the iterator::operator*()
         // END EXCEPTION CHECKS
 
         // Gate step
-        if (elem.type_ == QCircuitDescription::StepType::GATE) {
+        if (elem.type_ == QCircuit::StepType::GATE) {
             auto gates = qcd_.get_gates();
             idx q_ip =
                 std::distance(std::begin(qcd_.get_gates()), elem.gates_ip_);
@@ -2340,36 +2248,36 @@ class QCircuit : public IDisplay, public IJSON {
                 get_relative_pos_(gates[q_ip].target_);
 
             switch (gates[q_ip].gate_type_) {
-            case QCircuitDescription::GateType::NONE:
+            case QCircuit::GateType::NONE:
                 break;
-            case QCircuitDescription::GateType::SINGLE:
-            case QCircuitDescription::GateType::TWO:
-            case QCircuitDescription::GateType::THREE:
-            case QCircuitDescription::GateType::CUSTOM:
+            case QCircuit::GateType::SINGLE:
+            case QCircuit::GateType::TWO:
+            case QCircuit::GateType::THREE:
+            case QCircuit::GateType::CUSTOM:
                 psi_ = apply(psi_, gates[q_ip].gate_, target_rel_pos,
                              qcd_.get_d());
                 break;
-            case QCircuitDescription::GateType::FAN:
+            case QCircuit::GateType::FAN:
                 for (idx m = 0; m < gates[q_ip].target_.size(); ++m)
                     psi_ = apply(psi_, gates[q_ip].gate_, {target_rel_pos[m]},
                                  qcd_.get_d());
                 break;
-            case QCircuitDescription::GateType::QFT:
-            case QCircuitDescription::GateType::TFQ:
-            case QCircuitDescription::GateType::SINGLE_CTRL_SINGLE_TARGET:
-            case QCircuitDescription::GateType::SINGLE_CTRL_MULTIPLE_TARGET:
-            case QCircuitDescription::GateType::MULTIPLE_CTRL_SINGLE_TARGET:
-            case QCircuitDescription::GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
-            case QCircuitDescription::GateType::CUSTOM_CTRL:
+            case QCircuit::GateType::QFT:
+            case QCircuit::GateType::TFQ:
+            case QCircuit::GateType::SINGLE_CTRL_SINGLE_TARGET:
+            case QCircuit::GateType::SINGLE_CTRL_MULTIPLE_TARGET:
+            case QCircuit::GateType::MULTIPLE_CTRL_SINGLE_TARGET:
+            case QCircuit::GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
+            case QCircuit::GateType::CUSTOM_CTRL:
                 ctrl_rel_pos = get_relative_pos_(gates[q_ip].ctrl_);
                 psi_ = applyCTRL(psi_, gates[q_ip].gate_, ctrl_rel_pos,
                                  target_rel_pos, qcd_.get_d());
                 break;
-            case QCircuitDescription::GateType::SINGLE_cCTRL_SINGLE_TARGET:
-            case QCircuitDescription::GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
-            case QCircuitDescription::GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
-            case QCircuitDescription::GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
-            case QCircuitDescription::GateType::CUSTOM_cCTRL:
+            case QCircuit::GateType::SINGLE_cCTRL_SINGLE_TARGET:
+            case QCircuit::GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
+            case QCircuit::GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
+            case QCircuit::GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
+            case QCircuit::GateType::CUSTOM_cCTRL:
                 if (dits_.size() == 0) {
                     psi_ = apply(psi_, gates[q_ip].gate_, target_rel_pos,
                                  qcd_.get_d());
@@ -2391,7 +2299,7 @@ class QCircuit : public IDisplay, public IJSON {
             } // end switch on gate type
         }     // end if gate step
         // Measurement step
-        else if (elem.type_ == QCircuitDescription::StepType::MEASUREMENT) {
+        else if (elem.type_ == QCircuit::StepType::MEASUREMENT) {
             auto measurements = qcd_.get_measurements();
             idx m_ip = std::distance(std::begin(qcd_.get_measurements()),
                                      elem.measurements_ip_);
@@ -2407,16 +2315,16 @@ class QCircuit : public IDisplay, public IJSON {
             std::vector<cmat> states;
 
             switch (measurements[m_ip].measurement_type_) {
-            case QCircuitDescription::MeasureType::NONE:
+            case QCircuit::MeasureType::NONE:
                 break;
-            case QCircuitDescription::MeasureType::MEASURE_Z:
+            case QCircuit::MeasureType::MEASURE_Z:
                 std::tie(resZ, probZ, psi_) =
                     measure_seq(psi_, target_rel_pos, qcd_.get_d());
                 dits_[measurements[m_ip].c_reg_] = resZ[0];
                 probs_[measurements[m_ip].c_reg_] = probZ;
                 set_measured_(measurements[m_ip].target_[0]);
                 break;
-            case QCircuitDescription::MeasureType::MEASURE_V:
+            case QCircuit::MeasureType::MEASURE_V:
                 std::tie(mres, probs, states) =
                     measure(psi_, measurements[m_ip].mats_[0], target_rel_pos,
                             qcd_.get_d());
@@ -2425,7 +2333,7 @@ class QCircuit : public IDisplay, public IJSON {
                 probs_[measurements[m_ip].c_reg_] = probs[mres];
                 set_measured_(measurements[m_ip].target_[0]);
                 break;
-            case QCircuitDescription::MeasureType::MEASURE_V_MANY:
+            case QCircuit::MeasureType::MEASURE_V_MANY:
                 std::tie(mres, probs, states) =
                     measure(psi_, measurements[m_ip].mats_[0], target_rel_pos,
                             qcd_.get_d());
@@ -2447,7 +2355,7 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \param it Iterator to the step to be executed
      */
-    void execute(const QCircuitDescription::iterator& it) { execute(*it); }
+    void execute(const QCircuit::iterator& it) { execute(*it); }
 
     /**
      * \brief qpp::IJOSN::to_JSON() override
@@ -2487,7 +2395,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         return result;
     }
-}; /* class QCircuit */
+}; /* class QEngine */
 
 } /* namespace qpp */
 

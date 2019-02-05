@@ -32,10 +32,10 @@ In progress - pre-release
       JSON serialization support
     - Added new classes in the new header file "classes/circuits.h" for
       simulating qudit quantum circuits:
-          - qpp::QCircuitDescription - Quantum circuit description, does not
+          - qpp::QCircuit - Quantum circuit description, does not
                                        effectively perform any operations
           - qpp::IQCircuit           - Abstract base class for quantum circuits
-          - qpp::QCircuit            - Concrete class for simulation of
+          - qpp::QEngine            - Concrete class for simulation of
                                        noiseless quantum circuits
       BE AWARE: this is (still) work in progress, not yet complete, bugs may
       still lingering around
