@@ -38,10 +38,10 @@ int main() {
     std::cout << ">> END CIRCUIT\n\n";
 
     // execute the circuit
-    for (auto&& elem : qc)
-        engine.execute(elem);
+    for (auto&& step : qc)
+        engine.execute(step);
 
-    // display the  measurement statistics
+    // display the measurement statistics
     std::cout << ">> BEGIN AFTER RUNNING\n";
     std::cout << engine << '\n';
     std::cout << ">> END AFTER RUNNING\n\n";
