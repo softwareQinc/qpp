@@ -5,7 +5,7 @@ var dir_b02e4219757ae4e3a0f1714873865bbf =
       [ "GateStep", "structqpp_1_1_q_circuit_1_1_gate_step.html", "structqpp_1_1_q_circuit_1_1_gate_step" ],
       [ "MeasureStep", "structqpp_1_1_q_circuit_1_1_measure_step.html", "structqpp_1_1_q_circuit_1_1_measure_step" ],
       [ "iterator", "classqpp_1_1_q_circuit_1_1iterator.html", "classqpp_1_1_q_circuit_1_1iterator" ],
-      [ "value_type_", "structqpp_1_1_q_circuit_1_1iterator_1_1value__type__.html", "structqpp_1_1_q_circuit_1_1iterator_1_1value__type__" ],
+      [ "value_type_", "classqpp_1_1_q_circuit_1_1iterator_1_1value__type__.html", "classqpp_1_1_q_circuit_1_1iterator_1_1value__type__" ],
       [ "QEngine", "classqpp_1_1_q_engine.html", "classqpp_1_1_q_engine" ]
     ] ],
     [ "codes.h", "codes_8h.html", [

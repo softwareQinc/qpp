@@ -1,10 +1,10 @@
 <map id="qpp::QCircuit::iterator" name="qpp::QCircuit::iterator">
-<area shape="rect" id="node2" href="$structqpp_1_1_q_circuit_1_1iterator_1_1value__type__.html" title="qpp::QCircuit::iterator\l::value_type_" alt="" coords="1296,138,1445,179"/>
-<area shape="rect" id="node3" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="741,16,840,43"/>
-<area shape="rect" id="node12" href="$classqpp_1_1_q_circuit.html" title="Quantum circuit class. " alt="" coords="1034,224,1134,251"/>
-<area shape="rect" id="node5" href="$structqpp_1_1_q_circuit_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. " alt="" coords="411,89,597,116"/>
-<area shape="rect" id="node11" href="$structqpp_1_1_q_circuit_1_1_gate_step.html" title="One step consisting only of gates/operators in the circuit. " alt="" coords="422,160,586,187"/>
-<area shape="rect" id="node8" title="STL class. " alt="" coords="209,180,289,207"/>
-<area shape="rect" id="node9" title="STL class. " alt="" coords="5,173,132,214"/>
-<area shape="rect" id="node13" href="$classqpp_1_1_i_j_s_o_n.html" title="Abstract class (interface) that mandates the definition of very basic JSON serialization support..." alt="" coords="745,275,836,301"/>
+<area shape="rect" id="node2" href="$classqpp_1_1_q_circuit_1_1iterator_1_1value__type__.html" title="qpp::QCircuit::iterator\l::value_type_" alt="" coords="1379,159,1528,201"/>
+<area shape="rect" id="node3" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="824,25,923,52"/>
+<area shape="rect" id="node12" href="$classqpp_1_1_q_circuit.html" title="Quantum circuit class. " alt="" coords="1117,245,1217,272"/>
+<area shape="rect" id="node5" href="$structqpp_1_1_q_circuit_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. " alt="" coords="411,60,597,87"/>
+<area shape="rect" id="node11" href="$structqpp_1_1_q_circuit_1_1_gate_step.html" title="One step consisting only of gates/operators in the circuit. " alt="" coords="422,176,586,203"/>
+<area shape="rect" id="node8" title="STL class. " alt="" coords="209,223,289,249"/>
+<area shape="rect" id="node9" title="STL class. " alt="" coords="5,215,132,257"/>
+<area shape="rect" id="node13" href="$classqpp_1_1_i_j_s_o_n.html" title="Abstract class (interface) that mandates the definition of very basic JSON serialization support..." alt="" coords="828,489,919,516"/>
 </map>

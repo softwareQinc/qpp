@@ -39,11 +39,20 @@ namespace qpp {
  * \see qpp::QEngine
  */
 class QCircuit : public IDisplay, public IJSON {
+    friend class QEngine;
     const idx nq_;               ///< number of qudits
     const idx nc_;               ///< number of classical "dits"
     const idx d_;                ///< qudit dimension
     std::string name_;           ///< optional circuit name
     std::vector<bool> measured_; ///< keeps track of the measured qudits
+
+    std::unordered_map<std::string, idx>
+        depth_; ///< keeps track of the gate depths
+    std::unordered_map<std::string, idx>
+        count_; ///< keeps track of the gate counts
+    std::unordered_map<std::string, idx>
+        measurement_count_; ///< keeps track of the measurement counts
+
   public:
     /**
      * \brief Type of gate being executed in a gate step
@@ -324,6 +333,22 @@ class QCircuit : public IDisplay, public IJSON {
     std::vector<MeasureStep> measurements_{}; ///< measurements
     std::vector<StepType> step_types_{};      ///< type of each step
 
+    /**
+     * \brief Vector of qpp::QCircuit::MeasureStep
+     *
+     * \return Vector of qpp::QCircuit::MeasureStep
+     */
+    const std::vector<MeasureStep>& get_measurements_() const noexcept {
+        return measurements_;
+    }
+
+    /**
+     * \brief Vector of qpp::QCircuit::GateStep
+     *
+     * \return Vector of qpp::QCircuit::GateStep
+     */
+    const std::vector<GateStep>& get_gates_() const noexcept { return gates_; }
+
   public:
     /**
      * \class qpp::QCircuit::iterator
@@ -334,7 +359,8 @@ class QCircuit : public IDisplay, public IJSON {
         ///< non-owning pointer to const quantum circuit
         const QCircuit* qcd_{nullptr};
 
-        struct value_type_ : public IDisplay {
+        class value_type_ : public IDisplay {
+          public:
             ///< non-owning pointer to the parent iterator
             const QCircuit* value_type_qcd_;
 
@@ -367,6 +393,7 @@ class QCircuit : public IDisplay, public IJSON {
              */
             value_type_& operator=(const value_type_&) = default;
 
+          private:
             /**
              * \brief qpp::IDisplay::display() override
              *
@@ -389,7 +416,7 @@ class QCircuit : public IDisplay, public IJSON {
                     os << std::right;
                     idx pos = std::distance(std::begin(value_type_qcd_->gates_),
                                             gates_ip_);
-                    os << value_type_qcd_->get_gates()[pos];
+                    os << value_type_qcd_->get_gates_()[pos];
                 }
                 // measurement step
                 else if (type_ == StepType::MEASUREMENT) {
@@ -399,7 +426,7 @@ class QCircuit : public IDisplay, public IJSON {
                     idx pos = std::distance(
                         std::begin(value_type_qcd_->measurements_),
                         measurements_ip_);
-                    os << "|> " << value_type_qcd_->get_measurements()[pos];
+                    os << "|> " << value_type_qcd_->get_measurements_()[pos];
                 }
                 // otherwise
                 else {
@@ -407,7 +434,7 @@ class QCircuit : public IDisplay, public IJSON {
 
                 return os;
             }
-        };
+        }; /* class value_type_ */
 
         value_type_ elem_{nullptr};
 
@@ -667,8 +694,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param name Circuit name (optional)
      */
     explicit QCircuit(idx nq, idx nc = 0, idx d = 2, std::string name = "")
-        : nq_{nq}, nc_{nc}, d_{d}, name_{name},
-          measured_(nq, false), step_types_{} {
+        : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false) {
         // EXCEPTION CHECKS
 
         if (nq == 0)
@@ -704,22 +730,6 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Qudit dimension
      */
     idx get_d() const noexcept { return d_; }
-
-    /**
-     * \brief Vector of qpp::QCircuit::MeasureStep
-     *
-     * \return Vector of qpp::QCircuit::MeasureStep
-     */
-    const std::vector<MeasureStep>& get_measurements() const noexcept {
-        return measurements_;
-    }
-
-    /**
-     * \brief Vector of qpp::QCircuit::GateStep
-     *
-     * \return Vector of qpp::QCircuit::GateStep
-     */
-    const std::vector<GateStep>& get_gates() const noexcept { return gates_; }
 
     /**
      * \brief Quantum circuit name
@@ -776,14 +786,87 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \return Total gate count
      */
-    idx get_gate_count() const noexcept { return gates_.size(); }
+    idx get_gate_count() const noexcept {
+        idx result = 0;
+        for (auto&& elem : count_)
+            result += elem.second;
+
+        return result;
+    }
+
+    /**
+     * \brief Quantum circuit gate count
+     *
+     * \param name Gate name
+     * \return Gate count
+     */
+    idx get_gate_count(const std::string& name) const {
+        idx result = 0;
+        // EXCEPTION CHECKS
+
+        try {
+            result = count_.at(name);
+        } catch (...) {
+            std::cerr << "In qpp::QCircuit::get_gate_count()\n";
+            throw;
+        }
+        // END EXCEPTION CHECKS
+
+        return result;
+    }
+
+    /**
+     * \brief Quantum circuit total gate depth
+     *
+     * \return Total gate depth
+     */
+    idx get_gate_depth() const {
+        throw exception::NotImplemented("qpp::QCircuit::get_gate_depth()");
+    }
+
+    /**
+     * \brief Quantum circuit gate depth
+     *
+     * \param name Gate name
+     * \return Gate depth
+     */
+    idx get_gate_depth(const std::string& name QPP_UNUSED_) const {
+        throw exception::NotImplemented("qpp::QCircuit::get_gate_depth()");
+    }
 
     /**
      * \brief Quantum circuit total measurement count
      *
      * \return Total measurement count
      */
-    idx get_measurement_count() const noexcept { return measurements_.size(); }
+    idx get_measurement_count() const noexcept {
+        idx result = 0;
+        for (auto&& elem : measurement_count_)
+            result += elem.second;
+
+        return result;
+    }
+
+    /**
+     * \brief Quantum circuit measurement count
+     *
+     * \param name Measurement name
+     * \return Measurement count
+     */
+    idx get_measurement_count(const std::string& name) const {
+        idx result = 0;
+        // EXCEPTION CHECKS
+
+        try {
+            result = measurement_count_.at(name);
+        } catch (...) {
+            std::cerr << "In qpp::QCircuit::get_measurement_count()\n";
+            throw;
+        }
+        // END EXCEPTION CHECKS
+
+        return result;
+    }
 
     /**
      * \brief Quantum circuit total steps count, i.e. the sum of gate count and
@@ -830,6 +913,7 @@ class QCircuit : public IDisplay, public IJSON {
         gates_.emplace_back(GateType::SINGLE, U, std::vector<idx>{},
                             std::vector<idx>{i}, name);
         step_types_.push_back(StepType::GATE);
+        ++count_[name];
 
         return *this;
     }
@@ -870,6 +954,7 @@ class QCircuit : public IDisplay, public IJSON {
         gates_.emplace_back(GateType::TWO, U, std::vector<idx>{},
                             std::vector<idx>{i, j}, name);
         step_types_.push_back(StepType::GATE);
+        ++count_[name];
 
         return *this;
     }
@@ -912,6 +997,7 @@ class QCircuit : public IDisplay, public IJSON {
         gates_.emplace_back(GateType::THREE, U, std::vector<idx>{},
                             std::vector<idx>{i, j, k}, name);
         step_types_.push_back(StepType::GATE);
+        ++count_[name];
 
         return *this;
     }
@@ -963,6 +1049,7 @@ class QCircuit : public IDisplay, public IJSON {
             name = qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::FAN, U, std::vector<idx>{}, target, name);
         step_types_.push_back(StepType::GATE);
+        count_[name] += target.size();
 
         return *this;
     }
@@ -1015,6 +1102,7 @@ class QCircuit : public IDisplay, public IJSON {
         gates_.emplace_back(GateType::FAN, U, std::vector<idx>{},
                             get_non_measured(), name);
         step_types_.push_back(StepType::GATE);
+        count_[name] += get_non_measured().size();
 
         return *this;
     }
@@ -1071,6 +1159,7 @@ class QCircuit : public IDisplay, public IJSON {
         gates_.emplace_back(GateType::CUSTOM, U, std::vector<idx>{}, target,
                             name);
         step_types_.push_back(StepType::GATE);
+        ++count_[name];
 
         return *this;
     }
@@ -1166,11 +1255,12 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name == "")
-            name = qpp::Gates::get_instance().get_name(U);
+            name = "CTRL-" + qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, U,
                             std::vector<idx>{ctrl}, std::vector<idx>{target},
                             name);
         step_types_.push_back(StepType::GATE);
+        ++count_[name];
 
         return *this;
     }
@@ -1231,10 +1321,11 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name == "")
-            name = qpp::Gates::get_instance().get_name(U);
+            name = "CTRL-" + qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, U,
                             std::vector<idx>{ctrl}, target, name);
         step_types_.push_back(StepType::GATE);
+        ++count_[name];
 
         return *this;
     }
@@ -1292,10 +1383,11 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name == "")
-            name = qpp::Gates::get_instance().get_name(U);
+            name = "CTRL-" + qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, U, ctrl,
                             std::vector<idx>{target}, name);
         step_types_.push_back(StepType::GATE);
+        ++count_[name];
 
         return *this;
     }
@@ -1365,10 +1457,11 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name == "")
-            name = qpp::Gates::get_instance().get_name(U);
+            name = "CTRL-" + qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, U, ctrl,
                             std::vector<idx>{target}, name);
         step_types_.push_back(StepType::GATE);
+        ++count_[name];
 
         return *this;
     }
@@ -1442,9 +1535,10 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name == "")
-            name = qpp::Gates::get_instance().get_name(U);
+            name = "CTRL-" + qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::CUSTOM_CTRL, U, ctrl, target, name);
         step_types_.push_back(StepType::GATE);
+        ++count_[name];
 
         return *this;
     }
@@ -1485,11 +1579,12 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name == "")
-            name = qpp::Gates::get_instance().get_name(U);
+            name = "cCTRL-" + qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, U,
                             std::vector<idx>{ctrl_dit},
                             std::vector<idx>{target}, name);
         step_types_.push_back(StepType::GATE);
+        ++count_[name];
 
         return *this;
     }
@@ -1543,10 +1638,11 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name == "")
-            name = qpp::Gates::get_instance().get_name(U);
+            name = "cCTRL-" + qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, U,
                             std::vector<idx>{ctrl_dit}, target, name);
         step_types_.push_back(StepType::GATE);
+        ++count_[name];
 
         return *this;
     }
@@ -1596,10 +1692,11 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name == "")
-            name = qpp::Gates::get_instance().get_name(U);
+            name = "cCTRL-" + qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, U,
                             ctrl_dits, std::vector<idx>{target}, name);
         step_types_.push_back(StepType::GATE);
+        ++count_[name];
 
         return *this;
     }
@@ -1659,10 +1756,11 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name == "")
-            name = qpp::Gates::get_instance().get_name(U);
+            name = "cCTRL-" + qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, U,
                             ctrl_dits, std::vector<idx>{target}, name);
         step_types_.push_back(StepType::GATE);
+        ++count_[name];
 
         return *this;
     }
@@ -1730,9 +1828,10 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name == "")
-            name = qpp::Gates::get_instance().get_name(U);
+            name = "cCTRL-" + qpp::Gates::get_instance().get_name(U);
         gates_.emplace_back(GateType::CUSTOM_cCTRL, U, ctrl_dits, target, name);
         step_types_.push_back(StepType::GATE);
+        ++count_[name];
 
         return *this;
     }
@@ -1767,11 +1866,12 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name == "")
-            name = "Measure Z";
+            name = "Z";
         measured_[target] = true;
         measurements_.emplace_back(MeasureType::MEASURE_Z, std::vector<cmat>{},
                                    std::vector<idx>{target}, c_reg, name);
         step_types_.push_back(StepType::MEASUREMENT);
+        ++measurement_count_[name];
 
         return *this;
     }
@@ -1816,6 +1916,7 @@ class QCircuit : public IDisplay, public IJSON {
         measurements_.emplace_back(MeasureType::MEASURE_V, std::vector<cmat>{V},
                                    std::vector<idx>{target}, c_reg, name);
         step_types_.push_back(StepType::MEASUREMENT);
+        ++measurement_count_[name];
 
         return *this;
     }
@@ -1875,35 +1976,9 @@ class QCircuit : public IDisplay, public IJSON {
         measurements_.emplace_back(MeasureType::MEASURE_V_MANY,
                                    std::vector<cmat>{V}, target, c_reg, name);
         step_types_.push_back(StepType::MEASUREMENT);
+        ++measurement_count_[name];
 
         return *this;
-    }
-
-    /**
-     * \brief qpp::IDisplay::display() override
-     *
-     * Writes to the output stream a textual representation of the quantum
-     * circuit
-     *
-     * \param os Output stream passed by reference
-     * \return Reference to the output stream
-     */
-    std::ostream& display(std::ostream& os) const override {
-        os << "nq = " << nq_ << ", nc = " << nc_ << ", d = " << d_;
-
-        if (name_ != "") // if the circuit is named
-            os << ", name = \"" << name_ << "\"\n";
-        else
-            os << ", name = \"\"\n";
-
-        for (auto&& elem : *this) {
-            os << elem << '\n';
-        }
-
-        os << "measured positions: " << disp(get_measured(), ", ") << '\n';
-        os << "non-measured positions: " << disp(get_non_measured(), ", ");
-
-        return os;
     }
 
     /**
@@ -1999,7 +2074,34 @@ class QCircuit : public IDisplay, public IJSON {
 
         return result;
     } /* to_JSON() */
-};    /* class QCircuit */
+  private:
+    /**
+     * \brief qpp::IDisplay::display() override
+     *
+     * Writes to the output stream a textual representation of the quantum
+     * circuit
+     *
+     * \param os Output stream passed by reference
+     * \return Reference to the output stream
+     */
+    std::ostream& display(std::ostream& os) const override {
+        os << "nq = " << nq_ << ", nc = " << nc_ << ", d = " << d_;
+
+        if (name_ != "") // if the circuit is named
+            os << ", name = \"" << name_ << "\"\n";
+        else
+            os << ", name = \"\"\n";
+
+        for (auto&& elem : *this) {
+            os << elem << '\n';
+        }
+
+        os << "measured positions: " << disp(get_measured(), ", ") << '\n';
+        os << "non-measured positions: " << disp(get_non_measured(), ", ");
+
+        return os;
+    }
+}; /* class QCircuit */
 
 /**
  * \class qpp::QEngine
@@ -2204,23 +2306,6 @@ class QEngine : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief qpp::IDisplay::display() override
-     *
-     * Writes to the output stream a textual representation of the state of 
-     * the engine
-     *
-     * \param os Output stream passed by reference
-     * \return Reference to the output stream
-     */
-    std::ostream& display(std::ostream& os) const override {
-        os << "measured: " << disp(get_measured(), ", ") << '\n';
-        os << "dits: " << disp(get_dits(), ", ") << '\n';
-        os << "probs: " << disp(get_probs(), ", ");
-
-        return os;
-    }
-
-    /**
      * \brief Executes one step in the quantum circuit
      *
      * \param elem Step to be executed
@@ -2236,9 +2321,9 @@ class QEngine : public IDisplay, public IJSON {
 
         // gate step
         if (elem.type_ == QCircuit::StepType::GATE) {
-            auto gates = qcd_.get_gates();
+            auto gates = qcd_.get_gates_();
             idx q_ip =
-                std::distance(std::begin(qcd_.get_gates()), elem.gates_ip_);
+                std::distance(std::begin(qcd_.get_gates_()), elem.gates_ip_);
 
             std::vector<idx> ctrl_rel_pos;
             std::vector<idx> target_rel_pos =
@@ -2297,8 +2382,8 @@ class QEngine : public IDisplay, public IJSON {
         }     // end if gate step
         // measurement step
         else if (elem.type_ == QCircuit::StepType::MEASUREMENT) {
-            auto measurements = qcd_.get_measurements();
-            idx m_ip = std::distance(std::begin(qcd_.get_measurements()),
+            auto measurements = qcd_.get_measurements_();
+            idx m_ip = std::distance(std::begin(qcd_.get_measurements_()),
                                      elem.measurements_ip_);
 
             std::vector<idx> target_rel_pos =
@@ -2361,7 +2446,7 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \param enclosed_in_curly_brackets If true, encloses the result in curly
      * brackets
-     * \return String containing the JSON representation of the state of the 
+     * \return String containing the JSON representation of the state of the
      * engine
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
@@ -2392,6 +2477,24 @@ class QEngine : public IDisplay, public IJSON {
             result += "}";
 
         return result;
+    }
+
+  private:
+    /**
+     * \brief qpp::IDisplay::display() override
+     *
+     * Writes to the output stream a textual representation of the state of
+     * the engine
+     *
+     * \param os Output stream passed by reference
+     * \return Reference to the output stream
+     */
+    std::ostream& display(std::ostream& os) const override {
+        os << "measured: " << disp(get_measured(), ", ") << '\n';
+        os << "dits: " << disp(get_dits(), ", ") << '\n';
+        os << "probs: " << disp(get_probs(), ", ");
+
+        return os;
     }
 }; /* class QEngine */
 

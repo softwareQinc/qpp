@@ -7,30 +7,39 @@ int main() {
     using namespace qpp;
     /////////// testing ///////////
 
-    QCircuit qcd{4, 2, 2, "test_circuit"};
-    qcd.gate(gt.X, 0, "named_X");
-    qcd.measureZ(3, 0);
-    qcd.gate(gt.X, 0, "named_X");
-    qcd.gate(gt.Z, 1);
-    qcd.CTRL(gt.X, 0, 1, "ctrl_X");
-    qcd.gate_fan(gt.H);
-    qcd.gate_fan(gt.H, {0, 2});
-    qcd.measureZ(0, 0);
-    qcd.measureV(gt.H, 1, 1);
-    qcd.measureZ(2, 0);
+    QCircuit qc{4, 4, 2, "test_circuit"};
+    qc.gate_fan(gt.H);
+    qc.gate(gt.X, 0, "named_X");
+    qc.measureZ(3, 0);
+    qc.gate(gt.X, 0, "named_X");
+    qc.gate(gt.Z, 1);
+    qc.cCTRL(gt.X, 0, 1);
+    qc.CTRL(gt.X, 0, 1);
+    qc.gate_fan(gt.H);
+    qc.gate_fan(gt.H, {0, 2});
+    qc.measureZ(0, 1);
+    qc.measureV(gt.Z, 1, 2);
+    qc.measureZ(2, 3);
 
-    std::cout << qcd << '\n';
-    std::cout << qcd.to_JSON() << "\n\n";
-
-    QEngine qc{qcd};
-    for (auto&& elem: qcd) {
-        qc.execute(elem);
-    }
     std::cout << qc << '\n';
     std::cout << qc.to_JSON() << "\n\n";
 
-    auto n = QuditDepolarizingNoise(0.2, 3);
-    std::cout << n.get_d() << '\n';
-    for (auto&& elem : n.get_Ks())
-        std::cout << disp(elem) << "\n\n";
+    QEngine engine{qc};
+    for (auto&& step : qc) {
+        engine.execute(step);
+    }
+    std::cout << engine << '\n';
+    std::cout << engine.to_JSON() << "\n\n";
+
+    engine.reset();
+    for (auto&& step : qc) {
+        engine.execute(step);
+    }
+    std::cout << engine << '\n';
+    std::cout << engine.to_JSON() << "\n\n";
+
+    std::cout << qc.get_gate_count("H") << "\n";
+    std::cout << qc.get_gate_count() << "\n";
+    std::cout << qc.get_measurement_count("Z") << "\n";
+    std::cout << qc.get_measurement_count() << "\n";
 }
