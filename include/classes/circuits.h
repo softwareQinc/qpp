@@ -1254,8 +1254,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
-            name = "CTRL-" + qpp::Gates::get_instance().get_name(U);
+        if (name == "") {
+            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            name = (gate_name == "") ? "CTRL" : "CTRL-" + gate_name;
+        }
         gates_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, U,
                             std::vector<idx>{ctrl}, std::vector<idx>{target},
                             name);
@@ -1320,8 +1322,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
-            name = "CTRL-" + qpp::Gates::get_instance().get_name(U);
+        if (name == "") {
+            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            name = (gate_name == "") ? "CTRL" : "CTRL-" + gate_name;
+        }
         gates_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, U,
                             std::vector<idx>{ctrl}, target, name);
         step_types_.push_back(StepType::GATE);
@@ -1382,8 +1386,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
-            name = "CTRL-" + qpp::Gates::get_instance().get_name(U);
+        if (name == "") {
+            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            name = (gate_name == "") ? "CTRL" : "CTRL-" + gate_name;
+        }
         gates_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, U, ctrl,
                             std::vector<idx>{target}, name);
         step_types_.push_back(StepType::GATE);
@@ -1456,8 +1462,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
-            name = "CTRL-" + qpp::Gates::get_instance().get_name(U);
+        if (name == "") {
+            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            name = (gate_name == "") ? "CTRL" : "CTRL-" + gate_name;
+        }
         gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, U, ctrl,
                             std::vector<idx>{target}, name);
         step_types_.push_back(StepType::GATE);
@@ -1534,8 +1542,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
-            name = "CTRL-" + qpp::Gates::get_instance().get_name(U);
+        if (name == "") {
+            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            name = (gate_name == "") ? "CTRL" : "CTRL-" + gate_name;
+        }
         gates_.emplace_back(GateType::CUSTOM_CTRL, U, ctrl, target, name);
         step_types_.push_back(StepType::GATE);
         ++count_[name];
@@ -1578,8 +1588,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
-            name = "cCTRL-" + qpp::Gates::get_instance().get_name(U);
+        if (name == "") {
+            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            name = (gate_name == "") ? "cCTRL" : "cCTRL-" + gate_name;
+        }
         gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, U,
                             std::vector<idx>{ctrl_dit},
                             std::vector<idx>{target}, name);
@@ -1637,8 +1649,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
-            name = "cCTRL-" + qpp::Gates::get_instance().get_name(U);
+        if (name == "") {
+            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            name = (gate_name == "") ? "cCTRL" : "cCTRL-" + gate_name;
+        }
         gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, U,
                             std::vector<idx>{ctrl_dit}, target, name);
         step_types_.push_back(StepType::GATE);
@@ -1691,8 +1705,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
-            name = "cCTRL-" + qpp::Gates::get_instance().get_name(U);
+        if (name == "") {
+            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            name = (gate_name == "") ? "cCTRL" : "cCTRL-" + gate_name;
+        }
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, U,
                             ctrl_dits, std::vector<idx>{target}, name);
         step_types_.push_back(StepType::GATE);
@@ -1755,8 +1771,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
-            name = "cCTRL-" + qpp::Gates::get_instance().get_name(U);
+        if (name == "") {
+            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            name = (gate_name == "") ? "cCTRL" : "cCTRL-" + gate_name;
+        }
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, U,
                             ctrl_dits, std::vector<idx>{target}, name);
         step_types_.push_back(StepType::GATE);
@@ -1827,8 +1845,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
-            name = "cCTRL-" + qpp::Gates::get_instance().get_name(U);
+        if (name == "") {
+            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            name = (gate_name == "") ? "cCTRL" : "cCTRL-" + gate_name;
+        }
         gates_.emplace_back(GateType::CUSTOM_cCTRL, U, ctrl_dits, target, name);
         step_types_.push_back(StepType::GATE);
         ++count_[name];
