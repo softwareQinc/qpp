@@ -27,6 +27,6 @@ int main() {
     std::cout << ">> CNOT count: " << bit_circuit.gate_count.CNOT << '\n';
 
     bit_circuit.reset(); // resets the circuit
-    std::cout << ">> Reseted circuit:\n\t" << bit_circuit << '\n';
+    std::cout << ">> Reset circuit:\n\t" << bit_circuit << '\n';
     std::cout << ">> CNOT count: " << bit_circuit.gate_count.CNOT << '\n';
 }
