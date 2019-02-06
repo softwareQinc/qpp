@@ -34,7 +34,10 @@ int main() {
     qc.cCTRL(adjoint(gt.Xd(d)), 1, 2);
     qc.cCTRL(gt.Zd(d), 0, 2);
 
+    // initialize the quantum engine with a circuit
     QEngine engine{qc};
+
+    // display the quantum circuit
     std::cout << ">> BEGIN CIRCUIT\n";
     std::cout << engine.get_circuit() << '\n';
     std::cout << ">> END CIRCUIT\n\n";

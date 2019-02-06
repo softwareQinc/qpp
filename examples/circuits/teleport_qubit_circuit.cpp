@@ -29,8 +29,10 @@ int main() {
     qc.cCTRL(gt.X, 1, 2);
     qc.cCTRL(gt.Z, 0, 2);
 
+    // initialize the quantum engine with a circuit
     QEngine engine{qc};
 
+    // display the quantum circuit
     std::cout << ">> BEGIN CIRCUIT\n";
     std::cout << engine.get_circuit() << '\n';
     std::cout << ">> END CIRCUIT\n\n";
