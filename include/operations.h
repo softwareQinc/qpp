@@ -845,7 +845,7 @@ inline std::vector<cmat> choi2kraus(const cmat& A) {
     std::vector<cmat> result;
 
     for (idx i = 0; i < D * D; ++i) {
-        if (std::abs(ev(i)) > eps)
+        if (std::abs(ev(i)) > 0)
             result.push_back(std::sqrt(std::abs(ev(i))) *
                              reshape(evec.col(i), D, D));
     }

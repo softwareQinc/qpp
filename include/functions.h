@@ -276,7 +276,7 @@ normalize(const Eigen::MatrixBase<Derived>& A) {
     if (internal::check_cvector(rA) || internal::check_rvector(rA)) {
         double normA = norm(rA);
         try {
-            if (normA < eps)
+            if (normA == 0)
                 throw std::overflow_error("Division by zero!");
         } catch (...) {
             std::cerr << "In qpp::normalize()\n";
@@ -286,7 +286,7 @@ normalize(const Eigen::MatrixBase<Derived>& A) {
     } else if (internal::check_square_mat(rA)) {
         typename Derived::Scalar traceA = trace(rA);
         try {
-            if (std::abs(traceA) < eps)
+            if (std::abs(traceA) == 0)
                 throw std::overflow_error("Division by zero!");
         } catch (...) {
             std::cerr << "In qpp::normalize()\n";
@@ -1245,9 +1245,8 @@ anticomm(const Eigen::MatrixBase<Derived1>& A,
  *  Normalized projector onto state vector
  *
  * \param A Eigen expression
- * \return Projector onto the state vector \a A, or the matrix \a Zero
- * if \a A has norm zero (i.e. smaller than qpp::eps),
- * as a dynamic matrix over the same scalar field as \a A
+ * \return Projector onto the state vector \a A, or the matrix \a Zero if \a A
+ * has norm zero, as a dynamic matrix over the same scalar field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& A) {
@@ -1265,7 +1264,7 @@ dyn_mat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& A) {
     // END EXCEPTION CHECKS
 
     double normA = norm(rA);
-    if (normA > eps)
+    if (normA > 0)
         return rA * adjoint(rA) / (normA * normA);
     else
         return dyn_mat<typename Derived::Scalar>::Zero(rA.rows(), rA.rows());
@@ -1310,7 +1309,7 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& As) {
     // find the first non-zero vector in the list
     idx pos = 0;
     for (pos = 0; pos < As.size(); ++pos) {
-        if (norm(As[pos]) > eps) // add it as the first element
+        if (norm(As[pos]) > 0) // add it as the first element
         {
             outvecs.push_back(As[pos]);
             break;
@@ -1329,7 +1328,7 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& As) {
     idx cnt = 0;
     for (auto&& elem : outvecs) {
         double normA = norm(elem);
-        if (normA > eps) // we add only the non-zero vectors
+        if (normA > 0) // we add only the non-zero vectors
         {
             result.col(cnt) = elem / normA;
             ++cnt;
@@ -1755,7 +1754,7 @@ rho2pure(const Eigen::MatrixBase<Derived>& A) {
     // find the non-zero eigenvector
     // there is only one, assuming the state is pure
     for (idx k = 0; k < static_cast<idx>(rA.rows()); ++k) {
-        if (std::abs(tmp_evals(k)) > eps) {
+        if (std::abs(tmp_evals(k)) > 0) {
             result = tmp_evects.col(k);
             break;
         }

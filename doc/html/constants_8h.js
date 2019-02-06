@@ -5,7 +5,6 @@ var constants_8h =
     [ "operator\"\" _i", "constants_8h.html#a12e22073e741a1057129fa01b4ec10a6", null ],
     [ "chop", "constants_8h.html#a3a6d2c509bdcf240869e1bebb3be4e94", null ],
     [ "ee", "constants_8h.html#aca5c7e10fa94db0755cb937250144630", null ],
-    [ "eps", "constants_8h.html#a9a99ccccd473a9006dfaadb5761ac4f6", null ],
     [ "idx_infty", "constants_8h.html#af4099f440c6a7f755896a4a85445ec58", null ],
     [ "infty", "constants_8h.html#aecd9c0f42f21f1d3b29868b6a8cac4c7", null ],
     [ "maxn", "constants_8h.html#aea80be6c57ee43e43aa9629942cd3608", null ],

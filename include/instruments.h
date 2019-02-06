@@ -236,7 +236,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
             outstates[i] = cmat::Zero(rA.rows(), rA.rows());
             cmat tmp = Ks[i] * rA * adjoint(Ks[i]); // un-normalized;
             prob[i] = std::abs(trace(tmp));         // probability
-            if (prob[i] > eps)
+            if (prob[i] > 0)
                 outstates[i] = tmp / prob[i]; // normalized
         }
     }
@@ -248,7 +248,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
             ket tmp = Ks[i] * rA; // un-normalized;
             // probability
             prob[i] = std::pow(norm(tmp), 2);
-            if (prob[i] > eps)
+            if (prob[i] > 0)
                 outstates[i] = tmp / std::sqrt(prob[i]); // normalized
         }
     } else
@@ -397,7 +397,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
             cmat tmp = apply(rA, Ks[i], target, dims);
             tmp = ptrace(tmp, target, dims);
             prob[i] = std::abs(trace(tmp)); // probability
-            if (prob[i] > eps) {
+            if (prob[i] > 0) {
                 // normalized output state
                 // corresponding to measurement result i
                 outstates[i] = tmp / prob[i];
@@ -413,7 +413,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
         for (idx i = 0; i < Ks.size(); ++i) {
             ket tmp = apply(rA, Ks[i], target, dims);
             prob[i] = std::pow(norm(tmp), 2);
-            if (prob[i] > eps) {
+            if (prob[i] > 0) {
                 // normalized output state
                 // corresponding to measurement result i
                 tmp /= std::sqrt(prob[i]);
@@ -603,7 +603,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
         for (idx i = 0; i < M; ++i) {
             double tmp = norm(outstates[i]);
             prob[i] = tmp * tmp;
-            if (prob[i] > eps) {
+            if (prob[i] > 0) {
                 // normalized output state
                 // corresponding to measurement result m
                 outstates[i] /= tmp;

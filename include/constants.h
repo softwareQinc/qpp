@@ -60,14 +60,6 @@ inline constexpr cplx operator"" _i(long double x) noexcept {
 constexpr double chop = 1e-10;
 
 /**
- * \brief Used to decide whether a number or expression in double precision
- * is zero or not for the purpose of a specific computation
- *
- * Example: \code if(std::abs(x) < qpp::eps) // x is zero \endcode
- */
-constexpr double eps = std::numeric_limits<double>::epsilon();
-
-/**
  * \brief Maximum number of allowed qubits/qudits (subsystems)
  *
  * Used internally to allocate arrays on the stack (for performance reasons):

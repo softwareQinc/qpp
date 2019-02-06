@@ -40,7 +40,8 @@ In progress - pre-release
     - Added new circuit simulator examples in "examples/circuits":
           - teleport_qubit_circuit.cpp - qubit teleportation circuit example
           - teleport_qudit_circuit.cpp - qudit teleportation circuit example
-
+    - Removed qpp::eps constant from "constants.h", as one should simply use
+      direct comparison with 0 when dealing with small doubles
 Version 1.1 - 26 November 2018
     - Added new functions in "operations.h":
           qpp::QFT()      - qudit quantum Fourier transform (includes qubit

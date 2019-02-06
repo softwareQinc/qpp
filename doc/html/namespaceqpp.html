@@ -913,9 +913,6 @@ Variables</h2></td></tr>
 <tr class="memitem:a3a6d2c509bdcf240869e1bebb3be4e94"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a> = 1e-10</td></tr>
 <tr class="memdesc:a3a6d2c509bdcf240869e1bebb3be4e94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used in <a class="el" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d" title="Eigen expression ostream manipulator. ">qpp::disp()</a> for setting to zero numbers that have their absolute value smaller than <a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94" title="Used in qpp::disp() for setting to zero numbers that have their absolute value smaller than qpp::chop...">qpp::chop</a>.  <a href="#a3a6d2c509bdcf240869e1bebb3be4e94">More...</a><br /></td></tr>
 <tr class="separator:a3a6d2c509bdcf240869e1bebb3be4e94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a99ccccd473a9006dfaadb5761ac4f6"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a9a99ccccd473a9006dfaadb5761ac4f6">eps</a> = std::numeric_limits&lt;double&gt;::epsilon()</td></tr>
-<tr class="memdesc:a9a99ccccd473a9006dfaadb5761ac4f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to decide whether a number or expression in double precision is zero or not for the purpose of a specific computation.  <a href="#a9a99ccccd473a9006dfaadb5761ac4f6">More...</a><br /></td></tr>
-<tr class="separator:a9a99ccccd473a9006dfaadb5761ac4f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea80be6c57ee43e43aa9629942cd3608"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">maxn</a> = 64</td></tr>
 <tr class="memdesc:aea80be6c57ee43e43aa9629942cd3608"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of allowed qubits/qudits (subsystems)  <a href="#aea80be6c57ee43e43aa9629942cd3608">More...</a><br /></td></tr>
 <tr class="separator:aea80be6c57ee43e43aa9629942cd3608"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5774,7 +5771,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Projector onto the state vector <em>A</em>, or the matrix <em>Zero</em> if <em>A</em> has norm zero (i.e. smaller than <a class="el" href="namespaceqpp.html#a9a99ccccd473a9006dfaadb5761ac4f6" title="Used to decide whether a number or expression in double precision is zero or not for the purpose of a...">qpp::eps</a>), as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Projector onto the state vector <em>A</em>, or the matrix <em>Zero</em> if <em>A</em> has norm zero, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -8875,22 +8872,6 @@ template&lt;typename Container &gt; </div>
 
 </div>
 </div>
-<a id="a9a99ccccd473a9006dfaadb5761ac4f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a99ccccd473a9006dfaadb5761ac4f6">&#9670;&nbsp;</a></span>eps</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr double qpp::eps = std::numeric_limits&lt;double&gt;::epsilon()</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Used to decide whether a number or expression in double precision is zero or not for the purpose of a specific computation. </p>
-<p>Example:</p><div class="fragment"><div class="line"><span class="keywordflow">if</span>(std::abs(x) &lt; <a class="code" href="namespaceqpp.html#a9a99ccccd473a9006dfaadb5761ac4f6">qpp::eps</a>) <span class="comment">// x is zero </span></div></div><!-- fragment --> 
-</div>
-</div>
 <a id="af4099f440c6a7f755896a4a85445ec58"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af4099f440c6a7f755896a4a85445ec58">&#9670;&nbsp;</a></span>idx_infty</h2>
 
@@ -8962,7 +8943,7 @@ template&lt;typename Container &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Wed Feb 6 2019 12:48:21 for Quantum++ by
+    <li class="footer">Generated on Wed Feb 6 2019 15:43:41 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>
