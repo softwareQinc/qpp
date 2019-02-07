@@ -46,9 +46,12 @@ dyn_mat<typename Derived::Scalar>
 transpose(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::check_nonzero_size(rA))
         throw exception::ZeroSize("qpp::transpose()");
+    // END EXCEPTION CHECKS
 
     return rA.transpose();
 }
@@ -65,9 +68,12 @@ dyn_mat<typename Derived::Scalar>
 conjugate(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
+    // EXCEPTION CHECKS
+
     // check zero-size
     if (!internal::check_nonzero_size(rA))
         throw exception::ZeroSize("qpp::conjugate()");
+    // END EXCEPTION CHECKS
 
     return rA.conjugate();
 }
@@ -1944,6 +1950,66 @@ cmat operator"" _prj() {
 }
 } /* namespace literals */
 
+/**
+ * \brief Computes the hash of en Eigen matrix/vector/expression
+ * \note Code taken from boost::hash_combine(), see
+ * https://www.boost.org/doc/libs/1_69_0/doc/html/hash/reference.html#boost.hash_combine
+ *
+ * \param A Eigen expression
+ * \return Hash of its argument
+ */
+template <typename Derived>
+std::size_t hash_eigen_expression(const Eigen::MatrixBase<Derived>& A) {
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero-size
+    if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::hash_eigen_expression()");
+    // END EXCEPTION CHECKS
+
+    std::size_t result = 0;
+    auto* p = rA.data();
+    idx sizeA = static_cast<idx>(rA.size());
+    for (idx i = 0; i < sizeA; ++i) {
+        internal::hash_combine(result, std::real(p[i]));
+        internal::hash_combine(result, std::imag(p[i]));
+    }
+    return result;
+}
+
 } /* namespace qpp */
+
+/**
+ * \brief std::hash explicit (full) specializations for basic Eigen data types,
+ * see qpp::hash_eigen_expression()
+ */
+namespace std {
+template <>
+struct hash<qpp::cmat> {
+    std::size_t operator()(const qpp::cmat& A) const {
+        return qpp::hash_eigen_expression(A);
+    }
+};
+template <>
+struct hash<qpp::dmat> {
+    std::size_t operator()(const qpp::dmat& A) const {
+        return qpp::hash_eigen_expression(A);
+    }
+};
+template <>
+struct hash<qpp::ket> {
+    std::size_t operator()(const qpp::ket& A) const {
+        return qpp::hash_eigen_expression(A);
+    }
+};
+template <>
+struct hash<qpp::bra> {
+    std::size_t operator()(const qpp::bra& A) const {
+        return qpp::hash_eigen_expression(A);
+    }
+};
+} /* namespace std */
 
 #endif /* FUNCTIONS_H_ */

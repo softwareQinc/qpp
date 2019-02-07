@@ -42,6 +42,12 @@ In progress - pre-release
           - teleport_qudit_circuit.cpp - qudit teleportation circuit example
     - Removed qpp::eps constant from "constants.h", as one should simply use
       direct comparison with 0 when dealing with small doubles
+    - Added support for hashing Eigen matrixes/vectors/expression via
+      qpp::hash_eigen_expression() in "functions.h" and support for associative
+      C++ standard containers with Eigen data types as keys, via specializing
+      std::hash<> for Eigen data types; code based on boost::hash_combine(), see
+      https://www.boost.org/doc/libs/1_69_0/doc/html/hash/reference.html\
+      #boost.hash_combine
 Version 1.1 - 26 November 2018
     - Added new functions in "operations.h":
           qpp::QFT()      - qudit quantum Fourier transform (includes qubit

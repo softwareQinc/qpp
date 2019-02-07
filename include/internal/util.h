@@ -464,6 +464,14 @@ struct Display_Impl_ {
     }
 };
 
+// hash combine, code taken from boost::hash_combine(), see
+// https://www.boost.org/doc/libs/1_69_0/doc/html/hash/reference.html#boost.hash_combine
+template <class T>
+void hash_combine(std::size_t& seed, const T& v) {
+    std::hash<T> hasher;
+    seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+}
+
 } /* namespace internal */
 } /* namespace qpp */
 

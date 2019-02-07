@@ -42,4 +42,14 @@ int main() {
     std::cout << qc.get_gate_count() << "\n";
     std::cout << qc.get_measurement_count("Z") << "\n";
     std::cout << qc.get_measurement_count() << "\n";
+
+    std::cout << hash_eigen_expression(gt.X) << "\n";
+    std::cout << std::hash<cmat>{}(gt.X) << "\n";
+
+    dmat a(2, 2);
+    a << 1, 2, 3, 4.000000000000001;
+    dmat b(2, 2);
+    b << 1, 2, 3, 4.000000000000002;
+    std::cout << std::hash<cmat>{}(a) << "\n";
+    std::cout << std::hash<dmat>{}(b) << "\n";
 }
