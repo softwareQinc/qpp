@@ -472,7 +472,7 @@ class QCircuit : public IDisplay, public IJSON {
                     "qpp::QCircuit::iterator::operator++()");
             }
 
-            // protect against incrementing an empty circuit iterator
+            // protects against incrementing an empty circuit iterator
             if (qcd_->get_step_count() == 0) {
                 throw exception::InvalidIterator(
                     "qpp::QCircuit::iterator::operator++()");
@@ -552,7 +552,7 @@ class QCircuit : public IDisplay, public IJSON {
         const value_type_& operator*() const {
             // EXCEPTION CHECKS
 
-            // protect against de-referencing past the last element or against
+            // protects against de-referencing past the last element or against
             // de-referencing invalid iterators
             if (qcd_ == nullptr || elem_.ip_ == qcd_->get_step_count())
                 throw exception::InvalidIterator(
