@@ -47,11 +47,11 @@ class QCircuit : public IDisplay, public IJSON {
     std::vector<bool> measured_; ///< keeps track of the measured qudits
 
     std::unordered_map<std::string, idx>
-        depth_; ///< keeps track of the gate depths
+        depth_{}; ///< keeps track of the gate depths
     std::unordered_map<std::string, idx>
-        count_; ///< keeps track of the gate counts
+        count_{}; ///< keeps track of the gate counts
     std::unordered_map<std::string, idx>
-        measurement_count_; ///< keeps track of the measurement counts
+        measurement_count_{}; ///< keeps track of the measurement counts
 
   public:
     /**
@@ -1256,7 +1256,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name == "") {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = (gate_name == "") ? "CTRL" : "CTRL-" + gate_name;
+            name = gate_name == "" ? "CTRL" : "CTRL-" + gate_name;
         }
         gates_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, U,
                             std::vector<idx>{ctrl}, std::vector<idx>{target},
@@ -1324,7 +1324,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name == "") {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = (gate_name == "") ? "CTRL" : "CTRL-" + gate_name;
+            name = gate_name == "" ? "CTRL" : "CTRL-" + gate_name;
         }
         gates_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, U,
                             std::vector<idx>{ctrl}, target, name);
@@ -1388,7 +1388,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name == "") {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = (gate_name == "") ? "CTRL" : "CTRL-" + gate_name;
+            name = gate_name == "" ? "CTRL" : "CTRL-" + gate_name;
         }
         gates_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, U, ctrl,
                             std::vector<idx>{target}, name);
@@ -1464,7 +1464,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name == "") {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = (gate_name == "") ? "CTRL" : "CTRL-" + gate_name;
+            name = gate_name == "" ? "CTRL" : "CTRL-" + gate_name;
         }
         gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, U, ctrl,
                             std::vector<idx>{target}, name);
@@ -1544,7 +1544,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name == "") {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = (gate_name == "") ? "CTRL" : "CTRL-" + gate_name;
+            name = gate_name == "" ? "CTRL" : "CTRL-" + gate_name;
         }
         gates_.emplace_back(GateType::CUSTOM_CTRL, U, ctrl, target, name);
         step_types_.push_back(StepType::GATE);
@@ -1590,7 +1590,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name == "") {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = (gate_name == "") ? "cCTRL" : "cCTRL-" + gate_name;
+            name = gate_name == "" ? "cCTRL" : "cCTRL-" + gate_name;
         }
         gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, U,
                             std::vector<idx>{ctrl_dit},
@@ -1651,7 +1651,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name == "") {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = (gate_name == "") ? "cCTRL" : "cCTRL-" + gate_name;
+            name = gate_name == "" ? "cCTRL" : "cCTRL-" + gate_name;
         }
         gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, U,
                             std::vector<idx>{ctrl_dit}, target, name);
@@ -1707,7 +1707,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name == "") {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = (gate_name == "") ? "cCTRL" : "cCTRL-" + gate_name;
+            name = gate_name == "" ? "cCTRL" : "cCTRL-" + gate_name;
         }
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, U,
                             ctrl_dits, std::vector<idx>{target}, name);
@@ -1773,7 +1773,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name == "") {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = (gate_name == "") ? "cCTRL" : "cCTRL-" + gate_name;
+            name = gate_name == "" ? "cCTRL" : "cCTRL-" + gate_name;
         }
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, U,
                             ctrl_dits, std::vector<idx>{target}, name);
@@ -1847,7 +1847,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name == "") {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = (gate_name == "") ? "cCTRL" : "cCTRL-" + gate_name;
+            name = gate_name == "" ? "cCTRL" : "cCTRL-" + gate_name;
         }
         gates_.emplace_back(GateType::CUSTOM_cCTRL, U, ctrl_dits, target, name);
         step_types_.push_back(StepType::GATE);
