@@ -50,6 +50,9 @@ int main() {
     a << 1, 2, 3, 4.000000000000001;
     dmat b(2, 2);
     b << 1, 2, 3, 4.000000000000002;
-    std::cout << std::hash<cmat>{}(a) << "\n";
+    cmat c(1, 1);
+    c << 1.1 + 2.2_i;
+    std::cout << std::hash<dmat>{}(a) << "\n";
     std::cout << std::hash<dmat>{}(b) << "\n";
+    std::cout << std::hash<cmat>{}(c) << "\n";
 }
