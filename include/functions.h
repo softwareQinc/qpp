@@ -2014,6 +2014,7 @@ struct hash<qpp::bra> {
 template <>
 struct equal_to<qpp::cmat> {
     bool operator()(const qpp::cmat& lhs, const qpp::cmat& rhs) const {
+        std::cout << "compare\n";
         if (lhs.rows() == rhs.rows() && lhs.cols() == rhs.cols()) {
             if (lhs == rhs)
                 return true;

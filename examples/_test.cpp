@@ -14,11 +14,10 @@ void add_gate(std::unordered_set<qpp::cmat>& gate_set, const qpp::cmat& U) {
     }
     // gate exists already
     else {
+        //std::cout << "here\n";
         // hash collision
-        if ((*it).cols() == U.cols() && (*it).rows() == U.rows()) {
-            if ((*it) != U) {
-                throw 42;
-            }
+        if ((*it) != U) {
+            throw 42;
         }
         // no hash collision
         else {
@@ -34,7 +33,7 @@ int main() {
 
     std::unordered_set<cmat> gate_set;
 
-    cmat x(1,1);
+    cmat x(1, 1);
     x << 1.;
 
     std::cout << hash_eigen_expression(gt.CNOT) << '\n';
@@ -42,11 +41,14 @@ int main() {
     std::cout << hash_eigen_expression(x) << '\n';
 
     add_gate(gate_set, x);
+    std::cout << "\t END1\n";
     add_gate(gate_set, x);
+    std::cout << "\t END2\n";
     add_gate(gate_set, gt.CNOT);
+    std::cout << "\t END3\n";
+    add_gate(gate_set, gt.TOF);
+    std::cout << "\t END4\n";
 
     std::cout << *(gate_set.find(x)) << '\n';
-
-
-
+    std::cout << "\t END5\n";
 }
