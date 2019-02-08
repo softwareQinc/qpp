@@ -2010,6 +2010,14 @@ struct hash<qpp::bra> {
         return qpp::hash_eigen_expression(A);
     }
 };
+
+template<>
+struct equal_to<qpp::cmat>{
+    constexpr bool operator()(const qpp::cmat &lhs, const qpp::cmat &rhs) const
+    {
+        return 1;
+    }
+};
 } /* namespace std */
 
 #endif /* FUNCTIONS_H_ */

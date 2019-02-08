@@ -357,12 +357,12 @@ class QCircuit : public IDisplay, public IJSON {
      */
     class iterator {
         ///< non-owning pointer to const quantum circuit
-        const QCircuit* qcd_{nullptr};
+        const QCircuit* qc_{nullptr};
 
         class value_type_ : public IDisplay {
           public:
             ///< non-owning pointer to the parent iterator
-            const QCircuit* value_type_qcd_;
+            const QCircuit* value_type_qc_;
 
             StepType type_{StepType::NONE}; ///< step type
             idx ip_{idx_infty};             ///< instruction pointer
@@ -374,10 +374,10 @@ class QCircuit : public IDisplay, public IJSON {
             /**
              * \brief Default value_type_ constructor
              *
-             * \param value_type_qcd Constant pointer to quantum circuit
+             * \param value_type_qc Pointer to constant quantum circuit
              */
-            explicit value_type_(const QCircuit* value_type_qcd)
-                : value_type_qcd_{value_type_qcd} {}
+            explicit value_type_(const QCircuit* value_type_qc)
+                : value_type_qc_{value_type_qc} {}
 
             // silence -Weffc++ class has pointer data members
             /**
@@ -406,27 +406,26 @@ class QCircuit : public IDisplay, public IJSON {
             std::ostream& display(std::ostream& os) const override {
                 // field spacing for the step number
                 idx text_width =
-                    std::to_string(value_type_qcd_->get_step_count()).size() +
-                    1;
+                    std::to_string(value_type_qc_->get_step_count()).size() + 1;
 
                 // gate step
                 if (type_ == StepType::GATE) {
                     os << std::left;
                     os << std::setw(text_width) << ip_;
                     os << std::right;
-                    idx pos = std::distance(std::begin(value_type_qcd_->gates_),
+                    idx pos = std::distance(std::begin(value_type_qc_->gates_),
                                             gates_ip_);
-                    os << value_type_qcd_->get_gates_()[pos];
+                    os << value_type_qc_->get_gates_()[pos];
                 }
                 // measurement step
                 else if (type_ == StepType::MEASUREMENT) {
                     os << std::left;
                     os << std::setw(text_width) << ip_;
                     os << std::right;
-                    idx pos = std::distance(
-                        std::begin(value_type_qcd_->measurements_),
-                        measurements_ip_);
-                    os << "|> " << value_type_qcd_->get_measurements_()[pos];
+                    idx pos =
+                        std::distance(std::begin(value_type_qc_->measurements_),
+                                      measurements_ip_);
+                    os << "|> " << value_type_qc_->get_measurements_()[pos];
                 }
                 // otherwise
                 else {
@@ -467,19 +466,19 @@ class QCircuit : public IDisplay, public IJSON {
             // EXCEPTION CHECKS
 
             // protects against incrementing invalid iterators
-            if (qcd_ == nullptr) {
+            if (qc_ == nullptr) {
                 throw exception::InvalidIterator(
                     "qpp::QCircuit::iterator::operator++()");
             }
 
             // protects against incrementing an empty circuit iterator
-            if (qcd_->get_step_count() == 0) {
+            if (qc_->get_step_count() == 0) {
                 throw exception::InvalidIterator(
                     "qpp::QCircuit::iterator::operator++()");
             }
 
             // protects against incrementing past the end
-            if (elem_.ip_ == qcd_->get_step_count()) {
+            if (elem_.ip_ == qc_->get_step_count()) {
                 throw exception::InvalidIterator(
                     "qpp::QCircuit::iterator::operator++()");
             }
@@ -501,11 +500,11 @@ class QCircuit : public IDisplay, public IJSON {
             ++elem_.ip_;
 
             // if we hit the end
-            if (elem_.ip_ == qcd_->get_step_count()) {
+            if (elem_.ip_ == qc_->get_step_count()) {
                 elem_.type_ = StepType::NONE;
             } else {
                 // set the next step type
-                elem_.type_ = qcd_->step_types_[elem_.ip_];
+                elem_.type_ = qc_->step_types_[elem_.ip_];
             }
 
             return *this;
@@ -554,7 +553,7 @@ class QCircuit : public IDisplay, public IJSON {
 
             // protects against de-referencing past the last element or against
             // de-referencing invalid iterators
-            if (qcd_ == nullptr || elem_.ip_ == qcd_->get_step_count())
+            if (qc_ == nullptr || elem_.ip_ == qc_->get_step_count())
                 throw exception::InvalidIterator(
                     "qpp::QCircuit::iterator::operator*()");
             // END EXCEPTION CHECKS
@@ -565,38 +564,38 @@ class QCircuit : public IDisplay, public IJSON {
         /**
          * \brief Sets the iterator to std::begin(this)
          *
-         * \param qcd Constant pointer to a quantum circuit
+         * \param qc Pointer to constant quantum circuit
          */
-        void set_begin_(const QCircuit* qcd) {
-            qcd_ = qcd;
-            elem_ = value_type_{qcd_};
+        void set_begin_(const QCircuit* qc) {
+            qc_ = qc;
+            elem_ = value_type_{qc_};
 
-            if (qcd_ != nullptr) {
-                if (qcd_->get_step_count() != 0) // non-empty circuit
+            if (qc_ != nullptr) {
+                if (qc_->get_step_count() != 0) // non-empty circuit
                 {
-                    elem_.type_ = qcd_->step_types_[0];
+                    elem_.type_ = qc_->step_types_[0];
                     elem_.ip_ = 0;
                 }
-                elem_.gates_ip_ = std::begin(qcd_->gates_);
-                elem_.measurements_ip_ = std::begin(qcd_->measurements_);
+                elem_.gates_ip_ = std::begin(qc_->gates_);
+                elem_.measurements_ip_ = std::begin(qc_->measurements_);
             }
         }
 
         /**
          * \brief Sets the iterator to std::begin(this)
          *
-         * \param qcd Constant pointer to a quantum circuit
+         * \param qc Pointer to constant quantum circuit
          */
-        void set_end_(const QCircuit* qcd) {
-            qcd_ = qcd;
-            elem_ = value_type_{qcd_};
+        void set_end_(const QCircuit* qc) {
+            qc_ = qc;
+            elem_ = value_type_{qc_};
 
-            if (qcd_ != nullptr) {
-                if (qcd->get_step_count() != 0) {
-                    elem_.ip_ = qcd->get_step_count();
+            if (qc_ != nullptr) {
+                if (qc->get_step_count() != 0) {
+                    elem_.ip_ = qc->get_step_count();
                 }
-                elem_.gates_ip_ = std::end(qcd->gates_);
-                elem_.measurements_ip_ = std::end(qcd->measurements_);
+                elem_.gates_ip_ = std::end(qc->gates_);
+                elem_.measurements_ip_ = std::end(qc->measurements_);
             }
         }
 
@@ -2034,8 +2033,8 @@ class QCircuit : public IDisplay, public IJSON {
             result += "\"type\" : ";
             // gate step
             if (elem.type_ == StepType::GATE) {
-                idx pos = std::distance(
-                    std::begin(elem.value_type_qcd_->gates_), elem.gates_ip_);
+                idx pos = std::distance(std::begin(elem.value_type_qc_->gates_),
+                                        elem.gates_ip_);
                 ss.str("");
                 ss.clear();
                 ss << gates_[pos].gate_type_;
@@ -2056,7 +2055,7 @@ class QCircuit : public IDisplay, public IJSON {
             // measurement step
             else if (elem.type_ == StepType::MEASUREMENT) {
                 idx pos = std::distance(
-                    std::begin(elem.value_type_qcd_->measurements_),
+                    std::begin(elem.value_type_qc_->measurements_),
                     elem.measurements_ip_);
                 ss.str("");
                 ss.clear();
@@ -2130,7 +2129,7 @@ class QCircuit : public IDisplay, public IJSON {
  */
 class QEngine : public IDisplay, public IJSON {
   protected:
-    const QCircuit& qcd_;       ///< quantum circuit
+    const QCircuit* qc_;        ///< pointer to constant quantum circuit
     ket psi_;                   ///< state vector
     std::vector<idx> dits_;     ///< classical dits
     std::vector<double> probs_; ///< measurement probabilities
@@ -2147,7 +2146,7 @@ class QEngine : public IDisplay, public IJSON {
             throw exception::QuditAlreadyMeasured(
                 "qpp::QEngine::set_measured_()");
         subsys_[i] = idx_infty; // set qudit i to measured state
-        for (idx m = i; m < qcd_.get_nq(); ++m) {
+        for (idx m = i; m < qc_->get_nq(); ++m) {
             if (!get_measured(m)) {
                 --subsys_[m];
             }
@@ -2183,15 +2182,29 @@ class QEngine : public IDisplay, public IJSON {
      * \note The initial underlying quantum state is set to
      * \f$|0\rangle^{\otimes n}\f$
      *
-     * \param qcd Quantum circuit
+     * \param qc Quantum circuit
      */
-    explicit QEngine(const QCircuit& qcd)
-        : qcd_{qcd}, psi_{States::get_instance().zero(qcd.get_nq(),
-                                                      qcd.get_d())},
-          dits_(qcd.get_nc(), 0), probs_(qcd.get_nc(), 0),
-          subsys_(qcd.get_nq(), 0) {
+    explicit QEngine(const QCircuit& qc)
+        : qc_{std::addressof(qc)}, psi_{States::get_instance().zero(
+                                       qc.get_nq(), qc.get_d())},
+          dits_(qc.get_nc(), 0), probs_(qc.get_nc(), 0),
+          subsys_(qc.get_nq(), 0) {
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
     }
+
+    // silence -Weffc++ class has pointer data members
+    /**
+     * \brief Default copy constructor
+     */
+    QEngine(const QEngine&) = default;
+
+    // silence -Weffc++ class has pointer data members
+    /**
+     * \brief Default copy assignment operator
+     *
+     * \return Reference to the current instance
+     */
+    QEngine& operator=(const QEngine&) = default;
 
     /**
      * \brief Disables rvalue QCircuit
@@ -2233,7 +2246,7 @@ class QEngine : public IDisplay, public IJSON {
      * \return Value of the classical dit at position \a i
      */
     idx get_dit(idx i) const {
-        if (i > qcd_.get_nc())
+        if (i > qc_->get_nc())
             throw exception::OutOfRange("qpp::QEngine::get_dit()");
 
         return dits_[i];
@@ -2266,7 +2279,7 @@ class QEngine : public IDisplay, public IJSON {
      */
     std::vector<idx> get_measured() const {
         std::vector<idx> result;
-        for (idx i = 0; i < qcd_.get_nq(); ++i)
+        for (idx i = 0; i < qc_->get_nq(); ++i)
             if (get_measured(i))
                 result.emplace_back(i);
 
@@ -2280,7 +2293,7 @@ class QEngine : public IDisplay, public IJSON {
      */
     std::vector<idx> get_not_measured() const {
         std::vector<idx> result;
-        for (idx i = 0; i < qcd_.get_nq(); ++i)
+        for (idx i = 0; i < qc_->get_nq(); ++i)
             if (!get_measured(i))
                 result.emplace_back(i);
 
@@ -2292,7 +2305,7 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \return Underlying quantum circuit
      */
-    const QCircuit& get_circuit() const noexcept { return qcd_; }
+    const QCircuit& get_circuit() const noexcept { return *qc_; }
     // end getters
 
     // setters
@@ -2304,7 +2317,7 @@ class QEngine : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QEngine& set_dit(idx i, idx value) {
-        if (i > qcd_.get_nc())
+        if (i > qc_->get_nc())
             throw exception::OutOfRange("qpp::QEngine::set_dit()");
         dits_[i] = value;
 
@@ -2319,9 +2332,9 @@ class QEngine : public IDisplay, public IJSON {
      * \f$|0\rangle^{\otimes n}\f$
      */
     void reset() {
-        psi_ = States::get_instance().zero(qcd_.get_nq(), qcd_.get_d());
-        dits_ = std::vector<idx>(qcd_.get_nc(), 0);
-        probs_ = std::vector<double>(qcd_.get_nc(), 0);
+        psi_ = States::get_instance().zero(qc_->get_nq(), qc_->get_d());
+        dits_ = std::vector<idx>(qc_->get_nc(), 0);
+        probs_ = std::vector<double>(qc_->get_nc(), 0);
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
     }
 
@@ -2334,16 +2347,16 @@ class QEngine : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         // iterator must point to the same quantum circuit
-        if (elem.value_type_qcd_ != std::addressof(qcd_))
+        if (elem.value_type_qc_ != qc_)
             throw exception::InvalidIterator("qpp::QEngine::execute()");
         // the rest of exceptions are caught by the iterator::operator*()
         // END EXCEPTION CHECKS
 
         // gate step
         if (elem.type_ == QCircuit::StepType::GATE) {
-            auto gates = qcd_.get_gates_();
+            auto gates = qc_->get_gates_();
             idx q_ip =
-                std::distance(std::begin(qcd_.get_gates_()), elem.gates_ip_);
+                std::distance(std::begin(qc_->get_gates_()), elem.gates_ip_);
 
             std::vector<idx> ctrl_rel_pos;
             std::vector<idx> target_rel_pos =
@@ -2357,12 +2370,12 @@ class QEngine : public IDisplay, public IJSON {
             case QCircuit::GateType::THREE:
             case QCircuit::GateType::CUSTOM:
                 psi_ = apply(psi_, gates[q_ip].gate_, target_rel_pos,
-                             qcd_.get_d());
+                             qc_->get_d());
                 break;
             case QCircuit::GateType::FAN:
                 for (idx m = 0; m < gates[q_ip].target_.size(); ++m)
                     psi_ = apply(psi_, gates[q_ip].gate_, {target_rel_pos[m]},
-                                 qcd_.get_d());
+                                 qc_->get_d());
                 break;
             case QCircuit::GateType::QFT:
             case QCircuit::GateType::TFQ:
@@ -2373,7 +2386,7 @@ class QEngine : public IDisplay, public IJSON {
             case QCircuit::GateType::CUSTOM_CTRL:
                 ctrl_rel_pos = get_relative_pos_(gates[q_ip].ctrl_);
                 psi_ = applyCTRL(psi_, gates[q_ip].gate_, ctrl_rel_pos,
-                                 target_rel_pos, qcd_.get_d());
+                                 target_rel_pos, qc_->get_d());
                 break;
             case QCircuit::GateType::SINGLE_cCTRL_SINGLE_TARGET:
             case QCircuit::GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
@@ -2382,7 +2395,7 @@ class QEngine : public IDisplay, public IJSON {
             case QCircuit::GateType::CUSTOM_cCTRL:
                 if (dits_.size() == 0) {
                     psi_ = apply(psi_, gates[q_ip].gate_, target_rel_pos,
-                                 qcd_.get_d());
+                                 qc_->get_d());
                 } else {
                     bool should_apply = true;
                     idx first_dit = dits_[(gates[q_ip].ctrl_)[0]];
@@ -2394,7 +2407,7 @@ class QEngine : public IDisplay, public IJSON {
                     }
                     if (should_apply) {
                         psi_ = apply(psi_, powm(gates[q_ip].gate_, first_dit),
-                                     target_rel_pos, qcd_.get_d());
+                                     target_rel_pos, qc_->get_d());
                     }
                 }
                 break;
@@ -2402,8 +2415,8 @@ class QEngine : public IDisplay, public IJSON {
         }     // end if gate step
         // measurement step
         else if (elem.type_ == QCircuit::StepType::MEASUREMENT) {
-            auto measurements = qcd_.get_measurements_();
-            idx m_ip = std::distance(std::begin(qcd_.get_measurements_()),
+            auto measurements = qc_->get_measurements_();
+            idx m_ip = std::distance(std::begin(qc_->get_measurements_()),
                                      elem.measurements_ip_);
 
             std::vector<idx> target_rel_pos =
@@ -2421,7 +2434,7 @@ class QEngine : public IDisplay, public IJSON {
                 break;
             case QCircuit::MeasureType::MEASURE_Z:
                 std::tie(resZ, probZ, psi_) =
-                    measure_seq(psi_, target_rel_pos, qcd_.get_d());
+                    measure_seq(psi_, target_rel_pos, qc_->get_d());
                 dits_[measurements[m_ip].c_reg_] = resZ[0];
                 probs_[measurements[m_ip].c_reg_] = probZ;
                 set_measured_(measurements[m_ip].target_[0]);
@@ -2429,7 +2442,7 @@ class QEngine : public IDisplay, public IJSON {
             case QCircuit::MeasureType::MEASURE_V:
                 std::tie(mres, probs, states) =
                     measure(psi_, measurements[m_ip].mats_[0], target_rel_pos,
-                            qcd_.get_d());
+                            qc_->get_d());
                 psi_ = states[mres];
                 dits_[measurements[m_ip].c_reg_] = mres;
                 probs_[measurements[m_ip].c_reg_] = probs[mres];
@@ -2438,7 +2451,7 @@ class QEngine : public IDisplay, public IJSON {
             case QCircuit::MeasureType::MEASURE_V_MANY:
                 std::tie(mres, probs, states) =
                     measure(psi_, measurements[m_ip].mats_[0], target_rel_pos,
-                            qcd_.get_d());
+                            qc_->get_d());
                 psi_ = states[mres];
                 dits_[measurements[m_ip].c_reg_] = mres;
                 probs_[measurements[m_ip].c_reg_] = probs[mres];

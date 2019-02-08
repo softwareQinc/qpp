@@ -1,58 +1,62 @@
 // Used for testing, do not use it as an example
 #include <iostream>
+#include <unordered_set>
 
 #include "qpp.h"
+
+void add_gate(std::unordered_set<qpp::cmat>& gate_set, const qpp::cmat& U) {
+    auto it = gate_set.find(U);
+
+    // gate does not exist
+    if (it == gate_set.end()) {
+        std::cout << "new gate\n";
+        gate_set.insert(U);
+    }
+    // gate exists already
+    else {
+        // hash collision
+        if ((*it).cols() == U.cols() && (*it).rows() == U.rows()) {
+            if ((*it) != U) {
+                throw 42;
+            }
+        }
+        // no hash collision
+        else {
+            std::cout << "gate exists\n";
+            return;
+        }
+    }
+}
 
 int main() {
     using namespace qpp;
     /////////// testing ///////////
 
-    QCircuit qc{4, 4, 2, "test_circuit"};
-    qc.gate_fan(gt.H);
-    qc.gate(gt.X, 0, "named_X");
-    qc.measureZ(3, 0);
-    qc.gate(gt.X, 0, "named_X");
-    qc.gate(gt.Z, 1);
-    qc.cCTRL(gt.X, 0, 1);
-    qc.CTRL(gt.X, 0, 1);
-    qc.gate_fan(gt.H);
-    qc.gate_fan(gt.H, {0, 2});
-    qc.measureZ(0, 1);
-    qc.measureV(gt.Z, 1, 2);
-    qc.measureZ(2, 3);
+    std::unordered_set<cmat> gate_set;
 
-    std::cout << qc << '\n';
-    std::cout << qc.to_JSON() << "\n\n";
+    cmat x(1, 2);
+    x << 1.,1;
 
-    QEngine engine{qc};
-    for (auto&& step : qc) {
-        engine.execute(step);
-    }
-    std::cout << engine << '\n';
-    std::cout << engine.to_JSON() << "\n\n";
+    cmat y(1, 1);
+    y << 2.000000000000001,1;
 
-    engine.reset();
-    for (auto&& step : qc) {
-        engine.execute(step);
-    }
-    std::cout << engine << '\n';
-    std::cout << engine.to_JSON() << "\n\n";
+    std::cout << hash_eigen_expression(gt.CNOT) << '\n';
+    std::cout << hash_eigen_expression(gt.TOF) << '\n';
 
-    std::cout << qc.get_gate_count("H") << "\n";
-    std::cout << qc.get_gate_count() << "\n";
-    std::cout << qc.get_measurement_count("Z") << "\n";
-    std::cout << qc.get_measurement_count() << "\n";
+    // std::cout << (x != y) << '\n';
+    add_gate(gate_set, gt.Id2);
+    add_gate(gate_set, gt.Z);
+    add_gate(gate_set, gt.X);
+    add_gate(gate_set, gt.X);
+    add_gate(gate_set, gt.CNOT);
+    add_gate(gate_set, gt.TOF);
+    add_gate(gate_set, gt.Id2);
 
-    std::cout << hash_eigen_expression(gt.X) << "\n";
-    std::cout << std::hash<cmat>{}(gt.X) << "\n";
+    add_gate(gate_set, x);
+//    add_gate(gate_set, y);
 
-    dmat a(2, 2);
-    a << 1, 2, 3, 4.000000000000001;
-    dmat b(2, 2);
-    b << 1, 2, 3, 4.000000000000002;
-    cmat c(1, 1);
-    c << 1.1 + 2.2_i;
-    std::cout << std::hash<dmat>{}(a) << "\n";
-    std::cout << std::hash<dmat>{}(b) << "\n";
-    std::cout << std::hash<cmat>{}(c) << "\n";
+    std::cout << *(gate_set.find(gt.x)) << '\n';
+
+
+
 }

@@ -698,27 +698,27 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
             std::vector<idx> dims) {
     //    typename std::remove_const<
     //            typename Eigen::MatrixBase<Derived>::EvalReturnType
-    //    >::type cA = A.derived();
+    //    >::type rA = A.derived();
 
-    dyn_mat<typename Derived::Scalar> cA = A.derived();
+    dyn_mat<typename Derived::Scalar> rA = A.derived();
 
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(cA))
+    if (!internal::check_nonzero_size(rA))
         throw exception::ZeroSize("qpp::measure_seq()");
     // check that dimension is valid
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::measure_seq()");
 
     // check square matrix or column vector
-    if (internal::check_square_mat(cA)) {
+    if (internal::check_square_mat(rA)) {
         // check that dims match rho matrix
-        if (!internal::check_dims_match_mat(dims, cA))
+        if (!internal::check_dims_match_mat(dims, rA))
             throw exception::DimsMismatchMatrix("qpp::measure_seq()");
-    } else if (internal::check_cvector(cA)) {
+    } else if (internal::check_cvector(rA)) {
         // check that dims match psi column vector
-        if (!internal::check_dims_match_cvect(dims, cA))
+        if (!internal::check_dims_match_cvect(dims, rA))
             throw exception::DimsMismatchCvector("qpp::measure_seq()");
     } else
         throw exception::MatrixNotSquareNorCvector("qpp::measure_seq()");
@@ -737,11 +737,11 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
 
     //************ density matrix or column vector ************//
     while (target.size() > 0) {
-        auto tmp = measure(cA, Gates::get_instance().Id(dims[target[0]]),
+        auto tmp = measure(rA, Gates::get_instance().Id(dims[target[0]]),
                            {target[0]}, dims);
         result.push_back(std::get<0>(tmp));
         prob *= std::get<1>(tmp)[std::get<0>(tmp)];
-        cA = std::get<2>(tmp)[std::get<0>(tmp)];
+        rA = std::get<2>(tmp)[std::get<0>(tmp)];
 
         // remove the subsystem
         dims.erase(std::next(std::begin(dims), target[0]));
@@ -750,7 +750,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     // order result in increasing order with respect to target
     std::reverse(std::begin(result), std::end(result));
 
-    return std::make_tuple(result, prob, cA);
+    return std::make_tuple(result, prob, rA);
 }
 
 /**
