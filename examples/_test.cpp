@@ -48,7 +48,11 @@ int main() {
     std::cout << "\t END3\n";
     add_gate(gate_set, gt.TOF);
     std::cout << "\t END4\n";
+    add_gate(gate_set, st.b00);
+    std::cout << "\t END5\n";
+    add_gate(gate_set, st.b00);
+    std::cout << "\t END6\n";
 
     std::cout << *(gate_set.find(x)) << '\n';
-    std::cout << "\t END5\n";
+    std::cout << "\t END7\n";
 }
