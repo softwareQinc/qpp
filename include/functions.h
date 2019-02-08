@@ -2011,11 +2011,16 @@ struct hash<qpp::bra> {
     }
 };
 
-template<>
-struct equal_to<qpp::cmat>{
-    constexpr bool operator()(const qpp::cmat &lhs, const qpp::cmat &rhs) const
-    {
-        return 1;
+template <>
+struct equal_to<qpp::cmat> {
+    bool operator()(const qpp::cmat& lhs, const qpp::cmat& rhs) const {
+        if (lhs.rows() == rhs.rows() && lhs.cols() == rhs.cols()) {
+            if (lhs == rhs)
+                return true;
+            else
+                return false;
+        } else
+            return false;
     }
 };
 } /* namespace std */

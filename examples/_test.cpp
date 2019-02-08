@@ -34,28 +34,18 @@ int main() {
 
     std::unordered_set<cmat> gate_set;
 
-    cmat x(1, 2);
-    x << 1.,1;
-
-    cmat y(1, 1);
-    y << 2.000000000000001,1;
+    cmat x(1,1);
+    x << 1.;
 
     std::cout << hash_eigen_expression(gt.CNOT) << '\n';
     std::cout << hash_eigen_expression(gt.TOF) << '\n';
-
-    // std::cout << (x != y) << '\n';
-    add_gate(gate_set, gt.Id2);
-    add_gate(gate_set, gt.Z);
-    add_gate(gate_set, gt.X);
-    add_gate(gate_set, gt.X);
-    add_gate(gate_set, gt.CNOT);
-    add_gate(gate_set, gt.TOF);
-    add_gate(gate_set, gt.Id2);
+    std::cout << hash_eigen_expression(x) << '\n';
 
     add_gate(gate_set, x);
-//    add_gate(gate_set, y);
+    add_gate(gate_set, x);
+    add_gate(gate_set, gt.CNOT);
 
-    std::cout << *(gate_set.find(gt.x)) << '\n';
+    std::cout << *(gate_set.find(x)) << '\n';
 
 
 
