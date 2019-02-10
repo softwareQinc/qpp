@@ -87,7 +87,7 @@ class NoiseBase {
         // minimal EXCEPTION CHECKS
 
         if (!internal::check_nonzero_size(state))
-            throw exception::ZeroSize("qpp::Noise::compute_probs_()");
+            throw exception::ZeroSize("qpp::NoiseBase::compute_probs_()");
         // END EXCEPTION CHECKS
 
         cmat rho_i;
@@ -122,7 +122,7 @@ class NoiseBase {
         //************ Exception: not ket nor density matrix ************//
         else
             throw exception::MatrixNotSquareNorCvector(
-                "qpp::Noise::compute_state_()");
+                "qpp::NoiseBase::compute_state_()");
 
         // now do the actual noise generation
         std::discrete_distribution<idx> dd{std::begin(probs_),
@@ -159,14 +159,14 @@ class NoiseBase {
         // EXCEPTION CHECKS
 
         if (Ks.size() == 0)
-            throw exception::ZeroSize("qpp::Noise::Noise()");
+            throw exception::ZeroSize("qpp::NoiseBase::NoiseBase()");
         if (!internal::check_nonzero_size(Ks[0]))
-            throw exception::ZeroSize("qpp::Noise::Noise()");
+            throw exception::ZeroSize("qpp::NoiseBase::NoiseBase()");
         if (!internal::check_square_mat(Ks[0]))
-            throw exception::MatrixNotSquare("qpp::Noise::Noise()");
+            throw exception::MatrixNotSquare("qpp::NoiseBase::NoiseBase()");
         for (auto&& elem : Ks)
             if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
-                throw exception::DimsNotEqual("qpp::Noise::Noise()");
+                throw exception::DimsNotEqual("qpp::NoiseBase::NoiseBase()");
         // END EXCEPTION CHECKS
 
         d_ = Ks[0].rows(); // set the local dimension
@@ -190,19 +190,19 @@ class NoiseBase {
         // EXCEPTION CHECKS
 
         if (Ks.size() == 0)
-            throw exception::ZeroSize("qpp::Noise::Noise()");
+            throw exception::ZeroSize("qpp::NoiseBase::NoiseBase()");
         if (Ks.size() != probs.size())
-            throw exception::SizeMismatch("qpp::Noise::Noise");
+            throw exception::SizeMismatch("qpp::NoiseBase::NoiseBase");
         if (!internal::check_nonzero_size(Ks[0]))
-            throw exception::ZeroSize("qpp::Noise::Noise()");
+            throw exception::ZeroSize("qpp::NoiseBase::NoiseBase()");
         if (!internal::check_square_mat(Ks[0]))
-            throw exception::MatrixNotSquare("qpp::Noise::Noise()");
+            throw exception::MatrixNotSquare("qpp::NoiseBase::NoiseBase()");
         for (auto&& elem : Ks)
             if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
-                throw exception::DimsNotEqual("qpp::Noise::Noise()");
+                throw exception::DimsNotEqual("qpp::NoiseBase::NoiseBase()");
         for (auto&& elem : probs)
             if (elem < 0 || elem > 1)
-                throw exception::OutOfRange("qpp::Noise::Noise");
+                throw exception::OutOfRange("qpp::NoiseBase::NoiseBase");
         // END EXCEPTION CHECKS
 
         d_ = Ks[0].rows(); // set the local dimension
@@ -240,8 +240,8 @@ class NoiseBase {
             return probs_;
         } else
             throw exception::CustomException(
-                "qpp::Noise::get_probs()",
-                "Noise::operator() was not yet invoked");
+                "qpp::NoiseBase::get_probs()",
+                "NoiseBase::operator() was not yet invoked");
     }
 
     /**
@@ -254,8 +254,8 @@ class NoiseBase {
             return i_;
         } else
             throw exception::CustomException(
-                "qpp::Noise::get_last_idx()",
-                "Noise::operator() was not yet invoked");
+                "qpp::NoiseBase::get_last_idx()",
+                "NoiseBase::operator() was not yet invoked");
     }
 
     /**
@@ -268,8 +268,8 @@ class NoiseBase {
             return probs_[i_];
         } else
             throw exception::CustomException(
-                "qpp::Noise::get_last_p()",
-                "Noise::operator() was not yet invoked");
+                "qpp::NoiseBase::get_last_p()",
+                "NoiseBase::operator() was not yet invoked");
     }
 
     /**
@@ -282,10 +282,31 @@ class NoiseBase {
             return Ks_[i_];
         } else
             throw exception::CustomException(
-                "qpp::Noise::get_last_K()",
-                "Noise::operator() was not yet invoked");
+                "qpp::NoiseBase::get_last_K()",
+                "NoiseBase::operator() was not yet invoked");
     }
     // end getters
+
+    /**
+     * \brief Function invocation operator, applies the underlying noise
+     * model on the state vector or density matrix \a state
+     *
+     * \param state State vector or density matrix
+     * \return Resulting state vector or density matrix
+     */
+    virtual cmat operator()(const cmat& state) const {
+        cmat result;
+        try {
+
+            compute_probs_(state, std::vector<idx>{0});
+            result = compute_state_(state, std::vector<idx>{0});
+        } catch (exception::Exception&) {
+            std::cerr << "In qpp::NoiseBase::operator()\n";
+            throw;
+        }
+
+        return result;
+    }
 
     /**
      * \brief Function invocation operator, applies the underlying noise
@@ -301,8 +322,8 @@ class NoiseBase {
         try {
             compute_probs_(state, std::vector<idx>{target});
             result = compute_state_(state, std::vector<idx>{target});
-        } catch (qpp::exception::Exception&) {
-            std::cerr << "In qpp::Noise::operator()\n";
+        } catch (exception::Exception&) {
+            std::cerr << "In qpp::NoiseBase::operator()\n";
             throw;
         }
 
@@ -324,14 +345,14 @@ class NoiseBase {
         try {
             compute_probs_(state, target);
             result = compute_state_(state, target);
-        } catch (qpp::exception::Exception&) {
-            std::cerr << "In qpp::Noise::operator()\n";
+        } catch (exception::Exception&) {
+            std::cerr << "In qpp::NoiseBase::operator()\n";
             throw;
         }
 
         return result;
     }
-}; /* class Noise */
+}; /* class NoiseBase */
 
 // qubit noise models
 

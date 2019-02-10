@@ -27,7 +27,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Quantum++
-   &#160;<span id="projectnumber">v1.1</span>
+   &#160;<span id="projectnumber">v1.2</span>
    </div>
    <div id="projectbrief">A modern C++11 quantum computing library</div>
   </td>
@@ -86,17 +86,18 @@ $(document).ready(function(){initNavTree('classqpp_1_1_qubit_amplitude_damping_n
   <tr class="even"><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html#a2a69e7111f5b5f58ed7a6d02baf4953e">noise_type</a> typedef</td><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html">qpp::NoiseBase&lt; NoiseType::StateDependent &gt;</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html#a8a9d0ff03bc6764f23faa3a05c0d9246">NoiseBase</a>(const std::vector&lt; cmat &gt; &amp;Ks, typename std::enable_if&lt; std::is_same&lt; NoiseType::StateDependent, U &gt;::value &gt;::type *=nullptr)</td><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html">qpp::NoiseBase&lt; NoiseType::StateDependent &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">explicit</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html#adbfea0db656cb733b5e70ef290f1cafe">NoiseBase</a>(const std::vector&lt; cmat &gt; &amp;Ks, const std::vector&lt; double &gt; &amp;probs, typename std::enable_if&lt; std::is_same&lt; NoiseType::StateIndependent, U &gt;::value &gt;::type *=nullptr)</td><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html">qpp::NoiseBase&lt; NoiseType::StateDependent &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">explicit</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html#ad0801a75632ac9839dc01b8a3b1d5c55">operator()</a>(const cmat &amp;state, idx target) const</td><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html">qpp::NoiseBase&lt; NoiseType::StateDependent &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html#a41b72542255e61301042b775808d0e59">operator()</a>(const cmat &amp;state, const std::vector&lt; idx &gt; &amp;target) const</td><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html">qpp::NoiseBase&lt; NoiseType::StateDependent &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html#aef4611fecbc1dd70982fb0513c65d356">probs_</a></td><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html">qpp::NoiseBase&lt; NoiseType::StateDependent &gt;</a></td><td class="entry"><span class="mlabel">mutable</span><span class="mlabel">protected</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classqpp_1_1_qubit_amplitude_damping_noise.html#a0e3177b53bc6ecb881ff6e8518decc99">QubitAmplitudeDampingNoise</a>(double gamma)</td><td class="entry"><a class="el" href="classqpp_1_1_qubit_amplitude_damping_noise.html">qpp::QubitAmplitudeDampingNoise</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">explicit</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html#ae7001fa8dc0f2cf7655bb6073b860d64">~NoiseBase</a>()=default</td><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html">qpp::NoiseBase&lt; NoiseType::StateDependent &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html#afdebf3ca7d4a68534c53d98f705098cc">operator()</a>(const cmat &amp;state) const</td><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html">qpp::NoiseBase&lt; NoiseType::StateDependent &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html#ad0801a75632ac9839dc01b8a3b1d5c55">operator()</a>(const cmat &amp;state, idx target) const</td><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html">qpp::NoiseBase&lt; NoiseType::StateDependent &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html#a41b72542255e61301042b775808d0e59">operator()</a>(const cmat &amp;state, const std::vector&lt; idx &gt; &amp;target) const</td><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html">qpp::NoiseBase&lt; NoiseType::StateDependent &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html#aef4611fecbc1dd70982fb0513c65d356">probs_</a></td><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html">qpp::NoiseBase&lt; NoiseType::StateDependent &gt;</a></td><td class="entry"><span class="mlabel">mutable</span><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classqpp_1_1_qubit_amplitude_damping_noise.html#a0e3177b53bc6ecb881ff6e8518decc99">QubitAmplitudeDampingNoise</a>(double gamma)</td><td class="entry"><a class="el" href="classqpp_1_1_qubit_amplitude_damping_noise.html">qpp::QubitAmplitudeDampingNoise</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">explicit</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html#ae7001fa8dc0f2cf7655bb6073b860d64">~NoiseBase</a>()=default</td><td class="entry"><a class="el" href="classqpp_1_1_noise_base.html">qpp::NoiseBase&lt; NoiseType::StateDependent &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Feb 10 2019 17:31:06 for Quantum++ by
+    <li class="footer">Generated on Sun Feb 10 2019 18:32:48 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

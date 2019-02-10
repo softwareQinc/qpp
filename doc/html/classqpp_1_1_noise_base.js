@@ -12,6 +12,7 @@ var classqpp_1_1_noise_base =
     [ "get_last_K", "classqpp_1_1_noise_base.html#ab683e02a7f1dbdaf28e67b0ec9194839", null ],
     [ "get_last_p", "classqpp_1_1_noise_base.html#ae9c370f4fb29713cc8f2153fbdda1017", null ],
     [ "get_probs", "classqpp_1_1_noise_base.html#ae1f2a95c32b3f0129824bb6dca7ca3ed", null ],
+    [ "operator()", "classqpp_1_1_noise_base.html#afdebf3ca7d4a68534c53d98f705098cc", null ],
     [ "operator()", "classqpp_1_1_noise_base.html#ad0801a75632ac9839dc01b8a3b1d5c55", null ],
     [ "operator()", "classqpp_1_1_noise_base.html#a41b72542255e61301042b775808d0e59", null ],
     [ "d_", "classqpp_1_1_noise_base.html#a3f2a297558ea507b8c291ebf2be7f4d2", null ],
