@@ -95,12 +95,12 @@ Collaboration diagram for qpp::QCircuit:</div>
 <div class="dyncontent">
 <div class="center"><img src="classqpp_1_1_q_circuit__coll__graph.png" border="0" usemap="#qpp_1_1_q_circuit_coll__map" alt="Collaboration graph"/></div>
 <map name="qpp_1_1_q_circuit_coll__map" id="qpp_1_1_q_circuit_coll__map">
-<area shape="rect" id="node2" href="classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="824,5,923,32"/>
-<area shape="rect" id="node3" href="classqpp_1_1_i_j_s_o_n.html" title="Abstract class (interface) that mandates the definition of very basic JSON serialization support..." alt="" coords="828,56,919,83"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="209,180,289,207"/>
-<area shape="rect" id="node8" href="structqpp_1_1_q_circuit_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. " alt="" coords="411,339,597,365"/>
-<area shape="rect" id="node12" href="structqpp_1_1_q_circuit_1_1_gate_step.html" title="One step consisting only of gates/operators in the circuit. " alt="" coords="422,257,586,284"/>
-<area shape="rect" id="node6" title="STL class. " alt="" coords="5,173,132,214"/>
+<area shape="rect" id="node2" href="classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="887,12,985,39"/>
+<area shape="rect" id="node3" href="classqpp_1_1_i_j_s_o_n.html" title="Abstract class (interface) that mandates the definition of very basic JSON serialization support..." alt="" coords="891,63,981,89"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="225,223,305,249"/>
+<area shape="rect" id="node8" href="structqpp_1_1_q_circuit_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. " alt="" coords="473,69,660,96"/>
+<area shape="rect" id="node12" href="structqpp_1_1_q_circuit_1_1_gate_step.html" title="One step consisting only of gates/operators in the circuit. " alt="" coords="485,187,649,213"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="5,215,132,257"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -340,12 +340,18 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
+<tr class="memitem:a1cc73c71db60eb4a45f5b56f3c9a9c6f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a1cc73c71db60eb4a45f5b56f3c9a9c6f">add_hash_</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, std::size_t hashU)</td></tr>
+<tr class="memdesc:a1cc73c71db60eb4a45f5b56f3c9a9c6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds matrix to the hash table.  <a href="#a1cc73c71db60eb4a45f5b56f3c9a9c6f">More...</a><br /></td></tr>
+<tr class="separator:a1cc73c71db60eb4a45f5b56f3c9a9c6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e447b3e2aaa5eec47f385dca6847902"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html">MeasureStep</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a5e447b3e2aaa5eec47f385dca6847902">get_measurements_</a> () const noexcept</td></tr>
 <tr class="memdesc:a5e447b3e2aaa5eec47f385dca6847902"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of <a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. ">qpp::QCircuit::MeasureStep</a>.  <a href="#a5e447b3e2aaa5eec47f385dca6847902">More...</a><br /></td></tr>
 <tr class="separator:a5e447b3e2aaa5eec47f385dca6847902"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6894637fc7687828cb8fbc09ed764938"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="structqpp_1_1_q_circuit_1_1_gate_step.html">GateStep</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a6894637fc7687828cb8fbc09ed764938">get_gates_</a> () const noexcept</td></tr>
 <tr class="memdesc:a6894637fc7687828cb8fbc09ed764938"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of <a class="el" href="structqpp_1_1_q_circuit_1_1_gate_step.html" title="One step consisting only of gates/operators in the circuit. ">qpp::QCircuit::GateStep</a>.  <a href="#a6894637fc7687828cb8fbc09ed764938">More...</a><br /></td></tr>
 <tr class="separator:a6894637fc7687828cb8fbc09ed764938"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adaa58f9bc087b20b0bbf6e655041a455"><td class="memItemLeft" align="right" valign="top">const std::unordered_map&lt; std::size_t, <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#adaa58f9bc087b20b0bbf6e655041a455">get_cmat_hash_tbl_</a> () const noexcept</td></tr>
+<tr class="memdesc:adaa58f9bc087b20b0bbf6e655041a455"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hash table with the matrices used in the circuit.  <a href="#adaa58f9bc087b20b0bbf6e655041a455">More...</a><br /></td></tr>
+<tr class="separator:adaa58f9bc087b20b0bbf6e655041a455"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada022f191fc6534058c800e41578cceb"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#ada022f191fc6534058c800e41578cceb">display</a> (std::ostream &amp;os) const override</td></tr>
 <tr class="memdesc:ada022f191fc6534058c800e41578cceb"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classqpp_1_1_i_display.html#ae994cbe2f2a0302dc0acc377fc3d51ab" title="Must be overridden by all derived classes. ">qpp::IDisplay::display()</a> override  <a href="#ada022f191fc6534058c800e41578cceb">More...</a><br /></td></tr>
 <tr class="separator:ada022f191fc6534058c800e41578cceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -367,12 +373,14 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a4c6abb5231be0dfa07b24ac4ac1093df"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a4c6abb5231be0dfa07b24ac4ac1093df">measured_</a></td></tr>
 <tr class="memdesc:a4c6abb5231be0dfa07b24ac4ac1093df"><td class="mdescLeft">&#160;</td><td class="mdescRight">keeps track of the measured qudits  <a href="#a4c6abb5231be0dfa07b24ac4ac1093df">More...</a><br /></td></tr>
 <tr class="separator:a4c6abb5231be0dfa07b24ac4ac1093df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6fd701ae5b1c159d11355da7112f0066"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a6fd701ae5b1c159d11355da7112f0066">depth_</a> {}</td></tr>
-<tr class="memdesc:a6fd701ae5b1c159d11355da7112f0066"><td class="mdescLeft">&#160;</td><td class="mdescRight">keeps track of the gate depths  <a href="#a6fd701ae5b1c159d11355da7112f0066">More...</a><br /></td></tr>
-<tr class="separator:a6fd701ae5b1c159d11355da7112f0066"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7d43f8317b41062d3a70ab969f2f5d7"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::size_t, <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#aa7d43f8317b41062d3a70ab969f2f5d7">cmat_hash_tbl_</a> {}</td></tr>
+<tr class="separator:aa7d43f8317b41062d3a70ab969f2f5d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c9c26ee9ea5d6565ba57b86486258bc"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a7c9c26ee9ea5d6565ba57b86486258bc">count_</a> {}</td></tr>
 <tr class="memdesc:a7c9c26ee9ea5d6565ba57b86486258bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">keeps track of the gate counts  <a href="#a7c9c26ee9ea5d6565ba57b86486258bc">More...</a><br /></td></tr>
 <tr class="separator:a7c9c26ee9ea5d6565ba57b86486258bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fd701ae5b1c159d11355da7112f0066"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a6fd701ae5b1c159d11355da7112f0066">depth_</a> {}</td></tr>
+<tr class="memdesc:a6fd701ae5b1c159d11355da7112f0066"><td class="mdescLeft">&#160;</td><td class="mdescRight">keeps track of the gate depths  <a href="#a6fd701ae5b1c159d11355da7112f0066">More...</a><br /></td></tr>
+<tr class="separator:a6fd701ae5b1c159d11355da7112f0066"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d8c0048dc397fef207aa9b110a019bc"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a3d8c0048dc397fef207aa9b110a019bc">measurement_count_</a> {}</td></tr>
 <tr class="memdesc:a3d8c0048dc397fef207aa9b110a019bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">keeps track of the measurement counts  <a href="#a3d8c0048dc397fef207aa9b110a019bc">More...</a><br /></td></tr>
 <tr class="separator:a3d8c0048dc397fef207aa9b110a019bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -462,35 +470,25 @@ Friends</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7eae756763a309c477063b5e2e7d0c455ea"></a>TFQ&#160;</td><td class="fielddoc"><p>quantum inverse Fourier transform, </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ea88190c1e1f68f85cbbac03cc3ad67429"></a>SINGLE_CTRL_SINGLE_TARGET&#160;</td><td class="fielddoc"><p>one control and one target </p>
-<p>controlled 1 qudit unitary gate with </p>
+<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ea88190c1e1f68f85cbbac03cc3ad67429"></a>SINGLE_CTRL_SINGLE_TARGET&#160;</td><td class="fielddoc"><p>controlled 1 qudit unitary gate with one control and one target </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ea9fdb77d5ae25c12f141716753b077faa"></a>SINGLE_CTRL_MULTIPLE_TARGET&#160;</td><td class="fielddoc"><p>one control and multiple targets </p>
-<p>controlled 1 qudit unitary gate with </p>
+<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ea9fdb77d5ae25c12f141716753b077faa"></a>SINGLE_CTRL_MULTIPLE_TARGET&#160;</td><td class="fielddoc"><p>controlled 1 qudit unitary gate with one control and multiple targets </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ea875e8f8f78f4e5b229ef5e4fb15f71a8"></a>MULTIPLE_CTRL_SINGLE_TARGET&#160;</td><td class="fielddoc"><p>multiple controls and single target </p>
-<p>controlled 1 qudit unitary gate with </p>
+<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ea875e8f8f78f4e5b229ef5e4fb15f71a8"></a>MULTIPLE_CTRL_SINGLE_TARGET&#160;</td><td class="fielddoc"><p>controlled 1 qudit unitary gate with multiple controls and single target </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7eab1d9fa96ac88e4295e1ea9c05c4e25e8"></a>MULTIPLE_CTRL_MULTIPLE_TARGET&#160;</td><td class="fielddoc"><p>multiple controls and multiple targets </p>
-<p>controlled 1 qudit unitary gate with </p>
+<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7eab1d9fa96ac88e4295e1ea9c05c4e25e8"></a>MULTIPLE_CTRL_MULTIPLE_TARGET&#160;</td><td class="fielddoc"><p>controlled 1 qudit unitary gate with multiple controls and multiple targets </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ead305923ad5ac78f0ef86ab4997d277ed"></a>CUSTOM_CTRL&#160;</td><td class="fielddoc"><p>and multiple targets </p>
-<p>custom controlled gate with multiple controls </p>
+<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ead305923ad5ac78f0ef86ab4997d277ed"></a>CUSTOM_CTRL&#160;</td><td class="fielddoc"><p>custom controlled gate with multiple controls and multiple targets </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7eaf0e4631ba18e2035edf72e0beaf15240"></a>SINGLE_cCTRL_SINGLE_TARGET&#160;</td><td class="fielddoc"><p>one classical control and one target </p>
-<p>controlled 1 qudit unitary gate with </p>
+<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7eaf0e4631ba18e2035edf72e0beaf15240"></a>SINGLE_cCTRL_SINGLE_TARGET&#160;</td><td class="fielddoc"><p>controlled 1 qudit unitary gate with one classical control and one target </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7eabfe2b5a975cef70d97a910e54e5c84ea"></a>SINGLE_cCTRL_MULTIPLE_TARGET&#160;</td><td class="fielddoc"><p>one classical control and multiple targets </p>
-<p>controlled 1 qudit unitary gate with </p>
+<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7eabfe2b5a975cef70d97a910e54e5c84ea"></a>SINGLE_cCTRL_MULTIPLE_TARGET&#160;</td><td class="fielddoc"><p>controlled 1 qudit unitary gate with one classical control and multiple targets </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ea21c45a6fc6f6ccf29ec7c48ad6ce4c1b"></a>MULTIPLE_cCTRL_SINGLE_TARGET&#160;</td><td class="fielddoc"><p>multiple classical controls and single target </p>
-<p>controlled 1 qudit unitary gate with </p>
+<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ea21c45a6fc6f6ccf29ec7c48ad6ce4c1b"></a>MULTIPLE_cCTRL_SINGLE_TARGET&#160;</td><td class="fielddoc"><p>controlled 1 qudit unitary gate with multiple classical controls and single target </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7eac758e25010bdef1cc3f4bc39e39ad557"></a>MULTIPLE_cCTRL_MULTIPLE_TARGET&#160;</td><td class="fielddoc"><p>with multiple classical controls and multiple targets </p>
-<p>controlled 1 qudit unitary gate </p>
+<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7eac758e25010bdef1cc3f4bc39e39ad557"></a>MULTIPLE_cCTRL_MULTIPLE_TARGET&#160;</td><td class="fielddoc"><p>controlled 1 qudit unitary gate with multiple classical controls and multiple targets </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ea79b326efcb9013f059bd0e83470e150f"></a>CUSTOM_cCTRL&#160;</td><td class="fielddoc"><p>multiple targets </p>
-<p>custom controlled gate with multiple controls and </p>
+<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ea79b326efcb9013f059bd0e83470e150f"></a>CUSTOM_cCTRL&#160;</td><td class="fielddoc"><p>custom controlled gate with multiple controls and multiple targets </p>
 </td></tr>
 </table>
 
@@ -522,11 +520,9 @@ Friends</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="abd78f82ad807d5d8af20f391d2336308a2ab1d76092348e984f9aca92c648ec37"></a>MEASURE_Z&#160;</td><td class="fielddoc"><p>Z measurement of single qudit. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="abd78f82ad807d5d8af20f391d2336308a8f2c7e7ab229b75a139822637593621d"></a>MEASURE_V&#160;</td><td class="fielddoc"><p>or rank-1 projectors specified by the columns of matrix <em>V</em> </p>
-<p>measurement of single qudit in the orthonormal basis </p>
+<tr><td class="fieldname"><a id="abd78f82ad807d5d8af20f391d2336308a8f2c7e7ab229b75a139822637593621d"></a>MEASURE_V&#160;</td><td class="fielddoc"><p>measurement of single qudit in the orthonormal basis or rank-1 projectors specified by the columns of matrix <em>V</em> </p>
 </td></tr>
-<tr><td class="fieldname"><a id="abd78f82ad807d5d8af20f391d2336308a9c11f6f406f8d8e47e50e35b77b9dd8c"></a>MEASURE_V_MANY&#160;</td><td class="fielddoc"><p>basis or rank-1 projectors specified by the columns of matrix <em>V</em> </p>
-<p>measurement of multiple qudits in the orthonormal </p>
+<tr><td class="fieldname"><a id="abd78f82ad807d5d8af20f391d2336308a9c11f6f406f8d8e47e50e35b77b9dd8c"></a>MEASURE_V_MANY&#160;</td><td class="fielddoc"><p>measurement of multiple qudits in the orthonormal basis or rank-1 projectors specified by the columns of matrix <em>V</em> </p>
 </td></tr>
 </table>
 
@@ -653,6 +649,52 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1cc73c71db60eb4a45f5b56f3c9a9c6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cc73c71db60eb4a45f5b56f3c9a9c6f">&#9670;&nbsp;</a></span>add_hash_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void qpp::QCircuit::add_hash_ </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;&#160;</td>
+          <td class="paramname"><em>U</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>hashU</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds matrix to the hash table. </p>
+<dl class="section note"><dt>Note</dt><dd>Throws if a hash collision is detected., i.e., if two different matrices have the same hash</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">U</td><td>Complex matrix </td></tr>
+    <tr><td class="paramname">hashU</td><td>Hash value of U </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="aa5d75f3a6969a051d5480ad65702c14c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa5d75f3a6969a051d5480ad65702c14c">&#9670;&nbsp;</a></span>begin() <span class="overload">[1/2]</span></h2>
 
@@ -1844,6 +1886,34 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="adaa58f9bc087b20b0bbf6e655041a455"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adaa58f9bc087b20b0bbf6e655041a455">&#9670;&nbsp;</a></span>get_cmat_hash_tbl_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::unordered_map&lt;std::size_t, <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&gt;&amp; qpp::QCircuit::get_cmat_hash_tbl_ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Hash table with the matrices used in the circuit. </p>
+<dl class="section return"><dt>Returns</dt><dd>Hash table with the matrices used in the circuit </dd></dl>
+
+</div>
+</div>
 <a id="aa7a0454f64c9922350e7ab01659e93e2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa7a0454f64c9922350e7ab01659e93e2">&#9670;&nbsp;</a></span>get_d()</h2>
 
@@ -2831,6 +2901,29 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="aa7d43f8317b41062d3a70ab969f2f5d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7d43f8317b41062d3a70ab969f2f5d7">&#9670;&nbsp;</a></span>cmat_hash_tbl_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::size_t, <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&gt; qpp::QCircuit::cmat_hash_tbl_ {}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>hash table with the matrices used in the circuit, with [Key = idx, Value = cmat] </p>
+
+</div>
+</div>
 <a id="a7c9c26ee9ea5d6565ba57b86486258bc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7c9c26ee9ea5d6565ba57b86486258bc">&#9670;&nbsp;</a></span>count_</h2>
 
@@ -3104,7 +3197,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a></li>
-    <li class="footer">Generated on Sat Feb 9 2019 19:02:31 for Quantum++ by
+    <li class="footer">Generated on Sun Feb 10 2019 17:31:06 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

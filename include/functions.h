@@ -1966,28 +1966,29 @@ void hash_combine(std::size_t& seed, const T& v) {
  * https://www.boost.org/doc/libs/1_69_0/doc/html/hash/reference.html#boost.hash_combine
  *
  * \param A Eigen expression
+ * \param seed Seed, 0 by default
  * \return Hash of its argument
  */
 template <typename Derived>
-std::size_t hash_eigen_expression(const Eigen::MatrixBase<Derived>& A) {
+std::size_t hash_eigen(const Eigen::MatrixBase<Derived>& A,
+                       std::size_t seed = 0) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::hash_eigen_expression()");
+        throw exception::ZeroSize("qpp::hash_eigen()");
     // END EXCEPTION CHECKS
 
-    std::size_t result = 0;
     auto* p = rA.data();
     idx sizeA = static_cast<idx>(rA.size());
     for (idx i = 0; i < sizeA; ++i) {
-        internal::hash_combine(result, std::real(p[i]));
-        internal::hash_combine(result, std::imag(p[i]));
+        internal::hash_combine(seed, std::real(p[i]));
+        internal::hash_combine(seed, std::imag(p[i]));
     }
 
-    return result;
+    return seed;
 }
 
 namespace internal {
@@ -1999,17 +2000,17 @@ struct HashEigen {
     template <typename Derived>
     std::size_t operator()(const Eigen::MatrixBase<Derived>& A) const {
         const dyn_mat<typename Derived::Scalar>& rA = A.derived();
-        return hash_eigen_expression(rA);
+        return hash_eigen(rA);
     }
 };
 
 /**
- * \class qpp::internal::KeyEqualEigen
- * \brief Functor for comparing Eigen expressions
+ * \class qpp::internal::EqualEigen
+ * \brief Functor for comparing Eigen expressions for equality
  * \note Works without assertion fails even if the dimensions of the arguments
  * are different (in which case simply returns false
  */
-struct KeyEqualEigen {
+struct EqualEigen {
     template <typename Derived>
     bool operator()(const Eigen::MatrixBase<Derived>& A,
                     const Eigen::MatrixBase<Derived>& B) const {

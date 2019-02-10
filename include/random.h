@@ -129,12 +129,8 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
  * qpp::dmat and qpp::cmat
  */
 template <typename Derived>
-Derived rand(idx rows, idx cols, double a = 0, double b = 1) {
-    // silence -Wunused-parameter in clang++
-    (void) rows;
-    (void) cols;
-    (void) a;
-    (void) b;
+Derived rand(idx rows QPP_UNUSED_, idx cols QPP_UNUSED_,
+             double a QPP_UNUSED_ = 0, double b QPP_UNUSED_ = 1) {
     throw exception::UndefinedType("qpp::rand()");
 }
 
@@ -221,12 +217,8 @@ inline cmat rand(idx rows, idx cols, double a, double b) {
  * qpp::dmat and qpp::cmat
  */
 template <typename Derived>
-Derived randn(idx rows, idx cols, double mean = 0, double sigma = 1) {
-    // silence -Wunused-parameter in clang++
-    (void) rows;
-    (void) cols;
-    (void) mean;
-    (void) sigma;
+Derived randn(idx rows QPP_UNUSED_, idx cols QPP_UNUSED_,
+              double mean QPP_UNUSED_ = 0, double sigma QPP_UNUSED_ = 1) {
     throw exception::UndefinedType("qpp::randn()");
 }
 

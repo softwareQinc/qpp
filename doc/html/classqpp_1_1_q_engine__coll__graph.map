@@ -1,9 +1,9 @@
 <map id="qpp::QEngine" name="qpp::QEngine">
-<area shape="rect" id="node2" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="824,83,923,109"/>
-<area shape="rect" id="node5" href="$classqpp_1_1_q_circuit.html" title="Quantum circuit class. " alt="" coords="1131,229,1231,256"/>
-<area shape="rect" id="node3" href="$classqpp_1_1_i_j_s_o_n.html" title="Abstract class (interface) that mandates the definition of very basic JSON serialization support..." alt="" coords="828,133,919,160"/>
-<area shape="rect" id="node10" href="$structqpp_1_1_q_circuit_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. " alt="" coords="411,209,597,236"/>
-<area shape="rect" id="node13" href="$structqpp_1_1_q_circuit_1_1_gate_step.html" title="One step consisting only of gates/operators in the circuit. " alt="" coords="422,309,586,336"/>
-<area shape="rect" id="node7" title="STL class. " alt="" coords="209,368,289,395"/>
-<area shape="rect" id="node8" title="STL class. " alt="" coords="5,361,132,402"/>
+<area shape="rect" id="node2" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="887,83,985,109"/>
+<area shape="rect" id="node5" href="$classqpp_1_1_q_circuit.html" title="Quantum circuit class. " alt="" coords="1194,273,1294,300"/>
+<area shape="rect" id="node3" href="$classqpp_1_1_i_j_s_o_n.html" title="Abstract class (interface) that mandates the definition of very basic JSON serialization support..." alt="" coords="891,251,981,277"/>
+<area shape="rect" id="node10" href="$structqpp_1_1_q_circuit_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. " alt="" coords="473,287,660,313"/>
+<area shape="rect" id="node13" href="$structqpp_1_1_q_circuit_1_1_gate_step.html" title="One step consisting only of gates/operators in the circuit. " alt="" coords="485,143,649,169"/>
+<area shape="rect" id="node7" title="STL class. " alt="" coords="225,348,305,375"/>
+<area shape="rect" id="node8" title="STL class. " alt="" coords="5,341,132,382"/>
 </map>

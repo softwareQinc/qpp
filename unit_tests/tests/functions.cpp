@@ -138,9 +138,9 @@ TEST(qpp_grams_matrix, AllTests) {}
 ///       qpp::grams(const std::vector<Derived>& As)
 TEST(qpp_grams_vector, AllTests) {}
 /******************************************************************************/
-/// BEGIN template<typename Derived> std::size_t qpp::hash_eigen_expression(
+/// BEGIN template<typename Derived> std::size_t qpp::hash_eigen(
 ///       const Eigen::MatrixBase<Derived>& A)
-TEST(qpp_hash_eigen_expression, AllTests){}
+TEST(qpp_hash_eigen, AllTests){}
 /// BEGIN template<typename Derived> std::pair<dyn_col_vect<double>, cmat>
 ///       qpp::heig(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_heig, AllTests) {}

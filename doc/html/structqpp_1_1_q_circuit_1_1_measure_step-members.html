@@ -72,10 +72,10 @@ $(document).ready(function(){initNavTree('structqpp_1_1_q_circuit_1_1_measure_st
 <p>This is the complete list of members for <a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html">qpp::QCircuit::MeasureStep</a>, including all inherited members.</p>
 <table class="directory">
   <tr class="even"><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html#a976b9c183d2f942b1a851e1d31a12ed3">c_reg_</a></td><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html">qpp::QCircuit::MeasureStep</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html#abb1e28974bf96b7e94631ee11eac5923">mats_</a></td><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html">qpp::QCircuit::MeasureStep</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html#a78d5f3038942e167483e0cded5e785d4">mats_hash_</a></td><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html">qpp::QCircuit::MeasureStep</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html#a0e5343b78de1c757384bd614470426ac">measurement_type_</a></td><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html">qpp::QCircuit::MeasureStep</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html#ad4b8ce2efcb1ff86887b591ac94222a3">MeasureStep</a>()=default</td><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html">qpp::QCircuit::MeasureStep</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html#a090241035d519ca8b1dbff581d6ff9e0">MeasureStep</a>(MeasureType measurement_type, const std::vector&lt; cmat &gt; &amp;mats, const std::vector&lt; idx &gt; &amp;target, idx c_reg, std::string name=&quot;&quot;)</td><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html">qpp::QCircuit::MeasureStep</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">explicit</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html#a41cee04691da8208bf9f43febda6c33a">MeasureStep</a>(MeasureType measurement_type, const std::vector&lt; std::size_t &gt; &amp;mats_hash, const std::vector&lt; idx &gt; &amp;target, idx c_reg, std::string name=&quot;&quot;)</td><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html">qpp::QCircuit::MeasureStep</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">explicit</span></td></tr>
   <tr><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html#a428f358f3b3a38e070ed2ed27a0aab98">name_</a></td><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html">qpp::QCircuit::MeasureStep</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html#a15cb90f8467e525cdf907d998443bcd4">target_</a></td><td class="entry"><a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html">qpp::QCircuit::MeasureStep</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
@@ -83,7 +83,7 @@ $(document).ready(function(){initNavTree('structqpp_1_1_q_circuit_1_1_measure_st
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Feb 9 2019 19:02:31 for Quantum++ by
+    <li class="footer">Generated on Sun Feb 10 2019 17:31:06 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

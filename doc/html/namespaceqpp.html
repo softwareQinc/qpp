@@ -573,10 +573,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a7e5c413d74d838e78264444307e81576"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a7e5c413d74d838e78264444307e81576">bloch2rho</a> (const std::vector&lt; double &gt; &amp;r)</td></tr>
 <tr class="memdesc:a7e5c413d74d838e78264444307e81576"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the density matrix corresponding to the 3-dimensional real Bloch vector <em>r</em>.  <a href="#a7e5c413d74d838e78264444307e81576">More...</a><br /></td></tr>
 <tr class="separator:a7e5c413d74d838e78264444307e81576"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0133b055303ced031fb3652c9a77fb1c"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:a0133b055303ced031fb3652c9a77fb1c"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a0133b055303ced031fb3652c9a77fb1c">hash_eigen_expression</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</td></tr>
-<tr class="memdesc:a0133b055303ced031fb3652c9a77fb1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the hash of en Eigen matrix/vector/expression.  <a href="#a0133b055303ced031fb3652c9a77fb1c">More...</a><br /></td></tr>
-<tr class="separator:a0133b055303ced031fb3652c9a77fb1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a400f71f143ed7787747f67980b4f6c97"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a400f71f143ed7787747f67980b4f6c97"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a400f71f143ed7787747f67980b4f6c97">hash_eigen</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, std::size_t seed=0)</td></tr>
+<tr class="memdesc:a400f71f143ed7787747f67980b4f6c97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the hash of en Eigen matrix/vector/expression.  <a href="#a400f71f143ed7787747f67980b4f6c97">More...</a><br /></td></tr>
+<tr class="separator:a400f71f143ed7787747f67980b4f6c97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f1805e175751ef749374e3c8499f15d"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a4f1805e175751ef749374e3c8499f15d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html">internal::IOManipEigen</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, double <a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>=<a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>)</td></tr>
 <tr class="memdesc:a4f1805e175751ef749374e3c8499f15d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eigen expression ostream manipulator.  <a href="#a4f1805e175751ef749374e3c8499f15d">More...</a><br /></td></tr>
@@ -831,10 +831,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ab2e295b33fd56735f0bffb21d61d21dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ab2e295b33fd56735f0bffb21d61d21dd">randidx</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> a=std::numeric_limits&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;::min(), <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> b=std::numeric_limits&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;::max())</td></tr>
 <tr class="memdesc:ab2e295b33fd56735f0bffb21d61d21dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random index (idx) uniformly distributed in the interval [a, b].  <a href="#ab2e295b33fd56735f0bffb21d61d21dd">More...</a><br /></td></tr>
 <tr class="separator:ab2e295b33fd56735f0bffb21d61d21dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e4bd67e5334b4a9ac09216e8fe37249"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:a6e4bd67e5334b4a9ac09216e8fe37249"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a6e4bd67e5334b4a9ac09216e8fe37249">rand</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols, double a=0, double b=1)</td></tr>
-<tr class="memdesc:a6e4bd67e5334b4a9ac09216e8fe37249"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random matrix with entries uniformly distributed in the interval [a, b)  <a href="#a6e4bd67e5334b4a9ac09216e8fe37249">More...</a><br /></td></tr>
-<tr class="separator:a6e4bd67e5334b4a9ac09216e8fe37249"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1c210549a0732e0ee379917dbe21b15"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:ac1c210549a0732e0ee379917dbe21b15"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ac1c210549a0732e0ee379917dbe21b15">rand</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows QPP_UNUSED_, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols QPP_UNUSED_, double a QPP_UNUSED_=0, double b QPP_UNUSED_=1)</td></tr>
+<tr class="memdesc:ac1c210549a0732e0ee379917dbe21b15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random matrix with entries uniformly distributed in the interval [a, b)  <a href="#ac1c210549a0732e0ee379917dbe21b15">More...</a><br /></td></tr>
+<tr class="separator:ac1c210549a0732e0ee379917dbe21b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a884c04674e908e0ee6160a8d37623766"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
 <tr class="memitem:a884c04674e908e0ee6160a8d37623766"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff">dmat</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a884c04674e908e0ee6160a8d37623766">rand</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols, double a, double b)</td></tr>
 <tr class="memdesc:a884c04674e908e0ee6160a8d37623766"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random real matrix with entries uniformly distributed in the interval [a, b), specialization for double matrices (<a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a>)  <a href="#a884c04674e908e0ee6160a8d37623766">More...</a><br /></td></tr>
@@ -843,10 +843,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a2a6ed04b1092ce25ceed3ce4e7136b48"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a2a6ed04b1092ce25ceed3ce4e7136b48">rand</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols, double a, double b)</td></tr>
 <tr class="memdesc:a2a6ed04b1092ce25ceed3ce4e7136b48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random complex matrix with entries (both real and imaginary) uniformly distributed in the interval [a, b), specialization for complex matrices (<a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a>)  <a href="#a2a6ed04b1092ce25ceed3ce4e7136b48">More...</a><br /></td></tr>
 <tr class="separator:a2a6ed04b1092ce25ceed3ce4e7136b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeeb9fb000b5bb9056653c3d2c10a1d65"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
-<tr class="memitem:aeeb9fb000b5bb9056653c3d2c10a1d65"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aeeb9fb000b5bb9056653c3d2c10a1d65">randn</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols, double mean=0, double <a class="el" href="namespaceqpp.html#a5dac002761cbcfb72cdb6a573e2689c3">sigma</a>=1)</td></tr>
-<tr class="memdesc:aeeb9fb000b5bb9056653c3d2c10a1d65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random matrix with entries normally distributed in N(mean, sigma)  <a href="#aeeb9fb000b5bb9056653c3d2c10a1d65">More...</a><br /></td></tr>
-<tr class="separator:aeeb9fb000b5bb9056653c3d2c10a1d65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8cf9c3bf47bb46bdd7d69b5c18de60f"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:ad8cf9c3bf47bb46bdd7d69b5c18de60f"><td class="memTemplItemLeft" align="right" valign="top">Derived&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#ad8cf9c3bf47bb46bdd7d69b5c18de60f">randn</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows QPP_UNUSED_, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols QPP_UNUSED_, double mean QPP_UNUSED_=0, double <a class="el" href="namespaceqpp.html#a5dac002761cbcfb72cdb6a573e2689c3">sigma</a> QPP_UNUSED_=1)</td></tr>
+<tr class="memdesc:ad8cf9c3bf47bb46bdd7d69b5c18de60f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random matrix with entries normally distributed in N(mean, sigma)  <a href="#ad8cf9c3bf47bb46bdd7d69b5c18de60f">More...</a><br /></td></tr>
+<tr class="separator:ad8cf9c3bf47bb46bdd7d69b5c18de60f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a793a175c6092603d8d4518ede7176fce"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
 <tr class="memitem:a793a175c6092603d8d4518ede7176fce"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff">dmat</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a793a175c6092603d8d4518ede7176fce">randn</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols, double mean, double <a class="el" href="namespaceqpp.html#a5dac002761cbcfb72cdb6a573e2689c3">sigma</a>)</td></tr>
 <tr class="memdesc:a793a175c6092603d8d4518ede7176fce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random real matrix with entries normally distributed in N(mean, sigma), specialization for double matrices (<a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff" title="Real (double precision) dynamic Eigen matrix. ">qpp::dmat</a>)  <a href="#a793a175c6092603d8d4518ede7176fce">More...</a><br /></td></tr>
@@ -3533,8 +3533,8 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a id="a0133b055303ced031fb3652c9a77fb1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0133b055303ced031fb3652c9a77fb1c">&#9670;&nbsp;</a></span>hash_eigen_expression()</h2>
+<a id="a400f71f143ed7787747f67980b4f6c97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a400f71f143ed7787747f67980b4f6c97">&#9670;&nbsp;</a></span>hash_eigen()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3542,11 +3542,21 @@ template&lt;typename Derived &gt; </div>
 template&lt;typename Derived &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t qpp::hash_eigen_expression </td>
+          <td class="memname">std::size_t qpp::hash_eigen </td>
           <td>(</td>
           <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
-          <td class="paramname"><em>A</em></td><td>)</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>seed</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3556,6 +3566,7 @@ template&lt;typename Derived &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
+    <tr><td class="paramname">seed</td><td>Seed, 0 by default </td></tr>
   </table>
   </dd>
 </dl>
@@ -6524,8 +6535,8 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a id="a6e4bd67e5334b4a9ac09216e8fe37249"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e4bd67e5334b4a9ac09216e8fe37249">&#9670;&nbsp;</a></span>rand() <span class="overload">[3/5]</span></h2>
+<a id="ac1c210549a0732e0ee379917dbe21b15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1c210549a0732e0ee379917dbe21b15">&#9670;&nbsp;</a></span>rand() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6535,26 +6546,26 @@ template&lt;typename Derived &gt; </div>
         <tr>
           <td class="memname">Derived qpp::rand </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>rows</em>, </td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows&#160;</td>
+          <td class="paramname"><em>QPP_UNUSED_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>cols</em>, </td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols&#160;</td>
+          <td class="paramname"><em>QPP_UNUSED_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>a</em> = <code>0</code>, </td>
+          <td class="paramtype">double a&#160;</td>
+          <td class="paramname"><em>QPP_UNUSED_</em> = <code>0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>b</em> = <code>1</code>&#160;</td>
+          <td class="paramtype">double b&#160;</td>
+          <td class="paramname"><em>QPP_UNUSED_</em> = <code>1</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -6584,26 +6595,26 @@ template&lt;&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff">dmat</a> qpp::rand </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>rows</em>, </td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>cols</em>, </td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
+          <td class="paramtype">double a&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
+          <td class="paramtype">double b&#160;</td>
+          <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -6647,26 +6658,26 @@ template&lt;&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> qpp::rand </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>rows</em>, </td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>cols</em>, </td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
+          <td class="paramtype">double a&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
+          <td class="paramtype">double b&#160;</td>
+          <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -6859,8 +6870,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="aeeb9fb000b5bb9056653c3d2c10a1d65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeeb9fb000b5bb9056653c3d2c10a1d65">&#9670;&nbsp;</a></span>randn() <span class="overload">[1/4]</span></h2>
+<a id="ad8cf9c3bf47bb46bdd7d69b5c18de60f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8cf9c3bf47bb46bdd7d69b5c18de60f">&#9670;&nbsp;</a></span>randn() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6870,26 +6881,26 @@ template&lt;typename Derived &gt; </div>
         <tr>
           <td class="memname">Derived qpp::randn </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>rows</em>, </td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows&#160;</td>
+          <td class="paramname"><em>QPP_UNUSED_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>cols</em>, </td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols&#160;</td>
+          <td class="paramname"><em>QPP_UNUSED_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>mean</em> = <code>0</code>, </td>
+          <td class="paramtype">double mean&#160;</td>
+          <td class="paramname"><em>QPP_UNUSED_</em> = <code>0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>sigma</em> = <code>1</code>&#160;</td>
+          <td class="paramtype">double <a class="el" href="namespaceqpp.html#a5dac002761cbcfb72cdb6a573e2689c3">sigma</a>&#160;</td>
+          <td class="paramname"><em>QPP_UNUSED_</em> = <code>1</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -6919,26 +6930,26 @@ template&lt;&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="namespaceqpp.html#a923e2becc99eb818c04c71ae913902ff">dmat</a> qpp::randn </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>rows</em>, </td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>cols</em>, </td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>mean</em>, </td>
+          <td class="paramtype">double mean&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>sigma</em>&#160;</td>
+          <td class="paramtype">double <a class="el" href="namespaceqpp.html#a5dac002761cbcfb72cdb6a573e2689c3">sigma</a>&#160;</td>
+          <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -6982,26 +6993,26 @@ template&lt;&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> qpp::randn </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>rows</em>, </td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> rows&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
-          <td class="paramname"><em>cols</em>, </td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> cols&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>mean</em>, </td>
+          <td class="paramtype">double mean&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>sigma</em>&#160;</td>
+          <td class="paramtype">double <a class="el" href="namespaceqpp.html#a5dac002761cbcfb72cdb6a573e2689c3">sigma</a>&#160;</td>
+          <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -8958,7 +8969,7 @@ template&lt;typename Container &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Sat Feb 9 2019 19:02:31 for Quantum++ by
+    <li class="footer">Generated on Sun Feb 10 2019 17:31:05 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

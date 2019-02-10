@@ -46,12 +46,39 @@ class QCircuit : public IDisplay, public IJSON {
     std::string name_;           ///< optional circuit name
     std::vector<bool> measured_; ///< keeps track of the measured qudits
 
-    std::unordered_map<std::string, idx>
-        depth_{}; ///< keeps track of the gate depths
+    std::unordered_map<std::size_t, cmat>
+        cmat_hash_tbl_{}; ///< hash table with the matrices used in the circuit,
+                          ///< with [Key = idx, Value = cmat]
     std::unordered_map<std::string, idx>
         count_{}; ///< keeps track of the gate counts
     std::unordered_map<std::string, idx>
+        depth_{}; ///< keeps track of the gate depths
+    std::unordered_map<std::string, idx>
         measurement_count_{}; ///< keeps track of the measurement counts
+
+    /**
+     * \brief Adds matrix to the hash table
+     * \note Throws if a hash collision is detected., i.e., if two different
+     * matrices have the same hash
+     *
+     * \param U Complex matrix
+     * \param hashU Hash value of U
+     */
+    void add_hash_(const cmat& U, std::size_t hashU) {
+        // EXCEPTION CHECKS
+
+        auto search = cmat_hash_tbl_.find(hashU);
+        static internal::EqualEigen equal_eigen;
+        if (search != cmat_hash_tbl_.end()) // found the hash in the table
+        {
+            // have a hash collision
+            if (!equal_eigen(search->second, U))
+                throw exception::CustomException("qpp::QCircuit::add_hash_()",
+                                                 "Matrix hash collision");
+        }
+        // END EXCEPTION CHECKS
+        cmat_hash_tbl_.insert({hashU, U});
+    }
 
   public:
     /**
@@ -75,34 +102,38 @@ class QCircuit : public IDisplay, public IJSON {
         TFQ, ///< quantum inverse Fourier transform,
 
         SINGLE_CTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< one control and one target
+                                   ///< one control and one target
 
         SINGLE_CTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< one control and multiple targets
+                                     ///< one control and multiple targets
 
         MULTIPLE_CTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< multiple controls and single target
+                                     ///< multiple controls and single target
 
         MULTIPLE_CTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< multiple controls and multiple targets
+                                       ///< multiple controls and multiple
+                                       ///< targets
 
         CUSTOM_CTRL, ///< custom controlled gate with multiple controls
-        ///< and multiple targets
+                     ///< and multiple targets
 
         SINGLE_cCTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< one classical control and one target
+                                    ///< one classical control and one target
 
         SINGLE_cCTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< one classical control and multiple targets
+                                      ///< one classical control and multiple
+                                      ///< targets
 
         MULTIPLE_cCTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< multiple classical controls and single target
+                                      ///< multiple classical controls and
+                                      ///< single target
 
         MULTIPLE_cCTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate
-        ///< with multiple classical controls and multiple targets
+                                        ///< with multiple classical controls
+                                        ///< and multiple targets
 
         CUSTOM_cCTRL, ///< custom controlled gate with multiple controls and
-        ///< multiple targets
+                      ///< multiple targets
     };
 
     /**
@@ -180,7 +211,7 @@ class QCircuit : public IDisplay, public IJSON {
      */
     struct GateStep {
         GateType gate_type_ = GateType::NONE; ///< gate type
-        cmat gate_;                           ///< gate
+        std::size_t gate_hash_;               ///< gate hash
         std::vector<idx> ctrl_;               ///< control
         std::vector<idx> target_; ///< target where the gate is applied
         std::string name_;        ///< custom name of the step
@@ -192,17 +223,18 @@ class QCircuit : public IDisplay, public IJSON {
          * \brief Constructs a gate step instance
          *
          * \param gate_type Gate type
-         * \param gate Quantum gate
+         * \param gate_hash Hash of the quantum gate
          * \param ctrl Control qudit indexes
          * \param target Target qudit indexes
          * \param step_no Circuit step number
          * \param name Optional gate name
          */
-        explicit GateStep(GateType gate_type, const cmat& gate,
+        explicit GateStep(GateType gate_type, std::size_t gate_hash,
                           const std::vector<idx>& ctrl,
                           const std::vector<idx>& target, std::string name = "")
-            : gate_type_{gate_type}, gate_{gate}, ctrl_{ctrl}, target_{target},
-              name_{name} {}
+            : gate_type_{gate_type},
+              gate_hash_{gate_hash}, ctrl_{ctrl}, target_{target}, name_{name} {
+        }
     };
 
     /**
@@ -232,10 +264,12 @@ class QCircuit : public IDisplay, public IJSON {
         MEASURE_Z, ///< Z measurement of single qudit
 
         MEASURE_V, ///< measurement of single qudit in the orthonormal basis
-        ///< or rank-1 projectors specified by the columns of matrix \a V
+                   ///< or rank-1 projectors specified by the columns of matrix
+                   ///< \a V
 
         MEASURE_V_MANY, ///< measurement of multiple qudits in the orthonormal
-        ///< basis or rank-1 projectors specified by the columns of matrix \a V
+                        ///< basis or rank-1 projectors specified by the columns
+                        ///< of matrix \a V
     };
 
     /**
@@ -271,8 +305,8 @@ class QCircuit : public IDisplay, public IJSON {
      */
     struct MeasureStep {
         MeasureType measurement_type_ = MeasureType::NONE; ///< measurement type
-        std::vector<cmat> mats_;  ///< matrix/matrices that specify the
-                                  ///< measurement
+        std::vector<std::size_t> mats_hash_; ///< hashes of measurement
+                                             ///< matrix/matrices
         std::vector<idx> target_; ///< target where the measurement is applied
         idx c_reg_{}; ///< index of the classical register where the measurement
                       ///< result is being stored
@@ -285,20 +319,18 @@ class QCircuit : public IDisplay, public IJSON {
          * \brief Constructs a measurement step instance
          *
          * \param measurement_type Measurement type
-         * \param mats Vector of measurement matrices (can be only one or many
-         * for Kraus measurements)
-         * \param target Target qudit indexes
-         * \param c_reg Classical register where the value of the measurement is
-         * stored
-         * \param step_no Circuit step number
-         * \param name Optional gate name
+         * \param mats_hash Vector of hashes of the measurement matrix/matrices
+         * \param target Target qudit
+         * indexes \param c_reg Classical register where the value of the
+         * measurement is stored \param step_no Circuit step number \param name
+         * Optional gate name
          */
         explicit MeasureStep(MeasureType measurement_type,
-                             const std::vector<cmat>& mats,
+                             const std::vector<std::size_t>& mats_hash,
                              const std::vector<idx>& target, idx c_reg,
                              std::string name = "")
-            : measurement_type_{measurement_type}, mats_{mats}, target_{target},
-              c_reg_{c_reg}, name_{name} {}
+            : measurement_type_{measurement_type}, mats_hash_{mats_hash},
+              target_{target}, c_reg_{c_reg}, name_{name} {}
     };
 
     /**
@@ -348,6 +380,16 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Vector of qpp::QCircuit::GateStep
      */
     const std::vector<GateStep>& get_gates_() const noexcept { return gates_; }
+
+    /**
+     * \brief Hash table with the matrices used in the circuit
+     *
+     * \return Hash table with the matrices used in the circuit
+     */
+    const std::unordered_map<std::size_t, cmat>& get_cmat_hash_tbl_() const
+        noexcept {
+        return cmat_hash_tbl_;
+    }
 
   public:
     /**
@@ -909,7 +951,9 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
-        gates_.emplace_back(GateType::SINGLE, U, std::vector<idx>{},
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(U, hashU);
+        gates_.emplace_back(GateType::SINGLE, hashU, std::vector<idx>{},
                             std::vector<idx>{i}, name);
         step_types_.push_back(StepType::GATE);
         ++count_[name];
@@ -950,7 +994,9 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
-        gates_.emplace_back(GateType::TWO, U, std::vector<idx>{},
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(U, hashU);
+        gates_.emplace_back(GateType::TWO, hashU, std::vector<idx>{},
                             std::vector<idx>{i, j}, name);
         step_types_.push_back(StepType::GATE);
         ++count_[name];
@@ -993,7 +1039,9 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
-        gates_.emplace_back(GateType::THREE, U, std::vector<idx>{},
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(U, hashU);
+        gates_.emplace_back(GateType::THREE, hashU, std::vector<idx>{},
                             std::vector<idx>{i, j, k}, name);
         step_types_.push_back(StepType::GATE);
         ++count_[name];
@@ -1046,7 +1094,10 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
-        gates_.emplace_back(GateType::FAN, U, std::vector<idx>{}, target, name);
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(U, hashU);
+        gates_.emplace_back(GateType::FAN, hashU, std::vector<idx>{}, target,
+                            name);
         step_types_.push_back(StepType::GATE);
         count_[name] += target.size();
 
@@ -1098,7 +1149,9 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
-        gates_.emplace_back(GateType::FAN, U, std::vector<idx>{},
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(U, hashU);
+        gates_.emplace_back(GateType::FAN, hashU, std::vector<idx>{},
                             get_non_measured(), name);
         step_types_.push_back(StepType::GATE);
         count_[name] += get_non_measured().size();
@@ -1155,7 +1208,9 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name == "")
             name = qpp::Gates::get_instance().get_name(U);
-        gates_.emplace_back(GateType::CUSTOM, U, std::vector<idx>{}, target,
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(U, hashU);
+        gates_.emplace_back(GateType::CUSTOM, hashU, std::vector<idx>{}, target,
                             name);
         step_types_.push_back(StepType::GATE);
         ++count_[name];
@@ -1185,7 +1240,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        gates_.emplace_back(GateType::QFT, cmat{}, std::vector<idx>{}, target,
+        gates_.emplace_back(GateType::QFT, 0, std::vector<idx>{}, target,
                             "QFT");
         step_types_.push_back(StepType::GATE);
 
@@ -1213,7 +1268,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw;
         }
         // END EXCEPTION CHECKS
-        gates_.emplace_back(GateType::TFQ, cmat{}, std::vector<idx>{}, target,
+        gates_.emplace_back(GateType::TFQ, 0, std::vector<idx>{}, target,
                             "TFQ");
         step_types_.push_back(StepType::GATE);
 
@@ -1257,7 +1312,9 @@ class QCircuit : public IDisplay, public IJSON {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
             name = gate_name == "" ? "CTRL" : "CTRL-" + gate_name;
         }
-        gates_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, U,
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(U, hashU);
+        gates_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, hashU,
                             std::vector<idx>{ctrl}, std::vector<idx>{target},
                             name);
         step_types_.push_back(StepType::GATE);
@@ -1325,7 +1382,9 @@ class QCircuit : public IDisplay, public IJSON {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
             name = gate_name == "" ? "CTRL" : "CTRL-" + gate_name;
         }
-        gates_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, U,
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(U, hashU);
+        gates_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, hashU,
                             std::vector<idx>{ctrl}, target, name);
         step_types_.push_back(StepType::GATE);
         ++count_[name];
@@ -1389,7 +1448,9 @@ class QCircuit : public IDisplay, public IJSON {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
             name = gate_name == "" ? "CTRL" : "CTRL-" + gate_name;
         }
-        gates_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, U, ctrl,
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(U, hashU);
+        gates_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, hashU, ctrl,
                             std::vector<idx>{target}, name);
         step_types_.push_back(StepType::GATE);
         ++count_[name];
@@ -1465,8 +1526,10 @@ class QCircuit : public IDisplay, public IJSON {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
             name = gate_name == "" ? "CTRL" : "CTRL-" + gate_name;
         }
-        gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, U, ctrl,
-                            std::vector<idx>{target}, name);
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(U, hashU);
+        gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, hashU,
+                            ctrl, std::vector<idx>{target}, name);
         step_types_.push_back(StepType::GATE);
         ++count_[name];
 
@@ -1545,7 +1608,9 @@ class QCircuit : public IDisplay, public IJSON {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
             name = gate_name == "" ? "CTRL" : "CTRL-" + gate_name;
         }
-        gates_.emplace_back(GateType::CUSTOM_CTRL, U, ctrl, target, name);
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(U, hashU);
+        gates_.emplace_back(GateType::CUSTOM_CTRL, hashU, ctrl, target, name);
         step_types_.push_back(StepType::GATE);
         ++count_[name];
 
@@ -1591,7 +1656,9 @@ class QCircuit : public IDisplay, public IJSON {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
             name = gate_name == "" ? "cCTRL" : "cCTRL-" + gate_name;
         }
-        gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, U,
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(U, hashU);
+        gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, hashU,
                             std::vector<idx>{ctrl_dit},
                             std::vector<idx>{target}, name);
         step_types_.push_back(StepType::GATE);
@@ -1652,7 +1719,9 @@ class QCircuit : public IDisplay, public IJSON {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
             name = gate_name == "" ? "cCTRL" : "cCTRL-" + gate_name;
         }
-        gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, U,
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(U, hashU);
+        gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, hashU,
                             std::vector<idx>{ctrl_dit}, target, name);
         step_types_.push_back(StepType::GATE);
         ++count_[name];
@@ -1708,7 +1777,9 @@ class QCircuit : public IDisplay, public IJSON {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
             name = gate_name == "" ? "cCTRL" : "cCTRL-" + gate_name;
         }
-        gates_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, U,
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(U, hashU);
+        gates_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, hashU,
                             ctrl_dits, std::vector<idx>{target}, name);
         step_types_.push_back(StepType::GATE);
         ++count_[name];
@@ -1774,7 +1845,9 @@ class QCircuit : public IDisplay, public IJSON {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
             name = gate_name == "" ? "cCTRL" : "cCTRL-" + gate_name;
         }
-        gates_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, U,
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(U, hashU);
+        gates_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, hashU,
                             ctrl_dits, std::vector<idx>{target}, name);
         step_types_.push_back(StepType::GATE);
         ++count_[name];
@@ -1848,7 +1921,10 @@ class QCircuit : public IDisplay, public IJSON {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
             name = gate_name == "" ? "cCTRL" : "cCTRL-" + gate_name;
         }
-        gates_.emplace_back(GateType::CUSTOM_cCTRL, U, ctrl_dits, target, name);
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(U, hashU);
+        gates_.emplace_back(GateType::CUSTOM_cCTRL, hashU, ctrl_dits, target,
+                            name);
         step_types_.push_back(StepType::GATE);
         ++count_[name];
 
@@ -1887,7 +1963,8 @@ class QCircuit : public IDisplay, public IJSON {
         if (name == "")
             name = "Z";
         measured_[target] = true;
-        measurements_.emplace_back(MeasureType::MEASURE_Z, std::vector<cmat>{},
+        measurements_.emplace_back(MeasureType::MEASURE_Z,
+                                   std::vector<std::size_t>{},
                                    std::vector<idx>{target}, c_reg, name);
         step_types_.push_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
@@ -1932,7 +2009,8 @@ class QCircuit : public IDisplay, public IJSON {
         if (name == "")
             name = qpp::Gates::get_instance().get_name(V);
         measured_[target] = true;
-        measurements_.emplace_back(MeasureType::MEASURE_V, std::vector<cmat>{V},
+        measurements_.emplace_back(MeasureType::MEASURE_V,
+                                   std::vector<std::size_t>{hash_eigen(V)},
                                    std::vector<idx>{target}, c_reg, name);
         step_types_.push_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
@@ -1993,7 +2071,8 @@ class QCircuit : public IDisplay, public IJSON {
         for (auto&& elem : target)
             measured_[elem] = true;
         measurements_.emplace_back(MeasureType::MEASURE_V_MANY,
-                                   std::vector<cmat>{V}, target, c_reg, name);
+                                   std::vector<std::size_t>{hash_eigen(V)},
+                                   target, c_reg, name);
         step_types_.push_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
 
@@ -2078,6 +2157,9 @@ class QCircuit : public IDisplay, public IJSON {
         }                // end for
         result += "], "; // end steps
 
+        ss << get_gate_count();
+        result += "\"gate count\" : " + std::to_string(get_gate_count()) + ", ";
+
         ss.str("");
         ss.clear();
         ss << disp(get_measured(), ", ");
@@ -2115,6 +2197,7 @@ class QCircuit : public IDisplay, public IJSON {
             os << elem << '\n';
         }
 
+        os << "gate count: " << get_gate_count() << '\n';
         os << "measured positions: " << disp(get_measured(), ", ") << '\n';
         os << "non-measured positions: " << disp(get_non_measured(), ", ");
 
@@ -2354,9 +2437,12 @@ class QEngine : public IDisplay, public IJSON {
         // the rest of exceptions are caught by the iterator::operator*()
         // END EXCEPTION CHECKS
 
+        auto h_tbl = qc_->get_cmat_hash_tbl_();
+
         // gate step
         if (elem.type_ == QCircuit::StepType::GATE) {
             auto gates = qc_->get_gates_();
+
             idx q_ip =
                 std::distance(std::begin(qc_->get_gates_()), elem.gates_ip_);
 
@@ -2371,13 +2457,13 @@ class QEngine : public IDisplay, public IJSON {
             case QCircuit::GateType::TWO:
             case QCircuit::GateType::THREE:
             case QCircuit::GateType::CUSTOM:
-                psi_ = apply(psi_, gates[q_ip].gate_, target_rel_pos,
-                             qc_->get_d());
+                psi_ = apply(psi_, h_tbl[gates[q_ip].gate_hash_],
+                             target_rel_pos, qc_->get_d());
                 break;
             case QCircuit::GateType::FAN:
                 for (idx m = 0; m < gates[q_ip].target_.size(); ++m)
-                    psi_ = apply(psi_, gates[q_ip].gate_, {target_rel_pos[m]},
-                                 qc_->get_d());
+                    psi_ = apply(psi_, h_tbl[gates[q_ip].gate_hash_],
+                                 {target_rel_pos[m]}, qc_->get_d());
                 break;
             case QCircuit::GateType::QFT:
             case QCircuit::GateType::TFQ:
@@ -2387,8 +2473,8 @@ class QEngine : public IDisplay, public IJSON {
             case QCircuit::GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
             case QCircuit::GateType::CUSTOM_CTRL:
                 ctrl_rel_pos = get_relative_pos_(gates[q_ip].ctrl_);
-                psi_ = applyCTRL(psi_, gates[q_ip].gate_, ctrl_rel_pos,
-                                 target_rel_pos, qc_->get_d());
+                psi_ = applyCTRL(psi_, h_tbl[gates[q_ip].gate_hash_],
+                                 ctrl_rel_pos, target_rel_pos, qc_->get_d());
                 break;
             case QCircuit::GateType::SINGLE_cCTRL_SINGLE_TARGET:
             case QCircuit::GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
@@ -2396,8 +2482,8 @@ class QEngine : public IDisplay, public IJSON {
             case QCircuit::GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
             case QCircuit::GateType::CUSTOM_cCTRL:
                 if (dits_.size() == 0) {
-                    psi_ = apply(psi_, gates[q_ip].gate_, target_rel_pos,
-                                 qc_->get_d());
+                    psi_ = apply(psi_, h_tbl[gates[q_ip].gate_hash_],
+                                 target_rel_pos, qc_->get_d());
                 } else {
                     bool should_apply = true;
                     idx first_dit = dits_[(gates[q_ip].ctrl_)[0]];
@@ -2408,8 +2494,10 @@ class QEngine : public IDisplay, public IJSON {
                         }
                     }
                     if (should_apply) {
-                        psi_ = apply(psi_, powm(gates[q_ip].gate_, first_dit),
-                                     target_rel_pos, qc_->get_d());
+                        psi_ = apply(
+                            psi_,
+                            powm(h_tbl[gates[q_ip].gate_hash_], first_dit),
+                            target_rel_pos, qc_->get_d());
                     }
                 }
                 break;
@@ -2443,8 +2531,8 @@ class QEngine : public IDisplay, public IJSON {
                 break;
             case QCircuit::MeasureType::MEASURE_V:
                 std::tie(mres, probs, states) =
-                    measure(psi_, measurements[m_ip].mats_[0], target_rel_pos,
-                            qc_->get_d());
+                    measure(psi_, h_tbl[measurements[m_ip].mats_hash_[0]],
+                            target_rel_pos, qc_->get_d());
                 psi_ = states[mres];
                 dits_[measurements[m_ip].c_reg_] = mres;
                 probs_[measurements[m_ip].c_reg_] = probs[mres];
@@ -2452,8 +2540,8 @@ class QEngine : public IDisplay, public IJSON {
                 break;
             case QCircuit::MeasureType::MEASURE_V_MANY:
                 std::tie(mres, probs, states) =
-                    measure(psi_, measurements[m_ip].mats_[0], target_rel_pos,
-                            qc_->get_d());
+                    measure(psi_, h_tbl[measurements[m_ip].mats_hash_[0]],
+                            target_rel_pos, qc_->get_d());
                 psi_ = states[mres];
                 dits_[measurements[m_ip].c_reg_] = mres;
                 probs_[measurements[m_ip].c_reg_] = probs[mres];

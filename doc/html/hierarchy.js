@@ -3,6 +3,7 @@ var hierarchy =
     [ "qpp::internal::Display_Impl_", "structqpp_1_1internal_1_1_display___impl__.html", [
       [ "qpp::internal::IOManipEigen", "classqpp_1_1internal_1_1_i_o_manip_eigen.html", null ]
     ] ],
+    [ "qpp::internal::EqualEigen", "structqpp_1_1internal_1_1_equal_eigen.html", null ],
     [ "std::exception", null, [
       [ "qpp::exception::Exception", "classqpp_1_1exception_1_1_exception.html", [
         [ "qpp::exception::CustomException", "classqpp_1_1exception_1_1_custom_exception.html", null ],
@@ -69,7 +70,6 @@ var hierarchy =
       [ "qpp::is_matrix_expression< Derived >", "structqpp_1_1is__matrix__expression.html", null ]
     ] ],
     [ "qpp::QCircuit::iterator", "classqpp_1_1_q_circuit_1_1iterator.html", null ],
-    [ "qpp::internal::KeyEqualEigen", "structqpp_1_1internal_1_1_key_equal_eigen.html", null ],
     [ "qpp::make_void< Ts >", "structqpp_1_1make__void.html", null ],
     [ "qpp::QCircuit::MeasureStep", "structqpp_1_1_q_circuit_1_1_measure_step.html", null ],
     [ "qpp::NoiseBase< T >", "classqpp_1_1_noise_base.html", null ],
