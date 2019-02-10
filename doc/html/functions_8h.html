@@ -65,6 +65,7 @@ $(document).ready(function(){initNavTree('functions_8h.html','');});
 <div id="doc-content">
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -85,12 +86,24 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 <p><a href="functions_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpp_1_1internal_1_1_hash_eigen.html">qpp::internal::HashEigen</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Functor for hashing Eigen expressions.  <a href="structqpp_1_1internal_1_1_hash_eigen.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpp_1_1internal_1_1_key_equal_eigen.html">qpp::internal::KeyEqualEigen</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Functor for comparing Eigen expressions.  <a href="structqpp_1_1internal_1_1_key_equal_eigen.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceqpp"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html">qpp</a></td></tr>
 <tr class="memdesc:namespaceqpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantum++ main namespace. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceqpp_1_1literals"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1literals.html">qpp::literals</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceqpp_1_1internal"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html">qpp::internal</a></td></tr>
+<tr class="memdesc:namespaceqpp_1_1internal"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal utility functions, do not use them directly or modify them. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -363,6 +376,13 @@ Functions</h2></td></tr>
 <tr class="memitem:a807ed54ce7598a383aa383d1cb60436a"><td class="memTemplItemLeft" align="right" valign="top">cmat&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1literals.html#a807ed54ce7598a383aa383d1cb60436a">qpp::literals::operator&quot;&quot; _prj</a> ()</td></tr>
 <tr class="memdesc:a807ed54ce7598a383aa383d1cb60436a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi-partite qubit projector user-defined literal.  <a href="namespaceqpp_1_1literals.html#a807ed54ce7598a383aa383d1cb60436a">More...</a><br /></td></tr>
 <tr class="separator:a807ed54ce7598a383aa383d1cb60436a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77d0b56561acdfa44c3a05036638d5c4"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a77d0b56561acdfa44c3a05036638d5c4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#a77d0b56561acdfa44c3a05036638d5c4">qpp::internal::hash_combine</a> (std::size_t &amp;seed, const T &amp;v)</td></tr>
+<tr class="separator:a77d0b56561acdfa44c3a05036638d5c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0133b055303ced031fb3652c9a77fb1c"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a0133b055303ced031fb3652c9a77fb1c"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a0133b055303ced031fb3652c9a77fb1c">qpp::hash_eigen_expression</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</td></tr>
+<tr class="memdesc:a0133b055303ced031fb3652c9a77fb1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the hash of en Eigen matrix/vector/expression.  <a href="namespaceqpp.html#a0133b055303ced031fb3652c9a77fb1c">More...</a><br /></td></tr>
+<tr class="separator:a0133b055303ced031fb3652c9a77fb1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Generic quantum computing functions. </p>
@@ -372,7 +392,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="functions_8h.html">functions.h</a></li>
-    <li class="footer">Generated on Thu Feb 7 2019 11:00:46 for Quantum++ by
+    <li class="footer">Generated on Sat Feb 9 2019 19:02:30 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

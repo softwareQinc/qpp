@@ -1,58 +1,60 @@
 // Used for testing, do not use it as an example
 #include <iostream>
-#include <unordered_set>
 
 #include "qpp.h"
+using gate_hash_t = std::unordered_set<qpp::cmat, qpp::internal::HashEigen,
+                                       qpp::internal::KeyEqualEigen>;
 
-void add_gate(std::unordered_set<qpp::cmat>& gate_set, const qpp::cmat& U) {
-    auto it = gate_set.find(U);
-
-    // gate does not exist
-    if (it == gate_set.end()) {
+void add_gate(gate_hash_t& gate_set, const qpp::cmat& U) {
+    auto ret = gate_set.insert(U);
+    if (ret.second == false)
+        std::cout << "gate exists\n";
+    else
         std::cout << "new gate\n";
-        gate_set.insert(U);
-    }
-    // gate exists already
-    else {
-        //std::cout << "here\n";
-        // hash collision
-        if ((*it) != U) {
-            throw 42;
-        }
-        // no hash collision
-        else {
-            std::cout << "gate exists\n";
-            return;
-        }
-    }
 }
 
 int main() {
     using namespace qpp;
     /////////// testing ///////////
 
-    std::unordered_set<cmat> gate_set;
+    gate_hash_t gate_set;
 
     cmat x(1, 1);
     x << 1.;
+
+    cmat y(1, 1);
+    y << 1.000000000000001;
 
     std::cout << hash_eigen_expression(gt.CNOT) << '\n';
     std::cout << hash_eigen_expression(gt.TOF) << '\n';
     std::cout << hash_eigen_expression(x) << '\n';
 
+    internal::HashEigen h;
+    std::cout << h(gt.X + gt.X) << '\n';
+    std::cout << h(gt.X) << '\n';
+    std::cout << h(gt.Z) << '\n';
+
     add_gate(gate_set, x);
-    std::cout << "\t END1\n";
     add_gate(gate_set, x);
-    std::cout << "\t END2\n";
     add_gate(gate_set, gt.CNOT);
-    std::cout << "\t END3\n";
     add_gate(gate_set, gt.TOF);
-    std::cout << "\t END4\n";
     add_gate(gate_set, st.b00);
-    std::cout << "\t END5\n";
     add_gate(gate_set, st.b00);
-    std::cout << "\t END6\n";
+    add_gate(gate_set, x);
+    add_gate(gate_set, gt.X);
+    add_gate(gate_set, gt.Z);
+    add_gate(gate_set, gt.Z);
 
     std::cout << *(gate_set.find(x)) << '\n';
-    std::cout << "\t END7\n";
+    std::cout << *(gate_set.find(st.b00)) << '\n';
+    std::cout << *(gate_set.find(gt.X)) << '\n';
+    std::cout << *(gate_set.find(gt.Z)) << '\n';
+    std::cout << (x == y) << '\n';
+
+    cmat c(2, 2);
+    dmat d(2, 2);
+    c << 2, 1, 3, 4;
+    d << 1, 2, 3, 4;
+    std::cout << h(c) << '\n';
+    std::cout << h(d) << '\n';
 }

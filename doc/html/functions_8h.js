@@ -1,5 +1,7 @@
 var functions_8h =
 [
+    [ "HashEigen", "structqpp_1_1internal_1_1_hash_eigen.html", "structqpp_1_1internal_1_1_hash_eigen" ],
+    [ "KeyEqualEigen", "structqpp_1_1internal_1_1_key_equal_eigen.html", "structqpp_1_1internal_1_1_key_equal_eigen" ],
     [ "absm", "functions_8h.html#a3a4cb16d97f9cc763bd133b64f2b6f6d", null ],
     [ "abssq", "functions_8h.html#a3e9825a190c56286a68989b67620bbb9", null ],
     [ "abssq", "functions_8h.html#a31fc4d84b7de3be27d575d823611ed08", null ],
@@ -26,6 +28,8 @@ var functions_8h =
     [ "grams", "functions_8h.html#a9bd864d5b7c0edfe047589282d701950", null ],
     [ "grams", "functions_8h.html#ae40f14c3ec60bace8ab14a733d161932", null ],
     [ "grams", "functions_8h.html#aa4917f28299b0430203972045b8cf377", null ],
+    [ "hash_combine", "functions_8h.html#a77d0b56561acdfa44c3a05036638d5c4", null ],
+    [ "hash_eigen_expression", "functions_8h.html#a0133b055303ced031fb3652c9a77fb1c", null ],
     [ "heig", "functions_8h.html#acbb48ecd842d8f6a3938e3e5b9a36506", null ],
     [ "hevals", "functions_8h.html#a322665174fcacffbdf82dd04139d667e", null ],
     [ "hevects", "functions_8h.html#abeadaf6395c78a52339bec119c4a331b", null ],

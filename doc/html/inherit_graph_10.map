@@ -1,4 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node2" href="$structqpp_1_1is__complex.html" title="Checks whether the type is a complex type. " alt="" coords="136,5,285,32"/>
-<area shape="rect" id="node3" href="$structqpp_1_1is__iterable.html" title="Checks whether T is compatible with an STL&#45;like iterable container. " alt="" coords="143,57,279,98"/>
+<area shape="rect" id="node1" href="$classqpp_1_1internal_1_1_singleton.html" title="Singleton policy class, used internally to implement the singleton pattern via CRTP (Curiously recurr..." alt="" coords="5,5,195,32"/>
 </map>

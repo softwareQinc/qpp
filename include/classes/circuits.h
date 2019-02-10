@@ -365,7 +365,7 @@ class QCircuit : public IDisplay, public IJSON {
             const QCircuit* value_type_qc_;
 
             StepType type_{StepType::NONE}; ///< step type
-            idx ip_{idx_infty};             ///< instruction pointer
+            idx ip_{static_cast<idx>(-1)};  ///< instruction pointer
             std::vector<GateStep>::const_iterator
                 gates_ip_{}; ///< gates instruction pointer
             std::vector<MeasureStep>::const_iterator
@@ -2145,7 +2145,7 @@ class QEngine : public IDisplay, public IJSON {
         if (get_measured(i))
             throw exception::QuditAlreadyMeasured(
                 "qpp::QEngine::set_measured_()");
-        subsys_[i] = idx_infty; // set qudit i to measured state
+        subsys_[i] = static_cast<idx>(-1); // set qudit i to measured state
         for (idx m = i; m < qc_->get_nq(); ++m) {
             if (!get_measured(m)) {
                 --subsys_[m];
@@ -2270,7 +2270,9 @@ class QEngine : public IDisplay, public IJSON {
      * \param i Qudit index
      * \return True if qudit \a i was already measured, false othwewise
      */
-    bool get_measured(idx i) const { return subsys_[i] == idx_infty; }
+    bool get_measured(idx i) const {
+        return subsys_[i] == static_cast<idx>(-1);
+    }
 
     /**
      * \brief Vector of already measured qudit indexes

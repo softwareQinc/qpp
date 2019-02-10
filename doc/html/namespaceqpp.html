@@ -573,6 +573,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a7e5c413d74d838e78264444307e81576"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a7e5c413d74d838e78264444307e81576">bloch2rho</a> (const std::vector&lt; double &gt; &amp;r)</td></tr>
 <tr class="memdesc:a7e5c413d74d838e78264444307e81576"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the density matrix corresponding to the 3-dimensional real Bloch vector <em>r</em>.  <a href="#a7e5c413d74d838e78264444307e81576">More...</a><br /></td></tr>
 <tr class="separator:a7e5c413d74d838e78264444307e81576"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0133b055303ced031fb3652c9a77fb1c"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
+<tr class="memitem:a0133b055303ced031fb3652c9a77fb1c"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a0133b055303ced031fb3652c9a77fb1c">hash_eigen_expression</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A)</td></tr>
+<tr class="memdesc:a0133b055303ced031fb3652c9a77fb1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the hash of en Eigen matrix/vector/expression.  <a href="#a0133b055303ced031fb3652c9a77fb1c">More...</a><br /></td></tr>
+<tr class="separator:a0133b055303ced031fb3652c9a77fb1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f1805e175751ef749374e3c8499f15d"><td class="memTemplParams" colspan="2">template&lt;typename Derived &gt; </td></tr>
 <tr class="memitem:a4f1805e175751ef749374e3c8499f15d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html">internal::IOManipEigen</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d">disp</a> (const Eigen::MatrixBase&lt; Derived &gt; &amp;A, double <a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>=<a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>)</td></tr>
 <tr class="memdesc:a4f1805e175751ef749374e3c8499f15d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eigen expression ostream manipulator.  <a href="#a4f1805e175751ef749374e3c8499f15d">More...</a><br /></td></tr>
@@ -925,9 +929,6 @@ Variables</h2></td></tr>
 <tr class="memitem:aecd9c0f42f21f1d3b29868b6a8cac4c7"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aecd9c0f42f21f1d3b29868b6a8cac4c7">infty</a> = std::numeric_limits&lt;double&gt;::max()</td></tr>
 <tr class="memdesc:aecd9c0f42f21f1d3b29868b6a8cac4c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to denote infinity in double precision.  <a href="#aecd9c0f42f21f1d3b29868b6a8cac4c7">More...</a><br /></td></tr>
 <tr class="separator:aecd9c0f42f21f1d3b29868b6a8cac4c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4099f440c6a7f755896a4a85445ec58"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#af4099f440c6a7f755896a4a85445ec58">idx_infty</a> = static_cast&lt;<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&gt;(-1)</td></tr>
-<tr class="memdesc:af4099f440c6a7f755896a4a85445ec58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to denote the largest unsigned index.  <a href="#af4099f440c6a7f755896a4a85445ec58">More...</a><br /></td></tr>
-<tr class="separator:af4099f440c6a7f755896a4a85445ec58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Quantum++ main namespace. </p>
@@ -3529,6 +3530,36 @@ template&lt;typename Derived &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Gram-Schmidt vectors of the columns of <em>A</em>, as columns of a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+
+</div>
+</div>
+<a id="a0133b055303ced031fb3652c9a77fb1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0133b055303ced031fb3652c9a77fb1c">&#9670;&nbsp;</a></span>hash_eigen_expression()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t qpp::hash_eigen_expression </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::MatrixBase&lt; Derived &gt; &amp;&#160;</td>
+          <td class="paramname"><em>A</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Computes the hash of en Eigen matrix/vector/expression. </p>
+<dl class="section note"><dt>Note</dt><dd>Code taken from <a class="el" href="namespaceqpp_1_1internal.html#a77d0b56561acdfa44c3a05036638d5c4">boost::hash_combine()</a>, see <a href="https://www.boost.org/doc/libs/1_69_0/doc/html/hash/reference.html#boost.hash_combine">https://www.boost.org/doc/libs/1_69_0/doc/html/hash/reference.html#boost.hash_combine</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>Eigen expression </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Hash of its argument </dd></dl>
 
 </div>
 </div>
@@ -8872,22 +8903,6 @@ template&lt;typename Container &gt; </div>
 
 </div>
 </div>
-<a id="af4099f440c6a7f755896a4a85445ec58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4099f440c6a7f755896a4a85445ec58">&#9670;&nbsp;</a></span>idx_infty</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::idx_infty = static_cast&lt;<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&gt;(-1)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Used to denote the largest unsigned index. </p>
-
-</div>
-</div>
 <a id="aecd9c0f42f21f1d3b29868b6a8cac4c7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aecd9c0f42f21f1d3b29868b6a8cac4c7">&#9670;&nbsp;</a></span>infty</h2>
 
@@ -8943,7 +8958,7 @@ template&lt;typename Container &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li>
-    <li class="footer">Generated on Thu Feb 7 2019 11:00:46 for Quantum++ by
+    <li class="footer">Generated on Sat Feb 9 2019 19:02:31 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

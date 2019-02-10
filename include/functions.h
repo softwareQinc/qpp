@@ -1950,6 +1950,16 @@ cmat operator"" _prj() {
 }
 } /* namespace literals */
 
+namespace internal {
+// hash combine, code taken from boost::hash_combine(), see
+// https://www.boost.org/doc/libs/1_69_0/doc/html/hash/reference.html#boost.hash_combine
+template <class T>
+void hash_combine(std::size_t& seed, const T& v) {
+    std::hash<T> hasher;
+    seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+}
+} // namespace internal
+
 /**
  * \brief Computes the hash of en Eigen matrix/vector/expression
  * \note Code taken from boost::hash_combine(), see
@@ -1976,54 +1986,43 @@ std::size_t hash_eigen_expression(const Eigen::MatrixBase<Derived>& A) {
         internal::hash_combine(result, std::real(p[i]));
         internal::hash_combine(result, std::imag(p[i]));
     }
+
     return result;
 }
 
-} /* namespace qpp */
+namespace internal {
+/**
+ * \class qpp::internal::HashEigen
+ * \brief Functor for hashing Eigen expressions
+ */
+struct HashEigen {
+    template <typename Derived>
+    std::size_t operator()(const Eigen::MatrixBase<Derived>& A) const {
+        const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+        return hash_eigen_expression(rA);
+    }
+};
 
 /**
- * \brief std::hash explicit (full) specializations for basic Eigen data types,
- * see qpp::hash_eigen_expression()
+ * \class qpp::internal::KeyEqualEigen
+ * \brief Functor for comparing Eigen expressions
+ * \note Works without assertion fails even if the dimensions of the arguments
+ * are different (in which case simply returns false
  */
-namespace std {
-template <>
-struct hash<qpp::cmat> {
-    std::size_t operator()(const qpp::cmat& A) const {
-        return qpp::hash_eigen_expression(A);
-    }
-};
-template <>
-struct hash<qpp::dmat> {
-    std::size_t operator()(const qpp::dmat& A) const {
-        return qpp::hash_eigen_expression(A);
-    }
-};
-template <>
-struct hash<qpp::ket> {
-    std::size_t operator()(const qpp::ket& A) const {
-        return qpp::hash_eigen_expression(A);
-    }
-};
-template <>
-struct hash<qpp::bra> {
-    std::size_t operator()(const qpp::bra& A) const {
-        return qpp::hash_eigen_expression(A);
-    }
-};
-
-template <>
-struct equal_to<qpp::cmat> {
-    bool operator()(const qpp::cmat& lhs, const qpp::cmat& rhs) const {
-        std::cout << "compare\n";
-        if (lhs.rows() == rhs.rows() && lhs.cols() == rhs.cols()) {
-            if (lhs == rhs)
-                return true;
-            else
-                return false;
-        } else
+struct KeyEqualEigen {
+    template <typename Derived>
+    bool operator()(const Eigen::MatrixBase<Derived>& A,
+                    const Eigen::MatrixBase<Derived>& B) const {
+        const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+        const dyn_mat<typename Derived::Scalar>& rB = B.derived();
+        if (rA.rows() == rB.rows() && rA.cols() == rB.cols())
+            return rA == rB ? true : false;
+        else
             return false;
     }
 };
-} /* namespace std */
+
+} /* namespace internal */
+} /* namespace qpp */
 
 #endif /* FUNCTIONS_H_ */

@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classqpp_1_1_noise_base.html" title="Base class for all noise models, derive your particular noise model. " alt="" coords="5,5,152,32"/>
+<area shape="rect" id="node1" href="$classqpp_1_1_noise_base.html" title="qpp::NoiseBase\&lt; NoiseType\l::StateDependent \&gt;" alt="" coords="5,35,197,76"/>
+<area shape="rect" id="node2" href="$classqpp_1_1_qubit_amplitude_damping_noise.html" title="Qubit amplitude damping noise, as described in Nielsen and Chuang. " alt="" coords="252,5,448,47"/>
+<area shape="rect" id="node3" href="$classqpp_1_1_qubit_phase_damping_noise.html" title="Qubit phase damping noise, as described in Nielsen and Chuang. " alt="" coords="245,71,455,98"/>
 </map>
