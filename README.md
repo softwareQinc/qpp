@@ -53,14 +53,19 @@ Copyright (c) 2013 - 2019 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
 ---
 ## License
 
-[Quantum++](https://github.com/vsoftco/qpp) is distributed under the MIT license. 
-Please see the [`LICENSE`](https://github.com/vsoftco/qpp/blob/master/LICENSE) file for 
-more details.
+[Quantum++](https://github.com/vsoftco/qpp) is distributed under the MIT 
+license. Please see the 
+[`LICENSE`](https://github.com/vsoftco/qpp/blob/master/LICENSE) file for more 
+details.
 
 ---
 ## Installation instructions and further documentation
 
-Please see the installation guide [`INSTALL.md`](https://github.com/vsoftco/qpp/blob/master/INSTALL.md) and the comprehensive [Wiki](https://github.com/vsoftco/qpp/wiki) for further documentation and detailed examples. 
+Please see the installation guide 
+[`INSTALL.md`](https://github.com/vsoftco/qpp/blob/master/INSTALL.md) 
+and the comprehensive [Wiki](https://github.com/vsoftco/qpp/wiki) for further 
+documentation and detailed examples. 
 
-The official API documentation is available in PDF and HTML formats in the [`doc`](https://github.com/vsoftco/qpp/tree/master/doc) folder.
+The official API documentation is available in PDF and HTML formats in the 
+[`doc`](https://github.com/vsoftco/qpp/tree/master/doc) folder.
 

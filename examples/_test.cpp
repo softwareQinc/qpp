@@ -7,7 +7,7 @@ int main() {
     /////////// testing ///////////
     using namespace qpp;
 
-    QCircuit qc(16, 0);
+    QCircuit qc(10, 0);
     idx i;
     idx N = 1000;
 
@@ -36,10 +36,16 @@ int main() {
         throw;
     }
 
-    std::cout << "Executing...\n";
-    QEngine qEngine{qc};
-    for (auto&& elem : qc) {
-        std::cout << elem << '\n';
-        qEngine.execute(elem);
+    try {
+        std::cout << "Executing...\n";
+        QEngine qEngine{qc};
+        for (auto&& elem : qc) {
+            std::cout << elem << '\n';
+            qEngine.execute(elem);
+        }
+    }
+    catch(std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
     }
 }

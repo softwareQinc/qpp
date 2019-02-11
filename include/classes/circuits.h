@@ -401,6 +401,10 @@ class QCircuit : public IDisplay, public IJSON {
         ///< non-owning pointer to const quantum circuit
         const QCircuit* qc_{nullptr};
 
+        /**
+         * \class qpp::QCircuit::iterator::value_type_
+         * \brief Value type class for qpp::QCircuit::iterator
+         */
         class value_type_ : public IDisplay {
           public:
             ///< non-owning pointer to the parent iterator
