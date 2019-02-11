@@ -1,5 +1,5 @@
 In progress - pre-release
-    -
+    - Minimum required CMake version is now 3.2
 Version 1.2 - 10 February 2019
     - Added new function in "functions.h":
           qpp::normalize() - normalizes a state vector (ket or bra) or density

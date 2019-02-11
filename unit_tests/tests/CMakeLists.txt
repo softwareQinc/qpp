@@ -19,7 +19,9 @@
 
 INCLUDE_DIRECTORIES(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 ADD_EXECUTABLE(qpp_testing
+        classes/circuits.cpp
         classes/gates.cpp
+        classes/noise.cpp
         classes/random_devices.cpp
         classes/reversible.cpp
         classes/states.cpp
