@@ -24,8 +24,10 @@
 # SOFTWARE.
 #
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1.3)
 PROJECT(qpp VERSION 1.1 LANGUAGES CXX)
+SET(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #### Quantum++ headers
 INCLUDE_DIRECTORIES(include)
@@ -58,12 +60,9 @@ ELSE () #### Try to find it automatically
     MESSAGE(STATUS "Detecting Eigen3 - done")
 ENDIF ()
 
-#### Use C++11
+#### Cygwin has issues with std=c++11, use std=gnu++11 instead
 IF (CYGWIN)
-    #### Cygwin has issues with std=c++11, use std=gnu++11 instead
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
-ELSE ()
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 ENDIF ()
 
 SET(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra -Weffc++")
