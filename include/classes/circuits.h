@@ -2680,7 +2680,7 @@ class QNoisyEngine : public QEngine {
         for (auto&& i : target_rel_pos) {
             psi_ = noise_(psi_, i);
         }
-        // execute the circuit
+        // execute the circuit step
         QEngine::execute(elem);
     }
     /**
