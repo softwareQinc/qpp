@@ -32,27 +32,27 @@ int main() {
     // initialize the noisy quantum engine with an amplitude damping noise model
     // and a quantum circuit; in C++17 you can make use of the class template
     // argument deduction rules to simply write
-    // QNoisyEngine qNoisyEngine{qc, QubitAmplitudeDampingNoise{0.99}};
-    QNoisyEngine<QubitAmplitudeDampingNoise> qNoisyEngine{
+    // QNoisyEngine noisy_engine{qc, QubitAmplitudeDampingNoise{0.99}};
+    QNoisyEngine<QubitAmplitudeDampingNoise> noisy_engine{
         qc, QubitAmplitudeDampingNoise{0.99}};
 
     // display the quantum circuit
     std::cout << ">> BEGIN CIRCUIT\n";
-    std::cout << qNoisyEngine.get_circuit() << '\n';
+    std::cout << noisy_engine.get_circuit() << '\n';
     std::cout << ">> END CIRCUIT\n\n";
 
     // execute the circuit
     for (auto&& step : qc)
-        qNoisyEngine.execute(step);
+        noisy_engine.execute(step);
 
     // display the measurement statistics
     std::cout << ">> BEGIN AFTER RUNNING\n";
-    std::cout << qNoisyEngine << '\n';
+    std::cout << noisy_engine << '\n';
     std::cout << ">> END AFTER RUNNING\n\n";
 
     // verify how successful the teleportation was
     ket psi_initial = U * 0_ket;
-    ket psi_final = qNoisyEngine.get_psi();
+    ket psi_final = noisy_engine.get_psi();
     std::cout << ">> Initial state:\n";
     std::cout << disp(psi_initial) << '\n';
     std::cout << ">> Teleported state:\n";
