@@ -1,6 +1,8 @@
 In progress - pre-release
     - Minimum required CMake version is now 3.2
     - Added noisy quantum engine for non-correlated noise
+    - Added noisy teleportation example (that uses a noisy quantum engine) in
+      "examples/circuits/noisy_teleport_qubit_circuit.cpp"
 Version 1.2 - 10 February 2019
     - Added new function in "functions.h":
           qpp::normalize() - normalizes a state vector (ket or bra) or density
