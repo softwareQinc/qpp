@@ -2689,7 +2689,7 @@ class QNoisyEngine : public QEngine {
      * \param it Iterator to the step to be executed
      */
     void execute(const QCircuit::iterator& it) override { execute(*it); }
-};
+}; /* class QNoisyEngine */
 
 } /* namespace qpp */
 
