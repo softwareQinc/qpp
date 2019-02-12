@@ -456,7 +456,7 @@ class QubitAmplitudeDampingNoise : public NoiseBase<NoiseType::StateDependent> {
     /**
      * \brief Qubit amplitude damping noise constructor
      *
-     * \param gamma Amplitude damping probability
+     * \param gamma Amplitude damping coefficient
      */
     explicit QubitAmplitudeDampingNoise(double gamma)
         : NoiseBase(std::vector<cmat>{
@@ -480,7 +480,7 @@ class QubitPhaseDampingNoise : public NoiseBase<NoiseType::StateDependent> {
     /**
      * \brief Qubit phase damping noise constructor
      *
-     * \param lambda Phase damping probability
+     * \param lambda Phase damping coefficient
      */
     explicit QubitPhaseDampingNoise(double lambda)
         : NoiseBase(std::vector<cmat>{
