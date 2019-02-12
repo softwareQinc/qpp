@@ -2649,7 +2649,7 @@ class QEngine : public IDisplay, public IJSON {
  */
 template <typename NoiseModel>
 class QNoisyEngine : public QEngine {
-    NoiseModel noise_; ///< Quantum noise model
+    const NoiseModel noise_; ///< Quantum noise model
 
   public:
     /**
