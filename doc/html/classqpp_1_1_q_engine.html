@@ -84,6 +84,7 @@ Inheritance diagram for qpp::QEngine:</div>
 <div class="dyncontent">
 <div class="center"><img src="classqpp_1_1_q_engine__inherit__graph.png" border="0" usemap="#qpp_1_1_q_engine_inherit__map" alt="Inheritance graph"/></div>
 <map name="qpp_1_1_q_engine_inherit__map" id="qpp_1_1_q_engine_inherit__map">
+<area shape="rect" id="node4" href="classqpp_1_1_q_noisy_engine.html" title="Noisy quantum circuit engine, executes qpp::QCircuit. " alt="" coords="41,155,185,196"/>
 <area shape="rect" id="node2" href="classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="5,5,104,32"/>
 <area shape="rect" id="node3" href="classqpp_1_1_i_j_s_o_n.html" title="Abstract class (interface) that mandates the definition of very basic JSON serialization support..." alt="" coords="128,5,219,32"/>
 </map>
@@ -153,12 +154,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aac024b817ce7e68f8748bc14e7ca27cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_engine.html#aac024b817ce7e68f8748bc14e7ca27cb">reset</a> ()</td></tr>
 <tr class="memdesc:aac024b817ce7e68f8748bc14e7ca27cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the engine.  <a href="#aac024b817ce7e68f8748bc14e7ca27cb">More...</a><br /></td></tr>
 <tr class="separator:aac024b817ce7e68f8748bc14e7ca27cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58ab3c17537fb948d7603862e6bb8552"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_engine.html#a58ab3c17537fb948d7603862e6bb8552">execute</a> (const <a class="el" href="classqpp_1_1_q_circuit_1_1iterator.html#a6da6046afb3aa0715561c6e8886fe933">QCircuit::iterator::value_type</a> &amp;elem)</td></tr>
-<tr class="memdesc:a58ab3c17537fb948d7603862e6bb8552"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes one step in the quantum circuit.  <a href="#a58ab3c17537fb948d7603862e6bb8552">More...</a><br /></td></tr>
-<tr class="separator:a58ab3c17537fb948d7603862e6bb8552"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cf0c18d460133c9d1d4bd63bff0ab97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_engine.html#a4cf0c18d460133c9d1d4bd63bff0ab97">execute</a> (const <a class="el" href="classqpp_1_1_q_circuit_1_1iterator.html">QCircuit::iterator</a> &amp;it)</td></tr>
-<tr class="memdesc:a4cf0c18d460133c9d1d4bd63bff0ab97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes one step in the quantum circuit.  <a href="#a4cf0c18d460133c9d1d4bd63bff0ab97">More...</a><br /></td></tr>
-<tr class="separator:a4cf0c18d460133c9d1d4bd63bff0ab97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1904e798a2ff48ff97f71f57560e91a5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_engine.html#a1904e798a2ff48ff97f71f57560e91a5">execute</a> (const <a class="el" href="classqpp_1_1_q_circuit_1_1iterator.html#a6da6046afb3aa0715561c6e8886fe933">QCircuit::iterator::value_type</a> &amp;elem)</td></tr>
+<tr class="memdesc:a1904e798a2ff48ff97f71f57560e91a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes one step in the quantum circuit.  <a href="#a1904e798a2ff48ff97f71f57560e91a5">More...</a><br /></td></tr>
+<tr class="separator:a1904e798a2ff48ff97f71f57560e91a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ad1dd4e8e5330b614b285cb37ee0630"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_engine.html#a8ad1dd4e8e5330b614b285cb37ee0630">execute</a> (const <a class="el" href="classqpp_1_1_q_circuit_1_1iterator.html">QCircuit::iterator</a> &amp;it)</td></tr>
+<tr class="memdesc:a8ad1dd4e8e5330b614b285cb37ee0630"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes one step in the quantum circuit.  <a href="#a8ad1dd4e8e5330b614b285cb37ee0630">More...</a><br /></td></tr>
+<tr class="separator:a8ad1dd4e8e5330b614b285cb37ee0630"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99b802169657dca3a1452b4870c1c53b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_engine.html#a99b802169657dca3a1452b4870c1c53b">to_JSON</a> (bool enclosed_in_curly_brackets=true) const override</td></tr>
 <tr class="memdesc:a99b802169657dca3a1452b4870c1c53b"><td class="mdescLeft">&#160;</td><td class="mdescRight">qpp::IJOSN::to_JSON() override  <a href="#a99b802169657dca3a1452b4870c1c53b">More...</a><br /></td></tr>
 <tr class="separator:a99b802169657dca3a1452b4870c1c53b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -396,8 +397,8 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a58ab3c17537fb948d7603862e6bb8552"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58ab3c17537fb948d7603862e6bb8552">&#9670;&nbsp;</a></span>execute() <span class="overload">[1/2]</span></h2>
+<a id="a1904e798a2ff48ff97f71f57560e91a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1904e798a2ff48ff97f71f57560e91a5">&#9670;&nbsp;</a></span>execute() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -406,7 +407,7 @@ Private Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::QEngine::execute </td>
+          <td class="memname">virtual void qpp::QEngine::execute </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classqpp_1_1_q_circuit_1_1iterator.html#a6da6046afb3aa0715561c6e8886fe933">QCircuit::iterator::value_type</a> &amp;&#160;</td>
           <td class="paramname"><em>elem</em></td><td>)</td>
@@ -415,7 +416,7 @@ Private Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -428,10 +429,12 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
+<p>Reimplemented in <a class="el" href="classqpp_1_1_q_noisy_engine.html#adcc1277a85aa877d4e10344124bf288b">qpp::QNoisyEngine&lt; NoiseModel &gt;</a>.</p>
+
 </div>
 </div>
-<a id="a4cf0c18d460133c9d1d4bd63bff0ab97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4cf0c18d460133c9d1d4bd63bff0ab97">&#9670;&nbsp;</a></span>execute() <span class="overload">[2/2]</span></h2>
+<a id="a8ad1dd4e8e5330b614b285cb37ee0630"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ad1dd4e8e5330b614b285cb37ee0630">&#9670;&nbsp;</a></span>execute() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -440,7 +443,7 @@ Private Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void qpp::QEngine::execute </td>
+          <td class="memname">virtual void qpp::QEngine::execute </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classqpp_1_1_q_circuit_1_1iterator.html">QCircuit::iterator</a> &amp;&#160;</td>
           <td class="paramname"><em>it</em></td><td>)</td>
@@ -449,7 +452,7 @@ Private Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -461,6 +464,8 @@ Private Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+<p>Reimplemented in <a class="el" href="classqpp_1_1_q_noisy_engine.html#a875e083beba6be3eb862e40348f43e90">qpp::QNoisyEngine&lt; NoiseModel &gt;</a>.</p>
 
 </div>
 </div>
@@ -670,6 +675,7 @@ Private Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Vector of underlying measurement outcome probabilities. </p>
+<p>Those should be interpreted as conditional probabilities based on the temporal order of the measurements, i.e. if we measure qubit 0, then measure qubit 1, and finally qubit 2, the resulting vector of outcome probabilities probs[2] should be interpreted as the conditional probability of qubit 2 having the outcome it had given that qubit 1 and qubit 0 had their given outcomes, respectively. As an example, if we measure the qubit 0 followed by the qubit 1 of a maximally entangled state <img class="formulaInl" alt="$(|00\rangle + |11\rangle)/\sqrt{2}$" src="form_76.png"/>, then the vector of outcome probabilities will be [0.5, 1].</p>
 <dl class="section note"><dt>Note</dt><dd>The probability vector has the same length as the vector of classical dits. If the measurement result is stored at the index <em>c_reg</em>, then the outcome probability is automatically stored at the same index <em>c_reg</em> in the probability vector.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Vector of underlying measurement outcome probabilities </dd></dl>
 
@@ -1070,7 +1076,7 @@ Private Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_q_engine.html">QEngine</a></li>
-    <li class="footer">Generated on Sun Feb 10 2019 18:32:48 for Quantum++ by
+    <li class="footer">Generated on Tue Feb 12 2019 11:49:54 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

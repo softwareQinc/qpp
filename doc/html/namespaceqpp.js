@@ -22,6 +22,7 @@ var namespaceqpp =
     ] ],
     [ "QCircuit", "classqpp_1_1_q_circuit.html", "classqpp_1_1_q_circuit" ],
     [ "QEngine", "classqpp_1_1_q_engine.html", "classqpp_1_1_q_engine" ],
+    [ "QNoisyEngine", "classqpp_1_1_q_noisy_engine.html", "classqpp_1_1_q_noisy_engine" ],
     [ "QubitAmplitudeDampingNoise", "classqpp_1_1_qubit_amplitude_damping_noise.html", "classqpp_1_1_qubit_amplitude_damping_noise" ],
     [ "QubitBitFlipNoise", "classqpp_1_1_qubit_bit_flip_noise.html", "classqpp_1_1_qubit_bit_flip_noise" ],
     [ "QubitBitPhaseFlipNoise", "classqpp_1_1_qubit_bit_phase_flip_noise.html", "classqpp_1_1_qubit_bit_phase_flip_noise" ],

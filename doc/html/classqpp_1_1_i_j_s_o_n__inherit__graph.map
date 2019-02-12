@@ -1,4 +1,5 @@
 <map id="qpp::IJSON" name="qpp::IJSON">
 <area shape="rect" id="node2" href="$classqpp_1_1_q_circuit.html" title="Quantum circuit class. " alt="" coords="5,80,105,107"/>
 <area shape="rect" id="node3" href="$classqpp_1_1_q_engine.html" title="Quantum circuit engine, executes qpp::QCircuit. " alt="" coords="130,80,234,107"/>
+<area shape="rect" id="node4" href="$classqpp_1_1_q_noisy_engine.html" title="Noisy quantum circuit engine, executes qpp::QCircuit. " alt="" coords="110,155,254,196"/>
 </map>

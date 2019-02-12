@@ -73,3 +73,5 @@
 \form#72:$Tr_{subsys}(\cdot)$
 \form#73:$(\cdot)^{T_{subsys}}$
 \form#74:$ \sum_i K_i^\dagger K_i = I$
+\form#75:$(|00\rangle + |11\rangle)/sqrt{2}$
+\form#76:$(|00\rangle + |11\rangle)/\sqrt{2}$

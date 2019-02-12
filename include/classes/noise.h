@@ -146,9 +146,7 @@ class NoiseBase {
      *
      * \note SFINAEd-out for StateIndependent noise
      *
-     * \param A Eigen expression (state vector or density matrix)
      * \param Ks Vector of noise (Kraus) operators that specify the noise
-     * \param d Subsystem dimension
      */
     template <typename U = noise_type>
     explicit NoiseBase(
@@ -177,9 +175,9 @@ class NoiseBase {
      *
      * \note SFINAEd-out for StateDependent noise
      *
-     * \param A Eigen expression (state vector or density matrix)
      * \param Ks Vector of noise (Kraus) operators that specify the noise
-     * \param d Subsystem dimension
+     * \param probs Vector of probabilities corresponding to each Kraus
+     * operator
      */
     template <typename U = noise_type>
     explicit NoiseBase(
@@ -482,7 +480,7 @@ class QubitPhaseDampingNoise : public NoiseBase<NoiseType::StateDependent> {
     /**
      * \brief Qubit phase damping noise constructor
      *
-     * \param gamma Phase damping probability
+     * \param lambda Phase damping probability
      */
     explicit QubitPhaseDampingNoise(double lambda)
         : NoiseBase(std::vector<cmat>{

@@ -226,7 +226,6 @@ class QCircuit : public IDisplay, public IJSON {
          * \param gate_hash Hash of the quantum gate
          * \param ctrl Control qudit indexes
          * \param target Target qudit indexes
-         * \param step_no Circuit step number
          * \param name Optional gate name
          */
         explicit GateStep(GateType gate_type, std::size_t gate_hash,
@@ -241,7 +240,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Extraction operator overload for qpp::QCircuit::GateStep class
      *
      * \param os Output stream
-     * \param gate_type qpp::QCircuit::GateStep class
+     * \param gate_step qpp::QCircuit::GateStep class
      * \return Output stream
      */
     friend std::ostream& operator<<(std::ostream& os,
@@ -277,7 +276,7 @@ class QCircuit : public IDisplay, public IJSON {
      * class
      *
      * \param os Output stream
-     * \param gate_type qpp::QCircuit::MeasureType enum class
+     * \param measure_type qpp::QCircuit::MeasureType enum class
      * \return Output stream
      */
     friend std::ostream& operator<<(std::ostream& os,
@@ -320,10 +319,10 @@ class QCircuit : public IDisplay, public IJSON {
          *
          * \param measurement_type Measurement type
          * \param mats_hash Vector of hashes of the measurement matrix/matrices
-         * \param target Target qudit
-         * indexes \param c_reg Classical register where the value of the
-         * measurement is stored \param step_no Circuit step number \param name
-         * Optional gate name
+         * \param target Target qudit indexes
+         * \param c_reg Classical register where the value of the measurement
+         * is stored
+         * \param name Optional gate name
          */
         explicit MeasureStep(MeasureType measurement_type,
                              const std::vector<std::size_t>& mats_hash,
@@ -337,7 +336,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Extraction operator overload for qpp::QCircuit::MeasureStep class
      *
      * \param os Output stream
-     * \param gate_type qpp::QCircuit::MeasureStep enum class
+     * \param measure_step qpp::QCircuit::MeasureStep enum class
      * \return Output stream
      */
     friend std::ostream& operator<<(std::ostream& os,
@@ -2342,6 +2341,16 @@ class QEngine : public IDisplay, public IJSON {
     /**
      * \brief Vector of underlying measurement outcome probabilities
      *
+     * Those should be interpreted as conditional probabilities based on the
+     * temporal order of the measurements, i.e. if we measure qubit 0, then
+     * measure qubit 1, and finally qubit 2, the resulting vector of outcome
+     * probabilities probs[2] should be interpreted as the conditional
+     * probability of qubit 2 having the outcome it had given that qubit 1 and
+     * qubit 0 had their given outcomes, respectively. As an example, if we
+     * measure the qubit 0 followed by the qubit 1 of a maximally entangled
+     * state \f$(|00\rangle + |11\rangle)/\sqrt{2}\f$, then the vector of
+     * outcome probabilities will be [0.5, 1].
+     *
      * \note The probability vector has the same length as the vector of
      * classical dits. If the measurement result is stored at the index
      * \a c_reg, then the outcome probability is automatically stored at
@@ -2432,7 +2441,7 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \param elem Step to be executed
      */
-    void execute(const QCircuit::iterator::value_type& elem) {
+    virtual void execute(const QCircuit::iterator::value_type& elem) {
         // EXCEPTION CHECKS
 
         // iterator must point to the same quantum circuit
@@ -2564,7 +2573,7 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \param it Iterator to the step to be executed
      */
-    void execute(const QCircuit::iterator& it) { execute(*it); }
+    virtual void execute(const QCircuit::iterator& it) { execute(*it); }
 
     /**
      * \brief qpp::IJOSN::to_JSON() override
@@ -2624,6 +2633,63 @@ class QEngine : public IDisplay, public IJSON {
         return os;
     }
 }; /* class QEngine */
+
+/**
+ * \class qpp::QNoisyEngine
+ * \brief Noisy quantum circuit engine, executes qpp::QCircuit
+ * \see qpp::QCircuit, qpp::NoiseBase
+ *
+ * Assumes an uncorrelated noise model that is applied to each non-measured
+ * qubit before every step in the logical circuit
+ *
+ * \tparam NoiseModel Quantum noise model, should implement at least
+ * NoiseModel::get_d() and the functor
+ * qpp::cmat NoiseModel::operator()(qpp::cmat, qpp::idx). I recommend to use a
+ * noise model derived from qpp::NoiseBase.
+ */
+template <typename NoiseModel>
+class QNoisyEngine : public QEngine {
+    NoiseModel noise_; ///< Quantum noise model
+
+  public:
+    /**
+     * \brief Constructs a noisy quantum engine out of a quantum circuit
+     *
+     * \param qc Quantum circuit
+     * \param noise Quantum noise model
+     */
+    explicit QNoisyEngine(const QCircuit& qc, const NoiseModel& noise)
+        : QEngine{qc}, noise_{noise} {
+        // EXCEPTION CHECKS
+
+        // check noise has the correct dimensionality
+        if (qc.get_d() != noise.get_d())
+            throw exception::DimsNotEqual("qpp::QNoisyEngine::QNoisyEngine()");
+        // END EXCEPTION CHECKS
+    }
+    /**
+     * \brief Executes one step in the quantum circuit
+     *
+     * \param elem Step to be executed
+     */
+    void execute(const QCircuit::iterator::value_type& elem) override {
+        // get the relative position of the target
+        std::vector<idx> target_rel_pos =
+            get_relative_pos_(qc_->get_non_measured());
+        // apply the noise
+        for (auto&& i : target_rel_pos) {
+            psi_ = noise_(psi_, i);
+        }
+        // execute the circuit
+        QEngine::execute(elem);
+    }
+    /**
+     * \brief Executes one step in the noisy quantum circuit
+     *
+     * \param it Iterator to the step to be executed
+     */
+    void execute(const QCircuit::iterator& it) override { execute(*it); }
+};
 
 } /* namespace qpp */
 

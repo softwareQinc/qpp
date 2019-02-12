@@ -59,7 +59,9 @@ var hierarchy =
       [ "qpp::internal::IOManipRange< InputIterator >", "classqpp_1_1internal_1_1_i_o_manip_range.html", null ],
       [ "qpp::QCircuit", "classqpp_1_1_q_circuit.html", null ],
       [ "qpp::QCircuit::iterator::value_type_", "classqpp_1_1_q_circuit_1_1iterator_1_1value__type__.html", null ],
-      [ "qpp::QEngine", "classqpp_1_1_q_engine.html", null ],
+      [ "qpp::QEngine", "classqpp_1_1_q_engine.html", [
+        [ "qpp::QNoisyEngine< NoiseModel >", "classqpp_1_1_q_noisy_engine.html", null ]
+      ] ],
       [ "qpp::Timer< T, CLOCK_T >", "classqpp_1_1_timer.html", null ]
     ] ],
     [ "qpp::IJSON", "classqpp_1_1_i_j_s_o_n.html", [
