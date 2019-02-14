@@ -2478,7 +2478,9 @@ class QEngine : public IDisplay, public IJSON {
                                  {target_rel_pos[m]}, qc_->get_d());
                 break;
             case QCircuit::GateType::QFT:
+                break;
             case QCircuit::GateType::TFQ:
+                break;
             case QCircuit::GateType::SINGLE_CTRL_SINGLE_TARGET:
             case QCircuit::GateType::SINGLE_CTRL_MULTIPLE_TARGET:
             case QCircuit::GateType::MULTIPLE_CTRL_SINGLE_TARGET:
