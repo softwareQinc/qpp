@@ -12,7 +12,7 @@ var classqpp_1_1_q_engine =
     [ "get_dits", "classqpp_1_1_q_engine.html#a37d503421b3966bcd7db603277e8178f", null ],
     [ "get_measured", "classqpp_1_1_q_engine.html#a4d3044ce19357892fac6148488028c7f", null ],
     [ "get_measured", "classqpp_1_1_q_engine.html#aa8536fb01cbac8d17ca7e09eeae15afc", null ],
-    [ "get_not_measured", "classqpp_1_1_q_engine.html#a1daafaca8e5473a334ae40e7b09610a1", null ],
+    [ "get_non_measured", "classqpp_1_1_q_engine.html#a9cd88769479a8906dcb20eef1b99f407", null ],
     [ "get_probs", "classqpp_1_1_q_engine.html#a88b9591f281b7b6746180018156976d6", null ],
     [ "get_psi", "classqpp_1_1_q_engine.html#a8259dd084bad3a50e23f674a78ee4968", null ],
     [ "get_ref_psi", "classqpp_1_1_q_engine.html#a2e58153025dbe535949ebcc6e5a6f39d", null ],

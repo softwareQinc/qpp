@@ -397,7 +397,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \note The iterator is a const_iterator by default
      */
     class iterator {
-        ///< non-owning pointer to const quantum circuit
+        ///< non-owning pointer to the parent const quantum circuit
         const QCircuit* qc_{nullptr};
 
         /**
@@ -406,7 +406,7 @@ class QCircuit : public IDisplay, public IJSON {
          */
         class value_type_ : public IDisplay {
           public:
-            ///< non-owning pointer to the parent iterator
+            ///< non-owning pointer to the grand-parent const quantum circuit
             const QCircuit* value_type_qc_;
 
             StepType type_{StepType::NONE}; ///< step type
@@ -2389,7 +2389,7 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \return Vector of non-measured qudit indexes
      */
-    std::vector<idx> get_not_measured() const {
+    std::vector<idx> get_non_measured() const {
         std::vector<idx> result;
         for (idx i = 0; i < qc_->get_nq(); ++i)
             if (!get_measured(i))
@@ -2674,8 +2674,7 @@ class QNoisyEngine : public QEngine {
      */
     void execute(const QCircuit::iterator::value_type& elem) override {
         // get the relative position of the target
-        std::vector<idx> target_rel_pos =
-            get_relative_pos_(qc_->get_non_measured());
+        std::vector<idx> target_rel_pos = get_relative_pos_(get_non_measured());
         // apply the noise
         for (auto&& i : target_rel_pos) {
             psi_ = noise_(psi_, i);
