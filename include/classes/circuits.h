@@ -345,7 +345,6 @@ class QCircuit : public IDisplay, public IJSON {
         os << "target = " << disp(measure_step.target_, ", ") << ", ";
         os << "c_reg = " << measure_step.c_reg_ << ", ";
         os << "name = " << '\"' << measure_step.name_ << '\"';
-        os << " ";
 
         return os;
     }
