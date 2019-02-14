@@ -46,9 +46,9 @@ int main() {
         noisy_engine.execute(step);
 
     // display the measurement statistics
-    std::cout << ">> BEGIN AFTER RUNNING\n";
+    std::cout << ">> BEGIN NOISY ENGINE STATISTICS\n";
     std::cout << noisy_engine << '\n';
-    std::cout << ">> END AFTER RUNNING\n\n";
+    std::cout << ">> END NOISY ENGINE STATISTICS\n\n";
 
     // verify how successful the teleportation was
     ket psi_initial = U * 0_ket;

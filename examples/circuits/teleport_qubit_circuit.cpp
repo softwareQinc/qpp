@@ -42,9 +42,9 @@ int main() {
         engine.execute(step);
 
     // display the measurement statistics
-    std::cout << ">> BEGIN AFTER RUNNING\n";
+    std::cout << ">> BEGIN ENGINE STATISTICS\n";
     std::cout << engine << '\n';
-    std::cout << ">> END AFTER RUNNING\n\n";
+    std::cout << ">> END ENGINE STATISTICS\n\n";
 
     // verify that the teleportation was successful
     ket psi_initial = U * 0_ket;
