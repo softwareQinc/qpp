@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"classqpp_1_1internal_1_1_i_o_manip_range.html#ade5ff982e7724c1a4e7ceb14a79ef5b9":[2,0,0,1,5,2],
+"classqpp_1_1internal_1_1_i_o_manip_range.html#aea45315682f3f04018ddf8d59ad7b010":[2,0,0,1,5,4],
 "classqpp_1_1internal_1_1_singleton.html":[2,0,0,1,6],
 "classqpp_1_1internal_1_1_singleton.html#a1338519d694c423036ee981c97625133":[2,0,0,1,6,2],
 "classqpp_1_1internal_1_1_singleton.html#a2d3f298f1de58b32475c0bc1986e564a":[2,0,0,1,6,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "namespacemembers_func_l.html":[1,1,1,10],
 "namespacemembers_func_m.html":[1,1,1,11],
 "namespacemembers_func_n.html":[1,1,1,12],
-"namespacemembers_func_o.html":[1,1,1,13],
-"namespacemembers_func_p.html":[1,1,1,14],
-"namespacemembers_func_q.html":[1,1,1,15]
+"namespacemembers_func_o.html":[1,1,1,13]
 };

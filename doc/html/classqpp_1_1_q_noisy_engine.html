@@ -92,14 +92,14 @@ Collaboration diagram for qpp::QNoisyEngine&lt; NoiseModel &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classqpp_1_1_q_noisy_engine__coll__graph.png" border="0" usemap="#qpp_1_1_q_noisy_engine_3_01_noise_model_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="qpp_1_1_q_noisy_engine_3_01_noise_model_01_4_coll__map" id="qpp_1_1_q_noisy_engine_3_01_noise_model_01_4_coll__map">
-<area shape="rect" id="node2" href="classqpp_1_1_q_engine.html" title="Quantum circuit engine, executes qpp::QCircuit. " alt="" coords="1411,149,1515,176"/>
-<area shape="rect" id="node3" href="classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="887,83,985,109"/>
-<area shape="rect" id="node6" href="classqpp_1_1_q_circuit.html" title="Quantum circuit class. " alt="" coords="1194,273,1294,300"/>
-<area shape="rect" id="node4" href="classqpp_1_1_i_j_s_o_n.html" title="Abstract class (interface) that mandates the definition of very basic JSON serialization support..." alt="" coords="891,251,981,277"/>
-<area shape="rect" id="node11" href="structqpp_1_1_q_circuit_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. " alt="" coords="473,287,660,313"/>
-<area shape="rect" id="node14" href="structqpp_1_1_q_circuit_1_1_gate_step.html" title="One step consisting only of gates/operators in the circuit. " alt="" coords="485,143,649,169"/>
-<area shape="rect" id="node8" title="STL class. " alt="" coords="225,348,305,375"/>
-<area shape="rect" id="node9" title="STL class. " alt="" coords="5,341,132,382"/>
+<area shape="rect" id="node2" href="classqpp_1_1_q_engine.html" title="Quantum circuit engine, executes qpp::QCircuit. " alt="" coords="1512,508,1616,535"/>
+<area shape="rect" id="node3" href="classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="887,475,985,501"/>
+<area shape="rect" id="node6" href="classqpp_1_1_q_circuit.html" title="Quantum circuit class. " alt="" coords="1250,352,1350,379"/>
+<area shape="rect" id="node4" href="classqpp_1_1_i_j_s_o_n.html" title="Abstract class (interface) that mandates the definition of very basic JSON serialization support..." alt="" coords="891,525,981,552"/>
+<area shape="rect" id="node11" href="structqpp_1_1_q_circuit_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. " alt="" coords="473,348,660,375"/>
+<area shape="rect" id="node14" href="structqpp_1_1_q_circuit_1_1_gate_step.html" title="One step consisting only of gates/operators in the circuit. " alt="" coords="485,416,649,443"/>
+<area shape="rect" id="node8" title="STL class. " alt="" coords="225,257,305,284"/>
+<area shape="rect" id="node9" title="STL class. " alt="" coords="5,250,132,291"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -114,6 +114,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a875e083beba6be3eb862e40348f43e90"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_noisy_engine.html#a875e083beba6be3eb862e40348f43e90">execute</a> (const <a class="el" href="classqpp_1_1_q_circuit_1_1iterator.html">QCircuit::iterator</a> &amp;it) override</td></tr>
 <tr class="memdesc:a875e083beba6be3eb862e40348f43e90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes one step in the noisy quantum circuit.  <a href="#a875e083beba6be3eb862e40348f43e90">More...</a><br /></td></tr>
 <tr class="separator:a875e083beba6be3eb862e40348f43e90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3996276e2dcd3c4c5622e32f12273260"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_noisy_engine.html#a3996276e2dcd3c4c5622e32f12273260">get_noise_results</a> () const</td></tr>
+<tr class="memdesc:a3996276e2dcd3c4c5622e32f12273260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of noise results obtained before every step in the circuit.  <a href="#a3996276e2dcd3c4c5622e32f12273260">More...</a><br /></td></tr>
+<tr class="separator:a3996276e2dcd3c4c5622e32f12273260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classqpp_1_1_q_engine"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classqpp_1_1_q_engine')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classqpp_1_1_q_engine.html">qpp::QEngine</a></td></tr>
 <tr class="memitem:afcfb3859062cc3134b1883f9c5c8f86a inherit pub_methods_classqpp_1_1_q_engine"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_engine.html#afcfb3859062cc3134b1883f9c5c8f86a">QEngine</a> (const <a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a> &amp;qc)</td></tr>
 <tr class="memdesc:afcfb3859062cc3134b1883f9c5c8f86a inherit pub_methods_classqpp_1_1_q_engine"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a quantum engine out of a quantum circuit.  <a href="classqpp_1_1_q_engine.html#afcfb3859062cc3134b1883f9c5c8f86a">More...</a><br /></td></tr>
@@ -208,8 +211,11 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a547110cb77f4621991ee1f79636349f2"><td class="memItemLeft" align="right" valign="top">const NoiseModel&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_noisy_engine.html#a547110cb77f4621991ee1f79636349f2">noise_</a></td></tr>
-<tr class="memdesc:a547110cb77f4621991ee1f79636349f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantum noise model.  <a href="#a547110cb77f4621991ee1f79636349f2">More...</a><br /></td></tr>
+<tr class="memdesc:a547110cb77f4621991ee1f79636349f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">quantum noise model  <a href="#a547110cb77f4621991ee1f79636349f2">More...</a><br /></td></tr>
 <tr class="separator:a547110cb77f4621991ee1f79636349f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24142d903bbe6e6667f126b041d7cd16"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_noisy_engine.html#a24142d903bbe6e6667f126b041d7cd16">noise_results_</a></td></tr>
+<tr class="memdesc:a24142d903bbe6e6667f126b041d7cd16"><td class="mdescLeft">&#160;</td><td class="mdescRight">noise results  <a href="#a24142d903bbe6e6667f126b041d7cd16">More...</a><br /></td></tr>
+<tr class="separator:a24142d903bbe6e6667f126b041d7cd16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -245,7 +251,7 @@ class qpp::QNoisyEngine&lt; NoiseModel &gt;</h3>
 <p>Assumes an uncorrelated noise model that is applied to each non-measured qubit before every step in the logical circuit</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">NoiseModel</td><td>Quantum noise model, should implement at least NoiseModel::get_d() and the functor <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276" title="Complex (double precision) dynamic Eigen matrix. ">qpp::cmat</a> NoiseModel::operator()(qpp::cmat, qpp::idx). I recommend to use a noise model derived from <a class="el" href="classqpp_1_1_noise_base.html" title="Base class for all noise models, derive your particular noise model. ">qpp::NoiseBase</a>. </td></tr>
+    <tr><td class="paramname">NoiseModel</td><td>Quantum noise model, should be derived from <a class="el" href="classqpp_1_1_noise_base.html" title="Base class for all noise models, derive your particular noise model. ">qpp::NoiseBase</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -374,6 +380,37 @@ template&lt;typename NoiseModel &gt; </div>
 
 </div>
 </div>
+<a id="a3996276e2dcd3c4c5622e32f12273260"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3996276e2dcd3c4c5622e32f12273260">&#9670;&nbsp;</a></span>get_noise_results()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename NoiseModel &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::vector&lt;<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&gt; &gt; <a class="el" href="classqpp_1_1_q_noisy_engine.html">qpp::QNoisyEngine</a>&lt; NoiseModel &gt;::get_noise_results </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Vector of noise results obtained before every step in the circuit. </p>
+<p>The first vector contains the noise measurement results obtained before applying the first step in the circuit, and so on, ordered by non-measured qudits. That is, the first element in the vector corresponding to noise obtained before a given step in the circuit represents the noise result obtained on the first non-measured qudit etc.</p>
+<dl class="section return"><dt>Returns</dt><dd>Vector of noise results </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a547110cb77f4621991ee1f79636349f2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a547110cb77f4621991ee1f79636349f2">&#9670;&nbsp;</a></span>noise_</h2>
@@ -397,7 +434,33 @@ template&lt;typename NoiseModel &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Quantum noise model. </p>
+<p>quantum noise model </p>
+
+</div>
+</div>
+<a id="a24142d903bbe6e6667f126b041d7cd16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24142d903bbe6e6667f126b041d7cd16">&#9670;&nbsp;</a></span>noise_results_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename NoiseModel &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::vector&lt;<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&gt; &gt; <a class="el" href="classqpp_1_1_q_noisy_engine.html">qpp::QNoisyEngine</a>&lt; NoiseModel &gt;::noise_results_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>noise results </p>
 
 </div>
 </div>
@@ -410,7 +473,7 @@ template&lt;typename NoiseModel &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_q_noisy_engine.html">QNoisyEngine</a></li>
-    <li class="footer">Generated on Thu Feb 14 2019 09:12:19 for Quantum++ by
+    <li class="footer">Generated on Thu Feb 14 2019 13:12:35 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

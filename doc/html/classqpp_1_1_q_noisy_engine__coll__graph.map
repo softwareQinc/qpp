@@ -1,10 +1,10 @@
 <map id="qpp::QNoisyEngine&lt; NoiseModel &gt;" name="qpp::QNoisyEngine&lt; NoiseModel &gt;">
-<area shape="rect" id="node2" href="$classqpp_1_1_q_engine.html" title="Quantum circuit engine, executes qpp::QCircuit. " alt="" coords="1411,149,1515,176"/>
-<area shape="rect" id="node3" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="887,83,985,109"/>
-<area shape="rect" id="node6" href="$classqpp_1_1_q_circuit.html" title="Quantum circuit class. " alt="" coords="1194,273,1294,300"/>
-<area shape="rect" id="node4" href="$classqpp_1_1_i_j_s_o_n.html" title="Abstract class (interface) that mandates the definition of very basic JSON serialization support..." alt="" coords="891,251,981,277"/>
-<area shape="rect" id="node11" href="$structqpp_1_1_q_circuit_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. " alt="" coords="473,287,660,313"/>
-<area shape="rect" id="node14" href="$structqpp_1_1_q_circuit_1_1_gate_step.html" title="One step consisting only of gates/operators in the circuit. " alt="" coords="485,143,649,169"/>
-<area shape="rect" id="node8" title="STL class. " alt="" coords="225,348,305,375"/>
-<area shape="rect" id="node9" title="STL class. " alt="" coords="5,341,132,382"/>
+<area shape="rect" id="node2" href="$classqpp_1_1_q_engine.html" title="Quantum circuit engine, executes qpp::QCircuit. " alt="" coords="1512,508,1616,535"/>
+<area shape="rect" id="node3" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="887,475,985,501"/>
+<area shape="rect" id="node6" href="$classqpp_1_1_q_circuit.html" title="Quantum circuit class. " alt="" coords="1250,352,1350,379"/>
+<area shape="rect" id="node4" href="$classqpp_1_1_i_j_s_o_n.html" title="Abstract class (interface) that mandates the definition of very basic JSON serialization support..." alt="" coords="891,525,981,552"/>
+<area shape="rect" id="node11" href="$structqpp_1_1_q_circuit_1_1_measure_step.html" title="One step consisting only of measurements in the circuit. " alt="" coords="473,348,660,375"/>
+<area shape="rect" id="node14" href="$structqpp_1_1_q_circuit_1_1_gate_step.html" title="One step consisting only of gates/operators in the circuit. " alt="" coords="485,416,649,443"/>
+<area shape="rect" id="node8" title="STL class. " alt="" coords="225,257,305,284"/>
+<area shape="rect" id="node9" title="STL class. " alt="" coords="5,250,132,291"/>
 </map>

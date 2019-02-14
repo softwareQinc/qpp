@@ -2642,15 +2642,12 @@ class QEngine : public IDisplay, public IJSON {
  * Assumes an uncorrelated noise model that is applied to each non-measured
  * qubit before every step in the logical circuit
  *
- * \tparam NoiseModel Quantum noise model, should implement at least
- * NoiseModel::get_d() and the functor
- * qpp::cmat NoiseModel::operator()(qpp::cmat, qpp::idx). I recommend to use a
- * noise model derived from qpp::NoiseBase.
+ * \tparam NoiseModel Quantum noise model, should be derived from qpp::NoiseBase
  */
 template <typename NoiseModel>
 class QNoisyEngine : public QEngine {
-    const NoiseModel noise_; ///< Quantum noise model
-
+    const NoiseModel noise_;                      ///< quantum noise model
+    std::vector<std::vector<idx>> noise_results_; ///< noise results
   public:
     /**
      * \brief Constructs a noisy quantum engine out of a quantum circuit
@@ -2659,7 +2656,7 @@ class QNoisyEngine : public QEngine {
      * \param noise Quantum noise model
      */
     explicit QNoisyEngine(const QCircuit& qc, const NoiseModel& noise)
-        : QEngine{qc}, noise_{noise} {
+        : QEngine{qc}, noise_{noise}, noise_results_(qc.get_step_count()) {
         // EXCEPTION CHECKS
 
         // check noise has the correct dimensionality
@@ -2678,6 +2675,8 @@ class QNoisyEngine : public QEngine {
         // apply the noise
         for (auto&& i : target_rel_pos) {
             psi_ = noise_(psi_, i);
+            // record the Kraus operator that occured
+            noise_results_[elem.ip_].emplace_back(noise_.get_last_idx());
         }
         // execute the circuit step
         QEngine::execute(elem);
@@ -2688,6 +2687,24 @@ class QNoisyEngine : public QEngine {
      * \param it Iterator to the step to be executed
      */
     void execute(const QCircuit::iterator& it) override { execute(*it); }
+
+    // getters
+    /**
+     * \brief Vector of noise results obtained before every step in the
+     * circuit
+     *
+     * The first vector contains the noise measurement results obtained before
+     * applying the first step in the circuit, and so on, ordered by
+     * non-measured qudits. That is, the first element in the vector
+     * corresponding to noise obtained before a given step in the circuit
+     * represents the noise result obtained on the first non-measured qudit etc.
+     *
+     * \return Vector of noise results
+     */
+    std::vector<std::vector<idx>> get_noise_results() const {
+        return noise_results_;
+    }
+    // end getters
 }; /* class QNoisyEngine */
 
 } /* namespace qpp */
