@@ -80,7 +80,7 @@ $(document).ready(function(){initNavTree('classqpp_1_1_q_circuit.html','');});
 <p>Quantum circuit class.  
  <a href="classqpp_1_1_q_circuit.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="circuits_8h_source.html">classes/circuits.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="circuits_8h_source.html">classes/circuits/circuits.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for qpp::QCircuit:</div>
 <div class="dyncontent">
@@ -126,20 +126,17 @@ Public Types</h2></td></tr>
 <br />
 &#160;&#160;<a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7ea72baef04098f035e8a320b03ad197818">GateType::CUSTOM</a>, 
 <a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7ea1da87abe947673580190ba507384ad37">GateType::FAN</a>, 
-<a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7eadc9eb41de97c29762154fa78fd436cc6">GateType::QFT</a>, 
-<a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7eae756763a309c477063b5e2e7d0c455ea">GateType::TFQ</a>, 
-<br />
-&#160;&#160;<a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7ea88190c1e1f68f85cbbac03cc3ad67429">GateType::SINGLE_CTRL_SINGLE_TARGET</a>, 
+<a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7ea88190c1e1f68f85cbbac03cc3ad67429">GateType::SINGLE_CTRL_SINGLE_TARGET</a>, 
 <a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7ea9fdb77d5ae25c12f141716753b077faa">GateType::SINGLE_CTRL_MULTIPLE_TARGET</a>, 
-<a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7ea875e8f8f78f4e5b229ef5e4fb15f71a8">GateType::MULTIPLE_CTRL_SINGLE_TARGET</a>, 
+<br />
+&#160;&#160;<a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7ea875e8f8f78f4e5b229ef5e4fb15f71a8">GateType::MULTIPLE_CTRL_SINGLE_TARGET</a>, 
 <a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7eab1d9fa96ac88e4295e1ea9c05c4e25e8">GateType::MULTIPLE_CTRL_MULTIPLE_TARGET</a>, 
-<br />
-&#160;&#160;<a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7ead305923ad5ac78f0ef86ab4997d277ed">GateType::CUSTOM_CTRL</a>, 
+<a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7ead305923ad5ac78f0ef86ab4997d277ed">GateType::CUSTOM_CTRL</a>, 
 <a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7eaf0e4631ba18e2035edf72e0beaf15240">GateType::SINGLE_cCTRL_SINGLE_TARGET</a>, 
-<a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7eabfe2b5a975cef70d97a910e54e5c84ea">GateType::SINGLE_cCTRL_MULTIPLE_TARGET</a>, 
-<a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7ea21c45a6fc6f6ccf29ec7c48ad6ce4c1b">GateType::MULTIPLE_cCTRL_SINGLE_TARGET</a>, 
 <br />
-&#160;&#160;<a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7eac758e25010bdef1cc3f4bc39e39ad557">GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET</a>, 
+&#160;&#160;<a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7eabfe2b5a975cef70d97a910e54e5c84ea">GateType::SINGLE_cCTRL_MULTIPLE_TARGET</a>, 
+<a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7ea21c45a6fc6f6ccf29ec7c48ad6ce4c1b">GateType::MULTIPLE_cCTRL_SINGLE_TARGET</a>, 
+<a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7eac758e25010bdef1cc3f4bc39e39ad557">GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET</a>, 
 <a class="el" href="classqpp_1_1_q_circuit.html#a808fb10009cf37d1ac900b3b2e3dea7ea79b326efcb9013f059bd0e83470e150f">GateType::CUSTOM_cCTRL</a>
 <br />
  }</td></tr>
@@ -251,12 +248,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4be903c64543612f9d4e090730850713"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a4be903c64543612f9d4e090730850713">gate_custom</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, std::string name=&quot;&quot;)</td></tr>
 <tr class="memdesc:a4be903c64543612f9d4e090730850713"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jointly applies the custom multiple qudit gate <em>U</em> on the qudit indexes specified by <em>target</em>.  <a href="#a4be903c64543612f9d4e090730850713">More...</a><br /></td></tr>
 <tr class="separator:a4be903c64543612f9d4e090730850713"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76078ed13bfbee5284e41a32571ffa27"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a76078ed13bfbee5284e41a32571ffa27">QFT</a> (const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, bool swap QPP_UNUSED_=true)</td></tr>
-<tr class="memdesc:a76078ed13bfbee5284e41a32571ffa27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the quantum Fourier transform (as a series of gates) on the qudit indexes specified by <em>target</em>.  <a href="#a76078ed13bfbee5284e41a32571ffa27">More...</a><br /></td></tr>
-<tr class="separator:a76078ed13bfbee5284e41a32571ffa27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8539846e449f78f31b4bf80d755db177"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a8539846e449f78f31b4bf80d755db177">QFT</a> (const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, bool swap=true)</td></tr>
+<tr class="memdesc:a8539846e449f78f31b4bf80d755db177"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the quantum Fourier transform (as a series of gates) on the qudit indexes specified by <em>target</em>.  <a href="#a8539846e449f78f31b4bf80d755db177">More...</a><br /></td></tr>
+<tr class="separator:a8539846e449f78f31b4bf80d755db177"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a319e7ca66215698f290cf7d6d0183296"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a319e7ca66215698f290cf7d6d0183296">QFT</a> (bool swap=true)</td></tr>
+<tr class="memdesc:a319e7ca66215698f290cf7d6d0183296"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the quantum Fourier transform (as a series of gates) on all of remaining non-measured qudits.  <a href="#a319e7ca66215698f290cf7d6d0183296">More...</a><br /></td></tr>
+<tr class="separator:a319e7ca66215698f290cf7d6d0183296"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7e8b654007a90fa288c9d0ca3141677"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#af7e8b654007a90fa288c9d0ca3141677">TFQ</a> (const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, bool swap QPP_UNUSED_=true)</td></tr>
 <tr class="memdesc:af7e8b654007a90fa288c9d0ca3141677"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the inverse quantum Fourier transform (as a series of gates) on the qudit indexes specified by <em>target</em>.  <a href="#af7e8b654007a90fa288c9d0ca3141677">More...</a><br /></td></tr>
 <tr class="separator:af7e8b654007a90fa288c9d0ca3141677"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adee6efdd08052f20b8115559627f501a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#adee6efdd08052f20b8115559627f501a">TFQ</a> (bool swap=true)</td></tr>
+<tr class="memdesc:adee6efdd08052f20b8115559627f501a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the inverse quantum Fourier transform (as a series of gates) on all of remaining non-measured qudits.  <a href="#adee6efdd08052f20b8115559627f501a">More...</a><br /></td></tr>
+<tr class="separator:adee6efdd08052f20b8115559627f501a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af840c2fd26c02d4d0ecaa4d0238757c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#af840c2fd26c02d4d0ecaa4d0238757c5">CTRL</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> ctrl, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> target, std::string name=&quot;&quot;)</td></tr>
 <tr class="memdesc:af840c2fd26c02d4d0ecaa4d0238757c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the single qudit controlled gate <em>U</em> with control qudit <em>ctrl</em> and target qudit <em>target</em>.  <a href="#af840c2fd26c02d4d0ecaa4d0238757c5">More...</a><br /></td></tr>
 <tr class="separator:af840c2fd26c02d4d0ecaa4d0238757c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -466,10 +469,6 @@ Friends</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ea1da87abe947673580190ba507384ad37"></a>FAN&#160;</td><td class="fielddoc"><p>same unitary gate on multiple qudits </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7eadc9eb41de97c29762154fa78fd436cc6"></a>QFT&#160;</td><td class="fielddoc"><p>quantum Fourier transform, </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7eae756763a309c477063b5e2e7d0c455ea"></a>TFQ&#160;</td><td class="fielddoc"><p>quantum inverse Fourier transform, </p>
-</td></tr>
 <tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ea88190c1e1f68f85cbbac03cc3ad67429"></a>SINGLE_CTRL_SINGLE_TARGET&#160;</td><td class="fielddoc"><p>controlled 1 qudit unitary gate with one control and one target </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ea9fdb77d5ae25c12f141716753b077faa"></a>SINGLE_CTRL_MULTIPLE_TARGET&#160;</td><td class="fielddoc"><p>controlled 1 qudit unitary gate with one control and multiple targets </p>
@@ -552,7 +551,7 @@ Friends</h2></td></tr>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="acb7804c99c55129760eade99214c3de8ab50339a10e1de285ac99d4c3990b8693"></a>NONE&#160;</td><td class="fielddoc"><p>represents no step </p>
 </td></tr>
-<tr><td class="fieldname"><a id="acb7804c99c55129760eade99214c3de8a1818cedf1c2bed8c63664cc8313b443c"></a>GATE&#160;</td><td class="fielddoc"><p>quantum gate </p>
+<tr><td class="fieldname"><a id="acb7804c99c55129760eade99214c3de8a1818cedf1c2bed8c63664cc8313b443c"></a>GATE&#160;</td><td class="fielddoc"><p>quantum gate(s) </p>
 </td></tr>
 <tr><td class="fieldname"><a id="acb7804c99c55129760eade99214c3de8aeb1f81048e02a1d6977cdd9f344b3212"></a>MEASUREMENT&#160;</td><td class="fielddoc"><p>measurement </p>
 </td></tr>
@@ -2563,8 +2562,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a76078ed13bfbee5284e41a32571ffa27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76078ed13bfbee5284e41a32571ffa27">&#9670;&nbsp;</a></span>QFT()</h2>
+<a id="a8539846e449f78f31b4bf80d755db177"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8539846e449f78f31b4bf80d755db177">&#9670;&nbsp;</a></span>QFT() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2581,8 +2580,8 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool swap&#160;</td>
-          <td class="paramname"><em>QPP_UNUSED_</em> = <code>true</code>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>swap</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2609,8 +2608,43 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="a319e7ca66215698f290cf7d6d0183296"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a319e7ca66215698f290cf7d6d0183296">&#9670;&nbsp;</a></span>QFT() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a>&amp; qpp::QCircuit::QFT </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>swap</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Applies the quantum Fourier transform (as a series of gates) on all of remaining non-measured qudits. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">swap</td><td>Swaps the qubits at the end (true by default) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
+
+</div>
+</div>
 <a id="af7e8b654007a90fa288c9d0ca3141677"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7e8b654007a90fa288c9d0ca3141677">&#9670;&nbsp;</a></span>TFQ()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af7e8b654007a90fa288c9d0ca3141677">&#9670;&nbsp;</a></span>TFQ() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2647,6 +2681,41 @@ Friends</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>Subsystem indexes where the inverse quantum Fourier transform is applied </td></tr>
+    <tr><td class="paramname">swap</td><td>Swaps the qubits at the end (true by default) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
+
+</div>
+</div>
+<a id="adee6efdd08052f20b8115559627f501a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adee6efdd08052f20b8115559627f501a">&#9670;&nbsp;</a></span>TFQ() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a>&amp; qpp::QCircuit::TFQ </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>swap</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Applies the inverse quantum Fourier transform (as a series of gates) on all of remaining non-measured qudits. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
     <tr><td class="paramname">swap</td><td>Swaps the qubits at the end (true by default) </td></tr>
   </table>
   </dd>
@@ -3189,7 +3258,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>classes/<a class="el" href="circuits_8h_source.html">circuits.h</a></li>
+<li>classes/circuits/<a class="el" href="circuits_8h_source.html">circuits.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -3197,7 +3266,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a></li>
-    <li class="footer">Generated on Thu Feb 14 2019 14:34:38 for Quantum++ by
+    <li class="footer">Generated on Fri Feb 15 2019 12:49:04 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>
