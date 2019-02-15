@@ -8,7 +8,7 @@ int main() {
     using namespace qpp;
 
     const idx n = 5;
-    const idx d = 2;
+    const idx d = 3;
     QCircuit qc{n, 0, d, "testing QFT/TFQ"};
     for (idx i = 0; i < n; ++i)
         qc.gate(randU(d), i, "randU_" + std::to_string(i));
@@ -27,11 +27,11 @@ int main() {
         }
     }
 
-    std::cout << "----CIRCUIT----:\n"
+    std::cout << "---- CIRCUIT ----\n"
               << qc << std::endl
-              << "----END CIRCUIT----\n";
-    std::cout << "----ENGINE----:\n"
+              << "---- END CIRCUIT ----\n";
+    std::cout << "---- ENGINE ----\n"
               << engine << std::endl
-              << "----END ENGINE----\n";
+              << "---- END ENGINE ----\n";
     std::cout << "Norm difference: " << norm(psi_initial - engine.get_psi());
 }
