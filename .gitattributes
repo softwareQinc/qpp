@@ -1,1 +1,6 @@
 * text=auto
+*.c text
+*.cpp text
+*.cxx text
+*.hpp text
+*.h text
