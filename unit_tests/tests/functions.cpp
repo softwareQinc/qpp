@@ -140,7 +140,7 @@ TEST(qpp_grams_vector, AllTests) {}
 /******************************************************************************/
 /// BEGIN template<typename Derived> std::size_t qpp::hash_eigen(
 ///       const Eigen::MatrixBase<Derived>& A)
-TEST(qpp_hash_eigen, AllTests){}
+TEST(qpp_hash_eigen, AllTests) {}
 /// BEGIN template<typename Derived> std::pair<dyn_col_vect<double>, cmat>
 ///       qpp::heig(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_heig, AllTests) {}

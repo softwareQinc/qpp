@@ -62,7 +62,10 @@
     <ClCompile Include="..\..\unit_tests\tests\MATLAB\matlab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\unit_tests\tests\classes\circuits.cpp">
+    <ClCompile Include="..\..\unit_tests\tests\classes\circuits\circuits.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\unit_tests\tests\classes\circuits\engines.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\unit_tests\tests\classes\gates.cpp">

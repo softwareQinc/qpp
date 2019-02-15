@@ -30,4 +30,4 @@
 
 using namespace qpp;
 
-// Unit testing "classes/circuits.h"
+// Unit testing "classes/circuits/engines.h"

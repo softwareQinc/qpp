@@ -9,7 +9,7 @@
 
 int main() {
     using namespace qpp;
-    idx d = 3; // size of the system
+    const idx d = 3; // size of the system
     std::cout << ">> Qudit teleportation, d = " << d << '\n';
 
     ket mes_AB = st.mes(d); // maximally entangled state resource

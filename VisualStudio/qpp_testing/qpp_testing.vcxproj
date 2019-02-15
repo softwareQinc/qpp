@@ -155,7 +155,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\unit_tests\tests\classes\circuits.cpp" />
+    <ClCompile Include="..\..\unit_tests\tests\classes\circuits\circuits.cpp" />
+    <ClCompile Include="..\..\unit_tests\tests\classes\circuits\engines.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\classes\gates.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\classes\noise.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\classes\random_devices.cpp" />
