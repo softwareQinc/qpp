@@ -7,17 +7,16 @@ int main() {
     /////////// testing ///////////
     using namespace qpp;
 
-    const idx n = 5;
-    const idx d = 3;
+    const idx n = 3;
+    const idx d = 2;
     QCircuit qc{n, 0, d, "testing QFT/TFQ"};
     for (idx i = 0; i < n; ++i)
         qc.gate(randU(d), i, "randU_" + std::to_string(i));
     qc.QFT();
-    qc.QFT();
-    qc.QFT();
-    qc.QFT();
+    qc.TFQ();
 
-    QEngine engine{qc};
+    QNoisyEngine<QubitAmplitudeDampingNoise> engine{
+        qc, QubitAmplitudeDampingNoise{0.99}};
     idx i = 0;
     ket psi_initial;
     for (auto&& step : qc) {

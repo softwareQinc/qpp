@@ -1292,6 +1292,20 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
+    // std::initializer_list overload, avoids ambiguity for {idx} -> bool
+    /**
+     * \brief Applies the quantum Fourier transform (as a series of gates) on
+     * the qudit indexes specified by \a target
+     *
+     * \param target Subsystem indexes where the quantum Fourier transform is
+     * applied
+     * \param swap Swaps the qubits at the end (true by default)
+     * \return Reference to the current instance
+     */
+    QCircuit& QFT(const std::initializer_list<idx>& target, bool swap = true) {
+        return QFT(std::vector<idx>(target), swap);
+    }
+
     /**
      * \brief Applies the quantum Fourier transform (as a series of gates) on
      * all of remaining non-measured qudits
@@ -1382,6 +1396,20 @@ class QCircuit : public IDisplay, public IJSON {
         }
 
         return *this;
+    }
+
+    // std::initializer_list overload, avoids ambiguity for {idx} -> bool
+    /**
+     * \brief Applies the inverse quantum Fourier transform (as a series of
+     * gates) on the qudit indexes specified by \a target
+     *
+     * \param target Subsystem indexes where the inverse quantum Fourier
+     * transform is applied
+     * \param swap Swaps the qubits at the end (true by default)
+     * \return Reference to the current instance
+     */
+    QCircuit& TFQ(const std::initializer_list<idx>& target, bool swap = true) {
+        return TFQ(std::vector<idx>(target), swap);
     }
 
     /**

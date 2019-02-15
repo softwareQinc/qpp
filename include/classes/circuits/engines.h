@@ -339,7 +339,8 @@ class QEngine : public IDisplay, public IJSON {
                 break;
             } // end switch on gate type
         }     // end if gate step
-          // measurement step
+
+        // measurement step
         else if (elem.type_ == QCircuit::StepType::MEASUREMENT) {
             auto measurements = qc_->get_measurements_();
             idx m_ip = std::distance(std::begin(qc_->get_measurements_()),
@@ -386,7 +387,8 @@ class QEngine : public IDisplay, public IJSON {
                 break;
             } // end switch on measurement type
         }     // end else if measurement step
-          // otherwise
+
+        // otherwise
         else {
         }
     }
