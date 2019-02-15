@@ -32,5 +32,6 @@ int main() {
     std::cout << "---- ENGINE ----\n"
               << engine << std::endl
               << "---- END ENGINE ----\n";
-    std::cout << "Norm difference: " << norm(psi_initial - engine.get_psi());
+    std::cout << "Norm difference: " << norm(psi_initial - engine.get_psi())
+              << '\n';
 }
