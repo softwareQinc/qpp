@@ -149,7 +149,7 @@ inline bigint gcd(const std::vector<bigint>& as) {
     bigint result = as[0]; // convention: gcd({a}) = a
     for (idx i = 1; i < as.size(); ++i) {
         result = gcd(result, as[i]);
-    }
+    }d
 
     return (result > 0) ? result : -result;
 }
@@ -504,14 +504,14 @@ inline bool isprime(bigint p, idx k = 80) {
     // compute u and r
     bigint u = 0, r = 1;
 
-    // write n − 1 as 2^u * r
+    // write n - 1 as 2^u * r
     for (bigint i = p - 1; i % 2 == 0; ++u, i /= 2)
         ;
     r = (p - 1) / static_cast<bigint>(std::llround(std::pow(2, u)));
 
     // repeat k times
     for (idx i = 0; i < k; ++i) {
-        // pick a random integer a in the range [2, p − 2]
+        // pick a random integer a in the range [2, p - 2]
         bigint a = rand(2, p - 2);
 
         // set z = a^r mod p
