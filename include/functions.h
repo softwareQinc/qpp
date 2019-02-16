@@ -1872,7 +1872,7 @@ template <char... Bits>
 ket operator"" _ket() {
     constexpr idx n = sizeof...(Bits);
     constexpr char bits[n + 1] = {Bits..., '\0'};
-    qpp::ket q = qpp::ket::Zero(std::pow(2, n));
+    qpp::ket q = qpp::ket::Zero(static_cast<idx>(std::llround(std::pow(2, n))));
     idx pos = 0;
 
     // EXCEPTION CHECKS
@@ -1903,7 +1903,7 @@ template <char... Bits>
 bra operator"" _bra() {
     constexpr idx n = sizeof...(Bits);
     constexpr char bits[n + 1] = {Bits..., '\0'};
-    qpp::bra q = qpp::ket::Zero(std::pow(2, n));
+    qpp::bra q = qpp::ket::Zero(static_cast<idx>(std::llround(std::pow(2, n))));
     idx pos = 0;
 
     // EXCEPTION CHECKS
