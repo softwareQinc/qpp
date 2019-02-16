@@ -540,7 +540,7 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
      * \brief Qudit depolarizing noise constructor
      *
      * \param p Noise probability
-     * \param d Subsystem dimension
+     * \param d Qudit dimension
      */
     explicit QuditDepolarizingNoise(double p, idx d)
         : NoiseBase(fill_Ks_(d), fill_probs_(p, d)) {
