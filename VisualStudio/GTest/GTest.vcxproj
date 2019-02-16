@@ -93,6 +93,7 @@
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <AdditionalIncludeDirectories>C:\eigen;$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock;</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -109,6 +110,7 @@
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <AdditionalIncludeDirectories>C:\eigen;$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock;</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -127,6 +129,7 @@
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <AdditionalIncludeDirectories>C:\eigen;$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock;</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,6 +150,7 @@
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <AdditionalIncludeDirectories>C:\eigen;$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock;</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
