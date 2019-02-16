@@ -149,7 +149,7 @@ inline bigint gcd(const std::vector<bigint>& as) {
     bigint result = as[0]; // convention: gcd({a}) = a
     for (idx i = 1; i < as.size(); ++i) {
         result = gcd(result, as[i]);
-    }d
+    }
 
     return (result > 0) ? result : -result;
 }
