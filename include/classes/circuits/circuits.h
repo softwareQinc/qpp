@@ -735,7 +735,7 @@ class QCircuit : public IDisplay, public IJSON {
      * of which number is specified by \a nc
      *
      * \param nq Number of qbits
-     * \param nc Number of classical dits
+     * \param nc Number of classical dits (optional)
      * \param d Subsystem dimensions (optional, default is qubit, i.e. \a d = 2)
      * \param name Circuit name (optional)
      */
