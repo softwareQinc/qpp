@@ -919,6 +919,17 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Total (gates + measurements) count
      */
     idx get_step_count() const noexcept { return step_types_.size(); }
+
+    /**
+     * \brief No-op count
+     *
+     * \return No-op count
+     */
+    idx get_nop_count() const {
+        return std::count_if(
+            std::begin(step_types_), std::end(step_types_),
+            [](const StepType& s) { return s == StepType::NOP; });
+    }
     // end getters
 
     /**
@@ -2322,8 +2333,7 @@ class QCircuit : public IDisplay, public IJSON {
 
             }
             // no-op
-            else if (elem.type_ == StepType::NOP)
-            {
+            else if (elem.type_ == StepType::NOP) {
                 result += std::string{"\"NOP\""} + "}";
             }
             // otherwise

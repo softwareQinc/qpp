@@ -18,7 +18,6 @@ int main() {
     qc.gate(gt.Z, 0);
     qc.nop();
     qc.gate(gt.Z, 0);
-    // qc.wait();
     qc.measureZ(0, 0);
 
     QNoisyEngine<QubitDepolarizingNoise> engine{qc,
@@ -41,4 +40,6 @@ int main() {
 
     std::cout << engine.to_JSON() << '\n';
     std::cout << qc.to_JSON() << '\n';
+
+    std::cout << qc.get_nop_count() << '\n';
 }

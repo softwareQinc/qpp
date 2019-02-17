@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"classqpp_1_1internal_1_1_i_o_manip_range.html#a32bc91344b36488b2db0179f08a0f051":[2,0,0,1,5,3],
 "classqpp_1_1internal_1_1_i_o_manip_range.html#a42e512ecfa910bbdfbfe951feab9421b":[2,0,0,1,5,6],
 "classqpp_1_1internal_1_1_i_o_manip_range.html#ac922617e85eb199608488f19a725fbc6":[2,0,0,1,5,8],
 "classqpp_1_1internal_1_1_i_o_manip_range.html#accb36abc2740f69e4b17826aee293ced":[2,0,0,1,5,0],
@@ -146,8 +147,8 @@ var NAVTREEINDEX2 =
 "functions_e.html":[2,3,0,4],
 "functions_enum.html":[2,3,4],
 "functions_f.html":[2,3,0,5],
-"functions_func.html":[2,3,1],
 "functions_func.html":[2,3,1,0],
+"functions_func.html":[2,3,1],
 "functions_func_0x7e.html":[2,3,1,22],
 "functions_func_b.html":[2,3,1,1],
 "functions_func_c.html":[2,3,1,2],
@@ -235,8 +236,8 @@ var NAVTREEINDEX2 =
 "matlab_8h.html#af46ebc145afb868fcb89b3e2f98e808b":[3,0,3,0,1],
 "matlab_8h_source.html":[3,0,3,0],
 "md___users_vlad_qpp__r_e_a_d_m_e.html":[0],
-"namespacemembers.html":[1,1,0,0],
 "namespacemembers.html":[1,1,0],
+"namespacemembers.html":[1,1,0,0],
 "namespacemembers_b.html":[1,1,0,1],
 "namespacemembers_c.html":[1,1,0,2],
 "namespacemembers_d.html":[1,1,0,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "namespacemembers_func_c.html":[1,1,1,2],
 "namespacemembers_func_d.html":[1,1,1,3],
 "namespacemembers_func_e.html":[1,1,1,4],
-"namespacemembers_func_f.html":[1,1,1,5],
-"namespacemembers_func_g.html":[1,1,1,6]
+"namespacemembers_func_f.html":[1,1,1,5]
 };

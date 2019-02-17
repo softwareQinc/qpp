@@ -228,6 +228,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a569ad03b7ecc82ff63554c4c4d1514ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a569ad03b7ecc82ff63554c4c4d1514ba">get_step_count</a> () const noexcept</td></tr>
 <tr class="memdesc:a569ad03b7ecc82ff63554c4c4d1514ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantum circuit total steps count, i.e. the sum of gate count and measurement count.  <a href="#a569ad03b7ecc82ff63554c4c4d1514ba">More...</a><br /></td></tr>
 <tr class="separator:a569ad03b7ecc82ff63554c4c4d1514ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a019a426a94972114d4ad6711461f45fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a019a426a94972114d4ad6711461f45fe">get_nop_count</a> () const</td></tr>
+<tr class="memdesc:a019a426a94972114d4ad6711461f45fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">No-op count.  <a href="#a019a426a94972114d4ad6711461f45fe">More...</a><br /></td></tr>
+<tr class="separator:a019a426a94972114d4ad6711461f45fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add7560df240d9110af06027cf8ac6ce5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#add7560df240d9110af06027cf8ac6ce5">gate</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i, std::string name=&quot;&quot;)</td></tr>
 <tr class="memdesc:add7560df240d9110af06027cf8ac6ce5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the single qudit gate <em>U</em> on single qudit <em>i</em>.  <a href="#add7560df240d9110af06027cf8ac6ce5">More...</a><br /></td></tr>
 <tr class="separator:add7560df240d9110af06027cf8ac6ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2345,6 +2348,34 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="a019a426a94972114d4ad6711461f45fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a019a426a94972114d4ad6711461f45fe">&#9670;&nbsp;</a></span>get_nop_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::QCircuit::get_nop_count </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>No-op count. </p>
+<dl class="section return"><dt>Returns</dt><dd>No-op count </dd></dl>
+
+</div>
+</div>
 <a id="a526ddd2928873dd719bc8f99aadc58af"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a526ddd2928873dd719bc8f99aadc58af">&#9670;&nbsp;</a></span>get_nq()</h2>
 
@@ -3399,7 +3430,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a></li>
-    <li class="footer">Generated on Sun Feb 17 2019 12:45:39 for Quantum++ by
+    <li class="footer">Generated on Sun Feb 17 2019 14:13:57 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

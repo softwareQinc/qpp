@@ -76,6 +76,7 @@ var classqpp_1_1_q_circuit =
     [ "get_name", "classqpp_1_1_q_circuit.html#aa2efa2508156ab3fc6938bf2db3e1910", null ],
     [ "get_nc", "classqpp_1_1_q_circuit.html#a766f8179216faac9e9a788c6b203cec3", null ],
     [ "get_non_measured", "classqpp_1_1_q_circuit.html#acf86af5a696d3b04a59e790bb07fd5be", null ],
+    [ "get_nop_count", "classqpp_1_1_q_circuit.html#a019a426a94972114d4ad6711461f45fe", null ],
     [ "get_nq", "classqpp_1_1_q_circuit.html#a526ddd2928873dd719bc8f99aadc58af", null ],
     [ "get_step_count", "classqpp_1_1_q_circuit.html#a569ad03b7ecc82ff63554c4c4d1514ba", null ],
     [ "measureV", "classqpp_1_1_q_circuit.html#a9b130cc4eb1bbef1c6fd41b59cea44c1", null ],
