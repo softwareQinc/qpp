@@ -2342,7 +2342,7 @@ class QCircuit : public IDisplay, public IJSON {
         }                // end for
         result += "], "; // end steps
 
-        ss << get_gate_count();
+        result += "\"step count\" : " + std::to_string(get_step_count()) + ", ";
         result += "\"gate count\" : " + std::to_string(get_gate_count()) + ", ";
 
         ss.str("");
@@ -2382,6 +2382,7 @@ class QCircuit : public IDisplay, public IJSON {
             os << elem << '\n';
         }
 
+        os << "step count: " << get_step_count() << '\n';
         os << "gate count: " << get_gate_count() << '\n';
         os << "measured positions: " << disp(get_measured(), ", ") << '\n';
         os << "non-measured positions: " << disp(get_non_measured(), ", ");
