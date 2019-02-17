@@ -7,23 +7,29 @@ int main() {
     /////////// testing ///////////
     using namespace qpp;
 
-    const idx n = 3;
+    const idx n = 1;
     const idx d = 2;
-    QCircuit qc{n, 0, d, "testing QFT/TFQ"};
-    for (idx i = 0; i < n; ++i)
-        qc.gate(randU(d), i, "randU_" + std::to_string(i));
-    qc.QFT();
-    qc.TFQ();
+    QCircuit qc{n, 1, d, "testing"};
+    //    for (idx i = 0; i < n; ++i)
+    //        qc.gate(randU(d), i, "randU_" + std::to_string(i));
 
-    QNoisyEngine<QubitAmplitudeDampingNoise> engine{
-        qc, QubitAmplitudeDampingNoise{0.99}};
+    qc.gate(gt.Z, 0);
+    qc.nop();
+    qc.gate(gt.Z, 0);
+    qc.nop();
+    qc.gate(gt.Z, 0);
+    // qc.wait();
+    qc.measureZ(0, 0);
+
+    QNoisyEngine<QubitDepolarizingNoise> engine{qc,
+                                                QubitDepolarizingNoise{0.75}};
     idx i = 0;
     ket psi_initial;
     for (auto&& step : qc) {
-        engine.execute(step);
-        if (++i == n) {
+        if (i++ == 0) {
             psi_initial = engine.get_psi();
         }
+        engine.execute(step);
     }
 
     std::cout << "---- CIRCUIT ----\n"
@@ -32,6 +38,7 @@ int main() {
     std::cout << "---- ENGINE ----\n"
               << engine << std::endl
               << "---- END ENGINE ----\n";
-    std::cout << "Norm difference: " << norm(psi_initial - engine.get_psi())
-              << '\n';
+
+    std::cout << engine.to_JSON() << '\n';
+    std::cout << qc.to_JSON() << '\n';
 }

@@ -388,6 +388,10 @@ class QEngine : public IDisplay, public IJSON {
             } // end switch on measurement type
         }     // end else if measurement step
 
+        // no-op
+        else if (elem.type_ == QCircuit::StepType::NOP) {
+        }
+
         // otherwise
         else {
         }

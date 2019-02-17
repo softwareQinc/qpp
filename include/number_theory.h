@@ -55,11 +55,11 @@ inline std::vector<int> x2contfrac(double x, idx N, idx cut = 1e5) {
 
     for (idx i = 0; i < N; ++i) {
         if (x > 0) {
-            result.push_back(static_cast<int>(std::llround(std::floor(x))));
+            result.emplace_back(static_cast<int>(std::llround(std::floor(x))));
             x = 1 / (x - std::floor(x));
         } else // x < 0
         {
-            result.push_back(static_cast<int>(std::llround(std::ceil(x))));
+            result.emplace_back(static_cast<int>(std::llround(std::ceil(x))));
             x = 1 / (x - std::ceil(x));
         }
         if (!std::isfinite(x) || std::abs(x) > cut)
@@ -275,14 +275,14 @@ inline std::vector<bigint> factors(bigint a) {
 
     while (a > 1) {
         while (a % d == 0) {
-            result.push_back(d);
+            result.emplace_back(d);
             a /= d;
         }
         ++d;
         if (d * d > a) // changes the running time from O(a) to O(sqrt(a))
         {
             if (a > 1) {
-                result.push_back(a);
+                result.emplace_back(a);
             }
             break;
         }

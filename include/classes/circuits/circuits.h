@@ -346,6 +346,7 @@ class QCircuit : public IDisplay, public IJSON {
         NONE,        ///< represents no step
         GATE,        ///< quantum gate(s)
         MEASUREMENT, ///< measurement
+        NOP,         ///< no-op
     };
 
   private:
@@ -461,6 +462,13 @@ class QCircuit : public IDisplay, public IJSON {
                                       measurements_ip_);
                     os << "|> " << value_type_qc_->get_measurements_()[pos];
                 }
+                // no-op
+                else if (type_ == StepType::NOP) {
+                    os << std::left;
+                    os << std::setw(text_width) << ip_;
+                    os << std::right;
+                    os << "NOP";
+                }
                 // otherwise
                 else {
                 }
@@ -525,6 +533,9 @@ class QCircuit : public IDisplay, public IJSON {
             // measurement step
             else if (elem_.type_ == StepType::MEASUREMENT) {
                 std::advance(elem_.measurements_ip_, 1);
+            }
+            // no-op
+            else if (elem_.type_ == StepType::NOP) {
             }
             // otherwise
             else {
@@ -947,7 +958,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::SINGLE, hashU, std::vector<idx>{},
                             std::vector<idx>{i}, name);
-        step_types_.push_back(StepType::GATE);
+        step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
         return *this;
@@ -990,7 +1001,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::TWO, hashU, std::vector<idx>{},
                             std::vector<idx>{i, j}, name);
-        step_types_.push_back(StepType::GATE);
+        step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
         return *this;
@@ -1035,7 +1046,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::THREE, hashU, std::vector<idx>{},
                             std::vector<idx>{i, j, k}, name);
-        step_types_.push_back(StepType::GATE);
+        step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
         return *this;
@@ -1090,7 +1101,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::FAN, hashU, std::vector<idx>{}, target,
                             name);
-        step_types_.push_back(StepType::GATE);
+        step_types_.emplace_back(StepType::GATE);
         count_[name] += target.size();
 
         return *this;
@@ -1145,7 +1156,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::FAN, hashU, std::vector<idx>{},
                             get_non_measured(), name);
-        step_types_.push_back(StepType::GATE);
+        step_types_.emplace_back(StepType::GATE);
         count_[name] += get_non_measured().size();
 
         return *this;
@@ -1204,7 +1215,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::CUSTOM, hashU, std::vector<idx>{}, target,
                             name);
-        step_types_.push_back(StepType::GATE);
+        step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
         return *this;
@@ -1463,7 +1474,7 @@ class QCircuit : public IDisplay, public IJSON {
         gates_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, hashU,
                             std::vector<idx>{ctrl}, std::vector<idx>{target},
                             name);
-        step_types_.push_back(StepType::GATE);
+        step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
         return *this;
@@ -1532,7 +1543,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, hashU,
                             std::vector<idx>{ctrl}, target, name);
-        step_types_.push_back(StepType::GATE);
+        step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
         return *this;
@@ -1598,7 +1609,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, hashU, ctrl,
                             std::vector<idx>{target}, name);
-        step_types_.push_back(StepType::GATE);
+        step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
         return *this;
@@ -1676,7 +1687,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, hashU,
                             ctrl, std::vector<idx>{target}, name);
-        step_types_.push_back(StepType::GATE);
+        step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
         return *this;
@@ -1757,7 +1768,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::CUSTOM_CTRL, hashU, ctrl, target, name);
-        step_types_.push_back(StepType::GATE);
+        step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
         return *this;
@@ -1807,7 +1818,7 @@ class QCircuit : public IDisplay, public IJSON {
         gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, hashU,
                             std::vector<idx>{ctrl_dit},
                             std::vector<idx>{target}, name);
-        step_types_.push_back(StepType::GATE);
+        step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
         return *this;
@@ -1869,7 +1880,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, hashU,
                             std::vector<idx>{ctrl_dit}, target, name);
-        step_types_.push_back(StepType::GATE);
+        step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
         return *this;
@@ -1927,7 +1938,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, hashU,
                             ctrl_dits, std::vector<idx>{target}, name);
-        step_types_.push_back(StepType::GATE);
+        step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
         return *this;
@@ -1995,7 +2006,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, hashU,
                             ctrl_dits, std::vector<idx>{target}, name);
-        step_types_.push_back(StepType::GATE);
+        step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
         return *this;
@@ -2071,7 +2082,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::CUSTOM_cCTRL, hashU, ctrl_dits, target,
                             name);
-        step_types_.push_back(StepType::GATE);
+        step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
         return *this;
@@ -2112,7 +2123,7 @@ class QCircuit : public IDisplay, public IJSON {
         measurements_.emplace_back(MeasureType::MEASURE_Z,
                                    std::vector<std::size_t>{},
                                    std::vector<idx>{target}, c_reg, name);
-        step_types_.push_back(StepType::MEASUREMENT);
+        step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
 
         return *this;
@@ -2158,7 +2169,7 @@ class QCircuit : public IDisplay, public IJSON {
         measurements_.emplace_back(MeasureType::MEASURE_V,
                                    std::vector<std::size_t>{hash_eigen(V)},
                                    std::vector<idx>{target}, c_reg, name);
-        step_types_.push_back(StepType::MEASUREMENT);
+        step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
 
         return *this;
@@ -2219,8 +2230,21 @@ class QCircuit : public IDisplay, public IJSON {
         measurements_.emplace_back(MeasureType::MEASURE_V_MANY,
                                    std::vector<std::size_t>{hash_eigen(V)},
                                    target, c_reg, name);
-        step_types_.push_back(StepType::MEASUREMENT);
+        step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
+
+        return *this;
+    }
+
+    /**
+     * \brief No operation (no-op)
+     * \note If the underlying step is executed on a noisy engine, then noise
+     * acts before it
+     *
+     * \return Reference to the current instance
+     */
+    QCircuit& nop() {
+        step_types_.emplace_back(StepType::NOP);
 
         return *this;
     }
@@ -2296,6 +2320,11 @@ class QCircuit : public IDisplay, public IJSON {
                 result += "\"name\" : ";
                 result += "\"" + measurements_[pos].name_ + "\"" + "}";
 
+            }
+            // no-op
+            else if (elem.type_ == StepType::NOP)
+            {
+                result += std::string{"\"NOP\""} + "}";
             }
             // otherwise
             else {

@@ -415,15 +415,15 @@ struct Display_Impl_ {
 
                 if (std::abs(re) < chop && std::abs(im) < chop) {
                     ostr << "0 "; // otherwise segfault on destruction
-                    // if using only vstr.push_back("0 ");
+                    // if using only vstr.emplace_back("0 ");
                     // bug in MATLAB libmx
-                    vstr.push_back(ostr.str());
+                    vstr.emplace_back(ostr.str());
                 } else if (std::abs(re) < chop) {
                     ostr << im;
-                    vstr.push_back(ostr.str() + "i");
+                    vstr.emplace_back(ostr.str() + "i");
                 } else if (std::abs(im) < chop) {
                     ostr << re;
-                    vstr.push_back(ostr.str() + " ");
+                    vstr.emplace_back(ostr.str() + " ");
                 } else {
                     ostr << re;
                     strA = ostr.str();
@@ -434,7 +434,7 @@ struct Display_Impl_ {
                     ostr << std::abs(im);
                     strA += ostr.str();
                     strA += "i";
-                    vstr.push_back(strA);
+                    vstr.emplace_back(strA);
                 }
             }
         }

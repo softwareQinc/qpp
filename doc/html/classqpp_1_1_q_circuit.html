@@ -151,7 +151,8 @@ Public Types</h2></td></tr>
 <tr class="separator:abd78f82ad807d5d8af20f391d2336308"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb7804c99c55129760eade99214c3de8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#acb7804c99c55129760eade99214c3de8">StepType</a> { <a class="el" href="classqpp_1_1_q_circuit.html#acb7804c99c55129760eade99214c3de8ab50339a10e1de285ac99d4c3990b8693">StepType::NONE</a>, 
 <a class="el" href="classqpp_1_1_q_circuit.html#acb7804c99c55129760eade99214c3de8a1818cedf1c2bed8c63664cc8313b443c">StepType::GATE</a>, 
-<a class="el" href="classqpp_1_1_q_circuit.html#acb7804c99c55129760eade99214c3de8aeb1f81048e02a1d6977cdd9f344b3212">StepType::MEASUREMENT</a>
+<a class="el" href="classqpp_1_1_q_circuit.html#acb7804c99c55129760eade99214c3de8aeb1f81048e02a1d6977cdd9f344b3212">StepType::MEASUREMENT</a>, 
+<a class="el" href="classqpp_1_1_q_circuit.html#acb7804c99c55129760eade99214c3de8a1a004f5abe2b334db21328be1ea6b593">StepType::NOP</a>
  }</td></tr>
 <tr class="memdesc:acb7804c99c55129760eade99214c3de8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Types of each step in the quantum circuit.  <a href="classqpp_1_1_q_circuit.html#acb7804c99c55129760eade99214c3de8">More...</a><br /></td></tr>
 <tr class="separator:acb7804c99c55129760eade99214c3de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -305,6 +306,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af75bf25c17ea7b03c251ad4069783645"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#af75bf25c17ea7b03c251ad4069783645">measureV</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;V, const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;target, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> c_reg, std::string name=&quot;&quot;)</td></tr>
 <tr class="memdesc:af75bf25c17ea7b03c251ad4069783645"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joint measurement of multiple qudits in the orthonormal basis or rank-1 projectors specified by the columns of matrix <em>V</em>.  <a href="#af75bf25c17ea7b03c251ad4069783645">More...</a><br /></td></tr>
 <tr class="separator:af75bf25c17ea7b03c251ad4069783645"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7650e4117ddc82e48d5855d75b17c101"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a7650e4117ddc82e48d5855d75b17c101">nop</a> ()</td></tr>
+<tr class="memdesc:a7650e4117ddc82e48d5855d75b17c101"><td class="mdescLeft">&#160;</td><td class="mdescRight">No operation (no-op)  <a href="#a7650e4117ddc82e48d5855d75b17c101">More...</a><br /></td></tr>
+<tr class="separator:a7650e4117ddc82e48d5855d75b17c101"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c52f4e2c0ab81f81fa900c08afa07f2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a7c52f4e2c0ab81f81fa900c08afa07f2">to_JSON</a> (bool enclosed_in_curly_brackets=true) const override</td></tr>
 <tr class="memdesc:a7c52f4e2c0ab81f81fa900c08afa07f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">qpp::IJOSN::to_JSON() override  <a href="#a7c52f4e2c0ab81f81fa900c08afa07f2">More...</a><br /></td></tr>
 <tr class="separator:a7c52f4e2c0ab81f81fa900c08afa07f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -560,6 +564,8 @@ Friends</h2></td></tr>
 <tr><td class="fieldname"><a id="acb7804c99c55129760eade99214c3de8a1818cedf1c2bed8c63664cc8313b443c"></a>GATE&#160;</td><td class="fielddoc"><p>quantum gate(s) </p>
 </td></tr>
 <tr><td class="fieldname"><a id="acb7804c99c55129760eade99214c3de8aeb1f81048e02a1d6977cdd9f344b3212"></a>MEASUREMENT&#160;</td><td class="fielddoc"><p>measurement </p>
+</td></tr>
+<tr><td class="fieldname"><a id="acb7804c99c55129760eade99214c3de8a1a004f5abe2b334db21328be1ea6b593"></a>NOP&#160;</td><td class="fielddoc"><p>no-op </p>
 </td></tr>
 </table>
 
@@ -2568,6 +2574,35 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="a7650e4117ddc82e48d5855d75b17c101"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7650e4117ddc82e48d5855d75b17c101">&#9670;&nbsp;</a></span>nop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a>&amp; qpp::QCircuit::nop </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>No operation (no-op) </p>
+<dl class="section note"><dt>Note</dt><dd>If the underlying step is executed on a noisy engine, then noise acts before it</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
+
+</div>
+</div>
 <a id="a8539846e449f78f31b4bf80d755db177"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8539846e449f78f31b4bf80d755db177">&#9670;&nbsp;</a></span>QFT() <span class="overload">[1/3]</span></h2>
 
@@ -3364,7 +3399,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a></li>
-    <li class="footer">Generated on Sat Feb 16 2019 16:56:02 for Quantum++ by
+    <li class="footer">Generated on Sun Feb 17 2019 12:45:39 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

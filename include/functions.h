@@ -1317,7 +1317,7 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& As) {
     for (pos = 0; pos < As.size(); ++pos) {
         if (norm(As[pos]) > 0) // add it as the first element
         {
-            outvecs.push_back(As[pos]);
+            outvecs.emplace_back(As[pos]);
             break;
         }
     }
@@ -1326,7 +1326,7 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& As) {
     for (idx i = pos + 1; i < As.size(); ++i) {
         cut -= prj(outvecs[i - 1 - pos]);
         vi = cut * As[i];
-        outvecs.push_back(vi);
+        outvecs.emplace_back(vi);
     }
 
     dyn_mat<typename Derived::Scalar> result(As[0].rows(), outvecs.size());
@@ -1378,7 +1378,7 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A) {
     std::vector<dyn_mat<typename Derived::Scalar>> input;
 
     for (idx i = 0; i < static_cast<idx>(rA.cols()); ++i)
-        input.push_back(rA.col(i));
+        input.emplace_back(rA.col(i));
 
     return grams<dyn_mat<typename Derived::Scalar>>(input);
 }

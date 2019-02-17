@@ -117,8 +117,8 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     std::vector<dyn_mat<typename Derived1::Scalar>> Ai;
     std::vector<dyn_mat<typename Derived1::Scalar>> Aidagger;
     for (idx i = 0; i < std::max(d, static_cast<idx>(2)); ++i) {
-        Ai.push_back(powm(rA, i));
-        Aidagger.push_back(powm(adjoint(rA), i));
+        Ai.emplace_back(powm(rA, i));
+        Aidagger.emplace_back(powm(adjoint(rA), i));
     }
 
     idx D = static_cast<idx>(rstate.rows()); // total dimension
@@ -846,8 +846,8 @@ inline std::vector<cmat> choi2kraus(const cmat& A) {
 
     for (idx i = 0; i < D * D; ++i) {
         if (std::abs(ev(i)) > 0)
-            result.push_back(std::sqrt(std::abs(ev(i))) *
-                             reshape(evec.col(i), D, D));
+            result.emplace_back(std::sqrt(std::abs(ev(i))) *
+                                reshape(evec.col(i), D, D));
     }
 
     return result;

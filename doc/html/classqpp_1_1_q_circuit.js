@@ -31,7 +31,8 @@ var classqpp_1_1_q_circuit =
     [ "StepType", "classqpp_1_1_q_circuit.html#acb7804c99c55129760eade99214c3de8", [
       [ "NONE", "classqpp_1_1_q_circuit.html#acb7804c99c55129760eade99214c3de8ab50339a10e1de285ac99d4c3990b8693", null ],
       [ "GATE", "classqpp_1_1_q_circuit.html#acb7804c99c55129760eade99214c3de8a1818cedf1c2bed8c63664cc8313b443c", null ],
-      [ "MEASUREMENT", "classqpp_1_1_q_circuit.html#acb7804c99c55129760eade99214c3de8aeb1f81048e02a1d6977cdd9f344b3212", null ]
+      [ "MEASUREMENT", "classqpp_1_1_q_circuit.html#acb7804c99c55129760eade99214c3de8aeb1f81048e02a1d6977cdd9f344b3212", null ],
+      [ "NOP", "classqpp_1_1_q_circuit.html#acb7804c99c55129760eade99214c3de8a1a004f5abe2b334db21328be1ea6b593", null ]
     ] ],
     [ "QCircuit", "classqpp_1_1_q_circuit.html#ab684b5af269e36d24c43b2bd66bd864c", null ],
     [ "~QCircuit", "classqpp_1_1_q_circuit.html#ac3967f9bff53190b70fe0a8410ffe90e", null ],
@@ -80,6 +81,7 @@ var classqpp_1_1_q_circuit =
     [ "measureV", "classqpp_1_1_q_circuit.html#a9b130cc4eb1bbef1c6fd41b59cea44c1", null ],
     [ "measureV", "classqpp_1_1_q_circuit.html#af75bf25c17ea7b03c251ad4069783645", null ],
     [ "measureZ", "classqpp_1_1_q_circuit.html#a42c8cc3537fac9008d2a4f21f3ee11c6", null ],
+    [ "nop", "classqpp_1_1_q_circuit.html#a7650e4117ddc82e48d5855d75b17c101", null ],
     [ "QFT", "classqpp_1_1_q_circuit.html#a8539846e449f78f31b4bf80d755db177", null ],
     [ "QFT", "classqpp_1_1_q_circuit.html#a3b8bc38b3dfc3bf69e22072f5d84811b", null ],
     [ "QFT", "classqpp_1_1_q_circuit.html#a319e7ca66215698f290cf7d6d0183296", null ],

@@ -739,7 +739,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     while (target.size() > 0) {
         auto tmp = measure(rA, Gates::get_instance().Id(dims[target[0]]),
                            {target[0]}, dims);
-        result.push_back(std::get<0>(tmp));
+        result.emplace_back(std::get<0>(tmp));
         prob *= std::get<1>(tmp)[std::get<0>(tmp)];
         rA = std::get<2>(tmp)[std::get<0>(tmp)];
 
