@@ -136,13 +136,6 @@ class QEngine : public IDisplay, public IJSON {
     ket get_psi() const { return psi_; }
 
     /**
-     * \brief Reference to the underlying quantum state
-     *
-     * \return Reference to the underlying quantum state
-     */
-    ket& get_ref_psi() { return psi_; }
-
-    /**
      * \brief Vector with the values of the underlying classical dits
      *
      * \return Vector of underlying classical dits
@@ -240,9 +233,32 @@ class QEngine : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QEngine& set_dit(idx i, idx value) {
-        if (i > qc_->get_nc())
+        if (i >= qc_->get_nc())
             throw exception::OutOfRange("qpp::QEngine::set_dit()");
         dits_[i] = value;
+
+        return *this;
+    }
+
+    /**
+     * \brief Sets the underlying quantum state to \a psi
+     *
+     * \note The order is lexicographical with respect to the remaining
+     * non-measured qudits
+     *
+     * \param psi State vector
+     * \return Reference to the current instance
+     */
+    QEngine& set_psi(const ket& psi) {
+        // EXCEPTION CHECKS
+
+        idx n = get_non_measured().size();
+        idx D = static_cast<idx>(std::llround(std::pow(qc_->get_d(), n)));
+        if (static_cast<idx>(psi.rows()) != D)
+            throw exception::DimsNotEqual("qpp::QEngine::set_psi()");
+        // END EXCEPTION CHECKS
+
+        psi_ = psi;
 
         return *this;
     }

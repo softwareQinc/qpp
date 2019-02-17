@@ -25,7 +25,7 @@
 #
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.2)
-PROJECT(qpp VERSION 1.3 LANGUAGES CXX)
+PROJECT(qpp VERSION 1.2 LANGUAGES CXX)
 SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -34,7 +34,7 @@ INCLUDE_DIRECTORIES(include)
 
 #### Source file(s) to be compiled, modify as needed
 SET(SOURCE_FILES
-        examples/minimal.cpp)
+        examples/_test.cpp)
 
 #### Eigen3
 MESSAGE(STATUS "Detecting Eigen3")

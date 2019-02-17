@@ -58,6 +58,7 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Adds matrix to the hash table
+     *
      * \note Throws if a hash collision is detected., i.e., if two different
      * matrices have the same hash
      *
@@ -384,6 +385,7 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \class qpp::QCircuit::iterator
      * \brief Quantum circuit bound-checking (safe) iterator
+     *
      * \note The iterator is a const_iterator by default
      */
     class iterator {
@@ -2249,6 +2251,7 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief No operation (no-op)
+     *
      * \note If the underlying step is executed on a noisy engine, then noise
      * acts before it
      *
