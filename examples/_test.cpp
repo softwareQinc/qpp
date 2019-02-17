@@ -25,7 +25,7 @@ int main() {
     idx i = 0;
     ket psi_initial;
     engine.set_psi(1_ket);
-    
+
     for (auto&& step : qc) {
         if (i++ == 0) {
             psi_initial = engine.get_psi();
