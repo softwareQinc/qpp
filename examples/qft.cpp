@@ -33,7 +33,7 @@ int main() {
         result = apply(result, gt.SWAP, {i, n - i - 1});
     }
     // check that we got the Fourier transform, compute the norm difference
-    if (n < 14) { // otherwise not enough memory in computing gt.Fd(D) * psi
+    if (n < 14) { // otherwise not enough memory for computing gt.Fd(D) * psi
         std::cout << ">> Norm difference: " << norm(result - gt.Fd(D) * psi)
                   << '\n';
     }
