@@ -1,5 +1,3 @@
-# Qiskit QFT stress tests
-
 from qiskit import *
 
 import math
@@ -18,8 +16,7 @@ os.environ['OPENBLAS_NUM_THREADS'] = str(num_cores)
 os.environ['MKL_NUM_THREADS'] = str(num_cores)
 
 q = QuantumRegister(n)
-c = ClassicalRegister(n)
-qc = QuantumCircuit(q, c)
+qc = QuantumCircuit(q)
 
 # start timing
 start_time = timeit.default_timer()
