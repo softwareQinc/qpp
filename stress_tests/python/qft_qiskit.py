@@ -37,7 +37,8 @@ for i in range(n // 2):
 
 all_local_backends = Aer.backends(local=True)  # returns a list of local backends
 qasm_simulator = all_local_backends[0]
-job_sim = execute(qc, backend=qasm_simulator, shots=1)
+statevector_simulator = all_local_backends[1]
+job_sim = execute(qc, backend=statevector_simulator, shots=1)
 result = job_sim.result()
 
 elapsed = timeit.default_timer() - start_time
