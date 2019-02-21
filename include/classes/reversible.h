@@ -40,12 +40,12 @@ namespace qpp {
  */
 class Dynamic_bitset : public IDisplay {
   public:
-    using value_type = unsigned int; ///< Type of the storage elements
-    using storage_type = std::vector<value_type>; ///< Type of the storage
+    using value_type = unsigned int; ///< type of the storage elements
+    using storage_type = std::vector<value_type>; ///< type of the storage
   protected:
-    idx storage_size_;          ///< Storage size
-    idx N_;                     ///< Number of bits
-    std::vector<value_type> v_; ///< Storage space
+    idx storage_size_;          ///< storage size
+    idx N_;                     ///< number of bits
+    std::vector<value_type> v_; ///< storage space
 
     /**
      * \brief Index of the \a pos bit in the storage space
@@ -400,7 +400,7 @@ class Bit_circuit : public Dynamic_bitset {
         // 3 bit gates
         idx FRED = 0;
         idx TOF = 0;
-    } gate_count{}; ///< Gate counters
+    } gate_count{}; ///< gate counters
 
     /**
      * \brief Inherited constructor
