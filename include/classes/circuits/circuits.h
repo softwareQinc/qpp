@@ -52,8 +52,6 @@ class QCircuit : public IDisplay, public IJSON {
     std::unordered_map<std::string, idx>
         count_{}; ///< keeps track of the gate counts
     std::unordered_map<std::string, idx>
-        depth_{}; ///< keeps track of the gate depths
-    std::unordered_map<std::string, idx>
         measurement_count_{}; ///< keeps track of the measurement counts
 
     /**
@@ -237,7 +235,9 @@ class QCircuit : public IDisplay, public IJSON {
     friend std::ostream& operator<<(std::ostream& os,
                                     const GateStep& gate_step) {
         os << gate_step.gate_type_ << ", ";
-        if (gate_step.gate_type_ >= GateType::SINGLE_CTRL_SINGLE_TARGET)
+        if (gate_step.gate_type_ >= GateType::SINGLE_cCTRL_SINGLE_TARGET)
+            os << "c_ctrl = " << disp(gate_step.ctrl_, ", ") << ", ";
+        else if (gate_step.gate_type_ >= GateType::SINGLE_CTRL_SINGLE_TARGET)
             os << "ctrl = " << disp(gate_step.ctrl_, ", ") << ", ";
         os << "target = " << disp(gate_step.target_, ", ") << ", ";
         os << "name = " << '\"' << gate_step.name_ << '\"';
@@ -853,31 +853,108 @@ class QCircuit : public IDisplay, public IJSON {
         try {
             result = count_.at(name);
         } catch (...) {
-            std::cerr << "In qpp::QCircuit::get_gate_count()\n";
-            throw;
+            return 0;
         }
         // END EXCEPTION CHECKS
 
         return result;
     }
 
-    /**
-     * \brief Quantum circuit total gate depth
-     *
-     * \return Total gate depth
-     */
-    idx get_gate_depth() const {
-        throw exception::NotImplemented("qpp::QCircuit::get_gate_depth()");
-    }
-
+    // implemented the algorithm D (Sec. 3.1) in
+    // http://www.informatik.uni-bremen.de/agra/doc/konf/13_rc_depth_impr.pdf
     /**
      * \brief Quantum circuit gate depth
      *
-     * \param name Gate name
+     * \note If \a name is empty (default), returns the total gate depth of the
+     * circuit
+     *
+     * \param name Gate name (optional)
      * \return Gate depth
      */
-    idx get_gate_depth(const std::string& name QPP_UNUSED_) const {
-        throw exception::NotImplemented("qpp::QCircuit::get_gate_depth()");
+    idx get_gate_depth(const std::string& name = "") const {
+        idx result = 0;
+        bool found = false;
+        std::vector<idx> b(nc_ + nq_, 0);
+
+        for (auto&& step : *this) {
+            if (step.type_ != StepType::GATE)
+                continue;
+
+            GateStep gate_step = *step.gates_ip_;
+            if (name != "" && gate_step.name_ != name)
+                continue;
+
+            found = true; // gate was found in the circuit
+
+            std::vector<idx> ctrl = gate_step.ctrl_;
+            std::vector<idx> target = gate_step.target_;
+            std::vector<idx> ctrl_target;
+            ctrl_target.reserve(ctrl.size() + target.size());
+            ctrl_target.insert(ctrl_target.end(), ctrl.begin(), ctrl.end());
+            ctrl_target.insert(ctrl_target.end(), target.begin(), target.end());
+
+            bool overlap = false;
+
+            switch (gate_step.gate_type_) {
+            case GateType::NONE:
+            case GateType::SINGLE:
+            case GateType::TWO:
+            case GateType::THREE:
+            case GateType::CUSTOM:
+            case GateType::FAN:
+            case GateType::SINGLE_CTRL_SINGLE_TARGET:
+            case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
+            case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
+            case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
+            case GateType::CUSTOM_CTRL:
+                // apply (ctrl) gate
+                for (auto&& i : ctrl_target)
+                    b[nc_ + i] += 1;
+                // check whether gates overlap
+                for (auto&& elem : b)
+                    if (elem == 2)
+                        overlap = true;
+                if (overlap) {
+                    // reset the b vector
+                    b = std::vector<idx>(nc_ + nq_, 0);
+                    // set to 1 the locations of the last gate
+                    for (auto&& i : ctrl_target)
+                        b[nc_ + i] = 1;
+                    ++result;
+                }
+                break;
+            case GateType::SINGLE_cCTRL_SINGLE_TARGET:
+            case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
+            case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
+            case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
+            case GateType::CUSTOM_cCTRL:
+                // apply classical ctrl
+                for (auto&& i : ctrl)
+                    b[i] += 1;
+                // apply gate
+                for (auto&& i : target)
+                    b[nc_ + i] += 1;
+                // check whether gates overlap
+                for (auto&& elem : b) {
+                    if (elem == 2) {
+                        overlap = true;
+                    }
+                }
+                if (overlap) {
+                    // reset the b vector
+                    b = std::vector<idx>(nc_ + nq_, 0);
+                    // set to 1 the locations of the last gate
+                    for (auto&& i : ctrl)
+                        b[i] = 1;
+                    for (auto&& i : target)
+                        b[nc_ + i] = 1;
+                    ++result;
+                }
+                break;
+            }
+        }
+
+        return found ? result + 1 : 0;
     }
 
     /**
@@ -906,8 +983,7 @@ class QCircuit : public IDisplay, public IJSON {
         try {
             result = measurement_count_.at(name);
         } catch (...) {
-            std::cerr << "In qpp::QCircuit::get_measurement_count()\n";
-            throw;
+            return 0;
         }
         // END EXCEPTION CHECKS
 
@@ -2306,7 +2382,11 @@ class QCircuit : public IDisplay, public IJSON {
                     ss.str("");
                     ss.clear();
                     ss << disp(gates_[pos].ctrl_, ", ");
-                    result += "\"ctrl\" : " + ss.str() + ", ";
+                    if (gates_[pos].gate_type_ >=
+                        GateType::SINGLE_cCTRL_SINGLE_TARGET)
+                        result += "\"c_ctrl\" : " + ss.str() + ", ";
+                    else
+                        result += "\"ctrl\" : " + ss.str() + ", ";
                 }
                 ss.str("");
                 ss.clear();
@@ -2346,7 +2426,10 @@ class QCircuit : public IDisplay, public IJSON {
         result += "], "; // end steps
 
         result += "\"step count\" : " + std::to_string(get_step_count()) + ", ";
-        result += "\"gate count\" : " + std::to_string(get_gate_count()) + ", ";
+        result +=
+            "\"total gate count\" : " + std::to_string(get_gate_count()) + ", ";
+        result +=
+            "\"total gate depth\" : " + std::to_string(get_gate_depth()) + ", ";
 
         ss.str("");
         ss.clear();
@@ -2386,7 +2469,8 @@ class QCircuit : public IDisplay, public IJSON {
         }
 
         os << "step count: " << get_step_count() << '\n';
-        os << "gate count: " << get_gate_count() << '\n';
+        os << "total gate count: " << get_gate_count() << '\n';
+        os << "total gate depth: " << get_gate_depth() << '\n';
         os << "measured positions: " << disp(get_measured(), ", ") << '\n';
         os << "non-measured positions: " << disp(get_non_measured(), ", ");
 
