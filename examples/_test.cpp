@@ -9,8 +9,8 @@ int main() {
 
     QCircuit qc{4, 4};
     qc.QFT();
-    qc.measureZ(0,0);
-    qc.measureZ(1,1);
+    qc.measureZ(0, 0);
+    qc.measureZ(1, 1);
 
     std::cout << qc << std::endl << std::endl;
 

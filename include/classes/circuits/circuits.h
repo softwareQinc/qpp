@@ -951,8 +951,8 @@ class QCircuit : public IDisplay, public IJSON {
                     ++result;
                 }
                 break;
-            }
-        }
+            } // end switch
+        }     // end for
 
         return found ? result + 1 : 0;
     }
