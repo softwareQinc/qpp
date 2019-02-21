@@ -7,11 +7,12 @@ int main() {
     /////////// testing ///////////
     using namespace qpp;
 
-    const idx N = 100; // qubits
+    const idx N = 10000; // qubits
+    const idx w = 100;   // gates per qubit
     QCircuit qc{N};
 
     std::cout << "filling the circuit...\n";
-    for (idx i = 0; i < 1000000 * N; ++i) {
+    for (idx i = 0; i < w * N; ++i) {
         idx ctrl = randidx(0, N - 1);
         idx target = randidx(0, N - 1);
         while (target == ctrl)
