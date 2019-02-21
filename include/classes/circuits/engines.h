@@ -520,7 +520,7 @@ class QNoisyEngine : public QEngine {
         // apply the noise
         for (auto&& i : target_rel_pos) {
             psi_ = noise_(psi_, i);
-            // record the Kraus operator that occured
+            // record the Kraus operator that occurred
             noise_results_[elem.ip_].emplace_back(noise_.get_last_idx());
         }
         // execute the circuit step
