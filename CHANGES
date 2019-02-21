@@ -1,12 +1,13 @@
 In progress - pre-release
     - Minimum required CMake version is now 3.2
-    - split the "classes/circuits.h" into "classes/circuits/circuits.h" and
+    - Split the "classes/circuits.h" into "classes/circuits/circuits.h" and
       "classes/circuits/engines.h"
     - Added noisy quantum engine for non-correlated noise
     - Added noisy teleportation example (that uses a noisy quantum engine) in
       "examples/circuits/noisy_teleport_qubit_circuit.cpp"
-    - implemented qpp::QCircuit::QFT() and qpp::QCircuit::TFQ() (inverse Fourier
+    - Implemented qpp::QCircuit::QFT() and qpp::QCircuit::TFQ() (inverse Fourier
       transform)
+    - Implemented qpp::QCircuit::get_gate_depth()
 Version 1.2 - 10 February 2019
     - Added new function in "functions.h":
           qpp::normalize() - normalizes a state vector (ket or bra) or density
