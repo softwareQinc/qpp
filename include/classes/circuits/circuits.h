@@ -860,7 +860,7 @@ class QCircuit : public IDisplay, public IJSON {
         return result;
     }
 
-    // implemented the algorithm D (Sec. 3.1) in
+    // implemented the algorithm D (Sec. 3.1) from
     // http://www.informatik.uni-bremen.de/agra/doc/konf/13_rc_depth_impr.pdf
     /**
      * \brief Quantum circuit gate depth
