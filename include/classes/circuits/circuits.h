@@ -828,26 +828,25 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Quantum circuit total gate count
-     *
-     * \return Total gate count
-     */
-    idx get_gate_count() const noexcept {
-        idx result = 0;
-        for (auto&& elem : count_)
-            result += elem.second;
-
-        return result;
-    }
-
-    /**
      * \brief Quantum circuit gate count
      *
-     * \param name Gate name
+     * \note If \a name is empty (default), returns the total gate count of the
+     * circuit
+     *
+     * \param name Gate name (optional)
      * \return Gate count
      */
-    idx get_gate_count(const std::string& name) const {
+    idx get_gate_count(const std::string& name = "") const {
         idx result = 0;
+
+        // total count
+        if (name == "") {
+            for (auto&& elem : count_)
+                result += elem.second;
+
+            return result;
+        }
+
         // EXCEPTION CHECKS
 
         try {
