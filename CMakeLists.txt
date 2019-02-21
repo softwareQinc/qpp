@@ -127,7 +127,8 @@ IF (${WITH_OPENMP})
     ELSE ()
         MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} \
         ${CMAKE_CXX_COMPILER_VERSION}. Support for OpenMP is enabled only for \
-        the GNU gcc compiler or the clang version version 3.8 or higher.")
+        the GNU gcc compiler or the clang compiler version version 3.8 or \
+        higher.")
     ENDIF ()
 ENDIF ()
 
