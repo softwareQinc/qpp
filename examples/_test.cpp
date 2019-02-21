@@ -7,19 +7,18 @@ int main() {
     /////////// testing ///////////
     using namespace qpp;
 
-    QCircuit qc{4, 4};
-    qc.measureV(gt.H, 3, 3);
-    qc.QFT();
-    qc.measureZ(0, 0);
-    qc.measureZ(1, 1);
+    const idx N = 100; // qubits
+    QCircuit qc{N};
 
-    std::cout << qc << std::endl << std::endl;
+    std::cout << "filling the circuit...\n";
+    for (idx i = 0; i < 1000000 * N; ++i) {
+        idx ctrl = randidx(0, N - 1);
+        idx target = randidx(0, N - 1);
+        while (target == ctrl)
+            target = randidx(0, N - 1);
+        qc.gate(gt.CNOT, ctrl, target);
+    }
 
-    QEngine q_engine{qc};
-    std::cout << q_engine << std::endl;
-
-    std::cout << qc.get_gate_depth("CTRL-R2") << std::endl;
-    std::cout << qc.get_gate_depth() << std::endl;
-    std::cout << qc.get_gate_count("H") << std::endl;
-    std::cout << qc.get_gate_depth("H") << std::endl;
+    std::cout << "gate count: " << qc.get_gate_count() << std::endl;
+    std::cout << "gate depth: " << qc.get_gate_depth() << std::endl;
 }
