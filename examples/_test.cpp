@@ -8,6 +8,7 @@ int main() {
     using namespace qpp;
 
     QCircuit qc{4, 4};
+    qc.measureV(gt.H, 3, 3);
     qc.QFT();
     qc.measureZ(0, 0);
     qc.measureZ(1, 1);
@@ -20,4 +21,5 @@ int main() {
     std::cout << qc.get_gate_depth("CTRL-R2") << std::endl;
     std::cout << qc.get_gate_depth() << std::endl;
     std::cout << qc.get_gate_count("H") << std::endl;
+    std::cout << qc.get_gate_depth("H") << std::endl;
 }
