@@ -41,7 +41,7 @@ int main() {
             std::cout << '\t' << elem << " ";
         }
         std::cout << '\n';
-        bit_circuit.TOF(indices[i]);
+        bit_circuit.TOF(indices[i][0], indices[i][1], indices[i][2]);
     }
     std::cout << ">> Initial/Intermediate bit circuit\n\t";
     std::cout << initial_bit_circuit << "\n\t" << bit_circuit << '\n';
@@ -62,7 +62,7 @@ int main() {
         for (auto&& elem : indices[i])
             std::cout << '\t' << elem << " ";
         std::cout << '\n';
-        bit_circuit.TOF(indices[i]);
+        bit_circuit.TOF(indices[i][0], indices[i][1], indices[i][2]);
     }
 
     std::cout << ">> Final bit circuit:\n\t" << bit_circuit << '\n';

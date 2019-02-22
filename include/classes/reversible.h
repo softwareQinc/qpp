@@ -44,7 +44,7 @@ class Dynamic_bitset : public IDisplay {
     using storage_type = std::vector<value_type>; ///< type of the storage
   protected:
     idx storage_size_;          ///< storage size
-    idx N_;                     ///< number of bits
+    idx n_;                     ///< number of bits
     std::vector<value_type> v_; ///< storage space
 
     /**
@@ -69,10 +69,10 @@ class Dynamic_bitset : public IDisplay {
     /**
      * \brief Constructor, initializes all bits to false (zero)
      *
-     * \param N Number of bits in the bitset
+     * \param n Number of bits in the bitset
      */
-    explicit Dynamic_bitset(idx N)
-        : storage_size_{N / (sizeof(value_type) * CHAR_BIT) + 1}, N_{N},
+    explicit Dynamic_bitset(idx n)
+        : storage_size_{n / (sizeof(value_type) * CHAR_BIT) + 1}, n_{n},
           v_(storage_size_) {}
 
     /**
@@ -94,7 +94,7 @@ class Dynamic_bitset : public IDisplay {
      *
      * \return Number of bits stored in the bitset
      */
-    idx size() const noexcept { return N_; }
+    idx size() const noexcept { return n_; }
 
     /**
      * \brief Size of the underlying storage space (in units of value_type,
@@ -388,7 +388,17 @@ class Dynamic_bitset : public IDisplay {
  */
 class Bit_circuit : public Dynamic_bitset {
   public:
-    struct Gate_count {
+    /**
+     * \class qpp::Bit_circuit::Gate_count
+     * \brief Gate counters
+     * \see qpp::Bit_circuit::Gate_depth
+     */
+    class Gate_count {
+      public:
+        /**
+         * \brief Resets the gate count
+         */
+        void reset() { NOT = CNOT = SWAP = FRED = TOF = total = 0; }
         // 1 bit gates
         idx NOT = 0;
         idx& X = NOT;
@@ -400,7 +410,80 @@ class Bit_circuit : public Dynamic_bitset {
         // 3 bit gates
         idx FRED = 0;
         idx TOF = 0;
+
+        // total count
+        idx total = 0;
     } gate_count{}; ///< gate counters
+
+    /**
+     * \class qpp::Bit_circuit::Gate_depth
+     * \brief Gate depth
+     * \see qpp::Bit_circuit::Gate_counter
+     */
+    class Gate_depth {
+        friend Bit_circuit;
+        const Bit_circuit* bit_circuit_{};
+        Dynamic_bitset bNOT, bCNOT, bSWAP, bFRED, bTOF, btotal;
+
+      public:
+        /**
+         * \brief Constructs the gate depth class out of a reversible bit
+         * circuit
+         *
+         * \note The reversible bit circuit must be an lvalue
+         * \see qpp::Gate_depth(Gate_depth&&)
+         *
+         * \param bit_circuit Reversible bit circuit
+         */
+        explicit Gate_depth(const Bit_circuit& bit_circuit)
+            : bit_circuit_{std::addressof(bit_circuit)},
+              bNOT{bit_circuit.size()}, bCNOT{bit_circuit.size()},
+              bSWAP{bit_circuit.size()}, bFRED{bit_circuit.size()},
+              bTOF{bit_circuit.size()}, btotal{bit_circuit.size()} {}
+
+        // silence -Weffc++ class has pointer data members
+        /**
+         * \brief Default copy constructor
+         */
+        Gate_depth(const Gate_depth&) = default;
+
+        // silence -Weffc++ class has pointer data members
+        /**
+         * \brief Default copy assignment operator
+         *
+         * \return Reference to the current instance
+         */
+        Gate_depth& operator=(const Gate_depth&) = default;
+
+        /**
+         * \brief Disables rvalue QCircuit
+         */
+        Gate_depth(Gate_depth&&) = delete;
+
+        /**
+         * \brief Resets the gate depth
+         */
+        void reset() {
+            NOT = CNOT = SWAP = FRED = TOF = total = 0;
+            idx n = bit_circuit_->size();
+            bNOT = bCNOT = bSWAP = bFRED = bTOF = btotal = Dynamic_bitset(n);
+        }
+
+        // 1 bit gates
+        idx NOT = 0;
+        idx& X = NOT;
+
+        // 2 bit gates
+        idx CNOT = 0;
+        idx SWAP = 0;
+
+        // 3 bit gates
+        idx FRED = 0;
+        idx TOF = 0;
+
+        // total depth
+        idx total = 0;
+    } gate_depth{*this}; ///< gate depths
 
     /**
      * \brief Inherited constructor
@@ -420,12 +503,15 @@ class Bit_circuit : public Dynamic_bitset {
      * \brief Bit flip
      * \see qpp::Bit_circuit::NOT()
      *
-     * \param pos Bit position in the circuit
+     * \param i Bit position in the circuit
      * \return Reference to the current instance
      */
-    Bit_circuit& X(idx pos) {
-        this->flip(pos);
+    Bit_circuit& X(idx i) {
+        this->flip(i);
         ++gate_count.X;
+        ++gate_count.total;
+
+        // compute the depth
 
         return *this;
     }
@@ -434,12 +520,27 @@ class Bit_circuit : public Dynamic_bitset {
      * \brief Bit flip
      * \see qpp::Bit_circuit::X()
      *
-     * \param pos Bit position in the circuit
+     * \param i Bit position in the circuit
      * \return Reference to the current instance
      */
-    Bit_circuit& NOT(idx pos) {
-        this->flip(pos);
+    Bit_circuit& NOT(idx i) {
+        this->flip(i);
         ++gate_count.NOT;
+        ++gate_count.total;
+
+        // compute the depth
+        if (gate_count.NOT == 1)
+            gate_depth.NOT = 1;
+        // apply the gate
+        gate_depth.bNOT.flip(i);
+        // check whether gates overlap
+        if (gate_depth.bNOT.get(i) == false) {
+            // reset the b vector
+            gate_depth.bNOT = Dynamic_bitset{n_};
+            // set to true the locations of the last gate
+            gate_depth.bNOT.set(i);
+            ++gate_depth.NOT;
+        }
 
         return *this;
     }
@@ -447,13 +548,30 @@ class Bit_circuit : public Dynamic_bitset {
     /**
      * \brief Controlled-NOT
      *
-     * \param pos Bit position in the circuit
+     * \param ctrl Control bit index
+     * \param target Target bit index
      * \return Reference to the current instance
      */
-    Bit_circuit& CNOT(const std::vector<idx>& pos) {
-        v_[index_(pos[1])] ^= (1 & (v_[index_(pos[0])] >> offset_(pos[0])))
-                              << offset_(pos[1]);
+    Bit_circuit& CNOT(idx ctrl, idx target) {
+        v_[index_(target)] ^= (1 & (v_[index_(ctrl)] >> offset_(ctrl)))
+                              << offset_(target);
         ++gate_count.CNOT;
+        ++gate_count.total;
+
+        // compute the depth
+        if (gate_count.CNOT == 1)
+            gate_depth.CNOT = 1;
+        // apply the gate
+        gate_depth.bCNOT.flip(ctrl).flip(target);
+        // check whether gates overlap
+        if (gate_depth.bCNOT.get(ctrl) == false ||
+            gate_depth.bCNOT.get(target) == false) {
+            // reset the b vector
+            gate_depth.bCNOT = Dynamic_bitset{n_};
+            // set to true the locations of the last gate
+            gate_depth.bCNOT.set(ctrl).set(target);
+            ++gate_depth.CNOT;
+        }
 
         return *this;
     }
@@ -461,15 +579,33 @@ class Bit_circuit : public Dynamic_bitset {
     /**
      * \brief Toffoli gate
      *
-     * \param pos Bit positions in the circuit, in the order
-     * control-control-target
+     * \param i Control first bit index
+     * \param j Control second bit index
+     * \param k Target bit index
      * \return Reference to the current instance
      */
-    Bit_circuit& TOF(const std::vector<idx>& pos) {
-        v_[index_(pos[2])] ^= ((1 & (v_[index_(pos[1])] >> offset_(pos[1]))) &
-                               (1 & (v_[index_(pos[0])] >> offset_(pos[0]))))
-                              << offset_(pos[2]);
+    Bit_circuit& TOF(idx i, idx j, idx k) {
+        v_[index_(k)] ^= ((1 & (v_[index_(j)] >> offset_(j))) &
+                          (1 & (v_[index_(i)] >> offset_(i))))
+                         << offset_(k);
         ++gate_count.TOF;
+        ++gate_count.total;
+
+        // compute the depth
+        if (gate_count.TOF == 1)
+            gate_depth.TOF = 1;
+        // apply the gate
+        gate_depth.bTOF.flip(i).flip(j).flip(k);
+        // check whether gates overlap
+        if (gate_depth.bTOF.get(i) == false ||
+            gate_depth.bTOF.get(j) == false ||
+            gate_depth.bTOF.get(k) == false) {
+            // reset the b vector
+            gate_depth.bTOF = Dynamic_bitset{n_};
+            // set to true the locations of the last gate
+            gate_depth.bTOF.set(i).set(j).set(k);
+            ++gate_depth.TOF;
+        }
 
         return *this;
     }
@@ -477,15 +613,32 @@ class Bit_circuit : public Dynamic_bitset {
     /**
      * \brief Swap bits
      *
-     * \param pos Bit positions in the circuit
+     * \param i Bit index
+     * \param j Bit index
      * \return Reference to the current instance
      */
-    Bit_circuit& SWAP(const std::vector<idx>& pos) {
-        if (this->get(pos[0]) != this->get(pos[1])) {
-            this->X(pos[0]);
-            this->X(pos[1]);
+    Bit_circuit& SWAP(idx i, idx j) {
+        if (this->get(i) != this->get(j)) {
+            this->X(i);
+            this->X(j);
         }
         ++gate_count.SWAP;
+        ++gate_count.total;
+
+        // compute the depth
+        if (gate_count.SWAP == 1)
+            gate_depth.SWAP = 1;
+        // apply the gate
+        gate_depth.bSWAP.flip(i).flip(j);
+        // check whether gates overlap
+        if (gate_depth.bSWAP.get(i) == false ||
+            gate_depth.bSWAP.get(j) == false) {
+            // reset the b vector
+            gate_depth.bSWAP = Dynamic_bitset{n_};
+            // set to true the locations of the last gate
+            gate_depth.bSWAP.set(i).set(j);
+            ++gate_depth.SWAP;
+        }
 
         return *this;
     }
@@ -493,15 +646,33 @@ class Bit_circuit : public Dynamic_bitset {
     /**
      * \brief Fredkin gate (Controlled-SWAP)
      *
-     * \param pos Bit positions in the circuit, in the order
-     * control-target-target
+     * \param i Control bit index
+     * \param j Target first bit index
+     * \param k Target second bit index
      * \return Reference to the current instance
      */
-    Bit_circuit& FRED(const std::vector<idx>& pos) {
-        if (this->get(pos[0])) {
-            this->SWAP({pos[1], pos[2]});
+    Bit_circuit& FRED(idx i, idx j, idx k) {
+        if (this->get(i)) {
+            this->SWAP(j, k);
         }
         ++gate_count.FRED;
+        ++gate_count.total;
+
+        // compute the depth
+        if (gate_count.FRED == 1)
+            gate_depth.FRED = 1;
+        // apply the gate
+        gate_depth.bFRED.flip(i).flip(j).flip(k);
+        // check whether gates overlap
+        if (gate_depth.bFRED.get(i) == false ||
+            gate_depth.bFRED.get(j) == false ||
+            gate_depth.bFRED.get(k) == false) {
+            // reset the b vector
+            gate_depth.bFRED = Dynamic_bitset{n_};
+            // set to true the locations of the last gate
+            gate_depth.bFRED.set(i).set(j).set(k);
+            ++gate_depth.FRED;
+        }
 
         return *this;
     }
@@ -512,9 +683,8 @@ class Bit_circuit : public Dynamic_bitset {
      * \return Reference to the current instance
      */
     Bit_circuit& reset() noexcept {
-        gate_count.NOT = gate_count.X = 0;
-        gate_count.CNOT = gate_count.SWAP = 0;
-        gate_count.FRED = gate_count.TOF = 0;
+        gate_count.reset();
+        gate_depth.reset();
         Dynamic_bitset::reset();
 
         return *this;

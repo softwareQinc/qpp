@@ -20,7 +20,7 @@ int main() {
 
     std::cout << ">> Apply X_0, followed by CNOT_02, CNOT_13 and TOF_013\n";
     bit_circuit.X(0); // apply a NOT gate on first bit
-    bit_circuit.CNOT({0, 2}).CNOT({1, 3}).TOF({0, 1, 3}); // sequence operations
+    bit_circuit.CNOT(0, 2).CNOT(1, 3).TOF(0, 1, 3); // sequence operations
 
     std::cout << ">> Final bit circuit:\n\t" << bit_circuit << '\n';
     std::cout << ">> 3rd bit: " << bit_circuit.get(2) << '\n';
