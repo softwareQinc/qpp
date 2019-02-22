@@ -29,11 +29,11 @@ int main() {
     idx n = 1000000;
     Bit_circuit bit_circuit{n};
     for (idx i = 0; i < n; ++i) {
-        bit_circuit.NOT(randidx(0, N - 1));
-        idx a = randidx(0, N - 1);
-        idx b = randidx(0, N - 1);
+        bit_circuit.NOT(randidx(0, n - 1));
+        idx a = randidx(0, n - 1);
+        idx b = randidx(0, n - 1);
         while (a == b)
-            b = randidx(0, N - 1);
+            b = randidx(0, n - 1);
         bit_circuit.CNOT(a, b);
     }
 
