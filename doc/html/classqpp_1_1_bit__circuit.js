@@ -1,14 +1,16 @@
 var classqpp_1_1_bit__circuit =
 [
-    [ "Gate_count", "structqpp_1_1_bit__circuit_1_1_gate__count.html", "structqpp_1_1_bit__circuit_1_1_gate__count" ],
+    [ "Gate_count", "classqpp_1_1_bit__circuit_1_1_gate__count.html", "classqpp_1_1_bit__circuit_1_1_gate__count" ],
+    [ "Gate_depth", "classqpp_1_1_bit__circuit_1_1_gate__depth.html", "classqpp_1_1_bit__circuit_1_1_gate__depth" ],
+    [ "Bit_circuit", "classqpp_1_1_bit__circuit.html#a6a8127e64bbbf25a8a3be255eea02a72", null ],
     [ "Bit_circuit", "classqpp_1_1_bit__circuit.html#a45e0c880532e7be15b837b008b59053e", null ],
-    [ "CNOT", "classqpp_1_1_bit__circuit.html#add4baad1b6a0a259cf650e1911cf0447", null ],
-    [ "Dynamic_bitset", "classqpp_1_1_bit__circuit.html#afc961b247bc241e5e7baa33a257d7f7c", null ],
-    [ "FRED", "classqpp_1_1_bit__circuit.html#ab11411f8fb294e26b7fba82ff13f9d36", null ],
-    [ "NOT", "classqpp_1_1_bit__circuit.html#a48ebe703e671acab692ff30b5fccf403", null ],
+    [ "CNOT", "classqpp_1_1_bit__circuit.html#a6e847459756a044e8463a867271f2f3b", null ],
+    [ "FRED", "classqpp_1_1_bit__circuit.html#a7e5a31cbfe853b2ea52bb29306886080", null ],
+    [ "NOT", "classqpp_1_1_bit__circuit.html#a8401a8aa83e95f0ca4954bd1e400bb48", null ],
     [ "reset", "classqpp_1_1_bit__circuit.html#a182b2b59b88e8c7bc275d1ab575a7a8d", null ],
-    [ "SWAP", "classqpp_1_1_bit__circuit.html#a852b301bee20ffeed478fe244a617b78", null ],
-    [ "TOF", "classqpp_1_1_bit__circuit.html#a50cf7e866cf0d8ed26759fc95bc7f330", null ],
-    [ "X", "classqpp_1_1_bit__circuit.html#afcfb199386850b7920370511f2c5652c", null ],
-    [ "gate_count", "classqpp_1_1_bit__circuit.html#a7e37d98cfbb2c3bf5f80eb9ed55668fd", null ]
+    [ "SWAP", "classqpp_1_1_bit__circuit.html#a60d0dddf6e439ff1115755e213975ad0", null ],
+    [ "TOF", "classqpp_1_1_bit__circuit.html#ab31cc2c51d3841fac423157b0e3ec7ae", null ],
+    [ "X", "classqpp_1_1_bit__circuit.html#a0a3f436c81f1b509575fab45e486e9a7", null ],
+    [ "gate_count", "classqpp_1_1_bit__circuit.html#a26c6f11af82b62f5dfe8587c615845c4", null ],
+    [ "this", "classqpp_1_1_bit__circuit.html#a62357637dad3fec15ab8e36f86b73283", null ]
 ];

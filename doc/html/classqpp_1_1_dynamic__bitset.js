@@ -2,7 +2,7 @@ var classqpp_1_1_dynamic__bitset =
 [
     [ "storage_type", "classqpp_1_1_dynamic__bitset.html#aecd403d627d99e63c892380bb5c37c3a", null ],
     [ "value_type", "classqpp_1_1_dynamic__bitset.html#a87abb7decde697b3275b5dc19c721315", null ],
-    [ "Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html#afc961b247bc241e5e7baa33a257d7f7c", null ],
+    [ "Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html#a6dcb8a4ce9f468cd7be1d7d9edde95a5", null ],
     [ "~Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html#a38e2baba11faae2f0001e917fb44835a", null ],
     [ "all", "classqpp_1_1_dynamic__bitset.html#aa496767a8b143f15f707264cdbee48b8", null ],
     [ "any", "classqpp_1_1_dynamic__bitset.html#a7367a2709d226e84c33d87fa9528ef6f", null ],
@@ -27,7 +27,7 @@ var classqpp_1_1_dynamic__bitset =
     [ "size", "classqpp_1_1_dynamic__bitset.html#a42028c667114b7d1ff0cd689ff721d7a", null ],
     [ "storage_size", "classqpp_1_1_dynamic__bitset.html#a50d767ed3d2ee4a837b53b31fb8eb65a", null ],
     [ "to_string", "classqpp_1_1_dynamic__bitset.html#aaf75372567cacf084b8f4b044aa3791a", null ],
-    [ "N_", "classqpp_1_1_dynamic__bitset.html#acc2c6775c346a4b349770c230e3e1baa", null ],
+    [ "n_", "classqpp_1_1_dynamic__bitset.html#a3ab05eb0cc732ee272bc765b8087d61b", null ],
     [ "storage_size_", "classqpp_1_1_dynamic__bitset.html#a50413fb262ce401ee4fc79faf9c670d8", null ],
     [ "v_", "classqpp_1_1_dynamic__bitset.html#a9d23eb180bc4405f4179b434c837dc9a", null ]
 ];
