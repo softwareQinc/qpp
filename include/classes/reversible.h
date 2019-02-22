@@ -71,7 +71,7 @@ class Dynamic_bitset : public IDisplay {
      *
      * \param n Number of bits in the bitset
      */
-    explicit Dynamic_bitset(idx n)
+    Dynamic_bitset(idx n)
         : storage_size_{n / (sizeof(value_type) * CHAR_BIT) + 1}, n_{n},
           v_(storage_size_) {}
 
