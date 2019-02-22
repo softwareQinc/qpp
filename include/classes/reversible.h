@@ -71,7 +71,7 @@ class Dynamic_bitset : public IDisplay {
      *
      * \param n Number of bits in the bitset
      */
-    Dynamic_bitset(idx n)
+    explicit Dynamic_bitset(idx n)
         : storage_size_{n / (sizeof(value_type) * CHAR_BIT) + 1}, n_{n},
           v_(storage_size_) {}
 
@@ -399,6 +399,7 @@ class Bit_circuit : public Dynamic_bitset {
          * \brief Resets the gate count
          */
         void reset() { NOT = CNOT = SWAP = FRED = TOF = total = 0; }
+
         // 1 bit gates
         idx NOT = 0;
         idx& X = NOT;
@@ -486,9 +487,11 @@ class Bit_circuit : public Dynamic_bitset {
     } gate_depth{*this}; ///< gate depths
 
     /**
-     * \brief Inherited constructor
+     * \brief Constructs a bit circuit instance
+     *
+     * \param n Number of classical bits
      */
-    using Dynamic_bitset::Dynamic_bitset;
+    explicit Bit_circuit(idx n) : Dynamic_bitset{n} {}
 
     /**
      * \brief Conversion constructor, used to initialize a qpp::Bit_circuit with
@@ -531,7 +534,7 @@ class Bit_circuit : public Dynamic_bitset {
         gate_depth.bNOT.flip(i);
         // check whether gates overlap
         if (gate_depth.bNOT.get(i) == false) {
-            // reset the b vector
+            // reset the b bitset
             gate_depth.bNOT = Dynamic_bitset{n_};
             // set to true the locations of the last gate
             gate_depth.bNOT.set(i);
@@ -545,7 +548,7 @@ class Bit_circuit : public Dynamic_bitset {
         gate_depth.btotal.flip(i);
         // check whether gates overlap
         if (gate_depth.btotal.get(i) == false) {
-            // reset the b vector
+            // reset the b bitset
             gate_depth.btotal = Dynamic_bitset{n_};
             // set to true the locations of the last gate
             gate_depth.btotal.set(i);
@@ -576,7 +579,7 @@ class Bit_circuit : public Dynamic_bitset {
         // check whether gates overlap
         if (gate_depth.bCNOT.get(ctrl) == false ||
             gate_depth.bCNOT.get(target) == false) {
-            // reset the b vector
+            // reset the b bitset
             gate_depth.bCNOT = Dynamic_bitset{n_};
             // set to true the locations of the last gate
             gate_depth.bCNOT.set(ctrl).set(target);
@@ -591,7 +594,7 @@ class Bit_circuit : public Dynamic_bitset {
         // check whether gates overlap
         if (gate_depth.btotal.get(ctrl) == false ||
             gate_depth.btotal.get(target) == false) {
-            // reset the b vector
+            // reset the b bitset
             gate_depth.btotal = Dynamic_bitset{n_};
             // set to true the locations of the last gate
             gate_depth.btotal.set(ctrl).set(target);
@@ -625,7 +628,7 @@ class Bit_circuit : public Dynamic_bitset {
         if (gate_depth.bTOF.get(i) == false ||
             gate_depth.bTOF.get(j) == false ||
             gate_depth.bTOF.get(k) == false) {
-            // reset the b vector
+            // reset the b bitset
             gate_depth.bTOF = Dynamic_bitset{n_};
             // set to true the locations of the last gate
             gate_depth.bTOF.set(i).set(j).set(k);
@@ -641,7 +644,7 @@ class Bit_circuit : public Dynamic_bitset {
         if (gate_depth.btotal.get(i) == false ||
             gate_depth.btotal.get(j) == false ||
             gate_depth.btotal.get(k) == false) {
-            // reset the b vector
+            // reset the b bitset
             gate_depth.btotal = Dynamic_bitset{n_};
             // set to true the locations of the last gate
             gate_depth.btotal.set(i).set(j).set(k);
@@ -674,7 +677,7 @@ class Bit_circuit : public Dynamic_bitset {
         // check whether gates overlap
         if (gate_depth.bSWAP.get(i) == false ||
             gate_depth.bSWAP.get(j) == false) {
-            // reset the b vector
+            // reset the b bitset
             gate_depth.bSWAP = Dynamic_bitset{n_};
             // set to true the locations of the last gate
             gate_depth.bSWAP.set(i).set(j);
@@ -689,7 +692,7 @@ class Bit_circuit : public Dynamic_bitset {
         // check whether gates overlap
         if (gate_depth.btotal.get(i) == false ||
             gate_depth.btotal.get(j) == false) {
-            // reset the b vector
+            // reset the b bitset
             gate_depth.btotal = Dynamic_bitset{n_};
             // set to true the locations of the last gate
             gate_depth.btotal.set(i).set(j);
@@ -723,7 +726,7 @@ class Bit_circuit : public Dynamic_bitset {
         if (gate_depth.bFRED.get(i) == false ||
             gate_depth.bFRED.get(j) == false ||
             gate_depth.bFRED.get(k) == false) {
-            // reset the b vector
+            // reset the b bitset
             gate_depth.bFRED = Dynamic_bitset{n_};
             // set to true the locations of the last gate
             gate_depth.bFRED.set(i).set(j).set(k);
@@ -739,7 +742,7 @@ class Bit_circuit : public Dynamic_bitset {
         if (gate_depth.btotal.get(i) == false ||
             gate_depth.btotal.get(j) == false ||
             gate_depth.btotal.get(k) == false) {
-            // reset the b vector
+            // reset the b bitset
             gate_depth.btotal = Dynamic_bitset{n_};
             // set to true the locations of the last gate
             gate_depth.btotal.set(i).set(j).set(k);
