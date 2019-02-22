@@ -507,11 +507,7 @@ class Bit_circuit : public Dynamic_bitset {
      * \return Reference to the current instance
      */
     Bit_circuit& X(idx i) {
-        this->flip(i);
-        ++gate_count.X;
-        ++gate_count.total;
-
-        // compute the depth
+        this->NOT(i);
 
         return *this;
     }
@@ -540,6 +536,20 @@ class Bit_circuit : public Dynamic_bitset {
             // set to true the locations of the last gate
             gate_depth.bNOT.set(i);
             ++gate_depth.NOT;
+        }
+
+        // compute the total depth
+        if (gate_count.total == 1)
+            gate_depth.total = 1;
+        // apply the gate
+        gate_depth.btotal.flip(i);
+        // check whether gates overlap
+        if (gate_depth.btotal.get(i) == false) {
+            // reset the b vector
+            gate_depth.btotal = Dynamic_bitset{n_};
+            // set to true the locations of the last gate
+            gate_depth.btotal.set(i);
+            ++gate_depth.total;
         }
 
         return *this;
@@ -571,6 +581,21 @@ class Bit_circuit : public Dynamic_bitset {
             // set to true the locations of the last gate
             gate_depth.bCNOT.set(ctrl).set(target);
             ++gate_depth.CNOT;
+        }
+
+        // compute the total depth
+        if (gate_count.total == 1)
+            gate_depth.total = 1;
+        // apply the gate
+        gate_depth.btotal.flip(ctrl).flip(target);
+        // check whether gates overlap
+        if (gate_depth.btotal.get(ctrl) == false ||
+            gate_depth.btotal.get(target) == false) {
+            // reset the b vector
+            gate_depth.btotal = Dynamic_bitset{n_};
+            // set to true the locations of the last gate
+            gate_depth.btotal.set(ctrl).set(target);
+            ++gate_depth.total;
         }
 
         return *this;
@@ -607,6 +632,22 @@ class Bit_circuit : public Dynamic_bitset {
             ++gate_depth.TOF;
         }
 
+        // compute the total depth
+        if (gate_count.total == 1)
+            gate_depth.total = 1;
+        // apply the gate
+        gate_depth.btotal.flip(i).flip(j).flip(k);
+        // check whether gates overlap
+        if (gate_depth.btotal.get(i) == false ||
+            gate_depth.btotal.get(j) == false ||
+            gate_depth.btotal.get(k) == false) {
+            // reset the b vector
+            gate_depth.btotal = Dynamic_bitset{n_};
+            // set to true the locations of the last gate
+            gate_depth.btotal.set(i).set(j).set(k);
+            ++gate_depth.total;
+        }
+
         return *this;
     }
 
@@ -638,6 +679,21 @@ class Bit_circuit : public Dynamic_bitset {
             // set to true the locations of the last gate
             gate_depth.bSWAP.set(i).set(j);
             ++gate_depth.SWAP;
+        }
+
+        // compute the total depth
+        if (gate_count.total == 1)
+            gate_depth.total = 1;
+        // apply the gate
+        gate_depth.btotal.flip(i).flip(j);
+        // check whether gates overlap
+        if (gate_depth.btotal.get(i) == false ||
+            gate_depth.btotal.get(j) == false) {
+            // reset the b vector
+            gate_depth.btotal = Dynamic_bitset{n_};
+            // set to true the locations of the last gate
+            gate_depth.btotal.set(i).set(j);
+            ++gate_depth.total;
         }
 
         return *this;
@@ -672,6 +728,22 @@ class Bit_circuit : public Dynamic_bitset {
             // set to true the locations of the last gate
             gate_depth.bFRED.set(i).set(j).set(k);
             ++gate_depth.FRED;
+        }
+
+        // compute the total depth
+        if (gate_count.total == 1)
+            gate_depth.total = 1;
+        // apply the gate
+        gate_depth.btotal.flip(i).flip(j).flip(k);
+        // check whether gates overlap
+        if (gate_depth.btotal.get(i) == false ||
+            gate_depth.btotal.get(j) == false ||
+            gate_depth.btotal.get(k) == false) {
+            // reset the b vector
+            gate_depth.btotal = Dynamic_bitset{n_};
+            // set to true the locations of the last gate
+            gate_depth.btotal.set(i).set(j).set(k);
+            ++gate_depth.total;
         }
 
         return *this;
