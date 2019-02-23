@@ -37,7 +37,7 @@ int main() {
     std::cout << engine.get_circuit() << '\n';
     std::cout << ">> END CIRCUIT\n\n";
 
-    // execute the circuit
+    // execute the entire circuit step by step, same effect as engine.execute();
     for (auto&& step : qc)
         engine.execute(step);
 

@@ -41,9 +41,8 @@ int main() {
     std::cout << noisy_engine.get_circuit() << '\n';
     std::cout << ">> END CIRCUIT\n\n";
 
-    // execute the circuit
-    for (auto&& step : qc)
-        noisy_engine.execute(step);
+    // execute the entire circuit
+    noisy_engine.execute();
 
     // display the measurement statistics
     std::cout << ">> BEGIN NOISY ENGINE STATISTICS\n";
