@@ -49,7 +49,7 @@ class Codes final : public internal::Singleton<const Codes> // const Singleton
     enum class Type       // exception types
     { FIVE_QUBIT = 1,     ///< [[5,1,3]] qubit code
       SEVEN_QUBIT_STEANE, ///< [[7,1,3]] Steane qubit code
-      NINE_QUBIT_SHOR     ///< [[9,1,3]] Shor qubit code
+      NINE_QUBIT_SHOR,    ///< [[9,1,3]] Shor qubit code
     };
 
   private:
@@ -135,17 +135,8 @@ class Codes final : public internal::Singleton<const Codes> // const Singleton
             break;
         // [[9,1,3]] Shor code
         case Type::NINE_QUBIT_SHOR:
-            ket shora, shorb;
-            shora = mket({0, 0, 0}) + mket({
-                                          1,
-                                          1,
-                                          1,
-                                      });
-            shorb = mket({0, 0, 0}) - mket({
-                                          1,
-                                          1,
-                                          1,
-                                      });
+            ket shora = mket({0, 0, 0}) + mket({1, 1, 1});
+            ket shorb = mket({0, 0, 0}) - mket({1, 1, 1});
             switch (i) {
             case 0:
                 result = kron(shora, kron(shora, shora)) / std::sqrt(8.);
