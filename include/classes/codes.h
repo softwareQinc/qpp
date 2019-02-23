@@ -46,10 +46,10 @@ class Codes final : public internal::Singleton<const Codes> // const Singleton
      * \brief Code types, add more codes here if needed
      * \see qpp::Codes::codeword()
      */
-    enum class Type       // exception types
-    { FIVE_QUBIT = 1,     ///< [[5,1,3]] qubit code
-      SEVEN_QUBIT_STEANE, ///< [[7,1,3]] Steane qubit code
-      NINE_QUBIT_SHOR,    ///< [[9,1,3]] Shor qubit code
+    enum class Type {
+        FIVE_QUBIT,         ///< [[5,1,3]] qubit code
+        SEVEN_QUBIT_STEANE, ///< [[7,1,3]] Steane qubit code
+        NINE_QUBIT_SHOR,    ///< [[9,1,3]] Shor qubit code
     };
 
   private:
