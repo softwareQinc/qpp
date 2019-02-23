@@ -13,5 +13,5 @@ int main() {
 
     QEngine q_engine{qc};
     q_engine.execute();
-    std::cout << q_engine << '\n';
+    std::cout << q_engine.get_dit(0) << '\n';
 }

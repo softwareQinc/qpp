@@ -150,7 +150,7 @@ class QEngine : public IDisplay, public IJSON {
      * \return Value of the classical dit at position \a i
      */
     idx get_dit(idx i) const {
-        if (i > qc_->get_nc())
+        if (i >= qc_->get_nc())
             throw exception::OutOfRange("qpp::QEngine::get_dit()");
 
         return dits_[i];
