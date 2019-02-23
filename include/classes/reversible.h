@@ -684,13 +684,13 @@ class Bit_circuit : public Dynamic_bitset {
      * TOF, FRED.
      * \return Gate count
      */
-    idx get_gate_count(const std::string& name = "") const {
+    idx get_gate_count(const std::string& name = {}) const {
         idx result = 0;
 
         // EXCEPTION CHECKS
 
         try {
-            if (name == "")
+            if (name.empty())
                 result = count_.at("total");
             else if (name == "X")
                 result = count_.at("NOT");
@@ -714,13 +714,13 @@ class Bit_circuit : public Dynamic_bitset {
      * TOF, FRED.
      * \return Gate depth
      */
-    idx get_gate_depth(const std::string& name = "") const {
+    idx get_gate_depth(const std::string& name = {}) const {
         idx result = 0;
 
         // EXCEPTION CHECKS
 
         try {
-            if (name == "")
+            if (name.empty())
                 result = depth_.at("total");
             else if (name == "X")
                 result = depth_.at("NOT");

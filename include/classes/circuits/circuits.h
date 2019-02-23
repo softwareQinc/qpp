@@ -218,7 +218,7 @@ class QCircuit : public IDisplay, public IJSON {
          */
         explicit GateStep(GateType gate_type, std::size_t gate_hash,
                           const std::vector<idx>& ctrl,
-                          const std::vector<idx>& target, std::string name = "")
+                          const std::vector<idx>& target, std::string name = {})
             : gate_type_{gate_type},
               gate_hash_{gate_hash}, ctrl_{ctrl}, target_{target}, name_{name} {
         }
@@ -317,7 +317,7 @@ class QCircuit : public IDisplay, public IJSON {
         explicit MeasureStep(MeasureType measurement_type,
                              const std::vector<std::size_t>& mats_hash,
                              const std::vector<idx>& target, idx c_reg,
-                             std::string name = "")
+                             std::string name = {})
             : measurement_type_{measurement_type}, mats_hash_{mats_hash},
               target_{target}, c_reg_{c_reg}, name_{name} {}
     };
@@ -738,7 +738,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param d Subsystem dimensions (optional, default is qubit, i.e. \a d = 2)
      * \param name Circuit name (optional)
      */
-    explicit QCircuit(idx nq, idx nc = 0, idx d = 2, std::string name = "")
+    explicit QCircuit(idx nq, idx nc = 0, idx d = 2, std::string name = {})
         : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false) {
         // EXCEPTION CHECKS
 
@@ -835,11 +835,11 @@ class QCircuit : public IDisplay, public IJSON {
      * \param name Gate name (optional)
      * \return Gate count
      */
-    idx get_gate_count(const std::string& name = "") const {
+    idx get_gate_count(const std::string& name = {}) const {
         idx result = 0;
 
         // total count
-        if (name == "") {
+        if (name.empty()) {
             for (auto&& elem : count_)
                 result += elem.second;
 
@@ -869,7 +869,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param name Gate name (optional)
      * \return Gate depth
      */
-    idx get_gate_depth(const std::string& name = "") const {
+    idx get_gate_depth(const std::string& name = {}) const {
         idx result = 0;
         bool found = false;
         std::vector<idx> b(nc_ + nq_, 0);
@@ -1016,7 +1016,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuit& gate(const cmat& U, idx i, std::string name = "") {
+    QCircuit& gate(const cmat& U, idx i, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -1039,7 +1039,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
+        if (name.empty())
             name = qpp::Gates::get_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
@@ -1060,7 +1060,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuit& gate(const cmat& U, idx i, idx j, std::string name = "") {
+    QCircuit& gate(const cmat& U, idx i, idx j, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -1082,7 +1082,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
+        if (name.empty())
             name = qpp::Gates::get_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
@@ -1104,7 +1104,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuit& gate(const cmat& U, idx i, idx j, idx k, std::string name = "") {
+    QCircuit& gate(const cmat& U, idx i, idx j, idx k, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -1127,7 +1127,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
+        if (name.empty())
             name = qpp::Gates::get_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
@@ -1150,7 +1150,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& gate_fan(const cmat& U, const std::vector<idx>& target,
-                       std::string name = "") {
+                       std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -1182,7 +1182,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
+        if (name.empty())
             name = qpp::Gates::get_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
@@ -1208,7 +1208,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& gate_fan(const cmat& U, const std::initializer_list<idx>& target,
-                       std::string name = "") {
+                       std::string name = {}) {
         return gate_fan(U, std::vector<idx>(target), name);
     }
 
@@ -1220,7 +1220,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuit& gate_fan(const cmat& U, std::string name = "") {
+    QCircuit& gate_fan(const cmat& U, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -1237,7 +1237,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
+        if (name.empty())
             name = qpp::Gates::get_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
@@ -1260,7 +1260,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& gate_custom(const cmat& U, const std::vector<idx>& target,
-                          std::string name = "") {
+                          std::string name = {}) {
         // EXCEPTION CHECKS
 
         idx n = static_cast<idx>(target.size());
@@ -1296,7 +1296,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
+        if (name.empty())
             name = qpp::Gates::get_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
@@ -1530,7 +1530,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuit& CTRL(const cmat& U, idx ctrl, idx target, std::string name = "") {
+    QCircuit& CTRL(const cmat& U, idx ctrl, idx target, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -1552,9 +1552,9 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "") {
+        if (name.empty()) {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = gate_name == "" ? "CTRL" : "CTRL-" + gate_name;
+            name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
@@ -1580,7 +1580,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& CTRL(const cmat& U, idx ctrl, const std::vector<idx>& target,
-                   std::string name = "") {
+                   std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -1622,9 +1622,9 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "") {
+        if (name.empty()) {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = gate_name == "" ? "CTRL" : "CTRL-" + gate_name;
+            name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
@@ -1648,7 +1648,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& CTRL(const cmat& U, const std::vector<idx>& ctrl, idx target,
-                   std::string name = "") {
+                   std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -1688,9 +1688,9 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "") {
+        if (name.empty()) {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = gate_name == "" ? "CTRL" : "CTRL-" + gate_name;
+            name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
@@ -1716,7 +1716,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& CTRL(const cmat& U, const std::vector<idx>& ctrl,
-                   const std::vector<idx>& target, std::string name = "") {
+                   const std::vector<idx>& target, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -1766,9 +1766,9 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "") {
+        if (name.empty()) {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = gate_name == "" ? "CTRL" : "CTRL-" + gate_name;
+            name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
@@ -1795,7 +1795,7 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit& CTRL_custom(const cmat& U, const std::vector<idx>& ctrl,
                           const std::vector<idx>& target,
-                          std::string name = "") {
+                          std::string name = {}) {
         // EXCEPTION CHECKS
 
         idx n = static_cast<idx>(target.size());
@@ -1848,9 +1848,9 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "") {
+        if (name.empty()) {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = gate_name == "" ? "CTRL" : "CTRL-" + gate_name;
+            name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
@@ -1874,7 +1874,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& cCTRL(const cmat& U, idx ctrl_dit, idx target,
-                    std::string name = "") {
+                    std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -1896,9 +1896,9 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "") {
+        if (name.empty()) {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = gate_name == "" ? "cCTRL" : "cCTRL-" + gate_name;
+            name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
@@ -1924,7 +1924,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& cCTRL(const cmat& U, idx ctrl_dit, const std::vector<idx>& target,
-                    std::string name = "") {
+                    std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -1959,9 +1959,9 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "") {
+        if (name.empty()) {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = gate_name == "" ? "cCTRL" : "cCTRL-" + gate_name;
+            name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
@@ -1985,7 +1985,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& cCTRL(const cmat& U, const std::vector<idx>& ctrl_dits,
-                    idx target, std::string name = "") {
+                    idx target, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -2017,9 +2017,9 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "") {
+        if (name.empty()) {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = gate_name == "" ? "cCTRL" : "cCTRL-" + gate_name;
+            name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
@@ -2045,7 +2045,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& cCTRL(const cmat& U, const std::vector<idx>& ctrl_dits,
-                    const std::vector<idx>& target, std::string name = "") {
+                    const std::vector<idx>& target, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -2085,9 +2085,9 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "") {
+        if (name.empty()) {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = gate_name == "" ? "cCTRL" : "cCTRL-" + gate_name;
+            name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
@@ -2114,7 +2114,7 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit& cCTRL_custom(const cmat& U, const std::vector<idx>& ctrl_dits,
                            const std::vector<idx>& target,
-                           std::string name = "") {
+                           std::string name = {}) {
         // EXCEPTION CHECKS
 
         idx n = static_cast<idx>(target.size());
@@ -2161,9 +2161,9 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "") {
+        if (name.empty()) {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
-            name = gate_name == "" ? "cCTRL" : "cCTRL-" + gate_name;
+            name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
@@ -2185,7 +2185,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param name Optional measurement name, default is "Measure Z"
      * \return Reference to the current instance
      */
-    QCircuit& measureZ(idx target, idx c_reg, std::string name = "") {
+    QCircuit& measureZ(idx target, idx c_reg, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -2204,7 +2204,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
+        if (name.empty())
             name = "Z";
         measured_[target] = true;
         measurements_.emplace_back(MeasureType::MEASURE_Z,
@@ -2231,7 +2231,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& measureV(const cmat& V, idx target, idx c_reg,
-                       std::string name = "") {
+                       std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -2250,7 +2250,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
+        if (name.empty())
             name = qpp::Gates::get_instance().get_name(V);
         measured_[target] = true;
         measurements_.emplace_back(MeasureType::MEASURE_V,
@@ -2277,7 +2277,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& measureV(const cmat& V, const std::vector<idx>& target, idx c_reg,
-                       std::string name = "") {
+                       std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -2310,7 +2310,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        if (name == "")
+        if (name.empty())
             name = qpp::Gates::get_instance().get_name(V);
         for (auto&& elem : target)
             measured_[elem] = true;
