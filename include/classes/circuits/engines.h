@@ -418,7 +418,15 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \param it Iterator to the step to be executed
      */
-    virtual void execute(const QCircuit::iterator& it) { execute(*it); }
+    void execute(const QCircuit::iterator& it) { execute(*it); }
+
+    /**
+     * \brief Executes the entire quantum circuit
+     */
+    void execute() {
+        for (auto&& elem : *qc_)
+            execute(elem);
+    }
 
     /**
      * \brief qpp::IJOSN::to_JSON() override
@@ -509,6 +517,8 @@ class QNoisyEngine : public QEngine {
             throw exception::DimsNotEqual("qpp::QNoisyEngine::QNoisyEngine()");
         // END EXCEPTION CHECKS
     }
+
+    using QEngine::execute;
     /**
      * \brief Executes one step in the quantum circuit
      *
@@ -526,12 +536,6 @@ class QNoisyEngine : public QEngine {
         // execute the circuit step
         QEngine::execute(elem);
     }
-    /**
-     * \brief Executes one step in the noisy quantum circuit
-     *
-     * \param it Iterator to the step to be executed
-     */
-    void execute(const QCircuit::iterator& it) override { execute(*it); }
 
     // getters
     /**
