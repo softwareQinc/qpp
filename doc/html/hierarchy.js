@@ -47,8 +47,6 @@ var hierarchy =
       [ "qpp::is_complex< T >", "structqpp_1_1is__complex.html", null ],
       [ "qpp::is_iterable< T, typename >", "structqpp_1_1is__iterable.html", null ]
     ] ],
-    [ "qpp::Bit_circuit::Gate_count", "classqpp_1_1_bit__circuit_1_1_gate__count.html", null ],
-    [ "qpp::Bit_circuit::Gate_depth", "classqpp_1_1_bit__circuit_1_1_gate__depth.html", null ],
     [ "qpp::QCircuit::GateStep", "structqpp_1_1_q_circuit_1_1_gate_step.html", null ],
     [ "qpp::internal::HashEigen", "structqpp_1_1internal_1_1_hash_eigen.html", null ],
     [ "qpp::IDisplay", "classqpp_1_1_i_display.html", [

@@ -49,10 +49,9 @@ class QCircuit : public IDisplay, public IJSON {
     std::unordered_map<std::size_t, cmat>
         cmat_hash_tbl_{}; ///< hash table with the matrices used in the circuit,
                           ///< with [Key = idx, Value = cmat]
+    std::unordered_map<std::string, idx> count_{}; ///< gate counts
     std::unordered_map<std::string, idx>
-        count_{}; ///< keeps track of the gate counts
-    std::unordered_map<std::string, idx>
-        measurement_count_{}; ///< keeps track of the measurement counts
+        measurement_count_{}; ///< measurement counts
 
     /**
      * \brief Adds matrix to the hash table

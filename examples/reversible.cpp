@@ -16,17 +16,21 @@ int main() {
     bits.rand(); // randomize the bits
     std::cout << ">> After randomization:\n\t" << bits << '\n'; // display them
 
-    Bit_circuit bit_circuit{bits}; // bit circuit
+    Bit_circuit bc{bits}; // bit circuit
 
     std::cout << ">> Apply X_0, followed by CNOT_02, CNOT_13 and TOF_013\n";
-    bit_circuit.X(0); // apply a NOT gate on first bit
-    bit_circuit.CNOT(0, 2).CNOT(1, 3).TOF(0, 1, 3); // sequence operations
+    bc.X(0);                               // apply a NOT gate on the first bit
+    bc.CNOT(0, 2).CNOT(1, 3).TOF(0, 1, 3); // sequence operations
 
-    std::cout << ">> Final bit circuit:\n\t" << bit_circuit << '\n';
-    std::cout << ">> 3rd bit: " << bit_circuit.get(2) << '\n';
-    std::cout << ">> CNOT count: " << bit_circuit.gate_count.CNOT << '\n';
+    std::cout << ">> Final bit circuit:\n\t" << bc << '\n';
+    std::cout << ">> 3rd bit: " << bc.get(2) << '\n';
+    std::cout << ">> CNOT count: " << bc.get_gate_count("CNOT") << '\n';
+    std::cout << ">> CNOT depth: " << bc.get_gate_depth("CNOT") << '\n';
+    std::cout << ">> Total depth: " << bc.get_gate_depth() << '\n';
 
-    bit_circuit.reset(); // resets the circuit
-    std::cout << ">> Reset circuit:\n\t" << bit_circuit << '\n';
-    std::cout << ">> CNOT count: " << bit_circuit.gate_count.CNOT << '\n';
+    bc.reset(); // resets the circuit
+    std::cout << ">> Reset circuit:\n\t" << bc << '\n';
+    std::cout << ">> CNOT count: " << bc.get_gate_count("CNOT") << '\n';
+    std::cout << ">> CNOT depth: " << bc.get_gate_depth("CNOT") << '\n';
+    std::cout << ">> Total depth: " << bc.get_gate_depth() << '\n';
 }

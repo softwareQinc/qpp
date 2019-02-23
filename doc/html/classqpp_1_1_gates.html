@@ -120,7 +120,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ace5b3f45601bbe6c646dab08d4f27d95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantum Fourier transform gate for qudits.  <a href="#ace5b3f45601bbe6c646dab08d4f27d95">More...</a><br /></td></tr>
 <tr class="separator:ace5b3f45601bbe6c646dab08d4f27d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5fd14aaac513809b471f11e946039c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_gates.html#aa5fd14aaac513809b471f11e946039c0">MODMUL</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> a, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n) const</td></tr>
-<tr class="memdesc:aa5fd14aaac513809b471f11e946039c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modular multiplication gate for qubits Implements <img class="formulaInl" alt="$ |x\rangle \longrightarrow |ax \mathrm{ mod } N\rangle $" src="form_3.png"/>.  <a href="#aa5fd14aaac513809b471f11e946039c0">More...</a><br /></td></tr>
+<tr class="memdesc:aa5fd14aaac513809b471f11e946039c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modular multiplication gate for qubits Implements <img class="formulaInl" alt="$ |x\rangle \longrightarrow |ax \mathrm{ mod } N\rangle $" src="form_4.png"/>.  <a href="#aa5fd14aaac513809b471f11e946039c0">More...</a><br /></td></tr>
 <tr class="separator:aa5fd14aaac513809b471f11e946039c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c8ef80183ab2172328b8589a78bbfab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_gates.html#a8c8ef80183ab2172328b8589a78bbfab">Xd</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> D=2) const</td></tr>
 <tr class="memdesc:a8c8ef80183ab2172328b8589a78bbfab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generalized X gate for qudits.  <a href="#a8c8ef80183ab2172328b8589a78bbfab">More...</a><br /></td></tr>
@@ -404,7 +404,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Tensor product <img class="formulaInl" alt="$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I$" src="form_7.png"/>, with <em>A</em> on position <em>pos</em>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Tensor product <img class="formulaInl" alt="$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I$" src="form_8.png"/>, with <em>A</em> on position <em>pos</em>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -462,7 +462,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Tensor product <img class="formulaInl" alt="$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I$" src="form_7.png"/>, with <em>A</em> on position <em>pos</em>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Tensor product <img class="formulaInl" alt="$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I$" src="form_8.png"/>, with <em>A</em> on position <em>pos</em>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -526,7 +526,7 @@ template&lt;typename Derived &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Tensor product <img class="formulaInl" alt="$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I$" src="form_7.png"/>, with <em>A</em> on position <em>pos</em>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Tensor product <img class="formulaInl" alt="$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I$" src="form_8.png"/>, with <em>A</em> on position <em>pos</em>, as a dynamic matrix over the same scalar field as <em>A</em> </dd></dl>
 
 </div>
 </div>
@@ -555,7 +555,7 @@ template&lt;typename Derived &gt; </div>
 </div><div class="memdoc">
 
 <p>Quantum Fourier transform gate for qudits. </p>
-<dl class="section note"><dt>Note</dt><dd>Defined as <img class="formulaInl" alt="$ F = \sum_{j,k=0}^{D-1} \exp(2\pi \mathrm{i} jk/D) |j\rangle\langle k| $" src="form_2.png"/></dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Defined as <img class="formulaInl" alt="$ F = \sum_{j,k=0}^{D-1} \exp(2\pi \mathrm{i} jk/D) |j\rangle\langle k| $" src="form_3.png"/></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">D</td><td>Dimension of the Hilbert space </td></tr>
@@ -680,10 +680,10 @@ template&lt;typename Derived  = Eigen::MatrixXcd&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Modular multiplication gate for qubits Implements <img class="formulaInl" alt="$ |x\rangle \longrightarrow |ax \mathrm{ mod } N\rangle $" src="form_3.png"/>. </p>
+<p>Modular multiplication gate for qubits Implements <img class="formulaInl" alt="$ |x\rangle \longrightarrow |ax \mathrm{ mod } N\rangle $" src="form_4.png"/>. </p>
 <dl class="section note"><dt>Note</dt><dd>For the gate to be unitary, <em>a</em> and <em>N</em> should be co-prime. The function does not check co-primality in release versions!</dd>
 <dd>
-The number of qubits required to implement the gate should satisfy <img class="formulaInl" alt="$ n \geq \lceil\log_2(N)\rceil $" src="form_4.png"/></dd></dl>
+The number of qubits required to implement the gate should satisfy <img class="formulaInl" alt="$ n \geq \lceil\log_2(N)\rceil $" src="form_5.png"/></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">a</td><td>Positive integer less than <em>N</em> </td></tr>
@@ -907,7 +907,7 @@ The number of qubits required to implement the gate should satisfy <img class="f
 </div><div class="memdoc">
 
 <p>Generalized X gate for qudits. </p>
-<dl class="section note"><dt>Note</dt><dd>Defined as <img class="formulaInl" alt="$ X = \sum_{j=0}^{D-1} |j\oplus 1\rangle\langle j| $" src="form_5.png"/>, i.e. raising operator <img class="formulaInl" alt="$ X|j\rangle = |j\oplus 1\rangle$" src="form_6.png"/></dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Defined as <img class="formulaInl" alt="$ X = \sum_{j=0}^{D-1} |j\oplus 1\rangle\langle j| $" src="form_6.png"/>, i.e. raising operator <img class="formulaInl" alt="$ X|j\rangle = |j\oplus 1\rangle$" src="form_7.png"/></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">D</td><td>Dimension of the Hilbert space </td></tr>
@@ -943,7 +943,7 @@ The number of qubits required to implement the gate should satisfy <img class="f
 </div><div class="memdoc">
 
 <p>Generalized Z gate for qudits. </p>
-<dl class="section note"><dt>Note</dt><dd>Defined as <img class="formulaInl" alt="$ Z = \sum_{j=0}^{D-1} \exp(2\pi \mathrm{i} j/D) |j\rangle\langle j| $" src="form_1.png"/></dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Defined as <img class="formulaInl" alt="$ Z = \sum_{j=0}^{D-1} \exp(2\pi \mathrm{i} j/D) |j\rangle\langle j| $" src="form_2.png"/></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">D</td><td>Dimension of the Hilbert space </td></tr>
@@ -1195,7 +1195,7 @@ The number of qubits required to implement the gate should satisfy <img class="f
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_gates.html">Gates</a></li>
-    <li class="footer">Generated on Fri Feb 22 2019 18:14:49 for Quantum++ by
+    <li class="footer">Generated on Sat Feb 23 2019 11:43:43 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

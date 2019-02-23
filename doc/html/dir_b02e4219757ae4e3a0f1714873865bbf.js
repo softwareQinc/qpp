@@ -71,9 +71,7 @@ var dir_b02e4219757ae4e3a0f1714873865bbf =
     ] ],
     [ "reversible.h", "reversible_8h.html", [
       [ "Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html", "classqpp_1_1_dynamic__bitset" ],
-      [ "Bit_circuit", "classqpp_1_1_bit__circuit.html", "classqpp_1_1_bit__circuit" ],
-      [ "Gate_count", "classqpp_1_1_bit__circuit_1_1_gate__count.html", "classqpp_1_1_bit__circuit_1_1_gate__count" ],
-      [ "Gate_depth", "classqpp_1_1_bit__circuit_1_1_gate__depth.html", "classqpp_1_1_bit__circuit_1_1_gate__depth" ]
+      [ "Bit_circuit", "classqpp_1_1_bit__circuit.html", "classqpp_1_1_bit__circuit" ]
     ] ],
     [ "states.h", "states_8h.html", [
       [ "States", "classqpp_1_1_states.html", "classqpp_1_1_states" ]

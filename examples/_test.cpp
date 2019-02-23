@@ -21,11 +21,11 @@ int main() {
         qc.gate(gt.CNOT, ctrl, target);
     }
 
-    // std::cout << qc << std::endl;
-    std::cout << qc.get_gate_count() << std::endl;
-    std::cout << qc.get_gate_depth("H") << std::endl;
-    std::cout << qc.get_gate_depth("CNOT") << std::endl;
-    std::cout << qc.get_gate_depth() << std::endl << std::endl;
+    // std::cout << qc << '\n';
+    std::cout << qc.get_gate_count() << '\n';
+    std::cout << qc.get_gate_depth("H") << '\n';
+    std::cout << qc.get_gate_depth("CNOT") << '\n';
+    std::cout << qc.get_gate_depth() << "\n\n";
 
     idx nc = nq;
     Bit_circuit bit_circuit{nc};
@@ -39,11 +39,21 @@ int main() {
         bit_circuit.CNOT(a, b);
     }
 
-    std::cout << bit_circuit.gate_count.total << std::endl;
-    std::cout << bit_circuit.gate_count.X << std::endl;
-    std::cout << bit_circuit.gate_count.CNOT << std::endl << std::endl;
+    std::cout << bit_circuit.get_gate_count() << '\n';
+    std::cout << bit_circuit.get_gate_count("X") << '\n';
+    std::cout << bit_circuit.get_gate_count("CNOT") << "\n\n";
 
-    std::cout << bit_circuit.gate_depth.X << std::endl;
-    std::cout << bit_circuit.gate_depth.CNOT << std::endl;
-    std::cout << bit_circuit.gate_depth.total << std::endl;
+    std::cout << bit_circuit.get_gate_depth("X") << '\n';
+    std::cout << bit_circuit.get_gate_depth("CNOT") << '\n';
+    std::cout << bit_circuit.get_gate_depth() << "\n\n";
+
+    bit_circuit.reset();
+
+    std::cout << bit_circuit.get_gate_count() << '\n';
+    std::cout << bit_circuit.get_gate_count("X") << '\n';
+    std::cout << bit_circuit.get_gate_count("CNOT") << "\n\n";
+
+    std::cout << bit_circuit.get_gate_depth("X") << '\n';
+    std::cout << bit_circuit.get_gate_depth("CNOT") << '\n';
+    std::cout << bit_circuit.get_gate_depth() << "\n\n";
 }

@@ -36,7 +36,8 @@ namespace qpp {
 /**
  * \class qpp::Dynamic_bitset
  * \brief Dynamic bitset class, allows the specification of the number of bits
- * at runtime (unlike std::bitset<N>)
+ * at runtime
+ * \note The interface mimics std::bitset<>
  */
 class Dynamic_bitset : public IDisplay {
   public:
@@ -387,112 +388,20 @@ class Dynamic_bitset : public IDisplay {
  * \brief Classical reversible circuit simulator
  */
 class Bit_circuit : public Dynamic_bitset {
+    std::unordered_map<std::string, idx> count_{}; ///< gate counts
+    std::unordered_map<std::string, idx> depth_{}; ///< gate depths
+    Dynamic_bitset bNOT_, bCNOT_, bSWAP_, bTOF_, bFRED_,
+        btotal_; ///< used for depth calculations
+
   public:
-    /**
-     * \class qpp::Bit_circuit::Gate_count
-     * \brief Gate counters
-     * \see qpp::Bit_circuit::Gate_depth
-     */
-    class Gate_count {
-      public:
-        /**
-         * \brief Resets the gate count
-         */
-        void reset() { NOT = CNOT = SWAP = FRED = TOF = total = 0; }
-
-        // 1 bit gates
-        idx NOT = 0;
-        idx& X = NOT;
-
-        // 2 bit gates
-        idx CNOT = 0;
-        idx SWAP = 0;
-
-        // 3 bit gates
-        idx FRED = 0;
-        idx TOF = 0;
-
-        // total count
-        idx total = 0;
-    } gate_count{}; ///< gate counters
-
-    /**
-     * \class qpp::Bit_circuit::Gate_depth
-     * \brief Gate depth
-     * \see qpp::Bit_circuit::Gate_counter
-     */
-    class Gate_depth {
-        friend Bit_circuit;
-        const Bit_circuit* bit_circuit_{};
-        Dynamic_bitset bNOT, bCNOT, bSWAP, bFRED, bTOF, btotal;
-
-      public:
-        /**
-         * \brief Constructs the gate depth class out of a reversible bit
-         * circuit
-         *
-         * \note The reversible bit circuit must be an lvalue
-         * \see qpp::Gate_depth(Gate_depth&&)
-         *
-         * \param bit_circuit Reversible bit circuit
-         */
-        explicit Gate_depth(const Bit_circuit& bit_circuit)
-            : bit_circuit_{std::addressof(bit_circuit)},
-              bNOT{bit_circuit.size()}, bCNOT{bit_circuit.size()},
-              bSWAP{bit_circuit.size()}, bFRED{bit_circuit.size()},
-              bTOF{bit_circuit.size()}, btotal{bit_circuit.size()} {}
-
-        // silence -Weffc++ class has pointer data members
-        /**
-         * \brief Default copy constructor
-         */
-        Gate_depth(const Gate_depth&) = default;
-
-        // silence -Weffc++ class has pointer data members
-        /**
-         * \brief Default copy assignment operator
-         *
-         * \return Reference to the current instance
-         */
-        Gate_depth& operator=(const Gate_depth&) = default;
-
-        /**
-         * \brief Disables rvalue QCircuit
-         */
-        Gate_depth(Gate_depth&&) = delete;
-
-        /**
-         * \brief Resets the gate depth
-         */
-        void reset() {
-            NOT = CNOT = SWAP = FRED = TOF = total = 0;
-            idx n = bit_circuit_->size();
-            bNOT = bCNOT = bSWAP = bFRED = bTOF = btotal = Dynamic_bitset(n);
-        }
-
-        // 1 bit gates
-        idx NOT = 0;
-        idx& X = NOT;
-
-        // 2 bit gates
-        idx CNOT = 0;
-        idx SWAP = 0;
-
-        // 3 bit gates
-        idx FRED = 0;
-        idx TOF = 0;
-
-        // total depth
-        idx total = 0;
-    } gate_depth{*this}; ///< gate depths
-
     /**
      * \brief Constructs a bit circuit instance
      *
      * \param n Number of classical bits
      */
-    explicit Bit_circuit(idx n) : Dynamic_bitset{n} {}
-
+    explicit Bit_circuit(idx n)
+        : Dynamic_bitset{n}, bNOT_{n}, bCNOT_{n}, bSWAP_{n}, bTOF_{n},
+          bFRED_{n}, btotal_{n} {}
     /**
      * \brief Conversion constructor, used to initialize a qpp::Bit_circuit with
      * a qpp::Dynamic_bitset
@@ -500,7 +409,9 @@ class Bit_circuit : public Dynamic_bitset {
      * \param dynamic_bitset Dynamic bitset
      */
     explicit Bit_circuit(const Dynamic_bitset& dynamic_bitset)
-        : Dynamic_bitset{dynamic_bitset} {};
+        : Dynamic_bitset{dynamic_bitset}, bNOT_{this->size()},
+          bCNOT_{this->size()}, bSWAP_{this->size()}, bTOF_{this->size()},
+          bFRED_{this->size()}, btotal_{this->size()} {}
 
     /**
      * \brief Bit flip
@@ -516,6 +427,11 @@ class Bit_circuit : public Dynamic_bitset {
     }
 
     /**
+     * \brief Default virtual destructor
+     */
+    virtual ~Bit_circuit() = default;
+
+    /**
      * \brief Bit flip
      * \see qpp::Bit_circuit::X()
      *
@@ -524,35 +440,35 @@ class Bit_circuit : public Dynamic_bitset {
      */
     Bit_circuit& NOT(idx i) {
         this->flip(i);
-        ++gate_count.NOT;
-        ++gate_count.total;
+        ++count_["NOT"];
+        ++count_["total"];
 
         // compute the depth
-        if (gate_count.NOT == 1)
-            gate_depth.NOT = 1;
+        if (count_["NOT"] == 1)
+            depth_["NOT"] = 1;
         // apply the gate
-        gate_depth.bNOT.flip(i);
+        bNOT_.flip(i);
         // check whether gates overlap
-        if (gate_depth.bNOT.get(i) == false) {
+        if (bNOT_.get(i) == false) {
             // reset the b bitset
-            gate_depth.bNOT = Dynamic_bitset{n_};
+            bNOT_ = Dynamic_bitset{n_};
             // set to true the locations of the last gate
-            gate_depth.bNOT.set(i);
-            ++gate_depth.NOT;
+            bNOT_.set(i);
+            ++depth_["NOT"];
         }
 
         // compute the total depth
-        if (gate_count.total == 1)
-            gate_depth.total = 1;
+        if (count_["total"] == 1)
+            depth_["total"] = 1;
         // apply the gate
-        gate_depth.btotal.flip(i);
+        btotal_.flip(i);
         // check whether gates overlap
-        if (gate_depth.btotal.get(i) == false) {
+        if (btotal_.get(i) == false) {
             // reset the b bitset
-            gate_depth.btotal = Dynamic_bitset{n_};
+            btotal_ = Dynamic_bitset{n_};
             // set to true the locations of the last gate
-            gate_depth.btotal.set(i);
-            ++gate_depth.total;
+            btotal_.set(i);
+            ++depth_["total"];
         }
 
         return *this;
@@ -568,37 +484,35 @@ class Bit_circuit : public Dynamic_bitset {
     Bit_circuit& CNOT(idx ctrl, idx target) {
         v_[index_(target)] ^= (1 & (v_[index_(ctrl)] >> offset_(ctrl)))
                               << offset_(target);
-        ++gate_count.CNOT;
-        ++gate_count.total;
+        ++count_["CNOT"];
+        ++count_["total"];
 
         // compute the depth
-        if (gate_count.CNOT == 1)
-            gate_depth.CNOT = 1;
+        if (count_["CNOT"] == 1)
+            depth_["CNOT"] = 1;
         // apply the gate
-        gate_depth.bCNOT.flip(ctrl).flip(target);
+        bCNOT_.flip(ctrl).flip(target);
         // check whether gates overlap
-        if (gate_depth.bCNOT.get(ctrl) == false ||
-            gate_depth.bCNOT.get(target) == false) {
+        if (bCNOT_.get(ctrl) == false || bCNOT_.get(target) == false) {
             // reset the b bitset
-            gate_depth.bCNOT = Dynamic_bitset{n_};
+            bCNOT_ = Dynamic_bitset{n_};
             // set to true the locations of the last gate
-            gate_depth.bCNOT.set(ctrl).set(target);
-            ++gate_depth.CNOT;
+            bCNOT_.set(ctrl).set(target);
+            ++depth_["CNOT"];
         }
 
         // compute the total depth
-        if (gate_count.total == 1)
-            gate_depth.total = 1;
+        if (count_["total"] == 1)
+            depth_["total"] = 1;
         // apply the gate
-        gate_depth.btotal.flip(ctrl).flip(target);
+        btotal_.flip(ctrl).flip(target);
         // check whether gates overlap
-        if (gate_depth.btotal.get(ctrl) == false ||
-            gate_depth.btotal.get(target) == false) {
+        if (btotal_.get(ctrl) == false || btotal_.get(target) == false) {
             // reset the b bitset
-            gate_depth.btotal = Dynamic_bitset{n_};
+            btotal_ = Dynamic_bitset{n_};
             // set to true the locations of the last gate
-            gate_depth.btotal.set(ctrl).set(target);
-            ++gate_depth.total;
+            btotal_.set(ctrl).set(target);
+            ++depth_["total"];
         }
 
         return *this;
@@ -616,39 +530,37 @@ class Bit_circuit : public Dynamic_bitset {
         v_[index_(k)] ^= ((1 & (v_[index_(j)] >> offset_(j))) &
                           (1 & (v_[index_(i)] >> offset_(i))))
                          << offset_(k);
-        ++gate_count.TOF;
-        ++gate_count.total;
+        ++count_["TOF"];
+        ++count_["total"];
 
         // compute the depth
-        if (gate_count.TOF == 1)
-            gate_depth.TOF = 1;
+        if (count_["TOF"] == 1)
+            depth_["TOF"] = 1;
         // apply the gate
-        gate_depth.bTOF.flip(i).flip(j).flip(k);
+        bTOF_.flip(i).flip(j).flip(k);
         // check whether gates overlap
-        if (gate_depth.bTOF.get(i) == false ||
-            gate_depth.bTOF.get(j) == false ||
-            gate_depth.bTOF.get(k) == false) {
+        if (bTOF_.get(i) == false || bTOF_.get(j) == false ||
+            bTOF_.get(k) == false) {
             // reset the b bitset
-            gate_depth.bTOF = Dynamic_bitset{n_};
+            bTOF_ = Dynamic_bitset{n_};
             // set to true the locations of the last gate
-            gate_depth.bTOF.set(i).set(j).set(k);
-            ++gate_depth.TOF;
+            bTOF_.set(i).set(j).set(k);
+            ++depth_["TOF"];
         }
 
         // compute the total depth
-        if (gate_count.total == 1)
-            gate_depth.total = 1;
+        if (count_["total"] == 1)
+            depth_["total"] = 1;
         // apply the gate
-        gate_depth.btotal.flip(i).flip(j).flip(k);
+        btotal_.flip(i).flip(j).flip(k);
         // check whether gates overlap
-        if (gate_depth.btotal.get(i) == false ||
-            gate_depth.btotal.get(j) == false ||
-            gate_depth.btotal.get(k) == false) {
+        if (btotal_.get(i) == false || btotal_.get(j) == false ||
+            btotal_.get(k) == false) {
             // reset the b bitset
-            gate_depth.btotal = Dynamic_bitset{n_};
+            btotal_ = Dynamic_bitset{n_};
             // set to true the locations of the last gate
-            gate_depth.btotal.set(i).set(j).set(k);
-            ++gate_depth.total;
+            btotal_.set(i).set(j).set(k);
+            ++depth_["total"];
         }
 
         return *this;
@@ -666,37 +578,35 @@ class Bit_circuit : public Dynamic_bitset {
             this->X(i);
             this->X(j);
         }
-        ++gate_count.SWAP;
-        ++gate_count.total;
+        ++count_["SWAP"];
+        ++count_["total"];
 
         // compute the depth
-        if (gate_count.SWAP == 1)
-            gate_depth.SWAP = 1;
+        if (count_["SWAP"] == 1)
+            depth_["SWAP"] = 1;
         // apply the gate
-        gate_depth.bSWAP.flip(i).flip(j);
+        bSWAP_.flip(i).flip(j);
         // check whether gates overlap
-        if (gate_depth.bSWAP.get(i) == false ||
-            gate_depth.bSWAP.get(j) == false) {
+        if (bSWAP_.get(i) == false || bSWAP_.get(j) == false) {
             // reset the b bitset
-            gate_depth.bSWAP = Dynamic_bitset{n_};
+            bSWAP_ = Dynamic_bitset{n_};
             // set to true the locations of the last gate
-            gate_depth.bSWAP.set(i).set(j);
-            ++gate_depth.SWAP;
+            bSWAP_.set(i).set(j);
+            ++depth_["SWAP"];
         }
 
         // compute the total depth
-        if (gate_count.total == 1)
-            gate_depth.total = 1;
+        if (count_["total"] == 1)
+            depth_["total"] = 1;
         // apply the gate
-        gate_depth.btotal.flip(i).flip(j);
+        btotal_.flip(i).flip(j);
         // check whether gates overlap
-        if (gate_depth.btotal.get(i) == false ||
-            gate_depth.btotal.get(j) == false) {
+        if (btotal_.get(i) == false || btotal_.get(j) == false) {
             // reset the b bitset
-            gate_depth.btotal = Dynamic_bitset{n_};
+            btotal_ = Dynamic_bitset{n_};
             // set to true the locations of the last gate
-            gate_depth.btotal.set(i).set(j);
-            ++gate_depth.total;
+            btotal_.set(i).set(j);
+            ++depth_["total"];
         }
 
         return *this;
@@ -714,39 +624,37 @@ class Bit_circuit : public Dynamic_bitset {
         if (this->get(i)) {
             this->SWAP(j, k);
         }
-        ++gate_count.FRED;
-        ++gate_count.total;
+        ++count_["FRED"];
+        ++count_["total"];
 
         // compute the depth
-        if (gate_count.FRED == 1)
-            gate_depth.FRED = 1;
+        if (count_["FRED"] == 1)
+            depth_["FRED"] = 1;
         // apply the gate
-        gate_depth.bFRED.flip(i).flip(j).flip(k);
+        bFRED_.flip(i).flip(j).flip(k);
         // check whether gates overlap
-        if (gate_depth.bFRED.get(i) == false ||
-            gate_depth.bFRED.get(j) == false ||
-            gate_depth.bFRED.get(k) == false) {
+        if (bFRED_.get(i) == false || bFRED_.get(j) == false ||
+            bFRED_.get(k) == false) {
             // reset the b bitset
-            gate_depth.bFRED = Dynamic_bitset{n_};
+            bFRED_ = Dynamic_bitset{n_};
             // set to true the locations of the last gate
-            gate_depth.bFRED.set(i).set(j).set(k);
-            ++gate_depth.FRED;
+            bFRED_.set(i).set(j).set(k);
+            ++depth_["FRED"];
         }
 
         // compute the total depth
-        if (gate_count.total == 1)
-            gate_depth.total = 1;
+        if (count_["total"] == 1)
+            depth_["total"] = 1;
         // apply the gate
-        gate_depth.btotal.flip(i).flip(j).flip(k);
+        btotal_.flip(i).flip(j).flip(k);
         // check whether gates overlap
-        if (gate_depth.btotal.get(i) == false ||
-            gate_depth.btotal.get(j) == false ||
-            gate_depth.btotal.get(k) == false) {
+        if (btotal_.get(i) == false || btotal_.get(j) == false ||
+            btotal_.get(k) == false) {
             // reset the b bitset
-            gate_depth.btotal = Dynamic_bitset{n_};
+            btotal_ = Dynamic_bitset{n_};
             // set to true the locations of the last gate
-            gate_depth.btotal.set(i).set(j).set(k);
-            ++gate_depth.total;
+            btotal_.set(i).set(j).set(k);
+            ++depth_["total"];
         }
 
         return *this;
@@ -758,12 +666,74 @@ class Bit_circuit : public Dynamic_bitset {
      * \return Reference to the current instance
      */
     Bit_circuit& reset() noexcept {
-        gate_count.reset();
-        gate_depth.reset();
+        count_ = {};
+        depth_ = {};
         Dynamic_bitset::reset();
 
         return *this;
     }
+
+    // getters
+    /**
+     * \brief Bit circuit gate count
+     *
+     * \note If \a name is empty (default), returns the total gate count of the
+     * circuit
+     *
+     * \param name Gate name (optional). Possible names are NOT (X), CNOT, SWAP,
+     * TOF, FRED.
+     * \return Gate count
+     */
+    idx get_gate_count(const std::string& name = "") const {
+        idx result = 0;
+
+        // EXCEPTION CHECKS
+
+        try {
+            if (name == "")
+                result = count_.at("total");
+            else if (name == "X")
+                result = count_.at("NOT");
+            else
+                result = count_.at(name);
+        } catch (...) {
+            return 0;
+        }
+        // END EXCEPTION CHECKS
+
+        return result;
+    }
+
+    /**
+     * \brief Bit circuit gate depth
+     *
+     * \note If \a name is empty (default), returns the total gate depth of the
+     * circuit
+     *
+     * \param name Gate name (optional). Possible names are NOT (X), CNOT, SWAP,
+     * TOF, FRED.
+     * \return Gate depth
+     */
+    idx get_gate_depth(const std::string& name = "") const {
+        idx result = 0;
+
+        // EXCEPTION CHECKS
+
+        try {
+            if (name == "")
+                result = depth_.at("total");
+            else if (name == "X")
+                result = depth_.at("NOT");
+            else
+                result = depth_.at(name);
+        } catch (...) {
+            return 0;
+        }
+        // END EXCEPTION CHECKS
+
+        return result;
+    }
+    // end getters
 }; /* class Bit_circuit */
 
 } /* namespace qpp */

@@ -676,7 +676,7 @@ Private Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Vector of underlying measurement outcome probabilities. </p>
-<p>Those should be interpreted as conditional probabilities based on the temporal order of the measurements, i.e. if we measure qubit 0, then measure qubit 1, and finally qubit 2, the resulting vector of outcome probabilities probs[2] should be interpreted as the conditional probability of qubit 2 having the outcome it had given that qubit 1 and qubit 0 had their given outcomes, respectively. As an example, if we measure the qubit 0 followed by the qubit 1 of a maximally entangled state <img class="formulaInl" alt="$(|00\rangle + |11\rangle)/\sqrt{2}$" src="form_76.png"/>, then the vector of outcome probabilities will be [0.5, 1].</p>
+<p>Those should be interpreted as conditional probabilities based on the temporal order of the measurements, i.e. if we measure qubit 0, then measure qubit 1, and finally qubit 2, the resulting vector of outcome probabilities probs[2] should be interpreted as the conditional probability of qubit 2 having the outcome it had given that qubit 1 and qubit 0 had their given outcomes, respectively. As an example, if we measure the qubit 0 followed by the qubit 1 of a maximally entangled state <img class="formulaInl" alt="$(|00\rangle + |11\rangle)/\sqrt{2}$" src="form_1.png"/>, then the vector of outcome probabilities will be [0.5, 1].</p>
 <dl class="section note"><dt>Note</dt><dd>The probability vector has the same length as the vector of classical dits. If the measurement result is stored at the index <em>c_reg</em>, then the outcome probability is automatically stored at the same index <em>c_reg</em> in the probability vector.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Vector of underlying measurement outcome probabilities </dd></dl>
 
@@ -1087,7 +1087,7 @@ Private Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_q_engine.html">QEngine</a></li>
-    <li class="footer">Generated on Fri Feb 22 2019 18:14:49 for Quantum++ by
+    <li class="footer">Generated on Sat Feb 23 2019 11:43:43 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

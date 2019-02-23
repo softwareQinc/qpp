@@ -13,12 +13,11 @@ int main() {
 
     const idx n = 32;          // number of bits
     const idx num_trials = 10; // number of trials
-    Bit_circuit bit_circuit{n};
-    bit_circuit.rand(); // randomize the vector
-    Bit_circuit initial_bit_circuit = bit_circuit;
+    Bit_circuit bc{n};
+    bc.rand(); // randomize the vector
+    Bit_circuit bc_initial = bc;
 
-    std::cout << ">> Initial randomized bit circuit\n\t" << initial_bit_circuit
-              << '\n';
+    std::cout << ">> Initial randomized bit circuit\n\t" << bc_initial << '\n';
 
     // randomize the indices where Toffoli will be applied
     std::random_device rd;
@@ -41,20 +40,20 @@ int main() {
             std::cout << '\t' << elem << " ";
         }
         std::cout << '\n';
-        bit_circuit.TOF(indices[i][0], indices[i][1], indices[i][2]);
+        bc.TOF(indices[i][0], indices[i][1], indices[i][2]);
     }
     std::cout << ">> Initial/Intermediate bit circuit\n\t";
-    std::cout << initial_bit_circuit << "\n\t" << bit_circuit << '\n';
-    std::cout << ">> Hamming weight (intermediate circuit): "
-              << bit_circuit.count() << '\n';
+    std::cout << bc_initial << "\n\t" << bc << '\n';
+    std::cout << ">> Hamming weight (intermediate circuit): " << bc.count()
+              << '\n';
     std::cout << ">> Hamming distance (from the initial circuit): "
-              << initial_bit_circuit - bit_circuit << '\n';
+              << bc_initial - bc << '\n';
     std::cout << ">> NOT count (intermediate circuit, should be zero): "
-              << bit_circuit.gate_count.NOT << '\n';
+              << bc.get_gate_count("NOT") << '\n';
     std::cout << ">> X count (should be same as NOT count, i.e. zero): "
-              << bit_circuit.gate_count.X << '\n';
+              << bc.get_gate_count("X") << '\n';
     std::cout << ">> Toffoli count (intermediate circuit): "
-              << bit_circuit.gate_count.TOF << '\n';
+              << bc.get_gate_count("TOF") << '\n';
 
     // apply again the same Toffoli gates in reverse order
     std::cout << ">> Applying again Toffoli gates to bits\n";
@@ -62,16 +61,16 @@ int main() {
         for (auto&& elem : indices[i])
             std::cout << '\t' << elem << " ";
         std::cout << '\n';
-        bit_circuit.TOF(indices[i][0], indices[i][1], indices[i][2]);
+        bc.TOF(indices[i][0], indices[i][1], indices[i][2]);
     }
 
-    std::cout << ">> Final bit circuit:\n\t" << bit_circuit << '\n';
-    std::cout << ">> Hamming weight: " << bit_circuit.count() << '\n';
+    std::cout << ">> Final bit circuit:\n\t" << bc << '\n';
+    std::cout << ">> Hamming weight: " << bc.count() << '\n';
 
-    std::cout << std::boolalpha;
     std::cout << ">> Are the initial and final circuits equal? "
-              << (initial_bit_circuit == bit_circuit) << '\n';
+              << std::boolalpha << (bc_initial == bc) << std::noboolalpha
+              << '\n';
 
     std::cout << ">> Changing the string representation of the bits:\n\t";
-    std::cout << bit_circuit.to_string('o', 'i') << '\n';
+    std::cout << bc.to_string('o', 'i') << '\n';
 }
