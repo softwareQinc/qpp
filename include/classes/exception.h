@@ -43,9 +43,9 @@ namespace exception {
  * \brief Base class for generating Quantum++ custom exceptions
  *
  * Derive from this class if more exceptions are needed, making sure to override
- * qpp::exception::Exception::type_description() in the derived class and to
- * inherit the constructor qpp::exception::Exception::Exception(). Preferably
- * keep your newly defined exception classes in the namespace qpp::exception.
+ * qpp::exception::Exception::description() in the derived class and to inherit 
+ * the constructor qpp::exception::Exception::Exception(). Preferably keep your 
+ * newly defined exception classes in the namespace qpp::exception.
  *
  * Example:
  * \code
@@ -56,7 +56,7 @@ namespace exception {
  *     class ZeroSize : public Exception
  *     {
  *     public:
- *         std::string type_description() const override
+ *         std::string description() const override
  *         {
  *             return "Object has zero size";
  *         }
@@ -86,26 +86,26 @@ class Exception : public std::exception {
      *
      * \return Exception description
      */
-    virtual const char* what() const noexcept override {
+    const char* what() const noexcept override {
         msg_.clear();
         msg_ += "In ";
         msg_ += where_;
         msg_ += ": ";
-        msg_ += this->type_description();
+        msg_ += this->description();
         msg_ += "!";
 
         return msg_.c_str();
     }
 
     /**
-     * \brief Exception type description
+     * \brief Exception description
      *
-     * \return Exception type description
+     * \return Exception description
      */
-    virtual std::string type_description() const = 0;
+    virtual std::string description() const = 0;
 }; /* class Exception */
 
-inline std::string Exception::type_description() const {
+inline std::string Exception::description() const {
     return "qpp::exception::Exception";
 }
 
@@ -118,7 +118,7 @@ inline std::string Exception::type_description() const {
  */
 class Unknown : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "UNKNOWN EXCEPTION";
     }
 
@@ -133,7 +133,7 @@ class Unknown : public Exception {
  */
 class ZeroSize : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Object has zero size";
     }
 
@@ -148,7 +148,7 @@ class ZeroSize : public Exception {
  */
 class MatrixNotSquare : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Matrix is not square";
     }
 
@@ -163,7 +163,7 @@ class MatrixNotSquare : public Exception {
  */
 class MatrixNotCvector : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Matrix is not a column vector";
     }
 
@@ -178,7 +178,7 @@ class MatrixNotCvector : public Exception {
  */
 class MatrixNotRvector : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Matrix is not a row vector";
     }
 
@@ -193,7 +193,7 @@ class MatrixNotRvector : public Exception {
  */
 class MatrixNotVector : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Matrix is not a vector";
     }
 
@@ -208,7 +208,7 @@ class MatrixNotVector : public Exception {
  */
 class MatrixNotSquareNorCvector : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Matrix is not square nor column vector";
     }
 
@@ -223,7 +223,7 @@ class MatrixNotSquareNorCvector : public Exception {
  */
 class MatrixNotSquareNorRvector : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Matrix is not square nor row vector";
     }
 
@@ -238,7 +238,7 @@ class MatrixNotSquareNorRvector : public Exception {
  */
 class MatrixNotSquareNorVector : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Matrix is not square nor vector";
     }
 
@@ -253,7 +253,7 @@ class MatrixNotSquareNorVector : public Exception {
  */
 class MatrixMismatchSubsys : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Matrix mismatch subsystems";
     }
 
@@ -268,7 +268,7 @@ class MatrixMismatchSubsys : public Exception {
  */
 class DimsInvalid : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Invalid dimension(s)";
     }
 
@@ -283,7 +283,7 @@ class DimsInvalid : public Exception {
  */
 class DimsNotEqual : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Dimensions not equal";
     }
 
@@ -299,7 +299,7 @@ class DimsNotEqual : public Exception {
  */
 class DimsMismatchMatrix : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Dimension(s) mismatch matrix size";
     }
 
@@ -315,7 +315,7 @@ class DimsMismatchMatrix : public Exception {
  */
 class DimsMismatchCvector : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Dimension(s) mismatch column vector size";
     }
 
@@ -331,7 +331,7 @@ class DimsMismatchCvector : public Exception {
  */
 class DimsMismatchRvector : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Dimension(s) mismatch row vector size";
     }
 
@@ -348,7 +348,7 @@ class DimsMismatchRvector : public Exception {
  */
 class DimsMismatchVector : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Dimension(s) mismatch vector size";
     }
 
@@ -364,7 +364,7 @@ class DimsMismatchVector : public Exception {
  */
 class SubsysMismatchDims : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Subsystems mismatch dimensions";
     }
 
@@ -379,7 +379,7 @@ class SubsysMismatchDims : public Exception {
  */
 class PermInvalid : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Invalid permutation";
     }
 
@@ -395,7 +395,7 @@ class PermInvalid : public Exception {
  */
 class PermMismatchDims : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Permutation mismatch dimensions";
     }
 
@@ -410,7 +410,7 @@ class PermMismatchDims : public Exception {
  */
 class NotQubitMatrix : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Matrix is not 2 x 2";
     }
 
@@ -425,7 +425,7 @@ class NotQubitMatrix : public Exception {
  */
 class NotQubitCvector : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Column vector is not 2 x 1";
     }
 
@@ -440,7 +440,7 @@ class NotQubitCvector : public Exception {
  */
 class NotQubitRvector : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Row vector is not 1 x 2";
     }
 
@@ -455,7 +455,7 @@ class NotQubitRvector : public Exception {
  */
 class NotQubitVector : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Vector is not 2 x 1 nor 1 x 2";
     }
 
@@ -470,7 +470,7 @@ class NotQubitVector : public Exception {
  */
 class NotQubitSubsys : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Subsystems are not qubits";
     }
 
@@ -485,7 +485,7 @@ class NotQubitSubsys : public Exception {
  */
 class NotBipartite : public Exception {
   public:
-    std::string type_description() const override { return "Not bi-partite"; }
+    std::string description() const override { return "Not bi-partite"; }
 
     using Exception::Exception;
 };
@@ -499,7 +499,7 @@ class NotBipartite : public Exception {
  */
 class NoCodeword : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Codeword does not exist";
     }
 
@@ -514,7 +514,7 @@ class NoCodeword : public Exception {
  */
 class OutOfRange : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Argument out of range";
     }
 
@@ -529,7 +529,7 @@ class OutOfRange : public Exception {
  */
 class TypeMismatch : public Exception {
   public:
-    std::string type_description() const override { return "Type mismatch"; }
+    std::string description() const override { return "Type mismatch"; }
 
     using Exception::Exception;
 };
@@ -542,7 +542,7 @@ class TypeMismatch : public Exception {
  */
 class SizeMismatch : public Exception {
   public:
-    std::string type_description() const override { return "Size mismatch"; }
+    std::string description() const override { return "Size mismatch"; }
 
     using Exception::Exception;
 };
@@ -555,7 +555,7 @@ class SizeMismatch : public Exception {
  */
 class UndefinedType : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Not defined for this type";
     }
 
@@ -570,7 +570,7 @@ class UndefinedType : public Exception {
  */
 class QuditAlreadyMeasured : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Qudit was already measured";
     }
 
@@ -584,7 +584,7 @@ class QuditAlreadyMeasured : public Exception {
  */
 class Duplicates : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "System (e.g. std::vector) has duplicates";
     }
 
@@ -600,7 +600,7 @@ class Duplicates : public Exception {
 class CustomException : public Exception {
     std::string what_{};
 
-    std::string type_description() const override {
+    std::string description() const override {
         return "CUSTOM EXCEPTION " + what_;
     }
 
@@ -615,7 +615,7 @@ class CustomException : public Exception {
  */
 class NotImplemented : public Exception {
   public:
-    std::string type_description() const override {
+    std::string description() const override {
         return "Not yet implemented";
     }
 
@@ -628,7 +628,7 @@ class NotImplemented : public Exception {
  */
 class InvalidIterator : public Exception {
   public:
-    std::string type_description() const override { return "Invalid iterator"; }
+    std::string description() const override { return "Invalid iterator"; }
 
     using Exception::Exception;
 };
