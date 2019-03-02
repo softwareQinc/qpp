@@ -444,14 +444,14 @@ TEST(qpp_randperm, AllTests) {
 TEST(qpp_randprob, AllTests) {
     idx N = 1;
     std::vector<double> result = qpp::randprob(N);
-    EXPECT_EQ(1, result.size());
+    EXPECT_EQ(1u, result.size());
     EXPECT_NEAR(1, sum(result), 1e-7);
 
     N = 2;
     result = qpp::randprob(N);
     for (idx i = 0; i < N; ++i)
         EXPECT_GE(result[i], 0);
-    EXPECT_EQ(2, result.size());
+    EXPECT_EQ(2u, result.size());
     EXPECT_NEAR(1, sum(result), 1e-7);
 
     N = 10;
