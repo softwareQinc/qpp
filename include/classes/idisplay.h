@@ -50,8 +50,8 @@ class IDisplay {
      *
      * The actual stream extraction processing is performed by the overriden
      * member function in the derived class. This function is automatically
-     * invoked by friend inline std::ostream& operator<<(std::ostream& os,
-     * const IDisplay& rhs).
+     * invoked by 
+     * friend std::ostream& operator<<(std::ostream& os, const IDisplay& rhs).
      */
     virtual std::ostream& display(std::ostream& os) const = 0;
 
