@@ -458,7 +458,7 @@ TEST(qpp_randprob, AllTests) {
     result = qpp::randprob(N);
     for (idx i = 0; i < N; ++i)
         EXPECT_GE(result[i], 0);
-    EXPECT_EQ(10, result.size());
+    EXPECT_EQ(10u, result.size());
     EXPECT_NEAR(1, sum(result), 1e-7);
 }
 /******************************************************************************/
