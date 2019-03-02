@@ -43,8 +43,8 @@ namespace exception {
  * \brief Base class for generating Quantum++ custom exceptions
  *
  * Derive from this class if more exceptions are needed, making sure to override
- * qpp::exception::Exception::description() in the derived class and to inherit 
- * the constructor qpp::exception::Exception::Exception(). Preferably keep your 
+ * qpp::exception::Exception::description() in the derived class and to inherit
+ * the constructor qpp::exception::Exception::Exception(). Preferably keep your
  * newly defined exception classes in the namespace qpp::exception.
  *
  * Example:
@@ -118,9 +118,7 @@ inline std::string Exception::description() const {
  */
 class Unknown : public Exception {
   public:
-    std::string description() const override {
-        return "UNKNOWN EXCEPTION";
-    }
+    std::string description() const override { return "UNKNOWN EXCEPTION"; }
 
     using Exception::Exception;
 };
@@ -133,9 +131,7 @@ class Unknown : public Exception {
  */
 class ZeroSize : public Exception {
   public:
-    std::string description() const override {
-        return "Object has zero size";
-    }
+    std::string description() const override { return "Object has zero size"; }
 
     using Exception::Exception;
 };
@@ -148,9 +144,7 @@ class ZeroSize : public Exception {
  */
 class MatrixNotSquare : public Exception {
   public:
-    std::string description() const override {
-        return "Matrix is not square";
-    }
+    std::string description() const override { return "Matrix is not square"; }
 
     using Exception::Exception;
 };
@@ -268,9 +262,7 @@ class MatrixMismatchSubsys : public Exception {
  */
 class DimsInvalid : public Exception {
   public:
-    std::string description() const override {
-        return "Invalid dimension(s)";
-    }
+    std::string description() const override { return "Invalid dimension(s)"; }
 
     using Exception::Exception;
 };
@@ -283,9 +275,7 @@ class DimsInvalid : public Exception {
  */
 class DimsNotEqual : public Exception {
   public:
-    std::string description() const override {
-        return "Dimensions not equal";
-    }
+    std::string description() const override { return "Dimensions not equal"; }
 
     using Exception::Exception;
 };
@@ -379,9 +369,7 @@ class SubsysMismatchDims : public Exception {
  */
 class PermInvalid : public Exception {
   public:
-    std::string description() const override {
-        return "Invalid permutation";
-    }
+    std::string description() const override { return "Invalid permutation"; }
 
     using Exception::Exception;
 };
@@ -410,9 +398,7 @@ class PermMismatchDims : public Exception {
  */
 class NotQubitMatrix : public Exception {
   public:
-    std::string description() const override {
-        return "Matrix is not 2 x 2";
-    }
+    std::string description() const override { return "Matrix is not 2 x 2"; }
 
     using Exception::Exception;
 };
@@ -514,9 +500,7 @@ class NoCodeword : public Exception {
  */
 class OutOfRange : public Exception {
   public:
-    std::string description() const override {
-        return "Argument out of range";
-    }
+    std::string description() const override { return "Argument out of range"; }
 
     using Exception::Exception;
 };
@@ -615,9 +599,7 @@ class CustomException : public Exception {
  */
 class NotImplemented : public Exception {
   public:
-    std::string description() const override {
-        return "Not yet implemented";
-    }
+    std::string description() const override { return "Not yet implemented"; }
 
     using Exception::Exception;
 };

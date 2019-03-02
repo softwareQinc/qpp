@@ -61,7 +61,7 @@ IF (CYGWIN)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
 ENDIF ()
 
-SET(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra -Weffc++")
+SET(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra")
 SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
 
 #### CMake support only for GNU gcc and Clang/AppleClang
@@ -127,14 +127,14 @@ IF (${WITH_OPENMP})
     ENDIF ()
 ENDIF ()
 
-#### GoogleTest
+#### Google Test
 ADD_SUBDIRECTORY(lib/gtest-1.8.0)
+
+#### Enable all warnings only after compiling Google Test
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
 
 #### Unit tests
 ADD_SUBDIRECTORY(tests)
-
-#### Enable all warnings
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
 
 #### GNU gcc additional debug settings
 IF (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
@@ -157,6 +157,7 @@ SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DEIGEN_NO_DEBUG")
 SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO
         "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DEIGEN_NO_DEBUG")
 
+#### Default build type
 IF (NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE Release CACHE STRING
             "Choose the type of build, options are: \

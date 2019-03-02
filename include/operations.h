@@ -1036,7 +1036,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero size
-    if (!internal::check_nonzero_size(A))
+    if (!internal::check_nonzero_size(rA))
         throw exception::ZeroSize("qpp::ptrace1()");
 
     // check valid dims
@@ -1046,7 +1046,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 
     std::vector<idx> dims(2, d); // local dimensions vector
 
-    return ptrace1(A, dims);
+    return ptrace1(rA, dims);
 }
 
 /**
@@ -1156,7 +1156,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero size
-    if (!internal::check_nonzero_size(A))
+    if (!internal::check_nonzero_size(rA))
         throw exception::ZeroSize("qpp::ptrace2()");
 
     // check valid dims
@@ -1166,7 +1166,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 
     std::vector<idx> dims(2, d); // local dimensions vector
 
-    return ptrace2(A, dims);
+    return ptrace2(rA, dims);
 }
 
 /**

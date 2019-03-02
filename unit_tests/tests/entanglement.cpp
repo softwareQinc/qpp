@@ -369,7 +369,7 @@ TEST(qpp_schmidtA_schmidtB_qubits, AllTests) {
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_schmidtcoeffs, AllTests) {
     // random degenerate 1 x 1 product state
-    idx dA = 1, dB = 1, D = dA * dB, minD = std::min(dA, dB);
+    idx dA = 1, dB = 1, minD = std::min(dA, dB);
     cmat UA = randU(dA);
     cmat UB = randU(dB);
     ket psi = kron(UA, UB) * mket({0, 0}, {dA, dB});
@@ -379,7 +379,7 @@ TEST(qpp_schmidtcoeffs, AllTests) {
     EXPECT_NEAR(0, norm(result - expected), 1e-7);
 
     // random degenerate 3 x 1 product state
-    dA = 3, dB = 1, D = dA * dB, minD = std::min(dA, dB);
+    dA = 3, dB = 1, minD = std::min(dA, dB);
     UA = randU(dA);
     UB = randU(dB);
     psi = kron(UA, UB) * mket({0, 0}, {dA, dB});
@@ -389,7 +389,7 @@ TEST(qpp_schmidtcoeffs, AllTests) {
     EXPECT_NEAR(0, norm(result - expected), 1e-7);
 
     // random 3 x 4 product state
-    dA = 3, dB = 4, D = dA * dB, minD = std::min(dA, dB);
+    dA = 3, dB = 4, minD = std::min(dA, dB);
     UA = randU(dA);
     UB = randU(dB);
     psi = kron(UA, UB) * mket({0, 0}, {dA, dB});
@@ -399,7 +399,7 @@ TEST(qpp_schmidtcoeffs, AllTests) {
     EXPECT_NEAR(0, norm(result - expected), 1e-7);
 
     // random 2 x 3 state with fixed Schmidt coefficients
-    dA = 2, dB = 3, D = dA * dB, minD = std::min(dA, dB);
+    dA = 2, dB = 3, minD = std::min(dA, dB);
     double c0 = 0.8, c1 = 0.6;
     UA = randU(dA);
     UB = randU(dB);
@@ -411,7 +411,7 @@ TEST(qpp_schmidtcoeffs, AllTests) {
     EXPECT_NEAR(0, norm(result - expected), 1e-7);
 
     // random 5 x 3 state with fixed Schmidt coefficients
-    dA = 5, dB = 3, D = dA * dB, minD = std::min(dA, dB);
+    dA = 5, dB = 3, minD = std::min(dA, dB);
     c0 = 0.8, c1 = 0.5;
     double c2 = std::sqrt(1 - c0 * c0 - c1 * c1);
     UA = randU(dA);
@@ -477,7 +477,7 @@ TEST(qpp_schmidtcoeffs_qubits, AllTests) {
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_schmidtprobs, AllTests) {
     // random degenerate 1 x 1 product state
-    idx dA = 1, dB = 1, D = dA * dB, minD = std::min(dA, dB);
+    idx dA = 1, dB = 1, minD = std::min(dA, dB);
     cmat UA = randU(dA);
     cmat UB = randU(dB);
     ket psi = kron(UA, UB) * mket({0, 0}, {dA, dB});
@@ -489,7 +489,7 @@ TEST(qpp_schmidtprobs, AllTests) {
     EXPECT_NEAR(0, norm(result - expected), 1e-7);
 
     // random degenerate 3 x 1 product state
-    dA = 3, dB = 1, D = dA * dB, minD = std::min(dA, dB);
+    dA = 3, dB = 1, minD = std::min(dA, dB);
     UA = randU(dA);
     UB = randU(dB);
     psi = kron(UA, UB) * mket({0, 0}, {dA, dB});
@@ -501,7 +501,7 @@ TEST(qpp_schmidtprobs, AllTests) {
     EXPECT_NEAR(0, norm(result - expected), 1e-7);
 
     // random 3 x 4 product state
-    dA = 3, dB = 4, D = dA * dB, minD = std::min(dA, dB);
+    dA = 3, dB = 4, minD = std::min(dA, dB);
     UA = randU(dA);
     UB = randU(dB);
     psi = kron(UA, UB) * mket({0, 0}, {dA, dB});
@@ -513,7 +513,7 @@ TEST(qpp_schmidtprobs, AllTests) {
     EXPECT_NEAR(0, norm(result - expected), 1e-7);
 
     // random 2 x 3 state with fixed Schmidt coefficients
-    dA = 2, dB = 3, D = dA * dB, minD = std::min(dA, dB);
+    dA = 2, dB = 3, minD = std::min(dA, dB);
     double c0 = 0.8, c1 = 0.6;
     UA = randU(dA);
     UB = randU(dB);
@@ -527,7 +527,7 @@ TEST(qpp_schmidtprobs, AllTests) {
     EXPECT_NEAR(0, norm(result - expected), 1e-7);
 
     // random 5 x 3 state with fixed Schmidt coefficients
-    dA = 5, dB = 3, D = dA * dB, minD = std::min(dA, dB);
+    dA = 5, dB = 3, minD = std::min(dA, dB);
     c0 = 0.8, c1 = 0.5;
     double c2 = std::sqrt(1 - c0 * c0 - c1 * c1);
     UA = randU(dA);
