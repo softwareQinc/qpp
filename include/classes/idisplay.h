@@ -39,13 +39,12 @@ namespace qpp {
  * \brief Abstract class (interface) that mandates the definition of
  * virtual std::ostream& display(std::ostream& os) const
  *
- * This class defines friend inline std::ostream& operator<<
- * (std::ostream& os, const qpp::IDisplay& rhs). The latter delegates
- * the work to the pure private virtual function qpp::IDisplay::display()
- * which has to be overridden by all derived classes.
+ * This class defines
+ * friend std::ostream& operator<<(std::ostream& os, const qpp::IDisplay& rhs).
+ * The latter delegates the work to the pure private virtual function
+ * qpp::IDisplay::display() which has to be overridden by all derived classes.
  */
 class IDisplay {
-  private:
     /**
      * \brief Must be overridden by all derived classes
      *
@@ -58,31 +57,6 @@ class IDisplay {
 
   public:
     /**
-     * \brief Default constructor
-     */
-    IDisplay() = default;
-
-    /**
-     * \brief Default copy constructor
-     */
-    IDisplay(const IDisplay&) = default;
-
-    /**
-     * \brief Default move constructor
-     */
-    IDisplay(IDisplay&&) = default;
-
-    /**
-     * \brief Default copy assignment operator
-     */
-    IDisplay& operator=(const IDisplay&) = default;
-
-    /**
-     * \brief Default move assignment operator
-     */
-    IDisplay& operator=(IDisplay&&) = default;
-
-    /**
      * \brief Default virtual destructor
      */
     virtual ~IDisplay() = default;
@@ -92,8 +66,7 @@ class IDisplay {
      *
      * Delegates the work to the virtual function qpp::IDisplay::display()
      */
-    friend inline std::ostream& operator<<(std::ostream& os,
-                                           const IDisplay& rhs) {
+    friend std::ostream& operator<<(std::ostream& os, const IDisplay& rhs) {
         return rhs.display(os);
     }
 }; /* class IDisplay */
@@ -105,31 +78,6 @@ class IDisplay {
  */
 class IJSON {
   public:
-    /**
-     * \brief Default constructor
-     */
-    IJSON() = default;
-
-    /**
-     * \brief Default copy constructor
-     */
-    IJSON(const IJSON&) = default;
-
-    /**
-     * \brief Default move constructor
-     */
-    IJSON(IJSON&&) = default;
-
-    /**
-     * \brief Default copy assignment operator
-     */
-    IJSON& operator=(const IJSON&) = default;
-
-    /**
-     * \brief Default move assignment operator
-     */
-    IJSON& operator=(IJSON&&) = default;
-
     /**
      * \brief Default virtual destructor
      */

@@ -37,7 +37,7 @@ namespace qpp {
  * \class qpp::Timer
  * \brief Chronometer
  *
- * \tparam T Tics duration, default is std::chrono::duration<double, 1>,
+ * \tparam T Tics duration, default is std::chrono::duration<double>,
  * i.e. seconds in double precision
  * \tparam CLOCK_T Clock's type, default is std::chrono::steady_clock,
  * not affected by wall clock changes during runtime
@@ -50,10 +50,14 @@ class Timer : public IDisplay {
 
   public:
     /**
-     * \brief Constructs an instance with the current time
-     * as the starting point
+     * \brief Constructs an instance with the current time as the starting point
      */
     Timer() noexcept : start_{CLOCK_T::now()}, end_{start_} {}
+
+    /**
+     * \brief Default virtual destructor
+     */
+    virtual ~Timer() = default;
 
     /**
      * \brief Resets the chronometer
@@ -88,7 +92,7 @@ class Timer : public IDisplay {
      * \brief Duration specified by U
      *
      * \tparam U Duration, default is T, which defaults to
-     * std::chrono::duration<double, 1>, i.e. seconds in double precision
+     * std::chrono::duration<double>, i.e. seconds in double precision
      *
      * \return Duration that passed between the
      * instantiation/reset and invocation of qpp::Timer::toc()
@@ -98,38 +102,13 @@ class Timer : public IDisplay {
         return std::chrono::duration_cast<U>(end_ - start_);
     }
 
-    /**
-     * \brief Default copy constructor
-     */
-    Timer(const Timer&) = default;
-
-    /**
-     * \brief Default move constructor
-     */
-    Timer(Timer&&) = default;
-
-    /**
-     * \brief Default copy assignment operator
-     */
-    Timer& operator=(const Timer&) = default;
-
-    /**
-     * \brief Default move assignment operator
-     */
-    Timer& operator=(Timer&&) = default;
-
-    /**
-     * \brief Default virtual destructor
-     */
-    virtual ~Timer() = default;
-
   private:
     /**
      * \brief qpp::IDisplay::display() override
      *
-     * Writes to the output stream the number of tics (specified by T)
-     * that passed between the instantiation/reset and invocation
-     * of qpp::Timer::toc().
+     * Writes to the output stream the number of tics (specified by T) that
+     * passed between the instantiation/reset and invocation of
+     * qpp::Timer::toc()
      *
      * \param os Output stream passed by reference
      * \return Reference to the output stream
