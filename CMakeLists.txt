@@ -165,6 +165,7 @@ IF (NOT CMAKE_BUILD_TYPE)
 ENDIF ()
 
 ADD_EXECUTABLE(qpp ${SOURCE_FILES})
+
 #### Eigen3 was found automatically
 IF (TARGET Eigen3::Eigen)
     TARGET_LINK_LIBRARIES(qpp Eigen3::Eigen)

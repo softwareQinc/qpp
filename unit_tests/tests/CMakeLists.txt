@@ -1,4 +1,4 @@
-# Quantum++
+su# Quantum++
 #
 # Copyright (c) 2013 - 2019 Vlad Gheorghiu (vgheorgh@gmail.com)
 #
@@ -18,7 +18,7 @@
 # along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 INCLUDE_DIRECTORIES(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
-ADD_EXECUTABLE(qpp_testing
+SET(SOURCE_FILES
         classes/circuits/circuits.cpp
         classes/circuits/engines.cpp
         classes/gates.cpp
@@ -40,6 +40,7 @@ ADD_EXECUTABLE(qpp_testing
         statistics.cpp
         testing_main.cpp
         traits.cpp)
+ADD_EXECUTABLE(qpp_testing ${SOURCE_FILES})
 TARGET_LINK_LIBRARIES(qpp_testing gmock)
 
 #### Eigen3 was found automatically
