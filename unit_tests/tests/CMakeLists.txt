@@ -18,28 +18,7 @@
 # along with Quantum++.  If not, see <http://www.gnu.org/licenses/>.
 
 INCLUDE_DIRECTORIES(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
-SET(SOURCE_FILES
-        classes/circuits/circuits.cpp
-        classes/circuits/engines.cpp
-        classes/gates.cpp
-        classes/noise.cpp
-        classes/random_devices.cpp
-        classes/reversible.cpp
-        classes/states.cpp
-        classes/timer.cpp
-        MATLAB/matlab.cpp
-        entanglement.cpp
-        entropies.cpp
-        functions.cpp
-        input_output.cpp
-        instruments.cpp
-        issues.cpp
-        number_theory.cpp
-        operations.cpp
-        random.cpp
-        statistics.cpp
-        testing_main.cpp
-        traits.cpp)
+AUX_SOURCE_DIRECTORY(. SOURCE_FILES)
 ADD_EXECUTABLE(qpp_testing ${SOURCE_FILES})
 TARGET_LINK_LIBRARIES(qpp_testing gmock)
 
