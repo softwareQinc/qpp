@@ -1,4 +1,4 @@
-su# Quantum++
+# Quantum++
 #
 # Copyright (c) 2013 - 2019 Vlad Gheorghiu (vgheorgh@gmail.com)
 #
