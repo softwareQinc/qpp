@@ -34,6 +34,7 @@ INCLUDE_DIRECTORIES(include)
 
 #### Source file(s) to be compiled, modify as needed
 AUX_SOURCE_DIRECTORY(examples EXAMPLE_FILES)
+AUX_SOURCE_DIRECTORY(examples/circuits EXAMPLE_FILES)
 
 #### Eigen3
 MESSAGE(STATUS "Detecting Eigen3")
@@ -172,8 +173,8 @@ FOREACH (FILE ${EXAMPLE_FILES})
         ADD_EXECUTABLE(${TARGET_NAME} ${FILE})
         TARGET_LINK_LIBRARIES(${TARGET_NAME} mx mat)
     ELSE () #### No MATLAB support
-        #### Do not build examples/input_output.cpp if there's no MATLAB support
-        IF (${FILE} STREQUAL "examples/input_output.cpp")
+        #### Do not build examples/matlab.cpp if there's no MATLAB support
+        IF (${FILE} STREQUAL "examples/matlab.cpp")
             CONTINUE()
         ELSE ()
             ADD_EXECUTABLE(${TARGET_NAME} ${FILE})

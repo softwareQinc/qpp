@@ -19,6 +19,8 @@
 
 INCLUDE_DIRECTORIES(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 AUX_SOURCE_DIRECTORY(. TEST_FILES)
+AUX_SOURCE_DIRECTORY(MATLAB TEST_FILES)
+AUX_SOURCE_DIRECTORY(classes TEST_FILES)
 SET(TARGET_NAME "qpp_testing")
 ADD_EXECUTABLE(${TARGET_NAME} testing_main.cpp)
 CMAKE_POLICY(SET CMP0076 NEW)
@@ -30,8 +32,8 @@ FOREACH (FILE ${TEST_FILES})
         TARGET_SOURCES(${TARGET_NAME} PUBLIC ${FILE})
         TARGET_LINK_LIBRARIES(${TARGET_NAME} mx mat)
     ELSE () #### No MATLAB support
-        #### Do not build tests/input_output.cpp if there's no MATLAB support
-        IF (${FILE} STREQUAL "tests/input_output.cpp")
+        #### Do not build tests/matlab.cpp if there's no MATLAB support
+        IF (${FILE} STREQUAL "MATLAB/matlab.cpp")
             CONTINUE()
         ELSE ()
             TARGET_SOURCES(${TARGET_NAME} PUBLIC ${FILE})
