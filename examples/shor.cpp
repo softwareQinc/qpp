@@ -69,7 +69,7 @@ int main() {
     std::cout << '\n';
 
     bool failed = true;
-    idx r1, c1;
+    idx r1 = 0, c1 = 0;
     for (auto&& elem : convergents(x1, 10)) {
         std::tie(c1, r1) = elem;
         double c1r1 = static_cast<double>(c1) / r1;
@@ -96,7 +96,7 @@ int main() {
     std::cout << '\n';
 
     failed = true;
-    idx r2, c2;
+    idx r2 = 0, c2 = 0;
     for (auto&& elem : convergents(x2, 10)) {
         std::tie(c2, r2) = elem;
         double c2r2 = static_cast<double>(c2) / r2;
