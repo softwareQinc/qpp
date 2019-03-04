@@ -68,4 +68,3 @@ documentation and detailed examples.
 
 The official API documentation is available in PDF and HTML formats in the 
 [`doc`](https://github.com/vsoftco/qpp/tree/master/doc) folder.
-
