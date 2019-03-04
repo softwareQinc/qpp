@@ -33,7 +33,7 @@ SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 INCLUDE_DIRECTORIES(include)
 
 #### Source file(s) to be compiled, modify as needed
-AUX_SOURCE_DIRECTORY(examples/ EXAMPLES)
+AUX_SOURCE_DIRECTORY(examples EXAMPLE_FILES)
 
 #### Eigen3
 MESSAGE(STATUS "Detecting Eigen3")
@@ -105,8 +105,9 @@ IF (NOT ${WITH_MATLAB} STREQUAL "")
         ELSE ()
             MESSAGE(FATAL_ERROR "Possibly corrupted MATLAB linker files")
         ENDIF ()
-        #### everything is OK, inject definition (as #define) in the source
+        #### Everything is OK, inject definition (as #define) in the source
         ADD_DEFINITIONS(-DWITH_MATLAB_)
+        SET(BUILD_WITH_MATLAB TRUE)
     ELSE ()
         MESSAGE(FATAL_ERROR "Invalid path to MATLAB installation")
     ENDIF ()
@@ -163,24 +164,28 @@ IF (NOT CMAKE_BUILD_TYPE)
             FORCE)
 ENDIF ()
 
-#### Build all examples in ${EXAMPLES}
-FOREACH(file ${EXAMPLES})
-    GET_FILENAME_COMPONENT(file_no_extension ${file} NAME_WE)
-    ADD_EXECUTABLE(${file_no_extension} ${file})
-
+#### Build all examples in ${EXAMPLE_FILES}
+FOREACH (FILE ${EXAMPLE_FILES})
+    GET_FILENAME_COMPONENT(TARGET_NAME ${FILE} NAME_WE)
+    #### MATALB support
+    IF (${BUILD_WITH_MATLAB})
+        ADD_EXECUTABLE(${TARGET_NAME} ${FILE})
+        TARGET_LINK_LIBRARIES(${TARGET_NAME} mx mat)
+    ELSE () #### No MATLAB support
+        #### Do not build examples/input_output.cpp if there's no MATLAB support
+        IF (${FILE} STREQUAL "examples/input_output.cpp")
+            CONTINUE()
+        ELSE ()
+            ADD_EXECUTABLE(${TARGET_NAME} ${FILE})
+        ENDIF ()
+    ENDIF ()
     #### Eigen3 was found automatically
     IF (TARGET Eigen3::Eigen)
-        TARGET_LINK_LIBRARIES(${file_no_extension} Eigen3::Eigen)
+        TARGET_LINK_LIBRARIES(${TARGET_NAME} Eigen3::Eigen)
     ENDIF ()
-
-    IF (NOT ${WITH_MATLAB} STREQUAL "")
-        TARGET_LINK_LIBRARIES(${file_no_extension} mx mat)
-    ENDIF ()
-
+    #### OpenMP was enabled
     IF ($WITH_OPENMP$ AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang"
             AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.7")
-        TARGET_LINK_LIBRARIES(file_no_extension omp)
+        TARGET_LINK_LIBRARIES(TARGET_NAME omp)
     ENDIF ()
-ENDFOREACH()
-
-
+ENDFOREACH ()

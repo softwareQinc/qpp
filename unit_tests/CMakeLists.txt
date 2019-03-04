@@ -104,6 +104,7 @@ IF (NOT ${WITH_MATLAB} STREQUAL "")
         ENDIF ()
         #### everything is OK, inject definition (as #define) in the source
         ADD_DEFINITIONS(-DWITH_MATLAB_)
+        SET (BUILD_WITH_MATLAB TRUE)
     ELSE ()
         MESSAGE(FATAL_ERROR "Invalid path to MATLAB installation")
     ENDIF ()
