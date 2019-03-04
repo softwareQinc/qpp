@@ -33,8 +33,7 @@ SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 INCLUDE_DIRECTORIES(include)
 
 #### Source file(s) to be compiled, modify as needed
-SET(SOURCE_FILES
-        examples/minimal.cpp)
+AUX_SOURCE_DIRECTORY(examples/ EXAMPLES)
 
 #### Eigen3
 MESSAGE(STATUS "Detecting Eigen3")
@@ -164,18 +163,24 @@ IF (NOT CMAKE_BUILD_TYPE)
             FORCE)
 ENDIF ()
 
-ADD_EXECUTABLE(qpp ${SOURCE_FILES})
+#### Build all examples in ${EXAMPLES}
+FOREACH(file ${EXAMPLES})
+    GET_FILENAME_COMPONENT(file_no_extension ${file} NAME_WE)
+    ADD_EXECUTABLE(${file_no_extension} ${file})
 
-#### Eigen3 was found automatically
-IF (TARGET Eigen3::Eigen)
-    TARGET_LINK_LIBRARIES(qpp Eigen3::Eigen)
-ENDIF ()
+    #### Eigen3 was found automatically
+    IF (TARGET Eigen3::Eigen)
+        TARGET_LINK_LIBRARIES(${file_no_extension} Eigen3::Eigen)
+    ENDIF ()
 
-IF (NOT ${WITH_MATLAB} STREQUAL "")
-    TARGET_LINK_LIBRARIES(qpp mx mat)
-ENDIF ()
+    IF (NOT ${WITH_MATLAB} STREQUAL "")
+        TARGET_LINK_LIBRARIES(${file_no_extension} mx mat)
+    ENDIF ()
 
-IF ($WITH_OPENMP$ AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang"
-        AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.7")
-    TARGET_LINK_LIBRARIES(qpp omp)
-ENDIF ()
+    IF ($WITH_OPENMP$ AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang"
+            AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.7")
+        TARGET_LINK_LIBRARIES(file_no_extension omp)
+    ENDIF ()
+ENDFOREACH()
+
+
