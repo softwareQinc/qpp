@@ -11,8 +11,8 @@ int main() {
     using namespace qpp;
     std::cout << ">> Classical reversible circuits\n";
 
-    const idx n = 32;          // number of bits
-    const idx num_trials = 10; // number of trials
+    idx n = 32;          // number of bits
+    idx num_trials = 10; // number of trials
     Bit_circuit bc{n};
     bc.rand(); // randomize the vector
     Bit_circuit bc_initial = bc;
