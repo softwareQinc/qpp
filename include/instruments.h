@@ -40,8 +40,8 @@ namespace qpp {
  * \param psi Column vector Eigen expression
  * \param subsys Subsystem indexes over which \a phi is defined
  * \param dims Dimensions of the multi-partite system
- * \return Inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar
- * or column vector over the remaining Hilbert space
+ * \return Inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar or
+ * column vector over the remaining Hilbert space
  */
 template <typename Derived>
 dyn_col_vect<typename Derived::Scalar>
@@ -165,8 +165,8 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
  * \param psi Column vector Eigen expression
  * \param subsys Subsystem indexes over which \a phi is defined
  * \param d Subsystem dimensions
- * \return Inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar
- * or column vector over the remaining Hilbert space
+ * \return Inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar or
+ * column vector over the remaining Hilbert space
  */
 template <typename Derived>
 dyn_col_vect<typename Derived::Scalar>
@@ -197,9 +197,8 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
- * \return Tuple of: 1. Result of the measurement, 2.
- * Vector of outcome probabilities, and 3. Vector of post-measurement
- * normalized states
+ * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
@@ -276,9 +275,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
- * \return Tuple of: 1. Result of the measurement, 2.
- * Vector of outcome probabilities, and 3. Vector of post-measurement
- * normalized states
+ * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
@@ -293,9 +291,8 @@ measure(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param U Unitary matrix whose columns represent the measurement basis vectors
- * \return Tuple of: 1. Result of the measurement, 2.
- * Vector of outcome probabilities, and 3. Vector of post-measurement
- * normalized states
+ * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
@@ -337,9 +334,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
  * \param Ks Set of Kraus operators
  * \param target Subsystem indexes that are measured
  * \param dims Dimensions of the multi-partite system
- * \return Tuple of: 1. Result of the measurement, 2.
- * Vector of outcome probabilities, and 3. Vector of post-measurement
- * normalized states
+ * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
@@ -451,9 +447,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
  * \param Ks Set of Kraus operators
  * \param target Subsystem indexes that are measured
  * \param dims Dimensions of the multi-partite system
- * \return Tuple of: 1. Result of the measurement, 2.
- * Vector of outcome probabilities, and 3. Vector of post-measurement
- * normalized states
+ * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
@@ -475,9 +470,8 @@ measure(const Eigen::MatrixBase<Derived>& A,
  * \param Ks Set of Kraus operators
  * \param target Subsystem indexes that are measured
  * \param d Subsystem dimensions
- * \return Tuple of: 1. Result of the measurement, 2.
- * Vector of outcome probabilities, and 3. Vector of post-measurement
- * normalized states
+ * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
@@ -517,9 +511,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
  * \param Ks Set of Kraus operators
  * \param target Subsystem indexes that are measured
  * \param d Subsystem dimensions
- * \return Tuple of: 1. Result of the measurement, 2.
- * Vector of outcome probabilities, and 3. Vector of post-measurement
- * normalized states
+ * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
@@ -543,9 +536,8 @@ measure(const Eigen::MatrixBase<Derived>& A,
  * bra parts of the rank-1 projectors
  * \param target Subsystem indexes that are measured
  * \param dims Dimensions of the multi-partite system
- * \return Tuple of: 1. Result of the measurement, 2.
- * Vector of outcome probabilities, and 3. Vector of post-measurement
- * normalized states
+ * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>

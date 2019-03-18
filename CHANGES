@@ -8,6 +8,8 @@ In progress - pre-release
     - Implemented qpp::QCircuit::QFT() and qpp::QCircuit::TFQ() (inverse Fourier
       transform)
     - Implemented qpp::QCircuit::get_gate_depth()
+    - Implemented qpp::Bit_circuit::get_gate_count() and
+      qpp::Bit_circuit::get_gate_depth()
 Version 1.2 - 10 February 2019
     - Added new function in "functions.h":
           qpp::normalize() - normalizes a state vector (ket or bra) or density

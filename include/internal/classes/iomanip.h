@@ -41,14 +41,15 @@ template <typename InputIterator>
 class IOManipRange : public IDisplay {
     InputIterator first_, last_;
     std::string separator_, start_, end_;
+    double chop_;
 
   public:
     explicit IOManipRange(InputIterator first, InputIterator last,
                           const std::string& separator,
                           const std::string& start = "[",
-                          const std::string& end = "]")
+                          const std::string& end = "]", double chop = qpp::chop)
         : first_{first}, last_{last},
-          separator_{separator}, start_{start}, end_{end} {}
+          separator_{separator}, start_{start}, end_{end}, chop_{chop} {}
 
     // to silence -Weffc++ warnings for classes that have pointer members
     // (whenever we have a pointer instantiation,
@@ -66,7 +67,7 @@ class IOManipRange : public IDisplay {
             if (!first)
                 os << separator_;
             first = false;
-            os << *it;
+            os << abs_chop(*it, chop_);
         }
         os << end_;
 
@@ -79,13 +80,16 @@ class IOManipPointer : public IDisplay {
     const PointerType* p_;
     idx N_;
     std::string separator_, start_, end_;
+    double chop_;
 
   public:
     explicit IOManipPointer(const PointerType* p, idx N,
                             const std::string& separator,
                             const std::string& start = "[",
-                            const std::string& end = "]")
-        : p_{p}, N_{N}, separator_{separator}, start_{start}, end_{end} {}
+                            const std::string& end = "]",
+                            double chop = qpp::chop)
+        : p_{p}, N_{N},
+          separator_{separator}, start_{start}, end_{end}, chop_{chop} {}
 
     // to silence -Weffc++ warnings for classes that have pointer members
     IOManipPointer(const IOManipPointer&) = default;
@@ -97,9 +101,9 @@ class IOManipPointer : public IDisplay {
         os << start_;
 
         for (idx i = 0; i < N_ - 1; ++i)
-            os << p_[i] << separator_;
+            os << abs_chop(p_[i], chop_) << separator_;
         if (N_ > 0)
-            os << p_[N_ - 1];
+            os << abs_chop(p_[N_ - 1], chop_);
 
         os << end_;
 

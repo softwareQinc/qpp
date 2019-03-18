@@ -57,7 +57,7 @@ inline constexpr cplx operator"" _i(long double x) noexcept {
  * \brief  Used in qpp::disp() for setting to zero  numbers
  * that have their absolute value smaller than qpp::chop
  */
-constexpr double chop = 1e-10;
+constexpr double chop = 1e-16;
 
 /**
  * \brief Maximum number of allowed qubits/qudits (subsystems)
