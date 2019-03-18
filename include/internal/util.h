@@ -393,8 +393,8 @@ inline idx get_dim_subsys(idx sz, idx N) {
 
 // chops a floating point or complex number to zero
 template <typename T,
-    typename std::enable_if<std::numeric_limits<T>::is_iec559 ||
-        is_complex<T>::value>::type* = nullptr>
+          typename std::enable_if<std::numeric_limits<T>::is_iec559 ||
+                                  is_complex<T>::value>::type* = nullptr>
 T abs_chop(const T& x, double chop = qpp::chop) {
     if (std::abs(x) < chop)
         return 0;
@@ -404,12 +404,11 @@ T abs_chop(const T& x, double chop = qpp::chop) {
 
 // returns it unchanged otherwise
 template <typename T,
-    typename std::enable_if<!(std::numeric_limits<T>::is_iec559 ||
-        is_complex<T>::value)>::type* = nullptr>
+          typename std::enable_if<!(std::numeric_limits<T>::is_iec559 ||
+                                    is_complex<T>::value)>::type* = nullptr>
 T abs_chop(const T& x, double QPP_UNUSED_ chop = qpp::chop) {
     return x;
 }
-
 
 // implementation details for pretty formatting
 struct Display_Impl_ {

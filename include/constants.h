@@ -42,7 +42,6 @@ inline namespace literals {
 inline constexpr cplx operator"" _i(unsigned long long int x) noexcept {
     return {0., static_cast<double>(x)};
 }
-} /* namespace literals */
 
 /**
  * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (real overload)
@@ -52,6 +51,27 @@ inline constexpr cplx operator"" _i(unsigned long long int x) noexcept {
 inline constexpr cplx operator"" _i(long double x) noexcept {
     return {0., static_cast<double>(x)};
 }
+
+/**
+ * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (integer overload)
+ *
+ * Example: \code auto z = 4_if; // type of z is std::complex<double> \endcode
+ */
+inline constexpr std::complex<float>
+operator"" _if(unsigned long long int x) noexcept {
+    return {0., static_cast<float>(x)};
+}
+
+/**
+ * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (real overload)
+ *
+ * Example: \code auto z = 4.5_if; // type of z is std::complex<float> \endcode
+ */
+inline constexpr std::complex<float> operator"" _if(long double x) noexcept {
+    return {0., static_cast<float>(x)};
+}
+
+} /* namespace literals */
 
 /**
  * \brief  Used in qpp::disp() for setting to zero  numbers
