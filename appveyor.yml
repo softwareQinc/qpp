@@ -6,7 +6,8 @@ platform: x64
 
 build:
     project: VisualStudio/VisualStudio.sln
-    verbosity: minimal 
+    verbosity: minimal
+    parallel: true
 
 install:
     - ps: wget http://bitbucket.org/eigen/eigen/get/3.3.5.zip -O eigen3.zip
@@ -19,4 +20,4 @@ configuration:
 
 test_script:
     - cmd: >-
-        %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\qpp_testing.exe --gtest_filter=-qpp_Timer*
+        %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\qpp_testing.exe --gtest_filter=-qpp_Timer*
