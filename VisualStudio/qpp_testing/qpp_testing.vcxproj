@@ -89,7 +89,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\eigen;$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EIGEN3_INSTALL_PATH);$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -105,7 +105,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\eigen;$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EIGEN3_INSTALL_PATH);$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -123,7 +123,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\eigen;$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EIGEN3_INSTALL_PATH);$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -143,7 +143,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\eigen;$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EIGEN3_INSTALL_PATH);$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googletest\;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock\include;$(SolutionDir)..\unit_tests\lib\gtest-1.8.0\googlemock;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
