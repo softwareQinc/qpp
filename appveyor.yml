@@ -4,6 +4,9 @@ image: Visual Studio 2017
 
 platform: x64
 
+environment: 
+    EIGEN3_INSTALL_PATH: c:\eigen3
+    
 build:
     project: VisualStudio/VisualStudio.sln
     verbosity: minimal
@@ -12,7 +15,7 @@ build:
 install:
     - ps: wget http://bitbucket.org/eigen/eigen/get/3.3.5.zip -O eigen3.zip
     - cmd: unzip eigen3.zip > nul
-    - cmd: mv eigen-eigen-b3f3d4950030 c:\eigen
+    - cmd: mv eigen-eigen-b3f3d4950030 %EIGEN3_INSTALL_PATH%
 
 configuration:
     - Debug
