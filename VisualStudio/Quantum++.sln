@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qpp", "qpp\qpp.vcxproj", "{0CC64CC9-0396-4E3F-B56B-6CAAA30088F5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "minimal_example", "minimal_example\minimal_example.vcxproj", "{0CC64CC9-0396-4E3F-B56B-6CAAA30088F5}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GoogleTest", "GTest\GTest.vcxproj", "{4C85A4B5-83A6-4723-BEF2-8658732B3F38}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GoogleTest", "GoogleTest\GoogleTest.vcxproj", "{4C85A4B5-83A6-4723-BEF2-8658732B3F38}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qpp_testing", "qpp_testing\qpp_testing.vcxproj", "{19A91C31-5D11-4C16-BE4B-6F7301DB3212}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unit_tests", "unit_tests\unit_tests.vcxproj", "{19A91C31-5D11-4C16-BE4B-6F7301DB3212}"
 	ProjectSection(ProjectDependencies) = postProject
 		{4C85A4B5-83A6-4723-BEF2-8658732B3F38} = {4C85A4B5-83A6-4723-BEF2-8658732B3F38}
 	EndProjectSection

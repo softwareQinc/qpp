@@ -88,7 +88,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="qpp_testing.rc">
+    <ResourceCompile Include="minimal_example.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

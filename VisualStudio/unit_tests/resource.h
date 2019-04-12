@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by qpp_testing.rc
+// Used by minimal_example.rc
 
 // Next default values for new objects
 // 
