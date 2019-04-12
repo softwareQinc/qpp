@@ -156,10 +156,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\unit_tests\tests\classes\circuits\circuits.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\classes\circuits\engines.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\classes\gates.cpp" />
@@ -181,9 +177,6 @@
     <ClCompile Include="..\..\unit_tests\tests\random.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\statistics.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\traits.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="minimal_example.rc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoogleTest\GoogleTest.vcxproj">

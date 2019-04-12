@@ -160,9 +160,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\unit_tests\lib\gtest-1.8.0\googletest\src\gtest-all.cc" />
     <ClCompile Include="..\..\unit_tests\lib\gtest-1.8.0\googletest\src\gtest_main.cc" />
   </ItemGroup>

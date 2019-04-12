@@ -15,11 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\unit_tests\lib\gtest-1.8.0\googletest\src\gtest-all.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
