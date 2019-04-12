@@ -41,13 +41,13 @@ script:
   # Build the examples
   - mkdir build
   - cd build
-  - cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j 4
+  - cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j4
   
   # Build the unit tests
   - cd ../unit_tests
   - mkdir build
   - cd build
-  - cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j 4
+  - cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j4
 
   # Run the unit tests
   - ./tests/qpp_testing --gtest_filter=-qpp_Timer*
