@@ -8,7 +8,7 @@ environment:
     EIGEN3_INSTALL_PATH: c:\eigen3
     
 build:
-    project: VisualStudio/VisualStudio.sln
+    project: VisualStudio/Quantum++.sln
     verbosity: minimal
     parallel: true
 
@@ -23,4 +23,4 @@ configuration:
 
 test_script:
     - cmd: >-
-        %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\qpp_testing.exe --gtest_filter=-qpp_Timer*
+        %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\unit_tests.exe --gtest_filter=-qpp_Timer*
