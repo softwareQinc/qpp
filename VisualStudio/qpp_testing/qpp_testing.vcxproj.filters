@@ -53,9 +53,6 @@
     <ClCompile Include="..\..\unit_tests\tests\statistics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\unit_tests\tests\testing_main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\unit_tests\tests\traits.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -84,6 +81,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\unit_tests\tests\classes\timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\unit_tests\tests\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

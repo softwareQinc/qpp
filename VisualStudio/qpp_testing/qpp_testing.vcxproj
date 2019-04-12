@@ -173,12 +173,12 @@
     <ClCompile Include="..\..\unit_tests\tests\input_output.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\instruments.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\issues.cpp" />
+    <ClCompile Include="..\..\unit_tests\tests\main.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\MATLAB\matlab.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\number_theory.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\operations.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\random.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\statistics.cpp" />
-    <ClCompile Include="..\..\unit_tests\tests\testing_main.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\traits.cpp" />
   </ItemGroup>
   <ItemGroup>
