@@ -16,7 +16,7 @@ int main() {
     idx N = 10000; // number of "measurement experiments"
     for (idx i = 0; i < N; ++i) {
         auto measured = measure(psi, evects);
-        idx m = std::get<0>(measured); // measurement result
+        idx m = std::get<RES>(measured); // measurement result
         if (evals[m] < 0)              // -1
             --res;
         else // +1

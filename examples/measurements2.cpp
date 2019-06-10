@@ -85,18 +85,18 @@ int main() {
     // ket
     std::cout << ">> Ket, measuring subsystem(s) ";
     std::cout << disp(subsys_ket, " ") << '\n';
-    std::cout << ">> Outcome(s): " << disp(std::get<0>(measured_ket), " ")
+    std::cout << ">> Outcome(s): " << disp(std::get<RES>(measured_ket), " ")
               << '\n';
-    std::cout << ">> Probability:  " << std::get<1>(measured_ket) << '\n';
+    std::cout << ">> Probability:  " << std::get<PROB>(measured_ket) << '\n';
     std::cout << ">> Resulting state:\n";
-    std::cout << disp(std::get<2>(measured_ket)) << '\n';
+    std::cout << disp(std::get<ST>(measured_ket)) << '\n';
 
     // density matrix
     std::cout << ">> Density matrix, measuring subsystem(s) ";
     std::cout << disp(subsys_rho, " ") << '\n';
-    std::cout << ">> Outcome(s): " << disp(std::get<0>(measured_rho), " ")
+    std::cout << ">> Outcome(s): " << disp(std::get<RES>(measured_rho), " ")
               << '\n';
-    std::cout << ">> Probability:  " << std::get<1>(measured_rho) << '\n';
+    std::cout << ">> Probability:  " << std::get<PROB>(measured_rho) << '\n';
     std::cout << ">> Resulting state:\n";
-    std::cout << disp(std::get<2>(measured_rho)) << '\n';
+    std::cout << disp(std::get<ST>(measured_rho)) << '\n';
 }

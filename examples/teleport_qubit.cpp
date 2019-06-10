@@ -27,17 +27,17 @@ int main() {
     auto results = measure_seq(input_aAB, {0, 1});
 
     // measurement results
-    idx z = std::get<0>(results)[0];
-    idx x = std::get<0>(results)[1];
+    idx z = std::get<RES>(results)[0];
+    idx x = std::get<RES>(results)[1];
     std::cout << ">> Alice's measurement results: ";
     std::cout << "x = " << x << " and z = " << z;
 
     // probability of obtaining the measurement results x and z
-    double p = std::get<1>(results);
+    double p = std::get<PROB>(results);
     std::cout << ", obtained with probability: " << p << '\n';
 
     // the output state (before correction)
-    ket out_B = std::get<2>(results);
+    ket out_B = std::get<ST>(results);
     std::cout << ">> Bob's state (before correction):\n";
     std::cout << disp(out_B) << '\n';
 

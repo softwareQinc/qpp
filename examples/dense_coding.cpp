@@ -35,10 +35,10 @@ int main() {
 
     auto measured = measure(psi_AB, gt.Id(d * d));
     std::cout << ">> Bob's measurement probabilities: ";
-    std::cout << disp(std::get<1>(measured), ", ") << '\n';
+    std::cout << disp(std::get<PROB>(measured), ", ") << '\n';
 
     // Bob samples according to the measurement probabilities
-    idx m_B = std::get<0>(measured);
+    idx m_B = std::get<RES>(measured);
     std::cout << ">> Bob received: ";
     std::cout << m_B << " -> " << disp(n2multiidx(m_B, {d, d}), " ") << '\n';
 }

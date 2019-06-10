@@ -40,13 +40,13 @@ int main() {
     // we now measure the state in the computational basis
     auto measured = measure(psi, gt.Id(N));
     std::cout << ">> Probability of the marked state: "
-              << std::get<1>(measured)[marked] << '\n';
+              << std::get<PROB>(measured)[marked] << '\n';
     std::cout << ">> Probability of all results: ";
-    std::cout << disp(std::get<1>(measured), ", ") << '\n';
+    std::cout << disp(std::get<PROB>(measured), ", ") << '\n';
 
     // sample
     std::cout << ">> Let's sample...\n";
-    idx result = std::get<0>(measured);
+    idx result = std::get<RES>(measured);
     if (result == marked)
         std::cout << ">> Hooray, we obtained the correct result: ";
     else

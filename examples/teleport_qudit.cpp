@@ -28,16 +28,16 @@ int main() {
 
     // measure on aA
     auto measured_aA = measure(output_aAB, gt.Id(d * d), {0, 1}, d);
-    idx m = std::get<0>(measured_aA); // measurement result
+    idx m = std::get<RES>(measured_aA); // measurement result
 
     std::vector<idx> midx = n2multiidx(m, {d, d});
     std::cout << ">> Alice's measurement result: ";
     std::cout << m << " -> " << disp(midx, " ") << '\n';
     std::cout << ">> Alice's measurement probabilities: ";
-    std::cout << disp(std::get<1>(measured_aA), ", ") << '\n';
+    std::cout << disp(std::get<PROB>(measured_aA), ", ") << '\n';
 
     // conditional result on B before correction
-    ket output_m_B = std::get<2>(measured_aA)[m];
+    ket output_m_B = std::get<ST>(measured_aA)[m];
 
     // perform the correction on B
     cmat correction_B =

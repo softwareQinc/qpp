@@ -112,6 +112,16 @@ inline cplx omega(idx D) {
     return exp(2.0 * pi * 1_i / static_cast<double>(D));
 }
 
+/**
+ * \brief Constants to be used by std::get<> on the result of qpp::measure(),
+ * qpp_measure_seq() etc.
+ */
+enum {
+    RES,  ///< Measurement result(s)
+    PROB, ///< Probabilit(y)/(ies)
+    ST,   ///< Output state(s)
+};
+
 } /* namespace qpp */
 
 #endif /* CONSTANTS_H_ */

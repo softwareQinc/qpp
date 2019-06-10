@@ -10,6 +10,9 @@ In progress - pre-release
     - Implemented qpp::QCircuit::get_gate_depth()
     - Implemented qpp::Bit_circuit::get_gate_count() and
       qpp::Bit_circuit::get_gate_depth()
+    - Added enum {RES, PROB, ST} in "constants.h" for using by
+      std::get<> on the result of qpp::measure() etc.
+
 Version 1.2 - 10 February 2019
     - Added new function in "functions.h":
           qpp::normalize() - normalizes a state vector (ket or bra) or density
