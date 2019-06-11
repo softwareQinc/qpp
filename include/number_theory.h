@@ -613,6 +613,9 @@ convergents(const std::vector<int>& cf) {
     // END EXCEPTIONS CHECKS
 
     result[0] = std::make_pair(a_0, b_0);
+    if (N == 1)
+        return result;
+
     result[1] = std::make_pair(cf[1] * std::get<0>(result[0]) + a_minus_one,
                                cf[1] * std::get<1>(result[0]) + b_minus_one);
     for (idx i = 2; i < N; ++i) {
