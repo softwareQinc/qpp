@@ -35,8 +35,6 @@ INCLUDE_DIRECTORIES(../include)
 #### Ling GoogleTest dynamically if using MSVC
 IF (MSVC)
     SET(GTEST_FORCE_SHARED_CRT ON CACHE BOOL "" FORCE)
-    # pragma warining(disable : 4996)
-    ADD_COMPILE_OPTIONS(/w4996)
 ENDIF ()
 
 #### Eigen3
@@ -131,7 +129,7 @@ IF (${WITH_OPENMP})
 ENDIF ()
 
 #### Google Test
-ADD_SUBDIRECTORY(lib/gtest-1.8.0)
+ADD_SUBDIRECTORY(lib/googletest-release-1.8.1)
 
 #### Enable all warnings only after compiling Google Test
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")

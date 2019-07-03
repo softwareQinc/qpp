@@ -12,6 +12,8 @@ In progress - pre-release
       qpp::Bit_circuit::get_gate_depth()
     - Added enum {RES, PROB, ST} in "constants.h" for using by
       std::get<> on the result of qpp::measure() etc.
+    - Added MSVC support for cmake
+    - Updated Google Test to version 1.8.1
 
 Version 1.2 - 10 February 2019
     - Added new function in "functions.h":
