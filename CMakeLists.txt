@@ -65,15 +65,11 @@ IF (CYGWIN)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
 ENDIF ()
 
-SET(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra -Weffc++")
-SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
-
-#### CMake support only for GNU gcc and Clang/AppleClang
-#### AppleClang does not support OpenMP; only Clang >= 3.7 supports OpenMP
-IF (NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang"
-        AND NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
-    MESSAGE(FATAL_ERROR
-            "This CMakeLists.txt works only with GNU gcc/Clang/AppleClang")
+#### Additional flags for GNU gcc and Clang/AppleClang
+IF (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
+        STREQUAL "GNU")
+    SET(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra -Weffc++")
+    SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
 ENDIF ()
 
 #### Disable support for thread_local storage duration specifier

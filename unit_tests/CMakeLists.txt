@@ -32,6 +32,13 @@ SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 #### Quantum++ headers
 INCLUDE_DIRECTORIES(../include)
 
+#### Ling GoogleTest dynamically if using MSVC
+IF (MSVC)
+    SET(GTEST_FORCE_SHARED_CRT ON CACHE BOOL "" FORCE)
+    # pragma warining(disable : 4996)
+    ADD_COMPILE_OPTIONS(/w4996)
+ENDIF ()
+
 #### Eigen3
 MESSAGE(STATUS "Detecting Eigen3")
 SET(EIGEN3_INCLUDE_DIR "" CACHE PATH "Path to Eigen3")
@@ -61,15 +68,11 @@ IF (CYGWIN)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
 ENDIF ()
 
-SET(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra")
-SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
-
-#### CMake support only for GNU gcc and Clang/AppleClang
-#### AppleClang does not support OpenMP; only Clang >= 3.7 supports OpenMP
-IF (NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang"
-        AND NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
-    MESSAGE(FATAL_ERROR
-            "This CMakeLists.txt works only with GNU gcc/Clang/AppleClang")
+#### Additional flags for GNU gcc and Clang/AppleClang
+IF (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
+        STREQUAL "GNU")
+    SET(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra -Weffc++")
+    SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
 ENDIF ()
 
 #### Disable support for thread_local storage duration specifier
@@ -104,7 +107,7 @@ IF (NOT ${WITH_MATLAB} STREQUAL "")
         ENDIF ()
         #### everything is OK, inject definition (as #define) in the source
         ADD_DEFINITIONS(-DWITH_MATLAB_)
-        SET (BUILD_WITH_MATLAB TRUE)
+        SET(BUILD_WITH_MATLAB TRUE)
     ELSE ()
         MESSAGE(FATAL_ERROR "Invalid path to MATLAB installation")
     ENDIF ()
