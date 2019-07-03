@@ -4,6 +4,7 @@ out.tmp
 
 # Visual Studio
 .vs/
+CMakeSettings.json
 
 # CLion
 .idea/
