@@ -32,7 +32,7 @@ SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 #### Quantum++ headers
 INCLUDE_DIRECTORIES(../include)
 
-#### Ling GoogleTest dynamically if using MSVC
+#### Link GoogleTest dynamically if using MSVC
 IF (MSVC)
     SET(GTEST_FORCE_SHARED_CRT ON CACHE BOOL "" FORCE)
 ENDIF ()
