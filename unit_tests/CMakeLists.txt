@@ -34,7 +34,7 @@ INCLUDE_DIRECTORIES(../include)
 
 #### Link GoogleTest dynamically if using MSVC
 IF (MSVC)
-    SET(GTEST_FORCE_SHARED_CRT ON CACHE BOOL "" FORCE)
+    SET(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 ENDIF ()
 
 #### Eigen3
