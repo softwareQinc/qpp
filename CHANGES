@@ -10,9 +10,9 @@ In progress - pre-release
     - Implemented qpp::QCircuit::get_gate_depth()
     - Implemented qpp::Bit_circuit::get_gate_count() and
       qpp::Bit_circuit::get_gate_depth()
-    - Added enum {RES, PROB, ST} in "constants.h" for using by
-      std::get<> on the result of qpp::measure() etc.
-    - Added MSVC support for cmake
+    - Added enum {RES, PROB, ST} in "constants.h" for using with std::get<> on 
+      the result of qpp::measure() etc.
+    - Added MSVC support for CMake
     - Updated Google Test to version 1.8.1
 
 Version 1.2 - 10 February 2019
