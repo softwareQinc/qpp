@@ -68,8 +68,9 @@ ENDIF ()
 #### Additional flags for GNU gcc and Clang/AppleClang
 IF (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
         STREQUAL "GNU")
-    SET(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra -Weffc++")
     SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
+    # Enable all warnings
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Weffc++")
 ENDIF ()
 
 #### Disable support for thread_local storage duration specifier
@@ -127,9 +128,6 @@ IF (${WITH_OPENMP})
         higher.")
     ENDIF ()
 ENDIF ()
-
-#### Enable all warnings
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
 
 #### GNU gcc additional debug settings
 IF (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")

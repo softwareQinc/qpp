@@ -32,7 +32,7 @@ SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 #### Quantum++ headers
 INCLUDE_DIRECTORIES(../include)
 
-#### Link GoogleTest dynamically if using MSVC
+#### Link Google Test dynamically if using MSVC
 IF (MSVC)
     SET(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 ENDIF ()
@@ -69,7 +69,6 @@ ENDIF ()
 #### Additional flags for GNU gcc and Clang/AppleClang
 IF (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
         STREQUAL "GNU")
-    SET(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra -Weffc++")
     SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
 ENDIF ()
 
@@ -132,7 +131,12 @@ ENDIF ()
 ADD_SUBDIRECTORY(lib/googletest-release-1.8.1)
 
 #### Enable all warnings only after compiling Google Test
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
+#### Additional flags for GNU gcc and Clang/AppleClang
+IF (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
+        STREQUAL "GNU")
+    # Enable all warnings
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Weffc++")
+ENDIF ()
 
 #### Unit tests
 ADD_SUBDIRECTORY(tests)
