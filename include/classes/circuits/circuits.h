@@ -40,7 +40,7 @@ namespace qpp {
  */
 class QCircuit : public IDisplay, public IJSON {
     friend class QEngine;
-    const idx nq_;               ///< number of qudits
+    idx nq_;                     ///< number of qudits
     const idx nc_;               ///< number of classical "dits"
     const idx d_;                ///< qudit dimension
     std::string name_;           ///< optional circuit name
@@ -1007,6 +1007,45 @@ class QCircuit : public IDisplay, public IJSON {
             [](const StepType& s) { return s == StepType::NOP; });
     }
     // end getters
+
+    /**
+     * \brief Adds extra qudit before qudit \a i (by default adds at the end)
+     *
+     * \param i Qudit index
+     * \return Reference to the current instance
+     */
+    QCircuit& add_qudit(idx i = -1) {
+        if (i == static_cast<idx>(-1)) {
+            i = nq_;
+            measured_.insert(std::end(measured_),false);
+        }
+        else if (i > nq_)
+            throw exception::OutOfRange("qpp::QCircuit::add_qudit()");
+
+        ++nq_;
+        measured_.insert(std::begin(measured_) + i, false);
+
+        // update indexes
+        for (auto& gate : gates_) {
+            for (auto& pos : gate.ctrl_) {
+                if (pos >= i)
+                    ++pos;
+            }
+            for (auto& pos : gate.target_) {
+                if (pos >= i)
+                    ++pos;
+            }
+        }
+
+        for (auto& measurement : measurements_) {
+            for (auto& pos : measurement.target_) {
+                if (pos >= i)
+                    ++pos;
+            }
+        }
+
+        return *this;
+    }
 
     /**
      * \brief Applies the single qudit gate \a U on single qudit \a i

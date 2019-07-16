@@ -45,7 +45,7 @@ class QEngine : public IDisplay, public IJSON {
     std::vector<idx> dits_;     ///< classical dits
     std::vector<double> probs_; ///< measurement probabilities
     std::vector<idx> subsys_;   ///< keeps track of the measured subsystems,
-    ///< relabel them after measurements
+                                ///< relabel them after measurements
 
     /**
      * \brief Marks qudit \a i as measured then re-label accordingly the
