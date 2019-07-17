@@ -41,7 +41,7 @@ namespace qpp {
 class QCircuit : public IDisplay, public IJSON {
     friend class QEngine;
     idx nq_;                     ///< number of qudits
-    const idx nc_;               ///< number of classical "dits"
+    idx nc_;                     ///< number of classical "dits"
     const idx d_;                ///< qudit dimension
     std::string name_;           ///< optional circuit name
     std::vector<bool> measured_; ///< keeps track of the measured qudits
@@ -126,8 +126,8 @@ class QCircuit : public IDisplay, public IJSON {
                                         ///< with multiple classical controls
                                         ///< and multiple targets
 
-        CUSTOM_cCTRL, ///< custom controlled gate with multiple controls and
-                      ///< multiple targets
+        CUSTOM_cCTRL, ///< custom controlled gate with multiple classical
+                      ///< controls and multiple targets
     };
 
     /**
@@ -1009,7 +1009,11 @@ class QCircuit : public IDisplay, public IJSON {
     // end getters
 
     /**
-     * \brief Adds extra qudit before qudit \a i (by default adds at the end)
+     * \brief Adds an additional qudit before qudit \a i (by default adds it at
+     * the end)
+     *
+     * \note Qudits with indexes greater than the newly inserted one have their
+     * indexes automatically incremented
      *
      * \param i Qudit index
      * \return Reference to the current instance
@@ -1017,15 +1021,14 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& add_qudit(idx i = -1) {
         if (i == static_cast<idx>(-1)) {
             i = nq_;
-            measured_.insert(std::end(measured_),false);
-        }
-        else if (i > nq_)
+            measured_.insert(std::end(measured_), false);
+        } else if (i > nq_)
             throw exception::OutOfRange("qpp::QCircuit::add_qudit()");
 
         ++nq_;
         measured_.insert(std::begin(measured_) + i, false);
 
-        // update indexes
+        // update gate indexes
         for (auto& gate : gates_) {
             for (auto& pos : gate.ctrl_) {
                 if (pos >= i)
@@ -1037,11 +1040,57 @@ class QCircuit : public IDisplay, public IJSON {
             }
         }
 
+        // update measurement indexes
         for (auto& measurement : measurements_) {
             for (auto& pos : measurement.target_) {
                 if (pos >= i)
                     ++pos;
             }
+        }
+
+        return *this;
+    }
+
+    /**
+     * \brief Adds an additional classical dit before dit \a i (by default adds
+     * it at the end)
+     *
+     * \note Classical dits with indexes greater than the newly inserted one
+     * have their indexes automatically incremented
+     *
+     * \param i Classical dit index
+     * \return Reference to the current instance
+     */
+    QCircuit& add_dit(idx i = -1) {
+        if (i == static_cast<idx>(-1)) {
+            i = nc_;
+        } else if (i > nc_)
+            throw exception::OutOfRange("qpp::QCircuit::add_dit()");
+
+        ++nc_;
+
+        // update gate indexes
+        for (auto& gate : gates_) {
+            switch (gate.gate_type_) {
+            case GateType::SINGLE_cCTRL_SINGLE_TARGET:
+            case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
+            case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
+            case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
+            case GateType::CUSTOM_cCTRL:
+                for (auto& pos : gate.ctrl_) {
+                    if (pos >= i)
+                        ++pos;
+                }
+                break;
+            default:
+                break;
+            }
+        }
+
+        // update measurement indexes
+        for (auto& measurement : measurements_) {
+            if (measurement.c_reg_ >= i)
+                ++measurement.c_reg_;
         }
 
         return *this;
