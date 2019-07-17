@@ -2015,7 +2015,7 @@ struct HashEigen {
  * \class qpp::internal::EqualEigen
  * \brief Functor for comparing Eigen expressions for equality
  * \note Works without assertion fails even if the dimensions of the arguments
- * are different (in which case simply returns false
+ * are different (in which case it simply returns false)
  */
 struct EqualEigen {
     template <typename Derived>

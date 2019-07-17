@@ -46,6 +46,7 @@ class QEngine : public IDisplay, public IJSON {
     std::vector<double> probs_; ///< measurement probabilities
     std::vector<idx> subsys_;   ///< keeps track of the measured subsystems,
                                 ///< relabel them after measurements
+    std::map<idx, idx> stats_;  ///< measurement statistics for multiple runs
 
     /**
      * \brief Marks qudit \a i as measured then re-label accordingly the
@@ -99,7 +100,7 @@ class QEngine : public IDisplay, public IJSON {
         : qc_{std::addressof(qc)}, psi_{States::get_instance().zero(
                                        qc.get_nq(), qc.get_d())},
           dits_(qc.get_nc(), 0), probs_(qc.get_nc(), 0),
-          subsys_(qc.get_nq(), 0) {
+          subsys_(qc.get_nq(), 0), stats_{} {
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
     }
 
@@ -222,6 +223,15 @@ class QEngine : public IDisplay, public IJSON {
      * \return Underlying quantum circuit
      */
     const QCircuit& get_circuit() const noexcept { return *qc_; }
+
+    /**
+     * \brief Measurement statistics for multiple runs
+     *
+     * \return Hash table with measurement statistics for multiple runs, with
+     * hash key being the decimal value of the vector of measurement results and
+     * value being the number of occurrences of the later
+     */
+    const std::map<idx, idx>& get_stats() const { return stats_; }
     // end getters
 
     // setters
@@ -422,10 +432,20 @@ class QEngine : public IDisplay, public IJSON {
 
     /**
      * \brief Executes the entire quantum circuit
+     *
+     * \param rep Number of repetitions
      */
-    void execute() {
-        for (auto&& elem : *qc_)
-            execute(elem);
+    void execute(idx rep = 1) {
+        stats_ = {};
+        for (idx i = 0; i < rep; ++i) {
+            reset();
+            for (auto&& elem : *qc_)
+                execute(elem);
+
+            auto m_res = get_dits();
+            ++stats_[multiidx2n(m_res,
+                                std::vector<idx>(m_res.size(), qc_->get_d()))];
+        }
     }
 
     /**
