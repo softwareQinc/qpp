@@ -99,6 +99,7 @@ Classes</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a77d0b56561acdfa44c3a05036638d5c4"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a77d0b56561acdfa44c3a05036638d5c4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#a77d0b56561acdfa44c3a05036638d5c4">hash_combine</a> (std::size_t &amp;seed, const T &amp;v)</td></tr>
+<tr class="memdesc:a77d0b56561acdfa44c3a05036638d5c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hash combine.  <a href="#a77d0b56561acdfa44c3a05036638d5c4">More...</a><br /></td></tr>
 <tr class="separator:a77d0b56561acdfa44c3a05036638d5c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e8ed22ae3490cd81beff37931d8ca25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#a3e8ed22ae3490cd81beff37931d8ca25">n2multiidx</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> n, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> numdims, const <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> *const dims, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> *result) noexcept</td></tr>
 <tr class="separator:a3e8ed22ae3490cd81beff37931d8ca25"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,10 +170,76 @@ Functions</h2></td></tr>
 <tr class="separator:abc50ce9f80ba0cf904aa3fefaa82cd34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a321de4158dbe66d77f480d8f0b7ffd6d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#a321de4158dbe66d77f480d8f0b7ffd6d">get_dim_subsys</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> sz, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> N)</td></tr>
 <tr class="separator:a321de4158dbe66d77f480d8f0b7ffd6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ef8c62f0308437384ab998ae3d91635"><td class="memTemplParams" colspan="2">template&lt;typename T , typename std::enable_if&lt; std::numeric_limits&lt; T &gt;::is_iec559||is_complex&lt; T &gt;::value &gt;::type *  = nullptr&gt; </td></tr>
+<tr class="memitem:a1ef8c62f0308437384ab998ae3d91635"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#a1ef8c62f0308437384ab998ae3d91635">abs_chop</a> (const T &amp;x, double <a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>=<a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>)</td></tr>
+<tr class="separator:a1ef8c62f0308437384ab998ae3d91635"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3f0b3021c6831552202d9c370474ea0"><td class="memTemplParams" colspan="2">template&lt;typename T , typename std::enable_if&lt;!(std::numeric_limits&lt; T &gt;::is_iec559||is_complex&lt; T &gt;::value)&gt;::type *  = nullptr&gt; </td></tr>
+<tr class="memitem:aa3f0b3021c6831552202d9c370474ea0"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#aa3f0b3021c6831552202d9c370474ea0">abs_chop</a> (const T &amp;x, double QPP_UNUSED_ <a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>=<a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>)</td></tr>
+<tr class="separator:aa3f0b3021c6831552202d9c370474ea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Internal utility functions, do not use them directly or modify them. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a1ef8c62f0308437384ab998ae3d91635"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ef8c62f0308437384ab998ae3d91635">&#9670;&nbsp;</a></span>abs_chop() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename std::enable_if&lt; std::numeric_limits&lt; T &gt;::is_iec559||is_complex&lt; T &gt;::value &gt;::type *  = nullptr&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">T qpp::internal::abs_chop </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>chop</em> = <code><a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa3f0b3021c6831552202d9c370474ea0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3f0b3021c6831552202d9c370474ea0">&#9670;&nbsp;</a></span>abs_chop() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename std::enable_if&lt;!(std::numeric_limits&lt; T &gt;::is_iec559||is_complex&lt; T &gt;::value)&gt;::type *  = nullptr&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">T qpp::internal::abs_chop </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double QPP_UNUSED_&#160;</td>
+          <td class="paramname"><em>chop</em> = <code><a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a85177fd977a0e44b3b7e70ef1802e9a5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a85177fd977a0e44b3b7e70ef1802e9a5">&#9670;&nbsp;</a></span>check_cvector()</h2>
 
@@ -801,6 +868,21 @@ template&lt;class T &gt; </div>
       </table>
 </div><div class="memdoc">
 
+<p>Hash combine. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>Type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">seed</td><td>Initial seed, will be updated by the function </td></tr>
+    <tr><td class="paramname">v</td><td>Value with which the hash is combined </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a66c954a3de84c422f6080936477c86d4"></a>
@@ -985,7 +1067,7 @@ template&lt;typename T , typename First , typename... Args&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="namespaceqpp_1_1internal.html">internal</a></li>
-    <li class="footer">Generated on Mon Mar 4 2019 15:38:36 for Quantum++ by
+    <li class="footer">Generated on Tue Jul 16 2019 21:08:06 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

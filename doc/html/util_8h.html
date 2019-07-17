@@ -171,6 +171,12 @@ Functions</h2></td></tr>
 <tr class="separator:abc50ce9f80ba0cf904aa3fefaa82cd34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a321de4158dbe66d77f480d8f0b7ffd6d"><td class="memItemLeft" align="right" valign="top">idx&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#a321de4158dbe66d77f480d8f0b7ffd6d">qpp::internal::get_dim_subsys</a> (idx sz, idx N)</td></tr>
 <tr class="separator:a321de4158dbe66d77f480d8f0b7ffd6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ef8c62f0308437384ab998ae3d91635"><td class="memTemplParams" colspan="2">template&lt;typename T , typename std::enable_if&lt; std::numeric_limits&lt; T &gt;::is_iec559||is_complex&lt; T &gt;::value &gt;::type *  = nullptr&gt; </td></tr>
+<tr class="memitem:a1ef8c62f0308437384ab998ae3d91635"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#a1ef8c62f0308437384ab998ae3d91635">qpp::internal::abs_chop</a> (const T &amp;x, double chop=<a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>)</td></tr>
+<tr class="separator:a1ef8c62f0308437384ab998ae3d91635"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3f0b3021c6831552202d9c370474ea0"><td class="memTemplParams" colspan="2">template&lt;typename T , typename std::enable_if&lt;!(std::numeric_limits&lt; T &gt;::is_iec559||is_complex&lt; T &gt;::value)&gt;::type *  = nullptr&gt; </td></tr>
+<tr class="memitem:aa3f0b3021c6831552202d9c370474ea0"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1internal.html#aa3f0b3021c6831552202d9c370474ea0">qpp::internal::abs_chop</a> (const T &amp;x, double <a class="el" href="qpp_8h.html#ab43c9d25cd2a4fabfc643a79bdf97b2b">QPP_UNUSED_</a> chop=<a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>)</td></tr>
+<tr class="separator:aa3f0b3021c6831552202d9c370474ea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Internal utility functions. </p>
@@ -180,7 +186,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7374381ecdb819c64ee9b6ea2bd3370d.html">internal</a></li><li class="navelem"><a class="el" href="util_8h.html">util.h</a></li>
-    <li class="footer">Generated on Mon Mar 4 2019 15:38:34 for Quantum++ by
+    <li class="footer">Generated on Tue Jul 16 2019 21:08:04 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

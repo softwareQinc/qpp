@@ -1,6 +1,8 @@
 var util_8h =
 [
     [ "Display_Impl_", "structqpp_1_1internal_1_1_display___impl__.html", "structqpp_1_1internal_1_1_display___impl__" ],
+    [ "abs_chop", "util_8h.html#a1ef8c62f0308437384ab998ae3d91635", null ],
+    [ "abs_chop", "util_8h.html#aa3f0b3021c6831552202d9c370474ea0", null ],
     [ "check_cvector", "util_8h.html#a85177fd977a0e44b3b7e70ef1802e9a5", null ],
     [ "check_dims", "util_8h.html#a7abb5871441abcf45ce0e379a4267047", null ],
     [ "check_dims_match_cvect", "util_8h.html#abb10c264874e20180c7c0944e0bf7657", null ],

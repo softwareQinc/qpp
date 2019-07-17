@@ -225,6 +225,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a019a426a94972114d4ad6711461f45fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a019a426a94972114d4ad6711461f45fe">get_nop_count</a> () const</td></tr>
 <tr class="memdesc:a019a426a94972114d4ad6711461f45fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">No-op count.  <a href="#a019a426a94972114d4ad6711461f45fe">More...</a><br /></td></tr>
 <tr class="separator:a019a426a94972114d4ad6711461f45fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae97284fceb9ff4c09199d9bb16e0665b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#ae97284fceb9ff4c09199d9bb16e0665b">add_qudit</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i=-1)</td></tr>
+<tr class="memdesc:ae97284fceb9ff4c09199d9bb16e0665b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an additional qudit before qudit <em>i</em> (by default adds it at the end)  <a href="#ae97284fceb9ff4c09199d9bb16e0665b">More...</a><br /></td></tr>
+<tr class="separator:ae97284fceb9ff4c09199d9bb16e0665b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a69878f346a7824d3f8aff67eb0bf21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a9a69878f346a7824d3f8aff67eb0bf21">add_dit</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i=-1)</td></tr>
+<tr class="memdesc:a9a69878f346a7824d3f8aff67eb0bf21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an additional classical dit before dit <em>i</em> (by default adds it at the end)  <a href="#a9a69878f346a7824d3f8aff67eb0bf21">More...</a><br /></td></tr>
+<tr class="separator:a9a69878f346a7824d3f8aff67eb0bf21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a186a92ce1ac81796c5894d76170b947a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a186a92ce1ac81796c5894d76170b947a">gate</a> (const <a class="el" href="namespaceqpp.html#ab0de67006716bdc8fae52c6a49259276">cmat</a> &amp;U, <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i, std::string name={})</td></tr>
 <tr class="memdesc:a186a92ce1ac81796c5894d76170b947a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the single qudit gate <em>U</em> on single qudit <em>i</em>.  <a href="#a186a92ce1ac81796c5894d76170b947a">More...</a><br /></td></tr>
 <tr class="separator:a186a92ce1ac81796c5894d76170b947a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -338,12 +344,12 @@ Private Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a5f5ae13b7038fbb6024a156274b09024"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a5f5ae13b7038fbb6024a156274b09024">nq_</a></td></tr>
-<tr class="memdesc:a5f5ae13b7038fbb6024a156274b09024"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of qudits  <a href="#a5f5ae13b7038fbb6024a156274b09024">More...</a><br /></td></tr>
-<tr class="separator:a5f5ae13b7038fbb6024a156274b09024"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af56f56d7d6899c4900f62b632cd938f7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#af56f56d7d6899c4900f62b632cd938f7">nc_</a></td></tr>
-<tr class="memdesc:af56f56d7d6899c4900f62b632cd938f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of classical "dits"  <a href="#af56f56d7d6899c4900f62b632cd938f7">More...</a><br /></td></tr>
-<tr class="separator:af56f56d7d6899c4900f62b632cd938f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d51a22c4be80cc5203bba887f7c93c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a7d51a22c4be80cc5203bba887f7c93c5">nq_</a></td></tr>
+<tr class="memdesc:a7d51a22c4be80cc5203bba887f7c93c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of qudits  <a href="#a7d51a22c4be80cc5203bba887f7c93c5">More...</a><br /></td></tr>
+<tr class="separator:a7d51a22c4be80cc5203bba887f7c93c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b788c0c3f489374b83c22fb1e16bbfc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a5b788c0c3f489374b83c22fb1e16bbfc">nc_</a></td></tr>
+<tr class="memdesc:a5b788c0c3f489374b83c22fb1e16bbfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of classical "dits"  <a href="#a5b788c0c3f489374b83c22fb1e16bbfc">More...</a><br /></td></tr>
+<tr class="separator:a5b788c0c3f489374b83c22fb1e16bbfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f7271af5a863ceac760c1cad5d7bf5c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_q_circuit.html#a7f7271af5a863ceac760c1cad5d7bf5c">d_</a></td></tr>
 <tr class="memdesc:a7f7271af5a863ceac760c1cad5d7bf5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">qudit dimension  <a href="#a7f7271af5a863ceac760c1cad5d7bf5c">More...</a><br /></td></tr>
 <tr class="separator:a7f7271af5a863ceac760c1cad5d7bf5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -461,7 +467,7 @@ Friends</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7eac758e25010bdef1cc3f4bc39e39ad557"></a>MULTIPLE_cCTRL_MULTIPLE_TARGET&#160;</td><td class="fielddoc"><p>controlled 1 qudit unitary gate with multiple classical controls and multiple targets </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ea79b326efcb9013f059bd0e83470e150f"></a>CUSTOM_cCTRL&#160;</td><td class="fielddoc"><p>custom controlled gate with multiple controls and multiple targets </p>
+<tr><td class="fieldname"><a id="a808fb10009cf37d1ac900b3b2e3dea7ea79b326efcb9013f059bd0e83470e150f"></a>CUSTOM_cCTRL&#160;</td><td class="fielddoc"><p>custom controlled gate with multiple classical controls and multiple targets </p>
 </td></tr>
 </table>
 
@@ -624,6 +630,42 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9a69878f346a7824d3f8aff67eb0bf21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a69878f346a7824d3f8aff67eb0bf21">&#9670;&nbsp;</a></span>add_dit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a>&amp; qpp::QCircuit::add_dit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>i</em> = <code>-1</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds an additional classical dit before dit <em>i</em> (by default adds it at the end) </p>
+<dl class="section note"><dt>Note</dt><dd>Classical dits with indexes greater than the newly inserted one have their indexes automatically incremented</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>Classical dit index </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
+
+</div>
+</div>
 <a id="a1cc73c71db60eb4a45f5b56f3c9a9c6f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1cc73c71db60eb4a45f5b56f3c9a9c6f">&#9670;&nbsp;</a></span>add_hash_()</h2>
 
@@ -667,6 +709,42 @@ Friends</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ae97284fceb9ff4c09199d9bb16e0665b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae97284fceb9ff4c09199d9bb16e0665b">&#9670;&nbsp;</a></span>add_qudit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a>&amp; qpp::QCircuit::add_qudit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td>
+          <td class="paramname"><em>i</em> = <code>-1</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds an additional qudit before qudit <em>i</em> (by default adds it at the end) </p>
+<dl class="section note"><dt>Note</dt><dd>Qudits with indexes greater than the newly inserted one have their indexes automatically incremented</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>Qudit index </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
 
 </div>
 </div>
@@ -3232,8 +3310,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="af56f56d7d6899c4900f62b632cd938f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af56f56d7d6899c4900f62b632cd938f7">&#9670;&nbsp;</a></span>nc_</h2>
+<a id="a5b788c0c3f489374b83c22fb1e16bbfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b788c0c3f489374b83c22fb1e16bbfc">&#9670;&nbsp;</a></span>nc_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3242,7 +3320,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::QCircuit::nc_</td>
+          <td class="memname"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::QCircuit::nc_</td>
         </tr>
       </table>
   </td>
@@ -3256,8 +3334,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a5f5ae13b7038fbb6024a156274b09024"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f5ae13b7038fbb6024a156274b09024">&#9670;&nbsp;</a></span>nq_</h2>
+<a id="a7d51a22c4be80cc5203bba887f7c93c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d51a22c4be80cc5203bba887f7c93c5">&#9670;&nbsp;</a></span>nq_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3266,7 +3344,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::QCircuit::nq_</td>
+          <td class="memname"><a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> qpp::QCircuit::nq_</td>
         </tr>
       </table>
   </td>
@@ -3313,7 +3391,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_q_circuit.html">QCircuit</a></li>
-    <li class="footer">Generated on Mon Mar 4 2019 15:38:35 for Quantum++ by
+    <li class="footer">Generated on Tue Jul 16 2019 21:08:04 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

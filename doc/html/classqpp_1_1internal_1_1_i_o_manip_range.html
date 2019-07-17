@@ -96,8 +96,8 @@ Collaboration diagram for qpp::internal::IOManipRange&lt; InputIterator &gt;:</d
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:accb36abc2740f69e4b17826aee293ced"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html#accb36abc2740f69e4b17826aee293ced">IOManipRange</a> (InputIterator first, InputIterator last, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;)</td></tr>
-<tr class="separator:accb36abc2740f69e4b17826aee293ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1f67bf6f66a8f23e558a52d66bdb6d1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html#ad1f67bf6f66a8f23e558a52d66bdb6d1">IOManipRange</a> (InputIterator first, InputIterator last, const std::string &amp;separator, const std::string &amp;start=&quot;[&quot;, const std::string &amp;end=&quot;]&quot;, double <a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">chop</a>=<a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a>)</td></tr>
+<tr class="separator:ad1f67bf6f66a8f23e558a52d66bdb6d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25d87df59d9262e30a9d49f189aaa2b7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html#a25d87df59d9262e30a9d49f189aaa2b7">IOManipRange</a> (const <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html">IOManipRange</a> &amp;)=default</td></tr>
 <tr class="separator:a25d87df59d9262e30a9d49f189aaa2b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32bc91344b36488b2db0179f08a0f051"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html">IOManipRange</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html#a32bc91344b36488b2db0179f08a0f051">operator=</a> (const <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html">IOManipRange</a> &amp;)=default</td></tr>
@@ -125,10 +125,12 @@ Private Attributes</h2></td></tr>
 <tr class="separator:ac922617e85eb199608488f19a725fbc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea45315682f3f04018ddf8d59ad7b010"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html#aea45315682f3f04018ddf8d59ad7b010">end_</a></td></tr>
 <tr class="separator:aea45315682f3f04018ddf8d59ad7b010"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4a6c26da812b54c19240c842fc85109"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html#aa4a6c26da812b54c19240c842fc85109">chop_</a></td></tr>
+<tr class="separator:aa4a6c26da812b54c19240c842fc85109"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="accb36abc2740f69e4b17826aee293ced"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#accb36abc2740f69e4b17826aee293ced">&#9670;&nbsp;</a></span>IOManipRange() <span class="overload">[1/2]</span></h2>
+<a id="ad1f67bf6f66a8f23e558a52d66bdb6d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1f67bf6f66a8f23e558a52d66bdb6d1">&#9670;&nbsp;</a></span>IOManipRange() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -166,7 +168,13 @@ template&lt;typename InputIterator&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>end</em> = <code>&quot;]&quot;</code>&#160;</td>
+          <td class="paramname"><em>end</em> = <code>&quot;]&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>chop</em> = <code><a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -274,6 +282,30 @@ template&lt;typename InputIterator&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="aa4a6c26da812b54c19240c842fc85109"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4a6c26da812b54c19240c842fc85109">&#9670;&nbsp;</a></span>chop_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename InputIterator&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html">qpp::internal::IOManipRange</a>&lt; InputIterator &gt;::chop_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aea45315682f3f04018ddf8d59ad7b010"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aea45315682f3f04018ddf8d59ad7b010">&#9670;&nbsp;</a></span>end_</h2>
 
@@ -403,7 +435,7 @@ template&lt;typename InputIterator&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="namespaceqpp_1_1internal.html">internal</a></li><li class="navelem"><a class="el" href="classqpp_1_1internal_1_1_i_o_manip_range.html">IOManipRange</a></li>
-    <li class="footer">Generated on Mon Mar 4 2019 15:38:36 for Quantum++ by
+    <li class="footer">Generated on Tue Jul 16 2019 21:08:06 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

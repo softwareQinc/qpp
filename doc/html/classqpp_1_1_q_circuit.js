@@ -36,7 +36,9 @@ var classqpp_1_1_q_circuit =
     ] ],
     [ "QCircuit", "classqpp_1_1_q_circuit.html#aef7f8b3b93ebd78ee0d5a10e270bfe93", null ],
     [ "~QCircuit", "classqpp_1_1_q_circuit.html#ac3967f9bff53190b70fe0a8410ffe90e", null ],
+    [ "add_dit", "classqpp_1_1_q_circuit.html#a9a69878f346a7824d3f8aff67eb0bf21", null ],
     [ "add_hash_", "classqpp_1_1_q_circuit.html#a1cc73c71db60eb4a45f5b56f3c9a9c6f", null ],
+    [ "add_qudit", "classqpp_1_1_q_circuit.html#ae97284fceb9ff4c09199d9bb16e0665b", null ],
     [ "begin", "classqpp_1_1_q_circuit.html#aa5d75f3a6969a051d5480ad65702c14c", null ],
     [ "begin", "classqpp_1_1_q_circuit.html#ad14b3917983d348a2e5e595e4eea462f", null ],
     [ "cbegin", "classqpp_1_1_q_circuit.html#aa22470fe60134a2fb5dc1f89ccfd41e0", null ],
@@ -101,7 +103,7 @@ var classqpp_1_1_q_circuit =
     [ "measurement_count_", "classqpp_1_1_q_circuit.html#a3d8c0048dc397fef207aa9b110a019bc", null ],
     [ "measurements_", "classqpp_1_1_q_circuit.html#a63ce880593abb6035644863c02867df3", null ],
     [ "name_", "classqpp_1_1_q_circuit.html#ab9031cbe7414bc5825cbe8aea27ad688", null ],
-    [ "nc_", "classqpp_1_1_q_circuit.html#af56f56d7d6899c4900f62b632cd938f7", null ],
-    [ "nq_", "classqpp_1_1_q_circuit.html#a5f5ae13b7038fbb6024a156274b09024", null ],
+    [ "nc_", "classqpp_1_1_q_circuit.html#a5b788c0c3f489374b83c22fb1e16bbfc", null ],
+    [ "nq_", "classqpp_1_1_q_circuit.html#a7d51a22c4be80cc5203bba887f7c93c5", null ],
     [ "step_types_", "classqpp_1_1_q_circuit.html#ac312938bc2a770888a79f6259895ba72", null ]
 ];
