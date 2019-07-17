@@ -14,10 +14,8 @@ In progress - pre-release
       the result of qpp::measure() etc.
     - Added MSVC support for CMake
     - Updated Google Test to version 1.8.1
-    - Added qpp::QCircuit::add_qudit() function for inserting a new qudit on the
-      fly
-    - Added qpp::QCircuit::add_dit() function for inserting a new classical dit
-      on the fly
+    - Added qpp::QCircuit::add_qudit() and qpp::QCircuit::add_dit() member
+      functions for inserting a new qudit/classical dit on the fly
 
 Version 1.2 - 10 February 2019
     - Added new function in "functions.h":
