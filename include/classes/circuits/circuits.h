@@ -221,8 +221,9 @@ class QCircuit : public IDisplay, public IJSON {
         explicit GateStep(GateType gate_type, std::size_t gate_hash,
                           const std::vector<idx>& ctrl,
                           const std::vector<idx>& target, std::string name = {})
-            : gate_type_{gate_type}, gate_hash_{gate_hash}, ctrl_{ctrl},
-              target_{target}, name_{name} {}
+            : gate_type_{gate_type},
+              gate_hash_{gate_hash}, ctrl_{ctrl}, target_{target}, name_{name} {
+        }
     };
 
     /**
@@ -2498,8 +2499,9 @@ class QCircuit : public IDisplay, public IJSON {
                 ss.clear();
                 ss << disp(measurements_[pos].target_, ", ");
                 result += "\"target\" : " + ss.str() + ", ";
-                result += "\"c_reg\" : " +
-                          std::to_string(measurements_[pos].c_reg_) + ", ";
+                result +=
+                    "\"c_reg\" : " + std::to_string(measurements_[pos].c_reg_) +
+                    ", ";
                 result += "\"name\" : ";
                 result += "\"" + measurements_[pos].name_ + "\"" + "}";
 

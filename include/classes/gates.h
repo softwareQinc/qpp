@@ -205,7 +205,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        // column major order for speed
+       // column major order for speed
         for (idx j = 0; j < D; ++j)
             for (idx i = 0; i < D; ++i)
                 result(D * i + j, i + D * j) = 1;
@@ -236,7 +236,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        // column major order for speed
+       // column major order for speed
         for (idx j = 0; j < D; ++j)
             for (idx i = 0; i < D; ++i)
                 result(i, j) = 1 / std::sqrt(D) *
@@ -287,7 +287,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
-        // column major order for speed
+       // column major order for speed
         for (idx j = 0; j < N; ++j)
             for (idx i = 0; i < N; ++i)
                 if (static_cast<idx>(modmul(j, a, N)) == i)
@@ -296,7 +296,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 #ifdef WITH_OPENMP_
 #pragma omp parallel for
 #endif // WITH_OPENMP_
-        // complete the matrix
+       // complete the matrix
         for (idx i = N; i < D; ++i)
             result(i, i) = 1;
 
