@@ -229,7 +229,9 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \return Hash table with measurement statistics for multiple runs, with
      * hash key being the decimal value of the vector of measurement results and
-     * value being the number of occurrences of the later
+     * value being the number of occurrences (of the vector of measurement
+     * results), with the most significant bit located at index 0
+     * (i.e. top/left) of the classical dits array.
      */
     const std::map<idx, idx>& get_stats() const { return stats_; }
     // end getters

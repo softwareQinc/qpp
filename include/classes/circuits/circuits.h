@@ -1012,8 +1012,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Adds an additional qudit before qudit \a i (by default adds it at
      * the end)
      *
-     * \note Qudits with indexes greater than the newly inserted one have their
-     * indexes automatically incremented
+     * \note Qudits with indexes greater or equal than the newly inserted one
+     * have their indexes automatically incremented by one
      *
      * \param i Qudit index
      * \return Reference to the current instance
@@ -1055,8 +1055,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Adds an additional classical dit before dit \a i (by default adds
      * it at the end)
      *
-     * \note Classical dits with indexes greater than the newly inserted one
-     * have their indexes automatically incremented
+     * \note Classical dits with indexes greater or equal than the newly
+     * inserted one have their indexes automatically incremented by one
      *
      * \param i Classical dit index
      * \return Reference to the current instance
