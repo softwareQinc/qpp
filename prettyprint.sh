@@ -2,9 +2,15 @@
 # Code beautifier with clang-format
 # Recursively parses the folder(s) passed as command line argument(s)
 
-CLANG_FORMAT=clang-format-mp-6.0
+if test -z "$CLANG_FORMAT"
+then
+    echo "Please set the CLANG_FORMAT environment variable to point to the \
+location of clang-format"
+    exit 1
+else
+    echo "Code formatting with '$CLANG_FORMAT' the folders:"
+fi
 
-echo "Code formatting..."
 for folder in "$@"
 do
     echo $folder 
