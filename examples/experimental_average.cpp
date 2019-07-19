@@ -17,7 +17,7 @@ int main() {
     for (idx i = 0; i < N; ++i) {
         auto measured = measure(psi, evects);
         idx m = std::get<RES>(measured); // measurement result
-        if (evals[m] < 0)              // -1
+        if (evals[m] < 0)                // -1
             --res;
         else // +1
             ++res;

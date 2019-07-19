@@ -48,8 +48,8 @@ class IOManipRange : public IDisplay {
                           const std::string& separator,
                           const std::string& start = "[",
                           const std::string& end = "]", double chop = qpp::chop)
-        : first_{first}, last_{last},
-          separator_{separator}, start_{start}, end_{end}, chop_{chop} {}
+        : first_{first}, last_{last}, separator_{separator}, start_{start},
+          end_{end}, chop_{chop} {}
 
     // to silence -Weffc++ warnings for classes that have pointer members
     // (whenever we have a pointer instantiation,
@@ -88,8 +88,8 @@ class IOManipPointer : public IDisplay {
                             const std::string& start = "[",
                             const std::string& end = "]",
                             double chop = qpp::chop)
-        : p_{p}, N_{N},
-          separator_{separator}, start_{start}, end_{end}, chop_{chop} {}
+        : p_{p}, N_{N}, separator_{separator}, start_{start}, end_{end},
+          chop_{chop} {}
 
     // to silence -Weffc++ warnings for classes that have pointer members
     IOManipPointer(const IOManipPointer&) = default;

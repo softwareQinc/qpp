@@ -40,6 +40,7 @@ namespace qpp {
  */
 class QCircuit : public IDisplay, public IJSON {
     friend class QEngine;
+
     idx nq_;                     ///< number of qudits
     idx nc_;                     ///< number of classical "dits"
     const idx d_;                ///< qudit dimension
@@ -48,7 +49,7 @@ class QCircuit : public IDisplay, public IJSON {
 
     std::unordered_map<std::size_t, cmat>
         cmat_hash_tbl_{}; ///< hash table with the matrices used in the circuit,
-                          ///< with [Key = std::size_t, Value = cmat]
+    ///< with [Key = std::size_t, Value = cmat]
     std::unordered_map<std::string, idx> count_{}; ///< gate counts
     std::unordered_map<std::string, idx>
         measurement_count_{}; ///< measurement counts
@@ -96,38 +97,38 @@ class QCircuit : public IDisplay, public IJSON {
         FAN, ///< same unitary gate on multiple qudits
 
         SINGLE_CTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-                                   ///< one control and one target
+        ///< one control and one target
 
         SINGLE_CTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
-                                     ///< one control and multiple targets
+        ///< one control and multiple targets
 
         MULTIPLE_CTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-                                     ///< multiple controls and single target
+        ///< multiple controls and single target
 
         MULTIPLE_CTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
-                                       ///< multiple controls and multiple
-                                       ///< targets
+        ///< multiple controls and multiple
+        ///< targets
 
         CUSTOM_CTRL, ///< custom controlled gate with multiple controls
-                     ///< and multiple targets
+        ///< and multiple targets
 
         SINGLE_cCTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-                                    ///< one classical control and one target
+        ///< one classical control and one target
 
         SINGLE_cCTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
-                                      ///< one classical control and multiple
-                                      ///< targets
+        ///< one classical control and multiple
+        ///< targets
 
         MULTIPLE_cCTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-                                      ///< multiple classical controls and
-                                      ///< single target
+        ///< multiple classical controls and
+        ///< single target
 
         MULTIPLE_cCTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate
-                                        ///< with multiple classical controls
-                                        ///< and multiple targets
+        ///< with multiple classical controls
+        ///< and multiple targets
 
         CUSTOM_cCTRL, ///< custom controlled gate with multiple classical
-                      ///< controls and multiple targets
+        ///< controls and multiple targets
     };
 
     /**
@@ -207,6 +208,7 @@ class QCircuit : public IDisplay, public IJSON {
          * \brief Default constructor
          */
         GateStep() = default;
+
         /**
          * \brief Constructs a gate step instance
          *
@@ -219,9 +221,8 @@ class QCircuit : public IDisplay, public IJSON {
         explicit GateStep(GateType gate_type, std::size_t gate_hash,
                           const std::vector<idx>& ctrl,
                           const std::vector<idx>& target, std::string name = {})
-            : gate_type_{gate_type},
-              gate_hash_{gate_hash}, ctrl_{ctrl}, target_{target}, name_{name} {
-        }
+            : gate_type_{gate_type}, gate_hash_{gate_hash}, ctrl_{ctrl},
+              target_{target}, name_{name} {}
     };
 
     /**
@@ -253,12 +254,12 @@ class QCircuit : public IDisplay, public IJSON {
         MEASURE_Z, ///< Z measurement of single qudit
 
         MEASURE_V, ///< measurement of single qudit in the orthonormal basis
-                   ///< or rank-1 projectors specified by the columns of matrix
-                   ///< \a V
+        ///< or rank-1 projectors specified by the columns of matrix
+        ///< \a V
 
         MEASURE_V_MANY, ///< measurement of multiple qudits in the orthonormal
-                        ///< basis or rank-1 projectors specified by the columns
-                        ///< of matrix \a V
+        ///< basis or rank-1 projectors specified by the columns
+        ///< of matrix \a V
     };
 
     /**
@@ -295,15 +296,16 @@ class QCircuit : public IDisplay, public IJSON {
     struct MeasureStep {
         MeasureType measurement_type_ = MeasureType::NONE; ///< measurement type
         std::vector<std::size_t> mats_hash_; ///< hashes of measurement
-                                             ///< matrix/matrices
+        ///< matrix/matrices
         std::vector<idx> target_; ///< target where the measurement is applied
         idx c_reg_{}; ///< index of the classical register where the measurement
-                      ///< result is being stored
+        ///< result is being stored
         std::string name_; ///< custom name of the step
         /**
          * \brief Default constructor
          */
         MeasureStep() = default;
+
         /**
          * \brief Constructs a measurement step instance
          *
@@ -1009,34 +1011,36 @@ class QCircuit : public IDisplay, public IJSON {
     // end getters
 
     /**
-     * \brief Adds an additional qudit before qudit \a i (by default adds it at
-     * the end)
+     * \brief Adds \a n additional qudits before qudit \a i (by default adds
+     * them at the end)
      *
-     * \note Qudits with indexes greater or equal than the newly inserted one
-     * have their indexes automatically incremented by one
+     * \note Qudits with indexes greater or equal than the newly inserted ones
+     * have their indexes automatically incremented
      *
      * \param i Qudit index
      * \return Reference to the current instance
      */
-    QCircuit& add_qudit(idx i = -1) {
+    QCircuit& add_qudit(idx i = -1, idx n = 1) {
         if (i == static_cast<idx>(-1)) {
             i = nq_;
-            measured_.insert(std::end(measured_), false);
+            measured_.insert(std::end(measured_), n, false);
         } else if (i > nq_)
             throw exception::OutOfRange("qpp::QCircuit::add_qudit()");
 
-        ++nq_;
-        measured_.insert(std::begin(measured_) + i, false);
+        nq_ += n;
+
+        // updated the measured qudits
+        measured_.insert(std::begin(measured_) + i, n, false);
 
         // update gate indexes
         for (auto& gate : gates_) {
             for (auto& pos : gate.ctrl_) {
                 if (pos >= i)
-                    ++pos;
+                    pos += n;
             }
             for (auto& pos : gate.target_) {
                 if (pos >= i)
-                    ++pos;
+                    pos += n;
             }
         }
 
@@ -1044,7 +1048,7 @@ class QCircuit : public IDisplay, public IJSON {
         for (auto& measurement : measurements_) {
             for (auto& pos : measurement.target_) {
                 if (pos >= i)
-                    ++pos;
+                    pos += n;
             }
         }
 
@@ -1052,22 +1056,22 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Adds an additional classical dit before dit \a i (by default adds
-     * it at the end)
+     * \brief Adds \a n additional classical dits before dit \a i (by default
+     * adds them at the end)
      *
      * \note Classical dits with indexes greater or equal than the newly
-     * inserted one have their indexes automatically incremented by one
+     * inserted ones have their indexes automatically incremented
      *
      * \param i Classical dit index
      * \return Reference to the current instance
      */
-    QCircuit& add_dit(idx i = -1) {
+    QCircuit& add_dit(idx i = -1, idx n = 1) {
         if (i == static_cast<idx>(-1)) {
             i = nc_;
         } else if (i > nc_)
             throw exception::OutOfRange("qpp::QCircuit::add_dit()");
 
-        ++nc_;
+        nc_ += n;
 
         // update gate indexes
         for (auto& gate : gates_) {
@@ -1079,7 +1083,7 @@ class QCircuit : public IDisplay, public IJSON {
             case GateType::CUSTOM_cCTRL:
                 for (auto& pos : gate.ctrl_) {
                     if (pos >= i)
-                        ++pos;
+                        pos += n;
                 }
                 break;
             default:
@@ -1090,7 +1094,7 @@ class QCircuit : public IDisplay, public IJSON {
         // update measurement indexes
         for (auto& measurement : measurements_) {
             if (measurement.c_reg_ >= i)
-                ++measurement.c_reg_;
+                measurement.c_reg_ += n;
         }
 
         return *this;
@@ -2270,7 +2274,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param target Qudit index
      * \param c_reg Classical register where the value of the measurement is
      * being stored
-     * \param name Optional measurement name, default is "Measure Z"
+     * \param name Optional measurement name, default is "Z"
      * \return Reference to the current instance
      */
     QCircuit& measureZ(idx target, idx c_reg, std::string name = {}) {
@@ -2494,9 +2498,8 @@ class QCircuit : public IDisplay, public IJSON {
                 ss.clear();
                 ss << disp(measurements_[pos].target_, ", ");
                 result += "\"target\" : " + ss.str() + ", ";
-                result +=
-                    "\"c_reg\" : " + std::to_string(measurements_[pos].c_reg_) +
-                    ", ";
+                result += "\"c_reg\" : " +
+                          std::to_string(measurements_[pos].c_reg_) + ", ";
                 result += "\"name\" : ";
                 result += "\"" + measurements_[pos].name_ + "\"" + "}";
 

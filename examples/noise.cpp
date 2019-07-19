@@ -7,9 +7,9 @@
 int main() {
     using namespace qpp;
     std::cout << ">> Depolarizing qubit noise acting on a random state\n";
-    double p = 0.75; // depolarizing probability (fully depolarizing)
-    idx N = 10000;   // number of trials
-    ket psi = randket();   // initial state
+    double p = 0.75;     // depolarizing probability (fully depolarizing)
+    idx N = 10000;       // number of trials
+    ket psi = randket(); // initial state
     cmat rho = cmat::Zero(2, 2);        // final density matrix
     QubitDepolarizingNoise noise{0.75}; // constructs a noise instance
     // compute the noise action; see qpp::NoiseBase::operator() for other

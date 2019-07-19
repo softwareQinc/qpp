@@ -45,8 +45,8 @@ class QEngine : public IDisplay, public IJSON {
     std::vector<idx> dits_;     ///< classical dits
     std::vector<double> probs_; ///< measurement probabilities
     std::vector<idx> subsys_;   ///< keeps track of the measured subsystems,
-                                ///< relabel them after measurements
-    std::map<idx, idx> stats_;  ///< measurement statistics for multiple runs
+    ///< relabel them after measurements
+    std::map<idx, idx> stats_; ///< measurement statistics for multiple runs
 
     /**
      * \brief Marks qudit \a i as measured then re-label accordingly the
@@ -97,8 +97,8 @@ class QEngine : public IDisplay, public IJSON {
      * \param qc Quantum circuit
      */
     explicit QEngine(const QCircuit& qc)
-        : qc_{std::addressof(qc)}, psi_{States::get_instance().zero(
-                                       qc.get_nq(), qc.get_d())},
+        : qc_{std::addressof(qc)},
+          psi_{States::get_instance().zero(qc.get_nq(), qc.get_d())},
           dits_(qc.get_nc(), 0), probs_(qc.get_nc(), 0),
           subsys_(qc.get_nq(), 0), stats_{} {
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
@@ -227,10 +227,10 @@ class QEngine : public IDisplay, public IJSON {
     /**
      * \brief Measurement statistics for multiple runs
      *
-     * \return Hash table with measurement statistics for multiple runs, with
-     * hash key being the decimal value of the vector of measurement results and
-     * value being the number of occurrences (of the vector of measurement
-     * results), with the most significant bit located at index 0
+     * \return Hash table with collected measurement statistics for multiple
+     * runs, with hash key being the decimal value of the vector of measurement
+     * results and value being the number of occurrences (of the vector of
+     * measurement results), with the most significant bit located at index 0
      * (i.e. top/left) of the classical dits array.
      */
     const std::map<idx, idx>& get_stats() const { return stats_; }
@@ -274,19 +274,36 @@ class QEngine : public IDisplay, public IJSON {
 
         return *this;
     }
+
+    /**
+     * \brief Resets the collected measurement statistics hash table
+     *
+     * \return Reference to the current instance
+    */
+    QEngine& reset_stats() {
+        stats_ = {};
+        return *this;
+    }
+
     // end setters
 
     /**
      * \brief Resets the engine
      *
+     * \param clear_stats Resets the collected measurement statistics hash
+     * table (true by default)
+     *
      * Re-initializes everything to zero and sets the initial state to
      * \f$|0\rangle^{\otimes n}\f$
      */
-    void reset() {
+    void reset(bool clear_stats = true) {
         psi_ = States::get_instance().zero(qc_->get_nq(), qc_->get_d());
         dits_ = std::vector<idx>(qc_->get_nc(), 0);
         probs_ = std::vector<double>(qc_->get_nc(), 0);
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
+
+        if (clear_stats)
+            reset_stats();
     }
 
     /**
@@ -358,10 +375,9 @@ class QEngine : public IDisplay, public IJSON {
                         }
                     }
                     if (should_apply) {
-                        psi_ = apply(
-                            psi_,
-                            powm(h_tbl[gates[q_ip].gate_hash_], first_dit),
-                            target_rel_pos, qc_->get_d());
+                        psi_ = apply(psi_, powm(h_tbl[gates[q_ip].gate_hash_],
+                                                first_dit),
+                                     target_rel_pos, qc_->get_d());
                     }
                 }
                 break;
@@ -436,17 +452,24 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Executes the entire quantum circuit
      *
      * \param rep Number of repetitions
+     * \param clear_stats Resets the collected measurement statistics hash table
+     * before the run
      */
-    void execute(idx rep = 1) {
-        stats_ = {};
+    void execute(idx rep = 1, bool clear_stats = true) {
+        if (clear_stats)
+            reset_stats();
+
         for (idx i = 0; i < rep; ++i) {
-            reset();
+            reset(false); // reset everything except the measurement statistics
             for (auto&& elem : *qc_)
                 execute(elem);
 
-            auto m_res = get_dits();
-            ++stats_[multiidx2n(m_res,
-                                std::vector<idx>(m_res.size(), qc_->get_d()))];
+            // we measured at least one qudit
+            if (get_measured().size() != 0) {
+                auto m_res = get_dits();
+                ++stats_[multiidx2n(
+                    m_res, std::vector<idx>(m_res.size(), qc_->get_d()))];
+            }
         }
     }
 
@@ -484,6 +507,22 @@ class QEngine : public IDisplay, public IJSON {
         ss << disp(get_probs(), ", ");
         result += ss.str();
 
+        ss.str("");
+        ss.clear();
+        result += ", \"stats\" : {";
+        std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
+        bool is_first = true;
+        for (auto&& elem : get_stats()) {
+            if (is_first)
+                is_first = false;
+            else
+                ss << ", ";
+            ss << "\"" << disp(n2multiidx(elem.first, dits_dims), " ")
+               << "\" : " << elem.second;
+        }
+        ss << '}';
+        result += ss.str();
+
         if (enclosed_in_curly_brackets)
             result += "}";
 
@@ -503,7 +542,12 @@ class QEngine : public IDisplay, public IJSON {
     std::ostream& display(std::ostream& os) const override {
         os << "measured: " << disp(get_measured(), ", ") << '\n';
         os << "dits: " << disp(get_dits(), ", ") << '\n';
-        os << "probs: " << disp(get_probs(), ", ");
+        os << "probs: " << disp(get_probs(), ", ") << '\n';
+        os << "stats:\n";
+        std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
+        for (auto&& elem : get_stats())
+            os << '\t' << disp(n2multiidx(elem.first, dits_dims), " ") << ": "
+               << elem.second << '\n';
 
         return os;
     }
@@ -541,6 +585,7 @@ class QNoisyEngine : public QEngine {
     }
 
     using QEngine::execute;
+
     /**
      * \brief Executes one step in the quantum circuit
      *
