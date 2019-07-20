@@ -49,7 +49,7 @@ class QCircuit : public IDisplay, public IJSON {
 
     std::unordered_map<std::size_t, cmat>
         cmat_hash_tbl_{}; ///< hash table with the matrices used in the circuit,
-    ///< with [Key = std::size_t, Value = cmat]
+                          ///< with [Key = std::size_t, Value = cmat]
     std::unordered_map<std::string, idx> count_{}; ///< gate counts
     std::unordered_map<std::string, idx>
         measurement_count_{}; ///< measurement counts
@@ -200,10 +200,10 @@ class QCircuit : public IDisplay, public IJSON {
      */
     struct GateStep {
         GateType gate_type_ = GateType::NONE; ///< gate type
-        std::size_t gate_hash_;               ///< gate hash
-        std::vector<idx> ctrl_;               ///< control
-        std::vector<idx> target_; ///< target where the gate is applied
-        std::string name_;        ///< custom name of the step
+        std::size_t gate_hash_{};             ///< gate hash
+        std::vector<idx> ctrl_{};             ///< control
+        std::vector<idx> target_{}; ///< target where the gate is applied
+        std::string name_{};        ///< custom name of the step
         /**
          * \brief Default constructor
          */
@@ -296,12 +296,12 @@ class QCircuit : public IDisplay, public IJSON {
      */
     struct MeasureStep {
         MeasureType measurement_type_ = MeasureType::NONE; ///< measurement type
-        std::vector<std::size_t> mats_hash_; ///< hashes of measurement
-        ///< matrix/matrices
-        std::vector<idx> target_; ///< target where the measurement is applied
+        std::vector<std::size_t> mats_hash_{}; ///< hashes of measurement
+                                               ///< matrix/matrices
+        std::vector<idx> target_{}; ///< target where the measurement is applied
         idx c_reg_{}; ///< index of the classical register where the measurement
-        ///< result is being stored
-        std::string name_; ///< custom name of the step
+                      ///< result is being stored
+        std::string name_{}; ///< custom name of the step
         /**
          * \brief Default constructor
          */
@@ -2431,13 +2431,57 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
+     * \brief Replicates the circuit
+     * \note The circuit should not contain any measurements when invoking this
+     * member function
+     *
+     * \param n Number of repetitions. If \a n == 1, returns the original
+     * circuit.
+     * \return Reference to the current instance
+     */
+    QCircuit& replicate(idx n) {
+        // EXCEPTION CHECKS
+
+        if (n == 0)
+            throw exception::OutOfRange("qpp::QCircuit::repeat()");
+        if (n == 1)
+            return *this;
+        if (get_measured().size() != 0)
+            throw exception::CustomException(
+                "qpp::QCircuit::repeat()",
+                "The circuit cannot contain measurements at this stage");
+        // END EXCEPTION CHECKS
+
+        auto gates_copy = gates_;
+        auto gates_size = gates_.size();
+
+        auto step_types_copy = step_types_;
+        auto step_types_size = step_types_.size();
+
+        gates_.resize(gates_.size() * n);
+        step_types_.resize(step_types_size * n);
+
+        for (idx i = 0; i < n - 1; ++i) {
+            std::copy(std::begin(gates_copy), std::end(gates_copy),
+                      std::begin(gates_) + (i + 1) * gates_size);
+            std::copy(std::begin(step_types_copy), std::end(step_types_copy),
+                      std::begin(step_types_) + (i + 1) * step_types_size);
+        }
+
+        for (auto& elem : count_)
+            elem.second *= n;
+
+        return *this;
+    }
+
+    /**
      * \brief qpp::IJOSN::to_JSON() override
      *
      * Displays the quantum circuit in JSON format
      *
-     * \param enclosed_in_curly_brackets If true, encloses the result in curly
-     * brackets
-     * \return String containing the JSON representation of the quantum circuit
+     * \param enclosed_in_curly_brackets If true, encloses the result in
+     * curly brackets \return String containing the JSON representation of
+     * the quantum circuit
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
         std::string result;
