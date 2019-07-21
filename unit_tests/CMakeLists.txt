@@ -88,17 +88,18 @@ IF (NOT ${WITH_MATLAB} STREQUAL "")
     IF (IS_DIRECTORY ${WITH_MATLAB})
         MESSAGE(STATUS "MATLAB support enabled")
         # MATLAB include files
-        SET(MATLAB_INCLUDE "${WITH_MATLAB}/extern/include")
+        SET(MATLAB_INCLUDE "${WITH_MATLAB}/extern/include" CACHE PATH
+                "Path to MATLAB include directory")
         IF (IS_DIRECTORY ${MATLAB_INCLUDE})
             INCLUDE_DIRECTORIES(SYSTEM ${MATLAB_INCLUDE})
         ELSE ()
             MESSAGE(FATAL_ERROR "Possibly corrupted MATLAB include headers")
         ENDIF ()
         # MATLAB linker files
-        SET(MATLAB_LINK "${WITH_MATLAB}/bin/maci64")
+        SET(MATLAB_LINK "${WITH_MATLAB}/bin/maci64" CACHE PATH
+                "Path to MATLAB lib directory")
         IF (IS_DIRECTORY ${MATLAB_LINK})
-            SET(CMAKE_EXE_LINKER_FLAGS
-                    "${CMAKE_EXE_LINKER_FLAGS} -L${MATLAB_LINK}")
+            LINK_DIRECTORIES(${MATLAB_LINK})
         ELSE ()
             MESSAGE(FATAL_ERROR "Possibly corrupted MATLAB linker files")
         ENDIF ()
