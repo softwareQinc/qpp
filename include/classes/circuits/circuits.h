@@ -2558,42 +2558,41 @@ class QCircuit : public IDisplay, public IJSON {
                 }
                 measurement.c_reg_ += pos_dit;
             }
+        } // end else
 
-            // STEP 2: append the copy of the to-be-added circuit to the current
-            // instance
-            // insert classical dits from the to-be-added circuit
-            add_dit(other.nc_, pos_dit);
+        // STEP 2: append the copy of the to-be-added circuit to the current
+        // instance
+        // insert classical dits from the to-be-added circuit
+        add_dit(other.nc_, pos_dit);
 
-            // insert the measured vector
-            measured_.insert(std::begin(measured_) + pos_dit,
-                             std::begin(other.measured_),
-                             std::end(other.measured_));
+        // insert the measured vector
+        measured_.insert(std::begin(measured_) + pos_dit,
+                         std::begin(other.measured_),
+                         std::end(other.measured_));
 
-            // append gate steps vector
-            gates_.insert(std::end(gates_), std::begin(other.gates_),
-                          std::end(other.gates_));
+        // append gate steps vector
+        gates_.insert(std::end(gates_), std::begin(other.gates_),
+                      std::end(other.gates_));
 
-            // append measurement steps vector
-            measurements_.insert(std::end(measurements_),
-                                 std::begin(other.measurements_),
-                                 std::end(other.measurements_));
+        // append measurement steps vector
+        measurements_.insert(std::end(measurements_),
+                             std::begin(other.measurements_),
+                             std::end(other.measurements_));
 
-            // append step types vector
-            step_types_.insert(std::end(step_types_),
-                               std::begin(other.step_types_),
-                               std::end(other.step_types_));
+        // append step types vector
+        step_types_.insert(std::end(step_types_), std::begin(other.step_types_),
+                           std::end(other.step_types_));
 
-            // STEP 3: modify gate counts, hash tables etc accordingly
-            // update matrix hash table
-            for (auto& elem : other.cmat_hash_tbl_)
-                cmat_hash_tbl_[elem.first] = elem.second;
-            // update gate counts
-            for (auto& elem : other.count_)
-                count_[elem.first] += elem.second;
-            // update measurement counts
-            for (auto& elem : other.measurement_count_)
-                measurement_count_[elem.first] += elem.second;
-        }
+        // STEP 3: modify gate counts, hash tables etc accordingly
+        // update matrix hash table
+        for (auto& elem : other.cmat_hash_tbl_)
+            cmat_hash_tbl_[elem.first] = elem.second;
+        // update gate counts
+        for (auto& elem : other.count_)
+            count_[elem.first] += elem.second;
+        // update measurement counts
+        for (auto& elem : other.measurement_count_)
+            measurement_count_[elem.first] += elem.second;
 
         return *this;
     }
