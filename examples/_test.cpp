@@ -6,28 +6,4 @@
 int main() {
     /////////// testing ///////////
     using namespace qpp;
-
-    idx nq = 3, nc = 3;
-    QCircuit qc{nq, nc};
-    qc.gate_fan(gt.H);
-    qc.gate_fan(gt.H);
-    qc.gate_fan(gt.H);
-    //for (idx i = 0; i < qc.get_nq(); ++i)
-    //    qc.measureZ(1, 1);
-
-    qc.replicate(9);
-    for(idx i = 0; i < nq; ++i)
-        qc.measureZ(i, i);
-
-    auto qc1 = qc;
-
-    std::cout << qc1 << "\n";
-
-    std::cout << '\n' << "engine " << '\n';
-    QEngine q_engine{qc1};
-    q_engine.execute(512);
-    q_engine.execute(512, false);
-
-    std::cout << q_engine << '\n';
-    std::cout << q_engine.to_JSON() << '\n';
 }

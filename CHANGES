@@ -16,6 +16,8 @@ In progress - pre-release
     - Updated Google Test to version 1.8.1
     - Added qpp::QCircuit::add_qudit() and qpp::QCircuit::add_dit() member
       functions for inserting a new qudit/classical dit on the fly
+    - Added qpp::QCircuit::add_circuit() for adding a quantum circuit
+      description to the current quantum circuit description on the fly
 
 Version 1.2 - 10 February 2019
     - Added new function in "functions.h":

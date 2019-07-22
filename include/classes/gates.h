@@ -676,50 +676,50 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         const idx D = static_cast<idx>(U.rows());
 
         switch (D) {
-        // 1 qubit gates
-        case 2:
-            if (U == this->Id2)
-                return "Id2";
-            else if (U == this->H)
-                return "H";
-            else if (U == this->X)
-                return "X";
-            else if (U == this->Y)
-                return "Y";
-            else if (U == this->Z)
-                return "Z";
-            else if (U == this->S)
-                return "S";
-            else if (U == this->T)
-                return "T";
-            else
-                return "";
-            break;
-        // 2 qubit gates
-        case 4:
-            if (U == this->CNOT)
-                return "CNOT";
-            else if (U == this->CZ)
-                return "CZ";
-            else if (U == this->CNOTba)
-                return "CNOTba";
-            else if (U == this->SWAP)
-                return "SWAP";
-            else
-                return "";
-            break;
-        // 3 qubit gates
-        case 8:
-            if (U == this->TOF)
-                return "TOF";
-            else if (U == this->FRED)
-                return "FRED";
-            else
-                return "";
-            break;
+            // 1 qubit gates
+            case 2:
+                if (U == this->Id2)
+                    return "Id2";
+                else if (U == this->H)
+                    return "H";
+                else if (U == this->X)
+                    return "X";
+                else if (U == this->Y)
+                    return "Y";
+                else if (U == this->Z)
+                    return "Z";
+                else if (U == this->S)
+                    return "S";
+                else if (U == this->T)
+                    return "T";
+                else
+                    return "";
+                break;
+            // 2 qubit gates
+            case 4:
+                if (U == this->CNOT)
+                    return "CNOT";
+                else if (U == this->CZ)
+                    return "CZ";
+                else if (U == this->CNOTba)
+                    return "CNOTba";
+                else if (U == this->SWAP)
+                    return "SWAP";
+                else
+                    return "";
+                break;
+            // 3 qubit gates
+            case 8:
+                if (U == this->TOF)
+                    return "TOF";
+                else if (U == this->FRED)
+                    return "FRED";
+                else
+                    return "";
+                break;
 
-        default:
-            return "";
+            default:
+                return "";
         }
     }
     // end getters

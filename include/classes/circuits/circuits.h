@@ -142,54 +142,54 @@ class QCircuit : public IDisplay, public IJSON {
     friend std::ostream& operator<<(std::ostream& os,
                                     const GateType& gate_type) {
         switch (gate_type) {
-        case GateType::NONE:
-            os << "GATE NONE";
-            break;
-        case GateType::SINGLE:
-            os << "SINGLE";
-            break;
-        case GateType::TWO:
-            os << "TWO";
-            break;
-        case GateType::THREE:
-            os << "THREE";
-            break;
-        case GateType::FAN:
-            os << "FAN";
-            break;
-        case GateType::CUSTOM:
-            os << "CUSTOM";
-            break;
-        case GateType::SINGLE_CTRL_SINGLE_TARGET:
-            os << "SINGLE_CTRL_SINGLE_TARGET";
-            break;
-        case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
-            os << "SINGLE_CTRL_MULTIPLE_TARGET";
-            break;
-        case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
-            os << "MULTIPLE_CTRL_SINGLE_TARGET";
-            break;
-        case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
-            os << "MULTIPLE_CTRL_MULTIPLE_TARGET";
-            break;
-        case GateType::CUSTOM_CTRL:
-            os << "CUSTOM_CTRL";
-            break;
-        case GateType::SINGLE_cCTRL_SINGLE_TARGET:
-            os << "SINGLE_cCTRL_SINGLE_TARGET";
-            break;
-        case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
-            os << "SINGLE_cCTRL_MULTIPLE_TARGET";
-            break;
-        case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
-            os << "MULTIPLE_cCTRL_SINGLE_TARGET";
-            break;
-        case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
-            os << "MULTIPLE_cCTRL_MULTIPLE_TARGET";
-            break;
-        case GateType::CUSTOM_cCTRL:
-            os << "CUSTOM_cCTRL";
-            break;
+            case GateType::NONE:
+                os << "GATE NONE";
+                break;
+            case GateType::SINGLE:
+                os << "SINGLE";
+                break;
+            case GateType::TWO:
+                os << "TWO";
+                break;
+            case GateType::THREE:
+                os << "THREE";
+                break;
+            case GateType::FAN:
+                os << "FAN";
+                break;
+            case GateType::CUSTOM:
+                os << "CUSTOM";
+                break;
+            case GateType::SINGLE_CTRL_SINGLE_TARGET:
+                os << "SINGLE_CTRL_SINGLE_TARGET";
+                break;
+            case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
+                os << "SINGLE_CTRL_MULTIPLE_TARGET";
+                break;
+            case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
+                os << "MULTIPLE_CTRL_SINGLE_TARGET";
+                break;
+            case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
+                os << "MULTIPLE_CTRL_MULTIPLE_TARGET";
+                break;
+            case GateType::CUSTOM_CTRL:
+                os << "CUSTOM_CTRL";
+                break;
+            case GateType::SINGLE_cCTRL_SINGLE_TARGET:
+                os << "SINGLE_cCTRL_SINGLE_TARGET";
+                break;
+            case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
+                os << "SINGLE_cCTRL_MULTIPLE_TARGET";
+                break;
+            case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
+                os << "MULTIPLE_cCTRL_SINGLE_TARGET";
+                break;
+            case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
+                os << "MULTIPLE_cCTRL_MULTIPLE_TARGET";
+                break;
+            case GateType::CUSTOM_cCTRL:
+                os << "CUSTOM_cCTRL";
+                break;
         }
 
         return os;
@@ -274,18 +274,18 @@ class QCircuit : public IDisplay, public IJSON {
     friend std::ostream& operator<<(std::ostream& os,
                                     const MeasureType& measure_type) {
         switch (measure_type) {
-        case MeasureType::NONE:
-            os << "MEASURE NONE";
-            break;
-        case MeasureType::MEASURE_Z:
-            os << "MEASURE_Z";
-            break;
-        case MeasureType::MEASURE_V:
-            os << "MEASURE_V";
-            break;
-        case MeasureType::MEASURE_V_MANY:
-            os << "MEASURE_V_MANY";
-            break;
+            case MeasureType::NONE:
+                os << "MEASURE NONE";
+                break;
+            case MeasureType::MEASURE_Z:
+                os << "MEASURE_Z";
+                break;
+            case MeasureType::MEASURE_V:
+                os << "MEASURE_V";
+                break;
+            case MeasureType::MEASURE_V_MANY:
+                os << "MEASURE_V_MANY";
+                break;
         }
 
         return os;
@@ -861,8 +861,8 @@ class QCircuit : public IDisplay, public IJSON {
         return result;
     }
 
-    // implemented the algorithm D (Sec. 3.1) from
-    // http://www.informatik.uni-bremen.de/agra/doc/konf/13_rc_depth_impr.pdf
+    // computes the depth greedily, measuring the "height" (depth) of the
+    // "pieces" (gates) placed in a tetris-like style
     /**
      * \brief Quantum circuit gate depth
      *
@@ -873,9 +873,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Gate depth
      */
     idx get_gate_depth(const std::string& name = {}) const {
-        idx result = 0;
         bool found = false;
-        std::vector<idx> b(nc_ + nq_, 0);
+        std::vector<idx> heights(nc_ + nq_, 0);
 
         for (auto&& step : *this) {
             if (step.type_ != StepType::GATE)
@@ -894,68 +893,51 @@ class QCircuit : public IDisplay, public IJSON {
             ctrl_target.insert(ctrl_target.end(), ctrl.begin(), ctrl.end());
             ctrl_target.insert(ctrl_target.end(), target.begin(), target.end());
 
-            bool overlap = false;
-
+            idx max_height = 0;
             switch (gate_step.gate_type_) {
-            case GateType::NONE:
-            case GateType::SINGLE:
-            case GateType::TWO:
-            case GateType::THREE:
-            case GateType::CUSTOM:
-            case GateType::FAN:
-            case GateType::SINGLE_CTRL_SINGLE_TARGET:
-            case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
-            case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
-            case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
-            case GateType::CUSTOM_CTRL:
-                // apply (ctrl) gate
-                for (auto&& i : ctrl_target)
-                    b[nc_ + i] += 1;
-                // check whether gates overlap
-                for (auto&& elem : b)
-                    if (elem == 2)
-                        overlap = true;
-                if (overlap) {
-                    // reset the b vector
-                    b = std::vector<idx>(nc_ + nq_, 0);
-                    // set to 1 the locations of the last gate
+                case GateType::NONE:
+                case GateType::SINGLE:
+                case GateType::TWO:
+                case GateType::THREE:
+                case GateType::CUSTOM:
+                case GateType::FAN:
+                case GateType::SINGLE_CTRL_SINGLE_TARGET:
+                case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
+                case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
+                case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
+                case GateType::CUSTOM_CTRL:
+                    // compute the "height" of the to-be-placed gate
                     for (auto&& i : ctrl_target)
-                        b[nc_ + i] = 1;
-                    ++result;
-                }
-                break;
-            case GateType::SINGLE_cCTRL_SINGLE_TARGET:
-            case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
-            case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
-            case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
-            case GateType::CUSTOM_cCTRL:
-                // apply classical ctrl
-                for (auto&& i : ctrl)
-                    b[i] += 1;
-                // apply gate
-                for (auto&& i : target)
-                    b[nc_ + i] += 1;
-                // check whether gates overlap
-                for (auto&& elem : b) {
-                    if (elem == 2) {
-                        overlap = true;
-                    }
-                }
-                if (overlap) {
-                    // reset the b vector
-                    b = std::vector<idx>(nc_ + nq_, 0);
-                    // set to 1 the locations of the last gate
+                        if (heights[nc_ + i] > max_height)
+                            max_height = heights[nc_ + i];
+                    // apply (ctrl) gate
+                    for (auto&& i : ctrl_target)
+                        heights[nc_ + i] = max_height + 1;
+                    break;
+                case GateType::SINGLE_cCTRL_SINGLE_TARGET:
+                case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
+                case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
+                case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
+                case GateType::CUSTOM_cCTRL:
+                    // compute the "height" of the to-be-placed gate
                     for (auto&& i : ctrl)
-                        b[i] = 1;
+                        if (heights[i] > max_height)
+                            max_height = heights[i];
                     for (auto&& i : target)
-                        b[nc_ + i] = 1;
-                    ++result;
-                }
-                break;
+                        if (heights[nc_ + i] > max_height)
+                            max_height = heights[nc_ + i];
+                    // apply classical ctrl
+                    for (auto&& i : ctrl)
+                        heights[i] = max_height + 1;
+                    // apply gate
+                    for (auto&& i : target)
+                        heights[nc_ + i] = max_height + 1;
+                    break;
             } // end switch
         }     // end for
 
-        return found ? result + 1 : 0;
+        return found ? *std::max_element(std::begin(heights), std::end(heights))
+                     : 0;
     }
 
     /**
@@ -1018,15 +1000,19 @@ class QCircuit : public IDisplay, public IJSON {
      * \note Qudits with indexes greater or equal than the newly inserted ones
      * have their indexes automatically incremented
      *
+     * \param n Number of qudits
      * \param i Qudit index
      * \return Reference to the current instance
      */
-    QCircuit& add_qudit(idx i = -1, idx n = 1) {
+    QCircuit& add_qudit(idx n = 1, idx i = -1) {
+        // EXCEPTION CHECKS
+
         if (i == static_cast<idx>(-1)) {
             i = nq_;
             measured_.insert(std::end(measured_), n, false);
         } else if (i > nq_)
             throw exception::OutOfRange("qpp::QCircuit::add_qudit()");
+        // END EXCEPTION CHECKS
 
         nq_ += n;
 
@@ -1063,32 +1049,37 @@ class QCircuit : public IDisplay, public IJSON {
      * \note Classical dits with indexes greater or equal than the newly
      * inserted ones have their indexes automatically incremented
      *
+     * \param n Number of classical dits
      * \param i Classical dit index
      * \return Reference to the current instance
      */
-    QCircuit& add_dit(idx i = -1, idx n = 1) {
-        if (i == static_cast<idx>(-1)) {
+    QCircuit& add_dit(idx n = 1, idx i = -1) {
+        // EXCEPTION CHECKS
+
+        if (i == static_cast<idx>(-1))
             i = nc_;
-        } else if (i > nc_)
+        else if (i > nc_)
             throw exception::OutOfRange("qpp::QCircuit::add_dit()");
+        // END EXCEPTION CHECKS
 
         nc_ += n;
 
         // update gate indexes
         for (auto& gate : gates_) {
             switch (gate.gate_type_) {
-            case GateType::SINGLE_cCTRL_SINGLE_TARGET:
-            case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
-            case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
-            case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
-            case GateType::CUSTOM_cCTRL:
-                for (auto& pos : gate.ctrl_) {
-                    if (pos >= i)
-                        pos += n;
-                }
-                break;
-            default:
-                break;
+                // classically-controlled gates
+                case GateType::SINGLE_cCTRL_SINGLE_TARGET:
+                case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
+                case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
+                case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
+                case GateType::CUSTOM_cCTRL:
+                    for (auto& pos : gate.ctrl_) {
+                        if (pos >= i)
+                            pos += n;
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -2475,6 +2466,139 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
+     * \brief Appends a quantum circuit description to the current one
+     *
+     * \note If qudit indexes of the added quantum circuit description do not
+     * totally overlap with the indexes of the current quantum circuit
+     * description, then the required number of additional qudits are
+     * automatically added to the current quantum circuit description
+     *
+     * \param other Quantum circuit description
+     * \param pos_qudit The index of the first qudit of \a other relative to the
+     * index of the first qudit of the current quantum circuit description, with
+     * the rest following in order. If negative or greater than the total number
+     * of qudits of the current quantum circuit description, the required number
+     * of additional qudits are automatically added to the current quantum
+     * circuit description
+     * \param pos_dit The first classical dit of \a other is inserted before the
+     * \a pos_dit classical dit index of the current quantum circuit description
+     * (in the classical dits array), the rest following in order. By default,
+     * insertion is performed at the end.
+     * \return Reference to the current instance
+     */
+    QCircuit& add_circuit(QCircuit other, bigint pos_qudit, idx pos_dit = -1) {
+        // EXCEPTION CHECKS
+
+        // check equal dimensions
+        if (other.d_ != d_)
+            throw exception::DimsNotEqual("qpp::QCircuit::add_circuit()");
+        // check classical dits
+        if (pos_dit == static_cast<idx>(-1))
+            pos_dit = nc_;
+        else if (pos_dit > nc_)
+            throw exception::OutOfRange("qpp::QCircuit::add_circuit()");
+        // check overlapping qudits (in the current instance) were not already
+        // measured
+        if (pos_qudit >= 0 && static_cast<idx>(pos_qudit) < nq_) {
+            for (idx i = 0;
+                 i < std::min(static_cast<idx>(nq_ - pos_qudit), other.nq_);
+                 ++i)
+                if (get_measured(pos_qudit + i))
+                    throw exception::QuditAlreadyMeasured(
+                        "qpp::QCircuit::add_circuit");
+        }
+        // END EXCEPTION CHECKS
+
+        // STEP 0: add additional qudits (if needed)
+        idx extra_qudits = 0;
+        // add qudits before beginning
+        if (pos_qudit < 0) {
+            extra_qudits = std::abs(pos_qudit);
+            add_qudit(extra_qudits, 0);
+        } else {
+            idx tmp = pos_qudit + other.nq_;
+            if (tmp > nq_) {
+                extra_qudits = tmp - nq_;
+                add_qudit(extra_qudits);
+            }
+
+            // STEP 1: modify the copy of the to-be-added circuit
+
+            // update gate indexes
+            for (auto& gate : other.gates_) {
+                switch (gate.gate_type_) {
+                    // classically-controlled gates
+                    case GateType::SINGLE_cCTRL_SINGLE_TARGET:
+                    case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
+                    case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
+                    case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
+                    case GateType::CUSTOM_cCTRL:
+                        for (auto& pos : gate.ctrl_) {
+                            pos += pos_dit;
+                        }
+                        break;
+                    // quantumly-controlled gates
+                    default:
+                        for (auto& pos : gate.ctrl_) {
+                            pos += pos_qudit;
+                        }
+                        break;
+                }
+
+                // non-controlled gates
+                for (auto& pos : gate.target_) {
+                    pos += pos_qudit;
+                }
+            }
+
+            // update measurement indexes
+            for (auto& measurement : other.measurements_) {
+                for (auto& pos : measurement.target_) {
+                    pos += pos_qudit;
+                }
+                measurement.c_reg_ += pos_dit;
+            }
+
+            // STEP 2: append the copy of the to-be-added circuit to the current
+            // instance
+            // insert classical dits from the to-be-added circuit
+            add_dit(other.nc_, pos_dit);
+
+            // insert the measured vector
+            measured_.insert(std::begin(measured_) + pos_dit,
+                             std::begin(other.measured_),
+                             std::end(other.measured_));
+
+            // append gate steps vector
+            gates_.insert(std::end(gates_), std::begin(other.gates_),
+                          std::end(other.gates_));
+
+            // append measurement steps vector
+            measurements_.insert(std::end(measurements_),
+                                 std::begin(other.measurements_),
+                                 std::end(other.measurements_));
+
+            // append step types vector
+            step_types_.insert(std::end(step_types_),
+                               std::begin(other.step_types_),
+                               std::end(other.step_types_));
+
+            // STEP 3: modify gate counts, hash tables etc accordingly
+            // update matrix hash table
+            for (auto& elem : other.cmat_hash_tbl_)
+                cmat_hash_tbl_[elem.first] = elem.second;
+            // update gate counts
+            for (auto& elem : other.count_)
+                count_[elem.first] += elem.second;
+            // update measurement counts
+            for (auto& elem : other.measurement_count_)
+                measurement_count_[elem.first] += elem.second;
+        }
+
+        return *this;
+    }
+
+    /**
      * \brief qpp::IJOSN::to_JSON() override
      *
      * Displays the quantum circuit in JSON format
@@ -2611,7 +2735,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         return os;
     }
-}; /* class QCircuit */
+}; // namespace qpp
 
 } /* namespace qpp */
 
