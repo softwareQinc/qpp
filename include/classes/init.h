@@ -48,11 +48,9 @@ class Init final : public internal::Singleton<const Init> // const Singleton
      */
     Init() {
         // set default output format and precision
-        //        std::cout << std::fixed; // use fixed format for nice
-        //        formatting
+        // std::cout << std::fixed; // use fixed format for nice formatting
         // std::cout << std::scientific;
-        //        std::cout << std::setprecision(4); // only for
-        //        fixed/scientific modes
+        // std::cout << std::setprecision(4); // only for fixed/scientific modes
     }
 
     /**

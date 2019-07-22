@@ -547,9 +547,15 @@ class QEngine : public IDisplay, public IJSON {
         os << "probs: " << disp(get_probs(), ", ") << '\n';
         os << "stats:\n";
         std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
-        for (auto&& elem : get_stats())
+        bool is_first = true;
+        for (auto&& elem : get_stats()) {
+            if (is_first)
+                is_first = false;
+            else
+                os << '\n';
             os << '\t' << disp(n2multiidx(elem.first, dits_dims), " ") << ": "
-               << elem.second << '\n';
+               << elem.second;
+        }
 
         return os;
     }
