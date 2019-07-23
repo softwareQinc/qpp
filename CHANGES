@@ -1,23 +1,23 @@
 In progress - pre-release
     - Minimum required CMake version is now 3.2
+    - Added MSVC support for CMake
+    - Updated Google Test to version 1.8.1
+    - Added enum {RES, PROB, ST} in "constants.h" for using with std::get<> on
+      the result of qpp::measure() etc.
     - Split the "classes/circuits.h" into "classes/circuits/circuits.h" and
       "classes/circuits/engines.h"
     - Added noisy quantum engine for non-correlated noise
     - Added noisy teleportation example (that uses a noisy quantum engine) in
       "examples/circuits/noisy_teleport_qubit_circuit.cpp"
-    - Implemented qpp::QCircuit::QFT() and qpp::QCircuit::TFQ() (inverse Fourier
-      transform)
-    - Implemented qpp::QCircuit::get_gate_depth()
-    - Implemented qpp::Bit_circuit::get_gate_count() and
-      qpp::Bit_circuit::get_gate_depth()
-    - Added enum {RES, PROB, ST} in "constants.h" for using with std::get<> on 
-      the result of qpp::measure() etc.
-    - Added MSVC support for CMake
-    - Updated Google Test to version 1.8.1
-    - Added qpp::QCircuit::add_qudit() and qpp::QCircuit::add_dit() member
-      functions for inserting a new qudit/classical dit on the fly
-    - Added qpp::QCircuit::add_circuit() for adding a quantum circuit
-      description to the current quantum circuit description on the fly
+    - Implemented qpp::QCircuit::
+          QFT()            - Quantum Fourier Transform
+          TFQ()            - inverse Quantum Fourier Transform
+          get_gate_depth() - circuit gate depth
+          add_qudit()      - adds qudit(s) on the fly
+          add_dit() - adds classical dit(s) on the fly
+    - Implemented qpp::Bit_circuit::
+          get_gate_count() - classical reversible circuit gate count
+          get_gate_depth() - classical reversible circuit gate depth
 
 Version 1.2 - 10 February 2019
     - Added new function in "functions.h":
