@@ -1,6 +1,7 @@
 <map id="qpp::exception::SizeMismatch" name="qpp::exception::SizeMismatch">
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="17,200,192,227"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="13,96,117,123"/>
-<area shape="rect" id="node4" title="STL class. " alt="" coords="141,96,221,123"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="117,5,244,47"/>
+<area shape="rect" id="node1" title="Size mismatch exception." alt="" coords="5,276,204,303"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="17,200,192,227"/>
+<area shape="rect" id="node3" title="STL class." alt="" coords="13,96,117,123"/>
+<area shape="rect" id="node4" title="STL class." alt="" coords="141,96,221,123"/>
+<area shape="rect" id="node5" title="STL class." alt="" coords="117,5,244,47"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="qpp::exception::ZeroSize" name="qpp::exception::ZeroSize">
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="5,80,180,107"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="41,5,145,32"/>
+<area shape="rect" id="node1" title="Object has zero size exception." alt="" coords="8,155,177,181"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="5,80,180,107"/>
+<area shape="rect" id="node3" title="STL class." alt="" coords="41,5,145,32"/>
 </map>
