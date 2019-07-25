@@ -1017,7 +1017,7 @@ class QCircuit : public IDisplay, public IJSON {
         nq_ += n;
 
         // updated the measured qudits
-        measured_.insert(std::begin(measured_) + i, n, false);
+        measured_.insert(std::next(std::begin(measured_) , i), n, false);
 
         // update gate indexes
         for (auto& gate : gates_) {
@@ -2454,9 +2454,10 @@ class QCircuit : public IDisplay, public IJSON {
 
         for (idx i = 0; i < n - 1; ++i) {
             std::copy(std::begin(gates_copy), std::end(gates_copy),
-                      std::begin(gates_) + (i + 1) * gates_size);
-            std::copy(std::begin(step_types_copy), std::end(step_types_copy),
-                      std::begin(step_types_) + (i + 1) * step_types_size);
+                      std::next(std::begin(gates_), (i + 1) * gates_size));
+            std::copy(
+                std::begin(step_types_copy), std::end(step_types_copy),
+                std::next(std::begin(step_types_), (i + 1) * step_types_size));
         }
 
         for (auto& elem : count_)
@@ -2566,7 +2567,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_dit(other.nc_, pos_dit);
 
         // insert the measured vector
-        measured_.insert(std::begin(measured_) + pos_dit,
+        measured_.insert(std::next(std::begin(measured_) , pos_dit),
                          std::begin(other.measured_),
                          std::end(other.measured_));
 

@@ -453,15 +453,15 @@ class QEngine : public IDisplay, public IJSON {
     /**
      * \brief Executes the entire quantum circuit
      *
-     * \param rep Number of repetitions
+     * \param reps Number of repetitions
      * \param clear_stats Resets the collected measurement statistics hash table
      * before the run
      */
-    void execute(idx rep = 1, bool clear_stats = true) {
+    void execute(idx reps = 1, bool clear_stats = true) {
         if (clear_stats)
             reset_stats();
 
-        for (idx i = 0; i < rep; ++i) {
+        for (idx i = 0; i < reps; ++i) {
             reset(false); // reset everything except the measurement statistics
             for (auto&& elem : *qc_)
                 execute(elem);
