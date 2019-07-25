@@ -248,8 +248,7 @@ g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
     ```
     
 - If you enable
-[MATLAB](http://www.mathworks.com/products/matlab/) support, you may need to set
-the environment variable `DYLD_LIBRARY_PATH` is set to point to the 
+[MATLAB](http://www.mathworks.com/products/matlab/) support, you may need to set the environment variable `DYLD_LIBRARY_PATH` to point to the 
 [MATLAB](http://www.mathworks.com/products/matlab/) 
 compiler shared libraries location, such as 
 
