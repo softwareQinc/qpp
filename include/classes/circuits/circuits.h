@@ -2480,7 +2480,7 @@ class QCircuit : public IDisplay, public IJSON {
      * the rest following in order. If negative or greater than the total number
      * of qudits of the current quantum circuit description, the required number
      * of additional qudits are automatically added to the current quantum
-     * circuit description
+     * circuit description.
      * \param pos_dit The first classical dit of \a other is inserted before the
      * \a pos_dit classical dit index of the current quantum circuit description
      * (in the classical dits array), the rest following in order. By default,
