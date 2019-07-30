@@ -16,5 +16,5 @@ int main() {
     QNoisyEngine<QubitBitFlipNoise> q_noisy_engine{q_circuit,
                                                    QubitBitFlipNoise{0.1}};
     q_noisy_engine.execute(1000);
-    std::cout << q_noisy_engine;
+    std::cout << q_noisy_engine << "\n\n";
 }
