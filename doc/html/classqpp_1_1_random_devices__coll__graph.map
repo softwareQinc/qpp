@@ -1,3 +1,4 @@
 <map id="qpp::RandomDevices" name="qpp::RandomDevices">
-<area shape="rect" id="node2" href="$classqpp_1_1internal_1_1_singleton.html" title="qpp::internal::Singleton\l\&lt; RandomDevices \&gt;" alt="" coords="5,5,164,47"/>
+<area shape="rect" id="node1" title="Singleton class that manages the source of randomness in the library." alt="" coords="10,95,159,121"/>
+<area shape="rect" id="node2" href="$classqpp_1_1internal_1_1_singleton.html" title=" " alt="" coords="5,5,164,47"/>
 </map>

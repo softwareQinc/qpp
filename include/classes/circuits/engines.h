@@ -453,15 +453,15 @@ class QEngine : public IDisplay, public IJSON {
     /**
      * \brief Executes the entire quantum circuit
      *
-     * \param rep Number of repetitions
+     * \param reps Number of repetitions
      * \param clear_stats Resets the collected measurement statistics hash table
      * before the run
      */
-    void execute(idx rep = 1, bool clear_stats = true) {
+    void execute(idx reps = 1, bool clear_stats = true) {
         if (clear_stats)
             reset_stats();
 
-        for (idx i = 0; i < rep; ++i) {
+        for (idx i = 0; i < reps; ++i) {
             reset(false); // reset everything except the measurement statistics
             for (auto&& elem : *qc_)
                 execute(elem);
@@ -580,7 +580,8 @@ class QEngine : public IDisplay, public IJSON {
  * \see qpp::QCircuit, qpp::NoiseBase
  *
  * Assumes an uncorrelated noise model that is applied to each non-measured
- * qubit before every step in the logical circuit
+ * qubit before every non-measurement step in the logical circuit. To add noise
+ * before a measurement, insert a no-op via qpp::QCircuit::nop().
  *
  * \tparam NoiseModel Quantum noise model, should be derived from qpp::NoiseBase
  */
@@ -615,11 +616,13 @@ class QNoisyEngine : public QEngine {
     void execute(const QCircuit::iterator::value_type& elem) override {
         // get the relative position of the target
         std::vector<idx> target_rel_pos = get_relative_pos_(get_non_measured());
-        // apply the noise
-        for (auto&& i : target_rel_pos) {
-            psi_ = noise_(psi_, i);
-            // record the Kraus operator that occurred
-            noise_results_[elem.ip_].emplace_back(noise_.get_last_idx());
+        if (elem.type_ != QCircuit::StepType::MEASUREMENT) {
+            // apply the noise
+            for (auto&& i : target_rel_pos) {
+                psi_ = noise_(psi_, i);
+                // record the Kraus operator that occurred
+                noise_results_[elem.ip_].emplace_back(noise_.get_last_idx());
+            }
         }
         // execute the circuit step
         QEngine::execute(elem);

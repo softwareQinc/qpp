@@ -1,4 +1,7 @@
 <map id="qpp::QCircuit::MeasureStep" name="qpp::QCircuit::MeasureStep">
-<area shape="rect" id="node4" title="STL class. " alt="" coords="345,96,425,123"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="321,5,448,47"/>
+<area shape="rect" id="node1" title="One step consisting only of measurements in the circuit." alt="" coords="165,185,351,212"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,96,172,123"/>
+<area shape="rect" id="node3" title=" " alt="" coords="196,96,320,123"/>
+<area shape="rect" id="node4" title="STL class." alt="" coords="345,96,425,123"/>
+<area shape="rect" id="node5" title="STL class." alt="" coords="321,5,448,47"/>
 </map>

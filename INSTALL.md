@@ -248,8 +248,7 @@ g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
     ```
     
 - If you enable
-[MATLAB](http://www.mathworks.com/products/matlab/) support, make sure that 
-the environment variable `DYLD_LIBRARY_PATH` is set to point to the 
+[MATLAB](http://www.mathworks.com/products/matlab/) support, you may need to set the environment variable `DYLD_LIBRARY_PATH` to point to the 
 [MATLAB](http://www.mathworks.com/products/matlab/) 
 compiler shared libraries location, such as 
 
@@ -257,12 +256,12 @@ compiler shared libraries location, such as
     export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"Applications/MATLAB_R2017b.app/bin/maci64"
     ```
 
-    Otherwise, you get a runtime error similar to  
+    Otherwise, you may get a runtime error similar to
 
     > dyld: Library not loaded: @rpath/libmat.dylib.
     
     
-    You can use the 
+    If that is the case, you may use the
 [`run_mac_MATLAB.sh`](https://github.com/vsoftco/qpp/blob/master/run_mac_MATLAB.sh)
 script to wrap the output executable you want to run in, as otherwise setting the `DYLD_LIBRARY_PATH` globally may interfere with 
 [MacPorts](https://www.macports.org/)' [CMake](http://www.cmake.org/) 
@@ -288,40 +287,44 @@ for more details about this problem.
 
 ## Via [Visual Studio](https://www.visualstudio.com)
 
-- [Quantum++](https://github.com/vsoftco/qpp) contains a full [Visual Studio 2017](https://www.visualstudio.com) 
-solution under the folder [`VisualStudio`](https://github.com/vsoftco/qpp/tree/master/VisualStudio). 
-The solution 
-expects [Eigen 3](http://eigen.tuxfamily.org) to be installed 
-under `C:\eigen`. Use this solution at first to get you started. 
-A unit testing project (`qpp_testing`) with 
-[Google Test 1.8.0](https://github.com/google/googletest) is also 
+- [Quantum++](https://github.com/vsoftco/qpp) provides full [CMake](http://www.cmake.org/) support for [Visual Studio](https://github.com/vsoftco/qpp/tree/master/VisualStudio). I recommend using [Visual Studio 2017](https://www.visualstudio.com) or later (preferably [Visual Studio 2019](https://www.visualstudio.com)). To build, you will need to edit the `EIGEN3_INCLUDE_DIR` [CMake](http://www.cmake.org/) cache variable so it correctly points to the [Eigen 3](http://eigen.tuxfamily.org)
+location, e.g. `C:\eigen3`. For comprehensive details about using [CMake](http://www.cmake.org/) with [Visual Studio](https://github.com/vsoftco/qpp/tree/master/VisualStudio) please read [this page](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019).
+
+- In addition, [Quantum++](https://github.com/vsoftco/qpp) contains a full [Visual Studio 2017](https://www.visualstudio.com)
+solution under the folder [`VisualStudio`](https://github.com/vsoftco/qpp/tree/master/VisualStudio).
+You must first [set the environment variable](https://stackoverflow.com/questions/32463212/how-to-set-environment-variables-from-windows/32463213#32463213) `EIGEN3_INSTALL_PATH` to point to the [Eigen 3](http://eigen.tuxfamily.org)
+location, e.g. `C:\eigen3`.
+A unit testing project (`unit_tests`) using
+[Google Test 1.8.1](https://github.com/google/googletest) is also
 included in the solution.
 
--  [Visual Studio](https://www.visualstudio.com) versions preceding 
-version 2015 do not have full C++11 support. If you decide to use 
+-  [Visual Studio](https://www.visualstudio.com) versions preceding
+version 2015 do not have full C++11 support. If you decide to use
 [Visual Studio](https://www.visualstudio.com) make sure you install version
-2015 or later. I recommend using 
-[Visual Studio 2017](https://www.visualstudio.com).
-    
+2015 or later. I recommend using
+[Visual Studio 2017](https://www.visualstudio.com) or later.
+
 - [Visual Studio 2015/2017](https://www.visualstudio.com) only
-supports [OpenMP 2.0](http://openmp.org/). 
+supports [OpenMP 2.0](http://openmp.org/).
 [Quantum++](https://github.com/vsoftco/qpp) uses features
-from [OpenMP 3.0](http://openmp.org/), hence 
+from [OpenMP 3.0](http://openmp.org/), hence
 [Quantum++](https://github.com/vsoftco/qpp) will not compile
-on [Visual Studio 2015/2017](https://www.visualstudio.com) if you 
-`#define WITH_OPENMP_` in your source file and enable 
+on [Visual Studio 2015/2017](https://www.visualstudio.com) if you
+`#define WITH_OPENMP_` in your source file and enable
 [OpenMP](http://openmp.org/) (disabled by default) in
-    
+
     *Project/Properties/Configuration Properties/C_C++/Language/Open MP Support*
 .
-    
+
+In case you get a "Missing Windows SDK" error, right-click on the solution name and choose "Retarget solution" to re-target the projects in the solution to your available Windows SDK.
+
 ## Via [Cygwin](https://www.cygwin.com)
 
-- Use the [same building instructions](https://github.com/vsoftco/qpp/wiki/Building-instructions-for-POSIX-compliant-platforms) as for POSIX systems.
-- **Note:** some earlier versions of 
-[Cygwin](https://www.cygwin.com) had a bug related to lack of support for some 
+- Use the [same building instructions as for POSIX systems](https://github.com/vsoftco/qpp/wiki/2.-Building-instructions-for-POSIX-compliant-platforms).
+- **Note:** some earlier versions of
+[Cygwin](https://www.cygwin.com) had a bug related to lack of support for some
 C++11 math functions, see
 <http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2>
-for more details. Quick fix: patch the standard library header file `<cmath>` 
-using the provided patch [`cmath_cygwin.patch`](https://github.com/vsoftco/qpp/blob/master/cmath_cygwin.patch). 
-Later [Cygwin](https://www.cygwin.com) versions seem to have fixed the issue (as of Nov. 2016). 
+for more details. Quick fix: patch the standard library header file `<cmath>`
+using the provided patch [`cmath_cygwin.patch`](https://github.com/vsoftco/qpp/blob/master/cmath_cygwin.patch).
+Later [Cygwin](https://www.cygwin.com) versions seem to have fixed the issue (as of Nov. 2016).

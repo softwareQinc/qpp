@@ -1,4 +1,5 @@
 <map id="qpp::exception::SubsysMismatchDims" name="qpp::exception::SubsysMismatchDims">
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="41,80,216,107"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="77,5,181,32"/>
+<area shape="rect" id="node1" title="Subsystems mismatch dimensions exception." alt="" coords="5,155,252,181"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="41,80,216,107"/>
+<area shape="rect" id="node3" title="STL class." alt="" coords="77,5,181,32"/>
 </map>

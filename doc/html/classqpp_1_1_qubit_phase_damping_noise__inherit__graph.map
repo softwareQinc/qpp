@@ -1,3 +1,4 @@
 <map id="qpp::QubitPhaseDampingNoise" name="qpp::QubitPhaseDampingNoise">
-<area shape="rect" id="node2" href="$classqpp_1_1_noise_base.html" title="qpp::NoiseBase\&lt; NoiseType\l::StateDependent \&gt;" alt="" coords="14,5,206,47"/>
+<area shape="rect" id="node1" title="Qubit phase damping noise, as described in Nielsen and Chuang." alt="" coords="5,95,215,121"/>
+<area shape="rect" id="node2" href="$classqpp_1_1_noise_base.html" title=" " alt="" coords="14,5,206,47"/>
 </map>

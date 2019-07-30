@@ -1,4 +1,5 @@
 <map id="qpp::exception::Duplicates" name="qpp::exception::Duplicates">
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="7,80,182,107"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="43,5,147,32"/>
+<area shape="rect" id="node1" title="System (e.g. std::vector) has duplicates exception." alt="" coords="5,155,184,181"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="7,80,182,107"/>
+<area shape="rect" id="node3" title="STL class." alt="" coords="43,5,147,32"/>
 </map>
