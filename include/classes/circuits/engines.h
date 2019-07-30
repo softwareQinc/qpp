@@ -511,26 +511,28 @@ class QEngine : public IDisplay, public IJSON {
 
         ss.str("");
         ss.clear();
-        result += ", \"stats\": {";
 
         // compute the statistics
-        idx reps = 0;
-        for(auto&& elem: get_stats())
-            reps += elem.second;
-        result += "\"reps\": " + std::to_string(reps) + ", ";
+        if (!stats_.empty()) {
+            result += ", \"stats\": {";
+            idx reps = 0;
+            for (auto&& elem : get_stats())
+                reps += elem.second;
+            result += "\"reps\": " + std::to_string(reps) + ", ";
 
-        std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
-        bool is_first = true;
-        for (auto&& elem : get_stats()) {
-            if (is_first)
-                is_first = false;
-            else
-                ss << ", ";
-            ss << "\"" << disp(n2multiidx(elem.first, dits_dims), " ")
-               << "\" : " << elem.second;
+            std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
+            bool is_first = true;
+            for (auto&& elem : get_stats()) {
+                if (is_first)
+                    is_first = false;
+                else
+                    ss << ", ";
+                ss << "\"" << disp(n2multiidx(elem.first, dits_dims), " ")
+                   << "\" : " << elem.second;
+            }
+            ss << '}';
+            result += ss.str();
         }
-        ss << '}';
-        result += ss.str();
 
         if (enclosed_in_curly_brackets)
             result += "}";
@@ -551,23 +553,25 @@ class QEngine : public IDisplay, public IJSON {
     std::ostream& display(std::ostream& os) const override {
         os << "measured: " << disp(get_measured(), ", ") << '\n';
         os << "dits: " << disp(get_dits(), ", ") << '\n';
-        os << "probs: " << disp(get_probs(), ", ") << '\n';
+        os << "probs: " << disp(get_probs(), ", ");
 
         // compute the statistics
-        idx reps = 0;
-        for(auto&& elem: get_stats())
-            reps += elem.second;
-        os << "stats:\n";
-        os << '\t' << "reps: " << reps << '\n';
-        std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
-        bool is_first = true;
-        for (auto&& elem : get_stats()) {
-            if (is_first)
-                is_first = false;
-            else
-                os << '\n';
-            os << '\t' << disp(n2multiidx(elem.first, dits_dims), " ") << ": "
-               << elem.second;
+        if (!stats_.empty()) {
+            idx reps = 0;
+            for (auto&& elem : get_stats())
+                reps += elem.second;
+            os << "\nstats:\n";
+            os << '\t' << "reps: " << reps << '\n';
+            std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
+            bool is_first = true;
+            for (auto&& elem : get_stats()) {
+                if (is_first)
+                    is_first = false;
+                else
+                    os << '\n';
+                os << '\t' << disp(n2multiidx(elem.first, dits_dims), " ")
+                   << ": " << elem.second;
+            }
         }
 
         return os;
