@@ -1,4 +1,4 @@
-// Qubit teleporation circuit simulator
+// Qubit noisy teleporation circuit simulator
 // Source: ./examples/circuits/noisy_teleport_qubit_circuit.cpp
 #include <iostream>
 
