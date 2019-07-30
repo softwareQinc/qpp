@@ -493,25 +493,32 @@ class QEngine : public IDisplay, public IJSON {
 
         std::ostringstream ss;
 
-        result += "\"measured\" : ";
+        result += "\"measured\": ";
         ss << disp(get_measured(), ", ");
         result += ss.str();
 
         ss.str("");
         ss.clear();
-        result += ", \"dits\" : ";
+        result += ", \"dits\": ";
         ss << disp(get_dits(), ", ");
         result += ss.str();
 
         ss.str("");
         ss.clear();
-        result += ", \"probs\" : ";
+        result += ", \"probs\": ";
         ss << disp(get_probs(), ", ");
         result += ss.str();
 
         ss.str("");
         ss.clear();
-        result += ", \"stats\" : {";
+        result += ", \"stats\": {";
+
+        // compute the statistics
+        idx reps = 0;
+        for(auto&& elem: get_stats())
+            reps += elem.second;
+        result += "\"reps\": " + std::to_string(reps) + ", ";
+
         std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
         bool is_first = true;
         for (auto&& elem : get_stats()) {
@@ -545,7 +552,13 @@ class QEngine : public IDisplay, public IJSON {
         os << "measured: " << disp(get_measured(), ", ") << '\n';
         os << "dits: " << disp(get_dits(), ", ") << '\n';
         os << "probs: " << disp(get_probs(), ", ") << '\n';
+
+        // compute the statistics
+        idx reps = 0;
+        for(auto&& elem: get_stats())
+            reps += elem.second;
         os << "stats:\n";
+        os << '\t' << "reps: " << reps << '\n';
         std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
         bool is_first = true;
         for (auto&& elem : get_stats()) {
