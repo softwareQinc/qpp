@@ -907,8 +907,7 @@ cwise(const Eigen::MatrixBase<Derived>& A,
  * \brief Kronecker product
  * \see qpp::kronpow()
  *
- * Used to stop the recursion for the variadic template version of
- * qpp::kron()
+ * Used to stop the recursion for the variadic template version of qpp::kron()
  *
  * \param head Eigen expression
  * \return Its argument \a head
@@ -924,9 +923,8 @@ dyn_mat<typename T::Scalar> kron(const T& head) {
  *
  * \param head Eigen expression
  * \param tail Variadic Eigen expression (zero or more parameters)
- * \return Kronecker product of all input parameters,
- * evaluated from left to right, as a dynamic matrix
- * over the same scalar field as its arguments
+ * \return Kronecker product of all input parameters, evaluated from left to
+ * right, as a dynamic matrix over the same scalar field as its arguments
  */
 template <typename T, typename... Args>
 dyn_mat<typename T::Scalar> kron(const T& head, const Args&... tail) {
@@ -938,9 +936,8 @@ dyn_mat<typename T::Scalar> kron(const T& head, const Args&... tail) {
  * \see qpp::kronpow()
  *
  * \param As std::vector of Eigen expressions
- * \return Kronecker product of all elements in \a As,
- * evaluated from left to right, as a dynamic matrix
- * over the same scalar field as its arguments
+ * \return Kronecker product of all elements in \a As, evaluated from left to
+ * right, as a dynamic matrix over the same scalar field as its arguments
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> kron(const std::vector<Derived>& As) {
@@ -970,9 +967,8 @@ dyn_mat<typename Derived::Scalar> kron(const std::vector<Derived>& As) {
  *
  * \param As std::initializer_list of Eigen expressions,
  * such as \a {A1, A2, ... ,Ak}
- * \return Kronecker product of all elements in \a As,
- * evaluated from left to right, as a dynamic matrix
- * over the same scalar field as its arguments
+ * \return Kronecker product of all elements in \a As, evaluated from left to
+ * right, as a dynamic matrix over the same scalar field as its arguments
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
@@ -1016,8 +1012,7 @@ dyn_mat<typename Derived::Scalar> kronpow(const Eigen::MatrixBase<Derived>& A,
  * \brief Direct sum
  * \see qpp::dirsumpow()
  *
- * Used to stop the recursion for the variadic template version of
- * qpp::dirsum()
+ * Used to stop the recursion for the variadic template version of qpp::dirsum()
  *
  * \param head Eigen expression
  * \return Its argument \a head
@@ -1033,9 +1028,8 @@ dyn_mat<typename T::Scalar> dirsum(const T& head) {
  *
  * \param head Eigen expression
  * \param tail Variadic Eigen expression (zero or more parameters)
- * \return Direct sum of all input parameters,
- * evaluated from left to right, as a dynamic matrix
- * over the same scalar field as its arguments
+ * \return Direct sum of all input parameters, evaluated from left to right, as
+ * a dynamic matrix over the same scalar field as its arguments
  */
 template <typename T, typename... Args>
 dyn_mat<typename T::Scalar> dirsum(const T& head, const Args&... tail) {
@@ -1047,9 +1041,8 @@ dyn_mat<typename T::Scalar> dirsum(const T& head, const Args&... tail) {
  * \see qpp::dirsumpow()
  *
  * \param As std::vector of Eigen expressions
- * \return Direct sum of all elements in \a As,
- * evaluated from left to right, as a dynamic matrix
- * over the same scalar field as its arguments
+ * \return Direct sum of all elements in \a As, evaluated from left to right, as
+ * a dynamic matrix over the same scalar field as its arguments
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> dirsum(const std::vector<Derived>& As) {
@@ -1089,9 +1082,8 @@ dyn_mat<typename Derived::Scalar> dirsum(const std::vector<Derived>& As) {
  *
  * \param As std::initializer_list of Eigen expressions,
  * such as \a {A1, A2, ... ,Ak}
- * \return Direct sum of all elements in \a As,
- * evaluated from left to right, as a dynamic matrix
- * over the same scalar field as its arguments
+ * \return Direct sum of all elements in \a As, evaluated from left to right, as
+ * a dynamic matrix over the same scalar field as its arguments
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
@@ -1105,8 +1097,8 @@ dirsum(const std::initializer_list<Derived>& As) {
  *
  * \param A Eigen expression
  * \param n Non-negative integer
- * \return Direct sum of \a A with itself \a n times \f$A^{\oplus n}\f$,
- * as a dynamic matrix over the same scalar field as \a A
+ * \return Direct sum of \a A with itself \a n times \f$A^{\oplus n}\f$, as a
+ * dynamic matrix over the same scalar field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> dirsumpow(const Eigen::MatrixBase<Derived>& A,
@@ -1137,8 +1129,8 @@ dyn_mat<typename Derived::Scalar> dirsumpow(const Eigen::MatrixBase<Derived>& A,
  * \param A Eigen expression
  * \param rows Number of rows of the reshaped matrix
  * \param cols Number of columns of the reshaped matrix
- * \return Reshaped matrix with \a rows rows and \a cols columns,
- * as a dynamic matrix over the same scalar field as \a A
+ * \return Reshaped matrix with \a rows rows and \a cols columns, as a dynamic
+ * matrix over the same scalar field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived>& A,
@@ -1171,8 +1163,8 @@ dyn_mat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param B Eigen expression
- * \return Commutator \f$AB -BA\f$, as a dynamic matrix
- * over the same scalar field as \a A
+ * \return Commutator \f$AB -BA\f$, as a dynamic matrix over the same scalar
+ * field as \a A
  */
 template <typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1>& A,
@@ -1212,8 +1204,8 @@ dyn_mat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1>& A,
  *
  * \param A Eigen expression
  * \param B Eigen expression
- * \return Anti-commutator \f$AB +BA\f$, as a dynamic matrix
- * over the same scalar field as \a A
+ * \return Anti-commutator \f$AB +BA\f$, as a dynamic matrix over the same
+ * scalar field as \a A
  */
 template <typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar>
@@ -1280,8 +1272,8 @@ dyn_mat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& A) {
  * \brief Gram-Schmidt orthogonalization
  *
  * \param As std::vector of Eigen expressions as column vectors
- * \return Gram-Schmidt vectors of \a As as columns of a dynamic matrix
- * over the same scalar field as its arguments
+ * \return Gram-Schmidt vectors of \a As as columns of a dynamic matrix over the
+ * same scalar field as its arguments
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& As) {

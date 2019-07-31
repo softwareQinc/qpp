@@ -2599,6 +2599,18 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
+     * \brief Kronecker product with another quantum circuit description
+     *
+     * \param other Quantum circuit description
+     * \return Reference to the current instance
+     */
+    QCircuit& kron(const QCircuit& other) {
+        add_circuit(other, nq_);
+
+        return *this;
+    }
+
+    /**
      * \brief qpp::IJOSN::to_JSON() override
      *
      * Displays the quantum circuit in JSON format
