@@ -519,6 +519,7 @@ class QEngine : public IDisplay, public IJSON {
             for (auto&& elem : get_stats())
                 reps += elem.second;
             result += "\"reps\": " + std::to_string(reps) + ", ";
+            result += "\"outcomes\": " + std::to_string(stats_.size()) + ", ";
 
             std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
             bool is_first = true;
@@ -562,6 +563,7 @@ class QEngine : public IDisplay, public IJSON {
                 reps += elem.second;
             os << "\nstats:\n";
             os << '\t' << "reps: " << reps << '\n';
+            os << '\t' << "outcomes: " << stats_.size() << '\n';
             std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
             bool is_first = true;
             for (auto&& elem : get_stats()) {
