@@ -2435,12 +2435,12 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (n == 0)
             throw exception::OutOfRange("qpp::QCircuit::repeat()");
-        if (n == 1)
-            return *this;
         if (get_measured().size() != 0)
             throw exception::CustomException(
                 "qpp::QCircuit::repeat()",
                 "The circuit cannot contain measurements at this stage");
+        if (n == 1)
+            return *this;
         // END EXCEPTION CHECKS
 
         auto gates_copy = gates_;
