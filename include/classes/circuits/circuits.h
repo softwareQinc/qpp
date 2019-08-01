@@ -35,7 +35,7 @@
 namespace qpp {
 /**
  * \class qpp::QCircuit
- * \brief Quantum circuit class
+ * \brief Quantum circuit description
  * \see qpp::QEngine
  */
 class QCircuit : public IDisplay, public IJSON {
@@ -221,9 +221,8 @@ class QCircuit : public IDisplay, public IJSON {
         explicit GateStep(GateType gate_type, std::size_t gate_hash,
                           const std::vector<idx>& ctrl,
                           const std::vector<idx>& target, std::string name = {})
-            : gate_type_{gate_type},
-              gate_hash_{gate_hash}, ctrl_{ctrl}, target_{target}, name_{name} {
-        }
+            : gate_type_{gate_type}, gate_hash_{gate_hash}, ctrl_{ctrl},
+              target_{target}, name_{name} {}
     };
 
     /**
@@ -255,12 +254,12 @@ class QCircuit : public IDisplay, public IJSON {
         MEASURE_Z, ///< Z measurement of single qudit
 
         MEASURE_V, ///< measurement of single qudit in the orthonormal basis
-        ///< or rank-1 projectors specified by the columns of matrix
-        ///< \a V
+                   ///< or rank-1 projectors specified by the columns of matrix
+                   ///< \a V
 
         MEASURE_V_MANY, ///< measurement of multiple qudits in the orthonormal
-        ///< basis or rank-1 projectors specified by the columns
-        ///< of matrix \a V
+                        ///< basis or rank-1 projectors specified by the columns
+                        ///< of matrix \a V
     };
 
     /**
@@ -862,79 +861,110 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     // computes the depth greedily, measuring the "height" (depth) of the
-    // "pieces" (gates) placed in a tetris-like style
+    // "pieces" (gates) placed in a Tetris-like style
     /**
-     * \brief Quantum circuit gate depth
+     * \brief Quantum circuit depth
      *
-     * \note If \a name is empty (default), returns the total gate depth of the
+     * \note If \a name is empty (default), returns the total depth of the
      * circuit
      *
-     * \param name Gate name (optional)
-     * \return Gate depth
+     * \param name Gate/measurement name (optional)
+     * \return Gate/measurement depth
      */
-    idx get_gate_depth(const std::string& name = {}) const {
+    idx get_depth(const std::string& name = {}) const {
         bool found = false;
         std::vector<idx> heights(nc_ + nq_, 0);
 
+        // iterate over all steps in the circuit
         for (auto&& step : *this) {
-            if (step.type_ != StepType::GATE)
-                continue;
+            // measurements
+            if (step.type_ == StepType::MEASUREMENT) {
+                MeasureStep measure_step = *step.measurements_ip_;
+                if (name != "" && measure_step.name_ != name)
+                    continue;
 
-            GateStep gate_step = *step.gates_ip_;
-            if (name != "" && gate_step.name_ != name)
-                continue;
+                found = true; // measurement was found in the circuit
 
-            found = true; // gate was found in the circuit
+                std::vector<idx> target = measure_step.target_;
+                idx c_reg = measure_step.c_reg_;
 
-            std::vector<idx> ctrl = gate_step.ctrl_;
-            std::vector<idx> target = gate_step.target_;
-            std::vector<idx> ctrl_target;
-            ctrl_target.reserve(ctrl.size() + target.size());
-            ctrl_target.insert(ctrl_target.end(), ctrl.begin(), ctrl.end());
-            ctrl_target.insert(ctrl_target.end(), target.begin(), target.end());
+                idx max_height = 0;
+                switch (measure_step.measurement_type_) {
+                    case MeasureType::NONE:
+                    case MeasureType::MEASURE_Z:
+                    case MeasureType::MEASURE_V:
+                    case MeasureType::MEASURE_V_MANY:
+                        // compute the "height" of the to-be-placed measurement
+                        if (heights[c_reg] > max_height)
+                            max_height = heights[c_reg];
+                        for (auto&& i : target)
+                            if (heights[nc_ + i] > max_height)
+                                max_height = heights[nc_ + i];
+                        // apply measurement
+                        heights[c_reg] = max_height + 1;
+                        for (auto&& i : target)
+                            heights[nc_ + i] = max_height + 1;
+                        break;
+                }
+                // gates
+            } else if (step.type_ == StepType::GATE) {
+                GateStep gate_step = *step.gates_ip_;
+                if (name != "" && gate_step.name_ != name)
+                    continue;
 
-            idx max_height = 0;
-            switch (gate_step.gate_type_) {
-                case GateType::NONE:
-                case GateType::SINGLE:
-                case GateType::TWO:
-                case GateType::THREE:
-                case GateType::CUSTOM:
-                case GateType::FAN:
-                case GateType::SINGLE_CTRL_SINGLE_TARGET:
-                case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
-                case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
-                case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
-                case GateType::CUSTOM_CTRL:
-                    // compute the "height" of the to-be-placed gate
-                    for (auto&& i : ctrl_target)
-                        if (heights[nc_ + i] > max_height)
-                            max_height = heights[nc_ + i];
-                    // apply (ctrl) gate
-                    for (auto&& i : ctrl_target)
-                        heights[nc_ + i] = max_height + 1;
-                    break;
-                case GateType::SINGLE_cCTRL_SINGLE_TARGET:
-                case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
-                case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
-                case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
-                case GateType::CUSTOM_cCTRL:
-                    // compute the "height" of the to-be-placed gate
-                    for (auto&& i : ctrl)
-                        if (heights[i] > max_height)
-                            max_height = heights[i];
-                    for (auto&& i : target)
-                        if (heights[nc_ + i] > max_height)
-                            max_height = heights[nc_ + i];
-                    // apply classical ctrl
-                    for (auto&& i : ctrl)
-                        heights[i] = max_height + 1;
-                    // apply gate
-                    for (auto&& i : target)
-                        heights[nc_ + i] = max_height + 1;
-                    break;
-            } // end switch
-        }     // end for
+                found = true; // gate was found in the circuit
+
+                std::vector<idx> ctrl = gate_step.ctrl_;
+                std::vector<idx> target = gate_step.target_;
+                std::vector<idx> ctrl_target;
+                ctrl_target.reserve(ctrl.size() + target.size());
+                ctrl_target.insert(ctrl_target.end(), ctrl.begin(), ctrl.end());
+                ctrl_target.insert(ctrl_target.end(), target.begin(),
+                                   target.end());
+
+                idx max_height = 0;
+                switch (gate_step.gate_type_) {
+                    case GateType::NONE:
+                    case GateType::SINGLE:
+                    case GateType::TWO:
+                    case GateType::THREE:
+                    case GateType::CUSTOM:
+                    case GateType::FAN:
+                    case GateType::SINGLE_CTRL_SINGLE_TARGET:
+                    case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
+                    case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
+                    case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
+                    case GateType::CUSTOM_CTRL:
+                        // compute the "height" of the to-be-placed gate
+                        for (auto&& i : ctrl_target)
+                            if (heights[nc_ + i] > max_height)
+                                max_height = heights[nc_ + i];
+                        // apply (ctrl) gate
+                        for (auto&& i : ctrl_target)
+                            heights[nc_ + i] = max_height + 1;
+                        break;
+                    case GateType::SINGLE_cCTRL_SINGLE_TARGET:
+                    case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
+                    case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
+                    case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
+                    case GateType::CUSTOM_cCTRL:
+                        // compute the "height" of the to-be-placed gate
+                        for (auto&& i : ctrl)
+                            if (heights[i] > max_height)
+                                max_height = heights[i];
+                        for (auto&& i : target)
+                            if (heights[nc_ + i] > max_height)
+                                max_height = heights[nc_ + i];
+                        // apply classical ctrl
+                        for (auto&& i : ctrl)
+                            heights[i] = max_height + 1;
+                        // apply gate
+                        for (auto&& i : target)
+                            heights[nc_ + i] = max_height + 1;
+                        break;
+                } // end switch
+            }     // end if (step.type_ == StepType::GATE)
+        }         // end for
 
         return found ? *std::max_element(std::begin(heights), std::end(heights))
                      : 0;
@@ -2289,7 +2319,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty())
-            name = "Z";
+            name = "mZ";
         measured_[target] = true;
         measurements_.emplace_back(MeasureType::MEASURE_Z,
                                    std::vector<std::size_t>{},
@@ -2335,7 +2365,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty())
-            name = qpp::Gates::get_instance().get_name(V);
+            name = "m" + qpp::Gates::get_instance().get_name(V);
         measured_[target] = true;
         measurements_.emplace_back(MeasureType::MEASURE_V,
                                    std::vector<std::size_t>{hash_eigen(V)},
@@ -2395,7 +2425,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty())
-            name = qpp::Gates::get_instance().get_name(V);
+            name = "m" + qpp::Gates::get_instance().get_name(V);
         for (auto&& elem : target)
             measured_[elem] = true;
         measurements_.emplace_back(MeasureType::MEASURE_V_MANY,
@@ -2444,10 +2474,10 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         auto gates_copy = gates_;
-        auto gates_size = gates_.size();
+        idx gates_size = gates_.size();
 
         auto step_types_copy = step_types_;
-        auto step_types_size = step_types_.size();
+        idx step_types_size = step_types_.size();
 
         gates_.resize(gates_.size() * n);
         step_types_.resize(step_types_size * n);
@@ -2611,7 +2641,7 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief qpp::IJOSN::to_JSON() override
+     * \brief qpp::IJSON::to_JSON() override
      *
      * Displays the quantum circuit in JSON format
      *
@@ -2679,9 +2709,8 @@ class QCircuit : public IDisplay, public IJSON {
                 ss.clear();
                 ss << disp(measurements_[pos].target_, ", ");
                 result += "\"target\" : " + ss.str() + ", ";
-                result +=
-                    "\"c_reg\" : " + std::to_string(measurements_[pos].c_reg_) +
-                    ", ";
+                result += "\"c_reg\" : " +
+                          std::to_string(measurements_[pos].c_reg_) + ", ";
                 result += "\"name\" : ";
                 result += "\"" + measurements_[pos].name_ + "\"" + "}";
 
@@ -2699,8 +2728,7 @@ class QCircuit : public IDisplay, public IJSON {
         result += "\"step count\" : " + std::to_string(get_step_count()) + ", ";
         result +=
             "\"total gate count\" : " + std::to_string(get_gate_count()) + ", ";
-        result +=
-            "\"total gate depth\" : " + std::to_string(get_gate_depth()) + ", ";
+        result += "\"total depth\" : " + std::to_string(get_depth()) + ", ";
 
         ss.str("");
         ss.clear();
@@ -2741,7 +2769,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         os << "step count: " << get_step_count() << '\n';
         os << "total gate count: " << get_gate_count() << '\n';
-        os << "total gate depth: " << get_gate_depth() << '\n';
+        os << "total depth: " << get_depth() << '\n';
         os << "measured positions: " << disp(get_measured(), ", ") << '\n';
         os << "non-measured positions: " << disp(get_non_measured(), ", ");
 

@@ -1,5 +1,4 @@
 <map id="qpp::exception::NoCodeword" name="qpp::exception::NoCodeword">
-<area shape="rect" id="node1" title="Codeword does not exist exception." alt="" coords="5,155,199,181"/>
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="15,80,189,107"/>
-<area shape="rect" id="node3" title="STL class." alt="" coords="50,5,154,32"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="14,80,187,107"/>
+<area shape="rect" id="node3" title="STL class. " alt="" coords="49,5,153,32"/>
 </map>

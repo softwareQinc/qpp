@@ -1,4 +1,2 @@
 <map id="qpp::is_iterable&lt; T, to_void&lt; decltype(std::declval&lt; T &gt;().begin()), decltype(std::declval&lt; T &gt;().end()), decltype(*(std::declval&lt; T &gt;().begin()))&gt; &gt;" name="qpp::is_iterable&lt; T, to_void&lt; decltype(std::declval&lt; T &gt;().begin()), decltype(std::declval&lt; T &gt;().end()), decltype(*(std::declval&lt; T &gt;().begin()))&gt; &gt;">
-<area shape="rect" id="node1" title="Checks whether T is compatible with an STL&#45;like iterable container, specialization for STL&#45;like itera..." alt="" coords="5,80,212,180"/>
-<area shape="rect" id="node2" title=" " alt="" coords="57,5,160,32"/>
 </map>

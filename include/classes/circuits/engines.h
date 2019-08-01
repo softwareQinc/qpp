@@ -468,7 +468,7 @@ class QEngine : public IDisplay, public IJSON {
 
             // we measured at least one qudit
             if (get_measured().size() != 0) {
-                auto m_res = get_dits();
+                std::vector<idx> m_res = get_dits();
                 ++stats_[multiidx2n(
                     m_res, std::vector<idx>(m_res.size(), qc_->get_d()))];
             }
@@ -476,7 +476,7 @@ class QEngine : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief qpp::IJOSN::to_JSON() override
+     * \brief qpp::IJSON::to_JSON() override
      *
      * Displays the state of the engine in JSON format
      *
@@ -583,7 +583,7 @@ class QEngine : public IDisplay, public IJSON {
 /**
  * \class qpp::QNoisyEngine
  * \brief Noisy quantum circuit engine, executes qpp::QCircuit
- * \see qpp::QCircuit, qpp::NoiseBase
+ * \see qpp::QEngine, qpp::QCircuit, qpp::NoiseBase
  *
  * Assumes an uncorrelated noise model that is applied to each non-measured
  * qubit before every non-measurement step in the logical circuit. To add noise

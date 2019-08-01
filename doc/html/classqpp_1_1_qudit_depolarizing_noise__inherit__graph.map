@@ -1,4 +1,3 @@
 <map id="qpp::QuditDepolarizingNoise" name="qpp::QuditDepolarizingNoise">
-<area shape="rect" id="node1" title="Qudit depolarizing noise." alt="" coords="5,95,197,121"/>
-<area shape="rect" id="node2" href="$classqpp_1_1_noise_base.html" title=" " alt="" coords="5,5,197,47"/>
+<area shape="rect" id="node2" href="$classqpp_1_1_noise_base.html" title="qpp::NoiseBase\&lt; NoiseType\l::StateIndependent \&gt;" alt="" coords="5,5,196,47"/>
 </map>

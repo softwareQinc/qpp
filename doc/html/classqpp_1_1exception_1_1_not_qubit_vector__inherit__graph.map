@@ -1,5 +1,4 @@
 <map id="qpp::exception::NotQubitVector" name="qpp::exception::NotQubitVector">
-<area shape="rect" id="node1" title="Vector is not 2 x 1 nor 1 x 2 exception." alt="" coords="8,155,177,196"/>
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="5,80,180,107"/>
-<area shape="rect" id="node3" title="STL class." alt="" coords="41,5,145,32"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="5,80,179,107"/>
+<area shape="rect" id="node3" title="STL class. " alt="" coords="40,5,144,32"/>
 </map>

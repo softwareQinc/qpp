@@ -1,5 +1,4 @@
 <map id="qpp::exception::PermInvalid" name="qpp::exception::PermInvalid">
-<area shape="rect" id="node1" title="Invalid permutation exception." alt="" coords="5,155,192,181"/>
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="11,80,186,107"/>
-<area shape="rect" id="node3" title="STL class." alt="" coords="47,5,151,32"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="11,80,184,107"/>
+<area shape="rect" id="node3" title="STL class. " alt="" coords="45,5,149,32"/>
 </map>

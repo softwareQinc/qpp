@@ -1,7 +1,6 @@
 <map id="qpp::exception::CustomException" name="qpp::exception::CustomException">
-<area shape="rect" id="node1" title="Custom exception." alt="" coords="51,276,271,303"/>
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="5,200,180,227"/>
-<area shape="rect" id="node3" title="STL class." alt="" coords="41,96,145,123"/>
-<area shape="rect" id="node4" title="STL class." alt="" coords="179,96,259,123"/>
-<area shape="rect" id="node5" title="STL class." alt="" coords="156,5,283,47"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="5,200,179,227"/>
+<area shape="rect" id="node3" title="STL class. " alt="" coords="40,96,144,123"/>
+<area shape="rect" id="node4" title="STL class. " alt="" coords="177,96,257,123"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="154,5,281,47"/>
 </map>

@@ -1,7 +1,6 @@
 <map id="qpp::exception::MatrixNotRvector" name="qpp::exception::MatrixNotRvector">
-<area shape="rect" id="node1" title="Matrix is not a row vector exception." alt="" coords="11,276,184,317"/>
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="10,200,185,227"/>
-<area shape="rect" id="node3" title="STL class." alt="" coords="5,96,109,123"/>
-<area shape="rect" id="node4" title="STL class." alt="" coords="133,96,213,123"/>
-<area shape="rect" id="node5" title="STL class." alt="" coords="110,5,237,47"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="11,200,184,227"/>
+<area shape="rect" id="node3" title="STL class. " alt="" coords="5,96,109,123"/>
+<area shape="rect" id="node4" title="STL class. " alt="" coords="133,96,213,123"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="110,5,237,47"/>
 </map>
