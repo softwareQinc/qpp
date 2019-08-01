@@ -1,6 +1,7 @@
 In progress - pre-release
     - Implemented qpp::QCircuit::
           kron() - Kronecker product with another quantum circuit description
+          measureZ
     - API change qpp::QCircuit::get_gate_depth() to qpp::QCircuit::get_depth(),
       so now measurements are taken into account when computing depths
 

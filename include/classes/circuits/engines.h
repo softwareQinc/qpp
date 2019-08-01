@@ -97,8 +97,8 @@ class QEngine : public IDisplay, public IJSON {
      * \param qc Quantum circuit
      */
     explicit QEngine(const QCircuit& qc)
-        : qc_{std::addressof(qc)}, psi_{States::get_instance().zero(
-                                       qc.get_nq(), qc.get_d())},
+        : qc_{std::addressof(qc)},
+          psi_{States::get_instance().zero(qc.get_nq(), qc.get_d())},
           dits_(qc.get_nc(), 0), probs_(qc.get_nc(), 0),
           subsys_(qc.get_nq(), 0), stats_{} {
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
@@ -376,10 +376,10 @@ class QEngine : public IDisplay, public IJSON {
                             }
                         }
                         if (should_apply) {
-                            psi_ = apply(
-                                psi_,
-                                powm(h_tbl[gates[q_ip].gate_hash_], first_dit),
-                                target_rel_pos, qc_->get_d());
+                            psi_ =
+                                apply(psi_, powm(h_tbl[gates[q_ip].gate_hash_],
+                                                 first_dit),
+                                      target_rel_pos, qc_->get_d());
                         }
                     }
                     break;
@@ -411,6 +411,27 @@ class QEngine : public IDisplay, public IJSON {
                     dits_[measurements[m_ip].c_reg_] = resZ[0];
                     probs_[measurements[m_ip].c_reg_] = probZ;
                     set_measured_(measurements[m_ip].target_[0]);
+                    break;
+                case QCircuit::MeasureType::MEASURE_Z_MANY:
+                    std::tie(resZ, probZ, psi_) =
+                        measure_seq(psi_, target_rel_pos, qc_->get_d());
+
+                    std::cout << "resZ: " << disp(resZ, " ") << "\n";
+                    std::cout << "target_rel_pos: " << disp(target_rel_pos, " ")
+                              << "\n";
+                    std::cout << "dims: "
+                              << disp(std::vector<idx>(target_rel_pos.size(),
+                                                       qc_->get_d()),
+                                      " ")
+                              << "\n\n";
+
+                    std::cout << resZ.size() << "\n";
+                    dits_[measurements[m_ip].c_reg_] =
+                        multiidx2n(resZ, std::vector<idx>(target_rel_pos.size(),
+                                                          qc_->get_d()));
+                    probs_[measurements[m_ip].c_reg_] = probZ;
+                    for (auto&& elem : measurements[m_ip].target_)
+                        set_measured_(measurements[m_ip].target_[elem]);
                     break;
                 case QCircuit::MeasureType::MEASURE_V:
                     std::tie(mres, probs, states) =

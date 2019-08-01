@@ -1417,12 +1417,18 @@ inline idx multiidx2n(const std::vector<idx>& midx,
                       const std::vector<idx>& dims) {
     // EXCEPTION CHECKS
 
+    std::cout << disp(midx, " ") << "\n" << disp(dims, " ") <<
+               "A" << "\n";
+
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::multiidx2n()");
 
     for (idx i = 0; i < dims.size(); ++i)
-        if (midx[i] >= dims[i])
+        if (midx[i] >= dims[i]) {
+            std::cout << "\t" << disp(midx, " ") << "\n" << disp(dims, " ") <<
+            "B"<< "\n";
             throw exception::OutOfRange("qpp::multiidx2n()");
+        }
     // END EXCEPTION CHECKS
 
     return internal::multiidx2n(midx.data(), dims.size(), dims.data());

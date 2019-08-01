@@ -221,8 +221,9 @@ class QCircuit : public IDisplay, public IJSON {
         explicit GateStep(GateType gate_type, std::size_t gate_hash,
                           const std::vector<idx>& ctrl,
                           const std::vector<idx>& target, std::string name = {})
-            : gate_type_{gate_type}, gate_hash_{gate_hash}, ctrl_{ctrl},
-              target_{target}, name_{name} {}
+            : gate_type_{gate_type},
+              gate_hash_{gate_hash}, ctrl_{ctrl}, target_{target}, name_{name} {
+        }
     };
 
     /**
@@ -253,13 +254,15 @@ class QCircuit : public IDisplay, public IJSON {
 
         MEASURE_Z, ///< Z measurement of single qudit
 
+        MEASURE_Z_MANY, ///< Z measurement of multiple qudit
+
         MEASURE_V, ///< measurement of single qudit in the orthonormal basis
                    ///< or rank-1 projectors specified by the columns of matrix
                    ///< \a V
 
-        MEASURE_V_MANY, ///< measurement of multiple qudits in the orthonormal
-                        ///< basis or rank-1 projectors specified by the columns
-                        ///< of matrix \a V
+        MEASURE_V_MANY, ///< joint measurement of multiple qudits in the
+                        ///< orthonormal basis or rank-1 projectors specified
+                        //< by the columns of the matrix \a V
     };
 
     /**
@@ -278,6 +281,9 @@ class QCircuit : public IDisplay, public IJSON {
                 break;
             case MeasureType::MEASURE_Z:
                 os << "MEASURE_Z";
+                break;
+            case MeasureType::MEASURE_Z_MANY:
+                os << "MEASURE_Z_MANY";
                 break;
             case MeasureType::MEASURE_V:
                 os << "MEASURE_V";
@@ -892,6 +898,7 @@ class QCircuit : public IDisplay, public IJSON {
                 switch (measure_step.measurement_type_) {
                     case MeasureType::NONE:
                     case MeasureType::MEASURE_Z:
+                    case MeasureType::MEASURE_Z_MANY:
                     case MeasureType::MEASURE_V:
                     case MeasureType::MEASURE_V_MANY:
                         // compute the "height" of the to-be-placed measurement
@@ -2296,7 +2303,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param target Qudit index
      * \param c_reg Classical register where the value of the measurement is
      * being stored
-     * \param name Optional measurement name, default is "Z"
+     * \param name Optional measurement name, default is "mZ"
      * \return Reference to the current instance
      */
     QCircuit& measureZ(idx target, idx c_reg, std::string name = {}) {
@@ -2324,6 +2331,57 @@ class QCircuit : public IDisplay, public IJSON {
         measurements_.emplace_back(MeasureType::MEASURE_Z,
                                    std::vector<std::size_t>{},
                                    std::vector<idx>{target}, c_reg, name);
+        step_types_.emplace_back(StepType::MEASUREMENT);
+        ++measurement_count_[name];
+
+        return *this;
+    }
+
+    // Z measurement of multiple qudits
+    /**
+     * \brief Measurement of multiple qudit in the computational basis (Z-basis)
+     *
+     * \param target Target qudit indexes that are measured
+     * \param c_reg Classical register where the value of the measurement is
+     * being stored, as a decimal representation of the binary string
+     * representing the measurement, with the most significant dit on the
+     * left (corresponding to the first qudit that is being measured)
+     * \param name Optional measurement name, default is "mZ"
+     * \return Reference to the current instance
+     */
+    QCircuit& measureZ(const std::vector<idx>& target, idx c_reg,
+                       std::string name = {}) {
+        // EXCEPTION CHECKS
+
+        try {
+            for (auto&& elem : target) {
+                // measuring non-existing qudit
+                if (elem >= nq_)
+                    throw exception::OutOfRange("qpp::QCircuit::measureZ()");
+                // qudit was measured before
+                if (get_measured(elem))
+                    throw exception::QuditAlreadyMeasured(
+                        "qpp:QCircuit::measureZ");
+            }
+            // trying to put the result into a non-existing classical slot
+            if (c_reg >= nc_)
+                throw exception::OutOfRange("qpp::QCircuit::measureZ()");
+
+        } catch (exception::Exception&) {
+            std::cerr << "At STEP " << get_step_count() << "\n";
+            throw;
+        }
+        // END EXCEPTION CHECKS
+
+        if (name.empty())
+            name = "mZ";
+
+        for (auto&& elem : target) {
+            measured_[elem] = true;
+        }
+        measurements_.emplace_back(MeasureType::MEASURE_Z_MANY,
+                                   std::vector<std::size_t>{}, target, c_reg,
+                                   name);
         step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
 
@@ -2709,8 +2767,9 @@ class QCircuit : public IDisplay, public IJSON {
                 ss.clear();
                 ss << disp(measurements_[pos].target_, ", ");
                 result += "\"target\" : " + ss.str() + ", ";
-                result += "\"c_reg\" : " +
-                          std::to_string(measurements_[pos].c_reg_) + ", ";
+                result +=
+                    "\"c_reg\" : " + std::to_string(measurements_[pos].c_reg_) +
+                    ", ";
                 result += "\"name\" : ";
                 result += "\"" + measurements_[pos].name_ + "\"" + "}";
 
