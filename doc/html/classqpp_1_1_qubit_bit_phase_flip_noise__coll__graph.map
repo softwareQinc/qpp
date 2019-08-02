@@ -1,3 +1,6 @@
 <map id="qpp::QubitBitPhaseFlipNoise" name="qpp::QubitBitPhaseFlipNoise">
-<area shape="rect" id="node2" href="$classqpp_1_1_noise_base.html" title="qpp::NoiseBase\&lt; NoiseType\l::StateIndependent \&gt;" alt="" coords="61,95,252,136"/>
+<area shape="rect" id="node1" title="Qubit bit&#45;phase flip (dephasing) noise." alt="" coords="60,185,252,212"/>
+<area shape="rect" id="node2" href="$classqpp_1_1_noise_base.html" title=" " alt="" coords="60,95,252,136"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,5,141,32"/>
+<area shape="rect" id="node4" title=" " alt="" coords="165,5,312,32"/>
 </map>

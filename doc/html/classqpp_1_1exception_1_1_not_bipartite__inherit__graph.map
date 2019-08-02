@@ -1,4 +1,5 @@
 <map id="qpp::exception::NotBipartite" name="qpp::exception::NotBipartite">
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="11,80,184,107"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="45,5,149,32"/>
+<area shape="rect" id="node1" title="Not bi&#45;partite exception." alt="" coords="5,155,191,181"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="11,80,185,107"/>
+<area shape="rect" id="node3" title="STL class." alt="" coords="46,5,150,32"/>
 </map>

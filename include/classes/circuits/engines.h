@@ -42,11 +42,12 @@ class QEngine : public IDisplay, public IJSON {
   protected:
     const QCircuit* qc_;        ///< pointer to constant quantum circuit
     ket psi_;                   ///< state vector
-    std::vector<idx> dits_;     ///< classical dits
     std::vector<double> probs_; ///< measurement probabilities
+    std::vector<idx> dits_;     ///< classical dits
     std::vector<idx> subsys_;   ///< keeps track of the measured subsystems,
                                 ///< re-label them after measurements
-    std::map<idx, idx> stats_;  ///< measurement statistics for multiple runs
+    std::map<std::string, idx, internal::EqualSameSizeStringDits>
+        stats_; ///< measurement statistics for multiple runs
 
     /**
      * \brief Marks qudit \a i as measured then re-label accordingly the
@@ -97,9 +98,9 @@ class QEngine : public IDisplay, public IJSON {
      * \param qc Quantum circuit
      */
     explicit QEngine(const QCircuit& qc)
-        : qc_{std::addressof(qc)},
-          psi_{States::get_instance().zero(qc.get_nq(), qc.get_d())},
-          dits_(qc.get_nc(), 0), probs_(qc.get_nc(), 0),
+        : qc_{std::addressof(qc)}, psi_{States::get_instance().zero(
+                                       qc.get_nq(), qc.get_d())},
+          probs_(qc.get_nc(), 0), dits_(qc.get_nc(), 0),
           subsys_(qc.get_nq(), 0), stats_{} {
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
     }
@@ -228,12 +229,15 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Measurement statistics for multiple runs
      *
      * \return Hash table with collected measurement statistics for multiple
-     * runs, with hash key being the decimal value of the vector of measurement
-     * results and value being the number of occurrences (of the vector of
-     * measurement results), with the most significant bit located at index 0
-     * (i.e. top/left) of the classical dits array.
+     * runs, with hash key being the string representation of the vector of
+     * measurement results and value being the number of occurrences (of the
+     * vector of measurement results), with the most significant bit located at
+     * index 0 (i.e. top/left).
      */
-    const std::map<idx, idx>& get_stats() const { return stats_; }
+    const std::map<std::string, idx, internal::EqualSameSizeStringDits>&
+    get_stats() const {
+        return stats_;
+    }
     // end getters
 
     // setters
@@ -376,10 +380,10 @@ class QEngine : public IDisplay, public IJSON {
                             }
                         }
                         if (should_apply) {
-                            psi_ =
-                                apply(psi_, powm(h_tbl[gates[q_ip].gate_hash_],
-                                                 first_dit),
-                                      target_rel_pos, qc_->get_d());
+                            psi_ = apply(
+                                psi_,
+                                powm(h_tbl[gates[q_ip].gate_hash_], first_dit),
+                                target_rel_pos, qc_->get_d());
                         }
                     }
                     break;
@@ -415,23 +419,12 @@ class QEngine : public IDisplay, public IJSON {
                 case QCircuit::MeasureType::MEASURE_Z_MANY:
                     std::tie(resZ, probZ, psi_) =
                         measure_seq(psi_, target_rel_pos, qc_->get_d());
-
-                    std::cout << "resZ: " << disp(resZ, " ") << "\n";
-                    std::cout << "target_rel_pos: " << disp(target_rel_pos, " ")
-                              << "\n";
-                    std::cout << "dims: "
-                              << disp(std::vector<idx>(target_rel_pos.size(),
-                                                       qc_->get_d()),
-                                      " ")
-                              << "\n\n";
-
-                    std::cout << resZ.size() << "\n";
                     dits_[measurements[m_ip].c_reg_] =
                         multiidx2n(resZ, std::vector<idx>(target_rel_pos.size(),
                                                           qc_->get_d()));
                     probs_[measurements[m_ip].c_reg_] = probZ;
                     for (auto&& elem : measurements[m_ip].target_)
-                        set_measured_(measurements[m_ip].target_[elem]);
+                        set_measured_(elem);
                     break;
                 case QCircuit::MeasureType::MEASURE_V:
                     std::tie(mres, probs, states) =
@@ -490,8 +483,10 @@ class QEngine : public IDisplay, public IJSON {
             // we measured at least one qudit
             if (get_measured().size() != 0) {
                 std::vector<idx> m_res = get_dits();
-                ++stats_[multiidx2n(
-                    m_res, std::vector<idx>(m_res.size(), qc_->get_d()))];
+
+                std::stringstream ss;
+                ss << disp(m_res, " ", "", "");
+                ++stats_[ss.str()];
             }
         }
     }
@@ -520,14 +515,14 @@ class QEngine : public IDisplay, public IJSON {
 
         ss.str("");
         ss.clear();
-        result += ", \"dits\": ";
-        ss << disp(get_dits(), ", ");
+        result += ", \"last probs\": ";
+        ss << disp(get_probs(), ", ");
         result += ss.str();
 
         ss.str("");
         ss.clear();
-        result += ", \"probs\": ";
-        ss << disp(get_probs(), ", ");
+        result += ", \"last dits\": ";
+        ss << disp(get_dits(), ", ");
         result += ss.str();
 
         ss.str("");
@@ -549,7 +544,8 @@ class QEngine : public IDisplay, public IJSON {
                     is_first = false;
                 else
                     ss << ", ";
-                ss << "\"" << disp(n2multiidx(elem.first, dits_dims), " ")
+                ss << "\""
+                   << "[" << elem.first << "]"
                    << "\" : " << elem.second;
             }
             ss << '}';
@@ -574,8 +570,8 @@ class QEngine : public IDisplay, public IJSON {
      */
     std::ostream& display(std::ostream& os) const override {
         os << "measured: " << disp(get_measured(), ", ") << '\n';
-        os << "dits: " << disp(get_dits(), ", ") << '\n';
-        os << "probs: " << disp(get_probs(), ", ");
+        os << "last probs: " << disp(get_probs(), ", ") << '\n';
+        os << "last dits: " << disp(get_dits(), ", ");
 
         // compute the statistics
         if (!stats_.empty()) {
@@ -592,7 +588,7 @@ class QEngine : public IDisplay, public IJSON {
                     is_first = false;
                 else
                     os << '\n';
-                os << '\t' << disp(n2multiidx(elem.first, dits_dims), " ")
+                os << '\t' << "[" << elem.first << "]"
                    << ": " << elem.second;
             }
         }

@@ -17,7 +17,7 @@ var classqpp_1_1_q_engine =
     [ "get_probs", "classqpp_1_1_q_engine.html#a88b9591f281b7b6746180018156976d6", null ],
     [ "get_psi", "classqpp_1_1_q_engine.html#a8259dd084bad3a50e23f674a78ee4968", null ],
     [ "get_relative_pos_", "classqpp_1_1_q_engine.html#a9eb41166f8f5e3d8073cfe6fdd1157f3", null ],
-    [ "get_stats", "classqpp_1_1_q_engine.html#a9e9b7c3b5827e8eceb587b88395b86dc", null ],
+    [ "get_stats", "classqpp_1_1_q_engine.html#a266e2c7c3c3cdaec8bd30b6427e7357a", null ],
     [ "operator=", "classqpp_1_1_q_engine.html#af0b58822514ba7f8e121cdcdbcac1825", null ],
     [ "reset", "classqpp_1_1_q_engine.html#a23e8199b24689bd0371e0ebc98537805", null ],
     [ "reset_stats", "classqpp_1_1_q_engine.html#ad49ee31daaa5d6540aa73f03f812c689", null ],
@@ -29,6 +29,6 @@ var classqpp_1_1_q_engine =
     [ "probs_", "classqpp_1_1_q_engine.html#acf9ee7a11551617a6a7aaa4fabee096f", null ],
     [ "psi_", "classqpp_1_1_q_engine.html#a1571152e55085a462e5bc93e9c19facb", null ],
     [ "qc_", "classqpp_1_1_q_engine.html#a485fd25dfe53bee444090efaced52659", null ],
-    [ "stats_", "classqpp_1_1_q_engine.html#a0c04d7fdbb6eb11afa07ad131c8d22e0", null ],
+    [ "stats_", "classqpp_1_1_q_engine.html#ae93cfe8bc22667830b90d406b24efcc9", null ],
     [ "subsys_", "classqpp_1_1_q_engine.html#a5947fc9506b659e5190f4ebada755996", null ]
 ];

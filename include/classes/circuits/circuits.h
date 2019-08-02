@@ -2361,7 +2361,7 @@ class QCircuit : public IDisplay, public IJSON {
                 // qudit was measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp:QCircuit::measureZ");
+                        "qpp:QCircuit::measureZ()");
             }
             // trying to put the result into a non-existing classical slot
             if (c_reg >= nc_)

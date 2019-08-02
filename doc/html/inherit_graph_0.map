@@ -1,39 +1,39 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title="STL class. " alt="" coords="5,1045,109,1072"/>
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="157,1045,331,1072"/>
-<area shape="rect" id="node3" href="$classqpp_1_1exception_1_1_custom_exception.html" title="Custom exception. " alt="" coords="393,5,611,32"/>
-<area shape="rect" id="node4" href="$classqpp_1_1exception_1_1_dims_invalid.html" title="Invalid dimension(s) exception. " alt="" coords="410,56,594,83"/>
-<area shape="rect" id="node5" href="$classqpp_1_1exception_1_1_dims_mismatch_cvector.html" title="Dimension(s) mismatch column vector size exception. " alt="" coords="401,107,603,149"/>
-<area shape="rect" id="node6" href="$classqpp_1_1exception_1_1_dims_mismatch_matrix.html" title="Dimension(s) mismatch matrix size exception. " alt="" coords="401,173,603,214"/>
-<area shape="rect" id="node7" href="$classqpp_1_1exception_1_1_dims_mismatch_rvector.html" title="Dimension(s) mismatch row vector size exception. " alt="" coords="401,238,603,279"/>
-<area shape="rect" id="node8" href="$classqpp_1_1exception_1_1_dims_mismatch_vector.html" title="Dimension(s) mismatch vector size exception. " alt="" coords="401,303,603,345"/>
-<area shape="rect" id="node9" href="$classqpp_1_1exception_1_1_dims_not_equal.html" title="Dimensions not equal exception. " alt="" coords="402,369,602,396"/>
-<area shape="rect" id="node10" href="$classqpp_1_1exception_1_1_duplicates.html" title="System (e.g. std::vector) has duplicates exception. " alt="" coords="413,420,591,447"/>
-<area shape="rect" id="node11" href="$classqpp_1_1exception_1_1_invalid_iterator.html" title="Invalid iterator. " alt="" coords="405,471,599,497"/>
-<area shape="rect" id="node12" href="$classqpp_1_1exception_1_1_matrix_mismatch_subsys.html" title="Matrix mismatch subsystems exception. " alt="" coords="398,522,606,563"/>
-<area shape="rect" id="node13" href="$classqpp_1_1exception_1_1_matrix_not_cvector.html" title="Matrix is not a column vector exception. " alt="" coords="416,587,588,629"/>
-<area shape="rect" id="node14" href="$classqpp_1_1exception_1_1_matrix_not_rvector.html" title="Matrix is not a row vector exception. " alt="" coords="416,653,588,694"/>
-<area shape="rect" id="node15" href="$classqpp_1_1exception_1_1_matrix_not_square.html" title="Matrix is not square exception. " alt="" coords="416,718,588,759"/>
-<area shape="rect" id="node16" href="$classqpp_1_1exception_1_1_matrix_not_square_nor_cvector.html" title="Matrix is not square nor column vector exception. " alt="" coords="416,783,588,825"/>
-<area shape="rect" id="node17" href="$classqpp_1_1exception_1_1_matrix_not_square_nor_rvector.html" title="Matrix is not square nor row vector exception. " alt="" coords="416,849,588,890"/>
-<area shape="rect" id="node18" href="$classqpp_1_1exception_1_1_matrix_not_square_nor_vector.html" title="Matrix is not square nor vector exception. " alt="" coords="416,914,588,955"/>
-<area shape="rect" id="node19" href="$classqpp_1_1exception_1_1_matrix_not_vector.html" title="Matrix is not a vector exception. " alt="" coords="416,979,588,1021"/>
-<area shape="rect" id="node20" href="$classqpp_1_1exception_1_1_no_codeword.html" title="Codeword does not exist exception. " alt="" coords="407,1045,597,1072"/>
-<area shape="rect" id="node21" href="$classqpp_1_1exception_1_1_not_bipartite.html" title="Not bi&#45;partite exception. " alt="" coords="410,1096,594,1123"/>
-<area shape="rect" id="node22" href="$classqpp_1_1exception_1_1_not_implemented.html" title="Code not yet implemented. " alt="" coords="397,1147,607,1173"/>
-<area shape="rect" id="node23" href="$classqpp_1_1exception_1_1_not_qubit_cvector.html" title="Column vector is not 2 x 1 exception. " alt="" coords="419,1198,585,1239"/>
-<area shape="rect" id="node24" href="$classqpp_1_1exception_1_1_not_qubit_matrix.html" title="Matrix is not 2 x 2 exception. " alt="" coords="419,1263,585,1305"/>
-<area shape="rect" id="node25" href="$classqpp_1_1exception_1_1_not_qubit_rvector.html" title="Row vector is not 1 x 2 exception. " alt="" coords="419,1329,585,1370"/>
-<area shape="rect" id="node26" href="$classqpp_1_1exception_1_1_not_qubit_subsys.html" title="Subsystems are not qubits exception. " alt="" coords="419,1394,585,1435"/>
-<area shape="rect" id="node27" href="$classqpp_1_1exception_1_1_not_qubit_vector.html" title="Vector is not 2 x 1 nor 1 x 2 exception. " alt="" coords="419,1459,585,1501"/>
-<area shape="rect" id="node28" href="$classqpp_1_1exception_1_1_out_of_range.html" title="Argument out of range exception. " alt="" coords="408,1525,596,1552"/>
-<area shape="rect" id="node29" href="$classqpp_1_1exception_1_1_perm_invalid.html" title="Invalid permutation exception. " alt="" coords="410,1576,594,1603"/>
-<area shape="rect" id="node30" href="$classqpp_1_1exception_1_1_perm_mismatch_dims.html" title="Permutation mismatch dimensions exception. " alt="" coords="385,1627,619,1653"/>
-<area shape="rect" id="node31" href="$classqpp_1_1exception_1_1_qudit_already_measured.html" title="Qudit was already measured exception. " alt="" coords="407,1678,597,1719"/>
-<area shape="rect" id="node32" href="$classqpp_1_1exception_1_1_size_mismatch.html" title="Size mismatch exception. " alt="" coords="403,1744,601,1771"/>
-<area shape="rect" id="node33" href="$classqpp_1_1exception_1_1_subsys_mismatch_dims.html" title="Subsystems mismatch dimensions exception. " alt="" coords="379,1795,625,1821"/>
-<area shape="rect" id="node34" href="$classqpp_1_1exception_1_1_type_mismatch.html" title="Type mismatch exception. " alt="" coords="401,1845,603,1872"/>
-<area shape="rect" id="node35" href="$classqpp_1_1exception_1_1_undefined_type.html" title="Not defined for this type exception. " alt="" coords="401,1896,603,1923"/>
-<area shape="rect" id="node36" href="$classqpp_1_1exception_1_1_unknown.html" title="Unknown exception. " alt="" coords="417,1947,587,1973"/>
-<area shape="rect" id="node37" href="$classqpp_1_1exception_1_1_zero_size.html" title="Object has zero size exception. " alt="" coords="419,1997,585,2024"/>
+<area shape="rect" id="node1" title="STL class." alt="" coords="5,1045,109,1072"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="157,1045,332,1072"/>
+<area shape="rect" id="node3" href="$classqpp_1_1exception_1_1_custom_exception.html" title="Custom exception." alt="" coords="393,5,613,32"/>
+<area shape="rect" id="node4" href="$classqpp_1_1exception_1_1_dims_invalid.html" title="Invalid dimension(s) exception." alt="" coords="411,56,596,83"/>
+<area shape="rect" id="node5" href="$classqpp_1_1exception_1_1_dims_mismatch_cvector.html" title="Dimension(s) mismatch column vector size exception." alt="" coords="401,107,605,149"/>
+<area shape="rect" id="node6" href="$classqpp_1_1exception_1_1_dims_mismatch_matrix.html" title="Dimension(s) mismatch matrix size exception." alt="" coords="401,173,605,214"/>
+<area shape="rect" id="node7" href="$classqpp_1_1exception_1_1_dims_mismatch_rvector.html" title="Dimension(s) mismatch row vector size exception." alt="" coords="401,238,605,279"/>
+<area shape="rect" id="node8" href="$classqpp_1_1exception_1_1_dims_mismatch_vector.html" title="Dimension(s) mismatch vector size exception." alt="" coords="401,303,605,345"/>
+<area shape="rect" id="node9" href="$classqpp_1_1exception_1_1_dims_not_equal.html" title="Dimensions not equal exception." alt="" coords="403,369,604,396"/>
+<area shape="rect" id="node10" href="$classqpp_1_1exception_1_1_duplicates.html" title="System (e.g. std::vector) has duplicates exception." alt="" coords="414,420,593,447"/>
+<area shape="rect" id="node11" href="$classqpp_1_1exception_1_1_invalid_iterator.html" title="Invalid iterator." alt="" coords="405,471,602,497"/>
+<area shape="rect" id="node12" href="$classqpp_1_1exception_1_1_matrix_mismatch_subsys.html" title="Matrix mismatch subsystems exception." alt="" coords="399,522,608,563"/>
+<area shape="rect" id="node13" href="$classqpp_1_1exception_1_1_matrix_not_cvector.html" title="Matrix is not a column vector exception." alt="" coords="417,587,590,629"/>
+<area shape="rect" id="node14" href="$classqpp_1_1exception_1_1_matrix_not_rvector.html" title="Matrix is not a row vector exception." alt="" coords="417,653,590,694"/>
+<area shape="rect" id="node15" href="$classqpp_1_1exception_1_1_matrix_not_square.html" title="Matrix is not square exception." alt="" coords="417,718,590,759"/>
+<area shape="rect" id="node16" href="$classqpp_1_1exception_1_1_matrix_not_square_nor_cvector.html" title="Matrix is not square nor column vector exception." alt="" coords="417,783,590,825"/>
+<area shape="rect" id="node17" href="$classqpp_1_1exception_1_1_matrix_not_square_nor_rvector.html" title="Matrix is not square nor row vector exception." alt="" coords="417,849,590,890"/>
+<area shape="rect" id="node18" href="$classqpp_1_1exception_1_1_matrix_not_square_nor_vector.html" title="Matrix is not square nor vector exception." alt="" coords="417,914,590,955"/>
+<area shape="rect" id="node19" href="$classqpp_1_1exception_1_1_matrix_not_vector.html" title="Matrix is not a vector exception." alt="" coords="417,979,590,1021"/>
+<area shape="rect" id="node20" href="$classqpp_1_1exception_1_1_no_codeword.html" title="Codeword does not exist exception." alt="" coords="407,1045,600,1072"/>
+<area shape="rect" id="node21" href="$classqpp_1_1exception_1_1_not_bipartite.html" title="Not bi&#45;partite exception." alt="" coords="411,1096,596,1123"/>
+<area shape="rect" id="node22" href="$classqpp_1_1exception_1_1_not_implemented.html" title="Code not yet implemented." alt="" coords="397,1147,610,1173"/>
+<area shape="rect" id="node23" href="$classqpp_1_1exception_1_1_not_qubit_cvector.html" title="Column vector is not 2 x 1 exception." alt="" coords="419,1198,588,1239"/>
+<area shape="rect" id="node24" href="$classqpp_1_1exception_1_1_not_qubit_matrix.html" title="Matrix is not 2 x 2 exception." alt="" coords="419,1263,588,1305"/>
+<area shape="rect" id="node25" href="$classqpp_1_1exception_1_1_not_qubit_rvector.html" title="Row vector is not 1 x 2 exception." alt="" coords="419,1329,588,1370"/>
+<area shape="rect" id="node26" href="$classqpp_1_1exception_1_1_not_qubit_subsys.html" title="Subsystems are not qubits exception." alt="" coords="419,1394,588,1435"/>
+<area shape="rect" id="node27" href="$classqpp_1_1exception_1_1_not_qubit_vector.html" title="Vector is not 2 x 1 nor 1 x 2 exception." alt="" coords="419,1459,588,1501"/>
+<area shape="rect" id="node28" href="$classqpp_1_1exception_1_1_out_of_range.html" title="Argument out of range exception." alt="" coords="408,1525,599,1552"/>
+<area shape="rect" id="node29" href="$classqpp_1_1exception_1_1_perm_invalid.html" title="Invalid permutation exception." alt="" coords="410,1576,597,1603"/>
+<area shape="rect" id="node30" href="$classqpp_1_1exception_1_1_perm_mismatch_dims.html" title="Permutation mismatch dimensions exception." alt="" coords="385,1627,621,1653"/>
+<area shape="rect" id="node31" href="$classqpp_1_1exception_1_1_qudit_already_measured.html" title="Qudit was already measured exception." alt="" coords="407,1678,600,1719"/>
+<area shape="rect" id="node32" href="$classqpp_1_1exception_1_1_size_mismatch.html" title="Size mismatch exception." alt="" coords="404,1744,603,1771"/>
+<area shape="rect" id="node33" href="$classqpp_1_1exception_1_1_subsys_mismatch_dims.html" title="Subsystems mismatch dimensions exception." alt="" coords="380,1795,627,1821"/>
+<area shape="rect" id="node34" href="$classqpp_1_1exception_1_1_type_mismatch.html" title="Type mismatch exception." alt="" coords="402,1845,605,1872"/>
+<area shape="rect" id="node35" href="$classqpp_1_1exception_1_1_undefined_type.html" title="Not defined for this type exception." alt="" coords="400,1896,607,1923"/>
+<area shape="rect" id="node36" href="$classqpp_1_1exception_1_1_unknown.html" title="Unknown exception." alt="" coords="417,1947,589,1973"/>
+<area shape="rect" id="node37" href="$classqpp_1_1exception_1_1_zero_size.html" title="Object has zero size exception." alt="" coords="419,1997,588,2024"/>
 </map>

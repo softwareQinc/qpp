@@ -1,6 +1,7 @@
 <map id="qpp::exception::NotImplemented" name="qpp::exception::NotImplemented">
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="24,200,197,227"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="19,96,123,123"/>
-<area shape="rect" id="node4" title="STL class. " alt="" coords="147,96,227,123"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="123,5,250,47"/>
+<area shape="rect" id="node1" title="Code not yet implemented." alt="" coords="5,276,219,303"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="25,200,199,227"/>
+<area shape="rect" id="node3" title="STL class." alt="" coords="20,96,124,123"/>
+<area shape="rect" id="node4" title="STL class." alt="" coords="148,96,228,123"/>
+<area shape="rect" id="node5" title="STL class." alt="" coords="125,5,251,47"/>
 </map>

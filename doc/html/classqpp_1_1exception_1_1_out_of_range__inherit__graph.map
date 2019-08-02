@@ -1,4 +1,5 @@
 <map id="qpp::exception::OutOfRange" name="qpp::exception::OutOfRange">
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="13,80,186,107"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="47,5,151,32"/>
+<area shape="rect" id="node1" title="Argument out of range exception." alt="" coords="5,155,196,181"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="13,80,188,107"/>
+<area shape="rect" id="node3" title="STL class." alt="" coords="49,5,153,32"/>
 </map>

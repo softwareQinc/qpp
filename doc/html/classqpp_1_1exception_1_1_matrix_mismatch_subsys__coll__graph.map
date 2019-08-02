@@ -1,6 +1,7 @@
 <map id="qpp::exception::MatrixMismatchSubsys" name="qpp::exception::MatrixMismatchSubsys">
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions. " alt="" coords="23,200,196,227"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="17,96,121,123"/>
-<area shape="rect" id="node4" title="STL class. " alt="" coords="145,96,225,123"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="122,5,249,47"/>
+<area shape="rect" id="node1" title="Matrix mismatch subsystems exception." alt="" coords="5,276,215,317"/>
+<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="23,200,197,227"/>
+<area shape="rect" id="node3" title="STL class." alt="" coords="18,96,122,123"/>
+<area shape="rect" id="node4" title="STL class." alt="" coords="146,96,226,123"/>
+<area shape="rect" id="node5" title="STL class." alt="" coords="123,5,249,47"/>
 </map>
