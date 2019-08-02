@@ -115,6 +115,7 @@
 #include "instruments.h"
 #include "classes/reversible.h"
 #include "classes/noise.h"
+#include "classes/circuits/layouts.h"
 #include "classes/circuits/circuits.h"
 #include "classes/circuits/engines.h"
 

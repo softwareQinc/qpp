@@ -1334,8 +1334,8 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Applies the single qudit gate \a U on every remaining non-measured
-     * qudit
+     * \brief Applies the single qudit gate \a U on all of the remaining
+     * non-measured qudits
      *
      * \param U Single qudit quantum gate
      * \param name Optional gate name
