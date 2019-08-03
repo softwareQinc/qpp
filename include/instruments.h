@@ -212,7 +212,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
         throw exception::ZeroSize("qpp::measure()");
 
     // check the Kraus operators
-    if (Ks.size() == 0)
+    if (Ks.empty())
         throw exception::ZeroSize("qpp::measure()");
     if (!internal::check_square_mat(Ks[0]))
         throw exception::MatrixNotSquare("qpp::measure()");
@@ -366,7 +366,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     idx Dsubsys_bar = D / Dsubsys;
 
     // check the Kraus operators
-    if (Ks.size() == 0)
+    if (Ks.empty())
         throw exception::ZeroSize("qpp::measure()");
     if (!internal::check_square_mat(Ks[0]))
         throw exception::MatrixNotSquare("qpp::measure()");

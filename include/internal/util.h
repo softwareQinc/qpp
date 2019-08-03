@@ -132,7 +132,7 @@ bool check_matching_sizes(const T1& lhs, const T2& rhs) noexcept {
 
 // check that dims is a valid dimension vector
 inline bool check_dims(const std::vector<idx>& dims) {
-    if (dims.size() == 0)
+    if (dims.empty())
         return false;
 
     return std::find_if(std::begin(dims), std::end(dims),
@@ -261,7 +261,7 @@ bool check_qubit_vector(const Eigen::MatrixBase<Derived>& A) noexcept {
 
 // check valid permutation
 inline bool check_perm(const std::vector<idx>& perm) {
-    if (perm.size() == 0)
+    if (perm.empty())
         return false;
 
     std::vector<idx> ordered(perm.size());

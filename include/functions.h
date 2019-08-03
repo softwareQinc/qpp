@@ -943,7 +943,7 @@ template <typename Derived>
 dyn_mat<typename Derived::Scalar> kron(const std::vector<Derived>& As) {
     // EXCEPTION CHECKS
 
-    if (As.size() == 0)
+    if (As.empty())
         throw exception::ZeroSize("qpp::kron()");
 
     for (auto&& elem : As)
@@ -1048,7 +1048,7 @@ template <typename Derived>
 dyn_mat<typename Derived::Scalar> dirsum(const std::vector<Derived>& As) {
     // EXCEPTION CHECKS
 
-    if (As.size() == 0)
+    if (As.empty())
         throw exception::ZeroSize("qpp::dirsum()");
 
     for (auto&& elem : As)

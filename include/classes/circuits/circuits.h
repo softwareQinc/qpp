@@ -221,9 +221,8 @@ class QCircuit : public IDisplay, public IJSON {
         explicit GateStep(GateType gate_type, std::size_t gate_hash,
                           const std::vector<idx>& ctrl,
                           const std::vector<idx>& target, std::string name = {})
-            : gate_type_{gate_type},
-              gate_hash_{gate_hash}, ctrl_{ctrl}, target_{target}, name_{name} {
-        }
+            : gate_type_{gate_type}, gate_hash_{gate_hash}, ctrl_{ctrl},
+              target_{target}, name_{name} {}
     };
 
     /**
@@ -1276,7 +1275,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         try {
             // check valid target
-            if (target.size() == 0)
+            if (target.empty())
                 throw exception::ZeroSize("qpp::QCircuit::gate_fan()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
@@ -1389,7 +1388,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         try {
             // check valid target
-            if (target.size() == 0)
+            if (target.empty())
                 throw exception::ZeroSize("qpp::QCircuit::gate_custom()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
@@ -1442,7 +1441,7 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
         try {
             // check valid target
-            if (target.size() == 0)
+            if (target.empty())
                 throw exception::ZeroSize("qpp::QCircuit::QFT()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
@@ -1548,7 +1547,7 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
         try {
             // check valid target
-            if (target.size() == 0)
+            if (target.empty())
                 throw exception::ZeroSize("qpp::QCircuit::TFQ()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
@@ -1572,7 +1571,7 @@ class QCircuit : public IDisplay, public IJSON {
         {
             if (swap) {
                 // we have the qubits in reversed order, we must swap them
-                for (idx i = 0; i < n_subsys / 2; ++i) {
+                for (idx i = n_subsys / 2; i-- > 0;) {
                     gate(Gates::get_instance().SWAP, target[i],
                          target[n_subsys - i - 1]);
                 }
@@ -1584,7 +1583,7 @@ class QCircuit : public IDisplay, public IJSON {
                     cmat Rj(2, 2);
                     Rj << 1, 0, 0, exp(-2.0 * pi * 1_i / std::pow(2, j));
                     CTRL(Rj, target[i + j - 1], target[i],
-                         "CTRL-R" + std::to_string(j) + "_adj");
+                         "CTRL-R" + std::to_string(j) + "+");
                 }
                 // apply Hadamard on qubit i
                 gate(Gates::get_instance().H, target[i]);
@@ -1592,9 +1591,9 @@ class QCircuit : public IDisplay, public IJSON {
         } else { // qudits
             if (swap) {
                 // we have the qudits in reversed order, we must swap them
-                for (idx i = 0; i < n_subsys / 2; ++i) {
+                for (idx i = n_subsys / 2; i-- > 0;) {
                     gate(Gates::get_instance().SWAPd(d_), target[i],
-                         target[n_subsys - i - 1], "SWAPd");
+                         target[n_subsys - i - 1], "SWAPd+");
                 }
             }
             for (idx i = n_subsys; i-- > 0;) {
@@ -1606,11 +1605,10 @@ class QCircuit : public IDisplay, public IJSON {
                         Rj(m, m) = exp(-2.0 * pi * m * 1_i / std::pow(d_, j));
                     }
                     CTRL(Rj, target[i + j - 1], target[i],
-                         "CTRL-R" + std::to_string(j) + "d_adj");
+                         "CTRL-R" + std::to_string(j) + "d+");
                 }
                 // apply qudit Fourier on qudit i
-                gate(adjoint(Gates::get_instance().Fd(d_)), target[i],
-                     "Fd_adj");
+                gate(adjoint(Gates::get_instance().Fd(d_)), target[i], "Fd+");
             }
         }
 
@@ -1712,7 +1710,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()");
 
             // check valid target
-            if (target.size() == 0)
+            if (target.empty())
                 throw exception::ZeroSize("qpp::QCircuit::CTRL()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
@@ -1855,7 +1853,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::Duplicates("qpp::QCircuit::CTRL()");
 
             // check valid target
-            if (target.size() == 0)
+            if (target.empty())
                 throw exception::ZeroSize("qpp::QCircuit::CTRL()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
@@ -1937,7 +1935,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::Duplicates("qpp::QCircuit::CTRL_custom()");
 
             // check valid target
-            if (target.size() == 0)
+            if (target.empty())
                 throw exception::ZeroSize("qpp::QCircuit::CTRL_custom()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
@@ -2054,7 +2052,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
 
             // check valid target
-            if (target.size() == 0)
+            if (target.empty())
                 throw exception::ZeroSize("qpp::QCircuit::cCTRL()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
@@ -2180,7 +2178,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::Duplicates("qpp::QCircuit::cCTRL()");
 
             // check valid target
-            if (target.size() == 0)
+            if (target.empty())
                 throw exception::ZeroSize("qpp::QCircuit::cCTRL()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
@@ -2253,7 +2251,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::Duplicates("qpp::QCircuit::cCTRL_custom()");
 
             // check valid target
-            if (target.size() == 0)
+            if (target.empty())
                 throw exception::ZeroSize("qpp::QCircuit::cCTRL_custom()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
@@ -2354,6 +2352,9 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         try {
+            // check valid target
+            if (target.empty())
+                throw exception::ZeroSize("qpp::QCircuit::measureZ()");
             for (auto&& elem : target) {
                 // measuring non-existing qudit
                 if (elem >= nq_)
@@ -2454,7 +2455,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         try {
             // check valid target
-            if (target.size() == 0)
+            if (target.empty())
                 throw exception::ZeroSize("qpp::QCircuit::measureV()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
@@ -2767,9 +2768,8 @@ class QCircuit : public IDisplay, public IJSON {
                 ss.clear();
                 ss << disp(measurements_[pos].target_, ", ");
                 result += "\"target\" : " + ss.str() + ", ";
-                result +=
-                    "\"c_reg\" : " + std::to_string(measurements_[pos].c_reg_) +
-                    ", ";
+                result += "\"c_reg\" : " +
+                          std::to_string(measurements_[pos].c_reg_) + ", ";
                 result += "\"name\" : ";
                 result += "\"" + measurements_[pos].name_ + "\"" + "}";
 
@@ -2849,15 +2849,16 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         auto htbl = other.cmat_hash_tbl_; // copy the gate hash table of other
-        htbl.clear();
+        other.cmat_hash_tbl_.clear();
 
         std::reverse(std::begin(other.gates_), std::end(other.gates_));
         std::reverse(std::begin(other.step_types_),
                      std::end(other.step_types_));
+
         for (auto& elem : other.gates_) {
             // get the gate and its corresponding hash
             std::size_t hashU = elem.gate_hash_;
-            cmat U = other.cmat_hash_tbl_[hashU];
+            cmat U = htbl[hashU];
 
             // compute the adjoints
             cmat Udagger = adjoint(U);
@@ -2865,8 +2866,9 @@ class QCircuit : public IDisplay, public IJSON {
 
             // modify and add hash
             elem.gate_hash_ = hashUdagger;
-            elem.name_ += "_adj";
-            htbl.insert({hashUdagger, Udagger});
+            if (elem.name_ != "")
+                elem.name_ += "+";
+            other.add_hash_(Udagger, hashUdagger);
         }
 
         return other;

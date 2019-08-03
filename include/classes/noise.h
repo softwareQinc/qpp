@@ -156,7 +156,7 @@ class NoiseBase {
         : Ks_{Ks}, probs_(Ks.size()) {
         // EXCEPTION CHECKS
 
-        if (Ks.size() == 0)
+        if (Ks.empty())
             throw exception::ZeroSize("qpp::NoiseBase::NoiseBase()");
         if (!internal::check_nonzero_size(Ks[0]))
             throw exception::ZeroSize("qpp::NoiseBase::NoiseBase()");
@@ -187,7 +187,7 @@ class NoiseBase {
         : Ks_{Ks}, probs_(probs) {
         // EXCEPTION CHECKS
 
-        if (Ks.size() == 0)
+        if (Ks.empty())
             throw exception::ZeroSize("qpp::NoiseBase::NoiseBase()");
         if (Ks.size() != probs.size())
             throw exception::SizeMismatch("qpp::NoiseBase::NoiseBase");

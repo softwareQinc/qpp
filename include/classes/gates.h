@@ -376,9 +376,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
             throw exception::MatrixNotSquare("qpp::Gates::CTRL()");
 
         // check lists zero-size
-        if (ctrl.size() == 0)
+        if (ctrl.empty())
             throw exception::ZeroSize("qpp::Gates::CTRL()");
-        if (target.size() == 0)
+        if (target.empty())
             throw exception::ZeroSize("qpp::Gates::CTRL()");
 
         // check out of range

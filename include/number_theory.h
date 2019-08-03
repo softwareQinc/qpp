@@ -83,7 +83,7 @@ inline std::vector<int> x2contfrac(double x, idx N, idx cut = 1e5) {
  */
 inline double contfrac2x(const std::vector<int>& cf, idx N = idx(-1)) {
     // EXCEPTION CHECKS
-    if (cf.size() == 0)
+    if (cf.empty())
         throw exception::ZeroSize("qpp::contfrac2x()");
 
     if (N == 0)
@@ -142,7 +142,7 @@ inline bigint gcd(bigint a, bigint b) {
 inline bigint gcd(const std::vector<bigint>& as) {
     // EXCEPTION CHECKS
 
-    if (as.size() == 0)
+    if (as.empty())
         throw exception::ZeroSize("qpp::gcd()");
     // END EXCEPTION CHECKS
 
@@ -184,7 +184,7 @@ inline bigint lcm(bigint a, bigint b) {
 inline bigint lcm(const std::vector<bigint>& as) {
     // EXCEPTION CHECKS
 
-    if (as.size() == 0)
+    if (as.empty())
         throw exception::ZeroSize("qpp::lcm()");
 
     if (as.size() == 1) // convention: lcm({a}) = a

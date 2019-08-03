@@ -567,7 +567,7 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
         throw exception::ZeroSize("qpp::apply()");
     if (!internal::check_square_mat(rA))
         throw exception::MatrixNotSquare("qpp::apply()");
-    if (Ks.size() == 0)
+    if (Ks.empty())
         throw exception::ZeroSize("qpp::apply()");
     if (!internal::check_square_mat(Ks[0]))
         throw exception::MatrixNotSquare("qpp::apply()");
@@ -639,7 +639,7 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
         subsys_dims[i] = dims[target[i]];
 
     // check the Kraus operators
-    if (Ks.size() == 0)
+    if (Ks.empty())
         throw exception::ZeroSize("qpp::apply()");
     if (!internal::check_square_mat(Ks[0]))
         throw exception::MatrixNotSquare("qpp::apply()");
@@ -704,7 +704,7 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 inline cmat kraus2super(const std::vector<cmat>& Ks) {
     // EXCEPTION CHECKS
 
-    if (Ks.size() == 0)
+    if (Ks.empty())
         throw exception::ZeroSize("qpp::kraus2super()");
     if (!internal::check_nonzero_size(Ks[0]))
         throw exception::ZeroSize("qpp::kraus2super()");
@@ -775,7 +775,7 @@ inline cmat kraus2super(const std::vector<cmat>& Ks) {
 inline cmat kraus2choi(const std::vector<cmat>& Ks) {
     // EXCEPTION CHECKS
 
-    if (Ks.size() == 0)
+    if (Ks.empty())
         throw exception::ZeroSize("qpp::kraus2choi()");
     if (!internal::check_nonzero_size(Ks[0]))
         throw exception::ZeroSize("qpp::kraus2choi()");
@@ -977,8 +977,8 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
-#endif // WITH_OPENMP_
-       // column major order for speed
+#endif  // WITH_OPENMP_
+        // column major order for speed
         for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
@@ -1002,8 +1002,8 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
-#endif // WITH_OPENMP_
-       // column major order for speed
+#endif  // WITH_OPENMP_
+        // column major order for speed
         for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
@@ -1105,8 +1105,8 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
-#endif // WITH_OPENMP_
-       // column major order for speed
+#endif  // WITH_OPENMP_
+        // column major order for speed
         for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
                 result(i, j) = worker(i, j);
@@ -1122,8 +1122,8 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 
 #ifdef WITH_OPENMP_
 #pragma omp parallel for collapse(2)
-#endif // WITH_OPENMP_
-       // column major order for speed
+#endif  // WITH_OPENMP_
+        // column major order for speed
         for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
                 result(i, j) = trace(rA.block(i * DB, j * DB, DB, DB));
@@ -1251,7 +1251,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             return result;
         }
 
-        if (target.size() == 0)
+        if (target.empty())
             return rA * adjoint(rA);
 
         auto worker = [&](idx i) noexcept->typename Derived::Scalar {
@@ -1314,7 +1314,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             return result;
         }
 
-        if (target.size() == 0)
+        if (target.empty())
             return rA;
 
         auto worker = [&](idx i) noexcept->typename Derived::Scalar {
@@ -1466,7 +1466,7 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
         if (target.size() == dims.size())
             return (rA * adjoint(rA)).transpose();
 
-        if (target.size() == 0)
+        if (target.empty())
             return rA * adjoint(rA);
 
         auto worker = [&](idx i) noexcept->typename Derived::Scalar {
@@ -1511,7 +1511,7 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
         if (target.size() == dims.size())
             return rA.transpose();
 
-        if (target.size() == 0)
+        if (target.empty())
             return rA;
 
         auto worker = [&](idx i) noexcept->typename Derived::Scalar {
@@ -1932,7 +1932,7 @@ dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
     {
         if (swap) {
             // we have the qubits in reversed order, we must swap them
-            for (idx i = 0; i < n_subsys / 2; ++i) {
+            for (idx i = n_subsys / 2; i-- > 0;) {
                 result = apply(result, Gates::get_instance().SWAP,
                                {target[i], target[n_subsys - i - 1]});
             }
@@ -1952,7 +1952,7 @@ dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
     } else { // qudits
         if (swap) {
             // we have the qudits in reversed order, we must swap them
-            for (idx i = 0; i < n_subsys / 2; ++i) {
+            for (idx i = n_subsys / 2; i-- > 0;) {
                 result = apply(result, Gates::get_instance().SWAPd(d),
                                {target[i], target[n_subsys - i - 1]}, d);
             }
