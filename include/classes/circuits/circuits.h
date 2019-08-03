@@ -1593,7 +1593,7 @@ class QCircuit : public IDisplay, public IJSON {
                 // we have the qudits in reversed order, we must swap them
                 for (idx i = n_subsys / 2; i-- > 0;) {
                     gate(Gates::get_instance().SWAPd(d_), target[i],
-                         target[n_subsys - i - 1], "SWAPd+");
+                         target[n_subsys - i - 1], "SWAPd");
                 }
             }
             for (idx i = n_subsys; i-- > 0;) {
