@@ -654,7 +654,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
 
         // iterator traits
-        using difference_type = long long;                   ///< iterator trait
+        using difference_type = ptrdiff_t;                   ///< iterator trait
         using value_type = value_type_;                      ///< iterator trait
         using pointer = const value_type*;                   ///< iterator trait
         using reference = const value_type&;                 ///< iterator trait
@@ -1584,7 +1584,7 @@ class QCircuit : public IDisplay, public IJSON {
                     cmat Rj(2, 2);
                     Rj << 1, 0, 0, exp(-2.0 * pi * 1_i / std::pow(2, j));
                     CTRL(Rj, target[i + j - 1], target[i],
-                         "CTRL-R" + std::to_string(j) + "_adjoint");
+                         "CTRL-R" + std::to_string(j) + "_adj");
                 }
                 // apply Hadamard on qubit i
                 gate(Gates::get_instance().H, target[i]);
@@ -1606,11 +1606,11 @@ class QCircuit : public IDisplay, public IJSON {
                         Rj(m, m) = exp(-2.0 * pi * m * 1_i / std::pow(d_, j));
                     }
                     CTRL(Rj, target[i + j - 1], target[i],
-                         "CTRL-R" + std::to_string(j) + "d_adjoint");
+                         "CTRL-R" + std::to_string(j) + "d_adj");
                 }
                 // apply qudit Fourier on qudit i
                 gate(adjoint(Gates::get_instance().Fd(d_)), target[i],
-                     "Fd_adjoint");
+                     "Fd_adj");
             }
         }
 
@@ -2834,7 +2834,44 @@ class QCircuit : public IDisplay, public IJSON {
 
         return os;
     }
-}; // namespace qpp
+
+    /**
+     * \brief Adjoint quantum circuit description
+     *
+     * \param other Quantum circuit description
+     * \return Adjoint quantum circuit description
+     */
+    friend QCircuit adjoint(QCircuit other) {
+        // EXCEPTION CHECKS
+
+        if (other.get_measured().size() > 0)
+            throw exception::QuditAlreadyMeasured("qpp::adjoint()");
+        // END EXCEPTION CHECKS
+
+        auto htbl = other.cmat_hash_tbl_; // copy the gate hash table of other
+        htbl.clear();
+
+        std::reverse(std::begin(other.gates_), std::end(other.gates_));
+        std::reverse(std::begin(other.step_types_),
+                     std::end(other.step_types_));
+        for (auto& elem : other.gates_) {
+            // get the gate and its corresponding hash
+            std::size_t hashU = elem.gate_hash_;
+            cmat U = other.cmat_hash_tbl_[hashU];
+
+            // compute the adjoints
+            cmat Udagger = adjoint(U);
+            std::size_t hashUdagger = hash_eigen(Udagger);
+
+            // modify and add hash
+            elem.gate_hash_ = hashUdagger;
+            elem.name_ += "_adj";
+            htbl.insert({hashUdagger, Udagger});
+        }
+
+        return other;
+    }
+}; /* class QCircuit */
 
 } /* namespace qpp */
 

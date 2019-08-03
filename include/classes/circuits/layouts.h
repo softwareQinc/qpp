@@ -66,7 +66,7 @@ class GridView {
 
         return dim_x_ * y + x;
     }
-};
+}; /* class GridView */
 
 /**
  * \class qpp::3DGridView
@@ -102,7 +102,8 @@ class GridView3D : private GridView {
 
         return dim_x_ * dim_y_ * z + GridView::operator()(x, y);
     }
-};
+}; /* class GridView3D */
+
 } /* namespace qpp */
 
 #endif /* CLASSES_CIRCUITS_LAYOUTS_H_ */
