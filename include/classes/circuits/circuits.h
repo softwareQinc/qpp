@@ -2524,7 +2524,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (n == 0)
             throw exception::OutOfRange("qpp::QCircuit::repeat()");
-        if (get_measured().size() != 0)
+        if (!get_measured().empty())
             throw exception::CustomException(
                 "qpp::QCircuit::repeat()",
                 "The circuit cannot contain measurements at this stage");
@@ -2738,7 +2738,7 @@ class QCircuit : public IDisplay, public IJSON {
                 ss.clear();
                 ss << gates_[pos].gate_type_;
                 result += "\"" + ss.str() + "\", ";
-                if (gates_[pos].ctrl_.size() != 0) {
+                if (!gates_[pos].ctrl_.empty()) {
                     ss.str("");
                     ss.clear();
                     ss << disp(gates_[pos].ctrl_, ", ");
