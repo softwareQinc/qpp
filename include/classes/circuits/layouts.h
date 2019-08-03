@@ -63,6 +63,7 @@ class GridView {
         if (x >= dim_x_ || y >= dim_y_)
             throw exception::OutOfRange("qpp::GridView::operator()");
         // END EXCEPTION CHECKS
+
         return dim_x_ * y + x;
     }
 };
