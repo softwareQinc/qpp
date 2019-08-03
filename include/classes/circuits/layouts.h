@@ -57,7 +57,7 @@ class GridView {
      * \param y Y coordinate
      * \return Linear coordinate of the (x, y) pair
      */
-    idx operator()(idx x, idx y) {
+    idx operator()(idx x, idx y) const {
         // EXCEPTION CHECKS
 
         if (x >= dim_x_ || y >= dim_y_)
@@ -92,7 +92,7 @@ class GridView3D : private GridView {
      * \param z Z coordinate
      * \return Linear coordinate of the (x, y, z) pair
      */
-    idx operator()(idx x, idx y, idx z) {
+    idx operator()(idx x, idx y, idx z) const {
         // EXCEPTION CHECKS
 
         if (x >= dim_x_ || y >= dim_y_)
