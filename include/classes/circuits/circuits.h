@@ -221,8 +221,9 @@ class QCircuit : public IDisplay, public IJSON {
         explicit GateStep(GateType gate_type, std::size_t gate_hash,
                           const std::vector<idx>& ctrl,
                           const std::vector<idx>& target, std::string name = {})
-            : gate_type_{gate_type}, gate_hash_{gate_hash}, ctrl_{ctrl},
-              target_{target}, name_{name} {}
+            : gate_type_{gate_type},
+              gate_hash_{gate_hash}, ctrl_{ctrl}, target_{target}, name_{name} {
+        }
     };
 
     /**
@@ -1608,7 +1609,8 @@ class QCircuit : public IDisplay, public IJSON {
                          "CTRL-R" + std::to_string(j) + "d+");
                 }
                 // apply qudit Fourier on qudit i
-                gate(adjoint(Gates::get_instance().Fd(d_)), target[i], "Fd+");
+                gate(qpp::adjoint(Gates::get_instance().Fd(d_)), target[i],
+                     "Fd+");
             }
         }
 
@@ -2511,7 +2513,7 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Replicates the circuit
+     * \brief Replicates the circuit, in place
      * \note The circuit should not contain any measurements when invoking this
      * member function
      *
@@ -2523,11 +2525,9 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         if (n == 0)
-            throw exception::OutOfRange("qpp::QCircuit::repeat()");
+            throw exception::OutOfRange("qpp::QCircuit::replicate()");
         if (!get_measured().empty())
-            throw exception::CustomException(
-                "qpp::QCircuit::repeat()",
-                "The circuit cannot contain measurements at this stage");
+            throw exception::QuditAlreadyMeasured("qpp::QCircuit::replicate()");
         if (n == 1)
             return *this;
         // END EXCEPTION CHECKS
@@ -2688,13 +2688,51 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Kronecker product with another quantum circuit description
+     * \brief Kronecker product with another quantum circuit description, in
+     * place
      *
-     * \param other Quantum circuit description
+     * \param qc Quantum circuit description
      * \return Reference to the current instance
      */
-    QCircuit& kron(const QCircuit& other) {
-        add_circuit(other, nq_);
+    QCircuit& kron(const QCircuit& qc) {
+        add_circuit(qc, nq_);
+
+        return *this;
+    }
+
+    /**
+     * \brief Adjoint quantum circuit description, in place
+     *
+     * \return Reference to the current instance
+     */
+    QCircuit& adjoint() {
+        // EXCEPTION CHECKS
+
+        if (get_measured().size() > 0)
+            throw exception::QuditAlreadyMeasured("qpp::QCircuit()::adjoint()");
+        // END EXCEPTION CHECKS
+
+        auto htbl = cmat_hash_tbl_; // copy the gate hash table of other
+        cmat_hash_tbl_.clear();
+
+        std::reverse(std::begin(gates_), std::end(gates_));
+        std::reverse(std::begin(step_types_), std::end(step_types_));
+
+        for (auto& elem : gates_) {
+            // get the gate and its corresponding hash
+            std::size_t hashU = elem.gate_hash_;
+            cmat U = htbl[hashU];
+
+            // compute the adjoints
+            cmat Udagger = qpp::adjoint(U);
+            std::size_t hashUdagger = hash_eigen(Udagger);
+
+            // modify and add hash
+            elem.gate_hash_ = hashUdagger;
+            if (elem.name_ != "")
+                elem.name_ += "+";
+            add_hash_(Udagger, hashUdagger);
+        }
 
         return *this;
     }
@@ -2768,8 +2806,9 @@ class QCircuit : public IDisplay, public IJSON {
                 ss.clear();
                 ss << disp(measurements_[pos].target_, ", ");
                 result += "\"target\" : " + ss.str() + ", ";
-                result += "\"c_reg\" : " +
-                          std::to_string(measurements_[pos].c_reg_) + ", ";
+                result +=
+                    "\"c_reg\" : " + std::to_string(measurements_[pos].c_reg_) +
+                    ", ";
                 result += "\"name\" : ";
                 result += "\"" + measurements_[pos].name_ + "\"" + "}";
 
@@ -2804,6 +2843,61 @@ class QCircuit : public IDisplay, public IJSON {
 
         return result;
     } /* to_JSON() */
+
+    /**
+     * \brief Adjoint quantum circuit description
+     *
+     * \param qc Quantum circuit description
+     * \return Adjoint quantum circuit description
+     */
+    friend QCircuit adjoint(QCircuit qc) {
+        // EXCEPTION CHECKS
+
+        if (qc.get_measured().size() > 0)
+            throw exception::QuditAlreadyMeasured("qpp::adjoint()");
+        // END EXCEPTION CHECKS
+
+        return qc.adjoint();
+    }
+
+    /**
+     * \brief Kronecker product between two quantum circuit descriptions
+     *
+     * \param qc1 Quantum circuit description
+     * \param qc2 Quantum circuit description
+     * \return Quantum circuit description of the Kronecker product of \a qc1
+     * with \a qc2
+     */
+    friend QCircuit kron(const QCircuit& qc1, const QCircuit& qc2) {
+        QCircuit qc{qc1}; // create a copy
+
+        return qc.kron(qc2);
+    }
+
+    /**
+     * \brief Replicates the circuit
+     * \note The circuit should not contain any measurements when invoking this
+     * function
+     *
+     * \param qc Quantum circuit description
+     * \param n Number of repetitions. If \a n == 1, returns the original
+     * circuit.
+     * \return Reference to the current instance
+     */
+    friend QCircuit replicate(QCircuit qc, idx n) {
+        // EXCEPTION CHECKS
+
+        if (n == 0)
+            throw exception::OutOfRange("qpp::replicate()");
+        if (!qc.get_measured().empty())
+            throw exception::QuditAlreadyMeasured("qpp::replicate()");
+        if (n == 1)
+            return qc;
+        // END EXCEPTION CHECKS
+
+        return qc.replicate(n);
+    }
+
   private:
     /**
      * \brief qpp::IDisplay::display() override
@@ -2833,45 +2927,6 @@ class QCircuit : public IDisplay, public IJSON {
         os << "non-measured positions: " << disp(get_non_measured(), ", ");
 
         return os;
-    }
-
-    /**
-     * \brief Adjoint quantum circuit description
-     *
-     * \param other Quantum circuit description
-     * \return Adjoint quantum circuit description
-     */
-    friend QCircuit adjoint(QCircuit other) {
-        // EXCEPTION CHECKS
-
-        if (other.get_measured().size() > 0)
-            throw exception::QuditAlreadyMeasured("qpp::adjoint()");
-        // END EXCEPTION CHECKS
-
-        auto htbl = other.cmat_hash_tbl_; // copy the gate hash table of other
-        other.cmat_hash_tbl_.clear();
-
-        std::reverse(std::begin(other.gates_), std::end(other.gates_));
-        std::reverse(std::begin(other.step_types_),
-                     std::end(other.step_types_));
-
-        for (auto& elem : other.gates_) {
-            // get the gate and its corresponding hash
-            std::size_t hashU = elem.gate_hash_;
-            cmat U = htbl[hashU];
-
-            // compute the adjoints
-            cmat Udagger = adjoint(U);
-            std::size_t hashUdagger = hash_eigen(Udagger);
-
-            // modify and add hash
-            elem.gate_hash_ = hashUdagger;
-            if (elem.name_ != "")
-                elem.name_ += "+";
-            other.add_hash_(Udagger, hashUdagger);
-        }
-
-        return other;
     }
 }; /* class QCircuit */
 

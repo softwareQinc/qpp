@@ -3,8 +3,13 @@ In progress - pre-release
           kron()     - Kronecker product with another quantum circuit
                        description
           measureZ() - new overload that allows multiple targets at once
-    - Implemented QCircuit qpp::adjoint(QCircuit) for computing the
-      adjoint of a given quantum circuit description
+          adjoint()  - in place adjoint of quantum circuit description
+          kron()     - in place Kronecker product with another quantum circuit
+                       description
+     - Implemented the corresponding free functions as friends of qpp::QCircuit:
+          qpp::adjoint(QCircuit)
+          qpp::kron(const QCircuit&, const QCircuit&)
+          qpp::replicate()
     - API change qpp::QCircuit::get_gate_depth() to qpp::QCircuit::get_depth(),
       so now measurements are taken into account when computing depths
     - Added "classes/circuits/layouts.h" header file for dealing with different
