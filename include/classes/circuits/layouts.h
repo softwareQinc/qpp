@@ -73,7 +73,7 @@ class GridView {
  * \brief 3D-grid qudit layout
  */
 class GridView3D : private GridView {
-    idx dim_z_;
+    idx dim_z_ QPP_UNUSED_;
 
   public:
     /**
