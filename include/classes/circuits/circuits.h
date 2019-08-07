@@ -2564,12 +2564,13 @@ class QCircuit : public IDisplay, public IJSON {
      * automatically added to the current quantum circuit description
      *
      * \param other Quantum circuit description
-     * \param pos_qudit The index of the first qudit of \a other relative to the
-     * index of the first qudit of the current quantum circuit description, with
-     * the rest following in order. If negative or greater than the total number
-     * of qudits of the current quantum circuit description, the required number
-     * of additional qudits are automatically added to the current quantum
-     * circuit description.
+     * \param pos_qudit The index of the first qudit of \a other quantum circuit
+     * description relative to the index of the first qudit of the current
+     * quantum circuit description, with the rest following in order. If
+     * negative or greater than the total number of qudits of the current
+     * quantum circuit description, then the required number of additional
+     * qudits are automatically added to the current quantum circuit
+     * description.
      * \param pos_dit The first classical dit of \a other is inserted before the
      * \a pos_dit classical dit index of the current quantum circuit description
      * (in the classical dits array), the rest following in order. By default,
@@ -2896,6 +2897,33 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         return qc.replicate(n);
+    }
+
+    /**
+     * \brief Appends a quantum circuit description to another one
+     *
+     * \note If qudit indexes of the second quantum circuit description do not
+     * totally overlap with the indexes of the first quantum circuit
+     * description, then the required number of additional qudits are
+     * automatically added to the output quantum circuit description
+     *
+     * \param qc1 Quantum circuit description
+     * \param qc2 Quantum circuit description
+     * \param pos_qudit The index of the first qudit of \a qc2 quantum circuit
+     * description relative to the index of the first qudit of the \a qc1
+     * quantum circuit description, with the rest following in order. If
+     * negative or greater than the total number of qudits of \a qc1, then the
+     * required number of additional qudits are automatically added to the
+     * output quantum circuit description.
+     * \param pos_dit The first classical dit of \a qc2 quantum circuit
+     * description is inserted before the \a pos_dit classical dit index of
+     * \a qc1 quantum circuit description (in the classical dits array), the
+     * rest following in order. By default, insertion is performed at the end.
+     * \return Combined quantum circuit description
+     */
+    friend QCircuit add_circuit(QCircuit qc1, const QCircuit& qc2,
+                                bigint pos_qudit, idx pos_dit = -1) {
+        return qc1.add_circuit(qc2, pos_qudit, pos_dit);
     }
 
   private:

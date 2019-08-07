@@ -7,9 +7,12 @@ In progress - pre-release
           kron()     - in place Kronecker product with another quantum circuit
                        description
      - Implemented the corresponding free functions as friends of qpp::QCircuit:
-          qpp::adjoint(QCircuit)
-          qpp::kron(const QCircuit&, const QCircuit&)
-          qpp::replicate()
+          qpp::adjoint()     - adjoint of quantum circuit description
+          qpp::kron()        - Kronecker product between two quantum circuit
+                               descriptions
+          qpp::replicate()   - replicates (repeats) a quantum circuit
+                               description
+          qpp::add_circuit() - adds two quantum circuit descriptions
     - API change qpp::QCircuit::get_gate_depth() to qpp::QCircuit::get_depth(),
       so now measurements are taken into account when computing depths
     - Added "classes/circuits/layouts.h" header file for dealing with different
