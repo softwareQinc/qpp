@@ -610,7 +610,7 @@ class QEngine : public IDisplay, public IJSON {
  */
 template <typename NoiseModel>
 class QNoisyEngine : public QEngine {
-    const NoiseModel noise_;                      ///< quantum noise model
+    NoiseModel noise_;                            ///< quantum noise model
     std::vector<std::vector<idx>> noise_results_; ///< noise results
   public:
     /**

@@ -43,7 +43,7 @@ class QCircuit : public IDisplay, public IJSON {
 
     idx nq_;                     ///< number of qudits
     idx nc_;                     ///< number of classical "dits"
-    const idx d_;                ///< qudit dimension
+    idx d_;                      ///< qudit dimension
     std::string name_;           ///< optional circuit name
     std::vector<bool> measured_; ///< keeps track of the measured qudits
 
