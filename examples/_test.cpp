@@ -8,9 +8,11 @@ int main() {
     using namespace qpp;
 
     QCircuit qc{1, 2};
-    qc.cCTRL(gt.X, 0, 0, 1);
-    qc.measureZ(0, 1);
+    qc.cCTRL(gt.X, {0, 1}, 0, {1, 1});
+    qc.measureZ(0, 0);
+    qc.measureZ(1, 1);
     std::cout << qc << "\n\n";
+    std::cout << qc.to_JSON() << "\n\n";
 
     QEngine q_engine{qc};
     q_engine.execute();

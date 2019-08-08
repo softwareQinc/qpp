@@ -1999,8 +1999,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param U Single qudit quantum gate
      * \param ctrl_dit Classical control dit index
      * \param target Target qudit index
-     * \param shift Shift (e.g., if 2, then effectively replaces the classical
-     * dit with its value incremented by 2)
+     * \param shift Performs the control as if the \a ctrl_dit classical dit was
+     * incremented by \a shift
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2059,8 +2059,9 @@ class QCircuit : public IDisplay, public IJSON {
      * \param ctrl_dit Classical control dit index
      * \param target Target qudit indexes; the gate \a U is applied on every one
      * of them depending on the values of the classical control dits
-     * \param shift Shift (e.g., if 2, then effectively replaces the classical
-     * dit with its value incremented by 2)
+     * \param shift Performs the control as if the \a ctrl_dit classical dit was
+     * incremented by \a shift
+     * same as the size of \a ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2130,10 +2131,9 @@ class QCircuit : public IDisplay, public IJSON {
      * \param U Single qudit quantum gate
      * \param ctrl_dits Classical control dits indexes
      * \param target Target qudit index
-     * \param shift Shift (e.g., if {2, 3} then effectively replaces the
-     * classical control dits with their value incremented by 2 and 3,
-     * respectively). The size of \a shift must be the same as the size of
-     * \a ctrl_dits.
+     * \param shift Performs the control as if the \a ctrl_dits classical dits
+     * were component-wise incremented by \a shift. The size of \a shift must be
+     * the same as the size of \a ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2201,10 +2201,9 @@ class QCircuit : public IDisplay, public IJSON {
      * \param ctrl_dits Classical control dits indexes
      * \param target Target qudit indexes; the gate \a U is applied on every one
      * of them depending on the values of the classical control dits
-     * * \param shift Shift (e.g., if {2, 3} then effectively replaces the
-     * classical control dits with their value incremented by 2 and 3,
-     * respectively). The size of \a shift must be the same as the size of
-     * \a ctrl_dits.
+     * \param shift Performs the control as if the \a ctrl_dits classical dits
+     * were component-wise incremented by \a shift. The size of \a shift must be
+     * the same as the size of \a ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2279,10 +2278,9 @@ class QCircuit : public IDisplay, public IJSON {
      * \param ctrl_dits Classical control dits indexes
      * \param target Target qudit indexes where the gate \a U is applied
      * depending on the values of the classical control dits
-     * \param shift Shift (e.g., if {2, 3} then effectively replaces the
-     * classical control dits with their value incremented by 2 and 3,
-     * respectively). The size of \a shift must be the same as the size of
-     * \a ctrl_dits.
+     * \param shift Performs the control as if the \a ctrl_dits classical dits
+     * were component-wise incremented by \a shift. The size of \a shift must be
+     * the same as the size of \a ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
