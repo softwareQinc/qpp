@@ -243,6 +243,8 @@ class QCircuit : public IDisplay, public IJSON {
         else if (gate_step.gate_type_ >= GateType::SINGLE_CTRL_SINGLE_TARGET)
             os << "ctrl = " << disp(gate_step.ctrl_, ", ") << ", ";
         os << "target = " << disp(gate_step.target_, ", ") << ", ";
+        if (!gate_step.shift_.empty())
+            os << "shift = " << disp(gate_step.shift_, ", ") << ", ";
         os << "name = " << '\"' << gate_step.name_ << '\"';
 
         return os;
@@ -2032,12 +2034,16 @@ class QCircuit : public IDisplay, public IJSON {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
             name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
+
+        std::vector<idx> shift_vec;
+        if (shift != 0)
+            shift_vec.emplace_back(shift);
+
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, hashU,
                             std::vector<idx>{ctrl_dit},
-                            std::vector<idx>{target},
-                            std::vector<idx>(1, shift), name);
+                            std::vector<idx>{target}, shift_vec, name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -2097,6 +2103,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
+        std::vector<idx> shift_vec;
+        if (shift != 0)
+            shift_vec.emplace_back(shift);
+
         if (name.empty()) {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
             name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
@@ -2104,8 +2114,8 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, hashU,
-                            std::vector<idx>{ctrl_dit}, target,
-                            std::vector<idx>(1, shift), name);
+                            std::vector<idx>{ctrl_dit}, target, shift_vec,
+                            name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -2840,6 +2850,14 @@ class QCircuit : public IDisplay, public IJSON {
                 ss.clear();
                 ss << disp(gates_[pos].target_, ", ");
                 result += "\"target\" : " + ss.str() + ", ";
+
+                if (!gates_[pos].shift_.empty()) {
+                    ss.str("");
+                    ss.clear();
+                    ss << disp(gates_[pos].shift_, ", ");
+                    result += "\"shift\" : " + ss.str() + ", ";
+                }
+
                 result += "\"name\" : ";
                 result += "\"" + gates_[pos].name_ + "\"" + "}";
             }
