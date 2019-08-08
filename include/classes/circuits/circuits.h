@@ -203,6 +203,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t gate_hash_{};             ///< gate hash
         std::vector<idx> ctrl_{};             ///< control
         std::vector<idx> target_{}; ///< target where the gate is applied
+        std::vector<idx> shift_{};  ///< shifts in CTRL gates
         std::string name_{};        ///< custom name of the step
         /**
          * \brief Default constructor
@@ -220,10 +221,11 @@ class QCircuit : public IDisplay, public IJSON {
          */
         explicit GateStep(GateType gate_type, std::size_t gate_hash,
                           const std::vector<idx>& ctrl,
-                          const std::vector<idx>& target, std::string name = {})
-            : gate_type_{gate_type},
-              gate_hash_{gate_hash}, ctrl_{ctrl}, target_{target}, name_{name} {
-        }
+                          const std::vector<idx>& target,
+                          const std::vector<idx>& shift = {},
+                          std::string name = {})
+            : gate_type_{gate_type}, gate_hash_{gate_hash}, ctrl_{ctrl},
+              target_{target}, shift_{shift}, name_{name} {}
     };
 
     /**
@@ -1165,7 +1167,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::SINGLE, hashU, std::vector<idx>{},
-                            std::vector<idx>{i}, name);
+                            std::vector<idx>{i}, std::vector<idx>{}, name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -1208,7 +1210,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::TWO, hashU, std::vector<idx>{},
-                            std::vector<idx>{i, j}, name);
+                            std::vector<idx>{i, j}, std::vector<idx>{}, name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -1253,7 +1255,8 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::THREE, hashU, std::vector<idx>{},
-                            std::vector<idx>{i, j, k}, name);
+                            std::vector<idx>{i, j, k}, std::vector<idx>{},
+                            name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -1308,7 +1311,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::FAN, hashU, std::vector<idx>{}, target,
-                            name);
+                            std::vector<idx>{}, name);
         step_types_.emplace_back(StepType::GATE);
         count_[name] += target.size();
 
@@ -1363,7 +1366,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::FAN, hashU, std::vector<idx>{},
-                            get_non_measured(), name);
+                            get_non_measured(), std::vector<idx>{}, name);
         step_types_.emplace_back(StepType::GATE);
         count_[name] += get_non_measured().size();
 
@@ -1422,7 +1425,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::CUSTOM, hashU, std::vector<idx>{}, target,
-                            name);
+                            std::vector<idx>{}, name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -1681,7 +1684,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, hashU,
                             std::vector<idx>{ctrl}, std::vector<idx>{target},
-                            name);
+                            std::vector<idx>{}, name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -1750,7 +1753,8 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, hashU,
-                            std::vector<idx>{ctrl}, target, name);
+                            std::vector<idx>{ctrl}, target, std::vector<idx>{},
+                            name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -1816,7 +1820,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, hashU, ctrl,
-                            std::vector<idx>{target}, name);
+                            std::vector<idx>{target}, std::vector<idx>{}, name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -1894,7 +1898,8 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, hashU,
-                            ctrl, std::vector<idx>{target}, name);
+                            ctrl, std::vector<idx>{target}, std::vector<idx>{},
+                            name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -1975,7 +1980,8 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
-        gates_.emplace_back(GateType::CUSTOM_CTRL, hashU, ctrl, target, name);
+        gates_.emplace_back(GateType::CUSTOM_CTRL, hashU, ctrl, target,
+                            std::vector<idx>{}, name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -1991,10 +1997,12 @@ class QCircuit : public IDisplay, public IJSON {
      * \param U Single qudit quantum gate
      * \param ctrl_dit Classical control dit index
      * \param target Target qudit index
+     * \param shift Shift (e.g., if 2, then effectively replaces the classical
+     * dit with its value incremented by 2)
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuit& cCTRL(const cmat& U, idx ctrl_dit, idx target,
+    QCircuit& cCTRL(const cmat& U, idx ctrl_dit, idx target, idx shift = 0,
                     std::string name = {}) {
         // EXCEPTION CHECKS
 
@@ -2011,6 +2019,9 @@ class QCircuit : public IDisplay, public IJSON {
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::cCTRL()");
+            // check shift
+            if (shift >= d_)
+                throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -2025,7 +2036,8 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, hashU,
                             std::vector<idx>{ctrl_dit},
-                            std::vector<idx>{target}, name);
+                            std::vector<idx>{target},
+                            std::vector<idx>(1, shift), name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -2041,11 +2053,13 @@ class QCircuit : public IDisplay, public IJSON {
      * \param ctrl_dit Classical control dit index
      * \param target Target qudit indexes; the gate \a U is applied on every one
      * of them depending on the values of the classical control dits
+     * \param shift Shift (e.g., if 2, then effectively replaces the classical
+     * dit with its value incremented by 2)
      * \param name Optional gate name
      * \return Reference to the current instance
      */
     QCircuit& cCTRL(const cmat& U, idx ctrl_dit, const std::vector<idx>& target,
-                    std::string name = {}) {
+                    idx shift = 0, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -2074,6 +2088,9 @@ class QCircuit : public IDisplay, public IJSON {
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::cCTRL()");
+            // check shift
+            if (shift >= d_)
+                throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -2087,7 +2104,8 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, hashU,
-                            std::vector<idx>{ctrl_dit}, target, name);
+                            std::vector<idx>{ctrl_dit}, target,
+                            std::vector<idx>(1, shift), name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -2102,11 +2120,16 @@ class QCircuit : public IDisplay, public IJSON {
      * \param U Single qudit quantum gate
      * \param ctrl_dits Classical control dits indexes
      * \param target Target qudit index
+     * \param shift Shift (e.g., if {2, 3} then effectively replaces the
+     * classical control dits with their value incremented by 2 and 3,
+     * respectively). The size of \a shift must be the same as the size of
+     * \a ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
     QCircuit& cCTRL(const cmat& U, const std::vector<idx>& ctrl_dits,
-                    idx target, std::string name = {}) {
+                    idx target, const std::vector<idx>& shift = {},
+                    std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -2132,6 +2155,12 @@ class QCircuit : public IDisplay, public IJSON {
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::cCTRL()");
+            // check shift
+            if (!shift.empty())
+                for (auto&& elem : shift)
+                    if (elem >= d_)
+                        throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
+
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -2145,7 +2174,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, hashU,
-                            ctrl_dits, std::vector<idx>{target}, name);
+                            ctrl_dits, std::vector<idx>{target}, shift, name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -2162,11 +2191,16 @@ class QCircuit : public IDisplay, public IJSON {
      * \param ctrl_dits Classical control dits indexes
      * \param target Target qudit indexes; the gate \a U is applied on every one
      * of them depending on the values of the classical control dits
+     * * \param shift Shift (e.g., if {2, 3} then effectively replaces the
+     * classical control dits with their value incremented by 2 and 3,
+     * respectively). The size of \a shift must be the same as the size of
+     * \a ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
     QCircuit& cCTRL(const cmat& U, const std::vector<idx>& ctrl_dits,
-                    const std::vector<idx>& target, std::string name = {}) {
+                    const std::vector<idx>& target,
+                    const std::vector<idx>& shift = {}, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -2200,6 +2234,11 @@ class QCircuit : public IDisplay, public IJSON {
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::cCTRL()");
+            // check shift
+            if (!shift.empty())
+                for (auto&& elem : shift)
+                    if (elem >= d_)
+                        throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -2213,7 +2252,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, hashU,
-                            ctrl_dits, std::vector<idx>{target}, name);
+                            ctrl_dits, std::vector<idx>{target}, shift, name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -2230,11 +2269,16 @@ class QCircuit : public IDisplay, public IJSON {
      * \param ctrl_dits Classical control dits indexes
      * \param target Target qudit indexes where the gate \a U is applied
      * depending on the values of the classical control dits
+     * \param shift Shift (e.g., if {2, 3} then effectively replaces the
+     * classical control dits with their value incremented by 2 and 3,
+     * respectively). The size of \a shift must be the same as the size of
+     * \a ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
     QCircuit& cCTRL_custom(const cmat& U, const std::vector<idx>& ctrl_dits,
                            const std::vector<idx>& target,
+                           const std::vector<idx>& shift = {},
                            std::string name = {}) {
         // EXCEPTION CHECKS
 
@@ -2276,6 +2320,11 @@ class QCircuit : public IDisplay, public IJSON {
             if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuit::cCTRL_custom()");
+            // check shift
+            if (!shift.empty())
+                for (auto&& elem : shift)
+                    if (elem >= d_)
+                        throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -2289,7 +2338,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::CUSTOM_cCTRL, hashU, ctrl_dits, target,
-                            name);
+                            shift, name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 

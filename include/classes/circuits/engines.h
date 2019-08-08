@@ -98,8 +98,8 @@ class QEngine : public IDisplay, public IJSON {
      * \param qc Quantum circuit
      */
     explicit QEngine(const QCircuit& qc)
-        : qc_{std::addressof(qc)},
-          psi_{States::get_instance().zero(qc.get_nq(), qc.get_d())},
+        : qc_{std::addressof(qc)}, psi_{States::get_instance().zero(
+                                       qc.get_nq(), qc.get_d())},
           probs_(qc.get_nc(), 0), dits_(qc.get_nc(), 0),
           subsys_(qc.get_nq(), 0), stats_{} {
         std::iota(std::begin(subsys_), std::end(subsys_), 0);
@@ -372,18 +372,37 @@ class QEngine : public IDisplay, public IJSON {
                                      target_rel_pos, qc_->get_d());
                     } else {
                         bool should_apply = true;
-                        idx first_dit = dits_[(gates[q_ip].ctrl_)[0]];
-                        for (idx m = 0; m < gates[q_ip].ctrl_.size(); ++m) {
-                            if (dits_[(gates[q_ip].ctrl_)[m]] != first_dit) {
-                                should_apply = false;
-                                break;
+                        idx first_dit;
+                        // we have a shift
+                        if (!gates[q_ip].shift_.empty()) {
+                            first_dit = dits_[(gates[q_ip].ctrl_)[0]] +
+                                        gates[q_ip].shift_[0];
+                            for (idx m = 1; m < gates[q_ip].ctrl_.size(); ++m) {
+                                if (dits_[(gates[q_ip].ctrl_)[m]] +
+                                        gates[q_ip].shift_[m] !=
+                                    first_dit) {
+                                    should_apply = false;
+                                    break;
+                                }
                             }
                         }
+                        // no shift
+                        else {
+                            first_dit = dits_[(gates[q_ip].ctrl_)[0]];
+                            for (idx m = 1; m < gates[q_ip].ctrl_.size(); ++m) {
+                                if (dits_[(gates[q_ip].ctrl_)[m]] !=
+                                    first_dit) {
+                                    should_apply = false;
+                                    break;
+                                }
+                            }
+                        }
+
                         if (should_apply) {
-                            psi_ =
-                                apply(psi_, powm(h_tbl[gates[q_ip].gate_hash_],
-                                                 first_dit),
-                                      target_rel_pos, qc_->get_d());
+                            psi_ = apply(
+                                psi_,
+                                powm(h_tbl[gates[q_ip].gate_hash_], first_dit),
+                                target_rel_pos, qc_->get_d());
                         }
                     }
                     break;
