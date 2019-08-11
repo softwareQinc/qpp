@@ -47,8 +47,8 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Current state of the engine
      */
     struct state_ {
-        const QCircuit* qc_;          ///< non-owning pointer to the
-                                      ///< grand-parent const quantum circuit
+        const QCircuit* qc_;          ///< non-owning pointer to the parent
+                                      ///< const quantum circuit
         ket psi_{};                   ///< state vector
         std::vector<double> probs_{}; ///< measurement probabilities
         std::vector<idx> dits_{};     ///< classical dits
