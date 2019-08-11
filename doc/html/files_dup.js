@@ -15,6 +15,13 @@ var files_dup =
     [ "qpp.h", "qpp_8h.html", "qpp_8h" ],
     [ "random.h", "random_8h.html", "random_8h" ],
     [ "statistics.h", "statistics_8h.html", "statistics_8h" ],
-    [ "traits.h", "traits_8h.html", "traits_8h" ],
-    [ "types.h", "types_8h.html", "types_8h" ]
+    [ "traits.h", "traits_8h.html", [
+      [ "make_void", "structqpp_1_1make__void.html", "structqpp_1_1make__void" ],
+      [ "is_iterable", "structqpp_1_1is__iterable.html", null ],
+      [ "is_iterable< T, to_void< decltype(std::declval< T >().begin()), decltype(std::declval< T >().end()), decltype(*(std::declval< T >().begin()))> >", "structqpp_1_1is__iterable_3_01_t_00_01to__void_3_01decltype_07std_1_1declval_3_01_t_01_4_07_08_8a85a9c2c5a028e47768327c6329d9509.html", null ],
+      [ "is_matrix_expression", "structqpp_1_1is__matrix__expression.html", null ],
+      [ "is_complex", "structqpp_1_1is__complex.html", null ],
+      [ "is_complex< std::complex< T > >", "structqpp_1_1is__complex_3_01std_1_1complex_3_01_t_01_4_01_4.html", null ]
+    ] ],
+    [ "types.h", "types_8h.html", null ]
 ];

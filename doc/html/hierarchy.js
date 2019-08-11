@@ -49,6 +49,9 @@ var hierarchy =
       [ "qpp::is_iterable< T, typename >", "structqpp_1_1is__iterable.html", null ]
     ] ],
     [ "qpp::QCircuit::GateStep", "structqpp_1_1_q_circuit_1_1_gate_step.html", null ],
+    [ "qpp::GridView", "classqpp_1_1_grid_view.html", [
+      [ "qpp::GridView3D", "classqpp_1_1_grid_view3_d.html", null ]
+    ] ],
     [ "qpp::internal::HashEigen", "structqpp_1_1internal_1_1_hash_eigen.html", null ],
     [ "qpp::IDisplay", "classqpp_1_1_i_display.html", [
       [ "qpp::Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html", [
@@ -87,6 +90,7 @@ var hierarchy =
       [ "qpp::QuditDepolarizingNoise", "classqpp_1_1_qudit_depolarizing_noise.html", null ]
     ] ],
     [ "qpp::NoiseType", "structqpp_1_1_noise_type.html", null ],
+    [ "qpp", "classqpp.html", null ],
     [ "qpp::internal::Singleton< T >", "classqpp_1_1internal_1_1_singleton.html", null ],
     [ "qpp::internal::Singleton< const Codes >", "classqpp_1_1internal_1_1_singleton.html", [
       [ "qpp::Codes", "classqpp_1_1_codes.html", null ]
@@ -103,6 +107,7 @@ var hierarchy =
     [ "qpp::internal::Singleton< RandomDevices >", "classqpp_1_1internal_1_1_singleton.html", [
       [ "qpp::RandomDevices", "classqpp_1_1_random_devices.html", null ]
     ] ],
+    [ "qpp::QEngine::state_", "structqpp_1_1_q_engine_1_1state__.html", null ],
     [ "qpp::NoiseType::StateDependent", "classqpp_1_1_noise_type_1_1_state_dependent.html", null ],
     [ "qpp::NoiseType::StateIndependent", "classqpp_1_1_noise_type_1_1_state_independent.html", null ],
     [ "true_type", null, [

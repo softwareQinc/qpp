@@ -6,6 +6,8 @@ var namespaceqpp =
     [ "Codes", "classqpp_1_1_codes.html", "classqpp_1_1_codes" ],
     [ "Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html", "classqpp_1_1_dynamic__bitset" ],
     [ "Gates", "classqpp_1_1_gates.html", "classqpp_1_1_gates" ],
+    [ "GridView", "classqpp_1_1_grid_view.html", "classqpp_1_1_grid_view" ],
+    [ "GridView3D", "classqpp_1_1_grid_view3_d.html", "classqpp_1_1_grid_view3_d" ],
     [ "IDisplay", "classqpp_1_1_i_display.html", "classqpp_1_1_i_display" ],
     [ "IJSON", "classqpp_1_1_i_j_s_o_n.html", "classqpp_1_1_i_j_s_o_n" ],
     [ "Init", "classqpp_1_1_init.html", "classqpp_1_1_init" ],

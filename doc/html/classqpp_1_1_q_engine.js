@@ -1,5 +1,6 @@
 var classqpp_1_1_q_engine =
 [
+    [ "state_", "structqpp_1_1_q_engine_1_1state__.html", "structqpp_1_1_q_engine_1_1state__" ],
     [ "QEngine", "classqpp_1_1_q_engine.html#afcfb3859062cc3134b1883f9c5c8f86a", null ],
     [ "QEngine", "classqpp_1_1_q_engine.html#a4492ae93af198450d224c9a0e69f2a30", null ],
     [ "QEngine", "classqpp_1_1_q_engine.html#a2a6de9fe7e20fa5d489b99fdf722c6bf", null ],
@@ -19,16 +20,13 @@ var classqpp_1_1_q_engine =
     [ "get_relative_pos_", "classqpp_1_1_q_engine.html#a9eb41166f8f5e3d8073cfe6fdd1157f3", null ],
     [ "get_stats", "classqpp_1_1_q_engine.html#a266e2c7c3c3cdaec8bd30b6427e7357a", null ],
     [ "operator=", "classqpp_1_1_q_engine.html#af0b58822514ba7f8e121cdcdbcac1825", null ],
-    [ "reset", "classqpp_1_1_q_engine.html#a23e8199b24689bd0371e0ebc98537805", null ],
+    [ "reset", "classqpp_1_1_q_engine.html#aac024b817ce7e68f8748bc14e7ca27cb", null ],
     [ "reset_stats", "classqpp_1_1_q_engine.html#ad49ee31daaa5d6540aa73f03f812c689", null ],
     [ "set_dit", "classqpp_1_1_q_engine.html#a792b4eae723de607629e1716024d9955", null ],
     [ "set_measured_", "classqpp_1_1_q_engine.html#a79c3b847aa23bb63a3676117dc42e45d", null ],
     [ "set_psi", "classqpp_1_1_q_engine.html#ac33a2b500d5a7545a7e3fd363497ab8d", null ],
     [ "to_JSON", "classqpp_1_1_q_engine.html#a99b802169657dca3a1452b4870c1c53b", null ],
-    [ "dits_", "classqpp_1_1_q_engine.html#ad6854effefde6fe6e859ba81bcc0b1ff", null ],
-    [ "probs_", "classqpp_1_1_q_engine.html#acf9ee7a11551617a6a7aaa4fabee096f", null ],
-    [ "psi_", "classqpp_1_1_q_engine.html#a1571152e55085a462e5bc93e9c19facb", null ],
     [ "qc_", "classqpp_1_1_q_engine.html#a485fd25dfe53bee444090efaced52659", null ],
-    [ "stats_", "classqpp_1_1_q_engine.html#ae93cfe8bc22667830b90d406b24efcc9", null ],
-    [ "subsys_", "classqpp_1_1_q_engine.html#a5947fc9506b659e5190f4ebada755996", null ]
+    [ "st_", "classqpp_1_1_q_engine.html#a1fd3dc43b10b341fdf76994946270aca", null ],
+    [ "stats_", "classqpp_1_1_q_engine.html#ae93cfe8bc22667830b90d406b24efcc9", null ]
 ];

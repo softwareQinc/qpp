@@ -1,5 +1,5 @@
 <map id="qpp::QCircuit::GateStep" name="qpp::QCircuit::GateStep">
-<area shape="rect" id="node1" title="One step consisting only of gates/operators in the circuit." alt="" coords="23,200,187,227"/>
+<area shape="rect" id="node1" title="One step consisting only of gates/operators in the circuit." alt="" coords="23,215,187,241"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,96,129,123"/>
 <area shape="rect" id="node3" title="STL class." alt="" coords="154,96,234,123"/>
 <area shape="rect" id="node4" title="STL class." alt="" coords="131,5,257,47"/>
