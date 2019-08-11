@@ -420,7 +420,7 @@ class QCircuit : public IDisplay, public IJSON {
                 measurements_ip_{}; ///< measurements instruction pointer
 
             /**
-             * \brief Default value_type_ constructor
+             * \brief Constructor
              *
              * \param value_type_qc Pointer to constant quantum circuit
              */
