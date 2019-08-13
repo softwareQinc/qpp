@@ -63,14 +63,14 @@ class RandomDevices final : public internal::Singleton<RandomDevices> //
     /**
      * \brief Loads the state of the PRNG from an input stream
      * \param is Input stream
-     * \return The input stream
+     * \return Input stream
      */
     std::istream& load(std::istream& is) { return is >> prng_; }
 
     /**
      * \brief Saves the state of the PRNG to an output stream
      * \param os Output stream
-     * \return The output stream
+     * \return Output stream
      */
     std::ostream& save(std::ostream& os) const { return os << prng_; }
 

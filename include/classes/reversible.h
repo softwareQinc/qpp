@@ -125,7 +125,7 @@ class Dynamic_bitset : public IDisplay {
      * \brief The value of the bit at position \a pos
      *
      * \param pos Position in the bitset
-     * \return The value of the bit at position \a pos
+     * \return Value of the bit at position \a pos
      */
     bool get(idx pos) const noexcept {
         return 1 & (v_[index_(pos)] >> offset_(pos));
@@ -345,7 +345,7 @@ class Dynamic_bitset : public IDisplay {
      * \tparam Allocator String Allocator
      * \param zero Character representing the zero
      * \param one Character representing the one
-     * \return The bitset as a string
+     * \return Bitset as a string
      */
     template <class CharT = char, class Traits = std::char_traits<CharT>,
               class Allocator = std::allocator<CharT>>

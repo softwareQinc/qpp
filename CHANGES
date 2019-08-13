@@ -15,10 +15,9 @@ In progress - pre-release
           qpp::add_circuit() - adds two quantum circuit descriptions
     - API change qpp::QCircuit::get_gate_depth() to qpp::QCircuit::get_depth(),
       so now measurements are taken into account when computing depths
-    - Added "classes/circuits/layouts.h" header file for dealing with different
-      physical qudit layouts, including:
-          qpp::GridView   - Qudits on an orthogonal grid
-          qpp::GridView3D - Qudits on a 3D orthogonal lattice
+    - Added "classes/layouts.h" header file for representing different physical
+      qudit layouts. Implemented the class(es):
+          qpp::Lattice - Qudits on a multi-dimensional orthogonal grid
 
 Version 1.3 - 25 July 2019
     - Minimum required CMake version is now 3.2

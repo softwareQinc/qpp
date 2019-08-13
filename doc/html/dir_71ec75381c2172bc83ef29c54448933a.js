@@ -11,9 +11,5 @@ var dir_71ec75381c2172bc83ef29c54448933a =
       [ "QEngine", "classqpp_1_1_q_engine.html", "classqpp_1_1_q_engine" ],
       [ "state_", "structqpp_1_1_q_engine_1_1state__.html", "structqpp_1_1_q_engine_1_1state__" ],
       [ "QNoisyEngine", "classqpp_1_1_q_noisy_engine.html", "classqpp_1_1_q_noisy_engine" ]
-    ] ],
-    [ "layouts.h", "layouts_8h.html", [
-      [ "GridView", "classqpp_1_1_grid_view.html", "classqpp_1_1_grid_view" ],
-      [ "GridView3D", "classqpp_1_1_grid_view3_d.html", "classqpp_1_1_grid_view3_d" ]
     ] ]
 ];

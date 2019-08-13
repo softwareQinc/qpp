@@ -658,7 +658,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * not, returns the empty string
      *
      * \param U Complex matrix representing the quantum gate
-     * \return The name of the gate (if any), otherwise the empty string
+     * \return Name of the gate (if any), otherwise the empty string
      */
     std::string get_name(const cmat& U) const {
         // EXCEPTION CHECKS

@@ -66,7 +66,9 @@ $(document).ready(function(){initNavTree('constants_8h.html','');});
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">constants.h File Reference</div>  </div>
 </div><!--header-->
@@ -94,6 +96,15 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceqpp_1_1literals"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1literals.html">qpp::literals</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a3b96acee501e2045583d889420bef377"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="namespaceqpp.html#a3b96acee501e2045583d889420bef377a20d75f526a3d160934b8269ecfbbe12c">qpp::RES</a>, 
+<a class="el" href="namespaceqpp.html#a3b96acee501e2045583d889420bef377a97187e455ad4572a9ee7228fe38126d5">qpp::PROB</a>, 
+<a class="el" href="namespaceqpp.html#a3b96acee501e2045583d889420bef377a6d4aee9ec3b0dad08fd604ee473b4ce7">qpp::ST</a>
+ }</td></tr>
+<tr class="memdesc:a3b96acee501e2045583d889420bef377"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constants to be used by std::get&lt;&gt; on the result of <a class="el" href="namespaceqpp.html#a65da96cadec88fbbb3cc70b0a82fa90c" title="Measures the state vector or density operator A using the set of Kraus operators Ks.">qpp::measure()</a>, qpp_measure_seq() etc.  <a href="namespaceqpp.html#a3b96acee501e2045583d889420bef377">More...</a><br /></td></tr>
+<tr class="separator:a3b96acee501e2045583d889420bef377"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aac19b27d3a1a35f55f69973c2b82613e"><td class="memItemLeft" align="right" valign="top">constexpr cplx&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp_1_1literals.html#aac19b27d3a1a35f55f69973c2b82613e">qpp::literals::operator&quot;&quot;_i</a> (unsigned long long int x) noexcept</td></tr>
@@ -111,6 +122,24 @@ Functions</h2></td></tr>
 <tr class="memitem:a621afdaae12a94a5e10a874fc2073dc0"><td class="memItemLeft" align="right" valign="top">cplx&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a621afdaae12a94a5e10a874fc2073dc0">qpp::omega</a> (idx D)</td></tr>
 <tr class="memdesc:a621afdaae12a94a5e10a874fc2073dc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">D-th root of unity.  <a href="namespaceqpp.html#a621afdaae12a94a5e10a874fc2073dc0">More...</a><br /></td></tr>
 <tr class="separator:a621afdaae12a94a5e10a874fc2073dc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a3a6d2c509bdcf240869e1bebb3be4e94"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp::chop</a> = 1e-16</td></tr>
+<tr class="memdesc:a3a6d2c509bdcf240869e1bebb3be4e94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used in <a class="el" href="namespaceqpp.html#a4f1805e175751ef749374e3c8499f15d" title="Eigen expression ostream manipulator.">qpp::disp()</a> for setting to zero numbers that have their absolute value smaller than <a class="el" href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94" title="Used in qpp::disp() for setting to zero numbers that have their absolute value smaller than qpp::chop...">qpp::chop</a>.  <a href="namespaceqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">More...</a><br /></td></tr>
+<tr class="separator:a3a6d2c509bdcf240869e1bebb3be4e94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea80be6c57ee43e43aa9629942cd3608"><td class="memItemLeft" align="right" valign="top">constexpr idx&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">qpp::maxn</a> = 64</td></tr>
+<tr class="memdesc:aea80be6c57ee43e43aa9629942cd3608"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of allowed qubits/qudits (subsystems)  <a href="namespaceqpp.html#aea80be6c57ee43e43aa9629942cd3608">More...</a><br /></td></tr>
+<tr class="separator:aea80be6c57ee43e43aa9629942cd3608"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73c04db6f636b236d64fddb069bef492"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#a73c04db6f636b236d64fddb069bef492">qpp::pi</a> = 3.141592653589793238462643383279502884</td></tr>
+<tr class="memdesc:a73c04db6f636b236d64fddb069bef492"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img class="formulaInl" alt="$ \pi $" src="form_15.png"/>  <a href="namespaceqpp.html#a73c04db6f636b236d64fddb069bef492">More...</a><br /></td></tr>
+<tr class="separator:a73c04db6f636b236d64fddb069bef492"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca5c7e10fa94db0755cb937250144630"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aca5c7e10fa94db0755cb937250144630">qpp::ee</a> = 2.718281828459045235360287471352662497</td></tr>
+<tr class="memdesc:aca5c7e10fa94db0755cb937250144630"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base of natural logarithm, <img class="formulaInl" alt="$e$" src="form_16.png"/>.  <a href="namespaceqpp.html#aca5c7e10fa94db0755cb937250144630">More...</a><br /></td></tr>
+<tr class="separator:aca5c7e10fa94db0755cb937250144630"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecd9c0f42f21f1d3b29868b6a8cac4c7"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpp.html#aecd9c0f42f21f1d3b29868b6a8cac4c7">qpp::infty</a> = std::numeric_limits&lt;double&gt;::max()</td></tr>
+<tr class="memdesc:aecd9c0f42f21f1d3b29868b6a8cac4c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to denote infinity in double precision.  <a href="namespaceqpp.html#aecd9c0f42f21f1d3b29868b6a8cac4c7">More...</a><br /></td></tr>
+<tr class="separator:aecd9c0f42f21f1d3b29868b6a8cac4c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Constants. </p>
@@ -120,7 +149,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="constants_8h.html">constants.h</a></li>
-    <li class="footer">Generated on Sun Aug 11 2019 11:35:54 for Quantum++ by
+    <li class="footer">Generated on Tue Aug 13 2019 11:13:55 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

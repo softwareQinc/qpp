@@ -6,8 +6,6 @@ var namespaceqpp =
     [ "Codes", "classqpp_1_1_codes.html", "classqpp_1_1_codes" ],
     [ "Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html", "classqpp_1_1_dynamic__bitset" ],
     [ "Gates", "classqpp_1_1_gates.html", "classqpp_1_1_gates" ],
-    [ "GridView", "classqpp_1_1_grid_view.html", "classqpp_1_1_grid_view" ],
-    [ "GridView3D", "classqpp_1_1_grid_view3_d.html", "classqpp_1_1_grid_view3_d" ],
     [ "IDisplay", "classqpp_1_1_i_display.html", "classqpp_1_1_i_display" ],
     [ "IJSON", "classqpp_1_1_i_j_s_o_n.html", "classqpp_1_1_i_j_s_o_n" ],
     [ "Init", "classqpp_1_1_init.html", "classqpp_1_1_init" ],
@@ -16,6 +14,7 @@ var namespaceqpp =
     [ "is_iterable", "structqpp_1_1is__iterable.html", null ],
     [ "is_iterable< T, to_void< decltype(std::declval< T >().begin()), decltype(std::declval< T >().end()), decltype(*(std::declval< T >().begin()))> >", "structqpp_1_1is__iterable_3_01_t_00_01to__void_3_01decltype_07std_1_1declval_3_01_t_01_4_07_08_8a85a9c2c5a028e47768327c6329d9509.html", null ],
     [ "is_matrix_expression", "structqpp_1_1is__matrix__expression.html", null ],
+    [ "Lattice", "classqpp_1_1_lattice.html", "classqpp_1_1_lattice" ],
     [ "make_void", "structqpp_1_1make__void.html", "structqpp_1_1make__void" ],
     [ "NoiseBase", "classqpp_1_1_noise_base.html", "classqpp_1_1_noise_base" ],
     [ "NoiseType", "structqpp_1_1_noise_type.html", [

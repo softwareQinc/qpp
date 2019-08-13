@@ -111,11 +111,11 @@
 #include "entanglement.h"
 
 // the ones below can be in any order, no inter-dependencies
-#include "classes/timer.h"
 #include "instruments.h"
-#include "classes/reversible.h"
+#include "classes/layouts.h"
 #include "classes/noise.h"
-#include "classes/circuits/layouts.h"
+#include "classes/reversible.h"
+#include "classes/timer.h"
 #include "classes/circuits/circuits.h"
 #include "classes/circuits/engines.h"
 

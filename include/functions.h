@@ -1729,8 +1729,8 @@ prod(const Container& c,
  *
  * \param A Eigen expression, assumed to be proportional
  * to a projector onto a pure state, i.e. \a A is assumed to have rank one
- * \return The unique non-zero eigenvector of \a A (up to a phase),
- * as a dynamic column vector over the same scalar field as \a A
+ * \return The unique non-zero eigenvector of \a A (up to a phase), as a
+ * dynamic column vector over the same scalar field as \a A
  */
 template <typename Derived>
 dyn_col_vect<typename Derived::Scalar>

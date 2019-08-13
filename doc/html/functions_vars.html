@@ -111,9 +111,6 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>c_reg_
 : <a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html#a976b9c183d2f942b1a851e1d31a12ed3">qpp::QCircuit::MeasureStep</a>
 </li>
-<li>chop
-: <a class="el" href="classqpp.html#a3a6d2c509bdcf240869e1bebb3be4e94">qpp</a>
-</li>
 <li>chop_
 : <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_eigen.html#a8ed022489ad2ba7f4f688eefc5ffd035">qpp::internal::IOManipEigen</a>
 , <a class="el" href="classqpp_1_1internal_1_1_i_o_manip_pointer.html#a304f24230b5340fd3860f72063b68867">qpp::internal::IOManipPointer&lt; PointerType &gt;</a>
@@ -149,11 +146,8 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>depth_
 : <a class="el" href="classqpp_1_1_bit__circuit.html#a64e639fd0de5bb4df4c7d11f8b5f7c3a">qpp::Bit_circuit</a>
 </li>
-<li>dim_x_
-: <a class="el" href="classqpp_1_1_grid_view.html#ab286d6b83e2c8b36f8ab0b47cdb38ab3">qpp::GridView</a>
-</li>
-<li>dim_y_
-: <a class="el" href="classqpp_1_1_grid_view.html#a7410f95564fc9a580eaa1765eb7f20cb">qpp::GridView</a>
+<li>dims_
+: <a class="el" href="classqpp_1_1_lattice.html#a61d7cd9c6aa7fee6b37bc9cc6ec422ee">qpp::Lattice</a>
 </li>
 <li>dits_
 : <a class="el" href="structqpp_1_1_q_engine_1_1state__.html#af1cb83d051be6de71509e295a2b97755">qpp::QEngine::state_</a>
@@ -162,9 +156,6 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 
 <h3><a id="index_e"></a>- e -</h3><ul>
-<li>ee
-: <a class="el" href="classqpp.html#aca5c7e10fa94db0755cb937250144630">qpp</a>
-</li>
 <li>elem_
 : <a class="el" href="classqpp_1_1_q_circuit_1_1iterator.html#ab50762d5a65a04ae4f8cfc1c01ecb3fe">qpp::QCircuit::iterator</a>
 </li>
@@ -222,9 +213,6 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>Id2
 : <a class="el" href="classqpp_1_1_gates.html#adc40cf08a8215535962bf6a42b7f532a">qpp::Gates</a>
 </li>
-<li>infty
-: <a class="el" href="classqpp.html#aecd9c0f42f21f1d3b29868b6a8cac4c7">qpp</a>
-</li>
 <li>ip_
 : <a class="el" href="classqpp_1_1_q_circuit_1_1iterator_1_1value__type__.html#a1cfaf4119cceece146524f7dbf7c011b">qpp::QCircuit::iterator::value_type_</a>
 </li>
@@ -248,9 +236,6 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <h3><a id="index_m"></a>- m -</h3><ul>
 <li>mats_hash_
 : <a class="el" href="structqpp_1_1_q_circuit_1_1_measure_step.html#a78d5f3038942e167483e0cded5e785d4">qpp::QCircuit::MeasureStep</a>
-</li>
-<li>maxn
-: <a class="el" href="classqpp.html#aea80be6c57ee43e43aa9629942cd3608">qpp</a>
 </li>
 <li>measured_
 : <a class="el" href="classqpp_1_1_q_circuit.html#a4c6abb5231be0dfa07b24ac4ac1093df">qpp::QCircuit</a>
@@ -319,9 +304,6 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>pGHZ
 : <a class="el" href="classqpp_1_1_states.html#a012e01a42673e00a17ff22e3d7b787ee">qpp::States</a>
 </li>
-<li>pi
-: <a class="el" href="classqpp.html#a73c04db6f636b236d64fddb069bef492">qpp</a>
-</li>
 <li>prng_
 : <a class="el" href="classqpp_1_1_random_devices.html#af4b631223d003893114a8b49bc0bb27b">qpp::RandomDevices</a>
 </li>
@@ -361,10 +343,6 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="classqpp_1_1_q_circuit_1_1iterator.html#ac2715c8c03391d06c0eb8ab4c39f8973">qpp::QCircuit::iterator</a>
 , <a class="el" href="classqpp_1_1_q_engine.html#a485fd25dfe53bee444090efaced52659">qpp::QEngine</a>
 , <a class="el" href="structqpp_1_1_q_engine_1_1state__.html#ae0b66a391b329c48d257cd9a600d806e">qpp::QEngine::state_</a>
-</li>
-<li>QPP_UNUSED_
-: <a class="el" href="classqpp_1_1_grid_view3_d.html#a4f1b4b1289d624678cc4ae619aaa5f29">qpp::GridView3D</a>
-, <a class="el" href="classqpp.html#a91810fb2e8f9148db91b066ed2ff3d52">qpp</a>
 </li>
 </ul>
 
@@ -495,7 +473,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Aug 11 2019 11:35:59 for Quantum++ by
+    <li class="footer">Generated on Tue Aug 13 2019 11:13:57 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

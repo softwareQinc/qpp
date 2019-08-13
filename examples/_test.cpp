@@ -17,4 +17,7 @@ int main() {
     q_engine.set_dit(1, 1);
     q_engine.execute();
     std::cout << q_engine << "\n\n";
+
+    Lattice l(3, 4, 5); // Dx = 3, Dy = 4, Dz = 5
+    std::cout << l(1, 2, 3) << "\n";
 }

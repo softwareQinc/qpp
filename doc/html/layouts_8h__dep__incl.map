@@ -1,4 +1,4 @@
-<map id="classes/circuits/layouts.h" name="classes/circuits/layouts.h">
-<area shape="rect" id="node1" title="Various physical qudit layouts, all must implement idx operator(idx, idx, ...)" alt="" coords="5,5,175,32"/>
-<area shape="rect" id="node2" href="$qpp_8h.html" title="Quantum++ main header file, includes all other necessary headers." alt="" coords="62,80,118,107"/>
+<map id="classes/layouts.h" name="classes/layouts.h">
+<area shape="rect" id="node1" title="Various physical qudit layouts, all must implement template &lt;class... Ts&gt; idx operator()(Ts...." alt="" coords="5,5,129,32"/>
+<area shape="rect" id="node2" href="$qpp_8h.html" title="Quantum++ main header file, includes all other necessary headers." alt="" coords="39,80,95,107"/>
 </map>

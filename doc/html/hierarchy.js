@@ -49,9 +49,6 @@ var hierarchy =
       [ "qpp::is_iterable< T, typename >", "structqpp_1_1is__iterable.html", null ]
     ] ],
     [ "qpp::QCircuit::GateStep", "structqpp_1_1_q_circuit_1_1_gate_step.html", null ],
-    [ "qpp::GridView", "classqpp_1_1_grid_view.html", [
-      [ "qpp::GridView3D", "classqpp_1_1_grid_view3_d.html", null ]
-    ] ],
     [ "qpp::internal::HashEigen", "structqpp_1_1internal_1_1_hash_eigen.html", null ],
     [ "qpp::IDisplay", "classqpp_1_1_i_display.html", [
       [ "qpp::Dynamic_bitset", "classqpp_1_1_dynamic__bitset.html", [
@@ -75,6 +72,7 @@ var hierarchy =
       [ "qpp::is_matrix_expression< Derived >", "structqpp_1_1is__matrix__expression.html", null ]
     ] ],
     [ "qpp::QCircuit::iterator", "classqpp_1_1_q_circuit_1_1iterator.html", null ],
+    [ "qpp::Lattice", "classqpp_1_1_lattice.html", null ],
     [ "qpp::make_void< Ts >", "structqpp_1_1make__void.html", null ],
     [ "qpp::QCircuit::MeasureStep", "structqpp_1_1_q_circuit_1_1_measure_step.html", null ],
     [ "qpp::NoiseBase< T >", "classqpp_1_1_noise_base.html", null ],
@@ -90,7 +88,6 @@ var hierarchy =
       [ "qpp::QuditDepolarizingNoise", "classqpp_1_1_qudit_depolarizing_noise.html", null ]
     ] ],
     [ "qpp::NoiseType", "structqpp_1_1_noise_type.html", null ],
-    [ "qpp", "classqpp.html", null ],
     [ "qpp::internal::Singleton< T >", "classqpp_1_1internal_1_1_singleton.html", null ],
     [ "qpp::internal::Singleton< const Codes >", "classqpp_1_1internal_1_1_singleton.html", [
       [ "qpp::Codes", "classqpp_1_1_codes.html", null ]
