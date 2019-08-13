@@ -15,6 +15,8 @@ In progress - pre-release
           qpp::add_circuit() - adds two quantum circuit descriptions
     - API change qpp::QCircuit::get_gate_depth() to qpp::QCircuit::get_depth(),
       so now measurements are taken into account when computing depths
+    - API change in qpp::Circuit::cCTRL*(), now accepts an additional "shift" on
+      the control dits
     - Added "classes/layouts.h" header file for representing different physical
       qudit layouts. Implemented the class(es):
           qpp::Lattice - Qudits on a multi-dimensional orthogonal grid
