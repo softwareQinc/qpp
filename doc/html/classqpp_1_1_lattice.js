@@ -5,7 +5,6 @@ var classqpp_1_1_lattice =
     [ "get_dims", "classqpp_1_1_lattice.html#a5b9d3c0f9647f3d246502419bdd51336", null ],
     [ "operator()", "classqpp_1_1_lattice.html#abd082f5b331816fcff237992ca187b13", null ],
     [ "operator()", "classqpp_1_1_lattice.html#ae282528a246adae3602e97443ecae3a6", null ],
-    [ "prod_dims", "classqpp_1_1_lattice.html#a900ea2dbdd9328cdad80a819f613b117", null ],
     [ "to_coordinates", "classqpp_1_1_lattice.html#ae62515ba7ed2ac016dd428dc93c2aef2", null ],
     [ "dims_", "classqpp_1_1_lattice.html#a61d7cd9c6aa7fee6b37bc9cc6ec422ee", null ]
 ];

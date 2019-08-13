@@ -1,6 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"instruments_8h.html#a57ee7dc0438a826efdb135a3492cfdca":[3,0,9,10],
 "instruments_8h.html#a65da96cadec88fbbb3cc70b0a82fa90c":[3,0,9,2],
 "instruments_8h.html#a6aaa808e50827cfdfbd27933e18190ef":[3,0,9,8],
 "instruments_8h.html#a943b1da665384d3076f7118771783e84":[3,0,9,3],
@@ -69,8 +68,8 @@ var NAVTREEINDEX3 =
 "namespacemembers_x.html":[1,1,0,21],
 "namespaceqpp.html":[1,0,0],
 "namespaceqpp.html":[2,0,0],
-"namespaceqpp_1_1exception.html":[1,0,0,0],
 "namespaceqpp_1_1exception.html":[2,0,0,0],
+"namespaceqpp_1_1exception.html":[1,0,0,0],
 "namespaceqpp_1_1experimental.html":[1,0,0,1],
 "namespaceqpp_1_1internal.html":[1,0,0,2],
 "namespaceqpp_1_1internal.html":[2,0,0,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX3 =
 "util_8h.html#aa3f0b3021c6831552202d9c370474ea0":[3,0,2,1,2],
 "util_8h.html#abb10c264874e20180c7c0944e0bf7657":[3,0,2,1,5],
 "util_8h.html#abc50ce9f80ba0cf904aa3fefaa82cd34":[3,0,2,1,23],
-"util_8h.html#ac902276e8bbd993712a8c421a7e81672":[3,0,2,1,6]
+"util_8h.html#ac902276e8bbd993712a8c421a7e81672":[3,0,2,1,6],
+"util_8h.html#acf5acbd0e6d0d6549dcf038b231f8ef1":[3,0,2,1,16]
 };

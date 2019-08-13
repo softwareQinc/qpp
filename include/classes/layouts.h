@@ -81,16 +81,6 @@ class ILayout {
  */
 class Lattice : public ILayout {
     std::vector<idx> dims_; ///< lattice dimensions
-    /**
-     * \brief Computes the product of the first \a n dimensions
-     *
-     * \param n Index
-     * \return Product of the first \a n dimensions
-     */
-    idx prod_dims(idx n) const {
-        return prod(std::begin(dims_), std::next(std::begin(dims_), n));
-    }
-
   public:
     /**
      * \brief Constructor
@@ -131,14 +121,14 @@ class Lattice : public ILayout {
                 throw exception::OutOfRange("qpp::Lattice::operator()");
         // END EXCEPTION CHECKS
 
-        return multiidx2n(xs, dims_);
+        return internal::multiidx2n(xs.data(), dims_.size(), dims_.data());
     }
 
     /**
      * \brief Computes the index of the point represented by \a xs in the
      * lattice coordinate system
 
-     * \tparam Ts Variadic yype list
+     * \tparam Ts Variadic type list
      * \param xs Coordinates in the lattice coordinate system
      * \return Index of the point represented by \a xs in the lattice coordinate
      * system
@@ -161,7 +151,10 @@ class Lattice : public ILayout {
             throw exception::OutOfRange("qpp::Lattice::to_coordinates()");
         // END EXCEPTION CHECKS
 
-        return n2multiidx(i, dims_);
+        std::vector<idx> result(dims_.size());
+        internal::n2multiidx(i, dims_.size(), dims_.data(), result.data());
+
+        return result;
     }
 
     /**
