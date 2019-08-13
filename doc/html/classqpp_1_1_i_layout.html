@@ -72,7 +72,7 @@ $(document).ready(function(){initNavTree('classqpp_1_1_i_layout.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>Mandatory interface for layouts.  
+<p>Mandatory interface for qudit placement layouts.  
  <a href="classqpp_1_1_i_layout.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="layouts_8h_source.html">classes/layouts.h</a>&gt;</code></p>
@@ -81,7 +81,7 @@ Inheritance diagram for qpp::ILayout:</div>
 <div class="dyncontent">
 <div class="center"><img src="classqpp_1_1_i_layout__inherit__graph.png" border="0" usemap="#qpp_1_1_i_layout_inherit__map" alt="Inheritance graph"/></div>
 <map name="qpp_1_1_i_layout_inherit__map" id="qpp_1_1_i_layout_inherit__map">
-<area shape="rect"  title="Mandatory interface for layouts." alt="" coords="5,5,101,32"/>
+<area shape="rect"  title="Mandatory interface for qudit placement layouts." alt="" coords="5,5,101,32"/>
 <area shape="rect"  href="classqpp_1_1_lattice.html" title="N&#45;dimensional orthogonal lattice coordinate system." alt="" coords="8,80,99,107"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
@@ -89,20 +89,21 @@ Inheritance diagram for qpp::ILayout:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae2aefa29e1a725d7c3722a69c4b47a2b"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_layout.html#ae2aefa29e1a725d7c3722a69c4b47a2b">operator()</a> (const std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt; &amp;xs) const =0</td></tr>
-<tr class="memdesc:ae2aefa29e1a725d7c3722a69c4b47a2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the index of the point represented by <em>xs</em> in the lattice coordinate system.  <a href="#ae2aefa29e1a725d7c3722a69c4b47a2b">More...</a><br /></td></tr>
+<tr class="memdesc:ae2aefa29e1a725d7c3722a69c4b47a2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the index of the point represented by <em>xs</em> in the layout coordinate system (bijection)  <a href="#ae2aefa29e1a725d7c3722a69c4b47a2b">More...</a><br /></td></tr>
 <tr class="separator:ae2aefa29e1a725d7c3722a69c4b47a2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0433a8b8745b1f8a74baca5de7f63e40"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_layout.html#a0433a8b8745b1f8a74baca5de7f63e40">to_coordinates</a> (<a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> i) const =0</td></tr>
-<tr class="memdesc:a0433a8b8745b1f8a74baca5de7f63e40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts index to coordinates.  <a href="#a0433a8b8745b1f8a74baca5de7f63e40">More...</a><br /></td></tr>
+<tr class="memdesc:a0433a8b8745b1f8a74baca5de7f63e40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts index to coordinates (bijection)  <a href="#a0433a8b8745b1f8a74baca5de7f63e40">More...</a><br /></td></tr>
 <tr class="separator:a0433a8b8745b1f8a74baca5de7f63e40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d49089746d59b9750f7d29c7348238c"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="namespaceqpp.html#a1f5f7137e8551cf82db04d3b81cdd706">idx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_layout.html#a7d49089746d59b9750f7d29c7348238c">get_dims</a> () const =0</td></tr>
-<tr class="memdesc:a7d49089746d59b9750f7d29c7348238c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coordinate system dimensions.  <a href="#a7d49089746d59b9750f7d29c7348238c">More...</a><br /></td></tr>
+<tr class="memdesc:a7d49089746d59b9750f7d29c7348238c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layout coordinate system dimensions.  <a href="#a7d49089746d59b9750f7d29c7348238c">More...</a><br /></td></tr>
 <tr class="separator:a7d49089746d59b9750f7d29c7348238c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26fee4df8a96fb27748f3fdb69b0973d"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpp_1_1_i_layout.html#a26fee4df8a96fb27748f3fdb69b0973d">~ILayout</a> ()=default</td></tr>
 <tr class="memdesc:a26fee4df8a96fb27748f3fdb69b0973d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default virtual destructor.  <a href="#a26fee4df8a96fb27748f3fdb69b0973d">More...</a><br /></td></tr>
 <tr class="separator:a26fee4df8a96fb27748f3fdb69b0973d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Mandatory interface for layouts. </p>
+<div class="textblock"><p>Mandatory interface for qudit placement layouts. </p>
+<dl class="section note"><dt>Note</dt><dd>A layout is a bijection between indexes and layout coordinates </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a26fee4df8a96fb27748f3fdb69b0973d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a26fee4df8a96fb27748f3fdb69b0973d">&#9670;&nbsp;</a></span>~ILayout()</h2>
@@ -155,8 +156,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Coordinate system dimensions. </p>
-<dl class="section return"><dt>Returns</dt><dd>Coordinate system dimensions </dd></dl>
+<p>Layout coordinate system dimensions. </p>
+<dl class="section return"><dt>Returns</dt><dd>Layout coordinate system dimensions </dd></dl>
 
 <p>Implemented in <a class="el" href="classqpp_1_1_lattice.html#a5b9d3c0f9647f3d246502419bdd51336">qpp::Lattice</a>.</p>
 
@@ -186,14 +187,14 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Computes the index of the point represented by <em>xs</em> in the lattice coordinate system. </p>
+<p>Computes the index of the point represented by <em>xs</em> in the layout coordinate system (bijection) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">xs</td><td>Vector of coordinates in the lattice coordinate system </td></tr>
+    <tr><td class="paramname">xs</td><td>Vector of coordinates in the layout coordinate system </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Index of the point represented by <em>xs</em> in the lattice coordinate system </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Index of the point represented by <em>xs</em> in the layout coordinate system </dd></dl>
 
 <p>Implemented in <a class="el" href="classqpp_1_1_lattice.html#abd082f5b331816fcff237992ca187b13">qpp::Lattice</a>.</p>
 
@@ -223,14 +224,14 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Converts index to coordinates. </p>
+<p>Converts index to coordinates (bijection) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i</td><td>Index </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>coordinates of the point with index <em>i</em> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Coordinates of the point with index <em>i</em> </dd></dl>
 
 <p>Implemented in <a class="el" href="classqpp_1_1_lattice.html#ae62515ba7ed2ac016dd428dc93c2aef2">qpp::Lattice</a>.</p>
 
@@ -245,7 +246,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceqpp.html">qpp</a></li><li class="navelem"><a class="el" href="classqpp_1_1_i_layout.html">ILayout</a></li>
-    <li class="footer">Generated on Tue Aug 13 2019 13:18:18 for Quantum++ by
+    <li class="footer">Generated on Tue Aug 13 2019 15:40:14 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

@@ -27,7 +27,7 @@
 /**
  * \file classes/layouts.h
  * \see qpp::ILayout
- * \brief Various qudit placement layouts, all must implement the interface 
+ * \brief Various qudit placement layouts, all must implement the interface
  * \a ILayout
  *
  */
@@ -39,32 +39,33 @@ namespace qpp {
 
 /**
  * \class qpp::ILayout
- * \brief Mandatory interface for layouts
+ * \brief Mandatory interface for qudit placement layouts
+ * \note A layout is a bijection between indexes and layout coordinates
  */
 class ILayout {
   public:
     /**
      * \brief Computes the index of the point represented by \a xs in the
-     * lattice coordinate system
+     * layout coordinate system (bijection)
      *
-     * \param xs Vector of coordinates in the lattice coordinate system
-     * \return Index of the point represented by \a xs in the lattice coordinate
+     * \param xs Vector of coordinates in the layout coordinate system
+     * \return Index of the point represented by \a xs in the layout coordinate
      * system
      */
     virtual idx operator()(const std::vector<idx>& xs) const = 0;
 
     /**
-     * \brief Converts index to coordinates
+     * \brief Converts index to coordinates (bijection)
      *
      * \param i Index
-     * \return coordinates of the point with index \a i
+     * \return Coordinates of the point with index \a i
      */
     virtual std::vector<idx> to_coordinates(idx i) const = 0;
 
     /**
-     * \brief Coordinate system dimensions
+     * \brief Layout coordinate system dimensions
      *
-     * \return Coordinate system dimensions
+     * \return Layout coordinate system dimensions
      */
     virtual std::vector<idx> get_dims() const = 0;
 
@@ -88,29 +89,6 @@ class Lattice : public ILayout {
      */
     idx prod_dims(idx n) const {
         return prod(std::begin(dims_), std::next(std::begin(dims_), n));
-    }
-
-    /**
-     * \brief Computes the index of the point represented by \a xs in the
-     * lattice coordinate system
-     *
-     * \param xs Coordinates in the lattice coordinate system
-     * \param n Recursion index
-     * \return Index of the point represented by \a xs in the lattice coordinate
-     * system
-     */
-    idx compute_(const std::vector<idx>& xs, idx n) const {
-        if (n == 0)
-            return 0;
-        else {
-            // EXCEPTION CHECKS
-
-            if (xs[n - 1] >= dims_[n - 1])
-                throw exception::OutOfRange("qpp::Lattice::operator()");
-            // END EXCEPTION CHECKS
-
-            return xs[n - 1] * prod_dims(n - 1) + compute_(xs, n - 1);
-        }
     }
 
   public:
@@ -148,9 +126,12 @@ class Lattice : public ILayout {
 
         if (xs.size() != dims_.size())
             throw exception::DimsNotEqual("qpp::Lattice::operator()");
+        for (idx i = 0; i < dims_.size(); ++i)
+            if (xs[i] >= dims_[i])
+                throw exception::OutOfRange("qpp::Lattice::operator()");
         // END EXCEPTION CHECKS
 
-        return compute_(xs, dims_.size());
+        return multiidx2n(xs, dims_);
     }
 
     /**
@@ -180,12 +161,7 @@ class Lattice : public ILayout {
             throw exception::OutOfRange("qpp::Lattice::to_coordinates()");
         // END EXCEPTION CHECKS
 
-        std::vector<idx> result = dims_;
-        std::reverse(std::begin(result), std::end(result));
-        result = n2multiidx(i, result);
-        std::reverse(std::begin(result), std::end(result));
-
-        return result;
+        return n2multiidx(i, dims_);
     }
 
     /**
