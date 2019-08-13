@@ -53,6 +53,7 @@ var dir_b02e4219757ae4e3a0f1714873865bbf =
       [ "Init", "classqpp_1_1_init.html", "classqpp_1_1_init" ]
     ] ],
     [ "layouts.h", "layouts_8h.html", [
+      [ "ILayout", "classqpp_1_1_i_layout.html", "classqpp_1_1_i_layout" ],
       [ "Lattice", "classqpp_1_1_lattice.html", "classqpp_1_1_lattice" ]
     ] ],
     [ "noise.h", "noise_8h.html", [

@@ -18,6 +18,27 @@ int main() {
     q_engine.execute();
     std::cout << q_engine << "\n\n";
 
-    Lattice l(3, 4, 5); // Dx = 3, Dy = 4, Dz = 5
-    std::cout << l(1, 2, 3) << "\n";
+    std::vector<idx> dims{31, 42, 150, 12};
+    std::vector<idx> coordinates{10, 12, 30, 2};
+
+    // Layouts
+
+    // using vectors
+    Lattice l(dims);
+    std::cout << "Dims: " << disp(l.get_dims(), " ") << "\n";
+
+    std::cout << "Coords: " << disp(coordinates, " ") << "\n";
+    std::cout << "Index: " << l(coordinates) << "\n";
+    std::cout << "Back to coords: "
+              << disp(l.to_coordinates(l(coordinates)), " ") << "\n\n";
+
+    // using variadics
+    Lattice l2(32, 43, 151, 14);
+    std::cout << "Dims: " << disp(l.get_dims(), " ") << "\n";
+
+    std::cout << "Coords: " << disp(std ::vector<idx>{11, 20, 31, 9}, " ")
+              << "\n";
+    std::cout << "Index: " << l(11, 20, 31, 9) << "\n";
+    std::cout << "Back to coords: "
+              << disp(l.to_coordinates(l(11, 20, 31, 9)), " ") << "\n\n";
 }

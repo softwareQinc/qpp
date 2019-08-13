@@ -68,11 +68,13 @@ var hierarchy =
       [ "qpp::QCircuit", "classqpp_1_1_q_circuit.html", null ],
       [ "qpp::QEngine", "classqpp_1_1_q_engine.html", null ]
     ] ],
+    [ "qpp::ILayout", "classqpp_1_1_i_layout.html", [
+      [ "qpp::Lattice", "classqpp_1_1_lattice.html", null ]
+    ] ],
     [ "is_base_of", null, [
       [ "qpp::is_matrix_expression< Derived >", "structqpp_1_1is__matrix__expression.html", null ]
     ] ],
     [ "qpp::QCircuit::iterator", "classqpp_1_1_q_circuit_1_1iterator.html", null ],
-    [ "qpp::Lattice", "classqpp_1_1_lattice.html", null ],
     [ "qpp::make_void< Ts >", "structqpp_1_1make__void.html", null ],
     [ "qpp::QCircuit::MeasureStep", "structqpp_1_1_q_circuit_1_1_measure_step.html", null ],
     [ "qpp::NoiseBase< T >", "classqpp_1_1_noise_base.html", null ],

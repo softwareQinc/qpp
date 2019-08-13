@@ -71,18 +71,22 @@ $(document).ready(function(){initNavTree('classqpp_1_1_lattice.html','');});
 
 <p>This is the complete list of members for <a class="el" href="classqpp_1_1_lattice.html">qpp::Lattice</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classqpp_1_1_lattice.html#a9d33a7dfd4389c11946c097c8fb98837">compute_</a>(const std::vector&lt; idx &gt; &amp;xs, idx n)</td><td class="entry"><a class="el" href="classqpp_1_1_lattice.html">qpp::Lattice</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classqpp_1_1_lattice.html#a846ba92fc8971b3c794ffc7b5a098a32">compute_</a>(const std::vector&lt; idx &gt; &amp;xs, idx n) const</td><td class="entry"><a class="el" href="classqpp_1_1_lattice.html">qpp::Lattice</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">private</span></td></tr>
   <tr><td class="entry"><a class="el" href="classqpp_1_1_lattice.html#a61d7cd9c6aa7fee6b37bc9cc6ec422ee">dims_</a></td><td class="entry"><a class="el" href="classqpp_1_1_lattice.html">qpp::Lattice</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classqpp_1_1_lattice.html#a7d254327af945f28f19d3358db0a25da">Lattice</a>(const std::vector&lt; idx &gt; &amp;dims)</td><td class="entry"><a class="el" href="classqpp_1_1_lattice.html">qpp::Lattice</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classqpp_1_1_lattice.html#a88f262c253d5edfe604c40c4a9c6a48f">Lattice</a>(Ts... ds)</td><td class="entry"><a class="el" href="classqpp_1_1_lattice.html">qpp::Lattice</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classqpp_1_1_lattice.html#a76656e42fb0fd74be0f51f7bdcb0ad58">operator()</a>(Ts... xs)</td><td class="entry"><a class="el" href="classqpp_1_1_lattice.html">qpp::Lattice</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classqpp_1_1_lattice.html#aebb763872824cda4d3b41c32b81a276b">prod_dims</a>(idx n)</td><td class="entry"><a class="el" href="classqpp_1_1_lattice.html">qpp::Lattice</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classqpp_1_1_lattice.html#a5b9d3c0f9647f3d246502419bdd51336">get_dims</a>() const override</td><td class="entry"><a class="el" href="classqpp_1_1_lattice.html">qpp::Lattice</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classqpp_1_1_lattice.html#a7d254327af945f28f19d3358db0a25da">Lattice</a>(const std::vector&lt; idx &gt; &amp;dims)</td><td class="entry"><a class="el" href="classqpp_1_1_lattice.html">qpp::Lattice</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classqpp_1_1_lattice.html#a88f262c253d5edfe604c40c4a9c6a48f">Lattice</a>(Ts... ds)</td><td class="entry"><a class="el" href="classqpp_1_1_lattice.html">qpp::Lattice</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classqpp_1_1_lattice.html#abd082f5b331816fcff237992ca187b13">operator()</a>(const std::vector&lt; idx &gt; &amp;xs) const override</td><td class="entry"><a class="el" href="classqpp_1_1_lattice.html">qpp::Lattice</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classqpp_1_1_lattice.html#ae282528a246adae3602e97443ecae3a6">operator()</a>(Ts... xs) const</td><td class="entry"><a class="el" href="classqpp_1_1_lattice.html">qpp::Lattice</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classqpp_1_1_lattice.html#a900ea2dbdd9328cdad80a819f613b117">prod_dims</a>(idx n) const</td><td class="entry"><a class="el" href="classqpp_1_1_lattice.html">qpp::Lattice</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classqpp_1_1_lattice.html#ae62515ba7ed2ac016dd428dc93c2aef2">to_coordinates</a>(idx i) const override</td><td class="entry"><a class="el" href="classqpp_1_1_lattice.html">qpp::Lattice</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classqpp_1_1_i_layout.html#a26fee4df8a96fb27748f3fdb69b0973d">~ILayout</a>()=default</td><td class="entry"><a class="el" href="classqpp_1_1_i_layout.html">qpp::ILayout</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Aug 13 2019 11:13:56 for Quantum++ by
+    <li class="footer">Generated on Tue Aug 13 2019 13:10:01 for Quantum++ by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

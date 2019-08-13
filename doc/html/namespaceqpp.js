@@ -8,6 +8,7 @@ var namespaceqpp =
     [ "Gates", "classqpp_1_1_gates.html", "classqpp_1_1_gates" ],
     [ "IDisplay", "classqpp_1_1_i_display.html", "classqpp_1_1_i_display" ],
     [ "IJSON", "classqpp_1_1_i_j_s_o_n.html", "classqpp_1_1_i_j_s_o_n" ],
+    [ "ILayout", "classqpp_1_1_i_layout.html", "classqpp_1_1_i_layout" ],
     [ "Init", "classqpp_1_1_init.html", "classqpp_1_1_init" ],
     [ "is_complex", "structqpp_1_1is__complex.html", null ],
     [ "is_complex< std::complex< T > >", "structqpp_1_1is__complex_3_01std_1_1complex_3_01_t_01_4_01_4.html", null ],

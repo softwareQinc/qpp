@@ -1,0 +1,4 @@
+<map id="qpp::Lattice" name="qpp::Lattice">
+<area shape="rect" id="node1" title="N&#45;dimensional orthogonal lattice coordinate system." alt="" coords="8,80,99,107"/>
+<area shape="rect" id="node2" href="$classqpp_1_1_i_layout.html" title="Mandatory interface for layouts." alt="" coords="5,5,101,32"/>
+</map>
