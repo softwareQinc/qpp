@@ -75,7 +75,7 @@ class ILayout {
 }; /* class ILayout */
 
 /**
- * \class Lattice
+ * \class qpp::Lattice
  * \brief N-dimensional orthogonal lattice coordinate system
  */
 class Lattice : public ILayout {
