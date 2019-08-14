@@ -159,6 +159,7 @@
     <ClCompile Include="..\..\unit_tests\tests\classes\circuits\circuits.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\classes\circuits\engines.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\classes\gates.cpp" />
+    <ClCompile Include="..\..\unit_tests\tests\classes\layouts.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\classes\noise.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\classes\random_devices.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\classes\reversible.cpp" />

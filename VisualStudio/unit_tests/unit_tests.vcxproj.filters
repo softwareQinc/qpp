@@ -60,6 +60,9 @@
     <ClCompile Include="..\..\unit_tests\tests\classes\gates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\unit_tests\tests\classes\layouts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\unit_tests\tests\classes\noise.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
