@@ -149,18 +149,18 @@ class Parser {
         switch (current_token_.kind()) {
           // Parse declarations (<decl>)
         case Token::Kind::kw_creg:
-          ret.push_back(std::move(parse_reg_decl(false)));
+          ret.emplace_back(parse_reg_decl(false));
           break;
         case Token::Kind::kw_qreg:
-          ret.push_back(std::move(parse_reg_decl(true)));
+          ret.emplace_back(parse_reg_decl(true));
           break;
 
         case Token::Kind::kw_gate:
-          ret.push_back(std::move(parse_gate_decl()));
+          ret.emplace_back(parse_gate_decl());
           break;
 
         case Token::Kind::kw_opaque:
-          ret.push_back(std::move(parse_opaque_decl()));
+          ret.emplace_back(parse_opaque_decl());
           break;
 
           // Parse quantum operations (<qop>)
@@ -169,15 +169,15 @@ class Parser {
         case Token::Kind::kw_measure:
         case Token::Kind::kw_reset:
         case Token::Kind::kw_u:
-          ret.push_back(std::move(parse_qop()));
+          ret.emplace_back(parse_qop());
           break;
 
         case Token::Kind::kw_barrier:
-          ret.push_back(std::move(parse_barrier()));
+          ret.emplace_back(parse_barrier());
           break;
 
         case Token::Kind::kw_if:
-          ret.push_back(std::move(parse_if()));
+          ret.emplace_back(parse_if());
           break;
 
         default:
@@ -308,7 +308,7 @@ class Parser {
         case Token::Kind::kw_u:
         case Token::Kind::identifier:
         case Token::Kind::kw_barrier:
-          ret.push_back(std::move(parse_gop()));
+          ret.emplace_back(parse_gop());
           break;
 
         default:
@@ -317,7 +317,7 @@ class Parser {
         }
       }
 
-      return std::move(ret);
+      return ret;
     }
 
     /**
@@ -335,7 +335,7 @@ class Parser {
       case Token::Kind::kw_cx:
       case Token::Kind::kw_u:
       case Token::Kind::identifier:
-        return StatementPtr(std::move(parse_gop()));
+        return StatementPtr(parse_gop());
 
       case Token::Kind::kw_measure:
         return parse_measure();
@@ -369,7 +369,7 @@ class Parser {
     GatePtr parse_gop() {
       switch (current_token_.kind()) {
       case Token::Kind::kw_u:
-        return std::move(parse_unitary());
+        return parse_unitary();
 
       case Token::Kind::kw_cx:
         return parse_cnot();
