@@ -78,8 +78,10 @@ class ILayout {
 /**
  * \class qpp::Lattice
  * \brief N-dimensional orthogonal lattice coordinate system
+ * \see qpp::PeriodicBoundaryLattice
  */
 class Lattice : public ILayout {
+  protected:
     std::vector<idx> dims_; ///< lattice dimensions
   public:
     /**
@@ -164,6 +166,39 @@ class Lattice : public ILayout {
      */
     std::vector<idx> get_dims() const override { return dims_; }
 }; /* class Lattice */
+
+/**
+ * \class qpp::PeriodicBoundaryLattice
+ * \brief N-dimensional orthogonal lattice coordinate system with periodic
+ * boundary conditions
+ * \see qpp::Lattice
+ */
+class PeriodicBoundaryLattice : public Lattice {
+  public:
+    using Lattice::Lattice;
+    using Lattice::operator();
+
+    /**
+     * \brief Computes the index of the point represented by \a xs in the
+     * lattice coordinate system
+     *
+     * \param xs Vector of coordinates in the lattice coordinate system
+     * \return Index of the point represented by \a xs in the lattice coordinate
+     * system
+     */
+    idx operator()(const std::vector<idx>& xs) const override {
+        // EXCEPTION CHECKS
+
+        if (xs.size() != dims_.size())
+            throw exception::DimsNotEqual("qpp::Lattice::operator()");
+        // END EXCEPTION CHECKS
+
+        std::vector<idx> xs_copy = xs;
+        for (idx i = 0; i < dims_.size(); ++i)
+            xs_copy[i] = xs[i] % dims_[i];
+        return Lattice::operator()(xs_copy);
+    }
+}; /* class PeriodicBoundaryLattice */
 
 } /* namespace qpp */
 

@@ -41,4 +41,17 @@ int main() {
     std::cout << "Index: " << l(11, 20, 31, 9) << "\n";
     std::cout << "Back to coords: "
               << disp(l.to_coordinates(l(11, 20, 31, 9)), " ") << "\n\n";
+
+    for (idx x = 0; x < 3; ++x)
+        for (idx y = 0; y < 4; ++y)
+            for (idx z = 0; z < 5; ++z)
+                std::cout << Lattice{3, 4, 5}(x, y, z) << " ";
+
+    std::cout << '\n';
+    for (idx i = 0; i < 3 * 4 * 5; ++i)
+        std::cout << disp(Lattice{3, 4, 5}.to_coordinates(i), " ") << '\n';
+
+    PeriodicBoundaryLattice pl(5, 7);
+    std::cout << pl(8, 12) << '\n';
+    std::cout << pl(3, 5) << '\n';
 }
