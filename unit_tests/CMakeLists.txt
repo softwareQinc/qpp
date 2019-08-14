@@ -29,6 +29,9 @@ PROJECT(qpp_testing)
 SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+#### Source directory
+ADD_DEFINITIONS(-DPATH="${CMAKE_SOURCE_DIR}")
+
 #### Quantum++ headers
 INCLUDE_DIRECTORIES(../include)
 
@@ -170,3 +173,4 @@ IF (NOT CMAKE_BUILD_TYPE)
          None Debug Release MinSizeRel RelWithDebInfo."
             FORCE)
 ENDIF ()
+
