@@ -40,7 +40,8 @@ namespace qpp {
 /**
  * \class qpp::ILayout
  * \brief Mandatory interface for qudit placement layouts
- * \note A layout is a bijection between indexes and layout coordinates
+ * \note A layout is a bijection (surjection when there are periodic boundary
+ * conditions) between the set of indexes and layout coordinates
  */
 class ILayout {
   public:

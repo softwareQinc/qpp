@@ -54,4 +54,5 @@ int main() {
     PeriodicBoundaryLattice pl(5, 7);
     std::cout << pl(8, 12) << '\n';
     std::cout << pl(3, 5) << '\n';
+    std::cout << disp(pl.to_coordinates(26), " ") << '\n';
 }
