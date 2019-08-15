@@ -255,7 +255,7 @@ class Parser {
 
         expect_and_consume_token(Token::Kind::l_brace);
         std::vector<GatePtr> body;
-        if (not try_and_consume_token(Token::Kind::r_brace)) {
+        if (!try_and_consume_token(Token::Kind::r_brace)) {
             body = parse_goplist();
             expect_and_consume_token(Token::Kind::r_brace);
         }
@@ -482,7 +482,7 @@ class Parser {
         while (true) {
             auto exp = parse_exp();
             ret.push_back(std::move(exp));
-            if (not try_and_consume_token(Token::Kind::comma)) {
+            if (!try_and_consume_token(Token::Kind::comma)) {
                 break;
             }
         }

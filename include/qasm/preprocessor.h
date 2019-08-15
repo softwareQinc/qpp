@@ -149,7 +149,7 @@ class Preprocessor {
             handle_include();
             token = current_lexer_->next_token();
         } else if (token.is(Token::Kind::eof)) {
-            if (not lexer_stack_.empty()) {
+            if (!lexer_stack_.empty()) {
                 current_lexer_ = std::move(lexer_stack_.back());
                 lexer_stack_.pop_back();
                 token = current_lexer_->next_token();
