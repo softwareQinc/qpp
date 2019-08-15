@@ -1492,7 +1492,7 @@ class PiExpr final : public Expr {
      */
     double evaluate(Context& ctx) const {
         (void) ctx;
-        return M_PI;
+        return qpp::pi;
     }
 
     /**
