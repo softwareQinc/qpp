@@ -1092,8 +1092,8 @@ namespace qasm {
 
       // generate the matrix
       cmat u{cmat::Zero(2, 2)};
-      u << std::polar(cos(theta/2), -(phi+lambda)/2), -std::polar(sin(theta/2), -(phi-lambda)/2),
-           std::polar(sin(theta/2), (phi-lambda)/2),  std::polar(cos(theta/2), (phi+lambda)/2);
+      u << cos(theta/2)*std::exp(-1_i*(phi+lambda)/2.0), -(sin(theta/2))*std::exp(-1_i*(phi-lambda)/2.0),
+           sin(theta/2)*std::exp(1_i*(phi-lambda)/2.0),  cos(theta/2)*std::exp(1_i*(phi+lambda)/2.0);
 
       // apply the gate
       for (auto i : args) {
