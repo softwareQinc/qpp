@@ -61,6 +61,7 @@
 #include <iomanip>
 #include <iterator>
 #include <limits>
+#include <list>
 #include <map>
 #include <memory>
 #include <numeric>
@@ -118,6 +119,14 @@
 #include "classes/timer.h"
 #include "classes/circuits/circuits.h"
 #include "classes/circuits/engines.h"
+
+// do not change the order in this group, inter-dependencies
+#include "qasm/token.h"
+#include "qasm/lexer.h"
+#include "qasm/preprocessor.h"
+#include "qasm/ast.h"
+#include "qasm/parser.h"
+#include "qasm/qasm.h"
 
 /**
  * \namespace qpp
