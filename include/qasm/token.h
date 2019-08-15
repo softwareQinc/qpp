@@ -58,10 +58,7 @@ class Location : public IDisplay {
      * \param column Column number
      */
     Location(const std::string& fname, idx line, idx column)
-      : fname_(fname)
-      , line_(line)
-      , column_(column)
-    {}
+        : fname_(fname), line_(line), column_(column) {}
 
     /**
      * \brief Copy constructor
@@ -69,23 +66,20 @@ class Location : public IDisplay {
      * \param loc Location to be copied
      */
     Location(const Location& loc)
-      : fname_(loc.fname_)
-      , line_(loc.line_)
-      , column_(loc.column_)
-    {}
+        : fname_(loc.fname_), line_(loc.line_), column_(loc.column_) {}
 
     /**
      * \brief qpp::IDisplay::display() override
      *
-     * Writes to the output stream a textual representation of the 
+     * Writes to the output stream a textual representation of the
      * source location
      *
      * \param os Output stream passed by reference
      * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const {
-      os << fname_ << ":" << line_ << ":" << column_;
-      return os;
+        os << fname_ << ":" << line_ << ":" << column_;
+        return os;
     }
 
     /**
@@ -116,7 +110,10 @@ class Location : public IDisplay {
      *
      * \param num Number of lines to advance (optional, default is 1)
      */
-    void advance_line(idx num = 1) { line_ += num; column_ = 0; }
+    void advance_line(idx num = 1) {
+        line_ += num;
+        column_ = 0;
+    }
 
     /**
      * \brief Advance the column number by a specified amount
@@ -124,7 +121,6 @@ class Location : public IDisplay {
      * \param num Number of columns to advance (optional, default is 1)
      */
     void advance_column(idx num = 1) { column_ += num; }
-
 };
 
 /**
@@ -132,55 +128,55 @@ class Location : public IDisplay {
  * \brief openQASM token class
  * \see qpp::qasm::Lexer
  */
-  class Token : public IDisplay {
+class Token : public IDisplay {
   public:
     /**
      * \brief Token types
      */
     enum class Kind {
-      unknown,
-      eof,
-      comment,
-      identifier,
-      real,
-      nninteger,
-      string,
-      l_square,
-      r_square,
-      l_paren,
-      r_paren,
-      l_brace,
-      r_brace,
-      period,
-      star,
-      plus,
-      minus,
-      arrow,
-      slash,
-      caret,
-      semicolon,
-      equalequal,
-      comma,
-      colon,
-      kw_include,
-      kw_barrier,
-      kw_creg,
-      kw_cx,
-      kw_gate,
-      kw_if,
-      kw_measure,
-      kw_pi,     
-      kw_opaque, 
-      kw_openqasm,
-      kw_qreg, 
-      kw_reset,
-      kw_u,    
-      kw_sin,
-      kw_cos,
-      kw_tan,
-      kw_exp,
-      kw_ln,
-      kw_sqrt
+        unknown,
+        eof,
+        comment,
+        identifier,
+        real,
+        nninteger,
+        string,
+        l_square,
+        r_square,
+        l_paren,
+        r_paren,
+        l_brace,
+        r_brace,
+        period,
+        star,
+        plus,
+        minus,
+        arrow,
+        slash,
+        caret,
+        semicolon,
+        equalequal,
+        comma,
+        colon,
+        kw_include,
+        kw_barrier,
+        kw_creg,
+        kw_cx,
+        kw_gate,
+        kw_if,
+        kw_measure,
+        kw_pi,
+        kw_opaque,
+        kw_openqasm,
+        kw_qreg,
+        kw_reset,
+        kw_u,
+        kw_sin,
+        kw_cos,
+        kw_tan,
+        kw_exp,
+        kw_ln,
+        kw_sqrt
     };
 
     /**
@@ -189,7 +185,8 @@ class Location : public IDisplay {
     Token() = default;
 
     /**
-     * \brief Constructs a token with a given type, source location, and string value
+     * \brief Constructs a token with a given type, source location, and string
+     * value
      *
      * \param loc The location of the token within a source stream
      * \param k The type of token being created
@@ -197,20 +194,14 @@ class Location : public IDisplay {
      *
      */
     Token(Location loc, Kind k, const std::string& value)
-      : loc_(loc)
-      , kind_(k)
-      , value_(value)
-    {}
-
+        : loc_(loc), kind_(k), value_(value) {}
 
     /**
      * \brief Get the type of token
      *
      * \return The token type
      */
-    Kind kind() const {
-      return kind_;
-    }
+    Kind kind() const { return kind_; }
 
     /**
      * \brief Check whether the token is a particular type
@@ -218,9 +209,7 @@ class Location : public IDisplay {
      * \param k The token type to compare against
      * \return True if and only if the token is of type k
      */
-    bool is(Kind k) const {
-      return kind_ == k;
-    }
+    bool is(Kind k) const { return kind_ == k; }
 
     /**
      * \brief Check whether the token is not a particular type
@@ -228,9 +217,7 @@ class Location : public IDisplay {
      * \param k The token type to compare against
      * \return True if and only if the token is not of type k
      */
-    bool is_not(Kind k) const {
-      return kind_ != k;
-    }
+    bool is_not(Kind k) const { return kind_ != k; }
 
     /**
      * \brief Check whether the token is one of a list of types
@@ -238,9 +225,9 @@ class Location : public IDisplay {
      * \param ks List of token types to check
      * \return True if and only if the token is one of the types in ks
      */
-    template<typename... Ts>
+    template <typename... Ts>
     bool is_one_of(Kind k1, Kind k2, Ts... ks) const {
-      return is(k1) || is_one_of(k2, ks...);
+        return is(k1) || is_one_of(k2, ks...);
     }
 
     /**
@@ -292,52 +279,138 @@ class Location : public IDisplay {
      * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os, const Kind& k) {
-      switch (k) {
-      case Kind::unknown: os << "UNKOWN"; break;
-      case Kind::eof: os << "EOF"; break;
-      case Kind::comment: os << "COMMENT"; break;
-      case Kind::identifier: os << "ID"; break;
-      case Kind::real: os << "REAL"; break;
-      case Kind::nninteger: os << "INT"; break;
-      case Kind::string: os << "STRING"; break;
-      case Kind::l_square: os << "LBRACKET"; break;
-      case Kind::r_square: os << "RBRACKET"; break;
-      case Kind::l_paren: os << "LPAREN"; break;
-      case Kind::r_paren: os << "RPAREN"; break;
-      case Kind::l_brace: os << "LBRACE"; break;
-      case Kind::r_brace: os << "RBRACE"; break;
-      case Kind::period: os << "PERIOD"; break;
-      case Kind::star: os << "STAR"; break;
-      case Kind::plus: os << "PLUS"; break;
-      case Kind::minus: os << "MINUS"; break;
-      case Kind::arrow: os << "RARROW"; break;
-      case Kind::slash: os << "SLASH"; break;
-      case Kind::caret: os << "CARAT"; break;
-      case Kind::semicolon: os << "SEMICOLON"; break;
-      case Kind::equalequal: os << "EQUALS"; break;
-      case Kind::comma: os << "COMMA"; break;
-      case Kind::colon: os << "COLON"; break;
-      case Kind::kw_include: os << "INCLUDE"; break;
-      case Kind::kw_barrier: os << "BARRIER"; break;
-      case Kind::kw_creg: os << "CREG"; break;
-      case Kind::kw_cx: os << "CX"; break;
-      case Kind::kw_gate: os << "GATE"; break;
-      case Kind::kw_if: os << "IF"; break;
-      case Kind::kw_measure: os << "MEASURE"; break;
-      case Kind::kw_pi: os << "PI"; break;
-      case Kind::kw_opaque: os << "OPAQUE"; break;
-      case Kind::kw_openqasm: os << "OPENQASM"; break;
-      case Kind::kw_qreg: os << "QREG"; break;
-      case Kind::kw_reset: os << "RESET"; break;
-      case Kind::kw_u: os << "UNITARY"; break;
-      case Kind::kw_sin: os << "SIN"; break;
-      case Kind::kw_cos: os << "COS"; break;
-      case Kind::kw_tan: os << "TAN"; break;
-      case Kind::kw_exp: os << "EXP"; break;
-      case Kind::kw_ln: os << "LN"; break;
-      case Kind::kw_sqrt: os << "SQRT"; break;
-      }
-      return os;
+        switch (k) {
+            case Kind::unknown:
+                os << "UNKOWN";
+                break;
+            case Kind::eof:
+                os << "EOF";
+                break;
+            case Kind::comment:
+                os << "COMMENT";
+                break;
+            case Kind::identifier:
+                os << "ID";
+                break;
+            case Kind::real:
+                os << "REAL";
+                break;
+            case Kind::nninteger:
+                os << "INT";
+                break;
+            case Kind::string:
+                os << "STRING";
+                break;
+            case Kind::l_square:
+                os << "LBRACKET";
+                break;
+            case Kind::r_square:
+                os << "RBRACKET";
+                break;
+            case Kind::l_paren:
+                os << "LPAREN";
+                break;
+            case Kind::r_paren:
+                os << "RPAREN";
+                break;
+            case Kind::l_brace:
+                os << "LBRACE";
+                break;
+            case Kind::r_brace:
+                os << "RBRACE";
+                break;
+            case Kind::period:
+                os << "PERIOD";
+                break;
+            case Kind::star:
+                os << "STAR";
+                break;
+            case Kind::plus:
+                os << "PLUS";
+                break;
+            case Kind::minus:
+                os << "MINUS";
+                break;
+            case Kind::arrow:
+                os << "RARROW";
+                break;
+            case Kind::slash:
+                os << "SLASH";
+                break;
+            case Kind::caret:
+                os << "CARAT";
+                break;
+            case Kind::semicolon:
+                os << "SEMICOLON";
+                break;
+            case Kind::equalequal:
+                os << "EQUALS";
+                break;
+            case Kind::comma:
+                os << "COMMA";
+                break;
+            case Kind::colon:
+                os << "COLON";
+                break;
+            case Kind::kw_include:
+                os << "INCLUDE";
+                break;
+            case Kind::kw_barrier:
+                os << "BARRIER";
+                break;
+            case Kind::kw_creg:
+                os << "CREG";
+                break;
+            case Kind::kw_cx:
+                os << "CX";
+                break;
+            case Kind::kw_gate:
+                os << "GATE";
+                break;
+            case Kind::kw_if:
+                os << "IF";
+                break;
+            case Kind::kw_measure:
+                os << "MEASURE";
+                break;
+            case Kind::kw_pi:
+                os << "PI";
+                break;
+            case Kind::kw_opaque:
+                os << "OPAQUE";
+                break;
+            case Kind::kw_openqasm:
+                os << "OPENQASM";
+                break;
+            case Kind::kw_qreg:
+                os << "QREG";
+                break;
+            case Kind::kw_reset:
+                os << "RESET";
+                break;
+            case Kind::kw_u:
+                os << "UNITARY";
+                break;
+            case Kind::kw_sin:
+                os << "SIN";
+                break;
+            case Kind::kw_cos:
+                os << "COS";
+                break;
+            case Kind::kw_tan:
+                os << "TAN";
+                break;
+            case Kind::kw_exp:
+                os << "EXP";
+                break;
+            case Kind::kw_ln:
+                os << "LN";
+                break;
+            case Kind::kw_sqrt:
+                os << "SQRT";
+                break;
+        }
+        return os;
     }
 
     /**
@@ -349,15 +422,24 @@ class Location : public IDisplay {
      * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const {
-      os << kind_;
-      switch (kind_) {
-      case Kind::identifier: os << "(" << value_ << ")"; break;
-      case Kind::real: os << "(" << std::stof(value_) << ")"; break;
-      case Kind::nninteger: os << "(" << std::stoi(value_) << ")"; break;
-      case Kind::string: os << "(\"" << value_ << "\")"; break;
-      default: break;
-      }
-      return os;
+        os << kind_;
+        switch (kind_) {
+            case Kind::identifier:
+                os << "(" << value_ << ")";
+                break;
+            case Kind::real:
+                os << "(" << std::stof(value_) << ")";
+                break;
+            case Kind::nninteger:
+                os << "(" << std::stoi(value_) << ")";
+                break;
+            case Kind::string:
+                os << "(\"" << value_ << "\")";
+                break;
+            default:
+                break;
+        }
+        return os;
     }
 
   private:
@@ -369,26 +451,26 @@ class Location : public IDisplay {
 /**
  * \brief Hash-map of openQASM keywords and their token type
  */
-static const std::unordered_map<std::string, Token::Kind> keywords {
-  { "include", Token::Kind::kw_include },
-  { "barrier", Token::Kind::kw_barrier },
-  { "creg", Token::Kind::kw_creg },
-  { "CX", Token::Kind::kw_cx },
-  { "gate", Token::Kind::kw_gate },
-  { "if", Token::Kind::kw_if },
-  { "measure", Token::Kind::kw_measure },
-  { "pi", Token::Kind::kw_pi },     
-  { "opaque", Token::Kind::kw_opaque }, 
-  { "OPENQASM", Token::Kind::kw_openqasm },
-  { "qreg", Token::Kind::kw_qreg }, 
-  { "reset", Token::Kind::kw_reset },
-  { "U", Token::Kind::kw_u },    
-  { "sin", Token::Kind::kw_sin },
-  { "cos", Token::Kind::kw_cos },
-  { "tan", Token::Kind::kw_tan },
-  { "exp", Token::Kind::kw_exp },
-  { "ln", Token::Kind::kw_ln },
-  { "sqrt", Token::Kind::kw_sqrt } };
+static const std::unordered_map<std::string, Token::Kind> keywords{
+    {"include", Token::Kind::kw_include},
+    {"barrier", Token::Kind::kw_barrier},
+    {"creg", Token::Kind::kw_creg},
+    {"CX", Token::Kind::kw_cx},
+    {"gate", Token::Kind::kw_gate},
+    {"if", Token::Kind::kw_if},
+    {"measure", Token::Kind::kw_measure},
+    {"pi", Token::Kind::kw_pi},
+    {"opaque", Token::Kind::kw_opaque},
+    {"OPENQASM", Token::Kind::kw_openqasm},
+    {"qreg", Token::Kind::kw_qreg},
+    {"reset", Token::Kind::kw_reset},
+    {"U", Token::Kind::kw_u},
+    {"sin", Token::Kind::kw_sin},
+    {"cos", Token::Kind::kw_cos},
+    {"tan", Token::Kind::kw_tan},
+    {"exp", Token::Kind::kw_exp},
+    {"ln", Token::Kind::kw_ln},
+    {"sqrt", Token::Kind::kw_sqrt}};
 
 } /* namespace qasm */
 } /* namespace qpp */

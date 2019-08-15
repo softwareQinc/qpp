@@ -35,26 +35,28 @@
 namespace qpp {
 namespace qasm {
 
-  /**
-   * \brief Reads a openQASM circuit from stdin and returns its QCircuit representation
-   *
-   * \return Unique pointer to a QCircuit object
-   */
-  inline std::unique_ptr<QCircuit> read_from_stdin() {
+/**
+ * \brief Reads a openQASM circuit from stdin and returns its QCircuit
+ * representation
+ *
+ * \return Unique pointer to a QCircuit object
+ */
+inline std::unique_ptr<QCircuit> read_from_stdin() {
     Preprocessor pp;
     Parser parser(pp);
 
     pp.add_target_stream(std::shared_ptr<std::istream>(&std::cin));
 
     return parser.parse();
-  }
+}
 
-  /**
-   * \brief Reads a openQASM circuit from a file and returns its QCircuit representation
-   *
-   * \return Unique pointer to a QCircuit object
-   */
-  inline std::unique_ptr<QCircuit> read_from_file(const std::string& fname_) {
+/**
+ * \brief Reads a openQASM circuit from a file and returns its QCircuit
+ * representation
+ *
+ * \return Unique pointer to a QCircuit object
+ */
+inline std::unique_ptr<QCircuit> read_from_file(const std::string& fname_) {
     Preprocessor pp;
     Parser parser(pp);
 
@@ -62,14 +64,14 @@ namespace qasm {
 
     ifs->open(fname_, std::ifstream::in);
     if (!ifs->good()) {
-      ifs->close();
-      throw exception::FileNotFound("qpp::qasm::read_file");
+        ifs->close();
+        throw exception::FileNotFound("qpp::qasm::read_file");
     }
 
     pp.add_target_stream(ifs, fname_);
 
     return parser.parse();
-  }
+}
 
 } /* namespace qasm */
 } /* namespace qpp */

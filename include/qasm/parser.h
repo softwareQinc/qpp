@@ -43,13 +43,13 @@ namespace qasm {
  * \see qpp::qasm::Lexer
  */
 class Parser {
-    Preprocessor& pp_lexer_;          ///< preprocessed, tokenized input stream
+    Preprocessor& pp_lexer_; ///< preprocessed, tokenized input stream
 
-    bool error_ = false;              ///< whether a parse error has occured
-    Token current_token_ = Token();   ///< current token
-    int bits_ = 0;                    ///< number of bits
-    int qubits_ = 0;                  ///< number of qubits
-    bool reset_ = false;              ///< whether reset statements are used
+    bool error_ = false;            ///< whether a parse error has occured
+    Token current_token_ = Token(); ///< current token
+    int bits_ = 0;                  ///< number of bits
+    int qubits_ = 0;                ///< number of qubits
+    bool reset_ = false;            ///< whether reset statements are used
 
   public:
     /**
@@ -65,21 +65,20 @@ class Parser {
      * \return A unique pointer to a QCircuit object
      */
     std::unique_ptr<QCircuit> parse() {
-      // Parse the program
-      auto result = parse_program();
-      if (error_) throw exception::ParseError("qpp::qasm::parser.h");
+        // Parse the program
+        auto result = parse_program();
+        if (error_)
+            throw exception::ParseError("qpp::qasm::parser.h");
 
-      // Generate the QCircuit
-      return result.to_QCircuit();
+        // Generate the QCircuit
+        return result.to_QCircuit();
     }
-    
+
   private:
     /**
      * \brief Consume a token and retrieve the next one
      */
-    void consume_token() {
-      current_token_ = pp_lexer_.next_token();
-    }
+    void consume_token() { current_token_ = pp_lexer_.next_token(); }
 
     /**
      * \brief Consume a particular type of token
@@ -87,23 +86,23 @@ class Parser {
      * Checks that the current token is of type given by the argument
      * and consumes the token, setting the error flag if it is not
      * of the correct type
-     * 
+     *
      * \param expected The type of token to be consumed
      * \return The current token
      */
     Token expect_and_consume_token(Token::Kind expected) {
-      if (current_token_.is_not(expected)) {
-        current_token_.location().display(std::cerr);
-        std::cerr << ": expected " << expected;
-        std::cerr << " but got " << current_token_.kind() << "\n";
+        if (current_token_.is_not(expected)) {
+            current_token_.location().display(std::cerr);
+            std::cerr << ": expected " << expected;
+            std::cerr << " but got " << current_token_.kind() << "\n";
 
-        error_ = true;
-        return current_token_;
-      }
+            error_ = true;
+            return current_token_;
+        }
 
-      auto return_token = current_token_;
-      consume_token();
-      return return_token;
+        auto return_token = current_token_;
+        consume_token();
+        return return_token;
     }
 
     /**
@@ -111,16 +110,16 @@ class Parser {
      *
      * Attempts to parse a particular type of token, only consuming
      * the token if it is of the correct type
-     * 
+     *
      * \param expected The type of token to be consumed
      * \return True if and only if a token of type expected was consumed
      */
     bool try_and_consume_token(Token::Kind expected) {
-      if (current_token_.is_not(expected)) {
-        return false;
-      }
-      consume_token();
-      return true;
+        if (current_token_.is_not(expected)) {
+            return false;
+        }
+        consume_token();
+        return true;
     }
 
     /**
@@ -135,62 +134,64 @@ class Parser {
      *               | <qop>
      *               | if ( <id> == <nninteger> ) <qop>
      *               | barrier <anylist> ;
-     * 
+     *
      * \return A QASM AST object
      */
     QASM parse_program() {
-      std::vector<StatementPtr> ret;
+        std::vector<StatementPtr> ret;
 
-      // The first (non-comment) line of an Open QASM program must be
-      // OPENQASM M.m; indicating a major version M and minor version m.
-      parse_header();
+        // The first (non-comment) line of an Open QASM program must be
+        // OPENQASM M.m; indicating a major version M and minor version m.
+        parse_header();
 
-      while (!current_token_.is(Token::Kind::eof)) {
-        switch (current_token_.kind()) {
-          // Parse declarations (<decl>)
-        case Token::Kind::kw_creg:
-          ret.emplace_back(parse_reg_decl(false));
-          break;
-        case Token::Kind::kw_qreg:
-          ret.emplace_back(parse_reg_decl(true));
-          break;
+        while (!current_token_.is(Token::Kind::eof)) {
+            switch (current_token_.kind()) {
+                    // Parse declarations (<decl>)
+                case Token::Kind::kw_creg:
+                    ret.emplace_back(parse_reg_decl(false));
+                    break;
+                case Token::Kind::kw_qreg:
+                    ret.emplace_back(parse_reg_decl(true));
+                    break;
 
-        case Token::Kind::kw_gate:
-          ret.emplace_back(parse_gate_decl());
-          break;
+                case Token::Kind::kw_gate:
+                    ret.emplace_back(parse_gate_decl());
+                    break;
 
-        case Token::Kind::kw_opaque:
-          ret.emplace_back(parse_opaque_decl());
-          break;
+                case Token::Kind::kw_opaque:
+                    ret.emplace_back(parse_opaque_decl());
+                    break;
 
-          // Parse quantum operations (<qop>)
-        case Token::Kind::identifier:
-        case Token::Kind::kw_cx:
-        case Token::Kind::kw_measure:
-        case Token::Kind::kw_reset:
-        case Token::Kind::kw_u:
-          ret.emplace_back(parse_qop());
-          break;
+                    // Parse quantum operations (<qop>)
+                case Token::Kind::identifier:
+                case Token::Kind::kw_cx:
+                case Token::Kind::kw_measure:
+                case Token::Kind::kw_reset:
+                case Token::Kind::kw_u:
+                    ret.emplace_back(parse_qop());
+                    break;
 
-        case Token::Kind::kw_barrier:
-          ret.emplace_back(parse_barrier());
-          break;
+                case Token::Kind::kw_barrier:
+                    ret.emplace_back(parse_barrier());
+                    break;
 
-        case Token::Kind::kw_if:
-          ret.emplace_back(parse_if());
-          break;
+                case Token::Kind::kw_if:
+                    ret.emplace_back(parse_if());
+                    break;
 
-        default:
-          current_token_.location().display(std::cerr);
-          std::cerr << ": expected a declaration or statement, but got ";
-          std::cerr << current_token_.kind() << "\n";;
+                default:
+                    current_token_.location().display(std::cerr);
+                    std::cerr
+                        << ": expected a declaration or statement, but got ";
+                    std::cerr << current_token_.kind() << "\n";
+                    ;
 
-          error_ = true;
-          break;
+                    error_ = true;
+                    break;
+            }
         }
-      }
 
-      return QASM(bits_, qubits_, reset_, std::move(ret));
+        return QASM(bits_, qubits_, reset_, std::move(ret));
     }
 
     /**
@@ -199,10 +200,10 @@ class Parser {
      * OPENQASM <nninteger> ;
      */
     void parse_header() {
-      consume_token();
-      expect_and_consume_token(Token::Kind::kw_openqasm);
-      expect_and_consume_token(Token::Kind::real);
-      expect_and_consume_token(Token::Kind::semicolon);
+        consume_token();
+        expect_and_consume_token(Token::Kind::kw_openqasm);
+        expect_and_consume_token(Token::Kind::real);
+        expect_and_consume_token(Token::Kind::semicolon);
     }
 
     /**
@@ -215,17 +216,17 @@ class Parser {
      * \return Unique pointer to a statement object
      */
     StatementPtr parse_reg_decl(bool quantum) {
-      auto loc = current_token_.location();
+        auto loc = current_token_.location();
 
-      consume_token();
-      auto identifier = expect_and_consume_token(Token::Kind::identifier);
-      expect_and_consume_token(Token::Kind::l_square);
-      auto size = expect_and_consume_token(Token::Kind::nninteger);
-      expect_and_consume_token(Token::Kind::r_square);
-      expect_and_consume_token(Token::Kind::semicolon);
+        consume_token();
+        auto identifier = expect_and_consume_token(Token::Kind::identifier);
+        expect_and_consume_token(Token::Kind::l_square);
+        auto size = expect_and_consume_token(Token::Kind::nninteger);
+        expect_and_consume_token(Token::Kind::r_square);
+        expect_and_consume_token(Token::Kind::semicolon);
 
-      quantum ? qubits_ += (int)size : bits_ += (int)size;
-      return StatementPtr(new RegisterDecl(loc, identifier, quantum, size));
+        quantum ? qubits_ += (int) size : bits_ += (int) size;
+        return StatementPtr(new RegisterDecl(loc, identifier, quantum, size));
     }
 
     /**
@@ -237,29 +238,30 @@ class Parser {
      *            | gate <id> ( <idlist> ) <idlist> {
      *
      * \return Unique pointer to a statement object
-     */ 
+     */
     StatementPtr parse_gate_decl() {
-      auto loc = current_token_.location();
+        auto loc = current_token_.location();
 
-      consume_token();
-      auto identifier = expect_and_consume_token(Token::Kind::identifier);
+        consume_token();
+        auto identifier = expect_and_consume_token(Token::Kind::identifier);
 
-      std::vector<ident> c_params;
-      if (try_and_consume_token(Token::Kind::l_paren)) {
-        c_params = parse_idlist();
-        expect_and_consume_token(Token::Kind::r_paren);
-      }
+        std::vector<ident> c_params;
+        if (try_and_consume_token(Token::Kind::l_paren)) {
+            c_params = parse_idlist();
+            expect_and_consume_token(Token::Kind::r_paren);
+        }
 
-      auto q_params = parse_idlist();
+        auto q_params = parse_idlist();
 
-      expect_and_consume_token(Token::Kind::l_brace);
-      std::vector<GatePtr> body;
-      if (not try_and_consume_token(Token::Kind::r_brace)) {
-        body = parse_goplist();
-        expect_and_consume_token(Token::Kind::r_brace);
-      }
+        expect_and_consume_token(Token::Kind::l_brace);
+        std::vector<GatePtr> body;
+        if (not try_and_consume_token(Token::Kind::r_brace)) {
+            body = parse_goplist();
+            expect_and_consume_token(Token::Kind::r_brace);
+        }
 
-      return StatementPtr(new GateDecl(loc, identifier, false, c_params, q_params, std::move(body)));
+        return StatementPtr(new GateDecl(loc, identifier, false, c_params,
+                                         q_params, std::move(body)));
     }
 
     /**
@@ -267,26 +269,27 @@ class Parser {
      * \note <opaquedecl>
      *
      * <opaquedecl> = opaque <id> <idlist> ;
-     *              | opaque <id> ( ) <idlist> ; 
-     *              | opaque <id> ( <idlist> ) <idlist> ; 
+     *              | opaque <id> ( ) <idlist> ;
+     *              | opaque <id> ( <idlist> ) <idlist> ;
      *
      * \return Unique pointer to a statement object
-     */ 
+     */
     StatementPtr parse_opaque_decl() {
-      auto loc = current_token_.location();
+        auto loc = current_token_.location();
 
-      consume_token();
-      auto identifier = expect_and_consume_token(Token::Kind::identifier);
+        consume_token();
+        auto identifier = expect_and_consume_token(Token::Kind::identifier);
 
-      std::vector<ident> c_params;
-      if (try_and_consume_token(Token::Kind::l_paren)) {
-        c_params = parse_idlist();
-        expect_and_consume_token(Token::Kind::r_paren);
-      }
+        std::vector<ident> c_params;
+        if (try_and_consume_token(Token::Kind::l_paren)) {
+            c_params = parse_idlist();
+            expect_and_consume_token(Token::Kind::r_paren);
+        }
 
-      auto q_params = parse_idlist();
+        auto q_params = parse_idlist();
 
-      return StatementPtr(new GateDecl(loc, identifier, true, c_params, q_params, {}));
+        return StatementPtr(
+            new GateDecl(loc, identifier, true, c_params, q_params, {}));
     }
 
     /**
@@ -299,58 +302,59 @@ class Parser {
      * \return Vector of gate objects
      */
     std::vector<GatePtr> parse_goplist() {
-      std::vector<GatePtr> ret;
-      bool finished = false;
+        std::vector<GatePtr> ret;
+        bool finished = false;
 
-      while(!finished) {
-        switch (current_token_.kind()) {
-        case Token::Kind::kw_cx:
-        case Token::Kind::kw_u:
-        case Token::Kind::identifier:
-        case Token::Kind::kw_barrier:
-          ret.emplace_back(parse_gop());
-          break;
+        while (!finished) {
+            switch (current_token_.kind()) {
+                case Token::Kind::kw_cx:
+                case Token::Kind::kw_u:
+                case Token::Kind::identifier:
+                case Token::Kind::kw_barrier:
+                    ret.emplace_back(parse_gop());
+                    break;
 
-        default:
-          finished = true;
-          break;
+                default:
+                    finished = true;
+                    break;
+            }
         }
-      }
 
-      return ret;
+        return ret;
     }
 
     /**
      * \brief Parse a quantum operation
      * \note <qop>
      *
-     * <qop> = <gop> 
-     *       | measure <argument> -> <argument> ; 
+     * <qop> = <gop>
+     *       | measure <argument> -> <argument> ;
      *       | reset <argument> ;
      *
      * \return Unique pointer to a statement object
-     */ 
+     */
     StatementPtr parse_qop() {
-      switch (current_token_.kind()) {
-      case Token::Kind::kw_cx:
-      case Token::Kind::kw_u:
-      case Token::Kind::identifier:
-        return StatementPtr(parse_gop());
+        switch (current_token_.kind()) {
+            case Token::Kind::kw_cx:
+            case Token::Kind::kw_u:
+            case Token::Kind::identifier:
+                return StatementPtr(parse_gop());
 
-      case Token::Kind::kw_measure:
-        return parse_measure();
+            case Token::Kind::kw_measure:
+                return parse_measure();
 
-      case Token::Kind::kw_reset:
-        return parse_reset();
+            case Token::Kind::kw_reset:
+                return parse_reset();
 
-      default:
-        current_token_.location().display(std::cerr);
-        std::cerr << ": expected a quantum operation, but got ";
-        std::cerr << current_token_.kind() << "\n";;
+            default:
+                current_token_.location().display(std::cerr);
+                std::cerr << ": expected a quantum operation, but got ";
+                std::cerr << current_token_.kind() << "\n";
+                ;
 
-        error_ = true;
-        return nullptr;
-      }
+                error_ = true;
+                return nullptr;
+        }
     }
 
     /**
@@ -359,35 +363,36 @@ class Parser {
      *
      * <gop> = U ( <explist> ) <argument> ;
      *       | CX <argument> , <argument> ;
-     *       | <id> <anylist> ; 
+     *       | <id> <anylist> ;
      *       | <id> ( ) <anylist> ;
      *       | <id> ( <explist> ) <anylist> ;
      *       | barrier <idlist> ;
-     * 
+     *
      * \return Unique pointer to a gate object
      */
     GatePtr parse_gop() {
-      switch (current_token_.kind()) {
-      case Token::Kind::kw_u:
-        return parse_unitary();
+        switch (current_token_.kind()) {
+            case Token::Kind::kw_u:
+                return parse_unitary();
 
-      case Token::Kind::kw_cx:
-        return parse_cnot();
+            case Token::Kind::kw_cx:
+                return parse_cnot();
 
-      case Token::Kind::identifier:
-        return parse_gate_statement();
+            case Token::Kind::identifier:
+                return parse_gate_statement();
 
-      case Token::Kind::kw_barrier:
-        return parse_barrier();
+            case Token::Kind::kw_barrier:
+                return parse_barrier();
 
-      default:
-        current_token_.location().display(std::cerr);
-        std::cerr << ": expected a gate operator but got ";
-        std::cerr << current_token_.kind() << "\n";;
+            default:
+                current_token_.location().display(std::cerr);
+                std::cerr << ": expected a gate operator but got ";
+                std::cerr << current_token_.kind() << "\n";
+                ;
 
-        error_ = true;
-        return nullptr;
-      }
+                error_ = true;
+                return nullptr;
+        }
     }
 
     /**
@@ -400,18 +405,18 @@ class Parser {
      * \return Vector of identifiers
      */
     std::vector<ident> parse_idlist() {
-      std::vector<ident> ret;
-    
-      // doesn't accept empty lists
-      while (true) {
-        auto identifier = expect_and_consume_token(Token::Kind::identifier);
-        ret.push_back(identifier);
-        if (!try_and_consume_token(Token::Kind::comma)) {
-          break;
-        }
-      }
+        std::vector<ident> ret;
 
-      return ret;
+        // doesn't accept empty lists
+        while (true) {
+            auto identifier = expect_and_consume_token(Token::Kind::identifier);
+            ret.push_back(identifier);
+            if (!try_and_consume_token(Token::Kind::comma)) {
+                break;
+            }
+        }
+
+        return ret;
     }
 
     /**
@@ -424,65 +429,65 @@ class Parser {
      * \return Variable object
      */
     Varinfo parse_argument() {
-      auto loc = current_token_.location();
+        auto loc = current_token_.location();
 
-      auto id = expect_and_consume_token(Token::Kind::identifier);
-      if (try_and_consume_token(Token::Kind::l_square)) {
-        auto offset = expect_and_consume_token(Token::Kind::nninteger);
-        expect_and_consume_token(Token::Kind::r_square);
+        auto id = expect_and_consume_token(Token::Kind::identifier);
+        if (try_and_consume_token(Token::Kind::l_square)) {
+            auto offset = expect_and_consume_token(Token::Kind::nninteger);
+            expect_and_consume_token(Token::Kind::r_square);
 
-        return Varinfo(loc, id, offset);
-      }
+            return Varinfo(loc, id, offset);
+        }
 
-      return Varinfo(loc, id);
-    }	
+        return Varinfo(loc, id);
+    }
 
     /**
      * \brief Parse a list of variable expressions
      * \note <varlist>
      *
-     * <varlist> = <var> 
+     * <varlist> = <var>
      *           | <varlist> , <var>
      *
      * \return Vector of variable objects
      */
     std::vector<Varinfo> parse_anylist() {
-      std::vector<Varinfo> ret;
-    
-      // doesn't accept empty lists
-      while (true) {
-        auto arg = parse_argument();
-        ret.push_back(arg);
-        if (!try_and_consume_token(Token::Kind::comma)) {
-          break;
-        }
-      }
+        std::vector<Varinfo> ret;
 
-      return ret;
+        // doesn't accept empty lists
+        while (true) {
+            auto arg = parse_argument();
+            ret.push_back(arg);
+            if (!try_and_consume_token(Token::Kind::comma)) {
+                break;
+            }
+        }
+
+        return ret;
     }
 
     /**
      * \brief Parse a list of expressions
      * \note <explist>
      *
-     * <explist> = <exp> 
+     * <explist> = <exp>
      *           | <explist> , <exp>
      *
      * \return Vector of expressions
      */
     std::vector<ExprPtr> parse_explist() {
-      // doesn't accept empty lists
-      std::vector<ExprPtr> ret;
-    
-      while (true) {
-        auto exp = parse_exp();
-        ret.push_back(std::move(exp));
-        if (not try_and_consume_token(Token::Kind::comma)) {
-          break;
-        }
-      }
+        // doesn't accept empty lists
+        std::vector<ExprPtr> ret;
 
-      return ret;
+        while (true) {
+            auto exp = parse_exp();
+            ret.push_back(std::move(exp));
+            if (not try_and_consume_token(Token::Kind::comma)) {
+                break;
+            }
+        }
+
+        return ret;
     }
 
     /**
@@ -490,68 +495,69 @@ class Parser {
      * \note <exp>
      *
      * <exp> = <real> | <nninteger> | pi | <id>
-     *       | <exp> + <exp> | <exp> - <exp> 
-     *       | <exp> * <exp> | <exp> / <exp> 
-     *       | - <exp> 
+     *       | <exp> + <exp> | <exp> - <exp>
+     *       | <exp> * <exp> | <exp> / <exp>
+     *       | - <exp>
      *       | <exp> ^ <exp>
-     *       | ( <exp> ) 
+     *       | ( <exp> )
      *       | <unaryop> ( <exp> )
      *
      * \return Unique pointer to an expression object
      */
     ExprPtr parse_exp(int min_precedence = 1) {
-      auto loc = current_token_.location();
+        auto loc = current_token_.location();
 
-      auto lexp = parse_atom();
-      while (1) {
-        auto next_min_precedence = min_precedence;
+        auto lexp = parse_atom();
+        while (1) {
+            auto next_min_precedence = min_precedence;
 
-        switch (current_token_.kind()) {
-        case Token::Kind::plus:
-          if (min_precedence > 1) {
-            return lexp;
-          }
-          next_min_precedence = 2;
-          break;
+            switch (current_token_.kind()) {
+                case Token::Kind::plus:
+                    if (min_precedence > 1) {
+                        return lexp;
+                    }
+                    next_min_precedence = 2;
+                    break;
 
-        case Token::Kind::minus:
-          if (min_precedence > 1) {
-            return lexp;
-          }
-          next_min_precedence = 2;
-          break;
+                case Token::Kind::minus:
+                    if (min_precedence > 1) {
+                        return lexp;
+                    }
+                    next_min_precedence = 2;
+                    break;
 
-        case Token::Kind::star:
-          if (min_precedence > 2) {
-            return lexp;
-          }
-          next_min_precedence = 3;
-          break;
+                case Token::Kind::star:
+                    if (min_precedence > 2) {
+                        return lexp;
+                    }
+                    next_min_precedence = 3;
+                    break;
 
-        case Token::Kind::slash:
-          if (min_precedence > 2) {
-            return lexp;
-          }
-          next_min_precedence = 3;
-          break;
+                case Token::Kind::slash:
+                    if (min_precedence > 2) {
+                        return lexp;
+                    }
+                    next_min_precedence = 3;
+                    break;
 
-        case Token::Kind::caret:
-          if (min_precedence > 3) {
-            return lexp;
-          }
-          next_min_precedence = 4;
-          break;
+                case Token::Kind::caret:
+                    if (min_precedence > 3) {
+                        return lexp;
+                    }
+                    next_min_precedence = 4;
+                    break;
 
-        default:
-          return lexp;
+                default:
+                    return lexp;
+            }
+
+            auto bop = parse_binaryop();
+            auto rexp = parse_exp(next_min_precedence);
+            lexp =
+                ExprPtr(new BExpr(loc, std::move(lexp), bop, std::move(rexp)));
         }
 
-        auto bop = parse_binaryop();
-        auto rexp = parse_exp(next_min_precedence);
-        lexp = ExprPtr(new BExpr(loc, std::move(lexp), bop, std::move(rexp)));
-      }
-
-      return lexp;
+        return lexp;
     }
 
     /**
@@ -561,63 +567,63 @@ class Parser {
      * \return Unique pointer to an expression object
      */
     ExprPtr parse_atom() {
-      auto loc = current_token_.location();
+        auto loc = current_token_.location();
 
-      switch (current_token_.kind()) {
-      case Token::Kind::l_paren: {
-        consume_token();
-        auto exp = parse_exp();
-        expect_and_consume_token(Token::Kind::r_paren);
-        return exp;
-      }
+        switch (current_token_.kind()) {
+            case Token::Kind::l_paren: {
+                consume_token();
+                auto exp = parse_exp();
+                expect_and_consume_token(Token::Kind::r_paren);
+                return exp;
+            }
 
-      case Token::Kind::minus: {
-        consume_token();
-        auto exp = parse_exp();
-        return ExprPtr(new UExpr(loc, UnaryOp::Neg, std::move(exp)));
-      }
+            case Token::Kind::minus: {
+                consume_token();
+                auto exp = parse_exp();
+                return ExprPtr(new UExpr(loc, UnaryOp::Neg, std::move(exp)));
+            }
 
-      case Token::Kind::identifier: {
-        auto identifier = current_token_;
-        consume_token();
-        return ExprPtr(new VarExpr(loc, identifier));
-      }
-      case Token::Kind::nninteger: {
-        auto integer = current_token_;
-        consume_token();
-        return ExprPtr(new IntExpr(loc, integer));
-      }
-      case Token::Kind::kw_pi:
-        consume_token();
-        return ExprPtr(new PiExpr(loc));
-      case Token::Kind::real: {
-        auto real = current_token_;
-        consume_token();
-        return ExprPtr(new RealExpr(loc, real));
-      }
+            case Token::Kind::identifier: {
+                auto identifier = current_token_;
+                consume_token();
+                return ExprPtr(new VarExpr(loc, identifier));
+            }
+            case Token::Kind::nninteger: {
+                auto integer = current_token_;
+                consume_token();
+                return ExprPtr(new IntExpr(loc, integer));
+            }
+            case Token::Kind::kw_pi:
+                consume_token();
+                return ExprPtr(new PiExpr(loc));
+            case Token::Kind::real: {
+                auto real = current_token_;
+                consume_token();
+                return ExprPtr(new RealExpr(loc, real));
+            }
 
-      case Token::Kind::kw_sin:
-      case Token::Kind::kw_cos:
-      case Token::Kind::kw_tan:
-      case Token::Kind::kw_exp:
-      case Token::Kind::kw_ln:
-      case Token::Kind::kw_sqrt: {
-        auto op = parse_unaryop();
-        expect_and_consume_token(Token::Kind::l_paren);
-        auto exp = parse_exp();
-        expect_and_consume_token(Token::Kind::r_paren);
-        return ExprPtr(new UExpr(loc, op, std::move(exp)));
-      }
+            case Token::Kind::kw_sin:
+            case Token::Kind::kw_cos:
+            case Token::Kind::kw_tan:
+            case Token::Kind::kw_exp:
+            case Token::Kind::kw_ln:
+            case Token::Kind::kw_sqrt: {
+                auto op = parse_unaryop();
+                expect_and_consume_token(Token::Kind::l_paren);
+                auto exp = parse_exp();
+                expect_and_consume_token(Token::Kind::r_paren);
+                return ExprPtr(new UExpr(loc, op, std::move(exp)));
+            }
 
-      default:
-        current_token_.location().display(std::cerr);
-        std::cerr << ": expected an atomic expression but got ";
-        std::cerr << current_token_.kind() << "\n";;
+            default:
+                current_token_.location().display(std::cerr);
+                std::cerr << ": expected an atomic expression but got ";
+                std::cerr << current_token_.kind() << "\n";
+                ;
 
-        error_ = true;
-        return nullptr;
-      }
-
+                error_ = true;
+                return nullptr;
+        }
     }
 
     /**
@@ -627,30 +633,32 @@ class Parser {
      * \return Binary operator
      */
     BinaryOp parse_binaryop() {
-      switch (current_token_.kind()) { 
-      case Token::Kind::plus:
-        consume_token();
-        return BinaryOp::Plus;
-      case Token::Kind::minus:
-        consume_token();
-        return BinaryOp::Minus;
-      case Token::Kind::star:
-        consume_token();
-        return BinaryOp::Times;
-      case Token::Kind::slash:
-        consume_token();
-        return BinaryOp::Divide;
-      case Token::Kind::caret:
-        consume_token();
-        return BinaryOp::Pow;
-      default:
-        current_token_.location().display(std::cerr);
-        std::cerr << ": expected a binary operator but got ";
-        std::cerr << current_token_.kind() << "\n";;
+        switch (current_token_.kind()) {
+            case Token::Kind::plus:
+                consume_token();
+                return BinaryOp::Plus;
+            case Token::Kind::minus:
+                consume_token();
+                return BinaryOp::Minus;
+            case Token::Kind::star:
+                consume_token();
+                return BinaryOp::Times;
+            case Token::Kind::slash:
+                consume_token();
+                return BinaryOp::Divide;
+            case Token::Kind::caret:
+                consume_token();
+                return BinaryOp::Pow;
+            default:
+                current_token_.location().display(std::cerr);
+                std::cerr << ": expected a binary operator but got ";
+                std::cerr << current_token_.kind() << "\n";
+                ;
 
-        error_ = true;
-        return BinaryOp::Plus; // This will be fixed when we change to exceptions
-      }
+                error_ = true;
+                return BinaryOp::Plus; // This will be fixed when we change to
+                                       // exceptions
+        }
     }
 
     /**
@@ -660,33 +668,35 @@ class Parser {
      * \return Unary operator
      */
     UnaryOp parse_unaryop() {
-      switch (current_token_.kind()) { 
-      case Token::Kind::kw_sin:
-        consume_token();
-        return UnaryOp::Sin;
-      case Token::Kind::kw_cos:
-        consume_token();
-        return UnaryOp::Cos;
-      case Token::Kind::kw_tan:
-        consume_token();
-        return UnaryOp::Tan;
-      case Token::Kind::kw_exp:
-        consume_token();
-        return UnaryOp::Exp;
-      case Token::Kind::kw_ln:
-        consume_token();
-        return UnaryOp::Ln;
-      case Token::Kind::kw_sqrt:
-        consume_token();
-        return UnaryOp::Sqrt;
-      default:
-        current_token_.location().display(std::cerr);
-        std::cerr << ": expected a unary operator but got ";
-        std::cerr << current_token_.kind() << "\n";;
+        switch (current_token_.kind()) {
+            case Token::Kind::kw_sin:
+                consume_token();
+                return UnaryOp::Sin;
+            case Token::Kind::kw_cos:
+                consume_token();
+                return UnaryOp::Cos;
+            case Token::Kind::kw_tan:
+                consume_token();
+                return UnaryOp::Tan;
+            case Token::Kind::kw_exp:
+                consume_token();
+                return UnaryOp::Exp;
+            case Token::Kind::kw_ln:
+                consume_token();
+                return UnaryOp::Ln;
+            case Token::Kind::kw_sqrt:
+                consume_token();
+                return UnaryOp::Sqrt;
+            default:
+                current_token_.location().display(std::cerr);
+                std::cerr << ": expected a unary operator but got ";
+                std::cerr << current_token_.kind() << "\n";
+                ;
 
-        error_ = true;
-        return UnaryOp::Neg; // This will be fixed when we change to exceptions
-      }
+                error_ = true;
+                return UnaryOp::Neg; // This will be fixed when we change to
+                                     // exceptions
+        }
     }
 
     /**
@@ -697,15 +707,15 @@ class Parser {
      * \return Unique pointer to a gate object
      */
     GatePtr parse_cnot() {
-      auto loc = current_token_.location();
-    
-      expect_and_consume_token(Token::Kind::kw_cx);
-      auto ctrl = parse_argument();
-      expect_and_consume_token(Token::Kind::comma);
-      auto tgt = parse_argument();
-      expect_and_consume_token(Token::Kind::semicolon);
+        auto loc = current_token_.location();
 
-      return GatePtr(new CNOTGate(loc, ctrl, tgt));
+        expect_and_consume_token(Token::Kind::kw_cx);
+        auto ctrl = parse_argument();
+        expect_and_consume_token(Token::Kind::comma);
+        auto tgt = parse_argument();
+        expect_and_consume_token(Token::Kind::semicolon);
+
+        return GatePtr(new CNOTGate(loc, ctrl, tgt));
     }
 
     /**
@@ -716,20 +726,21 @@ class Parser {
      * \return Unique pointer to a gate object
      */
     GatePtr parse_unitary() {
-      auto loc = current_token_.location();
+        auto loc = current_token_.location();
 
-      expect_and_consume_token(Token::Kind::kw_u);
-      expect_and_consume_token(Token::Kind::l_paren);
-      auto theta = parse_exp();
-      expect_and_consume_token(Token::Kind::comma);
-      auto phi = parse_exp();
-      expect_and_consume_token(Token::Kind::comma);
-      auto lambda = parse_exp();
-      expect_and_consume_token(Token::Kind::r_paren);
-      auto arg = parse_argument();
-      expect_and_consume_token(Token::Kind::semicolon);
+        expect_and_consume_token(Token::Kind::kw_u);
+        expect_and_consume_token(Token::Kind::l_paren);
+        auto theta = parse_exp();
+        expect_and_consume_token(Token::Kind::comma);
+        auto phi = parse_exp();
+        expect_and_consume_token(Token::Kind::comma);
+        auto lambda = parse_exp();
+        expect_and_consume_token(Token::Kind::r_paren);
+        auto arg = parse_argument();
+        expect_and_consume_token(Token::Kind::semicolon);
 
-      return GatePtr(new UGate(loc, std::move(theta), std::move(phi), std::move(lambda), arg));
+        return GatePtr(new UGate(loc, std::move(theta), std::move(phi),
+                                 std::move(lambda), arg));
     }
 
     /**
@@ -741,19 +752,19 @@ class Parser {
      * \return Unique pointer to a gate object
      */
     GatePtr parse_gate_statement() {
-      auto loc = current_token_.location();
+        auto loc = current_token_.location();
 
-      auto id = expect_and_consume_token(Token::Kind::identifier);
-      std::vector<ExprPtr> c_args;
-      if (try_and_consume_token(Token::Kind::l_paren)) {
-        c_args = parse_explist();
-        expect_and_consume_token(Token::Kind::r_paren);
-      }
+        auto id = expect_and_consume_token(Token::Kind::identifier);
+        std::vector<ExprPtr> c_args;
+        if (try_and_consume_token(Token::Kind::l_paren)) {
+            c_args = parse_explist();
+            expect_and_consume_token(Token::Kind::r_paren);
+        }
 
-      auto q_args = parse_anylist();
-      expect_and_consume_token(Token::Kind::semicolon);
+        auto q_args = parse_anylist();
+        expect_and_consume_token(Token::Kind::semicolon);
 
-      return GatePtr(new DeclaredGate(loc, id, std::move(c_args), q_args));
+        return GatePtr(new DeclaredGate(loc, id, std::move(c_args), q_args));
     }
 
     /**
@@ -764,15 +775,15 @@ class Parser {
      * \return Unique pointer to a statement object
      */
     StatementPtr parse_measure() {
-      auto loc = current_token_.location();
+        auto loc = current_token_.location();
 
-      expect_and_consume_token(Token::Kind::kw_measure);
-      auto q_arg = parse_argument();
-      expect_and_consume_token(Token::Kind::arrow);
-      auto c_arg = parse_argument();
-      expect_and_consume_token(Token::Kind::semicolon);
+        expect_and_consume_token(Token::Kind::kw_measure);
+        auto q_arg = parse_argument();
+        expect_and_consume_token(Token::Kind::arrow);
+        auto c_arg = parse_argument();
+        expect_and_consume_token(Token::Kind::semicolon);
 
-      return StatementPtr(new MeasureStatement(loc, q_arg, c_arg));
+        return StatementPtr(new MeasureStatement(loc, q_arg, c_arg));
     }
 
     /**
@@ -783,14 +794,14 @@ class Parser {
      * \return Unique pointer to a statement object
      */
     StatementPtr parse_reset() {
-      auto loc = current_token_.location();
+        auto loc = current_token_.location();
 
-      expect_and_consume_token(Token::Kind::kw_reset);
-      auto arg = parse_argument();
-      expect_and_consume_token(Token::Kind::semicolon);
+        expect_and_consume_token(Token::Kind::kw_reset);
+        auto arg = parse_argument();
+        expect_and_consume_token(Token::Kind::semicolon);
 
-      reset_ = true;
-      return StatementPtr(new ResetStatement(loc, arg));
+        reset_ = true;
+        return StatementPtr(new ResetStatement(loc, arg));
     }
 
     /**
@@ -801,13 +812,13 @@ class Parser {
      * \return Unique pointer to a gate object
      */
     GatePtr parse_barrier() {
-      auto loc = current_token_.location();
+        auto loc = current_token_.location();
 
-      expect_and_consume_token(Token::Kind::kw_barrier);
-      auto args = parse_anylist();
-      expect_and_consume_token(Token::Kind::semicolon);
+        expect_and_consume_token(Token::Kind::kw_barrier);
+        auto args = parse_anylist();
+        expect_and_consume_token(Token::Kind::semicolon);
 
-      return GatePtr(new BarrierGate(loc, args));
+        return GatePtr(new BarrierGate(loc, args));
     }
 
     /**
@@ -818,19 +829,19 @@ class Parser {
      * \return Unique pointer to a statement object
      */
     StatementPtr parse_if() {
-      auto loc = current_token_.location();
+        auto loc = current_token_.location();
 
-      expect_and_consume_token(Token::Kind::kw_if);
-      expect_and_consume_token(Token::Kind::l_paren);
-      auto identifier = expect_and_consume_token(Token::Kind::identifier);
-      expect_and_consume_token(Token::Kind::equalequal);
-      auto integer = expect_and_consume_token(Token::Kind::nninteger);
-      expect_and_consume_token(Token::Kind::r_paren);
-      auto op = parse_qop();
+        expect_and_consume_token(Token::Kind::kw_if);
+        expect_and_consume_token(Token::Kind::l_paren);
+        auto identifier = expect_and_consume_token(Token::Kind::identifier);
+        expect_and_consume_token(Token::Kind::equalequal);
+        auto integer = expect_and_consume_token(Token::Kind::nninteger);
+        expect_and_consume_token(Token::Kind::r_paren);
+        auto op = parse_qop();
 
-      return StatementPtr(new IfStatement(loc, identifier, integer, std::move(op)));
+        return StatementPtr(
+            new IfStatement(loc, identifier, integer, std::move(op)));
     }
-
 };
 
 } /* namespace qasm */
