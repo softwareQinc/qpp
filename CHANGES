@@ -24,6 +24,7 @@ In progress - pre-release
           qpp::PeriodicBoundaryLattice - Qudits on a multi-dimensional
                                          orthogonal grid with periodic boundary
                                          conditions
+    - Added preliminary support for qASM. Requires a C++17-compliant compiler.
 
 Version 1.3 - 25 July 2019
     - Minimum required CMake version is now 3.2

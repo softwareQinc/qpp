@@ -615,6 +615,61 @@ class InvalidIterator : public Exception {
     using Exception::Exception;
 };
 
+/**
+ * \class qpp::exception::FileNotFound
+ * \brief File not found
+ */
+class FileNotFound : public Exception {
+  public:
+    std::string description() const override { return "File not found"; }
+
+    using Exception::Exception;
+};
+
+/**
+ * \class qpp::exception::LexicalError
+ * \brief Lexical error
+ */
+class LexicalError : public Exception {
+  public:
+    std::string description() const override { return "Lexical error"; }
+
+    using Exception::Exception;
+};
+
+/**
+ * \class qpp::exception::ParseError
+ * \brief Parse error
+ */
+class ParseError : public Exception {
+  public:
+    std::string description() const override { return "Parse error"; }
+
+    using Exception::Exception;
+};
+
+/**
+ * \class qpp::exception::SemanticError
+ * \brief Semantic error
+ */
+class SemanticError : public Exception {
+  public:
+    std::string description() const override { return "Semantic error"; }
+
+    using Exception::Exception;
+};
+
+/**
+ * \class qpp::exception::Undeclared
+ * \brief Undeclared variable
+ */
+class Undeclared : public Exception {
+  public:
+    std::string description() const override { return "Undeclared variable"; }
+
+    using Exception::Exception;
+};
+
 } /* namespace exception */
 } /* namespace qpp */
 
