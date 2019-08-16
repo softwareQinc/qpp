@@ -491,6 +491,14 @@ class QEngine : public IDisplay, public IJSON {
                     for (auto&& elem : measurements[m_ip].target_)
                         set_measured_(elem);
                     break;
+                case QCircuit::MeasureType::RESET:
+                    std::tie(std::ignore, std::ignore, st_.psi_) =
+                        measure_seq(st_.psi_, target_rel_pos, qc_->get_d());
+                    break;
+                case QCircuit::MeasureType::RESET_MANY:
+                    std::tie(std::ignore, std::ignore, st_.psi_) =
+                        measure_seq(st_.psi_, target_rel_pos, qc_->get_d());
+                    break;
             } // end switch on measurement type
         }     // end else if measurement step
 

@@ -267,6 +267,8 @@ class QCircuit : public IDisplay, public IJSON {
         MEASURE_V_MANY, ///< joint measurement of multiple qudits in the
                         ///< orthonormal basis or rank-1 projectors specified
                         //< by the columns of the matrix \a V
+        RESET,          ///< resets single qudit
+        RESET_MANY,     ///< resets multiple qudits
     };
 
     /**
@@ -295,6 +297,11 @@ class QCircuit : public IDisplay, public IJSON {
             case MeasureType::MEASURE_V_MANY:
                 os << "MEASURE_V_MANY";
                 break;
+            case MeasureType::RESET:
+                os << "RESET";
+                break;
+            case MeasureType::RESET_MANY:
+                os << "RESET_MANY";
         }
 
         return os;
@@ -345,7 +352,9 @@ class QCircuit : public IDisplay, public IJSON {
                                     const MeasureStep& measure_step) {
         os << measure_step.measurement_type_ << ", ";
         os << "target = " << disp(measure_step.target_, ", ") << ", ";
-        os << "c_reg = " << measure_step.c_reg_ << ", ";
+        if (measure_step.measurement_type_ != MeasureType::RESET &&
+            measure_step.measurement_type_ != MeasureType::RESET_MANY)
+            os << "c_reg = " << measure_step.c_reg_ << ", ";
         os << "name = " << '\"' << measure_step.name_ << '\"';
 
         return os;
@@ -473,7 +482,13 @@ class QCircuit : public IDisplay, public IJSON {
                     idx pos =
                         std::distance(std::begin(value_type_qc_->measurements_),
                                       measurements_ip_);
-                    os << "|> " << value_type_qc_->get_measurements_()[pos];
+                    if (value_type_qc_->measurements_[pos].measurement_type_ !=
+                            MeasureType::RESET &&
+                        value_type_qc_->measurements_[pos].measurement_type_ !=
+                            MeasureType::RESET_MANY)
+                        os << "|> ";
+
+                    os << value_type_qc_->get_measurements_()[pos];
                 }
                 // no-op
                 else if (type_ == StepType::NOP) {
@@ -2375,7 +2390,8 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::measureZ()");
             // qudit was measured before
             if (get_measured(target))
-                throw exception::QuditAlreadyMeasured("qpp:QCircuit::measureZ");
+                throw exception::QuditAlreadyMeasured(
+                    "qpp:QCircuit::measureZ()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -2475,7 +2491,8 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::measureV()");
             // qudit was measured before
             if (get_measured(target))
-                throw exception::QuditAlreadyMeasured("qpp:QCircuit::measureV");
+                throw exception::QuditAlreadyMeasured(
+                    "qpp:QCircuit::measureV()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -2535,7 +2552,7 @@ class QCircuit : public IDisplay, public IJSON {
             for (auto&& elem : target)
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuit::measureV");
+                        "qpp::QCircuit::measureV()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -2565,6 +2582,82 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit& nop() {
         step_types_.emplace_back(StepType::NOP);
+
+        return *this;
+    }
+
+    /**
+     * \brief Resets single qudit by measuring it non-destructively in the
+     * computational basis and discarding the measurement result
+     *
+     * \param target Qudit index
+     * \param name Optional name, default is "reset"
+     * \return Reference to the current instance
+    */
+    QCircuit& reset(idx target, std::string name = {}) {
+        // EXCEPTION CHECKS
+
+        try {
+            // resetting non-existing qudit
+            if (target >= nq_)
+                throw exception::OutOfRange("qpp::QCircuit::reset()");
+            // qudit was measured before
+            if (get_measured(target))
+                throw exception::QuditAlreadyMeasured("qpp:QCircuit::reset()");
+        } catch (exception::Exception&) {
+            std::cerr << "At STEP " << get_step_count() << "\n";
+            throw;
+        }
+        // END EXCEPTION CHECKS
+
+        if (name.empty())
+            name = "reset";
+        measurements_.emplace_back(MeasureType::RESET,
+                                   std::vector<std::size_t>{},
+                                   std::vector<idx>{target}, 0, name);
+        step_types_.emplace_back(StepType::MEASUREMENT);
+        ++measurement_count_[name];
+
+        return *this;
+    }
+
+    // Z measurement of multiple qudits
+    /**
+     * \brief Resets multiple qudits by measuring them non-destructively in the
+     * computational basis and discarding the measurement results
+     *
+     * \param target Target qudit indexes that are reset
+     * \param name Optional measurement name, default is "reset"
+     * \return Reference to the current instance
+     */
+    QCircuit& reset(const std::vector<idx>& target, std::string name = {}) {
+        // EXCEPTION CHECKS
+
+        try {
+            // check valid target
+            if (target.empty())
+                throw exception::ZeroSize("qpp::QCircuit::reset()");
+            for (auto&& elem : target) {
+                // resetting non-existing qudit
+                if (elem >= nq_)
+                    throw exception::OutOfRange("qpp::QCircuit::reset()");
+                // qudit was measured before
+                if (get_measured(elem))
+                    throw exception::QuditAlreadyMeasured(
+                        "qpp:QCircuit::reset()");
+            }
+        } catch (exception::Exception&) {
+            std::cerr << "At STEP " << get_step_count() << "\n";
+            throw;
+        }
+        // END EXCEPTION CHECKS
+
+        if (name.empty())
+            name = "reset";
+        measurements_.emplace_back(MeasureType::RESET_MANY,
+                                   std::vector<std::size_t>{}, target, 0, name);
+        step_types_.emplace_back(StepType::MEASUREMENT);
+        ++measurement_count_[name];
 
         return *this;
     }
@@ -2615,8 +2708,8 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Appends a quantum circuit description to the current one
      *
-     * \note If qudit indexes of the added quantum circuit description do not
-     * totally overlap with the indexes of the current quantum circuit
+     * \note If the qudit indexes of the added quantum circuit description do
+     * not totally overlap with the indexes of the current quantum circuit
      * description, then the required number of additional qudits are
      * automatically added to the current quantum circuit description
      *
@@ -2872,9 +2965,14 @@ class QCircuit : public IDisplay, public IJSON {
                 ss.clear();
                 ss << disp(measurements_[pos].target_, ", ");
                 result += "\"target\" : " + ss.str() + ", ";
-                result +=
-                    "\"c_reg\" : " + std::to_string(measurements_[pos].c_reg_) +
-                    ", ";
+
+                if (measurements_[pos].measurement_type_ !=
+                        MeasureType::RESET &&
+                    measurements_[pos].measurement_type_ !=
+                        MeasureType::RESET_MANY)
+                    result += "\"c_reg\" : " +
+                              std::to_string(measurements_[pos].c_reg_) + ", ";
+
                 result += "\"name\" : ";
                 result += "\"" + measurements_[pos].name_ + "\"" + "}";
 
