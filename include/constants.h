@@ -117,9 +117,9 @@ inline cplx omega(idx D) {
  * qpp_measure_seq() etc.
  */
 enum {
-    RES,  ///< Measurement result(s)
-    PROB, ///< Probabilit(y)/(ies)
-    ST,   ///< Output state(s)
+    RES = 0,  ///< Measurement result(s)
+    PROB = 1, ///< Probabilit(y)/(ies)
+    ST = 2,   ///< Output state(s)
 };
 
 } /* namespace qpp */
