@@ -95,12 +95,12 @@ Version 1.2 - 10 February 2019
       JSON serialization support
     - Added new classes in the new header file "classes/circuits.h" for
       simulating qudit quantum circuits:
-          - qpp::QCircuit - Quantum circuit description, does not effectively 
+          qpp::QCircuit - Quantum circuit description, does not effectively
                             perform any operations
-          - qpp::QEngine  - Quantum engine for simulation of quantum circuits
+          qpp::QEngine  - Quantum engine for simulation of quantum circuits
     - Added new circuit simulator examples in "examples/circuits":
-          - teleport_qubit_circuit.cpp - qubit teleportation circuit example
-          - teleport_qudit_circuit.cpp - qudit teleportation circuit example
+          teleport_qubit_circuit.cpp - qubit teleportation circuit example
+          teleport_qudit_circuit.cpp - qudit teleportation circuit example
     - Removed qpp::eps constant from "constants.h", as one should simply use
       direct comparison with 0 when dealing with small doubles
     - Added support for hashing Eigen matrixes/vectors/expressions via
@@ -245,6 +245,7 @@ Version 0.8.6 - 1 November 2015
     - Fixed serious bug in qpp::applyCTRL(), which was failing before for
       control gates with 2 or more controls. Added unit test in
       "unit_tests/testing.cpp".
+    - Removed "macros.h" preprocessor debug macros header added in v0.8.4
 
 Version 0.8.4 - 14 October 2015
     - Added "macros.h" preprocessor debug macros header, containing:
@@ -253,7 +254,7 @@ Version 0.8.4 - 14 October 2015
           ERROR(x)   - std::cerr << (x)
           ERRORLN(x) - std::cerr << (x) << std::endl
     - Added new functions in "operations.h":
-          qpp::ip()  - Generalized inner product
+          qpp::ip() - Generalized inner product
     - Modified qpp::measure() so that the output consists of pure states
       whenever the input is a pure state and the measurement operators are
       rank-one POVMs (technically rank-one Kraus operators). Includes basis

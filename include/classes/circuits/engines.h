@@ -585,7 +585,7 @@ class QEngine : public IDisplay, public IJSON {
 
         std::ostringstream ss;
 
-        result += "\"measured\": ";
+        result += "\"measured (destructive)\": ";
         ss << disp(get_measured(), ", ");
         result += ss.str();
 
@@ -645,7 +645,8 @@ class QEngine : public IDisplay, public IJSON {
      * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
-        os << "measured: " << disp(get_measured(), ", ") << '\n';
+        os << "measured (destructive): " << disp(get_measured(), ", ")
+           << '\n';
         os << "last probs: " << disp(get_probs(), ", ") << '\n';
         os << "last dits: " << disp(get_dits(), ", ");
 
