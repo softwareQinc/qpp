@@ -91,7 +91,7 @@ class Exception : public std::exception {
         msg_ += "In ";
         msg_ += where_;
         msg_ += ": ";
-        msg_ += this->description();
+        msg_ += description();
         msg_ += "!";
 
         return msg_.c_str();

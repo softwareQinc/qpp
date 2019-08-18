@@ -223,7 +223,7 @@ class States final : public internal::Singleton<const States> // const Singleton
             throw exception::OutOfRange("qpp::States::minus()");
         // END EXCEPTION CHECKS
 
-        return kronpow(this->x1, n);
+        return kronpow(x1, n);
     }
 
   private:

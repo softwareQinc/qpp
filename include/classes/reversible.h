@@ -112,9 +112,9 @@ class Dynamic_bitset : public IDisplay {
      */
     idx count() const noexcept {
         idx result = 0;
-        idx bitset_size = this->size();
+        idx bitset_size = size();
         for (idx i = 0; i < bitset_size; ++i) {
-            if (this->get(i))
+            if (get(i))
                 ++result;
         }
 
@@ -138,7 +138,7 @@ class Dynamic_bitset : public IDisplay {
      */
     bool none() const noexcept {
         bool result = true;
-        idx bitset_storage_size = this->storage_size();
+        idx bitset_storage_size = storage_size();
         for (idx i = 0; i < bitset_storage_size; ++i) {
             if (v_[i]) {
                 return false;
@@ -155,7 +155,7 @@ class Dynamic_bitset : public IDisplay {
      */
     bool all() const noexcept {
         bool result = true;
-        idx bitset_storage_size = this->storage_size();
+        idx bitset_storage_size = storage_size();
         for (idx i = 0; i < bitset_storage_size; ++i) {
             if (~v_[i]) {
                 return false;
@@ -170,7 +170,7 @@ class Dynamic_bitset : public IDisplay {
      *
      * \return True if any of the bits is set
      */
-    bool any() const noexcept { return !(this->none()); }
+    bool any() const noexcept { return !(none()); }
 
     /* setters */
     /**
@@ -195,7 +195,7 @@ class Dynamic_bitset : public IDisplay {
      * \return Reference to the current instance
      */
     Dynamic_bitset& set() noexcept {
-        idx bitset_storage_size = this->storage_size();
+        idx bitset_storage_size = storage_size();
         for (idx i = 0; i < bitset_storage_size; ++i) {
             v_[i] = ~0;
         }
@@ -216,7 +216,7 @@ class Dynamic_bitset : public IDisplay {
         std::mt19937 gen{rd()};
         std::bernoulli_distribution d{p};
 
-        this->set(pos, d(gen));
+        set(pos, d(gen));
 
         return *this;
     }
@@ -228,7 +228,7 @@ class Dynamic_bitset : public IDisplay {
      * \return Reference to the current instance
      */
     Dynamic_bitset& rand(double p = 0.5) {
-        idx bitset_size = this->size();
+        idx bitset_size = size();
         for (idx i = 0; i < bitset_size; ++i) {
             this->rand(i, p);
         }
@@ -254,7 +254,7 @@ class Dynamic_bitset : public IDisplay {
      * \return Reference to the current instance
      */
     Dynamic_bitset& reset() noexcept {
-        idx bitset_storage_size = this->storage_size();
+        idx bitset_storage_size = storage_size();
         for (idx i = 0; i < bitset_storage_size; ++i) {
             v_[i] = 0;
         }
@@ -280,7 +280,7 @@ class Dynamic_bitset : public IDisplay {
      * \return Reference to the current instance
      */
     Dynamic_bitset& flip() noexcept {
-        idx bitset_storage_size = this->storage_size();
+        idx bitset_storage_size = storage_size();
         for (idx i = 0; i < bitset_storage_size; ++i) {
             v_[i] = ~v_[i];
         }
@@ -296,9 +296,9 @@ class Dynamic_bitset : public IDisplay {
      * \return True if the bitsets are equal (bit by bit), false otherwise
      */
     bool operator==(const Dynamic_bitset& rhs) const noexcept {
-        assert(this->size() == rhs.size());
+        assert(size() == rhs.size());
         bool result = true;
-        idx n = std::min(this->storage_size(), rhs.storage_size());
+        idx n = std::min(storage_size(), rhs.storage_size());
         for (idx i = 0; i < n; ++i) {
             if (v_[i] != rhs.v_[i]) {
                 return false;
@@ -327,9 +327,9 @@ class Dynamic_bitset : public IDisplay {
      */
     idx operator-(const Dynamic_bitset& rhs) const noexcept {
         idx result = 0;
-        idx bitset_size = this->size();
+        idx bitset_size = size();
         for (idx i = 0; i < bitset_size; ++i) {
-            if (this->get(i) != rhs.get(i))
+            if (get(i) != rhs.get(i))
                 ++result;
         }
 
@@ -352,11 +352,11 @@ class Dynamic_bitset : public IDisplay {
     std::basic_string<CharT, Traits, Allocator>
     to_string(CharT zero = CharT('0'), CharT one = CharT('1')) const {
         std::basic_string<CharT, Traits, Allocator> result;
-        idx bitset_size = this->size();
+        idx bitset_size = size();
         result.resize(bitset_size);
 
         for (idx i = bitset_size; i-- > 0;) {
-            if (!this->get(i)) {
+            if (!get(i)) {
                 result[bitset_size - i - 1] = zero;
             } else {
                 result[bitset_size - i - 1] = one;
@@ -374,9 +374,9 @@ class Dynamic_bitset : public IDisplay {
      * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
-        idx bitset_size = this->size();
+        idx bitset_size = size();
         for (idx i = bitset_size; i-- > 0;) {
-            os << this->get(i);
+            os << get(i);
         }
 
         return os;
@@ -409,9 +409,8 @@ class Bit_circuit : public Dynamic_bitset {
      * \param dynamic_bitset Dynamic bitset
      */
     explicit Bit_circuit(const Dynamic_bitset& dynamic_bitset)
-        : Dynamic_bitset{dynamic_bitset}, bNOT_{this->size()},
-          bCNOT_{this->size()}, bSWAP_{this->size()}, bTOF_{this->size()},
-          bFRED_{this->size()}, btotal_{this->size()} {}
+        : Dynamic_bitset{dynamic_bitset}, bNOT_{size()}, bCNOT_{size()},
+          bSWAP_{size()}, bTOF_{size()}, bFRED_{size()}, btotal_{size()} {}
 
     /**
      * \brief Bit flip
@@ -421,7 +420,7 @@ class Bit_circuit : public Dynamic_bitset {
      * \return Reference to the current instance
      */
     Bit_circuit& X(idx i) {
-        this->NOT(i);
+        NOT(i);
 
         return *this;
     }
@@ -439,7 +438,7 @@ class Bit_circuit : public Dynamic_bitset {
      * \return Reference to the current instance
      */
     Bit_circuit& NOT(idx i) {
-        this->flip(i);
+        flip(i);
         ++count_["NOT"];
         ++count_["total"];
 
@@ -574,9 +573,9 @@ class Bit_circuit : public Dynamic_bitset {
      * \return Reference to the current instance
      */
     Bit_circuit& SWAP(idx i, idx j) {
-        if (this->get(i) != this->get(j)) {
-            this->X(i);
-            this->X(j);
+        if (get(i) != get(j)) {
+            X(i);
+            X(j);
         }
         ++count_["SWAP"];
         ++count_["total"];
@@ -621,8 +620,8 @@ class Bit_circuit : public Dynamic_bitset {
      * \return Reference to the current instance
      */
     Bit_circuit& FRED(idx i, idx j, idx k) {
-        if (this->get(i)) {
-            this->SWAP(j, k);
+        if (get(i)) {
+            SWAP(j, k);
         }
         ++count_["FRED"];
         ++count_["total"];
