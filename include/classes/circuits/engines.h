@@ -557,7 +557,7 @@ class QEngine : public IDisplay, public IJSON {
                 execute(elem);
 
             // we measured at least one qudit
-            if (!get_measured().empty()) {
+            if (qc_->get_measurement_count() > 0) {
                 std::vector<idx> m_res = get_dits();
 
                 std::stringstream ss;

@@ -509,15 +509,28 @@ class QCircuit : public IDisplay, public IJSON {
                     idx pos =
                         std::distance(std::begin(value_type_qc_->measurements_),
                                       measurements_ip_);
-                    // measurement but not reset
-                    if (value_type_qc_->measurements_[pos].measurement_type_ !=
-                            MeasureType::RESET &&
-                        value_type_qc_->measurements_[pos].measurement_type_ !=
-                            MeasureType::RESET_MANY)
-                        os << "|> ";
-                    // reset
-                    else
-                        os << "|* ";
+
+                    switch (
+                        value_type_qc_->measurements_[pos].measurement_type_) {
+                        case MeasureType::MEASURE_Z:
+                        case MeasureType::MEASURE_Z_MANY:
+                        case MeasureType::MEASURE_V:
+                        case MeasureType::MEASURE_V_MANY:
+                            os << "|> ";
+                            break;
+                        case MeasureType::MEASURE_Z_ND:
+                        case MeasureType::MEASURE_Z_MANY_ND:
+                        case MeasureType::MEASURE_V_ND:
+                        case MeasureType::MEASURE_V_MANY_ND:
+                            os << "|] ";
+                            break;
+                        case MeasureType::RESET:
+                        case MeasureType::RESET_MANY:
+                            os << "|* ";
+                            break;
+                        default:
+                            break;
+                    } /* end switch */
 
                     os << value_type_qc_->get_measurements_()[pos];
                 }
