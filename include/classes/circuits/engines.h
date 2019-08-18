@@ -350,6 +350,7 @@ class QEngine : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         auto h_tbl = qc_->get_cmat_hash_tbl_();
+        idx d = qc_->get_d();
 
         // gate step
         if (elem.type_ == QCircuit::StepType::GATE) {
@@ -370,13 +371,13 @@ class QEngine : public IDisplay, public IJSON {
                 case QCircuit::GateType::THREE:
                 case QCircuit::GateType::CUSTOM:
                     st_.psi_ = apply(st_.psi_, h_tbl[gates[q_ip].gate_hash_],
-                                     target_rel_pos, qc_->get_d());
+                                     target_rel_pos, d);
                     break;
                 case QCircuit::GateType::FAN:
                     for (idx m = 0; m < gates[q_ip].target_.size(); ++m)
                         st_.psi_ =
                             apply(st_.psi_, h_tbl[gates[q_ip].gate_hash_],
-                                  {target_rel_pos[m]}, qc_->get_d());
+                                  {target_rel_pos[m]}, d);
                     break;
                 case QCircuit::GateType::SINGLE_CTRL_SINGLE_TARGET:
                 case QCircuit::GateType::SINGLE_CTRL_MULTIPLE_TARGET:
@@ -386,7 +387,7 @@ class QEngine : public IDisplay, public IJSON {
                     ctrl_rel_pos = get_relative_pos_(gates[q_ip].ctrl_);
                     st_.psi_ =
                         applyCTRL(st_.psi_, h_tbl[gates[q_ip].gate_hash_],
-                                  ctrl_rel_pos, target_rel_pos, qc_->get_d());
+                                  ctrl_rel_pos, target_rel_pos, d);
                     break;
                 case QCircuit::GateType::SINGLE_cCTRL_SINGLE_TARGET:
                 case QCircuit::GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
@@ -396,7 +397,7 @@ class QEngine : public IDisplay, public IJSON {
                     if (st_.dits_.empty()) {
                         st_.psi_ =
                             apply(st_.psi_, h_tbl[gates[q_ip].gate_hash_],
-                                  target_rel_pos, qc_->get_d());
+                                  target_rel_pos, d);
                     } else {
                         bool should_apply = true;
                         idx first_dit;
@@ -429,7 +430,7 @@ class QEngine : public IDisplay, public IJSON {
                             st_.psi_ = apply(
                                 st_.psi_,
                                 powm(h_tbl[gates[q_ip].gate_hash_], first_dit),
-                                target_rel_pos, qc_->get_d());
+                                target_rel_pos, d);
                         }
                     }
                     break;
@@ -457,17 +458,16 @@ class QEngine : public IDisplay, public IJSON {
                     break;
                 case QCircuit::MeasureType::MEASURE_Z:
                     std::tie(resZ, probZ, st_.psi_) =
-                        measure_seq(st_.psi_, target_rel_pos, qc_->get_d());
+                        measure_seq(st_.psi_, target_rel_pos, d);
                     st_.dits_[measurements[m_ip].c_reg_] = resZ[0];
                     st_.probs_[measurements[m_ip].c_reg_] = probZ;
                     set_measured_(measurements[m_ip].target_[0]);
                     break;
                 case QCircuit::MeasureType::MEASURE_Z_MANY:
                     std::tie(resZ, probZ, st_.psi_) =
-                        measure_seq(st_.psi_, target_rel_pos, qc_->get_d());
-                    st_.dits_[measurements[m_ip].c_reg_] =
-                        multiidx2n(resZ, std::vector<idx>(target_rel_pos.size(),
-                                                          qc_->get_d()));
+                        measure_seq(st_.psi_, target_rel_pos, d);
+                    st_.dits_[measurements[m_ip].c_reg_] = multiidx2n(
+                        resZ, std::vector<idx>(target_rel_pos.size(), d));
                     st_.probs_[measurements[m_ip].c_reg_] = probZ;
                     for (auto&& elem : measurements[m_ip].target_)
                         set_measured_(elem);
@@ -475,7 +475,7 @@ class QEngine : public IDisplay, public IJSON {
                 case QCircuit::MeasureType::MEASURE_V:
                     std::tie(mres, probs, states) = measure(
                         st_.psi_, h_tbl[measurements[m_ip].mats_hash_[0]],
-                        target_rel_pos, qc_->get_d());
+                        target_rel_pos, d);
                     st_.psi_ = states[mres];
                     st_.dits_[measurements[m_ip].c_reg_] = mres;
                     st_.probs_[measurements[m_ip].c_reg_] = probs[mres];
@@ -484,7 +484,7 @@ class QEngine : public IDisplay, public IJSON {
                 case QCircuit::MeasureType::MEASURE_V_MANY:
                     std::tie(mres, probs, states) = measure(
                         st_.psi_, h_tbl[measurements[m_ip].mats_hash_[0]],
-                        target_rel_pos, qc_->get_d());
+                        target_rel_pos, d);
                     st_.psi_ = states[mres];
                     st_.dits_[measurements[m_ip].c_reg_] = mres;
                     st_.probs_[measurements[m_ip].c_reg_] = probs[mres];
@@ -492,12 +492,15 @@ class QEngine : public IDisplay, public IJSON {
                         set_measured_(elem);
                     break;
                 case QCircuit::MeasureType::RESET:
-                    std::tie(std::ignore, std::ignore, st_.psi_) =
-                        measure_seq(st_.psi_, target_rel_pos, qc_->get_d());
-                    break;
                 case QCircuit::MeasureType::RESET_MANY:
-                    std::tie(std::ignore, std::ignore, st_.psi_) =
-                        measure_seq(st_.psi_, target_rel_pos, qc_->get_d());
+                    std::tie(resZ, std::ignore, st_.psi_) =
+                        measure_seq(st_.psi_, target_rel_pos, d, false);
+                    for (idx i = 0; i < target_rel_pos.size(); ++i) {
+                        cmat correction =
+                            powm(Gates::get_instance().Xd(d), d - resZ[i]);
+                        st_.psi_ =
+                            apply(st_.psi_, correction, {target_rel_pos[i]}, d);
+                    }
                     break;
             } // end switch on measurement type
         }     // end else if measurement step

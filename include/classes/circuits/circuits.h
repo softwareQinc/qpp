@@ -931,6 +931,15 @@ class QCircuit : public IDisplay, public IJSON {
                         for (auto&& i : target)
                             heights[nc_ + i] = max_height + 1;
                         break;
+                    case MeasureType::RESET:
+                    case MeasureType::RESET_MANY:
+                        for (auto&& i : target)
+                            if (heights[nc_ + i] > max_height)
+                                max_height = heights[nc_ + i];
+                        // apply reset
+                        for (auto&& i : target)
+                            heights[nc_ + i] = max_height + 1;
+                        break;
                 }
                 // gates
             } else if (step.type_ == StepType::GATE) {
@@ -2586,9 +2595,11 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
+    // reset single qudit
     /**
-     * \brief Resets single qudit by measuring it non-destructively in the
-     * computational basis and discarding the measurement result
+     * \brief Resets single qudit by first measuring it non-destructively in the
+     * computational basis and discarding the measurement result, followed by
+     * shifting it back to the \f$|0\rangle\f$ state
      *
      * \param target Qudit index
      * \param name Optional name, default is "reset"
@@ -2621,10 +2632,11 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
-    // Z measurement of multiple qudits
+    // reset multiple qudits
     /**
-     * \brief Resets multiple qudits by measuring them non-destructively in the
-     * computational basis and discarding the measurement results
+     * \brief Resets multiple qudits by first measuring them non-destructively
+     * in the computational basis and discarding the measurement results,
+     * followed by shifting them back to the \f$|0\cdots 0\rangle\f$ state
      *
      * \param target Target qudit indexes that are reset
      * \param name Optional measurement name, default is "reset"

@@ -26,6 +26,7 @@ In progress - pre-release
                                          conditions
     - Added support for non-destructive measurements in qpp::measure() and
       qpp::measure_seq() from "instruments.h"
+    - Added qpp::reset() qpp::QCircuit::reset() qudit resetting function
     - Added preliminary support for qASM. Requires a C++17-compliant compiler.
       Still work in progress, may be buggy.
 

@@ -28,8 +28,7 @@
  * \file classes/layouts.h
  * \see qpp::ILayout
  * \brief Various qudit placement layouts, all must implement the interface
- * \a ILayout
- *
+ * \a qpp::ILayout
  */
 
 #ifndef CLASSES_LAYOUTS_H_

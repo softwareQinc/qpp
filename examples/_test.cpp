@@ -7,16 +7,16 @@ int main() {
     /////////// testing ///////////
     using namespace qpp;
 
-    QCircuit qc{3, 3};
+    QCircuit qc{3, 3, 3};
+    qc.gate_fan(gt.Fd(3));
     qc.reset(0);
-    qc.reset({1, 2});
-    qc.cCTRL(gt.X, {0, 1}, 0, {1, 0});
-    qc.measureZ(0, 2);
+    qc.reset({0, 1, 2});
+    for (idx i = 0; i < 3; ++i)
+        qc.measureZ(i, i);
     std::cout << qc << "\n\n";
     std::cout << qc.to_JSON() << "\n\n";
 
     QEngine q_engine{qc};
-    q_engine.set_dit(1, 1);
-    q_engine.execute();
+    q_engine.execute(1024);
     std::cout << q_engine << "\n\n";
 }

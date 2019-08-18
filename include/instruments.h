@@ -766,8 +766,10 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
         prob *= std::get<1>(tmp)[std::get<0>(tmp)];
         rA = std::get<2>(tmp)[std::get<0>(tmp)];
 
-        // remove the subsystem
-        dims.erase(std::next(std::begin(dims), target[0]));
+        if (destructive) {
+            // remove the subsystem
+            dims.erase(std::next(std::begin(dims), target[0]));
+        }
         target.erase(std::begin(target));
     }
     // order result in increasing order with respect to target
