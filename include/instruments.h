@@ -118,7 +118,7 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
         Cdimssubsys_bar[i] = dims[subsys_bar[i]];
     }
 
-    auto worker = [&](idx b) noexcept -> typename Derived::Scalar {
+    auto worker = [&](idx b) noexcept->typename Derived::Scalar {
         idx Cmidxrow[maxn];
         idx Cmidxrowsubsys[maxn];
         idx Cmidxcolsubsys_bar[maxn];
@@ -816,6 +816,95 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     std::vector<idx> dims(n, d); // local dimensions vector
 
     return measure_seq(rA, target, dims, destructive);
+}
+
+/**
+ * \brief Resets qudits from the multi-partite state vector or density matrix
+ * \a A by performing a non-destructive measurement in the computational basis
+ * on the \a target qudits and discarding the measurement results,
+ * followed by shifting them back to the \f$|0\cdots 0\rangle\f$ state
+ *
+ * \param A Eigen expression
+ * \param target Qudit indexes that are reset
+ * \param dims Dimensions of the multi-partite system
+ * \return Reset quantum state
+ */
+template <typename Derived>
+dyn_mat<typename Derived::Scalar> reset(const Eigen::MatrixBase<Derived>& A,
+                                        std::vector<idx> target,
+                                        std::vector<idx> dims) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero-size
+    if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::reset()");
+    // check that dimension is valid
+    if (!internal::check_dims(dims))
+        throw exception::DimsInvalid("qpp::reset()");
+
+    // check square matrix or column vector
+    if (internal::check_square_mat(rA)) {
+        // check that dims match rho matrix
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::reset()");
+    } else if (internal::check_cvector(rA)) {
+        // check that dims match psi column vector
+        if (!internal::check_dims_match_cvect(dims, rA))
+            throw exception::DimsMismatchCvector("qpp::reset()");
+    } else
+        throw exception::MatrixNotSquareNorCvector("qpp::reset()");
+
+    // check that target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims))
+        throw exception::SubsysMismatchDims("qpp::reset()");
+    // END EXCEPTION CHECKS
+
+    dyn_mat<typename Derived::Scalar> result;
+    std::vector<idx> resZ;
+
+    std::tie(resZ, std::ignore, result) = measure_seq(rA, target, dims, false);
+    for (idx i = 0; i < target.size(); ++i) {
+        cmat correction =
+            powm(Gates::get_instance().Xd(dims[i]), dims[i] - resZ[i]);
+        result = apply(result, correction, {target[i]}, dims);
+    }
+
+    return result;
+}
+
+/**
+ * \brief Resets qudits from the multi-partite state vector or density matrix
+ * \a A by performing a non-destructive measurement in the computational basis
+ * on the \a target qudits and discarding the measurement results,
+ * followed by shifting them back to the \f$|0\cdots 0\rangle\f$ state
+ *
+ * \param A Eigen expression
+ * \param target Qudit indexes that are reset
+ * \param d Subsystem dimensions
+ * \return Reset quantum state
+ */
+template <typename Derived>
+dyn_mat<typename Derived::Scalar> reset(const Eigen::MatrixBase<Derived>& A,
+                                        std::vector<idx> target, idx d = 2) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero size
+    if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::reset()");
+
+    // check valid dims
+    if (d < 2)
+        throw exception::DimsInvalid("qpp::reset()");
+    // END EXCEPTION CHECKS
+
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
+
+    return reset(rA, target, dims);
 }
 
 } /* namespace qpp */

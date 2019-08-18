@@ -266,9 +266,24 @@ class QCircuit : public IDisplay, public IJSON {
 
         MEASURE_V_MANY, ///< joint measurement of multiple qudits in the
                         ///< orthonormal basis or rank-1 projectors specified
-                        //< by the columns of the matrix \a V
-        RESET,          ///< resets single qudit
-        RESET_MANY,     ///< resets multiple qudits
+                        ///< by the columns of the matrix \a V
+
+        MEASURE_Z_ND, ///< Z measurement of single qudit, non-destructive
+
+        MEASURE_Z_MANY_ND, ///< Z measurement of multiple qudit, non-destructive
+
+        MEASURE_V_ND, ///< measurement of single qudit in the orthonormal basis
+                      ///< or rank-1 projectors specified by the columns of
+                      ///< matrix \a V, non-destructive
+
+        MEASURE_V_MANY_ND, ///< joint measurement of multiple qudits in the
+                           ///< orthonormal basis or rank-1 projectors specified
+                           ///< by the columns of the matrix \a V,
+                           ///< non-destructive
+
+        RESET, ///< resets single qudit
+
+        RESET_MANY, ///< resets multiple qudits
     };
 
     /**
@@ -296,6 +311,18 @@ class QCircuit : public IDisplay, public IJSON {
                 break;
             case MeasureType::MEASURE_V_MANY:
                 os << "MEASURE_V_MANY";
+                break;
+            case MeasureType::MEASURE_Z_ND:
+                os << "MEASURE_Z_ND";
+                break;
+            case MeasureType::MEASURE_Z_MANY_ND:
+                os << "MEASURE_Z_MANY_ND";
+                break;
+            case MeasureType::MEASURE_V_ND:
+                os << "MEASURE_V_ND";
+                break;
+            case MeasureType::MEASURE_V_MANY_ND:
+                os << "MEASURE_V_MANY_ND";
                 break;
             case MeasureType::RESET:
                 os << "RESET";
@@ -924,6 +951,10 @@ class QCircuit : public IDisplay, public IJSON {
                     case MeasureType::MEASURE_Z_MANY:
                     case MeasureType::MEASURE_V:
                     case MeasureType::MEASURE_V_MANY:
+                    case MeasureType::MEASURE_Z_ND:
+                    case MeasureType::MEASURE_Z_MANY_ND:
+                    case MeasureType::MEASURE_V_ND:
+                    case MeasureType::MEASURE_V_MANY_ND:
                         // compute the "height" of the to-be-placed measurement
                         if (heights[c_reg] > max_height)
                             max_height = heights[c_reg];
@@ -2388,10 +2419,12 @@ class QCircuit : public IDisplay, public IJSON {
      * \param target Qudit index
      * \param c_reg Classical register where the value of the measurement is
      * being stored
+     * \param destructive Destructive measurement, true by default
      * \param name Optional measurement name, default is "mZ"
      * \return Reference to the current instance
      */
-    QCircuit& measureZ(idx target, idx c_reg, std::string name = {}) {
+    QCircuit& measureZ(idx target, idx c_reg, bool destructive = true,
+                       std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -2413,10 +2446,16 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name.empty())
             name = "mZ";
-        measured_[target] = true;
-        measurements_.emplace_back(MeasureType::MEASURE_Z,
-                                   std::vector<std::size_t>{},
-                                   std::vector<idx>{target}, c_reg, name);
+        if (destructive) {
+            measured_[target] = true;
+            measurements_.emplace_back(MeasureType::MEASURE_Z,
+                                       std::vector<std::size_t>{},
+                                       std::vector<idx>{target}, c_reg, name);
+        } else {
+            measurements_.emplace_back(MeasureType::MEASURE_Z_ND,
+                                       std::vector<std::size_t>{},
+                                       std::vector<idx>{target}, c_reg, name);
+        }
         step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
 
@@ -2432,11 +2471,12 @@ class QCircuit : public IDisplay, public IJSON {
      * being stored, as a decimal representation of the binary string
      * representing the measurement, with the most significant dit on the
      * left (corresponding to the first qudit that is being measured)
+     * \param destructive Destructive measurement, true by default
      * \param name Optional measurement name, default is "mZ"
      * \return Reference to the current instance
      */
     QCircuit& measureZ(const std::vector<idx>& target, idx c_reg,
-                       std::string name = {}) {
+                       bool destructive = true, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -2465,12 +2505,18 @@ class QCircuit : public IDisplay, public IJSON {
         if (name.empty())
             name = "mZ";
 
-        for (auto&& elem : target) {
-            measured_[elem] = true;
+        if (destructive) {
+            for (auto&& elem : target) {
+                measured_[elem] = true;
+            }
+            measurements_.emplace_back(MeasureType::MEASURE_Z_MANY,
+                                       std::vector<std::size_t>{}, target,
+                                       c_reg, name);
+        } else {
+            measurements_.emplace_back(MeasureType::MEASURE_Z_MANY_ND,
+                                       std::vector<std::size_t>{}, target,
+                                       c_reg, name);
         }
-        measurements_.emplace_back(MeasureType::MEASURE_Z_MANY,
-                                   std::vector<std::size_t>{}, target, c_reg,
-                                   name);
         step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
 
@@ -2488,11 +2534,12 @@ class QCircuit : public IDisplay, public IJSON {
      * \param target Qudit index
      * \param c_reg Classical register where the value of the measurement is
      * stored
+     * \param destructive Destructive measurement, true by default
      * \param name Optional measurement name
      * \return Reference to the current instance
      */
     QCircuit& measureV(const cmat& V, idx target, idx c_reg,
-                       std::string name = {}) {
+                       bool destructive = true, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -2514,10 +2561,17 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name.empty())
             name = "m" + qpp::Gates::get_instance().get_name(V);
-        measured_[target] = true;
-        measurements_.emplace_back(MeasureType::MEASURE_V,
-                                   std::vector<std::size_t>{hash_eigen(V)},
-                                   std::vector<idx>{target}, c_reg, name);
+
+        if (destructive) {
+            measured_[target] = true;
+            measurements_.emplace_back(MeasureType::MEASURE_V,
+                                       std::vector<std::size_t>{hash_eigen(V)},
+                                       std::vector<idx>{target}, c_reg, name);
+        } else {
+            measurements_.emplace_back(MeasureType::MEASURE_V_ND,
+                                       std::vector<std::size_t>{hash_eigen(V)},
+                                       std::vector<idx>{target}, c_reg, name);
+        }
         step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
 
@@ -2535,11 +2589,12 @@ class QCircuit : public IDisplay, public IJSON {
      * \param target Target qudit indexes that are jointly measured
      * \param c_reg Classical register where the value of the measurement is
      * stored
+     * \param destructive Destructive measurement, true by default
      * \param name Optional measurement name
      * \return Reference to the current instance
      */
     QCircuit& measureV(const cmat& V, const std::vector<idx>& target, idx c_reg,
-                       std::string name = {}) {
+                       bool destructive = true, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -2574,11 +2629,18 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name.empty())
             name = "m" + qpp::Gates::get_instance().get_name(V);
-        for (auto&& elem : target)
-            measured_[elem] = true;
-        measurements_.emplace_back(MeasureType::MEASURE_V_MANY,
-                                   std::vector<std::size_t>{hash_eigen(V)},
-                                   target, c_reg, name);
+
+        if (destructive) {
+            for (auto&& elem : target)
+                measured_[elem] = true;
+            measurements_.emplace_back(MeasureType::MEASURE_V_MANY,
+                                       std::vector<std::size_t>{hash_eigen(V)},
+                                       target, c_reg, name);
+        } else {
+            measurements_.emplace_back(MeasureType::MEASURE_V_MANY_ND,
+                                       std::vector<std::size_t>{hash_eigen(V)},
+                                       target, c_reg, name);
+        }
         step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
 
@@ -2608,7 +2670,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param target Qudit index
      * \param name Optional name, default is "reset"
      * \return Reference to the current instance
-    */
+     */
     QCircuit& reset(idx target, std::string name = {}) {
         // EXCEPTION CHECKS
 

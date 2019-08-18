@@ -9,14 +9,13 @@ int main() {
 
     QCircuit qc{3, 3, 3};
     qc.gate_fan(gt.Fd(3));
-    qc.reset(0);
-    qc.reset({0, 1, 2});
-    for (idx i = 0; i < 3; ++i)
-        qc.measureZ(i, i);
+    qc.measureZ({0,1,2},0,false);
+    qc.measureZ({0,1,2},1,false);
     std::cout << qc << "\n\n";
     std::cout << qc.to_JSON() << "\n\n";
 
     QEngine q_engine{qc};
     q_engine.execute(1024);
     std::cout << q_engine << "\n\n";
+    std::cout << q_engine.to_JSON() << "\n\n";
 }

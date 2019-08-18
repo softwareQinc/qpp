@@ -491,16 +491,31 @@ class QEngine : public IDisplay, public IJSON {
                     for (auto&& elem : measurements[m_ip].target_)
                         set_measured_(elem);
                     break;
+                case QCircuit::MeasureType::MEASURE_Z_ND:
+                    std::tie(resZ, probZ, st_.psi_) =
+                        measure_seq(st_.psi_, target_rel_pos, d, false);
+                    st_.dits_[measurements[m_ip].c_reg_] = resZ[0];
+                    st_.probs_[measurements[m_ip].c_reg_] = probZ;
+                    break;
+                case QCircuit::MeasureType::MEASURE_Z_MANY_ND:
+                    std::tie(resZ, probZ, st_.psi_) =
+                        measure_seq(st_.psi_, target_rel_pos, d, false);
+                    st_.dits_[measurements[m_ip].c_reg_] = multiidx2n(
+                        resZ, std::vector<idx>(target_rel_pos.size(), d));
+                    st_.probs_[measurements[m_ip].c_reg_] = probZ;
+                    break;
+                case QCircuit::MeasureType::MEASURE_V_ND:
+                case QCircuit::MeasureType::MEASURE_V_MANY_ND:
+                    std::tie(mres, probs, states) = measure(
+                        st_.psi_, h_tbl[measurements[m_ip].mats_hash_[0]],
+                        target_rel_pos, d, false);
+                    st_.psi_ = states[mres];
+                    st_.dits_[measurements[m_ip].c_reg_] = mres;
+                    st_.probs_[measurements[m_ip].c_reg_] = probs[mres];
+                    break;
                 case QCircuit::MeasureType::RESET:
                 case QCircuit::MeasureType::RESET_MANY:
-                    std::tie(resZ, std::ignore, st_.psi_) =
-                        measure_seq(st_.psi_, target_rel_pos, d, false);
-                    for (idx i = 0; i < target_rel_pos.size(); ++i) {
-                        cmat correction =
-                            powm(Gates::get_instance().Xd(d), d - resZ[i]);
-                        st_.psi_ =
-                            apply(st_.psi_, correction, {target_rel_pos[i]}, d);
-                    }
+                    st_.psi_ = qpp::reset(st_.psi_, target_rel_pos, d);
                     break;
             } // end switch on measurement type
         }     // end else if measurement step

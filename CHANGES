@@ -24,9 +24,14 @@ In progress - pre-release
           qpp::PeriodicBoundaryLattice - Qudits on a multi-dimensional
                                          orthogonal grid with periodic boundary
                                          conditions
-    - Added support for non-destructive measurements in qpp::measure() and
-      qpp::measure_seq() from "instruments.h"
-    - Added qpp::reset() qpp::QCircuit::reset() qudit resetting function
+    - Added support for non-destructive measurements in "instruments.h" by
+      modifying the API for
+          qpp::measure()
+          qpp::measure_seq()
+    - Added qudit resetting function in "intruments.h" and "classes/circuits.h"
+          qpp::reset()           - Resets qudits in a multipartite state
+          qpp::QCircuit::reset() - Resets qudits in a quantum circuit
+                                   description
     - Added preliminary support for qASM. Requires a C++17-compliant compiler.
       Still work in progress, may be buggy.
 
