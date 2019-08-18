@@ -855,9 +855,10 @@ class QCircuit : public IDisplay, public IJSON {
     std::string get_name() const { return name_; }
 
     /**
-     * \brief Check whether qudit \a i was already measured
+     * \brief Check whether qudit \a i was already measured (destructively)
      * \param i Qudit index
-     * \return True if qudit \a i was already measured, false othwewise
+     * \return True if qudit \a i was already measured (destructively), false
+     * othwewise
      */
     idx get_measured(idx i) const {
         // EXCEPTION CHECKS
@@ -870,9 +871,9 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Vector of already measured qudit indexes
+     * \brief Vector of already measured (destructively) qudit indexes
      *
-     * \return Vector of already measured qudit indexes
+     * \return Vector of already measured (destructively) qudit indexes
      */
     std::vector<idx> get_measured() const {
         std::vector<idx> result;
@@ -884,9 +885,9 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Vector of non-measured qudit indexes
+     * \brief Vector of non-measured (destructively) qudit indexes
      *
-     * \return Vector of non-measured qudit indexes
+     * \return Vector of non-measured (destructively) qudit indexes
      */
     std::vector<idx> get_non_measured() const {
         std::vector<idx> result;
@@ -2830,14 +2831,14 @@ class QCircuit : public IDisplay, public IJSON {
         else if (pos_dit > nc_)
             throw exception::OutOfRange("qpp::QCircuit::add_circuit()");
         // check overlapping qudits (in the current instance) were not already
-        // measured
+        // destructively measured
         if (pos_qudit >= 0 && static_cast<idx>(pos_qudit) < nq_) {
             for (idx i = 0;
                  i < std::min(static_cast<idx>(nq_ - pos_qudit), other.nq_);
                  ++i)
                 if (get_measured(pos_qudit + i))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuit::add_circuit");
+                        "qpp::QCircuit::add_circuit()");
         }
         // END EXCEPTION CHECKS
 
@@ -3205,8 +3206,10 @@ class QCircuit : public IDisplay, public IJSON {
         os << "step count: " << get_step_count() << '\n';
         os << "total gate count: " << get_gate_count() << '\n';
         os << "total depth: " << get_depth() << '\n';
-        os << "measured (destructive) positions: " << disp(get_measured(), ", ") << '\n';
-        os << "non-measured (destructive) positions: " << disp(get_non_measured(), ", ");
+        os << "measured (destructive) positions: " << disp(get_measured(), ", ")
+           << '\n';
+        os << "non-measured (destructive) positions: "
+           << disp(get_non_measured(), ", ");
 
         return os;
     }

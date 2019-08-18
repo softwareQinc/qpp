@@ -550,12 +550,12 @@ class UndefinedType : public Exception {
  * \class qpp::exception::QuditAlreadyMeasured
  * \brief Qudit was already measured exception
  *
- * The qudit was already measured and cannot be measured again
+ * The qudit was already measured (destructively) and cannot be measured again
  */
 class QuditAlreadyMeasured : public Exception {
   public:
     std::string description() const override {
-        return "Qudit was already measured";
+        return "Qudit was already measured (destructively)";
     }
 
     using Exception::Exception;
