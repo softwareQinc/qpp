@@ -35,6 +35,7 @@ using namespace qpp;
 
 // Unit testing "qasm.h"
 
+
 /******************************************************************************/
 /// BEGIN  std::unique_ptr<qpp::QCircuit>
 ///        qpp::qasm::read_from_file(const std::string& fname)
@@ -124,7 +125,7 @@ TEST(qpp_qasm_read_from_file, Teleportation) {
     engine.execute();
 
     // Final state
-    auto rho = ptrace(engine.get_psi(), {1, 2}, {2, 2, 2});
+    auto rho = ptrace(engine.get_psi(), {0, 1}, {2, 2, 2});
     ket psi1 = rho2pure(rho);
 
     // Reference state
@@ -167,8 +168,8 @@ TEST(qpp_qasm_read_from_file, NonDestrMeas) {
 }
 
 TEST(qpp_qasm_read_from_file, Reset) {
-    auto qcircuit =
-        qasm::read_from_file(PATH "/tests/qasm/circuits/units/reset.qasm");
+    auto qcircuit = qasm::read_from_file(
+        PATH "/tests/qasm/circuits/units/reset.qasm");
     QEngine engine{*qcircuit};
     engine.execute();
 

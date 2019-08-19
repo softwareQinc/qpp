@@ -49,7 +49,6 @@ class Parser {
     Token current_token_ = Token(); ///< current token
     int bits_ = 0;                  ///< number of bits
     int qubits_ = 0;                ///< number of qubits
-    bool reset_ = false;            ///< whether reset statements are used
 
   public:
     /**
@@ -191,7 +190,7 @@ class Parser {
             }
         }
 
-        return QASM(bits_, qubits_, reset_, std::move(ret));
+        return QASM(bits_, qubits_, std::move(ret));
     }
 
     /**
@@ -800,7 +799,6 @@ class Parser {
         auto arg = parse_argument();
         expect_and_consume_token(Token::Kind::semicolon);
 
-        reset_ = true;
         return StatementPtr(new ResetStatement(loc, arg));
     }
 

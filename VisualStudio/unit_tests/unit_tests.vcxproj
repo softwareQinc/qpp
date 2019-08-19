@@ -175,6 +175,9 @@
     <ClCompile Include="..\..\unit_tests\tests\MATLAB\matlab.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\number_theory.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\operations.cpp" />
+    <ClCompile Include="..\..\unit_tests\tests\qasm\qasm.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PATH=R"($(SolutionDir)../unit_tests)";_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
     <ClCompile Include="..\..\unit_tests\tests\random.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\statistics.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\traits.cpp" />
