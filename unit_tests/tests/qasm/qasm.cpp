@@ -24,9 +24,15 @@
  * SOFTWARE.
  */
 
-#ifndef PATH
-#define PATH ""
-#endif
+#ifndef PATH // did not use CMake for the build
+
+#ifdef _MSC_VER // built under Windows with MSVC
+#define PATH "../../../unit_tests"
+#else
+#define PATH "" // not built with CMake and not built under Windows with MSVC
+#endif // _MSC_VER
+
+#endif // PATH
 
 #include "gtest/gtest.h"
 #include "qpp.h"
