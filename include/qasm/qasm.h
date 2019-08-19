@@ -65,7 +65,7 @@ inline std::unique_ptr<QCircuit> read_from_file(const std::string& fname_) {
     ifs->open(fname_, std::ifstream::in);
     if (!ifs->good()) {
         ifs->close();
-        throw exception::FileNotFound("qpp::qasm::read_file");
+        throw exception::FileNotFound("qpp::qasm::read_from_file()");
     }
 
     pp.add_target_stream(ifs, fname_);

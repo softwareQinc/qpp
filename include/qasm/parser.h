@@ -67,7 +67,7 @@ class Parser {
         // Parse the program
         auto result = parse_program();
         if (error_)
-            throw exception::ParseError("qpp::qasm::parser.h");
+            throw exception::ParseError("qpp::qasm::Parser::parse()");
 
         // Generate the QCircuit
         return result.to_QCircuit();

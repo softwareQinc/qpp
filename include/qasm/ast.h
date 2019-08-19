@@ -228,7 +228,7 @@ class Context {
         }
 
         std::cerr << "At (" << loc << "): Undeclared identifier " << id << "\n";
-        throw exception::Undeclared("qpp::qasm::Context::lookup");
+        throw exception::Undeclared("qpp::qasm::Context::lookup()");
     }
 
     /**
@@ -832,7 +832,7 @@ class MeasureStatement final : public Statement {
         if (q_args.size() != c_args.size()) {
             std::cerr << "(" << loc_ << "): Registers have different lengths\n";
             throw exception::ParseError(
-                "qpp::qasm::MeasureStatement::append_to_circuit");
+                "qpp::qasm::MeasureStatement::evaluate()");
         }
 
         // apply measurements non-desctructively
