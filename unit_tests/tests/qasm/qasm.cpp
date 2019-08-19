@@ -124,7 +124,7 @@ TEST(qpp_qasm_read_from_file, Teleportation) {
     engine.execute();
 
     // Final state
-    auto rho = ptrace(engine.get_psi(), {1, 2}, {2, 2, 2});
+    auto rho = ptrace(engine.get_psi(), {0, 1}, {2, 2, 2});
     ket psi1 = rho2pure(rho);
 
     // Reference state

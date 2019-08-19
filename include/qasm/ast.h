@@ -117,10 +117,8 @@ class Value {
  *
  * Stores all information relevant to execution (i.e. generation of a QCircuit).
  * Each classical and quantum bit in the AST is mapped to a unique classical or
- * quantum index. For classical bits these indices coincide with indicies of the
- * classical bits in the accumulating QCircuit, while for quantum bits at any
- * point an AST (virtual) index is mapped to a QCircuit (physical) index, to
- * emulate the non-destructive nature of QASM measurements
+ * quantum index corresponding to a QCircuit qubit or bit. Measurements are
+ * always non-destructive
  */
 class Context {
     QCircuit* circuit_; ///< pointer to the accumulating circuit
@@ -128,11 +126,8 @@ class Context {
     std::vector<std::unordered_map<ident, std::unique_ptr<Value>>>
         env_{};                   ///< environment stack
     std::list<idx> qubit_pool_{}; ///< pool of unassigned physical qubits
-    std::vector<idx>
-        qubit_mapping_{};  ///< mapping of virtual to physical qubits
     idx max_bit_ = -1;     ///< largest classical bit index
     idx max_qubit_ = -1;   ///< largest (virtual) qubit index
-    idx garbage_bit_ = -1; ///< designated bit for garbage measurements
 
     // For controlled contexts
     std::vector<idx> cctrls_{}; ///< classical controls in the current context
@@ -143,21 +138,8 @@ class Context {
      * \brief Constructs a translation context with a given target QCircuit
      *
      * \param qc Pointer to a QCircuit object
-     * \param reset Whether a garbage measurement bit should be allocated
-     * (optional, default is true)
      */
-    Context(QCircuit* qc, bool reset = true) : circuit_(qc) {
-        qubit_mapping_.reserve(qc->get_nq());
-        for (idx i = 0; i < qc->get_nq(); i++) {
-            qubit_pool_.push_back(i);
-        }
-
-        // allocate a garbage bit for resets, if applicable
-        if (reset) {
-            garbage_bit_ = ++max_bit_;
-            circuit_->add_dit(1, garbage_bit_);
-        }
-    }
+    Context(QCircuit* qc) : circuit_(qc) {}
 
     /**
      * \brief Disables copy constructor
@@ -179,38 +161,6 @@ class Context {
     /*-------------- (Qu)bit management & allocation ---------------*/
 
     /**
-     * \brief The garbage bit
-     *
-     * \return Index of the garbage bit
-     */
-    idx get_garbage_bit() {
-        if (garbage_bit_ != 0) {
-            std::cerr
-                << "Internal error: no garbage bit allocated for resets\n";
-            throw std::logic_error("");
-        }
-
-        return garbage_bit_;
-    }
-
-    /**
-     * \brief Reserve physical qubits
-     *
-     * \param Number of physical qubits to reserve
-     */
-    void reserve_qubits(idx n) {
-        if (qubit_pool_.size() < n) {
-            idx num_reserve = n - qubit_pool_.size();
-            idx range_start = circuit_->get_nq();
-
-            // allocate num_reserve QCircuit qubits and add to the pool
-            circuit_->add_qudit(num_reserve, range_start);
-            for (idx i = 0; i < num_reserve; i++)
-                qubit_pool_.push_back(range_start + i);
-        }
-    }
-
-    /**
      * \brief Allocate a classical bit
      *
      * \return Index of a fresh classical bit
@@ -229,58 +179,17 @@ class Context {
     /**
      * \brief Allocate a virtual qubit
      *
-     * \return Index of a fresh virtual qubit
+     * \return Index of a fresh qubit
      */
     idx alloc_qubit() {
         idx ret = ++max_qubit_;
 
-        // reserve a physical qubit if none exist
-        if (qubit_pool_.empty()) {
-            reserve_qubits(1);
+        // check if circuit has enough classical bits
+        if (max_qubit_ >= circuit_->get_nq()) {
+            circuit_->add_qudit(1, ret);
         }
-
-        // map the new qubit to a QCircuit qubit
-        qubit_mapping_.push_back(qubit_pool_.front());
-        qubit_pool_.pop_front();
 
         return ret;
-    }
-
-    /**
-     * \brief Map a virtual qubit to a physical one
-     *
-     * \param Virtual qubit index
-     * \return Physical qubit index
-     */
-    idx map_qubit(idx i) {
-        if (i > max_qubit_) {
-            std::cerr << "Qubit index out of bounds";
-            throw exception::OutOfRange("qpp::qasm::Context::map_qubit()");
-        }
-
-        return qubit_mapping_[i];
-    }
-
-    /**
-     * \brief Assign a virtual qubit to a fresh physical one
-     * \note Used for implementing non-destructive measurements
-     *
-     * \param Virtual qubit index
-     */
-    void remap_qubit(idx i) {
-        if (i > max_qubit_) {
-            std::cerr << "Qubit index out of bounds";
-            throw exception::OutOfRange("qpp::qasm::Context::remap_qubit()");
-        }
-
-        // reserve a physical qubit if none exist
-        if (qubit_pool_.empty()) {
-            reserve_qubits(1);
-        }
-
-        // remap the qubit to a fresh QCircuit qubit
-        qubit_mapping_[i] = qubit_pool_.front();
-        qubit_pool_.pop_front();
     }
 
     /*------------------ Environment management --------------*/
@@ -522,7 +431,6 @@ using ExprPtr = std::unique_ptr<Expr>;
 class QASM : public IDisplay {
     int bits_ = -1;                  ///< number of bits
     int qubits_ = -1;                ///< number of qubits
-    bool reset_ = true;              ///< whether reset is used
     std::vector<StatementPtr> body_; ///< program body
 
   public:
@@ -534,8 +442,8 @@ class QASM : public IDisplay {
      * \param reset Whether reset is used
      * \param body Rvalue reference to a list of statements
      */
-    QASM(int bits, int qubits, bool reset, std::vector<StatementPtr>&& body)
-        : bits_(bits), qubits_(qubits), reset_(reset), body_(std::move(body)) {}
+    QASM(int bits, int qubits, std::vector<StatementPtr>&& body)
+        : bits_(bits), qubits_(qubits), body_(std::move(body)) {}
 
     /**
      * \brief Constructs a QCircuit object from the QASM AST
@@ -543,8 +451,8 @@ class QASM : public IDisplay {
      * \return Unique pointer to a QCircuit object
      */
     std::unique_ptr<QCircuit> to_QCircuit() {
-        auto ret = std::unique_ptr<QCircuit>(new QCircuit(qubits_, bits_ + 1));
-        Context ctx(ret.get(), reset_);
+        auto ret = std::unique_ptr<QCircuit>(new QCircuit(qubits_, bits_));
+        Context ctx(ret.get());
         for (auto it = body_.begin(); it != body_.end(); it++) {
             (*it)->evaluate(ctx);
         }
@@ -920,16 +828,9 @@ class MeasureStatement final : public Statement {
                 "qpp::qasm::MeasureStatement::append_to_circuit");
         }
 
-        // apply measurements
+        // apply measurements non-desctructively
         for (idx i = 0; i < q_args.size(); i++) {
-            circuit->measureZ(ctx.map_qubit(q_args[i]), c_args[i]);
-        }
-
-        // allocate new qubits to simulate non-destructive measurement
-        ctx.reserve_qubits(q_args.size());
-        for (idx i = 0; i < q_args.size(); i++) {
-            ctx.remap_qubit(q_args[i]);
-            circuit->cCTRL(gt.X, c_args[i], ctx.map_qubit(q_args[i]));
+          circuit->measureZ(q_args[i], c_args[i], false);
         }
     }
 
@@ -966,16 +867,7 @@ class ResetStatement final : public Statement {
         auto q_args = arg_.as_qreg(ctx);
         auto circuit = ctx.get_circuit();
 
-        // apply measurements & throwaway
-        for (idx i = 0; i < q_args.size(); i++) {
-            circuit->measureZ(ctx.map_qubit(q_args[i]), ctx.get_garbage_bit());
-        }
-
-        // allocate new qubits
-        ctx.reserve_qubits(q_args.size());
-        for (idx i = 0; i < q_args.size(); i++) {
-            ctx.remap_qubit(q_args[i]);
-        }
+        circuit->reset(q_args);
     }
 
     /**
@@ -1092,10 +984,10 @@ class UGate final : public Gate {
         // apply the gate
         for (auto i : args) {
             if (ctx.ccontrolled()) {
-                circuit->cCTRL(u, ctx.get_cctrls(), ctx.map_qubit(i),
+                circuit->cCTRL(u, ctx.get_cctrls(), i,
                                ctx.get_shift(), "Controlled-U");
             } else {
-                circuit->gate(u, ctx.map_qubit(i), "U");
+                circuit->gate(u, i, "U");
             }
         }
     }
@@ -1141,48 +1033,40 @@ class CNOTGate final : public Gate {
         // different combinations of controls and targets
         if (ctrls.size() == 1 && tgts.size() == 1) {
             if (ctx.ccontrolled()) {
-                std::vector<idx> tmp{ctx.map_qubit(ctrls[0]),
-                                     ctx.map_qubit(tgts[0])};
+                std::vector<idx> tmp{ctrls[0], tgts[0]};
                 circuit->cCTRL_custom(gt.CNOT, ctx.get_cctrls(), tmp,
                                       ctx.get_shift(), "CX");
             } else {
-                circuit->gate(gt.CNOT, ctx.map_qubit(ctrls[0]),
-                              ctx.map_qubit(tgts[0]), "CX");
+                circuit->gate(gt.CNOT, ctrls[0], tgts[0], "CX");
             }
         } else if (ctrls.size() > 1 && tgts.size() == 1) {
             for (idx i = 0; i < ctrls.size(); i++) {
                 if (ctx.ccontrolled()) {
-                    std::vector<idx> tmp{ctx.map_qubit(ctrls[i]),
-                                         ctx.map_qubit(tgts[0])};
+                    std::vector<idx> tmp{ctrls[i], tgts[0]};
                     circuit->cCTRL_custom(gt.CNOT, ctx.get_cctrls(), tmp,
                                           ctx.get_shift(), "CX");
                 } else {
-                    circuit->gate(gt.CNOT, ctx.map_qubit(ctrls[i]),
-                                  ctx.map_qubit(tgts[0]), "CX");
+                    circuit->gate(gt.CNOT, ctrls[i], tgts[0], "CX");
                 }
             }
         } else if (ctrls.size() == 1 && tgts.size() > 1) {
             for (idx i = 0; i < tgts.size(); i++) {
                 if (ctx.ccontrolled()) {
-                    std::vector<idx> tmp{ctx.map_qubit(ctrls[0]),
-                                         ctx.map_qubit(tgts[i])};
+                    std::vector<idx> tmp{ctrls[0], tgts[i]};
                     circuit->cCTRL_custom(gt.CNOT, ctx.get_cctrls(), tmp,
                                           ctx.get_shift(), "CX");
                 } else {
-                    circuit->gate(gt.CNOT, ctx.map_qubit(ctrls[0]),
-                                  ctx.map_qubit(tgts[i]), "CX");
+                    circuit->gate(gt.CNOT, ctrls[0], tgts[i], "CX");
                 }
             }
         } else if (ctrls.size() == tgts.size()) {
             for (idx i = 0; i < ctrls.size(); i++) {
                 if (ctx.ccontrolled()) {
-                    std::vector<idx> tmp{ctx.map_qubit(ctrls[i]),
-                                         ctx.map_qubit(tgts[i])};
+                    std::vector<idx> tmp{ctrls[i], tgts[i]};
                     circuit->cCTRL_custom(gt.CNOT, ctx.get_cctrls(), tmp,
                                           ctx.get_shift(), "CX");
                 } else {
-                    circuit->gate(gt.CNOT, ctx.map_qubit(ctrls[i]),
-                                  ctx.map_qubit(tgts[i]), "CX");
+                    circuit->gate(gt.CNOT, ctrls[i], tgts[i], "CX");
                 }
             }
         } else {
@@ -1343,8 +1227,7 @@ class DeclaredGate final : public Gate {
                 // map virtual qubits to physical qubits
                 std::vector<idx> mapped_args(q_args.size());
                 for (idx i = 0; i < q_args.size(); i++) {
-                    mapped_args[i] = mapped[i] ? ctx.map_qubit(q_args[i][j])
-                                               : ctx.map_qubit(q_args[i][0]);
+                    mapped_args[i] = mapped[i] ? q_args[i][j] : q_args[i][0];
                 }
 
                 // apply (possibly classical controlled) gate
