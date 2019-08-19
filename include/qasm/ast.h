@@ -123,11 +123,18 @@ class Value {
 class Context {
     QCircuit* circuit_; ///< pointer to the accumulating circuit
 
-    std::vector<std::unordered_map<ident, std::unique_ptr<Value>>>
-        env_{};                   ///< environment stack
-    std::list<idx> qubit_pool_{}; ///< pool of unassigned physical qubits
-    idx max_bit_ = -1;     ///< largest classical bit index
-    idx max_qubit_ = -1;   ///< largest (virtual) qubit index
+    // Hack for MSCV
+    using hash_ident_uptr = std::unordered_map<ident, std::unique_ptr<Value>>;
+    struct Environment {
+        Environment() noexcept {};
+        Environment(Environment&& rhs) noexcept : val_(std::move(rhs.val_)) {}
+        hash_ident_uptr val_;
+    };
+
+    std::vector<Environment> env_{}; ///< environment stack
+    std::list<idx> qubit_pool_{};    ///< pool of unassigned physical qubits
+    idx max_bit_ = -1;               ///< largest classical bit index
+    idx max_qubit_ = -1;             ///< largest (virtual) qubit index
 
     // For controlled contexts
     std::vector<idx> cctrls_{}; ///< classical controls in the current context
@@ -215,8 +222,8 @@ class Context {
      */
     Value* lookup(const ident& id, const Location& loc) {
         for (auto table = env_.rbegin(); table != env_.rend(); table++) {
-            auto it = table->find(id);
-            if (it != table->end())
+            auto it = table->val_.find(id);
+            if (it != table->val_.end())
                 return it->second.get();
         }
 
@@ -234,7 +241,7 @@ class Context {
     void set(const ident& id, std::unique_ptr<Value> val) {
         if (env_.empty())
             env_.push_back({});
-        env_.back()[id] = std::move(val);
+        env_.back().val_[id] = std::move(val);
     }
 
     /*------------------- Classical controls ----------------*/
@@ -830,7 +837,7 @@ class MeasureStatement final : public Statement {
 
         // apply measurements non-desctructively
         for (idx i = 0; i < q_args.size(); i++) {
-          circuit->measureZ(q_args[i], c_args[i], false);
+            circuit->measureZ(q_args[i], c_args[i], false);
         }
     }
 
@@ -984,8 +991,8 @@ class UGate final : public Gate {
         // apply the gate
         for (auto i : args) {
             if (ctx.ccontrolled()) {
-                circuit->cCTRL(u, ctx.get_cctrls(), i,
-                               ctx.get_shift(), "Controlled-U");
+                circuit->cCTRL(u, ctx.get_cctrls(), i, ctx.get_shift(),
+                               "Controlled-U");
             } else {
                 circuit->gate(u, i, "U");
             }
