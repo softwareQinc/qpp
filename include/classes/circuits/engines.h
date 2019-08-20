@@ -40,7 +40,7 @@ namespace qpp {
  */
 class QEngine : public IDisplay, public IJSON {
   protected:
-    const QCircuit* qc_; ///< pointer to constant quantum circuit
+    const QCircuit* qc_; ///< pointer to constant quantum circuit description
 
     /**
      * \class qpp::QEngine::state_
@@ -48,7 +48,7 @@ class QEngine : public IDisplay, public IJSON {
      */
     struct state_ {
         const QCircuit* qc_;          ///< non-owning pointer to the parent
-                                      ///< const quantum circuit
+                                      ///< const quantum circuit description
         ket psi_{};                   ///< state vector
         std::vector<double> probs_{}; ///< measurement probabilities
         std::vector<idx> dits_{};     ///< classical dits
@@ -58,7 +58,7 @@ class QEngine : public IDisplay, public IJSON {
         /**
          * \brief Constructor
          *
-         * \param qc Non-owning pointer to the parent const quantum circuit
+         * \param qc Non-owning pointer to the parent const quantum circuit description
          */
         explicit state_(const QCircuit* qc) : qc_{qc} {
             // EXECEPTION CHECKS
@@ -135,15 +135,15 @@ class QEngine : public IDisplay, public IJSON {
 
   public:
     /**
-     * \brief Constructs a quantum engine out of a quantum circuit
+     * \brief Constructs a quantum engine out of a quantum circuit description
      *
-     * \note The quantum circuit must be an lvalue
+     * \note The quantum circuit description must be an lvalue
      * \see qpp::QEngine(QCircuit&&)
      *
      * \note The initial underlying quantum state is set to
      * \f$|0\rangle^{\otimes n}\f$
      *
-     * \param qc Quantum circuit
+     * \param qc Quantum circuit description
      */
     explicit QEngine(const QCircuit& qc)
         : qc_{std::addressof(qc)}, st_{qc_}, stats_{} {}
@@ -262,9 +262,9 @@ class QEngine : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Quantum circuit
+     * \brief Quantum circuit description
      *
-     * \return Underlying quantum circuit
+     * \return Underlying quantum circuit description
      */
     const QCircuit& get_circuit() const noexcept { return *qc_; }
 
@@ -343,14 +343,14 @@ class QEngine : public IDisplay, public IJSON {
     void reset() { st_.reset(); }
 
     /**
-     * \brief Executes one step in the quantum circuit
+     * \brief Executes one step in the quantum circuit description
      *
      * \param elem Step to be executed
      */
     virtual void execute(const QCircuit::iterator::value_type& elem) {
         // EXCEPTION CHECKS
 
-        // iterator must point to the same quantum circuit
+        // iterator must point to the same quantum circuit description
         if (elem.value_type_qc_ != qc_)
             throw exception::InvalidIterator("qpp::QEngine::execute()");
         // the rest of exceptions are caught by the iterator::operator*()
@@ -537,14 +537,14 @@ class QEngine : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Executes one step in the quantum circuit
+     * \brief Executes one step in the quantum circuit description
      *
      * \param it Iterator to the step to be executed
      */
     void execute(const QCircuit::iterator& it) { execute(*it); }
 
     /**
-     * \brief Executes the entire quantum circuit
+     * \brief Executes the entire quantum circuit description
      *
      * \param reps Number of repetitions
      * \param clear_stats Resets the collected measurement statistics hash table
@@ -698,8 +698,9 @@ class QNoisyEngine : public QEngine {
   public:
     /**
      * \brief Constructs a noisy quantum engine out of a quantum circuit
+     * description
      *
-     * \param qc Quantum circuit
+     * \param qc Quantum circuit description
      * \param noise Quantum noise model
      */
     explicit QNoisyEngine(const QCircuit& qc, const NoiseModel& noise)
@@ -715,7 +716,7 @@ class QNoisyEngine : public QEngine {
     using QEngine::execute;
 
     /**
-     * \brief Executes one step in the quantum circuit
+     * \brief Executes one step in the quantum circuit description
      *
      * \param elem Step to be executed
      */

@@ -388,7 +388,7 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Types of each step in the quantum circuit
+     * \brief Types of each step in the quantum circuit description
      */
     enum class StepType {
         NONE,        ///< represents no step
@@ -431,12 +431,12 @@ class QCircuit : public IDisplay, public IJSON {
   public:
     /**
      * \class qpp::QCircuit::iterator
-     * \brief Quantum circuit bound-checking (safe) iterator
+     * \brief Quantum circuit description bound-checking (safe) iterator
      *
      * \note The iterator is a const_iterator by default
      */
     class iterator {
-        ///< non-owning pointer to the parent const quantum circuit
+        ///< non-owning pointer to the parent const quantum circuit description
         const QCircuit* qc_{nullptr};
 
         /**
@@ -446,6 +446,7 @@ class QCircuit : public IDisplay, public IJSON {
         class value_type_ : public IDisplay {
           public:
             ///< non-owning pointer to the grand-parent const quantum circuit
+            ///< description
             const QCircuit* value_type_qc_;
 
             StepType type_{StepType::NONE}; ///< step type
@@ -459,6 +460,7 @@ class QCircuit : public IDisplay, public IJSON {
              * \brief Constructor
              *
              * \param value_type_qc Pointer to constant quantum circuit
+             * description
              */
             explicit value_type_(const QCircuit* value_type_qc)
                 : value_type_qc_{value_type_qc} {}
@@ -681,7 +683,7 @@ class QCircuit : public IDisplay, public IJSON {
         /**
          * \brief Sets the iterator to std::begin(this)
          *
-         * \param qc Pointer to constant quantum circuit
+         * \param qc Pointer to constant quantum circuit description
          */
         void set_begin_(const QCircuit* qc) {
             qc_ = qc;
@@ -701,7 +703,7 @@ class QCircuit : public IDisplay, public IJSON {
         /**
          * \brief Sets the iterator to std::begin(this)
          *
-         * \param qc Pointer to constant quantum circuit
+         * \param qc Pointer to constant quantum circuit description
          */
         void set_end_(const QCircuit* qc) {
             qc_ = qc;
@@ -799,7 +801,7 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Constructs a quantum circuit
+     * \brief Constructs a quantum circuit description
      *
      * \note The measurement results can only be stored in the classical dits
      * of which number is specified by \a nc
@@ -848,12 +850,11 @@ class QCircuit : public IDisplay, public IJSON {
     idx get_d() const noexcept { return d_; }
 
     /**
-     * \brief Quantum circuit name
+     * \brief Quantum circuit description name
      *
-     * \return Quantum circuit name
+     * \return Quantum circuit description name
      */
     std::string get_name() const { return name_; }
-
     /**
      * \brief Check whether qudit \a i was already measured (destructively)
      * \param i Qudit index
@@ -899,7 +900,7 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Quantum circuit gate count
+     * \brief Quantum circuit description gate count
      *
      * \note If \a name is empty (default), returns the total gate count of the
      * circuit
@@ -910,7 +911,7 @@ class QCircuit : public IDisplay, public IJSON {
     idx get_gate_count(const std::string& name = {}) const {
         idx result = 0;
 
-        // total count
+        // total gate count
         if (name.empty()) {
             for (auto&& elem : count_)
                 result += elem.second;
@@ -918,14 +919,12 @@ class QCircuit : public IDisplay, public IJSON {
             return result;
         }
 
-        // EXCEPTION CHECKS
-
+        // name not found in the hash table
         try {
             result = count_.at(name);
         } catch (...) {
             return 0;
         }
-        // END EXCEPTION CHECKS
 
         return result;
     }
@@ -933,7 +932,7 @@ class QCircuit : public IDisplay, public IJSON {
     // computes the depth greedily, measuring the "height" (depth) of the
     // "pieces" (gates) placed in a Tetris-like style
     /**
-     * \brief Quantum circuit depth
+     * \brief Quantum circuit description depth
      *
      * \note If \a name is empty (default), returns the total depth of the
      * circuit
@@ -950,7 +949,7 @@ class QCircuit : public IDisplay, public IJSON {
             // measurements
             if (step.type_ == StepType::MEASUREMENT) {
                 MeasureStep measure_step = *step.measurements_ip_;
-                if (name != "" && measure_step.name_ != name)
+                if (!name.empty() && measure_step.name_ != name)
                     continue;
 
                 found = true; // measurement was found in the circuit
@@ -993,7 +992,7 @@ class QCircuit : public IDisplay, public IJSON {
                 // gates
             } else if (step.type_ == StepType::GATE) {
                 GateStep gate_step = *step.gates_ip_;
-                if (name != "" && gate_step.name_ != name)
+                if (!name.empty() && gate_step.name_ != name)
                     continue;
 
                 found = true; // gate was found in the circuit
@@ -1055,34 +1054,31 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Quantum circuit total measurement count
+     * \brief Quantum circuit description measurement count
      *
-     * \return Total measurement count
-     */
-    idx get_measurement_count() const noexcept {
-        idx result = 0;
-        for (auto&& elem : measurement_count_)
-            result += elem.second;
-
-        return result;
-    }
-
-    /**
-     * \brief Quantum circuit measurement count
+     * \note If \a name is empty (default), returns the total measurement count
+     * of the circuit
      *
-     * \param name Measurement name
+     * \param name Measurement name (optional)
      * \return Measurement count
      */
-    idx get_measurement_count(const std::string& name) const {
+    idx get_measurement_count(const std::string& name = {}) const {
         idx result = 0;
-        // EXCEPTION CHECKS
 
+        // total measurement count
+        if (name.empty()) {
+            for (auto&& elem : measurement_count_)
+                result += elem.second;
+
+            return result;
+        }
+
+        // name not found in the hash table
         try {
             result = measurement_count_.at(name);
         } catch (...) {
             return 0;
         }
-        // END EXCEPTION CHECKS
 
         return result;
     }
@@ -1106,6 +1102,19 @@ class QCircuit : public IDisplay, public IJSON {
             [](const StepType& s) { return s == StepType::NOP; });
     }
     // end getters
+
+    // setters
+    /**
+     * \brief Sets name for the quantum circuit description
+     *
+     * \param name Quantum circuit description name
+     * \return Reference to the current instance
+     */
+    QCircuit& set_name(const std::string& name) {
+        name_ = name;
+        return *this;
+    }
+    // end setters
 
     /**
      * \brief Adds \a n additional qudits before qudit \a i (by default adds
@@ -2972,7 +2981,7 @@ class QCircuit : public IDisplay, public IJSON {
 
             // modify and add hash
             elem.gate_hash_ = hashUdagger;
-            if (elem.name_ != "")
+            if (!elem.name_.empty())
                 elem.name_ += "+";
             add_hash_(Udagger, hashUdagger);
         }
@@ -2983,11 +2992,11 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief qpp::IJSON::to_JSON() override
      *
-     * Displays the quantum circuit in JSON format
+     * Displays the quantum circuit description in JSON format
      *
      * \param enclosed_in_curly_brackets If true, encloses the result in
      * curly brackets \return String containing the JSON representation of
-     * the quantum circuit
+     * the quantum circuit description
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
         std::string result;
@@ -3194,7 +3203,7 @@ class QCircuit : public IDisplay, public IJSON {
     std::ostream& display(std::ostream& os) const override {
         os << "nq = " << nq_ << ", nc = " << nc_ << ", d = " << d_;
 
-        if (name_ != "") // if the circuit is named
+        if (!name_.empty()) // if the circuit is named
             os << ", name = \"" << name_ << "\"\n";
         else
             os << ", name = \"\"\n";
