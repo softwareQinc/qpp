@@ -1,5 +1,5 @@
 // Reversible classical circuits
-// Source: ./examples/reversible.cpp
+// Source: ./examples/reversible1.cpp
 #include <iostream>
 
 #include "qpp.h"
