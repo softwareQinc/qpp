@@ -8,7 +8,7 @@
 int main(int argc, char** argv) {
     using namespace qpp;
     if (argc < 2) {
-        std::cerr << "Input file not specified.\n";
+        std::cerr << "Input file not specified!\n";
         return EXIT_FAILURE;
     }
 
