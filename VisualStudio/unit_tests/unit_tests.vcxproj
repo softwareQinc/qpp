@@ -143,7 +143,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);PATH=PATH=R"($(SolutionDir)../unit_tests)"</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);PATH=R"($(SolutionDir)../unit_tests)"</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(EIGEN3_INSTALL_PATH);$(SolutionDir)..\include;$(SolutionDir)..\unit_tests\lib\googletest-release-1.8.1\googletest\include;$(SolutionDir)..\unit_tests\lib\googletest-release-1.8.1\googletest\;$(SolutionDir)..\unit_tests\lib\googletest-release-1.8.1\googlemock\include;$(SolutionDir)..\unit_tests\lib\googletest-release-1.8.1\googlemock;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
