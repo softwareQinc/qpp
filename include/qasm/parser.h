@@ -46,6 +46,7 @@ class Parser {
     Preprocessor& pp_lexer_; ///< preprocessed, tokenized input stream
 
     bool error_ = false;            ///< whether a parse error has occured
+    bool supress_errors_ = false;   ///< whether to supress errors
     Token current_token_ = Token(); ///< current token
     int bits_ = 0;                  ///< number of bits
     int qubits_ = 0;                ///< number of qubits
@@ -76,8 +77,14 @@ class Parser {
   private:
     /**
      * \brief Consume a token and retrieve the next one
+     *
+     * \param reset Whether to unsupress errors (optional, default is false)
      */
-    void consume_token() { current_token_ = pp_lexer_.next_token(); }
+    void consume_token(bool reset = false) {
+      current_token_ = pp_lexer_.next_token();
+      if (reset)
+        supress_errors_ = false;
+    }
 
     /**
      * \brief Consume a particular type of token
@@ -91,16 +98,47 @@ class Parser {
      */
     Token expect_and_consume_token(Token::Kind expected) {
         if (current_token_.is_not(expected)) {
-            current_token_.location().display(std::cerr);
-            std::cerr << ": expected " << expected;
-            std::cerr << " but got " << current_token_.kind() << "\n";
-
             error_ = true;
+            if (!supress_errors_) {
+                std::cerr << current_token_.location();
+                std::cerr << ": expected " << expected;
+                std::cerr << " but got " << current_token_.kind() << "\n";
+                ;
+                supress_errors_ = true;
+            }
             return current_token_;
         }
 
         auto return_token = current_token_;
         consume_token();
+        return return_token;
+    }
+
+    /**
+     * \brief Consume tokens until a particular token is found
+     *
+     * Repeatedly skips tokens, setting the error flag if necessary,
+     * until the given token or eof is found
+     *
+     * \param expected The type of token to be consumed
+     * \return The next expected token, or eof
+     */
+  Token consume_until(Token::Kind expected) {
+    while (current_token_.is_not(expected) &&
+           current_token_.is_not(Token::Kind::eof)) {
+            error_ = true;
+            if (!supress_errors_) {
+                std::cerr << current_token_.location();
+                std::cerr << ": expected " << expected;
+                std::cerr << " but got " << current_token_.kind() << "\n";
+                ;
+                supress_errors_ = true;
+            }
+            consume_token();
+        }
+
+        auto return_token = current_token_;
+        consume_token(true);
         return return_token;
     }
 
@@ -179,13 +217,16 @@ class Parser {
                     break;
 
                 default:
-                    current_token_.location().display(std::cerr);
-                    std::cerr
-                        << ": expected a declaration or statement, but got ";
-                    std::cerr << current_token_.kind() << "\n";
-                    ;
-
                     error_ = true;
+                    if (!supress_errors_) {
+                        std::cerr << current_token_.location();
+                        std::cerr << ": expected a declaration or statement";
+                        std::cerr << " but got " << current_token_.kind() << "\n";
+                        ;
+                        supress_errors_ = true;
+                    }
+
+                    consume_until(Token::Kind::semicolon);
                     break;
             }
         }
@@ -202,7 +243,7 @@ class Parser {
         consume_token();
         expect_and_consume_token(Token::Kind::kw_openqasm);
         expect_and_consume_token(Token::Kind::real);
-        expect_and_consume_token(Token::Kind::semicolon);
+        consume_until(Token::Kind::semicolon);
     }
 
     /**
@@ -222,7 +263,7 @@ class Parser {
         expect_and_consume_token(Token::Kind::l_square);
         auto size = expect_and_consume_token(Token::Kind::nninteger);
         expect_and_consume_token(Token::Kind::r_square);
-        expect_and_consume_token(Token::Kind::semicolon);
+        consume_until(Token::Kind::semicolon);
 
         quantum ? qubits_ += (int) size : bits_ += (int) size;
         return StatementPtr(new RegisterDecl(loc, identifier, quantum, size));
@@ -346,12 +387,15 @@ class Parser {
                 return parse_reset();
 
             default:
-                current_token_.location().display(std::cerr);
-                std::cerr << ": expected a quantum operation, but got ";
-                std::cerr << current_token_.kind() << "\n";
-                ;
-
                 error_ = true;
+                if (!supress_errors_) {
+                    std::cerr << current_token_.location();
+                    std::cerr << ": expected a quantum operation, but got ";
+                    std::cerr << current_token_.kind() << "\n";
+                    ;
+                    supress_errors_ = true;
+                }
+
                 return nullptr;
         }
     }
@@ -384,12 +428,15 @@ class Parser {
                 return parse_barrier();
 
             default:
-                current_token_.location().display(std::cerr);
-                std::cerr << ": expected a gate operator but got ";
-                std::cerr << current_token_.kind() << "\n";
-                ;
-
                 error_ = true;
+                if (!supress_errors_) {
+                    std::cerr << current_token_.location();
+                    std::cerr << ": expected a gate operation but got ";
+                    std::cerr << current_token_.kind() << "\n";
+                    ;
+                    supress_errors_ = true;
+                }
+
                 return nullptr;
         }
     }
@@ -615,12 +662,15 @@ class Parser {
             }
 
             default:
-                current_token_.location().display(std::cerr);
-                std::cerr << ": expected an atomic expression but got ";
-                std::cerr << current_token_.kind() << "\n";
-                ;
-
                 error_ = true;
+                if (!supress_errors_) {
+                    std::cerr << current_token_.location();
+                    std::cerr << ": expected an atomic expression but got ";
+                    std::cerr << current_token_.kind() << "\n";
+                    ;
+                    supress_errors_ = true;
+                }
+
                 return nullptr;
         }
     }
@@ -649,14 +699,16 @@ class Parser {
                 consume_token();
                 return BinaryOp::Pow;
             default:
-                current_token_.location().display(std::cerr);
-                std::cerr << ": expected a binary operator but got ";
-                std::cerr << current_token_.kind() << "\n";
-                ;
-
                 error_ = true;
-                return BinaryOp::Plus; // This will be fixed when we change to
-                                       // exceptions
+                if (!supress_errors_) {
+                    std::cerr << current_token_.location();
+                    std::cerr << ": expected a binary operator but got ";
+                    std::cerr << current_token_.kind() << "\n";
+                    ;
+                    supress_errors_ = true;
+                }
+
+                return BinaryOp::Plus;
         }
     }
 
@@ -687,14 +739,16 @@ class Parser {
                 consume_token();
                 return UnaryOp::Sqrt;
             default:
-                current_token_.location().display(std::cerr);
-                std::cerr << ": expected a unary operator but got ";
-                std::cerr << current_token_.kind() << "\n";
-                ;
-
                 error_ = true;
-                return UnaryOp::Neg; // This will be fixed when we change to
-                                     // exceptions
+                if (!supress_errors_) {
+                    std::cerr << current_token_.location();
+                    std::cerr << ": expected a unary operator but got ";
+                    std::cerr << current_token_.kind() << "\n";
+                    ;
+                    supress_errors_ = true;
+                }
+
+                return UnaryOp::Neg;
         }
     }
 
@@ -712,7 +766,7 @@ class Parser {
         auto ctrl = parse_argument();
         expect_and_consume_token(Token::Kind::comma);
         auto tgt = parse_argument();
-        expect_and_consume_token(Token::Kind::semicolon);
+        consume_until(Token::Kind::semicolon);
 
         return GatePtr(new CNOTGate(loc, ctrl, tgt));
     }
@@ -736,7 +790,7 @@ class Parser {
         auto lambda = parse_exp();
         expect_and_consume_token(Token::Kind::r_paren);
         auto arg = parse_argument();
-        expect_and_consume_token(Token::Kind::semicolon);
+        consume_until(Token::Kind::semicolon);
 
         return GatePtr(new UGate(loc, std::move(theta), std::move(phi),
                                  std::move(lambda), arg));
@@ -761,7 +815,7 @@ class Parser {
         }
 
         auto q_args = parse_anylist();
-        expect_and_consume_token(Token::Kind::semicolon);
+        consume_until(Token::Kind::semicolon);
 
         return GatePtr(new DeclaredGate(loc, id, std::move(c_args), q_args));
     }
@@ -780,7 +834,7 @@ class Parser {
         auto q_arg = parse_argument();
         expect_and_consume_token(Token::Kind::arrow);
         auto c_arg = parse_argument();
-        expect_and_consume_token(Token::Kind::semicolon);
+        consume_until(Token::Kind::semicolon);
 
         return StatementPtr(new MeasureStatement(loc, q_arg, c_arg));
     }
@@ -797,7 +851,7 @@ class Parser {
 
         expect_and_consume_token(Token::Kind::kw_reset);
         auto arg = parse_argument();
-        expect_and_consume_token(Token::Kind::semicolon);
+        consume_until(Token::Kind::semicolon);
 
         return StatementPtr(new ResetStatement(loc, arg));
     }
@@ -814,7 +868,7 @@ class Parser {
 
         expect_and_consume_token(Token::Kind::kw_barrier);
         auto args = parse_anylist();
-        expect_and_consume_token(Token::Kind::semicolon);
+        consume_until(Token::Kind::semicolon);
 
         return GatePtr(new BarrierGate(loc, args));
     }

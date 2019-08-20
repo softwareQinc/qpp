@@ -141,8 +141,7 @@ class Preprocessor {
      */
     Token next_token() {
         if (current_lexer_ == nullptr) {
-            std::cerr << "No target to lex.\n";
-            return {};
+          return Token(Location(), Token::Kind::eof, "");
         }
         auto token = current_lexer_->next_token();
         if (token.is(Token::Kind::kw_include)) {

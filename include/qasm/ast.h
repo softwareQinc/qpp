@@ -227,7 +227,7 @@ class Context {
                 return it->second.get();
         }
 
-        std::cerr << "At (" << loc << "): Undeclared identifier " << id << "\n";
+        std::cerr << loc << ": Undeclared identifier " << id << "\n";
         throw exception::Undeclared("qpp::qasm::Context::lookup()");
     }
 
@@ -584,7 +584,7 @@ class Varinfo : public IDisplay {
         auto reg = dynamic_cast<const Register*>(ctx.lookup(id_, loc_));
 
         if (reg == nullptr || reg->quantum_) {
-            std::cerr << "At (" << loc_ << "): Identifier " << id_
+            std::cerr << loc_ << ": Identifier " << id_
                       << " does not refer to a bit register\n";
             throw exception::SemanticError("qpp::qasm::Varinfo::as_creg()");
         }
@@ -597,7 +597,7 @@ class Varinfo : public IDisplay {
 
             // check register size
             if ((idx) offset_ >= reg->indices_.size()) {
-                std::cerr << "At (" << loc_ << "): Index out of bounds\n";
+                std::cerr << loc_ << ": Index out of bounds\n";
                 throw exception::SemanticError("qpp::qasm::Varinfo::as_qreg()");
             }
 
@@ -624,7 +624,7 @@ class Varinfo : public IDisplay {
                 auto reg = dynamic_cast<const Register*>(tmp);
                 // check register type
                 if (reg == nullptr || !reg->quantum_) {
-                    std::cerr << "At (" << loc_ << "): Identifier " << id_
+                    std::cerr << loc_ << ": Identifier " << id_
                               << " does not refer to a qubit register\n";
                     throw exception::SemanticError(
                         "qpp::qasm::Varinfo::as_qreg()");
@@ -638,14 +638,14 @@ class Varinfo : public IDisplay {
 
             // check register type
             if (reg == nullptr || !reg->quantum_) {
-                std::cerr << "At (" << loc_ << "): Identifier " << id_
+                std::cerr << loc_ << ": Identifier " << id_
                           << " does not refer to a qubit register\n";
                 throw exception::SemanticError("qpp::qasm::Varinfo::as_qreg()");
             }
 
             // check register size
             if ((idx) offset_ >= reg->indices_.size()) {
-                std::cerr << "At (" << loc_ << "): Index out of bounds\n";
+                std::cerr << loc_ << ": Index out of bounds\n";
                 throw exception::SemanticError("qpp::qasm::Varinfo::as_qreg()");
             }
 
@@ -916,7 +916,7 @@ class IfStatement final : public Statement {
 
         // check register type
         if (creg == nullptr || creg->quantum_) {
-            std::cerr << "At (" << loc_ << "): Identifier " << id_
+            std::cerr << loc_ << ": Identifier " << id_
                       << " does not refer to a classic register\n";
             throw exception::SemanticError(
                 "qpp::qasm::IfStatement::evaluate()");
@@ -1077,8 +1077,7 @@ class CNOTGate final : public Gate {
                 }
             }
         } else {
-            std::cerr << "At (" << loc_
-                      << "): Registers have different lengths\n";
+            std::cerr << loc_ << ": Registers have different lengths\n";
             throw exception::SemanticError("qpp::qasm::CNOTGate::evaluate()");
         }
     }
@@ -1123,8 +1122,7 @@ class BarrierGate final : public Gate {
                 if (mapping_size == 1) {
                     mapping_size = tmp.size();
                 } else if (mapping_size != tmp.size()) {
-                    std::cerr << "At (" << loc_
-                              << "): Registers have different lengths\n";
+                    std::cerr << loc_ << ": Registers have different lengths\n";
                     throw exception::SemanticError(
                         "qpp::qasm::BarrierGate::evaluate()");
                 }
@@ -1177,7 +1175,7 @@ class DeclaredGate final : public Gate {
 
         // check gate type
         if (gate == nullptr) {
-            std::cerr << "At (" << loc_ << "): Identifier " << id_
+            std::cerr << loc_ << ": Identifier " << id_
                       << " does not refer to a gate declaration\n";
             throw exception::SemanticError(
                 "qpp::qasm::DeclaredGate::evaluate()");
@@ -1185,13 +1183,13 @@ class DeclaredGate final : public Gate {
 
         // check argument lengths
         if (c_args_.size() != gate->c_params_.size()) {
-            std::cerr << "At (" << loc_ << "): " << id_ << " expects "
+            std::cerr << loc_ << ": " << id_ << " expects "
                       << gate->c_params_.size();
             std::cerr << " classic arguments, got " << c_args_.size() << "\n";
             throw exception::SemanticError(
                 "qpp::qasm::DeclaredGate::evaluate()");
         } else if (q_args_.size() != gate->q_params_.size()) {
-            std::cerr << "At (" << loc_ << "): " << id_ << " expects "
+            std::cerr << loc_ << ": " << id_ << " expects "
                       << gate->q_params_.size();
             std::cerr << " quantum arguments, got " << q_args_.size() << "\n";
             throw exception::SemanticError(
@@ -1215,8 +1213,7 @@ class DeclaredGate final : public Gate {
                 if (mapping_size == 1) {
                     mapping_size = q_args[i].size();
                 } else if (mapping_size != q_args[i].size()) {
-                    std::cerr << "At (" << loc_
-                              << "): Registers have different lengths\n";
+                    std::cerr << loc_ << ": Registers have different lengths\n";
                     throw exception::SemanticError(
                         "qpp::qasm::DeclaredGate::evaluate()");
                 }
@@ -1418,7 +1415,7 @@ class VarExpr final : public Expr {
         auto val = dynamic_cast<const Number*>(ctx.lookup(value_, loc_));
 
         if (val == nullptr) {
-            std::cerr << "At (" << loc_ << "): Identifier " << value_;
+            std::cerr << loc_ << ": Identifier " << value_;
             std::cerr << " does not refer to a classical parameter\n";
             throw exception::ParseError("qpp::qasm::VarExpr::evaluate()");
         }

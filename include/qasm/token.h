@@ -41,8 +41,8 @@ namespace qasm {
  */
 class Location : public IDisplay {
     std::string fname_ = ""; ///< name of the containing file
-    idx line_ = 0;           ///< line number
-    idx column_ = 0;         ///< column number
+    idx line_ = 1;           ///< line number
+    idx column_ = 1;         ///< column number
 
   public:
     /**

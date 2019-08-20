@@ -60,7 +60,7 @@ class Lexer {
      * \param fname The name of the file associated with buffer (optional)
      */
     Lexer(std::shared_ptr<std::istream> buffer, const std::string& fname = "")
-        : loc_(fname, 0, 0), buf_(buffer) {}
+        : loc_(fname, 1, 1), buf_(buffer) {}
 
     /**
      * \brief Lex and return the next token
