@@ -981,7 +981,7 @@ kron(const std::initializer_list<Derived>& As) {
  * \see qpp::kron()
  *
  * \param A Eigen expression
- * \param n Non-negative integer
+ * \param n Positive integer
  * \return Kronecker product of \a A with itself \a n times \f$A^{\otimes n}\f$,
  * as a dynamic matrix over the same scalar field as \a A
  */
@@ -1096,7 +1096,7 @@ dirsum(const std::initializer_list<Derived>& As) {
  * \see qpp::dirsum()
  *
  * \param A Eigen expression
- * \param n Non-negative integer
+ * \param n Positive integer
  * \return Direct sum of \a A with itself \a n times \f$A^{\oplus n}\f$, as a
  * dynamic matrix over the same scalar field as \a A
  */

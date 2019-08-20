@@ -81,9 +81,9 @@ class Parser {
      * \param reset Whether to unsupress errors (optional, default is false)
      */
     void consume_token(bool reset = false) {
-      current_token_ = pp_lexer_.next_token();
-      if (reset)
-        supress_errors_ = false;
+        current_token_ = pp_lexer_.next_token();
+        if (reset)
+            supress_errors_ = false;
     }
 
     /**
@@ -123,9 +123,9 @@ class Parser {
      * \param expected The type of token to be consumed
      * \return The next expected token, or eof
      */
-  Token consume_until(Token::Kind expected) {
-    while (current_token_.is_not(expected) &&
-           current_token_.is_not(Token::Kind::eof)) {
+    Token consume_until(Token::Kind expected) {
+        while (current_token_.is_not(expected) &&
+               current_token_.is_not(Token::Kind::eof)) {
             error_ = true;
             if (!supress_errors_) {
                 std::cerr << current_token_.location();
@@ -221,7 +221,8 @@ class Parser {
                     if (!supress_errors_) {
                         std::cerr << current_token_.location();
                         std::cerr << ": expected a declaration or statement";
-                        std::cerr << " but got " << current_token_.kind() << "\n";
+                        std::cerr << " but got " << current_token_.kind()
+                                  << "\n";
                         ;
                         supress_errors_ = true;
                     }

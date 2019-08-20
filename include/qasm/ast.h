@@ -126,7 +126,7 @@ class Context {
     // Hack for MSCV
     using hash_ident_uptr = std::unordered_map<ident, std::unique_ptr<Value>>;
     struct Environment {
-      Environment() noexcept : val_() {};
+        Environment() noexcept : val_(){};
         Environment(Environment&& rhs) noexcept : val_(std::move(rhs.val_)) {}
         hash_ident_uptr val_;
     };

@@ -114,7 +114,7 @@ class States final : public internal::Singleton<const States> // const Singleton
     /**
      * \brief Zero state of \a n qudits
      *
-     * \param n Non-negative integer
+     * \param n Positive integer
      * \param d Subsystem dimensions
      * \return Zero state \f$|0\rangle^{\otimes n}\f$ of \a n qudits
      */
@@ -139,7 +139,7 @@ class States final : public internal::Singleton<const States> // const Singleton
     /**
      * \brief One state of \a n qudits
      *
-     * \param n Non-negative integer
+     * \param n Positive integer
      * \param d Subsystem dimensions
      * \return One state \f$|1\rangle^{\otimes n}\f$ of \a n qudits
      */
@@ -164,7 +164,7 @@ class States final : public internal::Singleton<const States> // const Singleton
      * \brief \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
      *
      * \param j Non-negative integer
-     * \param n Non-negative integer
+     * \param n Positive integer
      * \param d Subsystem dimensions
      * \return \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
      */
@@ -192,7 +192,7 @@ class States final : public internal::Singleton<const States> // const Singleton
     /**
      * \brief Plus state of \a n qubits
      *
-     * \param n Non-negative integer
+     * \param n Positive integer
      * \return Plus state \f$|+\rangle^{\otimes n}\f$ of \a n qubits
      */
     ket plus(idx n) const {
@@ -212,7 +212,7 @@ class States final : public internal::Singleton<const States> // const Singleton
     /**
      * \brief Minus state of \a n qubits
      *
-     * \param n Non-negative integer
+     * \param n Positive integer
      * \return Minus state \f$|-\rangle^{\otimes n}\f$ of \a n qubits
      */
     ket minus(idx n) const {

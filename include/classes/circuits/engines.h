@@ -60,7 +60,14 @@ class QEngine : public IDisplay, public IJSON {
          *
          * \param qc Non-owning pointer to the parent const quantum circuit
          */
-        explicit state_(const QCircuit* qc) : qc_{qc} { reset(); }
+        explicit state_(const QCircuit* qc) : qc_{qc} {
+            // EXECEPTION CHECKS
+
+            if (qc->get_nq() == 0)
+                throw exception::ZeroSize("qpp::QEngine::state_::reset()");
+            // END EXCEPTION CHECKS
+            reset();
+        }
 
         // silence -Weffc++ class has pointer data members
         /**

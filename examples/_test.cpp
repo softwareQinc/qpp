@@ -7,16 +7,11 @@ int main() {
     /////////// testing ///////////
     using namespace qpp;
 
-    QCircuit qc{3, 3, 3};
-    qc.gate_fan(gt.Fd(3));
-    qc.measureZ({0, 1, 2}, 0, false);
-    qc.measureZ({0, 1, 2}, 1, false);
-    qc.measureZ({0, 1, 2}, 2);
+    QCircuit qc = *qasm::read_from_file(
+        PATH "/unit_tests/tests/qasm/circuits/generic/teleport.qasm");
     std::cout << qc << "\n\n";
-    std::cout << qc.to_JSON() << "\n\n";
 
     QEngine q_engine{qc};
-    q_engine.execute(1024);
-    std::cout << q_engine << "\n\n";
-    std::cout << q_engine.to_JSON() << "\n\n";
+    q_engine.execute();
+    std::cout << q_engine << '\n';
 }

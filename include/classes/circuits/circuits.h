@@ -804,7 +804,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \note The measurement results can only be stored in the classical dits
      * of which number is specified by \a nc
      *
-     * \param nq Number of qbits
+     * \param nq Number of qudits
      * \param nc Number of classical dits (optional)
      * \param d Subsystem dimensions (optional, default is qubit, i.e. \a d = 2)
      * \param name Circuit name (optional)
@@ -813,8 +813,8 @@ class QCircuit : public IDisplay, public IJSON {
         : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false) {
         // EXCEPTION CHECKS
 
-        if (nq == 0)
-            throw exception::ZeroSize("qpp::QCircuit::QCircuit()");
+        // if (nq == 0)
+        //    throw exception::ZeroSize("qpp::QCircuit::QCircuit()");
         if (d < 2)
             throw exception::OutOfRange("qpp::QCircuit::QCircuit()");
         // END EXCEPTION CHECKS

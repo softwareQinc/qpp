@@ -141,7 +141,7 @@ class Preprocessor {
      */
     Token next_token() {
         if (current_lexer_ == nullptr) {
-          return Token(Location(), Token::Kind::eof, "");
+            return Token(Location(), Token::Kind::eof, "");
         }
         auto token = current_lexer_->next_token();
         if (token.is(Token::Kind::kw_include)) {
