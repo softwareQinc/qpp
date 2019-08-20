@@ -4,7 +4,7 @@
 #include "qpp.h"
 
 int main() {
-	using namespace qpp;
-	std::cout << "Hello, Quantum++!\nThis is the |0> state:\n";
-	std::cout << disp(0_ket) << '\n';
+    using namespace qpp;
+    std::cout << "Hello, Quantum++!\nThis is the |0> state:\n";
+    std::cout << disp(0_ket) << '\n';
 }
