@@ -6,6 +6,8 @@ In progress - pre-release
           adjoint()  - in place adjoint of quantum circuit description
           kron()     - in place Kronecker product with another quantum circuit
                        description
+          discard()  - Discards qudits by measuring them destructively and
+                       ignoring the result of the measurement
      - Implemented the corresponding free functions as friends of qpp::QCircuit:
           qpp::adjoint()     - adjoint of quantum circuit description
           qpp::kron()        - Kronecker product between two quantum circuit
@@ -32,7 +34,7 @@ In progress - pre-release
           qpp::reset()           - Resets qudits in a multipartite state
           qpp::QCircuit::reset() - Resets qudits in a quantum circuit
                                    description
-    - Added support for qASM
+    - Added support for OpenQASM
 
 Version 1.3 - 25 July 2019
     - Minimum required CMake version is now 3.2

@@ -284,6 +284,10 @@ class QCircuit : public IDisplay, public IJSON {
         RESET, ///< resets single qudit
 
         RESET_MANY, ///< resets multiple qudits
+
+        DISCARD, ///< discards single qudit
+
+        DISCARD_MANY, ///< discards multiple qudits
     };
 
     /**
@@ -329,6 +333,13 @@ class QCircuit : public IDisplay, public IJSON {
                 break;
             case MeasureType::RESET_MANY:
                 os << "RESET_MANY";
+                break;
+            case MeasureType::DISCARD:
+                os << "DISCARD";
+                break;
+            case MeasureType::DISCARD_MANY:
+                os << "DISCARD_MANY";
+                break;
         }
 
         return os;
@@ -380,7 +391,9 @@ class QCircuit : public IDisplay, public IJSON {
         os << measure_step.measurement_type_ << ", ";
         os << "target = " << disp(measure_step.target_, ", ") << ", ";
         if (measure_step.measurement_type_ != MeasureType::RESET &&
-            measure_step.measurement_type_ != MeasureType::RESET_MANY)
+            measure_step.measurement_type_ != MeasureType::RESET_MANY &&
+            measure_step.measurement_type_ != MeasureType::DISCARD &&
+            measure_step.measurement_type_ != MeasureType::DISCARD_MANY)
             os << "c_reg = " << measure_step.c_reg_ << ", ";
         os << "name = " << '\"' << measure_step.name_ << '\"';
 
@@ -530,7 +543,9 @@ class QCircuit : public IDisplay, public IJSON {
                         case MeasureType::RESET_MANY:
                             os << "|* ";
                             break;
-                        default:
+                        case MeasureType::DISCARD:
+                        case MeasureType::DISCARD_MANY:
+                            os << "|x ";
                             break;
                     } /* end switch */
 
@@ -902,22 +917,11 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Quantum circuit description gate count
      *
-     * \note If \a name is empty (default), returns the total gate count of the
-     * circuit
-     *
-     * \param name Gate name (optional)
+     * \param name Gate name
      * \return Gate count
      */
-    idx get_gate_count(const std::string& name = {}) const {
+    idx get_gate_count(const std::string& name) const {
         idx result = 0;
-
-        // total gate count
-        if (name.empty()) {
-            for (auto&& elem : count_)
-                result += elem.second;
-
-            return result;
-        }
 
         // name not found in the hash table
         try {
@@ -929,6 +933,20 @@ class QCircuit : public IDisplay, public IJSON {
         return result;
     }
 
+    /**
+     * \brief Quantum circuit description total gate count
+     *
+     * \return Total gate count
+     */
+    idx get_gate_count() const {
+        idx result = 0;
+
+        for (auto&& elem : count_)
+            result += elem.second;
+
+        return result;
+    }
+    
     // computes the depth greedily, measuring the "height" (depth) of the
     // "pieces" (gates) placed in a Tetris-like style
     /**
@@ -950,7 +968,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (step.type_ == StepType::MEASUREMENT) {
                 MeasureStep measure_step = *step.measurements_ip_;
                 if (!name.empty() && measure_step.name_ != name)
-                    continue;
+                    continue; // we skip this measurement step
 
                 found = true; // measurement was found in the circuit
 
@@ -981,6 +999,8 @@ class QCircuit : public IDisplay, public IJSON {
                         break;
                     case MeasureType::RESET:
                     case MeasureType::RESET_MANY:
+                    case MeasureType::DISCARD:
+                    case MeasureType::DISCARD_MANY:
                         for (auto&& i : target)
                             if (heights[nc_ + i] > max_height)
                                 max_height = heights[nc_ + i];
@@ -993,7 +1013,7 @@ class QCircuit : public IDisplay, public IJSON {
             } else if (step.type_ == StepType::GATE) {
                 GateStep gate_step = *step.gates_ip_;
                 if (!name.empty() && gate_step.name_ != name)
-                    continue;
+                    continue; // we skip this gate step
 
                 found = true; // gate was found in the circuit
 
@@ -1056,22 +1076,11 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Quantum circuit description measurement count
      *
-     * \note If \a name is empty (default), returns the total measurement count
-     * of the circuit
-     *
-     * \param name Measurement name (optional)
+     * \param name Measurement name
      * \return Measurement count
      */
-    idx get_measurement_count(const std::string& name = {}) const {
+    idx get_measurement_count(const std::string& name) const {
         idx result = 0;
-
-        // total measurement count
-        if (name.empty()) {
-            for (auto&& elem : measurement_count_)
-                result += elem.second;
-
-            return result;
-        }
 
         // name not found in the hash table
         try {
@@ -1079,6 +1088,20 @@ class QCircuit : public IDisplay, public IJSON {
         } catch (...) {
             return 0;
         }
+
+        return result;
+    }
+
+    /**
+     * \brief Quantum circuit description total measurement count
+     *
+     * \return Total measurement count
+     */
+    idx get_measurement_count() const {
+        idx result = 0;
+
+        for (auto&& elem : measurement_count_)
+            result += elem.second;
 
         return result;
     }
@@ -2439,7 +2462,7 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Measurement of single qudit in the computational basis (Z-basis)
      *
-     * \param target Qudit index
+     * \param target Target qudit index that is measured
      * \param c_reg Classical register where the value of the measurement is
      * being stored
      * \param destructive Destructive measurement, true by default
@@ -2487,7 +2510,8 @@ class QCircuit : public IDisplay, public IJSON {
 
     // Z measurement of multiple qudits
     /**
-     * \brief Measurement of multiple qudit in the computational basis (Z-basis)
+     * \brief Measurement of multiple qudits in the computational basis
+     * (Z-basis)
      *
      * \param target Target qudit indexes that are measured
      * \param c_reg Classical register where the value of the measurement is
@@ -2518,7 +2542,6 @@ class QCircuit : public IDisplay, public IJSON {
             // trying to put the result into a non-existing classical slot
             if (c_reg >= nc_)
                 throw exception::OutOfRange("qpp::QCircuit::measureZ()");
-
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -2554,7 +2577,7 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \param V Orthonormal basis or rank-1 projectors specified by the
      * columns of matrix V
-     * \param target Qudit index
+     * \param target Target qudit index that is measured
      * \param c_reg Classical register where the value of the measurement is
      * stored
      * \param destructive Destructive measurement, true by default
@@ -2671,6 +2694,90 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
+     * \brief Discard single qudit by measuring it destructively in the
+     * computational basis (Z-basis) and discarding the measurement result
+     *
+     * \param target Target qudit index that is discarded
+     * \param name Optional discard operation name, default is "discard"
+     * \return Reference to the current instance
+     */
+    QCircuit& discard(idx target, std::string name = {}) {
+        // EXCEPTION CHECKS
+
+        try {
+            // discarding non-existing qudit
+            if (target >= nq_)
+                throw exception::OutOfRange("qpp::QCircuit::discard()");
+            // qudit was measured before
+            if (get_measured(target))
+                throw exception::QuditAlreadyMeasured(
+                    "qpp:QCircuit::discard()");
+        } catch (exception::Exception&) {
+            std::cerr << "At STEP " << get_step_count() << "\n";
+            throw;
+        }
+        // END EXCEPTION CHECKS
+
+        if (name.empty())
+            name = "discard";
+
+        measured_[target] = true;
+        measurements_.emplace_back(MeasureType::DISCARD,
+                                   std::vector<std::size_t>{},
+                                   std::vector<idx>{target}, -1, name);
+
+        step_types_.emplace_back(StepType::MEASUREMENT);
+        ++measurement_count_[name];
+
+        return *this;
+    }
+
+    /**
+     * \brief Discard multiple qudits by measuring them destructively in the
+     * computational basis (Z-basis) and discarding the measurement result
+     *
+     * \param target Target qudit indexes that are discarded
+     * \param name Optional discard operation name, default is "discard"
+     * \return Reference to the current instance
+     */
+    QCircuit& discard(const std::vector<idx>& target, std::string name = {}) {
+        // EXCEPTION CHECKS
+
+        try {
+            // check valid target
+            if (target.empty())
+                throw exception::ZeroSize("qpp::QCircuit::discard()");
+            for (auto&& elem : target) {
+                // discarding non-existing qudit
+                if (elem >= nq_)
+                    throw exception::OutOfRange("qpp::QCircuit::discard()");
+                // qudit was measured before
+                if (get_measured(elem))
+                    throw exception::QuditAlreadyMeasured(
+                        "qpp:QCircuit::discard()");
+            }
+        } catch (exception::Exception&) {
+            std::cerr << "At STEP " << get_step_count() << "\n";
+            throw;
+        }
+        // END EXCEPTION CHECKS
+
+        if (name.empty())
+            name = "discard";
+
+        for (auto&& elem : target) {
+            measured_[elem] = true;
+        }
+        measurements_.emplace_back(MeasureType::DISCARD_MANY,
+                                   std::vector<std::size_t>{}, target, -1,
+                                   name);
+        step_types_.emplace_back(StepType::MEASUREMENT);
+        ++measurement_count_[name];
+
+        return *this;
+    }
+
+    /**
      * \brief No operation (no-op)
      *
      * \note If the underlying step is executed on a noisy engine, then noise
@@ -2690,7 +2797,7 @@ class QCircuit : public IDisplay, public IJSON {
      * computational basis and discarding the measurement result, followed by
      * shifting it back to the \f$|0\rangle\f$ state
      *
-     * \param target Qudit index
+     * \param target Target qudit index that is reset
      * \param name Optional name, default is "reset"
      * \return Reference to the current instance
      */
@@ -2714,7 +2821,7 @@ class QCircuit : public IDisplay, public IJSON {
             name = "reset";
         measurements_.emplace_back(MeasureType::RESET,
                                    std::vector<std::size_t>{},
-                                   std::vector<idx>{target}, 0, name);
+                                   std::vector<idx>{target}, -1, name);
         step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
 
@@ -2756,7 +2863,8 @@ class QCircuit : public IDisplay, public IJSON {
         if (name.empty())
             name = "reset";
         measurements_.emplace_back(MeasureType::RESET_MANY,
-                                   std::vector<std::size_t>{}, target, 0, name);
+                                   std::vector<std::size_t>{}, target, -1,
+                                   name);
         step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
 
@@ -3070,7 +3178,11 @@ class QCircuit : public IDisplay, public IJSON {
                 if (measurements_[pos].measurement_type_ !=
                         MeasureType::RESET &&
                     measurements_[pos].measurement_type_ !=
-                        MeasureType::RESET_MANY)
+                        MeasureType::RESET_MANY &&
+                    measurements_[pos].measurement_type_ !=
+                        MeasureType::DISCARD &&
+                    measurements_[pos].measurement_type_ !=
+                        MeasureType::DISCARD_MANY)
                     result += "\"c_reg\" : " +
                               std::to_string(measurements_[pos].c_reg_) + ", ";
 

@@ -825,7 +825,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
  * followed by shifting them back to the \f$|0\cdots 0\rangle\f$ state
  *
  * \param A Eigen expression
- * \param target Qudit indexes that are reset
+ * \param target Target qudit indexes that are reset
  * \param dims Dimensions of the multi-partite system
  * \return Reset quantum state
  */
@@ -881,7 +881,7 @@ dyn_mat<typename Derived::Scalar> reset(const Eigen::MatrixBase<Derived>& A,
  * followed by shifting them back to the \f$|0\cdots 0\rangle\f$ state
  *
  * \param A Eigen expression
- * \param target Qudit indexes that are reset
+ * \param target Target qudit indexes that are reset
  * \param d Subsystem dimensions
  * \return Reset quantum state
  */

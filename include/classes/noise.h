@@ -77,7 +77,7 @@ class NoiseBase {
      * otherwise returns without performing any operation (no-op)
      *
      * \param state State vector or density matrix
-     * \param target Qudit indexes where the noise is applied
+     * \param target Target qudit indexes where the noise is applied
      */
     void compute_probs_(const cmat& state,
                         const std::vector<idx>& target) const {
@@ -103,7 +103,7 @@ class NoiseBase {
      * \brief Compute the resulting state after the noise was applied
      *
      * \param state State vector or density matrix
-     * \param target Qudit indexes where the noise is applied
+     * \param target Target qudit indexes where the noise is applied
      * \return Resulting state after the noise was applied
      */
     cmat compute_state_(const cmat& state,
@@ -312,7 +312,7 @@ class NoiseBase {
      * matrix \a state
      *
      * \param state Multi-partite state vector or density matrix
-     * \param target Qudit index where the noise is applied
+     * \param target Target qudit index where the noise is applied
      * \return Resulting state vector or density matrix
      */
     virtual cmat operator()(const cmat& state, idx target) const {
@@ -334,7 +334,7 @@ class NoiseBase {
      * vector or density matrix \a state
      *
      * \param state Multi-partite state vector or density matrix
-     * \param target Qudit indexes where the correlated noise is applied
+     * \param target Target qudit indexes where the correlated noise is applied
      * \return Resulting state vector or density matrix
      */
     virtual cmat operator()(const cmat& state,

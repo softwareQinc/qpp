@@ -58,7 +58,8 @@ class QEngine : public IDisplay, public IJSON {
         /**
          * \brief Constructor
          *
-         * \param qc Non-owning pointer to the parent const quantum circuit description
+         * \param qc Non-owning pointer to the parent const quantum circuit
+         * description
          */
         explicit state_(const QCircuit* qc) : qc_{qc} {
             // EXECEPTION CHECKS
@@ -523,6 +524,11 @@ class QEngine : public IDisplay, public IJSON {
                 case QCircuit::MeasureType::RESET:
                 case QCircuit::MeasureType::RESET_MANY:
                     st_.psi_ = qpp::reset(st_.psi_, target_rel_pos, d);
+                    break;
+                case QCircuit::MeasureType::DISCARD:
+                case QCircuit::MeasureType::DISCARD_MANY:
+                    std::tie(std::ignore, std::ignore, st_.psi_) =
+                        measure_seq(st_.psi_, target_rel_pos, d);
                     break;
             } // end switch on measurement type
         }     // end else if measurement step
