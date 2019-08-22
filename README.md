@@ -78,4 +78,4 @@ To generate a PDF file of the documentation, run
 latexmk -pdf refman.tex
 ```
 
-from `doc/latex` directory or compile the file `doc/latex/refman.tex` with your LaTeX compiler. This will create the `doc/latex/refman.pdf` documentation file. Consult your favourite LaTeX manual for how to compile/build LaTeX files under your specific operating system. 
+from the `doc/latex` directory or compile the file `doc/latex/refman.tex` with your LaTeX compiler. This will create the `doc/latex/refman.pdf` documentation file. Consult your favourite LaTeX manual for how to compile/build LaTeX files under your specific operating system. 
