@@ -1,5 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,35,88,61"/>
-<area shape="rect" id="node2" href="$structqpp_1_1is__complex.html" title="Checks whether the type is a complex type." alt="" coords="136,5,285,32"/>
-<area shape="rect" id="node3" href="$structqpp_1_1is__iterable.html" title="Checks whether T is compatible with an STL&#45;like iterable container." alt="" coords="143,57,279,98"/>
-</map>

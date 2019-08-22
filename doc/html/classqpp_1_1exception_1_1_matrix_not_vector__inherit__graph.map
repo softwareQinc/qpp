@@ -1,5 +1,0 @@
-<map id="qpp::exception::MatrixNotVector" name="qpp::exception::MatrixNotVector">
-<area shape="rect" id="node1" title="Matrix is not a vector exception." alt="" coords="6,155,179,196"/>
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="5,80,180,107"/>
-<area shape="rect" id="node3" title="STL class." alt="" coords="41,5,145,32"/>
-</map>

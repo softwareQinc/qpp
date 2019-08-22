@@ -66,5 +66,16 @@ Please see the installation guide
 and the comprehensive [Wiki](https://github.com/vsoftco/qpp/wiki) for further 
 documentation and detailed examples. 
 
-The official API documentation is available in PDF and HTML formats in the 
-[`doc`](https://github.com/vsoftco/qpp/tree/master/doc) folder.
+To generate the full official API documentation in both PDF and HTML formats run 
+[`doxygen`](http://www.doxygen.nl) on the [`Doxyfile`](https://github.com/vsoftco/qpp/blob/master/Doxyfile) file. This will generate the 
+documentation directory `doc` containing both the HTML and LaTeX documentation. 
+
+The HTML documentation file will be accessible by opening `doc/html/index.html` with the browser of your choice.
+
+To generate a PDF file of the documentation, run 
+
+```bash
+latexmk -pdf refman.tex
+```
+
+from `doc/latex` directory or compile the file `doc/latex/refman.tex` with your LaTeX compiler. This will create the `doc/latex/refman.pdf` documentation file. Consult your favourite LaTeX manual for how to compile/build LaTeX files under your specific operating system. 

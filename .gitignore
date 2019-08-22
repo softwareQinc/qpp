@@ -11,5 +11,5 @@ CMakeSettings.json
 build/
 cmake-build*/
 
-# Latex documentation source files
-doc/latex/
+# documentation source files
+doc/

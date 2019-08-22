@@ -1,4 +1,0 @@
-<map id="qpp::QubitPhaseFlipNoise" name="qpp::QubitPhaseFlipNoise">
-<area shape="rect" id="node1" title="Qubit phase flip (dephasing) noise." alt="" coords="13,95,190,121"/>
-<area shape="rect" id="node2" href="$classqpp_1_1_noise_base.html" title=" " alt="" coords="5,5,197,47"/>
-</map>

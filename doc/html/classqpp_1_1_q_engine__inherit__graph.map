@@ -1,6 +1,0 @@
-<map id="qpp::QEngine" name="qpp::QEngine">
-<area shape="rect" id="node1" title="Quantum circuit engine, executes qpp::QCircuit." alt="" coords="61,80,165,107"/>
-<area shape="rect" id="node4" href="$classqpp_1_1_q_noisy_engine.html" title="Noisy quantum circuit engine, executes qpp::QCircuit." alt="" coords="41,155,185,196"/>
-<area shape="rect" id="node2" href="$classqpp_1_1_i_display.html" title="Abstract class (interface) that mandates the definition of virtual std::ostream&amp; display(std::ostream..." alt="" coords="5,5,104,32"/>
-<area shape="rect" id="node3" href="$classqpp_1_1_i_j_s_o_n.html" title="Abstract class (interface) that mandates the definition of very basic JSON serialization support." alt="" coords="128,5,219,32"/>
-</map>

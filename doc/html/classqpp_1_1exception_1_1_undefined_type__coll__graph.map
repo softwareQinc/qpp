@@ -1,7 +1,0 @@
-<map id="qpp::exception::UndefinedType" name="qpp::exception::UndefinedType">
-<area shape="rect" id="node1" title="Not defined for this type exception." alt="" coords="5,276,212,303"/>
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="21,200,196,227"/>
-<area shape="rect" id="node3" title="STL class." alt="" coords="17,96,121,123"/>
-<area shape="rect" id="node4" title="STL class." alt="" coords="145,96,225,123"/>
-<area shape="rect" id="node5" title="STL class." alt="" coords="121,5,248,47"/>
-</map>

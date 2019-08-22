@@ -1,7 +1,0 @@
-<map id="qpp::exception::DimsMismatchMatrix" name="qpp::exception::DimsMismatchMatrix">
-<area shape="rect" id="node1" title="Dimension(s) mismatch matrix size exception." alt="" coords="5,276,209,317"/>
-<area shape="rect" id="node2" href="$classqpp_1_1exception_1_1_exception.html" title="Base class for generating Quantum++ custom exceptions." alt="" coords="20,200,195,227"/>
-<area shape="rect" id="node3" title="STL class." alt="" coords="15,96,119,123"/>
-<area shape="rect" id="node4" title="STL class." alt="" coords="143,96,223,123"/>
-<area shape="rect" id="node5" title="STL class." alt="" coords="120,5,247,47"/>
-</map>

@@ -3250,6 +3250,12 @@ class QCircuit : public IDisplay, public IJSON {
         result += "\"step count\" : " + std::to_string(get_step_count()) + ", ";
         result +=
             "\"total gate count\" : " + std::to_string(get_gate_count()) + ", ";
+        result +=
+            "\"total gate depth\" : " + std::to_string(get_gate_depth()) + ", ";
+        result += "\"total measurement count\" : " +
+                  std::to_string(get_measurement_count()) + ", ";
+        result += "\"total measurement depth\" : " +
+                  std::to_string(get_measurement_depth()) + ", ";
         result += "\"total depth\" : " + std::to_string(get_depth()) + ", ";
 
         ss.str("");
@@ -3373,6 +3379,9 @@ class QCircuit : public IDisplay, public IJSON {
 
         os << "step count: " << get_step_count() << '\n';
         os << "total gate count: " << get_gate_count() << '\n';
+        os << "total gate depth: " << get_gate_depth() << '\n';
+        os << "total measurement count: " << get_measurement_count() << '\n';
+        os << "total measurement depth: " << get_measurement_depth() << '\n';
         os << "total depth: " << get_depth() << '\n';
         os << "measured (destructive) positions: " << disp(get_measured(), ", ")
            << '\n';

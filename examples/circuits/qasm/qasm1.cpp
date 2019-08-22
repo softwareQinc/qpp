@@ -16,7 +16,7 @@ int main() {
     qc.discard({0, 1});
 
     std::cout << ">> BEGIN CIRCUIT\n";
-    std::cout << qc << '\n'; // displays the circuit
+    std::cout << qc << '\n'; // display the circuit
     std::cout << ">> END CIRCUIT\n\n";
 
     QEngine q_engine{qc}; // create an engine out of a quantum circuit
