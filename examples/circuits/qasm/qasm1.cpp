@@ -8,7 +8,7 @@ int main() {
     using namespace qpp;
 
     // create a qpp::QCircuit from a QASM file
-    QCircuit qc = *qasm::read_from_file(
+    QCircuit qc = qasm::read_from_file(
         PATH "/examples/circuits/qasm/teleport_minimal.qasm");
     // note that QASM measurements are non-destructive, so the final state after
     // this step when executed on an engine will be a state of 3 qubits; that is

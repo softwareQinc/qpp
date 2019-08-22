@@ -36,41 +36,44 @@ namespace qpp {
 namespace qasm {
 
 /**
- * \brief Reads a openQASM circuit from stdin and returns its QCircuit
+ * \brief Reads a openQASM circuit from stdin and returns its qpp::QCircuit
  * representation
  *
- * \return Unique pointer to a QCircuit object
+ * \return qpp::QCircuit
  */
-inline std::unique_ptr<QCircuit> read_from_stdin() {
+inline QCircuit read(std::istream& stream) {
     Preprocessor pp;
     Parser parser(pp);
 
-    pp.add_target_stream(std::shared_ptr<std::istream>(&std::cin));
+    pp.add_target_stream(std::shared_ptr<std::istream>(&stream));
 
-    return parser.parse();
+    return *parser.parse();
 }
 
 /**
- * \brief Reads a openQASM circuit from a file and returns its QCircuit
+ * \brief Reads a openQASM circuit from a file and returns its qpp::QCircuit
  * representation
  *
- * \return Unique pointer to a QCircuit object
+ * \return qpp::QCircuit
  */
-inline std::unique_ptr<QCircuit> read_from_file(const std::string& fname_) {
+inline QCircuit read_from_file(const std::string& fname) {
     Preprocessor pp;
     Parser parser(pp);
 
     std::shared_ptr<std::ifstream> ifs(new std::ifstream);
 
-    ifs->open(fname_, std::ifstream::in);
+    // EXCEPTION CHECKS
+
+    ifs->open(fname, std::ifstream::in);
     if (!ifs->good()) {
         ifs->close();
         throw exception::FileNotFound("qpp::qasm::read_from_file()");
     }
+    // END EXCEPTION CHECKS
 
-    pp.add_target_stream(ifs, fname_);
+    pp.add_target_stream(ifs, fname);
 
-    return parser.parse();
+    return *parser.parse();
 }
 
 } /* namespace qasm */

@@ -24,8 +24,8 @@
  * SOFTWARE.
  */
 
-#ifndef PATH 
-#define PATH "" 
+#ifndef PATH
+#define PATH ""
 #endif
 
 #include "gtest/gtest.h"
@@ -94,9 +94,9 @@ TEST(qpp_qasm_read_from_file, StdCompliance) {
 }
 
 TEST(qpp_qasm_read_from_file, BuiltinGates) {
-    auto qcircuit = qasm::read_from_file(
+    qpp::QCircuit q_circuit = qasm::read_from_file(
         PATH "/tests/qasm/circuits/units/builtingates.qasm");
-    QEngine engine{*qcircuit};
+    QEngine engine{q_circuit};
     engine.execute();
 
     // Final state
@@ -118,9 +118,9 @@ TEST(qpp_qasm_read_from_file, BuiltinGates) {
 }
 
 TEST(qpp_qasm_read_from_file, Teleportation) {
-    auto qcircuit = qasm::read_from_file(
+    qpp::QCircuit q_circuit = qasm::read_from_file(
         PATH "/tests/qasm/circuits/units/teleportation.qasm");
-    QEngine engine{*qcircuit};
+    QEngine engine{q_circuit};
     engine.execute();
 
     // Final state
@@ -135,9 +135,9 @@ TEST(qpp_qasm_read_from_file, Teleportation) {
 }
 
 TEST(qpp_qasm_read_from_file, MappedGates) {
-    auto qcircuit = qasm::read_from_file(
+    qpp::QCircuit q_circuit = qasm::read_from_file(
         PATH "/tests/qasm/circuits/units/mappedgates.qasm");
-    QEngine engine{*qcircuit};
+    QEngine engine{q_circuit};
     engine.execute();
 
     // Final state
@@ -151,9 +151,9 @@ TEST(qpp_qasm_read_from_file, MappedGates) {
 }
 
 TEST(qpp_qasm_read_from_file, NonDestrMeas) {
-    auto qcircuit = qasm::read_from_file(
+    qpp::QCircuit q_circuit = qasm::read_from_file(
         PATH "/tests/qasm/circuits/units/nondestrmeas.qasm");
-    QEngine engine{*qcircuit};
+    QEngine engine{q_circuit};
     engine.execute();
 
     // Measurement result
@@ -167,9 +167,9 @@ TEST(qpp_qasm_read_from_file, NonDestrMeas) {
 }
 
 TEST(qpp_qasm_read_from_file, Reset) {
-    auto qcircuit = qasm::read_from_file(
-        PATH "/tests/qasm/circuits/units/reset.qasm");
-    QEngine engine{*qcircuit};
+    qpp::QCircuit q_circuit =
+        qasm::read_from_file(PATH "/tests/qasm/circuits/units/reset.qasm");
+    QEngine engine{q_circuit};
     engine.execute();
 
     // Final state

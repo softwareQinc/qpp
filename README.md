@@ -1,5 +1,5 @@
 # Quantum++ 
-## Version 1.3 - 25 July 2019
+## Version 2.0 - 24 August 2019
 
 **Build status:**
 

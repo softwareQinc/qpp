@@ -527,6 +527,8 @@ class QCircuit : public IDisplay, public IJSON {
 
                     switch (
                         value_type_qc_->measurements_[pos].measurement_type_) {
+                        case MeasureType::NONE:
+                            break;
                         case MeasureType::MEASURE_Z:
                         case MeasureType::MEASURE_Z_MANY:
                         case MeasureType::MEASURE_V:
@@ -946,73 +948,25 @@ class QCircuit : public IDisplay, public IJSON {
 
         return result;
     }
-    
-    // computes the depth greedily, measuring the "height" (depth) of the
-    // "pieces" (gates) placed in a Tetris-like style
+
     /**
-     * \brief Quantum circuit description depth
+     * \brief Quantum circuit description gate depth
      *
-     * \note If \a name is empty (default), returns the total depth of the
-     * circuit
-     *
-     * \param name Gate/measurement name (optional)
-     * \return Gate/measurement depth
+     * \param name Gate name
+     * \return Gate depth
      */
-    idx get_depth(const std::string& name = {}) const {
+    idx get_gate_depth(const std::string& name) const {
         bool found = false;
         std::vector<idx> heights(nc_ + nq_, 0);
 
         // iterate over all steps in the circuit
         for (auto&& step : *this) {
-            // measurements
-            if (step.type_ == StepType::MEASUREMENT) {
-                MeasureStep measure_step = *step.measurements_ip_;
-                if (!name.empty() && measure_step.name_ != name)
-                    continue; // we skip this measurement step
-
-                found = true; // measurement was found in the circuit
-
-                std::vector<idx> target = measure_step.target_;
-                idx c_reg = measure_step.c_reg_;
-
-                idx max_height = 0;
-                switch (measure_step.measurement_type_) {
-                    case MeasureType::NONE:
-                    case MeasureType::MEASURE_Z:
-                    case MeasureType::MEASURE_Z_MANY:
-                    case MeasureType::MEASURE_V:
-                    case MeasureType::MEASURE_V_MANY:
-                    case MeasureType::MEASURE_Z_ND:
-                    case MeasureType::MEASURE_Z_MANY_ND:
-                    case MeasureType::MEASURE_V_ND:
-                    case MeasureType::MEASURE_V_MANY_ND:
-                        // compute the "height" of the to-be-placed measurement
-                        if (heights[c_reg] > max_height)
-                            max_height = heights[c_reg];
-                        for (auto&& i : target)
-                            if (heights[nc_ + i] > max_height)
-                                max_height = heights[nc_ + i];
-                        // apply measurement
-                        heights[c_reg] = max_height + 1;
-                        for (auto&& i : target)
-                            heights[nc_ + i] = max_height + 1;
-                        break;
-                    case MeasureType::RESET:
-                    case MeasureType::RESET_MANY:
-                    case MeasureType::DISCARD:
-                    case MeasureType::DISCARD_MANY:
-                        for (auto&& i : target)
-                            if (heights[nc_ + i] > max_height)
-                                max_height = heights[nc_ + i];
-                        // apply reset
-                        for (auto&& i : target)
-                            heights[nc_ + i] = max_height + 1;
-                        break;
-                }
-                // gates
-            } else if (step.type_ == StepType::GATE) {
+            // gates
+            if (step.type_ == StepType::GATE) {
                 GateStep gate_step = *step.gates_ip_;
-                if (!name.empty() && gate_step.name_ != name)
+
+                if (name != __FILE__ "__total_gate_depth__" &&
+                    gate_step.name_ != name)
                     continue; // we skip this gate step
 
                 found = true; // gate was found in the circuit
@@ -1072,6 +1026,99 @@ class QCircuit : public IDisplay, public IJSON {
         return found ? *std::max_element(std::begin(heights), std::end(heights))
                      : 0;
     }
+
+    /**
+     * \brief Quantum circuit description total gate depth
+     *
+     * \return Total gate depth
+     */
+    idx get_gate_depth() const {
+        return get_gate_depth(__FILE__ "__total_gate_depth__");
+    }
+
+    /**
+     * \brief Quantum circuit description measurement depth
+     *
+     * \param name Measurement name
+     * \return Measurement depth
+     */
+    idx get_measurement_depth(const std::string& name) const {
+        bool found = false;
+        std::vector<idx> heights(nc_ + nq_, 0);
+
+        // iterate over all steps in the circuit
+        for (auto&& step : *this) {
+            // measurements
+            if (step.type_ == StepType::MEASUREMENT) {
+                MeasureStep measure_step = *step.measurements_ip_;
+                if (name != __FILE__ "__total_measurement_depth__" &&
+                    measure_step.name_ != name)
+                    continue; // we skip this measurement step
+
+                found = true; // measurement was found in the circuit
+
+                std::vector<idx> target = measure_step.target_;
+                idx c_reg = measure_step.c_reg_;
+
+                idx max_height = 0;
+                switch (measure_step.measurement_type_) {
+                    case MeasureType::NONE:
+                    case MeasureType::MEASURE_Z:
+                    case MeasureType::MEASURE_Z_MANY:
+                    case MeasureType::MEASURE_V:
+                    case MeasureType::MEASURE_V_MANY:
+                    case MeasureType::MEASURE_Z_ND:
+                    case MeasureType::MEASURE_Z_MANY_ND:
+                    case MeasureType::MEASURE_V_ND:
+                    case MeasureType::MEASURE_V_MANY_ND:
+                        // compute the "height" of the to-be-placed measurement
+                        if (heights[c_reg] > max_height)
+                            max_height = heights[c_reg];
+                        for (auto&& i : target)
+                            if (heights[nc_ + i] > max_height)
+                                max_height = heights[nc_ + i];
+                        // apply measurement
+                        heights[c_reg] = max_height + 1;
+                        for (auto&& i : target)
+                            heights[nc_ + i] = max_height + 1;
+                        break;
+                    case MeasureType::RESET:
+                    case MeasureType::RESET_MANY:
+                    case MeasureType::DISCARD:
+                    case MeasureType::DISCARD_MANY:
+                        for (auto&& i : target)
+                            if (heights[nc_ + i] > max_height)
+                                max_height = heights[nc_ + i];
+                        // apply reset/discard
+                        for (auto&& i : target)
+                            heights[nc_ + i] = max_height + 1;
+                        break;
+                } // end switch
+            }     // if (step.type_ == StepType::MEASUREMENT) }
+        }         // end for
+
+        return found ? *std::max_element(std::begin(heights), std::end(heights))
+                     : 0;
+    }
+
+    /**
+     * \brief Quantum circuit description total measurement depth
+     *
+     * \return Total measurement depth
+     */
+    idx get_measurement_depth() const {
+        return get_measurement_depth(__FILE__ "__total_measurement_depth__");
+    }
+
+    // computes the depth greedily, measuring the "height" (depth) of the
+    // "pieces" (gates) placed in a Tetris-like style
+    /**
+     * \brief Quantum circuit description total depth
+     *
+     * \param name Gate/measurement name (optional)
+     * \return Gate/measurement depth
+     */
+    idx get_depth() const { return get_gate_depth() + get_measurement_depth(); }
 
     /**
      * \brief Quantum circuit description measurement count
