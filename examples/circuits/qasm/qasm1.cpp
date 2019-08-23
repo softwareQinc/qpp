@@ -10,6 +10,11 @@ int main() {
     // create a qpp::QCircuit from a QASM file
     QCircuit qc = qasm::read_from_file(
         PATH "/examples/circuits/qasm/teleport_minimal.qasm");
+
+    // could have also used a C++ standard stream from <fstream>, like below
+    // std::ifstream ifs{PATH "/examples/circuits/qasm/teleport_minimal.qasm"};
+    // QCircuit qc = qasm::read(ifs);
+
     // note that QASM measurements are non-destructive, so the final state after
     // this step when executed on an engine will be a state of 3 qubits; that is
     // why we discard the first two qubits in the next line

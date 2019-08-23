@@ -45,7 +45,9 @@ inline QCircuit read(std::istream& stream) {
     Preprocessor pp;
     Parser parser(pp);
 
-    pp.add_target_stream(std::shared_ptr<std::istream>(&stream));
+    // do not manage the stream, use [](std::istream*){} as shared_ptr deleter
+    pp.add_target_stream(
+        std::shared_ptr<std::istream>(&stream, [](std::istream*) {}));
 
     return *parser.parse();
 }
