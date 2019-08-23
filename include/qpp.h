@@ -59,6 +59,7 @@
 #include <functional>
 #include <initializer_list>
 #include <iomanip>
+#include <istream>
 #include <iterator>
 #include <limits>
 #include <list>
