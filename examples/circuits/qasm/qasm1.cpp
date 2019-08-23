@@ -11,7 +11,7 @@ int main() {
     QCircuit qc = qasm::read_from_file(
         PATH "/examples/circuits/qasm/teleport_minimal.qasm");
 
-    // could have also used a C++ standard stream from <fstream>, like below
+    // we could have also used a C++ standard stream from <fstream>, like below
     // std::ifstream ifs{PATH "/examples/circuits/qasm/teleport_minimal.qasm"};
     // QCircuit qc = qasm::read(ifs);
 
