@@ -21,13 +21,16 @@ int main() {
     qc.discard({0, 1});
 
     std::cout << ">> BEGIN CIRCUIT\n";
-    std::cout << qc << '\n'; // display the circuit
+    // display the circuit; use qc.to_JSON() for JSON output
+    std::cout << qc << '\n';
     std::cout << ">> END CIRCUIT\n\n";
 
     QEngine q_engine{qc}; // create an engine out of a quantum circuit
     q_engine.execute();   // execute the circuit
     std::cout << ">> BEGIN ENGINE STATISTICS\n";
-    std::cout << q_engine << '\n'; // display the measurement statistics
+    // display the measurement statistics; use q_engine.to_JSON() for JSON
+    // output
+    std::cout << q_engine << '\n';
     std::cout << ">> END ENGINE STATISTICS\n\n";
 
     // displays the final output state

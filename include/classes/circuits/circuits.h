@@ -3261,12 +3261,12 @@ class QCircuit : public IDisplay, public IJSON {
         ss.str("");
         ss.clear();
         ss << disp(get_measured(), ", ");
-        result += "\"measured (destructive) positions\" : " + ss.str() + ", ";
+        result += "\"measured/discarded (destructive)\" : " + ss.str() + ", ";
 
         ss.str("");
         ss.clear();
         ss << disp(get_non_measured(), ", ");
-        result += "\"non-measured (destructive) positions\" : " + ss.str();
+        result += "\"non-measured/non-discarded\" : " + ss.str();
 
         if (enclosed_in_curly_brackets)
             result += "}";
@@ -3383,10 +3383,9 @@ class QCircuit : public IDisplay, public IJSON {
         os << "total measurement count: " << get_measurement_count() << '\n';
         os << "total measurement depth: " << get_measurement_depth() << '\n';
         os << "total depth: " << get_depth() << '\n';
-        os << "measured (destructive) positions: " << disp(get_measured(), ", ")
+        os << "measured/discarded (destructive): " << disp(get_measured(), ", ")
            << '\n';
-        os << "non-measured (destructive) positions: "
-           << disp(get_non_measured(), ", ");
+        os << "non-measured/non-discarded: " << disp(get_non_measured(), ", ");
 
         return os;
     }

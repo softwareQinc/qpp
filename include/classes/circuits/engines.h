@@ -526,9 +526,15 @@ class QEngine : public IDisplay, public IJSON {
                     st_.psi_ = qpp::reset(st_.psi_, target_rel_pos, d);
                     break;
                 case QCircuit::MeasureType::DISCARD:
+                    std::tie(std::ignore, std::ignore, st_.psi_) =
+                        measure_seq(st_.psi_, target_rel_pos, d);
+                    set_measured_(measurements[m_ip].target_[0]);
+                    break;
                 case QCircuit::MeasureType::DISCARD_MANY:
                     std::tie(std::ignore, std::ignore, st_.psi_) =
                         measure_seq(st_.psi_, target_rel_pos, d);
+                    for (auto&& elem : measurements[m_ip].target_)
+                        set_measured_(elem);
                     break;
             } // end switch on measurement type
         }     // end else if measurement step
@@ -597,10 +603,13 @@ class QEngine : public IDisplay, public IJSON {
             result += "{";
 
         std::ostringstream ss;
-
-        result += "\"measured (destructive)\": ";
         ss << disp(get_measured(), ", ");
-        result += ss.str();
+        result += "\"measured/discarded (destructive)\" : " + ss.str() + ", ";
+
+        ss.str("");
+        ss.clear();
+        ss << disp(get_non_measured(), ", ");
+        result += "\"non-measured/non-discarded\" : " + ss.str();
 
         ss.str("");
         ss.clear();
@@ -658,7 +667,10 @@ class QEngine : public IDisplay, public IJSON {
      * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
-        os << "measured (destructive): " << disp(get_measured(), ", ") << '\n';
+        os << "measured/discarded (destructive): " << disp(get_measured(), ", ")
+           << '\n';
+        os << "non-measured/non-discarded: " << disp(get_non_measured(), ", ")
+           << '\n';
         os << "last probs: " << disp(get_probs(), ", ") << '\n';
         os << "last dits: " << disp(get_dits(), ", ");
 
