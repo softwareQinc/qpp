@@ -1,5 +1,5 @@
 // Another QASM example
-// Source: ./examples/circuits/qasm/qasm2.cpp
+// Source: ./examples/qasm/qasm2.cpp
 
 #include <iostream>
 
