@@ -1,5 +1,5 @@
 Version 2.0 - 24 August 2019
-    - Added support for OpenQASM via the interface "qasm/qasm.h" containing
+    - Added support for OpenQASM via the interface "qasm/qasm.h" containing:
           qpp::QCircuit qpp::qasm::read_from_file(const std::string& fname)
             - reads a OpenQASM file and returns the qpp::QCircuit representation
           qpp::QCircuit qpp::qasm::read(std::ifstream& stream)
@@ -41,12 +41,12 @@ Version 2.0 - 24 August 2019
                                               construction
     - API change in qpp::QCircuit::cCTRL*(), now accepts an additional "shift"
       on the control dits
-    - Split qpp::QCircuit::get_depth() into
+    - Split qpp::QCircuit::get_depth() into:
           qpp::QCircuit::get_gate_depth()        - gate depth
           qpp::QCircuit::get_measurement_depth() - measurement depth
       for a finer control over depth computations
     - Added support for non-destructive measurements in "instruments.h" by
-      modifying the API for
+      modifying the API for:
           qpp::measure()
           qpp::measure_seq()
     - Added "classes/layouts.h" header file for representing different physical
@@ -58,6 +58,7 @@ Version 2.0 - 24 August 2019
                                          conditions
     - Removed the documentation directory (doc). To generate the documentation
       in HTML/LaTeX formats, run `doxygen` from the root of the project.
+
 Version 1.3 - 25 July 2019
     - Minimum required CMake version is now 3.2
     - Added MSVC support for CMake
