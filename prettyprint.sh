@@ -8,7 +8,7 @@ then
 location of clang-format"
     exit 1
 else
-    if ! [ -x "$(command -v $CLANG_FORMAT)" ]; then
+    if ! [ -x "$(command -v "$CLANG_FORMAT")" ]; then
         echo "Error: $CLANG_FORMAT executable not found." >&2
         exit 1
     fi
@@ -17,7 +17,7 @@ fi
 
 for folder in "$@"
 do
-    echo $folder 
-    find $folder \( -iname '*.cpp' -o -iname '*.c' -o -iname '*.h'\
-         -o -iname '*.hpp' \) | xargs $CLANG_FORMAT -style=file -i
+    echo "$folder"
+    find "$folder" \( -iname '*.cpp' -o -iname '*.c' -o -iname '*.h'\
+         -o -iname '*.hpp' \) -exec "$CLANG_FORMAT" -style=file -i {} +
 done
