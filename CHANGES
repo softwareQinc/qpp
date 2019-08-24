@@ -1,3 +1,6 @@
+In progress - pre-release
+    - 
+
 Version 2.0 - 24 August 2019
     - Added support for OpenQASM via the interface "qasm/qasm.h" containing:
           qpp::QCircuit qpp::qasm::read_from_file(const std::string& fname)
