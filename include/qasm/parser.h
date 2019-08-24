@@ -900,4 +900,4 @@ class Parser {
 } /* namespace qasm */
 } /* namespace qpp */
 
-#endif
+#endif /* QASM_PARSER_H_ */

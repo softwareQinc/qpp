@@ -38,7 +38,7 @@ INCLUDE_DIRECTORIES(include)
 #### Source file(s) to be compiled, modify as needed
 AUX_SOURCE_DIRECTORY(examples EXAMPLE_FILES)
 AUX_SOURCE_DIRECTORY(examples/circuits EXAMPLE_FILES)
-AUX_SOURCE_DIRECTORY(examples/circuits/qasm EXAMPLE_FILES)
+AUX_SOURCE_DIRECTORY(examples/qasm EXAMPLE_FILES)
 
 #### Eigen3
 MESSAGE(STATUS "Detecting Eigen3")

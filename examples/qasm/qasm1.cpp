@@ -1,5 +1,5 @@
 // Minimal QASM example
-// Source: ./examples/circuits/qasm/qasm1.cpp
+// Source: ./examples/qasm/qasm1.cpp
 #include <iostream>
 
 #include "qpp.h"
@@ -8,11 +8,11 @@ int main() {
     using namespace qpp;
 
     // create a qpp::QCircuit from a QASM file
-    QCircuit qc = qasm::read_from_file(
-        PATH "/examples/circuits/qasm/teleport_minimal.qasm");
+    QCircuit qc =
+        qasm::read_from_file(PATH "/examples/qasm/teleport_minimal.qasm");
 
     // we could have also used a C++ standard stream from <fstream>, like below
-    // std::ifstream ifs{PATH "/examples/circuits/qasm/teleport_minimal.qasm"};
+    // std::ifstream ifs{PATH "/examples/qasm/teleport_minimal.qasm"};
     // QCircuit qc = qasm::read(ifs);
 
     // note that QASM measurements are non-destructive, so the final state after

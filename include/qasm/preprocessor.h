@@ -210,4 +210,4 @@ class Preprocessor {
 } /* namespace qasm */
 } /* namespace qpp */
 
-#endif
+#endif /* QASM_PREPROCESSOR_H_ */

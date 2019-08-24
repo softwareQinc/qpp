@@ -475,4 +475,4 @@ static const std::unordered_map<std::string, Token::Kind> keywords{
 } /* namespace qasm */
 } /* namespace qpp */
 
-#endif
+#endif /* QASM_TOKEN_H_ */

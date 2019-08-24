@@ -1582,7 +1582,7 @@ class UExpr final : public Expr {
     }
 };
 
-} // namespace qasm
+} /* namespace qasm */
 } /* namespace qpp */
 
-#endif
+#endif /* QASM_AST_H_ */

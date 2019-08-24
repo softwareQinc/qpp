@@ -350,7 +350,7 @@ class Lexer {
     }
 };
 
-} // namespace qasm
-} // namespace qpp
+} /* namespace qasm */
+} /* namespace qpp */
 
-#endif
+#endif /* QASM_LEXER_H_ */
