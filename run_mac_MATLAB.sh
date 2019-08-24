@@ -1,6 +1,6 @@
 #!/bin/sh
 # Runs Quantum++ executable with MATLAB support
-# The full path to the executable is specified in the command line
+# The full path to the executable must be specified in the command line
 
 # Modify as needed
 MATLAB=/Applications/MATLAB_R2017b.app
