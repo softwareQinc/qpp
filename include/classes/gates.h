@@ -95,8 +95,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     // one qubit gates
 
     /**
-     * \brief Qubit rotation of \a theta about the
-     * 3-dimensional real (unit) vector \a n
+     * \brief Qubit rotation of \a theta about the 3-dimensional real (unit)
+     * vector \a n
      *
      * \param theta Rotation angle
      * \param n 3-dimensional real (unit) vector
@@ -326,8 +326,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     /**
      * \brief Identity gate
      *
-     * \note Can change the return type from complex matrix (default)
-     * by explicitly specifying the template parameter
+     * \note Can change the return type from complex matrix (default) by
+     * explicitly specifying the template parameter
      *
      * \param D Dimension of the Hilbert space
      * \return Identity gate on a Hilbert space of dimension \a D
@@ -345,8 +345,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-     * \brief Generates the multi-partite multiple-controlled-\a A gate
-     * in matrix form
+     * \brief Generates the multi-partite multiple-controlled-\a A gate in
+     * matrix form
      * \see qpp::applyCTRL()
      *
      * \note The dimension of the gate \a A must match
@@ -505,16 +505,16 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \brief Expands out
      * \see qpp::kron()
      *
-     *  Expands out \a A as a matrix in a multi-partite system.
-     *  Faster than using qpp::kron(I, I, ..., I, A, I, ..., I).
+     * Expands out \a A as a matrix in a multi-partite system. Faster than using
+     * qpp::kron(I, I, ..., I, A, I, ..., I).
      *
      * \param A Eigen expression
      * \param pos Position
      * \param dims Dimensions of the multi-partite system
      * \return Tensor product
      * \f$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
-     * with \a A on position \a pos, as a dynamic matrix
-     * over the same scalar field as \a A
+     * with \a A on position \a pos, as a dynamic matrix over the same scalar
+     * field as \a A
      */
     template <typename Derived>
     dyn_mat<typename Derived::Scalar>
@@ -590,8 +590,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \brief Expands out
      * \see qpp::kron()
      *
-     *  Expands out \a A as a matrix in a multi-partite system.
-     *  Faster than using qpp::kron(I, I, ..., I, A, I, ..., I).
+     * Expands out \a A as a matrix in a multi-partite system. Faster than using
+     * qpp::kron(I, I, ..., I, A, I, ..., I).
      *
      * \note The std::initializer_list overload exists because otherwise, in the
      * degenerate case when \a dims has only one element, the one element list
@@ -604,8 +604,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param dims Dimensions of the multi-partite system
      * \return Tensor product
      * \f$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
-     * with \a A on position \a pos, as a dynamic matrix
-     * over the same scalar field as \a A
+     * with \a A on position \a pos, as a dynamic matrix over the same scalar
+     * field as \a A
      */
     template <typename Derived>
     dyn_mat<typename Derived::Scalar>
@@ -618,8 +618,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \brief Expands out
      * \see qpp::kron()
      *
-     *  Expands out \a A as a matrix in a multi-partite system.
-     *  Faster than using qpp::kron(I, I, ..., I, A, I, ..., I).
+     * Expands out \a A as a matrix in a multi-partite system. Faster than using
+     * qpp::kron(I, I, ..., I, A, I, ..., I).
      *
      * \param A Eigen expression
      * \param pos Position
@@ -627,8 +627,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param d Subsystem dimensions
      * \return Tensor product
      * \f$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
-     * with \a A on position \a pos, as a dynamic matrix
-     * over the same scalar field as \a A
+     * with \a A on position \a pos, as a dynamic matrix over the same scalar
+     * field as \a A
      */
     template <typename Derived>
     dyn_mat<typename Derived::Scalar>
@@ -654,6 +654,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
     /**
      * \brief Get the name of the most common qubit gates
+     *
      * \note Assumes that the gate \a U is represented by a square matrix. If
      * not, returns the empty string
      *

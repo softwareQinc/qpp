@@ -40,11 +40,11 @@
 
 namespace qpp {
 /**
- * \brief Loads a complex Eigen dynamic matrix from a MATLAB .mat file,
+ * \brief Loads a complex Eigen dynamic matrix from a MATLAB .mat file
  * \see qpp::saveMATLAB()
  *
- * The template parameter cannot be automatically deduced and
- * must be explicitly provided
+ * The template parameter cannot be automatically deduced and must be explicitly
+ * provided
  *
  * Example:
  * \code
@@ -55,9 +55,8 @@ namespace qpp {
  *
  * \tparam Derived Complex Eigen type
  * \param mat_file MATALB .mat file
- * \param var_name Variable name in the .mat file representing the matrix
- * to be loaded
- *
+ * \param var_name Variable name in the .mat file representing the matrix to be
+ * loaded
  * \return Eigen dynamic matrix
  */
 template <typename Derived> // double
@@ -122,11 +121,11 @@ loadMATLAB(const std::string& mat_file, const std::string& var_name) {
 }
 
 /**
- * \brief Loads a non-complex Eigen dynamic matrix from a MATLAB .mat file,
+ * \brief Loads a non-complex Eigen dynamic matrix from a MATLAB .mat file
  * \see qpp::saveMATLAB()
  *
- * The template parameter cannot be automatically deduced and
- * must be explicitly provided
+ * The template parameter cannot be automatically deduced and must be explicitly
+ * provided
  *
  * Example:
  * \code
@@ -137,9 +136,8 @@ loadMATLAB(const std::string& mat_file, const std::string& var_name) {
  *
  * \tparam Derived Non-complex Eigen type
  * \param mat_file MATALB .mat file
- * \param var_name Variable name in the .mat file representing
- * the matrix to be loaded
- *
+ * \param var_name Variable name in the .mat file representing the matrix to be
+ * loaded
  * \return Eigen dynamic matrix
  */
 template <typename Derived> // cplx
@@ -187,16 +185,16 @@ loadMATLAB(const std::string& mat_file, const std::string& var_name) {
 }
 
 /**
- * \brief Saves a complex Eigen dynamic matrix to a MATLAB .mat file,
+ * \brief Saves a complex Eigen dynamic matrix to a MATLAB .mat file
  * \see qpp::loadMATLAB()
  *
  * \tparam Complex Eigen type
  * \param A Eigen expression over the complex field
  * \param mat_file MATALB .mat file
- * \param var_name Variable name in the .mat file representing
- * the matrix to be saved
- * \param mode Saving mode (append, overwrite etc.),
- * see MATLAB \a matOpen() documentation for details
+ * \param var_name Variable name in the .mat file representing the matrix to be
+ * saved
+ * \param mode Saving mode (append, overwrite etc.), see MATLAB \a matOpen()
+ * documentation for details
  */
 template <typename Derived>
 // double
@@ -250,16 +248,16 @@ saveMATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
 }
 
 /**
- * \brief Saves a non-complex Eigen dynamic matrix to a MATLAB .mat file,
+ * \brief Saves a non-complex Eigen dynamic matrix to a MATLAB .mat file
  * \see qpp::loadMATLAB()
  *
  * \tparam Npn-complex Eigen type
  * \param A Non-complex Eigen expression
  * \param mat_file MATALB .mat file
- * \param var_name Variable name in the .mat file representing
- * the matrix to be saved
- * \param mode Saving mode (append, overwrite etc.),
- * see MATLAB \a matOpen() documentation for details
+ * \param var_name Variable name in the .mat file representing the matrix to be
+ * saved
+ * \param mode Saving mode (append, overwrite etc.), see MATLAB \a matOpen()
+ * documentation for details
  */
 template <typename Derived>
 // cplx

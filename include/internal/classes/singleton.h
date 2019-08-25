@@ -41,10 +41,9 @@ namespace internal // internal class, do not modify
  * the singleton pattern via CRTP (Curiously recurring template pattern)
  *
  * To implement a singleton, derive your class from qpp::internal::Singleton,
- * make qpp::internal::Singleton a friend of your class, then declare
- * the constructor and destructor of your class as private.
- * To get an instance, use the static
- * member function qpp::internal::Singleton::get_instance()
+ * make qpp::internal::Singleton a friend of your class, then declare the
+ * constructor and destructor of your class as private. To get an instance, use
+ * the static member function qpp::internal::Singleton::get_instance()
  * (qpp::internal::Singleton::get_thread_local_instance()), which returns a
  * reference (thread_local reference) to your newly created singleton
  * (thread-safe in C++11).

@@ -97,38 +97,38 @@ class QCircuit : public IDisplay, public IJSON {
         FAN, ///< same unitary gate on multiple qudits
 
         SINGLE_CTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< one control and one target
+                                   ///< one control and one target
 
         SINGLE_CTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< one control and multiple targets
+                                     ///< one control and multiple targets
 
         MULTIPLE_CTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< multiple controls and single target
+                                     ///< multiple controls and single target
 
         MULTIPLE_CTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< multiple controls and multiple
-        ///< targets
+                                       ///< multiple controls and multiple
+                                       ///< targets
 
         CUSTOM_CTRL, ///< custom controlled gate with multiple controls
-        ///< and multiple targets
+                     ///< and multiple targets
 
         SINGLE_cCTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< one classical control and one target
+                                    ///< one classical control and one target
 
         SINGLE_cCTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< one classical control and multiple
-        ///< targets
+                                      ///< one classical control and multiple
+                                      ///< targets
 
         MULTIPLE_cCTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< multiple classical controls and
-        ///< single target
+                                      ///< multiple classical controls and
+                                      ///< single target
 
         MULTIPLE_cCTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate
-        ///< with multiple classical controls
-        ///< and multiple targets
+                                        ///< with multiple classical controls
+                                        ///< and multiple targets
 
         CUSTOM_cCTRL, ///< custom controlled gate with multiple classical
-        ///< controls and multiple targets
+                      ///< controls and multiple targets
     };
 
     /**
@@ -367,8 +367,8 @@ class QCircuit : public IDisplay, public IJSON {
          * \param measurement_type Measurement type
          * \param mats_hash Vector of hashes of the measurement matrix/matrices
          * \param target Target qudit indexes
-         * \param c_reg Classical register where the value of the measurement
-         * is stored
+         * \param c_reg Classical register where the value of the measurement is
+         * stored
          * \param name Optional gate name
          */
         explicit MeasureStep(MeasureType measurement_type,
@@ -820,8 +820,8 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Constructs a quantum circuit description
      *
-     * \note The measurement results can only be stored in the classical dits
-     * of which number is specified by \a nc
+     * \note The measurement results can only be stored in the classical dits of
+     * which number is specified by \a nc
      *
      * \param nq Number of qudits
      * \param nc Number of classical dits (optional)
@@ -1534,7 +1534,6 @@ class QCircuit : public IDisplay, public IJSON {
      * \param U Multiple qudit quantum gate
      * \param target Subsystem indexes where the gate \a U is applied
      * \param name Optional gate name
-     *
      * \return Reference to the current instance
      */
     QCircuit& gate_custom(const cmat& U, const std::vector<idx>& target,
@@ -2213,7 +2212,6 @@ class QCircuit : public IDisplay, public IJSON {
      * of them depending on the values of the classical control dits
      * \param shift Performs the control as if the \a ctrl_dit classical dit was
      * incremented by \a shift
-     * same as the size of \a ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2563,8 +2561,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param target Target qudit indexes that are measured
      * \param c_reg Classical register where the value of the measurement is
      * being stored, as a decimal representation of the binary string
-     * representing the measurement, with the most significant dit on the
-     * left (corresponding to the first qudit that is being measured)
+     * representing the measurement, with the most significant dit on the left
+     * (corresponding to the first qudit that is being measured)
      * \param destructive Destructive measurement, true by default
      * \param name Optional measurement name, default is "mZ"
      * \return Reference to the current instance
@@ -2622,8 +2620,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Measurement of single qudit in the orthonormal basis or rank-1
      * projectors specified by the columns of matrix \a V
      *
-     * \param V Orthonormal basis or rank-1 projectors specified by the
-     * columns of matrix V
+     * \param V Orthonormal basis or rank-1 projectors specified by the columns
+     * of matrix V
      * \param target Target qudit index that is measured
      * \param c_reg Classical register where the value of the measurement is
      * stored
@@ -2677,8 +2675,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Joint measurement of multiple qudits in the orthonormal basis or
      * rank-1 projectors specified by the columns of matrix \a V
      *
-     * \param V Orthonormal basis or rank-1 projectors specified by the
-     * columns of matrix V
+     * \param V Orthonormal basis or rank-1 projectors specified by the columns
+     * of matrix V
      * \param target Target qudit indexes that are jointly measured
      * \param c_reg Classical register where the value of the measurement is
      * stored
@@ -3149,8 +3147,9 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * Displays the quantum circuit description in JSON format
      *
-     * \param enclosed_in_curly_brackets If true, encloses the result in
-     * curly brackets \return String containing the JSON representation of
+     * \param enclosed_in_curly_brackets If true, encloses the result in curly
+     * brackets
+     * \return String containing the JSON representation of
      * the quantum circuit description
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {

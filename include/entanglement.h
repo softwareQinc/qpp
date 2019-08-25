@@ -41,8 +41,8 @@ namespace qpp {
  *
  * \param A Eigen expression
  * \param dims Dimensions of the bi-partite system
- * \return Schmidt coefficients of \a A, ordered in decreasing order, as a
- * real dynamic column vector
+ * \return Schmidt coefficients of \a A, ordered in decreasing order, as a real
+ * dynamic column vector
  */
 template <typename Derived>
 dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
@@ -76,8 +76,8 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param d Subsystem dimensions
- * \return Schmidt coefficients of \a A, ordered in decreasing order, as a
- * real dynamic column vector
+ * \return Schmidt coefficients of \a A, ordered in decreasing order, as a real
+ * dynamic column vector
  */
 template <typename Derived>
 dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
@@ -106,8 +106,8 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param dims Dimensions of the bi-partite system
- * \return Unitary matrix \f$ U \f$ whose columns represent
- * the Schmidt basis vectors on Alice side.
+ * \return Unitary matrix \f$ U \f$ whose columns represent the Schmidt basis
+ * vectors on Alice side.
  */
 template <typename Derived>
 cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
@@ -138,8 +138,8 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param d Subsystem dimensions
- * \return Unitary matrix \f$ U \f$ whose columns represent
- * the Schmidt basis vectors on Alice side.
+ * \return Unitary matrix \f$ U \f$ whose columns represent the Schmidt basis
+ * vectors on Alice side.
  */
 template <typename Derived>
 cmat schmidtA(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
@@ -167,8 +167,8 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
  *
  * \param A Eigen expression
  * \param dims Dimensions of the bi-partite system
- * \return Unitary matrix \f$ V \f$ whose columns represent
- * the Schmidt basis vectors on Bob side.
+ * \return Unitary matrix \f$ V \f$ whose columns represent the Schmidt basis
+ * vectors on Bob side.
  */
 template <typename Derived>
 cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
@@ -201,8 +201,8 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param d Subsystem dimensions
- * \return Unitary matrix \f$ V \f$ whose columns represent
- * the Schmidt basis vectors on Bob side.
+ * \return Unitary matrix \f$ V \f$ whose columns represent the Schmidt basis
+ * vectors on Bob side.
  */
 template <typename Derived>
 cmat schmidtB(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
@@ -228,14 +228,14 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
 /**
  * \brief Schmidt probabilities of the bi-partite pure state \a A
  *
- * Defined as the squares of the Schmidt coefficients.
- * The sum of the Schmidt probabilities equals 1.
+ * Defined as the squares of the Schmidt coefficients. The sum of the Schmidt
+ * probabilities equals 1.
  * \see qpp::schmidtcoeffs()
  *
  * \param A Eigen expression
  * \param dims Dimensions of the bi-partite system
- * \return Real vector consisting of the Schmidt probabilites of \a A,
- * ordered in decreasing order
+ * \return Real vector consisting of the Schmidt probabilites of \a A, ordered
+ * in decreasing order
  */
 template <typename Derived>
 std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
@@ -269,14 +269,14 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
 /**
  * \brief Schmidt probabilities of the bi-partite pure state \a A
  *
- * Defined as the squares of the Schmidt coefficients.
- * The sum of the Schmidt probabilities equals 1.
+ * Defined as the squares of the Schmidt coefficients. The sum of the Schmidt
+ * probabilities equals 1.
  * \see qpp::schmidtcoeffs()
  *
  * \param A Eigen expression
  * \param d Subsystem dimensions
- * \return Real vector consisting of the Schmidt probabilites of \a A,
- * ordered in decreasing order
+ * \return Real vector consisting of the Schmidt probabilites of \a A, ordered
+ * in decreasing order
  */
 template <typename Derived>
 std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
@@ -303,8 +303,8 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
 /**
  * \brief Entanglement of the bi-partite pure state \a A
  *
- * Defined as the von-Neumann entropy of the reduced density matrix
- * of one of the subsystems
+ * Defined as the von-Neumann entropy of the reduced density matrix of one of
+ * the subsystems
  * \see qpp::entropy()
  *
  * \param A Eigen expression
@@ -338,8 +338,8 @@ double entanglement(const Eigen::MatrixBase<Derived>& A,
 /**
  * \brief Entanglement of the bi-partite pure state \a A
  *
- * Defined as the von-Neumann entropy of the reduced density matrix
- * of one of the subsystems
+ * Defined as the von-Neumann entropy of the reduced density matrix of one of
+ * the subsystems
  * \see qpp::entropy()
  *
  * \param A Eigen expression

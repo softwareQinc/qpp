@@ -74,8 +74,8 @@ inline constexpr std::complex<float> operator"" _if(long double x) noexcept {
 } /* namespace literals */
 
 /**
- * \brief  Used in qpp::disp() for setting to zero  numbers
- * that have their absolute value smaller than qpp::chop
+ * \brief  Used in qpp::disp() for setting to zero  numbers that have their
+ * absolute value smaller than qpp::chop
  */
 constexpr double chop = 1e-15;
 

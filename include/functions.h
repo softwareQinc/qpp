@@ -38,8 +38,8 @@ namespace qpp {
  * \brief Transpose
  *
  * \param A Eigen expression
- * \return Transpose of \a A, as a dynamic matrix
- * over the same scalar field as \a A
+ * \return Transpose of \a A, as a dynamic matrix over the same scalar field as
+ * \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
@@ -60,8 +60,8 @@ transpose(const Eigen::MatrixBase<Derived>& A) {
  * \brief Complex conjugate
  *
  * \param A Eigen expression
- * \return Complex conjugate of \a A, as a dynamic matrix
- * over the same scalar field as \a A
+ * \return Complex conjugate of \a A, as a dynamic matrix over the same scalar
+ * field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
@@ -82,8 +82,8 @@ conjugate(const Eigen::MatrixBase<Derived>& A) {
  * \brief Adjoint
  *
  * \param A Eigen expression
- * \return Adjoint (Hermitian conjugate) of \a A, as a dynamic matrix
- * over the same scalar field as \a A
+ * \return Adjoint (Hermitian conjugate) of \a A, as a dynamic matrix over the
+ * same scalar field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> adjoint(const Eigen::MatrixBase<Derived>& A) {
@@ -103,8 +103,8 @@ dyn_mat<typename Derived::Scalar> adjoint(const Eigen::MatrixBase<Derived>& A) {
  * \brief Inverse
  *
  * \param A Eigen expression
- * \return Inverse of \a A, as a dynamic matrix
- * over the same scalar field as \a A
+ * \return Inverse of \a A, as a dynamic matrix over the same scalar field as
+ * \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> inverse(const Eigen::MatrixBase<Derived>& A) {
@@ -167,8 +167,8 @@ typename Derived::Scalar det(const Eigen::MatrixBase<Derived>& A) {
  * Useful when the determinant overflows/underflows
  *
  * \param A Eigen expression
- * \return Logarithm of the determinant of \a A, as a scalar
- * over the same scalar field as \a A
+ * \return Logarithm of the determinant of \a A, as a scalar over the same
+ * scalar field as \a A
  */
 template <typename Derived>
 typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A) {
@@ -200,8 +200,8 @@ typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A) {
  * \brief Element-wise sum of \a A
  *
  * \param A Eigen expression
- * \return Element-wise sum of \a A, as a scalar
- * over the same scalar field as \a A
+ * \return Element-wise sum of \a A, as a scalar over the same scalar field as
+ * \a A
  */
 template <typename Derived>
 typename Derived::Scalar sum(const Eigen::MatrixBase<Derived>& A) {
@@ -221,8 +221,8 @@ typename Derived::Scalar sum(const Eigen::MatrixBase<Derived>& A) {
  * \brief Element-wise product of \a A
  *
  * \param A Eigen expression
- * \return Element-wise product of \a A, as a scalar
- * over the same scalar field as \a A
+ * \return Element-wise product of \a A, as a scalar over the same scalar field
+ * as \a A
  */
 template <typename Derived>
 typename Derived::Scalar prod(const Eigen::MatrixBase<Derived>& A) {
@@ -497,8 +497,8 @@ svd(const Eigen::MatrixBase<Derived>& A) {
  * \brief Singular values
  *
  * \param A Eigen expression
- * \return Singular values of \a A, ordered in decreasing order,
- * as a real dynamic column vector
+ * \return Singular values of \a A, ordered in decreasing order, as a real
+ * dynamic column vector
  */
 template <typename Derived>
 dyn_col_vect<double> svals(const Eigen::MatrixBase<Derived>& A) {
@@ -520,8 +520,8 @@ dyn_col_vect<double> svals(const Eigen::MatrixBase<Derived>& A) {
  * \brief Left singular vectors
  *
  * \param A Eigen expression
- * \return Complex dynamic matrix, whose columns are the left singular
- * vectors of \a A
+ * \return Complex dynamic matrix, whose columns are the left singular vectors
+ * of \a A
  */
 template <typename Derived>
 cmat svdU(const Eigen::MatrixBase<Derived>& A) {
@@ -544,8 +544,8 @@ cmat svdU(const Eigen::MatrixBase<Derived>& A) {
  * \brief Right singular vectors
  *
  * \param A Eigen expression
- * \return Complex dynamic matrix, whose columns are the right singular
- * vectors of \a A
+ * \return Complex dynamic matrix, whose columns are the right singular vectors
+ * of \a A
  */
 template <typename Derived>
 cmat svdV(const Eigen::MatrixBase<Derived>& A) {
@@ -747,8 +747,8 @@ cmat cosm(const Eigen::MatrixBase<Derived>& A) {
  * \brief Matrix power
  * \see qpp::powm()
  *
- * Uses the spectral decomposition of \a A to compute the matrix power.
- * By convention \f$A^0 = I\f$.
+ * Uses the spectral decomposition of \a A to compute the matrix power. By
+ * convention \f$A^0 = I\f$.
  *
  * \param A Eigen expression
  * \param z Complex number
@@ -788,8 +788,8 @@ cmat spectralpowm(const Eigen::MatrixBase<Derived>& A, const cplx z) {
  * \brief Fast matrix power based on the SQUARE-AND-MULTIPLY algorithm
  * \see qpp::spectralpowm()
  *
- * Explicitly multiplies the matrix \a A with itself \a n times.
- * By convention \f$A^0 = I\f$.
+ * Explicitly multiplies the matrix \a A with itself \a n times. By convention
+ * \f$A^0 = I\f$.
  *
  * \param A Eigen expression
  * \param n Non-negative integer
@@ -837,8 +837,8 @@ dyn_mat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived>& A,
  * \brief Schatten matrix norm
  *
  * \param A Eigen expression
- * \param p Real number, greater or equal to 1,
- * use qpp::infty for \f$p = \infty\f$
+ * \param p Real number, greater or equal to 1, use qpp::infty for
+ * \f$p = \infty\f$
  * \return Schatten-\a p matrix norm of \a A
  */
 template <typename Derived>
@@ -872,8 +872,8 @@ double schatten(const Eigen::MatrixBase<Derived>& A, double p) {
  *
  * \param A Eigen expression
  * \param f Pointer-to-function from scalars of \a A to \a OutputScalar
- * \return Component-wise \f$f(A)\f$, as a dynamic matrix
- * over the \a OutputScalar scalar field
+ * \return Component-wise \f$f(A)\f$, as a dynamic matrix over the
+ * \a OutputScalar scalar field
  */
 template <typename OutputScalar, typename Derived>
 dyn_mat<OutputScalar>
@@ -1124,7 +1124,7 @@ dyn_mat<typename Derived::Scalar> dirsumpow(const Eigen::MatrixBase<Derived>& A,
 /**
  * \brief Reshape
  *
- *  Uses column-major order when reshaping (same as MATLAB)
+ * Uses column-major order when reshaping (same as MATLAB)
  *
  * \param A Eigen expression
  * \param rows Number of rows of the reshaped matrix
@@ -1158,8 +1158,8 @@ dyn_mat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived>& A,
  * \brief Commutator
  * \see qpp::anticomm()
  *
- *  Commutator \f$ [A,B] = AB - BA \f$.
- *  Both \a A and \a B must be Eigen expressions over the same scalar field.
+ *  Commutator \f$ [A,B] = AB - BA \f$. Both \a A and \a B must be Eigen
+ *  expressions over the same scalar field.
  *
  * \param A Eigen expression
  * \param B Eigen expression
@@ -1341,8 +1341,8 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& As) {
  * \brief Gram-Schmidt orthogonalization
  *
  * \param As std::initializer_list of Eigen expressions as column vectors
- * \return Gram-Schmidt vectors of \a As as columns of a dynamic matrix
- * over the same scalar field as its arguments
+ * \return Gram-Schmidt vectors of \a As as columns of a dynamic matrix over the
+ * same scalar field as its arguments
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
@@ -1354,8 +1354,8 @@ grams(const std::initializer_list<Derived>& As) {
  * \brief Gram-Schmidt orthogonalization
  *
  * \param A Eigen expression, the input vectors are the columns of \a A
- * \return Gram-Schmidt vectors of the columns of \a A,
- * as columns of a dynamic matrix over the same scalar field as \a A
+ * \return Gram-Schmidt vectors of the columns of \a A, as columns of a dynamic
+ * matrix over the same scalar field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A) {
@@ -1435,9 +1435,8 @@ inline idx multiidx2n(const std::vector<idx>& midx,
  *
  *
  * Constructs the multi-partite qudit ket \f$|\mathrm{mask}\rangle\f$,
- * where \a mask is a std::vector of non-negative integers.
- * Each element in \a mask has to be smaller than the corresponding element
- * in \a dims.
+ * where \a mask is a std::vector of non-negative integers. Each element in
+ * \a mask has to be smaller than the corresponding element in \a dims.
  *
  * \param mask std::vector of non-negative integers
  * \param dims Dimensions of the multi-partite system
@@ -1477,10 +1476,10 @@ inline ket mket(const std::vector<idx>& mask, const std::vector<idx>& dims) {
  * \brief Multi-partite qudit ket
  * \see qpp::operator "" _ket()
  *
- * Constructs the multi-partite qudit ket \f$|\mathrm{mask}\rangle\f$,
- * all subsystem having equal dimension \a d.
- * \a mask is a std::vector of non-negative integers, and
- * each element in \a mask has to be strictly smaller than \a d.
+ * Constructs the multi-partite qudit ket \f$|\mathrm{mask}\rangle\f$, all
+ * subsystem having equal dimension \a d. \a mask is a std::vector of
+ * non-negative integers, and each element in \a mask has to be strictly smaller
+ * than \a d.
  *
  * \param mask std::vector of non-negative integers
  * \param d Subsystem dimensions
@@ -1519,15 +1518,14 @@ inline ket mket(const std::vector<idx>& mask, idx d = 2) {
  * \see qpp::operator "" _prj()
  *
  * Constructs the projector onto the multi-partite qudit ket
- * \f$|\mathrm{mask}\rangle\f$,
- * where \a mask is a std::vector of non-negative integers.
- * Each element in \a mask has to be smaller than the corresponding element
- * in \a dims.
+ * \f$|\mathrm{mask}\rangle\f$, where \a mask is a std::vector of non-negative
+ * integers. Each element in \a mask has to be smaller than the corresponding
+ * element in \a dims.
  *
  * \param mask std::vector of non-negative integers
  * \param dims Dimensions of the multi-partite system
- * \return Projector onto multi-partite qudit state vector,
- * as a complex dynamic matrix
+ * \return Projector onto multi-partite qudit state vector, as a complex dynamic
+ * matrix
  */
 inline cmat mprj(const std::vector<idx>& mask, const std::vector<idx>& dims) {
     idx n = mask.size();
@@ -1564,15 +1562,14 @@ inline cmat mprj(const std::vector<idx>& mask, const std::vector<idx>& dims) {
  * \see qpp::operator "" _prj()
  *
  * Constructs the projector onto the multi-partite qudit ket
- * \f$|\mathrm{mask}\rangle\f$,
- * all subsystem having equal dimension \a d.
- * \a mask is a std::vector of non-negative integers, and
- * each element in \a mask has to be strictly smaller than \a d.
+ * \f$|\mathrm{mask}\rangle\f$, all subsystem having equal dimension \a d.
+ * \a mask is a std::vector of non-negative integers, and each element in
+ * \a mask has to be strictly smaller than \a d.
  *
  * \param mask std::vector of non-negative integers
  * \param d Subsystem dimensions
- * \return Projector onto multi-partite qudit state vector,
- * as a complex dynamic matrix
+ * \return Projector onto multi-partite qudit state vector, as a complex dynamic
+ * matrix
  */
 inline cmat mprj(const std::vector<idx>& mask, idx d = 2) {
     idx n = mask.size();
@@ -1603,8 +1600,8 @@ inline cmat mprj(const std::vector<idx>& mask, idx d = 2) {
 }
 
 /**
-* \brief Computes the absolute values squared of an STL-like range
-* of complex numbers
+* \brief Computes the absolute values squared of an STL-like range of complex
+* numbers
 
 * \param first Iterator to the first element of the range
 * \param last  Iterator to the last element of the range
@@ -1664,8 +1661,8 @@ std::vector<double> abssq(const Eigen::MatrixBase<Derived>& A) {
  *
  * \param first Iterator to the first element of the range
  * \param last  Iterator to the last element of the range
- * \return Element-wise sum of the range,
- * as a scalar over the same scalar field as the range
+ * \return Element-wise sum of the range, as a scalar over the same scalar
+ * field as the range
  */
 template <typename InputIterator>
 typename std::iterator_traits<InputIterator>::value_type
@@ -1694,8 +1691,8 @@ sum(const Container& c,
  *
  * \param first Iterator to the first element of the range
  * \param last  Iterator to the last element of the range
- * \return Element-wise product of the range,
- * as a scalar over the same scalar field as the range
+ * \return Element-wise product of the range, as a scalar over the same scalar
+ * field as the range
  */
 template <typename InputIterator>
 typename std::iterator_traits<InputIterator>::value_type
@@ -1710,8 +1707,8 @@ prod(InputIterator first, InputIterator last) {
  * \brief Element-wise product of the elements of an STL-like container
  *
  * \param c STL-like container
- * \return Element-wise product of the elements of the container,
- * as a scalar over the same scalar field as the container
+ * \return Element-wise product of the elements of the container, as a scalar
+ * over the same scalar field as the container
  */
 template <typename Container>
 typename Container::value_type
@@ -1721,14 +1718,14 @@ prod(const Container& c,
 }
 
 /**
- * \brief Finds the pure state representation of a matrix
- * proportional to a projector onto a pure state
+ * \brief Finds the pure state representation of a matrix proportional to a
+ * projector onto a pure state
  *
  * \note No purity check is done, the input state \a A must have rank one,
  * otherwise the function returns the first non-zero eigenvector of \a A
  *
- * \param A Eigen expression, assumed to be proportional
- * to a projector onto a pure state, i.e. \a A is assumed to have rank one
+ * \param A Eigen expression, assumed to be proportional to a projector onto a
+ * pure state, i.e. \a A is assumed to have rank one
  * \return The unique non-zero eigenvector of \a A (up to a phase), as a
  * dynamic column vector over the same scalar field as \a A
  */
@@ -1792,8 +1789,8 @@ inline std::vector<idx> complement(std::vector<idx> subsys, idx n) {
 }
 
 /**
- * \brief Computes the 3-dimensional real Bloch vector
- * corresponding to the qubit density matrix \a A
+ * \brief Computes the 3-dimensional real Bloch vector corresponding to the
+ * qubit density matrix \a A
  * \see qpp::bloch2rho()
  *
  * \note It is implicitly assumed that the density matrix is Hermitian
@@ -1825,8 +1822,8 @@ std::vector<double> rho2bloch(const Eigen::MatrixBase<Derived>& A) {
 }
 
 /**
- * \brief Computes the density matrix corresponding to
- * the 3-dimensional real Bloch vector \a r
+ * \brief Computes the density matrix corresponding to the 3-dimensional real
+ * Bloch vector \a r
  * \see qpp::rho2bloch()
  *
  * \param r 3-dimensional real vector
@@ -1921,8 +1918,8 @@ bra operator"" _bra() {
  * Constructs the multi-partite qubit projector
  * \f$|\mathrm{Bits}\rangle\langle\mathrm{Bits}|\f$ (in the computational basis)
  *
- * \tparam Bits String of binary numbers representing the qubit state
- * to project on
+ * \tparam Bits String of binary numbers representing the qubit state to project
+ * on
  * \return Multi-partite qubit projector, as a complex dynamic matrix
  */
 template <char... Bits>

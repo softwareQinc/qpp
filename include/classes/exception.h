@@ -563,13 +563,15 @@ class QuditAlreadyMeasured : public Exception {
 
 /**
  * \class qpp::exception::Duplicates
- * \brief System (e.g. std::vector) has duplicates exception
+ * \brief System (e.g. std::vector) contains duplicates exception
+ *
+ * System (vector/matrix etc.) contains duplicate elements
  *
  */
 class Duplicates : public Exception {
   public:
     std::string description() const override {
-        return "System (e.g. std::vector) has duplicates";
+        return "System (e.g. std::vector) contains duplicates";
     }
 
     using Exception::Exception;

@@ -48,7 +48,7 @@ class IDisplay {
     /**
      * \brief Must be overridden by all derived classes
      *
-     * The actual stream extraction processing is performed by the overriden
+     * The actual stream extraction processing is performed by the overridden
      * member function in the derived class. This function is automatically
      * invoked by
      * friend std::ostream& operator<<(std::ostream& os, const IDisplay& rhs).

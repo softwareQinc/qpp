@@ -70,7 +70,8 @@ class NoiseBase {
 
     mutable idx i_{}; ///< index of the last occurring noise element
     mutable bool generated_{false}; ///< set to true after compute_state_() is
-    ///< invoked, or if the noise is state-independent
+                                    ///< invoked, or if the noise is
+                                    ///< state-independent
 
     /**
      * \brief Compute probability outcomes for StateDependent noise type,
@@ -176,8 +177,7 @@ class NoiseBase {
      * \note SFINAEd-out for StateDependent noise
      *
      * \param Ks Vector of noise (Kraus) operators that specify the noise
-     * \param probs Vector of probabilities corresponding to each Kraus
-     * operator
+     * \param probs Vector of probabilities corresponding to each Kraus operator
      */
     template <typename U = noise_type>
     explicit NoiseBase(
@@ -286,8 +286,8 @@ class NoiseBase {
     // end getters
 
     /**
-     * \brief Function invocation operator, applies the underlying noise
-     * model on the state vector or density matrix \a state
+     * \brief Function invocation operator, applies the underlying noise model
+     * on the state vector or density matrix \a state
      *
      * \param state State vector or density matrix
      * \return Resulting state vector or density matrix

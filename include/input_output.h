@@ -49,8 +49,8 @@ internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
 /**
  * \brief Complex number ostream manipulator
  *
- * \param z Complex number (or any other type implicitly cast-able
- * to std::complex<double>)
+ * \param z Complex number (or any other type implicitly cast-able to
+ * std::complex<double>)
  * \param chop Set to zero the elements smaller in absolute value than \a chop
  * \return Instance of qpp::internal::IOManipEigen
  */
@@ -166,9 +166,8 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname) {
  * precision
  * \see qpp::save()
  *
- * The template parameter cannot be automatically deduced and
- * must be explicitly provided, depending on the scalar field of the matrix
- * that is being loaded.
+ * The template parameter cannot be automatically deduced and must be explicitly
+ * provided, depending on the scalar field of the matrix that is being loaded
  *
  * Example:
  * \code

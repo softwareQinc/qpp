@@ -34,13 +34,13 @@
 
 namespace qpp {
 /**
- * \brief Generates a random real number uniformly distributed in
- * the interval [a, b)
+ * \brief Generates a random real number uniformly distributed in the interval
+ * [a, b)
  *
  * \param a Beginning of the interval, belongs to it
  * \param b End of the interval, does not belong to it
- * \return Random real number (double) uniformly distributed in
- * the interval [a, b)
+ * \return Random real number (double) uniformly distributed in the interval
+ * [a, b)
  */
 inline double rand(double a, double b) {
     // EXCEPTION CHECKS
@@ -61,11 +61,11 @@ inline double rand(double a, double b) {
 }
 
 /**
- * \brief Generates a random big integer uniformly distributed in
- * the interval [a, b]
+ * \brief Generates a random big integer uniformly distributed in the interval
+ * [a, b]
  *
- * \note To avoid ambiguity with double qpp::rand(double, double) cast at
- * least one of the arguments to qpp::bigint
+ * \note To avoid ambiguity with double qpp::rand(double, double) cast at least
+ * one of the arguments to qpp::bigint
  *
  * \param a Beginning of the interval, belongs to it
  * \param b End of the interval, belongs to it
@@ -91,8 +91,8 @@ inline bigint rand(bigint a, bigint b) {
 }
 
 /**
- * \brief Generates a random index (idx) uniformly distributed in
- * the interval [a, b]
+ * \brief Generates a random index (idx) uniformly distributed in the interval
+ * [a, b]
  *
  * \param a Beginning of the interval, belongs to it
  * \param b End of the interval, belongs to it
@@ -118,15 +118,15 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
 }
 
 /**
- * \brief Generates a random matrix with entries uniformly
- * distributed in the interval [a, b)
+ * \brief Generates a random matrix with entries uniformly distributed in the
+ * interval [a, b)
  *
- * If complex, then both real and imaginary parts are uniformly distributed
- * in [a, b)
+ * If complex, then both real and imaginary parts are uniformly distributed in
+ * [a, b)
  *
  * This is the generic version that always throws
- * qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
- * qpp::dmat and qpp::cmat
+ * qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for qpp::dmat
+ * and qpp::cmat
  */
 template <typename Derived>
 Derived rand(idx rows QPP_UNUSED_, idx cols QPP_UNUSED_,
@@ -135,12 +135,11 @@ Derived rand(idx rows QPP_UNUSED_, idx cols QPP_UNUSED_,
 }
 
 /**
- * \brief Generates a random real matrix with entries uniformly
- * distributed in the interval [a, b),
- * specialization for double matrices (qpp::dmat)
+ * \brief Generates a random real matrix with entries uniformly distributed in
+ * the interval [a, b), specialization for double matrices (qpp::dmat)
  *
- * The template parameter cannot be automatically deduced and
- * must be explicitly provided
+ * The template parameter cannot be automatically deduced and must be explicitly
+ * provided
  *
  * Example:
  * \code
@@ -172,11 +171,11 @@ inline dmat rand(idx rows, idx cols, double a, double b) {
 
 /**
  * \brief Generates a random complex matrix with entries (both real and
- * imaginary) uniformly distributed in the interval [a, b),
- * specialization for complex matrices (qpp::cmat)
+ * imaginary) uniformly distributed in the interval [a, b), specialization for
+ * complex matrices (qpp::cmat)
  *
- * The template parameter cannot be automatically deduced and
- * must be explicitly provided
+ * The template parameter cannot be automatically deduced and must be explicitly
+ * provided
  *
  * Example:
  * \code
@@ -206,15 +205,15 @@ inline cmat rand(idx rows, idx cols, double a, double b) {
 }
 
 /**
- * \brief Generates a random matrix with entries normally
- * distributed in N(mean, sigma)
+ * \brief Generates a random matrix with entries normally distributed in
+ * N(mean, sigma)
  *
- * If complex, then both real and imaginary parts are normally distributed
- * in N(mean, sigma)
+ * If complex, then both real and imaginary parts are normally distributed in
+ * N(mean, sigma)
  *
  * This is the generic version that always throws
- * qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for
- * qpp::dmat and qpp::cmat
+ * qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for qpp::dmat
+ * and qpp::cmat
  */
 template <typename Derived>
 Derived randn(idx rows QPP_UNUSED_, idx cols QPP_UNUSED_,
@@ -223,12 +222,11 @@ Derived randn(idx rows QPP_UNUSED_, idx cols QPP_UNUSED_,
 }
 
 /**
- * \brief Generates a random real matrix with entries normally
- * distributed in N(mean, sigma),
- * specialization for double matrices (qpp::dmat)
+ * \brief Generates a random real matrix with entries normally distributed in
+ * N(mean, sigma), specialization for double matrices (qpp::dmat)
  *
- * The template parameter cannot be automatically deduced and
- * must be explicitly provided
+ * The template parameter cannot be automatically deduced and must be explicitly
+ * provided
  *
  * Example:
  * \code
@@ -266,11 +264,11 @@ inline dmat randn(idx rows, idx cols, double mean, double sigma) {
 
 /**
  * \brief Generates a random complex matrix with entries (both real and
- * imaginary) normally distributed in N(mean, sigma),
- * specialization for complex matrices (qpp::cmat)
+ * imaginary) normally distributed in N(mean, sigma), specialization for complex
+ * matrices (qpp::cmat)
  *
- * The template parameter cannot be automatically deduced and
- * must be explicitly provided
+ * The template parameter cannot be automatically deduced and must be explicitly
+ * provided
  *
  * Example:
  * \code
@@ -468,8 +466,8 @@ inline cmat randrho(idx D = 2) {
 /**
  * \brief Generates a random uniformly distributed permutation
  *
- * Uses Knuth shuffle method (as implemented by std::shuffle),
- * so that all permutations are equally probable
+ * Uses Knuth shuffle method (as implemented by std::shuffle), so that all
+ * permutations are equally probable
  *
  * \param N Size of the permutation
  * \return Random permutation of size \a N

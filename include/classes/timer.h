@@ -37,10 +37,10 @@ namespace qpp {
  * \class qpp::Timer
  * \brief Chronometer
  *
- * \tparam T Tics duration, default is std::chrono::duration<double>,
- * i.e. seconds in double precision
- * \tparam CLOCK_T Clock's type, default is std::chrono::steady_clock,
- * not affected by wall clock changes during runtime
+ * \tparam T Tics duration, default is std::chrono::duration<double>, i.e.
+ * seconds in double precision
+ * \tparam CLOCK_T Clock's type, default is std::chrono::steady_clock, not
+ * affected by wall clock changes during runtime
  */
 template <typename T = std::chrono::duration<double>,
           typename CLOCK_T = std::chrono::steady_clock>
@@ -94,8 +94,8 @@ class Timer : public IDisplay {
      * \tparam U Duration, default is T, which defaults to
      * std::chrono::duration<double>, i.e. seconds in double precision
      *
-     * \return Duration that passed between the
-     * instantiation/reset and invocation of qpp::Timer::toc()
+     * \return Duration that passed between the instantiation/reset and
+     * invocation of qpp::Timer::toc()
      */
     template <typename U = T>
     U get_duration() const noexcept {

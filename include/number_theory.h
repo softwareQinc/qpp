@@ -41,8 +41,8 @@ namespace qpp {
  * \param N Maximum number of terms in the expansion
  * \param cut Stop the expansion when the next term is greater than \a cut
  * \return Integer vector containing the simple continued fraction expansion
- * of \a x. If there are \a M less than \a N terms in the expansion,
- * a shorter vector with \a M components is returned.
+ * of \a x. If there are \a M less than \a N terms in the expansion, a shorter
+ * vector with \a M components is returned.
  */
 inline std::vector<int> x2contfrac(double x, idx N, idx cut = 1e5) {
     // EXCEPTION CHECKS
@@ -230,7 +230,7 @@ inline std::vector<idx> invperm(const std::vector<idx>& perm) {
  * \param perm Permutation
  * \param sigma Permutation
  * \return Composition of the permutations \a perm \f$\circ\f$ \a sigma
- *  = perm(sigma)
+ * = perm(sigma)
  */
 inline std::vector<idx> compperm(const std::vector<idx>& perm,
                                  const std::vector<idx>& sigma) {
@@ -372,8 +372,8 @@ inline bigint modmul(bigint a, bigint b, bigint p) {
 }
 
 /**
- * \brief Fast integer power modulo \a p based on
- * the SQUARE-AND-MULTIPLY algorithm
+ * \brief Fast integer power modulo \a p based on the SQUARE-AND-MULTIPLY
+ * algorithm
  *
  * \note Uses qpp::modmul() that avoids overflows
  *
@@ -480,8 +480,8 @@ inline bigint modinv(bigint a, bigint p) {
  * \brief Primality test based on the Miller-Rabin's algorithm
  *
  * \param p Integer different from 0, 1 or -1
- * \param k Number of iterations. The probability of a
- * false positive is \f$2^{-k}\f$.
+ * \param k Number of iterations. The probability of a false positive is
+ * \f$2^{-k}\f$.
  * \return True if the number is (most-likely) prime, false otherwise
  */
 inline bool isprime(bigint p, idx k = 80) {
@@ -543,14 +543,13 @@ inline bool isprime(bigint p, idx k = 80) {
 }
 
 /**
- * \brief Generates a random big prime uniformly distributed in
- * the interval [a, b]
+ * \brief Generates a random big prime uniformly distributed in the interval
+ * [a, b]
  *
  * \param a Beginning of the interval, belongs to it
  * \param b End of the interval, belongs to it
  * \param N Maximum number of candidates
- * \return Random big integer uniformly distributed in
- * the interval [a, b]
+ * \return Random big integer uniformly distributed in the interval [a, b]
  */
 // A std::optional<bigint> return type would have been awesome here!
 inline bigint randprime(bigint a, bigint b, idx N = 1000) {

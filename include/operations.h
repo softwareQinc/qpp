@@ -39,8 +39,7 @@ namespace qpp {
  * multi-partite state vector or density matrix \a state
  * \see qpp::Gates::CTRL()
  *
- * \note The dimension of the gate \a A must match
- * the dimension of \a target.
+ * \note The dimension of the gate \a A must match the dimension of \a target.
  * Also, all control subsystems in \a ctrl must have the same dimension.
  *
  * \param state Eigen expression
@@ -390,8 +389,8 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
  * multi-partite state vector or density matrix \a state
  * \see qpp::Gates::CTRL()
  *
- * \note The dimension of the gate \a A must match
- * the dimension of \a target
+ * \note The dimension of the gate \a A must match the dimension of \a target.
+ * Also, all control subsystems in \a ctrl must have the same dimension.
  *
  * \param state Eigen expression
  * \param A Eigen expression
@@ -430,8 +429,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
  * \brief Applies the gate \a A to the part \a target of the multi-partite state
  * vector or density matrix \a state
  *
- * \note The dimension of the gate \a A must match
- * the dimension of \a target
+ * \note The dimension of the gate \a A must match the dimension of \a target
  *
  * \param state Eigen expression
  * \param A Eigen expression
@@ -514,8 +512,7 @@ apply(const Eigen::MatrixBase<Derived1>& state,
  * \brief Applies the gate \a A to the part \a target of the multi-partite state
  * vector or density matrix \a state
  *
- * \note The dimension of the gate \a A must match
- * the dimension of \a target
+ * \note The dimension of the gate \a A must match the dimension of \a target
  *
  * \param state Eigen expression
  * \param A Eigen expression
@@ -766,8 +763,8 @@ inline cmat kraus2super(const std::vector<cmat>& Ks) {
  * ordered in lexicographical order, i.e.
  * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
  *
- * \note The superoperator matrix \f$S\f$ and the Choi matrix \f$ C\f$
- * are related by \f$ S_{ab,mn} = C_{ma,nb}\f$
+ * \note The superoperator matrix \f$S\f$ and the Choi matrix \f$ C\f$ are
+ * related by \f$ S_{ab,mn} = C_{ma,nb}\f$
  *
  * \param Ks Set of Kraus operators
  * \return Choi matrix
@@ -821,8 +818,8 @@ inline cmat kraus2choi(const std::vector<cmat>& Ks) {
  * Extracts a set of orthogonal (under Hilbert-Schmidt operator norm) Kraus
  * operators from the Choi matrix \a A
  *
- * \note The Kraus operators satisfy \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$
- * for all \f$i\neq j\f$
+ * \note The Kraus operators satisfy \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$ for
+ * all \f$i\neq j\f$
  *
  * \param A Choi matrix
  * \return Set of orthogonal Kraus operators
@@ -931,8 +928,8 @@ inline cmat super2choi(const cmat& A) {
  * \param A Eigen expression
  * \param dims Dimensions of the bi-partite system
  * \return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$
- * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
- * over the same scalar field as \a A
+ * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix over the same
+ * scalar field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
@@ -1024,9 +1021,9 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param d Subsystem dimensions
- * \return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$
- * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
- * over the same scalar field as \a A
+ * \return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$ in
+ * a bi-partite system \f$A\otimes B\f$, as a dynamic matrix over the same
+ * scalar field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
@@ -1058,9 +1055,9 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param dims Dimensions of the bi-partite system
- * \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$
- * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
- * over the same scalar field as \a A
+ * \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$ in
+ * a bi-partite system \f$A\otimes B\f$, as a dynamic matrix over the same
+ * scalar field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
@@ -1144,9 +1141,9 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param d Subsystem dimensions
- * \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$
- * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix
- * over the same scalar field as \a A
+ * \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$ in
+ * a bi-partite system \f$A\otimes B\f$, as a dynamic matrix over the same
+ * scalar field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
@@ -1180,8 +1177,8 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
  * \param target Subsystem indexes
  * \param dims Dimensions of the multi-partite system
  * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
- * in a multi-partite system, as a dynamic matrix
- * over the same scalar field as \a A
+ * in a multi-partite system, as a dynamic matrix over the same scalar field as
+ * \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
@@ -1381,8 +1378,8 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
  * \param target Subsystem indexes
  * \param d Subsystem dimensions
  * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
- * in a multi-partite system, as a dynamic matrix
- * over the same scalar field as \a A
+ * in a multi-partite system, as a dynamic matrix over the same scalar field as
+ * \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
@@ -1560,9 +1557,9 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
  * \param A Eigen expression
  * \param target Subsystem indexes
  * \param d Subsystem dimensions
- * \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$
- * over the subsytems \a target in a multi-partite system, as a dynamic matrix
- * over the same scalar field as \a A
+ * \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$ over the subsytems
+ * \a target in a multi-partite system, as a dynamic matrix over the same scalar
+ * field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
@@ -1596,8 +1593,8 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
  * \param A Eigen expression
  * \param perm Permutation
  * \param dims Dimensions of the multi-partite system
- * \return Permuted system, as a dynamic matrix
- * over the same scalar field as \a A
+ * \return Permuted system, as a dynamic matrix over the same scalar field as
+ * \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
@@ -1735,8 +1732,8 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
  * \param A Eigen expression
  * \param perm Permutation
  * \param d Subsystem dimensions
- * \return Permuted system, as a dynamic matrix
- * over the same scalar field as \a A
+ * \return Permuted system, as a dynamic matrix over the same scalar field as
+ * \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
@@ -1770,8 +1767,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
  * \param target Subsystem indexes where the QFT is applied
  * \param d Subsystem dimensions
  * \param swap Swaps the qubits/qudits at the end (true by default)
- * \return Qudit Quantum Fourier transform applied to the part \a target
- * of \a A
+ * \return Qudit Quantum Fourier transform applied to the part \a target of \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,

@@ -327,9 +327,9 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
  * density matrix \a A using the set of Kraus operators \a Ks
  * \see qpp::measure_seq()
  *
- * \note The dimension of all \a Ks must match the dimension of \a target.
- * If \a destructive is set to true (by default), the measurement is
- * destructive, i.e. the measured subsystems are traced away.
+ * \note The dimension of all \a Ks must match the dimension of \a target. If
+ * \a destructive is set to true (by default), the measurement is destructive,
+ * i.e. the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
@@ -451,9 +451,9 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
  * density matrix \a A using the set of Kraus operators \a Ks
  * \see qpp::measure_seq()
  *
- * \note The dimension of all \a Ks must match the dimension of \a target.
- * If \a destructive is set to true (by default), the measurement is
- * destructive, i.e. the measured subsystems are traced away.
+ * \note The dimension of all \a Ks must match the dimension of \a target. If
+ * \a destructive is set to true (by default), the measurement is destructive,
+ * i.e. the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
@@ -476,9 +476,9 @@ measure(const Eigen::MatrixBase<Derived>& A,
  * density matrix \a A using the set of Kraus operators \a Ks
  * \see qpp::measure_seq()
  *
- * \note The dimension of all \a Ks must match the dimension of \a target.
- * If \a destructive is set to true (by default), the measurement is
- * destructive, i.e. the measured subsystems are traced away.
+ * \note The dimension of all \a Ks must match the dimension of \a target. If
+ * \a destructive is set to true (by default), the measurement is destructive,
+ * i.e. the measured subsystems are traced away.
 
  *
  * \param A Eigen expression
@@ -520,9 +520,9 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
  * density matrix \a A using the set of Kraus operators \a Ks
  * \see qpp::measure_seq()
  *
- * \note The dimension of all \a Ks must match the dimension of \a target.
- * If \a destructive is set to true (by default), the measurement is
- * destructive, i.e. the measured subsystems are traced away.
+ * \note The dimension of all \a Ks must match the dimension of \a target. If
+ * \a destructive is set to true (by default), the measurement is destructive,
+ * i.e. the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
@@ -546,9 +546,9 @@ measure(const Eigen::MatrixBase<Derived>& A,
  * by the columns of the matrix \a V
  * \see qpp::measure_seq()
  *
- * \note The dimension of \a V must match the dimension of \a target.
- * If \a destructive is set to true (by default), the measurement is
- * destructive, i.e. the measured subsystems are traced away.
+ * \note The dimension of \a V must match the dimension of \a target. If
+ * \a destructive is set to true (by default), the measurement is destructive,
+ * i.e. the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param V Matrix whose columns represent the measurement basis vectors or the
@@ -661,9 +661,9 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
  * by the columns of the matrix \a V
  * \see qpp::measure_seq()
  *
- * \note The dimension of \a V must match the dimension of \a target.
- * If \a destructive is set to true (by default), the measurement is
- * destructive, i.e. the measured subsystems are traced away.
+ * \note The dimension of \a V must match the dimension of \a target. If
+ * \a destructive is set to true (by default), the measurement is destructive,
+ * i.e. the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param V Matrix whose columns represent the measurement basis vectors or the
@@ -671,9 +671,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
  * \param target Subsystem indexes that are measured
  * \param d Subsystem dimensions
  * \param destructive Destructive measurement, true by default
- * \return Tuple of: 1. Result of the measurement, 2.
- * Vector of outcome probabilities, and 3. Vector of post-measurement
- * normalized states
+ * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
 std::tuple<idx, std::vector<double>, std::vector<cmat>>
@@ -821,8 +820,8 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
 /**
  * \brief Resets qudits from the multi-partite state vector or density matrix
  * \a A by performing a non-destructive measurement in the computational basis
- * on the \a target qudits and discarding the measurement results,
- * followed by shifting them back to the \f$|0\cdots 0\rangle\f$ state
+ * on the \a target qudits and discarding the measurement results, followed by
+ * shifting them back to the \f$|0\cdots 0\rangle\f$ state
  *
  * \param A Eigen expression
  * \param target Target qudit indexes that are reset
@@ -877,8 +876,8 @@ dyn_mat<typename Derived::Scalar> reset(const Eigen::MatrixBase<Derived>& A,
 /**
  * \brief Resets qudits from the multi-partite state vector or density matrix
  * \a A by performing a non-destructive measurement in the computational basis
- * on the \a target qudits and discarding the measurement results,
- * followed by shifting them back to the \f$|0\cdots 0\rangle\f$ state
+ * on the \a target qudits and discarding the measurement results, followed by
+ * shifting them back to the \f$|0\cdots 0\rangle\f$ state
  *
  * \param A Eigen expression
  * \param target Target qudit indexes that are reset

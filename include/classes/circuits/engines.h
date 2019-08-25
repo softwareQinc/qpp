@@ -118,9 +118,10 @@ class QEngine : public IDisplay, public IJSON {
     // giving a vector of non-measured qudits, get their relative position wrt
     // the measured qudits
     /**
-     * \brief Giving a vector \a V of non-measured qudits, get their relative
-     * position with respect to the measured qudits \param v
+     * \brief Giving a vector \a v of non-measured qudits, gets their relative
+     * position with respect to the measured qudits
      *
+     * \param v Vector of non-measured qudit indexes
      * \return Vector of qudit indexes
      */
     std::vector<idx> get_relative_pos_(std::vector<idx> v) {
@@ -192,7 +193,6 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Value of the classical dit at position \a i
      *
      * \param i Classical dit index
-     *
      * \return Value of the classical dit at position \a i
      */
     idx get_dit(idx i) const {
@@ -205,8 +205,8 @@ class QEngine : public IDisplay, public IJSON {
     /**
      * \brief Vector of underlying measurement outcome probabilities
      *
-     * Those should be interpreted as conditional probabilities based on the
-     * temporal order of the measurements, i.e. if we measure qubit 0, then
+     * \note Those should be interpreted as conditional probabilities based on
+     * the temporal order of the measurements, i.e. if we measure qubit 0, then
      * measure qubit 1, and finally qubit 2, the resulting vector of outcome
      * probabilities probs[2] should be interpreted as the conditional
      * probability of qubit 2 having the outcome it had given that qubit 1 and
@@ -758,8 +758,8 @@ class QNoisyEngine : public QEngine {
      * \brief Vector of noise results obtained before every step in the
      * circuit
      *
-     * The first vector contains the noise measurement results obtained before
-     * applying the first step in the circuit, and so on, ordered by
+     * \note The first vector contains the noise measurement results obtained
+     * before applying the first step in the circuit, and so on, ordered by
      * non-measured qudits. That is, the first element in the vector
      * corresponding to noise obtained before a given step in the circuit
      * represents the noise result obtained on the first non-measured qudit etc.
