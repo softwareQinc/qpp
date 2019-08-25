@@ -440,7 +440,7 @@ class Bit_circuit : public Dynamic_bitset {
     Bit_circuit& NOT(idx i) {
         flip(i);
         ++count_["NOT"];
-        ++count_["total"];
+        ++count_[__FILE__ "__total__"];
 
         // compute the depth
         if (count_["NOT"] == 1)
@@ -457,8 +457,8 @@ class Bit_circuit : public Dynamic_bitset {
         }
 
         // compute the total depth
-        if (count_["total"] == 1)
-            depth_["total"] = 1;
+        if (count_[__FILE__ "__total__"] == 1)
+            depth_[__FILE__ "__total__"] = 1;
         // apply the gate
         btotal_.flip(i);
         // check whether gates overlap
@@ -467,7 +467,7 @@ class Bit_circuit : public Dynamic_bitset {
             btotal_ = Dynamic_bitset{n_};
             // set to true the locations of the last gate
             btotal_.set(i);
-            ++depth_["total"];
+            ++depth_[__FILE__ "__total__"];
         }
 
         return *this;
@@ -484,7 +484,7 @@ class Bit_circuit : public Dynamic_bitset {
         v_[index_(target)] ^= (1 & (v_[index_(ctrl)] >> offset_(ctrl)))
                               << offset_(target);
         ++count_["CNOT"];
-        ++count_["total"];
+        ++count_[__FILE__ "__total__"];
 
         // compute the depth
         if (count_["CNOT"] == 1)
@@ -501,8 +501,8 @@ class Bit_circuit : public Dynamic_bitset {
         }
 
         // compute the total depth
-        if (count_["total"] == 1)
-            depth_["total"] = 1;
+        if (count_[__FILE__ "__total__"] == 1)
+            depth_[__FILE__ "__total__"] = 1;
         // apply the gate
         btotal_.flip(ctrl).flip(target);
         // check whether gates overlap
@@ -511,7 +511,7 @@ class Bit_circuit : public Dynamic_bitset {
             btotal_ = Dynamic_bitset{n_};
             // set to true the locations of the last gate
             btotal_.set(ctrl).set(target);
-            ++depth_["total"];
+            ++depth_[__FILE__ "__total__"];
         }
 
         return *this;
@@ -530,7 +530,7 @@ class Bit_circuit : public Dynamic_bitset {
                           (1 & (v_[index_(i)] >> offset_(i))))
                          << offset_(k);
         ++count_["TOF"];
-        ++count_["total"];
+        ++count_[__FILE__ "__total__"];
 
         // compute the depth
         if (count_["TOF"] == 1)
@@ -548,8 +548,8 @@ class Bit_circuit : public Dynamic_bitset {
         }
 
         // compute the total depth
-        if (count_["total"] == 1)
-            depth_["total"] = 1;
+        if (count_[__FILE__ "__total__"] == 1)
+            depth_[__FILE__ "__total__"] = 1;
         // apply the gate
         btotal_.flip(i).flip(j).flip(k);
         // check whether gates overlap
@@ -559,7 +559,7 @@ class Bit_circuit : public Dynamic_bitset {
             btotal_ = Dynamic_bitset{n_};
             // set to true the locations of the last gate
             btotal_.set(i).set(j).set(k);
-            ++depth_["total"];
+            ++depth_[__FILE__ "__total__"];
         }
 
         return *this;
@@ -578,7 +578,7 @@ class Bit_circuit : public Dynamic_bitset {
             X(j);
         }
         ++count_["SWAP"];
-        ++count_["total"];
+        ++count_[__FILE__ "__total__"];
 
         // compute the depth
         if (count_["SWAP"] == 1)
@@ -595,8 +595,8 @@ class Bit_circuit : public Dynamic_bitset {
         }
 
         // compute the total depth
-        if (count_["total"] == 1)
-            depth_["total"] = 1;
+        if (count_[__FILE__ "__total__"] == 1)
+            depth_[__FILE__ "__total__"] = 1;
         // apply the gate
         btotal_.flip(i).flip(j);
         // check whether gates overlap
@@ -605,7 +605,7 @@ class Bit_circuit : public Dynamic_bitset {
             btotal_ = Dynamic_bitset{n_};
             // set to true the locations of the last gate
             btotal_.set(i).set(j);
-            ++depth_["total"];
+            ++depth_[__FILE__ "__total__"];
         }
 
         return *this;
@@ -624,7 +624,7 @@ class Bit_circuit : public Dynamic_bitset {
             SWAP(j, k);
         }
         ++count_["FRED"];
-        ++count_["total"];
+        ++count_[__FILE__ "__total__"];
 
         // compute the depth
         if (count_["FRED"] == 1)
@@ -642,8 +642,8 @@ class Bit_circuit : public Dynamic_bitset {
         }
 
         // compute the total depth
-        if (count_["total"] == 1)
-            depth_["total"] = 1;
+        if (count_[__FILE__ "__total__"] == 1)
+            depth_[__FILE__ "__total__"] = 1;
         // apply the gate
         btotal_.flip(i).flip(j).flip(k);
         // check whether gates overlap
@@ -653,7 +653,7 @@ class Bit_circuit : public Dynamic_bitset {
             btotal_ = Dynamic_bitset{n_};
             // set to true the locations of the last gate
             btotal_.set(i).set(j).set(k);
-            ++depth_["total"];
+            ++depth_[__FILE__ "__total__"];
         }
 
         return *this;
@@ -676,22 +676,16 @@ class Bit_circuit : public Dynamic_bitset {
     /**
      * \brief Bit circuit gate count
      *
-     * \note If \a name is empty (default), returns the total gate count of the
-     * circuit
-     *
-     * \param name Gate name (optional). Possible names are NOT (X), CNOT, SWAP,
-     * TOF, FRED.
+     * \param name Gate name. Possible names are NOT (X), CNOT, SWAP, TOF, FRED.
      * \return Gate count
      */
-    idx get_gate_count(const std::string& name = {}) const {
+    idx get_gate_count(const std::string& name) const {
         idx result = 0;
 
         // EXCEPTION CHECKS
 
         try {
-            if (name.empty())
-                result = count_.at("total");
-            else if (name == "X")
+            if (name == "X")
                 result = count_.at("NOT");
             else
                 result = count_.at(name);
@@ -704,27 +698,61 @@ class Bit_circuit : public Dynamic_bitset {
     }
 
     /**
-     * \brief Bit circuit gate depth
+     * \brief Bit circuit total gate count
      *
-     * \note If \a name is empty (default), returns the total gate depth of the
-     * circuit
-     *
-     * \param name Gate name (optional). Possible names are NOT (X), CNOT, SWAP,
-     * TOF, FRED.
-     * \return Gate depth
+     * \return Total gate count
      */
-    idx get_gate_depth(const std::string& name = {}) const {
+    idx get_gate_count() const {
         idx result = 0;
 
         // EXCEPTION CHECKS
 
         try {
-            if (name.empty())
-                result = depth_.at("total");
-            else if (name == "X")
+            result = count_.at(__FILE__ "__total__");
+        } catch (...) {
+            return 0;
+        }
+        // END EXCEPTION CHECKS
+
+        return result;
+    }
+
+    /**
+     * \brief Bit circuit gate depth
+     *
+     * \param name Gate name. Possible names are NOT (X), CNOT, SWAP, TOF, FRED.
+     * \return Gate depth
+     */
+    idx get_gate_depth(const std::string& name) const {
+        idx result = 0;
+
+        // EXCEPTION CHECKS
+
+        try {
+            if (name == "X")
                 result = depth_.at("NOT");
             else
                 result = depth_.at(name);
+        } catch (...) {
+            return 0;
+        }
+        // END EXCEPTION CHECKS
+
+        return result;
+    }
+
+    /**
+     * \brief Bit circuit total gate depth
+     *
+     * \return Total gate depth
+     */
+    idx get_gate_depth() const {
+        idx result = 0;
+
+        // EXCEPTION CHECKS
+
+        try {
+            result = depth_.at(__FILE__ "__total__");
         } catch (...) {
             return 0;
         }
