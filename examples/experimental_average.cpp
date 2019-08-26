@@ -8,9 +8,9 @@
 int main() {
     using namespace qpp;
     ket psi = 0_ket; // same as st.z0;
-    cmat A = gt.X;
-    dyn_col_vect<double> evals = hevals(A);
-    cmat evects = hevects(A);
+    cmat X = gt.X;
+    dyn_col_vect<double> evals = hevals(X);
+    cmat evects = hevects(X);
 
     long res = 0;
     idx N = 10000; // number of "measurement experiments"
@@ -23,11 +23,11 @@ int main() {
             ++res;
     }
     std::cout << ">> N = " << N << " measurements\n";
-    std::cout << ">> The experimental average of the observable\n";
-    std::cout << disp(A) << '\n';
-    std::cout << "on the state\n";
+    std::cout << ">> The experimental average of the observable X\n";
+    std::cout << disp(X) << '\n';
+    std::cout << "on the state psi\n";
     std::cout << disp(psi) << '\n';
     std::cout << "is: " << res / static_cast<double>(N) << '\n';
-    std::cout << ">> Theoretical average <psi | A | psi> = ";
-    std::cout << disp((adjoint(psi) * A * psi).value()) << '\n';
+    std::cout << ">> Theoretical average <psi | X | psi> = ";
+    std::cout << disp((adjoint(psi) * X * psi).value()) << '\n';
 }
