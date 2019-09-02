@@ -263,11 +263,18 @@ class QEngine : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Quantum circuit description
+     * \brief Quantum circuit description, lvalue ref qualifier
      *
-     * \return Underlying quantum circuit description
+     * \return Const reference to the underlying quantum circuit description
      */
-    const QCircuit& get_circuit() const noexcept { return *qc_; }
+    const QCircuit& get_circuit() const& noexcept { return *qc_; }
+
+    /**
+     * \brief Quantum circuit description, rvalue ref qualifier
+     *
+     * \return Copy of the underlying quantum circuit description
+     */
+    QCircuit get_circuit() const&& noexcept { return *qc_; }
 
     /**
      * \brief Measurement statistics for multiple runs
@@ -278,7 +285,7 @@ class QEngine : public IDisplay, public IJSON {
      * vector of measurement results), with the most significant bit located at
      * index 0 (i.e. top/left).
      */
-    const std::map<std::string, idx, internal::EqualSameSizeStringDits>&
+    std::map<std::string, idx, internal::EqualSameSizeStringDits>
     get_stats() const {
         return stats_;
     }
@@ -322,6 +329,7 @@ class QEngine : public IDisplay, public IJSON {
 
         return *this;
     }
+    // end setters
 
     /**
      * \brief Resets the collected measurement statistics hash table
@@ -330,25 +338,34 @@ class QEngine : public IDisplay, public IJSON {
      */
     QEngine& reset_stats() {
         stats_ = {};
+
         return *this;
     }
-
-    // end setters
 
     /**
      * \brief Resets the engine
      *
      * Re-initializes everything to zero and sets the initial state to
      * \f$|0\rangle^{\otimes n}\f$
+     *
+     * \return Reference to the current instance
      */
-    void reset() { st_.reset(); }
+    QEngine& reset() {
+        st_.reset();
+
+        return *this;
+    }
 
     /**
      * \brief Executes one step in the quantum circuit description
      *
+     * \note Override only this QEngine::execute() member function in every
+     * derived class to achieve the desired behaviour
+     *
      * \param elem Step to be executed
+     * \return Reference to the current instance
      */
-    virtual void execute(const QCircuit::iterator::value_type& elem) {
+    virtual QEngine& execute(const QCircuit::iterator::value_type& elem) {
         // EXCEPTION CHECKS
 
         // iterator must point to the same quantum circuit description
@@ -546,23 +563,31 @@ class QEngine : public IDisplay, public IJSON {
         // otherwise
         else {
         }
+
+        return *this;
     }
 
     /**
      * \brief Executes one step in the quantum circuit description
      *
+     * \note Do not override!
+     *
      * \param it Iterator to the step to be executed
+     * \return Reference to the current instance
      */
-    void execute(const QCircuit::iterator& it) { execute(*it); }
+    QEngine& execute(const QCircuit::iterator& it) { return execute(*it); }
 
     /**
      * \brief Executes the entire quantum circuit description
      *
+     * \note Do not override!
+     *
      * \param reps Number of repetitions
      * \param clear_stats Resets the collected measurement statistics hash table
      * before the run
+     * \return Reference to the current instance
      */
-    void execute(idx reps = 1, bool clear_stats = true) {
+    QEngine& execute(idx reps = 1, bool clear_stats = true) {
         auto initial_engine_state = st_; // saves the engine entry state
 
         if (clear_stats)
@@ -573,7 +598,7 @@ class QEngine : public IDisplay, public IJSON {
             st_ = initial_engine_state;
 
             for (auto&& elem : *qc_)
-                execute(elem);
+                (void) execute(elem);
 
             // we measured at least one qudit
             if (qc_->get_measurement_count() > 0) {
@@ -584,6 +609,8 @@ class QEngine : public IDisplay, public IJSON {
                 ++stats_[ss.str()];
             }
         }
+
+        return *this;
     }
 
     /**
@@ -738,7 +765,7 @@ class QNoisyEngine : public QEngine {
      *
      * \param elem Step to be executed
      */
-    void execute(const QCircuit::iterator::value_type& elem) override {
+    QNoisyEngine& execute(const QCircuit::iterator::value_type& elem) override {
         // get the relative position of the target
         std::vector<idx> target_rel_pos = get_relative_pos_(get_non_measured());
         if (elem.type_ != QCircuit::StepType::MEASUREMENT) {
@@ -750,7 +777,9 @@ class QNoisyEngine : public QEngine {
             }
         }
         // execute the circuit step
-        QEngine::execute(elem);
+        (void) QEngine::execute(elem);
+
+        return *this;
     }
 
     // getters
