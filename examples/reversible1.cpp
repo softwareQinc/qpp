@@ -28,6 +28,4 @@ int main() {
     std::cout << ">> 3rd bit: " << bc.get(2) << '\n';
     std::cout << ">> CNOT count: " << bc.get_gate_count("CNOT") << '\n';
     std::cout << ">> CNOT depth: " << bc.get_gate_depth("CNOT") << '\n';
-
-    std::cout << bc.to_JSON() << '\n';
 }
