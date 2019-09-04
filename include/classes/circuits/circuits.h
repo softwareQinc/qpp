@@ -204,7 +204,8 @@ class QCircuit : public IDisplay, public IJSON {
         std::vector<idx> ctrl_{};             ///< control
         std::vector<idx> target_{}; ///< target where the gate is applied
         std::vector<idx> shift_{};  ///< shifts in CTRL gates
-        std::string name_{};        ///< custom name of the step
+        std::string name_{};        ///< custom name of the gate(s)
+
         /**
          * \brief Default constructor
          */
@@ -355,7 +356,8 @@ class QCircuit : public IDisplay, public IJSON {
         std::vector<idx> target_{}; ///< target where the measurement is applied
         idx c_reg_{}; ///< index of the classical register where the measurement
                       ///< result is being stored
-        std::string name_{}; ///< custom name of the step
+        std::string name_{}; ///< custom name of the measurement(s)
+
         /**
          * \brief Default constructor
          */
