@@ -366,9 +366,12 @@ class Dynamic_bitset : public IDisplay {
         return result;
     }
 
-  private:
+  protected:
     /**
-     * \brief qpp::IDisplay::display() override, displays the bitset bit by bit
+     * \brief qpp::IDisplay::display() override
+     *
+     * Writes to the output stream a textual representation of the bitset
+     * (displays the bitset bit by bit_
      *
      * \param os Output stream passed by reference
      * \return Reference to the output stream
@@ -387,7 +390,7 @@ class Dynamic_bitset : public IDisplay {
  * \class qpp::Bit_circuit
  * \brief Classical reversible circuit simulator
  */
-class Bit_circuit : public Dynamic_bitset {
+class Bit_circuit : public Dynamic_bitset, public IJSON {
     std::unordered_map<std::string, idx> count_{}; ///< gate counts
     std::unordered_map<std::string, idx> depth_{}; ///< gate depths
     Dynamic_bitset bNOT_, bCNOT_, bSWAP_, bTOF_, bFRED_,
@@ -761,6 +764,56 @@ class Bit_circuit : public Dynamic_bitset {
         return result;
     }
     // end getters
+
+    /**
+     * \brief qpp::IJSON::to_JSON() override
+     *
+     * Displays the bit circuit in JSON format
+     *
+     * \param enclosed_in_curly_brackets If true, encloses the result in curly
+     * brackets
+     * \return String containing the JSON representation of the state of the
+     * engine
+     */
+    std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
+        std::string result;
+
+        if (enclosed_in_curly_brackets)
+            result += "{";
+
+        result += "\"n\" : " + std::to_string(n_);
+        result +=
+            ", \"total gate count\" : " + std::to_string(get_gate_count());
+        result +=
+            ", \"total gate depth\" : " + std::to_string(get_gate_depth());
+        result += ", \"bit state\" : \"" + this->to_string() + '\"';
+        result += ", \"Hamming weight\" : " + std::to_string(count());
+
+        if (enclosed_in_curly_brackets)
+            result += "}";
+
+        return result;
+    }
+
+  private:
+    /**
+     * \brief qpp::IDisplay::display() override
+     *
+     * Writes to the output stream a textual representation of the bit circuit
+     *
+     * \param os Output stream passed by reference
+     * \return Reference to the output stream
+     */
+    std::ostream& display(std::ostream& os) const override {
+        os << "n = " << n_ << '\n';
+        os << "total gate count: " << get_gate_count() << '\n';
+        os << "total gate depth: " << get_gate_depth() << '\n';
+        os << "bit state: " << this->to_string() << '\n';
+        os << "Hamming weight: " << count();
+
+        return os;
+    }
+
 }; /* class Bit_circuit */
 
 } /* namespace qpp */

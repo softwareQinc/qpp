@@ -17,7 +17,8 @@ int main() {
     bc.rand(); // randomize the vector
     Bit_circuit bc_initial = bc;
 
-    std::cout << ">> Initial randomized bit circuit\n\t" << bc_initial << '\n';
+    std::cout << ">> Initial randomized bit circuit state\n"
+              << bc_initial.to_string() << '\n';
 
     // randomize the indices where Toffoli will be applied
     std::random_device rd;
@@ -42,10 +43,8 @@ int main() {
         std::cout << '\n';
         bc.TOF(indices[i][0], indices[i][1], indices[i][2]);
     }
-    std::cout << ">> Initial/Intermediate bit circuit\n\t";
-    std::cout << bc_initial << "\n\t" << bc << '\n';
-    std::cout << ">> Hamming weight (intermediate circuit): " << bc.count()
-              << '\n';
+    std::cout << ">> Intermediate bit circuit state\n";
+    std::cout << bc.to_string() << '\n';
     std::cout << ">> Hamming distance (from the initial circuit): "
               << bc_initial - bc << '\n';
     std::cout << ">> NOT count (intermediate circuit, should be zero): "
@@ -64,13 +63,11 @@ int main() {
         bc.TOF(indices[i][0], indices[i][1], indices[i][2]);
     }
 
-    std::cout << ">> Final bit circuit:\n\t" << bc << '\n';
-    std::cout << ">> Hamming weight: " << bc.count() << '\n';
-
+    std::cout << ">> Final bit circuit state\n" << bc.to_string() << '\n';
     std::cout << ">> Are the initial and final circuits equal? "
               << std::boolalpha << (bc_initial == bc) << std::noboolalpha
               << '\n';
 
-    std::cout << ">> Changing the string representation of the bits:\n\t";
+    std::cout << ">> Changing the string representation of the bits\n";
     std::cout << bc.to_string('o', 'i') << '\n';
 }

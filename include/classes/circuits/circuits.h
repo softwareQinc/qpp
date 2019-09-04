@@ -3161,7 +3161,7 @@ class QCircuit : public IDisplay, public IJSON {
         result += "\"nq\" : " + std::to_string(nq_);
         result += ", \"nc\" : " + std::to_string(nc_);
         result += ", \"d\" : " + std::to_string(d_);
-        result += ", \"name\" : \"" + name_ + "\"";
+        result += ", \"name\" : \"" + name_ + '\"';
 
         bool is_first = true;
         std::ostringstream ss;
@@ -3181,7 +3181,7 @@ class QCircuit : public IDisplay, public IJSON {
                 ss.str("");
                 ss.clear();
                 ss << gates_[pos].gate_type_;
-                result += "\"" + ss.str() + "\", ";
+                result += '\"' + ss.str() + "\", ";
                 if (!gates_[pos].ctrl_.empty()) {
                     ss.str("");
                     ss.clear();
@@ -3205,7 +3205,7 @@ class QCircuit : public IDisplay, public IJSON {
                 }
 
                 result += "\"name\" : ";
-                result += "\"" + gates_[pos].name_ + "\"" + "}";
+                result += '\"' + gates_[pos].name_ + "\"}";
             }
             // measurement step
             else if (elem.type_ == StepType::MEASUREMENT) {
@@ -3215,7 +3215,7 @@ class QCircuit : public IDisplay, public IJSON {
                 ss.str("");
                 ss.clear();
                 ss << measurements_[pos].measurement_type_;
-                result += "\"" + ss.str() + "\", ";
+                result += '\"' + ss.str() + "\", ";
                 ss.str("");
                 ss.clear();
                 ss << disp(measurements_[pos].target_, ", ");
@@ -3233,7 +3233,7 @@ class QCircuit : public IDisplay, public IJSON {
                               std::to_string(measurements_[pos].c_reg_) + ", ";
 
                 result += "\"name\" : ";
-                result += "\"" + measurements_[pos].name_ + "\"" + "}";
+                result += '\"' + measurements_[pos].name_ + "\"}";
 
             }
             // no-op
