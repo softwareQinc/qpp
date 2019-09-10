@@ -1630,7 +1630,7 @@ class QCircuit : public IDisplay, public IJSON {
                     // construct Rj
                     cmat Rj(2, 2);
                     Rj << 1, 0, 0, exp(2.0 * pi * 1_i / std::pow(2, j));
-                    CTRL(Rj, target[i + j - 1], target[i],
+                    CTRL(Rj, target[i + j - 1], target[i], {},
                          "CTRL-R" + std::to_string(j));
                 }
             }
@@ -1653,7 +1653,7 @@ class QCircuit : public IDisplay, public IJSON {
                     for (idx m = 0; m < d_; ++m) {
                         Rj(m, m) = exp(2.0 * pi * m * 1_i / std::pow(d_, j));
                     }
-                    CTRL(Rj, target[i + j - 1], target[i],
+                    CTRL(Rj, target[i + j - 1], target[i], {},
                          "CTRL-R" + std::to_string(j) + "d");
                 }
             }
@@ -1741,7 +1741,7 @@ class QCircuit : public IDisplay, public IJSON {
                     // construct Rj
                     cmat Rj(2, 2);
                     Rj << 1, 0, 0, exp(-2.0 * pi * 1_i / std::pow(2, j));
-                    CTRL(Rj, target[i + j - 1], target[i],
+                    CTRL(Rj, target[i + j - 1], target[i], {},
                          "CTRL-R" + std::to_string(j) + "+");
                 }
                 // apply Hadamard on qubit i
@@ -1763,7 +1763,7 @@ class QCircuit : public IDisplay, public IJSON {
                     for (idx m = 0; m < d_; ++m) {
                         Rj(m, m) = exp(-2.0 * pi * m * 1_i / std::pow(d_, j));
                     }
-                    CTRL(Rj, target[i + j - 1], target[i],
+                    CTRL(Rj, target[i + j - 1], target[i], {},
                          "CTRL-R" + std::to_string(j) + "d+");
                 }
                 // apply qudit Fourier on qudit i
@@ -1806,10 +1806,13 @@ class QCircuit : public IDisplay, public IJSON {
      * \param U Single qudit quantum gate
      * \param ctrl Control qudit index
      * \param target Target qudit index
+     * \param shift Performs the control as if the \a ctrl qudit state was
+     * \f$ X\f$-incremented by \a shift
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuit& CTRL(const cmat& U, idx ctrl, idx target, std::string name = {}) {
+    QCircuit& CTRL(const cmat& U, idx ctrl, idx target, idx shift = 0,
+                   std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -1825,6 +1828,10 @@ class QCircuit : public IDisplay, public IJSON {
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::CTRL()");
+
+            // check shift
+            if (shift >= d_)
+                throw exception::OutOfRange("qpp::QCircuit::CTRL()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1839,7 +1846,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, hashU,
                             std::vector<idx>{ctrl}, std::vector<idx>{target},
-                            std::vector<idx>{}, name);
+                            std::vector<idx>{shift}, name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -1855,11 +1862,13 @@ class QCircuit : public IDisplay, public IJSON {
      * \param ctrl Control qudit index
      * \param target Target qudit indexes; the gate \a U is applied on every one
      * of them depending on the values of the control qudits
+     * \param shift Performs the control as if the \a ctrl qudit state was
+     * \f$ X\f$-incremented by \a shift
      * \param name Optional gate name
      * \return Reference to the current instance
      */
     QCircuit& CTRL(const cmat& U, idx ctrl, const std::vector<idx>& target,
-                   std::string name = {}) {
+                   idx shift = 0, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -1895,6 +1904,10 @@ class QCircuit : public IDisplay, public IJSON {
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::CTRL()");
+
+            // check shift
+            if (shift >= d_)
+                throw exception::OutOfRange("qpp::QCircuit::CTRL()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1908,8 +1921,8 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, hashU,
-                            std::vector<idx>{ctrl}, target, std::vector<idx>{},
-                            name);
+                            std::vector<idx>{ctrl}, target,
+                            std::vector<idx>{shift}, name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -1924,11 +1937,14 @@ class QCircuit : public IDisplay, public IJSON {
      * \param U Single qudit quantum gate
      * \param ctrl Control qudit indexes
      * \param target Target qudit index
+     * \param shift Performs the control as if the \a ctrl qudit states were
+     * \f$ X\f$-incremented component-wise by \a shift. If non-empty (default),
+     * the size of \a shift must be the same as the size of \a ctrl.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
     QCircuit& CTRL(const cmat& U, const std::vector<idx>& ctrl, idx target,
-                   std::string name = {}) {
+                   const std::vector<idx>& shift = {}, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -1962,6 +1978,14 @@ class QCircuit : public IDisplay, public IJSON {
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::CTRL()");
+
+            // check shift
+            if (!shift.empty() && (shift.size() != ctrl.size()))
+                throw exception::SizeMismatch("qpp::QCircuit::CTRL()");
+            if (!shift.empty())
+                for (auto&& elem : shift)
+                    if (elem >= d_)
+                        throw exception::OutOfRange("qpp::QCircuit::CTRL()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -1975,7 +1999,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, hashU, ctrl,
-                            std::vector<idx>{target}, std::vector<idx>{}, name);
+                            std::vector<idx>{target}, shift, name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -1992,11 +2016,15 @@ class QCircuit : public IDisplay, public IJSON {
      * \param ctrl Control qudit indexes
      * \param target Target qudit indexes; the gate \a U is applied on every one
      * of them depending on the values of the control qudits
+     * \param shift Performs the control as if the \a ctrl qudit states were
+     * \f$ X\f$-incremented component-wise by \a shift. If non-empty (default),
+     * the size of \a shift must be the same as the size of \a ctrl.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
     QCircuit& CTRL(const cmat& U, const std::vector<idx>& ctrl,
-                   const std::vector<idx>& target, std::string name = {}) {
+                   const std::vector<idx>& target,
+                   const std::vector<idx>& shift = {}, std::string name = {}) {
         // EXCEPTION CHECKS
 
         try {
@@ -2040,6 +2068,14 @@ class QCircuit : public IDisplay, public IJSON {
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::CTRL()");
+
+            // check shift
+            if (!shift.empty() && (shift.size() != ctrl.size()))
+                throw exception::SizeMismatch("qpp::QCircuit::CTRL()");
+            if (!shift.empty())
+                for (auto&& elem : shift)
+                    if (elem >= d_)
+                        throw exception::OutOfRange("qpp::QCircuit::CTRL()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -2053,8 +2089,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, hashU,
-                            ctrl, std::vector<idx>{target}, std::vector<idx>{},
-                            name);
+                            ctrl, std::vector<idx>{target}, shift, name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -2071,11 +2106,15 @@ class QCircuit : public IDisplay, public IJSON {
      * \param ctrl Control qudit indexes
      * \param target Target qudit indexes where the gate \a U is applied
      * depending on the values of the control qudits
+     * \param shift Performs the control as if the \a ctrl qudit states were
+     * \f$ X\f$-incremented component-wise by \a shift. If non-empty (default),
+     * the size of \a shift must be the same as the size of \a ctrl.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
     QCircuit& CTRL_custom(const cmat& U, const std::vector<idx>& ctrl,
                           const std::vector<idx>& target,
+                          const std::vector<idx>& shift = {},
                           std::string name = {}) {
         // EXCEPTION CHECKS
 
@@ -2123,6 +2162,15 @@ class QCircuit : public IDisplay, public IJSON {
             if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuit::CTRL_custom()");
+
+            // check shift
+            if (!shift.empty() && (shift.size() != ctrl.size()))
+                throw exception::SizeMismatch("qpp::QCircuit::CTRL_custom()");
+            if (!shift.empty())
+                for (auto&& elem : shift)
+                    if (elem >= d_)
+                        throw exception::OutOfRange(
+                            "qpp::QCircuit::CTRL_custom()");
         } catch (exception::Exception&) {
             std::cerr << "At STEP " << get_step_count() << "\n";
             throw;
@@ -2135,8 +2183,8 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
-        gates_.emplace_back(GateType::CUSTOM_CTRL, hashU, ctrl, target,
-                            std::vector<idx>{}, name);
+        gates_.emplace_back(GateType::CUSTOM_CTRL, hashU, ctrl, target, shift,
+                            name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -2174,6 +2222,7 @@ class QCircuit : public IDisplay, public IJSON {
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::cCTRL()");
+
             // check shift
             if (shift >= d_)
                 throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
@@ -2188,15 +2237,12 @@ class QCircuit : public IDisplay, public IJSON {
             name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
 
-        std::vector<idx> shift_vec;
-        if (shift != 0)
-            shift_vec.emplace_back(shift);
-
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, hashU,
                             std::vector<idx>{ctrl_dit},
-                            std::vector<idx>{target}, shift_vec, name);
+                            std::vector<idx>{target}, std::vector<idx>{shift},
+                            name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -2247,6 +2293,7 @@ class QCircuit : public IDisplay, public IJSON {
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::cCTRL()");
+
             // check shift
             if (shift >= d_)
                 throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
@@ -2256,10 +2303,6 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        std::vector<idx> shift_vec;
-        if (shift != 0)
-            shift_vec.emplace_back(shift);
-
         if (name.empty()) {
             std::string gate_name = qpp::Gates::get_instance().get_name(U);
             name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
@@ -2267,8 +2310,8 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, hashU,
-                            std::vector<idx>{ctrl_dit}, target, shift_vec,
-                            name);
+                            std::vector<idx>{ctrl_dit}, target,
+                            std::vector<idx>{shift}, name);
         step_types_.emplace_back(StepType::GATE);
         ++count_[name];
 
@@ -2284,8 +2327,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param ctrl_dits Classical control dits indexes
      * \param target Target qudit index
      * \param shift Performs the control as if the \a ctrl_dits classical dits
-     * were component-wise incremented by \a shift. The size of \a shift must be
-     * the same as the size of \a ctrl_dits.
+     * were incremented component-wise by \a shift. If non-empty (default), the
+     * size of \a shift must be the same as the size of \a ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2317,7 +2360,10 @@ class QCircuit : public IDisplay, public IJSON {
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::cCTRL()");
+
             // check shift
+            if (!shift.empty() && (shift.size() != ctrl_dits.size()))
+                throw exception::SizeMismatch("qpp::QCircuit::cCTRL()");
             if (!shift.empty())
                 for (auto&& elem : shift)
                     if (elem >= d_)
@@ -2354,8 +2400,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param target Target qudit indexes; the gate \a U is applied on every one
      * of them depending on the values of the classical control dits
      * \param shift Performs the control as if the \a ctrl_dits classical dits
-     * were component-wise incremented by \a shift. The size of \a shift must be
-     * the same as the size of \a ctrl_dits.
+     * were incremented component-wise by \a shift. If non-empty (default), the
+     * size of \a shift must be the same as the size of \a ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2395,7 +2441,10 @@ class QCircuit : public IDisplay, public IJSON {
             // check correct dimension
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::cCTRL()");
+
             // check shift
+            if (!shift.empty() && (shift.size() != ctrl_dits.size()))
+                throw exception::SizeMismatch("qpp::QCircuit::cCTRL()");
             if (!shift.empty())
                 for (auto&& elem : shift)
                     if (elem >= d_)
@@ -2431,8 +2480,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param target Target qudit indexes where the gate \a U is applied
      * depending on the values of the classical control dits
      * \param shift Performs the control as if the \a ctrl_dits classical dits
-     * were component-wise incremented by \a shift. The size of \a shift must be
-     * the same as the size of \a ctrl_dits.
+     * were incremented component-wise by \a shift. If non-empty (default), the
+     * size of \a shift must be the same as the size of \a ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2480,7 +2529,10 @@ class QCircuit : public IDisplay, public IJSON {
             if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuit::cCTRL_custom()");
+
             // check shift
+            if (!shift.empty() && (shift.size() != ctrl_dits.size()))
+                throw exception::SizeMismatch("qpp::QCircuit::cCTRL()");
             if (!shift.empty())
                 for (auto&& elem : shift)
                     if (elem >= d_)

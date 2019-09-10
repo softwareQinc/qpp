@@ -77,7 +77,7 @@ inline constexpr std::complex<float> operator"" _if(long double x) noexcept {
  * \brief  Used in qpp::disp() for setting to zero  numbers that have their
  * absolute value smaller than qpp::chop
  */
-constexpr double chop = 1e-15;
+constexpr double chop = 1e-14;
 
 /**
  * \brief Maximum number of allowed qubits/qudits (subsystems)

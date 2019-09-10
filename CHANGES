@@ -2,6 +2,8 @@ In progress - pre-release
     - Minor API change in the QEngine::execute()/reset()/reset_stats(), now
       they all return a reference to *this
     - Added Bit_circuit::display() and Bit_circuit::to_JSON() in "reversible.h"
+    - Added the option for "shifted" control gates, in qpp::Gates::CTRL(),
+      qpp::applyCTRL() and qpp::QCircuit::CTRL()
 
 Version 2.0 - 24 August 2019
     - Added support for OpenQASM via the interface "qasm/qasm.h" containing:
