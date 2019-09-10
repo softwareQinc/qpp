@@ -48,8 +48,8 @@ namespace qpp {
  * \param target Subsystem indexes where the gate \a A is applied
  * \param dims Dimensions of the multi-partite system
  * \param shift Performs the control as if the \a ctrl qudit states were
- * \f$ X\f$-incremented component-wise by \a shift. If non-empty (default),
- * the size of \a shift must be the same as the size of \a ctrl.
+ * \f$ X\f$-incremented component-wise by \a shift. If non-empty (default), the
+ * size of \a shift must be the same as the size of \a ctrl.
  * \return CTRL-A gate applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
@@ -414,8 +414,8 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
  * \param target Subsystem indexes where the gate \a A is applied
  * \param d Subsystem dimensions
  * \param shift Performs the control as if the \a ctrl qudit states were
- * \f$ X\f$-incremented component-wise by \a shift. If non-empty (default),
- * the size of \a shift must be the same as the size of \a ctrl.
+ * \f$ X\f$-incremented component-wise by \a shift. If non-empty (default), the
+ * size of \a shift must be the same as the size of \a ctrl.
  * \return CTRL-A gate applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
