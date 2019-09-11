@@ -410,9 +410,9 @@ class QEngine : public IDisplay, public IJSON {
                 case QCircuit::GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
                 case QCircuit::GateType::CUSTOM_CTRL:
                     ctrl_rel_pos = get_relative_pos_(gates[q_ip].ctrl_);
-                    st_.psi_ =
-                        applyCTRL(st_.psi_, h_tbl[gates[q_ip].gate_hash_],
-                                  ctrl_rel_pos, target_rel_pos, d);
+                    st_.psi_ = applyCTRL(
+                        st_.psi_, h_tbl[gates[q_ip].gate_hash_], ctrl_rel_pos,
+                        target_rel_pos, d, gates[q_ip].shift_);
                     break;
                 case QCircuit::GateType::SINGLE_cCTRL_SINGLE_TARGET:
                 case QCircuit::GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
@@ -428,11 +428,13 @@ class QEngine : public IDisplay, public IJSON {
                         idx first_dit;
                         // we have a shift
                         if (!gates[q_ip].shift_.empty()) {
-                            first_dit = st_.dits_[(gates[q_ip].ctrl_)[0]] +
-                                        gates[q_ip].shift_[0];
+                            first_dit = (st_.dits_[(gates[q_ip].ctrl_)[0]] +
+                                         gates[q_ip].shift_[0]) %
+                                        d;
                             for (idx m = 1; m < gates[q_ip].ctrl_.size(); ++m) {
-                                if (st_.dits_[(gates[q_ip].ctrl_)[m]] +
-                                        gates[q_ip].shift_[m] !=
+                                if ((st_.dits_[(gates[q_ip].ctrl_)[m]] +
+                                     gates[q_ip].shift_[m]) %
+                                        d !=
                                     first_dit) {
                                     should_apply = false;
                                     break;
@@ -450,7 +452,6 @@ class QEngine : public IDisplay, public IJSON {
                                 }
                             }
                         }
-
                         if (should_apply) {
                             st_.psi_ = apply(
                                 st_.psi_,

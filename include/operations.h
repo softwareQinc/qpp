@@ -47,13 +47,17 @@ namespace qpp {
  * \param ctrl Control subsystem indexes
  * \param target Subsystem indexes where the gate \a A is applied
  * \param dims Dimensions of the multi-partite system
+ * \param shift Performs the control as if the \a ctrl qudit states were
+ * \f$ X\f$-incremented component-wise by \a shift. If non-empty (default), the
+ * size of \a shift must be the same as the size of \a ctrl.
  * \return CTRL-A gate applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar>
 applyCTRL(const Eigen::MatrixBase<Derived1>& state,
           const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
-          const std::vector<idx>& target, const std::vector<idx>& dims) {
+          const std::vector<idx>& target, const std::vector<idx>& dims,
+          std::vector<idx> shift = {}) {
     const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate =
         state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
@@ -110,7 +114,18 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     // with respect to local dimensions
     if (!internal::check_subsys_match_dims(ctrlgate, dims))
         throw exception::SubsysMismatchDims("qpp::applyCTRL()");
+
+    // check shift
+    if (!shift.empty() && (shift.size() != ctrl.size()))
+        throw exception::SizeMismatch("qpp::applyCTRL()");
+    if (!shift.empty())
+        for (auto&& elem : shift)
+            if (elem >= d)
+                throw exception::OutOfRange("qpp::applyCTRL()");
     // END EXCEPTION CHECKS
+
+    if (shift.empty())
+        shift = {0};
 
     // construct the table of A^i and (A^dagger)^i
     std::vector<dyn_mat<typename Derived1::Scalar>> Ai;
@@ -154,8 +169,9 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 
     // worker, computes the coefficient and the index for the ket case
     // used in #pragma omp parallel for collapse
-    auto coeff_idx_ket = [&](idx i_, idx m_, idx r_) noexcept
-                             ->std::pair<typename Derived1::Scalar, idx> {
+    auto coeff_idx_ket = [&](
+        idx i_, idx m_,
+        idx r_) noexcept -> std::pair<typename Derived1::Scalar, idx> {
         idx indx = 0;
         typename Derived1::Scalar coeff = 0;
 
@@ -192,8 +208,12 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
             for (idx k = 0; k < targetsize; ++k) {
                 Cmidx[target[k]] = CmidxA[k];
             }
-            coeff +=
-                Ai[i_](m_, n_) * rstate(internal::multiidx2n(Cmidx, n, Cdims));
+            if (ctrlsize > 0)
+                coeff += Ai[(i_ + shift[0]) % d](m_, n_) *
+                         rstate(internal::multiidx2n(Cmidx, n, Cdims));
+            else
+                coeff += Ai[i_](m_, n_) *
+                         rstate(internal::multiidx2n(Cmidx, n, Cdims));
         }
 
         return std::make_pair(coeff, indx);
@@ -202,9 +222,9 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     // worker, computes the coefficient and the index
     // for the density matrix case
     // used in #pragma omp parallel for collapse
-    auto coeff_idx_rho = [&](idx i1_, idx m1_, idx r1_, idx i2_, idx m2_,
-                             idx r2_) noexcept
-                             ->std::tuple<typename Derived1::Scalar, idx, idx> {
+    auto coeff_idx_rho = [&](
+        idx i1_, idx m1_, idx r1_, idx i2_, idx m2_,
+        idx r2_) noexcept -> std::tuple<typename Derived1::Scalar, idx, idx> {
         idx idxrow = 0;
         idx idxcol = 0;
         typename Derived1::Scalar coeff = 0, lhs = 1, rhs = 1;
@@ -257,20 +277,20 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 
         idx first_ctrl_row, first_ctrl_col;
         if (ctrlsize > 0) {
-            first_ctrl_row = CmidxCTRLrow[0];
-            first_ctrl_col = CmidxCTRLcol[0];
+            first_ctrl_row = (CmidxCTRLrow[0] + shift[0]) % d;
+            first_ctrl_col = (CmidxCTRLcol[0] + shift[0]) % d;
         } else {
             first_ctrl_row = first_ctrl_col = 1;
         }
 
         for (idx k = 1; k < ctrlsize; ++k) {
-            if (CmidxCTRLrow[k] != first_ctrl_row) {
+            if ((CmidxCTRLrow[k] + shift[k]) % d != first_ctrl_row) {
                 all_ctrl_rows_equal = false;
                 break;
             }
         }
         for (idx k = 1; k < ctrlsize; ++k) {
-            if (CmidxCTRLcol[k] != first_ctrl_col) {
+            if ((CmidxCTRLcol[k] + shift[k]) % d != first_ctrl_col) {
                 all_ctrl_cols_equal = false;
                 break;
             }
@@ -397,13 +417,17 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
  * \param ctrl Control subsystem indexes
  * \param target Subsystem indexes where the gate \a A is applied
  * \param d Subsystem dimensions
+ * \param shift Performs the control as if the \a ctrl qudit states were
+ * \f$ X\f$-incremented component-wise by \a shift. If non-empty (default), the
+ * size of \a shift must be the same as the size of \a ctrl.
  * \return CTRL-A gate applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar>
 applyCTRL(const Eigen::MatrixBase<Derived1>& state,
           const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
-          const std::vector<idx>& target, idx d = 2) {
+          const std::vector<idx>& target, idx d = 2,
+          const std::vector<idx>& shift = {}) {
     const typename Eigen::MatrixBase<Derived1>::EvalReturnType& rstate =
         state.derived();
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
@@ -422,7 +446,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     idx n = internal::get_num_subsys(static_cast<idx>(rstate.rows()), d);
     std::vector<idx> dims(n, d); // local dimensions vector
 
-    return applyCTRL(rstate, rA, ctrl, target, dims);
+    return applyCTRL(rstate, rA, ctrl, target, dims, shift);
 }
 
 /**
@@ -964,7 +988,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
         if (!internal::check_dims_match_cvect(dims, rA))
             throw exception::DimsMismatchCvector("qpp::ptrace1()");
 
-        auto worker = [&](idx i, idx j) noexcept->typename Derived::Scalar {
+        auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar {
             typename Derived::Scalar sum = 0;
             for (idx m = 0; m < DA; ++m)
                 sum += rA(m * DB + i) * std::conj(rA(m * DB + j));
@@ -989,7 +1013,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
         if (!internal::check_dims_match_mat(dims, rA))
             throw exception::DimsMismatchMatrix("qpp::ptrace1()");
 
-        auto worker = [&](idx i, idx j) noexcept->typename Derived::Scalar {
+        auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar {
             typename Derived::Scalar sum = 0;
             for (idx m = 0; m < DA; ++m)
                 sum += rA(m * DB + i, m * DB + j);
@@ -1092,7 +1116,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
         if (!internal::check_dims_match_cvect(dims, rA))
             throw exception::DimsMismatchCvector("qpp::ptrace2()");
 
-        auto worker = [&](idx i, idx j) noexcept->typename Derived::Scalar {
+        auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar {
             typename Derived::Scalar sum = 0;
             for (idx m = 0; m < DB; ++m)
                 sum += rA(i * DB + m) * std::conj(rA(j * DB + m));
@@ -1251,7 +1275,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         if (target.empty())
             return rA * adjoint(rA);
 
-        auto worker = [&](idx i) noexcept->typename Derived::Scalar {
+        auto worker = [&](idx i) noexcept -> typename Derived::Scalar {
             // use static allocation for speed!
 
             idx Cmidxrow[maxn];
@@ -1314,7 +1338,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         if (target.empty())
             return rA;
 
-        auto worker = [&](idx i) noexcept->typename Derived::Scalar {
+        auto worker = [&](idx i) noexcept -> typename Derived::Scalar {
             // use static allocation for speed!
 
             idx Cmidxrow[maxn];
@@ -1466,7 +1490,7 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
         if (target.empty())
             return rA * adjoint(rA);
 
-        auto worker = [&](idx i) noexcept->typename Derived::Scalar {
+        auto worker = [&](idx i) noexcept -> typename Derived::Scalar {
             // use static allocation for speed!
             idx midxcoltmp[maxn];
             idx midxrow[maxn];
@@ -1511,7 +1535,7 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
         if (target.empty())
             return rA;
 
-        auto worker = [&](idx i) noexcept->typename Derived::Scalar {
+        auto worker = [&](idx i) noexcept -> typename Derived::Scalar {
             // use static allocation for speed!
             idx midxcoltmp[maxn];
             idx midxrow[maxn];
@@ -1643,7 +1667,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
         }
         result.resize(D, 1);
 
-        auto worker = [&Cdims, &Cperm, n ](idx i) noexcept->idx {
+        auto worker = [&Cdims, &Cperm, n](idx i) noexcept -> idx {
             // use static allocation for speed,
             // double the size for matrices reshaped as vectors
             idx midx[maxn];
@@ -1692,7 +1716,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
             Eigen::Map<dyn_mat<typename Derived::Scalar>>(
                 const_cast<typename Derived::Scalar*>(rA.data()), D * D, 1);
 
-        auto worker = [&Cdims, &Cperm, n ](idx i) noexcept->idx {
+        auto worker = [&Cdims, &Cperm, n](idx i) noexcept -> idx {
             // use static allocation for speed,
             // double the size for matrices reshaped as vectors
             idx midx[2 * maxn];

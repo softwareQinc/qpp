@@ -357,12 +357,16 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param target Subsystem indexes where the gate \a A is applied
      * \param n Total number of subsystems
      * \param d Subsystem dimensions
+     * \param shift Performs the control as if the \a ctrl qudit states were
+     * \f$ X\f$-incremented component-wise by \a shift. If non-empty (default),
+     * the size of \a shift must be the same as the size of \a ctrl.
      * \return CTRL-A gate, as a matrix over the same scalar field as \a A
      */
     template <typename Derived>
     dyn_mat<typename Derived::Scalar>
     CTRL(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& ctrl,
-         const std::vector<idx>& target, idx n, idx d = 2) const {
+         const std::vector<idx>& target, idx n, idx d = 2,
+         std::vector<idx> shift = {}) const {
         const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
         // EXCEPTION CHECKS
@@ -407,7 +411,18 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         if (rA.rows() !=
             static_cast<Index>(std::llround(std::pow(d, target.size()))))
             throw exception::DimsMismatchMatrix("qpp::Gates::CTRL()");
+
+        // check shift
+        if (!shift.empty() && (shift.size() != ctrl.size()))
+            throw exception::SizeMismatch("qpp::Gates::CTRL()");
+        if (!shift.empty())
+            for (auto&& elem : shift)
+                if (elem >= d)
+                    throw exception::OutOfRange("qpp::Gates::CTRL()");
         // END EXCEPTION CHECKS
+
+        if (shift.empty())
+            shift = std::vector<idx>(ctrl.size(), 0);
 
         // Use static allocation for speed!
         idx Cdims[maxn];
@@ -469,7 +484,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
                     // first the ctrl part (equal for both row and column)
                     for (idx c = 0; c < n_ctrl; ++c)
-                        midx_row[ctrl[c]] = midx_col[ctrl[c]] = k;
+                        midx_row[ctrl[c]] = midx_col[ctrl[c]] =
+                            (k + d - shift[c]) % d;
 
                     // then the complement part (equal for column)
                     for (idx c = 0; c < n_subsys_bar; ++c)
