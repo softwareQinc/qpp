@@ -121,7 +121,7 @@ TEST(qpp_apply_kraus_qubits, AllTests) {}
 ///       const std::vector<idx>& target,
 ///       const std::vector<idx>& dims)
 TEST(qpp_applyCTRL, NonEmptyControl) {
-    std::vector<idx> dims{2, 2, 2, 2}; // 3 qubits
+    std::vector<idx> dims{2, 2, 2, 2}; // 4 qubits
     idx D = prod(dims);                // total dimension
 
     std::vector<idx> ctrl{2, 0};   // where we apply the control
@@ -153,7 +153,7 @@ TEST(qpp_applyCTRL, NonEmptyControl) {
 }
 
 TEST(qpp_applyCTRL, EmptyControl) {
-    std::vector<idx> dims{2, 2, 2, 2}; // 3 qubits
+    std::vector<idx> dims{2, 2, 2, 2}; // 4 qubits
     idx D = prod(dims);                // total dimension
 
     std::vector<idx> ctrl{};          // where we apply the control
