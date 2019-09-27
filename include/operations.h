@@ -217,9 +217,8 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
             for (idx k = 0; k < targetsize; ++k) {
                 Cmidx[target[k]] = CmidxA[k];
             }
-            if (ctrlsize > 0)
-                coeff += Ai[i_](m_, n_) *
-                         rstate(internal::multiidx2n(Cmidx, n, Cdims));
+            coeff +=
+                Ai[i_](m_, n_) * rstate(internal::multiidx2n(Cmidx, n, Cdims));
         }
 
         return std::make_pair(coeff, indx);
