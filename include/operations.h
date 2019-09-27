@@ -125,7 +125,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     // END EXCEPTION CHECKS
 
     if (shift.empty())
-        shift = {0};
+        shift = std::vector<idx>(ctrl.size(), 0);
 
     // construct the table of A^i and (A^dagger)^i
     std::vector<dyn_mat<typename Derived1::Scalar>> Ai;
@@ -209,7 +209,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
                 Cmidx[target[k]] = CmidxA[k];
             }
             if (ctrlsize > 0)
-                coeff += Ai[(i_ + shift[0]) % d](m_, n_) *
+                coeff += Ai[(i_ + shift[i_]) % d](m_, n_) *
                          rstate(internal::multiidx2n(Cmidx, n, Cdims));
             else
                 coeff += Ai[i_](m_, n_) *
