@@ -187,6 +187,7 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
 
     idx n = internal::get_num_subsys(static_cast<idx>(rpsi.rows()), d);
     std::vector<idx> dims(n, d); // local dimensions vector
+
     return ip(phi, psi, subsys, dims);
 }
 
@@ -360,6 +361,16 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::measure()");
 
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rA)) {
+        if (!internal::check_dims_match_cvect(dims, rA))
+            throw exception::DimsMismatchCvector("qpp::measure()");
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::measure()");
+    } else
+        throw exception::MatrixNotSquareNorCvector("qpp::measure()");
+
     std::vector<idx> subsys_dims(target.size());
     for (idx i = 0; i < target.size(); ++i)
         subsys_dims[i] = dims[target[i]];
@@ -390,30 +401,9 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     else
         outstates.resize(Ks.size(), cmat::Zero(D, D));
 
-    //************ density matrix ************//
-    if (internal::check_square_mat(rA)) // square matrix
-    {
-        // check that dims match rho matrix
-        if (!internal::check_dims_match_mat(dims, rA))
-            throw exception::DimsMismatchMatrix("qpp::measure()");
-        for (idx i = 0; i < Ks.size(); ++i) {
-            cmat tmp = apply(rA, Ks[i], target, dims);
-            if (destructive)
-                tmp = ptrace(tmp, target, dims);
-            prob[i] = std::abs(trace(tmp)); // probability
-            if (prob[i] > 0) {
-                // normalized output state
-                // corresponding to measurement result i
-                outstates[i] = tmp / prob[i];
-            }
-        }
-    }
     //************ ket ************//
-    else if (internal::check_cvector(rA)) // column vector
+    if (internal::check_cvector(rA)) // column vector
     {
-        // check that dims match psi column vector
-        if (!internal::check_dims_match_cvect(dims, rA))
-            throw exception::DimsMismatchCvector("qpp::measure()");
         for (idx i = 0; i < Ks.size(); ++i) {
             ket tmp = apply(rA, Ks[i], target, dims);
             prob[i] = std::pow(norm(tmp), 2);
@@ -427,9 +417,22 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
                     outstates[i] = tmp;
             }
         }
-    } else
-        throw exception::MatrixNotSquareNorCvector("qpp::measure()");
-
+    }
+    //************ density matrix ************//
+    else // square matrix
+    {
+        for (idx i = 0; i < Ks.size(); ++i) {
+            cmat tmp = apply(rA, Ks[i], target, dims);
+            if (destructive)
+                tmp = ptrace(tmp, target, dims);
+            prob[i] = std::abs(trace(tmp)); // probability
+            if (prob[i] > 0) {
+                // normalized output state
+                // corresponding to measurement result i
+                outstates[i] = tmp / prob[i];
+            }
+        }
+    }
     // sample from the probability distribution
     std::discrete_distribution<idx> dd(std::begin(prob), std::end(prob));
     auto& gen =
@@ -479,7 +482,6 @@ measure(const Eigen::MatrixBase<Derived>& A,
  * \note The dimension of all \a Ks must match the dimension of \a target. If
  * \a destructive is set to true (by default), the measurement is destructive,
  * i.e. the measured subsystems are traced away.
-
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
@@ -580,6 +582,16 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::measure()");
 
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rA)) {
+        if (!internal::check_dims_match_cvect(dims, rA))
+            throw exception::DimsMismatchCvector("qpp::measure()");
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::measure()");
+    } else
+        throw exception::MatrixNotSquareNorCvector("qpp::measure()");
+
     std::vector<idx> subsys_dims(target.size());
     for (idx i = 0; i < target.size(); ++i)
         subsys_dims[i] = dims[target[i]];
@@ -599,10 +611,6 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
     //************ ket ************//
     if (internal::check_cvector(rA)) {
         const ket& rpsi = A.derived();
-        // check that dims match state vector
-        if (!internal::check_dims_match_cvect(dims, rA))
-            throw exception::DimsMismatchCvector("qpp::measure()");
-
         std::vector<double> prob(M);    // probabilities
         std::vector<cmat> outstates(M); // resulting states
 
@@ -640,19 +648,13 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
         return std::make_tuple(result, prob, outstates);
     }
     //************ density matrix ************//
-    else if (internal::check_square_mat(rA)) {
-        // check that dims match rho matrix
-        if (!internal::check_dims_match_mat(dims, rA))
-            throw exception::DimsMismatchMatrix("qpp::measure()");
-
+    else {
         std::vector<cmat> Ks(M);
         for (idx i = 0; i < M; ++i)
             Ks[i] = V.col(i) * adjoint(V.col(i));
 
         return measure(rA, Ks, target, dims, destructive);
     }
-    //************ Exception: not ket nor density matrix ************//
-    throw exception::MatrixNotSquareNorCvector("qpp::measure()");
 }
 
 /**
@@ -733,15 +735,13 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::measure_seq()");
 
-    // check square matrix or column vector
-    if (internal::check_square_mat(rA)) {
-        // check that dims match rho matrix
-        if (!internal::check_dims_match_mat(dims, rA))
-            throw exception::DimsMismatchMatrix("qpp::measure_seq()");
-    } else if (internal::check_cvector(rA)) {
-        // check that dims match psi column vector
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rA)) {
         if (!internal::check_dims_match_cvect(dims, rA))
             throw exception::DimsMismatchCvector("qpp::measure_seq()");
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::measure_seq()");
     } else
         throw exception::MatrixNotSquareNorCvector("qpp::measure_seq()");
 
@@ -843,15 +843,13 @@ dyn_mat<typename Derived::Scalar> reset(const Eigen::MatrixBase<Derived>& A,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::reset()");
 
-    // check square matrix or column vector
-    if (internal::check_square_mat(rA)) {
-        // check that dims match rho matrix
-        if (!internal::check_dims_match_mat(dims, rA))
-            throw exception::DimsMismatchMatrix("qpp::reset()");
-    } else if (internal::check_cvector(rA)) {
-        // check that dims match psi column vector
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rA)) {
         if (!internal::check_dims_match_cvect(dims, rA))
             throw exception::DimsMismatchCvector("qpp::reset()");
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::reset()");
     } else
         throw exception::MatrixNotSquareNorCvector("qpp::reset()");
 
@@ -931,15 +929,13 @@ dyn_mat<typename Derived::Scalar> discard(const Eigen::MatrixBase<Derived>& A,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::discard()");
 
-    // check square matrix or column vector
-    if (internal::check_square_mat(rA)) {
-        // check that dims match rho matrix
-        if (!internal::check_dims_match_mat(dims, rA))
-            throw exception::DimsMismatchMatrix("qpp::discard()");
-    } else if (internal::check_cvector(rA)) {
-        // check that dims match psi column vector
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rA)) {
         if (!internal::check_dims_match_cvect(dims, rA))
             throw exception::DimsMismatchCvector("qpp::discard()");
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::discard()");
     } else
         throw exception::MatrixNotSquareNorCvector("qpp::discard()");
 

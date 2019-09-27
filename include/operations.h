@@ -85,6 +85,16 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     if (!internal::check_square_mat(rA))
         throw exception::MatrixNotSquare("qpp::applyCTRL()");
 
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rstate)) {
+        if (!internal::check_dims_match_cvect(dims, state))
+            throw exception::DimsMismatchCvector("qpp::applyCTRL()");
+    } else if (internal::check_square_mat(rstate)) {
+        if (!internal::check_dims_match_mat(dims, state))
+            throw exception::DimsMismatchMatrix("qpp::applyCTRL()");
+    } else
+        throw exception::MatrixNotSquareNorCvector("qpp::applyCTRL()");
+
     // check that all control subsystems have the same dimension
     idx d = ctrl.size() > 0 ? dims[ctrl[0]] : 1;
     for (idx i = 1; i < ctrl.size(); ++i)
@@ -169,9 +179,8 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 
     // worker, computes the coefficient and the index for the ket case
     // used in #pragma omp parallel for collapse
-    auto coeff_idx_ket = [&](
-        idx i_, idx m_,
-        idx r_) noexcept -> std::pair<typename Derived1::Scalar, idx> {
+    auto coeff_idx_ket = [&](idx i_, idx m_, idx r_) noexcept
+                             ->std::pair<typename Derived1::Scalar, idx> {
         idx indx = 0;
         typename Derived1::Scalar coeff = 0;
 
@@ -222,9 +231,9 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     // worker, computes the coefficient and the index
     // for the density matrix case
     // used in #pragma omp parallel for collapse
-    auto coeff_idx_rho = [&](
-        idx i1_, idx m1_, idx r1_, idx i2_, idx m2_,
-        idx r2_) noexcept -> std::tuple<typename Derived1::Scalar, idx, idx> {
+    auto coeff_idx_rho = [&](idx i1_, idx m1_, idx r1_, idx i2_, idx m2_,
+                             idx r2_) noexcept
+                             ->std::tuple<typename Derived1::Scalar, idx, idx> {
         idx idxrow = 0;
         idx idxcol = 0;
         typename Derived1::Scalar coeff = 0, lhs = 1, rhs = 1;
@@ -357,8 +366,6 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
                             coeff_idx_ket(i, m, r).first;
                     }
             }
-
-        return result;
     }
     //************ density matrix ************//
     else if (internal::check_square_mat(rstate)) // we have a density operator
@@ -396,12 +403,12 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
                                         std::get<0>(coeff_idxes);
                                 }
                         }
-
-        return result;
     }
     //************ Exception: not ket nor density matrix ************//
     else
         throw exception::MatrixNotSquareNorCvector("qpp::applyCTRL()");
+
+    return result;
 }
 
 /**
@@ -501,6 +508,16 @@ apply(const Eigen::MatrixBase<Derived1>& state,
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::apply()");
 
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rstate)) {
+        if (!internal::check_dims_match_cvect(dims, state))
+            throw exception::DimsMismatchCvector("qpp::apply()");
+    } else if (internal::check_square_mat(rstate)) {
+        if (!internal::check_dims_match_mat(dims, state))
+            throw exception::DimsMismatchMatrix("qpp::apply()");
+    } else
+        throw exception::MatrixNotSquareNorCvector("qpp::apply()");
+
     // check that gate matches the dimensions of the target
     std::vector<idx> subsys_dims(target.size());
     for (idx i = 0; i < target.size(); ++i)
@@ -511,25 +528,10 @@ apply(const Eigen::MatrixBase<Derived1>& state,
 
     //************ ket ************//
     if (internal::check_cvector(rstate)) // we have a ket
-    {
-        // check that dims match state vector
-        if (!internal::check_dims_match_cvect(dims, rstate))
-            throw exception::DimsMismatchCvector("qpp::apply()");
-
         return applyCTRL(rstate, rA, {}, target, dims);
-    }
     //************ density matrix ************//
     else if (internal::check_square_mat(rstate)) // we have a density operator
-    {
-        // check that dims match state matrix
-        if (!internal::check_dims_match_mat(dims, rstate))
-            throw exception::DimsMismatchMatrix("qpp::apply()");
-
         return applyCTRL(rstate, rA, {}, target, dims);
-    }
-    //************ Exception: not ket nor density matrix ************//
-    else
-        throw exception::MatrixNotSquareNorCvector("qpp::apply()");
 }
 
 /**
@@ -647,13 +649,19 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::apply()");
 
-    // check that dims match A matrix
-    if (!internal::check_dims_match_mat(dims, rA))
-        throw exception::DimsMismatchMatrix("qpp::apply()");
-
     // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::apply()");
+
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rA)) {
+        if (!internal::check_dims_match_cvect(dims, rA))
+            throw exception::DimsMismatchCvector("qpp::apply()");
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::apply()");
+    } else
+        throw exception::MatrixNotSquareNorCvector("qpp::apply()");
 
     std::vector<idx> subsys_dims(target.size());
     for (idx i = 0; i < target.size(); ++i)
@@ -988,7 +996,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
         if (!internal::check_dims_match_cvect(dims, rA))
             throw exception::DimsMismatchCvector("qpp::ptrace1()");
 
-        auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar {
+        auto worker = [&](idx i, idx j) noexcept->typename Derived::Scalar {
             typename Derived::Scalar sum = 0;
             for (idx m = 0; m < DA; ++m)
                 sum += rA(m * DB + i) * std::conj(rA(m * DB + j));
@@ -1003,8 +1011,6 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
         for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
-
-        return result;
     }
     //************ density matrix ************//
     else if (internal::check_square_mat(rA)) // we have a density operator
@@ -1013,7 +1019,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
         if (!internal::check_dims_match_mat(dims, rA))
             throw exception::DimsMismatchMatrix("qpp::ptrace1()");
 
-        auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar {
+        auto worker = [&](idx i, idx j) noexcept->typename Derived::Scalar {
             typename Derived::Scalar sum = 0;
             for (idx m = 0; m < DA; ++m)
                 sum += rA(m * DB + i, m * DB + j);
@@ -1028,12 +1034,12 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
         for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
                 result(i, j) = worker(i, j);
-
-        return result;
     }
     //************ Exception: not ket nor density matrix ************//
     else
         throw exception::MatrixNotSquareNorCvector("qpp::ptrace1()");
+
+    return result;
 }
 
 /**
@@ -1116,7 +1122,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
         if (!internal::check_dims_match_cvect(dims, rA))
             throw exception::DimsMismatchCvector("qpp::ptrace2()");
 
-        auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar {
+        auto worker = [&](idx i, idx j) noexcept->typename Derived::Scalar {
             typename Derived::Scalar sum = 0;
             for (idx m = 0; m < DB; ++m)
                 sum += rA(i * DB + m) * std::conj(rA(j * DB + m));
@@ -1131,8 +1137,6 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
         for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
                 result(i, j) = worker(i, j);
-
-        return result;
     }
     //************ density matrix ************//
     else if (internal::check_square_mat(rA)) // we have a density operator
@@ -1148,12 +1152,12 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
         for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
                 result(i, j) = trace(rA.block(i * DB, j * DB, DB, DB));
-
-        return result;
     }
     //************ Exception: not ket nor density matrix ************//
     else
         throw exception::MatrixNotSquareNorCvector("qpp::ptrace1()");
+
+    return result;
 }
 
 /**
@@ -1223,6 +1227,16 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     // check that target are valid
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::ptrace()");
+
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rA)) {
+        if (!internal::check_dims_match_cvect(dims, rA))
+            throw exception::DimsMismatchCvector("qpp::ptrace()");
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::ptrace()");
+    } else
+        throw exception::MatrixNotSquareNorCvector("qpp::ptrace()");
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
@@ -1263,10 +1277,6 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     //************ ket ************//
     if (internal::check_cvector(rA)) // we have a ket
     {
-        // check that dims match the dimension of A
-        if (!internal::check_dims_match_cvect(dims, rA))
-            throw exception::DimsMismatchCvector("qpp::ptrace()");
-
         if (target.size() == dims.size()) {
             result(0, 0) = (adjoint(rA) * rA).value();
             return result;
@@ -1275,7 +1285,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         if (target.empty())
             return rA * adjoint(rA);
 
-        auto worker = [&](idx i) noexcept -> typename Derived::Scalar {
+        auto worker = [&](idx i) noexcept->typename Derived::Scalar {
             // use static allocation for speed!
 
             idx Cmidxrow[maxn];
@@ -1320,16 +1330,10 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
                 result(i, j) = worker(i);
             }
         }
-
-        return result;
     }
     //************ density matrix ************//
-    else if (internal::check_square_mat(rA)) // we have a density operator
+    else // we have a density operator
     {
-        // check that dims match the dimension of A
-        if (!internal::check_dims_match_mat(dims, rA))
-            throw exception::DimsMismatchMatrix("qpp::ptrace()");
-
         if (target.size() == dims.size()) {
             result(0, 0) = rA.trace();
             return result;
@@ -1338,7 +1342,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
         if (target.empty())
             return rA;
 
-        auto worker = [&](idx i) noexcept -> typename Derived::Scalar {
+        auto worker = [&](idx i) noexcept->typename Derived::Scalar {
             // use static allocation for speed!
 
             idx Cmidxrow[maxn];
@@ -1383,12 +1387,9 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
                 result(i, j) = worker(i);
             }
         }
-
-        return result;
     }
-    //************ Exception: not ket nor density matrix ************//
-    else
-        throw exception::MatrixNotSquareNorCvector("qpp::ptrace()");
+
+    return result;
 }
 
 /**
@@ -1460,6 +1461,16 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
     // check that target are valid
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::ptranspose()");
+
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rA)) {
+        if (!internal::check_dims_match_cvect(dims, rA))
+            throw exception::DimsMismatchCvector("qpp::ptranspose()");
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::ptranspose()");
+    } else
+        throw exception::MatrixNotSquareNorCvector("qpp::ptranspose()");
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
@@ -1480,17 +1491,13 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
     //************ ket ************//
     if (internal::check_cvector(rA)) // we have a ket
     {
-        // check that dims match the dimension of A
-        if (!internal::check_dims_match_cvect(dims, rA))
-            throw exception::DimsMismatchCvector("qpp::ptranspose()");
-
         if (target.size() == dims.size())
             return (rA * adjoint(rA)).transpose();
 
         if (target.empty())
             return rA * adjoint(rA);
 
-        auto worker = [&](idx i) noexcept -> typename Derived::Scalar {
+        auto worker = [&](idx i) noexcept->typename Derived::Scalar {
             // use static allocation for speed!
             idx midxcoltmp[maxn];
             idx midxrow[maxn];
@@ -1519,23 +1526,17 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
             for (idx i = 0; i < D; ++i)
                 result(i, j) = worker(i);
         }
-
-        return result;
     }
     //************ density matrix ************//
-    else if (internal::check_square_mat(rA)) // we have a density operator
+    else // we have a density operator
     {
-        // check that dims match the dimension of A
-        if (!internal::check_dims_match_mat(dims, rA))
-            throw exception::DimsMismatchMatrix("qpp::ptranspose()");
-
         if (target.size() == dims.size())
             return rA.transpose();
 
         if (target.empty())
             return rA;
 
-        auto worker = [&](idx i) noexcept -> typename Derived::Scalar {
+        auto worker = [&](idx i) noexcept->typename Derived::Scalar {
             // use static allocation for speed!
             idx midxcoltmp[maxn];
             idx midxrow[maxn];
@@ -1564,12 +1565,9 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
             for (idx i = 0; i < D; ++i)
                 result(i, j) = worker(i);
         }
-
-        return result;
     }
-    //************ Exception: not ket nor density matrix ************//
-    else
-        throw exception::MatrixNotSquareNorCvector("qpp::ptranspose()");
+
+    return result;
 }
 
 /**
@@ -1643,6 +1641,16 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
     // check that permutation match dimensions
     if (perm.size() != dims.size())
         throw exception::PermMismatchDims("qpp::syspermute()");
+
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rA)) {
+        if (!internal::check_dims_match_cvect(dims, rA))
+            throw exception::DimsMismatchCvector("qpp::syspermute()");
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::syspermute()");
+    } else
+        throw exception::MatrixNotSquareNorCvector("qpp::syspermute()");
     // END EXCEPTION CHECKS
 
     idx D = static_cast<idx>(rA.rows());
@@ -1656,10 +1664,6 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
         idx Cdims[maxn];
         idx Cperm[maxn];
 
-        // check that dims match the dimension of rA
-        if (!internal::check_dims_match_cvect(dims, rA))
-            throw exception::DimsMismatchCvector("qpp::syspermute()");
-
         // copy dims in Cdims and perm in Cperm
         for (idx i = 0; i < n; ++i) {
             Cdims[i] = dims[i];
@@ -1667,7 +1671,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
         }
         result.resize(D, 1);
 
-        auto worker = [&Cdims, &Cperm, n](idx i) noexcept -> idx {
+        auto worker = [&Cdims, &Cperm, n ](idx i) noexcept->idx {
             // use static allocation for speed,
             // double the size for matrices reshaped as vectors
             idx midx[maxn];
@@ -1690,18 +1694,12 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
 #endif // WITH_OPENMP_
         for (idx i = 0; i < D; ++i)
             result(worker(i)) = rA(i);
-
-        return result;
     }
     //************ density matrix ************//
-    else if (internal::check_square_mat(rA)) // we have a density operator
+    else // we have a density operator
     {
         idx Cdims[2 * maxn];
         idx Cperm[2 * maxn];
-
-        // check that dims match the dimension of rA
-        if (!internal::check_dims_match_mat(dims, rA))
-            throw exception::DimsMismatchMatrix("qpp::syspermute()");
 
         // copy dims in Cdims and perm in Cperm
         for (idx i = 0; i < n; ++i) {
@@ -1716,7 +1714,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
             Eigen::Map<dyn_mat<typename Derived::Scalar>>(
                 const_cast<typename Derived::Scalar*>(rA.data()), D * D, 1);
 
-        auto worker = [&Cdims, &Cperm, n](idx i) noexcept -> idx {
+        auto worker = [&Cdims, &Cperm, n ](idx i) noexcept->idx {
             // use static allocation for speed,
             // double the size for matrices reshaped as vectors
             idx midx[2 * maxn];
@@ -1740,11 +1738,10 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
         for (idx i = 0; i < D * D; ++i)
             result(worker(i)) = rA(i);
 
-        return reshape(result, D, D);
+        result = reshape(result, D, D);
     }
-    //************ Exception: not ket nor density matrix ************//
-    else
-        throw exception::MatrixNotSquareNorCvector("qpp::syspermute()");
+
+    return result;
 }
 
 /**
@@ -1999,61 +1996,6 @@ dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
 
 // as in https://arxiv.org/abs/1707.08834
 /**
- * \brief Inverse (adjoint) qudit quantum Fourier transform
- *
- * \param A Eigen expression
- * \param d Subsystem dimensions
- * \param swap Swaps the qubits/qudits at the end (true by default)
- * \return Inverse (adjoint) qudit quantum Fourier transform applied on \a A
- */
-template <typename Derived>
-dyn_col_vect<typename Derived::Scalar> TFQ(const Eigen::MatrixBase<Derived>& A,
-                                           idx d = 2, bool swap = true) {
-    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
-
-    // EXCEPTION CHECKS
-
-    // check zero-size
-    if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::TFQ()");
-
-    // check valid subsystem dimension
-    if (d < 2)
-        throw exception::DimsInvalid("qpp::TFQ()");
-
-    // total number of qubits/qudits in the state
-    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-
-    std::vector<idx> dims(n, d); // local dimensions vector
-
-    //************ ket ************//
-    if (internal::check_cvector(rA)) // we have a ket
-    {
-        // check that dims match state vector
-        if (!internal::check_dims_match_cvect(dims, rA))
-            throw exception::DimsMismatchCvector("qpp::TFQ()");
-    }
-    //************ density matrix ************//
-    else if (internal::check_square_mat(rA)) // we have a density operator
-    {
-        // check that dims match state matrix
-        if (!internal::check_dims_match_mat(dims, rA))
-            throw exception::DimsMismatchMatrix("qpp::TFQ()");
-    }
-    //************ Exception: not ket nor density matrix ************//
-    else
-        throw exception::MatrixNotSquareNorCvector("qpp::TFQ()");
-    // END EXCEPTION CHECKS
-
-    std::vector<idx> subsys(n);
-    std::iota(std::begin(subsys), std::end(subsys), 0);
-    ket result = applyTFQ(rA, subsys, d, swap);
-
-    return result;
-}
-
-// as in https://arxiv.org/abs/1707.08834
-/**
  * \brief Qudit quantum Fourier transform
  *
  * \param A Eigen expression
@@ -2103,6 +2045,61 @@ dyn_col_vect<typename Derived::Scalar> QFT(const Eigen::MatrixBase<Derived>& A,
     std::vector<idx> subsys(n);
     std::iota(std::begin(subsys), std::end(subsys), 0);
     ket result = applyQFT(rA, subsys, d, swap);
+
+    return result;
+}
+
+// as in https://arxiv.org/abs/1707.08834
+/**
+ * \brief Inverse (adjoint) qudit quantum Fourier transform
+ *
+ * \param A Eigen expression
+ * \param d Subsystem dimensions
+ * \param swap Swaps the qubits/qudits at the end (true by default)
+ * \return Inverse (adjoint) qudit quantum Fourier transform applied on \a A
+ */
+template <typename Derived>
+dyn_col_vect<typename Derived::Scalar> TFQ(const Eigen::MatrixBase<Derived>& A,
+                                           idx d = 2, bool swap = true) {
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero-size
+    if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::TFQ()");
+
+    // check valid subsystem dimension
+    if (d < 2)
+        throw exception::DimsInvalid("qpp::TFQ()");
+
+    // total number of qubits/qudits in the state
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+
+    std::vector<idx> dims(n, d); // local dimensions vector
+
+    //************ ket ************//
+    if (internal::check_cvector(rA)) // we have a ket
+    {
+        // check that dims match state vector
+        if (!internal::check_dims_match_cvect(dims, rA))
+            throw exception::DimsMismatchCvector("qpp::TFQ()");
+    }
+    //************ density matrix ************//
+    else if (internal::check_square_mat(rA)) // we have a density operator
+    {
+        // check that dims match state matrix
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::TFQ()");
+    }
+    //************ Exception: not ket nor density matrix ************//
+    else
+        throw exception::MatrixNotSquareNorCvector("qpp::TFQ()");
+    // END EXCEPTION CHECKS
+
+    std::vector<idx> subsys(n);
+    std::iota(std::begin(subsys), std::end(subsys), 0);
+    ket result = applyTFQ(rA, subsys, d, swap);
 
     return result;
 }
