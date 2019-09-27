@@ -192,7 +192,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 
         // set the CTRL part
         for (idx k = 0; k < ctrlsize; ++k) {
-            Cmidx[ctrl[k]] = i_;
+            Cmidx[ctrl[k]] = (i_ + d - shift[k]) % d;
         }
 
         // set the rest
@@ -218,9 +218,6 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
                 Cmidx[target[k]] = CmidxA[k];
             }
             if (ctrlsize > 0)
-                coeff += Ai[(i_ + shift[i_]) % d](m_, n_) *
-                         rstate(internal::multiidx2n(Cmidx, n, Cdims));
-            else
                 coeff += Ai[i_](m_, n_) *
                          rstate(internal::multiidx2n(Cmidx, n, Cdims));
         }
