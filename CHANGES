@@ -39,13 +39,11 @@ Version 2.0 - 24 August 2019
                       description by measuring them destructively
                       and ignoring the result of the measurement
     - Implemented the corresponding free functions in "instruments.h":
-          qpp::reset()             - resets qudits in a multipartite state by
-                                     measuring them non-destructively in the
-                                     computational basis followed by shifting
-                                     them back to the |0> state
-          qpp::discard()           - discards qudits by measuring them
-                                     destructively and ignoring the result of
-                                     the measurement
+          qpp::reset()   - resets qudits in a multipartite state by measuring
+                           them non-destructively in the computational basis
+                           followed by shifting them back to the |0> state
+          qpp::discard() - discards qudits by measuring them destructively and
+                           ignoring the result of the measurement
     - Implemented qpp::QCircuit::set_name() - set the QCircuit name after
                                               construction
     - API change in qpp::QCircuit::cCTRL*(), now accepts an additional "shift"
@@ -141,6 +139,7 @@ Version 1.2 - 10 February 2019
       qpp::hash_eigen() in "functions.h"; code based on
       boost::hash_combine(), see https://www.boost.org/doc/libs/1_69_0/doc/html/
       hash/reference.html\#boost.hash_combine
+
 Version 1.1 - 26 November 2018
     - Added new functions in "operations.h":
           qpp::QFT()      - qudit quantum Fourier transform (includes qubit

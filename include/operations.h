@@ -95,6 +95,10 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     } else
         throw exception::MatrixNotSquareNorCvector("qpp::applyCTRL()");
 
+    // check that ctrl subsystem is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(ctrl, dims))
+        throw exception::SubsysMismatchDims("qpp::applyCTRL()");
+
     // check that all control subsystems have the same dimension
     idx d = ctrl.size() > 0 ? dims[ctrl[0]] : 1;
     for (idx i = 1; i < ctrl.size(); ++i)
@@ -1219,7 +1223,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::ptrace()");
 
-    // check that target are valid
+    // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::ptrace()");
 
@@ -1453,7 +1457,7 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::ptranspose()");
 
-    // check that target are valid
+    // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::ptranspose()");
 
@@ -1805,6 +1809,7 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
 
     std::vector<idx> dims(n, d); // local dimensions vector
+
     // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::applyQFT()");
@@ -1905,6 +1910,7 @@ dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
 
     std::vector<idx> dims(n, d); // local dimensions vector
+
     // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims))
         throw exception::SubsysMismatchDims("qpp::applyTFQ()");

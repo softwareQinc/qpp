@@ -72,7 +72,7 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::ip()");
 
-    // check that subsys are valid
+    // check that subsys are valid w.r.t. dims
     if (!internal::check_subsys_match_dims(subsys, dims))
         throw exception::SubsysMismatchDims("qpp::ip()");
 
@@ -731,6 +731,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     // check zero-size
     if (!internal::check_nonzero_size(rA))
         throw exception::ZeroSize("qpp::measure_seq()");
+
     // check that dimension is valid
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::measure_seq()");
@@ -839,6 +840,7 @@ dyn_mat<typename Derived::Scalar> reset(const Eigen::MatrixBase<Derived>& A,
     // check zero-size
     if (!internal::check_nonzero_size(rA))
         throw exception::ZeroSize("qpp::reset()");
+
     // check that dimension is valid
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::reset()");
@@ -925,6 +927,7 @@ dyn_mat<typename Derived::Scalar> discard(const Eigen::MatrixBase<Derived>& A,
     // check zero-size
     if (!internal::check_nonzero_size(rA))
         throw exception::ZeroSize("qpp::discard()");
+
     // check that dimension is valid
     if (!internal::check_dims(dims))
         throw exception::DimsInvalid("qpp::discard()");
