@@ -66,8 +66,8 @@ and the comprehensive [Wiki](https://github.com/vsoftco/qpp/wiki) for further
 documentation and detailed examples. 
 
 To generate the full official API documentation in both PDF and HTML formats run 
-[`doxygen`](http://www.doxygen.nl) on the [`Doxyfile`](https://github.com/vsoftco/qpp/blob/master/Doxyfile) file. This will generate the 
-documentation directory `doc` containing both the HTML and LaTeX documentation. 
+[`doxygen`](http://www.doxygen.nl) on the [`Doxyfile`](https://github.com/vsoftco/qpp/blob/master/Doxyfile) file. The tool `dot` from the [`Graphviz`](https://www.graphviz.org) package must be installed (`sudo apt-get install graphviz` in Ubuntu/Debian). Running `doxygen` will generate the 
+documentation directory `doc` containing both the HTML and LaTeX documentation.
 
 The HTML documentation file will be accessible by opening `doc/html/index.html` with the browser of your choice.
 
