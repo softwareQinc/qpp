@@ -188,7 +188,6 @@ inline double renyi(const std::vector<double>& prob, double alpha) {
  *
  * \param A Eigen expression
  * \param q Non-negative real number
- *
  * \return Tsallis-\f$q\f$ entropy
  */
 template <typename Derived>
@@ -230,7 +229,6 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double q) {
  *
  * \param prob Real probability vector
  * \param q Non-negative real number
- *
  * \return Tsallis-\f$q\f$ entropy
  */
 inline double tsallis(const std::vector<double>& prob, double q) {
