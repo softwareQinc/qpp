@@ -125,7 +125,7 @@ TEST(qpp_qasm_read_from_file, Teleportation) {
 
     // Final state, should be |0> according to the QASM circuit
     auto rho = ptrace(engine.get_psi(), {0, 1}, {2, 2, 2});
-    
+
     // Check norm
     EXPECT_NEAR(0, norm(rho - qpp::prj(0_ket)), 1e-7);
 }

@@ -1,5 +1,5 @@
 In progress - pre-release
-    - Changed gate definitions in "qasm/prepreocessor.h" so they agree with 
+    - Changed gate definitions in "qasm/preprocessor.h" so they agree with
       Qiskit, see https://github.com/vsoftco/qpp/issues/65
     - Minor API change in the QEngine::execute()/reset()/reset_stats(), now
       they all return a reference to *this
