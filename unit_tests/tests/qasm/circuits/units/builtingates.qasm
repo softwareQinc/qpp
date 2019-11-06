@@ -7,7 +7,7 @@ creg c[2];
 
 U(0.1, 0.2, 0.3) a[0];
 
-// Proportional to X
+// proportional to X
 U(pi, 0, pi) b[0];
 CX b[0],b[1];
 

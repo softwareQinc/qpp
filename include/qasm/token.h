@@ -281,7 +281,7 @@ class Token : public IDisplay {
     friend std::ostream& operator<<(std::ostream& os, const Kind& k) {
         switch (k) {
             case Kind::unknown:
-                os << "UNKOWN";
+                os << "UNKNOWN";
                 break;
             case Kind::eof:
                 os << "EOF";

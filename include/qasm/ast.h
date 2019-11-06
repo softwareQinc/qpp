@@ -983,10 +983,21 @@ class UGate final : public Gate {
 
         // generate the matrix
         cmat u{cmat::Zero(2, 2)};
-        u << cos(theta / 2) * std::exp(-1_i * (phi + lambda) / 2.0),
-            -(sin(theta / 2)) * std::exp(-1_i * (phi - lambda) / 2.0),
-            sin(theta / 2) * std::exp(1_i * (phi - lambda) / 2.0),
-            cos(theta / 2) * std::exp(1_i * (phi + lambda) / 2.0);
+
+        // standard QASM spec, as defined in
+        // https://arxiv.org/pdf/1707.03429.pdf
+        // u << cos(theta / 2) * std::exp(-1_i * (phi + lambda) / 2.0),
+        //     -(sin(theta / 2)) * std::exp(-1_i * (phi - lambda) / 2.0),
+        //     sin(theta / 2) * std::exp(1_i * (phi - lambda) / 2.0),
+        //     cos(theta / 2) * std::exp(1_i * (phi + lambda) / 2.0);
+
+        // Qiskit spec, as defined in
+        // https://github.com/Qiskit/qiskit-terra/tree/master/qiskit/extensions/standard
+        // We use these definitions, see
+        // https://github.com/vsoftco/qpp/issues/65 for the reasons why.
+        u << cos(theta / 2), -(sin(theta / 2)) * std::exp(1_i * lambda),
+            sin(theta / 2) * std::exp(1_i * phi),
+            cos(theta / 2) * std::exp(1_i * (phi + lambda));
 
         // apply the gate
         for (auto i : args) {

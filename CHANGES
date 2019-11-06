@@ -1,4 +1,6 @@
 In progress - pre-release
+    - Changed gate definitions in "qasm/prepreocessor.h" so they agree with 
+      Qiskit, see https://github.com/vsoftco/qpp/issues/65
     - Minor API change in the QEngine::execute()/reset()/reset_stats(), now
       they all return a reference to *this
     - Added Bit_circuit::display() and Bit_circuit::to_JSON() in "reversible.h"

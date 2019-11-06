@@ -123,15 +123,11 @@ TEST(qpp_qasm_read_from_file, Teleportation) {
     QEngine engine{q_circuit};
     engine.execute();
 
-    // Final state
+    // Final state, should be |0> according to the QASM circuit
     auto rho = ptrace(engine.get_psi(), {0, 1}, {2, 2, 2});
-    ket psi1 = rho2pure(rho);
-
-    // Reference state
-    ket psi2 = gt.H * 0_ket;
-
+    
     // Check norm
-    EXPECT_NEAR(0, norm(psi1 - psi2), 1e-7);
+    EXPECT_NEAR(0, norm(rho - qpp::prj(0_ket)), 1e-7);
 }
 
 TEST(qpp_qasm_read_from_file, MappedGates) {
