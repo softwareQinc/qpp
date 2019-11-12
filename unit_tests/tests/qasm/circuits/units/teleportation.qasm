@@ -6,7 +6,7 @@ qreg b[2];
 creg c[1];
 creg d[1];
 
-// prepare bell state
+// prepare Bell state
 h b[0];
 cx b[0],b[1];
 
