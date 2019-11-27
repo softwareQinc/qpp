@@ -290,6 +290,9 @@ measure(const Eigen::MatrixBase<Derived>& A,
  * \brief Measures the state vector or density matrix \a A in the orthonormal
  * basis specified by the unitary matrix \a U
  *
+ * \note This measurement is equivalent to measuring \a A in the
+ * \f$U^\dagger\f$ basis
+ *
  * \param A Eigen expression
  * \param U Unitary matrix whose columns represent the measurement basis vectors
  * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
@@ -552,9 +555,13 @@ measure(const Eigen::MatrixBase<Derived>& A,
  * \a destructive is set to true (by default), the measurement is destructive,
  * i.e. the measured subsystems are traced away.
  *
+ * \note The number of column vectors of \a V can be smaller than the dimension
+ * of \a target. If that is the case, then the measurement probabilities sum up
+ * to a number smaller than 1 (i.e., having, in effect, a filtering operation).
+ *
  * \param A Eigen expression
  * \param V Matrix whose columns represent the measurement basis vectors or the
- * bra parts of the rank-1 projectors
+ * ket parts of the rank-1 projectors
  * \param target Subsystem indexes that are measured
  * \param dims Dimensions of the multi-partite system
  * \param destructive Destructive measurement, true by default
@@ -667,9 +674,13 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
  * \a destructive is set to true (by default), the measurement is destructive,
  * i.e. the measured subsystems are traced away.
  *
+ * \note The number of column vectors of \a V can be smaller than the dimension
+ * of \a target. If that is the case, then the measurement probabilities sum up
+ * to a number smaller than 1 (i.e., having, in effect, a filtering operation).
+ *
  * \param A Eigen expression
  * \param V Matrix whose columns represent the measurement basis vectors or the
- * bra parts of the rank-1 projectors
+ * ket parts of the rank-1 projectors
  * \param target Subsystem indexes that are measured
  * \param d Subsystem dimensions
  * \param destructive Destructive measurement, true by default
