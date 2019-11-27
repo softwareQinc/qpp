@@ -47,7 +47,7 @@ see <http://eigen.tuxfamily.org/dox/>. For a simple
 [Eigen 3](http://eigen.tuxfamily.org) quick ASCII reference see
 <http://eigen.tuxfamily.org/dox/AsciiQuickReference.txt>.
 
-Copyright (c) 2013 - 2019 Vlad Gheorghiu, vgheorgh AT gmail DOT com.
+Copyright (c) 2013 - 2020 Vlad Gheorghiu.
 
 ---
 ## License
