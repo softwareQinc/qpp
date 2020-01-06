@@ -70,7 +70,10 @@ static std::unordered_map<ident,
         {"rz",
          [](const std::vector<double>& args) {
              assert(args.size() > 0);
-             return gt.RZ(args[0]);
+             // note the discrepancy; QISKIT defines it as diag(1, e^{i\phi})
+             // we comply to the QISKIT definition (and not the OPENQASM
+             // specs); see https://github.com/softwareQinc/qpp/issues/70
+             return std::exp(1_i * args[0] / 2.0) * gt.RZ(args[0]);
          }},
         {"ry",
          [](const std::vector<double>& args) {
