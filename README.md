@@ -4,7 +4,7 @@
 **Build status:**
 
 [![Build Status](https://travis-ci.org/softwareQinc/qpp.svg?branch=master)](https://travis-ci.org/softwareQinc/qpp)
-[![Build status](https://ci.appveyor.com/api/projects/status/woy7ujojonqt731o?svg=true)](https://ci.appveyor.com/project/vsoftco/qpp-cycx8)
+[![Build status](https://ci.appveyor.com/api/projects/status/woy7ujojonqt731o?svg=true)](https://ci.appveyor.com/project/vsoftco/qpp)
 
 **Chat (questions/issues)**
 
