@@ -32,22 +32,13 @@ script:
   - $CXX --version
   
   # Install Eigen3
-  # - hg clone https://bitbucket.org/eigen/eigen/
-  # - ln -s $HOME/build/vsoftco/qpp/eigen $HOME/eigen
-  - wget http://bitbucket.org/eigen/eigen/get/3.3.5.zip -O eigen3.zip
-  - unzip -q eigen3.zip 
-  - mv eigen-eigen-b3f3d4950030 $HOME/eigen
+  - wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip -O eigen3.zip && unzip -q eigen3.zip &&  mv eigen-eigen-b3f3d4950030 $HOME/eigen
   
   # Build the examples
-  - mkdir build
-  - cd build
-  - cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j4
+  - mkdir build && cd build && cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j4
   
   # Build the unit tests
-  - cd ../unit_tests
-  - mkdir build
-  - cd build
-  - cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j4
+  - cd ../unit_tests && mkdir build && cd build && cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j4
 
   # Run the unit tests
   - ./tests/qpp_testing --gtest_filter=-qpp_Timer*
