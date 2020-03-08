@@ -61,7 +61,7 @@ Hello Quantum++!
 This is the |0> state:
 1
 0
-````
+```
 
 The line
 
@@ -245,33 +245,6 @@ g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
 
     ```bash
     sudo port install libomp
-    ```
-    
-- If you enable
-[MATLAB](http://www.mathworks.com/products/matlab/) support, you may need to set the environment variable `DYLD_LIBRARY_PATH` to point to the 
-[MATLAB](http://www.mathworks.com/products/matlab/) 
-compiler shared libraries location, such as 
-
-    ```bash
-    export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"Applications/MATLAB_R2017b.app/bin/maci64"
-    ```
-
-    Otherwise, you may get a runtime error similar to
-
-    > dyld: Library not loaded: @rpath/libmat.dylib.
-    
-    
-    If that is the case, you may use the
-[`run_mac_MATLAB.sh`](https://github.com/vsoftco/qpp/blob/master/run_mac_MATLAB.sh)
-script to wrap the output executable you want to run in, as otherwise setting the `DYLD_LIBRARY_PATH` globally may interfere with 
-[MacPorts](https://www.macports.org/)' [CMake](http://www.cmake.org/) 
-installation (in case you use [CMake](http://www.cmake.org/) from 
-[MacPorts](https://www.macports.org/)). If you use the script, 
-then the environment variable is local to the script and 
-does not interfere with the rest of the system. Usage example:
-
-    ```bash
-    bash ./run_mac_MATLAB.sh ./build/qpp
     ```
 
 ### Building debug versions with [g++](https://gcc.gnu.org/) on [OS X/macOS](http://www.apple.com/osx)
