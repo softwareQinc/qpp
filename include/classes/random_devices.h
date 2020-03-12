@@ -46,9 +46,7 @@ namespace qpp {
  * Eigen::Matrix::Random() or functions that depend on the C style random number
  * engine, but use qpp::rand() instead!
  */
-class RandomDevices final : public internal::Singleton<RandomDevices> //
-// Singleton
-{
+class RandomDevices final : public internal::Singleton<RandomDevices> {
     friend class internal::Singleton<RandomDevices>;
 
     std::random_device rd_; ///< used to seed std::mt19937 prng_

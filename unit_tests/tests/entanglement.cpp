@@ -27,7 +27,7 @@ TEST(qpp_concurrence, AllTests) {
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::entanglement(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
-TEST(qpp_entanglement, AllTests) {
+TEST(qpp_entanglement, Qudits) {
     // random qutrit product state
     ket psi1 = kron(randU(3), randU(3)) * mket({0, 0}, 3);
     EXPECT_NEAR(0, qpp::entanglement(psi1, {3, 3}), 1e-7);
@@ -47,7 +47,7 @@ TEST(qpp_entanglement, AllTests) {
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::entanglement(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
-TEST(qpp_entanglement_qubits, AllTests) {
+TEST(qpp_entanglement, Qubits) {
     // random qubit product state
     ket psi1 = kron(randU(), randU()) * mket({0, 0});
     EXPECT_NEAR(0, qpp::entanglement(psi1), 1e-7);
@@ -97,7 +97,7 @@ TEST(qpp_gconcurrence, AllTests) {
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::lognegativity(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
-TEST(qpp_lognegativity, AllTests) {
+TEST(qpp_lognegativity, Qudits) {
     // zero on product states (2 qutrits)
     cmat rho = randrho(3);
     cmat sigma = randrho(3);
@@ -129,7 +129,7 @@ TEST(qpp_lognegativity, AllTests) {
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::lognegativity(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
-TEST(qpp_lognegativity_qubits, AllTests) {
+TEST(qpp_lognegativity, Qubits) {
     // zero on product states (2 qubits)
     cmat rho = randrho();
     cmat sigma = randrho();
@@ -149,7 +149,7 @@ TEST(qpp_lognegativity_qubits, AllTests) {
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::negativity(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
-TEST(qpp_negativity, AllTests) {
+TEST(qpp_negativity, Qudits) {
     // Must be (d - 1)/2 on MES
 
     // zero on product states (2 qutrits)
@@ -189,7 +189,7 @@ TEST(qpp_negativity, AllTests) {
 /******************************************************************************/
 /// BEGIN template<typename Derived> double qpp::negativity(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
-TEST(qpp_negativity_qubits, AllTests) {
+TEST(qpp_negativity, Qubits) {
     // Must be (d - 1)/2 on MES
 
     // zero on product states (2 qutrits)
@@ -211,7 +211,7 @@ TEST(qpp_negativity_qubits, AllTests) {
 /******************************************************************************/
 /// BEGIN template<typename Derived> cmat qpp::schmidtA/B(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
-TEST(qpp_schmidtA_schmidtB, AllTests) {
+TEST(qpp_schmidtA_schmidtB, Qudits) {
     // random degenerate 1 x 1 product state
     idx dA = 1, dB = 1, D = dA * dB, minD = std::min(dA, dB);
     cmat UA = randU(dA);
@@ -285,7 +285,7 @@ TEST(qpp_schmidtA_schmidtB, AllTests) {
 /******************************************************************************/
 /// BEGIN template<typename Derived> cmat qpp::schmidtA/B(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
-TEST(qpp_schmidtA_schmidtB_qubits, AllTests) {
+TEST(qpp_schmidtA_schmidtB, Qubits) {
     // random 2 x 2 product state
     idx d = 2, D = d * d;
     cmat UA = randU(d);
@@ -341,7 +341,7 @@ TEST(qpp_schmidtA_schmidtB_qubits, AllTests) {
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_col_vect<double> qpp::schmidtcoeffs(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
-TEST(qpp_schmidtcoeffs, AllTests) {
+TEST(qpp_schmidtcoeffs, Qudits) {
     // random degenerate 1 x 1 product state
     idx dA = 1, dB = 1, minD = std::min(dA, dB);
     cmat UA = randU(dA);
@@ -401,7 +401,7 @@ TEST(qpp_schmidtcoeffs, AllTests) {
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_col_vect<double> qpp::schmidtcoeffs(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
-TEST(qpp_schmidtcoeffs_qubits, AllTests) {
+TEST(qpp_schmidtcoeffs, Qubits) {
     // random 2 x 2 product state
     idx d = 2;
     cmat UA = randU(d);
@@ -449,7 +449,7 @@ TEST(qpp_schmidtcoeffs_qubits, AllTests) {
 /******************************************************************************/
 /// BEGIN template<typename Derived> std::vector<double> qpp::schmidtprobs(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
-TEST(qpp_schmidtprobs, AllTests) {
+TEST(qpp_schmidtprobs, Qudits) {
     // random degenerate 1 x 1 product state
     idx dA = 1, dB = 1, minD = std::min(dA, dB);
     cmat UA = randU(dA);
@@ -519,7 +519,7 @@ TEST(qpp_schmidtprobs, AllTests) {
 /******************************************************************************/
 /// BEGIN template<typename Derived> std::vector<double> qpp::schmidtprobs(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
-TEST(qpp_schmidtprobs_qubits, AllTests) {
+TEST(qpp_schmidtprobs, Qubits) {
     // random 2 x 2 product state
     idx d = 2;
     cmat UA = randU(d);

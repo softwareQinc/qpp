@@ -12,6 +12,7 @@ using namespace qpp;
 /******************************************************************************/
 /// BEGIN  std::unique_ptr<qpp::QCircuit>
 ///        qpp::qasm::read_from_file(const std::string& fname)
+/******************************************************************************/
 TEST(qpp_qasm_read_from_file, StdCompliance) {
     // generic circuits
     EXPECT_NO_THROW(
@@ -66,7 +67,7 @@ TEST(qpp_qasm_read_from_file, StdCompliance) {
                      "/tests/qasm/circuits/invalid/missing_semicolon.qasm"),
                  exception::ParseError);
 }
-
+/******************************************************************************/
 TEST(qpp_qasm_read_from_file, BuiltinGates) {
     qpp::QCircuit q_circuit = qasm::read_from_file(
         PATH "/tests/qasm/circuits/units/builtingates.qasm");
@@ -90,7 +91,7 @@ TEST(qpp_qasm_read_from_file, BuiltinGates) {
     EXPECT_EQ(1, c0);
     EXPECT_EQ(1, c1);
 }
-
+/******************************************************************************/
 TEST(qpp_qasm_read_from_file, Teleportation) {
     qpp::QCircuit q_circuit = qasm::read_from_file(
         PATH "/tests/qasm/circuits/units/teleportation.qasm");
@@ -103,7 +104,7 @@ TEST(qpp_qasm_read_from_file, Teleportation) {
     // Check norm
     EXPECT_NEAR(0, norm(rho - qpp::prj(0_ket)), 1e-7);
 }
-
+/******************************************************************************/
 TEST(qpp_qasm_read_from_file, MappedGates) {
     qpp::QCircuit q_circuit = qasm::read_from_file(
         PATH "/tests/qasm/circuits/units/mappedgates.qasm");
@@ -119,7 +120,7 @@ TEST(qpp_qasm_read_from_file, MappedGates) {
     // Check norm
     EXPECT_NEAR(0, norm(psi1 - psi2), 1e-7);
 }
-
+/******************************************************************************/
 TEST(qpp_qasm_read_from_file, NonDestrMeas) {
     qpp::QCircuit q_circuit = qasm::read_from_file(
         PATH "/tests/qasm/circuits/units/nondestrmeas.qasm");
@@ -135,7 +136,7 @@ TEST(qpp_qasm_read_from_file, NonDestrMeas) {
     // Check norm
     EXPECT_NEAR(0, norm(psi - mket({res})), 1e-7);
 }
-
+/******************************************************************************/
 TEST(qpp_qasm_read_from_file, Reset) {
     qpp::QCircuit q_circuit =
         qasm::read_from_file(PATH "/tests/qasm/circuits/units/reset.qasm");

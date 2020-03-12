@@ -9,11 +9,10 @@ using namespace qpp;
 
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
-///        qpp::Gates::CTRL(const Eigen::MatrixBase<Derived>& A,
-///        const std::vector<idx>& ctrl,
-///        const std::vector<idx>& target,
-///        idx N,
-///        idx d = 2) const
+///       qpp::Gates::CTRL(const Eigen::MatrixBase<Derived>& A,
+///       const std::vector<idx>& ctrl, const std::vector<idx>& target, idx N,
+///       idx d = 2) const
+/******************************************************************************/
 TEST(qpp_Gates_CTRL, Qubits) {
     // CNOT control-target on 2 qubits
     cmat CTRL1 = gt.CTRL(gt.X, {0}, {1}, 2);
@@ -40,7 +39,7 @@ TEST(qpp_Gates_CTRL, Qubits) {
     ket res2 = kron(st.z1, U * st.z1, st.z1);
     EXPECT_NEAR(0, norm(CTRL4 * psi2 - res2), 1e-7);
 }
-
+/******************************************************************************/
 TEST(qpp_Gates_CTRL, Qudits) {
     idx D = 3; // qutrits
 
@@ -103,22 +102,19 @@ TEST(qpp_Gates_CTRL, Qudits) {
 /******************************************************************************/
 /// BEGIN template<typename Derived>
 ///       dyn_mat<typename Derived::Scalar> qpp::Gates::expandout(
-///       const Eigen::MatrixBase<Derived>& A,
-///       idx pos,
+///       const Eigen::MatrixBase<Derived>& A, idx pos,
 ///       const std::initializer_list<idx>& dims) const
-TEST(qpp_Gates_expandout_init_list, AllTests) {
+TEST(qpp_Gates_expandout, InitList) {
     // single qutrit (degenerate case) random gate expansion
     cmat U = randU(3);
     EXPECT_EQ(gt.expandout(U, 0, {3}), U);
 }
-
 /******************************************************************************/
 /// BEGIN template<typename Derived>
 ///       dyn_mat<typename Derived::Scalar> qpp::Gates::expandout(
-///       const Eigen::MatrixBase<Derived>& A,
-///       idx pos,
+///       const Eigen::MatrixBase<Derived>& A, idx pos,
 ///       const std::vector<idx>& dims) const
-TEST(qpp_Gates_expandout_vector, AllTests) {
+TEST(qpp_Gates_expandout, Qudits) {
     // single qubit (degenerate case) random gate expansion
     cmat U = randU();
     EXPECT_EQ(gt.expandout(U, 0, std::vector<idx>{2}), U);
@@ -131,11 +127,9 @@ TEST(qpp_Gates_expandout_vector, AllTests) {
 }
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::expandout(const Eigen::MatrixBase<Derived>& A,
-///       idx pos,
-///       idx N,
+///       qpp::expandout(const Eigen::MatrixBase<Derived>& A, idx pos, idx N,
 ///       idx d = 2) const
-TEST(qpp_Gates_expandout_qubits, AllTests) {
+TEST(qpp_Gates_expandout, Qubits) {
     // single qubit (degenerate case) random gate expansion
     cmat U = randU();
     EXPECT_EQ(gt.expandout(U, 0, 1), U);

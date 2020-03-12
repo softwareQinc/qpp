@@ -12,15 +12,16 @@ using namespace qpp;
 /******************************************************************************/
 /// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
 ///       qpp::loadMATLAB(const std::string& mat_file,
-//                        const std::string& var_name)
+///                       const std::string& var_name)
 ///
 ///       template<typename Derived> dyn_mat<typename Derived::Scalar>
 ///       void qpp::saveMATLAB(const Eigen::MatrixBase <Derived>& A,
 ///                            const std::string& mat_file,
 ///                            const std::string& var_name,
-///                       const std::string& mode)
-TEST(qpp_MATLAB_load_save_MATLAB_Matrices, AllTests) {
-    // matrices,complex, real and integer
+///                            const std::string& mode)
+/******************************************************************************/
+TEST(qpp_MATLAB_load_save_MATLAB, Matrices) {
+    // matrices, complex, real and integer
 
     // DA = 1, DB = 1 degenerate case
     idx DA = 1, DB = 1;
@@ -83,8 +84,8 @@ TEST(qpp_MATLAB_load_save_MATLAB_Matrices, AllTests) {
     cmat load_expression = qpp::loadMATLAB<cmat>("out.mat", "expression");
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-7);
 }
-
-TEST(qpp_MATLAB_load_save_MATLAB_Vectors, AllTests) {
+/******************************************************************************/
+TEST(qpp_MATLAB_load_save_MATLAB, Vectors) {
     // kets/row vectors, complex, real and integer
 
     // D = 1 degenerate case
@@ -134,4 +135,4 @@ TEST(qpp_MATLAB_load_save_MATLAB_Vectors, AllTests) {
 }
 /******************************************************************************/
 
-#endif // WITH_MATLAB
+#endif // WITH_MATLAB_

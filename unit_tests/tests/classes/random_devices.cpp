@@ -7,6 +7,9 @@ using namespace qpp;
 // Unit testing "classes/random_devices.h"
 
 /******************************************************************************/
+/// BEGIN std::mt19937& qpp::RandomDevices::get_prng()
+TEST(qpp_RandomDevices_get_prng, AllTests) {}
+/******************************************************************************/
 /// BEGIN qpp::RandomDevices::load(std::istream& is)
 ///
 ///       qpp::RandomDevices::save(std::ostream& os) const
