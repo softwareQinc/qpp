@@ -8,8 +8,7 @@ using namespace qpp;
 
 /******************************************************************************/
 /// BEGIN template<typename Container> double qpp::avg(
-///       const std::vector<double>& prob,
-///       const Container& X,
+///       const std::vector<double>& prob, const Container& X,
 ///       typename std::enable_if<is_iterable<Container>::value>::type*
 ///       = nullptr)
 TEST(qpp_avg, AllTests) {
@@ -34,10 +33,8 @@ TEST(qpp_avg, AllTests) {
     EXPECT_NEAR(11 / 2., qpp::avg(prob, X), 1e-7);
 }
 /******************************************************************************/
-/// BEGIN template<typename Container> double qpp::cor(
-///       const dmat& probXY,
-///       const Container& X,
-///       const Container& Y,
+/// BEGIN template<typename Container> double qpp::cor(const dmat& probXY,
+///       const Container& X, const Container& Y,
 ///       typename std::enable_if<is_iterable<Container>::value>::type*
 ///       = nullptr)
 TEST(qpp_cor, AllTests) {
@@ -69,10 +66,8 @@ TEST(qpp_cor, AllTests) {
                 1e-7);
 }
 /******************************************************************************/
-/// BEGIN template<typename Container> double qpp::cov(
-///       const dmat& probXY,
-///       const Container& X,
-///       const Container& Y,
+/// BEGIN template<typename Container> double qpp::cov(const dmat& probXY,
+///       const Container& X, const Container& Y,
 ///       typename std::enable_if<is_iterable<Container>::value>::type*
 ///       = nullptr)
 TEST(qpp_cov, AllTests) {
@@ -257,8 +252,7 @@ TEST(qpp_uniform, AllTests) {
 }
 /******************************************************************************/
 /// BEGIN template<typename Container> double qpp::var(
-///       const std::vector<double>& prob,
-///       const Container& X,
+///       const std::vector<double>& prob, const Container& X,
 ///       typename std::enable_if<is_iterable<Container>::value>::type*
 ///       = nullptr)
 TEST(qpp_var, AllTests) {

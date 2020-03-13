@@ -8,7 +8,7 @@ using namespace qpp;
 
 /******************************************************************************/
 /// BEGIN inline bigint qpp::rand(bigint a, bigint b)
-TEST(qpp_rand_integer, AllTests) {
+TEST(qpp_rand, Integer) {
     // 1 element equal boundaries
     bigint a = 42, b = a;
     EXPECT_EQ(a, qpp::rand(a, b));
@@ -38,7 +38,7 @@ TEST(qpp_rand_integer, AllTests) {
 }
 /******************************************************************************/
 /// BEGIN inline double qpp::rand(double a, double b)
-TEST(qpp_rand_double, AllTests) {
+TEST(qpp_rand, Real) {
     // 1000 elements between 0 and 1
     idx N = 1000;
     double a = 0, b = 1;
@@ -62,9 +62,9 @@ TEST(qpp_rand_double, AllTests) {
     EXPECT_NEAR(0, average, 2e-1); // very likely
 }
 /******************************************************************************/
-/// BEGIN template<> inline cmat qpp::rand(
-///       idx rows, idx cols, double a, double b)
-TEST(qpp_rand_cmat, AllTests) {
+/// BEGIN template<> inline cmat qpp::rand(idx rows, idx cols, double a,
+///       double b)
+TEST(qpp_rand, ComplexMatrix) {
     // 1 x 1 matrix with elements between -1 and 1
     idx NA = 1, NB = 1;
     double a = -1, b = 1;
@@ -107,9 +107,9 @@ TEST(qpp_rand_cmat, AllTests) {
     EXPECT_NEAR(0, average.imag(), 1); // very likely
 }
 /******************************************************************************/
-/// BEGIN template<> inline dmat qpp::rand(
-///       idx rows, idx cols, double a, double b)
-TEST(qpp_rand_dmat, AllTests) {
+/// BEGIN template<> inline dmat qpp::rand(idx rows, idx cols, double a,
+///       double b)
+TEST(qpp_rand, RealMatrix) {
     // 1 x 1 matrix with elements between -1 and 1
     idx NA = 1, NB = 1;
     double a = -1, b = 1;
@@ -163,8 +163,7 @@ TEST(qpp_randH, AllTests) {
     EXPECT_NEAR(0, norm(A - adjoint(A)), 1e-7);
 }
 /******************************************************************************/
-/// BEGIN inline idx qpp::randidx(
-///       idx a = std::numeric_limits<idx>::min(),
+/// BEGIN inline idx qpp::randidx(idx a = std::numeric_limits<idx>::min(),
 ///       idx b = std::numeric_limits<idx>::max())
 TEST(qpp_randidx, AllTests) {
     // 1 element equal boundaries
@@ -271,7 +270,7 @@ TEST(qpp_randkraus, AllTests) {
 }
 /******************************************************************************/
 /// BEGIN inline double qpp::randn(double mean = 0, double sigma = 1)
-TEST(qpp_randn_double, AllTests) {
+TEST(qpp_randn, Real) {
     // 10000 elements with mean = 0 and sigma = 1
     double mean = 0, sigma = 1;
     idx N = 10000;
@@ -306,9 +305,9 @@ TEST(qpp_randn_double, AllTests) {
     EXPECT_NEAR(mean, average, 2.58 * sigma); // very likely (99%)
 }
 /******************************************************************************/
-/// BEGIN template<> inline cmat qpp::randn(
-///       idx rows, idx cols, double mean, double sigma)
-TEST(qpp_randn_cmat, AllTests) {
+/// BEGIN template<> inline cmat qpp::randn(idx rows, idx cols, double mean,
+///       double sigma)
+TEST(qpp_randn, ComplexMatrix) {
     // 1 x 1 matrix with elements of mean = 0 and sigma = 0.1
     idx NA = 1, NB = 1;
     double mean = 0, sigma = 0.1;
@@ -349,9 +348,9 @@ TEST(qpp_randn_cmat, AllTests) {
     EXPECT_NEAR(mean, average.imag(), 2.58 * sigma); // very likely (99%)
 }
 /******************************************************************************/
-/// BEGIN template<> inline dmat qpp::randn(
-///       idx rows, idx cols, double mean, double sigma)
-TEST(qpp_randn_dmat, AllTests) {
+/// BEGIN template<> inline dmat qpp::randn(idx rows, idx cols, double mean,
+///       double sigma)
+TEST(qpp_randn, RealMatrix) {
     // 1 x 1 matrix with elements of mean = 0 and sigma = 0.1
     idx NA = 1, NB = 1;
     double mean = 0, sigma = 0.1;

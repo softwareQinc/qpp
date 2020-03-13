@@ -7,9 +7,9 @@ using namespace qpp;
 // Unit testing "entropies.h"
 
 /******************************************************************************/
-/// BEGIN template<typename Derived> double qpp::entropy(
+/// BEGIN template <typename Derived> double qpp::entropy(
 ///       const Eigen::MatrixBase<Derived>& A)
-TEST(qpp_entropy_matrix, AllTests) {
+TEST(qpp_entropy, Matrix) {
     // 1 x 1 case
     cmat A(1, 1);
     A << 1.;
@@ -49,7 +49,7 @@ TEST(qpp_entropy_matrix, AllTests) {
 }
 /******************************************************************************/
 /// BEGIN inline double qpp::entropy(const std::vector<double>& prob)
-TEST(qpp_entropy_vector, AllTests) {
+TEST(qpp_entropy, Vector) {
     // 1 value
     std::vector<double> v = {1};
     EXPECT_NEAR(0, qpp::entropy(v), 1e-7);
@@ -72,12 +72,10 @@ TEST(qpp_entropy_vector, AllTests) {
     EXPECT_NEAR(std::log2(D), qpp::entropy(v), 1e-7);
 }
 /******************************************************************************/
-/// BEGIN template<typename Derived> double qpp::qmutualinfo(
-///       const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& subsysA,
-///       const std::vector<idx>& subsysB,
-///       const std::vector<idx>& dims)
-TEST(qpp_qmutualinfo, AllTests) {
+/// BEGIN template <typename Derived> double qpp::qmutualinfo(
+///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsysA,
+///       const std::vector<idx>& subsysB, const std::vector<idx>& dims)
+TEST(qpp_qmutualinfo, Qudits) {
     // 1 x 1 degenerate product state
     idx dA = 1, dB = 1;
     cmat rhoA = randrho(dA), rhoB = randrho(dB);
@@ -119,12 +117,10 @@ TEST(qpp_qmutualinfo, AllTests) {
     EXPECT_NEAR(result, expected, 1e-7);
 }
 /******************************************************************************/
-/// BEGIN template<typename Derived> double qpp::qmutualinfo(
-///       const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& subsysA,
-///       const std::vector<idx>& subsysB,
-///       idx d = 2)
-TEST(qpp_qmutualinfo_qubits, AllTests) {
+/// BEGIN template <typename Derived> double qpp::qmutualinfo(
+///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsysA,
+///       const std::vector<idx>& subsysB, idx d = 2)
+TEST(qpp_qmutualinfo, Qubits) {
     // 2 x 2 product state
     idx d = 2;
     cmat rhoA = randrho(d), rhoB = randrho(d);
@@ -158,9 +154,9 @@ TEST(qpp_qmutualinfo_qubits, AllTests) {
     EXPECT_NEAR(result, expected, 1e-7);
 }
 /******************************************************************************/
-/// BEGIN template<typename Derived> double qpp::renyi(
+/// BEGIN template <typename Derived> double qpp::renyi(
 ///       const Eigen::MatrixBase<Derived>& A, double alpha)
-TEST(qpp_renyi_matrix, AllTests) {
+TEST(qpp_renyi, Matrix) {
     // 1 x 1 case
     cmat A(1, 1);
     A << 1.;
@@ -224,7 +220,7 @@ TEST(qpp_renyi_matrix, AllTests) {
 /******************************************************************************/
 /// BEGIN qpp::inline double renyi(const std::vector<double>& prob,
 ///       double alpha)
-TEST(qpp_renyi_vector, AllTests) {
+TEST(qpp_renyi, Vector) {
     // 1 value
     std::vector<double> v = {1};
     EXPECT_NEAR(0, qpp::renyi(v, 0), 1e-7);
@@ -270,9 +266,9 @@ TEST(qpp_renyi_vector, AllTests) {
     EXPECT_NEAR(std::log2(D), qpp::renyi(v, qpp::infty), 1e-7);
 }
 /******************************************************************************/
-/// BEGIN template<typename Derived> double qpp::tsallis(
+/// BEGIN template <typename Derived> double qpp::tsallis(
 ///       const Eigen::MatrixBase<Derived>& A, double q)
-TEST(qpp_tsallis_matrix, AllTests) {
+TEST(qpp_tsallis, Matrix) {
     // 1 x 1 case
     cmat A(1, 1);
     A << 1.;
@@ -335,7 +331,7 @@ TEST(qpp_tsallis_matrix, AllTests) {
 }
 /******************************************************************************/
 /// BEGIN inline double qpp::tsallis(const std::vector<double>& prob, double q)
-TEST(qpp_tsallis_vector, AllTests) {
+TEST(qpp_tsallis, Vector) {
     // 1 value
     std::vector<double> v = {1};
     EXPECT_NEAR(0, qpp::tsallis(v, 0), 1e-7);

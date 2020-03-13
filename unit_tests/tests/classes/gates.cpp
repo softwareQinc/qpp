@@ -8,7 +8,7 @@ using namespace qpp;
 // Unit testing "classes/gates.h"
 
 /******************************************************************************/
-/// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
+/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       qpp::Gates::CTRL(const Eigen::MatrixBase<Derived>& A,
 ///       const std::vector<idx>& ctrl, const std::vector<idx>& target, idx N,
 ///       idx d = 2) const
@@ -100,7 +100,7 @@ TEST(qpp_Gates_CTRL, Qudits) {
     EXPECT_NEAR(0, norm(CTRL3 * psi3 - res3), 1e-7);
 }
 /******************************************************************************/
-/// BEGIN template<typename Derived>
+/// BEGIN template <typename Derived>
 ///       dyn_mat<typename Derived::Scalar> qpp::Gates::expandout(
 ///       const Eigen::MatrixBase<Derived>& A, idx pos,
 ///       const std::initializer_list<idx>& dims) const
@@ -110,7 +110,7 @@ TEST(qpp_Gates_expandout, InitList) {
     EXPECT_EQ(gt.expandout(U, 0, {3}), U);
 }
 /******************************************************************************/
-/// BEGIN template<typename Derived>
+/// BEGIN template <typename Derived>
 ///       dyn_mat<typename Derived::Scalar> qpp::Gates::expandout(
 ///       const Eigen::MatrixBase<Derived>& A, idx pos,
 ///       const std::vector<idx>& dims) const
@@ -126,7 +126,7 @@ TEST(qpp_Gates_expandout, Qudits) {
     EXPECT_EQ(gt.expandout(gt.X, 1, {2, 2, 2}), kron(gt.Id2, gt.X, gt.Id2));
 }
 /******************************************************************************/
-/// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
+/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       qpp::expandout(const Eigen::MatrixBase<Derived>& A, idx pos, idx N,
 ///       idx d = 2) const
 TEST(qpp_Gates_expandout, Qubits) {
@@ -164,7 +164,7 @@ TEST(qpp_Gates_Fd, AllTests) {
 /// BEGIN  std::string qpp::Gates::get_name(const cmat& U) const
 TEST(qpp_Gates_get_name, AllTests) {}
 /******************************************************************************/
-/// BEGIN  template<typename Derived = Eigen::MatrixXcd>
+/// BEGIN  template <typename Derived = Eigen::MatrixXcd>
 ///        qpp::Gates::Id(idx D = 2) const
 TEST(qpp_Gates_Id, AllTests) {
     EXPECT_EQ(gt.Id(1), Eigen::MatrixXcd::Identity(1, 1));

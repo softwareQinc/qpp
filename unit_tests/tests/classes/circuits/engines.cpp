@@ -8,11 +8,11 @@ using namespace qpp;
 
 /******************************************************************************/
 /// BEGIN QEngine& qpp::QEngine::execute(const QCircuit::iterator& it)
-TEST(qpp_QEngine_execute, IteratorStep) {}
+TEST(qpp_QEngine_execute, Iterator) {}
 /******************************************************************************/
 /// BEGIN virtual QEngine& qpp::QEngine::execute(
 ///       const QCircuit::iterator::value_type& elem)
-TEST(qpp_QEngine_execute, CircuitStep) {}
+TEST(qpp_QEngine_execute, ValueType) {}
 /******************************************************************************/
 /// BEGIN QEngine& qpp::QEngine::execute(idx reps = 1, bool clear_stats = true)
 TEST(qpp_QEngine_execute, AllCircuitWithRepetitions) {}
@@ -66,7 +66,7 @@ TEST(qpp_QEngine_to_JSON, AllTests) {}
 /******************************************************************************/
 /// BEGIN QNoisyEngine& qpp::QNoisyEngine::execute(
 ///       const QCircuit::iterator::value_type& elem) override
-TEST(qpp_QNoisyEngine_execute, CircuitStep) {}
+TEST(qpp_QNoisyEngine_execute, ValueType) {}
 /******************************************************************************/
 /// BEGIN std::vector<std::vector<idx>>
 ///       qpp::QNoisyEngine::get_noise_results() const

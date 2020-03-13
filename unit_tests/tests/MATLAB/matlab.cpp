@@ -10,17 +10,16 @@ using namespace qpp;
 // Unit testing "MATLAB/matlab.h"
 
 /******************************************************************************/
-/// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
+/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       qpp::loadMATLAB(const std::string& mat_file,
 ///                       const std::string& var_name)
 ///
-///       template<typename Derived> dyn_mat<typename Derived::Scalar>
+///       template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       void qpp::saveMATLAB(const Eigen::MatrixBase <Derived>& A,
 ///                            const std::string& mat_file,
 ///                            const std::string& var_name,
 ///                            const std::string& mode)
-/******************************************************************************/
-TEST(qpp_MATLAB_load_save_MATLAB, Matrices) {
+TEST(qpp_MATLAB_load_save_MATLAB, Matrix) {
     // matrices, complex, real and integer
 
     // DA = 1, DB = 1 degenerate case
@@ -85,7 +84,7 @@ TEST(qpp_MATLAB_load_save_MATLAB, Matrices) {
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-7);
 }
 /******************************************************************************/
-TEST(qpp_MATLAB_load_save_MATLAB, Vectors) {
+TEST(qpp_MATLAB_load_save_MATLAB, Vector) {
     // kets/row vectors, complex, real and integer
 
     // D = 1 degenerate case

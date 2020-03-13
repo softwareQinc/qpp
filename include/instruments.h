@@ -118,7 +118,7 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
         Cdimssubsys_bar[i] = dims[subsys_bar[i]];
     }
 
-    auto worker = [&](idx b) noexcept->typename Derived::Scalar {
+    auto worker = [&](idx b) noexcept -> typename Derived::Scalar {
         idx Cmidxrow[maxn];
         idx Cmidxrowsubsys[maxn];
         idx Cmidxcolsubsys_bar[maxn];
@@ -808,7 +808,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
  */
 template <typename Derived>
 std::tuple<std::vector<idx>, double, cmat>
-measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
+measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
             idx d = 2, bool destructive = true) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
@@ -842,8 +842,8 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> reset(const Eigen::MatrixBase<Derived>& A,
-                                        std::vector<idx> target,
-                                        std::vector<idx> dims) {
+                                        const std::vector<idx>& target,
+                                        const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -897,7 +897,8 @@ dyn_mat<typename Derived::Scalar> reset(const Eigen::MatrixBase<Derived>& A,
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> reset(const Eigen::MatrixBase<Derived>& A,
-                                        std::vector<idx> target, idx d = 2) {
+                                        const std::vector<idx>& target,
+                                        idx d = 2) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -929,8 +930,8 @@ dyn_mat<typename Derived::Scalar> reset(const Eigen::MatrixBase<Derived>& A,
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> discard(const Eigen::MatrixBase<Derived>& A,
-                                          std::vector<idx> target,
-                                          std::vector<idx> dims) {
+                                          const std::vector<idx>& target,
+                                          const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -976,7 +977,8 @@ dyn_mat<typename Derived::Scalar> discard(const Eigen::MatrixBase<Derived>& A,
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> discard(const Eigen::MatrixBase<Derived>& A,
-                                          std::vector<idx> target, idx d = 2) {
+                                          const std::vector<idx>& target,
+                                          idx d = 2) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS

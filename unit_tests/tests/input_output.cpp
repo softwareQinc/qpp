@@ -6,12 +6,12 @@ using namespace qpp;
 // Unit testing "input_output.h"
 
 /******************************************************************************/
-/// BEGIN template<typename Derived> dyn_mat<typename Derived::Scalar>
+/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       qpp::load(const std::string& fname)
 ///
-///       template<typename Derived> void qpp::save(
+///       template <typename Derived> void qpp::save(
 ///       const Eigen::MatrixBase<Derived>& A, const std::string& fname)
-TEST(qpp_load_save, Matrices) {
+TEST(qpp_load_save, Matrix) {
     // matrices,complex, real and integer
 
     // DA = 1, DB = 1 degenerate case
@@ -75,8 +75,8 @@ TEST(qpp_load_save, Matrices) {
     cmat load_expression = qpp::load<cmat>("out.tmp");
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-7);
 }
-
-TEST(qpp_load_save, Vectors) {
+/******************************************************************************/
+TEST(qpp_load_save, Vector) {
     // kets/row vectors, complex, real and integer
 
     // D = 1 degenerate case
