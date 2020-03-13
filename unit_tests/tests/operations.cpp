@@ -239,7 +239,6 @@ TEST(qpp_syspermute, Qubits) {}
 /******************************************************************************/
 /// BEGIN  template <typename Derived> dyn_col_vect<typename Derived::Scalar>
 ///        qpp::TFQ(const Eigen::MatrixBase<Derived>& A,
-///        idx d = 2,
-///        bool swap = true)
+///        idx d = 2, bool swap = true)
 TEST(qpp_TFQ, AllTests) {}
 /******************************************************************************/
