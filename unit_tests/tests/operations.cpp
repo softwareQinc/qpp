@@ -237,8 +237,8 @@ TEST(qpp_syspermute, Qudits) {}
 ///       const std::vector<idx>& perm, idx d = 2)
 TEST(qpp_syspermute, Qubits) {}
 /******************************************************************************/
-/// BEGIN  template <typename Derived> dyn_col_vect<typename Derived::Scalar>
-///        qpp::TFQ(const Eigen::MatrixBase<Derived>& A,
-///        idx d = 2, bool swap = true)
+/// BEGIN template <typename Derived> dyn_col_vect<typename Derived::Scalar>
+///       qpp::TFQ(const Eigen::MatrixBase<Derived>& A,
+///       idx d = 2, bool swap = true)
 TEST(qpp_TFQ, AllTests) {}
 /******************************************************************************/
