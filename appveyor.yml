@@ -13,9 +13,9 @@ build:
     parallel: true
 
 install:
-    - ps: wget http://bitbucket.org/eigen/eigen/get/3.3.5.zip -O eigen3.zip
+    - ps: wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip -O eigen3.zip
     - cmd: unzip eigen3.zip > nul
-    - cmd: mv eigen-eigen-b3f3d4950030 %EIGEN3_INSTALL_PATH%
+    - cmd: mv eigen-3.3.7 %EIGEN3_INSTALL_PATH%
 
 configuration:
     - Debug

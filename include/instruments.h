@@ -118,7 +118,7 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
         Cdimssubsys_bar[i] = dims[subsys_bar[i]];
     }
 
-    auto worker = [&](idx b) noexcept -> typename Derived::Scalar {
+    auto worker = [&](idx b) noexcept->typename Derived::Scalar {
         idx Cmidxrow[maxn];
         idx Cmidxrowsubsys[maxn];
         idx Cmidxcolsubsys_bar[maxn];
