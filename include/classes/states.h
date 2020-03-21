@@ -113,12 +113,13 @@ class States final : public internal::Singleton<const States> // const Singleton
 
     /**
      * \brief Zero state of \a n qudits
+     * \see qpp::States::one()
      *
-     * \param n Positive integer
+     * \param n Positive integer, 1 by default
      * \param d Subsystem dimensions
      * \return Zero state \f$|0\rangle^{\otimes n}\f$ of \a n qudits
      */
-    ket zero(idx n, idx d = 2) const {
+    ket zero(idx n = 1, idx d = 2) const {
         // EXCEPTION CHECKS
 
         // check out of range
@@ -138,12 +139,13 @@ class States final : public internal::Singleton<const States> // const Singleton
 
     /**
      * \brief One state of \a n qudits
+     * \see qpp::States::zero()
      *
-     * \param n Positive integer
+     * \param n Positive integer, 1 by default
      * \param d Subsystem dimensions
      * \return One state \f$|1\rangle^{\otimes n}\f$ of \a n qudits
      */
-    ket one(idx n, idx d = 2) const {
+    ket one(idx n = 1, idx d = 2) const {
         // EXCEPTION CHECKS
 
         // check out of range
@@ -162,13 +164,14 @@ class States final : public internal::Singleton<const States> // const Singleton
 
     /**
      * \brief \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
+     * \see qpp::States::j()
      *
      * \param j Non-negative integer
-     * \param n Positive integer
+     * \param n Positive integer, 1 by default
      * \param d Subsystem dimensions
      * \return \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
      */
-    ket jn(idx j, idx n, idx d = 2) const {
+    ket jn(idx j, idx n = 1, idx d = 2) const {
         // EXCEPTION CHECKS
 
         // check out of range
@@ -191,6 +194,7 @@ class States final : public internal::Singleton<const States> // const Singleton
 
     /**
      * \brief \f$|j\rangle\f$ computational basis state of a single qudit
+     * \see qpp::States::jn()
      *
      * \param j Non-negative integer
      * \param D System dimension
@@ -216,11 +220,12 @@ class States final : public internal::Singleton<const States> // const Singleton
 
     /**
      * \brief Plus state of \a n qubits
+     * \see qpp::States::minus()
      *
-     * \param n Positive integer
+     * \param n Positive integer, 1 by default
      * \return Plus state \f$|+\rangle^{\otimes n}\f$ of \a n qubits
      */
-    ket plus(idx n) const {
+    ket plus(idx n = 1) const {
         // EXCEPTION CHECKS
 
         // check out of range
@@ -236,11 +241,12 @@ class States final : public internal::Singleton<const States> // const Singleton
 
     /**
      * \brief Minus state of \a n qubits
+     * \see qpp::States::plus()
      *
-     * \param n Positive integer
+     * \param n Positive integer, 1 by default
      * \return Minus state \f$|-\rangle^{\otimes n}\f$ of \a n qubits
      */
-    ket minus(idx n) const {
+    ket minus(idx n = 1) const {
         // EXCEPTION CHECKS
 
         // check out of range

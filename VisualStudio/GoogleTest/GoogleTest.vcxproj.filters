@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\unit_tests\lib\googletest-release-1.8.1\googletest\src\gtest-all.cc">
+    <ClCompile Include="..\..\unit_tests\lib\googletest-release-1.10.0\googletest\src\gtest-all.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\unit_tests\lib\googletest-release-1.8.1\googletest\src\gtest_main.cc">
+    <ClCompile Include="..\..\unit_tests\lib\googletest-release-1.10.0\googletest\src\gtest_main.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

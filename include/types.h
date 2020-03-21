@@ -85,8 +85,8 @@ using dyn_mat = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
  *
  * Example:
  * \code
- * // type of colvect is Eigen::Matrix<float, Eigen::Dynamic, 1>
- * dyn_col_vect<float> colvect(2);
+ * // type of col_vect is Eigen::Matrix<float, Eigen::Dynamic, 1>
+ * dyn_col_vect<float> col_vect(2);
  * \endcode
  */
 template <typename Scalar> // Eigen::VectorX_type (where type = Scalar)
@@ -97,12 +97,17 @@ using dyn_col_vect = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
  *
  * Example:
  * \code
- * // type of rowvect is Eigen::Matrix<float, 1, Eigen::Dynamic>
- * dyn_row_vect<float> rowvect(3);
+ * // type of row_vect is Eigen::Matrix<float, 1, Eigen::Dynamic>
+ * dyn_row_vect<float> row_vect(3);
  * \endcode
  */
 template <typename Scalar> // Eigen::RowVectorX_type (where type = Scalar)
 using dyn_row_vect = Eigen::Matrix<Scalar, 1, Eigen::Dynamic>;
+
+/**
+ * \brief Quantumly-accessible Random Access Memory (qRAM)
+ */
+using qram = std::vector<idx>;
 
 } /* namespace qpp */
 

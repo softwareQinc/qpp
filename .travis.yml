@@ -1,42 +1,43 @@
 language: cpp
 dist: xenial
+os: linux
 
-matrix:
-    include:
-        # Ubuntu Linux 16.04 gcc5.4
-        - os: linux
-          compiler: gcc
-          before_install:
-              export CXX="g++-5" CC="gcc-5"
+jobs:
+  include:
+    # Ubuntu Linux 16.04 gcc5.4
+    - os: linux
+      compiler: gcc
+      before_install:
+        export CXX="g++-5" CC="gcc-5"
 
-        # Apple OSX LLVM version 10.0.0 (clang-1000.11.45.5)
-        - os: osx
-          osx_image: xcode10.1
-          compiler: clang
+    # Apple OSX LLVM version 10.0.0 (clang-1000.11.45.5)
+    - os: osx
+      osx_image: xcode10.1
+      compiler: clang
 
-        # OSX gcc6
-        - os: osx
-          osx_image: xcode10.1
-          compiler: gcc
-          before_install:
-              - rm -rf /usr/local/include/c++
-              - brew update
-              - brew install gcc6
-              - export CXX="g++-6" CC="gcc-6"
-              - sudo softwareupdate -i "Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.1"
+    # Apple OSX gcc6
+    - os: osx
+      osx_image: xcode10.1
+      compiler: gcc
+      before_install:
+        - rm -rf /usr/local/include/c++
+        - brew update
+        - brew install gcc6
+        - export CXX="g++-6" CC="gcc-6"
+        - sudo softwareupdate -i "Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.1"
 
 notifications:
   email: false
 
 script:
   - $CXX --version
-  
+
   # Install Eigen3
   - wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip -O eigen3.zip && unzip -q eigen3.zip &&  mv eigen-3.3.7 $HOME/eigen
-  
+
   # Build the examples
   - mkdir build && cd build && cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j4
-  
+
   # Build the unit tests
   - cd ../unit_tests && mkdir build && cd build && cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j4
 

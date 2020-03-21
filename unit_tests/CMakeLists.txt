@@ -106,7 +106,7 @@ IF (${WITH_OPENMP})
 ENDIF ()
 
 #### Google Test
-ADD_SUBDIRECTORY(lib/googletest-release-1.8.1)
+ADD_SUBDIRECTORY(lib/googletest-release-1.10.0)
 
 #### Enable all warnings only after compiling Google Test
 #### Additional flags for GNU gcc and Clang/AppleClang
