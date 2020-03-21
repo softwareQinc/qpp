@@ -1,3 +1,9 @@
+Pre-release
+    - Implemented
+        qpp::experimental::qRAM() - quantum Random Access Memory over classical
+                                    data
+        qpp::States::j() const    - |j> state of a single qudit
+
 Version 2.1 - 14 March 2020 (3.14.2020 Pi day)
     - Migrated the repository to https://github.com/softwareqinc/qpp
     - Changed gate definitions in "qasm/preprocessor.h" so they agree with

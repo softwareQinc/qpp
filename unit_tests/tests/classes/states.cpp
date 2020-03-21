@@ -7,10 +7,12 @@ using namespace qpp;
 // Unit testing "classes/states.h"
 
 /******************************************************************************/
+/// BEGIN ket qpp::States::j(idx j, idx D = 2) const
+TEST(qpp_States_j, AllTests) {}
+/******************************************************************************/
 /// BEGIN ket qpp::States::jn(idx j, idx n, idx d = 2) const
 TEST(qpp_States_jn, AllTests) {
     // qubits
-
     idx n = 1;
     EXPECT_NEAR(0, norm(qpp::st.z0 - qpp::st.jn(0, n)), 1e-7);
     EXPECT_NEAR(0, norm(qpp::st.z1 - qpp::st.jn(1, n)), 1e-7);

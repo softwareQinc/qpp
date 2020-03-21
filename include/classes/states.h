@@ -190,6 +190,31 @@ class States final : public internal::Singleton<const States> // const Singleton
     }
 
     /**
+     * \brief \f$|j\rangle\f$ computational basis state of a single qudit
+     *
+     * \param j Non-negative integer
+     * \param D System dimension
+     * \return \f$|j\rangle\f$ computational basis state of a single qudit
+     */
+    ket j(idx j, idx D = 2) const {
+        // EXCEPTION CHECKS
+
+        // check valid subsystem
+        if (j >= D)
+            throw exception::SubsysMismatchDims("qpp::States::j()");
+
+        // check valid dims
+        if (D == 0)
+            throw exception::DimsInvalid("qpp::States::j()");
+        // END EXCEPTION CHECKS
+
+        ket result = ket::Zero(D);
+        result(j) = 1;
+
+        return result;
+    }
+
+    /**
      * \brief Plus state of \a n qubits
      *
      * \param n Positive integer

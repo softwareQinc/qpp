@@ -1437,9 +1437,9 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
  * \param A Eigen expression
  * \param target Subsystem indexes
  * \param dims Dimensions of the multi-partite system
- * \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$
- * over the subsytems \a target in a multi-partite system, as a dynamic matrix
- * over the same scalar field as \a A
+ * \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$ over the subsytems
+ * \a target in a multi-partite system, as a dynamic matrix over the same scalar
+ * field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>

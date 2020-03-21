@@ -1433,7 +1433,6 @@ inline idx multiidx2n(const std::vector<idx>& midx,
  * \brief Multi-partite qudit ket
  * \see qpp::operator "" _ket()
  *
- *
  * Constructs the multi-partite qudit ket \f$|\mathrm{mask}\rangle\f$,
  * where \a mask is a std::vector of non-negative integers. Each element in
  * \a mask has to be smaller than the corresponding element in \a dims.
