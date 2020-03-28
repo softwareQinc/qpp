@@ -353,7 +353,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
         dyn_mat<typename Derived1::Scalar> result = rstate;
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for collapse(2) // NOLINT
 #endif // WITH_OPENMP_
         for (idx m = 0; m < DA; ++m)
             for (idx r = 0; r < DCTRLA_bar; ++r) {
@@ -383,7 +383,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
         dyn_mat<typename Derived1::Scalar> result = rstate;
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for collapse(4)
+#pragma omp parallel for collapse(4) // NOLINT
 #endif // WITH_OPENMP_
         for (idx m1 = 0; m1 < DA; ++m1)
             for (idx r1 = 0; r1 < DCTRLA_bar; ++r1)
@@ -604,7 +604,7 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
     cmat result = cmat::Zero(rA.rows(), rA.rows());
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for
+#pragma omp parallel for // NOLINT
 #endif // WITH_OPENMP_
     for (idx i = 0; i < Ks.size(); ++i) {
 #ifdef WITH_OPENMP_
@@ -753,7 +753,7 @@ inline cmat kraus2super(const std::vector<cmat>& Ks) {
     cmat EMN = cmat::Zero(D, D);
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for collapse(2) // NOLINT
 #endif // WITH_OPENMP_
     for (idx m = 0; m < D; ++m) {
         for (idx n = 0; n < D; ++n) {
@@ -828,7 +828,7 @@ inline cmat kraus2choi(const std::vector<cmat>& Ks) {
     cmat result = cmat::Zero(D * D, D * D);
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for
+#pragma omp parallel for // NOLINT
 #endif // WITH_OPENMP_
     for (idx i = 0; i < Ks.size(); ++i) {
 #ifdef WITH_OPENMP_
@@ -905,7 +905,7 @@ inline cmat choi2super(const cmat& A) {
     cmat result(D * D, D * D);
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for collapse(4)
+#pragma omp parallel for collapse(4) // NOLINT
 #endif // WITH_OPENMP_
     for (idx a = 0; a < D; ++a)
         for (idx b = 0; b < D; ++b)
@@ -939,7 +939,7 @@ inline cmat super2choi(const cmat& A) {
     cmat result(D * D, D * D);
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for collapse(4)
+#pragma omp parallel for collapse(4) // NOLINT
 #endif // WITH_OPENMP_
     for (idx a = 0; a < D; ++a)
         for (idx b = 0; b < D; ++b)
@@ -1005,7 +1005,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
         }; /* end worker */
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for collapse(2) // NOLINT
 #endif // WITH_OPENMP_
        // column major order for speed
         for (idx j = 0; j < DB; ++j)
@@ -1028,7 +1028,7 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
         }; /* end worker */
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for collapse(2) // NOLINT
 #endif // WITH_OPENMP_
        // column major order for speed
         for (idx j = 0; j < DB; ++j)
@@ -1131,7 +1131,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
         }; /* end worker */
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for collapse(2) // NOLINT
 #endif // WITH_OPENMP_
        // column major order for speed
         for (idx j = 0; j < DA; ++j)
@@ -1146,7 +1146,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
             throw exception::DimsMismatchMatrix("qpp::ptrace2()");
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for collapse(2) // NOLINT
 #endif // WITH_OPENMP_
        // column major order for speed
         for (idx j = 0; j < DA; ++j)
@@ -1323,7 +1323,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             internal::n2multiidx(j, n_subsys_bar, Cdimssubsys_bar,
                                  Cmidxcolsubsys_bar);
 #ifdef WITH_OPENMP_
-#pragma omp parallel for
+#pragma omp parallel for // NOLINT
 #endif // WITH_OPENMP_
             for (idx i = 0; i < Dsubsys_bar; ++i) {
                 result(i, j) = worker(i);
@@ -1379,7 +1379,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
             internal::n2multiidx(j, n_subsys_bar, Cdimssubsys_bar,
                                  Cmidxcolsubsys_bar);
 #ifdef WITH_OPENMP_
-#pragma omp parallel for
+#pragma omp parallel for // NOLINT
 #endif // WITH_OPENMP_
             for (idx i = 0; i < Dsubsys_bar; ++i) {
                 result(i, j) = worker(i);
@@ -1519,7 +1519,7 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
             internal::n2multiidx(j, n, Cdims, Cmidxcol);
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for
+#pragma omp parallel for // NOLINT
 #endif // WITH_OPENMP_
             for (idx i = 0; i < D; ++i)
                 result(i, j) = worker(i);
@@ -1558,7 +1558,7 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
             internal::n2multiidx(j, n, Cdims, Cmidxcol);
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for
+#pragma omp parallel for // NOLINT
 #endif // WITH_OPENMP_
             for (idx i = 0; i < D; ++i)
                 result(i, j) = worker(i);
@@ -1688,7 +1688,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
         }; /* end worker */
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for
+#pragma omp parallel for // NOLINT
 #endif // WITH_OPENMP_
         for (idx i = 0; i < D; ++i)
             result(worker(i)) = rA(i);
@@ -1731,7 +1731,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
         }; /* end worker */
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for
+#pragma omp parallel for // NOLINT
 #endif // WITH_OPENMP_
         for (idx i = 0; i < D * D; ++i)
             result(worker(i)) = rA(i);
@@ -2118,7 +2118,7 @@ qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data, idx DqRAM = -1) {
     ket result(Dout);
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for
+#pragma omp parallel for // NOLINT
 #endif // WITH_OPENMP_
     for (idx i = 0; i < Din; ++i) {
         dyn_col_vect<typename Derived::Scalar> ket_i =
