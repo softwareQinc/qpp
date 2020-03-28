@@ -304,7 +304,8 @@ dyn_mat<typename Derived1::Scalar> kron2(const Eigen::MatrixBase<Derived1>& A,
     result.resize(Arows * Brows, Acols * Bcols);
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for collapse(2) // NOLINT
+// NOLINTNEXTLINE
+#pragma omp parallel for collapse(2)
 #endif // WITH_OPENMP_
     // column major order for speed
     for (idx j = 0; j < Acols; ++j)

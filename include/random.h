@@ -391,7 +391,8 @@ inline std::vector<cmat> randkraus(idx N, idx D = 2) {
     cmat U = randU(N * D);
 
 #ifdef WITH_OPENMP_
-#pragma omp parallel for collapse(3) // NOLINT
+// NOLINTNEXTLINE
+#pragma omp parallel for collapse(3)
 #endif // WITH_OPENMP_
     for (idx k = 0; k < N; ++k)
         for (idx a = 0; a < D; ++a)
