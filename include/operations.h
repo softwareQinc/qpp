@@ -1287,7 +1287,6 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 
         auto worker = [&](idx i) noexcept->typename Derived::Scalar {
             // use static allocation for speed!
-
             idx Cmidxrow[maxn];
             idx Cmidxcol[maxn];
             idx Cmidxrowsubsys_bar[maxn];
@@ -1344,7 +1343,6 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 
         auto worker = [&](idx i) noexcept->typename Derived::Scalar {
             // use static allocation for speed!
-
             idx Cmidxrow[maxn];
             idx Cmidxcol[maxn];
             idx Cmidxrowsubsys_bar[maxn];
