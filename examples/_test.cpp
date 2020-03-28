@@ -9,7 +9,7 @@ int main() {
     using namespace qpp;
 
     ket in = st.plus();
-    qram data{0, 1};
-    ket out = experimental::qRAM(in, data);
+    qram data{1, 2, 3};
+    ket out = qRAM(in, data);
     std::cout << disp(out) << '\n';
 }

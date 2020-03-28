@@ -1,9 +1,9 @@
 Pre-release
     - Updated Google Test to version 1.10.0
     - Implemented
-          qpp::experimental::qRAM() - Quantumly-accessible Random Access Memory
-                                      over classical data (qRAM)
-    - Added a new type qpp::qram in "types.h" for representing qRAM data
+          qpp::qRAM() - Quantumly-accessible Random Access Memory over classical
+                        data (qRAM) ["operations.h"]
+    - Added the new type qpp::qram for representing qRAM data ["types.h"]
 
 Version 2.1 - 14 March 2020 (3.14.2020 Pi day release)
     - Migrated the repository to https://github.com/softwareqinc/qpp

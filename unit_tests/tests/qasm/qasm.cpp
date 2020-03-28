@@ -10,8 +10,8 @@ using namespace qpp;
 // Unit testing "qasm.h"
 
 /******************************************************************************/
-/// BEGIN  std::unique_ptr<qpp::QCircuit>
-///        qpp::qasm::read_from_file(const std::string& fname)
+/// BEGIN std::unique_ptr<qpp::QCircuit>
+///       qpp::qasm::read_from_file(const std::string& fname)
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, StdCompliance) {
     // generic circuits

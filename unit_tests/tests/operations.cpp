@@ -219,10 +219,15 @@ TEST(qpp_ptranspose, Qudits) {}
 ///       const std::vector<idx>& target, idx d = 2)
 TEST(qpp_ptranspose, Qubits) {}
 /******************************************************************************/
-/// BEGIN  template <typename Derived> dyn_col_vect<typename Derived::Scalar>
-///        qpp::QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2,
-///        bool swap = true)
+/// BEGIN template <typename Derived> dyn_col_vect<typename Derived::Scalar>
+///       qpp::QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2,
+///       bool swap = true)
 TEST(qpp_QFT, AllTests) {}
+/******************************************************************************/
+/// BEGIN template <typename Derived> dyn_col_vect<typename Derived::Scalar>
+///       qpp::qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data,
+///       idx DqRAM = -1)
+TEST(qpp_qRAM, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline cmat qpp::super2choi(const cmat& A)
 TEST(qpp_super2choi, AllTests) {}
