@@ -62,12 +62,12 @@ ket qRAM(const ket& in, const qram& data, idx DqRAM = -1) {
 
     // check equal dimensions
     idx Din = static_cast<idx>(in.rows());
-    if (data.size() != Din)
-        throw exception::DimsNotEqual("qpp::experimental::qRAM()");
+    if (data.size() < Din)
+        throw exception::DimsInvalid("qpp::experimental::qRAM()");
 
     idx max_val_qRAM = *std::max_element(std::begin(data), std::end(data));
     if (DqRAM != static_cast<idx>(-1) && DqRAM <= max_val_qRAM)
-        throw exception::OutOfRange("qpp::experimental::qRAM()");
+        throw exception::DimsInvalid("qpp::experimental::qRAM()");
     // END EXCEPTION CHECKS
 
     if (DqRAM == static_cast<idx>(-1))

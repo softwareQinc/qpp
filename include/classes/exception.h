@@ -258,7 +258,8 @@ class MatrixMismatchSubsys : public Exception {
  * \class qpp::exception::DimsInvalid
  * \brief Invalid dimension(s) exception
  *
- * std::vector<idx> of dimensions has zero size or contains zeros
+ * std::vector<idx> of dimensions has zero size or contains zeros, or any other
+ * related exception where some dimension(s) is(are) invalid
  */
 class DimsInvalid : public Exception {
   public:
