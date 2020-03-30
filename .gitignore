@@ -2,8 +2,9 @@
 *.swp
 out.tmp
 
-# Visual Studio
+# MSVC 
 .vs/
+/out*
 CMakeSettings.json
 
 # CLion
