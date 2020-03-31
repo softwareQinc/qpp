@@ -111,10 +111,11 @@ class Lexer {
     void skip_line_comment() {
         int consumed = 0;
 
-        while (buf_->peek() != 0 && buf_->peek() != '\n' &&
-               buf_->peek() != '\r') {
+        char c = buf_->peek();
+        while (c != 0 && c != '\n' && c != '\r' && c != EOF) {
             buf_->ignore();
             ++consumed;
+            c = buf_->peek();
         }
 
         loc_.advance_column(consumed);
