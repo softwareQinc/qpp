@@ -62,6 +62,9 @@ TEST(qpp_QCircuit_cCTRL_custom, AllTests) {}
 /// BEGIN const_iterator qpp::QCircuit::cend() const noexcept
 TEST(qpp_QCircuit_cend, AllTests) {}
 /******************************************************************************/
+/// BEGIN QCircuit& qpp::QCircuit::compress()
+TEST(qpp_QCircuit_compress, AllTests) {}
+/******************************************************************************/
 /// BEGIN QCircuit& qpp::QCircuit::CTRL(const cmat& U,
 ///       const std::vector<idx>& ctrl, const std::vector<idx>& target,
 ///       const std::vector<idx>& shift = {}, std::string name = {})
@@ -122,6 +125,9 @@ TEST(qpp_QCircuit_gate_fan, SpecificQudits) {}
 ///       std::string name = {})
 TEST(qpp_QCircuit_gate_fan, AllQudits) {}
 /******************************************************************************/
+/// BEGIN std::vector<idx> qpp::QCircuit::get_clean() const
+TEST(qpp_QCircuit_get_clean, AllTests) {}
+/******************************************************************************/
 /// BEGIN idx qpp::QCircuit::get_d() const noexcept
 TEST(qpp_QCircuit_get_d, AllTests) {}
 /******************************************************************************/
@@ -178,6 +184,9 @@ TEST(qpp_QCircuit_get_nq, AllTests) {}
 /// BEGIN idx qpp::QCircuit::get_step_count() const noexcept
 TEST(qpp_QCircuit_get_step_count, AllTests) {}
 /******************************************************************************/
+/// BEGIN bool qpp::QCircuit::is_clean(idx i) const
+TEST(qpp_QCircuit_is_clean, AllTests) {}
+/******************************************************************************/
 /// BEGIN QCircuit& qpp::QCircuit::kron(const QCircuit& qc)
 TEST(qpp_QCircuit_kron, AllTests) {}
 /******************************************************************************/
@@ -210,6 +219,12 @@ TEST(qpp_QCircuit_QFT, AllQudits) {}
 /// BEGIN QCircuit& qpp::QCircuit::QFT(const std::vector<idx>& target,
 ///       bool swap = true)
 TEST(qpp_QCircuit_QFT, SpecificQudits) {}
+/******************************************************************************/
+/// BEGIN QCircuit& qpp::QCircuit::remove_clean(idx target)
+TEST(qpp_QCircuit_remove_clean, SingleTarget) {}
+/******************************************************************************/
+/// BEGIN QCircuit& qpp::QCircuit::remove_clean(std::vector<idx> target)
+TEST(qpp_QCircuit_remove_clean, MultipleTargets) {}
 /******************************************************************************/
 /// BEGIN QCircuit& qpp::QCircuit::replicate(idx n)
 TEST(qpp_QCircuit_replicate, AllTests) {}

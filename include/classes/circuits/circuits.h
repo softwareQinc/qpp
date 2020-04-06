@@ -2793,7 +2793,7 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Discard single qudit by measuring it destructively in the
+     * \brief Discards single qudit by measuring it destructively in the
      * computational basis (Z-basis) and discarding the measurement result
      *
      * \param target Target qudit index that is discarded
@@ -2832,7 +2832,7 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Discard multiple qudits by measuring them destructively in the
+     * \brief Discards multiple qudits by measuring them destructively in the
      * computational basis (Z-basis) and discarding the measurement result
      *
      * \param target Target qudit indexes that are discarded
@@ -3197,13 +3197,140 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
+     * \brief Checks whether a qudit in the circuit was used before or not
+     * \see qpp::QCircuit::get_clean()
+     *
+     * \param i Qudit index
+     * \return True if the qudit \a i was used before (by a gate and/or
+     * measurement), false otherwise
+     */
+    bool is_clean(idx i) const {
+        // EXCEPTION CHECKS
+
+        // check valid target
+        if (i >= nq_)
+            throw exception::OutOfRange("qpp::QCircuit::is_clean()");
+        // END EXCEPTION CHECKS
+
+        for (auto&& elem : gates_) {
+            if (std::find(std::begin(elem.ctrl_), std::end(elem.ctrl_), i) !=
+                std::end(elem.ctrl_))
+                return false;
+
+            if (std::find(std::begin(elem.target_), std::end(elem.target_),
+                          i) != std::end(elem.target_))
+                return false;
+        }
+        for (auto&& elem : measurements_) {
+            if (std::find(std::begin(elem.target_), std::end(elem.target_),
+                          i) != std::end(elem.target_))
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * \brief Vector of clean qudits
+     * \see qpp::QCircuit::is_clean()
+     *
+     * \return Vector of clean qudits
+     */
+    std::vector<idx> get_clean() const {
+        std::vector<idx> result;
+        for (idx i = 0; i < nq_; ++i)
+            if (is_clean(i))
+                result.emplace_back(i);
+
+        return result;
+    }
+
+    /**
+     * \brief Removes clean qudit from the quantum circuit description and
+     * relabels the rest of the qudits accordingly
+     * \see qpp::QCircuit::is_clean(), qpp::QCircuit::compress()
+     *
+     * \param target Target clean qudit index that is removed
+     * \return Reference to the current instance
+     */
+    QCircuit& remove_clean(idx target) {
+        // EXCEPTION CHECKS
+
+        // check valid target and clean qudit
+        if (target >= nq_ || !is_clean(target))
+            throw exception::OutOfRange("qpp::QCircuit::remove_clean()");
+        // END EXCEPTION CHECKS
+
+        for (auto&& elem : gates_) {
+            for (idx& pos : elem.ctrl_) {
+                if (pos > target)
+                    --pos;
+            }
+            for (idx& pos : elem.target_) {
+                if (pos > target)
+                    --pos;
+            }
+        }
+
+        for (auto&& elem : measurements_) {
+            for (idx& pos : elem.target_) {
+                if (pos > target)
+                    --pos;
+            }
+        }
+        --nq_;
+
+        return *this;
+    }
+
+    /**
+     * \brief Removes list of clean qudits from the quantum circuit description
+     * and relabels the rest of the qudits accordingly
+     * \see qpp::QCircuit::is_clean(), qpp::QCircuit::compress()
+     *
+     * \param target Target clean qudit indexes that are removed
+     * \return Reference to the current instance
+     */
+    QCircuit& remove_clean(std::vector<idx> target) {
+        // EXCEPTION CHECKS
+
+        // check valid target
+        for (auto&& pos : target) {
+            // removing non-existing or non-clean qudit
+            if (pos >= nq_ || !is_clean(pos))
+                throw exception::OutOfRange("qpp::QCircuit::remove_clean()");
+        }
+        // END EXCEPTION CHECKS
+
+        // sort the target
+        std::sort(std::begin(target), std::end(target));
+        idx cnt = 0;
+        for (auto&& pos : target) {
+            remove_clean(pos - cnt++);
+        }
+
+        return *this;
+    }
+
+    /**
+     * \brief Removes all clean qudits form the quantum circuit description and
+     * relabels the rest of the qudits accordingly
+     * \see qpp::QCircuit::remove_clean()
+     *
+     * \return Reference to the current instance
+     */
+    QCircuit& compress() {
+        remove_clean(get_clean());
+
+        return *this;
+    }
+
+    /**
      * \brief qpp::IJSON::to_JSON() override
      *
      * Displays the quantum circuit description in JSON format
      *
-     * \param enclosed_in_curly_brackets If true, encloses the result in curly
-     * brackets
-     * \return String containing the JSON representation of
+     * \param enclosed_in_curly_brackets If true, encloses the result in
+     * curly brackets \return String containing the JSON representation of
      * the quantum circuit description
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
