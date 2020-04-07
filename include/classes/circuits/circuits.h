@@ -3213,9 +3213,16 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         for (auto&& elem : gates_) {
-            if (std::find(std::begin(elem.ctrl_), std::end(elem.ctrl_), i) !=
-                std::end(elem.ctrl_))
-                return false;
+            if (elem.gate_type_ != GateType::SINGLE_cCTRL_SINGLE_TARGET &&
+                elem.gate_type_ != GateType::SINGLE_cCTRL_MULTIPLE_TARGET &&
+                elem.gate_type_ != GateType::MULTIPLE_cCTRL_SINGLE_TARGET &&
+                elem.gate_type_ != GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET &&
+                elem.gate_type_ != GateType::CUSTOM_cCTRL) {
+                if (std::find(std::begin(elem.ctrl_), std::end(elem.ctrl_),
+                              i) != std::end(elem.ctrl_)) {
+                    return false;
+                }
+            }
 
             if (std::find(std::begin(elem.target_), std::end(elem.target_),
                           i) != std::end(elem.target_))
@@ -3261,9 +3268,15 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         for (auto&& elem : gates_) {
-            for (idx& pos : elem.ctrl_) {
-                if (pos > target)
-                    --pos;
+            if (elem.gate_type_ != GateType::SINGLE_cCTRL_SINGLE_TARGET &&
+                elem.gate_type_ != GateType::SINGLE_cCTRL_MULTIPLE_TARGET &&
+                elem.gate_type_ != GateType::MULTIPLE_cCTRL_SINGLE_TARGET &&
+                elem.gate_type_ != GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET &&
+                elem.gate_type_ != GateType::CUSTOM_cCTRL) {
+                for (idx& pos : elem.ctrl_) {
+                    if (pos > target)
+                        --pos;
+                }
             }
             for (idx& pos : elem.target_) {
                 if (pos > target)
