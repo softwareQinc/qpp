@@ -5,22 +5,32 @@ image: Visual Studio 2019
 platform: x64
 
 environment: 
-    EIGEN3_INSTALL_PATH: c:\eigen3
+  EIGEN3_INSTALL_PATH: c:\eigen3
     
-build:
-    project: VisualStudio/Quantum++.sln
-    verbosity: minimal
-    parallel: true
-
 install:
-    - ps: wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip -O eigen3.zip
-    - cmd: unzip eigen3.zip > nul
-    - cmd: mv eigen-3.3.7 %EIGEN3_INSTALL_PATH%
+  - ps: wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip -O eigen3.zip
+  - cmd: |-
+      unzip eigen3.zip > nul
+      mv eigen-3.3.7 %EIGEN3_INSTALL_PATH%
 
-configuration:
-    - Debug
-    - Release
+build_script:
+  - cmd: |-
+      @echo on
+      call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+      mkdir build
+      cd build
+      cmake -DEIGEN3_INCLUDE_DIR=%EIGEN3_INSTALL_PATH% ..
+      msbuild -verbosity:minimal qpp.sln
+
+before_test:
+  - cmd: |-
+      cd %APPVEYOR_BUILD_FOLDER%\unit_tests
+      mkdir build
+      cd build
+      cmake -DEIGEN3_INCLUDE_DIR=%EIGEN3_INSTALL_PATH% ..
+      msbuild -verbosity:minimal qpp_testing.sln
+        
 
 test_script:
-    - cmd: >-
-        %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\unit_tests.exe --gtest_filter=-qpp_Timer*
+  - cmd: |-
+      %APPVEYOR_BUILD_FOLDER%\unit_tests\build\tests\Debug\qpp_testing.exe --gtest_filter=-qpp_Timer*

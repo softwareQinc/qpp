@@ -88,9 +88,10 @@ nice format using the display manipulator `qpp::disp()`.
 
 ## Installing and running under [Windows](https://www.microsoft.com/en-us/windows)
 
-Double-click on the [Visual Studio](https://www.visualstudio.com)
-solution `VisualStudio.sln` located in the 
-[`VisualStudio`](https://github.com/vsoftco/qpp/tree/master/VisualStudio) folder.
+We provide [CMake](http://www.cmake.org/) support for [Visual Studio](https://www.visualstudio.com). We recommend using 
+Visual Studio 2017 or later. For comprehensive details about using [CMake](http://www.cmake.org/) with 
+[Visual Studio](https://www.visualstudio.com) please read 
+[this page](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019) and see the [Wiki](https://github.com/softwareQinc/qpp/wiki/3.-Building-instructions-for-Windows-platforms).
 
 ---
 # Building instructions for POSIX-compliant systems
@@ -260,36 +261,10 @@ for more details about this problem.
 
 ## Via [Visual Studio](https://www.visualstudio.com)
 
-- [Quantum++](https://github.com/vsoftco/qpp) provides full [CMake](http://www.cmake.org/) support for [Visual Studio](https://github.com/vsoftco/qpp/tree/master/VisualStudio). I recommend using [Visual Studio 2017](https://www.visualstudio.com) or later (preferably [Visual Studio 2019](https://www.visualstudio.com)). To build, you will need to edit the `EIGEN3_INCLUDE_DIR` [CMake](http://www.cmake.org/) cache variable so it correctly points to the [Eigen 3](http://eigen.tuxfamily.org)
-location, e.g. `C:\eigen3`. For comprehensive details about using [CMake](http://www.cmake.org/) with [Visual Studio](https://github.com/vsoftco/qpp/tree/master/VisualStudio) please read [this page](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019).
-
-- In addition, [Quantum++](https://github.com/vsoftco/qpp) contains a full [Visual Studio 2017](https://www.visualstudio.com)
-solution under the folder [`VisualStudio`](https://github.com/vsoftco/qpp/tree/master/VisualStudio).
-You must first [set the environment variable](https://stackoverflow.com/questions/32463212/how-to-set-environment-variables-from-windows/32463213#32463213) `EIGEN3_INSTALL_PATH` to point to the [Eigen 3](http://eigen.tuxfamily.org)
-location, e.g. `C:\eigen3`.
-A unit testing project (`unit_tests`) using
-[Google Test 1.8.1](https://github.com/google/googletest) is also
-included in the solution.
-
--  [Visual Studio](https://www.visualstudio.com) versions preceding
-version 2015 do not have full C++11 support. If you decide to use
-[Visual Studio](https://www.visualstudio.com) make sure you install version
-2015 or later. I recommend using
-[Visual Studio 2017](https://www.visualstudio.com) or later.
-
-- [Visual Studio 2015/2017](https://www.visualstudio.com) only
-supports [OpenMP 2.0](http://openmp.org/).
-[Quantum++](https://github.com/vsoftco/qpp) uses features
-from [OpenMP 3.0](http://openmp.org/), hence
-[Quantum++](https://github.com/vsoftco/qpp) will not compile
-on [Visual Studio 2015/2017](https://www.visualstudio.com) if you
-`#define WITH_OPENMP_` in your source file and enable
-[OpenMP](http://openmp.org/) (disabled by default) in
-
-    *Project/Properties/Configuration Properties/C_C++/Language/Open MP Support*
-.
-
-In case you get a "Missing Windows SDK" error, right-click on the solution name and choose "Retarget solution" to re-target the projects in the solution to your available Windows SDK.
+We provide [CMake](http://www.cmake.org/) support for [Visual Studio](https://www.visualstudio.com). We recommend using 
+Visual Studio 2017 or later. For comprehensive details about using [CMake](http://www.cmake.org/) with 
+[Visual Studio](https://www.visualstudio.com) please read 
+[this page](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019) and see the [Wiki](https://github.com/softwareQinc/qpp/wiki/3.-Building-instructions-for-Windows-platforms).
 
 ## Via [Cygwin](https://www.cygwin.com)
 
