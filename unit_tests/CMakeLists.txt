@@ -33,7 +33,7 @@ ELSE () # Try to find it automatically
             to your Eigen3 location when building with cmake,\
             for example\
 
-            cmake -DEIGEN3_INCLUDE_DIR=$HOME/eigen ..")
+            cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen")
     ENDIF ()
     MESSAGE(STATUS "Detecting Eigen3 - done")
 ENDIF ()

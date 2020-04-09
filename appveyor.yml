@@ -19,7 +19,7 @@ build_script:
       call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
       mkdir build
       cd build
-      cmake -DEIGEN3_INCLUDE_DIR=%EIGEN3_INSTALL_PATH% ..
+      cmake .. -DEIGEN3_INCLUDE_DIR=%EIGEN3_INSTALL_PATH%
       msbuild -verbosity:minimal qpp.sln
 
 before_test:
@@ -27,7 +27,7 @@ before_test:
       cd %APPVEYOR_BUILD_FOLDER%\unit_tests
       mkdir build
       cd build
-      cmake -DEIGEN3_INCLUDE_DIR=%EIGEN3_INSTALL_PATH% ..
+      cmake .. -DEIGEN3_INCLUDE_DIR=%EIGEN3_INSTALL_PATH%
       msbuild -verbosity:minimal qpp_testing.sln
         
 

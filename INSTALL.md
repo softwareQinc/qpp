@@ -144,7 +144,7 @@ manually in the [CMake](http://www.cmake.org/) build command line by passing
 the `-DEIGEN3_INCLUDE_DIR=path_to_eigen3` flag, e.g.
 
 ```bash
-cmake -DEIGEN3_INCLUDE_DIR=/usr/local/eigen3 ..
+cmake .. -DEIGEN3_INCLUDE_DIR=/usr/local/eigen3
 ```
 
 To build a different configuration, 
@@ -154,7 +154,7 @@ support, type from the root of the project
 ```bash
 cd build
 rm -rf *
-cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB="/Applications/MATLAB_R2017b.app" ..
+cmake .. -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB="/Applications/MATLAB_R2017b.app"
 make
 ```
     
@@ -163,7 +163,7 @@ Or, to disable [OpenMP](http://openmp.org/) support (enabled by default), type
 ```bash
 cd build
 rm -rf *
-cmake -DWITH_OPENMP=OFF ..
+cmake .. -DWITH_OPENMP=OFF
 make
 ```
 

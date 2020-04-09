@@ -188,7 +188,7 @@ Version 1.0 - 3 July 2018
     - Added "examples/reversible.cpp" example
     - The path to MATLAB can now be specified in the CMake command line (not
       hard coded anymore), such as
-          cmake -DWITH_MATLAB="/Applications/MATLAB_R2017b.app" ..
+          cmake .. -DWITH_MATLAB="/Applications/MATLAB_R2017b.app"
     - qpp::ket operator "" _ket(), qpp::ket operator "" _bra() and
       qpp::ket operator "" _prj() are now inside the newly introduced inline
       namespace qpp::literals
