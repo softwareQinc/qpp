@@ -83,6 +83,13 @@ class Location : public IDisplay {
     }
 
     /**
+     * \brief Default assignment operator
+     *
+     * \return Reference to the current instance
+     */
+    Location& operator=(const Location&) = default;
+
+    /**
      * \brief The name of the containing file
      *
      * \return Const reference to the filename
