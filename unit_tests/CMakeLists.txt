@@ -16,26 +16,26 @@ ENDIF ()
 
 #### Eigen3
 MESSAGE(STATUS "Detecting Eigen3")
-SET(EIGEN3_INCLUDE_DIR "" CACHE PATH "Path to Eigen3")
-# Location manually specified
-IF (NOT ${EIGEN3_INCLUDE_DIR} STREQUAL "")
-    IF (IS_DIRECTORY ${EIGEN3_INCLUDE_DIR})
-        MESSAGE(STATUS "Detecting Eigen3 - done (in ${EIGEN3_INCLUDE_DIR})")
-        INCLUDE_DIRECTORIES(SYSTEM "${EIGEN3_INCLUDE_DIR}")
+SET(EIGEN3_INSTALL_DIR "" CACHE PATH "Path to Eigen3")
+#### Location manually specified
+IF (NOT ${EIGEN3_INSTALL_DIR} STREQUAL "")
+    IF (IS_DIRECTORY ${EIGEN3_INSTALL_DIR})
+        MESSAGE(STATUS "Detecting Eigen3 - done (in ${EIGEN3_INSTALL_DIR})")
+        INCLUDE_DIRECTORIES(SYSTEM "${EIGEN3_INSTALL_DIR}")
     ELSE ()
         MESSAGE(FATAL_ERROR "Invalid path to Eigen3 installation")
     ENDIF ()
-ELSE () # Try to find it automatically
+ELSE () #### Try to find it automatically
     FIND_PACKAGE(Eigen3 3.0 QUIET NO_MODULE)
     IF (NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
         MESSAGE(FATAL_ERROR
-                "Eigen3 not detected! Please point EIGEN3_INCLUDE_DIR\
+                "Eigen3 not detected! Please point EIGEN3_INSTALL_DIR\
             to your Eigen3 location when building with cmake,\
             for example\
 
-            cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen")
+            cmake .. -DEIGEN3_INSTALL_DIR=$HOME/eigen")
     ENDIF ()
-    MESSAGE(STATUS "Detecting Eigen3 - done")
+    MESSAGE(STATUS "Detecting Eigen3 - done (in ${EIGEN3_INCLUDE_DIR})")
 ENDIF ()
 
 #### Cygwin has issues with std=c++11, use std=gnu++11 instead
@@ -58,33 +58,87 @@ IF (${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang")
     ${CMAKE_CXX_COMPILER_VERSION}. thread_local not supported.")
 ENDIF ()
 
-#### MATLAB support
-SET(WITH_MATLAB "" CACHE PATH "Path to MATLAB (to enable MATLAB support)")
-# WITH_MATLAB option was activated (set)
-IF (NOT ${WITH_MATLAB} STREQUAL "")
-    IF (IS_DIRECTORY ${WITH_MATLAB})
-        MESSAGE(STATUS "MATLAB support enabled")
-        # MATLAB include files
-        SET(MATLAB_INCLUDE "${WITH_MATLAB}/extern/include" CACHE PATH
-                "Path to MATLAB include directory")
-        IF (IS_DIRECTORY ${MATLAB_INCLUDE})
-            INCLUDE_DIRECTORIES(SYSTEM ${MATLAB_INCLUDE})
+#### MATLAB support, disabled by default
+OPTION(WITH_MATLAB "MATLAB support" OFF)
+IF (${WITH_MATLAB})
+    MESSAGE(STATUS "Detecting MATLAB")
+    #### Try to find it automatically
+    FIND_PACKAGE(Matlab OPTIONAL_COMPONENTS MX_LIBRARY MAT_LIBRARY QUIET)
+    IF (MATLAB_FOUND)
+        MESSAGE(STATUS "Detecting MATLAB - done (in ${Matlab_ROOT_DIR})")
+        INCLUDE_DIRECTORIES(SYSTEM ${Matlab_INCLUDE_DIRS})
+        IF (WIN32)
+            IF (MSVC)
+                SET(MATLAB_LIB_DIR
+                        "${Matlab_ROOT_DIR}/extern/lib/win64/microsoft"
+                        CACHE PATH "Custom path to MATLAB lib directory")
+            ELSEIF (MINGW)
+                SET(MATLAB_LIB_DIR "${Matlab_ROOT_DIR}/extern/lib/win64/mingw64"
+                        CACHE PATH "Custom path to MATLAB lib directory")
+            ELSE ()
+                MESSAGE(FATAL "Platform not supported, aborting.")
+            ENDIF ()
+        ELSEIF (UNIX AND NOT APPLE)
+            SET(MATLAB_LIB_DIR "${Matlab_ROOT_DIR}/bin/glnxa64" CACHE
+                    PATH "Custom path to MATLAB lib directory")
+        ELSEIF (APPLE)
+            SET(MATLAB_LIB_DIR "${Matlab_ROOT_DIR}/bin/maci64" CACHE
+                    PATH "Custom path to MATLAB lib directory")
         ELSE ()
-            MESSAGE(FATAL_ERROR "Possibly corrupted MATLAB include headers")
+            MESSAGE(FATAL "Platform not supported, aborting.")
         ENDIF ()
-        # MATLAB linker files
-        SET(MATLAB_LINK "${WITH_MATLAB}/bin/maci64" CACHE PATH
-                "Path to MATLAB lib directory")
-        IF (IS_DIRECTORY ${MATLAB_LINK})
-            LINK_DIRECTORIES(${MATLAB_LINK})
-        ELSE ()
-            MESSAGE(FATAL_ERROR "Possibly corrupted MATLAB linker files")
-        ENDIF ()
-        #### Everything is OK, inject definition (as #define) in the source
-        ADD_DEFINITIONS(-DWITH_MATLAB_)
+        LINK_DIRECTORIES(${MATLAB_LIB_DIR})
+        ADD_DEFINITIONS(-DHAS_MATLAB_ENABLED)
         SET(BUILD_WITH_MATLAB TRUE)
-    ELSE ()
-        MESSAGE(FATAL_ERROR "Invalid path to MATLAB installation")
+    ELSE () #### Location manually specified
+        SET(MATLAB_INSTALL_DIR "" CACHE PATH
+                "Custom path to MATLAB installation")
+        IF (IS_DIRECTORY ${MATLAB_INSTALL_DIR})
+            # MATLAB include files
+            SET(MATLAB_INCLUDE_DIR "${MATLAB_INSTALL_DIR}/extern/include"
+                    CACHE PATH "Custom path to MATLAB include directory")
+            IF (IS_DIRECTORY ${MATLAB_INCLUDE_DIR})
+                INCLUDE_DIRECTORIES(SYSTEM ${MATLAB_INCLUDE_DIR})
+            ELSE ()
+                MESSAGE(FATAL_ERROR
+                        "Possibly corrupted MATLAB include headers")
+            ENDIF ()
+            # MATLAB linker files
+            IF (WIN32)
+                IF (MSVC)
+                    SET(MATLAB_LIB_DIR
+                            "${MATLAB_INSTALL_DIR}/extern/lib/win64/microsoft"
+                            CACHE PATH "Custom path to MATLAB lib directory")
+                ELSEIF (MINGW64)
+                    SET(MATLAB_LIB_DIR
+                            "${MATLAB_INSTALL_DIR}/extern/lib/win64/mingw64"
+                            CACHE PATH "Custom path to MATLAB lib directory")
+                ELSE ()
+                    MESSAGE(FATAL "Platform not supported, aborting.")
+                ENDIF ()
+            ELSEIF (UNIX AND NOT APPLE)
+                SET(MATLAB_LIB_DIR "${MATLAB_INSTALL_DIR}/bin/glnxa64" CACHE
+                        PATH "Custom path to MATLAB lib directory")
+            ELSEIF (APPLE)
+                SET(MATLAB_LIB_DIR "${MATLAB_INSTALL_DIR}/bin/maci64" CACHE
+                        PATH "Custom path to MATLAB lib directory")
+            ELSE ()
+                MESSAGE(FATAL "Platform not supported, aborting.")
+            ENDIF ()
+            IF (IS_DIRECTORY ${MATLAB_LIB_DIR})
+                LINK_DIRECTORIES(${MATLAB_LIB_DIR})
+            ELSE ()
+                MESSAGE(FATAL_ERROR
+                        "Possibly corrupted MATLAB compiler libraries")
+            ENDIF ()
+            #### Everything is OK, inject definition (as #define) in the source
+            MESSAGE(STATUS
+                    "Detecting MATLAB - done (in ${MATLAB_INSTALL_DIR})")
+            ADD_DEFINITIONS(-DHAS_MATLAB_ENABLED)
+            SET(BUILD_WITH_MATLAB TRUE)
+        ELSE ()
+            MESSAGE(FATAL_ERROR "Could not detect MATLAB, aborting")
+        ENDIF ()
     ENDIF ()
 ENDIF ()
 
@@ -97,11 +151,11 @@ IF (${WITH_OPENMP})
     (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS "3.8")))
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
         #### inject definition (as #define) in the source files
-        ADD_DEFINITIONS(-DWITH_OPENMP_)
+        ADD_DEFINITIONS(-DHAS_OPENMP)
     ELSE ()
         MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} \
         ${CMAKE_CXX_COMPILER_VERSION}. Support for OpenMP is enabled only for \
-        the GNU gcc compiler or the clang version version 3.8 or higher.")
+        the GNU gcc compiler or the clang version 3.8 or higher.")
     ENDIF ()
 ENDIF ()
 
@@ -147,4 +201,3 @@ IF (NOT CMAKE_BUILD_TYPE)
          None Debug Release MinSizeRel RelWithDebInfo."
             FORCE)
 ENDIF ()
-

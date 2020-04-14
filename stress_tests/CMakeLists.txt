@@ -10,12 +10,13 @@ SET(SOURCE_FILES
 
 #### Eigen3
 MESSAGE(STATUS "Detecting Eigen3")
-SET(EIGEN3_INCLUDE_DIR "" CACHE PATH "Path to Eigen3")
+SET(EIGEN3_INSTALL_DIR "" CACHE PATH "Path to Eigen3")
 #### Location manually specified
-IF (NOT ${EIGEN3_INCLUDE_DIR} STREQUAL "")
-    IF (IS_DIRECTORY ${EIGEN3_INCLUDE_DIR})
-        MESSAGE(STATUS "Detecting Eigen3 - done (in ${EIGEN3_INCLUDE_DIR})")
-        INCLUDE_DIRECTORIES(SYSTEM "${EIGEN3_INCLUDE_DIR}")
+IF (NOT ${EIGEN3_INSTALL_DIR} STREQUAL "")
+    IF (IS_DIRECTORY ${EIGEN3_INSTALL_DIR})
+        MESSAGE(STATUS "Detecting Eigen3 - done (in ${EIGEN3_INSTALL_DIR})")
+        INCLUDE_DIRECTORIES(SYSTEM "${EIGEN3_INSTALL_DIR}")
+
     ELSE ()
         MESSAGE(FATAL_ERROR "Invalid path to Eigen3 installation")
     ENDIF ()
@@ -23,13 +24,13 @@ ELSE () #### Try to find it automatically
     FIND_PACKAGE(Eigen3 3.0 QUIET NO_MODULE)
     IF (NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
         MESSAGE(FATAL_ERROR
-                "Eigen3 not detected! Please point EIGEN3_INCLUDE_DIR\
+                "Eigen3 not detected! Please point EIGEN3_INSTALL_DIR\
             to your Eigen3 location when building with cmake,\
             for example\
 
-            cmake .. -DEIGEN3_INCLUDE_DIR=$HOME/eigen")
+            cmake .. -DEIGEN3_INSTALL_DIR=$HOME/eigen")
     ENDIF ()
-    MESSAGE(STATUS "Detecting Eigen3 - done")
+    MESSAGE(STATUS "Detecting Eigen3 - done (in ${EIGEN3_INCLUDE_DIR})")
 ENDIF ()
 
 #### Use C++11
@@ -98,7 +99,7 @@ IF (${WITH_OPENMP})
             CMAKE_CXX_COMPILER_VERSION VERSION_EQUAL "3.8")))
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
         #### inject definition (as #define) in the source files
-        ADD_DEFINITIONS(-DWITH_OPENMP_)
+        ADD_DEFINITIONS(-DHAS_OPENMP)
     ELSE ()
         MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} \
         ${CMAKE_CXX_COMPILER_VERSION}. Support for OpenMP is enabled only for \

@@ -70,10 +70,8 @@ inline void n2multiidx(idx n, idx numdims, const idx* const dims,
 // standard lexicographical order, e.g. 00->0, 01->1, 10->2, 11->3
 inline idx multiidx2n(const idx* const midx, idx numdims,
                       const idx* const dims) noexcept {
-// error checks only in DEBUG version
-#ifndef NDEBUG
+    // error checks only in DEBUG version
     assert(numdims > 0);
-#endif
 
     // no error checks in release version to improve speed
 
@@ -149,11 +147,10 @@ inline bool check_dims(const std::vector<idx>& dims) {
 template <typename Derived>
 bool check_dims_match_mat(const std::vector<idx>& dims,
                           const Eigen::MatrixBase<Derived>& A) {
-// error checks only in DEBUG version
-#ifndef NDEBUG
+    // error checks only in DEBUG version
     assert(dims.size() > 0);
     assert(A.rows() == A.cols());
-#endif
+
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
                                   static_cast<idx>(1), std::multiplies<idx>());
 
@@ -164,12 +161,11 @@ bool check_dims_match_mat(const std::vector<idx>& dims,
 template <typename Derived>
 bool check_dims_match_cvect(const std::vector<idx>& dims,
                             const Eigen::MatrixBase<Derived>& A) {
-// error checks only in DEBUG version
-#ifndef NDEBUG
+    // error checks only in DEBUG version
     assert(dims.size() > 0);
     assert(A.rows() > 0);
     assert(A.cols() == 1);
-#endif
+
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
                                   static_cast<idx>(1), std::multiplies<idx>());
 
@@ -180,12 +176,11 @@ bool check_dims_match_cvect(const std::vector<idx>& dims,
 template <typename Derived>
 bool check_dims_match_rvect(const std::vector<idx>& dims,
                             const Eigen::MatrixBase<Derived>& A) {
-// error checks only in DEBUG version
-#ifndef NDEBUG
+    // error checks only in DEBUG version
     assert(dims.size() > 0);
     assert(A.cols() > 0);
     assert(A.rows() == 1);
-#endif
+
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
                                   static_cast<idx>(1), std::multiplies<idx>());
     ;
@@ -195,10 +190,9 @@ bool check_dims_match_rvect(const std::vector<idx>& dims,
 
 // check that all elements in valid dims equal to dim
 inline bool check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept {
-// error checks only in DEBUG version
-#ifndef NDEBUG
+    // error checks only in DEBUG version
     assert(dims.size() > 0);
-#endif
+
     for (idx i : dims)
         if (i != dim)
             return false;
@@ -303,10 +297,10 @@ dyn_mat<typename Derived1::Scalar> kron2(const Eigen::MatrixBase<Derived1>& A,
     dyn_mat<typename Derived1::Scalar> result;
     result.resize(Arows * Brows, Acols * Bcols);
 
-#ifdef WITH_OPENMP_
+#ifdef HAS_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
-#endif // WITH_OPENMP_
+#endif // HAS_OPENMP
     // column major order for speed
     for (idx j = 0; j < Acols; ++j)
         for (idx i = 0; i < Arows; ++i)
@@ -369,11 +363,10 @@ void variadic_vector_emplace(std::vector<T>& v, First&& first, Args&&... args) {
 // returns the number of subsystems (each subsystem assumed of the same
 // dimension d) from an object (ket/bra/density matrix) of size D
 inline idx get_num_subsys(idx D, idx d) {
-// error checks only in DEBUG version
-#ifndef NDEBUG
+    // error checks only in DEBUG version
     assert(D > 0);
     assert(d > 1);
-#endif
+
     return static_cast<idx>(std::llround(std::log2(D) / std::log2(d)));
 }
 
@@ -381,11 +374,10 @@ inline idx get_num_subsys(idx D, idx d) {
 // dimension d) from an object (ket/bra/density matrix) of size sz consisting
 // of N subsystems
 inline idx get_dim_subsys(idx sz, idx N) {
-// error checks only in DEBUG version
-#ifndef NDEBUG
+    // error checks only in DEBUG version
     assert(N > 0);
     assert(sz > 0);
-#endif
+
     if (N == 2)
         return static_cast<idx>(std::llround(std::sqrt(sz)));
 

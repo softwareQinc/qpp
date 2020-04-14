@@ -1,5 +1,5 @@
 // MATLAB input/output
-// Source: ./examples/matlab.cpp
+// Source: ./examples/matlab_io.cpp
 #include <iostream>
 
 #include "qpp.h"

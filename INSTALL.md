@@ -1,21 +1,20 @@
 # Building instructions for the truly impatient
 
-If you really cannot wait anymore, continue reading the remaining. If you afford to be a bit patient, 
-please skip the reminder of this section and read the detailed 
-[Building instructions for POSIX-compliant systems](https://github.com/vsoftco/qpp/wiki/2.-Building-instructions-for-POSIX-compliant-platforms) 
+If you really cannot wait anymore, continue reading the remaining. If you afford to be a bit patient, please skip the reminder of this section and read the detailed 
+[Building instructions for POSIX-compliant systems](https://github.com/softwareqinc/qpp/wiki/2.-Building-instructions-for-POSIX-compliant-platforms) 
 or 
-[Building instructions for Windows](https://github.com/vsoftco/qpp/wiki/3.-Building-instructions-for-Windows-platforms) 
+[Building instructions for Windows](https://github.com/softwareqinc/qpp/wiki/3.-Building-instructions-for-Windows-platforms) 
 in the Wiki or in the reminder of this document.
 
 ## Installing and running under POSIX-compliant systems
 
 In this section I assume that you use a POSIX-compliant system (e.g. UNIX-like).
-To get started with [Quantum++](https://github.com/vsoftco/qpp), first
+To get started with [Quantum++](https://github.com/softwareqinc/qpp), first
 install the [Eigen 3](http://eigen.tuxfamily.org/) library into your home directory, 
 as `$HOME/eigen`. You can change the name of the directory, but in the
 current document I will use `$HOME/eigen` as the location of the
 [Eigen 3](http://eigen.tuxfamily.org/) library. Next, download or clone
-[Quantum++](https://github.com/vsoftco/qpp) library into the home
+[Quantum++](https://github.com/softwareqinc/qpp) library into the home
 directory as `$HOME/qpp`. Finally, make sure that your compiler supports
 C++11 and preferably [OpenMP](http://openmp.org/). As a compiler I
 recommend [g++](https://gcc.gnu.org/) version 5.0 or later or
@@ -24,7 +23,7 @@ recommend [g++](https://gcc.gnu.org/) version 5.0 or later or
 Next, we will build a simple minimal example to test that the installation was
 successful. Create a directory called `$HOME/testing`, and inside it
 create the file `minimal.cpp`, available for download in 
-[`examples/minimal.cpp`](https://github.com/vsoftco/qpp/blob/master/examples/minimal.cpp) and with 
+[`examples/minimal.cpp`](https://github.com/softwareqinc/qpp/blob/master/examples/minimal.cpp) and with 
 the content listed below.
 
 ```CPP
@@ -71,11 +70,11 @@ The line
 
 includes the main header file of the
 library `qpp.h`. This header file includes all other necessary internal
-[Quantum++](https://github.com/vsoftco/qpp) header files. The line
+[Quantum++](https://github.com/softwareqinc/qpp) header files. The line
 ```CPP
 using namespace qpp;
 ```
-injects the [Quantum++](https://github.com/vsoftco/qpp)'s namespace into
+injects the [Quantum++](https://github.com/softwareqinc/qpp)'s namespace into
 the working namespace, so we don't need to prefix the library functions by
 `qpp::`. Finally the line 
 
@@ -99,28 +98,28 @@ Visual Studio 2017 or later. For comprehensive details about using [CMake](http:
 ## Pre-requisites
 
 - Recommended compiler: [g++](https://gcc.gnu.org/) version 5.0 or later
-(for good C++11 support). You may also use [clang++](http://clang.llvm.org/) version 3.8 or later, please read the "Additional remarks/Building with [clang++](http://clang.llvm.org/)" subsection near the end of this document for more plarform-dependent details.
+(for good C++11 support). You may also use [clang++](http://clang.llvm.org/) version 3.8 or later, please read the ["Additional remarks/Building with clang++"](https://github.com/softwareqinc/qpp/blob/master/INSTALL.md#clang) subsection near the end of this document for more platform-dependent details.
 - [Eigen 3](http://eigen.tuxfamily.org) linear algebra library. I assume here that 
 the library is installed in `$HOME/eigen`, although the location may vary, e.g. if 
-the libary was installed using a package manager.
-- [Quantum++](https://github.com/vsoftco/qpp) library located in `$HOME/qpp`.
+the library was installed using a package manager.
+- [Quantum++](https://github.com/softwareqinc/qpp) library located in `$HOME/qpp`.
 
 ## Optional
 
 - [CMake](http://www.cmake.org/) version 3.0 or later, highly recommended
 - [MATLAB](http://www.mathworks.com/products/matlab/) compiler include header 
-files:
+files, e.g.:
 `/Applications/MATLAB_R2017b.app/extern/include`
 - [MATLAB](http://www.mathworks.com/products/matlab/) compiler shared library 
-files:
+files, e.g.:
 `/Applications/MATLAB_R2017b.app/bin/maci64`
 
 ## Building using [CMake](http://www.cmake.org/) (version 3.0 or later)
 
 The current version of the repository has a 
-[`CMakeLists.txt`](https://github.com/vsoftco/qpp/blob/master/CMakeLists.txt)
+[`CMakeLists.txt`](https://github.com/softwareqinc/qpp/blob/master/CMakeLists.txt)
 configuration file for building examples using [CMake](http://www.cmake.org/). 
-To build an example using [CMake](http://www.cmake.org/), 
+To build an(the) example(s) using [CMake](http://www.cmake.org/), 
 I recommend an out-of-source build, i.e., from the root of the project 
 (where the `include` folder is located), type
 
@@ -128,23 +127,23 @@ I recommend an out-of-source build, i.e., from the root of the project
 mkdir build
 cd build
 cmake ..
-make
+make [<target>]
 ```
 
-The commands above build the release version (default) executable `qpp`, 
-from the source file `examples/minimal.cpp`,
+If the optional `<target>` is specified, the commands above build the release version (default) executable corresponding to `<target>`, 
+from the corresponding example source file `examples/<target>.cpp`,
 without [MATLAB](http://www.mathworks.com/products/matlab/) support (default), 
-inside the directory `build`. 
+inside the directory `build`. If `<target>` is not specified, all target examples from the directory `examples` are built.
 
 If the location of [Eigen 3](http://eigen.tuxfamily.org) is not detected
 automatically by the [CMake](http://www.cmake.org/) build script, 
 then the build script will fail (with an error message). In this case 
 the location of [Eigen 3](http://eigen.tuxfamily.org) needs to be specified
 manually in the [CMake](http://www.cmake.org/) build command line by passing
-the `-DEIGEN3_INCLUDE_DIR=path_to_eigen3` flag, e.g.
+the `-DEIGEN3_INSTALL_DIR=/path/to/eigen3` flag, e.g.
 
 ```bash
-cmake .. -DEIGEN3_INCLUDE_DIR=/usr/local/eigen3
+cmake .. -DEIGEN3_INSTALL_DIR=/usr/local/eigen3
 ```
 
 To build a different configuration, 
@@ -154,22 +153,22 @@ support, type from the root of the project
 ```bash
 cd build
 rm -rf *
-cmake .. -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB="/Applications/MATLAB_R2017b.app"
-make
+cmake .. -DCMAKE_BUILD_TYPE=Debug -DWITH_MATLAB=ON
+make [<target>]
 ```
+
+The flag `-DWITH_MATLAB=ON` instructs [CMake](http://www.cmake.org/)  to detect the [MATLAB](http://www.mathworks.com/products/matlab/) installation automatically. If successful, it builds and links with the [MATLAB](http://www.mathworks.com/products/matlab/) compiler libraries and injects the macro `HAS_MATLAB_ENABLED` in the source code. If [MATLAB](http://www.mathworks.com/products/matlab/) was not detected automatically, specify its location manually via the additional flag `-DMATLAB_INSTALL_DIR=/path/to/MATLAB`, e.g. `-DMATLAB_INSTALL_DIR=/Applications/MATLAB_R2017b.app`. If you still get some [CMake](http://www.cmake.org/) errors, try adding the flags `-DMATLAB_INCLUDE_DIR=/path/to/MATLAB/headers` and `-DMATLAB_LIB_DIR=/path/to/MATLAB/libs` to specify the exact location of the [MATLAB](http://www.mathworks.com/products/matlab/) compiler include header files and compiler shared library files, respectively.
     
-Or, to disable [OpenMP](http://openmp.org/) support (enabled by default), type
+To disable [OpenMP](http://openmp.org/) support (enabled by default), type
    
 ```bash
 cd build
 rm -rf *
 cmake .. -DWITH_OPENMP=OFF
-make
+make [<target>]
 ```
 
-To change the name of the example file or the location of 
-[MATLAB](http://www.mathworks.com/products/matlab/) installation, 
-edit the [`CMakeLists.txt`](https://github.com/vsoftco/qpp/blob/master/CMakeLists.txt) file. Inspect also [`CMakeLists.txt`](https://github.com/vsoftco/qpp/blob/master/CMakeLists.txt) 
+Inspect also [`CMakeLists.txt`](https://github.com/softwareqinc/qpp/blob/master/CMakeLists.txt) 
 for additional fine-tuning options. Do not forget to clean the `build` 
 directory before a fresh build!
 
@@ -222,7 +221,7 @@ g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
 
 ## Additional remarks
 
-### Building with [clang++](http://clang.llvm.org/)
+### <a name="clang"></a>Building with [clang++](http://clang.llvm.org/)
 - Make sure to use [clang++](http://clang.llvm.org/) version 3.8 or later (previous versions lack or do not have good [OpenMP](http://openmp.org/) support).
 
 #### Linux specific instructions
@@ -266,13 +265,21 @@ Visual Studio 2017 or later. For comprehensive details about using [CMake](http:
 [Visual Studio](https://www.visualstudio.com) please read 
 [this page](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019) and see the [Wiki](https://github.com/softwareQinc/qpp/wiki/3.-Building-instructions-for-Windows-platforms).
 
-## Via [Cygwin](https://www.cygwin.com)
+## Via [Cygwin](https://www.cygwin.com) or [MSYS2](https://www.msys2.org)
 
-- Use the [same building instructions as for POSIX systems](https://github.com/vsoftco/qpp/wiki/2.-Building-instructions-for-POSIX-compliant-platforms).
+- Use the [same building instructions as for POSIX systems](https://github.com/softwareqinc/qpp/wiki/2.-Building-instructions-for-POSIX-compliant-platforms).
 - **Note:** some earlier versions of
 [Cygwin](https://www.cygwin.com) had a bug related to lack of support for some
 C++11 math functions, see
 <http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2>
 for more details. Quick fix: patch the standard library header file `<cmath>`
-using the provided patch [`cmath_cygwin.patch`](https://github.com/vsoftco/qpp/blob/master/cmath_cygwin.patch).
+using the provided patch [`cmath_cygwin.patch`](https://github.com/softwareqinc/qpp/blob/master/cmath_cygwin.patch).
 Later [Cygwin](https://www.cygwin.com) versions seem to have fixed the issue (as of Nov. 2016).
+
+---
+**Important**: If building under Windows with 
+[MATLAB](http://www.mathworks.com/products/matlab/)
+support, please add the location of `libmx.dll` and `libmat.dll` 
+(the `.dll` **and not** the `.lib` files) to your
+`PATH` environment variable. In my case they are located under 
+`C:\Program Files\MATLAB\R2020a\bin\win64`.

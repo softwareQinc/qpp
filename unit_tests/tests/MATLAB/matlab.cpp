@@ -1,4 +1,4 @@
-#ifdef WITH_MATLAB_
+#ifdef HAS_MATLAB_ENABLED
 
 #include "gtest/gtest.h"
 #include "qpp.h"
@@ -134,4 +134,4 @@ TEST(qpp_MATLAB_load_save_MATLAB, Vector) {
 }
 /******************************************************************************/
 
-#endif // WITH_MATLAB_
+#endif // HAS_MATLAB_ENABLED

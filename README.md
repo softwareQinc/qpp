@@ -1,5 +1,5 @@
 # Quantum++ 
-## Version 2.1 - 14 March 2020 (3.14.2020 Pi day)
+## Version 2.2 - 14 April 2020
 
 **Build status:**
 

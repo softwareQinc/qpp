@@ -32,11 +32,8 @@
 #ifndef MATLAB_MATLAB_H_
 #define MATLAB_MATLAB_H_
 
-// MATLAB I/O interfacing
-// add the path to $MATLAB_INSTALLATION_FOLDER/extern/include in include path
-
-#include "mat.h" // path to this file is defined in the Makefile
-#include "mex.h" // path to this file is defined in the Makefile
+#include "mat.h"
+#include "mex.h"
 
 namespace qpp {
 /**
@@ -54,12 +51,12 @@ namespace qpp {
  * \endcode
  *
  * \tparam Derived Complex Eigen type
- * \param mat_file MATALB .mat file
+ * \param mat_file MATLAB .mat file
  * \param var_name Variable name in the .mat file representing the matrix to be
  * loaded
  * \return Eigen dynamic matrix
  */
-template <typename Derived> // double
+template <typename Derived> // complex
 typename std::enable_if<std::is_same<typename Derived::Scalar, cplx>::value,
                         dyn_mat<cplx>>::type
 loadMATLAB(const std::string& mat_file, const std::string& var_name) {
@@ -86,42 +83,41 @@ loadMATLAB(const std::string& mat_file, const std::string& var_name) {
         throw std::runtime_error("qpp::loadMATLAB(): Loaded variable " +
                                  var_name +
                                  " is not in double-precision format!");
-    // END EXCEPTION CHECKS
+        // END EXCEPTION CHECKS
 
-    idx rows = mxGetM(pa);
-    idx cols = mxGetN(pa);
+// populate the result
+#if MX_HAS_INTERLEAVED_COMPLEX
+    dyn_mat<cplx> result(mxGetM(pa), mxGetN(pa));
+    std::memcpy((void*) result.data(), (void*) mxGetComplexDoubles(pa),
+                sizeof(cplx) * result.size());
+    mxDestroyArray(pa);
+    matClose(pmat);
 
-    dyn_mat<double> result_re(rows, cols);
-    dyn_mat<double> result_im(rows, cols);
+    return result;
+#else
+    dyn_mat<double> result_re(mxGetM(pa), mxGetN(pa));
+    dyn_mat<double> result_im(mxGetM(pa), mxGetN(pa));
 
-    // real part and imaginary part pointers
-    double* pa_re = nullptr;
-    double* pa_im = nullptr;
-
-    // Populate the real part of the created array.
-    pa_re = mxGetPr(pa);
-    std::memcpy(result_re.data(), pa_re,
-                sizeof(double) * mxGetNumberOfElements(pa));
+    // populate the real part of the created array
+    std::memcpy((void*) result_re.data(), (void*) mxGetPr(pa),
+                sizeof(double) * result_re.size());
 
     if (mxIsComplex(pa)) // populate the imaginary part if exists
-    {
-        pa_im = mxGetPi(pa);
-        std::memcpy(result_im.data(), pa_im,
-                    sizeof(double) * mxGetNumberOfElements(pa));
-    } else // set to zero the imaginary part
-    {
-        std::memset(result_im.data(), 0,
-                    sizeof(double) * mxGetNumberOfElements(pa));
-    }
+        std::memcpy((void*) result_im.data(), (void*) mxGetPi(pa),
+                    sizeof(double) * result_im.size());
+    else // set to zero the imaginary part
+        std::memset(result_im.data(), 0, sizeof(double) * result_im.size());
 
     mxDestroyArray(pa);
     matClose(pmat);
 
     return (result_re.cast<cplx>()) + 1_i * (result_im.cast<cplx>());
+#endif // MX_HAS_INTERLEAVED_COMPLEX
 }
 
 /**
- * \brief Loads a non-complex Eigen dynamic matrix from a MATLAB .mat file
+ * \brief Loads a non-complex (real, integer etc.) Eigen dynamic matrix from a
+ * MATLAB .mat file
  * \see qpp::saveMATLAB()
  *
  * The template parameter cannot be automatically deduced and must be explicitly
@@ -135,12 +131,12 @@ loadMATLAB(const std::string& mat_file, const std::string& var_name) {
  * \endcode
  *
  * \tparam Derived Non-complex Eigen type
- * \param mat_file MATALB .mat file
+ * \param mat_file MATLAB .mat file
  * \param var_name Variable name in the .mat file representing the matrix to be
  * loaded
  * \return Eigen dynamic matrix
  */
-template <typename Derived> // cplx
+template <typename Derived> // real
 typename std::enable_if<!std::is_same<typename Derived::Scalar, cplx>::value,
                         dyn_mat<typename Derived::Scalar>>::type
 loadMATLAB(const std::string& mat_file, const std::string& var_name) {
@@ -169,13 +165,16 @@ loadMATLAB(const std::string& mat_file, const std::string& var_name) {
                                  " is not in double-precision format!");
     // END EXCEPTION CHECKS
 
-    idx rows = mxGetM(pa);
-    idx cols = mxGetN(pa);
+    dyn_mat<double> result(mxGetM(pa), mxGetN(pa));
 
-    dyn_mat<double> result(rows, cols);
-
-    std::memcpy(result.data(), mxGetPr(pa),
-                sizeof(double) * mxGetNumberOfElements(pa));
+// populate the result
+#if MX_HAS_INTERLEAVED_COMPLEX
+    std::memcpy((void*) result.data(), (void*) mxGetDoubles(pa),
+                sizeof(double) * result.size());
+#else
+    std::memcpy((void*) result.data(), (void*) mxGetPr(pa),
+                sizeof(double) * result.size());
+#endif // MX_HAS_INTERLEAVED_COMPLEX
 
     mxDestroyArray(pa);
     matClose(pmat);
@@ -190,14 +189,13 @@ loadMATLAB(const std::string& mat_file, const std::string& var_name) {
  *
  * \tparam Complex Eigen type
  * \param A Eigen expression over the complex field
- * \param mat_file MATALB .mat file
+ * \param mat_file MATLAB .mat file
  * \param var_name Variable name in the .mat file representing the matrix to be
  * saved
  * \param mode Saving mode (append, overwrite etc.), see MATLAB \a matOpen()
  * documentation for details
  */
-template <typename Derived>
-// double
+template <typename Derived> // complex
 typename std::enable_if<
     std::is_same<typename Derived::Scalar, cplx>::value>::type
 saveMATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
@@ -210,34 +208,37 @@ saveMATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
     if (!internal::check_nonzero_size(rA))
         throw exception::ZeroSize("qpp::saveMATLAB()");
 
-    // cast the input to a double (internal MATLAB format)
-    dyn_mat<double> tmp_re = rA.real();
-    dyn_mat<double> tmp_im = rA.imag();
-
     MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
     if (!pmat)
         throw std::runtime_error(
             "qpp::saveMATLAB(): Can not open/create MATLAB file " + mat_file +
             "!");
-
-    mxArray* pa = mxCreateDoubleMatrix(tmp_re.rows(), tmp_re.cols(), mxCOMPLEX);
-    if (!pa)
+    mxArray* pa = mxCreateDoubleMatrix(rA.rows(), rA.cols(), mxCOMPLEX);
+    if (!pa) {
         throw std::runtime_error(
             "qpp::saveMATLAB(): mxCreateDoubleMatrix failed!");
+    }
     // END EXCEPTION CHECKS
 
-    // real part and imaginary part pointers
-    double* pa_re = nullptr;
-    double* pa_im = nullptr;
+// populate the MATLAB structure
+#if MX_HAS_INTERLEAVED_COMPLEX
+    std::memcpy((void*) mxGetComplexDoubles(pa), (void*) rA.data(),
+                sizeof(cplx) * rA.size());
+#else
+    // cast the input to a double (internal MATLAB format)
+    dyn_mat<double> tmp_re = rA.real();
+    dyn_mat<double> tmp_im = rA.imag();
 
-    /* Populate the real part of the created array. */
-    pa_re = mxGetPr(pa);
-    std::memcpy(pa_re, tmp_re.data(), sizeof(double) * tmp_re.size());
+    // populate the real part of the created array
+    std::memcpy((void*) mxGetPr(pa), (void*) tmp_re.data(),
+                sizeof(double) * tmp_re.size());
 
-    /* Populate the imaginary part of the created array. */
-    pa_im = mxGetPi(pa);
-    std::memcpy(pa_im, tmp_im.data(), sizeof(double) * tmp_im.size());
+    // populate the imaginary part of the created array
+    std::memcpy((void*) mxGetPi(pa), (void*) tmp_im.data(),
+                sizeof(double) * tmp_im.size());
+#endif // MX_HAS_INTERLEAVED_COMPLEX
 
+    // write it as a MATLAB variable
     if (matPutVariable(pmat, var_name.c_str(), pa))
         throw std::runtime_error(
             "qpp::saveMATLAB(): Can not write the variable " + var_name +
@@ -248,24 +249,24 @@ saveMATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
 }
 
 /**
- * \brief Saves a non-complex Eigen dynamic matrix to a MATLAB .mat file
+ * \brief Saves a non-complex (real, integer etc.) Eigen dynamic matrix to a
+ * MATLAB .mat file
  * \see qpp::loadMATLAB()
  *
- * \tparam Npn-complex Eigen type
+ * \tparam Non-complex Eigen type
  * \param A Non-complex Eigen expression
- * \param mat_file MATALB .mat file
+ * \param mat_file MATLAB .mat file
  * \param var_name Variable name in the .mat file representing the matrix to be
  * saved
  * \param mode Saving mode (append, overwrite etc.), see MATLAB \a matOpen()
  * documentation for details
  */
-template <typename Derived>
-// cplx
+template <typename Derived> // real
 typename std::enable_if<
     !std::is_same<typename Derived::Scalar, cplx>::value>::type
 saveMATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
            const std::string& var_name, const std::string& mode) {
-    // cast to double, as MATLAB doesn't work with other types
+    // cast to double, since MATLAB does not work with other types
     const dyn_mat<double>& rA = A.template cast<double>();
 
     // EXCEPTION CHECKS
@@ -279,15 +280,23 @@ saveMATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
         throw std::runtime_error(
             "qpp::saveMATLAB(): Can not open/create MATLAB file " + mat_file +
             "!");
-
     mxArray* pa = mxCreateDoubleMatrix(rA.rows(), rA.cols(), mxREAL);
-    if (!pa)
+    if (!pa) {
         throw std::runtime_error(
             "qpp::saveMATLAB(): mxCreateDoubleMatrix failed!");
+    }
     // END EXCEPTION CHECKS
 
-    std::memcpy(mxGetPr(pa), rA.data(), sizeof(double) * rA.size());
+// populate the MATLAB structure
+#if MX_HAS_INTERLEAVED_COMPLEX
+    std::memcpy((void*) mxGetDoubles(pa), (void*) rA.data(),
+                sizeof(double) * rA.size());
+#else
+    std::memcpy((void*) mxGetPr(pa), (void*) rA.data(),
+                sizeof(double) * rA.size());
+#endif // MX_HAS_INTERLEAVED_COMPLEX
 
+    // write it as a MATLAB variable
     if (matPutVariable(pmat, var_name.c_str(), pa))
         throw std::runtime_error(
             "qpp::saveMATLAB(): Can not write the variable " + var_name +

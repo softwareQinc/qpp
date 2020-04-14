@@ -12,16 +12,20 @@ ENDIF ()
 
 #### Build all tests in ${TEST_FILES}
 FOREACH (FILE ${TEST_FILES})
-    #### MATALB support
+    #### Do not build "tests/MATLAB/matlab.cpp" if there's no MATLAB support
+    IF (${FILE} STREQUAL "MATLAB/matlab.cpp" AND NOT BUILD_WITH_MATLAB)
+        CONTINUE()
+    ENDIF ()
+    TARGET_SOURCES(${TARGET_NAME} PUBLIC ${FILE})
     IF (${BUILD_WITH_MATLAB})
-        TARGET_SOURCES(${TARGET_NAME} PUBLIC ${FILE})
-        TARGET_LINK_LIBRARIES(${TARGET_NAME} mx mat)
-    ELSE () #### No MATLAB support
-        #### Do not build tests/matlab.cpp if there's no MATLAB support
-        IF (${FILE} STREQUAL "MATLAB/matlab.cpp")
-            CONTINUE()
+        IF (WIN32)
+            IF (MSVC)
+                TARGET_LINK_LIBRARIES(${TARGET_NAME} libmx libmat)
+            ELSEIF (MINGW)
+                TARGET_LINK_LIBRARIES(${TARGET_NAME} mx mat)
+            ENDIF ()
         ELSE ()
-            TARGET_SOURCES(${TARGET_NAME} PUBLIC ${FILE})
+            TARGET_LINK_LIBRARIES(${TARGET_NAME} mx mat)
         ENDIF ()
     ENDIF ()
     #### Eigen3 was found automatically
