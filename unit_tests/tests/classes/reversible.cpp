@@ -69,17 +69,17 @@ TEST(qpp_Dynamic_bitset_get, AllTests) {}
 /// BEGIN bool qpp::Dynamic_bitset::none() const noexcept
 TEST(qpp_Dynamic_bitset_none, AllTests) {}
 /******************************************************************************/
-/// BEGIN bool qpp::Dynamic_bitset::operator!=
-///        (const Dynamic_bitset& rhs) const noexcept
+/// BEGIN bool qpp::Dynamic_bitset::operator!=(const Dynamic_bitset& rhs) const
+///       noexcept
 TEST(qpp_Dynamic_bitset_operator_noneq, AllTests) {}
 /******************************************************************************/
-/// BEGIN idx qpp::Dynamic_bitset::operator-(const Dynamic_bitset& rhs)
-///        const noexcept
+/// BEGIN idx qpp::Dynamic_bitset::operator-(const Dynamic_bitset& rhs) const
+///       noexcept
 TEST(qpp_Dynamic_bitset_operator_minus, AllTests) {}
 /******************************************************************************/
-/// BEGIN bool qpp::Dynamic_bitset::operator==(const Dynamic_bitset& rhs)
-///        const noexcept
-TEST(qpp_Dynamic_bitset_operator_eqeq, AllTests) {}
+/// BEGIN bool qpp::Dynamic_bitset::operator==(const Dynamic_bitset& rhs) const
+///       noexcept
+TEST(qpp_Dynamic_bitset_operator_eq, AllTests) {}
 /******************************************************************************/
 /// BEGIN Dynamic_bitset& qpp::Dynamic_bitset::rand(double p = 0.5)
 TEST(qpp_Dynamic_bitset_rand_default, AllBits) {}

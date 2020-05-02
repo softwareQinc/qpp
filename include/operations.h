@@ -49,7 +49,7 @@ namespace qpp {
  * \param target Subsystem indexes where the gate \a A is applied
  * \param dims Dimensions of the multi-partite system
  * \param shift Performs the control as if the \a ctrl qudit states were
- * \f$ X\f$-incremented component-wise by \a shift. If non-empty (default), the
+ * \f$X\f$-incremented component-wise by \a shift. If non-empty (default), the
  * size of \a shift must be the same as the size of \a ctrl.
  * \return CTRL-A gate applied to the part \a target of \a state
  */
@@ -427,7 +427,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
  * \param target Subsystem indexes where the gate \a A is applied
  * \param d Subsystem dimensions
  * \param shift Performs the control as if the \a ctrl qudit states were
- * \f$ X\f$-incremented component-wise by \a shift. If non-empty (default), the
+ * \f$X\f$-incremented component-wise by \a shift. If non-empty (default), the
  * size of \a shift must be the same as the size of \a ctrl.
  * \return CTRL-A gate applied to the part \a target of \a state
  */
@@ -578,6 +578,9 @@ apply(const Eigen::MatrixBase<Derived1>& state,
  * \brief Applies the channel specified by the set of Kraus operators \a Ks to
  * the density matrix \a A
  *
+ * \note The Kraus operators can have their range different from their domain
+ * (i.e., they can be rectangular matrices)
+ *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
  * \return Output density matrix after the action of the channel
@@ -594,16 +597,15 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
         throw exception::MatrixNotSquare("qpp::apply()");
     if (Ks.empty())
         throw exception::ZeroSize("qpp::apply()");
-    if (!internal::check_square_mat(Ks[0]))
-        throw exception::MatrixNotSquare("qpp::apply()");
-    if (Ks[0].rows() != rA.rows())
+    if (Ks[0].cols() != rA.rows())
         throw exception::DimsMismatchMatrix("qpp::apply()");
     for (auto&& elem : Ks)
-        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
+        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].cols())
             throw exception::DimsNotEqual("qpp::apply()");
     // END EXCEPTION CHECKS
 
-    cmat result = cmat::Zero(rA.rows(), rA.rows());
+    idx Dout = Ks[0].rows();
+    cmat result = cmat::Zero(Dout, Dout);
 
 #ifdef HAS_OPENMP
 // NOLINTNEXTLINE
@@ -678,11 +680,11 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     if (!internal::check_dims_match_mat(subsys_dims, Ks[0]))
         throw exception::MatrixMismatchSubsys("qpp::apply()");
     for (auto&& elem : Ks)
-        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
+        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].cols())
             throw exception::DimsNotEqual("qpp::apply()");
     // END EXCEPTION CHECKS
 
-    cmat result = cmat::Zero(rA.rows(), rA.rows());
+    cmat result = cmat::Zero(rA.rows(), rA.cols());
 
     for (idx i = 0; i < Ks.size(); ++i)
         result += apply(rA, Ks[i], target, dims);
@@ -723,74 +725,6 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 }
 
 /**
- * \brief Superoperator matrix
- *
- * Constructs the superoperator matrix of the channel specified by the set of
- * Kraus operators \a Ks in the standard operator basis
- * \f$\{|i\rangle\langle j|\}\f$ ordered in lexicographical order, i.e.
- * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
- *
- * \param Ks Set of Kraus operators
- * \return Superoperator matrix
- */
-inline cmat kraus2super(const std::vector<cmat>& Ks) {
-    // EXCEPTION CHECKS
-
-    if (Ks.empty())
-        throw exception::ZeroSize("qpp::kraus2super()");
-    if (!internal::check_nonzero_size(Ks[0]))
-        throw exception::ZeroSize("qpp::kraus2super()");
-    if (!internal::check_square_mat(Ks[0]))
-        throw exception::MatrixNotSquare("qpp::kraus2super()");
-    for (auto&& elem : Ks)
-        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
-            throw exception::DimsNotEqual("qpp::kraus2super()");
-    // END EXCEPTION CHECKS
-
-    idx D = static_cast<idx>(Ks[0].rows());
-
-    cmat result(D * D, D * D);
-    cmat MN = cmat::Zero(D, D);
-    bra A = bra::Zero(D);
-    ket B = ket::Zero(D);
-    cmat EMN = cmat::Zero(D, D);
-
-#ifdef HAS_OPENMP
-// NOLINTNEXTLINE
-#pragma omp parallel for collapse(2)
-#endif // HAS_OPENMP
-    for (idx m = 0; m < D; ++m) {
-        for (idx n = 0; n < D; ++n) {
-#ifdef HAS_OPENMP
-#pragma omp critical
-#endif // HAS_OPENMP
-            {
-                // compute E(|m><n|)
-                MN(m, n) = 1;
-                for (idx i = 0; i < Ks.size(); ++i)
-                    EMN += Ks[i] * MN * adjoint(Ks[i]);
-                MN(m, n) = 0;
-
-                for (idx a = 0; a < D; ++a) {
-                    A(a) = 1;
-                    for (idx b = 0; b < D; ++b) {
-                        // compute result(ab,mn)=<a|E(|m><n)|b>
-                        B(b) = 1;
-                        result(a * D + b, m * D + n) =
-                            static_cast<cmat>(A * EMN * B).value();
-                        B(b) = 0;
-                    }
-                    A(a) = 0;
-                }
-                EMN = cmat::Zero(D, D);
-            }
-        }
-    }
-
-    return result;
-}
-
-/**
  * \brief Choi matrix
  * \see qpp::choi2kraus()
  *
@@ -799,8 +733,9 @@ inline cmat kraus2super(const std::vector<cmat>& Ks) {
  * ordered in lexicographical order, i.e.
  * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
  *
- * \note The superoperator matrix \f$S\f$ and the Choi matrix \f$ C\f$ are
- * related by \f$ S_{ab,mn} = C_{ma,nb}\f$
+ * \note The Kraus operators can have their range different from their domain
+ * (i.e., they can be rectangular matrices). The superoperator matrix \f$S\f$
+ * and the Choi matrix \f$C\f$ are related by \f$S_{ab,mn} = C_{ma,nb}\f$.
  *
  * \param Ks Set of Kraus operators
  * \return Choi matrix
@@ -812,24 +747,28 @@ inline cmat kraus2choi(const std::vector<cmat>& Ks) {
         throw exception::ZeroSize("qpp::kraus2choi()");
     if (!internal::check_nonzero_size(Ks[0]))
         throw exception::ZeroSize("qpp::kraus2choi()");
-    if (!internal::check_square_mat(Ks[0]))
-        throw exception::MatrixNotSquare("qpp::kraus2choi()");
     for (auto&& elem : Ks)
-        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
+        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].cols())
             throw exception::DimsNotEqual("qpp::kraus2choi()");
     // END EXCEPTION CHECKS
 
-    idx D = static_cast<idx>(Ks[0].rows());
+    idx Din = static_cast<idx>(Ks[0].cols());
+    idx Dout = static_cast<idx>(Ks[0].rows());
 
-    // construct the D x D \sum |jj> vector
+    // construct the Din x Din \sum |jj> vector
     // (un-normalized maximally entangled state)
-    cmat MES = cmat::Zero(D * D, 1);
-    for (idx a = 0; a < D; ++a)
-        MES(a * D + a) = 1;
+    cmat MES = cmat::Zero(Din * Din, 1);
+
+#ifdef HAS_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for
+#endif // HAS_OPENMP
+    for (idx a = 0; a < Din; ++a)
+        MES(a * Din + a, 0) = 1;
 
     cmat Omega = MES * adjoint(MES);
 
-    cmat result = cmat::Zero(D * D, D * D);
+    cmat result = cmat::Zero(Din * Dout, Din * Dout);
 
 #ifdef HAS_OPENMP
 // NOLINTNEXTLINE
@@ -840,8 +779,8 @@ inline cmat kraus2choi(const std::vector<cmat>& Ks) {
 #pragma omp critical
 #endif // HAS_OPENMP
         {
-            result += kron(cmat::Identity(D, D), Ks[i]) * Omega *
-                      adjoint(kron(cmat::Identity(D, D), Ks[i]));
+            result += kron(cmat::Identity(Din, Din), Ks[i]) * Omega *
+                      adjoint(kron(cmat::Identity(Din, Din), Ks[i]));
         }
     }
 
@@ -855,8 +794,50 @@ inline cmat kraus2choi(const std::vector<cmat>& Ks) {
  * Extracts a set of orthogonal (under Hilbert-Schmidt operator norm) Kraus
  * operators from the Choi matrix \a A
  *
- * \note The Kraus operators satisfy \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$ for
- * all \f$i\neq j\f$
+ * \note The Kraus operators can have their range different from their domain
+ * (i.e., they can be rectangular matrices). The Kraus operators satisfy
+ * \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$ for all \f$i\neq j\f$.
+ *
+ * \param A Choi matrix
+ * \param Din Dimension of the Kraus input Hilbert space
+ * \param Dout Dimension of the Kraus output Hilbert space
+ * \return Set of orthogonal Kraus operators
+ */
+inline std::vector<cmat> choi2kraus(const cmat& A, idx Din, idx Dout) {
+    // EXCEPTION CHECKS
+
+    if (!internal::check_nonzero_size(A))
+        throw exception::ZeroSize("qpp::choi2kraus()");
+    if (!internal::check_square_mat(A))
+        throw exception::MatrixNotSquare("qpp::choi2kraus()");
+    // check equal dimensions
+    if (Din * Dout != static_cast<idx>(A.rows()))
+        throw exception::DimsInvalid("qpp::choi2kraus()");
+    // END EXCEPTION CHECKS
+
+    dmat ev = hevals(A);
+    cmat evec = hevects(A);
+    std::vector<cmat> result;
+
+    for (idx i = 0; i < Din * Dout; ++i) {
+        if (std::abs(ev(i)) > 0)
+            result.emplace_back(std::sqrt(std::abs(ev(i))) *
+                                reshape(evec.col(i), Dout, Din));
+    }
+
+    return result;
+}
+
+/**
+ * \brief Orthogonal Kraus operators from Choi matrix
+ * \see qpp::kraus2choi()
+ *
+ * Extracts a set of orthogonal (under Hilbert-Schmidt operator norm) Kraus
+ * operators from the Choi matrix \a A
+ *
+ * \note The Kraus operators are assumed to have their range equal to their
+ * domain (i.e., they are square matrices). The Kraus operators satisfy
+ * \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$ for all \f$i\neq j\f$.
  *
  * \param A Choi matrix
  * \return Set of orthogonal Kraus operators
@@ -868,21 +849,51 @@ inline std::vector<cmat> choi2kraus(const cmat& A) {
         throw exception::ZeroSize("qpp::choi2kraus()");
     if (!internal::check_square_mat(A))
         throw exception::MatrixNotSquare("qpp::choi2kraus()");
-    idx D = internal::get_dim_subsys(A.rows(), 2);
     // check equal dimensions
+    idx D = internal::get_num_subsys(static_cast<idx>(A.rows()), 2);
     if (D * D != static_cast<idx>(A.rows()))
         throw exception::DimsInvalid("qpp::choi2kraus()");
     // END EXCEPTION CHECKS
 
-    dmat ev = hevals(A);
-    cmat evec = hevects(A);
-    std::vector<cmat> result;
+    return choi2kraus(A, D, D);
+}
 
-    for (idx i = 0; i < D * D; ++i) {
-        if (std::abs(ev(i)) > 0)
-            result.emplace_back(std::sqrt(std::abs(ev(i))) *
-                                reshape(evec.col(i), D, D));
-    }
+/**
+ * \brief Converts Choi matrix to superoperator matrix
+ * \see qpp::super2choi()
+ *
+ * \note The superoperator can have its range different from its domain
+ * (i.e., it can be a rectangular matrix)
+ *
+ * \param A Choi matrix
+ * \param Din Dimension of the Kraus input Hilbert space
+ * \param Dout Dimension of the Kraus output Hilbert space
+ * \return Superoperator matrix
+ */
+inline cmat choi2super(const cmat& A, idx Din, idx Dout) {
+    // EXCEPTION CHECKS
+
+    if (!internal::check_nonzero_size(A))
+        throw exception::ZeroSize("qpp::choi2super()");
+    if (!internal::check_square_mat(A))
+        throw exception::MatrixNotSquare("qpp::choi2super()");
+    // check equal dimensions
+    if (Din * Dout != static_cast<idx>(A.rows()))
+        throw exception::DimsInvalid("qpp::choi2super()");
+    // END EXCEPTION CHECKS
+
+    cmat result(Dout * Dout, Din * Din);
+
+#ifdef HAS_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for collapse(4)
+#endif // HAS_OPENMP
+    for (idx a = 0; a < Dout; ++a)
+        for (idx b = 0; b < Dout; ++b)
+            for (idx m = 0; m < Din; ++m)
+                for (idx n = 0; n < Din; ++n)
+                    result(a * Dout + b, m * Din + n) =
+                        A(m * Dout + a, n * Dout + b);
 
     return result;
 }
@@ -890,6 +901,9 @@ inline std::vector<cmat> choi2kraus(const cmat& A) {
 /**
  * \brief Converts Choi matrix to superoperator matrix
  * \see qpp::super2choi()
+ *
+ * \note The superoperator is assumed to have the its range equal to its domain
+ * (i.e., its Kraus operators are square matrices).
  *
  * \param A Choi matrix
  * \return Superoperator matrix
@@ -901,30 +915,21 @@ inline cmat choi2super(const cmat& A) {
         throw exception::ZeroSize("qpp::choi2super()");
     if (!internal::check_square_mat(A))
         throw exception::MatrixNotSquare("qpp::choi2super()");
-    idx D = internal::get_dim_subsys(static_cast<idx>(A.rows()), 2);
     // check equal dimensions
+    idx D = internal::get_num_subsys(static_cast<idx>(A.rows()), 2);
     if (D * D != static_cast<idx>(A.rows()))
         throw exception::DimsInvalid("qpp::choi2super()");
     // END EXCEPTION CHECKS
 
-    cmat result(D * D, D * D);
-
-#ifdef HAS_OPENMP
-// NOLINTNEXTLINE
-#pragma omp parallel for collapse(4)
-#endif // HAS_OPENMP
-    for (idx a = 0; a < D; ++a)
-        for (idx b = 0; b < D; ++b)
-            for (idx m = 0; m < D; ++m)
-                for (idx n = 0; n < D; ++n)
-                    result(a * D + b, m * D + n) = A(m * D + a, n * D + b);
-
-    return result;
+    return choi2super(A, D, D);
 }
 
 /**
  * \brief Converts superoperator matrix to Choi matrix
  * \see qpp::choi2super()
+ *
+ * \note The superoperator can have its range different from its domain
+ * (i.e., it can be a rectangular matrix)
  *
  * \param A Superoperator matrix
  * \return Choi matrix
@@ -934,27 +939,131 @@ inline cmat super2choi(const cmat& A) {
 
     if (!internal::check_nonzero_size(A))
         throw exception::ZeroSize("qpp::super2choi()");
-    if (!internal::check_square_mat(A))
-        throw exception::MatrixNotSquare("qpp::super2choi()");
-    idx D = internal::get_dim_subsys(static_cast<idx>(A.rows()), 2);
+    idx Din = internal::get_dim_subsys(static_cast<idx>(A.cols()), 2);
+    idx Dout = internal::get_dim_subsys(static_cast<idx>(A.rows()), 2);
     // check equal dimensions
-    if (D * D != static_cast<idx>(A.rows()))
+    if (Din * Din != static_cast<idx>(A.cols()))
+        throw exception::DimsInvalid("qpp::super2choi()");
+    if (Dout * Dout != static_cast<idx>(A.rows()))
         throw exception::DimsInvalid("qpp::super2choi()");
     // END EXCEPTION CHECKS
 
-    cmat result(D * D, D * D);
+    cmat result(Din * Dout, Din * Dout);
 
 #ifdef HAS_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(4)
 #endif // HAS_OPENMP
-    for (idx a = 0; a < D; ++a)
-        for (idx b = 0; b < D; ++b)
-            for (idx m = 0; m < D; ++m)
-                for (idx n = 0; n < D; ++n)
-                    result(m * D + a, n * D + b) = A(a * D + b, m * D + n);
+    for (idx a = 0; a < Dout; ++a)
+        for (idx b = 0; b < Dout; ++b)
+            for (idx m = 0; m < Din; ++m)
+                for (idx n = 0; n < Din; ++n)
+                    result(m * Dout + a, n * Dout + b) =
+                        A(a * Dout + b, m * Din + n);
 
     return result;
+}
+
+/**
+ * \brief Superoperator matrix
+ * \see qpp::super2kraus()
+ *
+ * Constructs the superoperator matrix of the channel specified by the set of
+ * Kraus operators \a Ks in the standard operator basis
+ * \f$\{|i\rangle\langle j|\}\f$ ordered in lexicographical order, i.e.
+ * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
+ *
+ * \note The Kraus operators can have their range different from their domain
+ * (i.e., they can be rectangular matrices)
+ *
+ * \param Ks Set of Kraus operators
+ * \return Superoperator matrix
+ */
+inline cmat kraus2super(const std::vector<cmat>& Ks) {
+    // EXCEPTION CHECKS
+
+    if (Ks.empty())
+        throw exception::ZeroSize("qpp::kraus2super()");
+    if (!internal::check_nonzero_size(Ks[0]))
+        throw exception::ZeroSize("qpp::kraus2super()");
+    for (auto&& elem : Ks)
+        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].cols())
+            throw exception::DimsNotEqual("qpp::kraus2super()");
+    // END EXCEPTION CHECKS
+
+    idx Din = static_cast<idx>(Ks[0].cols());
+    idx Dout = static_cast<idx>(Ks[0].rows());
+
+    cmat MN = cmat::Zero(Din, Din);
+    cmat EMN = cmat::Zero(Dout, Dout);
+    bra A = bra::Zero(Dout);
+    ket B = ket::Zero(Dout);
+    cmat result(Dout * Dout, Din * Din);
+
+#ifdef HAS_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for collapse(2)
+#endif // HAS_OPENMP
+    for (idx m = 0; m < Din; ++m) {
+        for (idx n = 0; n < Din; ++n) {
+#ifdef HAS_OPENMP
+#pragma omp critical
+#endif        // HAS_OPENMP
+            { // DO NOT ERASE THIS CURLY BRACKET!!!! OMP CRITICAL CODE
+                // compute E(|m><n|)
+                MN(m, n) = 1;
+                for (idx i = 0; i < Ks.size(); ++i)
+                    EMN += Ks[i] * MN * adjoint(Ks[i]);
+                MN(m, n) = 0;
+
+                for (idx a = 0; a < Dout; ++a) {
+                    A(a) = 1;
+                    for (idx b = 0; b < Dout; ++b) {
+                        // compute result(ab,mn)=<a|E(|m><n)|b>
+                        B(b) = 1;
+                        result(a * Dout + b, m * Din + n) =
+                            static_cast<cmat>(A * EMN * B).value();
+                        B(b) = 0;
+                    }
+                    A(a) = 0;
+                }
+                EMN = cmat::Zero(Dout, Dout);
+            } // DO NOT ERASE THIS CURLY BRACKET!!!! OMP CRITICAL CODE
+        }
+    }
+
+    return result;
+}
+
+/**
+ * \brief Orthogonal Kraus operators from superoperator matrix
+ * \see qpp::kraus2super()
+ *
+ * Extracts a set of orthogonal (under the Hilbert-Schmidt operator norm) Kraus
+ * operators from the superoperator matrix \a A
+ *
+ * \note The superoperator can have its range different from its domain
+ * (i.e., it can be a rectangular matrix). The Kraus operators satisfy
+ * \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$ for all \f$i\neq j\f$.
+ *
+ * \param A Superoperator matrix
+ * \return Set of orthogonal Kraus operators
+ */
+inline std::vector<cmat> super2kraus(const cmat& A) {
+    // EXCEPTION CHECKS
+
+    if (!internal::check_nonzero_size(A))
+        throw exception::ZeroSize("qpp::super2kraus()");
+    idx Din = internal::get_dim_subsys(static_cast<idx>(A.cols()), 2);
+    idx Dout = internal::get_dim_subsys(static_cast<idx>(A.rows()), 2);
+    // check equal dimensions
+    if (Din * Din != static_cast<idx>(A.cols()))
+        throw exception::DimsInvalid("qpp::super2kraus()");
+    if (Dout * Dout != static_cast<idx>(A.rows()))
+        throw exception::DimsInvalid("qpp::super2kraus()");
+    // END EXCEPTION CHECKS
+
+    return choi2kraus(super2choi(A), Din, Dout);
 }
 
 /**
@@ -2100,19 +2209,21 @@ dyn_col_vect<typename Derived::Scalar> TFQ(const Eigen::MatrixBase<Derived>& A,
  *
  * \param psi Column vector Eigen expression, input amplitudes
  * \param data Vector storing the classical data
- * \param DqRAM qRAM subsystem dimension (optional, by default is set to 1 +
- * maximum value stored in the qRAM)
+ * \param DqRAM qRAM subsystem dimension (must be at least 1 + maximum value
+ * stored in the qRAM)
  * \return Superposition over the qRAM values
  */
 template <typename Derived>
 dyn_col_vect<typename Derived::Scalar>
-qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data, idx DqRAM = -1) {
+qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data, idx DqRAM) {
     const dyn_mat<typename Derived::Scalar>& rpsi = psi.derived();
 
     // EXCEPTION CHECKS
 
     // check zero-size
     if (!internal::check_nonzero_size(rpsi))
+        throw exception::ZeroSize("qpp::qRAM()");
+    if (!internal::check_nonzero_size(data))
         throw exception::ZeroSize("qpp::qRAM()");
 
     // check column vector
@@ -2125,12 +2236,10 @@ qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data, idx DqRAM = -1) {
         throw exception::DimsInvalid("qpp::qRAM()");
 
     idx max_val_qRAM = *std::max_element(std::begin(data), std::end(data));
-    if (DqRAM != static_cast<idx>(-1) && DqRAM <= max_val_qRAM)
+    if (DqRAM <= max_val_qRAM)
         throw exception::DimsInvalid("qpp::qRAM()");
     // END EXCEPTION CHECKS
 
-    if (DqRAM == static_cast<idx>(-1))
-        DqRAM = max_val_qRAM + 1;
     idx Dout = Din * DqRAM;
     ket result(Dout);
 
@@ -2146,6 +2255,37 @@ qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data, idx DqRAM = -1) {
     }
 
     return result;
+}
+
+/**
+ * \brief Quantumly-accessible Random Access Memory (qRAM) over classical data,
+ * implements \f$\sum_j\alpha_j|j\rangle\stackrel{qRAM}{\longrightarrow}
+   \sum_j\alpha_j|j\rangle|m_j\rangle\f$
+ *
+ * \see
+ * <a href="https://iopscience.iop.org/article/10.1088/1367-2630/17/12/123010">
+ * New Journal of Physics, Vol. 17, No. 12, Pp. 123010 (2015)</a>
+ *
+ * \note The qRAM subsystem dimension is set to 1 + maximum value stored in the
+ * qRAM
+ *
+ * \param psi Column vector Eigen expression, input amplitudes
+ * \param data Vector storing the classical data
+ * \return Superposition over the qRAM values
+ */
+template <typename Derived>
+dyn_col_vect<typename Derived::Scalar>
+qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data) {
+    // EXCEPTION CHECKS
+
+    // check zero-size
+    if (!internal::check_nonzero_size(data))
+        throw exception::ZeroSize("qpp::qRAM()");
+    // END EXCEPTION CHECKS
+
+    idx max_val_qRAM = *std::max_element(std::begin(data), std::end(data));
+
+    return qRAM(psi, data, 1 + max_val_qRAM);
 }
 } /* namespace qpp */
 

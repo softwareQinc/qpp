@@ -1,222 +1,221 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
-PROJECT(qpp VERSION 2.2 LANGUAGES CXX)
-SET(CMAKE_CXX_STANDARD 11)
-SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+cmake_minimum_required(VERSION 3.0)
+project(qpp VERSION 2.3 LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #### Source directory
-ADD_DEFINITIONS(-DPATH="${CMAKE_SOURCE_DIR}")
+add_definitions(-DPATH="${CMAKE_SOURCE_DIR}")
 
 #### Quantum++ headers
-INCLUDE_DIRECTORIES(include)
+include_directories(include)
 
 #### Source file(s) to be compiled, modify as needed
-AUX_SOURCE_DIRECTORY(examples EXAMPLE_FILES)
-AUX_SOURCE_DIRECTORY(examples/circuits EXAMPLE_FILES)
-AUX_SOURCE_DIRECTORY(examples/qasm EXAMPLE_FILES)
+aux_source_directory(examples EXAMPLE_FILES)
+aux_source_directory(examples/circuits EXAMPLE_FILES)
+aux_source_directory(examples/qasm EXAMPLE_FILES)
 
 #### Eigen3
-MESSAGE(STATUS "Detecting Eigen3")
-SET(EIGEN3_INSTALL_DIR "" CACHE PATH "Path to Eigen3")
+message(STATUS "Detecting Eigen3")
+set(EIGEN3_INSTALL_DIR "" CACHE PATH "Path to Eigen3")
 #### Location manually specified
-IF (NOT ${EIGEN3_INSTALL_DIR} STREQUAL "")
-    IF (IS_DIRECTORY ${EIGEN3_INSTALL_DIR})
-        MESSAGE(STATUS "Detecting Eigen3 - done (in ${EIGEN3_INSTALL_DIR})")
-        INCLUDE_DIRECTORIES(SYSTEM "${EIGEN3_INSTALL_DIR}")
-
-    ELSE ()
-        MESSAGE(FATAL_ERROR "Invalid path to Eigen3 installation")
-    ENDIF ()
-ELSE () #### Try to find it automatically
-    FIND_PACKAGE(Eigen3 3.0 QUIET NO_MODULE)
-    IF (NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
-        MESSAGE(FATAL_ERROR
+if (NOT ${EIGEN3_INSTALL_DIR} STREQUAL "")
+    if (IS_DIRECTORY ${EIGEN3_INSTALL_DIR})
+        message(STATUS "Detecting Eigen3 - done (in ${EIGEN3_INSTALL_DIR})")
+        include_directories(SYSTEM "${EIGEN3_INSTALL_DIR}")
+    else ()
+        message(FATAL_ERROR "Invalid path to Eigen3 installation")
+    endif ()
+else () #### Try to find it automatically
+    find_package(Eigen3 3.0 QUIET NO_MODULE)
+    if (NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
+        message(FATAL_ERROR
                 "Eigen3 not detected! Please point EIGEN3_INSTALL_DIR\
             to your Eigen3 location when building with cmake,\
             for example\
 
             cmake .. -DEIGEN3_INSTALL_DIR=$HOME/eigen")
-    ENDIF ()
-    MESSAGE(STATUS "Detecting Eigen3 - done (in ${EIGEN3_INCLUDE_DIR})")
-ENDIF ()
+    endif ()
+    message(STATUS "Detecting Eigen3 - done (in ${EIGEN3_INCLUDE_DIR})")
+endif ()
 
 #### Cygwin has issues with std=c++11, use std=gnu++11 instead
-IF (CYGWIN)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
-ENDIF ()
+if (CYGWIN)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
+endif ()
 
 #### Additional flags for GNU gcc and Clang/AppleClang
-IF (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
+if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
         STREQUAL "GNU")
-    SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
+    set(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
     # Enable all warnings
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Weffc++")
-ENDIF ()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Weffc++")
+endif ()
 
 #### Disable support for thread_local storage duration specifier
 #### when using AppleClang as libc++ doesn't yet support it
-IF (${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang")
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang")
     #### inject definition (as #define) in the source files
-    ADD_DEFINITIONS(-DNO_THREAD_LOCAL_)
-    MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} \
+    add_definitions(-DNO_THREAD_LOCAL_)
+    message(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} \
     ${CMAKE_CXX_COMPILER_VERSION}. thread_local not supported.")
-ENDIF ()
+endif ()
 
 #### MATLAB support, disabled by default
-OPTION(WITH_MATLAB "MATLAB support" OFF)
-IF (${WITH_MATLAB})
-    MESSAGE(STATUS "Detecting MATLAB")
+option(WITH_MATLAB "MATLAB support" OFF)
+if (${WITH_MATLAB})
+    message(STATUS "Detecting MATLAB")
     #### Try to find it automatically
-    FIND_PACKAGE(Matlab OPTIONAL_COMPONENTS MX_LIBRARY MAT_LIBRARY QUIET)
-    IF (MATLAB_FOUND)
-        MESSAGE(STATUS "Detecting MATLAB - done (in ${Matlab_ROOT_DIR})")
-        INCLUDE_DIRECTORIES(SYSTEM ${Matlab_INCLUDE_DIRS})
-        IF (WIN32)
-            IF (MSVC)
-                SET(MATLAB_LIB_DIR
+    find_package(Matlab OPTIONAL_COMPONENTS MX_LIBRARY MAT_LIBRARY QUIET)
+    if (MATLAB_FOUND)
+        message(STATUS "Detecting MATLAB - done (in ${Matlab_ROOT_DIR})")
+        include_directories(SYSTEM ${Matlab_INCLUDE_DIRS})
+        if (WIN32)
+            if (MSVC)
+                set(MATLAB_LIB_DIR
                         "${Matlab_ROOT_DIR}/extern/lib/win64/microsoft"
                         CACHE PATH "Custom path to MATLAB lib directory")
-            ELSEIF (MINGW)
-                SET(MATLAB_LIB_DIR "${Matlab_ROOT_DIR}/extern/lib/win64/mingw64"
+            elseif (MINGW)
+                set(MATLAB_LIB_DIR "${Matlab_ROOT_DIR}/extern/lib/win64/mingw64"
                         CACHE PATH "Custom path to MATLAB lib directory")
-            ELSE ()
-                MESSAGE(FATAL "Platform not supported, aborting.")
-            ENDIF ()
-        ELSEIF (UNIX AND NOT APPLE)
-            SET(MATLAB_LIB_DIR "${Matlab_ROOT_DIR}/bin/glnxa64" CACHE
+            else ()
+                message(FATAL "Platform not supported, aborting.")
+            endif ()
+        elseif (UNIX AND NOT APPLE)
+            set(MATLAB_LIB_DIR "${Matlab_ROOT_DIR}/bin/glnxa64" CACHE
                     PATH "Custom path to MATLAB lib directory")
-        ELSEIF (APPLE)
-            SET(MATLAB_LIB_DIR "${Matlab_ROOT_DIR}/bin/maci64" CACHE
+        elseif (APPLE)
+            set(MATLAB_LIB_DIR "${Matlab_ROOT_DIR}/bin/maci64" CACHE
                     PATH "Custom path to MATLAB lib directory")
-        ELSE ()
-            MESSAGE(FATAL "Platform not supported, aborting.")
-        ENDIF ()
-        LINK_DIRECTORIES(${MATLAB_LIB_DIR})
-        ADD_DEFINITIONS(-DHAS_MATLAB_ENABLED)
-        SET(BUILD_WITH_MATLAB TRUE)
-    ELSE () #### Location manually specified
-        SET(MATLAB_INSTALL_DIR "" CACHE PATH
+        else ()
+            message(FATAL "Platform not supported, aborting.")
+        endif ()
+        link_directories(${MATLAB_LIB_DIR})
+        add_definitions(-DHAS_MATLAB_ENABLED)
+        set(BUILD_WITH_MATLAB TRUE)
+    else () #### Location manually specified
+        set(MATLAB_INSTALL_DIR "" CACHE PATH
                 "Custom path to MATLAB installation")
-        IF (IS_DIRECTORY ${MATLAB_INSTALL_DIR})
+        if (IS_DIRECTORY ${MATLAB_INSTALL_DIR})
             # MATLAB include files
-            SET(MATLAB_INCLUDE_DIR "${MATLAB_INSTALL_DIR}/extern/include"
+            set(MATLAB_INCLUDE_DIR "${MATLAB_INSTALL_DIR}/extern/include"
                     CACHE PATH "Custom path to MATLAB include directory")
-            IF (IS_DIRECTORY ${MATLAB_INCLUDE_DIR})
-                INCLUDE_DIRECTORIES(SYSTEM ${MATLAB_INCLUDE_DIR})
-            ELSE ()
-                MESSAGE(FATAL_ERROR
+            if (IS_DIRECTORY ${MATLAB_INCLUDE_DIR})
+                include_directories(SYSTEM ${MATLAB_INCLUDE_DIR})
+            else ()
+                message(FATAL_ERROR
                         "Possibly corrupted MATLAB include headers")
-            ENDIF ()
+            endif ()
             # MATLAB linker files
-            IF (WIN32)
-                IF (MSVC)
-                    SET(MATLAB_LIB_DIR
+            if (WIN32)
+                if (MSVC)
+                    set(MATLAB_LIB_DIR
                             "${MATLAB_INSTALL_DIR}/extern/lib/win64/microsoft"
                             CACHE PATH "Custom path to MATLAB lib directory")
-                ELSEIF (MINGW64)
-                    SET(MATLAB_LIB_DIR
+                elseif (MINGW64)
+                    set(MATLAB_LIB_DIR
                             "${MATLAB_INSTALL_DIR}/extern/lib/win64/mingw64"
                             CACHE PATH "Custom path to MATLAB lib directory")
-                ELSE ()
-                    MESSAGE(FATAL "Platform not supported, aborting.")
-                ENDIF ()
-            ELSEIF (UNIX AND NOT APPLE)
-                SET(MATLAB_LIB_DIR "${MATLAB_INSTALL_DIR}/bin/glnxa64" CACHE
+                else ()
+                    message(FATAL "Platform not supported, aborting.")
+                endif ()
+            elseif (UNIX AND NOT APPLE)
+                set(MATLAB_LIB_DIR "${MATLAB_INSTALL_DIR}/bin/glnxa64" CACHE
                         PATH "Custom path to MATLAB lib directory")
-            ELSEIF (APPLE)
-                SET(MATLAB_LIB_DIR "${MATLAB_INSTALL_DIR}/bin/maci64" CACHE
+            elseif (APPLE)
+                set(MATLAB_LIB_DIR "${MATLAB_INSTALL_DIR}/bin/maci64" CACHE
                         PATH "Custom path to MATLAB lib directory")
-            ELSE ()
-                MESSAGE(FATAL "Platform not supported, aborting.")
-            ENDIF ()
-            IF (IS_DIRECTORY ${MATLAB_LIB_DIR})
-                LINK_DIRECTORIES(${MATLAB_LIB_DIR})
-            ELSE ()
-                MESSAGE(FATAL_ERROR
+            else ()
+                message(FATAL "Platform not supported, aborting.")
+            endif ()
+            if (IS_DIRECTORY ${MATLAB_LIB_DIR})
+                link_directories(${MATLAB_LIB_DIR})
+            else ()
+                message(FATAL_ERROR
                         "Possibly corrupted MATLAB compiler libraries")
-            ENDIF ()
+            endif ()
             #### Everything is OK, inject definition (as #define) in the source
-            MESSAGE(STATUS
+            message(STATUS
                     "Detecting MATLAB - done (in ${MATLAB_INSTALL_DIR})")
-            ADD_DEFINITIONS(-DHAS_MATLAB_ENABLED)
-            SET(BUILD_WITH_MATLAB TRUE)
-        ELSE ()
-            MESSAGE(FATAL_ERROR "Could not detect MATLAB, aborting")
-        ENDIF ()
-    ENDIF ()
-ENDIF ()
+            add_definitions(-DHAS_MATLAB_ENABLED)
+            set(BUILD_WITH_MATLAB TRUE)
+        else ()
+            message(FATAL_ERROR "Could not detect MATLAB, aborting")
+        endif ()
+    endif ()
+endif ()
 
 #### OpenMP support
-OPTION(WITH_OPENMP "OpenMP support" ON)
-IF (${WITH_OPENMP})
+option(WITH_OPENMP "OpenMP support" ON)
+if (${WITH_OPENMP})
     #### Enable only for GNU gcc or clang >= 3.8
-    IF (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
+    if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
     (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND
     (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS "3.8")))
-        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
         #### inject definition (as #define) in the source files
-        ADD_DEFINITIONS(-DHAS_OPENMP)
-    ELSE ()
-        MESSAGE(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} \
+        add_definitions(-DHAS_OPENMP)
+    else ()
+        message(WARNING "Detected compiler: ${CMAKE_CXX_COMPILER_ID} \
         ${CMAKE_CXX_COMPILER_VERSION}. Support for OpenMP is enabled only for \
         the GNU gcc compiler or the clang compiler version 3.8 or higher.")
-    ENDIF ()
-ENDIF ()
+    endif ()
+endif ()
 
 #### GNU gcc additional debug settings
-IF (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
-    IF (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+if (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
+    if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         ## use the "no-weak" debugging flag only when debugging under OS X,
         ## as gdb cannot step in template functions when debugging code
         ## produced by g++
         ## see http://stackoverflow.com/questions/
         ## 23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks
-        SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-weak")
-    ENDIF ()
-    SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og -D_GLIBCXX_DEBUG")
-ENDIF ()
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-weak")
+    endif ()
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og -D_GLIBCXX_DEBUG")
+endif ()
 
 #### Configurations
-SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
-SET(CMAKE_CXX_FLAGS_MINSIZEREL
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
+set(CMAKE_CXX_FLAGS_MINSIZEREL
         "${CMAKE_CXX_FLAGS_MINSIZEREL} -DEIGEN_NO_DEBUG")
-SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DEIGEN_NO_DEBUG")
-SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DEIGEN_NO_DEBUG")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
         "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DEIGEN_NO_DEBUG")
 
 #### Default build type
-IF (NOT CMAKE_BUILD_TYPE)
-    SET(CMAKE_BUILD_TYPE Release CACHE STRING
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING
             "Choose the type of build, options are: \
          None Debug Release MinSizeRel RelWithDebInfo."
             FORCE)
-ENDIF ()
+endif ()
 
 #### Build all examples in ${EXAMPLE_FILES}
-FOREACH (FILE ${EXAMPLE_FILES})
-    GET_FILENAME_COMPONENT(TARGET_NAME ${FILE} NAME_WE)
+foreach (FILE ${EXAMPLE_FILES})
+    get_filename_component(TARGET_NAME ${FILE} NAME_WE)
     #### Do not build "examples/matlab_io.cpp" if there's no MATLAB support
-    IF (${FILE} STREQUAL "examples/matlab_io.cpp" AND NOT BUILD_WITH_MATLAB)
-        CONTINUE()
-    ENDIF ()
-    ADD_EXECUTABLE(${TARGET_NAME} ${FILE})
-    IF (${BUILD_WITH_MATLAB})
-        IF (WIN32)
-            IF (MSVC)
-                TARGET_LINK_LIBRARIES(${TARGET_NAME} libmx libmat)
-            ELSEIF (MINGW)
-                TARGET_LINK_LIBRARIES(${TARGET_NAME} mx mat)
-            ENDIF ()
-        ELSE ()
-            TARGET_LINK_LIBRARIES(${TARGET_NAME} mx mat)
-        ENDIF ()
-    ENDIF ()
+    if (${FILE} STREQUAL "examples/matlab_io.cpp" AND NOT BUILD_WITH_MATLAB)
+        continue()
+    endif ()
+    add_executable(${TARGET_NAME} ${FILE})
+    if (${BUILD_WITH_MATLAB})
+        if (WIN32)
+            if (MSVC)
+                target_link_libraries(${TARGET_NAME} libmx libmat)
+            elseif (MINGW)
+                target_link_libraries(${TARGET_NAME} mx mat)
+            endif ()
+        else ()
+            target_link_libraries(${TARGET_NAME} mx mat)
+        endif ()
+    endif ()
     #### Eigen3 was found automatically
-    IF (TARGET Eigen3::Eigen)
-        TARGET_LINK_LIBRARIES(${TARGET_NAME} Eigen3::Eigen)
-    ENDIF ()
+    if (TARGET Eigen3::Eigen)
+        target_link_libraries(${TARGET_NAME} Eigen3::Eigen)
+    endif ()
     #### OpenMP was enabled
-    IF ($WITH_OPENMP$ AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang"
+    if ($WITH_OPENMP$ AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang"
             AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.7")
-        TARGET_LINK_LIBRARIES(TARGET_NAME omp)
-    ENDIF ()
-ENDFOREACH ()
+        target_link_libraries(TARGET_NAME omp)
+    endif ()
+endforeach ()

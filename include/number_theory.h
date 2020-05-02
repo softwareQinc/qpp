@@ -591,7 +591,7 @@ inline bigint randprime(bigint a, bigint b, idx N = 1000) {
  * \see qpp::contfrac2x() and qpp::x2contfrac()
  *
  * \param cf Continued fraction
- * \return Vector of convergents pairs \f$ (a_k, b_k) \f$ that approximate the
+ * \return Vector of convergents pairs \f$(a_k, b_k)\f$ that approximate the
  * number represented by the continued fraction
  */
 inline std::vector<std::pair<int, int>>
@@ -638,7 +638,7 @@ convergents(const std::vector<int>& cf) {
  *
  * \param x Real number
  * \param N Number of convergents.
- * \return Vector of convergents pairs \f$ (a_k, b_k) \f$ that approximate the
+ * \return Vector of convergents pairs \f$(a_k, b_k)\f$ that approximate the
  * number \a x
  */
 inline std::vector<std::pair<int, int>> convergents(double x, idx N) {

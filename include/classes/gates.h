@@ -165,8 +165,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     /**
      * \brief Generalized Z gate for qudits
      *
-     * \note Defined as \f$ Z = \sum_{j=0}^{D-1} \exp(2\pi \mathrm{i} j/D)
-     * |j\rangle\langle j| \f$
+     * \note Defined as \f$Z = \sum_{j=0}^{D-1} \exp(2\pi \mathrm{i} j/D)
+     * |j\rangle\langle j|\f$
      *
      * \param D Dimension of the Hilbert space
      * \return Generalized Z gate for qudits
@@ -178,6 +178,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         if (D == 0)
             throw exception::DimsInvalid("qpp::Gates::Zd()");
         // END EXCEPTION CHECKS
+
+        if (D == 2)
+            return Z;
 
         cmat result = cmat::Zero(D, D);
         for (idx i = 0; i < D; ++i)
@@ -200,6 +203,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
             throw exception::DimsInvalid("qpp::Gates::SWAPd()");
         // END EXCEPTION CHECKS
 
+        if (D == 2)
+            return SWAP;
+
         cmat result = cmat::Zero(D * D, D * D);
 
 #ifdef HAS_OPENMP
@@ -218,7 +224,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \brief Quantum Fourier transform gate for qudits
      *
      * \note Defined as
-     * \f$ F = \sum_{j,k=0}^{D-1} \exp(2\pi \mathrm{i} jk/D) |j\rangle\langle k|
+     * \f$F = \sum_{j,k=0}^{D-1} \exp(2\pi \mathrm{i} jk/D) |j\rangle\langle k|
      * \f$
      *
      * \param D Dimension of the Hilbert space
@@ -249,13 +255,13 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
     /**
      * \brief Modular multiplication gate for qubits
-     * Implements \f$ |x\rangle  \longrightarrow |ax \mathrm{ mod } N\rangle \f$
+     * Implements \f$|x\rangle  \longrightarrow |ax \mathrm{ mod } N\rangle\f$
      *
      * \note For the gate to be unitary, \a a and \a N should be co-prime. The
      * function does not check co-primality in release versions!
      *
      * \note The number of qubits required to implement the gate should satisfy
-     * \f$ n \geq \lceil\log_2(N)\rceil \f$
+     * \f$n \geq \lceil\log_2(N)\rceil\f$
      *
      * \param a Positive integer less than \a N
      * \param N Positive integer
@@ -310,8 +316,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     /**
      * \brief Generalized X gate for qudits
      *
-     * \note Defined as \f$ X = \sum_{j=0}^{D-1} |j\oplus 1\rangle\langle j|
-     * \f$, i.e. raising operator \f$ X|j\rangle = |j\oplus 1\rangle\f$
+     * \note Defined as \f$X = \sum_{j=0}^{D-1} |j\oplus 1\rangle\langle j|\f$,
+     * i.e. raising operator \f$X|j\rangle = |j\oplus 1\rangle\f$
      *
      * \param D Dimension of the Hilbert space
      * \return Generalized X gate for qudits
@@ -323,6 +329,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         if (D == 0)
             throw exception::DimsInvalid("qpp::Gates::Xd()");
         // END EXCEPTION CHECKS
+
+        if (D == 2)
+            return X;
 
         return Fd(D).inverse() * Zd(D) * Fd(D);
     }
@@ -362,7 +371,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param n Total number of subsystems
      * \param d Subsystem dimensions
      * \param shift Performs the control as if the \a ctrl qudit states were
-     * \f$ X\f$-incremented component-wise by \a shift. If non-empty (default),
+     * \f$X\f$-incremented component-wise by \a shift. If non-empty (default),
      * the size of \a shift must be the same as the size of \a ctrl.
      * \return CTRL-A gate, as a matrix over the same scalar field as \a A
      */
@@ -532,7 +541,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param pos Position
      * \param dims Dimensions of the multi-partite system
      * \return Tensor product
-     * \f$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
+     * \f$I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
      * with \a A on position \a pos, as a dynamic matrix over the same scalar
      * field as \a A
      */
@@ -623,7 +632,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param pos Position
      * \param dims Dimensions of the multi-partite system
      * \return Tensor product
-     * \f$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
+     * \f$I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
      * with \a A on position \a pos, as a dynamic matrix over the same scalar
      * field as \a A
      */
@@ -646,7 +655,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param n Number of subsystems
      * \param d Subsystem dimensions
      * \return Tensor product
-     * \f$ I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
+     * \f$I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
      * with \a A on position \a pos, as a dynamic matrix over the same scalar
      * field as \a A
      */

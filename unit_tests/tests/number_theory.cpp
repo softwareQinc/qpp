@@ -340,12 +340,12 @@ TEST(qpp_x2contfrac, AllTests) {
     EXPECT_EQ(std::vector<int>({1}), qpp::x2contfrac(1, 3));
     EXPECT_EQ(std::vector<int>({3, 7, 15, 1, 292, 1, 1, 1, 2, 1}),
               qpp::x2contfrac(qpp::pi, 10));
-    EXPECT_EQ(std::vector<int>({0, -8, -9, -1, -135665, -1}),
-              qpp::x2contfrac(-0.123456789, 6,
-                              1e6)); // due to large term in c.f.e.
-    EXPECT_EQ(std::vector<int>({0, -8, -9, -1}),
-              qpp::x2contfrac(-0.123456789,
-                              6)); // cuts the expansion at the 4th term
+    EXPECT_EQ(
+        std::vector<int>({0, -8, -9, -1, -135665, -1}),
+        qpp::x2contfrac(-0.123456789, 6, 1e6)); // due to large term in c.f.e.
+    EXPECT_EQ(
+        std::vector<int>({0, -8, -9, -1}),
+        qpp::x2contfrac(-0.123456789, 6)); // cuts the expansion at the 4th term
     EXPECT_EQ(std::vector<int>({0, -1, -80}),
               qpp::x2contfrac(-0.987654321, 10));
     EXPECT_EQ(std::vector<int>({-1, -4, -3, -1, -3, -1, -13565, -1, -8}),

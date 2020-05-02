@@ -295,11 +295,10 @@ class NoiseBase {
     virtual cmat operator()(const cmat& state) const {
         cmat result;
         try {
-
             compute_probs_(state, std::vector<idx>{0});
             result = compute_state_(state, std::vector<idx>{0});
         } catch (exception::Exception&) {
-            std::cerr << "In qpp::NoiseBase::operator()\n";
+            std::cout << "qpp::NoiseBase::operator()\n";
             throw;
         }
 
@@ -321,7 +320,7 @@ class NoiseBase {
             compute_probs_(state, std::vector<idx>{target});
             result = compute_state_(state, std::vector<idx>{target});
         } catch (exception::Exception&) {
-            std::cerr << "In qpp::NoiseBase::operator()\n";
+            std::cout << "qpp::NoiseBase::operator()\n";
             throw;
         }
 
@@ -344,7 +343,7 @@ class NoiseBase {
             compute_probs_(state, target);
             result = compute_state_(state, target);
         } catch (exception::Exception&) {
-            std::cerr << "In qpp::NoiseBase::operator()\n";
+            std::cout << "qpp::NoiseBase::operator()\n";
             throw;
         }
 
@@ -503,7 +502,7 @@ class QubitPhaseDampingNoise : public NoiseBase<NoiseType::StateDependent> {
  */
 class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
     /**
-     * \brief Fills the Kraus operator vector
+     * \brief Constructs the vector of Kraus operators
      *
      * \param d Qudit dimension
      * \return Vector of Kraus operators representing the depolarizing noise

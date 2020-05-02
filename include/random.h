@@ -118,42 +118,41 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
 }
 
 /**
- * \brief Generates a random matrix with entries uniformly distributed in the
- * interval [a, b)
+ * \brief Generates a random real or complex matrix with entries uniformly
+ * distributed in the interval [a, b)
  *
- * If complex, then both real and imaginary parts are uniformly distributed in
- * [a, b)
+ * \note The template parameter cannot be automatically deduced and must be
+ * explicitly provided. It is only specialized for qpp::dmat and qpp::cmat.
  *
- * This is the generic version that always throws
- * qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for qpp::dmat
- * and qpp::cmat
- */
-template <typename Derived>
-Derived rand(idx rows QPP_UNUSED_, idx cols QPP_UNUSED_,
-             double a QPP_UNUSED_ = 0, double b QPP_UNUSED_ = 1) {
-    throw exception::UndefinedType("qpp::rand()");
-}
-
-/**
- * \brief Generates a random real matrix with entries uniformly distributed in
- * the interval [a, b), specialization for double matrices (qpp::dmat)
- *
- * The template parameter cannot be automatically deduced and must be explicitly
- * provided
+ * \note If complex, then both real and imaginary parts are uniformly
+ * distributed in [a, b)
  *
  * Example:
  * \code
  * // generates a 3 x 3 random Eigen::MatrixXd,
  * // with entries uniformly distributed in [-1,1)
  * dmat mat = rand<dmat>(3, 3, -1, 1);
+ *
+ * // generates a 3 x 3 random Eigen::MatrixXcd,
+ * // with entries (both real and imaginary) uniformly distributed in [-1,1)
+ * cmat mat = rand<cmat>(3, 3, -1, 1);
  * \endcode
  *
- * \param rows Number of rows of the random generated matrix
- * \param cols Number of columns of the random generated matrix
+ * \tparam Derived Matrix type, must be either qpp::dmat or qpp::cmat
+ * \param rows Number of rows of the randomly generated matrix
+ * \param cols Number of columns of the randomly generated matrix
  * \param a Beginning of the interval, belongs to it
  * \param b End of the interval, does not belong to it
- * \return Random real matrix
+ * \return Random real (qpp::dmat spacialization) or complex
+ * (qpp::cmat specialization) matrix
  */
+template <typename Derived>
+Derived rand(QPP_UNUSED_ idx rows, QPP_UNUSED_ idx cols,
+             QPP_UNUSED_ double a = 0, QPP_UNUSED_ double b = 1) {
+    throw exception::UndefinedType("qpp::rand()");
+}
+
+/// \cond DO_NOT_DOCUMENT
 template <>
 inline dmat rand(idx rows, idx cols, double a, double b) {
     // EXCEPTION CHECKS
@@ -169,27 +168,6 @@ inline dmat rand(idx rows, idx cols, double a, double b) {
     });
 }
 
-/**
- * \brief Generates a random complex matrix with entries (both real and
- * imaginary) uniformly distributed in the interval [a, b), specialization for
- * complex matrices (qpp::cmat)
- *
- * The template parameter cannot be automatically deduced and must be explicitly
- * provided
- *
- * Example:
- * \code
- * // generates a 3 x 3 random Eigen::MatrixXcd,
- * // with entries (both real and imaginary) uniformly distributed in [-1,1)
- * cmat mat = rand<cmat>(3, 3, -1, 1);
- * \endcode
- *
- * \param rows Number of rows of the random generated matrix
- * \param cols Number of columns of the random generated matrix
- * \param a Beginning of the interval, belongs to it
- * \param b End of the interval, does not belong to it
- * \return Random complex matrix
- */
 template <>
 inline cmat rand(idx rows, idx cols, double a, double b) {
     // EXCEPTION CHECKS
@@ -203,44 +181,44 @@ inline cmat rand(idx rows, idx cols, double a, double b) {
     return rand<dmat>(rows, cols, a, b).cast<cplx>() +
            1_i * rand<dmat>(rows, cols, a, b).cast<cplx>();
 }
+/// \endcond
 
 /**
- * \brief Generates a random matrix with entries normally distributed in
- * N(mean, sigma)
+ * \brief Generates a random real or complex matrix with entries normally
+ * distributed in N(mean, sigma).
  *
- * If complex, then both real and imaginary parts are normally distributed in
- * N(mean, sigma)
+ * \note The template parameter cannot be automatically deduced and must be
+ * explicitly provided. It is only specialized for qpp::dmat and qpp::cmat.
  *
- * This is the generic version that always throws
- * qpp::Exception::Type::UNDEFINED_TYPE. It is specialized only for qpp::dmat
- * and qpp::cmat
- */
-template <typename Derived>
-Derived randn(idx rows QPP_UNUSED_, idx cols QPP_UNUSED_,
-              double mean QPP_UNUSED_ = 0, double sigma QPP_UNUSED_ = 1) {
-    throw exception::UndefinedType("qpp::randn()");
-}
-
-/**
- * \brief Generates a random real matrix with entries normally distributed in
- * N(mean, sigma), specialization for double matrices (qpp::dmat)
- *
- * The template parameter cannot be automatically deduced and must be explicitly
- * provided
+ * \note If complex, then both real and imaginary parts are normally distributed
+ * in N(mean, sigma)
  *
  * Example:
  * \code
  * // generates a 3 x 3 random Eigen::MatrixXd,
  * // with entries normally distributed in N(0,2)
  * dmat mat = randn<dmat>(3, 3, 0, 2);
+ *
+ * // generates a 3 x 3 random Eigen::MatrixXcd,
+ * // with entries (both real and imaginary) normally distributed in N(0,2)
+ * cmat mat = randn<cmat>(3, 3, 0, 2);
  * \endcode
  *
- * \param rows Number of rows of the random generated matrix
- * \param cols Number of columns of the random generated matrix
+ * \tparam Derived Matrix type, must be either qpp::dmat or qpp::cmat
+ * \param rows Number of rows of the randomly generated matrix
+ * \param cols Number of columns of the randomly generated matrix
  * \param mean Mean
  * \param sigma Standard deviation
- * \return Random real matrix
+ * \return Random real (qpp::dmat spacialization) or complex
+ * (qpp::cmat specialization) matrix
  */
+template <typename Derived>
+Derived randn(QPP_UNUSED_ idx rows, QPP_UNUSED_ idx cols,
+              QPP_UNUSED_ double mean = 0, QPP_UNUSED_ double sigma = 1) {
+    throw exception::UndefinedType("qpp::randn()");
+}
+
+/// \cond DO_NOT_DOCUMENT
 template <>
 inline dmat randn(idx rows, idx cols, double mean, double sigma) {
     // EXCEPTION CHECKS
@@ -262,27 +240,6 @@ inline dmat randn(idx rows, idx cols, double mean, double sigma) {
     });
 }
 
-/**
- * \brief Generates a random complex matrix with entries (both real and
- * imaginary) normally distributed in N(mean, sigma), specialization for complex
- * matrices (qpp::cmat)
- *
- * The template parameter cannot be automatically deduced and must be explicitly
- * provided
- *
- * Example:
- * \code
- * // generates a 3 x 3 random Eigen::MatrixXcd,
- * // with entries (both real and imaginary) normally distributed in N(0,2)
- * cmat mat = randn<cmat>(3, 3, 0, 2);
- * \endcode
- *
- * \param rows Number of rows of the random generated matrix
- * \param cols Number of columns of the random generated matrix
- * \param mean Mean
- * \param sigma Standard deviation
- * \return Random complex matrix
- */
 template <>
 inline cmat randn(idx rows, idx cols, double mean, double sigma) {
     // EXCEPTION CHECKS
@@ -294,6 +251,7 @@ inline cmat randn(idx rows, idx cols, double mean, double sigma) {
     return randn<dmat>(rows, cols, mean, sigma).cast<cplx>() +
            1_i * randn<dmat>(rows, cols, mean, sigma).cast<cplx>();
 }
+/// \endcond
 
 /**
  * \brief Generates a random real number (double) normally distributed in
@@ -365,41 +323,65 @@ inline cmat randV(idx Din, idx Dout) {
 }
 
 /**
- * \brief Generates a set of random Kraus operators
+ * \brief Generates a set of random Kraus operators from an input space of
+ * dimension \a Din to an output space of dimension \a Dout
  *
- * \note The set of Kraus operators satisfy the closure condition
- * \f$ \sum_i K_i^\dagger K_i = I\f$
+ * \note The set of Kraus operators satisfies the closure condition
+ * \f$\sum_i K_i^\dagger K_i = I\f$. The Kraus operators can have their range
+ * different from their domain (i.e., they can be rectangular matrices). The
+ * dimensions \a Din, \a Dout and the number of Kraus operators \a N must be
+ * chosen so that \f$D_{out}N/D_{in}\f$ is a positive integer.
  *
  * \param N Number of Kraus operators
- * \param D Dimension of the Hilbert space
+ * \param Din Dimension of the input Hilbert space
+ * \param Dout Dimension of the output Hilbert space
  * \return Set of \a N Kraus operators satisfying the closure condition
  */
-inline std::vector<cmat> randkraus(idx N, idx D = 2) {
+inline std::vector<cmat> randkraus(idx N, idx Din, idx Dout) {
     // EXCEPTION CHECKS
 
     if (N == 0)
         throw exception::OutOfRange("qpp::randkraus()");
-    if (D == 0)
+    if (Din == 0 || Dout == 0)
+        throw exception::DimsInvalid("qpp::randkraus()");
+    idx Din_env = (N * Dout) / Din; // dimension of the input environment
+    if (Din_env * Din != Dout * N)
         throw exception::DimsInvalid("qpp::randkraus()");
     // END EXCEPTION CHECKS
 
     std::vector<cmat> result(N);
     for (idx i = 0; i < N; ++i)
-        result[i] = cmat::Zero(D, D);
+        result[i] = cmat::Zero(Dout, Din);
 
-    cmat Fk(D, D);
-    cmat U = randU(N * D);
+    cmat Fk(Dout, Din);
+    cmat U = randU(N * Dout);
 
 #ifdef HAS_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(3)
 #endif // HAS_OPENMP
     for (idx k = 0; k < N; ++k)
-        for (idx a = 0; a < D; ++a)
-            for (idx b = 0; b < D; ++b)
-                result[k](a, b) = U(a * N + k, b * N);
+        for (idx a = 0; a < Dout; ++a)
+            for (idx b = 0; b < Din; ++b)
+                result[k](a, b) = U(a * N + k, b * Din_env);
 
     return result;
+}
+
+/**
+ * \brief Generates a set of random Kraus operators from an input space of
+ * dimension \a Din to an output space of dimension \a Dout
+ *
+ * \note The set of Kraus operators satisfies the closure condition
+ * \f$\sum_i K_i^\dagger K_i = I\f$. The Kraus operators are assumed to have
+ * their range equal to their domain (i.e., they are square matrices).
+ *
+ * \param N Number of Kraus operators
+ * \param D Dimension of the Kraus input and output Hilbert space
+ * \return Set of \a N Kraus operators satisfying the closure condition
+ */
+inline std::vector<cmat> randkraus(idx N, idx D = 2) {
+    return randkraus(N, D, D);
 }
 
 /**
@@ -530,6 +512,25 @@ inline std::vector<double> randprob(idx N) {
         result[i] /= sumprob;
 
     return result;
+}
+
+/**
+ *\brief Generates a random boolean drawn from a Bernoulli-\f$p\f$ distribution
+ *\note Outputs always false for \a p == 0, and always true for \a p == 1
+ *
+ * \param p Probability bias (0.5 by default)
+ * \return Boolean drawn from a Bernoulli-\f$p\f$ distribution
+ */
+inline bool bernoulli(double p = 0.5) {
+    std::bernoulli_distribution bd(p);
+    auto& gen =
+#ifdef NO_THREAD_LOCAL_
+        RandomDevices::get_instance().get_prng();
+#else
+        RandomDevices::get_thread_local_instance().get_prng();
+#endif
+
+    return bd(gen);
 }
 
 } /* namespace qpp */

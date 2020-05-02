@@ -229,7 +229,9 @@ class Token : public IDisplay {
     /**
      * \brief Check whether the token is one of a list of types
      *
-     * \param ks List of token types to check
+     * \param k1 First token types to check
+     * \param k2 Second token types to check
+     * \param ks List of remaining token types to check
      * \return True if and only if the token is one of the types in ks
      */
     template <typename... Ts>

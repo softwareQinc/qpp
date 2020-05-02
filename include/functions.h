@@ -115,6 +115,10 @@ dyn_mat<typename Derived::Scalar> inverse(const Eigen::MatrixBase<Derived>& A) {
     // check zero-size
     if (!internal::check_nonzero_size(rA))
         throw exception::ZeroSize("qpp::inverse()");
+
+    // check square matrix
+    if (!internal::check_square_mat(rA))
+        throw exception::MatrixNotSquare("qpp::inverse()");
     // END EXCEPTION CHECKS
 
     return rA.inverse();
@@ -135,6 +139,10 @@ typename Derived::Scalar trace(const Eigen::MatrixBase<Derived>& A) {
     // check zero-size
     if (!internal::check_nonzero_size(rA))
         throw exception::ZeroSize("qpp::trace()");
+
+    // check square matrix
+    if (!internal::check_square_mat(rA))
+        throw exception::MatrixNotSquare("qpp::trace()");
     // END EXCEPTION CHECKS
 
     return rA.trace();
@@ -156,6 +164,10 @@ typename Derived::Scalar det(const Eigen::MatrixBase<Derived>& A) {
     // check zero-size
     if (!internal::check_nonzero_size(rA))
         throw exception::ZeroSize("qpp::det()");
+
+    // check square matrix
+    if (!internal::check_square_mat(rA))
+        throw exception::MatrixNotSquare("qpp::det()");
     // END EXCEPTION CHECKS
 
     return rA.determinant();
@@ -281,22 +293,16 @@ normalize(const Eigen::MatrixBase<Derived>& A) {
 
     if (internal::check_cvector(rA) || internal::check_rvector(rA)) {
         double normA = norm(rA);
-        try {
-            if (normA == 0)
-                throw std::overflow_error("Division by zero!");
-        } catch (...) {
-            std::cerr << "In qpp::normalize()\n";
-            throw;
+        if (normA == 0) {
+            std::cout << "qpp::normalize()\n";
+            throw std::overflow_error("Division by zero!");
         }
         result = rA / normA;
     } else if (internal::check_square_mat(rA)) {
         typename Derived::Scalar traceA = trace(rA);
-        try {
-            if (std::abs(traceA) == 0)
-                throw std::overflow_error("Division by zero!");
-        } catch (...) {
-            std::cerr << "In qpp::normalize()\n";
-            throw;
+        if (std::abs(traceA) == 0) {
+            std::cout << "qpp::normalize()\n";
+            throw std::overflow_error("Division by zero!");
         }
         result = rA / trace(rA);
     } else
@@ -310,7 +316,7 @@ normalize(const Eigen::MatrixBase<Derived>& A) {
  * \see qpp::heig()
  *
  * \param A Eigen expression
- * \return Pair of:  1. Eigenvalues of \a A, as a complex dynamic column vector,
+ * \return Pair of: 1. Eigenvalues of \a A, as a complex dynamic column vector,
  * and 2. Eigenvectors of \a A, as columns of a complex dynamic matrix
  */
 template <typename Derived>
@@ -771,7 +777,7 @@ cmat spectralpowm(const Eigen::MatrixBase<Derived>& A, const cplx z) {
 
     // Define A^0 = Id, for z IDENTICALLY zero
     if (real(z) == 0 && imag(z) == 0)
-        return cmat::Identity(rA.rows(), rA.rows());
+        return cmat::Identity(rA.rows(), rA.cols());
 
     Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
     cmat evects = es.eigenvectors();
@@ -815,7 +821,7 @@ dyn_mat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived>& A,
         return A;
 
     dyn_mat<typename Derived::Scalar> result =
-        dyn_mat<typename Derived::Scalar>::Identity(A.rows(), A.rows());
+        dyn_mat<typename Derived::Scalar>::Identity(A.rows(), A.cols());
 
     // if n = 0, return the identity (as just prepared in result)
     if (n == 0)
@@ -1159,7 +1165,7 @@ dyn_mat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived>& A,
  * \brief Commutator
  * \see qpp::anticomm()
  *
- *  Commutator \f$ [A,B] = AB - BA \f$. Both \a A and \a B must be Eigen
+ *  Commutator \f$[A,B] = AB - BA\f$. Both \a A and \a B must be Eigen
  *  expressions over the same scalar field.
  *
  * \param A Eigen expression
@@ -1200,7 +1206,7 @@ dyn_mat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1>& A,
  * \brief Anti-commutator
  * \see qpp::comm()
  *
- *  Anti-commutator \f$ \{A,B\} = AB + BA \f$.
+ *  Anti-commutator \f$\{A,B\} = AB + BA\f$.
  *  Both \a A and \a B must be Eigen expressions over the same scalar field.
  *
  * \param A Eigen expression

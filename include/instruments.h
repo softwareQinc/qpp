@@ -197,6 +197,9 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
  * \brief Measures the state vector or density operator \a A using the set of
  * Kraus operators \a Ks
  *
+ * \note The Kraus operators can have their range different from their domain
+ * (i.e., they can be rectangular matrices).
+ *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
  * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
@@ -216,12 +219,10 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
     // check the Kraus operators
     if (Ks.empty())
         throw exception::ZeroSize("qpp::measure()");
-    if (!internal::check_square_mat(Ks[0]))
-        throw exception::MatrixNotSquare("qpp::measure()");
-    if (Ks[0].rows() != rA.rows())
+    if (Ks[0].cols() != rA.rows())
         throw exception::DimsMismatchMatrix("qpp::measure()");
     for (auto&& elem : Ks)
-        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
+        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].cols())
             throw exception::DimsNotEqual("qpp::measure()");
     // END EXCEPTION CHECKS
 
@@ -230,11 +231,12 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
     // resulting states
     std::vector<cmat> outstates(Ks.size());
 
+    idx Dout = Ks[0].rows();
     //************ density matrix ************//
     if (internal::check_square_mat(rA)) // square matrix
     {
         for (idx i = 0; i < Ks.size(); ++i) {
-            outstates[i] = cmat::Zero(rA.rows(), rA.rows());
+            outstates[i] = cmat::Zero(Dout, Dout);
             cmat tmp = Ks[i] * rA * adjoint(Ks[i]); // un-normalized;
             prob[i] = std::abs(trace(tmp));         // probability
             if (prob[i] > 0)
@@ -245,7 +247,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
     else if (internal::check_cvector(rA)) // column vector
     {
         for (idx i = 0; i < Ks.size(); ++i) {
-            outstates[i] = ket::Zero(rA.rows());
+            outstates[i] = ket::Zero(Dout);
             ket tmp = Ks[i] * rA; // un-normalized;
             // probability
             prob[i] = std::pow(norm(tmp), 2);
@@ -391,7 +393,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     if (Dsubsys != static_cast<idx>(Ks[0].rows()))
         throw exception::DimsMismatchMatrix("qpp::measure()");
     for (auto&& elem : Ks)
-        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
+        if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].cols())
             throw exception::DimsNotEqual("qpp::measure()");
     // END EXCEPTION CHECKS
 

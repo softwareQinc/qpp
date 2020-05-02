@@ -1,10 +1,10 @@
 # Quantum++ 
-## Version 2.2 - 14 April 2020
+## Version 2.3 - 2 May 2020
 
 **Build status:**
 
 [![Build Status](https://travis-ci.org/softwareQinc/qpp.svg?branch=master)](https://travis-ci.org/softwareQinc/qpp)
-[![Build status](https://ci.appveyor.com/api/projects/status/woy7ujojonqt731o?svg=true)](https://ci.appveyor.com/project/vsoftco/qpp)
+[![Build status](https://ci.appveyor.com/api/projects/status/1k2866yffaiaapmw?svg=true)](https://ci.appveyor.com/project/vsoftco/qpp)
 
 **Chat (questions/issues)**
 

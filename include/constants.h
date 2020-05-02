@@ -87,7 +87,7 @@ constexpr double chop = 1e-14;
 constexpr idx maxn = 64; // maximum number of qubits/qudits a state may have
 
 /**
- * \brief \f$ \pi \f$
+ * \brief \f$\pi\f$
  */
 constexpr double pi = 3.141592653589793238462643383279502884;
 /**
@@ -114,7 +114,7 @@ inline cplx omega(idx D) {
 
 /**
  * \brief Constants to be used by std::get<> on the result of qpp::measure(),
- * qpp_measure_seq() etc.
+ * qpp::measure_seq() etc.
  */
 enum {
     RES = 0,  ///< Measurement result(s)

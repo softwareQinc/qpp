@@ -88,7 +88,6 @@ class Exception : public std::exception {
      */
     const char* what() const noexcept override {
         msg_.clear();
-        msg_ += "In ";
         msg_ += where_;
         msg_ += ": ";
         msg_ += description();

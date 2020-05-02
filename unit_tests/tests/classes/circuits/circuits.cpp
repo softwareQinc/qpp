@@ -213,6 +213,12 @@ TEST(qpp_QCircuit_measureZ, SingleTarget) {}
 /// BEGIN QCircuit& qpp::QCircuit::nop()
 TEST(qpp_QCircuit_nop, AllTests) {}
 /******************************************************************************/
+/// BEGIN bool qpp::QCircuit::operator!=(const QCircuit& rhs) const noexcept
+TEST(qpp_QCircuit_operator_noneq, AllTests) {}
+/******************************************************************************/
+/// BEGIN bool qpp::QCircuit::operator==(const QCircuit& rhs) const noexcept
+TEST(qpp_QCircuit_operator_eq, AllTests) {}
+/******************************************************************************/
 /// BEGIN QCircuit& qpp::QCircuit::QFT(bool swap = true)
 TEST(qpp_QCircuit_QFT, AllQudits) {}
 /******************************************************************************/

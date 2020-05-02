@@ -449,7 +449,6 @@ class QASM : public IDisplay {
      *
      * \param bits Number of bits
      * \param qubits Number of qubits
-     * \param reset Whether reset is used
      * \param body Rvalue reference to a list of statements
      */
     QASM(int bits, int qubits, std::vector<StatementPtr>&& body)
@@ -486,7 +485,6 @@ class QASM : public IDisplay {
      * \brief Formats and prints the AST with location annotations
      *
      * \param os Output stream
-     * \param prefix Prefix for the statement
      */
     void pretty_print(std::ostream& os) const {
         os << "(Included header): OPENQASM 2.0;\n(Included header): include "
@@ -685,6 +683,7 @@ class GateDecl final : public Decl {
      *
      * \param loc The source location
      * \param id The gate identifier
+     * \param opaque Opaque
      * \param c_params List of classical parameters
      * \param q_params List of quantum parameters
      * \param body List of gate statements

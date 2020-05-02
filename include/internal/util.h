@@ -116,7 +116,7 @@ bool check_cvector(const Eigen::MatrixBase<Derived>& A) {
     return A.cols() == 1;
 }
 
-// check non-zero size of object that supports size() function
+// check non-zero size of object that implements size() member function
 template <typename T>
 bool check_nonzero_size(const T& x) noexcept {
     return x.size() != 0;
@@ -154,7 +154,7 @@ bool check_dims_match_mat(const std::vector<idx>& dims,
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
                                   static_cast<idx>(1), std::multiplies<idx>());
 
-    return proddim == static_cast<idx>(A.rows());
+    return proddim == static_cast<idx>(A.cols());
 }
 
 // check that valid dims match the dimensions of valid column vector
@@ -266,7 +266,7 @@ inline bool check_perm(const std::vector<idx>& perm) {
 }
 
 // Kronecker product of 2 matrices, preserve return type
-// internal function for the variadic template function wrapper kron()
+// internal function for the variadic template function wrapper qpp::kron()
 template <typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar> kron2(const Eigen::MatrixBase<Derived1>& A,
                                          const Eigen::MatrixBase<Derived2>& B) {
@@ -310,7 +310,7 @@ dyn_mat<typename Derived1::Scalar> kron2(const Eigen::MatrixBase<Derived1>& A,
 }
 
 // Direct sum of 2 matrices, preserve return type
-// internal function for the variadic template function wrapper dirsum()
+// internal function for the variadic template function wrapper qpp::dirsum()
 template <typename Derived1, typename Derived2>
 dyn_mat<typename Derived1::Scalar>
 dirsum2(const Eigen::MatrixBase<Derived1>& A,

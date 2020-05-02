@@ -7,6 +7,9 @@ using namespace qpp;
 // Unit testing "random.h"
 
 /******************************************************************************/
+/// BEGIN inline bool qpp::bernoulli(double p = 0.5)
+TEST(qpp_bernoulli, AllTests) {}
+/******************************************************************************/
 /// BEGIN inline bigint qpp::rand(bigint a, bigint b)
 TEST(qpp_rand, Integer) {
     // 1 element equal boundaries
@@ -221,7 +224,8 @@ TEST(qpp_randket, AllTests) {
     EXPECT_NEAR(0, norm(expected - avg_state / N), 2e-2);
 }
 /******************************************************************************/
-/// BEGIN inline std::vector<cmat> qpp::randkraus(idx N, idx D = 2)
+/// BEGIN inline std::vector<cmat> qpp::randkraus(idx N, idx Din = 2,
+///       idx Dout = -1)
 TEST(qpp_randkraus, AllTests) {
     // D = 1, N = 1 degenerate case
     idx D = 1, N = 1;
@@ -267,6 +271,16 @@ TEST(qpp_randkraus, AllTests) {
         closure += adjoint(Ks[i]) * Ks[i];
     }
     EXPECT_NEAR(0, norm(closure - gt.Id(D)), 1e-7);
+
+    // Din = 3, Dout = 5, N = 6
+    idx Din = 3, Dout = 5;
+    N = 6;
+    Ks = qpp::randkraus(N, Din, Dout);
+    closure = cmat::Zero(Din, Din);
+    for (idx i = 0; i < N; ++i) {
+        closure += adjoint(Ks[i]) * Ks[i];
+    }
+    EXPECT_NEAR(0, norm(closure - gt.Id(Din)), 1e-7);
 }
 /******************************************************************************/
 /// BEGIN inline double qpp::randn(double mean = 0, double sigma = 1)

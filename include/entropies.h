@@ -89,7 +89,7 @@ inline double entropy(const std::vector<double>& prob) {
  * \brief Renyi-\f$\alpha\f$ entropy of the density matrix \a A,
  * for \f$\alpha\geq 0\f$
  *
- * \note When \f$ \alpha\to 1\f$ the Renyi entropy converges to the von-Neumann
+ * \note When \f$\alpha\to 1\f$ the Renyi entropy converges to the von-Neumann
  * entropy, with the logarithm in base 2
  *
  * \param A Eigen expression
@@ -137,7 +137,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha) {
  * \brief Renyi-\f$\alpha\f$ entropy of the probability distribution \a prob,
  * for \f$\alpha\geq 0\f$
  *
- * \note When \f$ \alpha\to 1\f$ the Renyi entropy converges to the Shannon
+ * \note When \f$\alpha\to 1\f$ the Renyi entropy converges to the Shannon
  * entropy, with the logarithm in base 2
  *
  * \param prob Real probability vector
@@ -183,8 +183,8 @@ inline double renyi(const std::vector<double>& prob, double alpha) {
 /**
  * \brief Tsallis-\f$q\f$ entropy of the density matrix \a A, for \f$q\geq 0\f$
  *
- * \note When \f$ q\to 1\f$ the Tsallis entropy converges to the von-Neumann
- * entropy, with the logarithm in base \f$ e \f$
+ * \note When \f$q\to 1\f$ the Tsallis entropy converges to the von-Neumann
+ * entropy, with the logarithm in base \f$e\f$
  *
  * \param A Eigen expression
  * \param q Non-negative real number
@@ -224,8 +224,8 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double q) {
  * \brief Tsallis-\f$q\f$ entropy of the probability distribution \a prob, for
  * \f$q\geq 0\f$
  *
- * \note When \f$ q\to 1\f$ the Tsallis entropy converges to the Shannon
- * entropy, with the logarithm in base \f$ e \f$
+ * \note When \f$q\to 1\f$ the Tsallis entropy converges to the Shannon
+ * entropy, with the logarithm in base \f$e\f$
  *
  * \param prob Real probability vector
  * \param q Non-negative real number

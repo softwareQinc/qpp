@@ -169,10 +169,11 @@ TEST(qpp_applyQFT, AllTests) {}
 ///       const std::vector<idx>& target, idx d = 2, bool swap = true)
 TEST(qpp_applyTQF, AllTests) {}
 /******************************************************************************/
-/// BEGIN inline std::vector<cmat> qpp::choi2kraus(const cmat& A)
+/// BEGIN inline std::vector<cmat> qpp::choi2kraus(const cmat& A, idx Din,
+///       idx Dout)
 TEST(qpp_choi2kraus, AllTests) {}
 /******************************************************************************/
-/// BEGIN inline cmat qpp::choi2super(const cmat& A)
+/// BEGIN inline cmat qpp::choi2super(const cmat& A, idx Din, idx Dout)
 TEST(qpp_choi2super, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline cmat qpp::kraus2choi(const std::vector<cmat>& Ks)
@@ -231,6 +232,9 @@ TEST(qpp_qRAM, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline cmat qpp::super2choi(const cmat& A)
 TEST(qpp_super2choi, AllTests) {}
+/******************************************************************************/
+/// BEGIN inline cmat qpp::super2kraus(const cmat& A)
+TEST(qpp_super2kraus, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       qpp::syspermute(const Eigen::MatrixBase<Derived>& A,

@@ -7,4 +7,8 @@
 int main() {
     /////////// testing ///////////
     using namespace qpp;
+    try {
+    } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
+    }
 }
