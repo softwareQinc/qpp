@@ -294,14 +294,14 @@ normalize(const Eigen::MatrixBase<Derived>& A) {
     if (internal::check_cvector(rA) || internal::check_rvector(rA)) {
         double normA = norm(rA);
         if (normA == 0) {
-            std::cout << "qpp::normalize()\n";
+            std::cerr << "qpp::normalize()\n";
             throw std::overflow_error("Division by zero!");
         }
         result = rA / normA;
     } else if (internal::check_square_mat(rA)) {
         typename Derived::Scalar traceA = trace(rA);
         if (std::abs(traceA) == 0) {
-            std::cout << "qpp::normalize()\n";
+            std::cerr << "qpp::normalize()\n";
             throw std::overflow_error("Division by zero!");
         }
         result = rA / trace(rA);
@@ -972,8 +972,8 @@ dyn_mat<typename Derived::Scalar> kron(const std::vector<Derived>& As) {
  * \brief Kronecker product
  * \see qpp::kronpow()
  *
- * \param As std::initializer_list of Eigen expressions,
- * such as \a {A1, A2, ... ,Ak}
+ * \param As std::initializer_list of Eigen expressions, such as
+ * \a {A1, A2, ... ,Ak}
  * \return Kronecker product of all elements in \a As, evaluated from left to
  * right, as a dynamic matrix over the same scalar field as its arguments
  */
@@ -1330,17 +1330,16 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& As) {
 
     dyn_mat<typename Derived::Scalar> result(As[0].rows(), outvecs.size());
 
-    idx cnt = 0;
+    idx tmp = 0;
     for (auto&& elem : outvecs) {
         double normA = norm(elem);
         if (normA > 0) // we add only the non-zero vectors
         {
-            result.col(cnt) = elem / normA;
-            ++cnt;
+            result.col(tmp++) = elem / normA;
         }
     }
 
-    return result.block(0, 0, As[0].rows(), cnt);
+    return result.block(0, 0, As[0].rows(), tmp);
 }
 
 // deduce the template parameters from initializer_list

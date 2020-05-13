@@ -67,8 +67,8 @@ class RandomDevices final : public internal::Singleton<RandomDevices> {
 
     /**
      * \brief Saves the state of the PRNG to an output stream
-     * \param os Output stream
-     * \return Output stream
+     * \param os Output stream passed by reference
+     * \return Reference to the output stream
      */
     std::ostream& save(std::ostream& os) const { return os << prng_; }
 

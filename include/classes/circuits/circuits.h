@@ -54,6 +54,10 @@ class QCircuit : public IDisplay, public IJSON {
     std::unordered_map<std::string, idx>
         measurement_count_{}; ///< measurement counts
 
+    std::vector<bool> clean_qudits_; ///< keeps track of clean (unused) qudits
+    std::vector<bool>
+        clean_dits_; ///< keeps track of clean (unused) classical dits
+
     /**
      * \brief Adds matrix to the hash table
      *
@@ -135,9 +139,9 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Extraction operator overload for qpp::QCircuit::GateType enum
      * class
      *
-     * \param os Output stream
+     * \param os Output stream passed by reference
      * \param gate_type qpp::QCircuit::GateType enum class
-     * \return Output stream
+     * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os,
                                     const GateType& gate_type) {
@@ -246,9 +250,9 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Extraction operator overload for qpp::QCircuit::GateStep class
      *
-     * \param os Output stream
+     * \param os Output stream passed by reference
      * \param gate_step qpp::QCircuit::GateStep class
-     * \return Output stream
+     * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os,
                                     const GateStep& gate_step) {
@@ -309,9 +313,9 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Extraction operator overload for qpp::QCircuit::MeasureType enum
      * class
      *
-     * \param os Output stream
+     * \param os Output stream passed by reference
      * \param measure_type qpp::QCircuit::MeasureType enum class
-     * \return Output stream
+     * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os,
                                     const MeasureType& measure_type) {
@@ -411,9 +415,9 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Extraction operator overload for qpp::QCircuit::MeasureStep class
      *
-     * \param os Output stream
+     * \param os Output stream passed by reference
      * \param measure_step qpp::QCircuit::MeasureStep enum class
-     * \return Output stream
+     * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os,
                                     const MeasureStep& measure_step) {
@@ -465,8 +469,8 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \return Hash table with the matrices used in the circuit
      */
-    const std::unordered_map<std::size_t, cmat>& get_cmat_hash_tbl_() const
-        noexcept {
+    const std::unordered_map<std::size_t, cmat>&
+    get_cmat_hash_tbl_() const noexcept {
         return cmat_hash_tbl_;
     }
 
@@ -858,7 +862,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param name Circuit name (optional)
      */
     explicit QCircuit(idx nq, idx nc = 0, idx d = 2, std::string name = {})
-        : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false) {
+        : nq_{nq}, nc_{nc}, d_{d}, name_{name}, measured_(nq, false),
+          clean_qudits_(nq_, true), clean_dits_(nc_, true) {
         // EXCEPTION CHECKS
 
         // if (nq == 0)
@@ -872,6 +877,54 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Default virtual destructor
      */
     virtual ~QCircuit() = default;
+
+    // static member functions
+    /**
+     * \brief Checks whether a gate step is a controlled gate
+     *
+     * \return True if the gate step is a controlled gate, false otherwise
+     */
+    inline static bool is_CTRL(const GateStep& gate_step) {
+        switch (gate_step.gate_type_) {
+            case GateType::SINGLE_CTRL_SINGLE_TARGET:
+            case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
+            case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
+            case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
+            case GateType::CUSTOM_CTRL:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * \brief Checks whether a gate step is a classically-controlled gate
+     *
+     * \return True if the gate step is a classically-controlled gate, false
+     * otherwise
+     */
+    inline static bool is_cCTRL(const GateStep& gate_step) {
+        switch (gate_step.gate_type_) {
+            case GateType::SINGLE_cCTRL_SINGLE_TARGET:
+            case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
+            case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
+            case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
+            case GateType::CUSTOM_cCTRL:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * \brief Checks whether a gate step is a regular gate (not a controlled
+     * gate)
+     *
+     * \return True if the gate step is a regular gate, false otherwise
+     */
+    inline static bool is_non_CTRL(const GateStep& gate_step) {
+        return !(is_CTRL(gate_step) || is_cCTRL(gate_step));
+    }
 
     // getters
     /**
@@ -905,7 +958,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Check whether qudit \a i was already measured (destructively)
      * \param i Qudit index
      * \return True if qudit \a i was already measured (destructively), false
-     * othwewise
+     * otherwise
      */
     idx get_measured(idx i) const {
         // EXCEPTION CHECKS
@@ -1009,48 +1062,32 @@ class QCircuit : public IDisplay, public IJSON {
                                    target.end());
 
                 idx max_height = 0;
-                switch (gate_step.gate_type_) {
-                    case GateType::NONE:
-                    case GateType::SINGLE:
-                    case GateType::TWO:
-                    case GateType::THREE:
-                    case GateType::CUSTOM:
-                    case GateType::FAN:
-                    case GateType::SINGLE_CTRL_SINGLE_TARGET:
-                    case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
-                    case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
-                    case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
-                    case GateType::CUSTOM_CTRL:
-                        // compute the "height" of the to-be-placed gate
-                        for (auto&& i : ctrl_target)
-                            if (heights[nc_ + i] > max_height)
-                                max_height = heights[nc_ + i];
-                        // apply (ctrl) gate
-                        for (auto&& i : ctrl_target)
-                            heights[nc_ + i] = max_height + 1;
-                        break;
-                    case GateType::SINGLE_cCTRL_SINGLE_TARGET:
-                    case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
-                    case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
-                    case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
-                    case GateType::CUSTOM_cCTRL:
-                        // compute the "height" of the to-be-placed gate
-                        for (auto&& i : ctrl)
-                            if (heights[i] > max_height)
-                                max_height = heights[i];
-                        for (auto&& i : target)
-                            if (heights[nc_ + i] > max_height)
-                                max_height = heights[nc_ + i];
-                        // apply classical ctrl
-                        for (auto&& i : ctrl)
-                            heights[i] = max_height + 1;
-                        // apply gate
-                        for (auto&& i : target)
-                            heights[nc_ + i] = max_height + 1;
-                        break;
-                } // end switch
-            }     // end if (step.type_ == StepType::GATE)
-        }         // end for
+
+                if (is_cCTRL(gate_step)) {
+                    // compute the "height" of the to-be-placed gate
+                    for (auto&& i : ctrl)
+                        if (heights[i] > max_height)
+                            max_height = heights[i];
+                    for (auto&& i : target)
+                        if (heights[nc_ + i] > max_height)
+                            max_height = heights[nc_ + i];
+                    // apply classical ctrl
+                    for (auto&& i : ctrl)
+                        heights[i] = max_height + 1;
+                    // apply gate
+                    for (auto&& i : target)
+                        heights[nc_ + i] = max_height + 1;
+                } else {
+                    // compute the "height" of the to-be-placed gate
+                    for (auto&& i : ctrl_target)
+                        if (heights[nc_ + i] > max_height)
+                            max_height = heights[nc_ + i];
+                    // apply (ctrl) gate
+                    for (auto&& i : ctrl_target)
+                        heights[nc_ + i] = max_height + 1;
+                }
+            } // end if (step.type_ == StepType::GATE)
+        }     // end for
 
         return found ? *std::max_element(std::begin(heights), std::end(heights))
                      : 0;
@@ -1216,59 +1253,55 @@ class QCircuit : public IDisplay, public IJSON {
     // end setters
 
     /**
-     * \brief Adds \a n additional qudits before qudit \a i
+     * \brief Adds \a n additional qudits before qudit \a pos
      *
      * \note Qudits with indexes greater or equal than the newly inserted ones
      * have their indexes automatically incremented
      *
      * \param n Number of qudits
-     * \param i Qudit index
+     * \param pos Qudit index
      * \return Reference to the current instance
      */
-    QCircuit& add_qudit(idx n, idx i) {
+    QCircuit& add_qudit(idx n, idx pos) {
         // EXCEPTION CHECKS
 
-        if (i > nq_)
+        if (pos > nq_)
             throw exception::OutOfRange("qpp::QCircuit::add_qudit()");
         // END EXCEPTION CHECKS
 
         nq_ += n;
 
         // updated the measured qudits
-        measured_.insert(std::next(std::begin(measured_), i), n, false);
+        measured_.insert(std::next(std::begin(measured_), pos), n, false);
 
         // update gate indexes
         for (auto& gate : gates_) {
-            switch (gate.gate_type_) {
-                // classically-controlled gates
-                case GateType::SINGLE_cCTRL_SINGLE_TARGET:
-                case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
-                case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
-                case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
-                case GateType::CUSTOM_cCTRL:
-                    break;
-                // quantumly-controlled gates
-                default:
-                    for (auto& pos : gate.ctrl_) {
-                        if (pos >= i)
-                            pos += n;
-                    }
-                    break;
+            // update ctrl indexes
+            if (is_CTRL(gate)) {
+                for (auto& elem : gate.ctrl_) {
+                    if (elem >= pos)
+                        elem += n;
+                }
             }
 
-            for (auto& pos : gate.target_) {
-                if (pos >= i)
-                    pos += n;
+            // update target indexes
+            for (auto& elem : gate.target_) {
+                if (elem >= pos)
+                    elem += n;
             }
         }
 
         // update measurement indexes
         for (auto& measurement : measurements_) {
-            for (auto& pos : measurement.target_) {
-                if (pos >= i)
-                    pos += n;
+            for (auto& elem : measurement.target_) {
+                if (elem >= pos)
+                    elem += n;
             }
         }
+
+        // update (enlarge) the clean qudits vector
+        clean_qudits_.insert(std::next(std::begin(clean_qudits_), pos), n,
+                             true);
 
         return *this;
     }
@@ -1282,19 +1315,19 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& add_qudit(idx n = 1) { return add_qudit(n, nq_); }
 
     /**
-     * \brief Adds \a n additional classical dits before dit \a i
+     * \brief Adds \a n additional classical dits before dit \a pos
      *
      * \note Classical dits with indexes greater or equal than the newly
      * inserted ones have their indexes automatically incremented
      *
      * \param n Number of classical dits
-     * \param i Classical dit index
+     * \param pos Classical dit index
      * \return Reference to the current instance
      */
-    QCircuit& add_dit(idx n, idx i) {
+    QCircuit& add_dit(idx n, idx pos) {
         // EXCEPTION CHECKS
 
-        if (i > nc_)
+        if (pos > nc_)
             throw exception::OutOfRange("qpp::QCircuit::add_dit()");
         // END EXCEPTION CHECKS
 
@@ -1302,28 +1335,23 @@ class QCircuit : public IDisplay, public IJSON {
 
         // update gate indexes
         for (auto& gate : gates_) {
-            switch (gate.gate_type_) {
-                // classically-controlled gates
-                case GateType::SINGLE_cCTRL_SINGLE_TARGET:
-                case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
-                case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
-                case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
-                case GateType::CUSTOM_cCTRL:
-                    for (auto& pos : gate.ctrl_) {
-                        if (pos >= i)
-                            pos += n;
-                    }
-                    break;
-                default:
-                    break;
+            // update cctrl indexes
+            if (is_cCTRL(gate)) {
+                for (auto& elem : gate.ctrl_) {
+                    if (elem >= pos)
+                        elem += n;
+                }
             }
         }
 
         // update measurement indexes
         for (auto& measurement : measurements_) {
-            if (measurement.c_reg_ >= i)
+            if (measurement.c_reg_ >= pos)
                 measurement.c_reg_ += n;
         }
+
+        // update (enlarge) the clean dits vector
+        clean_dits_.insert(std::next(std::begin(clean_dits_), pos), n, true);
 
         return *this;
     }
@@ -1362,7 +1390,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::gate()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -1375,6 +1403,8 @@ class QCircuit : public IDisplay, public IJSON {
                             std::vector<idx>{i}, std::vector<idx>{}, name);
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
+
+        clean_qudits_[i] = false;
 
         return *this;
     }
@@ -1405,7 +1435,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (static_cast<idx>(U.rows()) != d_ * d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::gate()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -1419,11 +1449,14 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
 
+        clean_qudits_[i] = clean_qudits_[j] = false;
+
         return *this;
     }
 
     /**
-     * \brief Applies the three qudit gate \a U on qudits \a i, \a j and \a k
+     * \brief Applies the three qudit gate \a U on qudits \a i, \a j and \a
+     * k
      *
      * \param U Three qudit quantum gate
      * \param i Qudit index
@@ -1450,7 +1483,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (static_cast<idx>(U.rows()) != d_ * d_ * d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::gate()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -1465,6 +1498,8 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
 
+        clean_qudits_[i] = clean_qudits_[j] = clean_qudits_[k] = false;
+
         return *this;
     }
 
@@ -1473,8 +1508,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \a target
      *
      * \param U Single qudit quantum gate
-     * \param target Target qudit indexes; the gate \a U is applied on every one
-     * of them
+     * \param target Target qudit indexes; the gate \a U is applied on every
+     * one of them
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -1506,7 +1541,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuit::gate_fan()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -1520,19 +1555,23 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         gate_count_[name] += target.size();
 
+        for (auto&& elem : target) {
+            clean_qudits_[elem] = false;
+        }
+
         return *this;
     }
 
-    // std::initializer_list overload, avoids ambiguity for 2-element lists, see
-    // http://stackoverflow.com
+    // std::initializer_list overload, avoids ambiguity for 2-element lists,
+    // see http://stackoverflow.com
     // /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
     /**
      * \brief Applies the single qudit gate \a U on every qudit listed in
      * \a target
      *
      * \param U Single qudit quantum gate
-     * \param target Target qudit indexes; the gate \a U is applied on every one
-     * of them
+     * \param target Target qudit indexes; the gate \a U is applied on every
+     * one of them
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -1561,7 +1600,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuit::gate_fan()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -1575,12 +1614,16 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         gate_count_[name] += get_non_measured().size();
 
+        for (auto&& elem : get_non_measured()) {
+            clean_qudits_[elem] = false;
+        }
+
         return *this;
     }
 
     /**
-     * \brief Jointly applies the custom multiple qudit gate \a U on the qudit
-     * indexes specified by \a target
+     * \brief Jointly applies the custom multiple qudit gate \a U on the
+     * qudit indexes specified by \a target
      *
      * \param U Multiple qudit quantum gate
      * \param target Subsystem indexes where the gate \a U is applied
@@ -1619,7 +1662,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::DimsMismatchMatrix(
                     "qpp::QCircuit::gate_custom()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -1633,15 +1676,19 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
 
+        for (auto&& elem : target) {
+            clean_qudits_[elem] = false;
+        }
+
         return *this;
     }
 
     /**
-     * \brief Applies the quantum Fourier transform (as a series of gates) on
-     * the qudit indexes specified by \a target
+     * \brief Applies the quantum Fourier transform (as a series of gates)
+     * on the qudit indexes specified by \a target
      *
-     * \param target Subsystem indexes where the quantum Fourier transform is
-     * applied
+     * \param target Subsystem indexes where the quantum Fourier transform
+     * is applied
      * \param swap Swaps the qubits at the end (true by default)
      * \return Reference to the current instance
      */
@@ -1663,7 +1710,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (!internal::check_no_duplicates(target))
                 throw exception::Duplicates("qpp::QCircuit::QFT()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -1720,11 +1767,11 @@ class QCircuit : public IDisplay, public IJSON {
 
     // std::initializer_list overload, avoids ambiguity for {idx} -> bool
     /**
-     * \brief Applies the quantum Fourier transform (as a series of gates) on
-     * the qudit indexes specified by \a target
+     * \brief Applies the quantum Fourier transform (as a series of gates)
+     * on the qudit indexes specified by \a target
      *
-     * \param target Subsystem indexes where the quantum Fourier transform is
-     * applied
+     * \param target Subsystem indexes where the quantum Fourier transform
+     * is applied
      * \param swap Swaps the qubits at the end (true by default)
      * \return Reference to the current instance
      */
@@ -1733,8 +1780,8 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Applies the quantum Fourier transform (as a series of gates) on
-     * all of remaining non-measured qudits
+     * \brief Applies the quantum Fourier transform (as a series of gates)
+     * on all of remaining non-measured qudits
      *
      * \param swap Swaps the qubits at the end (true by default)
      * \return Reference to the current instance
@@ -1769,7 +1816,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (!internal::check_no_duplicates(target))
                 throw exception::Duplicates("qpp::QCircuit::TFQ()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -1849,8 +1896,8 @@ class QCircuit : public IDisplay, public IJSON {
 
     // single ctrl single target
     /**
-     * \brief Applies the single qudit controlled gate \a U with control qudit
-     * \a ctrl and target qudit \a target
+     * \brief Applies the single qudit controlled gate \a U with control
+     * qudit \a ctrl and target qudit \a target
      *
      * \param U Single qudit quantum gate
      * \param ctrl Control qudit index
@@ -1882,7 +1929,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (shift >= d_)
                 throw exception::OutOfRange("qpp::QCircuit::CTRL()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -1899,18 +1946,21 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
 
+        clean_qudits_[ctrl] = false;
+        clean_qudits_[target] = false;
+
         return *this;
     }
 
     // single ctrl multiple target
     /**
-     * \brief Applies the single qudit controlled gate \a U with control qudit
-     * \a ctrl on every qudit listed in \a target
+     * \brief Applies the single qudit controlled gate \a U with control
+     * qudit \a ctrl on every qudit listed in \a target
      *
      * \param U Single qudit quantum gate
      * \param ctrl Control qudit index
-     * \param target Target qudit indexes; the gate \a U is applied on every one
-     * of them depending on the values of the control qudits
+     * \param target Target qudit indexes; the gate \a U is applied on every
+     * one of them depending on the values of the control qudits
      * \param shift Performs the control as if the \a ctrl qudit state was
      * \f$X\f$-incremented by \a shift
      * \param name Optional gate name
@@ -1958,7 +2008,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (shift >= d_)
                 throw exception::OutOfRange("qpp::QCircuit::CTRL()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -1975,6 +2025,11 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
 
+        clean_qudits_[ctrl] = false;
+        for (auto&& elem : target) {
+            clean_qudits_[elem] = false;
+        }
+
         return *this;
     }
 
@@ -1987,8 +2042,9 @@ class QCircuit : public IDisplay, public IJSON {
      * \param ctrl Control qudit indexes
      * \param target Target qudit index
      * \param shift Performs the control as if the \a ctrl qudit states were
-     * \f$X\f$-incremented component-wise by \a shift. If non-empty (default),
-     * the size of \a shift must be the same as the size of \a ctrl.
+     * \f$X\f$-incremented component-wise by \a shift. If non-empty
+     * (default), the size of \a shift must be the same as the size of \a
+     * ctrl.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2036,7 +2092,7 @@ class QCircuit : public IDisplay, public IJSON {
                     if (elem >= d_)
                         throw exception::OutOfRange("qpp::QCircuit::CTRL()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -2052,6 +2108,11 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
 
+        for (auto&& elem : ctrl) {
+            clean_qudits_[elem] = false;
+        }
+        clean_qudits_[target] = false;
+
         return *this;
     }
 
@@ -2063,11 +2124,12 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \param U Single qudit quantum gate
      * \param ctrl Control qudit indexes
-     * \param target Target qudit indexes; the gate \a U is applied on every one
-     * of them depending on the values of the control qudits
+     * \param target Target qudit indexes; the gate \a U is applied on every
+     * one of them depending on the values of the control qudits
      * \param shift Performs the control as if the \a ctrl qudit states were
-     * \f$X\f$-incremented component-wise by \a shift. If non-empty (default),
-     * the size of \a shift must be the same as the size of \a ctrl.
+     * \f$X\f$-incremented component-wise by \a shift. If non-empty
+     * (default), the size of \a shift must be the same as the size of \a
+     * ctrl.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2126,7 +2188,7 @@ class QCircuit : public IDisplay, public IJSON {
                     if (elem >= d_)
                         throw exception::OutOfRange("qpp::QCircuit::CTRL()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -2138,9 +2200,16 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, hashU,
-                            ctrl, std::vector<idx>{target}, shift, name);
+                            ctrl, target, shift, name);
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
+
+        for (auto&& elem : ctrl) {
+            clean_qudits_[elem] = false;
+        }
+        for (auto&& elem : target) {
+            clean_qudits_[elem] = false;
+        }
 
         return *this;
     }
@@ -2156,8 +2225,9 @@ class QCircuit : public IDisplay, public IJSON {
      * \param target Target qudit indexes where the gate \a U is applied
      * depending on the values of the control qudits
      * \param shift Performs the control as if the \a ctrl qudit states were
-     * \f$X\f$-incremented component-wise by \a shift. If non-empty (default),
-     * the size of \a shift must be the same as the size of \a ctrl.
+     * \f$X\f$-incremented component-wise by \a shift. If non-empty
+     * (default), the size of \a shift must be the same as the size of \a
+     * ctrl.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2221,7 +2291,7 @@ class QCircuit : public IDisplay, public IJSON {
                         throw exception::OutOfRange(
                             "qpp::QCircuit::CTRL_custom()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -2237,6 +2307,13 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
 
+        for (auto&& elem : ctrl) {
+            clean_qudits_[elem] = false;
+        }
+        for (auto&& elem : target) {
+            clean_qudits_[elem] = false;
+        }
+
         return *this;
     }
 
@@ -2249,8 +2326,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param U Single qudit quantum gate
      * \param ctrl_dit Classical control dit index
      * \param target Target qudit index
-     * \param shift Performs the control as if the \a ctrl_dit classical dit was
-     * incremented by \a shift
+     * \param shift Performs the control as if the \a ctrl_dit classical dit
+     * was incremented by \a shift
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2276,7 +2353,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (shift >= d_)
                 throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -2295,6 +2372,9 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
 
+        clean_dits_[ctrl_dit] = false;
+        clean_qudits_[target] = false;
+
         return *this;
     }
 
@@ -2305,10 +2385,10 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \param U Single qudit quantum gate
      * \param ctrl_dit Classical control dit index
-     * \param target Target qudit indexes; the gate \a U is applied on every one
-     * of them depending on the values of the classical control dits
-     * \param shift Performs the control as if the \a ctrl_dit classical dit was
-     * incremented by \a shift
+     * \param target Target qudit indexes; the gate \a U is applied on every
+     * one of them depending on the values of the classical control dits
+     * \param shift Performs the control as if the \a ctrl_dit classical dit
+     * was incremented by \a shift
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2347,7 +2427,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (shift >= d_)
                 throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -2364,20 +2444,27 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
 
+        clean_dits_[ctrl_dit] = false;
+        for (auto&& elem : target) {
+            clean_qudits_[elem] = false;
+        }
+
         return *this;
     }
 
     // multiple ctrl single target
     /**
      * \brief Applies the single qudit controlled gate \a U with multiple
-     * classical control dits listed in \a ctrl on the target qudit \a target
+     * classical control dits listed in \a ctrl on the target qudit \a
+     * target
      *
      * \param U Single qudit quantum gate
      * \param ctrl_dits Classical control dits indexes
      * \param target Target qudit index
-     * \param shift Performs the control as if the \a ctrl_dits classical dits
-     * were incremented component-wise by \a shift. If non-empty (default), the
-     * size of \a shift must be the same as the size of \a ctrl_dits.
+     * \param shift Performs the control as if the \a ctrl_dits classical
+     * dits were incremented component-wise by \a shift. If non-empty
+     * (default), the size of \a shift must be the same as the size of \a
+     * ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2419,7 +2506,7 @@ class QCircuit : public IDisplay, public IJSON {
                         throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
 
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -2435,6 +2522,11 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
 
+        for (auto&& elem : ctrl_dits) {
+            clean_dits_[elem] = false;
+        }
+        clean_qudits_[target] = false;
+
         return *this;
     }
 
@@ -2446,11 +2538,12 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \param U Single qudit quantum gate
      * \param ctrl_dits Classical control dits indexes
-     * \param target Target qudit indexes; the gate \a U is applied on every one
-     * of them depending on the values of the classical control dits
-     * \param shift Performs the control as if the \a ctrl_dits classical dits
-     * were incremented component-wise by \a shift. If non-empty (default), the
-     * size of \a shift must be the same as the size of \a ctrl_dits.
+     * \param target Target qudit indexes; the gate \a U is applied on every
+     * one of them depending on the values of the classical control dits
+     * \param shift Performs the control as if the \a ctrl_dits classical
+     * dits were incremented component-wise by \a shift. If non-empty
+     * (default), the size of \a shift must be the same as the size of \a
+     * ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2499,7 +2592,7 @@ class QCircuit : public IDisplay, public IJSON {
                     if (elem >= d_)
                         throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -2515,6 +2608,13 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
 
+        for (auto&& elem : ctrl_dits) {
+            clean_dits_[elem] = false;
+        }
+        for (auto&& elem : target) {
+            clean_qudits_[elem] = false;
+        }
+
         return *this;
     }
 
@@ -2528,9 +2628,10 @@ class QCircuit : public IDisplay, public IJSON {
      * \param ctrl_dits Classical control dits indexes
      * \param target Target qudit indexes where the gate \a U is applied
      * depending on the values of the classical control dits
-     * \param shift Performs the control as if the \a ctrl_dits classical dits
-     * were incremented component-wise by \a shift. If non-empty (default), the
-     * size of \a shift must be the same as the size of \a ctrl_dits.
+     * \param shift Performs the control as if the \a ctrl_dits classical
+     * dits were incremented component-wise by \a shift. If non-empty
+     * (default), the size of \a shift must be the same as the size of \a
+     * ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2587,7 +2688,7 @@ class QCircuit : public IDisplay, public IJSON {
                     if (elem >= d_)
                         throw exception::OutOfRange("qpp::QCircuit::cCTRL()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -2603,12 +2704,20 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
 
+        for (auto&& elem : ctrl_dits) {
+            clean_dits_[elem] = false;
+        }
+        for (auto&& elem : target) {
+            clean_qudits_[elem] = false;
+        }
+
         return *this;
     }
 
     // Z measurement of single qudit
     /**
-     * \brief Measurement of single qudit in the computational basis (Z-basis)
+     * \brief Measurement of single qudit in the computational basis
+     * (Z-basis)
      *
      * \param target Target qudit index that is measured
      * \param c_reg Classical register where the value of the measurement is
@@ -2633,7 +2742,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::QuditAlreadyMeasured(
                     "qpp:QCircuit::measureZ()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -2653,6 +2762,9 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
 
+        clean_qudits_[target] = false;
+        clean_dits_[c_reg] = false;
+
         return *this;
     }
 
@@ -2664,8 +2776,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param target Target qudit indexes that are measured
      * \param c_reg Classical register where the value of the measurement is
      * being stored, as a decimal representation of the binary string
-     * representing the measurement, with the most significant dit on the left
-     * (corresponding to the first qudit that is being measured)
+     * representing the measurement, with the most significant dit on the
+     * left (corresponding to the first qudit that is being measured)
      * \param destructive Destructive measurement, true by default
      * \param name Optional measurement name, default is "mZ"
      * \return Reference to the current instance
@@ -2691,7 +2803,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (c_reg >= nc_)
                 throw exception::OutOfRange("qpp::QCircuit::measureZ()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -2714,17 +2826,22 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
 
+        for (auto&& elem : target) {
+            clean_qudits_[elem] = false;
+        }
+        clean_dits_[c_reg] = false;
+
         return *this;
     }
 
-    // measurement of single qudit in the orthonormal basis or rank-1 projectors
-    // specified by the columns of matrix V
+    // measurement of single qudit in the orthonormal basis or rank-1
+    // projectors specified by the columns of matrix V
     /**
      * \brief Measurement of single qudit in the orthonormal basis or rank-1
      * projectors specified by the columns of matrix \a V
      *
-     * \param V Orthonormal basis or rank-1 projectors specified by the columns
-     * of matrix V
+     * \param V Orthonormal basis or rank-1 projectors specified by the
+     * columns of matrix V
      * \param target Target qudit index that is measured
      * \param c_reg Classical register where the value of the measurement is
      * stored
@@ -2748,7 +2865,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::QuditAlreadyMeasured(
                     "qpp:QCircuit::measureV()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -2769,20 +2886,23 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
 
+        clean_qudits_[target] = false;
+        clean_dits_[c_reg] = false;
+
         return *this;
     }
 
     // measurement of multiple qudits in the orthonormal basis or rank-1
     // projectors specified by the columns of matrix V
     /**
-     * \brief Joint measurement of multiple qudits in the orthonormal basis or
-     * rank-1 projectors specified by the columns of matrix \a V
+     * \brief Joint measurement of multiple qudits in the orthonormal basis
+     * or rank-1 projectors specified by the columns of matrix \a V
      *
-     * \param V Orthonormal basis or rank-1 projectors specified by the columns
-     * of matrix V
+     * \param V Orthonormal basis or rank-1 projectors specified by the
+     * columns of matrix V
      * \param target Target qudit indexes that are jointly measured
-     * \param c_reg Classical register where the value of the measurement is
-     * stored
+     * \param c_reg Classical register where the value of
+     * the measurement is stored
      * \param destructive Destructive measurement, true by default
      * \param name Optional measurement name
      * \return Reference to the current instance
@@ -2816,7 +2936,7 @@ class QCircuit : public IDisplay, public IJSON {
                     throw exception::QuditAlreadyMeasured(
                         "qpp::QCircuit::measureV()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -2837,6 +2957,11 @@ class QCircuit : public IDisplay, public IJSON {
         }
         step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
+
+        for (auto&& elem : target) {
+            clean_qudits_[elem] = false;
+        }
+        clean_dits_[c_reg] = false;
 
         return *this;
     }
@@ -2861,7 +2986,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::QuditAlreadyMeasured(
                     "qpp:QCircuit::discard()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -2877,12 +3002,15 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
 
+        clean_qudits_[target] = false;
+
         return *this;
     }
 
     /**
-     * \brief Discards multiple qudits by measuring them destructively in the
-     * computational basis (Z-basis) and discarding the measurement result
+     * \brief Discards multiple qudits by measuring them destructively in
+     * the computational basis (Z-basis) and discarding the measurement
+     * result
      *
      * \param target Target qudit indexes that are discarded
      * \param name Optional discard operation name, default is "discard"
@@ -2905,7 +3033,7 @@ class QCircuit : public IDisplay, public IJSON {
                         "qpp:QCircuit::discard()");
             }
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -2922,14 +3050,18 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];
 
+        for (auto&& elem : target) {
+            clean_qudits_[elem] = false;
+        }
+
         return *this;
     }
 
     /**
      * \brief No operation (no-op)
      *
-     * \note If the underlying step is executed on a noisy engine, then noise
-     * acts before it
+     * \note If the underlying step is executed on a noisy engine, then
+     * noise acts before it
      *
      * \return Reference to the current instance
      */
@@ -2941,9 +3073,9 @@ class QCircuit : public IDisplay, public IJSON {
 
     // reset single qudit
     /**
-     * \brief Resets single qudit by first measuring it non-destructively in the
-     * computational basis and discarding the measurement result, followed by
-     * shifting it back to the \f$|0\rangle\f$ state
+     * \brief Resets single qudit by first measuring it non-destructively in
+     * the computational basis and discarding the measurement result,
+     * followed by shifting it back to the \f$|0\rangle\f$ state
      *
      * \param target Target qudit index that is reset
      * \param name Optional name, default is "reset"
@@ -2960,7 +3092,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (get_measured(target))
                 throw exception::QuditAlreadyMeasured("qpp:QCircuit::reset()");
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -2978,9 +3110,10 @@ class QCircuit : public IDisplay, public IJSON {
 
     // reset multiple qudits
     /**
-     * \brief Resets multiple qudits by first measuring them non-destructively
-     * in the computational basis and discarding the measurement results,
-     * followed by shifting them back to the \f$|0\cdots 0\rangle\f$ state
+     * \brief Resets multiple qudits by first measuring them
+     * non-destructively in the computational basis and discarding the
+     * measurement results, followed by shifting them back to the
+     * \f$|0\cdots 0\rangle\f$ state
      *
      * \param target Target qudit indexes that are reset
      * \param name Optional measurement name, default is "reset"
@@ -3003,7 +3136,7 @@ class QCircuit : public IDisplay, public IJSON {
                         "qpp:QCircuit::reset()");
             }
         } catch (exception::Exception&) {
-            std::cout << "STEP " << get_step_count() << "\n";
+            std::cerr << "STEP " << get_step_count() << "\n";
             throw;
         }
         // END EXCEPTION CHECKS
@@ -3021,8 +3154,8 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Replicates the circuit, in place
-     * \note The circuit should not contain any measurements when invoking this
-     * member function
+     * \note The circuit should not contain any measurements when invoking
+     * this member function
      *
      * \param n Number of repetitions. If \a n == 1, returns the original
      * circuit.
@@ -3063,25 +3196,26 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Appends (glues) a quantum circuit description to the current one
+     * \brief Appends (glues) a quantum circuit description to the current
+     * one
      *
-     * \note If the qudit indexes of the added quantum circuit description do
-     * not totally overlap with the indexes of the current quantum circuit
-     * description, then the required number of additional qudits are
-     * automatically added to the current quantum circuit description
+     * \note If the qudit indexes of the added quantum circuit description
+     * do not totally overlap with the indexes of the current quantum
+     * circuit description, then the required number of additional qudits
+     * are automatically added to the current quantum circuit description
      *
      * \param other Quantum circuit description
-     * \param pos_qudit The index of the first qudit of \a other quantum circuit
-     * description relative to the index of the first qudit of the current
-     * quantum circuit description, with the rest following in order. If
-     * negative or greater than the total number of qudits of the current
-     * quantum circuit description, then the required number of additional
-     * qudits are automatically added to the current quantum circuit
-     * description.
-     * \param pos_dit The first classical dit of \a other is inserted before the
-     * \a pos_dit classical dit index of the current quantum circuit description
-     * (in the classical dits array), the rest following in order. By default,
-     * insertion is performed at the end.
+     * \param pos_qudit The index of the first qudit of \a other quantum
+     * circuit description relative to the index of the first qudit of the
+     * current quantum circuit description, with the rest following in
+     * order. If negative or greater than the total number of qudits of the
+     * current quantum circuit description, then the required number of
+     * additional qudits are automatically added to the current quantum
+     * circuit description.
+     * \param pos_dit The first classical dit of \a other is inserted before
+     * the \a pos_dit classical dit index of the current quantum circuit
+     * description (in the classical dits array), the rest following in order.
+     * By default, insertion is performed at the end.
      * \return Reference to the current instance
      */
     QCircuit& add_circuit(QCircuit other, bigint pos_qudit, idx pos_dit = -1) {
@@ -3095,8 +3229,8 @@ class QCircuit : public IDisplay, public IJSON {
             pos_dit = nc_;
         else if (pos_dit > nc_)
             throw exception::OutOfRange("qpp::QCircuit::add_circuit()");
-        // check overlapping qudits (in the current instance) were not already
-        // destructively measured
+        // check overlapping qudits (in the current instance) were not
+        // already destructively measured
         if (pos_qudit < 0 &&
             (pos_qudit + static_cast<bigint>(other.nq_)) >= 0) {
             for (idx i = 0;
@@ -3132,32 +3266,22 @@ class QCircuit : public IDisplay, public IJSON {
             }
         }
 
-        // STEP 1: modify the ctrl and gate indexes of other
+        // STEP 1: update [c]ctrl and target indexes of other
         for (auto& gate : other.gates_) {
-            switch (gate.gate_type_) {
-                // classically-controlled gates
-                case GateType::SINGLE_cCTRL_SINGLE_TARGET:
-                case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
-                case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
-                case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
-                case GateType::CUSTOM_cCTRL:
-                    for (auto& pos : gate.ctrl_) {
-                        pos += pos_dit;
-                    }
-                    break;
-                // quantumly-controlled gates
-                default:
-                    if (pos_qudit < 0)
-                        break;
-                    else {
-                        for (auto& pos : gate.ctrl_) {
-                            pos += pos_qudit;
-                        }
-                        break;
-                    }
+            // update the cctrl indexes
+            if (is_cCTRL(gate)) {
+                for (auto& pos : gate.ctrl_) {
+                    pos += pos_dit;
+                }
+            }
+            // update the ctrl indexes
+            if (is_CTRL(gate) && pos_qudit >= 0) {
+                for (auto& pos : gate.ctrl_) {
+                    pos += pos_qudit;
+                }
             }
 
-            // non-controlled gates
+            // update the target indexes
             if (pos_qudit >= 0) {
                 for (auto& pos : gate.target_) {
                     pos += pos_qudit;
@@ -3175,14 +3299,29 @@ class QCircuit : public IDisplay, public IJSON {
             }
         } // end for other.measurements_
 
-        // replace the corresponding elements of measured_ with the
-        // other.measured vector
+        // replace the corresponding elements of measured_, clean_qudits_
+        // and clean_dits_ with the ones of other
         if (pos_qudit < 0) {
             std::copy(std::begin(other.measured_), std::end(other.measured_),
                       std::begin(measured_));
+            std::copy_if(std::begin(other.clean_dits_),
+                         std::end(other.clean_dits_), std::begin(clean_dits_),
+                         [](bool val) { return val == false; });
+            std::copy_if(std::begin(other.clean_qudits_),
+                         std::end(other.clean_qudits_),
+                         std::begin(clean_qudits_),
+                         [](bool val) { return val == false; });
         } else {
             std::copy(std::begin(other.measured_), std::end(other.measured_),
                       std::next(std::begin(measured_), pos_qudit));
+            std::copy_if(std::begin(other.clean_dits_),
+                         std::end(other.clean_dits_),
+                         std::next(std::begin(clean_dits_), pos_qudit),
+                         [](bool val) { return val == false; });
+            std::copy_if(std::begin(other.clean_qudits_),
+                         std::end(other.clean_qudits_),
+                         std::next(std::begin(clean_qudits_), pos_qudit),
+                         [](bool val) { return val == false; });
         }
 
         // STEP 2: append the copy of other to the current instance
@@ -3268,54 +3407,68 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Checks whether a qudit in the circuit was used before or not
-     * \see qpp::QCircuit::get_clean()
+     * \see qpp::QCircuit::get_clean_qudits()
      *
      * \param i Qudit index
      * \return True if the qudit \a i was used before (by a gate and/or
      * measurement), false otherwise
      */
-    bool is_clean(idx i) const {
+    bool is_clean_qudit(idx i) const {
         // EXCEPTION CHECKS
 
         // check valid target
         if (i >= nq_)
-            throw exception::OutOfRange("qpp::QCircuit::is_clean()");
+            throw exception::OutOfRange("qpp::QCircuit::is_clean_qudit()");
         // END EXCEPTION CHECKS
 
-        for (auto&& elem : gates_) {
-            if (elem.gate_type_ != GateType::SINGLE_cCTRL_SINGLE_TARGET &&
-                elem.gate_type_ != GateType::SINGLE_cCTRL_MULTIPLE_TARGET &&
-                elem.gate_type_ != GateType::MULTIPLE_cCTRL_SINGLE_TARGET &&
-                elem.gate_type_ != GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET &&
-                elem.gate_type_ != GateType::CUSTOM_cCTRL) {
-                if (std::find(std::begin(elem.ctrl_), std::end(elem.ctrl_),
-                              i) != std::end(elem.ctrl_)) {
-                    return false;
-                }
-            }
+        return clean_qudits_[i];
+    }
 
-            if (std::find(std::begin(elem.target_), std::end(elem.target_),
-                          i) != std::end(elem.target_))
-                return false;
-        }
-        for (auto&& elem : measurements_) {
-            if (std::find(std::begin(elem.target_), std::end(elem.target_),
-                          i) != std::end(elem.target_))
-                return false;
-        }
-        return true;
+    /**
+     * \brief Checks whether a classical dit in the circuit was used before
+     * or not
+     * \see qpp::QCircuit::get_clean_dit()
+     *
+     * \param i Classical dit index
+     * \return True if the classical dit \a i was used before (by a cCTRL
+     * gate and/or measurement), false otherwise
+     */
+    bool is_clean_dit(idx i) const {
+        // EXCEPTION CHECKS
+
+        // check valid target
+        if (i >= nc_)
+            throw exception::OutOfRange("qpp::QCircuit::is_clean_dit()");
+        // END EXCEPTION CHECKS
+
+        return clean_dits_[i];
     }
 
     /**
      * \brief Vector of clean qudits
-     * \see qpp::QCircuit::is_clean()
+     * \see qpp::QCircuit::is_clean_qudit()
      *
      * \return Vector of clean qudits
      */
-    std::vector<idx> get_clean() const {
+    std::vector<idx> get_clean_qudits() const {
         std::vector<idx> result;
         for (idx i = 0; i < nq_; ++i)
-            if (is_clean(i))
+            if (is_clean_qudit(i))
+                result.emplace_back(i);
+
+        return result;
+    }
+
+    /**
+     * \brief Vector of clean classical dits
+     * \see qpp::QCircuit::is_clean_dit()
+     *
+     * \return Vector of clean classical dits
+     */
+    std::vector<idx> get_clean_dits() const {
+        std::vector<idx> result;
+        for (idx i = 0; i < nc_; ++i)
+            if (is_clean_dit(i))
                 result.emplace_back(i);
 
         return result;
@@ -3324,71 +3477,141 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Removes clean qudit from the quantum circuit description and
      * relabels the rest of the qudits accordingly
-     * \see qpp::QCircuit::is_clean(), qpp::QCircuit::compress()
+     * \see qpp::QCircuit::is_clean_qudit(), qpp::QCircuit::compress()
      *
      * \param target Target clean qudit index that is removed
      * \return Reference to the current instance
      */
-    QCircuit& remove_clean(idx target) {
+    QCircuit& remove_clean_qudit(idx target) {
         // EXCEPTION CHECKS
 
         // check valid target and clean qudit
-        if (target >= nq_ || !is_clean(target))
-            throw exception::OutOfRange("qpp::QCircuit::remove_clean()");
+        if (target >= nq_ || !is_clean_qudit(target))
+            throw exception::OutOfRange("qpp::QCircuit::remove_clean_qudit()");
         // END EXCEPTION CHECKS
 
-        for (auto&& elem : gates_) {
-            if (elem.gate_type_ != GateType::SINGLE_cCTRL_SINGLE_TARGET &&
-                elem.gate_type_ != GateType::SINGLE_cCTRL_MULTIPLE_TARGET &&
-                elem.gate_type_ != GateType::MULTIPLE_cCTRL_SINGLE_TARGET &&
-                elem.gate_type_ != GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET &&
-                elem.gate_type_ != GateType::CUSTOM_cCTRL) {
-                for (idx& pos : elem.ctrl_) {
+        for (auto&& gate : gates_) {
+            if (is_CTRL(gate)) {
+                for (idx& pos : gate.ctrl_) {
                     if (pos > target)
                         --pos;
                 }
             }
-            for (idx& pos : elem.target_) {
+            for (idx& pos : gate.target_) {
                 if (pos > target)
                     --pos;
             }
         }
 
-        for (auto&& elem : measurements_) {
-            for (idx& pos : elem.target_) {
+        for (auto&& measurement : measurements_) {
+            for (idx& pos : measurement.target_) {
                 if (pos > target)
                     --pos;
             }
         }
+
+        clean_qudits_.erase(std::next(std::begin(clean_qudits_), target));
+
         --nq_;
 
         return *this;
     }
 
     /**
+     * \brief Removes clean classical dit from the quantum circuit
+     * description and relabels the rest of the classical dits accordingly
+     * \see qpp::QCircuit::is_clean_dit(), qpp::QCircuit::compress()
+     *
+     * \param target Target clean classical dit index that is removed
+     * \return Reference to the current instance
+     */
+    QCircuit& remove_clean_dit(idx target) {
+        // EXCEPTION CHECKS
+
+        // check valid target and clean dit
+        if (target >= nc_ || !is_clean_dit(target))
+            throw exception::OutOfRange("qpp::QCircuit::remove_clean_dit()");
+        // END EXCEPTION CHECKS
+
+        for (auto&& gate : gates_) {
+            if (is_cCTRL(gate)) {
+                for (idx& pos : gate.ctrl_) {
+                    if (pos > target)
+                        --pos;
+                }
+            }
+        }
+
+        for (auto&& measurement : measurements_) {
+            if (measurement.c_reg_ > target) {
+                --measurement.c_reg_;
+            }
+        }
+
+        clean_dits_.erase(std::next(std::begin(clean_dits_), target));
+
+        --nc_;
+
+        return *this;
+    }
+
+    /**
      * \brief Removes list of clean qudits from the quantum circuit
-     * description and relabels the rest of the qudits accordingly \see
-     * qpp::QCircuit::is_clean(), qpp::QCircuit::compress()
+     * description and relabels the rest of the qudits accordingly
+     * \see qpp::QCircuit::is_clean_qudit(), qpp::QCircuit::compress()
      *
      * \param target Target clean qudit indexes that are removed
      * \return Reference to the current instance
      */
-    QCircuit& remove_clean(std::vector<idx> target) {
+    QCircuit& remove_clean_qudits(std::vector<idx> target) {
         // EXCEPTION CHECKS
 
         // check valid target
         for (auto&& pos : target) {
             // removing non-existing or non-clean qudit
-            if (pos >= nq_ || !is_clean(pos))
-                throw exception::OutOfRange("qpp::QCircuit::remove_clean()");
+            if (pos >= nq_ || !is_clean_qudit(pos))
+                throw exception::OutOfRange(
+                    "qpp::QCircuit::remove_clean_qudits()");
         }
         // END EXCEPTION CHECKS
 
         // sort the target
         std::sort(std::begin(target), std::end(target));
-        idx cnt = 0;
+        idx dirty = 0;
+
         for (auto&& pos : target) {
-            remove_clean(pos - cnt++);
+            remove_clean_qudit(pos - dirty++);
+        }
+
+        return *this;
+    }
+
+    /**
+     * \brief Removes list of clean classical dits from the quantum circuit
+     * description and relabels the rest of the classical dits accordingly
+     * \see qpp::QCircuit::is_clean_dit(), qpp::QCircuit::compress()
+     *
+     * \param target Target clean classical dit indexes that are removed
+     * \return Reference to the current instance
+     */
+    QCircuit& remove_clean_dits(std::vector<idx> target) {
+        // EXCEPTION CHECKS
+
+        // check valid target
+        for (auto&& pos : target) {
+            // removing non-existing or non-clean dit
+            if (pos >= nc_ || !is_clean_dit(pos))
+                throw exception::OutOfRange(
+                    "qpp::QCircuit::remove_clean_dits()");
+        }
+        // END EXCEPTION CHECKS
+
+        // sort the target
+        std::sort(std::begin(target), std::end(target));
+        idx dirty = 0;
+
+        for (auto&& pos : target) {
+            remove_clean_dit(pos - dirty++);
         }
 
         return *this;
@@ -3396,13 +3619,18 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Removes all clean qudits form the quantum circuit description
-     * and relabels the rest of the qudits accordingly \see
-     * qpp::QCircuit::remove_clean()
+     * and relabels the rest of the qudits accordingly
+     * \see qpp::QCircuit::remove_clean_qudits(),
+     * qpp::QCircuit::remove_clean_dits()
      *
+     * \param compress_dits If true, removes clean classical dits. Set to
+     * false by default.
      * \return Reference to the current instance
      */
-    QCircuit& compress() {
-        remove_clean(get_clean());
+    QCircuit& compress(bool compress_dits = false) {
+        remove_clean_qudits(get_clean_qudits());
+        if (compress_dits)
+            remove_clean_dits(get_clean_dits());
 
         return *this;
     }
@@ -3433,8 +3661,9 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Inequality operator
      *
      * \param rhs Quantum circuit description against which the inequality
-     * is being tested \return True if the quantum circuit descriptions are
-     * not equal, false otherwise
+     * is being tested
+     * \return True if the quantum circuit descriptions are not equal, false
+     * otherwise
      */
     bool operator!=(const QCircuit& rhs) const noexcept {
         return !(*this == rhs);
@@ -3446,8 +3675,9 @@ class QCircuit : public IDisplay, public IJSON {
      * Displays the quantum circuit description in JSON format
      *
      * \param enclosed_in_curly_brackets If true, encloses the result in
-     * curly brackets \return String containing the JSON representation of
-     * the quantum circuit description
+     * curly brackets
+     * \return String containing the JSON representation of the quantum circuit
+     * description
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
         std::string result;
@@ -3639,12 +3869,12 @@ class QCircuit : public IDisplay, public IJSON {
      * \a qc1 quantum circuit description, with the rest following in order.
      * If negative or greater than the total number of qudits of \a qc1,
      * then the required number of additional qudits are automatically added
-     * to the output quantum circuit description. \param pos_dit The first
-     * classical dit of \a qc2 quantum circuit description is inserted
-     * before the \a pos_dit classical dit index of \a qc1 quantum circuit
-     * description (in the classical dits array), the rest following in
-     * order. By default, insertion is performed at the end. \return
-     * Combined quantum circuit description
+     * to the output quantum circuit description.
+     * \param pos_dit The first classical dit of \a qc2 quantum circuit
+     * description is inserted before the \a pos_dit classical dit index of
+     * \a qc1 quantum circuit description (in the classical dits array), the
+     * rest following in order. By default, insertion is performed at the end.
+     * \return Combined quantum circuit description
      */
     friend QCircuit add_circuit(QCircuit qc1, const QCircuit& qc2,
                                 bigint pos_qudit, idx pos_dit = -1) {
@@ -3678,10 +3908,13 @@ class QCircuit : public IDisplay, public IJSON {
         os << "total gate depth: " << get_gate_depth() << '\n';
         os << "total measurement count: " << get_measurement_count() << '\n';
         os << "total measurement depth: " << get_measurement_depth() << '\n';
-        os << "total depth: " << get_depth() << '\n';
-        os << "measured/discarded (destructive): " << disp(get_measured(), ", ")
-           << '\n';
+        os << "total depth: " << get_depth();
+
+        /*
+        os << "\nmeasured/discarded (destructive): "
+           << disp(get_measured(), ", ") << '\n';
         os << "non-measured/non-discarded: " << disp(get_non_measured(), ", ");
+        */
 
         return os;
     }

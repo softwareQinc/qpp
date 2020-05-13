@@ -38,7 +38,7 @@ PROJECT_NAME           = "Quantum++"
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = v2.3
+PROJECT_NUMBER         = v2.4
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -463,7 +463,7 @@ EXTRACT_ALL            = YES
 # be included in the documentation.
 # The default value is: NO.
 
-EXTRACT_PRIVATE        = YES
+EXTRACT_PRIVATE        = NO
 
 # If the EXTRACT_PRIV_VIRTUAL tag is set to YES, documented private virtual
 # methods of a class will be included in the documentation.
@@ -1572,7 +1572,7 @@ MATHJAX_CODEFILE       =
 # The default value is: YES.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-SEARCHENGINE           = NO
+SEARCHENGINE           = YES
 
 # When the SERVER_BASED_SEARCH tag is enabled the search engine will be
 # implemented using a web server instead of a web client using Javascript. There

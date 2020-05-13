@@ -73,7 +73,7 @@ static std::unordered_map<ident,
              // note the discrepancy; QISKIT defines it as diag(1, e^{i\phi})
              // we comply to the QISKIT definition (and not the OPENQASM
              // specs); see https://github.com/softwareQinc/qpp/issues/70
-             return std::exp(1_i * args[0] / 2.0) * gt.RZ(args[0]);
+             return (std::exp(1_i * args[0] / 2.0) * gt.RZ(args[0])).eval();
          }},
         {"ry",
          [](const std::vector<double>& args) {
@@ -332,7 +332,7 @@ class Statement : public IDisplay {
     /**
      * \brief Formats and prints the statement
      *
-     * \param os Output stream
+     * \param os Output stream passed by reference
      * \param prefix Prefix for the statement
      */
     void pretty_print(std::ostream& os, const std::string& prefix) const {
@@ -484,7 +484,7 @@ class QASM : public IDisplay {
     /**
      * \brief Formats and prints the AST with location annotations
      *
-     * \param os Output stream
+     * \param os Output stream passed by reference
      */
     void pretty_print(std::ostream& os) const {
         os << "(Included header): OPENQASM 2.0;\n(Included header): include "
@@ -576,7 +576,8 @@ class Varinfo : public IDisplay {
 
     /**
      * \brief Try to interpret the access as a classical register in a given
-     * context \note Throws qpp:exception::SemanticError if ill-typed
+     * context
+     * \note Throws qpp:exception::SemanticError if ill-typed
      *
      * \param ctx The translation context
      * \return List of bit indices corresponding to the variable access
@@ -608,7 +609,8 @@ class Varinfo : public IDisplay {
 
     /**
      * \brief Try to interpret the access as a quantum register in a given
-     * context \note Throws qpp:exception::SemanticError if ill-typed
+     * context
+     * \note Throws qpp:exception::SemanticError if ill-typed
      *
      * \param ctx The translation context
      * \return List of virtual qubit indices corresponding to the variable

@@ -204,15 +204,15 @@ class Preprocessor {
 
     /**
      * \brief Prints and consumes all tokens buffered
+     *
+     * \param os Output stream passed by reference
      */
-    void print_all_tokens() {
+    void print_all_tokens(std::ostream& os = std::cout) {
         Token current = next_token();
 
         while (!current.is(Token::Kind::eof)) {
-            current.location().display(std::cout);
-            std::cout << ": " << current << " " << (std::string) current
-                      << "\n";
-
+            current.location().display(os);
+            os << ": " << current << " " << (std::string) current << "\n";
             current = next_token();
         }
     }

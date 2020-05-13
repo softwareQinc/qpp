@@ -1,19 +1,19 @@
 # Building instructions for the truly impatient
 
-If you really cannot wait anymore, continue reading the remaining. If you afford to be a bit patient, please skip the reminder of this section and read the detailed 
-[Building instructions for POSIX-compliant systems](https://github.com/softwareqinc/qpp/wiki/2.-Building-instructions-for-POSIX-compliant-platforms) 
+If you really cannot wait anymore, continue reading this section. If you afford to be a bit patient, please skip the reminder of this section and read the detailed 
+[Building instructions for POSIX compliant systems](https://github.com/softwareqinc/qpp/wiki/2.-Building-instructions-for-POSIX-compliant-platforms) 
 or 
 [Building instructions for Windows](https://github.com/softwareqinc/qpp/wiki/3.-Building-instructions-for-Windows-platforms) 
 in the Wiki or in the reminder of this document.
 
-## Installing and running under POSIX-compliant systems
+## Quick instructions for building on POSIX compliant systems
 
-In this section I assume that you use a POSIX-compliant system (e.g. UNIX-like).
+In this section I assume that you use a POSIX compliant system (e.g. UNIX-like).
 To get started with [Quantum++](https://github.com/softwareqinc/qpp), first
-install the [Eigen 3](http://eigen.tuxfamily.org/) library into your home directory, 
+install the [Eigen 3](http://eigen.tuxfamily.org/) library into your home directory, 
 as `$HOME/eigen`. You can change the name of the directory, but in the
 current document I will use `$HOME/eigen` as the location of the
-[Eigen 3](http://eigen.tuxfamily.org/) library. Next, download or clone
+[Eigen 3](http://eigen.tuxfamily.org/) library. Next, download or clone
 [Quantum++](https://github.com/softwareqinc/qpp) library into the home
 directory as `$HOME/qpp`. Finally, make sure that your compiler supports
 C++11 and preferably [OpenMP](http://openmp.org/). As a compiler I
@@ -85,7 +85,7 @@ std::cout << disp(st.z0) << '\n';
 displays the state |0> represented by the Singleton `qpp::st.z0` in a
 nice format using the display manipulator `qpp::disp()`.
 
-## Installing and running under [Windows](https://www.microsoft.com/en-us/windows)
+## Quick instructions for building on [Windows](https://www.microsoft.com/en-us/windows)
 
 We provide [CMake](http://www.cmake.org/) support for [Visual Studio](https://www.visualstudio.com). We recommend using 
 Visual Studio 2017 or later. For comprehensive details about using [CMake](http://www.cmake.org/) with 
@@ -93,7 +93,7 @@ Visual Studio 2017 or later. For comprehensive details about using [CMake](http:
 [this page](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019) and see the [Wiki](https://github.com/softwareQinc/qpp/wiki/3.-Building-instructions-for-Windows-platforms).
 
 ---
-# Building instructions for POSIX-compliant systems
+# Building instructions for POSIX compliant systems
 
 ## Pre-requisites
 

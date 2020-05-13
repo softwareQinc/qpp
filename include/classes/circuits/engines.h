@@ -51,7 +51,7 @@ class QEngine : public IDisplay, public IJSON {
                                       ///< const quantum circuit description
         ket psi_{};                   ///< state vector
         std::vector<double> probs_{}; ///< measurement probabilities
-        std::vector<idx> dits_{};     ///< classical dits
+        std::vector<idx> dits_{};     ///< classical dits, little-endian order
         std::vector<idx> subsys_{}; ///< keeps track of the measured subsystems,
                                     ///< re-label them after measurements
 
@@ -104,9 +104,12 @@ class QEngine : public IDisplay, public IJSON {
      * \param i Qudit index
      */
     void set_measured_(idx i) {
+        // EXCEPTION CHECKS
+
         if (get_measured(i))
             throw exception::QuditAlreadyMeasured(
                 "qpp::QEngine::set_measured_()");
+        // END EXCEPTION CHECKS
         st_.subsys_[i] = static_cast<idx>(-1); // set qudit i to measured state
         for (idx m = i; m < qc_->get_nq(); ++m) {
             if (!get_measured(m)) {
@@ -127,9 +130,11 @@ class QEngine : public IDisplay, public IJSON {
     std::vector<idx> get_relative_pos_(std::vector<idx> v) {
         idx vsize = v.size();
         for (idx i = 0; i < vsize; ++i) {
+            // EXCEPTION CHECKS
             if (get_measured(v[i]))
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QEngine::get_relative_pos_()");
+            // END EXCEPTION CHECKS
             v[i] = st_.subsys_[v[i]];
         }
         return v;
@@ -184,6 +189,10 @@ class QEngine : public IDisplay, public IJSON {
 
     /**
      * \brief Vector with the values of the underlying classical dits
+     * \see qpp::QEngine::set_dits()
+     *
+     * \note When interfacing with OpenQASM, the classical dits are stored in
+     * little-endian order, i.e. the least significant bit is stored first
      *
      * \return Vector of underlying classical dits
      */
@@ -191,13 +200,20 @@ class QEngine : public IDisplay, public IJSON {
 
     /**
      * \brief Value of the classical dit at position \a i
+     * \see qpp::QEngine::set_dit()
+     *
+     * \note When interfacing with OpenQASM, the classical dits are stored in
+     * little-endian order, i.e. the least significant bit is stored first
      *
      * \param i Classical dit index
      * \return Value of the classical dit at position \a i
      */
     idx get_dit(idx i) const {
+        // EXCEPTION CHECKS
+
         if (i >= qc_->get_nc())
             throw exception::OutOfRange("qpp::QEngine::get_dit()");
+        // END EXCEPTION CHECKS
 
         return st_.dits_[i];
     }
@@ -294,15 +310,44 @@ class QEngine : public IDisplay, public IJSON {
     // setters
     /**
      * \brief Sets the classical dit at position \a i
+     * \see qpp::QEngine::get_dit()
+     *
+     * \note When interfacing with OpenQASM, the classical dits are stored in
+     * little-endian order, i.e. the least significant bit is stored first
      *
      * \param i Classical dit index
      * \param value Classical dit value
      * \return Reference to the current instance
      */
     QEngine& set_dit(idx i, idx value) {
+        // EXCEPTION CHECKS
+
         if (i >= qc_->get_nc())
             throw exception::OutOfRange("qpp::QEngine::set_dit()");
+        // END EXCEPTION CHECKS
         st_.dits_[i] = value;
+
+        return *this;
+    }
+
+    /**
+     * \brief Set the classical dits to \a dits
+     * \see qpp::QEngine::get_dits()
+     *
+     * \note When interfacing with OpenQASM, the classical dits are stored in
+     * little-endian order, i.e. the least significant bit is stored first
+     *
+     * \param dits Vector of classical dits, must have the same size as the
+     * internal vector of classical dits returned by qpp::QEngine::get_dits()
+     * \return Reference to the current instance
+     */
+    QEngine& set_dits(std::vector<idx> dits) {
+        // EXCEPTION CHECKS
+
+        if (dits.size() != st_.dits_.size())
+            throw exception::SizeMismatch("qpp::QEngine::set_dits()");
+        // END EXCEPTION CHECKS
+        st_.dits_ = std::move(dits);
 
         return *this;
     }
@@ -388,6 +433,7 @@ class QEngine : public IDisplay, public IJSON {
             std::vector<idx> target_rel_pos =
                 get_relative_pos_(gates[q_ip].target_);
 
+            // regular gate
             switch (gates[q_ip].gate_type_) {
                 case QCircuit::GateType::NONE:
                     break;
@@ -404,63 +450,60 @@ class QEngine : public IDisplay, public IJSON {
                             apply(st_.psi_, h_tbl[gates[q_ip].gate_hash_],
                                   {target_rel_pos[m]}, d);
                     break;
-                case QCircuit::GateType::SINGLE_CTRL_SINGLE_TARGET:
-                case QCircuit::GateType::SINGLE_CTRL_MULTIPLE_TARGET:
-                case QCircuit::GateType::MULTIPLE_CTRL_SINGLE_TARGET:
-                case QCircuit::GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
-                case QCircuit::GateType::CUSTOM_CTRL:
-                    ctrl_rel_pos = get_relative_pos_(gates[q_ip].ctrl_);
-                    st_.psi_ = applyCTRL(
-                        st_.psi_, h_tbl[gates[q_ip].gate_hash_], ctrl_rel_pos,
-                        target_rel_pos, d, gates[q_ip].shift_);
+                default:
                     break;
-                case QCircuit::GateType::SINGLE_cCTRL_SINGLE_TARGET:
-                case QCircuit::GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
-                case QCircuit::GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
-                case QCircuit::GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
-                case QCircuit::GateType::CUSTOM_cCTRL:
-                    if (st_.dits_.empty()) {
-                        st_.psi_ =
-                            apply(st_.psi_, h_tbl[gates[q_ip].gate_hash_],
-                                  target_rel_pos, d);
-                    } else {
-                        bool should_apply = true;
-                        idx first_dit;
-                        // we have a shift
-                        if (!gates[q_ip].shift_.empty()) {
-                            first_dit = (st_.dits_[(gates[q_ip].ctrl_)[0]] +
-                                         gates[q_ip].shift_[0]) %
-                                        d;
-                            for (idx m = 1; m < gates[q_ip].ctrl_.size(); ++m) {
-                                if ((st_.dits_[(gates[q_ip].ctrl_)[m]] +
-                                     gates[q_ip].shift_[m]) %
-                                        d !=
-                                    first_dit) {
-                                    should_apply = false;
-                                    break;
-                                }
+            }
+
+            // controlled gate
+            if (QCircuit::is_CTRL(gates[q_ip])) {
+                ctrl_rel_pos = get_relative_pos_(gates[q_ip].ctrl_);
+                st_.psi_ = applyCTRL(st_.psi_, h_tbl[gates[q_ip].gate_hash_],
+                                     ctrl_rel_pos, target_rel_pos, d,
+                                     gates[q_ip].shift_);
+            }
+
+            // classically-controlled gate
+            if (QCircuit::is_cCTRL(gates[q_ip])) {
+                if (st_.dits_.empty()) {
+                    st_.psi_ = apply(st_.psi_, h_tbl[gates[q_ip].gate_hash_],
+                                     target_rel_pos, d);
+                } else {
+                    bool should_apply = true;
+                    idx first_dit;
+                    // we have a shift
+                    if (!gates[q_ip].shift_.empty()) {
+                        first_dit = (st_.dits_[(gates[q_ip].ctrl_)[0]] +
+                                     gates[q_ip].shift_[0]) %
+                                    d;
+                        for (idx m = 1; m < gates[q_ip].ctrl_.size(); ++m) {
+                            if ((st_.dits_[(gates[q_ip].ctrl_)[m]] +
+                                 gates[q_ip].shift_[m]) %
+                                    d !=
+                                first_dit) {
+                                should_apply = false;
+                                break;
                             }
-                        }
-                        // no shift
-                        else {
-                            first_dit = st_.dits_[(gates[q_ip].ctrl_)[0]];
-                            for (idx m = 1; m < gates[q_ip].ctrl_.size(); ++m) {
-                                if (st_.dits_[(gates[q_ip].ctrl_)[m]] !=
-                                    first_dit) {
-                                    should_apply = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if (should_apply) {
-                            st_.psi_ = apply(
-                                st_.psi_,
-                                powm(h_tbl[gates[q_ip].gate_hash_], first_dit),
-                                target_rel_pos, d);
                         }
                     }
-                    break;
-            } // end switch on gate type
+                    // no shift
+                    else {
+                        first_dit = st_.dits_[(gates[q_ip].ctrl_)[0]];
+                        for (idx m = 1; m < gates[q_ip].ctrl_.size(); ++m) {
+                            if (st_.dits_[(gates[q_ip].ctrl_)[m]] !=
+                                first_dit) {
+                                should_apply = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (should_apply) {
+                        st_.psi_ = apply(
+                            st_.psi_,
+                            powm(h_tbl[gates[q_ip].gate_hash_], first_dit),
+                            target_rel_pos, d);
+                    }
+                }
+            } // end if classically-controlled gate
         }     // end if gate step
 
         // measurement step
@@ -584,9 +627,8 @@ class QEngine : public IDisplay, public IJSON {
      * \note Do not override!
      *
      * \param reps Number of repetitions
-     * \param clear_stats Resets the collected measurement statistics hash table
-     * before the run
-     * \return Reference to the current instance
+     * \param clear_stats Resets the collected measurement statistics hash
+     * table before the run \return Reference to the current instance
      */
     QEngine& execute(idx reps = 1, bool clear_stats = true) {
         auto initial_engine_state = st_; // saves the engine entry state
@@ -619,10 +661,9 @@ class QEngine : public IDisplay, public IJSON {
      *
      * Displays the state of the engine in JSON format
      *
-     * \param enclosed_in_curly_brackets If true, encloses the result in curly
-     * brackets
-     * \return String containing the JSON representation of the state of the
-     * engine
+     * \param enclosed_in_curly_brackets If true, encloses the result in
+     * curly brackets \return String containing the JSON representation of
+     * the state of the engine
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
         std::string result;
@@ -695,10 +736,13 @@ class QEngine : public IDisplay, public IJSON {
      * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
+        /*
         os << "measured/discarded (destructive): " << disp(get_measured(), ", ")
            << '\n';
         os << "non-measured/non-discarded: " << disp(get_non_measured(), ", ")
            << '\n';
+        */
+
         os << "last probs: " << disp(get_probs(), ", ") << '\n';
         os << "last dits: " << disp(get_dits(), ", ");
 
@@ -732,10 +776,11 @@ class QEngine : public IDisplay, public IJSON {
  * \see qpp::QEngine, qpp::QCircuit, qpp::NoiseBase
  *
  * Assumes an uncorrelated noise model that is applied to each non-measured
- * qubit before every non-measurement step in the logical circuit. To add noise
- * before a measurement, insert a no-op via qpp::QCircuit::nop().
+ * qubit before every non-measurement step in the logical circuit. To add
+ * noise before a measurement, insert a no-op via qpp::QCircuit::nop().
  *
- * \tparam NoiseModel Quantum noise model, should be derived from qpp::NoiseBase
+ * \tparam NoiseModel Quantum noise model, should be derived from
+ * qpp::NoiseBase
  */
 template <typename NoiseModel>
 class QNoisyEngine : public QEngine {
@@ -788,11 +833,12 @@ class QNoisyEngine : public QEngine {
      * \brief Vector of noise results obtained before every step in the
      * circuit
      *
-     * \note The first vector contains the noise measurement results obtained
-     * before applying the first step in the circuit, and so on, ordered by
-     * non-measured qudits. That is, the first element in the vector
-     * corresponding to noise obtained before a given step in the circuit
-     * represents the noise result obtained on the first non-measured qudit etc.
+     * \note The first vector contains the noise measurement results
+     * obtained before applying the first step in the circuit, and so on,
+     * ordered by non-measured qudits. That is, the first element in the
+     * vector corresponding to noise obtained before a given step in the
+     * circuit represents the noise result obtained on the first
+     * non-measured qudit etc.
      *
      * \return Vector of noise results
      */

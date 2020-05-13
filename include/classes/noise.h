@@ -66,7 +66,7 @@ class NoiseBase {
   protected:
     const std::vector<cmat> Ks_;        ///< Kraus operators
     mutable std::vector<double> probs_; ///< probabilities
-    mutable idx d_{};                   ///< qudit dimension
+    mutable idx D_{};                   ///< qudit dimension
 
     mutable idx i_{}; ///< index of the last occurring noise element
     mutable bool generated_{false}; ///< set to true after compute_state_() is
@@ -92,10 +92,10 @@ class NoiseBase {
         // END EXCEPTION CHECKS
 
         cmat rho_i;
-        idx n = internal::get_num_subsys(state.rows(), d_);
+        idx n = internal::get_num_subsys(state.rows(), D_);
 
         for (idx i = 0; i < Ks_.size(); ++i) {
-            rho_i = ptrace(state, complement(target, n), d_);
+            rho_i = ptrace(state, complement(target, n), D_);
             probs_[i] = trace(Ks_[i] * rho_i * adjoint(Ks_[i])).real();
         }
     } /* compute_probs_() */
@@ -135,7 +135,7 @@ class NoiseBase {
             RandomDevices::get_thread_local_instance().get_prng();
 #endif
         i_ = dd(gen);
-        result = apply(state, Ks_[i_], target, d_);
+        result = apply(state, Ks_[i_], target, D_);
         generated_ = true;
 
         return normalize(result);
@@ -168,7 +168,7 @@ class NoiseBase {
                 throw exception::DimsNotEqual("qpp::NoiseBase::NoiseBase()");
         // END EXCEPTION CHECKS
 
-        d_ = Ks[0].rows(); // set the local dimension
+        D_ = Ks[0].rows(); // set the local dimension
     }
 
     /**
@@ -203,7 +203,7 @@ class NoiseBase {
                 throw exception::OutOfRange("qpp::NoiseBase::NoiseBase");
         // END EXCEPTION CHECKS
 
-        d_ = Ks[0].rows(); // set the local dimension
+        D_ = Ks[0].rows(); // set the local dimension
         probs_ = probs;
     }
 
@@ -218,7 +218,7 @@ class NoiseBase {
      *
      * \return Qudit dimension
      */
-    idx get_d() const noexcept { return d_; };
+    idx get_d() const noexcept { return D_; };
 
     /**
      * \brief Vector of noise operators
@@ -298,7 +298,7 @@ class NoiseBase {
             compute_probs_(state, std::vector<idx>{0});
             result = compute_state_(state, std::vector<idx>{0});
         } catch (exception::Exception&) {
-            std::cout << "qpp::NoiseBase::operator()\n";
+            std::cerr << "qpp::NoiseBase::operator()\n";
             throw;
         }
 
@@ -320,7 +320,7 @@ class NoiseBase {
             compute_probs_(state, std::vector<idx>{target});
             result = compute_state_(state, std::vector<idx>{target});
         } catch (exception::Exception&) {
-            std::cout << "qpp::NoiseBase::operator()\n";
+            std::cerr << "qpp::NoiseBase::operator()\n";
             throw;
         }
 
@@ -343,7 +343,7 @@ class NoiseBase {
             compute_probs_(state, target);
             result = compute_state_(state, target);
         } catch (exception::Exception&) {
-            std::cout << "qpp::NoiseBase::operator()\n";
+            std::cerr << "qpp::NoiseBase::operator()\n";
             throw;
         }
 
@@ -504,16 +504,16 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
     /**
      * \brief Constructs the vector of Kraus operators
      *
-     * \param d Qudit dimension
+     * \param D Qudit dimension
      * \return Vector of Kraus operators representing the depolarizing noise
      */
-    std::vector<cmat> fill_Ks_(idx d) const {
-        std::vector<cmat> Ks(d * d);
-        idx cnt = 0;
-        for (idx i = 0; i < d; ++i)
-            for (idx j = 0; j < d; ++j)
-                Ks[cnt++] = powm(Gates::get_instance().Xd(d), i) *
-                            powm(Gates::get_instance().Zd(d), j);
+    std::vector<cmat> fill_Ks_(idx D) const {
+        std::vector<cmat> Ks(D * D);
+        idx tmp = 0;
+        for (idx i = 0; i < D; ++i)
+            for (idx j = 0; j < D; ++j)
+                Ks[tmp++] = powm(Gates::get_instance().Xd(D), i) *
+                            powm(Gates::get_instance().Zd(D), j);
 
         return Ks;
     }
@@ -522,14 +522,14 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
      * \brief Fills the probability vector
      *
      * \param p Probability
-     * \param d Qudit dimension
+     * \param D Qudit dimension
      * \return Probability vector
      */
-    std::vector<double> fill_probs_(double p, idx d) const {
-        std::vector<double> probs(d * d);
+    std::vector<double> fill_probs_(double p, idx D) const {
+        std::vector<double> probs(D * D);
         probs[0] = 1 - p;
-        for (idx i = 1; i < d * d; ++i)
-            probs[i] = p / (d - 1) * (d - 1);
+        for (idx i = 1; i < D * D; ++i)
+            probs[i] = p / (D - 1) * (D - 1);
 
         return probs;
     }
@@ -539,13 +539,13 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
      * \brief Qudit depolarizing noise constructor
      *
      * \param p Noise probability
-     * \param d Qudit dimension
+     * \param D Qudit dimension
      */
-    explicit QuditDepolarizingNoise(double p, idx d)
-        : NoiseBase(fill_Ks_(d), fill_probs_(p, d)) {
+    explicit QuditDepolarizingNoise(double p, idx D)
+        : NoiseBase(fill_Ks_(D), fill_probs_(p, D)) {
         // EXCEPTION CHECKS
 
-        if (d < 2 || p < 0 || p > 1)
+        if (D < 2 || p < 0 || p > 1)
             throw exception::OutOfRange(
                 "qpp::QuditDepolarizingNoise::QuditDepolarizingNoise()");
         // END EXCEPTION CHECKS

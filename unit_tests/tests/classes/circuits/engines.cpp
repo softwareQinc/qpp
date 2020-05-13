@@ -17,9 +17,11 @@ TEST(qpp_QEngine_execute, ValueType) {}
 /// BEGIN QEngine& qpp::QEngine::execute(idx reps = 1, bool clear_stats = true)
 TEST(qpp_QEngine_execute, AllCircuitWithRepetitions) {}
 /******************************************************************************/
-/// BEGIN const QEngine& qpp::QEngine::get_circuit() const& noexcept AND
-///       QCircuit get_circuit() const&& noexcept
-TEST(qpp_QEngine_get_circuit, AllTests) {}
+/// BEGIN const QEngine& qpp::QEngine::get_circuit() const& noexcept
+TEST(qpp_QEngine_get_circuit, Lvalue) {}
+/******************************************************************************/
+/// BEGIN QCircuit get_circuit() const&& noexcept
+TEST(qpp_QEngine_get_circuit, Rvalue) {}
 /******************************************************************************/
 /// BEGIN idx qpp::QEngine::get_dit(idx i) const
 TEST(qpp_QEngine_get_dit, AllTests) {}
@@ -54,6 +56,9 @@ TEST(qpp_QEngine_reset_stats, AllTests) {}
 /******************************************************************************/
 /// BEGIN QEngine& qpp::QEngine::set_dit(idx i, idx value)
 TEST(qpp_QEngine_set_dit, AllTests) {}
+/******************************************************************************/
+/// BEGIN QEngine& qpp::QEngine::set_dits(std::vector<idx> dits)
+TEST(qpp_QEngine_set_dits, AllTests) {}
 /******************************************************************************/
 /// BEGIN QEngine& qpp::QEngine::set_psi(const ket& psi)
 TEST(qpp_QEngine_set_psi, AllTests) {}

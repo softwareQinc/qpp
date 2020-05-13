@@ -130,8 +130,8 @@ struct is_complex : std::false_type {};
 #endif
 
 /**
- * \brief \brief Checks whether the type is a complex number type,
- * specialization for complex types
+ * \brief Checks whether the type is a complex number type, specialization for
+ * complex types
  */
 // silence g++4.8.x warning about non-virtual destructor in inherited class
 #if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)

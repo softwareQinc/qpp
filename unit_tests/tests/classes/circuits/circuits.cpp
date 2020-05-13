@@ -125,8 +125,11 @@ TEST(qpp_QCircuit_gate_fan, SpecificQudits) {}
 ///       std::string name = {})
 TEST(qpp_QCircuit_gate_fan, AllQudits) {}
 /******************************************************************************/
-/// BEGIN std::vector<idx> qpp::QCircuit::get_clean() const
-TEST(qpp_QCircuit_get_clean, AllTests) {}
+/// BEGIN std::vector<idx> qpp::QCircuit::get_clean_dits() const
+TEST(qpp_QCircuit_get_clean_dits, AllTests) {}
+/******************************************************************************/
+/// BEGIN std::vector<idx> qpp::QCircuit::get_clean_qudits() const
+TEST(qpp_QCircuit_get_clean_qudits, AllTests) {}
 /******************************************************************************/
 /// BEGIN idx qpp::QCircuit::get_d() const noexcept
 TEST(qpp_QCircuit_get_d, AllTests) {}
@@ -184,8 +187,21 @@ TEST(qpp_QCircuit_get_nq, AllTests) {}
 /// BEGIN idx qpp::QCircuit::get_step_count() const noexcept
 TEST(qpp_QCircuit_get_step_count, AllTests) {}
 /******************************************************************************/
-/// BEGIN bool qpp::QCircuit::is_clean(idx i) const
-TEST(qpp_QCircuit_is_clean, AllTests) {}
+/// BEGIN inline static bool qpp::QCircuit::is_cCTRL(const GateStep& gate_step)
+TEST(qpp_QCircuit_is_cCTRL, AllTests) {}
+/******************************************************************************/
+/// BEGIN bool qpp::QCircuit::is_clean_dit(idx i) const
+TEST(qpp_QCircuit_is_clean_dit, AllTests) {}
+/******************************************************************************/
+/// BEGIN bool qpp::QCircuit::is_clean_qudit(idx i) const
+TEST(qpp_QCircuit_is_clean_qudit, AllTests) {}
+/******************************************************************************/
+/// BEGIN inline static bool qpp::QCircuit::is_CTRL(const GateStep& gate_step)
+TEST(qpp_QCircuit_is_CTRL, AllTests) {}
+/******************************************************************************/
+/// BEGIN inline static bool qpp::QCircuit::is_non_CTRL(
+///       const GateStep& gate_step)
+TEST(qpp_QCircuit_is_non_CTRL, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& qpp::QCircuit::kron(const QCircuit& qc)
 TEST(qpp_QCircuit_kron, AllTests) {}
@@ -226,11 +242,17 @@ TEST(qpp_QCircuit_QFT, AllQudits) {}
 ///       bool swap = true)
 TEST(qpp_QCircuit_QFT, SpecificQudits) {}
 /******************************************************************************/
-/// BEGIN QCircuit& qpp::QCircuit::remove_clean(idx target)
-TEST(qpp_QCircuit_remove_clean, SingleTarget) {}
+/// BEGIN QCircuit& qpp::QCircuit::remove_clean_dit(idx target)
+TEST(qpp_QCircuit_remove_clean_dit, AllTests) {}
 /******************************************************************************/
-/// BEGIN QCircuit& qpp::QCircuit::remove_clean(std::vector<idx> target)
-TEST(qpp_QCircuit_remove_clean, MultipleTargets) {}
+/// BEGIN QCircuit& qpp::QCircuit::remove_clean_dits(std::vector<idx> target)
+TEST(qpp_QCircuit_remove_clean_dits, AllTests) {}
+/******************************************************************************/
+/// BEGIN QCircuit& qpp::QCircuit::remove_clean_qudit(idx target)
+TEST(qpp_QCircuit_remove_clean_qudit, AllTests) {}
+/******************************************************************************/
+/// BEGIN QCircuit& qpp::QCircuit::remove_clean_qudits(std::vector<idx> target)
+TEST(qpp_QCircuit_remove_clean_qudits, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& qpp::QCircuit::replicate(idx n)
 TEST(qpp_QCircuit_replicate, AllTests) {}
