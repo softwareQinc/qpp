@@ -5,7 +5,7 @@
 
 using namespace qpp;
 
-// Unit testing "operations.h"
+// Unit testing "operations.hpp"
 
 /******************************************************************************/
 /// BEGIN template <typename Derived1, typename Derived2>
@@ -95,8 +95,8 @@ TEST(qpp_applyCTRL, NonEmptyControl) {
     std::vector<idx> target{1, 3}; // target
 
     idx Dtarget = 1; // dimension of the target subsystems
-    for (idx i = 0; i < target.size(); ++i)
-        Dtarget *= dims[target[i]]; // compute it here
+    for (auto i : target)
+        Dtarget *= dims[i]; // compute it here
 
     // some random n qudit pure state
     ket psi = randket(D);
@@ -113,7 +113,7 @@ TEST(qpp_applyCTRL, NonEmptyControl) {
     // result when using CTRL-U|psi><psi|CTRL-U^\dagger
     cmat result_psi = A * adjoint(A);
     // result when using CTRL-U(rho)CTRL-U^\dagger
-    cmat result_rho = B;
+    const cmat& result_rho = B;
 
     double res = norm(result_psi - result_rho);
     EXPECT_NEAR(0, res, 1e-7);
@@ -127,8 +127,8 @@ TEST(qpp_applyCTRL, EmptyControl) {
     std::vector<idx> target{1, 0, 3}; // target
 
     idx Dtarget = 1; // dimension of the target subsystems
-    for (idx i = 0; i < target.size(); ++i)
-        Dtarget *= dims[target[i]]; // compute it here
+    for (auto i : target)
+        Dtarget *= dims[i]; // compute it here
 
     // some random n qudit pure state
     ket psi = randket(D);
@@ -145,7 +145,7 @@ TEST(qpp_applyCTRL, EmptyControl) {
     // result when using CTRL-U|psi><psi|CTRL-U^\dagger
     cmat result_psi = A * adjoint(A);
     // result when using CTRL-U(rho)CTRL-U^\dagger
-    cmat result_rho = B;
+    const cmat& result_rho = B;
 
     double res = norm(result_psi - result_rho);
     EXPECT_NEAR(0, res, 1e-7);

@@ -6,14 +6,14 @@
 
 int main() {
     using namespace qpp;
-    ket a0 = codes.codeword(Codes::Type::FIVE_QUBIT, 0);
-    ket a1 = codes.codeword(Codes::Type::FIVE_QUBIT, 1);
+    ket a0 = Codes::codeword(Codes::Type::FIVE_QUBIT, 0);
+    ket a1 = Codes::codeword(Codes::Type::FIVE_QUBIT, 1);
 
-    ket b0 = codes.codeword(Codes::Type::SEVEN_QUBIT_STEANE, 0);
-    ket b1 = codes.codeword(Codes::Type::SEVEN_QUBIT_STEANE, 1);
+    ket b0 = Codes::codeword(Codes::Type::STEANE_SEVEN_QUBIT, 0);
+    ket b1 = Codes::codeword(Codes::Type::STEANE_SEVEN_QUBIT, 1);
 
-    ket c0 = codes.codeword(Codes::Type::NINE_QUBIT_SHOR, 0);
-    ket c1 = codes.codeword(Codes::Type::NINE_QUBIT_SHOR, 1);
+    ket c0 = Codes::codeword(Codes::Type::SHOR_NINE_QUBIT, 0);
+    ket c1 = Codes::codeword(Codes::Type::SHOR_NINE_QUBIT, 1);
 
     std::cout << ">> [[5, 1, 3]] Five qubit code.\n";
     std::cout << ">> Checking codeword orthogonality.\n";

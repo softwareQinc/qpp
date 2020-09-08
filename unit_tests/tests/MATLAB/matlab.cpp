@@ -3,11 +3,11 @@
 #include "gtest/gtest.h"
 #include "qpp.h"
 
-#include "MATLAB/matlab.h"
+#include "MATLAB/matlab.hpp"
 
 using namespace qpp;
 
-// Unit testing "MATLAB/matlab.h"
+// Unit testing "MATLAB/matlab.hpp"
 
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>

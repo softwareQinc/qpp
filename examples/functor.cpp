@@ -17,7 +17,7 @@ int main() {
     std::cout << disp(A) << '\n';
 
     std::cout << ">> Result (with lambda):\n";
-    // functor z^3 componentwise, specify OutputScalar and Derived for lambdas
+    // functor z^3 component-wise, specify OutputScalar and Derived for lambdas
     std::cout << disp(cwise<cplx, cmat>(A, [](const cplx& z) -> cplx {
         return z * z * z;
     })) << '\n';

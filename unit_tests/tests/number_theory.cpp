@@ -1,5 +1,4 @@
 #include <limits>
-#include <string>
 #include <tuple>
 #include <vector>
 #include "gtest/gtest.h"
@@ -7,7 +6,7 @@
 
 using namespace qpp;
 
-// Unit testing "number_theory.h"
+// Unit testing "number_theory.hpp"
 
 /******************************************************************************/
 /// BEGIN std::vector<idx> qpp::compperm(const std::vector<idx>& perm,
@@ -29,7 +28,7 @@ TEST(qpp_compperm, AllTests) {
     EXPECT_EQ(result3, qpp::compperm(sigma3, tau3));
 }
 /******************************************************************************/
-/// BEGIN double qpp::contfrac2x(const std::vector<int>& cf, idx N = idx(-1))
+/// BEGIN double qpp::contfrac2x(const std::vector<bigint>& cf, idx N = idx(-1))
 TEST(qpp_contfrac2x, DefaultN) {
     EXPECT_NEAR(0, qpp::contfrac2x({0}), 1e-7);
     EXPECT_NEAR(42, qpp::contfrac2x({42}), 1e-7);
@@ -51,11 +50,12 @@ TEST(qpp_contfrac2x, UserSpecifiedN) {
     EXPECT_NEAR(-0.4321, qpp::contfrac2x({0, -2, -3, -5, -2}, 4), 1e-3);
 }
 /******************************************************************************/
-/// BEGIN std::vector<std::pair<int, int>>
-///       qpp::convergents(const std::vector<int>& cf)
+/// BEGIN std::vector<std::pair<bigint, bigint>>
+///       qpp::convergents(const std::vector<bigint>& cf)
 TEST(qpp_convergents, ContinuedFraction) {}
 /******************************************************************************/
-/// BEGIN std::vector<std::pair<int, int>> qpp::convergents(double x, idx N)
+/// BEGIN std::vector<std::pair<bigint, bigint>>
+///       qpp::convergents(double x, idx N)
 TEST(qpp_convergents, RealNumber) {}
 /******************************************************************************/
 /// BEGIN std::tuple<bigint, bigint, bigint> qpp::egcd(bigint m, bigint n)
@@ -334,21 +334,21 @@ TEST(qpp_randprime, AllTests) {
     EXPECT_TRUE(qpp::isprime(qpp::randprime(10000, 10100)));
 }
 /******************************************************************************/
-/// BEGIN std::vector<int> qpp::x2contfrac(double x, idx n, idx cut = 1e5)
+/// BEGIN std::vector<bigint> qpp::x2contfrac(double x, idx n, idx cut = 1e5)
 TEST(qpp_x2contfrac, AllTests) {
-    EXPECT_EQ(std::vector<int>({0}), qpp::x2contfrac(0, 3));
-    EXPECT_EQ(std::vector<int>({1}), qpp::x2contfrac(1, 3));
-    EXPECT_EQ(std::vector<int>({3, 7, 15, 1, 292, 1, 1, 1, 2, 1}),
+    EXPECT_EQ(std::vector<bigint>({0}), qpp::x2contfrac(0, 3));
+    EXPECT_EQ(std::vector<bigint>({1}), qpp::x2contfrac(1, 3));
+    EXPECT_EQ(std::vector<bigint>({3, 7, 15, 1, 292, 1, 1, 1, 2, 1}),
               qpp::x2contfrac(qpp::pi, 10));
+    EXPECT_EQ(std::vector<bigint>({0, -8, -9, -1, -135665, -1}),
+              qpp::x2contfrac(-0.123456789, 6,
+                              1000000)); // due to large term in c.f.e.
     EXPECT_EQ(
-        std::vector<int>({0, -8, -9, -1, -135665, -1}),
-        qpp::x2contfrac(-0.123456789, 6, 1e6)); // due to large term in c.f.e.
-    EXPECT_EQ(
-        std::vector<int>({0, -8, -9, -1}),
+        std::vector<bigint>({0, -8, -9, -1}),
         qpp::x2contfrac(-0.123456789, 6)); // cuts the expansion at the 4th term
-    EXPECT_EQ(std::vector<int>({0, -1, -80}),
+    EXPECT_EQ(std::vector<bigint>({0, -1, -80}),
               qpp::x2contfrac(-0.987654321, 10));
-    EXPECT_EQ(std::vector<int>({-1, -4, -3, -1, -3, -1, -13565, -1, -8}),
-              qpp::x2contfrac(-1.23456789, 9, 1e7));
+    EXPECT_EQ(std::vector<bigint>({-1, -4, -3, -1, -3, -1, -13565, -1, -8}),
+              qpp::x2contfrac(-1.23456789, 9, 10000000));
 }
 /******************************************************************************/

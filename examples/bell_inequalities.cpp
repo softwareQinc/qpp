@@ -12,8 +12,8 @@ int main() {
     // detector settings (Q and R on Alice's side, S and T on Bob's side)
     cmat Q = gt.Z;
     cmat R = gt.X;
-    cmat S = (-gt.Z - gt.X) / sqrt(2);
-    cmat T = (gt.Z - gt.X) / sqrt(2);
+    cmat S = (-gt.Z - gt.X) / sqrt(2.0);
+    cmat T = (gt.Z - gt.X) / sqrt(2.0);
 
     // number of "experiments" for each of the 4 detector settings
     idx N = 10000;
@@ -67,15 +67,11 @@ int main() {
             ++gate_idx;
         }
     }
-    std::cout << "[N++ | N+- | N-+ | N-- | (N++ + N-- - N+- - N-+)]\n";
-    std::cout << "QS: " << disp(statistics[0], 4, " ");
-    std::cout << "  " << E[0] << '\n';
-    std::cout << "QT: " << disp(statistics[1], 4, " ");
-    std::cout << "  " << E[1] << '\n';
-    std::cout << "RS: " << disp(statistics[2], 4, " ");
-    std::cout << "  " << E[2] << '\n';
-    std::cout << "RT: " << disp(statistics[3], 4, " ");
-    std::cout << "  " << E[3] << '\n';
+    std::cout << "[N++ | N+- | N-+ | N--] (N++ + N--) - (N+- + N-+)\n";
+    std::cout << "QS: " << disp(statistics[0], 4, " ") << " " << E[0] << '\n';
+    std::cout << "QT: " << disp(statistics[1], 4, " ") << " " << E[1] << '\n';
+    std::cout << "RS: " << disp(statistics[2], 4, " ") << " " << E[2] << '\n';
+    std::cout << "RT: " << disp(statistics[3], 4, " ") << " " << E[3] << '\n';
 
     // Experimental average
     double exp_avg = (E[0] - E[1] + E[2] + E[3]) / static_cast<double>(N);
@@ -90,5 +86,5 @@ int main() {
     std::cout << ">> Theoretical value of <QS> + <RS> + <RT> - <QT> = ";
     std::cout << th_avg << '\n';
 
-    std::cout << ">> 2 * sqrt(2) = " << 2 * sqrt(2) << '\n';
+    std::cout << ">> 2 * sqrt(2) = " << 2 * sqrt(2.0) << '\n';
 }

@@ -5,7 +5,7 @@
 
 using namespace qpp;
 
-// Unit testing "classes/gates.h"
+// Unit testing "classes/gates.hpp"
 
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>

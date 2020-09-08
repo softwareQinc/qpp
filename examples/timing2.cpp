@@ -1,5 +1,6 @@
 // Timing, second take
 // Source: ./examples/timing2.cpp
+#include <numeric>
 #include <cmath>
 #include <iostream>
 #include <vector>
@@ -9,7 +10,7 @@
 int main() {
     using namespace qpp;
     idx n = 10; // number of qubits
-    idx D = std::round(std::pow(2, n));
+    idx D = static_cast<idx>(std::llround(std::pow(2, n)));
     std::cout << ">> n = " << n << " qubits, matrix size " << D << " x " << D
               << ".\n\n";
     cmat randcmat = cmat::Random(D, D);
@@ -26,9 +27,8 @@ int main() {
     // qpp::ptranspose()
     std::cout << "**** qpp::ptranspose() timing ****\n";
     // partially transpose n-1 subsystems
-    std::vector<idx> subsys_ptranspose;
-    for (idx i = 0; i < n - 1; ++i)
-        subsys_ptranspose.emplace_back(i);
+    std::vector<idx> subsys_ptranspose(n - 1);
+    std::iota(std::begin(subsys_ptranspose), std::end(subsys_ptranspose), 0);
     std::cout << ">> Subsytem(s): ";
     std::cout << disp(subsys_ptranspose, ", ") << '\n';
     t.tic();
@@ -37,9 +37,9 @@ int main() {
 
     // qpp::syspermute()
     std::cout << "**** qpp::syspermute() timing ****\n";
-    std::vector<idx> perm; // left-shift all subsystems by 1
+    std::vector<idx> perm(n); // left-shift all subsystems by 1
     for (idx i = 0; i < n; ++i)
-        perm.emplace_back((i + 1) % n);
+        perm[i] = (i + 1) % n;
     std::cout << ">> Subsytem(s): ";
     std::cout << disp(perm, ", ") << '\n';
     t.tic();

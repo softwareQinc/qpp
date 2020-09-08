@@ -4,7 +4,7 @@
 
 using namespace qpp;
 
-// Unit testing "classes/noise.h"
+// Unit testing "classes/noise.hpp"
 
 /******************************************************************************/
 /// BEGIN idx qpp::NoiseBase::get_d() const noexcept

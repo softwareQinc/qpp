@@ -5,7 +5,7 @@
 
 using namespace qpp;
 
-// Unit testing "entanglement.h"
+// Unit testing "entanglement.hpp"
 
 /******************************************************************************/
 /// BEGIN template <typename Derived> double qpp::concurrence(

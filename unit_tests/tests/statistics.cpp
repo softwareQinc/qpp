@@ -4,7 +4,7 @@
 
 using namespace qpp;
 
-// Unit testing "statistics.h"
+// Unit testing "statistics.hpp"
 
 /******************************************************************************/
 /// BEGIN template<typename Container> double qpp::avg(

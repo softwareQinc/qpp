@@ -1,4 +1,4 @@
-// Qubit teleporation
+// Qubit teleportation
 // Source: ./examples/teleport_qubit.cpp
 #include <iostream>
 #include <tuple>
@@ -10,7 +10,7 @@ int main() {
     // input state
     ket psi_a = randket();
 
-    std::cout << ">> Qubit teleporation\n";
+    std::cout << ">> Qubit teleportation\n";
     std::cout << ">> Initial state:\n" << disp(psi_a) << '\n';
 
     // the entangled resource
@@ -24,20 +24,20 @@ int main() {
     input_aAB = apply(input_aAB, gt.H, {0});
 
     // measure the aA part
-    auto results = measure_seq(input_aAB, {0, 1});
+    auto measured = measure_seq(input_aAB, {0, 1});
 
     // measurement results
-    idx z = std::get<RES>(results)[0];
-    idx x = std::get<RES>(results)[1];
-    std::cout << ">> Alice's measurement results: ";
+    idx z = std::get<RES>(measured)[0];
+    idx x = std::get<RES>(measured)[1];
+    std::cout << ">> Alice's measurement result: ";
     std::cout << "x = " << x << " and z = " << z;
 
     // probability of obtaining the measurement results x and z
-    double p = std::get<PROB>(results);
+    double p = std::get<PROB>(measured);
     std::cout << ", obtained with probability: " << p << '\n';
 
     // the output state (before correction)
-    ket out_B = std::get<ST>(results);
+    ket out_B = std::get<ST>(measured);
     std::cout << ">> Bob's state (before correction):\n";
     std::cout << disp(out_B) << '\n';
 

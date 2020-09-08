@@ -4,7 +4,7 @@
 
 using namespace qpp;
 
-// Unit testing "classes/circuits/engines.h"
+// Unit testing "classes/circuits/engines.hpp"
 
 /******************************************************************************/
 /// BEGIN QEngine& qpp::QEngine::execute(const QCircuit::iterator& it)

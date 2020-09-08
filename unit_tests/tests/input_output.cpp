@@ -3,7 +3,7 @@
 
 using namespace qpp;
 
-// Unit testing "input_output.h"
+// Unit testing "input_output.hpp"
 
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>

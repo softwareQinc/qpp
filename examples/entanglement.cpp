@@ -12,7 +12,7 @@ int main() {
 
     std::cout << ">> Concurrence of rho: " << concurrence(rho) << '\n';
     std::cout << ">> Negativity of rho: " << negativity(rho, {2, 2}) << '\n';
-    std::cout << ">> Logarithimc negativity of rho: "
+    std::cout << ">> Logarithmic negativity of rho: "
               << lognegativity(rho, {2, 2}) << '\n';
 
     ket psi = 0.8 * 00_ket + 0.6 * 11_ket;

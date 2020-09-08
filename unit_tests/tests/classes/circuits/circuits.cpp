@@ -4,7 +4,7 @@
 
 using namespace qpp;
 
-// Unit testing "classes/circuits/circuits.h"
+// Unit testing "classes/circuits/circuits.hpp"
 
 /******************************************************************************/
 /// BEGIN QCircuit& qpp::QCircuit::add_circuit(QCircuit other, bigint pos_qudit,

@@ -4,7 +4,7 @@
 
 using namespace qpp;
 
-// Unit testing "functions.h"
+// Unit testing "functions.hpp"
 
 /******************************************************************************/
 /// BEGIN template <char... Bits> bra qpp::operator"" _bra()

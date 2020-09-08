@@ -1,29 +1,42 @@
 language: cpp
-dist: xenial
+dist: bionic
 os: linux
 
 jobs:
   include:
-    # Ubuntu Linux 16.04 gcc5.4
+    # Ubuntu Linux 18.04 gcc-7.1
     - os: linux
       compiler: gcc
       before_install:
-        export CXX="g++-5" CC="gcc-5"
+        - export CXX="g++-7" CC="gcc-7"
+        - export BUILD="make"
+
+    # Ubuntu Linux 18.04 clang-7.0
+    - os: linux
+      compiler: clang
+      before_install:
+        - sudo apt-get install libc++-dev libc++abi-dev
+        - export CXX="clang++" CC="clang"
+        - export LD_LIBRARY_PATH=/usr/local/clang/lib:$LD_LIBRARY_PATH
+        - export BUILD="make"
 
     # Apple OSX LLVM version 10.0.0 (clang-1000.11.45.5)
     - os: osx
-      osx_image: xcode10.1
+      osx_image: xcode10.2
       compiler: clang
+      before_install:
+        - export BUILD="make"
 
-    # Apple OSX gcc6
+    # Apple OSX gcc-7.5
     - os: osx
-      osx_image: xcode10.1
+      osx_image: xcode10.2
       compiler: gcc
       before_install:
         - rm -rf /usr/local/include/c++
         - brew update
-        - brew install gcc6
-        - export CXX="g++-6" CC="gcc-6"
+        - brew install gcc@7
+        - export CXX="g++-7" CC="gcc-7"
+        - export BUILD="make"
         - sudo softwareupdate -i "Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.1"
 
 notifications:

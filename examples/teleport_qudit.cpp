@@ -1,6 +1,5 @@
-// Qudit teleporation
+// Qudit teleportation
 // Source: ./examples/teleport_qudit.cpp
-#include <cmath>
 #include <iostream>
 #include <tuple>
 #include <vector>

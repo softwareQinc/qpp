@@ -11,7 +11,7 @@ int main() {
     std::cout << std::setprecision(8); // increase the default output precision
 
     // get the first codeword from Shor's [[9,1,3]] code
-    ket c0 = codes.codeword(Codes::Type::NINE_QUBIT_SHOR, 0);
+    ket c0 = codes.codeword(Codes::Type::SHOR_NINE_QUBIT, 0);
 
     Timer<> t;                           // declare and start a timer
     std::vector<idx> perm = randperm(9); // declare a random permutation

@@ -1,4 +1,4 @@
-// Qubit teleporation circuit simulator
+// Qubit teleportation circuit simulator
 // Source: ./examples/circuits/teleport_qubit_circuit.cpp
 #include <iostream>
 

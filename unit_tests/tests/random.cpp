@@ -4,7 +4,7 @@
 
 using namespace qpp;
 
-// Unit testing "random.h"
+// Unit testing "random.hpp"
 
 /******************************************************************************/
 /// BEGIN inline bool qpp::bernoulli(double p = 0.5)
@@ -105,7 +105,7 @@ TEST(qpp_rand, ComplexMatrix) {
         EXPECT_LT(elem.imag(), b);
         average += elem;
     }
-    average /= (NA * NB);
+    average /= static_cast<double>(NA * NB);
     EXPECT_NEAR(0, average.real(), 1); // very likely
     EXPECT_NEAR(0, average.imag(), 1); // very likely
 }
@@ -144,7 +144,7 @@ TEST(qpp_rand, RealMatrix) {
         EXPECT_LT(elem, b);
         average += elem;
     }
-    average /= (NA * NB);
+    average /= static_cast<double>(NA * NB);
     EXPECT_NEAR(0, average, 1); // very likely
 }
 /******************************************************************************/
@@ -331,7 +331,7 @@ TEST(qpp_randn, ComplexMatrix) {
         cplx elem = A.data()[i];
         average += elem;
     }
-    average /= NA * NB;
+    average /= static_cast<double>(NA * NB);
     EXPECT_NEAR(mean, average.real(), 2.58 * sigma); // very likely (99%)
     EXPECT_NEAR(mean, average.imag(), 2.58 * sigma); // very likely (99%)
 
@@ -344,7 +344,7 @@ TEST(qpp_randn, ComplexMatrix) {
         cplx elem = A.data()[i];
         average += elem;
     }
-    average /= NA * NB;
+    average /= static_cast<double>(NA * NB);
     EXPECT_NEAR(mean, average.real(), 2.58 * sigma); // very likely (99%)
     EXPECT_NEAR(mean, average.imag(), 2.58 * sigma); // very likely (99%)
 
@@ -357,7 +357,7 @@ TEST(qpp_randn, ComplexMatrix) {
         cplx elem = A.data()[i];
         average += elem;
     }
-    average /= NA * NB;
+    average /= static_cast<double>(NA * NB);
     EXPECT_NEAR(mean, average.real(), 2.58 * sigma); // very likely (99%)
     EXPECT_NEAR(mean, average.imag(), 2.58 * sigma); // very likely (99%)
 }
@@ -374,7 +374,7 @@ TEST(qpp_randn, RealMatrix) {
         double elem = A.data()[i];
         average += elem;
     }
-    average /= NA * NB;
+    average /= static_cast<double>(NA * NB);
     EXPECT_NEAR(mean, average, 2.58 * sigma); // very likely (99%)
 
     // 1 x 10 matrix with elements of mean = -1 and sigma = 0.1
@@ -386,7 +386,7 @@ TEST(qpp_randn, RealMatrix) {
         double elem = A.data()[i];
         average += elem;
     }
-    average /= NA * NB;
+    average /= static_cast<double>(NA * NB);
     EXPECT_NEAR(mean, average, 2.58 * sigma); // very likely (99%)
 
     // 25 x 15 matrix with elements of mean = 10 and sigma = 1e-7
@@ -398,7 +398,7 @@ TEST(qpp_randn, RealMatrix) {
         double elem = A.data()[i];
         average += elem;
     }
-    average /= NA * NB;
+    average /= static_cast<double>(NA * NB);
     EXPECT_NEAR(mean, average, 2.58 * sigma); // very likely (99%)
 }
 /******************************************************************************/

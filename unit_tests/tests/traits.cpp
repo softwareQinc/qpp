@@ -6,7 +6,7 @@
 
 using namespace qpp;
 
-// Unit testing "traits.h"
+// Unit testing "traits.hpp"
 
 /******************************************************************************/
 /// BEGIN template<typename T> struct qpp::is_complex

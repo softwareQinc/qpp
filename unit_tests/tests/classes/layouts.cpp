@@ -4,7 +4,7 @@
 
 using namespace qpp;
 
-// Unit testing "classes/layouts.h"
+// Unit testing "classes/layouts.hpp"
 
 /******************************************************************************/
 /// BEGIN std::vector<idx> qpp::Lattice::get_dims() const override

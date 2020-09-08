@@ -5,7 +5,7 @@
 
 using namespace qpp;
 
-// Unit testing "classes/timer.h"
+// Unit testing "classes/timer.hpp"
 
 // All test below test std::chrono::steady_clock timers,
 // i.e Timer<T, CLOCK_T = std::chrono::steady_clock>
@@ -24,14 +24,16 @@ TEST(qpp_Timer_get_duration, AllTests) {
     EXPECT_NEAR(duration_t1_s.count(), 1, 0.05); // within 0.05s
 
     auto duration_t1_ms = t1.get_duration<milliseconds>(); // in milli seconds
-    EXPECT_NEAR(duration_t1_ms.count(), 1000, 50);         // within 0.05s
+    EXPECT_NEAR(static_cast<double>(duration_t1_ms.count()), 1000,
+                50); // within 0.05s
 
     Timer<std::chrono::microseconds> t2;               // in micro seconds
     std::this_thread::sleep_for(microseconds(100000)); // sleep 0.1 seconds
     t2.toc();                                          // get current time snap
 
     auto duration_t2_micros = t2.get_duration();
-    EXPECT_NEAR(duration_t2_micros.count(), 100000, 50000); // within 0.05s
+    EXPECT_NEAR(static_cast<double>(duration_t2_micros.count()), 100000,
+                50000); // within 0.05s
 }
 /******************************************************************************/
 /// BEGIN Timer& qpp::Timer::tic() noexcept

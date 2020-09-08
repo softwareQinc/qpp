@@ -28,7 +28,7 @@
 // Init, Codes, Gates, States and RandomDevices
 //
 // Any additional singletons should be instantiated here
-// Includes all necessary headers (except "matlab.h")
+// Includes all necessary headers (except "matlab.hpp")
 // ALWAYS include it in main.cpp
 
 /**
@@ -84,50 +84,50 @@
 // Quantum++ headers
 
 // do not change the order in this group, inter-dependencies
-#include "types.h"
-#include "classes/exception.h"
-#include "constants.h"
-#include "traits.h"
-#include "classes/idisplay.h"
-#include "internal/util.h"
-#include "internal/classes/iomanip.h"
-#include "input_output.h"
+#include "types.hpp"
+#include "classes/exception.hpp"
+#include "constants.hpp"
+#include "traits.hpp"
+#include "classes/idisplay.hpp"
+#include "internal/util.hpp"
+#include "internal/classes/iomanip.hpp"
+#include "input_output.hpp"
 
 // do not change the order in this group, inter-dependencies
-#include "internal/classes/singleton.h"
-#include "classes/random_devices.h"
-#include "random.h"
-#include "number_theory.h"
+#include "internal/classes/singleton.hpp"
+#include "classes/random_devices.hpp"
+#include "random.hpp"
+#include "number_theory.hpp"
 
 // do not change the order in this group, inter-dependencies
-#include "functions.h"
-#include "classes/init.h"
-#include "classes/codes.h"
-#include "classes/gates.h"
-#include "classes/states.h"
+#include "functions.hpp"
+#include "classes/init.hpp"
+#include "classes/codes.hpp"
+#include "classes/gates.hpp"
+#include "classes/states.hpp"
 
 // do not change the order in this group, inter-dependencies
-#include "statistics.h"
-#include "operations.h"
-#include "entropies.h"
-#include "entanglement.h"
+#include "statistics.hpp"
+#include "operations.hpp"
+#include "entropies.hpp"
+#include "entanglement.hpp"
 
 // the ones below can be in any order, no inter-dependencies
-#include "instruments.h"
-#include "classes/layouts.h"
-#include "classes/noise.h"
-#include "classes/reversible.h"
-#include "classes/timer.h"
-#include "classes/circuits/circuits.h"
-#include "classes/circuits/engines.h"
+#include "instruments.hpp"
+#include "classes/layouts.hpp"
+#include "classes/noise.hpp"
+#include "classes/reversible.hpp"
+#include "classes/timer.hpp"
+#include "classes/circuits/circuits.hpp"
+#include "classes/circuits/engines.hpp"
 
 // do not change the order in this group, inter-dependencies
-#include "qasm/token.h"
-#include "qasm/lexer.h"
-#include "qasm/preprocessor.h"
-#include "qasm/ast.h"
-#include "qasm/parser.h"
-#include "qasm/qasm.h"
+#include "qasm/token.hpp"
+#include "qasm/lexer.hpp"
+#include "qasm/preprocessor.hpp"
+#include "qasm/ast.hpp"
+#include "qasm/parser.hpp"
+#include "qasm/qasm.hpp"
 
 /**
  * \namespace qpp

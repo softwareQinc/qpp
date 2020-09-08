@@ -7,7 +7,7 @@
 
 using namespace qpp;
 
-// Unit testing "qasm.h"
+// Unit testing "qasm.hpp"
 
 /******************************************************************************/
 /// BEGIN std::unique_ptr<qpp::QCircuit>

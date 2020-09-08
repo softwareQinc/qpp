@@ -3,7 +3,7 @@
 
 using namespace qpp;
 
-// Unit testing "instruments.h"
+// Unit testing "instruments.hpp"
 
 /******************************************************************************/
 /// BEGIN template <typename Derived>

@@ -73,7 +73,7 @@ int main() {
     for (auto&& elem : convergents(x1, 10)) {
         std::tie(c1, r1) = elem;
         double c1r1 = static_cast<double>(c1) / r1;
-        if (abs(x1 - c1r1) < 1. / std::pow(2, (n - 1) / 2.)) {
+        if (abs(x1 - c1r1) < 1. / std::pow(2, (n - 1.) / 2.)) {
             failed = false;
             break;
         }
@@ -100,7 +100,7 @@ int main() {
     for (auto&& elem : convergents(x2, 10)) {
         std::tie(c2, r2) = elem;
         double c2r2 = static_cast<double>(c2) / r2;
-        if (abs(x2 - c2r2) < 1. / std::pow(2, (n - 1) / 2.)) {
+        if (abs(x2 - c2r2) < 1. / std::pow(2, (n - 1.) / 2.)) {
             failed = false;
             break;
         }

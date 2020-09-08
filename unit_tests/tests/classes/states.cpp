@@ -4,7 +4,7 @@
 
 using namespace qpp;
 
-// Unit testing "classes/states.h"
+// Unit testing "classes/states.hpp"
 
 /******************************************************************************/
 /// BEGIN ket qpp::States::j(idx j, idx D = 2) const

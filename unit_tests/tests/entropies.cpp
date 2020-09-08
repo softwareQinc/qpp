@@ -4,7 +4,7 @@
 
 using namespace qpp;
 
-// Unit testing "entropies.h"
+// Unit testing "entropies.hpp"
 
 /******************************************************************************/
 /// BEGIN template <typename Derived> double qpp::entropy(

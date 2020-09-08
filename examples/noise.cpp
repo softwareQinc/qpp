@@ -18,7 +18,7 @@ int main() {
         // apply the noise
         rho += prj(noise(psi));
     }
-    rho /= N; // normalize the resulting density matrix
+    rho /= static_cast<double>(N); // normalize the resulting density matrix
     std::cout << ">> Resulting state after " << N
               << " actions of depolarizing noise with p = " << p << ":\n";
     std::cout << disp(rho) << '\n';
