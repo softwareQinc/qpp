@@ -124,7 +124,7 @@ class Lexer {
     /**
      * \brief Lex a numeric constant
      *
-     * \note [0-9]*(.[0-9]*)
+     * \note [0-9]+(.[0-9]*)([eE][+-][0-9]+)?
      *
      * \param tok_start The location of the beginning of the token
      * \return An integer or real type token
@@ -132,25 +132,47 @@ class Lexer {
     Token lex_numeric_constant(Location tok_start) {
         std::string str;
         str.reserve(64); // Reserve space to avoid reallocation
+        bool integral = true;
 
         while (std::isdigit(buf_->peek())) {
             str.push_back(buf_->peek());
             skip_char();
         }
 
-        if (buf_->peek() != '.') {
+        // lex decimal
+        if (buf_->peek() == '.') {
+            integral = false;
+            str.push_back(buf_->peek());
+            skip_char();
+
+            while (std::isdigit(buf_->peek())) {
+                str.push_back(buf_->peek());
+                skip_char();
+            }
+        }
+
+        // lex exponent
+        if (buf_->peek() == 'e' || buf_->peek() == 'E') {
+            integral = false;
+            str.push_back(buf_->peek());
+            skip_char();
+
+            if (buf_->peek() == '-' || buf_->peek() == '+') {
+                str.push_back(buf_->peek());
+                skip_char();
+            }
+
+            while (std::isdigit(buf_->peek())) {
+                str.push_back(buf_->peek());
+                skip_char();
+            }
+        }
+
+        if (integral) {
             return Token(tok_start, Token::Kind::nninteger, str);
+        } else {
+            return Token(tok_start, Token::Kind::real, str);
         }
-
-        // lex decimal part
-        str.push_back(buf_->peek());
-        skip_char();
-        while (std::isdigit(buf_->peek())) {
-            str.push_back(buf_->peek());
-            skip_char();
-        }
-
-        return Token(tok_start, Token::Kind::real, str);
     }
 
     /**
