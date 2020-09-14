@@ -150,3 +150,21 @@ TEST(qpp_qasm_read_from_file, Reset) {
     EXPECT_NEAR(0, norm(psi - 0_ket), 1e-7);
 }
 /******************************************************************************/
+
+/******************************************************************************/
+TEST(qpp_qasm_read_from_file, SciNot) {
+    qpp::QCircuit q_circuit =
+        qasm::read_from_file(PATH "/tests/qasm/circuits/units/scinot.qasm");
+    QEngine engine{q_circuit};
+    engine.execute();
+
+    // Final state
+    ket psi = engine.get_psi();
+
+    // Check against C++ scientific notation
+    ket phi = gt.H * gt.RZ(1.0E-3) * gt.H * 0_ket;
+
+    // Check norm
+    EXPECT_NEAR(1, norm(adjoint(psi) * phi), 1e-7);
+}
+/******************************************************************************/
