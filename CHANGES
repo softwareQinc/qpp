@@ -1,8 +1,8 @@
 Pre-release
     - Significant improvements in qpp::QEngine::execute() for multiple
-      repetitions
+      runs
     - Changed all header extensions from .h to .hpp (except for qpp.h)
-    - OpenMP automatic detection by CMake
+    - Automatic OpenMP detection by CMake
     - CMake minimum required version bumped to 3.9 (3.12 for macOS) for
       automatic OpenMP detection
 
