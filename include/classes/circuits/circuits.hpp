@@ -3693,15 +3693,12 @@ class QCircuit : public IDisplay, public IJSON {
         result += ", \"d\" : " + std::to_string(d_);
         result += R"(, "name" : ")" + name_ + '\"';
 
-        bool is_first = true;
+        std::string sep;
         std::ostringstream ss;
         result += ", \"steps\" : [";
         for (auto&& elem : *this) {
-            if (is_first) {
-                is_first = false;
-            } else {
-                result += ", ";
-            }
+            result += sep;
+            sep = ", ";
             result += "{\"step\" : " + std::to_string(elem.ip_) + ", ";
             result += "\"type\" : ";
             // gate step

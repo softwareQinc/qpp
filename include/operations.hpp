@@ -32,7 +32,6 @@
 #ifndef OPERATIONS_HPP_
 #define OPERATIONS_HPP_
 
-#include "qpp.h"
 namespace qpp {
 
 /**

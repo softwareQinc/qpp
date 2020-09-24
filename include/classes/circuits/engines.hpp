@@ -717,15 +717,12 @@ class QEngine : public IDisplay, public IJSON {
             result += "\"outcomes\": " + std::to_string(stats_.size()) + ", ";
 
             std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
-            bool is_first = true;
+            std::string sep;
             for (auto&& elem : get_stats()) {
-                if (is_first)
-                    is_first = false;
-                else
-                    ss << ", ";
-                ss << "\""
+                ss << sep << "\""
                    << "[" << elem.first << "]"
                    << "\" : " << elem.second;
+                sep = ", ";
             }
             ss << '}';
             result += ss.str();
@@ -767,14 +764,11 @@ class QEngine : public IDisplay, public IJSON {
             os << '\t' << "reps: " << reps << '\n';
             os << '\t' << "outcomes: " << stats_.size() << '\n';
             std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
-            bool is_first = true;
+            std::string sep;
             for (auto&& elem : get_stats()) {
-                if (is_first)
-                    is_first = false;
-                else
-                    os << '\n';
-                os << '\t' << "[" << elem.first << "]"
+                os << sep << '\t' << "[" << elem.first << "]"
                    << ": " << elem.second;
+                sep = '\n';
             }
         }
 
