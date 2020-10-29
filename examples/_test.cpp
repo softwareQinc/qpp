@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
     std::size_t nq = 5, nc = nq;
     QCircuit qCircuit{nq, nc};
     qCircuit.QFT();
-    qCircuit.QFT();
+    //qCircuit.QFT();
     qCircuit.QFT();
     qCircuit.QFT();
     qCircuit.discard(0);
@@ -29,4 +29,7 @@ int main(int argc, char** argv) {
 
     std::cout << qEngine << '\n';
     std::cout << "Took: " << t << " seconds to execute\n";
+
+    std::cout << qCircuit.to_JSON() << '\n';
+    std::cout << qEngine.to_JSON() << '\n';
 }

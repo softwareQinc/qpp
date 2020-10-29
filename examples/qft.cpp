@@ -14,7 +14,7 @@ int main() {
     idx n = qubits.size();                                  // number of qubits
     idx D = static_cast<idx>(std::llround(std::pow(2, n))); // dimension
     std::cout << ">> QFT on N = " << n << " qubits. ";
-    std::cout << "The succession of applied gates are:\n";
+    std::cout << "The sequence of applied gates is:\n";
     for (idx i = 0; i < n; ++i) {
         std::cout << "H" << i << " ";
         result = apply(result, gt.H, {i}); // apply Hadamard on qubit i
