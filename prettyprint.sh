@@ -16,6 +16,6 @@ fi
 
 for folder in "$@"; do
     echo "$folder"
-    find "$folder" \( -iname '*.cpp' -o -iname '*.c' -o -iname '*.h'\
-         -o -iname '*.hpp' \) -exec "$CLANG_FORMAT" -style=file -i {} +
+    find "$folder" \( -iname '*.cpp' -o -iname '*.c' -o -iname '*.h' \
+        -o -iname '*.hpp' \) -exec "$CLANG_FORMAT" -style=file -i {} +
 done
