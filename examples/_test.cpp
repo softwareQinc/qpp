@@ -11,25 +11,26 @@ int main(int argc, char** argv) {
     assert(argc > 1);
     std::size_t reps = std::stoi(argv[1]);
 
-    std::size_t nq = 5, nc = nq;
+    std::size_t nq = 2, nc = nq;
     QCircuit qCircuit{nq, nc};
-    qCircuit.QFT();
-    //qCircuit.QFT();
-    qCircuit.QFT();
-    qCircuit.QFT();
-    qCircuit.discard(0);
-    for (idx i = 1; i < nq; ++i)
+
+    qCircuit.gate(gt.H, 0);
+    qCircuit.CTRL(gt.X, 0, 1);
+    for (std::size_t i = 0; i < nc; ++i)
         qCircuit.measureZ(i, i);
     std::cout << qCircuit << '\n';
 
-    QEngine qEngine{qCircuit};
+    std::unique_ptr<QEngine> qEngine;
+    bool noisy = true;
+
+    if (noisy)
+        qEngine.reset(new QNoisyEngine<QubitBitFlipNoise>{
+            qCircuit, QubitBitFlipNoise{0.01}});
+    else
+        qEngine.reset(new QEngine{qCircuit});
+
     Timer<> t;
-    qEngine.execute(reps);
-    t.toc();
-
-    std::cout << qEngine << '\n';
-    std::cout << "Took: " << t << " seconds to execute\n";
-
-    std::cout << qCircuit.to_JSON() << '\n';
-    std::cout << qEngine.to_JSON() << '\n';
+    qEngine->execute(reps);
+    std::cout << *qEngine << '\n';
+    std::cout << "Took:" << t.toc() << " seconds\n";
 }

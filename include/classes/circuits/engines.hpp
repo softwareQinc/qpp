@@ -622,14 +622,12 @@ class QEngine : public IDisplay, public IJSON {
     /**
      * \brief Executes the entire quantum circuit description
      *
-     * \note Do not override!
-     *
      * \param reps Number of repetitions
      * \param clear_stats Resets the collected measurement statistics hash
      * table before the run
      * \return Reference to the current instance
      */
-    QEngine& execute(idx reps = 1, bool clear_stats = true) {
+    virtual QEngine& execute(idx reps = 1, bool clear_stats = true) {
         auto initial_engine_state = st_; // saves the engine entry state
 
         if (clear_stats)
@@ -830,6 +828,40 @@ class QNoisyEngine : public QEngine {
         }
         // execute the circuit step
         (void) QEngine::execute(elem);
+
+        return *this;
+    }
+
+    /**
+     * \brief Executes the entire quantum circuit description
+     *
+     * \param reps Number of repetitions
+     * \param clear_stats Resets the collected measurement statistics hash
+     * table before the run
+     * \return Reference to the current instance
+     */
+    QNoisyEngine& execute(idx reps = 1, bool clear_stats = true) override {
+        auto initial_engine_state = st_; // saves the engine entry state
+
+        if (clear_stats)
+            reset_stats();
+
+        for (idx i = 0; i < reps; ++i) {
+            // sets the state of the engine to the entry state
+            st_ = initial_engine_state;
+
+            for (auto&& elem : *qc_)
+                (void) execute(elem);
+
+            // we measured at least one qudit
+            if (qc_->get_measurement_count() > 0) {
+                std::vector<idx> m_res = get_dits();
+
+                std::stringstream ss;
+                ss << disp(m_res, " ", "", "");
+                ++stats_[ss.str()];
+            }
+        }
 
         return *this;
     }
