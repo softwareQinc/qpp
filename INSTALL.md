@@ -23,7 +23,7 @@ recommend [g++](https://gcc.gnu.org/) version 5.0 or later or
 Next, we will build a simple minimal example to test that the installation was
 successful. Create a directory called `$HOME/testing`, and inside it
 create the file `minimal.cpp`, available for download in 
-[`examples/minimal.cpp`](https://github.com/softwareqinc/qpp/blob/master/examples/minimal.cpp) and with 
+[`examples/minimal.cpp`](https://github.com/softwareqinc/qpp/blob/main/examples/minimal.cpp) and with 
 the content listed below.
 
 ```CPP
@@ -98,7 +98,7 @@ Visual Studio 2017 or later. For comprehensive details about using [CMake](http:
 ## Pre-requisites
 
 - Recommended compiler: [g++](https://gcc.gnu.org/) version 5.0 or later
-(for good C++11 support). You may also use [clang++](http://clang.llvm.org/) version 3.8 or later, please read the ["Additional remarks/Building with clang++"](https://github.com/softwareqinc/qpp/blob/master/INSTALL.md#clang) subsection near the end of this document for more platform-dependent details.
+(for good C++11 support). You may also use [clang++](http://clang.llvm.org/) version 3.8 or later, please read the ["Additional remarks/Building with clang++"](https://github.com/softwareqinc/qpp/blob/main/INSTALL.md#clang) subsection near the end of this document for more platform-dependent details.
 - [Eigen 3](http://eigen.tuxfamily.org) linear algebra library. I assume here that 
 the library is installed in `$HOME/eigen`, although the location may vary, e.g. if 
 the library was installed using a package manager.
@@ -117,7 +117,7 @@ files, e.g.:
 ## Building using [CMake](http://www.cmake.org/) (version 3.0 or later)
 
 The current version of the repository has a 
-[`CMakeLists.txt`](https://github.com/softwareqinc/qpp/blob/master/CMakeLists.txt)
+[`CMakeLists.txt`](https://github.com/softwareqinc/qpp/blob/main/CMakeLists.txt)
 configuration file for building examples using [CMake](http://www.cmake.org/). 
 To build an(the) example(s) using [CMake](http://www.cmake.org/), 
 I recommend an out-of-source build, i.e., from the root of the project 
@@ -168,7 +168,7 @@ cmake .. -DWITH_OPENMP=OFF
 make [<target>]
 ```
 
-Inspect also [`CMakeLists.txt`](https://github.com/softwareqinc/qpp/blob/master/CMakeLists.txt) 
+Inspect also [`CMakeLists.txt`](https://github.com/softwareqinc/qpp/blob/main/CMakeLists.txt) 
 for additional fine-tuning options. Do not forget to clean the `build` 
 directory before a fresh build!
 
@@ -273,7 +273,7 @@ Visual Studio 2017 or later. For comprehensive details about using [CMake](http:
 C++11 math functions, see
 <http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2>
 for more details. Quick fix: patch the standard library header file `<cmath>`
-using the provided patch [`cmath_cygwin.patch`](https://github.com/softwareqinc/qpp/blob/master/cmath_cygwin.patch).
+using the provided patch [`cmath_cygwin.patch`](https://github.com/softwareqinc/qpp/blob/main/cmath_cygwin.patch).
 Later [Cygwin](https://www.cygwin.com) versions seem to have fixed the issue (as of Nov. 2016).
 
 ---
