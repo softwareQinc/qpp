@@ -3,7 +3,7 @@ if (APPLE)
 else ()
     cmake_minimum_required(VERSION 3.9)
 endif ()
-project(qpp VERSION 2.4 LANGUAGES CXX)
+project(qpp VERSION 2.5 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
