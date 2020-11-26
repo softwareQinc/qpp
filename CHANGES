@@ -4,6 +4,7 @@ Version 2.5 - 26 November 2020
     - Automatic OpenMP detection by CMake
     - CMake minimum required version bumped to 3.9 (3.12 for macOS) for
       automatic OpenMP detection
+    - Renamed 'master' branch to 'main'
 
 Version 2.4 - 13 May 2020
     - Enabled documentation searching by setting SEARCHENGINE = ON in
