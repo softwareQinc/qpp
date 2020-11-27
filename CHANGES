@@ -1,9 +1,10 @@
-Version 2.5 - 26 November 2020
+Version 2.5 - 28 November 2020
     - Significant improvements in qpp::QEngine::execute() for multiple runs
     - Changed all header extensions from .h to .hpp (except for qpp.h)
     - Automatic OpenMP detection by CMake
     - CMake minimum required version bumped to 3.9 (3.12 for macOS) for
       automatic OpenMP detection
+    - OpenQASM bugfixes
     - Renamed 'master' branch to 'main'
 
 Version 2.4 - 13 May 2020
