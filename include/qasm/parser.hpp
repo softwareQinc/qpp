@@ -630,6 +630,11 @@ class Parser {
                 return ExprPtr(new UExpr(loc, UnaryOp::Neg, std::move(exp)));
             }
 
+            case Token::Kind::plus: {
+                consume_token();
+                return parse_atom();
+            }
+
             case Token::Kind::identifier: {
                 auto identifier = current_token_;
                 consume_token();
