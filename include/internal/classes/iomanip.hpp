@@ -1,5 +1,3 @@
-#include <utility>
-
 /*
  * This file is part of Quantum++.
  *
@@ -63,12 +61,10 @@ class IOManipRange : public IDisplay {
     std::ostream& display(std::ostream& os) const override {
         os << start_;
 
-        bool first = true;
+        std::string sep;
         for (InputIterator it = first_; it != last_; ++it) {
-            if (!first)
-                os << separator_;
-            first = false;
-            os << abs_chop(*it, chop_);
+            os << sep << abs_chop(*it, chop_);
+            sep = separator_;
         }
         os << end_;
 

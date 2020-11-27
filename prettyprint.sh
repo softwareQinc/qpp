@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Code beautifier with clang-format
 # Recursively parses the folder(s) passed as command line argument(s)
 
@@ -16,6 +17,6 @@ fi
 
 for folder in "$@"; do
     echo "$folder"
-    find "$folder" \( -iname '*.cpp' -o -iname '*.c' -o -iname '*.h'\
-         -o -iname '*.hpp' \) -exec "$CLANG_FORMAT" -style=file -i {} +
+    find "$folder" \( -iname '*.cpp' -o -iname '*.c' -o -iname '*.h' \
+        -o -iname '*.hpp' \) -exec "$CLANG_FORMAT" -style=file -i {} +
 done

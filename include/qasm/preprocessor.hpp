@@ -76,7 +76,7 @@ static const std::string std_include_qasm =
 /**
  * \brief openQASM 2.0 standard library + r and cswap gates, as a string
  * constant, as defined in
- * https://github.com/Qiskit/qiskit-terra/tree/master/qiskit/extensions/standard
+ * https://github.com/Qiskit/qiskit-terra/tree/master/qiskit/circuit/library/standard_gates
  * We use these definitions, see https://github.com/vsoftco/qpp/issues/65 for
  * the reasons why.
  */
@@ -102,10 +102,10 @@ static const std::string std_include =
     "gate cz a,b { h b; cx a,b; h b; }\n"
     "gate cy a,b { sdg b; cx a,b; s b; }\n"
     "gate swap a,b { cx a,b; cx b,a; cx a,b; }\n"
-    "gate cswap a,b,c { cx c,b; ccx a,b,c; cx c,b; }\n"
     "gate ch a,b { s b; h b; t b; cx a,b; tdg b; h b; sdg b; }\n"
     "gate ccx a,b,c { h c; cx b,c; tdg c; cx a,c; t c; cx b,c; tdg c; cx a,c; "
     "t b; t c; h c; cx a,b; t a; tdg b; cx a,b; }\n"
+    "gate cswap a,b,c { cx c,b; ccx a,b,c; cx c,b; }\n"
     "gate crz(lambda) a,b { u1(lambda/2) b; cx a,b; u1(-lambda/2) b; cx a,b; "
     "}\n"
     "gate cu1(lambda) a,b { u1(lambda/2) a; cx a,b; u1(-lambda/2) b; cx a,b; "

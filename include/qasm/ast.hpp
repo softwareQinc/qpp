@@ -996,7 +996,7 @@ class UGate final : public Gate {
         //     std::cos(theta / 2) * std::exp(1_i * (phi + lambda) / 2.0);
 
         // Qiskit spec, as defined in
-        // https://github.com/Qiskit/qiskit-terra/tree/master/qiskit/extensions/standard
+        // https://github.com/Qiskit/qiskit-terra/tree/master/qiskit/circuit/library/standard_gates
         // We use these definitions, see
         // https://github.com/vsoftco/qpp/issues/65 for the reasons why.
         u << std::cos(theta / 2),

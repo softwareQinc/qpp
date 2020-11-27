@@ -1,9 +1,9 @@
 # Quantum++ 
-## Version 2.4 - 13 May 2020
+## Version 2.5 - 28 November 2020
 
 **Build status:**
 
-[![Build Status](https://travis-ci.org/softwareQinc/qpp.svg?branch=master)](https://travis-ci.org/softwareQinc/qpp)
+[![Build Status](https://travis-ci.org/softwareQinc/qpp.svg?branch=main)](https://travis-ci.org/softwareQinc/qpp)
 [![Build status](https://ci.appveyor.com/api/projects/status/1k2866yffaiaapmw?svg=true)](https://ci.appveyor.com/project/vsoftco/qpp)
 
 **Chat (questions/issues)**
@@ -54,19 +54,19 @@ Copyright (c) 2013 - 2020 Vlad Gheorghiu.
 
 [Quantum++](https://github.com/softwareqinc/qpp) is distributed under the MIT 
 license. Please see the 
-[`LICENSE`](https://github.com/softwareqinc/qpp/blob/master/LICENSE) file for more 
+[`LICENSE`](https://github.com/softwareqinc/qpp/blob/main/LICENSE) file for more 
 details.
 
 ---
 ## Installation instructions and further documentation
 
 Please see the installation guide 
-[`INSTALL.md`](https://github.com/softwareqinc/qpp/blob/master/INSTALL.md) 
+[`INSTALL.md`](https://github.com/softwareqinc/qpp/blob/main/INSTALL.md) 
 and the comprehensive [Wiki](https://github.com/softwareqinc/qpp/wiki) for further 
 documentation and detailed examples. 
 
 To generate the full official API documentation in both PDF and HTML formats run 
-[`doxygen`](http://www.doxygen.nl) on the [`Doxyfile`](https://github.com/softwareqinc/qpp/blob/master/Doxyfile) file. The tool `dot` from the [`Graphviz`](https://www.graphviz.org) package must be installed (`sudo apt-get install graphviz` in Ubuntu/Debian). Running `doxygen` will generate the 
+[`doxygen`](http://www.doxygen.nl) on the [`Doxyfile`](https://github.com/softwareqinc/qpp/blob/main/Doxyfile) file. The tool `dot` from the [`Graphviz`](https://www.graphviz.org) package must be installed (`sudo apt-get install graphviz` in Ubuntu/Debian). Running `doxygen` will generate the 
 documentation directory `doc` containing both the HTML and LaTeX documentation.
 
 The HTML documentation file will be accessible by opening `doc/html/index.html` with the browser of your choice.

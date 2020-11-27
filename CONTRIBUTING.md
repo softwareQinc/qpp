@@ -1,7 +1,7 @@
 If you are interesting in contributing to this project, feel free to contact
 me. Alternatively, fork the repository, create a custom branch, add your
 contribution, then finally create a pull request. If I accept the pull
-request, I will merge your custom branch with the latest master/development
+request, I will merge your custom branch with the latest main/development
 branch. The latter will eventually be merged into a future release version.
 To contribute, you need to have a solid knowledge of C++ (preferably C++11),
 including templates and the standard library, a basic knowledge of quantum

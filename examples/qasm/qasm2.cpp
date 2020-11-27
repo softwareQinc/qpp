@@ -5,15 +5,11 @@
 
 #include "qpp.h"
 
-int main(int argc, char** argv) {
+int main() {
     using namespace qpp;
-    if (argc < 2) {
-        std::cerr << "Input file not specified!\n";
-        return EXIT_FAILURE;
-    }
 
-    // read the circuit
-    auto qc = qasm::read_from_file(argv[1]);
+    // read the circuit from the input stream
+    auto qc = qasm::read(std::cin);
 
     // initialize the quantum engine with a circuit
     QEngine q_engine{qc};
