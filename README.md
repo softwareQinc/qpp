@@ -30,7 +30,7 @@ the evolution of 25 qubits in a pure state or of 12 qubits in a mixed state
 reasonably fast.
 
 To report any bugs or ask for additional features/enhancements, please 
-[submit an issue](https://github.com/softwareqinc/qpp/issues) with an appropriate 
+[submit an issue](https://github.com/softwareQinc/qpp/issues) with an appropriate 
 label.
 
 If you are interesting in contributing to this project, feel free to contact
@@ -47,26 +47,26 @@ see <http://eigen.tuxfamily.org/dox/>. For a simple
 [Eigen 3](http://eigen.tuxfamily.org) quick ASCII reference see
 <http://eigen.tuxfamily.org/dox/AsciiQuickReference.txt>.
 
-Copyright (c) 2013 - 2020 Vlad Gheorghiu.
+Copyright (c) 2013 - 2021 softwareQ Inc. All rights reserved.
 
 ---
 ## License
 
-[Quantum++](https://github.com/softwareqinc/qpp) is distributed under the MIT 
+[Quantum++](https://github.com/softwareQinc/qpp) is distributed under the MIT 
 license. Please see the 
-[`LICENSE`](https://github.com/softwareqinc/qpp/blob/main/LICENSE) file for more 
+[`LICENSE`](https://github.com/softwareQinc/qpp/blob/main/LICENSE) file for more 
 details.
 
 ---
 ## Installation instructions and further documentation
 
 Please see the installation guide 
-[`INSTALL.md`](https://github.com/softwareqinc/qpp/blob/main/INSTALL.md) 
-and the comprehensive [Wiki](https://github.com/softwareqinc/qpp/wiki) for further 
+[`INSTALL.md`](https://github.com/softwareQinc/qpp/blob/main/INSTALL.md) 
+and the comprehensive [Wiki](https://github.com/softwareQinc/qpp/wiki) for further 
 documentation and detailed examples. 
 
 To generate the full official API documentation in both PDF and HTML formats run 
-[`doxygen`](http://www.doxygen.nl) on the [`Doxyfile`](https://github.com/softwareqinc/qpp/blob/main/Doxyfile) file. The tool `dot` from the [`Graphviz`](https://www.graphviz.org) package must be installed (`sudo apt-get install graphviz` in Ubuntu/Debian). Running `doxygen` will generate the 
+[`doxygen`](http://www.doxygen.nl) on the [`Doxyfile`](https://github.com/softwareQinc/qpp/blob/main/Doxyfile) file. The tool `dot` from the [`Graphviz`](https://www.graphviz.org) package must be installed (`sudo apt-get install graphviz` in Ubuntu/Debian). Running `doxygen` will generate the 
 documentation directory `doc` containing both the HTML and LaTeX documentation.
 
 The HTML documentation file will be accessible by opening `doc/html/index.html` with the browser of your choice.

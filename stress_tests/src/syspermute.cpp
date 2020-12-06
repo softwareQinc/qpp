@@ -1,4 +1,5 @@
 // System permutation stress test on a pure state of n qubits
+
 #include <cmath>
 #include <cstdlib>
 #include <iostream>

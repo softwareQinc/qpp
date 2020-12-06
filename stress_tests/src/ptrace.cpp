@@ -1,5 +1,6 @@
 // Partial trace stress test on a density matrix of n qubits
 // Reduce the number of NQ_END in run.sh to accommodate for density matrices
+
 #include <cmath>
 #include <cstdlib>
 #include <iostream>

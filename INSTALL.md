@@ -1,20 +1,20 @@
 # Building instructions for the truly impatient
 
 If you really cannot wait anymore, continue reading this section. If you afford to be a bit patient, please skip the reminder of this section and read the detailed 
-[Building instructions for POSIX compliant systems](https://github.com/softwareqinc/qpp/wiki/2.-Building-instructions-for-POSIX-compliant-platforms) 
+[Building instructions for POSIX compliant systems](https://github.com/softwareQinc/qpp/wiki/2.-Building-instructions-for-POSIX-compliant-platforms) 
 or 
-[Building instructions for Windows](https://github.com/softwareqinc/qpp/wiki/3.-Building-instructions-for-Windows-platforms) 
+[Building instructions for Windows](https://github.com/softwareQinc/qpp/wiki/3.-Building-instructions-for-Windows-platforms) 
 in the Wiki or in the reminder of this document.
 
 ## Quick instructions for building on POSIX compliant systems
 
 In this section I assume that you use a POSIX compliant system (e.g. UNIX-like).
-To get started with [Quantum++](https://github.com/softwareqinc/qpp), first
+To get started with [Quantum++](https://github.com/softwareQinc/qpp), first
 install the [Eigen 3](http://eigen.tuxfamily.org/) library into your home directory, 
 as `$HOME/eigen`. You can change the name of the directory, but in the
 current document I will use `$HOME/eigen` as the location of the
 [Eigen 3](http://eigen.tuxfamily.org/) library. Next, download or clone
-[Quantum++](https://github.com/softwareqinc/qpp) library into the home
+[Quantum++](https://github.com/softwareQinc/qpp) library into the home
 directory as `$HOME/qpp`. Finally, make sure that your compiler supports
 C++11 and preferably [OpenMP](http://openmp.org/). As a compiler I
 recommend [g++](https://gcc.gnu.org/) version 5.0 or later or
@@ -23,7 +23,7 @@ recommend [g++](https://gcc.gnu.org/) version 5.0 or later or
 Next, we will build a simple minimal example to test that the installation was
 successful. Create a directory called `$HOME/testing`, and inside it
 create the file `minimal.cpp`, available for download in 
-[`examples/minimal.cpp`](https://github.com/softwareqinc/qpp/blob/main/examples/minimal.cpp) and with 
+[`examples/minimal.cpp`](https://github.com/softwareQinc/qpp/blob/main/examples/minimal.cpp) and with 
 the content listed below.
 
 ```CPP
@@ -70,11 +70,11 @@ The line
 
 includes the main header file of the
 library `qpp.h`. This header file includes all other necessary internal
-[Quantum++](https://github.com/softwareqinc/qpp) header files. The line
+[Quantum++](https://github.com/softwareQinc/qpp) header files. The line
 ```CPP
 using namespace qpp;
 ```
-injects the [Quantum++](https://github.com/softwareqinc/qpp)'s namespace into
+injects the [Quantum++](https://github.com/softwareQinc/qpp)'s namespace into
 the working namespace, so we don't need to prefix the library functions by
 `qpp::`. Finally the line 
 
@@ -98,15 +98,15 @@ Visual Studio 2017 or later. For comprehensive details about using [CMake](http:
 ## Pre-requisites
 
 - Recommended compiler: [g++](https://gcc.gnu.org/) version 5.0 or later
-(for good C++11 support). You may also use [clang++](http://clang.llvm.org/) version 3.8 or later, please read the ["Additional remarks/Building with clang++"](https://github.com/softwareqinc/qpp/blob/main/INSTALL.md#clang) subsection near the end of this document for more platform-dependent details.
+(for good C++11 support). You may also use [clang++](http://clang.llvm.org/) version 3.8 or later, please read the ["Additional remarks/Building with clang++"](https://github.com/softwareQinc/qpp/blob/main/INSTALL.md#clang) subsection near the end of this document for more platform-dependent details.
 - [Eigen 3](http://eigen.tuxfamily.org) linear algebra library. I assume here that 
 the library is installed in `$HOME/eigen`, although the location may vary, e.g. if 
 the library was installed using a package manager.
-- [Quantum++](https://github.com/softwareqinc/qpp) library located in `$HOME/qpp`.
+- [Quantum++](https://github.com/softwareQinc/qpp) library located in `$HOME/qpp`.
 
 ## Optional
 
-- [CMake](http://www.cmake.org/) version 3.0 or later, highly recommended
+- [CMake](http://www.cmake.org/) version 3.9 or later, highly recommended
 - [MATLAB](http://www.mathworks.com/products/matlab/) compiler include header 
 files, e.g.:
 `/Applications/MATLAB_R2017b.app/extern/include`
@@ -114,10 +114,10 @@ files, e.g.:
 files, e.g.:
 `/Applications/MATLAB_R2017b.app/bin/maci64`
 
-## Building using [CMake](http://www.cmake.org/) (version 3.0 or later)
+## Building using [CMake](http://www.cmake.org/) (version 3.9 or later)
 
 The current version of the repository has a 
-[`CMakeLists.txt`](https://github.com/softwareqinc/qpp/blob/main/CMakeLists.txt)
+[`CMakeLists.txt`](https://github.com/softwareQinc/qpp/blob/main/CMakeLists.txt)
 configuration file for building examples using [CMake](http://www.cmake.org/). 
 To build an(the) example(s) using [CMake](http://www.cmake.org/), 
 I recommend an out-of-source build, i.e., from the root of the project 
@@ -168,7 +168,7 @@ cmake .. -DWITH_OPENMP=OFF
 make [<target>]
 ```
 
-Inspect also [`CMakeLists.txt`](https://github.com/softwareqinc/qpp/blob/main/CMakeLists.txt) 
+Inspect also [`CMakeLists.txt`](https://github.com/softwareQinc/qpp/blob/main/CMakeLists.txt) 
 for additional fine-tuning options. Do not forget to clean the `build` 
 directory before a fresh build!
 
@@ -267,13 +267,13 @@ Visual Studio 2017 or later. For comprehensive details about using [CMake](http:
 
 ## Via [Cygwin](https://www.cygwin.com) or [MSYS2](https://www.msys2.org)
 
-- Use the [same building instructions as for POSIX systems](https://github.com/softwareqinc/qpp/wiki/2.-Building-instructions-for-POSIX-compliant-platforms).
+- Use the [same building instructions as for POSIX systems](https://github.com/softwareQinc/qpp/wiki/2.-Building-instructions-for-POSIX-compliant-platforms).
 - **Note:** some earlier versions of
 [Cygwin](https://www.cygwin.com) had a bug related to lack of support for some
 C++11 math functions, see
 <http://stackoverflow.com/questions/28997206/cygwin-support-for-c11-in-g4-9-2>
 for more details. Quick fix: patch the standard library header file `<cmath>`
-using the provided patch [`cmath_cygwin.patch`](https://github.com/softwareqinc/qpp/blob/main/cmath_cygwin.patch).
+using the provided patch [`cmath_cygwin.patch`](https://github.com/softwareQinc/qpp/blob/main/cmath_cygwin.patch).
 Later [Cygwin](https://www.cygwin.com) versions seem to have fixed the issue (as of Nov. 2016).
 
 ---

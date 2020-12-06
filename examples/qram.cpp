@@ -9,7 +9,7 @@ int main() {
     std::cout << ">> qRAM over classical data\n";
 
     ket in = st.x0;              // |+> input state
-    std::vector<idx> data{0, 1}; // qRAM data
+    qram data{0, 1}; // qRAM data
     std::cout << ">> qRAM input:\n" << disp(in) << '\n';
     std::cout << ">> Classical data:\n" << disp(data, ", ") << '\n';
     ket out = qRAM(in, data); // qRAM output, automatically sets the dimension
