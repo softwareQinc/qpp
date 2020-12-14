@@ -85,7 +85,7 @@ int main() {
         auto measured = measure(result, gt.Z, {i});
         auto res = std::get<RES>(measured);
         auto prob = std::get<PROB>(measured);
-        std::cout << ">> Measurement result q0: " << res << '\n';
+        std::cout << ">> Measurement result q" << i << ": " << res << '\n';
         std::cout << ">> Probabilities: ";
         std::cout << disp(prob, ", ") << '\n';
         if (prob[0] < prob[1]) { decimal += pow(2,i); }
