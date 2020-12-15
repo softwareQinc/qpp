@@ -1,5 +1,6 @@
 Pre-release
-    -
+    - Added Quantum Phase Estimation example, courtesy of @ryanhill1
+      https://github.com/softwareQinc/qpp/pull/91
 
 Version 2.5 - 28 November 2020
     - Significant improvements in qpp::QEngine::execute() for multiple runs
