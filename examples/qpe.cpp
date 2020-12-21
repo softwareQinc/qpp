@@ -23,7 +23,6 @@ execute simulation on the phase of U = diag(1, e^{2*pi*i*theta}).
 
 int main() {
     using namespace qpp;
-
     // initial four qubit state
     // qubits 0, 1, 2 are counting qubits, qubit 3 is the ancilla
     std::vector<idx> qubits{0, 0, 0, 0};
