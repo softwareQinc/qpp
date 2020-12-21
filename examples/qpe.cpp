@@ -73,7 +73,7 @@ int main() {
             cmat Rj(2, 2);
             Rj << 1, 0, 0, std::exp(-1_i * pi / std::pow(2, j - m));
             result = applyCTRL(result, Rj, {m}, {j});
-            std::cout << "R" << j << "(" << m << ", " << j << ") ";
+            std::cout << "R" << j-m+1 << "(" << m << ", " << j << ") ";
         }
         result = apply(result, gt.H, {j});
         std::cout << "H" << j << "\n";
