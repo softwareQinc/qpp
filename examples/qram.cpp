@@ -8,7 +8,7 @@ int main() {
     using namespace qpp;
     std::cout << ">> qRAM over classical data\n";
 
-    ket in = st.x0;              // |+> input state
+    ket in = st.x0;  // |+> input state
     qram data{0, 1}; // qRAM data
     std::cout << ">> qRAM input:\n" << disp(in) << '\n';
     std::cout << ">> Classical data:\n" << disp(data, ", ") << '\n';

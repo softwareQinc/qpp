@@ -44,9 +44,14 @@ endif ()
 
 #### OpenMP support
 find_package(OpenMP)
-if (OpenMP_CXX_FOUND AND (OpenMP_CXX_VERSION_MAJOR GREATER_EQUAL 3))
-    #### inject definition (as #define) in the source files
-    add_definitions(-DHAS_OPENMP)
+if (OpenMP_CXX_FOUND)
+    if (OpenMP_CXX_VERSION_MAJOR GREATER_EQUAL 3)
+        #### inject definition (as #define) in the source files
+        add_definitions(-DHAS_OPENMP)
+    else ()
+        message(NOTICE "Found OpenMP version ${OpenMP_CXX_VERSION}, Quantum++ \
+requires OpenMP 3.0 or later")
+    endif ()
 endif ()
 
 #### MATLAB support, disabled by default
@@ -162,14 +167,14 @@ endif ()
 
 #### GNU gcc additional debug settings
 if (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
-    #    if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    #        ## use the "no-weak" debugging flag only when debugging under OS X,
-    #        ## as gdb cannot step in template functions when debugging code
-    #        ## produced by g++
-    #        ## see http://stackoverflow.com/questions/
-    #        ## 23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks
-    #        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-weak")
-    #    endif ()
+    #if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    #    ## use the "no-weak" debugging flag only when debugging under OS X,
+    #    ## as gdb cannot step in template functions when debugging code
+    #    ## produced by g++
+    #    ## see http://stackoverflow.com/questions/
+    #    ## 23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks
+    #    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-weak")
+    #endif ()
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og -D_GLIBCXX_DEBUG")
 endif ()
 

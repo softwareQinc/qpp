@@ -120,15 +120,23 @@ disp(const PointerType* p, idx N, const std::string& separator,
 }
 
 /**
- * \brief Saves Eigen expression to a binary file (internal format) in double
+ * \brief Saves Eigen expression to a binary stream (internal format) in double
  * precision
  * \see qpp::load()
  *
+ * Example:
+ * \code
+ * // saves an Eigen dynamic complex matrix to a binary stream
+ * std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+ * cmat mat = rand<cmat>(2, 2); // a 2 x 2 complex matrix
+ * save(mat, fout);
+ * \endcode
+ *
  * \param A Eigen expression
- * \param fname Output file name
+ * \param os Output binary stream
  */
 template <typename Derived>
-void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname) {
+void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -137,32 +145,25 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname) {
     if (!internal::check_nonzero_size(rA))
         throw exception::ZeroSize("qpp::save()");
 
-    std::fstream fout;
-    fout.open(fname, std::ios::out | std::ios::binary);
-
-    if (fout.fail()) {
-        throw std::runtime_error("qpp::save(): Error writing output file \"" +
-                                 std::string(fname) + "\"!");
+    if (!os.good()) {
+        throw std::runtime_error("qpp::save(): Error writing output stream!");
     }
     // END EXCEPTION CHECKS
 
     // write the header to file
     const std::string header_ = "TYPE::Eigen::Matrix";
-    fout.write(header_.c_str(), header_.length());
+    os.write(header_.c_str(), header_.length());
 
     idx rows = static_cast<idx>(rA.rows());
     idx cols = static_cast<idx>(rA.cols());
-    fout.write(reinterpret_cast<const char*>(&rows), sizeof(rows));
-    fout.write(reinterpret_cast<const char*>(&cols), sizeof(cols));
-
-    fout.write(reinterpret_cast<const char*>(rA.data()),
-               sizeof(typename Derived::Scalar) * rows * cols);
-
-    fout.close();
+    os.write(reinterpret_cast<const char*>(&rows), sizeof(rows));
+    os.write(reinterpret_cast<const char*>(&cols), sizeof(cols));
+    os.write(reinterpret_cast<const char*>(rA.data()),
+             sizeof(typename Derived::Scalar) * rows * cols);
 }
 
 /**
- * \brief Loads Eigen matrix from a binary file (internal format) in double
+ * \brief Loads Eigen matrix from a binary stream (internal format) in double
  * precision
  * \see qpp::save()
  *
@@ -171,45 +172,39 @@ void save(const Eigen::MatrixBase<Derived>& A, const std::string& fname) {
  *
  * Example:
  * \code
- * // loads a previously saved Eigen dynamic complex matrix from "input.bin"
- * cmat mat = load<cmat>("input.bin");
+ * // loads a previously saved Eigen dynamic complex matrix from a binary stream
+ * std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+ * cmat mat = load<cmat>(fin);
  * \endcode
  *
- * \param fname Output file name
+ * \param is Input binary stream
  */
 template <typename Derived>
-dyn_mat<typename Derived::Scalar> load(const std::string& fname) {
-    std::fstream fin;
-    fin.open(fname, std::ios::in | std::ios::binary);
-
+dyn_mat<typename Derived::Scalar> load(std::istream& is) {
     // EXCEPTION CHECKS
 
-    if (fin.fail()) {
-        throw std::runtime_error("qpp::load(): Error opening input file \"" +
-                                 std::string(fname) + "\"!");
+    if (!is.good()) {
+        throw std::runtime_error("qpp::load(): Error opening input stream!");
     }
 
     const std::string header_ = "TYPE::Eigen::Matrix";
     std::unique_ptr<char[]> fheader_{new char[header_.length()]};
 
     // read the header from file
-    fin.read(fheader_.get(), header_.length());
+    is.read(fheader_.get(), header_.length());
     if (std::string(fheader_.get(), header_.length()) != header_) {
-        throw std::runtime_error("qpp::load(): Input file \"" +
-                                 std::string(fname) + "\" is corrupted!");
+        throw std::runtime_error("qpp::load(): Input stream is corrupted!");
     }
     // END EXCEPTION CHECKS
 
     idx rows, cols;
-    fin.read(reinterpret_cast<char*>(&rows), sizeof(rows));
-    fin.read(reinterpret_cast<char*>(&cols), sizeof(cols));
+    is.read(reinterpret_cast<char*>(&rows), sizeof(rows));
+    is.read(reinterpret_cast<char*>(&cols), sizeof(cols));
 
     dyn_mat<typename Derived::Scalar> A(rows, cols);
 
-    fin.read(reinterpret_cast<char*>(A.data()),
-             sizeof(typename Derived::Scalar) * rows * cols);
-
-    fin.close();
+    is.read(reinterpret_cast<char*>(A.data()),
+            sizeof(typename Derived::Scalar) * rows * cols);
 
     return A;
 }

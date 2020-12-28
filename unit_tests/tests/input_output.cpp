@@ -7,72 +7,131 @@ using namespace qpp;
 
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::load(const std::string& fname)
+///       qpp::load(std::istream& is)
 ///
 ///       template <typename Derived> void qpp::save(
-///       const Eigen::MatrixBase<Derived>& A, const std::string& fname)
+///       const Eigen::MatrixBase<Derived>& A, std::ostream& os)
 TEST(qpp_load_save, Matrix) {
-    // matrices,complex, real and integer
 
+    // matrices,complex, real and integer
     // DA = 1, DB = 1 degenerate case
     idx DA = 1, DB = 1;
-    cmat A = rand<cmat>(DA, DB);
-    dmat B = rand<dmat>(DA, DB);
-    dyn_mat<int> C = Eigen::MatrixXi::Random(DA, DB);
-
-    qpp::save(A, "out.tmp");
-    cmat loadA = qpp::load<cmat>("out.tmp");
+    cmat A = rand<cmat>(DA, DB), loadA;
+    dmat B = rand<dmat>(DA, DB), loadB;
+    dyn_mat<int> C = dyn_mat<int>::Random(DA, DB), loadC;
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(A, fout);
+    }
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        loadA = qpp::load<cmat>(fin);
+    }
     EXPECT_NEAR(0, norm(loadA - A), 1e-7);
 
-    qpp::save(B, "out.tmp");
-    dmat loadB = qpp::load<dmat>("out.tmp");
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(B, fout);
+    }
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        loadB = qpp::load<dmat>(fin);
+    }
     EXPECT_NEAR(0, norm(loadB - B), 1e-7);
 
-    qpp::save(C, "out.tmp");
-    Eigen::MatrixXi loadC = qpp::load<Eigen::MatrixXi>("out.tmp");
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(C, fout);
+    }
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        loadC = qpp::load<dyn_mat<int>>(fin);
+    }
     EXPECT_NEAR(0, norm(loadC - C), 1e-7);
 
     // DA = 1, DB = 10
     DA = 1, DB = 10;
     A = rand<cmat>(DA, DB);
     B = rand<dmat>(DA, DB);
-    C = Eigen::MatrixXi::Random(DA, DB);
-
-    qpp::save(A, "out.tmp");
-    loadA = qpp::load<cmat>("out.tmp");
+    C = dyn_mat<int>::Random(DA, DB);
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(A, fout);
+    }
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        loadA = qpp::load<cmat>(fin);
+    }
     EXPECT_NEAR(0, norm(loadA - A), 1e-7);
 
-    qpp::save(B, "out.tmp");
-    loadB = qpp::load<dmat>("out.tmp");
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(B, fout);
+    }
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        loadB = qpp::load<dmat>(fin);
+    }
     EXPECT_NEAR(0, norm(loadB - B), 1e-7);
 
-    qpp::save(C, "out.tmp");
-    loadC = qpp::load<Eigen::MatrixXi>("out.tmp");
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(C, fout);
+    }
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        loadC = qpp::load<dyn_mat<int>>(fin);
+    }
     EXPECT_NEAR(0, norm(loadC - C), 1e-7);
 
     // DA = 32, DB = 24
     DA = 32, DB = 24;
     A = rand<cmat>(DA, DB);
     B = rand<dmat>(DA, DB);
-    C = Eigen::MatrixXi::Random(DA, DB);
+    C = dyn_mat<int>::Random(DA, DB);
 
-    qpp::save(A, "out.tmp");
-    loadA = qpp::load<cmat>("out.tmp");
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(A, fout);
+    }
+
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        loadA = qpp::load<cmat>(fin);
+    }
     EXPECT_NEAR(0, norm(loadA - A), 1e-7);
 
-    qpp::save(B, "out.tmp");
-    loadB = qpp::load<dmat>("out.tmp");
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(B, fout);
+    }
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        loadB = qpp::load<dmat>(fin);
+    }
     EXPECT_NEAR(0, norm(loadB - B), 1e-7);
 
-    qpp::save(C, "out.tmp");
-    loadC = qpp::load<Eigen::MatrixXi>("out.tmp");
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(C, fout);
+    }
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        loadC = qpp::load<dyn_mat<int>>(fin);
+    }
     EXPECT_NEAR(0, norm(loadC - C), 1e-7);
 
     // expression
     A = rand<cmat>(5, 5);
-    cmat expression = A * A + A;
-    qpp::save(A * A + A, "out.tmp");
-    cmat load_expression = qpp::load<cmat>("out.tmp");
+    cmat expression = A * A + A, load_expression;
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(A * A + A, fout);
+    }
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        load_expression = qpp::load<cmat>(fin);
+    }
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-7);
 }
 /******************************************************************************/
@@ -81,20 +140,38 @@ TEST(qpp_load_save, Vector) {
 
     // D = 1 degenerate case
     idx D = 1;
-    ket A = randket(D);
-    dyn_row_vect<double> B = dyn_row_vect<double>::Random(D);
-    dyn_row_vect<int> C = dyn_row_vect<int>::Random(D);
+    ket A = randket(D), loadA;
+    dyn_row_vect<double> B = dyn_row_vect<double>::Random(D), loadB;
+    dyn_row_vect<int> C = dyn_row_vect<int>::Random(D), loadC;
 
-    qpp::save(A, "out.tmp");
-    ket loadA = qpp::load<ket>("out.tmp");
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(A, fout);
+    }
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        loadA = qpp::load<ket>(fin);
+    }
     EXPECT_NEAR(0, norm(loadA - A), 1e-7);
 
-    qpp::save(B, "out.tmp");
-    dyn_row_vect<double> loadB = qpp::load<dyn_row_vect<double>>("out.tmp");
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(B, fout);
+    }
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        loadB = qpp::load<dyn_row_vect<double>>(fin);
+    }
     EXPECT_NEAR(0, norm(loadB - B), 1e-7);
 
-    qpp::save(C, "out.tmp");
-    dyn_row_vect<int> loadC = qpp::load<dyn_row_vect<int>>("out.tmp");
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(C, fout);
+    }
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        loadC = qpp::load<dyn_row_vect<int>>(fin);
+    }
     EXPECT_NEAR(0, norm(loadC - C), 1e-7);
 
     // D = 32
@@ -103,22 +180,46 @@ TEST(qpp_load_save, Vector) {
     B = dyn_row_vect<double>::Random(D);
     C = dyn_row_vect<int>::Random(D);
 
-    qpp::save(A, "out.tmp");
-    loadA = qpp::load<ket>("out.tmp");
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(A, fout);
+    }
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        loadA = qpp::load<ket>(fin);
+    }
     EXPECT_NEAR(0, norm(loadA - A), 1e-7);
 
-    qpp::save(B, "out.tmp");
-    loadB = qpp::load<dyn_row_vect<double>>("out.tmp");
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(B, fout);
+    }
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        loadB = qpp::load<dyn_row_vect<double>>(fin);
+    }
     EXPECT_NEAR(0, norm(loadB - B), 1e-7);
 
-    qpp::save(C, "out.tmp");
-    loadC = qpp::load<dyn_row_vect<int>>("out.tmp");
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(C, fout);
+    }
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        loadC = qpp::load<dyn_row_vect<int>>(fin);
+    }
     EXPECT_NEAR(0, norm(loadC - C), 1e-7);
 
     // expression
-    ket expression = 3. * A + A;
-    qpp::save(3. * A + A, "out.tmp");
-    ket load_expression = qpp::load<ket>("out.tmp");
+    ket expression = 3. * A + A, load_expression;
+    {
+        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        qpp::save(3. * A + A, fout);
+    }
+    {
+        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        load_expression = qpp::load<ket>(fin);
+    }
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-7);
 }
 /******************************************************************************/
