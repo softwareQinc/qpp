@@ -127,7 +127,7 @@ disp(const PointerType* p, idx N, const std::string& separator,
  * Example:
  * \code
  * // saves an Eigen dynamic complex matrix to a binary stream
- * std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+ * std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
  * cmat mat = rand<cmat>(2, 2); // a 2 x 2 complex matrix
  * save(mat, fout);
  * \endcode
@@ -173,7 +173,7 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
  * Example:
  * \code
  * // loads a previously saved Eigen dynamic complex matrix from a binary stream
- * std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+ * std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
  * cmat mat = load<cmat>(fin);
  * \endcode
  *

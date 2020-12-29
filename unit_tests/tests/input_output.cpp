@@ -20,31 +20,31 @@ TEST(qpp_load_save, Matrix) {
     dmat B = rand<dmat>(DA, DB), loadB;
     dyn_mat<int> C = dyn_mat<int>::Random(DA, DB), loadC;
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(A, fout);
     }
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadA = qpp::load<cmat>(fin);
     }
     EXPECT_NEAR(0, norm(loadA - A), 1e-7);
 
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(B, fout);
     }
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadB = qpp::load<dmat>(fin);
     }
     EXPECT_NEAR(0, norm(loadB - B), 1e-7);
 
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(C, fout);
     }
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadC = qpp::load<dyn_mat<int>>(fin);
     }
     EXPECT_NEAR(0, norm(loadC - C), 1e-7);
@@ -55,31 +55,31 @@ TEST(qpp_load_save, Matrix) {
     B = rand<dmat>(DA, DB);
     C = dyn_mat<int>::Random(DA, DB);
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(A, fout);
     }
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadA = qpp::load<cmat>(fin);
     }
     EXPECT_NEAR(0, norm(loadA - A), 1e-7);
 
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(B, fout);
     }
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadB = qpp::load<dmat>(fin);
     }
     EXPECT_NEAR(0, norm(loadB - B), 1e-7);
 
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(C, fout);
     }
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadC = qpp::load<dyn_mat<int>>(fin);
     }
     EXPECT_NEAR(0, norm(loadC - C), 1e-7);
@@ -91,32 +91,32 @@ TEST(qpp_load_save, Matrix) {
     C = dyn_mat<int>::Random(DA, DB);
 
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(A, fout);
     }
 
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadA = qpp::load<cmat>(fin);
     }
     EXPECT_NEAR(0, norm(loadA - A), 1e-7);
 
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(B, fout);
     }
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadB = qpp::load<dmat>(fin);
     }
     EXPECT_NEAR(0, norm(loadB - B), 1e-7);
 
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(C, fout);
     }
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadC = qpp::load<dyn_mat<int>>(fin);
     }
     EXPECT_NEAR(0, norm(loadC - C), 1e-7);
@@ -125,11 +125,11 @@ TEST(qpp_load_save, Matrix) {
     A = rand<cmat>(5, 5);
     cmat expression = A * A + A, load_expression;
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(A * A + A, fout);
     }
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         load_expression = qpp::load<cmat>(fin);
     }
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-7);
@@ -145,31 +145,31 @@ TEST(qpp_load_save, Vector) {
     dyn_row_vect<int> C = dyn_row_vect<int>::Random(D), loadC;
 
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(A, fout);
     }
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadA = qpp::load<ket>(fin);
     }
     EXPECT_NEAR(0, norm(loadA - A), 1e-7);
 
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(B, fout);
     }
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadB = qpp::load<dyn_row_vect<double>>(fin);
     }
     EXPECT_NEAR(0, norm(loadB - B), 1e-7);
 
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(C, fout);
     }
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadC = qpp::load<dyn_row_vect<int>>(fin);
     }
     EXPECT_NEAR(0, norm(loadC - C), 1e-7);
@@ -181,31 +181,31 @@ TEST(qpp_load_save, Vector) {
     C = dyn_row_vect<int>::Random(D);
 
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(A, fout);
     }
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadA = qpp::load<ket>(fin);
     }
     EXPECT_NEAR(0, norm(loadA - A), 1e-7);
 
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(B, fout);
     }
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadB = qpp::load<dyn_row_vect<double>>(fin);
     }
     EXPECT_NEAR(0, norm(loadB - B), 1e-7);
 
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(C, fout);
     }
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadC = qpp::load<dyn_row_vect<int>>(fin);
     }
     EXPECT_NEAR(0, norm(loadC - C), 1e-7);
@@ -213,11 +213,11 @@ TEST(qpp_load_save, Vector) {
     // expression
     ket expression = 3. * A + A, load_expression;
     {
-        std::ofstream fout("mat.bin", std::ios::out | std::ios::binary);
+        std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
         qpp::save(3. * A + A, fout);
     }
     {
-        std::ifstream fin("mat.bin", std::ios::in | std::ios::binary);
+        std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         load_expression = qpp::load<ket>(fin);
     }
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-7);
