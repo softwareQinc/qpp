@@ -1,12 +1,15 @@
 Pre-release
     - Added Quantum Phase Estimation example in "examples/qpe.cpp", courtesy of
       @ryanhill1, see https://github.com/softwareQinc/qpp/pull/91
-    - Modified qpp::load() and qpp::save() to accept streams instead of file
-      names
+    - Modified qpp::load() and qpp::save() ["input_output.hpp"] to accept
+      streams instead of file names, and load/save in text format (instead of
+      binary format), while preserving double precision
+    - Renamed qpp::saveMATLAB() to qpp::save_MATLAB() and qpp::loadMATLAB() to
+      qpp::load_MATLAB() ["MATLAB/matlab.hpp"]
 
 Version 2.5 - 28 November 2020
     - Significant improvements in qpp::QEngine::execute() for multiple runs
-    - Changed all header extensions from .h to .hpp (except for qpp.h)
+    - Changed all header extensions from ".h" to ".hpp" (except for "qpp.h")
     - Automatic OpenMP detection by CMake
     - CMake minimum required version bumped to 3.9 (3.12 for macOS) for
       automatic OpenMP detection

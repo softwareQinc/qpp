@@ -476,6 +476,22 @@ struct Display_Impl_ {
     }
 };
 
+// converts a real value to a text representation (to machine precision)
+template <typename T>
+std::string real2text(T d) {
+    std::stringstream ss;
+    ss << std::setprecision(std::numeric_limits<T>::max_digits10);
+    ss << d;
+    return ss.str();
+}
+
+// converts the text representation of a real value to its corresponding
+// numerical value
+template <typename T>
+T text2real(const std::string& str) {
+    return std::strtod(str.c_str(), nullptr);
+}
+
 } /* namespace internal */
 } /* namespace qpp */
 
