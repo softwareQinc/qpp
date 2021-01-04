@@ -18,7 +18,7 @@ int main() {
     std::iota(std::begin(subsys), std::end(subsys), 0);
 
     // number of elements in the database
-    idx N = static_cast<idx>(std::round(std::pow(2, n)));
+    idx N = static_cast<idx>(std::llround(std::pow(2, n)));
     std::cout << ">> Database size: " << N << '\n';
 
     // mark an element randomly

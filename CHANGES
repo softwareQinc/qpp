@@ -1,6 +1,10 @@
 Pre-release
-    - Added Quantum Phase Estimation example in "examples/qpe.cpp", courtesy of
-      @ryanhill1, see https://github.com/softwareQinc/qpp/pull/91
+    - Added Quantum Phase Estimation low-level API example in
+      "examples/qpe.cpp", courtesy of @ryanhill1, see
+      https://github.com/softwareQinc/qpp/pull/91
+    - Added Quantum Phase Estimation high-level API example in
+      "examples/circuits/quantum_phase_estimation.cpp", thanks @DevelopDaily for
+      the suggestion, https://github.com/softwareQinc/qpp/issues/96
     - Modified qpp::load() and qpp::save() ["input_output.hpp"] to accept
       streams instead of file names, and load/save in text format (instead of
       binary format), while preserving double precision

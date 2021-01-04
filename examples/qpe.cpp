@@ -1,5 +1,7 @@
 // Quantum Phase Estimation
 // Source: ./examples/qpe.cpp
+// See also ./examples/circuits/quantum_phase_estimation.cpp for a high-level
+// API example
 
 /*
 A program to construct the following quantum phase estimator circuit and
@@ -13,7 +15,7 @@ execute simulation on the phase of U = diag(1, e^{2*pi*i*theta}).
             |    |    |
 |0> ---X----U----U^2--U^4--------------------------------------------- [q3]
 
- */
+*/
 
 #include <cmath>
 #include <iostream>
