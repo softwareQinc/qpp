@@ -26,7 +26,7 @@ int main() {
     std::cout << ">> Marked state: " << marked << " -> ";
     std::cout << disp(n2multiidx(marked, dims), " ") << '\n';
 
-    ket psi = mket(n2multiidx(0, dims)); // computational |0>^\otimes n
+    ket psi = mket(std::vector<idx>(n, 0)); // computational |0>^\otimes n
 
     // apply H^\otimes n, no aliasing
     psi = (kronpow(gt.H, n) * psi).eval();
