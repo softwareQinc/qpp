@@ -37,7 +37,7 @@ jobs:
         - brew install gcc@7
         - export CXX="g++-7" CC="gcc-7"
         - export BUILD="make"
-        - sudo softwareupdate -i "Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.1"
+        - sudo softwareupdate -i "Command Line Tools (macOS Mojave version 10.14) for Xcode-10.2"
 
 notifications:
   email: false
