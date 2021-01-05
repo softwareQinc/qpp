@@ -119,16 +119,18 @@ disp(const PointerType* p, idx N, const std::string& separator,
                                                  chop);
 }
 
+#if (0)
 /**
- * \brief Saves Eigen expression to a binary stream (internal format) in double
- * precision
+ * \brief Saves an Eigen expression to a binary stream (internal format) in
+ * double precision
  * \see qpp::load()
  *
  * Example:
+ *
  * \code
  * // saves an Eigen dynamic complex matrix to a binary stream
  * std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
- * cmat mat = rand<cmat>(2, 2); // a 2 x 2 complex matrix
+ * cmat mat = rand<cmat>(2, 2); // a 2 x 2 random complex matrix
  * save(mat, fout);
  * \endcode
  *
@@ -163,7 +165,7 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
 }
 
 /**
- * \brief Loads Eigen matrix from a binary stream (internal format) in double
+ * \brief Loads an Eigen matrix from a binary stream (internal format) in double
  * precision
  * \see qpp::save()
  *
@@ -171,8 +173,9 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
  * provided, depending on the scalar field of the matrix that is being loaded
  *
  * Example:
+ *
  * \code
- * // loads a previously saved Eigen dynamic complex matrix from a binary stream
+ * // loads an Eigen dynamic complex matrix from a binary stream
  * std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
  * cmat mat = load<cmat>(fin);
  * \endcode
@@ -205,6 +208,144 @@ dyn_mat<typename Derived::Scalar> load(std::istream& is) {
 
     is.read(reinterpret_cast<char*>(A.data()),
             sizeof(typename Derived::Scalar) * rows * cols);
+
+    return A;
+}
+#endif // if (0)
+
+/**
+ * \brief Saves Eigen expression to a text stream in double precision
+ * \see qpp::load()
+ *
+ * Example:
+ * \code
+ * // saves an Eigen dynamic complex matrix to a text stream
+ * std::ofstream fout("mat.txt");
+ * cmat mat = rand<cmat>(2, 2); // a 2 x 2 random complex matrix
+ * save(mat, fout);
+ * \endcode
+ *
+ * \param A Eigen expression
+ * \param os Output text stream
+ */
+template <typename Derived>
+void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero-size
+    if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::save()");
+
+    if (!os.good()) {
+        throw std::runtime_error("qpp::save(): Error writing output stream!");
+    }
+    // END EXCEPTION CHECKS
+
+    idx rows = static_cast<idx>(rA.rows());
+    idx cols = static_cast<idx>(rA.cols());
+    os << rows << " " << cols << '\n';
+
+    bool is_complex = qpp::is_complex<typename Derived::Scalar>::value;
+
+    for (idx i = 0; i < rows; ++i) {
+        std::string sep;
+        for (idx j = 0; j < cols; ++j) {
+            if (is_complex) {
+                os << sep << '(' << internal::real2text(std::real(rA(i, j)));
+                os << ',' << internal::real2text(std::imag(rA(i, j))) << ')';
+            } else {
+                os << sep << internal::real2text(rA(i, j));
+            }
+            sep = " ";
+        }
+        os << '\n';
+    }
+}
+
+/**
+ * \brief Loads a complex Eigen matrix from a text stream in double precision
+ * \see qpp::save()
+ *
+ * The template parameter cannot be automatically deduced and must be explicitly
+ * provided, depending on the scalar field of the matrix that is being loaded
+ *
+ * Example:
+ * \code
+ * // loads a complex Eigen dynamic complex matrix from a text stream
+ * std::ifstream fin("mat.txt");
+ * cmat mat = load<cmat>(fin);
+ * \endcode
+ *
+ * \param is Input text stream
+ */
+template <typename Derived>
+dyn_mat<typename Derived::Scalar>
+load(std::istream& is,
+     typename std::enable_if<
+         is_complex<typename Derived::Scalar>::value>::type* = nullptr) {
+    // EXCEPTION CHECKS
+
+    if (!is.good()) {
+        throw std::runtime_error("qpp::load(): Error opening input stream!");
+    }
+    // END EXCEPTION CHECKS
+
+    idx rows, cols;
+    is >> rows >> cols;
+
+    dyn_mat<typename Derived::Scalar> A(rows, cols);
+
+    char skip;
+    decltype(std::declval<typename Derived::Scalar>().real()) re, im;
+
+    for (idx i = 0; i < rows; ++i) {
+        for (idx j = 0; j < cols; ++j) {
+            is >> skip >> re >> skip >> im >> skip; // (re,im)
+            A(i, j) = typename Derived::Scalar{re, im};
+        }
+    }
+
+    return A;
+}
+
+/**
+ * \brief Loads a real Eigen matrix from a text stream in double precision
+ * \see qpp::save()
+ *
+ * The template parameter cannot be automatically deduced and must be explicitly
+ * provided, depending on the scalar field of the matrix that is being loaded
+ *
+ * Example:
+ * \code
+ * // loads a real Eigen dynamic complex matrix from a text stream
+ * std::ifstream fin("mat.txt");
+ * dmat mat = load<dmat>(fin);
+ * \endcode
+ *
+ * \param is Input text stream
+ */
+template <typename Derived>
+dyn_mat<typename Derived::Scalar>
+load(std::istream& is,
+     typename std::enable_if<
+         !is_complex<typename Derived::Scalar>::value>::type* = nullptr) {
+    // EXCEPTION CHECKS
+
+    if (!is.good()) {
+        throw std::runtime_error("qpp::load(): Error opening input stream!");
+    }
+    // END EXCEPTION CHECKS
+
+    idx rows, cols;
+    is >> rows >> cols;
+
+    dyn_mat<typename Derived::Scalar> A(rows, cols);
+
+    for (idx i = 0; i < rows; ++i)
+        for (idx j = 0; j < cols; ++j)
+            is >> A(i, j);
 
     return A;
 }

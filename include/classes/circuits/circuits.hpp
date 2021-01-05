@@ -1974,6 +1974,7 @@ class QCircuit : public IDisplay, public IJSON {
                    idx shift = 0, std::string name = {}) {
         // EXCEPTION CHECKS
 
+        idx D = static_cast<idx>(std::llround(std::pow(d_, target.size())));
         try {
             // check valid ctrl
             if (ctrl >= nq_)
@@ -2005,7 +2006,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (!internal::check_square_mat(U))
                 throw exception::MatrixNotSquare("qpp::QCircuit::CTRL()");
             // check correct dimension
-            if (static_cast<idx>(U.rows()) != d_)
+            if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::CTRL()");
 
             // check shift
@@ -2142,6 +2143,7 @@ class QCircuit : public IDisplay, public IJSON {
                    const std::vector<idx>& shift = {}, std::string name = {}) {
         // EXCEPTION CHECKS
 
+        idx D = static_cast<idx>(std::llround(std::pow(d_, target.size())));
         try {
             // check valid ctrl
             for (auto&& elem : ctrl) {
@@ -2181,7 +2183,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (!internal::check_square_mat(U))
                 throw exception::MatrixNotSquare("qpp::QCircuit::CTRL()");
             // check correct dimension
-            if (static_cast<idx>(U.rows()) != d_)
+            if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::CTRL()");
 
             // check shift
@@ -2241,9 +2243,7 @@ class QCircuit : public IDisplay, public IJSON {
                           std::string name = {}) {
         // EXCEPTION CHECKS
 
-        idx n = static_cast<idx>(target.size());
-        idx D = static_cast<idx>(std::llround(std::pow(d_, n)));
-
+        idx D = static_cast<idx>(std::llround(std::pow(d_, target.size())));
         try {
             // check valid ctrl
             for (auto&& elem : ctrl) {
@@ -2400,6 +2400,7 @@ class QCircuit : public IDisplay, public IJSON {
                     idx shift = 0, std::string name = {}) {
         // EXCEPTION CHECKS
 
+        idx D = static_cast<idx>(std::llround(std::pow(d_, target.size())));
         try {
             // check valid ctrl_dit
             if (ctrl_dit >= nc_)
@@ -2424,7 +2425,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (!internal::check_square_mat(U))
                 throw exception::MatrixNotSquare("qpp::QCircuit::cCTRL()");
             // check correct dimension
-            if (static_cast<idx>(U.rows()) != d_)
+            if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::cCTRL()");
 
             // check shift
@@ -2556,6 +2557,7 @@ class QCircuit : public IDisplay, public IJSON {
                     const std::vector<idx>& shift = {}, std::string name = {}) {
         // EXCEPTION CHECKS
 
+        idx D = static_cast<idx>(std::llround(std::pow(d_, target.size())));
         try {
             // check valid ctrl_dits
             for (auto&& elem : ctrl_dits) {
@@ -2585,7 +2587,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (!internal::check_square_mat(U))
                 throw exception::MatrixNotSquare("qpp::QCircuit::cCTRL()");
             // check correct dimension
-            if (static_cast<idx>(U.rows()) != d_)
+            if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::cCTRL()");
 
             // check shift
@@ -2645,9 +2647,7 @@ class QCircuit : public IDisplay, public IJSON {
                            std::string name = {}) {
         // EXCEPTION CHECKS
 
-        idx n = static_cast<idx>(target.size());
-        idx D = static_cast<idx>(std::llround(std::pow(d_, n)));
-
+        idx D = static_cast<idx>(std::llround(std::pow(d_, target.size())));
         try {
             // check valid ctrl_dits
             for (auto&& elem : ctrl_dits) {
@@ -2781,7 +2781,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param c_reg Classical register where the value of the measurement is
      * being stored, as a decimal representation of the binary string
      * representing the measurement, with the most significant dit on the
-     * left (corresponding to the first qudit that is being measured)
+     * left (corresponding to the first/top qudit that is being measured)
      * \param destructive Destructive measurement, true by default
      * \param name Optional measurement name, default is "mZ"
      * \return Reference to the current instance
@@ -3209,8 +3209,8 @@ class QCircuit : public IDisplay, public IJSON {
      * are automatically added to the current quantum circuit description
      *
      * \param other Quantum circuit description
-     * \param pos_qudit The index of the first qudit of \a other quantum
-     * circuit description relative to the index of the first qudit of the
+     * \param pos_qudit The index of the first/top qudit of \a other quantum
+     * circuit description relative to the index of the first/top qudit of the
      * current quantum circuit description, with the rest following in
      * order. If negative or greater than the total number of qudits of the
      * current quantum circuit description, then the required number of
@@ -3864,8 +3864,8 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \param qc1 Quantum circuit description
      * \param qc2 Quantum circuit description
-     * \param pos_qudit The index of the first qudit of \a qc2 quantum
-     * circuit description relative to the index of the first qudit of the
+     * \param pos_qudit The index of the first/top qudit of \a qc2 quantum
+     * circuit description relative to the index of the first/top qudit of the
      * \a qc1 quantum circuit description, with the rest following in order.
      * If negative or greater than the total number of qudits of \a qc1,
      * then the required number of additional qudits are automatically added
