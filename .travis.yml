@@ -32,7 +32,6 @@ jobs:
       osx_image: xcode10.2
       compiler: gcc
       before_install:
-        - rm -rf /usr/local/include/c++
         - brew update
         - brew install gcc@7
         - export CXX="g++-7" CC="gcc-7"
