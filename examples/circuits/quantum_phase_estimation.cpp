@@ -1,5 +1,5 @@
 // Quantum Phase Estimation circuit simulator
-// Source: ./examples/circuits/qpe.cpp
+// Source: ./examples/circuits/quantum_phase_estimation.cpp
 // See also ./examples/qpe.cpp for a low-level API example
 #include <cmath>
 #include <iostream>
