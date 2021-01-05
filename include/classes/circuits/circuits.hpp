@@ -1974,8 +1974,6 @@ class QCircuit : public IDisplay, public IJSON {
                    idx shift = 0, std::string name = {}) {
         // EXCEPTION CHECKS
 
-        idx D_target =
-            static_cast<idx>(std::llround(std::pow(d_, target.size())));
         try {
             // check valid ctrl
             if (ctrl >= nq_)
@@ -2007,7 +2005,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (!internal::check_square_mat(U))
                 throw exception::MatrixNotSquare("qpp::QCircuit::CTRL()");
             // check correct dimension
-            if (static_cast<idx>(U.rows()) != D_target)
+            if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::CTRL()");
 
             // check shift
@@ -2144,8 +2142,6 @@ class QCircuit : public IDisplay, public IJSON {
                    const std::vector<idx>& shift = {}, std::string name = {}) {
         // EXCEPTION CHECKS
 
-        idx D_target =
-            static_cast<idx>(std::llround(std::pow(d_, target.size())));
         try {
             // check valid ctrl
             for (auto&& elem : ctrl) {
@@ -2185,7 +2181,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (!internal::check_square_mat(U))
                 throw exception::MatrixNotSquare("qpp::QCircuit::CTRL()");
             // check correct dimension
-            if (static_cast<idx>(U.rows()) != D_target)
+            if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::CTRL()");
 
             // check shift
@@ -2403,8 +2399,6 @@ class QCircuit : public IDisplay, public IJSON {
                     idx shift = 0, std::string name = {}) {
         // EXCEPTION CHECKS
 
-        idx D_target =
-            static_cast<idx>(std::llround(std::pow(d_, target.size())));
         try {
             // check valid ctrl_dit
             if (ctrl_dit >= nc_)
@@ -2429,7 +2423,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (!internal::check_square_mat(U))
                 throw exception::MatrixNotSquare("qpp::QCircuit::cCTRL()");
             // check correct dimension
-            if (static_cast<idx>(U.rows()) != D_target)
+            if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::cCTRL()");
 
             // check shift
@@ -2561,8 +2555,6 @@ class QCircuit : public IDisplay, public IJSON {
                     const std::vector<idx>& shift = {}, std::string name = {}) {
         // EXCEPTION CHECKS
 
-        idx D_target =
-            static_cast<idx>(std::llround(std::pow(d_, target.size())));
         try {
             // check valid ctrl_dits
             for (auto&& elem : ctrl_dits) {
@@ -2592,7 +2584,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (!internal::check_square_mat(U))
                 throw exception::MatrixNotSquare("qpp::QCircuit::cCTRL()");
             // check correct dimension
-            if (static_cast<idx>(U.rows()) != D_target)
+            if (static_cast<idx>(U.rows()) != d_)
                 throw exception::DimsMismatchMatrix("qpp::QCircuit::cCTRL()");
 
             // check shift

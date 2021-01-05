@@ -10,8 +10,6 @@ Pre-release
       binary format), while preserving double precision
     - Renamed qpp::saveMATLAB() to qpp::save_MATLAB() and qpp::loadMATLAB() to
       qpp::load_MATLAB() ["MATLAB/matlab.hpp"]
-    - Bugfix in QCircuit::CTRL() and QCircuit::cCTRL() for multiple-qubit
-      targets (when exception checking)
 
 Version 2.5 - 28 November 2020
     - Significant improvements in qpp::QEngine::execute() for multiple runs
