@@ -13,7 +13,7 @@ int main() {
     idx nq_c = 4;         // number of counting qubits
     idx nq_a = 2;         // number of ancilla qubits
     idx nq = nq_c + nq_a; // total number of qubits
-    idx nc = 1;           // nc stores a 'dit'; increase nq for more precision.
+    idx nc = 1;           // nc stores a 'dit', increase nq_c for more precision
 
     std::cout << ">> Quantum phase estimation quantum circuit simulation\n";
     std::cout << ">> nq_c = " << nq_c << " counting qubits, nq_a = " << nq_a
