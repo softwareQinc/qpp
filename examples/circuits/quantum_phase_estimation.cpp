@@ -10,24 +10,29 @@
 
 int main() {
     using namespace qpp;
-    idx nq = 4; // number of qubits; qubits 0, 1, ... , n - 2 are counting
-                // qubits, qubit n - 1 is the ancilla
-    idx nc = 1; // nc stores a 'dit'; increase nq for more precision.
-    std::cout << ">> Quantum phase estimation quantum circuit simulation on ";
-    std::cout << "n = " << nq << " qubits\n\n";
+    idx nq_c = 4;         // number of counting qubits
+    idx nq_a = 2;         // number of ancilla qubits
+    idx nq = nq_c + nq_a; // total number of qubits
+    idx nc = 1;           // nc stores a 'dit'; increase nq for more precision.
 
-    cmat U(2, 2); // initialize a unitary operator
-    // we use the T gate as an example; we expect estimated theta = 1/8 (0.125).
-    double theta = 0.125; // change if you want, increase nq for more precision
-    U << 1, 0, 0, std::exp(2 * pi * 1_i * theta);
+    std::cout << ">> Quantum phase estimation quantum circuit simulation\n";
+    std::cout << ">> nq_c = " << nq_c << " counting qubits, nq_a = " << nq_a
+              << " ancilla qubits\n\n";
+
+    // we use the T\otimes T gate as an example; we want to estimate its last
+    // (4-th) eigenvalue; we expect estimated theta = 1/4 (0.25).
+    cmat U = kron(gt.T, gt.T); // diag(1,e^{\pi i/4},e^{\pi i/4},e^{2\pi i/4})
+    double theta = 0.25;
 
     QCircuit qc{nq, nc};
-    std::vector<idx> counting_qubits(nq - 1);
+    std::vector<idx> counting_qubits(nq_c);
     std::iota(counting_qubits.begin(), counting_qubits.end(), 0);
-    idx ancilla = nq - 1;
+    std::vector<idx> ancilla(nq_a);
+    std::iota(ancilla.begin(), ancilla.end(), nq_c);
 
-    qc.gate_fan(gt.H, counting_qubits).gate(gt.X, ancilla);
-    for (idx i = ancilla; i-- > 0;) {
+    qc.gate_fan(gt.H, counting_qubits);
+    qc.gate_fan(gt.X, ancilla); // prepare |11>, the fourth eigenvector of U
+    for (idx i = nq_c; i-- > 0;) {
         qc.CTRL(U, i, ancilla);
         U = powm(U, 2);
     }

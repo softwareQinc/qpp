@@ -1,7 +1,7 @@
 // Quantum Phase Estimation
 // Source: ./examples/qpe.cpp
 // See also ./examples/circuits/quantum_phase_estimation.cpp for a high-level
-// API example
+// API example (with a 2-qubit target unitary!)
 
 /*
 A program to construct the following quantum phase estimator circuit and
@@ -41,14 +41,15 @@ int main() {
     idx ancilla = n - 1;
 
     std::cout << ">> QPE on n = " << n << " qubits. ";
-    std::cout << "The sequence of applied gates is:\n";
 
+    std::cout << "The sequence of applied gates is:\n";
     for (idx i = 0; i < counting_qubits.size(); ++i) {
         // apply Hadamard on counting qubits
         result = apply(result, gt.H, {i});
         std::cout << "H" << i << " ";
     }
-    result = apply(result, gt.X, {ancilla}); // apply X on the ancilla
+    // prepare |1>, the second eigenvector of U
+    result = apply(result, gt.X, {ancilla});
     std::cout << "X" << ancilla << '\n';
 
     // apply controlled unitary operations
