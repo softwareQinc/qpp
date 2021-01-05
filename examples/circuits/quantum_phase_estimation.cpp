@@ -1,5 +1,5 @@
 // Quantum Phase Estimation circuit simulator
-// Source: ./examples/circuits/qpe.cpp
+// Source: ./examples/circuits/quantum_phase_estimation.cpp
 // See also ./examples/qpe.cpp for a low-level API example
 #include <cmath>
 #include <iostream>
@@ -13,7 +13,7 @@ int main() {
     idx nq_c = 4;         // number of counting qubits
     idx nq_a = 2;         // number of ancilla qubits
     idx nq = nq_c + nq_a; // total number of qubits
-    idx nc = 1;           // nc stores a 'dit'; increase nq for more precision.
+    idx nc = 1;           // nc stores a 'dit', increase nq_c for more precision
 
     std::cout << ">> Quantum phase estimation quantum circuit simulation\n";
     std::cout << ">> nq_c = " << nq_c << " counting qubits, nq_a = " << nq_a
@@ -33,7 +33,7 @@ int main() {
     qc.gate_fan(gt.H, counting_qubits);
     qc.gate_fan(gt.X, ancilla); // prepare |11>, the fourth eigenvector of U
     for (idx i = nq_c; i-- > 0;) {
-        qc.CTRL(U, i, ancilla);
+        qc.CTRL_custom(U, {i}, ancilla);
         U = powm(U, 2);
     }
     qc.TFQ(counting_qubits); // inverse Fourier transform
