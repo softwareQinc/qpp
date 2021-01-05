@@ -22,21 +22,22 @@ jobs:
 
     # Apple OSX LLVM version 10.0.0 (clang-1000.11.45.5)
     - os: osx
-      osx_image: xcode10.2
+      osx_image: xcode10.3
       compiler: clang
       before_install:
         - export BUILD="make"
 
     # Apple OSX gcc-7.5
     - os: osx
-      osx_image: xcode10.2
+      osx_image: xcode10.3
       compiler: gcc
       before_install:
+        - rm -rf /usr/local/include/c++
         - brew update
         - brew install gcc@7
         - export CXX="g++-7" CC="gcc-7"
         - export BUILD="make"
-        - sudo softwareupdate -i "Command Line Tools (macOS Mojave version 10.14) for Xcode-10.2"
+        - sudo softwareupdate -i "Command Line Tools (macOS Mojave version 10.14) for Xcode-10.3"
 
 notifications:
   email: false
@@ -45,7 +46,7 @@ script:
   - $CXX --version
 
   # Install Eigen3
-  - wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip -O eigen3.zip && unzip -q eigen3.zip &&  mv eigen-3.3.7 $HOME/eigen
+  - wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip -O eigen3.zip && unzip -q eigen3.zip && mv eigen-3.3.7 $HOME/eigen
 
   # Build the examples
   - mkdir build && cd build && cmake .. -DEIGEN3_INSTALL_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j4
