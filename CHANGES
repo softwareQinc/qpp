@@ -10,11 +10,14 @@ Pre-release
       binary format), while preserving the required precision. The old load/save
       functions that use binary files for I/O are now moved to the qpp::obsolete
       namespace and are deprecated.
-    - Renamed qpp::saveMATLAB() to qpp::save_MATLAB() and qpp::loadMATLAB() to
-      qpp::load_MATLAB() ["MATLAB/matlab.hpp"]
-    - Minor API change: renamed qpp::[c]CTRL_custom() to qpp::[c]CTRL_joint(),
-      and qpp::gate_custom() to qpp::gate_joint()
-      ["classes/circuits/circuits.hpp"]
+    - Minor API changes:
+        ["MATLAB/matlab.hpp"]
+          - qpp::saveMATLAB() -> qpp::save_MATLAB()
+          - qpp::loadMATLAB() -> qpp::load_MATLAB()
+        ["classes/circuits/circuits.hpp"]
+          - qpp::cCTRL_custom() -> qpp::cCTRL_joint()
+          - qpp::CTRL_custom()  -> qpp::CTRL_joint()
+          - qpp::gate_custom()  -> qpp::gate_joint()
     - Documentation improvements in ["classes/circuits/circuits.hpp"]
 
 Version 2.5 - 28 November 2020
