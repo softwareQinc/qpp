@@ -1057,7 +1057,7 @@ class CNOTGate final : public Gate {
         if (ctrls.size() == 1 && tgts.size() == 1) {
             if (ctx.ccontrolled()) {
                 std::vector<idx> tmp{ctrls[0], tgts[0]};
-                circuit->cCTRL_custom(gt.CNOT, ctx.get_cctrls(), tmp,
+                circuit->cCTRL_joint(gt.CNOT, ctx.get_cctrls(), tmp,
                                       ctx.get_shift(), "CX");
             } else {
                 circuit->gate(gt.CNOT, ctrls[0], tgts[0], "CX");
@@ -1066,7 +1066,7 @@ class CNOTGate final : public Gate {
             for (idx i = 0; i < ctrls.size(); i++) {
                 if (ctx.ccontrolled()) {
                     std::vector<idx> tmp{ctrls[i], tgts[0]};
-                    circuit->cCTRL_custom(gt.CNOT, ctx.get_cctrls(), tmp,
+                    circuit->cCTRL_joint(gt.CNOT, ctx.get_cctrls(), tmp,
                                           ctx.get_shift(), "CX");
                 } else {
                     circuit->gate(gt.CNOT, ctrls[i], tgts[0], "CX");
@@ -1076,7 +1076,7 @@ class CNOTGate final : public Gate {
             for (idx i = 0; i < tgts.size(); i++) {
                 if (ctx.ccontrolled()) {
                     std::vector<idx> tmp{ctrls[0], tgts[i]};
-                    circuit->cCTRL_custom(gt.CNOT, ctx.get_cctrls(), tmp,
+                    circuit->cCTRL_joint(gt.CNOT, ctx.get_cctrls(), tmp,
                                           ctx.get_shift(), "CX");
                 } else {
                     circuit->gate(gt.CNOT, ctrls[0], tgts[i], "CX");
@@ -1086,7 +1086,7 @@ class CNOTGate final : public Gate {
             for (idx i = 0; i < ctrls.size(); i++) {
                 if (ctx.ccontrolled()) {
                     std::vector<idx> tmp{ctrls[i], tgts[i]};
-                    circuit->cCTRL_custom(gt.CNOT, ctx.get_cctrls(), tmp,
+                    circuit->cCTRL_joint(gt.CNOT, ctx.get_cctrls(), tmp,
                                           ctx.get_shift(), "CX");
                 } else {
                     circuit->gate(gt.CNOT, ctrls[i], tgts[i], "CX");
@@ -1252,7 +1252,7 @@ class DeclaredGate final : public Gate {
 
                 // apply (possibly classical controlled) gate
                 if (ctx.ccontrolled()) {
-                    circuit->cCTRL_custom(mat, ctx.get_cctrls(), mapped_args,
+                    circuit->cCTRL_joint(mat, ctx.get_cctrls(), mapped_args,
                                           ctx.get_shift(), id_);
                 } else {
                     circuit->gate_custom(mat, mapped_args, id_);

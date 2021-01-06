@@ -113,8 +113,8 @@ class QCircuit : public IDisplay, public IJSON {
                                        ///< multiple controls and multiple
                                        ///< targets
 
-        CUSTOM_CTRL, ///< custom controlled gate with multiple controls
-                     ///< and multiple targets
+        JOINT_CTRL, ///< custom controlled gate with multiple controls
+                    ///< and multiple targets
 
         SINGLE_cCTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
                                     ///< one classical control and one target
@@ -131,8 +131,8 @@ class QCircuit : public IDisplay, public IJSON {
                                         ///< with multiple classical controls
                                         ///< and multiple targets
 
-        CUSTOM_cCTRL, ///< custom controlled gate with multiple classical
-                      ///< controls and multiple targets
+        JOINT_cCTRL, ///< custom controlled gate with multiple classical
+                     ///< controls and multiple targets
     };
 
     /**
@@ -176,8 +176,8 @@ class QCircuit : public IDisplay, public IJSON {
             case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
                 os << "MULTIPLE_CTRL_MULTIPLE_TARGET";
                 break;
-            case GateType::CUSTOM_CTRL:
-                os << "CUSTOM_CTRL";
+            case GateType::JOINT_CTRL:
+                os << "JOINT_CTRL";
                 break;
             case GateType::SINGLE_cCTRL_SINGLE_TARGET:
                 os << "SINGLE_cCTRL_SINGLE_TARGET";
@@ -191,8 +191,8 @@ class QCircuit : public IDisplay, public IJSON {
             case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
                 os << "MULTIPLE_cCTRL_MULTIPLE_TARGET";
                 break;
-            case GateType::CUSTOM_cCTRL:
-                os << "CUSTOM_cCTRL";
+            case GateType::JOINT_cCTRL:
+                os << "JOINT_cCTRL";
                 break;
         }
 
@@ -892,7 +892,7 @@ class QCircuit : public IDisplay, public IJSON {
             case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
             case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
             case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
-            case GateType::CUSTOM_CTRL:
+            case GateType::JOINT_CTRL:
                 return true;
             default:
                 return false;
@@ -911,7 +911,7 @@ class QCircuit : public IDisplay, public IJSON {
             case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
             case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
             case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
-            case GateType::CUSTOM_cCTRL:
+            case GateType::JOINT_cCTRL:
                 return true;
             default:
                 return false;
@@ -2235,10 +2235,10 @@ class QCircuit : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuit& CTRL_custom(const cmat& U, const std::vector<idx>& ctrl,
-                          const std::vector<idx>& target,
-                          const std::vector<idx>& shift = {},
-                          std::string name = {}) {
+    QCircuit& CTRL_joint(const cmat& U, const std::vector<idx>& ctrl,
+                         const std::vector<idx>& target,
+                         const std::vector<idx>& shift = {},
+                         std::string name = {}) {
         // EXCEPTION CHECKS
 
         idx D_target =
@@ -2247,26 +2247,26 @@ class QCircuit : public IDisplay, public IJSON {
             // check valid ctrl
             for (auto&& elem : ctrl) {
                 if (elem >= nq_)
-                    throw exception::OutOfRange("qpp::QCircuit::CTRL_custom()");
+                    throw exception::OutOfRange("qpp::QCircuit::CTRL_joint()");
                 // check ctrl was not measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuit::CTRL_custom()");
+                        "qpp::QCircuit::CTRL_joint()");
             }
             // check no duplicates ctrl
             if (!internal::check_no_duplicates(ctrl))
-                throw exception::Duplicates("qpp::QCircuit::CTRL_custom()");
+                throw exception::Duplicates("qpp::QCircuit::CTRL_joint()");
 
             // check valid target
             if (target.empty())
-                throw exception::ZeroSize("qpp::QCircuit::CTRL_custom()");
+                throw exception::ZeroSize("qpp::QCircuit::CTRL_joint()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
-                    throw exception::OutOfRange("qpp::QCircuit::CTRL_custom()");
+                    throw exception::OutOfRange("qpp::QCircuit::CTRL_joint()");
                 // check target was not measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuit::CTRL_custom()");
+                        "qpp::QCircuit::CTRL_joint()");
             }
 
             // check ctrl and target don't share common elements
@@ -2274,25 +2274,24 @@ class QCircuit : public IDisplay, public IJSON {
                 for (auto&& elem_target : target)
                     if (elem_ctrl == elem_target)
                         throw exception::OutOfRange(
-                            "qpp::QCircuit::CTRL_custom()");
+                            "qpp::QCircuit::CTRL_joint()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
-                throw exception::MatrixNotSquare(
-                    "qpp::QCircuit::CTRL_custom()");
+                throw exception::MatrixNotSquare("qpp::QCircuit::CTRL_joint()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != D_target)
                 throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuit::CTRL_custom()");
+                    "qpp::QCircuit::CTRL_joint()");
 
             // check shift
             if (!shift.empty() && (shift.size() != ctrl.size()))
-                throw exception::SizeMismatch("qpp::QCircuit::CTRL_custom()");
+                throw exception::SizeMismatch("qpp::QCircuit::CTRL_joint()");
             if (!shift.empty())
                 for (auto&& elem : shift)
                     if (elem >= d_)
                         throw exception::OutOfRange(
-                            "qpp::QCircuit::CTRL_custom()");
+                            "qpp::QCircuit::CTRL_joint()");
         } catch (exception::Exception&) {
             std::cerr << "STEP " << get_step_count() << "\n";
             throw;
@@ -2305,7 +2304,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
-        gates_.emplace_back(GateType::CUSTOM_CTRL, hashU, ctrl, target, shift,
+        gates_.emplace_back(GateType::JOINT_CTRL, hashU, ctrl, target, shift,
                             name);
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
@@ -2638,10 +2637,10 @@ class QCircuit : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuit& cCTRL_custom(const cmat& U, const std::vector<idx>& ctrl_dits,
-                           const std::vector<idx>& target,
-                           const std::vector<idx>& shift = {},
-                           std::string name = {}) {
+    QCircuit& cCTRL_joint(const cmat& U, const std::vector<idx>& ctrl_dits,
+                          const std::vector<idx>& target,
+                          const std::vector<idx>& shift = {},
+                          std::string name = {}) {
         // EXCEPTION CHECKS
 
         idx D_target =
@@ -2650,37 +2649,35 @@ class QCircuit : public IDisplay, public IJSON {
             // check valid ctrl_dits
             for (auto&& elem : ctrl_dits) {
                 if (elem >= nc_)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuit::cCTRL_custom()");
+                    throw exception::OutOfRange("qpp::QCircuit::cCTRL_joint()");
             }
             // check no duplicates ctrl_dits
             if (!internal::check_no_duplicates(ctrl_dits))
-                throw exception::Duplicates("qpp::QCircuit::cCTRL_custom()");
+                throw exception::Duplicates("qpp::QCircuit::cCTRL_joint()");
 
             // check valid target
             if (target.empty())
-                throw exception::ZeroSize("qpp::QCircuit::cCTRL_custom()");
+                throw exception::ZeroSize("qpp::QCircuit::cCTRL_joint()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
-                    throw exception::OutOfRange(
-                        "qpp::QCircuit::cCTRL_custom()");
+                    throw exception::OutOfRange("qpp::QCircuit::cCTRL_joint()");
                 // check target was not measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuit::cCTRL_custom()");
+                        "qpp::QCircuit::cCTRL_joint()");
             }
             // check no duplicates target
             if (!internal::check_no_duplicates(target))
-                throw exception::Duplicates("qpp::QCircuit::cCTRL_custom()");
+                throw exception::Duplicates("qpp::QCircuit::cCTRL_joint()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
                 throw exception::MatrixNotSquare(
-                    "qpp::QCircuit::cCTRL_custom()");
+                    "qpp::QCircuit::cCTRL_joint()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != D_target)
                 throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuit::cCTRL_custom()");
+                    "qpp::QCircuit::cCTRL_joint()");
 
             // check shift
             if (!shift.empty() && (shift.size() != ctrl_dits.size()))
@@ -2701,7 +2698,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
-        gates_.emplace_back(GateType::CUSTOM_cCTRL, hashU, ctrl_dits, target,
+        gates_.emplace_back(GateType::JOINT_cCTRL, hashU, ctrl_dits, target,
                             shift, name);
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
