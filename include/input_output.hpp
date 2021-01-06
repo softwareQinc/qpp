@@ -119,103 +119,9 @@ disp(const PointerType* p, idx N, const std::string& separator,
                                                  chop);
 }
 
-#if (0)
 /**
- * \brief Saves an Eigen expression to a binary stream (internal format) in
- * double precision
- * \see qpp::load()
- *
- * Example:
- *
- * \code
- * // saves an Eigen dynamic complex matrix to a binary stream
- * std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
- * cmat mat = rand<cmat>(2, 2); // a 2 x 2 random complex matrix
- * save(mat, fout);
- * \endcode
- *
- * \param A Eigen expression
- * \param os Output binary stream
- */
-template <typename Derived>
-void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
-    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
-
-    // EXCEPTION CHECKS
-
-    // check zero-size
-    if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::save()");
-
-    if (!os.good()) {
-        throw std::runtime_error("qpp::save(): Error writing output stream!");
-    }
-    // END EXCEPTION CHECKS
-
-    // write the header to file
-    const std::string header_ = "TYPE::Eigen::Matrix";
-    os.write(header_.c_str(), header_.length());
-
-    idx rows = static_cast<idx>(rA.rows());
-    idx cols = static_cast<idx>(rA.cols());
-    os.write(reinterpret_cast<const char*>(&rows), sizeof(rows));
-    os.write(reinterpret_cast<const char*>(&cols), sizeof(cols));
-    os.write(reinterpret_cast<const char*>(rA.data()),
-             sizeof(typename Derived::Scalar) * rows * cols);
-}
-
-/**
- * \brief Loads an Eigen matrix from a binary stream (internal format) in double
- * precision
- * \see qpp::save()
- *
- * The template parameter cannot be automatically deduced and must be explicitly
- * provided, depending on the scalar field of the matrix that is being loaded
- *
- * Example:
- *
- * \code
- * // loads an Eigen dynamic complex matrix from a binary stream
- * std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
- * cmat mat = load<cmat>(fin);
- * \endcode
- *
- * \param is Input binary stream
- */
-template <typename Derived>
-dyn_mat<typename Derived::Scalar> load(std::istream& is) {
-    // EXCEPTION CHECKS
-
-    if (!is.good()) {
-        throw std::runtime_error("qpp::load(): Error opening input stream!");
-    }
-
-    const std::string header_ = "TYPE::Eigen::Matrix";
-    std::unique_ptr<char[]> fheader_{new char[header_.length()]};
-
-    // read the header from file
-    is.read(fheader_.get(), header_.length());
-    if (std::string(fheader_.get(), header_.length()) != header_) {
-        throw std::runtime_error("qpp::load(): Input stream is corrupted!");
-    }
-    // END EXCEPTION CHECKS
-
-    idx rows, cols;
-    is.read(reinterpret_cast<char*>(&rows), sizeof(rows));
-    is.read(reinterpret_cast<char*>(&cols), sizeof(cols));
-
-    dyn_mat<typename Derived::Scalar> A(rows, cols);
-
-    is.read(reinterpret_cast<char*>(A.data()),
-            sizeof(typename Derived::Scalar) * rows * cols);
-
-    return A;
-}
-#endif // if (0)
-
-/**
- * \brief Saves Eigen expression to a text stream in double precision
- * \see qpp::load()
+ * \brief Saves Eigen expression to a text stream in corresponding machine
+ * precision \see qpp::load()
  *
  * Example:
  * \code
@@ -265,7 +171,8 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
 }
 
 /**
- * \brief Loads a complex Eigen matrix from a text stream in double precision
+ * \brief Loads a complex Eigen matrix from a text stream in corresponding
+ * machine precision
  * \see qpp::save()
  *
  * The template parameter cannot be automatically deduced and must be explicitly
@@ -311,7 +218,8 @@ load(std::istream& is,
 }
 
 /**
- * \brief Loads a real Eigen matrix from a text stream in double precision
+ * \brief Loads a real Eigen matrix from a text stream in corresponding machine
+ * precision
  * \see qpp::save()
  *
  * The template parameter cannot be automatically deduced and must be explicitly
@@ -349,6 +257,103 @@ load(std::istream& is,
 
     return A;
 }
+
+namespace obsolete {
+/**
+ * \brief Saves an Eigen expression to a binary stream (internal format) in
+ * double precision
+ * \see qpp::obsolete::load()
+ *
+ * Example:
+ *
+ * \code
+ * // saves an Eigen dynamic complex matrix to a binary stream
+ * std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
+ * cmat mat = rand<cmat>(2, 2); // a 2 x 2 random complex matrix
+ * save(mat, fout);
+ * \endcode
+ *
+ * \param A Eigen expression
+ * \param os Output binary stream
+ */
+template <typename Derived>
+void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero-size
+    if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::obsolete::save()");
+
+    if (!os.good()) {
+        throw std::runtime_error(
+            "qpp::obsolete::save(): Error writing output stream!");
+    }
+    // END EXCEPTION CHECKS
+
+    // write the header to file
+    const std::string header_ = "TYPE::Eigen::Matrix";
+    os.write(header_.c_str(), header_.length());
+
+    idx rows = static_cast<idx>(rA.rows());
+    idx cols = static_cast<idx>(rA.cols());
+    os.write(reinterpret_cast<const char*>(&rows), sizeof(rows));
+    os.write(reinterpret_cast<const char*>(&cols), sizeof(cols));
+    os.write(reinterpret_cast<const char*>(rA.data()),
+             sizeof(typename Derived::Scalar) * rows * cols);
+}
+
+/**
+ * \brief Loads an Eigen matrix from a binary stream (internal format) in double
+ * precision
+ * \see qpp::obsolete::save()
+ *
+ * The template parameter cannot be automatically deduced and must be explicitly
+ * provided, depending on the scalar field of the matrix that is being loaded
+ *
+ * Example:
+ *
+ * \code
+ * // loads an Eigen dynamic complex matrix from a binary stream
+ * std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
+ * cmat mat = load<cmat>(fin);
+ * \endcode
+ *
+ * \param is Input binary stream
+ */
+template <typename Derived>
+dyn_mat<typename Derived::Scalar> load(std::istream& is) {
+    // EXCEPTION CHECKS
+
+    if (!is.good()) {
+        throw std::runtime_error(
+            "qpp::obsolete::load(): Error opening input stream!");
+    }
+
+    const std::string header_ = "TYPE::Eigen::Matrix";
+    std::unique_ptr<char[]> fheader_{new char[header_.length()]};
+
+    // read the header from file
+    is.read(fheader_.get(), header_.length());
+    if (std::string(fheader_.get(), header_.length()) != header_) {
+        throw std::runtime_error(
+            "qpp::obsolete::load(): Input stream is corrupted!");
+    }
+    // END EXCEPTION CHECKS
+
+    idx rows, cols;
+    is.read(reinterpret_cast<char*>(&rows), sizeof(rows));
+    is.read(reinterpret_cast<char*>(&cols), sizeof(cols));
+
+    dyn_mat<typename Derived::Scalar> A(rows, cols);
+
+    is.read(reinterpret_cast<char*>(A.data()),
+            sizeof(typename Derived::Scalar) * rows * cols);
+
+    return A;
+}
+} /* namespace obsolete */
 
 } /* namespace qpp */
 
