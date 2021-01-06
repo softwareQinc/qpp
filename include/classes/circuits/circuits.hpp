@@ -2620,7 +2620,7 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
-    //  custom controlled gate with multiple controls and multiple targets
+    // custom multiple classical control composed target
     /**
      * \brief Jointly applies the custom multiple-qudit controlled gate \a U
      * with multiple classical control dits listed in \a ctrl on the qudit
