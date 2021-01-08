@@ -2778,7 +2778,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param c_reg Classical register where the value of the measurement is
      * being stored, as a decimal representation of the binary string
      * representing the measurement, with the most significant dit on the
-     * left (corresponding to the first/top qudit that is being measured)
+     * left (corresponding to the first/top qudit that is being measured, i.e.
+     * target[0])
      * \param destructive Destructive measurement, true by default
      * \param name Optional measurement name, default is "mZ"
      * \return Reference to the current instance
