@@ -5,12 +5,20 @@ Pre-release
     - Added Quantum Phase Estimation high-level API example in
       "examples/circuits/quantum_phase_estimation.cpp", thanks @DevelopDaily for
       the suggestion, https://github.com/softwareQinc/qpp/issues/96
-    - Modified qpp::load() and qpp::save() ["input_output.hpp"] to accept
-      streams instead of file names, and load/save in text format (instead of
-      binary format), while preserving double precision
-    - Renamed qpp::saveMATLAB() to qpp::save_MATLAB() and qpp::loadMATLAB() to
-      qpp::load_MATLAB() ["MATLAB/matlab.hpp"]
-    - Renamed [c]CTRL_custom() to [c]CTRL_joint() ["classes/circuits/circuits.hpp"]
+    - qpp::load() and qpp::save() ["input_output.hpp"] now use C++ I/O streams
+      instead of file names, and load/save in text format (instead of
+      binary format), while preserving the required precision. The old load/save
+      functions that use binary files for I/O are now moved to the qpp::obsolete
+      namespace and are deprecated.
+    - Minor API changes:
+        ["MATLAB/matlab.hpp"]
+          - qpp::saveMATLAB() -> qpp::save_MATLAB()
+          - qpp::loadMATLAB() -> qpp::load_MATLAB()
+        ["classes/circuits/circuits.hpp"]
+          - qpp::cCTRL_custom() -> qpp::cCTRL_joint()
+          - qpp::CTRL_custom()  -> qpp::CTRL_joint()
+          - qpp::gate_custom()  -> qpp::gate_joint()
+    - Documentation improvements in ["classes/circuits/circuits.hpp"]
 
 Version 2.5 - 28 November 2020
     - Significant improvements in qpp::QEngine::execute() for multiple runs

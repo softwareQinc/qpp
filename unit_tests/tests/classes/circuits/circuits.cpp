@@ -54,10 +54,10 @@ TEST(qpp_QCircuit_cCTRL, SingleCtrlMultipleTargets) {}
 ///       idx target, idx shift = 0, std::string name = {})
 TEST(qpp_QCircuit_cCTRL, SingleCtrlSingleTarget) {}
 /******************************************************************************/
-/// BEGIN QCircuit& qpp::QCircuit::cCTRL_custom(const cmat& U,
+/// BEGIN QCircuit& qpp::QCircuit::cCTRL_joint(const cmat& U,
 ///       const std::vector<idx>& ctrl_dits, const std::vector<idx>& target,
 ///       const std::vector<idx>& shift = {}, std::string name = {})
-TEST(qpp_QCircuit_cCTRL_custom, AllTests) {}
+TEST(qpp_QCircuit_cCTRL_joint, AllTests) {}
 /******************************************************************************/
 /// BEGIN const_iterator qpp::QCircuit::cend() const noexcept
 TEST(qpp_QCircuit_cend, AllTests) {}
@@ -83,10 +83,10 @@ TEST(qpp_QCircuit_CTRL, SingleCtrlMultipleTargets) {}
 ///       idx shift = 0, std::string name = {})
 TEST(qpp_QCircuit_CTRL, SingleCtrlSingleTarget) {}
 /******************************************************************************/
-/// BEGIN QCircuit& qpp::QCircuit::CTRL_custom(const cmat& U,
+/// BEGIN QCircuit& qpp::QCircuit::CTRL_joint(const cmat& U,
 ///       const std::vector<idx>& ctrl,const std::vector<idx>& target,
 ///       const std::vector<idx>& shift = {}, std::string name = {})
-TEST(qpp_QCircuit_CTRL_custom, AllTests) {}
+TEST(qpp_QCircuit_CTRL_joint, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& qpp::QCircuit::discard(const std::vector<idx>& target,
 ///       std::string name = {})
@@ -113,9 +113,9 @@ TEST(qpp_QCircuit_gate, TwoQudits) {}
 ///       std::string name = {})
 TEST(qpp_QCircuit_gate, SingleQudit) {}
 /******************************************************************************/
-/// BEGIN QCircuit& qpp::QCircuit::gate_custom(const cmat& U,
+/// BEGIN QCircuit& qpp::QCircuit::gate_joint(const cmat& U,
 ///       const std::vector<idx>& target, std::string name = {})
-TEST(qpp_QCircuit_gate_custom, AllTests) {}
+TEST(qpp_QCircuit_gate_joint, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& qpp::QCircuit::gate_fan(const cmat& U,
 ///       const std::vector<idx>& target, std::string name = {})

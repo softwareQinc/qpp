@@ -96,7 +96,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         THREE, ///< unitary gate on 3 qudits
 
-        CUSTOM, ///< custom gate on multiple qudits
+        JOINT, ///< joint gate on multiple qudits
 
         FAN, ///< same unitary gate on multiple qudits
 
@@ -113,8 +113,8 @@ class QCircuit : public IDisplay, public IJSON {
                                        ///< multiple controls and multiple
                                        ///< targets
 
-        JOINT_CTRL, ///< custom controlled gate with multiple controls
-                    ///< and multiple targets
+        JOINT_CTRL, ///< controlled gate with multiple controls and joint
+                    ///< targets
 
         SINGLE_cCTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
                                     ///< one classical control and one target
@@ -131,8 +131,8 @@ class QCircuit : public IDisplay, public IJSON {
                                         ///< with multiple classical controls
                                         ///< and multiple targets
 
-        JOINT_cCTRL, ///< custom controlled gate with multiple classical
-                     ///< controls and multiple targets
+        JOINT_cCTRL, ///< controlled gate with multiple classical controls and
+                     ///< joint targets
     };
 
     /**
@@ -161,8 +161,8 @@ class QCircuit : public IDisplay, public IJSON {
             case GateType::FAN:
                 os << "FAN";
                 break;
-            case GateType::CUSTOM:
-                os << "CUSTOM";
+            case GateType::JOINT:
+                os << "JOINT";
                 break;
             case GateType::SINGLE_CTRL_SINGLE_TARGET:
                 os << "SINGLE_CTRL_SINGLE_TARGET";
@@ -276,7 +276,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         MEASURE_Z, ///< Z measurement of single qudit
 
-        MEASURE_Z_MANY, ///< Z measurement of multiple qudit
+        MEASURE_Z_MANY, ///< Z measurement of joint qudits
 
         MEASURE_V, ///< measurement of single qudit in the orthonormal basis
                    ///< or rank-1 projectors specified by the columns of matrix
@@ -1624,16 +1624,16 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Jointly applies the custom multiple qudit gate \a U on the
-     * qudit indexes specified by \a target
+     * \brief Jointly applies the multiple-qudit gate \a U on the qudit indexes
+     * specified by \a target
      *
      * \param U Multiple qudit quantum gate
      * \param target Subsystem indexes where the gate \a U is applied
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuit& gate_custom(const cmat& U, const std::vector<idx>& target,
-                          std::string name = {}) {
+    QCircuit& gate_joint(const cmat& U, const std::vector<idx>& target,
+                         std::string name = {}) {
         // EXCEPTION CHECKS
 
         idx n = static_cast<idx>(target.size());
@@ -1642,27 +1642,26 @@ class QCircuit : public IDisplay, public IJSON {
         try {
             // check valid target
             if (target.empty())
-                throw exception::ZeroSize("qpp::QCircuit::gate_custom()");
+                throw exception::ZeroSize("qpp::QCircuit::gate_joint()");
             for (auto&& elem : target) {
                 if (elem >= nq_)
-                    throw exception::OutOfRange("qpp::QCircuit::gate_custom()");
+                    throw exception::OutOfRange("qpp::QCircuit::gate_joint()");
                 // check target was not measured before
                 if (get_measured(elem))
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuit::gate_custom()");
+                        "qpp::QCircuit::gate_joint()");
             }
             // check no duplicates target
             if (!internal::check_no_duplicates(target))
-                throw exception::Duplicates("qpp::QCircuit::gate_custom()");
+                throw exception::Duplicates("qpp::QCircuit::gate_joint()");
 
             // check square matrix for the gate
             if (!internal::check_square_mat(U))
-                throw exception::MatrixNotSquare(
-                    "qpp::QCircuit::gate_custom()");
+                throw exception::MatrixNotSquare("qpp::QCircuit::gate_joint()");
             // check correct dimension
             if (static_cast<idx>(U.rows()) != D)
                 throw exception::DimsMismatchMatrix(
-                    "qpp::QCircuit::gate_custom()");
+                    "qpp::QCircuit::gate_joint()");
         } catch (exception::Exception&) {
             std::cerr << "STEP " << get_step_count() << "\n";
             throw;
@@ -1673,7 +1672,7 @@ class QCircuit : public IDisplay, public IJSON {
             name = qpp::Gates::get_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
-        gates_.emplace_back(GateType::CUSTOM, hashU, std::vector<idx>{}, target,
+        gates_.emplace_back(GateType::JOINT, hashU, std::vector<idx>{}, target,
                             std::vector<idx>{}, name);
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[name];
@@ -1901,7 +1900,7 @@ class QCircuit : public IDisplay, public IJSON {
     // single ctrl single target
     /**
      * \brief Applies the single qudit controlled gate \a U with control
-     * qudit \a ctrl and target qudit \a target
+     * qudit \a ctrl and target qudit \a target, i.e., CTRL-U.
      *
      * \param U Single qudit quantum gate
      * \param ctrl Control qudit index
@@ -1959,7 +1958,7 @@ class QCircuit : public IDisplay, public IJSON {
     // single ctrl multiple target
     /**
      * \brief Applies the single qudit controlled gate \a U with control
-     * qudit \a ctrl on every qudit listed in \a target
+     * qudit \a ctrl on every qudit listed in \a target, i.e., CTRL-U-U-...-U.
      *
      * \param U Single qudit quantum gate
      * \param ctrl Control qudit index
@@ -2040,7 +2039,8 @@ class QCircuit : public IDisplay, public IJSON {
     // multiple ctrl single target
     /**
      * \brief Applies the single qudit controlled gate \a U with multiple
-     * control qudits listed in \a ctrl on the target qudit \a target
+     * control qudits listed in \a ctrl on the target qudit \a target, i.e.,
+     * CTRL-CTRL-...-CTRL-U.
      *
      * \param U Single qudit quantum gate
      * \param ctrl Control qudit indexes
@@ -2124,7 +2124,8 @@ class QCircuit : public IDisplay, public IJSON {
     // FIXME
     /**
      * \brief Applies the single qudit controlled gate \a U with multiple
-     * control qudits listed in \a ctrl on every qudit listed in \a target
+     * control qudits listed in \a ctrl on every qudit listed in \a target,
+     * i.e., CTRL-CTRL-...-CTRL-U-U-...-U.
      *
      * \param U Single qudit quantum gate
      * \param ctrl Control qudit indexes
@@ -2218,11 +2219,11 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
-    // custom multiple control composed target
+    // multiple control composed target
     /**
-     * \brief Jointly applies the custom multiple-qudit controlled gate \a U
-     * with multiple control qudits listed in \a ctrl on the qudit indexes
-     * specified by \a target
+     * \brief Jointly applies the multiple-qudit controlled gate \a U with
+     * multiple control qudits listed in \a ctrl on the qudit indexes specified
+     * by \a target, i.e., CTRL-CTRL-...-CTRL-U_{joint}.
      *
      * \param U Multiple-qudit quantum gate
      * \param ctrl Control qudit indexes
@@ -2323,7 +2324,7 @@ class QCircuit : public IDisplay, public IJSON {
     // FIXME, use the corresponding dits
     /**
      * \brief Applies the single qubit controlled gate \a U with classical
-     * control dit \a ctrl and target qudit \a target
+     * control dit \a ctrl and target qudit \a target, i.e., cCTRL-U.
      *
      * \param U Single qudit quantum gate
      * \param ctrl_dit Classical control dit index
@@ -2383,7 +2384,8 @@ class QCircuit : public IDisplay, public IJSON {
     // single ctrl multiple targets
     /**
      * \brief Applies the single qudit controlled gate \a U with classical
-     * control dit \a ctrl on every qudit listed in \a target
+     * control dit \a ctrl on every qudit listed in \a target, i.e.,
+     * cCTRL-U-U-...-U.
      *
      * \param U Single qudit quantum gate
      * \param ctrl_dit Classical control dit index
@@ -2458,7 +2460,7 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Applies the single qudit controlled gate \a U with multiple
      * classical control dits listed in \a ctrl on the target qudit \a
-     * target
+     * target, i.e., cCTRL-cCTRL-...-CTRL-U.
      *
      * \param U Single qudit quantum gate
      * \param ctrl_dits Classical control dits indexes
@@ -2536,7 +2538,7 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Applies the single qudit controlled gate \a U with multiple
      * classical control dits listed in \a ctrl on every qudit listed in
-     * \a target
+     * \a target, i.e., cCTRL-cCTRL-...-cCTRL-U-U-...-U.
      *
      * \param U Single qudit quantum gate
      * \param ctrl_dits Classical control dits indexes
@@ -2620,11 +2622,11 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
-    //  custom controlled gate with multiple controls and multiple targets
+    // multiple classical control composed target
     /**
-     * \brief Jointly applies the custom multiple-qudit controlled gate \a U
-     * with multiple classical control dits listed in \a ctrl on the qudit
-     * indexes specified by \a target
+     * \brief Jointly applies the multiple-qudit controlled gate \a U with
+     * multiple classical control dits listed in \a ctrl on the qudit indexes
+     * specified by \a target, i.e., i.e., cCTRL-cCTRL-...-cCTRL-U_{joint}.
      *
      * \param U Multiple-qudit quantum gate
      * \param ctrl_dits Classical control dits indexes
@@ -2776,7 +2778,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param c_reg Classical register where the value of the measurement is
      * being stored, as a decimal representation of the binary string
      * representing the measurement, with the most significant dit on the
-     * left (corresponding to the first/top qudit that is being measured)
+     * left (corresponding to the first/top qudit that is being measured, i.e.
+     * target[0])
      * \param destructive Destructive measurement, true by default
      * \param name Optional measurement name, default is "mZ"
      * \return Reference to the current instance

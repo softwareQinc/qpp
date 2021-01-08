@@ -440,7 +440,7 @@ class QEngine : public IDisplay, public IJSON {
                 case QCircuit::GateType::SINGLE:
                 case QCircuit::GateType::TWO:
                 case QCircuit::GateType::THREE:
-                case QCircuit::GateType::CUSTOM:
+                case QCircuit::GateType::JOINT:
                     st_.psi_ = apply(st_.psi_, h_tbl[gates[q_ip].gate_hash_],
                                      target_rel_pos, d);
                     break;

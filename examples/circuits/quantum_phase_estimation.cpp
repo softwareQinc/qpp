@@ -19,10 +19,12 @@ int main() {
     std::cout << ">> nq_c = " << nq_c << " counting qubits, nq_a = " << nq_a
               << " ancilla qubits\n\n";
 
+    double theta = 0.25; // change if you want, increase nq_c for more precision
+    cmat U(2, 2);        // initialize a unitary operator
+    U << 1, 0, 0, std::exp(pi * 1_i * theta); // T gate
     // we use the T\otimes T gate as an example; we want to estimate its last
     // (4-th) eigenvalue; we expect estimated theta = 1/4 (0.25).
-    cmat U = kron(gt.T, gt.T); // diag(1,e^{\pi i/4},e^{\pi i/4},e^{2\pi i/4})
-    double theta = 0.25;
+    U = kron(U, U); // OK, size will re-adjust since U is a dynamic Eigen matrix
 
     QCircuit qc{nq, nc};
     std::vector<idx> counting_qubits(nq_c);
@@ -45,6 +47,7 @@ int main() {
     std::cout << qc << '\n';
     std::cout << ">> END CIRCUIT\n\n";
 
+    std::cout << ">> Running...\n";
     QEngine engine{qc};
     engine.execute();
     // decimal representation of the measurement result

@@ -177,6 +177,13 @@ thread_local static RandomDevices& rdevs QPP_UNUSED_ =
     RandomDevices::get_thread_local_instance();
 #endif // NO_THREAD_LOCAL_
 
+/**
+ * \namespace qpp::obsolete
+ * \brief Obsolete/deprecated code, may be removed without notice in future
+ * releases
+ */
+namespace obsolete {} /* namespace obsolete */
+
 } /* namespace qpp */
 
 #endif /* QPP_H_ */

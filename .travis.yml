@@ -1,46 +1,42 @@
 language: cpp
-dist: bionic
+dist: focal
 os: linux
 
 jobs:
   include:
-    # Ubuntu Linux 18.04 gcc-7.1
+    # Ubuntu Linux Focal Fosa 20.04, gcc-9.3
     - os: linux
       compiler: gcc
-      before_install:
-        - export CXX="g++-7" CC="gcc-7"
-        - export BUILD="make"
+      env:
+        - MATRIX_EVAL="CXX=g++ && CC=gcc"
 
-    # Ubuntu Linux 18.04 clang-7.0
+    # Ubuntu Linux Focal Fosa 20.04, clang-7.0
     - os: linux
       compiler: clang
       before_install:
-        - sudo apt-get install libc++-dev libc++abi-dev
-        - export CXX="clang++" CC="clang"
         - export LD_LIBRARY_PATH=/usr/local/clang/lib:$LD_LIBRARY_PATH
-        - export BUILD="make"
+      env:
+        - MATRIX_EVAL="CXX=clang++ && CC=clang"
 
-    # Apple OSX LLVM version 10.0.0 (clang-1000.11.45.5)
+    # macOS Catalina 10.15, AppleClang version 12.0.0 (clang-1200.0.32.2)
     - os: osx
-      osx_image: xcode10.3
+      osx_image: xcode12
       compiler: clang
-      before_install:
-        - export BUILD="make"
+      env:
+        - MATRIX_EVAL="CXX=clang++ && CC=clang"
 
-    # Apple OSX gcc-7.5
+    # macOS Catalina 10.15, gcc-10.2
     - os: osx
-      osx_image: xcode10.3
+      osx_image: xcode12
       compiler: gcc
-      before_install:
-        - rm -rf /usr/local/include/c++
-        - brew update
-        - brew install gcc@7
-        - export CXX="g++-7" CC="gcc-7"
-        - export BUILD="make"
-        - sudo softwareupdate -i "Command Line Tools (macOS Mojave version 10.14) for Xcode-10.3"
+      env:
+        - MATRIX_EVAL="CXX=g++-10 && CC=gcc-10"
 
 notifications:
   email: false
+
+before_install:
+  - eval "${MATRIX_EVAL}"
 
 script:
   - $CXX --version
@@ -49,10 +45,8 @@ script:
   - wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip -O eigen3.zip && unzip -q eigen3.zip && mv eigen-3.3.7 $HOME/eigen
 
   # Build the examples
-  - mkdir build && cd build && cmake .. -DEIGEN3_INSTALL_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j4
+  - cd $TRAVIS_BUILD_DIR && mkdir build && cd build && cmake .. -DEIGEN3_INSTALL_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j4
 
-  # Build the unit tests
-  - cd ../unit_tests && mkdir build && cd build && cmake .. -DEIGEN3_INSTALL_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j4
-
-  # Run the unit tests
+  # Build and run the unit tests
+  - cd $TRAVIS_BUILD_DIR/unit_tests && mkdir build && cd build && cmake .. -DEIGEN3_INSTALL_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j4
   - ./tests/qpp_testing --gtest_filter=-qpp_Timer*
