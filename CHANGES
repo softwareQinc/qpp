@@ -1,4 +1,4 @@
-Pre-release
+Version 2.6 - 9 January 2021
     - Added Quantum Phase Estimation low-level API example in
       "examples/qpe.cpp", courtesy of @ryanhill1, see
       https://github.com/softwareQinc/qpp/pull/91
@@ -19,6 +19,7 @@ Pre-release
           - qpp::CTRL_custom()  -> qpp::CTRL_joint()
           - qpp::gate_custom()  -> qpp::gate_joint()
     - Documentation improvements in ["classes/circuits/circuits.hpp"]
+    - Updated Travis CI configuration
 
 Version 2.5 - 28 November 2020
     - Significant improvements in qpp::QEngine::execute() for multiple runs
