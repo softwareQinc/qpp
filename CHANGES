@@ -1,3 +1,6 @@
+Pre-release
+    - 
+
 Version 2.6 - 9 January 2021
     - Added Quantum Phase Estimation low-level API example in
       "examples/qpe.cpp", courtesy of @ryanhill1, see
