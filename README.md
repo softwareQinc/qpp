@@ -65,7 +65,7 @@ Please see the installation guide
 and the comprehensive [Wiki](https://github.com/softwareQinc/qpp/wiki) for further 
 documentation and detailed examples. 
 
-To generate the full official API documentation in both PDF and HTML formats run 
+To generate the full official API documentation in both LaTeX and HTML formats run 
 [`doxygen`](http://www.doxygen.nl) on the [`Doxyfile`](https://github.com/softwareQinc/qpp/blob/main/Doxyfile) file. The tool `dot` from the [`Graphviz`](https://www.graphviz.org) package must be installed (`sudo apt-get install graphviz` in Ubuntu/Debian). Running `doxygen` will generate the 
 documentation directory `doc` containing both the HTML and LaTeX documentation.
 
