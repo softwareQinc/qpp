@@ -126,6 +126,7 @@ class NoiseBase {
                 "qpp::NoiseBase::compute_state_()");
 
         // now do the actual noise generation
+        assert(probs_ != decltype(probs_)(probs_.size(), 0)); // not all zeros
         std::discrete_distribution<idx> dd{std::begin(probs_),
                                            std::end(probs_)};
         auto& gen =

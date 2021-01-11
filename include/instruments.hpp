@@ -227,7 +227,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
     // END EXCEPTION CHECKS
 
     // probabilities
-    std::vector<double> prob(Ks.size());
+    std::vector<double> probs(Ks.size());
     // resulting states
     std::vector<cmat> outstates(Ks.size());
 
@@ -238,9 +238,10 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
         for (idx i = 0; i < Ks.size(); ++i) {
             outstates[i] = cmat::Zero(Dout, Dout);
             cmat tmp = Ks[i] * rA * adjoint(Ks[i]); // un-normalized;
-            prob[i] = std::abs(trace(tmp));         // probability
-            if (prob[i] > 0)
-                outstates[i] = tmp / prob[i]; // normalized
+            probs[i] = std::abs(trace(tmp));        // probability
+            if (probs[i] > 0) {
+                outstates[i] = tmp / probs[i]; // normalized
+            }
         }
     }
     //************ ket ************//
@@ -250,15 +251,17 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
             outstates[i] = ket::Zero(Dout);
             ket tmp = Ks[i] * rA; // un-normalized;
             // probability
-            prob[i] = std::pow(norm(tmp), 2);
-            if (prob[i] > 0)
-                outstates[i] = tmp / std::sqrt(prob[i]); // normalized
+            probs[i] = std::pow(norm(tmp), 2);
+            if (probs[i] > 0) {
+                outstates[i] = tmp / std::sqrt(probs[i]); // normalized
+            }
         }
     } else
         throw exception::MatrixNotSquareNorCvector("qpp::measure()");
 
     // sample from the probability distribution
-    std::discrete_distribution<idx> dd(std::begin(prob), std::end(prob));
+    assert(probs != decltype(probs)(probs.size(), 0)); // not all zeros
+    std::discrete_distribution<idx> dd(std::begin(probs), std::end(probs));
     auto& gen =
 #ifdef NO_THREAD_LOCAL_
         RandomDevices::get_instance().get_prng();
@@ -267,7 +270,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
 #endif
     idx result = dd(gen);
 
-    return std::make_tuple(result, prob, outstates);
+    return std::make_tuple(result, probs, outstates);
 }
 
 // std::initializer_list overload, avoids ambiguity for 2-element lists, see
@@ -398,7 +401,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     // END EXCEPTION CHECKS
 
     // probabilities
-    std::vector<double> prob(Ks.size());
+    std::vector<double> probs(Ks.size());
     // resulting states
     std::vector<cmat> outstates;
 
@@ -412,11 +415,11 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     {
         for (idx i = 0; i < Ks.size(); ++i) {
             ket tmp = apply(rA, Ks[i], target, dims);
-            prob[i] = std::pow(norm(tmp), 2);
-            if (prob[i] > 0) {
+            probs[i] = std::pow(norm(tmp), 2);
+            if (probs[i] > 0) {
                 // normalized output state
                 // corresponding to measurement result i
-                tmp /= std::sqrt(prob[i]);
+                tmp /= std::sqrt(probs[i]);
                 if (destructive)
                     outstates[i] = ptrace(tmp, target, dims);
                 else
@@ -431,16 +434,17 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
             cmat tmp = apply(rA, Ks[i], target, dims);
             if (destructive)
                 tmp = ptrace(tmp, target, dims);
-            prob[i] = std::abs(trace(tmp)); // probability
-            if (prob[i] > 0) {
+            probs[i] = std::abs(trace(tmp)); // probability
+            if (probs[i] > 0) {
                 // normalized output state
                 // corresponding to measurement result i
-                outstates[i] = tmp / prob[i];
+                outstates[i] = tmp / probs[i];
             }
         }
     }
     // sample from the probability distribution
-    std::discrete_distribution<idx> dd(std::begin(prob), std::end(prob));
+    assert(probs != decltype(probs)(probs.size(), 0)); // not all zeros
+    std::discrete_distribution<idx> dd(std::begin(probs), std::end(probs));
     auto& gen =
 #ifdef NO_THREAD_LOCAL_
         RandomDevices::get_instance().get_prng();
@@ -449,7 +453,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 #endif
     idx result = dd(gen);
 
-    return std::make_tuple(result, prob, outstates);
+    return std::make_tuple(result, probs, outstates);
 }
 
 // std::initializer_list overload, avoids ambiguity for 2-element lists, see
@@ -621,7 +625,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
     //************ ket ************//
     if (internal::check_cvector(rA)) {
         const ket& rpsi = A.derived();
-        std::vector<double> prob(M);    // probabilities
+        std::vector<double> probs(M);   // probabilities
         std::vector<cmat> outstates(M); // resulting states
 
 #ifdef HAS_OPENMP
@@ -638,8 +642,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 
         for (idx i = 0; i < M; ++i) {
             double tmp = norm(outstates[i]);
-            prob[i] = tmp * tmp;
-            if (prob[i] > 0) {
+            probs[i] = tmp * tmp;
+            if (probs[i] > 0) {
                 // normalized output state
                 // corresponding to measurement result m
                 outstates[i] /= tmp;
@@ -647,7 +651,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
         }
 
         // sample from the probability distribution
-        std::discrete_distribution<idx> dd(std::begin(prob), std::end(prob));
+        assert(probs != decltype(probs)(probs.size(), 0)); // not all zeros
+        std::discrete_distribution<idx> dd(std::begin(probs), std::end(probs));
         auto& gen =
 #ifdef NO_THREAD_LOCAL_
             RandomDevices::get_instance().get_prng();
@@ -656,7 +661,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 #endif
         idx result = dd(gen);
 
-        return std::make_tuple(result, prob, outstates);
+        return std::make_tuple(result, probs, outstates);
     }
     //************ density matrix ************//
     else {
