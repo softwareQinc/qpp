@@ -66,7 +66,7 @@ TEST(qpp_cosm, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename OutputScalar, typename Derived>
 ///       dyn_mat <OutputScalar> qpp::cwise(const Eigen::MatrixBase<Derived>& A,
-///       OutputScalar (*f)(const typename Derived::Scalar&))
+///       OutputScalar (*f)(typename Derived::Scalar))
 TEST(qpp_cwise, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> typename Derived::Scalar qpp::det(

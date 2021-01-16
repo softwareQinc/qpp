@@ -1,5 +1,16 @@
 Pre-release
-    - 
+    - Fixed minor inadvertence in OpenQASM `crz` implementation, see
+      https://github.com/softwareQinc/qpp/issues/99
+    - Integrated the unit tests with the main project, so now the unit tests
+      are automatically compiled along with the examples, and can now be run
+      by typing 'make test' or 'ctest'. Use 'GTEST_COLOR=1 ARGS="-V" make test'
+      or 'GTEST_COLOR=1 ctest -V' for coloured verbose testing output.
+    - Changed the signature of qpp::cwise() ["functions.h"] so it takes the
+      scalar argument by value (and not constant reference as before). This
+      avoids an internal compiler error (ICE) triggered when compiling
+      "examples/functor.cpp" in MinGW.
+    - CMake minimum required version bumped to 3.10 (3.12 for macOS) for
+      automatic unit tests detection by CMake
 
 Version 2.6 - 9 January 2021
     - Added Quantum Phase Estimation low-level API example in

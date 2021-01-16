@@ -98,9 +98,9 @@ static std::unordered_map<ident,
         {"crz", [](const std::vector<double>& args) {
              assert(!args.empty());
              cmat mat{cmat::Identity(4, 4)};
-             // note the discrepancy; QISKIT defines it as CTRL-diag(1,
-             // e^{i\phi}) we comply to the QISKIT definition (and not the
-             // OPENQASM specs); see
+             // note the discrepancy; QISKIT defines it as
+             // CTRL-diag(1, e^{i\phi}) we comply to the QISKIT definition (and
+             // not the OPENQASM specs); see
              // https://github.com/softwareQinc/qpp/issues/99 and
              // https://github.com/softwareQinc/qpp/issues/70
              mat.block(2, 2, 2, 2) =

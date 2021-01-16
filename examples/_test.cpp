@@ -4,7 +4,7 @@
 #include "qpp.h"
 #include "experimental/experimental.hpp"
 
-int main(int argc, char** argv) {
+int main(int /*argc*/, char** /*argv*/) {
     /////////// testing ///////////
     using namespace qpp;
 }

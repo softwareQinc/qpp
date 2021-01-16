@@ -883,9 +883,8 @@ double schatten(const Eigen::MatrixBase<Derived>& A, double p) {
  * \a OutputScalar scalar field
  */
 template <typename OutputScalar, typename Derived>
-dyn_mat<OutputScalar>
-cwise(const Eigen::MatrixBase<Derived>& A,
-      OutputScalar (*f)(const typename Derived::Scalar&)) {
+dyn_mat<OutputScalar> cwise(const Eigen::MatrixBase<Derived>& A,
+                            OutputScalar (*f)(typename Derived::Scalar)) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
