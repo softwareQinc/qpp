@@ -44,9 +44,8 @@ script:
   # Install Eigen3
   - wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip -O eigen3.zip && unzip -q eigen3.zip && mv eigen-3.3.7 $HOME/eigen
 
-  # Build the examples
+  # Build the examples and the unit tests
   - cd $TRAVIS_BUILD_DIR && mkdir build && cd build && cmake .. -DEIGEN3_INSTALL_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j4
 
-  # Build and run the unit tests
-  - cd $TRAVIS_BUILD_DIR/unit_tests && mkdir build && cd build && cmake .. -DEIGEN3_INSTALL_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j4
-  - ./tests/qpp_testing --gtest_filter=-qpp_Timer*
+  # Run the unit tests
+  - make test ARGS='-E qpp_Timer'

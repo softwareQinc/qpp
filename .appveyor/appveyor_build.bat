@@ -6,21 +6,12 @@ IF %COMPILER%==msvc2019 (
     cd build
     cmake .. -DEIGEN3_INSTALL_DIR="c:\%EIGEN3_INSTALL_PATH%"
     msbuild -verbosity:minimal qpp.sln
-    cd ../unit_tests
-    mkdir build
-    cd build
-    cmake .. -DEIGEN3_INSTALL_DIR="c:\%EIGEN3_INSTALL_PATH%"
-    msbuild -verbosity:minimal qpp_testing.sln
 )
 IF %COMPILER%==msys2 (
     @echo on
     SET "PATH=C:\msys64\mingw64\bin;%PATH%"
     cd %APPVEYOR_BUILD_FOLDER%
     mkdir build
-    cd build
-    bash -lc "cmake .. -DEIGEN3_INSTALL_DIR=/c/%EIGEN3_INSTALL_PATH% -GNinja && ninja"
-    cd ../unit_tests 
-    mkdir build 
     cd build
     bash -lc "cmake .. -DEIGEN3_INSTALL_DIR=/c/%EIGEN3_INSTALL_PATH% -GNinja && ninja"
 )

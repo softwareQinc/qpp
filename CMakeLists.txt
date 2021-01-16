@@ -1,17 +1,19 @@
 if (APPLE)
     cmake_minimum_required(VERSION 3.12)
 else ()
-    cmake_minimum_required(VERSION 3.9)
+    cmake_minimum_required(VERSION 3.10)
 endif ()
 project(qpp VERSION 2.6 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+enable_testing()
 
 #### Source directory
 add_definitions(-DPATH="${CMAKE_SOURCE_DIR}")
 
 #### Quantum++ headers
-include_directories(include)
+add_library(libqpp INTERFACE)
+target_include_directories(libqpp INTERFACE ${PROJECT_SOURCE_DIR}/include)
 
 #### Source file(s) to be compiled, modify as needed
 aux_source_directory(examples EXAMPLE_FILES)
@@ -157,6 +159,9 @@ if (CYGWIN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
 endif ()
 
+#### Unit testing
+add_subdirectory(unit_tests/)
+
 #### Additional flags for GNU gcc and Clang/AppleClang
 if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
         STREQUAL "GNU")
@@ -205,26 +210,27 @@ foreach (FILE ${EXAMPLE_FILES})
     if (${BUILD_WITH_MATLAB})
         if (WIN32)
             if (MSVC)
-                target_link_libraries(${TARGET_NAME} libmx libmat)
+                target_link_libraries(${TARGET_NAME} PUBLIC libmx libmat)
             elseif (MINGW)
-                target_link_libraries(${TARGET_NAME} mx mat)
+                target_link_libraries(${TARGET_NAME} PUBLIC mx mat)
             endif ()
         else ()
-            target_link_libraries(${TARGET_NAME} mx mat)
+            target_link_libraries(${TARGET_NAME} PUBLIC mx mat)
         endif ()
     endif ()
     #### Eigen3 was found automatically
     if (TARGET Eigen3::Eigen)
-        target_link_libraries(${TARGET_NAME} Eigen3::Eigen)
+        target_link_libraries(${TARGET_NAME} PUBLIC Eigen3::Eigen)
     endif ()
     #### OpenMP was found automatically
     if (OpenMP_CXX_FOUND AND (OpenMP_CXX_VERSION_MAJOR GREATER_EQUAL 3))
-        target_link_libraries(${TARGET_NAME} OpenMP::OpenMP_CXX)
+        target_link_libraries(${TARGET_NAME} PUBLIC OpenMP::OpenMP_CXX)
     endif ()
+    target_link_libraries(${TARGET_NAME} PUBLIC libqpp)
     #### On Linux we get a linker error related to __cxa_thread_atexit()
     if (UNIX AND NOT (APPLE OR CYGWIN)
             AND (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
             AND (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.0))
-        target_link_libraries(${TARGET_NAME} supc++)
+        target_link_libraries(${TARGET_NAME} PUBLIC supc++)
     endif ()
 endforeach ()
