@@ -20,7 +20,8 @@ jobs:
       - run:
           name: Install dependencies (Eigen3)
           command: |
-            apt install -y libeigen3-dev
+            sudo apt-get update
+            sudo apt-get install -y libeigen3-dev
       - run:
           name: Build the examples and the unit tests
           command: |
