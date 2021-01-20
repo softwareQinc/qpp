@@ -294,15 +294,13 @@ normalize(const Eigen::MatrixBase<Derived>& A) {
     if (internal::check_cvector(rA) || internal::check_rvector(rA)) {
         double normA = norm(rA);
         if (normA == 0) {
-            std::cerr << "qpp::normalize()\n";
-            throw std::overflow_error("Division by zero!");
+            throw std::overflow_error("qpp::normalize(): Division by zero!");
         }
         result = rA / normA;
     } else if (internal::check_square_mat(rA)) {
         typename Derived::Scalar traceA = trace(rA);
         if (std::abs(traceA) == 0) {
-            std::cerr << "qpp::normalize()\n";
-            throw std::overflow_error("Division by zero!");
+            throw std::overflow_error("qpp::normalize(): Division by zero!");
         }
         result = rA / trace(rA);
     } else

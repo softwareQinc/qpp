@@ -12,6 +12,8 @@ Pre-release
     - CMake minimum required version bumped to 3.10 (3.12 for macOS) for
       automatic unit tests detection by CMake
     - Added CircleCI continuous integration
+    - Removed <iostream> implicit dependencies ["qpp.h"]
+    - Added optional "context" to qpp::Exception ["classes/exception.hpp"]
 
 Version 2.6 - 9 January 2021
     - Added Quantum Phase Estimation low-level API example in

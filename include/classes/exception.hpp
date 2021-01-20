@@ -69,17 +69,20 @@ namespace exception {
  * \endcode
  */
 class Exception : public std::exception {
-  private:
+  protected:
     std::string where_;
     mutable std::string msg_;
+    std::string context_;
 
   public:
     /**
      * \brief Constructs an exception
      *
      * \param where Text representing where the exception occurred
+     * \param context Optional context-dependent message
      */
-    explicit Exception(std::string where) : where_{std::move(where)}, msg_{} {}
+    explicit Exception(std::string where, std::string context = {})
+        : where_{std::move(where)}, msg_{}, context_{std::move(context)} {}
 
     /**
      * \brief Overrides std::exception::what()
@@ -91,7 +94,11 @@ class Exception : public std::exception {
         msg_ += where_;
         msg_ += ": ";
         msg_ += description();
-        msg_ += "!";
+        msg_ += '!';
+
+        if (!context_.empty()) {
+            msg_ += " [" + context_ + ']';
+        }
 
         return msg_.c_str();
     }
@@ -584,15 +591,10 @@ class Duplicates : public Exception {
  * Custom exception, the user must provide a custom message
  */
 class CustomException : public Exception {
-    std::string what_{};
-
-    std::string description() const override {
-        return "CUSTOM EXCEPTION " + what_;
-    }
-
   public:
-    CustomException(std::string where, std::string what)
-        : Exception{std::move(where)}, what_{std::move(what)} {}
+    std::string description() const override { return "Custom exception"; }
+
+    using Exception::Exception;
 };
 
 /**

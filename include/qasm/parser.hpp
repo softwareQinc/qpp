@@ -45,11 +45,12 @@ namespace qasm {
 class Parser {
     Preprocessor& pp_lexer_; ///< preprocessed, tokenized input stream
 
-    bool error_ = false;            ///< whether a parse error has occured
-    bool supress_errors_ = false;   ///< whether to supress errors
+    bool error_ = false;            ///< whether a parse error has occurred
+    bool suppress_errors_ = false;  ///< whether to suppress errors
     Token current_token_ = Token(); ///< current token
     int bits_ = 0;                  ///< number of bits
     int qubits_ = 0;                ///< number of qubits
+    std::string error_context_;     ///< parsing error context
 
   public:
     /**
@@ -57,7 +58,7 @@ class Parser {
      *
      * \param pp_lexer The preprocessed lexer stream to be parsed
      */
-    Parser(Preprocessor& pp_lexer) : pp_lexer_(pp_lexer) {}
+    explicit Parser(Preprocessor& pp_lexer) : pp_lexer_(pp_lexer) {}
 
     /**
      * \brief Parses the tokenized stream as a QCircuit object
@@ -67,8 +68,13 @@ class Parser {
     std::unique_ptr<QCircuit> parse() {
         // Parse the program
         auto result = parse_program();
-        if (error_)
-            throw exception::ParseError("qpp::qasm::Parser::parse()");
+        if (error_) {
+            if (error_context_.empty())
+                throw exception::ParseError("qpp::qasm::Parser::parse()");
+            else
+                throw exception::ParseError("qpp::qasm::Parser::parse()",
+                                            error_context_);
+        }
 
         // Generate the QCircuit
         return result.to_QCircuit();
@@ -78,12 +84,12 @@ class Parser {
     /**
      * \brief Consume a token and retrieve the next one
      *
-     * \param reset Whether to unsupress errors (optional, default is false)
+     * \param reset Whether to un-suppress errors (optional, default is false)
      */
     void consume_token(bool reset = false) {
         current_token_ = pp_lexer_.next_token();
         if (reset)
-            supress_errors_ = false;
+            suppress_errors_ = false;
     }
 
     /**
@@ -99,12 +105,13 @@ class Parser {
     Token expect_and_consume_token(Token::Kind expected) {
         if (current_token_.is_not(expected)) {
             error_ = true;
-            if (!supress_errors_) {
-                std::cerr << current_token_.location();
-                std::cerr << ": expected " << expected;
-                std::cerr << " but got " << current_token_.kind() << "\n";
-                ;
-                supress_errors_ = true;
+            if (!suppress_errors_) {
+                std::stringstream ss;
+                ss << current_token_.location();
+                ss << ": expected " << expected;
+                ss << " but got " << current_token_.kind();
+                error_context_ = ss.str();
+                suppress_errors_ = true;
             }
             return current_token_;
         }
@@ -127,12 +134,13 @@ class Parser {
         while (current_token_.is_not(expected) &&
                current_token_.is_not(Token::Kind::eof)) {
             error_ = true;
-            if (!supress_errors_) {
-                std::cerr << current_token_.location();
-                std::cerr << ": expected " << expected;
-                std::cerr << " but got " << current_token_.kind() << "\n";
-                ;
-                supress_errors_ = true;
+            if (!suppress_errors_) {
+                std::stringstream ss;
+                ss << current_token_.location();
+                ss << ": expected " << expected;
+                ss << " but got " << current_token_.kind();
+                error_context_ = ss.str();
+                suppress_errors_ = true;
             }
             consume_token();
         }
@@ -218,13 +226,13 @@ class Parser {
 
                 default:
                     error_ = true;
-                    if (!supress_errors_) {
-                        std::cerr << current_token_.location();
-                        std::cerr << ": expected a declaration or statement";
-                        std::cerr << " but got " << current_token_.kind()
-                                  << "\n";
-                        ;
-                        supress_errors_ = true;
+                    if (!suppress_errors_) {
+                        std::stringstream ss;
+                        ss << current_token_.location();
+                        ss << ": expected a declaration or statement";
+                        ss << " but got " << current_token_.kind();
+                        error_context_ = ss.str();
+                        suppress_errors_ = true;
                     }
 
                     consume_until(Token::Kind::semicolon);
@@ -389,12 +397,13 @@ class Parser {
 
             default:
                 error_ = true;
-                if (!supress_errors_) {
-                    std::cerr << current_token_.location();
-                    std::cerr << ": expected a quantum operation, but got ";
-                    std::cerr << current_token_.kind() << "\n";
-                    ;
-                    supress_errors_ = true;
+                if (!suppress_errors_) {
+                    std::stringstream ss;
+                    ss << current_token_.location();
+                    ss << ": expected a quantum operation, but got ";
+                    ss << current_token_.kind();
+                    error_context_ = ss.str();
+                    suppress_errors_ = true;
                 }
 
                 return nullptr;
@@ -430,12 +439,13 @@ class Parser {
 
             default:
                 error_ = true;
-                if (!supress_errors_) {
-                    std::cerr << current_token_.location();
-                    std::cerr << ": expected a gate operation but got ";
-                    std::cerr << current_token_.kind() << "\n";
-                    ;
-                    supress_errors_ = true;
+                if (!suppress_errors_) {
+                    std::stringstream ss;
+                    ss << current_token_.location();
+                    ss << ": expected a gate operation but got ";
+                    ss << current_token_.kind();
+                    error_context_ = ss.str();
+                    suppress_errors_ = true;
                 }
 
                 return nullptr;
@@ -555,17 +565,11 @@ class Parser {
         auto loc = current_token_.location();
 
         auto lexp = parse_atom();
-        while (1) {
+        while (true) {
             auto next_min_precedence = min_precedence;
 
             switch (current_token_.kind()) {
                 case Token::Kind::plus:
-                    if (min_precedence > 1) {
-                        return lexp;
-                    }
-                    next_min_precedence = 2;
-                    break;
-
                 case Token::Kind::minus:
                     if (min_precedence > 1) {
                         return lexp;
@@ -574,12 +578,6 @@ class Parser {
                     break;
 
                 case Token::Kind::star:
-                    if (min_precedence > 2) {
-                        return lexp;
-                    }
-                    next_min_precedence = 3;
-                    break;
-
                 case Token::Kind::slash:
                     if (min_precedence > 2) {
                         return lexp;
@@ -603,8 +601,6 @@ class Parser {
             lexp =
                 ExprPtr(new BExpr(loc, std::move(lexp), bop, std::move(rexp)));
         }
-
-        return lexp;
     }
 
     /**
@@ -669,12 +665,13 @@ class Parser {
 
             default:
                 error_ = true;
-                if (!supress_errors_) {
-                    std::cerr << current_token_.location();
-                    std::cerr << ": expected an atomic expression but got ";
-                    std::cerr << current_token_.kind() << "\n";
-                    ;
-                    supress_errors_ = true;
+                if (!suppress_errors_) {
+                    std::stringstream ss;
+                    ss << current_token_.location();
+                    ss << ": expected an atomic expression but got ";
+                    ss << current_token_.kind();
+                    error_context_ = ss.str();
+                    suppress_errors_ = true;
                 }
 
                 return nullptr;
@@ -706,12 +703,13 @@ class Parser {
                 return BinaryOp::Pow;
             default:
                 error_ = true;
-                if (!supress_errors_) {
-                    std::cerr << current_token_.location();
-                    std::cerr << ": expected a binary operator but got ";
-                    std::cerr << current_token_.kind() << "\n";
-                    ;
-                    supress_errors_ = true;
+                if (!suppress_errors_) {
+                    std::stringstream ss;
+                    ss << current_token_.location();
+                    ss << ": expected a binary operator but got ";
+                    ss << current_token_.kind();
+                    error_context_ = ss.str();
+                    suppress_errors_ = true;
                 }
 
                 return BinaryOp::Plus;
@@ -746,12 +744,13 @@ class Parser {
                 return UnaryOp::Sqrt;
             default:
                 error_ = true;
-                if (!supress_errors_) {
-                    std::cerr << current_token_.location();
-                    std::cerr << ": expected a unary operator but got ";
-                    std::cerr << current_token_.kind() << "\n";
-                    ;
-                    supress_errors_ = true;
+                if (!suppress_errors_) {
+                    std::stringstream ss;
+                    ss << current_token_.location();
+                    ss << ": expected a unary operator but got ";
+                    ss << current_token_.kind();
+                    error_context_ = ss.str();
+                    suppress_errors_ = true;
                 }
 
                 return UnaryOp::Neg;

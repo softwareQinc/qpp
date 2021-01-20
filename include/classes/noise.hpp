@@ -79,16 +79,18 @@ class NoiseBase {
      *
      * \param state State vector or density matrix
      * \param target Target qudit indexes where the noise is applied
+     * \param callee Optional caller name
      */
-    void compute_probs_(const cmat& state,
-                        const std::vector<idx>& target) const {
+    void compute_probs_(const cmat& state, const std::vector<idx>& target,
+                        const std::string& caller = {}) const {
         if (!std::is_same<NoiseType::StateDependent, noise_type>::value)
             return; // no-op
 
         // minimal EXCEPTION CHECKS
 
         if (!internal::check_nonzero_size(state))
-            throw exception::ZeroSize("qpp::NoiseBase::compute_probs_()");
+            throw exception::ZeroSize(caller,
+                                      "qpp::NoiseBase::compute_probs_()");
         // END EXCEPTION CHECKS
 
         cmat rho_i;
@@ -105,10 +107,11 @@ class NoiseBase {
      *
      * \param state State vector or density matrix
      * \param target Target qudit indexes where the noise is applied
+     * \param callee Optional caller name
      * \return Resulting state after the noise was applied
      */
-    cmat compute_state_(const cmat& state,
-                        const std::vector<idx>& target) const {
+    cmat compute_state_(const cmat& state, const std::vector<idx>& target,
+                        const std::string& caller = {}) const {
         cmat result;
         idx D = static_cast<idx>(state.rows());
 
@@ -123,7 +126,7 @@ class NoiseBase {
         //************ Exception: not ket nor density matrix ************//
         else
             throw exception::MatrixNotSquareNorCvector(
-                "qpp::NoiseBase::compute_state_()");
+                caller, "qpp::NoiseBase::compute_state_()");
 
         // now do the actual noise generation
         assert(probs_ != decltype(probs_)(probs_.size(), 0)); // not all zeros
@@ -295,13 +298,10 @@ class NoiseBase {
      */
     virtual cmat operator()(const cmat& state) const {
         cmat result;
-        try {
-            compute_probs_(state, std::vector<idx>{0});
-            result = compute_state_(state, std::vector<idx>{0});
-        } catch (exception::Exception&) {
-            std::cerr << "qpp::NoiseBase::operator()\n";
-            throw;
-        }
+        compute_probs_(state, std::vector<idx>{0},
+                       "qpp::NoiseBase::operator()");
+        result = compute_state_(state, std::vector<idx>{0},
+                                "qpp::NoiseBase::operator()");
 
         return result;
     }
@@ -317,13 +317,10 @@ class NoiseBase {
      */
     virtual cmat operator()(const cmat& state, idx target) const {
         cmat result;
-        try {
-            compute_probs_(state, std::vector<idx>{target});
-            result = compute_state_(state, std::vector<idx>{target});
-        } catch (exception::Exception&) {
-            std::cerr << "qpp::NoiseBase::operator()\n";
-            throw;
-        }
+        compute_probs_(state, std::vector<idx>{target},
+                       "qpp::NoiseBase::operator()");
+        result = compute_state_(state, std::vector<idx>{target},
+                                "qpp::NoiseBase::operator()");
 
         return result;
     }
@@ -340,13 +337,8 @@ class NoiseBase {
     virtual cmat operator()(const cmat& state,
                             const std::vector<idx>& target) const {
         cmat result;
-        try {
-            compute_probs_(state, target);
-            result = compute_state_(state, target);
-        } catch (exception::Exception&) {
-            std::cerr << "qpp::NoiseBase::operator()\n";
-            throw;
-        }
+        compute_probs_(state, target, "qpp::NoiseBase::operator()");
+        result = compute_state_(state, target, "qpp::NoiseBase::operator()");
 
         return result;
     }

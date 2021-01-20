@@ -59,8 +59,8 @@ class Lexer {
      * \param buffer Buffer to lex
      * \param fname The name of the file associated with buffer (optional)
      */
-    Lexer(std::shared_ptr<std::istream> buffer, const std::string& fname = "")
-        : loc_(fname, 1, 1), buf_(buffer) {}
+    explicit Lexer(std::shared_ptr<std::istream> buffer, const std::string& fname = "")
+        : loc_(fname, 1, 1), buf_(std::move(buffer)) {}
 
     /**
      * \brief Lex and return the next token
@@ -129,7 +129,7 @@ class Lexer {
      * \param tok_start The location of the beginning of the token
      * \return An integer or real type token
      */
-    Token lex_numeric_constant(Location tok_start) {
+    Token lex_numeric_constant(const Location& tok_start) {
         std::string str;
         str.reserve(64); // Reserve space to avoid reallocation
         bool integral = true;
@@ -183,7 +183,7 @@ class Lexer {
      * \param tok_start The location of the beginning of the token
      * \return An identifier type token
      */
-    Token lex_identifier(Location tok_start) {
+    Token lex_identifier(const Location& tok_start) {
         std::string str;
         str.reserve(64); // Reserve space to avoid reallocation
 
@@ -210,7 +210,7 @@ class Lexer {
      * \param tok_start The location of the beginning of the token
      * \return A string type token
      */
-    Token lex_string(Location tok_start) {
+    Token lex_string(const Location& tok_start) {
         std::string str;
         str.reserve(64); // Reserve space to avoid reallocation
 
@@ -220,10 +220,8 @@ class Lexer {
             skip_char();
         }
 
-        if (buf_->peek() != '"') {
-            std::cerr << "Unmatched \", strings must on the same line\n";
+        if (buf_->peek() != '"')
             return Token(tok_start, Token::Kind::unknown, str);
-        }
 
         skip_char();
         return Token(tok_start, Token::Kind::string, str);
