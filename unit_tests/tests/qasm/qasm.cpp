@@ -2,6 +2,7 @@
 #define PATH ""
 #endif
 
+#include <iostream>
 #include "gtest/gtest.h"
 #include "qpp.h"
 

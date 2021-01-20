@@ -207,7 +207,7 @@ class Preprocessor {
      *
      * \param os Output stream passed by reference
      */
-    void print_all_tokens(std::ostream& os = std::cout) {
+    void print_all_tokens(std::ostream& os) {
         Token current = next_token();
 
         while (!current.is(Token::Kind::eof)) {
@@ -228,14 +228,17 @@ class Preprocessor {
     void handle_include() {
         auto token = current_lexer_->next_token();
         if (token.is_not(Token::Kind::string)) {
-            std::cerr << "Error: Include must be followed by a file name\n";
-            return;
+            throw exception::CustomException(
+                "qpp::qasm::Preprocessor::handle_include()",
+                "Error: Include must be followed by a file name");
         }
 
         std::string target = token;
         token = current_lexer_->next_token();
         if (token.is_not(Token::Kind::semicolon)) {
-            std::cerr << "Warning: Missing a ';'\n";
+            throw exception::CustomException(
+                "qpp::qasm::Preprocessor::handle_include()",
+                "Warning: Missing a ';'");
         }
         if (add_target_file(target)) {
             return;
@@ -245,7 +248,9 @@ class Preprocessor {
                               "qelib1.inc");
             return;
         } else {
-            std::cerr << "Error: Couldn't open file " << target << "\n";
+            throw exception::CustomException(
+                "qpp::qasm::Preprocessor::handle_include()",
+                "Error: Can not open file " + target);
         }
     }
 };
