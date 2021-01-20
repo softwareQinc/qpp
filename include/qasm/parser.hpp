@@ -50,7 +50,7 @@ class Parser {
     Token current_token_ = Token(); ///< current token
     int bits_ = 0;                  ///< number of bits
     int qubits_ = 0;                ///< number of qubits
-    std::string error_context_;     ///< parsing error context
+    std::string error_context_{};   ///< parsing error context
 
   public:
     /**
