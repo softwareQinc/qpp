@@ -102,7 +102,7 @@ class Singleton {
         // Guaranteed to be destroyed.
         // Instantiated on first use.
         // Thread safe in C++11
-        thread_local static T instance;
+        thread_local static T instance{};
 
         return instance;
     }

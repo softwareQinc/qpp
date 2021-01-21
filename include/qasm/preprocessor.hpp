@@ -163,14 +163,16 @@ class Preprocessor {
      * current buffer
      *
      * \param buffer Shared pointer to an input buffer
-     * \param fname Filename associated with the buffer (optional)
+     * \param fname Filename associated with the buffer (optional, stdin by
+     * default)
      */
     void add_target_stream(std::shared_ptr<std::istream> buffer,
-                           const std::string& fname = "") {
+                           const std::string& fname = "stdin") {
         if (current_lexer_ != nullptr) {
             lexer_stack_.push_back(std::move(current_lexer_));
         }
-        current_lexer_ = std::unique_ptr<Lexer>(new Lexer(buffer, fname));
+        current_lexer_ =
+            std::unique_ptr<Lexer>(new Lexer(std::move(buffer), fname));
     }
 
     /**
@@ -233,7 +235,7 @@ class Preprocessor {
                 "Error: Include must be followed by a file name");
         }
 
-        std::string target = token;
+        auto target = static_cast<std::string>(token);
         token = current_lexer_->next_token();
         if (token.is_not(Token::Kind::semicolon)) {
             throw exception::CustomException(

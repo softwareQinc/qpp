@@ -155,7 +155,7 @@ class Context {
      *
      * \param qc Pointer to a QCircuit object
      */
-    Context(QCircuit* qc) : circuit_(qc) {}
+    explicit Context(QCircuit* qc) : circuit_(qc) {}
 
     /**
      * \brief Disables copy constructor
@@ -212,7 +212,7 @@ class Context {
     /**
      * \brief Enter a new scope
      */
-    void enter_scope() { env_.push_back({}); }
+    void enter_scope() { env_.emplace_back(); }
 
     /**
      * \brief Exit current scope
@@ -251,7 +251,7 @@ class Context {
      */
     void set(const ident& id, std::unique_ptr<Value> val) {
         if (env_.empty())
-            env_.push_back({});
+            env_.emplace_back();
         env_.back().val_[id] = std::move(val);
     }
 
@@ -315,17 +315,12 @@ class Statement : public IDisplay {
      *
      * \param loc Source location
      */
-    Statement(Location loc) : loc_(loc) {}
+    explicit Statement(const Location& loc) : loc_(loc) {}
 
     /**
      * \brief Disable copying
      */
     Statement(const Statement&) = delete;
-
-    /**
-     * \brief Default virtual destructor
-     */
-    virtual ~Statement() = default;
 
     /**
      * \brief Must be overridden by all derived classes
@@ -343,7 +338,8 @@ class Statement : public IDisplay {
      * \param os Output stream passed by reference
      * \param prefix Prefix for the statement
      */
-    void pretty_print(std::ostream& os, const std::string& prefix) const {
+    virtual void pretty_print(std::ostream& os,
+                              const std::string& prefix) const {
         os << "(" << loc_ << "):" << prefix << *this;
     }
 };
@@ -360,17 +356,12 @@ class Gate : public Statement {
      *
      * \param loc Source location
      */
-    Gate(Location loc) : Statement(loc) {}
+    explicit Gate(const Location& loc) : Statement(loc) {}
 
     /**
      * \brief Disable copying
      */
     Gate(const Gate&) = delete;
-
-    /**
-     * \brief Default virtual destructor
-     */
-    virtual ~Gate() = default;
 };
 using GatePtr = std::unique_ptr<Gate>;
 
@@ -390,17 +381,12 @@ class Decl : public Statement {
      * \param loc Source location
      * \param id Declared identifier
      */
-    Decl(Location loc, ident id) : Statement(loc), id_(id) {}
+    Decl(const Location& loc, ident id) : Statement(loc), id_(std::move(id)) {}
 
     /**
      * \brief Disable copying
      */
     Decl(const Decl&) = delete;
-
-    /**
-     * \brief Default virtual destructor
-     */
-    virtual ~Decl() = default;
 };
 
 /**
@@ -417,17 +403,12 @@ class Expr : public IDisplay {
      *
      * \param loc Source location
      */
-    Expr(Location loc) : loc_(loc) {}
+    explicit Expr(const Location& loc) : loc_(loc) {}
 
     /**
      * \brief Disable copying
      */
     Expr(const Expr&) = delete;
-
-    /**
-     * \brief Default virtual destructor
-     */
-    virtual ~Expr() = default;
 
     /**
      * \brief Must be overridden by all derived classes
@@ -444,6 +425,7 @@ using ExprPtr = std::unique_ptr<Expr>;
 /*-------------------- Non-virtual leaf classes ------------------*/
 /**
  * \class qpp::qasm::QASM
+ * \brief QASM program class
  * \brief QASM program class
  */
 class QASM : public IDisplay {
@@ -480,7 +462,7 @@ class QASM : public IDisplay {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << "OPENQASM 2.0;\ninclude \"qelib1.inc\";\n";
         for (auto it = body_.begin(); it != body_.end(); it++) {
             os << **it;
@@ -518,7 +500,6 @@ class Circuit : public Value {
             const std::vector<ident>& q_params,
             const std::vector<GatePtr>& body)
         : c_params_(c_params), q_params_(q_params), body_(body) {}
-    ~Circuit() = default;
 };
 
 /**
@@ -532,8 +513,7 @@ class Register : public Value {
     std::vector<idx> indices_; ///< the (virtual) register indices
 
     Register(bool quantum, std::vector<idx> indices)
-        : quantum_(quantum), indices_(indices) {}
-    ~Register() = default;
+        : quantum_(quantum), indices_(std::move(indices)) {}
 };
 
 /**
@@ -545,8 +525,7 @@ class Qubit : public Value {
   public:
     idx index_; ///< index of the qubit
 
-    Qubit(idx index) : index_(index) {}
-    ~Qubit() = default;
+    explicit Qubit(idx index) : index_(index) {}
 };
 
 /**
@@ -558,8 +537,7 @@ class Number : public Value {
   public:
     double value_; ///< the floating point number
 
-    Number(double value) : value_(value) {}
-    ~Number() = default;
+    explicit Number(double value) : value_(value) {}
 };
 
 /**
@@ -579,8 +557,8 @@ class Varinfo : public IDisplay {
      * \param id The identifier accessed
      * \param offset The register offset (optional)
      */
-    Varinfo(Location loc, ident id, int offset = -1)
-        : loc_(loc), id_(id), offset_(offset) {}
+    Varinfo(const Location& loc, ident id, int offset = -1)
+        : loc_(loc), id_(std::move(id)), offset_(offset) {}
 
     /**
      * \brief Try to interpret the access as a classical register in a given
@@ -676,7 +654,7 @@ class Varinfo : public IDisplay {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << id_;
         if (offset_ != -1)
             os << "[" << offset_ << "]";
@@ -707,15 +685,17 @@ class GateDecl final : public Decl {
      * \param q_params List of quantum parameters
      * \param body List of gate statements
      */
-    GateDecl(Location loc, ident id, bool opaque, std::vector<ident> c_params,
-             std::vector<ident> q_params, std::vector<GatePtr> body)
-        : Decl(loc, id), opaque_(opaque), c_params_(c_params),
-          q_params_(q_params), body_(std::move(body)) {}
+    GateDecl(const Location& loc, ident id, bool opaque,
+             std::vector<ident> c_params, std::vector<ident> q_params,
+             std::vector<GatePtr> body)
+        : Decl(loc, std::move(id)), opaque_(opaque),
+          c_params_(std::move(c_params)), q_params_(std::move(q_params)),
+          body_(std::move(body)) {}
 
     /**
      * \brief qpp::qasm::Statement::evaluate() override
      */
-    void evaluate(Context& ctx) const {
+    void evaluate(Context& ctx) const override {
         ctx.set(id_, std::unique_ptr<Value>(
                          new Circuit(c_params_, q_params_, body_)));
     }
@@ -723,7 +703,7 @@ class GateDecl final : public Decl {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << (opaque_ ? "opaque " : "gate ") << id_;
         if (!c_params_.empty()) {
             os << "(";
@@ -752,7 +732,8 @@ class GateDecl final : public Decl {
      * \brief qpp::qasm::Statement::pretty_print() override
      * \note Necessary since textual representation is multi-line
      */
-    void pretty_print(std::ostream& os, const std::string& prefix) const {
+    void pretty_print(std::ostream& os,
+                      const std::string& prefix) const override {
         os << "(" << loc_ << "):" << prefix;
         os << (opaque_ ? "opaque " : "gate ") << id_;
         if (!c_params_.empty()) {
@@ -797,13 +778,13 @@ class RegisterDecl final : public Decl {
      * \param quantum whether the register is a quantum register
      * \param length the length of the register
      */
-    RegisterDecl(Location loc, ident id, bool quantum, idx length)
-        : Decl(loc, id), quantum_(quantum), length_(length) {}
+    RegisterDecl(const Location& loc, ident id, bool quantum, idx length)
+        : Decl(loc, std::move(id)), quantum_(quantum), length_(length) {}
 
     /**
      * \brief qpp::qasm::Statement::evaluate() override
      */
-    void evaluate(Context& ctx) const {
+    void evaluate(Context& ctx) const override {
         std::vector<idx> indices(length_);
         for (idx i = 0; i < length_; i++) {
             indices[i] = quantum_ ? ctx.alloc_qubit() : ctx.alloc_bit();
@@ -815,7 +796,7 @@ class RegisterDecl final : public Decl {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << (quantum_ ? "qreg " : "creg ") << id_ << "[" << length_ << "];\n";
         return os;
     }
@@ -838,13 +819,13 @@ class MeasureStatement final : public Statement {
      * \param q_arg The quantum argument
      * \param c_arg The classical argument
      */
-    MeasureStatement(Location loc, Varinfo q_arg, Varinfo c_arg)
-        : Statement(loc), q_arg_(q_arg), c_arg_(c_arg) {}
+    MeasureStatement(const Location& loc, Varinfo q_arg, Varinfo c_arg)
+        : Statement(loc), q_arg_(std::move(q_arg)), c_arg_(std::move(c_arg)) {}
 
     /**
      * \brief qpp::qasm::Statement::evaluate() override
      */
-    void evaluate(Context& ctx) const {
+    void evaluate(Context& ctx) const override {
         auto q_args = q_arg_.as_qreg(ctx);
         auto c_args = c_arg_.as_creg(ctx);
         auto circuit = ctx.get_circuit();
@@ -866,7 +847,7 @@ class MeasureStatement final : public Statement {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << "measure " << q_arg_ << " -> " << c_arg_ << ";\n";
         return os;
     }
@@ -887,12 +868,13 @@ class ResetStatement final : public Statement {
      * \param loc The source location
      * \param arg The argument
      */
-    ResetStatement(Location loc, Varinfo arg) : Statement(loc), arg_(arg) {}
+    ResetStatement(const Location& loc, Varinfo arg)
+        : Statement(loc), arg_(std::move(arg)) {}
 
     /**
      * \brief qpp::qasm::Statement::evaluate() override
      */
-    void evaluate(Context& ctx) const {
+    void evaluate(Context& ctx) const override {
         auto q_args = arg_.as_qreg(ctx);
         auto circuit = ctx.get_circuit();
 
@@ -902,7 +884,7 @@ class ResetStatement final : public Statement {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << "reset " << arg_ << ";\n";
         return os;
     }
@@ -927,13 +909,14 @@ class IfStatement final : public Statement {
      * \param value The value to check against
      * \param then Unique pointer to the statement to be executed
      */
-    IfStatement(Location loc, ident id, int value, StatementPtr then)
-        : Statement(loc), id_(id), value_(value), then_(std::move(then)) {}
+    IfStatement(const Location& loc, ident id, int value, StatementPtr then)
+        : Statement(loc), id_(std::move(id)), value_(value),
+          then_(std::move(then)) {}
 
     /**
      * \brief qpp::qasm::Statement::evaluate() override
      */
-    void evaluate(Context& ctx) const {
+    void evaluate(Context& ctx) const override {
         auto creg = dynamic_cast<const Register*>(ctx.lookup(id_, loc_));
 
         // check register type
@@ -963,7 +946,7 @@ class IfStatement final : public Statement {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << "if (" << id_ << "==" << value_ << ") " << *then_;
         return os;
     }
@@ -990,14 +973,15 @@ class UGate final : public Gate {
      * \param lambda Unique pointer to an angle expression
      * \param arg The quantum bit or register
      */
-    UGate(Location loc, ExprPtr theta, ExprPtr phi, ExprPtr lambda, Varinfo arg)
+    UGate(const Location& loc, ExprPtr theta, ExprPtr phi, ExprPtr lambda,
+          Varinfo arg)
         : Gate(loc), theta_(std::move(theta)), phi_(std::move(phi)),
-          lambda_(std::move(lambda)), arg_(arg) {}
+          lambda_(std::move(lambda)), arg_(std::move(arg)) {}
 
     /**
      * \brief qpp::qasm::Statement::evaluate() override
      */
-    void evaluate(Context& ctx) const {
+    void evaluate(Context& ctx) const override {
         auto theta = theta_->evaluate(ctx);
         auto phi = phi_->evaluate(ctx);
         auto lambda = lambda_->evaluate(ctx);
@@ -1037,7 +1021,7 @@ class UGate final : public Gate {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << "U(" << *theta_ << "," << *phi_ << "," << *lambda_ << ") " << arg_
            << ";\n";
         return os;
@@ -1061,13 +1045,13 @@ class CNOTGate final : public Gate {
      * \param ctrl The control bit or register
      * \param tgt The target bit or register
      */
-    CNOTGate(Location loc, Varinfo ctrl, Varinfo tgt)
-        : Gate(loc), ctrl_(ctrl), tgt_(tgt) {}
+    CNOTGate(const Location& loc, Varinfo ctrl, Varinfo tgt)
+        : Gate(loc), ctrl_(std::move(ctrl)), tgt_(std::move(tgt)) {}
 
     /**
      * \brief qpp::qasm::Statement::evaluate() override
      */
-    void evaluate(Context& ctx) const {
+    void evaluate(Context& ctx) const override {
         auto ctrls = ctrl_.as_qreg(ctx);
         auto tgts = tgt_.as_qreg(ctx);
         auto circuit = ctx.get_circuit();
@@ -1082,23 +1066,23 @@ class CNOTGate final : public Gate {
                 circuit->gate(gt.CNOT, ctrls[0], tgts[0], "CX");
             }
         } else if (ctrls.size() > 1 && tgts.size() == 1) {
-            for (idx i = 0; i < ctrls.size(); i++) {
+            for (idx ctrl : ctrls) {
                 if (ctx.ccontrolled()) {
-                    std::vector<idx> tmp{ctrls[i], tgts[0]};
+                    std::vector<idx> tmp{ctrl, tgts[0]};
                     circuit->cCTRL_joint(gt.CNOT, ctx.get_cctrls(), tmp,
                                          ctx.get_shift(), "CX");
                 } else {
-                    circuit->gate(gt.CNOT, ctrls[i], tgts[0], "CX");
+                    circuit->gate(gt.CNOT, ctrl, tgts[0], "CX");
                 }
             }
         } else if (ctrls.size() == 1 && tgts.size() > 1) {
-            for (idx i = 0; i < tgts.size(); i++) {
+            for (idx tgt : tgts) {
                 if (ctx.ccontrolled()) {
-                    std::vector<idx> tmp{ctrls[0], tgts[i]};
+                    std::vector<idx> tmp{ctrls[0], tgt};
                     circuit->cCTRL_joint(gt.CNOT, ctx.get_cctrls(), tmp,
                                          ctx.get_shift(), "CX");
                 } else {
-                    circuit->gate(gt.CNOT, ctrls[0], tgts[i], "CX");
+                    circuit->gate(gt.CNOT, ctrls[0], tgt, "CX");
                 }
             }
         } else if (ctrls.size() == tgts.size()) {
@@ -1122,7 +1106,7 @@ class CNOTGate final : public Gate {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << "CX " << ctrl_ << tgt_ << ";\n";
         return os;
     }
@@ -1143,13 +1127,13 @@ class BarrierGate final : public Gate {
      * \param loc The source location
      * \param args The quantum bits or registers
      */
-    BarrierGate(Location loc, std::vector<Varinfo> args)
-        : Gate(loc), args_(args) {}
+    BarrierGate(const Location& loc, std::vector<Varinfo> args)
+        : Gate(loc), args_(std::move(args)) {}
 
     /**
      * \brief qpp::qasm::Statement::evaluate() override
      */
-    void evaluate(Context& ctx) const {
+    void evaluate(Context& ctx) const override {
         // just check validity and do nothing
         idx mapping_size = 1;
 
@@ -1171,7 +1155,7 @@ class BarrierGate final : public Gate {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << "barrier ";
         for (auto it = args_.begin(); it != args_.end(); it++) {
             os << (it == args_.begin() ? "" : ",") << *it;
@@ -1200,15 +1184,15 @@ class DeclaredGate final : public Gate {
      * \param c_args Rvalue reference to a list of the classical arguments
      * \param q_args List of the quantum arguments
      */
-    DeclaredGate(Location loc, ident id, std::vector<ExprPtr>&& c_args,
+    DeclaredGate(const Location& loc, ident id, std::vector<ExprPtr>&& c_args,
                  std::vector<Varinfo> q_args)
-        : Gate(loc), id_(id), c_args_(std::move(c_args)),
+        : Gate(loc), id_(std::move(id)), c_args_(std::move(c_args)),
           q_args_(std::move(q_args)) {}
 
     /**
      * \brief qpp::qasm::Statement::evaluate() override
      */
-    void evaluate(Context& ctx) const {
+    void evaluate(Context& ctx) const override {
         auto gate = dynamic_cast<const Circuit*>(ctx.lookup(id_, loc_));
 
         // check gate type
@@ -1253,10 +1237,12 @@ class DeclaredGate final : public Gate {
                 if (mapping_size == 1) {
                     mapping_size = q_args[i].size();
                 } else if (mapping_size != q_args[i].size()) {
-                    std::stringstream context;
-                    context << loc_ << ": Registers have different lengths";
+                    std::stringstream inner_context;
+                    inner_context << loc_
+                                  << ": Registers have different lengths";
                     throw exception::SemanticError(
-                        "qpp::qasm::DeclaredGate::evaluate()", context.str());
+                        "qpp::qasm::DeclaredGate::evaluate()",
+                        inner_context.str());
                 }
             }
         }
@@ -1301,9 +1287,8 @@ class DeclaredGate final : public Gate {
                 }
 
                 // evaluate the gate
-                for (auto it = gate->body_.begin(); it != gate->body_.end();
-                     it++) {
-                    (*it)->evaluate(ctx);
+                for (auto&& elem : gate->body_) {
+                    elem->evaluate(ctx);
                 }
 
                 ctx.exit_scope();
@@ -1315,7 +1300,7 @@ class DeclaredGate final : public Gate {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << id_;
         if (!c_args_.empty()) {
             os << "(";
@@ -1348,12 +1333,12 @@ class RealExpr final : public Expr {
      * \param loc The source location
      * \param value The floating point value
      */
-    RealExpr(Location loc, double value) : Expr(loc), value_(value) {}
+    RealExpr(const Location& loc, double value) : Expr(loc), value_(value) {}
 
     /**
      * \brief qpp::qasm::Expr::evaluate() override
      */
-    double evaluate(Context& ctx) const {
+    double evaluate(Context& ctx) const override {
         (void) ctx;
         return value_;
     }
@@ -1361,7 +1346,7 @@ class RealExpr final : public Expr {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << value_;
         return os;
     }
@@ -1382,12 +1367,12 @@ class IntExpr final : public Expr {
      * \param loc The source location
      * \param value The integer value
      */
-    IntExpr(Location loc, int value) : Expr(loc), value_(value) {}
+    IntExpr(const Location& loc, int value) : Expr(loc), value_(value) {}
 
     /**
      * \brief qpp::qasm::Expr::evaluate() override
      */
-    double evaluate(Context& ctx) const {
+    double evaluate(Context& ctx) const override {
         (void) ctx;
         return (double) value_;
     }
@@ -1395,7 +1380,7 @@ class IntExpr final : public Expr {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << value_;
         return os;
     }
@@ -1413,12 +1398,12 @@ class PiExpr final : public Expr {
      *
      * \param loc The source location
      */
-    PiExpr(Location loc) : Expr(loc) {}
+    explicit PiExpr(const Location& loc) : Expr(loc) {}
 
     /**
      * \brief qpp::qasm::Expr::evaluate() override
      */
-    double evaluate(Context& ctx) const {
+    double evaluate(Context& ctx) const override {
         (void) ctx;
         return qpp::pi;
     }
@@ -1426,7 +1411,7 @@ class PiExpr final : public Expr {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << "pi";
         return os;
     }
@@ -1447,12 +1432,13 @@ class VarExpr final : public Expr {
      * \param loc The source location
      * \param value The variable identifier
      */
-    VarExpr(Location loc, ident value) : Expr(loc), value_(value) {}
+    VarExpr(const Location& loc, ident value)
+        : Expr(loc), value_(std::move(value)) {}
 
     /**
      * \brief qpp::qasm::Expr::evaluate() override
      */
-    double evaluate(Context& ctx) const {
+    double evaluate(Context& ctx) const override {
         auto val = dynamic_cast<const Number*>(ctx.lookup(value_, loc_));
 
         if (val == nullptr) {
@@ -1469,7 +1455,7 @@ class VarExpr final : public Expr {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << value_;
         return os;
     }
@@ -1494,14 +1480,14 @@ class BExpr final : public Expr {
      * \param bop The binary operator
      * \param rexp Unique pointer to the right sub-expression
      */
-    BExpr(Location loc, ExprPtr lexp, BinaryOp bop, ExprPtr rexp)
+    BExpr(const Location& loc, ExprPtr lexp, BinaryOp bop, ExprPtr rexp)
         : Expr(loc), lexp_(std::move(lexp)), bop_(bop), rexp_(std::move(rexp)) {
     }
 
     /**
      * \brief qpp::qasm::Expr::evaluate() override
      */
-    double evaluate(Context& ctx) const {
+    double evaluate(Context& ctx) const override {
         double lval = lexp_->evaluate(ctx);
         double rval = rexp_->evaluate(ctx);
 
@@ -1524,7 +1510,7 @@ class BExpr final : public Expr {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << "(" << *lexp_;
         switch (bop_) {
             case BinaryOp::Plus:
@@ -1565,13 +1551,13 @@ class UExpr final : public Expr {
      * \param uop The unary operator
      * \param exp Unique pointer to the sub-expression
      */
-    UExpr(Location loc, UnaryOp uop, ExprPtr exp)
+    UExpr(const Location& loc, UnaryOp uop, ExprPtr exp)
         : Expr(loc), uop_(uop), exp_(std::move(exp)) {}
 
     /**
      * \brief qpp::qasm::Expr::evaluate() override
      */
-    double evaluate(Context& ctx) const {
+    double evaluate(Context& ctx) const override {
         double val = exp_->evaluate(ctx);
 
         switch (uop_) {
@@ -1597,7 +1583,7 @@ class UExpr final : public Expr {
     /**
      * \brief qpp::IDisplay::display() override
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         switch (uop_) {
             case UnaryOp::Neg:
                 os << "-" << *exp_;
