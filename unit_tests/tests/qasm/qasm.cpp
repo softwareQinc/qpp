@@ -16,7 +16,6 @@ using namespace qpp;
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, StdCompliance) {
     // generic circuits
-    std::cout << "PATH IS: " << PATH << std::endl;
     EXPECT_NO_THROW(qasm::read_from_file(
         PATH "/unit_tests/tests/qasm/circuits/generic/adder.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(

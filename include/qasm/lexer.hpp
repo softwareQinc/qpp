@@ -59,7 +59,8 @@ class Lexer {
      * \param buffer Buffer to lex
      * \param fname The name of the file associated with buffer (optional)
      */
-    explicit Lexer(std::shared_ptr<std::istream> buffer, const std::string& fname = "")
+    explicit Lexer(std::shared_ptr<std::istream> buffer,
+                   const std::string& fname = "")
         : loc_(fname, 1, 1), buf_(std::move(buffer)) {}
 
     /**

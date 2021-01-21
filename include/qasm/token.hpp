@@ -40,9 +40,9 @@ namespace qasm {
  * \brief Source location class
  */
 class Location : public IDisplay {
-    std::string fname_ = ""; ///< name of the containing file
-    idx line_ = 1;           ///< line number
-    idx column_ = 1;         ///< column number
+    std::string fname_{}; ///< name of the containing file
+    idx line_ = 1;        ///< line number
+    idx column_ = 1;      ///< column number
 
   public:
     /**
@@ -57,16 +57,8 @@ class Location : public IDisplay {
      * \param line Line number
      * \param column Column number
      */
-    Location(const std::string& fname, idx line, idx column)
-        : fname_(fname), line_(line), column_(column) {}
-
-    /**
-     * \brief Copy constructor
-     *
-     * \param loc Location to be copied
-     */
-    Location(const Location& loc)
-        : fname_(loc.fname_), line_(loc.line_), column_(loc.column_) {}
+    Location(std::string fname, idx line, idx column)
+        : fname_(std::move(fname)), line_(line), column_(column) {}
 
     /**
      * \brief qpp::IDisplay::display() override
@@ -77,7 +69,7 @@ class Location : public IDisplay {
      * \param os Output stream passed by reference
      * \return Reference to the output stream
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << fname_ << ":" << line_ << ":" << column_;
         return os;
     }
@@ -108,7 +100,7 @@ class Location : public IDisplay {
      *
      * \return The column of the location
      */
-    idx get_column() const { return column_; }
+    idx get_colnum() const { return column_; }
 
     /**
      * \brief Advance the line number by a specified amount
@@ -200,8 +192,8 @@ class Token : public IDisplay {
      * \param value The string value of the token
      *
      */
-    Token(Location loc, Kind k, const std::string& value)
-        : loc_(loc), kind_(k), value_(value) {}
+    Token(const Location& loc, Kind k, std::string value)
+        : loc_(loc), kind_(k), value_(std::move(value)) {}
 
     /**
      * \brief Get the type of token
@@ -246,7 +238,7 @@ class Token : public IDisplay {
      *
      * \return The value of the token as a floating point number
      */
-    operator double() { return std::stof(value_); }
+    operator double() { return std::stod(value_); }
 
     /**
      * \brief User-defined conversion to std::string
@@ -262,7 +254,7 @@ class Token : public IDisplay {
      *
      * \return The value of the token as an unsigned integer
      */
-    operator idx() { return std::stoi(value_); }
+    operator idx() { return static_cast<idx>(std::stoi(value_)); }
 
     /**
      * \brief User-defined conversion to int
@@ -430,7 +422,7 @@ class Token : public IDisplay {
      * \param os Output stream passed by reference
      * \return Reference to the output stream
      */
-    std::ostream& display(std::ostream& os) const {
+    std::ostream& display(std::ostream& os) const override {
         os << kind_;
         switch (kind_) {
             case Kind::identifier:
@@ -454,7 +446,7 @@ class Token : public IDisplay {
   private:
     Location loc_ = Location(); ///< the token location
     Kind kind_ = Kind::unknown; ///< the token type
-    std::string value_ = "";    ///< the token value
+    std::string value_{};       ///< the token value
 };
 
 /**
