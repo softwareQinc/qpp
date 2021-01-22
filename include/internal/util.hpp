@@ -413,11 +413,11 @@ struct Display_Impl_ {
         ostr.copyfmt(os); // copy os' state
 
         std::vector<std::string> vstr;
-        std::string strA;
+        std::string str;
 
         for (idx i = 0; i < static_cast<idx>(A.rows()); ++i) {
             for (idx j = 0; j < static_cast<idx>(A.cols()); ++j) {
-                strA.clear(); // clear the temporary string
+                str.clear(); // clear the temporary string
                 ostr.clear();
                 ostr.str(std::string{}); // clear the ostringstream
 
@@ -425,28 +425,35 @@ struct Display_Impl_ {
                 double re = static_cast<cplx>(A(i, j)).real();
                 double im = static_cast<cplx>(A(i, j)).imag();
 
+                // zero
                 if (std::abs(re) < chop && std::abs(im) < chop) {
-                    ostr << "0 "; // otherwise segfault on destruction
+                    ostr << "0"; // otherwise segfault on destruction
                     // if using only vstr.emplace_back("0 ");
                     // bug in MATLAB libmx
                     vstr.emplace_back(ostr.str());
-                } else if (std::abs(re) < chop) {
+                }
+                // pure imag
+                else if (std::abs(re) < chop) {
                     ostr << im;
                     vstr.emplace_back(ostr.str() + "i");
-                } else if (std::abs(im) < chop) {
+                }
+                // real
+                else if (std::abs(im) < chop) {
                     ostr << re;
-                    vstr.emplace_back(ostr.str() + " ");
-                } else {
+                    vstr.emplace_back(ostr.str());
+                }
+                // full complex
+                else {
                     ostr << re;
-                    strA = ostr.str();
+                    str = ostr.str();
 
-                    strA += (im > 0 ? " + " : " - ");
+                    str += (im > 0 ? " + " : " - ");
                     ostr.clear();
                     ostr.str(std::string()); // clear
                     ostr << std::abs(im);
-                    strA += ostr.str();
-                    strA += "i";
-                    vstr.emplace_back(strA);
+                    str += ostr.str();
+                    str += "i";
+                    vstr.emplace_back(str);
                 }
             }
         }
@@ -464,12 +471,13 @@ struct Display_Impl_ {
             os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
                << vstr[i * A.cols()]; // display first column
             // then the rest
+            idx spacer = 2;
             for (idx j = 1; j < static_cast<idx>(A.cols()); ++j)
-                os << std::setw(static_cast<int>(maxlengthcols[j] + 2))
+                os << std::setw(static_cast<int>(maxlengthcols[j] + spacer))
                    << std::right << vstr[i * A.cols() + j];
 
             if (i < static_cast<idx>(A.rows()) - 1)
-                os << std::endl;
+                os << '\n';
         }
 
         return os;
