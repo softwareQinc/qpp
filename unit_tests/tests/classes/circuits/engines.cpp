@@ -48,7 +48,7 @@ TEST(qpp_QEngine_get_psi, AllTests) {}
 ///       qpp::QEngine::get_stats() const
 TEST(qpp_QEngine_get_stats, AllTests) {}
 /******************************************************************************/
-/// BEGIN QEngine& qpp::QEngine::reset()
+/// BEGIN QEngine& qpp::QEngine::reset(bool reset_stats = true)
 TEST(qpp_QEngine_reset, AllTests) {}
 /******************************************************************************/
 /// BEGIN QEngine& qpp::QEngine::reset_stats()

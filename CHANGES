@@ -1,19 +1,28 @@
 Pre-release
-    - Fixed minor inadvertence in OpenQASM `crz` implementation, see
-      https://github.com/softwareQinc/qpp/issues/99
+    - Added CircleCI continuous integration
+    - CMake minimum required version bumped to 3.10 (3.12 for macOS) for
+      automatic unit tests detection by CMake
     - Integrated the unit tests with the main project, so now the unit tests
       are automatically compiled along with the examples, and can now be run
       by typing 'make test' or 'ctest'. Use 'GTEST_COLOR=1 ARGS="-V" make test'
       or 'GTEST_COLOR=1 ctest -V' for coloured verbose testing output.
+    - Fixed minor inadvertence in OpenQASM `crz` implementation, see
+      https://github.com/softwareQinc/qpp/issues/99
     - Changed the signature of qpp::cwise() ["functions.h"] so it takes the
       scalar argument by value (and not constant reference as before). This
       avoids an internal compiler error (ICE) triggered when compiling
       "examples/functor.cpp" in MinGW.
-    - CMake minimum required version bumped to 3.10 (3.12 for macOS) for
-      automatic unit tests detection by CMake
-    - Added CircleCI continuous integration
     - Removed <iostream> implicit dependencies ["qpp.h"]
     - Added optional "context" to qpp::Exception ["classes/exception.hpp"]
+    - Made qpp::QCircuit default-constructible ["classes/circuits/circuits.hpp"]
+      so it constructs by default a 1-qubit circuit with no classical bits
+    - qpp::QEngine::reset() now accepts a default argument
+      'bool reset_stats = true' and cleans the engine's statistics by default
+      ["classes/circuits/engines.hpp"]
+    - Renamed ["examples/qasm/qasm1.cpp"] and ["examples/qasm/qasm2.cpp"]
+      into ["examples/qasm/teleport_minimal.cpp"] and
+      ["examples/qasm/qasm.cpp"]; the latter executes an arbitrary OpenQASM
+      program read from the standard input or from a file (if specified)
 
 Version 2.6 - 9 January 2021
     - Added Quantum Phase Estimation low-level API example in

@@ -69,7 +69,7 @@ inline QCircuit read_from_file(const std::string& fname) {
     ifs->open(fname, std::ifstream::in);
     if (!ifs->good()) {
         ifs->close();
-        throw exception::FileNotFound("qpp::qasm::read_from_file()");
+        throw exception::FilesystemError("qpp::qasm::read_from_file()");
     }
     // END EXCEPTION CHECKS
 

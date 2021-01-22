@@ -75,7 +75,7 @@ static const std::string std_include_qasm =
 
 /**
  * \brief openQASM 2.0 standard library + r and cswap gates, as a string
- * constant, as defined in
+ * constant, as defined by Qiskit in
  * https://github.com/Qiskit/qiskit-terra/tree/master/qiskit/circuit/library/standard_gates
  * We use these definitions, see https://github.com/vsoftco/qpp/issues/65 for
  * the reasons why.
