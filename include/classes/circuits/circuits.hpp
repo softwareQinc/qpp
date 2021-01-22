@@ -858,12 +858,13 @@ class QCircuit : public IDisplay, public IJSON {
      * \note The measurement results can only be stored in the classical dits of
      * which number is specified by \a nc
      *
-     * \param nq Number of qudits
+     * \param nq Number of qudits (optional, defaults to 1 so qpp::QCircuit is
+     * default-constructible)
      * \param nc Number of classical dits (optional)
      * \param d Subsystem dimensions (optional, default is qubit, i.e. \a d = 2)
      * \param name Circuit name (optional)
      */
-    explicit QCircuit(idx nq, idx nc = 0, idx d = 2, std::string name = {})
+    explicit QCircuit(idx nq = 1, idx nc = 0, idx d = 2, std::string name = {})
         : nq_{nq}, nc_{nc}, d_{d}, name_{std::move(name)}, measured_(nq, false),
           clean_qudits_(nq_, true), clean_dits_(nc_, true) {
         // EXCEPTION CHECKS
@@ -1183,8 +1184,7 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Quantum circuit description total depth
      *
-     * \param name Gate/measurement name (optional)
-     * \return Gate/measurement depth
+     * \return Gate/measurement total depth
      */
     idx get_depth() const { return get_gate_depth() + get_measurement_depth(); }
 
@@ -2108,7 +2108,7 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     // multiple ctrl multiple target
-    // FIXME
+    // TODO check
     /**
      * \brief Applies the single qudit controlled gate \a U with multiple
      * control qudits listed in \a ctrl on every qudit listed in \a target,
@@ -2310,7 +2310,7 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     // single ctrl single target
-    // FIXME, use the corresponding dits
+    // TODO check use the corresponding dits
     /**
      * \brief Applies the single qubit controlled gate \a U with classical
      * control dit \a ctrl and target qudit \a target, i.e., cCTRL-U.

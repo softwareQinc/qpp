@@ -620,12 +620,14 @@ class InvalidIterator : public Exception {
 };
 
 /**
- * \class qpp::exception::FileNotFound
+ * \class qpp::exception::FilesystemError
  * \brief File not found
  */
-class FileNotFound : public Exception {
+class FilesystemError : public Exception {
   public:
-    std::string description() const override { return "File not found"; }
+    std::string description() const override {
+        return "Filesystem error (cannot read/write/create etc. file)";
+    }
 
     using Exception::Exception;
 };

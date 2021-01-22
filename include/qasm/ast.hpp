@@ -70,8 +70,8 @@ static std::unordered_map<ident,
         {"rz",
          [](const std::vector<double>& args) {
              assert(!args.empty());
-             // note the discrepancy; QISKIT defines it as diag(1, e^{i\phi})
-             // we comply to the QISKIT definition (and not the OPENQASM
+             // note the discrepancy; Qiskit defines it as diag(1, e^{i\phi})
+             // we comply to the Qiskit definition (and not the OPENQASM
              // specs); see https://github.com/softwareQinc/qpp/issues/70
              return (std::exp(1_i * args[0] / 2.0) * gt.RZ(args[0])).eval();
          }},
@@ -98,8 +98,8 @@ static std::unordered_map<ident,
         {"crz", [](const std::vector<double>& args) {
              assert(!args.empty());
              cmat mat{cmat::Identity(4, 4)};
-             // note the discrepancy; QISKIT defines it as
-             // CTRL-diag(1, e^{i\phi}) we comply to the QISKIT definition (and
+             // note the discrepancy; Qiskit defines it as
+             // CTRL-diag(1, e^{i\phi}) we comply to the Qiskit definition (and
              // not the OPENQASM specs); see
              // https://github.com/softwareQinc/qpp/issues/99 and
              // https://github.com/softwareQinc/qpp/issues/70

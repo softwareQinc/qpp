@@ -393,10 +393,15 @@ class QEngine : public IDisplay, public IJSON {
      * Re-initializes everything to zero and sets the initial state to
      * \f$|0\rangle^{\otimes n}\f$
      *
+     * \param reset_stats Optional (true by default), resets the collected
+     * measurement statistics hash table
+     *
      * \return Reference to the current instance
      */
-    QEngine& reset() {
+    QEngine& reset(bool reset_stats = true) {
         st_.reset();
+        if (reset_stats)
+            this->reset_stats();
 
         return *this;
     }
