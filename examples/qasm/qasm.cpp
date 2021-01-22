@@ -1,7 +1,6 @@
 // OpenQASM example, executes an OpenQASM circuit read from the input stream or
 // a file (if specified)
 // Source: ./examples/qasm/qasm.cpp
-
 #include <iostream>
 
 #include "qpp.h"
