@@ -1,7 +1,9 @@
 Pre-release
+    - Added installation support and auto package detection via CMake
+      find_package(qpp REQUIRED NO_MODULE)
     - Added CircleCI continuous integration
-    - CMake minimum required version bumped to 3.10 (3.12 for macOS) for
-      automatic unit tests detection by CMake
+    - CMake minimum required version bumped to 3.12 for automatic unit tests
+      detection by CMake and other CMake-related "good practices"
     - Integrated the unit tests with the main project, so now the unit tests
       are automatically compiled along with the examples, and can now be run
       by typing 'make test' or 'ctest'. Use 'GTEST_COLOR=1 ARGS="-V" make test'
@@ -20,7 +22,7 @@ Pre-release
       'bool reset_stats = true' and cleans the engine's statistics by default
       ["classes/circuits/engines.hpp"]
     - Renamed ["examples/qasm/qasm1.cpp"] and ["examples/qasm/qasm2.cpp"]
-      into ["examples/qasm/teleport_minimal.cpp"] and
+      to ["examples/qasm/qasm_teleport_minimal.cpp"] and
       ["examples/qasm/qasm.cpp"]; the latter executes an arbitrary OpenQASM
       program read from the standard input or from a file (if specified)
 

@@ -13,5 +13,7 @@ IF %COMPILER%==msys2 (
     cd %APPVEYOR_BUILD_FOLDER%
     mkdir build
     cd build
-    bash -lc "cmake .. -DEIGEN3_INSTALL_DIR=/c/%EIGEN3_INSTALL_PATH% -GNinja && ninja"
+    bash -lc "cmake .. -DEIGEN3_INSTALL_DIR=/c/%EIGEN3_INSTALL_PATH% -GNinja"
+    bash -lc "ninja examples"
+    bash -lc "ninja unit_tests"
 )
