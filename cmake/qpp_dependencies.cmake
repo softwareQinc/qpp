@@ -151,12 +151,13 @@ endif ()
 
 #### Force clang to use libc++
 if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
-    add_compile_options("-stdlib=libc++")
+    add_compile_options(-stdlib=libc++)
+    list(APPEND QPP_LINK_DEPS c++ c++abi)
 endif ()
 
 #### Cygwin has issues with std=c++11, use std=gnu++11 instead
 if (CYGWIN)
-    add_compile_options("-std=gnu++11")
+    add_compile_options(-std=gnu++11)
 endif ()
 
 #### GNU gcc additional debug settings
@@ -192,8 +193,8 @@ endif ()
 if (UNIX AND NOT (APPLE OR CYGWIN)
         AND (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
         AND (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.0))
-    set(QPP_ADDITIONAL_LINK_DEPS PUBLIC supc++)
+    list(APPEND QPP_LINK_DEPS PUBLIC supc++)
 endif ()
 
 #### Export all settings to outside
-set(QPP_LINK_DEPS ${QPP_EIGEN3_LINK_DEPS} ${QPP_OPENMP_LINK_DEPS} ${QPP_MATLAB_LINK_DEPS} ${QPP_ADDITIONAL_LINK_DEPS})
+list(APPEND QPP_LINK_DEPS ${QPP_EIGEN3_LINK_DEPS} ${QPP_OPENMP_LINK_DEPS} ${QPP_MATLAB_LINK_DEPS})
