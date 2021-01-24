@@ -69,5 +69,5 @@ workflows:
     jobs:
       - ubuntu_bionic:
           name: ubuntu-bionic
-      - macOS:
-          name: macOS-base
+#     - macOS:
+#         name: macOS-base
