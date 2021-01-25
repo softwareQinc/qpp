@@ -32,7 +32,7 @@ jobs:
           name: Compile and run a standalone example
           command: |
             cd examples/standalone && mkdir build && cd build
-            cmake .. -DCMAKE_BUILD_TYPE=Debug && make
+            cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j4
             ./standalone
       - run:
           name: Build the examples
@@ -75,7 +75,7 @@ jobs:
           name: Compile and run a standalone example
           command: |
             cd examples/standalone && mkdir build && cd build
-            cmake .. -DCMAKE_BUILD_TYPE=Debug && make
+            cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j4
             ./standalone
       - run:
           name: Build the examples

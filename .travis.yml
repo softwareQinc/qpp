@@ -46,7 +46,7 @@ script:
   - cd $TRAVIS_BUILD_DIR && mkdir build && cd build && cmake .. -DEIGEN3_INSTALL_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && sudo make install
 
   # Compile and run a standalone example
-  - cd $TRAVIS_BUILD_DIR/examples/standalone && mkdir build && cd build && cmake .. -DEIGEN3_INSTALL_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make && ./standalone
+  - cd $TRAVIS_BUILD_DIR/examples/standalone && mkdir build && cd build && cmake .. -DEIGEN3_INSTALL_DIR=$HOME/eigen -DCMAKE_BUILD_TYPE=Debug && make -j4 && ./standalone
 
   # Build the examples and the unit tests
   - cd $TRAVIS_BUILD_DIR/build
