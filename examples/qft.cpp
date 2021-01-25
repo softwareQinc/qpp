@@ -13,7 +13,7 @@ int main() {
     ket result = psi;
 
     idx n = qubits.size();                                  // number of qubits
-    idx D = static_cast<idx>(std::llround(std::pow(2, n))); // dimension
+    idx D = static_cast<idx>(std::llround(std::pow(2, n))); // dimension 2^n
     std::cout << ">> QFT on n = " << n << " qubits. ";
 
     std::cout << "The sequence of applied gates is:\n";

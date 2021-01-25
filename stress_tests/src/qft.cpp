@@ -10,14 +10,14 @@
 
 #include "qpp.h"
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     using namespace qpp;
     if (argc != 3) {
         std::cerr << "Please specify the number of cores and qubits!\n";
         exit(EXIT_FAILURE);
     }
 
-    idx num_cores = std::stoi(argv[1]); // number of cores
+    int num_cores = std::stoi(argv[1]); // number of cores
     idx n = std::stoi(argv[2]);         // number of qubits
     omp_set_num_threads(num_cores);     // number of cores
 
@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
         // apply controlled rotations
         for (idx j = 2; j <= n - i; ++j) {
             cmat Rj(2, 2);
-            Rj << 1, 0, 0, omega(std::pow(2, j));
+            Rj << 1, 0, 0, omega(static_cast<idx>(std::pow(2, j)));
             result = applyCTRL(result, Rj, {i + j - 1}, {i});
         }
     }

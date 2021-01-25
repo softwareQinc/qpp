@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+
+# Qiskit QFT stress tests
+
 from qiskit import *
 
 import math
@@ -6,11 +10,10 @@ import sys
 import timeit
 
 if len(sys.argv) != 3:
-    sys.exit("Please specify the number of cores and qubits!")
+    sys.exit("Please specify the maximum number of cores and qubits!")
 
-num_cores = int(sys.argv[1])  # number of cores
-n = int(sys.argv[2])  # number of qubits
-N = 2 ** n
+num_cores = int(sys.argv[1])  # max number of cores
+n = int(sys.argv[2])          # number of qubits
 
 os.environ['OPENBLAS_NUM_THREADS'] = str(num_cores)
 os.environ['MKL_NUM_THREADS'] = str(num_cores)
@@ -32,7 +35,8 @@ for i in range(n // 2):
 # Compile and run the Quantum circuit on a simulator backend
 
 
-all_local_backends = Aer.backends(local=True)  # returns a list of local backends
+all_local_backends = Aer.backends(
+    local=True)  # returns a list of local backends
 qasm_simulator = all_local_backends[0]
 statevector_simulator = all_local_backends[1]
 job_sim = execute(qc, backend=statevector_simulator, shots=1)

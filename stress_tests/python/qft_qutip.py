@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # QuTiP QFT stress tests
 
 import numpy
@@ -7,11 +9,10 @@ import sys
 import timeit
 
 if len(sys.argv) != 3:
-    sys.exit("Please specify the number of cores and qubits!")
+    sys.exit("Please specify the maximum number of cores and qubits!")
 
-num_cores = int(sys.argv[1])  # number of cores
-n = int(sys.argv[2])  # number of qubits
-N = 2 ** n
+num_cores = int(sys.argv[1])  # max number of cores
+n = int(sys.argv[2])          # number of qubits
 
 os.environ['OPENBLAS_NUM_THREADS'] = str(num_cores)
 os.environ['MKL_NUM_THREADS'] = str(num_cores)
@@ -20,7 +21,7 @@ qutip.settings.num_cpus = num_cores
 
 def qft_gate_sequence(n=1, swapping=True):
     """
-    Quantum Fourier Transform operator on N qubits returning the gate sequence.
+    Quantum Fourier Transform operator on n qubits returning the gate sequence.
 
     Parameters
     ----------
