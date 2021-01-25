@@ -177,7 +177,7 @@ The flag `-DWITH_MATLAB=ON` instructs [CMake](http://www.cmake.org/)  to detect
 the [MATLAB](http://www.mathworks.com/products/matlab/) installation
 automatically. If successful, it builds and links with
 the [MATLAB](http://www.mathworks.com/products/matlab/) compiler libraries and
-injects the macro `HAS_MATLAB_ENABLED` in the source code.
+injects the macro `HAS_MATLAB` in the source code.
 If [MATLAB](http://www.mathworks.com/products/matlab/) was not detected
 automatically, specify its location manually via the additional
 flag `-DMATLAB_INSTALL_DIR=/path/to/MATLAB`,
