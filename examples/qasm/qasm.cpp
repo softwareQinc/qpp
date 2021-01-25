@@ -34,6 +34,5 @@ int main(int argc, char** argv) {
 
     // display the final state
     ket psi_final = q_engine.get_psi();
-    std::cout << ">> Final state:\n";
-    std::cout << disp(psi_final) << '\n';
+    std::cout << ">> Final state:\n" << disp(psi_final) << '\n';
 }
