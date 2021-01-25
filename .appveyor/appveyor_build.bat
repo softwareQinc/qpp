@@ -22,7 +22,7 @@ IF %COMPILER%==msys2 (
     mkdir build
     cd build
     bash -lc "cmake .. -DEIGEN3_INSTALL_DIR=/c/%EIGEN3_INSTALL_PATH% -GNinja"
-    bash -lc "sudo ninja install"
+    bash -lc "ninja install"
     cd %APPVEYOR_BUILD_FOLDER%\examples\standalone
     mkdir build
     cd build

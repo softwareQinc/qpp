@@ -74,7 +74,7 @@ if (${WITH_MATLAB})
             message(FATAL "Platform not supported, aborting.")
         endif ()
         link_directories(${MATLAB_LIB_DIR})
-        add_compile_definitions(HAS_MATLAB_ENABLED)
+        add_compile_definitions(HAS_MATLAB)
         set(BUILD_WITH_MATLAB TRUE)
     else () #### Location manually specified
         set(MATLAB_INSTALL_DIR "" CACHE PATH
