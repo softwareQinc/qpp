@@ -1,22 +1,21 @@
 # Stress test suite (for POSIX compliant systems) 
 
 Tests some quantum circuit/operation as a function of the number of cores of
-the machine and number of qubits. Records the time for each such run in
-`results_$DATE.csv`, where `$DATE` represents the current date of the run.
-Requires [OpenMP](http://openmp.org/).
+the machine and number of qubits (hard-coded in the script `run.sh`). Records 
+the time for each such run in `results_$DATE.csv`, where `$DATE` represents the 
+current date and time of the run. Requires [OpenMP](http://openmp.org/).
 
 To compile, I recommend using [CMake](http://www.cmake.org), then perform an
-out-of-source build. Assuming you are
-at the root of the project, i.e. inside `qpp`, type
+out-of-source build. Assuming you are at the root of this project, i.e., inside 
+`qpp/stress_test`, type
 
 ```bash
-cd ./stress_tests
-mkdir ./build
+mkdir build
 cmake ..
-make
+make -j4
 ```
 
-To run, change the directory back to `stress_tests` 
+To run, change the directory back to `qpp/stress_tests` 
 
 ```bash
 cd ..
@@ -25,24 +24,35 @@ cd ..
 then type
 
 ```bash
-bash run.sh
+bash run.sh <path_to_stress_test_executable> <results_output_directory>
 ```
 
-To modify the stress test configuration, edit the `run.sh` file, it should be
-self-explanatory. In case you want to switch or to add a stress test, do not forget
-to edit the `CMakeLists.txt` and modify the line 
+e.g.,
 
 ```bash
-SET(SOURCE_FILES
-        src/your_stress_test.cpp)
-```        
-accordingly.
+bash run.sh build/qft results
+```
+
+The results will be written in `results_output_directory/results_$DATE.csv`. If 
+the directory `results_output_directory` does not exist, it will be created.
 
 ## Python stress tests
 
-There are also [Qiskit](https://qiskit.org/) and [QuTiP](http://qutip.org/) stress 
-tests scripts located in the `python` directory. The output format they produce is 
-exactly the same as the one produced by the C++ version, so the `run.sh` script can
-be modified to work with them. For more information regarding running the scripts, 
-please referto the corresponding [Qiskit](https://qiskit.org/) and 
-[QuTiP](http://qutip.org/) documentation.
+We wrote some [Qiskit](https://qiskit.org/) and [QuTiP](http://qutip.org/) stress 
+tests scripts, all located in the `python` directory. The output format they produce is 
+exactly the same as the one produced by the C++ version, and the `run.sh` script 
+works with them with no modification, e.g.,
+
+```bash
+bash run.sh python/qft_qutip.py results
+```
+
+The command above assumes that [Qiskit](https://qiskit.org/) and 
+[QuTiP](http://qutip.org/) were successfully installed on your system.
+For installation details, please refer to their corresponding documentation.
+
+## Windows (MSVC) support
+
+To build the C++ stress tests with MSVC on Windows, follow the same instructions
+as above but replace `make -j4` with `msbuild stress_tests.sln` and adapt the
+`run.sh` script accordingly.
