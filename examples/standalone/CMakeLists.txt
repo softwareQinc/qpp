@@ -2,8 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 project(standalone)
 set(CMAKE_CXX_STANDARD 11)
 
-# If Quantum++ was installed in a non-standard location (e.g., due to lack of
-# admin. rights) via the command
+# If Quantum++ was installed in a non-standard location via
 #
 # 'cmake .. -DCMAKE_INSTALL_PREFIX=/path/to/qpp'
 #

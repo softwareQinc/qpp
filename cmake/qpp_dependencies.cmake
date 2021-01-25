@@ -152,7 +152,7 @@ endif ()
 #### Force clang to use libc++
 if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     add_compile_options(-stdlib=libc++)
-    list(APPEND QPP_LINK_DEPS c++ c++abi)
+    list(APPEND QPP_LINK_DEPS c++)
 endif ()
 
 #### Cygwin has issues with std=c++11, use std=gnu++11 instead
@@ -193,7 +193,7 @@ endif ()
 if (UNIX AND NOT (APPLE OR CYGWIN)
         AND (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
         AND (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.0))
-    list(APPEND QPP_LINK_DEPS PUBLIC supc++)
+    list(APPEND QPP_LINK_DEPS supc++)
 endif ()
 
 #### Export all settings to outside
