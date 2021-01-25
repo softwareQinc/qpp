@@ -13,6 +13,8 @@ jobs:
     # Ubuntu Linux Focal Fosa 20.04, clang-7.0
     - os: linux
       compiler: clang
+      before_install:
+        - export LD_LIBRARY_PATH=/usr/local/clang/lib:$LD_LIBRARY_PATH
       env:
         - MATRIX_EVAL="CXX=clang++ && CC=clang"
 
