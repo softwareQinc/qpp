@@ -2,3 +2,4 @@
 
 include("${CMAKE_CURRENT_LIST_DIR}/qpp_targets.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/qpp_dependencies.cmake")
+message(STATUS "Found Quantum++ in @QPP_INSTALL_DIR@")

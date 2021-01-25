@@ -4,6 +4,11 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 enable_testing()
 
+#### Guard against in-source builds (snippet from Eigen's CMakeLists.txt)
+if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+    message(FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there. You may need to remove CMakeCache.txt.")
+endif ()
+
 add_library(libqpp INTERFACE)
 target_include_directories(libqpp INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
@@ -29,20 +34,43 @@ endif ()
 include(cmake/qpp_examples.cmake)
 ######## END LOCAL stuff
 
-#### Package installation, can then be found via CMake's find_package(qpp)
+#### Quantum++ installation instructions, can then be found via CMake's
+####
+#### find_package(qpp REQUIRED)
+
+#### For both UNIX/Windows, first run from an out-of-source directory
+####
+#### 'cmake .. [additional options]'
+####
+#### where [additional options] are optional arguments, one or more of
+#### [-DEIGEN3_INSTALL_DIR=/path/to/eigen3] [-DWITH_MATLAB=ON/OFF] [-DWITH_OPENMP=ON/OFF]
+####
+#### If you want to install Quantum++ in a non-standard location (e.g., due to
+#### lack of admin. rights), then pass the additional flag
+#### '-DCMAKE_INSTALL_PREFIX=/path/to/qpp' to cmake above, i.e.,
+####
+#### 'cmake .. -DCMAKE_INSTALL_PREFIX=/path/to/qpp [additional options]'
+
+#### Next, follow the platform-specific instructions below
 
 #### UNIX/Linux: sudo make install (or sudo cmake --build . --target install)
-#### Destination(s): /usr/local/include/qpp && /usr/local/lib/cmake/qpp
+#### Will install in: /usr/local/include/qpp and /usr/local/lib/cmake/qpp
 
 #### Windows: cmake --build . --target INSTALL (from an Admin. Command Prompt)
-#### Destination: C:\Program Files (x86)\qpp
+#### Will install in: C:\Program Files (x86)\qpp
 
-#### Minimal example, always add the ${QPP_LINK_DEPS} to target_link_libraries()
+#### Minimal CMakeLists.txt of a standalone application that uses Quantum++
+#### Always add the ${QPP_LINK_DEPS} to target_link_libraries()!
 
-# cmake_minimum_required(VERSION 3.9)
+# cmake_minimum_required(VERSION 3.12)
 # project(test)
 # set(CMAKE_CXX_STANDARD 11)
-# find_package(qpp REQUIRED NO_MODULE)
+#
+# The line below is optional (Quantum++ installed in a non-standard location)
+# set(CMAKE_PREFIX_PATH "/path/to/qpp")
+#
+# find_package(qpp REQUIRED)
+#
 # add_executable(test src/main.cpp)
 # target_link_libraries(test PUBLIC ${QPP_LINK_DEPS} libqpp)
 

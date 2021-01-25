@@ -8,8 +8,8 @@ int main() {
     using namespace qpp;
 
     // create a qpp::QCircuit from a QASM file
-    QCircuit qc =
-        qasm::read_from_file(QPP_ROOT_DIR "/examples/qasm/teleport_minimal.qasm");
+    QCircuit qc = qasm::read_from_file(QPP_ROOT_DIR
+                                       "/examples/qasm/teleport_minimal.qasm");
 
     // we could have also used a C++ standard stream from <fstream>, like below
     // std::ifstream ifs{PATH "/examples/qasm/teleport_minimal.qasm"};
