@@ -23,10 +23,22 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y libeigen3-dev
       - run:
-          name: Build the examples
+          name: Install the library
           command: |
             mkdir build && cd build
-            cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j4 examples
+            cmake .. -DCMAKE_BUILD_TYPE=Debug
+            sudo make install
+      - run:
+          name: Compile and run a standalone example
+          command: |
+            cd examples/standalone && mkdir build && cd build
+            cmake .. -DCMAKE_BUILD_TYPE=Debug && make
+            ./standalone
+      - run:
+          name: Build the examples
+          command: |
+            cd build
+            make -j4 examples
       - run:
           name: Build the unit tests
           command: |
@@ -49,10 +61,27 @@ jobs:
           command: |
             brew update && brew install eigen
       - run:
-          name: Build the examples
+          name: Install dependencies (Eigen3)
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y libeigen3-dev
+      - run:
+          name: Install the library
           command: |
             mkdir build && cd build
-            cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j4 examples
+            cmake .. -DCMAKE_BUILD_TYPE=Debug
+            sudo make install
+      - run:
+          name: Compile and run a standalone example
+          command: |
+            cd examples/standalone && mkdir build && cd build
+            cmake .. -DCMAKE_BUILD_TYPE=Debug && make
+            ./standalone
+      - run:
+          name: Build the examples
+          command: |
+            cd build
+            make -j4 examples
       - run:
           name: Build the unit tests
           command: |
