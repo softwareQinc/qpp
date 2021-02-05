@@ -10,10 +10,10 @@ IF %COMPILER%==msvc2019 (
     mkdir build
     cd build
     cmake .. -DEIGEN3_INSTALL_DIR="c:\%EIGEN3_INSTALL_PATH%"
-    msbuild -verbosity:minimal standalone.sln
+    msbuild -verbosity:minimal -m:4 standalone.sln
     Debug\standalone.exe
     cd %APPVEYOR_BUILD_FOLDER%/build
-    msbuild -verbosity:minimal qpp.sln
+    msbuild -verbosity:minimal -m:4 qpp.sln
 )
 IF %COMPILER%==msys2 (
     @echo on

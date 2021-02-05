@@ -77,14 +77,14 @@ include(cmake/qpp_examples.cmake)
 set(QPP_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/include/${PROJECT_NAME}")
 install(DIRECTORY include/ DESTINATION ${QPP_INSTALL_DIR})
 install(TARGETS libqpp EXPORT qpp_targets)
-install(EXPORT qpp_targets DESTINATION lib/cmake/qpp)
+install(EXPORT qpp_targets DESTINATION "lib/cmake/${PROJECT_NAME}")
 include(CMakePackageConfigHelpers)
 configure_package_config_file(
         "cmake/qppConfig.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/qppConfig.cmake"
-        INSTALL_DESTINATION "lib/cmake/qpp"
+        INSTALL_DESTINATION "lib/cmake/${PROJECT_NAME}"
 )
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/qppConfig.cmake" DESTINATION "lib/cmake/qpp")
-install(FILES "${CMAKE_SOURCE_DIR}/cmake/qpp_dependencies.cmake" DESTINATION "lib/cmake/qpp")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/qppConfig.cmake" DESTINATION "lib/cmake/${PROJECT_NAME}")
+install(FILES "${CMAKE_SOURCE_DIR}/cmake/qpp_dependencies.cmake" DESTINATION "lib/cmake/${PROJECT_NAME}")
 
 #### Uninstall
 #### https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake

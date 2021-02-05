@@ -1,13 +1,16 @@
 Pre-release
-    - Added installation support and auto package detection via CMake
-      find_package(qpp REQUIRED NO_MODULE)
+    - Added CMake installation support and automatic package detection
+      via 'find_package(qpp REQUIRED)'
     - Added CircleCI continuous integration
     - CMake minimum required version bumped to 3.12 for automatic unit tests
       detection by CMake and other CMake-related "good practices"
-    - Integrated the unit tests with the main project, so now the unit tests
-      are automatically compiled along with the examples, and can now be run
-      by typing 'make test' or 'ctest'. Use 'GTEST_COLOR=1 ARGS="-V" make test'
-      or 'GTEST_COLOR=1 ctest -V' for coloured verbose testing output.
+    - Unit testing and examples are now separate CMake targets, one needs to
+      explicitly type 'make unit_testing' and/or 'make examples' to build the
+      unit testing suite and/or the examples, respectively
+    - Simplified unit testing, now one can run tests with 'ctest' or
+      'make test' (after explicitly built with 'make unit_testing'). Use
+      'GTEST_COLOR=1 ARGS="-V" make test' or 'GTEST_COLOR=1 ctest -V' for
+      coloured verbose testing output.
     - Fixed minor inadvertence in OpenQASM `crz` implementation, see
       https://github.com/softwareQinc/qpp/issues/99
     - Changed the signature of qpp::cwise() ["functions.h"] so it takes the
