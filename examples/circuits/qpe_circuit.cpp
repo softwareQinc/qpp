@@ -10,6 +10,7 @@
 
 int main() {
     using namespace qpp;
+
     idx nq_c = 4;         // number of counting qubits
     idx nq_a = 2;         // number of ancilla qubits
     idx nq = nq_c + nq_a; // total number of qubits

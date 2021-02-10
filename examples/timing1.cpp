@@ -8,6 +8,7 @@
 
 int main() {
     using namespace qpp;
+
     std::cout << std::setprecision(8); // increase the default output precision
 
     // get the first codeword from Shor's [[9,1,3]] code

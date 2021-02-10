@@ -6,6 +6,7 @@
 
 int main() {
     using namespace qpp;
+
     std::cout << ">> Qubit teleportation quantum circuit simulation\n\n";
 
     // quantum circuit with 3 qubits and 2 classical bits

@@ -8,6 +8,7 @@
 
 int main() {
     using namespace qpp;
+
     std::vector<idx> qubits{1, 0, 1, 1, 0}; // initial state
     ket psi = mket(qubits);
     ket result = psi;

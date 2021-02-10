@@ -8,6 +8,7 @@
 
 int main() {
     using namespace qpp;
+
     // input state
     ket psi_a = randket();
 

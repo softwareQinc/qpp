@@ -7,6 +7,7 @@
 
 int main() {
     using namespace qpp;
+
     // Quantum++ input/output
     cmat rho = randrho(256); // an 8 qubit density operator
     {

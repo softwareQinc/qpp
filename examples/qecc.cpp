@@ -6,6 +6,7 @@
 
 int main() {
     using namespace qpp;
+
     ket a0 = Codes::codeword(Codes::Type::FIVE_QUBIT, 0);
     ket a1 = Codes::codeword(Codes::Type::FIVE_QUBIT, 1);
 

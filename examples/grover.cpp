@@ -10,6 +10,7 @@
 
 int main() {
     using namespace qpp;
+
     idx n = 10; // number of qubits
     std::cout << ">> Grover on n = " << n << " qubits\n";
 

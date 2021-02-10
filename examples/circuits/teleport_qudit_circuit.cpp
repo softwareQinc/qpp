@@ -6,6 +6,7 @@
 
 int main() {
     using namespace qpp;
+
     idx d = 5; // qudit dimension
     std::cout << ">> Qudit teleportation (d = " << d << ") ";
     std::cout << "quantum circuit simulation\n\n";

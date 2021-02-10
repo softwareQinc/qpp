@@ -6,6 +6,7 @@
 
 int main() {
     using namespace qpp;
+
     std::cout << ">> Various physical qudit layouts\n";
 
     // a 2 x 2 x 2 orthogonal lattice

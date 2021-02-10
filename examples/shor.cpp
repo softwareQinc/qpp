@@ -10,6 +10,7 @@
 
 int main() {
     using namespace qpp;
+
     bigint N = 15;                                  // number to factor
     bigint a = rand(static_cast<bigint>(3), N - 1); // random co-prime with N
     while (gcd(a, N) != 1) {

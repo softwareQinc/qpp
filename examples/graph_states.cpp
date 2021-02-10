@@ -6,6 +6,7 @@
 
 int main() {
     using namespace qpp;
+
     // adjacency matrix, triangle graph (LU equivalent to a GHZ state)
     idx Gamma[3][3] = {{0, 1, 1}, {1, 0, 1}, {1, 1, 0}};
 

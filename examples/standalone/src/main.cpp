@@ -4,6 +4,7 @@
 
 int main() {
     using namespace qpp;
+
     QCircuit qc{1, 1, 2, "coin flip"};
     qc.gate(gt.H, 0);
     qc.measureZ(0, 0);

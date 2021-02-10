@@ -7,6 +7,7 @@
 
 int main() {
     using namespace qpp;
+
     // interfacing with MATLAB
     cmat rho = randrho(256); // an 8 qubit density operator
     save_MATLAB(rho, "rho.mat", "rho", "w");
