@@ -39,7 +39,7 @@ namespace qpp {
  */
 namespace internal {
 // integer index to multi-index, use C-style array for speed
-// standard lexicographical order, e.g. 00, 01, 10, 11
+// standard lexicographical order, e.g., 00, 01, 10, 11
 inline void n2multiidx(idx n, idx numdims, const idx* const dims,
                        idx* result) noexcept {
     // error checks only in DEBUG version
@@ -67,7 +67,7 @@ inline void n2multiidx(idx n, idx numdims, const idx* const dims,
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #endif
 // multi-index to integer index, use C-style array for speed,
-// standard lexicographical order, e.g. 00->0, 01->1, 10->2, 11->3
+// standard lexicographical order, e.g., 00->0, 01->1, 10->2, 11->3
 inline idx multiidx2n(const idx* const midx, idx numdims,
                       const idx* const dims) noexcept {
     // error checks only in DEBUG version

@@ -50,7 +50,7 @@ int main() {
               << bc_initial - bc << '\n';
     std::cout << ">> NOT count (intermediate circuit, should be zero): "
               << bc.get_gate_count("NOT") << '\n';
-    std::cout << ">> X count (should be same as NOT count, i.e. zero): "
+    std::cout << ">> X count (should be same as NOT count, i.e., zero): "
               << bc.get_gate_count("X") << '\n';
     std::cout << ">> Toffoli count (intermediate circuit): "
               << bc.get_gate_count("TOF") << '\n';

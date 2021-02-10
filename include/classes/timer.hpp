@@ -100,7 +100,7 @@ class Timer : public IDisplay {
      * \brief Duration specified by U
      *
      * \tparam U Duration, default is T, which defaults to
-     * std::chrono::duration<double>, i.e. seconds in double precision
+     * std::chrono::duration<double>, i.e., seconds in double precision
      *
      * \return Duration that passed between the instantiation/reset and
      * invocation of qpp::Timer::toc()

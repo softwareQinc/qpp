@@ -1383,7 +1383,7 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A) {
  * \brief Non-negative integer index to multi-index
  * \see qpp::multiidx2n()
  *
- * Uses standard lexicographical order, i.e. 00...0, 00...1 etc.
+ * Uses standard lexicographical order, i.e., 00...0, 00...1 etc.
  *
  * \param n Non-negative integer index
  * \param dims Dimensions of the multi-partite system
@@ -1416,7 +1416,7 @@ inline std::vector<idx> n2multiidx(idx n, const std::vector<idx>& dims) {
  * \brief Multi-index to non-negative integer index
  * \see qpp::n2multiidx()
  *
- * Uses standard lexicographical order, i.e. 00...0, 00...1 etc.
+ * Uses standard lexicographical order, i.e., 00...0, 00...1 etc.
  *
  * \param midx Multi-index
  * \param dims Dimensions of the multi-partite system
@@ -1738,7 +1738,7 @@ prod(const Container& c,
  * otherwise the function returns the first non-zero eigenvector of \a A
  *
  * \param A Eigen expression, assumed to be proportional to a projector onto a
- * pure state, i.e. \a A is assumed to have rank one
+ * pure state, i.e., \a A is assumed to have rank one
  * \return The unique non-zero eigenvector of \a A (up to a phase), as a
  * dynamic column vector over the same scalar field as \a A
  */

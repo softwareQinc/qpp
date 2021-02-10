@@ -191,8 +191,8 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
         throw exception::DimsMismatchCvector("qpp::schmidtB()");
     // END EXCEPTION CHECKS
 
-    // by default returns U_B^*, we need U_B, i.e. the complex conjugate,
-    // i.e. adjoint(transpose(U_B))
+    // by default returns U_B^*, we need U_B, i.e., the complex conjugate,
+    // i.e., adjoint(transpose(U_B))
     return svdV(transpose(reshape(conjugate(rA), dims[1], dims[0])));
 }
 

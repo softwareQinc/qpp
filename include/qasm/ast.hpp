@@ -124,10 +124,10 @@ class Value {
  * \class qpp::qasm::Context
  * \brief QCircuit translation context
  *
- * Stores all information relevant to execution (i.e. generation of a QCircuit).
- * Each classical and quantum bit in the AST is mapped to a unique classical or
- * quantum index corresponding to a QCircuit qubit or bit. Measurements are
- * always non-destructive
+ * Stores all information relevant to execution (i.e., generation of a
+ * QCircuit). Each classical and quantum bit in the AST is mapped to a unique
+ * classical or quantum index corresponding to a QCircuit qubit or bit.
+ * Measurements are always non-destructive.
  */
 class Context {
     QCircuit* circuit_; ///< pointer to the accumulating circuit

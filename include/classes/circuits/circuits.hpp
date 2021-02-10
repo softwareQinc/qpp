@@ -945,7 +945,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param nq Number of qudits (optional, defaults to 1 so qpp::QCircuit is
      * default-constructible)
      * \param nc Number of classical dits (optional)
-     * \param d Subsystem dimensions (optional, default is qubit, i.e. \a d = 2)
+     * \param d Subsystem dimensions (optional, default is qubit, i.e.,
+     * \a d =2)
      * \param name Circuit name (optional)
      */
     explicit QCircuit(idx nq = 1, idx nc = 0, idx d = 2, std::string name = {})
@@ -1306,7 +1307,7 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Quantum circuit total steps count, i.e. the sum of gate count and
+     * \brief Quantum circuit total steps count, i.e., the sum of gate count and
      * measurement count
      *
      * \return Total (gates + measurements) count
@@ -2716,7 +2717,7 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Jointly applies the multiple-qudit controlled gate \a U with
      * multiple classical control dits listed in \a ctrl on the qudit indexes
-     * specified by \a target, i.e., i.e., cCTRL-cCTRL-...-cCTRL-U_{joint}.
+     * specified by \a target, i.e., cCTRL-cCTRL-...-cCTRL-U_{joint}.
      *
      * \param U Multiple-qudit quantum gate
      * \param ctrl_dits Classical control dits indexes
@@ -2867,8 +2868,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param c_reg Classical register where the value of the measurement is
      * being stored, as a decimal representation of the binary string
      * representing the measurement, with the most significant dit on the
-     * left (corresponding to the first/top qudit that is being measured, i.e.
-     * target[0])
+     * left (corresponding to the first/top qudit that is being measured,
+     * i.e., target[0])
      * \param destructive Destructive measurement, true by default
      * \param name Optional measurement name, default is "mZ"
      * \return Reference to the current instance
@@ -3710,7 +3711,7 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Equality operator
-     * \note Ignores names (e.g. circuit names, gate names etc.) and does
+     * \note Ignores names (e.g., circuit names, gate names etc.) and does
      * not perform any circuit simplifications, in other words the circuits
      * have to have the exact same number of qubits/classical dits and the
      * exact same gates/measurements placed in the exact same order. For

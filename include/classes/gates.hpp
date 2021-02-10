@@ -314,7 +314,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \brief Generalized X gate for qudits
      *
      * \note Defined as \f$X = \sum_{j=0}^{D-1} |j\oplus 1\rangle\langle j|\f$,
-     * i.e. raising operator \f$X|j\rangle = |j\oplus 1\rangle\f$
+     * i.e., raising operator \f$X|j\rangle = |j\oplus 1\rangle\f$
      *
      * \param D Dimension of the Hilbert space
      * \return Generalized X gate for qudits
@@ -621,7 +621,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      *
      * \note The std::initializer_list overload exists because otherwise, in the
      * degenerate case when \a dims has only one element, the one element list
-     * is implicitly converted to the element's underlying type, i.e. qpp::idx,
+     * is implicitly converted to the element's underlying type, i.e., qpp::idx,
      * which has the net effect of picking the wrong (non-vector)
      * qpp::expandout() overload
      *
