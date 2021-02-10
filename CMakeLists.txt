@@ -62,16 +62,18 @@ include(cmake/qpp_examples.cmake)
 #### Always add the ${QPP_LINK_DEPS} to target_link_libraries()!
 
 # cmake_minimum_required(VERSION 3.12)
-# project(test)
+# project(my_qpp_project)
 # set(CMAKE_CXX_STANDARD 17)
 #
-# The line below is optional (Quantum++ installed in a non-standard location)
+# # The line below is optional (Quantum++ installed in a non-standard location)
 # set(CMAKE_PREFIX_PATH "/path/to/installed/qpp")
 #
 # find_package(qpp REQUIRED)
-#
-# add_executable(test src/main.cpp)
-# target_link_libraries(test PUBLIC ${QPP_LINK_DEPS} libqpp)
+# if (MSVC)
+#    add_compile_definitions(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING)
+# endif ()
+# add_executable(my_qpp_project src/main.cpp)
+# target_link_libraries(my_qpp_project PUBLIC ${QPP_LINK_DEPS} libqpp)
 
 set(QPP_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/include/${PROJECT_NAME}")
 install(DIRECTORY include/ DESTINATION ${QPP_INSTALL_DIR})
