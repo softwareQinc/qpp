@@ -9,7 +9,7 @@ using namespace qpp;
 
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::Gates::CTRL(const Eigen::MatrixBase<Derived>& A,
+///       Gates::CTRL(const Eigen::MatrixBase<Derived>& A,
 ///       const std::vector<idx>& ctrl, const std::vector<idx>& target, idx N,
 ///       idx d = 2) const
 /******************************************************************************/
@@ -101,7 +101,7 @@ TEST(qpp_Gates_CTRL, Qudits) {
 }
 /******************************************************************************/
 /// BEGIN template <typename Derived>
-///       dyn_mat<typename Derived::Scalar> qpp::Gates::expandout(
+///       dyn_mat<typename Derived::Scalar> Gates::expandout(
 ///       const Eigen::MatrixBase<Derived>& A, idx pos,
 ///       const std::initializer_list<idx>& dims) const
 TEST(qpp_Gates_expandout, InitList) {
@@ -111,7 +111,7 @@ TEST(qpp_Gates_expandout, InitList) {
 }
 /******************************************************************************/
 /// BEGIN template <typename Derived>
-///       dyn_mat<typename Derived::Scalar> qpp::Gates::expandout(
+///       dyn_mat<typename Derived::Scalar> Gates::expandout(
 ///       const Eigen::MatrixBase<Derived>& A, idx pos,
 ///       const std::vector<idx>& dims) const
 TEST(qpp_Gates_expandout, Qudits) {
@@ -127,7 +127,7 @@ TEST(qpp_Gates_expandout, Qudits) {
 }
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::expandout(const Eigen::MatrixBase<Derived>& A, idx pos, idx N,
+///       expandout(const Eigen::MatrixBase<Derived>& A, idx pos, idx N,
 ///       idx d = 2) const
 TEST(qpp_Gates_expandout, Qubits) {
     // single qubit (degenerate case) random gate expansion
@@ -141,7 +141,7 @@ TEST(qpp_Gates_expandout, Qubits) {
     EXPECT_EQ(gt.expandout(gt.X, 1, 3), kron(gt.Id2, gt.X, gt.Id2));
 }
 /******************************************************************************/
-/// BEGIN cmat qpp::Gates::Fd(idx D = 2) const
+/// BEGIN cmat Gates::Fd(idx D = 2) const
 TEST(qpp_Gates_Fd, AllTests) {
     EXPECT_NEAR(0, norm(gt.Fd(1) - gt.Id(1)), 1e-7);
 
@@ -161,11 +161,11 @@ TEST(qpp_Gates_Fd, AllTests) {
     EXPECT_NEAR(0, norm(gt.Fd(4) - F4), 1e-7);
 }
 /******************************************************************************/
-/// BEGIN std::string qpp::Gates::get_name(const cmat& U) const
+/// BEGIN std::string Gates::get_name(const cmat& U) const
 TEST(qpp_Gates_get_name, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived = Eigen::MatrixXcd>
-///       qpp::Gates::Id(idx D = 2) const
+///       Gates::Id(idx D = 2) const
 TEST(qpp_Gates_Id, AllTests) {
     EXPECT_EQ(gt.Id(1), Eigen::MatrixXcd::Identity(1, 1));
     EXPECT_EQ(gt.Id(2), Eigen::MatrixXcd::Identity(2, 2));
@@ -173,10 +173,10 @@ TEST(qpp_Gates_Id, AllTests) {
     EXPECT_EQ(gt.Id(100), Eigen::MatrixXcd::Identity(100, 100));
 }
 /******************************************************************************/
-/// BEGIN cmat qpp::Gates::MODMUL(idx a, idx N) const
+/// BEGIN cmat Gates::MODMUL(idx a, idx N) const
 TEST(qpp_Gates_MODMUL, AllTests) {}
 /******************************************************************************/
-/// BEGIN cmat qpp::Gates::Rn(double theta, const std::vector<double>& n) const
+/// BEGIN cmat Gates::Rn(double theta, const std::vector<double>& n) const
 TEST(qpp_Gates_Rn, AllTests) {
     // |z0> stays invariant (up to a phase) if rotated by any angle
     // around the Z axis
@@ -201,16 +201,16 @@ TEST(qpp_Gates_Rn, AllTests) {
     EXPECT_NEAR(0, norm(st.py1 - prj(gt.Rn(pi, {0, 0, 1}) * st.y0)), 1e-7);
 }
 /******************************************************************************/
-/// BEGIN cmat qpp::Gates::RX(double theta) const
+/// BEGIN cmat Gates::RX(double theta) const
 TEST(qpp_Gates_RX, AllTests) {}
 /******************************************************************************/
-/// BEGIN cmat qpp::Gates::RY(double theta) const
+/// BEGIN cmat Gates::RY(double theta) const
 TEST(qpp_Gates_RY, AllTests) {}
 /******************************************************************************/
-/// BEGIN cmat qpp::Gates::RZ(double theta) const
+/// BEGIN cmat Gates::RZ(double theta) const
 TEST(qpp_Gates_RZ, AllTests) {}
 /******************************************************************************/
-/// BEGIN cmat qpp::SWAPd(idx D = 2) const
+/// BEGIN cmat SWAPd(idx D = 2) const
 TEST(qpp_Gates_SWAPd, AllTests) {
     for (idx D = 1; D < 6; ++D) {
         ket psi = randket(D);
@@ -221,7 +221,7 @@ TEST(qpp_Gates_SWAPd, AllTests) {
     }
 }
 /******************************************************************************/
-/// BEGIN cmat qpp::Gates::Xd(idx D = 2) const
+/// BEGIN cmat Gates::Xd(idx D = 2) const
 TEST(qpp_Gates_Xd, AllTests) {
     for (idx D = 1; D < 10; ++D) {
         cmat Xd = gt.Xd(D);
@@ -233,7 +233,7 @@ TEST(qpp_Gates_Xd, AllTests) {
     }
 }
 /******************************************************************************/
-/// BEGIN cmat qpp::Gates::Zd(idx D = 2) const
+/// BEGIN cmat Gates::Zd(idx D = 2) const
 TEST(qpp_Gates_Zd, AllTests) {
     for (idx D = 1; D < 10; ++D) {
         cmat Zd = gt.Zd(D);

@@ -1,5 +1,5 @@
 // Minimal teleportation OpenQASM example
-// Source: ./examples/qasm/teleport_minimal.cpp
+// Source: ./examples/qasm/qasm_teleport_minimal.cpp
 #include <iostream>
 
 #include "qpp.h"

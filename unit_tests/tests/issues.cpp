@@ -4,6 +4,7 @@
 using namespace qpp;
 
 // Unit testing reported issues
+
 /******************************************************************************/
 /// BEGIN issue #1
 TEST(qpp_issue, IssueNumber) {

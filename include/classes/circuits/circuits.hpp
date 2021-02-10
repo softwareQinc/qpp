@@ -72,8 +72,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         auto search = cmat_hash_tbl_.find(hashU);
         static internal::EqualEigen equal_eigen;
-        if (search != cmat_hash_tbl_.end()) // found the hash in the table
-        {
+        if (search != cmat_hash_tbl_.end()) { // found the hash in the table
             // have a hash collision
             if (!equal_eigen(search->second, U))
                 throw exception::CustomException("qpp::QCircuit::add_hash_()",
@@ -202,7 +201,7 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief One step consisting only of gates/operators in the circuit
      */
-    struct GateStep {
+    struct GateStep : IDisplay {
         GateType gate_type_ = GateType::NONE; ///< gate type
         std::size_t gate_hash_{};             ///< gate hash
         std::vector<idx> ctrl_{};             ///< control
@@ -244,29 +243,31 @@ class QCircuit : public IDisplay, public IJSON {
                             rhs.gate_hash_, rhs.ctrl_) ==
                    std::tie(target_, shift_, gate_type_, gate_hash_, ctrl_);
         }
+
+      private:
+        /**
+         * \brief qpp::IDisplay::display() override
+         *
+         * Writes to the output stream a textual representation of the
+         * \a qpp::QCircuit::GateStep instance
+         *
+         * \param os Output stream passed by reference
+         * \return Reference to the output stream
+         */
+        std::ostream& display(std::ostream& os) const override {
+            os << gate_type_ << ", ";
+            if (gate_type_ >= GateType::SINGLE_cCTRL_SINGLE_TARGET)
+                os << "c_ctrl = " << disp(ctrl_, ", ") << ", ";
+            else if (gate_type_ >= GateType::SINGLE_CTRL_SINGLE_TARGET)
+                os << "ctrl = " << disp(ctrl_, ", ") << ", ";
+            os << "target = " << disp(target_, ", ") << ", ";
+            if (!shift_.empty())
+                os << "shift = " << disp(shift_, ", ") << ", ";
+            os << "name = " << '\"' << name_ << '\"';
+
+            return os;
+        }
     };
-
-    /**
-     * \brief Extraction operator overload for qpp::QCircuit::GateStep class
-     *
-     * \param os Output stream passed by reference
-     * \param gate_step qpp::QCircuit::GateStep class
-     * \return Reference to the output stream
-     */
-    friend std::ostream& operator<<(std::ostream& os,
-                                    const GateStep& gate_step) {
-        os << gate_step.gate_type_ << ", ";
-        if (gate_step.gate_type_ >= GateType::SINGLE_cCTRL_SINGLE_TARGET)
-            os << "c_ctrl = " << disp(gate_step.ctrl_, ", ") << ", ";
-        else if (gate_step.gate_type_ >= GateType::SINGLE_CTRL_SINGLE_TARGET)
-            os << "ctrl = " << disp(gate_step.ctrl_, ", ") << ", ";
-        os << "target = " << disp(gate_step.target_, ", ") << ", ";
-        if (!gate_step.shift_.empty())
-            os << "shift = " << disp(gate_step.shift_, ", ") << ", ";
-        os << "name = " << '\"' << gate_step.name_ << '\"';
-
-        return os;
-    }
 
     /**
      * \brief Type of measurement being executed in a measurement step
@@ -366,7 +367,7 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief One step consisting only of measurements in the circuit
      */
-    struct MeasureStep {
+    struct MeasureStep : IDisplay {
         MeasureType measurement_type_ = MeasureType::NONE; ///< measurement type
         std::vector<std::size_t> mats_hash_{}; ///< hashes of measurement
                                                ///< matrix/matrices
@@ -410,28 +411,30 @@ class QCircuit : public IDisplay, public IJSON {
                             rhs.c_reg_) ==
                    std::tie(target_, measurement_type_, mats_hash_, c_reg_);
         }
+
+      private:
+        /**
+         * \brief qpp::IDisplay::display() override
+         *
+         * Writes to the output stream a textual representation of the
+         * \a qpp::QCircuit::Measure instance
+         *
+         * \param os Output stream passed by reference
+         * \return Reference to the output stream
+         */
+        std::ostream& display(std::ostream& os) const override {
+            os << measurement_type_ << ", ";
+            os << "target = " << disp(target_, ", ") << ", ";
+            if (measurement_type_ != MeasureType::RESET &&
+                measurement_type_ != MeasureType::RESET_MANY &&
+                measurement_type_ != MeasureType::DISCARD &&
+                measurement_type_ != MeasureType::DISCARD_MANY)
+                os << "c_reg = " << c_reg_ << ", ";
+            os << "name = " << '\"' << name_ << '\"';
+
+            return os;
+        }
     };
-
-    /**
-     * \brief Extraction operator overload for qpp::QCircuit::MeasureStep class
-     *
-     * \param os Output stream passed by reference
-     * \param measure_step qpp::QCircuit::MeasureStep enum class
-     * \return Reference to the output stream
-     */
-    friend std::ostream& operator<<(std::ostream& os,
-                                    const MeasureStep& measure_step) {
-        os << measure_step.measurement_type_ << ", ";
-        os << "target = " << disp(measure_step.target_, ", ") << ", ";
-        if (measure_step.measurement_type_ != MeasureType::RESET &&
-            measure_step.measurement_type_ != MeasureType::RESET_MANY &&
-            measure_step.measurement_type_ != MeasureType::DISCARD &&
-            measure_step.measurement_type_ != MeasureType::DISCARD_MANY)
-            os << "c_reg = " << measure_step.c_reg_ << ", ";
-        os << "name = " << '\"' << measure_step.name_ << '\"';
-
-        return os;
-    }
 
     /**
      * \brief Types of each step in the quantum circuit description
@@ -441,6 +444,87 @@ class QCircuit : public IDisplay, public IJSON {
         GATE,        ///< quantum gate(s)
         MEASUREMENT, ///< measurement
         NOP,         ///< no-op
+    };
+
+    /**
+     * \brief Quantum circuit resources
+     */
+    struct Resources : IDisplay, IJSON {
+        idx nq{}, nc{}, d{};
+        std::string name{};
+        idx step_count{};
+        idx gate_count{};
+        idx gate_depth{};
+        idx measurement_count{};
+        idx measurement_depth{};
+        idx total_depth{};
+
+        /**
+         * \brief qpp::IJSON::to_JSON() override
+         *
+         * Displays the quantum circuit resources in JSON format
+         *
+         * \param enclosed_in_curly_brackets If true, encloses the result in
+         * curly brackets
+         * \return String containing the JSON representation of the quantum
+         * circuit resources
+         */
+        std::string
+        to_JSON(bool enclosed_in_curly_brackets = true) const override {
+            std::string result;
+
+            if (enclosed_in_curly_brackets)
+                result += "{";
+
+            result += "\"nq\": " + std::to_string(nq) + ", ";
+            result += "\"nc\": " + std::to_string(nc) + ", ";
+            result += "\"d\": " + std::to_string(d) + ", ";
+
+            result += "\"step count\": " + std::to_string(step_count) + ", ";
+            result +=
+                "\"total gate count\": " + std::to_string(gate_count) + ", ";
+            result +=
+                "\"total gate depth\": " + std::to_string(gate_depth) + ", ";
+            result += "\"total measurement count\": " +
+                      std::to_string(measurement_count) + ", ";
+            result += "\"total measurement depth\": " +
+                      std::to_string(measurement_depth) + ", ";
+            result += "\"total depth\": " + std::to_string(total_depth);
+
+            if (enclosed_in_curly_brackets)
+                result += "}";
+
+            return result;
+        }
+
+      private:
+        /**
+         * \brief qpp::IDisplay::display() override
+         *
+         * Writes to the output stream a textual representation of the quantum
+         * circuit resources
+         *
+         * \param os Output stream passed by reference
+         * \return Reference to the output stream
+         */
+        std::ostream& display(std::ostream& os) const override {
+            os << "[Resources]\n";
+
+            os << "<QCircuit "
+               << "nq: " << nq << ", nc: " << nc << ", d: " << d;
+            if (!name.empty())
+                os << ", name: \"" << name << '"';
+            os << ">\n";
+
+            os << "step count: " << step_count << '\n';
+            os << "total gate count: " << gate_count << '\n';
+            os << "total gate depth: " << gate_depth << '\n';
+            os << "total measurement count: " << measurement_count << '\n';
+            os << "total measurement depth: " << measurement_depth << '\n';
+            os << "total depth: " << total_depth;
+
+            return os;
+        }
     };
 
   private:
@@ -538,12 +622,12 @@ class QCircuit : public IDisplay, public IJSON {
             std::ostream& display(std::ostream& os) const override {
                 // field spacing for the step number
                 idx text_width =
-                    std::to_string(value_type_qc_->get_step_count()).size() + 1;
+                    std::to_string(value_type_qc_->get_step_count()).size();
 
                 // gate step
                 if (type_ == StepType::GATE) {
                     os << std::left;
-                    os << std::setw(text_width) << ip_;
+                    os << std::setw(text_width) << ip_ << ": ";
                     os << std::right;
                     idx pos = std::distance(std::begin(value_type_qc_->gates_),
                                             gates_ip_);
@@ -552,7 +636,7 @@ class QCircuit : public IDisplay, public IJSON {
                 // measurement step
                 else if (type_ == StepType::MEASUREMENT) {
                     os << std::left;
-                    os << std::setw(text_width) << ip_;
+                    os << std::setw(text_width) << ip_ << ": ";
                     os << std::right;
                     idx pos =
                         std::distance(std::begin(value_type_qc_->measurements_),
@@ -1239,6 +1323,28 @@ class QCircuit : public IDisplay, public IJSON {
             std::begin(step_types_), std::end(step_types_),
             [](const StepType& s) { return s == StepType::NOP; });
     }
+
+    /**
+     * \brief Quantum circuit resources
+     *
+     * \return Instance of \a qpp::QCircuit::Resources
+     */
+    Resources get_resources() const {
+        Resources result;
+        result.nq = get_nq();
+        result.nc = get_nc();
+        result.d = get_d();
+        result.name = get_name();
+        result.step_count = get_step_count();
+        result.gate_count = get_gate_count();
+        result.gate_depth = get_gate_depth();
+        result.measurement_count = get_measurement_count();
+        result.measurement_depth = get_measurement_depth();
+        result.total_depth = get_depth();
+
+        return result;
+    }
+
     // end getters
 
     // setters
@@ -3652,19 +3758,16 @@ class QCircuit : public IDisplay, public IJSON {
         if (enclosed_in_curly_brackets)
             result += "{";
 
-        result += "\"nq\" : " + std::to_string(nq_);
-        result += ", \"nc\" : " + std::to_string(nc_);
-        result += ", \"d\" : " + std::to_string(d_);
-        result += R"(, "name" : ")" + name_ + '\"';
+        result += "\"name\": \"" + name_ + "\", ";
 
         std::string sep;
         std::ostringstream ss;
-        result += ", \"steps\" : [";
+        result += "\"steps\": [";
         for (auto&& elem : *this) {
             result += sep;
             sep = ", ";
-            result += "{\"step\" : " + std::to_string(elem.ip_) + ", ";
-            result += "\"type\" : ";
+            result += "{\"step\": " + std::to_string(elem.ip_) + ", ";
+            result += "\"type\": ";
             // gate step
             if (elem.type_ == StepType::GATE) {
                 idx pos = std::distance(std::begin(elem.value_type_qc_->gates_),
@@ -3679,23 +3782,23 @@ class QCircuit : public IDisplay, public IJSON {
                     ss << disp(gates_[pos].ctrl_, ", ");
                     if (gates_[pos].gate_type_ >=
                         GateType::SINGLE_cCTRL_SINGLE_TARGET)
-                        result += "\"c_ctrl\" : " + ss.str() + ", ";
+                        result += "\"c_ctrl\": " + ss.str() + ", ";
                     else
-                        result += "\"ctrl\" : " + ss.str() + ", ";
+                        result += "\"ctrl\": " + ss.str() + ", ";
                 }
                 ss.str("");
                 ss.clear();
                 ss << disp(gates_[pos].target_, ", ");
-                result += "\"target\" : " + ss.str() + ", ";
+                result += "\"target\": " + ss.str() + ", ";
 
                 if (!gates_[pos].shift_.empty()) {
                     ss.str("");
                     ss.clear();
                     ss << disp(gates_[pos].shift_, ", ");
-                    result += "\"shift\" : " + ss.str() + ", ";
+                    result += "\"shift\": " + ss.str() + ", ";
                 }
 
-                result += "\"name\" : ";
+                result += "\"name\": ";
                 result += '\"' + gates_[pos].name_ + "\"}";
             }
             // measurement step
@@ -3710,7 +3813,7 @@ class QCircuit : public IDisplay, public IJSON {
                 ss.str("");
                 ss.clear();
                 ss << disp(measurements_[pos].target_, ", ");
-                result += "\"target\" : " + ss.str() + ", ";
+                result += "\"target\": " + ss.str() + ", ";
 
                 if (measurements_[pos].measurement_type_ !=
                         MeasureType::RESET &&
@@ -3720,10 +3823,10 @@ class QCircuit : public IDisplay, public IJSON {
                         MeasureType::DISCARD &&
                     measurements_[pos].measurement_type_ !=
                         MeasureType::DISCARD_MANY)
-                    result += "\"c_reg\" : " +
+                    result += "\"c_reg\": " +
                               std::to_string(measurements_[pos].c_reg_) + ", ";
 
-                result += "\"name\" : ";
+                result += "\"name\": ";
                 result += '\"' + measurements_[pos].name_ + "\"}";
 
             }
@@ -3737,26 +3840,17 @@ class QCircuit : public IDisplay, public IJSON {
         }                // end for
         result += "], "; // end steps
 
-        result += "\"step count\" : " + std::to_string(get_step_count()) + ", ";
-        result +=
-            "\"total gate count\" : " + std::to_string(get_gate_count()) + ", ";
-        result +=
-            "\"total gate depth\" : " + std::to_string(get_gate_depth()) + ", ";
-        result += "\"total measurement count\" : " +
-                  std::to_string(get_measurement_count()) + ", ";
-        result += "\"total measurement depth\" : " +
-                  std::to_string(get_measurement_depth()) + ", ";
-        result += "\"total depth\" : " + std::to_string(get_depth()) + ", ";
+        result += get_resources().to_JSON(false) + ", ";
 
         ss.str("");
         ss.clear();
         ss << disp(get_measured(), ", ");
-        result += "\"measured/discarded (destructive)\" : " + ss.str() + ", ";
+        result += "\"measured/discarded (destructive)\": " + ss.str() + ", ";
 
         ss.str("");
         ss.clear();
         ss << disp(get_non_measured(), ", ");
-        result += "\"non-measured/non-discarded\" : " + ss.str();
+        result += "\"non-measured/non-discarded\": " + ss.str();
 
         if (enclosed_in_curly_brackets)
             result += "}";
@@ -3856,23 +3950,17 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
-        os << "nq = " << nq_ << ", nc = " << nc_ << ", d = " << d_;
+        os << "[QCircuit ";
+        os << "nq: " << nq_ << ", nc: " << nc_ << ", d: " << d_;
+        if (!name_.empty())
+            os << ", name: \"" << name_ << '"';
+        os << "]\n";
 
-        if (!name_.empty()) // if the circuit is named
-            os << ", name = \"" << name_ << "\"\n";
-        else
-            os << ", name = \"\"\n";
-
+        std::string sep{};
         for (auto&& elem : *this) {
-            os << elem << '\n';
+            os << sep << elem;
+            sep = '\n';
         }
-
-        os << "step count: " << get_step_count() << '\n';
-        os << "total gate count: " << get_gate_count() << '\n';
-        os << "total gate depth: " << get_gate_depth() << '\n';
-        os << "total measurement count: " << get_measurement_count() << '\n';
-        os << "total measurement depth: " << get_measurement_depth() << '\n';
-        os << "total depth: " << get_depth();
 
         /*
         os << "\nmeasured/discarded (destructive): "

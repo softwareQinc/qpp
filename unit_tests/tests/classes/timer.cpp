@@ -12,7 +12,7 @@ using namespace qpp;
 
 // the precision should be at least within 0.05s <=> 50 ms <=> 50000 micros
 /******************************************************************************/
-/// BEGIN template <typename U = T> U qpp::Timer::get_duration() const noexcept
+/// BEGIN template <typename U = T> U Timer::get_duration() const noexcept
 TEST(qpp_Timer_get_duration, AllTests) {
     using namespace std::chrono;
 
@@ -36,11 +36,11 @@ TEST(qpp_Timer_get_duration, AllTests) {
                 50000); // within 0.05s
 }
 /******************************************************************************/
-/// BEGIN Timer& qpp::Timer::tic() noexcept
+/// BEGIN Timer& Timer::tic() noexcept
 ///
-///       double qpp::Timer::tics() const noexcept
+///       double Timer::tics() const noexcept
 ///
-///       Timer& qpp::Timer::toc() noexcept
+///       Timer& Timer::toc() noexcept
 TEST(qpp_Timer_tic_tics_toc, AllTests) {
     using namespace std::chrono;
 

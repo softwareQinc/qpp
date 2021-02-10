@@ -1,5 +1,5 @@
 // Quantum Phase Estimation circuit simulator
-// Source: ./examples/circuits/quantum_phase_estimation.cpp
+// Source: ./examples/circuits/qpe_circuit.cpp
 // See also ./examples/qpe.cpp for a low-level API example
 #include <cmath>
 #include <iostream>
@@ -42,10 +42,8 @@ int main() {
     // measure many qubits at once, result is a dit
     qc.measureZ(counting_qubits, 0);
 
-    // display the quantum circuit
-    std::cout << ">> BEGIN CIRCUIT\n";
-    std::cout << qc << '\n';
-    std::cout << ">> END CIRCUIT\n\n";
+    // display the quantum circuit and its corresponding resources
+    std::cout << qc << "\n\n" << qc.get_resources() << "\n\n";
 
     std::cout << ">> Running...\n";
     QEngine engine{qc};

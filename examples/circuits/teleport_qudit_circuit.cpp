@@ -34,28 +34,22 @@ int main() {
     qc.cCTRL(adjoint(gt.Xd(d)), 1, 2);
     qc.cCTRL(gt.Zd(d), 0, 2);
 
+    // display the quantum circuit and its corresponding resources
+    std::cout << qc << "\n\n" << qc.get_resources() << "\n\n";
+
     // initialize the quantum engine with a circuit
     QEngine engine{qc};
 
-    // display the quantum circuit
-    std::cout << ">> BEGIN CIRCUIT\n";
-    std::cout << engine.get_circuit() << '\n';
-    std::cout << ">> END CIRCUIT\n\n";
-
-    // execute the entire circuit step by step, same effect as engine.execute();
-    for (auto&& step : qc)
-        engine.execute(step);
+    // execute the entire circuit
+    engine.execute();
 
     // display the measurement statistics
-    std::cout << ">> BEGIN ENGINE STATISTICS\n";
-    std::cout << engine << '\n';
-    std::cout << ">> END ENGINE STATISTICS\n\n";
+    std::cout << engine << "\n\n";
 
     // verify that the teleportation was successful
-    ket psi_initial = U * mket({0}, d);
-    ket psi_final = engine.get_psi();
+    ket psi_in = U * mket({0}, d);
+    ket psi_out = engine.get_psi();
     std::cout << ">> Teleported state:\n";
-    std::cout << disp(psi_final) << '\n';
-    std::cout << ">> Norm difference: " << norm(psi_final - psi_initial)
-              << '\n';
+    std::cout << disp(psi_out) << '\n';
+    std::cout << ">> Norm difference: " << norm(psi_out - psi_in) << '\n';
 }

@@ -7,48 +7,48 @@ using namespace qpp;
 // Unit testing "functions.hpp"
 
 /******************************************************************************/
-/// BEGIN template <char... Bits> bra qpp::operator"" _bra()
+/// BEGIN template <char... Bits> bra operator"" _bra()
 TEST(qpp_literals_operator_bra, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <char... Bits> ket qpp::operator"" _ket()
+/// BEGIN template <char... Bits> ket operator"" _ket()
 TEST(qpp_literals_operator_ket, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <char... Bits> cmat qpp::operator"" _prj()
+/// BEGIN template <char... Bits> cmat operator"" _prj()
 TEST(qpp_literals_operator_prj, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> cmat qpp::absm(
+/// BEGIN template <typename Derived> cmat absm(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_absm, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Container> std::vector<double> qpp::abssq(
+/// BEGIN template <typename Container> std::vector<double> abssq(
 ///       const Container& c,
 ///       typename std::enable_if<is_iterable<Container>::value>::type*
 ///       = nullptr)
 TEST(qpp_abssq, Container) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> std::vector<double> qpp::abssq(
+/// BEGIN template <typename Derived> std::vector<double> abssq(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_abssq, Matrix) {}
 /******************************************************************************/
-/// BEGIN template <typename InputIterator> std::vector<double> qpp::abssq(
+/// BEGIN template <typename InputIterator> std::vector<double> abssq(
 ///       InputIterator first, InputIterator last)
 TEST(qpp_abssq, Iterator) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::adjoint(const Eigen::MatrixBase<Derived>& A)
+///       adjoint(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_adjoint, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived1, typename Derived2>
-///       dyn_mat<typename Derived1::Scalar> qpp::anticomm(
+///       dyn_mat<typename Derived1::Scalar> anticomm(
 ///       const Eigen::MatrixBase<Derived1>& A,
 ///       const Eigen::MatrixBase<Derived2>& B)
 TEST(qpp_anticomm, AllTests) {}
 /******************************************************************************/
-/// BEGIN inline cmat qpp::bloch2rho(const std::vector<double>& r)
+/// BEGIN inline cmat bloch2rho(const std::vector<double>& r)
 TEST(qpp_bloch2rho, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived1, typename Derived2>
-///       dyn_mat<typename Derived1::Scalar> qpp::comm(
+///       dyn_mat<typename Derived1::Scalar> comm(
 ///       const Eigen::MatrixBase<Derived1>& A,
 ///       const Eigen::MatrixBase<Derived2>& B)
 TEST(qpp_comm, AllTests) {}
@@ -57,236 +57,236 @@ TEST(qpp_comm, AllTests) {}
 TEST(qpp_complement, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::conjugate(const Eigen::MatrixBase<Derived>& A)
+///       conjugate(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_conjugate, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> cmat qpp::cosm(
+/// BEGIN template <typename Derived> cmat cosm(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_cosm, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename OutputScalar, typename Derived>
-///       dyn_mat <OutputScalar> qpp::cwise(const Eigen::MatrixBase<Derived>& A,
+///       dyn_mat <OutputScalar> cwise(const Eigen::MatrixBase<Derived>& A,
 ///       OutputScalar (*f)(typename Derived::Scalar))
 TEST(qpp_cwise, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> typename Derived::Scalar qpp::det(
+/// BEGIN template <typename Derived> typename Derived::Scalar det(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_det, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::dirsum(const std::initializer_list<Derived>& As)
+///       dirsum(const std::initializer_list<Derived>& As)
 TEST(qpp_dirsum, InitList) {}
 /******************************************************************************/
 /// BEGIN template <typename T, typename ... Args>
-/// dyn_mat<typename T::Scalar> qpp::dirsum(const T& head, const Args& ... tail)
+/// dyn_mat<typename T::Scalar> dirsum(const T& head, const Args& ... tail)
 TEST(qpp_dirsum, Variadic) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::dirsum(const std::vector<Derived>& As)
+///       dirsum(const std::vector<Derived>& As)
 TEST(qpp_dirsum, Vector) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::dirsumpow(const Eigen::MatrixBase<Derived>& A, idx n)
+///       dirsumpow(const Eigen::MatrixBase<Derived>& A, idx n)
 TEST(qpp_dirsumpow, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> std::pair<dyn_col_vect<cplx>, cmat>
-///       qpp::eig (const Eigen::MatrixBase<Derived>& A)
+///       eig (const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_eig, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> dyn_col_vect <cplx> qpp::evals(
+/// BEGIN template <typename Derived> dyn_col_vect <cplx> evals(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_evals, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> cmat qpp::evects(
+/// BEGIN template <typename Derived> cmat evects(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_evects, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> cmat qpp::expm(
+/// BEGIN template <typename Derived> cmat expm(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_expm, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> cmat qpp::funm(
+/// BEGIN template <typename Derived> cmat funm(
 ///       const Eigen::MatrixBase<Derived>& A, cplx (*f)(const cplx&))
 TEST(qpp_funm, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::grams(const std::initializer_list<Derived>& As)
+///       grams(const std::initializer_list<Derived>& As)
 TEST(qpp_grams, InitList) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp:::grams(const Eigen::MatrixBase<Derived>& A)
+///       :grams(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_grams, Matrix) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::grams(const std::vector<Derived>& As)
+///       grams(const std::vector<Derived>& As)
 TEST(qpp_grams, Vector) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> std::size_t qpp::hash_eigen(
+/// BEGIN template <typename Derived> std::size_t hash_eigen(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_hash_eigen, AllTests) {}
 /// BEGIN template <typename Derived> std::pair<dyn_col_vect<double>, cmat>
-///       qpp::heig(const Eigen::MatrixBase<Derived>& A)
+///       heig(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_heig, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> dyn_col_vect<double> qpp::hevals(
+/// BEGIN template <typename Derived> dyn_col_vect<double> hevals(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_hevals, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> cmat qpp::hevects(
+/// BEGIN template <typename Derived> cmat hevects(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_hevects, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::inverse(const Eigen::MatrixBase<Derived>& A)
+///       inverse(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_inverse, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::kron(const std::initializer_list<Derived>& As)
+///       kron(const std::initializer_list<Derived>& As)
 TEST(qpp_kron, InitList) {}
 /******************************************************************************/
 /// BEGIN template <typename T, typename ... Args> dyn_mat<typename T::Scalar>
-///       qpp::kron(const T& head, const Args& ... tail)
+///       kron(const T& head, const Args& ... tail)
 TEST(qpp_kron, Variadic) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::kron(const std::vector<Derived>& As)
+///       kron(const std::vector<Derived>& As)
 TEST(qpp_kron, Vector) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::kronpow(const Eigen::MatrixBase<Derived>& A, idx n)
+///       kronpow(const Eigen::MatrixBase<Derived>& A, idx n)
 TEST(qpp_kronpow, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> typename Derived::Scalar qpp::logdet(
+/// BEGIN template <typename Derived> typename Derived::Scalar logdet(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_logdet, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> cmat qpp::logm(
+/// BEGIN template <typename Derived> cmat logm(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_logm, AllTests) {}
 /******************************************************************************/
-/// BEGIN inline ket qpp::mket(const std::vector<idx>& mask,
+/// BEGIN inline ket mket(const std::vector<idx>& mask,
 ///       const std::vector<idx>& dims)
 TEST(qpp_mket, Qudits) {}
 /******************************************************************************/
-/// BEGIN inline ket qpp::mket(const std::vector<idx>& mask, idx d = 2)
+/// BEGIN inline ket mket(const std::vector<idx>& mask, idx d = 2)
 TEST(qpp_mket, Qubits) {}
 /******************************************************************************/
-/// BEGIN inline cmat qpp::mprj(const std::vector<idx>& mask,
+/// BEGIN inline cmat mprj(const std::vector<idx>& mask,
 ///       const std::vector<idx>& dims)
 TEST(qpp_mprj, Qudits) {}
 /******************************************************************************/
-/// BEGIN inline cmat qpp::mprj(const std::vector<idx>& mask, idx d = 2)
+/// BEGIN inline cmat mprj(const std::vector<idx>& mask, idx d = 2)
 TEST(qpp_mprj, Qubits) {}
 /******************************************************************************/
-/// BEGIN inline idx qpp::multiidx2n(const std::vector<idx>& midx,
+/// BEGIN inline idx multiidx2n(const std::vector<idx>& midx,
 ///       const std::vector<idx>& dims)
 TEST(qpp_multiidx2n, AllTests) {}
 /******************************************************************************/
-/// BEGIN inline std::vector<idx> qpp::n2multiidx(idx n,
+/// BEGIN inline std::vector<idx> n2multiidx(idx n,
 ///       const std::vector<idx>& dims)
 TEST(qpp_n2multiidx, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> double qpp::norm(
+/// BEGIN template <typename Derived> double norm(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_norm, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::normalize(const Eigen::MatrixBase<Derived>& A)
+///       normalize(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_normalize, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::powm(const Eigen::MatrixBase<Derived>& A, idx n)
+///       powm(const Eigen::MatrixBase<Derived>& A, idx n)
 TEST(qpp_powm, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::prj(const Eigen::MatrixBase<Derived>& A)
+///       prj(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_prj, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Container> typename Container::value_type
-///       qpp::prod(const Container& c,
+///       prod(const Container& c,
 ///       typename std::enable_if<is_iterable<Container>::value>::type*
 ///       = nullptr)
 TEST(qpp_prod, Container) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> typename Derived::Scalar qpp::prod(
+/// BEGIN template <typename Derived> typename Derived::Scalar prod(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_prod, Matrix) {}
 /******************************************************************************/
 /// BEGIN template <typename InputIterator>
 ///       typename std::iterator_traits<InputIterator>::value_type
-///       qpp::prod(InputIterator first, InputIterator last)
+///       prod(InputIterator first, InputIterator last)
 TEST(qpp_prod, Iterator) {
     std::vector<int> v{1, 2, 3, 4};
-    EXPECT_EQ(24, qpp::prod(v.begin(), v.end()));
+    EXPECT_EQ(24, prod(v.begin(), v.end()));
 }
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::reshape(const Eigen::MatrixBase<Derived>& A, idx rows, idx cols)
+///       reshape(const Eigen::MatrixBase<Derived>& A, idx rows, idx cols)
 TEST(qpp_reshape, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> std::vector<double> qpp::rho2bloch(
+/// BEGIN template <typename Derived> std::vector<double> rho2bloch(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_rho2bloch, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_col_vect<typename Derived::Scalar>
-///       qpp::rho2pure(const Eigen::MatrixBase<Derived>& A)
+///       rho2pure(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_rho2pure, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> double qpp::schatten(
+/// BEGIN template <typename Derived> double schatten(
 ///       const Eigen::MatrixBase<Derived>& A, double p)
 TEST(qpp_schatten, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> cmat qpp::sinm(
+/// BEGIN template <typename Derived> cmat sinm(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_sinm, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> cmat qpp::spectralpowm(
+/// BEGIN template <typename Derived> cmat spectralpowm(
 ///       const Eigen::MatrixBase<Derived>& A, const cplx z)
 TEST(qpp_spectralpowm, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> cmat qpp::sqrtm(
+/// BEGIN template <typename Derived> cmat sqrtm(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_sqrtm, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Container> typename Container::value_type
-///       qpp::sum(const Container& c,
+///       sum(const Container& c,
 ///       typename std::enable_if<is_iterable<Container>::value>::type*
 ///       = nullptr)
 TEST(qpp_sum, Container) {}
-/// BEGIN template <typename Derived> typename Derived::Scalar qpp::sum(
+/// BEGIN template <typename Derived> typename Derived::Scalar sum(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_sum, Matrix) {}
 /******************************************************************************/
 /// BEGIN template <typename InputIterator>
 ///       typename std::iterator_traits<InputIterator>::value_type
-///       qpp::sum(InputIterator first, InputIterator last)
+///       sum(InputIterator first, InputIterator last)
 TEST(qpp_sum, Iterator) {
     std::vector<int> v{0, 1, 2, 3};
-    EXPECT_EQ(6, qpp::sum(v.begin(), v.end()));
+    EXPECT_EQ(6, sum(v.begin(), v.end()));
 }
 /******************************************************************************/
-/// BEGIN template <typename Derived> dyn_col_vect<double> qpp::svals(
+/// BEGIN template <typename Derived> dyn_col_vect<double> svals(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_svals, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived>
-///       std::tuple<cmat, dyn_col_vect<double>, cmat> qpp::svd(
+///       std::tuple<cmat, dyn_col_vect<double>, cmat> svd(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_svd, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> cmat qpp::svdU(
+/// BEGIN template <typename Derived> cmat svdU(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_svdU, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> cmat qpp::svdV(
+/// BEGIN template <typename Derived> cmat svdV(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_svdV, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> typename Derived::Scalar qpp::trace(
+/// BEGIN template <typename Derived> typename Derived::Scalar trace(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_trace, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       qpp::transpose(const Eigen::MatrixBase<Derived>& A)
+///       transpose(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_transpose, AllTests) {}
 /******************************************************************************/

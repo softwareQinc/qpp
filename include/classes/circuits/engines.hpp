@@ -305,6 +305,14 @@ class QEngine : public IDisplay, public IJSON {
     get_stats() const {
         return stats_;
     }
+
+    /**
+     * \brief Determines if engines derived from \a qpp::QEngine are noisy or
+     * not at runtime
+     *
+     * \return True if the engine is noisy, false otherwise
+     */
+    virtual bool is_noisy() const { return false; }
     // end getters
 
     // setters
@@ -606,6 +614,7 @@ class QEngine : public IDisplay, public IJSON {
         }     // end else if measurement step
         // no-op
         else if (elem.type_ == QCircuit::StepType::NOP) {
+            (void) 0; // nop, to trick "duplicate code" warning in clang-tidy
         }
         // otherwise
         else {
@@ -687,13 +696,19 @@ class QEngine : public IDisplay, public IJSON {
             result += "{";
 
         std::ostringstream ss;
+        ss << "\"nq\": " << get_circuit().get_nq() << ", ";
+        ss << "\"nc\": " << get_circuit().get_nc() << ", ";
+        ss << "\"d\": " << get_circuit().get_d() << ", ";
+        ss << R"("name": ")" << get_circuit().get_name() << "\", ";
+
+        ss << "\"measured/discarded (destructive)\": ";
         ss << disp(get_measured(), ", ");
-        result += "\"measured/discarded (destructive)\" : " + ss.str() + ", ";
+        result += ss.str() + ", ";
 
         ss.str("");
         ss.clear();
         ss << disp(get_non_measured(), ", ");
-        result += "\"non-measured/non-discarded\" : " + ss.str();
+        result += "\"non-measured/non-discarded\": " + ss.str();
 
         ss.str("");
         ss.clear();
@@ -754,6 +769,16 @@ class QEngine : public IDisplay, public IJSON {
         os << "non-measured/non-discarded: " << disp(get_non_measured(), ", ")
            << '\n';
         */
+
+        std::string engine_type = is_noisy() ? "[QNoisyEngine]" : "[QEngine]";
+        os << engine_type << '\n';
+        os << "<QCircuit nq: " << get_circuit().get_nq()
+           << ", nc: " << get_circuit().get_nc()
+           << ", d: " << get_circuit().get_d();
+        auto circ_name = get_circuit().get_name();
+        if (!circ_name.empty())
+            os << ", name: \"" << circ_name << '\"';
+        os << ">\n";
 
         os << "last probs: " << disp(get_probs(), ", ") << '\n';
         os << "last dits: " << disp(get_dits(), ", ");
@@ -888,6 +913,13 @@ class QNoisyEngine : public QEngine {
     std::vector<std::vector<idx>> get_noise_results() const {
         return noise_results_;
     }
+
+    /**
+     * \brief \a qpp::QEngine::is_noisy() override
+     *
+     * \return True
+     */
+    bool is_noisy() const override { return true; }
     // end getters
 }; /* class QNoisyEngine */
 

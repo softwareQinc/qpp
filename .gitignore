@@ -12,5 +12,8 @@ CMakeSettings.json
 build/
 cmake-build*/
 
+# Windows build
+win/
+
 # documentation source files
 doc/

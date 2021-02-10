@@ -1,5 +1,6 @@
 // Qudit teleportation
 // Source: ./examples/teleport_qudit.cpp
+// See also: ./examples/teleport_qubit.cpp
 #include <iostream>
 #include <tuple>
 #include <vector>
@@ -13,7 +14,7 @@ int main() {
 
     ket mes_AB = st.mes(d); // maximally entangled state resource
 
-    // circuit that measures in the qudit Bell basis
+    // circuit used to measure in the qudit Bell basis
     cmat Bell_aA = kron(adjoint(gt.Fd(d)), gt.Id(d)) *
                    gt.CTRL(adjoint(gt.Xd(d)), {0}, {1}, 2, d);
 
