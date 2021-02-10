@@ -1,7 +1,7 @@
-// Quantum Phase Estimation
+// Quantum phase estimation
 // Source: ./examples/qpe.cpp
-// See also ./examples/circuits/quantum_phase_estimation.cpp for a high-level
-// API example (with a 2-qubit target unitary!)
+// See also ./examples/circuits/qpe_circuit.cpp for a high-level API example
+// (with a 2-qubit target unitary!)
 
 /*
 A program to construct the following quantum phase estimator circuit and

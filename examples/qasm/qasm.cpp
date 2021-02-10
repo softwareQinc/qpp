@@ -1,5 +1,5 @@
-// OpenQASM example, executes an OpenQASM circuit read from the input stream or
-// a file (if specified)
+// OpenQASM example, executes an OpenQASM circuit read from the input stream
+// (repeatedly if the number of repetitions is passed as an argument)
 // Source: ./examples/qasm/qasm.cpp
 
 #include <iostream>
@@ -10,12 +10,12 @@ int main(int argc, char** argv) {
     using namespace qpp;
 
     QCircuit qc;
-    if (argc < 2)
-        // read the circuit from the input stream
-        qc = qasm::read(std::cin);
-    else
-        // read the circuit from a file
-        qc = qasm::read_from_file(argv[1]);
+    // read the circuit from the input stream
+    qc = qasm::read(std::cin);
+
+    idx reps = 1;
+    if (argc > 1)
+        reps = std::stoi(argv[1]);
 
     // initialize the quantum engine with a circuit
     QEngine q_engine{qc};
@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
     std::cout << qc << "\n\n" << qc.get_resources() << "\n\n";
 
     // execute the quantum circuit
-    q_engine.execute();
+    q_engine.execute(reps);
 
     // display the measurement statistics
     std::cout << q_engine << '\n';

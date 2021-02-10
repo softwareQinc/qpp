@@ -1,4 +1,4 @@
-// Measurements, second take
+// Measurements
 // Source: ./examples/measurements2.cpp
 #include <iostream>
 #include <tuple>
