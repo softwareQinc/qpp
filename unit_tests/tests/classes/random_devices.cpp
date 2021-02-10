@@ -7,16 +7,16 @@ using namespace qpp;
 // Unit testing "classes/random_devices.hpp"
 
 /******************************************************************************/
-/// BEGIN std::mt19937& qpp::RandomDevices::get_prng()
+/// BEGIN std::mt19937& RandomDevices::get_prng()
 TEST(qpp_RandomDevices_get_prng, AllTests) {}
 /******************************************************************************/
-/// BEGIN qpp::RandomDevices::load(std::istream& is)
+/// BEGIN RandomDevices::load(std::istream& is)
 ///
-///       qpp::RandomDevices::save(std::ostream& os) const
+///       RandomDevices::save(std::ostream& os) const
 TEST(qpp_RandomDevices_load_save, AllTests) {
     // save the state of the PRNG
     std::stringstream ss;
-    qpp::rdevs.save(ss);
+    rdevs.save(ss);
 
     // generate some random matrix
     cmat A1 = rand<cmat>(4, 4);
@@ -29,7 +29,7 @@ TEST(qpp_RandomDevices_load_save, AllTests) {
 
     // load the state of the PRNG
     ss.seekg(0);
-    qpp::rdevs.load(ss);
+    rdevs.load(ss);
 
     // generate again some random matrix
     cmat A2 = rand<cmat>(4, 4);

@@ -7,8 +7,8 @@ using namespace qpp;
 // Unit testing "qasm.hpp"
 
 /******************************************************************************/
-/// BEGIN std::unique_ptr<qpp::QCircuit>
-///       qpp::qasm::read_from_file(const std::string& fname)
+/// BEGIN std::unique_ptr<QCircuit> qasm::read_from_file(
+///       const std::string& fname)
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, StdCompliance) {
     // generic circuits
@@ -76,7 +76,7 @@ TEST(qpp_qasm_read_from_file, StdCompliance) {
 }
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, BuiltinGates) {
-    qpp::QCircuit q_circuit = qasm::read_from_file(
+    QCircuit q_circuit = qasm::read_from_file(
         QPP_ROOT_DIR "/unit_tests/tests/qasm/circuits/units/builtingates.qasm");
     QEngine engine{q_circuit};
     engine.execute();
@@ -100,7 +100,7 @@ TEST(qpp_qasm_read_from_file, BuiltinGates) {
 }
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, Teleportation) {
-    qpp::QCircuit q_circuit = qasm::read_from_file(
+    QCircuit q_circuit = qasm::read_from_file(
         QPP_ROOT_DIR
         "/unit_tests/tests/qasm/circuits/units/teleportation.qasm");
     QEngine engine{q_circuit};
@@ -110,11 +110,11 @@ TEST(qpp_qasm_read_from_file, Teleportation) {
     auto rho = ptrace(engine.get_psi(), {0, 1}, {2, 2, 2});
 
     // Check norm
-    EXPECT_NEAR(0, norm(rho - qpp::prj(0_ket)), 1e-7);
+    EXPECT_NEAR(0, norm(rho - prj(0_ket)), 1e-7);
 }
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, MappedGates) {
-    qpp::QCircuit q_circuit = qasm::read_from_file(
+    QCircuit q_circuit = qasm::read_from_file(
         QPP_ROOT_DIR "/unit_tests/tests/qasm/circuits/units/mappedgates.qasm");
     QEngine engine{q_circuit};
     engine.execute();
@@ -130,7 +130,7 @@ TEST(qpp_qasm_read_from_file, MappedGates) {
 }
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, NonDestrMeas) {
-    qpp::QCircuit q_circuit = qasm::read_from_file(
+    QCircuit q_circuit = qasm::read_from_file(
         QPP_ROOT_DIR "/unit_tests/tests/qasm/circuits/units/nondestrmeas.qasm");
     QEngine engine{q_circuit};
     engine.execute();
@@ -146,7 +146,7 @@ TEST(qpp_qasm_read_from_file, NonDestrMeas) {
 }
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, Reset) {
-    qpp::QCircuit q_circuit = qasm::read_from_file(
+    QCircuit q_circuit = qasm::read_from_file(
         QPP_ROOT_DIR "/unit_tests/tests/qasm/circuits/units/reset.qasm");
     QEngine engine{q_circuit};
     engine.execute();
@@ -158,10 +158,8 @@ TEST(qpp_qasm_read_from_file, Reset) {
     EXPECT_NEAR(0, norm(psi - 0_ket), 1e-7);
 }
 /******************************************************************************/
-
-/******************************************************************************/
 TEST(qpp_qasm_read_from_file, SciNot) {
-    qpp::QCircuit q_circuit = qasm::read_from_file(
+    QCircuit q_circuit = qasm::read_from_file(
         QPP_ROOT_DIR "/unit_tests/tests/qasm/circuits/units/scinot.qasm");
     QEngine engine{q_circuit};
     engine.execute();

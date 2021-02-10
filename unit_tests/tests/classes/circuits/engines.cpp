@@ -7,73 +7,82 @@ using namespace qpp;
 // Unit testing "classes/circuits/engines.hpp"
 
 /******************************************************************************/
-/// BEGIN QEngine& qpp::QEngine::execute(const QCircuit::iterator& it)
+/// BEGIN QEngine& QEngine::execute(const QCircuit::iterator& it)
 TEST(qpp_QEngine_execute, Iterator) {}
 /******************************************************************************/
-/// BEGIN virtual QEngine& qpp::QEngine::execute(
+/// BEGIN virtual QEngine& QEngine::execute(
 ///       const QCircuit::iterator::value_type& elem)
 TEST(qpp_QEngine_execute, ValueType) {}
 /******************************************************************************/
-/// BEGIN QEngine& qpp::QEngine::execute(idx reps = 1, bool clear_stats = true)
+/// BEGIN QEngine& QEngine::execute(idx reps = 1, bool clear_stats = true)
 TEST(qpp_QEngine_execute, AllCircuitWithRepetitions) {}
 /******************************************************************************/
-/// BEGIN const QEngine& qpp::QEngine::get_circuit() const& noexcept
+/// BEGIN const QEngine& QEngine::get_circuit() const& noexcept
 TEST(qpp_QEngine_get_circuit, Lvalue) {}
 /******************************************************************************/
 /// BEGIN QCircuit get_circuit() const&& noexcept
 TEST(qpp_QEngine_get_circuit, Rvalue) {}
 /******************************************************************************/
-/// BEGIN idx qpp::QEngine::get_dit(idx i) const
+/// BEGIN idx QEngine::get_dit(idx i) const
 TEST(qpp_QEngine_get_dit, AllTests) {}
 /******************************************************************************/
-/// BEGIN std::vector<idx> qpp::QEngine::get_dits() const
+/// BEGIN std::vector<idx> QEngine::get_dits() const
 TEST(qpp_QEngine_get_dits, AllTests) {}
 /******************************************************************************/
-/// BEGIN std::vector<idx> qpp::QEngine::get_measured() const
+/// BEGIN std::vector<idx> QEngine::get_measured() const
 TEST(qpp_QEngine_get_measured, AllQudits) {}
 /******************************************************************************/
-/// BEGIN bool qpp::QEngine::get_measured(idx i) const
+/// BEGIN bool QEngine::get_measured(idx i) const
 TEST(qpp_QEngine_get_measured, SpecificQudit) {}
 /******************************************************************************/
-/// BEGIN std::vector<idx> qpp::QEngine::get_non_measured() const
+/// BEGIN std::vector<idx> QEngine::get_non_measured() const
 TEST(qpp_QEngine_get_non_measured, AllTests) {}
 /******************************************************************************/
-/// BEGIN std::vector<double> qpp::QEngine::get_probs() const
+/// BEGIN std::vector<double> QEngine::get_probs() const
 TEST(qpp_QEngine_get_probs, AllTests) {}
 /******************************************************************************/
-/// BEGIN ket qpp::QEngine::get_psi() const
+/// BEGIN ket QEngine::get_psi() const
 TEST(qpp_QEngine_get_psi, AllTests) {}
 /******************************************************************************/
 /// BEGIN std::map<std::string, idx, internal::EqualSameSizeStringDits>
-///       qpp::QEngine::get_stats() const
+///       QEngine::get_stats() const
 TEST(qpp_QEngine_get_stats, AllTests) {}
 /******************************************************************************/
-/// BEGIN QEngine& qpp::QEngine::reset(bool reset_stats = true)
+/// BEGIN virtual bool QEngine::is_noisy() const
+TEST(qpp_QEngine_is_noisy, AllTests) {}
+/******************************************************************************/
+/// BEGIN QEngine& QEngine::reset(bool reset_stats = true)
 TEST(qpp_QEngine_reset, AllTests) {}
 /******************************************************************************/
-/// BEGIN QEngine& qpp::QEngine::reset_stats()
+/// BEGIN QEngine& QEngine::reset_stats()
 TEST(qpp_QEngine_reset_stats, AllTests) {}
 /******************************************************************************/
-/// BEGIN QEngine& qpp::QEngine::set_dit(idx i, idx value)
+/// BEGIN QEngine& QEngine::set_dit(idx i, idx value)
 TEST(qpp_QEngine_set_dit, AllTests) {}
 /******************************************************************************/
-/// BEGIN QEngine& qpp::QEngine::set_dits(std::vector<idx> dits)
+/// BEGIN QEngine& QEngine::set_dits(std::vector<idx> dits)
 TEST(qpp_QEngine_set_dits, AllTests) {}
 /******************************************************************************/
-/// BEGIN QEngine& qpp::QEngine::set_psi(const ket& psi)
+/// BEGIN QEngine& QEngine::set_psi(const ket& psi)
 TEST(qpp_QEngine_set_psi, AllTests) {}
 /******************************************************************************/
-/// BEGIN std::string qpp::QEngine::to_JSON(
+/// BEGIN std::string QEngine::to_JSON(
 ///       bool enclosed_in_curly_brackets = true) const override
 TEST(qpp_QEngine_to_JSON, AllTests) {}
 /******************************************************************************/
 
 /******************************************************************************/
-/// BEGIN QNoisyEngine& qpp::QNoisyEngine::execute(
+/// BEGIN QNoisyEngine& QNoisyEngine::execute(
 ///       const QCircuit::iterator::value_type& elem) override
 TEST(qpp_QNoisyEngine_execute, ValueType) {}
 /******************************************************************************/
+/// BEGIN QEngine& QNoisyEngine::execute(idx reps = 1, bool clear_stats = true)
+TEST(qpp_QNoisyEngine_execute, AllCircuitWithRepetitions) {}
+/******************************************************************************/
 /// BEGIN std::vector<std::vector<idx>>
-///       qpp::QNoisyEngine::get_noise_results() const
+///       QNoisyEngine::get_noise_results() const
 TEST(qpp_QNoisyEngine_get_noise_results, AllTests) {}
+/******************************************************************************/
+/// BEGIN virtual bool QNoisyEngine::is_noisy() const
+TEST(qpp_QNoisyEngine_is_noisy, AllTests) {}
 /******************************************************************************/

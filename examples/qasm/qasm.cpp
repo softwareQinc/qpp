@@ -20,20 +20,19 @@ int main(int argc, char** argv) {
     // initialize the quantum engine with a circuit
     QEngine q_engine{qc};
 
-    // display the quantum circuit
-    std::cout << ">> BEGIN CIRCUIT\n";
-    std::cout << q_engine.get_circuit() << '\n';
-    std::cout << ">> END CIRCUIT\n\n";
+    // display the quantum circuit and its corresponding resources
+    std::cout << qc << "\n\n" << qc.get_resources() << "\n\n";
 
     // execute the quantum circuit
     q_engine.execute();
 
     // display the measurement statistics
-    std::cout << ">> BEGIN ENGINE STATISTICS\n";
     std::cout << q_engine << '\n';
-    std::cout << ">> END ENGINE STATISTICS\n\n";
 
-    // display the final state
+    // uncomment the following lines if you want to display the final state
+    /*
     ket psi_final = q_engine.get_psi();
-    std::cout << ">> Final state:\n" << disp(psi_final) << '\n';
+    std::cout << ">> Final state (transpose):\n"
+              << disp(transpose(psi_final)) << '\n';
+    */
 }

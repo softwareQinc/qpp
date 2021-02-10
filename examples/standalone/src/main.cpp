@@ -4,5 +4,10 @@
 
 int main() {
     using namespace qpp;
-    std::cout << "The |0> state is:\n" << disp(0_ket) << '\n';
+    QCircuit qc{1, 1, 2, "coin flip"};
+    qc.gate(gt.H, 0);
+    qc.measureZ(0, 0);
+
+    std::cout << qc << "\n\n" << qc.get_resources() << "\n\n";
+    std::cout << QEngine{qc}.execute(100) << "\n";
 }

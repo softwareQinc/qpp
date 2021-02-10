@@ -1,6 +1,6 @@
 Pre-release
     - Added installation support and auto package detection via CMake
-      find_package(qpp REQUIRED NO_MODULE)
+      find_package(qpp REQUIRED)
     - Added CircleCI continuous integration
     - CMake minimum required version bumped to 3.12 for automatic unit tests
       detection by CMake and other CMake-related "good practices"
@@ -10,7 +10,7 @@ Pre-release
       or 'GTEST_COLOR=1 ctest -V' for coloured verbose testing output.
     - Fixed minor inadvertence in OpenQASM `crz` implementation, see
       https://github.com/softwareQinc/qpp/issues/99
-    - Changed the signature of qpp::cwise() ["functions.h"] so it takes the
+    - Changed the signature of qpp::cwise() ["functions.hpp"] so it takes the
       scalar argument by value (and not constant reference as before). This
       avoids an internal compiler error (ICE) triggered when compiling
       "examples/functor.cpp" in MinGW.
@@ -25,6 +25,15 @@ Pre-release
       to ["examples/qasm/qasm_teleport_minimal.cpp"] and
       ["examples/qasm/qasm.cpp"]; the latter executes an arbitrary OpenQASM
       program read from the standard input or from a file (if specified)
+    - Added the aggregate qpp::QCircuit::Resources
+      ["classes/circuits/circuits.hpp"] class for quantum circuit resource
+      estimations. It derives from qpp::IDisplay and qpp::IJSON, so one can
+      display instances of it as text or in JSON format.
+    - Implemented qpp::QCircuit::get_resources() which returns an
+      instance of qpp::QCircuit::Resources
+    - Renamed "examples/circuits/quantum_phase_estimation.cpp" to
+      "examples/circuits/qpe_circuit.cpp"
+    - Minor refactoring and code simplifications
 
 Version 2.6 - 9 January 2021
     - Added Quantum Phase Estimation low-level API example in

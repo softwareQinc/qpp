@@ -1,5 +1,6 @@
 // Qubit teleportation
 // Source: ./examples/teleport_qubit.cpp
+// See also: ./examples/teleport_qudit.cpp
 #include <iostream>
 #include <tuple>
 
@@ -37,19 +38,19 @@ int main() {
     std::cout << ", obtained with probability: " << p << '\n';
 
     // the output state (before correction)
-    ket out_B = std::get<ST>(measured);
+    ket psi_B = std::get<ST>(measured);
     std::cout << ">> Bob's state (before correction):\n";
-    std::cout << disp(out_B) << '\n';
+    std::cout << disp(psi_B) << '\n';
 
     // perform the correction on B
-    out_B = powm(gt.Z, z) * powm(gt.X, x) * out_B;
+    psi_B = powm(gt.Z, z) * powm(gt.X, x) * psi_B;
     std::cout << ">> Bob must apply the correction operator Z^" << z << " X^"
               << x << '\n';
 
     // display the output
     std::cout << ">> Bob's final state (after correction):\n";
-    std::cout << disp(out_B) << '\n';
+    std::cout << disp(psi_B) << '\n';
 
     // verification
-    std::cout << ">> Norm difference: " << norm(out_B - psi_a) << '\n';
+    std::cout << ">> Norm difference: " << norm(psi_B - psi_a) << '\n';
 }
