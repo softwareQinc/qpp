@@ -1,4 +1,4 @@
-// Timing, second take
+// Timing
 // Source: ./examples/timing2.cpp
 #include <numeric>
 #include <cmath>
