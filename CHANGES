@@ -33,6 +33,8 @@ Pre-release
       instance of qpp::QCircuit::Resources
     - Renamed "examples/circuits/quantum_phase_estimation.cpp" to
       "examples/circuits/qpe_circuit.cpp"
+    - Added "examples/qasm/coin_flip.qasm" coin flipping OpenQASM example that
+      can be run, e.g., with 'qasm < coin_flip.qasm [number of reps]'
     - Minor refactoring and code simplifications
 
 Version 2.6 - 9 January 2021
