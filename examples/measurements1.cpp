@@ -7,6 +7,7 @@
 
 int main() {
     using namespace qpp;
+
     ket psi = 00_ket;
     cmat U = gt.CNOT * kron(gt.H, gt.Id2);
     ket result = U * psi; // we have the Bell state (|00> + |11>) / sqrt(2)

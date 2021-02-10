@@ -7,6 +7,7 @@
 
 int main() {
     using namespace qpp;
+
     cmat rho = randrho(16); // 4 qubits (subsystems)
     try {
         // the line below throws qpp::exception::SubsysMismatchDims

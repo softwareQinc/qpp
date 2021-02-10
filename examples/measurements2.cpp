@@ -8,6 +8,7 @@
 
 int main() {
     using namespace qpp;
+
     ket psi = st.b00;
     std::vector<idx> subsys = {0};
     idx result;

@@ -6,6 +6,7 @@
 
 int main() {
     using namespace qpp;
+
     std::cout << ">> Classical reversible circuits. ";
     std::cout << "Bits are labeled from right to left,\n   ";
     std::cout << "i.e. bit zero is the least significant bit (rightmost).\n";

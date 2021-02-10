@@ -6,6 +6,7 @@
 
 int main() {
     using namespace qpp;
+
     ket psi = st.z0; // |0> state
     cmat U = gt.X;
     ket result = U * psi;

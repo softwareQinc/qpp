@@ -6,6 +6,7 @@
 
 int main() {
     using namespace qpp;
+
     std::cout << ">> qRAM over classical data\n";
 
     ket in = st.x0;  // |+> input state

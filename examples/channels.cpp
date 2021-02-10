@@ -8,6 +8,7 @@
 
 int main() {
     using namespace qpp;
+
     idx D = 3;  // dimension
     idx nk = 5; // nk Kraus operators on a D-dimensional system
     std::cout << ">> Generating a random channel with " << nk

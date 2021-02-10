@@ -9,6 +9,7 @@
 
 int main() {
     using namespace qpp;
+
     std::cout << ">> Classical reversible circuits\n";
 
     idx n = 32;          // number of bits

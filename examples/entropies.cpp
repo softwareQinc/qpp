@@ -6,6 +6,7 @@
 
 int main() {
     using namespace qpp;
+
     cmat rho = st.pb00;
     cmat rhoA = ptrace(rho, {1});
     std::cout << ">> State:\n" << disp(rho) << '\n';

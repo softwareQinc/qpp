@@ -6,6 +6,7 @@
 
 int main() {
     using namespace qpp;
+
     std::cout << ">> Depolarizing qubit noise acting on a random state\n";
     double p = 0.75;     // depolarizing probability (fully depolarizing)
     idx N = 10000;       // number of trials
