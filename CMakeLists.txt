@@ -34,13 +34,12 @@ endif ()
 include(cmake/qpp_examples.cmake)
 ######## END LOCAL stuff
 
-#### Quantum++ installation instructions, can then be found via CMake's
-####
+#### Quantum++ installation instructions, which can then be found via CMake's
 #### find_package(qpp REQUIRED)
 
 #### For both UNIX/Windows, first run from an out-of-source directory
 ####
-#### 'cmake .. [additional options]'
+#### cmake .. [additional options]
 ####
 #### where [additional options] are optional arguments, one or more of
 #### [-DEIGEN3_INSTALL_DIR=/path/to/eigen3] [-DWITH_MATLAB=ON/OFF] [-DWITH_OPENMP=ON/OFF]
@@ -49,7 +48,7 @@ include(cmake/qpp_examples.cmake)
 #### lack of admin. rights), then pass the additional flag
 #### '-DCMAKE_INSTALL_PREFIX=/path/to/qpp' to cmake above, i.e.,
 ####
-#### 'cmake .. -DCMAKE_INSTALL_PREFIX=/path/to/qpp [additional options]'
+#### cmake .. -DCMAKE_INSTALL_PREFIX=/path/to/qpp [additional options]
 
 #### Next, follow the platform-specific instructions below
 
@@ -64,10 +63,10 @@ include(cmake/qpp_examples.cmake)
 
 # cmake_minimum_required(VERSION 3.12)
 # project(test)
-# set(CMAKE_CXX_STANDARD 11)
+# set(CMAKE_CXX_STANDARD 17)
 #
 # The line below is optional (Quantum++ installed in a non-standard location)
-# set(CMAKE_PREFIX_PATH "/path/to/qpp")
+# set(CMAKE_PREFIX_PATH "/path/to/installed/qpp")
 #
 # find_package(qpp REQUIRED)
 #

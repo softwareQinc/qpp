@@ -17,3 +17,6 @@ win/
 
 # documentation source files
 doc/
+
+# misc
+_test.cpp
