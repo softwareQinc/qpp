@@ -192,7 +192,7 @@ class QEngine : public IDisplay, public IJSON {
      * \see qpp::QEngine::set_dits()
      *
      * \note When interfacing with OpenQASM, the classical dits are stored in
-     * little-endian order, i.e. the least significant bit is stored first
+     * little-endian order, i.e., the least significant bit is stored first
      *
      * \return Vector of underlying classical dits
      */
@@ -203,7 +203,7 @@ class QEngine : public IDisplay, public IJSON {
      * \see qpp::QEngine::set_dit()
      *
      * \note When interfacing with OpenQASM, the classical dits are stored in
-     * little-endian order, i.e. the least significant bit is stored first
+     * little-endian order, i.e., the least significant bit is stored first
      *
      * \param i Classical dit index
      * \return Value of the classical dit at position \a i
@@ -222,9 +222,9 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Vector of underlying measurement outcome probabilities
      *
      * \note Those should be interpreted as conditional probabilities based on
-     * the temporal order of the measurements, i.e. if we measure qubit 0, then
-     * measure qubit 1, and finally qubit 2, the resulting vector of outcome
-     * probabilities probs[2] should be interpreted as the conditional
+     * the temporal order of the measurements, i.e., if we measure qubit 0,
+     * then measure qubit 1, and finally qubit 2, the resulting vector of
+     * outcome probabilities probs[2] should be interpreted as the conditional
      * probability of qubit 2 having the outcome it had given that qubit 1 and
      * qubit 0 had their given outcomes, respectively. As an example, if we
      * measure the qubit 0 followed by the qubit 1 of a maximally entangled
@@ -299,7 +299,7 @@ class QEngine : public IDisplay, public IJSON {
      * runs, with hash key being the string representation of the vector of
      * measurement results and value being the number of occurrences (of the
      * vector of measurement results), with the most significant bit located at
-     * index 0 (i.e. top/left).
+     * index 0 (i.e., top/left).
      */
     std::map<std::string, idx, internal::EqualSameSizeStringDits>
     get_stats() const {
@@ -321,7 +321,7 @@ class QEngine : public IDisplay, public IJSON {
      * \see qpp::QEngine::get_dit()
      *
      * \note When interfacing with OpenQASM, the classical dits are stored in
-     * little-endian order, i.e. the least significant bit is stored first
+     * little-endian order, i.e., the least significant bit is stored first
      *
      * \param i Classical dit index
      * \param value Classical dit value
@@ -343,7 +343,7 @@ class QEngine : public IDisplay, public IJSON {
      * \see qpp::QEngine::get_dits()
      *
      * \note When interfacing with OpenQASM, the classical dits are stored in
-     * little-endian order, i.e. the least significant bit is stored first
+     * little-endian order, i.e., the least significant bit is stored first
      *
      * \param dits Vector of classical dits, must have the same size as the
      * internal vector of classical dits returned by qpp::QEngine::get_dits()

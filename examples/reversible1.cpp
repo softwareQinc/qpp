@@ -9,7 +9,7 @@ int main() {
 
     std::cout << ">> Classical reversible circuits. ";
     std::cout << "Bits are labeled from right to left,\n   ";
-    std::cout << "i.e. bit zero is the least significant bit (rightmost).\n";
+    std::cout << "i.e., bit zero is the least significant bit (rightmost).\n";
 
     Dynamic_bitset bits{4};                             // 4 classical bits
     std::cout << ">> Initial bitset: " << bits << '\n'; // display them

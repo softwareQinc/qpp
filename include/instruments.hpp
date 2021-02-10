@@ -339,7 +339,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
  *
  * \note The dimension of all \a Ks must match the dimension of \a target. If
  * \a destructive is set to true (by default), the measurement is destructive,
- * i.e. the measured subsystems are traced away.
+ * i.e., the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
@@ -466,7 +466,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
  *
  * \note The dimension of all \a Ks must match the dimension of \a target. If
  * \a destructive is set to true (by default), the measurement is destructive,
- * i.e. the measured subsystems are traced away.
+ * i.e., the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
@@ -491,7 +491,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
  *
  * \note The dimension of all \a Ks must match the dimension of \a target. If
  * \a destructive is set to true (by default), the measurement is destructive,
- * i.e. the measured subsystems are traced away.
+ * i.e., the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
@@ -534,7 +534,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
  *
  * \note The dimension of all \a Ks must match the dimension of \a target. If
  * \a destructive is set to true (by default), the measurement is destructive,
- * i.e. the measured subsystems are traced away.
+ * i.e., the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param Ks Set of Kraus operators
@@ -560,7 +560,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
  *
  * \note The dimension of \a V must match the dimension of \a target. If
  * \a destructive is set to true (by default), the measurement is destructive,
- * i.e. the measured subsystems are traced away.
+ * i.e., the measured subsystems are traced away.
  *
  * \note The number of column vectors of \a V can be smaller than the dimension
  * of \a target. If that is the case, then the measurement probabilities sum up
@@ -681,7 +681,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
  *
  * \note The dimension of \a V must match the dimension of \a target. If
  * \a destructive is set to true (by default), the measurement is destructive,
- * i.e. the measured subsystems are traced away.
+ * i.e., the measured subsystems are traced away.
  *
  * \note The number of column vectors of \a V can be smaller than the dimension
  * of \a target. If that is the case, then the measurement probabilities sum up
@@ -725,7 +725,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
  * \see qpp::measure()
  *
  * \note If \a destructive is set to true (by default), the measurement is
- * destructive, i.e. the measured subsystems are traced away.
+ * destructive, i.e., the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param target Subsystem indexes that are measured
@@ -804,7 +804,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
  * \see qpp::measure()
  *
  * \note If \a destructive is set to true (by default), the measurement is
- * destructive, i.e. the measured subsystems are traced away.
+ * destructive, i.e., the measured subsystems are traced away.
  *
  * \param A Eigen expression
  * \param target Subsystem indexes that are measured

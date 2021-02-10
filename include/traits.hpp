@@ -58,9 +58,9 @@ using to_void = typename make_void<Ts...>::type;
  * \brief Checks whether \a T is compatible with an STL-like iterable container
  *
  * Provides the constant member \a value which is equal to \a true, if \a T is
- * compatible with an iterable container, i.e. provides at least \a begin() and
- * \a end() member functions and allows de-referencing. Otherwise, \a value is
- * equal to \a false.
+ * compatible with an iterable container, i.e., provides at least \a begin()
+ * and \a end() member functions and allows de-referencing. Otherwise, \a value
+ * is equal to \a false.
  */
 // silence g++4.8.x warning about non-virtual destructor in inherited class
 #if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)
@@ -116,7 +116,7 @@ struct is_matrix_expression
  * \brief Checks whether the type is a complex type
  *
  * Provides the constant member \a value which is equal to \a true, if the type
- * is a complex type, i.e. \a std::complex<T>
+ * is a complex type, i.e., \a std::complex<T>
  */
 // silence g++4.8.x warning about non-virtual destructor in inherited class
 #if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)

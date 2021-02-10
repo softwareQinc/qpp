@@ -18,7 +18,7 @@ int main() {
     }
     // qubits required for half of the circuit, in total we need 2n qubits
     // if you know the order 'r' of 'a', then you can take the smallest 'n' s.t.
-    // 2^n >= 2 * r^2, i.e. n = ceil(log2(2 * r^2))
+    // 2^n >= 2 * r^2, i.e., n = ceil(log2(2 * r^2))
     idx n = static_cast<idx>(std::ceil(2 * std::log2(N)));
     idx D = static_cast<idx>(std::llround(std::pow(2, n))); // dimension 2^n
 
@@ -66,7 +66,7 @@ int main() {
     double x1 = static_cast<double>(n1) / D; // multiple of 1/r
 
     std::cout << ">> First measurement:  " << disp(vect_results1, " ") << " ";
-    std::cout << "i.e. j = " << n1 << " with probability " << prob1;
+    std::cout << "i.e., j = " << n1 << " with probability " << prob1;
     std::cout << '\n';
 
     bool failed = true;
@@ -93,7 +93,7 @@ int main() {
     double x2 = static_cast<double>(n2) / D; // multiple of 1/r
 
     std::cout << ">> Second measurement: " << disp(vect_results2, " ") << " ";
-    std::cout << "i.e. j = " << n2 << " with probability " << prob2;
+    std::cout << "i.e., j = " << n2 << " with probability " << prob2;
     std::cout << '\n';
 
     failed = true;

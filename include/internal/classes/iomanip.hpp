@@ -51,8 +51,8 @@ class IOManipRange : public IDisplay {
           start_{std::move(start)}, end_{std::move(end)}, chop_{chop} {}
 
     // to silence -Weffc++ warnings for classes that have pointer members
-    // (whenever we have a pointer instantiation,
-    // i.e. iterator is a raw pointer)
+    // (whenever we have a pointer instantiation, i.e., iterator is a raw
+    // pointer)
     IOManipRange(const IOManipRange&) = default;
 
     IOManipRange& operator=(const IOManipRange&) = default;

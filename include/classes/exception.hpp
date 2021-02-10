@@ -133,7 +133,8 @@ class Unknown : public Exception {
  * \class qpp::exception::ZeroSize
  * \brief Object has zero size exception
  *
- * Zero sized object, e.g. empty Eigen::Matrix or std::vector with no elements
+ * Zero sized object, e.g., empty Eigen::Matrix or std::vector<> with no
+ * elements
  */
 class ZeroSize : public Exception {
   public:
@@ -249,7 +250,7 @@ class MatrixNotSquareNorVector : public Exception {
  * \class qpp::exception::MatrixMismatchSubsys
  * \brief Matrix mismatch subsystems exception
  *
- * Matrix size mismatch subsystem sizes (e.g. in qpp::apply())
+ * Matrix size mismatch subsystem sizes (e.g., in qpp::apply())
  */
 class MatrixMismatchSubsys : public Exception {
   public:
@@ -570,7 +571,7 @@ class QuditAlreadyMeasured : public Exception {
 
 /**
  * \class qpp::exception::Duplicates
- * \brief System (e.g. std::vector) contains duplicates exception
+ * \brief System (e.g., std::vector<>) contains duplicates exception
  *
  * System (vector/matrix etc.) contains duplicate elements
  *
@@ -578,7 +579,7 @@ class QuditAlreadyMeasured : public Exception {
 class Duplicates : public Exception {
   public:
     std::string description() const override {
-        return "System (e.g. std::vector) contains duplicates";
+        return "System (e.g., std::vector<>) contains duplicates";
     }
 
     using Exception::Exception;
