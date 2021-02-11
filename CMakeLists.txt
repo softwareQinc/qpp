@@ -63,15 +63,12 @@ include(cmake/qpp_examples.cmake)
 
 # cmake_minimum_required(VERSION 3.12)
 # project(my_qpp_project)
-# set(CMAKE_CXX_STANDARD 17)
+# set(CMAKE_CXX_STANDARD 11)
 #
 # # The line below is optional (Quantum++ installed in a non-standard location)
 # set(CMAKE_PREFIX_PATH "/path/to/installed/qpp")
 #
 # find_package(qpp REQUIRED)
-# if (MSVC)
-#    add_compile_definitions(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING)
-# endif ()
 # add_executable(my_qpp_project src/main.cpp)
 # target_link_libraries(my_qpp_project PUBLIC ${QPP_LINK_DEPS} libqpp)
 
