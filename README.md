@@ -35,14 +35,14 @@ To report any bugs or ask for additional features/enhancements, please
 [submit an issue](https://github.com/softwareQinc/qpp/issues) with an
 appropriate label.
 
-If you are interesting in contributing to this project, feel free to contact me.
-Alternatively, fork the repository, add your contribution, then finally create a
-pull request. If I accept the pull request, I will merge your custom branch with
-the latest development branch. The latter will eventually be merged into a
-future release version. To contribute, you need to have a solid knowledge of
-C++ (preferably C++11), including templates and the standard library, a basic
-knowledge of quantum computing and linear algebra, and working experience
-with [Eigen 3](http://eigen.tuxfamily.org).
+If you are interesting in contributing to this project, feel free to contact us.
+Alternatively, fork the repository, create a custom branch, add your
+contribution, then finally create a pull request. If we accept the pull request,
+we will merge your custom branch with the latest main/development branch. The
+latter will eventually be merged into a future release version. To contribute,
+you need to have a solid knowledge of C++ (preferably C++11 or later), including
+templates and the standard library, a basic knowledge of quantum computing and
+linear algebra, and working experience with [Eigen 3](http://eigen.tuxfamily.org).
 
 For additional [Eigen 3](http://eigen.tuxfamily.org) documentation
 see <http://eigen.tuxfamily.org/dox/>. For a simple

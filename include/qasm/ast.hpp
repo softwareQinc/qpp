@@ -40,12 +40,26 @@ using ident = std::string;
 /**
  * \brief Enum of binary operators
  */
-enum class BinaryOp { Plus, Minus, Times, Divide, Pow };
+enum class BinaryOp {
+    Plus,
+    Minus,
+    Times,
+    Divide,
+    Pow,
+};
 
 /**
  * \brief Enum of unary operators
  */
-enum class UnaryOp { Neg, Sin, Cos, Tan, Ln, Sqrt, Exp };
+enum class UnaryOp {
+    Neg,
+    Sin,
+    Cos,
+    Tan,
+    Ln,
+    Sqrt,
+    Exp,
+};
 
 static const Gates& gt = Gates::get_instance(); ///< matrices
 static std::unordered_map<ident,

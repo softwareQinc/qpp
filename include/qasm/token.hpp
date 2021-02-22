@@ -175,7 +175,7 @@ class Token : public IDisplay {
         kw_tan,
         kw_exp,
         kw_ln,
-        kw_sqrt
+        kw_sqrt,
     };
 
     /**

@@ -10,11 +10,11 @@ in the Wiki or in the reminder of this document.
 
 ## Quick instructions for building on POSIX compliant systems
 
-In this section I assume that you use a POSIX compliant system (e.g., UNIX-like)
+In this section we assume that you use a POSIX compliant system (e.g., UNIX-like)
 . To get started with [Quantum++](https://github.com/softwareQinc/qpp), first
 install the [Eigen 3](http://eigen.tuxfamily.org/) library into your home
 directory, as `$HOME/eigen`. You can change the name of the directory, but in
-the current document I will use `$HOME/eigen` as the location of the
+the current document we will use `$HOME/eigen` as the location of the
 [Eigen 3](http://eigen.tuxfamily.org/) library. Next, download or clone
 [Quantum++](https://github.com/softwareQinc/qpp) library into the home directory
 as `$HOME/qpp`. Finally, make sure that your compiler supports C++11 and
@@ -38,12 +38,12 @@ and with the content listed below.
 int main() {
     using namespace qpp;
     std::cout << "Hello Quantum++!\nThis is the |0> state:\n";
-    std::cout << disp(st.z0) << '\n';
+    std::cout << disp(0_ket) << '\n';
 }
 ```
 
 Next, compile the file using the C++11 compliant compiler. In the
-following I assume you use [g++](https://gcc.gnu.org/), but the building
+following we assume you use [g++](https://gcc.gnu.org/), but the building
 instructions are similar for other compilers. From the directory
 `$HOME/testing` type
 
@@ -83,11 +83,11 @@ the working namespace, so we don't need to prefix the library functions by
 `qpp::`. Finally the line
 
 ```CPP
-std::cout << disp(st.z0) << '\n';
+std::cout << disp(0_ket) << '\n';
 ```
 
-displays the state |0> represented by the Singleton `qpp::st.z0` in a nice
-format using the display manipulator `qpp::disp()`.
+displays the state |0> in a display-friendly format using the display
+manipulator `qpp::disp()`.
 
 ## Quick instructions for building on [Windows](https://www.microsoft.com/en-us/windows)
 
@@ -112,7 +112,7 @@ the [Wiki](https://github.com/softwareQinc/qpp/wiki/3.-Building-instructions-for
   version 3.8 or later, please read
   the ["Additional remarks/Building with clang++"](https://github.com/softwareQinc/qpp/blob/main/INSTALL.md#clang)
   subsection near the end of this document for more platform-dependent details.
-- [Eigen 3](http://eigen.tuxfamily.org) linear algebra library. I assume here
+- [Eigen 3](http://eigen.tuxfamily.org) linear algebra library. We assume here
   that the library is installed in `$HOME/eigen`, although the location may
   vary, e.g., if the library was installed using a package manager.
 - [Quantum++](https://github.com/softwareQinc/qpp) library, assumed here to be
@@ -133,7 +133,7 @@ the [Wiki](https://github.com/softwareQinc/qpp/wiki/3.-Building-instructions-for
 The current version of the repository has a
 [`CMakeLists.txt`](https://github.com/softwareQinc/qpp/blob/main/CMakeLists.txt)
 configuration file for building examples using [CMake](http://www.cmake.org/).
-To build an(the) example(s) using [CMake](http://www.cmake.org/), I recommend an
+To build an(the) example(s) using [CMake](http://www.cmake.org/), we recommend an
 out-of-source build, i.e., from the root of the project
 (where the `include` folder is located), type
 
@@ -275,7 +275,7 @@ g++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
 
 #### [OS X/macOS](http://www.apple.com/osx) specific instructions
 
-- I highly recommend to install [clang++](http://clang.llvm.org/) version 3.8 or
+- We highly recommend to install [clang++](http://clang.llvm.org/) version 3.8 or
   later via [MacPorts](https://www.macports.org/).
 - In case you get any compiler or linker errors
   when [OpenMP](http://openmp.org/) is enabled, you need to install the `libomp`
