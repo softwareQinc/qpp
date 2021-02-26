@@ -1,4 +1,4 @@
-// simple coin flipping, run it, e.g., with 'qasm < coin_flip.qasm 1024'
+// simple coin flipping, run it, e.g., with 'qasm < coin_flip.qasm 1000'
 OPENQASM 2.0;
 include "qelib1.inc";
 
