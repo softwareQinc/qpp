@@ -17,7 +17,7 @@ int main() {
     Timer<> t;                           // declare and start a timer
     std::vector<idx> perm = randperm(9); // declare a random permutation
     ket c0perm = syspermute(c0, perm);   // permute the system
-    t.toc();                             // stops the timer
+    t.toc();                             // stop the timer
     std::cout << ">> Permuting subsystems according to " << disp(perm, ", ");
     std::cout << "\n>> It took " << t << " seconds to permute the subsytems.\n";
 
