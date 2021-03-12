@@ -1,5 +1,5 @@
 // measuring the (|00>+|11>)/sqrt(2) Bell state, run it, e.g., with
-// 'qpp_qasm < bell.qasm 1000'
+// 'qasm < bell.qasm 1000'
 OPENQASM 2.0;
 include "qelib1.inc";
 
