@@ -624,20 +624,18 @@ class QCircuit : public IDisplay, public IJSON {
                 idx text_width =
                     std::to_string(value_type_qc_->get_step_count()).size();
 
+                os << std::left;
+                os << std::setw(text_width) << ip_ << ": ";
+                os << std::right;
+
                 // gate step
                 if (type_ == StepType::GATE) {
-                    os << std::left;
-                    os << std::setw(text_width) << ip_ << ": ";
-                    os << std::right;
                     idx pos = std::distance(std::begin(value_type_qc_->gates_),
                                             gates_ip_);
                     os << value_type_qc_->get_gates_()[pos];
                 }
                 // measurement step
                 else if (type_ == StepType::MEASUREMENT) {
-                    os << std::left;
-                    os << std::setw(text_width) << ip_ << ": ";
-                    os << std::right;
                     idx pos =
                         std::distance(std::begin(value_type_qc_->measurements_),
                                       measurements_ip_);
@@ -672,9 +670,6 @@ class QCircuit : public IDisplay, public IJSON {
                 }
                 // no-op
                 else if (type_ == StepType::NOP) {
-                    os << std::left;
-                    os << std::setw(text_width) << ip_;
-                    os << std::right;
                     os << "NOP";
                 }
                 // otherwise
