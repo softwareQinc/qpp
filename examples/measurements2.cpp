@@ -13,7 +13,7 @@ int main() {
     std::vector<idx> subsys = {0};
     idx result;
     std::vector<double> probs;
-    std::vector<cmat> states;
+    std::vector<ket> states;
 
     // measures the first subsystem of the Bell state (|00> + |11>) / sqrt(2)
     // in the X basis
