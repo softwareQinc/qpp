@@ -105,6 +105,12 @@ template <typename Scalar> // Eigen::RowVectorX_type (where type = Scalar)
 using dyn_row_vect = Eigen::Matrix<Scalar, 1, Eigen::Dynamic>;
 
 /**
+ * \brief Matrix type deduced from Derived
+ */
+template < typename Derived >
+using deduced_mat = typename std::decay<decltype(std::declval<Derived>().eval())>::type;
+
+/**
  * \brief Quantumly-accessible Random Access Memory (qRAM)
  */
 using qram = std::vector<idx>;

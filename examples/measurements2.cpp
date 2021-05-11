@@ -13,7 +13,7 @@ int main() {
     std::vector<idx> subsys = {0};
     idx result;
     std::vector<double> probs;
-    std::vector<cmat> states;
+    std::vector<ket> states;
 
     // measures the first subsystem of the Bell state (|00> + |11>) / sqrt(2)
     // in the X basis
@@ -37,14 +37,16 @@ int main() {
               << " of a 4-qubit random state in the random basis:\n";
     std::cout << disp(U) << '\n';
 
-    std::tie(result, probs, states) = measure(rho, U, {1, 2});
+    std::vector<cmat> density_states;
+
+    std::tie(result, probs, density_states) = measure(rho, U, {1, 2});
     std::cout << ">> Measurement result: " << result << '\n';
     std::cout << ">> Probabilities: " << disp(probs, ", ") << '\n';
     std::cout << ">> Sum of the probabilities: "
               << sum(probs.begin(), probs.end()) << '\n';
     std::cout << ">> Resulting normalized post-measurement states:\n";
 
-    for (auto&& it : states)
+    for (auto&& it : density_states)
         std::cout << disp(it) << "\n\n";
 
     // check now how the state after the measurement "looks"
@@ -59,7 +61,7 @@ int main() {
 
     // compute the resulting mixed state after the measurement
     for (idx i = 0; i < probs.size(); ++i)
-        rho_out_bar += probs[i] * states[i];
+        rho_out_bar += probs[i] * density_states[i];
 
     // verification
     std::cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar) << '\n';
