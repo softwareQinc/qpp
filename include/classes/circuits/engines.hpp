@@ -533,7 +533,7 @@ class QEngine : public IDisplay, public IJSON {
 
             idx mres = 0;
             std::vector<double> probs;
-            std::vector<cmat> states;
+            std::vector<ket> states;
 
             switch (measurements[m_ip].measurement_type_) {
                 case QCircuit::MeasureType::NONE:
