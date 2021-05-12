@@ -1163,8 +1163,8 @@ dyn_mat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived>& A,
  * \brief Commutator
  * \see qpp::anticomm()
  *
- *  Commutator \f$[A,B] = AB - BA\f$. Both \a A and \a B must be Eigen
- *  expressions over the same scalar field.
+ * Commutator \f$[A,B] = AB - BA\f$. Both \a A and \a B must be Eigen
+ * expressions over the same scalar field.
  *
  * \param A Eigen expression
  * \param B Eigen expression
@@ -1204,8 +1204,8 @@ dyn_mat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1>& A,
  * \brief Anti-commutator
  * \see qpp::comm()
  *
- *  Anti-commutator \f$\{A,B\} = AB + BA\f$.
- *  Both \a A and \a B must be Eigen expressions over the same scalar field.
+ * Anti-commutator \f$\{A,B\} = AB + BA\f$.
+ * Both \a A and \a B must be Eigen expressions over the same scalar field.
  *
  * \param A Eigen expression
  * \param B Eigen expression
@@ -1245,7 +1245,7 @@ anticomm(const Eigen::MatrixBase<Derived1>& A,
 /**
  * \brief Projector
  *
- *  Normalized projector onto state vector
+ * Normalized projector onto state vector
  *
  * \param A Eigen expression
  * \return Projector onto the state vector \a A, or the matrix \a Zero if \a A

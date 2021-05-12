@@ -4,6 +4,11 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 enable_testing()
 
+#### Disable spurious Eigen warnings if using C++17 with MSVC (warning STL4007)
+if (MSVC)
+    add_compile_definitions(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING)
+endif ()
+
 #### Guard against in-source builds (snippet from Eigen's CMakeLists.txt)
 if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
     message(FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there. You may need to remove CMakeCache.txt.")
@@ -63,7 +68,12 @@ include(cmake/qpp_examples.cmake)
 
 # cmake_minimum_required(VERSION 3.12)
 # project(my_qpp_project)
-# set(CMAKE_CXX_STANDARD 11)
+# set(CMAKE_CXX_STANDARD 11) # can set the C++ standard to C++17 as well
+#
+# # Disable spurious Eigen warnings if using C++17 with MSVC (warning STL4007)
+# if (MSVC)
+#     add_compile_definitions(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING)
+# endif ()
 #
 # # The line below is optional (Quantum++ installed in a non-standard location)
 # set(CMAKE_PREFIX_PATH "/path/to/installed/qpp")
