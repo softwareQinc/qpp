@@ -29,8 +29,6 @@
  * \brief Quantum gates
  */
 
-#include <array>
-
 #ifndef CLASSES_GATES_HPP_
 #define CLASSES_GATES_HPP_
 

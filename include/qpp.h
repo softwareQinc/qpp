@@ -48,6 +48,7 @@
 
 // standard C++ library headers
 #include <algorithm>
+#include <array>
 #include <cassert>
 #include <chrono>
 #include <cmath>

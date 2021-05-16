@@ -111,14 +111,3 @@ TEST(qpp_reset, Qudits) {}
 ///       idx d = 2)
 TEST(qpp_reset, Qubits) {}
 /******************************************************************************/
-
-TEST(qpp_measure, ket)
-{
-    using namespace qpp::literals;
-    auto const state = (0_ket + 1_ket).normalized().eval();
-    auto const res = qpp::measure(state, qpp::gt.Id2);
-    auto const& resulting_states = std::get<qpp::ST>(res);
-
-    EXPECT_EQ(resulting_states[0][0], 1.);
-    EXPECT_EQ(resulting_states[1][1], 1.);
-}

@@ -281,13 +281,3 @@ TEST(qpp_QCircuit_TFQ, SpecificQudits) {}
 ///       bool enclosed_in_curly_brackets = true) const override
 TEST(qpp_QCircuit_to_JSON, AllTests) {}
 /******************************************************************************/
-
-TEST(qpp_QCircuit, measureV)
-{
-    using namespace qpp;
-    auto circuit = QCircuit{ 1, 1 };
-    circuit.measureV(gt.Id2, 0, 0);
-
-    auto engine = QEngine{ circuit };
-    EXPECT_NO_THROW(engine.execute());
-}
