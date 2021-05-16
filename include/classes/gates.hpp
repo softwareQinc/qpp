@@ -29,6 +29,8 @@
  * \brief Quantum gates
  */
 
+#include <array>
+
 #ifndef CLASSES_GATES_HPP_
 #define CLASSES_GATES_HPP_
 
@@ -102,15 +104,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param n 3-dimensional real (unit) vector
      * \return Rotation gate
      */
-    cmat Rn(double theta, const std::vector<double>& n) const {
-        // EXCEPTION CHECKS
-
-        // check 3-dimensional vector
-        if (n.size() != 3)
-            throw exception::CustomException(
-                "qpp::Gates::Rn()", "n is not a 3-dimensional vector!");
-        // END EXCEPTION CHECKS
-
+    cmat Rn(double theta, const std::array<double, 3>& n) const {
         cmat result(2, 2);
         result = std::cos(theta / 2) * Id2 -
                  1_i * std::sin(theta / 2) * (n[0] * X + n[1] * Y + n[2] * Z);

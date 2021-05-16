@@ -2955,14 +2955,17 @@ class QCircuit : public IDisplay, public IJSON {
         if (name.empty())
             name = "m" + qpp::Gates::get_instance().get_name(V);
 
+        std::size_t hashV = hash_eigen(V);
+        add_hash_(V, hashV);
+
         if (destructive) {
             measured_[target] = true;
             measurements_.emplace_back(MeasureType::MEASURE_V,
-                                       std::vector<std::size_t>{hash_eigen(V)},
+                                       std::vector<std::size_t>{hashV},
                                        std::vector<idx>{target}, c_reg, name);
         } else {
             measurements_.emplace_back(MeasureType::MEASURE_V_ND,
-                                       std::vector<std::size_t>{hash_eigen(V)},
+                                       std::vector<std::size_t>{hashV},
                                        std::vector<idx>{target}, c_reg, name);
         }
         step_types_.emplace_back(StepType::MEASUREMENT);
@@ -3024,15 +3027,18 @@ class QCircuit : public IDisplay, public IJSON {
         if (name.empty())
             name = "m" + qpp::Gates::get_instance().get_name(V);
 
+        std::size_t hashV = hash_eigen(V);
+        add_hash_(V, hashV);
+
         if (destructive) {
             for (auto&& elem : target)
                 measured_[elem] = true;
             measurements_.emplace_back(MeasureType::MEASURE_V_MANY,
-                                       std::vector<std::size_t>{hash_eigen(V)},
+                                       std::vector<std::size_t>{hashV},
                                        target, c_reg, name);
         } else {
             measurements_.emplace_back(MeasureType::MEASURE_V_MANY_ND,
-                                       std::vector<std::size_t>{hash_eigen(V)},
+                                       std::vector<std::size_t>{hashV},
                                        target, c_reg, name);
         }
         step_types_.emplace_back(StepType::MEASUREMENT);
