@@ -290,3 +290,13 @@ TEST(qpp_trace, AllTests) {}
 ///       transpose(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_transpose, AllTests) {}
 /******************************************************************************/
+/// BEGIN template <typename Derived> std::vector<idx> zket2dits(
+///       const Eigen::MatrixBase<Derived>& psi, const std::vector<idx>& dims,
+///       double precision = 1e-12)
+TEST(qpp_zket2dits, Qudits) {}
+/******************************************************************************/
+/// BEGIN template <typename Derived> std::vector<idx> zket2dits(
+///       const Eigen::MatrixBase<Derived>& psi, idx d = 2,
+///       double precision = 1e-12)
+TEST(qpp_zket2dits, Qubits) {}
+/******************************************************************************/

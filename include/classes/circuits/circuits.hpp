@@ -3034,12 +3034,12 @@ class QCircuit : public IDisplay, public IJSON {
             for (auto&& elem : target)
                 measured_[elem] = true;
             measurements_.emplace_back(MeasureType::MEASURE_V_MANY,
-                                       std::vector<std::size_t>{hashV},
-                                       target, c_reg, name);
+                                       std::vector<std::size_t>{hashV}, target,
+                                       c_reg, name);
         } else {
             measurements_.emplace_back(MeasureType::MEASURE_V_MANY_ND,
-                                       std::vector<std::size_t>{hashV},
-                                       target, c_reg, name);
+                                       std::vector<std::size_t>{hashV}, target,
+                                       c_reg, name);
         }
         step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[name];

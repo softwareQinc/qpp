@@ -1860,6 +1860,98 @@ inline cmat bloch2rho(const std::vector<double>& r) {
     return (Id2 + r[0] * X + r[1] * Y + r[2] * Z) / 2.;
 }
 
+/**
+ * \brief Extracts the dits from a normalized multi-partite pure state in the
+ * computational basis. Behaves like the "inverse" of qpp::mket().
+ * \see qpp::mket()
+ *
+ * \note Assumes \a psi is a normalized state vector (ket) in the computational
+ * basis, up to a phase; finds the first coefficient of \a psi close to 1 up to
+ * \a precision, and returns the digit representation of the corresponding state
+ * with a single 1 in that position. If there's no such coefficient (i.e., the
+ * state is not a computational basis state up to a phase), returns the empty
+ * vector.
+ *
+ * \param psi Column vector Eigen expression
+ * \param dims Dimensions of the multi-partite system
+ * \param precision Numerical precision (how close to 1 should the nonzero
+ * coefficient be)
+ * \return Vector containing the digit representation of \a psi, or the empty
+ * vector if \a psi is not a  computational basis state up to a phase.
+ */
+template <typename Derived>
+std::vector<idx> zket2dits(const Eigen::MatrixBase<Derived>& psi,
+                           const std::vector<idx>& dims,
+                           double precision = 1e-12) {
+    const dyn_col_vect<typename Derived::Scalar>& rpsi = psi.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero-size
+    if (!internal::check_nonzero_size(rpsi))
+        throw exception::ZeroSize("qpp::zket2dits()");
+
+    // check column vector
+    if (!internal::check_cvector(rpsi))
+        throw exception::MatrixNotCvector("qpp::zket2dits()");
+
+    // check that dims is a valid dimension vector
+    if (!internal::check_dims(dims))
+        throw exception::DimsInvalid("qpp::zket2dits()");
+
+    // check that dims match psi column vector
+    if (!internal::check_dims_match_cvect(dims, rpsi))
+        throw exception::DimsMismatchCvector("qpp::zket2dits()");
+    // END EXCEPTION CHECKS
+
+    auto N = static_cast<idx>(rpsi.size());
+    for (idx i = 0; i < N; ++i) {
+        if (std::abs(std::abs(rpsi[i]) - 1.0) < precision) {
+            return n2multiidx(i, dims);
+        }
+    }
+
+    return {};
+}
+
+/**
+ * \brief Extracts the dits from a normalized multi-partite pure state in the
+ * computational basis, all subsystem having equal dimension \a d. Behaves like
+ * the "inverse" of qpp::mket().
+ * \see qpp::mket()
+ *
+ * \note Assumes \a psi is a normalized state vector (ket) in the computational
+ * basis, up to a phase; finds the first coefficient of \a psi close to 1 up to
+ * \a precision, and returns the digit representation of the corresponding state
+ * with a single 1 in that position. If there's no such coefficient (i.e., the
+ * state is not a computational basis state up to a phase), returns the empty
+ * vector.
+ *
+ * \param psi Column vector Eigen expression
+ * \param d Subsystem dimensions
+ * \param precision Numerical precision (how close to 1 should the nonzero
+ * coefficient be)
+ * \return Vector containing the digit representation of \a psi, or the empty
+ * vector if \a psi is not a  computational basis state up to a phase.
+ */
+template <typename Derived>
+std::vector<idx> zket2dits(const Eigen::MatrixBase<Derived>& psi, idx d = 2,
+                           double precision = 1e-12) {
+    const dyn_col_vect<typename Derived::Scalar>& rpsi = psi.derived();
+
+    // EXCEPTION CHECKS
+    // check valid dims
+    if (d < 2)
+        throw exception::DimsInvalid("qpp::zket2dits()");
+
+    // END EXCEPTION CHECKS
+
+    idx n = internal::get_num_subsys(static_cast<idx>(rpsi.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
+
+    return zket2dits(psi, dims, precision);
+}
+
 inline namespace literals {
 // Idea taken from http://techblog.altplus.co.jp/entry/2017/11/08/130921
 /**

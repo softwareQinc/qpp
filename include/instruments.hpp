@@ -80,7 +80,7 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
     if (!internal::check_dims_match_cvect(dims, rpsi))
         throw exception::DimsMismatchCvector("qpp::ip()");
 
-    // check that subsys match pho column vector
+    // check that subsys match phi column vector
     std::vector<idx> subsys_dims(subsys.size());
     for (idx i = 0; i < subsys.size(); ++i)
         subsys_dims[i] = dims[subsys[i]];
@@ -625,7 +625,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
     //************ ket ************//
     if (internal::check_cvector(rA)) {
         const ket& rpsi = A.derived();
-        std::vector<double> probs(M);   // probabilities
+        std::vector<double> probs(M);                   // probabilities
         std::vector<deduced_mat<Derived>> outstates(M); // resulting states
 
 #ifdef HAS_OPENMP
