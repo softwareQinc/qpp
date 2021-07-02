@@ -3407,11 +3407,11 @@ class QCircuit : public IDisplay, public IJSON {
      * \see qpp::QCircuit::match_circuit_right() and
      * qpp::QCircuit::add_circuit()
      *
-     * \note The matched quantum circuit description cannot be larger than the
-     * current quantum circuit description, i.e., all qudit indexes of the added
-     * quantum circuit description must match with qudits from the current
-     * quantum circuit description (and those matched of the latter must contain
-     * no measurements)
+     * \note The matched quantum circuit description cannot contain measurements
+     * and cannot be larger than the current quantum circuit description, i.e.,
+     * all qudit indexes of the added quantum circuit description must match
+     * with qudits from the current quantum circuit description (and those
+     * matched of the latter must contain no measurements)
      *
      * \param other Quantum circuit description
      * \param target Qudit indexes of the current circuit description where the
@@ -3437,6 +3437,10 @@ class QCircuit : public IDisplay, public IJSON {
             pos_dit = nc_;
         else if (pos_dit > nc_)
             throw exception::OutOfRange("qpp::QCircuit::match_circuit_left()");
+        // check no measurement for the matched circuit
+        if (!other.measurements_.empty())
+            throw exception::QuditAlreadyMeasured(
+                "qpp::QCircuit::match_circuit_left()");
         // check valid target
         if (target.size() != other.nq_)
             throw exception::OutOfRange("qpp::QCircuit::match_circuit_left()");
