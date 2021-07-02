@@ -8,10 +8,6 @@
 [![Build Status](https://travis-ci.org/softwareQinc/qpp.svg?branch=main)](https://travis-ci.org/softwareQinc/qpp)
 [![Build status](https://ci.appveyor.com/api/projects/status/1k2866yffaiaapmw?svg=true)](https://ci.appveyor.com/project/vsoftco/qpp)
 
-**Chat (questions/issues)**
-
-[![Join the chat at https://gitter.im/vsoftco_qpp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/vsoftco_qpp/Lobby/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 ---
 
 ## About
