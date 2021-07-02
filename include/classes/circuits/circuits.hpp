@@ -3283,6 +3283,8 @@ class QCircuit : public IDisplay, public IJSON {
      * quantum circuit description (and those matched of the latter must contain
      * no measurements)
      *
+     * \note The classical dits are not re-labelled
+     *
      * \param other Quantum circuit description
      * \param target Qudit indexes of the current circuit description where the
      * qudits of \a other are being matched, i.e., the first/top qudit of
@@ -3329,7 +3331,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        // STEP 0: update [c]ctrl and target indexes of other
+        // STEP 0: insert classical dits from the to-be-matched circuit
+        add_dit(other.nc_, pos_dit);
+
+        // STEP 1: update [c]ctrl and target indexes of other
         for (auto& gate : other.gates_) {
             // update the cctrl indexes
             if (is_cCTRL(gate)) {
@@ -3369,10 +3374,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (!other.clean_qudits_[i])
                 clean_qudits_[target[i]] = false;
 
-        // STEP 1: append the copy of other to the current instance
-        // insert classical dits from the to-be-added circuit
-        add_dit(other.nc_, pos_dit);
-
+        // STEP 2: append the copy of other to the current instance
         // append gate steps vector
         gates_.insert(std::end(gates_), std::begin(other.gates_),
                       std::end(other.gates_));
@@ -3386,7 +3388,7 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.insert(std::end(step_types_), std::begin(other.step_types_),
                            std::end(other.step_types_));
 
-        // STEP 2: modify gate counts, hash tables etc accordingly
+        // STEP 3: modify gate counts, hash tables etc accordingly
         // update matrix hash table
         for (auto& elem : other.cmat_hash_tbl_)
             cmat_hash_tbl_[elem.first] = elem.second;
@@ -3412,6 +3414,7 @@ class QCircuit : public IDisplay, public IJSON {
      * all qudit indexes of the added quantum circuit description must match
      * with qudits from the current quantum circuit description (and those
      * matched of the latter must contain no measurements)
+     * \note The classical dits are not re-labelled
      *
      * \param other Quantum circuit description
      * \param target Qudit indexes of the current circuit description where the
@@ -3462,7 +3465,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        // STEP 0: update [c]ctrl and target indexes of other
+        // STEP 0: insert classical dits from the to-be-matched circuit
+        add_dit(other.nc_, pos_dit);
+
+        // STEP 1: update [c]ctrl and target indexes of other
         for (auto& gate : other.gates_) {
             // update the cctrl indexes
             if (is_cCTRL(gate)) {
@@ -3502,10 +3508,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (!other.clean_qudits_[i])
                 clean_qudits_[target[i]] = false;
 
-        // STEP 1: append the copy of other to the current instance
-        // insert classical dits from the to-be-added circuit
-        add_dit(other.nc_, pos_dit);
-
+        // STEP 2: append the copy of other to the current instance
         // append gate steps vector
         gates_.insert(std::begin(gates_), std::begin(other.gates_),
                       std::end(other.gates_));
@@ -3520,7 +3523,7 @@ class QCircuit : public IDisplay, public IJSON {
                            std::begin(other.step_types_),
                            std::end(other.step_types_));
 
-        // STEP 2: modify gate counts, hash tables etc accordingly
+        // STEP 3: modify gate counts, hash tables etc accordingly
         // update matrix hash table
         for (auto& elem : other.cmat_hash_tbl_)
             cmat_hash_tbl_[elem.first] = elem.second;
@@ -3593,7 +3596,8 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        // STEP 0: add additional qudits (if needed)
+        // STEP 0: add additional qudits (if needed) and classical dits from the
+        // to-be-matched circuit
         if (pos_qudit < 0) {
             // add qudits before beginning
             idx extra_qudits = std::abs(pos_qudit);
@@ -3606,6 +3610,7 @@ class QCircuit : public IDisplay, public IJSON {
                 add_qudit(extra_qudits);
             }
         }
+        add_dit(other.nc_, pos_dit);
 
         // STEP 1: update [c]ctrl and target indexes of other
         for (auto& gate : other.gates_) {
@@ -3665,9 +3670,6 @@ class QCircuit : public IDisplay, public IJSON {
         }
 
         // STEP 2: append the copy of other to the current instance
-        // insert classical dits from the to-be-added circuit
-        add_dit(other.nc_, pos_dit);
-
         // append gate steps vector
         gates_.insert(std::end(gates_), std::begin(other.gates_),
                       std::end(other.gates_));
@@ -4219,6 +4221,8 @@ class QCircuit : public IDisplay, public IJSON {
      * quantum circuit description (and those matched of the latter must contain
      * no measurements)
      *
+     * \note The classical dits are not re-labelled
+     *
      * \param qc1 Quantum circuit description
      * \param qc2 Quantum circuit description
      * \param target Qudit indexes of the current circuit description where the
@@ -4248,6 +4252,8 @@ class QCircuit : public IDisplay, public IJSON {
      * quantum circuit description must match with qudits from the current
      * quantum circuit description (and those matched of the latter must contain
      * no measurements)
+     *
+     * \note The classical dits are not re-labelled
      *
      * \param qc1 Quantum circuit description
      * \param qc2 Quantum circuit description
