@@ -8,7 +8,7 @@ using namespace qpp;
 /******************************************************************************/
 TEST(qpp_PR, 110) {
     auto const state = (0_ket + 1_ket).normalized().eval();
-    auto const res = qpp::measure(state, gt.Id2);
+    auto const res = measure(state, gt.Id2);
     auto const& resulting_states = std::get<ST>(res);
 
     EXPECT_EQ(resulting_states[0][0], 1.);

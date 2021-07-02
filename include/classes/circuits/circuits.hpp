@@ -3272,8 +3272,269 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
+     * \brief Matches a quantum circuit description to the current quantum
+     * circuit description, with the to-be-matched quantum circuit description
+     * placed at the right (end) of the current quantum circuit description
+     * \see qpp::QCircuit::match_circuit_left() and qpp::QCircuit::add_circuit()
+     *
+     * \note The matched quantum circuit description cannot be larger than the
+     * current quantum circuit description, i.e., all qudit indexes of the added
+     * quantum circuit description must match with qudits from the current
+     * quantum circuit description (and those matched of the latter must contain
+     * no measurements)
+     *
+     * \param other Quantum circuit description
+     * \param target Qudit indexes of the current circuit description where the
+     * qudits of \a other are being matched, i.e., the first/top qudit of
+     * \a other quantum circuit description is matched with the target[0] qudit
+     * of the current circuit description, and so on
+     * \param pos_dit The first classical dit of \a other is inserted before
+     * the \a pos_dit classical dit index of the current quantum circuit
+     * description (in the classical dits array), the rest following in order.
+     * By default, insertion is performed at the end.
+     * \return Reference to the current instance
+     */
+    QCircuit& match_circuit_right(QCircuit other,
+                                  const std::vector<idx>& target,
+                                  idx pos_dit = -1) {
+        // EXCEPTION CHECKS
+
+        // check equal dimensions
+        if (other.d_ != d_)
+            throw exception::DimsNotEqual(
+                "qpp::QCircuit::match_circuit_right()");
+        // check classical dits
+        if (pos_dit == static_cast<idx>(-1))
+            pos_dit = nc_;
+        else if (pos_dit > nc_)
+            throw exception::OutOfRange("qpp::QCircuit::match_circuit_right()");
+        // check valid target
+        if (target.size() != other.nq_)
+            throw exception::OutOfRange("qpp::QCircuit::match_circuit_right()");
+        if (target.size() > nq_)
+            throw exception::OutOfRange("qpp::QCircuit::match_circuit_right()");
+        if (!internal::check_no_duplicates(target))
+            throw exception::Duplicates("qpp::QCircuit::match_circuit_right()");
+        for (auto&& qudit : target)
+            if (qudit >= nq_)
+                throw exception::OutOfRange(
+                    "qpp::QCircuit::match_circuit_right()");
+        // check matching qudits (in the current instance) were not already
+        // destructively measured
+        for (auto&& qudit : target) {
+            if (get_measured(qudit)) {
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuit::match_circuit_right()");
+            }
+        }
+        // END EXCEPTION CHECKS
+
+        // STEP 0: update [c]ctrl and target indexes of other
+        for (auto& gate : other.gates_) {
+            // update the cctrl indexes
+            if (is_cCTRL(gate)) {
+                for (auto& dit : gate.ctrl_) {
+                    dit += pos_dit;
+                }
+            }
+            // update the ctrl indexes
+            if (is_CTRL(gate)) {
+                for (auto& pos : gate.ctrl_) {
+                    pos = target[pos];
+                }
+            }
+            // update the target indexes
+            for (auto& pos : gate.target_) {
+                pos = target[pos];
+            }
+        } // end for other.gates_
+
+        // update measurement indexes of other
+        for (auto& measurement : other.measurements_) {
+            measurement.c_reg_ += pos_dit;
+            for (auto& pos : measurement.target_) {
+                pos = target[pos];
+            }
+        } // end for other.measurements_
+
+        // replace the corresponding elements of measured_, clean_qudits_
+        // and clean_dits_ with the ones of other
+        for (idx i = 0; i < other.measured_.size(); ++i)
+            if (other.measured_[i])
+                measured_[target[i]] = true;
+        for (idx i = 0; i < other.clean_dits_.size(); ++i)
+            if (!other.clean_dits_[i])
+                clean_dits_[target[i]] = false;
+        for (idx i = 0; i < other.clean_qudits_.size(); ++i)
+            if (!other.clean_qudits_[i])
+                clean_qudits_[target[i]] = false;
+
+        // STEP 1: append the copy of other to the current instance
+        // insert classical dits from the to-be-added circuit
+        add_dit(other.nc_, pos_dit);
+
+        // append gate steps vector
+        gates_.insert(std::end(gates_), std::begin(other.gates_),
+                      std::end(other.gates_));
+
+        // append measurement steps vector
+        measurements_.insert(std::end(measurements_),
+                             std::begin(other.measurements_),
+                             std::end(other.measurements_));
+
+        // append step types vector
+        step_types_.insert(std::end(step_types_), std::begin(other.step_types_),
+                           std::end(other.step_types_));
+
+        // STEP 2: modify gate counts, hash tables etc accordingly
+        // update matrix hash table
+        for (auto& elem : other.cmat_hash_tbl_)
+            cmat_hash_tbl_[elem.first] = elem.second;
+        // update gate counts
+        for (auto& elem : other.gate_count_)
+            gate_count_[elem.first] += elem.second;
+        // update measurement counts
+        for (auto& elem : other.measurement_count_)
+            measurement_count_[elem.first] += elem.second;
+
+        return *this;
+    }
+
+    /**
+     * \brief Matches a quantum circuit description to the current quantum
+     * circuit description, with the to-be-matched quantum circuit description
+     * placed at the left (beginning) of the current quantum circuit description
+     * \see qpp::QCircuit::match_circuit_right() and
+     * qpp::QCircuit::add_circuit()
+     *
+     * \note The matched quantum circuit description cannot be larger than the
+     * current quantum circuit description, i.e., all qudit indexes of the added
+     * quantum circuit description must match with qudits from the current
+     * quantum circuit description (and those matched of the latter must contain
+     * no measurements)
+     *
+     * \param other Quantum circuit description
+     * \param target Qudit indexes of the current circuit description where the
+     * qudits of \a other are being matched, i.e., the first/top qudit of
+     * \a other quantum circuit description is matched with the target[0] qudit
+     * of the current circuit description, and so on
+     * \param pos_dit The first classical dit of \a other is inserted before
+     * the \a pos_dit classical dit index of the current quantum circuit
+     * description (in the classical dits array), the rest following in order.
+     * By default, insertion is performed at the end.
+     * \return Reference to the current instance
+     */
+    QCircuit& match_circuit_left(QCircuit other, const std::vector<idx>& target,
+                                 idx pos_dit = -1) {
+        // EXCEPTION CHECKS
+
+        // check equal dimensions
+        if (other.d_ != d_)
+            throw exception::DimsNotEqual(
+                "qpp::QCircuit::match_circuit_left()");
+        // check classical dits
+        if (pos_dit == static_cast<idx>(-1))
+            pos_dit = nc_;
+        else if (pos_dit > nc_)
+            throw exception::OutOfRange("qpp::QCircuit::match_circuit_left()");
+        // check valid target
+        if (target.size() != other.nq_)
+            throw exception::OutOfRange("qpp::QCircuit::match_circuit_left()");
+        if (target.size() > nq_)
+            throw exception::OutOfRange("qpp::QCircuit::match_circuit_left()");
+        if (!internal::check_no_duplicates(target))
+            throw exception::Duplicates("qpp::QCircuit::match_circuit_left()");
+        for (auto&& qudit : target)
+            if (qudit >= nq_)
+                throw exception::OutOfRange(
+                    "qpp::QCircuit::match_circuit_left()");
+        // check matching qudits (in the current instance) were not already
+        // destructively measured
+        for (auto&& qudit : target) {
+            if (get_measured(qudit)) {
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuit::match_circuit_left()");
+            }
+        }
+        // END EXCEPTION CHECKS
+
+        // STEP 0: update [c]ctrl and target indexes of other
+        for (auto& gate : other.gates_) {
+            // update the cctrl indexes
+            if (is_cCTRL(gate)) {
+                for (auto& dit : gate.ctrl_) {
+                    dit += pos_dit;
+                }
+            }
+            // update the ctrl indexes
+            if (is_CTRL(gate)) {
+                for (auto& pos : gate.ctrl_) {
+                    pos = target[pos];
+                }
+            }
+            // update the target indexes
+            for (auto& pos : gate.target_) {
+                pos = target[pos];
+            }
+        } // end for other.gates_
+
+        // update measurement indexes of other
+        for (auto& measurement : other.measurements_) {
+            measurement.c_reg_ += pos_dit;
+            for (auto& pos : measurement.target_) {
+                pos = target[pos];
+            }
+        } // end for other.measurements_
+
+        // replace the corresponding elements of measured_, clean_qudits_
+        // and clean_dits_ with the ones of other
+        for (idx i = 0; i < other.measured_.size(); ++i)
+            if (other.measured_[i])
+                measured_[target[i]] = true;
+        for (idx i = 0; i < other.clean_dits_.size(); ++i)
+            if (!other.clean_dits_[i])
+                clean_dits_[target[i]] = false;
+        for (idx i = 0; i < other.clean_qudits_.size(); ++i)
+            if (!other.clean_qudits_[i])
+                clean_qudits_[target[i]] = false;
+
+        // STEP 1: append the copy of other to the current instance
+        // insert classical dits from the to-be-added circuit
+        add_dit(other.nc_, pos_dit);
+
+        // append gate steps vector
+        gates_.insert(std::begin(gates_), std::begin(other.gates_),
+                      std::end(other.gates_));
+
+        // append measurement steps vector
+        measurements_.insert(std::begin(measurements_),
+                             std::begin(other.measurements_),
+                             std::end(other.measurements_));
+
+        // append step types vector
+        step_types_.insert(std::begin(step_types_),
+                           std::begin(other.step_types_),
+                           std::end(other.step_types_));
+
+        // STEP 2: modify gate counts, hash tables etc accordingly
+        // update matrix hash table
+        for (auto& elem : other.cmat_hash_tbl_)
+            cmat_hash_tbl_[elem.first] = elem.second;
+        // update gate counts
+        for (auto& elem : other.gate_count_)
+            gate_count_[elem.first] += elem.second;
+        // update measurement counts
+        for (auto& elem : other.measurement_count_)
+            measurement_count_[elem.first] += elem.second;
+
+        return *this;
+    }
+
+    /**
      * \brief Appends (glues) a quantum circuit description to the current
      * one
+     * \see qpp::QCircuit::match_circuit_left() and
+     * qpp::QCircuit::match_circuit_right()
      *
      * \note If the qudit indexes of the added quantum circuit description
      * do not totally overlap with the indexes of the current quantum
@@ -3916,6 +4177,7 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Appends (glues) a quantum circuit description to another one
+     * \see qpp::match_circuit_left() and qpp::match_circuit_right()
      *
      * \note If qudit indexes of the second quantum circuit description do
      * not totally overlap with the indexes of the first quantum circuit
@@ -3939,6 +4201,66 @@ class QCircuit : public IDisplay, public IJSON {
     friend QCircuit add_circuit(QCircuit qc1, const QCircuit& qc2,
                                 bigint pos_qudit, idx pos_dit = -1) {
         return qc1.add_circuit(qc2, pos_qudit, pos_dit);
+    }
+
+    /**
+     * \brief Matches a quantum circuit description to the current quantum
+     * circuit description, with the to-be-matched quantum circuit description
+     * placed at the right (end) of the current quantum circuit description
+     * \see qpp::match_circuit_left() and qpp::add_circuit()
+     *
+     * \note The matched quantum circuit description cannot be larger than the
+     * current quantum circuit description, i.e., all qudit indexes of the added
+     * quantum circuit description must match with qudits from the current
+     * quantum circuit description (and those matched of the latter must contain
+     * no measurements)
+     *
+     * \param qc1 Quantum circuit description
+     * \param qc2 Quantum circuit description
+     * \param target Qudit indexes of the current circuit description where the
+     * qudits of \a other are being matched, i.e., the first/top qudit of
+     * \a other quantum circuit description is matched with the target[0] qudit
+     * of the current circuit description, and so on
+     * \param pos_dit The first classical dit of \a other is inserted before
+     * the \a pos_dit classical dit index of the current quantum circuit
+     * description (in the classical dits array), the rest following in order.
+     * By default, insertion is performed at the end.
+     * \return Combined quantum circuit description
+     */
+    friend QCircuit match_circuit_right(QCircuit qc1, const QCircuit& qc2,
+                                        const std::vector<idx>& target,
+                                        idx pos_dit = -1) {
+        return qc1.match_circuit_right(qc2, target, pos_dit);
+    }
+
+    /**
+     * \brief Matches a quantum circuit description to the current quantum
+     * circuit description, with the to-be-matched quantum circuit description
+     * placed at the left (beginning) of the current quantum circuit description
+     * \see qpp::match_circuit_right() and qpp::add_circuit()
+     *
+     * \note The matched quantum circuit description cannot be larger than the
+     * current quantum circuit description, i.e., all qudit indexes of the added
+     * quantum circuit description must match with qudits from the current
+     * quantum circuit description (and those matched of the latter must contain
+     * no measurements)
+     *
+     * \param qc1 Quantum circuit description
+     * \param qc2 Quantum circuit description
+     * \param target Qudit indexes of the current circuit description where the
+     * qudits of \a other are being matched, i.e., the first/top qudit of
+     * \a other quantum circuit description is matched with the target[0] qudit
+     * of the current circuit description, and so on
+     * \param pos_dit The first classical dit of \a other is inserted before
+     * the \a pos_dit classical dit index of the current quantum circuit
+     * description (in the classical dits array), the rest following in order.
+     * By default, insertion is performed at the end.
+     * \return Combined quantum circuit description
+     */
+    friend QCircuit match_circuit_left(QCircuit qc1, const QCircuit& qc2,
+                                       const std::vector<idx>& target,
+                                       idx pos_dit = -1) {
+        return qc1.match_circuit_left(qc2, target, pos_dit);
     }
 
   private:
