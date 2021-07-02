@@ -41,10 +41,11 @@ Pre-release
     - qpp::measure() deducts the input state type (`qpp::ket` or `qpp::cmat`)
       and returns accordingly a set of kets or density matrices in its return
       tuple, thanks @anoine-bussy (https://github.com/antoine-bussy)
-    - Implemented qpp::QCircuit::match_circuit_right() and
-      qpp::QCircuit::match_circuit_left() which match circuit qudits in
-      arbitrary order, and the corresponding free functions
-      qpp::match_circuit_left() and qpp::match_circuit_right()
+    - Implemented qpp::QCircuit::
+          - match_circuit_left()
+          - match_circuit_right()
+      (and the corresponding free functions), that match circuit qudits in
+      arbitrary order
     - Minor refactoring and code simplifications
 
 Version 2.6 - 9 January 2021

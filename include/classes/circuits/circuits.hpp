@@ -4206,36 +4206,6 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Matches a quantum circuit description to the current quantum
      * circuit description, with the to-be-matched quantum circuit description
-     * placed at the right (end) of the current quantum circuit description
-     * \see qpp::match_circuit_left() and qpp::add_circuit()
-     *
-     * \note The matched quantum circuit description cannot be larger than the
-     * current quantum circuit description, i.e., all qudit indexes of the added
-     * quantum circuit description must match with qudits from the current
-     * quantum circuit description (and those matched of the latter must contain
-     * no measurements)
-     *
-     * \param qc1 Quantum circuit description
-     * \param qc2 Quantum circuit description
-     * \param target Qudit indexes of the current circuit description where the
-     * qudits of \a other are being matched, i.e., the first/top qudit of
-     * \a other quantum circuit description is matched with the target[0] qudit
-     * of the current circuit description, and so on
-     * \param pos_dit The first classical dit of \a other is inserted before
-     * the \a pos_dit classical dit index of the current quantum circuit
-     * description (in the classical dits array), the rest following in order.
-     * By default, insertion is performed at the end.
-     * \return Combined quantum circuit description
-     */
-    friend QCircuit match_circuit_right(QCircuit qc1, const QCircuit& qc2,
-                                        const std::vector<idx>& target,
-                                        idx pos_dit = -1) {
-        return qc1.match_circuit_right(qc2, target, pos_dit);
-    }
-
-    /**
-     * \brief Matches a quantum circuit description to the current quantum
-     * circuit description, with the to-be-matched quantum circuit description
      * placed at the left (beginning) of the current quantum circuit description
      * \see qpp::match_circuit_right() and qpp::add_circuit()
      *
@@ -4261,6 +4231,36 @@ class QCircuit : public IDisplay, public IJSON {
                                        const std::vector<idx>& target,
                                        idx pos_dit = -1) {
         return qc1.match_circuit_left(qc2, target, pos_dit);
+    }
+
+    /**
+     * \brief Matches a quantum circuit description to the current quantum
+     * circuit description, with the to-be-matched quantum circuit description
+     * placed at the right (end) of the current quantum circuit description
+     * \see qpp::match_circuit_left() and qpp::add_circuit()
+     *
+     * \note The matched quantum circuit description cannot be larger than the
+     * current quantum circuit description, i.e., all qudit indexes of the added
+     * quantum circuit description must match with qudits from the current
+     * quantum circuit description (and those matched of the latter must contain
+     * no measurements)
+     *
+     * \param qc1 Quantum circuit description
+     * \param qc2 Quantum circuit description
+     * \param target Qudit indexes of the current circuit description where the
+     * qudits of \a other are being matched, i.e., the first/top qudit of
+     * \a other quantum circuit description is matched with the target[0] qudit
+     * of the current circuit description, and so on
+     * \param pos_dit The first classical dit of \a other is inserted before
+     * the \a pos_dit classical dit index of the current quantum circuit
+     * description (in the classical dits array), the rest following in order.
+     * By default, insertion is performed at the end.
+     * \return Combined quantum circuit description
+     */
+    friend QCircuit match_circuit_right(QCircuit qc1, const QCircuit& qc2,
+                                        const std::vector<idx>& target,
+                                        idx pos_dit = -1) {
+        return qc1.match_circuit_right(qc2, target, pos_dit);
     }
 
   private:
