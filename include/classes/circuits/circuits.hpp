@@ -3283,7 +3283,7 @@ class QCircuit : public IDisplay, public IJSON {
      * quantum circuit description (and those matched of the latter must contain
      * no measurements)
      *
-     * \note The classical dits are not re-labelled
+     * \note The classical dits are not relabeled
      *
      * \param other Quantum circuit description
      * \param target Qudit indexes of the current circuit description where the
@@ -3414,7 +3414,7 @@ class QCircuit : public IDisplay, public IJSON {
      * all qudit indexes of the added quantum circuit description must match
      * with qudits from the current quantum circuit description (and those
      * matched of the latter must contain no measurements)
-     * \note The classical dits are not re-labelled
+     * \note The classical dits are not relabeled
      *
      * \param other Quantum circuit description
      * \param target Qudit indexes of the current circuit description where the
@@ -4221,7 +4221,7 @@ class QCircuit : public IDisplay, public IJSON {
      * quantum circuit description (and those matched of the latter must contain
      * no measurements)
      *
-     * \note The classical dits are not re-labelled
+     * \note The classical dits are not relabeled
      *
      * \param qc1 Quantum circuit description
      * \param qc2 Quantum circuit description
@@ -4253,7 +4253,7 @@ class QCircuit : public IDisplay, public IJSON {
      * quantum circuit description (and those matched of the latter must contain
      * no measurements)
      *
-     * \note The classical dits are not re-labelled
+     * \note The classical dits are not relabeled
      *
      * \param qc1 Quantum circuit description
      * \param qc2 Quantum circuit description
