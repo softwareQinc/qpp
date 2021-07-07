@@ -47,6 +47,7 @@ Pre-release
       (and the corresponding free functions), that match circuit qudits in
       arbitrary order
     - Minor refactoring and code simplifications
+    - Removed `cmath_cygwin.patch` as the problem was fixed since 2016.
 
 Version 2.6 - 9 January 2021
     - Added Quantum Phase Estimation low-level API example in

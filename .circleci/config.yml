@@ -26,24 +26,24 @@ jobs:
           name: Install the library
           command: |
             mkdir build && cd build
-            cmake .. -DCMAKE_BUILD_TYPE=Debug
+            cmake .. -DWITH_EXAMPLES=ON -DWITH_UNIT_TESTS=ON -DCMAKE_BUILD_TYPE=Debug
             sudo make install
       - run:
           name: Compile and run a standalone example
           command: |
             cd examples/standalone && mkdir build && cd build
-            cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j4
+            cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j8
             ./standalone
       - run:
           name: Build the examples
           command: |
             cd build
-            make -j4 examples
+            make -j8 examples
       - run:
           name: Build the unit tests
           command: |
             cd build
-            make -j4 unit_tests
+            make -j8 unit_tests
       - run:
           name: Run the unit tests
           command: |
@@ -64,24 +64,24 @@ jobs:
           name: Install the library
           command: |
             mkdir build && cd build
-            cmake .. -DCMAKE_BUILD_TYPE=Debug
+            cmake .. -DWITH_EXAMPLES=ON -DWITH_UNIT_TESTS=ON -DCMAKE_BUILD_TYPE=Debug
             sudo make install
       - run:
           name: Compile and run a standalone example
           command: |
             cd examples/standalone && mkdir build && cd build
-            cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j4
+            cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j8
             ./standalone
       - run:
           name: Build the examples
           command: |
             cd build
-            make -j4 examples
+            make -j8 examples
       - run:
           name: Build the unit tests
           command: |
             cd build
-            make -j4 unit_tests
+            make -j8 unit_tests
       - run:
           name: Run the unit tests
           command: |

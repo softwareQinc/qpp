@@ -20,14 +20,21 @@ target_include_directories(libqpp INTERFACE
         $<INSTALL_INTERFACE:include/>)
 
 ######## BEGIN LOCAL stuff, you don't need it in your project
+option(WITH_EXAMPLES "Enable example compilation" OFF)
+option(WITH_UNIT_TESTS "Enable unit testing" OFF)
+
 #### Dependencies, do not modify unless you know what you're doing
-include(cmake/qpp_dependencies.cmake)
+if (${WITH_EXAMPLES} OR ${WITH_UNIT_TESTS})
+    include(cmake/qpp_dependencies.cmake)
+endif ()
 
 #### Quantum++ root directory
 add_compile_definitions(QPP_ROOT_DIR="${CMAKE_SOURCE_DIR}")
 
 #### Unit testing
-include(cmake/qpp_unit_tests.cmake)
+if (${WITH_UNIT_TESTS})
+    include(cmake/qpp_unit_tests.cmake)
+endif ()
 
 #### Enable all warnings for GNU gcc and Clang/AppleClang
 if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
@@ -36,51 +43,79 @@ if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
 endif ()
 
 #### Examples
-include(cmake/qpp_examples.cmake)
+if (${WITH_EXAMPLES})
+    include(cmake/qpp_examples.cmake)
+endif ()
 ######## END LOCAL stuff
 
-#### Quantum++ installation instructions, which can then be found via CMake's
-#### find_package(qpp REQUIRED)
+#[[
+Quantum++ installation instructions
 
-#### For both UNIX/Windows, first run from an out-of-source directory
-####
-#### cmake .. [additional options]
-####
-#### where [additional options] are optional arguments, one or more of
-#### [-DEIGEN3_INSTALL_DIR=/path/to/eigen3] [-DWITH_MATLAB=ON/OFF] [-DWITH_OPENMP=ON/OFF]
-####
-#### If you want to install Quantum++ in a non-standard location (e.g., due to
-#### lack of admin. rights), then pass the additional flag
-#### '-DCMAKE_INSTALL_PREFIX=/path/to/qpp' to cmake above, i.e.,
-####
-#### cmake .. -DCMAKE_INSTALL_PREFIX=/path/to/qpp [additional options]
+For both UNIX/Windows, first configure the system by running from an
+out-of-source directory
 
-#### Next, follow the platform-specific instructions below
+    cmake .. [optional arguments]
 
-#### UNIX/Linux: sudo make install (or sudo cmake --build . --target install)
-#### Will install in: /usr/local/include/qpp and /usr/local/lib/cmake/qpp
+where [optional arguments] are passed with -DOPTIONAL_ARGUMENT=VALUE. In most
+cases `cmake ..` should suffice. The optional arguments are:
 
-#### Windows: cmake --build . --target INSTALL (from an Admin. Command Prompt)
-#### Will install in: C:\Program Files (x86)\qpp
+    DEIGEN3_INSTALL_DIR="/path/to/eigen3"   - Path to Eigen3 installation, if not automatically detected
+    WITH_OPENMP=ON/OFF     [ON by default]  - Enables/disables OpenMP
+    WITH_EXAMPLES=ON/OFF   [OFF by default] - Enables/disables building examples as a cmake target.
+                                              If enabled, adds "examples" as a cmake target.
+    WITH_UNIT_TESTS=ON/OFF [OFF by default] - Enables/disables building unit tests as a cmake target.
+                                              If enabled, adds "unit_tests" as a cmake target.
+    WITH_MATLAB=ON/OFF     [OFF by default] - Enables/disables interoperability with MATLAB, will detect MATLAB
+                                              installation automatically. If enabled, allows saving/loading qpp
+                                              matrices and vectors to/from MATLAB.
+    CMAKE_INSTALL_PREFIX="/path/to/install" - Installs Quantum++ header files in a non-standard location (e.g., due to
+                                              lack of admin. rights).
 
-#### Minimal CMakeLists.txt of a standalone application that uses Quantum++
-#### Always add the ${QPP_LINK_DEPS} to target_link_libraries()!
+If WITH_MATLAB=ON and the system could not detect your MATLAB installation, you
+can manually specify the path to MATLAB's installation directory via the
+additional argument
 
-# cmake_minimum_required(VERSION 3.12)
-# project(my_qpp_project)
-# set(CMAKE_CXX_STANDARD 11) # can set the C++ standard to C++17 as well
-#
-# # Disable spurious Eigen warnings if using C++17 with MSVC (warning STL4007)
-# if (MSVC)
-#     add_compile_definitions(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING)
-# endif ()
-#
-# # The line below is optional (Quantum++ installed in a non-standard location)
+    MATLAB_INSTALL_DIR="/path/to/MATLAB"
+
+If you still receive errors, you can manually specify the path to MATLAB's
+required libraries and header files via the additional arguments
+
+    MATLAB_LIB_DIR="/path/to/MATLAB/libs"
+    MATLAB_INCLUDE_DIR="/path/to/MATLAB/headers"
+
+Finally, to install the library into a target directory, follow the
+platform-specific instructions below.
+
+UNIX/Linux: sudo make install (or sudo cmake --build . --target install)
+Will install in: /usr/local/include/qpp and /usr/local/lib/cmake/qpp
+
+Windows: cmake --build . --target INSTALL (from an Admin. Command Prompt)
+Will install in: C:\Program Files (x86)\qpp
+
+Below is a minimal CMakeLists.txt of a standalone application that uses
+Quantum++. For simplicity, we assume that the whole application is located in a
+single file `src/main.cpp'.
+
+Do not forget to ALWAYS add ${QPP_LINK_DEPS} (verbatim) to target_link_libraries()!
+
+cmake_minimum_required(VERSION 3.12)
+project(my_qpp_project)
+set(CMAKE_CXX_STANDARD 11) # can set the C++ standard to C++17 as well
+
+# Disable spurious Eigen warnings if using C++17 with MSVC (warning STL4007)
+if (MSVC)
+    add_compile_definitions(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING)
+endif ()
+
+# The line below is optional (uncomment if Quantum++ was installed in a
+# non-standard location)
+
 # set(CMAKE_PREFIX_PATH "/path/to/installed/qpp")
-#
-# find_package(qpp REQUIRED)
-# add_executable(my_qpp_project src/main.cpp)
-# target_link_libraries(my_qpp_project PUBLIC ${QPP_LINK_DEPS} libqpp)
+
+find_package(qpp REQUIRED)
+add_executable(my_qpp_project src/main.cpp)
+target_link_libraries(my_qpp_project PUBLIC ${QPP_LINK_DEPS} libqpp)
+]]
 
 set(QPP_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/include/${PROJECT_NAME}")
 install(DIRECTORY include/ DESTINATION ${QPP_INSTALL_DIR})

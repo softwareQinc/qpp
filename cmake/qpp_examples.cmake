@@ -1,3 +1,4 @@
+#### Examples
 #### Source file(s) to be compiled, modify as needed
 aux_source_directory(${CMAKE_SOURCE_DIR}/examples EXAMPLE_FILES)
 aux_source_directory(${CMAKE_SOURCE_DIR}/examples/circuits EXAMPLE_FILES)
