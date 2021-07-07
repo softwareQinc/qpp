@@ -1,6 +1,7 @@
-Pre-release
+Version 2.7 - coming soon
     - Added installation support and auto package detection via CMake
       find_package(qpp REQUIRED)
+    - Simplified installation instructions ["INSTALL.md"]
     - Added CircleCI continuous integration
     - CMake minimum required version bumped to 3.12 for automatic unit tests
       detection by CMake and other CMake-related "good practices"
