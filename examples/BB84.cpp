@@ -130,7 +130,7 @@ key_T final_key(const key_T& Alice_raw_key, const key_T& Bob_raw_key) {
 }
 
 // helper, retrieves the key from a collection of (basis, state) pairs
-key_T raw_key(const bases_states_T& bases_states) {
+key_T get_key(const bases_states_T& bases_states) {
     using namespace qpp;
     auto n = bases_states.size();
     key_T result(n);
@@ -151,8 +151,8 @@ int main() {
 
     std::cout << ">> BB84, sending n = " << n << " qubits from Alice to Bob\n";
     std::cout << ">> With probability p = " << p
-              << " Eve intercepts the qubits and randomly measures them in the "
-                 "Z or X basis, then sends them to Bob\n";
+              << ", Eve intercepts the qubits and randomly measures them in the"
+                 " Z or X basis, then sends them to Bob\n";
     std::cout << ">> Excludes error correction and privacy amplification\n";
 
     // Alice's basis and state pairs (basis, state); 0 -> Z basis, 1 -> X
@@ -229,11 +229,11 @@ int main() {
 
     std::cout << ">> Established keys\n";
     // display the raw key on Alice's side
-    auto raw_key_A = raw_key(Alice_bases_states);
+    auto raw_key_A = get_key(Alice_bases_states);
     std::cout << "Alice's raw key: " << disp(raw_key_A, " ", "", "") << '\n';
 
     // display the raw key on Bob's side
-    auto raw_key_B = raw_key(Bob_bases_states);
+    auto raw_key_B = get_key(Bob_bases_states);
     std::cout << "Bob's raw key:   " << disp(raw_key_B, " ", "", "") << '\n';
 
     // display the final key and the corresponding rate
