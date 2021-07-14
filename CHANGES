@@ -2,7 +2,8 @@ Version 2.7 - coming soon
     - Added installation support and auto package detection via CMake
       find_package(qpp REQUIRED)
     - Simplified installation instructions ["INSTALL.md"]
-    - Added BB84 example ["examples/BB84.cpp"]
+    - Added an almost complete BB84 example ["examples/BB84.cpp"], does not
+      include error correction and privacy amplification
     - Added CircleCI continuous integration
     - CMake minimum required version bumped to 3.12 for automatic unit tests
       detection by CMake and other CMake-related "good practices"
