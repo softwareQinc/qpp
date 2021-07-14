@@ -315,26 +315,18 @@ inline bigint modmul(bigint a, bigint b, bigint p) {
     if (a == 0 || b == 0)
         return 0;
 
-    ubigint ua, ub, up;
+    ubigint ua = a < 0 ? -static_cast<ubigint>(a) : a;
+    ubigint ub = b < 0 ? -static_cast<ubigint>(b) : b;
+    auto up = static_cast<ubigint>(p);
 
-    bool is_positive = true;
-    if (a < 0) {
-        ua = -a;
-        is_positive = false;
-    } else
-        ua = a;
-    if (b < 0) {
-        ub = -b;
-        is_positive = false;
-    } else
-        ub = b;
-
-    if (a < 0 && b < 0)
-        is_positive = true;
-
-    up = static_cast<ubigint>(p);
     ua %= up;
     ub %= up;
+
+    bool is_positive = true;
+    if (a < 0 || b < 0)
+        is_positive = false;
+    if (a < 0 && b < 0)
+        is_positive = true;
 
     // the code below is taken from
     // http://stackoverflow.com/a/18680280/3093378
@@ -344,7 +336,7 @@ inline bigint modmul(bigint a, bigint b, bigint p) {
     if (ub > ua)
         std::swap(ua, ub);
 
-    /* only needed if un may be >= up */
+    /* only needed if ub may be >= up */
     if (ub >= up) {
         if (up > std::numeric_limits<ubigint>::max() / 2u)
             ub -= up;
@@ -354,11 +346,12 @@ inline bigint modmul(bigint a, bigint b, bigint p) {
 
     while (ua != 0) {
         if (ua & static_cast<ubigint>(1)) {
-            /* add un to res, modulo p, without overflow */
+            /* add ub to res, modulo p, without overflow */
             /* equiv to if (res + ub >= p), without overflow */
             if (ub >= up - res)
                 res -= up;
             res += ub;
+            std::cout << ub << '\n';
         }
         ua >>= static_cast<ubigint>(1);
 
