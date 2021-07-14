@@ -315,8 +315,15 @@ inline bigint modmul(bigint a, bigint b, bigint p) {
     if (a == 0 || b == 0)
         return 0;
 
+#ifdef _MSC_VER
+#pragma warning(disable : 4146) // disable warning C4146
+#endif
     ubigint ua = a < 0 ? -static_cast<ubigint>(a) : a;
     ubigint ub = b < 0 ? -static_cast<ubigint>(b) : b;
+#ifdef _MSC_VER
+#pragma warning(default : 4146) // enable warning C4146 back
+#endif
+
     auto up = static_cast<ubigint>(p);
 
     ua %= up;
