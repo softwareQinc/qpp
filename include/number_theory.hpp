@@ -358,7 +358,6 @@ inline bigint modmul(bigint a, bigint b, bigint p) {
             if (ub >= up - res)
                 res -= up;
             res += ub;
-            std::cout << ub << '\n';
         }
         ua >>= static_cast<ubigint>(1);
 
