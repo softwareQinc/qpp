@@ -3,14 +3,17 @@
 #include <cstdlib>
 #include <iostream>
 #include <numeric>
+#include <string>
 #include <tuple>
 #include <utility>
 #include <vector>
 
 #include "qpp.h"
 
+using basis_T = short; // basis type
+using state_T = short; // state index type
 // (basis, state) pair collection type ; 0 -> Z basis, 1 -> X basis
-using bases_states_T = std::vector<std::pair<short, short>>;
+using bases_states_T = std::vector<std::pair<basis_T, state_T>>;
 using key_T = std::vector<short>; // key type (bit string)
 
 // display Alice's and Bob's bases choices and states
@@ -19,8 +22,14 @@ void display(const bases_states_T& Alice_bases_states,
     using namespace qpp;
     auto n = Alice_bases_states.size();
     std::cout << "Alice's states: ";
-    for (idx i = 0; i < n; ++i)
-        std::cout << Alice_bases_states[i].second << ' ';
+    for (idx i = 0; i < n; ++i) {
+        std::string state;
+        if (Alice_bases_states[i].first == 0) // Z basis
+            state = std::to_string(Alice_bases_states[i].second);
+        else // X basis
+            state = Alice_bases_states[i].second == 0 ? "+" : "-";
+        std::cout << state << ' ';
+    }
     std::cout << '\n';
     std::cout << "Alice's bases:  ";
     for (idx i = 0; i < n; ++i)
@@ -31,14 +40,20 @@ void display(const bases_states_T& Alice_bases_states,
         std::cout << (Bob_bases_states[i].first == 0 ? 'Z' : 'X') << ' ';
     std::cout << '\n';
     std::cout << "Bob's states:   ";
-    for (idx i = 0; i < n; ++i)
-        std::cout << Bob_bases_states[i].second << ' ';
+    for (idx i = 0; i < n; ++i) {
+        std::string state;
+        if (Bob_bases_states[i].first == 0) // Z basis
+            state = std::to_string(Bob_bases_states[i].second);
+        else // X basis
+            state = Bob_bases_states[i].second == 0 ? "+" : "-";
+        std::cout << state << ' ';
+    }
     std::cout << '\n';
 }
 
 // key sifting, removes the locations where the bases do not coincide
-void key_sift(bases_states_T& Alice_bases_states,
-              bases_states_T& Bob_bases_states) {
+void sift(bases_states_T& Alice_bases_states,
+          bases_states_T& Bob_bases_states) {
     using namespace qpp;
     auto n = Alice_bases_states.size();
     bases_states_T result_A, result_B;
@@ -52,10 +67,10 @@ void key_sift(bases_states_T& Alice_bases_states,
     Bob_bases_states = result_B;
 }
 
-// Alice and Bob check a subset (of size k) of their qubits and estimate how
+// Alice and Bob sample a subset (of size k) of their qubits and estimate how
 // much Eve eavesdropped; returns the number of positions where they disagree
-double check_eavesdrop(bases_states_T& Alice_bases_states,
-                       bases_states_T& Bob_bases_states, qpp::idx k) {
+double sample(bases_states_T& Alice_bases_states,
+              bases_states_T& Bob_bases_states, qpp::idx k) {
     using namespace qpp;
     auto n = Alice_bases_states.size();
 
@@ -117,7 +132,7 @@ double check_eavesdrop(bases_states_T& Alice_bases_states,
 
 // compute the final key; technically, here is where we do error correction and
 // privacy amplification; however, here we simply discard the bits that differ
-key_T final_key(const key_T& Alice_raw_key, const key_T& Bob_raw_key) {
+key_T final(const key_T& Alice_raw_key, const key_T& Bob_raw_key) {
     using namespace qpp;
     auto n = Alice_raw_key.size();
     key_T result;
@@ -145,11 +160,12 @@ int main() {
     idx n = 100;    // no. of qubits Alice sends to Bob
     idx k = 20;     // no. of qubits Alice and Bob check for eavesdropping
     double p = 0.5; // probability of Eve intercepting (and altering) the qubits
-
     // when we should abort due to eavesdropping; lower in reality
     double abort_rate = 0.2;
 
-    std::cout << ">> BB84, sending n = " << n << " qubits from Alice to Bob\n";
+    std::cout << ">> BB84, sending n = " << n
+              << " qubits from Alice to Bob, k = " << k
+              << " qubits are used for sampling (eavesdrop detection)\n";
     std::cout << ">> With probability p = " << p
               << ", Eve intercepts the qubits and randomly measures them in the"
                  " Z or X basis, then sends them to Bob\n";
@@ -160,9 +176,9 @@ int main() {
     bases_states_T Alice_bases_states(n);
     for (auto& elem : Alice_bases_states) {
         // chose a random basis, 0 -> Z basis, 1 -> X basis
-        short basis = bernoulli() ? 0 : 1;
+        basis_T basis = bernoulli() ? 0 : 1;
         // chose a random state, |0> or |1> in the basis 'basis'
-        short state = bernoulli() ? 0 : 1;
+        state_T state = bernoulli() ? 0 : 1;
         elem = std::make_pair(basis, state);
     }
 
@@ -171,7 +187,7 @@ int main() {
     bases_states_T Bob_bases_states(n);
     for (auto& elem : Bob_bases_states) {
         // chose a random basis, 0 -> Z basis, 1 -> X basis
-        short basis = bernoulli() ? 0 : 1;
+        basis_T basis = bernoulli() ? 0 : 1;
         elem.first = basis;
     }
 
@@ -189,7 +205,7 @@ int main() {
         // basis, then sends it to Bob
         if (bernoulli(p)) {
             // chose a random basis, 0 -> Z basis, 1 -> X basis
-            short basis_E = bernoulli();
+            basis_T basis_E = bernoulli();
             cmat U_E = (basis_E == 0) ? gt.Z : gt.H;
             auto measure_E = measure(psi, U_E);
             auto m_E = std::get<RES>(measure_E); // measurement result
@@ -202,19 +218,25 @@ int main() {
         cmat U_B = (basis_B == 0) ? gt.Z : gt.H;
         auto measure_B = measure(psi, U_B);
         auto m_B = std::get<RES>(measure_B); // measurement result
-        Bob_bases_states[i].second =
-            static_cast<decltype(Bob_bases_states[i].second)>(m_B);
+        Bob_bases_states[i].second = static_cast<state_T>(m_B);
     }
 
     // display the results before bases sifting
     std::cout << ">> Before sifting\n";
     display(Alice_bases_states, Bob_bases_states);
 
-    // filter on same bases
-    key_sift(Alice_bases_states, Bob_bases_states);
+    // sift on same bases
+    sift(Alice_bases_states, Bob_bases_states);
+    auto sifted_key_size = Alice_bases_states.size();
 
-    // check eavesdropping
-    auto eves_rate = check_eavesdrop(Alice_bases_states, Bob_bases_states, k);
+    // display the results after bases sifting
+    std::cout << ">> After sifting\n";
+    display(Alice_bases_states, Bob_bases_states);
+
+    // check eavesdropping (sampling)
+    auto eves_rate = sample(Alice_bases_states, Bob_bases_states, k);
+    auto raw_key_size = Alice_bases_states.size();
+    std::cout << ">> Sampling k = " << k << " qubits...\n";
     std::cout << ">> Detected eavesdropping rate: " << eves_rate << '\n';
     // if rate is too high we should abort here
     if (eves_rate > abort_rate) {
@@ -224,25 +246,24 @@ int main() {
     }
 
     // display the results after basis sifting and eavesdropping detection
-    std::cout << ">> After sifting and eavesdrop detection (raw key)\n";
+    std::cout << ">> After sifting and eavesdrop detection (raw keys)\n";
     display(Alice_bases_states, Bob_bases_states);
 
     std::cout << ">> Established keys\n";
-    // display the raw key on Alice's side
+    // display the raw final_key on Alice's side
     auto raw_key_A = get_key(Alice_bases_states);
     std::cout << "Alice's raw key: " << disp(raw_key_A, " ", "", "") << '\n';
 
-    // display the raw key on Bob's side
+    // display the raw final_key on Bob's side
     auto raw_key_B = get_key(Bob_bases_states);
     std::cout << "Bob's raw key:   " << disp(raw_key_B, " ", "", "") << '\n';
 
-    // display the final key and the corresponding rate
-    auto key = final_key(raw_key_A, raw_key_B);
-    std::cout << "Final key:       " << disp(key, " ", "", "") << '\n';
-
-    double key_rate = static_cast<double>(key.size()) / static_cast<double>(n);
-
-    std::cout << ">> Bits/keys sizes: " << n << '/' << raw_key_A.size() << '/'
-              << key.size() << '\n';
-    std::cout << ">> Final key rate: " << key_rate << '\n';
+    // display the final final_key and the corresponding rate
+    auto final_key = final(raw_key_A, raw_key_B);
+    auto final_key_rate =
+        static_cast<double>(final_key.size()) / static_cast<double>(n);
+    std::cout << "Final key:       " << disp(final_key, " ", "", "") << '\n';
+    std::cout << ">> Bits/keys sizes: " << n << '/' << sifted_key_size << '/'
+              << raw_key_size << '/' << final_key.size() << '\n';
+    std::cout << ">> Final key rate: " << final_key_rate << '\n';
 }
