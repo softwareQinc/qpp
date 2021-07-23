@@ -1,7 +1,7 @@
 # Quantum++ installation instructions
 
 Quantum++ is a header-only library that uses [CMake](https://www.cmake.org/) as its build/install system. Quantum++ is
-platform-independent, supporting both [UNIX](https://www.opengroup.org/membership/forums/platform/unix) (including
+platform-independent, supporting [UNIX](https://www.opengroup.org/membership/forums/platform/unix) (including
 [macOS](https://www.apple.com/macos/)) and UNIX-like operating systems (e.g., [Linux](https://www.linux.org)), as well
 as [Windows](https://www.microsoft.com/en-us/windows).
 
@@ -9,7 +9,7 @@ as [Windows](https://www.microsoft.com/en-us/windows).
 
 - [CMake](http://www.cmake.org/) version 3.12 or later
 - [Eigen 3](http://eigen.tuxfamily.org) linear algebra library
-- A C++ 11 compliant compiler, e.g., [gcc](https://gcc.gnu.org/)/[clang](https://clang.llvm.org)/
+- A C++ 11 compliant compiler, e.g., [gcc](https://gcc.gnu.org/), [clang](https://clang.llvm.org),
   [MSVC](https://visualstudio.microsoft.com/vs/) etc.
 
 ## Optional
@@ -25,7 +25,7 @@ as [Windows](https://www.microsoft.com/en-us/windows).
 For UNIX/UNIX-like/Windows, first create an out-of-source build directory, e.g., from the project's root directory type
 in a terminal/console/command prompt
 
-```
+```bash
 mkdir build && cd build
 ```
 
@@ -43,14 +43,14 @@ CMake,
 cmake .. [optional arguments]
 ```
 
-where [optional arguments] are passed as `-DOPTIONAL_ARGUMENT=VALUE`. The optional arguments are:
+where [optional arguments] are passed as `-DOPTIONAL_ARGUMENT=VALUE`. The Quantum++-specific optional arguments are:
 
 Optional argument | Value | Description
 | --- | --- | --- |
 `EIGEN3_INSTALL_DIR` | `/path/to/eigen3` | Path to Eigen3 installation, if not automatically detected
 `WITH_OPENMP` | `ON/OFF` [`ON` by default] | Enables (if available)/disables OpenMP multi-processing library
-`WITH_EXAMPLES` | `ON/OFF` [`OFF` by default] | Enables/disables building examples as a CMake target
-`WITH_UNIT_TESTS` | `ON/OFF` [`OFF` by default] |  Enables/disables building unit tests as a CMake target
+`WITH_EXAMPLES` | `ON/OFF` [`OFF` by default] | Enables/disables examples as a CMake build target
+`WITH_UNIT_TESTS` | `ON/OFF` [`OFF` by default] |  Enables/disables unit tests as a CMake build target
 `WITH_MATLAB=ON/OFF` | `ON/OFF` [`OFF` by default] | Enables (if available)/disables interoperability with MATLAB, allowing to detect MATLAB installation automatically. If enabled, allows applications to save/load Quantum++ matrices and vectors to/from MATLAB.
 `CMAKE_INSTALL_PREFIX` | `/path/to/install` | Installs Quantum++ header files in a non-standard location (e.g., due to lack of admin. rights)
 
@@ -90,7 +90,9 @@ The commands above will install Quantum++ in: `/usr/local/include/qpp` and `/usr
 
 From the same out-of-source build directory execute under an Administrator Command Prompt
 
-	cmake --build . --target INSTALL 
+```shell
+cmake --build . --target INSTALL
+```
 
 The commands above will install Quantum++ in: `C:\Program Files (x86)\qpp`
 
@@ -164,6 +166,81 @@ c++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
 If you intend to go this route, we assume that you are familiar with how compilers work, so we won't add any more
 explanations to what the line above does. We still highly recommend compiling and building your applications using a
 modern build system such as [CMake](http://www.cmake.org/).
+
+## Building and running examples
+
+We assume that you have already installed Quantum++, if not please go back and read the instructions above. We also
+assume that you are now familiar with the CMake build system, so in the following we only showcase the commands, with no
+further explanations. If the lines below are not clear, please read the instructions above, or look into the
+[AppVeyor](https://github.com/softwareQinc/qpp/tree/main/.appveyor) or
+[CircleCI](https://github.com/softwareQinc/qpp/tree/main/.circleci) continuous integration scripts to understand better
+how to compile and run under various platforms (and using alternatives build systems such as,
+e.g., [Ninja](https://ninja-build.org/)).
+
+Finally, we assume that you type the commands below in a terminal/console/command prompt, inside an out-of-source build
+directory, e.g., `./build`.
+
+### UNIX/UNIX-like
+
+```bash
+cmake .. -DWITH_EXAMPLES=ON [optional arguments]
+make -j8 examples
+./bb84 # runs, e.g., the BB84 example
+```
+
+If you want to compile a single example/subset of examples, replace `make -j8 examples` with
+`make -j8 example_target[s]`, e.g.,
+
+```bash
+make bb84 # builds the BB84 example
+```
+
+or
+
+```bash
+make -j8 bb84 grover # builds both BB84 and Grover examples
+```
+
+### Windows
+
+```shell
+cmake .. -DWITH_EXAMPLES=ON [optional arguments]
+msbuild -verbosity:minimal -m:8 examples.vcxproj
+.\Debug\bb84 # runs, e.g., the BB84 example
+```
+
+The examples will be built under the `./Debug` directory (default). You can also compile and build Release versions,
+please go ahead and read more about CMake under Windows from your favourite source.
+
+If you want to compile a single example/subset of examples, replace `msbuild -verbosity:minimal -m:8 examples.vcxproj` with
+`msbuild -verbosity:minimal -m:8 example_target[s].vcxproj`, e.g.,
+
+```shell
+msbuild -verbosity:minimal bb84.vcxproj # builds the BB84 example
+```
+
+or
+
+```shell
+msbuild -verbosity:minimal -m:8 bb84.vcxproj grover.vcxproj # builds both BB84 and Grover examples
+```    
+
+## Building and running unit tests
+
+### UNIX/UNIX-like
+
+```bash
+cmake .. -DWITH_UNIT_TESTS=ON [optional arguments]
+make -j8 unit_tests
+ctest # or ./unit_tests/unit_tests
+```
+
+### Windows
+
+```shell
+msbuild -verbosity:minimal -m:8 .\unit_tests\unit_tests.vcxproj
+ctest # or .\unit_tests\Debug\unit_tests.exe
+```    
 
 ## Additional platform-specific instructions
 

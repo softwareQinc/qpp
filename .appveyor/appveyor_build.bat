@@ -13,7 +13,8 @@ IF %COMPILER%==msvc2019 (
     msbuild -verbosity:minimal -m:8 standalone.sln
     Debug\standalone.exe
     cd %APPVEYOR_BUILD_FOLDER%/build
-    msbuild -verbosity:minimal -m:8 qpp.sln
+    msbuild -verbosity:minimal -m:8 examples.vcxproj
+    msbuild -verbosity:minimal -m:8 unit_tests\unit_tests.vcxproj
 )
 IF %COMPILER%==msys2 (
     @echo on
