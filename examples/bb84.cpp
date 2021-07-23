@@ -1,5 +1,5 @@
-// BB84
-// Source: ./examples/BB84.cpp
+// BB84 Quantum Key Establishement
+// Source: ./examples/bb84.cpp
 #include <cstdlib>
 #include <iostream>
 #include <numeric>
