@@ -19,8 +19,8 @@ int main() {
     // qubits required for half of the circuit, in total we need 2n qubits
     // if you know the order 'r' of 'a', then you can take the smallest 'n' s.t.
     // 2^n >= 2 * r^2, i.e., n = ceil(log2(2 * r^2))
-    idx n = static_cast<idx>(std::ceil(2 * std::log2(N)));
-    idx D = static_cast<idx>(std::llround(std::pow(2, n))); // dimension 2^n
+    auto n = static_cast<idx>(std::ceil(2 * std::log2(N)));
+    auto D = static_cast<idx>(std::llround(std::pow(2, n))); // dimension 2^n
 
     std::cout << ">> Factoring N = " << N << " with coprime a = " << a << '\n';
     std::cout << ">> n = " << n << ", D = 2^n = " << D << " and 2^(2n) = ";
@@ -63,7 +63,7 @@ int main() {
     std::vector<idx> vect_results1 = std::get<RES>(measured1); // results
     double prob1 = std::get<PROB>(measured1); // probability of the result
     idx n1 = multiidx2n(vect_results1, std::vector<idx>(n, 2)); // binary to int
-    double x1 = static_cast<double>(n1) / D; // multiple of 1/r
+    auto x1 = static_cast<double>(n1) / D; // multiple of 1/r
 
     std::cout << ">> First measurement:  " << disp(vect_results1, " ") << " ";
     std::cout << "i.e., j = " << n1 << " with probability " << prob1;
@@ -73,7 +73,7 @@ int main() {
     idx r1 = 0, c1 = 0;
     for (auto&& elem : convergents(x1, 10)) {
         std::tie(c1, r1) = elem;
-        double c1r1 = static_cast<double>(c1) / r1;
+        auto c1r1 = static_cast<double>(c1) / r1;
         if (abs(x1 - c1r1) < 1. / std::pow(2, (n - 1.) / 2.)) {
             failed = false;
             break;
@@ -90,7 +90,7 @@ int main() {
     std::vector<idx> vect_results2 = std::get<RES>(measured2); // results
     double prob2 = std::get<PROB>(measured2); // probability of the result
     idx n2 = multiidx2n(vect_results2, std::vector<idx>(n, 2)); // binary to int
-    double x2 = static_cast<double>(n2) / D; // multiple of 1/r
+    auto x2 = static_cast<double>(n2) / D; // multiple of 1/r
 
     std::cout << ">> Second measurement: " << disp(vect_results2, " ") << " ";
     std::cout << "i.e., j = " << n2 << " with probability " << prob2;
@@ -100,7 +100,7 @@ int main() {
     idx r2 = 0, c2 = 0;
     for (auto&& elem : convergents(x2, 10)) {
         std::tie(c2, r2) = elem;
-        double c2r2 = static_cast<double>(c2) / r2;
+        auto c2r2 = static_cast<double>(c2) / r2;
         if (abs(x2 - c2r2) < 1. / std::pow(2, (n - 1.) / 2.)) {
             failed = false;
             break;

@@ -79,7 +79,7 @@ class NoiseBase {
      *
      * \param state State vector or density matrix
      * \param target Target qudit indexes where the noise is applied
-     * \param callee Optional caller name
+     * \param caller Optional caller name
      */
     void compute_probs_(const cmat& state, const std::vector<idx>& target,
                         const std::string& caller = {}) const {
@@ -107,7 +107,7 @@ class NoiseBase {
      *
      * \param state State vector or density matrix
      * \param target Target qudit indexes where the noise is applied
-     * \param callee Optional caller name
+     * \param caller Optional caller name
      * \return Resulting state after the noise was applied
      */
     cmat compute_state_(const cmat& state, const std::vector<idx>& target,

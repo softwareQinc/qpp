@@ -10,8 +10,8 @@
 int main() {
     using namespace qpp;
 
-    idx n = 10;                                             // number of qubits
-    idx D = static_cast<idx>(std::llround(std::pow(2, n))); // dimension 2^n
+    idx n = 10;                                              // number of qubits
+    auto D = static_cast<idx>(std::llround(std::pow(2, n))); // dimension 2^n
     std::cout << ">> n = " << n << " qubits, matrix size " << D << " x " << D
               << ".\n\n";
     cmat randcmat = cmat::Random(D, D);

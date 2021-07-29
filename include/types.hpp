@@ -105,10 +105,10 @@ template <typename Scalar> // Eigen::RowVectorX_type (where type = Scalar)
 using dyn_row_vect = Eigen::Matrix<Scalar, 1, Eigen::Dynamic>;
 
 /**
- * \brief Matrix type deduced from Derived
+ * \brief Eigen type (ket/density matrix) deduced from the expression Derived
  */
 template <typename Derived>
-using deduced_mat =
+using expr_t =
     typename std::decay<decltype(std::declval<Derived>().eval())>::type;
 
 /**

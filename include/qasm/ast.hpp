@@ -61,25 +61,38 @@ enum class UnaryOp {
     Exp,
 };
 
-static const Gates& gt = Gates::get_instance(); ///< matrices
 static std::unordered_map<ident,
                           std::function<cmat(const std::vector<double>&)>>
     known_matrices{
         ///< generators for various gate constants
-        {"cx", [](const std::vector<double>&) { return gt.CNOT; }},
-        {"id", [](const std::vector<double>&) { return gt.Id2; }},
-        {"x", [](const std::vector<double>&) { return gt.X; }},
-        {"y", [](const std::vector<double>&) { return gt.Y; }},
-        {"z", [](const std::vector<double>&) { return gt.Z; }},
-        {"h", [](const std::vector<double>&) { return gt.H; }},
-        {"s", [](const std::vector<double>&) { return gt.S; }},
-        {"sdg", [](const std::vector<double>&) { return gt.S.adjoint(); }},
-        {"t", [](const std::vector<double>&) { return gt.T; }},
-        {"tdg", [](const std::vector<double>&) { return gt.T.adjoint(); }},
+        {"cx",
+         [](const std::vector<double>&) { return Gates::get_instance().CNOT; }},
+        {"id",
+         [](const std::vector<double>&) { return Gates::get_instance().Id2; }},
+        {"x",
+         [](const std::vector<double>&) { return Gates::get_instance().X; }},
+        {"y",
+         [](const std::vector<double>&) { return Gates::get_instance().Y; }},
+        {"z",
+         [](const std::vector<double>&) { return Gates::get_instance().Z; }},
+        {"h",
+         [](const std::vector<double>&) { return Gates::get_instance().H; }},
+        {"s",
+         [](const std::vector<double>&) { return Gates::get_instance().S; }},
+        {"sdg",
+         [](const std::vector<double>&) {
+             return Gates::get_instance().S.adjoint();
+         }},
+        {"t",
+         [](const std::vector<double>&) { return Gates::get_instance().T; }},
+        {"tdg",
+         [](const std::vector<double>&) {
+             return Gates::get_instance().T.adjoint();
+         }},
         {"rx",
          [](const std::vector<double>& args) {
              assert(!args.empty());
-             return gt.RX(args[0]);
+             return Gates::get_instance().RX(args[0]);
          }},
         {"rz",
          [](const std::vector<double>& args) {
@@ -87,28 +100,33 @@ static std::unordered_map<ident,
              // note the discrepancy; Qiskit defines it as diag(1, e^{i\phi})
              // we comply to the Qiskit definition (and not the OPENQASM
              // specs); see https://github.com/softwareQinc/qpp/issues/70
-             return (std::exp(1_i * args[0] / 2.0) * gt.RZ(args[0])).eval();
+             return (std::exp(1_i * args[0] / 2.0) *
+                     Gates::get_instance().RZ(args[0]))
+                 .eval();
          }},
         {"ry",
          [](const std::vector<double>& args) {
              assert(!args.empty());
-             return gt.RY(args[0]);
+             return Gates::get_instance().RY(args[0]);
          }},
-        {"cz", [](const std::vector<double>&) { return gt.CZ; }},
+        {"cz",
+         [](const std::vector<double>&) { return Gates::get_instance().CZ; }},
         {"cy",
          [](const std::vector<double>&) {
              cmat mat{cmat::Identity(4, 4)};
-             mat.block(2, 2, 2, 2) = gt.Y;
+             mat.block(2, 2, 2, 2) = Gates::get_instance().Y;
              return mat;
          }},
-        {"swap", [](const std::vector<double>&) { return gt.SWAP; }},
+        {"swap",
+         [](const std::vector<double>&) { return Gates::get_instance().SWAP; }},
         {"ch",
          [](const std::vector<double>&) {
              cmat mat{cmat::Identity(4, 4)};
-             mat.block(2, 2, 2, 2) = gt.H;
+             mat.block(2, 2, 2, 2) = Gates::get_instance().H;
              return mat;
          }},
-        {"ccx", [](const std::vector<double>&) { return gt.TOF; }},
+        {"ccx",
+         [](const std::vector<double>&) { return Gates::get_instance().TOF; }},
         {"crz", [](const std::vector<double>& args) {
              assert(!args.empty());
              cmat mat{cmat::Identity(4, 4)};
@@ -117,8 +135,8 @@ static std::unordered_map<ident,
              // not the OPENQASM specs); see
              // https://github.com/softwareQinc/qpp/issues/99 and
              // https://github.com/softwareQinc/qpp/issues/70
-             mat.block(2, 2, 2, 2) =
-                 std::exp(1_i * args[0] / 2.0) * gt.RZ(args[0]);
+             mat.block(2, 2, 2, 2) = std::exp(1_i * args[0] / 2.0) *
+                                     Gates::get_instance().RZ(args[0]);
              return mat;
          }}};
 
@@ -466,8 +484,8 @@ class QASM : public IDisplay {
     std::unique_ptr<QCircuit> to_QCircuit() {
         auto ret = std::unique_ptr<QCircuit>(new QCircuit(qubits_, bits_));
         Context ctx(ret.get());
-        for (auto it = body_.begin(); it != body_.end(); it++) {
-            (*it)->evaluate(ctx);
+        for (auto& it : body_) {
+            it->evaluate(ctx);
         }
 
         return ret;
@@ -478,8 +496,8 @@ class QASM : public IDisplay {
      */
     std::ostream& display(std::ostream& os) const override {
         os << "OPENQASM 2.0;\ninclude \"qelib1.inc\";\n";
-        for (auto it = body_.begin(); it != body_.end(); it++) {
-            os << **it;
+        for (const auto& it : body_) {
+            os << *it;
         }
 
         return os;
@@ -493,8 +511,8 @@ class QASM : public IDisplay {
     void pretty_print(std::ostream& os) const {
         os << "(Included header): OPENQASM 2.0;\n(Included header): include "
               "\"qelib1.inc\";\n";
-        for (auto it = body_.begin(); it != body_.end(); it++) {
-            (*it)->pretty_print(os, "\t");
+        for (const auto& it : body_) {
+            it->pretty_print(os, "\t");
         }
     }
 };
@@ -734,8 +752,8 @@ class GateDecl final : public Decl {
             os << ";\n";
         } else {
             os << "{\n";
-            for (auto it = body_.begin(); it != body_.end(); it++) {
-                os << "\t" << **it;
+            for (const auto& it : body_) {
+                os << "\t" << *it;
             }
             os << "}\n";
         }
@@ -766,8 +784,8 @@ class GateDecl final : public Decl {
         } else {
             auto nprefix = prefix + "\t";
             os << "{\n";
-            for (auto it = body_.begin(); it != body_.end(); it++) {
-                (*it)->pretty_print(os, nprefix);
+            for (const auto& it : body_) {
+                it->pretty_print(os, nprefix);
             }
             os << "(" << loc_ << "):" << prefix << "}\n";
         }
@@ -1074,39 +1092,47 @@ class CNOTGate final : public Gate {
         if (ctrls.size() == 1 && tgts.size() == 1) {
             if (ctx.ccontrolled()) {
                 std::vector<idx> tmp{ctrls[0], tgts[0]};
-                circuit->cCTRL_joint(gt.CNOT, ctx.get_cctrls(), tmp,
-                                     ctx.get_shift(), "CX");
+                circuit->cCTRL_joint(Gates::get_instance().CNOT,
+                                     ctx.get_cctrls(), tmp, ctx.get_shift(),
+                                     "CX");
             } else {
-                circuit->gate(gt.CNOT, ctrls[0], tgts[0], "CX");
+                circuit->gate(Gates::get_instance().CNOT, ctrls[0], tgts[0],
+                              "CX");
             }
         } else if (ctrls.size() > 1 && tgts.size() == 1) {
             for (idx ctrl : ctrls) {
                 if (ctx.ccontrolled()) {
                     std::vector<idx> tmp{ctrl, tgts[0]};
-                    circuit->cCTRL_joint(gt.CNOT, ctx.get_cctrls(), tmp,
-                                         ctx.get_shift(), "CX");
+                    circuit->cCTRL_joint(Gates::get_instance().CNOT,
+                                         ctx.get_cctrls(), tmp, ctx.get_shift(),
+                                         "CX");
                 } else {
-                    circuit->gate(gt.CNOT, ctrl, tgts[0], "CX");
+                    circuit->gate(Gates::get_instance().CNOT, ctrl, tgts[0],
+                                  "CX");
                 }
             }
         } else if (ctrls.size() == 1 && tgts.size() > 1) {
             for (idx tgt : tgts) {
                 if (ctx.ccontrolled()) {
                     std::vector<idx> tmp{ctrls[0], tgt};
-                    circuit->cCTRL_joint(gt.CNOT, ctx.get_cctrls(), tmp,
-                                         ctx.get_shift(), "CX");
+                    circuit->cCTRL_joint(Gates::get_instance().CNOT,
+                                         ctx.get_cctrls(), tmp, ctx.get_shift(),
+                                         "CX");
                 } else {
-                    circuit->gate(gt.CNOT, ctrls[0], tgt, "CX");
+                    circuit->gate(Gates::get_instance().CNOT, ctrls[0], tgt,
+                                  "CX");
                 }
             }
         } else if (ctrls.size() == tgts.size()) {
             for (idx i = 0; i < ctrls.size(); i++) {
                 if (ctx.ccontrolled()) {
                     std::vector<idx> tmp{ctrls[i], tgts[i]};
-                    circuit->cCTRL_joint(gt.CNOT, ctx.get_cctrls(), tmp,
-                                         ctx.get_shift(), "CX");
+                    circuit->cCTRL_joint(Gates::get_instance().CNOT,
+                                         ctx.get_cctrls(), tmp, ctx.get_shift(),
+                                         "CX");
                 } else {
-                    circuit->gate(gt.CNOT, ctrls[i], tgts[i], "CX");
+                    circuit->gate(Gates::get_instance().CNOT, ctrls[i], tgts[i],
+                                  "CX");
                 }
             }
         } else {

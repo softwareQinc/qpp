@@ -19,7 +19,7 @@ int main() {
     std::iota(std::begin(subsys), std::end(subsys), 0);
 
     // number of elements in the database
-    idx N = static_cast<idx>(std::llround(std::pow(2, n)));
+    auto N = static_cast<idx>(std::llround(std::pow(2, n)));
     std::cout << ">> Database size: " << N << '\n';
 
     // mark an element randomly
@@ -37,7 +37,7 @@ int main() {
     Timer<> t;
 
     // number of queries
-    idx nqueries = static_cast<idx>(std::ceil(pi / 4 * std::sqrt(N)));
+    auto nqueries = static_cast<idx>(std::ceil(pi / 4 * std::sqrt(N)));
     std::cout << ">> We run " << nqueries << " queries\n";
     for (idx i = 0; i < nqueries; ++i) {
         psi(marked) = -psi(marked); // apply the oracle first, no aliasing

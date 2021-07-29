@@ -1,4 +1,4 @@
-Version 2.7 - coming soon
+Version 2.7 - 1 August 2021
     - Added installation support and auto package detection via CMake
       find_package(qpp REQUIRED)
     - Simplified installation instructions ["INSTALL.md"]
@@ -51,6 +51,7 @@ Version 2.7 - coming soon
       arbitrary order
     - Removed `cmath_cygwin.patch` as the problem was fixed since 2016.
     - Minor refactorings, code simplifications and bugfixes
+    - Removed Travis CI
 
 Version 2.6 - 9 January 2021
     - Added Quantum Phase Estimation low-level API example in

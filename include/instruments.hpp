@@ -206,9 +206,9 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
-std::tuple<idx, std::vector<double>, std::vector<deduced_mat<Derived>>>
+std::tuple<idx, std::vector<double>, std::vector<expr_t<Derived>>>
 measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
-    const deduced_mat<Derived>& rA = A.derived();
+    const expr_t<Derived>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -229,7 +229,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
     // probabilities
     std::vector<double> probs(Ks.size());
     // resulting states
-    std::vector<deduced_mat<Derived>> outstates(Ks.size());
+    std::vector<expr_t<Derived>> outstates(Ks.size());
 
     idx Dout = Ks[0].rows();
     //************ density matrix ************//
@@ -286,7 +286,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
-std::tuple<idx, std::vector<double>, std::vector<deduced_mat<Derived>>>
+std::tuple<idx, std::vector<double>, std::vector<expr_t<Derived>>>
 measure(const Eigen::MatrixBase<Derived>& A,
         const std::initializer_list<cmat>& Ks) {
     return measure(A, std::vector<cmat>(Ks));
@@ -305,9 +305,9 @@ measure(const Eigen::MatrixBase<Derived>& A,
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
-std::tuple<idx, std::vector<double>, std::vector<deduced_mat<Derived>>>
+std::tuple<idx, std::vector<double>, std::vector<expr_t<Derived>>>
 measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
-    const deduced_mat<Derived>& rA = A.derived();
+    const expr_t<Derived>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -350,7 +350,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
-std::tuple<idx, std::vector<double>, std::vector<deduced_mat<Derived>>>
+std::tuple<idx, std::vector<double>, std::vector<expr_t<Derived>>>
 measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
         const std::vector<idx>& target, const std::vector<idx>& dims,
         bool destructive = true) {
@@ -403,7 +403,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     // probabilities
     std::vector<double> probs(Ks.size());
     // resulting states
-    std::vector<deduced_mat<Derived>> outstates;
+    std::vector<expr_t<Derived>> outstates;
 
     if (destructive)
         outstates.resize(Ks.size(), cmat::Zero(Dsubsys_bar, Dsubsys_bar));
@@ -477,7 +477,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
-std::tuple<idx, std::vector<double>, std::vector<deduced_mat<Derived>>>
+std::tuple<idx, std::vector<double>, std::vector<expr_t<Derived>>>
 measure(const Eigen::MatrixBase<Derived>& A,
         const std::initializer_list<cmat>& Ks, const std::vector<idx>& target,
         const std::vector<idx>& dims, bool destructive = true) {
@@ -502,7 +502,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
-std::tuple<idx, std::vector<double>, std::vector<deduced_mat<Derived>>>
+std::tuple<idx, std::vector<double>, std::vector<expr_t<Derived>>>
 measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
         const std::vector<idx>& target, idx d = 2, bool destructive = true) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
@@ -545,7 +545,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
-std::tuple<idx, std::vector<double>, std::vector<deduced_mat<Derived>>>
+std::tuple<idx, std::vector<double>, std::vector<expr_t<Derived>>>
 measure(const Eigen::MatrixBase<Derived>& A,
         const std::initializer_list<cmat>& Ks, const std::vector<idx>& target,
         idx d = 2, bool destructive = true) {
@@ -576,7 +576,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
-std::tuple<idx, std::vector<double>, std::vector<deduced_mat<Derived>>>
+std::tuple<idx, std::vector<double>, std::vector<expr_t<Derived>>>
 measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
         const std::vector<idx>& target, const std::vector<idx>& dims,
         bool destructive = true) {
@@ -626,7 +626,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
     if (internal::check_cvector(rA)) {
         const ket& rpsi = A.derived();
         std::vector<double> probs(M);                   // probabilities
-        std::vector<deduced_mat<Derived>> outstates(M); // resulting states
+        std::vector<expr_t<Derived>> outstates(M); // resulting states
 
 #ifdef HAS_OPENMP
 // NOLINTNEXTLINE
@@ -697,7 +697,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
-std::tuple<idx, std::vector<double>, std::vector<deduced_mat<Derived>>>
+std::tuple<idx, std::vector<double>, std::vector<expr_t<Derived>>>
 measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
         const std::vector<idx>& target, idx d = 2, bool destructive = true) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
@@ -737,14 +737,15 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
  * index), 2. Outcome probability, and 3. Post-measurement normalized state
  */
 template <typename Derived>
-std::tuple<std::vector<idx>, double, cmat>
+std::tuple<std::vector<idx>, double, expr_t<Derived>>
 measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
             std::vector<idx> dims, bool destructive = true) {
     //    typename std::remove_const<
     //            typename Eigen::MatrixBase<Derived>::EvalReturnType
     //    >::type rA = A.derived();
 
-    dyn_mat<typename Derived::Scalar> rA = A.derived();
+    // typename Eigen::MatrixBase<Derived>::EvalReturnType rA = A.derived();
+    expr_t<Derived> rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -782,9 +783,10 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     while (!target.empty()) {
         auto tmp = measure(rA, Gates::get_instance().Id(dims[target[0]]),
                            {target[0]}, dims, destructive);
-        result.emplace_back(std::get<0>(tmp));
-        prob *= std::get<1>(tmp)[std::get<0>(tmp)];
-        rA = std::get<2>(tmp)[std::get<0>(tmp)];
+        idx m = std::get<0>(tmp);
+        result.emplace_back(m);
+        prob *= std::get<1>(tmp)[m];
+        rA = std::get<2>(tmp)[m];
 
         if (destructive) {
             // remove the subsystem
@@ -816,7 +818,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
  * index), 2. Outcome probability, and 3. Post-measurement normalized state
  */
 template <typename Derived>
-std::tuple<std::vector<idx>, double, cmat>
+std::tuple<std::vector<idx>, double, expr_t<Derived>>
 measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
             idx d = 2, bool destructive = true) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();

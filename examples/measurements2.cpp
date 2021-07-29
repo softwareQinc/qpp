@@ -37,16 +37,16 @@ int main() {
               << " of a 4-qubit random state in the random basis:\n";
     std::cout << disp(U) << '\n';
 
-    std::vector<cmat> density_states;
+    std::vector<cmat> density_operators;
 
-    std::tie(result, probs, density_states) = measure(rho, U, {1, 2});
+    std::tie(result, probs, density_operators) = measure(rho, U, {1, 2});
     std::cout << ">> Measurement result: " << result << '\n';
     std::cout << ">> Probabilities: " << disp(probs, ", ") << '\n';
     std::cout << ">> Sum of the probabilities: "
               << sum(probs.begin(), probs.end()) << '\n';
     std::cout << ">> Resulting normalized post-measurement states:\n";
 
-    for (auto&& it : density_states)
+    for (auto&& it : density_operators)
         std::cout << disp(it) << "\n\n";
 
     // check now how the state after the measurement "looks"
@@ -61,7 +61,7 @@ int main() {
 
     // compute the resulting mixed state after the measurement
     for (idx i = 0; i < probs.size(); ++i)
-        rho_out_bar += probs[i] * density_states[i];
+        rho_out_bar += probs[i] * density_operators[i];
 
     // verification
     std::cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar) << '\n';
@@ -76,7 +76,7 @@ int main() {
 
     std::cout << ">> Sequential measurements on the state/density matrix:\n";
     psi = 0.8 * 01_ket + 0.6 * 10_ket;
-    rho = psi * adjoint(psi);
+    rho = prj(psi); // psi * adjoint(psi)
     std::cout << disp(psi) << '\n';
 
     std::vector<idx> subsys_ket{0};

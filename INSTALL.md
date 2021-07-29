@@ -212,7 +212,8 @@ msbuild -verbosity:minimal -m:8 examples.vcxproj
 The examples will be built under the `./Debug` directory (default). You can also compile and build Release versions,
 please go ahead and read more about CMake under Windows from your favourite source.
 
-If you want to compile a single example/subset of examples, replace `msbuild -verbosity:minimal -m:8 examples.vcxproj` with
+If you want to compile a single example/subset of examples, replace `msbuild -verbosity:minimal -m:8 examples.vcxproj`
+with
 `msbuild -verbosity:minimal -m:8 example_target[s].vcxproj`, e.g.,
 
 ```shell

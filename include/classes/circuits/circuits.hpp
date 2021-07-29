@@ -2210,7 +2210,6 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     // multiple ctrl multiple target
-    // TODO check
     /**
      * \brief Applies the single qudit controlled gate \a U with multiple
      * control qudits listed in \a ctrl on every qudit listed in \a target,
@@ -2412,7 +2411,6 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     // single ctrl single target
-    // TODO check use the corresponding dits
     /**
      * \brief Applies the single qubit controlled gate \a U with classical
      * control dit \a ctrl and target qudit \a target, i.e., cCTRL-U.

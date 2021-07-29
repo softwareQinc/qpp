@@ -1,19 +1,18 @@
 # Quantum++
 
-## Version 2.6 - 9 January 2021
+## Version 2.7 - 1 August 2021
 
 **Build status:**
 
 [![Build status - CircleCI Linux/macOS](https://circleci.com/gh/softwareQinc/qpp.svg?style=svg)](https://circleci.com/gh/softwareQinc/qpp)
-[![Build Status](https://travis-ci.org/softwareQinc/qpp.svg?branch=main)](https://travis-ci.org/softwareQinc/qpp)
 [![Build status](https://ci.appveyor.com/api/projects/status/1k2866yffaiaapmw?svg=true)](https://ci.appveyor.com/project/vsoftco/qpp)
 
 ---
 
 ## About
 
-Quantum++ is a modern C++11 general purpose quantum computing library, composed solely of template header files.
-Quantum++ is written in standard C++11 and has very low external dependencies, using only
+Quantum++ is a modern C++ general purpose quantum computing library, composed solely of template header files. Quantum++
+is written in standard C++11 and has very low external dependencies, using only
 the [Eigen 3](http://eigen.tuxfamily.org) linear algebra header-only template library and, if available,
 the [OpenMP](http://openmp.org/) multi-processing library.
 
@@ -51,14 +50,14 @@ Copyright (c) 2013 - 2021 softwareQ Inc. All rights reserved.
 ## Installation instructions and further documentation
 
 Please see the installation guide
-[`INSTALL.md`](https://github.com/softwareQinc/qpp/blob/main/INSTALL.md)
-and the comprehensive [Wiki](https://github.com/softwareQinc/qpp/wiki) for further documentation and detailed examples.
+[`INSTALL.md`](https://github.com/softwareQinc/qpp/blob/main/INSTALL.md) and the
+comprehensive [Wiki](https://github.com/softwareQinc/qpp/wiki) for further documentation and detailed examples.
 
 To generate the full official API documentation in both LaTeX and HTML formats run
 [`doxygen`](http://www.doxygen.nl) on the [`Doxyfile`](https://github.com/softwareQinc/qpp/blob/main/Doxyfile) file. The
-tool `dot` from the [`Graphviz`](https://www.graphviz.org) package must be installed (`sudo apt-get install graphviz` in
-Ubuntu/Debian). Running `doxygen` will generate the documentation directory `doc` containing both the HTML and LaTeX
-documentation.
+tool `dot` from the [`Graphviz`](https://www.graphviz.org) package must be installed (`sudo apt-get install graphviz` on
+Ubuntu/Debian Linux, or `brew install graphviz` on macOS). Running `doxygen` will generate the documentation
+directory `doc` containing both the HTML and LaTeX documentation.
 
 The HTML documentation file will be accessible by opening `doc/html/index.html` with the browser of your choice. To
 generate a PDF file of the documentation, run
