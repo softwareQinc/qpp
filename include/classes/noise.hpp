@@ -132,12 +132,7 @@ class NoiseBase {
         assert(probs_ != decltype(probs_)(probs_.size(), 0)); // not all zeros
         std::discrete_distribution<idx> dd{std::begin(probs_),
                                            std::end(probs_)};
-        auto& gen =
-#ifdef NO_THREAD_LOCAL_
-            RandomDevices::get_instance().get_prng();
-#else
-            RandomDevices::get_thread_local_instance().get_prng();
-#endif
+        auto& gen = RandomDevices::get_instance().get_prng();
         i_ = dd(gen);
         result = apply(state, Ks_[i_], target, D_);
         generated_ = true;

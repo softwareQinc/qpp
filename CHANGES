@@ -1,3 +1,11 @@
+Pre-release - in progress
+    - Refactored qpp::internal::Singleton ["internal/classes/singleton.hpp"]
+      so that qpp::internal::Singleton::get_instance() returns a thread local
+      instance whenever the compiler supports thread_local. For more
+      fine-grained control, one can use
+          qpp::internal::Singleton::get_no_thread_local_instance()
+          qpp::internal::Singleton::get_thread_local_instance()
+
 Version 2.7 - 1 August 2021
     - Added installation support and auto package detection via CMake
       find_package(qpp REQUIRED)
@@ -45,8 +53,8 @@ Version 2.7 - 1 August 2021
       and returns accordingly a set of kets or density matrices in its return
       tuple, thanks @anoine-bussy (https://github.com/antoine-bussy)
     - Implemented qpp::QCircuit::
-          - match_circuit_left()
-          - match_circuit_right()
+          match_circuit_left()
+          match_circuit_right()
       (and the corresponding free functions), that match circuit qudits in
       arbitrary order
     - Removed `cmath_cygwin.patch` as the problem was fixed since 2016.
@@ -67,12 +75,12 @@ Version 2.6 - 9 January 2021
       namespace and are deprecated.
     - Minor API changes:
         ["MATLAB/matlab.hpp"]
-          - qpp::saveMATLAB() -> qpp::save_MATLAB()
-          - qpp::loadMATLAB() -> qpp::load_MATLAB()
+          qpp::saveMATLAB() -> qpp::save_MATLAB()
+          qpp::loadMATLAB() -> qpp::load_MATLAB()
         ["classes/circuits/circuits.hpp"]
-          - qpp::cCTRL_custom() -> qpp::cCTRL_joint()
-          - qpp::CTRL_custom()  -> qpp::CTRL_joint()
-          - qpp::gate_custom()  -> qpp::gate_joint()
+          qpp::cCTRL_custom() -> qpp::cCTRL_joint()
+          qpp::CTRL_custom()  -> qpp::CTRL_joint()
+          qpp::gate_custom()  -> qpp::gate_joint()
     - Documentation improvements in ["classes/circuits/circuits.hpp"]
     - Updated Travis CI configuration
 
@@ -89,25 +97,25 @@ Version 2.4 - 13 May 2020
     - Enabled documentation searching by setting SEARCHENGINE = ON in
       "Doxyfile"
     - Implemented the following static member functions qpp::QCircuit::
-          - is_CTRL()     - gate step is a controlled gate or not
-          - is_cCTRL()    - gate step is a classically-controlled gate or not
-          - is_non_CTRL() - gate step is a non-controlled gate or not
+          is_CTRL()     - gate step is a controlled gate or not
+          is_cCTRL()    - gate step is a classically-controlled gate or not
+          is_non_CTRL() - gate step is a non-controlled gate or not
     - Changed qpp::QCircuit::
-          - is_clean()  -> is_clean_qudit()
-          - get_clean() -> get_clean_qudits()
+          is_clean()  -> is_clean_qudit()
+          get_clean() -> get_clean_qudits()
     - Split qpp::QCircuit::remove_clean() into qpp::QCircuit::
-          - remove_clean_qudit()  - removes single clean qudit from quantum
-                                    circuit description
-          - remove_clean_qudits() - removes list of clean qudits from quantum
-                                    circuit description
+          remove_clean_qudit()  - removes single clean qudit from quantum
+                                  circuit description
+          remove_clean_qudits() - removes list of clean qudits from quantum
+                                  circuit description
     - Implemented qpp::QCircuit::
-          - is_clean_dit()      - true if the classical dit is clean (not used),
-                                  false otherwise
-          - get_clean_dits()    - list of clean classical dits
-          - remove_clean_dit()  - removes single clean classical dit from
-                                  quantum circuit description
-          - remove_clean_dits() - removes list of clean classical dits from
-                                  quantum circuit description
+          is_clean_dit()      - true if the classical dit is clean (not used),
+                                false otherwise
+          get_clean_dits()    - list of clean classical dits
+          remove_clean_dit()  - removes single clean classical dit from
+                                quantum circuit description
+          remove_clean_dits() - removes list of clean classical dits from
+                                quantum circuit description
     - Modified the signature of qpp::QCircuit::compress() to
       qpp::QCircuit::compress(bool compress_dits = false) so one can compress
       the clean classical dits as well
@@ -152,13 +160,13 @@ Version 2.2 - 14 April 2020
     - Added the new type qpp::qram for representing qRAM data ["types.h"]
     - Thanks to @DevelopDaily https://github.com/softwareQinc/qpp/issues/72,
       implemented qpp::QCircuit::
-          is_clean      - true if the qudit is clean (not used), false
-                          otherwise
-          get_clean    - list of clean qudits
-          remove_clean - removes single/list of clean qudits from quantum
-                         circuit description
-          compress()   - removes unused qudits from quantum circuit
-                         description
+          is_clean()     - true if the qudit is clean (not used), false
+                           otherwise
+          get_clean()    - list of clean qudits
+          remove_clean() - removes single/list of clean qudits from quantum
+                           circuit description
+          compress()     - removes unused qudits from quantum circuit
+                           description
     - More robust MATLAB integration, detects MATLAB automatically when the
       CMake flag -DWITH_MATLAB=ON is specified; if CMake can not detect it
       automatically, pass the additional CMake flag

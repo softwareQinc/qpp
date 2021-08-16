@@ -262,12 +262,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
     // sample from the probability distribution
     assert(probs != decltype(probs)(probs.size(), 0)); // not all zeros
     std::discrete_distribution<idx> dd(std::begin(probs), std::end(probs));
-    auto& gen =
-#ifdef NO_THREAD_LOCAL_
-        RandomDevices::get_instance().get_prng();
-#else
-        RandomDevices::get_thread_local_instance().get_prng();
-#endif
+    auto& gen = RandomDevices::get_instance().get_prng();
     idx result = dd(gen);
 
     return std::make_tuple(result, probs, outstates);
@@ -445,12 +440,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     // sample from the probability distribution
     assert(probs != decltype(probs)(probs.size(), 0)); // not all zeros
     std::discrete_distribution<idx> dd(std::begin(probs), std::end(probs));
-    auto& gen =
-#ifdef NO_THREAD_LOCAL_
-        RandomDevices::get_instance().get_prng();
-#else
-        RandomDevices::get_thread_local_instance().get_prng();
-#endif
+    auto& gen = RandomDevices::get_instance().get_prng();
     idx result = dd(gen);
 
     return std::make_tuple(result, probs, outstates);
@@ -625,7 +615,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
     //************ ket ************//
     if (internal::check_cvector(rA)) {
         const ket& rpsi = A.derived();
-        std::vector<double> probs(M);                   // probabilities
+        std::vector<double> probs(M);              // probabilities
         std::vector<expr_t<Derived>> outstates(M); // resulting states
 
 #ifdef HAS_OPENMP
@@ -653,12 +643,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
         // sample from the probability distribution
         assert(probs != decltype(probs)(probs.size(), 0)); // not all zeros
         std::discrete_distribution<idx> dd(std::begin(probs), std::end(probs));
-        auto& gen =
-#ifdef NO_THREAD_LOCAL_
-            RandomDevices::get_instance().get_prng();
-#else
-            RandomDevices::get_thread_local_instance().get_prng();
-#endif
+        auto& gen = RandomDevices::get_instance().get_prng();
         idx result = dd(gen);
 
         return std::make_tuple(result, probs, outstates);
