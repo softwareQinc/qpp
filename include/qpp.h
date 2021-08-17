@@ -168,16 +168,11 @@ static const States& st QPP_UNUSED_ = States::get_instance();
  *
  * Initializes the random devices, see the class qpp::RandomDevices
  *
- * \note Has thread_local storage duration, due to mutability of its public
- * member std::mt19937 and possible data races
+ * \note If the compiler supports thread_local, has thread_local storage
+ * duration, due to mutability of its public member std::mt19937 and possible
+ * data races
  */
-#ifdef NO_THREAD_LOCAL_
-static RandomDevices& rdevs QPP_UNUSED_ =
-    RandomDevices::get_no_thread_local_instance();
-#else
-thread_local static RandomDevices& rdevs QPP_UNUSED_ =
-    RandomDevices::get_thread_local_instance();
-#endif // NO_THREAD_LOCAL_
+static RandomDevices& rdevs QPP_UNUSED_ = RandomDevices::get_instance();
 
 /**
  * \namespace qpp::obsolete

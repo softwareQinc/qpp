@@ -109,11 +109,11 @@ class Singleton {
 #endif // NO_THREAD_LOCAL_
 
     static T& get_instance() noexcept(std::is_nothrow_constructible<T>::value) {
-#ifdef NO_THREAD_LOCAL
+#ifdef NO_THREAD_LOCAL_
         return get_no_thread_local_instance();
 #else
         return get_thread_local_instance();
-#endif // NO_THREAD_LOCAL
+#endif // NO_THREAD_LOCAL_
     }
 
 }; /* class Singleton */
