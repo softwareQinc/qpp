@@ -766,8 +766,9 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
 
     //************ density matrix or column vector ************//
     while (!target.empty()) {
-        auto tmp = measure(rA, Gates::get_instance().Id(dims[target[0]]),
-                           {target[0]}, dims, destructive);
+        auto tmp = measure(
+            rA, Gates::get_no_thread_local_instance().Id(dims[target[0]]),
+            {target[0]}, dims, destructive);
         idx m = std::get<0>(tmp);
         result.emplace_back(m);
         prob *= std::get<1>(tmp)[m];
@@ -873,7 +874,8 @@ dyn_mat<typename Derived::Scalar> reset(const Eigen::MatrixBase<Derived>& A,
     std::tie(resZ, std::ignore, result) = measure_seq(rA, target, dims, false);
     for (idx i = 0; i < target.size(); ++i) {
         cmat correction =
-            powm(Gates::get_instance().Xd(dims[i]), dims[i] - resZ[i]);
+            powm(Gates::get_no_thread_local_instance().Xd(dims[i]),
+                 dims[i] - resZ[i]);
         result = apply(result, correction, {target[i]}, dims);
     }
 

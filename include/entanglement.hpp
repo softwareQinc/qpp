@@ -544,7 +544,7 @@ double concurrence(const Eigen::MatrixBase<Derived>& A) {
         throw exception::NotQubitSubsys("qpp::concurrence()");
     // END EXCEPTION CHECKS
 
-    cmat sigmaY = Gates::get_instance().Y;
+    cmat sigmaY = Gates::get_no_thread_local_instance().Y;
     dyn_col_vect<double> lambdas =
         evals(rA * kron(sigmaY, sigmaY) * conjugate(rA) * kron(sigmaY, sigmaY))
             .real();

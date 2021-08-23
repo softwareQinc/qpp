@@ -1499,7 +1499,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty())
-            name = qpp::Gates::get_instance().get_name(U);
+            name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::SINGLE, hashU, std::vector<idx>{},
@@ -1543,7 +1543,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty())
-            name = qpp::Gates::get_instance().get_name(U);
+            name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::TWO, hashU, std::vector<idx>{},
@@ -1590,7 +1590,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty())
-            name = qpp::Gates::get_instance().get_name(U);
+            name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::THREE, hashU, std::vector<idx>{},
@@ -1647,7 +1647,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty())
-            name = qpp::Gates::get_instance().get_name(U);
+            name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::FAN, hashU, std::vector<idx>{}, target,
@@ -1704,7 +1704,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty())
-            name = qpp::Gates::get_instance().get_name(U);
+            name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::FAN, hashU, std::vector<idx>{},
@@ -1764,7 +1764,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty())
-            name = qpp::Gates::get_instance().get_name(U);
+            name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(U, hashU);
         gates_.emplace_back(GateType::JOINT, hashU, std::vector<idx>{}, target,
@@ -1814,7 +1814,7 @@ class QCircuit : public IDisplay, public IJSON {
         {
             for (idx i = 0; i < n_subsys; ++i) {
                 // apply Hadamard on qubit i
-                gate(Gates::get_instance().H, target[i]);
+                gate(Gates::get_no_thread_local_instance().H, target[i]);
                 // apply controlled rotations
                 for (idx j = 2; j <= n_subsys - i; ++j) {
                     // construct Rj
@@ -1827,7 +1827,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (swap) {
                 // we have the qubits in reversed order, we must swap them
                 for (idx i = 0; i < n_subsys / 2; ++i) {
-                    gate(Gates::get_instance().SWAP, target[i],
+                    gate(Gates::get_no_thread_local_instance().SWAP, target[i],
                          target[n_subsys - i - 1]);
                 }
             }
@@ -1835,7 +1835,8 @@ class QCircuit : public IDisplay, public IJSON {
         } else { // qudits
             for (idx i = 0; i < n_subsys; ++i) {
                 // apply qudit Fourier on qudit i
-                gate(Gates::get_instance().Fd(d_), target[i], "Fd");
+                gate(Gates::get_no_thread_local_instance().Fd(d_), target[i],
+                     "Fd");
                 // apply controlled rotations
                 for (idx j = 2; j <= n_subsys - i; ++j) {
                     // construct Rj
@@ -1851,8 +1852,8 @@ class QCircuit : public IDisplay, public IJSON {
             if (swap) {
                 // we have the qudits in reversed order, we must swap them
                 for (idx i = 0; i < n_subsys / 2; ++i) {
-                    gate(Gates::get_instance().SWAPd(d_), target[i],
-                         target[n_subsys - i - 1], "SWAPd");
+                    gate(Gates::get_no_thread_local_instance().SWAPd(d_),
+                         target[i], target[n_subsys - i - 1], "SWAPd");
                 }
             }
         }
@@ -1920,7 +1921,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (swap) {
                 // we have the qubits in reversed order, we must swap them
                 for (idx i = n_subsys / 2; i-- > 0;) {
-                    gate(Gates::get_instance().SWAP, target[i],
+                    gate(Gates::get_no_thread_local_instance().SWAP, target[i],
                          target[n_subsys - i - 1]);
                 }
             }
@@ -1934,14 +1935,14 @@ class QCircuit : public IDisplay, public IJSON {
                          "CTRL-R" + std::to_string(j) + "+");
                 }
                 // apply Hadamard on qubit i
-                gate(Gates::get_instance().H, target[i]);
+                gate(Gates::get_no_thread_local_instance().H, target[i]);
             }
         } else { // qudits
             if (swap) {
                 // we have the qudits in reversed order, we must swap them
                 for (idx i = n_subsys / 2; i-- > 0;) {
-                    gate(Gates::get_instance().SWAPd(d_), target[i],
-                         target[n_subsys - i - 1], "SWAPd");
+                    gate(Gates::get_no_thread_local_instance().SWAPd(d_),
+                         target[i], target[n_subsys - i - 1], "SWAPd");
                 }
             }
             for (idx i = n_subsys; i-- > 0;) {
@@ -1957,8 +1958,8 @@ class QCircuit : public IDisplay, public IJSON {
                          "CTRL-R" + std::to_string(j) + "d+");
                 }
                 // apply qudit Fourier on qudit i
-                gate(qpp::adjoint(Gates::get_instance().Fd(d_)), target[i],
-                     "Fd+");
+                gate(qpp::adjoint(Gates::get_no_thread_local_instance().Fd(d_)),
+                     target[i], "Fd+");
             }
         }
 
@@ -2028,7 +2029,8 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty()) {
-            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            std::string gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(U);
             name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
@@ -2106,7 +2108,8 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty()) {
-            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            std::string gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(U);
             name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
@@ -2191,7 +2194,8 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty()) {
-            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            std::string gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(U);
             name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
@@ -2288,7 +2292,8 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty()) {
-            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            std::string gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(U);
             name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
@@ -2390,7 +2395,8 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty()) {
-            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            std::string gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(U);
             name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
@@ -2450,7 +2456,8 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty()) {
-            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            std::string gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(U);
             name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
 
@@ -2523,7 +2530,8 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty()) {
-            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            std::string gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(U);
             name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
@@ -2601,7 +2609,8 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty()) {
-            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            std::string gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(U);
             name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
@@ -2686,7 +2695,8 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty()) {
-            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            std::string gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(U);
             name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
@@ -2781,7 +2791,8 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty()) {
-            std::string gate_name = qpp::Gates::get_instance().get_name(U);
+            std::string gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(U);
             name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
@@ -2951,7 +2962,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty())
-            name = "m" + qpp::Gates::get_instance().get_name(V);
+            name = "m" + qpp::Gates::get_no_thread_local_instance().get_name(V);
 
         std::size_t hashV = hash_eigen(V);
         add_hash_(V, hashV);
@@ -3023,7 +3034,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         if (name.empty())
-            name = "m" + qpp::Gates::get_instance().get_name(V);
+            name = "m" + qpp::Gates::get_no_thread_local_instance().get_name(V);
 
         std::size_t hashV = hash_eigen(V);
         add_hash_(V, hashV);

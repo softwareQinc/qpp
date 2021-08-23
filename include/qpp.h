@@ -140,28 +140,28 @@ namespace qpp {
  *
  * Additional initializations/cleanups, see the class qpp::Init
  */
-static const Init& init QPP_UNUSED_ = Init::get_instance();
+static const Init& init QPP_UNUSED_ = Init::get_no_thread_local_instance();
 
 /**
  * \brief qpp::Codes const Singleton
  *
  * Initializes the codes, see the class qpp::Codes
  */
-static const Codes& codes QPP_UNUSED_ = Codes::get_instance();
+static const Codes& codes QPP_UNUSED_ = Codes::get_no_thread_local_instance();
 
 /**
  * \brief qpp::Gates const Singleton
  *
  * Initializes the gates, see the class qpp::Gates
  */
-static const Gates& gt QPP_UNUSED_ = Gates::get_instance();
+static const Gates& gt QPP_UNUSED_ = Gates::get_no_thread_local_instance();
 
 /**
  * \brief qpp::States const Singleton
  *
  * Initializes the states, see the class qpp::States
  */
-static const States& st QPP_UNUSED_ = States::get_instance();
+static const States& st QPP_UNUSED_ = States::get_no_thread_local_instance();
 
 /**
  * \brief qpp::RandomDevices Singleton
@@ -172,7 +172,11 @@ static const States& st QPP_UNUSED_ = States::get_instance();
  * duration, due to mutability of its public member std::mt19937 and possible
  * data races
  */
-static RandomDevices& rdevs QPP_UNUSED_ = RandomDevices::get_instance();
+
+#ifndef NO_THREAD_LOCAL_
+thread_local
+#endif
+    static RandomDevices& rdevs QPP_UNUSED_ = RandomDevices::get_instance();
 
 /**
  * \namespace qpp::obsolete

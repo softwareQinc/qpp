@@ -88,7 +88,8 @@ class QEngine : public IDisplay, public IJSON {
          * \brief Resets the engine state
          */
         void reset() {
-            psi_ = States::get_instance().zero(qc_->get_nq(), qc_->get_d());
+            psi_ = States::get_no_thread_local_instance().zero(qc_->get_nq(),
+                                                               qc_->get_d());
             probs_ = std::vector<double>(qc_->get_nc(), 0);
             dits_ = std::vector<idx>(qc_->get_nc(), 0);
             subsys_ = std::vector<idx>(qc_->get_nq(), 0);

@@ -37,16 +37,19 @@ namespace internal // internal class, do not modify
 {
 /**
  * \class qpp::internal::Singleton
- * \brief Singleton policy class, used internally to implement
- * the singleton pattern via CRTP (Curiously recurring template pattern)
+ * \brief Singleton policy class, used internally to implement the singleton
+ * pattern via CRTP (Curiously Recurring Template Pattern), thread safe in
+ * C++11 and later.
  *
  * To implement a singleton, derive your class from qpp::internal::Singleton,
  * make qpp::internal::Singleton a friend of your class, then declare the
  * constructor and destructor of your class as private. To get an instance, use
- * the static member function qpp::internal::Singleton::get_instance()
- * (qpp::internal::Singleton::get_thread_local_instance()), which returns a
- * reference (thread_local reference) to your newly created singleton
- * (thread-safe in C++11).
+ * the static member function qpp::internal::Singleton::get_instance(), which
+ * returns a thread_local reference (if the compiler supports thread_local), or
+ * otherwise a non thread_local reference to your newly created singleton. For a
+ * more fine-grained control, use
+ * qpp::internal::Singleton::get_thread_local_instance() or
+ * qpp::internal::Singleton::get_no_thread_local_instance().
  *
  * Example:
  * \code
@@ -90,7 +93,7 @@ class Singleton {
         std::is_nothrow_constructible<T>::value) {
         // Guaranteed to be destroyed.
         // Instantiated on first use.
-        // Thread safe in C++11
+        // Thread safe in C++11.
         static T instance{};
 
         return instance;
@@ -101,7 +104,7 @@ class Singleton {
         std::is_nothrow_constructible<T>::value) {
         // Guaranteed to be destroyed.
         // Instantiated on first use.
-        // Thread safe in C++11
+        // Thread safe in C++11.
         thread_local static T instance{};
 
         return instance;
@@ -115,7 +118,6 @@ class Singleton {
         return get_thread_local_instance();
 #endif // NO_THREAD_LOCAL_
     }
-
 }; /* class Singleton */
 
 } /* namespace internal */

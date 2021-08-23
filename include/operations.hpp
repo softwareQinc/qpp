@@ -1958,7 +1958,8 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
     {
         for (idx i = 0; i < n_subsys; ++i) {
             // apply Hadamard on qubit i
-            result = apply(result, Gates::get_instance().H, {target[i]});
+            result = apply(result, Gates::get_no_thread_local_instance().H,
+                           {target[i]});
             // apply controlled rotations
             for (idx j = 2; j <= n_subsys - i; ++j) {
                 // construct Rj
@@ -1971,15 +1972,17 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
         if (swap) {
             // we have the qubits in reversed order, we must swap them
             for (idx i = 0; i < n_subsys / 2; ++i) {
-                result = apply(result, Gates::get_instance().SWAP,
-                               {target[i], target[n_subsys - i - 1]});
+                result =
+                    apply(result, Gates::get_no_thread_local_instance().SWAP,
+                          {target[i], target[n_subsys - i - 1]});
             }
         }
 
     } else { // qudits
         for (idx i = 0; i < n_subsys; ++i) {
             // apply qudit Fourier on qudit i
-            result = apply(result, Gates::get_instance().Fd(d), {target[i]}, d);
+            result = apply(result, Gates::get_no_thread_local_instance().Fd(d),
+                           {target[i]}, d);
             // apply controlled rotations
             for (idx j = 2; j <= n_subsys - i; ++j) {
                 // construct Rj
@@ -1994,7 +1997,8 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
         if (swap) {
             // we have the qudits in reversed order, we must swap them
             for (idx i = 0; i < n_subsys / 2; ++i) {
-                result = apply(result, Gates::get_instance().SWAPd(d),
+                result = apply(result,
+                               Gates::get_no_thread_local_instance().SWAPd(d),
                                {target[i], target[n_subsys - i - 1]}, d);
             }
         }
@@ -2060,8 +2064,9 @@ dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
         if (swap) {
             // we have the qubits in reversed order, we must swap them
             for (idx i = n_subsys / 2; i-- > 0;) {
-                result = apply(result, Gates::get_instance().SWAP,
-                               {target[i], target[n_subsys - i - 1]});
+                result =
+                    apply(result, Gates::get_no_thread_local_instance().SWAP,
+                          {target[i], target[n_subsys - i - 1]});
             }
         }
         for (idx i = n_subsys; i-- > 0;) {
@@ -2074,13 +2079,15 @@ dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
                     applyCTRL(result, Rj, {target[i + j - 1]}, {target[i]});
             }
             // apply Hadamard on qubit i
-            result = apply(result, Gates::get_instance().H, {target[i]});
+            result = apply(result, Gates::get_no_thread_local_instance().H,
+                           {target[i]});
         }
     } else { // qudits
         if (swap) {
             // we have the qudits in reversed order, we must swap them
             for (idx i = n_subsys / 2; i-- > 0;) {
-                result = apply(result, Gates::get_instance().SWAPd(d),
+                result = apply(result,
+                               Gates::get_no_thread_local_instance().SWAPd(d),
                                {target[i], target[n_subsys - i - 1]}, d);
             }
         }
@@ -2096,7 +2103,8 @@ dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
                     applyCTRL(result, Rj, {target[i + j - 1]}, {target[i]}, d);
             }
             // apply qudit Fourier on qudit i
-            result = apply(result, adjoint(Gates::get_instance().Fd(d)),
+            result = apply(result,
+                           adjoint(Gates::get_no_thread_local_instance().Fd(d)),
                            {target[i]}, d);
         }
     }

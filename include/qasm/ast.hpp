@@ -66,33 +66,49 @@ static std::unordered_map<ident,
     known_matrices{
         ///< generators for various gate constants
         {"cx",
-         [](const std::vector<double>&) { return Gates::get_instance().CNOT; }},
+         [](const std::vector<double>&) {
+             return Gates::get_no_thread_local_instance().CNOT;
+         }},
         {"id",
-         [](const std::vector<double>&) { return Gates::get_instance().Id2; }},
+         [](const std::vector<double>&) {
+             return Gates::get_no_thread_local_instance().Id2;
+         }},
         {"x",
-         [](const std::vector<double>&) { return Gates::get_instance().X; }},
+         [](const std::vector<double>&) {
+             return Gates::get_no_thread_local_instance().X;
+         }},
         {"y",
-         [](const std::vector<double>&) { return Gates::get_instance().Y; }},
+         [](const std::vector<double>&) {
+             return Gates::get_no_thread_local_instance().Y;
+         }},
         {"z",
-         [](const std::vector<double>&) { return Gates::get_instance().Z; }},
+         [](const std::vector<double>&) {
+             return Gates::get_no_thread_local_instance().Z;
+         }},
         {"h",
-         [](const std::vector<double>&) { return Gates::get_instance().H; }},
+         [](const std::vector<double>&) {
+             return Gates::get_no_thread_local_instance().H;
+         }},
         {"s",
-         [](const std::vector<double>&) { return Gates::get_instance().S; }},
+         [](const std::vector<double>&) {
+             return Gates::get_no_thread_local_instance().S;
+         }},
         {"sdg",
          [](const std::vector<double>&) {
-             return Gates::get_instance().S.adjoint();
+             return Gates::get_no_thread_local_instance().S.adjoint();
          }},
         {"t",
-         [](const std::vector<double>&) { return Gates::get_instance().T; }},
+         [](const std::vector<double>&) {
+             return Gates::get_no_thread_local_instance().T;
+         }},
         {"tdg",
          [](const std::vector<double>&) {
-             return Gates::get_instance().T.adjoint();
+             return Gates::get_no_thread_local_instance().T.adjoint();
          }},
         {"rx",
          [](const std::vector<double>& args) {
              assert(!args.empty());
-             return Gates::get_instance().RX(args[0]);
+             return Gates::get_no_thread_local_instance().RX(args[0]);
          }},
         {"rz",
          [](const std::vector<double>& args) {
@@ -101,32 +117,38 @@ static std::unordered_map<ident,
              // we comply to the Qiskit definition (and not the OPENQASM
              // specs); see https://github.com/softwareQinc/qpp/issues/70
              return (std::exp(1_i * args[0] / 2.0) *
-                     Gates::get_instance().RZ(args[0]))
+                     Gates::get_no_thread_local_instance().RZ(args[0]))
                  .eval();
          }},
         {"ry",
          [](const std::vector<double>& args) {
              assert(!args.empty());
-             return Gates::get_instance().RY(args[0]);
+             return Gates::get_no_thread_local_instance().RY(args[0]);
          }},
         {"cz",
-         [](const std::vector<double>&) { return Gates::get_instance().CZ; }},
+         [](const std::vector<double>&) {
+             return Gates::get_no_thread_local_instance().CZ;
+         }},
         {"cy",
          [](const std::vector<double>&) {
              cmat mat{cmat::Identity(4, 4)};
-             mat.block(2, 2, 2, 2) = Gates::get_instance().Y;
+             mat.block(2, 2, 2, 2) = Gates::get_no_thread_local_instance().Y;
              return mat;
          }},
         {"swap",
-         [](const std::vector<double>&) { return Gates::get_instance().SWAP; }},
+         [](const std::vector<double>&) {
+             return Gates::get_no_thread_local_instance().SWAP;
+         }},
         {"ch",
          [](const std::vector<double>&) {
              cmat mat{cmat::Identity(4, 4)};
-             mat.block(2, 2, 2, 2) = Gates::get_instance().H;
+             mat.block(2, 2, 2, 2) = Gates::get_no_thread_local_instance().H;
              return mat;
          }},
         {"ccx",
-         [](const std::vector<double>&) { return Gates::get_instance().TOF; }},
+         [](const std::vector<double>&) {
+             return Gates::get_no_thread_local_instance().TOF;
+         }},
         {"crz", [](const std::vector<double>& args) {
              assert(!args.empty());
              cmat mat{cmat::Identity(4, 4)};
@@ -135,8 +157,9 @@ static std::unordered_map<ident,
              // not the OPENQASM specs); see
              // https://github.com/softwareQinc/qpp/issues/99 and
              // https://github.com/softwareQinc/qpp/issues/70
-             mat.block(2, 2, 2, 2) = std::exp(1_i * args[0] / 2.0) *
-                                     Gates::get_instance().RZ(args[0]);
+             mat.block(2, 2, 2, 2) =
+                 std::exp(1_i * args[0] / 2.0) *
+                 Gates::get_no_thread_local_instance().RZ(args[0]);
              return mat;
          }}};
 
@@ -1092,47 +1115,47 @@ class CNOTGate final : public Gate {
         if (ctrls.size() == 1 && tgts.size() == 1) {
             if (ctx.ccontrolled()) {
                 std::vector<idx> tmp{ctrls[0], tgts[0]};
-                circuit->cCTRL_joint(Gates::get_instance().CNOT,
+                circuit->cCTRL_joint(Gates::get_no_thread_local_instance().CNOT,
                                      ctx.get_cctrls(), tmp, ctx.get_shift(),
                                      "CX");
             } else {
-                circuit->gate(Gates::get_instance().CNOT, ctrls[0], tgts[0],
-                              "CX");
+                circuit->gate(Gates::get_no_thread_local_instance().CNOT,
+                              ctrls[0], tgts[0], "CX");
             }
         } else if (ctrls.size() > 1 && tgts.size() == 1) {
             for (idx ctrl : ctrls) {
                 if (ctx.ccontrolled()) {
                     std::vector<idx> tmp{ctrl, tgts[0]};
-                    circuit->cCTRL_joint(Gates::get_instance().CNOT,
-                                         ctx.get_cctrls(), tmp, ctx.get_shift(),
-                                         "CX");
+                    circuit->cCTRL_joint(
+                        Gates::get_no_thread_local_instance().CNOT,
+                        ctx.get_cctrls(), tmp, ctx.get_shift(), "CX");
                 } else {
-                    circuit->gate(Gates::get_instance().CNOT, ctrl, tgts[0],
-                                  "CX");
+                    circuit->gate(Gates::get_no_thread_local_instance().CNOT,
+                                  ctrl, tgts[0], "CX");
                 }
             }
         } else if (ctrls.size() == 1 && tgts.size() > 1) {
             for (idx tgt : tgts) {
                 if (ctx.ccontrolled()) {
                     std::vector<idx> tmp{ctrls[0], tgt};
-                    circuit->cCTRL_joint(Gates::get_instance().CNOT,
-                                         ctx.get_cctrls(), tmp, ctx.get_shift(),
-                                         "CX");
+                    circuit->cCTRL_joint(
+                        Gates::get_no_thread_local_instance().CNOT,
+                        ctx.get_cctrls(), tmp, ctx.get_shift(), "CX");
                 } else {
-                    circuit->gate(Gates::get_instance().CNOT, ctrls[0], tgt,
-                                  "CX");
+                    circuit->gate(Gates::get_no_thread_local_instance().CNOT,
+                                  ctrls[0], tgt, "CX");
                 }
             }
         } else if (ctrls.size() == tgts.size()) {
             for (idx i = 0; i < ctrls.size(); i++) {
                 if (ctx.ccontrolled()) {
                     std::vector<idx> tmp{ctrls[i], tgts[i]};
-                    circuit->cCTRL_joint(Gates::get_instance().CNOT,
-                                         ctx.get_cctrls(), tmp, ctx.get_shift(),
-                                         "CX");
+                    circuit->cCTRL_joint(
+                        Gates::get_no_thread_local_instance().CNOT,
+                        ctx.get_cctrls(), tmp, ctx.get_shift(), "CX");
                 } else {
-                    circuit->gate(Gates::get_instance().CNOT, ctrls[i], tgts[i],
-                                  "CX");
+                    circuit->gate(Gates::get_no_thread_local_instance().CNOT,
+                                  ctrls[i], tgts[i], "CX");
                 }
             }
         } else {

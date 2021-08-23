@@ -353,8 +353,10 @@ class QubitDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
      * \param p Noise probability
      */
     explicit QubitDepolarizingNoise(double p)
-        : NoiseBase({Gates::get_instance().Id2, Gates::get_instance().X,
-                     Gates::get_instance().Y, Gates::get_instance().Z},
+        : NoiseBase({Gates::get_no_thread_local_instance().Id2,
+                     Gates::get_no_thread_local_instance().X,
+                     Gates::get_no_thread_local_instance().Y,
+                     Gates::get_no_thread_local_instance().Z},
                     {1 - p, p / 3, p / 3, p / 3}) {
         // EXCEPTION CHECKS
 
@@ -377,7 +379,8 @@ class QubitPhaseFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
      * \param p Noise probability
      */
     explicit QubitPhaseFlipNoise(double p)
-        : NoiseBase({Gates::get_instance().Id2, Gates::get_instance().Z},
+        : NoiseBase({Gates::get_no_thread_local_instance().Id2,
+                     Gates::get_no_thread_local_instance().Z},
                     {1 - p, p}) {
         // EXCEPTION CHECKS
 
@@ -400,7 +403,8 @@ class QubitBitFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
      * \param p Noise probability
      */
     explicit QubitBitFlipNoise(double p)
-        : NoiseBase({Gates::get_instance().Id2, Gates::get_instance().X},
+        : NoiseBase({Gates::get_no_thread_local_instance().Id2,
+                     Gates::get_no_thread_local_instance().X},
                     {1 - p, p}) {
         // EXCEPTION CHECKS
 
@@ -423,7 +427,8 @@ class QubitBitPhaseFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
      * \param p Noise probability
      */
     explicit QubitBitPhaseFlipNoise(double p)
-        : NoiseBase({Gates::get_instance().Id2, Gates::get_instance().Y},
+        : NoiseBase({Gates::get_no_thread_local_instance().Id2,
+                     Gates::get_no_thread_local_instance().Y},
                     {1 - p, p}) {
         // EXCEPTION CHECKS
 
@@ -500,8 +505,9 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
         idx tmp = 0;
         for (idx i = 0; i < D; ++i)
             for (idx j = 0; j < D; ++j)
-                Ks[tmp++] = powm(Gates::get_instance().Xd(D), i) *
-                            powm(Gates::get_instance().Zd(D), j);
+                Ks[tmp++] =
+                    powm(Gates::get_no_thread_local_instance().Xd(D), i) *
+                    powm(Gates::get_no_thread_local_instance().Zd(D), j);
 
         return Ks;
     }
