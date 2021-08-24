@@ -489,9 +489,7 @@ svd(const Eigen::MatrixBase<Derived>& A) {
         throw exception::ZeroSize("qpp::svd()");
     // END EXCEPTION CHECKS
 
-    Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>> sv(
-        rA, Eigen::DecompositionOptions::ComputeFullU |
-                Eigen::DecompositionOptions::ComputeFullV);
+    auto const sv = rA.bdcSvd(Eigen::ComputeFullU | Eigen::ComputeFullV);
 
     return std::make_tuple(sv.matrixU(), sv.singularValues(), sv.matrixV());
 }
@@ -514,9 +512,7 @@ dyn_col_vect<double> svals(const Eigen::MatrixBase<Derived>& A) {
         throw exception::ZeroSize("qpp::svals()");
     // END EXCEPTION CHECKS
 
-    Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>> sv(rA);
-
-    return sv.singularValues();
+    return rA.bdcSvd().singularValues();
 }
 
 /**
@@ -537,10 +533,7 @@ cmat svdU(const Eigen::MatrixBase<Derived>& A) {
         throw exception::ZeroSize("qpp::svdU()");
     // END EXCEPTION CHECKS
 
-    Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>> sv(
-        rA, Eigen::DecompositionOptions::ComputeFullU);
-
-    return sv.matrixU();
+    return rA.bdcSvd(Eigen::ComputeFullU).matrixU();
 }
 
 /**
@@ -561,10 +554,7 @@ cmat svdV(const Eigen::MatrixBase<Derived>& A) {
         throw exception::ZeroSize("qpp::svdV()");
     // END EXCEPTION CHECKS
 
-    Eigen::JacobiSVD<dyn_mat<typename Derived::Scalar>> sv(
-        rA, Eigen::DecompositionOptions::ComputeFullV);
-
-    return sv.matrixV();
+    return rA.bdcSvd(Eigen::ComputeFullV).matrixV();
 }
 
 // Matrix functional calculus
