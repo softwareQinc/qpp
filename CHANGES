@@ -5,6 +5,9 @@ Pre-release - in progress
       fine-grained control, one can use
           qpp::internal::Singleton::get_no_thread_local_instance()
           qpp::internal::Singleton::get_thread_local_instance()
+    - Added qpp::schmidt() ["entanglement.hpp"] and improved the performance
+      of singular value decomposition, thanks @antoine-bussy
+      (https://github.com/antoine-bussy)
 
 Version 2.7 - 1 August 2021
     - Added installation support and auto package detection via CMake
