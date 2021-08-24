@@ -301,6 +301,86 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
+ * \brief Schmidt basis on Alice's and Bob's sides, coefficients and probabilities of the bi-partite pure state \a A
+ *
+ * \see qpp::schmidtA()
+ * \see qpp::schmidtB()
+ * \see qpp::schmidtcoeffs()
+ * \see qpp::schmidtprobs()
+ *
+ * \param A Eigen expression
+ * \param dims Dimensions of the bi-partite system
+ * \return Tuple of: 1. Unitary matrix \f$U\f$ whose columns represent the Schmidt basis
+ * vectors on Alice side, 2. Unitary matrix \f$V\f$ whose columns represent the Schmidt basis
+ * vectors on Bob side, 3. Schmidt coefficients of \a A, ordered in decreasing order, as a real
+ * dynamic column vector, and 4. Schmidt probabilites of \a A, ordered in decreasing order,
+ * as a real dynamic column vector
+ */
+template <typename Derived>
+std::tuple<cmat, cmat, dyn_col_vect<double>, dyn_col_vect<double>>
+schmidt(const Eigen::MatrixBase<Derived>& A,
+                                 const std::vector<idx>& dims) {
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero-size
+    if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::schmidt()");
+    // check bi-partite
+    if (dims.size() != 2)
+        throw exception::NotBipartite("qpp::schmidt()");
+    // check column vector
+    if (!internal::check_cvector(rA))
+        throw exception::MatrixNotCvector("qpp::schmidt()");
+    // check matching dimensions
+    if (!internal::check_dims_match_cvect(dims, rA))
+        throw exception::DimsMismatchCvector("qpp::schmidt()");
+    // END EXCEPTION CHECKS
+
+    auto const sv = svd(transpose(reshape(rA, dims[1], dims[0])));
+
+    return std::make_tuple(std::get<0>(sv), conjugate(std::get<2>(sv)), std::get<1>(sv), std::get<1>(sv).cwiseAbs2().eval());
+}
+
+/**
+ * \brief Schmidt basis on Alice's and Bob's sides, coefficients and probabilities of the bi-partite pure state \a A
+ *
+ * \see qpp::schmidtA()
+ * \see qpp::schmidtB()
+ * \see qpp::schmidtcoeffs()
+ * \see qpp::schmidtprobs()
+ *
+ * \param A Eigen expression
+ * \param d Subsystem dimensions
+ * \return Tuple of: 1. Unitary matrix \f$U\f$ whose columns represent the Schmidt basis
+ * vectors on Alice side, 2. Unitary matrix \f$V\f$ whose columns represent the Schmidt basis
+ * vectors on Bob side, 3. Schmidt coefficients of \a A, ordered in decreasing order, as a real
+ * dynamic column vector, and 4. Schmidt probabilites of \a A, ordered in decreasing order,
+ * as a real dynamic column vector
+ */
+template <typename Derived>
+std::tuple<cmat, cmat, dyn_col_vect<double>, dyn_col_vect<double>>
+schmidt(const Eigen::MatrixBase<Derived>& A,
+                                 idx d = 2) {
+    // EXCEPTION CHECKS
+
+    // check zero size
+    if (!internal::check_nonzero_size(A))
+        throw exception::ZeroSize("qpp::schmidt()");
+
+    // check valid dims
+    if (d < 2)
+        throw exception::DimsInvalid("qpp::schmidt()");
+    // END EXCEPTION CHECKS
+
+    idx n = internal::get_num_subsys(static_cast<idx>(A.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
+
+    return schmidt(A, dims);
+}
+
+/**
  * \brief Entanglement of the bi-partite pure state \a A
  *
  * Defined as the von-Neumann entropy of the reduced density matrix of one of
