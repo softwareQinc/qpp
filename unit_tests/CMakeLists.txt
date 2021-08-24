@@ -1,8 +1,9 @@
 include(GoogleTest)
 set(TARGET_NAME "unit_tests")
 
-#### Link Google Test dynamically if using MSVC
+#### Link Google Test dynamically if using MSVC, and add bigobj option
 if (MSVC)
+    add_compile_options(-bigobj)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif ()
 
