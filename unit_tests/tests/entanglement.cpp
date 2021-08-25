@@ -208,6 +208,65 @@ TEST(qpp_negativity, Qubits) {
     EXPECT_NEAR(0.5, negativity(rho), 1e-7);
 }
 /******************************************************************************/
+/// BEGIN template <typename Derived>
+///       std::tuple<cmat, cmat, dyn_col_vect<double>, dyn_col_vect<double>>
+///       schmidt(const Eigen::MatrixBase<Derived>& A,
+///       const std::vector<idx>& dims)
+TEST(qpp_schmidt, Qudits) {
+    // random 3 x 4 state
+    idx dA = 3, dB = 4, D = dA * dB, minD = std::min(dA, dB);
+    auto const psi = randket(D);
+
+    auto const t = schmidt(psi, {dA, dB});
+    auto const& basisA = std::get<0>(t);
+    auto const& basisB = std::get<1>(t);
+    auto const& coeffs = std::get<2>(t);
+    auto const& probs = std::get<3>(t);
+
+    auto const basisA_ref = schmidtA(psi, {dA, dB});
+    EXPECT_NEAR(0, norm(basisA - basisA_ref), 1e-7);
+
+    auto const basisB_ref = schmidtB(psi, {dA, dB});
+    EXPECT_NEAR(0, norm(basisB - basisB_ref), 1e-7);
+
+    auto const coeffs_ref = schmidtcoeffs(psi, {dA, dB});
+    EXPECT_NEAR(0, norm(coeffs - coeffs_ref), 1e-7);
+
+    auto const probs_ref_vect = schmidtprobs(psi, {dA, dB});
+    auto const probs_ref =
+        dyn_col_vect<double>::Map(probs_ref_vect.data(), probs_ref_vect.size());
+    EXPECT_NEAR(0, norm(probs - probs_ref), 1e-7);
+}
+/******************************************************************************/
+/// BEGIN template <typename Derived>
+///       std::tuple<cmat, cmat, dyn_col_vect<double>, dyn_col_vect<double>>
+///       schmidt(const Eigen::MatrixBase<Derived>& A, idx d = 2)
+TEST(qpp_schmidt, Qubits) {
+    // random 5 x 5 state
+    idx d = 5, D = d * d;
+    auto const psi = randket(D);
+
+    auto const t = schmidt(psi, d);
+    auto const& basisA = std::get<0>(t);
+    auto const& basisB = std::get<1>(t);
+    auto const& coeffs = std::get<2>(t);
+    auto const& probs = std::get<3>(t);
+
+    auto const basisA_ref = schmidtA(psi, d);
+    EXPECT_NEAR(0, norm(basisA - basisA_ref), 1e-7);
+
+    auto const basisB_ref = schmidtB(psi, d);
+    EXPECT_NEAR(0, norm(basisB - basisB_ref), 1e-7);
+
+    auto const coeffs_ref = schmidtcoeffs(psi, d);
+    EXPECT_NEAR(0, norm(coeffs - coeffs_ref), 1e-7);
+
+    auto const probs_ref_vect = schmidtprobs(psi, d);
+    auto const probs_ref =
+        dyn_col_vect<double>::Map(probs_ref_vect.data(), probs_ref_vect.size());
+    EXPECT_NEAR(0, norm(probs - probs_ref), 1e-7);
+}
+/******************************************************************************/
 /// BEGIN template <typename Derived> cmat schmidtA/B(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_schmidtA_schmidtB, Qudits) {
@@ -572,58 +631,3 @@ TEST(qpp_schmidtprobs, Qubits) {
     EXPECT_NEAR(0, norm(result - expected), 1e-7);
 }
 /******************************************************************************/
-/// BEGIN template <typename Derived>
-///       std::tuple<cmat, cmat, dyn_col_vect<double>, dyn_col_vect<double>>
-////      schmidt(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
-TEST(qpp_schmidt, Qudits) {
-    // random 3 x 4 state
-    idx dA = 3, dB = 4, D = dA * dB, minD = std::min(dA, dB);
-    auto const psi = randket(D);
-
-    auto const t = schmidt(psi, {dA, dB});
-    auto const& basisA = std::get<0>(t);
-    auto const& basisB = std::get<1>(t);
-    auto const& coeffs = std::get<2>(t);
-    auto const& probs  = std::get<3>(t);
-
-    auto const basisA_ref = schmidtA(psi, {dA, dB});
-    EXPECT_NEAR(0, norm(basisA - basisA_ref), 1e-7);
-
-    auto const basisB_ref = schmidtB(psi, {dA, dB});
-    EXPECT_NEAR(0, norm(basisB - basisB_ref), 1e-7);
-
-    auto const coeffs_ref = schmidtcoeffs(psi, {dA, dB});
-    EXPECT_NEAR(0, norm(coeffs - coeffs_ref), 1e-7);
-
-    auto const probs_ref_vect = schmidtprobs(psi, {dA, dB});
-    auto const probs_ref = dyn_col_vect<double>::Map(probs_ref_vect.data(), probs_ref_vect.size());
-    EXPECT_NEAR(0, norm(probs - probs_ref), 1e-7);
-}
-/******************************************************************************/
-/// BEGIN template <typename Derived>
-///       std::tuple<cmat, cmat, dyn_col_vect<double>, dyn_col_vect<double>>
-////      schmidt(const Eigen::MatrixBase<Derived>& A, idx d = 2)
-TEST(qpp_schmidt, Qubits) {
-    // random 5 x 5 state
-    idx d = 5, D = d * d;
-    auto const psi = randket(D);
-
-    auto const t = schmidt(psi, d);
-    auto const& basisA = std::get<0>(t);
-    auto const& basisB = std::get<1>(t);
-    auto const& coeffs = std::get<2>(t);
-    auto const& probs  = std::get<3>(t);
-
-    auto const basisA_ref = schmidtA(psi, d);
-    EXPECT_NEAR(0, norm(basisA - basisA_ref), 1e-7);
-
-    auto const basisB_ref = schmidtB(psi, d);
-    EXPECT_NEAR(0, norm(basisB - basisB_ref), 1e-7);
-
-    auto const coeffs_ref = schmidtcoeffs(psi, d);
-    EXPECT_NEAR(0, norm(coeffs - coeffs_ref), 1e-7);
-
-    auto const probs_ref_vect = schmidtprobs(psi, d);
-    auto const probs_ref = dyn_col_vect<double>::Map(probs_ref_vect.data(), probs_ref_vect.size());
-    EXPECT_NEAR(0, norm(probs - probs_ref), 1e-7);
-}

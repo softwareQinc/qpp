@@ -301,7 +301,8 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief Schmidt basis on Alice's and Bob's sides, coefficients and probabilities of the bi-partite pure state \a A
+ * \brief Schmidt basis on Alice's and Bob's sides, coefficients and
+ * probabilities of the bi-partite pure state \a A
  *
  * \see qpp::schmidtA()
  * \see qpp::schmidtB()
@@ -310,16 +311,16 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param dims Dimensions of the bi-partite system
- * \return Tuple of: 1. Unitary matrix \f$U\f$ whose columns represent the Schmidt basis
- * vectors on Alice side, 2. Unitary matrix \f$V\f$ whose columns represent the Schmidt basis
- * vectors on Bob side, 3. Schmidt coefficients of \a A, ordered in decreasing order, as a real
- * dynamic column vector, and 4. Schmidt probabilites of \a A, ordered in decreasing order,
- * as a real dynamic column vector
+ * \return Tuple of: 1. Unitary matrix \f$U\f$ whose columns represent the
+ * Schmidt basis vectors on Alice side, 2. Unitary matrix \f$V\f$ whose columns
+ * represent the Schmidt basis vectors on Bob side, 3. Schmidt coefficients of
+ * \a A, ordered in decreasing order, as a real dynamic column vector, and 4.
+ * Schmidt probabilites of \a A, ordered in decreasing order, as a real dynamic
+ * column vector
  */
 template <typename Derived>
 std::tuple<cmat, cmat, dyn_col_vect<double>, dyn_col_vect<double>>
-schmidt(const Eigen::MatrixBase<Derived>& A,
-                                 const std::vector<idx>& dims) {
+schmidt(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -340,11 +341,13 @@ schmidt(const Eigen::MatrixBase<Derived>& A,
 
     auto const sv = svd(transpose(reshape(rA, dims[1], dims[0])));
 
-    return std::make_tuple(std::get<0>(sv), conjugate(std::get<2>(sv)), std::get<1>(sv), std::get<1>(sv).cwiseAbs2().eval());
+    return std::make_tuple(std::get<0>(sv), conjugate(std::get<2>(sv)),
+                           std::get<1>(sv), std::get<1>(sv).cwiseAbs2().eval());
 }
 
 /**
- * \brief Schmidt basis on Alice's and Bob's sides, coefficients and probabilities of the bi-partite pure state \a A
+ * \brief Schmidt basis on Alice's and Bob's sides, coefficients and
+ * probabilities of the bi-partite pure state \a A
  *
  * \see qpp::schmidtA()
  * \see qpp::schmidtB()
@@ -353,16 +356,16 @@ schmidt(const Eigen::MatrixBase<Derived>& A,
  *
  * \param A Eigen expression
  * \param d Subsystem dimensions
- * \return Tuple of: 1. Unitary matrix \f$U\f$ whose columns represent the Schmidt basis
- * vectors on Alice side, 2. Unitary matrix \f$V\f$ whose columns represent the Schmidt basis
- * vectors on Bob side, 3. Schmidt coefficients of \a A, ordered in decreasing order, as a real
- * dynamic column vector, and 4. Schmidt probabilites of \a A, ordered in decreasing order,
- * as a real dynamic column vector
+ * \return Tuple of: 1. Unitary matrix \f$U\f$ whose columns represent the
+ * Schmidt basis vectors on Alice side, 2. Unitary matrix \f$V\f$ whose columns
+ * represent the Schmidt basis vectors on Bob side, 3. Schmidt coefficients of
+ * \a A, ordered in decreasing order, as a real dynamic column vector, and 4.
+ * Schmidt probabilites of \a A, ordered in decreasing order, as a real dynamic
+ * column vector
  */
 template <typename Derived>
 std::tuple<cmat, cmat, dyn_col_vect<double>, dyn_col_vect<double>>
-schmidt(const Eigen::MatrixBase<Derived>& A,
-                                 idx d = 2) {
+schmidt(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     // EXCEPTION CHECKS
 
     // check zero size
