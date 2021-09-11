@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Code beautifier with clang-format
 # Recursively parses the folder(s) passed as command line argument(s)
