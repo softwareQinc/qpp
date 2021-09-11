@@ -115,9 +115,9 @@ directory.
 ```cmake
 cmake_minimum_required(VERSION 3.12)
 project(my_qpp_app)
-set(CMAKE_CXX_STANDARD 11) # can set the C++ standard to C++17 or later as well
+set(CMAKE_CXX_STANDARD 17)
 
-# Disable spurious Eigen warnings if using C++17 with MSVC (warning STL4007)
+# Disable spurious Eigen warnings with MSVC (warning STL4007)
 if (MSVC)
     add_compile_definitions(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING)
 endif ()
@@ -157,7 +157,7 @@ building system, by simply using the compiler and specifying the location to all
 (assumes UNIX/UNIX-like, adapt accordingly for Windows)
 
 ```bash
-c++ -pedantic -std=c++11 -Wall -Wextra -Weffc++ -fopenmp \
+c++ -pedantic -std=c++17 -Wall -Wextra -Weffc++ -fopenmp \
     -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
     -isystem $HOME/eigen3 -I $HOME/qpp/include \
      src/main.cpp -o my_qpp_app

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 project(standalone)
 set(CMAKE_CXX_STANDARD 17)
 
-#### Disable spurious Eigen warnings if using C++17 with MSVC (warning STL4007)
+#### Disable spurious Eigen warnings with MSVC (warning STL4007)
 if (MSVC)
     add_compile_definitions(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING)
 endif ()

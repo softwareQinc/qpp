@@ -1,4 +1,5 @@
 Pre-release - in progress
+    - Bumped up C++ standard to C++17
     - Refactored qpp::internal::Singleton ["internal/classes/singleton.hpp"]
       so that qpp::internal::Singleton::get_instance() returns a thread local
       instance whenever the compiler supports thread_local. For more

@@ -15,8 +15,8 @@ int main() {
               << " Kraus operators on a " << D << " dimensional space\n";
     std::vector<cmat> Ks = randkraus(nk, D);
 
-    cmat rho_in = randrho(D);         // random input state
-    cmat rho_out = apply(rho_in, Ks); // output state
+    cmat rho_in = randrho(D);              // random input state
+    cmat rho_out = qpp::apply(rho_in, Ks); // output state
 
     std::cout << ">> Computing its Choi matrix...\n";
     cmat choim = kraus2choi(Ks);
@@ -31,7 +31,7 @@ int main() {
     std::cout << ">> The Kraus rank of the channel is: " << Kperps.size()
               << '\n';
 
-    cmat rho_out1 = apply(rho_in, Kperps);
+    cmat rho_out1 = qpp::apply(rho_in, Kperps);
     // verification
     std::cout << ">> Norm difference on output states: "
               << norm(rho_out1 - rho_out) << '\n';

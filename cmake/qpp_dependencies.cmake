@@ -20,7 +20,7 @@ else () #### Try to find it automatically
             to your Eigen3 location when building with cmake,\
             for example\
 
-            cmake .. -DEIGEN3_INSTALL_DIR=$HOME/eigen")
+            cmake .. -DEIGEN3_INSTALL_DIR=$HOME/eigen3")
     endif ()
     message(STATUS "Detecting Eigen3 - done (in ${EIGEN3_INCLUDE_DIR})")
     # Eigen3 header-only dependencies to be injected in the main CMakeLists.txt
