@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
 
     QCircuit qc;
     // read the circuit from the input stream
-    qc = qasm::read(std::cin);
+    qc = qpp::qasm::read(std::cin);
 
     idx reps = 1;
     if (argc > 1)
