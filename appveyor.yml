@@ -13,6 +13,7 @@ environment:
 install:
   - ps: wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip -O eigen3.zip
   - cmd: |-
+      git submodule update --init --recursive
       unzip eigen3.zip > nul
       mv eigen-3.3.7 "c:\%EIGEN3_INSTALL_PATH%"
 
