@@ -14,6 +14,9 @@ if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
     message(FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there. You may need to remove CMakeCache.txt.")
 endif ()
 
+#### qasmtools library
+include_directories(${PROJECT_SOURCE_DIR}/qasmtools/include)
+
 add_library(libqpp INTERFACE)
 target_include_directories(libqpp INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
@@ -23,6 +26,12 @@ target_include_directories(libqpp INTERFACE
 option(WITH_EXAMPLES "Enable example compilation" OFF)
 option(WITH_UNIT_TESTS "Enable unit testing" OFF)
 option(SANITIZE "Enable code sanitizing (only for gcc/clang)" OFF)
+option(USE_QISKIT_SPECS "Use Qiskit gate specifications instead of OpenQASM standard" OFF)
+
+#### Enable Qiskit Specs
+if (${USE_QISKIT_SPECS})
+    target_compile_definitions(libqpp INTERFACE -DUSE_QISKIT_SPECS)
+endif ()
 
 #### Dependencies, do not modify unless you know what you're doing
 if (${WITH_EXAMPLES} OR ${WITH_UNIT_TESTS})

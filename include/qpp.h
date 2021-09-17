@@ -123,11 +123,7 @@
 #include "classes/circuits/engines.hpp"
 
 // do not change the order in this group, inter-dependencies
-#include "qasm/token.hpp"
-#include "qasm/lexer.hpp"
-#include "qasm/preprocessor.hpp"
-#include "qasm/ast.hpp"
-#include "qasm/parser.hpp"
+#include <qasm/parser/parser.hpp>
 #include "qasm/qasm.hpp"
 
 /**
