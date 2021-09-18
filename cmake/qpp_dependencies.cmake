@@ -154,6 +154,7 @@ if (MSVC)
     # Disable spurious Eigen warnings with MSVC (warning STL4007)
     add_compile_definitions(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING)
     add_compile_options(-bigobj)
+    add_definitions(-DNOMINMAX)
 endif ()
 
 #### MinGW or Cygwin have issues with object files that are too large
