@@ -7,6 +7,8 @@ enable_testing()
 #### Disable spurious Eigen warnings with MSVC (warning STL4007)
 if (MSVC)
     add_compile_definitions(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING)
+    add_compile_options(-bigobj)
+    add_definitions(-DNOMINMAX)
 endif ()
 
 #### Guard against in-source builds (snippet from Eigen's CMakeLists.txt)
