@@ -24,7 +24,8 @@ option(WITH_UNIT_TESTS "Enable unit testing" OFF)
 option(SANITIZE "Enable code sanitizing (only for gcc/clang)" OFF)
 option(USE_QISKIT_SPECS "Use Qiskit gate specifications instead of OpenQASM standard" OFF)
 
-#### Enable Qiskit Specs
+#### Enable Qiskit specs, see DISCREPANCIES.md for a comparison with standard
+#### OpenQASM
 if (${USE_QISKIT_SPECS})
     target_compile_definitions(libqpp INTERFACE -DUSE_QISKIT_SPECS)
 endif ()
