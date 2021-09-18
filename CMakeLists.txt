@@ -4,14 +4,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 enable_testing()
 
-#### Windows issues with Microsoft Visual Studio
-if (MSVC)
-    # Disable spurious Eigen warnings with MSVC (warning STL4007)
-    add_compile_definitions(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING)
-    add_compile_options(-bigobj)
-    add_definitions(-DNOMINMAX)
-endif ()
-
 #### Guard against in-source builds (snippet from Eigen's CMakeLists.txt)
 if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
     message(FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there. You may need to remove CMakeCache.txt.")
