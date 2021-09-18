@@ -67,6 +67,7 @@ endif ()
 
 set(QPP_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/include/${PROJECT_NAME}")
 install(DIRECTORY include/ DESTINATION ${QPP_INSTALL_DIR})
+install(DIRECTORY qasmtools/include/ DESTINATION ${QPP_INSTALL_DIR})
 install(TARGETS libqpp EXPORT qpp_targets)
 install(EXPORT qpp_targets DESTINATION "lib/cmake/${PROJECT_NAME}")
 include(CMakePackageConfigHelpers)
