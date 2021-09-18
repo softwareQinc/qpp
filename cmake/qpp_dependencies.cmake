@@ -149,15 +149,27 @@ endif ()
 #    ${CMAKE_CXX_COMPILER_VERSION}. thread_local not supported.")
 #endif ()
 
-#### Force clang to use libc++
-if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
-    add_compile_options(-stdlib=libc++)
-    list(APPEND QPP_LINK_DEPS c++)
+#### Windows issues with Microsoft Visual Studio
+if (MSVC)
+    # Disable spurious Eigen warnings with MSVC (warning STL4007)
+    add_compile_definitions(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING)
+    add_compile_options(-bigobj)
+endif ()
+
+#### MinGW or Cygwin have issues with object files that are too large
+if (MINGW OR CYGWIN)
+    add_compile_options("-Wa,-mbig-obj")
 endif ()
 
 #### Cygwin has issues with std=c++11, use std=gnu++11 instead
 if (CYGWIN)
     add_compile_options(-std=gnu++11)
+endif ()
+
+#### Force clang to use libc++
+if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
+    add_compile_options(-stdlib=libc++)
+    list(APPEND QPP_LINK_DEPS c++)
 endif ()
 
 #### GNU gcc additional debug settings
