@@ -48,7 +48,7 @@ where [optional arguments] are passed as `-DOPTIONAL_ARGUMENT=VALUE`. The Quantu
 Optional argument | Value | Description
 | --- | --- | --- |
 `EIGEN3_INSTALL_DIR` | `/path/to/eigen3` | Path to Eigen3 installation, if not automatically detected
-`USE_QISKIT_SPECS` | `ON/OFF` [`OFF` by default] | Enables/disables using Qiskit specifications instead of the OpenQASM 2.0 standard; see [`discrepancies.md`](https://github.com/softwareQinc/qpp/blob/main/discrepancies.md)
+`USE_QISKIT_SPECS` | `ON/OFF` [`OFF` by default] | Enables/disables using Qiskit specifications instead of the OpenQASM 2.0 standard; see [`DISCREPANCIES.md`](https://github.com/softwareQinc/qpp/blob/main/DISCREPANCIES.md)
 `WITH_OPENMP` | `ON/OFF` [`ON` by default] | Enables (if available)/disables OpenMP multi-processing library
 `WITH_EXAMPLES` | `ON/OFF` [`OFF` by default] | Enables/disables examples as a CMake build target
 `WITH_UNIT_TESTS` | `ON/OFF` [`OFF` by default] |  Enables/disables unit tests as a CMake build target
