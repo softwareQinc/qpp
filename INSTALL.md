@@ -9,7 +9,7 @@ as [Windows](https://www.microsoft.com/en-us/windows).
 
 - [CMake](http://www.cmake.org/) version 3.12 or later
 - [Eigen 3](http://eigen.tuxfamily.org) linear algebra library
-- A C++ 11 compliant compiler, e.g., [gcc](https://gcc.gnu.org/), [clang](https://clang.llvm.org),
+- A C++17 compliant compiler, e.g., [gcc](https://gcc.gnu.org/), [clang](https://clang.llvm.org),
   [MSVC](https://visualstudio.microsoft.com/vs/) etc.
 
 ## Optional
