@@ -27,7 +27,9 @@ option(USE_QISKIT_SPECS "Use Qiskit gate specifications instead of OpenQASM stan
 #### Enable Qiskit specs, see DISCREPANCIES.md for a comparison with standard
 #### OpenQASM
 if (${USE_QISKIT_SPECS})
-    target_compile_definitions(libqpp INTERFACE -DUSE_QISKIT_SPECS)
+    target_compile_definitions(libqpp INTERFACE -DUSE_QISKIT_SPECS=true)
+else ()
+    target_compile_definitions(libqpp INTERFACE -DUSE_QISKIT_SPECS=false)
 endif ()
 
 #### Dependencies, do not modify unless you know what you're doing
