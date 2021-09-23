@@ -123,7 +123,7 @@
 #include "classes/circuits/engines.hpp"
 
 // do not change the order in this group, inter-dependencies
-#include "qasm/parser/parser.hpp"
+#include "qasmtools/parser/parser.hpp"
 #include "qasm/qasm.hpp"
 
 /**

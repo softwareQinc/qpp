@@ -32,16 +32,11 @@
 #ifndef QASM_QASM_HPP_
 #define QASM_QASM_HPP_
 
-#ifdef USE_QISKIT_SPECS
-#define USE_QISKIT true
-#else
-#define USE_QISKIT false
-#endif
-
-using namespace qasm;
-
 namespace qpp {
 namespace qasm {
+
+namespace ast = qasmtools::ast;
+namespace parser = qasmtools::parser;
 
 static std::unordered_map<ast::symbol,
                           std::function<cmat(const std::vector<double>&)>>
@@ -57,49 +52,49 @@ static std::unordered_map<ast::symbol,
          }},
         {"x",
          [](const std::vector<double>&) {
-             return USE_QISKIT ? Gates::get_no_thread_local_instance().X
-                               : Gates::get_no_thread_local_instance().X * (-1_i);
+             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().X
+                        : Gates::get_no_thread_local_instance().X * (-1_i);
          }},
         {"y",
          [](const std::vector<double>&) {
-             return USE_QISKIT ? Gates::get_no_thread_local_instance().Y
-                               : Gates::get_no_thread_local_instance().Y * (-1_i);
+             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().Y
+                        : Gates::get_no_thread_local_instance().Y * (-1_i);
          }},
         {"z",
          [](const std::vector<double>&) {
-             return USE_QISKIT ? Gates::get_no_thread_local_instance().Z
-                               : Gates::get_no_thread_local_instance().Z * (-1_i);
+             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().Z
+                        : Gates::get_no_thread_local_instance().Z * (-1_i);
          }},
         {"h",
          [](const std::vector<double>&) {
-             return USE_QISKIT ? Gates::get_no_thread_local_instance().H
-                               : Gates::get_no_thread_local_instance().H * (-1_i);
+             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().H
+                        : Gates::get_no_thread_local_instance().H * (-1_i);
          }},
         {"s",
          [](const std::vector<double>&) {
-             return USE_QISKIT ? Gates::get_no_thread_local_instance().S
-                               : Gates::get_no_thread_local_instance().S
-                                    * std::exp(-1_i * pi / 4.0);
+             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().S
+                        : Gates::get_no_thread_local_instance().S
+                            * std::exp(-1_i * pi / 4.0);
          }},
         {"sdg",
          [](const std::vector<double>&) {
-             return USE_QISKIT ? Gates::get_no_thread_local_instance().S.adjoint()
-                               : (Gates::get_no_thread_local_instance().S.adjoint()
-                                    * std::exp(1_i * pi / 4.0))
-                                 .eval();
+             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().S.adjoint()
+                        : (Gates::get_no_thread_local_instance().S.adjoint()
+                            * std::exp(1_i * pi / 4.0))
+                            .eval();
          }},
         {"t",
          [](const std::vector<double>&) {
-             return USE_QISKIT ? Gates::get_no_thread_local_instance().T
-                               : Gates::get_no_thread_local_instance().T
-                                    * std::exp(-1_i * pi / 8.0);
+             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().T
+                        : Gates::get_no_thread_local_instance().T
+                            * std::exp(-1_i * pi / 8.0);
          }},
         {"tdg",
          [](const std::vector<double>&) {
-             return USE_QISKIT ? Gates::get_no_thread_local_instance().T.adjoint()
-                               : (Gates::get_no_thread_local_instance().T.adjoint()
-                                    * std::exp(1_i * pi / 8.0))
-                                 .eval();
+             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().T.adjoint()
+                        : (Gates::get_no_thread_local_instance().T.adjoint()
+                            * std::exp(1_i * pi / 8.0))
+                            .eval();
          }},
         {"rx",
          [](const std::vector<double>& args) {
@@ -123,8 +118,8 @@ static std::unordered_map<ast::symbol,
          }},
         {"cz",
          [](const std::vector<double>&) {
-             return USE_QISKIT ? Gates::get_no_thread_local_instance().CZ
-                               : Gates::get_no_thread_local_instance().CZ * (-1);
+             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().CZ
+                        : Gates::get_no_thread_local_instance().CZ * (-1);
          }},
         {"cy",
          [](const std::vector<double>&) {
@@ -140,13 +135,13 @@ static std::unordered_map<ast::symbol,
          [](const std::vector<double>&) {
              cmat mat{cmat::Identity(4, 4)};
              mat.block(2, 2, 2, 2) = Gates::get_no_thread_local_instance().H;
-             return USE_QISKIT ? mat : mat * std::exp(-1_i * pi / 4.0);
+             return USE_QISKIT_SPECS ? mat : mat * std::exp(-1_i * pi / 4.0);
          }},
         {"ccx",
          [](const std::vector<double>&) {
-             return USE_QISKIT ? Gates::get_no_thread_local_instance().TOF
-                               : Gates::get_no_thread_local_instance().TOF
-                                    * (-std::exp(-1_i * pi / 8.0));
+             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().TOF
+                        : Gates::get_no_thread_local_instance().TOF
+                            * (-std::exp(-1_i * pi / 8.0));
          }},
         {"crz", [](const std::vector<double>& args) {
              assert(!args.empty());
@@ -550,22 +545,22 @@ class QCircuitBuilder final : public ast::Visitor {
         // generate the matrix
         cmat u{cmat::Zero(2, 2)};
 
-        if (USE_QISKIT) {
-            // Qiskit spec, as defined in
-            // https://github.com/Qiskit/qiskit-terra/tree/master/qiskit/circuit/library/standard_gates
-            // see https://github.com/vsoftco/qpp/issues/65
-            u << std::cos(theta / 2),
-                -(std::sin(theta / 2)) * std::exp(1_i * lambda),
-                std::sin(theta / 2) * std::exp(1_i * phi),
-                std::cos(theta / 2) * std::exp(1_i * (phi + lambda));
-        } else {
-            // standard QASM spec, as defined in
-            // https://arxiv.org/pdf/1707.03429.pdf
-            u << std::cos(theta / 2) * std::exp(-1_i * (phi + lambda) / 2.0),
-                -(std::sin(theta / 2)) * std::exp(-1_i * (phi - lambda) / 2.0),
-                std::sin(theta / 2) * std::exp(1_i * (phi - lambda) / 2.0),
-                std::cos(theta / 2) * std::exp(1_i * (phi + lambda) / 2.0);
-        }
+#if USE_QISKIT_SPECS
+        // Qiskit spec, as defined in
+        // https://github.com/Qiskit/qiskit-terra/tree/master/qiskit/circuit/library/standard_gates
+        // see https://github.com/vsoftco/qpp/issues/65
+        u << std::cos(theta / 2),
+            -(std::sin(theta / 2)) * std::exp(1_i * lambda),
+            std::sin(theta / 2) * std::exp(1_i * phi),
+            std::cos(theta / 2) * std::exp(1_i * (phi + lambda));
+#else
+        // standard QASM spec, as defined in
+        // https://arxiv.org/pdf/1707.03429.pdf
+        u << std::cos(theta / 2) * std::exp(-1_i * (phi + lambda) / 2.0),
+            -(std::sin(theta / 2)) * std::exp(-1_i * (phi - lambda) / 2.0),
+            std::sin(theta / 2) * std::exp(1_i * (phi - lambda) / 2.0),
+            std::cos(theta / 2) * std::exp(1_i * (phi + lambda) / 2.0);
+#endif
 
         // apply the gate
         for (auto i : args) {
