@@ -636,11 +636,11 @@ class QCircuitBuilder final : public ast::Visitor {
         // evaluate arguments
         std::vector<double> c_args(dgate.num_cargs());
         std::vector<std::vector<idx>> q_args(dgate.num_qargs());
-        for (idx i = 0; i < dgate.num_cargs(); i++) {
+        for (int i = 0; i < dgate.num_cargs(); i++) {
             dgate.carg(i).accept(*this);
             c_args[i] = temp_value;
         }
-        for (idx i = 0; i < dgate.num_qargs(); i++)
+        for (int i = 0; i < dgate.num_qargs(); i++)
             q_args[i] = var_access_as_qreg(dgate.qarg(i));
 
         // map gate across registers
