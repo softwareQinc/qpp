@@ -1,18 +1,11 @@
 Pre-release - in progress
     - Bumped up C++ standard to C++17
-    - Decoupled the OpenQASM parser and GoogleTest from the main codebase, now
-      they are submodules, https://github.com/softwareQinc/qasmtools and
-      https://github.com/softwareQinc/googletest, respectively. The OpenQASM
-      parser submodule is now common to both staq and Quantum++, and by default
-      uses standard OpenQASM gate definitions in Quantum++. To switch to Qiskit
-      definitions (which are also the usual ones used in QC textbooks),
-      configure the project with `cmake -DUSE_QISKIT_SPECS=ON`. For a list of
-      discrepancies between Qiskit and standard OpenQASM, please see the newly
-      added ["DISCREPANCIES.md"] file. DO NOT FORGET to clone the repository
-      with `--recursive` (or `--recurse-submodules`), i.e.
-      `git clone --recurse-submodules https://github.com/softwareqinc/qpp`.
-      Alternatively, type `git submodule update --init` if you didn't clone
-      the repository recursively.
+    - Decoupled the OpenQASM parser from the main codebase. A hard copy of
+      qasmtools (https://github.com/softwareQinc/qasmtools) is now common to
+      both staq and Quantum++, and by default uses standard OpenQASM 2.0 gate
+      definitions. To switch to Qiskit definitions (which are also the usual
+      ones used in QC textbooks), configure the project with
+      `cmake -DUSE_QISKIT_SPECS=ON`.
     - Refactored qpp::internal::Singleton ["internal/classes/singleton.hpp"]
       so that qpp::internal::Singleton::get_instance() returns a thread local
       instance whenever the compiler supports thread_local. For more
