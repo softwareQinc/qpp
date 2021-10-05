@@ -12,55 +12,48 @@ using namespace qpp;
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, StdCompliance) {
     // generic circuits
-    EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/generic/adder.qasm"));
+    EXPECT_NO_THROW(qasm::read_from_file(QPP_ROOT_DIR
+                                         "/qasmtools/qasm/generic/adder.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
         QPP_ROOT_DIR "/qasmtools/qasm/generic/bigadder.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR
-        "/qasmtools/qasm/generic/inverseqft1.qasm"));
+        QPP_ROOT_DIR "/qasmtools/qasm/generic/inverseqft1.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR
-        "/qasmtools/qasm/generic/inverseqft2.qasm"));
+        QPP_ROOT_DIR "/qasmtools/qasm/generic/inverseqft2.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR
-        "/qasmtools/qasm/generic/ipea_3_pi_8.qasm"));
+        QPP_ROOT_DIR "/qasmtools/qasm/generic/ipea_3_pi_8.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR
-        "/qasmtools/qasm/generic/pea_3_pi_8.qasm"));
-    EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/generic/qec.qasm"));
-    EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/generic/qft.qasm"));
-    EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/generic/qpt.qasm"));
-    EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/generic/rb.qasm"));
+        QPP_ROOT_DIR "/qasmtools/qasm/generic/pea_3_pi_8.qasm"));
+    EXPECT_NO_THROW(
+        qasm::read_from_file(QPP_ROOT_DIR "/qasmtools/qasm/generic/qec.qasm"));
+    EXPECT_NO_THROW(
+        qasm::read_from_file(QPP_ROOT_DIR "/qasmtools/qasm/generic/qft.qasm"));
+    EXPECT_NO_THROW(
+        qasm::read_from_file(QPP_ROOT_DIR "/qasmtools/qasm/generic/qpt.qasm"));
+    EXPECT_NO_THROW(
+        qasm::read_from_file(QPP_ROOT_DIR "/qasmtools/qasm/generic/rb.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
         QPP_ROOT_DIR "/qasmtools/qasm/generic/teleport.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR
-        "/qasmtools/qasm/generic/teleportv2.qasm"));
+        QPP_ROOT_DIR "/qasmtools/qasm/generic/teleportv2.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
         QPP_ROOT_DIR "/qasmtools/qasm/generic/W-state.qasm"));
 
     // ibmqx2 circuits
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR
-        "/qasmtools/qasm/ibmqx2/011_3_qubit_grover_50_.qasm"));
+        QPP_ROOT_DIR "/qasmtools/qasm/ibmqx2/011_3_qubit_grover_50_.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR
-        "/qasmtools/qasm/ibmqx2/Deutsch_Algorithm.qasm"));
-    EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/ibmqx2/iswap.qasm"));
+        QPP_ROOT_DIR "/qasmtools/qasm/ibmqx2/Deutsch_Algorithm.qasm"));
+    EXPECT_NO_THROW(
+        qasm::read_from_file(QPP_ROOT_DIR "/qasmtools/qasm/ibmqx2/iswap.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
         QPP_ROOT_DIR "/qasmtools/qasm/ibmqx2/qe_qft_3.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
         QPP_ROOT_DIR "/qasmtools/qasm/ibmqx2/qe_qft_4.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
         QPP_ROOT_DIR "/qasmtools/qasm/ibmqx2/qe_qft_5.qasm"));
-    EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/ibmqx2/W3test.qasm"));
+    EXPECT_NO_THROW(qasm::read_from_file(QPP_ROOT_DIR
+                                         "/qasmtools/qasm/ibmqx2/W3test.qasm"));
 }
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, BuiltinGates) {
@@ -111,8 +104,9 @@ TEST(qpp_qasm_read_from_file, MappedGates) {
     ket psi1 = engine.get_psi();
 
     // Reference state
-    ket psi2 = USE_QISKIT_SPECS ? kron(gt.H * 0_ket, gt.H * 0_ket)
-                : kron(gt.H * 0_ket * (-1_i), gt.H * 0_ket * (-1_i));
+    ket psi2 = USE_QISKIT_SPECS
+                   ? kron(gt.H * 0_ket, gt.H * 0_ket)
+                   : kron(gt.H * 0_ket * (-1_i), gt.H * 0_ket * (-1_i));
 
     // Check norm
     EXPECT_NEAR(0, norm(psi1 - psi2), 1e-7);

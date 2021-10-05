@@ -1,6 +1,6 @@
 # Quantum++
 
-## Version 2.7 - 1 August 2021
+## Version 3.0 - 5 October 2021
 
 **Build status:**
 
