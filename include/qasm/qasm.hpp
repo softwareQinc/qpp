@@ -52,49 +52,55 @@ static std::unordered_map<ast::symbol,
          }},
         {"x",
          [](const std::vector<double>&) {
-             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().X
+             return USE_QISKIT_SPECS
+                        ? Gates::get_no_thread_local_instance().X
                         : Gates::get_no_thread_local_instance().X * (-1_i);
          }},
         {"y",
          [](const std::vector<double>&) {
-             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().Y
+             return USE_QISKIT_SPECS
+                        ? Gates::get_no_thread_local_instance().Y
                         : Gates::get_no_thread_local_instance().Y * (-1_i);
          }},
         {"z",
          [](const std::vector<double>&) {
-             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().Z
+             return USE_QISKIT_SPECS
+                        ? Gates::get_no_thread_local_instance().Z
                         : Gates::get_no_thread_local_instance().Z * (-1_i);
          }},
         {"h",
          [](const std::vector<double>&) {
-             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().H
+             return USE_QISKIT_SPECS
+                        ? Gates::get_no_thread_local_instance().H
                         : Gates::get_no_thread_local_instance().H * (-1_i);
          }},
         {"s",
          [](const std::vector<double>&) {
              return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().S
-                        : Gates::get_no_thread_local_instance().S
-                            * std::exp(-1_i * pi / 4.0);
+                                     : Gates::get_no_thread_local_instance().S *
+                                           std::exp(-1_i * pi / 4.0);
          }},
         {"sdg",
          [](const std::vector<double>&) {
-             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().S.adjoint()
-                        : (Gates::get_no_thread_local_instance().S.adjoint()
-                            * std::exp(1_i * pi / 4.0))
-                            .eval();
+             return USE_QISKIT_SPECS
+                        ? Gates::get_no_thread_local_instance().S.adjoint()
+                        : (Gates::get_no_thread_local_instance().S.adjoint() *
+                           std::exp(1_i * pi / 4.0))
+                              .eval();
          }},
         {"t",
          [](const std::vector<double>&) {
              return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().T
-                        : Gates::get_no_thread_local_instance().T
-                            * std::exp(-1_i * pi / 8.0);
+                                     : Gates::get_no_thread_local_instance().T *
+                                           std::exp(-1_i * pi / 8.0);
          }},
         {"tdg",
          [](const std::vector<double>&) {
-             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().T.adjoint()
-                        : (Gates::get_no_thread_local_instance().T.adjoint()
-                            * std::exp(1_i * pi / 8.0))
-                            .eval();
+             return USE_QISKIT_SPECS
+                        ? Gates::get_no_thread_local_instance().T.adjoint()
+                        : (Gates::get_no_thread_local_instance().T.adjoint() *
+                           std::exp(1_i * pi / 8.0))
+                              .eval();
          }},
         {"rx",
          [](const std::vector<double>& args) {
@@ -118,7 +124,8 @@ static std::unordered_map<ast::symbol,
          }},
         {"cz",
          [](const std::vector<double>&) {
-             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().CZ
+             return USE_QISKIT_SPECS
+                        ? Gates::get_no_thread_local_instance().CZ
                         : Gates::get_no_thread_local_instance().CZ * (-1);
          }},
         {"cy",
@@ -139,9 +146,10 @@ static std::unordered_map<ast::symbol,
          }},
         {"ccx",
          [](const std::vector<double>&) {
-             return USE_QISKIT_SPECS ? Gates::get_no_thread_local_instance().TOF
-                        : Gates::get_no_thread_local_instance().TOF
-                            * (-std::exp(-1_i * pi / 8.0));
+             return USE_QISKIT_SPECS
+                        ? Gates::get_no_thread_local_instance().TOF
+                        : Gates::get_no_thread_local_instance().TOF *
+                              (-std::exp(-1_i * pi / 8.0));
          }},
         {"crz", [](const std::vector<double>& args) {
              assert(!args.empty());
@@ -176,9 +184,9 @@ class Value {
  */
 class Circuit : public Value {
   public:
-    const std::vector<ast::symbol>& c_params_;      ///< the classical parameters
-    const std::vector<ast::symbol>& q_params_;      ///< the quantum parameters
-    const std::list<ast::ptr<ast::Gate>>& body_;    ///< the circuit body
+    const std::vector<ast::symbol>& c_params_;   ///< the classical parameters
+    const std::vector<ast::symbol>& q_params_;   ///< the quantum parameters
+    const std::list<ast::ptr<ast::Gate>>& body_; ///< the circuit body
 
     Circuit(const std::vector<ast::symbol>& c_params,
             const std::vector<ast::symbol>& q_params,
@@ -237,16 +245,17 @@ class Context {
     QCircuit* circuit_; ///< pointer to the accumulating circuit
 
     // Hack for MSVC
-    using hash_ident_uptr = std::unordered_map<ast::symbol, std::unique_ptr<Value>>;
+    using hash_ident_uptr =
+        std::unordered_map<ast::symbol, std::unique_ptr<Value>>;
     struct Environment {
         Environment() noexcept : val_(){};
         Environment(Environment&& rhs) noexcept : val_(std::move(rhs.val_)) {}
         hash_ident_uptr val_;
     };
 
-    std::vector<Environment> env_{};       ///< environment stack
-    std::list<idx> qubit_pool_{};          ///< pool of unassigned physical qubits
-    idx max_bit_ = static_cast<idx>(-1);   ///< largest classical bit index
+    std::vector<Environment> env_{};     ///< environment stack
+    std::list<idx> qubit_pool_{};        ///< pool of unassigned physical qubits
+    idx max_bit_ = static_cast<idx>(-1); ///< largest classical bit index
     idx max_qubit_ = static_cast<idx>(-1); ///< largest (virtual) qubit index
 
     // For controlled contexts
@@ -341,7 +350,8 @@ class Context {
         }
 
         std::stringstream context;
-        context << "Bad lookup during QCircuit translation : " << loc << " , " << id;
+        context << "Bad lookup during QCircuit translation : " << loc << " , "
+                << id;
         throw exception::CustomException("qpp::qasm::Context::lookup()",
                                          context.str());
     }
@@ -409,8 +419,9 @@ class Context {
  * \brief Visitor for converting a QASM AST to a QCircuit
  */
 class QCircuitBuilder final : public ast::Visitor {
-    Context ctx;       ///< QCircuit translation context
-    double temp_value; ///< stores intermediate values when computing expressions
+    Context ctx; ///< QCircuit translation context
+    double
+        temp_value; ///< stores intermediate values when computing expressions
 
   public:
     /**
@@ -490,7 +501,8 @@ class QCircuitBuilder final : public ast::Visitor {
     void visit(ast::RealExpr& expr) { temp_value = expr.value(); }
 
     void visit(ast::VarExpr& expr) {
-        auto val = dynamic_cast<const Number*>(ctx.lookup(expr.var(), expr.pos()));
+        auto val =
+            dynamic_cast<const Number*>(ctx.lookup(expr.var(), expr.pos()));
         temp_value = val->value_;
     }
 
@@ -514,7 +526,8 @@ class QCircuitBuilder final : public ast::Visitor {
     }
 
     void visit(ast::IfStmt& stmt) {
-        auto creg = dynamic_cast<const Register*>(ctx.lookup(stmt.var(), stmt.pos()));
+        auto creg =
+            dynamic_cast<const Register*>(ctx.lookup(stmt.var(), stmt.pos()));
 
         // create the shift
         int tmp = stmt.cond();
@@ -625,13 +638,15 @@ class QCircuitBuilder final : public ast::Visitor {
                                   ctrls[i], tgts[i], "CX");
                 }
             }
-        } // If registers have different lengths then it would be caught by the parser
+        } // If registers have different lengths then it would be caught by the
+          // parser
     }
 
     void visit(ast::BarrierGate&) {}
 
     void visit(ast::DeclaredGate& dgate) {
-        auto gate = dynamic_cast<const Circuit*>(ctx.lookup(dgate.name(), dgate.pos()));
+        auto gate =
+            dynamic_cast<const Circuit*>(ctx.lookup(dgate.name(), dgate.pos()));
 
         // evaluate arguments
         std::vector<double> c_args(dgate.num_cargs());
@@ -705,8 +720,8 @@ class QCircuitBuilder final : public ast::Visitor {
 
     // Declarations
     void visit(ast::GateDecl& decl) {
-        ctx.set(decl.id(), std::unique_ptr<Value>(
-                    new Circuit(decl.c_params(), decl.q_params(), decl.body())));
+        ctx.set(decl.id(), std::unique_ptr<Value>(new Circuit(
+                               decl.c_params(), decl.q_params(), decl.body())));
     }
 
     void visit(ast::OracleDecl& decl) {
@@ -719,9 +734,11 @@ class QCircuitBuilder final : public ast::Visitor {
     void visit(ast::RegisterDecl& decl) {
         std::vector<idx> indices(decl.size());
         for (idx i = 0; i < (idx) decl.size(); i++) {
-            indices[i] = decl.is_quantum() ? ctx.alloc_qubit() : ctx.alloc_bit();
+            indices[i] =
+                decl.is_quantum() ? ctx.alloc_qubit() : ctx.alloc_bit();
         }
-        ctx.set(decl.id(), std::unique_ptr<Value>(new Register(decl.is_quantum(), indices)));
+        ctx.set(decl.id(), std::unique_ptr<Value>(
+                               new Register(decl.is_quantum(), indices)));
     }
 
     void visit(ast::AncillaDecl& decl) {
@@ -744,7 +761,8 @@ class QCircuitBuilder final : public ast::Visitor {
      * \return List of bit indices corresponding to the variable access
      */
     std::vector<idx> var_access_as_creg(ast::VarAccess& ap) {
-        auto reg = dynamic_cast<const Register*>(ctx.lookup(ap.var(), ap.pos()));
+        auto reg =
+            dynamic_cast<const Register*>(ctx.lookup(ap.var(), ap.pos()));
 
         if (ap.offset() == std::nullopt) {
             // creg
@@ -759,7 +777,8 @@ class QCircuitBuilder final : public ast::Visitor {
      * \brief Interpret the access as a quantum register
      *
      * \param ctx The variable access
-     * \return List of virtual qubit indices corresponding to the variable access
+     * \return List of virtual qubit indices corresponding to the variable
+     * access
      */
     std::vector<idx> var_access_as_qreg(ast::VarAccess& ap) {
         if (ap.offset() == std::nullopt) {
@@ -775,12 +794,12 @@ class QCircuitBuilder final : public ast::Visitor {
             }
         } else {
             // qreg deref
-            auto reg = dynamic_cast<const Register*>(ctx.lookup(ap.var(), ap.pos()));
+            auto reg =
+                dynamic_cast<const Register*>(ctx.lookup(ap.var(), ap.pos()));
 
             return std::vector<idx>{reg->indices_[ap.offset().value()]};
         }
     }
-
 };
 
 /**
@@ -792,7 +811,8 @@ class QCircuitBuilder final : public ast::Visitor {
 inline QCircuit read(std::istream& stream) {
     ast::ptr<ast::Program> program = parser::parse_stream(stream);
 
-    std::unique_ptr<QCircuit> qc(new QCircuit(program->bits(), program->qubits()));
+    std::unique_ptr<QCircuit> qc(
+        new QCircuit(program->bits(), program->qubits()));
     QCircuitBuilder builder(qc.get());
     program->accept(builder);
     return *qc;
@@ -807,7 +827,8 @@ inline QCircuit read(std::istream& stream) {
 inline QCircuit read_from_file(const std::string& fname) {
     ast::ptr<ast::Program> program = parser::parse_file(fname);
 
-    std::unique_ptr<QCircuit> qc(new QCircuit(program->bits(), program->qubits()));
+    std::unique_ptr<QCircuit> qc(
+        new QCircuit(program->bits(), program->qubits()));
     QCircuitBuilder builder(qc.get());
     program->accept(builder);
     return *qc;
