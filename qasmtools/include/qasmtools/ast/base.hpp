@@ -32,6 +32,7 @@
 #pragma once
 
 #include "../parser/position.hpp"
+#include "cloneable.hpp"
 #include "visitor.hpp"
 
 #include <memory>
@@ -49,7 +50,7 @@ using symbol = std::string;
  * \class qasmtools::ast::ASTNode
  * \brief Base class for AST nodes
  */
-class ASTNode {
+class ASTNode : public object::cloneable<ASTNode> {
     static int& max_uid_() {
         static int v;
         return v;
@@ -88,11 +89,6 @@ class ASTNode {
      * \param os Output stream
      */
     virtual std::ostream& pretty_print(std::ostream& os) const = 0;
-
-    /**
-     * \brief Generate a deep copy of the node
-     */
-    virtual ASTNode* clone() const = 0;
 
     /**
      * \brief Extraction operator override
