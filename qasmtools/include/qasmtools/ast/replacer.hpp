@@ -177,17 +177,17 @@ class Replacer : public Visitor {
         if (replacement_stmts_) {
             std::list<ptr<Stmt>> ret;
             for (auto& rep : *replacement_stmts_) {
-                auto tmp = stmt.clone();
+                auto tmp = object::clone(stmt);
                 tmp->set_then(std::move(rep));
-                ret.emplace_back(tmp);
+                ret.emplace_back(std::move(tmp));
             }
             replacement_stmts_ = std::move(ret);
         } else if (replacement_gates_) {
             std::list<ptr<Stmt>> ret;
             for (auto& rep : *replacement_gates_) {
-                auto tmp = stmt.clone();
+                auto tmp = object::clone(stmt);
                 tmp->set_then(std::move(rep));
-                ret.emplace_back(tmp);
+                ret.emplace_back(std::move(tmp));
             }
             replacement_gates_ = std::nullopt;
             replacement_stmts_ = std::move(ret);
