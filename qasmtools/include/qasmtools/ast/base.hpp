@@ -26,7 +26,7 @@
 
 /**
  * \file qasmtools/ast/base.hpp
- * \brief openQASM syntax trees
+ * \brief OpenQASM syntax trees
  */
 
 #pragma once

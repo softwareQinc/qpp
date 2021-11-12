@@ -1,6 +1,6 @@
-# openQASM/Qiskit discrepancies
+# OpenQASM/Qiskit discrepancies
 
-| Gate | openQASM | Qiskit | Phase inconsistency|
+| Gate | OpenQASM | Qiskit | Phase inconsistency|
 | - | - | - | - |
 | u3 | ![equation](https://latex.codecogs.com/gif.latex?%5Cbegin%7Bpmatrix%7De%5E%7B-i%28%5Cphi&plus;%5Clambda%29/2%7D%5Ccos%28%5Ctheta/2%29%26-e%5E%7B-i%28%5Cphi-%5Clambda%29/2%7D%5Csin%28%5Ctheta/2%29%5C%5Ce%5E%7Bi%28%5Cphi-%5Clambda%29/2%7D%5Csin%28%5Ctheta/2%29%26e%5E%7Bi%28%5Cphi&plus;%5Clambda%29/2%7D%5Ccos%28%5Ctheta/2%29%5Cend%7Bpmatrix%7D) | ![equation](https://latex.codecogs.com/gif.latex?%5Cbegin%7Bpmatrix%7D%5Ccos%28%5Ctheta/2%29%26-e%5E%7Bi%5Clambda%7D%5Csin%28%5Ctheta/2%29%5C%5Ce%5E%7Bi%5Cphi%7D%5Csin%28%5Ctheta/2%29%26e%5E%7Bi%28%5Cphi&plus;%5Clambda%29%7D%5Ccos%28%5Ctheta/2%29%5Cend%7Bpmatrix%7D) | ![equation](https://latex.codecogs.com/gif.latex?e%5E%7B-i%28%5Cphi&plus;%5Clambda%29/2%7D) |
 | u2 | ![equation](https://latex.codecogs.com/gif.latex?%5Ctfrac%7B1%7D%7B%5Csqrt%7B2%7D%7D%5Cbegin%7Bpmatrix%7De%5E%7B-i%28%5Cphi&plus;%5Clambda%29/2%7D%26-e%5E%7B-i%28%5Cphi-%5Clambda%29/2%7D%5C%5Ce%5E%7Bi%28%5Cphi-%5Clambda%29/2%7D%26e%5E%7Bi%28%5Cphi&plus;%5Clambda%29/2%7D%5Cend%7Bpmatrix%7D) | ![equation](https://latex.codecogs.com/gif.latex?%5Ctfrac%7B1%7D%7B%5Csqrt%7B2%7D%7D%5Cbegin%7Bpmatrix%7D1%26-e%5E%7Bi%5Clambda%7D%5C%5Ce%5E%7Bi%5Cphi%7D%26e%5E%7Bi%28%5Cphi&plus;%5Clambda%29%7D%5Cend%7Bpmatrix%7D) | ![equation](https://latex.codecogs.com/gif.latex?e%5E%7B-i%28%5Cphi&plus;%5Clambda%29/2%7D) |

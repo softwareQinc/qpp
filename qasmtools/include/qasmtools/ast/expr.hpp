@@ -26,7 +26,7 @@
 
 /**
  * \file qasmtools/ast/expr.hpp
- * \brief openQASM expressions
+ * \brief OpenQASM expressions
  */
 
 #pragma once
@@ -98,7 +98,7 @@ inline std::ostream& operator<<(std::ostream& os, const UnaryOp& uop) {
 
 /**
  * \class qasmtools::ast::Expr
- * \brief Base class for openQASM expressions
+ * \brief Base class for OpenQASM expressions
  */
 class Expr : public ASTNode {
   public:

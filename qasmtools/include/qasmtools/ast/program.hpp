@@ -26,7 +26,7 @@
 
 /**
  * \file qasmtools/ast/program.hpp
- * \brief openQASM programs
+ * \brief OpenQASM programs
  */
 
 #pragma once
