@@ -116,9 +116,14 @@ int main() {
     idx r = lcm(r1, r2); // candidate order of a mod N
     std::cout << ">> r = " << r << ", a^r mod N = " << modpow(a, r, N) << '\n';
     if (r % 2 == 0 && modpow(a, r / 2, N) != static_cast<bigint>(N - 1)) {
-        std::cout << ">> Possible factors: ";
-        std::cout << gcd(modpow(a, r / 2, N) - 1, N) << " ";
-        std::cout << gcd(modpow(a, r / 2, N) + 1, N) << '\n';
+        // at least one of those is a non-trivial factor
+        bigint p = gcd(modpow(a, r / 2, N) - 1, N);
+        bigint q = gcd(modpow(a, r / 2, N) + 1, N);
+        if (p == 1)
+            p = N / q;
+        if (q == 1)
+            q = N / p;
+        std::cout << ">> Factors: " << p << " " << q << '\n';
     } else {
         std::cout << ">> Factoring failed at stage 3, please try again!\n";
         std::exit(EXIT_FAILURE);
