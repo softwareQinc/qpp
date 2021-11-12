@@ -128,6 +128,7 @@ class Program : public ASTNode {
 
         return os;
     }
+
   protected:
     Program* clone() const override {
         std::list<ptr<Stmt>> tmp;

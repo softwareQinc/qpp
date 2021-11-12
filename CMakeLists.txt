@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.12)
-project(qpp VERSION 2.6 LANGUAGES CXX)
+project(qpp VERSION 3.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 enable_testing()
+
+#### Quantum++ root directory
+add_compile_definitions(PROJECT_ROOT_DIR="${PROJECT_SOURCE_DIR}")
 
 #### Guard against in-source builds (snippet from Eigen's CMakeLists.txt)
 if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -36,9 +39,6 @@ endif ()
 if (${WITH_EXAMPLES} OR ${WITH_UNIT_TESTS})
     include(cmake/qpp_dependencies.cmake)
 endif ()
-
-#### Quantum++ root directory
-add_compile_definitions(QPP_ROOT_DIR="${CMAKE_SOURCE_DIR}")
 
 #### Unit testing
 if (${WITH_UNIT_TESTS})
