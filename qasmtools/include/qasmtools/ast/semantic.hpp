@@ -84,7 +84,7 @@ struct RegisterType {
 struct RealType {};
 
 /**
- * \brief openQASM types as a std::variant
+ * \brief OpenQASM types as a std::variant
  *
  * Functional-style syntax trees in C++17 as a simpler alternative
  * to inheritance hierarchy. Support is still lacking for large-scale.

@@ -26,7 +26,7 @@
 
 /**
  * \file qasmtools/ast/var.hpp
- * \brief openQASM variable utilities
+ * \brief OpenQASM variable utilities
  */
 
 #pragma once

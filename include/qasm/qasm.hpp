@@ -26,7 +26,7 @@
 
 /**
  * \file qasm/qasm.hpp
- * \brief openQASM to QCircuit interface
+ * \brief OpenQASM to QCircuit interface
  */
 
 #ifndef QASM_QASM_HPP_
@@ -167,7 +167,7 @@ static std::unordered_map<ast::symbol,
 
 /**
  * \class qpp::qasm::Value
- * \brief Interface class for openQASM values during evaluation
+ * \brief Interface class for OpenQASM values during evaluation
  *
  * Allows environments to contain different types of mappings depending on
  * the type of variable. See deriving classes
@@ -803,7 +803,7 @@ class QCircuitBuilder final : public ast::Visitor {
 };
 
 /**
- * \brief Reads a openQASM circuit from stdin and returns its qpp::QCircuit
+ * \brief Reads a OpenQASM circuit from stdin and returns its qpp::QCircuit
  * representation
  *
  * \return qpp::QCircuit
@@ -819,7 +819,7 @@ inline QCircuit read(std::istream& stream) {
 }
 
 /**
- * \brief Reads a openQASM circuit from a file and returns its qpp::QCircuit
+ * \brief Reads a OpenQASM circuit from a file and returns its qpp::QCircuit
  * representation
  *
  * \return qpp::QCircuit

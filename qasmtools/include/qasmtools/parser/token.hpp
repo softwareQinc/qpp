@@ -43,7 +43,7 @@ namespace parser {
 
 /**
  * \class qasmtools::parser::Token
- * \brief openQASM token class
+ * \brief OpenQASM token class
  * \see qasmtools::parser::Lexer
  */
 class Token {
@@ -359,7 +359,7 @@ class Token {
 };
 
 /**
- * \brief Hash-map of openQASM keywords and their token type
+ * \brief Hash-map of OpenQASM keywords and their token type
  */
 static const std::unordered_map<std::string, Token::Kind> keywords{
     {"include", Token::Kind::kw_include},

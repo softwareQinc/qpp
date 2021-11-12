@@ -26,7 +26,7 @@
 
 /**
  * \file qasmtools/ast/stmt.hpp
- * \brief openQASM statements
+ * \brief OpenQASM statements
  */
 
 #pragma once
@@ -43,7 +43,7 @@ namespace ast {
 
 /**
  * \class qasmtools::ast::Stmt
- * \brief Base class for openQASM statements
+ * \brief Base class for OpenQASM statements
  */
 class Stmt : public ASTNode {
   public:

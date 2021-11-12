@@ -28,7 +28,7 @@
 
 /**
  * \file qasmtools/parser/preprocessor.hpp
- * \brief Manages includes for openQASM parsing
+ * \brief Manages includes for OpenQASM parsing
  */
 
 #pragma once
@@ -44,7 +44,7 @@ namespace parser {
 
 #if !USE_QISKIT_SPECS
 /**
- * \brief openQASM 2.0 standard library (qelib1.inc) as a string constant
+ * \brief OpenQASM 2.0 standard library (qelib1.inc) as a string constant
  */
 static const std::string std_include =
     "gate u3(theta,phi,lambda) q { U(theta,phi,lambda) q; }\n"
@@ -78,7 +78,7 @@ static const std::string std_include =
     "u3(-theta/2,0,-(phi+lambda)/2) t;  cx c,t;  u3(theta/2,phi,0) t;}\n";
 #else
 /**
- * \brief openQASM 2.0 standard library + r and cswap gates, as a string
+ * \brief OpenQASM 2.0 standard library + r and cswap gates, as a string
  * constant, as defined by Qiskit in
  * https://github.com/Qiskit/qiskit-terra/tree/master/qiskit/circuit/library/standard_gates
  */
@@ -119,7 +119,7 @@ static const std::string std_include =
 
 /**
  * \class qasmtools::parser::Preprocessor
- * \brief openQASM preprocessor class
+ * \brief OpenQASM preprocessor class
  * \see qasmtools::parser::Lexer
  *
  * The preprocessor acts as a wrapper around the lexer, providing a token stream

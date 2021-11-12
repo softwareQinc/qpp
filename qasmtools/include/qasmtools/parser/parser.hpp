@@ -28,7 +28,7 @@
 
 /**
  * \file qasmtools/parser/parser.hpp
- * \brief openQASM parsing
+ * \brief OpenQASM parsing
  */
 
 #pragma once
@@ -54,7 +54,7 @@ class ParseError : public std::exception {
 
 /**
  * \class qasmtools::parser::Parser
- * \brief openQASM parser class
+ * \brief OpenQASM parser class
  * \see qasmtools::parser::Preprocessor
  */
 class Parser {
@@ -179,7 +179,7 @@ class Parser {
     }
 
     /**
-     * \brief Parse an openQASM 2.0 program
+     * \brief Parse an OpenQASM 2.0 program
      *
      * <mainprogram> = OPENQASM <real> ; <program>
      * <program>     = <statement> | <program> <statement>
@@ -261,7 +261,7 @@ class Parser {
     }
 
     /**
-     * \brief Parse an openQASM 2.0 header
+     * \brief Parse an OpenQASM 2.0 header
      *
      * OPENQASM <nninteger> ;
      */
