@@ -1,5 +1,5 @@
 // Minimal teleportation OpenQASM example
-// Source: ./examples/qasm/qasm_teleport_minimal.cpp
+// Source: ./examples/qasm/teleport_minimal_qasm.cpp
 #include <iostream>
 
 #include "qpp.h"
@@ -8,15 +8,16 @@ int main() {
     using namespace qpp;
 
     // create a qpp::QCircuit from a QASM file
-    QCircuit qc = qasm::read_from_file(QPP_ROOT_DIR
+    QCircuit qc = qasm::read_from_file(PROJECT_ROOT_DIR
                                        "/examples/qasm/teleport_minimal.qasm");
 
     // we could have also used a C++ standard stream from <fstream>, like below
-    // std::ifstream ifs{PATH "/examples/qasm/teleport_minimal.qasm"};
+    // std::ifstream ifs{PROJECT_ROOT_DIR
+    //                   "/examples/qasm/teleport_minimal.qasm"};
     // QCircuit qc = qasm::read(ifs);
 
     // note that QASM measurements are non-destructive, so the final state after
-    // this step when executed on an engine will be a state of 3 qubits; that is
+    // this step when executed on an engine will be a state of 3 qubits; this is
     // why we discard the first two qubits in the next line
     qc.discard({0, 1});
 

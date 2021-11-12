@@ -208,6 +208,7 @@ class GateDecl final : public Stmt, public Decl {
         }
         return os;
     }
+
   protected:
     GateDecl* clone() const override {
         std::list<ptr<Gate>> tmp;
@@ -272,6 +273,7 @@ class OracleDecl final : public Stmt, public Decl {
         os << " { \"" << fname_ << "\" }\n";
         return os;
     }
+
   protected:
     OracleDecl* clone() const override {
         return new OracleDecl(pos_, id_, params_, fname_);
@@ -326,6 +328,7 @@ class RegisterDecl final : public Stmt, public Decl {
         os << (quantum_ ? "qreg " : "creg ") << id_ << "[" << size_ << "];\n";
         return os;
     }
+
   protected:
     RegisterDecl* clone() const override {
         return new RegisterDecl(pos_, id_, quantum_, size_);
@@ -382,6 +385,7 @@ class AncillaDecl final : public Gate, public Decl {
         os << "ancilla " << id_ << "[" << size_ << "];\n";
         return os;
     }
+
   protected:
     AncillaDecl* clone() const override {
         return new AncillaDecl(pos_, id_, dirty_, size_);

@@ -62,6 +62,7 @@ class Stmt : public ASTNode {
     std::ostream& pretty_print(std::ostream& os) const override {
         return pretty_print(os, false);
     }
+
   protected:
     virtual Stmt* clone() const override = 0;
 };
@@ -128,6 +129,7 @@ class MeasureStmt final : public Stmt {
         os << "measure " << q_arg_ << " -> " << c_arg_ << ";\n";
         return os;
     }
+
   protected:
     MeasureStmt* clone() const override {
         return new MeasureStmt(pos_, VarAccess(q_arg_), VarAccess(c_arg_));
@@ -178,6 +180,7 @@ class ResetStmt final : public Stmt {
         os << "reset " << arg_ << ";\n";
         return os;
     }
+
   protected:
     ResetStmt* clone() const override {
         return new ResetStmt(pos_, VarAccess(arg_));
@@ -247,6 +250,7 @@ class IfStmt final : public Stmt {
         os << "if (" << var_ << "==" << cond_ << ") " << *then_;
         return os;
     }
+
   protected:
     IfStmt* clone() const override {
         return new IfStmt(pos_, var_, cond_, object::clone(*then_));
@@ -261,6 +265,7 @@ class Gate : public Stmt {
   public:
     Gate(parser::Position pos) : Stmt(pos) {}
     virtual ~Gate() = default;
+
   protected:
     virtual Gate* clone() const = 0;
 };
@@ -363,6 +368,7 @@ class UGate final : public Gate {
            << ";\n";
         return os;
     }
+
   protected:
     UGate* clone() const override {
         return new UGate(pos_, object::clone(*theta_), object::clone(*phi_),
@@ -431,6 +437,7 @@ class CNOTGate final : public Gate {
         os << "CX " << ctrl_ << "," << tgt_ << ";\n";
         return os;
     }
+
   protected:
     CNOTGate* clone() const override {
         return new CNOTGate(pos_, VarAccess(ctrl_), VarAccess(tgt_));
@@ -512,6 +519,7 @@ class BarrierGate final : public Gate {
         os << ";\n";
         return os;
     }
+
   protected:
     BarrierGate* clone() const override {
         return new BarrierGate(pos_, std::vector<VarAccess>(args_));
@@ -650,6 +658,7 @@ class DeclaredGate final : public Gate {
         os << ";\n";
         return os;
     }
+
   protected:
     DeclaredGate* clone() const override {
         std::vector<ptr<Expr>> c_tmp;

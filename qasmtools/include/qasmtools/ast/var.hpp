@@ -160,6 +160,7 @@ class VarAccess final : public ASTNode {
             os << "[" << *offset_ << "]";
         return os;
     }
+
   protected:
     VarAccess* clone() const override {
         return new VarAccess(pos_, var_, offset_);

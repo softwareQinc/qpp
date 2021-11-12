@@ -12,53 +12,54 @@ using namespace qpp;
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, StdCompliance) {
     // generic circuits
-    EXPECT_NO_THROW(qasm::read_from_file(QPP_ROOT_DIR
+    EXPECT_NO_THROW(qasm::read_from_file(PROJECT_ROOT_DIR
                                          "/qasmtools/qasm/generic/adder.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/generic/bigadder.qasm"));
+        PROJECT_ROOT_DIR "/qasmtools/qasm/generic/bigadder.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/generic/inverseqft1.qasm"));
+        PROJECT_ROOT_DIR "/qasmtools/qasm/generic/inverseqft1.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/generic/inverseqft2.qasm"));
+        PROJECT_ROOT_DIR "/qasmtools/qasm/generic/inverseqft2.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/generic/ipea_3_pi_8.qasm"));
+        PROJECT_ROOT_DIR "/qasmtools/qasm/generic/ipea_3_pi_8.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/generic/pea_3_pi_8.qasm"));
-    EXPECT_NO_THROW(
-        qasm::read_from_file(QPP_ROOT_DIR "/qasmtools/qasm/generic/qec.qasm"));
-    EXPECT_NO_THROW(
-        qasm::read_from_file(QPP_ROOT_DIR "/qasmtools/qasm/generic/qft.qasm"));
-    EXPECT_NO_THROW(
-        qasm::read_from_file(QPP_ROOT_DIR "/qasmtools/qasm/generic/qpt.qasm"));
-    EXPECT_NO_THROW(
-        qasm::read_from_file(QPP_ROOT_DIR "/qasmtools/qasm/generic/rb.qasm"));
+        PROJECT_ROOT_DIR "/qasmtools/qasm/generic/pea_3_pi_8.qasm"));
+    EXPECT_NO_THROW(qasm::read_from_file(PROJECT_ROOT_DIR
+                                         "/qasmtools/qasm/generic/qec.qasm"));
+    EXPECT_NO_THROW(qasm::read_from_file(PROJECT_ROOT_DIR
+                                         "/qasmtools/qasm/generic/qft.qasm"));
+    EXPECT_NO_THROW(qasm::read_from_file(PROJECT_ROOT_DIR
+                                         "/qasmtools/qasm/generic/qpt.qasm"));
+    EXPECT_NO_THROW(qasm::read_from_file(PROJECT_ROOT_DIR
+                                         "/qasmtools/qasm/generic/rb.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/generic/teleport.qasm"));
+        PROJECT_ROOT_DIR "/qasmtools/qasm/generic/teleport.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/generic/teleportv2.qasm"));
+        PROJECT_ROOT_DIR "/qasmtools/qasm/generic/teleportv2.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/generic/W-state.qasm"));
+        PROJECT_ROOT_DIR "/qasmtools/qasm/generic/W-state.qasm"));
 
     // ibmqx2 circuits
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/ibmqx2/011_3_qubit_grover_50_.qasm"));
+        PROJECT_ROOT_DIR "/qasmtools/qasm/ibmqx2/011_3_qubit_grover_50_.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/ibmqx2/Deutsch_Algorithm.qasm"));
-    EXPECT_NO_THROW(
-        qasm::read_from_file(QPP_ROOT_DIR "/qasmtools/qasm/ibmqx2/iswap.qasm"));
+        PROJECT_ROOT_DIR "/qasmtools/qasm/ibmqx2/Deutsch_Algorithm.qasm"));
+    EXPECT_NO_THROW(qasm::read_from_file(PROJECT_ROOT_DIR
+                                         "/qasmtools/qasm/ibmqx2/iswap.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/ibmqx2/qe_qft_3.qasm"));
+        PROJECT_ROOT_DIR "/qasmtools/qasm/ibmqx2/qe_qft_3.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/ibmqx2/qe_qft_4.qasm"));
+        PROJECT_ROOT_DIR "/qasmtools/qasm/ibmqx2/qe_qft_4.qasm"));
     EXPECT_NO_THROW(qasm::read_from_file(
-        QPP_ROOT_DIR "/qasmtools/qasm/ibmqx2/qe_qft_5.qasm"));
-    EXPECT_NO_THROW(qasm::read_from_file(QPP_ROOT_DIR
+        PROJECT_ROOT_DIR "/qasmtools/qasm/ibmqx2/qe_qft_5.qasm"));
+    EXPECT_NO_THROW(qasm::read_from_file(PROJECT_ROOT_DIR
                                          "/qasmtools/qasm/ibmqx2/W3test.qasm"));
 }
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, BuiltinGates) {
     QCircuit q_circuit = qasm::read_from_file(
-        QPP_ROOT_DIR "/unit_tests/tests/qasm/circuits/units/builtingates.qasm");
+        PROJECT_ROOT_DIR
+        "/unit_tests/tests/qasm/circuits/units/builtingates.qasm");
     QEngine engine{q_circuit};
     engine.execute();
 
@@ -82,7 +83,7 @@ TEST(qpp_qasm_read_from_file, BuiltinGates) {
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, Teleportation) {
     QCircuit q_circuit = qasm::read_from_file(
-        QPP_ROOT_DIR
+        PROJECT_ROOT_DIR
         "/unit_tests/tests/qasm/circuits/units/teleportation.qasm");
     QEngine engine{q_circuit};
     engine.execute();
@@ -96,7 +97,8 @@ TEST(qpp_qasm_read_from_file, Teleportation) {
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, MappedGates) {
     QCircuit q_circuit = qasm::read_from_file(
-        QPP_ROOT_DIR "/unit_tests/tests/qasm/circuits/units/mappedgates.qasm");
+        PROJECT_ROOT_DIR
+        "/unit_tests/tests/qasm/circuits/units/mappedgates.qasm");
     QEngine engine{q_circuit};
     engine.execute();
 
@@ -114,7 +116,8 @@ TEST(qpp_qasm_read_from_file, MappedGates) {
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, NonDestrMeas) {
     QCircuit q_circuit = qasm::read_from_file(
-        QPP_ROOT_DIR "/unit_tests/tests/qasm/circuits/units/nondestrmeas.qasm");
+        PROJECT_ROOT_DIR
+        "/unit_tests/tests/qasm/circuits/units/nondestrmeas.qasm");
     QEngine engine{q_circuit};
     engine.execute();
 
@@ -133,7 +136,7 @@ TEST(qpp_qasm_read_from_file, NonDestrMeas) {
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, Reset) {
     QCircuit q_circuit = qasm::read_from_file(
-        QPP_ROOT_DIR "/unit_tests/tests/qasm/circuits/units/reset.qasm");
+        PROJECT_ROOT_DIR "/unit_tests/tests/qasm/circuits/units/reset.qasm");
     QEngine engine{q_circuit};
     engine.execute();
 
@@ -149,7 +152,7 @@ TEST(qpp_qasm_read_from_file, Reset) {
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, SciNot) {
     QCircuit q_circuit = qasm::read_from_file(
-        QPP_ROOT_DIR "/unit_tests/tests/qasm/circuits/units/scinot.qasm");
+        PROJECT_ROOT_DIR "/unit_tests/tests/qasm/circuits/units/scinot.qasm");
     QEngine engine{q_circuit};
     engine.execute();
 
