@@ -32,6 +32,10 @@
 #ifndef QASM_QASM_HPP_
 #define QASM_QASM_HPP_
 
+#ifndef USE_QISKIT_SPECS
+#define USE_QISKIT_SPECS false
+#endif
+
 namespace qpp {
 namespace qasm {
 
