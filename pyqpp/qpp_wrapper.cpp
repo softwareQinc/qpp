@@ -37,6 +37,7 @@ using QCircuit = qpp::QCircuit;
 using QEngine = qpp::QEngine;
 using idx = qpp::idx;
 using cmat = qpp::cmat;
+using ket = qpp::ket;
 
 PYBIND11_MODULE(pyqpp, m) {
     m.doc() = "Python wrapper for qpp (https://github.com/softwareQinc/qpp)";
@@ -351,6 +352,43 @@ PYBIND11_MODULE(pyqpp, m) {
     gates.attr("SWAP") = qpp::gt.SWAP;
     gates.attr("TOF") = qpp::gt.TOF;
     gates.attr("FRED") = qpp::gt.FRED;
+    gates.def("Rn", [](double theta, const std::array<double, 3>& n) -> cmat {
+            return qpp::gt.Rn(theta, n);
+        },
+        "Qubit rotation of theta about the 3-dimensional real (unit) vector n",
+        py::arg("theta"), py::arg("n"));
+    gates.def("RX", [](double theta) -> cmat { return qpp::gt.RX(theta); },
+              "Qubit rotation of theta about the X axis",
+              py::arg("theta"));
+    gates.def("RY", [](double theta) -> cmat { return qpp::gt.RY(theta); },
+              "Qubit rotation of theta about the Y axis",
+              py::arg("theta"));
+    gates.def("RZ", [](double theta) -> cmat { return qpp::gt.RZ(theta); },
+              "Qubit rotation of theta about the Z axis",
+              py::arg("theta"));
+    gates.def("Zd", [](idx D) -> cmat { return qpp::gt.Zd(D); },
+              "Generalized Z gate for qudits",
+              py::arg("D") = 2);
+    gates.def("SWAPd", [](idx D) -> cmat { return qpp::gt.SWAPd(D); },
+              "SWAP gate for qudits",
+              py::arg("D") = 2);
+    gates.def("Fd", [](idx D) -> cmat { return qpp::gt.Fd(D); },
+              "Quantum Fourier transform gate for qudits",
+              py::arg("D") = 2);
+    gates.def("MODMUL", [](idx a, idx N, idx n) -> cmat {
+            return qpp::gt.MODMUL(a, N, n);
+        },
+        "Modular multiplication gate for qubits",
+        py::arg("a"), py::arg("N"), py::arg("n"));
+    gates.def("Xd", [](idx D) -> cmat { return qpp::gt.Xd(D); },
+              "Generalized X gate for qudits",
+              py::arg("D") = 2);
+    gates.def("Id", [](idx D) -> cmat { return qpp::gt.Id(D); },
+              "Identity gate", py::arg("D") = 2);
+    gates.def("get_name", [](const cmat& U) -> std::string {
+            return qpp::gt.get_name(U);
+        },
+        "Get the name of the most common qubit gates", py::arg("U"));
 
     auto states = m.def_submodule("states");
     states.attr("x0") = qpp::st.x0;
@@ -371,7 +409,50 @@ PYBIND11_MODULE(pyqpp, m) {
     states.attr("W") = qpp::st.W;
     states.attr("pGHZ") = qpp::st.pGHZ;
     states.attr("pW") = qpp::st.pW;
+    states.def("mes", [](idx d) -> ket { return qpp::st.mes(d); },
+        "Maximally entangled state of 2 qudits", py::arg("d") = 2);
+    states.def("zero", [](idx n, idx d) -> ket { return qpp::st.zero(n, d); },
+        "Zero state of n qudits", py::arg("n") = 1, py::arg("d") = 2);
+    states.def("one", [](idx n, idx d) -> ket { return qpp::st.one(n, d); },
+        "One state of n qudits", py::arg("n") = 1, py::arg("d") = 2);
+    states.def("jn", [](idx j, idx n, idx d) -> ket {
+            return qpp::st.jn(j, n, d);
+        },
+        "$|j\\rangle^{\\otimes n}$ state of n qudits", py::arg("j"),
+        py::arg("n") = 1, py::arg("d") = 2);
+    states.def("j", [](idx j, idx d) -> ket { return qpp::st.j(j, d); },
+        "$|j\\rangle$ computational basis state of a single qudit",
+        py::arg("j"), py::arg("d") = 2);
+    states.def("plus", [](idx n) -> ket { return qpp::st.plus(n); },
+        "Plus state of n qubits", py::arg("n") = 1);
+    states.def("minus", [](idx n) -> ket { return qpp::st.minus(n); },
+        "Minus state of n qubits", py::arg("n") = 1);
+
+    m.def("transpose", [](const cmat& A) -> cmat { return qpp::transpose(A); },
+          "Transpose");
+    m.def("conjugate", [](const cmat& A) -> cmat { return qpp::conjugate(A); },
+          "Complex conjugate");
+    m.def("adjoint", [](const cmat& A) -> cmat { return qpp::adjoint(A); },
+          "Adjoint");
+    m.def("inverse", [](const cmat& A) -> cmat { return qpp::inverse(A); },
+          "Inverse");
+    m.def("trace", [](const cmat& A) -> qpp::cplx { return qpp::trace(A); },
+          "trace");
+    m.def("det", [](const cmat& A) -> qpp::cplx { return qpp::det(A); },
+          "Determinant");
+    m.def("logdet", [](const cmat& A) -> qpp::cplx { return qpp::logdet(A); },
+          "Logarithm of the determinant");
+    m.def("sum", [](const cmat& A) -> qpp::cplx { return qpp::sum(A); },
+          "Element-wise sum");
+    m.def("prod", [](const cmat& A) -> qpp::cplx { return qpp::prod(A); },
+          "Element-wise product");
+    m.def("norm", [](const cmat& A) -> double { return qpp::norm(A); },
+          "Frobenius norm");
 
     m.def("randU", &qpp::randU, "Generates a random unitary matrix",
           py::arg("D") = 2);
+
+    m.attr("pi") = qpp::pi;
+    m.attr("ee") = qpp::ee;
+    m.def("omega", &qpp::omega, "D-th root of unity", py::arg("D"));
 }
