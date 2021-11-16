@@ -384,6 +384,9 @@ PYBIND11_MODULE(pyqpp, m) {
     declare_noisy_engine<qpp::QubitDepolarizingNoise, double>(m, "QubitDepolarizingNoise");
     /* QuditDepolarizingNoise's constructor accepts a double and an idx */
     declare_noisy_engine<qpp::QuditDepolarizingNoise, double, idx>(m, "QuditDepolarizingNoise");
+    declare_noisy_engine<qpp::QubitPhaseFlipNoise, double>(m, "QubitPhaseFlipNoise");
+    declare_noisy_engine<qpp::QubitBitFlipNoise, double>(m, "QubitBitFlipNoise");
+    declare_noisy_engine<qpp::QubitBitPhaseFlipNoise, double>(m, "QubitBitPhaseFlipNoise");
 
     auto py_qasm = m.def_submodule("qasm");
     py_qasm.def("read_from_file", &qpp::qasm::read_from_file,
