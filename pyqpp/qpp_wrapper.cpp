@@ -39,6 +39,53 @@ using idx = qpp::idx;
 using cmat = qpp::cmat;
 using ket = qpp::ket;
 
+/* Trampoline class for virtual methods */
+class PyQEngine : public QEngine {
+  public:
+    using QEngine::QEngine;
+
+    bool is_noisy() const override {
+        PYBIND11_OVERRIDE(
+            bool,    /* Return type */
+            QEngine, /* Parent class */
+            is_noisy /* Name of function in C++ (must match Python name) */
+        );
+    }
+
+    QEngine& execute(idx reps = 1, bool clear_stats = true) override {
+        PYBIND11_OVERRIDE(
+            QEngine&, /* Return type */
+            QEngine,  /* Parent class */
+            execute,  /* Name of function in C++ (must match Python name) */
+            reps,     /* Argument(s) */
+            clear_stats
+        );
+    }
+};
+
+template<typename NoiseModel, typename... CtorTypeList>
+void declare_noisy_engine(py::module &m, const std::string& type) {
+    py::class_<NoiseModel>(m, type.c_str())
+        .def(py::init<CtorTypeList ...>())
+        .def("get_d", &NoiseModel::get_d, "Qudit dimension")
+        .def("get_Ks", &NoiseModel::get_Ks, "Vector of noise operators")
+        .def("get_probs", &NoiseModel::get_probs,
+             "Vector of probabilities corresponding to each noise operator")
+        .def("get_last_idx", &NoiseModel::get_last_idx,
+             "Index of the last occurring noise element")
+        .def("get_last_p", &NoiseModel::get_last_p,
+             "Probability of the last occurring noise element")
+        .def("get_last_K", &NoiseModel::get_last_K,
+             "Last occurring noise element");
+
+    std::string pyname = "QNoisyEngine_" + type;
+    py::class_<qpp::QNoisyEngine<NoiseModel>, QEngine>(m, pyname.c_str())
+        .def(py::init<const QCircuit&, const NoiseModel&>())
+        .def("get_noise_results",
+             &qpp::QNoisyEngine<NoiseModel>::get_noise_results,
+             "Vector of noise results obtained before every step in the circuit");
+}
+
 PYBIND11_MODULE(pyqpp, m) {
     m.doc() = "Python wrapper for qpp (https://github.com/softwareQinc/qpp)";
 
@@ -289,9 +336,8 @@ PYBIND11_MODULE(pyqpp, m) {
              return oss.str();
         });
 
-    py::class_<QEngine>(m, "QEngine")
+    py::class_<QEngine, PyQEngine>(m, "QEngine")
         .def(py::init<const QCircuit&>())
-        .def(py::init<const QEngine&>())
         .def("get_psi", &QEngine::get_psi, "Underlying quantum state")
         .def("get_dits", &QEngine::get_dits, "Underlying classical dits")
         .def("get_dit", &QEngine::get_dit,
@@ -333,6 +379,11 @@ PYBIND11_MODULE(pyqpp, m) {
              oss << qe;
              return oss.str();
         });
+
+    /* QubitDepolarizingNoise's constructor accepts a double */
+    declare_noisy_engine<qpp::QubitDepolarizingNoise, double>(m, "QubitDepolarizingNoise");
+    /* QuditDepolarizingNoise's constructor accepts a double and an idx */
+    declare_noisy_engine<qpp::QuditDepolarizingNoise, double, idx>(m, "QuditDepolarizingNoise");
 
     auto py_qasm = m.def_submodule("qasm");
     py_qasm.def("read_from_file", &qpp::qasm::read_from_file,
@@ -428,6 +479,7 @@ PYBIND11_MODULE(pyqpp, m) {
     states.def("minus", [](idx n) -> ket { return qpp::st.minus(n); },
         "Minus state of n qubits", py::arg("n") = 1);
 
+    /* template methods must be explicitly instantiated */
     m.def("transpose", [](const cmat& A) -> cmat { return qpp::transpose(A); },
           "Transpose");
     m.def("conjugate", [](const cmat& A) -> cmat { return qpp::conjugate(A); },
