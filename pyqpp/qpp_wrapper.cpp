@@ -66,7 +66,7 @@ class PyQEngine : public QEngine {
 template<typename NoiseModel, typename... CtorTypeList>
 void declare_noisy_engine(py::module &m, const std::string& type) {
     py::class_<NoiseModel>(m, type.c_str())
-        .def(py::init<CtorTypeList ...>())
+        .def(py::init<CtorTypeList...>())
         .def("get_d", &NoiseModel::get_d, "Qudit dimension")
         .def("get_Ks", &NoiseModel::get_Ks, "Vector of noise operators")
         .def("get_probs", &NoiseModel::get_probs,
@@ -84,6 +84,10 @@ void declare_noisy_engine(py::module &m, const std::string& type) {
         .def("get_noise_results",
              &qpp::QNoisyEngine<NoiseModel>::get_noise_results,
              "Vector of noise results obtained before every step in the circuit");
+
+    m.def("QNoisyEngine", [](const QCircuit& qc, const NoiseModel& nm) {
+            return qpp::QNoisyEngine(qc, nm);
+        });
 }
 
 PYBIND11_MODULE(pyqpp, m) {
@@ -352,11 +356,8 @@ PYBIND11_MODULE(pyqpp, m) {
              "Vector of already measured qudit indexes")
         .def("get_non_measured", &QEngine::get_non_measured,
              "Non-measured qudit indexes")
-        /* Always return QCircuit copy */
-        .def("get_circuit", [](const QEngine& qe) -> QCircuit {
-                return qe.get_circuit();
-            },
-            "Underlying quantum circuit description")
+        .def("get_circuit", [](const QEngine& qe) { return qe.get_circuit(); },
+             "Underlying quantum circuit description")
         .def("get_stats", &QEngine::get_stats,
              "Measurement statistics for multiple runs")
         .def("is_noisy", &QEngine::is_noisy, "Whether the engine is noisy")
@@ -406,42 +407,40 @@ PYBIND11_MODULE(pyqpp, m) {
     gates.attr("SWAP") = qpp::gt.SWAP;
     gates.attr("TOF") = qpp::gt.TOF;
     gates.attr("FRED") = qpp::gt.FRED;
-    gates.def("Rn", [](double theta, const std::array<double, 3>& n) -> cmat {
+    gates.def("Rn", [](double theta, const std::array<double, 3>& n) {
             return qpp::gt.Rn(theta, n);
         },
         "Qubit rotation of theta about the 3-dimensional real (unit) vector n",
         py::arg("theta"), py::arg("n"));
-    gates.def("RX", [](double theta) -> cmat { return qpp::gt.RX(theta); },
+    gates.def("RX", [](double theta) { return qpp::gt.RX(theta); },
               "Qubit rotation of theta about the X axis",
               py::arg("theta"));
-    gates.def("RY", [](double theta) -> cmat { return qpp::gt.RY(theta); },
+    gates.def("RY", [](double theta) { return qpp::gt.RY(theta); },
               "Qubit rotation of theta about the Y axis",
               py::arg("theta"));
-    gates.def("RZ", [](double theta) -> cmat { return qpp::gt.RZ(theta); },
+    gates.def("RZ", [](double theta) { return qpp::gt.RZ(theta); },
               "Qubit rotation of theta about the Z axis",
               py::arg("theta"));
-    gates.def("Zd", [](idx D) -> cmat { return qpp::gt.Zd(D); },
+    gates.def("Zd", [](idx D) { return qpp::gt.Zd(D); },
               "Generalized Z gate for qudits",
               py::arg("D") = 2);
-    gates.def("SWAPd", [](idx D) -> cmat { return qpp::gt.SWAPd(D); },
+    gates.def("SWAPd", [](idx D) { return qpp::gt.SWAPd(D); },
               "SWAP gate for qudits",
               py::arg("D") = 2);
-    gates.def("Fd", [](idx D) -> cmat { return qpp::gt.Fd(D); },
+    gates.def("Fd", [](idx D) { return qpp::gt.Fd(D); },
               "Quantum Fourier transform gate for qudits",
               py::arg("D") = 2);
-    gates.def("MODMUL", [](idx a, idx N, idx n) -> cmat {
+    gates.def("MODMUL", [](idx a, idx N, idx n) {
             return qpp::gt.MODMUL(a, N, n);
         },
         "Modular multiplication gate for qubits",
         py::arg("a"), py::arg("N"), py::arg("n"));
-    gates.def("Xd", [](idx D) -> cmat { return qpp::gt.Xd(D); },
+    gates.def("Xd", [](idx D) { return qpp::gt.Xd(D); },
               "Generalized X gate for qudits",
               py::arg("D") = 2);
-    gates.def("Id", [](idx D) -> cmat { return qpp::gt.Id(D); },
+    gates.def("Id", [](idx D) { return qpp::gt.Id(D); },
               "Identity gate", py::arg("D") = 2);
-    gates.def("get_name", [](const cmat& U) -> std::string {
-            return qpp::gt.get_name(U);
-        },
+    gates.def("get_name", [](const cmat& U) { return qpp::gt.get_name(U); },
         "Get the name of the most common qubit gates", py::arg("U"));
 
     auto states = m.def_submodule("states");
@@ -463,46 +462,38 @@ PYBIND11_MODULE(pyqpp, m) {
     states.attr("W") = qpp::st.W;
     states.attr("pGHZ") = qpp::st.pGHZ;
     states.attr("pW") = qpp::st.pW;
-    states.def("mes", [](idx d) -> ket { return qpp::st.mes(d); },
+    states.def("mes", [](idx d) { return qpp::st.mes(d); },
         "Maximally entangled state of 2 qudits", py::arg("d") = 2);
-    states.def("zero", [](idx n, idx d) -> ket { return qpp::st.zero(n, d); },
+    states.def("zero", [](idx n, idx d) { return qpp::st.zero(n, d); },
         "Zero state of n qudits", py::arg("n") = 1, py::arg("d") = 2);
-    states.def("one", [](idx n, idx d) -> ket { return qpp::st.one(n, d); },
+    states.def("one", [](idx n, idx d) { return qpp::st.one(n, d); },
         "One state of n qudits", py::arg("n") = 1, py::arg("d") = 2);
-    states.def("jn", [](idx j, idx n, idx d) -> ket {
-            return qpp::st.jn(j, n, d);
-        },
+    states.def("jn", [](idx j, idx n, idx d) { return qpp::st.jn(j, n, d); },
         "$|j\\rangle^{\\otimes n}$ state of n qudits", py::arg("j"),
         py::arg("n") = 1, py::arg("d") = 2);
-    states.def("j", [](idx j, idx d) -> ket { return qpp::st.j(j, d); },
+    states.def("j", [](idx j, idx d) { return qpp::st.j(j, d); },
         "$|j\\rangle$ computational basis state of a single qudit",
         py::arg("j"), py::arg("d") = 2);
-    states.def("plus", [](idx n) -> ket { return qpp::st.plus(n); },
+    states.def("plus", [](idx n) { return qpp::st.plus(n); },
         "Plus state of n qubits", py::arg("n") = 1);
-    states.def("minus", [](idx n) -> ket { return qpp::st.minus(n); },
+    states.def("minus", [](idx n) { return qpp::st.minus(n); },
         "Minus state of n qubits", py::arg("n") = 1);
 
     /* template methods must be explicitly instantiated */
-    m.def("transpose", [](const cmat& A) -> cmat { return qpp::transpose(A); },
+    m.def("transpose", [](const cmat& A) { return qpp::transpose(A); },
           "Transpose");
-    m.def("conjugate", [](const cmat& A) -> cmat { return qpp::conjugate(A); },
+    m.def("conjugate", [](const cmat& A) { return qpp::conjugate(A); },
           "Complex conjugate");
-    m.def("adjoint", [](const cmat& A) -> cmat { return qpp::adjoint(A); },
-          "Adjoint");
-    m.def("inverse", [](const cmat& A) -> cmat { return qpp::inverse(A); },
-          "Inverse");
-    m.def("trace", [](const cmat& A) -> qpp::cplx { return qpp::trace(A); },
-          "trace");
-    m.def("det", [](const cmat& A) -> qpp::cplx { return qpp::det(A); },
-          "Determinant");
-    m.def("logdet", [](const cmat& A) -> qpp::cplx { return qpp::logdet(A); },
+    m.def("adjoint", [](const cmat& A) { return qpp::adjoint(A); }, "Adjoint");
+    m.def("inverse", [](const cmat& A) { return qpp::inverse(A); }, "Inverse");
+    m.def("trace", [](const cmat& A) { return qpp::trace(A); }, "trace");
+    m.def("det", [](const cmat& A) { return qpp::det(A); }, "Determinant");
+    m.def("logdet", [](const cmat& A) { return qpp::logdet(A); },
           "Logarithm of the determinant");
-    m.def("sum", [](const cmat& A) -> qpp::cplx { return qpp::sum(A); },
-          "Element-wise sum");
-    m.def("prod", [](const cmat& A) -> qpp::cplx { return qpp::prod(A); },
+    m.def("sum", [](const cmat& A) { return qpp::sum(A); }, "Element-wise sum");
+    m.def("prod", [](const cmat& A) { return qpp::prod(A); },
           "Element-wise product");
-    m.def("norm", [](const cmat& A) -> double { return qpp::norm(A); },
-          "Frobenius norm");
+    m.def("norm", [](const cmat& A) { return qpp::norm(A); }, "Frobenius norm");
 
     m.def("randU", &qpp::randU, "Generates a random unitary matrix",
           py::arg("D") = 2);
