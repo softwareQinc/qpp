@@ -1,7 +1,8 @@
 Pre-release - work in progress
+    - Added a pyqpp, a Python wrapper around Quantum++. See
+      https://github.com/softwareQinc/qpp/wiki/8.-pyqpp for more details.
     - Minor update of Shor's algorithm example ["examples/shor.cpp"]
     - Renamed ["examples/qasm/qasm.cpp"] to ["examples/qasm/qpp_qasm.cpp"]
-    - 
 
 Version 3.0 - 5 October 2021
     - Major release, bumped up C++ standard to C++17
