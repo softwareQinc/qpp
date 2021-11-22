@@ -35,4 +35,7 @@ setup(
     author='softwareQ',
     author_email='info@softwareq.ca',
     url='https://github.com/softwareQinc/qpp',
+    install_requires=[
+        'numpy',
+    ],
     ext_modules=ext_modules)
