@@ -341,7 +341,7 @@ PYBIND11_MODULE(pyqpp, m) {
         });
 
     py::class_<QEngine, PyQEngine>(m, "QEngine")
-        .def(py::init<const QCircuit&>())
+        .def(py::init<const QCircuit&>(), py::keep_alive<1, 2>())
         .def("get_psi", &QEngine::get_psi, "Underlying quantum state")
         .def("get_dits", &QEngine::get_dits, "Underlying classical dits")
         .def("get_dit", &QEngine::get_dit,
