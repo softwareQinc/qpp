@@ -205,7 +205,7 @@ class SemanticChecker final : public Visitor {
     void visit(GateDecl& decl) {
         if (lookup_gate(decl.id())) {
             std::cerr << decl.pos() << ": Gate \"" << decl.id()
-                      << "\" previous declared\n";
+                      << "\" previously declared\n";
             error_ = true;
         } else {
             // Check the body
@@ -229,7 +229,7 @@ class SemanticChecker final : public Visitor {
     void visit(OracleDecl& decl) {
         if (lookup(decl.id())) {
             std::cerr << decl.pos() << ": Identifier \"" << decl.id()
-                      << "\" previous declared\n";
+                      << "\" previously declared\n";
             error_ = true;
         } else {
             set_gate(decl.id(), GateType{0, (int) decl.params().size()});
@@ -238,7 +238,7 @@ class SemanticChecker final : public Visitor {
     void visit(RegisterDecl& decl) {
         if (lookup(decl.id())) {
             std::cerr << decl.pos() << ": Identifier \"" << decl.id()
-                      << "\" previous declared\n";
+                      << "\" previously declared\n";
             error_ = true;
         } else if (decl.size() < 0) {
             std::cerr << decl.pos()
@@ -253,7 +253,7 @@ class SemanticChecker final : public Visitor {
     void visit(AncillaDecl& decl) {
         if (lookup(decl.id())) {
             std::cerr << decl.pos() << ": Identifier \"" << decl.id()
-                      << "\" previous declared\n";
+                      << "\" previously declared\n";
             error_ = true;
         } else if (decl.size() < 0) {
             std::cerr << decl.pos()
