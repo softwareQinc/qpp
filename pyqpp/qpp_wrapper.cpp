@@ -80,14 +80,16 @@ void declare_noisy_engine(py::module &m, const std::string& type) {
 
     std::string pyname = "QNoisyEngine_" + type;
     py::class_<qpp::QNoisyEngine<NoiseModel>, QEngine>(m, pyname.c_str())
-        .def(py::init<const QCircuit&, const NoiseModel&>())
+        .def(py::init<const QCircuit&, const NoiseModel&>(),
+             py::keep_alive<1, 2>())
         .def("get_noise_results",
              &qpp::QNoisyEngine<NoiseModel>::get_noise_results,
              "Vector of noise results obtained before every step in the circuit");
 
     m.def("QNoisyEngine", [](const QCircuit& qc, const NoiseModel& nm) {
             return qpp::QNoisyEngine(qc, nm);
-        });
+        },
+        py::keep_alive<0, 1>());
 }
 
 PYBIND11_MODULE(pyqpp, m) {
