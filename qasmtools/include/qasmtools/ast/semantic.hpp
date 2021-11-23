@@ -172,14 +172,14 @@ class SemanticChecker final : public Visitor {
         check_uniform(gate.args(), types);
     }
     void visit(DeclaredGate& gate) {
-        auto entry = lookup_gate(gate.name());
+        auto entry = lookup(gate.name());
 
         if (!entry) {
             std::cerr << gate.pos() << ": Gate \"" << gate.name()
                       << "\" undeclared\n";
             error_ = true;
-        } else {
-            auto ty = *entry;
+        } else if (std::holds_alternative<GateType>(*entry)) {
+            auto ty = std::get<GateType>(*entry);
             if (ty.num_c_params != gate.num_cargs()) {
                 std::cerr << gate.pos() << ": Gate \"" << gate.name()
                           << "\" expects " << ty.num_c_params;
@@ -199,12 +199,16 @@ class SemanticChecker final : public Visitor {
                                                           BitType::Qubit);
                 check_uniform(gate.qargs(), types);
             }
+        } else {
+            std::cerr << gate.pos() << ": Identifier \"" << gate.name()
+                      << "\" is not a gate\n";
+            error_ = true;
         }
     }
 
     void visit(GateDecl& decl) {
-        if (lookup_gate(decl.id())) {
-            std::cerr << decl.pos() << ": Gate \"" << decl.id()
+        if (lookup_local(decl.id())) {
+            std::cerr << decl.pos() << ": Identifier \"" << decl.id()
                       << "\" previously declared\n";
             error_ = true;
         } else {
@@ -222,21 +226,21 @@ class SemanticChecker final : public Visitor {
             pop_scope();
 
             // Add declaration
-            set_gate(decl.id(), GateType{(int) decl.c_params().size(),
-                                         (int) decl.q_params().size()});
+            set(decl.id(), GateType{(int) decl.c_params().size(),
+                                    (int) decl.q_params().size()});
         }
     }
     void visit(OracleDecl& decl) {
-        if (lookup(decl.id())) {
+        if (lookup_local(decl.id())) {
             std::cerr << decl.pos() << ": Identifier \"" << decl.id()
                       << "\" previously declared\n";
             error_ = true;
         } else {
-            set_gate(decl.id(), GateType{0, (int) decl.params().size()});
+            set(decl.id(), GateType{0, (int) decl.params().size()});
         }
     }
     void visit(RegisterDecl& decl) {
-        if (lookup(decl.id())) {
+        if (lookup_local(decl.id())) {
             std::cerr << decl.pos() << ": Identifier \"" << decl.id()
                       << "\" previously declared\n";
             error_ = true;
@@ -251,7 +255,7 @@ class SemanticChecker final : public Visitor {
         }
     }
     void visit(AncillaDecl& decl) {
-        if (lookup(decl.id())) {
+        if (lookup_local(decl.id())) {
             std::cerr << decl.pos() << ": Identifier \"" << decl.id()
                       << "\" previously declared\n";
             error_ = true;
@@ -274,8 +278,6 @@ class SemanticChecker final : public Visitor {
 
   private:
     bool error_ = false; ///< whether errors have occurred
-    std::unordered_map<ast::symbol, GateType>
-        gate_decls_{}; ///< global gate declarations
     std::list<std::unordered_map<ast::symbol, Type>> symbol_table_{
         {}}; ///< a stack of symbol tables
 
@@ -293,7 +295,7 @@ class SemanticChecker final : public Visitor {
      * \brief Looks up a symbol in the symbol table
      *
      * Lookup checks in each symbol table going backwards up the enclosing
-     * scopes. Does not look in the global gate scope.
+     * scopes.
      *
      * \param id Const reference to a symbol
      * \return The type of the symbol, if found
@@ -301,6 +303,22 @@ class SemanticChecker final : public Visitor {
     std::optional<Type> lookup(const ast::symbol& id) {
         for (auto& table : symbol_table_) {
             if (auto it = table.find(id); it != table.end()) {
+                return it->second;
+            }
+        }
+        return std::nullopt;
+    }
+
+    /**
+     * \brief Looks up a symbol in the local scope.
+     *
+     * \param id Const reference to a symbol
+     * \return The type of the symbol, if found
+     */
+    std::optional<Type> lookup_local(const ast::symbol& id) {
+        if (!(symbol_table_.empty())) {
+            const auto& local = symbol_table_.front();
+            if (auto it = local.find(id); it != local.end()) {
                 return it->second;
             }
         }
@@ -318,29 +336,6 @@ class SemanticChecker final : public Visitor {
             throw std::logic_error("No current symbol table!");
 
         symbol_table_.front()[id] = typ;
-    }
-
-    /**
-     * \brief Looks up a symbol in the gate table
-     *
-     * \param id Const reference to a symbol
-     * \return The gate type of the symbol, if found
-     */
-    std::optional<GateType> lookup_gate(const ast::symbol& id) {
-        if (auto it = gate_decls_.find(id); it != gate_decls_.end()) {
-            return it->second;
-        }
-        return std::nullopt;
-    }
-
-    /**
-     * \brief Assigns a symbol in the global gate scope
-     *
-     * \param id Const reference to a symbol
-     * \param typ The gate type
-     */
-    void set_gate(const ast::symbol& id, GateType typ) {
-        gate_decls_[id] = typ;
     }
 
     /**
