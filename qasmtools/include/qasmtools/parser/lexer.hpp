@@ -106,7 +106,7 @@ class Lexer {
     void skip_line_comment() {
         int consumed = 0;
 
-        char c = buf_->peek();
+        int c = buf_->peek();
         while (c != 0 && c != '\n' && c != '\r' && c != EOF) {
             buf_->ignore();
             ++consumed;
