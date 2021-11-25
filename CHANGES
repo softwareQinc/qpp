@@ -1,5 +1,5 @@
 Pre-release - work in progress
-    - Added a pyqpp, a Python wrapper around Quantum++. See
+    - Added a pyqpp, Python wrapper around Quantum++. See
       https://github.com/softwareQinc/qpp/wiki/8.-pyqpp for more details.
     - Minor update of Shor's algorithm example ["examples/shor.cpp"]
     - Renamed ["examples/qasm/qasm.cpp"] to ["examples/qasm/qpp_qasm.cpp"]
