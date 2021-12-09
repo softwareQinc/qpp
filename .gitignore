@@ -1,6 +1,5 @@
-# vim
+# Vim
 *.swp
-out.tmp
 
 # MSVC 
 .vs/
@@ -15,8 +14,10 @@ cmake-build*/
 # Windows build
 win/
 
-# documentation source files
+# Documentation source files
 doc/
 
-# misc
+# Misc
+.DS_Store
 _test.cpp
+out.tmp
