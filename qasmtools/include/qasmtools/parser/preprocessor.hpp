@@ -42,7 +42,7 @@
 namespace qasmtools {
 namespace parser {
 
-#if !USE_QISKIT_SPECS
+#if USE_OPENQASM2_SPECS
 /**
  * \brief OpenQASM 2.0 standard library (qelib1.inc) as a string constant
  */

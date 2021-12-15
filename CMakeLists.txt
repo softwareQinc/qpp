@@ -25,14 +25,13 @@ target_include_directories(libqpp INTERFACE
 option(WITH_EXAMPLES "Enable example compilation" OFF)
 option(WITH_UNIT_TESTS "Enable unit testing" OFF)
 option(SANITIZE "Enable code sanitizing (only for gcc/clang)" OFF)
-option(USE_QISKIT_SPECS "Use Qiskit gate specifications instead of OpenQASM standard" OFF)
+option(USE_OPENQASM2_SPECS "Use OpenQASM 2.0 standard instead of Qiskit gate specifications" OFF)
 
-#### Enable Qiskit specs, see DISCREPANCIES.md for a comparison with standard
-#### OpenQASM
-if (${USE_QISKIT_SPECS})
-    target_compile_definitions(libqpp INTERFACE -DUSE_QISKIT_SPECS=true)
+#### Enable OpenQASM 2.0 specs, see DISCREPANCIES.md for a comparison with Qiskit
+if (${USE_OPENQASM2_SPECS})
+    target_compile_definitions(libqpp INTERFACE -DUSE_OPENQASM2_SPECS=true)
 else ()
-    target_compile_definitions(libqpp INTERFACE -DUSE_QISKIT_SPECS=false)
+    target_compile_definitions(libqpp INTERFACE -DUSE_OPENQASM2_SPECS=false)
 endif ()
 
 #### Dependencies, do not modify unless you know what you're doing
