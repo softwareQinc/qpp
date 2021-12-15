@@ -114,12 +114,12 @@ static std::unordered_map<ast::symbol,
         {"rz",
          [](const std::vector<double>& args) {
              assert(!args.empty());
-             // note the discrepancy; Qiskit defines it as diag(1, e^{i\phi})
-             // we comply to the Qiskit definition (and not the OPENQASM
-             // specs); see https://github.com/softwareQinc/qpp/issues/70
-             return (std::exp(1_i * args[0] / 2.0) *
-                     Gates::get_no_thread_local_instance().RZ(args[0]))
-                 .eval();
+             return
+                 USE_QISKIT_SPECS
+                     ? (std::exp(1_i * args[0] / 2.0) *
+                           Gates::get_no_thread_local_instance().RZ(args[0]))
+                       .eval()
+                     : Gates::get_no_thread_local_instance().RZ(args[0]);
          }},
         {"ry",
          [](const std::vector<double>& args) {
@@ -158,14 +158,11 @@ static std::unordered_map<ast::symbol,
         {"crz", [](const std::vector<double>& args) {
              assert(!args.empty());
              cmat mat{cmat::Identity(4, 4)};
-             // note the discrepancy; Qiskit defines it as
-             // CTRL-diag(1, e^{i\phi}) we comply to the Qiskit definition (and
-             // not the OPENQASM specs); see
-             // https://github.com/softwareQinc/qpp/issues/99 and
-             // https://github.com/softwareQinc/qpp/issues/70
              mat.block(2, 2, 2, 2) =
-                 std::exp(1_i * args[0] / 2.0) *
-                 Gates::get_no_thread_local_instance().RZ(args[0]);
+                 USE_QISKIT_SPECS
+                     ? std::exp(1_i * args[0] / 2.0) *
+                       Gates::get_no_thread_local_instance().RZ(args[0])
+                     : Gates::get_no_thread_local_instance().RZ(args[0]);
              return mat;
          }}};
 
