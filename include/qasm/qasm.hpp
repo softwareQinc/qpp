@@ -514,9 +514,15 @@ class QCircuitBuilder final : public ast::Visitor {
         auto c_args = var_access_as_creg(stmt.c_arg());
         auto circuit = ctx.get_circuit();
 
-        // apply measurements non-desctructively
+        // apply measurements non-destructively (destructively if
+        // the CMake option USE_OPENQASM2_DESTRUCTIVE_MEASUREMENTS is ON
+        // (OFF by default))
+        bool is_destructive = false;
+#if USE_OPENQASM2_DESTRUCTIVE_MEASUREMENTS
+        is_destructive = true;
+#endif
         for (idx i = 0; i < q_args.size(); i++) {
-            circuit->measureZ(q_args[i], c_args[i], false);
+            circuit->measureZ(q_args[i], c_args[i], is_destructive);
         }
     }
 
@@ -805,7 +811,7 @@ class QCircuitBuilder final : public ast::Visitor {
 };
 
 /**
- * \brief Reads a OpenQASM circuit from stdin and returns its qpp::QCircuit
+ * \brief Reads an OpenQASM circuit from stdin and returns its qpp::QCircuit
  * representation
  *
  * \return qpp::QCircuit
@@ -821,7 +827,7 @@ inline QCircuit read(std::istream& stream) {
 }
 
 /**
- * \brief Reads a OpenQASM circuit from a file and returns its qpp::QCircuit
+ * \brief Reads an OpenQASM circuit from a file and returns its qpp::QCircuit
  * representation
  *
  * \return qpp::QCircuit
