@@ -100,7 +100,12 @@ static const std::string std_include =
     "gate r(theta, phi) a { u3(theta,phi-pi/2,-phi+pi/2) a; }\n"
     "gate rx(theta) a { r(theta,0) a; } \n"
     "gate ry(theta) a { r(theta,pi/2) a; }\n"
-    "gate rz(phi) a { u1(phi) a; } \n"
+    /**
+     * Rz = e^{-i*phi/2} U1
+     * This differs from the doctring here:
+     * https://github.com/Qiskit/qiskit-terra/blob/main/qiskit/circuit/library/standard_gates/rz.py#L65
+     */
+    "gate rz(phi) a { u1(phi) a; x a; u1(-phi/2) a; x a; u1(-phi/2) a; } \n"
     "gate cz a,b { h b; cx a,b; h b; }\n"
     "gate cy a,b { sdg b; cx a,b; s b; }\n"
     "gate swap a,b { cx a,b; cx b,a; cx a,b; }\n"
@@ -108,8 +113,8 @@ static const std::string std_include =
     "gate ccx a,b,c { h c; cx b,c; tdg c; cx a,c; t c; cx b,c; tdg c; cx a,c; "
     "t b; t c; h c; cx a,b; t a; tdg b; cx a,b; }\n"
     "gate cswap a,b,c { cx c,b; ccx a,b,c; cx c,b; }\n"
-    "gate crz(lambda) a,b { u1(lambda/2) a; cx a,b; u1(-lambda/2) b; cx a,b; "
-    "u1(lambda/2) b; }\n"
+    "gate crz(lambda) a,b { u1(lambda/2) b; cx a,b; u1(-lambda/2) b; cx a,b; "
+    "}\n"
     "gate cu1(lambda) a,b { u1(lambda/2) a; cx a,b; u1(-lambda/2) b; cx a,b; "
     "u1(lambda/2) b; }\n"
     "gate cu3(theta,phi,lambda) c,t { u1((lambda+phi)/2) c; "
