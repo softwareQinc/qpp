@@ -242,19 +242,22 @@ class QEngine : public IDisplay, public IJSON {
     std::vector<double> get_probs() const { return st_.probs_; }
 
     /**
-     * \brief Check whether qudit \a i was already measured
+     * \brief Check whether qudit \a i was already measured (destructively) at
+     * the current engine state
      *
      * \param i Qudit index
-     * \return True if qudit \a i was already measured, false othwewise
+     * \return True if qudit \a i was already measured, false otherwise
      */
     bool get_measured(idx i) const {
         return st_.subsys_[i] == static_cast<idx>(-1);
     }
 
     /**
-     * \brief Vector of already measured qudit indexes
+     * \brief Vector of already measured (destructively) qudit indexes at the
+     * current engine state
      *
-     * \return Vector of already measured qudit indexes
+     * \return Vector of already measured qudit (destructively) indexes at the
+     * current engine state
      */
     std::vector<idx> get_measured() const {
         std::vector<idx> result;
