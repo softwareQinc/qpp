@@ -102,7 +102,7 @@ static const std::string std_include =
     "gate ry(theta) a { r(theta,pi/2) a; }\n"
     /**
      * Rz = e^{-i*phi/2} U1
-     * This differs from the doctring here:
+     * This differs from the docstring here:
      * https://github.com/Qiskit/qiskit-terra/blob/main/qiskit/circuit/library/standard_gates/rz.py#L65
      */
     "gate rz(phi) a { u1(phi) a; x a; u1(-phi/2) a; x a; u1(-phi/2) a; } \n"
