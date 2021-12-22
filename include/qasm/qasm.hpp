@@ -805,7 +805,7 @@ class QCircuitBuilder final : public ast::Visitor {
 };
 
 /**
- * \brief Reads a OpenQASM circuit from stdin and returns its qpp::QCircuit
+ * \brief Reads an OpenQASM circuit from stdin and returns its qpp::QCircuit
  * representation
  *
  * \return qpp::QCircuit
@@ -821,7 +821,7 @@ inline QCircuit read(std::istream& stream) {
 }
 
 /**
- * \brief Reads a OpenQASM circuit from a file and returns its qpp::QCircuit
+ * \brief Reads an OpenQASM circuit from a file and returns its qpp::QCircuit
  * representation
  *
  * \return qpp::QCircuit
