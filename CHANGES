@@ -7,9 +7,6 @@ Pre-release - work in progress
       definitions (which are also the usual ones used in QC textbooks). To
       switch to standard OpenQASM 2.0 gate definitions, configure the project
       with `cmake -DUSE_OPENQASM2_SPECS=ON`.
-    - Added the CMake option of enabling destructive measurements when executing
-      OpenQASM2 circuits. To enable it (OFF by default), configure the project
-      with `cmake -DUSE_OPENQASM2_DESTRUCTIVE_MEASUREMENTS=ON`.
 
 Version 3.0 - 5 October 2021
     - Major release, bumped up C++ standard to C++17
