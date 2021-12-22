@@ -814,7 +814,7 @@ inline QCircuit read(std::istream& stream) {
     ast::ptr<ast::Program> program = parser::parse_stream(stream);
 
     std::unique_ptr<QCircuit> qc(
-        new QCircuit(program->bits(), program->qubits()));
+        new QCircuit(program->qubits(), program->bits()));
     QCircuitBuilder builder(qc.get());
     program->accept(builder);
     return *qc;
@@ -830,7 +830,7 @@ inline QCircuit read_from_file(const std::string& fname) {
     ast::ptr<ast::Program> program = parser::parse_file(fname);
 
     std::unique_ptr<QCircuit> qc(
-        new QCircuit(program->bits(), program->qubits()));
+        new QCircuit(program->qubits(), program->bits()));
     QCircuitBuilder builder(qc.get());
     program->accept(builder);
     return *qc;
