@@ -7,6 +7,15 @@ Pre-release - work in progress
       definitions (which are also the usual ones used in QC textbooks). To
       switch to standard OpenQASM 2.0 gate definitions, configure the project
       with `cmake -DUSE_OPENQASM2_SPECS=ON`.
+    - Implemented qpp::QCircuit::
+          get_dirty_dits()
+          get_dirty_qudits()
+      to retrieve the dits/qudits that were used in the circuit (by any allowed
+      operation). qpp::QCircuit::get_dirty_dits() is particularly useful when
+      executing an OpenQASM 2.0 file and want to retrieve which classical dits
+      were used to store the measurement results. Those member functions are
+      complementary to the already implemented
+      qpp::QCircuit::get_clean_[qu]dits().
 
 Version 3.0 - 5 October 2021
     - Major release, bumped up C++ standard to C++17

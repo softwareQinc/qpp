@@ -3758,11 +3758,11 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Checks whether a qudit in the circuit was used before or not
-     * \see qpp::QCircuit::get_clean_qudits()
+     * \see qpp::QCircuit::get_clean_qudits(), qpp::QCircuit::get_dirty_qudits()
      *
      * \param i Qudit index
      * \return True if the qudit \a i was used before (by a gate and/or
-     * measurement), false otherwise
+     * measurement, either destructive or non-destructive), false otherwise
      */
     bool is_clean_qudit(idx i) const {
         // EXCEPTION CHECKS
@@ -3778,11 +3778,12 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Checks whether a classical dit in the circuit was used before
      * or not
-     * \see qpp::QCircuit::get_clean_dit()
+     * \see qpp::QCircuit::get_clean_dits(), qpp::QCircuit::get_dirty_dits()
      *
      * \param i Classical dit index
      * \return True if the classical dit \a i was used before (by a cCTRL
-     * gate and/or measurement), false otherwise
+     * gate and/or measurement, either destructive or non-destructive), false
+     * otherwise
      */
     bool is_clean_dit(idx i) const {
         // EXCEPTION CHECKS
@@ -3797,7 +3798,7 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Vector of clean qudits
-     * \see qpp::QCircuit::is_clean_qudit()
+     * \see qpp::QCircuit::is_clean_qudit(), qpp::QCircuit::get_dirty_qudits()
      *
      * \return Vector of clean qudits
      */
@@ -3811,8 +3812,18 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
+     * \brief Vector of dirty qudits
+     * \see qpp::QCircuit::is_clean_qudit(), qpp::QCircuit::get_clean_qudits()
+     *
+     * \return Vector of dirty qudits
+     */
+    std::vector<idx> get_dirty_qudits() const {
+        return complement(get_clean_qudits(), get_nq());
+    }
+
+    /**
      * \brief Vector of clean classical dits
-     * \see qpp::QCircuit::is_clean_dit()
+     * \see qpp::QCircuit::is_clean_dit(), qpp::QCircuit::get_dirty_dits()
      *
      * \return Vector of clean classical dits
      */
@@ -3823,6 +3834,16 @@ class QCircuit : public IDisplay, public IJSON {
                 result.emplace_back(i);
 
         return result;
+    }
+
+    /**
+     * \brief Vector of dirty classical dits
+     * \see qpp::QCircuit::is_clean_dit(), qpp::QCircuit::get_clean_dits()
+     *
+     * \return Vector of dirty classical dits
+     */
+    std::vector<idx> get_dirty_dits() const {
+        return complement(get_clean_dits(), get_nc());
     }
 
     /**

@@ -137,6 +137,12 @@ TEST(qpp_QCircuit_get_d, AllTests) {}
 /// BEGIN idx QCircuit::get_depth() const
 TEST(qpp_QCircuit_get_depth, AllTests) {}
 /******************************************************************************/
+/// BEGIN std::vector<idx> QCircuit::get_dirty_dits() const
+TEST(qpp_QCircuit_get_dirty_dits, AllTests) {}
+/******************************************************************************/
+/// BEGIN std::vector<idx> QCircuit::get_dirty_qudits() const
+TEST(qpp_QCircuit_get_dirty_qudits, AllTests) {}
+/******************************************************************************/
 /// BEGIN idx QCircuit::get_gate_count() const
 TEST(qpp_QCircuit_get_gate_count, TotalGateCount) {}
 /******************************************************************************/
