@@ -26,7 +26,6 @@ option(WITH_EXAMPLES "Enable example compilation" OFF)
 option(WITH_UNIT_TESTS "Enable unit testing" OFF)
 option(SANITIZE "Enable code sanitizing (only for gcc/clang)" OFF)
 option(USE_OPENQASM2_SPECS "Use OpenQASM 2.0 standard instead of Qiskit gate specifications" OFF)
-option(USE_OPENQASM2_DESTRUCTIVE_MEASUREMENTS "Use destructive measurements when executing OpenQASM 2.0 circuits" OFF)
 
 #### Enable OpenQASM 2.0 specs, see DISCREPANCIES.md for a comparison with Qiskit
 if (${USE_OPENQASM2_SPECS})
@@ -34,14 +33,6 @@ if (${USE_OPENQASM2_SPECS})
 else ()
     target_compile_definitions(libqpp INTERFACE -DUSE_OPENQASM2_SPECS=false)
 endif ()
-
-#### Use destructive measurements when executing OpenQASM 2.0 circuits
-if (${USE_OPENQASM2_DESTRUCTIVE_MEASUREMENTS})
-    target_compile_definitions(libqpp INTERFACE -DUSE_OPENQASM2_DESTRUCTIVE_MEASUREMENTS=true)
-else ()
-    target_compile_definitions(libqpp INTERFACE -DUSE_OPENQASM2_DESTRUCTIVE_MEASUREMENTS=false)
-endif ()
-
 
 #### Dependencies, do not modify unless you know what you're doing
 if (${WITH_EXAMPLES} OR ${WITH_UNIT_TESTS})
