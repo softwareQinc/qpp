@@ -297,6 +297,10 @@ PYBIND11_MODULE(pyqpp, m) {
              "Vector of clean qudits")
         .def("get_clean_dits", &QCircuit::get_clean_dits,
              "Vector of clean classical dits")
+        .def("get_dirty_qudits", &QCircuit::get_dirty_qudits,
+             "Vector of dirty qudits")
+        .def("get_dirty_dits", &QCircuit::get_dirty_dits,
+             "Vector of dirty classical dits")
         .def("remove_clean_qudit", &QCircuit::remove_clean_qudit,
              "Removes clean qudit and relabels the rest of the qudits accordingly",
              py::arg("target"))
