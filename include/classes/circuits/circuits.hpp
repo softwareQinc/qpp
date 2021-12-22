@@ -4144,12 +4144,19 @@ class QCircuit : public IDisplay, public IJSON {
         ss.str("");
         ss.clear();
         ss << disp(get_measured(), ", ");
-        result += "\"measured/discarded (destructive)\": " + ss.str() + ", ";
+        result += "\"measured/discarded (destructively)\": " + ss.str() + ", ";
 
         ss.str("");
         ss.clear();
         ss << disp(get_non_measured(), ", ");
-        result += "\"non-measured/non-discarded\": " + ss.str();
+        result +=
+            "\"non-measured (destructively)/non-discarded\": " + ss.str() +
+            ", ";
+
+        ss.str("");
+        ss.clear();
+        ss << disp(get_dirty_dits(), ", ");
+        result += "\"dirty (used) dits\": " + ss.str();
 
         if (enclosed_in_curly_brackets)
             result += "}";

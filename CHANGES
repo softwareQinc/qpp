@@ -16,6 +16,7 @@ Pre-release - work in progress
       were used to store the measurement results. Those member functions are
       complementary to the already implemented
       qpp::QCircuit::get_clean_[qu]dits().
+    - Bugfixes
 
 Version 3.0 - 5 October 2021
     - Major release, bumped up C++ standard to C++17
