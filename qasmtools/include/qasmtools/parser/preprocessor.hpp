@@ -105,7 +105,7 @@ static const std::string std_include =
      * This differs from the docstring here:
      * https://github.com/Qiskit/qiskit-terra/blob/main/qiskit/circuit/library/standard_gates/rz.py#L65
      */
-    "gate rz(phi) a { u1(phi) a; x a; u1(-phi/2) a; x a; u1(-phi/2) a; } \n"
+    "gate rz(phi) a { x a; u1(-phi/2) a; x a; u1(phi/2) a; } \n"
     "gate cz a,b { h b; cx a,b; h b; }\n"
     "gate cy a,b { sdg b; cx a,b; s b; }\n"
     "gate swap a,b { cx a,b; cx b,a; cx a,b; }\n"
