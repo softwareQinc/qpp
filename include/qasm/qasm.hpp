@@ -50,10 +50,6 @@ static std::unordered_map<ast::symbol,
          [](const std::vector<double>&) {
              return Gates::get_no_thread_local_instance().CNOT;
          }},
-        {"CX",
-         [](const std::vector<double>&) {
-             return Gates::get_no_thread_local_instance().CNOT;
-         }},
         {"id",
          [](const std::vector<double>&) {
              return Gates::get_no_thread_local_instance().Id2;
