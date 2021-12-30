@@ -7,6 +7,13 @@ Pre-release - work in progress
       definitions (which are also the usual ones used in QC textbooks). To
       switch to standard OpenQASM 2.0 gate definitions, configure the project
       with `cmake -DUSE_OPENQASM2_SPECS=ON`.
+    - Implemented qpp::QCircuit::
+          get_dirty_dits()       -
+          get_dirty_qudits()     -
+          get_measured_nd()      -
+          get_measurement_dits() -
+          is_measurement_dit()   -
+    - Bugfixes
 
 Version 3.0 - 5 October 2021
     - Major release, bumped up C++ standard to C++17

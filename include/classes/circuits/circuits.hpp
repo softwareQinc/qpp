@@ -41,11 +41,21 @@ namespace qpp {
 class QCircuit : public IDisplay, public IJSON {
     friend class QEngine;
 
-    idx nq_;                     ///< number of qudits
-    idx nc_;                     ///< number of classical "dits"
-    idx d_;                      ///< qudit dimension
-    std::string name_;           ///< optional circuit name
-    std::vector<bool> measured_; ///< keeps track of the measured qudits
+    idx nq_;           ///< number of qudits
+    idx nc_;           ///< number of classical "dits"
+    idx d_;            ///< qudit dimension
+    std::string name_; ///< optional circuit name
+
+    std::vector<bool>
+        measured_; ///< keeps track of the destructively measured qudits
+    std::vector<bool>
+        measured_nd_; ///< keeps track of the non-destructively measured qudits
+    std::vector<bool> clean_qudits_; ///< keeps track of clean (unused) qudits
+
+    std::vector<bool>
+        clean_dits_; ///< keeps track of clean (unused) classical dits
+    std::vector<bool> measurement_dits_; ///< keeps track of classical dits used
+                                         ///< in measurements
 
     std::unordered_map<std::size_t, cmat>
         cmat_hash_tbl_{}; ///< hash table with the matrices used in the circuit,
@@ -53,10 +63,6 @@ class QCircuit : public IDisplay, public IJSON {
     std::unordered_map<std::string, idx> gate_count_{}; ///< gate counts
     std::unordered_map<std::string, idx>
         measurement_count_{}; ///< measurement counts
-
-    std::vector<bool> clean_qudits_; ///< keeps track of clean (unused) qudits
-    std::vector<bool>
-        clean_dits_; ///< keeps track of clean (unused) classical dits
 
     /**
      * \brief Adds matrix to the hash table
@@ -946,7 +952,8 @@ class QCircuit : public IDisplay, public IJSON {
      */
     explicit QCircuit(idx nq = 1, idx nc = 0, idx d = 2, std::string name = {})
         : nq_{nq}, nc_{nc}, d_{d}, name_{std::move(name)}, measured_(nq, false),
-          clean_qudits_(nq_, true), clean_dits_(nc_, true) {
+          measured_nd_(nq, false), clean_qudits_(nq_, true),
+          clean_dits_(nc_, true), measurement_dits_(nc_, false) {
         // EXCEPTION CHECKS
 
         // if (nq == 0)
@@ -1043,7 +1050,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return True if qudit \a i was already measured (destructively), false
      * otherwise
      */
-    idx get_measured(idx i) const {
+    bool get_measured(idx i) const {
         // EXCEPTION CHECKS
 
         if (i >= nq_)
@@ -1068,6 +1075,36 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
+     * \brief Check whether qudit \a i was already measured (non-destructively)
+     * \param i Qudit index
+     * \return True if qudit \a i was already measured (non-destructively),
+     * false otherwise
+     */
+    bool get_measured_nd(idx i) const {
+        // EXCEPTION CHECKS
+
+        if (i >= nq_)
+            throw exception::OutOfRange("qpp::QCircuit::get_measured_nd()");
+        // END EXCEPTION CHECKS
+
+        return measured_nd_[i];
+    }
+
+    /**
+     * \brief Vector of already measured (non-destructively) qudit indexes
+     *
+     * \return Vector of already measured (non-destructively) qudit indexes
+     */
+    std::vector<idx> get_measured_nd() const {
+        std::vector<idx> result;
+        for (idx i = 0; i < nq_; ++i)
+            if (get_measured_nd(i))
+                result.emplace_back(i);
+
+        return result;
+    }
+
+    /**
      * \brief Vector of non-measured (destructively) qudit indexes
      *
      * \return Vector of non-measured (destructively) qudit indexes
@@ -1076,6 +1113,21 @@ class QCircuit : public IDisplay, public IJSON {
         std::vector<idx> result;
         for (idx i = 0; i < nq_; ++i)
             if (!get_measured(i))
+                result.emplace_back(i);
+
+        return result;
+    }
+
+    /**
+     * \brief Vector of classical dits that were used to store results of
+     * measurements (either destructive or non-destructive)
+     *
+     * \return Vector of classical dits that participate in measurements
+     */
+    std::vector<idx> get_measurement_dits() const {
+        std::vector<idx> result;
+        for (idx i = 0; i < nc_; ++i)
+            if (is_measurement_dit(i))
                 result.emplace_back(i);
 
         return result;
@@ -1375,9 +1427,6 @@ class QCircuit : public IDisplay, public IJSON {
 
         nq_ += n;
 
-        // updated the measured qudits
-        measured_.insert(std::next(std::begin(measured_), pos), n, false);
-
         // update gate indexes
         for (auto& gate : gates_) {
             // update ctrl indexes
@@ -1402,6 +1451,12 @@ class QCircuit : public IDisplay, public IJSON {
                     elem += n;
             }
         }
+
+        // update the destructively measured qudits
+        measured_.insert(std::next(std::begin(measured_), pos), n, false);
+
+        // update the non-destructively measured qudits
+        measured_nd_.insert(std::next(std::begin(measured_nd_), pos), n, false);
 
         // update (enlarge) the clean qudits vector
         clean_qudits_.insert(std::next(std::begin(clean_qudits_), pos), n,
@@ -1456,6 +1511,10 @@ class QCircuit : public IDisplay, public IJSON {
 
         // update (enlarge) the clean dits vector
         clean_dits_.insert(std::next(std::begin(clean_dits_), pos), n, true);
+
+        // update (enlarge) the measurement dits vector
+        measurement_dits_.insert(std::next(std::begin(measurement_dits_), pos),
+                                 n, false);
 
         return *this;
     }
@@ -2850,6 +2909,7 @@ class QCircuit : public IDisplay, public IJSON {
                                        std::vector<std::size_t>{},
                                        std::vector<idx>{target}, c_reg, name);
         } else {
+            measured_nd_[target] = true;
             measurements_.emplace_back(MeasureType::MEASURE_Z_ND,
                                        std::vector<std::size_t>{},
                                        std::vector<idx>{target}, c_reg, name);
@@ -2858,7 +2918,9 @@ class QCircuit : public IDisplay, public IJSON {
         ++measurement_count_[name];
 
         clean_qudits_[target] = false;
+
         clean_dits_[c_reg] = false;
+        measurement_dits_[c_reg] = true;
 
         return *this;
     }
@@ -2913,6 +2975,9 @@ class QCircuit : public IDisplay, public IJSON {
                                        std::vector<std::size_t>{}, target,
                                        c_reg, name);
         } else {
+            for (auto&& elem : target) {
+                measured_nd_[elem] = true;
+            }
             measurements_.emplace_back(MeasureType::MEASURE_Z_MANY_ND,
                                        std::vector<std::size_t>{}, target,
                                        c_reg, name);
@@ -2923,7 +2988,9 @@ class QCircuit : public IDisplay, public IJSON {
         for (auto&& elem : target) {
             clean_qudits_[elem] = false;
         }
+
         clean_dits_[c_reg] = false;
+        measurement_dits_[c_reg] = true;
 
         return *this;
     }
@@ -2973,6 +3040,7 @@ class QCircuit : public IDisplay, public IJSON {
                                        std::vector<std::size_t>{hashV},
                                        std::vector<idx>{target}, c_reg, name);
         } else {
+            measured_nd_[target] = true;
             measurements_.emplace_back(MeasureType::MEASURE_V_ND,
                                        std::vector<std::size_t>{hashV},
                                        std::vector<idx>{target}, c_reg, name);
@@ -2981,7 +3049,9 @@ class QCircuit : public IDisplay, public IJSON {
         ++measurement_count_[name];
 
         clean_qudits_[target] = false;
+
         clean_dits_[c_reg] = false;
+        measurement_dits_[c_reg] = true;
 
         return *this;
     }
@@ -3046,6 +3116,8 @@ class QCircuit : public IDisplay, public IJSON {
                                        std::vector<std::size_t>{hashV}, target,
                                        c_reg, name);
         } else {
+            for (auto&& elem : target)
+                measured_nd_[elem] = true;
             measurements_.emplace_back(MeasureType::MEASURE_V_MANY_ND,
                                        std::vector<std::size_t>{hashV}, target,
                                        c_reg, name);
@@ -3056,7 +3128,9 @@ class QCircuit : public IDisplay, public IJSON {
         for (auto&& elem : target) {
             clean_qudits_[elem] = false;
         }
+
         clean_dits_[c_reg] = false;
+        measurement_dits_[c_reg] = true;
 
         return *this;
     }
@@ -3371,17 +3445,27 @@ class QCircuit : public IDisplay, public IJSON {
             }
         } // end for other.measurements_
 
-        // replace the corresponding elements of measured_, clean_qudits_
-        // and clean_dits_ with the ones of other
+        // FIXME
+
+        // replace the corresponding elements of measured_, measured_nd_,
+        // clean_qudits_, clean_dits_, and measurement_dits_ with the ones of
+        // other
         for (idx i = 0; i < other.measured_.size(); ++i)
             if (other.measured_[i])
                 measured_[target[i]] = true;
-        for (idx i = 0; i < other.clean_dits_.size(); ++i)
-            if (!other.clean_dits_[i])
-                clean_dits_[target[i]] = false;
+        for (idx i = 0; i < other.measured_nd_.size(); ++i)
+            if (other.measured_nd_[i])
+                measured_nd_[target[i]] = true;
         for (idx i = 0; i < other.clean_qudits_.size(); ++i)
             if (!other.clean_qudits_[i])
                 clean_qudits_[target[i]] = false;
+
+        for (idx i = 0; i < other.clean_dits_.size(); ++i)
+            if (!other.clean_dits_[i])
+                clean_dits_[target[i]] = false;
+        for (idx i = 0; i < other.measurement_dits_.size(); ++i)
+            if (other.measurement_dits_[i])
+                measurement_dits_[target[i]] = true;
 
         // STEP 2: append the copy of other to the current instance
         // append gate steps vector
@@ -3505,17 +3589,27 @@ class QCircuit : public IDisplay, public IJSON {
             }
         } // end for other.measurements_
 
-        // replace the corresponding elements of measured_, clean_qudits_
-        // and clean_dits_ with the ones of other
+        // FIXME
+
+        // replace the corresponding elements of measured_, measured_nd_,
+        // clean_qudits_, clean_dits_, and measurement_dits_ with the ones of
+        // other
         for (idx i = 0; i < other.measured_.size(); ++i)
             if (other.measured_[i])
                 measured_[target[i]] = true;
-        for (idx i = 0; i < other.clean_dits_.size(); ++i)
-            if (!other.clean_dits_[i])
-                clean_dits_[target[i]] = false;
+        for (idx i = 0; i < other.measured_nd_.size(); ++i)
+            if (other.measured_nd_[i])
+                measured_nd_[target[i]] = true;
         for (idx i = 0; i < other.clean_qudits_.size(); ++i)
             if (!other.clean_qudits_[i])
                 clean_qudits_[target[i]] = false;
+
+        for (idx i = 0; i < other.clean_dits_.size(); ++i)
+            if (!other.clean_dits_[i])
+                clean_dits_[target[i]] = false;
+        for (idx i = 0; i < other.measurement_dits_.size(); ++i)
+            if (other.measurement_dits_[i])
+                measurement_dits_[target[i]] = true;
 
         // STEP 2: append the copy of other to the current instance
         // append gate steps vector
@@ -3547,8 +3641,8 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Appends (glues) a quantum circuit description to the current
-     * one
+     * \brief Appends (glues) a quantum circuit description to the end of the
+     * current one
      * \see qpp::QCircuit::match_circuit_left() and
      * qpp::QCircuit::match_circuit_right()
      *
@@ -3582,8 +3676,8 @@ class QCircuit : public IDisplay, public IJSON {
             pos_dit = nc_;
         else if (pos_dit > nc_)
             throw exception::OutOfRange("qpp::QCircuit::add_circuit()");
-        // check overlapping qudits (in the current instance) were not
-        // already destructively measured
+        // check overlapping qudits (in the current instance) were not already
+        // destructively measured
         if (pos_qudit < 0 &&
             (pos_qudit + static_cast<bigint>(other.nq_)) >= 0) {
             for (idx i = 0;
@@ -3654,31 +3748,42 @@ class QCircuit : public IDisplay, public IJSON {
             }
         } // end for other.measurements_
 
-        // replace the corresponding elements of measured_, clean_qudits_
-        // and clean_dits_ with the ones of other
+        // STEP 2
+        // replace the corresponding elements of measured_, measured_nd_, and
+        // clean_qudits_ with the ones of other
         if (pos_qudit < 0) {
-            std::copy(std::begin(other.measured_), std::end(other.measured_),
-                      std::begin(measured_));
-            std::copy_if(std::begin(other.clean_dits_),
-                         std::end(other.clean_dits_), std::begin(clean_dits_),
-                         [](bool val) { return !val; });
+            std::copy_if(std::begin(other.measured_), std::end(other.measured_),
+                         std::begin(measured_), [](bool val) { return val; });
+            std::copy_if(std::begin(other.measured_nd_),
+                         std::end(other.measured_nd_), std::begin(measured_nd_),
+                         [](bool val) { return val; });
             std::copy_if(
                 std::begin(other.clean_qudits_), std::end(other.clean_qudits_),
                 std::begin(clean_qudits_), [](bool val) { return !val; });
         } else {
-            std::copy(std::begin(other.measured_), std::end(other.measured_),
-                      std::next(std::begin(measured_), pos_qudit));
-            std::copy_if(std::begin(other.clean_dits_),
-                         std::end(other.clean_dits_),
-                         std::next(std::begin(clean_dits_), pos_qudit),
-                         [](bool val) { return !val; });
+            std::copy_if(std::begin(other.measured_), std::end(other.measured_),
+                         std::next(std::begin(measured_), pos_qudit),
+                         [](bool val) { return val; });
+            std::copy_if(std::begin(other.measured_nd_),
+                         std::end(other.measured_nd_),
+                         std::next(std::begin(measured_nd_), pos_qudit),
+                         [](bool val) { return val; });
             std::copy_if(std::begin(other.clean_qudits_),
                          std::end(other.clean_qudits_),
                          std::next(std::begin(clean_qudits_), pos_qudit),
                          [](bool val) { return !val; });
         }
 
-        // STEP 2: append the copy of other to the current instance
+        // STEP 3
+        // replace the corresponding elements of clean_dits_ and
+        // measurement_dits_ with the ones of other
+        std::copy(std::begin(other.clean_dits_), std::end(other.clean_dits_),
+                  std::next(std::begin(clean_dits_), pos_dit));
+        std::copy(std::begin(other.measurement_dits_),
+                  std::end(other.measurement_dits_),
+                  std::next(std::begin(measurement_dits_), pos_dit));
+
+        // STEP 4: append the copy of other to the current instance
         // append gate steps vector
         gates_.insert(std::end(gates_), std::begin(other.gates_),
                       std::end(other.gates_));
@@ -3692,7 +3797,7 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.insert(std::end(step_types_), std::begin(other.step_types_),
                            std::end(other.step_types_));
 
-        // STEP 3: modify gate counts, hash tables etc accordingly
+        // STEP 5: modify gate counts, hash tables etc accordingly
         // update matrix hash table
         for (auto& elem : other.cmat_hash_tbl_)
             cmat_hash_tbl_[elem.first] = elem.second;
@@ -3713,8 +3818,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param qc Quantum circuit description
      * \return Reference to the current instance
      */
-    QCircuit& kron(const QCircuit& qc) {
-        add_circuit(qc, nq_);
+    QCircuit& kron(QCircuit qc) {
+        add_circuit(std::move(qc), nq_);
 
         return *this;
     }
@@ -3796,8 +3901,28 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
+     * \brief Checks whether a classical dit in the circuit was used to store
+     * the result of a measurement (either destructive or non-destructive)
+     * \see qpp::QCircuit::get_measurement_dits()
+     *
+     * \param i Classical dit index
+     * \return True if the classical dit \a i was used before to store the
+     * result of a measurement, false otherwise
+     */
+    bool is_measurement_dit(idx i) const {
+        // EXCEPTION CHECKS
+
+        // check valid target
+        if (i >= nc_)
+            throw exception::OutOfRange("qpp::QCircuit::is_measurement_dit()");
+        // END EXCEPTION CHECKS
+
+        return measurement_dits_[i];
+    }
+
+    /**
      * \brief Vector of clean qudits
-     * \see qpp::QCircuit::is_clean_qudit()
+     * \see qpp::QCircuit::is_clean_qudit(), qpp::QCircuit::get_clean_qudits()
      *
      * \return Vector of clean qudits
      */
@@ -3812,7 +3937,7 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Vector of clean classical dits
-     * \see qpp::QCircuit::is_clean_dit()
+     * \see qpp::QCircuit::is_clean_dit(), qpp::QCircuit::get_clean_dits()
      *
      * \return Vector of clean classical dits
      */
@@ -3823,6 +3948,26 @@ class QCircuit : public IDisplay, public IJSON {
                 result.emplace_back(i);
 
         return result;
+    }
+
+    /**
+     * \brief Vector of dirty qudits
+     * \see qpp::QCircuit::get_clean_qudits()
+     *
+     * \return Vector of dirty qudits
+     */
+    std::vector<idx> get_dirty_qudits() const {
+        return complement(get_clean_qudits(), get_nq());
+    }
+
+    /**
+     * \brief Vector of dirty classical dits
+     * \see qpp::QCircuit::get_clean_dits()
+     *
+     * \return Vector of dirty classical dits
+     */
+    std::vector<idx> get_dirty_dits() const {
+        return complement(get_clean_dits(), get_nc());
     }
 
     /**
@@ -3974,8 +4119,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \see qpp::QCircuit::remove_clean_qudits(),
      * qpp::QCircuit::remove_clean_dits()
      *
-     * \param compress_dits If true, removes clean classical dits. Set to
-     * false by default.
+     * \param compress_dits If true, removes clean classical dits. Set to false
+     * by default.
      * \return Reference to the current instance
      */
     QCircuit& compress(bool compress_dits = false) {
@@ -4127,8 +4272,13 @@ class QCircuit : public IDisplay, public IJSON {
 
         ss.str("");
         ss.clear();
-        ss << disp(get_non_measured(), ", ");
-        result += "\"non-measured/non-discarded\": " + ss.str();
+        ss << disp(get_measured_nd(), ", ");
+        result += "\"measured (non-destructive)\": " + ss.str() + ", ";
+
+        ss.str("");
+        ss.clear();
+        ss << disp(get_measurement_dits(), ", ");
+        result += "\"measurement dits\": " + ss.str();
 
         if (enclosed_in_curly_brackets)
             result += "}";
@@ -4157,17 +4307,16 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \param qc1 Quantum circuit description
      * \param qc2 Quantum circuit description
-     * \return Quantum circuit description of the Kronecker product of \a
-     * qc1 with \a qc2
+     * \return Quantum circuit description of the Kronecker product of \a qc1
+     * with \a qc2
      */
-    friend QCircuit kron(const QCircuit& qc1, const QCircuit& qc2) {
-        QCircuit qc{qc1}; // create a copy
+    friend QCircuit kron(QCircuit qc1, const QCircuit& qc2) {
 
-        return qc.kron(qc2);
+        return qc1.kron(qc2);
     }
 
     /**
-     * \brief Replicates the circuit
+     * \brief Replicates the quantum circuit description
      * \note The circuit should not contain any measurements when invoking
      * this function
      *
@@ -4211,7 +4360,8 @@ class QCircuit : public IDisplay, public IJSON {
      * description is inserted before the \a pos_dit classical dit index of
      * \a qc1 quantum circuit description (in the classical dits array), the
      * rest following in order. By default, insertion is performed at the end.
-     * \return Combined quantum circuit description
+     * \return Combined quantum circuit description, with \a qc2 added at the
+     * end of \a qc1
      */
     friend QCircuit add_circuit(QCircuit qc1, const QCircuit& qc2,
                                 bigint pos_qudit, idx pos_dit = -1) {
@@ -4305,11 +4455,13 @@ class QCircuit : public IDisplay, public IJSON {
             sep = '\n';
         }
 
-        /*
+/*
+        os << "\n$";
         os << "\nmeasured/discarded (destructive): "
-           << disp(get_measured(), ", ") << '\n';
-        os << "non-measured/non-discarded: " << disp(get_non_measured(), ", ");
-        */
+           << disp(get_measured(), ", ");
+        os << "\nmeasured (non-destructive): " << disp(get_measured_nd(), ", ");
+        os << "\nmeasurement dits: " << disp(get_measurement_dits(), ", ");
+*/
 
         return os;
     }

@@ -26,8 +26,8 @@
 
 /**
  * \file classes/idisplay.hpp
- * \brief Display interface via the non-virtual interface (NVI) and very basic
- * JSON serialization support interface
+ * \brief Textual representation interface and very basic JSON serialization
+ * interface
  */
 
 #ifndef CLASSES_IDISPLAY_HPP_
