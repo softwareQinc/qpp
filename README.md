@@ -36,7 +36,7 @@ For additional [Eigen 3](http://eigen.tuxfamily.org) documentation see <http://e
 [Eigen 3](http://eigen.tuxfamily.org) quick ASCII reference see
 <http://eigen.tuxfamily.org/dox/AsciiQuickReference.txt>.
 
-Copyright (c) 2013 - 2021 softwareQ Inc. All rights reserved.
+Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
 
 ---
 
