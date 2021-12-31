@@ -705,14 +705,14 @@ class QEngine : public IDisplay, public IJSON {
         ss << "\"d\": " << get_circuit().get_d() << ", ";
         ss << R"("name": ")" << get_circuit().get_name() << "\", ";
 
-        ss << "\"measured/discarded (destructive)\": ";
+        ss << "\"measured/discarded (destructively)\": ";
         ss << disp(get_measured(), ", ");
         result += ss.str() + ", ";
 
         ss.str("");
         ss.clear();
         ss << disp(get_non_measured(), ", ");
-        result += "\"non-measured/non-discarded\": " + ss.str();
+        result += "\"non-measured (destructively)/non-discarded\": " + ss.str();
 
         ss.str("");
         ss.clear();
