@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2019 - 2021 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2022 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -108,7 +108,13 @@ PYBIND11_MODULE(pyqpp, m) {
              "Whether qudit i was already measured", py::arg("i"))
         .def("get_measured",
              py::overload_cast<>(&QCircuit::get_measured, py::const_),
-             "Already measured qudit indexes")
+             "Vector of already measured qudit indexes")
+        .def("get_measured_nd",
+             py::overload_cast<idx>(&QCircuit::get_measured_nd, py::const_),
+            "Whether qudit i was already measured non-destructively", py::arg("i"))
+        .def("get_measured_nd",
+             py::overload_cast<>(&QCircuit::get_measured_nd, py::const_),
+             "Vector of already measured non-destructively qudit indexes")
         .def("get_non_measured", &QCircuit::get_non_measured,
              "Non-measured qudit indexes")
         .def("get_gate_count",
@@ -288,10 +294,13 @@ PYBIND11_MODULE(pyqpp, m) {
         .def("adjoint", &QCircuit::adjoint,
              "Adjoint quantum circuit description, in place")
         .def("is_clean_qudit", &QCircuit::is_clean_qudit,
-             "Whether a qudit in the circuit was used before or not",
+             "Whether qudit i in the circuit was used before or not",
              py::arg("i"))
         .def("is_clean_dit", &QCircuit::is_clean_dit,
-             "Whether a classical dit in the circuit was used before or not",
+             "Whether classical dit i in the circuit was used before or not",
+             py::arg("i"))
+        .def("is_measurement_dit", &QCircuit::is_measurement_dit,
+             "Whether classical dit i in the circuit was used to store the result of a measurement (either destructive or non-destructive)",
              py::arg("i"))
         .def("get_clean_qudits", &QCircuit::get_clean_qudits,
              "Vector of clean qudits")
@@ -300,7 +309,9 @@ PYBIND11_MODULE(pyqpp, m) {
         .def("get_dirty_qudits", &QCircuit::get_dirty_qudits,
              "Vector of dirty qudits")
         .def("get_dirty_dits", &QCircuit::get_dirty_dits,
-             "Vector of dirty classical dits")
+              "Vector of dirty classical dits")
+        .def("get_measurement_dits", &QCircuit::get_measurement_dits,
+              "Vector of classical dits that were used to store results of measurements (either destructive or non-destructive)")
         .def("remove_clean_qudit", &QCircuit::remove_clean_qudit,
              "Removes clean qudit and relabels the rest of the qudits accordingly",
              py::arg("target"))
@@ -356,7 +367,7 @@ PYBIND11_MODULE(pyqpp, m) {
              "Underlying measurement outcome probabilities")
         .def("get_measured",
              py::overload_cast<idx>(&QEngine::get_measured, py::const_),
-             "Whether qudit i was already measured", py::arg("i"))
+             "Whether qudit i was already measured destructively", py::arg("i"))
         .def("get_measured",
              py::overload_cast<>(&QEngine::get_measured, py::const_),
              "Vector of already measured qudit indexes")

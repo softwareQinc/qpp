@@ -158,8 +158,14 @@ TEST(qpp_QCircuit_get_gate_depth, SpecificGateDepth) {}
 /// BEGIN std::vector<idx> QCircuit::get_measured() const
 TEST(qpp_QCircuit_get_measured, AllQudits) {}
 /******************************************************************************/
-/// BEGIN idx QCircuit::get_measured(idx i) const
+/// BEGIN bool QCircuit::get_measured(idx i) const
 TEST(qpp_QCircuit_get_measured, SpecificQudit) {}
+/******************************************************************************/
+/// BEGIN std::vector<idx> QCircuit::get_measured_nd() const
+TEST(qpp_QCircuit_get_measured_nd, AllQudits) {}
+/******************************************************************************/
+/// BEGIN bool QCircuit::get_measured_nd(idx i) const
+TEST(qpp_QCircuit_get_measured_nd, SpecificQudit) {}
 /******************************************************************************/
 /// BEGIN idx QCircuit::get_measurement_count() const
 TEST(qpp_QCircuit_get_measurement_count, TotalMeasurementCount) {}
@@ -172,6 +178,9 @@ TEST(qpp_QCircuit_get_measurement_depth, TotalMeasurementDepth) {}
 /******************************************************************************/
 /// BEGIN idx QCircuit::get_measurement_depth(const std::string& name) const
 TEST(qpp_QCircuit_get_measurement_depth, SpecificMeasurementDepth) {}
+/******************************************************************************/
+/// BEGIN std::vector<idx> QCircuit::get_measurement_dits() const
+TEST(qpp_QCircuit_get_measurement_dits, AllTests) {}
 /******************************************************************************/
 /// BEGIN std::string QCircuit::get_name() const
 TEST(qpp_QCircuit_get_name, AllTests) {}
@@ -206,13 +215,16 @@ TEST(qpp_QCircuit_is_clean_qudit, AllTests) {}
 /// BEGIN inline static bool QCircuit::is_CTRL(const GateStep& gate_step)
 TEST(qpp_QCircuit_is_CTRL, AllTests) {}
 /******************************************************************************/
+/// BEGIN bool QCircuit::is_measurement_dit(idx i) const
+TEST(qpp_QCircuit_is_measurement_dit, AllTests) {}
+/******************************************************************************/
 /// BEGIN inline static bool QCircuit::is_non_CTRL(const GateStep& gate_step)
 TEST(qpp_QCircuit_is_non_CTRL, AllTests) {}
 /******************************************************************************/
-/// BEGIN QCircuit& QCircuit::kron(const QCircuit& qc)
+/// BEGIN QCircuit& QCircuit::kron(QCircuit qc)
 TEST(qpp_QCircuit_kron, AllTests) {}
 /******************************************************************************/
-/// BEGIN friend QCircuit kron(const QCircuit& qc1, const QCircuit& qc2)
+/// BEGIN friend QCircuit kron(QCircuit qc1, const QCircuit& qc2)
 TEST(qpp_friend_QCircuit_kron, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::match_circuit_left(QCircuit other,
@@ -257,12 +269,10 @@ TEST(qpp_QCircuit_measureZ, SingleTarget) {}
 /// BEGIN QCircuit& QCircuit::nop()
 TEST(qpp_QCircuit_nop, AllTests) {}
 /******************************************************************************/
-/// BEGIN bool QCircuit::operator!=(const QCircuit&
-/// rhs) const noexcept
+/// BEGIN bool QCircuit::operator!=(const QCircuit& rhs) const noexcept
 TEST(qpp_QCircuit_operator_noneq, AllTests) {}
 /******************************************************************************/
-/// BEGIN bool QCircuit::operator==(const QCircuit&
-/// rhs) const noexcept
+/// BEGIN bool QCircuit::operator==(const QCircuit& rhs) const noexcept
 TEST(qpp_QCircuit_operator_eq, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::QFT(bool swap = true)

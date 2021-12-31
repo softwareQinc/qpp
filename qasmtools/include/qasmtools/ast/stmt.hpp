@@ -1,7 +1,7 @@
 /*
  * This file is part of qasmtools.
  *
- * Copyright (c) 2019 - 2021 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2022 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *

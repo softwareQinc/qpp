@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2013 - 2021 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -116,11 +116,7 @@ static std::unordered_map<ast::symbol,
         {"rz",
          [](const std::vector<double>& args) {
              assert(!args.empty());
-             return USE_OPENQASM2_SPECS
-                        ? Gates::get_no_thread_local_instance().RZ(args[0])
-                        : (std::exp(1_i * args[0] / 2.0) *
-                           Gates::get_no_thread_local_instance().RZ(args[0]))
-                              .eval();
+             return Gates::get_no_thread_local_instance().RZ(args[0]);
          }},
         {"ry",
          [](const std::vector<double>& args) {
@@ -160,10 +156,7 @@ static std::unordered_map<ast::symbol,
              assert(!args.empty());
              cmat mat{cmat::Identity(4, 4)};
              mat.block(2, 2, 2, 2) =
-                 USE_OPENQASM2_SPECS
-                     ? Gates::get_no_thread_local_instance().RZ(args[0])
-                     : std::exp(1_i * args[0] / 2.0) *
-                           Gates::get_no_thread_local_instance().RZ(args[0]);
+                 Gates::get_no_thread_local_instance().RZ(args[0]);
              return mat;
          }}};
 
