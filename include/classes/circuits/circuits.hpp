@@ -3097,10 +3097,11 @@ class QCircuit : public IDisplay, public IJSON {
         if (c_reg >= nc_)
             throw exception::OutOfRange("qpp::QCircuit::measureV()", context);
         // qudit was measured before
-        for (auto&& elem : target)
+        for (auto&& elem : target) {
             if (get_measured(elem))
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::measureV()", context);
+        }
         // END EXCEPTION CHECKS
 
         if (name.empty())
@@ -3110,14 +3111,16 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(V, hashV);
 
         if (destructive) {
-            for (auto&& elem : target)
+            for (auto&& elem : target) {
                 measured_[elem] = true;
+            }
             measurements_.emplace_back(MeasureType::MEASURE_V_MANY,
                                        std::vector<std::size_t>{hashV}, target,
                                        c_reg, name);
         } else {
-            for (auto&& elem : target)
+            for (auto&& elem : target) {
                 measured_nd_[elem] = true;
+            }
             measurements_.emplace_back(MeasureType::MEASURE_V_MANY_ND,
                                        std::vector<std::size_t>{hashV}, target,
                                        c_reg, name);
@@ -3224,7 +3227,7 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief No operation (no-op)
      *
-     * \note If the underlying step is executed on a noisy engine, then
+     * \note If the underlying step is executed on a noisy engine, then the
      * noise acts before it
      *
      * \return Reference to the current instance
@@ -3400,12 +3403,13 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::match_circuit_right()");
         if (!internal::check_no_duplicates(target))
             throw exception::Duplicates("qpp::QCircuit::match_circuit_right()");
-        for (auto&& qudit : target)
+        for (auto&& qudit : target) {
             if (qudit >= nq_)
                 throw exception::OutOfRange(
                     "qpp::QCircuit::match_circuit_right()");
+        }
         // check matching qudits (in the current instance) were not already
-        // destructively measured
+        // measured destructively
         for (auto&& qudit : target) {
             if (get_measured(qudit)) {
                 throw exception::QuditAlreadyMeasured(
@@ -3445,7 +3449,7 @@ class QCircuit : public IDisplay, public IJSON {
             }
         } // end for other.measurements_
 
-        // FIXME
+        // TODO check this
 
         // replace the corresponding elements of measured_, measured_nd_,
         // clean_qudits_, clean_dits_, and measurement_dits_ with the ones of
@@ -3544,12 +3548,13 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::match_circuit_left()");
         if (!internal::check_no_duplicates(target))
             throw exception::Duplicates("qpp::QCircuit::match_circuit_left()");
-        for (auto&& qudit : target)
+        for (auto&& qudit : target) {
             if (qudit >= nq_)
                 throw exception::OutOfRange(
                     "qpp::QCircuit::match_circuit_left()");
+        }
         // check matching qudits (in the current instance) were not already
-        // destructively measured
+        // measured destructively
         for (auto&& qudit : target) {
             if (get_measured(qudit)) {
                 throw exception::QuditAlreadyMeasured(
@@ -3589,7 +3594,7 @@ class QCircuit : public IDisplay, public IJSON {
             }
         } // end for other.measurements_
 
-        // FIXME
+        // TODO check this
 
         // replace the corresponding elements of measured_, measured_nd_,
         // clean_qudits_, clean_dits_, and measurement_dits_ with the ones of
@@ -4455,13 +4460,11 @@ class QCircuit : public IDisplay, public IJSON {
             sep = '\n';
         }
 
-/*
-        os << "\n$";
+        /* os << "\n$";
         os << "\nmeasured/discarded (destructive): "
            << disp(get_measured(), ", ");
         os << "\nmeasured (non-destructive): " << disp(get_measured_nd(), ", ");
-        os << "\nmeasurement dits: " << disp(get_measurement_dits(), ", ");
-*/
+        os << "\nmeasurement dits: " << disp(get_measurement_dits(), ", "); */
 
         return os;
     }

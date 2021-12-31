@@ -108,7 +108,13 @@ PYBIND11_MODULE(pyqpp, m) {
              "Whether qudit i was already measured", py::arg("i"))
         .def("get_measured",
              py::overload_cast<>(&QCircuit::get_measured, py::const_),
-             "Already measured qudit indexes")
+             "Vector of already measured qudit indexes")
+        .def("get_measured_nd",
+             py::overload_cast<idx>(&QCircuit::get_measured_nd, py::const_),
+            "Whether qudit i was already measured non-destructively", py::arg("i"))
+        .def("get_measured_nd",
+             py::overload_cast<>(&QCircuit::get_measured_nd, py::const_),
+             "Vector of already measured non-destructively qudit indexes")
         .def("get_non_measured", &QCircuit::get_non_measured,
              "Non-measured qudit indexes")
         .def("get_gate_count",
@@ -365,12 +371,6 @@ PYBIND11_MODULE(pyqpp, m) {
         .def("get_measured",
              py::overload_cast<>(&QEngine::get_measured, py::const_),
              "Vector of already measured qudit indexes")
-        .def("get_measured_nd",
-             py::overload_cast<idx>(&QEngine::get_measured_nd, py::const_),
-             "Whether qudit i was already measured non-destructively", py::arg("i"))
-        .def("get_measured_nd",
-             py::overload_cast<>(&QEngine::get_measured_nd, py::const_),
-             "Vector of already measured non-destructively qudit indexes")
         .def("get_non_measured", &QEngine::get_non_measured,
              "Non-measured qudit indexes")
         .def("get_circuit", [](const QEngine& qe) { return qe.get_circuit(); },
