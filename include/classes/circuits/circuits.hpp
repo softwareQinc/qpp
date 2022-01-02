@@ -3538,7 +3538,7 @@ class QCircuit : public IDisplay, public IJSON {
         else if (pos_dit > nc_)
             throw exception::OutOfRange("qpp::QCircuit::match_circuit_left()");
         // check no measurement for the matched circuit
-        if (!other.measurements_.empty())
+        if (!other.get_measured().empty())
             throw exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::match_circuit_left()");
         // check valid target
