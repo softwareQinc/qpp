@@ -946,8 +946,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param nq Number of qudits (optional, defaults to 1 so qpp::QCircuit is
      * default-constructible)
      * \param nc Number of classical dits (optional)
-     * \param d Subsystem dimensions (optional, default is qubit, i.e.,
-     * \a d =2)
+     * \param d Subsystem dimensions (optional, default is qubit, i.e., \a d =2)
      * \param name Circuit name (optional)
      */
     explicit QCircuit(idx nq = 1, idx nc = 0, idx d = 2, std::string name = {})
@@ -2786,9 +2785,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param target Target qudit indexes where the gate \a U is applied
      * depending on the values of the classical control dits
      * \param shift Performs the control as if the \a ctrl_dits classical
-     * dits were incremented component-wise by \a shift. If non-empty
-     * (default), the size of \a shift must be the same as the size of \a
-     * ctrl_dits.
+     * dits were incremented component-wise by \a shift. If non-empty (default),
+     * the size of \a shift must be the same as the size of \a ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -2932,10 +2930,10 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \param target Target qudit indexes that are measured
      * \param c_reg Classical register where the value of the measurement is
-     * being stored, as a decimal representation of the binary string
-     * representing the measurement, with the most significant dit on the
-     * left (corresponding to the first/top qudit that is being measured,
-     * i.e., target[0])
+     * being stored, as a decimal representation of the string representing the
+     * measurement results, with the most significant dit on the left
+     * (corresponding to the first/top qudit that is being measured, i.e.,
+     * target[0]); that is, big-endian order.
      * \param destructive Destructive measurement, true by default
      * \param name Optional measurement name, default is "mZ"
      * \return Reference to the current instance
@@ -3059,14 +3057,14 @@ class QCircuit : public IDisplay, public IJSON {
     // measurement of multiple qudits in the orthonormal basis or rank-1
     // projectors specified by the columns of matrix V
     /**
-     * \brief Joint measurement of multiple qudits in the orthonormal basis
-     * or rank-1 projectors specified by the columns of matrix \a V
+     * \brief Joint measurement of multiple qudits in the orthonormal basis or
+     * rank-1 projectors specified by the columns of matrix \a V
      *
-     * \param V Orthonormal basis or rank-1 projectors specified by the
-     * columns of matrix V
+     * \param V Orthonormal basis or rank-1 projectors specified by the columns
+     * of matrix V
      * \param target Target qudit indexes that are jointly measured
-     * \param c_reg Classical register where the value of
-     * the measurement is stored
+     * \param c_reg Classical register where the value of the measurement is
+     * stored
      * \param destructive Destructive measurement, true by default
      * \param name Optional measurement name
      * \return Reference to the current instance
@@ -3177,9 +3175,8 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Discards multiple qudits by measuring them destructively in
-     * the computational basis (Z-basis) and discarding the measurement
-     * result
+     * \brief Discards multiple qudits by measuring them destructively in the
+     * computational basis (Z-basis) and discarding the measurement result
      *
      * \param target Target qudit indexes that are discarded
      * \param name Optional discard operation name, default is "discard"

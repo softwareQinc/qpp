@@ -17,6 +17,9 @@ Pre-release - work in progress
                                    measurements
           is_measurement_dit()   - whether a classical dit participated in a
                                    measurement
+    - Changed the ordering of bits in qpp::Bit_circuit::display(), so that
+      the zero-th bit (top bit) is now the leftmost bit in the textual
+      representation. That is, qpp::Bit_circuit assumes big-endian order.
     - Bugfixes
 
 Version 3.0 - 5 October 2021

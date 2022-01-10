@@ -37,6 +37,11 @@ namespace qpp {
  * \class qpp::QEngine
  * \brief Quantum circuit engine, executes qpp::QCircuit
  * \see qpp::QCircuit
+ *
+ * \note When interfacing with OpenQASM, the classical dits/registers are
+ * evaluated in little-endian order, with  the least significant bit being
+ * stored first. For example, [1,0,0] is interpreted as 1 (and not 4).
+ * See https://github.com/softwareQinc/qpp/issues/75 for more details.
  */
 class QEngine : public IDisplay, public IJSON {
   protected:
@@ -47,13 +52,14 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Current state of the engine
      */
     struct state_ {
-        const QCircuit* qc_; ///< non-owning pointer to the parent
-        ///< const quantum circuit description
+        const QCircuit* qc_;          ///< non-owning pointer to the parent
+                                      ///< const quantum circuit description
         ket psi_{};                   ///< state vector
         std::vector<double> probs_{}; ///< measurement probabilities
-        std::vector<idx> dits_{};     ///< classical dits, little-endian order
-        std::vector<idx> subsys_{}; ///< keeps track of the measured subsystems,
-        ///< re-label them after measurements
+        std::vector<idx> dits_{};     ///< classical dits
+        std::vector<idx> subsys_{};   ///< keeps track of the measured
+                                      ///< subsystems, re-label them after
+                                      ///< measurements
 
         /**
          * \brief Constructor
@@ -192,8 +198,9 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Vector with the values of the underlying classical dits
      * \see qpp::QEngine::set_dits()
      *
-     * \note When interfacing with OpenQASM, the classical dits are stored in
-     * little-endian order, i.e., the least significant bit is stored first
+     * \note When interfacing with OpenQASM, the classical dits/registers are
+     * evaluated in little-endian order, with  the least significant bit being
+     * stored first. For example, [1,0,0] is interpreted as 1 (and not 4).
      *
      * \return Vector of underlying classical dits
      */
@@ -203,8 +210,9 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Value of the classical dit at position \a i
      * \see qpp::QEngine::set_dit()
      *
-     * \note When interfacing with OpenQASM, the classical dits are stored in
-     * little-endian order, i.e., the least significant bit is stored first
+     * \note When interfacing with OpenQASM, the classical dits/registers are
+     * evaluated in little-endian order, with  the least significant bit being
+     * stored first. For example, [1,0,0] is interpreted as 1 (and not 4).
      *
      * \param i Classical dit index
      * \return Value of the classical dit at position \a i
@@ -324,8 +332,9 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Sets the classical dit at position \a i
      * \see qpp::QEngine::get_dit()
      *
-     * \note When interfacing with OpenQASM, the classical dits are stored in
-     * little-endian order, i.e., the least significant bit is stored first
+     * \note When interfacing with OpenQASM, the classical dits/registers are
+     * evaluated in little-endian order, with  the least significant bit being
+     * stored first. For example, [1,0,0] is interpreted as 1 (and not 4).
      *
      * \param i Classical dit index
      * \param value Classical dit value
@@ -346,8 +355,9 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Set the classical dits to \a dits
      * \see qpp::QEngine::get_dits()
      *
-     * \note When interfacing with OpenQASM, the classical dits are stored in
-     * little-endian order, i.e., the least significant bit is stored first
+     * \note When interfacing with OpenQASM, the classical dits/registers are
+     * evaluated in little-endian order, with  the least significant bit being
+     * stored first. For example, [1,0,0] is interpreted as 1 (and not 4).
      *
      * \param dits Vector of classical dits, must have the same size as the
      * internal vector of classical dits returned by qpp::QEngine::get_dits()

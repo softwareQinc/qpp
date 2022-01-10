@@ -254,7 +254,7 @@ class Dynamic_bitset : public IDisplay {
     }
 
     /**
-     * \brief Sets all bits to false
+     * \brief Set all bits to false
      *
      * \return Reference to the current instance
      */
@@ -333,6 +333,7 @@ class Dynamic_bitset : public IDisplay {
     idx operator-(const Dynamic_bitset& rhs) const noexcept {
         idx result = 0;
         idx bitset_size = size();
+        assert(bitset_size == rhs.size());
         for (idx i = 0; i < bitset_size; ++i) {
             if (get(i) != rhs.get(i))
                 ++result;
@@ -348,8 +349,8 @@ class Dynamic_bitset : public IDisplay {
      * \tparam CharT String character type
      * \tparam Traits String traits
      * \tparam Allocator String Allocator
-     * \param zero Character representing the zero
-     * \param one Character representing the one
+     * \param zero Character representing false (zero)
+     * \param one Character representing true (one)
      * \return Bitset as a string
      */
     template <class CharT = char, class Traits = std::char_traits<CharT>,
@@ -376,7 +377,10 @@ class Dynamic_bitset : public IDisplay {
      * \brief qpp::IDisplay::display() override
      *
      * Writes to the output stream a textual representation of the bitset
-     * (displays the bitset bit by bit_
+     * (displays the bitset bit by bit), with first bit (location 0 of the
+     * bitset) on the right (least significant bit), and last bit (location n-1
+     * of the bitset) on the left (most significant bit); that is, little-endian
+     * order.
      *
      * \param os Output stream passed by reference
      * \return Reference to the output stream
@@ -421,7 +425,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
           bSWAP_{size()}, bTOF_{size()}, bFRED_{size()}, btotal_{size()} {}
 
     /**
-     * \brief Bit flip
+     * \brief Not gate (bit flip)
      * \see qpp::Bit_circuit::NOT()
      *
      * \param i Bit position in the circuit
@@ -439,7 +443,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     ~Bit_circuit() override = default;
 
     /**
-     * \brief Bit flip
+     * \brief NOT gate (bit flip)
      * \see qpp::Bit_circuit::X()
      *
      * \param i Bit position in the circuit
@@ -482,7 +486,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     }
 
     /**
-     * \brief Controlled-NOT
+     * \brief Controlled-NOT gate
      *
      * \param ctrl Control bit index
      * \param target Target bit index
@@ -574,7 +578,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     }
 
     /**
-     * \brief Swap bits
+     * \brief Swap gate
      *
      * \param i Bit index
      * \param j Bit index
@@ -666,7 +670,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     }
 
     /**
-     * \brief Reset the circuit all zero, clear all gates
+     * \brief Resets the circuit to all-zero, clear all gates
      *
      * \return Reference to the current instance
      */
@@ -802,7 +806,10 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     /**
      * \brief qpp::IDisplay::display() override
      *
-     * Writes to the output stream a textual representation of the bit circuit
+     * Writes to the output stream a textual representation of the bit circuit,
+     * with first bit (at position 0, or top of the circuit) on the left (most
+     * significant bit), and last bit (at position n-1, or bottom of the
+     * circuit) on the right (least significant bit); that is, big-endian order.
      *
      * \param os Output stream passed by reference
      * \return Reference to the output stream
@@ -811,7 +818,9 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         os << "n = " << n_ << '\n';
         os << "total gate count: " << get_gate_count() << '\n';
         os << "total gate depth: " << get_gate_depth() << '\n';
-        os << "bit state: " << this->to_string() << '\n';
+        auto bit_state = this->to_string();
+        std::reverse(bit_state.begin(), bit_state.end());
+        os << "bit state: " << bit_state << '\n';
         os << "Hamming weight: " << count();
 
         return os;

@@ -33,11 +33,15 @@
 #include "qpp.h"
 
 namespace py = pybind11;
-using QCircuit = qpp::QCircuit;
-using QEngine = qpp::QEngine;
+
 using idx = qpp::idx;
 using cmat = qpp::cmat;
 using ket = qpp::ket;
+
+using Bit_circuit = qpp::Bit_circuit;
+using Dynamic_bitset = qpp::Dynamic_bitset;
+using QCircuit = qpp::QCircuit;
+using QEngine = qpp::QEngine;
 
 /* Trampoline class for virtual methods */
 class PyQEngine : public QEngine {
@@ -94,6 +98,90 @@ void declare_noisy_engine(py::module &m, const std::string& type) {
 
 PYBIND11_MODULE(pyqpp, m) {
     m.doc() = "Python wrapper for qpp (https://github.com/softwareQinc/qpp)";
+
+    auto pyDynamic_bitset = py::class_<Dynamic_bitset>(m ,"Dynamic_bitset")
+        .def(py::init<idx>(), py::arg("n"))
+        .def("all", &Dynamic_bitset::all,
+             "True if all of the bits are set")
+        .def("any", &Dynamic_bitset::any, "True if any of the bits is set")
+        .def("count", &Dynamic_bitset::count,
+             "Number of bits set to one in the bitset (Hamming weight)")
+        .def("flip",  py::overload_cast<idx>(&Dynamic_bitset::flip),
+             "Flips the bit at position pos", py::arg("pos"))
+        .def("flip",  py::overload_cast<>(&Dynamic_bitset::flip),
+             "Flips all bits")
+        .def("get", &Dynamic_bitset::get,
+             "The value of the bit at position pos", py::arg("pos"))
+        .def("none", &Dynamic_bitset::none, "True if none of the bits are set")
+        .def("__sub__", &Dynamic_bitset::operator-,
+             "Number of places the two bitsets differ (Hamming distance)")
+        .def("rand",  py::overload_cast<double>(&Dynamic_bitset::rand),
+             "Sets all bits according to a Bernoulli(p) distribution",
+             py::arg("p") = 0.5)
+        .def("rand",  py::overload_cast<idx, double>(&Dynamic_bitset::rand),
+             "Sets the bit at position pos according to a Bernoulli(p) distribution",
+             py::arg("pos"), py::arg("p") = 0.5)
+        .def("reset",  py::overload_cast<idx>(&Dynamic_bitset::reset),
+             "Sets the bit at position pos to false", py::arg("pos"))
+        .def("reset",  py::overload_cast<>(&Dynamic_bitset::reset),
+             "Sets all bits to false")
+        .def("set",  py::overload_cast<idx, bool>(&Dynamic_bitset::set),
+             "Sets the bit at position pos", py::arg("pos"),
+             py::arg("value") = true)
+        .def("set",  py::overload_cast<>(&Dynamic_bitset::set),
+             "Sets all bits to true")
+        .def("size", &Dynamic_bitset::size,
+             "Number of bits stored in the bitset")
+        .def("storage_size", &Dynamic_bitset::storage_size,
+             "Size of the underlying storage space (in units of qpp::Dynamic_bitset::value_type, unsigned int by default)")
+        .def("to_string", &Dynamic_bitset::to_string<>, "String representation",
+             py::arg("zero") = '0', py::arg("one") = '1')
+        .def(py::self == py::self)
+        .def(py::self != py::self)
+        .def("__repr__", [](const Dynamic_bitset & dbs){
+            std::ostringstream oss;
+            oss << dbs;
+            return oss.str();
+        });
+
+    auto pyBit_circuit = py::class_<Bit_circuit, Dynamic_bitset>(m, "Bit_circuit")
+        .def(py::init<idx>(), py::arg("n"))
+        .def(py::init<const Dynamic_bitset&>(), py::keep_alive<1, 2>())
+        .def("CNOT", &Bit_circuit::CNOT, "Controlled-NOT gate", py::arg("ctrl"),
+             py::arg("target"))
+        .def("FRED", &Bit_circuit::FRED, " Fredkin gate (Controlled-SWAP)",
+             py::arg("i"), py::arg("j"), py::arg("k"))
+        .def("get_gate_count",
+             py::overload_cast<const std::string&>(&Bit_circuit::get_gate_count, py::const_),
+             "Bit circuit gate count from name. Possible names are NOT (X), CNOT, SWAP, TOF, FRED",
+             py::arg("name"))
+        .def("get_gate_count",
+             py::overload_cast<>(&Bit_circuit::get_gate_count, py::const_),
+             "Total gate count")
+        .def("get_gate_depth",
+             py::overload_cast<const std::string&>(&Bit_circuit::get_gate_depth, py::const_),
+             "Bit circuit gate depth from name. Possible names are NOT (X), CNOT, SWAP, TOF, FRED",
+             py::arg("name"))
+        .def("get_gate_depth",
+             py::overload_cast<>(&Bit_circuit::get_gate_depth, py::const_),
+             "Total gate depth")
+        .def("NOT", &Bit_circuit::NOT, "NOT gate (bit flip)", py::arg("i"))
+        .def("reset", &Bit_circuit::reset,
+             "Reset the circuit all zero, clear all gates")
+        .def("SWAP", &Bit_circuit::SWAP, "Swap gate", py::arg("i"), py::arg("j"))
+        .def("to_JSON", &Bit_circuit::to_JSON,
+             "Displays the bit circuit in JSON format",
+             py::arg("enclosed_in_curly_brackets") = true)
+        .def("TOF", &Bit_circuit::TOF, "Toffoli gate", py::arg("i"),
+             py::arg("j"), py::arg("k"))
+        .def("X", &Bit_circuit::X, "NOT gate (bit flip)", py::arg("i"))
+        .def(py::self == py::self)
+        .def(py::self != py::self)
+        .def("__repr__", [](const Bit_circuit& bc){
+            std::ostringstream oss;
+            oss << bc;
+            return oss.str();
+        });
 
     auto pyQCircuit = py::class_<QCircuit>(m, "QCircuit")
         .def(py::init<idx, idx, idx, std::string>(), py::arg("nq") = 1,
