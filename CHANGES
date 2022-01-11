@@ -1,3 +1,6 @@
+Pre-release
+    -
+
 Version 3.1 - 11 January 2022
     - Added pyqpp, a Python wrapper around Quantum++. See
       https://github.com/softwareQinc/qpp/wiki/8.-pyqpp for more details.
