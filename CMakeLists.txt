@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(qpp VERSION 3.0 LANGUAGES CXX)
+project(qpp VERSION 3.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 enable_testing()
@@ -21,7 +21,7 @@ target_include_directories(libqpp INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/qasmtools/include/>
         $<INSTALL_INTERFACE:include/>)
 
-######## BEGIN LOCAL stuff, you don't need it in your project
+######## BEGIN LOCAL stuff, you don't need those in standalone projects
 option(WITH_EXAMPLES "Enable example compilation" OFF)
 option(WITH_UNIT_TESTS "Enable unit testing" OFF)
 option(SANITIZE "Enable code sanitizing (only for gcc/clang)" OFF)

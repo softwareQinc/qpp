@@ -6,7 +6,7 @@ RUN apt-get update && \
     ln -fs /usr/share/zoneinfo/America/Toronto /etc/localtime && \
     dpkg-reconfigure -f noninteractive tzdata
 
-RUN apt-get install -y \ 
+RUN apt-get install -y \
     build-essential \
     python3.6 \
     python3-pip \

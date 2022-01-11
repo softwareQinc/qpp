@@ -37,7 +37,10 @@ namespace qpp {
  * \class qpp::Dynamic_bitset
  * \brief Dynamic bitset class, allows the specification of the number of bits
  * at runtime
- * \note The interface mimics std::bitset<>
+ *
+ * \note The interface mimics std::bitset<>.
+ * \note qpp::Bit_circuit does not perform any exception checking (only asserts
+ * in Debug mode). This is due to high-performance considerations.
  */
 class Dynamic_bitset : public IDisplay {
   public:
@@ -132,6 +135,8 @@ class Dynamic_bitset : public IDisplay {
      * \return Value of the bit at position \a pos
      */
     bool get(idx pos) const noexcept {
+        assert(pos < size());
+
         return static_cast<value_type>(1) & (v_[index_(pos)] >> offset_(pos));
     }
 
@@ -185,9 +190,12 @@ class Dynamic_bitset : public IDisplay {
      * \return Reference to the current instance
      */
     Dynamic_bitset& set(idx pos, bool value = true) {
-        value
-            ? v_[index_(pos)] |= (static_cast<value_type>(1) << offset_(pos))
-            : v_[index_(pos)] &= ~(static_cast<value_type>(1) << offset_(pos));
+        assert(pos < size());
+
+        if (value)
+            v_[index_(pos)] |= (static_cast<value_type>(1) << offset_(pos));
+        else
+            v_[index_(pos)] &= ~(static_cast<value_type>(1) << offset_(pos));
 
         //        v_[index_(pos)] &= ~(!value << offset_(pos));
 
@@ -217,6 +225,8 @@ class Dynamic_bitset : public IDisplay {
      * \return Reference to the current instance
      */
     Dynamic_bitset& rand(idx pos, double p = 0.5) {
+        assert(pos < size());
+
         std::random_device rd;
         std::mt19937 gen{rd()};
         std::bernoulli_distribution d{p};
@@ -248,6 +258,8 @@ class Dynamic_bitset : public IDisplay {
      * \return Reference to the current instance
      */
     Dynamic_bitset& reset(idx pos) {
+        assert(pos < size());
+
         v_[index_(pos)] &= ~(static_cast<value_type>(1) << offset_(pos));
 
         return *this;
@@ -274,6 +286,8 @@ class Dynamic_bitset : public IDisplay {
      * \return Reference to the current instance
      */
     Dynamic_bitset& flip(idx pos) {
+        assert(pos < size());
+
         v_[index_(pos)] ^= static_cast<value_type>(1) << (offset_(pos));
 
         return *this;
@@ -302,6 +316,7 @@ class Dynamic_bitset : public IDisplay {
      */
     bool operator==(const Dynamic_bitset& rhs) const noexcept {
         assert(size() == rhs.size());
+
         bool result = true;
         idx n = std::min(storage_size(), rhs.storage_size());
         for (idx i = 0; i < n; ++i) {
@@ -334,6 +349,7 @@ class Dynamic_bitset : public IDisplay {
         idx result = 0;
         idx bitset_size = size();
         assert(bitset_size == rhs.size());
+
         for (idx i = 0; i < bitset_size; ++i) {
             if (get(i) != rhs.get(i))
                 ++result;
@@ -398,6 +414,9 @@ class Dynamic_bitset : public IDisplay {
 /**
  * \class qpp::Bit_circuit
  * \brief Classical reversible circuit simulator
+ *
+ * \note qpp::Bit_circuit does not perform any exception checking (only asserts
+ * in Debug mode). This is due to high-performance considerations.
  */
 class Bit_circuit : public Dynamic_bitset, public IJSON {
     std::unordered_map<std::string, idx> count_{}; ///< gate counts
@@ -432,6 +451,8 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
      * \return Reference to the current instance
      */
     Bit_circuit& X(idx i) {
+        assert(i < size());
+
         NOT(i);
 
         return *this;
@@ -450,6 +471,8 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
      * \return Reference to the current instance
      */
     Bit_circuit& NOT(idx i) {
+        assert(i < size());
+
         flip(i);
         ++count_["NOT"];
         ++count_[__FILE__ "__total__"];
@@ -493,6 +516,10 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
      * \return Reference to the current instance
      */
     Bit_circuit& CNOT(idx ctrl, idx target) {
+        auto n = size();
+        assert(ctrl < n && target < n);
+        assert(ctrl != target);
+
         v_[index_(target)] ^=
             (static_cast<value_type>(1) & (v_[index_(ctrl)] >> offset_(ctrl)))
             << offset_(target);
@@ -539,6 +566,10 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
      * \return Reference to the current instance
      */
     Bit_circuit& TOF(idx i, idx j, idx k) {
+        auto n = size();
+        assert(i < n && j < n && k < n);
+        assert(i != j && i != k && j != k);
+
         v_[index_(k)] ^=
             ((static_cast<value_type>(1) & (v_[index_(j)] >> offset_(j))) &
              (static_cast<value_type>(1) & (v_[index_(i)] >> offset_(i))))
@@ -585,6 +616,10 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
      * \return Reference to the current instance
      */
     Bit_circuit& SWAP(idx i, idx j) {
+        auto n = size();
+        assert(i < n && j < n);
+        assert(i != j);
+
         if (get(i) != get(j)) {
             X(i);
             X(j);
@@ -632,6 +667,10 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
      * \return Reference to the current instance
      */
     Bit_circuit& FRED(idx i, idx j, idx k) {
+        auto n = size();
+        assert(i < n && j < n && k < n);
+        assert(i != j && i != k && j != k);
+
         if (get(i)) {
             SWAP(j, k);
         }

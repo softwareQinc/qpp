@@ -30,7 +30,7 @@ ext_modules = [
 
 setup(
     name='pyqpp',
-    version='3.0',
+    version='3.1',
     description='Python wrapper for Quantum++',
     author='softwareQ',
     author_email='info@softwareq.ca',

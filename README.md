@@ -1,6 +1,6 @@
 # Quantum++
 
-## Version 3.0 - 5 October 2021
+## Version 3.1 - 11 January 2022
 
 **Build status:**
 
@@ -25,12 +25,12 @@ in a pure state or of 12 qubits in a mixed state reasonably fast.
 To report any bugs or ask for additional features/enhancements, please
 [submit an issue](https://github.com/softwareQinc/qpp/issues) with an appropriate label.
 
-If you are interesting in contributing to this project, feel free to contact us. Alternatively, fork the repository,
+If you are interested in contributing to this project, feel free to contact us. Alternatively, fork the repository,
 create a custom branch, add your contribution, then finally create a pull request. If we accept the pull request, we
 will merge your custom branch with the latest main/development branch. The latter will eventually be merged into a
-future release version. To contribute, you need to have a solid knowledge of C++ (preferably C++17 or later), including
-templates and the standard library, a basic knowledge of quantum computing and linear algebra, and working experience
-with [Eigen 3](http://eigen.tuxfamily.org).
+future release version. To contribute, it is preferable to have a solid knowledge of modern C++ (preferably C++17 or
+later), including templates and the standard library, a basic knowledge of quantum computing and linear algebra, and
+working experience with [Eigen 3](http://eigen.tuxfamily.org).
 
 For additional [Eigen 3](http://eigen.tuxfamily.org) documentation see <http://eigen.tuxfamily.org/dox/>. For a simple
 [Eigen 3](http://eigen.tuxfamily.org) quick ASCII reference see
@@ -69,3 +69,13 @@ latexmk -pdf refman.tex
 from the `doc/latex` directory or compile the file `doc/latex/refman.tex` with your LaTeX compiler. This will create
 the `doc/latex/refman.pdf` documentation file. Consult your favourite LaTeX manual for how to compile/build LaTeX files
 under your specific operating system.
+
+
+## Python3 wrapper
+pyqpp is a Python wrapper for Quantum++. 
+pyqpp can be installed using `pip`:
+```
+pip install git+https://github.com/softwareQinc/qpp
+```
+For more details, please see 
+[pyqpp/README.md](https://github.com/softwareQinc/qpp/blob/main/pyqpp/README.md).
