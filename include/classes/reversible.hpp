@@ -38,9 +38,13 @@ namespace qpp {
  * \brief Dynamic bitset class, allows the specification of the number of bits
  * at runtime
  *
+ * \note qpp::Dynamic_bitset assumes that the first bit (location 0 in the
+ * bitset) is on the right (least significant bit), and the last bit (location
+ * n-1 in the bitset) is on the left (most significant bit); that is, assumes
+ * little-endian order.
+ * \note qpp::Dynamic_bitset does not perform any exception checking (only
+ * asserts in Debug mode). This is due to performance considerations.
  * \note The interface mimics std::bitset<>.
- * \note qpp::Bit_circuit does not perform any exception checking (only asserts
- * in Debug mode). This is due to high-performance considerations.
  */
 class Dynamic_bitset : public IDisplay {
   public:
@@ -82,6 +86,23 @@ class Dynamic_bitset : public IDisplay {
     explicit Dynamic_bitset(idx n)
         : storage_size_{n / (sizeof(value_type) * CHAR_BIT) + 1}, n_{n},
           v_(storage_size_) {}
+
+    /**
+     * \brief Constructs a dynamic bitset instance out of a string
+     *
+     * \param str String, \a str[0] corresponds to the left bit (most
+     * significant) in the bitset, i.e. corresponds to the bit at position n-1
+     * \param zero Character representing false (zero)
+     * \param one Character representing true (one)
+     */
+    explicit Dynamic_bitset(std::string str, char zero = '0', char one = '1')
+        : Dynamic_bitset{str.size()} {
+        idx n = str.size();
+        for (idx i = 0; i < n; ++i) {
+            assert(str[i] == zero || str[i] == one);
+            this->set(n - 1 - i, str[i] != zero);
+        }
+    }
 
     /**
      * \brief Default virtual destructor
@@ -362,27 +383,17 @@ class Dynamic_bitset : public IDisplay {
     /**
      * \brief String representation
      *
-     * \tparam CharT String character type
-     * \tparam Traits String traits
-     * \tparam Allocator String Allocator
      * \param zero Character representing false (zero)
      * \param one Character representing true (one)
      * \return Bitset as a string
      */
-    template <class CharT = char, class Traits = std::char_traits<CharT>,
-              class Allocator = std::allocator<CharT>>
-    std::basic_string<CharT, Traits, Allocator>
-    to_string(CharT zero = CharT('0'), CharT one = CharT('1')) const {
-        std::basic_string<CharT, Traits, Allocator> result;
+    virtual std::string to_string(char zero = '0', char one = '1') const {
+        std::string result;
         idx bitset_size = size();
         result.resize(bitset_size);
 
         for (idx i = bitset_size; i-- > 0;) {
-            if (!get(i)) {
-                result[bitset_size - i - 1] = zero;
-            } else {
-                result[bitset_size - i - 1] = one;
-            }
+            result[bitset_size - i - 1] = get(i) ? one : zero;
         }
 
         return result;
@@ -393,21 +404,16 @@ class Dynamic_bitset : public IDisplay {
      * \brief qpp::IDisplay::display() override
      *
      * Writes to the output stream a textual representation of the bitset
-     * (displays the bitset bit by bit), with first bit (location 0 of the
-     * bitset) on the right (least significant bit), and last bit (location n-1
-     * of the bitset) on the left (most significant bit); that is, little-endian
-     * order.
+     * (displays the bitset bit by bit), with the first bit (location 0 in the
+     * bitset) on the right (least significant bit), and the last bit (location
+     * n-1 in the bitset) on the left (most significant bit); that is,
+     * little-endian order.
      *
      * \param os Output stream passed by reference
      * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
-        idx bitset_size = size();
-        for (idx i = bitset_size; i-- > 0;) {
-            os << get(i);
-        }
-
-        return os;
+        return os << this->to_string();
     }
 }; /* class Dynamic_bitset */
 
@@ -415,8 +421,11 @@ class Dynamic_bitset : public IDisplay {
  * \class qpp::Bit_circuit
  * \brief Classical reversible circuit simulator
  *
+ * \note qpp::Bit_circuit assumes that the first bit (bit at position 0) is on
+ * the left (most significant bit), and the last bit (bit at position n-1) is on
+ * the right (least significant bit); that is, assumes big-endian order.
  * \note qpp::Bit_circuit does not perform any exception checking (only asserts
- * in Debug mode). This is due to high-performance considerations.
+ * in Debug mode). This is due to performance considerations.
  */
 class Bit_circuit : public Dynamic_bitset, public IJSON {
     std::unordered_map<std::string, idx> count_{}; ///< gate counts
@@ -433,9 +442,28 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     explicit Bit_circuit(idx n)
         : Dynamic_bitset{n}, bNOT_{n}, bCNOT_{n}, bSWAP_{n}, bTOF_{n},
           bFRED_{n}, btotal_{n} {}
+
     /**
-     * \brief Conversion constructor, used to initialize a qpp::Bit_circuit with
-     * a qpp::Dynamic_bitset
+     * \brief Constructs a bit circuit instance out of a string
+     *
+     * \param str String, with \a str[0] corresponding to the top bit 0 (most
+     * significant) in the circuit, i.e. the bit at position 0
+     * \param zero Character representing false (zero)
+     * \param one Character representing true (one)
+     */
+    explicit Bit_circuit(std::string str, char zero = '0', char one = '1')
+        : Dynamic_bitset{str.size()}, bNOT_{size()}, bCNOT_{size()},
+          bSWAP_{size()}, bTOF_{size()}, bFRED_{size()}, btotal_{size()} {
+        idx n = str.size();
+        for (idx i = 0; i < n; ++i) {
+            assert(str[i] == zero || str[i] == one);
+            this->set(i, str[i] != zero);
+        }
+    }
+
+    /**
+     * \brief Explicit conversion constructor, used to initialize a
+     * qpp::Bit_circuit with a qpp::Dynamic_bitset
      *
      * \param dynamic_bitset Dynamic bitset
      */
@@ -841,14 +869,35 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         return result;
     }
 
+    /* input/output */
+    /**
+     * \brief String representation
+     *
+     * \param zero Character representing false (zero)
+     * \param one Character representing true (one)
+     * \return Bits in the bit circuit as a string
+     */
+    std::string to_string(char zero = '0', char one = '1') const override {
+        std::string result;
+        idx bitset_size = size();
+        result.resize(bitset_size);
+
+        for (idx i = 0; i < bitset_size; ++i) {
+            result[i] = get(i) ? one : zero;
+        }
+
+        return result;
+    }
+
   private:
     /**
      * \brief qpp::IDisplay::display() override
      *
      * Writes to the output stream a textual representation of the bit circuit,
-     * with first bit (at position 0, or top of the circuit) on the left (most
-     * significant bit), and last bit (at position n-1, or bottom of the
-     * circuit) on the right (least significant bit); that is, big-endian order.
+     * with the first bit (at position 0, or top of the circuit) on the left
+     * (most significant bit), and the last bit (at position n-1, or bottom of
+     * the circuit) on the right (least significant bit); that is, big-endian
+     * order.
      *
      * \param os Output stream passed by reference
      * \return Reference to the output stream
@@ -857,9 +906,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         os << "n = " << n_ << '\n';
         os << "total gate count: " << get_gate_count() << '\n';
         os << "total gate depth: " << get_gate_depth() << '\n';
-        auto bit_state = this->to_string();
-        std::reverse(bit_state.begin(), bit_state.end());
-        os << "bit state: " << bit_state << '\n';
+        os << "bit state: " << this->to_string() << '\n';
         os << "Hamming weight: " << count();
 
         return os;

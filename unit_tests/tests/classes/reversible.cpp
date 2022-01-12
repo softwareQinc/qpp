@@ -37,6 +37,10 @@ TEST(qpp_Bit_circuit_SWAP, AllTests) {}
 ///       bool enclosed_in_curly_brackets = true) const override
 TEST(qpp_Bit_circuit_to_JSON, AllTests) {}
 /******************************************************************************/
+/// BEGIN std::string Bit_circuit::to_string(char zero = '0', char one = '1')
+///       const override
+TEST(qpp_Bit_circuit_to_string, AllTests) {}
+/******************************************************************************/
 /// BEGIN Bit_circuit& Bit_circuit::TOF(const std::vector<idx>& pos)
 TEST(qpp_Bit_circuit_TOF, AllTests) {}
 /******************************************************************************/
@@ -105,10 +109,7 @@ TEST(qpp_Dynamic_bitset_size, AllTests) {}
 /// BEGIN idx Dynamic_bitset::storage_size() const noexcept
 TEST(qpp_Dynamic_bitset_storage_size, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <class CharT = char, class Traits = std::char_traits<CharT>,
-///       class Allocator = std::allocator<CharT>>
-///       std::basic_string<CharT, Traits, Allocator>
-///       Dynamic_bitset::to_string(CharT zero = CharT('0'), CharT one =
-///       CharT('1')) const
+/// BEGIN virtual std::string Dynamic_bitset::to_string(char zero = '0',
+///       char one = '1') const
 TEST(qpp_Dynamic_bitset_to_string, AllTests) {}
 /******************************************************************************/

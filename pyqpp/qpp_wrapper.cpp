@@ -101,6 +101,8 @@ PYBIND11_MODULE(pyqpp, m) {
 
     auto pyDynamic_bitset = py::class_<Dynamic_bitset>(m ,"Dynamic_bitset")
         .def(py::init<idx>(), py::arg("n"))
+        .def(py::init<std::string, char, char>(), py::arg("str"),
+             py::arg("zero") = '0', py::arg("one") = '1')
         .def("all", &Dynamic_bitset::all,
              "True if all of the bits are set")
         .def("any", &Dynamic_bitset::any, "True if any of the bits is set")
@@ -134,7 +136,7 @@ PYBIND11_MODULE(pyqpp, m) {
              "Number of bits stored in the bitset")
         .def("storage_size", &Dynamic_bitset::storage_size,
              "Size of the underlying storage space (in units of qpp::Dynamic_bitset::value_type, unsigned int by default)")
-        .def("to_string", &Dynamic_bitset::to_string<>, "String representation",
+        .def("to_string", &Dynamic_bitset::to_string, "String representation",
              py::arg("zero") = '0', py::arg("one") = '1')
         .def(py::self == py::self)
         .def(py::self != py::self)
@@ -146,6 +148,8 @@ PYBIND11_MODULE(pyqpp, m) {
 
     auto pyBit_circuit = py::class_<Bit_circuit, Dynamic_bitset>(m, "Bit_circuit")
         .def(py::init<idx>(), py::arg("n"))
+        .def(py::init<std::string, char, char>(), py::arg("str"),
+             py::arg("zero") = '0', py::arg("one") = '1')
         .def(py::init<const Dynamic_bitset&>(), py::keep_alive<1, 2>())
         .def("CNOT", &Bit_circuit::CNOT, "Controlled-NOT gate", py::arg("ctrl"),
              py::arg("target"))
@@ -172,6 +176,8 @@ PYBIND11_MODULE(pyqpp, m) {
         .def("to_JSON", &Bit_circuit::to_JSON,
              "Displays the bit circuit in JSON format",
              py::arg("enclosed_in_curly_brackets") = true)
+        .def("to_string", &Bit_circuit::to_string, "String representation",
+             py::arg("zero") = '0', py::arg("one") = '1')
         .def("TOF", &Bit_circuit::TOF, "Toffoli gate", py::arg("i"),
              py::arg("j"), py::arg("k"))
         .def("X", &Bit_circuit::X, "NOT gate (bit flip)", py::arg("i"))
