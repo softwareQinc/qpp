@@ -516,7 +516,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
      * \return Reference to the current instance
      */
     Bit_circuit& CNOT(idx ctrl, idx target) {
-        auto n = size();
+        [[maybe_unused]] auto n = size();
         assert(ctrl < n && target < n);
         assert(ctrl != target);
 
@@ -566,7 +566,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
      * \return Reference to the current instance
      */
     Bit_circuit& TOF(idx i, idx j, idx k) {
-        auto n = size();
+        [[maybe_unused]] auto n = size();
         assert(i < n && j < n && k < n);
         assert(i != j && i != k && j != k);
 
@@ -616,7 +616,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
      * \return Reference to the current instance
      */
     Bit_circuit& SWAP(idx i, idx j) {
-        auto n = size();
+        [[maybe_unused]] auto n = size();
         assert(i < n && j < n);
         assert(i != j);
 
@@ -667,7 +667,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
      * \return Reference to the current instance
      */
     Bit_circuit& FRED(idx i, idx j, idx k) {
-        auto n = size();
+        [[maybe_unused]] auto n = size();
         assert(i < n && j < n && k < n);
         assert(i != j && i != k && j != k);
 
