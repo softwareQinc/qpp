@@ -10,7 +10,7 @@
 int main() {
     using namespace qpp;
 
-    std::cout << ">> Classical reversible circuits\n";
+    std::cout << ">> Classical reversible circuits (2)\n";
 
     idx n = 32;          // number of bits
     idx num_trials = 10; // number of trials

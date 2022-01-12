@@ -95,7 +95,8 @@ class Dynamic_bitset : public IDisplay {
      * \param zero Character representing false (zero)
      * \param one Character representing true (one)
      */
-    explicit Dynamic_bitset(std::string str, char zero = '0', char one = '1')
+    explicit Dynamic_bitset(std::string str, char zero = '0',
+                            [[maybe_unused]] char one = '1')
         : Dynamic_bitset{str.size()} {
         idx n = str.size();
         for (idx i = 0; i < n; ++i) {
@@ -451,7 +452,8 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
      * \param zero Character representing false (zero)
      * \param one Character representing true (one)
      */
-    explicit Bit_circuit(std::string str, char zero = '0', char one = '1')
+    explicit Bit_circuit(std::string str, char zero = '0',
+                         [[maybe_unused]] char one = '1')
         : Dynamic_bitset{str.size()}, bNOT_{size()}, bCNOT_{size()},
           bSWAP_{size()}, bTOF_{size()}, bFRED_{size()}, btotal_{size()} {
         idx n = str.size();
