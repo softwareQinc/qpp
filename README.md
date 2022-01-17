@@ -70,9 +70,8 @@ from the `doc/latex` directory or compile the file `doc/latex/refman.tex` with y
 the `doc/latex/refman.pdf` documentation file. Consult your favourite LaTeX manual for how to compile/build LaTeX files
 under your specific operating system.
 
-
 ## Python3 wrapper
-pyqpp is a Python wrapper for Quantum++. 
+pyqpp is a Python wrapper for Quantum++.
 pyqpp can be installed using `pip`:
 ```
 pip install git+https://github.com/softwareQinc/qpp
