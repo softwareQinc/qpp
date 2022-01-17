@@ -1,6 +1,14 @@
 #### Quantum++ additional dependencies
 #### Do not modify unless you know what you're doing
 
+#### Enable OpenQASM 2.0 specs, see DISCREPANCIES.md for a comparison with Qiskit
+option(USE_OPENQASM2_SPECS "Use OpenQASM 2.0 standard instead of Qiskit gate specifications" OFF)
+if (${USE_OPENQASM2_SPECS})
+    add_compile_definitions(USE_OPENQASM2_SPECS=true)
+else ()
+    add_compile_definitions(USE_OPENQASM2_SPECS=false)
+endif ()
+
 #### Eigen3
 message(STATUS "Detecting Eigen3")
 set(EIGEN3_INSTALL_DIR "" CACHE PATH "Path to Eigen3")
@@ -154,7 +162,7 @@ if (MSVC)
     # Disable spurious Eigen warnings with MSVC (warning STL4007)
     add_compile_definitions(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING)
     add_compile_options(-bigobj)
-    add_definitions(-DNOMINMAX)
+    add_compile_definitions(NOMINMAX)
 endif ()
 
 #### MinGW or Cygwin have issues with object files that are too large
