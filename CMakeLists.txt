@@ -1,8 +1,14 @@
 cmake_minimum_required(VERSION 3.12)
-project(qpp VERSION 3.1 LANGUAGES CXX)
+set(QPP_VERSION_NUM 3.1)
+set(QPP_VERSION_STR "${QPP_VERSION_NUM}")
+project(qpp VERSION ${QPP_VERSION_NUM} LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 enable_testing()
+
+#### Quantum++ version
+add_compile_definitions(QPP_VERSION_NUM=${QPP_VERSION_NUM})
+add_compile_definitions(QPP_VERSION_STR="${QPP_VERSION_STR}")
 
 #### Quantum++ root directory
 add_compile_definitions(PROJECT_ROOT_DIR="${PROJECT_SOURCE_DIR}")

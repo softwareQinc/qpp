@@ -1,5 +1,8 @@
 Pre-release:
     - Added from-string constructor for qpp::Bit_circuit and qpp::Dynamic_bitset
+    - When building with CMake, the new QPP_VERSION_NUM (numeric) and
+      QPP_VERSION_STR (string) preprocessor definitions are automatically
+      injected in the code
 
 Version 3.1 - 11 January 2022
     - Added pyqpp, a Python wrapper around Quantum++. See
