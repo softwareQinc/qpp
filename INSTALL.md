@@ -1,4 +1,4 @@
-# Quantum++ installation instructions
+# Installation instructions
 
 Quantum++ is a header-only library that uses [CMake](https://www.cmake.org/) as its build/install system. Quantum++ is
 platform-independent, supporting [UNIX](https://www.opengroup.org/membership/forums/platform/unix) (including
@@ -272,4 +272,3 @@ pip install git+https://github.com/softwareQinc/qpp
 ```
 For more details, please see 
 [pyqpp/README.md](https://github.com/softwareQinc/qpp/blob/main/pyqpp/README.md).
-
