@@ -39,6 +39,17 @@
 #ifndef QPP_H_
 #define QPP_H_
 
+// ignore warnings for unknown C++17 attributes (we use such "custom" attributes
+// internally, the compiler is supposed to ignore them according to the C++17
+// standard)
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunknown-attributes"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wattributes"
+#elif defined(_MSC_VER) && !defined(__INTEL_COMPILER)
+#pragma warning(disable : 5030)
+#endif
+
 // standard C++ library headers
 #include <algorithm>
 #include <array>

@@ -611,11 +611,11 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
 // NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // HAS_OPENMP
-    for (idx i = 0; i < Ks.size(); ++i) {
+    for (const auto& K : Ks) {
 #ifdef HAS_OPENMP
 #pragma omp critical
 #endif // HAS_OPENMP
-        { result += Ks[i] * rA * adjoint(Ks[i]); }
+        { result += K * rA * adjoint(K); }
     }
 
     return result;
@@ -686,8 +686,9 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 
     cmat result = cmat::Zero(rA.rows(), rA.cols());
 
-    for (idx i = 0; i < Ks.size(); ++i)
-        result += apply(rA, Ks[i], target, dims);
+    // TODO fix with omp
+    for (const auto& K : Ks)
+        result += apply(rA, K, target, dims);
 
     return result;
 }
@@ -774,13 +775,13 @@ inline cmat kraus2choi(const std::vector<cmat>& Ks) {
 // NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // HAS_OPENMP
-    for (idx i = 0; i < Ks.size(); ++i) {
+    for (const auto& K : Ks) {
 #ifdef HAS_OPENMP
 #pragma omp critical
 #endif // HAS_OPENMP
         {
-            result += kron(cmat::Identity(Din, Din), Ks[i]) * Omega *
-                      adjoint(kron(cmat::Identity(Din, Din), Ks[i]));
+            result += kron(cmat::Identity(Din, Din), K) * Omega *
+                      adjoint(kron(cmat::Identity(Din, Din), K));
         }
     }
 

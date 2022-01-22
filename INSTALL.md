@@ -161,7 +161,7 @@ building system, by simply using the compiler and specifying the location to all
 ```bash
 c++ -pedantic -std=c++17 -Wall -Wextra -Weffc++ -fopenmp \
     -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
-    -isystem $HOME/eigen3 -I $HOME/qpp/include \
+    -isystem $HOME/eigen3 -I $HOME/qpp/include -I $HOME/qpp/qasmtools/include \
      src/main.cpp -o my_qpp_app
 ```
 

@@ -61,7 +61,7 @@ inline void n2multiidx(idx n, idx numdims, const idx* const dims,
 
 // silence g++4.9 bogus warning -Warray-bounds and -Wmaybe-uninitialized
 // in qpp::internal::multiidx2n()
-#if (__GNUC__ && !__clang__)
+#if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Warray-bounds"
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
@@ -92,7 +92,7 @@ inline idx multiidx2n(const idx* const midx, idx numdims,
 
     return result + midx[numdims - 1];
 }
-#if (__GNUC__ && !__clang__)
+#if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic pop
 #endif
 
