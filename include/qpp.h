@@ -39,13 +39,6 @@
 #ifndef QPP_H_
 #define QPP_H_
 
-// silence bogus warning -Wunused-variable for singletons
-#if (__GNUC__ || __clang__)
-#define QPP_UNUSED_ __attribute__((unused))
-#else
-#define QPP_UNUSED_
-#endif
-
 // standard C++ library headers
 #include <algorithm>
 #include <array>
@@ -136,28 +129,30 @@ namespace qpp {
  *
  * Additional initializations/cleanups, see the class qpp::Init
  */
-static const Init& init QPP_UNUSED_ = Init::get_no_thread_local_instance();
+static const Init& init [[maybe_unused]] = Init::get_no_thread_local_instance();
 
 /**
  * \brief qpp::Codes const Singleton
  *
  * Initializes the codes, see the class qpp::Codes
  */
-static const Codes& codes QPP_UNUSED_ = Codes::get_no_thread_local_instance();
+static const Codes& codes [[maybe_unused]] =
+    Codes::get_no_thread_local_instance();
 
 /**
  * \brief qpp::Gates const Singleton
  *
  * Initializes the gates, see the class qpp::Gates
  */
-static const Gates& gt QPP_UNUSED_ = Gates::get_no_thread_local_instance();
+static const Gates& gt [[maybe_unused]] = Gates::get_no_thread_local_instance();
 
 /**
  * \brief qpp::States const Singleton
  *
  * Initializes the states, see the class qpp::States
  */
-static const States& st QPP_UNUSED_ = States::get_no_thread_local_instance();
+static const States& st [[maybe_unused]] =
+    States::get_no_thread_local_instance();
 
 /**
  * \brief qpp::RandomDevices Singleton
@@ -172,7 +167,8 @@ static const States& st QPP_UNUSED_ = States::get_no_thread_local_instance();
 #ifndef NO_THREAD_LOCAL_
 thread_local
 #endif
-    static RandomDevices& rdevs QPP_UNUSED_ = RandomDevices::get_instance();
+    static RandomDevices& rdevs [[maybe_unused]] =
+        RandomDevices::get_instance();
 
 /**
  * \namespace qpp::obsolete

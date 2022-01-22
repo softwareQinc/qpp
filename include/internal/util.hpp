@@ -399,7 +399,7 @@ T abs_chop(const T& x, double chop = qpp::chop) {
 template <typename T,
           typename std::enable_if<!(std::numeric_limits<T>::is_iec559 ||
                                     is_complex<T>::value)>::type* = nullptr>
-T abs_chop(const T& x, QPP_UNUSED_ double chop = qpp::chop) {
+T abs_chop(const T& x, [[maybe_unused]] double chop = qpp::chop) {
     return x;
 }
 

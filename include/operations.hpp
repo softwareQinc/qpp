@@ -53,7 +53,7 @@ namespace qpp {
  * \return CTRL-A gate applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
-dyn_mat<typename Derived1::Scalar>
+[[qpp::high_performance]] dyn_mat<typename Derived1::Scalar>
 applyCTRL(const Eigen::MatrixBase<Derived1>& state,
           const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
           const std::vector<idx>& target, const std::vector<idx>& dims,

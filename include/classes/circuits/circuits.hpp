@@ -1952,7 +1952,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& TFQ(const std::vector<idx>& target,
-                  QPP_UNUSED_ bool swap = true) {
+                  [[maybe_unused]] bool swap = true) {
         // EXCEPTION CHECKS
 
         std::string context{"Step " + std::to_string(get_step_count())};
