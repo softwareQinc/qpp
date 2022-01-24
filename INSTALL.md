@@ -45,16 +45,16 @@ cmake .. [optional arguments]
 
 where [optional arguments] are passed as `-DOPTIONAL_ARGUMENT=VALUE`. The Quantum++-specific optional arguments are:
 
-Optional argument | Value | Description
-| --- | --- | --- |
-`CMAKE_INSTALL_PREFIX` | `/path/to/install` | Installs Quantum++ header files in a non-standard location (e.g., due to lack of admin. rights)
-`EIGEN3_INSTALL_DIR` | `/path/to/eigen3` | Path to Eigen3 installation, if not automatically detected
-`SANITIZE` | `ON/OFF` [`OFF` by default] | Enable code sanitizing (only for gcc/clang)
-`USE_OPENQASM2_SPECS` | `ON/OFF` [`OFF` by default] | Enables/disables using the OpenQASM 2.0 standard instead of Qiskit specifications; see [`DISCREPANCIES.md`](https://github.com/softwareQinc/qpp/blob/main/DISCREPANCIES.md)
-`WITH_EXAMPLES` | `ON/OFF` [`OFF` by default] | Enables/disables examples as a CMake build target
-`WITH_UNIT_TESTS` | `ON/OFF` [`OFF` by default] |  Enables/disables unit tests as a CMake build target
-`WITH_OPENMP` | `ON/OFF` [`ON` by default] | Enables (if available)/disables OpenMP multi-processing library
-`WITH_MATLAB=ON/OFF` | `ON/OFF` [`OFF` by default] | Enables (if available)/disables interoperability with MATLAB, allowing to detect MATLAB installation automatically. If enabled, allows applications to save/load Quantum++ matrices and vectors to/from MATLAB.
+| Optional argument      | Value                       | Description                                                                                                                                                                                                     |
+|------------------------|-----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `CMAKE_INSTALL_PREFIX` | `/path/to/install`          | Installs Quantum++ header files in a non-standard location (e.g., due to lack of admin. rights)                                                                                                                 |
+| `EIGEN3_INSTALL_DIR`   | `/path/to/eigen3`           | Path to Eigen3 installation, if not automatically detected                                                                                                                                                      |
+| `SANITIZE`             | `ON/OFF` [`OFF` by default] | Enable code sanitizing (only for gcc/clang)                                                                                                                                                                     |
+| `USE_OPENQASM2_SPECS`  | `ON/OFF` [`OFF` by default] | Enables/disables using the OpenQASM 2.0 standard instead of Qiskit specifications; see [`DISCREPANCIES.md`](https://github.com/softwareQinc/qpp/blob/main/DISCREPANCIES.md)                                     |
+| `WITH_EXAMPLES`        | `ON/OFF` [`OFF` by default] | Enables/disables examples as a CMake build target                                                                                                                                                               |
+| `WITH_UNIT_TESTS`      | `ON/OFF` [`OFF` by default] | Enables/disables unit tests as a CMake build target                                                                                                                                                             |
+| `WITH_OPENMP`          | `ON/OFF` [`ON` by default]  | Enables (if available)/disables OpenMP multi-processing library                                                                                                                                                 |
+| `WITH_MATLAB=ON/OFF`   | `ON/OFF` [`OFF` by default] | Enables (if available)/disables interoperability with MATLAB, allowing to detect MATLAB installation automatically. If enabled, allows applications to save/load Quantum++ matrices and vectors to/from MATLAB. |
 
 If `WITH_MATLAB=ON` and the system could not detect your MATLAB installation, you can manually specify the path to
 MATLAB's installation directory via the additional argument
@@ -119,13 +119,11 @@ cmake_minimum_required(VERSION 3.12)
 project(my_qpp_app)
 set(CMAKE_CXX_STANDARD 17)
 
-# Disable spurious Eigen warnings with MSVC (warning STL4007)
-if (MSVC)
-    add_compile_definitions(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING)
-endif ()
-
-# The line below is optional (uncomment if Quantum++ was installed in a
-# non-standard location)
+# If the Quantum++ installation path was non-standard, i.e., specified by
+#
+# cmake .. -DCMAKE_INSTALL_PREFIX=/path/to/installed/qpp
+#
+# then uncomment the following line and replace the installation path with yours
 
 # set(CMAKE_PREFIX_PATH "/path/to/installed/qpp")
 
