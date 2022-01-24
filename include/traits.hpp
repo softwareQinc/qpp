@@ -42,15 +42,15 @@ namespace qpp {
  * is equal to \a false.
  */
 // silence g++4.8.x warning about non-virtual destructor in inherited class
-#if defined(__GNUC__) && !defined(__clang__) && (__GNUC__ == 4) &&             \
-    (__GNUC_MINOR__ == 8)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER) &&  \
+    (__GNUC__ == 4) && (__GNUC_MINOR__ == 8)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
 template <typename T, typename = void>
 struct is_iterable : std::false_type {};
-#if defined(__GNUC__) && !defined(__clang__) && (__GNUC__ == 4) &&             \
-    (__GNUC_MINOR__ == 8)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER) &&  \
+    (__GNUC__ == 4) && (__GNUC_MINOR__ == 8)
 #pragma GCC diagnostic pop
 #endif
 
@@ -59,8 +59,8 @@ struct is_iterable : std::false_type {};
  * specialization for STL-like iterable containers
  */
 // silence g++4.8.x warning about non-virtual destructor in inherited class
-#if defined(__GNUC__) && !defined(__clang__) && (__GNUC__ == 4) &&             \
-    (__GNUC_MINOR__ == 8)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER) &&  \
+    (__GNUC__ == 4) && (__GNUC_MINOR__ == 8)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
@@ -69,8 +69,8 @@ struct is_iterable<T, std::void_t<decltype(std::declval<T>().begin()),
                                   decltype(std::declval<T>().end()),
                                   decltype(*(std::declval<T>().begin()))>>
     : std::true_type {};
-#if defined(__GNUC__) && !defined(__clang__) && (__GNUC__ == 4) &&             \
-    (__GNUC_MINOR__ == 8)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER) &&  \
+    (__GNUC__ == 4) && (__GNUC_MINOR__ == 8)
 #pragma GCC diagnostic pop
 #endif
 
@@ -83,8 +83,8 @@ struct is_iterable<T, std::void_t<decltype(std::declval<T>().begin()),
  */
 // thanks to @davidhigh http://stackoverflow.com/a/40293333/3093378
 // silence g++4.8.x warning about non-virtual destructor in inherited class
-#if defined(__GNUC__) && !defined(__clang__) && (__GNUC__ == 4) &&             \
-    (__GNUC_MINOR__ == 8)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER) &&  \
+    (__GNUC__ == 4) && (__GNUC_MINOR__ == 8)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
@@ -92,8 +92,8 @@ template <typename Derived>
 struct is_matrix_expression
     : std::is_base_of<Eigen::MatrixBase<typename std::decay<Derived>::type>,
                       typename std::decay<Derived>::type> {};
-#if defined(__GNUC__) && !defined(__clang__) && (__GNUC__ == 4) &&             \
-    (__GNUC_MINOR__ == 8)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER) &&  \
+    (__GNUC__ == 4) && (__GNUC_MINOR__ == 8)
 #pragma GCC diagnostic pop
 #endif
 
@@ -104,15 +104,15 @@ struct is_matrix_expression
  * is a complex type, i.e., \a std::complex<T>
  */
 // silence g++4.8.x warning about non-virtual destructor in inherited class
-#if defined(__GNUC__) && !defined(__clang__) && (__GNUC__ == 4) &&             \
-    (__GNUC_MINOR__ == 8)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER) &&  \
+    (__GNUC__ == 4) && (__GNUC_MINOR__ == 8)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
 template <typename T>
 struct is_complex : std::false_type {};
-#if defined(__GNUC__) && !defined(__clang__) && (__GNUC__ == 4) &&             \
-    (__GNUC_MINOR__ == 8)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER) &&  \
+    (__GNUC__ == 4) && (__GNUC_MINOR__ == 8)
 #pragma GCC diagnostic pop
 #endif
 
@@ -121,15 +121,15 @@ struct is_complex : std::false_type {};
  * complex types
  */
 // silence g++4.8.x warning about non-virtual destructor in inherited class
-#if defined(__GNUC__) && !defined(__clang__) && (__GNUC__ == 4) &&             \
-    (__GNUC_MINOR__ == 8)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER) &&  \
+    (__GNUC__ == 4) && (__GNUC_MINOR__ == 8)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
 template <typename T>
 struct is_complex<std::complex<T>> : std::true_type {};
-#if defined(__GNUC__) && !defined(__clang__) && (__GNUC__ == 4) &&             \
-    (__GNUC_MINOR__ == 8)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER) &&  \
+    (__GNUC__ == 4) && (__GNUC_MINOR__ == 8)
 #pragma GCC diagnostic pop
 #endif
 

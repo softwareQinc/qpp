@@ -313,7 +313,7 @@ inline cmat randV(idx Din, idx Dout) {
  * \param Dout Dimension of the output Hilbert space
  * \return Set of \a N Kraus operators satisfying the closure condition
  */
-inline std::vector<cmat> randkraus(idx N, idx Din, idx Dout) {
+[[qpp::parallel]] inline std::vector<cmat> randkraus(idx N, idx Din, idx Dout) {
     // EXCEPTION CHECKS
 
     if (N == 0)

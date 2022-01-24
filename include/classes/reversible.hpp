@@ -292,7 +292,7 @@ class Dynamic_bitset : public IDisplay {
      *
      * \return Reference to the current instance
      */
-    Dynamic_bitset& reset() noexcept {
+    virtual Dynamic_bitset& reset() noexcept {
         idx bitset_storage_size = storage_size();
         for (idx i = 0; i < bitset_storage_size; ++i) {
             v_[i] = 0;
@@ -421,6 +421,9 @@ class Dynamic_bitset : public IDisplay {
 /**
  * \class qpp::Bit_circuit
  * \brief Classical reversible circuit simulator
+ *
+ * \note Computations are done on-the-fly, that is, gates are not stored, but
+ * applied at once on the internal bit state of the circuit
  *
  * \note qpp::Bit_circuit assumes that the first bit (bit at position 0) is on
  * the left (most significant bit), and the last bit (bit at position n-1) is on
@@ -743,7 +746,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
      *
      * \return Reference to the current instance
      */
-    Bit_circuit& clear() noexcept {
+    Bit_circuit& reset() noexcept override {
         *this = Bit_circuit{n_};
 
         return *this;

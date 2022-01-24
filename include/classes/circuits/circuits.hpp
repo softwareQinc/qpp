@@ -567,7 +567,7 @@ class QCircuit : public IDisplay, public IJSON {
   public:
     /**
      * \class qpp::QCircuit::iterator
-     * \brief Quantum circuit description bound-checking (safe) iterator
+     * \brief Quantum circuit description bound-checking (safe) forward iterator
      *
      * \note The iterator is a const_iterator by default
      */
@@ -722,14 +722,15 @@ class QCircuit : public IDisplay, public IJSON {
                     "qpp::QCircuit::iterator::operator++()");
             }
 
+            auto num_steps = qc_->get_step_count();
             // protects against incrementing an empty circuit iterator
-            if (qc_->get_step_count() == 0) {
+            if (num_steps == 0) {
                 throw exception::InvalidIterator(
                     "qpp::QCircuit::iterator::operator++()");
             }
 
             // protects against incrementing past the end
-            if (elem_.ip_ == qc_->get_step_count()) {
+            if (elem_.ip_ == num_steps) {
                 throw exception::InvalidIterator(
                     "qpp::QCircuit::iterator::operator++()");
             }
@@ -809,7 +810,8 @@ class QCircuit : public IDisplay, public IJSON {
 
             // protects against de-referencing past the last element or against
             // de-referencing invalid iterators
-            if (qc_ == nullptr || elem_.ip_ == qc_->get_step_count())
+            auto num_steps = qc_->get_step_count();
+            if (qc_ == nullptr || num_steps == 0 || elem_.ip_ == num_steps)
                 throw exception::InvalidIterator(
                     "qpp::QCircuit::iterator::operator*()");
             // END EXCEPTION CHECKS
@@ -870,7 +872,7 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \return Iterator to the first element
      */
-    iterator begin() {
+    iterator begin() noexcept {
         iterator it;
         it.set_begin_(this);
 
@@ -906,7 +908,7 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \return Iterator to the next to the last element
      */
-    iterator end() {
+    iterator end() noexcept {
         iterator it;
         it.set_end_(this);
 

@@ -208,13 +208,16 @@ TEST(qpp_prj, AllTests) {}
 ///       = nullptr)
 TEST(qpp_prod, Container) {}
 /******************************************************************************/
+/// BEGIN template <typename T> T prod(const std::initializer_list<T>& Ts)
+TEST(qpp_prod, InitList) { EXPECT_EQ(24, prod({1, 2, 3, 4})); }
+/******************************************************************************/
 /// BEGIN template <typename Derived> typename Derived::Scalar prod(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_prod, Matrix) {}
 /******************************************************************************/
-/// BEGIN template <typename InputIterator>
-///       typename std::iterator_traits<InputIterator>::value_type
-///       prod(InputIterator first, InputIterator last)
+/// BEGIN template <typename InputIterator, typename value_type =
+///       std::decay_t<decltype(*std::declval<InputIterator>())>>
+///       value_type prod(InputIterator first, InputIterator last)
 TEST(qpp_prod, Iterator) {
     std::vector<int> v{1, 2, 3, 4};
     EXPECT_EQ(24, prod(v.begin(), v.end()));
@@ -253,13 +256,16 @@ TEST(qpp_sqrtm, AllTests) {}
 ///       typename std::enable_if<is_iterable<Container>::value>::type*
 ///       = nullptr)
 TEST(qpp_sum, Container) {}
+/******************************************************************************/
+/// BEGIN template <typename T> T sum(const std::initializer_list<T>& Ts)
+TEST(qpp_sum, InitList) { EXPECT_EQ(6, sum({0, 1, 2, 3})); }
 /// BEGIN template <typename Derived> typename Derived::Scalar sum(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_sum, Matrix) {}
 /******************************************************************************/
-/// BEGIN template <typename InputIterator>
-///       typename std::iterator_traits<InputIterator>::value_type
-///       sum(InputIterator first, InputIterator last)
+/// BEGIN template <typename InputIterator, typename value_type =
+///       std::decay_t<decltype(*std::declval<InputIterator>())>>
+///      value_type sum(InputIterator first, InputIterator last)
 TEST(qpp_sum, Iterator) {
     std::vector<int> v{0, 1, 2, 3};
     EXPECT_EQ(6, sum(v.begin(), v.end()));

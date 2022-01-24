@@ -40,8 +40,8 @@ namespace qpp {
 namespace internal {
 // integer index to multi-index, use C-style array for speed
 // standard lexicographical order, e.g., 00, 01, 10, 11
-inline void n2multiidx(idx n, idx numdims, const idx* const dims,
-                       idx* result) noexcept {
+[[qpp::critical]] inline void
+n2multiidx(idx n, idx numdims, const idx* const dims, idx* result) noexcept {
     // error checks only in DEBUG version
 #ifndef NDEBUG
     if (numdims > 0) // numdims equal zero is a no-op
@@ -61,15 +61,15 @@ inline void n2multiidx(idx n, idx numdims, const idx* const dims,
 
 // silence g++4.9 bogus warning -Warray-bounds and -Wmaybe-uninitialized
 // in qpp::internal::multiidx2n()
-#if defined(__GNUC__) && !defined(__clang__)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Warray-bounds"
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #endif
 // multi-index to integer index, use C-style array for speed,
 // standard lexicographical order, e.g., 00->0, 01->1, 10->2, 11->3
-inline idx multiidx2n(const idx* const midx, idx numdims,
-                      const idx* const dims) noexcept {
+[[qpp::critical]] inline idx multiidx2n(const idx* const midx, idx numdims,
+                                        const idx* const dims) noexcept {
     // error checks only in DEBUG version
     assert(numdims > 0);
     assert(numdims < internal::maxn);
@@ -92,7 +92,7 @@ inline idx multiidx2n(const idx* const midx, idx numdims,
 
     return result + midx[numdims - 1];
 }
-#if defined(__GNUC__) && !defined(__clang__)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma GCC diagnostic pop
 #endif
 
@@ -268,8 +268,9 @@ inline bool check_perm(const std::vector<idx>& perm) {
 // Kronecker product of 2 matrices, preserve return type
 // internal function for the variadic template function wrapper qpp::kron()
 template <typename Derived1, typename Derived2>
-dyn_mat<typename Derived1::Scalar> kron2(const Eigen::MatrixBase<Derived1>& A,
-                                         const Eigen::MatrixBase<Derived2>& B) {
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived1::Scalar>
+kron2(const Eigen::MatrixBase<Derived1>& A,
+      const Eigen::MatrixBase<Derived2>& B) {
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
     const dyn_mat<typename Derived2::Scalar>& rB = B.derived();
 

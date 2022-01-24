@@ -187,7 +187,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param D Dimension of the Hilbert space
      * \return SWAP gate for qudits
      */
-    cmat SWAPd(idx D = 2) const {
+    [[qpp::parallel]] cmat SWAPd(idx D = 2) const {
         // EXCEPTION CHECKS
 
         // check valid dimension
@@ -222,7 +222,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param D Dimension of the Hilbert space
      * \return Fourier transform gate for qudits
      */
-    cmat Fd(idx D = 2) const {
+    [[qpp::parallel]] cmat Fd(idx D = 2) const {
         // EXCEPTION CHECKS
 
         // check valid dimension
@@ -260,7 +260,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param n Number of qubits required for implementing the gate
      * \return Modular multiplication gate
      */
-    cmat MODMUL(idx a, idx N, idx n) const {
+    [[qpp::parallel]] cmat MODMUL(idx a, idx N, idx n) const {
         // check co-primality (unitarity) only in DEBUG version
         assert(gcd(a, N) == 1);
         // EXCEPTION CHECKS

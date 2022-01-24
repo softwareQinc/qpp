@@ -170,7 +170,7 @@ PYBIND11_MODULE(pyqpp, m) {
              py::overload_cast<>(&Bit_circuit::get_gate_depth, py::const_),
              "Total gate depth")
         .def("NOT", &Bit_circuit::NOT, "NOT gate (bit flip)", py::arg("i"))
-        .def("clear", &Bit_circuit::clear,
+        .def("reset", &Bit_circuit::reset,
              "Resets the circuit to all-zero, clears all gates")
         .def("SWAP", &Bit_circuit::SWAP, "Swap gate", py::arg("i"), py::arg("j"))
         .def("to_JSON", &Bit_circuit::to_JSON,
