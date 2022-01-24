@@ -128,7 +128,7 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
  * \param cols Number of columns of the randomly generated matrix
  * \param a Beginning of the interval, belongs to it
  * \param b End of the interval, does not belong to it
- * \return Random real (qpp::dmat spacialization) or complex
+ * \return Random real (qpp::dmat specialization) or complex
  * (qpp::cmat specialization) matrix
  */
 template <typename Derived>
@@ -194,7 +194,7 @@ inline cmat rand(idx rows, idx cols, double a, double b) {
  * \param cols Number of columns of the randomly generated matrix
  * \param mean Mean
  * \param sigma Standard deviation
- * \return Random real (qpp::dmat spacialization) or complex
+ * \return Random real (qpp::dmat specialization) or complex
  * (qpp::cmat specialization) matrix
  */
 template <typename Derived>

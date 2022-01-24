@@ -20,7 +20,7 @@ int main() {
     std::cout << "The sequence of applied gates is:\n";
     for (idx i = 0; i < n; ++i) {
         std::cout << "H" << i << " ";
-        result = apply(result, gt.H, {i}); // apply Hadamard on qubit i
+        result = apply(result, gt.H, {i}); // apply Hadamard on qubit 'i'
         // apply controlled rotations
         for (idx j = 2; j <= n - i; ++j) {
             cmat Rj(2, 2);
@@ -39,7 +39,7 @@ int main() {
     }
 
     // check that we got the Fourier transform, compute the norm difference
-    if (n < 14) { // otherwise not enough memory for computing gt.Fd(D) * psi
+    if (n < 14) { // otherwise, not enough memory for computing gt.Fd(D) * psi
         std::cout << ">> Norm difference: " << norm(result - gt.Fd(D) * psi)
                   << '\n';
     }

@@ -631,7 +631,7 @@ class QCircuit : public IDisplay, public IJSON {
                     std::to_string(value_type_qc_->get_step_count()).size();
 
                 os << std::left;
-                os << std::setw(text_width) << ip_ << ": ";
+                os << std::setw(static_cast<int>(text_width)) << ip_ << ": ";
                 os << std::right;
 
                 // gate step
@@ -2009,8 +2009,8 @@ class QCircuit : public IDisplay, public IJSON {
                     // construct Rj
                     cmat Rj = cmat::Zero(d_, d_);
                     for (idx m = 0; m < d_; ++m) {
-                        Rj(m, m) =
-                            std::exp(-2.0 * pi * m * 1_i / std::pow(d_, j));
+                        Rj(m, m) = std::exp(-2.0 * pi * static_cast<double>(m) *
+                                            1_i / std::pow(d_, j));
                     }
                     CTRL(Rj, target[i + j - 1], target[i], {},
                          "CTRL-R" + std::to_string(j) + "d+");

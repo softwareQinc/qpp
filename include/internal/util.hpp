@@ -156,7 +156,7 @@ bool check_dims_match_mat(const std::vector<idx>& dims,
     assert(A.rows() == A.cols());
 
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
-                                  static_cast<idx>(1), std::multiplies<idx>());
+                                  static_cast<idx>(1), std::multiplies<>());
 
     return proddim == static_cast<idx>(A.cols());
 }
@@ -171,7 +171,7 @@ bool check_dims_match_cvect(const std::vector<idx>& dims,
     assert(A.cols() == 1);
 
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
-                                  static_cast<idx>(1), std::multiplies<idx>());
+                                  static_cast<idx>(1), std::multiplies<>());
 
     return proddim == static_cast<idx>(A.rows());
 }
@@ -186,7 +186,7 @@ bool check_dims_match_rvect(const std::vector<idx>& dims,
     assert(A.rows() == 1);
 
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
-                                  static_cast<idx>(1), std::multiplies<idx>());
+                                  static_cast<idx>(1), std::multiplies<>());
 
     return proddim == static_cast<idx>(A.cols());
 }
@@ -381,7 +381,8 @@ inline idx get_dim_subsys(idx sz, idx N) {
     if (N == 2)
         return static_cast<idx>(std::llround(std::sqrt(sz)));
 
-    return static_cast<idx>(std::llround(std::pow(sz, 1. / N)));
+    return static_cast<idx>(
+        std::llround(std::pow(sz, 1. / static_cast<double>(N))));
 }
 
 // chops a floating point or complex number to zero
@@ -427,7 +428,7 @@ struct Display_Impl_ {
 
                 // zero
                 if (std::abs(re) < chop && std::abs(im) < chop) {
-                    ostr << "0"; // otherwise segfault on destruction
+                    ostr << "0"; // otherwise, segfault on destruction
                     // if using only vstr.emplace_back("0 ");
                     // bug in MATLAB libmx
                     vstr.emplace_back(ostr.str());
@@ -466,7 +467,7 @@ struct Display_Impl_ {
                 if (vstr[i * A.cols() + j].size() > maxlengthcols[j])
                     maxlengthcols[j] = vstr[i * A.cols() + j].size();
 
-        // finally display it!
+        // finally, display it!
         for (idx i = 0; i < static_cast<idx>(A.rows()); ++i) {
             os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
                << vstr[i * A.cols()]; // display first column

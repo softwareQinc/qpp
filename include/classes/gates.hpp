@@ -564,7 +564,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // END EXCEPTION CHECKS
 
         idx D = std::accumulate(std::begin(dims), std::end(dims),
-                                static_cast<idx>(1), std::multiplies<idx>());
+                                static_cast<idx>(1), std::multiplies<>());
         dyn_mat<typename Derived::Scalar> result =
             dyn_mat<typename Derived::Scalar>::Identity(D, D);
 

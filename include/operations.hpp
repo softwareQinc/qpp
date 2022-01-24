@@ -53,7 +53,7 @@ namespace qpp {
  * \return CTRL-A gate applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
-[[qpp::high_performance]] dyn_mat<typename Derived1::Scalar>
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived1::Scalar>
 applyCTRL(const Eigen::MatrixBase<Derived1>& state,
           const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
           const std::vector<idx>& target, const std::vector<idx>& dims,
@@ -1013,8 +1013,8 @@ inline cmat kraus2super(const std::vector<cmat>& Ks) {
             { // DO NOT ERASE THIS CURLY BRACKET!!!! OMP CRITICAL CODE
                 // compute E(|m><n|)
                 MN(m, n) = 1;
-                for (idx i = 0; i < Ks.size(); ++i)
-                    EMN += Ks[i] * MN * adjoint(Ks[i]);
+                for (const auto& K : Ks)
+                    EMN += K * MN * adjoint(K);
                 MN(m, n) = 0;
 
                 for (idx a = 0; a < Dout; ++a) {
@@ -1989,7 +1989,8 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
                 // construct Rj
                 cmat Rj = cmat::Zero(d, d);
                 for (idx m = 0; m < d; ++m) {
-                    Rj(m, m) = std::exp(2.0 * pi * m * 1_i / std::pow(d, j));
+                    Rj(m, m) = std::exp(2.0 * pi * static_cast<double>(m) *
+                                        1_i / std::pow(d, j));
                 }
                 result =
                     applyCTRL(result, Rj, {target[i + j - 1]}, {target[i]}, d);
@@ -2098,7 +2099,8 @@ dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
                 // construct Rj
                 cmat Rj = cmat::Zero(d, d);
                 for (idx m = 0; m < d; ++m) {
-                    Rj(m, m) = std::exp(-2.0 * pi * m * 1_i / std::pow(d, j));
+                    Rj(m, m) = std::exp(-2.0 * pi * static_cast<double>(m) *
+                                        1_i / std::pow(d, j));
                 }
                 result =
                     applyCTRL(result, Rj, {target[i + j - 1]}, {target[i]}, d);

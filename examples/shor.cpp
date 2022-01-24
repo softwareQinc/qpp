@@ -63,7 +63,8 @@ int main() {
     std::vector<idx> vect_results1 = std::get<RES>(measured1); // results
     double prob1 = std::get<PROB>(measured1); // probability of the result
     idx n1 = multiidx2n(vect_results1, std::vector<idx>(n, 2)); // binary to int
-    auto x1 = static_cast<double>(n1) / D; // multiple of 1/r
+    auto x1 =
+        static_cast<double>(n1) / static_cast<double>(D); // multiple of 1/r
 
     std::cout << ">> First measurement:  " << disp(vect_results1, " ") << " ";
     std::cout << "i.e., j = " << n1 << " with probability " << prob1;

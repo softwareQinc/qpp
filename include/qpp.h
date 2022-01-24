@@ -33,7 +33,7 @@
 
 /**
  * \file qpp.h
- * \brief Quantum++ main header file, includes all other necessary headers
+ * \brief Quantum++ main header file, includes all other required headers
  */
 
 #ifndef QPP_H_

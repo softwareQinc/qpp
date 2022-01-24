@@ -483,7 +483,8 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A) {
     // END EXCEPTION CHECKS
 
     // we compute exp(logdet()) to avoid underflow
-    return d * std::abs(std::exp(2. / d * logdet(reshape(rA, d, d))));
+    return d * std::abs(std::exp(2. / static_cast<double>(d) *
+                                 logdet(reshape(rA, d, d))));
 }
 
 /**
@@ -636,7 +637,7 @@ double concurrence(const Eigen::MatrixBase<Derived>& A) {
                                        lambdas.data() + lambdas.size());
 
     std::sort(std::begin(lambdas_sorted), std::end(lambdas_sorted),
-              std::greater<double>());
+              std::greater<>());
     std::transform(std::begin(lambdas_sorted), std::end(lambdas_sorted),
                    std::begin(lambdas_sorted), [](double elem) {
                        return std::sqrt(std::abs(elem));

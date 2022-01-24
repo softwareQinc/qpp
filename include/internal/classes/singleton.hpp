@@ -32,8 +32,7 @@
 #ifndef INTERNAL_CLASSES_SINGLETON_HPP_
 #define INTERNAL_CLASSES_SINGLETON_HPP_
 
-namespace qpp {
-namespace internal // internal class, do not modify
+namespace qpp::internal // internal class, do not modify
 {
 /**
  * \class qpp::internal::Singleton
@@ -120,7 +119,6 @@ class Singleton {
     }
 }; /* class Singleton */
 
-} /* namespace internal */
-} /* namespace qpp */
+} /* namespace qpp::internal */
 
 #endif /* INTERNAL_CLASSES_SINGLETON_HPP_ */

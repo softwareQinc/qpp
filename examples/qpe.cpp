@@ -82,7 +82,7 @@ int main() {
     idx decimal = multiidx2n(res, std::vector<idx>(counting_qubits.size(), 2));
 
     // readout phase estimate
-    double theta_e = decimal / std::pow(2, nq_c);
+    auto theta_e = static_cast<double>(decimal) / std::pow(2, nq_c);
     std::cout << ">> Input theta = " << theta << '\n';
     std::cout << ">> Estimated theta = " << theta_e << '\n';
     std::cout << ">> Norm difference: " << std::abs(theta_e - theta) << '\n';

@@ -32,8 +32,7 @@
 #ifndef INTERNAL_CLASSES_IOMANIP_HPP_
 #define INTERNAL_CLASSES_IOMANIP_HPP_
 
-namespace qpp {
-namespace internal {
+namespace qpp::internal {
 // ostream manipulators for nice formatting of
 // Eigen matrices and STL/C-style containers/vectors
 
@@ -143,7 +142,6 @@ class IOManipEigen : public IDisplay, private Display_Impl_ {
     }
 }; /* class IOManipEigen */
 
-} /* namespace internal */
-} /* namespace qpp */
+} /* namespace qpp::internal */
 
 #endif /* INTERNAL_CLASSES_IOMANIP_HPP_ */

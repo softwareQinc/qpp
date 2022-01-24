@@ -769,7 +769,7 @@ cmat spectralpowm(const Eigen::MatrixBase<Derived>& A, const cplx z) {
         return cmat::Identity(rA.rows(), rA.cols());
 
     Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
-    cmat evects = es.eigenvectors();
+    const cmat& evects = es.eigenvectors();
     cmat evals = es.eigenvalues();
     for (idx i = 0; i < static_cast<idx>(evals.rows()); ++i)
         evals(i) = std::pow(evals(i), z);
@@ -1390,7 +1390,7 @@ inline std::vector<idx> n2multiidx(idx n, const std::vector<idx>& dims) {
     }
 
     if (n >= std::accumulate(std::begin(dims), std::end(dims),
-                             static_cast<idx>(1), std::multiplies<idx>())) {
+                             static_cast<idx>(1), std::multiplies<>())) {
         throw exception::OutOfRange("qpp::n2multiidx()");
     }
     // END EXCEPTION CHECKS
@@ -1449,7 +1449,7 @@ inline ket mket(const std::vector<idx>& mask, const std::vector<idx>& dims) {
     idx n = mask.size();
 
     idx D = std::accumulate(std::begin(dims), std::end(dims),
-                            static_cast<idx>(1), std::multiplies<idx>());
+                            static_cast<idx>(1), std::multiplies<>());
 
     // EXCEPTION CHECKS
 
@@ -1534,7 +1534,7 @@ inline cmat mprj(const std::vector<idx>& mask, const std::vector<idx>& dims) {
     idx n = mask.size();
 
     idx D = std::accumulate(std::begin(dims), std::end(dims),
-                            static_cast<idx>(1), std::multiplies<idx>());
+                            static_cast<idx>(1), std::multiplies<>());
 
     // EXCEPTION CHECKS
 
@@ -1958,7 +1958,6 @@ ket operator"" _ket() {
     constexpr idx n = sizeof...(Bits);
     constexpr char bits[n + 1] = {Bits..., '\0'};
     qpp::ket q = qpp::ket::Zero(static_cast<idx>(std::llround(std::pow(2, n))));
-    idx pos = 0;
 
     // EXCEPTION CHECKS
 
@@ -1969,7 +1968,7 @@ ket operator"" _ket() {
     }
     // END EXCEPTION CHECKS
 
-    pos = std::stoi(bits, nullptr, 2);
+    idx pos = std::stoi(bits, nullptr, 2);
     q(pos) = 1;
 
     return q;
@@ -1989,7 +1988,6 @@ bra operator"" _bra() {
     constexpr idx n = sizeof...(Bits);
     constexpr char bits[n + 1] = {Bits..., '\0'};
     qpp::bra q = qpp::ket::Zero(static_cast<idx>(std::llround(std::pow(2, n))));
-    idx pos = 0;
 
     // EXCEPTION CHECKS
 
@@ -2000,7 +1998,7 @@ bra operator"" _bra() {
     }
     // END EXCEPTION CHECKS
 
-    pos = std::stoi(bits, nullptr, 2);
+    idx pos = std::stoi(bits, nullptr, 2);
     q(pos) = 1;
 
     return q;

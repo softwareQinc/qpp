@@ -34,11 +34,8 @@ int main() {
     std::cout << qc << "\n\n" << qc.get_resources() << "\n\n";
 
     // initialize the noisy quantum engine with an amplitude damping noise model
-    // and a quantum circuit; in C++17 you can make use of the class template
-    // argument deduction rules to simply write
-    // QNoisyEngine noisy_engine{qc, QubitAmplitudeDampingNoise{0.99}};
-    QNoisyEngine<QubitAmplitudeDampingNoise> noisy_engine{
-        qc, QubitAmplitudeDampingNoise{0.99}};
+    // and a quantum circuit
+    QNoisyEngine noisy_engine{qc, QubitAmplitudeDampingNoise{0.99}};
 
     // execute the entire circuit
     noisy_engine.execute();

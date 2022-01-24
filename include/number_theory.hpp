@@ -64,7 +64,7 @@ inline std::vector<bigint> x2contfrac(double x, idx N, idx cut = 100000) {
                 static_cast<bigint>(std::llround(std::ceil(x))));
             x = 1 / (x - std::ceil(x));
         }
-        if (!std::isfinite(x) || std::abs(x) > cut)
+        if (!std::isfinite(x) || std::abs(x) > static_cast<double>(cut))
             return result;
     }
 
@@ -98,12 +98,12 @@ inline double contfrac2x(const std::vector<bigint>& cf, idx N = idx(-1)) {
     if (N == 1) // degenerate case, integer
         return static_cast<double>(cf[0]);
 
-    double tmp = 1. / cf[N - 1];
+    double tmp = 1. / static_cast<double>(cf[N - 1]);
     for (idx i = N - 2; i != 0; --i) {
-        tmp = 1. / (tmp + cf[i]);
+        tmp = 1. / (tmp + static_cast<double>(cf[i]));
     }
 
-    return cf[0] + tmp;
+    return static_cast<double>(cf[0]) + tmp;
 }
 
 /**
@@ -512,7 +512,7 @@ inline bool isprime(bigint p, idx k = 80) {
 
     // repeat k times
     for (idx i = 0; i < k; ++i) {
-        // pick a random integer a in the range [2, p - 2]
+        // pick a random integer 'a' in the range [2, p - 2]
         bigint a = rand(2, p - 2);
 
         // set z = a^r mod p

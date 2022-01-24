@@ -36,8 +36,7 @@
 #define USE_OPENQASM2_SPECS false
 #endif
 
-namespace qpp {
-namespace qasm {
+namespace qpp::qasm {
 
 namespace ast = qasmtools::ast;
 namespace parser = qasmtools::parser;
@@ -196,8 +195,8 @@ class Circuit : public Value {
  */
 class Register : public Value {
   public:
-    bool quantum_;             ///< whether the register is a qreg or creg
-    std::vector<idx> indices_; ///< the (virtual) register indices
+    [[maybe_unused]] bool quantum_; ///< whether the register is a qreg or creg
+    std::vector<idx> indices_;      ///< the (virtual) register indices
 
     Register(bool quantum, std::vector<idx> indices)
         : quantum_(quantum), indices_(std::move(indices)) {}
@@ -248,8 +247,9 @@ class Context {
         hash_ident_uptr val_;
     };
 
-    std::vector<Environment> env_{};     ///< environment stack
-    std::list<idx> qubit_pool_{};        ///< pool of unassigned physical qubits
+    std::vector<Environment> env_{}; ///< environment stack
+    [[maybe_unused]] std::list<idx>
+        qubit_pool_{};                   ///< pool of unassigned physical qubits
     idx max_bit_ = static_cast<idx>(-1); ///< largest classical bit index
     idx max_qubit_ = static_cast<idx>(-1); ///< largest (virtual) qubit index
 
@@ -424,14 +424,14 @@ class QCircuitBuilder final : public ast::Visitor {
      *
      * \param qc Pointer to the accumulating QCircuit
      */
-    QCircuitBuilder(QCircuit* qc) : ctx(qc), temp_value(0) {}
+    explicit QCircuitBuilder(QCircuit* qc) : ctx(qc), temp_value(0) {}
 
     // Variables
-    void visit(ast::VarAccess&) {}
+    void visit(ast::VarAccess&) override {}
 
     // Expressions
     // - Set temp_value to the value of the expression
-    void visit(ast::BExpr& expr) {
+    void visit(ast::BExpr& expr) override {
         expr.lexp().accept(*this);
         double lval = temp_value;
         expr.rexp().accept(*this);
@@ -458,7 +458,7 @@ class QCircuitBuilder final : public ast::Visitor {
         }
     }
 
-    void visit(ast::UExpr& expr) {
+    void visit(ast::UExpr& expr) override {
         expr.subexp().accept(*this);
         double val = temp_value;
 
@@ -489,38 +489,40 @@ class QCircuitBuilder final : public ast::Visitor {
         }
     }
 
-    void visit(ast::PiExpr&) { temp_value = qpp::pi; }
+    void visit(ast::PiExpr&) override { temp_value = qpp::pi; }
 
-    void visit(ast::IntExpr& expr) { temp_value = (double) expr.value(); }
+    void visit(ast::IntExpr& expr) override {
+        temp_value = static_cast<double>(expr.value());
+    }
 
-    void visit(ast::RealExpr& expr) { temp_value = expr.value(); }
+    void visit(ast::RealExpr& expr) override { temp_value = expr.value(); }
 
-    void visit(ast::VarExpr& expr) {
+    void visit(ast::VarExpr& expr) override {
         auto val =
             dynamic_cast<const Number*>(ctx.lookup(expr.var(), expr.pos()));
         temp_value = val->value_;
     }
 
     // Statements
-    void visit(ast::MeasureStmt& stmt) {
+    void visit(ast::MeasureStmt& stmt) override {
         auto q_args = var_access_as_qreg(stmt.q_arg());
         auto c_args = var_access_as_creg(stmt.c_arg());
         auto circuit = ctx.get_circuit();
 
-        // apply measurements non-desctructively
+        // apply measurements non-destructively
         for (idx i = 0; i < q_args.size(); i++) {
             circuit->measureZ(q_args[i], c_args[i], false);
         }
     }
 
-    void visit(ast::ResetStmt& stmt) {
+    void visit(ast::ResetStmt& stmt) override {
         auto q_args = var_access_as_qreg(stmt.arg());
         auto circuit = ctx.get_circuit();
 
         circuit->reset(q_args);
     }
 
-    void visit(ast::IfStmt& stmt) {
+    void visit(ast::IfStmt& stmt) override {
         auto creg =
             dynamic_cast<const Register*>(ctx.lookup(stmt.var(), stmt.pos()));
 
@@ -540,7 +542,7 @@ class QCircuitBuilder final : public ast::Visitor {
     }
 
     // Gates
-    void visit(ast::UGate& gate) {
+    void visit(ast::UGate& gate) override {
         gate.theta().accept(*this);
         double theta = temp_value;
         gate.phi().accept(*this);
@@ -581,7 +583,7 @@ class QCircuitBuilder final : public ast::Visitor {
         }
     }
 
-    void visit(ast::CNOTGate& gate) {
+    void visit(ast::CNOTGate& gate) override {
         auto ctrls = var_access_as_qreg(gate.ctrl());
         auto tgts = var_access_as_qreg(gate.tgt());
         auto circuit = ctx.get_circuit();
@@ -637,9 +639,9 @@ class QCircuitBuilder final : public ast::Visitor {
           // parser
     }
 
-    void visit(ast::BarrierGate&) {}
+    void visit(ast::BarrierGate&) override {}
 
-    void visit(ast::DeclaredGate& dgate) {
+    void visit(ast::DeclaredGate& dgate) override {
         auto gate =
             dynamic_cast<const Circuit*>(ctx.lookup(dgate.name(), dgate.pos()));
 
@@ -669,7 +671,7 @@ class QCircuitBuilder final : public ast::Visitor {
             auto circuit = ctx.get_circuit();
             auto mat = it->second(c_args);
 
-            // map the gate accross registers
+            // map the gate across registers
             for (idx j = 0; j < mapping_size; j++) {
                 // map virtual qubits to physical qubits
                 std::vector<idx> mapped_args(q_args.size());
@@ -714,19 +716,19 @@ class QCircuitBuilder final : public ast::Visitor {
     }
 
     // Declarations
-    void visit(ast::GateDecl& decl) {
+    void visit(ast::GateDecl& decl) override {
         ctx.set(decl.id(), std::unique_ptr<Value>(new Circuit(
                                decl.c_params(), decl.q_params(), decl.body())));
     }
 
-    void visit(ast::OracleDecl& decl) {
+    void visit(ast::OracleDecl& decl) override {
         std::stringstream context;
         context << "Oracle declarations not supported : " << decl.pos();
         throw exception::NotImplemented("qpp:qasm::QCircuitBuilder::visit()",
                                         context.str());
     }
 
-    void visit(ast::RegisterDecl& decl) {
+    void visit(ast::RegisterDecl& decl) override {
         std::vector<idx> indices(decl.size());
         for (idx i = 0; i < (idx) decl.size(); i++) {
             indices[i] =
@@ -736,7 +738,7 @@ class QCircuitBuilder final : public ast::Visitor {
                                new Register(decl.is_quantum(), indices)));
     }
 
-    void visit(ast::AncillaDecl& decl) {
+    void visit(ast::AncillaDecl& decl) override {
         std::stringstream context;
         context << "Ancilla declarations not supported : " << decl.pos();
         throw exception::NotImplemented("qpp:qasm::QCircuitBuilder::visit()",
@@ -744,7 +746,7 @@ class QCircuitBuilder final : public ast::Visitor {
     }
 
     // Program
-    void visit(ast::Program& prog) {
+    void visit(ast::Program& prog) override {
         prog.foreach_stmt([this](auto& stmt) { stmt.accept(*this); });
     }
 
@@ -829,7 +831,6 @@ inline QCircuit read_from_file(const std::string& fname) {
     return *qc;
 }
 
-} /* namespace qasm */
-} /* namespace qpp */
+} /* namespace qpp::qasm */
 
 #endif /* QASM_QASM_HPP_ */
