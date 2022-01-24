@@ -686,9 +686,16 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 
     cmat result = cmat::Zero(rA.rows(), rA.cols());
 
-    // TODO fix with omp
-    for (const auto& K : Ks)
-        result += apply(rA, K, target, dims);
+#ifdef HAS_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for
+#endif // HAS_OPENMP
+    for (const auto& K : Ks) {
+#ifdef HAS_OPENMP
+#pragma omp critical
+#endif // HAS_OPENMP
+        { result += apply(rA, K, target, dims); }
+    }
 
     return result;
 }

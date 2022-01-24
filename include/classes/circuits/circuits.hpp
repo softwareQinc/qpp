@@ -856,7 +856,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
 
         // iterator traits
-        using difference_type = ptrdiff_t;                   ///< iterator trait
+        using difference_type = std::ptrdiff_t;              ///< iterator trait
         using value_type = value_type_;                      ///< iterator trait
         using pointer = const value_type*;                   ///< iterator trait
         using reference = const value_type&;                 ///< iterator trait
@@ -1452,14 +1452,19 @@ class QCircuit : public IDisplay, public IJSON {
         }
 
         // update the destructively measured qudits
-        measured_.insert(std::next(std::begin(measured_), pos), n, false);
+        measured_.insert(
+            std::next(std::begin(measured_), static_cast<std::ptrdiff_t>(pos)),
+            n, false);
 
         // update the non-destructively measured qudits
-        measured_nd_.insert(std::next(std::begin(measured_nd_), pos), n, false);
+        measured_nd_.insert(std::next(std::begin(measured_nd_),
+                                      static_cast<std::ptrdiff_t>(pos)),
+                            n, false);
 
         // update (enlarge) the clean qudits vector
-        clean_qudits_.insert(std::next(std::begin(clean_qudits_), pos), n,
-                             true);
+        clean_qudits_.insert(std::next(std::begin(clean_qudits_),
+                                       static_cast<std::ptrdiff_t>(pos)),
+                             n, true);
 
         return *this;
     }
@@ -1509,10 +1514,13 @@ class QCircuit : public IDisplay, public IJSON {
         }
 
         // update (enlarge) the clean dits vector
-        clean_dits_.insert(std::next(std::begin(clean_dits_), pos), n, true);
+        clean_dits_.insert(std::next(std::begin(clean_dits_),
+                                     static_cast<std::ptrdiff_t>(pos)),
+                           n, true);
 
         // update (enlarge) the measurement dits vector
-        measurement_dits_.insert(std::next(std::begin(measurement_dits_), pos),
+        measurement_dits_.insert(std::next(std::begin(measurement_dits_),
+                                           static_cast<std::ptrdiff_t>(pos)),
                                  n, false);
 
         return *this;
@@ -1900,8 +1908,8 @@ class QCircuit : public IDisplay, public IJSON {
                     // construct Rj
                     cmat Rj = cmat::Zero(d_, d_);
                     for (idx m = 0; m < d_; ++m) {
-                        Rj(m, m) =
-                            std::exp(2.0 * pi * m * 1_i / std::pow(d_, j));
+                        Rj(m, m) = std::exp(2.0 * pi * static_cast<double>(m) *
+                                            1_i / std::pow(d_, j));
                     }
                     CTRL(Rj, target[i + j - 1], target[i], {},
                          "CTRL-R" + std::to_string(j) + "d");
@@ -3342,10 +3350,12 @@ class QCircuit : public IDisplay, public IJSON {
 
         for (idx i = 0; i < n - 1; ++i) {
             std::copy(std::begin(gates_copy), std::end(gates_copy),
-                      std::next(std::begin(gates_), (i + 1) * gates_size));
-            std::copy(
-                std::begin(step_types_copy), std::end(step_types_copy),
-                std::next(std::begin(step_types_), (i + 1) * step_types_size));
+                      std::next(std::begin(gates_), static_cast<std::ptrdiff_t>(
+                                                        (i + 1) * gates_size)));
+            std::copy(std::begin(step_types_copy), std::end(step_types_copy),
+                      std::next(std::begin(step_types_),
+                                static_cast<std::ptrdiff_t>((i + 1) *
+                                                            step_types_size)));
         }
 
         for (auto& elem : gate_count_)
@@ -3780,10 +3790,12 @@ class QCircuit : public IDisplay, public IJSON {
         // replace the corresponding elements of clean_dits_ and
         // measurement_dits_ with the ones of other
         std::copy(std::begin(other.clean_dits_), std::end(other.clean_dits_),
-                  std::next(std::begin(clean_dits_), pos_dit));
+                  std::next(std::begin(clean_dits_),
+                            static_cast<std::ptrdiff_t>(pos_dit)));
         std::copy(std::begin(other.measurement_dits_),
                   std::end(other.measurement_dits_),
-                  std::next(std::begin(measurement_dits_), pos_dit));
+                  std::next(std::begin(measurement_dits_),
+                            static_cast<std::ptrdiff_t>(pos_dit)));
 
         // STEP 4: append the copy of other to the current instance
         // append gate steps vector
@@ -3821,7 +3833,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& kron(QCircuit qc) {
-        add_circuit(std::move(qc), nq_);
+        add_circuit(std::move(qc), static_cast<bigint>(nq_));
 
         return *this;
     }
@@ -4009,7 +4021,8 @@ class QCircuit : public IDisplay, public IJSON {
             }
         }
 
-        clean_qudits_.erase(std::next(std::begin(clean_qudits_), target));
+        clean_qudits_.erase(std::next(std::begin(clean_qudits_),
+                                      static_cast<std::ptrdiff_t>(target)));
 
         --nq_;
 
@@ -4047,7 +4060,8 @@ class QCircuit : public IDisplay, public IJSON {
             }
         }
 
-        clean_dits_.erase(std::next(std::begin(clean_dits_), target));
+        clean_dits_.erase(std::next(std::begin(clean_dits_),
+                                    static_cast<std::ptrdiff_t>(target)));
 
         --nc_;
 
@@ -4184,7 +4198,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (enclosed_in_curly_brackets)
             result += "{";
 
-        result += "\"name\": \"" + name_ + "\", ";
+        result += R"("name": ")" + name_ + "\", ";
 
         std::string sep;
         std::ostringstream ss;

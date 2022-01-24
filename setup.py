@@ -21,7 +21,8 @@ ext_modules = [
     Pybind11Extension(
         "pyqpp",
         ["pyqpp/qpp_wrapper.cpp"],
-        extra_compile_args=["-Ilibs", "-Iinclude", "-Iqasmtools/include", "-I"+eigen_path],
+        extra_compile_args=["-Ilibs", "-Iinclude", "-Iqasmtools/include",
+                            "-I" + eigen_path],
         cxx_std=17,
         include_pybind11=False,
     ),

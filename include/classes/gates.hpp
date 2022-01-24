@@ -288,7 +288,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
        // column major order for speed
         for (idx j = 0; j < N; ++j)
             for (idx i = 0; i < N; ++i)
-                if (static_cast<idx>(modmul(j, a, N)) == i)
+                if (static_cast<idx>(modmul(static_cast<bigint>(j),
+                                            static_cast<bigint>(a),
+                                            static_cast<bigint>(N))) == i)
                     result(i, j) = 1;
 
 #ifdef HAS_OPENMP

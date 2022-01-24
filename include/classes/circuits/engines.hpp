@@ -880,8 +880,8 @@ class QNoisyEngine : public QEngine {
      * \brief Executes the entire quantum circuit description
      *
      * \param reps Number of repetitions
-     * \param clear_stats Resets the collected measurement statistics hash
-     * table before the run
+     * \param clear_stats Resets the collected measurement statistics hash table
+     * before the run
      * \return Reference to the current instance
      */
     QNoisyEngine& execute(idx reps = 1, bool clear_stats = true) override {

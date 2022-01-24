@@ -739,14 +739,12 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     }
 
     /**
-     * \brief Resets the circuit to all-zero, clear all gates
+     * \brief Resets the circuit to all-zero, clears all gates
      *
      * \return Reference to the current instance
      */
-    Bit_circuit& reset() noexcept {
-        count_ = {};
-        depth_ = {};
-        Dynamic_bitset::reset();
+    Bit_circuit& clear() noexcept {
+        *this = Bit_circuit{n_};
 
         return *this;
     }

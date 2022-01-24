@@ -6,6 +6,9 @@ using namespace qpp;
 // Unit testing "classes/reversible.hpp"
 
 /******************************************************************************/
+/// BEGIN Bit_circuit& Bit_circuit::clear() noexcept
+TEST(qpp_Bit_circuit_clear, AllTests) {}
+/******************************************************************************/
 /// BEGIN Bit_circuit& Bit_circuit::CNOT(const std::vector<idx>& pos)
 TEST(qpp_Bit_circuit_CNOT, AllTests) {}
 /******************************************************************************/
@@ -26,9 +29,6 @@ TEST(qpp_Bit_circuit_get_gate_depth, SpecificGate) {}
 /******************************************************************************/
 /// BEGIN Bit_circuit& Bit_circuit::NOT(idx pos)
 TEST(qpp_Bit_circuit_NOT, AllTests) {}
-/******************************************************************************/
-/// BEGIN Bit_circuit& Bit_circuit::reset() noexcept
-TEST(qpp_Bit_circuit_reset, AllTests) {}
 /******************************************************************************/
 /// BEGIN Bit_circuit& Bit_circuit::SWAP(const std::vector<idx>& pos)
 TEST(qpp_Bit_circuit_SWAP, AllTests) {}

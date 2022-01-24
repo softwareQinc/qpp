@@ -1369,6 +1369,7 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A) {
     return grams<dyn_mat<typename Derived::Scalar>>(input);
 }
 
+// TODO check
 /**
  * \brief Non-negative integer index to multi-index
  * \see qpp::multiidx2n()

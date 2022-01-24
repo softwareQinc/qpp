@@ -3,6 +3,8 @@ Pre-release:
     - When building with CMake, the new QPP_VERSION_NUM (numeric) and
       QPP_VERSION_STR (string) preprocessor definitions are automatically
       injected in the code
+    - Renamed qpp::Bit_circuit::reset() to qpp::Bit_circuit::clear() to avoid
+      ambiguities with qpp::Dynamic_bitset::reset()
 
 Version 3.1 - 11 January 2022
     - Added pyqpp, a Python wrapper around Quantum++. See

@@ -776,7 +776,8 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
 
         if (destructive) {
             // remove the subsystem
-            dims.erase(std::next(std::begin(dims), target[0]));
+            dims.erase(std::next(std::begin(dims),
+                                 static_cast<std::ptrdiff_t>(target[0])));
         }
         target.erase(std::begin(target));
     }
