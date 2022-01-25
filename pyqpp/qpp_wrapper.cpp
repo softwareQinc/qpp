@@ -97,7 +97,7 @@ void declare_noisy_engine(py::module &m, const std::string& type) {
 }
 
 PYBIND11_MODULE(pyqpp, m) {
-    m.doc() = "Python wrapper for qpp (https://github.com/softwareQinc/qpp)";
+    m.doc() = "Python 3 wrapper for qpp (https://github.com/softwareQinc/qpp)";
 
     auto pyDynamic_bitset = py::class_<Dynamic_bitset>(m ,"Dynamic_bitset")
         .def(py::init<idx>(), py::arg("n"))

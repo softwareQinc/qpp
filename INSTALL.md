@@ -262,8 +262,8 @@ If building under Windows with [MATLAB](http://www.mathworks.com/products/matlab
 `libmx.dll` and `libmat.dll` (the `.dll` **and not** the `.lib` files) to your `PATH` environment variable. In our case
 they are located under `C:\Program Files\MATLAB\R2021a\bin\win64`.
 
-## Python wrapper
-pyqpp is a Python wrapper for Quantum++. 
+## Python 3 wrapper
+pyqpp is a Python 3 wrapper for Quantum++. 
 pyqpp can be installed using `pip`:
 ```
 pip install git+https://github.com/softwareQinc/qpp

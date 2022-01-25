@@ -1,4 +1,4 @@
-pyqpp is a Python wrapper for Quantum++.
+pyqpp is a Python 3 wrapper for Quantum++.
 
 # Installation
 pyqpp can be installed using `pip`:
