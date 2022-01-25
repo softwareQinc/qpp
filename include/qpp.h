@@ -42,12 +42,23 @@
 // ignore warnings for unknown C++17 attributes (we use such "custom" attributes
 // internally, the compiler is supposed to ignore them according to the C++17
 // standard)
+
+// Intel icc
 #if defined(__INTEL_COMPILER)
 #pragma warning(disable : 3924)
+
+// clang
 #elif defined(__clang__)
 #pragma clang diagnostic ignored "-Wunknown-attributes"
+
+// gcc
 #elif defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma GCC diagnostic ignored "-Wattributes"
+
+// MSVC
+#elif defined(_MSC_VER) && !defined(__INTEL_COMPILER)
+#pragma warning(disable : 5030)
+
 #endif
 
 // standard C++ library headers
