@@ -423,7 +423,8 @@ class Dynamic_bitset : public IDisplay {
  * \brief Classical reversible circuit simulator
  *
  * \note Computations are done on-the-fly, that is, gates are not stored, but
- * applied at once on the internal bit state of the circuit
+ * applied at once on the internal bit state of the circuit. This allows
+ * simulation of very large circuits (with billions of bits and gates).
  *
  * \note qpp::Bit_circuit assumes that the first bit (bit at position 0) is on
  * the left (most significant bit), and the last bit (bit at position n-1) is on
