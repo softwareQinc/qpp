@@ -7,8 +7,8 @@ as [Windows](https://www.microsoft.com/en-us/windows).
 
 ## Pre-requisites
 
-- [CMake](http://www.cmake.org/) version 3.12 or later
-- [Eigen 3](http://eigen.tuxfamily.org) linear algebra library
+- [CMake](https://www.cmake.org/) version 3.12 or later
+- [Eigen 3](https://eigen.tuxfamily.org) linear algebra library
 - A C++17 compliant compiler, e.g., [gcc](https://gcc.gnu.org/), [clang](https://clang.llvm.org),
   [MSVC](https://visualstudio.microsoft.com/vs/) etc.
 
@@ -19,6 +19,7 @@ as [Windows](https://www.microsoft.com/en-us/windows).
   Quantum++ matrices and vectors to/from MATLAB. The locations of the MATLAB compiler shared libraries and header files
   are platform-specific, e.g., under Linux, they may be located under `/usr/local/MATLAB/R2021a/bin/glnxa64` and
   `/usr/local/MATLAB/R2021a/extern/include`, respectively. On your platform the locations may of course differ.
+- [Python 3](https://www.python.org/) for running the `pyqpp` Python 3 wrapper.  
 
 ## Configuring the system
 
@@ -165,7 +166,7 @@ c++ -pedantic -std=c++17 -Wall -Wextra -Weffc++ -fopenmp \
 
 If you intend to go this route, we assume that you are familiar with how compilers work, so we won't add any more
 explanations to what the line above does. We still highly recommend compiling and building your applications using a
-modern build system such as [CMake](http://www.cmake.org/).
+modern build system such as [CMake](https://www.cmake.org/).
 
 ## Building and running examples
 
@@ -244,6 +245,20 @@ ctest # or .\unit_tests\Debug\unit_tests.exe
 ```    
 
 ## Additional platform-specific instructions
+
+#### Eigen 3 installation under Windows
+
+- We **strongly** recommend installing [Eigen3](https://eigen.tuxfamily.org) using the [CMake](https://www.cmake.org) system, according to the installation instructions file INSTALL from the [Eigen3](https://eigen.tuxfamily.org) root directory (which you obtain after un-zipping the Eigen distribution archive). For MSVC, this translates into downloading the Eigen3 archive form [https://eigen.tuxfamily.org](https://eigen.tuxfamily.org), unziping it to e.g. `C:\path\to\eigen-3.x.x\`, followed by typing the following in a Command Prompt
+
+```shell
+cd C:\path\to\eigen-3.x.x\
+mkdir build && cd build
+cmake ..
+cmake --build . --target INSTALL
+```
+
+Running the last line may require Administrator privileges. For other compilers, you may need to replace the last line `cmake --build . --target INSTALL` with `make install`. 
+
 
 #### macOS/OS X specific instructions
 
