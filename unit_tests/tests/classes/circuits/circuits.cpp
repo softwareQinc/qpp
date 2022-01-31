@@ -11,10 +11,6 @@ using namespace qpp;
 ///       idx pos_dit = -1)
 TEST(qpp_QCircuit_add_circuit, AllTests) {}
 /******************************************************************************/
-/// BEGIN friend QCircuit add_circuit(QCircuit qc1, const QCircuit& qc2,
-///       bigint pos_qudit, idx pos_dit = -1)
-TEST(qpp_friend_QCircuit_add_circuit, AllTests) {}
-/******************************************************************************/
 /// BEGIN QCircuit& QCircuit::add_dit(idx n = 1, idx i = -1)
 TEST(qpp_QCircuit_add_dit, AllTests) {}
 /******************************************************************************/
@@ -23,9 +19,6 @@ TEST(qpp_QCircuit_add_qudit, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::adjoint()
 TEST(qpp_QCircuit_adjoint, AllTests) {}
-/******************************************************************************/
-/// BEGIN QCircuit adjoint(QCircuit qc)
-TEST(qpp_friend_QCircuit_adjoint, AllTests) {}
 /******************************************************************************/
 /// BEGIN iterator QCircuit::begin()
 TEST(qpp_QCircuit_begin, Iterator) {}
@@ -146,13 +139,13 @@ TEST(qpp_QCircuit_get_dirty_qudits, AllTests) {}
 /// BEGIN idx QCircuit::get_gate_count() const
 TEST(qpp_QCircuit_get_gate_count, TotalGateCount) {}
 /******************************************************************************/
-/// BEGIN idx QCircuit::get_gate_count(const std::string& name) const
+/// BEGIN idx QCircuit::get_gate_count(const cmat& U) const
 TEST(qpp_QCircuit_get_gate_count, SpecificGateCount) {}
 /******************************************************************************/
 /// BEGIN idx QCircuit::get_gate_depth() const
 TEST(qpp_QCircuit_get_gate_depth, TotalGateDepth) {}
 /******************************************************************************/
-/// BEGIN idx QCircuit::get_gate_depth(const std::string& name) const
+/// BEGIN idx QCircuit::get_gate_depth(const cmat& U) const
 TEST(qpp_QCircuit_get_gate_depth, SpecificGateDepth) {}
 /******************************************************************************/
 /// BEGIN std::vector<idx> QCircuit::get_measured() const
@@ -170,13 +163,13 @@ TEST(qpp_QCircuit_get_measured_nd, SpecificQudit) {}
 /// BEGIN idx QCircuit::get_measurement_count() const
 TEST(qpp_QCircuit_get_measurement_count, TotalMeasurementCount) {}
 /******************************************************************************/
-/// BEGIN idx QCircuit::get_measurement_count(const std::string& name) const
+/// BEGIN idx QCircuit::get_measurement_count(const cmat& V) const
 TEST(qpp_QCircuit_get_measurement_count, SpecificMeasurementCount) {}
 /******************************************************************************/
 /// BEGIN idx QCircuit::get_measurement_depth() const
 TEST(qpp_QCircuit_get_measurement_depth, TotalMeasurementDepth) {}
 /******************************************************************************/
-/// BEGIN idx QCircuit::get_measurement_depth(const std::string& name) const
+/// BEGIN idx QCircuit::get_measurement_depth(const cmat& V) const
 TEST(qpp_QCircuit_get_measurement_depth, SpecificMeasurementDepth) {}
 /******************************************************************************/
 /// BEGIN std::vector<idx> QCircuit::get_measurement_dits() const
@@ -224,24 +217,13 @@ TEST(qpp_QCircuit_is_non_CTRL, AllTests) {}
 /// BEGIN QCircuit& QCircuit::kron(QCircuit qc)
 TEST(qpp_QCircuit_kron, AllTests) {}
 /******************************************************************************/
-/// BEGIN friend QCircuit kron(QCircuit qc1, const QCircuit& qc2)
-TEST(qpp_friend_QCircuit_kron, AllTests) {}
-/******************************************************************************/
 /// BEGIN QCircuit& QCircuit::match_circuit_left(QCircuit other,
 ///       const std::vector<idx>& target, idx pos_dit = -1)
 TEST(qpp_QCircuit_match_circuit_left, AllTests) {}
 /******************************************************************************/
-/// BEGIN QCircuit match_circuit_left(QCircuit qc1, const QCircuit& qc2,
-///       const std::vector<idx>& target, idx pos_dit = -1)
-TEST(qpp_friend_QCircuit_match_circuit_left, AllTests) {}
-/******************************************************************************/
 /// BEGIN QCircuit& QCircuit::match_circuit_right(QCircuit other,
 ///       const std::vector<idx>& target, idx pos_dit = -1)
 TEST(qpp_QCircuit_match_circuit_right, AllTests) {}
-/******************************************************************************/
-/// BEGIN QCircuit match_circuit_right(QCircuit qc1, const QCircuit& qc2,
-///       const std::vector<idx>& target, idx pos_dit = -1)
-TEST(qpp_friend_QCircuit_match_circuit_right, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::measureV(const cmat& V,
 ///       const std::vector<idx>& target, idx c_reg, bool destructive = true,
@@ -304,10 +286,6 @@ TEST(qpp_QCircuit_remove_clean_qudits, AllTests) {}
 /// BEGIN QCircuit& QCircuit::replicate(idx n)
 TEST(qpp_QCircuit_replicate, AllTests) {}
 /******************************************************************************/
-/// BEGIN friend QCircuit replicate(QCircuit qc,
-/// idx n)
-TEST(qpp_friend_QCircuit_replicate, AllTests) {}
-/******************************************************************************/
 /// BEGIN QCircuit& QCircuit::reset(const
 /// std::vector<idx>& target,
 ///       std::string name = {})
@@ -333,4 +311,43 @@ TEST(qpp_QCircuit_TFQ, SpecificQudits) {}
 ///       bool enclosed_in_curly_brackets = true)
 ///       const override
 TEST(qpp_QCircuit_to_JSON, AllTests) {}
+/******************************************************************************/
+
+// free functions
+/******************************************************************************/
+/// BEGIN inline QCircuit add_circuit(QCircuit qc1, const QCircuit& qc2,
+///       bigint pos_qudit, idx pos_dit = -1)
+TEST(qpp_add_circuit, AllTests) {}
+/******************************************************************************/
+/// BEGIN inline QCircuit adjoint(QCircuit qc)
+TEST(qpp_adjoint, QCircuitAllTests) {}
+/******************************************************************************/
+/// BEGIN inline QCircuit kron(QCircuit qc1, const QCircuit& qc2)
+TEST(qpp_kron, QCircuitAllTests) {}
+/******************************************************************************/
+/// BEGIN inline QCircuit match_circuit_left(QCircuit qc1, const QCircuit& qc2,
+///       const std::vector<idx>& target, idx pos_dit = -1)
+TEST(qpp_match_circuit_left, AllTests) {}
+/******************************************************************************/
+/// BEGIN inline QCircuit match_circuit_right(QCircuit qc1, const QCircuit& qc2,
+///       const std::vector<idx>& target, idx pos_dit = -1)
+TEST(qpp_match_circuit_right, AllTests) {}
+/******************************************************************************/
+/// BEGIN inline QCircuit replicate(QCircuit qc, idx n)
+TEST(qpp_replicate, AllTests) {}
+/******************************************************************************/
+/// BEGIN inline QCircuit random_circuit_count(idx nq, idx num_steps,
+///       double p_two, std::vector<cmat> one_qudit_gate_set = {},
+///       std::vector<cmat> two_qudit_gate_set = {}, idx d = 2,
+///       const std::vector<std::string>& one_qudit_gate_names = {},
+///       const std::vector<std::string>& two_qudit_gate_names = {})
+TEST(qpp_random_circuit_count, AllTests) {}
+/******************************************************************************/
+/// BEEGIN inline QCircuit random_circuit_depth(idx nq, idx depth, double p_two,
+///        const cmat& gate_depth = {},
+///        std::vector<cmat> one_qudit_gate_set = {},
+///        std::vector<cmat> two_qudit_gate_set = {}, idx d = 2,
+///        const std::vector<std::string>& one_qudit_gate_names = {},
+///        const std::vector<std::string>& two_qudit_gate_names = {})
+TEST(qpp_random_circuit_depth, AllTests) {}
 /******************************************************************************/

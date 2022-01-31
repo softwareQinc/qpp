@@ -230,6 +230,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
             throw exception::DimsInvalid("qpp::Gates::Fd()");
         // END EXCEPTION CHECKS
 
+        if (D == 2)
+            return H;
+
         cmat result(D, D);
 
 #ifdef HAS_OPENMP
@@ -358,7 +361,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      *
      * \param A Eigen expression
      * \param ctrl Control subsystem indexes
-     * \param target Subsystem indexes where the gate \a A is applied
+     * \param target Target subsystem indexes where the gate \a A is applied
      * \param n Total number of subsystems
      * \param d Subsystem dimensions
      * \param shift Performs the control as if the \a ctrl qudit states were
@@ -697,7 +700,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         const idx D = static_cast<idx>(U.rows());
 
         switch (D) {
-            // 1 qubit gates
+                // 1 qubit gates
             case 2:
                 if (U == Id2)
                     return "Id2";
@@ -711,11 +714,15 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                     return "Z";
                 else if (U == S)
                     return "S";
+                else if (U == adjoint(S))
+                    return "S+";
                 else if (U == T)
                     return "T";
+                else if (U == adjoint(T))
+                    return "T+";
                 else
                     return "";
-            // 2 qubit gates
+                // 2 qubit gates
             case 4:
                 if (U == CNOT)
                     return "CNOT";
@@ -727,7 +734,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                     return "SWAP";
                 else
                     return "";
-            // 3 qubit gates
+                // 3 qubit gates
             case 8:
                 if (U == TOF)
                     return "TOF";

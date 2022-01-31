@@ -912,8 +912,7 @@ class QNoisyEngine : public QEngine {
 
     // getters
     /**
-     * \brief Vector of noise results obtained before every step in the
-     * circuit
+     * \brief Vector of noise results obtained before every step in the circuit
      *
      * \note The first vector contains the noise measurement results
      * obtained before applying the first step in the circuit, and so on,

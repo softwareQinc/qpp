@@ -99,7 +99,7 @@
 
 // Quantum++ headers
 
-// do not change the order in this group, inter-dependencies
+// do not change the order in this group, interdependencies
 #include "types.hpp"
 #include "classes/exception.hpp"
 #include "constants.hpp"
@@ -109,26 +109,26 @@
 #include "internal/classes/iomanip.hpp"
 #include "input_output.hpp"
 
-// do not change the order in this group, inter-dependencies
+// do not change the order in this group, interdependencies
 #include "internal/classes/singleton.hpp"
 #include "classes/random_devices.hpp"
 #include "random.hpp"
 #include "number_theory.hpp"
 
-// do not change the order in this group, inter-dependencies
+// do not change the order in this group, interdependencies
 #include "functions.hpp"
 #include "classes/init.hpp"
 #include "classes/codes.hpp"
 #include "classes/gates.hpp"
 #include "classes/states.hpp"
 
-// do not change the order in this group, inter-dependencies
+// do not change the order in this group, interdependencies
 #include "statistics.hpp"
 #include "operations.hpp"
 #include "entropies.hpp"
 #include "entanglement.hpp"
 
-// the ones below can be in any order, no inter-dependencies
+// the ones below can be in any order, no interdependencies
 #include "instruments.hpp"
 #include "classes/layouts.hpp"
 #include "classes/noise.hpp"
@@ -137,7 +137,7 @@
 #include "classes/circuits/circuits.hpp"
 #include "classes/circuits/engines.hpp"
 
-// do not change the order in this group, inter-dependencies
+// do not change the order in this group, interdependencies
 #include "qasmtools/parser/parser.hpp"
 #include "qasm/qasm.hpp"
 

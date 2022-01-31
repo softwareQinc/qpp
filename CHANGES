@@ -1,4 +1,13 @@
 Pre-release:
+    - Added the random qpp::QCircuit generators ["classes/circuits.hpp"]:
+          qpp::random_circuit_count() - Random QCircuit w.r.t. gate count
+          qpp::random_circuit_depth() - Random QCircuit w.r.t. gate depth
+    - Changed the API for
+          qpp::QCircuit::get_gate_count()
+          qpp::QCircuit::get_gate_depth()
+          qpp::QCircuit::get_measurement_count()
+          qpp::QCircuit::get_measurement_depth()
+      so now the std::string overloads take instead a qpp::cmat as argument.
     - Marked high performance functions with the "custom" attribute
       [[qpp::critical]] and functions that use parallelization with the "custom"
       attribute [[qpp::parallel]]. Since C++17, unknown attributes are supposed
@@ -12,8 +21,8 @@ Pre-release:
       injected in the code
     - Added initializer lists overloads for qpp::prod() and qpp::sum()
       in ["functions.h"]:
-        qpp::prod(const std::initializer_list<T>&)
-        qpp::sum(const std::initializer_list<T>&)
+          qpp::prod(const std::initializer_list<T>&)
+          qpp::sum(const std::initializer_list<T>&)
     - Modified qpp::prod() and qpp::sum() to allow list of matrices
     - Bugfixes
 

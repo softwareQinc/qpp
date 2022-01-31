@@ -97,7 +97,7 @@ void declare_noisy_engine(py::module &m, const std::string& type) {
 }
 
 PYBIND11_MODULE(pyqpp, m) {
-    m.doc() = "Python 3 wrapper for qpp (https://github.com/softwareQinc/qpp)";
+    m.doc() = "Python 3 wrapper for Quantum++ (https://github.com/softwareQinc/qpp)";
 
     auto pyDynamic_bitset = py::class_<Dynamic_bitset>(m ,"Dynamic_bitset")
         .def(py::init<idx>(), py::arg("n"))
@@ -212,28 +212,28 @@ PYBIND11_MODULE(pyqpp, m) {
         .def("get_non_measured", &QCircuit::get_non_measured,
              "Non-measured qudit indexes")
         .def("get_gate_count",
-             py::overload_cast<const std::string&>(&QCircuit::get_gate_count, py::const_),
-             "Gate count", py::arg("name"))
+             py::overload_cast<const cmat&>(&QCircuit::get_gate_count, py::const_),
+             "Gate count", py::arg("U"))
         .def("get_gate_count",
              py::overload_cast<>(&QCircuit::get_gate_count, py::const_),
              "Total gate count")
         .def("get_gate_depth",
-             py::overload_cast<const std::string&>(&QCircuit::get_gate_depth, py::const_),
-             "Gate depth", py::arg("name"))
+             py::overload_cast<const cmat&>(&QCircuit::get_gate_depth, py::const_),
+             "Gate depth", py::arg("U"))
         .def("get_gate_depth",
              py::overload_cast<>(&QCircuit::get_gate_depth, py::const_),
              "Total gate depth")
         .def("get_measurement_depth",
-             py::overload_cast<const std::string&>(&QCircuit::get_measurement_depth, py::const_),
-             "Measurement depth", py::arg("name"))
+             py::overload_cast<const cmat&>(&QCircuit::get_measurement_depth, py::const_),
+             "Measurement depth", py::arg("V"))
         .def("get_measurement_depth",
              py::overload_cast<>(&QCircuit::get_measurement_depth, py::const_),
              "Total measurement depth")
         .def("get_depth", &QCircuit::get_depth,
              "Quantum circuit description total depth")
         .def("get_measurement_count",
-             py::overload_cast<const std::string&>(&QCircuit::get_measurement_count, py::const_),
-             "Measurement count", py::arg("name"))
+             py::overload_cast<const cmat&>(&QCircuit::get_measurement_count, py::const_),
+             "Measurement count", py::arg("V"))
         .def("get_measurement_count",
              py::overload_cast<>(&QCircuit::get_measurement_count, py::const_),
              "Total measurement count")
@@ -242,7 +242,7 @@ PYBIND11_MODULE(pyqpp, m) {
         .def("get_nop_count", &QCircuit::get_nop_count, "No-op count")
         .def("get_resources", &QCircuit::get_resources,
              "Quantum circuit resources")
-        .def("set_name", &QCircuit::set_name, "Sets name")
+        .def("set_name", &QCircuit::set_name, "Sets name", py::arg("name"))
         .def("add_qudit", py::overload_cast<idx, idx>(&QCircuit::add_qudit),
              "Adds n additional qudits before qudit pos", py::arg("n"),
              py::arg("pos"))
@@ -373,7 +373,8 @@ PYBIND11_MODULE(pyqpp, m) {
              py::overload_cast<const std::vector<idx>&, std::string>(&QCircuit::reset),
              "Reset multiple qudits", py::arg("target"), py::arg("name") = "")
         .def("replicate", &QCircuit::replicate,
-             "Replicates the circuit, in place")
+             "Replicates the quantum circuit description, in place",
+             py::arg("n"))
         .def("match_circuit_right", &QCircuit::match_circuit_right,
              "Matches a quantum circuit description to the current one, placed at the right (end) of the current one",
              py::arg("other"), py::arg("target"), py::arg("pos_dit") = -1)
@@ -384,17 +385,18 @@ PYBIND11_MODULE(pyqpp, m) {
              "Appends (glues) a quantum circuit description to the current one",
              py::arg("other"), py::arg("pos_qudit"), py::arg("pos_dit") = -1)
         .def("kron", &QCircuit::kron,
-             "Kronecker product with another quantum circuit description, in place")
+             "Kronecker product with another quantum circuit description, in place",
+             py::arg("qc"))
         .def("adjoint", &QCircuit::adjoint,
              "Adjoint quantum circuit description, in place")
         .def("is_clean_qudit", &QCircuit::is_clean_qudit,
-             "Whether qudit i in the circuit was used before or not",
+             "Whether qudit i in the quantum circuit description was used before or not",
              py::arg("i"))
         .def("is_clean_dit", &QCircuit::is_clean_dit,
-             "Whether classical dit i in the circuit was used before or not",
+             "Whether classical dit i in the quantum circuit description was used before or not",
              py::arg("i"))
         .def("is_measurement_dit", &QCircuit::is_measurement_dit,
-             "Whether classical dit i in the circuit was used to store the result of a measurement (either destructive or non-destructive)",
+             "Whether classical dit i in the quantum circuit description was used to store the result of a measurement (either destructive or non-destructive)",
              py::arg("i"))
         .def("get_clean_qudits", &QCircuit::get_clean_qudits,
              "Vector of clean qudits")
@@ -431,6 +433,43 @@ PYBIND11_MODULE(pyqpp, m) {
              oss << qc;
              return oss.str();
         });
+
+    // free functions
+    m.def("add_circuit",&qpp::add_circuit,
+          "Appends (glues) the second quantum circuit description to the first one",
+          py::arg("qc1"), py::arg("qc2"), py::arg("pos_qudit"),
+          py::arg("pos_dit") = -1);
+    m.def("adjoint", static_cast<QCircuit(*)(QCircuit)>(&qpp::adjoint),
+          "Adjoint quantum circuit description", py::arg("qc"));
+    m.def("kron", static_cast<QCircuit(*)(QCircuit, const QCircuit&)>(&qpp::kron),
+          py::arg("qc1"), py::arg("qc2"));
+    m.def("match_circuit_left", &qpp::match_circuit_left,
+          "Matches the second quantum circuit description to the left (beginning) of the first one",
+          py::arg("qc1"), py::arg("qc2"), py::arg("target"),
+          py::arg("pos_dit") = -1);
+    m.def("match_circuit_right", &qpp::match_circuit_right,
+          "Matches the second quantum circuit description to the right (end) of the first one",
+          py::arg("qc1"), py::arg("qc2"), py::arg("target"),
+          py::arg("pos_dit") = -1);
+    m.def("random_circuit_count", &qpp::random_circuit_count,
+          "Random quantum circuit description generator for fixed gate count",
+          py::arg("nq"), py::arg("num_steps"), py::arg("p_two"),
+          py::arg("one_qudit_gate_set") = std::vector<cmat>{},
+          py::arg("two_qudit_gate_set") = std::vector<cmat>{},
+          py::arg("d") = 2,
+          py::arg("one_qudit_gate_names") = std::vector<std::string>{},
+          py::arg("two_qudit_gate_names") = std::vector<std::string>{});
+    m.def("random_circuit_depth", &qpp::random_circuit_depth,
+          "Random quantum circuit description generator for fixed gate depth",
+          py::arg("nq"), py::arg("num_steps"), py::arg("p_two"),
+          py::arg("gate_depth") = cmat{},
+          py::arg("one_qudit_gate_set") = std::vector<cmat>{},
+          py::arg("two_qudit_gate_set") = std::vector<cmat>{},
+          py::arg("d") = 2,
+          py::arg("one_qudit_gate_names") = std::vector<std::string>{},
+          py::arg("two_qudit_gate_names") = std::vector<std::string>{});
+    m.def("replicate", &qpp::replicate, "Replicates a quantum circuit description",
+          py::arg("qc"), py::arg("n"));
 
     py::class_<QCircuit::Resources>(pyQCircuit, "Resources")
         .def_readonly("nq", &QCircuit::Resources::nq)
@@ -475,8 +514,10 @@ PYBIND11_MODULE(pyqpp, m) {
         .def("set_dit", &QEngine::set_dit,
              "Sets the classical dit at position i", py::arg("i"),
              py::arg("value"))
-        .def("set_dits", &QEngine::set_dits, "Set the classical dits")
-        .def("set_psi", &QEngine::set_psi, "Sets the underlying quantum state")
+        .def("set_dits", &QEngine::set_dits, "Set the classical dits",
+             py::arg("dits"))
+        .def("set_psi", &QEngine::set_psi, "Sets the underlying quantum state",
+             py::arg("psi"))
         .def("reset_stats", &QEngine::reset_stats,
              "Resets the collected measurement statistics hash table")
         .def("reset", &QEngine::reset, "Resets the engine",

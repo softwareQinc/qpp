@@ -599,7 +599,7 @@ inline std::vector<std::pair<bigint, bigint>>
 convergents(const std::vector<bigint>& cf) {
 
     idx N = cf.size();
-    // EXCEPTIONS CHECKS
+    // EXCEPTION CHECKS
 
     if (N == 0)
         throw exception::OutOfRange("qpp::convergents()");
@@ -609,8 +609,7 @@ convergents(const std::vector<bigint>& cf) {
     bigint b_minus_one = 0;
     bigint a_0 = cf[0];
     bigint b_0 = 1;
-
-    // END EXCEPTIONS CHECKS
+    // END EXCEPTION CHECKS
 
     result[0] = std::make_pair(a_0, b_0);
     if (N == 1)
@@ -644,10 +643,11 @@ convergents(const std::vector<bigint>& cf) {
  */
 inline std::vector<std::pair<bigint, bigint>> convergents(double x, idx N) {
 
-    // EXCEPTIONS CHECKS
+    // EXCEPTION CHECKS
 
     if (N == 0)
         throw exception::OutOfRange("qpp::convergents()");
+    // END EXCEPTION CHECKS
 
     auto cf = x2contfrac(x, N);
     if (cf.size() < N)
