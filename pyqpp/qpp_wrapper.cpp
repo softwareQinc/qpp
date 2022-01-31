@@ -34,16 +34,18 @@
 
 namespace py = pybind11;
 
+/* Data types aliases */
 using idx = qpp::idx;
 using cmat = qpp::cmat;
 using ket = qpp::ket;
 
+/* Class aliases */
 using Bit_circuit = qpp::Bit_circuit;
 using Dynamic_bitset = qpp::Dynamic_bitset;
 using QCircuit = qpp::QCircuit;
 using QEngine = qpp::QEngine;
 
-/* Trampoline class for virtual methods */
+/* qpp::QEngine trampoline class for virtual methods */
 class PyQEngine : public QEngine {
   public:
     using QEngine::QEngine;
@@ -67,6 +69,7 @@ class PyQEngine : public QEngine {
     }
 };
 
+/* qpp::QNoisyEngine instantiator */
 template<typename NoiseModel, typename... CtorTypeList>
 void declare_noisy_engine(py::module &m, const std::string& type) {
     py::class_<NoiseModel>(m, type.c_str())
@@ -99,6 +102,7 @@ void declare_noisy_engine(py::module &m, const std::string& type) {
 PYBIND11_MODULE(pyqpp, m) {
     m.doc() = "Python 3 wrapper for Quantum++ (https://github.com/softwareQinc/qpp)";
 
+    /* qpp::Dynamic_bitset */
     auto pyDynamic_bitset = py::class_<Dynamic_bitset>(m ,"Dynamic_bitset")
         .def(py::init<idx>(), py::arg("n"))
         .def(py::init<std::string, char, char>(), py::arg("str"),
@@ -146,6 +150,7 @@ PYBIND11_MODULE(pyqpp, m) {
             return oss.str();
         });
 
+    /* qpp::Bit_circuit */
     auto pyBit_circuit = py::class_<Bit_circuit, Dynamic_bitset>(m, "Bit_circuit")
         .def(py::init<idx>(), py::arg("n"))
         .def(py::init<std::string, char, char>(), py::arg("str"),
@@ -189,6 +194,7 @@ PYBIND11_MODULE(pyqpp, m) {
             return oss.str();
         });
 
+    /* qpp::QCircuit */
     auto pyQCircuit = py::class_<QCircuit>(m, "QCircuit")
         .def(py::init<idx, idx, idx, std::string>(), py::arg("nq") = 1,
              py::arg("nc") = 0, py::arg("d") = 2, py::arg("name") = "")
@@ -434,7 +440,7 @@ PYBIND11_MODULE(pyqpp, m) {
              return oss.str();
         });
 
-    // free functions
+    /* qpp::QCircuit related free functions */
     m.def("add_circuit",&qpp::add_circuit,
           "Appends (glues) the second quantum circuit description to the first one",
           py::arg("qc1"), py::arg("qc2"), py::arg("pos_qudit"),
@@ -442,6 +448,7 @@ PYBIND11_MODULE(pyqpp, m) {
     m.def("adjoint", static_cast<QCircuit(*)(QCircuit)>(&qpp::adjoint),
           "Adjoint quantum circuit description", py::arg("qc"));
     m.def("kron", static_cast<QCircuit(*)(QCircuit, const QCircuit&)>(&qpp::kron),
+          "Kronecker product between two quantum circuit descriptions",
           py::arg("qc1"), py::arg("qc2"));
     m.def("match_circuit_left", &qpp::match_circuit_left,
           "Matches the second quantum circuit description to the left (beginning) of the first one",
@@ -468,9 +475,11 @@ PYBIND11_MODULE(pyqpp, m) {
           py::arg("d") = 2,
           py::arg("one_qudit_gate_names") = std::vector<std::string>{},
           py::arg("two_qudit_gate_names") = std::vector<std::string>{});
-    m.def("replicate", &qpp::replicate, "Replicates a quantum circuit description",
-          py::arg("qc"), py::arg("n"));
+    m.def("replicate", &qpp::replicate,
+          "Replicates a quantum circuit description", py::arg("qc"),
+          py::arg("n"));
 
+    /* qpp::QCircuit::Resources */
     py::class_<QCircuit::Resources>(pyQCircuit, "Resources")
         .def_readonly("nq", &QCircuit::Resources::nq)
         .def_readonly("nc", &QCircuit::Resources::nc)
@@ -490,6 +499,7 @@ PYBIND11_MODULE(pyqpp, m) {
              return oss.str();
         });
 
+    /* qpp::QEngine */
     py::class_<QEngine, PyQEngine>(m, "QEngine")
         .def(py::init<const QCircuit&>(), py::keep_alive<1, 2>())
         .def("get_psi", &QEngine::get_psi, "Underlying quantum state")
@@ -533,18 +543,19 @@ PYBIND11_MODULE(pyqpp, m) {
              return oss.str();
         });
 
-    /* QubitDepolarizingNoise's constructor accepts a double */
+    /* qpp::QNoisyEngine instantiations with different noise models */
     declare_noisy_engine<qpp::QubitDepolarizingNoise, double>(m, "QubitDepolarizingNoise");
-    /* QuditDepolarizingNoise's constructor accepts a double and an idx */
     declare_noisy_engine<qpp::QuditDepolarizingNoise, double, idx>(m, "QuditDepolarizingNoise");
     declare_noisy_engine<qpp::QubitPhaseFlipNoise, double>(m, "QubitPhaseFlipNoise");
     declare_noisy_engine<qpp::QubitBitFlipNoise, double>(m, "QubitBitFlipNoise");
     declare_noisy_engine<qpp::QubitBitPhaseFlipNoise, double>(m, "QubitBitPhaseFlipNoise");
 
+    /* OpenQASM interfacing */
     auto py_qasm = m.def_submodule("qasm");
     py_qasm.def("read_from_file", &qpp::qasm::read_from_file,
                 "Get QCircuit representation of OpenQASM circuit");
 
+    /* qpp::Gates */
     auto gates = m.def_submodule("gates");
     gates.attr("Id2") = qpp::gt.Id2;
     gates.attr("H") = qpp::gt.H;
@@ -595,6 +606,7 @@ PYBIND11_MODULE(pyqpp, m) {
     gates.def("get_name", [](const cmat& U) { return qpp::gt.get_name(U); },
         "Get the name of the most common qubit gates", py::arg("U"));
 
+    /* qpp::States */
     auto states = m.def_submodule("states");
     states.attr("x0") = qpp::st.x0;
     states.attr("x1") = qpp::st.x1;
@@ -631,26 +643,41 @@ PYBIND11_MODULE(pyqpp, m) {
     states.def("minus", [](idx n) { return qpp::st.minus(n); },
         "Minus state of n qubits", py::arg("n") = 1);
 
-    /* template methods must be explicitly instantiated */
-    m.def("transpose", [](const cmat& A) { return qpp::transpose(A); },
-          "Transpose");
-    m.def("conjugate", [](const cmat& A) { return qpp::conjugate(A); },
-          "Complex conjugate");
-    m.def("adjoint", [](const cmat& A) { return qpp::adjoint(A); }, "Adjoint");
-    m.def("inverse", [](const cmat& A) { return qpp::inverse(A); }, "Inverse");
-    m.def("trace", [](const cmat& A) { return qpp::trace(A); }, "trace");
-    m.def("det", [](const cmat& A) { return qpp::det(A); }, "Determinant");
-    m.def("logdet", [](const cmat& A) { return qpp::logdet(A); },
-          "Logarithm of the determinant");
-    m.def("sum", [](const cmat& A) { return qpp::sum(A); }, "Element-wise sum");
-    m.def("prod", [](const cmat& A) { return qpp::prod(A); },
-          "Element-wise product");
-    m.def("norm", [](const cmat& A) { return qpp::norm(A); }, "Frobenius norm");
-
-    m.def("randU", &qpp::randU, "Generates a random unitary matrix",
-          py::arg("D") = 2);
-
+    /* Constants */
     m.attr("pi") = qpp::pi;
     m.attr("ee") = qpp::ee;
+
+    /* Some free functions (non-exhaustive list */
     m.def("omega", &qpp::omega, "D-th root of unity", py::arg("D"));
+    m.def("randU", &qpp::randU, "Generates a random unitary matrix",
+          py::arg("D") = 2);
+    /* template methods must be explicitly instantiated, some examples below */
+    m.def("transpose", [](const cmat& A) { return qpp::transpose(A); },
+          "Transpose", py::arg("A"));
+    m.def("conjugate", [](const cmat& A) { return qpp::conjugate(A); },
+          "Complex conjugate", py::arg("A"));
+    m.def("adjoint", [](const cmat& A) { return qpp::adjoint(A); }, "Adjoint",
+          py::arg("A"));
+    m.def("inverse", [](const cmat& A) { return qpp::inverse(A); }, "Inverse",
+          py::arg("A"));
+    m.def("trace", [](const cmat& A) { return qpp::trace(A); }, "trace",
+          py::arg("A"));
+    m.def("det", [](const cmat& A) { return qpp::det(A); }, "Determinant",
+          py::arg("A"));
+    m.def("logdet", [](const cmat& A) { return qpp::logdet(A); },
+          "Logarithm of the determinant", py::arg("A"));
+    m.def("norm", [](const cmat& A) { return qpp::norm(A); }, "Frobenius norm",
+          py::arg("A"));
+    m.def("kron", [](const cmat& A, const cmat& B) { return qpp::kron(A, B); },
+          "Kronecker product", py::arg("A"), py::arg("B"));
+    m.def("kron", static_cast<cmat (*)(const std::vector<cmat>&)>(&qpp::kron),
+          "Kronecker product of a list of elements", py::arg("As"));
+    m.def("sum", [](const cmat& A) { return qpp::sum(A); }, "Element-wise sum",
+          py::arg("A"));
+    m.def("sum", [](const std::vector<cmat>& As) { return qpp::sum(As); },
+          "Sum of the elements of the list", py::arg("A"));
+    m.def("prod", [](const cmat& A) { return qpp::prod(A); },
+          "Element-wise product", py::arg("As"));
+    m.def("prod", [](const std::vector<cmat>& As) { return qpp::prod(As); },
+          "Products of the elements of the list", py::arg("As"));
 }

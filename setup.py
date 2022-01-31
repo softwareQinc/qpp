@@ -33,6 +33,8 @@ setup(
     name='pyqpp',
     version='3.1',
     description='Python 3 wrapper for Quantum++',
+    long_description=open('pyqpp/README.md').read(),
+    long_description_content_type='text/markdown',
     author='softwareQ',
     author_email='info@softwareq.ca',
     url='https://github.com/softwareQinc/qpp',
