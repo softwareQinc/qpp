@@ -1,5 +1,6 @@
 Pre-release:
-    - Added the random qpp::QCircuit generators ["classes/circuits.hpp"]:
+    - Added the random qpp::QCircuit free function generators in
+      ["classes/circuits/circuits.hpp"]:
           qpp::random_circuit_count() - Random QCircuit w.r.t. gate count
           qpp::random_circuit_depth() - Random QCircuit w.r.t. gate depth
     - Changed the API for
