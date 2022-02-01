@@ -4420,7 +4420,7 @@ class QCircuit : public IDisplay, public IJSON {
  * end of \a qc1
  */
 inline QCircuit add_circuit(QCircuit qc1, const QCircuit& qc2, bigint pos_qudit,
-                     idx pos_dit = -1) {
+                            idx pos_dit = -1) {
     return qc1.add_circuit(qc2, pos_qudit, pos_dit);
 }
 
@@ -4448,7 +4448,9 @@ inline QCircuit adjoint(QCircuit qc) {
  * \return Quantum circuit description of the Kronecker product of \a qc1 with
  * \a qc2
  */
-inline QCircuit kron(QCircuit qc1, const QCircuit& qc2) { return qc1.kron(qc2); }
+inline QCircuit kron(QCircuit qc1, const QCircuit& qc2) {
+    return qc1.kron(qc2);
+}
 
 /**
  * \brief Matches a quantum circuit description \a qc2 to another quantum
@@ -4477,7 +4479,8 @@ inline QCircuit kron(QCircuit qc1, const QCircuit& qc2) { return qc1.kron(qc2); 
  * \return Combined quantum circuit description
  */
 inline QCircuit match_circuit_left(QCircuit qc1, const QCircuit& qc2,
-                            const std::vector<idx>& target, idx pos_dit = -1) {
+                                   const std::vector<idx>& target,
+                                   idx pos_dit = -1) {
     return qc1.match_circuit_left(qc2, target, pos_dit);
 }
 
@@ -4509,7 +4512,8 @@ inline QCircuit match_circuit_left(QCircuit qc1, const QCircuit& qc2,
  * \return Combined quantum circuit description
  */
 inline QCircuit match_circuit_right(QCircuit qc1, const QCircuit& qc2,
-                             const std::vector<idx>& target, idx pos_dit = -1) {
+                                    const std::vector<idx>& target,
+                                    idx pos_dit = -1) {
     return qc1.match_circuit_right(qc2, target, pos_dit);
 }
 
@@ -4556,7 +4560,7 @@ inline QCircuit replicate(QCircuit qc, idx n) {
  */
 inline QCircuit random_circuit_count(
     idx nq, idx num_steps, double p_two,
-std::vector<cmat> one_qudit_gate_set = {},
+    std::vector<cmat> one_qudit_gate_set = {},
     std::vector<cmat> two_qudit_gate_set = {}, idx d = 2,
     const std::vector<std::string>& one_qudit_gate_names = {},
     const std::vector<std::string>& two_qudit_gate_names = {}) {

@@ -1,4 +1,8 @@
 Pre-release:
+    - EIGEN3_INSTALL_DIR can now be set as an OS environment variable (in
+      addition to a CMake variable). If both are set, then the CMake variable
+      trumps. If none are set, the system tries to detect the location of the
+      Eigen3 library automatically.
     - Added the random qpp::QCircuit free function generators in
       ["classes/circuits/circuits.hpp"]:
           qpp::random_circuit_count() - Random QCircuit w.r.t. gate count
@@ -8,7 +12,7 @@ Pre-release:
           qpp::QCircuit::get_gate_depth()
           qpp::QCircuit::get_measurement_count()
           qpp::QCircuit::get_measurement_depth()
-      so now the std::string overloads take instead a qpp::cmat as argument.
+      so now the old std::string overloads take instead a qpp::cmat as argument
     - Marked high performance functions with the "custom" attribute
       [[qpp::critical]] and functions that use parallelization with the "custom"
       attribute [[qpp::parallel]]. Since C++17, unknown attributes are supposed
